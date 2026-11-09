@@ -118,11 +118,11 @@ function patchFs(name, replacement) {
   const original = fs[name]; fs[name] = replacement(original); syncBuiltinESMExports();
   return () => { fs[name] = original; syncBuiltinESMExports(); };
 }
-test('metadata confirmation rejects identity movement during its whole-file hash', async (t) => {
+test('metadata confirmation rejects modification-time movement during its whole-file hash', async (t) => {
   const path = await fixture(t, '{"id":"a"}\n{"id":"b"}\n'); await chmod(path, 0o600);
   let injected = false;
   const restore = patchFs('readSync', (original) => function (fd, buffer, ...args) {
-    if (!injected && buffer.length === 64 * 1024) { fs.fchmodSync(fd, 0o600); injected = true; }
+    if (!injected && buffer.length === 64 * 1024) { fs.futimesSync(fd, 1700000000, 1700000000); injected = true; }
     return original.call(this, fd, buffer, ...args);
   });
   try {
@@ -188,4 +188,69 @@ test('indexing and changed-file failures name the check without a path', async (
 test('a file URL source indexes and names its file in failure detail', async (t) => {
   const url = pathToFileURL(await fixture(t, '{"id":"a"}\nbroken\n'));
   await assert.rejects(indexJsonl(url), (error) => error.detail.file === 'rows.jsonl' && error.detail.record === 2);
+});
+// FUCQ-164: a file provider can update ctime several times in a burst while the bytes stay exact.
+const BURST_ROWS = [{ id: 'a', value: 1 }, { id: 'b', value: 2 }, { id: 'c', value: 3 }];
+const burstContent = BURST_ROWS.map((row) => JSON.stringify(row) + '\n').join('');
+// Flip the mode (ctime only) just before each selected fstat of this file, then return the real stat.
+function churnCtime(path, shouldChurn, extra = () => {}) {
+  const target = fs.statSync(path, { bigint: true }); let calls = 0; let on = false;
+  const restore = patchFs('fstatSync', (original) => function (fd, ...args) {
+    const info = original.call(this, fd, ...args);
+    if (info.ino !== target.ino || info.dev !== target.dev || !shouldChurn(++calls)) return info;
+    extra(calls); fs.fchmodSync(fd, on ? 0o600 : 0o644); on = !on; return original.call(this, fd, ...args);
+  });
+  return { restore, calls: () => calls };
+}
+async function burstFixture(t, mtime) {
+  const path = await fixture(t, burstContent); await chmod(path, 0o600); if (mtime) await utimes(path, mtime, mtime);
+  const indexed = await indexJsonl(path, { key: (row) => row.id }); return { path, indexed };
+}
+test('a burst of ctime-only updates during confirmation is accepted and every row reads exact bytes', async (t) => {
+  const { path, indexed } = await burstFixture(t); const before = indexed.identity.ctimeNs;
+  await chmod(path, 0o644); const churn = churnCtime(path, (call) => call >= 2 && call <= 4);
+  try { assert.deepEqual([...indexed], BURST_ROWS); assert.equal(churn.calls() >= 5, true); } finally { churn.restore(); }
+  assert.notEqual(indexed.identity.ctimeNs, before); assert.deepEqual(indexed.get('b'), BURST_ROWS[1]);
+});
+test('a ctime-only update between the row read and the post-read check is accepted', async (t) => {
+  const { path, indexed } = await burstFixture(t); const before = indexed.identity.ctimeNs;
+  const churn = churnCtime(path, (call) => call === 2);
+  try { assert.deepEqual(indexed.get('b'), BURST_ROWS[1]); } finally { churn.restore(); }
+  assert.notEqual(indexed.identity.ctimeNs, before); assert.deepEqual([...indexed], BURST_ROWS);
+});
+test('a ctime burst during end-of-stream confirmation keeps one coherent byte snapshot', async (t) => {
+  const path = await fixture(t, burstContent); await chmod(path, 0o600); let churn;
+  try {
+    const indexed = await indexJsonl(path, { key: (row) => row.id, chunkBytes: 11, onRow: async (_row, entry) => {
+      if (entry.key === 'a') { await chmod(path, 0o644); churn = churnCtime(path, (call) => call <= 3); }
+    } });
+    assert.deepEqual([...indexed], BURST_ROWS);
+  } finally { churn?.restore(); }
+});
+test('ctime that never settles fails closed as unstable after a fixed number of attempts', async (t) => {
+  const { path, indexed } = await burstFixture(t); await chmod(path, 0o644);
+  const churn = churnCtime(path, () => true);
+  try {
+    assert.throws(() => indexed.get('a'), (error) => error.code === 'artifact-changed' && error.detail.check === 'confirm-unstable'
+      && error.detail.attempts === 4 && error.detail.record === 1);
+  } finally { churn.restore(); }
+});
+test('real changes still fail closed during or after a ctime burst', async (t) => {
+  let { path, indexed } = await burstFixture(t);
+  await utimes(path, 1700000000, 1700000000);
+  assert.throws(() => indexed.get('a'), (error) => error.code === 'artifact-changed' && error.detail.check === 'confirm-identity'
+    && error.detail.changedFields.join() === 'mtimeNs');
+  ({ path, indexed } = await burstFixture(t, 1700000000));
+  await writeFile(path, burstContent.replace('"value":2', '"value":9')); await utimes(path, 1700000000, 1700000000);
+  const bytes = churnCtime(path, (call) => call <= 2);
+  try { assert.throws(() => indexed.get('a'), (error) => error.detail.check === 'confirm-bytes'); } finally { bytes.restore(); }
+  ({ path, indexed } = await burstFixture(t));
+  await writeFile(path + '.new', burstContent); await rename(path + '.new', path);
+  assert.throws(() => indexed.get('a'), (error) => error.detail.check === 'confirm-identity' && error.detail.changedFields.includes('ino'));
+  ({ path, indexed } = await burstFixture(t)); await chmod(path, 0o644);
+  const mtime = churnCtime(path, (call) => call <= 3, (call) => { if (call === 3) fs.utimesSync(path, 1700000000, 1700000000); });
+  try {
+    assert.throws(() => indexed.get('a'), (error) => error.code === 'artifact-changed' && error.detail.check === 'confirm-identity'
+      && error.detail.changedFields.includes('mtimeNs'));
+  } finally { mtime.restore(); }
 });

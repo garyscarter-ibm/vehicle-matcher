@@ -16,26 +16,28 @@ const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const identity = (info) => Object.freeze(Object.fromEntries(
   ['dev', 'ino', 'size', 'mtimeNs', 'ctimeNs'].map((key) => [key, String(info[key])])));
 const sameIdentity = (left, right) => Object.keys(left).every((key) => left[key] === right[key]);
+const CONFIRM_ATTEMPTS = 4;
 function confirmMetadataChange(fd, expected, current, checksum, file) {
-  // File providers can update metadata without touching bytes. Keep every data identity
-  // guard, and confirm the entire indexed byte snapshot before accepting only a new ctime.
-  const latest = identity(fstatSync(fd, { bigint: true }));
-  if (!checksum || [current, latest].some((value) => Object.keys(expected).some(
-    (key) => key !== 'ctimeNs' && expected[key] !== value[key]))) {
-    const changedFields = [...new Set([current, latest].flatMap((value) => differing(expected, value, 'ctimeNs')))];
-    fail('artifact-changed', 'Indexed artifact identity changed.', { file, check: 'confirm-identity', changedFields });
+  // File providers write metadata in bursts. Accept only ctime movement, and only around a full re-hash.
+  const now = () => identity(fstatSync(fd, { bigint: true })); const buffer = Buffer.alloc(64 * 1024);
+  let latest = now();
+  const moved = [...new Set([current, latest].flatMap((value) => differing(expected, value, 'ctimeNs')))];
+  if (!checksum || moved.length) fail('artifact-changed', 'Indexed artifact identity changed.', { file, check: 'confirm-identity', changedFields: moved });
+  for (let attempt = 1; attempt <= CONFIRM_ATTEMPTS; attempt++) {
+    const hash = createHash('sha256'); let position = 0;
+    while (position < Number(latest.size)) {
+      const count = readSync(fd, buffer, 0, Math.min(buffer.length, Number(latest.size) - position), position);
+      if (!count) fail('artifact-changed', 'Indexed artifact became incomplete.', { file, check: 'confirm-incomplete', offset: position });
+      hash.update(buffer.subarray(0, count)); position += count;
+    }
+    if (hash.digest('hex') !== checksum) fail('artifact-changed', 'Indexed artifact bytes or identity changed.', { file, check: 'confirm-bytes', attempts: attempt });
+    const after = now();
+    if (sameIdentity(latest, after)) return latest;
+    const changedFields = differing(latest, after, 'ctimeNs');
+    if (changedFields.length) fail('artifact-changed', 'Indexed artifact bytes or identity changed.', { file, check: 'confirm-identity', changedFields, attempts: attempt });
+    latest = after;
   }
-  const hash = createHash('sha256'); const buffer = Buffer.alloc(64 * 1024); let position = 0;
-  while (position < Number(latest.size)) {
-    const count = readSync(fd, buffer, 0, Math.min(buffer.length, Number(latest.size) - position), position);
-    if (!count) fail('artifact-changed', 'Indexed artifact became incomplete.', { file, check: 'confirm-incomplete', offset: position });
-    hash.update(buffer.subarray(0, count)); position += count;
-  }
-  const after = identity(fstatSync(fd, { bigint: true }));
-  if (hash.digest('hex') !== checksum || !sameIdentity(latest, after)) {
-    fail('artifact-changed', 'Indexed artifact bytes or identity changed.', { file, check: 'confirm-bytes', changedFields: differing(latest, after) });
-  }
-  return latest;
+  fail('artifact-changed', 'Indexed artifact bytes or identity changed.', { file, check: 'confirm-unstable', attempts: CONFIRM_ATTEMPTS });
 }
 function parse(bytes, label, detail) {
   let row;
@@ -64,7 +66,9 @@ export function readIndexedRow(path, expectedIdentity, entry, integrity) {
     if (sha(bytes) !== entry.digest) fail('artifact-changed', 'Indexed record bytes changed.', { file, check: 'row-digest', offset: entry.offset });
     const after = identity(fstatSync(fd, { bigint: true }));
     if (!sameIdentity(after, expectedIdentity)) {
-      fail('artifact-changed', 'Indexed record bytes changed.', { file, check: 'post-read-identity', offset: entry.offset, changedFields: differing(expectedIdentity, after) });
+      const changedFields = differing(expectedIdentity, after, 'ctimeNs');
+      if (changedFields.length) fail('artifact-changed', 'Indexed record bytes changed.', { file, check: 'post-read-identity', offset: entry.offset, changedFields });
+      integrity.identity = confirmMetadataChange(fd, expectedIdentity, after, integrity.checksum, file);
     }
     return parse(bytes, 'Indexed record', () => ({ file, check: 'parse', offset: entry.offset }));
   } catch (error) {
