@@ -182,3 +182,19 @@ For Russell or Gary:
   - **Not done:** the draw.io page 09 statuses aren't updated. To stay under its 38-line cap, gcsp-greg.css's two `@import` lines were put on one line; raising the cap is the alternative.
 - **FUCQ-226 raised to High and started.** FUCQ-137's default command (1,000 employees, 3 seeds) didn't finish in 90 minutes. At 100 employees each seed took about 6 minutes, against 85 s for all three seeds before. The cause isn't known yet: either the command's path differs from the probe's (for example, through PostgreSQL), or something merged since 8 Nov slowed the replay. A lead is finding the root cause. It must never touch the hosted database for timing runs.
 - **FUCQ-174, 175 and 176 (C) wait for FUCQ-226,** because they change the same comparison code.
+- **About 04:00, merged, pushed and In Review:**
+  - **FUCQ-137 and FUCQ-138** (S). Scoped tests: 633 tests, 0 real failures. FUCQ-137's default 1,000-employee run is still open under FUCQ-226. Until that's fixed, store the demo result from a smaller run.
+  - **FUCQ-232** (bug, Medium): Greg's decline categories come from the reviewed policy, and fail closed. 555 tests, 0 failed.
+  - **FUCQ-233** (bug, Medium): a declined buddy car is re-offered on the next tick. A new assumed key, `offer.declinedHold.reallocation`, makes the person who declined sit out. The 300-employee comparison is unchanged. 890 tests, 0 failed.
+  - **FUCQ-234** (bug, Low): the offer page's live announcement is visually hidden.
+- **Merged locally, tests running:**
+  - **FUCQ-235** (Low): the kit dataTable gets an opt-in `stack` layout under 640 px. Its COMPONENTS.md conflict with FUCQ-138 is resolved by keeping both.
+  - **FUCQ-237** (Low): new-order wording through the optional policy `wordingByMode.new`.
+- **Questions for Gary:**
+  1. FUCQ-233: do you want the decline sit-out rule?
+  2. FUCQ-233: should the comparison's limitations line also mention declines? Adding it re-pins two fixtures.
+  3. FUCQ-237: please check the new new-order wording in the seed.
+  4. FUCQ-238: is about 3,340 px for the first gallery page at 320 acceptable? It shows 3 cars per page under 601 px.
+- **New Low bug FUCQ-239:** the offer handoff wording and Order history ignore new-order employees and placed orders.
+- **Still building:** FUCQ-226 (root cause) and FUCQ-238. **Waiting:** FUCQ-236 (Low, claim after these tests) and FUCQ-174, 175 and 176 (C, after FUCQ-226).
+- **Seen by a lead:** gcsp-cases-local-demo.test.js:154 fails on base. The full suite will confirm.
