@@ -254,6 +254,26 @@ test('account composition preserves complete supplied facts, labelled details an
   } finally { destroy(); root.remove(); }
 });
 
+test('FUCQ-277: the allowance panel hides unsupplied overrides and internal prose, and the current car drops its specification caveat', async () => {
+  const plain = unnamed('multi-slot'); delete plain.value.account.allowanceOverride; delete plain.value.account.allowanceOverrideEndDate;
+  plain.value.allowance.basis = 'Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.';
+  const first = await domMount({ ...readOnlyAdapter(), readAccount: async () => plain });
+  try {
+    const panel = first.root.querySelector('.gcsp-allowance');
+    assert.deepEqual([...panel.querySelectorAll('dt')].map((node) => node.textContent), ['Monthly allowance']);
+    assert.doesNotMatch(first.root.textContent, /Allowance basis|Synthetic monthly demo|Not a verified|Exact specification is not supplied/);
+    assert.match(first.root.querySelector('.gcsp-synthetic:last-child').textContent, /^Synthetic example data/);
+  } finally { first.destroy(); first.root.remove(); }
+  const set = unnamed('multi-slot');
+  Object.assign(set.value.account, { allowanceOverride: { value: 1500, unit: 'points/month' }, allowanceOverrideEndDate: '2026-12-01' });
+  const second = await domMount({ ...readOnlyAdapter(), readAccount: async () => set });
+  try {
+    const panel = second.root.querySelector('.gcsp-allowance');
+    assert.deepEqual([...panel.querySelectorAll('dt')].map((node) => node.textContent), ['Monthly allowance', 'Allowance override', 'Override end']);
+    assert.doesNotMatch(panel.textContent, /Allowance basis|Synthetic monthly demo/);
+  } finally { second.destroy(); second.root.remove(); }
+});
+
 test('current contracts retain their explicit scheme allowance including zero and unknown', async () => {
   const input = accountFixture('multi-slot');
   input.value.contracts[0].terms = { kind: 'points-monthly', value: 1100, allowance: 0 };

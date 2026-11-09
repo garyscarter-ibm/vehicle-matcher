@@ -560,6 +560,15 @@ test('kit primitives: screenIntro, button, statusScreen, factList', async () => 
   assert.deepEqual(values, ['one', '1,100 points a month', 'Not supplied', 'Unknown']);
   assert.equal(facts.querySelectorAll('dd.is-missing').length, 2);
   assert.doesNotMatch(facts.textContent, /undefined|null/);
+
+  const trimmed = ui.factList([{ label: 'A', value: 'one' }, { label: 'B', value: null }, { label: 'C', value: '' }], { hideMissing: 'More details not supplied' });
+  assert.deepEqual([...trimmed.querySelectorAll('dt')].map((d) => d.textContent), ['A']);
+  assert.equal(trimmed.querySelectorAll('.is-missing').length, 0);
+  assert.deepEqual([...trimmed.querySelectorAll('.vm-facts-more')].map((p) => p.textContent), ['More details not supplied']);
+  const all = ui.factList([{ label: 'B', value: null }], { hideMissing: 'More details not supplied' });
+  assert.equal(all.querySelector('dl'), null); assert.equal(all.textContent, 'More details not supplied');
+  const none = ui.factList([{ label: 'A', value: 'one' }], { hideMissing: 'More details not supplied' });
+  assert.equal(none.tagName, 'DL'); assert.equal(none.querySelector('.vm-facts-more'), null);
 });
 
 test('mediaWell placeholder: retail default unchanged, custom text for GCSP', async () => {
