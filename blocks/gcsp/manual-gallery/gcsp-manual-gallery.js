@@ -220,7 +220,8 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     nodes.check.hidden = !claimState.blocked || ['claiming', 'checking'].includes(claimState.state);
     nodes.check.disabled = ['claiming', 'checking'].includes(claimState.state);
     nodes.retry.hidden = claimState.state !== 'retry-available';
-    nodes.back.disabled = !canGoBack(); nodes.backReason.hidden = canGoBack();
+    // The status screen carries the one Back button in this state (FUCQ-282).
+    nodes.back.hidden = galleryState.state === 'choices-invalid'; nodes.back.disabled = !canGoBack(); nodes.backReason.hidden = canGoBack();
     nodes.backReason.textContent = canGoBack() ? '' : ['checking', 'claiming'].includes(claimState.state)
       ? 'Wait for the reservation check before returning to your choices.'
       : 'Resolve your current reservation before returning to your choices.';

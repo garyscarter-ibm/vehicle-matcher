@@ -9,7 +9,6 @@ gcsp-manual-setup { display: block; }
 .gcsp .gcsp-setup-group { display: flex; flex-direction: column; gap: 20px; min-width: 0; padding: 24px; background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
 .gcsp .gcsp-setup-group .gcsp-h2, .gcsp .gcsp-setup-allowance .gcsp-h2 { margin: 0; }
 .gcsp .gcsp-setup-source { padding-top: 12px; border-top: 1px solid var(--gcsp-divider); }
-.gcsp .gcsp-setup-reasons { margin: 0; padding-left: 20px; color: var(--gcsp-text-muted); font-size: 14px; display: grid; gap: 8px; }
 .gcsp .gcsp-setup-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; min-width: 0; grid-column: 1 / -1; }
 .gcsp .gcsp-setup-notice, .gcsp .gcsp-setup-invalidation { margin: 0; color: var(--gcsp-text-muted); }
 .gcsp .gcsp-setup-invalidation { padding: 16px; border: 1px solid var(--gcsp-divider); background: var(--gcsp-accent-soft); }

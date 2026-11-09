@@ -78,6 +78,8 @@ test('load derives trusted replacement, editable contact and sole brand, leaving
 test('required fields, conditional mileage and supplied driver/contract/location combinations validate inline', async () => {
   const f = await setup(); await f.controller.load();
   const missing = await f.controller.save(); assert.equal(missing.status, 'invalid');
+  assert.equal(f.controller.getState().errors.driverId, 'Choose who will drive the car.'); // FUCQ-282
+  assert.equal(f.controller.getState().errors.expectedReturnMileage, 'Enter the mileage your current car will have when you return it.');
   assert.deepEqual(Object.keys(f.controller.getState().errors).sort(), ['collectionLocationId', 'contractOptionId', 'driverId', 'expectedReturnMileage', 'requestedCollectionDate']);
   fill(f, { driverId: 'nominated:employee-paula', contractOptionId: 'twelve-month-12000' });
   assert.match(f.controller.getState().options.contractOptions[1].reason, /driver/);
@@ -112,6 +114,10 @@ test('calendar dates, canonical lead/renewal window, closed locations, contact a
     f.controller.update('requestedCollectionDate', value); assert.equal((await f.controller.save()).status, 'invalid');
     assert.ok(f.controller.getState().errors.requestedCollectionDate);
   }
+  f.controller.update('requestedCollectionDate', '2026-11-26'); await f.controller.save();
+  assert.equal(f.controller.getState().errors.requestedCollectionDate, 'Choose a collection date between Thursday 12 November 2026 and Wednesday 25 November 2026.');
+  f.controller.update('requestedCollectionDate', 'bad'); await f.controller.save();
+  assert.equal(f.controller.getState().errors.requestedCollectionDate, 'Enter the date you want to collect the car.');
   f.controller.update('requestedCollectionDate', '2026-11-21');
   f.controller.update('contact', { email: 'bad', phone: '' });
   f.controller.update('specialRequirements', 'x'.repeat(13));
@@ -126,7 +132,7 @@ test('FUCQ-237: a site that cannot apply to the chosen contract and driver is le
   assert.deepEqual(state.options.collectionLocations.map((row) => row.locationId), ['demo-collection-centre']);
   assert.equal(state.options.collectionLocations[0].disabled, false);
   assert.equal(deriveSetupModel(state.account, { ...state.choices, collectionLocationId: 'demo-company-site' }).errors.collectionLocationId,
-    'Choose an open, permitted collection location.');
+    'Choose where to collect the car.');
   const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
   seed.assumptions.find((a) => a.key === 'manual.context.v1').value.locations[0].closedDates = ['2026-11-20'];
   const closed = await setup({ policy: new PolicyService({ provider: { async loadVersions() { return [seed]; } } }) });
