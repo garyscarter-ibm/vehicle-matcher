@@ -55,7 +55,9 @@ export class LifecycleReturnPlanService {
     const contract = s?.oldContract; const slot = s?.vehicleSlot;
     // The buddy route records the car's odometer and never asks for a collection place; the manual draft carries both.
     const buddy = found.value.route === 'buddy'; const odometer = choices?.returnOdometer;
-    const mileage = buddy ? odometer?.value : choices?.expectedReturnMileage;
+    // Manual orders carry the review details frozen at confirmation; older orders without them fall back to the draft.
+    const frozen = s?.reviewDetails?.details;
+    const mileage = buddy ? odometer?.value : object(frozen) ? frozen.expectedReturnMileage : choices?.expectedReturnMileage;
     const unit = buddy ? odometer?.unit : 'mi';
     if (choices?.mode !== 'replacement' || !object(contract) || !text(contract.contractId) || !object(slot) || !text(slot.entitlementSlotId)
       || (buddy ? !object(odometer) || !text(unit, 16) : contract.contractId !== choices.oldContractId || !text(choices.collectionLocationId))

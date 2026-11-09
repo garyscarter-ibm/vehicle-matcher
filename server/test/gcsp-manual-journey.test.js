@@ -107,8 +107,6 @@ async function chooseAndBrowse(f, who, plan, label, { claimable = true } = {}) {
   return { e, account, choices, draft, stock, decision };
 }
 
-// Medium defect: server/gcsp/lifecycle/return-plan/index.js:52,58 reads the draft's mileage, not the frozen review details.
-const RETURN_MILEAGE_DEFECT = 'defect: the return plan shows the first draft return mileage, not the one saved on the review page';
 /** Plans for the two coherent journeys. Dates are offsets from the run clock, so no wall-clock date appears here. */
 const NEW_SELF = { mode: 'new', driverKind: 'employee', contractOptionId: 'twelve-month-12000', locationId: 'demo-company-site', leadDays: 10,
   contact: { phone: '01632 960111', email: 'new-order-contact@example.invalid' }, requirements: 'Left-hand seat adjustment',
@@ -233,7 +231,7 @@ async function journey(t, f, label, name, plan, { newOrder }) {
     same(seen.order.selection.draft.choices.requestedCollectionDate, plan.date, 'the requested collection date is recorded on the order');
   });
 
-  if (!newOrder) await t.test(`${label}: the return plan carries the return mileage the employee reviewed`, { skip: RETURN_MILEAGE_DEFECT }, async () => {
+  if (!newOrder) await t.test(`${label}: the return plan carries the return mileage the employee reviewed`, async () => {
     const returning = value(await e.get(`/api/gcsp/return-plan?orderUuid=${seen.orderUuid}`), 'return plan');
     same([returning.returnMileage.value, returning.returnMileage.unit], [plan.reviewMileage, 'mi'], 'the reviewed return mileage, not the first draft\'s');
   });
