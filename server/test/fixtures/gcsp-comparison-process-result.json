@@ -249,7 +249,7 @@
                 "buddyHeldNotTakenHours": 0.333333,
                 "heldNotTakenHours": 0.4
               },
-              "recordDigest": "12b11aa781759be4ba172926c6c2264e3d3a4d061d2e5fb0b7dc1433e2b4a79c"
+              "recordDigest": "b7922b0b8a9a7d013a3758cbb6527b1b83391ec024c4c87cda41f18803bac030"
             }
           }
         },
@@ -324,7 +324,7 @@
                 "buddyHeldNotTakenHours": 0,
                 "heldNotTakenHours": 0.066667
               },
-              "recordDigest": "e580c1f26770ec768943fff8054d580d010db0e4d5f9c877de650c22e4c929ed"
+              "recordDigest": "5fd25145b23aa4e1ff53161c4617f8e573e8c55f20a711885361ba1ea74cd038"
             }
           }
         },
@@ -399,7 +399,7 @@
                 "buddyHeldNotTakenHours": 0.333333,
                 "heldNotTakenHours": 0.333333
               },
-              "recordDigest": "19dbcc0519df4df1d75eaa867d1a0b397ffce61bed9c0036b156f2175ef24601"
+              "recordDigest": "e9203f2a8e33b33f6a67ad57adf5f3f0e89af947e6432dba656a31f811e2561d"
             }
           }
         }
@@ -932,10 +932,11 @@
         "Underlying needs are synthetic latent inputs, not a real employee confirmation.",
         "Equipment and ISOFIX facts are unknown; no factory-option or constructibility inference.",
         "Live corpus realism/integration is separate acceptance evidence.",
-        "Acceptance is recorded as a local offer decision; the ordering handoff is not replayed."
+        "Acceptance is recorded as a local offer decision; the ordering handoff is not replayed.",
+        "After an offer expires the live service re-offers its car at once (FUCQ-227); this replay leaves it for the next release."
       ]
     },
-    "resultId": "process-comparison-d1677c0a2e63bb0a89ed36608d82e7c3",
+    "resultId": "process-comparison-cff41da9c366f807382c71fd7bf848d3",
     "storedAt": "2026-11-08T12:00:00.000Z",
     "policyVersion": "gcsp-policy-v1",
     "activePolicyVersion": "gcsp-policy-v1",

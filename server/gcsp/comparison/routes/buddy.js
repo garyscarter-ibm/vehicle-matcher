@@ -196,7 +196,8 @@ export async function replayBuddyRoute(run) {
       offerExpiries: participants.get(row.employeeId)?.offerExpiries ?? 0, termsLapsed: participants.get(row.employeeId)?.termsLapsed ?? 0 }));
     const held = record.cars.reduce((total, row) => total + row.heldNotTakenSeconds, 0) + sum([...extra.values()], 'declinedSeconds');
     return { ...record, holdDuration: buddy.holdDuration, employees, cars,
-      limitations: [...record.limitations, 'Acceptance is recorded as a local offer decision; the ordering handoff is not replayed.'],
+      limitations: [...record.limitations, 'Acceptance is recorded as a local offer decision; the ordering handoff is not replayed.',
+        'After an offer expires the live service re-offers its car at once (FUCQ-227); this replay leaves it for the next release.'],
       totals: { ...record.totals, participants: participants.size, offersMade: sum(employees, 'offers'),
         offersAccepted: entries.filter((entry) => entry.status === 'accepted').length, declines: sum(employees, 'declines'),
         declinesByReason, offerExpiries: sum(employees, 'offerExpiries'), termsLapsed: sum(employees, 'termsLapsed'), notificationsCaptured: outbox.length,

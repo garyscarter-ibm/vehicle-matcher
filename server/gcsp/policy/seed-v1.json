@@ -11124,6 +11124,17 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "offer.expiredHold.reallocation",
+      "value": "lapsedHoldersSitOutAndNobodyGetsBackACarTheyLetLapse",
+      "unit": "enum",
+      "status": "assumed",
+      "basis": "Assumed demo rule (FUCQ-227): a lapsed buddy hold returns its car to allocation on the same tick. The employees whose holds lapsed sit out that allocation, and an expiry allocation never offers anyone a car they already let lapse, so the car goes to a waiting employee once rather than circling between non-responders. An expiry is not a decline: at the next release or brief change everyone competes again, with no priority.",
+      "source": "docs/gcsp/allocation-contract.md",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "choices.topUp.gbpPerPoint",
       "value": 1,
       "unit": "GBP per point",

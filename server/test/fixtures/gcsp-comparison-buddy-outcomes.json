@@ -250,7 +250,8 @@
       "Underlying needs are synthetic latent inputs, not a real employee confirmation.",
       "Equipment and ISOFIX facts are unknown; no factory-option or constructibility inference.",
       "Live corpus realism/integration is separate acceptance evidence.",
-      "Acceptance is recorded as a local offer decision; the ordering handoff is not replayed."
+      "Acceptance is recorded as a local offer decision; the ordering handoff is not replayed.",
+      "After an offer expires the live service re-offers its car at once (FUCQ-227); this replay leaves it for the next release."
     ],
     "employees": [
       {

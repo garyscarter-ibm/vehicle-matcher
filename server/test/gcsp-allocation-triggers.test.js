@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { inputDigest, ok } from '../gcsp/repository/index.js';
 import { BriefService } from '../gcsp/brief/index.js';
+import { buddyExpiryEvents } from '../gcsp/allocation/index.js';
 import { allocationFixture } from './helpers/gcsp-allocation.js';
 
 const release = (f, id = 'released-tranche') => ({ consumerId: 'stock-release', eventId: id,
@@ -11,6 +12,9 @@ const release = (f, id = 'released-tranche') => ({ consumerId: 'stock-release', 
     orderUuids: [f.stock().orderUuid], visibleOrderUuids: [f.stock().orderUuid], policyVersion: f.context.policyVersion,
     source: { providerId: 'allocation-trigger-test', mode: 'synthetic', version: 'fixture-v1', label: 'TEST' } }) });
 const put = (f, row) => f.write((tx) => tx.recordReceipt(row));
+const lapse = (holdId, orderUuid = `order-${holdId}`, expiredAt = '2026-11-05T12:00:00.000Z') => ({ consumerId: 'buddy-expiry', eventId: holdId,
+  eventType: 'buddy-expired', inputDigest: inputDigest(holdId), inputVersions: { holds: 1 }, state: 'completed',
+  outcome: ok({ holdId, offerId: `offer-${holdId}`, orderUuid, state: 'expired', expiredAt, expiresAt: expiredAt, proposedCapability: true }) });
 
 test('persisted release triggers preserve producer evidence and replay without another claim', async () => {
   const f = await allocationFixture({ cars: 1 }); const source = release(f); await put(f, source);
@@ -101,4 +105,43 @@ test('changing a completed producer payload conflicts without another claim', as
   await f.write((tx) => tx.compareAndSwap(ref, row.version, { outcome: ok({ ...row.outcome.value, source: {
     ...row.outcome.value.source, version: 'changed-source' } }) }));
   assert.equal((await f.service.consumeTriggers(f.context)).status, 'conflict'); assert.equal(f.calls.length, calls);
+});
+
+test('buddy expiry receipts group by lapse instant, sort holds and ignore other producers', () => {
+  const at = '2026-11-05T12:00:00.000Z'; const later = '2026-11-05T12:05:00.000Z';
+  const receipts = [lapse('hold-b', 'order-b', at), lapse('hold-a', 'order-a', at), lapse('hold-c', 'order-c', later),
+    { ...lapse('hold-p', 'order-p', at), state: 'pending' }, { ...lapse('hold-f', 'order-f', at), outcome: { status: 'unavailable' } },
+    { ...lapse('hold-o', 'order-o', at), consumerId: 'other-consumer' }];
+  const events = buddyExpiryEvents('allocation-run', receipts);
+  assert.deepEqual(events.map((e) => [e.occurredAt, e.holdIds]), [[at, ['hold-a', 'hold-b']], [later, ['hold-c']]]);
+  assert.deepEqual([events[0].eventType, events[0].orderUuids], ['buddy-expired', ['order-a', 'order-b']]);
+  const again = buddyExpiryEvents('allocation-run', receipts);
+  assert.equal(again[0].eventId, events[0].eventId); assert.deepEqual(again, events);
+});
+
+test('a completed buddy-expiry receipt whose hold differs from its event ID is malformed', () => {
+  const wrong = lapse('hold-m'); wrong.outcome.value.holdId = 'hold-n';
+  assert.equal(buddyExpiryEvents('allocation-run', [wrong]), null);
+});
+
+test('a lapsed hold hands its car to another eligible employee, once', async () => {
+  const f = await allocationFixture({ cars: 1 });
+  const [holder, other] = f.employees; const orderUuid = f.stock().orderUuid; const key = { runId: f.context.runId, holdId: 'hold-x' };
+  await f.write((tx) => tx.insert('holds', { ...key, orderUuid, employeeId: holder.employeeId, entitlementSlotId: holder.entitlementSlotId, state: 'active' }));
+  await f.write(async (tx) => { const row = await tx.get({ table: 'holds', key }); return tx.compareAndSwap({ table: 'holds', key }, row.value.version,
+    { state: 'expired', releaseReason: 'buddy-expired' }); });
+  await put(f, lapse('hold-x', orderUuid));
+  const out = await f.service.consumeTriggers(f.context); assert.equal(out.status, 'ok', JSON.stringify(out));
+  assert.equal(out.value.allocations[0].event.eventType, 'buddy-expired');
+  assert.deepEqual(out.value.allocations[0].assignments.map((a) => a.employeeId), [other.employeeId]);
+  const calls = f.calls.length;
+  assert.deepEqual(await f.create().consumeTriggers(f.context), out); assert.equal(f.calls.length, calls);
+});
+
+test('a malformed completed buddy-expiry receipt refuses the trigger batch without a claim', async () => {
+  const f = await allocationFixture({ cars: 1 });
+  const malformed = lapse('hold-bad', f.stock().orderUuid); malformed.outcome.value.orderUuid = '';
+  await put(f, malformed);
+  const out = await f.service.consumeTriggers(f.context);
+  assert.deepEqual([out.status, out.code], ['unavailable', 'allocation-trigger-invalid']); assert.equal(f.calls.length, 0);
 });

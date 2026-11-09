@@ -1,4 +1,5 @@
 // FUCQ-129: Paula's buddy offer runs out on a presenter tick, and the old email link tells the truth, twice across two resets.
+// FUCQ-227: the car is reoffered to waiting Alex (G1-6) on that same tick; repeat ticks add no second offer.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { startGcspDemo } from '../../scripts/gcsp-demo.mjs';
@@ -35,7 +36,7 @@ const link = (href, origin) => { const url = new URL(href, origin); return { run
 async function replay(ctx, label) {
   const { client, services, https, origin } = ctx;
   const { entry, reset } = await resetIntoScenario(client, SCENARIO, `${label}-reset`);
-  assert.equal(entry.ownerStory, 'FUCQ-129'); assert.equal(entry.fixtureVersion, 'offer-expires-inputs-v1');
+  assert.equal(entry.ownerStory, 'FUCQ-129'); assert.equal(entry.fixtureVersion, 'offer-expires-inputs-v2');
   assert.doesNotMatch(JSON.stringify(entry.inputs), /offerId|holdId|operationId|orderNumber|"offers?"/i);
   const { startState, runId } = reset;
   assert.equal(startState.status, 'ok', JSON.stringify(startState));
@@ -43,12 +44,12 @@ async function replay(ctx, label) {
   const as = async (principalId, tag) => { presenter(); route(await client.request('/api/gcsp/session/switch', { principalId, commandId: `${label}-${tag}` })); };
   const before = await records(services, cookie, runId);
 
-  // Start state: Paula holds one active offer. Alex may hold his own G1-6 car (FUCQ-199), never Paula's.
+  // Start state: Paula holds one active offer. Alex (G1-6) is eligible only for this hatch, so he waits for it.
   const offer = before.offers.find((row) => row.offerId === startState.offerId); const paula = offer.employeeId;
   assert.deepEqual([before.offers.filter((row) => row.employeeId === paula).length, offer.state], [1, 'active']);
   assert.equal(offer.expiresAt, startState.expiresAt);
   const alex = before.employees.find((row) => row.principalId === 'demo-alex').employeeId;
-  assert.ok(!before.offers.some((row) => row.employeeId === alex && row.orderUuid === offer.orderUuid));
+  assert.equal(before.offers.filter((row) => row.employeeId === alex).length, 0);
   assert.deepEqual(before.stock.find((row) => row.orderUuid === offer.orderUuid).state, 'held');
 
   // The hold length is the policy value; the offer carries it as a deadline read from the offer.
@@ -76,9 +77,7 @@ async function replay(ctx, label) {
   const stages = ticked.tick.handlerOrder.map((h) => h.stage);
   assert.ok(stages.indexOf('buddy-expiry') < stages.indexOf('buddy-allocation'));
   const expiry = good(ticked.tick.outcomes.find((o) => o.handlerId === 'buddy-expiry').outcome);
-  // Alex's own offer from the same release (FUCQ-199) lapses on the same deadline; Paula's is the one under test.
-  assert.deepEqual(expiry.expired.filter((row) => row.offerId === offer.offerId).map((row) => [row.offerId, row.state]), [[offer.offerId, 'expired']]);
-  assert.ok(expiry.expired.every((row) => row.state === 'expired'));
+  assert.deepEqual(expiry.expired.map((row) => [row.offerId, row.state]), [[offer.offerId, 'expired']]);
   const after = await records(services, cookie, runId);
 
   // Recorded as an expiry (not a decline or dislike) and the car is back in the pool, hold released.
@@ -87,8 +86,16 @@ async function replay(ctx, label) {
   assert.deepEqual([state(after.holds, 'holdId', offer.holdId).state, state(after.holds, 'holdId', offer.holdId).releaseReason], ['expired', 'buddy-expired']);
   assert.equal(after.claims.find((row) => row.holdId === offer.holdId).state, 'expired');
   assert.ok(after.receipts.length >= 1 && after.receipts.every((row) => row.eventType === 'buddy-expired'));
+  // FUCQ-227: the same tick reoffers the car to waiting Alex on a new hold; Paula sits this allocation out.
+  const alexOffers = after.offers.filter((row) => row.employeeId === alex);
+  assert.deepEqual(alexOffers.map((row) => [row.orderUuid, row.state]), [[offer.orderUuid, 'active']]);
+  assert.notEqual(alexOffers[0].holdId, offer.holdId);
   const car = state(after.stock, 'orderUuid', offer.orderUuid);
-  assert.deepEqual([car.state, car.available, car.held, car.allocated], ['released', true, false, false]);
+  assert.deepEqual([car.state, car.available, car.held, car.allocated], ['held', false, true, false]);
+  // Alex's captured email: exactly one reoffer message in the presenter outbox after the tick.
+  presenter();
+  const alexMail = route(await client.request('/api/gcsp/presenter/outbox')).messages.filter((m) => m.recipient.employeeId === alex);
+  assert.equal(alexMail.length, 1);
   assert.equal(after.decisions.length, 0, 'no decline or dislike record');
 
   // No priority entitlement: Paula's brief history, renewal and entitlement slot are exactly as before.
@@ -119,8 +126,11 @@ async function replay(ctx, label) {
   assert.equal(activity.currentOffer?.state ?? 'expired', 'expired');
   const final = await records(services, cookie, runId);
   assert.deepEqual([state(final.holds, 'holdId', offer.holdId).state, state(final.offers, 'offerId', offer.offerId).state, final.decisions.length], ['expired', 'expired', 0]);
+  // FUCQ-227: the repeat ticks add no second offer, so Alex's one reoffer is still active.
+  const reoffered = final.offers.filter((row) => row.employeeId === alex && row.orderUuid === offer.orderUuid);
+  assert.deepEqual(reoffered.map((row) => row.state), ['active']);
   presenter();
-  return { runId, link: old, offerCookie: anon.cookie(), expiresAt: offer.expiresAt, now: startState.now, duration, expired: view.state, expiredAt: expiry.expired.find((row) => row.offerId === offer.offerId).expiredAt, car: car.facts.display.name };
+  return { runId, link: old, offerCookie: anon.cookie(), expiresAt: offer.expiresAt, now: startState.now, duration, expired: view.state, expiredAt: expiry.expired.find((row) => row.offerId === offer.offerId).expiredAt, car: car.facts.display.name, reoffered: reoffered[0].state };
 }
 async function presenterTickAgain(client, cookie, commandId) { client.seed(cookie.split('; ')); return presenterTick(client, commandId, { mode: 'step' }); }
 
@@ -138,17 +148,4 @@ test('offer expires on a tick, the old email link reads expired, nothing revives
   const holder = createRouteClient({ fetch: ctx.https.fetch, origin: ctx.origin }); holder.seed(one.offerCookie.split('; '));
   const read = await holder.request(`/api/gcsp/offers/${encodeURIComponent(one.link.offerId)}?runId=${encodeURIComponent(one.runId)}`);
   assert.deepEqual([read.status, read.json.status], [409, 'stale-run'], 'the first run\'s offer cookie cannot read the offer');
-});
-
-// FUCQ-129 gap: allocation re-evaluates only on stock releases and brief changes, and Alex (G1-6) is over allowance for every released car.
-test('the expired car is offered to the waiting employee on the same or next tick', { todo: 'allocation has no expiry trigger; Alex is eligible only for his own G1-6 car, not Paula\'s' }, async (t) => {
-  const ctx = await setup(t);
-  const { reset } = await resetIntoScenario(ctx.client, SCENARIO, 'realloc-reset');
-  const cookie = ctx.client.cookie();
-  await presenterTick(ctx.client, 'realloc-expire', { mode: 'to', to: reset.startState.expiresAt });
-  await presenterTick(ctx.client, 'realloc-next', { mode: 'step' });
-  const after = await records(ctx.services, cookie, reset.runId);
-  const alex = after.employees.find((row) => row.principalId === 'demo-alex').employeeId;
-  const car = after.offers.find((row) => row.offerId === reset.startState.offerId).orderUuid;
-  assert.ok(after.offers.some((row) => row.employeeId === alex && row.orderUuid === car && row.state === 'active'), 'Alex holds an active offer for the returned car');
 });
