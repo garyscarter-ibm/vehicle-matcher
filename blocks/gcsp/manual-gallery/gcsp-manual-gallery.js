@@ -11,6 +11,8 @@ import { createManualGalleryHttpAdapter } from './http-adapter.js';
 let sequence = 0;
 /** Cars shown per page; a display choice, not a policy value. */
 export const MANUAL_GALLERY_PAGE_SIZE = 6;
+/** Cars per page at 600px and below, to keep the first page short. */
+export const MANUAL_GALLERY_NARROW_PAGE_SIZE = 3;
 const shown = (value) => value == null || value === '' ? 'Not supplied' : Array.isArray(value) ? value.map(shown).join('; ')
   : typeof value === 'object' ? Object.entries(value).map(([key, item]) => `${key.replaceAll(/([A-Z])/g, ' $1')}: ${shown(item)}`).join(' · ') : String(value);
 const CARD_FACTS = ['exterior', 'interior', 'engine', 'transmission', 'wltpCo2', 'earliestCollection'];
@@ -51,11 +53,13 @@ claimMessages.released = 'Your previous reservation has ended. Availability has 
 export function mountManualGallery(root, { adapter = createManualGalleryHttpAdapter(), brand = 'bmw', onBack,
   onClaimConfirmed, onClaimState, commandId } = {}) {
   const prefix = `gcsp-gallery-${++sequence}`; const controls = {}; const cards = new Map();
-  let nodes; let statusKey = null; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin; let limit = MANUAL_GALLERY_PAGE_SIZE; let pageKey; let paging;
+  let nodes; let statusKey = null; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin; let limit; let pageKey; let paging;
   // Car facts open on wide screens and closed at 600px and below; no matchMedia (jsdom) means open.
   const narrowQuery = root.ownerDocument.defaultView.matchMedia?.('(max-width: 600px)') ?? null;
   const factsOpen = () => !narrowQuery?.matches;
-  const syncFacts = () => cards.forEach(({ facts }) => { facts.open = factsOpen(); });
+  const pageSize = () => (factsOpen() ? MANUAL_GALLERY_PAGE_SIZE : MANUAL_GALLERY_NARROW_PAGE_SIZE);
+  limit = pageSize();
+  const syncFacts = () => { cards.forEach(({ facts }) => { facts.open = factsOpen(); }); limit = Math.max(limit, pageSize()); if (nodes && galleryState) draw(); };
   narrowQuery?.addEventListener?.('change', syncFacts);
   const notify = (name, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(name, { detail, bubbles: true, composed: true }));
   const canGoBack = () => !disposed && (adapter.readOnly === true || claimState?.blocked === false);
@@ -94,7 +98,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     if (hadFocus) list.querySelector('[aria-checked="true"]')?.focus();
   }
   function showMoreCars() {
-    const first = limit; limit += MANUAL_GALLERY_PAGE_SIZE; draw(); nodes?.grid.children[first]?.focus();
+    const first = limit; limit += pageSize(); draw(); nodes?.grid.children[first]?.focus();
   }
   function choose(id) { if (!claimState.blocked && !adapter.readOnly) gallery.review(id); }
   function closeDetail() { gallery.closeDetail(); (detailOrigin?.isConnected ? detailOrigin : controls.query)?.focus(); }
@@ -168,10 +172,10 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     }
     // A new search, sort, filter or reload starts again at the first page.
     const nextKey = `${galleryState.state === 'loading'}|${JSON.stringify(galleryState.controls)}`;
-    if (nextKey !== pageKey) { pageKey = nextKey; limit = MANUAL_GALLERY_PAGE_SIZE; }
+    if (nextKey !== pageKey) { pageKey = nextKey; limit = pageSize(); }
     const page = galleryState.cars.slice(0, limit);
     paging.update({ shown: page.length, total: galleryState.cars.length });
-    if ((galleryState.cars.length > MANUAL_GALLERY_PAGE_SIZE) !== paging.root.isConnected) {
+    if ((galleryState.cars.length > pageSize()) !== paging.root.isConnected) {
       if (paging.root.isConnected) paging.root.remove(); else nodes.results.append(paging.root);
     }
     const desired = [];
