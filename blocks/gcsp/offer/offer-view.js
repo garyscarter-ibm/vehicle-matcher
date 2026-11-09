@@ -23,6 +23,13 @@ const selectionHeadline = (selection) => selection.selectionState === 'acknowled
   ? `Selection received. Waiting for ${selection.stages.find((stage) => stage.state === 'waiting')?.name ?? selection.current}.`
   : selection.selectionState === 'handoff-pending' ? 'Sending your selection to ordering. Ordering owns the next step. You do not need to do anything.'
     : 'Your selection was not accepted for ordering. The car stays reserved. Contact scheme support.';
+// One line from the projected card, so a declined offer needs no second copy of the car.
+function declinedSummary(card) {
+  const member = card?.members?.length === 1 ? card.members[0] : null; const name = member?.display?.name;
+  if (!name) return '';
+  const points = member.terms?.find((term) => term.kind === 'points-monthly')?.value;
+  return `You declined the ${name}${Number.isFinite(points) ? `, ${points.toLocaleString('en-GB')} points a month` : ''}.`;
+}
 const messageFor = (model) => model.message || (model.state === 'accepted' && model.selection ? selectionHeadline(model.selection) : messages[model.state]);
 const longDate = (value) => /^\d{4}-\d\d-\d\d$/.test(value ?? '') && Number.isFinite(Date.parse(value))
   ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : value;
@@ -118,6 +125,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
   function draw(model) {
     const focused = root.ownerDocument.activeElement?.dataset?.offerAction;
     const followupFocused = followupRoot?.contains(root.ownerDocument.activeElement);
+    const inPage = content.contains(root.ownerDocument.activeElement);
     clearFollowup(); clearOrder(); followupRoot = undefined;
     content.replaceChildren();
     optionsKey = undefined; wasOpen = false; lastError = '';
@@ -133,7 +141,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     messageNode.hidden = !messageFor(model); content.append(messageNode);
     if (model.fixtureNotice) content.append(el('p', 'gcsp-note', model.fixtureNotice));
     if (state === 'accepted' && model.selection) content.append(selectionGroup(model.selection));
-    if (['pending', 'accepted', 'declined', 'superseded', 'uncertain'].includes(state) && model.card?.members?.length === 1) {
+    if (['pending', 'accepted', 'superseded', 'uncertain'].includes(state) && model.card?.members?.length === 1) {
       const columns = el('div', 'gcsp-offer-comparison');
       const offer = el('section', 'gcsp-offer-exact');
       offer.setAttribute('aria-label', 'The offered car');
@@ -141,6 +149,8 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       offer.append(matchCard(null, { view: card, big: true, showScore: false }));
       columns.append(offer, comparison(model.currentCar)); content.append(columns);
     }
+    const summary = state === 'declined' ? declinedSummary(model.card) : '';
+    if (summary) { const line = el('p', 'gcsp-note', summary); line.dataset.offerDeclinedSummary = ''; content.append(line); }
     if (state === 'pending' && model.handoff) content.append(handoffGroup(model, page.id, tickDeclaration));
     if (state === 'accepted' && typeof model.orderUuid === 'string' && typeof mountOrder === 'function' && model.card?.members?.length === 1) {
       const section = el('section', 'gcsp-offer-order'); section.setAttribute('aria-label', 'Your order progress');
@@ -183,13 +193,15 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     if (state === 'declined') {
       const section = el('section', 'gcsp-offer-content'); section.setAttribute('aria-label', 'Your next offer');
       followupRoot = el('div'); followupRoot.dataset.offerFollowup = '';
-      section.append(el('h2', 'gcsp-h2', 'Your next offer'), followupRoot); content.append(section);
+      section.append(followupRoot); content.append(section);
+      // After Decline the change question is the next step, so focus goes to it rather than the last control.
+      if (inPage && previousState !== 'declined') { followupRoot.tabIndex = -1; followupRoot.focus(); }
     }
     if (state !== 'loading') {
       const control = button({ label: state === 'error' ? 'Try again' : 'Check current state', variant: 'ghost', onClick: refreshCurrent });
       control.dataset.offerAction = 'refresh'; content.append(control);
     }
-    if (focused || followupFocused) {
+    if ((focused || followupFocused) && !(state === 'declined' && followupRoot === root.ownerDocument.activeElement)) {
       const target = content.querySelector(`[data-offer-action="${['accept', 'decline', 'refresh'].includes(focused) ? focused : 'refresh'}"]`);
       (target && !target.disabled ? target : content.querySelector('[data-offer-action="refresh"]'))?.focus();
     }
@@ -209,7 +221,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
         else followupUnavailable();
       } catch { followupUnavailable(); }
     }
-    if (focused) content.querySelector('[data-offer-action="refresh"]')?.focus();
+    if (focused && !followupRoot.contains(root.ownerDocument.activeElement)) content.querySelector('[data-offer-action="refresh"]')?.focus();
   }
   function updateReasons(model) {
     const reason = model.declineReason || { open: false, status: 'idle', choices: [], selectedCode: '', error: '' };
@@ -223,6 +235,8 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       optionsKey = key;
     }
     reasonSelect.value = reason.selectedCode;
+    const active = root.ownerDocument.activeElement;
+    const rereading = active === reasonSelect && reason.status !== 'ready' && model.canDecline;
     reasonSelect.disabled = reason.status !== 'ready' || !model.canDecline;
     confirmButton.disabled = reasonSelect.disabled;
     reasonStatus.textContent = reason.status === 'loading' ? 'Loading reasons.'
@@ -230,7 +244,8 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     reasonsRefresh.hidden = reason.status === 'loading';
     reasonField.setError(reason.error);
     reasonSummary.update(reason.error ? [{ id: reasonSelect.id, message: reason.error }] : []);
-    const active = root.ownerDocument.activeElement;
+    // A poll re-reads the reasons and disables the select; park focus on the status line until it is ready again.
+    if (rereading) reasonStatus.focus();
     if (reason.open && !wasOpen) (reason.status === 'ready' ? reasonSelect : reasonStatus).focus();
     else if (reason.open && active === reasonStatus) {
       if (reason.status === 'ready') reasonSelect.focus();
