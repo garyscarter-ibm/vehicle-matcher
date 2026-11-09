@@ -86,8 +86,10 @@ function feasible({ id, at = T0, clock = 1, policy = 'gcsp-policy-v1', q = {}, c
 }
 
 const touring2 = { [TOURING]: 2, [I5]: 1 };
+// The solver reports every minimum of 0 as binding; the panel leaves these out.
+const ZERO_MINIMUMS = [{ id: 'derivative:g20-saloon-320i:min', detail: 'Quantity meets minimum 0.' }, { id: 'model:g20-saloon:min', detail: 'Quantity meets minimum 0.' }];
 const planned = (extra = {}) => feasible({ id: 'ready0001', q: touring2, covered: 3, total: 4, risk: [1, 4, [{ sourceId: `order:${I5}`, quantity: 1 }]],
-  binding: [{ id: 'derivative:g61-i5-40:max', detail: 'Quantity meets maximum 1.' }, { id: 'model:g61-i5:max', detail: 'Quantity meets maximum 1.' }],
+  binding: [...ZERO_MINIMUMS, { id: 'derivative:g61-i5-40:max', detail: 'Quantity meets maximum 1.' }, { id: 'model:g61-i5:max', detail: 'Quantity meets maximum 1.' }],
   unmet: [{ entitlementId: 'slot-fixture-1', renewalAt: '2027-02-15T23:59:59.999Z', gates: ['acceptable-supply-scarcity', 'arrival-after-renewal'],
     constraintIds: [`derivative:${I5}:max`, `lead-time-before-renewal:${I5}`] }],
   alternatives: [{ kind: 'zero-new-orders-baseline', spec: { quantities: CATALOGUE.map((d) => ({ derivativeId: d.id, modelId: d.modelId, quantity: 0 })), spendMinor: 0, orderQuantity: 0,
@@ -128,9 +130,14 @@ const INFEASIBLE = () => {
     plan, activePlan: planned(), presentation: presentation(), learned: learnedFallback() };
 };
 
-const request = (state, quantity) => ({ requestId: 'request-fixture-1', commandId: `sub-1:${TOURING}`, derivativeId: TOURING, quantity, state, requestedAt: T0 });
-const SUBMITTED = () => readValue(planned({ supply: { requests: [request('requested', 2)], responses: [] } }),
-  { status: 'unchanged-since-submission', submittedPlanId: 'order-plan-ready0001', submittedAt: T0, currentPlanId: 'order-plan-ready0001', requests: [request('requested', 2)], responses: [] });
+const request = (state, quantity, derivativeId = TOURING) => ({ requestId: `request-fixture-${derivativeId === TOURING ? 1 : 2}`, commandId: `sub-1:${derivativeId}`, derivativeId, quantity, state, requestedAt: T0 });
+const submittedRequests = () => [request('requested', 2), request('requested', 1, I5)];
+const SUBMITTED = () => readValue(planned({ supply: { requests: submittedRequests(), responses: [] } }),
+  { status: 'unchanged-since-submission', submittedPlanId: 'order-plan-ready0001', submittedAt: T0, currentPlanId: 'order-plan-ready0001', requests: submittedRequests(), responses: [] });
+// Min 2 was set only in the draft that was submitted, so the plan under the active limits orders nothing (FUCQ-290).
+const REQUESTED_NO_ORDER = () => readValue(feasible({ id: 'noorder001', q: {}, covered: 1, total: 4, risk: [0, 1], binding: [...ZERO_MINIMUMS, { id: 'derivative:g21-touring-320i:min', detail: 'Quantity meets minimum 0.' }],
+  supply: { requests: [request('requested', 2)], responses: [] } }),
+{ status: 'unchanged-since-submission', submittedPlanId: 'order-plan-preview001', submittedAt: T0, currentPlanId: 'order-plan-noorder001', requests: [request('requested', 2)], responses: [] });
 const REPLANNED = () => {
   const after = { kind: 'partly-confirmed', requestId: 'request-fixture-1', supplyId: 'supply-1', quantity: 1, at: T1 };
   const plan = feasible({ id: 'replanned1', at: T1, clock: 2, q: { [TOURING]: 1, [I5]: 1 }, covered: 3, total: 4, risk: [1, 4, [{ sourceId: 'supply:supply-1', quantity: 1 }]],
@@ -147,7 +154,7 @@ const STALE_BODY = () => ({ status: 'conflict', code: 'replan-needed', reason: '
   current: { planId: 'order-plan-fresh0001', versions: versions(1, 'gcsp-policy-v1', 'fresh0001') }, contractVersion: '1.0.0' });
 
 /** Server values by name, for shape tests and galleries. Every call returns fresh objects. */
-export const FIXTURE_VALUES = Object.freeze({ ready: READY, learned: LEARNED, 'learned-coverage': LEARNED_COVERAGE, 'no-demand': NO_DEMAND, preview: () => PREVIEW(), infeasible: INFEASIBLE, submitted: SUBMITTED, replanned: REPLANNED,
+export const FIXTURE_VALUES = Object.freeze({ ready: READY, learned: LEARNED, 'learned-coverage': LEARNED_COVERAGE, 'no-demand': NO_DEMAND, preview: () => PREVIEW(), infeasible: INFEASIBLE, submitted: SUBMITTED, 'requested-no-order': REQUESTED_NO_ORDER, replanned: REPLANNED,
   submission: SUBMISSION, 'stale-body': STALE_BODY });
 
 function never(signal) {

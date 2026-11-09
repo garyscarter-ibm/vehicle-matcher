@@ -17,6 +17,12 @@ export const INFEASIBLE_ACTION = 'No plan meets these limits';
 export const NO_DEMAND_ACTION = 'No saved demand to plan for yet';
 export const NO_DEMAND_NOTE = 'Employees need to save and confirm a brief with a renewal date before a plan can be made.';
 
+export const REQUEST_LINK = 'See this request in Order requests';
+export const ORDER_REQUESTS_ID = 'gcsp-order-requests';
+export const requestedHeadline = (n) => `${plural(n, 'vehicle')} requested from Production`;
+export const requestedNotice = (at) => `Requested${at ? ` at ${at}` : ''}. Production has not confirmed anything yet.`;
+export const recommendationLine = (n, text) => `Under the current limits the plan recommends ${plural(n, 'vehicle')}: ${text}.`;
+
 export const UNBOUND_TITLE = 'Cars left out of this plan';
 /** Server count and model names of cars not in the ordering list -> the one notice sentence. */
 export function unboundStockText(count, models = []) {

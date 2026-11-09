@@ -169,7 +169,7 @@ test('submit is its own button, sends the plan, versions and changes, and reuses
   assert.equal(submitted, 0); assert.match(root.querySelector('.gcsp-plan-message').textContent, /Production did not answer\. Your request is kept/);
   requestButton(root).click(); await settle();
   assert.deepEqual(ids, ['cmd-1', 'cmd-1']); assert.equal(made, 1); assert.equal(submitted, 1);
-  assert.match(root.querySelector('.gcsp-plan-message').textContent, /Requested\. Production has not confirmed any of this yet\./);
+  assert.equal(root.querySelector('.gcsp-plan-message').textContent, '', 'the notice and headline carry the message, not the status line');
   assert.equal(calls.read, 2, 'the plan reloads after a submission');
 });
 
@@ -201,8 +201,8 @@ test('replanning a stale preview runs the same preview again', async () => {
 
 test('submitted and replanned plans say so, and a submitted plan is not requested again', async () => {
   const submitted = await mount('submitted');
-  assert.equal(state(submitted.root), 'submitted'); assert.match(text(submitted.root.querySelector('.gcsp-plan-banner')), /Requested from Production.*Order tracking/);
-  assert.equal(requestButton(submitted.root).disabled, true); assert.match(submitted.root.querySelector('.gcsp-plan-consequence').textContent, /Already requested/);
+  assert.equal(state(submitted.root), 'submitted'); assert.match(text(submitted.root.querySelector('.gcsp-plan-banner')), /^Requested at 5 Nov 2026, 09:00 GMT\. Production has not confirmed anything yet\.\s*See this request in Order requests$/);
+  assert.equal(requestButton(submitted.root).disabled, true); assert.equal(submitted.root.querySelector('.gcsp-plan-consequence'), null);
   assert.equal(submitted.root.querySelector('.gcsp-plan-top table, .gcsp-plan-content table[data-requests]'), null);
   const replanned = await mount('replanned');
   assert.equal(state(replanned.root), 'replanned');
@@ -282,7 +282,7 @@ test('the dashboard mounts the plan into its prediction region, refreshes it on 
   const region = teardown.regions.prediction;
   assert.equal(region.getAttribute('aria-label'), 'Next order plan'); assert.equal(region.hasAttribute('aria-labelledby'), false);
   assert.ok(region.querySelector('.gcsp-plan')); assert.equal(region.querySelector('.gcsp-note')?.textContent.includes('not built'), false);
-  assert.deepEqual(Object.keys(teardown.regions), ['publish', 'orderTracking', 'prediction', 'routeComparison', 'caseQueue']);
+  assert.deepEqual(Object.keys(teardown.regions), ['publish', 'prediction', 'orderTracking', 'routeComparison', 'caseQueue']);
   assert.equal(typeof teardown.orderPlan.refresh, 'function'); assert.equal(calls.read, 1);
   root.dispatchEvent(new window.CustomEvent('gcsp:policy-published', { bubbles: true })); await settle(); assert.equal(calls.read, 2);
   requestButton(region).click(); await settle(); assert.equal(submitted, 1);
@@ -453,4 +453,95 @@ test('a preview shows the notice from the previewed plan', async () => {
   const { root } = await mount('ready', {}, { previewPlan: async () => adapterMod.planOutcome(200, { status: 'ok', value: preview }) });
   edit(limit(root, 'Derivative limits', 2).max, '1'); action(root, 'Preview with these limits').click(); await settle();
   assert.equal(state(root), 'preview'); assert.match(notice(root).textContent, /3 new cars aren't in the ordering list yet, so this plan leaves them out: G42 Coupe\./);
+});
+
+// FUCQ-290: after a request the headline counts it, one notice remains, limits are a disclosure and focus follows each action.
+const top = (root) => root.querySelector('.gcsp-plan-top');
+const headline = (root) => root.querySelector('.gcsp-plan-top h2');
+// Reads the ready plan until a request is sent, then the submitted plan, as the live server does.
+const requestingAdapter = (after = 'submitted') => { let sent = false; return { readPlan: async () => adapterMod.planOutcome(200, { status: 'ok', value: valueOf(sent ? after : 'ready') }),
+  previewPlan: async () => ({ status: 'unavailable', message: 'x' }), submitPlan: async () => { sent = true; return adapterMod.planOutcome(200, { status: 'ok', value: valueOf('submission') }); } }; };
+
+test('after a request the headline says how many vehicles were requested, with one notice and a link to the request', async () => {
+  const root = host(); const target = document.createElement('section'); target.id = 'gcsp-order-requests'; document.body.append(target);
+  panel.mountGregOrderPlan(root, { adapter: requestingAdapter(), commandId: () => 'cmd-1' }); await settle();
+  assert.equal(document.activeElement, document.body, 'the first load does not take focus');
+  assert.match(headline(root).textContent, /^Order 3 vehicles/);
+  requestButton(root).click(); await settle();
+  assert.equal(state(root), 'submitted'); assert.equal(headline(root).textContent, '3 vehicles requested from Production');
+  assert.equal(root.querySelector('.gcsp-plan-top .vm-kicker').textContent, 'Next order'); assert.equal(document.activeElement, headline(root));
+  const link = top(root).querySelector('a'); assert.equal(link.textContent, 'See this request in Order requests'); assert.equal(link.getAttribute('href'), '#gcsp-order-requests');
+  link.click(); assert.equal(document.activeElement, target, 'the link takes focus to the Order requests section');
+  const all = text(root);
+  assert.equal((all.match(/not confirmed/g) ?? []).length, 1, 'one message about Production');
+  assert.doesNotMatch(all, /Already requested|Track it under|Order tracking|Requested\. Production/);
+  assert.equal(root.querySelector('.gcsp-plan-message').textContent, ''); assert.equal(root.querySelector('.gcsp-plan-consequence'), null);
+  assert.equal(requestButton(root).disabled, true); assert.equal(requestButton(root).hasAttribute('aria-describedby'), false);
+});
+
+test('a request the active limits would not order still leads with what was requested, not "No new order recommended"', async () => {
+  const root = host(); panel.mountGregOrderPlan(root, { adapter: staticAdapter(() => valueOf('requested-no-order')) }); await settle();
+  assert.equal(headline(root).textContent, '2 vehicles requested from Production'); assert.doesNotMatch(text(root), /No new order recommended/);
+  assert.equal(top(root).querySelector('.vm-lede'), null, 'a plan that orders nothing adds no second line');
+  assert.equal(requestButton(root).disabled, true);
+  const other = valueOf('submitted'); other.replan.requests = other.replan.requests.slice(0, 1);
+  const two = host(); panel.mountGregOrderPlan(two, { adapter: staticAdapter(() => other) }); await settle();
+  assert.equal(headline(two).textContent, '2 vehicles requested from Production');
+  assert.match(top(two).querySelector('.vm-lede').textContent, /^Under the current limits the plan recommends 3 vehicles: 2 × 3 Series Touring 320i/);
+});
+
+test('a Production response keeps the Replanned notice as the message', async () => {
+  const root = host(); panel.mountGregOrderPlan(root, { adapter: staticAdapter(() => valueOf('replanned')) }); await settle();
+  assert.match(headline(root).textContent, /^Order 2 vehicles/); assert.equal(root.querySelector('.gcsp-plan-banner h3').textContent, 'Replanned after a Production response');
+  assert.doesNotMatch(text(root), /requested from Production/);
+});
+
+test('Change limits is a closed disclosure under the headline and notices, above the tables, and keeps its draft and open state', async () => {
+  const { root, teardown } = await mount('submitted');
+  const bar = root.querySelector('.gcsp-plan-editor details'); assert.ok(bar); assert.equal(bar.open, false);
+  assert.equal(bar.querySelector('summary').textContent, 'Change limits'); assert.equal(bar.querySelector('summary').id.endsWith('-limits'), true);
+  assert.equal(bar.querySelector('h3'), null, 'no second Change limits heading');
+  const before = (a, b) => Boolean(a.compareDocumentPosition(b) & window.Node.DOCUMENT_POSITION_FOLLOWING);
+  assert.ok(before(top(root), bar) && before(bar, root.querySelector('.gcsp-plan-submit')) && before(bar, root.querySelector('.gcsp-plan-content')));
+  assert.equal(top(root).contains(bar), false); assert.ok(before(top(root).querySelector('.gcsp-plan-banner'), bar), 'below the notice');
+  bar.open = true; const row = limit(root, 'Derivative limits', 0); edit(row.min, '2');
+  bar.open = false; bar.open = true; assert.equal(limit(root, 'Derivative limits', 0).min.value, '2', 'closing and opening loses nothing');
+  teardown.refresh(); await settle(); assert.equal(root.querySelector('.gcsp-plan-editor details').open, true, 'a refresh leaves it as it was');
+  bar.open = false; edit(limit(root, 'Derivative limits', 0).max, '1'); edit(limit(root, 'Derivative limits', 0).min, '5');
+  action(root, 'Preview with these limits').click(); await settle();
+  assert.equal(root.querySelector('.gcsp-plan-editor details').open, true, 'a limit error opens it');
+});
+
+test('only limits that hold the plan back are listed, and none leaves the table out', async () => {
+  const { root } = await mount('ready');
+  const table = [...root.querySelectorAll('table')].find((t) => t.caption.textContent === 'Binding constraints');
+  assert.deepEqual([...table.tBodies[0].rows].map((r) => r.cells[0].textContent), ['i5 Touring eDrive40 M Sport Pro with Technology Plus and Comfort Packs maximum', 'i5 Touring maximum']);
+  assert.doesNotMatch(table.textContent, /minimum 0/);
+  const none = host(); panel.mountGregOrderPlan(none, { adapter: staticAdapter(() => valueOf('requested-no-order')) }); await settle();
+  assert.equal([...none.querySelectorAll('table')].some((t) => t.caption.textContent === 'Binding constraints'), false);
+  assert.doesNotMatch(text(none), /minimum 0/);
+});
+
+test('focus follows each action: preview, back, request and a refresh asked for after a Production response', async () => {
+  const { root } = await mount('preview');
+  edit(limit(root, 'Derivative limits', 0).max, '1'); action(root, 'Preview with these limits').click(); await settle();
+  assert.equal(document.activeElement, headline(root)); assert.equal(headline(root).tabIndex, -1);
+  action(root, 'Back to current plan').click(); assert.equal(document.activeElement, headline(root)); assert.match(headline(root).textContent, /^Order 3 vehicles/);
+  const flow = host(); let phase = 'submitted';
+  const adapter = { ...staticAdapter(() => valueOf(phase)), readPlan: async () => adapterMod.planOutcome(200, { status: 'ok', value: valueOf(phase) }) };
+  const outside = document.createElement('input'); document.body.append(outside);
+  const teardown = panel.mountGregOrderPlan(flow, { adapter }); await settle();
+  outside.focus(); phase = 'replanned'; teardown.refresh(); await settle();
+  assert.equal(document.activeElement, outside, 'a background refresh does not take focus');
+  phase = 'submitted'; teardown.refresh(); await settle(); phase = 'replanned'; teardown.refresh({ focus: true }); await settle();
+  const notice = flow.querySelector('.gcsp-plan-banner h3'); assert.equal(notice.textContent, 'Replanned after a Production response');
+  assert.equal(document.activeElement, notice); assert.equal(notice.tabIndex, -1);
+  phase = 'ready'; teardown.refresh({ focus: true }); await settle(); assert.equal(document.activeElement, headline(flow), 'with no notice it falls back to the headline');
+});
+
+test('range sliders have a visible focus ring on the track and the thumb in the shared native-control stylesheet', async () => {
+  const { readFileSync } = await import('node:fs');
+  const css = readFileSync(new URL('../../blocks/vehicle-matcher/question-controls.css', import.meta.url), 'utf8');
+  for (const selector of ['.vm .vm-slider-single:focus-visible {', '.vm-slider-single:focus-visible::-webkit-slider-thumb {', '.vm-slider-single:focus-visible::-moz-range-thumb {']) assert.ok(css.includes(selector), selector);
+  assert.match(css, /focus-visible \{ outline: 2px solid var\(--vm-ink-strong\)/);
 });

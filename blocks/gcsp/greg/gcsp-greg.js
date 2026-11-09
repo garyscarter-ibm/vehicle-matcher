@@ -27,8 +27,8 @@ const ACCOUNT = Object.freeze({ status: 'ready', name: 'Greg', initials: 'GR', c
 const FAILED_LOAD = { status: 'unavailable', message: 'The demand figures could not be loaded. Try again in a moment.' };
 const REGIONS = Object.freeze([
   ['publish', 'publish', 'Publishing', 'Publishing controls are not built in this demo yet.'],
-  ['orderTracking', 'order-tracking', 'Order tracking', 'Order tracking is not built in this demo yet.'],
   ['prediction', 'prediction', 'Prediction', 'The prediction panel is not built in this demo yet.'],
+  ['orderTracking', 'order-tracking', 'Order tracking', 'Order tracking is not built in this demo yet.'],
   ['routeComparison', 'route-comparison', 'Route comparison', 'Route comparison is not built in this demo yet.'],
   ['caseQueue', 'case-queue', 'Case queue', 'The scheme team case queue is not built in this demo yet.'],
 ]);
@@ -141,6 +141,7 @@ function reservedRegions() {
   for (const [key, data, title, text] of REGIONS) {
     const node = section(data, title, 'gcsp-greg-region');
     node.dataset.region = data;
+    if (data === 'order-tracking') node.id = 'gcsp-order-requests';
     node.append(note(text));
     host.append(node);
     regions[key] = node;

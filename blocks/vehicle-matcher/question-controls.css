@@ -1,6 +1,6 @@
 .vm .vm-control-field { min-width: 0; margin: 0; padding: var(--vm-space-4); border: 1px solid var(--vm-line); }
 .vm .vm-control-field legend { padding: 0 var(--vm-space-2); color: var(--vm-ink); font-weight: 600; }
-.vm .vm-slider-single { display: block; width: 100%; box-sizing: border-box; }
+.vm .vm-slider-single { display: block; width: 100%; box-sizing: border-box; } .vm .vm-slider-single:focus-visible { outline: 2px solid var(--vm-ink-strong); outline-offset: 3px; } .vm .vm-slider-single:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 2px var(--vm-surface), 0 0 0 4px var(--vm-ink-strong); } .vm .vm-slider-single:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 2px var(--vm-surface), 0 0 0 4px var(--vm-ink-strong); }
 .vm .vm-slider-single:disabled { opacity: .55; cursor: default; }
 .vm .vm-control-field .vm-option:disabled { opacity: .55; cursor: default; }
 .vm .vm-control-field .vm-slider-value { display: block; }

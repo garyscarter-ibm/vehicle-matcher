@@ -749,3 +749,11 @@ test('wider catalogue rows: available decline-then-change-waiting resets, unavai
   choice(f, 'Scenario', 'decline-then-change-waiting').click(); assert.equal(f.click('Reset scenario').disabled, false);
   f.click('Confirm reset'); await settle(); assert.equal(f.calls[0].scenarioId, 'decline-then-change-waiting'); f.control.destroy();
 });
+test('only a saved Production response asks the order plan to take focus; other refreshes leave focus alone (FUCQ-290)', async () => {
+  let changed; const calls = [];
+  const f = gregFixture({ mountGreg: () => { const t = () => {}; t.refresh = () => {}; t.orderPlan = { refresh: (options) => { calls.push(options?.focus); } }; t.regions = { orderTracking: document.createElement('section') }; return t; },
+    mountOrders: (_root, options) => { changed = options.onChanged; const t = () => {}; t.refresh = () => {}; return t; } });
+  await f.done.ready; changed('stepProduction'); changed('submit'); changed();
+  f.host.dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } }));
+  assert.deepEqual(calls, [true, false, false, undefined]); f.done();
+});

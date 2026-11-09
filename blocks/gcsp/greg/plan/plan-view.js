@@ -3,6 +3,7 @@ import {
   FORECAST_LABEL, FORECAST_QUALIFIER, FORECAST_NOTE, PREVIEW_FALLBACK, NO_ORDER, INFEASIBLE_ACTION, NO_DEMAND_ACTION, NO_DEMAND_NOTE,
   alternativeLabel, changeLabel, detailText, formatDate, formatDemoTime, gateText, humanise, inputLabel, money, plural,
   requestStateLabel, responseLabel, SUBMISSION_LABELS, LEARNED_LABEL, LEARNED_UNREADABLE, UNBOUND_TITLE, unboundStockText,
+  requestedHeadline, recommendationLine,
 } from './plan-copy.js';
 
 export const LIMIT_KEYS = Object.freeze({ models: 'orderPlan.modelBounds', derivatives: 'orderPlan.derivativeBounds', budget: 'orderPlan.budgetMinor' });
@@ -36,6 +37,9 @@ export function constraintLabel(id, names) {
   return humanise(id);
 }
 const constraints = (rows, names, currency) => list(rows).map((c) => ({ id: c.id, label: constraintLabel(c.id, names), detail: detailText(c.detail, currency) }));
+// A minimum of 0 is met by every plan, so "Quantity meets minimum 0." is not a limit holding the plan back.
+const trivialMinimum = (c) => /:min$/.test(String(c.id)) && /^Quantity meets minimum 0\.$/.test(String(c.detail ?? '').trim());
+const binding = (rows, names, currency) => constraints(list(rows).filter((c) => !trivialMinimum(c)), names, currency);
 
 const linesOf = (quantities, names) => list(quantities).map((q) => ({
   derivativeId: q.derivativeId, modelId: q.modelId, model: names.parts(q.derivativeId)?.model ?? names.model(q.modelId),
@@ -149,7 +153,7 @@ function submissionOf(replan, names) {
   return { status: replanned ? 'replanned' : 'submitted', message: SUBMISSION_LABELS[replanned ? 'replanned' : 'submitted'],
     submittedAt: replan.submittedAt, submittedAtLabel: formatDemoTime(replan.submittedAt), after: replanned ? responseLabel(replan.after) : null,
     afterAt: replanned ? (replan.after?.at ?? null) : null, afterAtLabel: replanned ? formatDemoTime(replan.after?.at) : null,
-    requests: list(replan.requests).map((r) => ({ name: names.derivative(r.derivativeId), quantity: r.quantity, state: r.state, stateLabel: requestStateLabel(r.state) })) };
+    requests: list(replan.requests).map((r) => ({ derivativeId: r.derivativeId, name: names.derivative(r.derivativeId), quantity: r.quantity, state: r.state, stateLabel: requestStateLabel(r.state) })) };
 }
 
 const text = (v) => (typeof v === 'string' && v.trim() ? v : null);
@@ -207,18 +211,23 @@ export function toPlanView(value) {
   const kind = infeasible ? 'infeasible' : !preview && coverage?.total === 0 ? 'no-demand' : preview ? 'preview' : 'ready';
   const lines = infeasible ? [] : linesOf(plan.quantities, names);
   const orders = ordered(lines);
-  const action = infeasible ? INFEASIBLE_ACTION : kind === 'no-demand' ? NO_DEMAND_ACTION
-    : plan.orderQuantity > 0 ? orderHeadline(plan.orderQuantity, lines) : NO_ORDER;
+  const submission = preview ? null : submissionOf(value.replan, names);
+  const requested = submission?.status === 'submitted' ? submission.requests.reduce((n, r) => n + (Number.isSafeInteger(r.quantity) ? r.quantity : 0), 0) : 0;
+  const planned = plan.orderQuantity > 0 ? orderHeadline(plan.orderQuantity, lines) : NO_ORDER;
+  const action = infeasible ? INFEASIBLE_ACTION : kind === 'no-demand' ? NO_DEMAND_ACTION : requested > 0 ? requestedHeadline(requested) : planned;
+  // After a request, the plan's own order follows as a plain line only when it differs from what was requested.
+  const sameAsRequested = orders.length === submission?.requests.length && orders.every((l) => submission.requests.some((r) => r.derivativeId === l.derivativeId && r.quantity === l.quantity));
+  const recommendation = requested > 0 && !infeasible && kind !== 'no-demand' && orders.length && !sameAsRequested ? recommendationLine(plan.orderQuantity, orderText(lines)) : null;
   const alternatives = infeasible ? [] : list(plan.alternatives).map((a) => alternativeOf(a, names, currency));
   return {
-    kind, preview, previewMessage: preview ? (value.message || PREVIEW_FALLBACK) : null, submission: preview ? null : submissionOf(value.replan, names),
+    kind, preview, previewMessage: preview ? (value.message || PREVIEW_FALLBACK) : null, submission, recommendation,
     unbound: unboundOf(plan.unboundStock), action, note: kind === 'no-demand' ? NO_DEMAND_NOTE : null, currency, orderQuantity: infeasible ? 0 : (plan.orderQuantity ?? 0),
     canSubmit: !infeasible && kind !== 'no-demand' && orders.length > 0,
     lines, orders, models: infeasible ? [] : list(plan.modelQuantities).map((m) => ({ modelId: m.modelId, model: names.model(m.modelId), quantity: m.quantity, zero: m.quantity === 0 })),
     spend: infeasible || !Number.isFinite(plan.spendMinor) ? null : money(plan.spendMinor, currency), spendMinor: infeasible ? null : (plan.spendMinor ?? null),
     coverage, unallocatedRisk: infeasible ? null : riskOf(plan.unallocatedStockRisk, names),
     unmetNeeds: infeasible ? [] : list(plan.unmetNeeds).map((n) => unmetOf(n, names)),
-    binding: infeasible ? [] : constraints(plan.bindingConstraints, names, currency),
+    binding: infeasible ? [] : binding(plan.bindingConstraints, names, currency),
     conflicts: infeasible ? constraints(plan.conflicts, names, currency) : [], alternatives,
     versions: versionsOf(value, plan, presentation), limits: limitsOf(plan, presentation, names),
     differences: preview ? differencesOf(plan, value.activePlan, names, currency) : null,
