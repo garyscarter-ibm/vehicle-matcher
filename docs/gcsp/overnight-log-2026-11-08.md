@@ -98,3 +98,10 @@ Entries are added as work merges.
   - **Question for Gary:** generated runs' three Next releases release only window-0 cars, about 60 of 300 to 400. Is that intended?
 - **FUCQ-77 closed and pushed** (partly met). The open gates are on its Jira comment.
 - **FUCQ-113 and FUCQ-115** (the learned model) are now being finished on the real data, by a fresh lead.
+
+## For Gary, from Russell's poller (9 Nov, about 00:45 UK)
+
+- **FUCQ-98 test email not sent: the hosted demo key is needed.** Russell asked for the test email to go out overnight so he can check his inbox in the morning. The send goes through the hosted presenter, which is behind `DEMO_ACCESS_KEY`, and Russell doesn't have the key. gcsp-api health is 200, and the outbox answers 401 without the key, as designed. Nothing was reset, ticked or sent.
+  - **Please either** run one buddy offer on the hosted demo for the mapped employee (Reset, tick until the offer exists, then read `outcome.provider.messageId` on the job row and tell Russell to check his inbox), **or** share the key with Russell privately so his poller can do it.
+  - Also on Jira, FUCQ-98 comment 3627934.
+- **Russell's poller is running overnight,** on his direction: it leaves every story Gary has claimed to Gary, and skips Won't-for-demo work.
