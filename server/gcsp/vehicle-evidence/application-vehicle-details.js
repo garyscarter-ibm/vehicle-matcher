@@ -52,7 +52,8 @@ const safeV2SourceReference = (value) => {
         'future-models': /^(true|false)$/, 'closest-fallback': /^(true|false)$/ };
     } else if (new RegExp(`^/rulesolver/constructibility-check/rule-sets/pcaso,con/${context}/models/[A-Z0-9]{4,12}$`).test(url.pathname)) {
       allowed = { application: /^connext$/, 'add-rules-for-mandatory-element-classes': /^(fabric|paint|rim)(,(fabric|paint|rim))*$/,
-        'included-elements': /^[A-Z0-9]{4,12}(,[A-Z0-9]{4,12})*$/, 'mandatory-elements': /^[A-Z0-9]{4,12}(,[A-Z0-9]{4,12})*$/ };
+        // Admission sends a present-empty mandatory-elements= when no trim is mandatory (FUCQ-158).
+        'included-elements': /^[A-Z0-9]{4,12}(,[A-Z0-9]{4,12})*$/, 'mandatory-elements': /^([A-Z0-9]{4,12}(,[A-Z0-9]{4,12})*)?$/ };
     } else return false;
     const entries = [...url.searchParams];
     return entries.length > 0 && new Set(entries.map(([name]) => name)).size === entries.length
