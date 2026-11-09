@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 // Offline FUCQ-77 audit, selection and F54 publication of the demo subset. No network, key or browser access.
+import { realpathSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { basename, dirname, isAbsolute, join, relative, resolve } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 import { MATRIX_PATH, validateDemoPlan } from './demo-plan.mjs';
 import { ENRICHMENT_DIR, assignRowsToLines, configurationDeepLink, countOtdFacts, lineModels, readEnrichmentEvidence, verifyStagedDemoFleet } from './demo-verifier.mjs';
 import { validateCorpusDirectory, writeCorpusCandidate } from '../../server/gcsp/vehicle-evidence/corpus-publisher.js';
@@ -331,7 +332,7 @@ export function parseSelectionArgs(args) {
   return options;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))) {
   const options = parseSelectionArgs(process.argv.slice(2));
   if (!options) { process.stderr.write(USAGE); process.exitCode = 1; }
   else {

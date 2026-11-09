@@ -2,12 +2,12 @@
 // FUCQ-77 demo enrichment: exact registrations, a resumable live driver and the demo-enrichment.v1 sidecar composer.
 // Only --execute touches the network (three BMW hosts, plain HTTPS GET); every other mode is offline.
 import { createHash } from 'node:crypto';
-import { createReadStream } from 'node:fs';
+import { createReadStream, realpathSync } from 'node:fs';
 import { mkdir, open, readFile, readdir, rename, rm, writeFile } from 'node:fs/promises';
 import { createInterface } from 'node:readline';
 import { isAbsolute, join, resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError } from './configuration-key.mjs';
 import { createEnrichmentObserver } from './enrichment-observation.mjs';
@@ -375,6 +375,6 @@ export async function enrichmentCli(args, write = (text) => process.stdout.write
   return 0;
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))) {
   enrichmentCli(process.argv.slice(2)).then((code) => { process.exitCode = code; }, (error) => { process.stderr.write(`${error.code ?? 'error'}: ${error.message}\n`); process.exitCode = 1; });
 }
