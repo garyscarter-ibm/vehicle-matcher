@@ -19,8 +19,9 @@
 .gcsp .gcsp-comparison-details > * + * { margin-top: 12px; }
 .gcsp .gcsp-comparison-summary { padding: 10px 0; font-weight: 600; cursor: pointer; }
 .gcsp .gcsp-comparison-summary:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
-.gcsp .gcsp-comparison .gcsp-table { min-width: 560px; }
-.gcsp .gcsp-comparison .gcsp-table-td, .gcsp .gcsp-comparison .gcsp-table-rowhead, .gcsp .gcsp-comparison code { overflow-wrap: anywhere; }
+.gcsp .gcsp-comparison .gcsp-table { min-width: 880px; }
+.gcsp .gcsp-comparison .gcsp-table-td, .gcsp .gcsp-comparison code { overflow-wrap: anywhere; }
+.gcsp .gcsp-comparison .gcsp-table-rowhead, .gcsp .gcsp-comparison .gcsp-table-td:nth-child(3), .gcsp .gcsp-comparison .gcsp-table-td:nth-child(4) { white-space: nowrap; overflow-wrap: normal; }
 gcsp-greg-comparison.gcsp { display: block; min-height: 0; background: transparent; }
 .gcsp .gcsp-greg-region:has(.gcsp-comparison) { grid-column: 1 / -1; border-style: solid; padding: 20px; background: var(--gcsp-surface); }
 @media (max-width: 600px) {
