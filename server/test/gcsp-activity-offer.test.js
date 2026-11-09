@@ -24,3 +24,23 @@ test('multiple representative images use native controls; failed image removes f
   assert.equal(node.querySelector('img'), null); assert.equal(node.querySelector('.vm-media-caption'), null);
   assert.match(node.textContent, /Synthetic BMW offer/); assert.match(node.textContent, /Image unavailable/); assert.deepEqual(display, original);
 });
+const I5 = '/assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp';
+const corpus = { src: I5, alt: 'i5 Touring: representative image', fidelity: 'representative-configuration' };
+test('approved corpus images render with the offer view caption; unapproved src or wrong fidelity stay placeholders', () => {
+  const ok = activityOffer({ offer: { state: 'active' }, display: { images: [corpus] } });
+  assert.equal(ok.querySelector('img').getAttribute('src'), I5);
+  assert.match(ok.textContent, /Representative image; exact appearance and equipment unconfirmed\./);
+  const own = activityOffer({ offer: { state: 'active' }, display: { images: [{ ...corpus, caption: 'Reviewed caption' }] } });
+  assert.match(own.textContent, /Reviewed caption/);
+  for (const image of [{ ...corpus, src: '/assets/gcsp-vehicle-evidence/other.webp' }, { ...corpus, fidelity: undefined },
+    { ...corpus, fidelity: 'exact' }, { ...corpus, fidelity: undefined, kind: 'exact' }]) {
+    const node = activityOffer({ offer: { state: 'active' }, display: { images: [image] } });
+    assert.equal(node.querySelector('img'), null); assert.match(node.textContent, /Image unavailable/);
+  }
+});
+test('client image allowlist mirrors the server approved corpus exactly', async () => {
+  const { APPROVED_CORPUS_IMAGES } = await import('../../server/gcsp/vehicle-evidence/registered-corpus-images.js');
+  const { approvedImages } = await import('../../blocks/gcsp/activity/activity-offer.js');
+  const client = [...approvedImages].filter(([, fidelity]) => fidelity !== 'representative').sort();
+  assert.deepEqual(client, APPROVED_CORPUS_IMAGES.map((image) => [`/${image.asset}`, image.fidelity]).sort());
+});

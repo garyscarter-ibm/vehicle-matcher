@@ -24,3 +24,25 @@ test('a 401 with no status (lapsed access key) reads access-required; a status k
   for(const status of [401,403])assert.deepEqual(await make({fetch:lapsed(status,{status:'forbidden'})}).readActivity(),{status:'forbidden'});
   assert.deepEqual(await make({fetch:lapsed(500,undefined)}).readActivity(),{status:'unavailable'});
 });
+
+import {readFileSync} from 'node:fs';
+const offerEnvelope=(images=[{src:'/assets/gcsp-vehicle-evidence/x.webp',alt:'Car',fidelity:'representative-configuration',sourceRef:'ref-1'}]) => {
+  const value=JSON.parse(readFileSync(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json',import.meta.url),'utf8'));
+  value.availableActions=[];value.quote.facts.display={...value.quote.facts.display,images,photo:images[0]?.src??null};
+  return {status:'ok',value,contractVersion:'1.0.0'};
+};
+test('readOfferDisplay reads the exact offer URL and returns only the validated display',async () => {
+  const calls=[];const signal=new AbortController().signal;let answer=offerEnvelope();
+  const a=make({fetch:async (path,options) => {calls.push({path,options});return {ok:true,json:async () => answer};}});
+  const display=await a.readOfferDisplay({offerId:'offer-one',runId:'demo-4c7d45fb1cefd387adf500299f0b119f',signal});
+  assert.equal(calls[0].path,'/api/gcsp/offers/offer-one?runId=demo-4c7d45fb1cefd387adf500299f0b119f');
+  assert.deepEqual([calls[0].options.method,calls[0].options.credentials,calls[0].options.cache,calls[0].options.redirect,calls[0].options.signal],['GET','same-origin','no-store','error',signal]);
+  assert.equal(display.offerRef.offerId,'offer-one');assert.equal(display.title,'Synthetic exact car 987');
+  assert.deepEqual(display.images.map((i) => [i.src,i.alt,i.fidelity]),[['/assets/gcsp-vehicle-evidence/x.webp','Car','representative-configuration']]);
+  const ids={offerId:'offer-one',runId:'demo-4c7d45fb1cefd387adf500299f0b119f'};
+  assert.equal(await a.readOfferDisplay({...ids,offerId:'other'}),null);assert.equal(await a.readOfferDisplay({...ids,runId:'foreign'}),null);
+  assert.equal(await a.readOfferDisplay({offerId:'',runId:'r'}),null);
+  answer={status:'not-found'};assert.equal(await a.readOfferDisplay(ids),null);
+  answer={...offerEnvelope(),value:{...offerEnvelope().value,schemaVersion:2}};assert.equal(await a.readOfferDisplay(ids),null);
+  assert.equal(await make({fetch:async () => {throw new Error('offline');}}).readOfferDisplay(ids),null);
+});
