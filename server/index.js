@@ -30,9 +30,7 @@ import { createServer } from 'node:http';
 import { fileURLToPath } from 'node:url';
 import { timingSafeEqual } from 'node:crypto';
 
-import {
-  matchCars, rankCars, groupListings, budgetRange, unmetWants, TOP_MATCHES,
-} from './engine.js';
+import { USED_RETAIL_V1 } from './scenarios/retail/index.js';
 import {
   fetchRetailerStock, fetchNearbyStock, startStockWarmer, StockUnavailableError, enrichColours,
   normalizeScope,
@@ -73,6 +71,8 @@ import { createGregPublishService } from './gcsp/greg/publish/index.js';
 import { createGregPublishRoutes } from './gcsp/greg/publish/http.js';
 import { createOrderPlanRoutes } from './gcsp/predict/plan/http.js';
 
+// Retail routes use this fixed profile, selected by server wiring, never by a request field.
+const RETAIL_PROFILE = USED_RETAIL_V1;
 const PORT = process.env.PORT === '0' ? 0 : Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
 
@@ -524,7 +524,7 @@ async function readMatchRequest(req) {
   // Budget is now a continuous number from the slider, but legacy b1–b5 band
   // keys are still honoured (old shared links). budgetRange resolves both to a
   // [min, max]; a null means neither a valid number nor a known band.
-  if (!budgetRange(answers)) {
+  if (!RETAIL_PROFILE.budgetRange(answers)) {
     return { error: 'Invalid or missing budget', status: 400 };
   }
   const retailer = typeof body.retailer === 'string' && body.retailer ? body.retailer : undefined;
@@ -581,7 +581,7 @@ async function handleMatch(req, res, deps) {
   const scored = applyBespokeAnswers(brand, answers);
   const {
     matches, alternatives, decisive, clusterSize, tasteLead, searched,
-  } = matchCars(scored, cars, brandTuning(brand));
+  } = RETAIL_PROFILE.matchCars(scored, cars, brandTuning(brand));
 
   // Paint only exists on the vehicle detail page, so it's fetched for the
   // handful of cars we're about to show rather than the whole pool (see
@@ -651,7 +651,7 @@ async function handleMatch(req, res, deps) {
     // working note in the block) rather than presenting a verdict with no
     // evidence behind it.
     searched,
-    unmet: unmetWants(scored, cars),
+    unmet: RETAIL_PROFILE.unmetWants(scored, cars),
   });
 }
 
@@ -692,12 +692,12 @@ async function handlePreview(req, res, deps) {
   // never take the process down with an uncaught throw.
   let matches = [];
   try {
-    const ranked = rankCars(applyBespokeAnswers(brand, answers), cars, brandTuning(brand));
+    const ranked = RETAIL_PROFILE.rankCars(applyBespokeAnswers(brand, answers), cars, brandTuning(brand));
     // Group the WHOLE ranking before slicing. Slicing first would hand
     // groupListings nine listings that might be three cars, and the caller
     // would get three cards where it asked for nine — the shortfall growing
     // with exactly the stock depth that made grouping worth asking for.
-    matches = (group ? groupListings(ranked) : ranked).slice(0, PREVIEW_COUNT);
+    matches = (group ? RETAIL_PROFILE.groupListings(ranked) : ranked).slice(0, PREVIEW_COUNT);
   } catch (err) {
     console.warn('[preview] ranking failed:', err?.message);
   }
@@ -772,7 +772,7 @@ async function handleField(req, res, deps) {
   // never take the process down.
   let matches = [];
   try {
-    matches = rankCars(applyBespokeAnswers(brand, answers), cars, brandTuning(brand)).slice(0, size);
+    matches = RETAIL_PROFILE.rankCars(applyBespokeAnswers(brand, answers), cars, brandTuning(brand)).slice(0, size);
   } catch (err) {
     console.warn('[field] ranking failed:', err?.message);
   }
@@ -822,9 +822,9 @@ async function handleNearby(req, res, deps) {
   try {
     const cars = await deps.fetchNearbyStock(brand, retailer);
     const scored = applyBespokeAnswers(brand, answers);
-    const ranked = rankCars(scored, cars, brandTuning(brand));
-    nearby = ranked.slice(0, TOP_MATCHES);
-    unmet = unmetWants(scored, cars);
+    const ranked = RETAIL_PROFILE.rankCars(scored, cars, brandTuning(brand));
+    nearby = ranked.slice(0, RETAIL_PROFILE.limits.TOP_MATCHES);
+    unmet = RETAIL_PROFILE.unmetWants(scored, cars);
 
     // Rescue slots. The top slice is ranked on the whole blend, which can
     // squeeze out the very want this tier exists to honour: every MINI
@@ -1021,7 +1021,7 @@ export function buildServer(deps = {}) {
       return sendJson(res, 200, {
         questions: publicQuestions(brand),
         budgetBands: BUDGET_BANDS,
-        topMatches: TOP_MATCHES,
+        topMatches: RETAIL_PROFILE.limits.TOP_MATCHES,
       });
     }
 
