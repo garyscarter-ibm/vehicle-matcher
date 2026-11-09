@@ -1,0 +1,197 @@
+{
+  "state": "passed",
+  "chunk": "desktop",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "startedAt": "2026-11-09T14:46:41.300Z",
+  "boundary": "Real buildServer routes, canonical services and the memory repository over loopback HTTP; the runner serves the same HTML, CSS and blocks from a plain file server. No live external calls, no PostgreSQL.",
+  "cookieMode": {
+    "help:greg": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure"
+  },
+  "checks": [
+    {
+      "id": "01a:charging",
+      "name": "01a: Paula's confirmed brief leaves charging unconfirmed",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "id": "01a:auto-case",
+      "name": "01a: the keyed deadline rule has opened one case for Paula",
+      "pass": true,
+      "detail": [
+        "renewal-deadline"
+      ]
+    },
+    {
+      "id": "01:api",
+      "name": "01: the options read answers 200 with feasible cars and the one-preference change",
+      "pass": true,
+      "detail": {
+        "status": 200,
+        "cars": 5,
+        "needsConfirmation": []
+      }
+    },
+    {
+      "id": "01:pick:tab",
+      "name": "01:pick: Tab alone reaches the control (4 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 4
+      }
+    },
+    {
+      "id": "01:pick:focus-ring",
+      "name": "01:pick: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "select",
+        "id": "gcsp-case-queue-1-selection",
+        "label": "Choose a caseAlex (fictional) · Open · 2026-12-01Paula (fictional) · Open · 2026",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "01:pick:chosen",
+      "name": "01:pick: the select reads \"Paula (fictional) · Open · 2026-12-01\"",
+      "pass": true,
+      "detail": "Paula (fictional) · Open · 2026-12-01"
+    },
+    {
+      "id": "01:open:tab",
+      "name": "01:open: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "01:open:focus-ring",
+      "name": "01:open: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Open selected case",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "01:remedies",
+      "name": "01: the remedy select offers alternative cars and the body-style change",
+      "pass": true,
+      "detail": [
+        "Keep the current remedy, if any",
+        "Alternative car: Synthetic 3 Series Saloon 320i, reference 1407353d-4161-4aed-a141-5429fc3c9cff",
+        "Alternative car: Synthetic 3 Series Touring 320i",
+        "Alternative car: Synthetic 3 Series Saloon 320i, reference 7e897abd-7a62-4b95-ae87-e942d1a3dd2b",
+        "Alternative car: Synthetic 1 Series Sports Hatch 120",
+        "Alternative car: Synthetic 3 Series Saloon 320i, reference a6d9503a-79ee-41c4-809c-89cc499b8aaf",
+        "Change body",
+        "Manual decision"
+      ]
+    },
+    {
+      "id": "01-greg-options-charging-unconfirmed:layout",
+      "name": "01-greg-options-charging-unconfirmed: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "01-greg-options-charging-unconfirmed:copy",
+      "name": "01-greg-options-charging-unconfirmed: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "01-greg-options-charging-unconfirmed:console",
+      "name": "01-greg-options-charging-unconfirmed: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "01-greg-options-charging-unconfirmed:\"Current case options loaded.\"",
+      "name": "01-greg-options-charging-unconfirmed: \"Current case options loaded.\"",
+      "pass": true
+    },
+    {
+      "id": "01-greg-options-charging-unconfirmed:no-options failure",
+      "name": "01-greg-options-charging-unconfirmed: absent: options failure",
+      "pass": true
+    }
+  ],
+  "captures": [
+    {
+      "name": "1280-01-greg-options-charging-unconfirmed",
+      "as": "greg",
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/1280-01-greg-options-charging-unconfirmed.png",
+      "bytesPng": 217990
+    }
+  ],
+  "steps": [
+    {
+      "id": "01a",
+      "via": "api",
+      "what": "Setup as the FUCQ-171 T6 runner, except Paula's brief confirms seats only, so charging stays unconfirmed: reset, briefs, release, first offer declined for body style, tick to one week before the contract end."
+    },
+    {
+      "id": "01",
+      "via": "browser",
+      "what": "Greg picks Paula's case with type-ahead, opens it with Tab and Enter on /gcsp-case-queue.html and reads the options."
+    }
+  ],
+  "observations": [],
+  "errors": [],
+  "requests": {
+    "greg GET /api/gcsp/scheme-team/cases 200 ok": 1,
+    "greg GET /api/gcsp/scheme-team/cases/options 200 ok": 1
+  },
+  "failedRequests": [],
+  "processes": {
+    "chrome": {
+      "pid": 68966,
+      "group": 68966,
+      "debugPort": 9139
+    },
+    "server-help": {
+      "pid": 68964,
+      "port": 9130,
+      "note": "in-process loopback server"
+    }
+  },
+  "notes": [],
+  "facts": {},
+  "finishedAt": "2026-11-09T14:46:54.893Z",
+  "summary": {
+    "checks": 14,
+    "passed": 14,
+    "failed": [],
+    "captures": 1,
+    "pngs": 1
+  }
+}

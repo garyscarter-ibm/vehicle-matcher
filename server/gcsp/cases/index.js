@@ -6,6 +6,7 @@ import { loadCasePolicy, unavailable } from './policy.js';
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const only = (v, keys) => object(v) && Object.keys(v).every((key) => keys.includes(key));
 const text = (v, max = 2000) => typeof v === 'string' && v.trim().length > 0 && v.length <= max;
+const BRIEF_UNKNOWNS = ['charging-unconfirmed'];
 const currentBrief = (rows) => rows.filter((b) => b.status === 'confirmed').sort((a, b) => b.briefVersion - a.briefVersion)[0];
 const active = (c) => ['open', 'in-progress', 'remedy-proposed'].includes(c.status);
 const invalid = (field, reason, code = 'invalid-case-command') => result('invalid', { code, reasons: [{ field, reason }], action: 'review-and-retry' });
@@ -124,10 +125,11 @@ export class RenewalCaseService {
     const briefs = await reader.list('briefs', { employeeId: c.employeeId }); if (briefs.status !== 'ok') return briefs;
     const brief = currentBrief(briefs.value);
     const stock = await reader.list('stock'); if (stock.status !== 'ok') return stock;
-    const cars = [];
+    const cars = []; const unconfirmed = [];
     for (const car of brief ? stock.value : []) {
       const checked = await this.#remedy(reader, context, renewal.value, p, { type: 'alternative-car', orderUuid: car.orderUuid }, false, true);
       if (checked.status === 'ok') cars.push(checked.value);
+      else if (checked.status === 'needs-confirmation') unconfirmed.push(checked.car);
       else if (checked.status !== 'invalid') return checked;
     }
     const decisions = await reader.list('decisions', { employeeId: c.employeeId }); if (decisions.status !== 'ok') return decisions;
@@ -164,7 +166,8 @@ export class RenewalCaseService {
     const fresh = await this.#fresh(reader, context, p); if (fresh.status !== 'ok') return fresh;
     return ok({ case: { ...c, employeeName: text(renewal.value.employee.name) ? renewal.value.employee.name : c.employeeId },
       nextStatuses: [...(transitions[c.status] ?? [])], asOf: p.now, policyVersion: p.read.policyVersion, automaticRecoveryPriority: false,
-      options: { alternativeCars: available(cars, brief ? 'No suitable available car is currently recorded.' : 'A confirmed brief is required to evaluate suitable available cars.'),
+      options: { alternativeCars: { ...available(cars, !brief ? 'A confirmed brief is required to evaluate suitable available cars.' : unconfirmed.length
+        ? 'No available car is confirmed as suitable yet. The cars listed need confirmation first.' : 'No suitable available car is currently recorded.'), needsConfirmation: unconfirmed },
         preferenceRelaxations: available(relaxation, 'A current confirmed brief and an unused recorded decline are required.'),
         laterRelease: available(later, 'No reviewed future release date and source are recorded for this case.'),
         manualDecision: { available: true, type: 'manual-decision', requiresDecision: true },
@@ -282,7 +285,12 @@ export class RenewalCaseService {
         essentials: Object.fromEntries(Object.entries(brief.essentials).filter(([key]) => key !== 'charging')) });
       const decision = evaluated.value?.decisions?.[0];
       if (evaluated.status !== 'ok') return projection && evaluated.status === 'invalid' ? unavailable() : evaluated;
-      if (!decision || decision.unknowns.length) return unavailable();
+      if (!decision) return unavailable();
+      // An unknown the employee answers in their brief marks the car in the options read; any other unknown still fails it.
+      const pending = projection && decision.unknowns.length > 0 && decision.unknowns.every((u) => BRIEF_UNKNOWNS.includes(u.code));
+      if (decision.unknowns.length && !pending) return unavailable();
+      if (pending && !decision.blockers.length) return result('needs-confirmation', { car: { ...remedy, configurationId: car.value.configurationId,
+        snapshot: decision.snapshot, unknowns: [...new Set(decision.unknowns.map((u) => u.code))] } });
       const name = decision.snapshot?.display?.name;
       // carName is server-derived from the checked snapshot, never accepted from the client.
       const stored = typeof name === 'string' && name.trim() ? { ...remedy, carName: name.trim().slice(0, 200) } : remedy;

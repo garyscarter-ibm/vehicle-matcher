@@ -755,10 +755,10 @@ async function saveConfirmedBrief(f, label, session, body) {
 }
 
 /** Paula's real first offer, declined for its body style over the offer routes: a confirmed brief (version 1) and one decline decision, with no follow-up change yet. */
-async function declinedFirstOffer(t, f, label) {
+async function declinedFirstOffer(t, f, label, charging = true) {
   await resetRun(f, label);
   const paula = await actAs(f, label, 'paula'); const alex = await actAs(f, label, 'alex');
-  await saveConfirmedBrief(f, label, paula, 'estate'); await saveBrief(f, label, 'alex', alex, 'estate');
+  await (charging ? saveConfirmedBrief(f, label, paula, 'estate') : saveBrief(f, label, 'paula', paula, 'estate')); await saveBrief(f, label, 'alex', alex, 'estate');
   await tickTo(f, label, { mode: 'next-release' });
   const offer = (await rows(f, 'offers')).find((row) => row.employeeId === 'employee-paula' && row.state === 'active'); assert.ok(offer, 'Paula holds a pending offer');
   const job = (await rows(f, 'notification_outbox')).find((row) => row.offerId === offer.offerId);
@@ -888,4 +888,18 @@ test('FUCQ-171 advanced help: Paula asks near the deadline, Greg proposes a feas
   await step('across the whole case no allocation input moved except the one confirmed brief change', async () => {
     assert.deepEqual(inputDiff(state.inputs, await allocatorInputs(f)), state.briefDiff, 'opening, progressing, proposing and resolving added nothing beyond the confirmed change');
   });
+});
+test('FUCQ-258: with charging unconfirmed, a help case after a declined offer still gives Greg feasible options', async (t) => {
+  const f = await launch(t, { environmentId: 'lifecycle-e2e-258' });
+  const state = await declinedFirstOffer(t, f, 'help258', false); const greg = await asPrincipal(f, 'greg');
+  const help = await f.api('/api/gcsp/cases', { session: state.paula, body: { commandId: 'e2e-258-help', reason: 'Please help with my renewal.' } });
+  assert.equal(help.status, 200, JSON.stringify(help.json));
+  const reply = await f.api(`${SCHEME}/options?caseId=${help.json.value.case.caseId}`, { session: greg });
+  assert.equal(reply.status, 200, JSON.stringify(reply.json));
+  const { alternativeCars, preferenceRelaxations, manualDecision } = reply.json.value.options;
+  assert.deepEqual([preferenceRelaxations.available, manualDecision.available, alternativeCars.available], [true, true, true]);
+  for (const car of alternativeCars.needsConfirmation) {
+    assert.deepEqual(car.unknowns, ['charging-unconfirmed']);
+    assert.ok(!alternativeCars.items.some((item) => item.orderUuid === car.orderUuid), 'a car needing confirmation is never a remedy');
+  }
 });
