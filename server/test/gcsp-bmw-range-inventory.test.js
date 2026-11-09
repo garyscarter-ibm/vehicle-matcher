@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, readFile, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 import { inputDigest } from '../gcsp/repository/core.js';
 import * as source from '../../scripts/gcsp/public-bmw-source.mjs';
 import * as registration from '../../scripts/gcsp/bmw-public-registration.mjs';
@@ -208,4 +209,98 @@ test('finite relationship collection and row ceilings expose only safe path coun
     assert.equal(error.code,'source-inventory-line-limit'); assert.equal(error.inventoryDiagnostic.kind,'rows');
     assert.equal(error.inventoryDiagnostic.count,769); assert.equal(error.inventoryDiagnostic.limit,768); return true;
   });
+});
+
+const evidenceUrl = new URL('../../docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/diagnostic.json', import.meta.url);
+async function proven() {
+  const bytes = await readFile(evidenceUrl);
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), '76711bca1cfbd20b44ba4aa66c860c8cf1513b92f68a27bb70977fe9f798d743');
+  const report = JSON.parse(bytes).report;
+  const models = Object.fromEntries(report.modelNodes.map(node => [node.modelKey, { ...node.facts, unknown: 'PRIVATE_MODEL' }]));
+  const lines = {};
+  const build = { '2': { modelRanges: { G42: { models, lines, pricing: { amount: 99999 } } } } };
+  for (const row of report.relationships) {
+    const parts = row.path.split('/').slice(1); let at = build;
+    for (const part of parts.slice(0, -1)) at = at[part];
+    at[parts.at(-1)] = row.type === 'object' ? {} : row.type === 'array' ? [] : row.value;
+  }
+  lines.M_PERFORMANCE_LINE.unknown = 'PRIVATE_LINE';
+  lines.M_PERFORMANCE_LINE.includedTransmissionVariants[0].configuration.elements = {};
+  lines.S0337.includedTransmissionVariants[0].configuration.elements.S0337.payload = Object.fromEntries(Array.from({ length: 400 }, (_, i) => ['p' + i, 'PRIVATE_PAYLOAD']));
+  return { report, build };
+}
+
+test('the proven G42 response shape with an underscore source line key is projected and revalidated without inferring a trim', async (t) => {
+  const api = functions(); const { report: seen, build } = await proven();
+  assert.deepEqual(seen.rejectedContract, { gate: 'line', path: '/2/modelRanges/G42/lines/M_PERFORMANCE_LINE', key: 'M_PERFORMANCE_LINE', type: 'object' });
+  assert.equal(api.classifyBmwInventoryLineKey('M_PERFORMANCE_LINE'), 'source-line');
+  assert.equal(api.classifyBmwInventoryLineKey('S0337'), 'option-code');
+  const { role, ...scope } = seen.requestScope; assert.equal(role, 'request-input-only');
+  assert.deepEqual(plan().inventoryRegistration, scope);
+  const report = api.projectBmwRangeInventory(structuredClone(build), plan().inventoryRegistration);
+  assert.deepEqual(report.observedAliases, ['2']); assert.deepEqual(report.modelNodes.map(n => n.facts), seen.modelNodes.map(n => n.facts));
+  assert.deepEqual(report.modelNodes.map(n => n.modelKey), ['2PBC', '2PMA', '2PMB', '2PMC', '2PPA', '2PPB']);
+  assert.deepEqual(report.modelAliases, seen.modelAliases);
+  const byPointer = (a, b) => a.pointer < b.pointer ? -1 : 1; const missing = '/2/modelRanges/G42/lines/M_PERFORMANCE_LINE/option';
+  const expected = [...seen.relationships.map(({ path, ...rest }) => ({ pointer: path, ...rest })), { pointer: missing, type: 'missing' }].sort(byPointer);
+  assert.deepEqual([...report.lineRows].sort(byPointer), expected);
+  assert.equal(report.lineRows.some(row => row.pointer.startsWith('/2/modelRanges/G42/lines/M_PERFORMANCE_LINE') && 'value' in row && row.value.includes('PERFORMANCE')), false);
+  assert.equal(report.lineRows.find(row => row.pointer.endsWith('/lines/S0337/option')).value, 'S0337');
+  assert.equal(report.lineRows.find(row => row.pointer.endsWith('/lines/S0337/includedTransmissionVariants/0/configuration/elements/S0337')).type, 'object');
+  assert.doesNotMatch(JSON.stringify(report), /PRIVATE_|unknown|pricing|99999/);
+  const f = await setup(t, ({ raw }) => { for (const key of Object.keys(raw)) delete raw[key]; Object.assign(raw, structuredClone(build)); });
+  const retained = await collect(f); assert.equal(f.calls.length, 3); assert.deepEqual(retained.document.report, report);
+  await collect(f); assert.equal(f.calls.length, 3);
+  api.validatePublicBmwInventoryObservation(f.p, retained, 'source-fixture');
+});
+
+test('a source line key is never treated as an element or trim and a literal line option stays literal', () => {
+  const api = functions(); const raw = tree(); delete raw.I; const lines = raw[2].modelRanges.G42.lines;
+  lines.M_PERFORMANCE_LINE = { defaultModel: { modelCode: '2PMC', agModelCode: '12CM' }, includedTransmissionVariants: [
+    { configuration: { modelCode: '2PMC', elements: { M_PERFORMANCE_LINE: {}, S0337: {} } } }] };
+  lines.OTHER_LINE = { option: 'S0XYZ', includedTransmissionVariants: [{ configuration: { elements: { OTHER_LINE: {}, S0XYZ: {} } } }] };
+  const rows = api.projectBmwRangeInventory(raw, plan().inventoryRegistration).lineRows; const at = pointer => rows.find(row => row.pointer === pointer);
+  const base = '/2/modelRanges/G42/lines/';
+  assert.equal(rows.some(row => /elements\/(?:M_PERFORMANCE_LINE|OTHER_LINE|S0337)$/.test(row.pointer) && row.pointer.includes('_LINE/')), false);
+  assert.deepEqual(at(base + 'M_PERFORMANCE_LINE/option'), { pointer: base + 'M_PERFORMANCE_LINE/option', type: 'missing' });
+  assert.deepEqual(at(base + 'OTHER_LINE/option'), { pointer: base + 'OTHER_LINE/option', type: 'string', value: 'S0XYZ' });
+  assert.equal(rows.filter(row => row.pointer === base + 'OTHER_LINE/option').length, 1);
+  assert.equal(at(base + 'OTHER_LINE/includedTransmissionVariants/0/configuration/elements').type, 'object');
+  const model = { schemaVersion: 'bmw-public-model-registration.v1', modelCode: '2PMC', agModelCode: '12CM', catalogueRangeKey: 'G42', rawModelRange: 'G42',
+    aliases: ['2'], market: 'GB', locale: 'en-GB', steering: 'RL', catalogueDate: '2026-11-01', orderDate: '2026-11-01', effectDate: '2027-01-05' };
+  const line = (lineKey, optionsQuery) => ({ model, line: { lineKey, defaultModel: { modelCode: '2PMC', agModelCode: '12CM' }, includedIndex: 0, optionsQuery } });
+  registration.validateBmwModelOptionsRequestRegistration(line('S0337', { kind: 'trim', code: 'S0337' }));
+  registration.validateBmwModelOptionsRequestRegistration(line('M_PERFORMANCE_LINE', { kind: 'untrimmed' }));
+  assert.throws(() => registration.validateBmwModelOptionsRequestRegistration(line('M_PERFORMANCE_LINE', { kind: 'trim', code: 'M_PERFORMANCE_LINE' })), { code: 'source-options-plan' });
+});
+
+test('unknown line and variant key grammar is still refused with a safe first-failure diagnostic', async (t) => {
+  const api = functions(); const registrationInput = plan().inventoryRegistration;
+  const cases = [['m_performance_line', true], ['M-PERF', true], ['TOKEN_ABC=1', false], ['A'.repeat(65), false], ['WBA12345678901234-X', false], ['M_PERF/LINE', false], ['', false], ['a'.repeat(65), true]];
+  for (const [key, literal] of cases) {
+    const raw = tree(); delete raw.I; raw[2].modelRanges.G42.lines = { S0337: raw[2].modelRanges.G42.lines.S0337, [key]: [1, 2] };
+    const keys = Object.keys(raw[2].modelRanges.G42.lines).sort();
+    assert.throws(() => api.projectBmwRangeInventory(raw, registrationInput), error => {
+      assert.equal(error.code, 'source-inventory-line-key');
+      const want = { schemaVersion: 'bmw-inventory-key.v1', gate: 'line', path: '/2/modelRanges/G42/lines', ordinal: keys.indexOf(key) + 1, count: 2, length: key.length, type: 'array' };
+      if (literal) want.key = key;
+      assert.deepEqual(error.inventoryDiagnostic, want); return true;
+    }, `line key ${key.slice(0, 20)}`);
+  }
+  for (const key of ['../x', 'a'.repeat(17)]) {
+    const raw = tree(); delete raw.I; raw[2].modelRanges.G42.lines.S0337.includedTransmissionVariants = { 0: { configuration: {} }, [key]: 'x' };
+    const keys = Object.keys(raw[2].modelRanges.G42.lines.S0337.includedTransmissionVariants).sort();
+    assert.throws(() => api.projectBmwRangeInventory(raw, registrationInput), error => {
+      assert.equal(error.code, 'source-inventory-line-key');
+      assert.deepEqual(error.inventoryDiagnostic, { schemaVersion: 'bmw-inventory-key.v1', gate: 'variant', path: '/2/modelRanges/G42/lines/S0337/includedTransmissionVariants',
+        ordinal: keys.indexOf(key) + 1, count: 2, length: key.length, type: 'string', ...(key === 'a'.repeat(17) ? { key } : {}) }); return true;
+    });
+  }
+  const f = await setup(t, ({ raw }) => { raw[2].modelRanges.G42.lines['x-PRIVATE_BOOTSTRAP'] = {}; });
+  await assert.rejects(collect(f), error => {
+    assert.equal(error.code, 'source-inventory-line-key'); const d = error.inventoryDiagnostic;
+    assert.ok(d, 'the session must surface the diagnostic'); assert.equal(d.path, '/'); assert.equal('key' in d, false);
+    assert.doesNotMatch(JSON.stringify(d), /PRIVATE_BOOTSTRAP/); return true;
+  });
+  assert.equal((await readFile(f.statePath, 'utf8').catch(() => '')).includes('PRIVATE_BOOTSTRAP'), false);
 });
