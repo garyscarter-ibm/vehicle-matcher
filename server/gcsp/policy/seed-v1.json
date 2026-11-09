@@ -14261,6 +14261,21 @@
       "sourceDate": "2026-11-07",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "forecast.learned.v1",
+      "value": {
+        "choiceMassThreshold": 0.8,
+        "waitExclusionThreshold": 0.5,
+        "intervalZ": 1.96
+      },
+      "unit": "forecast-settings",
+      "status": "assumed",
+      "basis": "Synthetic planning settings for the learned forecast: keep the likeliest permitted choices covering 80% of non-wait probability, leave out employees more likely to wait than not, and show a 95% normal interval. No BMW behaviour is claimed.",
+      "source": "docs/gcsp/shared-contracts.md",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }
