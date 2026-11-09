@@ -244,6 +244,18 @@ test('FUCQ-261: the queue stacks at narrow widths with every column labelled, an
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
   assert.match(css, /@media \(min-width: 641px\) \{ \.gcsp \.gcsp-case-queue \.gcsp-table \{ min-width: 1050px; \} \}/);
 });
+test('FUCQ-261: a resolved case with a confirmed change promises no further review, for Paula or Greg', () => {
+  const remedy = { type: 'preference-relaxation', path: 'preferences.body.value', value: 'hatchback', expectedBriefVersion: 1, confirmationState: 'employee-confirmed' };
+  const base = { ...queueCaseFixtures()[0], remedy, relaxation: { applicable: false, confirmed: true, before: 'saloon', currentBriefVersion: 2 } };
+  const text = (c, audience) => { const root = host(); root.append(renderCaseContent(c, { audience })); return root.textContent; };
+  for (const status of ['resolved', 'closed']) {
+    assert.match(text({ ...base, status }, 'employee'), /You confirmed this preference change\./);
+    assert.doesNotMatch(text({ ...base, status }, 'employee'), /will review the case/);
+    assert.doesNotMatch(text({ ...base, status }, 'scheme-team'), /before resolving it/);
+  }
+  assert.match(text({ ...base, status: 'remedy-proposed' }, 'employee'), /The scheme team will review the case\./);
+  assert.match(text({ ...base, status: 'remedy-proposed' }, 'scheme-team'), /Review the case before resolving it\./);
+});
 test('embedded queue spans the Greg dashboard grid like the publish panel', () => {
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
   assert.match(css, /\.gcsp-greg-region:has\(\.gcsp-case-queue\.is-embedded\) \{[^}]*grid-column: 1 \/ -1/);
