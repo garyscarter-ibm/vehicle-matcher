@@ -19,7 +19,7 @@
 .gcsp-brief-draft { margin: 16px 0; }
 .gcsp-brief-preview-status { margin: 16px 0; font-weight: 600; color: var(--gcsp-accent-strong); }
 .gcsp-brief-cards { display: grid; gap: 24px; margin-top: 16px; }
-.gcsp-brief .vm-card-facts .vm-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.gcsp-brief .vm-card-facts .vm-facts { grid-template-columns: repeat(auto-fit, minmax(max(140px, 40%), 1fr)); gap: 12px; }
 .gcsp-brief-question .vm-options { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .gcsp-brief-question .vm-option { padding: 12px; }
 .gcsp-brief-subchoice { margin: 16px 0 0; }

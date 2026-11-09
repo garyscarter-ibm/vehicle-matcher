@@ -1,0 +1,394 @@
+{
+  "story": "fucq223",
+  "chunk": "phone",
+  "entry": "hosted-offline",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "state": "passed",
+  "startedAt": "2026-11-09T02:15:45.349Z",
+  "steps": [
+    {
+      "id": "s223-setup",
+      "name": "Demo key, Choose a replacement: setup screen at width (fact grids, selects, header)",
+      "pass": true,
+      "screenshots": [
+        "browser/375-01-setup.png"
+      ],
+      "detail": {
+        "chosen": {
+          "driver": "Nominated: Casey (fictional)",
+          "contract": "six-month-8000",
+          "date": "2026-11-12",
+          "location": "demo-collection-centre"
+        },
+        "grids": [
+          {
+            "cols": 1,
+            "width": 317,
+            "forced": []
+          },
+          {
+            "cols": 1,
+            "width": 309,
+            "forced": []
+          },
+          {
+            "cols": 1,
+            "width": 309,
+            "forced": []
+          },
+          {
+            "cols": 1,
+            "width": 309,
+            "forced": []
+          }
+        ],
+        "selects": [
+          {
+            "name": "driverId",
+            "text": "Nominated: Casey (fictional)",
+            "textPx": 206,
+            "roomPx": 263,
+            "width": 309,
+            "fits": true
+          },
+          {
+            "name": "contractOptionId",
+            "text": "6 months, 8000 mi/year",
+            "textPx": 174,
+            "roomPx": 263,
+            "width": 309,
+            "fits": true
+          },
+          {
+            "name": "collectionLocationId",
+            "text": "Fictional collection centre",
+            "textPx": 186,
+            "roomPx": 263,
+            "width": 309,
+            "fits": true
+          },
+          {
+            "name": "brand",
+            "text": "BMW",
+            "textPx": 39,
+            "roomPx": 263,
+            "width": 309,
+            "fits": true
+          }
+        ],
+        "forcedWords": [],
+        "twoColAtNarrow": 0,
+        "header": {
+          "text": "Paula (fictional)",
+          "title": "Paula (fictional)",
+          "clipped": false,
+          "ellipsis": "ellipsis"
+        }
+      },
+      "overflowPx": 0,
+      "state": "selects [[\"driverId\",206,263,true],[\"contractOptionId\",174,263,true],[\"collectionLocationId\",186,263,true],[\"brand\",39,263,true]]; grids [1,1,1,1]; forced []; header {\"text\":\"Paula (fictional)\",\"title\":\"Paula (fictional)\",\"clipped\":false,\"ellipsis\":\"ellipsis\"}"
+    },
+    {
+      "id": "s223-gallery-first-page",
+      "name": "Next release, Continue: the first page of cars, the count line and Show more cars",
+      "pass": true,
+      "screenshots": [
+        "browser/375-02-gallery-first-page.png"
+      ],
+      "detail": {
+        "cards": 6,
+        "count": "Showing 6 of 20 cars",
+        "more": [
+          "Show more cars"
+        ],
+        "pageHeight": 6319,
+        "focusIndex": -1,
+        "forcedWords": [],
+        "grids": [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "overflowPx": 0,
+      "state": "{\"cards\":6,\"count\":\"Showing 6 of 20 cars\",\"more\":[\"Show more cars\"],\"pageHeight\":6319,\"focusIndex\":-1}; forced []"
+    },
+    {
+      "id": "s223-show-more-keyboard",
+      "name": "Tab to Show more cars, Enter: next page and focus on the first new card; a sort change resets paging",
+      "pass": true,
+      "screenshots": [
+        "browser/375-03-show-more-keyboard.png"
+      ],
+      "detail": {
+        "before": 6,
+        "after": {
+          "cards": 12,
+          "count": "Showing 12 of 20 cars",
+          "more": [
+            "Show more cars"
+          ],
+          "pageHeight": 11056,
+          "focusIndex": 6
+        },
+        "focus": "ARTICLE \"F70 Sports Hatch in Brooklyn Grey\"",
+        "afterSort": {
+          "cards": 6,
+          "count": "Showing 6 of 20 cars",
+          "more": [
+            "Show more cars"
+          ],
+          "pageHeight": 6220,
+          "focusIndex": -1
+        },
+        "hops": 14
+      },
+      "overflowPx": 0,
+      "state": "6 -> 12 cards, focus index 6 (ARTICLE \"F70 Sports Hatch in Brooklyn Grey\"); \"Showing 12 of 20 cars\"; after sort 6 cards"
+    },
+    {
+      "id": "s223-review",
+      "name": "Review a car: review screen at width",
+      "pass": true,
+      "screenshots": [
+        "browser/375-04-review.png"
+      ],
+      "detail": {
+        "selects": [],
+        "grids": [
+          {
+            "cols": 1,
+            "width": 317,
+            "forced": []
+          },
+          {
+            "cols": 1,
+            "width": 317,
+            "forced": []
+          },
+          {
+            "cols": 2,
+            "width": 343,
+            "forced": []
+          },
+          {
+            "cols": 2,
+            "width": 343,
+            "forced": []
+          },
+          {
+            "cols": 1,
+            "width": 309,
+            "forced": []
+          }
+        ],
+        "forcedWords": []
+      },
+      "overflowPx": 0,
+      "state": "Review your car; grids [{\"cols\":1,\"width\":317,\"forced\":[]},{\"cols\":1,\"width\":317,\"forced\":[]},{\"cols\":2,\"width\":343,\"forced\":[]},{\"cols\":2,\"width\":343,\"forced\":[]},{\"cols\":1,\"width\":309,\"forced\":[]}]; forced []"
+    },
+    {
+      "id": "s223-summary",
+      "name": "Continue to order review: summary at width",
+      "pass": true,
+      "screenshots": [
+        "browser/375-05-summary.png"
+      ],
+      "detail": {
+        "grids": [
+          {
+            "cols": 1,
+            "width": 317,
+            "forced": []
+          },
+          {
+            "cols": 2,
+            "width": 301,
+            "forced": []
+          },
+          {
+            "cols": 2,
+            "width": 301,
+            "forced": []
+          },
+          {
+            "cols": 2,
+            "width": 301,
+            "forced": []
+          },
+          {
+            "cols": 2,
+            "width": 301,
+            "forced": []
+          },
+          {
+            "cols": 2,
+            "width": 301,
+            "forced": []
+          },
+          {
+            "cols": 2,
+            "width": 301,
+            "forced": []
+          }
+        ],
+        "forcedWords": []
+      },
+      "overflowPx": 0,
+      "state": "Review your order; grids [{\"cols\":1,\"width\":317,\"forced\":[]},{\"cols\":2,\"width\":301,\"forced\":[]},{\"cols\":2,\"width\":301,\"forced\":[]},{\"cols\":2,\"width\":301,\"forced\":[]},{\"cols\":2,\"width\":301,\"forced\":[]},{\"cols\":2,\"width\":301,\"forced\":[]},{\"cols\":2,\"width\":301,\"forced\":[]}]; forced []"
+    },
+    {
+      "id": "s223b-outcome",
+      "name": "Tick the declarations and submit by keyboard: outcome",
+      "pass": true,
+      "screenshots": [
+        "browser/375-06-s223b-summary-unticked.png",
+        "browser/375-07-s223b-summary-ticked.png",
+        "browser/375-08-s223b-outcome.png"
+      ],
+      "detail": {
+        "posts": 1,
+        "heading": "Order received",
+        "orderNumber": "0453994"
+      },
+      "overflowPx": 0,
+      "state": "Order received | order 0453994; POSTs 1"
+    },
+    {
+      "id": "s223b-account-after-order",
+      "name": "Finish returns to the account: kicker, and a compact order image well",
+      "pass": true,
+      "screenshots": [
+        "browser/375-09-s223b-account-after-order.png"
+      ],
+      "detail": {
+        "kicker": "Choices",
+        "media": [
+          "vm-card-media gcsp-order-media:193"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "{\"kicker\":\"Choices\",\"media\":[\"vm-card-media gcsp-order-media:193\"]}"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "gallery",
+      "check": "Tab to Show more cars and Enter reveals the next page and focuses its first card",
+      "pass": true,
+      "detail": {
+        "hops": 14,
+        "focus": "ARTICLE \"F70 Sports Hatch in Brooklyn Grey\""
+      }
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8945/favicon.ico",
+      "page": "http://127.0.0.1:8945/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8945/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8945/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8945/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8945/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8945/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8945/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8945/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    }
+  ],
+  "notes": [
+    "375px gallery first page height 6319px, 6 cards, count \"Showing 6 of 20 cars\""
+  ],
+  "origin": "http://127.0.0.1:8945",
+  "orderPosts": [
+    "02:16:59.016"
+  ],
+  "finishedAt": "2026-11-09T02:17:15.769Z",
+  "counts": {
+    "steps": 7,
+    "passed": 7,
+    "screenshots": 9,
+    "keyboardChecks": 2
+  }
+}

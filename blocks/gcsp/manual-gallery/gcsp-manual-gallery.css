@@ -1,5 +1,5 @@
 @import "../employee/gcsp-employee.css";
-@import "../kit/form-controls.css";
+@import "../kit/form-controls.css"; @import "../kit/show-more.css";
 
 gcsp-manual-gallery { display: block; }
 .gcsp .gcsp-gallery-body { display: grid; gap: 24px; min-width: 0; width: 100%; overflow-wrap: anywhere; }
@@ -8,7 +8,7 @@ gcsp-manual-gallery { display: block; }
 .gcsp .gcsp-gallery-allowance { margin: 0; padding: 20px; background: var(--gcsp-accent-soft); border: 1px solid var(--gcsp-divider); font-weight: 700; }
 .gcsp .gcsp-gallery-results { display: grid; gap: 24px; min-width: 0; }
 .gcsp .gcsp-gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
-.gcsp .gcsp-gallery-grid .vm-card { min-width: 0; height: 100%; }
+.gcsp .gcsp-gallery-grid .vm-card { min-width: 0; height: 100%; } .gcsp .gcsp-gallery-grid .vm-card:focus { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
 .gcsp .gcsp-gallery-grid .vm-card-actions { flex-wrap: wrap; }
 .gcsp .gcsp-gallery-grid .vm-card-actions .vm-btn { white-space: normal; }
 .gcsp .gcsp-gallery-detail { padding: 24px; display: grid; gap: 20px; min-width: 0; background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }

@@ -241,6 +241,8 @@ The existing single `components.html` gallery includes a local brand callback, l
 
 The shared GCSP adaptation of `screenIntro`, `button`, `factList`, `statusScreen` and `mediaWell` lives in this explicitly capped kit stylesheet. It imports `blocks/gcsp/shell/gcsp-tokens.css` and scopes every rule under `.gcsp`, with no employee-shell dependency. Both `gcsp-employee.css` and `demo-launcher/launcher.css` import it; the employee's existing primitive rules were moved unchanged. Keep new common primitive treatment here rather than duplicating it in page CSS. Retail surfaces stay outside `.gcsp` and retain their brand themes.
 
+**Narrow widths (FUCQ-223).** `.gcsp .vm-facts` never asks a column to be wider than its container (`minmax(min(100%, 150px), 1fr)`) and the card variants (`.gcsp-card`, brief card facts) use `repeat(auto-fit, minmax(max(140px, 40%), 1fr))`, so a grid is one column below about 360 px and at most two wide. Fact labels and values wrap at spaces and hyphens (`overflow-wrap: break-word`); only a single word longer than its column, such as an email address or a hash, breaks inside the word. Below 600 px the shell's `.vm` panels lose their extra 16px side padding so native selects keep the full column width and show their selected text.
+
 ### GCSP order identity (`blocks/gcsp/kit/order-identity.js`, FUCQ-220)
 
 A data helper, not a component. `orderIdentityRows(orderReference, carOrderNumber)` returns `factList` rows labelled "Order reference" (only when the server sent a well-formed `^[A-Za-z0-9-]{1,32}$` reference) and "Car order number"; `orderReferenceOf` is the same check. The manual confirmation, buddy handoff, account order card and history, and order progress all use it, so an earlier order shows only the car's number and nothing is derived on the client.
@@ -268,6 +270,16 @@ Looked at `activityTimeline` (an ordered list, but every row needs a dated event
 | `stageList({ heading, stages: [{ name, state }], level, labels })` | An ordered `<ol>` of stage names with a state label: `complete` Done, `waiting` Waiting, `not-started` Not started, `pending` Sending, `failed` Not accepted (default `STAGE_LABELS`). Names and order are the caller's; the kit infers no stage or state, and an unknown state reads "Unknown". The gallery's **GCSP stage list** section shows acknowledged, sending and not-accepted lists. |
 
 `mountManualSetup(root, { adapter, brand, hint, onBack, onSupport, commandId })` and `<gcsp-manual-setup>` compose the employee shell, shared forms and existing heading/button/status/facts/typed terms. Native controls remain mounted through input and asynchronous state updates. The controller supplies permitted choices, source facts and errors. `gcsp-manual-setup.html` loads the authenticated draft directly; `mountManualJourney` connects account journey hints to a fresh trusted setup read and saves valid choices before Back. The bubbling/composed `gcsp:setup-ready` event carries exact mode/old-contract/slot/scheme/draft/context hints after a successful complete save and current availability; it creates no claim.
+
+### GCSP show more (`blocks/gcsp/kit/show-more.js`, FUCQ-223)
+
+Looked at `button` (a single action, no count or paging state), `statusScreen` (an empty or error shell) and the gallery's own counts line (a read-only total). None pages a long list, so `showMore` is new, with its own `show-more.css`, ratchet cap and pattern.
+
+| Call | Use for |
+|---|---|
+| `showMore({ nouns = ['car', 'cars'], label = 'Show more cars', onShowMore })` | A paging footer: a polite `role="status"` line "Showing n of total cars" and a real ghost `button`. Returns `{ root, update({ shown, total }), button }`; the button hides once `shown >= total`. The caller owns the page size, the sliced list and focus: on `onShowMore` it renders the next page and focuses the first new item (give it `tabindex="-1"` and an accessible name). The gallery's **GCSP show more and narrow values** section demonstrates it. |
+
+The manual released-car browser pages its cars with `showMore`: `MANUAL_GALLERY_PAGE_SIZE` (6, a display constant, not policy) cars first, "Show more cars" adds the next page and focuses its first card, and any search, sort, filter or reload resets to the first page. Sorting and filtering still apply to the whole list. The control is not in the page when the list fits one page. The counts line now reads "n matching" (the filtered total) beside "Showing x of n cars".
 
 ### GCSP renewal help and case composition (`blocks/gcsp/cases/`)
 

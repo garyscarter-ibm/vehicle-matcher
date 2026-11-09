@@ -1,6 +1,7 @@
-import { el, button } from '../../vehicle-matcher/ui.js';
+import { el, button, factList } from '../../vehicle-matcher/ui.js';
 import { labelledField, errorSummary, checkboxField } from './form-controls.js';
 import { stageList } from './stage-list.js';
+import { showMore } from './show-more.js';
 import { runRestartedScreen, runRestartedNotice, accessLapsedScreen } from './run-restarted.js';
 
 export function formControlsExample() {
@@ -36,5 +37,20 @@ export function runRestartedExample() {
   section.append(el('h2', 'vm-gallery-title', 'GCSP demo restarted'));
   const scope = el('div', 'gcsp'); const body = el('div', 'vm');
   body.append(runRestartedScreen({ reload: () => {} }), runRestartedNotice({ reload: () => {} }).root, accessLapsedScreen());
+  scope.append(body); section.append(scope); return section;
+}
+
+export function showMoreExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-show-more';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP show more and narrow values'));
+  const scope = el('div', 'gcsp'); const body = el('div', 'vm'); const list = el('ul', ''); const total = 14; const page = 5; let limit = page;
+  const paging = showMore({ onShowMore() { const first = limit; limit += page; draw(); list.children[first]?.focus(); } });
+  function draw() {
+    list.replaceChildren(...Array.from({ length: Math.min(limit, total) }, (_, i) => { const row = el('li', '', `Example car ${i + 1}`); row.tabIndex = -1; return row; }));
+    paging.update({ shown: Math.min(limit, total), total });
+  }
+  draw();
+  body.append(list, paging.root, factList([{ label: 'Contact email', value: 'employee-paula@example.invalid' }, { label: 'Licence number', value: 'FICTIONAL-NOMINEE' },
+    { label: 'Collection point', value: 'Fictional collection centre' }, { label: 'Requested collection date', value: '13 November 2026' }]));
   scope.append(body); section.append(scope); return section;
 }

@@ -175,7 +175,7 @@ function orderStatus(order, host) {
 export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls, orderHost, order, restarted = false, reload } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
-  wrap.append(screenIntro({ title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
+  wrap.append(screenIntro({ kicker: 'Choices', title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
   // A restarted demo needs a reload, so nothing else on the page can work.
   if (restarted || model.state === 'restarted' || isRunRestarted(draft)) {
     wrap.append(runRestartedScreen({ reload })); main.replaceChildren(wrap); return () => wrap.remove();
