@@ -206,6 +206,9 @@ export function createStockGenerator({ repository, registry, policyService, cont
             observed: structuredClone(model.observed), aggregateKey: model.key });
         }
         const timeZone = values.get('supply.release.cadence').timeZone;
+        // Lead time counts from the close of the planned release horizon: a window's backlog can release on any later
+        // window, so a delivery week anchored on its own window could end before the car is released (FUCQ-229).
+        const horizonEnd = releaseAt[releaseAt.length - 1];
         const observedAt = new Date(run.clockInstant).toISOString();
         const snapshotVersion = `${STOCK_GENERATOR_VERSION}:${policyVersion}`;
         const known = (value, sourceRef, unit = null) => ({ status: 'known', value, unit,
@@ -252,7 +255,7 @@ export function createStockGenerator({ repository, registry, policyService, cont
               sourceKeys: { stockId: identity.orderUuid }, snapshotVersion, observedAt, display: { name: `${title} in ${colour}` },
               facts: { ...extras.get(identity.configurationId), stockIdentityKind: own('synthetic'), modelLine: known(title, aggregateRef), colour: known(colour, aggregateRef),
                 leadTimeWeeks: known(car.leadTimeWeeks, aggregateRef, 'weeks'),
-                confirmedDeliveryWeek: known(confirmedWeek(at, car.leadTimeWeeks, timeZone), aggregateRef),
+                confirmedDeliveryWeek: known(confirmedWeek(horizonEnd, car.leadTimeWeeks, timeZone), aggregateRef),
                 plannedRelease: known({ releaseId: `${runId}:stock:${tranche}`, windowStart: at, windowEnd: releaseAt[windowIndex + 1], policyVersion },
                   'policy:supply.release.cadence'),
                 syntheticVehicleId: own(identity.vehicleId), configurationHash: own(identity.configurationHash),
