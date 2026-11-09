@@ -65,3 +65,31 @@ Disposable scratch was removed and absence verified; the owned HTTP server stopp
 and the isolated headless Chrome context closed. The cleanup receipt records 62,930,734 bytes
 maximum observed scratch, including the bounded local browser profile and isolated Git/build
 fixture. Retained evidence is in the checkpoint directory above; no disposable leftovers remain.
+
+## Publication freshness, 9 November 2026 (FUCQ-166)
+
+A successful `deploy-pages` step is not evidence that the public map changed. On 7 November run 42374327870
+deployed artifact 13574902456 (map sha256 `7ed0cc0a...`, generated 12:51:51 UTC) while the public
+`product-map/data.json` kept serving the 00:57:38 UTC snapshot, including on an uncached edge read; only the
+13:02 UTC main deployment was served. The retained observations are in
+[the publication evidence](evidence/f58-63-final-publish-actions-2026-11-07/) and stay unchanged.
+
+`pages.yml` now ends with **Verify the public product map** (`_tools/pages_readback.py`). It reads the public
+data.json with a unique query string and `Cache-Control: no-cache` every 15 s for up to 10 minutes and passes
+only when the served body's sha256 equals the uploaded file's. Otherwise the run fails with an `::error::` line.
+The receipt in the step summary and log records the run, event, `pages_build_version` (GITHUB_SHA), artifact id
+and each attempt's hash, `generated_at`, Age, X-Cache and Cache-Control.
+
+Freshness limits:
+- A green Pages run means the public body matched within 10 minutes of deployment. A red verify step means it
+  did not, and the map must not be read as current until a later run passes.
+- The gate bypasses edge caches with unique queries. An ordinary browser or link without a query can still see
+  the previous object for up to the `Cache-Control` max-age the receipt records.
+- Only the product-map data.json is checked; the retail demo files in the same artifact are not.
+
+The serving cause is unconfirmed. Every `workflow_run` and dispatch publication uses the main head as
+`pages_build_version`, and the first publication on a new main SHA was served at once, but same-SHA publications
+were also served on 5 and 7 November. The receipts from two or more same-SHA data pushes, compared with the
+github-pages deployment list, settle it. If same-version deployments prove unserved, the next correction is a
+unique `pages_build_version` through the documented Pages deployments REST API. Nothing here changes the
+main-only deployment policy or runs branch code.
