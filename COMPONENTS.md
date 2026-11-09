@@ -21,7 +21,7 @@ A view never styles a kit component's insides from the app stylesheet.
 | `cardinal(n)` / `CARDINALS` | Small counts as words ("three cars") in prose; falls back to the numeral above ten. |
 | `screenIntro({ kicker, title, lede, level = 2, className })` | Screen heading block (`vm-kicker` / `vm-title` / `vm-lede`); title is an `h<level>`. Retail modes have not migrated yet. |
 | `button({ label, variant: 'primary' \| 'ghost', onClick, href, disabled, describedBy })` | `vm-btn` button: `<button type="button">`, or `<a>` when `href` is given and not disabled. `describedBy` links a visible reason for a disabled action. Retail modes have not migrated yet. |
-| `statusScreen({ kicker, title, message, actions, role = 'status', level = 2 })` | Error, empty or no-match shell (`vm-screen vm-status`). `actions` are nodes; the title is an `h<level>`, so a page whose whole state is the screen can make it the h1. Retail modes have not migrated yet. |
+| `statusScreen({ kicker, title, message, actions, role = 'status', level = 2 })` | Error, empty or no-match shell (`vm-screen vm-status`). A null `role` leaves it plain content when the view's own status line speaks. `actions` are nodes; the title is an `h<level>`, so a page whose whole state is the screen can make it the h1. Retail modes have not migrated yet. |
 | `factList(rows, { className, hideMissing })` | `<dl>` of `{ label, value, unit, missingLabel }` rows. A null or undefined value reads "Not supplied" (or `missingLabel`) with the `is-missing` class, never "undefined" or blank. `className: 'vm-facts-pair'` (FUCQ-275) keeps two equal columns at narrow width (the default fits as many 150 px columns as the width allows, so one at 375 px); long values wrap. `matchCard`'s explicit view takes it as `factsClass`. Gallery: **factList: two columns at narrow width**. `hideMissing` (FUCQ-277, a line of text such as "More details not supplied") drops the missing rows and shows that line once beneath the supplied ones; with any row dropped the result is a `div.vm-facts-wrap` holding the `<dl>` (omitted if every row is missing) and a `p.vm-facts-more`, with none dropped it is the plain `<dl>`. The manual released-car cards use it inside their closed "Car facts" disclosure. |
 
 ## Result cards (`modes/result-card.js`)
@@ -310,9 +310,19 @@ Looked at `button` (a single action, no count or paging state), `statusScreen` (
 
 | Call | Use for |
 |---|---|
-| `showMore({ nouns = ['car', 'cars'], label = 'Show more cars', onShowMore })` | A paging footer: a polite `role="status"` line "Showing n of total cars" and a real ghost `button`. Returns `{ root, update({ shown, total }), button }`; the button hides once `shown >= total`. The caller owns the page size, the sliced list and focus: on `onShowMore` it renders the next page and focuses the first new item (give it `tabindex="-1"` and an accessible name). The gallery's **GCSP show more and narrow values** section demonstrates it. |
+| `showMore({ nouns = ['car', 'cars'], label = 'Show more cars', onShowMore })` | A paging footer: a plain (not live) line "Showing n of total cars" and a real ghost `button`; the caller announces the count through its `viewStatus`. Returns `{ root, update({ shown, total }), button }`; the button hides once `shown >= total`. The caller owns the page size, the sliced list and focus: on `onShowMore` it renders the next page and focuses the first new item (give it `tabindex="-1"` and an accessible name). The gallery's **GCSP show more and narrow values** section demonstrates it. |
 
 The manual released-car browser pages its cars with `showMore`: `MANUAL_GALLERY_PAGE_SIZE` (6, a display constant, not policy) cars first, "Show more cars" adds the next page and focuses its first card, and any search, sort, filter or reload resets to the first page. Sorting and filtering still apply to the whole list. The control is not in the page when the list fits one page. The counts line now reads "n matching" (the filtered total) beside "Showing x of n cars".
+
+### GCSP live regions (`blocks/gcsp/kit/view-status.js`, FUCQ-285)
+
+Each view announces through one region, for results and outcomes only. Looked at the brief's and follow-up's own live lines and the offer's hidden announcement: each was a private copy, and no kit helper owned a single per-view status, so `viewStatus` is new.
+
+| Call | Use for |
+|---|---|
+| `viewStatus({ className = 'gcsp-vh' })` | Returns `{ root, announce(text), clear() }`: one `p` with `role="status"` and `aria-atomic="true"`, visually hidden by default. `announce` skips text equal to the last announced; `clear()` lets the same text announce again. Stay silent on first paint. |
+
+Everything else is plain text: the explicit card's eligibility line (no `aria-live`), `showMore`'s count, a slider's readout (`span.vm-slider-value`, `aria-hidden`; the input's `aria-valuetext` carries the value), and a `statusScreen` embedded under a host that owns the region (`role: null`). `createFollowupView` takes `announce` to speak through its host instead of making its own line.
 
 ### GCSP renewal help and case composition (`blocks/gcsp/cases/`)
 

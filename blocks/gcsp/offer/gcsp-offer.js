@@ -6,19 +6,17 @@ import { el } from '../../vehicle-matcher/ui.js';
 // The trusted host binds this port to 107's body mount and its ordinary employee account loader.
 function followupMount(port) {
   if (typeof port?.loadAccount !== 'function' || typeof port?.mount !== 'function') return undefined;
-  return (root, { decisionId }) => {
+  return (root, { decisionId, announce }) => {
     const abort = new AbortController(); let done = false; let cleanup;
-    const show = (message) => {
-      const note = el('p', 'gcsp-note', message); note.setAttribute('role', 'status'); root.replaceChildren(note);
-    };
-    const unavailable = () => show('Follow-up unavailable. Open this offer from your account or check again.');
+    const show = (message) => root.replaceChildren(el('p', 'gcsp-note', message));
+    const unavailable = () => { const message = 'Follow-up unavailable. Open this offer from your account or check again.'; show(message); announce?.(message); };
     show('Loading your account for the follow-up.');
     void (async () => {
       try {
         const account = await port.loadAccount({ signal: abort.signal });
         if (done) return;
         if (account?.status !== 'ready') { unavailable(); return; }
-        cleanup = port.mount(root, { decisionId, signal: abort.signal });
+        cleanup = port.mount(root, { decisionId, signal: abort.signal, announce });
         if (typeof cleanup !== 'function') { cleanup = undefined; abort.abort(); unavailable(); }
       } catch { if (!done) { abort.abort(); unavailable(); } }
     })();

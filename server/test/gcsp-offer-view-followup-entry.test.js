@@ -104,7 +104,7 @@ test('declined unavailable view retains outcome, explicit refresh and zero decli
 test('unchanged reads preserve the mounted question and focus; changed entry tears it down', (t) => {
   const element = root(); let mounts = 0; let stops = 0; let latest = presentation().value;
   const view = createOfferView(element, { refresh: () => view.update(latest), mountFollowup: (target, input) => {
-    assert.deepEqual(input, latest.followup); mounts++;
+    assert.equal(input.decisionId, latest.followup.decisionId); assert.equal(typeof input.announce, 'function'); mounts++;
     const control = document.createElement('input'); control.setAttribute('aria-label', 'Contract question'); target.replaceChildren(control);
     return () => { stops++; target.replaceChildren(); };
   } }); t.after(view.destroy);
@@ -137,7 +137,7 @@ test('host forwards only the selector and abort signal after readiness and tears
     loadAccount: async () => ({ status: 'ready' }), mount: (target, context) => {
       input = context; target.textContent = 'Contract follow-up mounted'; return () => { stops++; };
     } } }); t.after(stop);
-  await settle(); assert.deepEqual(Object.keys(input).sort(), ['decisionId', 'signal']);
+  await settle(); assert.deepEqual(Object.keys(input).sort(), ['announce', 'decisionId', 'signal']);
   assert.equal(input.decisionId, handle.decisionId); assert.equal(input.signal.aborted, false);
   next = presentation(null); await stop.refresh();
   assert.equal(stops, 1); assert.equal(input.signal.aborted, true); assert.match(element.textContent, /Follow-up unavailable/);

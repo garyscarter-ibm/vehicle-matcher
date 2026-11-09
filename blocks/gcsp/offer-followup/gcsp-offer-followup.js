@@ -19,7 +19,7 @@ export function mountFollowupBody(root, ctx = {}) {
     controller = createFollowupController({ decisionId: ctx.decisionId, createCommandId: ctx.createCommandId,
       transport: ctx.transport || createFollowupHttpAdapter({ fetchImpl: ctx.fetchImpl, base: ctx.base, signal: abort.signal }) });
     view = createFollowupView(root, { choose: controller.choose, confirm: controller.confirm, refresh: controller.refresh,
-      projectOffer: ctx.projectOffer, openOffer: ctx.openOffer, hostRefresh: ctx.hostRefresh === true, headingLevel: ctx.headingLevel === 2 ? 2 : 1, activityHref: ctx.activityHref });
+      projectOffer: ctx.projectOffer, openOffer: ctx.openOffer, hostRefresh: ctx.hostRefresh === true, headingLevel: ctx.headingLevel === 2 ? 2 : 1, activityHref: ctx.activityHref, announce: ctx.announce });
     unsubscribe = controller.subscribe(view.update); view.update(controller.snapshot()); controller.refresh();
   } catch {
     root.replaceChildren(statusScreen({ title: 'Follow-up unavailable', message: 'Open the offer from your account to continue.' }));

@@ -63,7 +63,8 @@ test('FUCQ-183: a question with no current value says the answer adds it and kee
 
 test('invalid, busy and saved states disable confirmation and move completed focus to the heading', (t) => {
   const { root, view } = host(t); const model = question(); view.update({ ...model, error: 'Choose a different value.' });
-  assert.equal(root.querySelector('[role=alert]').textContent, 'Choose a different value.');
+  assert.equal(root.querySelector(`#${root.querySelector('fieldset').getAttribute('aria-describedby')}`).textContent, 'Choose a different value.');
+  assert.equal(root.querySelector('.gcsp-followup-live').textContent, 'Choose a different value.');
   assert.equal(root.querySelector('[data-followup-action=confirm]').disabled, true);
   view.update({ ...model, value: 'estate', canConfirm: true }); const button = root.querySelector('[data-followup-action=confirm]'); button.focus();
   view.update({ ...model, value: 'estate', busy: true }); assert.equal(button.disabled, true); assert.equal(root.getAttribute('aria-busy'), null);

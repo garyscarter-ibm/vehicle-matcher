@@ -1,9 +1,8 @@
 import { el, button } from '../../vehicle-matcher/ui.js';
 
-/** Paging footer: a polite "Showing n of total" line and a real button. The caller owns the page size, focus and state. */
+/** Paging footer: a plain "Showing n of total" line and a real button. The caller owns the page size, focus, state and announcing. */
 export function showMore({ nouns = ['car', 'cars'], label = 'Show more cars', onShowMore } = {}) {
   const root = el('div', 'gcsp-show-more'); const count = el('p', 'gcsp-show-more-count');
-  count.setAttribute('role', 'status');
   const more = button({ label, variant: 'ghost', onClick: () => onShowMore?.() });
   root.append(count, more);
   function update({ shown, total }) {

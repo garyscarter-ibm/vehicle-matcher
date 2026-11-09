@@ -40,7 +40,7 @@ export function mountBriefBody(main, adapters = {}) {
     const { context, initial } = editor; const brief = initial.brief;
     const page = el('div', 'vm gcsp-brief');
     page.append(screenIntro({ title: 'Your buddy found your car', level: 1, lede: 'You accepted a car, so your brief can no longer be changed.' }));
-    const note = el('p', 'gcsp-note', 'This is your saved brief. It is read only.'); note.setAttribute('role', 'status');
+    const note = el('p', 'gcsp-note', 'This is your saved brief. It is read only.');
     const level = (v) => Number.isFinite(v) ? `${v} out of ${context.slider.maximum}` : 'Not set';
     const prefs = Object.entries(context.preferences).filter(([key]) => brief.preferences[key]).map(([key, d]) => {
       const p = brief.preferences[key];
@@ -222,7 +222,6 @@ export function mountBriefBody(main, adapters = {}) {
               checks.append(el('h3', null, member.display.name), list);
             }
             const card = decision.gateStatus === 'eligible' ? matchCard(null, { view, scoreLabel: informative && decision.score === top ? BEST_MATCH : null }) : previewTile(null, { view });
-            card.querySelectorAll('[aria-live]').forEach((node) => node.removeAttribute('aria-live'));
             cards.append(card);
           }
           live.textContent = summary;

@@ -52,7 +52,7 @@ test('an accepted selection shows the saved brief read-only with labelled values
   assert.match(text, /Comfort/); assert.match(text, /Do you need a towbar\?/); assert.match(text, /Not confirmed|Needs confirmation|Yes|No/);
   assert.doesNotMatch(text, /\bseats\b|\bboot\b|could not be loaded|\u2014/);
   assert.equal(main.querySelector('a').getAttribute('href'), '/gcsp-order-progress-live.html');
-  assert.ok(main.querySelector('[role=status]'));
+  assert.match(main.textContent, /This is your saved brief\. It is read only\./); assert.equal(main.querySelector('[role=status]'), null);
 });
 test('teardown cancels late load and missing adapter gives unavailable body', async () => {
   const main = document.createElement('main'); let resolve;
@@ -159,7 +159,7 @@ test('Best match is withheld when every eligible car ties or the top score is ze
 test('an unset preference slider reads Not set, not Not supplied', async (t) => {
   const editor = structuredClone(fixture.edited.value); delete editor.initial.brief.preferences.economy;
   const main = await mountWith(t, fixture.preview, editor);
-  const outputs = [...main.querySelectorAll('[aria-label^="Economy: "]')].map((input) => input.parentElement.querySelector('output').textContent);
+  const outputs = [...main.querySelectorAll('[aria-label^="Economy: "]')].map((input) => input.parentElement.querySelector('.vm-slider-value').textContent);
   assert.deepEqual(outputs, ['Not set', 'Not set']);
   assert.doesNotMatch(main.querySelector('form').textContent, /Not supplied/);
 });

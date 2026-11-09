@@ -34,6 +34,9 @@ export function formatRange([lo, hi], q, options) {
 
 const callbackOwned = (options) => Object.hasOwn(options, 'value') || typeof options.onValueChange === 'function';
 
+// The input's aria-valuetext carries the value, so the visible readout stays out of the accessibility tree.
+function sliderReadout(text) { const node = el('span', 'vm-slider-value', text); node.setAttribute('aria-hidden', 'true'); return node; }
+
 /** Dual native range by default; single:true supports independent preference and importance axes. `unknownText` words an unset value. */
 export function renderRangeSlider(list, q, answers, options = {}) {
   const { onChange, onValueChange, single = false, disabled = false, ariaLabel } = options;
@@ -51,7 +54,7 @@ export function renderRangeSlider(list, q, answers, options = {}) {
     const known = Number.isFinite(stored) && options.valueState !== 'unknown';
     const start = known ? stored : Number.isFinite(q.default) ? q.default : q.min;
     if (!controlled) answers[q.id] = start;
-    const readout = el('output', 'vm-slider-value', formatSliderValue(known || !controlled ? start : null, q, options));
+    const readout = sliderReadout(formatSliderValue(known || !controlled ? start : null, q, options));
     const input = el('input', 'vm-slider-input vm-slider-single');
     input.type = 'range';
     input.min = String(q.min); input.max = String(q.max); input.step = String(q.step);
@@ -86,7 +89,7 @@ export function renderRangeSlider(list, q, answers, options = {}) {
   // Legacy defaults commit on mount; callbacks only fire on later input.
   if (!controlled) answers[q.id] = [lo, hi];
   let confirmed = !controlled || (Array.isArray(stored) && stored.every(Number.isFinite) && options.valueState !== 'unknown');
-  const readout = el('output', 'vm-slider-value', confirmed ? formatRange([lo, hi], q, options) : options.unknownText ?? 'Not supplied');
+  const readout = sliderReadout(confirmed ? formatRange([lo, hi], q, options) : options.unknownText ?? 'Not supplied');
   const noun = ariaLabel || q.thumbNoun || 'budget';
   const track = el('div', 'vm-range');
   const fill = el('div', 'vm-range-fill');
