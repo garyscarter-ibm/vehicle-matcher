@@ -1,6 +1,6 @@
 // Design harness only: callbacks report locally and save nothing. The state picker reuses the activity preview styles.
 import { el, button } from '../../vehicle-matcher/ui.js';
-import { mountEmployee, EMPLOYEE_NAVIGATION } from '../employee/gcsp-employee.js';
+import { mountEmployee } from '../employee/gcsp-employee.js';
 import { mountHelp } from '../cases/gcsp-help.js';
 import { fixtureAdapter } from '../cases/fixtures.js';
 import { orderProgressBody } from './order-progress-body.js';
@@ -24,7 +24,6 @@ const initial = orderProgressFixtureNames.includes(requested) ? requested : 'app
 const root = document.getElementById('gcsp-order-progress-preview');
 if (root) mountEmployee(root, {
   view: ORDER_PROGRESS_DESTINATION.key,
-  navigation: [...EMPLOYEE_NAVIGATION.map((item) => ({ ...item, available: false, unavailableReason: 'Not part of this order progress preview' })), ORDER_PROGRESS_DESTINATION],
   loadAccount: async () => ({ status: 'ready', name: 'Paula (synthetic)', context: 'Choices, synthetic demonstration' }),
   renderBody(main) {
     const fixtures = orderProgressFixtures(); const help = fixtureAdapter('request');

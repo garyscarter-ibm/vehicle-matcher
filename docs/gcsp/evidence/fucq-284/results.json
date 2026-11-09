@@ -1,9 +1,26 @@
 {
   "story": "FUCQ-284",
   "passed": true,
-  "origin": "https://localhost:9465",
+  "origin": "https://localhost:9466",
   "runtime": "memory",
   "pageErrors": [],
+  "navigation": {
+    "pages": [
+      "offer",
+      "your-cars",
+      "brief",
+      "activity"
+    ],
+    "labels": [
+      "Your cars",
+      "Your car brief",
+      "Buddy activity",
+      "Order progress"
+    ],
+    "same": true,
+    "noneDisabled": true,
+    "pass": true
+  },
   "shell": [
     {
       "viewport": 1280,
@@ -253,23 +270,18 @@
           "shown": true
         },
         {
-          "label": "New order",
-          "ariaDisabled": true,
+          "label": "Your car brief",
+          "ariaDisabled": false,
           "shown": true
         },
         {
-          "label": "Order history",
-          "ariaDisabled": true,
+          "label": "Buddy activity",
+          "ariaDisabled": false,
           "shown": true
         },
         {
-          "label": "Drivers and licences",
-          "ariaDisabled": true,
-          "shown": true
-        },
-        {
-          "label": "Scheme guidelines",
-          "ariaDisabled": true,
+          "label": "Order progress",
+          "ariaDisabled": false,
           "shown": true
         }
       ],
@@ -325,7 +337,22 @@
       "kicker": null,
       "nav": [
         {
+          "label": "Your cars",
+          "ariaDisabled": false,
+          "shown": true
+        },
+        {
           "label": "Your car brief",
+          "ariaDisabled": false,
+          "shown": true
+        },
+        {
+          "label": "Buddy activity",
+          "ariaDisabled": false,
+          "shown": true
+        },
+        {
+          "label": "Order progress",
           "ariaDisabled": false,
           "shown": true
         }
@@ -383,12 +410,22 @@
       "kicker": null,
       "nav": [
         {
+          "label": "Your cars",
+          "ariaDisabled": false,
+          "shown": true
+        },
+        {
           "label": "Your car brief",
           "ariaDisabled": false,
           "shown": true
         },
         {
           "label": "Buddy activity",
+          "ariaDisabled": false,
+          "shown": true
+        },
+        {
+          "label": "Order progress",
           "ariaDisabled": false,
           "shown": true
         }
@@ -457,23 +494,18 @@
           "shown": false
         },
         {
-          "label": "New order",
-          "ariaDisabled": true,
+          "label": "Your car brief",
+          "ariaDisabled": false,
           "shown": false
         },
         {
-          "label": "Order history",
-          "ariaDisabled": true,
+          "label": "Buddy activity",
+          "ariaDisabled": false,
           "shown": false
         },
         {
-          "label": "Drivers and licences",
-          "ariaDisabled": true,
-          "shown": false
-        },
-        {
-          "label": "Scheme guidelines",
-          "ariaDisabled": true,
+          "label": "Order progress",
+          "ariaDisabled": false,
           "shown": false
         }
       ],
@@ -529,7 +561,22 @@
       "kicker": null,
       "nav": [
         {
+          "label": "Your cars",
+          "ariaDisabled": false,
+          "shown": false
+        },
+        {
           "label": "Your car brief",
+          "ariaDisabled": false,
+          "shown": false
+        },
+        {
+          "label": "Buddy activity",
+          "ariaDisabled": false,
+          "shown": false
+        },
+        {
+          "label": "Order progress",
           "ariaDisabled": false,
           "shown": false
         }
@@ -587,12 +634,22 @@
       "kicker": null,
       "nav": [
         {
+          "label": "Your cars",
+          "ariaDisabled": false,
+          "shown": false
+        },
+        {
           "label": "Your car brief",
           "ariaDisabled": false,
           "shown": false
         },
         {
           "label": "Buddy activity",
+          "ariaDisabled": false,
+          "shown": false
+        },
+        {
+          "label": "Order progress",
           "ariaDisabled": false,
           "shown": false
         }

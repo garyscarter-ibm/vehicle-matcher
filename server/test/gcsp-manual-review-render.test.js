@@ -46,7 +46,7 @@ function setup(t, options = {}) {
   let sequence = 0; const root = document.createElement('div'); root.className = 'gcsp'; document.body.append(root);
   const args = { adapter, commandId: () => `render-${++sequence}`, onContinue: () => { ready += 1; }, onReleased: () => { released += 1; },
     subscribeClock: (callback) => { tick = callback; return () => { tick = null; }; } };
-  const destroy = options.shell ? mountManualReview(root, { ...args, loadAccount: async () => ({ status: 'ready', name: 'Fictional employee', context: 'Synthetic demo' }) }) : mountManualReviewBody(root, args);
+  const destroy = options.shell ? mountManualReview(root, { ...args, location: options.location, loadAccount: async () => ({ status: 'ready', name: 'Fictional employee', context: 'Synthetic demo' }) }) : mountManualReviewBody(root, args);
   t.after(() => { destroy(); root.remove(); });
   return { root, destroy, model, calls, adapter, get ready() { return ready; }, get released() { return released; },
     setClaim: (value) => { claimOutcome = value; }, tick: () => tick?.() };
@@ -119,6 +119,15 @@ test('shell mount and repeatable custom element registration tear down owned con
   element.loadAccount = async () => ({ status: 'ready', name: 'Fictional employee', context: 'Synthetic demo' });
   document.body.append(element); await settle(() => element.querySelector('form')); element.remove(); assert.equal(element.childNodes.length, 0);
   f.destroy(); assert.equal(f.root.childNodes.length, 0);
+});
+
+test('a rail click releases the reservation as Back does, then routes to the chosen page', async (t) => {
+  const assigned = []; const f = setup(t, { shell: true, location: { assign: (to) => assigned.push(to) } }); await settle(() => control(f, 'contact.phone'));
+  f.root.querySelector('nav button[data-key="activity"]').click(); await settle(() => assigned.length);
+  assert.deepEqual(assigned, ['/gcsp-activity-live.html']); assert.equal(f.calls.filter((entry) => entry === 'release:back').length, 1);
+  assert.equal(f.released, 1); f.root.querySelector('nav button[data-key="brief"]').click(); await settle(() => assigned.length === 2);
+  assert.equal(f.calls.filter((entry) => entry.startsWith('release')).length, 1, 'a released hold is not released twice');
+  assert.deepEqual(assigned, ['/gcsp-activity-live.html', '/gcsp-brief-live.html']);
 });
 
 test('a pending claim past its original deadline cannot offer browse navigation or announce expiry', async (t) => {

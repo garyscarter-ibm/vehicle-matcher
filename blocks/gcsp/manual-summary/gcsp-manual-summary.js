@@ -1,6 +1,7 @@
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard } from '../../vehicle-matcher/modes/result-card.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
+import { routeAfterRelease } from '../employee/portal-navigation.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 import { checkboxField, errorSummary } from '../kit/form-controls.js';
 import { stageList } from '../kit/stage-list.js';
@@ -236,9 +237,12 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
   return destroy;
 }
 
-export function mountManualSummary(root, { loadAccount = createAccountHttpAdapter().loadAccount, brand = 'bmw', ...options } = {}) {
+export function mountManualSummary(root, { loadAccount = createAccountHttpAdapter().loadAccount, brand = 'bmw', location, ...options } = {}) {
   let body; let disposed = false;
-  const shell = mountEmployee(root, { brand, loadAccount, onNavigate: () => body?.leave('back'),
+  const held = () => { const state = body?.controller.getState(); return !state || (state.phase !== 'outcome' && (!state.claim?.model || state.claim.canRelease)); };
+  const where = location || root.ownerDocument.defaultView?.location;
+  const shell = mountEmployee(root, { brand, loadAccount,
+    onNavigate: (key) => routeAfterRelease(key, { held, release: () => body?.leave('back'), location: where }),
     renderBody(main) { if (disposed) return; body?.(); body = mountManualSummaryBody(main, options); } });
   const destroy = () => { disposed = true; body?.(); shell(); };
   Object.defineProperty(destroy, 'controller', { get: () => body?.controller });

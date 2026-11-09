@@ -1,6 +1,7 @@
 // Embeddable order progress consumer. The injected adapter owns account, access and command authority.
 import { el, screenIntro, statusScreen } from '../../vehicle-matcher/ui.js';
-import { mountEmployee, EMPLOYEE_NAVIGATION } from '../employee/gcsp-employee.js';
+import { mountEmployee } from '../employee/gcsp-employee.js';
+import { PORTAL_NAVIGATION } from '../employee/portal-navigation.js';
 import { createAccountHttpAdapter } from '../shell/account-runtime.js';
 import { mountHelp } from '../cases/gcsp-help.js';
 import { orderProgressBody } from './order-progress-body.js';
@@ -10,8 +11,7 @@ import { orderCopy } from './order-progress-copy.js';
 import { runRestartedScreen } from '../kit/run-restarted.js';
 import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 
-export const ORDER_PROGRESS_DESTINATION = Object.freeze({ key: 'order-progress', label: 'Order progress', available: true,
-  icon: Object.freeze(['M4 6l2 2 3-3', 'M4 14l2 2 3-3', 'M12 7h8', 'M12 15h8']) });
+export const ORDER_PROGRESS_DESTINATION = PORTAL_NAVIGATION.find((item) => item.key === 'order-progress');
 
 const SECTION_OF = { completeTask: 'documents', requestAppointment: 'handover', acceptAppointment: 'handover', requestReturn: 'return', acceptReturn: 'return' };
 const SECTION = '.gcsp-order-section';
@@ -71,7 +71,7 @@ function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = 
   return stop;
 }
 
-export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand = 'bmw', navigation, onNavigate, helpAdapter, embedded = false, headingLevel, signal, reload } = {}) {
+export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand = 'bmw', onNavigate, helpAdapter, embedded = false, headingLevel, signal, reload } = {}) {
   let done = false; let stopBody; let stopShell;
   const abort = new AbortController();
   const teardown = () => {
@@ -89,8 +89,7 @@ export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand =
     return teardown;
   }
   stopShell = mountEmployee(root, { brand, view: ORDER_PROGRESS_DESTINATION.key, signal: abort.signal,
-    navigation: navigation || [...EMPLOYEE_NAVIGATION.map((item) => ({ ...item, available: false, unavailableReason: 'Not available in this demo' })), ORDER_PROGRESS_DESTINATION],
-    onNavigate: (to) => onNavigate?.(to),
+    onNavigate,
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
     renderBody(main, { account }) {
       stopBody = mountBody(main, { adapter, orderUuid, car, helpAdapter, level: headingLevel ?? 1, ready: account.status === 'ready', reload });
@@ -124,7 +123,7 @@ export class GcspOrderProgressElement extends HTMLElement {
     const level = Number(this.getAttribute('heading-level'));
     this._teardown = mountOrderProgress(this, { adapter: this._adapter || {}, brand: this.brand, car: this._car, helpAdapter: this._helpAdapter,
       orderUuid: this.getAttribute('order-uuid') || undefined, embedded: this.hasAttribute('embedded'),
-      headingLevel: Number.isInteger(level) && level >= 1 && level <= 4 ? level : undefined, navigation: this._adapter?.navigation,
+      headingLevel: Number.isInteger(level) && level >= 1 && level <= 4 ? level : undefined,
       onNavigate: (to) => {
         const EventType = this.ownerDocument.defaultView.CustomEvent;
         this.dispatchEvent(new EventType('gcsp:navigate', { detail: { from: 'order-progress', to }, bubbles: true, composed: true, cancelable: true }));

@@ -157,8 +157,13 @@ test(`${STORY}: shell inset, crumb-only label and presenter alignment, two viewp
     return { viewport: width, h1X: Object.fromEntries(rows.map((c) => [c.page, c.contentStartX.h1])), sameH1X: new Set(xs).size === 1,
       crumbOnH1: rows.every((c) => c.crumbLeft === c.contentStartX.h1), noKicker: rows.every((c) => c.kicker === null && c.kickersShown.length === 0),
       stripOnCrumb: strips.length > 0 && strips.every((c) => c.barShown && c.regionLeft === xs[0] && c.barLeft === xs[0] && c.overflowPx <= 0) }; });
+  // FUCQ-284 slice B: the same rail (labels and disabled flags) on every page at 1280, with the page's own item current.
+  const rails = captures.filter((c) => c.viewport === 1280).map((c) => ({ page: c.page, nav: c.nav.map((n) => `${n.label}|${n.ariaDisabled}`) }));
+  const navigation = { pages: rails.map((r) => r.page), labels: rails[0]?.nav.map((n) => n.split('|')[0]) ?? [],
+    same: rails.length === 4 && rails.every((r) => JSON.stringify(r.nav) === JSON.stringify(rails[0].nav)), noneDisabled: rails.every((r) => r.nav.every((n) => n.endsWith('|false'))) };
+  navigation.pass = navigation.same && navigation.noneDisabled && navigation.labels.length === 4;
   for (const s of shell) s.pass = s.sameH1X && s.crumbOnH1 && s.noKicker && s.stripOnCrumb;
-  const passed = captures.length === 8 && captures.every((c) => c.pass) && keyboard.pass && pageErrors.length === 0 && shell.every((s) => s.pass);
-  await writeFile(join(OUT, 'results.json'), `${JSON.stringify({ story: STORY, passed, origin: app.origin, runtime: 'memory', pageErrors, shell, presenterCaptures, captures, keyboard }, null, 2)}\n`);
-  assert.ok(passed, JSON.stringify({ captures: captures.map((c) => [c.page, c.viewport, c.pass]), keyboard: keyboard.pass, pageErrors, shell }));
+  const passed = captures.length === 8 && captures.every((c) => c.pass) && keyboard.pass && pageErrors.length === 0 && shell.every((s) => s.pass) && navigation.pass;
+  await writeFile(join(OUT, 'results.json'), `${JSON.stringify({ story: STORY, passed, origin: app.origin, runtime: 'memory', pageErrors, navigation, shell, presenterCaptures, captures, keyboard }, null, 2)}\n`);
+  assert.ok(passed, JSON.stringify({ captures: captures.map((c) => [c.page, c.viewport, c.pass]), keyboard: keyboard.pass, pageErrors, navigation, shell }));
 });
