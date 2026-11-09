@@ -135,13 +135,13 @@ const runOf = (text) => /\bRun\s+(\S+)/.exec(text)?.[1] ?? null;
 const actingOf = (text) => /Acting principal\s+(.+)/.exec(text)?.[1]?.trim() ?? null;
 async function openStrip() {
   const root = strip(); await root.waitFor({ state: 'attached', timeout: 60000 });
-  if (!(await root.evaluate((el) => el.open))) await root.locator('summary').click();
+  if (!(await root.evaluate((el) => el.open))) await root.locator('summary').first().click();
   await until(async () => clockOf(await stripText()), { what: 'presenter clock readout', timeout: 60000 });
 }
 // Open the strip with Tab and Enter, as a keyboard user would.
 async function openStripByKeyboard() {
   const root = strip(); await root.waitFor({ state: 'attached', timeout: 60000 });
-  if (!(await root.evaluate((el) => el.open))) { await tabTo(root.locator('summary')); await page.keyboard.press('Enter'); }
+  if (!(await root.evaluate((el) => el.open))) { await tabTo(root.locator('summary').first()); await page.keyboard.press('Enter'); }
   const ok = await root.evaluate((el) => el.open);
   kb('presenter', 'Enter on "Presenter controls" opens the strip', ok);
   await until(async () => clockOf(await stripText()), { what: 'presenter clock readout', timeout: 60000 });
