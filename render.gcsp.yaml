@@ -59,6 +59,8 @@ services:
         value: "1"
       - key: GCSP_REPOSITORY_MODE  # memory for the demo (state resets on restart); postgres stays available
         value: memory
+      - key: GCSP_COMPARISON_RESULT_FILE  # stored route comparison loaded at boot (FUCQ-288); relative to server/
+        value: data/gcsp/comparison/process-only.json
       - key: GCSP_PUBLIC_ORIGIN    # this service's own address, exactly; change here if Render adds a suffix
         value: https://gcsp-api.onrender.com
       - key: GCSP_PUBLIC_BASE_URL  # base for emailed offer links; the pages are served by this service

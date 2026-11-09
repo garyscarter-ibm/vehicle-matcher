@@ -50,7 +50,10 @@ export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, acces
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
-  const { runtime, stock, mode, environmentId } = gcspRuntimeOptions({ defaultMode: 'postgres',
+  // Stored route comparison (FUCQ-288): default to the committed file; an empty string opts out.
+  const env = { ...process.env };
+  env.GCSP_COMPARISON_RESULT_FILE ??= resolve(ROOT, 'server/data/gcsp/comparison/process-only.json');
+  const { runtime, stock, mode, environmentId } = gcspRuntimeOptions({ env, defaultMode: 'postgres',
     defaultEnvironmentId: 'gcsp-local-functional', commandId: 'local-bootstrap' });
   const app = await startGcspDemo({ port: Number(process.env.PORT) || 3001, runtime });
   if (app.status !== 'ok') { console.error(`GCSP local startup: ${app.status}${app.code ? ` (${app.code})` : ''}`); process.exitCode = 1; }
