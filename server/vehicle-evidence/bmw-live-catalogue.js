@@ -1,5 +1,5 @@
 import { bmwCatalogueLookupIdentity, createBmwCatalogueAdapter, BMW_OTD_MEASUREMENT_MAPPING as MEASUREMENTS,
-  emptyFacts, provenance, safeLabel, unknown, valueProblem } from './bmw-catalogue-adapter.js';
+  emptyFacts, presentBmwCatalogue, provenance, safeLabel, unknown, valueProblem } from './bmw-catalogue-adapter.js';
 
 export const BMW_LIVE_CATALOGUE_PROVIDER = 'bmw-catalogue-live';
 export const BMW_LIVE_CATALOGUE_SOURCE = 'bmw-ucp-gb-public-configurator.v1';
@@ -285,4 +285,84 @@ export function createBmwLiveCatalogueProvider({ selected = false, transport, ge
     }
   }
   return Object.freeze({ provider: BMW_LIVE_CATALOGUE_PROVIDER, resolve });
+}
+
+
+const SHOWN_CODE = /^[A-Z0-9]{3,12}$/;
+const FAILURE_STATUSES = new Set(['source-unavailable', 'identity-mismatch', 'not-found', 'unsupported', 'invalid-input']);
+const FIELD_LABELS = { modelCode: 'Model', modelRange: 'Range', rawModelRange: 'Raw range', agModelCode: 'AG model', orderDate: 'Order date',
+  effectDate: 'Effect date', taxDate: 'Tax date', productionDate: 'Production date', selectedOptions: 'Options',
+  selectedAccessories: 'Accessories', trim: 'Trim' };
+const LISTS = [['added', 'Options added'], ['removed', 'Options removed'], ['retyped', 'Retyped'], ['ignored', 'Ignored by source'],
+  ['invalid', 'Invalid in source']];
+
+const isoDate = (value) => typeof value === 'string' && ISO_DATE.test(value) && new Date(`${value}T00:00:00Z`).toISOString().startsWith(value);
+const longDate = (value) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+  .format(new Date(`${value}T00:00:00Z`));
+const shownCode = (value) => (typeof value === 'string' && SHOWN_CODE.test(value) ? value : null);
+const shownDate = (value) => (isoDate(value) ? value : null);
+const count = (list, noun) => `${list.length} ${list.length === 1 ? noun : `${noun}s`}`;
+const accessories = (list) => `${list.length} ${list.length === 1 ? 'accessory' : 'accessories'}`;
+
+function shownValue(value, field) {
+  if (Array.isArray(value)) return field === 'selectedAccessories' ? accessories(value) : count(value, 'option');
+  return shownCode(value) || shownDate(value) || 'unknown';
+}
+
+function identitySummary(identity) {
+  if (!identity || typeof identity !== 'object') return 'unknown';
+  const market = /^[A-Z]{2}$/.test(identity.market) ? identity.market : 'unknown';
+  const locale = /^[a-z]{2}-[A-Z]{2}$/.test(identity.locale) ? identity.locale : 'unknown';
+  const options = Array.isArray(identity.selectedOptions) ? count(identity.selectedOptions, 'option') : 'options unknown';
+  const extras = Array.isArray(identity.selectedAccessories) ? accessories(identity.selectedAccessories) : 'accessories unknown';
+  return `${shownCode(identity.modelCode) || 'unknown'} (${shownCode(identity.modelRange) || 'unknown'} / ${shownCode(identity.rawModelRange) || 'unknown'}, `
+    + `AG ${shownCode(identity.agModelCode) || 'unknown'}), ${market} ${locale}, trim ${shownCode(identity.trim) || 'unknown'}, `
+    + `order ${shownDate(identity.orderDate) || 'unknown'}, effect ${shownDate(identity.effectDate) || 'unknown'}, `
+    + `production ${shownDate(identity.productionDate) || 'unknown'}, tax ${shownDate(identity.taxDate) || 'unknown'}, ${options}, ${extras}`;
+}
+
+function differenceLines(resolution) {
+  const lines = [];
+  for (const item of Array.isArray(resolution?.differences) ? resolution.differences : []) {
+    if (Object.hasOwn(FIELD_LABELS, item?.field)) {
+      lines.push(`${FIELD_LABELS[item.field]}: requested ${shownValue(item.requested, item.field)}, resolved ${shownValue(item.resolved, item.field)}.`);
+    }
+  }
+  for (const [key, label] of LISTS) {
+    const codes = (Array.isArray(resolution?.options?.[key]) ? resolution.options[key] : []).map(shownCode).filter(Boolean);
+    if (codes.length) lines.push(`${label}: ${codes.join(', ')}.`);
+  }
+  const unrecognised = resolution?.options?.unrecognised;
+  if (Array.isArray(unrecognised) && unrecognised.length) lines.push(`Unrecognised source changes: ${unrecognised.length}.`);
+  if (resolution?.constructible === false) lines.push('Not constructible.');
+  return lines;
+}
+
+function liveFailure(result, malformed) {
+  const code = !malformed && Object.hasOwn(FAILURES, result?.failure?.code) ? result.failure.code : 'source-failed';
+  const status = !malformed && FAILURE_STATUSES.has(result?.status) ? result.status : 'source-unavailable';
+  return { status, label: status === 'identity-mismatch' ? 'Live catalogue mismatch' : 'Live catalogue unavailable', sourceKind: 'live',
+    source: null, failure: { code, message: FAILURES[code][0] }, context: null, measurements: [], measurementEvidence: [], equipment: [],
+    completeness: null,
+    identities: { requested: identitySummary(malformed ? null : result.requestedIdentity),
+      resolved: identitySummary(malformed ? null : result.resolvedIdentity) },
+    differences: malformed ? [] : differenceLines(result.resolution),
+    snapshotChoice: !malformed && result.snapshotChoice?.automatic === false ? snapshotChoice().label : null };
+}
+
+/** Plain text presentation of a live or snapshot envelope; labels never cross and nothing is mounted. */
+export function presentBmwLiveCatalogue(result) {
+  if (result?.provider === 'bmw-catalogue-snapshot' && result.sourceKind === 'dated-snapshot') {
+    const shown = presentBmwCatalogue(result);
+    const usable = ['ok', 'partial'].includes(shown.status);
+    return { ...shown, sourceKind: 'dated-snapshot', label: usable ? 'Dated snapshot' : 'Dated snapshot unavailable',
+      selection: result.selection?.kind === 'explicit-snapshot' ? 'Dated snapshot explicitly selected.' : null };
+  }
+  if (result?.provider !== BMW_LIVE_CATALOGUE_PROVIDER || result.sourceKind !== 'live') return liveFailure(result, true);
+  if (!['ok', 'partial'].includes(result.status)) return liveFailure(result, false);
+  if (result.resolution?.exact !== true || !isoDate(result.retrievedDate)) return liveFailure({ ...result, status: 'source-unavailable' }, false);
+  return { ...presentBmwCatalogue(result), sourceKind: 'live', label: 'Live catalogue (unsupported demo route)',
+    source: `BMW UK configurator, live, retrieved ${longDate(result.retrievedDate)}`,
+    identities: { requested: identitySummary(result.requestedIdentity), resolved: identitySummary(result.resolvedIdentity) },
+    differences: [], snapshotChoice: null };
 }

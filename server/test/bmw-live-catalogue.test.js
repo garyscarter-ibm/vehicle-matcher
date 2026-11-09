@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createBmwCatalogueAdapter, describeBmwEquipment, mergeBmwCatalogueFacts } from '../vehicle-evidence/bmw-catalogue-adapter.js';
 import { BMW_LIVE_CATALOGUE_PROVIDER, BMW_LIVE_CATALOGUE_SOURCE, bmwCatalogueProviderSelection, createBmwCatalogueProvider,
-  createBmwLiveCatalogueProvider, selectBmwCatalogueSnapshot } from '../vehicle-evidence/bmw-live-catalogue.js';
+  createBmwLiveCatalogueProvider, presentBmwLiveCatalogue, selectBmwCatalogueSnapshot } from '../vehicle-evidence/bmw-live-catalogue.js';
 
 // Every response below is a synthetic fixture shaped like the 1 Nov 2026 evidence; no real upstream data or key is used.
 const snapshot = JSON.parse(await readFile(new URL('../vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json', import.meta.url)));
@@ -384,4 +384,120 @@ test('the solver state token is never read, echoed or reused and no later reques
   assert.equal(result.status, 'partial'); assert.equal(requests.length, 4);
   assert.ok(requests.every((url) => !url.includes(STATE) && !/configuration-?state/i.test(url)));
   assert.ok(!JSON.stringify(result).includes(STATE));
+});
+
+const em = String.fromCharCode(0x2014);
+const clean = (presented) => {
+  const text = JSON.stringify(presented);
+  for (const bad of [KEY, STATE, '<', em, String(PRICE), 'retailPrice']) assert.ok(!text.includes(bad), `presented output contains ${bad}`);
+  assert.ok(!/html/i.test(text));
+  return text;
+};
+
+test('presentation examples: exact live chain keeps identities, live label, source date and equipment claims distinct', async () => {
+  const { result } = await run(happy(sample(), { otd: otdBody(four, 3) }));
+  const shown = presentBmwLiveCatalogue(result);
+  clean(shown);
+  assert.equal(shown.sourceKind, 'live'); assert.equal(shown.label, 'Live catalogue (unsupported demo route)');
+  assert.equal(shown.source, 'BMW UK configurator, live, retrieved 9 November 2026');
+  assert.equal(shown.status, 'partial'); assert.equal(shown.failure, null); assert.equal(shown.snapshotChoice, null);
+  assert.equal(shown.identities.requested, shown.identities.resolved);
+  assert.equal(shown.identities.requested, 'T5MJ (G61E / G61, AG 72HH), GB en-GB, trim S0337, order 2026-11-01, effect 2027-01-05, production 2027-01-05, tax 2027-01-05, 47 options, 1 accessory');
+  assert.deepEqual(shown.differences, []);
+  assert.ok(shown.measurements.includes('5 seats (observed)'));
+  assert.ok(shown.measurements.includes('6.1 seconds from 0–100 km/h (observed)'));
+  assert.ok(shown.measurementEvidence.every((line) => line.includes('observed 9 November 2026')));
+  assert.match(shown.completeness, /measurements: partial/); assert.match(shown.completeness, /VIN-fitted equipment: unknown/);
+  assert.ok(shown.equipment.some((line) => line.startsWith('S0337 Label S0337') && line.includes('; selected in this catalogue configuration;')));
+  assert.ok(shown.equipment.every((line) => line.endsWith('VIN-fitted: unknown.')));
+  assert.notEqual(shown.sourceKind, 'dated-snapshot');
+});
+
+test('presentation examples: an explicitly selected snapshot is labelled as a dated snapshot, never live', async () => {
+  const shown = presentBmwLiveCatalogue(await selectBmwCatalogueSnapshot(sample()));
+  clean(shown);
+  assert.equal(shown.sourceKind, 'dated-snapshot'); assert.equal(shown.label, 'Dated snapshot');
+  assert.equal(shown.selection, 'Dated snapshot explicitly selected.');
+  assert.ok(!/live/i.test(shown.source)); assert.ok(!/live/i.test(shown.label)); assert.equal(shown.status, 'ok');
+  const direct = presentBmwLiveCatalogue(await createBmwCatalogueAdapter().resolve(sample()));
+  assert.equal(direct.selection, null); assert.equal(direct.sourceKind, 'dated-snapshot');
+});
+
+test('presentation examples: partial live values show their unknown reasons and never invent a value', async () => {
+  const pairs = [['N_SITZE', '0000'], ['A_GEPR_V211', 490], ['A_GEPR_V214', null]];
+  const { result } = await run(happy(sample(), { otd: otdBody([...pairs, ['E_0_100KMH', 6.1]], 2) }));
+  const shown = presentBmwLiveCatalogue(result);
+  clean(shown);
+  assert.equal(shown.status, 'partial'); assert.equal(shown.sourceKind, 'live');
+  assert.match(shown.measurements[0], /^Seats: unknown \(.+\)$/);
+  assert.match(shown.measurements[2], /^Luggage \(expanded\): unknown \(.+\)$/);
+  assert.ok(shown.measurements.some((line) => line.startsWith('490 litres (normal,')));
+  assert.match(shown.completeness, /measurements: partial/);
+  assert.ok(!shown.measurements.some((line) => line.includes('0000')));
+});
+
+test('presentation examples: G21 mismatch and access failure keep requested and resolved identities and reasons', async () => {
+  const options = ['P0300', 'S0337', 'FKSFU', 'S043L'];
+  const request = sample({ modelCode: 'T3MQ', modelRange: 'G21', rawModelRange: 'G21', agModelCode: '22FZ', selectedOptions: options, selectedAccessories: [] });
+  const nodes = [node({ modelCode: 'T3MQ', modelRange: 'G21', rawModelRange: 'G21', agModelCode: '22FZ' }),
+    node({ modelCode: 'T3SK', modelRange: 'G21', rawModelRange: 'G21', agModelCode: '22FY' })];
+  const { result } = await run({ matrix: matrixBody(nodes), solver: solverBody({ modelCode: 'T3SK', codes: options }) }, request);
+  const shown = presentBmwLiveCatalogue(result);
+  clean(shown);
+  assert.equal(shown.label, 'Live catalogue mismatch'); assert.equal(shown.status, 'identity-mismatch'); assert.equal(shown.sourceKind, 'live');
+  assert.equal(shown.source, null); assert.equal(shown.failure.code, 'live-identity-mismatch');
+  assert.equal(shown.failure.message, 'The live catalogue describes a different configuration or date. No facts were substituted.');
+  assert.match(shown.identities.requested, /^T3MQ \(G21 \/ G21, AG 22FZ\)/); assert.match(shown.identities.resolved, /^T3SK \(G21 \/ G21, AG 22FY\)/);
+  assert.ok(shown.identities.resolved.includes('22FY'));
+  assert.ok(shown.differences.includes('Model: requested T3MQ, resolved T3SK.'));
+  assert.ok(shown.differences.includes('AG model: requested 22FZ, resolved 22FY.'));
+  assert.deepEqual(shown.measurements, []); assert.deepEqual(shown.measurementEvidence, []); assert.deepEqual(shown.equipment, []);
+  assert.equal(shown.snapshotChoice, null);
+
+  const denied = await live(() => { throw new Error('unused'); }, { getCredential: () => undefined }).resolve(sample());
+  const failed = presentBmwLiveCatalogue(denied);
+  clean(failed);
+  assert.equal(failed.label, 'Live catalogue unavailable'); assert.equal(failed.status, 'source-unavailable');
+  assert.equal(failed.failure.code, 'credentials-unavailable'); assert.equal(failed.failure.message, 'Live catalogue access is not configured.');
+  assert.equal(failed.snapshotChoice, 'Use the dated snapshot observed on 1 November 2026');
+  assert.equal(failed.sourceKind, 'live'); assert.match(failed.identities.requested, /^T5MJ /); assert.equal(failed.identities.resolved, 'unknown');
+  assert.deepEqual(failed.measurements, []);
+});
+
+test('presentation examples: option differences, unknown codes and malformed input use fixed text only', async () => {
+  const solver = solverBody({ drop: ['S0880'], add: { S09ZZ: { code: 'S09ZZ', type: 'option' } }, constructible: false,
+    changes: { ignoredElements: { S0880: { code: 'S0880' } }, conflictingElements: { S0880: {} } } });
+  const { result } = await run(happy(sample(), { solver }));
+  const shown = presentBmwLiveCatalogue(result);
+  clean(shown);
+  for (const line of ['Options: requested 47 options, resolved 47 options.', 'Options added: S09ZZ.', 'Options removed: S0880.', 'Ignored by source: S0880.',
+    'Unrecognised source changes: 1.', 'Not constructible.']) assert.ok(shown.differences.includes(line), line);
+  assert.equal(shown.failure.code, 'live-not-constructible');
+  const hostile = { ...result, failure: { code: 'upstream said <b>no</b>', message: 'raw upstream error' }, status: 'weird',
+    resolution: { differences: [{ field: 'modelCode', requested: '<script>', resolved: 'T3SK' }, { field: 'evil', requested: 'x', resolved: 'y' }],
+      options: { added: ['<b>', 'S09ZZ'], unrecognised: [] } } };
+  const safe = presentBmwLiveCatalogue(hostile);
+  clean(safe);
+  assert.equal(safe.status, 'source-unavailable'); assert.equal(safe.failure.code, 'source-failed');
+  assert.ok(safe.differences.includes('Model: requested unknown, resolved T3SK.'));
+  assert.ok(safe.differences.includes('Options added: S09ZZ.')); assert.equal(safe.differences.length, 2);
+  for (const input of [null, undefined, 'x', {}, { provider: 'other', status: 'ok', sourceKind: 'live' }, { provider: 'bmw-catalogue-live', sourceKind: 'dated-snapshot' }]) {
+    const bad = presentBmwLiveCatalogue(input);
+    assert.equal(bad.sourceKind, 'live'); assert.equal(bad.failure.code, 'source-failed');
+    assert.equal(bad.identities.requested, 'unknown'); assert.equal(bad.identities.resolved, 'unknown');
+    assert.deepEqual(bad.measurements, []);
+  }
+  const inexact = presentBmwLiveCatalogue({ ...(await run(happy())).result, resolution: { exact: false, differences: [], options: {} } });
+  assert.equal(inexact.failure.code, 'source-failed'); assert.deepEqual(inexact.measurements, []);
+});
+
+test('presentation labels never cross: live envelopes are never snapshot and snapshots are never live', async () => {
+  const envelopes = [(await run(happy())).result, (await run(happy(sample(), { solver: solverBody({ constructible: false }) }))).result,
+    await live(() => ({}), { getCredential: () => undefined }).resolve(sample())];
+  for (const envelope of envelopes) assert.equal(presentBmwLiveCatalogue(envelope).sourceKind, 'live');
+  for (const envelope of [await selectBmwCatalogueSnapshot(sample()), await createBmwCatalogueAdapter().resolve(sample()),
+    await createBmwCatalogueAdapter().resolve({ bad: true })]) {
+    const shown = presentBmwLiveCatalogue(envelope);
+    assert.equal(shown.sourceKind, 'dated-snapshot'); assert.ok(!/live/i.test(JSON.stringify(shown)));
+  }
 });
