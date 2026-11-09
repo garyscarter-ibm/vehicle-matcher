@@ -2,7 +2,7 @@
 // Shapes copy the recorded server values (server/test/fixtures/gcsp-order-plan-operations.json); outcomes go through planOutcome.
 import { planOutcome, PLAN_MESSAGES } from './http-adapter.js';
 
-export const FIXTURE_NAMES = Object.freeze(['loading', 'ready', 'no-demand', 'preview', 'infeasible', 'stale', 'submitted', 'replanned', 'unavailable', 'refused']);
+export const FIXTURE_NAMES = Object.freeze(['loading', 'ready', 'no-demand', 'preview', 'infeasible', 'stale', 'submitted', 'replanned', 'unavailable', 'refused', 'learned', 'learned-coverage']);
 
 const T0 = '2026-11-05T09:00:00.000Z';
 const T1 = '2026-11-05T09:01:00.000Z';
@@ -18,8 +18,37 @@ const MODEL_MAX = { 'g20-saloon': 4, 'g21-touring': 3, 'g61-i5': 2 };
 const TOURING = 'g21-touring-320i';
 const I5 = 'g61-i5-40';
 
-const learned = () => ({ status: 'fallback', label: 'Synthetic-trained model', recommended: false, submittable: false, reason: 'no-active-model',
-  limitation: 'No learned model is active, so only the baseline plan from expressed demand is shown.' });
+const FALLBACK_BASE = 'only the baseline plan from expressed demand is shown';
+const learnedFallback = () => ({ status: 'fallback', label: 'Synthetic-trained model', recommended: false, submittable: false, reason: 'no-active-model',
+  limitation: `No learned model is active, so ${FALLBACK_BASE}.` });
+const learnedCoverage = () => ({ status: 'fallback', label: 'Synthetic-trained model', recommended: false, submittable: false, reason: 'outside-coverage',
+  limitation: `Some employees or vehicle classes are outside what the model was trained on, so ${FALLBACK_BASE}.`,
+  coverage: { cohorts: ['G8-10'], vehicleClasses: ['unknown'] }, model: { artifactId: 'sha256:90100e040d79c3a31201dc9e7785d2c544557be8722511a6c3143aef1b36fb17', featureVersion: 'choice-features.v1' } });
+const score = (logLoss, brier, count, thin = false) => ({ count, logLoss, brier, zeroProbabilityOutcomes: 0, thin });
+// Delta is learned minus baseline, as the server computes it.
+function differencesFor(base, plan) {
+  const pair = (read) => { const [b, l] = [read(base), read(plan)]; return { baseline: b, learned: l, delta: l - b }; };
+  const qty = (p, id) => p.quantities.find((q) => q.derivativeId === id)?.quantity ?? 0;
+  return { comparable: true, coverage: pair((p) => p.expectedAcceptableCoverage.covered), orderQuantity: pair((p) => p.orderQuantity), spendMinor: pair((p) => p.spendMinor),
+    unmetNeeds: pair((p) => p.unmetNeeds.length),
+    derivatives: CATALOGUE.map((d) => { const row = pair((p) => qty(p, d.id)); return { derivativeId: d.id, ...row, changed: row.delta !== 0 }; }) };
+}
+// A realistic learned result: one derivative up, one down, the long i5 name unchanged.
+const learnedAvailable = (base) => {
+  const plan = feasible({ id: 'learned001', q: { 'g20-saloon-320i': 1, [TOURING]: 1, [I5]: 1 }, covered: 4, total: 4, risk: [0, 4] });
+  return { status: 'available', label: 'Synthetic-trained model', recommended: false, submittable: false, plan,
+    forecast: { version: 'forecast.learned.v1', model: { artifactId: 'sha256:90100e040d79c3a31201dc9e7785d2c544557be8722511a6c3143aef1b36fb17', featureVersion: 'choice-features.v1', modelVersion: 'choice-model.v1',
+      activationPolicyVersion: 'gcsp-policy-v1', activationEffectiveFrom: '2026-11-04T00:00:00.000Z' },
+    data: { dataHash: 'sha256:27281203f346f5155eacd89c55cf4c87a21a1027c5790d7ea8a4ed012319efe0', datasetKind: 'synthetic', generatorVersion: 'learning-generator.v1', trainingPolicyVersion: 'gcsp-policy-v1' },
+    settings: { choiceMassThreshold: 0.8, waitExclusionThreshold: 0.5, intervalZ: 1.96 }, modelExpectsWait: 0.18,
+    aggregate: [{ vehicleClass: 'estate', period: '2027-02', employees: 4, expected: 2.1, low: 0.8, high: 3.4 }],
+    evaluation: { label: 'Synthetic-trained; offline evaluation', partitionCounts: { train: 2400, validation: 480, later: 640 },
+      overall: { learned: score(0.912, 0.478, 640), expressedDemand: score(1.204, 0.601, 640), deterministicFit: score(1.086, 0.553, 640) },
+      deltas: {}, thin: { cohorts: [], vehicleClasses: ['estate'] } },
+    limitations: ['Trained on synthetic data; this does not describe validated BMW employee behaviour.',
+      'Probabilities are the model\'s estimate over each employee\'s permitted vehicles or waiting, not a fit score.'] },
+    differences: differencesFor(base, plan) };
+};
 const presentation = () => ({ forecastBasis: 'expressed-saved-demand', editableKeys: ['orderPlan.modelBounds', 'orderPlan.derivativeBounds', 'orderPlan.budgetMinor'],
   currency: 'GBP', derivatives: CATALOGUE.map((d) => ({ derivativeId: d.id, modelId: d.modelId, model: d.model, derivative: d.derivative })),
   models: Object.keys(MODEL_MAX).map((modelId) => ({ modelId, model: CATALOGUE.find((d) => d.modelId === modelId).model })) });
@@ -66,13 +95,15 @@ const planned = (extra = {}) => feasible({ id: 'ready0001', q: touring2, covered
     expectedAcceptableCoverage: { covered: 2, total: 4, fraction: 0.5, basis: BASIS }, unallocatedStockRisk: { quantity: 1, totalSupply: 3, basis: 'unmatched-supply-within-horizon', bySource: [{ sourceId: `order:${TOURING}`, quantity: 1 }] } } }],
   ...extra });
 
-const readValue = (plan, replan = { status: 'no-submission' }) => ({ mode: 'current', preview: false, plan, replan, presentation: presentation(), learned: learned() });
+const readValue = (plan, replan = { status: 'no-submission' }, learned = learnedFallback()) => ({ mode: 'current', preview: false, plan, replan, presentation: presentation(), learned });
 const READY = () => readValue(planned());
+const LEARNED = () => { const plan = planned(); return readValue(plan, undefined, learnedAvailable(plan)); };
+const LEARNED_COVERAGE = () => readValue(planned(), undefined, learnedCoverage());
 const NO_DEMAND = () => readValue(feasible({ id: 'nodemand1', covered: 0, total: 0, risk: [0, 0],
   alternatives: [{ kind: 'zero-new-orders-baseline', same: true, spec: {} }] }));
 
 const CHANGES = [{ key: 'orderPlan.derivativeBounds', value: CATALOGUE.map((d) => ({ derivativeId: d.id, min: 0, max: d.id === TOURING ? 1 : d.max })) }];
-const PREVIEW = () => {
+const PREVIEW = (withLearned = false) => {
   const policy = 'preview-fixture0001';
   const plan = feasible({ id: 'preview001', policy, q: { [TOURING]: 1, [I5]: 1 }, covered: 2, total: 4, risk: [1, 3, [{ sourceId: `order:${I5}`, quantity: 1 }]],
     binding: [{ id: `derivative:${TOURING}:max`, detail: 'Quantity meets maximum 1.' }],
@@ -81,7 +112,7 @@ const PREVIEW = () => {
       expectedAcceptableCoverage: { covered: 1, total: 4, fraction: 0.25, basis: BASIS }, unallocatedStockRisk: { quantity: 0, totalSupply: 1, basis: 'unmatched-supply-within-horizon', bySource: [] } } }],
     extra: { provenance: { derivativeMax: { [TOURING]: 1 } } } });
   return { mode: 'preview', preview: true, writes: 'none', message: 'Preview only. Nothing is saved, published or ordered.', activePolicyVersion: 'gcsp-policy-v1',
-    draftPolicyVersion: policy, changes: CHANGES, plan, activePlan: planned(), presentation: presentation(), learned: learned() };
+    draftPolicyVersion: policy, changes: CHANGES, plan, activePlan: planned(), presentation: presentation(), learned: withLearned ? learnedAvailable(plan) : learnedFallback() };
 };
 const INFEASIBLE = () => {
   const policy = 'preview-fixture0002';
@@ -93,7 +124,7 @@ const INFEASIBLE = () => {
     supplyActivity: { requests: [], responses: [] } };
   return { mode: 'preview', preview: true, writes: 'none', message: 'Preview only. Nothing is saved, published or ordered.', activePolicyVersion: 'gcsp-policy-v1',
     draftPolicyVersion: policy, changes: [{ key: 'orderPlan.budgetMinor', value: 5000000 }, { key: 'orderPlan.modelBounds', value: Object.entries(MODEL_MAX).map(([modelId, max]) => ({ modelId, min: modelId === 'g61-i5' ? 1 : 0, max })) }],
-    plan, activePlan: planned(), presentation: presentation(), learned: learned() };
+    plan, activePlan: planned(), presentation: presentation(), learned: learnedFallback() };
 };
 
 const request = (state, quantity) => ({ requestId: 'request-fixture-1', commandId: `sub-1:${TOURING}`, derivativeId: TOURING, quantity, state, requestedAt: T0 });
@@ -115,7 +146,7 @@ const STALE_BODY = () => ({ status: 'conflict', code: 'replan-needed', reason: '
   current: { planId: 'order-plan-fresh0001', versions: versions(1, 'gcsp-policy-v1', 'fresh0001') }, contractVersion: '1.0.0' });
 
 /** Server values by name, for shape tests and galleries. Every call returns fresh objects. */
-export const FIXTURE_VALUES = Object.freeze({ ready: READY, 'no-demand': NO_DEMAND, preview: PREVIEW, infeasible: INFEASIBLE, submitted: SUBMITTED, replanned: REPLANNED,
+export const FIXTURE_VALUES = Object.freeze({ ready: READY, learned: LEARNED, 'learned-coverage': LEARNED_COVERAGE, 'no-demand': NO_DEMAND, preview: () => PREVIEW(), infeasible: INFEASIBLE, submitted: SUBMITTED, replanned: REPLANNED,
   submission: SUBMISSION, 'stale-body': STALE_BODY });
 
 function never(signal) {
@@ -132,11 +163,11 @@ export function planFixtureAdapter(name) {
   const same = (outcome) => ({ readPlan: async () => outcome(), previewPlan: async () => outcome(), submitPlan: async () => outcome() });
   if (name === 'unavailable') return same(() => planOutcome(503, { status: 'unavailable' }));
   if (name === 'refused') return same(() => planOutcome(403, { status: 'forbidden' }));
-  const reads = { loading: READY, ready: READY, 'no-demand': NO_DEMAND, preview: READY, infeasible: READY, stale: READY, submitted: SUBMITTED, replanned: REPLANNED };
-  const previews = { infeasible: INFEASIBLE };
+  const reads = { loading: READY, ready: READY, learned: LEARNED, 'learned-coverage': LEARNED_COVERAGE, 'no-demand': NO_DEMAND, preview: READY, infeasible: READY, stale: READY, submitted: SUBMITTED, replanned: REPLANNED };
+  const previews = { infeasible: INFEASIBLE, learned: () => PREVIEW(true) };
   return {
     readPlan: name === 'loading' ? ({ signal } = {}) => never(signal) : ready(reads[name]),
-    previewPlan: ready(previews[name] ?? PREVIEW),
+    previewPlan: ready(previews[name] ?? (() => PREVIEW())),
     submitPlan: name === 'stale' ? async () => planOutcome(409, STALE_BODY()) : ready(SUBMISSION),
   };
 }
