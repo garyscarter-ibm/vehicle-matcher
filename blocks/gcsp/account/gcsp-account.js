@@ -184,11 +184,14 @@ function orderCurrentCar(car, order, orderVehicle) {
 
 export { orderCar };
 
+// Outcomes the projection reports (FUCQ-253 adds handed-over); any other outcome is still in progress.
+const orderTitles = Object.freeze({ declined: 'Your order was declined', 'handed-over': 'Your car has been handed over' });
+
 // The slot is allocated to this order, so its state replaces "No ordering entitlement". The link moves focus to the progress.
 function orderStatus(order, host) {
   const link = button({ label: 'View order progress', variant: 'ghost', href: `#${host.id}`, onClick: (event) => {
     event.preventDefault(); host.tabIndex = -1; host.focus(); } });
-  const node = statusScreen({ title: order.outcome === 'declined' ? 'Your order was declined' : 'Your order is in progress',
+  const node = statusScreen({ title: orderTitles[order.outcome] ?? 'Your order is in progress',
     message: order.currentStage ? `Current step: ${sentence(order.currentStage)}.` : null, actions: [link] });
   node.classList.add('gcsp-account-order-status');
   const { orderReference, orderNumber } = order.source ?? {};

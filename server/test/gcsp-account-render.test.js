@@ -679,6 +679,22 @@ test('FUCQ-192: an in-progress order on the slot replaces "No ordering entitleme
   assert.match(none.root.textContent, /No ordering entitlement/); none.destroy();
 });
 
+test('FUCQ-257: a handed-over order titles its account card as handed over, not in progress', async () => {
+  const stages = structuredClone(orderProgressFixtures().states['appointment-completed'].stages);
+  Object.assign(stages.value, { entitlementSlotId: 'slot-paula', currentStage: 'handover', outcome: 'handed-over', owner: 'employee', nextStep: 'Your handover is complete.',
+    stageList: [...stages.value.stageList, 'handover'], stages: [...stages.value.stages, { stage: 'handover', state: 'approved', at: instant, providerReference: 'SYN-APPT-0001', operationId: null }] });
+  const orders = { ...orderAdapter('appointment-completed', [stages.value]), readStages: async () => structuredClone(stages) };
+  const allocated = accountFixture('no-entitlement'); for (const slot of allocated.value.slots) slot.state = 'allocated';
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => structuredClone(allocated), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  try {
+    await settleOrder(root, (node) => node.querySelector('.gcsp-account-order-status'));
+    const status = root.querySelector('.gcsp-account-order-status'); assert.ok(status, 'order status');
+    assert.equal(status.querySelector('h2').textContent, 'Your car has been handed over');
+    assert.match(status.textContent, /Current step: Handover\./);
+    assert.doesNotMatch(root.textContent, /Your order is in progress/);
+  } finally { destroy(); }
+});
+
 test('FUCQ-224: an order on the slot replaces the saved journey card; an order on another slot keeps it', async () => {
   const listed = (slot) => { const row = structuredClone(orderProgressFixtures().states['appointment-requested'].stages.value); row.entitlementSlotId = slot; return [row]; };
   const allocated = () => { const envelope = accountFixture('no-entitlement'); for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
