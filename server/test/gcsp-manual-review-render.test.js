@@ -69,6 +69,17 @@ test('pinned card, typed points, current contract and requested collection use n
   assert.match(f.root.textContent, new RegExp(`${rules.value.maximumSpecialRequirements} / ${rules.value.maximumSpecialRequirements} characters`));
   assert.equal(f.root.querySelectorAll('script, [onclick]').length, 0); assert.equal(f.ready, 0);
 });
+test('FUCQ-316: unknown pinned facts collapse into one line on the card and in the pinned details', async (t) => {
+  const f = setup(t); await settle(() => control(f, 'contact.phone'));
+  const card = f.root.querySelector('.vm-card'); const pinned = [...f.root.querySelectorAll('details')].find((node) => node.firstElementChild.textContent === 'Pinned vehicle details');
+  for (const region of [card, pinned]) {
+    assert.doesNotMatch(region.textContent, /Not supplied/); assert.equal(region.querySelectorAll('.is-missing').length, 0);
+  }
+  assert.equal(card.querySelectorAll('.vm-facts-more').length, 1); assert.equal(card.querySelector('.vm-facts-more').textContent, 'More details not supplied');
+  assert.ok(![...pinned.querySelectorAll('dt')].some((node) => /Transmission/.test(node.textContent)));
+  assert.ok([...pinned.querySelectorAll('dt')].some((node) => node.textContent === 'Model'));
+  assert.ok(pinned.querySelectorAll('.vm-facts-more').length >= 1);
+});
 test('invalid Continue focuses linked summary, retains fields, and Cancel releases without validation', async (t) => {
   const f = setup(t); await settle(() => control(f, 'contact.phone'));
   input(f, 'contact.phone', ''); input(f, 'specialRequirements', 'Keep this safe text'); click(f, 'Continue to order review');

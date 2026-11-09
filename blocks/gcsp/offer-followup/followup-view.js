@@ -124,7 +124,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
     for (const [name, presented] of [['Declined offer', previous], ['Next offer', next]]) {
       const section = el('section', 'gcsp-followup-car'); section.append(el(`h${headingLevel + 1}`, null, name));
       const card = structuredClone(presented.value.card); card.members[0].actions = [];
-      section.append(matchCard(null, { view: card, big: true, showScore: false }));
+      section.append(matchCard(null, { view: card, big: true, showScore: false, hideMissing: 'More details not supplied' }));
       columns.append(section);
     }
     content.append(columns, el('p', 'gcsp-note', 'Each quote keeps its original brief and policy. No new match score is calculated.'));

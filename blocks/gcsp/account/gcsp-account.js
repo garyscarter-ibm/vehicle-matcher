@@ -48,7 +48,8 @@ function shown(value) {
 }
 const label = (key) => key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (letter) => letter.toUpperCase());
 const row = (name, value, unit) => ({ label: name, value: shown(value), ...(value != null && unit ? { unit } : {}) });
-const facts = (rows) => factList(rows, { className: 'gcsp-facts' });
+const MORE_MISSING = 'More details not supplied';
+const facts = (rows, hideMissing) => factList(rows, { className: 'gcsp-facts', hideMissing });
 const supplied = (value) => value != null && value !== '';
 // Raw ids are not copy (FUCQ-195/197): statuses read as words; slots, schemes and sources show only a supplied label.
 const statusLabels = { current: 'Current car', returned: 'Returned' };
@@ -108,12 +109,12 @@ function contractDetails(contract, model) {
     row('Returned mileage', contract.returnedMileage, contract.returnMileageUnit ?? 'mi'),
     row('Current mileage', contract.currentOdometer), row('Phone', contract.contact?.phone), row('Email', contract.contact?.email),
     row('Special requirements', contract.specialRequirements),
-  ]), details('Technical specification and options',
+  ], MORE_MISSING), details('Technical specification and options',
     el('p', 'gcsp-note', 'Model or handbook evidence does not confirm the fitted equipment on your car.'),
     facts([...standard.map((key) => row(technicalLabel(key), technical[key] ?? contract[key])),
       ...Object.entries(technical).filter(([key]) => !['provenance', 'source', ...standard].includes(key))
         .map(([key, value]) => row(technicalLabel(key), value)),
-      row('Specification provenance', sourceLabel(technical.provenance ?? technical.source ?? contract.source))])));
+      row('Specification provenance', sourceLabel(technical.provenance ?? technical.source ?? contract.source))], MORE_MISSING)));
 }
 
 function driverDetails(driver) {
@@ -156,7 +157,7 @@ function currentCar(contract, model, controls) {
     facts([row('Status', status(contract.status)), row('Driver', contract.driver?.name),
       row('Contract end', date(contract.contractEndDate)), row('Term', contract.months, 'months'),
       row('Annual mileage', contract.annualMileage, contract.mileageUnit), ...schemeRows(model, contract.schemeId), ...slotRows(model, contract.slotId),
-      row('Registration', contract.registration)]),
+      row('Registration', contract.registration)], MORE_MISSING),
     el('p', 'gcsp-account-terms', formatTerm(terms)));
   if (source?.provenance) copy.append(el('p', 'gcsp-synthetic', `Image source: ${shown(source.provenance)}`));
   if (contract.action) copy.append(controls.startButton(contract.action));
@@ -180,7 +181,7 @@ function orderCurrentCar(car, order, orderVehicle) {
   const copy = el('div', 'gcsp-feature-copy');
   copy.append(el('p', 'gcsp-eyebrow', 'Your current car'), heading,
     facts([row('Status', status('current')), row('Collected', date(car.collectedAt?.slice(0, 10))), ...(car.vin ? [row('Delivered VIN', car.vin)] : []),
-      ...(same ? orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value)) : [])]));
+      ...(same ? orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value)) : [])], MORE_MISSING));
   feature.append(media, copy);
   return feature;
 }
@@ -283,7 +284,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
       const entry = el('article', 'gcsp-account-history');
       entry.append(el('h3', 'gcsp-h2', orderVehicle?.name ?? 'Model not supplied'),
         facts([row('Status', status(order.outcome)), ...slotRows(model, order.entitlementSlotId),
-          ...orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value))]));
+          ...orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value))], MORE_MISSING));
       histories.append(entry);
     }
     if (model.historyState === 'no-history' && !placed) histories.append(el('p', 'gcsp-note', 'No order history.'));
@@ -296,7 +297,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
         entry.append(el('h3', 'gcsp-h2', contract.model ?? 'Model not supplied'),
           facts([row('Status', status(contract.status)), row('Driver', contract.driver?.name), ...schemeRows(model, history.schemeId), ...slotRows(model, contract.slotId),
             row('Registration', contract.registration), row('Actual collection', date(contract.actualCollectionDate)),
-            row('Contract end', date(contract.contractEndDate)), row('Returned', date(contract.returnedDate))]), contractDetails(contract, model),
+            row('Contract end', date(contract.contractEndDate)), row('Returned', date(contract.returnedDate))], MORE_MISSING), contractDetails(contract, model),
           button({ label: printLabel(contract), variant: 'ghost',
             onClick: () => controls.print(entry) }));
         const action = model.actions.find((item) => item.oldContractId === contract.contractId && item.slotId === contract.slotId

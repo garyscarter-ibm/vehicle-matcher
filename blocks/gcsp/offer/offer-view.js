@@ -188,7 +188,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       const card = structuredClone(model.card); const member = card.members[0]; member.actions = [];
       // Compared specs live in the table, so the card keeps identity facts only (when there is a current car).
       if (model.currentCar) { const shared = new Set(model.currentCar.facts.map((row) => row.label)); member.facts = member.facts.filter((row) => !shared.has(row.label)); }
-      offer.append(matchCard(null, { view: card, big: true, showScore: false, factsClass: 'vm-facts-pair', headingLevel: 2 }));
+      offer.append(matchCard(null, { view: card, big: true, showScore: false, factsClass: 'vm-facts-pair', hideMissing: 'More details not supplied', headingLevel: 2 }));
       columns.append(offer, comparison(model.card.members[0], model.currentCar)); content.append(columns);
     }
     const summary = state === 'declined' ? declinedSummary(model.card) : '';

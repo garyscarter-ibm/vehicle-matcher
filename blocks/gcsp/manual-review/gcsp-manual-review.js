@@ -28,7 +28,8 @@ function shown(value) {
   }
   return String(value);
 }
-const rows = (values) => factList(values.map(([name, value, unit]) => ({ label: name, value: shown(value), unit })));
+const MORE_MISSING = 'More details not supplied';
+const rows = (values, hideMissing) => factList(values.map(([name, value, unit]) => ({ label: name, value: shown(value), unit })), { hideMissing });
 const known = (value) => value?.status === 'known' ? shown(value) : null;
 const bodyFact = (fact) => fact?.status === 'known' && typeof fact.value === 'string' ? { ...fact, value: bodyStyleLabel(fact.value) } : fact;
 
@@ -127,10 +128,10 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
     if (lastVehicle !== signature || !nodes.vehicle.childNodes.length) {
       lastVehicle = signature;
       const technical = el('details', 'gcsp-details'); technical.append(el('summary', '', 'Pinned vehicle details'),
-        rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), ['body', 'bodyType'].includes(key) ? bodyFact(value) : value])),
-        rows([['Quote valid until', Number.isFinite(Date.parse(model.quote.validUntil)) ? `${demoTime(model.quote.validUntil)} (demo time)` : model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]]));
+        rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), ['body', 'bodyType'].includes(key) ? bodyFact(value) : value]), MORE_MISSING),
+        rows([['Quote valid until', Number.isFinite(Date.parse(model.quote.validUntil)) ? `${demoTime(model.quote.validUntil)} (demo time)` : model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]], MORE_MISSING));
       nodes.vehicle.replaceChildren(
-        matchCard(null, { view: reviewVehicleView(model), showScore: false }), technical);
+        matchCard(null, { view: reviewVehicleView(model), showScore: false, hideMissing: MORE_MISSING }), technical);
     }
     nodes.context.replaceChildren(el('h2', 'gcsp-h2', 'Collection and current contract'), rows([
       ['Journey', model.mode === 'replacement' ? 'Replacement' : 'New order'], ['Requested collection date', longDate(model.requestedCollection?.date) ?? model.requestedCollection?.date],

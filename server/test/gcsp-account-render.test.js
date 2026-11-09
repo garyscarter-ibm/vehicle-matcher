@@ -842,6 +842,22 @@ test('FUCQ-239: Order history lists a placed order and no longer says "No order 
   assert.match(plain.root.querySelector('.gcsp-account-histories').textContent, /No order history\./); plain.destroy();
 });
 
+// FUCQ-316: unknown car facts collapse into one line; identity facts keep their "Not supplied" rows.
+test('FUCQ-316: an unknown registration is not listed on the current car or in its details, and identity facts still read Not supplied', async () => {
+  const input = unnamed('ready'); input.value.contracts[0].registration = null;
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
+  try {
+    const card = root.querySelector('.gcsp-feature');
+    assert.ok(![...card.querySelectorAll('dt')].some((node) => node.textContent === 'Registration'));
+    assert.doesNotMatch(card.textContent, /Registration/);
+    assert.equal(card.querySelector('.gcsp-facts-more, .vm-facts-more').textContent, 'More details not supplied');
+    assert.equal(card.querySelectorAll('.is-missing').length, 0);
+    const identity = findDetail(root, 'Employee and contact details');
+    assert.ok([...identity.querySelectorAll('dd.is-missing')].some((node) => node.textContent === 'Not supplied'));
+    assert.equal(identity.querySelector('.vm-facts-more'), null);
+  } finally { destroy(); root.remove(); }
+});
+
 test('FUCQ-195: the current-car card shows readable labels and no raw identifiers', async () => {
   const input = unnamed('ready'); const value = input.value;
   const raw = [value.currentContract.contractId, value.currentContract.slotId, value.currentContract.schemeId,
@@ -855,7 +871,6 @@ test('FUCQ-195: the current-car card shows readable labels and no raw identifier
     assert.match(card.textContent, /StatusCurrent car/);
     assert.match(card.querySelector('.gcsp-account-terms').textContent, /^1,100 points a month · 1,300 points a month allowance$/);
     assert.match(card.textContent, /Specification provenanceSynthetic example data/);
-    assert.match(card.textContent, /WLTP CO2/);
     assert.doesNotMatch(card.textContent, /Vehicle slot|Scheme|Current contract|points cost not supplied|Wltp/);
   } finally { first.destroy(); first.root.remove(); }
   value.slots[0].label = 'Company car 1';

@@ -148,7 +148,7 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
     const c = state.claim; const model = c.model; panel.setAttribute('aria-busy', String(state.busy));
     const rb = readbackFor({ model, account: state.account, draft: state.draft });
     const view = JSON.stringify([model.quote, model.orderNumber]);
-    fill('vehicle', view, nodes.vehicle, () => [matchCard(null, { view: reviewVehicleView(model), showScore: false })]);
+    fill('vehicle', view, nodes.vehicle, () => [matchCard(null, { view: reviewVehicleView(model), showScore: false, hideMissing: 'More details not supplied' })]);
     const data = sectionRows(rb);
     for (const key of ['employee', 'driver', 'terms', 'collection', 'contact', 'returns']) fill(key, JSON.stringify(data[key]), nodes.facts[key], () => [rows(data[key])]);
     nodes.sections.order.querySelector('.gcsp-h2').textContent = rb.mode === 'replacement' ? 'Your replacement order' : 'Your new order';
@@ -215,7 +215,7 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
     actions.append(button({ label: 'Finish', onClick: finish }), button({ label: 'Print order', variant: 'ghost', onClick: () => { try { win().print(); } catch { /* No printer is not an order failure. */ } } }));
     if (!v.final) actions.append(button({ label: 'Check order status', variant: 'ghost', disabled: state.busy, onClick: () => controller.checkOrder() }));
     const left = el('div', 'gcsp-review-column'); const right = el('div', 'gcsp-review-column');
-    left.append(matchCard(null, { view: reviewVehicleView({ quote: rb.quote, orderNumber: rb.orderNumber }), showScore: false }),
+    left.append(matchCard(null, { view: reviewVehicleView({ quote: rb.quote, orderNumber: rb.orderNumber }), showScore: false, hideMissing: 'More details not supplied' }),
       section('Points and contract', rows(data.terms)), section('Requested collection', rows(data.collection)));
     left.lastChild.querySelector('.gcsp-card-body').append(el('p', 'gcsp-field-hint', 'Collection is requested, not a confirmed appointment.'));
     right.append(section('Order', facts), stages, next, section('Employee', rows(data.employee)), section('Driver and licence', rows(data.driver)),
