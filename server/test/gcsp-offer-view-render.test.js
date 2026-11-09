@@ -328,6 +328,29 @@ test('FUCQ-271: a hosted order tracker is the only progress list; without one th
   assert.equal(bare.querySelector('.gcsp-stage-heading').textContent, 'Your selection'); assert.equal(bare.querySelector('.gcsp-offer-order'), null);
 });
 
+test('FUCQ-311: with the tracker hosted the accepted note makes no stage claim; without one it keeps the selection line', async () => {
+  const selected = { ...offerFixture('selection-hr').value, canAccept: false, canDecline: false, orderUuid: ORDER };
+  const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root, { mountOrder: (host) => { host.append(document.createElement('ol')); return () => {}; } });
+  view.update(selected);
+  assert.equal(root.querySelector('p.gcsp-note').textContent, 'Selection received. Your order is with ordering.');
+  assert.doesNotMatch(root.textContent, /Waiting for/);
+  const bare = document.createElement('div'); document.body.append(bare);
+  createOfferView(bare, {}).update(selected);
+  assert.equal(bare.querySelector('p.gcsp-note').textContent, 'Selection received. Waiting for HR approval.');
+  const { mountOrderProgress } = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
+  const states = orderProgressFixtures().states['new-order'];
+  const adapter = { readStages: async () => structuredClone(states.stages), readDocuments: async () => structuredClone(states.documents),
+    readAppointment: async () => structuredClone(states.appointment), readReturnPlan: async () => structuredClone(states.returnPlan) };
+  const live = document.createElement('div'); document.body.append(live);
+  const liveView = createOfferView(live, { mountOrder: (node, { car }) => mountOrderProgress(node, { adapter, orderUuid: ORDER, car, embedded: true, headingLevel: 2 }) });
+  liveView.update(selected);
+  for (let n = 0; n < 60 && !live.querySelector('.gcsp-offer-order .gcsp-stage-tracker li'); n += 1) await new Promise((done) => setTimeout(done, 15));
+  const note = live.querySelector('p.gcsp-note').textContent; const tracker = live.querySelector('.gcsp-offer-order').textContent;
+  assert.match(tracker, /HR approval/); assert.match(tracker, /Not started/); assert.doesNotMatch(note, /HR approval|Waiting/);
+  liveView.destroy(); view.destroy();
+});
+
 test('the offer-hosted progress shows completed and missed handovers, rebooks the exact slot and re-reads the new attempt', async () => {
   const { mountOrderProgress } = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
   const all = orderProgressFixtures().states;

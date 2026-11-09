@@ -109,7 +109,7 @@ Feedback is recorded in this repository document and committed through the norma
 | 16 | Reopen Buddy activity. | A new offer, waiting for you, respond by 11:31. The activity shows "Search updated after a decline". |
 | 17 | Open the outbox viewer again and choose the newest email. | "2 captured emails, newest first." The newest is the second offer. |
 | 18 | Open that offer. | Synthetic 3 Series Saloon 320i, body style Saloon (100% fit), with a different order number from step 11. The declined Touring is not offered again. |
-| 19 | Tick the three declarations (terms, driver and licence, old contract and return mileage) and press **Accept this offer**. | The page asks for each declaration to be ticked before accepting. Afterwards it reads "Offer accepted. Selection received. Waiting for HR approval." |
+| 19 | Tick the three declarations (terms, driver and licence, old contract and return mileage) and press **Accept this offer**. | The page asks for each declaration to be ticked before accepting. Afterwards it reads "Offer accepted. Selection received. Your order is with ordering." |
 | 20 | Open **Order progress** (`/gcsp-order-progress-live.html`). | Order number from step 18. Step 1 "Selection received: Done", 5 Nov 2026, 09:31, "With ordering". HR approval, sales-manager approval and sent to ordering read "Not started". |
 | 21 | Repeat steps 2 to 20 after a second reset. | The same models and outcome, with a new run ID and new order numbers. An offer link copied from the first run is refused as stale. |
 
