@@ -384,7 +384,7 @@ export class OfferAccessService {
       const blocker = !derived.contact ? 'contact-required' : !derived.driver ? 'driver-review-required' : !derived.returnOk ? 'return-data-required'
         : terms.status !== 'ok' ? 'ordering-terms-unavailable' : null;
       const t = terms.status === 'ok' ? terms.value : null;
-      extra.handoff = { termsVersion: t?.termsVersion ?? null, termsDigest: t?.termsDigest ?? null, wording: t?.wording ?? null, fictional: true,
+      extra.handoff = { termsVersion: t?.termsVersion ?? null, termsDigest: t?.termsDigest ?? null, wording: t ? (t.wordingByMode?.[derived.mode] ?? t.wording) : null, fictional: true,
         mode: derived.mode, declarations: (t?.declarations ?? []).filter((d) => d.appliesTo === 'all' || d.appliesTo === derived.mode).map(({ id, label }) => ({ id, label })),
         contact: derived.contact ? select(derived.contact, ['phone', 'email']) : null,
         returnCar: derived.returnCar ? { model: derived.returnCar.model, contractEndDate: derived.returnCar.contractEndDate,

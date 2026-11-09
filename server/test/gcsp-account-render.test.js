@@ -628,6 +628,32 @@ test('FUCQ-237: an order in progress replaces "No current car" for an employee w
   } finally { declined.destroy(); }
 });
 
+test('FUCQ-239: Order history lists a placed order and no longer says "No order history"', async () => {
+  const listed = (name) => { const row = structuredClone(orderProgressFixtures().states[name].stages.value); row.entitlementSlotId = 'slot-paula'; return [row]; };
+  const noCarAllocated = () => { const envelope = accountFixture('no-current-car'); Object.assign(envelope.value, { state: 'no-entitlement', actions: [] });
+    for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
+  const mount = (name) => { const orders = orderAdapter(name, listed(name));
+    return domMount({ ...readOnlyAdapter(), readAccount: async () => noCarAllocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders }); };
+  const ordered = await mount('appointment-requested');
+  try {
+    await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order-status'));
+    const histories = ordered.root.querySelector('.gcsp-account-histories'); const [entry] = histories.querySelectorAll('.gcsp-account-history');
+    assert.doesNotMatch(histories.textContent, /No order history\./); assert.ok(entry, 'placed order entry');
+    assert.equal(entry.querySelector('h3').textContent, 'Synthetic 3 Series Saloon 320i');
+    assert.deepEqual(factPairs(entry).filter(([name]) => ['Status', 'Order reference', 'Car order number'].includes(name)),
+      [['Status', 'Sent to ordering'], ['Order reference', 'GCSP-000123'], ['Car order number', '1000001']]);
+  } finally { ordered.destroy(); }
+  const declined = await mount('declined');
+  try {
+    await settleOrder(declined.root, (node) => node.querySelector('.gcsp-account-order-status'));
+    const histories = declined.root.querySelector('.gcsp-account-histories');
+    assert.doesNotMatch(histories.textContent, /No order history\./);
+    assert.deepEqual(factPairs(histories.querySelector('.gcsp-account-history')).filter(([name]) => name === 'Status'), [['Status', 'Declined']]);
+  } finally { declined.destroy(); }
+  const plain = await domMount(readOnlyAdapter('no-history')); await tick();
+  assert.match(plain.root.querySelector('.gcsp-account-histories').textContent, /No order history\./); plain.destroy();
+});
+
 test('FUCQ-195: the current-car card shows readable labels and no raw identifiers', async () => {
   const input = accountFixture('ready'); const value = input.value;
   const raw = [value.currentContract.contractId, value.currentContract.slotId, value.currentContract.schemeId,
