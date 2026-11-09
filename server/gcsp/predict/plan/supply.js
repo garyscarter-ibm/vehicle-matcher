@@ -5,6 +5,13 @@ const unavailable = (code) => ({ status: 'unavailable', code, contractVersion: C
 const names = ['stock', 'holds', 'future_order_requests', 'confirmed_supply', 'event_receipts'];
 const same = (a, b) => inputDigest(a) === inputDigest(b);
 
+// Display names only: never the VIN, order number or configuration id of a left-out car.
+const knownText = (fact) => (fact?.status === 'known' && text(fact.value) ? fact.value.trim() : null);
+const unboundName = (row) => knownText(row.facts?.facts?.modelLine) ?? knownText(row.facts?.facts?.eligibilityModelKey)?.replace('|', ' ')
+  ?? (text(row.agModelCode) ? row.agModelCode : null);
+const unboundSummary = (rows) => ({ count: rows.length,
+  models: [...new Set(rows.map(unboundName).filter(Boolean))].sort(compare) });
+
 // F104 records pin: 6f57a05c538fa34361ba8594f152440ece851ed4.
 // This does not apportion request-wide readTracking release totals between acks.
 export function resolveSupplyRecords({ runId, asOf, catalogVersion, catalog, rows }) {
@@ -26,13 +33,13 @@ export function resolveSupplyRecords({ runId, asOf, catalogVersion, catalog, row
     const unique = (name, key) => new Set(rows[name].map((r) => r[key])).size === rows[name].length && rows[name].every((r) => text(r[key]));
     if (!unique('stock', 'orderUuid') || !unique('holds', 'holdId') || !unique('future_order_requests', 'requestId')
       || !unique('confirmed_supply', 'supplyId')) return unavailable('planning-supply-duplicate-identity');
-    const stock = [];
+    const stock = []; const unbound = [];
     for (const row of rows.stock) {
       if (row.state === 'allocated' || row.allocated === true) continue;
       if (!['released', 'held'].includes(row.state)) continue;
-      const derivative = configurationMap.get(row.configurationId);
+      // The release handler writes releasedAt = tick.now, so a valid release always has a past instant.
       const availableAt = row.release?.releasedAt ?? row.release?.availability?.availableFrom;
-      if (!derivative || !instant(availableAt) || Date.parse(availableAt) > Date.parse(asOf)) return unavailable('planning-exact-stock-mapping-missing');
+      if (!instant(availableAt) || Date.parse(availableAt) > Date.parse(asOf)) return unavailable('planning-stock-availability-invalid');
       const holds = rows.holds.filter((h) => h.orderUuid === row.orderUuid && OCCUPYING_STATES.includes(h.state));
       const held = row.state === 'held' || row.held === true || holds.length > 0;
       if (held && (holds.length !== 1 || !text(holds[0].entitlementSlotId) || !instant(holds[0].expiresAt)
@@ -41,6 +48,9 @@ export function resolveSupplyRecords({ runId, asOf, catalogVersion, catalog, row
       if (!Array.isArray(row.visibility?.companyIds) || !row.visibility.companyIds.every(text)
         || !Array.isArray(row.visibility?.schemeIds) || !row.visibility.schemeIds.every(text)
         || !(row.visibility.employeeIds === null || Array.isArray(row.visibility.employeeIds) && row.visibility.employeeIds.every(text))) return unavailable('planning-stock-visibility-missing');
+      // A car in no catalogue derivative cannot be planned for: it is left out and reported, never guessed.
+      const derivative = configurationMap.get(row.configurationId);
+      if (!derivative) { unbound.push(row); continue; }
       stock.push({ stockId: row.orderUuid, derivativeId: derivative.derivativeId, availableAt,
         heldForEntitlementSlotId: held ? holds[0].entitlementSlotId : null, visibility: structuredClone(row.visibility) });
     }
@@ -109,7 +119,7 @@ export function resolveSupplyRecords({ runId, asOf, catalogVersion, catalog, row
     const responses = [...confirmations, ...delays, ...releases]
       .sort((a, b) => Date.parse(a.at) - Date.parse(b.at) || compare(idOf(a), idOf(b)));
     requests.sort((a, b) => compare(a.requestId, b.requestId));
-    return { status: 'ok', contractVersion: CONTRACT_VERSION, value: { runId, asOf, stock, inbound, requests, responses,
+    return { status: 'ok', contractVersion: CONTRACT_VERSION, value: { runId, asOf, stock, unboundStock: unboundSummary(unbound), inbound, requests, responses,
       versions: { stock: inputDigest({ stock: rows.stock, holds: rows.holds }), supply: inputDigest({ requests: rows.future_order_requests,
         confirmations: rows.confirmed_supply, receipts: rows.event_receipts }), catalog: catalogVersion } } };
   } catch { return unavailable('planning-supply-input-invalid'); }
