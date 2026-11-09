@@ -201,3 +201,11 @@ For Russell or Gary:
 - **About 04:55, merged, pushed and In Review:** **FUCQ-235** (Low, kit dataTable `stack`), **FUCQ-237** (Low, new-order wording), **FUCQ-238** (Low, gallery 3,462 px at 320, down from 7,285; Renewal cases empty block gone). FUCQ-238's walkthrough-script conflict with 237 is resolved by keeping both stories. Scoped tests: 918 and 594 tests, 0 real failures.
 - **Regression found and fixed:** gcsp-cases-local-demo.test.js failed on gcsp-poc because FUCQ-232 made the decline-reasons registry required, and that test builds its own runtime without `adoptOfferJourney: true`. Real launches (host.js) adopt it, so the demo was never affected. Fixed in the test (7991d4bc).
 - **Started:** FUCQ-236 (Low, learning records read the reviewed reason policy), then FUCQ-239 (Low, offer handoff wording and Order history).
+- **About 06:45:**
+  - **FUCQ-236** (Low) is merged, pushed and In Review. Learning records now use the reviewed reason codes and fail closed. 204 tests, 0 failed.
+  - **FUCQ-239** (Low) is merged and its tests are running. The offer handoff now has new-order wording, and Order history shows placed orders. AC4 is partly met: Jordan's offer handoff couldn't be reached in the browser, so a test proves that wording instead.
+- **New High bug, FUCQ-240 (bug, not in MoSCoW): a fix lead is already working on it.** Once an employee with no current car saves an eligible brief with hold consent, buddy allocation returns 503 for the whole batch, so Paula's main-journey release fails too. Jordan arrived with FUCQ-224 and has been on the hosted demo since about 03:00. **Until it's fixed, don't save a brief as Jordan on the hosted demo.**
+  - **Recommendation being built:** fail per employee. Jordan uses a real needed-by date if one exists. Otherwise he's left out of buddy contention, with the limitation shown. No date is invented.
+- **Questions for Gary:**
+  1. FUCQ-239: does "Sent to ordering" read right as the Order history status?
+  2. FUCQ-236: observed learning records now carry `body-style` instead of `body`. Nothing downstream reads it.
