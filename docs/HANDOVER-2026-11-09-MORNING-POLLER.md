@@ -2,6 +2,13 @@
 
 The overnight poller stopped at 02:50: its conversation passed 300k. Nothing of Russell's is in flight: there are no claims, worktrees or story-leads. To resume, start a fresh `scaffolding:dev-inbox` poller and read this first.
 
+## Note from Gary's poller, 9 Nov 07:30 (Gary asked for this)
+Why the To Do bugs weren't picked up: `dev_mail.py queue` marks a bug "held" while its intake fields (related_story, story_link_basis, reproduction_steps, expected/actual) are unresolved, and FUCQ-152, 166, 190 and 207 also lacked the Jira headings check-story needs. Gary has asked for all of them to be built. Headings are now in Jira and re-imported; leads do the defect intake as their first step (defects SKILL.md).
+
+- **Gary's poller has claimed and started:** FUCQ-241 (High), FUCQ-190, FUCQ-152.
+- **Gary's poller will take next, in capacity batches:** FUCQ-207, FUCQ-242, then the fleet-tooling bugs FUCQ-156 to 165 (DEV-2026-11-07-GC-006..015) and FUCQ-166 (GC-016). FUCQ-184/185 (DEV-2026-11-09-003/004) get closed as already fixed after a check.
+- **Russell's poller, when restarted:** the fleet-tooling bugs FUCQ-156 to 166 are your area, so take any that are still unclaimed (run `dev_mail.py queue` and claim before starting; a claim that loses the race fails cleanly). To avoid collisions, work from FUCQ-166 downward; Gary's poller works from FUCQ-156 upward. Check the queue between claims. Held status is not a reason to skip them: do intake first.
+
 ## Direction that still holds (Russell, 8–9 Nov)
 - Leave every story claimed by `garyscarter-ibm` to Gary.
 - Skip Won't-for-demo work (`moscow-after-demo`, `post-demo`, FUCQ-27/28/46/47/48/149). Leave FUCQ-218 (it waits on Russell's scheme names) and FUCQ-98's email (it needs the hosted key).

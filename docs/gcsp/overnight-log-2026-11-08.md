@@ -209,3 +209,8 @@ For Russell or Gary:
 - **Questions for Gary:**
   1. FUCQ-239: does "Sent to ordering" read right as the Order history status?
   2. FUCQ-236: observed learning records now carry `body-style` instead of `body`. Nothing downstream reads it.
+
+## 07:35 9 Nov: held bugs picked up (Gary: "All of them")
+- Why Russell's poller skipped them: the queue holds bugs with unresolved intake fields, and FUCQ-152, 166, 190 and 207 lacked Jira headings. Headings added in Jira and re-imported; FUCQ-241 and 242 imported as DEV-2026-11-09-GC-010 and GC-011.
+- Claimed and leads started: FUCQ-241 (High, 5 pts), FUCQ-190 (5 pts), FUCQ-152 (3 pts). FUCQ-240's lead is still running.
+- Russell's poller has no live session here, so the prompt is in `docs/HANDOVER-2026-11-09-MORNING-POLLER.md` (top section): it takes fleet bugs FUCQ-166 downward, Gary's poller takes FUCQ-156 upward, claim before starting.
