@@ -213,7 +213,7 @@ test('nested projection preserves public image/fact provenance while excluding u
 test('pinned partial current-car model and safe provenance remain distinct from unavailable specification/points', async () => {
   const currentCarComparison = { schemaVersion: '1', comparisonAvailable: false,
     binding: { contractId: 'private-contract', employeeVersion: 99, slotVersion: 77, source: { sourceRef: 'private-source' } },
-    display: { state: 'partial', model: 'Fictional BMW 320i Touring', employeeId: 'private-owner',
+    display: { state: 'partial', model: 'BMW 3 Series Touring 320i', employeeId: 'private-owner',
       source: { mode: 'synthetic', sourceVersion: 'manual-records-v1', observedAt: '2026-11-05T11:00:00.000Z', sourceRef: 'private-ref' },
       unknowns: ['configuration','body','fuel','seats','boot','mpg','zeroTo62','points'] } };
   const f = await fixture({ currentCarComparison }); const read = await f.exchange(); assert.equal(read.status, 'ok');
@@ -227,7 +227,7 @@ test('pinned partial current-car model and safe provenance remain distinct from 
 test('pinned recorded facts are allowlisted, malformed ones become unknown and the binding never crosses', async () => {
   const currentCarComparison = { schemaVersion: '1', comparisonAvailable: true,
     binding: { contractId: 'private-contract', employeeVersion: 99, slotVersion: 77, source: { sourceRef: 'private-source' } },
-    display: { state: 'partial', model: 'Fictional BMW 320i Touring',
+    display: { state: 'partial', model: 'BMW 3 Series Touring 320i',
       source: { mode: 'synthetic', sourceVersion: 'manual-records-v1', observedAt: '2026-11-05T11:00:00.000Z', sourceRef: 'private-ref' },
       facts: { boot: { value: 500, unit: 'L', raw: 'private-raw' }, mpg: { value: -1, unit: null }, seats: { value: '5', unit: null }, body: { value: { x: 1 }, unit: null },
         vin: { value: 'private-vin', unit: null } },
