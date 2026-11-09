@@ -1,0 +1,322 @@
+[
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp/access?next=%2Fgcsp-presenter.html"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "scenarioOption": "radio false"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "step": "account",
+  "h1": "Your cars",
+  "text": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR CARS CHOICES Your cars Refresh account Your car offer Your buddy found a car for you. Check its details and deadline. View your offer Decide on your car offer before choosing another car. No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Scheme BMW Choices Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car evidence. Choose a replacement Order, collection and vehicle details Your allowance Monthly allowance 1,300 points a month Allowance override Not supplied Override end Not supplied Allowance basis Synthetic monthly demo allowanc"
+ },
+ {
+  "dump": "account",
+  "buttons": [
+   "Refresh account",
+   "View your offer",
+   "Choose a replacement"
+  ]
+ },
+ {
+  "shot": {
+   "file": "paula-held-375-01-account-offer-held.png",
+   "url": "/gcsp-presenter.html",
+   "h1": "Your cars",
+   "audit": {
+    "title": "GCSP presenter workspace",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Your cars",
+     "H2:Your car offer",
+     "H2:Fictional BMW 320i Touring",
+     "H2:Your allowance",
+     "H2:Order history",
+     "H3:Fictional BMW 320i Touring",
+     "H3:Model not supplied"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Your car offer",
+     "section:Fictional BMW 320i Touring"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 0,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 58
+   }
+  }
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "step": "gallery-held",
+  "text": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR CARS CHOOSE YOUR CAR Released cars Browse the available cars. Review one to reserve it while you check the details. Your allowance: 1,300 points a month Release history: 6 cars in 1 release visible to you. Latest visible release: 5 Nov 2026, 09:30 UTC (demo time). Current source version: unknown. Series All series 6 cars Body style All body styles 6 cars Estate 3 cars Hatchback 1 car Saloon 2 cars Search cars and equipment Sort by Model name Monthly points Earliest collection 6 released cars · 4 eligible · 6 matching · 4 eligible matching You already have a car offer Your buddy is holding a car for you. Decide on that offer before reserving another car. View your offer 1 SERIES SPORTS HATCH · HATCHBACK · 120 Representative image. See image provenance in vehicle details. Synthetic 1 Series Sports Hatch 120 Order no. 8543197 800 points a month Within your allowance, 500 points left Car facts Eligible Review this car Decide on your car offer first. Vehicle details No image for this car yet 3 SERIES SALOON · SALOON · 320I Synthetic 3 Series Saloon 320i Order no. 8543192 1,100 points a month Within your a",
+  "link": "/gcsp/offer?offerId=buddy-offer%3A56fbe21fa5a2eed05a3f53402df42b14e1194c99b001f55cedba03669dd123c4&runId=demo-b1d370927c4451a89e2f8b0a853c67a8",
+  "enabledReview": 0
+ },
+ {
+  "dump": "gallery-held",
+  "buttons": [
+   "All series6 cars",
+   "All body styles6 cars",
+   "Estate3 cars",
+   "Hatchback1 car",
+   "Saloon2 cars",
+   "View your offer",
+   "Review this car",
+   "Vehicle details",
+   "Review this car",
+   "Vehicle details",
+   "Review this car",
+   "Vehicle details",
+   "Show more cars",
+   "Back to your choices"
+  ]
+ },
+ {
+  "shot": {
+   "file": "paula-held-375-02-gallery-offer-held.png",
+   "url": "/gcsp-presenter.html",
+   "h1": "Released cars",
+   "audit": {
+    "title": "GCSP presenter workspace",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Released cars",
+     "H2:You already have a car offer",
+     "H3:Synthetic 1 Series Sports Hatch 120",
+     "H3:Synthetic 3 Series Saloon 320i",
+     "H3:Synthetic 3 Series Saloon 320i"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Release history",
+     "section:Reservation status"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "status:\"6 released cars · 4 eligible · 6 matching · 4 eligible match\"",
+     "status:\"You already have a car offerYour buddy is holding a car for \"",
+     "status:\"\"",
+     "polite:\"Eligible\"",
+     "polite:\"Eligible\"",
+     "polite:\"Eligible\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 3,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 55
+   }
+  }
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 409 (Conflict)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "step": "gallery-taken",
+  "text": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR CARS CHOOSE YOUR CAR Released cars Browse the available cars. Review one to reserve it while you check the details. Your allowance: 1,300 points a month Release history: 6 cars in 1 release visible to you. Latest visible release: 5 Nov 2026, 09:30 UTC (demo time). Current source version: unknown. Series All series 6 cars Body style All body styles 6 cars Estate 3 cars Hatchback 1 car Saloon 2 cars Search cars and equipment Sort by Model name Monthly points Earliest collection 6 released cars · 4 eligible · 6 matching · 4 eligible matching This car is no longer available Choose another car or refresh availability. Refresh availability 1 SERIES SPORTS HATCH · HATCHBACK · 120 Representative image. See image provenance in vehicle details. Synthetic 1 Series Sports Hatch 120 Order no. 8543197 800 points a month Within your allowance, 500 points left Car facts Eligible Review this car This car is no longer available. Vehicle details No image for this car yet 3 SERIES SALOON · SALOON · 320I Synthetic 3 Series Saloon 320i Order no. 8543192 1,100 points a month Within your allowance, 200 points left Car facts"
+ },
+ {
+  "dump": "gallery-taken",
+  "buttons": [
+   "All series6 cars",
+   "All body styles6 cars",
+   "Estate3 cars",
+   "Hatchback1 car",
+   "Saloon2 cars",
+   "Refresh availability",
+   "Review this car",
+   "Vehicle details",
+   "Review this car",
+   "Vehicle details",
+   "Review this car",
+   "Vehicle details",
+   "Show more cars",
+   "Back to your choices"
+  ]
+ },
+ {
+  "shot": {
+   "file": "paula-held-375-03-gallery-one-car-taken.png",
+   "url": "/gcsp-presenter.html",
+   "h1": "Released cars",
+   "audit": {
+    "title": "GCSP presenter workspace",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Released cars",
+     "H2:This car is no longer available",
+     "H3:Synthetic 1 Series Sports Hatch 120",
+     "H3:Synthetic 3 Series Saloon 320i",
+     "H3:Synthetic 3 Series Saloon 320i"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Release history",
+     "section:Reservation status"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "status:\"6 released cars · 4 eligible · 6 matching · 4 eligible match\"",
+     "status:\"This car is no longer availableChoose another car or refresh\"",
+     "status:\"\"",
+     "polite:\"Eligible\"",
+     "polite:\"Eligible\"",
+     "polite:\"Eligible\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 3,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 55
+   }
+  }
+ },
+ {
+  "step": "account-saved",
+  "text": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR CARS CHOICES Your cars Refresh account Your car offer Your buddy found a car for you. Check its details and deadline. View your offer Decide on your car offer before choosing another car. Replacement journey saved Your order choices are saved. This is not an order confirmation. Current car Fictional BMW 320i Touring Resume saved journey No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Scheme BMW Choices Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car evidence. Choose a replacement Order, collection and vehicle details Your all",
+  "primary": [
+   "View your offer"
+  ]
+ },
+ {
+  "dump": "account-saved",
+  "buttons": [
+   "Refresh account",
+   "View your offer",
+   "Resume saved journey",
+   "Choose a replacement"
+  ]
+ },
+ {
+  "shot": {
+   "file": "paula-held-375-04-account-offer-and-saved-journey.png",
+   "url": "/gcsp-presenter.html",
+   "h1": "Your cars",
+   "audit": {
+    "title": "GCSP presenter workspace",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Your cars",
+     "H2:Your car offer",
+     "H2:Replacement journey saved",
+     "H2:Fictional BMW 320i Touring",
+     "H2:Your allowance",
+     "H2:Order history",
+     "H3:Fictional BMW 320i Touring",
+     "H3:Model not supplied"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Your car offer",
+     "section:Fictional BMW 320i Touring"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 0,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 59
+   }
+  }
+ },
+ {
+  "done": true
+ }
+]
