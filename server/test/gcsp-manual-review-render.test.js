@@ -59,7 +59,7 @@ test('pinned card, typed points, current contract and requested collection use n
   const f = setup(t); await settle(() => control(f, 'contact.phone'));
   assert.equal(f.calls.filter((entry) => entry === 'read').length, 1); assert.equal(f.calls.length, 1);
   assert.match(f.root.textContent, /1,100 points a month.*1,300 points a month allowance/);
-  assert.match(f.root.textContent, /9000001/); assert.match(f.root.textContent, /Returning BMW Touring/); assert.match(f.root.textContent, /2026-11-20/);
+  assert.match(f.root.textContent, /9000001/); assert.match(f.root.textContent, /Returning BMW Touring/); assert.match(f.root.textContent, /Friday 20 November 2026/); assert.doesNotMatch(f.root.textContent, /2026-11-20/);
   assert.match(f.root.textContent, /No image for this car yet/); assert.match(f.root.textContent, /140 g\/km WLTP/);
   const phone = control(f, 'contact.phone'); phone.focus(); input(f, 'contact.phone', '01632 960009');
   assert.equal(control(f, 'contact.phone'), phone); assert.equal(document.activeElement, phone);

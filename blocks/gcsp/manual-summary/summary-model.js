@@ -1,11 +1,11 @@
 // Pure helpers: submit body, refusal copy and one readback shared by the live review and the placed order.
 import { orderReferenceOf } from '../kit/order-identity.js';
+import { longDate as kitLongDate } from '../kit/plain-copy.js';
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const present = (v) => v != null && v !== '';
 const points = (v) => v?.unit === 'points' && Number.isFinite(v.value) ? v.value : null;
 
-export const longDate = (value) => /^\d{4}-\d\d-\d\d$/.test(value ?? '') && Number.isFinite(Date.parse(value))
-  ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : value ?? null;
+export const longDate = (value) => kitLongDate(value) ?? value ?? null;
 
 // Words come from these maps, never from raw data codes. An unmapped value is omitted.
 const RELATIONSHIPS = { spouse: 'Spouse', partner: 'Partner', parent: 'Parent', child: 'Child', sibling: 'Sibling' };

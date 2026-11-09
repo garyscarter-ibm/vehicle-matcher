@@ -83,6 +83,7 @@ function confirmedWeek(releaseAt, weeks, timeZone) {
 function validPlan(plan) {
   return object(plan) && ['synthetic-fixture', 'accepted-f77', 'retained-corpus'].includes(plan.kind) && ['source', 'datasetId', 'corpusVersion'].every((key) => text(plan[key]))
     && (plan.titles === undefined || object(plan.titles) && Object.values(plan.titles).every(text))
+    && (plan.displayNames === undefined || object(plan.displayNames) && Object.values(plan.displayNames).every(text))
     && Array.isArray(plan.configurations) && plan.configurations.length > 0 && plan.configurations.length <= 10000
     && new Set(plan.configurations.map((row) => row?.configurationId)).size === plan.configurations.length
     && object(plan.aggregateKeys) && Object.keys(plan.aggregateKeys).length > 0
@@ -250,9 +251,9 @@ export function createStockGenerator({ repository, registry, policyService, cont
             const at = releaseAt[windowIndex];
             const { modelLineId, colour } = car.binding;
             const aggregateRef = `policy:${plan.aggregateKeys[modelLineId]}`;
-            const title = plan.titles?.[modelLineId] ?? modelLineId;
+            const title = plan.titles?.[modelLineId] ?? modelLineId; const displayName = plan.displayNames?.[modelLineId] ?? title;
             const facts = createVehicleSnapshot({ sourceNamespace: STOCK_GENERATOR_NAMESPACE, identityKind: 'exact-stock',
-              sourceKeys: { stockId: identity.orderUuid }, snapshotVersion, observedAt, display: { name: `${title} in ${colour}` },
+              sourceKeys: { stockId: identity.orderUuid }, snapshotVersion, observedAt, display: { name: `${displayName} in ${colour}` },
               facts: { ...extras.get(identity.configurationId), stockIdentityKind: own('synthetic'), modelLine: known(title, aggregateRef), colour: known(colour, aggregateRef),
                 leadTimeWeeks: known(car.leadTimeWeeks, aggregateRef, 'weeks'),
                 confirmedDeliveryWeek: known(confirmedWeek(horizonEnd, car.leadTimeWeeks, timeZone), aggregateRef),
