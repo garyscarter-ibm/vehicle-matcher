@@ -82,7 +82,7 @@ test('existing pure v2 enrichment uses the accepted catalogue and captured repre
 });
 
 test('prepared runner refuses absent release; isolated complete fixture persists tuple before one asset and emits existing enrichment output', async (t) => {
-  const { mkdtemp, mkdir, rm, symlink, writeFile, copyFile } = await import('node:fs/promises');
+  const { mkdtemp, mkdir, rm, symlink, writeFile, copyFile, realpath } = await import('node:fs/promises');
   const { tmpdir } = await import('node:os'); const { join, dirname } = await import('node:path'); const { fileURLToPath } = await import('node:url');
   const { execFile } = await import('node:child_process'); const { promisify } = await import('node:util');
   const actualRoot = fileURLToPath(new URL('../../', import.meta.url)); const relative = 'docs/gcsp/evidence/fucq60/v2-image-capture-2026-11-07';
@@ -95,7 +95,8 @@ test('prepared runner refuses absent release; isolated complete fixture persists
     if (before[index] === null) await assert.rejects(readFile(join(actualBase, name)), { code: 'ENOENT' });
     else assert.deepEqual(await readFile(join(actualBase, name)), before[index]);
   }
-  const root = await mkdtemp(join(tmpdir(), 'f60-capture-')); t.after(() => rm(root, { recursive: true, force: true }));
+  // The runner compares its pinned primary with its own resolved path, so a symlinked TMPDIR (/tmp, /var) must be resolved.
+  const root = await realpath(await mkdtemp(join(tmpdir(), 'f60-capture-'))); t.after(() => rm(root, { recursive: true, force: true }));
   for (const name of ['scripts', 'server', '_tools']) await symlink(join(actualRoot, name), join(root, name), 'dir');
   const allocation = JSON.parse(await readFile(join(actualBase, 'execution-plan.json'))); const base = join(root, relative);
   // The retained plan pins 7 Nov code; the fixture run exercises the runner flow against current code (FUCQ-230).
