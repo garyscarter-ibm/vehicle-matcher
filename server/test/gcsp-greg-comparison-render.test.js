@@ -64,7 +64,7 @@ test('the HTTP adapter reads the latest route with credentials and maps network 
 test('toComparisonView gives one formatted row per stored difference and throws on malformed input', () => {
   const v = view.toComparisonView(stored);
   assert.deepEqual(v.measures.map((m) => m.key), stored.result.differences.map((d) => d.measure));
-  assert.deepEqual(v.measures.map((m) => m.label), ['Covered before renewal', 'Cars never allocated', 'Car-days held but not taken', 'Offers declined', 'Offers expired',
+  assert.deepEqual(v.measures.map((m) => m.label), ['Covered before renewal', 'Cars never allocated', 'Car time held but not taken', 'Offers declined', 'Offers expired',
     'Holds that expired untaken', 'Retries after a lost claim', 'Calculated fit of accepted cars', 'Covered before renewal: mechanics access']);
   const coverage = v.measures[0];
   assert.deepEqual(coverage.rows.map((r) => r.label), ["Today's release route", 'Buddy route']);
@@ -76,7 +76,7 @@ test('toComparisonView gives one formatted row per stored difference and throws 
   assert.equal(v.measures[1].hint, 'Lower is better');
   assert.equal(v.measures[7].verdictText, 'Too few seeds to compare'); assert.equal(v.measures[7].differenceText, 'Difference (buddy minus today): Not observed');
   assert.equal(v.measures[7].format(null), 'Not observed'); assert.equal(v.measures[7].format(100), '100.0');
-  assert.equal(v.measures[2].format(0.003704), '0.004'); assert.equal(v.measures[2].format(1.25), '1.3');
+  assert.equal(v.measures[2].kind, 'hours'); assert.equal(v.measures[2].format(0.003704), '0.1 h'); assert.equal(v.measures[2].format(0.5), '12 h');
   assert.deepEqual(v.meta, { seeds: 3, policyVersion: 'gcsp-policy-v1', made: v.meta.made, employees: 4, codeRevision: 'fucq136-test' });
   assert.match(v.meta.made, /^8 Nov 2026, 12:00/); assert.equal(v.oldPolicy, null);
   assert.equal(v.assumptions.length, stored.result.assumptions.length); assert.equal(v.assumptions[0].status, 'Assumed');
@@ -131,15 +131,15 @@ test('assumptions, seeds and provenance sit in a closed native details with one 
   const details = root.querySelector('details'); assert.ok(details); assert.equal(details.open, false);
   assert.equal(details.querySelector('summary').textContent, 'Assumptions, seeds and provenance');
   const table = details.querySelector('table'); assert.equal(table.caption.textContent, 'Assumptions used');
-  assert.deepEqual([...table.tHead.rows[0].cells].map((c) => c.textContent), ['Key', 'Value', 'Unit', 'Status', 'Basis']);
+  assert.deepEqual([...table.tHead.rows[0].cells].map((c) => c.textContent), ['Setting', 'Key', 'Value', 'Unit', 'Status', 'Basis']);
   assert.equal(table.tBodies[0].rows.length, stored.result.assumptions.length);
-  assert.ok([...table.tBodies[0].rows].every((r) => r.cells[3].textContent === 'Assumed'));
+  assert.ok([...table.tBodies[0].rows].every((r) => r.cells[4].textContent === 'Assumed'));
   const facts = text(details.querySelector('.vm-facts'));
   for (const label of ['Seeds', 'Policy version', 'Policy hash', 'Generator version', 'Code revision', 'Result id', 'Made', 'Stored']) assert.match(facts, new RegExp(label));
   assert.match(facts, /comparison-a, comparison-b, comparison-c/); assert.match(facts, /90da819d8ae5(?![0-9a-f])/);
   const value = fixtures.FIXTURE_VALUES['no-clear-difference'](); value.result.assumptions[0].status = 'verified';
   const verified = host(); panel.mountGregComparison(verified, { adapter: { load: async () => adapterMod.outcomeToState(200, { status: 'ok', value }) } }); await settle();
-  assert.equal(verified.querySelector('tbody tr').cells[3].textContent, 'Verified');
+  assert.equal(verified.querySelector('tbody tr').cells[4].textContent, 'Verified');
   details.open = true; details.dispatchEvent(new window.Event('toggle')); await button(root, 'Reload').click(); await settle();
   assert.equal(root.querySelector('details').open, true);
 });
@@ -237,4 +237,60 @@ test('the dashboard mounts the comparison into its route-comparison region, and 
   node.adapter = { comparison: fixtures.comparisonFixtureAdapter('today-better'), loadDemand: demand.loadDemand };
   document.body.append(node); await settle();
   assert.ok(node.regions.routeComparison.querySelector('.gcsp-comparison-measure')); node.remove();
+});
+
+const headline = (root) => root.querySelector('.gcsp-comparison-headline');
+const withAdapter = async (value) => {
+  const root = host(); panel.mountGregComparison(root, { adapter: { load: async () => ({ status: 'ready', stored: value }) } }); await settle(); return root;
+};
+
+test('FUCQ-295: a headline sentence leads the body and says which route did better, from the stored coverage', async () => {
+  for (const [name, sentence] of [
+    ['buddy-better', "Buddy route did better: it covered 50% before renewal, against 12.5% on today's release route, across 3 seeds."],
+    ['today-better', "Today's release route did better: it covered 75% before renewal, against 25% on the buddy route, across 3 seeds."],
+    ['no-clear-difference', "No clear difference: the buddy route covered 8.3% before renewal and today's release route 0%, across 3 seeds."]]) {
+    const { root } = await mount(name);
+    assert.equal(headline(root).textContent, sentence, name);
+    assert.equal(headline(root).nextElementSibling, root.querySelector('.gcsp-comparison-facts'), name);
+    assert.doesNotMatch(headline(root).tagName, /^H/);
+  }
+});
+
+test('FUCQ-295: the committed process-only result says today\'s release route did better, with its figures and seeds', async () => {
+  const file = JSON.parse(await readFile(new URL('../data/gcsp/comparison/process-only.json', import.meta.url), 'utf8'));
+  const value = { result: file.result, policyVersion: file.result.manifest.policyVersion };
+  const sentence = "Today's release route did better: it covered 14.8% before renewal, against 11.8% on the buddy route, across 3 seeds.";
+  assert.equal(view.toComparisonView(value).headline, sentence);
+  assert.equal(headline(await withAdapter(value)).textContent, sentence);
+});
+
+test('FUCQ-295: headline wording for too few seeds, one seed and a missing coverage measure', () => {
+  const base = fixtures.FIXTURE_VALUES['buddy-better']();
+  const few = structuredClone(base); few.result.differences.find((d) => d.measure === 'acceptableCoverage').verdict = 'insufficient-seeds';
+  assert.equal(view.toComparisonView(few).headline, "Too few seeds to say which route did better: the buddy route covered 50% before renewal and today's release route 12.5%, across 3 seeds.");
+  const one = structuredClone(base); one.result.manifest.seeds = ['comparison-a'];
+  assert.match(view.toComparisonView(one).headline, /across 1 seed\.$/);
+  const missing = structuredClone(base); missing.result.differences = missing.result.differences.filter((d) => d.measure !== 'acceptableCoverage');
+  assert.match(view.toComparisonView(missing).headline, /^Buddy route better on \d+ of 8 measures, today's release route on \d+, across 3 seeds\.$/);
+  const unseen = structuredClone(base); unseen.result.differences.find((d) => d.measure === 'acceptableCoverage').current.mean = null;
+  assert.match(view.toComparisonView(unseen).headline, /^Buddy route better on 3 of 9 measures/);
+});
+
+test('FUCQ-295: both rows of a range bar share the grid columns, and a track never shrinks below 6rem', async () => {
+  const css = await readFile(new URL('../../blocks/gcsp/kit/range-bar.css', import.meta.url), 'utf8');
+  const rule = (selector) => css.split('\n').find((line) => line.startsWith(`.gcsp ${selector} {`)) ?? '';
+  assert.match(rule('.gcsp-range-bar-rows'), /display: grid;.*grid-template-columns: minmax\(6rem, 1fr\) auto/);
+  assert.match(rule('.gcsp-range-bar-row'), /grid-template-columns: subgrid/);
+  assert.doesNotMatch(css, /minmax\(0, 2fr\)/);
+});
+
+test('FUCQ-295: small car time reads in hours and large car time in days, never as 0.004', async () => {
+  const { root } = await mount('no-clear-difference');
+  const small = text(measure(root, 'Car time held but not taken'));
+  assert.match(small, /Today's release route0\.1 h/); assert.match(small, /Difference \(buddy minus today\): \+0\.2 h/);
+  assert.doesNotMatch(small, /0\.00|days/);
+  const file = JSON.parse(await readFile(new URL('../data/gcsp/comparison/process-only.json', import.meta.url), 'utf8'));
+  const big = await withAdapter({ result: file.result, policyVersion: file.result.manifest.policyVersion });
+  assert.match(text(measure(big, 'Car time held but not taken')), /Buddy route64\.4 days/);
+  assert.doesNotMatch(text(measure(big, 'Car time held but not taken')), / h[ )]/);
 });

@@ -169,7 +169,7 @@ test('toExperimentView presents the stored hold sweep with figures only from the
   assert.equal(view.oldPolicy, null); assert.equal(view.caveat, 'Calculated fit is not observed satisfaction.');
   assert.ok(!view.limitations.includes(view.caveat)); assert.ok(view.limitations.some((l) => /never published as live policy/.test(l)));
   assert.equal(view.assumptions.length, stored.result.assumptions.length);
-  assert.deepEqual(Object.keys(view.assumptions[0]), ['key', 'value', 'unit', 'status', 'basis']);
+  assert.deepEqual(Object.keys(view.assumptions[0]), ['key', 'setting', 'value', 'unit', 'status', 'basis']);
 });
 
 test('bounds come from the stored definition, never from literals', () => {
@@ -343,4 +343,20 @@ test('all new on-screen copy is free of em dashes', () => {
   for (const id of EXPERIMENT_IDS) assert.equal(copy.EXPERIMENTS[id].command, undefined);
   const view = ev.toExperimentView(stored); const text = JSON.stringify(view, (k, v) => (typeof v === 'function' ? undefined : v));
   assert.ok(!text.includes('—') || stored.result.assumptions.some((a) => JSON.stringify(a).includes('—')), 'view adds no em dash');
+});
+
+test('FUCQ-295: the change shows a plain parameter label, with a humanised fallback, and car time follows one unit per measure', async () => {
+  const labels = await import('../../blocks/gcsp/greg/comparison/experiment-copy.js');
+  const key = (k) => labels.parameterLabel(k);
+  assert.equal(key('hold.buddy.durationSeconds'), 'How long the buddy route holds a car');
+  for (const k of ['hold.cart.durationSeconds', 'hold.cart.orderReview.durationSeconds', 'brief.slider.minimum', 'brief.slider.maximum', 'offer.declinedCar.exclusion',
+    'allocation.tieBreak.rule', 'comparison.modelLineMix', 'comparison.pointsAllowanceMultiplier']) assert.ok(labels.PARAMETER_LABELS[k] && !/\./.test(key(k)), k);
+  assert.equal(key('some.newKey'), 'Some new key');
+  const view = ev.toExperimentView(stored);
+  assert.equal(view.change.label, 'How long the buddy route holds a car'); assert.equal(view.change.key, 'hold.buddy.durationSeconds');
+  assert.equal(view.assumptions.find((a) => a.key === 'hold.cart.durationSeconds').setting, 'How long a car stays in a cart');
+  const unit = (m) => m.rows.map((r) => m.format(r.mean)).concat(m.arms.map((a) => a.differenceText));
+  for (const route of view.routes) for (const m of route.measures.filter((x) => x.key === 'heldNotTakenCarDays')) {
+    assert.ok(['hours', 'days'].includes(m.kind)); assert.ok(unit(m).every((t) => t === 'Not observed' || new RegExp(m.kind === 'hours' ? ' h' : 'days?').test(t)), m.kind);
+  }
 });

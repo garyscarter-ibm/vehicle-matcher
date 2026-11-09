@@ -26,11 +26,11 @@ export const VERDICTS = Object.freeze({
 });
 export const BETTER_WHEN = Object.freeze({ higher: 'Higher is better', lower: 'Lower is better' });
 
-// kind drives the unit: share (0..1 shown as %), days (car-days), count, fit (0..100).
+// kind drives the unit: share (0..1 shown as %), days (car-days; carTimeKind may pick hours), count, fit (0..100).
 const MEASURES = Object.freeze({
   acceptableCoverage: ['Covered before renewal', 'share'],
   carsNeverAllocated: ['Cars never allocated', 'count'],
-  heldNotTakenCarDays: ['Car-days held but not taken', 'days'],
+  heldNotTakenCarDays: ['Car time held but not taken', 'days'],
   declinedOffers: ['Offers declined', 'count'],
   expiredOffers: ['Offers expired', 'count'],
   failedClaims: ['Holds that expired untaken', 'count'],
@@ -47,23 +47,42 @@ const finite = (v) => typeof v === 'number' && Number.isFinite(v);
 const trim = (v, dp) => String(Math.round(v * 10 ** dp) / 10 ** dp);
 const FORMATS = Object.freeze({
   share: (v) => `${trim(v * 100, 1)}%`,
-  days: (v) => (v !== 0 && Math.abs(v) < 0.05 ? v.toFixed(3) : v.toFixed(1)),
+  days: (v) => `${trim(v, 1)} ${trim(v, 1) === '1' ? 'day' : 'days'}`,
+  hours: (v) => `${trim(v * 24, 1)} h`,
   count: (v) => trim(v, 1),
   fit: (v) => v.toFixed(1),
 });
+/** Car-time reads in hours when every figure of its pair is under one car-day, else in days. Other kinds pass through. */
+export const carTimeKind = (kind, values) => (kind !== 'days' ? kind : Math.max(0, ...values.filter(finite).map(Math.abs)) < 1 ? 'hours' : 'days');
 /** A value in its measure's unit, or "Not observed" for null. */
 export const formatMeasure = (kind, v) => (finite(v) ? FORMATS[kind](v) : NOT_OBSERVED);
 /** As formatMeasure with an explicit sign, and "pts" for shares (a difference of two percentages). */
 export function formatChange(kind, v) {
   if (!finite(v)) return NOT_OBSERVED;
   const body = FORMATS[kind](Math.abs(v));
-  const sign = v > 0 && Number(body.replace('%', '')) !== 0 ? '+' : v < 0 && Number(body.replace('%', '')) !== 0 ? '-' : '';
+  const sign = v > 0 && parseFloat(body) !== 0 ? '+' : v < 0 && parseFloat(body) !== 0 ? '-' : '';
   return `${sign}${kind === 'share' ? `${body.slice(0, -1)} pts` : body}`;
 }
 export function differenceText(kind, diff) {
   if (!finite(diff?.mean)) return `Difference (buddy minus today): ${NOT_OBSERVED}`;
   const range = finite(diff.min) && finite(diff.max) ? ` (${formatChange(kind, diff.min)} to ${formatChange(kind, diff.max)})` : '';
   return `Difference (buddy minus today): ${formatChange(kind, diff.mean)}${range}`;
+}
+
+const seedsText = (n) => `${n} seed${n === 1 ? '' : 's'}`;
+/** The one-sentence answer from the acceptableCoverage measure: its verdict, both means as shares and the seed count. */
+export function coverageHeadline(verdict, today, buddy, seeds) {
+  const [t, b, n] = [formatMeasure('share', today), formatMeasure('share', buddy), seedsText(seeds)];
+  if (verdict === 'buddy-better') return `${BUDDY} did better: it covered ${b} before renewal, against ${t} on ${BASELINE.toLowerCase()}, across ${n}.`;
+  if (verdict === 'current-better') return `${BASELINE} did better: it covered ${t} before renewal, against ${b} on the ${BUDDY.toLowerCase()}, across ${n}.`;
+  const both = `the ${BUDDY.toLowerCase()} covered ${b} before renewal and ${BASELINE.toLowerCase()} ${t}, across ${n}.`;
+  return verdict === 'insufficient-seeds' ? `Too few seeds to say which route did better: ${both}` : `No clear difference: ${both}`;
+}
+/** The fallback when coverage is not stored: verdicts counted across all measures. */
+export function countHeadline(buddy, today, total, seeds) {
+  const n = seedsText(seeds);
+  if (!buddy && !today) return `Neither route did clearly better on any of ${total} measures, across ${n}.`;
+  return `${BUDDY} better on ${buddy} of ${total} measures, ${BASELINE.toLowerCase()} on ${today}, across ${n}.`;
 }
 
 export const STATUS_LABELS = Object.freeze({ assumed: 'Assumed', verified: 'Verified' });

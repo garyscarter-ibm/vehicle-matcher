@@ -197,7 +197,7 @@
     },
     {
       "path": "blocks/gcsp/greg/comparison/comparison.css",
-      "max_lines": 31
+      "max_lines": 29
     },
     {
       "path": "blocks/gcsp/greg/comparison/experiments.css",
@@ -265,7 +265,7 @@
     },
     {
       "path": "blocks/gcsp/kit/range-bar.css",
-      "max_lines": 13
+      "max_lines": 12
     },
     {
       "path": "blocks/gcsp/order-progress/gcsp-order-progress.css",
