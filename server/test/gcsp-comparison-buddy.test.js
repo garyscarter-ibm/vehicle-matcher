@@ -27,7 +27,8 @@ const solo = (preferences, seed) => ({ seed, overlay: { ...fixture.overlay, 'com
   'comparison.briefNoise.v1': { accuratePreferenceProbability: 0, preserveEssentials: true },
   'comparison.needs.v1': { essentials: fixture.overlay['comparison.needs.v1'].essentials, preferences } }, });
 // Two employees compete for two cars released a day apart; the first holder's underlying fit fails.
-const pair = { seed: 'fucq134-pair-151', overlay: { 'comparison.cohortSize': 2, 'comparison.carsPerEmployee': 1,
+// The seed gives that case under the run identity (re-picked when FUCQ-242 dropped codeRevision from it).
+const pair = { seed: 'fucq242-pair-8', overlay: { 'comparison.cohortSize': 2, 'comparison.carsPerEmployee': 1,
   'comparison.renewalDays': { min: 30, max: 30 }, 'comparison.modelLineMix': [{ modelLine: 'G21 Touring|320i', weight: 1 }],
   'comparison.releaseCadence': { firstReleaseDay: 0, intervalDays: 1, batchSize: 1 }, 'comparison.accessGroups': accessing(600),
   'comparison.needs.v1': { essentials: fixture.overlay['comparison.needs.v1'].essentials, preferences: {
