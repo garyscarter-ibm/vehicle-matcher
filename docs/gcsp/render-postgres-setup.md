@@ -153,6 +153,16 @@ The GCSP API uses the complete repository checkout so its pinned root image asse
 
 The command has passed with actual public assets and an offline restart locally. Confirm the deployed build separately; a Blueprint commit does not itself prove Render executed it. Native PostgreSQL setup remains a separate credential-dependent step.
 
+## Stored route comparison (FUCQ-288)
+
+Greg's route comparison panel reads a result prepared offline. It is committed at `server/data/gcsp/comparison/process-only.json` and loaded at boot through `GCSP_COMPARISON_RESULT_FILE` (set in `render.gcsp.yaml`; the local launcher defaults to the same file).
+
+To refresh it, run from the repo root:
+
+`NODE_OPTIONS=--max-old-space-size=2048 node scripts/gcsp-comparison.mjs --experiment process --out <new file>`
+
+It takes about 28 minutes and about 1.5 GB. The default 128 MB worker job fails (FUCQ-309). Then replace the committed file. Refresh it whenever the policy seed or the replay changes; until then the panel shows its older-policy note. Never start it live in the demo.
+
 ## Keeping it up to date
 
 - Every push to `gcsp-poc`, which is every merge the pollers make, redeploys `gcsp-api` and `gcsp-site`. To control

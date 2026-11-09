@@ -165,11 +165,11 @@ test('an older policy version is labelled with both versions and what to do', as
   assert.equal((await mount('no-clear-difference')).root.querySelector('.gcsp-comparison-notice'), null);
 });
 
-test('no stored comparison shows the preparation command in a code element and Reload reads again', async () => {
+test('no stored comparison tells Greg the presenter prepares it, shows no command, and Reload reads again', async () => {
   const { root, calls } = await mount('empty');
-  assert.equal(state(root), 'empty'); assert.equal(root.querySelector('h2').textContent, 'No stored comparison yet');
-  assert.equal(root.querySelector('code').textContent, 'node scripts/gcsp-comparison.mjs --experiment process');
-  assert.match(text(root), /Prepare it offline with node scripts\/gcsp-comparison\.mjs --experiment process, then reload\./);
+  assert.equal(state(root), 'empty'); assert.equal(root.querySelector('h2').textContent, 'No comparison has been run for this demo yet');
+  assert.equal(root.querySelector('code'), null); assert.doesNotMatch(text(root), /node scripts|gcsp-comparison\.mjs/);
+  assert.match(text(root), /The presenter prepares it before the demo\. Reload to check again\./);
   assert.equal(root.querySelector('table'), null); assert.equal(calls.load, 1);
   button(root, 'Reload').click(); await settle(); assert.equal(calls.load, 2);
 });

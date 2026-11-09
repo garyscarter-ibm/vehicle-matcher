@@ -68,7 +68,7 @@ test('the picker lists the four experiments with their stored state and the proc
   assert.deepEqual(options.map((o) => o.dataset.value), ['process-only', 'order-mix', 'points', 'hold-sweep']);
   assert.deepEqual(options.map((o) => o.querySelector('.vm-option-label').textContent), ['Process only', 'Order mix', 'Points allowance', 'Hold duration']);
   assert.match(options[0].textContent, /stored \d+ \w+ 2026/); assert.match(options[3].textContent, /stored 8 Nov 2026/);
-  assert.match(options[1].textContent, /no stored result/); assert.match(options[2].textContent, /no stored result/);
+  assert.match(options[1].textContent, /not run yet/); assert.match(options[2].textContent, /not run yet/);
   const group = root.querySelector('.gcsp-comparison-picker [role="radiogroup"]');
   assert.equal(group.getAttribute('aria-labelledby'), root.querySelector('.gcsp-comparison-picker .gcsp-field-label').id);
   assert.equal(root.querySelector('.gcsp-comparison-picker .gcsp-field-label').textContent, 'Experiment');
@@ -84,8 +84,8 @@ test('arrow keys move the choice and change only the body below, keeping focus o
   press(first, 'ArrowDown'); await settle();
   assert.equal(document.activeElement, optionOf(root, 'order-mix')); assert.equal(optionOf(root, 'order-mix').getAttribute('aria-checked'), 'true');
   assert.equal(root.querySelector('.gcsp-comparison-picker'), picker); assert.equal(root.querySelector('.gcsp-comparison-head'), head);
-  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No stored result yet/);
-  assert.match(root.querySelector('.gcsp-comparison-command').textContent, /--experiment order-mix/);
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No comparison has been run for this demo yet/);
+  assert.equal(root.querySelector('code'), null);
   press(document.activeElement, 'End'); await settle();
   assert.equal(document.activeElement, optionOf(root, 'hold-sweep')); assert.ok(root.querySelector('.gcsp-comparison-form'));
   press(document.activeElement, 'Home'); await settle();
@@ -135,14 +135,15 @@ test('the rerun form is prefilled from the stored result and its hint carries on
   assert.equal(submit(root).textContent, 'Run the hold comparison'); assert.equal(submit(root).disabled, false);
 });
 
-test('no stored result shows the offline command and, for the hold sweep, the form with a hint that has no bounds', async () => {
+test('no stored result tells Greg the presenter prepares it, with no command, and, for the hold sweep, the form with a hint that has no bounds', async () => {
   const { root } = await mount('experiments-empty');
   assert.equal(optionOf(root, 'process-only').getAttribute('aria-checked'), 'true');
-  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No stored result yet/);
-  assert.equal(root.querySelector('.gcsp-comparison-command').textContent, 'node scripts/gcsp-comparison.mjs --experiment process');
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No comparison has been run for this demo yet/);
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /The presenter prepares it before the demo\./);
+  assert.equal(root.querySelector('code'), null);
   assert.equal(root.querySelector('.gcsp-comparison-form'), null);
   await choose(root, 'hold-sweep');
-  assert.match(root.querySelector('.gcsp-comparison-command').textContent, /--experiment hold-sweep/);
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /The presenter prepares it before the demo\./); assert.equal(root.querySelector('code'), null);
   assert.equal(field(root, 'hours').value, ''); assert.equal(field(root, 'basis').value, '');
   const hint = root.querySelector(`#${field(root, 'hours').id}-hint`).textContent;
   assert.doesNotMatch(hint, /From \d|Up to|Not the value/); assert.match(hint, /service checks the range/);
@@ -245,11 +246,11 @@ test('with no previous result a running job says so and a failed one says nothin
     start: async () => adapterMod.startOutcomeToState(202, { status: 'pending', value: jobBody('running') }),
     readJob: (q) => (q?.jobId ? pending.then(() => okJob(failed)) : Promise.resolve(noJob())) } });
   await choose(root, 'hold-sweep'); await run(root, '1', 'Try one hour');
-  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No previous result/); assert.doesNotMatch(text(root.querySelector('.gcsp-comparison-stage')), /No stored result yet/);
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No previous result/); assert.doesNotMatch(text(root.querySelector('.gcsp-comparison-stage')), /No comparison has been run/);
   release(); await until(() => root.querySelector('.gcsp-comparison-job [role="alert"]:not([hidden])'));
   const alert = text(root.querySelector('.gcsp-comparison-job [role="alert"]'));
   assert.ok(alert.includes('It stopped.')); assert.ok(alert.includes('No result was stored.')); assert.doesNotMatch(alert, /still the latest/);
-  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No stored result yet/);
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No comparison has been run for this demo yet/);
 });
 
 test('server reasons land on the duration and reason fields, and other fields go to the summary only', async () => {

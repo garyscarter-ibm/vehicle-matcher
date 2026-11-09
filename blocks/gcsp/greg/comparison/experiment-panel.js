@@ -43,9 +43,8 @@ export function mountExperimentPanel(root, { adapter, signal, pollMs = 2000 } = 
   }
   function emptyNodes(e) {
     if (job?.active && job.experimentId === e.id) return [heading(words.NO_PREVIOUS), el('p', 'gcsp-note', words.NO_PREVIOUS_NOTE)];
-    const section = el('section', 'gcsp-comparison-empty'); const lead = el('p', 'gcsp-comparison-lead', e.id === 'hold-sweep' ? words.NO_RESULT_RUN : words.NO_RESULT_LEAD);
-    lead.append(el('code', 'gcsp-comparison-command', EXPERIMENTS[e.id]?.command ?? ''), words.NO_RESULT_TAIL);
-    section.append(heading(words.NO_RESULT_TITLE), lead); return [section];
+    const section = el('section', 'gcsp-comparison-empty');
+    section.append(heading(words.NO_RESULT_TITLE), el('p', 'gcsp-comparison-lead', words.NO_RESULT_NOTE)); return [section];
   }
   function drawStage() {
     const e = entry(selected); if (!e) { stage.replaceChildren(); return; }

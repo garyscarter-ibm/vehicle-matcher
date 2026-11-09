@@ -13,10 +13,8 @@ export const LEAVES_OUT = 'What this replay leaves out';
 export const DETAILS = 'Assumptions, seeds and provenance';
 export const UNAVAILABLE = 'The stored comparison could not be loaded. Try again in a moment.';
 export const REFUSED = 'Only the scheme ordering lead or the presenter can see the route comparison.';
-export const EMPTY_TITLE = 'No stored comparison yet';
-export const EMPTY_LEAD = 'Prepare it offline with ';
-export const EMPTY_COMMAND = 'node scripts/gcsp-comparison.mjs --experiment process';
-export const EMPTY_TAIL = ', then reload.';
+export const EMPTY_TITLE = 'No comparison has been run for this demo yet';
+export const EMPTY_NOTE = 'The presenter prepares it before the demo. Reload to check again.';
 export const OLD_POLICY_TITLE = 'Older policy version';
 export const oldPolicyText = (made, active) => `Made under policy ${made}. The active policy is ${active}. Prepare a new comparison to use it.`;
 
@@ -71,12 +69,12 @@ export function differenceText(kind, diff) {
 export const STATUS_LABELS = Object.freeze({ assumed: 'Assumed', verified: 'Verified' });
 export const statusLabel = (s) => STATUS_LABELS[s] ?? String(s ?? '');
 
-// Experiments (FUCQ-176). Labels, plain descriptions and offline commands; the stored result owns every figure.
+// Experiments (FUCQ-176). Labels and plain descriptions; the stored result owns every figure.
 export const EXPERIMENTS = Object.freeze({
-  'process-only': { label: 'Process only', summary: 'Compares the buddy route with today\'s release route. Nothing else changes.', command: 'node scripts/gcsp-comparison.mjs --experiment process' },
-  'order-mix': { label: 'Order mix', summary: 'Changes which model lines the fictional employees order.', command: "node scripts/gcsp-comparison.mjs --experiment order-mix --change '{...}'" },
-  points: { label: 'Points allowance', summary: 'Scales every employee\'s points allowance by one multiplier.', command: "node scripts/gcsp-comparison.mjs --experiment points --change '{...}'" },
-  'hold-sweep': { label: 'Hold duration', summary: 'Changes how long the buddy route holds a car, one run per chosen duration.', command: "node scripts/gcsp-comparison.mjs --experiment hold-sweep --change '{...}'" },
+  'process-only': { label: 'Process only', summary: 'Compares the buddy route with today\'s release route. Nothing else changes.' },
+  'order-mix': { label: 'Order mix', summary: 'Changes which model lines the fictional employees order.' },
+  points: { label: 'Points allowance', summary: 'Scales every employee\'s points allowance by one multiplier.' },
+  'hold-sweep': { label: 'Hold duration', summary: 'Changes how long the buddy route holds a car, one run per chosen duration.' },
 });
 export const experimentLabel = (id) => EXPERIMENTS[id]?.label ?? humanise(id);
 export const WHAT_IF = 'What-if: this value is tried here and never published as live policy.';
