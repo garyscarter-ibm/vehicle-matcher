@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { createReadStream } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { basename, dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,6 +13,13 @@ const unavailable = (code) => result('unavailable', { code, reason: 'The retaine
 const invalid = (code) => result('invalid', { code, reasons: [{ field: 'stock-configuration-plan', reason: 'Supply a valid retained corpus and reviewed policy labels.' }] });
 const byCode = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 
+function planRow(line) {
+  const row = JSON.parse(line);
+  const codes = row.canonicalIdentity?.factoryOptionCodes ?? [];
+  return { configurationId: row.configurationId, generation: row.configuration?.generation ?? null,
+    paint: codes.filter((code) => /^P[0-9A-Z]{4}$/.test(code)), upholstery: codes.filter((code) => /^F[0-9A-Z]{4}$/.test(code)) };
+}
+
 /** Reads the active retained corpus (pointer, manifest, checksummed rows) without the registry. */
 export async function readRetainedCorpus(root) {
   const active = JSON.parse(await readFile(join(root, 'active.json'), 'utf8'));
@@ -19,14 +27,17 @@ export async function readRetainedCorpus(root) {
   if (!/^[a-f0-9]{64}$/.test(directory ?? '') || directory !== active.selected.manifestDigest) throw new Error('active-pointer-invalid');
   const base = join(root, 'versions', directory);
   const manifest = JSON.parse(await readFile(join(base, 'manifest.json'), 'utf8'));
-  const bytes = await readFile(join(base, 'configurations.jsonl'));
-  if (createHash('sha256').update(bytes).digest('hex') !== manifest.checksums?.['configurations.jsonl']) throw new Error('configurations-checksum');
-  const rows = bytes.toString('utf8').split('\n').filter(Boolean).map((line) => {
-    const row = JSON.parse(line);
-    const codes = row.canonicalIdentity?.factoryOptionCodes ?? [];
-    return { configurationId: row.configurationId, generation: row.configuration?.generation ?? null,
-      paint: codes.filter((code) => /^P[0-9A-Z]{4}$/.test(code)), upholstery: codes.filter((code) => /^F[0-9A-Z]{4}$/.test(code)) };
-  });
+  // Streamed: the whole file plus its decoded copy cost ~370 MB at hosted start (FUCQ-190).
+  const hash = createHash('sha256'); const rows = []; let pending = Buffer.alloc(0);
+  const take = (bytes, start, end) => { if (end > start) rows.push(planRow(bytes.toString('utf8', start, end))); };
+  for await (const chunk of createReadStream(join(base, 'configurations.jsonl'), { highWaterMark: 1 << 20 })) {
+    hash.update(chunk); const bytes = pending.length ? Buffer.concat([pending, chunk]) : chunk;
+    let start = 0; let end;
+    while ((end = bytes.indexOf(10, start)) !== -1) { take(bytes, start, end); start = end + 1; }
+    pending = Buffer.from(bytes.subarray(start));
+  }
+  take(pending, 0, pending.length);
+  if (hash.digest('hex') !== manifest.checksums?.['configurations.jsonl']) throw new Error('configurations-checksum');
   return { datasetId: manifest.datasetId, corpusVersion: manifest.version, manifestDigest: directory, rows };
 }
 
