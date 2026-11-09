@@ -21,6 +21,11 @@ export const REQUEST_LINK = 'See this request in Order requests';
 export const ORDER_REQUESTS_ID = 'gcsp-order-requests';
 export const requestedHeadline = (n) => `${plural(n, 'vehicle')} requested from Production`;
 export const requestedNotice = (at) => `Requested${at ? ` at ${at}` : ''}. Production has not confirmed anything yet.`;
+/** Items from requestedLimitText -> the note shown above the editable limits while a request is with Production. */
+export function requestedLimitsNote(items) {
+  const joined = items.length > 1 ? `${items.slice(0, -1).join(', ')} and ${items.at(-1)}` : items[0];
+  return `The limits below are the plan in force. Your request for ${joined} is with Production.`;
+}
 export const recommendationLine = (n, text) => `Under the current limits the plan recommends ${plural(n, 'vehicle')}: ${text}.`;
 
 export const UNBOUND_TITLE = 'Cars left out of this plan';

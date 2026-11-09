@@ -37,9 +37,15 @@ export function constraintLabel(id, names) {
   return humanise(id);
 }
 const constraints = (rows, names, currency) => list(rows).map((c) => ({ id: c.id, label: constraintLabel(c.id, names), detail: detailText(c.detail, currency) }));
-// A minimum of 0 is met by every plan, so "Quantity meets minimum 0." is not a limit holding the plan back.
-const trivialMinimum = (c) => /:min$/.test(String(c.id)) && /^Quantity meets minimum 0\.$/.test(String(c.detail ?? '').trim());
-const binding = (rows, names, currency) => constraints(list(rows).filter((c) => !trivialMinimum(c)), names, currency);
+// A minimum of 0 is met by every plan, so it never holds the plan back. Read it from the plan's own bounds, not the solver text.
+export function trivialMinimum(c, plan) {
+  const [kind, ref, edge] = String(c?.id).split(':');
+  const model = kind === 'model';
+  if (edge !== 'min' || (!model && kind !== 'derivative')) return false;
+  const rows = list(list(plan?.policyProvenance).find((p) => p.key === (model ? LIMIT_KEYS.models : LIMIT_KEYS.derivatives))?.value);
+  return rows.find((b) => b?.[model ? 'modelId' : 'derivativeId'] === ref)?.min === 0;
+}
+const binding = (rows, names, currency, plan) => constraints(list(rows).filter((c) => !trivialMinimum(c, plan)), names, currency);
 
 const linesOf = (quantities, names) => list(quantities).map((q) => ({
   derivativeId: q.derivativeId, modelId: q.modelId, model: names.parts(q.derivativeId)?.model ?? names.model(q.modelId),
@@ -126,6 +132,20 @@ function limitsOf(plan, presentation, names) {
   });
 }
 
+/** Requested `changes` + the plan in force's `limits` -> short items for each value that differs, e.g. "3 Series Saloon 320i minimum 2". Unreadable entries are skipped. */
+export function requestedLimitText(changes, limits) {
+  const whole = (v) => Number.isSafeInteger(v) && v >= 0;
+  return list(changes).flatMap((change) => {
+    const group = list(limits).find((g) => g.key === change?.key);
+    if (!group) return [];
+    if (group.kind === 'budget') return whole(change.value) && change.value !== group.minor ? [`${group.label} ${money(change.value, group.currency)}`] : [];
+    return list(change.value).flatMap((b) => {
+      const row = group.rows.find((r) => r.id === b?.[group.idField]);
+      return row ? ['min', 'max'].filter((edge) => whole(b[edge]) && b[edge] !== row[edge]).map((edge) => `${row.label} ${edge === 'min' ? 'minimum' : 'maximum'} ${b[edge]}`) : [];
+    });
+  });
+}
+
 function differencesOf(plan, active, names, currency) {
   const quantity = (p, id) => list(p?.quantities).find((q) => q.derivativeId === id)?.quantity ?? null;
   const ids = [...new Set([...list(active?.quantities), ...list(plan.quantities)].map((q) => q.derivativeId))];
@@ -151,7 +171,7 @@ function submissionOf(replan, names) {
   if (!object(replan) || !['unchanged-since-submission', 'replanned'].includes(replan.status)) return null;
   const replanned = replan.status === 'replanned';
   return { status: replanned ? 'replanned' : 'submitted', message: SUBMISSION_LABELS[replanned ? 'replanned' : 'submitted'],
-    submittedAt: replan.submittedAt, submittedAtLabel: formatDemoTime(replan.submittedAt), after: replanned ? responseLabel(replan.after) : null,
+    changes: list(replan.changes), submittedAt: replan.submittedAt, submittedAtLabel: formatDemoTime(replan.submittedAt), after: replanned ? responseLabel(replan.after) : null,
     afterAt: replanned ? (replan.after?.at ?? null) : null, afterAtLabel: replanned ? formatDemoTime(replan.after?.at) : null,
     requests: list(replan.requests).map((r) => ({ derivativeId: r.derivativeId, name: names.derivative(r.derivativeId), quantity: r.quantity, state: r.state, stateLabel: requestStateLabel(r.state) })) };
 }
@@ -227,7 +247,7 @@ export function toPlanView(value) {
     spend: infeasible || !Number.isFinite(plan.spendMinor) ? null : money(plan.spendMinor, currency), spendMinor: infeasible ? null : (plan.spendMinor ?? null),
     coverage, unallocatedRisk: infeasible ? null : riskOf(plan.unallocatedStockRisk, names),
     unmetNeeds: infeasible ? [] : list(plan.unmetNeeds).map((n) => unmetOf(n, names)),
-    binding: infeasible ? [] : binding(plan.bindingConstraints, names, currency),
+    binding: infeasible ? [] : binding(plan.bindingConstraints, names, currency, plan),
     conflicts: infeasible ? constraints(plan.conflicts, names, currency) : [], alternatives,
     versions: versionsOf(value, plan, presentation), limits: limitsOf(plan, presentation, names),
     differences: preview ? differencesOf(plan, value.activePlan, names, currency) : null,

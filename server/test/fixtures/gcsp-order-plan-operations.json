@@ -1546,6 +1546,7 @@
         "submittedPlanId": "order-plan-a694a1b2a7c37452dbed1a157f6aff8318077061d7a446a6a4eb0dfd4b161a75",
         "submittedAt": "2026-11-05T09:00:00.000Z",
         "currentPlanId": "order-plan-0a1ef28b523ac84e217b39795e4bf3b3abe280a22e52dc71924840a9e30a9300",
+        "changes": [],
         "requests": [
           {
             "requestId": "request-ade349d7c5a96254209c384d655646ab",

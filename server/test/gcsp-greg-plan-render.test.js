@@ -181,6 +181,35 @@ test('submitting from a preview sends the previewed changes', async () => {
   assert.equal(calls.submit[0].versions.policy, 'preview-fixture0001');
 });
 
+test('after a request, Change limits says the requested limit is with Production and still shows the plan in force (FUCQ-314)', async () => {
+  let sent = null; let reads = 0;
+  const { root } = await mount('preview', {}, {
+    readPlan: async () => { reads += 1; const v = valueOf(sent ? 'submitted' : 'ready'); if (sent) v.replan.changes = sent; return adapterMod.planOutcome(200, { status: 'ok', value: v }); },
+    previewPlan: async (o) => { const v = valueOf('preview'); v.changes = o.changes; return adapterMod.planOutcome(200, { status: 'ok', value: v }); },
+    submitPlan: async (o) => { sent = structuredClone(o.changes); return adapterMod.planOutcome(200, { status: 'ok', value: valueOf('submission') }); },
+  });
+  edit(limit(root, 'Derivative limits', 2).min, '2'); action(root, 'Preview with these limits').click(); await settle();
+  requestButton(root).click(); await settle();
+  assert.equal(reads, 2); assert.equal(sent[0].value[2].min, 2); assert.equal(state(root), 'submitted');
+  const body = root.querySelector('.gcsp-plan-editor-body');
+  assert.equal(text(body.firstElementChild), 'The limits below are the plan in force. Your request for 3 Series Touring 320i minimum 2 is with Production.');
+  assert.equal(limit(root, 'Derivative limits', 2).min.value, '0', 'the editor keeps the plan in force');
+  action(root, 'Reset limits').click(); assert.match(text(root.querySelector('.gcsp-plan-editor-body').firstElementChild), /is with Production\.$/);
+  assert.equal(limit(root, 'Derivative limits', 2).min.value, '0');
+});
+
+test('Change limits adds no requested-limit note before a request, without readable changes, or after Production responds', async () => {
+  const noteIn = (root) => /is with Production/.test(text(root.querySelector('.gcsp-plan-editor')));
+  assert.equal(noteIn((await mount('ready')).root), false);
+  const bare = host(); const old = valueOf('submitted'); delete old.replan.changes;
+  panel.mountGregOrderPlan(bare, { adapter: staticAdapter(() => old) }); await settle();
+  assert.equal(state(bare), 'submitted'); assert.equal(noteIn(bare), false);
+  const same = host(); const none = valueOf('submitted'); none.replan.changes = [{ key: 'orderPlan.derivativeBounds', value: 'unreadable' }, { key: 'orderPlan.budgetMinor', value: 'x' }];
+  panel.mountGregOrderPlan(same, { adapter: staticAdapter(() => none) }); await settle(); assert.equal(noteIn(same), false);
+  const replanned = await mount('replanned'); assert.equal(noteIn(replanned.root), false);
+  assert.equal(noteIn((await mount('submitted')).root), true);
+});
+
 test('a stale plan shows what changed and replans on request', async () => {
   const { root, calls } = await mount('stale');
   requestButton(root).click(); await settle();

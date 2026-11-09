@@ -110,6 +110,7 @@ test('submission creates one request per derivative through the port, carrying t
   await f.advance();
   assert.deepEqual(good(await f.ops.submitPlan(f.context, submitOf(plan, 'submit-1'))), out);
   assert.equal(f.fake.requestCount, 1); assert.equal((await snapshots(f, 'submission')).length, 1);
+  assert.deepEqual(saved.output.changes, []); assert.deepEqual(good(await f.ops.readPlan(f.context)).replan.changes, []); // no changes were requested
   const changed = await f.ops.submitPlan(f.context, { ...submitOf(plan, 'submit-1'), planId: 'order-plan-other' });
   assert.deepEqual([changed.status, changed.code], ['conflict', 'idempotency-input-changed']); assert.equal(f.fake.requestCount, 1);
 });
@@ -183,6 +184,7 @@ test('replan after a partial confirmation, a delay and a release: a request is n
 
   let now = await read(); // requested only
   assert.deepEqual([now.replan.status, now.replan.submittedPlanId, now.replan.responses], ['unchanged-since-submission', preview.plan.planId, []]);
+  assert.deepEqual(now.replan.changes, changes); // the requested limits survive a reload (FUCQ-314)
   assert.deepEqual(now.plan.supplyActivity.requests.map((r) => [r.requestId, r.derivativeId, r.quantity, r.state, r.commandId]),
     [[requestId, TOURING, 2, 'requested', `sub-1:${TOURING}`]]);
   assert.deepEqual([now.plan.orderQuantity, sources(now.plan), now.plan.unallocatedStockRisk.totalSupply], [1, [`order:${TOURING}`], 1]);
