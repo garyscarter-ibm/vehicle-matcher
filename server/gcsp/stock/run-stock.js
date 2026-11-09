@@ -68,6 +68,8 @@ export function createRunStockProvider({ policy, repository, contextForRun, gene
     },
     /** The decided source for a run, or null before it is decided. */
     describe(runId) { return decisions.get(runId)?.value ?? null; },
+    /** Generated cars left out of this run's pulls because their availability had ended. */
+    expired(runId) { return generated.expired(runId); },
   });
 }
 

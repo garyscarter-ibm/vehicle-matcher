@@ -21,7 +21,7 @@ function planFor(runId, rows) {
     stock: members.map((row) => ({ ...Object.fromEntries(STOCK_FIELDS.filter((key) => row[key] !== undefined && key !== 'availability').map((key) => [key, row[key]])),
       availability: { availableUntil: `${value(row, 'confirmedDeliveryWeek')}T00:00:00.000Z` } })) }));
   const version = `${value(cars[0], 'generatorVersion')}:${value(cars[0], 'policyVersion')}`;
-  return createSyntheticStockProvider({ runId, version, label: LABEL, windows });
+  return { provider: createSyntheticStockProvider({ runId, version, label: LABEL, windows }), cars: windows.flatMap((window) => window.stock), expired: new Set() };
 }
 
 /** Pull-port source over a run's generated stock rows, read once per run on its first pull.
@@ -42,8 +42,20 @@ export function createGeneratedStockProvider({ repository, contextForRun } = {})
           if (!plan) return unavailable();
           plans.set(request.runId, plan);
         }
-        return await plans.get(request.runId).pull(request);
+        const plan = plans.get(request.runId);
+        const released = Array.isArray(request.released) ? request.released : [];
+        const known = new Set(released.flatMap((row) => row.orderUuids));
+        // Unreleased cars past their availability are left out of the pull and recorded, so they never void a release.
+        const ended = plan.cars.filter((car) => !known.has(car.orderUuid)
+          && Date.parse(car.availability.availableUntil) <= Date.parse(request.asOf)).map((car) => car.orderUuid);
+        ended.forEach((id) => plan.expired.add(id));
+        const pulled = await plan.provider.pull({ ...request, released: [...released, { trancheId: 'expired', orderUuids: ended }] });
+        if (pulled?.status !== 'ok' || !ended.length) return pulled;
+        const out = new Set(ended);
+        return { ...pulled, value: { ...pulled.value, stock: pulled.value.stock.filter((car) => !out.has(car.orderUuid)) } };
       } catch { return unavailable(); }
     },
+    /** Unreleased cars this run's pulls left out because their availability had ended, sorted. */
+    expired(runId) { return Object.freeze([...(plans.get(runId)?.expired ?? [])].sort()); },
   });
 }
