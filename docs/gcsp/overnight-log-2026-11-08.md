@@ -214,3 +214,11 @@ For Russell or Gary:
 - Why Russell's poller skipped them: the queue holds bugs with unresolved intake fields, and FUCQ-152, 166, 190 and 207 lacked Jira headings. Headings added in Jira and re-imported; FUCQ-241 and 242 imported as DEV-2026-11-09-GC-010 and GC-011.
 - Claimed and leads started: FUCQ-241 (High, 5 pts), FUCQ-190 (5 pts), FUCQ-152 (3 pts). FUCQ-240's lead is still running.
 - Russell's poller has no live session here, so the prompt is in `docs/HANDOVER-2026-11-09-MORNING-POLLER.md` (top section): it takes fleet bugs FUCQ-166 downward, Gary's poller takes FUCQ-156 upward, claim before starting.
+
+## 07:50 9 Nov: held-bug batch progress
+- Merged, closed, In Review: FUCQ-157 (b2d83cbb; AC3 partly met, real-evidence proof publication needs a collaborator-authorised allocation), FUCQ-160 (13a963f7). Both Python evidence scripts only, so merged during the full suite.
+- Built and reviewed, merging after the full suite on 39f67502 finishes (it is node-file changes, so held to keep the suite's identity): FUCQ-240 (High), 152, 159, 158, 162, 161.
+- Running leads: FUCQ-241 (High), 190, 163, 164, 165.
+- Left for Russell's poller: FUCQ-166 (Pages publication; its acceptance needs pushes to main and live Pages readback). Held until FUCQ-241 merges: FUCQ-207 and 242 (same comparison code). FUCQ-156 waits for 152 and 165 (same collector file).
+- For Gary: FUCQ-240 shows Jordan's exclusion on the presenter tick panel only; recommendation: enough for the demo, a count on Greg's dashboard would be a new Story. FUCQ-157 chose one 1 s finalize retry that still publishes the proof with the first error kept (alternative: strict stop). FUCQ-152 throws the fork refusal before any traffic, like the existing `continuation-allocation-used`.
+- For Russell: rerun the bounded consumer audit on corpus .12 against FUCQ-158's fix (expect 2,707 failures to fall to 0); FUCQ-161's fresh G42 allocation and FUCQ-157's real-evidence proof need authorisation; don't rerun `verify-retained.py 239`.
