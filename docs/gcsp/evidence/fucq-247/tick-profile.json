@@ -1,0 +1,464 @@
+{
+ "story": "FUCQ-247",
+ "run": 2,
+ "where": "local, macOS, offline memory host, fresh run, presenter Tick mode step",
+ "node": "v26.5.0",
+ "measuredAt": "2026-11-09T16:40:08.245Z",
+ "ticks": [
+  {
+   "i": 1,
+   "st": 200,
+   "ms": 658.2,
+   "bytes": 3836,
+   "status": "ok",
+   "code": null
+  },
+  {
+   "i": 2,
+   "st": 200,
+   "ms": 627,
+   "bytes": 3836,
+   "status": "ok",
+   "code": null
+  },
+  {
+   "i": 3,
+   "st": 200,
+   "ms": 652.6,
+   "bytes": 3836,
+   "status": "ok",
+   "code": null
+  },
+  {
+   "i": 4,
+   "st": 200,
+   "ms": 670.8,
+   "bytes": 3836,
+   "status": "ok",
+   "code": null
+  },
+  {
+   "i": 5,
+   "st": 200,
+   "ms": 704.8,
+   "bytes": 3836,
+   "status": "ok",
+   "code": null
+  },
+  {
+   "i": 6,
+   "st": 200,
+   "ms": 697.8,
+   "bytes": 3836,
+   "status": "ok",
+   "code": null
+  },
+  {
+   "i": 7,
+   "st": 200,
+   "ms": 714.6,
+   "bytes": 3836,
+   "status": "ok",
+   "code": null
+  },
+  {
+   "i": 8,
+   "st": 200,
+   "ms": 707.3,
+   "bytes": 3836,
+   "status": "ok",
+   "code": null
+  }
+ ],
+ "readbackBytes": [
+  {
+   "after": 0,
+   "st": 200,
+   "ms": 105.7,
+   "bytes": 17932
+  },
+  {
+   "after": 1,
+   "st": 200,
+   "ms": 98,
+   "bytes": 18820
+  },
+  {
+   "after": 2,
+   "st": 200,
+   "ms": 86.6,
+   "bytes": 18820
+  },
+  {
+   "after": 3,
+   "st": 200,
+   "ms": 96.6,
+   "bytes": 18821
+  },
+  {
+   "after": 4,
+   "st": 200,
+   "ms": 95.6,
+   "bytes": 18821
+  },
+  {
+   "after": 5,
+   "st": 200,
+   "ms": 120,
+   "bytes": 18821
+  },
+  {
+   "after": 6,
+   "st": 200,
+   "ms": 99,
+   "bytes": 18821
+  },
+  {
+   "after": 7,
+   "st": 200,
+   "ms": 110.5,
+   "bytes": 18821
+  },
+  {
+   "after": 8,
+   "st": 200,
+   "ms": 98.9,
+   "bytes": 18821
+  }
+ ],
+ "readbackGrowth": [
+  {
+   "p": "$.value.lastTick",
+   "firstKB": 2.7,
+   "lastKB": 3.6,
+   "grewKB": 0.8
+  },
+  {
+   "p": "$.value.lastTick.outcomes",
+   "firstKB": 1.8,
+   "lastKB": 2.5,
+   "grewKB": 0.6
+  },
+  {
+   "p": "$.value.lastTick.handlerOrder",
+   "firstKB": 0.6,
+   "lastKB": 0.8,
+   "grewKB": 0.2
+  },
+  {
+   "p": "$.value.runId",
+   "firstKB": 0,
+   "lastKB": 0,
+   "grewKB": 0
+  },
+  {
+   "p": "$.value.now",
+   "firstKB": 0,
+   "lastKB": 0,
+   "grewKB": 0
+  },
+  {
+   "p": "$.value.clockVersion",
+   "firstKB": 0,
+   "lastKB": 0,
+   "grewKB": 0
+  },
+  {
+   "p": "$.value.runVersion",
+   "firstKB": 0,
+   "lastKB": 0,
+   "grewKB": 0
+  },
+  {
+   "p": "$.value.versions",
+   "firstKB": 13.2,
+   "lastKB": 13.2,
+   "grewKB": 0
+  },
+  {
+   "p": "$.value.versions.scenario",
+   "firstKB": 0,
+   "lastKB": 0,
+   "grewKB": 0
+  },
+  {
+   "p": "$.value.versions.fixture",
+   "firstKB": 0,
+   "lastKB": 0,
+   "grewKB": 0
+  },
+  {
+   "p": "$.value.versions.corpus",
+   "firstKB": 0,
+   "lastKB": 0,
+   "grewKB": 0
+  },
+  {
+   "p": "$.value.versions.policy",
+   "firstKB": 0,
+   "lastKB": 0,
+   "grewKB": 0
+  },
+  {
+   "p": "$.value.versions.syntheticIdentityInventory",
+   "firstKB": 0.1,
+   "lastKB": 0.1,
+   "grewKB": 0
+  },
+  {
+   "p": "$.value.versions.stockGeneration",
+   "firstKB": 12.8,
+   "lastKB": 12.8,
+   "grewKB": 0
+  },
+  {
+   "p": "$.value.versions.lastTickId",
+   "firstKB": 0,
+   "lastKB": 0.1,
+   "grewKB": 0
+  }
+ ],
+ "arrayCountGrowth": [
+  {
+   "p": "$.value.lastTick.handlerOrder",
+   "first": 9,
+   "last": 12
+  },
+  {
+   "p": "$.value.lastTick.outcomes",
+   "first": 9,
+   "last": 12
+  }
+ ],
+ "gregOrderPlanAfterTicks": {
+  "st": 200,
+  "ms": 1080.2,
+  "status": "ok",
+  "reason": null,
+  "code": null
+ },
+ "serverDuringTicks": {
+  "maxEventLoopDelayMs": 716.2,
+  "peakRssMiB": 330
+ },
+ "cpuProfile": {
+  "note": "Samples inside the tick POSTs only. \"byService\" and \"bySite\" charge each sample to the innermost server/gcsp frame outside repository/core.js and memory.js.",
+  "totalMs": 5434,
+  "topSelf": [
+   {
+    "fn": "cloneJson server/gcsp/repository/core.js:7",
+    "ms": 4897,
+    "pct": 90.1
+   },
+   {
+    "fn": "(garbage collector) :0",
+    "ms": 230,
+    "pct": 4.2
+   },
+   {
+    "fn": "(program) :0",
+    "ms": 171,
+    "pct": 3.1
+   },
+   {
+    "fn": "runMicrotasks :0",
+    "ms": 11,
+    "pct": 0.2
+   },
+   {
+    "fn": "structuredClone node:internal/worker/js_transferable:113",
+    "ms": 9,
+    "pct": 0.2
+   },
+   {
+    "fn": "(idle) :0",
+    "ms": 9,
+    "pct": 0.2
+   },
+   {
+    "fn": "digest node:internal/crypto/hash:161",
+    "ms": 7,
+    "pct": 0.1
+   },
+   {
+    "fn": "Hash node:internal/crypto/hash:95",
+    "ms": 6,
+    "pct": 0.1
+   },
+   {
+    "fn": "isReceipt server/gcsp/repository/core.js:94",
+    "ms": 6,
+    "pct": 0.1
+   },
+   {
+    "fn": "(anonymous) server/gcsp/repository/core.js:108",
+    "ms": 6,
+    "pct": 0.1
+   },
+   {
+    "fn": "matches server/gcsp/repository/core.js:41",
+    "ms": 6,
+    "pct": 0.1
+   },
+   {
+    "fn": "validDay server/gcsp/policy/file-provider.js:22",
+    "ms": 5,
+    "pct": 0.1
+   },
+   {
+    "fn": "writeFileUtf8 :0",
+    "ms": 4,
+    "pct": 0.1
+   },
+   {
+    "fn": "#drain server/gcsp/notify/index.js:69",
+    "ms": 3,
+    "pct": 0.1
+   },
+   {
+    "fn": "insert server/gcsp/repository/core.js:179",
+    "ms": 3,
+    "pct": 0.1
+   }
+  ],
+  "byService": [
+   {
+    "fn": "(none)",
+    "ms": 5342,
+    "pct": 98.3
+   },
+   {
+    "fn": "server/gcsp/clock/index.js",
+    "ms": 24,
+    "pct": 0.4
+   },
+   {
+    "fn": "server/gcsp/cases/index.js",
+    "ms": 18,
+    "pct": 0.3
+   },
+   {
+    "fn": "server/gcsp/stock/index.js",
+    "ms": 16,
+    "pct": 0.3
+   },
+   {
+    "fn": "server/gcsp/stock/synthetic-provider.js",
+    "ms": 9,
+    "pct": 0.2
+   },
+   {
+    "fn": "server/gcsp/policy/file-provider.js",
+    "ms": 5,
+    "pct": 0.1
+   },
+   {
+    "fn": "server/gcsp/stock/port.js",
+    "ms": 4,
+    "pct": 0.1
+   },
+   {
+    "fn": "server/gcsp/notify/index.js",
+    "ms": 3,
+    "pct": 0.1
+   },
+   {
+    "fn": "server/gcsp/policy/index.js",
+    "ms": 3,
+    "pct": 0.1
+   },
+   {
+    "fn": "server/gcsp/policy/memory-provider.js",
+    "ms": 3,
+    "pct": 0.1
+   },
+   {
+    "fn": "server/gcsp/allocation/index.js",
+    "ms": 3,
+    "pct": 0
+   },
+   {
+    "fn": "server/gcsp/scenarios/index.js",
+    "ms": 2,
+    "pct": 0
+   }
+  ],
+  "bySite": [
+   {
+    "fn": "(none)",
+    "ms": 5342,
+    "pct": 98.3
+   },
+   {
+    "fn": "(anonymous) server/gcsp/cases/index.js:336",
+    "ms": 15,
+    "pct": 0.3
+   },
+   {
+    "fn": "(anonymous) server/gcsp/stock/index.js:75",
+    "ms": 13,
+    "pct": 0.2
+   },
+   {
+    "fn": "#executeTick server/gcsp/clock/index.js:235",
+    "ms": 9,
+    "pct": 0.2
+   },
+   {
+    "fn": "createSyntheticStockProvider server/gcsp/stock/synthetic-provider.js:8",
+    "ms": 9,
+    "pct": 0.2
+   },
+   {
+    "fn": "(anonymous) server/gcsp/clock/index.js:293",
+    "ms": 9,
+    "pct": 0.2
+   },
+   {
+    "fn": "validDay server/gcsp/policy/file-provider.js:22",
+    "ms": 5,
+    "pct": 0.1
+   },
+   {
+    "fn": "#drain server/gcsp/notify/index.js:69",
+    "ms": 3,
+    "pct": 0.1
+   },
+   {
+    "fn": "#resolve server/gcsp/policy/index.js:28",
+    "ms": 3,
+    "pct": 0.1
+   },
+   {
+    "fn": "(anonymous) server/gcsp/stock/port.js:12",
+    "ms": 3,
+    "pct": 0.1
+   },
+   {
+    "fn": "#current server/gcsp/clock/index.js:41",
+    "ms": 3,
+    "pct": 0
+   },
+   {
+    "fn": "handle server/gcsp/stock/index.js:54",
+    "ms": 3,
+    "pct": 0
+   },
+   {
+    "fn": "#records server/gcsp/policy/memory-provider.js:12",
+    "ms": 2,
+    "pct": 0
+   },
+   {
+    "fn": "#authorize server/gcsp/scenarios/index.js:32",
+    "ms": 2,
+    "pct": 0
+   },
+   {
+    "fn": "deadline server/gcsp/cases/index.js:28",
+    "ms": 2,
+    "pct": 0
+   }
+  ]
+ }
+}

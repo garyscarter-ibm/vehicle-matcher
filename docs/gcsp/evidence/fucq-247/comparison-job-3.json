@@ -1,0 +1,483 @@
+{
+ "story": "FUCQ-247",
+ "run": 2,
+ "runNo": 3,
+ "where": "local, macOS, offline memory host (GCSP_RUNTIME=1, GCSP_REPOSITORY_MODE=memory, GCSP_OFFLINE=1)",
+ "node": "v26.5.0",
+ "measuredAt": "2026-11-09T16:21:37.063Z",
+ "request": {
+  "experimentId": "process-only"
+ },
+ "switchStatus": 200,
+ "start": {
+  "st": 202,
+  "ms": 283,
+  "status": "pending",
+  "reason": null
+ },
+ "outcome": {
+  "status": "failed",
+  "reason": "The comparison used more than its 128 MB memory allowance and was stopped.",
+  "progress": {
+   "seedsDone": 0,
+   "seedsTotal": 3,
+   "stepsDone": 1,
+   "stepsTotal": 6
+  },
+  "durationMs": 189288,
+  "polledEveryMs": 2000
+ },
+ "worker": {
+  "events": [
+   {
+    "id": 1,
+    "t": 78,
+    "ev": "start",
+    "url": "server/gcsp/comparison/worker.js",
+    "limits": {
+     "maxOldGenerationSizeMb": 128,
+     "maxYoungGenerationSizeMb": 16
+    }
+   },
+   {
+    "id": 1,
+    "t": 270,
+    "ev": "msg",
+    "type": "plan",
+    "reason": null
+   },
+   {
+    "id": 1,
+    "t": 160677,
+    "ev": "progress",
+    "completed": 1,
+    "route": "current",
+    "seed": "comparison-a"
+   },
+   {
+    "id": 1,
+    "t": 187935,
+    "ev": "error",
+    "code": "ERR_WORKER_OUT_OF_MEMORY",
+    "message": "Worker terminated due to reaching memory limit: JS heap out of memory"
+   },
+   {
+    "id": 1,
+    "t": 187936,
+    "ev": "exit",
+    "code": 1,
+    "ms": 187858,
+    "peakUsed": 128803296
+   }
+  ],
+  "heapSamples": 739,
+  "peakUsedMiB": 123,
+  "peakTotalMiB": 134,
+  "heapLimitMiB": 152,
+  "usedSeriesMiB": [
+   [
+    0.3,
+    24
+   ],
+   [
+    2.3,
+    41
+   ],
+   [
+    4.4,
+    41
+   ],
+   [
+    6.4,
+    58
+   ],
+   [
+    8.5,
+    55
+   ],
+   [
+    10.5,
+    65
+   ],
+   [
+    12.5,
+    72
+   ],
+   [
+    14.6,
+    56
+   ],
+   [
+    16.6,
+    51
+   ],
+   [
+    18.7,
+    71
+   ],
+   [
+    20.7,
+    63
+   ],
+   [
+    22.7,
+    63
+   ],
+   [
+    24.8,
+    69
+   ],
+   [
+    26.8,
+    72
+   ],
+   [
+    28.9,
+    65
+   ],
+   [
+    30.9,
+    70
+   ],
+   [
+    32.9,
+    73
+   ],
+   [
+    35,
+    76
+   ],
+   [
+    37,
+    72
+   ],
+   [
+    39.1,
+    68
+   ],
+   [
+    41.1,
+    75
+   ],
+   [
+    43.1,
+    73
+   ],
+   [
+    45.2,
+    65
+   ],
+   [
+    47.2,
+    72
+   ],
+   [
+    49.3,
+    75
+   ],
+   [
+    51.3,
+    61
+   ],
+   [
+    53.3,
+    72
+   ],
+   [
+    55.3,
+    67
+   ],
+   [
+    57.3,
+    80
+   ],
+   [
+    59.3,
+    84
+   ],
+   [
+    61.3,
+    58
+   ],
+   [
+    63.4,
+    64
+   ],
+   [
+    65.4,
+    82
+   ],
+   [
+    67.4,
+    65
+   ],
+   [
+    69.4,
+    80
+   ],
+   [
+    71.5,
+    87
+   ],
+   [
+    73.5,
+    85
+   ],
+   [
+    75.5,
+    79
+   ],
+   [
+    77.6,
+    75
+   ],
+   [
+    79.6,
+    65
+   ],
+   [
+    81.6,
+    94
+   ],
+   [
+    83.6,
+    85
+   ],
+   [
+    85.6,
+    71
+   ],
+   [
+    87.7,
+    68
+   ],
+   [
+    89.7,
+    76
+   ],
+   [
+    91.7,
+    87
+   ],
+   [
+    93.7,
+    91
+   ],
+   [
+    95.7,
+    81
+   ],
+   [
+    98,
+    64
+   ],
+   [
+    100,
+    66
+   ],
+   [
+    102,
+    81
+   ],
+   [
+    104,
+    86
+   ],
+   [
+    106,
+    92
+   ],
+   [
+    108.1,
+    80
+   ],
+   [
+    110.1,
+    84
+   ],
+   [
+    112.1,
+    104
+   ],
+   [
+    114.1,
+    82
+   ],
+   [
+    116.1,
+    72
+   ],
+   [
+    118.1,
+    84
+   ],
+   [
+    120.1,
+    93
+   ],
+   [
+    122.1,
+    71
+   ],
+   [
+    124.1,
+    90
+   ],
+   [
+    126.3,
+    67
+   ],
+   [
+    128.5,
+    85
+   ],
+   [
+    130.6,
+    83
+   ],
+   [
+    132.6,
+    98
+   ],
+   [
+    134.7,
+    87
+   ],
+   [
+    136.8,
+    68
+   ],
+   [
+    138.8,
+    99
+   ],
+   [
+    140.8,
+    92
+   ],
+   [
+    142.8,
+    92
+   ],
+   [
+    144.8,
+    96
+   ],
+   [
+    146.8,
+    93
+   ],
+   [
+    148.9,
+    70
+   ],
+   [
+    150.9,
+    95
+   ],
+   [
+    152.9,
+    78
+   ],
+   [
+    154.9,
+    76
+   ],
+   [
+    156.9,
+    99
+   ],
+   [
+    158.9,
+    91
+   ],
+   [
+    160.9,
+    98
+   ],
+   [
+    163,
+    110
+   ],
+   [
+    165,
+    111
+   ],
+   [
+    167.1,
+    101
+   ],
+   [
+    169.1,
+    101
+   ],
+   [
+    171.1,
+    67
+   ],
+   [
+    173.2,
+    84
+   ],
+   [
+    175.2,
+    91
+   ],
+   [
+    177.2,
+    108
+   ],
+   [
+    179.2,
+    100
+   ],
+   [
+    181.2,
+    95
+   ],
+   [
+    183.2,
+    110
+   ],
+   [
+    185.2,
+    100
+   ],
+   [
+    187.2,
+    112
+   ]
+  ]
+ },
+ "process": {
+  "rssBeforeMiB": 269,
+  "peakRssDuringMiB": 393,
+  "mainHeapUsedPeakDuringMiB": 81,
+  "maxRssProcessMiB": 395,
+  "mainEventLoopDelayMaxDuringMs": 146.4,
+  "mainEluMeanDuring": 0.033
+ },
+ "mainLoopPing": {
+  "path": "/health",
+  "everyMs": 200,
+  "before": {
+   "n": 25,
+   "p50": 2.5,
+   "p95": 6.2,
+   "max": 7.1
+  },
+  "during": {
+   "n": 922,
+   "p50": 2.1,
+   "p95": 13.3,
+   "max": 192.7,
+   "over100ms": 5
+  }
+ },
+ "pollServerMs": {
+  "p50": 42,
+  "max": 246,
+  "n": 92
+ },
+ "storedResult": null
+}

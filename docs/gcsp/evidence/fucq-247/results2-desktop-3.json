@@ -1,0 +1,3227 @@
+{
+ "story": "FUCQ-247",
+ "run": 2,
+ "profile": "desktop",
+ "runNo": 3,
+ "where": "local, macOS, offline memory host (GCSP_OFFLINE=1, GCSP_REPOSITORY_MODE=memory)",
+ "node": "v26.5.0",
+ "viewport": {
+  "width": 1280,
+  "height": 900
+ },
+ "throttling": null,
+ "startedAt": "2026-11-09T16:22:43.912Z",
+ "state": "completed-with-failures",
+ "server": {
+  "spawnAt": 1794241363914,
+  "listeningMs": 10931,
+  "healthReadyMs": 20575,
+  "readyAt": 1794241384489,
+  "idleUntil": 1794241399491,
+  "peakRssToReadyMiB": 280,
+  "rssAtReadyMiB": 280,
+  "heapUsedAtReadyMiB": 94,
+  "idleRssEndMiB": 80,
+  "idleHeapUsedEndMiB": 109,
+  "cpuMsToReady": 21305,
+  "peakRssWholeRunMiB": 285,
+  "peakHeapUsedWholeRunMiB": 199,
+  "maxRssProcessMiB": 285,
+  "maxEventLoopDelayToReadyMs": 1311.8
+ },
+ "steps": [
+  {
+   "id": "signin-access-page",
+   "name": "Open the presenter link: access key page usable",
+   "demo": "sign-in",
+   "warm": false,
+   "pass": true,
+   "wallMs": 68,
+   "end": 1794241400809,
+   "start": 1794241400738,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 10,
+    "dcl": 16,
+    "load": 58
+   },
+   "fcp": null,
+   "lcp": null,
+   "lcpElement": null,
+   "usableSinceNavMs": 66,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": null,
+   "requests": {
+    "browserCount": 11,
+    "browserEncodedBytes": 23399,
+    "staticCount": 12,
+    "staticBytes": 23288,
+    "apiCount": 0,
+    "apiBytes": 0,
+    "apiServerMsTotal": 0,
+    "api": []
+   }
+  },
+  {
+   "id": "signin-workspace",
+   "name": "Type the key, Enter: workspace shows Your cars",
+   "demo": "sign-in",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1158,
+   "end": 1794241401973,
+   "start": 1794241400814,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 205,
+    "dcl": 420,
+    "load": 423
+   },
+   "fcp": 500,
+   "lcp": 900,
+   "lcpElement": "P.gcsp-account-terms",
+   "usableSinceNavMs": 1101,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 183,
+    "peakHeapUsedMiB": 71,
+    "cpuMs": 884,
+    "maxEventLoopDelayMs": 277.1
+   },
+   "requests": {
+    "browserCount": 137,
+    "browserEncodedBytes": 1074669,
+    "staticCount": 128,
+    "staticBytes": 1025061,
+    "apiCount": 9,
+    "apiBytes": 48026,
+    "apiServerMsTotal": 522,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 31.9,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 36.7,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 89.3,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 104.7,
+      "b": 17932
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 404,
+      "ms": 90.6,
+      "b": 78
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/current",
+      "st": 200,
+      "ms": 38.4,
+      "b": 63
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 41.8,
+      "b": 165
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 48.3,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 40.1,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "presenter-open",
+   "name": "Open Presenter controls: clock and controls ready",
+   "demo": "presenter",
+   "warm": false,
+   "pass": true,
+   "wallMs": 48,
+   "end": 1794241402024,
+   "start": 1794241401974,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 183,
+    "peakHeapUsedMiB": 71,
+    "cpuMs": 91,
+    "maxEventLoopDelayMs": 11.7
+   },
+   "requests": {
+    "browserCount": 0,
+    "browserEncodedBytes": 0,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 0,
+    "apiBytes": 0,
+    "apiServerMsTotal": 0,
+    "api": []
+   }
+  },
+  {
+   "id": "presenter-tick-1",
+   "name": "Tick on a fresh run",
+   "demo": "presenter",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1094,
+   "end": 1794241403120,
+   "start": 1794241402025,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "clockBefore": "2026-11-05T09:00:00.000Z",
+    "clockAfter": "2026-11-05T09:01:00.000Z",
+    "released": null
+   },
+   "serverDuring": {
+    "peakRssMiB": 220,
+    "peakHeapUsedMiB": 89,
+    "cpuMs": 1050,
+    "maxEventLoopDelayMs": 744.5
+   },
+   "requests": {
+    "browserCount": 5,
+    "browserEncodedBytes": 41764,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 5,
+    "apiBytes": 41764,
+    "apiServerMsTotal": 960,
+    "api": [
+     {
+      "m": "POST",
+      "p": "/api/gcsp/presenter/controls/tick",
+      "st": 200,
+      "ms": 733.9,
+      "b": 3836
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 124.2,
+      "b": 18820
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 23,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 41.5,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 37.1,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "account-load",
+   "name": "Account page (gcsp-account.html) load to Choose a replacement",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 882,
+   "end": 1794241404005,
+   "start": 1794241403121,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 3,
+    "dcl": 145,
+    "load": 557
+   },
+   "fcp": 160,
+   "lcp": 448,
+   "lcpElement": "P.gcsp-account-terms",
+   "usableSinceNavMs": 880,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 220,
+    "peakHeapUsedMiB": 72,
+    "cpuMs": 613,
+    "maxEventLoopDelayMs": 305.9
+   },
+   "requests": {
+    "browserCount": 104,
+    "browserEncodedBytes": 874144,
+    "staticCount": 96,
+    "staticBytes": 824644,
+    "apiCount": 8,
+    "apiBytes": 48307,
+    "apiServerMsTotal": 531,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 32.4,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 90.7,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 404,
+      "ms": 93,
+      "b": 78
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/current",
+      "st": 200,
+      "ms": 35.6,
+      "b": 63
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 41.3,
+      "b": 165
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 111.4,
+      "b": 18820
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 72.7,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 53.5,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "setup-open",
+   "name": "Choose a replacement: setup form usable",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1366,
+   "end": 1794241405373,
+   "start": 1794241404006,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 221,
+    "peakHeapUsedMiB": 74,
+    "cpuMs": 1111,
+    "maxEventLoopDelayMs": 202.8
+   },
+   "requests": {
+    "browserCount": 13,
+    "browserEncodedBytes": 82250,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 15,
+    "apiBytes": 100751,
+    "apiServerMsTotal": 1034,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 404,
+      "ms": 82.6,
+      "b": 78
+     },
+     {
+      "m": "POST",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 117.7,
+      "b": 2195
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 39.3,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 98.1,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/order",
+      "st": 404,
+      "ms": 49,
+      "b": 84
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 97.5,
+      "b": 18820
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/claim",
+      "st": 404,
+      "ms": 61.7,
+      "b": 173
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 47.3,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 41.9,
+      "b": 435
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 27,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 84.9,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 85.4,
+      "b": 2219
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 111.7,
+      "b": 18820
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 44.8,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 45,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "setup-save",
+   "name": "Save choices: saved confirmation",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 218,
+   "end": 1794241405643,
+   "start": 1794241405425,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 221,
+    "peakHeapUsedMiB": 74,
+    "cpuMs": 112,
+    "maxEventLoopDelayMs": 118.9
+   },
+   "requests": {
+    "browserCount": 2,
+    "browserEncodedBytes": 17516,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 2,
+    "apiBytes": 17516,
+    "apiServerMsTotal": 314,
+    "api": [
+     {
+      "m": "POST",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 111.1,
+      "b": 2770
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/stock",
+      "st": 200,
+      "ms": 202.7,
+      "b": 14746
+     }
+    ]
+   }
+  },
+  {
+   "id": "presenter-next-release",
+   "name": "Next release from the setup page",
+   "demo": "presenter",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1701,
+   "end": 1794241407345,
+   "start": 1794241405644,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "clockBefore": "2026-11-05T09:01:00.000Z",
+    "clockAfter": "2026-11-06T11:30:00.000Z",
+    "released": 20
+   },
+   "serverDuring": {
+    "peakRssMiB": 215,
+    "peakHeapUsedMiB": 83,
+    "cpuMs": 1765,
+    "maxEventLoopDelayMs": 888.7
+   },
+   "requests": {
+    "browserCount": 8,
+    "browserEncodedBytes": 117303,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 8,
+    "apiBytes": 117303,
+    "apiServerMsTotal": 1492,
+    "api": [
+     {
+      "m": "POST",
+      "p": "/api/gcsp/presenter/controls/tick",
+      "st": 200,
+      "ms": 887.3,
+      "b": 35023
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 129.9,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 115.5,
+      "b": 2794
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 108.3,
+      "b": 50007
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/stock",
+      "st": 400,
+      "ms": 132.7,
+      "b": 298
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 26,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 49.5,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 43.3,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "gallery-open",
+   "name": "Continue: Released cars gallery with enabled Review buttons",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1341,
+   "end": 1794241408952,
+   "start": 1794241407611,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "cards": 6
+   },
+   "serverDuring": {
+    "peakRssMiB": 221,
+    "peakHeapUsedMiB": 86,
+    "cpuMs": 1257,
+    "maxEventLoopDelayMs": 293.6
+   },
+   "requests": {
+    "browserCount": 9,
+    "browserEncodedBytes": 2002776,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 9,
+    "apiBytes": 2002776,
+    "apiServerMsTotal": 1153,
+    "api": [
+     {
+      "m": "POST",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 131.4,
+      "b": 2647
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/stock",
+      "st": 200,
+      "ms": 219.5,
+      "b": 960384
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 31,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 117.2,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 116.1,
+      "b": 50007
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/claim",
+      "st": 404,
+      "ms": 63.3,
+      "b": 173
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 48.3,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 41.9,
+      "b": 435
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/stock",
+      "st": 200,
+      "ms": 384.3,
+      "b": 960384
+     }
+    ]
+   }
+  },
+  {
+   "id": "review-open",
+   "name": "Review this car: review page with countdown and Continue enabled",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1333,
+   "end": 1794241410287,
+   "start": 1794241408953,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 222,
+    "peakHeapUsedMiB": 81,
+    "cpuMs": 1072,
+    "maxEventLoopDelayMs": 232.7
+   },
+   "requests": {
+    "browserCount": 9,
+    "browserEncodedBytes": 135221,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 9,
+    "apiBytes": 135221,
+    "apiServerMsTotal": 922,
+    "api": [
+     {
+      "m": "POST",
+      "p": "/api/gcsp/manual/claim",
+      "st": 200,
+      "ms": 224.7,
+      "b": 13123
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/claim",
+      "st": 200,
+      "ms": 83.5,
+      "b": 13123
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 27.5,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 94.1,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 109.1,
+      "b": 50007
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/claim",
+      "st": 200,
+      "ms": 87.7,
+      "b": 13123
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/review-details",
+      "st": 200,
+      "ms": 206.7,
+      "b": 16664
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 47.7,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 41.2,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "resume-account",
+   "name": "Reload: account offers Resume saved journey",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 834,
+   "end": 1794241411123,
+   "start": 1794241410288,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 3,
+    "dcl": 87,
+    "load": 482
+   },
+   "fcp": 100,
+   "lcp": 388,
+   "lcpElement": "H2.gcsp-h2",
+   "usableSinceNavMs": 831,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 222,
+    "peakHeapUsedMiB": 85,
+    "cpuMs": 653,
+    "maxEventLoopDelayMs": 260.4
+   },
+   "requests": {
+    "browserCount": 104,
+    "browserEncodedBytes": 907924,
+    "staticCount": 96,
+    "staticBytes": 824644,
+    "apiCount": 8,
+    "apiBytes": 82087,
+    "apiServerMsTotal": 482,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 29.1,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 88.5,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 87.5,
+      "b": 2671
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/current",
+      "st": 200,
+      "ms": 39.5,
+      "b": 63
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 43.1,
+      "b": 165
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 102.4,
+      "b": 50007
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 49.6,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 42.1,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "resume-review",
+   "name": "Resume saved journey: back on the review page, usable",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1831,
+   "end": 1794241412956,
+   "start": 1794241411124,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 223,
+    "peakHeapUsedMiB": 89,
+    "cpuMs": 1960,
+    "maxEventLoopDelayMs": 287.8
+   },
+   "requests": {
+    "browserCount": 17,
+    "browserEncodedBytes": 259350,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 22,
+    "apiBytes": 1227214,
+    "apiServerMsTotal": 1868,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 91.1,
+      "b": 2671
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 26,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 87.4,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/order",
+      "st": 404,
+      "ms": 49.6,
+      "b": 84
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 99.4,
+      "b": 50007
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/claim",
+      "st": 200,
+      "ms": 86,
+      "b": 13123
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 45.3,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 41.7,
+      "b": 435
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 23.8,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 86.4,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 103.4,
+      "b": 50007
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/claim",
+      "st": 200,
+      "ms": 84.5,
+      "b": 13123
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 47.5,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 41.1,
+      "b": 435
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/stock",
+      "st": 200,
+      "ms": 377.3,
+      "b": 930862
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 25.3,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 86.6,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 101.9,
+      "b": 50007
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/claim",
+      "st": 200,
+      "ms": 84.9,
+      "b": 13123
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 45.8,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/review-details",
+      "st": 200,
+      "ms": 190.5,
+      "b": 16664
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 42.5,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "order-summary",
+   "name": "Continue to order review: summary with declarations",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 2326,
+   "end": 1794241415284,
+   "start": 1794241412957,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 206,
+    "peakHeapUsedMiB": 93,
+    "cpuMs": 1971,
+    "maxEventLoopDelayMs": 333.7
+   },
+   "requests": {
+    "browserCount": 17,
+    "browserEncodedBytes": 214776,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 17,
+    "apiBytes": 214776,
+    "apiServerMsTotal": 1846,
+    "api": [
+     {
+      "m": "POST",
+      "p": "/api/gcsp/manual/review-details",
+      "st": 200,
+      "ms": 171.6,
+      "b": 16664
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/claim",
+      "st": 200,
+      "ms": 83.3,
+      "b": 13123
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/review-details",
+      "st": 200,
+      "ms": 192.2,
+      "b": 16664
+     },
+     {
+      "m": "POST",
+      "p": "/api/gcsp/manual/claim/review",
+      "st": 200,
+      "ms": 250,
+      "b": 13173
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/claim",
+      "st": 200,
+      "ms": 86.1,
+      "b": 13173
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/review-details",
+      "st": 200,
+      "ms": 187.4,
+      "b": 16714
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 25.9,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 91.5,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 107.9,
+      "b": 50007
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/order",
+      "st": 404,
+      "ms": 53.4,
+      "b": 84
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 48.1,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 47.1,
+      "b": 435
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/review-details",
+      "st": 200,
+      "ms": 193.1,
+      "b": 16714
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/order/terms",
+      "st": 200,
+      "ms": 47.4,
+      "b": 3362
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 91.5,
+      "b": 10073
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 88.3,
+      "b": 2671
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/claim",
+      "st": 200,
+      "ms": 81.6,
+      "b": 13173
+     }
+    ]
+   }
+  },
+  {
+   "id": "order-submit",
+   "name": "Submit order: outcome heading",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 654,
+   "end": 1794241416049,
+   "start": 1794241415394,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "outcome": "Order received"
+   },
+   "serverDuring": {
+    "peakRssMiB": 210,
+    "peakHeapUsedMiB": 79,
+    "cpuMs": 635,
+    "maxEventLoopDelayMs": 614.5
+   },
+   "requests": {
+    "browserCount": 1,
+    "browserEncodedBytes": 31125,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 1,
+    "apiBytes": 31125,
+    "apiServerMsTotal": 606,
+    "api": [
+     {
+      "m": "POST",
+      "p": "/api/gcsp/manual/order",
+      "st": 200,
+      "ms": 606.2,
+      "b": 31125
+     }
+    ]
+   }
+  },
+  {
+   "id": "order-finish",
+   "name": "Finish: account shows the order",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 847,
+   "end": 1794241416914,
+   "start": 1794241416051,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 212,
+    "peakHeapUsedMiB": 101,
+    "cpuMs": 640,
+    "maxEventLoopDelayMs": 335.8
+   },
+   "requests": {
+    "browserCount": 13,
+    "browserEncodedBytes": 129796,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 11,
+    "apiBytes": 119844,
+    "apiServerMsTotal": 921,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 27.9,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 104.3,
+      "b": 9988
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 111.5,
+      "b": 2729
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/current",
+      "st": 200,
+      "ms": 52.5,
+      "b": 63
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 66.2,
+      "b": 3343
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 149.6,
+      "b": 50007
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/order",
+      "st": 200,
+      "ms": 61.1,
+      "b": 31125
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 55.4,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 49.8,
+      "b": 549
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress",
+      "st": 200,
+      "ms": 121.6,
+      "b": 3228
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/documents",
+      "st": 200,
+      "ms": 120.7,
+      "b": 139
+     }
+    ]
+   }
+  },
+  {
+   "id": "order-progress-load",
+   "name": "Order progress page (gcsp-order-progress-live.html) load until settled",
+   "demo": "order-progress",
+   "warm": false,
+   "pass": true,
+   "wallMs": 2009,
+   "end": 1794241419368,
+   "start": 1794241416928,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 367,
+    "dcl": 578,
+    "load": 578
+   },
+   "fcp": 832,
+   "lcp": 2012,
+   "lcpElement": "H3.gcsp-order-car-name",
+   "usableSinceNavMs": 2437,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "text": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Order progress Show labels Presenter controls ORDER PROGRESS Order pr"
+   },
+   "serverDuring": {
+    "peakRssMiB": 194,
+    "peakHeapUsedMiB": 80,
+    "cpuMs": 1656,
+    "maxEventLoopDelayMs": 285.5
+   },
+   "requests": {
+    "browserCount": 67,
+    "browserEncodedBytes": 673255,
+    "staticCount": 55,
+    "staticBytes": 542224,
+    "apiCount": 16,
+    "apiBytes": 150894,
+    "apiServerMsTotal": 1704,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/appointments",
+      "st": 200,
+      "ms": 83.5,
+      "b": 3475
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/return-plan",
+      "st": 200,
+      "ms": 209.9,
+      "b": 6477
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 140.3,
+      "b": 3343
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/order",
+      "st": 200,
+      "ms": 96,
+      "b": 31125
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 43,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 118.4,
+      "b": 9988
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 123,
+      "b": 9988
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 57.2,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 219.2,
+      "b": 3343
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 139.6,
+      "b": 50007
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress",
+      "st": 200,
+      "ms": 69,
+      "b": 3228
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 57.2,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/return-plan",
+      "st": 200,
+      "ms": 175,
+      "b": 6477
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/documents",
+      "st": 200,
+      "ms": 52,
+      "b": 139
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 47.7,
+      "b": 549
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/appointments",
+      "st": 200,
+      "ms": 73,
+      "b": 3475
+     }
+    ]
+   }
+  },
+  {
+   "id": "presenter-tick-order",
+   "name": "Tick with an order placed",
+   "demo": "order-progress",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1559,
+   "end": 1794241422404,
+   "start": 1794241420844,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "clockBefore": "2026-11-06T11:30:00.000Z",
+    "clockAfter": "2026-11-06T11:31:00.000Z",
+    "released": 20
+   },
+   "serverDuring": {
+    "peakRssMiB": 196,
+    "peakHeapUsedMiB": 75,
+    "cpuMs": 1937,
+    "maxEventLoopDelayMs": 174.5
+   },
+   "requests": {
+    "browserCount": 5,
+    "browserEncodedBytes": 162659,
+    "staticCount": 1,
+    "staticBytes": 59964,
+    "apiCount": 5,
+    "apiBytes": 162659,
+    "apiServerMsTotal": 1418,
+    "api": [
+     {
+      "m": "POST",
+      "p": "/api/gcsp/presenter/controls/tick",
+      "st": 200,
+      "ms": 1112.9,
+      "b": 64226
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 134.5,
+      "b": 79211
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 46.3,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 68,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 56.2,
+      "b": 549
+     }
+    ]
+   }
+  },
+  {
+   "id": "order-progress-after-tick",
+   "name": "Order progress reload after the tick",
+   "demo": "order-progress",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1568,
+   "end": 1794241424427,
+   "start": 1794241422405,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 3,
+    "dcl": 101,
+    "load": 102
+   },
+   "fcp": 312,
+   "lcp": 1528,
+   "lcpElement": "H3.gcsp-order-car-name",
+   "usableSinceNavMs": 2017,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "text": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Order progress Show labels Presenter controls ORDER PROGRESS Order pr"
+   },
+   "serverDuring": {
+    "peakRssMiB": 196,
+    "peakHeapUsedMiB": 59,
+    "cpuMs": 1304,
+    "maxEventLoopDelayMs": 307.8
+   },
+   "requests": {
+    "browserCount": 67,
+    "browserEncodedBytes": 702683,
+    "staticCount": 55,
+    "staticBytes": 542224,
+    "apiCount": 14,
+    "apiBytes": 170370,
+    "apiServerMsTotal": 1397,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 125,
+      "b": 3419
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/order",
+      "st": 200,
+      "ms": 68.1,
+      "b": 31125
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 33.6,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 117.7,
+      "b": 9988
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 112.7,
+      "b": 9988
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 37.9,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 76.7,
+      "b": 3419
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 126,
+      "b": 79211
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress",
+      "st": 200,
+      "ms": 72.5,
+      "b": 3304
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/documents",
+      "st": 200,
+      "ms": 59.4,
+      "b": 139
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 53.3,
+      "b": 549
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 76.3,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/appointments",
+      "st": 200,
+      "ms": 109.7,
+      "b": 3473
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/return-plan",
+      "st": 200,
+      "ms": 328.5,
+      "b": 6475
+     }
+    ]
+   }
+  },
+  {
+   "id": "presenter-switch-greg",
+   "name": "Switch principal to Greg: dashboard settled",
+   "demo": "greg",
+   "warm": false,
+   "pass": true,
+   "wallMs": 2972,
+   "end": 1794241429406,
+   "start": 1794241426018,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 482,
+    "dcl": 707,
+    "load": 708
+   },
+   "fcp": 800,
+   "lcp": 800,
+   "lcpElement": "P.vm-lede",
+   "usableSinceNavMs": 2915,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {},
+   "serverDuring": {
+    "peakRssMiB": 199,
+    "peakHeapUsedMiB": 74,
+    "cpuMs": 2651,
+    "maxEventLoopDelayMs": 613.4
+   },
+   "requests": {
+    "browserCount": 151,
+    "browserEncodedBytes": 1319166,
+    "staticCount": 134,
+    "staticBytes": 1045534,
+    "apiCount": 21,
+    "apiBytes": 279429,
+    "apiServerMsTotal": 2393,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress",
+      "st": 200,
+      "ms": 110.1,
+      "b": 3304
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/documents",
+      "st": 200,
+      "ms": 71.5,
+      "b": 139
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/appointments",
+      "st": 200,
+      "ms": 116.9,
+      "b": 3473
+     },
+     {
+      "m": "POST",
+      "p": "/api/gcsp/session/switch",
+      "st": 200,
+      "ms": 121.7,
+      "b": 478
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 36.9,
+      "b": 502
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 167.8,
+      "b": 79211
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 66.5,
+      "b": 502
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 110.5,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 119.7,
+      "b": 549
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 45.6,
+      "b": 502
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 37.2,
+      "b": 502
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/greg/policy",
+      "st": 200,
+      "ms": 199.4,
+      "b": 69521
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/greg/order-plan",
+      "st": 503,
+      "ms": 286.7,
+      "b": 96
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/comparison/results/latest",
+      "st": 200,
+      "ms": 71.9,
+      "b": 279
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/comparison/jobs/latest",
+      "st": 404,
+      "ms": 54,
+      "b": 81
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/greg/demand",
+      "st": 200,
+      "ms": 213.9,
+      "b": 3576
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/scheme-team/cases",
+      "st": 200,
+      "ms": 67.7,
+      "b": 146
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/greg/orders",
+      "st": 200,
+      "ms": 247.3,
+      "b": 676
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 139.4,
+      "b": 79211
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 57.4,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 50.9,
+      "b": 549
+     }
+    ]
+   }
+  },
+  {
+   "id": "greg-page-load",
+   "name": "Greg dashboard page load until every region settles",
+   "demo": "greg",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1543,
+   "end": 1794241431383,
+   "start": 1794241429422,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 3,
+    "dcl": 137,
+    "load": 137
+   },
+   "fcp": 200,
+   "lcp": 200,
+   "lcpElement": "P.vm-lede",
+   "usableSinceNavMs": 1958,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "regions": [
+     {
+      "label": "Stock",
+      "chars": 622,
+      "buttons": [],
+      "text": "Stock Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line"
+     },
+     {
+      "label": "Preview and publish policy",
+      "chars": 11751,
+      "buttons": [
+       "Preview changes",
+       "Publish this preview",
+       "Retry original publication",
+       "Refresh policy"
+      ],
+      "text": "POLICY Preview and publish Try points costs or recommendation weights, compare the preview, then publish on purpose. Active version gcsp-pol"
+     },
+     {
+      "label": "Check your choices",
+      "chars": 18,
+      "buttons": [],
+      "text": "Check your choices"
+     },
+     {
+      "label": "Order requests",
+      "chars": 451,
+      "buttons": [
+       "Refresh orders",
+       "Submit request",
+       "Save production response"
+      ],
+      "text": "Order requests Refresh orders Orders up to date. Synthetic production · as of 6 Nov 2026. Only released cars enter supply. Requested, confir"
+     },
+     {
+      "label": "Next order plan",
+      "chars": 133,
+      "buttons": [
+       "Retry"
+      ],
+      "text": "NEXT ORDER The order plan is unavailable The order plan could not be loaded. Try again in a moment. Retry Order plan unavailable."
+     },
+     {
+      "label": "Route comparison",
+      "chars": 478,
+      "buttons": [
+       "Reload",
+       "Process onlyno stored result",
+       "Order mixno stored result",
+       "Points allowanceno stored result",
+       "Hold durationno stored result"
+      ],
+      "text": "Stored comparisons loaded. Route comparison Stored results of the fictional comparison. Both routes get the same employees, cars and release"
+     },
+     {
+      "label": "Renewal cases",
+      "chars": 229,
+      "buttons": [
+       "Refresh queue"
+      ],
+      "text": "Renewal cases Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. 0 renewal cases loaded. Refr"
+     }
+    ],
+    "domNodes": 671
+   },
+   "serverDuring": {
+    "peakRssMiB": 211,
+    "peakHeapUsedMiB": 91,
+    "cpuMs": 1578,
+    "maxEventLoopDelayMs": 512
+   },
+   "requests": {
+    "browserCount": 146,
+    "browserEncodedBytes": 1220407,
+    "staticCount": 134,
+    "staticBytes": 1045534,
+    "apiCount": 12,
+    "apiBytes": 173205,
+    "apiServerMsTotal": 1403,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 44.4,
+      "b": 502
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 34.5,
+      "b": 502
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/greg/policy",
+      "st": 200,
+      "ms": 199.6,
+      "b": 69521
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/greg/order-plan",
+      "st": 503,
+      "ms": 274.4,
+      "b": 96
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/greg/demand",
+      "st": 200,
+      "ms": 213,
+      "b": 3576
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/comparison/results/latest",
+      "st": 200,
+      "ms": 52.9,
+      "b": 279
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/comparison/jobs/latest",
+      "st": 404,
+      "ms": 51,
+      "b": 81
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/greg/orders",
+      "st": 200,
+      "ms": 236.5,
+      "b": 676
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 123.6,
+      "b": 79211
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/scheme-team/cases",
+      "st": 200,
+      "ms": 62.3,
+      "b": 146
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 52.9,
+      "b": 549
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 57.9,
+      "b": 18066
+     }
+    ]
+   }
+  },
+  {
+   "id": "greg-cases-refresh",
+   "name": "Renewal cases: Refresh queue",
+   "demo": "greg",
+   "warm": false,
+   "pass": true,
+   "wallMs": 140,
+   "end": 1794241431943,
+   "start": 1794241431385,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {},
+   "serverDuring": {
+    "peakRssMiB": 207,
+    "peakHeapUsedMiB": 84,
+    "cpuMs": 181,
+    "maxEventLoopDelayMs": 81.8
+   },
+   "requests": {
+    "browserCount": 1,
+    "browserEncodedBytes": 146,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 1,
+    "apiBytes": 146,
+    "apiServerMsTotal": 76,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/scheme-team/cases",
+      "st": 200,
+      "ms": 76,
+      "b": 146
+     }
+    ]
+   }
+  },
+  {
+   "id": "greg-comparison-reload",
+   "name": "Route comparison and experiments: Reload",
+   "demo": "greg",
+   "warm": false,
+   "pass": true,
+   "wallMs": 189,
+   "end": 1794241432550,
+   "start": 1794241431945,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {},
+   "serverDuring": {
+    "peakRssMiB": 204,
+    "peakHeapUsedMiB": 75,
+    "cpuMs": 109,
+    "maxEventLoopDelayMs": 55.7
+   },
+   "requests": {
+    "browserCount": 2,
+    "browserEncodedBytes": 360,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 2,
+    "apiBytes": 360,
+    "apiServerMsTotal": 104,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/comparison/results/latest",
+      "st": 200,
+      "ms": 52.8,
+      "b": 279
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/comparison/jobs/latest",
+      "st": 404,
+      "ms": 51.3,
+      "b": 81
+     }
+    ]
+   }
+  },
+  {
+   "id": "greg-plan-preview",
+   "name": "Next order plan: Preview",
+   "demo": "greg",
+   "warm": false,
+   "pass": true,
+   "wallMs": 12,
+   "end": 1794241432565,
+   "start": 1794241432552,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "skipped": "no enabled Preview",
+    "buttons": [
+     "Retry"
+    ]
+   },
+   "serverDuring": {
+    "peakRssMiB": 204,
+    "peakHeapUsedMiB": 75,
+    "cpuMs": 1,
+    "maxEventLoopDelayMs": 11.1
+   },
+   "requests": {
+    "browserCount": 0,
+    "browserEncodedBytes": 0,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 0,
+    "apiBytes": 0,
+    "apiServerMsTotal": 0,
+    "api": []
+   }
+  },
+  {
+   "id": "greg-tick",
+   "name": "Tick from Greg's dashboard: strip and dashboard refreshed",
+   "demo": "greg",
+   "warm": false,
+   "pass": true,
+   "wallMs": 2754,
+   "end": 1794241435747,
+   "start": 1794241432566,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "clockBefore": "2026-11-06T11:31:00.000Z",
+    "clockAfter": "2026-11-06T11:32:00.000Z",
+    "released": 20
+   },
+   "serverDuring": {
+    "peakRssMiB": 245,
+    "peakHeapUsedMiB": 155,
+    "cpuMs": 2553,
+    "maxEventLoopDelayMs": 1323.3
+   },
+   "requests": {
+    "browserCount": 8,
+    "browserEncodedBytes": 225128,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 8,
+    "apiBytes": 225128,
+    "apiServerMsTotal": 2630,
+    "api": [
+     {
+      "m": "POST",
+      "p": "/api/gcsp/presenter/controls/tick",
+      "st": 200,
+      "ms": 1317.2,
+      "b": 93339
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/greg/demand",
+      "st": 200,
+      "ms": 294.3,
+      "b": 3576
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/greg/orders",
+      "st": 200,
+      "ms": 277.5,
+      "b": 676
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/greg/order-plan",
+      "st": 503,
+      "ms": 379.8,
+      "b": 96
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 176.2,
+      "b": 108324
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 49.4,
+      "b": 502
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 72.3,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 63.5,
+      "b": 549
+     }
+    ]
+   }
+  },
+  {
+   "id": "presenter-reset-decline",
+   "name": "Reset to Decline then change from Greg's dashboard",
+   "demo": "outbox",
+   "warm": false,
+   "pass": true,
+   "wallMs": 3419,
+   "end": 1794241439168,
+   "start": 1794241435748,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 14,
+    "dcl": 189,
+    "load": 190
+   },
+   "fcp": 256,
+   "lcp": 504,
+   "lcpElement": "P.vm-lede",
+   "usableSinceNavMs": 763,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "scenario": "Decline then change",
+    "confirmToReadyMs": 3346,
+    "run": "new",
+    "clock": "2026-11-05T09:30:00.000Z"
+   },
+   "serverDuring": {
+    "peakRssMiB": 250,
+    "peakHeapUsedMiB": 193,
+    "cpuMs": 3099,
+    "maxEventLoopDelayMs": 1637.9
+   },
+   "requests": {
+    "browserCount": 139,
+    "browserEncodedBytes": 1091183,
+    "staticCount": 133,
+    "staticBytes": 985570,
+    "apiCount": 6,
+    "apiBytes": 103958,
+    "apiServerMsTotal": 2941,
+    "api": [
+     {
+      "m": "POST",
+      "p": "/api/gcsp/presenter/scenarios/reset",
+      "st": 200,
+      "ms": 2533.7,
+      "b": 949
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 48.4,
+      "b": 423
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 41.6,
+      "b": 423
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 165.7,
+      "b": 83662
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 82.1,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 69.3,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "outbox-load",
+   "name": "Outbox page load, open the first offer email (outbox-load)",
+   "demo": "outbox",
+   "warm": false,
+   "pass": true,
+   "wallMs": 547,
+   "end": 1794241440146,
+   "start": 1794241439173,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 5,
+    "dcl": 52,
+    "load": 406
+   },
+   "fcp": 80,
+   "lcp": 80,
+   "lcpElement": "H1.vm-title",
+   "usableSinceNavMs": 969,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "offerRows": 1,
+    "buttons": 19
+   },
+   "serverDuring": {
+    "peakRssMiB": 250,
+    "peakHeapUsedMiB": 133,
+    "cpuMs": 588,
+    "maxEventLoopDelayMs": 179.6
+   },
+   "requests": {
+    "browserCount": 45,
+    "browserEncodedBytes": 501353,
+    "staticCount": 40,
+    "staticBytes": 395652,
+    "apiCount": 6,
+    "apiBytes": 105628,
+    "apiServerMsTotal": 500,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 44.5,
+      "b": 423
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/outbox",
+      "st": 200,
+      "ms": 68.3,
+      "b": 2619
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 52.6,
+      "b": 423
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 178.3,
+      "b": 83662
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 84.8,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 71.6,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "outbox-after-tick",
+   "name": "Outbox page load, open the first offer email (outbox-after-tick)",
+   "demo": "outbox",
+   "warm": false,
+   "pass": true,
+   "wallMs": 632,
+   "end": 1794241443389,
+   "start": 1794241442334,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 10,
+    "dcl": 108,
+    "load": 505
+   },
+   "fcp": 116,
+   "lcp": 116,
+   "lcpElement": "H1.vm-title",
+   "usableSinceNavMs": 1049,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "offerRows": 1,
+    "buttons": 19
+   },
+   "serverDuring": {
+    "peakRssMiB": 197,
+    "peakHeapUsedMiB": 199,
+    "cpuMs": 744,
+    "maxEventLoopDelayMs": 165
+   },
+   "requests": {
+    "browserCount": 41,
+    "browserEncodedBytes": 492969,
+    "staticCount": 36,
+    "staticBytes": 388125,
+    "apiCount": 6,
+    "apiBytes": 104819,
+    "apiServerMsTotal": 551,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 54.5,
+      "b": 423
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/outbox",
+      "st": 200,
+      "ms": 74.5,
+      "b": 2619
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 48.2,
+      "b": 423
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 212.1,
+      "b": 82853
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 86.5,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 74.7,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "warm-greg",
+   "name": "Warm reload of greg",
+   "demo": "warm",
+   "warm": true,
+   "pass": false,
+   "wallMs": 90025,
+   "end": 1794241533415,
+   "start": 1794241443390,
+   "error": "locator.waitFor: Timeout 90000ms exceeded. Call log: - waiting for getByRole('heading', { name: 'Demand and supply' }).first() to be visible",
+   "serverDuring": {
+    "peakRssMiB": 153,
+    "peakHeapUsedMiB": 193,
+    "cpuMs": 757,
+    "maxEventLoopDelayMs": 188.1
+   },
+   "requests": {
+    "browserCount": 138,
+    "browserEncodedBytes": 1089425,
+    "staticCount": 133,
+    "staticBytes": 985570,
+    "apiCount": 5,
+    "apiBytes": 102200,
+    "apiServerMsTotal": 489,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 75.1,
+      "b": 423
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 50.3,
+      "b": 423
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 185.8,
+      "b": 82853
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 98.4,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 78.9,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "warm-order-progress",
+   "name": "Warm reload of order-progress",
+   "demo": "warm",
+   "warm": true,
+   "pass": true,
+   "wallMs": 750,
+   "end": 1794241564634,
+   "start": 1794241563469,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 4,
+    "dcl": 90,
+    "load": 90
+   },
+   "fcp": 244,
+   "lcp": 404,
+   "lcpElement": "H1.vm-title",
+   "usableSinceNavMs": 1159,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {},
+   "serverDuring": {
+    "peakRssMiB": 163,
+    "peakHeapUsedMiB": 75,
+    "cpuMs": 946,
+    "maxEventLoopDelayMs": 170.8
+   },
+   "requests": {
+    "browserCount": 65,
+    "browserEncodedBytes": 652524,
+    "staticCount": 59,
+    "staticBytes": 549751,
+    "apiCount": 8,
+    "apiBytes": 102563,
+    "apiServerMsTotal": 655,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 138.1,
+      "b": 165
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 55.7,
+      "b": 423
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 403,
+      "ms": 55.9,
+      "b": 99
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 403,
+      "ms": 53.7,
+      "b": 99
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 40.4,
+      "b": 423
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 169,
+      "b": 82853
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 75.4,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 67,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "warm-outbox",
+   "name": "Warm reload of outbox",
+   "demo": "warm",
+   "warm": true,
+   "pass": true,
+   "wallMs": 504,
+   "end": 1794241565554,
+   "start": 1794241564635,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 3,
+    "dcl": 40,
+    "load": 202
+   },
+   "fcp": 64,
+   "lcp": 64,
+   "lcpElement": "H1.vm-title",
+   "usableSinceNavMs": 917,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {},
+   "serverDuring": {
+    "peakRssMiB": 163,
+    "peakHeapUsedMiB": 83,
+    "cpuMs": 500,
+    "maxEventLoopDelayMs": 150.6
+   },
+   "requests": {
+    "browserCount": 43,
+    "browserEncodedBytes": 497186,
+    "staticCount": 38,
+    "staticBytes": 392318,
+    "apiCount": 6,
+    "apiBytes": 104819,
+    "apiServerMsTotal": 470,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 45.6,
+      "b": 423
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/outbox",
+      "st": 200,
+      "ms": 72.2,
+      "b": 2619
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 40.3,
+      "b": 423
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 164.4,
+      "b": 82853
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 77.7,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 69.3,
+      "b": 435
+     }
+    ]
+   }
+  }
+ ],
+ "errors": [
+  {
+   "step": "warm-greg",
+   "error": "locator.waitFor: Timeout 90000ms exceeded. Call log: - waiting for getByRole('heading', { name: 'Demand and supply' }).first() to be visible",
+   "h1": "",
+   "body": "Skip to content Group Car Schemes Portal P Presenter (fictional) Show labels Presenter controls Presenter workspace Choose an acting principal in Presenter controls."
+  }
+ ],
+ "badResponses": [
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/manual/draft"
+  },
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/manual/draft"
+  },
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/manual/draft"
+  },
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/manual/order"
+  },
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/manual/claim"
+  },
+  {
+   "st": 400,
+   "m": "GET",
+   "p": "/api/gcsp/manual/stock"
+  },
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/manual/claim"
+  },
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/manual/order"
+  },
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/manual/order"
+  },
+  {
+   "st": 503,
+   "m": "GET",
+   "p": "/api/gcsp/greg/order-plan"
+  },
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/comparison/jobs/latest"
+  },
+  {
+   "st": 503,
+   "m": "GET",
+   "p": "/api/gcsp/greg/order-plan"
+  },
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/comparison/jobs/latest"
+  },
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/comparison/jobs/latest"
+  },
+  {
+   "st": 503,
+   "m": "GET",
+   "p": "/api/gcsp/greg/order-plan"
+  },
+  {
+   "st": 403,
+   "m": "GET",
+   "p": "/api/gcsp/manual/account"
+  }
+ ],
+ "serverRequests": {
+  "count": 1704,
+  "uncompressed": 1704,
+  "staticNoStoreBytes": 11653768
+ },
+ "stockPayload": {
+  "totalBytes": 960384,
+  "counts": {
+   "decisions": 20,
+   "cars": 12,
+   "assumptions": 1
+  },
+  "topLevelKB": {
+   "state": 0,
+   "decisions": 577,
+   "cars": 346,
+   "total": 0,
+   "ranked": 0,
+   "browsingReservesStock": 0,
+   "versions": 12,
+   "assumptions": 2,
+   "view": 0,
+   "releaseHistory": 0
+  },
+  "largestPaths": [
+   {
+    "p": "$.value.decisions",
+    "kb": 577
+   },
+   {
+    "p": "$.value.decisions[]",
+    "kb": 577
+   },
+   {
+    "p": "$.value.cars",
+    "kb": 346.4
+   },
+   {
+    "p": "$.value.cars[]",
+    "kb": 346.4
+   },
+   {
+    "p": "$.value.decisions[].versions",
+    "kb": 248.8
+   },
+   {
+    "p": "$.value.decisions[].versions.stock",
+    "kb": 240.1
+   },
+   {
+    "p": "$.value.decisions[].evidence",
+    "kb": 163.1
+   },
+   {
+    "p": "$.value.cars[].versions",
+    "kb": 149.3
+   },
+   {
+    "p": "$.value.cars[].versions.stock",
+    "kb": 144
+   },
+   {
+    "p": "$.value.decisions[].snapshot",
+    "kb": 107.3
+   },
+   {
+    "p": "$.value.decisions[].snapshot.facts",
+    "kb": 98.5
+   },
+   {
+    "p": "$.value.cars[].evidence",
+    "kb": 97.9
+   },
+   {
+    "p": "$.value.decisions[].evidence.assumptions",
+    "kb": 75.4
+   },
+   {
+    "p": "$.value.decisions[].evidence.assumptions[]",
+    "kb": 75.3
+   },
+   {
+    "p": "$.value.cars[].snapshot",
+    "kb": 64
+   },
+   {
+    "p": "$.value.decisions[].evidence.eligibility",
+    "kb": 61
+   },
+   {
+    "p": "$.value.cars[].snapshot.facts",
+    "kb": 58.8
+   },
+   {
+    "p": "$.value.decisions[].evidence.eligibility.provenance",
+    "kb": 58.6
+   },
+   {
+    "p": "$.value.cars[].evidence.assumptions",
+    "kb": 45.2
+   },
+   {
+    "p": "$.value.cars[].evidence.assumptions[]",
+    "kb": 45.2
+   },
+   {
+    "p": "$.value.cars[].evidence.eligibility",
+    "kb": 36.6
+   },
+   {
+    "p": "$.value.cars[].evidence.eligibility.provenance",
+    "kb": 35.2
+   },
+   {
+    "p": "$.value.decisions[].employeeFacts",
+    "kb": 13.4
+   },
+   {
+    "p": "$.value.versions",
+    "kb": 12.2
+   },
+   {
+    "p": "$.value.versions.stock",
+    "kb": 12
+   }
+  ],
+  "repeatedSubtrees": {
+   "distinct": 34,
+   "extraCopies": 105,
+   "wastedKB": 682,
+   "top": [
+    {
+     "p": "$.value.decisions[].versions",
+     "copies": 7,
+     "kb": 12.4
+    },
+    {
+     "p": "$.value.decisions[].evidence.assumptions",
+     "copies": 17,
+     "kb": 3.8
+    },
+    {
+     "p": "$.value.decisions[].versions",
+     "copies": 5,
+     "kb": 12.4
+    },
+    {
+     "p": "$.value.decisions[].versions",
+     "copies": 5,
+     "kb": 12.4
+    },
+    {
+     "p": "$.value.decisions[]",
+     "copies": 2,
+     "kb": 28.9
+    },
+    {
+     "p": "$.value.decisions[]",
+     "copies": 2,
+     "kb": 28.9
+    },
+    {
+     "p": "$.value.decisions[]",
+     "copies": 2,
+     "kb": 28.9
+    },
+    {
+     "p": "$.value.decisions[]",
+     "copies": 2,
+     "kb": 28.9
+    }
+   ]
+  }
+ },
+ "stockFetches": [
+  {
+   "id": "setup-save",
+   "n": 1
+  },
+  {
+   "id": "presenter-next-release",
+   "n": 1
+  },
+  {
+   "id": "gallery-open",
+   "n": 2
+  },
+  {
+   "id": "resume-review",
+   "n": 1
+  }
+ ],
+ "finishedAt": "2026-11-09T16:26:05.840Z"
+}
