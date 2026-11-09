@@ -3794,6 +3794,27 @@
         "date": "2026-11-07",
         "demo_priority": "Could"
       }
+    },
+    {
+      "id": "FUCQ-155",
+      "title": "Publication supervisor treats uncertain process inspection as cleanup success",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-155",
+      "branch": "dev/DEV-2026-11-07-GC-005",
+      "observed_at": "2026-11-09T00:59:30Z",
+      "slices": [
+        {
+          "id": "uncertainty-gate-verify",
+          "status": "complete",
+          "title": "Verify is-False gates, truth table and supervisor/contract pins",
+          "observed_at": "2026-11-09T00:59:30Z",
+          "evidence": "No new code: b556ee34 (ancestor of gcsp-poc a6a213f3) already has both gates at lines 37/44 as 'is False'. Verified at a6a213f3: py_compile OK; truth table False->allow/groupsAbsent true, True->refuse/false, None->refuse/false (old not-x allowed None); supervisor sha 48fc3c4f matches pin in contract 715a5ad2, the contract the 2026-11-07 publication ran under."
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
