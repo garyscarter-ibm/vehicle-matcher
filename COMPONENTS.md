@@ -22,7 +22,7 @@ A view never styles a kit component's insides from the app stylesheet.
 | `screenIntro({ kicker, title, lede, level = 2, className })` | Screen heading block (`vm-kicker` / `vm-title` / `vm-lede`); title is an `h<level>`. Retail modes have not migrated yet. |
 | `button({ label, variant: 'primary' \| 'ghost', onClick, href, disabled, describedBy })` | `vm-btn` button: `<button type="button">`, or `<a>` when `href` is given and not disabled. `describedBy` links a visible reason for a disabled action. Retail modes have not migrated yet. |
 | `statusScreen({ kicker, title, message, actions, role = 'status' })` | Error, empty or no-match shell (`vm-screen vm-status`). `actions` are nodes. Retail modes have not migrated yet. |
-| `factList(rows, { className })` | `<dl>` of `{ label, value, unit, missingLabel }` rows. A null or undefined value reads "Not supplied" (or `missingLabel`) with the `is-missing` class, never "undefined" or blank. |
+| `factList(rows, { className, hideMissing })` | `<dl>` of `{ label, value, unit, missingLabel }` rows. A null or undefined value reads "Not supplied" (or `missingLabel`) with the `is-missing` class, never "undefined" or blank. `hideMissing` (FUCQ-277, a line of text such as "More details not supplied") drops the missing rows and shows that line once beneath the supplied ones; with any row dropped the result is a `div.vm-facts-wrap` holding the `<dl>` (omitted if every row is missing) and a `p.vm-facts-more`, with none dropped it is the plain `<dl>`. The manual released-car cards use it inside their closed "Car facts" disclosure. |
 
 ## Result cards (`modes/result-card.js`)
 
@@ -260,6 +260,10 @@ The existing single `components.html` gallery includes a local brand callback, l
 The shared GCSP adaptation of `screenIntro`, `button`, `factList`, `statusScreen` and `mediaWell` lives in this explicitly capped kit stylesheet. It imports `blocks/gcsp/shell/gcsp-tokens.css` and scopes every rule under `.gcsp`, with no employee-shell dependency. Both `gcsp-employee.css` and `demo-launcher/launcher.css` import it; the employee's existing primitive rules were moved unchanged. Keep new common primitive treatment here rather than duplicating it in page CSS. Retail surfaces stay outside `.gcsp` and retain their brand themes.
 
 **Narrow widths (FUCQ-223).** `.gcsp .vm-facts` never asks a column to be wider than its container (`minmax(min(100%, 150px), 1fr)`) and the card variants (`.gcsp-card`, brief card facts) use `repeat(auto-fit, minmax(max(140px, 40%), 1fr))`, so a grid is one column below about 360 px and at most two wide. Fact labels and values wrap at spaces and hyphens (`overflow-wrap: break-word`); only a single word longer than its column, such as an email address or a hash, breaks inside the word. Below 600 px the shell's `.vm` panels lose their extra 16px side padding so native selects keep the full column width and show their selected text.
+
+### GCSP synthetic note (`blocks/gcsp/kit/synthetic-note.js`, FUCQ-277)
+
+A data helper over `el`, no stylesheet (it uses the existing `.gcsp .gcsp-synthetic` rule). `syntheticNote()` returns the one footer line "Synthetic example data." (`SYNTHETIC_NOTE`) that keeps a scenario screen identified as made-up data once its per-field caveats (allowance basis, "Time follows the presenter clock") are gone. Setup, the released-car browser, review and the final summary end with it; the account keeps its own longer footer with source and date. The gallery's `syntheticNote` group shows it.
 
 ### GCSP order identity (`blocks/gcsp/kit/order-identity.js`, FUCQ-220)
 

@@ -7,6 +7,7 @@ import { createPreviewFeed } from './modes/preview-feed.js';
 import { employeeCardFixture } from './employee-card-fixture.js';
 import { applyBrowseFeedback, applyConfirmedFeedbackChange, createFeedbackState, matchesFeedbackPredicate, reduceFeedback } from './feedback-actions.js';
 import { el, screenIntro, button, statusScreen, factList } from './ui.js';
+import { syntheticNote } from '../gcsp/kit/synthetic-note.js';
 import { feedbackButton, feedbackScope, feedbackUndo, matchCard, mediaWell, previewTile } from './modes/result-card.js';
 import { portalShell, accountNavigation } from '../gcsp/shell/portal-shell.js';
 import { EMPLOYEE_NAVIGATION } from '../gcsp/employee/gcsp-employee.js';
@@ -130,6 +131,12 @@ function gcspExamples() {
     { label: 'Monthly cost', value: 1100, unit: 'points a month' },
     { label: 'WLTP CO2', value: null },
   ]));
+  group('factList: hideMissing').append(factList([
+    { label: 'Exterior', value: 'Portimao Blue metallic' },
+    { label: 'Engine', value: null },
+    { label: 'WLTP CO2', value: null },
+  ], { hideMissing: 'More details not supplied' }));
+  group('syntheticNote').append(syntheticNote());
   const well = group('mediaWell placeholder');
   well.append(mediaWell({ name: 'Synthetic car', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: 'No image for this car yet' }).media);
   const accounts = [

@@ -47,6 +47,7 @@ function shown(value) {
 const label = (key) => key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (letter) => letter.toUpperCase());
 const row = (name, value, unit) => ({ label: name, value: shown(value), ...(value != null && unit ? { unit } : {}) });
 const facts = (rows) => factList(rows, { className: 'gcsp-facts' });
+const supplied = (value) => value != null && value !== '';
 // Raw ids are not copy (FUCQ-195/197): statuses read as words; slots, schemes and sources show only a supplied label.
 const statusLabels = { current: 'Current car', returned: 'Returned' };
 const status = (value) => statusLabels[value] ?? (/^[a-z]+(-[a-z]+)*$/.test(value ?? '') ? sentence(value.replace(/-/g, ' ')) : value);
@@ -154,8 +155,7 @@ function currentCar(contract, model, controls) {
       row('Contract end', date(contract.contractEndDate)), row('Term', contract.months, 'months'),
       row('Annual mileage', contract.annualMileage, contract.mileageUnit), ...schemeRows(model, contract.schemeId), ...slotRows(model, contract.slotId),
       row('Registration', contract.registration)]),
-    el('p', 'gcsp-account-terms', formatTerm(terms)),
-    el('p', 'gcsp-note', 'Exact specification is not supplied unless confirmed by delivered-car evidence.'));
+    el('p', 'gcsp-account-terms', formatTerm(terms)));
   if (source?.provenance) copy.append(el('p', 'gcsp-synthetic', `Image source: ${shown(source.provenance)}`));
   if (contract.action) copy.append(controls.startButton(contract.action));
   else copy.append(el('p', 'gcsp-note', 'Replacement is unavailable for this contract and slot.'));
@@ -262,8 +262,9 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     const allowance = el('section', 'gcsp-allowance');
     allowance.append(el('h2', 'gcsp-h2', 'Your allowance'), facts([
       row('Monthly allowance', model.allowance?.monthlyPoints ?? model.allowance?.value, 'points a month'),
-      row('Allowance override', model.account.allowanceOverride), row('Override end', date(model.account.allowanceOverrideEndDate)),
-      row('Allowance basis', model.allowance?.basis),
+      // Override facts show only when supplied; a plain account has no override to explain.
+      ...(supplied(model.account.allowanceOverride) ? [row('Allowance override', model.account.allowanceOverride)] : []),
+      ...(supplied(model.account.allowanceOverrideEndDate) ? [row('Override end', date(model.account.allowanceOverrideEndDate))] : []),
     ]));
     wrap.append(allowance, details('Employee and contact details',
       facts(model.identityFacts.map((item) => row(item.label, item.value, item.unit))),
