@@ -70,3 +70,27 @@ test('existing enrichFleet records four known values with shared accounting, kee
   assert.deepEqual(await enrichFleet(input), output); assert.equal(calls, 2);
   await assert.rejects(enrichFleet({ ...input, technicalOptions: { ...f.options, pins: { ...f.options.pins, mappingDigest: '0'.repeat(64) } } }), { code: 'stage-incompatible' });
 });
+async function session(t, row, artifact) {
+  const root = await mkdtemp(join(tmpdir(), 'f60-substitution-')); t.after(() => rm(root, { recursive: true, force: true }));
+  t.mock.method(globalThis, 'fetch', () => { throw new Error('no source'); });
+  const operations = { catalogue: { kind: 'offline', sourceId: 'retained-catalogue', sourceVersion: '2', execute: async () => row.catalogue },
+    technical: { kind: 'offline', sourceId: 'retained-otd', sourceVersion: '1', execute: async () => artifact } };
+  const limits = { maxAttempts: 1, retryDelayMs: 0, operationTimeoutMs: 10000, deadlineMs: 90000, concurrency: 1,
+    imageRequests: 0, cacheEntries: 4, cacheRetentionMs: 86400000, checkpointBytes: 1048576, requestBudgets: { catalogue: 1, technical: 1 } };
+  return createCollectionSession({ identity: { stage: 'substitution-test', version: '1' }, operations, limits,
+    statePath: join(root, 'primary.json'), initialState: { accepted: [row] } });
+}
+const v2Options = (row) => Object.fromEntries(['provider', 'providerVersion', 'schemaVersion', 'sourceContractVersion', 'snapshotVersion'].map((k) => [k, row.lookupIdentity[k]]));
+test('technical options cannot substitute the session-owned accepted row', async (t) => {
+  const f = await inputs(); const source = await readFile(new URL('../../docs/gcsp/evidence/fucq59/f70-1f7e-first32-solver-2026-11-07/accepted.jsonl', import.meta.url), 'utf8');
+  const rowA = JSON.parse(source.split('\n')[1]); assert.notEqual(rowA.configurationId, f.accepted.configurationId);
+  const technicalOptions = { ...f.options, accepted: f.accepted };
+  await assert.rejects(enrichFleet({ session: await session(t, rowA, f.artifact), accepted: [rowA], catalogueOptions: v2Options(rowA),
+    technicalOperation: 'technical', technicalOptions, asOf: '2026-11-07' }), { code: 'technical-options-substitution' });
+});
+test('technical options cannot substitute the session-owned operation artifact', async (t) => {
+  const f = await inputs(); const other = structuredClone(f.artifact); other.document.report.values[0].targetValue = 999;
+  const technicalOptions = { ...f.options, artifact: f.artifact };
+  await assert.rejects(enrichFleet({ session: await session(t, f.accepted, other), accepted: [f.accepted], catalogueOptions: v2Options(f.accepted),
+    technicalOperation: 'technical', technicalOptions, asOf: '2026-11-07' }), { code: 'technical-options-substitution' });
+});
