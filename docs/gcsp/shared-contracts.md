@@ -1011,6 +1011,10 @@ model of the dated research, not a reproduction of BMW operations. Calculated fi
 and FUCQ-93 `CapturedTransport`. It never reads or writes the live demo run and sends no mail. Comparison runs use the
 memory repository's opt-in `snapshot: 'shallow'` mode, which copies table arrays rather than every row; core rows are
 replaced, never mutated in place, so transaction isolation is unchanged. The live demo keeps the default deep copy.
+The run's identity digest, which names its environment and run and so seeds every derived id and the allocation
+lottery, covers seed, route, `inputHash`, `policyVersion`, `policyHash` and `generatorVersion` only. `codeRevision` is
+provenance: it is recorded in the run metadata, the outcome record and the result manifest, but changes no outcome
+(FUCQ-242), so the same inputs give the same measures on any commit.
 
 **Shared evaluation.** `evaluateComparisonSeed({ inputs, policy })` in `evaluation.js` runs FUCQ-29's stored-subject
 evaluator once per employee for the stated brief and once for the underlying needs, gates first and then explained
@@ -1144,6 +1148,7 @@ FUCQ-133 policy hash is unchanged.
 **Runner and result.** `runComparison({ experimentId: 'process-only', seeds?, overlay? }, { policy, codeRevision, now,
 onRecord? })` in `experiments.js` generates each seed's inputs and evaluation once, replays `current` then `buddy` on the
 identical inputs, one run at a time, and keeps measures, totals and a `recordDigest` per route rather than the records.
+`recordDigest` is `outcomeRecordDigest(record)`: the digest of the record without its `codeRevision` provenance.
 Any other experiment (order mix, points, hold sweeps) is refused; those are FUCQ-174. The frozen result has
 `schemaVersion`, `kind: 'process-comparison'`, `experimentId`, `completedAt`, `manifest` (`experimentId`, `seeds`,
 `policyVersion`, `policyHash`, `generatorVersion`, `overlays`, `codeRevision`, `inputHashes`), `perSeed`, `measures` (per

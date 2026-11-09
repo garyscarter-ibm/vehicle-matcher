@@ -5,7 +5,7 @@ import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { COMPARISON_GENERATOR_VERSION } from '../gcsp/comparison/generator.js';
 import { ComparisonRunError } from '../gcsp/comparison/harness.js';
 import { routeMeasures, summariseSeeds, compareRoutes, MEASURE_NAMES } from '../gcsp/comparison/measures.js';
-import { runComparison, PROCESS_COMPARISON_CAVEAT } from '../gcsp/comparison/experiments.js';
+import { runComparison, outcomeRecordDigest, PROCESS_COMPARISON_CAVEAT } from '../gcsp/comparison/experiments.js';
 import { storeComparisonResult, readLatestComparisonResult, COMPARISON_RESULTS_ENVIRONMENT, COMPARISON_RESULTS_RUN } from '../gcsp/comparison/results.js';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/memory.js';
 import { inputDigest } from '../gcsp/repository/core.js';
@@ -133,8 +133,8 @@ test('runComparison gives both routes identical inputs for every seed', () => {
     assert.equal(current.inputHash, entry.inputHash);
     assert.equal(buddy.inputHash, entry.inputHash);
     assert.equal(first.manifest.inputHashes[entry.seed], entry.inputHash);
-    assert.equal(entry.routes.current.recordDigest, inputDigest(current));
-    assert.equal(entry.routes.buddy.recordDigest, inputDigest(buddy));
+    assert.equal(entry.routes.current.recordDigest, outcomeRecordDigest(current));
+    assert.equal(entry.routes.buddy.recordDigest, outcomeRecordDigest(buddy));
   }
   assert.equal(new Set(first.perSeed.map((entry) => entry.inputHash)).size, 3);
 });
@@ -170,6 +170,18 @@ test('the same inputs and clock give an identical result; other experiments are 
   assert.equal(JSON.stringify(again), JSON.stringify(first));
   await assert.rejects(runComparison({ experimentId: 'order-mix' }, options), /invalid-input: experimentId/);
   await assert.rejects(runComparison({ experimentId: 'process-only', mix: {} }, options), /invalid-input: experimentId/);
+});
+
+test('the code revision is provenance only: another revision gives identical measures and record digests (FUCQ-242)', async () => {
+  const revisions = [];
+  const other = await runComparison(experiment, { ...options, codeRevision: 'fucq242-other-commit', now: () => NOW,
+    onRecord: (record) => revisions.push(record.codeRevision) });
+  assert.deepEqual([...new Set(revisions)], ['fucq242-other-commit']);
+  assert.equal(other.manifest.codeRevision, 'fucq242-other-commit');
+  assert.equal(JSON.stringify({ ...other, manifest: { ...other.manifest, codeRevision: 'fucq136-test' } }), JSON.stringify(first));
+  for (const [index, entry] of other.perSeed.entries()) for (const route of ['current', 'buddy']) {
+    assert.equal(entry.routes[route].recordDigest, first.perSeed[index].routes[route].recordDigest, `${entry.seed} ${route}`);
+  }
 });
 
 const openRepository = async () => {

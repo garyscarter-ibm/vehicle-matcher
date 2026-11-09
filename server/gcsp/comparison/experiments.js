@@ -12,6 +12,8 @@ export const PROCESS_COMPARISON_CAVEAT = 'Calculated fit is not observed satisfa
 const ROUTES = Object.freeze({ current: replayCurrentRoute, buddy: replayBuddyRoute });
 const refuse = (boundary) => { throw new ComparisonRunError('invalid-input', boundary); };
 const byKey = (a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0);
+/** A route record's digest over its content; the code revision is provenance and stays out (FUCQ-242). */
+export const outcomeRecordDigest = ({ codeRevision, ...content }) => inputDigest(content);
 const assumptionRow = (row) => ({ key: row.key, value: structuredClone(row.value), unit: row.unit, status: row.status,
   basis: row.basis, source: row.source, policyVersion: row.policyVersion });
 
@@ -60,7 +62,7 @@ export async function runComparison(experiment, { policy, codeRevision, now = ()
         if (onRecord) await onRecord(record);
         for (const row of record.assumptions) if (!assumptions.has(row.key)) assumptions.set(row.key, assumptionRow(row));
         for (const line of record.limitations) limitations.add(line);
-        routes[route] = { measures: routeMeasures(record), totals: structuredClone(record.totals), recordDigest: inputDigest(record) };
+        routes[route] = { measures: routeMeasures(record), totals: structuredClone(record.totals), recordDigest: outcomeRecordDigest(record) };
       } finally { await run.close(); }
     }
     perSeed.push({ seed, inputHash: manifest.inputHash, routes });

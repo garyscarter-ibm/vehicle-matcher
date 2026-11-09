@@ -152,9 +152,11 @@ export async function openComparisonRun(options = {}) {
   check(validInstant(manifest.startsAt) && typeof manifest.policyVersion === 'string'
     && manifest.inputHash === inputDigest({ employees, stock: inputs.stock, releaseSchedule: inputs.releaseSchedule })
     && new Set(employees.map((employee) => employee.employeeId)).size === employees.length, 'inputHash');
-  check(evaluation?.inputHash === manifest.inputHash && evaluation.policyVersion === manifest.policyVersion, 'evaluation');
+  check(evaluation?.inputHash === manifest.inputHash && evaluation.policyVersion === manifest.policyVersion
+    && typeof manifest.generatorVersion === 'string', 'evaluation');
+  // The identity seeds every run id and tie-break lottery; codeRevision is provenance only (FUCQ-242).
   const identityDigest = inputDigest({ seed: manifest.seed, route, inputHash: manifest.inputHash,
-    policyVersion: manifest.policyVersion, policyHash: manifest.policyHash, codeRevision });
+    policyVersion: manifest.policyVersion, policyHash: manifest.policyHash, generatorVersion: manifest.generatorVersion });
   const environmentId = `comparison-${identityDigest.slice(0, 32)}`;
   const scope = { environmentId, runId: `comparison-run-${identityDigest.slice(0, 32)}`, principalId: 'comparison-bootstrap', roles: [] };
   const read = { runId: scope.runId, asOf: manifest.startsAt, policyVersion: manifest.policyVersion };
