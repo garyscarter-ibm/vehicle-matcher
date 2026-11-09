@@ -1,0 +1,308 @@
+{
+ "story": "DEV-2026-11-07-GC-014",
+ "jira": "FUCQ-164",
+ "date": "2026-11-09",
+ "environment": {
+  "os": "macOS Darwin 25.5.0",
+  "node": "v26.5.0",
+  "cloudRoot": "/Users/garycarter/Library/CloudStorage/OneDrive-IBM/Claude/_agent-output/vehicle-matcher/fucq164/probe-20261109T075147 (owned, removed)",
+  "fixture": "synthetic JSONL rows {configurationId, pad}; no corpus, source or VIN data; no network"
+ },
+ "slowSampler": {
+  "note": "50 ms sampling, 45 s, two 1 MB files (in place and stage-then-rename)",
+  "cloudChanges": [
+   {
+    "t": 252,
+    "file": "a",
+    "fields": [
+     "ctimeNs"
+    ]
+   },
+   {
+    "t": 311,
+    "file": "b",
+    "fields": [
+     "ctimeNs"
+    ]
+   },
+   {
+    "t": 894,
+    "file": "a",
+    "fields": [
+     "ctimeNs"
+    ]
+   },
+   {
+    "t": 1069,
+    "file": "b",
+    "fields": [
+     "ctimeNs"
+    ]
+   },
+   {
+    "t": 7027,
+    "file": "a",
+    "fields": [
+     "ctimeNs"
+    ]
+   },
+   {
+    "t": 7027,
+    "file": "b",
+    "fields": [
+     "ctimeNs"
+    ]
+   }
+  ],
+  "cloudXattrs": {
+   "a": [
+    "com.apple.lastuseddate#PS",
+    "com.apple.provenance"
+   ],
+   "b": [
+    "com.apple.lastuseddate#PS",
+    "com.apple.provenance"
+   ]
+  },
+  "localChanges": 0,
+  "localXattrs": {
+   "a": [
+    "com.apple.provenance"
+   ],
+   "b": [
+    "com.apple.provenance"
+   ]
+  }
+ },
+ "burstSampler": {
+  "note": "~1 us stat sampling for 9 s after writing a fresh 6 MB file, 3 trials",
+  "trials": [
+   {
+    "samples": 2911790,
+    "events": [
+     {
+      "t": 211.744,
+      "changed": [
+       "ctimeNs"
+      ]
+     },
+     {
+      "t": 616.867,
+      "changed": [
+       "ctimeNs"
+      ]
+     },
+     {
+      "t": 616.969,
+      "changed": [
+       "ctimeNs"
+      ]
+     },
+     {
+      "t": 617.117,
+      "changed": [
+       "ctimeNs"
+      ]
+     }
+    ],
+    "gapsMs": [
+     405.123,
+     0.102,
+     0.148
+    ]
+   },
+   {
+    "samples": 2970471,
+    "events": [
+     {
+      "t": 41.051,
+      "changed": [
+       "ctimeNs"
+      ]
+     },
+     {
+      "t": 107.636,
+      "changed": [
+       "ctimeNs"
+      ]
+     },
+     {
+      "t": 107.664,
+      "changed": [
+       "ctimeNs"
+      ]
+     },
+     {
+      "t": 8111.863,
+      "changed": [
+       "ctimeNs"
+      ]
+     }
+    ],
+    "gapsMs": [
+     66.585,
+     0.028,
+     8004.199
+    ]
+   },
+   {
+    "samples": 2877745,
+    "events": [
+     {
+      "t": 11.82,
+      "changed": [
+       "ctimeNs"
+      ]
+     },
+     {
+      "t": 111.94,
+      "changed": [
+       "ctimeNs"
+      ]
+     },
+     {
+      "t": 111.968,
+      "changed": [
+       "ctimeNs"
+      ]
+     },
+     {
+      "t": 112.038,
+      "changed": [
+       "ctimeNs"
+      ]
+     },
+     {
+      "t": 8126.239,
+      "changed": [
+       "ctimeNs"
+      ]
+     }
+    ],
+    "gapsMs": [
+     100.12,
+     0.028,
+     0.07,
+     8014.201
+    ]
+   }
+  ]
+ },
+ "loaderBeforeFix": {
+  "code": "aa4a4a82 indexed-jsonl (pre-fix)",
+  "note": "real indexJsonl + get() of every row continuously for 10 s on a fresh 6 MB file",
+  "trials": [
+   {
+    "status": "failed",
+    "code": "artifact-changed",
+    "message": "Indexed artifact bytes or identity changed.",
+    "checksumMatches": true,
+    "bytes": 6288000,
+    "rows": 393,
+    "ms": 515
+   },
+   {
+    "status": "failed",
+    "code": "artifact-changed",
+    "message": "Indexed record bytes changed.",
+    "checksumMatches": true,
+    "bytes": 6288000,
+    "rows": 393,
+    "ms": 9129
+   },
+   {
+    "status": "failed",
+    "code": "artifact-changed",
+    "message": "Indexed artifact bytes or identity changed.",
+    "checksumMatches": true,
+    "bytes": 6288000,
+    "rows": 393,
+    "ms": 105
+   },
+   {
+    "status": "failed",
+    "code": "artifact-changed",
+    "message": "Indexed artifact bytes or identity changed.",
+    "checksumMatches": true,
+    "bytes": 6288000,
+    "rows": 393,
+    "ms": 167
+   },
+   {
+    "status": "ok",
+    "checksumMatches": true,
+    "bytes": 6288000,
+    "rows": 393,
+    "rowReads": 186282,
+    "ms": 10001
+   },
+   {
+    "status": "failed",
+    "code": "artifact-changed",
+    "message": "Indexed artifact bytes or identity changed.",
+    "checksumMatches": true,
+    "bytes": 6288000,
+    "rows": 393,
+    "ms": 97
+   }
+  ]
+ },
+ "loaderAfterFix": {
+  "code": "d7ed673e indexed-jsonl",
+  "trials": [
+   {
+    "status": "ok",
+    "checksumMatches": true,
+    "bytes": 6288000,
+    "rows": 393,
+    "rowReads": 181566,
+    "ms": 10003
+   },
+   {
+    "status": "ok",
+    "checksumMatches": true,
+    "bytes": 6288000,
+    "rows": 393,
+    "rowReads": 179208,
+    "ms": 10013
+   },
+   {
+    "status": "ok",
+    "checksumMatches": true,
+    "bytes": 6288000,
+    "rows": 393,
+    "rowReads": 182745,
+    "ms": 10007
+   },
+   {
+    "status": "ok",
+    "checksumMatches": true,
+    "bytes": 6288000,
+    "rows": 393,
+    "rowReads": 181959,
+    "ms": 10003
+   },
+   {
+    "status": "ok",
+    "checksumMatches": true,
+    "bytes": 6288000,
+    "rows": 393,
+    "rowReads": 181959,
+    "ms": 10014
+   },
+   {
+    "status": "ok",
+    "checksumMatches": true,
+    "bytes": 6288000,
+    "rows": 393,
+    "rowReads": 183924,
+    "ms": 10007
+   }
+  ]
+ },
+ "localMechanism": "Local APFS, xattr written every 20 ms by another process: exact bytes failed artifact-changed (Indexed record bytes changed.); 100/300 ms and no writer passed.",
+ "cleanup": {
+  "peakCloudBytesApprox": 21000000,
+  "removed": true
+ }
+}

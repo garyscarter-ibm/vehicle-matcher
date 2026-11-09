@@ -3,7 +3,7 @@ import { createReadStream } from 'node:fs';
 import { lstat, mkdir, open, rename, rm } from 'node:fs/promises';
 import { basename, dirname, isAbsolute, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { fleetReleases, approvedAssetUrl, DEFAULT_ARTIFACT_ROOT, releaseLimits, EMPTY_SHA256 } from './fleet-release.js';
+import { fleetReleases, approvedAssetUrl, DEFAULT_ARTIFACT_ROOT, releaseLimits, EMPTY_SHA256, validateRelease } from './fleet-release.js';
 import { boundDiagnostic, durableCopy } from './corpus-publisher.js';
 import { createSyntheticRegistry } from './synthetic-registry.js';
 import { createPolicyService } from '../policy/index.js';
@@ -79,7 +79,8 @@ export async function downloadAssetWithRetry(asset, destination, { fetchImpl = f
     }
   }
 }
-function selected(id, releases = fleetReleases) { const r = releases.find((r) => r.releaseId === id); if (!r) throw coded('Release is not code-approved', 'release-not-approved'); return r; }
+// A supplied list (tests only) must still pass the full release descriptor validation.
+function selected(id, releases) { const r = releases ? releases.map(validateRelease).find((r) => r.releaseId === id) : fleetReleases.find((r) => r.releaseId === id); if (!r) throw coded('Release is not code-approved', 'release-not-approved'); return r; }
 function paths(...values) { if (values.some((v) => typeof v !== 'string' || !isAbsolute(v))) throw coded('Explicit absolute artifact paths required', 'invalid-paths'); }
 async function complete(root, release) { for (const asset of release.assets) await checkedAsset(root, asset); }
 /** Copy exact raw assets to a new release directory. This does not upload or grant trust. */
