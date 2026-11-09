@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createBmwCatalogueAdapter, describeBmwEquipment, mergeBmwCatalogueFacts } from '../vehicle-evidence/bmw-catalogue-adapter.js';
-import { BMW_LIVE_CATALOGUE_PROVIDER, BMW_LIVE_CATALOGUE_SOURCE, bmwCatalogueProviderSelection, createBmwCatalogueProvider,
+import { BMW_LIVE_CATALOGUE_OPERATION_POLICY, BMW_LIVE_CATALOGUE_PROVIDER, BMW_LIVE_CATALOGUE_SOURCE, bmwCatalogueProviderSelection, createBmwCatalogueProvider,
   createBmwLiveCatalogueProvider, presentBmwLiveCatalogue, selectBmwCatalogueSnapshot } from '../vehicle-evidence/bmw-live-catalogue.js';
 
 // Every response below is a synthetic fixture shaped like the 1 Nov 2026 evidence; no real upstream data or key is used.
@@ -49,6 +49,7 @@ const four = [['N_SITZE', 5], ['A_GEPR_V211', 490], ['A_GEPR_V214', 1700], ['E_0
 const otdBody = (pairs = four, extra = 0) => ({ businessKey: '1', status: 1, retailPrice: PRICE,
   values: [...pairs, ...Array.from({ length: extra }, (_, i) => [`OTHER_${i}`, i])].map(([referenceName, targetValue]) => ({ referenceName, targetValue })) });
 
+const seenUrls = [];
 function harness(r, responses, extra = {}) {
   const allowed = new Map(Object.entries(urls(r)).map(([name, url]) => [url, name]));
   const calls = [];
@@ -58,7 +59,7 @@ function harness(r, responses, extra = {}) {
     assert.ok(!FORBIDDEN.some((part) => call.url.includes(part)), `forbidden ${call.url}`);
     assert.equal(call.method, 'GET'); assert.equal(call.credentials, 'omit'); assert.equal(call.body, undefined);
     assert.equal(call.headers['x-api-key'], KEY); assert.equal(call.retries, 0);
-    calls.push(name);
+    calls.push(name); seenUrls.push(call.url); extra.order?.push(`call:${name}`);
     const value = responses[name];
     if (typeof value === 'function') return value(call);
     return { status: 200, body: JSON.stringify(value) };
@@ -226,7 +227,7 @@ for (const [name, change, field] of [['effect date', { effectDate: '2027-02-01' 
 }
 
 test('a model missing from the live matrix is not found, with no solver call', async () => {
-  for (const matrix of [matrixBody([node({ modelCode: 'T5MK' })]), { ranges: [] }, { modelCode: 3 }]) {
+  for (const matrix of [matrixBody([node({ modelCode: 'T5MK' })]), matrixBody([node({ modelCode: 'T5MK' }), node({ modelCode: 'T5ML' })])]) {
     const { result, calls } = await run({ matrix });
     assert.deepEqual(calls, ['matrix']);
     assert.equal(result.status, 'not-found'); assert.equal(result.failure.code, 'live-not-found');
@@ -340,41 +341,373 @@ test('env selects the live provider and the key never reaches the provider or en
   await done();
 });
 
-test('upstream failures, raw errors and HTML never reach the envelope or logs', async (context) => {
+// Fake time: the clock only moves when a retry delay is slept or an attempt timeout fires; no real timers are used.
+function fakeTime() {
+  let time = Date.parse('2026-11-09T10:00:00Z');
+  const state = { timeouts: true, delays: [], timers: [] };
+  return Object.assign(state, {
+    clock: () => new Date(time),
+    advance: (ms) => { time += ms; },
+    sleep: (ms, signal) => {
+      if (!signal) { state.delays.push(ms); time += ms; return Promise.resolve(); }
+      state.timers.push(ms);
+      if (!state.timeouts) return new Promise(() => {});
+      return new Promise((resolve) => setImmediate(() => { if (!signal.aborted) { time += ms; resolve(); } }));
+    },
+  });
+}
+const sim = (responses, { request = sample(), time = fakeTime(), policy, trace, order } = {}) => {
+  const h = harness(request, responses, { order });
+  const provider = createBmwLiveCatalogueProvider({ selected: true, transport: h.transport, getCredential: () => KEY, clock: time.clock,
+    sleep: time.sleep, trace, ...(policy ? { policy } : {}) });
+  return { provider, h, time, request };
+};
+const seq = (...items) => {
+  let index = 0;
+  return (call) => {
+    const item = items[Math.min(index, items.length - 1)];
+    index += 1;
+    return typeof item === 'function' ? item(call) : { status: 200, body: JSON.stringify(item) };
+  };
+};
+const HTML = '<html>upstream</html>';
+const reply = (status, extra = {}) => () => ({ status, statusText: 'upstream denied', body: HTML,
+  headers: { 'x-api-key': KEY, 'set-cookie': 'session=upstream' }, ...extra });
+const never = () => new Promise(() => {});
+const STAGES = ['matrix', 'solver', 'options', 'otd'];
+const MAX_ATTEMPTS = BMW_LIVE_CATALOGUE_OPERATION_POLICY.maxAttemptsPerRead;
+const NO_ELIGIBLE = /eligible|no cars|zero/i;
+
+function assertFailureEnvelope(result, code) {
+  assert.equal(result.status, 'source-unavailable'); assert.equal(result.failure.code, code);
+  assert.equal(result.failure.retryable, ['source-rate-limited', 'source-server-error', 'source-timeout', 'source-failed'].includes(code));
+  assert.ok(result.failure.message.endsWith('No facts were substituted.')); assert.ok(!result.failure.message.includes(String.fromCharCode(0x2014)));
+  assert.equal(result.snapshotChoice.automatic, false); assert.equal(result.snapshotChoice.provider, 'bmw-catalogue-snapshot');
+  assert.equal(result.sourceKind, 'live'); assert.equal(result.provider, 'bmw-catalogue-live');
+  assert.equal(result.resolvedIdentity, null); assert.equal(result.resolvedLookupIdentity, null);
+  allUnknown(result);
+  for (const fact of Object.values(result.facts)) assert.equal(fact.value, null);
+  assert.equal(result.equipment.selected.complete, false); assert.equal(result.equipment.selected.options, null);
+  assert.equal(result.equipment.selected.accessories, null);
+  assert.equal(result.equipment.available.state, 'unknown'); assert.equal(result.equipment.available.codes, null);
+  assert.deepEqual(result.equipment.definitions, []);
+  assert.deepEqual(Object.values(result.completeness), ['unknown', 'unknown', 'unknown', 'unknown', 'unknown']);
+  assert.deepEqual(result.resolution.options, { added: [], removed: [], retyped: [], ignored: [], invalid: [], unrecognised: [] });
+  assert.ok(!NO_ELIGIBLE.test(JSON.stringify(result)));
+  const known = { seats: { value: 5, state: 'known' }, acceleration: { value: 6.1, state: 'known' } };
+  assert.deepEqual(mergeBmwCatalogueFacts(known, result), known);
+}
+
+// [name, responder, code, attempts at the failing read, stages where it applies]
+const CASES = [
+  ['401', reply(401), 'source-auth-refused', 1], ['403', reply(403), 'source-auth-refused', 1],
+  ['429 with retry-after', reply(429, { headers: { 'Retry-After': '30', 'x-api-key': KEY } }), 'source-rate-limited', 1],
+  ['429 without hint', reply(429), 'source-rate-limited', 1],
+  ['500', reply(500), 'source-server-error', MAX_ATTEMPTS], ['503', reply(503), 'source-server-error', MAX_ATTEMPTS],
+  ['599', reply(599), 'source-server-error', MAX_ATTEMPTS],
+  ['timeout', never, 'source-timeout', MAX_ATTEMPTS],
+  ['transport throws', () => { throw new Error(`${KEY} ${HTML}`); }, 'source-failed', MAX_ATTEMPTS],
+  ['transport rejects', () => Promise.reject(new Error(`${KEY} upstream`)), 'source-failed', MAX_ATTEMPTS],
+  ['redirected', () => ({ status: 200, redirected: true, body: '{}' }), 'source-failed', 1],
+  ['302', reply(302), 'source-failed', 1], ['204', reply(204), 'source-failed', 1], ['100', reply(100), 'source-failed', 1],
+  ['no response object', () => undefined, 'source-failed', 1],
+  ['oversize', () => ({ status: 200, body: 'x'.repeat(4194305) }), 'source-invalid', 1],
+  ['oversize bytes', () => ({ status: 200, body: new Uint8Array(4194305) }), 'source-invalid', 1],
+  ['no body', () => ({ status: 200 }), 'source-invalid', 1], ['not json', () => ({ status: 200, body: HTML }), 'source-invalid', 1],
+  ['bytes not json', () => ({ status: 200, body: new TextEncoder().encode(HTML) }), 'source-invalid', 1],
+  ['scalar', () => ({ status: 200, body: '5' }), 'source-invalid', 1], ['null', () => ({ status: 200, body: 'null' }), 'source-invalid', 1],
+  ['400', reply(400), 'source-application-error', 1], ['404', reply(404), 'source-application-error', 1],
+  ['409', reply(409), 'source-application-error', 1], ['422', reply(422), 'source-application-error', 1],
+  ['200 with error', () => ({ status: 200, body: '{"error":"upstream denied"}' }), 'source-application-error', 1],
+  ['200 with errors', () => ({ status: 200, body: '{"errors":[{"message":"upstream denied"}]}' }), 'source-application-error', 1],
+];
+const SHAPES = [['matrix', 'empty matrix', { ranges: [] }, 'source-empty'], ['matrix', 'empty object', {}, 'source-empty'],
+  ['matrix', 'models without codes', { modelCode: 3 }, 'source-empty'],
+  ['solver', 'constructible not boolean', { constructible: 'yes' }, 'source-invalid'],
+  ['solver', 'constructible without configuration', { constructible: true }, 'source-invalid'],
+  ['solver', 'bad changes', { ...solverBody(), configurationChanges: [] }, 'source-invalid'],
+  ['solver', 'bad element code', solverBody({ add: { 'bad-code': { code: 'bad-code', type: 'option' } } }), 'source-invalid'],
+  ['otd', 'values not a list', { values: 5 }, 'source-invalid'], ['otd', 'too many values', otdBody(four, 2001), 'source-invalid'],
+  ['otd', 'no values', {}, 'source-invalid']];
+
+test('every failure maps to a distinct safe outcome at each read, with a finite number of attempts', async (context) => {
   const done = guardNetwork(context);
   const spies = ['log', 'info', 'warn', 'error', 'debug'].map((name) => context.mock.method(console, name, () => {}));
-  const html = '<html>upstream</html>';
-  const failures = {
-    'throws with key and html': () => { throw new Error(`${KEY} ${html}`); },
-    '500 with html': () => ({ status: 500, statusText: 'upstream broke', body: html }),
-    '401': () => ({ status: 401, body: '{"message":"upstream denied"}' }),
-    '200 not json': () => ({ status: 200, body: html }),
-    '200 scalar': () => ({ status: 200, body: '5' }),
-    'oversize': () => ({ status: 200, body: 'x'.repeat(4194305) }),
-    'redirected': () => ({ status: 200, redirected: true, body: '{}' }),
-    'no body': () => ({ status: 200 }),
-    'bytes not json': () => ({ status: 200, body: new TextEncoder().encode(html) }),
-    'rejected': () => Promise.reject(new Error(`${KEY} upstream`)),
-  };
-  for (const [name, respond] of Object.entries(failures)) {
-    for (const stage of ['matrix', 'solver', 'options', 'otd']) {
-      const { result, calls } = await run(happy(sample(), { [stage]: respond }));
-      assert.equal(calls.at(-1), stage, name);
-      assert.equal(result.status, 'source-unavailable', name); assert.equal(result.failure.code, 'source-failed');
-      assert.equal(result.failure.retryable, true); assert.equal(result.snapshotChoice.automatic, false);
-      assert.equal(result.sourceKind, 'live'); assert.equal(result.resolvedIdentity, null); allUnknown(result);
-      const text = JSON.stringify(result).toLowerCase();
-      for (const secret of [KEY, 'html', 'upstream', 'denied', STATE]) assert.ok(!text.includes(secret.toLowerCase()), `${name} ${secret}`);
+  const codes = new Set();
+  const check = async (stage, name, respond, code, attempts) => {
+    const events = [];
+    const { provider, h } = sim(happy(sample(), { [stage]: respond }), { trace: (event) => events.push(event) });
+    const result = await provider.resolve(sample());
+    const label = `${stage} ${name}`;
+    assertFailureEnvelope(result, code);
+    assert.deepEqual(h.calls, [...STAGES.slice(0, STAGES.indexOf(stage)), ...Array(attempts).fill(stage)], label);
+    assert.ok(h.calls.length <= STAGES.length * MAX_ATTEMPTS, label);
+    const text = JSON.stringify([result, events]).toLowerCase();
+    for (const secret of [KEY, 'html', 'upstream', 'denied', STATE, 'set-cookie', 'session=', '://', 'x-api-key']) {
+      assert.ok(!text.includes(secret.toLowerCase()), `${label} ${secret}`);
     }
+    assert.equal(events.at(-1).type, 'response'); assert.equal(events.at(-1).outcome, code, label);
+    codes.add(code);
+    return result;
+  };
+  for (const [name, respond, code, attempts] of CASES) {
+    for (const stage of STAGES) await check(stage, name, respond, code, attempts);
   }
-  const unusable = [{ matrix: matrixBody(), solver: { constructible: 'yes' } }, { matrix: matrixBody(), solver: { constructible: true } },
-    { matrix: matrixBody(), solver: { ...solverBody(), configurationChanges: [] } },
-    { matrix: matrixBody(), solver: solverBody({ add: { 'bad-code': { code: 'bad-code', type: 'option' } } }) }];
-  for (const responses of unusable) assert.equal((await run(responses)).result.failure.code, 'source-failed');
-  assert.equal((await live(null).resolve(sample())).failure.code, 'transport-unavailable');
-  assert.equal((await live(() => ({}), { clock: () => new Date('x') }).resolve(sample())).failure.code, 'source-failed');
+  for (const [stage, name, body, code] of SHAPES) await check(stage, name, () => ({ status: 200, body: JSON.stringify(body) }), code, 1);
+  assert.deepEqual([...codes].sort(), ['source-application-error', 'source-auth-refused', 'source-empty', 'source-failed', 'source-invalid',
+    'source-rate-limited', 'source-server-error', 'source-timeout']);
   for (const spy of spies) assert.equal(spy.mock.callCount(), 0);
   await done();
+});
+
+test('a model that is simply not in a non-empty matrix stays live-not-found', async () => {
+  const { provider } = sim({ matrix: matrixBody([node({ modelCode: 'T5MK' })]) });
+  const result = await provider.resolve(sample());
+  assert.equal(result.failure.code, 'live-not-found'); assert.equal(result.status, 'not-found');
+});
+
+test('a timed out attempt is aborted and retried once, then reported as a timeout', async () => {
+  const signals = [];
+  const { provider, h, time } = sim(happy(sample(), { solver: (call) => { signals.push(call.signal); return never(); } }));
+  const result = await provider.resolve(sample());
+  assert.equal(result.failure.code, 'source-timeout'); assert.deepEqual(h.calls, ['matrix', 'solver', 'solver']);
+  assert.equal(signals.length, 2); assert.ok(signals.every((signal) => signal instanceof AbortSignal && signal.aborted));
+  assert.deepEqual(time.delays, [1000]);
+});
+
+test('auth refusal is never retried, holds the provider for the recorded period and then reads again', async () => {
+  for (const status of [401, 403]) {
+    const events = [];
+    const responses = happy(sample(), { solver: reply(status) });
+    const { provider, h, time } = sim(responses, { trace: (event) => events.push(event) });
+    assert.equal((await provider.resolve(sample())).failure.code, 'source-auth-refused');
+    assert.deepEqual(h.calls, ['matrix', 'solver']);
+    responses.solver = solverBody();
+    for (const wait of [0, 60000, BMW_LIVE_CATALOGUE_OPERATION_POLICY.authRefusalHoldMs - 60001]) {
+      time.advance(wait);
+      const held = await provider.resolve(sample());
+      assertFailureEnvelope(held, 'source-auth-refused');
+      assert.deepEqual(h.calls, ['matrix', 'solver']);
+    }
+    assert.deepEqual(events.at(-1), { type: 'hold', outcome: 'source-auth-refused' });
+    time.advance(1);
+    const after = await provider.resolve(sample());
+    assert.equal(after.status, 'partial'); assert.equal(after.failure, null);
+    assert.deepEqual(h.calls, ['matrix', 'solver', 'matrix', 'solver', 'options', 'otd']);
+    const other = sim(happy(), { time }).provider;
+    assert.equal((await other.resolve(sample())).status, 'partial');
+  }
+});
+
+test('rate limiting reads Retry-After, clamps it, never retries inside the resolve and holds a cooldown', async () => {
+  const time0 = fakeTime();
+  const date = new Date(time0.clock().getTime() + 120000).toUTCString();
+  const header = (value) => ({ status: 429, headers: { 'RETRY-AFTER': value } });
+  const cases = [['30', 30], ['  45 ', 45], [date, 120], ['garbage', 60], ['', 60], ['-5', 60], ['0', 1], ['99999999', 900],
+    [new Date(time0.clock().getTime() - 5000).toUTCString(), 1], [undefined, 60]];
+  for (const [value, seconds] of cases) {
+    const { provider, h } = sim(happy(sample(), { options: () => (value === undefined ? { status: 429 } : header(value)) }), { time: time0 });
+    const result = await provider.resolve(sample());
+    assertFailureEnvelope(result, 'source-rate-limited');
+    assert.equal(result.failure.retryAfterSeconds, seconds, String(value));
+    assert.deepEqual(h.calls, ['matrix', 'solver', 'options']);
+  }
+  const events = [];
+  const responses = happy(sample(), { matrix: () => ({ status: 429, headers: { get: (name) => (name.toLowerCase() === 'retry-after' ? '30' : null) } }) });
+  const { provider, h, time } = sim(responses, { trace: (event) => events.push(event) });
+  assert.equal((await provider.resolve(sample())).failure.retryAfterSeconds, 30);
+  responses.matrix = matrixBody();
+  time.advance(10000);
+  const held = await provider.resolve(sample());
+  assertFailureEnvelope(held, 'source-rate-limited'); assert.equal(held.failure.retryAfterSeconds, 20);
+  time.advance(500);
+  assert.equal((await provider.resolve(sample())).failure.retryAfterSeconds, 20);
+  assert.deepEqual(h.calls, ['matrix']);
+  assert.deepEqual(events.at(-1), { type: 'hold', outcome: 'source-rate-limited', retryAfterSeconds: 20 });
+  time.advance(19500);
+  assert.equal((await provider.resolve(sample())).status, 'partial');
+  assert.deepEqual(h.calls, ['matrix', 'matrix', 'solver', 'options', 'otd']);
+});
+
+test('server errors, timeouts and transport failures recover on the single retry; the other outcomes do not retry', async () => {
+  for (const flaky of [reply(503), never, () => { throw new Error('boom'); }, () => Promise.reject(new Error('boom'))]) {
+    const events = [];
+    const { provider, h, time } = sim(happy(sample(), { options: seq(flaky, optionsBody()) }), { trace: (event) => events.push(event) });
+    const result = await provider.resolve(sample());
+    assert.equal(result.status, 'partial'); assert.equal(result.failure, null);
+    assert.deepEqual(h.calls, ['matrix', 'solver', 'options', 'options', 'otd']);
+    assert.deepEqual(time.delays, [1000]);
+    assert.deepEqual(events.filter(({ type }) => type === 'retry'), [{ type: 'retry', family: 'options', attempt: 1, delayMs: 1000 }]);
+  }
+  const { provider, h } = sim(happy(sample(), { solver: seq(reply(401), solverBody()) }));
+  assert.equal((await provider.resolve(sample())).failure.code, 'source-auth-refused');
+  assert.equal(h.calls.length, 2);
+});
+
+test('retries stop when the remaining budget cannot fit another attempt, and a spent deadline starts no request', async () => {
+  const slow = (ms, status) => (call) => { slowTime.advance(ms); return { status, body: HTML }; };
+  let slowTime = fakeTime();
+  let setup = sim(happy(sample(), { solver: slow(15000, 503) }), { time: slowTime });
+  let result = await setup.provider.resolve(sample());
+  assert.equal(result.failure.code, 'source-server-error'); assert.deepEqual(setup.h.calls, ['matrix', 'solver']);
+  assert.deepEqual(slowTime.delays, []);
+  slowTime = fakeTime();
+  setup = sim(happy(sample(), { solver: slow(14000, 503) }), { time: slowTime });
+  result = await setup.provider.resolve(sample());
+  assert.equal(result.failure.code, 'source-server-error'); assert.deepEqual(setup.h.calls, ['matrix', 'solver', 'solver']);
+  slowTime = fakeTime();
+  setup = sim(happy(sample(), { matrix: () => { slowTime.advance(20000); return { status: 200, body: JSON.stringify(matrixBody()) }; } }), { time: slowTime });
+  result = await setup.provider.resolve(sample());
+  assertFailureEnvelope(result, 'source-timeout'); assert.deepEqual(setup.h.calls, ['matrix']);
+  const wide = { ...BMW_LIVE_CATALOGUE_OPERATION_POLICY, maxAttemptsPerRead: 3 };
+  setup = sim(happy(sample(), { otd: reply(500) }), { policy: wide });
+  result = await setup.provider.resolve(sample());
+  assert.equal(result.failure.code, 'source-server-error'); assert.deepEqual(setup.h.calls, ['matrix', 'solver', 'options', 'otd', 'otd', 'otd']);
+  const tight = { ...BMW_LIVE_CATALOGUE_OPERATION_POLICY, resolveDeadlineMs: 5500, maxAttemptsPerRead: 5 };
+  setup = sim(happy(sample(), { matrix: reply(500) }), { policy: tight });
+  assert.equal((await setup.provider.resolve(sample())).failure.code, 'source-server-error');
+  assert.equal(setup.h.calls.length, 1);
+});
+
+test('an attempt timeout is capped by the time left in the resolve deadline', async () => {
+  const time = fakeTime();
+  const { provider, h } = sim(happy(sample(), { matrix: () => { time.advance(18000); return { status: 200, body: JSON.stringify(matrixBody()) }; },
+    solver: never }), { time });
+  assert.equal((await provider.resolve(sample())).failure.code, 'source-timeout');
+  assert.deepEqual(h.calls, ['matrix', 'solver']); assert.deepEqual(time.timers, [5000, 2000]);
+});
+
+test('live resolves are serialised: at most one upstream request is ever in flight', async () => {
+  let inFlight = 0;
+  let peak = 0;
+  const track = (value) => async () => {
+    inFlight += 1; peak = Math.max(peak, inFlight);
+    await new Promise((resolve) => setImmediate(resolve));
+    inFlight -= 1;
+    return { status: 200, body: JSON.stringify(value) };
+  };
+  const tracked = () => Object.fromEntries(Object.entries(happy()).map(([name, value]) => [name, track(value)]));
+  const time = fakeTime(); time.timeouts = false;
+  const one = sim(tracked(), { time });
+  const two = sim(tracked(), { time });
+  const results = await Promise.all([one.provider.resolve(sample()), one.provider.resolve(sample()),
+    two.provider.resolve(sample()), two.provider.resolve(sample())]);
+  assert.deepEqual(results.map(({ status }) => status), ['partial', 'partial', 'partial', 'partial']);
+  assert.equal(peak, 1); assert.equal(one.h.calls.length + two.h.calls.length, 16);
+  const failing = sim({ matrix: () => { throw new Error('x'); } }, { time });
+  assert.equal((await failing.provider.resolve(sample())).failure.code, 'source-failed');
+  assert.equal((await one.provider.resolve(sample())).status, 'partial');
+});
+
+test('time spent queued behind another resolve counts against the deadline and sends no request', async () => {
+  const time = fakeTime(); time.timeouts = false;
+  const slow = sim(happy(sample(), { matrix: async () => { await new Promise((resolve) => setImmediate(resolve)); time.advance(25000);
+    return { status: 200, body: JSON.stringify(matrixBody()) }; } }), { time });
+  const waiting = sim(happy(), { time });
+  const [first, second] = await Promise.all([slow.provider.resolve(sample()), waiting.provider.resolve(sample())]);
+  assert.equal(first.failure.code, 'source-timeout'); assertFailureEnvelope(second, 'source-timeout');
+  assert.deepEqual(slow.h.calls, ['matrix']); assert.deepEqual(waiting.h.calls, []);
+});
+
+test('the operation policy is frozen, recorded and validated at construction with fixed error text', () => {
+  const policy = BMW_LIVE_CATALOGUE_OPERATION_POLICY;
+  assert.deepEqual(policy, { version: 'bmw-ucp-operation-policy.v1', status: 'assumed', basis: 'docs/gcsp/evidence/fucq-16/operation-policy.md',
+    concurrency: 1, attemptTimeoutMs: 5000, maxAttemptsPerRead: 2, retryDelayMs: 1000, resolveDeadlineMs: 20000,
+    rateLimit: { defaultRetryAfterMs: 60000, minRetryAfterMs: 1000, maxRetryAfterMs: 900000 }, authRefusalHoldMs: 1800000 });
+  assert.ok(Object.isFrozen(policy) && Object.isFrozen(policy.rateLimit));
+  const bad = [null, 'x', 5, {}, { ...policy, concurrency: 2 }, { ...policy, concurrency: 0 }, { ...policy, attemptTimeoutMs: 0 },
+    { ...policy, maxAttemptsPerRead: 1.5 }, { ...policy, retryDelayMs: -1 }, { ...policy, resolveDeadlineMs: KEY }, { ...policy, authRefusalHoldMs: Infinity },
+    { ...policy, rateLimit: undefined }, { ...policy, rateLimit: { ...policy.rateLimit, minRetryAfterMs: 0 } },
+    { ...policy, rateLimit: { ...policy.rateLimit, maxRetryAfterMs: 500 } }, { ...policy, version: KEY, attemptTimeoutMs: KEY }];
+  for (const candidate of bad) {
+    for (const build of [() => createBmwLiveCatalogueProvider({ selected: true, policy: candidate }),
+      () => createBmwCatalogueProvider({ env: { GCSP_CATALOGUE_PROVIDER: 'bmw-ucp-live', GCSP_BMW_UCP_API_KEY: KEY }, policy: candidate })]) {
+      assert.throws(build, (error) => error instanceof TypeError && error.message === 'Invalid live catalogue operation policy'
+        && !JSON.stringify([error.message, error.stack.split('\n')[0]]).includes(KEY));
+    }
+  }
+  assert.ok(createBmwLiveCatalogueProvider({ selected: true, policy: { ...policy, extra: 'allowed' } }));
+});
+
+test('AC4: a failed read never replaces existing known facts or claims an empty list', async () => {
+  const known = { seats: { state: 'known', value: 4 }, luggageNormal: { state: 'known', value: 300 } };
+  for (const code of ['source-auth-refused', 'source-rate-limited', 'source-server-error', 'source-timeout', 'source-empty', 'source-invalid',
+    'source-application-error', 'source-failed']) {
+    const found = CASES.find((item) => item[2] === code);
+    const { provider } = sim(code === 'source-empty' ? { matrix: { ranges: [] } } : happy(sample(), { solver: found[1] }));
+    const result = await provider.resolve(sample());
+    assertFailureEnvelope(result, code);
+    assert.deepEqual(mergeBmwCatalogueFacts(known, result), known);
+    assert.deepEqual(describeBmwEquipment(result, 'S0337').catalogueSelection.state, 'unknown');
+  }
+});
+
+test('failures reach the presentation contract with fixed text, a labelled live source and a non-automatic snapshot offer', async () => {
+  const wanted = { 'source-auth-refused': reply(401), 'source-rate-limited': reply(429), 'source-server-error': reply(500), 'source-timeout': never,
+    'source-invalid': () => ({ status: 200, body: HTML }), 'source-application-error': reply(422), 'source-failed': () => { throw new Error(KEY); } };
+  for (const [code, respond] of Object.entries(wanted)) {
+    const { provider } = sim(happy(sample(), { solver: respond }));
+    const shown = presentBmwLiveCatalogue(await provider.resolve(sample()));
+    clean(shown);
+    assert.equal(shown.label, 'Live catalogue unavailable'); assert.equal(shown.status, 'source-unavailable'); assert.equal(shown.sourceKind, 'live');
+    assert.equal(shown.failure.code, code); assert.ok(shown.failure.message.endsWith('No facts were substituted.'));
+    assert.equal(shown.snapshotChoice, 'Use the dated snapshot observed on 1 November 2026');
+    assert.deepEqual(shown.measurements, []); assert.deepEqual(shown.equipment, []); assert.equal(shown.source, null);
+  }
+  const { provider } = sim({ matrix: { ranges: [] } });
+  assert.equal(presentBmwLiveCatalogue(await provider.resolve(sample())).failure.code, 'source-empty');
+});
+
+test('trace events precede every request, carry only fixed fields and never a URL, header or key', async () => {
+  const order = [];
+  const events = [];
+  const { provider } = sim(happy(), { order, trace: (event) => { events.push(event); order.push(`${event.type}:${event.family ?? ''}`); } });
+  assert.equal((await provider.resolve(sample())).status, 'partial');
+  assert.deepEqual(order, ['request:matrix', 'call:matrix', 'response:matrix', 'request:solver', 'call:solver', 'response:solver',
+    'request:options', 'call:options', 'response:options', 'request:otd', 'call:otd', 'response:otd']);
+  assert.deepEqual(events.filter(({ type }) => type === 'request'), STAGES.map((family) => ({ type: 'request', host: 'prod.ucp.bmw.cloud', family, attempt: 1 })));
+  assert.deepEqual(events.filter(({ type }) => type === 'response'), STAGES.map((family) => ({ type: 'response', family, attempt: 1, outcome: 'ok', httpStatus: 200 })));
+  assert.ok(events.every((event) => Object.isFrozen(event)));
+  const text = JSON.stringify(events);
+  for (const bad of [KEY, '://', '/model-matrices', 'x-api-key', STATE, 'T5MJ', 'S0337']) assert.ok(!text.includes(bad), bad);
+});
+
+test('a throwing or rejecting trace callback never changes the outcome', async () => {
+  for (const trace of [() => { throw new Error(KEY); }, () => Promise.reject(new Error(KEY))]) {
+    const { provider } = sim(happy(), { trace });
+    assert.equal((await provider.resolve(sample())).status, 'partial');
+    const failing = sim(happy(sample(), { otd: reply(401) }), { trace });
+    assert.equal((await failing.provider.resolve(sample())).failure.code, 'source-auth-refused');
+  }
+});
+
+test('AC5: startup and retry paths write nothing to the console and leak neither key nor upstream text', async (context) => {
+  const done = guardNetwork(context);
+  const spies = ['log', 'info', 'warn', 'error', 'debug'].map((name) => context.mock.method(console, name, () => {}));
+  const events = [];
+  const trace = (event) => events.push(event);
+  const results = [];
+  results.push(await live(() => { throw new Error(`${KEY} ${HTML}`); }, { getCredential: () => { throw new Error(KEY); }, trace }).resolve(sample()));
+  results.push(await live(() => { throw new Error(`${KEY} ${HTML}`); }, { trace, sleep: () => Promise.resolve() }).resolve(sample()));
+  results.push(await createBmwCatalogueProvider({ env: { GCSP_CATALOGUE_PROVIDER: 'bmw-ucp-live', GCSP_BMW_UCP_API_KEY: KEY },
+    transport: () => Promise.reject(new Error(KEY)), clock, sleep: () => Promise.resolve(), trace }).resolve(sample()));
+  results.push(await createBmwCatalogueProvider({ env: { GCSP_CATALOGUE_PROVIDER: 'bmw-ucp-live', GCSP_BMW_UCP_API_KEY: KEY },
+    transport: () => ({ status: 503, statusText: 'upstream', body: HTML, headers: { 'x-api-key': KEY } }), clock, sleep: () => Promise.resolve(), trace }).resolve(sample()));
+  assert.deepEqual(results.map(({ failure }) => failure.code), ['credentials-unavailable', 'source-failed', 'source-failed', 'source-server-error']);
+  let message = '';
+  try { createBmwLiveCatalogueProvider({ selected: true, policy: { concurrency: KEY } }); } catch (error) { message = `${error.message}\n${error.stack}`; }
+  const text = JSON.stringify([results, events, message.split('\n')[0]]).toLowerCase();
+  for (const secret of [KEY, 'html', 'upstream', 'denied', STATE, 'x-api-key']) assert.ok(!text.includes(secret.toLowerCase()), secret);
+  for (const spy of spies) assert.equal(spy.mock.callCount(), 0);
+  await done();
+});
+
+test('a missing transport and an unreadable clock are fixed failures that make no request', async () => {
+  assert.equal((await live(null).resolve(sample())).failure.code, 'transport-unavailable');
+  const h = harness(sample(), {});
+  assert.equal((await live(h.transport, { clock: () => new Date('x') }).resolve(sample())).failure.code, 'source-failed');
+  assert.equal((await live(h.transport, { clock: () => { throw new Error(KEY); } }).resolve(sample())).failure.code, 'source-failed');
+  assert.deepEqual(h.calls, []);
 });
 
 test('the solver state token is never read, echoed or reused and no later request carries it', async () => {
@@ -500,4 +833,10 @@ test('presentation labels never cross: live envelopes are never snapshot and sna
     const shown = presentBmwLiveCatalogue(envelope);
     assert.equal(shown.sourceKind, 'dated-snapshot'); assert.ok(!/live/i.test(JSON.stringify(shown)));
   }
+});
+
+test('AC5: no request across any retry or failure path carries a captured UUID', () => {
+  assert.ok(seenUrls.length > 100, 'expected the earlier tests to have made requests');
+  const uuid = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+  assert.ok(seenUrls.every((url) => !uuid.test(url) && url.startsWith(`${O}/`)));
 });

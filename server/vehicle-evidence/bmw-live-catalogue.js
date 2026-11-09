@@ -7,7 +7,17 @@ export const BMW_CATALOGUE_PROVIDER_ENV = 'GCSP_CATALOGUE_PROVIDER';
 export const BMW_UCP_KEY_ENV = 'GCSP_BMW_UCP_API_KEY';
 
 const ORIGIN = 'https://prod.ucp.bmw.cloud';
+const HOST = 'prod.ucp.bmw.cloud';
 const MAX_BYTES = 4194304;
+const NONE = ' No facts were substituted.';
+
+/** Assumed operating limits (no BMW terms or rate limits are published); the basis doc is added with the cache policy. */
+export const BMW_LIVE_CATALOGUE_OPERATION_POLICY = Object.freeze({
+  version: 'bmw-ucp-operation-policy.v1', status: 'assumed', basis: 'docs/gcsp/evidence/fucq-16/operation-policy.md',
+  concurrency: 1, attemptTimeoutMs: 5000, maxAttemptsPerRead: 2, retryDelayMs: 1000, resolveDeadlineMs: 20000,
+  rateLimit: Object.freeze({ defaultRetryAfterMs: 60000, minRetryAfterMs: 1000, maxRetryAfterMs: 900000 }),
+  authRefusalHoldMs: 1800000,
+});
 const LOOKUP_OPTIONS = { provider: BMW_LIVE_CATALOGUE_PROVIDER, providerVersion: '1', snapshotVersion: BMW_LIVE_CATALOGUE_SOURCE };
 const LOOKUP_ONLY = ['provider', 'providerVersion', 'schemaVersion', 'snapshotVersion'];
 const MODEL_FIELDS = ['modelCode', 'modelRange', 'rawModelRange', 'agModelCode', 'orderDate', 'effectDate', 'taxDate', 'productionDate'];
@@ -20,13 +30,22 @@ const FAILURES = {
   'unsupported-market': ['This market or language is not supported by the live catalogue.', false],
   'transport-unavailable': ['The live catalogue connection is not configured.', false],
   'credentials-unavailable': ['Live catalogue access is not configured.', false],
-  'source-failed': ['The live catalogue could not be read. No facts were substituted.', true],
+  'source-failed': [`The live catalogue could not be read.${NONE}`, true],
+  'source-auth-refused': [`The live catalogue refused access and will not be asked again for a while.${NONE}`, false],
+  'source-rate-limited': [`The live catalogue asked us to slow down. Try again later.${NONE}`, true],
+  'source-server-error': [`The live catalogue had a server problem.${NONE}`, true],
+  'source-timeout': [`The live catalogue took too long to answer.${NONE}`, true],
+  'source-empty': [`The live catalogue returned no models.${NONE}`, false],
+  'source-invalid': [`The live catalogue returned data that could not be used.${NONE}`, false],
+  'source-application-error': [`The live catalogue reported an error.${NONE}`, false],
   'live-not-found': ['The live catalogue has no such model for these dates.', false],
   'live-identity-mismatch': ['The live catalogue describes a different configuration or date. No facts were substituted.', false],
   'live-not-constructible': ['The live catalogue says this configuration cannot be built. No facts were substituted.', false],
 };
-const OFFER_SNAPSHOT = new Set(['source-not-selected', 'transport-unavailable', 'credentials-unavailable', 'source-failed']);
-const failure = (code) => ({ code, message: FAILURES[code][0], retryable: FAILURES[code][1] });
+const OFFER_SNAPSHOT = new Set(['source-not-selected', 'transport-unavailable', 'credentials-unavailable', 'source-failed',
+  'source-auth-refused', 'source-rate-limited', 'source-server-error', 'source-timeout', 'source-empty', 'source-invalid',
+  'source-application-error']);
+const failure = (code, extra) => ({ code, message: FAILURES[code][0], retryable: FAILURES[code][1], ...extra });
 const snapshotChoice = () => ({ kind: 'explicit-snapshot-selection', provider: 'bmw-catalogue-snapshot',
   snapshotVersion: 'bmw-gb-i5-2026-11-01.v1', label: 'Use the dated snapshot observed on 1 November 2026', automatic: false });
 
@@ -36,10 +55,11 @@ export function bmwCatalogueProviderSelection(env = {}) {
 }
 
 /** Snapshot stays the default; an unrecognised selection fails closed and never falls back silently. */
-export function createBmwCatalogueProvider({ env = process.env, transport, snapshotAdapter = createBmwCatalogueAdapter(), clock } = {}) {
+export function createBmwCatalogueProvider({ env = process.env, transport, snapshotAdapter = createBmwCatalogueAdapter(), clock, policy, sleep, trace } = {}) {
   const selection = bmwCatalogueProviderSelection(env);
   if (selection === 'snapshot') return snapshotAdapter;
-  return createBmwLiveCatalogueProvider({ selected: selection === 'live', transport, getCredential: () => env?.[BMW_UCP_KEY_ENV], clock });
+  return createBmwLiveCatalogueProvider({ selected: selection === 'live', transport, getCredential: () => env?.[BMW_UCP_KEY_ENV], clock,
+    policy, sleep, trace });
 }
 
 /** The deliberate, separate snapshot choice; a live failure never calls this. */
@@ -67,30 +87,83 @@ function base(lookup, requestedIdentity) {
   };
 }
 
-function finish(out, status, code) {
+function finish(out, status, code, extra) {
   out.status = status;
-  out.failure = failure(code);
+  out.failure = failure(code, extra);
   out.snapshotChoice = OFFER_SNAPSHOT.has(code) ? snapshotChoice() : null;
   return out;
 }
 
-const FAILED = Symbol('source-failed');
+const FAIL = Symbol('live-failure');
+const fail = (code, retry = false, httpStatus = null, retryAfterMs) => ({ [FAIL]: code, retry, httpStatus, retryAfterMs });
+const TIMED_OUT = Symbol('timed-out');
+const THREW = Symbol('threw');
+const hang = () => new Promise(() => {});
 
-/** Single attempt, fixed failure: FUCQ-47 owns timeout, retry, cache and the failure taxonomy at this seam. */
-async function read(transport, key, path) {
-  let response;
+/** The timer is unref'd and cleared on abort, so a finished read never keeps the process alive. */
+const defaultSleep = (ms, signal) => new Promise((resolve) => {
+  const timer = setTimeout(resolve, ms);
+  timer.unref?.();
+  signal?.addEventListener('abort', () => clearTimeout(timer), { once: true });
+});
+
+// Process-wide gate: whole live resolves run one at a time, so at most one upstream request is ever in flight.
+let gateTail = Promise.resolve();
+function acquireGate() {
+  let release;
+  const previous = gateTail;
+  gateTail = new Promise((resolve) => { release = resolve; });
+  return previous.then(() => release);
+}
+
+function headerValue(headers, name) {
   try {
-    response = await transport({ method: 'GET', url: `${ORIGIN}${path}`, headers: { 'x-api-key': key, accept: 'application/json' },
-      credentials: 'omit', cache: 'no-store', redirect: 'error', retries: 0, maxResponseBytes: MAX_BYTES });
-  } catch { throw FAILED; }
-  const body = response?.body;
-  if (response?.status !== 200 || response.redirected === true) throw FAILED;
-  if (!(typeof body === 'string' ? Buffer.byteLength(body) <= MAX_BYTES : body instanceof Uint8Array && body.length <= MAX_BYTES)) throw FAILED;
-  try {
-    const parsed = JSON.parse(typeof body === 'string' ? body : new TextDecoder().decode(body));
-    if (parsed && typeof parsed === 'object') return parsed;
-  } catch { /* fixed failure below */ }
-  throw FAILED;
+    if (typeof headers?.get === 'function') return headers.get(name);
+    for (const [key, value] of Object.entries(headers ?? {})) if (key.toLowerCase() === name) return value;
+  } catch { /* treated as missing */ }
+  return undefined;
+}
+
+function retryAfterMs(headers, nowMs, limits) {
+  const raw = headerValue(headers, 'retry-after');
+  const value = typeof raw === 'string' || typeof raw === 'number' ? String(raw).trim() : '';
+  let wait = limits.defaultRetryAfterMs;
+  if (/^\d{1,9}$/.test(value)) wait = Number(value) * 1000;
+  else if (/^[A-Za-z]/.test(value) && Number.isFinite(Date.parse(value))) wait = Date.parse(value) - nowMs;
+  return Math.min(limits.maxRetryAfterMs, Math.max(limits.minRetryAfterMs, wait));
+}
+
+/** One attempt: send, race the attempt timeout, classify the status and parse. Throws only fail() markers. */
+async function exchange(env, path, timeoutMs, finalise) {
+  const aborter = new AbortController();
+  const timer = new AbortController();
+  const sent = new Promise((resolve) => resolve(env.transport({ method: 'GET', url: `${ORIGIN}${path}`,
+    headers: { 'x-api-key': env.key, accept: 'application/json' }, credentials: 'omit', cache: 'no-store', redirect: 'error',
+    retries: 0, maxResponseBytes: MAX_BYTES, signal: aborter.signal })));
+  const timeout = Promise.resolve().then(() => env.sleep(timeoutMs, timer.signal)).then(() => TIMED_OUT, hang);
+  const winner = await Promise.race([sent.then((response) => ({ response }), () => THREW), timeout]);
+  timer.abort();
+  if (winner === TIMED_OUT) { aborter.abort(); throw fail('source-timeout', true); }
+  if (winner === THREW) throw fail('source-failed', true);
+  const response = winner.response;
+  const status = response?.status;
+  const known = Number.isInteger(status) ? status : null;
+  if (!response || typeof response !== 'object' || response.redirected === true) throw fail('source-failed', false, known);
+  if (status === 401 || status === 403) throw fail('source-auth-refused', false, status);
+  if (status === 429) throw fail('source-rate-limited', false, status, retryAfterMs(response.headers, env.now(), env.policy.rateLimit));
+  if (known >= 500 && known <= 599) throw fail('source-server-error', true, status);
+  if (known >= 400 && known <= 499) throw fail('source-application-error', false, status);
+  if (status !== 200) throw fail('source-failed', false, known);
+  const body = response.body;
+  if (!(typeof body === 'string' ? Buffer.byteLength(body) <= MAX_BYTES : body instanceof Uint8Array && body.length <= MAX_BYTES)) {
+    throw fail('source-invalid', false, 200);
+  }
+  let parsed;
+  try { parsed = JSON.parse(typeof body === 'string' ? body : new TextDecoder().decode(body)); } catch { throw fail('source-invalid', false, 200); }
+  if (!parsed || typeof parsed !== 'object') throw fail('source-invalid', false, 200);
+  // Assumed (not observed) failure markers: a truthy top-level error or a non-empty errors array.
+  if (!Array.isArray(parsed) && (parsed.error || (Array.isArray(parsed.errors) && parsed.errors.length))) throw fail('source-application-error', false, 200);
+  try { return finalise(parsed); } catch (error) { throw error?.[FAIL] ? error : fail('source-invalid', false, 200); }
 }
 
 function collectModels(root) {
@@ -157,7 +230,7 @@ function optionLabels(body) {
 
 function measurements(body, retrievedDate, node) {
   const values = Array.isArray(body.values) ? body.values : body.values && typeof body.values === 'object' ? Object.values(body.values) : null;
-  if (!values || values.length > 2000) throw FAILED;
+  if (!values || values.length > 2000) throw fail('source-invalid');
   const facts = emptyFacts();
   const mapped = new Set(Object.values(MEASUREMENTS).map(([reference]) => reference));
   for (const [name, [reference, definition, unit]] of Object.entries(MEASUREMENTS)) {
@@ -173,8 +246,27 @@ function measurements(body, retrievedDate, node) {
   return { facts, unmapped };
 }
 
-/** Live catalogue provider for the C13 envelope. Transport and credential are injected; it never reads the network itself. */
-export function createBmwLiveCatalogueProvider({ selected = false, transport, getCredential, clock = () => new Date() } = {}) {
+const positive = (value) => Number.isSafeInteger(value) && value > 0;
+function validPolicy(policy) {
+  const limits = policy?.rateLimit;
+  return policy && typeof policy === 'object' && policy.concurrency === 1
+    && ['attemptTimeoutMs', 'maxAttemptsPerRead', 'retryDelayMs', 'resolveDeadlineMs', 'authRefusalHoldMs'].every((name) => positive(policy[name]))
+    && limits && typeof limits === 'object' && ['defaultRetryAfterMs', 'minRetryAfterMs', 'maxRetryAfterMs'].every((name) => positive(limits[name]))
+    && limits.minRetryAfterMs <= limits.defaultRetryAfterMs && limits.defaultRetryAfterMs <= limits.maxRetryAfterMs;
+}
+
+/** Live provider: transport and credential are injected, no network of its own. Keep one instance; hold and cooldown are per instance. */
+export function createBmwLiveCatalogueProvider({ selected = false, transport, getCredential, clock = () => new Date(),
+  policy = BMW_LIVE_CATALOGUE_OPERATION_POLICY, sleep, trace } = {}) {
+  if (!validPolicy(policy)) throw new TypeError('Invalid live catalogue operation policy');
+  const pause = typeof sleep === 'function' ? sleep : defaultSleep;
+  let authHoldUntil = 0;
+  let cooldownUntil = 0;
+  const emit = (event) => {
+    if (typeof trace !== 'function') return;
+    try { Promise.resolve(trace(Object.freeze(event))).catch(() => {}); } catch { /* a trace callback never affects a read */ }
+  };
+
   async function resolve(request) {
     const lookup = bmwCatalogueLookupIdentity(request, LOOKUP_OPTIONS);
     if (!lookup) return finish(base(null, null), 'invalid-input', 'invalid-request');
@@ -187,13 +279,56 @@ export function createBmwLiveCatalogueProvider({ selected = false, transport, ge
     try { key = await getCredential(); } catch { key = undefined; }
     if (typeof key !== 'string' || !key || key.length > 4096 || /[\r\n]/.test(key)) return finish(out, 'source-unavailable', 'credentials-unavailable');
     let retrievedDate;
-    try { retrievedDate = clock().toISOString().slice(0, 10); } catch { retrievedDate = ''; }
-    if (!ISO_DATE.test(retrievedDate)) return finish(out, 'source-unavailable', 'source-failed');
-    const { modelCode, modelRange, agModelCode, trim, orderDate, effectDate } = requested;
-    const dated = `effect-dates/${effectDate}/order-dates/${orderDate}`;
-    const get = (path) => read(transport, key, path);
+    let startMs;
+    try { const began = clock(); retrievedDate = began.toISOString().slice(0, 10); startMs = began.getTime(); } catch { retrievedDate = ''; }
+    if (!ISO_DATE.test(retrievedDate) || !Number.isFinite(startMs)) return finish(out, 'source-unavailable', 'source-failed');
+    let lastMs = startMs;
+    const now = () => { try { const time = clock().getTime(); if (Number.isFinite(time)) lastMs = time; } catch { /* keep the last reading */ } return lastMs; };
+    const held = () => {
+      const time = now();
+      if (time < authHoldUntil) return ['source-auth-refused', undefined];
+      if (time < cooldownUntil) return ['source-rate-limited', { retryAfterSeconds: Math.ceil((cooldownUntil - time) / 1000) }];
+      return null;
+    };
+    const refuse = (hold) => {
+      emit({ type: 'hold', outcome: hold[0], ...hold[1] });
+      return finish(out, 'source-unavailable', hold[0], hold[1]);
+    };
+    const early = held();
+    if (early) return refuse(early);
+    const env = { transport, key, sleep: pause, now, policy };
+    const get = async (family, path, finalise) => {
+      for (let attempt = 1; ; attempt += 1) {
+        const left = policy.resolveDeadlineMs - (now() - startMs);
+        if (left <= 0) throw fail('source-timeout', true);
+        emit({ type: 'request', host: HOST, family, attempt });
+        try {
+          const value = await exchange(env, path, Math.min(policy.attemptTimeoutMs, left), finalise);
+          emit({ type: 'response', family, attempt, outcome: 'ok', httpStatus: 200 });
+          return value;
+        } catch (error) {
+          const known = error?.[FAIL] ? error : fail('source-failed');
+          emit({ type: 'response', family, attempt, outcome: known[FAIL], httpStatus: known.httpStatus });
+          if (!known.retry || attempt >= policy.maxAttemptsPerRead
+            || now() - startMs + policy.retryDelayMs + policy.attemptTimeoutMs > policy.resolveDeadlineMs) throw known;
+          emit({ type: 'retry', family, attempt, delayMs: policy.retryDelayMs });
+          try { await pause(policy.retryDelayMs); } catch { /* the deadline check still bounds the loop */ }
+        }
+      }
+    };
+    let release = () => {};
     try {
-      const matrix = collectModels(await get(`/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/${requested.catalogueDate}/order-dates/${orderDate}?gfs-policy=none&cluster=default&model-ranges=${modelRange}&future-models=true&closest-fallback=true`));
+      release = await acquireGate();
+      const queued = held();
+      if (queued) return refuse(queued);
+      if (now() - startMs >= policy.resolveDeadlineMs) return finish(out, 'source-unavailable', 'source-timeout');
+      const { modelCode, modelRange, agModelCode, trim, orderDate, effectDate } = requested;
+      const dated = `effect-dates/${effectDate}/order-dates/${orderDate}`;
+      const matrix = await get('matrix', `/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/${requested.catalogueDate}/order-dates/${orderDate}?gfs-policy=none&cluster=default&model-ranges=${modelRange}&future-models=true&closest-fallback=true`, (body) => {
+        const models = collectModels(body);
+        if (!models.size) throw fail('source-empty');
+        return models;
+      });
       out.observedDate = out.retrievedDate = retrievedDate;
       const node = matrix.get(modelCode);
       if (!node) return finish(out, 'not-found', 'live-not-found');
@@ -217,8 +352,11 @@ export function createBmwLiveCatalogueProvider({ selected = false, transport, ge
       if (matrixDifferences.length) return mismatch(matrixDifferences, identity(stated, null, null), 'live-identity-mismatch');
 
       const requestedCodes = unique([...requested.selectedOptions, ...requested.selectedAccessories.map(({ code }) => code)]);
-      const solved = parseSolver(await get(`/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/${dated}/models/${modelCode}?included-elements=${requestedCodes.join(',')}&mandatory-elements=${trim}&add-rules-for-mandatory-element-classes=fabric,paint,rim&application=connext`));
-      if (!solved) throw FAILED;
+      const solved = await get('solver', `/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/${dated}/models/${modelCode}?included-elements=${requestedCodes.join(',')}&mandatory-elements=${trim}&add-rules-for-mandatory-element-classes=fabric,paint,rim&application=connext`, (body) => {
+        const parsed = parseSolver(body);
+        if (!parsed) throw fail('source-invalid');
+        return parsed;
+      });
       const wanted = new Map([...requested.selectedOptions.map((code) => [code, 'option']),
         ...requested.selectedAccessories.map(({ code }) => [code, 'accessory'])]);
       const options = { added: unique([...solved.changes.added, ...[...solved.elements.keys()].filter((code) => !wanted.has(code))]),
@@ -252,9 +390,9 @@ export function createBmwLiveCatalogueProvider({ selected = false, transport, ge
       }
 
       const resolvedCodes = unique([...resolvedOptions, ...resolvedAccessories.map(({ code }) => code)]);
-      const labels = optionLabels(await get(`/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/${dated}/applications/connext/models/${modelCode}/options/languages/en?trim=${trim}`));
-      const otd = measurements(await get(`/otd/country-groups/eu27+/ag-models/${agModelCode}/validity-dates/${effectDate}/otd-for-configuration?included-options=${resolvedCodes.join(',')}`),
-        retrievedDate, node);
+      const labels = await get('options', `/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/${dated}/applications/connext/models/${modelCode}/options/languages/en?trim=${trim}`, optionLabels);
+      const otd = await get('otd', `/otd/country-groups/eu27+/ag-models/${agModelCode}/validity-dates/${effectDate}/otd-for-configuration?included-options=${resolvedCodes.join(',')}`,
+        (body) => measurements(body, retrievedDate, node));
       const observed = { kind: 'observed', source: 'BMW UK catalogue', observedDate: retrievedDate };
       const definitions = resolvedOptions.map((code) => {
         const entry = labels.get(code);
@@ -279,10 +417,18 @@ export function createBmwLiveCatalogueProvider({ selected = false, transport, ge
         availableOptions: 'partial', selectedConfiguration: 'complete', verifiedFitted: 'unknown' };
       if (measured && out.completeness.optionDefinitions === 'complete' && definitions.length) out.status = 'ok';
       return out;
-    } catch {
+    } catch (error) {
       out.resolvedIdentity = out.resolvedLookupIdentity = out.identityProvenance = out.catalogueValidity = null;
-      return finish(Object.assign(out, { facts: emptyFacts(), unmappedMeasurements: [] }), 'source-unavailable', 'source-failed');
-    }
+      const code = error?.[FAIL] ?? 'source-failed';
+      let extra;
+      if (code === 'source-auth-refused') authHoldUntil = now() + policy.authRefusalHoldMs;
+      if (code === 'source-rate-limited') {
+        const wait = error.retryAfterMs;
+        cooldownUntil = now() + wait;
+        extra = { retryAfterSeconds: Math.ceil(wait / 1000) };
+      }
+      return finish(Object.assign(out, { facts: emptyFacts(), unmappedMeasurements: [] }), 'source-unavailable', code, extra);
+    } finally { release(); }
   }
   return Object.freeze({ provider: BMW_LIVE_CATALOGUE_PROVIDER, resolve });
 }
