@@ -176,3 +176,4 @@ For Russell or Gary:
   - **FUCQ-223** (bug, not in MoSCoW, Medium), **partly met.** The 320 px layout fixes are done, including a new kit `showMore` component for gallery paging.
 - **Question for Gary (FUCQ-223):** the shell items a to d (BMW Group logo, soft blue nav tile, condensed H1, bright blue bands) come from your 5 November shell alignment (9472dffd) and the Density theme; they aren't drift. Keep Density and mark the FUCQ-64 screenshots as superseded for those items, or go back to the teal reference? **Recommendation: keep Density.** Nothing was changed for these items.
 - **New Low bugs:** FUCQ-237 (new-order copy for someone with no current car) and FUCQ-238 (the 320 px gallery is still about 7,300 px tall, and an empty grey block ends Greg's Renewal cases).
+- **About 03:00:** imported FUCQ-237 and FUCQ-238. A new UI lead is building the three Low UI bugs: FUCQ-235, then 237, then 238.
