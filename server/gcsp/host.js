@@ -6,6 +6,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { extname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createGcspRuntime } from './runtime.js';
+import { publicOrigin } from './public-origin.js';
 import { createRunStockProviderFactory } from './stock/index.js';
 import { createDemoUpstream, withConfirmedSupply } from './stock/demo-provider.js';
 
@@ -33,7 +34,7 @@ export function gcspRuntimeOptions({ env = process.env, defaultMode, defaultEnvi
   const runtime = { mode, stockProvider: (deps) => withConfirmedSupply(stock(deps), upstream), production: upstream.production,
     repositoryOptions: { connectionString: env.GCSP_DATABASE_URL }, environmentId,
     policyAsOf: new Date().toISOString(), commandId, adoptOfferJourney: true,
-    comparisonResultFile: env.GCSP_COMPARISON_RESULT_FILE };
+    comparisonResultFile: env.GCSP_COMPARISON_RESULT_FILE, mail: { env } };
   return { runtime, stock, mode, environmentId };
 }
 
@@ -154,13 +155,6 @@ export function createGcspFront({ root, services, api, origin, accessKey, access
 }
 
 const failure = (code) => ({ status: 'invalid', code });
-function publicOrigin(value) {
-  try {
-    const url = new URL(value);
-    const local = ['localhost', '127.0.0.1'].includes(url.hostname);
-    return url.origin === value && (url.protocol === 'https:' || url.protocol === 'http:' && local) ? url.origin : null;
-  } catch { return null; }
-}
 
 // Hosted entry: one origin serves the GCSP pages, /api/gcsp and the retail API. Resolves to { status, ... }.
 export async function startHostedGcsp({ buildServer, env = process.env, port, root = REPO_ROOT } = {}) {

@@ -1,0 +1,80 @@
+{
+ "375": [
+  {
+   "scenarioOption": "radio false"
+  },
+  {
+   "W": 375,
+   "chip": "Captured, not sent",
+   "facts": "To Paula (fictional) Status Captured, not sent Demo clock 5 Nov 2026, 09:30 GMT Attempts 1",
+   "email": "GCSP employee vehicle scheme Your vehicle offer is ready to review Hello Paula, Synthetic 3 Series Touring 320i 1,100 points a month Respond by 11:30 on Thursday 5 November. Review your vehicle offer and its current status If you cannot use the link, copy this address: http://127.0.0.1:9320/gcsp/offer?offerId=buddy-offer%3Ad669dbc6fc6e5207ac06029403ca624d659d4cd15cbb62082b194cec99b291b4&runId=demo-80b0432ee0b4e69580d2c1c86879db79#token=<redacted> This is a captured demonstration message for a fictional employee. No email has been sent.",
+   "href": "http://127.0.0.1:9320/gcsp/offer?offerId=buddy-offer%3Ad669dbc6fc6e5207ac06029403ca624d659d4cd15cbb62082b194cec99b291b4&runId=demo-80b0432ee0b4e69580d2c1c86879db79#token=<redacted>",
+   "ring": {
+    "stops": [
+     {
+      "tag": "IFRAME",
+      "outline": "none 3px rgb(31, 35, 40)",
+      "matches": []
+     }
+    ],
+    "after": {
+     "tag": "BODY",
+     "outline": "none 3px rgb(0, 0, 0)",
+     "matches": []
+    }
+   },
+   "checks": {
+    "carNamed": true,
+    "points": true,
+    "deadlineInWords": true,
+    "noIso": true,
+    "greeting": true,
+    "absoluteLink": true,
+    "tokenInFragment": true,
+    "capturedLabel": true,
+    "noSentLabel": true,
+    "frameStops": 1,
+    "noEmDash": true
+   }
+  }
+ ],
+ "1280": [
+  {
+   "scenarioOption": "radio false"
+  },
+  {
+   "W": 1280,
+   "chip": "Captured, not sent",
+   "facts": "To Paula (fictional) Status Captured, not sent Demo clock 5 Nov 2026, 09:30 GMT Attempts 1",
+   "email": "GCSP employee vehicle scheme Your vehicle offer is ready to review Hello Paula, Synthetic 3 Series Touring 320i 1,100 points a month Respond by 11:30 on Thursday 5 November. Review your vehicle offer and its current status If you cannot use the link, copy this address: http://127.0.0.1:9320/gcsp/offer?offerId=buddy-offer%3A6fc71344a518f686305d8fc4573febb569102dc26968a704a7183874c02b68e2&runId=demo-e1036d6392327c59927d625ef19da959#token=<redacted> This is a captured demonstration message for a fictional employee. No email has been sent.",
+   "href": "http://127.0.0.1:9320/gcsp/offer?offerId=buddy-offer%3A6fc71344a518f686305d8fc4573febb569102dc26968a704a7183874c02b68e2&runId=demo-e1036d6392327c59927d625ef19da959#token=<redacted>",
+   "ring": {
+    "stops": [
+     {
+      "tag": "IFRAME",
+      "outline": "none 3px rgb(31, 35, 40)",
+      "matches": []
+     }
+    ],
+    "after": {
+     "tag": "BODY",
+     "outline": "none 3px rgb(0, 0, 0)",
+     "matches": []
+    }
+   },
+   "checks": {
+    "carNamed": true,
+    "points": true,
+    "deadlineInWords": true,
+    "noIso": true,
+    "greeting": true,
+    "absoluteLink": true,
+    "tokenInFragment": true,
+    "capturedLabel": true,
+    "noSentLabel": true,
+    "frameStops": 1,
+    "noEmDash": true
+   }
+  }
+ ]
+}

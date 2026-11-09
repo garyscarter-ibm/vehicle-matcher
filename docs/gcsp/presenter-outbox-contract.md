@@ -15,7 +15,7 @@ FUCQ-97 (DEV-2026-11-04-062). A presenter-only viewer for the captured offer ema
 | `gcspOutbox` or its repository missing | 503 `unavailable`, retryable |
 | Repository unavailable | passed through (503) |
 
-Each message: `jobId, messageKind, state, attempts, error` (a fixed code or null), `nextAttemptAt, time` (`capturedAt` when sent, else `attemptedAt`, else null), `recipient { employeeId, name }`, `subject, textBody, htmlBody, offerLink` (null until rendered). `stale` rows are left out. `payload`, provider attempt/acknowledgment fields, `idempotencyKey`, configured sender/recipient addresses and `inputDigest` never leave the server. After a reset the new run has no messages.
+Each message: `jobId, messageKind, state, transport` (`'captured'` for the offline outbox, `'configured'` for a real send, else null; the viewer labels a sent, captured message "Captured, not sent"), `attempts, error` (a fixed code or null), `nextAttemptAt, time` (`capturedAt` when sent, else `attemptedAt`, else null), `recipient { employeeId, name }`, `subject, textBody, htmlBody, offerLink` (null until rendered). `stale` rows are left out. `payload`, provider attempt/acknowledgment fields, `idempotencyKey`, configured sender/recipient addresses and `inputDigest` never leave the server. After a reset the new run has no messages.
 
 ## Element
 

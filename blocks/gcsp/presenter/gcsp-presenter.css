@@ -27,7 +27,7 @@
 
 .gcsp .gcsp-mail-detail { display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 24px; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
 .gcsp .gcsp-mail-heading { margin: 0; font-size: 24px; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
-.gcsp .gcsp-mail-heading:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 4px; }
+.gcsp .gcsp-mail-heading:focus-visible, .gcsp .gcsp-mail-frame:focus, .gcsp .gcsp-mail-frame:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 4px; }
 .gcsp .gcsp-mail-sub { margin: 4px 0 0; font-size: 16px; font-weight: 600; }
 .gcsp .gcsp-mail-facts { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
 .gcsp .gcsp-mail-frame { display: block; width: 100%; height: 520px; border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); }
