@@ -57,9 +57,9 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, o
         }
         keepScroll(root.ownerDocument.defaultView, () => content.replaceChildren(body)); announcement.textContent = ''; announcement.textContent = state.message;
         if (ownedFocus) {
-          if (state.phase === 'loading') { main.tabIndex = -1; main.focus(); restoringFocus = true; }
+          if (state.phase === 'loading') { main.tabIndex = -1; main.focus(); restoringFocus = active?.tagName === 'H1' || restoringFocus === 'heading' ? 'heading' : true; }
           else {
-            const target = (held && findByFocusKey(body, held, FOCUSABLE)) || body.querySelector('.gcsp-action-trigger') || body.querySelector('button:not(:disabled)') || body.querySelector('h1');
+            const target = (held && findByFocusKey(body, held, FOCUSABLE)) || ((active?.tagName === 'H1' || restoringFocus === 'heading') && body.querySelector('h1')) || body.querySelector('.gcsp-action-trigger') || body.querySelector('button:not(:disabled)') || body.querySelector('h1');
             if (target) { if (target.tagName === 'H1') target.tabIndex = -1; target.focus(); }
             restoringFocus = false;
           }

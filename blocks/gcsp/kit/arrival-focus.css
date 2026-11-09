@@ -1,0 +1,11 @@
+/* Focus ring and the quiet heading focus of arrival-focus.js: keyboard focus keeps the ring, script focus does not. */
+.gcsp a:focus-visible,
+.gcsp button:focus-visible,
+.gcsp summary:focus-visible,
+.gcsp [tabindex]:focus-visible {
+  outline: 2px solid var(--gcsp-focus);
+  outline-offset: 2px;
+}
+.gcsp :is(h1, h2, h3)[tabindex="-1"]:focus-visible { outline-offset: 6px; border-radius: var(--gcsp-radius); }
+.gcsp [data-gcsp-quiet-focus]:focus { outline: none; }
+.gcsp :is(h1, h2, h3)[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
