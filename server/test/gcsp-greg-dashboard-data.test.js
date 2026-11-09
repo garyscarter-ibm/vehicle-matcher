@@ -62,7 +62,7 @@ test('real service: canonical threshold shows only "fewer than 5" bands and no o
   await offer(f, 1, 'declined', 'decline', { type: 'body' });
   const view = toDashboardView(await readDemand(f));
   assert.equal(view.meta.threshold, 5);
-  assert.match(view.meta.privacyNote, /below 5 show as fewer than 5/);
+  assert.match(view.meta.privacyNote, /below 5 show as <5,/);
   const counts = [];
   const walk = (node) => {
     if (!node || typeof node !== 'object') return;

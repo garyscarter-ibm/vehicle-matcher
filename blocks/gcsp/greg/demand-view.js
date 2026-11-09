@@ -14,18 +14,18 @@ const isObject = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
 export const OVERLAP_NOTE = 'Rows can overlap, so do not add them together. An accepted offer can later be selected, and one employee can be blocked by more than one reason.';
 
 function privacyNote(threshold) {
-  if (threshold === 1) return 'Zero shows as fewer than 1. Every other count is exact.';
-  return `Counts below ${threshold} show as fewer than ${threshold}, so small groups cannot be picked out.`;
+  if (threshold === 1) return 'Zero shows as <1. Every other count is exact.';
+  return `Counts below ${threshold} show as <${threshold}, so small groups cannot be picked out.`;
 }
 
-// Counts are shown by their server label only; no number is read from or derived for a band.
+// A band carries the server's own fewerThan threshold or label; no count is read from or derived for it.
 function countOf(count, where) {
   if (!isObject(count?.count)) return bad(`${where} has no count`);
   const { kind, label } = count.count;
   if (typeof label !== 'string' || !label) return bad(`${where} has no count label`);
   if (kind === 'band') {
     if (Object.hasOwn(count.count, 'value')) return bad(`${where} band carries a value`);
-    return { label, isBand: true };
+    return Number.isFinite(count.count.fewerThan) ? { label, isBand: true, fewerThan: count.count.fewerThan } : { label, isBand: true };
   }
   if (kind === 'exact') return { label, isBand: false };
   return bad(`${where} has an unknown count kind`);

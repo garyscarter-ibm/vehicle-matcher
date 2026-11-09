@@ -43,9 +43,12 @@ const meta = (root) => root.querySelector('.gcsp-greg-meta').textContent;
 const tileByLabel = (root, label) => [...root.querySelectorAll('.gcsp-tile')].find((t) => t.querySelector('.gcsp-tile-label').textContent === label);
 const cellsOf = (root, caption) => {
   const t = [...root.querySelectorAll('table')].find((n) => n.querySelector('caption').textContent === caption);
-  return [...t.querySelectorAll('tbody tr')].map((tr) => [...tr.children].map((c) => c.textContent));
+  return [...t.querySelectorAll('tbody tr')].map((tr) => [...tr.children].map(shown));
 };
-const visible = (text) => text.replace(/, a privacy band: the exact count is hidden/g, '');
+// What a sighted reader sees (hidden-only text dropped) and what a screen reader says (aria-hidden dropped).
+const strip = (node, sel) => { const c = node.cloneNode(true); c.querySelectorAll(sel).forEach((n) => n.remove()); return c.textContent; };
+const shown = (node) => strip(node, '.gcsp-vh');
+const spoken = (node) => strip(node, '[aria-hidden="true"]');
 
 test('the shell shows Greg, Demand and supply current, the rest honestly unavailable, and one h1', async () => {
   const { root } = await mountFixture('populated');
@@ -69,15 +72,15 @@ test('populated shows the meta strip, headline tiles, every table and the fixtur
   assert.match(m, /1, 2, 3/);
   assert.match(m, /Expressed saved demand/);
   assert.match(m, /not satisfaction and not a prediction/);
-  assert.match(m, /fewer than 5/);
+  assert.match(m, /show as <5/);
   assert.equal(tileByLabel(root, 'Active briefs').querySelector('.gcsp-tile-figure').textContent, '28');
   assert.ok(tileByLabel(root, 'Briefs with no suitable car'));
   assert.ok(tileByLabel(root, 'Offers made'));
   assert.ok(tileByLabel(root, 'Selected'));
   assert.equal(root.querySelectorAll('.gcsp-greg-headline .gcsp-tile').length, 4);
-  assert.deepEqual(cellsOf(root, 'By model line')[0].map(visible), ['G01 X3', '5']);
-  assert.deepEqual(cellsOf(root, 'By model line')[2].map(visible), ['G26 i4', 'fewer than 5']);
-  assert.deepEqual(cellsOf(root, 'By model line')[1].map(visible), ['G21 Touring', '11']);
+  assert.deepEqual(cellsOf(root, 'By model line')[0], ['G01 X3', '5']);
+  assert.deepEqual(cellsOf(root, 'By model line')[2], ['G26 i4', '<5']);
+  assert.deepEqual(cellsOf(root, 'By model line')[1], ['G21 Touring', '11']);
   assert.ok(cellsOf(root, 'By body style').some((r) => r[0] === 'Estate'));
   assert.ok(cellsOf(root, 'By fuel type').some((r) => r[0] === 'Plug-in hybrid'));
   assert.ok(cellsOf(root, 'By essential requirement').some((r) => r[0] === 'Seats at least 5' && r[1] === 'Confirmed' && r[2] === '15'));
@@ -89,7 +92,7 @@ test('populated shows the meta strip, headline tiles, every table and the fixtur
   const offers = section(root, 'offers');
   for (const l of ['Offers made', 'Accepted', 'Declined', 'Expired', 'Selected']) assert.ok([...offers.querySelectorAll('.gcsp-tile-label')].some((n) => n.textContent === l), l);
   assert.ok(cellsOf(root, 'Declined offers, by reason').length >= 4);
-  assert.deepEqual(cellsOf(root, 'Stock by model line')[1].map(visible), ['G21 Touring', '8', 'fewer than 5', 'fewer than 5']);
+  assert.deepEqual(cellsOf(root, 'Stock by model line')[1], ['G21 Touring', '8', '<5', '<5']);
   assert.match(root.querySelector('.gcsp-greg-status').textContent, /Figures updated for 5 Nov 2026, 09:40 GMT/);
   for (const h of root.querySelectorAll('.gcsp-greg-body section, .gcsp-greg-regions section')) {
     assert.equal(h.tagName, 'SECTION');
@@ -97,16 +100,17 @@ test('populated shows the meta strip, headline tiles, every table and the fixtur
   }
 });
 
-test('banded counts show their label with a privacy description and no derived digit', async () => {
+test('banded counts show plain <5, are spoken as fewer than 5 once, and carry no derived digit', async () => {
   const { root } = await mountFixture('banded');
-  const bands = [...root.querySelectorAll('.gcsp-greg-body [data-band="true"]')];
+  const bands = [...root.querySelectorAll('.gcsp-greg-body [data-band="true"]:not(.gcsp-tile)')];
   assert.ok(bands.length >= 8);
   for (const b of bands) {
-    assert.equal(visible(b.textContent).replace(/\s+/g, ' ').trim().match(/fewer than 5/) !== null, true, b.textContent);
-    assert.match(b.textContent, /a privacy band: the exact count is hidden/);
-    assert.deepEqual(visible(b.textContent).match(/\d+/g), ['5'], b.textContent);
+    assert.equal(shown(b).trim(), '<5', b.textContent);
+    assert.equal(spoken(b).trim(), 'fewer than 5', b.textContent);
+    assert.doesNotMatch(b.textContent, /privacy band|exact count is hidden/);
+    assert.deepEqual(shown(b).match(/\d+/g), ['5'], b.textContent);
   }
-  assert.match(meta(root), /Counts below 5 show as fewer than 5/);
+  assert.match(meta(root), /Counts below 5 show as <5, so small groups cannot be picked out\./);
   assert.equal(tileByLabel(root, 'Active briefs').dataset.band, 'true');
   assert.equal(root.querySelectorAll('.gcsp-greg-bar [role="alert"]').length, 0);
 });
@@ -118,7 +122,7 @@ test('empty (no briefs) explains itself, keeps the meta strip and stock, and sho
   assert.match(status.textContent, /No employee has confirmed a brief yet/);
   assert.match(meta(root), /None yet/);
   assert.equal(root.querySelector('[data-section="demand"]'), null);
-  assert.deepEqual(cellsOf(root, 'Stock by model line').map((r) => visible(r[0])), ['G21 Touring', 'G60 Saloon']);
+  assert.deepEqual(cellsOf(root, 'Stock by model line').map((r) => r[0]), ['G21 Touring', 'G60 Saloon']);
   assert.ok(refreshButton(root));
 });
 
@@ -149,7 +153,7 @@ test('conflict shows its message and Refresh reloads', async () => {
 test('refresh fixture: Refresh changes figures, as-of and versions, keeps focus on Refresh and announces it', async () => {
   const { root } = await mountFixture('refresh');
   assert.match(meta(root), /09:40 GMT/);
-  const before = cellsOf(root, 'Stock by model line')[1].map(visible);
+  const before = cellsOf(root, 'Stock by model line')[1];
   const declined = tileByLabel(root, 'Declined').querySelector('.gcsp-tile-figure').textContent;
   const unmet = tileByLabel(root, 'Briefs with no suitable car').querySelector('.gcsp-tile-figure').textContent;
   const button = refreshButton(root);
@@ -160,8 +164,8 @@ test('refresh fixture: Refresh changes figures, as-of and versions, keeps focus 
   assert.equal(document.activeElement, button);
   assert.match(meta(root), /10:25 GMT/);
   assert.doesNotMatch(meta(root), /09:40 GMT/);
-  assert.notDeepEqual(cellsOf(root, 'Stock by model line')[1].map(visible), before);
-  assert.equal(cellsOf(root, 'Stock by model line')[1].map(visible)[1], '9');
+  assert.notDeepEqual(cellsOf(root, 'Stock by model line')[1], before);
+  assert.equal(cellsOf(root, 'Stock by model line')[1][1], '9');
   assert.notEqual(tileByLabel(root, 'Declined').querySelector('.gcsp-tile-figure').textContent, declined);
   assert.notEqual(tileByLabel(root, 'Briefs with no suitable car').querySelector('.gcsp-tile-figure').textContent, unmet);
   assert.equal(root.querySelector('.gcsp-greg-status').getAttribute('role'), 'status');
@@ -301,10 +305,18 @@ test('metricTile: label, figure, note, level and band marking', () => {
   assert.equal(exact.querySelector('.gcsp-tile-figure').textContent, '30');
   assert.equal(exact.querySelector('.gcsp-tile-note').textContent, 'Counted once each.');
   assert.equal(exact.dataset.band, undefined);
-  const band = tile.metricTile({ label: 'Declined', count: { label: 'fewer than 5', isBand: true } });
+  const band = tile.metricTile({ label: 'Declined', count: { label: 'fewer than 5', isBand: true, fewerThan: 5 } });
+  const bandFigure = band.querySelector('.gcsp-tile-figure');
   assert.equal(band.dataset.band, 'true');
-  assert.ok(band.querySelector('.gcsp-tile-figure').classList.contains('is-band'));
-  assert.match(band.querySelector('.gcsp-tile-figure').textContent, /^fewer than 5, a privacy band/);
+  assert.ok(bandFigure.classList.contains('is-band'));
+  assert.equal(shown(bandFigure), '<5');
+  assert.equal(spoken(bandFigure), 'fewer than 5');
+  assert.equal(bandFigure.querySelector('[aria-hidden="true"]').textContent, '<5');
+  assert.doesNotMatch(bandFigure.textContent, /privacy band/);
+  const bare = tile.metricTile({ label: 'Declined', count: { label: 'few', isBand: true } }).querySelector('.gcsp-tile-figure');
+  assert.equal(bare.textContent, 'few');
+  assert.equal(bare.querySelector('.gcsp-vh'), null);
+  assert.equal(bare.dataset.band, 'true');
   assert.equal(band.querySelector('.gcsp-tile-note'), null);
   assert.ok(tile.metricTile({ label: 'X', count: { label: '1', isBand: false }, level: 'bogus' }).classList.contains('gcsp-tile-standard'));
   assert.match(tile.metricTile({ label: 'Missing', count: null }).textContent, /Not supplied/);
@@ -334,9 +346,17 @@ test('dataTable stack: labelled cells and explicit roles only when asked', () =>
   assert.match(css, /@media \(max-width: 640px\) \{[^\n]*\.gcsp \.gcsp-table-wrap\.is-stack thead/);
 });
 
+test('FUCQ-293: a band is plain figure text, not a dashed placeholder box or an italic muted cell', () => {
+  const css = read('blocks/gcsp/kit/gcsp-kit.css');
+  const bandRules = css.split('\n').filter((l) => /\.is-band/.test(l) && !/white-space/.test(l));
+  assert.deepEqual(bandRules, []);
+  assert.doesNotMatch(css, /dashed/);
+  assert.doesNotMatch(read('blocks/gcsp/kit/metric-tile.js'), /BAND_DESCRIPTION/);
+});
+
 test('dataTable: caption, scopes, numeric columns, scroll region, band cells and empty row', () => {
   const columns = [{ key: 'name', label: 'Model line' }, { key: 'n', label: 'Released', numeric: true }];
-  const region = table.dataTable({ caption: 'Stock', columns, rows: [{ name: 'A very long model name', n: { label: 'fewer than 5', isBand: true } }, { name: 'B', n: '7' }], id: 't1' });
+  const region = table.dataTable({ caption: 'Stock', columns, rows: [{ name: 'A very long model name', n: { label: 'fewer than 5', isBand: true, fewerThan: 5 } }, { name: 'B', n: '7' }], id: 't1' });
   document.body.append(region);
   assert.equal(region.getAttribute('role'), 'region');
   assert.equal(region.tabIndex, 0);
@@ -352,7 +372,8 @@ test('dataTable: caption, scopes, numeric columns, scroll region, band cells and
   assert.equal(row.children[1].tagName, 'TD');
   assert.ok(row.children[1].classList.contains('is-numeric'));
   assert.equal(row.children[1].dataset.band, 'true');
-  assert.match(row.children[1].textContent, /fewer than 5/);
+  assert.equal(shown(row.children[1]), '<5');
+  assert.equal(spoken(row.children[1]), 'fewer than 5');
   assert.equal(tbl.querySelectorAll('tbody tr')[1].children[1].dataset.band, undefined);
   const bold = table.dataTable({ caption: 'Bold', columns, rows: [{ name: { label: 'Changed', emphasis: true }, n: { label: '+1', emphasis: true } }, { name: 'Same', n: 'No change' }] });
   const [changed, same] = bold.querySelectorAll('tbody tr');
@@ -440,6 +461,24 @@ test('harness page, register module and fixture whitelist', () => {
   assert.equal(fixtures.fixtureAdapter('nope'), null);
 });
 
+test('harness page is labelled a fixture gallery with a link to the live presenter view', async () => {
+  const html = read('gcsp-greg.html');
+  assert.match(html, /<title>[^<]*fixture gallery[^<]*<\/title>/i);
+  assert.match(html, /<meta name="description" content="[^"]*fixture gallery[^"]*not the live demo/i);
+  document.body.replaceChildren();
+  const host = document.createElement('gcsp-greg-dashboard');
+  host.setAttribute('fixture', 'populated');
+  document.body.append(host);
+  await import('../../blocks/gcsp/greg/harness.js');
+  const notice = host.querySelector('.gcsp-fixture-notice');
+  assert.ok(notice, 'the harness renders the fixture notice');
+  assert.match(notice.textContent, /fixture gallery/i);
+  assert.match(notice.textContent, /not wired to the live demo/);
+  assert.equal(notice.querySelector('a').getAttribute('href'), './gcsp-presenter.html');
+  assert.equal(host.querySelectorAll('h1').length, 1);
+  assert.ok(notice.compareDocumentPosition(host.querySelector('h1')) & 4, 'the notice sits above the heading');
+});
+
 test('the gallery shows both kit components; the catalogue and ratchet record them', async () => {
   const { mountComponentGallery } = await import('../../blocks/vehicle-matcher/component-gallery.js');
   const root = host();
@@ -447,6 +486,7 @@ test('the gallery shows both kit components; the catalogue and ratchet record th
   const group = root.querySelector('.vm-gallery-greg-section');
   assert.ok(group);
   assert.ok(group.querySelector('.gcsp-tile[data-band="true"]'));
+  assert.equal(shown(group.querySelector('.gcsp-tile[data-band="true"] .gcsp-tile-figure')), '<5');
   assert.ok(group.querySelector('.gcsp-tile-note'));
   assert.ok(group.querySelectorAll('table').length >= 2);
   assert.ok(group.querySelector('td[data-band="true"]'));
