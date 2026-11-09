@@ -94,7 +94,7 @@ function selectionGroup(selection) {
 }
 
 /** Compose shared primitives only; server projection owns vehicle facts, terms and decisions. */
-export function createOfferView(root, { refresh, decide, tickDeclaration, selectReason, cancelDecline, refreshReasons, mountFollowup, mountOrder } = {}) {
+export function createOfferView(root, { refresh, decide, tickDeclaration, selectReason, cancelDecline, refreshReasons, mountFollowup, mountOrder, links } = {}) {
   const page = el('div', 'vm gcsp-offer-body');
   page.id = `gcsp-offer-${++sequence}`;
   const content = el('div', 'gcsp-offer-content');
@@ -107,7 +107,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
   let messageNode; let clockNode; let asOfNode; let reasonNode;
   let reasonForm; let reasonSelect; let reasonStatus; let reasonField; let reasonSummary;
   let confirmButton; let cancelButton; let reasonsRefresh; let optionsKey; let wasOpen = false; let lastError = '';
-  let followupRoot; let followupKey; let cleanupFollowup; let cleanupOrder;
+  let followupRoot; let followupKey; let cleanupFollowup; let cleanupOrder; let accepting = false;
   const clearFollowup = () => {
     const cleanup = cleanupFollowup; cleanupFollowup = undefined; followupKey = undefined;
     try { cleanup?.(); } catch { /* Teardown cannot prevent the offer from updating. */ }
@@ -140,6 +140,12 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     messageNode = el('p', 'gcsp-note', messageFor(model));
     messageNode.hidden = !messageFor(model); content.append(messageNode);
     if (model.fixtureNotice) content.append(el('p', 'gcsp-note', model.fixtureNotice));
+    if (state === 'accepted' && (links?.orderProgress || links?.cars)) {
+      const leadOn = el('div', 'gcsp-offer-actions');
+      if (links.orderProgress) leadOn.append(button({ label: 'View order progress', variant: 'primary', href: links.orderProgress }));
+      if (links.cars) leadOn.append(button({ label: 'Back to Your cars', variant: 'ghost', href: links.cars }));
+      content.append(leadOn);
+    }
     if (state === 'accepted' && model.selection) content.append(selectionGroup(model.selection));
     if (['pending', 'accepted', 'superseded', 'uncertain'].includes(state) && model.card?.members?.length === 1) {
       const columns = el('div', 'gcsp-offer-comparison');
@@ -168,7 +174,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       reasonNode = reason;
       for (const [kind, label, enabled] of [['accept', 'Accept this offer', model.canAccept], ['decline', 'Decline this offer', model.canDecline]]) {
         const control = button({ label, variant: kind === 'accept' ? 'primary' : 'ghost', disabled: !enabled,
-          describedBy: reason.id, onClick: () => decide?.(kind) });
+          describedBy: reason.id, onClick: () => { accepting = kind === 'accept'; decide?.(kind); } });
         control.dataset.offerAction = kind; control.hidden = kind === 'accept' && Boolean(model.handoff?.blocker); actions.append(control);
       }
       content.append(reason, actions);
@@ -200,6 +206,10 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     if (state !== 'loading') {
       const control = button({ label: state === 'error' ? 'Try again' : 'Check current state', variant: 'ghost', onClick: refreshCurrent });
       control.dataset.offerAction = 'refresh'; content.append(control);
+    }
+    if (state === 'accepted' && accepting) {
+      // The accept button is gone, so the outcome heading takes focus once, never on a later poll.
+      accepting = false; const heading = content.querySelector('h1'); if (heading) { heading.tabIndex = -1; heading.focus(); return; }
     }
     if ((focused || followupFocused) && !(state === 'declined' && followupRoot === root.ownerDocument.activeElement)) {
       const target = content.querySelector(`[data-offer-action="${['accept', 'decline', 'refresh'].includes(focused) ? focused : 'refresh'}"]`);
@@ -262,6 +272,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     if (structure !== nextStructure) { draw(model); structure = nextStructure; }
     messageNode.textContent = messageFor(model) || '';
     messageNode.hidden = !messageNode.textContent;
+    if (model.state === 'pending') accepting = false;
     updateFollowup(model);
     if (model.state === 'pending') {
       clockNode.textContent = model.countdown || 'Time remaining unavailable';
