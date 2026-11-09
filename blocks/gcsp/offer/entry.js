@@ -27,7 +27,7 @@ export function mountOfferEntry(root, { fetch: request = globalThis.fetch, locat
       order: { mount: (host, { orderUuid, car }) => mountOrderProgress(host, { adapter: progress, helpAdapter, orderUuid, car,
         embedded: true, headingLevel: 2, signal: abort.signal }) },
       followup: { loadAccount: account.loadAccount,
-        mount: (host, { decisionId, signal }) => mountFollowupBody(host, { decisionId, signal, hostRefresh: true,
+        mount: (host, { decisionId, signal }) => mountFollowupBody(host, { decisionId, signal, hostRefresh: true, headingLevel: 2,
           fetchImpl: request, projectOffer: toOfferPresentation,
           openOffer: ({ offerId, runId }) => location.assign(`/gcsp/offer?offerId=${encodeURIComponent(offerId)}&runId=${encodeURIComponent(runId)}`) }) } });
   })();

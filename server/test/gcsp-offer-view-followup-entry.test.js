@@ -163,3 +163,43 @@ test('throwing follow-up mount stays unavailable until explicit refresh; decline
   await stop.refresh(); await settle(); assert.equal(mounts, 1);
   element.querySelector('[data-offer-action="refresh"]').click(); await settle(); assert.equal(mounts, 2); assert.equal(posts, 0);
 });
+
+// GC-042: the declined page is one h1, one summary line, then the change question; focus follows Decline to that question.
+const questionTransport = (decisionId) => ({ confirm: async () => ({ status: 'unavailable' }), read: async () => ({ status: 'ok', value: {
+  schemaVersion: 1, state: 'question', decisionId, briefVersion: 2, question: { schemaVersion: 1, questionVersion: 'q1', policyVersion: 'p1',
+    reasonCode: 'body-style', path: 'preferences.body.value', prompt: 'Which body style would you prefer?', currentValue: 'estate',
+    control: { kind: 'options', options: ['hatchback', 'saloon', 'estate', 'suv', 'coupe', 'convertible', 'mpv'].map((value) => ({ value, label: value === 'coupe' ? 'Coupe' : value === 'mpv' ? 'MPV' : value })) } } } }) });
+async function declinedPage(t, { before } = {}) {
+  const { mountFollowupBody } = await import('../../blocks/gcsp/offer-followup/gcsp-offer-followup.js');
+  const element = root(); let latest = presentation().value;
+  const view = createOfferView(element, { refresh: () => view.update(latest),
+    mountFollowup: (target, input) => mountFollowupBody(target, { ...input, hostRefresh: true, headingLevel: 2, transport: questionTransport(input.decisionId) }) });
+  t.after(view.destroy);
+  if (before) { view.update({ ...latest, state: 'uncertain', canAccept: false, canDecline: false }); before(element); }
+  view.update(latest); await settle();
+  return { element, view, latest };
+}
+
+test('GC-042: declined page is one h1, a one-line summary and then the change question as an h2', async (t) => {
+  const { element } = await declinedPage(t);
+  assert.equal(element.querySelectorAll('h1').length, 1); assert.equal(element.querySelector('h1').textContent, 'Offer declined');
+  assert.equal(element.querySelector('.vm-card'), null); assert.equal(element.querySelector('.gcsp-offer-current'), null);
+  assert.doesNotMatch(element.textContent, /Your current car|Your next offer/);
+  const summary = element.querySelector('[data-offer-declined-summary]');
+  assert.match(summary.textContent, /^You declined the .+, [\d,]+ points a month\.$/); assert.doesNotMatch(summary.textContent, /\u2014/);
+  assert.equal(summary.previousElementSibling.textContent, 'Your decline is recorded.');
+  const next = summary.nextElementSibling; assert.equal(next.getAttribute('aria-label'), 'Your next offer');
+  assert.equal(next.querySelector('h1, h2, h3').tagName, 'H2'); assert.equal(next.querySelector('h2').textContent, 'One change to your brief');
+  assert.deepEqual([...next.querySelectorAll('[role=radio]')].map((node) => node.textContent).slice(-3), ['Coupé', 'Convertible', 'Family carrier']);
+});
+
+test('GC-042: after Decline focus moves to the change question; later polls and unfocused opens do not steal it', async (t) => {
+  const { element, view, latest } = await declinedPage(t, { before: (page) => page.querySelector('[data-offer-action="refresh"]').focus() });
+  assert.equal(document.activeElement.tagName, 'H2'); assert.equal(document.activeElement.textContent, 'One change to your brief');
+  view.update({ ...latest, now: '2026-11-06T01:01:00Z' }); await settle();
+  assert.equal(document.activeElement.textContent, 'One change to your brief');
+  element.querySelector('[data-offer-action="refresh"]').focus(); view.update({ ...latest, now: '2026-11-06T01:02:00Z' }); await settle();
+  assert.equal(document.activeElement.dataset.offerAction, 'refresh');
+  document.body.replaceChildren(); const fresh = await declinedPage(t);
+  assert.notEqual(document.activeElement.tagName, 'H2'); assert.ok(fresh.element.querySelector('h2'));
+});
