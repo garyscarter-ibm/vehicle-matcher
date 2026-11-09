@@ -144,3 +144,11 @@ test('an unlabelled collection location never shows its raw id (FUCQ-197)', asyn
   assert.ok(f.locationId); const text = [...control(f, 'collectionLocationId').options].map((o) => o.textContent).join('|');
   assert.equal(text.includes(f.locationId), false); assert.match(text, /Not supplied/);
 });
+
+test('FUCQ-237: a site that cannot apply to the chosen contract and driver is neither offered nor listed as a reason', async (t) => {
+  const f = await setup(t); fill(f);
+  await waitFor(() => control(f, 'collectionLocationId')?.options.length === 2);
+  const offered = [...control(f, 'collectionLocationId').options].map((o) => o.textContent).join('|');
+  assert.match(offered, /Fictional collection centre/); assert.equal(offered.includes('Fictional company site'), false);
+  assert.equal(f.root.querySelector('.gcsp-setup-reasons').textContent.includes('Fictional company site'), false);
+});

@@ -1,6 +1,9 @@
 import { inputDigest, ok, result } from '../repository/index.js';
 
 const text = (value) => typeof value === 'string' && value.trim().length > 0;
+// Optional per-mode wording: a plain object whose only keys are `new` and `replacement`, each with text.
+const modeWording = (value) => value === undefined || (value !== null && Object.getPrototypeOf(value) === Object.prototype
+  && Object.entries(value).every(([mode, wording]) => ['new', 'replacement'].includes(mode) && text(wording)));
 export const ORDERING_TERMS_KEY = 'ordering.terms.v1';
 export const ORDERING_STAGES_KEY = 'ordering.approvalStages.v1';
 export const ORDER_REFERENCE_KEY = 'ordering.reference.v1';
@@ -18,7 +21,7 @@ export class SchemeOrderTerms {
         this.policy.getAssumption(ORDERING_STAGES_KEY, read)]);
       if ([terms, stages].some((row) => row.status !== 'ok' || row.policyVersion !== context.policyVersion)) return unavailable('ordering-policy-unavailable');
       const t = terms.value.value; const s = stages.value.value;
-      if (t?.schemaVersion !== 1 || !text(t.termsVersion) || !text(t.wording) || t.fictional !== true
+      if (t?.schemaVersion !== 1 || !text(t.termsVersion) || !text(t.wording) || !modeWording(t.wordingByMode) || t.fictional !== true
         || !Number.isFinite(Date.parse(t.validUntil)) || Date.parse(t.validUntil) <= Date.parse(asOf)
         || !Array.isArray(t.declarations) || !t.declarations.length
         || t.declarations.some((d) => !text(d.id) || !text(d.label) || !['all', 'replacement', 'new'].includes(d.appliesTo))

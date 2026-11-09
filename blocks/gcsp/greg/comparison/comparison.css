@@ -1,0 +1,30 @@
+@import '../../kit/range-bar.css';
+/* Greg route comparison: dense operational body, same tokens. Every selector is .gcsp scoped. Whitespace and hairlines only: no stripes, no tinted verdicts. */
+.gcsp .gcsp-comparison, .gcsp .gcsp-comparison-body, .gcsp .gcsp-comparison-omits { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.gcsp .gcsp-comparison-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px 24px; }
+.gcsp .gcsp-comparison .vm-title { margin: 0 0 4px; font-size: 22px; line-height: 1.25; overflow-wrap: anywhere; }
+.gcsp .gcsp-comparison .vm-lede { margin: 0; max-width: 64ch; font-size: 16px; }
+.gcsp .gcsp-comparison .vm-btn { min-height: 44px; }
+.gcsp .gcsp-comparison-facts { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.gcsp .gcsp-comparison-caveat { font-size: 14px; max-width: 80ch; }
+.gcsp .gcsp-comparison-h3 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+.gcsp .gcsp-comparison-notice { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border: 1px solid var(--gcsp-warning); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-comparison-notice p, .gcsp .gcsp-comparison-measure p { margin: 0; }
+.gcsp .gcsp-comparison-measures { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 0 32px; }
+.gcsp .gcsp-comparison-measure { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 16px 0; border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-comparison-difference { font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.gcsp .gcsp-comparison-verdict { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.gcsp .gcsp-comparison-list { display: grid; gap: 4px; margin: 0; padding-left: 20px; overflow-wrap: anywhere; }
+.gcsp .gcsp-comparison-details { padding-top: 8px; border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-comparison-details > * + * { margin-top: 12px; }
+.gcsp .gcsp-comparison-summary { padding: 10px 0; font-weight: 600; cursor: pointer; }
+.gcsp .gcsp-comparison-summary:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
+.gcsp .gcsp-comparison .gcsp-table { min-width: 880px; }
+.gcsp .gcsp-comparison .gcsp-table-td, .gcsp .gcsp-comparison code { overflow-wrap: anywhere; }
+.gcsp .gcsp-comparison .gcsp-table-rowhead, .gcsp .gcsp-comparison .gcsp-table-td:nth-child(3), .gcsp .gcsp-comparison .gcsp-table-td:nth-child(4) { white-space: nowrap; overflow-wrap: normal; }
+gcsp-greg-comparison.gcsp { display: block; min-height: 0; background: transparent; }
+.gcsp .gcsp-greg-region:has(.gcsp-comparison) { grid-column: 1 / -1; border-style: solid; padding: 20px; background: var(--gcsp-surface); }
+@media (max-width: 600px) {
+  .gcsp .gcsp-greg-region:has(.gcsp-comparison) { padding: 12px; }
+  .gcsp .gcsp-comparison-head .vm-btn { width: 100%; }
+}

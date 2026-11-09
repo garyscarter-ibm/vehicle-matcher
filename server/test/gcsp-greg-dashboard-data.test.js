@@ -40,10 +40,10 @@ test('real service: each step of the demo changes the view figures and versions'
   assert.equal(row(released.demand.unmetByGate, 'essential-unmet:seats').label, 'Essential not met: Seats');
   assert.equal(row(released.demand.unmetByGate, 'no-released-stock'), undefined);
 
-  await offer(f, 2, 'declined', 'decline', { type: 'body' });
+  await offer(f, 2, 'declined', 'decline', { code: 'body-style', label: 'Body style', attribute: 'body' });
   const declined = toDashboardView(await readDemand(f));
   assert.equal(declined.offers.declined.count.label, '1');
-  assert.equal(row(declined.offers.declinedByReason, 'body').label, 'Body style');
+  assert.equal(row(declined.offers.declinedByReason, 'body-style').label, 'Body style');
   assert.equal(declined.offers.made.count.label, '1');
 
   await offer(f, 3, 'selected', 'select');

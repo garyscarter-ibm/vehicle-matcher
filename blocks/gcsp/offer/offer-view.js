@@ -92,7 +92,8 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
   const page = el('div', 'vm gcsp-offer-body');
   page.id = `gcsp-offer-${++sequence}`;
   const content = el('div', 'gcsp-offer-content');
-  const announcement = el('p', 'gcsp-note'); announcement.setAttribute('role', 'status');
+  // FUCQ-234: screen-reader only; the heading already shows the state.
+  const announcement = el('p', 'gcsp-vh'); announcement.setAttribute('role', 'status');
   announcement.dataset.offerAnnouncement = '';
   announcement.setAttribute('aria-live', 'polite'); announcement.setAttribute('aria-atomic', 'true');
   page.append(content, announcement); root.replaceChildren(page);

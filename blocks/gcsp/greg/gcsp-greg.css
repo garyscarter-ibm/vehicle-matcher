@@ -1,5 +1,5 @@
 @import './publish/publish.css';
-@import './plan/plan.css';
+@import './plan/plan.css'; @import './comparison/comparison.css';
 /* Greg dashboard composition: denser than the employee body, same shell and tokens. Every selector is .gcsp scoped. */
 .gcsp .gcsp-greg { max-width: 1280px; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px; }
 .gcsp .gcsp-greg .gcsp-intro .vm-title { margin: 0 0 8px; font-size: 34px; }

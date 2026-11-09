@@ -219,7 +219,8 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   }
   if (model.account) {
     for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls));
-    if (!model.currentContracts.length) wrap.append(statusScreen({ title: 'No current car', message: 'No current vehicle is supplied for your account.' }));
+    // FUCQ-237: an order in progress replaces "No current car"; a declined order keeps it.
+    if (!model.currentContracts.length && !(ordered && order.outcome !== 'declined')) wrap.append(statusScreen({ title: 'No current car', message: 'No current vehicle is supplied for your account.' }));
     for (const action of model.actions.filter((item) => item.action === 'order')) wrap.append(controls.startButton(action));
     const allowance = el('section', 'gcsp-allowance');
     allowance.append(el('h2', 'gcsp-h2', 'Your allowance'), facts([

@@ -313,7 +313,7 @@ test('allocation and demand update after a release from a confirmed request', as
   const upstream = createDemoUpstream();
   const runtime = good(await createGcspRuntime({ mode: 'memory', stockProvider: (deps) => withConfirmedSupply(createDemoStockProvider(deps), upstream),
     production: upstream.production, environmentId: 'orders-runtime-test', policyAsOf: '2026-11-05T09:00:00.000Z',
-    commandId: 'orders-bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z' }));
+    commandId: 'orders-bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z', adoptOfferJourney: true }));
   t.after(() => runtime.close());
   assert.equal(runtime.dependencies.gcspSupply, runtime.supply);
   good(await buildServer({ ...runtime.dependencies, gcspAllowedOrigins: ['https://orders.test'] }).gcspStartup);
