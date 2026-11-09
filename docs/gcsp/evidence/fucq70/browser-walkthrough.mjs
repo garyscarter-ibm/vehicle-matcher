@@ -501,8 +501,8 @@ async function waitGalleryReady() {
   await until(async () => (await enabledButton('Review this car').count()) > 0 || EMPTY_TITLES.test(await bodyText()), { what: 'gallery cards or empty state' });
 }
 const galleryFacts = async () => ({ cards: await page.getByRole('button', { name: 'Review this car' }).count(), enabled: await enabledButton('Review this car').count(), status: clip(await text(page.locator('.vm-status')), 240) });
-async function keyboardSubmitToOutcome(row, tag) {
-  await toSummary();
+async function keyboardSubmitToOutcome(row, tag, { atSummary = false } = {}) {
+  if (!atSummary) await toSummary();
   row.screenshots.push(await shot(`${tag}-summary-unticked`));
   const total = await boxes().count();
   for (let i = 0; i < total; i += 1) { await tabTo(boxes().nth(i)); await page.keyboard.press('Space'); }
@@ -1153,6 +1153,36 @@ async function walk223() {
     await toSummary(); const l = await layout223(); row.detail = { grids: l.grids, forcedWords: l.forcedWords };
     return { pass: !l.forcedWords.length && !l.twoColAtNarrow, state: `${await heading()}; grids ${JSON.stringify(l.grids)}; forced ${JSON.stringify(l.forcedWords)}`, shotName: 'summary' };
   });
+  // Slice 2: the shell and type on the pages after the summary, and the other surfaces that share the shell.
+  await step('s223b-outcome', 'Tick the declarations and submit by keyboard: outcome', async (row) => {
+    const r = await keyboardSubmitToOutcome(row, 's223b', { atSummary: true }); row.detail = { posts: r.posts, heading: r.o.heading, orderNumber: r.o.orderNumber };
+    return { pass: r.total > 0 && r.ticked === r.total && r.posts === 1 && /^\d{7}$/.test(r.o.orderNumber ?? ''), state: `${r.o.heading} | order ${r.o.orderNumber}; POSTs ${r.posts}`, shotName: 's223b-outcome' };
+  }, { critical: true });
+  await step('s223b-account-after-order', 'Finish returns to the account: kicker, and a compact order image well', async (row) => {
+    await finishToAccount(); await until(async () => !/Loading your order/.test(await bodyText()), { timeout: 15000, what: 'order progress loaded' }).catch(() => {});
+    const m = await page.evaluate(() => ({ kicker: document.querySelector('.gcsp-account-body .vm-kicker')?.textContent ?? null,
+      media: [...document.querySelectorAll('.gcsp-order-media, .gcsp-order-car .vm-media, .gcsp-order-car img')].map((n) => `${n.className || n.tagName}:${Math.round(n.getBoundingClientRect().height)}`) }));
+    row.detail = m;
+    return { pass: m.kicker === 'Choices' && m.media.every((x) => Number(x.split(':').pop()) <= 260), state: JSON.stringify(m), shotName: 's223b-account-after-order' };
+  });
+  if (chunk === 'desktop') {
+    await step('s223b-presenter-strip', 'Presenter strip opened on the account', async (row) => {
+      await openStrip(); const t = await stripText(); row.detail = { text: clip(t, 200) };
+      return { pass: /DemoClock/.test(t), state: clip(t, 200), shotName: 's223b-presenter-strip', full: false };
+    });
+    await step('s223b-greg', "Greg's dashboard harness at desktop width (shared shell)", async (row) => {
+      await page.goto(`${origin}/gcsp-greg.html?fixture=populated`, { waitUntil: 'load', timeout: 60000 }); await wait(1500);
+      row.detail = { h1: clip(await page.locator('h1').first().innerText().catch(() => ''), 60) };
+      return { pass: row.detail.h1.length > 0, state: row.detail.h1, shotName: 's223b-greg' };
+    });
+    for (const [id, path, label] of [['offer', '/blocks/gcsp/offer/preview.html?fixture=pending', 'The offer page (fixture)']]) {
+      await step(`s223b-${id}`, `${label} at desktop width (shared shell)`, async (row) => {
+        await page.goto(`${origin}${path}`, { waitUntil: 'load', timeout: 60000 }); await page.locator('h1').first().waitFor({ timeout: 20000 }).catch(() => {}); await wait(1000);
+        row.detail = { h1: clip(await page.locator('h1').first().innerText().catch(() => ''), 60) };
+        return { pass: row.detail.h1.length > 0, state: row.detail.h1, shotName: `s223b-${id}` };
+      });
+    }
+  }
 }
 
 // FUCQ-224: the new-order route for Jordan (fictional), then the account after the order.

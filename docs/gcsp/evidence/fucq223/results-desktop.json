@@ -7,7 +7,7 @@
     "height": 900
   },
   "state": "passed",
-  "startedAt": "2026-11-09T01:55:57.004Z",
+  "startedAt": "2026-11-09T02:14:06.323Z",
   "steps": [
     {
       "id": "s223-setup",
@@ -164,6 +164,11 @@
         "selects": [],
         "grids": [
           {
+            "cols": 6,
+            "width": 1062,
+            "forced": []
+          },
+          {
             "cols": 3,
             "width": 541,
             "forced": []
@@ -187,7 +192,7 @@
         "forcedWords": []
       },
       "overflowPx": 0,
-      "state": "Review your car; grids [{\"cols\":3,\"width\":541,\"forced\":[]},{\"cols\":3,\"width\":591,\"forced\":[]},{\"cols\":3,\"width\":591,\"forced\":[]},{\"cols\":3,\"width\":541,\"forced\":[]}]; forced []"
+      "state": "Review your car; grids [{\"cols\":6,\"width\":1062,\"forced\":[]},{\"cols\":3,\"width\":541,\"forced\":[]},{\"cols\":3,\"width\":591,\"forced\":[]},{\"cols\":3,\"width\":591,\"forced\":[]},{\"cols\":3,\"width\":541,\"forced\":[]}]; forced []"
     },
     {
       "id": "s223-summary",
@@ -238,6 +243,78 @@
       },
       "overflowPx": 0,
       "state": "Review your order; grids [{\"cols\":3,\"width\":541,\"forced\":[]},{\"cols\":2,\"width\":549,\"forced\":[]},{\"cols\":2,\"width\":549,\"forced\":[]},{\"cols\":2,\"width\":431,\"forced\":[]},{\"cols\":2,\"width\":431,\"forced\":[]},{\"cols\":2,\"width\":431,\"forced\":[]},{\"cols\":2,\"width\":431,\"forced\":[]}]; forced []"
+    },
+    {
+      "id": "s223b-outcome",
+      "name": "Tick the declarations and submit by keyboard: outcome",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-06-s223b-summary-unticked.png",
+        "browser/1280-07-s223b-summary-ticked.png",
+        "browser/1280-08-s223b-outcome.png"
+      ],
+      "detail": {
+        "posts": 1,
+        "heading": "Order received",
+        "orderNumber": "0453994"
+      },
+      "overflowPx": 0,
+      "state": "Order received | order 0453994; POSTs 1"
+    },
+    {
+      "id": "s223b-account-after-order",
+      "name": "Finish returns to the account: kicker, and a compact order image well",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-09-s223b-account-after-order.png"
+      ],
+      "detail": {
+        "kicker": "Choices",
+        "media": [
+          "vm-card-media gcsp-order-media:196"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "{\"kicker\":\"Choices\",\"media\":[\"vm-card-media gcsp-order-media:196\"]}"
+    },
+    {
+      "id": "s223b-presenter-strip",
+      "name": "Presenter strip opened on the account",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-10-s223b-presenter-strip.png"
+      ],
+      "detail": {
+        "text": "Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-06T11:30:00.000Z Acting principal Paula (fictional) (emp"
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-06T11:30:00.000Z Acting principal Paula (fictional) (emp"
+    },
+    {
+      "id": "s223b-greg",
+      "name": "Greg's dashboard harness at desktop width (shared shell)",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-11-s223b-greg.png"
+      ],
+      "detail": {
+        "h1": "Demand and supply"
+      },
+      "overflowPx": 0,
+      "state": "Demand and supply"
+    },
+    {
+      "id": "s223b-offer",
+      "name": "The offer page (fixture) at desktop width (shared shell)",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-12-s223b-offer.png"
+      ],
+      "detail": {
+        "h1": "Your car offer"
+      },
+      "overflowPx": 0,
+      "state": "Your car offer"
     }
   ],
   "keyboard": [
@@ -291,12 +368,27 @@
       "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
       "url": "http://127.0.0.1:8944/api/gcsp/manual/order",
       "page": "http://127.0.0.1:8944/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+      "url": "http://127.0.0.1:8944/api/gcsp/scheme-team/cases",
+      "page": "http://127.0.0.1:8944/gcsp-greg.html"
     }
   ],
   "pageErrors": [],
   "failedRequests": [
     {
       "url": "http://127.0.0.1:8944/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8944/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8944/api/gcsp/scheme-team/cases",
       "error": "net::ERR_ABORTED",
       "method": "GET"
     }
@@ -337,18 +429,26 @@
       "url": "http://127.0.0.1:8944/api/gcsp/manual/order",
       "method": "GET",
       "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 403,
+      "url": "http://127.0.0.1:8944/api/gcsp/scheme-team/cases",
+      "method": "GET",
+      "body": "{\"status\":\"forbidden\",\"reason\":\"This person cannot perform that action.\",\"contractVersion\":\"1.0.0\"}"
     }
   ],
   "notes": [
     "1280px gallery first page height 3100px, 6 cards, count \"Showing 6 of 20 cars\""
   ],
   "origin": "http://127.0.0.1:8944",
-  "orderPosts": [],
-  "finishedAt": "2026-11-09T01:57:10.121Z",
+  "orderPosts": [
+    "02:15:20.269"
+  ],
+  "finishedAt": "2026-11-09T02:15:44.761Z",
   "counts": {
-    "steps": 5,
-    "passed": 5,
-    "screenshots": 5,
+    "steps": 10,
+    "passed": 10,
+    "screenshots": 12,
     "keyboardChecks": 2
   }
 }

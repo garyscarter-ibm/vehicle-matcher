@@ -7,7 +7,7 @@
     "height": 812
   },
   "state": "passed",
-  "startedAt": "2026-11-09T01:57:10.819Z",
+  "startedAt": "2026-11-09T02:15:45.349Z",
   "steps": [
     {
       "id": "s223-setup",
@@ -243,6 +243,39 @@
       },
       "overflowPx": 0,
       "state": "Review your order; grids [{\"cols\":1,\"width\":317,\"forced\":[]},{\"cols\":2,\"width\":301,\"forced\":[]},{\"cols\":2,\"width\":301,\"forced\":[]},{\"cols\":2,\"width\":301,\"forced\":[]},{\"cols\":2,\"width\":301,\"forced\":[]},{\"cols\":2,\"width\":301,\"forced\":[]},{\"cols\":2,\"width\":301,\"forced\":[]}]; forced []"
+    },
+    {
+      "id": "s223b-outcome",
+      "name": "Tick the declarations and submit by keyboard: outcome",
+      "pass": true,
+      "screenshots": [
+        "browser/375-06-s223b-summary-unticked.png",
+        "browser/375-07-s223b-summary-ticked.png",
+        "browser/375-08-s223b-outcome.png"
+      ],
+      "detail": {
+        "posts": 1,
+        "heading": "Order received",
+        "orderNumber": "0453994"
+      },
+      "overflowPx": 0,
+      "state": "Order received | order 0453994; POSTs 1"
+    },
+    {
+      "id": "s223b-account-after-order",
+      "name": "Finish returns to the account: kicker, and a compact order image well",
+      "pass": true,
+      "screenshots": [
+        "browser/375-09-s223b-account-after-order.png"
+      ],
+      "detail": {
+        "kicker": "Choices",
+        "media": [
+          "vm-card-media gcsp-order-media:193"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "{\"kicker\":\"Choices\",\"media\":[\"vm-card-media gcsp-order-media:193\"]}"
     }
   ],
   "keyboard": [
@@ -348,12 +381,14 @@
     "375px gallery first page height 6319px, 6 cards, count \"Showing 6 of 20 cars\""
   ],
   "origin": "http://127.0.0.1:8945",
-  "orderPosts": [],
-  "finishedAt": "2026-11-09T01:58:25.617Z",
+  "orderPosts": [
+    "02:16:59.016"
+  ],
+  "finishedAt": "2026-11-09T02:17:15.769Z",
   "counts": {
-    "steps": 5,
-    "passed": 5,
-    "screenshots": 5,
+    "steps": 7,
+    "passed": 7,
+    "screenshots": 9,
     "keyboardChecks": 2
   }
 }

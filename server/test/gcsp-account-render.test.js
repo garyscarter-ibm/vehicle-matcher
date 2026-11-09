@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
+import { readFileSync } from 'node:fs';
 import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { createPolicyService } from '../gcsp/policy/index.js';
@@ -739,4 +740,18 @@ test('FUCQ-220: order history names the car order number, and shows a reference 
     assert.equal(without.querySelector('button').textContent, 'Print record 7654321');
     assert.doesNotMatch(without.textContent, /Order reference/);
   } finally { destroy(); }
+});
+
+test('FUCQ-223: the account keeps the Choices kicker, and its stylesheet carries the order-progress styles the hosted entry lacks', async () => {
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => accountFixture('populated') });
+  try {
+    const intro = root.querySelector('.gcsp-account-body .gcsp-intro');
+    assert.equal(intro.querySelector('.vm-kicker').textContent, 'Choices');
+    assert.ok(intro.querySelector('.vm-kicker').compareDocumentPosition(intro.querySelector('h1')) & 4, 'kicker sits above the title');
+  } finally { destroy(); root.remove(); }
+  // gcsp-presenter.html loads only gcsp-account.css, so the order-progress sheet must come in through it.
+  const css = (path) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
+  assert.match(css('blocks/gcsp/account/gcsp-account.css'), /@import "\.\.\/order-progress\/gcsp-order-progress\.css";/);
+  assert.match(css('gcsp-presenter.html'), /blocks\/gcsp\/account\/gcsp-account\.css/);
+  assert.match(css('blocks/gcsp/order-progress/gcsp-order-progress.css'), /\.gcsp-order-car \{ display: grid;/);
 });
