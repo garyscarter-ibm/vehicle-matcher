@@ -1,0 +1,1354 @@
+{
+  "chunk": "narrow",
+  "entry": "hosted",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "stockMode": "default",
+  "state": "passed",
+  "startedAt": "2026-11-09T14:13:48.180Z",
+  "runIds": {
+    "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
+    "new": "demo-fe434381490344dbad37199b86df1676"
+  },
+  "steps": [
+    {
+      "id": "access-key",
+      "name": "The demo key form opens the hosted demo, key typed by keyboard once",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR CARS CHOICES Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Scheme BMW Choices Registration Not supplied 1,100 points a month"
+    },
+    {
+      "id": "presenter-workspace",
+      "name": "Presenter workspace opens with the strip collapsed",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR CARS CHOICES Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Scheme BMW Choices Registration Not supplied 1,100 points a month "
+    },
+    {
+      "id": "presenter-strip-open",
+      "name": "Presenter controls open with the keyboard and show run, clock and release cue",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "run": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "clock": "2026-11-05T09:00:00.000Z",
+        "releaseCue": "2026-11-06T11:30:00.000Z",
+        "actingPrincipal": "Paula (fictional) (employee)"
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-05T09:00:00.000Z Acting principal Paula (fictional) (employee) Tick (60 seconds) Named time or UTC target Tick to ta"
+    },
+    {
+      "id": "scenario-main-reset",
+      "name": "Scenario \"Main successful journey\" chosen with arrow keys and reset confirmed by keyboard",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "previousRun": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "newRun": "demo-fe434381490344dbad37199b86df1676",
+        "scenario": "Main successful journey",
+        "clock": "2026-11-05T09:00:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Main successful journey Run demo-fe434381490344dbad37199b86df1676 DemoClock (UTC) 2026-11-05T09:00:00.000Z Acting principal Presenter (fictional) (presenter) Tick (60 seconds) Named time or UTC target Tick to target Next release Rel"
+    },
+    {
+      "id": "presenter-after-reset",
+      "name": "Presenter workspace after the reset shows the new run in the strip",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "newRun": "demo-fe434381490344dbad37199b86df1676",
+        "previousRun": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "actingPrincipal": "Presenter (fictional) (presenter)",
+        "scenario": "Main successful journey"
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Main successful journey Run demo-fe434381490344dbad37199b86df1676 DemoClock (UTC) 2026-11-05T09:00:00.000Z Acting principal Presenter (fictional) (presenter) Tick (60 seconds) Named time or UTC target Tick to target Next release Rel"
+    },
+    {
+      "id": "switch-to-paula",
+      "name": "Acting principal switched to Paula with the keyboard",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "actingBefore": "Presenter (fictional) (presenter)",
+        "actingAfter": "Paula (fictional) (employee)"
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Main successful journey Run demo-fe434381490344dbad37199b86df1676 DemoClock (UTC) 2026-11-05T09:00:00.000Z Acting principal Paula (fictional) (employee) Tick (60 seconds) Named time or UTC target Tick to target Next release Release"
+    },
+    {
+      "id": "brief-confirmed",
+      "name": "Brief page shows Paula's confirmed brief and no cars before release",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "checkedOptions": [
+          "Estate",
+          "Yes",
+          "Not sure yet",
+          "Not sure yet",
+          "No",
+          "Search for cars for me",
+          "Hold a suitable car for me"
+        ],
+        "previewBeforeAnyRelease": {
+          "eligibleCount": 0,
+          "needConfirmation": 0,
+          "eligibleCardsShown": 0,
+          "modelLines": {},
+          "cardOrder": [],
+          "summary": "0 eligible cars. 0 eligible cars."
+        }
+      },
+      "overflowPx": 0,
+      "state": "Confirmed: Estate | Yes | Not sure yet | Not sure yet | No | Search for cars for me | Hold a suitable car for me. Preview: 0 eligible cars. 0 eligible cars."
+    },
+    {
+      "id": "activity-before-release",
+      "name": "Activity before any release shows an active buddy and no offer",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls BUDDY ACTIVITY Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Not searched yet 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the s"
+    },
+    {
+      "id": "presenter-first-release",
+      "name": "Presenter Next release publishes the first stock release",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "clockBefore": "2026-11-05T09:00:00.000Z",
+        "clockAfter": "2026-11-05T09:30:00.000Z",
+        "carsReleased": 6,
+        "releaseCue": "2026-11-05T09:30:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Clock 2026-11-05T09:00:00.000Z to 2026-11-05T09:30:00.000Z; cars released 6"
+    },
+    {
+      "id": "brief-first-release-eligibility",
+      "name": "Brief preview after the first release counts the cars Paula sees",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "eligibleCount": 4,
+        "needConfirmation": 0,
+        "eligibleCardsShown": 4,
+        "modelLines": {
+          "Synthetic 3 Series Touring 320i": 1,
+          "Synthetic 3 Series Saloon 320i": 2,
+          "Synthetic 1 Series Sports Hatch 120": 1
+        },
+        "cardOrder": [
+          "Synthetic 3 Series Touring 320i (100%)",
+          "Synthetic 3 Series Saloon 320i (0%)",
+          "Synthetic 3 Series Saloon 320i (0%)",
+          "Synthetic 1 Series Sports Hatch 120 (0%)"
+        ],
+        "summary": "4 eligible cars. No image for this car yet SCHEME STOCK Synthetic 3 Series Touring 320i 100% 1,100 points a month · 1,30"
+      },
+      "overflowPx": 0,
+      "state": "4 eligible; lines {\"Synthetic 3 Series Touring 320i\":1,\"Synthetic 3 Series Saloon 320i\":2,\"Synthetic 1 Series Sports Hatch 120\":1}"
+    },
+    {
+      "id": "activity-offer",
+      "name": "Paula's activity shows the first offer and the search result",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:30 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:30: 6 cars checked, 5 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific nex"
+    },
+    {
+      "id": "outbox-first-message",
+      "name": "Outbox viewer shows the captured offer email",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "capturedEmails": 1,
+        "emailPreviewRendered": true
+      },
+      "overflowPx": 0,
+      "state": "1 email. Skip to content Group Car Schemes Portal Presenter Presenter controls CAPTURED EMAILS PRESENTER Captured emails Captured messages and delivery status. 1 captured email, newest first. Refresh Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent Your vehicle offer is read"
+    },
+    {
+      "id": "offer-first",
+      "name": "First offer opens from the captured message link",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR OFFER Your car offer No image for this car yet ORDER NO. 6841436 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model 3 Series Touring Derivative 320i Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg In"
+    },
+    {
+      "id": "offer-decline-form",
+      "name": "Decline opens its reason form with the keyboard",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "reasons": [
+          "Body style",
+          "Size",
+          "Fuel type",
+          "Equipment"
+        ],
+        "freeTextFields": 1
+      },
+      "overflowPx": 0,
+      "state": "Reason chosen: Body style"
+    },
+    {
+      "id": "offer-declined-followup",
+      "name": "Confirm decline shows the recorded decline and one follow-up question",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "question": "Which body style would you prefer?",
+        "declined": true,
+        "options": [
+          "Hatchback",
+          "Saloon",
+          "Estate",
+          "SUV",
+          "Coupe",
+          "Convertible",
+          "MPV"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR OFFER Offer declined Your decline is | One change to your brief Which body style would you prefer? Hatchback Saloon Estate SUV Coupe Convertible MPV Choose a different answer, then confirm. Confirm this change Which body style would you pr"
+    },
+    {
+      "id": "offer-change-confirmed",
+      "name": "Paula changes the follow-up answer with the keyboard and confirms one change",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "confirmDisabledAfterChoice": false
+      },
+      "overflowPx": 0,
+      "state": "Your change is saved in brief version 2. Change saved Check whether your next offer is ready. Change saved Check current state Offer declined"
+    },
+    {
+      "id": "presenter-second-release",
+      "name": "Presenter advances the clock (Next release when a cue remains, else one Tick) for the second offer",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "nextReleaseUnavailable": "No future release cue is configured.",
+        "clockBefore": "2026-11-05T09:30:00.000Z",
+        "clockAfter": "2026-11-05T09:31:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Next release unavailable (No future release cue is configured.). Tick: clock 2026-11-05T09:30:00.000Z to 2026-11-05T09:31:00.000Z"
+    },
+    {
+      "id": "activity-second-offer",
+      "name": "Activity shows the second offer after the decline update",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "text": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:31 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:31: 6 cars checked, 5 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed 5 Nov 2026, 09:30 Search updated after a decline Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is gu"
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:31 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:31: 6 cars checked, 5 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed 5 Nov 2026, 09:30 Search updated after a decline Renewal help Remedies"
+    },
+    {
+      "id": "outbox-second-message",
+      "name": "Outbox viewer now lists both captured emails, newest first",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "capturedEmails": 2,
+        "emailPreviewRendered": true
+      },
+      "overflowPx": 0,
+      "state": "2 emails. Skip to content Group Car Schemes Portal Presenter Presenter controls CAPTURED EMAILS PRESENTER Captured emails Captured messages and delivery status. 2 captured emails, newest first. Refresh Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:31 GMT Sent Paula (fictional) Your ve"
+    },
+    {
+      "id": "offer-second",
+      "name": "Second offer opens from the newest message and excludes the declined car",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "title": [
+          "6841434",
+          "Synthetic 3 Series Saloon 320i"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR OFFER Your car offer No image for this car yet ORDER NO. 6841434 Synthetic 3 Series Saloon 320i 1,100 points a month · 1,300 points a month allowance Model 3 Series Saloon Derivative 320i Colour Not supplied Options Fitted equipment unknown Body style Saloon Fuel Petrol Seats 5 Boot 480 litres 0 to 62 mph 7.4 s Fuel economy 45 mpg Inte"
+    },
+    {
+      "id": "offer-accepted",
+      "name": "Paula accepts with the keyboard and the outcome shows",
+      "pass": true,
+      "screenshots": [
+        "browser/375-01-focus-offer-accept.png",
+        "browser/375-02-offer-accepted.png"
+      ],
+      "detail": {
+        "embeddedOrderProgressSettled": true
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR OFFER Offer accepted Selection received. Waiting for HR approval. Your select | : manual-records-v1. Observed 2026-11-05T09:00:00.000Z. Order progress Loading your order Check current state Offer accepted"
+    },
+    {
+      "id": "order-progress",
+      "name": "Order progress shows the accepted car name (FUCQ-185) and the approval stages not started",
+      "pass": true,
+      "screenshots": [
+        "browser/375-03-order-progress.png"
+      ],
+      "detail": {
+        "carName": "Synthetic 3 Series Saloon 320i",
+        "acceptedOfferName": "Synthetic 3 Series Saloon 320i",
+        "stages": [
+          {
+            "label": "Selection received",
+            "state": "Done",
+            "at": "2026-11-05T09:31:00.000Z"
+          },
+          {
+            "label": "HR approval",
+            "state": "Not started",
+            "at": null
+          },
+          {
+            "label": "Sales-manager approval",
+            "state": "Not started",
+            "at": null
+          },
+          {
+            "label": "Sent to ordering",
+            "state": "Not started",
+            "at": null
+          }
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image for this car yet Synthetic 3 Series Saloon 320i Order reference GCSP-000001 Car order number 6841434 Steps Selection received Done 5 Nov 2026, 09:31 With ordering Next: Approval checks start HR approval Not started Sales-manager approval Not started Sent to ord"
+    },
+    {
+      "id": "approval-started",
+      "name": "One Tick starts \"HR approval\"",
+      "pass": true,
+      "screenshots": [
+        "browser/375-04-approval-started.png"
+      ],
+      "detail": {
+        "ticks": 1,
+        "stages": [
+          {
+            "label": "Selection received",
+            "state": "Done",
+            "at": "2026-11-05T09:31:00.000Z"
+          },
+          {
+            "label": "HR approval",
+            "state": "Current step",
+            "at": "2026-11-05T09:32:00.000Z"
+          },
+          {
+            "label": "Sales-manager approval",
+            "state": "Not started",
+            "at": null
+          },
+          {
+            "label": "Sent to ordering",
+            "state": "Not started",
+            "at": null
+          }
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Your order No image for this car yet Synthetic 3 Series Saloon 320i Order reference GCSP-000001 Car order number 6841434 Steps Selection received Done 5 Nov 2026, 09:31 HR approval Current step 5 Nov 2026, 09:32 With HR Next: HR decision Sales-manager approval Not started Sent to ordering Not started"
+    },
+    {
+      "id": "approval-hr-approval",
+      "name": "2 Ticks approve \"HR approval\", \"sales-manager approval\" starts",
+      "pass": true,
+      "screenshots": [
+        "browser/375-05-approval-hr-approval.png"
+      ],
+      "detail": {
+        "ticks": 2,
+        "stages": [
+          {
+            "label": "Selection received",
+            "state": "Done",
+            "at": "2026-11-05T09:31:00.000Z"
+          },
+          {
+            "label": "HR approval",
+            "state": "Done",
+            "at": "2026-11-05T09:34:00.000Z"
+          },
+          {
+            "label": "Sales-manager approval",
+            "state": "Current step",
+            "at": "2026-11-05T09:34:00.000Z"
+          },
+          {
+            "label": "Sent to ordering",
+            "state": "Not started",
+            "at": null
+          }
+        ],
+        "trail": [
+          "Done | Current step | Not started | Not started",
+          "Done | Current step | Not started | Not started",
+          "Done | Done | Current step | Not started"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Your order No image for this car yet Synthetic 3 Series Saloon 320i Order reference GCSP-000001 Car order number 6841434 Steps Selection received Done 5 Nov 2026, 09:31 HR approval Done 5 Nov 2026, 09:34 Sales-manager approval Current step 5 Nov 2026, 09:34 With the sales manager Next: Sales-manager decision Sent to ordering Not started"
+    },
+    {
+      "id": "approval-sales-manager-approval",
+      "name": "2 Ticks approve \"sales-manager approval\", \"sent to ordering\" starts",
+      "pass": true,
+      "screenshots": [
+        "browser/375-06-approval-sales-manager-approval.png"
+      ],
+      "detail": {
+        "ticks": 2,
+        "stages": [
+          {
+            "label": "Selection received",
+            "state": "Done",
+            "at": "2026-11-05T09:31:00.000Z"
+          },
+          {
+            "label": "HR approval",
+            "state": "Done",
+            "at": "2026-11-05T09:34:00.000Z"
+          },
+          {
+            "label": "Sales-manager approval",
+            "state": "Done",
+            "at": "2026-11-05T09:36:00.000Z"
+          },
+          {
+            "label": "Sent to ordering",
+            "state": "Current step",
+            "at": "2026-11-05T09:36:00.000Z"
+          }
+        ],
+        "trail": [
+          "Done | Current step | Not started | Not started",
+          "Done | Current step | Not started | Not started",
+          "Done | Done | Current step | Not started",
+          "Done | Done | Current step | Not started",
+          "Done | Done | Done | Current step"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Your order No image for this car yet Synthetic 3 Series Saloon 320i Order reference GCSP-000001 Car order number 6841434 Steps Selection received Done 5 Nov 2026, 09:31 HR approval Done 5 Nov 2026, 09:34 Sales-manager approval Done 5 Nov 2026, 09:36 Sent to ordering Current step 5 Nov 2026, 09:36 With ordering Next: Ordering confirms the order"
+    },
+    {
+      "id": "approval-sent-to-ordering",
+      "name": "1 Tick approve \"sent to ordering\"",
+      "pass": true,
+      "screenshots": [
+        "browser/375-07-approval-sent-to-ordering.png"
+      ],
+      "detail": {
+        "ticks": 1,
+        "stages": [
+          {
+            "label": "Selection received",
+            "state": "Done",
+            "at": "2026-11-05T09:31:00.000Z"
+          },
+          {
+            "label": "HR approval",
+            "state": "Done",
+            "at": "2026-11-05T09:34:00.000Z"
+          },
+          {
+            "label": "Sales-manager approval",
+            "state": "Done",
+            "at": "2026-11-05T09:36:00.000Z"
+          },
+          {
+            "label": "Sent to ordering",
+            "state": "Done",
+            "at": "2026-11-05T09:37:00.000Z"
+          }
+        ],
+        "trail": [
+          "Done | Current step | Not started | Not started",
+          "Done | Current step | Not started | Not started",
+          "Done | Done | Current step | Not started",
+          "Done | Done | Current step | Not started",
+          "Done | Done | Done | Current step",
+          "Done | Done | Done | Done"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Your order No image for this car yet Synthetic 3 Series Saloon 320i Order reference GCSP-000001 Car order number 6841434 Steps Selection received Done 5 Nov 2026, 09:31 HR approval Done 5 Nov 2026, 09:34 Sales-manager approval Done 5 Nov 2026, 09:36 Sent to ordering Done 5 Nov 2026, 09:37 With ordering Next: Appointment to be arranged"
+    },
+    {
+      "id": "handover-offered",
+      "name": "Handover section offers the policy slots",
+      "pass": true,
+      "screenshots": [
+        "browser/375-08-handover-offered.png"
+      ],
+      "detail": {
+        "slotButtons": [
+          "Request 7 Nov 2026, 09:00",
+          "Request 7 Nov 2026, 13:00",
+          "Request 8 Nov 2026, 09:00",
+          "Request 8 Nov 2026, 13:00",
+          "Request 9 Nov 2026, 09:00",
+          "Request 9 Nov 2026, 13:00"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Handover Choose a handover time. Request 7 Nov 2026, 09:00 Request 7 Nov 2026, 13:00 Request 8 Nov 2026, 09:00 Request 8 Nov 2026, 13:00 Request 9 Nov 2026, 09:00 Request 9 Nov 2026, 13:00"
+    },
+    {
+      "id": "handover-requested",
+      "name": "Enter on the first slot requests it; the page says not booked yet",
+      "pass": true,
+      "screenshots": [
+        "browser/375-09-handover-requested.png"
+      ],
+      "detail": {
+        "requestedAtClock": "2026-11-05T09:37:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Handover Requested 7 Nov 2026, 09:00. Not booked yet. Owner Retailer Next step Waiting for the retailer to confirm your slot."
+    },
+    {
+      "id": "handover-confirmed",
+      "name": "After 1800 seconds of demo time the retailer confirms the handover",
+      "pass": true,
+      "screenshots": [
+        "browser/375-10-handover-confirmed.png"
+      ],
+      "detail": {
+        "stillRequestedBeforeDelay": true,
+        "clockBeforeLastTick": "2026-11-05T10:06:00.000Z",
+        "clockAtConfirmation": "2026-11-05T10:07:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Handover Booked: 7 Nov 2026, 09:00 Owner Retailer Next step The retailer prepares your car for the handover. Handover history All dates are demo time (UTC). 5 Nov 2026, 09:37 Requested 5 Nov 2026, 10:07 Booked"
+    },
+    {
+      "id": "documents-open",
+      "name": "Documents and checks list the employee task and the other owners, not ready yet",
+      "pass": true,
+      "screenshots": [
+        "browser/375-11-documents-open.png"
+      ],
+      "detail": {
+        "taskButtons": [
+          "Acknowledge the agreement"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Documents and checks Not ready for handover. Still to do: Vehicle agreement, Driving licence check, Vehicle preparation, Delivery to the retailer. Checklist Your tasks Vehicle agreement Waiting for you. Due 7 Nov 2026, 09:37. Synthetic acknowledgement, not a signature Acknowledge the agreement Being handled by others Driving licence check Scheme team. In progress. Due 6 Nov 2026, 09:37. Vehicle preparation Retailer. "
+    },
+    {
+      "id": "documents-task-complete",
+      "name": "Enter on the task button completes the employee document task",
+      "pass": true,
+      "screenshots": [
+        "browser/375-12-documents-task-complete.png"
+      ],
+      "detail": {
+        "taskButtonsLeft": 0
+      },
+      "overflowPx": 0,
+      "state": "Documents and checks Not ready for handover. Still to do: Driving licence check, Vehicle preparation, Delivery to the retailer. Checklist Your tasks Vehicle agreement Complete. Synthetic acknowledgement. Not a signature. Being handled by others Driving licence check Scheme team. In progress. Due 6 Nov 2026, 09:37. Vehicle preparation Retailer. In progress. Due 8 Nov 2026, 09:37. Delivery to the retailer Retailer. In "
+    },
+    {
+      "id": "documents-ready",
+      "name": "After the last keyed item time the page reads ready for handover",
+      "pass": true,
+      "screenshots": [
+        "browser/375-13-documents-ready.png"
+      ],
+      "detail": {
+        "documentsOpenedAt": "2026-11-05T09:37:00.000Z",
+        "targetClock": "2026-11-07T09:37:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Documents and checks Ready for handover Checklist Your tasks Vehicle agreement Complete. Synthetic acknowledgement. Not a signature. Being handled by others Driving licence check Scheme team. Complete. Vehicle preparation Retailer. Complete. Delivery to the retailer Retailer. Complete."
+    },
+    {
+      "id": "return-offered",
+      "name": "Return section offers both choices, says the current car stays yours and names her home address as the collection place",
+      "pass": true,
+      "screenshots": [
+        "browser/375-14-return-offered.png"
+      ],
+      "detail": {
+        "separateSlotButtons": [
+          "Request return 9 Nov 2026, 09:00",
+          "Request return 9 Nov 2026, 13:00",
+          "Request return 10 Nov 2026, 09:00",
+          "Request return 10 Nov 2026, 13:00",
+          "Request return 11 Nov 2026, 09:00",
+          "Request return 11 Nov 2026, 13:00",
+          "Request return 12 Nov 2026, 09:00",
+          "Request return 12 Nov 2026, 13:00",
+          "Request return 13 Nov 2026, 09:00",
+          "Request return 13 Nov 2026, 13:00",
+          "Request return 14 Nov 2026, 09:00"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Collection from your home address 1 Fictional Way, Example Town, ZZ1 1ZZ Your current car stays yours until it is returned. Choose when to return your current car. Return it when the new car is handed over Request return at handover, 7 Nov 2026, 09:00 Return it on a separate day Request return 9 Nov 2026, 09:00 Re"
+    },
+    {
+      "id": "return-requested",
+      "name": "Enter on the first separate-return slot requests it; the page says not booked yet",
+      "pass": true,
+      "screenshots": [
+        "browser/375-15-return-requested.png"
+      ],
+      "detail": {
+        "requestedAtClock": "2026-11-07T09:37:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Collection from your home address 1 Fictional Way, Example Town, ZZ1 1ZZ Your current car stays yours until it is returned. Return requested 9 Nov 2026, 09:00. Not booked yet. Owner Retailer Next step Waiting for the retailer to confirm your return slot."
+    },
+    {
+      "id": "return-scheduled",
+      "name": "After 1800 seconds of demo time the return is scheduled",
+      "pass": true,
+      "screenshots": [
+        "browser/375-16-return-scheduled.png"
+      ],
+      "detail": {
+        "stillRequestedBeforeDelay": true,
+        "clockAtConfirmation": "2026-11-07T10:07:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Collection from your home address 1 Fictional Way, Example Town, ZZ1 1ZZ Your current car stays yours until it is returned. Return booked: 9 Nov 2026, 09:00 Owner Retailer Next step Keep driving your current car until the return. Return history All dates are demo time (UTC). 7 Nov 2026, 09:37 Return requested 7 No"
+    },
+    {
+      "id": "order-progress-final",
+      "name": "Whole page after the plan: stages done, handover booked, documents ready, return booked",
+      "pass": true,
+      "screenshots": [
+        "browser/375-17-order-progress-final.png"
+      ],
+      "detail": {
+        "stages": [
+          {
+            "label": "Selection received",
+            "state": "Done",
+            "at": "2026-11-05T09:31:00.000Z"
+          },
+          {
+            "label": "HR approval",
+            "state": "Done",
+            "at": "2026-11-05T09:34:00.000Z"
+          },
+          {
+            "label": "Sales-manager approval",
+            "state": "Done",
+            "at": "2026-11-05T09:36:00.000Z"
+          },
+          {
+            "label": "Sent to ordering",
+            "state": "Done",
+            "at": "2026-11-05T09:37:00.000Z"
+          }
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image for this car yet Synthetic 3 Series Saloon 320i Order reference GCSP-000001 Car order number 6841434 Steps Selection received Done 5 Nov 2026, 09:31 HR approval Done 5 Nov 2026, 09:34 Sales-manager approval Done 5 Nov 2026, 09:36 Sent to ordering Done 5 Nov 202"
+    },
+    {
+      "id": "current-car-unchanged",
+      "name": "Your cars page still shows the current Fictional BMW 320i Touring as current",
+      "pass": true,
+      "screenshots": [
+        "browser/375-18-current-car-unchanged.png"
+      ],
+      "detail": {
+        "currentCarCard": "YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 24 days, on 1 December 2026 Status Current",
+        "noEntitlementBanner": false,
+        "offerPromptStillShown": false
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR CARS CHOICES Your cars Refresh account Your order is in progress Order reference GCSP-000001 Car order number 6841434 Current step: Sent to ordering. View order progress Order progress Loading your order No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 24 days, on 1 December 2026 Status Current car"
+    },
+    {
+      "id": "help-case",
+      "name": "Renewal help: Ask for help, review, confirm; the case shows its named owner and status",
+      "pass": true,
+      "screenshots": [
+        "browser/375-19-help-case.png"
+      ],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls RENEWAL HELP Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Your help request was recorded. Get help with your renewal The scheme team can review a delayed or uncertain renewal and explain the next action. Opening help changes nothing. Ask for help RENEWAL CASE Open Case refere"
+    },
+    {
+      "id": "current-car-after-help",
+      "name": "Your cars page after the help request: current car still current",
+      "pass": true,
+      "screenshots": [
+        "browser/375-20-current-car-after-help.png"
+      ],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR CARS CHOICES Your cars Refresh account Your order is in progress Order reference GCSP-000001 Car order number 6841434 Current step: Sent to ordering. View order progress Order progress All times are demo time (UTC). Your order No image for this car yet Synthetic 3 Series Saloon 320i Order reference GCSP-000001 Car order number 6841434 "
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Tab reaches the demo key field; typing the key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Main successful journey\" in \"Scenario\"",
+      "pass": true,
+      "detail": "Main successful journey Available"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Reset scenario\" then \"Confirm reset\" resets the run",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches the acting principal",
+      "pass": true
+    },
+    {
+      "page": "brief",
+      "check": "visible focus",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "Save this brief"
+      }
+    },
+    {
+      "page": "activity",
+      "check": "visible focus",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "View offer"
+      }
+    },
+    {
+      "page": "outbox",
+      "check": "visible focus",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "Paula (fictional)\nYour vehicle offer is ready to review\n5 No"
+      }
+    },
+    {
+      "page": "outbox",
+      "check": "Enter on a captured email row opens the message",
+      "pass": true
+    },
+    {
+      "page": "outbox",
+      "check": "Enter on the captured message link opens the offer",
+      "pass": true
+    },
+    {
+      "page": "offer-decline",
+      "check": "visible focus",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "Choose a reason\nBody style\nSize\nFuel type\nEquipment"
+      }
+    },
+    {
+      "page": "offer",
+      "check": "typing \"Body\" in the reason list chooses \"Body style\"",
+      "pass": true,
+      "detail": "Body style"
+    },
+    {
+      "page": "offer",
+      "check": "Enter on \"Confirm decline\" records the decline",
+      "pass": true
+    },
+    {
+      "page": "offer",
+      "check": "arrow keys choose \"Saloon\" in \"Follow-up question\"",
+      "pass": true,
+      "detail": "Saloon"
+    },
+    {
+      "page": "offer-followup",
+      "check": "visible focus",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "Confirm this change"
+      }
+    },
+    {
+      "page": "offer",
+      "check": "Enter on \"Confirm this change\" saves the change",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" advances the clock",
+      "pass": true
+    },
+    {
+      "page": "outbox",
+      "check": "Enter on a captured email row opens the message",
+      "pass": true
+    },
+    {
+      "page": "outbox",
+      "check": "Enter on the captured message link opens the offer",
+      "pass": true
+    },
+    {
+      "page": "offer",
+      "check": "Space ticks each of the three declarations",
+      "pass": true
+    },
+    {
+      "page": "offer-accept",
+      "check": "visible focus",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "Accept this offer"
+      }
+    },
+    {
+      "page": "offer",
+      "check": "Enter on \"Accept this offer\" sends the decision",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" advances the clock",
+      "pass": true,
+      "detail": "2026-11-05T09:31:00.000Z to 2026-11-05T09:32:00.000Z"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" advances the clock",
+      "pass": true,
+      "detail": "2026-11-05T09:32:00.000Z to 2026-11-05T09:33:00.000Z"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" advances the clock",
+      "pass": true,
+      "detail": "2026-11-05T09:33:00.000Z to 2026-11-05T09:34:00.000Z"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" advances the clock",
+      "pass": true,
+      "detail": "2026-11-05T09:34:00.000Z to 2026-11-05T09:35:00.000Z"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" advances the clock",
+      "pass": true,
+      "detail": "2026-11-05T09:35:00.000Z to 2026-11-05T09:36:00.000Z"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" advances the clock",
+      "pass": true,
+      "detail": "2026-11-05T09:36:00.000Z to 2026-11-05T09:37:00.000Z"
+    },
+    {
+      "page": "handover-slot",
+      "check": "visible focus",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "Request 7 Nov 2026, 09:00"
+      }
+    },
+    {
+      "page": "order progress",
+      "check": "Enter on a handover slot button requests it",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Typing a UTC target and Enter on \"Tick to target\" advances the clock",
+      "pass": true,
+      "detail": "to 2026-11-05T10:06:00.000Z"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" advances the clock",
+      "pass": true,
+      "detail": "2026-11-05T10:06:00.000Z to 2026-11-05T10:07:00.000Z"
+    },
+    {
+      "page": "document-task",
+      "check": "visible focus",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "Acknowledge the agreement"
+      }
+    },
+    {
+      "page": "order progress",
+      "check": "Enter on the document task button completes it",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Typing a UTC target and Enter on \"Tick to target\" advances the clock",
+      "pass": true,
+      "detail": "to 2026-11-07T09:37:00.000Z"
+    },
+    {
+      "page": "return-slot",
+      "check": "visible focus",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "Request return 9 Nov 2026, 09:00"
+      }
+    },
+    {
+      "page": "order progress",
+      "check": "Enter on a separate-return slot button requests it",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Typing a UTC target and Enter on \"Tick to target\" advances the clock",
+      "pass": true,
+      "detail": "to 2026-11-07T10:06:00.000Z"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" advances the clock",
+      "pass": true,
+      "detail": "2026-11-07T10:06:00.000Z to 2026-11-07T10:07:00.000Z"
+    },
+    {
+      "page": "help",
+      "check": "Enter on \"Get help with your renewal\" opens the request",
+      "pass": true
+    },
+    {
+      "page": "help-confirm",
+      "check": "visible focus",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "Confirm help request"
+      }
+    },
+    {
+      "page": "help",
+      "check": "Enter on \"Confirm help request\" opens the case",
+      "pass": true
+    }
+  ],
+  "firstRelease": {
+    "eligibleCount": 4,
+    "needConfirmation": 0,
+    "eligibleCardsShown": 4,
+    "modelLines": {
+      "Synthetic 3 Series Touring 320i": 1,
+      "Synthetic 3 Series Saloon 320i": 2,
+      "Synthetic 1 Series Sports Hatch 120": 1
+    },
+    "cardOrder": [
+      "Synthetic 3 Series Touring 320i (100%)",
+      "Synthetic 3 Series Saloon 320i (0%)",
+      "Synthetic 3 Series Saloon 320i (0%)",
+      "Synthetic 1 Series Sports Hatch 120 (0%)"
+    ],
+    "summary": "4 eligible cars. No image for this car yet SCHEME STOCK Synthetic 3 Series Touring 320i 100% 1,100 points a month · 1,30",
+    "stockSource": "default generated run stock",
+    "screenshot": null
+  },
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9224/favicon.ico",
+      "page": "http://127.0.0.1:9224/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:9224/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:9224/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:9224/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:9224/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:9224/gcsp-account.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:9224/gcsp-account.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-outbox.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-outbox.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-order-progress-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-help.html"
+    },
+    {
+      "url": "http://127.0.0.1:9224/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-help.html"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-account.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9224/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:9224/gcsp-account.html"
+    }
+  ],
+  "notes": [
+    "Email preview heading box at 375px: 53,1084 267x65",
+    "Next release unavailable after the first release (No future release cue is configured.); one Tick (60 seconds) used instead.",
+    "Email preview heading box at 375px: 53,1195 267x65"
+  ],
+  "origin": "http://127.0.0.1:9224",
+  "acceptedOffer": [
+    "6841434",
+    "Synthetic 3 Series Saloon 320i"
+  ],
+  "policy": {
+    "approvalStages": [
+      "HR approval",
+      "sales-manager approval",
+      "sent to ordering"
+    ],
+    "approvalTicks": {
+      "HR approval": 2,
+      "sales-manager approval": 2,
+      "sent to ordering": 1
+    },
+    "confirmDelaySeconds": 1800,
+    "documentsLastProgressSeconds": 172800
+  },
+  "finishedAt": "2026-11-09T14:19:38.745Z",
+  "counts": {
+    "steps": 39,
+    "passed": 39,
+    "screenshots": 20,
+    "keyboardChecks": 43,
+    "keyboardPassed": 43
+  }
+}
