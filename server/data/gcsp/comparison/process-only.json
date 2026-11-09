@@ -1,0 +1,866 @@
+{
+  "format": "gcsp-process-comparison-result-v1",
+  "digest": "d388e3371ea4a7f3c3665102e9452e7ccd0940b685b64fa2d623e7e47a3f3027",
+  "result": {
+    "schemaVersion": 1,
+    "kind": "process-comparison",
+    "experimentId": "process-only",
+    "completedAt": "2026-11-09T18:12:24.449Z",
+    "manifest": {
+      "experimentId": "process-only",
+      "seeds": [
+        "comparison-a",
+        "comparison-b",
+        "comparison-c"
+      ],
+      "policyVersion": "gcsp-policy-v1",
+      "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+      "generatorVersion": "comparison-inputs.sha256.v1",
+      "overlays": {},
+      "codeRevision": "669fbc2f",
+      "inputHashes": {
+        "comparison-a": "53bcb43e78caefd6fef8c5c08e25454b1871c89af65369d624bb39af5b123509",
+        "comparison-b": "59c3ae5cd9a0425781f1b25bd0e587f828dcfee35935e23cb7b183f43220ccb2",
+        "comparison-c": "3793d4b7f30652d082a17756184714e86d263560e997ab37e87df7924766fe63"
+      }
+    },
+    "perSeed": [
+      {
+        "seed": "comparison-a",
+        "inputHash": "53bcb43e78caefd6fef8c5c08e25454b1871c89af65369d624bb39af5b123509",
+        "routes": {
+          "current": {
+            "measures": {
+              "acceptableCoverage": 0.157,
+              "carsNeverAllocated": 693,
+              "heldNotTakenCarDays": 0.536111,
+              "declinedOffers": 0,
+              "expiredOffers": 0,
+              "failedClaims": 386,
+              "retries": 1234,
+              "meanAcceptedFit": 81.17,
+              "accessGroupCoverage": {
+                "delayed-access": 0.165803,
+                "immediate-access": 0.161954,
+                "intermittent-access": 0.148325
+              }
+            },
+            "totals": {
+              "employees": 1000,
+              "taken": 157,
+              "noneByRenewal": 843,
+              "claims": 543,
+              "retries": 1234,
+              "expiries": 386,
+              "carsAllocated": 157,
+              "carsHeldNotTaken": 43,
+              "carsUnused": 650
+            },
+            "recordDigest": "da2a1773be9673f051ba904d235fbc4abf9640d3fb5bc848a872a69be33baf25"
+          },
+          "buddy": {
+            "measures": {
+              "acceptableCoverage": 0.119,
+              "carsNeverAllocated": 731,
+              "heldNotTakenCarDays": 68.085035,
+              "declinedOffers": 769,
+              "expiredOffers": 561,
+              "failedClaims": 96,
+              "retries": 4,
+              "meanAcceptedFit": 81.25,
+              "accessGroupCoverage": {
+                "delayed-access": 0.036269,
+                "immediate-access": 0.138817,
+                "intermittent-access": 0.138756
+              }
+            },
+            "totals": {
+              "employees": 1000,
+              "taken": 119,
+              "noneByRenewal": 881,
+              "claims": 138,
+              "retries": 4,
+              "expiries": 96,
+              "carsAllocated": 119,
+              "carsHeldNotTaken": 354,
+              "carsUnused": 377,
+              "participants": 752,
+              "offersMade": 1407,
+              "offersAccepted": 77,
+              "declines": 769,
+              "declinesByReason": {
+                "body-style": 248,
+                "size": 253,
+                "fuel": 268,
+                "equipment": 0
+              },
+              "offerExpiries": 561,
+              "termsLapsed": 0,
+              "notificationsCaptured": 1407,
+              "buddyHeldNotTakenHours": 1630.840833,
+              "heldNotTakenHours": 1634.040833
+            },
+            "recordDigest": "fa20779073c5a396d8d660c1928dff74979c8de2c31bcd3000747eeffce019ef"
+          }
+        }
+      },
+      {
+        "seed": "comparison-b",
+        "inputHash": "59c3ae5cd9a0425781f1b25bd0e587f828dcfee35935e23cb7b183f43220ccb2",
+        "routes": {
+          "current": {
+            "measures": {
+              "acceptableCoverage": 0.152,
+              "carsNeverAllocated": 698,
+              "heldNotTakenCarDays": 0.601389,
+              "declinedOffers": 0,
+              "expiredOffers": 0,
+              "failedClaims": 433,
+              "retries": 1102,
+              "meanAcceptedFit": 81.18,
+              "accessGroupCoverage": {
+                "delayed-access": 0.166667,
+                "immediate-access": 0.163683,
+                "intermittent-access": 0.132832
+              }
+            },
+            "totals": {
+              "employees": 1000,
+              "taken": 152,
+              "noneByRenewal": 848,
+              "claims": 585,
+              "retries": 1102,
+              "expiries": 433,
+              "carsAllocated": 152,
+              "carsHeldNotTaken": 36,
+              "carsUnused": 662
+            },
+            "recordDigest": "6e61ddcf815eef201368f14cc0809429050a995b6ef080f9065a77129142a00c"
+          },
+          "buddy": {
+            "measures": {
+              "acceptableCoverage": 0.119,
+              "carsNeverAllocated": 731,
+              "heldNotTakenCarDays": 65.800347,
+              "declinedOffers": 643,
+              "expiredOffers": 600,
+              "failedClaims": 140,
+              "retries": 3,
+              "meanAcceptedFit": 80.98,
+              "accessGroupCoverage": {
+                "delayed-access": 0.042857,
+                "immediate-access": 0.163683,
+                "intermittent-access": 0.115288
+              }
+            },
+            "totals": {
+              "employees": 1000,
+              "taken": 119,
+              "noneByRenewal": 881,
+              "claims": 175,
+              "retries": 3,
+              "expiries": 140,
+              "carsAllocated": 119,
+              "carsHeldNotTaken": 350,
+              "carsUnused": 381,
+              "participants": 745,
+              "offersMade": 1327,
+              "offersAccepted": 84,
+              "declines": 643,
+              "declinesByReason": {
+                "body-style": 162,
+                "size": 211,
+                "fuel": 270,
+                "equipment": 0
+              },
+              "offerExpiries": 600,
+              "termsLapsed": 0,
+              "notificationsCaptured": 1327,
+              "buddyHeldNotTakenHours": 1574.541667,
+              "heldNotTakenHours": 1579.208333
+            },
+            "recordDigest": "6c4704dca4fd9e6e17a48bc44cebc8ed586c79c297b9739ff263ab25bf15ab5b"
+          }
+        }
+      },
+      {
+        "seed": "comparison-c",
+        "inputHash": "3793d4b7f30652d082a17756184714e86d263560e997ab37e87df7924766fe63",
+        "routes": {
+          "current": {
+            "measures": {
+              "acceptableCoverage": 0.136,
+              "carsNeverAllocated": 714,
+              "heldNotTakenCarDays": 0.470833,
+              "declinedOffers": 0,
+              "expiredOffers": 0,
+              "failedClaims": 339,
+              "retries": 1231,
+              "meanAcceptedFit": 81.6,
+              "accessGroupCoverage": {
+                "delayed-access": 0.141414,
+                "immediate-access": 0.14455,
+                "intermittent-access": 0.123684
+              }
+            },
+            "totals": {
+              "employees": 1000,
+              "taken": 136,
+              "noneByRenewal": 864,
+              "claims": 475,
+              "retries": 1231,
+              "expiries": 339,
+              "carsAllocated": 136,
+              "carsHeldNotTaken": 36,
+              "carsUnused": 678
+            },
+            "recordDigest": "fab35406c754476822f9569f7bd1b59fa674cc4ae54e05f70b999761f88f7802"
+          },
+          "buddy": {
+            "measures": {
+              "acceptableCoverage": 0.115,
+              "carsNeverAllocated": 735,
+              "heldNotTakenCarDays": 59.432141,
+              "declinedOffers": 616,
+              "expiredOffers": 506,
+              "failedClaims": 57,
+              "retries": 4,
+              "meanAcceptedFit": 81.34,
+              "accessGroupCoverage": {
+                "delayed-access": 0.030303,
+                "immediate-access": 0.163507,
+                "intermittent-access": 0.105263
+              }
+            },
+            "totals": {
+              "employees": 1000,
+              "taken": 115,
+              "noneByRenewal": 885,
+              "claims": 87,
+              "retries": 4,
+              "expiries": 57,
+              "carsAllocated": 115,
+              "carsHeldNotTaken": 321,
+              "carsUnused": 414,
+              "participants": 765,
+              "offersMade": 1207,
+              "offersAccepted": 85,
+              "declines": 616,
+              "declinesByReason": {
+                "body-style": 203,
+                "size": 216,
+                "fuel": 197,
+                "equipment": 0
+              },
+              "offerExpiries": 506,
+              "termsLapsed": 0,
+              "notificationsCaptured": 1207,
+              "buddyHeldNotTakenHours": 1424.471389,
+              "heldNotTakenHours": 1426.371389
+            },
+            "recordDigest": "aa71df048b89882f6fb944e7ba8798d6e6526e6e0cf615785e4f38f24fcb4f6d"
+          }
+        }
+      }
+    ],
+    "measures": {
+      "current": {
+        "acceptableCoverage": {
+          "mean": 0.148333,
+          "min": 0.136,
+          "max": 0.157,
+          "observedSeeds": 3
+        },
+        "carsNeverAllocated": {
+          "mean": 701.666667,
+          "min": 693,
+          "max": 714,
+          "observedSeeds": 3
+        },
+        "heldNotTakenCarDays": {
+          "mean": 0.536111,
+          "min": 0.470833,
+          "max": 0.601389,
+          "observedSeeds": 3
+        },
+        "declinedOffers": {
+          "mean": 0,
+          "min": 0,
+          "max": 0,
+          "observedSeeds": 3
+        },
+        "expiredOffers": {
+          "mean": 0,
+          "min": 0,
+          "max": 0,
+          "observedSeeds": 3
+        },
+        "failedClaims": {
+          "mean": 386,
+          "min": 339,
+          "max": 433,
+          "observedSeeds": 3
+        },
+        "retries": {
+          "mean": 1189,
+          "min": 1102,
+          "max": 1234,
+          "observedSeeds": 3
+        },
+        "meanAcceptedFit": {
+          "mean": 81.316667,
+          "min": 81.17,
+          "max": 81.6,
+          "observedSeeds": 3
+        },
+        "accessGroupCoverage": {
+          "delayed-access": {
+            "mean": 0.157961,
+            "min": 0.141414,
+            "max": 0.166667,
+            "observedSeeds": 3
+          },
+          "immediate-access": {
+            "mean": 0.156729,
+            "min": 0.14455,
+            "max": 0.163683,
+            "observedSeeds": 3
+          },
+          "intermittent-access": {
+            "mean": 0.134947,
+            "min": 0.123684,
+            "max": 0.148325,
+            "observedSeeds": 3
+          }
+        }
+      },
+      "buddy": {
+        "acceptableCoverage": {
+          "mean": 0.117667,
+          "min": 0.115,
+          "max": 0.119,
+          "observedSeeds": 3
+        },
+        "carsNeverAllocated": {
+          "mean": 732.333333,
+          "min": 731,
+          "max": 735,
+          "observedSeeds": 3
+        },
+        "heldNotTakenCarDays": {
+          "mean": 64.439174,
+          "min": 59.432141,
+          "max": 68.085035,
+          "observedSeeds": 3
+        },
+        "declinedOffers": {
+          "mean": 676,
+          "min": 616,
+          "max": 769,
+          "observedSeeds": 3
+        },
+        "expiredOffers": {
+          "mean": 555.666667,
+          "min": 506,
+          "max": 600,
+          "observedSeeds": 3
+        },
+        "failedClaims": {
+          "mean": 97.666667,
+          "min": 57,
+          "max": 140,
+          "observedSeeds": 3
+        },
+        "retries": {
+          "mean": 3.666667,
+          "min": 3,
+          "max": 4,
+          "observedSeeds": 3
+        },
+        "meanAcceptedFit": {
+          "mean": 81.19,
+          "min": 80.98,
+          "max": 81.34,
+          "observedSeeds": 3
+        },
+        "accessGroupCoverage": {
+          "delayed-access": {
+            "mean": 0.036476,
+            "min": 0.030303,
+            "max": 0.042857,
+            "observedSeeds": 3
+          },
+          "immediate-access": {
+            "mean": 0.155336,
+            "min": 0.138817,
+            "max": 0.163683,
+            "observedSeeds": 3
+          },
+          "intermittent-access": {
+            "mean": 0.119769,
+            "min": 0.105263,
+            "max": 0.138756,
+            "observedSeeds": 3
+          }
+        }
+      }
+    },
+    "differences": [
+      {
+        "measure": "acceptableCoverage",
+        "betterWhen": "higher",
+        "current": {
+          "mean": 0.148333,
+          "min": 0.136,
+          "max": 0.157,
+          "observedSeeds": 3
+        },
+        "buddy": {
+          "mean": 0.117667,
+          "min": 0.115,
+          "max": 0.119,
+          "observedSeeds": 3
+        },
+        "difference": {
+          "mean": -0.030666,
+          "min": -0.038,
+          "max": -0.021
+        },
+        "verdict": "current-better"
+      },
+      {
+        "measure": "carsNeverAllocated",
+        "betterWhen": "lower",
+        "current": {
+          "mean": 701.666667,
+          "min": 693,
+          "max": 714,
+          "observedSeeds": 3
+        },
+        "buddy": {
+          "mean": 732.333333,
+          "min": 731,
+          "max": 735,
+          "observedSeeds": 3
+        },
+        "difference": {
+          "mean": 30.666666,
+          "min": 21,
+          "max": 38
+        },
+        "verdict": "current-better"
+      },
+      {
+        "measure": "heldNotTakenCarDays",
+        "betterWhen": "lower",
+        "current": {
+          "mean": 0.536111,
+          "min": 0.470833,
+          "max": 0.601389,
+          "observedSeeds": 3
+        },
+        "buddy": {
+          "mean": 64.439174,
+          "min": 59.432141,
+          "max": 68.085035,
+          "observedSeeds": 3
+        },
+        "difference": {
+          "mean": 63.903063,
+          "min": 58.961308,
+          "max": 67.548924
+        },
+        "verdict": "current-better"
+      },
+      {
+        "measure": "declinedOffers",
+        "betterWhen": "lower",
+        "current": {
+          "mean": 0,
+          "min": 0,
+          "max": 0,
+          "observedSeeds": 3
+        },
+        "buddy": {
+          "mean": 676,
+          "min": 616,
+          "max": 769,
+          "observedSeeds": 3
+        },
+        "difference": {
+          "mean": 676,
+          "min": 616,
+          "max": 769
+        },
+        "verdict": "current-better"
+      },
+      {
+        "measure": "expiredOffers",
+        "betterWhen": "lower",
+        "current": {
+          "mean": 0,
+          "min": 0,
+          "max": 0,
+          "observedSeeds": 3
+        },
+        "buddy": {
+          "mean": 555.666667,
+          "min": 506,
+          "max": 600,
+          "observedSeeds": 3
+        },
+        "difference": {
+          "mean": 555.666667,
+          "min": 506,
+          "max": 600
+        },
+        "verdict": "current-better"
+      },
+      {
+        "measure": "failedClaims",
+        "betterWhen": "lower",
+        "current": {
+          "mean": 386,
+          "min": 339,
+          "max": 433,
+          "observedSeeds": 3
+        },
+        "buddy": {
+          "mean": 97.666667,
+          "min": 57,
+          "max": 140,
+          "observedSeeds": 3
+        },
+        "difference": {
+          "mean": -288.333333,
+          "min": -293,
+          "max": -282
+        },
+        "verdict": "buddy-better"
+      },
+      {
+        "measure": "retries",
+        "betterWhen": "lower",
+        "current": {
+          "mean": 1189,
+          "min": 1102,
+          "max": 1234,
+          "observedSeeds": 3
+        },
+        "buddy": {
+          "mean": 3.666667,
+          "min": 3,
+          "max": 4,
+          "observedSeeds": 3
+        },
+        "difference": {
+          "mean": -1185.333333,
+          "min": -1230,
+          "max": -1099
+        },
+        "verdict": "buddy-better"
+      },
+      {
+        "measure": "meanAcceptedFit",
+        "betterWhen": "higher",
+        "current": {
+          "mean": 81.316667,
+          "min": 81.17,
+          "max": 81.6,
+          "observedSeeds": 3
+        },
+        "buddy": {
+          "mean": 81.19,
+          "min": 80.98,
+          "max": 81.34,
+          "observedSeeds": 3
+        },
+        "difference": {
+          "mean": -0.126667,
+          "min": -0.26,
+          "max": 0.08
+        },
+        "verdict": "no-clear-difference"
+      },
+      {
+        "measure": "accessGroupCoverage:delayed-access",
+        "betterWhen": "higher",
+        "current": {
+          "mean": 0.157961,
+          "min": 0.141414,
+          "max": 0.166667,
+          "observedSeeds": 3
+        },
+        "buddy": {
+          "mean": 0.036476,
+          "min": 0.030303,
+          "max": 0.042857,
+          "observedSeeds": 3
+        },
+        "difference": {
+          "mean": -0.121485,
+          "min": -0.129534,
+          "max": -0.111111
+        },
+        "verdict": "current-better"
+      },
+      {
+        "measure": "accessGroupCoverage:immediate-access",
+        "betterWhen": "higher",
+        "current": {
+          "mean": 0.156729,
+          "min": 0.14455,
+          "max": 0.163683,
+          "observedSeeds": 3
+        },
+        "buddy": {
+          "mean": 0.155336,
+          "min": 0.138817,
+          "max": 0.163683,
+          "observedSeeds": 3
+        },
+        "difference": {
+          "mean": -0.001393,
+          "min": -0.023137,
+          "max": 0.018957
+        },
+        "verdict": "no-clear-difference"
+      },
+      {
+        "measure": "accessGroupCoverage:intermittent-access",
+        "betterWhen": "higher",
+        "current": {
+          "mean": 0.134947,
+          "min": 0.123684,
+          "max": 0.148325,
+          "observedSeeds": 3
+        },
+        "buddy": {
+          "mean": 0.119769,
+          "min": 0.105263,
+          "max": 0.138756,
+          "observedSeeds": 3
+        },
+        "difference": {
+          "mean": -0.015178,
+          "min": -0.018421,
+          "max": -0.009569
+        },
+        "verdict": "no-clear-difference"
+      }
+    ],
+    "rule": {
+      "key": "comparison.noClearDifferenceRule",
+      "value": {
+        "schemaVersion": 1,
+        "rule": "route-seed-ranges-overlap",
+        "overlapInclusive": true,
+        "minimumSeeds": 3,
+        "betterWhen": {
+          "acceptableCoverage": "higher",
+          "carsNeverAllocated": "lower",
+          "heldNotTakenCarDays": "lower",
+          "declinedOffers": "lower",
+          "expiredOffers": "lower",
+          "failedClaims": "lower",
+          "retries": "lower",
+          "meanAcceptedFit": "higher",
+          "accessGroupCoverage": "higher"
+        }
+      },
+      "status": "assumed",
+      "basis": "Two routes show no clear difference for a measure when their lowest-to-highest seed ranges overlap, with at least three seeds; fewer seeds are labelled insufficient. A rule of thumb for a small seed set, revisable; not a statistical test.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-measures--fucq-136",
+      "policyVersion": "gcsp-policy-v1"
+    },
+    "assumptions": [
+      {
+        "key": "allocation.tieBreak.rule",
+        "value": "renewalDueThenFitThenSeededLottery",
+        "unit": "enum",
+        "status": "assumed",
+        "basis": "Assumed demo fairness: earlier renewal due, then higher eligible fit, then seeded tie-break. Not employee iteration/mail speed or verified BMW policy.",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "brief.slider.maximum",
+        "value": 100,
+        "unit": "integer slider units",
+        "status": "assumed",
+        "basis": "Assumed `brief.slider.scale`; dimensions declare categorical alternatives where required.",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "comparison.acceptableFitThreshold",
+        "value": 70,
+        "unit": "calculated fit, 0-100",
+        "status": "assumed",
+        "basis": "Plausible demonstration boundary for an acceptable car, revisable. A missing fit never passes. Calculated fit is not observed satisfaction.",
+        "source": "docs/gcsp/shared-contracts.md#comparison-route-replay--fucq-134",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "comparison.buddyRoute.v1",
+        "value": {
+          "schemaVersion": 1,
+          "participation": "generated-buddyParticipation",
+          "consent": "search-and-hold-given-through-brief-service-with-stated-brief",
+          "allocation": "at-each-release-through-allocation-service",
+          "orderingWindow": "participant-pauses-when-manual-ordering-closes",
+          "response": "offer-creation-plus-generated-responseSeconds",
+          "offerExpiry": "buddy-hold-deadline",
+          "acceptance": "underlying-gates-and-fit-at-or-above-threshold",
+          "declineReason": "registered-reason-for-largest-importance-weighted-shortfall",
+          "declineReasonFallback": "size",
+          "afterDeclineOrExpiry": "no-trigger-until-next-release-or-brief-change",
+          "nonParticipants": "comparison.manualRoute.v1"
+        },
+        "unit": "versioned synthetic buddy behaviour",
+        "status": "assumed",
+        "basis": "Plausible model of preference-led buddy offers: consenting participants get offers at each release, answer at their generated response time or let the offer lapse at the hold deadline, accept only a car that passes their underlying needs, and decline naming the attribute where it falls shortest. The fallback reason applies when that attribute has no registered reason; size is the most general of the four. Revisable; not observed BMW behaviour.",
+        "source": "docs/gcsp/shared-contracts.md#comparison-buddy-route--fucq-135",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "comparison.manualRoute.v1",
+        "value": {
+          "schemaVersion": 1,
+          "participation": "every-employee-in-the-current-route; buddy non-participants reuse it",
+          "accessEvent": "once-per-release-at-generated-accessSeconds-until-taken-or-renewal",
+          "accessTies": "employeeId-ascending",
+          "eventOrder": [
+            "release",
+            "expiry",
+            "access",
+            "claim",
+            "decision"
+          ],
+          "candidateGate": "stated-brief-eligible-and-fit-at-or-above-threshold",
+          "candidateOrder": "stated-fit-descending-then-orderUuid",
+          "listingToClaimSeconds": 30,
+          "decisionSeconds": 60,
+          "conflict": "refresh-listing-and-claim-next-candidate",
+          "acceptance": "underlying-gates-and-fit-at-or-above-threshold",
+          "acceptedHold": "order-review-then-allocate",
+          "unacceptableHold": "expire-without-taking",
+          "abandonedCar": "not-claimed-again-by-that-employee",
+          "expiryReentry": "next-modelled-access-event",
+          "renewalDeadline": "inclusive",
+          "responseSeconds": "not-used; the manual decision happens in the portal session"
+        },
+        "unit": "versioned synthetic manual behaviour",
+        "status": "assumed",
+        "basis": "Plausible model of today's first-come-first-served release: employees check the portal after each release at their modelled access time, take 30 s to claim from the listing and decide within the 120 s cart hold. Revisable; not observed BMW behaviour.",
+        "source": "docs/gcsp/shared-contracts.md#comparison-route-replay--fucq-134",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "comparison.noClearDifferenceRule",
+        "value": {
+          "schemaVersion": 1,
+          "rule": "route-seed-ranges-overlap",
+          "overlapInclusive": true,
+          "minimumSeeds": 3,
+          "betterWhen": {
+            "acceptableCoverage": "higher",
+            "carsNeverAllocated": "lower",
+            "heldNotTakenCarDays": "lower",
+            "declinedOffers": "lower",
+            "expiredOffers": "lower",
+            "failedClaims": "lower",
+            "retries": "lower",
+            "meanAcceptedFit": "higher",
+            "accessGroupCoverage": "higher"
+          }
+        },
+        "unit": "versioned rule for labelling a route difference",
+        "status": "assumed",
+        "basis": "Two routes show no clear difference for a measure when their lowest-to-highest seed ranges overlap, with at least three seeds; fewer seeds are labelled insufficient. A rule of thumb for a small seed set, revisable; not a statistical test.",
+        "source": "docs/gcsp/shared-contracts.md#comparison-measures--fucq-136",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "hold.buddy.durationSeconds",
+        "value": 7200,
+        "unit": "seconds",
+        "status": "assumed",
+        "basis": "Assumed new capability; roughly 2-hour proposal in demo brief/Q15.",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "hold.cart.durationSeconds",
+        "value": 120,
+        "unit": "seconds",
+        "status": "assumed",
+        "basis": "Assumed exact value; target has about 2 minutes (Q15, round-1 findings).",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "hold.cart.orderReview.durationSeconds",
+        "value": 600,
+        "unit": "seconds",
+        "status": "assumed",
+        "basis": "Assumed separate form-review phase, FUCQ-66/SAN-017; test in manual trials.",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "offer.declineReasons.v1",
+        "value": {
+          "schemaVersion": 1,
+          "reasons": [
+            {
+              "code": "body-style",
+              "label": "Body style",
+              "attribute": "body"
+            },
+            {
+              "code": "size",
+              "label": "Size",
+              "attribute": "sizeClass"
+            },
+            {
+              "code": "fuel",
+              "label": "Fuel type",
+              "attribute": "fuel"
+            },
+            {
+              "code": "equipment",
+              "label": "Equipment",
+              "attribute": "equipment"
+            }
+          ]
+        },
+        "unit": "reason-registry",
+        "status": "assumed",
+        "basis": "FUCQ-106 fixed typed decline list and HLD blueprint 06/07; plausible demo categories, not verified BMW policy.",
+        "source": "docs/gcsp/offer-decisions-contract.md",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "offer.declinedCar.exclusion",
+        "value": "untilRelevantConfirmedBriefChange",
+        "unit": "enum",
+        "status": "assumed",
+        "basis": "Assumed employee policy per HLD; unchanged declined `orderUuid` excluded, expiry excluded from dislike history.",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      }
+    ],
+    "caveat": "Calculated fit is not observed satisfaction.",
+    "limitations": [
+      "Calculated fit is not observed satisfaction.",
+      "People, cars and behaviour are fictional and assumed; not BMW employee data or observed BMW operations.",
+      "Fictional facts for mechanics; not observed BMW configurations, insurance, licence or employee behaviour.",
+      "Underlying needs are synthetic latent inputs, not a real employee confirmation.",
+      "Equipment and ISOFIX facts are unknown; no factory-option or constructibility inference.",
+      "Live corpus realism/integration is separate acceptance evidence.",
+      "Acceptance is recorded as a local offer decision; the ordering handoff is not replayed.",
+      "After an offer expires the live service re-offers its car at once (FUCQ-227); this replay leaves it for the next release."
+    ]
+  }
+}
