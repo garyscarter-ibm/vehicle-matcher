@@ -70,6 +70,7 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
         ? `Employee confirmation is recorded.${closed ? '' : ' Review the case before resolving it.'}`
         : 'The employee confirms this preference through their brief. Confirmation is checked before this case can be resolved.'));
       else if (c.relaxation?.confirmed === true || remedy.confirmationState === 'employee-confirmed') section.append(el('p', 'gcsp-note', `You confirmed this preference change.${closed ? '' : ' The scheme team will review the case.'}`));
+      else if (closed) section.append(el('p', 'gcsp-note', `This change was not confirmed before the case ${c.status === 'resolved' ? 'was resolved' : 'closed'}.`)); // FUCQ-263
       else {
         section.append(el('p', 'gcsp-note', applicable ? 'Waiting for your confirmation. Only this preference value will change.'
           : 'This proposal no longer matches your current brief. Ask the scheme team to review it.'));

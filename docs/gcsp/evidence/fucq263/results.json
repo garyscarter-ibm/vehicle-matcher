@@ -1,0 +1,32 @@
+{
+  "pids": {
+    "server": 14967,
+    "chrome": 14968
+  },
+  "shots": [
+    {
+      "width": 1280,
+      "file": "docs/gcsp/evidence/fucq263/1280-paula-closed-unconfirmed.png",
+      "remedyText": "Recorded remedy\nPreference\nBody\nCurrent value\nestate\nProposed value\nsuv\nCurrent brief version\n3\n\nThis change was not confirmed before the case closed.",
+      "remedyButtons": 0,
+      "horizontalOverflow": false,
+      "errors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ]
+    },
+    {
+      "width": 375,
+      "file": "docs/gcsp/evidence/fucq263/375-paula-closed-unconfirmed.png",
+      "remedyText": "Recorded remedy\nPreference\nBody\nCurrent value\nestate\nProposed value\nsuv\nCurrent brief version\n3\n\nThis change was not confirmed before the case closed.",
+      "remedyButtons": 0,
+      "horizontalOverflow": false,
+      "errors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ]
+    }
+  ]
+}
