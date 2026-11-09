@@ -14,9 +14,9 @@ import { createVehicleEvidenceLookup } from '../gcsp/vehicle-evidence/vehicle-lo
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const producerRoot = process.env.F60_PRODUCER_ROOT || repository;
 assert.ok(isAbsolute(producerRoot), 'Select an absolute actual producer root.');
-// Re-pinned 9 Nov (FUCQ-230) to the 7 Nov collection-session revision (03f04ec8..dc228aba).
+// Re-pinned 9 Nov (FUCQ-245) to the FUCQ-156 revision (3507792d); historical output proven byte-identical.
 const producerIdentity = {
-  'scripts/gcsp/collection-session.mjs': 'bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790',
+  'scripts/gcsp/collection-session.mjs': '75298b96656df70056f656b4db1210d04e0d96e5d973cfd493c75883c62dc5f9',
   'scripts/gcsp/configuration-key.mjs': '2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60',
 };
 for (const [path, expected] of Object.entries(producerIdentity)) {
@@ -114,6 +114,18 @@ test('changed source pins and mutable caller inputs cannot become admitted histo
     await (await opening).run();
     const checkpoint = JSON.parse(await readFile(options.statePath, 'utf8'));
     assert.deepEqual(checkpoint.content.identity.stage.producerIdentity, producerIdentity);
+  });
+});
+
+test('a producer identity other than the reviewed pins is refused before any session opens', async () => {
+  await fixture(async ({ open, options }) => {
+    const previous = { ...producerIdentity,
+      'scripts/gcsp/collection-session.mjs': 'bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790' };
+    for (const identity of [previous, { ...producerIdentity, 'scripts/gcsp/configuration-key.mjs': '0'.repeat(64) },
+      { 'scripts/gcsp/collection-session.mjs': producerIdentity['scripts/gcsp/collection-session.mjs'] }, undefined]) {
+      await assert.rejects(open({ producerIdentity: identity }), { code: 'historical-producer-required' });
+    }
+    await assert.rejects(readFile(options.statePath), { code: 'ENOENT' });
   });
 });
 
