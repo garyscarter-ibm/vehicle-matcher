@@ -440,6 +440,24 @@ test('harness page, register module and fixture whitelist', () => {
   assert.equal(fixtures.fixtureAdapter('nope'), null);
 });
 
+test('harness page is labelled a fixture gallery with a link to the live presenter view', async () => {
+  const html = read('gcsp-greg.html');
+  assert.match(html, /<title>[^<]*fixture gallery[^<]*<\/title>/i);
+  assert.match(html, /<meta name="description" content="[^"]*fixture gallery[^"]*not the live demo/i);
+  document.body.replaceChildren();
+  const host = document.createElement('gcsp-greg-dashboard');
+  host.setAttribute('fixture', 'populated');
+  document.body.append(host);
+  await import('../../blocks/gcsp/greg/harness.js');
+  const notice = host.querySelector('.gcsp-fixture-notice');
+  assert.ok(notice, 'the harness renders the fixture notice');
+  assert.match(notice.textContent, /fixture gallery/i);
+  assert.match(notice.textContent, /not wired to the live demo/);
+  assert.equal(notice.querySelector('a').getAttribute('href'), './gcsp-presenter.html');
+  assert.equal(host.querySelectorAll('h1').length, 1);
+  assert.ok(notice.compareDocumentPosition(host.querySelector('h1')) & 4, 'the notice sits above the heading');
+});
+
 test('the gallery shows both kit components; the catalogue and ratchet record them', async () => {
   const { mountComponentGallery } = await import('../../blocks/vehicle-matcher/component-gallery.js');
   const root = host();
