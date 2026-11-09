@@ -14095,6 +14095,11 @@
       "key": "orderPlan.modelBounds",
       "value": [
         {
+          "modelId": "f70-hatch",
+          "min": 0,
+          "max": 2
+        },
+        {
           "modelId": "g20-saloon",
           "min": 0,
           "max": 4
@@ -14121,6 +14126,11 @@
     {
       "key": "orderPlan.derivativeBounds",
       "value": [
+        {
+          "derivativeId": "f70-hatch-120",
+          "min": 0,
+          "max": 2
+        },
         {
           "derivativeId": "g20-saloon-320i",
           "min": 0,
@@ -14233,6 +14243,18 @@
             "unitCostMinor": 6200000,
             "configurationIds": [
               "Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0="
+            ]
+          },
+          {
+            "derivativeId": "f70-hatch-120",
+            "modelId": "f70-hatch",
+            "production": {
+              "model": "1 Series Sports Hatch",
+              "derivative": "120"
+            },
+            "unitCostMinor": 3300000,
+            "configurationIds": [
+              "Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0="
             ]
           }
         ],
@@ -14436,12 +14458,60 @@
                 "unit": null
               }
             }
+          },
+          {
+            "configurationId": "Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=",
+            "derivativeId": "f70-hatch-120",
+            "version": "order-plan-catalog.v1",
+            "display": {
+              "name": "Synthetic 1 Series Sports Hatch 120"
+            },
+            "facts": {
+              "eligibilityModelKey": {
+                "value": "F70 Sports Hatch|120",
+                "unit": null
+              },
+              "modelLine": {
+                "value": "F70 Sports Hatch",
+                "unit": null
+              },
+              "body": {
+                "value": "hatchback",
+                "unit": null
+              },
+              "fuel": {
+                "value": "petrol",
+                "unit": null
+              },
+              "seats": {
+                "value": 5,
+                "unit": "count"
+              },
+              "boot": {
+                "value": 380,
+                "unit": "L"
+              },
+              "zeroTo62": {
+                "value": null,
+                "unit": "s"
+              },
+              "sizeClass": {
+                "value": 1,
+                "unit": "ordinal-1-5"
+              },
+              "tags": {
+                "value": [
+                  "city"
+                ],
+                "unit": null
+              }
+            }
           }
         ]
       },
       "unit": "synthetic order-planning catalogue (derivatives, unit costs, configurations)",
       "status": "assumed",
-      "basis": "Synthetic catalogue of four derivatives over three models, bound to the reviewed structural configuration ids (the 330e id is minted in the same Base64 format). Unit costs are synthetic GBP minor units, not BMW prices or procurement data; facts are compact assumed values, not a published corpus.",
+      "basis": "Synthetic catalogue of five derivatives over four models (the F70 120 line was added for the FUCQ-199 demo car, FUCQ-265), bound to the reviewed structural configuration ids (the 330e id is minted in the same Base64 format). Unit costs are synthetic GBP minor units, not BMW prices or procurement data; facts are compact assumed values, not a published corpus.",
       "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
       "sourceDate": "2026-11-07",
       "policyVersion": "gcsp-policy-v1",

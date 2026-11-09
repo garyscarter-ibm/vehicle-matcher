@@ -213,6 +213,12 @@ test('supply conversion refuses guesses, missing release receipts and crossed pr
   ]) { const source = supplyRecords(); change(source); assert.equal(resolveSupplyRecords(source).status, 'unavailable'); }
 });
 
+test('a released stock row whose configuration is not in the catalogue fails closed', () => {
+  const source = supplyRecords(); source.rows.stock[0].configurationId = 'config-not-in-catalogue';
+  const out = resolveSupplyRecords(source);
+  assert.deepEqual([out.status, out.code], ['unavailable', 'planning-exact-stock-mapping-missing']);
+});
+
 test('supply conversion preserves exact held slot and refuses unresolved expiry', () => {
   const source = supplyRecords(); source.rows.stock[0].state = 'held'; source.rows.stock[0].available = false;
   source.rows.holds = [{ runId: source.runId, holdId: 'hold-a', orderUuid: 'exact-a', state: 'active',
