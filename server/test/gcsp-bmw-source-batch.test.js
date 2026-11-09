@@ -212,6 +212,20 @@ test('continuation refuses changed predecessor, allocation reuse and destination
   assert.equal(f.calls.length, calls + 5);
 });
 
+test('FUCQ-152: a second fresh allocation cannot fork a predecessor that already has a successor', async (context) => {
+  const f = await interrupted(context); const a = continuationInput(f, 'fork-a');
+  assert.equal((await (await createFleetCollector(a)).run()).status, 'complete');
+  const pending = f.calls.at(-1); const calls = f.calls.length; const successorBytes = await readFile(a.statePath);
+  const b = continuationInput(f, 'fork-b');
+  const outcome = await (await createFleetCollector(b)).run().then(() => 'ran', (error) => error);
+  assert.equal(f.calls.filter((url) => url === pending).length, 1, 'the fork repeated pending candidate C');
+  assert.equal(f.calls.length, calls); assert.equal(outcome.code, 'continuation-predecessor-forked');
+  assert.match(outcome.message, /already has a continuation successor/);
+  assert.deepEqual(await readFile(f.input.statePath), f.originalBytes); assert.deepEqual(await readFile(a.statePath), successorBytes);
+  assert.equal((await readdir(join(f.input.statePath, '..'))).some((name) => name.includes(inputDigest('fork-b'))), false);
+  assert.equal((await (await createFleetCollector(a)).run()).accepted.length, 2); assert.equal(f.calls.length, calls);
+});
+
 test('continuation validates retained solver cache through the strict binder before any fresh traffic', async (context) => {
   const f = await interrupted(context); const envelope = JSON.parse(f.originalBytes);
   const cached = envelope.content.cache.find((row) => row.operation === 'solve');

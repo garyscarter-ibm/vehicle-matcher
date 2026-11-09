@@ -446,6 +446,25 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
     operations: { ...operations, ...descriptors }, initialState, validateState });
   return { session, catalogueRegistrations, run: async () => {
     if (lineage) {
+      // FUCQ-152: one durable successor per predecessor allocation, reserved before this allocation's own marker.
+      const predecessorId = lineage.allocationIds.at(-1);
+      const successorPath = `${lineage.contract.rootPath}.continuation-successor-${inputDigest(predecessorId)}.json`;
+      const successor = { schemaVersion: '1', predecessorAllocationId: predecessorId, allocation: http.allocation,
+        statePath: resolve(statePath), contract: lineage.contract };
+      let reserved;
+      try { reserved = await open(successorPath, 'wx', 0o600); }
+      catch (error) {
+        if (error.code !== 'EEXIST') throw error;
+        const existing = await readBounded(successorPath, 16384, 'continuation-predecessor-forked');
+        requireValue(existing?.allocation?.id !== http.allocation.id || same(existing, successor),
+          'continuation-allocation-used', 'This allocation is already bound to another continuation checkpoint.');
+        requireValue(same(existing, successor),
+          'continuation-predecessor-forked', 'This predecessor already has a continuation successor; continue from the chain tip instead.');
+      }
+      if (reserved) {
+        try { await reserved.writeFile(JSON.stringify(successor) + '\n'); await reserved.sync(); } finally { await reserved.close(); }
+        const directory = await open(dirname(successorPath), 'r'); try { await directory.sync(); } finally { await directory.close(); }
+      }
       const markerPath = `${lineage.contract.rootPath}.continuation-allocation-${inputDigest(http.allocation.id)}.json`;
       const marker = { schemaVersion: '1', allocation: http.allocation, statePath: resolve(statePath), contract: lineage.contract };
       let file;
