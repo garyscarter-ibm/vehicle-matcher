@@ -1,0 +1,8 @@
+/* GCSP kit: slotPicker. Days stack; times sit side by side and wrap. Scoped to .gcsp; colours from tokens only. */
+.gcsp .gcsp-slot-picker { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px 24px; width: 100%; min-width: 0; }
+.gcsp .gcsp-slot-day { display: grid; gap: 8px; min-width: 0; }
+.gcsp .gcsp-slot-day-heading { margin: 0; font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.gcsp .gcsp-slot-times { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.gcsp .gcsp-slot-time { font-variant-numeric: tabular-nums; }
+.gcsp .gcsp-slot-times .vm-btn { min-height: 44px; min-width: 76px; padding: 0 16px; }
+@media (max-width: 600px) { .gcsp .gcsp-slot-picker { grid-template-columns: minmax(0, 1fr); } }
