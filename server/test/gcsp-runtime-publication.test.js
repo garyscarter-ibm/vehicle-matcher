@@ -8,9 +8,16 @@ import { stock, fact, preference } from './helpers/employee-recommendation.js';
 import { projectRecommendationFacts } from '../gcsp/manual-context/recommendation-facts.js';
 import { saved } from './helpers/greg-demand-run.js';
 import { good, response, now, adoptionCommand } from './helpers/gcsp-reviewed-runtime.js';
+import { readFile } from 'node:fs/promises';
+import { getReviewedDefinitionSet } from '../gcsp/policy/reviewed-definitions.js';
 
 const options = { mode: 'memory', environmentId: 'runtime-publish', policyAsOf: now,
   commandId: 'bootstrap', sessionNow: () => now };
+// Greg's demand read fails closed without the reviewed decline registry; seed it so a publish at `now` stays valid.
+const reviewedReasons = getReviewedDefinitionSet('offer-decline-reasons-v1').definitions.find((d) => d.key === 'offer.declineReasons.v1');
+const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
+seed.assumptions.push({ ...seed.assumptions[0], key: reviewedReasons.key, value: reviewedReasons.value, unit: reviewedReasons.unit, status: reviewedReasons.status, basis: reviewedReasons.basis });
+const reasonsPolicy = () => new PolicyService({ provider: new MemoryPolicyProvider({ seedProvider: { async loadVersions() { return [structuredClone(seed)]; } } }) });
 async function open(t, overrides = {}) {
   const f = good(await createGcspRuntime({ ...options, ...overrides }));
   const session = await f.createLocalSession(); good(session);
@@ -43,7 +50,7 @@ async function canonicalSubject(f) {
 }
 
 test('default Paula HTTP preparation preserves canonical driver parity and single-subject privacy suppression', async (t) => {
-  const f = await open(t); const context = f.session.value.context;
+  const f = await open(t, { policy: reasonsPolicy() }); const context = f.session.value.context;
   response(await f.http.request('/api/gcsp/manual/account', { session: f.session }));
   const brief = saved();
   response(await f.http.request('/api/gcsp/brief/draft', { session: f.session,
@@ -72,7 +79,7 @@ test('default Paula HTTP preparation preserves canonical driver parity and singl
 });
 
 test('delivered memory runtime dependencies drive ordinary Greg publish and employee terms while protecting pinned history', async (t) => {
-  const f = await open(t); const context = f.session.value.context;
+  const f = await open(t, { policy: reasonsPolicy() }); const context = f.session.value.context;
   assert.equal(f.dependencies.gcspRepository, f.repository); assert.equal(f.dependencies.gcspPolicy, f.policy);
   assert.equal(f.dependencies.gcspGreg, f.greg);
   assert.equal(f.dependencies.gcspGregPublish, f.gregPublish);
@@ -166,7 +173,7 @@ test('combined runtime serves authenticated scenarios, canonical presenter step 
   assert.equal(f.dependencies.gcspOfferAccess, f.offerAccess);
   const oldEmployee = f.session.value.context;
   const catalogue = response(await f.http.request('/api/gcsp/presenter/scenarios', { session: f.session }));
-  assert.deepEqual(catalogue.scenarios.filter((row) => row.kind === 'journey' && row.availability.available).map((row) => row.scenarioId), ['main-successful-journey', 'no-suitable-match', 'decline-then-change', 'data-unavailable', 'uncertain-handoff', 'uncertain-handoff-rejected', 'decline-then-change-waiting']);
+  assert.deepEqual(catalogue.scenarios.filter((row) => row.kind === 'journey' && row.availability.available).map((row) => row.scenarioId), ['main-successful-journey', 'no-suitable-match', 'decline-then-change', 'offer-expires', 'data-unavailable', 'uncertain-handoff', 'uncertain-handoff-rejected', 'decline-then-change-waiting']);
   const controls = response(await f.http.request('/api/gcsp/presenter/controls', { session: f.session }));
   assert.equal(controls.controls.step.value, 60);
   const configured = good(await readPolicy.getAssumption('clock.presenter.stepSeconds', {

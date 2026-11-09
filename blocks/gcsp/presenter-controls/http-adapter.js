@@ -20,6 +20,8 @@ export function createPresenterHttpAdapter({ base = '', fetchImpl = globalThis.f
     readControls: (options) => request('presenter/controls', null, options),
     readContext: (options) => request('context', null, options),
     readScenarios: (options) => request('presenter/scenarios', null, options),
+    readFaults: (options) => request('presenter/scenarios/faults', null, options),
+    setFault: (body, options) => request('presenter/scenarios/faults', body, options),
     tick: (body, options) => request('presenter/controls/tick', body, options),
     reset: (body, options) => request('presenter/scenarios/reset', body, options),
     switchPrincipal: (body, options) => request('session/switch', body, options),

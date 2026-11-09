@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "recordId": "record:contract-fixture",
+  "runId": "explicit-fictional-fixture-run",
+  "subject": {
+    "employeeRef": "employee:opaque-fixture",
+    "entitlementSlotRef": "slot:opaque-fixture",
+    "renewalRef": null
+  },
+  "target": {
+    "offerRef": "offer:opaque-fixture",
+    "holdRef": "hold:opaque-fixture",
+    "quoteRef": "quote:opaque-fixture",
+    "orderRef": "order:opaque-fixture",
+    "configurationId": {
+      "status": "known",
+      "value": "RzIxOlMx"
+    }
+  },
+  "renewal": {
+    "cohort": {
+      "status": "unknown",
+      "reason": "not-captured"
+    },
+    "period": {
+      "status": "unknown",
+      "reason": "not-captured"
+    }
+  },
+  "entitlement": {
+    "schemeId": {
+      "status": "unknown",
+      "reason": "missing-context"
+    },
+    "gradeId": {
+      "status": "unknown",
+      "reason": "missing-context"
+    },
+    "allowanceBand": {
+      "status": "unknown",
+      "reason": "not-captured"
+    }
+  },
+  "brief": {
+    "briefVersion": 1,
+    "policyVersion": "gcsp-policy-v1",
+    "confirmedAt": "2026-11-05T09:00:00.000Z",
+    "preferences": {
+      "body": {
+        "value": "estate",
+        "importance": 70,
+        "valueState": "confirmed",
+        "importanceState": "confirmed"
+      }
+    },
+    "essentials": {
+      "seats": {
+        "value": 5,
+        "operator": "gte",
+        "unit": "count",
+        "state": "confirmed"
+      }
+    }
+  },
+  "choiceSet": {
+    "status": "unknown",
+    "reason": "not-captured"
+  },
+  "terms": {
+    "status": "unknown",
+    "reason": "missing-quote"
+  },
+  "outcomes": {
+    "offered": {
+      "state": "offered",
+      "at": null
+    },
+    "selection": {
+      "state": "unknown",
+      "at": null
+    },
+    "acceptance": {
+      "state": "pending",
+      "at": null
+    },
+    "decline": {
+      "state": "unknown",
+      "at": null,
+      "reasonType": null
+    },
+    "expiry": {
+      "state": "unknown",
+      "at": null
+    },
+    "wait": {
+      "state": "unknown",
+      "at": null,
+      "reasonType": null
+    },
+    "satisfaction": {
+      "state": "unknown",
+      "at": null
+    }
+  },
+  "timestamps": {
+    "projectedAt": "2026-11-05T09:00:00.000Z",
+    "clockVersion": 1
+  },
+  "provenance": {
+    "kind": "observed"
+  }
+}

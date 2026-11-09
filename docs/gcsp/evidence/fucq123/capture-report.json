@@ -1,0 +1,892 @@
+{
+  "story": "FUCQ-123",
+  "startedAt": "2026-11-09T01:50:31.605Z",
+  "widths": [
+    1280,
+    375
+  ],
+  "captures": [
+    {
+      "state": "learned",
+      "label": "learned plan beside the recommended plan",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq123/learned-1280.png",
+      "pass": true,
+      "tableScrollsSideways": false,
+      "tableScrollWidth": 1044,
+      "tableClientWidth": 1044,
+      "checks": [
+        {
+          "check": "text /Synthetic-trained model/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Recommended plan/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Held-out log loss/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Synthetic-trained; offline evaluation/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "heading is \"Synthetic-trained model\"",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no button in the section",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console or page errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "comparison table has 4 column headers",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "changed rows are bold",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "state": "learned",
+      "label": "learned plan beside the recommended plan",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq123/learned-375.png",
+      "pass": true,
+      "tableScrollsSideways": true,
+      "tableScrollWidth": 382,
+      "tableClientWidth": 283,
+      "checks": [
+        {
+          "check": "text /Synthetic-trained model/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Recommended plan/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Held-out log loss/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Synthetic-trained; offline evaluation/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "heading is \"Synthetic-trained model\"",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no button in the section",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console or page errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "comparison table has 4 column headers",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "changed rows are bold",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "state": "ready",
+      "label": "fallback, no active model",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq123/ready-1280.png",
+      "pass": true,
+      "tableScrollsSideways": null,
+      "tableScrollWidth": null,
+      "tableClientWidth": null,
+      "checks": [
+        {
+          "check": "text /No learned model is active, so only the baseline plan from expressed demand is shown\\./",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "heading is \"Synthetic-trained model\"",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no button in the section",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console or page errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no table and no figures",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "state": "ready",
+      "label": "fallback, no active model",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq123/ready-375.png",
+      "pass": true,
+      "tableScrollsSideways": null,
+      "tableScrollWidth": null,
+      "tableClientWidth": null,
+      "checks": [
+        {
+          "check": "text /No learned model is active, so only the baseline plan from expressed demand is shown\\./",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "heading is \"Synthetic-trained model\"",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no button in the section",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console or page errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no table and no figures",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "state": "learned-coverage",
+      "label": "fallback, outside training coverage",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq123/learned-coverage-1280.png",
+      "pass": true,
+      "tableScrollsSideways": null,
+      "tableScrollWidth": null,
+      "tableClientWidth": null,
+      "checks": [
+        {
+          "check": "text /Outside training coverage:/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Employee cohorts: G8-10/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Vehicle classes: unknown/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "heading is \"Synthetic-trained model\"",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no button in the section",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console or page errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no table and no figures",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "state": "learned-coverage",
+      "label": "fallback, outside training coverage",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq123/learned-coverage-375.png",
+      "pass": true,
+      "tableScrollsSideways": null,
+      "tableScrollWidth": null,
+      "tableClientWidth": null,
+      "checks": [
+        {
+          "check": "text /Outside training coverage:/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Employee cohorts: G8-10/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Vehicle classes: unknown/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "heading is \"Synthetic-trained model\"",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no button in the section",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console or page errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no table and no figures",
+          "ok": true,
+          "detail": ""
+        }
+      ]
+    }
+  ],
+  "keyboard": {
+    "375": {
+      "order": [
+        {
+          "n": 1,
+          "focus": "button: Request 3 vehicles from Production",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 2,
+          "focus": "div[region]: Proposed order",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 3,
+          "focus": "div[region]: Order totals by model",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 4,
+          "focus": "div[region]: Unmatched supply by source",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 5,
+          "focus": "div[region]: Binding constraints",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 6,
+          "focus": "div[region]: Alternative plans",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 7,
+          "focus": "div[region]: Plan comparison",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 8,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 9,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 10,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 11,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 12,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 13,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 14,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 15,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 16,
+          "focus": "input: 3 Series Saloon 320i maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 17,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 18,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 19,
+          "focus": "input: 3 Series Saloon 330e maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 20,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 21,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 22,
+          "focus": "input: 3 Series Touring 320i maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 23,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 24,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 25,
+          "focus": "input: i5 Touring eDrive40 M Sport Pro with Technology Plus and Comfort Packs maximum s",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 26,
+          "focus": "input: Order budget (pounds)",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 27,
+          "focus": "button: Preview with these limits",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        }
+      ],
+      "requestPosition": 1,
+      "requestFocusVisible": true,
+      "requestButton": {
+        "text": "Request 3 vehicles from Production",
+        "described": "Nothing is ordered until Production confirms."
+      },
+      "tableKeyboardScroll": {
+        "scrollable": true,
+        "scrollLeftAfterFourArrowRight": 99
+      },
+      "everyStopVisible": true
+    },
+    "1280": {
+      "order": [
+        {
+          "n": 1,
+          "focus": "button: Request 3 vehicles from Production",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 2,
+          "focus": "div[region]: Proposed order",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 3,
+          "focus": "div[region]: Order totals by model",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 4,
+          "focus": "div[region]: Unmatched supply by source",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 5,
+          "focus": "div[region]: Binding constraints",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 6,
+          "focus": "div[region]: Alternative plans",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 7,
+          "focus": "div[region]: Plan comparison",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 8,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 9,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 10,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 11,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 12,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 13,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 14,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 15,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 16,
+          "focus": "input: 3 Series Saloon 320i maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 17,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 18,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 19,
+          "focus": "input: 3 Series Saloon 330e maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 20,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 21,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 22,
+          "focus": "input: 3 Series Touring 320i maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 23,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 24,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 25,
+          "focus": "input: i5 Touring eDrive40 M Sport Pro with Technology Plus and Comfort Packs maximum s",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 26,
+          "focus": "input: Order budget (pounds)",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 27,
+          "focus": "button: Preview with these limits",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        }
+      ],
+      "requestPosition": 1,
+      "requestFocusVisible": true,
+      "requestButton": {
+        "text": "Request 3 vehicles from Production",
+        "described": "Nothing is ordered until Production confirms."
+      },
+      "tableKeyboardScroll": {
+        "scrollable": false,
+        "scrollLeftAfterFourArrowRight": 0
+      },
+      "everyStopVisible": true
+    }
+  },
+  "console": [],
+  "pageErrors": [],
+  "badResponses": [
+    {
+      "stage": "learned-1280",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "learned-1280",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "learned-1280",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "learned-1280",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "learned-1280",
+      "url": "/favicon.ico",
+      "status": 404
+    },
+    {
+      "stage": "learned-375",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "learned-375",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "ready-1280",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "ready-1280",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "ready-375",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "ready-375",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "learned-coverage-1280",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "learned-coverage-1280",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "learned-coverage-375",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "learned-coverage-375",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "learned-1280",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "learned-1280",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "learned-1280",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "learned-1280",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "learned-375",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "learned-375",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "learned-375",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "learned-375",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    }
+  ],
+  "cleanup": {
+    "chrome": "stopped (process group), profile removed"
+  },
+  "finishedAt": "2026-11-09T01:50:55.400Z",
+  "pass": true
+}

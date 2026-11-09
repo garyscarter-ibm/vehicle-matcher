@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/memory.js';
 import { createPostgresRepository } from '../gcsp/repository/postgres.js';
-import { ok, result, inputDigest, TABLES, FOUNDATION_TABLES, createRepository } from '../gcsp/repository/core.js';
+import { ok, result, inputDigest, TABLES, FOUNDATION_TABLES, createRepository, cloneJson } from '../gcsp/repository/core.js';
 import { migrate, migrationStatus, loadMigrations } from '../gcsp/migrations/index.js';
 const responseFixtures = JSON.parse(readFileSync(new URL('./fixtures/gcsp-repository-outcomes.json', import.meta.url), 'utf8'));
 
@@ -422,6 +422,42 @@ repositoryContract('memory', async () => {
   return { repository: createMemoryRepository({ store }), reopen: () => createMemoryRepository({ store }) };
 });
 
+// FUCQ-226: the comparison replay's shallow snapshots and receipt index must keep the same contract.
+repositoryContract('memory (shallow snapshots, receipt index)', async () => {
+  const store = createMemoryStore();
+  return { repository: createMemoryRepository({ store, snapshot: 'shallow' }), reopen: () => createMemoryRepository({ store, snapshot: 'shallow' }) };
+});
+
+test('FUCQ-226: the shallow receipt index finds receipts committed where a rolled-back transaction had indexed others', async () => {
+  const repository = createMemoryRepository({ store: createMemoryStore(), snapshot: 'shallow' });
+  assert.equal((await repository.open()).status, 'ok'); await setup(repository);
+  const context = ctx(); const receipt = (eventId, value) => ({ consumerId: 'fucq226', eventId, inputDigest: inputDigest(eventId), state: 'completed', outcome: ok(value) });
+  // The refused work indexes its own appended receipts, then is rolled back.
+  const refused = await repository.transaction(context, command(), async (tx) => {
+    assert.equal((await tx.recordReceipt(receipt('lost-a', 1))).status, 'ok'); assert.equal((await tx.recordReceipt(receipt('lost-b', 2))).status, 'ok');
+    assert.equal((await tx.getReceipt('fucq226', 'lost-b')).status, 'ok');
+    return result('conflict', { code: 'refused-on-purpose' });
+  });
+  assert.equal(refused.status, 'conflict');
+  const kept = await repository.transaction(context, command(), async (tx) => {
+    assert.equal((await tx.getReceipt('fucq226', 'lost-a')).status, 'not-found');
+    assert.equal((await tx.recordReceipt(receipt('kept-a', 3))).status, 'ok'); assert.equal((await tx.recordReceipt(receipt('kept-b', 4))).status, 'ok');
+    return ok({ kept: true });
+  });
+  assert.equal(kept.status, 'ok');
+  for (const [eventId, status] of [['kept-a', 'ok'], ['kept-b', 'ok'], ['lost-a', 'not-found'], ['lost-b', 'not-found']]) {
+    assert.equal((await repository.read(context, ref('event_receipts', { consumerId: 'fucq226', eventId }))).status, status, eventId);
+  }
+  // An in-place update of the last indexed receipt is seen, and a duplicate record is refused as before.
+  const row = (await repository.read(context, ref('event_receipts', { consumerId: 'fucq226', eventId: 'kept-b' }))).value;
+  const updated = await repository.transaction(context, command(), (tx) => tx.compareAndSwap(ref('event_receipts', { consumerId: 'fucq226', eventId: 'kept-b' }), row.version, { state: 'pending' }));
+  assert.equal(updated.status, 'ok', JSON.stringify(updated));
+  assert.equal((await repository.read(context, ref('event_receipts', { consumerId: 'fucq226', eventId: 'kept-b' }))).value.state, 'pending');
+  const changed = await repository.transaction(context, command(), (tx) => tx.recordReceipt({ ...receipt('kept-a', 3), inputDigest: inputDigest('other') }));
+  assert.equal(changed.reason, 'idempotency-input-changed');
+  await repository.close();
+});
+
 test('FUCQ-210: a swallowed failure keeps the safe unavailable result and logs only the operation and error name', async (t) => {
   const lines = []; t.mock.method(console, 'error', (...args) => lines.push(args.map(String).join(' ')));
   const secret = 'row-employee-secret postgres://user:pw@host';
@@ -442,11 +478,11 @@ test('FUCQ-210: a swallowed failure keeps the safe unavailable result and logs o
 });
 test('memory: explicit store and complete foundation vocabulary', async () => {
   assert.equal((await createMemoryRepository().open()).code, 'missing-store');
-  assert.equal(FOUNDATION_TABLES.length, 21);
+  assert.equal(FOUNDATION_TABLES.length, 22);
   assert.ok(FOUNDATION_TABLES.includes('future_order_requests'));
   assert.ok(FOUNDATION_TABLES.includes('confirmed_supply'));
   assert.ok(FOUNDATION_TABLES.includes('comparison_results') && TABLES.comparison_results.immutable);
-  assert.equal(Object.keys(TABLES).length, 27);
+  assert.equal(Object.keys(TABLES).length, 28);
   assert.equal(inputDigest({ b: 2, a: 1 }), inputDigest({ a: 1, b: 2 }));
 });
 test('FUCQ-220: order reference is a unique pending_operations key backed by an additive partial index', async () => {
@@ -751,4 +787,13 @@ test('postgresql driver: mutating a returned row does not change the next read',
   tampered.state = 'tampered-again';
   assert.deepEqual((await repository.query(ctx(), 'stock')).value, original);
   await repository.close();
+});
+
+test('FUCQ-226: cloneJson copies JSON data exactly as structuredClone does, without sharing any object', () => {
+  const value = JSON.parse('{"a":[1,"x",null,{"b":true}],"__proto__":{"c":2},"d":{"e":[[]]},"f":-0}');
+  const copy = cloneJson(value);
+  assert.deepStrictEqual(copy, structuredClone(value));
+  assert.equal(Object.getPrototypeOf(copy), Object.prototype); assert.ok(Object.hasOwn(copy, '__proto__'));
+  assert.notEqual(copy.a, value.a); assert.notEqual(copy.a[3], value.a[3]); assert.notEqual(copy.d.e, value.d.e);
+  assert.ok(Object.is(copy.f, -0));
 });

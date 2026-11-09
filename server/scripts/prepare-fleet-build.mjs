@@ -1,5 +1,6 @@
+import { realpathSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 import { fleetReleases } from '../gcsp/vehicle-evidence/fleet-release.js';
 
 // Some existing Render services retain an npm-only dashboard build command.
@@ -32,7 +33,7 @@ export async function prepareFleetBuild({ env = process.env, config, restore } =
   return { status: 'prepared', manifestDigest: releaseId };
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))) {
   try { console.log(JSON.stringify(await prepareFleetBuild())); }
   catch { console.error('GCSP pinned fleet build preparation failed'); process.exitCode = 1; }
 }

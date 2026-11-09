@@ -1,0 +1,1378 @@
+{
+  "story": "fucq239",
+  "chunk": "narrow",
+  "build": "ecd4cf9a",
+  "branch": "dev/DEV-2026-11-09-GC-008",
+  "entry": "hosted-offline",
+  "viewport": {
+    "width": 320,
+    "height": 700
+  },
+  "state": "passed-with-blocker",
+  "startedAt": "2026-11-09T06:29:53.738Z",
+  "expected": {
+    "wordingNew": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. Approval, appointment and collection are separate decisions.",
+    "wordingReplacement": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. For a replacement, the recorded old contract and expected return mileage must be correct. Approval, appointment and collection are separate decisions; submission does not end the current contract.",
+    "replacementOnlyDeclarations": [
+      "return"
+    ]
+  },
+  "steps": [
+    {
+      "id": "a1-access",
+      "name": "Demo key (keyboard) opens the demo on a fresh host; Presenter controls open",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 0,
+        "visible": 0,
+        "missing": []
+      },
+      "state": "scenario Clock/reset mechanics (fictional support fixture)",
+      "seconds": 6
+    },
+    {
+      "id": "a1-jordan-brief",
+      "name": "Switch to Jordan; save his brief (Saloon, five seats, no boot or towbar need, no charging, search and hold) by keyboard",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "page": "Skip to content Group Car Schemes Portal Jordan (fictional) Presenter controls YOUR CAR BRIEF Your car brief Choose what you enjoy and what your next car needs to do. Synthetic local demo · Brief version 1"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 9,
+        "visible": 9,
+        "missing": []
+      },
+      "state": "Skip to content Group Car Schemes Portal Jordan (fictional) Presenter controls YOUR CAR BRIEF Your car brief Choose what you enjoy and what your next car needs to do. Synthetic local demo · Brief version 1",
+      "seconds": 20
+    },
+    {
+      "id": "a1-release",
+      "name": "Presenter: Next release (keyboard); read the strip result",
+      "pass": false,
+      "screenshots": [],
+      "blocker": "Next release answered HTTP 503, handler buddy-allocation, code renewal-deadline-unavailable",
+      "detail": {
+        "strip": "Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-06T11:30:00.000Z Acting principal Jordan (fictional) (employee) Tick (60 seconds) Named time or UTC target Tick to target Next release Release cue: 2026-11-",
+        "statuses": [
+          "Action not completed: A registered clock handler did not complete. Retry this event ID. Handler: Allocation is unavailable."
+        ],
+        "tickHttpFailure": 503,
+        "tickFailureCode": "renewal-deadline-unavailable",
+        "tickFailureBody": "{\"status\":\"unavailable\",\"tickId\":\"presenter-62dbea2e05ba163aed87242e2b54ca9536323e3b376711ab835c8d2c7a27a3ca\",\"handlerId\":\"buddy-allocation\",\"reason\":\"A registered clock handler did not complete. Retry this event ID.\",\"retryable\":true,\"handlerOutcome\":{\"status\":\"unavailable\",\"code\":\"renewal-deadline-unavailable\",\"reason\":\"Allocation is unavailable.\",\"retryable\":true,\"contractVersion\":\"1.0.0\"},\"contractVersion\":\"1.0.0\",\"advance\":{\"runId\":\"demo-ea3b050919d5058adfbcb7852fc98722\",\"now\":\"2026-11-06T11:30:00.000Z\",\"clockVersion\":\"2\"},\"tick\":{\"runId\":\"demo-ea3b050919d5058adfbcb7852fc98722\",\"tickId\":\"presenter-62dbea2e05ba163aed87242e2b54ca9536323e3b376711ab835c8d2c7a27a3ca\",\"eventId\":\"presenter-62d"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 1,
+        "visible": 1,
+        "missing": []
+      },
+      "state": "tick answered HTTP 503; Action not completed: A registered clock handler did not complete. Retry this event ID. Handler: Allocation is unavailable.",
+      "seconds": 15
+    },
+    {
+      "id": "a1-jordan-offer",
+      "name": "Jordan: outbox row, Enter on Open the offer; handoff wording is the policy's new-order text, with no replacement or return wording",
+      "pass": false,
+      "screenshots": [],
+      "detail": {
+        "outbox": {
+          "rows": [],
+          "opened": false
+        }
+      },
+      "blocker": "no captured offer email",
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 1,
+        "visible": 1,
+        "missing": []
+      },
+      "state": "No captured email for Jordan. Rows: none",
+      "seconds": 32
+    },
+    {
+      "id": "a1-jordan-activity",
+      "name": "Blocker evidence: Jordan's Buddy activity and brief preview after the release",
+      "pass": true,
+      "screenshots": [
+        "browser/320-01-jordan-buddy-activity.png"
+      ],
+      "detail": {
+        "activity": "BUDDY ACTIVITY Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Couldn't check for new cars. Stock source unavailable. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal.",
+        "brief": "Cars for your brief 10 eligible cars. No image for this car yet SCHEME STOCK F70 Sports Hatch in Alpine White 50% 800 points a month · 1,300 points a month allowance Body style Hatchback Fuel Petrol Seats 5 Boot 380 litres 0 to 62 mph Not supplied Fuel economy Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Fuel: 100% fit. NEEDS CONFIRMATION preference fact unknown: field spor"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 1,
+        "visible": 1,
+        "missing": []
+      },
+      "state": "BUDDY ACTIVITY Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Couldn't check for new cars. Stock source unavailable. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal. || Cars for your brief 10 eligible cars. No image for this car yet SCHEME STOCK F70 Sports Hatch in Alpine White 50% 800 points a month · 1,300 points a month allowance Body style Hatch",
+      "seconds": 22
+    },
+    {
+      "id": "a2-reset",
+      "name": "Reset into Main successful journey (keyboard)",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "scenario": "Main successful journey",
+        "run": "demo-64f8be3c66ac685459299f1cf8569b4d",
+        "clock": "2026-11-05T09:00:00.000Z"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 1,
+        "visible": 1,
+        "missing": []
+      },
+      "state": "{\"previous\":\"demo-ea3b050919d5058adfbcb7852fc98722\",\"scenario\":\"Main successful journey\",\"run\":\"demo-64f8be3c66ac685459299f1cf8569b4d\",\"clock\":\"2026-11-05T09:00:00.000Z\"}",
+      "seconds": 17
+    },
+    {
+      "id": "a2-release",
+      "name": "Presenter: Next release (keyboard); read the strip result",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "strip": "Presenter controls Scenario Main successful journey Run demo-64f8be3c66ac685459299f1cf8569b4d DemoClock (UTC) 2026-11-05T09:30:00.000Z Acting principal Presenter (fictional) (presenter) Tick (60 seconds) Named time or UTC target Tick to target Next release Next release unavailable: No future release",
+        "statuses": [
+          "Action recorded"
+        ],
+        "tickHttpFailure": null,
+        "tickFailureCode": null,
+        "tickFailureBody": null
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 1,
+        "visible": 1,
+        "missing": []
+      },
+      "state": "Action recorded",
+      "seconds": 12
+    },
+    {
+      "id": "a2-paula-offer",
+      "name": "Paula: outbox row, Enter on Open the offer; handoff wording keeps the replacement wording and the return declaration",
+      "pass": true,
+      "screenshots": [
+        "browser/320-02-paula-offer-handoff.png",
+        "browser/320-03-paula-before-you-accept.png"
+      ],
+      "detail": {
+        "mode": "replacement",
+        "wording": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. For a replacement, the recorded old contract and expected return mileage must be correct. Approval, appointment and collection are separate decisions; submission does not end the current contract.",
+        "declarations": [
+          {
+            "id": "terms",
+            "label": "I accept these fictional scheme terms."
+          },
+          {
+            "id": "driver",
+            "label": "The nominated driver and licence details are correct."
+          },
+          {
+            "id": "return",
+            "label": "The old contract and expected return mileage are correct."
+          }
+        ],
+        "rowLabels": [
+          "Contact phone",
+          "Contact email",
+          "Car to return",
+          "Contract end date",
+          "Recorded odometer"
+        ],
+        "checks": {
+          "wordingIsReplacementText": true,
+          "hasReplacementSentence": true,
+          "hasReturnDeclaration": true,
+          "declarationsAllThree": true,
+          "hasReturnCarRows": true
+        },
+        "outbox": {
+          "rows": [
+            "Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent"
+          ],
+          "opened": true,
+          "url": "http://127.0.0.1:8932/gcsp/offer"
+        }
+      },
+      "stripes": {
+        "scanned": 29,
+        "hits": []
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 2,
+        "visible": 2,
+        "missing": []
+      },
+      "state": "wordingIsReplacementText true; hasReplacementSentence true; hasReturnDeclaration true; declarationsAllThree true; hasReturnCarRows true. Wording: Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details",
+      "seconds": 16
+    },
+    {
+      "id": "a2-paula-accept",
+      "name": "Paula ticks the 3 declarations (Space) and presses Accept this offer (Enter); the offer reads accepted",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "ticked": 3,
+        "orderNumber": "1820689",
+        "page": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR OFFER Offer accepted Selection received. Waiting for HR approval. Your selection Selection received Done HR approval Waiting Sales-manager approval Not started Sent to ordering Not started Order reference GCSP-000001 Car order number 1820689 No image for this car yet ORDER NO. 1820689 Synthetic 3 Series Touring 320i"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 4,
+        "visible": 4,
+        "missing": []
+      },
+      "state": "Offer accepted Selection received. Waiting for HR approval. Your selection Selection received Done HR approval Waiting Sales-manager approval Not started Sent to ordering Not started Order reference GCSP-000001 Car order number 1820689 No i",
+      "seconds": 3
+    },
+    {
+      "id": "a2-paula-account",
+      "name": "Paula's account: Order history lists the accepted order",
+      "pass": true,
+      "screenshots": [
+        "browser/320-04-paula-buddy-account-after-order.png",
+        "browser/320-05-paula-buddy-order-history.png"
+      ],
+      "stripes": {
+        "scanned": 303,
+        "hits": []
+      },
+      "detail": {
+        "orderNumber": "1820689",
+        "entry": {
+          "heading": "Synthetic 3 Series Touring 320i",
+          "facts": [
+            [
+              "Status",
+              "In progress"
+            ],
+            [
+              "Order reference",
+              "GCSP-000001"
+            ],
+            [
+              "Car order number",
+              "1820689"
+            ]
+          ]
+        },
+        "checks": {
+          "listsAnEntry": true,
+          "noOrderHistoryText": true,
+          "carNameHeading": true,
+          "hasStatus": true,
+          "hasOrderReference": true,
+          "hasCarOrderNumber": true,
+          "orderNumberMatchesOutcome": true
+        },
+        "slotRowShown": false,
+        "section": "Order history Synthetic 3 Series Touring 320i Status In progress Order reference GCSP-000001 Car order number 1820689 Scheme 1 (1 record) Scheme 2 (1 record) Scheme 3 (0 records)"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 0,
+        "visible": 0,
+        "missing": []
+      },
+      "state": "listsAnEntry true; noOrderHistoryText true; carNameHeading true; hasStatus true; hasOrderReference true; hasCarOrderNumber true; orderNumberMatchesOutcome true. Order history Synthetic 3 Series Touring 320i Status In progress Order reference GCSP-000001 Car order number 1820689 Scheme 1 (1 record) Scheme 2 (1 record) Scheme 3 (0 records)",
+      "seconds": 13
+    },
+    {
+      "id": "b-account",
+      "name": "Fresh host: demo key, switch to Jordan; the account offers Start a new order and Order history says \"No order history.\"",
+      "pass": true,
+      "screenshots": [
+        "browser/320-06-jordan-account-before-order.png"
+      ],
+      "detail": {
+        "history": {
+          "noHistoryText": true,
+          "entries": 0
+        }
+      },
+      "stripes": {
+        "scanned": 14,
+        "hits": []
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 1,
+        "visible": 1,
+        "missing": []
+      },
+      "state": "Order history before the order: Order history No order history. Scheme 1 (0 records) Scheme 2 (0 records) Scheme 3 (0 records)",
+      "seconds": 17
+    },
+    {
+      "id": "b-setup",
+      "name": "Start a new order (Enter); setup saved for You: Jordan (fictional)",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "driver": "You: Jordan (fictional)",
+        "contract": "six-month-8000",
+        "date": "2026-11-12",
+        "location": "demo-collection-centre"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 2,
+        "visible": 2,
+        "missing": []
+      },
+      "state": "Your order choices | {\"driver\":\"You: Jordan (fictional)\",\"contract\":\"six-month-8000\",\"date\":\"2026-11-12\",\"location\":\"demo-collection-centre\"}",
+      "seconds": 8
+    },
+    {
+      "id": "b-gallery",
+      "name": "Continue (empty gallery), Next release, Review this car is available",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "cards": 3,
+        "enabled": 3,
+        "status": ""
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 5,
+        "visible": 5,
+        "missing": []
+      },
+      "state": "3 cards, 3 enabled",
+      "seconds": 75
+    },
+    {
+      "id": "b-review",
+      "name": "Review this car (Enter): review with an active countdown",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 1,
+        "visible": 1,
+        "missing": []
+      },
+      "state": "Car reservation: 2:00 remaining",
+      "seconds": 7
+    },
+    {
+      "id": "b-order",
+      "name": "Continue to order review, tick the declarations (Space), Submit (Enter): outcome with an order number",
+      "pass": true,
+      "screenshots": [
+        "browser/320-07-jordan-outcome.png"
+      ],
+      "detail": {
+        "total": 2,
+        "ticked": 2,
+        "enabled": true,
+        "orderNumber": "0453994",
+        "heading": "Order received"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 4,
+        "visible": 4,
+        "missing": []
+      },
+      "state": "Order received | order 0453994; 2/2 ticked",
+      "seconds": 18
+    },
+    {
+      "id": "b-account-after-order",
+      "name": "Finish (Enter) returns to the account; Order history lists the order and no longer says \"No order history.\"",
+      "pass": true,
+      "screenshots": [
+        "browser/320-08-jordan-account-after-order.png",
+        "browser/320-09-jordan-order-history.png"
+      ],
+      "stripes": {
+        "scanned": 25,
+        "hits": []
+      },
+      "detail": {
+        "orderNumber": "0453994",
+        "entry": {
+          "heading": "F70 Sports Hatch in Alpine White",
+          "facts": [
+            [
+              "Status",
+              "In progress"
+            ],
+            [
+              "Order reference",
+              "GCSP-000001"
+            ],
+            [
+              "Car order number",
+              "0453994"
+            ]
+          ]
+        },
+        "checks": {
+          "listsAnEntry": true,
+          "noOrderHistoryText": true,
+          "carNameHeading": true,
+          "hasStatus": true,
+          "hasOrderReference": true,
+          "hasCarOrderNumber": true,
+          "orderNumberMatchesOutcome": true
+        },
+        "slotRowShown": false,
+        "section": "Order history F70 Sports Hatch in Alpine White Status In progress Order reference GCSP-000001 Car order number 0453994 Scheme 1 (0 records) Scheme 2 (0 records) Scheme 3 (0 records)"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 1,
+        "visible": 1,
+        "missing": []
+      },
+      "state": "listsAnEntry true; noOrderHistoryText true; carNameHeading true; hasStatus true; hasOrderReference true; hasCarOrderNumber true; orderNumberMatchesOutcome true. Order history F70 Sports Hatch in Alpine White Status In progress Order reference GCSP-000001 Car order number 0453994 Scheme 1 (0 records) Scheme 2 (0 records) Scheme 3 (0 records)",
+      "seconds": 6
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Jordan\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Jordan (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Switch principal\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Switch principal"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "brief",
+      "check": "Tab and arrow keys reach \"Saloon\" in \"Body style\" with a visible focus indicator; Space selects it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Saloon",
+        "checked": "true"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab and arrow keys reach \"Yes\" in \"Do you need to carry five people\" with a visible focus indicator; Space selects it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Yes",
+        "checked": "true"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab and arrow keys reach \"No\" in \"Do you need at least 430 litres\" with a visible focus indicator; Space selects it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "No",
+        "checked": "true"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab and arrow keys reach \"No\" in \"Do you need a towbar\" with a visible focus indicator; Space selects it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "No",
+        "checked": "true"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab and arrow keys reach \"No\" in \"Can you charge at home or work\" with a visible focus indicator; Space selects it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "No",
+        "checked": "true"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab reaches \"Search for cars for me\" with a visible focus indicator; Space activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Search for cars for me"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab reaches \"Hold a suitable car for me\" with a visible focus indicator; Space activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Hold a suitable car for me"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab reaches \"Save this brief\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Save this brief"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Next release\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Next release"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Jordan\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Jordan (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Switch principal\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Switch principal"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Jordan\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Jordan (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Switch principal\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Switch principal"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Main successful journey\" in \"Scenario\"",
+      "pass": true,
+      "detail": "Main successful journey Available"
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Reset scenario\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Reset scenario"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Confirm reset\" resets the scenario",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Next release\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Next release"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Switch principal\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Switch principal"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "outbox",
+      "check": "Enter on the Paula row opens the captured email",
+      "pass": true
+    },
+    {
+      "page": "outbox",
+      "check": "Enter on \"Open the offer\" opens the offer",
+      "pass": true
+    },
+    {
+      "page": "offer",
+      "check": "Tab reaches \"on\" with a visible focus indicator; Space activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "on"
+      }
+    },
+    {
+      "page": "offer",
+      "check": "Tab reaches \"on\" with a visible focus indicator; Space activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "on"
+      }
+    },
+    {
+      "page": "offer",
+      "check": "Tab reaches \"on\" with a visible focus indicator; Space activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "on"
+      }
+    },
+    {
+      "page": "offer",
+      "check": "Tab reaches \"Accept this offer\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Accept this offer"
+      }
+    },
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Jordan\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Jordan (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Switch principal\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Switch principal"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "page",
+      "check": "Tab reaches \"Start a new order\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Start a new order"
+      }
+    },
+    {
+      "page": "page",
+      "check": "Tab reaches \"Save choices\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Save choices"
+      }
+    },
+    {
+      "page": "page",
+      "check": "Tab reaches \"Continue\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Continue"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Next release\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Next release"
+      }
+    },
+    {
+      "page": "page",
+      "check": "Tab reaches \"Back to your choices\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Back to your choices"
+      }
+    },
+    {
+      "page": "page",
+      "check": "Tab reaches \"Save choices\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Save choices"
+      }
+    },
+    {
+      "page": "page",
+      "check": "Tab reaches \"Continue\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Continue"
+      }
+    },
+    {
+      "page": "page",
+      "check": "Tab reaches \"Review this car\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Review this car"
+      }
+    },
+    {
+      "page": "page",
+      "check": "Tab reaches \"Continue to order review\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Continue to order review"
+      }
+    },
+    {
+      "page": "page",
+      "check": "Tab reaches \"on\" with a visible focus indicator; Space activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "on"
+      }
+    },
+    {
+      "page": "page",
+      "check": "Tab reaches \"on\" with a visible focus indicator; Space activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "on"
+      }
+    },
+    {
+      "page": "page",
+      "check": "Tab reaches \"Submit order\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Submit order"
+      }
+    },
+    {
+      "page": "page",
+      "check": "Tab reaches \"Finish\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Finish"
+      }
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "a1-access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "a1-jordan-brief"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "a1-jordan-brief"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "url": "http://127.0.0.1:8932/api/gcsp/brief/preview",
+      "page": "http://127.0.0.1:8932/gcsp-brief-live.html",
+      "step": "a1-jordan-brief"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "a1-release"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+      "url": "http://127.0.0.1:8932/api/gcsp/presenter/controls/tick",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "a1-release"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "a1-jordan-offer"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "a1-jordan-offer"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "a1-jordan-activity"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "a1-jordan-activity"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "a2-reset"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "url": "http://127.0.0.1:8932/api/gcsp/presenter/controls",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "a2-reset"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "a2-paula-offer"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-account.html",
+      "step": "a2-paula-account"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "b-account"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "b-account"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "b-account"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "b-setup"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "b-setup"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "b-setup"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "b-gallery"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/stock",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "b-gallery"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "b-gallery"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/stock",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "b-gallery"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "b-gallery"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html",
+      "step": "b-order"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "a1-jordan-offer"
+    },
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "a1-jordan-activity"
+    },
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "a1-jordan-activity"
+    },
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "a1-jordan-activity"
+    },
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "a2-paula-offer"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "a1-access"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "a1-jordan-brief"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "a1-jordan-brief"
+    },
+    {
+      "status": 409,
+      "url": "/api/gcsp/brief/preview",
+      "method": "POST",
+      "step": "a1-jordan-brief"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "a1-release"
+    },
+    {
+      "status": 503,
+      "url": "/api/gcsp/presenter/controls/tick",
+      "method": "POST",
+      "step": "a1-release"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "a1-jordan-offer"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "a1-jordan-offer"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "a1-jordan-activity"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "a1-jordan-activity"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "a2-reset"
+    },
+    {
+      "status": 409,
+      "url": "/api/gcsp/presenter/controls",
+      "method": "GET",
+      "step": "a2-reset"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "a2-paula-offer"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "a2-paula-account"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "b-account"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "b-account"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "b-account"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "b-setup"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/order",
+      "method": "GET",
+      "step": "b-setup"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/claim",
+      "method": "GET",
+      "step": "b-setup"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/claim",
+      "method": "GET",
+      "step": "b-gallery"
+    },
+    {
+      "status": 400,
+      "url": "/api/gcsp/manual/stock",
+      "method": "GET",
+      "step": "b-gallery"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/claim",
+      "method": "GET",
+      "step": "b-gallery"
+    },
+    {
+      "status": 400,
+      "url": "/api/gcsp/manual/stock",
+      "method": "GET",
+      "step": "b-gallery"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/claim",
+      "method": "GET",
+      "step": "b-gallery"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/order",
+      "method": "GET",
+      "step": "b-order"
+    }
+  ],
+  "externalBlocked": [],
+  "blockers": [
+    {
+      "step": "a1-release",
+      "what": "Next release answered HTTP 503, handler buddy-allocation, code renewal-deadline-unavailable",
+      "source": "server/gcsp/allocation/index.js: the contender needs a current contract with a contractEndDate (renewal deadline); Jordan has no current car"
+    },
+    {
+      "step": "a1-jordan-offer",
+      "what": "Jordan has no captured buddy offer email after the release",
+      "outboxRows": []
+    }
+  ],
+  "notes": [],
+  "origin": "http://127.0.0.1:8932",
+  "jordanOffered": false,
+  "hostLogTail": [
+    "GCSP hosted demo (memory): http://127.0.0.1:8932/gcsp-presenter.html",
+    "Matcher API listening on http://localhost:8932",
+    "[gcsp] offline vehicle evidence; live startup warmers disabled",
+    ""
+  ],
+  "finishedAt": "2026-11-09T06:35:08.555Z",
+  "counts": {
+    "steps": 16,
+    "passed": 14,
+    "screenshots": 9,
+    "keyboardChecks": 60,
+    "keyboardPassed": 60
+  },
+  "summary": {
+    "maxOverflowPx": 0,
+    "pageErrors": 0,
+    "emDashSteps": 0,
+    "stripeHits": [],
+    "externalBlocked": 0,
+    "consoleErrors": 26,
+    "badResponses": 26,
+    "focusMissing": []
+  }
+}

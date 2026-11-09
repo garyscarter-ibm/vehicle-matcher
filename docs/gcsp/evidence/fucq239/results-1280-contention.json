@@ -1,0 +1,570 @@
+{
+  "story": "fucq239",
+  "chunk": "desktop",
+  "build": "ecd4cf9a",
+  "branch": "dev/DEV-2026-11-09-GC-008",
+  "entry": "hosted-offline",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "state": "passed-with-blocker",
+  "startedAt": "2026-11-09T06:35:23.268Z",
+  "expected": {
+    "wordingNew": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. Approval, appointment and collection are separate decisions.",
+    "wordingReplacement": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. For a replacement, the recorded old contract and expected return mileage must be correct. Approval, appointment and collection are separate decisions; submission does not end the current contract.",
+    "replacementOnlyDeclarations": [
+      "return"
+    ]
+  },
+  "steps": [
+    {
+      "id": "c-reset",
+      "name": "Demo key, reset into Main successful journey (keyboard)",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "scenario": "Main successful journey",
+        "run": "demo-c751338b47e307ce03d62dbaa37b589d",
+        "clock": "2026-11-05T09:00:00.000Z"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 1,
+        "visible": 1,
+        "missing": []
+      },
+      "state": "{\"previous\":\"demo-ea3b050919d5058adfbcb7852fc98722\",\"scenario\":\"Main successful journey\",\"run\":\"demo-c751338b47e307ce03d62dbaa37b589d\",\"clock\":\"2026-11-05T09:00:00.000Z\"}",
+      "seconds": 26
+    },
+    {
+      "id": "c-jordan-brief",
+      "name": "Switch to Jordan; save his brief (Saloon, five seats, no boot or towbar need, no charging, search and hold) by keyboard",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "page": "Skip to content Group Car Schemes Portal J Jordan (fictional) Your car brief Show labels Presenter controls YOUR CAR BRIEF Your car brief Choose what you enjoy and what your next car needs to do. Synthetic local demo · Brief version 1"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 9,
+        "visible": 9,
+        "missing": []
+      },
+      "state": "Skip to content Group Car Schemes Portal J Jordan (fictional) Your car brief Show labels Presenter controls YOUR CAR BRIEF Your car brief Choose what you enjoy and what your next car needs to do. Synthetic local demo · Brief version 1",
+      "seconds": 16
+    },
+    {
+      "id": "c-release",
+      "name": "Presenter: Next release (keyboard); read the strip result",
+      "pass": false,
+      "screenshots": [],
+      "blocker": "Next release answered HTTP 503, handler buddy-allocation, code renewal-deadline-unavailable",
+      "detail": {
+        "strip": "Presenter controls Scenario Main successful journey Run demo-c751338b47e307ce03d62dbaa37b589d DemoClock (UTC) 2026-11-05T09:30:00.000Z Acting principal Jordan (fictional) (employee) Tick (60 seconds) Named time or UTC target Tick to target Next release Next release unavailable: No future release cue",
+        "statuses": [
+          "Action not completed: A registered clock handler did not complete. Retry this event ID. Handler: Allocation is unavailable."
+        ],
+        "tickHttpFailure": 503,
+        "tickFailureCode": "renewal-deadline-unavailable",
+        "tickFailureBody": "{\"status\":\"unavailable\",\"tickId\":\"presenter-b7b0312a83318bab0fe1e2e94d361b90bbaf1255b9133dcc1b389b8e5e460fef\",\"handlerId\":\"buddy-allocation\",\"reason\":\"A registered clock handler did not complete. Retry this event ID.\",\"retryable\":true,\"handlerOutcome\":{\"status\":\"unavailable\",\"code\":\"renewal-deadline-unavailable\",\"reason\":\"Allocation is unavailable.\",\"retryable\":true,\"contractVersion\":\"1.0.0\"},\"contractVersion\":\"1.0.0\",\"advance\":{\"runId\":\"demo-c751338b47e307ce03d62dbaa37b589d\",\"now\":\"2026-11-05T09:30:00.000Z\",\"clockVersion\":\"2\"},\"tick\":{\"runId\":\"demo-c751338b47e307ce03d62dbaa37b589d\",\"tickId\":\"presenter-b7b0312a83318bab0fe1e2e94d361b90bbaf1255b9133dcc1b389b8e5e460fef\",\"eventId\":\"presenter-b7b"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 1,
+        "visible": 1,
+        "missing": []
+      },
+      "state": "tick answered HTTP 503; Action not completed: A registered clock handler did not complete. Retry this event ID. Handler: Allocation is unavailable.",
+      "seconds": 11
+    },
+    {
+      "id": "c-jordan-offer",
+      "name": "Jordan: outbox row, Enter on Open the offer; handoff wording is the policy's new-order text, with no replacement or return wording",
+      "pass": false,
+      "screenshots": [],
+      "detail": {
+        "outbox": {
+          "rows": [],
+          "opened": false
+        }
+      },
+      "blocker": "no captured offer email",
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 1,
+        "visible": 1,
+        "missing": []
+      },
+      "state": "No captured email for Jordan. Rows: none",
+      "seconds": 33
+    },
+    {
+      "id": "c-jordan-activity",
+      "name": "Blocker evidence: Jordan's Buddy activity and brief preview after the release",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-01-jordan-contention-buddy-activity.png"
+      ],
+      "detail": {
+        "activity": "BUDDY ACTIVITY Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Couldn't check for new cars. Stock source unavailable. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal.",
+        "brief": "Cars for your brief 5 eligible cars. No image for this car yet SCHEME STOCK Synthetic 3 Series Saloon 320i 78% 1,100 points a month · 1,300 points a month allowance Body style Saloon Fuel Petrol Seats 5 Boot 480 litres 0 to 62 mph 7.4 s Fuel economy 45 mpg Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Fuel: 100% fit. TRADE-OFFS Sportiness: 52% fit. Comfort: 50% fit."
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "pageErrors": 0,
+      "focus": {
+        "activated": 1,
+        "visible": 1,
+        "missing": []
+      },
+      "state": "BUDDY ACTIVITY Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Couldn't check for new cars. Stock source unavailable. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal. || Cars for your brief 5 eligible cars. No image for this car yet SCHEME STOCK Synthetic 3 Series Saloon 320i 78% 1,100 points a month · 1,300 points a month allowance Body style Saloon",
+      "seconds": 23
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Main successful journey\" in \"Scenario\"",
+      "pass": true,
+      "detail": "Main successful journey Available"
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Reset scenario\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Reset scenario"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Confirm reset\" resets the scenario",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Jordan\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Jordan (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Switch principal\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Switch principal"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "brief",
+      "check": "Tab and arrow keys reach \"Saloon\" in \"Body style\" with a visible focus indicator; Space selects it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Saloon",
+        "checked": "true"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab and arrow keys reach \"Yes\" in \"Do you need to carry five people\" with a visible focus indicator; Space selects it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Yes",
+        "checked": "true"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab and arrow keys reach \"No\" in \"Do you need at least 430 litres\" with a visible focus indicator; Space selects it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "No",
+        "checked": "true"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab and arrow keys reach \"No\" in \"Do you need a towbar\" with a visible focus indicator; Space selects it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "No",
+        "checked": "true"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab and arrow keys reach \"No\" in \"Can you charge at home or work\" with a visible focus indicator; Space selects it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "No",
+        "checked": "true"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab reaches \"Search for cars for me\" with a visible focus indicator; Space activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Search for cars for me"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab reaches \"Hold a suitable car for me\" with a visible focus indicator; Space activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Hold a suitable car for me"
+      }
+    },
+    {
+      "page": "brief",
+      "check": "Tab reaches \"Save this brief\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Save this brief"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Next release\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Next release"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Jordan\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Jordan (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Switch principal\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Switch principal"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Jordan\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Jordan (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Tab reaches \"Switch principal\" with a visible focus indicator; Enter activates it",
+      "pass": true,
+      "detail": {
+        "visible": true,
+        "own": true,
+        "focusVisibleMatch": true,
+        "label": "Switch principal"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8930/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8930/gcsp-presenter.html",
+      "step": "c-reset"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8930/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8930/gcsp-presenter.html",
+      "step": "c-reset"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "url": "http://127.0.0.1:8930/api/gcsp/presenter/controls",
+      "page": "http://127.0.0.1:8930/gcsp-presenter.html",
+      "step": "c-reset"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8930/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8930/gcsp-presenter.html",
+      "step": "c-jordan-brief"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "url": "http://127.0.0.1:8930/api/gcsp/brief/preview",
+      "page": "http://127.0.0.1:8930/gcsp-brief-live.html",
+      "step": "c-jordan-brief"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8930/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8930/gcsp-presenter.html",
+      "step": "c-release"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+      "url": "http://127.0.0.1:8930/api/gcsp/presenter/controls/tick",
+      "page": "http://127.0.0.1:8930/gcsp-presenter.html",
+      "step": "c-release"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8930/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8930/gcsp-presenter.html",
+      "step": "c-jordan-offer"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8930/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8930/gcsp-presenter.html",
+      "step": "c-jordan-offer"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8930/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8930/gcsp-presenter.html",
+      "step": "c-jordan-activity"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8930/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8930/gcsp-presenter.html",
+      "step": "c-jordan-activity"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8930/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "c-jordan-offer"
+    },
+    {
+      "url": "http://127.0.0.1:8930/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "c-jordan-activity"
+    },
+    {
+      "url": "http://127.0.0.1:8930/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "c-jordan-activity"
+    },
+    {
+      "url": "http://127.0.0.1:8930/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "c-jordan-activity"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "c-reset"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "c-reset"
+    },
+    {
+      "status": 409,
+      "url": "/api/gcsp/presenter/controls",
+      "method": "GET",
+      "step": "c-reset"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "c-jordan-brief"
+    },
+    {
+      "status": 409,
+      "url": "/api/gcsp/brief/preview",
+      "method": "POST",
+      "step": "c-jordan-brief"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "c-release"
+    },
+    {
+      "status": 503,
+      "url": "/api/gcsp/presenter/controls/tick",
+      "method": "POST",
+      "step": "c-release"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "c-jordan-offer"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "c-jordan-offer"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "c-jordan-activity"
+    },
+    {
+      "status": 404,
+      "url": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "c-jordan-activity"
+    }
+  ],
+  "externalBlocked": [],
+  "blockers": [
+    {
+      "step": "c-release",
+      "what": "Next release answered HTTP 503, handler buddy-allocation, code renewal-deadline-unavailable",
+      "source": "server/gcsp/allocation/index.js: the contender needs a current contract with a contractEndDate (renewal deadline); Jordan has no current car"
+    },
+    {
+      "step": "c-jordan-offer",
+      "what": "Jordan has no captured buddy offer email after the release",
+      "outboxRows": []
+    }
+  ],
+  "notes": [],
+  "origin": "http://127.0.0.1:8930",
+  "hostLogTail": [
+    "GCSP hosted demo (memory): http://127.0.0.1:8930/gcsp-presenter.html",
+    "Matcher API listening on http://localhost:8930",
+    "[gcsp] offline vehicle evidence; live startup warmers disabled",
+    ""
+  ],
+  "finishedAt": "2026-11-09T06:37:26.570Z",
+  "counts": {
+    "steps": 5,
+    "passed": 3,
+    "screenshots": 1,
+    "keyboardChecks": 29,
+    "keyboardPassed": 29
+  },
+  "summary": {
+    "maxOverflowPx": 0,
+    "pageErrors": 0,
+    "emDashSteps": 0,
+    "stripeHits": [],
+    "externalBlocked": 0,
+    "consoleErrors": 11,
+    "badResponses": 11,
+    "focusMissing": []
+  }
+}

@@ -2,6 +2,7 @@ import { FilePolicyProvider, PolicySourceError, snapshotVersions, validInstant }
 import { PostgresPolicyProvider } from './postgres-provider.js';
 import { publishPolicyVersion } from './publish.js';
 import { adoptReviewedAssumptions } from './adoption.js';
+import { cloneJson } from '../repository/core.js';
 
 export { FilePolicyProvider } from './file-provider.js';
 export { PostgresPolicyProvider } from './postgres-provider.js';
@@ -10,14 +11,14 @@ const CONTRACT_VERSION = '1.0.0';
 const text = (value) => typeof value === 'string' && value.trim().length > 0;
 const activeAt = (row, instant) => Date.parse(row.effectiveFrom) <= instant
   && (row.effectiveTo === undefined || instant < Date.parse(row.effectiveTo));
-const outcome = (status, policyVersion, fields) => ({ status, ...structuredClone(fields), contractVersion: CONTRACT_VERSION, policyVersion });
+const outcome = (status, policyVersion, fields) => ({ status, ...cloneJson(fields), contractVersion: CONTRACT_VERSION, policyVersion });
 const invalid = (policyVersion, code, field, reason) => outcome('invalid', policyVersion, { code, reasons: [{ field, reason }] });
 const ok = (version, value) => outcome('ok', version, { value });
 
 export class PolicyService {
   #provider;
   #identity; #clock; #repository;
-  #snapshots = new WeakMap();
+  #snapshots = new WeakMap(); #pinnedRows = new WeakMap();
 
   constructor({ provider = new FilePolicyProvider(), identity, clock, repository } = {}) {
     this.#provider = provider;
@@ -53,7 +54,10 @@ export class PolicyService {
     if (!seed) return { error: outcome('not-found', null, { code: 'policy-version-not-found', resourceType: 'policy-version', reasons: [{ field: 'policyVersion', reason: 'No matching retained policy version.' }] }) };
     // A pin preserves the rows effective when that immutable version began, including after their expiry.
     const at = pinned ? Date.parse(seed.effectiveFrom) : instant;
-    return { seed, rows: (table) => seed[table].filter((row) => activeAt(row, at)) };
+    if (!pinned) return { seed, rows: (table) => seed[table].filter((row) => activeAt(row, at)) };
+    // A pinned version's effective rows never change, so each table is filtered once (read-only to callers).
+    const cache = this.#pinnedRows.get(seed) ?? new Map(); this.#pinnedRows.set(seed, cache);
+    return { seed, rows: (table) => { if (!cache.has(table)) cache.set(table, seed[table].filter((row) => activeAt(row, at))); return cache.get(table); } };
   }
 
   #context(context, read, resolved) {
@@ -135,7 +139,8 @@ export class PolicyService {
       return invalid(version, 'unsupported-rule-selection', 'eligibility.rule', 'Unsupported or ineffective rule field/precedence selection.');
     }
     const links = resolved.rows('schemeRuleLinks').filter((row) => row.schemeId === context.schemeId);
-    const rules = resolved.rows('eligibilityRules').filter((rule) => links.some((link) => link.ruleId === rule.ruleId));
+    const linked = new Set(links.map((link) => link.ruleId));
+    const rules = resolved.rows('eligibilityRules').filter((rule) => linked.has(rule.ruleId));
     if (rules.some((rule) => rule.matchField !== field.value || rule.operator !== 'equals')) {
       return invalid(version, 'unsupported-rule-selection', 'eligibility.rule.matchField', 'The selected field does not match the scheme rules.');
     }

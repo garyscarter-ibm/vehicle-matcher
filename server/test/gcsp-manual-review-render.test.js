@@ -127,3 +127,8 @@ test('an unavailable claim reread never shows the last countdown or reserved wor
   assert.equal([...f.root.querySelectorAll('button')].find((node) => node.textContent === 'Continue to order review').disabled, true);
   f.setClaim(null); f.tick(); await settle(() => f.root.textContent.includes('Car reservation:'));
 });
+
+test('review shows no raw slot, location, contract, quote or source ids (FUCQ-197)', async (t) => {
+  const f = setup(t); await settle(() => control(f, 'contact.phone'));
+  for (const text of ['old-contract', 'collection-centre', 'Vehicle slot', 'Quote reference', 'Terms source', 'Current contract']) assert.equal(f.root.textContent.includes(text), false, text);
+});

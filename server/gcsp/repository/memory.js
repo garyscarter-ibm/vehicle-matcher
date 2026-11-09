@@ -1,4 +1,4 @@
-import { createRepository, createState, ok, result } from './core.js';
+import { cloneJson, createReceiptIndex, createRepository, createState, ok, result } from './core.js';
 
 // Stores are explicitly injected so reopen persistence cannot hide a missing durable provider.
 export function createMemoryStore() {
@@ -7,7 +7,8 @@ export function createMemoryStore() {
 // Rows are replaced, never mutated in place, so `shallow` copies only table arrays.
 const shallowCopy = (state) => ({ ...state, tables: Object.fromEntries(Object.entries(state.tables).map(([name, rows]) => [name, rows.slice()])) });
 export function createMemoryRepository({ store, now, supportedTables, snapshot = 'deep' } = {}) {
-  const copy = snapshot === 'shallow' ? shallowCopy : structuredClone;
+  // Rows are validated JSON. structuredClone's serializer buffers took start-up RSS past 512 MiB (FUCQ-190).
+  const copy = snapshot === 'shallow' ? shallowCopy : cloneJson;
   const valid = store && store.state?.tables && store.queue && typeof store.queue.then === 'function';
   const serialized = async (work) => {
     const predecessor = store.queue;
@@ -19,6 +20,8 @@ export function createMemoryRepository({ store, now, supportedTables, snapshot =
   return createRepository({
     now,
     supportedTables,
+    // Deep snapshots copy every row, so only shared shallow rows can keep a receipt index between transactions.
+    receiptIndex: snapshot === 'shallow' ? createReceiptIndex() : undefined,
     async open() {
       return valid ? ok({ provider: 'memory', migrationStatus: { current: true, appliedVersions: [], pendingVersions: [] } })
         : result('invalid', { code: 'missing-store', reasons: [{ field: 'store', reason: 'Inject a memory store explicitly' }] });

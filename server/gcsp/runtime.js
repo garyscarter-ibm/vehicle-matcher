@@ -9,6 +9,9 @@ import { createBriefEditorService } from './brief/editor.js';
 import { createActivityService } from './brief/activity.js';
 import { createGregDemandService } from './greg/index.js';
 import { createGregPublishService } from './greg/publish/index.js';
+import { createComparisonResultService } from './comparison/http.js';
+import { importComparisonResult } from './comparison/job.js';
+import { createComparisonJobService } from './comparison/jobs.js';
 import { createOrderPlanOperations } from './predict/plan/index.js';
 import { createScenarioService } from './scenarios/index.js';
 import { adoptOfferJourneyPolicy } from './policy/offer-journey-adoption.js';
@@ -45,7 +48,7 @@ const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].ever
 // Explicit composition only. A failed PostgreSQL open never changes providers.
 export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy,
   environmentId, policyAsOf, commandId, stockProvider, production, offerLandingUrl = process.env.GCSP_OFFER_LANDING_URL,
-  sessionNow = () => new Date().toISOString(), adoptOfferJourney = false, mail } = {}) {
+  sessionNow = () => new Date().toISOString(), adoptOfferJourney = false, mail, comparisonResultFile } = {}) {
   if (!['postgres', 'memory'].includes(mode)) return result('invalid', { code: 'unsupported-repository-mode' });
   try { offerLandingUrl = resolveOfferLandingUrl(offerLandingUrl); }
   catch { return result('invalid', { code: 'invalid-offer-landing-url' }); }
@@ -53,9 +56,11 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
   const ownsPolicy = policy === undefined;
   const readPolicy = policy ?? new PolicyService({ provider: mode === 'memory'
     ? new MemoryPolicyProvider() : new PostgresPolicyProvider(repositoryOptions) });
-  let closing; let notify;
+  let closing; let notify; let comparisonJobs;
   // The trusted host settles startup and its initiating calls before closing.
   const close = () => closing ??= (async () => {
+    // Stops an active comparison worker first; a failure here must not skip the rest.
+    try { await comparisonJobs?.close(); } catch { /* the job row is left for the next start to mark interrupted */ }
     try { await notify?.close(); } finally {
       try { await repository.close(); } finally { if (ownsPolicy) await readPolicy.close(); }
     }
@@ -90,6 +95,10 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const activity = createActivityService({ repository, identity, clock });
     const greg = createGregDemandService({ repository, policy, clock, identity });
     const gregPublish = createGregPublishService({ repository, policy, clock, identity });
+    // Reads the stored result under the same policy instance the runtime uses for publishing.
+    const comparison = createComparisonResultService({ repository, policy, clock, identity });
+    // Spawns nothing until a presenter starts a job.
+    comparisonJobs = createComparisonJobService({ repository, policy, clock, identity });
     const adapter = createSyntheticManualStockAdapter();
     const manualClaims = createManualClaimsService({ repository, policy, clock, identity, manual: account, adapter });
     // The trusted host supplies the existing pull port. No source is invented here.
@@ -157,7 +166,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       return resolved.status === 'ok' ? offerAccess.fromAccount(resolved.value, selector) : session ?? resolved;
     };
     notify = createNotificationDispatcher({ repository, policy, clock, environmentId, mail });
-    const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish, gcspOrderPlan: orderPlan,
+    const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish, gcspComparison: comparison, gcspComparisonJobs: comparisonJobs, gcspOrderPlan: orderPlan,
       gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspManualRead: manualRead, gcspManualReview: manualReview,
       gcspStockRelease: stockRelease, gcspSupply: supply, gcspCases: cases, gcspManualOrder: manualOrder,
       gcspLifecycle: lifecycle, gcspDocuments: documents, gcspAppointments: appointments, gcspReturnPlan: returnPlan,
@@ -196,6 +205,14 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
         if (current.status === 'ok') await pullProvider.prepareRun(current.value.runId);
       } catch (error) { console.warn(`GCSP stock: preparing the first run failed (${error?.message ?? 'error'}).`); }
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, orderPlan, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, supply, releaseHistory, cases, orderingAdapter, lifecycle, documents, appointments, returnPlan, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
+    // Explicit opt-in: loads a prepared result file only, so the comparison never runs at startup.
+    if (typeof comparisonResultFile === 'string' && comparisonResultFile.length > 0) {
+      let loaded;
+      try { loaded = await importComparisonResult(repository, { principalId: 'gcsp-comparison-import', roles: ['presenter'] }, comparisonResultFile); }
+      catch { loaded = { status: 'unavailable' }; }
+      if (loaded.status === 'ok') console.log(`GCSP comparison: loaded result ${loaded.value.resultId}.`);
+      else console.warn(`GCSP comparison: the result file was not loaded (${loaded.reason ?? loaded.status}).`);
+    }
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, comparison, comparisonJobs, orderPlan, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, supply, releaseHistory, cases, orderingAdapter, lifecycle, documents, appointments, returnPlan, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
 }

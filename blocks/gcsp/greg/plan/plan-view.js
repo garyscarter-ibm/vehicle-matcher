@@ -2,7 +2,7 @@
 import {
   FORECAST_LABEL, FORECAST_QUALIFIER, FORECAST_NOTE, PREVIEW_FALLBACK, NO_ORDER, INFEASIBLE_ACTION, NO_DEMAND_ACTION, NO_DEMAND_NOTE,
   alternativeLabel, changeLabel, detailText, formatDate, formatDemoTime, gateText, humanise, inputLabel, money, plural,
-  requestStateLabel, responseLabel, SUBMISSION_LABELS,
+  requestStateLabel, responseLabel, SUBMISSION_LABELS, LEARNED_LABEL, LEARNED_UNREADABLE,
 } from './plan-copy.js';
 
 export const LIMIT_KEYS = Object.freeze({ models: 'orderPlan.modelBounds', derivatives: 'orderPlan.derivativeBounds', budget: 'orderPlan.budgetMinor' });
@@ -152,6 +152,40 @@ function submissionOf(replan, names) {
     requests: list(replan.requests).map((r) => ({ name: names.derivative(r.derivativeId), quantity: r.quantity, state: r.state, stateLabel: requestStateLabel(r.state) })) };
 }
 
+const text = (v) => (typeof v === 'string' && v.trim() ? v : null);
+const strings = (v) => list(v).filter((x) => typeof x === 'string' && x);
+const metric = (m) => (object(m) && Number.isFinite(m.logLoss) && Number.isFinite(m.brier)
+  ? { logLoss: m.logLoss.toFixed(3), brier: m.brier.toFixed(3), count: m.count, thin: m.thin === true } : null);
+const signedMoney = (delta, currency) => (!Number.isFinite(delta) || delta === 0 ? 'No change' : `${delta > 0 ? '+' : '-'}${money(Math.abs(delta), currency)}`);
+
+// Learned plan beside the baseline: rows for the comparison, evaluation facts and limits. Never invents a figure.
+function learnedOf(value, names, currency) {
+  if (value === undefined || value === null) return null;
+  const kinds = ['available', 'fallback', 'unavailable'];
+  const label = object(value) && text(value.label) ? value.label : LEARNED_LABEL;
+  if (!object(value) || !kinds.includes(value.status)) return { status: 'unavailable', label, reason: null, limitation: LEARNED_UNREADABLE, coverage: null };
+  if (value.status !== 'available') {
+    const c = object(value.coverage) ? { cohorts: strings(value.coverage.cohorts), vehicleClasses: strings(value.coverage.vehicleClasses) } : null;
+    return { status: value.status, label, reason: value.reason ?? null, limitation: text(value.limitation) ?? LEARNED_UNREADABLE, coverage: c && (c.cohorts.length || c.vehicleClasses.length) ? c : null };
+  }
+  const d = object(value.differences) ? value.differences : {};
+  const comparable = d.comparable === true;
+  const row = (name, p, format, sign) => ({ name, baseline: format(p?.baseline), learned: format(p?.learned), difference: sign(p?.delta), changed: Number.isFinite(p?.delta) && p.delta !== 0 });
+  const derivatives = list(d.derivatives).map((r) => ({ name: names.derivative(r.derivativeId), baseline: String(r.baseline), learned: String(r.learned),
+    difference: changeLabel(r.delta), changed: r.changed === true, quantity: Math.max(Number(r.baseline) || 0, Number(r.learned) || 0) }))
+    .sort((a, b) => Number(b.changed) - Number(a.changed) || Number(b.quantity > 0) - Number(a.quantity > 0));
+  const rows = comparable ? [...derivatives, row('Vehicles ordered', d.orderQuantity, String, changeLabel), row('Employees covered', d.coverage, String, changeLabel),
+    row('Unmet needs', d.unmetNeeds, String, changeLabel), row('Spend', d.spendMinor, (m) => money(m, currency), (n) => signedMoney(n, currency))] : [];
+  const f = object(value.forecast) ? value.forecast : {}; const ev = object(f.evaluation) ? f.evaluation : {}; const o = object(ev.overall) ? ev.overall : {};
+  const model = object(f.model) ? f.model : {}; const learnedScore = metric(o.learned);
+  return { status: 'available', label, comparable, rows, changedCount: rows.filter((r) => r.changed).length,
+    evaluation: learnedScore ? { label: text(ev.label), learned: learnedScore, expressed: metric(o.expressedDemand), fit: metric(o.deterministicFit),
+      count: learnedScore.count, thin: learnedScore.thin || Boolean(ev.thin?.cohorts?.length || ev.thin?.vehicleClasses?.length),
+      thinCohorts: strings(ev.thin?.cohorts), thinClasses: strings(ev.thin?.vehicleClasses) } : null,
+    model: { artifact: typeof model.artifactId === 'string' ? model.artifactId.replace(/^sha256:/, '').slice(0, 12) : null,
+      policy: text(model.activationPolicyVersion), data: text(f.data?.datasetKind) }, limitations: strings(f.limitations) };
+}
+
 /** Read or preview value -> everything the panel renders (see the keys below). Throws PlanViewError without a plan. */
 export function toPlanView(value) {
   const plan = value?.plan;
@@ -180,6 +214,7 @@ export function toPlanView(value) {
     conflicts: infeasible ? constraints(plan.conflicts, names, currency) : [], alternatives,
     versions: versionsOf(value, plan, presentation), limits: limitsOf(plan, presentation, names),
     differences: preview ? differencesOf(plan, value.activePlan, names, currency) : null,
+    learned: learnedOf(value.learned, names, currency),
     submit: { planId: plan.planId, versions: plan.versions, changes: preview ? list(value.changes) : [] },
   };
 }

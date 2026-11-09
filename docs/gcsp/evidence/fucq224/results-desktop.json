@@ -1,0 +1,302 @@
+{
+  "story": "fucq224",
+  "chunk": "desktop",
+  "entry": "hosted-offline",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "state": "passed",
+  "startedAt": "2026-11-09T01:28:59.947Z",
+  "steps": [
+    {
+      "id": "n224-account",
+      "name": "Demo key, switch to Jordan: the account offers Start a new order and no Choose a replacement",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-01-n224-account.png"
+      ],
+      "overflowPx": 0,
+      "state": "start true; replacement false; Skip to content Group Car Schemes Portal J Jordan (fictional) Your cars New order Order history Drivers and licences Scheme guidelines Show labels Presenter controls YOUR CARS Your cars Refresh account No current car No current vehicle is supplied for your account. Start a new order Your allowance Monthly allowance 1,300 points a month Allowance override Not supplied Override end Not supplied Allo",
+      "detail": {
+        "buttons": [
+          "Your cars",
+          "New order",
+          "Order history",
+          "Drivers and licences",
+          "Scheme guidelines",
+          "Show labels",
+          "Refresh account",
+          "Start a new order"
+        ]
+      }
+    },
+    {
+      "id": "n224-setup",
+      "name": "Start a new order (Tab+Enter); setup saved for You: Jordan (fictional), no returning-car mileage",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-02-n224-setup-saved.png"
+      ],
+      "detail": {
+        "driver": "You: Jordan (fictional)",
+        "contract": "six-month-8000",
+        "date": "2026-11-12",
+        "location": "demo-collection-centre",
+        "returningMileageVisible": false
+      },
+      "overflowPx": 0,
+      "state": "Your order choices | {\"driver\":\"You: Jordan (fictional)\",\"contract\":\"six-month-8000\",\"date\":\"2026-11-12\",\"location\":\"demo-collection-centre\",\"returningMileageVisible\":false}"
+    },
+    {
+      "id": "n224-empty-gallery",
+      "name": "Continue before any release: empty gallery",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-03-n224-gallery-empty.png"
+      ],
+      "detail": {
+        "cards": 0,
+        "enabled": 0,
+        "status": "No released cars are visible to you yet Refresh availability to check for new releases. Refresh availability"
+      },
+      "overflowPx": 0,
+      "state": "status \"No released cars are visible to you yet Refresh availability to check for new releases. Refresh availability\"; cards 0"
+    },
+    {
+      "id": "n224-gallery",
+      "name": "Next release; released cars (back to choices for a new date if the window moved)",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-04-n224-gallery-released.png"
+      ],
+      "detail": {
+        "dateRecovery": true,
+        "cards": 20,
+        "enabled": 12,
+        "status": ""
+      },
+      "overflowPx": 0,
+      "state": "20 cards, 12 enabled"
+    },
+    {
+      "id": "n224-review",
+      "name": "Review this car (Tab+Enter): review with an active countdown",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-05-n224-review.png"
+      ],
+      "detail": {
+        "vehicleName": "F70 Sports Hatch in Alpine White",
+        "vehicleCard": "Vehicle details, eligibility and points are pinned to your claim. No image for this car yet CAR ORDER 0453994 F70 Sports Hatch in Alpine White 800 points a month · 1,300 points a month allowance Model Not supplied Body style hatchback Engine Not supplied Exterior Alpine White Interior Not supplied Transmission Not supplied Insurance group 22 Car order number 0453994 Eligible Pinned vehicle details",
+        "orderNumber": null,
+        "hasPoints": true,
+        "hasRepresentativeCaption": false,
+        "noImagePlaceholder": true,
+        "context": "Collection and current contract Journey New order Requested collection date 2026-11-13 Contract term 6 months Annual mileage 8000 mi/year Collection is requested, not a confirmed appointment.",
+        "countdown": "Car reservation: 2:00 remaining",
+        "consequence": "This car is reserved until the deadline. Continuing does not place an order. Time follows the presenter clock.",
+        "phone": "01632 960000",
+        "email": "employee-jordan@example.invalid",
+        "mileage": "",
+        "special": "",
+        "counter": "0 / 500 characters",
+        "notice": "Your current claim has been checked."
+      },
+      "overflowPx": 0,
+      "state": "F70 Sports Hatch in Alpine White | Car reservation: 2:00 remaining"
+    },
+    {
+      "id": "n224-summary-outcome",
+      "name": "Continue to order review, tick declarations, Submit: outcome",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-06-n224-summary-unticked.png",
+        "browser/1280-07-n224-summary-ticked.png",
+        "browser/1280-08-n224-outcome.png"
+      ],
+      "detail": {
+        "total": 2,
+        "ticked": 2,
+        "submitEnabled": true,
+        "posts": 1,
+        "outcome": {
+          "heading": "Order received",
+          "orderNumber": "0453994",
+          "status": "Awaiting approval",
+          "rawIds": []
+        }
+      },
+      "overflowPx": 0,
+      "state": "Order received | order 0453994 | status Awaiting approval; POSTs 1"
+    },
+    {
+      "id": "n224-account-after-order",
+      "name": "Finish returns to the account: order in progress, no saved-journey card",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-09-n224-account-after-order.png"
+      ],
+      "detail": {
+        "orderShown": true,
+        "inProgress": true,
+        "staleSavedJourneyCard": false,
+        "text": "Skip to content Group Car Schemes Portal J Jordan (fictional) Your cars New order Order history Drivers and licences Scheme guidelines Show labels Presenter controls YOUR CARS Your cars Refresh account Your order is in progress Order reference GCSP-000001 Car order number 0453994 Current step: Selection received. View order progress Order progress All times are demo time (UTC). Your order No image for this car yet F70 Sports Hatch in Alpine White Order reference GCSP-000001 Car order number 0453994 Steps Selection received Done 6 Nov 2026, 11:30 With ordering Next: Approval checks start HR approval Not started Sales-manager approval Not started Sent to ordering Not started Handover Handover "
+      },
+      "overflowPx": 0,
+      "state": "in progress true; stale card false; Skip to content Group Car Schemes Portal J Jordan (fictional) Your cars New order Order history Drivers and licences Scheme guidelines Show labels Presenter controls YOUR CARS Your cars Refresh account Your order is in progress Order reference GCSP-000001 Car order number 0453994 Current step: Selection received. View order progress Order progress All times are demo time (UTC). Your order No image"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8942/favicon.ico",
+      "page": "http://127.0.0.1:8942/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8942/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8942/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8942/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8942/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8942/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8942/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/stock",
+      "page": "http://127.0.0.1:8942/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8942/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/stock",
+      "page": "http://127.0.0.1:8942/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8942/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8942/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 400,
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/stock",
+      "method": "GET",
+      "body": "{\"status\":\"invalid\",\"code\":\"invalid-manual-draft\",\"reasons\":[{\"field\":\"requestedCollectionDate\",\"reason\":\"Choose a date inside the supplied collection and renewal window.\"}],\"view\":{\"state\":\"validatio"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 400,
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/stock",
+      "method": "GET",
+      "body": "{\"status\":\"invalid\",\"code\":\"invalid-manual-draft\",\"reasons\":[{\"field\":\"requestedCollectionDate\",\"reason\":\"Choose a date inside the supplied collection and renewal window.\"}],\"view\":{\"state\":\"validatio"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8942/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    }
+  ],
+  "notes": [],
+  "defects": [],
+  "origin": "http://127.0.0.1:8942",
+  "orderPosts": [
+    "01:31:24.066"
+  ],
+  "finishedAt": "2026-11-09T01:31:35.533Z",
+  "counts": {
+    "steps": 7,
+    "passed": 7,
+    "screenshots": 9,
+    "keyboardChecks": 1
+  }
+}

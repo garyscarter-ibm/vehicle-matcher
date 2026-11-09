@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "observedDate": "2026-11-05",
+  "scope": "isolated exact-source registered memory-adoption caller",
+  "refs": {
+    "103": "82849155565edbfc792961553d7292b8b5965a35",
+    "113": "ad2e3bfbce96e39fa16d6a0652cf0dd522da78df"
+  },
+  "identityDigest": "9ef82993231da5c00b90d0e66dffed9d1cef1b9fcc5d366cef1c24aa3de1e6f5",
+  "probeSha256": "2beab117bde0d071407e1771f6c79338d63cd6eccda86a0becebf833b075ee55",
+  "command": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "adoption-caller-probe.mjs"
+  ],
+  "tests": {
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0
+  },
+  "wallSeconds": 3.3503761670000003,
+  "peakRssBytes": 219873280,
+  "peakScratchBytes": 1969793,
+  "cleanup": {
+    "groupsStopped": true,
+    "ownedScratchAbsent": true,
+    "probeUnchanged": true,
+    "reservationsReleased": true,
+    "sharedInstallPreserved": true,
+    "trackedWorktreeUnchanged": true
+  },
+  "sourceMap": "adoption-source-map.json",
+  "ownedRun": ".claude/test-runs/fucq113-adoption-caller/",
+  "limits": [
+    "memory runtime only",
+    "fixture configurations",
+    "isolated source composition",
+    "not PostgreSQL persistence",
+    "not real corpus",
+    "not actual observed outcome producers",
+    "not full-suite acceptance"
+  ]
+}

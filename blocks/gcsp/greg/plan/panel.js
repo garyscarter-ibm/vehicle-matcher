@@ -16,6 +16,52 @@ const bullets = (items) => { const ul = el('ul', 'gcsp-plan-list'); for (const t
 const wideTable = (region) => { region.classList.add('gcsp-plan-wide'); return region; };
 const readView = (value) => { try { return toPlanView(value); } catch { return null; } };
 
+const sentence = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+const LEARNED_NOTE = 'For comparison only. Only the recommended plan can be requested from Production.';
+// Learned plan beside the baseline. A fallback or unavailable result shows its limitation and nothing else; no figures are made up.
+function learnedSection(l, base) {
+  const section = el('section', 'gcsp-plan-section'); const h = el('h3', 'gcsp-plan-h3', l.label); h.id = `${base}-learned`; h.tabIndex = -1;
+  section.setAttribute('aria-labelledby', h.id); section.append(h);
+  if (l.status !== 'available') {
+    section.append(note(l.limitation));
+    if (l.coverage) {
+      section.append(note('Outside training coverage:'));
+      section.append(bullets([l.coverage.cohorts.length && `Employee cohorts: ${l.coverage.cohorts.join(', ')}`,
+        l.coverage.vehicleClasses.length && `Vehicle classes: ${l.coverage.vehicleClasses.join(', ')}`].filter(Boolean)));
+    }
+    return section;
+  }
+  section.append(note(LEARNED_NOTE));
+  if (!l.comparable) section.append(note('The plans cannot be compared because one of them has no plan inside the limits.'));
+  else {
+    const cell = (value, changed) => (changed ? { label: value, emphasis: true } : value);
+    section.append(dataTable({ caption: 'Plan comparison', emptyText: 'No vehicles to compare', stack: true,
+      columns: [{ key: 'name', label: 'Vehicle or measure' }, { key: 'baseline', label: 'Recommended plan', numeric: true },
+        { key: 'learned', label: l.label, numeric: true }, { key: 'difference', label: 'Difference', numeric: true }],
+      rows: l.rows.map((r) => ({ name: cell(r.name, r.changed), baseline: r.baseline, learned: cell(r.learned, r.changed), difference: cell(r.difference, r.changed) })) }));
+    if (!l.changedCount) section.append(note('The synthetic-trained model gives the same plan.'));
+  }
+  const ev = l.evaluation;
+  section.append(el('h4', 'gcsp-plan-h4', 'Evaluation'));
+  if (!ev) section.append(note('Evaluation figures are not available.'));
+  else {
+    const vs = (key) => [ev.expressed && `Expressed demand ${ev.expressed[key]}`, ev.fit && `Deterministic fit ${ev.fit[key]}`].filter(Boolean).join(', ');
+    const tile = (label, key) => metricTile({ label, count: ev.learned[key], note: [vs(key), 'Lower is better'].filter(Boolean).join('. '), level: 'compact' });
+    const tiles = el('div', 'gcsp-tile-row');
+    tiles.append(tile('Held-out log loss', 'logLoss'), tile('Held-out Brier score', 'brier'),
+      metricTile({ label: 'Held-out choices', count: ev.count, level: 'compact' }));
+    section.append(tiles);
+    if (ev.thin) {
+      const groups = [...ev.thinCohorts, ...ev.thinClasses];
+      section.append(note(groups.length ? `Thin support in: ${groups.join(', ')}. Treat these scores with care.` : 'Thin support: few held-out choices. Treat these scores with care.'));
+    }
+  }
+  section.append(factList([{ label: 'Evaluation', value: ev?.label }, { label: 'Model', value: l.model.artifact },
+    { label: 'Activation policy', value: l.model.policy }, { label: 'Training data', value: sentence(l.model.data) }], { className: 'gcsp-plan-facts' }));
+  if (l.limitations.length) section.append(bullets(l.limitations));
+  return section;
+}
+
 /** Greg's order plan panel. mountGregOrderPlan(root, { adapter, signal, onSubmitted, commandId }) -> teardown with refresh(). */
 export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, commandId = () => globalThis.crypto.randomUUID() } = {}) {
   const abort = new AbortController();
@@ -211,6 +257,7 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
         rows: view.binding.map((c) => ({ label: c.label, detail: c.detail })) }),
       wideTable(dataTable({ caption: 'Alternative plans', emptyText: 'No alternative plan is available', columns: [{ key: 'label', label: 'Plan' }, { key: 'same', label: 'Compared' }, { key: 'summary', label: 'What it does' }],
         rows: view.alternatives.map((a) => ({ label: a.label, summary: a.summary, same: a.status !== 'feasible' ? 'Not possible' : a.sameAsRecommended ? 'Same as the recommendation' : 'Different' })) })));
+    if (view.learned) out.push(learnedSection(view.learned, base));
     return out;
   }
   function draw(focus) {

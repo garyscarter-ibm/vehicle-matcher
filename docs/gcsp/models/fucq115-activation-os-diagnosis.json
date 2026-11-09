@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-115",
+  "originalFailureCommit": "fbff6ae357dacc1b7b18e06be9132a8e77ef4fc7",
+  "originalSourceCommit": "918ce04510fd327e860809e7de53bd636d1cf7da",
+  "scope": "Authorised bounded read-only diagnosis, then minimal owned parser repair; no activation/test/native allocation",
+  "diagnosticQuery": {
+    "observedAt": "2026-11-06T01:45:26.574726+00:00",
+    "returnCode": 0,
+    "stderrBytes": 0,
+    "rows": 662,
+    "stdoutBytes": 39059,
+    "stdoutSHA256": "93a71e2caf4453d949468f962367ac0ce950595b77d9895fd0c16de95cc55c60",
+    "rejectionCounts": {
+      "start-shape-unknown": 662
+    },
+    "retainedPath": ".claude/test-runs/fucq115/artifact-activation-v2-9efcc10376a148da9ca09142fb576a38/ps-schema-diagnosis.json",
+    "retainedSHA256": "3ce02521a6efeb34c99cdcfd7057c284ec4fe28d81079296f3ef689c0b8d5b54"
+  },
+  "cause": "macOS pads the final lstart column with trailing spaces. split(None,5) preserves that padding, and fullmatch rejected an otherwise valid timestamp.",
+  "examples": [
+    {
+      "pid": 1,
+      "ppid": 0,
+      "pgid": 1,
+      "rssKiB": 8912,
+      "state": "Ss",
+      "start": "Fri Oct 16 08:15:40 2026    ",
+      "rejections": [
+        "start-shape-unknown"
+      ]
+    },
+    {
+      "pid": 380,
+      "ppid": 1,
+      "pgid": 380,
+      "rssKiB": 13376,
+      "state": "Ss",
+      "start": "Fri Oct 16 08:17:28 2026    ",
+      "rejections": [
+        "start-shape-unknown"
+      ]
+    },
+    {
+      "pid": 381,
+      "ppid": 1,
+      "pgid": 381,
+      "rssKiB": 7008,
+      "state": "Ss",
+      "start": "Fri Oct 16 08:17:28 2026    ",
+      "rejections": [
+        "start-shape-unknown"
+      ]
+    }
+  ],
+  "recordedSampleComparison": {
+    "samples": 20,
+    "originalRegexAccepted": 0,
+    "afterOuterTrimAccepted": 20,
+    "method": "Passive regex comparison on already-retained metadata only; no helper or OS process executed by this comparison. No claim that the repaired live probe or activation has passed."
+  },
+  "repair": {
+    "path": "docs/gcsp/models/fucq115-activation-resources.py",
+    "function": "process_snapshot",
+    "change": "Strip only the outer whitespace of the sixth lstart field before all existing strict checks and PID/start comparisons.",
+    "preserved": "PID/PPID/PGID/RSS/state/date validation, query failure/timeout refusal, partial unknown observations, strict ledger, stop/join/absence-before-delete/release unchanged."
+  },
+  "originalFailurePreserved": {
+    "receipt": "docs/gcsp/models/fucq115-activation-run-receipt.json",
+    "sourceAdmissionCopy": ".claude/test-runs/fucq115/artifact-activation-v2-9efcc10376a148da9ca09142fb576a38/original-admission-c4667c21.json",
+    "admissionSHA256": "c4667c215fbaca5a15413df46e181118d5a8cde66dd2a127f0adb7b15bc13909"
+  },
+  "remaining": "Refreeze and independent exact review before any renewed actual grant; no retry, Node, activation or lifecycle proof ran."
+}

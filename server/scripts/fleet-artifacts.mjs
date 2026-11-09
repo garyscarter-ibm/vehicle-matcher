@@ -27,7 +27,7 @@ try {
   const fsCode = typeof e?.code === 'string' && /^[A-Z][A-Z0-9_]*$/.test(e.code) ? e.code : undefined;
   const code = e?.artifactCode ?? fsCode ?? (step === 'arguments' ? 'invalid-arguments' : 'unexpected');
   const reason = typeof e?.message === 'string' && !e.message.includes('://') && e.artifactCode !== 'download-failed' ? e.message : undefined;
-  const report = { status: 'artifact-release-failed', step: e?.step ?? step, code, httpStatus: e?.httpStatus, attempts: e?.attempts, asset: e?.asset, detail: e?.detail, reason,
+  const report = { status: 'artifact-release-failed', step: e?.step ?? step, code, httpStatus: e?.httpStatus, attempts: e?.attempts, asset: e?.asset, detail: e?.detail, validation: e?.validation, reason,
     failure: 'Check approved release, explicit absolute paths, pinned bytes and offline cache. Existing selection is preserved on rejected candidates.' };
   process.stdout.write(JSON.stringify(report) + '\n'); process.exitCode = 1;
 }

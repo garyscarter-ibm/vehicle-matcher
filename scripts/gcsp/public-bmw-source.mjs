@@ -254,6 +254,9 @@ const inventoryRequiredFields = ['modelCode', 'agModelCode', 'modelRange', 'stee
 const inventoryLabels = ['modelName', 'modelNameRaw', 'derivative'];
 const inventoryToken = (value) => typeof value === 'string' && /^[A-Z0-9]{1,16}$/.test(value);
 const inventoryCode = (value) => typeof value === 'string' && /^[A-Z0-9]{4,12}$/.test(value);
+/** An option code, or a source line name that is never an option or trim code. */
+export const classifyBmwInventoryLineKey = (key) => inventoryToken(key) ? 'option-code'
+  : typeof key === 'string' && /^[A-Z0-9_]{1,64}$/.test(key) ? 'source-line' : null;
 const inventoryType = (value) => value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value;
 const inventoryPointer = (alias, range) => `/${alias}/modelRanges/${range}`;
 function inventoryModelNode(modelKey, record, pointer) {
@@ -287,6 +290,16 @@ function inventoryLimit(condition, code, path, kind, count, limit, type) {
   throw error;
 }
 
+/** First refused key only: container, position and shape; the literal key only when it is plainly safe. */
+function inventoryKeyRefusal(gate, path, keys, key, entry) {
+  const error = new CollectionError('source-inventory-line-key', 'Only a literal bounded key can form a retained pointer.');
+  const safe = /^[A-Za-z0-9_.+ :-]{1,96}$/.test(key) && !/[A-HJ-NPR-Z0-9]{17}/.test(key)
+    && !/(?:https?:|[?&=@]|api.?key|token|secret|password|authorization|bearer|cookie|credential)/i.test(key);
+  error.inventoryDiagnostic = { schemaVersion: 'bmw-inventory-key.v1', gate, path, ordinal: keys.indexOf(key) + 1, count: keys.length,
+    length: key.length, type: inventoryType(entry), ...(safe ? { key } : {}) };
+  return error;
+}
+
 /** Direct bounded full records and line pointers only; unknown response fields are never copied. */
 export function projectBmwRangeInventory(value, input) {
   const r = validateBmwInventoryRequestRegistration(input);
@@ -297,9 +310,9 @@ export function projectBmwRangeInventory(value, input) {
     'source-inventory-alias-limit', 'Inspect every direct range alias within the finite inventory limit.');
   const modelNodes = []; const lineRows = [];
   // Traverse only the relationship contract. Unrelated properties and element payloads stay in memory.
-  const add = (entry, pointer, retainValue = false) => {
-    inventoryLimit(lineRows.length < 768, 'source-inventory-line-limit', pointer, 'rows', lineRows.length + 1, 768, inventoryType(entry));
-    const row = { pointer, type: inventoryType(entry) };
+  const add = (entry, pointer, retainValue = false, type = inventoryType(entry)) => {
+    inventoryLimit(lineRows.length < 768, 'source-inventory-line-limit', pointer, 'rows', lineRows.length + 1, 768, type);
+    const row = { pointer, type };
     if (retainValue && inventoryToken(entry)) row.value = entry;
     lineRows.push(row);
   };
@@ -310,10 +323,13 @@ export function projectBmwRangeInventory(value, input) {
   const lines = (container, path) => {
     requireValue(object(container), 'source-inventory-line-shape', 'A present lines field must be a bounded object.');
     inventoryLimit(Object.keys(container).length <= 128, 'source-inventory-line-limit', path, 'entries', Object.keys(container).length, 128, 'object');
-    for (const key of Object.keys(container).sort()) {
-      requireValue(inventoryToken(key), 'source-inventory-line-key', 'Only a literal bounded trim key can form a retained pointer.');
+    const keys = Object.keys(container).sort();
+    for (const key of keys) {
+      const kind = classifyBmwInventoryLineKey(key); if (!kind) throw inventoryKeyRefusal('line', path, keys, key, container[key]);
       const line = container[key]; const pointer = `${path}/${key}`;
       add(line, pointer); fields(line, pointer, ['option', 'modelCode', 'agModelCode']);
+      // Record a source line's absent option literally; never infer a trim from its key.
+      if (kind === 'source-line' && object(line) && !Object.hasOwn(line, 'option')) add(undefined, `${pointer}/option`, false, 'missing');
       if (!object(line)) continue;
       if (Object.hasOwn(line, 'defaultModel')) {
         add(line.defaultModel, `${pointer}/defaultModel`);
@@ -324,8 +340,9 @@ export function projectBmwRangeInventory(value, input) {
       add(variants, variantsPath);
       if (!object(variants) && !Array.isArray(variants)) continue;
       inventoryLimit(Object.keys(variants).length <= 128, 'source-inventory-line-limit', variantsPath, 'entries', Object.keys(variants).length, 128, inventoryType(variants));
-      for (const index of Object.keys(variants).sort()) {
-        requireValue(/^[A-Za-z0-9_.+-]{1,16}$/.test(index), 'source-inventory-line-key', 'Only a bounded variant key can form a retained pointer.');
+      const indexes = Object.keys(variants).sort();
+      for (const index of indexes) {
+        if (!/^[A-Za-z0-9_.+-]{1,16}$/.test(index)) throw inventoryKeyRefusal('variant', variantsPath, indexes, index, variants[index]);
         const variant = variants[index]; const variantPath = `${variantsPath}/${index}`;
         add(variant, variantPath); fields(variant, variantPath, ['modelCode', 'agModelCode']);
         if (!object(variant) || !Object.hasOwn(variant, 'configuration')) continue;
@@ -334,7 +351,7 @@ export function projectBmwRangeInventory(value, input) {
         if (!object(configuration) || !Object.hasOwn(configuration, 'elements')) continue;
         const elements = configuration.elements; const elementsPath = `${configurationPath}/elements`;
         add(elements, elementsPath);
-        if (object(elements) && Object.hasOwn(elements, key)) add(elements[key], `${elementsPath}/${key}`);
+        if (kind === 'option-code' && object(elements) && Object.hasOwn(elements, key)) add(elements[key], `${elementsPath}/${key}`);
       }
     }
   };
@@ -403,10 +420,10 @@ export function validatePublicBmwInventoryObservation(input, retained, mode) {
         if (row.pointer === prefix) return row.type === 'missing';
         if (!row.pointer.startsWith(prefix + '/')) return false;
         const parts = row.pointer.slice(prefix.length + 1).split('/'); const trim = parts.shift();
-        if (!inventoryToken(trim)) return false;
+        const kind = classifyBmwInventoryLineKey(trim); if (!kind) return false;
         const tail = parts.join('/');
         const field = '(?:modelCode|agModelCode)'; const variant = '[A-Za-z0-9_.+\\-]{1,16}';
-        return tail === '' || tail === 'option' || new RegExp(`^${field}$|^defaultModel(?:/${field})?$|^includedTransmissionVariants(?:/${variant}(?:/${field}|/configuration(?:/${field}|/elements(?:/${trim})?)?)?)?$`).test(tail);
+        return tail === '' || tail === 'option' || new RegExp(`^${field}$|^defaultModel(?:/${field})?$|^includedTransmissionVariants(?:/${variant}(?:/${field}|/configuration(?:/${field}|/elements${kind === 'option-code' ? `(?:/${trim})?` : ''})?)?)?$`).test(tail);
       }) && (row.value === undefined || (inventoryToken(row.value) && /\/(?:option|modelCode|agModelCode)$/.test(row.pointer)))),
   'source-inventory-binding', 'Preserve the complete observed aliases, conflicts and bounded direct line pointers.');
   return structuredClone(retained);
@@ -425,8 +442,8 @@ export function publicBmwInventoryOperations(input) {
       let result;
       try { result = project(value, request, metadata); }
       catch (error) {
-        if (error.inventoryDiagnostic && treeHeader && Object.values(treeHeader).some(secret => error.inventoryDiagnostic.path.includes(secret)))
-          error.inventoryDiagnostic.path = '/';
+        const d = error.inventoryDiagnostic;
+        if (d && treeHeader && Object.values(treeHeader).some(secret => d.path.includes(secret) || d.key?.includes(secret))) { d.path = '/'; delete d.key; }
         throw error;
       }
       JSON.stringify(result, (key, entry) => {
@@ -1046,18 +1063,31 @@ function publicBmwBatchOperations(plan) {
   const requestRegistration = bmwBatchRequestRegistration(plan); const r = requestRegistration.model;
   const urls = bmwBatchPlanRequestUrls(plan); let treeHeader; let localisationHeader; let solverHeader; let qualifiedDefinitions;
   let treeQualified = false; let definitionsQualified = false;
+  const scanned = (result) => {
+    const secrets = [treeHeader, localisationHeader, solverHeader].flatMap((header) => header ? Object.values(header) : []);
+    JSON.stringify(result, (key, entry) => {
+      requireValue(secrets.every((secret) => !key.includes(secret) && (typeof entry !== 'string' || !entry.includes(secret))),
+        'source-sensitive-projection', 'No bootstrap profile value may enter any retained source projection.');
+      return entry;
+    });
+    return result;
+  };
   const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: plan.source.version,
     kind: 'read-only-http', capability, strictJson: true, requestRegistration, prepare: async () => ({ method: 'GET', url, headers: {} }),
-    project: (value, request, metadata) => {
-      const result = project(value, request, metadata);
-      const secrets = [treeHeader, localisationHeader, solverHeader].flatMap((header) => header ? Object.values(header) : []);
-      JSON.stringify(result, (key, entry) => {
-        requireValue(secrets.every((secret) => !key.includes(secret) && (typeof entry !== 'string' || !entry.includes(secret))),
-          'source-sensitive-projection', 'No bootstrap profile value may enter any retained source projection.');
-        return entry;
-      });
-      return result;
-    }, ...extra });
+    project: (value, request, metadata) => scanned(project(value, request, metadata)), ...extra });
+  // Shared by the fresh projector and the cache restore so both set the same in-memory guard.
+  const qualifyDefinitions = (report) => {
+    const definitions = report.candidates[0]?.definitions;
+    requireValue(report.status === 'schema-review-required' && report.candidates.length === 1 && report.candidates[0].pointer === ''
+      && definitions.every((row) => row.issues.length === 0), 'source-options-shape', 'Use one directly keyed typed source definition map.');
+    for (const request of requestRegistration.candidates) {
+      requireValue(request.includedElements.every((code) => definitions.some((row) => row.code === code && row.option === code))
+        && ['paint', 'fabric', 'rim'].every((type) => request.includedElements.filter((code) => definitions.some((row) => row.code === code && row.optionType === type)).length === 1),
+      'source-candidate-definition', 'Every candidate input and exactly one paint, fabric and rim must occur in the fresh source definitions.');
+      if (plan.source.version === BMW_MODEL_AXIS_BATCH_SOURCE_VERSION) validateBmwModelAxisBatchCandidateDefinitions(request, requestRegistration, definitions);
+    }
+    qualifiedDefinitions = definitions; definitionsQualified = true;
+  };
   const requested = (request) => {
     requireValue(requestRegistration.candidates.some((row) => same(row, request)), 'source-candidate-registration', 'Only the exact allocated candidate requests may execute.');
     return request;
@@ -1083,21 +1113,23 @@ function publicBmwBatchOperations(plan) {
     }, { prepare: async () => {
       requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only public tree header is unavailable.');
       return { method: 'GET', url: urls.discover, headers: treeHeader };
+    }, restore: (report) => {
+      requireValue(object(report) && (isBmwModelBatchPlan(plan) || Array.isArray(report.nodes) && report.nodes.length === r.aliases.length
+        && report.nodes.every((node) => object(node?.facts) && node.facts.modelCode === r.modelCode && node.facts.agModelCode === r.agModelCode
+          && node.facts.orderDate === r.orderDate && node.facts.effectDate === r.effectDate)),
+      'source-tree-shape', 'The retained model tree must match the registered full model.');
+      scanned(report); treeQualified = true;
     } }),
     options: descriptor('bmw-options', urls.options, (value) => {
-      const report = optionsShapeReport(value); const definitions = report.candidates[0]?.definitions;
-      requireValue(report.status === 'schema-review-required' && report.candidates.length === 1 && report.candidates[0].pointer === ''
-        && definitions.every((row) => row.issues.length === 0), 'source-options-shape', 'Use one directly keyed typed source definition map.');
-      for (const request of requestRegistration.candidates) {
-        requireValue(request.includedElements.every((code) => definitions.some((row) => row.code === code && row.option === code))
-          && ['paint', 'fabric', 'rim'].every((type) => request.includedElements.filter((code) => definitions.some((row) => row.code === code && row.optionType === type)).length === 1),
-        'source-candidate-definition', 'Every candidate input and exactly one paint, fabric and rim must occur in the fresh source definitions.');
-        if (plan.source.version === BMW_MODEL_AXIS_BATCH_SOURCE_VERSION) validateBmwModelAxisBatchCandidateDefinitions(request, requestRegistration, definitions);
-      }
-      qualifiedDefinitions = definitions; definitionsQualified = true; return report;
+      const report = optionsShapeReport(value); qualifyDefinitions(report); return report;
     }, { prepare: async () => {
       requireValue(treeQualified && localisationHeader, 'source-tree-required', 'Observe the full registered model before its options.');
       return { method: 'GET', url: urls.options, headers: localisationHeader };
+    }, restore: (report) => {
+      requireValue(treeQualified, 'source-tree-required', 'Restore the full registered model before its options.');
+      requireValue(object(report) && Array.isArray(report.candidates) && report.candidates.length === 1 && Array.isArray(report.candidates[0]?.definitions)
+        && report.candidates[0].definitions.every((row) => object(row) && Array.isArray(row.issues)), 'source-options-shape', 'Use one directly keyed typed source definition map.');
+      scanned(report); qualifyDefinitions(report);
     } }),
     solve: descriptor('bmw-solver', null, (value, request) => {
       requireValue(object(value) && typeof value.constructible === 'boolean', 'source-solver-shape', 'The source must declare constructibility.');

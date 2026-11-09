@@ -20,10 +20,13 @@ const issuedClaim = (input, orderUuid) => input?.orderUuid === orderUuid
 const labels = { model: 'Model', body: 'Body style', engine: 'Engine', exterior: 'Exterior', interior: 'Interior',
   transmission: 'Transmission', insuranceGroup: 'Insurance group', earliestCollection: 'Earliest collection' };
 
+const HIDDEN_UNITS = new Set(['insurance-group']);
 function row(key, label, source, fallback = null) {
   const value = first(valueOf(source), fallback);
-  return { key, label, value, status: value === null ? 'unknown' : 'known', unit: source?.unit ?? null,
-    missingLabel: `Not supplied${source?.unit ? ` (${source.unit})` : ''}`, provenance: clone(source?.provenance), source: clone(source) };
+  // Some units are data codes the label already names (FUCQ-197); they are not shown.
+  const unit = source?.unit && !HIDDEN_UNITS.has(source.unit) ? source.unit : null;
+  return { key, label, value, status: value === null ? 'unknown' : 'known', unit,
+    missingLabel: `Not supplied${unit ? ` (${unit})` : ''}`, provenance: clone(source?.provenance), source: clone(source) };
 }
 
 function emission(key, label, source, expected) {
@@ -133,6 +136,8 @@ function validReleaseHistory(value) {
 /** History describes employee-visible releases, independently of current suitability. */
 export function toManualGallery(envelope, controls = {}) {
   const empty = { cars: [], allCars: [], counts: { records: 0, eligible: 0, visible: 0, visibleEligible: 0 }, series: [], bodies: [], controls: { ...controls }, envelope: clone(envelope), releaseHistory: null };
+  // A saved choice the server now refuses (a date past its window) needs the employee, not a retry (FUCQ-222).
+  if (envelope?.status === 'invalid') return { ...empty, state: 'choices-invalid', invalidField: envelope.reasons?.[0]?.field ?? null };
   if (envelope?.status !== 'ok') return { ...empty, state: envelope?.status === 'stale-version' || envelope?.status === 'stale-run'
     ? 'context-refresh' : envelope?.view?.state === 'car-taken' ? 'car-taken' : 'source-unavailable' };
   const source = envelope.value;

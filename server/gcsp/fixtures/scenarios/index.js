@@ -13,7 +13,7 @@ const definitions = freeze(structuredClone([...SCENARIO_INPUTS_V1, MECHANICS_SCE
 export const scenarioDefinitions = () => structuredClone(definitions);
 export const isPreparedScenarioFixture = (value, policy) => prepared.has(value) && prepared.get(value) === policy;
 // A journey is available only when scenarios/ holds a reviewed start loader that applies its inputs through actual services.
-const START_LOADERS = new Set(['main-successful-journey', 'decline-then-change', 'decline-then-change-waiting', 'no-suitable-match', 'data-unavailable', 'uncertain-handoff', 'uncertain-handoff-rejected']);
+const START_LOADERS = new Set(['main-successful-journey', 'decline-then-change', 'decline-then-change-waiting', 'offer-expires', 'no-suitable-match', 'data-unavailable', 'uncertain-handoff', 'uncertain-handoff-rejected']);
 export const hasScenarioStartLoader = (scenarioId) => START_LOADERS.has(scenarioId);
 export const missingScenarioCapabilities = (definition) => definition.kind === 'mechanics' || START_LOADERS.has(definition.scenarioId)
   ? [] : [...definition.requiredCapabilities];
@@ -47,6 +47,11 @@ export async function loadScenarioCatalogue({ policy, read }) {
 
 // Only concrete, reviewed loaders in this module can create a prepared selection. A caller's
 // function, capability flag or fixture label is never evidence that a business capability exists.
+// The refusal for a journey whose start loader is not reviewed yet (every catalogue journey has one as of FUCQ-129).
+export const unavailableScenario = (scenario) => result('unavailable', {
+  code: 'scenario-not-available-yet', reason: 'not available yet', retryable: false, scenarioId: scenario.scenarioId,
+  missingCapabilities: scenario.availability.missingCapabilities,
+});
 // Journey owning stories add their actual service preparation here before enabling their entry.
 // Preparation is read-only; the complete resulting input set still commits through FUCQ-85.
 export async function prepareScenarioFixture({ scenarioId, policy, read }) {
@@ -54,10 +59,7 @@ export async function prepareScenarioFixture({ scenarioId, policy, read }) {
   if (catalogue.status !== 'ok') return catalogue;
   const scenario = catalogue.value.scenarios.find((entry) => entry.scenarioId === scenarioId);
   if (!scenario) return result('not-found', { resourceType: 'scenario' });
-  if (!scenario.availability.available) return result('unavailable', {
-    code: 'scenario-not-available-yet', reason: 'not available yet', retryable: false, scenarioId,
-    missingCapabilities: scenario.availability.missingCapabilities,
-  });
+  if (!scenario.availability.available) return unavailableScenario(scenario);
   const configuration = await loadClockConfiguration(policy, read);
   if (configuration.status !== 'ok') return configuration;
   const fixture = freeze({ scenarioId, scenarioVersion: scenario.scenarioVersion,

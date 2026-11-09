@@ -19,7 +19,9 @@
     "blocks/gcsp/kit/stage-list.js",
     "blocks/gcsp/kit/action-menu.js",
     "blocks/gcsp/kit/stage-tracker.js",
-    "blocks/gcsp/kit/task-list.js"
+    "blocks/gcsp/kit/task-list.js",
+    "blocks/gcsp/kit/range-bar.js",
+    "blocks/gcsp/kit/show-more.js"
   ],
   "extensions": [
     ".js",
@@ -100,6 +102,16 @@
       "re": "el\\('section', 'gcsp-task-list'",
       "flags": "g",
       "use": "taskList({ heading, groups }) (blocks/gcsp/kit/task-list.js)"
+    },
+    "range-bar": {
+      "re": "el\\('figure', 'gcsp-range-bar'",
+      "flags": "g",
+      "use": "rangeBar({ label, rows, scale, format }) (blocks/gcsp/kit/range-bar.js)"
+    },
+    "show-more": {
+      "re": "el\\('div', 'gcsp-show-more'",
+      "flags": "g",
+      "use": "showMore({ nouns, label, onShowMore }) (blocks/gcsp/kit/show-more.js)"
     }
   },
   "stylesheets": [
@@ -184,6 +196,10 @@
       "max_lines": 32
     },
     {
+      "path": "blocks/gcsp/greg/comparison/comparison.css",
+      "max_lines": 31
+    },
+    {
       "path": "blocks/gcsp/presenter-controls/presenter-controls.css",
       "max_lines": 11
     },
@@ -244,6 +260,10 @@
       "max_lines": 16
     },
     {
+      "path": "blocks/gcsp/kit/range-bar.css",
+      "max_lines": 13
+    },
+    {
       "path": "blocks/gcsp/order-progress/gcsp-order-progress.css",
       "max_lines": 31
     },
@@ -254,6 +274,10 @@
     {
       "path": "blocks/gcsp/manual-summary/manual-summary.css",
       "max_lines": 19
+    },
+    {
+      "path": "blocks/gcsp/kit/show-more.css",
+      "max_lines": 6
     }
   ],
   "baseline": {

@@ -11124,6 +11124,28 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "offer.expiredHold.reallocation",
+      "value": "lapsedHoldersSitOutAndNobodyGetsBackACarTheyLetLapse",
+      "unit": "enum",
+      "status": "assumed",
+      "basis": "Assumed demo rule (FUCQ-227): a lapsed buddy hold returns its car to allocation on the same tick. The employees whose holds lapsed sit out that allocation, and an expiry allocation never offers anyone a car they already let lapse, so the car goes to a waiting employee once rather than circling between non-responders. An expiry is not a decline: at the next release or brief change everyone competes again, with no priority.",
+      "source": "docs/gcsp/allocation-contract.md",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "offer.declinedHold.reallocation",
+      "value": "declinersSitOutAndTheDeclinedCarStaysExcluded",
+      "unit": "enum",
+      "status": "assumed",
+      "basis": "Assumed demo rule (FUCQ-233): a declined buddy offer returns its car to allocation on the next tick, so another eligible employee is offered it at once rather than at the next release. The employee who declined sits out that allocation, and offer.declinedCar.exclusion still keeps that car from them until a relevant confirmed brief change.",
+      "source": "docs/gcsp/allocation-contract.md",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "choices.topUp.gbpPerPoint",
       "value": 1,
       "unit": "GBP per point",
@@ -11359,6 +11381,18 @@
           "schemeId": "choices-rr-production",
           "gradeId": "PG1",
           "entitlementSlotId": "slot-sam"
+        },
+        {
+          "principalId": "demo-jordan",
+          "employeeId": "employee-jordan",
+          "name": "Jordan (fictional)",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "entitlementSlotId": "slot-jordan"
         },
         {
           "principalId": "demo-greg",
@@ -12758,6 +12792,54 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "comparison.experiments.v1",
+      "value": {
+        "schemaVersion": 1,
+        "experiments": {
+          "order-mix": {
+            "key": "comparison.modelLineMix",
+            "unit": "weighted model-line mix"
+          },
+          "points": {
+            "key": "comparison.pointsAllowanceMultiplier",
+            "unit": "allowance multiplier",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "hold-sweep": {
+            "key": "hold.buddy.durationSeconds",
+            "unit": "seconds",
+            "minimum": 900,
+            "maximum": 86400,
+            "maximumValues": 5
+          }
+        }
+      },
+      "unit": "versioned what-if experiment definitions",
+      "basis": "Illustrative what-if bounds. A hold sweep of 15 minutes to 24 hours brackets the 2-hour baseline for the demo brief's longer-hold question; five values keep a 1,000-employee sweep within a presenter preparation slot. Points range from no allowance to three times the canonical allowance. Each experiment changes one key only, so the source of a difference is clear.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-experiments--fucq-174",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.jobs.v1",
+      "value": {
+        "schemaVersion": 1,
+        "timeoutSeconds": 1800,
+        "workerHeapMb": 128,
+        "workerYoungGenerationMb": 16
+      },
+      "unit": "versioned comparison worker job limits",
+      "basis": "A 128 MB worker heap keeps the backend inside a 512 MiB host after about 350 MiB of start-up (FUCQ-190). Thirty minutes bounds one presenter-started run; a longer run is stopped and reported as failed. A 16 MB young generation cut the default 1,000-employee job's peak process memory from 510 MB to 428 MB in a probe.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-worker-jobs--fucq-175",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "renewalCase.deadline.enabled",
       "value": true,
       "unit": "boolean",
@@ -12864,6 +12946,9 @@
         "termsVersion": "fictional-order-terms-v1",
         "fictional": true,
         "wording": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. For a replacement, the recorded old contract and expected return mileage must be correct. Approval, appointment and collection are separate decisions; submission does not end the current contract.",
+        "wordingByMode": {
+          "new": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. Approval, appointment and collection are separate decisions."
+        },
         "validUntil": "2026-12-01T00:00:00.000Z",
         "declarations": [
           {
@@ -13304,52 +13389,71 @@
       "key": "stock.aggregate.f70-sports-hatch",
       "value": {
         "modelLineId": "f70-sports-hatch",
-        "carCount": 45,
+        "carCount": 377,
         "colourShares": {
-          "Alpine White": 0.0805,
-          "BMW Individual Frozen Portimao Blue": 0.0781,
-          "BMW Individual Frozen Pure Grey": 0.0756,
-          "BMW Individual Paintwork": 0.0756,
-          "Black Sapphire": 0.0781,
-          "Brooklyn Grey": 0.0682,
-          "Cape York Green": 0.0829,
-          "Fire Red": 0.0756,
-          "Jet Black": 0.0074,
-          "Portimao Blue": 0.0706,
-          "Skyscraper Grey": 0.0781,
-          "Storm Bay": 0.0756,
-          "Tanzanite Blue": 0.0781,
-          "Thundernight": 0.0756
+          "Alpine White": 0.1459,
+          "BMW Individual Barbera Red": 0.0027,
+          "BMW Individual Borusan Turkish Blue": 0.0027,
+          "BMW Individual Chalk solid": 0.0027,
+          "BMW Individual Daytona Beach Blue solid paint": 0.0027,
+          "BMW Individual Fire Orange III solid": 0.0106,
+          "BMW Individual Frozen Black metallic": 0.0027,
+          "BMW Individual Frozen Pure Grey": 0.0027,
+          "BMW Individual Imola Red": 0.0027,
+          "BMW Individual Java Green": 0.0027,
+          "BMW Individual Laguna Green metallic": 0.0053,
+          "BMW Individual Laguna Seca Blue": 0.0027,
+          "BMW Individual Oxford Green II": 0.008,
+          "BMW Individual Purple Silk metallic": 0.0027,
+          "BMW Individual Rosso Corsa non-metallic": 0.0027,
+          "BMW Individual Ruby Star (Neo) solid": 0.008,
+          "BMW Individual San Marino Blue": 0.0027,
+          "BMW Individual Sepang Bronze": 0.0027,
+          "BMW Individual Signal Green": 0.0053,
+          "BMW Individual Sparkling Copper Grey": 0.0027,
+          "BMW Individual Speed Yellow solid": 0.0027,
+          "BMW Individual Tanzanite Blue": 0.0398,
+          "BMW Individual Urban green solid": 0.008,
+          "BMW Individual Velvet Blue": 0.0053,
+          "BMW Individual Velvet Orchid II metallic": 0.0053,
+          "BMW Individual Wildberry metallic": 0.0027,
+          "Black Sapphire": 0.1698,
+          "Brooklyn Grey": 0.1848,
+          "Cape York Green": 0.0106,
+          "Fire Red": 0.0424,
+          "Jet Black": 0.0292,
+          "Portimao Blue": 0.0796,
+          "Skyscraper Grey": 0.0822,
+          "Storm Bay": 0.0345,
+          "Tanzanite Blue": 0.0053,
+          "Thundernight": 0.0769
         },
         "upholsteryShares": {
-          "Cloth Anthracite": 0.0173,
-          "Econeer Bicolour Blue": 0.0149,
-          "M Alcantara Veganza combination Black contrast stitching": 0.1822,
-          "Veganza perforated Black": 0.1945,
-          "Veganza perforated Coral Red/Black": 0.1945,
-          "Veganza perforated Mocha": 0.1996,
-          "Veganza perforated Oyster": 0.197
+          "Fabric": 0.8223,
+          "Synthetic Leather": 0.1777
         },
         "leadTimeWeeks": {
-          "min": 6,
-          "max": 14
+          "min": 1,
+          "max": 16
         },
         "deliveryDateSpread": {
-          "min": "2026-12-21",
-          "max": "2027-02-15"
+          "min": "2025-12-31",
+          "max": "2027-02-10"
         },
         "priceBand": {
-          "min": 31000,
-          "max": 46000,
+          "min": 28678.81,
+          "max": 55995,
           "currency": "GBP"
         },
-        "sourceKind": "assumed-aggregate"
+        "sampleDate": "2026-11-08",
+        "requestCount": 40,
+        "sourceKind": "observed-aggregate"
       },
       "unit": "cars, share of cars, weeks, GBP, delivery dates",
-      "status": "assumed",
-      "basis": "Assumed demo mix and ranges pending a bounded stock-locator sample (FUCQ-78 sampling acceptance criterion unmet). Colour and upholstery shares are the retained FUCQ-61 corpus configuration mix, a configurator selection mix, not observed stock. Car count, lead times, delivery spread and price band are plausible placeholders, not observations.",
-      "source": "docs/gcsp/evidence/fucq-20/assumed-aggregates-2026-11-07.json",
-      "sourceDate": "2026-11-07",
+      "status": "observed aggregate",
+      "basis": "Observed BMW UK stock-locator aggregate, 2026-11-08: national nearest-first sample, capped at 40 pages before the end of the results, 377 cars. Only label shares and ranges are kept; no car-level data.",
+      "source": "docs/gcsp/evidence/fucq-20/stock-aggregates-2026-11-08.json",
+      "sourceDate": "2026-11-08",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
@@ -13357,49 +13461,47 @@
       "key": "stock.aggregate.g42-coupe",
       "value": {
         "modelLineId": "g42-coupe",
-        "carCount": 20,
+        "carCount": 400,
         "colourShares": {
-          "Alpine White": 0.2049,
-          "BMW Individual Frozen Portimao Blue": 0.0682,
-          "BMW Individual Frozen Pure Grey": 0.0682,
-          "Black Sapphire": 0.2047,
-          "Brooklyn Grey": 0.0682,
-          "Fire Red": 0.0682,
-          "Mineral White": 0.113,
-          "Portimao Blue": 0.0682,
-          "Skyscraper Grey": 0.0682,
-          "Thundernight": 0.0682
+          "Alpine White": 0.095,
+          "BMW Individual Frozen Portimao Blue": 0.0075,
+          "BMW Individual Frozen Pure Grey": 0.0125,
+          "Black Sapphire": 0.2575,
+          "Brooklyn Grey": 0.22,
+          "Fire Red": 0.045,
+          "Mineral White": 0.04,
+          "Portimao Blue": 0.0825,
+          "Skyscraper Grey": 0.1425,
+          "Thundernight": 0.08,
+          "Zandvoort Blue": 0.0175
         },
         "upholsteryShares": {
-          "Black Perforated Sensatec": 0.1173,
-          "Black with Blue stitching Vernasca leather": 0.1109,
-          "Black with Grey Contrast Stitching Vernasca Leather": 0.1109,
-          "Black with Red Highlight Vernasca Leather": 0.1109,
-          "Cognac Perforated Sensatec": 0.1237,
-          "M PerformTex Black Cloth with M Piping": 0.1576,
-          "Oyster with Grey contrast stitching Vernasca leather": 0.1109,
-          "Sensatec perforated with Tacora Red decor stitching": 0.1578
+          "Fabric": 0.3075,
+          "Leather": 0.0825,
+          "Synthetic Leather": 0.61
         },
         "leadTimeWeeks": {
-          "min": 8,
-          "max": 16
+          "min": 1,
+          "max": 9
         },
         "deliveryDateSpread": {
-          "min": "2027-01-04",
-          "max": "2027-03-01"
+          "min": "2025-08-07",
+          "max": "2026-12-27"
         },
         "priceBand": {
-          "min": 38000,
-          "max": 55000,
+          "min": 33495,
+          "max": 62545.02,
           "currency": "GBP"
         },
-        "sourceKind": "assumed-aggregate"
+        "sampleDate": "2026-11-08",
+        "requestCount": 40,
+        "sourceKind": "observed-aggregate"
       },
       "unit": "cars, share of cars, weeks, GBP, delivery dates",
-      "status": "assumed",
-      "basis": "Assumed demo mix and ranges pending a bounded stock-locator sample (FUCQ-78 sampling acceptance criterion unmet). Colour and upholstery shares are the retained FUCQ-61 corpus configuration mix, a configurator selection mix, not observed stock. Car count, lead times, delivery spread and price band are plausible placeholders, not observations.",
-      "source": "docs/gcsp/evidence/fucq-20/assumed-aggregates-2026-11-07.json",
-      "sourceDate": "2026-11-07",
+      "status": "observed aggregate",
+      "basis": "Observed BMW UK stock-locator aggregate, 2026-11-08: national nearest-first sample, capped at 40 pages before the end of the results, 400 cars. Only label shares and ranges are kept; no car-level data.",
+      "source": "docs/gcsp/evidence/fucq-20/stock-aggregates-2026-11-08.json",
+      "sourceDate": "2026-11-08",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
@@ -13407,54 +13509,280 @@
       "key": "stock.aggregate.g61-i5",
       "value": {
         "modelLineId": "g61-i5",
-        "carCount": 35,
+        "carCount": 23,
         "colourShares": {
-          "Alpine White": 0.0704,
-          "BMW Individual Frozen Deep Grey": 0.0616,
-          "BMW Individual Frozen Pure Grey": 0.0704,
-          "BMW Individual Paintwork": 0.0674,
-          "Black Sapphire": 0.0557,
-          "Brooklyn Grey": 0.0735,
-          "Cape York Green": 0.0704,
-          "Carbon Black": 0.0645,
-          "Fire Red": 0.0674,
-          "Frozen Portimao Blue": 0.0674,
-          "Mineral White": 0.0674,
-          "Oxide Grey": 0.0704,
-          "Phytonic Blue": 0.0674,
-          "Sophisto Grey": 0.0674,
-          "Tanzanite Blue": 0.0587
+          "Alpine White": 0.0435,
+          "BMW Individual Frozen Deep Grey": 0.0435,
+          "BMW Individual Frozen Pure Grey": 0.0435,
+          "Black Sapphire": 0.1739,
+          "Brooklyn Grey": 0.3042,
+          "Cape York Green": 0.0435,
+          "Carbon Black": 0.0435,
+          "Oxide Grey": 0.0435,
+          "Phytonic Blue": 0.1739,
+          "Sophisto Grey": 0.0435,
+          "Tanzanite Blue": 0.0435
         },
         "upholsteryShares": {
-          "BMW Individual Merino leather in Black and Atlas Grey": 0.1232,
-          "BMW Individual Merino leather in Copper Brown and Atlas Grey": 0.129,
-          "BMW Individual Merino leather in Silverstone II and Atlas Grey": 0.1202,
-          "Black Merino Leather": 0.1144,
-          "M Alcantara and Veganza in Black": 0.1173,
-          "Perforated and Quilted Veganza in Black": 0.129,
-          "Perforated and Quilted Veganza in Espresso Brown": 0.129,
-          "Perforated and Quilted Veganza in Smoke White": 0.1379
+          "Fabric": 0.1739,
+          "Leather": 0.0435,
+          "Synthetic Leather": 0.7826
         },
         "leadTimeWeeks": {
-          "min": 4,
-          "max": 12
+          "min": 1,
+          "max": 4
         },
         "deliveryDateSpread": {
-          "min": "2026-12-07",
-          "max": "2027-02-01"
+          "min": "2025-10-28",
+          "max": "2026-11-17"
         },
         "priceBand": {
           "min": 68000,
-          "max": 82000,
+          "max": 114715.01,
           "currency": "GBP"
         },
-        "sourceKind": "assumed-aggregate"
+        "sampleDate": "2026-11-08",
+        "requestCount": 3,
+        "sourceKind": "observed-aggregate"
       },
       "unit": "cars, share of cars, weeks, GBP, delivery dates",
-      "status": "assumed",
-      "basis": "Assumed demo mix and ranges pending a bounded stock-locator sample (FUCQ-78 sampling acceptance criterion unmet). Colour and upholstery shares are the retained FUCQ-61 corpus configuration mix, a configurator selection mix, not observed stock. Car count, lead times, delivery spread and price band are plausible placeholders, not observations.",
-      "source": "docs/gcsp/evidence/fucq-20/assumed-aggregates-2026-11-07.json",
-      "sourceDate": "2026-11-07",
+      "status": "observed aggregate",
+      "basis": "Observed BMW UK stock-locator aggregate, 2026-11-08: national nearest-first sample, complete to the end of the results, 23 cars. Only label shares and ranges are kept; no car-level data.",
+      "source": "docs/gcsp/evidence/fucq-20/stock-aggregates-2026-11-08.json",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "stock.aggregate.g21-touring",
+      "value": {
+        "modelLineId": "g21-touring",
+        "carCount": 152,
+        "colourShares": {
+          "Alpine White": 0.0855,
+          "Arctic Race Blue": 0.0461,
+          "BMW Individual Anglesey Green metallic": 0.0066,
+          "BMW Individual Daytona Violet metallic": 0.0066,
+          "BMW Individual Peridot Green metallic": 0.0066,
+          "BMW Individual Ruby Red II Pearl Effect metallic": 0.0066,
+          "BMW Individual Urban green solid": 0.0066,
+          "Black Sapphire": 0.2762,
+          "Brooklyn Grey": 0.2105,
+          "Dravit Grey": 0.0658,
+          "Fire Red": 0.0395,
+          "Mineral White": 0.0855,
+          "Portimao Blue": 0.0987,
+          "Skyscraper Grey": 0.0066,
+          "Tanzanite Blue": 0.0526
+        },
+        "upholsteryShares": {
+          "Fabric": 0.3224,
+          "Leather": 0.1513,
+          "Synthetic Leather": 0.5263
+        },
+        "leadTimeWeeks": {
+          "min": 1,
+          "max": 4
+        },
+        "deliveryDateSpread": {
+          "min": "2025-12-15",
+          "max": "2026-11-22"
+        },
+        "priceBand": {
+          "min": 40750,
+          "max": 75140,
+          "currency": "GBP"
+        },
+        "sampleDate": "2026-11-08",
+        "requestCount": 17,
+        "sourceKind": "observed-aggregate"
+      },
+      "unit": "cars, share of cars, weeks, GBP, delivery dates",
+      "status": "observed aggregate",
+      "basis": "Observed BMW UK stock-locator aggregate, 2026-11-08: national nearest-first sample, complete to the end of the results, 152 cars. Only label shares and ranges are kept; no car-level data.",
+      "source": "docs/gcsp/evidence/fucq-20/stock-aggregates-2026-11-08.json",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "stock.aggregate.g26-i4",
+      "value": {
+        "modelLineId": "g26-i4",
+        "carCount": 22,
+        "colourShares": {
+          "BMW Individual Isle of Man Green": 0.0455,
+          "Black Sapphire": 0.409,
+          "Brooklyn Grey": 0.1364,
+          "Dravit Grey": 0.1364,
+          "Fire Red": 0.0909,
+          "Mineral White": 0.1818
+        },
+        "upholsteryShares": {
+          "BMW Individual Leather": 0.2273,
+          "Fabric": 0.0909,
+          "Leather": 0.0455,
+          "Synthetic Leather": 0.6363
+        },
+        "leadTimeWeeks": {
+          "min": 1,
+          "max": 4
+        },
+        "deliveryDateSpread": {
+          "min": "2024-09-12",
+          "max": "2026-11-17"
+        },
+        "priceBand": {
+          "min": 55517.2,
+          "max": 87600,
+          "currency": "GBP"
+        },
+        "sampleDate": "2026-11-08",
+        "requestCount": 3,
+        "sourceKind": "observed-aggregate"
+      },
+      "unit": "cars, share of cars, weeks, GBP, delivery dates",
+      "status": "observed aggregate",
+      "basis": "Observed BMW UK stock-locator aggregate, 2026-11-08: national nearest-first sample, complete to the end of the results, 22 cars. Only label shares and ranges are kept; no car-level data.",
+      "source": "docs/gcsp/evidence/fucq-20/stock-aggregates-2026-11-08.json",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "stock.aggregate.u10-x2",
+      "value": {
+        "modelLineId": "u10-x2",
+        "carCount": 182,
+        "colourShares": {
+          "Alpine White": 0.1044,
+          "BMW Individual Frozen Pure Grey": 0.0055,
+          "Black Sapphire": 0.2088,
+          "Brooklyn Grey": 0.1484,
+          "Cape York Green": 0.0385,
+          "Fire Red": 0.0495,
+          "Portimao Blue": 0.1648,
+          "Skyscraper Grey": 0.2142,
+          "Storm Bay": 0.0659
+        },
+        "upholsteryShares": {
+          "Fabric": 0.7473,
+          "Synthetic Leather": 0.2527
+        },
+        "leadTimeWeeks": {
+          "min": 1,
+          "max": 4
+        },
+        "deliveryDateSpread": {
+          "min": "2026-02-17",
+          "max": "2026-11-20"
+        },
+        "priceBand": {
+          "min": 39480.75,
+          "max": 56725,
+          "currency": "GBP"
+        },
+        "sampleDate": "2026-11-08",
+        "requestCount": 19,
+        "sourceKind": "observed-aggregate"
+      },
+      "unit": "cars, share of cars, weeks, GBP, delivery dates",
+      "status": "observed aggregate",
+      "basis": "Observed BMW UK stock-locator aggregate, 2026-11-08: national nearest-first sample, complete to the end of the results, 182 cars. Only label shares and ranges are kept; no car-level data.",
+      "source": "docs/gcsp/evidence/fucq-20/stock-aggregates-2026-11-08.json",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "stock.aggregate.u11-x1",
+      "value": {
+        "modelLineId": "u11-x1",
+        "carCount": 400,
+        "colourShares": {
+          "Alpine White": 0.11,
+          "BMW Individual Frozen Pure Grey": 0.01,
+          "BMW Individual Malachite Green Dark metallic": 0.0025,
+          "Black Sapphire": 0.2675,
+          "Cape York Green": 0.0775,
+          "Dune Grey": 0.0025,
+          "Fire Red": 0.04,
+          "Jet Black": 0.015,
+          "Night Dusk Blue": 0.02,
+          "Portimao Blue": 0.1775,
+          "Space Silver": 0.15,
+          "Storm Bay": 0.1275
+        },
+        "upholsteryShares": {
+          "Fabric": 0.7275,
+          "Leather": 0.0025,
+          "Synthetic Leather": 0.27
+        },
+        "leadTimeWeeks": {
+          "min": 1,
+          "max": 6
+        },
+        "deliveryDateSpread": {
+          "min": "2025-11-04",
+          "max": "2026-11-30"
+        },
+        "priceBand": {
+          "min": 33950,
+          "max": 61415.01,
+          "currency": "GBP"
+        },
+        "sampleDate": "2026-11-08",
+        "requestCount": 40,
+        "sourceKind": "observed-aggregate"
+      },
+      "unit": "cars, share of cars, weeks, GBP, delivery dates",
+      "status": "observed aggregate",
+      "basis": "Observed BMW UK stock-locator aggregate, 2026-11-08: national nearest-first sample, capped at 40 pages before the end of the results, 400 cars. Only label shares and ranges are kept; no car-level data.",
+      "source": "docs/gcsp/evidence/fucq-20/stock-aggregates-2026-11-08.json",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "stock.aggregate.u11-ix1",
+      "value": {
+        "modelLineId": "u11-ix1",
+        "carCount": 14,
+        "colourShares": {
+          "Alpine White": 0.1429,
+          "Black Sapphire": 0.3571,
+          "Cape York Green": 0.0714,
+          "Dune Grey": 0.0714,
+          "Portimao Blue": 0.1429,
+          "Space Silver": 0.2143
+        },
+        "upholsteryShares": {
+          "Fabric": 0.5,
+          "Leather": 0.0714,
+          "Synthetic Leather": 0.4286
+        },
+        "leadTimeWeeks": {
+          "min": 1,
+          "max": 6
+        },
+        "deliveryDateSpread": {
+          "min": "2026-06-05",
+          "max": "2026-11-30"
+        },
+        "priceBand": {
+          "min": 34667.1,
+          "max": 55960.01,
+          "currency": "GBP"
+        },
+        "sampleDate": "2026-11-08",
+        "requestCount": 2,
+        "sourceKind": "observed-aggregate"
+      },
+      "unit": "cars, share of cars, weeks, GBP, delivery dates",
+      "status": "observed aggregate",
+      "basis": "Observed BMW UK stock-locator aggregate, 2026-11-08: national nearest-first sample, complete to the end of the results, 14 cars. Only label shares and ranges are kept; no car-level data.",
+      "source": "docs/gcsp/evidence/fucq-20/stock-aggregates-2026-11-08.json",
+      "sourceDate": "2026-11-08",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
@@ -13602,11 +13930,29 @@
         "22GE": "F70 Sports Hatch|M135",
         "12CM": "G42 Coupe|220i",
         "22CM": "G42 Coupe|230i",
-        "52FA": "G42 Coupe|M240i"
+        "52FA": "G42 Coupe|M240i",
+        "22FY": "G21 Touring|320i",
+        "42GL": "G21 Touring|330e",
+        "22GL": "G21 Touring|M340i",
+        "12EG": "U11 X1|18d",
+        "32EE": "U11 X1|20i",
+        "52EG": "U11 X1|23d",
+        "62EE": "U11 X1|23i",
+        "22EF": "U11 X1|25e",
+        "32EF": "U11 X1|30e",
+        "12EF": "U11 X1|M35i",
+        "22GM": "U10 X2|20i",
+        "82GM": "U10 X2|M35i",
+        "12HM": "U11 iX1|iX1 20",
+        "22HM": "U11 iX1|iX1 30",
+        "72GN": "U10 iX2|iX2 20",
+        "82GN": "U10 iX2|iX2 30",
+        "52HD": "G26 i4|i4 35",
+        "62HD": "G26 i4|i4 40"
       },
       "unit": "eligibility model key by corpus agModelCode",
       "status": "assumed",
-      "basis": "Generated stock cars carry the corpus agModelCode but no model name. fleet-plan.json maps AG 72HH (G61, VG T5MJ) to the G61 i5 eDrive40 line. FUCQ-77's corpus qualification maps each of 82GE, 22GE, 12CM, 22CM and 52FA to exactly one scheme line in the in-repo .9 corpus (demo-plan.json); 62GE (F70 123) has no scheme line and stays unmapped.",
+      "basis": "Generated stock cars carry the corpus agModelCode but no model name. fleet-plan.json maps AG 72HH (G61, VG T5MJ) to the G61 i5 eDrive40 line. FUCQ-77's corpus qualification maps each of 82GE, 22GE, 12CM, 22CM and 52FA to exactly one scheme line in the in-repo .9 corpus (demo-plan.json); 62GE (F70 123) has no scheme line and stays unmapped. FUCQ-77 (8 Nov 2026) adds 18 keys for the .12 corpus lines, each AG code matching exactly one mapped line in demo-plan.json; 62GE (F70 123) and 72HD (i4 M60) stay unmapped.",
       "source": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
       "sourceDate": "2026-11-07",
       "policyVersion": "gcsp-policy-v1",
@@ -13998,6 +14344,21 @@
       "basis": "Synthetic catalogue of four derivatives over three models, bound to the reviewed structural configuration ids (the 330e id is minted in the same Base64 format). Unit costs are synthetic GBP minor units, not BMW prices or procurement data; facts are compact assumed values, not a published corpus.",
       "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
       "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "forecast.learned.v1",
+      "value": {
+        "choiceMassThreshold": 0.8,
+        "waitExclusionThreshold": 0.5,
+        "intervalZ": 1.96
+      },
+      "unit": "forecast-settings",
+      "status": "assumed",
+      "basis": "Synthetic planning settings for the learned forecast: keep the likeliest permitted choices covering 80% of non-wait probability, leave out employees more likely to wait than not, and show a 95% normal interval. No BMW behaviour is claimed.",
+      "source": "docs/gcsp/shared-contracts.md",
+      "sourceDate": "2026-11-09",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }

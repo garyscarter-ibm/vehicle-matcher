@@ -118,6 +118,49 @@ test('eligibility keys come from policy: evidenced AG codes map, others stay unm
   assert.ok(alt.every((row) => factOf(row, 'eligibilityModelKey') === 'G21 Touring|320i' && factOf(row, 'boot') === 500));
 });
 
+// FUCQ-229: live-sampled one-week lead times voided the second Next release.
+test('generated stock releases on every Next release across the run release windows', async (t) => {
+  const f = await compose(t, { environmentId: 'run-stock-every-window' });
+  const run = good(await f.repository.read(f.context, { table: 'runs', key: { runId: f.runId } }));
+  const windows = run.versions.stockGeneration.report.release.windows;
+  assert.ok(windows.length >= 2);
+  for (const [index, at] of windows.entries()) {
+    const reply = await tick(f, `every-window-${index}`);
+    assert.equal(reply.status, 'ok', JSON.stringify(reply));
+    const outcome = releaseOutcome(reply);
+    assert.equal(outcome.status, 'ok', JSON.stringify(outcome)); assert.equal(outcome.value.kind, 'stock-released');
+    assert.equal(outcome.value.releasedAt, at); assert.ok(outcome.value.orderUuids.length > 0);
+  }
+  const last = Date.parse(windows.at(-1));
+  assert.ok(generatedRows(await f.stock()).every((row) => Date.parse(`${factOf(row, 'confirmedDeliveryWeek')}T00:00:00.000Z`) > last));
+});
+
+// FUCQ-231: a presenter jump past a delivery week made one expired car void every later pull.
+test('a presenter jump past a delivery week still releases the remaining generated cars', async (t) => {
+  const f = await compose(t, { environmentId: 'run-stock-expired-jump' });
+  const until = (row) => Date.parse(`${factOf(row, 'confirmedDeliveryWeek')}T00:00:00.000Z`);
+  const rows = generatedRows(await f.stock()).filter((row) => factOf(row, 'plannedRelease'));
+  const to = new Date(Math.min(...rows.map(until))).toISOString();
+  const ended = rows.filter((row) => until(row) <= Date.parse(to)).map((row) => row.orderUuid).sort();
+  assert.ok(ended.length > 0 && ended.length < rows.length, `ended ${ended.length} of ${rows.length}`);
+  const jump = async (commandId, at) => {
+    const state = good(await f.clock.readState(f.context));
+    const reply = await f.clock.advanceAndTick(f.context, { commandId, expectedClockVersion: state.clockVersion, mode: 'to', to: at });
+    assert.equal(reply.status, 'ok', JSON.stringify(reply));
+    const outcome = releaseOutcome(reply);
+    assert.equal(outcome.status, 'ok', JSON.stringify(outcome));
+    return outcome.value;
+  };
+  const first = await jump('expired-jump', to);
+  assert.equal(first.kind, 'stock-released'); assert.ok(first.orderUuids.length > 0);
+  assert.ok(first.orderUuids.every((id) => !ended.includes(id)), 'an expired car was released');
+  assert.deepEqual([...f.factory.provider.expired(f.runId)], ended);
+  const later = await jump('after-expired-jump', new Date(Date.parse(to) + 3600000).toISOString());
+  assert.equal(later.kind, 'stock-released', 'later pulls are not wedged');
+  const after = generatedRows(await f.stock());
+  assert.ok(after.filter((row) => ended.includes(row.orderUuid)).every((row) => row.state === 'unreleased'));
+});
+
 test('generation unavailable or not configured falls back to demo stock and says why; a forced demo launcher skips it', async (t) => {
   const logs = [];
   const failing = { generate: async () => result('unavailable', { code: 'forced-failure', retryable: true }) };

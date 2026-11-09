@@ -23,7 +23,7 @@ export function validateReviewedDefinitionSet(bundle) {
     for (const row of bundle.definitions) {
       if (!only(row, ['key', 'value', 'unit', 'basis', 'source', 'sourceDate', 'status'])
         || !['key', 'unit', 'basis', 'source'].every((key) => text(row[key])) || keys.has(row.key)
-        || !validDay(row.sourceDate) || !['assumed', 'verified'].includes(row.status)) return false;
+        || !validDay(row.sourceDate) || !['assumed', 'verified', 'observed aggregate'].includes(row.status)) return false;
       keys.add(row.key);
     }
     const { digest, ...definition } = bundle;

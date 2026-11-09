@@ -3,11 +3,16 @@ import { matchCard, mediaWell } from '../../vehicle-matcher/modes/result-card.js
 import { renderOptionList } from '../../vehicle-matcher/modes/question-ui.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { labelledField } from '../kit/form-controls.js';
+import { showMore } from '../kit/show-more.js';
 import { createManualGalleryController } from './gallery-controller.js';
 import { createManualClaimController } from './claim-controller.js';
 import { createManualGalleryHttpAdapter } from './http-adapter.js';
 
 let sequence = 0;
+/** Cars shown per page; a display choice, not a policy value. */
+export const MANUAL_GALLERY_PAGE_SIZE = 6;
+/** Cars per page at 600px and below, to keep the first page short. */
+export const MANUAL_GALLERY_NARROW_PAGE_SIZE = 3;
 const shown = (value) => value == null || value === '' ? 'Not supplied' : Array.isArray(value) ? value.map(shown).join('; ')
   : typeof value === 'object' ? Object.entries(value).map(([key, item]) => `${key.replaceAll(/([A-Z])/g, ' $1')}: ${shown(item)}`).join(' · ') : String(value);
 const CARD_FACTS = ['exterior', 'interior', 'engine', 'transmission', 'wltpCo2', 'earliestCollection'];
@@ -33,7 +38,9 @@ const states = {
   'source-unavailable': ['Availability cannot be checked right now', 'Retry to check current released cars.'],
   'context-refresh': ['Your choices need refreshing', 'Return to your choices or refresh availability.'],
   'car-taken': ['This car is no longer available', 'Refresh to see the current released cars.'],
+  'choices-invalid': ['Your saved choices need updating', 'One of your saved choices is no longer available. Go back to your choices to update it.'],
 };
+const invalidMessages = { requestedCollectionDate: 'Your requested collection date is no longer available. Go back to your choices and pick a new date.' };
 const claimMessages = { checking: 'Checking your current reservation.', claiming: 'Reserving this exact car for review.',
   pending: 'Your reservation is still being checked. Check its status before choosing another car.',
   uncertain: 'The reservation status is unavailable. Check its status before choosing another car.',
@@ -46,7 +53,14 @@ claimMessages.released = 'Your previous reservation has ended. Availability has 
 export function mountManualGallery(root, { adapter = createManualGalleryHttpAdapter(), brand = 'bmw', onBack,
   onClaimConfirmed, onClaimState, commandId } = {}) {
   const prefix = `gcsp-gallery-${++sequence}`; const controls = {}; const cards = new Map();
-  let nodes; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin;
+  let nodes; let statusKey = null; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin; let limit; let pageKey; let paging;
+  // Car facts open on wide screens and closed at 600px and below; no matchMedia (jsdom) means open.
+  const narrowQuery = root.ownerDocument.defaultView.matchMedia?.('(max-width: 600px)') ?? null;
+  const factsOpen = () => !narrowQuery?.matches;
+  const pageSize = () => (factsOpen() ? MANUAL_GALLERY_PAGE_SIZE : MANUAL_GALLERY_NARROW_PAGE_SIZE);
+  limit = pageSize();
+  const syncFacts = () => { cards.forEach(({ facts }) => { facts.open = factsOpen(); }); limit = Math.max(limit, pageSize()); if (nodes && galleryState) draw(); };
+  narrowQuery?.addEventListener?.('change', syncFacts);
   const notify = (name, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(name, { detail, bubbles: true, composed: true }));
   const canGoBack = () => !disposed && (adapter.readOnly === true || claimState?.blocked === false);
   const claim = createManualClaimController({ adapter, onChange(next) { claimState = next; onClaimState?.(next); draw(); },
@@ -82,6 +96,9 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     list.removeAttribute('aria-label'); list.setAttribute('aria-labelledby', nav.heading.id); list.classList.add('vm-options-chips'); list.dataset.nav = name;
     nav.slot.replaceChildren(list); nav.signature = signature; nav.update = update;
     if (hadFocus) list.querySelector('[aria-checked="true"]')?.focus();
+  }
+  function showMoreCars() {
+    const first = limit; limit += pageSize(); draw(); nodes?.grid.children[first]?.focus();
   }
   function choose(id) { if (!claimState.blocked && !adapter.readOnly) gallery.review(id); }
   function closeDetail() { gallery.closeDetail(); (detailOrigin?.isConnected ? detailOrigin : controls.query)?.focus(); }
@@ -138,29 +155,43 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     updateNav('series', galleryState.series, 'All series', (car) => car.series.value);
     updateNav('body', galleryState.bodies, 'All body styles', (car) => car.fields.body.value);
     const c = galleryState.counts;
-    nodes.counts.textContent = `${c.records} released cars · ${c.eligible} eligible · ${c.visible} shown · ${c.visibleEligible} eligible shown`;
+    nodes.counts.textContent = `${c.records} released cars · ${c.eligible} eligible · ${c.visible} matching · ${c.visibleEligible} eligible matching`;
     const allowances = [...new Set(galleryState.allCars.map((car) => car.cost.allowance).filter((value) => value != null))];
     nodes.allowance.textContent = allowances.length === 1 ? `Your allowance: ${allowances[0].toLocaleString('en-GB')} points a month` : 'Your allowance: see the terms for each car';
     const message = states[galleryState.state];
-    nodes.status.replaceChildren();
-    if (message && galleryState.state !== 'idle') {
+    // Rebuild the status only when it changes, so a re-render never drops focus from its button (FUCQ-222).
+    const key = `${galleryState.state}|${galleryState.invalidField ?? ''}`;
+    if (key !== statusKey) { statusKey = key; nodes.status.replaceChildren(); }
+    if (message && galleryState.state !== 'idle' && !nodes.status.childElementCount) {
+      const invalid = galleryState.state === 'choices-invalid';
       const actions = galleryState.state === 'loading' ? [] : galleryState.state === 'empty-search'
         ? [button({ label: 'Clear filters', variant: 'ghost', onClick() { controls.query.value = ''; gallery.setControls({ query: '', series: '', body: '' }); } })]
-        : [button({ label: 'Refresh availability', variant: 'ghost', onClick: () => gallery.refresh() })];
-      nodes.status.append(statusScreen({ title: message[0], message: message[1], actions }));
+        : invalid ? [button({ label: 'Back to your choices', variant: 'primary', onClick: () => nodes.back.click() })]
+          : [button({ label: 'Refresh availability', variant: 'ghost', onClick: () => gallery.refresh() })];
+      nodes.status.append(statusScreen({ title: message[0], message: (invalid && invalidMessages[galleryState.invalidField]) || message[1], actions }));
+    }
+    // A new search, sort, filter or reload starts again at the first page.
+    const nextKey = `${galleryState.state === 'loading'}|${JSON.stringify(galleryState.controls)}`;
+    if (nextKey !== pageKey) { pageKey = nextKey; limit = pageSize(); }
+    const page = galleryState.cars.slice(0, limit);
+    paging.update({ shown: page.length, total: galleryState.cars.length });
+    if ((galleryState.cars.length > pageSize()) !== paging.root.isConnected) {
+      if (paging.root.isConnected) paging.root.remove(); else nodes.results.append(paging.root);
     }
     const desired = [];
-    for (const car of galleryState.cars) {
+    for (const car of page) {
       const signature = JSON.stringify(car.view); let cached = cards.get(car.id);
       if (!cached || cached.signature !== signature) {
-        const view = structuredClone(car.view); view.members[0].facts = factRows(view.members[0].facts.filter((fact) => CARD_FACTS.includes(fact.key)));
+        const view = structuredClone(car.view); const rows = view.members[0].facts.filter((fact) => CARD_FACTS.includes(fact.key)); view.members[0].facts = [];
         if (adapter.readOnly) view.members[0].actions[0] = { ...view.members[0].actions[0], disabled: true, disabledReason: 'Read-only gallery example.' };
-        const card = matchCard(null, { view, showScore: false, onAction: () => choose(car.id) }); card.classList.add('gcsp-card');
+        const card = matchCard(null, { view, showScore: false, onAction: () => choose(car.id) }); card.classList.add('gcsp-card'); card.tabIndex = -1; card.setAttribute('aria-label', car.view.members[0].display.name);
+        const facts = detailSection('Car facts', rows.map((row) => ({ ...row, missingLabel: `Not supplied${row.unit ? ` (${row.unit})` : ''}` }))); facts.open = factsOpen();
+        card.querySelector('.vm-card-facts').replaceChildren(facts);
         card.querySelector('.vm-card-head').after(el('p', 'gcsp-note', `Order no. ${car.identity.orderNumber}`));
         card.querySelector('.vm-card-terms')?.replaceChildren(...costSummary(car.cost));
         card.querySelectorAll('[data-action-id="review-car"]').forEach((control) => { control.dataset.reviewId = car.id; control.dataset.baseDisabled = String(control.disabled); });
         const details = button({ label: 'Vehicle details', variant: 'ghost', onClick() { detailOrigin = details; gallery.openDetail(car.id); } });
-        card.querySelector('.vm-card-actions').append(details); cached = { signature, card }; cards.set(car.id, cached);
+        card.querySelector('.vm-card-actions').append(details); cached = { signature, card, facts }; cards.set(car.id, cached);
       }
       desired.push(cached.card);
     }
@@ -189,7 +220,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
       history: el('section', ''), historySummary: el('p', 'gcsp-note'), historyTime: el('p', 'gcsp-note'), historySource: el('p', 'gcsp-note'),
       backReason: el('p', 'gcsp-note'), back: button({ label: 'Back to your choices', variant: 'ghost', describedBy: `${prefix}-back-reason`,
         onClick() { if (!canGoBack()) return; onBack?.(); notify('gcsp:manual-gallery-back', {}); } }) };
-    nodes.counts.setAttribute('role', 'status'); nodes.claimMessage.setAttribute('role', 'status'); nodes.detail.hidden = true;
+    paging = showMore({ onShowMore: showMoreCars }); nodes.counts.setAttribute('role', 'status'); nodes.claimMessage.setAttribute('role', 'status'); nodes.detail.hidden = true;
     nodes.history.setAttribute('aria-label', 'Release history'); nodes.history.dataset.releaseHistory = '';
     nodes.history.append(nodes.historySummary, nodes.historyTime, nodes.historySource); nodes.backReason.id = `${prefix}-back-reason`;
     const claimNotice = el('section', 'gcsp-gallery-claim'); claimNotice.setAttribute('aria-label', 'Reservation status'); claimNotice.append(nodes.claimMessage, nodes.check, nodes.retry);
@@ -201,7 +232,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     if (!started) { started = true; gallery.load(); claim.load(); }
     return () => { nodes = null; panel.remove(); };
   } });
-  const teardown = () => { disposed = true; gallery.destroy(); claim.destroy(); shell(); };
+  const teardown = () => { disposed = true; narrowQuery?.removeEventListener?.('change', syncFacts); gallery.destroy(); claim.destroy(); shell(); };
   teardown.gallery = gallery; teardown.claim = claim; return teardown;
 }
 

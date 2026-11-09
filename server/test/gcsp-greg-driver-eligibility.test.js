@@ -18,7 +18,7 @@ const saved = () => ({ schemaVersion: 1, preferences: { body: preference('estate
   essentials: { seats: essential(5) } });
 async function setup(t, { release = true } = {}) {
   const runtime = good(await createGcspRuntime({ mode: 'memory', environmentId: 'greg-driver-test',
-    policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z' }));
+    policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z', adoptOfferJourney: true }));
   t.after(() => runtime.close());
   const employee = good(await runtime.createLocalSession()).context;
   const presenter = good(await runtime.identity.createPresenterSession('driver-presenter')).context;

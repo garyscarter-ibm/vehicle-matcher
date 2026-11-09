@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
+import { readFileSync } from 'node:fs';
 import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { createPolicyService } from '../gcsp/policy/index.js';
@@ -586,6 +587,73 @@ test('FUCQ-192: an in-progress order on the slot replaces "No ordering entitleme
   assert.match(none.root.textContent, /No ordering entitlement/); none.destroy();
 });
 
+test('FUCQ-224: an order on the slot replaces the saved journey card; an order on another slot keeps it', async () => {
+  const listed = (slot) => { const row = structuredClone(orderProgressFixtures().states['appointment-requested'].stages.value); row.entitlementSlotId = slot; return [row]; };
+  const allocated = () => { const envelope = accountFixture('no-entitlement'); for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
+  const draft = { status: 'ok', value: { draftStage: 'complete', draftVersion: 3, requiresRefresh: false,
+    choices: { mode: 'replacement', oldContractId: 'current:employee-paula', slotId: 'slot-paula', schemeId: 'choices-fs-uk' } } };
+  const mount = (orders) => domMount({ ...readOnlyAdapter(), readAccount: async () => allocated(), readDraft: async () => draft,
+    readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  const ordered = await mount(orderAdapter('appointment-requested', listed('slot-paula')));
+  try {
+    await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    assert.ok(ordered.root.querySelector('.gcsp-account-order-status'), 'order status');
+    assert.doesNotMatch(ordered.root.textContent, /journey saved|not an order confirmation|Saved journey could not be read/);
+    assert.equal(findButton(ordered.root, 'Resume saved journey'), undefined);
+  } finally { ordered.destroy(); }
+  const other = await mount(orderAdapter('appointment-requested', listed('slot-other')));
+  try {
+    await settleOrder(other.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    assert.match(other.root.textContent, /Replacement journey saved/);
+  } finally { other.destroy(); }
+});
+
+test('FUCQ-237: an order in progress replaces "No current car" for an employee with no current car, and a declined order keeps it', async () => {
+  const listed = (name) => { const row = structuredClone(orderProgressFixtures().states[name].stages.value); row.entitlementSlotId = 'slot-paula'; return [row]; };
+  const noCarAllocated = () => { const envelope = accountFixture('no-current-car'); Object.assign(envelope.value, { state: 'no-entitlement', actions: [] });
+    for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
+  const mount = (name) => { const orders = orderAdapter(name, listed(name));
+    return domMount({ ...readOnlyAdapter(), readAccount: async () => noCarAllocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders }); };
+  const ordered = await mount('appointment-requested');
+  try {
+    await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order-status'));
+    assert.ok(ordered.root.querySelector('.gcsp-account-order-status'), 'order status');
+    assert.doesNotMatch(ordered.root.textContent, /No current car/);
+  } finally { ordered.destroy(); }
+  const declined = await mount('declined');
+  try {
+    await settleOrder(declined.root, (node) => node.querySelector('.gcsp-account-order-status'));
+    assert.equal(declined.root.querySelector('.gcsp-account-order-status h2').textContent, 'Your order was declined');
+    assert.match(declined.root.textContent, /No current car/);
+  } finally { declined.destroy(); }
+});
+
+test('FUCQ-239: Order history lists a placed order and no longer says "No order history"', async () => {
+  const listed = (name) => { const row = structuredClone(orderProgressFixtures().states[name].stages.value); row.entitlementSlotId = 'slot-paula'; return [row]; };
+  const noCarAllocated = () => { const envelope = accountFixture('no-current-car'); Object.assign(envelope.value, { state: 'no-entitlement', actions: [] });
+    for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
+  const mount = (name) => { const orders = orderAdapter(name, listed(name));
+    return domMount({ ...readOnlyAdapter(), readAccount: async () => noCarAllocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders }); };
+  const ordered = await mount('appointment-requested');
+  try {
+    await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order-status'));
+    const histories = ordered.root.querySelector('.gcsp-account-histories'); const [entry] = histories.querySelectorAll('.gcsp-account-history');
+    assert.doesNotMatch(histories.textContent, /No order history\./); assert.ok(entry, 'placed order entry');
+    assert.equal(entry.querySelector('h3').textContent, 'Synthetic 3 Series Saloon 320i');
+    assert.deepEqual(factPairs(entry).filter(([name]) => ['Status', 'Order reference', 'Car order number'].includes(name)),
+      [['Status', 'Sent to ordering'], ['Order reference', 'GCSP-000123'], ['Car order number', '1000001']]);
+  } finally { ordered.destroy(); }
+  const declined = await mount('declined');
+  try {
+    await settleOrder(declined.root, (node) => node.querySelector('.gcsp-account-order-status'));
+    const histories = declined.root.querySelector('.gcsp-account-histories');
+    assert.doesNotMatch(histories.textContent, /No order history\./);
+    assert.deepEqual(factPairs(histories.querySelector('.gcsp-account-history')).filter(([name]) => name === 'Status'), [['Status', 'Declined']]);
+  } finally { declined.destroy(); }
+  const plain = await domMount(readOnlyAdapter('no-history')); await tick();
+  assert.match(plain.root.querySelector('.gcsp-account-histories').textContent, /No order history\./); plain.destroy();
+});
+
 test('FUCQ-195: the current-car card shows readable labels and no raw identifiers', async () => {
   const input = accountFixture('ready'); const value = input.value;
   const raw = [value.currentContract.contractId, value.currentContract.slotId, value.currentContract.schemeId,
@@ -718,4 +786,18 @@ test('FUCQ-220: order history names the car order number, and shows a reference 
     assert.equal(without.querySelector('button').textContent, 'Print record 7654321');
     assert.doesNotMatch(without.textContent, /Order reference/);
   } finally { destroy(); }
+});
+
+test('FUCQ-223: the account keeps the Choices kicker, and its stylesheet carries the order-progress styles the hosted entry lacks', async () => {
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => accountFixture('populated') });
+  try {
+    const intro = root.querySelector('.gcsp-account-body .gcsp-intro');
+    assert.equal(intro.querySelector('.vm-kicker').textContent, 'Choices');
+    assert.ok(intro.querySelector('.vm-kicker').compareDocumentPosition(intro.querySelector('h1')) & 4, 'kicker sits above the title');
+  } finally { destroy(); root.remove(); }
+  // gcsp-presenter.html loads only gcsp-account.css, so the order-progress sheet must come in through it.
+  const css = (path) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
+  assert.match(css('blocks/gcsp/account/gcsp-account.css'), /@import "\.\.\/order-progress\/gcsp-order-progress\.css";/);
+  assert.match(css('gcsp-presenter.html'), /blocks\/gcsp\/account\/gcsp-account\.css/);
+  assert.match(css('blocks/gcsp/order-progress/gcsp-order-progress.css'), /\.gcsp-order-car \{ display: grid;/);
 });

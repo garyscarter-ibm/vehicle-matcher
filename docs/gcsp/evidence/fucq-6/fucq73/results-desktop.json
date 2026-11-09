@@ -1,0 +1,1843 @@
+{
+  "story": "fucq73",
+  "chunk": "desktop",
+  "entry": "hosted-offline",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "state": "completed-with-failures",
+  "startedAt": "2026-11-08T21:13:07.248Z",
+  "steps": [
+    {
+      "id": "rep-account",
+      "name": "Demo key opens the account for Paula (Tab+Enter, keyboard only)",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-01-rep-account.png"
+      ],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Your cars New order Order history Drivers and licences Scheme guidelines Show labels Presenter controls YOUR CARS Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car evidence. Choose "
+    },
+    {
+      "id": "rep-setup",
+      "name": "Choose a replacement (Tab+Enter); setup saved with the nominated driver Casey",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-02-rep-setup-saved.png"
+      ],
+      "overflowPx": 0,
+      "state": "Your order choices | {\"driver\":\"Nominated: Casey (fictional)\",\"contract\":\"six-month-8000\",\"date\":\"2026-11-12\",\"location\":\"demo-collection-centre\"}",
+      "detail": {
+        "driver": "Nominated: Casey (fictional)",
+        "contract": "six-month-8000",
+        "date": "2026-11-12",
+        "location": "demo-collection-centre"
+      }
+    },
+    {
+      "id": "rep-empty-gallery",
+      "name": "Continue before any release: empty gallery states the next action",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-03-rep-gallery-empty.png"
+      ],
+      "detail": {
+        "cards": 0,
+        "enabled": 0,
+        "status": "No released cars are visible to you yet Refresh availability to check for new releases. Refresh availability"
+      },
+      "overflowPx": 0,
+      "state": "status \"No released cars are visible to you yet Refresh availability to check for new releases. Refresh availability\"; cards 0"
+    },
+    {
+      "id": "rep-release-gallery",
+      "name": "Presenter Next release; Refresh availability (keyboard) shows released cars",
+      "pass": false,
+      "screenshots": [
+        "browser/1280-04-rep-gallery-after-release.png"
+      ],
+      "detail": {
+        "cards": 0,
+        "enabled": 0,
+        "status": "Availability cannot be checked right now Retry to check current released cars. Refresh availability",
+        "stockStatus": 400
+      },
+      "overflowPx": 0,
+      "state": "0 cards, 0 enabled; stock 400; status \"Availability cannot be checked right now Retry to check current released cars. Refresh availability\"; Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d50"
+    },
+    {
+      "id": "rep-date-recovery",
+      "name": "Back to your choices, pick a date in the new window, Save, Continue: released cars",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-05-rep-gallery-released.png"
+      ],
+      "detail": {
+        "min": "2026-11-13",
+        "max": "2026-12-01",
+        "was": "2026-11-12",
+        "cards": 20,
+        "enabled": 10,
+        "status": ""
+      },
+      "overflowPx": 0,
+      "state": "20 cards, 10 enabled"
+    },
+    {
+      "id": "rep-review",
+      "name": "Review this car (Tab+Enter) opens the review with an active countdown",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-06-rep-review.png"
+      ],
+      "detail": {
+        "vehicleName": "F70 Sports Hatch in Alpine White",
+        "vehicleCard": "Vehicle details, eligibility and points are pinned to your claim. No image for this car yet ORDER 1326185 F70 Sports Hatch in Alpine White 800 points a month · 1,300 points a month allowance Model Not supplied Body style hatchback Engine Not supplied Exterior Alpine White Interior Not supplied Transmission Not supplied Insurance group 22 Order number 1326185 Eligible Pinned vehicle details",
+        "orderNumber": "1326185",
+        "hasPoints": true,
+        "hasRepresentativeCaption": false,
+        "noImagePlaceholder": true,
+        "context": "Collection and current contract Journey Replacement Requested collection date 2026-11-13 Contract term 6 months Annual mileage 8000 mi/year Returning car Fictional BMW 320i Touring Registration Not supplied Collection is requested, not a confirmed appointment.",
+        "countdown": "Car reservation: 2:00 remaining",
+        "consequence": "This car is reserved until the deadline. Continuing does not place an order. Time follows the presenter clock.",
+        "phone": "01632 960000",
+        "email": "employee-paula@example.invalid",
+        "mileage": "24000",
+        "special": "",
+        "counter": "0 / 500 characters",
+        "notice": "Your current claim has been checked."
+      },
+      "overflowPx": 0,
+      "state": "F70 Sports Hatch in Alpine White | Car reservation: 2:00 remaining | image caption false placeholder true"
+    },
+    {
+      "id": "rep-final-review",
+      "name": "Continue to order review, tick declarations (Space), Submit (Enter): outcome",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-07-rep-summary-unticked.png",
+        "browser/1280-08-rep-summary-ticked.png",
+        "browser/1280-09-rep-outcome.png"
+      ],
+      "detail": {
+        "total": 3,
+        "ticked": 3,
+        "submitEnabled": true,
+        "posts": 1,
+        "outcome": {
+          "heading": "Order received",
+          "orderNumber": "1326185",
+          "status": "Awaiting approval",
+          "stages": [
+            "Selection received Done",
+            "HR approval Waiting",
+            "Sales manager approval Not started",
+            "Sent to ordering Not started"
+          ],
+          "rawIds": []
+        }
+      },
+      "overflowPx": 0,
+      "state": "Order received | order 1326185 | status Awaiting approval; POSTs 1"
+    },
+    {
+      "id": "rep-print",
+      "name": "Print media: outcome keeps the order, hides buttons and presenter controls",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-10-rep-outcome-print.png"
+      ],
+      "detail": {
+        "buttonsVisible": 0,
+        "presenterVisible": 0
+      },
+      "overflowPx": 0,
+      "state": "{\"buttonsVisible\":0,\"presenterVisible\":0}"
+    },
+    {
+      "id": "rep-finish",
+      "name": "Finish (Tab+Enter) returns to the account, which shows the order",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-11-rep-account-after-order.png"
+      ],
+      "detail": {
+        "orderShown": true,
+        "shownAfterMs": 2142,
+        "staleSavedJourneyCard": true,
+        "text": "Skip to content Group Car Schemes Portal P Paula (fictional) Your cars New order Order history Drivers and licences Scheme guidelines Show labels Presenter controls YOUR CARS Your cars Refresh account Your order is in progress Current step: Selection received. View order progress Order progress All times are demo time (UTC). Your order No image for this car yet F70 Sports Hatch in Alpine White Order no. 1326185 Steps Selection received Done 6 Nov 2026, 11:30 With ordering Next: Approval checks start HR approval Not started Sales-manager approval Not started Sent to ordering Not started Handover Handover times open once your order is sent to ordering. Documents and checks Documents and checks"
+      },
+      "overflowPx": 0,
+      "state": "order 1326185 shown true; Skip to content Group Car Schemes Portal P Paula (fictional) Your cars New order Order history Drivers and licences Scheme guidelines Show labels Presenter controls YOUR CARS Your cars Refresh account Your order is in progress Current step: Selection received. View order progress Order progress All"
+    },
+    {
+      "id": "new-principal",
+      "name": "Find a fictional principal whose account offers Start a new order (Alex, Sam tried after Paula)",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-12-new-account-sam.png"
+      ],
+      "detail": {
+        "tried": [
+          {
+            "principal": "Paula",
+            "note": "replacement journey (rep segment): Choose a replacement, no Start a new order"
+          },
+          {
+            "principal": "Alex",
+            "actions": [
+              "Choose a replacement"
+            ],
+            "startNewOrder": false,
+            "sidebarNewOrder": {
+              "disabled": false,
+              "ariaDisabled": "true",
+              "text": "New order",
+              "title": ""
+            },
+            "notice": ""
+          },
+          {
+            "principal": "Sam",
+            "actions": [
+              "Contact support"
+            ],
+            "startNewOrder": false,
+            "sidebarNewOrder": {
+              "disabled": false,
+              "ariaDisabled": "true",
+              "text": "New order",
+              "title": ""
+            },
+            "notice": "Ordering is not supported for this scheme Your supplied contracts and history remain available below."
+          }
+        ],
+        "chosen": null
+      },
+      "overflowPx": 0,
+      "state": "none offers Start a new order: [{\"principal\":\"Paula\",\"note\":\"replacement journey (rep segment): Choose a replacement, no Start a new order\"},{\"principal\":\"Alex\",\"actions\":[\"Choose a replacement\"],\"startNewOrder\":false,\"sidebarNewOrder\":{\"disabled\":false,\"ariaDisabled\":\"true\",\"text\":\"New order\",\"title\":\"\"},\"notice\":\"\"},{\"principal\":\"Sam\",\"actions\":[\"Contact support\"],\"startNewOrder\":false,\"sidebarNewOrder\":{\"disabled\":false,\"ariaDisabled\":\"true\",\"text\":\"New order\",\"title\":\"\"},\"notice\":\"Ordering is not supported for this scheme Your supplied contracts and history remain available below.\"}]"
+    },
+    {
+      "id": "st-access-key",
+      "name": "Demo key form opens the offline hosted demo",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Your cars New order Order history Drivers and licences Scheme guidelines Show labels Presenter controls YOUR CARS Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car evidence. Choose "
+    },
+    {
+      "id": "st-setup-saved",
+      "name": "Choose a replacement; setup choices saved for Paula",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-13-st-setup-saved.png"
+      ],
+      "overflowPx": 0,
+      "state": "Your order choices | {\"driver\":\"You: Paula (fictional)\",\"contract\":\"six-month-8000\",\"date\":\"2026-11-12\",\"location\":\"demo-collection-centre\"}",
+      "detail": {
+        "driver": "You: Paula (fictional)",
+        "contract": "six-month-8000",
+        "date": "2026-11-12",
+        "location": "demo-collection-centre"
+      }
+    },
+    {
+      "id": "st-release-and-gallery",
+      "name": "Next release, Continue, Released cars gallery",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-14-st-release-and-gallery.png"
+      ],
+      "overflowPx": 0,
+      "state": "Released cars; 20 review buttons; Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-06T11:30:00.000Z",
+      "detail": {
+        "cards": 20
+      }
+    },
+    {
+      "id": "st-gallery-loading",
+      "name": "GET stock delayed 3 s: gallery shows a loading status, then the cars",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-15-st-gallery-loading.png"
+      ],
+      "detail": {
+        "loadingText": "Loading released cars Checking availability.",
+        "heading": "Released cars"
+      },
+      "overflowPx": 0,
+      "state": "loading text seen true; Loading released cars Checking availability.; cards loaded after the delay"
+    },
+    {
+      "id": "st-setup-outage",
+      "name": "GET stock answers 503 on the way to the gallery: outage state with a recovery button; unroute and recover",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-16-st-outage-setup.png"
+      ],
+      "detail": {
+        "outage": {
+          "where": "setup",
+          "heading": "Your order choices",
+          "galleryStatus": "",
+          "setupNotice": "Availability could not be refreshed Your saved choices are retained. Retry availability",
+          "routed": 1,
+          "recoveryButtons": [
+            "Retry availability"
+          ]
+        },
+        "recoveredCards": 10
+      },
+      "overflowPx": 0,
+      "state": "setup: \"Availability could not be refreshed Your saved choices are retained. Retry availability\"; recovery buttons Retry availability; recovered 10 cards"
+    },
+    {
+      "id": "st-gallery-outage",
+      "name": "GET stock answers 503 on the gallery (presenter tick re-reads): outage status with Refresh availability; recovers",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-17-st-gallery-outage.png"
+      ],
+      "detail": {
+        "status": "Availability cannot be checked right now Retry to check current released cars. Refresh availability",
+        "refreshButtons": 1,
+        "recoveredCards": 23
+      },
+      "overflowPx": 0,
+      "state": "\"Availability cannot be checked right now Retry to check current released cars. Refresh availability\"; Refresh availability buttons 1; recovered 23 cards"
+    },
+    {
+      "id": "st-gallery-images",
+      "name": "Every image request 404s on the gallery: fallback text, layout intact, no overflow",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-18-st-gallery-images-404.png"
+      ],
+      "detail": {
+        "docOverflow": 0,
+        "wideElements": [
+          "nav.gcsp-nav",
+          "ul.gcsp-nav-list",
+          "li.gcsp-nav-item",
+          "li.gcsp-nav-item"
+        ],
+        "images": 1,
+        "brokenImages": 0,
+        "fallbackText": 40,
+        "cards": 40,
+        "withPhotoClass": 0,
+        "photoImgs": 0,
+        "stockResponsesPatched": 189,
+        "imageRequestsRouted404": 13,
+        "sampleRequests": [
+          "/images/gcsp-missing-car.jpg",
+          "/images/gcsp-missing-car.jpg"
+        ],
+        "placeholders": 40
+      },
+      "overflowPx": 0,
+      "state": "photo URLs injected 189; image requests 404ed 13; cards 40, still showing a photo 0; fallback texts 40; overflow 0"
+    },
+    {
+      "id": "st-gallery-motion",
+      "name": "Gallery under prefers-reduced-motion",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "stage": "gallery",
+        "normal": {
+          "maxSeconds": 0.15,
+          "element": "button.vm-btn vm-btn-ghost"
+        },
+        "reduced": {
+          "maxSeconds": 0,
+          "element": null
+        },
+        "pass": true
+      },
+      "overflowPx": 0,
+      "state": "{\"stage\":\"gallery\",\"normal\":{\"maxSeconds\":0.15,\"element\":\"button.vm-btn vm-btn-ghost\"},\"reduced\":{\"maxSeconds\":0,\"element\":null},\"pass\":true}"
+    },
+    {
+      "id": "stb-access-key",
+      "name": "Demo key form opens the offline hosted demo",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Your cars New order Order history Drivers and licences Scheme guidelines Show labels Presenter controls YOUR CARS Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car evidence. Choose "
+    },
+    {
+      "id": "stb-setup-saved",
+      "name": "Choose a replacement; setup choices saved for Paula",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-19-stb-setup-saved.png"
+      ],
+      "overflowPx": 0,
+      "state": "Your order choices | {\"driver\":\"You: Paula (fictional)\",\"contract\":\"six-month-8000\",\"date\":\"2026-11-12\",\"location\":\"demo-collection-centre\"}",
+      "detail": {
+        "driver": "You: Paula (fictional)",
+        "contract": "six-month-8000",
+        "date": "2026-11-12",
+        "location": "demo-collection-centre"
+      }
+    },
+    {
+      "id": "stb-release-and-gallery",
+      "name": "Next release, Continue, Released cars gallery",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-20-stb-release-and-gallery.png"
+      ],
+      "overflowPx": 0,
+      "state": "Released cars; 20 review buttons; Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-06T11:30:00.000Z",
+      "detail": {
+        "cards": 20
+      }
+    },
+    {
+      "id": "st-review-loading",
+      "name": "GET claim/review-details delayed 3 s: review shows a loading state, then the car",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-21-st-review-loading.png"
+      ],
+      "detail": {
+        "heading": "Released cars",
+        "status": "",
+        "countdown": "Car reservation: 2:00 remaining",
+        "delayedReads": 3,
+        "headingsSeen": [
+          "Released cars"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "delayed claim reads 3; loading state {\"heading\":\"Released cars\",\"status\":\"\",\"countdown\":\"Car reservation: 2:00 remaining\",\"delayedReads\":3,\"headingsSeen\":[\"Released cars\"]}"
+    },
+    {
+      "id": "st-review-images",
+      "name": "Every image request 404s on the review: fallback text, layout intact",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-22-st-review-images-404.png"
+      ],
+      "detail": {
+        "docOverflow": 0,
+        "wideElements": [],
+        "images": 0,
+        "brokenImages": 0,
+        "fallbackText": 1,
+        "withPhotoClass": 0,
+        "photoImgs": 0,
+        "responsesPatched": 4,
+        "imageRequestsRouted404": 1,
+        "noImagePlaceholder": true,
+        "caption": false
+      },
+      "overflowPx": 0,
+      "state": "photo URLs injected 4; image requests 404ed 1; still showing a photo 0; placeholder true; overflow 0"
+    },
+    {
+      "id": "st-review-a11y",
+      "name": "Review: reduced motion, Tab focus indicators, contrast",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "motion": {
+          "stage": "review",
+          "normal": {
+            "maxSeconds": 0.15,
+            "element": "button.vm-btn vm-btn-ghost"
+          },
+          "reduced": {
+            "maxSeconds": 0,
+            "element": null
+          },
+          "pass": true
+        },
+        "focus": {
+          "stage": "review",
+          "stops": 11,
+          "missingIndicator": [],
+          "sample": [
+            "button \"Check current claim\" solid 2px rgb(2, 145, 183)",
+            "summary \"Pinned vehicle details\" solid 2px rgb(2, 145, 183)",
+            "input#gcsp-review-1-contact-phone \"01632 960000\" solid 2px rgb(2, 145, 183)"
+          ],
+          "pass": true
+        },
+        "contrast": {
+          "bodyText": 14.59,
+          "primaryButton": {
+            "text": "Continue to order review",
+            "ratio": 5.35
+          },
+          "ghostButton": {
+            "text": "Tick (60 seconds)",
+            "ratio": 7.87
+          },
+          "checked": 160,
+          "lowest": [
+            {
+              "el": "span.gcsp-nav-label",
+              "text": "Your cars",
+              "ratio": 4.67,
+              "large": false
+            },
+            {
+              "el": "a.gcsp-skip",
+              "text": "Skip to content",
+              "ratio": 5.35,
+              "large": false
+            },
+            {
+              "el": "span.gcsp-account-name",
+              "text": "Paula (fictional)",
+              "ratio": 5.35,
+              "large": false
+            },
+            {
+              "el": "button.vm-btn vm-btn-primary",
+              "text": "Continue to order review",
+              "ratio": 5.35,
+              "large": false
+            }
+          ],
+          "belowThreshold": [],
+          "failingCount": 0
+        }
+      },
+      "overflowPx": 0,
+      "state": "motion max 0s reduced; focus stops 11, missing 0; body 14.59; primary 5.35; below threshold 0"
+    },
+    {
+      "id": "st-review-long-data",
+      "name": "500 characters of unbroken words in Special requirements: no overflow on review and final review",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-23-st-review-long-data.png",
+        "browser/1280-24-st-final-review-long-data.png"
+      ],
+      "detail": {
+        "length": 500,
+        "onReview": {
+          "docOverflow": 0,
+          "wideElements": [],
+          "images": 0,
+          "brokenImages": 0,
+          "fallbackText": 1
+        },
+        "onSummary": {
+          "docOverflow": 0,
+          "wideElements": [],
+          "images": 0,
+          "brokenImages": 0,
+          "fallbackText": 1
+        },
+        "shownOnSummary": true
+      },
+      "overflowPx": 0,
+      "state": "typed 500; review overflow 0, wide none; final review overflow 0, wide none"
+    },
+    {
+      "id": "st-summary-a11y",
+      "name": "Final review: reduced motion, Tab focus indicators, contrast",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "motion": {
+          "stage": "final review",
+          "normal": {
+            "maxSeconds": 0.15,
+            "element": "button.vm-btn vm-btn-ghost"
+          },
+          "reduced": {
+            "maxSeconds": 0,
+            "element": null
+          },
+          "pass": true
+        },
+        "focus": {
+          "stage": "final review",
+          "stops": 17,
+          "missingIndicator": [],
+          "sample": [
+            "button \"Check current claim\" solid 2px rgb(2, 145, 183)",
+            "button \"Change car\" solid 2px rgb(2, 145, 183)",
+            "button \"Change order choices: term, collection a\" solid 2px rgb(2, 145, 183)"
+          ],
+          "pass": true
+        },
+        "contrast": {
+          "bodyText": 14.59,
+          "primaryButton": {
+            "text": "Reload",
+            "ratio": 5.35
+          },
+          "ghostButton": {
+            "text": "Tick (60 seconds)",
+            "ratio": 7.87
+          },
+          "checked": 159,
+          "lowest": [
+            {
+              "el": "span.gcsp-nav-label",
+              "text": "Your cars",
+              "ratio": 4.67,
+              "large": false
+            },
+            {
+              "el": "a.gcsp-skip",
+              "text": "Skip to content",
+              "ratio": 5.35,
+              "large": false
+            },
+            {
+              "el": "span.gcsp-account-name",
+              "text": "Paula (fictional)",
+              "ratio": 5.35,
+              "large": false
+            },
+            {
+              "el": "span.vm-option-sub",
+              "text": "Available",
+              "ratio": 6.66,
+              "large": false
+            }
+          ],
+          "belowThreshold": [],
+          "failingCount": 0
+        }
+      },
+      "overflowPx": 0,
+      "state": "motion max 0s reduced; focus stops 17, missing 0; body 14.59; primary 5.35; below threshold 0"
+    },
+    {
+      "id": "st-pending",
+      "name": "Lost response: one POST, could-not-confirm notice, Check order status recovers the order",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-25-st-pending-could-not-confirm.png",
+        "browser/1280-26-st-pending-outcome.png"
+      ],
+      "detail": {
+        "postsFromPage": 1,
+        "serverReceived": {
+          "status": 200,
+          "body": "{\"status\":\"ok\",\"value\":{\"schemaVersion\":1,\"operationId\":\"selection:fdcbff7fa43dac5c3fdca7564fe7b1c1186ada2ac474a8b5b4e32"
+        },
+        "notice": "We could not confirm whether your order was placed. Check the order status, or retry the same submission. Neither creates a second order.",
+        "outcome": {
+          "heading": "Order received",
+          "orderNumber": "1326185",
+          "status": "Awaiting approval"
+        }
+      },
+      "overflowPx": 0,
+      "state": "POSTs 1; server answered {\"status\":200,\"body\":\"{\\\"status\\\":\\\"ok\\\",\\\"value\\\":{\\\"schemaVersion\\\":1,\\\"operationId\\\":\\\"selection:fdcbff7fa43dac5c3fdca7564fe7b1c1186ada2ac474a8b5b4e32\"}; notice \"We could not confirm whether your order was placed. Check the order status, or retry the same submission. Neither creates a second order.\"; outcome \"Order received\" 1326185"
+    },
+    {
+      "id": "exp-access-key",
+      "name": "Demo key form opens the offline hosted demo",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Your cars New order Order history Drivers and licences Scheme guidelines Show labels Presenter controls YOUR CARS Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car evidence. Choose "
+    },
+    {
+      "id": "exp-setup-saved",
+      "name": "Choose a replacement; setup choices saved for Paula",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-27-exp-setup-saved.png"
+      ],
+      "overflowPx": 0,
+      "state": "Your order choices | {\"driver\":\"You: Paula (fictional)\",\"contract\":\"six-month-8000\",\"date\":\"2026-11-12\",\"location\":\"demo-collection-centre\"}",
+      "detail": {
+        "driver": "You: Paula (fictional)",
+        "contract": "six-month-8000",
+        "date": "2026-11-12",
+        "location": "demo-collection-centre"
+      }
+    },
+    {
+      "id": "exp-release-and-gallery",
+      "name": "Next release, Continue, Released cars gallery",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-28-exp-release-and-gallery.png"
+      ],
+      "overflowPx": 0,
+      "state": "Released cars; 20 review buttons; Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-06T11:30:00.000Z",
+      "detail": {
+        "cards": 20
+      }
+    },
+    {
+      "id": "exp-review-loaded",
+      "name": "Expiry run: review loaded",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Review your car | Car reservation: 2:00 remaining"
+    },
+    {
+      "id": "exp-expired",
+      "name": "Presenter ticks expire the hold at the final review: expiry message, Submit disabled, Refresh stock",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-29-exp-expired.png"
+      ],
+      "detail": {
+        "ticks": 11,
+        "submitPresent": 1,
+        "submitDisabled": true,
+        "refreshStock": 1,
+        "notice": "Your reservation has expired. Your entries are retained. Refresh stock to choose again.",
+        "hint": "Your reservation has expired."
+      },
+      "overflowPx": 0,
+      "state": "ticks 11; notice \"Your reservation has expired. Your entries are retained. Refresh stock to choose again.\"; hint \"Your reservation has expired.\"; Submit present true disabled true; Refresh stock 1"
+    },
+    {
+      "id": "adj-hosted-entry",
+      "name": "Same origin as the GCSP host: which retail and gallery pages it serves",
+      "pass": true,
+      "screenshots": [],
+      "detail": [
+        {
+          "path": "/",
+          "status": 401
+        },
+        {
+          "path": "/block.html?brand=bmw",
+          "status": 401
+        },
+        {
+          "path": "/components.html",
+          "status": 401
+        }
+      ],
+      "overflowPx": 0,
+      "state": "[{\"path\":\"/\",\"status\":401},{\"path\":\"/block.html?brand=bmw\",\"status\":401},{\"path\":\"/components.html\",\"status\":401}] (401 or 404: not served by the hosted GCSP entry)"
+    },
+    {
+      "id": "adj-home",
+      "name": "Static / (retail demo picker, block harness, GCSP component gallery)",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-30-adj-static-home.png"
+      ],
+      "detail": {
+        "path": "/",
+        "status": 200,
+        "title": "Find Your Car — in place",
+        "h1": "Where would you like to go?",
+        "consoleErrors": [],
+        "blockedExternal": 0
+      },
+      "overflowPx": 0,
+      "state": "{\"path\":\"/\",\"status\":200,\"title\":\"Find Your Car — in place\",\"h1\":\"Where would you like to go?\",\"consoleErrors\":[],\"blockedExternal\":0}"
+    },
+    {
+      "id": "adj-block-html-brand-bmw",
+      "name": "Static /block.html?brand=bmw (retail demo picker, block harness, GCSP component gallery)",
+      "pass": false,
+      "screenshots": [],
+      "detail": {
+        "path": "/block.html?brand=bmw",
+        "status": 200,
+        "title": "Find Your Car",
+        "h1": "",
+        "consoleErrors": [
+          "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector @ http://localhost:8787/api/questions"
+        ],
+        "blockedExternal": 1
+      },
+      "overflowPx": null,
+      "state": "{\"path\":\"/block.html?brand=bmw\",\"status\":200,\"title\":\"Find Your Car\",\"h1\":\"\",\"consoleErrors\":[\"Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector @ http://localhost:8787/api/questions\"],\"blockedExternal\":1}",
+      "error": "page.screenshot: Target page, context or browser has been closed"
+    },
+    {
+      "id": "adj-components-html",
+      "name": "Static /components.html (retail demo picker, block harness, GCSP component gallery)",
+      "pass": false,
+      "screenshots": [],
+      "error": "page.goto: Target page, context or browser has been closed",
+      "overflowPx": null
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/favicon.ico",
+      "page": "http://127.0.0.1:8936/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/stock",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/stock",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/stock",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/stock",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_FAILED",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8936/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "url": "http://localhost:8787/api/questions",
+      "page": "http://127.0.0.1:8937/block.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8936/api/gcsp/presenter/scenarios",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "error": "net::ERR_FAILED",
+      "method": "POST"
+    },
+    {
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:8787/api/questions",
+      "error": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "method": "GET"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 400,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/stock",
+      "method": "GET",
+      "body": "{\"status\":\"invalid\",\"code\":\"invalid-manual-draft\",\"reasons\":[{\"field\":\"requestedCollectionDate\",\"reason\":\"Choose a date inside the supplied collection and renewal window.\"}],\"view\":{\"state\":\"validatio"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 400,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/stock",
+      "method": "GET",
+      "body": "{\"status\":\"invalid\",\"code\":\"invalid-manual-draft\",\"reasons\":[{\"field\":\"requestedCollectionDate\",\"reason\":\"Choose a date inside the supplied collection and renewal window.\"}],\"view\":{\"state\":\"validatio"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 503,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/stock",
+      "method": "GET",
+      "body": "{\"status\":\"unavailable\",\"retryable\":true}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 503,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/stock",
+      "method": "GET",
+      "body": "{\"status\":\"unavailable\",\"retryable\":true}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/images/gcsp-missing-car.jpg",
+      "method": "GET",
+      "body": ""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8936/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    }
+  ],
+  "notes": [
+    "New-order journey not run: no fictional principal in the default scenario offers Start a new order. Tried [[\"Paula\",\"replacement journey (rep segment): Choose a replacement, no Start a new order\"],[\"Alex\",[\"Choose a replacement\"]],[\"Sam\",[\"Contact support\"]]]. Sam: Ordering is not supported for this scheme.",
+    "Collection window after release: {\"min\":\"2026-11-13\",\"max\":\"2026-12-01\",\"was\":\"2026-11-12\"}",
+    "Collection window after release: {\"min\":\"2026-11-13\",\"max\":\"2026-12-01\",\"was\":\"2026-11-12\"}",
+    "Collection window after release: {\"min\":\"2026-11-13\",\"max\":\"2026-12-01\",\"was\":\"2026-11-12\"}"
+  ],
+  "screens": [
+    {
+      "screen": "1280-01-rep-account.png",
+      "h1": "Your cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-02-rep-setup-saved.png",
+      "h1": "Your order choices",
+      "rawIds": [],
+      "kebabCaseText": [
+        "twelve-month-12000"
+      ]
+    },
+    {
+      "screen": "1280-03-rep-gallery-empty.png",
+      "h1": "Released cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-04-rep-gallery-after-release.png",
+      "h1": "Released cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-05-rep-gallery-released.png",
+      "h1": "Released cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-06-rep-review.png",
+      "h1": "Review your car",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-07-rep-summary-unticked.png",
+      "h1": "Review your order",
+      "rawIds": [],
+      "kebabCaseText": [
+        "fictional-order-terms-v1"
+      ]
+    },
+    {
+      "screen": "1280-08-rep-summary-ticked.png",
+      "h1": "Review your order",
+      "rawIds": [],
+      "kebabCaseText": [
+        "fictional-order-terms-v1"
+      ]
+    },
+    {
+      "screen": "1280-09-rep-outcome.png",
+      "h1": "Order received",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-10-rep-outcome-print.png",
+      "h1": "Order received",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-11-rep-account-after-order.png",
+      "h1": "Your cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-12-new-account-sam.png",
+      "h1": "Your cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-13-st-setup-saved.png",
+      "h1": "Your order choices",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-14-st-release-and-gallery.png",
+      "h1": "Released cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-15-st-gallery-loading.png",
+      "h1": "Released cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-16-st-outage-setup.png",
+      "h1": "Your order choices",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-17-st-gallery-outage.png",
+      "h1": "Released cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-18-st-gallery-images-404.png",
+      "h1": "Released cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-19-stb-setup-saved.png",
+      "h1": "Your order choices",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-20-stb-release-and-gallery.png",
+      "h1": "Released cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-21-st-review-loading.png",
+      "h1": "Released cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-22-st-review-images-404.png",
+      "h1": "Review your car",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-23-st-review-long-data.png",
+      "h1": "Review your car",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-24-st-final-review-long-data.png",
+      "h1": "Review your order",
+      "rawIds": [],
+      "kebabCaseText": [
+        "fictional-order-terms-v1"
+      ]
+    },
+    {
+      "screen": "1280-25-st-pending-could-not-confirm.png",
+      "h1": "Review your order",
+      "rawIds": [],
+      "kebabCaseText": [
+        "fictional-order-terms-v1"
+      ]
+    },
+    {
+      "screen": "1280-26-st-pending-outcome.png",
+      "h1": "Order received",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-27-exp-setup-saved.png",
+      "h1": "Your order choices",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-28-exp-release-and-gallery.png",
+      "h1": "Released cars",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-29-exp-expired.png",
+      "h1": "Review your order",
+      "rawIds": [],
+      "kebabCaseText": [
+        "fictional-order-terms-v1"
+      ]
+    },
+    {
+      "screen": "1280-30-adj-static-home.png",
+      "h1": "Where would you like to go?",
+      "rawIds": []
+    }
+  ],
+  "rawIdFailures": [],
+  "defects": [
+    {
+      "id": "D3",
+      "severity": "Medium",
+      "fileGuess": "blocks/gcsp/manual-setup/gcsp-manual-setup.js:126 (reason list falls back to contractOptionId)",
+      "observedVsExpected": "Setup lists \"twelve-month-12000: Not available for this driver and scheme.\" Expected the contract option name (for example \"12 months, 12000 mi/year\") instead of the raw option id, as the dropdown already shows.",
+      "step": "rawIdCheck",
+      "screenshot": "browser/1280-02-rep-setup-saved.png"
+    },
+    {
+      "id": "D1",
+      "severity": "Medium",
+      "fileGuess": "blocks/gcsp/manual-gallery/gallery-controller.js (stock 400 mapping)",
+      "observedVsExpected": "After Next release the saved collection date left the window: GET stock answered 400 invalid-manual-draft, and the gallery said \"Availability cannot be checked right now Retry to check current released cars. Refresh availability\". Expected a message that the collection date needs changing with a way to fix it; Refresh availability can never succeed.",
+      "step": "rep-release-gallery",
+      "screenshot": "taken after the step"
+    },
+    {
+      "id": "D2",
+      "severity": "Low",
+      "fileGuess": "blocks/gcsp/account/gcsp-account.js (saved journey card)",
+      "observedVsExpected": "After the order was received the account still showed the \"Replacement journey saved ... This is not an order confirmation. Your saved context has changed ... start the permitted journey again\" card beside \"Your order is in progress\". Expected the saved-journey card to be cleared or reworded once the order exists.",
+      "step": "rep-finish",
+      "screenshot": "taken after the step"
+    }
+  ],
+  "motion": [
+    {
+      "stage": "gallery",
+      "normal": {
+        "maxSeconds": 0.15,
+        "element": "button.vm-btn vm-btn-ghost"
+      },
+      "reduced": {
+        "maxSeconds": 0,
+        "element": null
+      },
+      "pass": true
+    },
+    {
+      "stage": "review",
+      "normal": {
+        "maxSeconds": 0.15,
+        "element": "button.vm-btn vm-btn-ghost"
+      },
+      "reduced": {
+        "maxSeconds": 0,
+        "element": null
+      },
+      "pass": true
+    },
+    {
+      "stage": "final review",
+      "normal": {
+        "maxSeconds": 0.15,
+        "element": "button.vm-btn vm-btn-ghost"
+      },
+      "reduced": {
+        "maxSeconds": 0,
+        "element": null
+      },
+      "pass": true
+    }
+  ],
+  "focus": [
+    {
+      "stage": "review",
+      "stops": 11,
+      "missingIndicator": [],
+      "sample": [
+        "button \"Check current claim\" solid 2px rgb(2, 145, 183)",
+        "summary \"Pinned vehicle details\" solid 2px rgb(2, 145, 183)",
+        "input#gcsp-review-1-contact-phone \"01632 960000\" solid 2px rgb(2, 145, 183)"
+      ],
+      "pass": true
+    },
+    {
+      "stage": "final review",
+      "stops": 17,
+      "missingIndicator": [],
+      "sample": [
+        "button \"Check current claim\" solid 2px rgb(2, 145, 183)",
+        "button \"Change car\" solid 2px rgb(2, 145, 183)",
+        "button \"Change order choices: term, collection a\" solid 2px rgb(2, 145, 183)"
+      ],
+      "pass": true
+    }
+  ],
+  "contrast": [
+    {
+      "stage": "review",
+      "bodyText": 14.59,
+      "primaryButton": {
+        "text": "Continue to order review",
+        "ratio": 5.35
+      },
+      "ghostButton": {
+        "text": "Tick (60 seconds)",
+        "ratio": 7.87
+      },
+      "checked": 160,
+      "lowest": [
+        {
+          "el": "span.gcsp-nav-label",
+          "text": "Your cars",
+          "ratio": 4.67,
+          "large": false
+        },
+        {
+          "el": "a.gcsp-skip",
+          "text": "Skip to content",
+          "ratio": 5.35,
+          "large": false
+        },
+        {
+          "el": "span.gcsp-account-name",
+          "text": "Paula (fictional)",
+          "ratio": 5.35,
+          "large": false
+        },
+        {
+          "el": "button.vm-btn vm-btn-primary",
+          "text": "Continue to order review",
+          "ratio": 5.35,
+          "large": false
+        }
+      ],
+      "belowThreshold": [],
+      "failingCount": 0
+    },
+    {
+      "stage": "final review",
+      "bodyText": 14.59,
+      "primaryButton": {
+        "text": "Reload",
+        "ratio": 5.35
+      },
+      "ghostButton": {
+        "text": "Tick (60 seconds)",
+        "ratio": 7.87
+      },
+      "checked": 159,
+      "lowest": [
+        {
+          "el": "span.gcsp-nav-label",
+          "text": "Your cars",
+          "ratio": 4.67,
+          "large": false
+        },
+        {
+          "el": "a.gcsp-skip",
+          "text": "Skip to content",
+          "ratio": 5.35,
+          "large": false
+        },
+        {
+          "el": "span.gcsp-account-name",
+          "text": "Paula (fictional)",
+          "ratio": 5.35,
+          "large": false
+        },
+        {
+          "el": "span.vm-option-sub",
+          "text": "Available",
+          "ratio": 6.66,
+          "large": false
+        }
+      ],
+      "belowThreshold": [],
+      "failingCount": 0
+    }
+  ],
+  "origin": "http://127.0.0.1:8936",
+  "orderPosts": [
+    "21:15:23.984",
+    "21:23:02.480"
+  ],
+  "finishedAt": "2026-11-08T21:30:59.270Z",
+  "counts": {
+    "steps": 36,
+    "passed": 33,
+    "screenshots": 33,
+    "keyboardChecks": 5
+  }
+}

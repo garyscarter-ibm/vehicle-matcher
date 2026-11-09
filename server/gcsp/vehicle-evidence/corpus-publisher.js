@@ -32,10 +32,28 @@ class CorpusError extends Error {
   constructor(code, detail) { super(detail); this.code = code; }
 }
 const reject = (code, detail) => { throw new CorpusError(code, detail); };
-export const corpusFailure = (error) => ({ status: 'invalid-corpus', failure: {
+/** Clamp a diagnostic: strings to 200 chars, arrays to 10 items, depth to 3; URL-bearing strings are dropped. */
+export function boundDiagnostic(value, depth = 0) {
+  if (typeof value === 'string') return value.includes('://') ? undefined : value.slice(0, 200);
+  if (typeof value === 'number') return Number.isFinite(value) ? value : undefined;
+  if (typeof value === 'boolean') return value;
+  if (depth >= 3 || value === null || typeof value !== 'object') return undefined;
+  if (Array.isArray(value)) return value.slice(0, 10).map((item) => boundDiagnostic(item, depth + 1)).filter((item) => item !== undefined);
+  return Object.fromEntries(Object.entries(value).slice(0, 20).map(([key, item]) => [key.slice(0, 60), boundDiagnostic(item, depth + 1)])
+    .filter(([, item]) => item !== undefined));
+}
+function diagnosticOf(error, phase) {
+  const where = phase ? { phase } : {};
+  if (error instanceof JsonlError) return { ...where, ...error.detail };
+  if (error instanceof CorpusError) return where;
+  const errno = typeof error?.code === 'string' && /^E[A-Z0-9]+$/.test(error.code) ? error.code : undefined;
+  const reason = !errno && typeof error?.message === 'string' && error.message.length <= 200 && !error.message.includes('://') ? error.message : undefined;
+  return { ...where, errorName: error?.name, ...(errno ? { errno } : {}), syscall: error?.syscall, reason };
+}
+export const corpusFailure = (error, phase) => ({ status: 'invalid-corpus', failure: {
   code: (error instanceof CorpusError || error instanceof JsonlError) ? error.code : 'artifact-unavailable',
   message: (error instanceof CorpusError || error instanceof JsonlError) ? error.message : 'Read the complete candidate from an accessible explicit directory; no version was selected.',
-} });
+}, diagnostic: boundDiagnostic(diagnosticOf(error, phase)) });
 const requireValue = (condition, code, detail) => { if (!condition) reject(code, detail); };
 const identityFields = ['vehicleId', 'configurationId', 'snapshotVersion', 'configurationHash', 'corpusVersion',
   'generatorVersion', 'identityKind', 'usage', 'vin17', 'vin7', 'serial', 'profile', 'sourceKind', 'sources',
@@ -316,6 +334,7 @@ function parseJsonl(content, name) {
   });
 }
 export async function validateCorpusDirectory(directory, options = {}) {
+  let phase = 'manifest';
   try {
     requireValue(typeof directory === 'string' && isAbsolute(directory), 'explicit-path-required', 'Supply an absolute artifact directory.');
     const manifestText = await readCorpusFile(directory, 'manifest.json'); let manifest;
@@ -327,6 +346,7 @@ export async function validateCorpusDirectory(directory, options = {}) {
       ...(options.jsonlLimitsForManifest ? { jsonlLimits: options.jsonlLimitsForManifest(contentChecksum(manifestText)) } : {}) };
     const rows = [];
     for (const [i, file] of CORPUS_FILES.entries()) {
+      phase = `${options.indexed === true ? 'index' : 'read'}:${file}`;
       if (options.indexed === true) {
         const indexed = await indexJsonl(join(directory, file), { ...options.jsonlLimits,
           key: (row) => row[['configurationId', 'vehicleId', 'imageId'][i]],
@@ -339,7 +359,8 @@ export async function validateCorpusDirectory(directory, options = {}) {
         rows.push(parseJsonl(content, file));
       }
     }
-    await validateRows(...rows, manifest, options);
+    phase = 'rows'; await validateRows(...rows, manifest, options);
+    phase = 'technical-supplements';
     for (const supplement of manifest.technicalSupplements || []) {
       const row = options.indexed === true ? rows[0].get(supplement.configurationId)
         : rows[0].find(row => row.configurationId === supplement.configurationId);
@@ -348,7 +369,7 @@ export async function validateCorpusDirectory(directory, options = {}) {
     }
     return { status: 'ok', manifest, manifestDigest: contentChecksum(manifestText),
       corpus: freezeCorpus({ manifest, configurations: rows[0], vins: rows[1], images: rows[2] }) };
-  } catch (error) { return corpusFailure(error); }
+  } catch (error) { return corpusFailure(error, phase); }
 }
 export async function durableWrite(path, content, exclusive = false) {
   const file = await open(path, exclusive ? 'wx' : 'w', 0o600);

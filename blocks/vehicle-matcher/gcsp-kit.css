@@ -13,10 +13,10 @@
 .gcsp .vm a:focus-visible,
 .gcsp .vm summary:focus-visible,
 .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
-.gcsp .vm-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 24px; margin: 0; }
+.gcsp .vm-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 14px 24px; margin: 0; }
 .gcsp .vm-fact { min-width: 0; margin: 0; }
-.gcsp .vm-fact-label { color: var(--gcsp-text-muted); font-size: 13px; }
-.gcsp .vm-fact-value { margin: 2px 0 0; overflow-wrap: anywhere; font-size: 16px; font-weight: 600; }
+.gcsp .vm-fact-label { color: var(--gcsp-text-muted); font-size: 13px; overflow-wrap: break-word; }
+.gcsp .vm-fact-value { margin: 2px 0 0; overflow-wrap: break-word; font-size: 16px; font-weight: 600; }
 .gcsp .vm-fact-value.is-missing { color: var(--gcsp-text-muted); font-style: italic; font-weight: 400; }
 .gcsp .vm-status { min-height: 0; padding: 24px; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
 .gcsp .vm-status .vm-btn-primary { min-width: 0; max-width: 100%; }

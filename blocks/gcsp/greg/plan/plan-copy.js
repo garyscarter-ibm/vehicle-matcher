@@ -8,6 +8,8 @@ export { humanise, plural, formatDemoTime };
 export const FORECAST_LABEL = 'Expressed demand';
 export const FORECAST_QUALIFIER = 'deterministic baseline';
 export const FORECAST_NOTE = 'Built from what employees have saved and confirmed they need. It is not a prediction.';
+export const LEARNED_LABEL = 'Synthetic-trained model';
+export const LEARNED_UNREADABLE = 'The learned forecast is unavailable right now, so only the baseline plan is shown.';
 export const PREVIEW_BADGE = 'Preview';
 export const PREVIEW_FALLBACK = 'Preview only. Nothing is saved, published or ordered.';
 export const NO_ORDER = 'No new order recommended';

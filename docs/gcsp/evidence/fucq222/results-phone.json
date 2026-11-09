@@ -1,0 +1,377 @@
+{
+  "story": "fucq222",
+  "chunk": "phone",
+  "entry": "hosted-offline",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "state": "passed",
+  "startedAt": "2026-11-08T23:05:50.618Z",
+  "steps": [
+    {
+      "id": "access-key",
+      "name": "Demo key form opens the offline hosted demo",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Presenter controls YOUR CARS Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car evidence. Choose a replacement Order, collection and vehicle details Your allowance Monthly allowance "
+    },
+    {
+      "id": "setup-saved",
+      "name": "Choose a replacement; Paula saves the earliest permitted date",
+      "pass": true,
+      "screenshots": [
+        "browser/375-01-setup-saved.png"
+      ],
+      "overflowPx": 0,
+      "state": "Your order choices | {\"driver\":\"You: Paula (fictional)\",\"contract\":\"six-month-8000\",\"date\":\"2026-11-12\",\"location\":\"demo-collection-centre\"}",
+      "detail": {
+        "driver": "You: Paula (fictional)",
+        "contract": "six-month-8000",
+        "date": "2026-11-12",
+        "location": "demo-collection-centre"
+      }
+    },
+    {
+      "id": "gallery-before-release",
+      "name": "Continue (keyboard) opens the gallery before any release",
+      "pass": true,
+      "screenshots": [
+        "browser/375-02-gallery-before-release.png"
+      ],
+      "detail": {
+        "cards": 0,
+        "enabled": 0,
+        "status": "No released cars are visible to you yet Refresh availability to check for new releases. Refresh availability"
+      },
+      "overflowPx": 0,
+      "state": "status \"No released cars are visible to you yet Refresh availability to check for new releases. Refresh availability\"; cards 0"
+    },
+    {
+      "id": "stale-date-gallery",
+      "name": "Next release passes the saved date: one Back to your choices, no Refresh availability",
+      "pass": true,
+      "screenshots": [
+        "browser/375-03-stale-date-gallery.png"
+      ],
+      "detail": {
+        "status": "Your saved choices need updating Your requested collection date is no longer available. Go back to your choices and pick a new date. Back to your choices",
+        "statusButtons": [
+          "Back to your choices"
+        ],
+        "pageRefreshButtons": 0,
+        "stockStatus": 400,
+        "clock": "2026-11-06T11:30:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "status \"Your saved choices need updating Your requested collection date is no longer available. Go back to your choices and pick a new date. Back to your choices\"; status buttons [Back to your choices]; stock 400"
+    },
+    {
+      "id": "back-keyboard",
+      "name": "Tab to the status Back to your choices, Enter: setup screen; focus recorded",
+      "pass": true,
+      "screenshots": [
+        "browser/375-04-setup-after-back.png"
+      ],
+      "detail": {
+        "tabHops": 3,
+        "backButtons": [
+          {
+            "disabled": false,
+            "inStatus": true
+          },
+          {
+            "disabled": true,
+            "inStatus": false
+          }
+        ],
+        "notes": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "0 released cars · 0 eligible · 0 shown · 0 eligible shown",
+          "Checking your current reservation.",
+          "Wait for the reservation check before returning to your choices."
+        ],
+        "pageBackEnabledAfterMs": 304,
+        "focusBeforeEnter": "BUTTON \"Back to your choices\" inStatus true",
+        "focusLostEarly": false,
+        "focus": {
+          "tag": "H1",
+          "id": "",
+          "text": "Your order choices"
+        }
+      },
+      "overflowPx": 0,
+      "state": "setup \"Your order choices\"; focus H1# \"Your order choices\""
+    },
+    {
+      "id": "date-recovery",
+      "name": "Pick a later valid date, Save and Continue (keyboard): released cars",
+      "pass": true,
+      "screenshots": [
+        "browser/375-05-gallery-released.png"
+      ],
+      "detail": {
+        "window": {
+          "min": "2026-11-13",
+          "max": "2026-12-01",
+          "was": "2026-11-12",
+          "now": "2026-11-13"
+        },
+        "cards": 20,
+        "enabled": 12,
+        "status": ""
+      },
+      "overflowPx": 0,
+      "state": "window {\"min\":\"2026-11-13\",\"max\":\"2026-12-01\",\"was\":\"2026-11-12\",\"now\":\"2026-11-13\"}; 20 cards, 12 enabled"
+    },
+    {
+      "id": "errors",
+      "name": "No page errors; only the one expected stock 400 and 404s",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "pageErrors": [],
+        "consoleErrors": [
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8941/favicon.ico",
+            "page": "http://127.0.0.1:8941/gcsp/access"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8941/api/gcsp/manual/draft",
+            "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8941/api/gcsp/manual/draft",
+            "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8941/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8941/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8941/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+            "url": "http://127.0.0.1:8941/api/gcsp/manual/stock",
+            "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8941/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+            "url": "http://127.0.0.1:8941/api/gcsp/manual/stock",
+            "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8941/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+          }
+        ],
+        "badResponses": [
+          "404 GET http://127.0.0.1:8941/api/gcsp/manual/draft {\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}",
+          "404 GET http://127.0.0.1:8941/api/gcsp/manual/draft {\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}",
+          "404 GET http://127.0.0.1:8941/api/gcsp/manual/order {\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}",
+          "404 GET http://127.0.0.1:8941/api/gcsp/manual/claim {\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}",
+          "404 GET http://127.0.0.1:8941/api/gcsp/manual/claim {\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}",
+          "400 GET http://127.0.0.1:8941/api/gcsp/manual/stock {\"status\":\"invalid\",\"code\":\"invalid-manual-draft\",\"reasons\":[{\"field\":\"requestedCollectionDate\",\"reason\":\"Choose a date inside the supplied collection and renewal window.\"}],\"view\":{\"state\":\"validatio",
+          "404 GET http://127.0.0.1:8941/api/gcsp/manual/claim {\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}",
+          "400 GET http://127.0.0.1:8941/api/gcsp/manual/stock {\"status\":\"invalid\",\"code\":\"invalid-manual-draft\",\"reasons\":[{\"field\":\"requestedCollectionDate\",\"reason\":\"Choose a date inside the supplied collection and renewal window.\"}],\"view\":{\"state\":\"validatio",
+          "404 GET http://127.0.0.1:8941/api/gcsp/manual/claim {\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+        ],
+        "stock400s": 2,
+        "failedRequests": [
+          {
+            "url": "http://127.0.0.1:8941/api/gcsp/presenter/controls",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          }
+        ]
+      },
+      "overflowPx": 0,
+      "state": "page errors 0; unexpected console 0; stock 400s 2; HTTP >=400: 404 http://127.0.0.1:8941/api/gcsp/manual/draft, 404 http://127.0.0.1:8941/api/gcsp/manual/draft, 404 http://127.0.0.1:8941/api/gcsp/manual/order, 404 http://127.0.0.1:8941/api/gcsp/manual/claim, 404 http://127.0.0.1:8941/api/gcsp/manual/claim, 400 http://127.0.0.1:8941/api/gcsp/manual/stock, 404 http://127.0.0.1:8941/api/gcsp/manual/claim, 400 http://127.0.0.1:8941/api/gcsp/manual/stock, 404 http://127.0.0.1:8941/api/gcsp/manual/claim; failed requests 1"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "gallery",
+      "check": "Tab reaches the status Back to your choices; Enter opens the setup screen",
+      "pass": true,
+      "detail": {
+        "hops": 3,
+        "focus": {
+          "tag": "H1",
+          "id": "",
+          "text": "Your order choices"
+        }
+      }
+    },
+    {
+      "page": "setup",
+      "check": "Save choices and Continue by keyboard reach the released cars",
+      "pass": true,
+      "detail": {
+        "cards": 20,
+        "enabled": 12,
+        "status": ""
+      }
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8941/favicon.ico",
+      "page": "http://127.0.0.1:8941/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/stock",
+      "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/stock",
+      "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8941/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8941/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 400,
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/stock",
+      "method": "GET",
+      "body": "{\"status\":\"invalid\",\"code\":\"invalid-manual-draft\",\"reasons\":[{\"field\":\"requestedCollectionDate\",\"reason\":\"Choose a date inside the supplied collection and renewal window.\"}],\"view\":{\"state\":\"validatio"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 400,
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/stock",
+      "method": "GET",
+      "body": "{\"status\":\"invalid\",\"code\":\"invalid-manual-draft\",\"reasons\":[{\"field\":\"requestedCollectionDate\",\"reason\":\"Choose a date inside the supplied collection and renewal window.\"}],\"view\":{\"state\":\"validatio"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8941/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    }
+  ],
+  "notes": [],
+  "origin": "http://127.0.0.1:8941",
+  "orderPosts": [],
+  "finishedAt": "2026-11-08T23:07:18.533Z",
+  "counts": {
+    "steps": 7,
+    "passed": 7,
+    "screenshots": 5,
+    "keyboardChecks": 3
+  }
+}

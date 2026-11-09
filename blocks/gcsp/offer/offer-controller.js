@@ -118,6 +118,7 @@ export function createOfferController({ read, decide, readReasons, createCommand
         // A failed read cannot turn an uncertain command into confirmed absence/failure.
         state = blocked({ state: afterDecision ? 'uncertain' : failureState,
           message: afterDecision ? 'Your decision could not be confirmed. Check the offer again.'
+            : failureState === 'earlier-run' ? 'This link is from an earlier demo run. Use your latest offer email or open the offer from your account.'
             : outcome?.accessExchange === 'failed' ? 'Open the original email link or open this offer from your account.' : 'The current offer could not be loaded.' });
       } else {
         if (!sameOffer(state.reference, outcome.value?.reference) || outcome.value?.state !== 'pending'

@@ -296,58 +296,112 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
   requireValue(!Object.keys(operations).some((name) => Object.hasOwn(descriptors, name)), 'invalid-session', 'Additional stages cannot replace source operations.');
   const catalogueRegistrations = []; const prior = new Set(batchBinding.existingConfigurationIds);
   const artifact = (entry) => ({ bytes: JSON.stringify(entry.document) + '\n', artifactSha256: entry.sha256, retrievedAt: entry.retrievedAt || entry.document.observation.observedAt });
-  const registration = (state, solver, evidence = state.batchEvidence) => ({ plan, configurationKey: key, producerPins: batchBinding.producerPins,
-    snapshotVersion: batchBinding.snapshotVersion, artifacts: { tree: artifact(evidence.tree), solver: artifact(solver) },
-    definitionBinding: { options: artifact(evidence.options) } });
-  const register = (input) => {
-    const row = buildBmwSelectionBinding(input).record;
-    if (row.sourceKind === 'dated-snapshot' && !catalogueRegistrations.some((value) => same(value.lookupIdentity, row.lookupIdentity)))
-      catalogueRegistrations.push(createBmwSelectionRegistration(input));
-    return row;
+  // FUCQ-151: bindings are pure in their exact artifact bytes, so a digest of those bytes caches the validated result.
+  // Every pass re-hashes the bytes it reads; altered bytes miss the cache and get the full strict build.
+  const bindings = new Map(); const registered = new Set();
+  const pass = () => {
+    const seen = new WeakMap();
+    return (capture) => {
+      let value = seen.get(capture);
+      if (!value) {
+        const entry = artifact(capture); value = { entry, digest: sha256(JSON.stringify([sha256(entry.bytes), entry.artifactSha256, entry.retrievedAt])) };
+        seen.set(capture, value);
+      }
+      return value;
+    };
+  };
+  const resolveBinding = (state, solver, evidence, memo) => {
+    const source = evidence === undefined ? state.batchEvidence : evidence; const parts = [source.tree, solver, source.options].map(memo);
+    return { id: sha256(parts.map((part) => part.digest).join(':')), input: { plan, configurationKey: key, producerPins: batchBinding.producerPins,
+      snapshotVersion: batchBinding.snapshotVersion, artifacts: { tree: parts[0].entry, solver: parts[1].entry }, definitionBinding: { options: parts[2].entry } } };
+  };
+  const remember = (id, row) => {
+    const hit = { recordDigest: inputDigest(row), lookupDigest: inputDigest(row.lookupIdentity), dated: row.sourceKind === 'dated-snapshot' };
+    bindings.set(id, hit); return hit;
+  };
+  const bind = (state, solver, evidence, memo) => {
+    const { id, input } = resolveBinding(state, solver, evidence, memo);
+    return { hit: bindings.get(id) || remember(id, buildBmwSelectionBinding(input).record), input };
+  };
+  const register = ({ hit, input }) => {
+    if (hit.dated && !registered.has(hit.lookupDigest)) { catalogueRegistrations.push(createBmwSelectionRegistration(input)); registered.add(hit.lookupDigest); }
   };
   const stageIdentity = { planDigest: inputDigest(plan), sourceVersion: plan.source.version, toolVersion: COLLECTOR_VERSION, mode,
     signaturePolicyVersion: key.policyVersion, batchBindingDigest: inputDigest(batchBinding) };
-  const validateRetainedCache = (state, allocation) => {
+  const candidatesById = new Map(); for (const candidate of plan.candidates) if (!candidatesById.has(candidate.candidateId)) candidatesById.set(candidate.candidateId, candidate);
+  const solveIndexes = new Map();
+  const candidateForCacheKey = (state, cacheKey) => {
+    const sourceDigest = inputDigest(state.identity.sources.solve ?? null); let index = solveIndexes.get(sourceDigest);
+    if (!index) {
+      index = new Map(); solveIndexes.set(sourceDigest, index);
+      for (const candidate of plan.candidates) {
+        const candidateKey = inputDigest({ operation: 'solve', ...state.identity.sources.solve, request: candidate.request });
+        if (!index.has(candidateKey)) index.set(candidateKey, candidate);
+      }
+    }
+    return index.get(cacheKey);
+  };
+  // Page/tree/options entries must be exact planned reads; retained ones must also match the root context. A fresh active entry is checked by run().
+  const validateBootstrapEntry = (state, cached, context) => {
+    const operation = cached.operation; const payload = cached.payload;
+    requireValue(['page', 'discover', 'options'].includes(operation) && state.identity.sources?.[operation]
+      && cached.cacheKey === inputDigest({ operation, ...state.identity.sources[operation], request: {} }) && object(payload),
+    'cache-corrupt', 'Retained bootstrap entries must be exact planned page, tree or options reads.');
+    if (operation === 'page') {
+      requireValue(same(Object.keys(payload), ['settingsPath']) && typeof payload.settingsPath === 'string' && /^\/en_GB\/settings\.[a-zA-Z0-9]+\.json$/.test(payload.settingsPath),
+        'cache-corrupt', 'A retained page entry holds only its settings path.'); return;
+    }
+    const document = payload.document; const urls = bmwBatchPlanRequestUrls(plan);
+    requireValue(object(document) && object(document.observation) && object(document.report) && payload.sha256 === sha256(JSON.stringify(document) + '\n')
+      && same(document.observation.request, { method: 'GET', url: urls[operation] }), 'cache-corrupt', 'Retained tree and option evidence must match its bytes and planned request.');
+    const root = state.batchEvidence?.[operation === 'discover' ? 'tree' : 'options'];
+    requireValue(!context || !root || same(document.report, root.document.report) && document.observation.responseSha256 === root.document.observation.responseSha256,
+      'cache-corrupt', 'Retained tree and option evidence must match the exact retained model and definition context.');
+  };
+  const validateRetainedCache = (state, allocation, memo = pass(), { context = true } = {}) => {
     requireValue(Array.isArray(allocation.cache) && allocation.cache.length <= plan.limits.cacheEntries && object(allocation.attempts),
       'cache-corrupt', 'Retained allocation caches and spending must remain bounded.');
     for (const cached of allocation.cache) {
-      requireValue(inputDigest(cached.payload) === cached.payloadDigest, 'cache-corrupt', 'Retained response bytes must match their digest.');
-      if (cached.operation !== 'solve') continue;
-      const candidate = plan.candidates.find((candidate) => cached.cacheKey === inputDigest({ operation: 'solve',
-        ...state.identity.sources.solve, request: candidate.request }));
+      requireValue(inputDigest(cached.payload) === cached.payloadDigest && Number.isFinite(cached.expiresAt)
+        && cached.expiresAt <= now() + plan.limits.cacheRetentionMs, 'cache-corrupt', 'Retained response bytes must match their digest and finite expiry.');
+      if (cached.operation !== 'solve') { validateBootstrapEntry(state, cached, context); continue; }
+      const candidate = candidateForCacheKey(state, cached.cacheKey);
       requireValue(candidate && allocation.attempts[cached.cacheKey] === 1 && allocation.batchEvidence
         && same(cached.payload?.document?.observation?.request, { method: 'GET', url: bmwBatchPlanRequestUrls(plan, candidate.request).solve }),
       'cache-corrupt', 'Retained solver evidence must identify a spent exact planned request.');
-      buildBmwSelectionBinding(registration(state, cached.payload, allocation.batchEvidence));
+      bind(state, cached.payload, allocation.batchEvidence, memo);
     }
   };
   const validateState = (state) => {
       requireValue((state.batchEvidence === null || object(state.batchEvidence) && object(state.batchEvidence.tree) && object(state.batchEvidence.options))
         && bounded(state.cursor, 0, plan.candidateCount) && ['sourceCaptures', 'records', 'accepted', 'rejected', 'duplicates'].every((field) =>
           Array.isArray(state[field]) && state[field].length <= plan.candidateCount), 'checkpoint-corrupt', 'Use bounded batch captures and outcomes.');
+      const memo = pass(); const captures = new Map(); const recordDigests = new Set();
+      for (const entry of state.sourceCaptures) if (!captures.has(entry.solver?.sha256)) captures.set(entry.solver?.sha256, entry);
       for (const row of state.records) {
-        const captured = state.sourceCaptures.find((entry) => entry.solver?.sha256 === row.sourceEvidence?.solver);
-        requireValue(captured && state.batchEvidence && qualifyBmwSelectionRecord(row, registration(state, captured.solver, captured.batchEvidence)).status === 'qualified',
-          'source-selection-mismatch', 'Every persisted record must match its exact source capture.');
-        register(registration(state, captured.solver, captured.batchEvidence));
+        const captured = captures.get(row.sourceEvidence?.solver); let bound = null;
+        try { if (captured && state.batchEvidence) bound = bind(state, captured.solver, captured.batchEvidence, memo); } catch { bound = null; }
+        const digest = bound && inputDigest(row);
+        requireValue(bound && digest === bound.hit.recordDigest, 'source-selection-mismatch', 'Every persisted record must match its exact source capture.');
+        recordDigests.add(digest); register(bound);
       }
       for (const row of state.accepted) requireValue(mode === 'live' && row.admission === true
-        && state.records.some((record) => same(record, { ...row, admission: false })),
+        && recordDigests.has(inputDigest({ ...row, admission: false })),
       'source-selection-mismatch', 'Accepted state must retain the exact live source-derived record.');
       for (const captured of state.sourceCaptures) {
-        const candidate = plan.candidates.find((candidate) => candidate.candidateId === captured.candidateId);
+        const candidate = candidatesById.get(captured.candidateId);
         requireValue(candidate && same(captured.solver?.document?.observation?.request,
           { method: 'GET', url: bmwBatchPlanRequestUrls(plan, candidate.request).solve }),
         'checkpoint-corrupt', 'Captures belong to their exact planned queue request.');
-        buildBmwSelectionBinding(registration(state, captured.solver, captured.batchEvidence));
+        bind(state, captured.solver, captured.batchEvidence, memo);
       }
       if (state.continuation) {
         requireValue(object(state.continuation.contract) && same(state.continuation.contract.limits, state.continuation.limits)
           && Array.isArray(state.continuation.retainedAllocations) && state.continuation.retainedAllocations.length <= 32
           && bounded(state.continuation.recoveredSolverResponses, 0, plan.candidateCount),
         'checkpoint-corrupt', 'Continuation identity, retained allocation lineage and recovered responses must remain bounded.');
-        for (const allocation of state.continuation.retainedAllocations) validateRetainedCache(state, allocation);
-        validateRetainedCache(state, { cache: state.cache, attempts: state.attempts, batchEvidence: state.activeBatchEvidence });
+        for (const allocation of state.continuation.retainedAllocations) validateRetainedCache(state, allocation, memo);
+        validateRetainedCache(state, { cache: state.cache, attempts: state.attempts, batchEvidence: state.activeBatchEvidence }, memo, { context: false });
         if (lineage) {
           requireValue(['contract', 'limits', 'allocationIds', 'retainedAllocations', 'priorCounts'].every((field) => same(state.continuation[field], lineage[field]))
             && ['records', 'accepted', 'rejected', 'duplicates', 'sourceCaptures'].every((field) =>
@@ -393,7 +447,7 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
         && ['page', 'settings', 'discover', 'options'].every((operation) => limits.requestBudgets[operation] === 1)
         && bounded(limits.requestBudgets.solve, 0, plan.candidateCount - retained.cursor)
       : bounded(limits[name], 0, plan.limits[name])) && limits.sourceAttempts <= 4 + limits.requestBudgets.solve,
-    'continuation-limits', 'Budget the four fresh bootstrap GETs and bounded remaining solver work within the original ceilings.');
+    'continuation-limits', 'Budget at most four bootstrap GETs (reused entries spend none) and bounded remaining solver work within the original ceilings.');
     const contract = { checkpointPath: resolve(continuation.checkpointPath), checkpointSha256: continuation.checkpointSha256, limits,
       rootPath: previousLineage?.contract.rootPath || resolve(continuation.checkpointPath) };
     const retainedAllocations = [...(previousLineage?.retainedAllocations || []), {
@@ -410,6 +464,25 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
     operations: { ...operations, ...descriptors }, initialState, validateState });
   return { session, catalogueRegistrations, run: async () => {
     if (lineage) {
+      // FUCQ-152: one durable successor per predecessor allocation, reserved before this allocation's own marker.
+      const predecessorId = lineage.allocationIds.at(-1);
+      const successorPath = `${lineage.contract.rootPath}.continuation-successor-${inputDigest(predecessorId)}.json`;
+      const successor = { schemaVersion: '1', predecessorAllocationId: predecessorId, allocation: http.allocation,
+        statePath: resolve(statePath), contract: lineage.contract };
+      let reserved;
+      try { reserved = await open(successorPath, 'wx', 0o600); }
+      catch (error) {
+        if (error.code !== 'EEXIST') throw error;
+        const existing = await readBounded(successorPath, 16384, 'continuation-predecessor-forked');
+        requireValue(existing?.allocation?.id !== http.allocation.id || same(existing, successor),
+          'continuation-allocation-used', 'This allocation is already bound to another continuation checkpoint.');
+        requireValue(same(existing, successor),
+          'continuation-predecessor-forked', 'This predecessor already has a continuation successor; continue from the chain tip instead.');
+      }
+      if (reserved) {
+        try { await reserved.writeFile(JSON.stringify(successor) + '\n'); await reserved.sync(); } finally { await reserved.close(); }
+        const directory = await open(dirname(successorPath), 'r'); try { await directory.sync(); } finally { await directory.close(); }
+      }
       const markerPath = `${lineage.contract.rootPath}.continuation-allocation-${inputDigest(http.allocation.id)}.json`;
       const marker = { schemaVersion: '1', allocation: http.allocation, statePath: resolve(statePath), contract: lineage.contract };
       let file;
@@ -437,7 +510,8 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
       ...(state.continuation ? { allocationCounts: structuredClone({ prior: state.continuation.priorCounts, fresh: state.counts }),
         continuation: { checkpointPath: state.continuation.contract.checkpointPath, checkpointSha256: state.continuation.contract.checkpointSha256,
           recoveredSolverResponses: state.continuation.recoveredSolverResponses,
-          bootstrap: 'fresh-page-settings-tree-options-required-for-ephemeral-capabilities' } } : {}),
+          bootstrap: Object.fromEntries([['reused', state.counts.cacheHits], ['refreshed', state.counts.operations]].map(([name, counts]) =>
+            [name, ['page', 'settings', 'discover', 'options'].filter((operation) => counts[operation] > 0)])) } } : {}),
       coverage: { distinctConfigurations: state.accepted.length, observedDistinctConfigurations: state.records.length, target: plan.target,
         attemptedCandidates: state.continuation ? addCounts(state.continuation.priorCounts, state.counts).operations.solve : state.counts.operations.solve, processedCandidates: state.cursor,
         rejectedCandidates: state.rejected.length, duplicateCandidates: state.duplicates.length,
@@ -446,10 +520,31 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
     if (state.cursor === plan.candidateCount) return report('queue-exhausted');
     // A recreated process cannot replay the spent settings operation to recover ephemeral headers.
     if (state.counts.httpAttempts > 0) { state.halted = 'source-batch-interrupted'; await commit('batch-stop'); return report(state.halted); }
+    if (state.continuation) {
+      // Unexpired safe entries from the lineage are copied unchanged, so original times, hashes and expiry survive; expired ones refetch.
+      let seeded = false;
+      for (const operation of ['page', 'discover', 'options']) {
+        const cacheKey = inputDigest({ operation, ...state.identity.sources[operation], request: {} });
+        if (state.cache.some((row) => row.cacheKey === cacheKey) || state.cache.length >= limits.cacheEntries) continue;
+        const entry = state.continuation.retainedAllocations.flatMap((allocation) => allocation.cache)
+          .findLast((row) => row.cacheKey === cacheKey && row.expiresAt > now());
+        if (entry) { state.cache.push(structuredClone(entry)); seeded = true; }
+      }
+      if (seeded) await commit('continuation-cache-seed');
+    }
     try {
+      const hits = { ...state.counts.cacheHits };
+      const recorded = [state.batchEvidence, ...(state.continuation?.retainedAllocations.map((allocation) => allocation.batchEvidence) || [])];
+      // A reused artifact keeps the retrieval time recorded with its identical bytes; only a fresh one is stamped now.
+      const stamp = (name, entry, operation) => {
+        entry.retrievedAt = state.counts.cacheHits[operation] > hits[operation]
+          ? recorded.find((evidence) => evidence?.[name]?.sha256 === entry.sha256)?.[name].retrievedAt || entry.document.observation.observedAt
+          : new Date(now()).toISOString();
+        return entry;
+      };
       const page = await execute('page', {}); await execute('settings', { path: page.settingsPath });
-      const tree = await execute('discover', {}); tree.retrievedAt = new Date(now()).toISOString();
-      const options = await execute('options', {}); options.retrievedAt = new Date(now()).toISOString();
+      const tree = stamp('tree', await execute('discover', {}), 'discover');
+      const options = stamp('options', await execute('options', {}), 'options');
       if (state.continuation) {
         for (const [name, entry] of Object.entries({ tree, options })) requireValue(same(entry.document.report, state.batchEvidence[name].document.report)
           && entry.document.observation.responseSha256 === state.batchEvidence[name].document.observation.responseSha256,
@@ -470,7 +565,7 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
           }
           solver = structuredClone(cached.payload); evidence = spent.batchEvidence;
           // A retained immutable observation remains evidence after its transport cache expiry.
-          buildBmwSelectionBinding(registration(state, solver, evidence));
+          bind(state, solver, evidence, pass());
           state.continuation.recoveredSolverResponses += 1;
         }
         try { solver ||= await execute('solve', candidate.request); }
@@ -482,7 +577,8 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
         solver.retrievedAt ||= spent ? solver.document.observation.observedAt : new Date(now()).toISOString();
         state.sourceCaptures.push({ candidateId: candidate.candidateId, solver,
           ...(state.continuation ? { batchEvidence: evidence } : {}) });
-        const input = registration(state, solver, evidence); const row = register(input);
+        const { id, input } = resolveBinding(state, solver, evidence, pass()); const row = buildBmwSelectionBinding(input).record;
+        register({ hit: remember(id, row), input });
         if (prior.has(row.configurationId) || state.records.some((record) => record.configurationId === row.configurationId))
           state.duplicates.push({ candidateId: candidate.candidateId, configurationId: row.configurationId, solverChanges: row.solverChanges,
             priorBatch: prior.has(row.configurationId) });

@@ -1,0 +1,625 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-115",
+  "status": "author-only-cancellation-repair-awaiting-independent-review",
+  "observedAt": "2026-11-06T02:05:51.154429+00:00",
+  "parentSourceCommit": "c4b72aaf53b412f4092bd8925ffd0bb6c7831b84",
+  "originalAcceptedExecutionSource": "73533d7c092911317f177469fc3e99fd37b5afaa",
+  "diagnosis": {
+    "reproduction": "No runtime reproduction authorised or run. Source review confirms cancellation can escape after Popen returns before tree.register persists ownership.",
+    "cause": "Supervisor-local handle was not yet in ProcessTree; process-is-None branch and empty ownership proof could accept absence.",
+    "affectedWritersReaders": [
+      "Owned activation supervisor Popen/register/finally paths",
+      "Owned ProcessTree registration/proof/stop_join and Finalizer deletion/release boundary"
+    ],
+    "existingEvidence": "Original failed preallocation and accepted actual activation evidence unchanged; accepted run does not prove the cancellation edge.",
+    "nextCheck": "Independent exact-delta review, then only a separately granted finite lifecycle fault-injection selection if required; no activation/training rerun."
+  },
+  "repair": {
+    "creationOwner": "ProcessTree.launch retains Popen handle before the caller receives it",
+    "cancellation": "SIGTERM/SIGINT handled cancellation deferred through complete registration, manifest save and strict readback; restored handlers and KeyboardInterrupt after ownership is durable",
+    "uncertainty": "Sticky pending latch and persisted creating state forbid empty absence proof when launch/registration/readback fails, including no returned handle",
+    "directHandle": "Fallback stop/join runs in finally even when metadata/probe persistence fails; incomplete registration still refuses deletion/release",
+    "caller": "Supervisor finally recovers tree.process when cancellation prevented return assignment"
+  },
+  "freeze": {
+    "path": "docs/gcsp/models/fucq115-activation-admission.json",
+    "beforeSHA256": "1fc1376aadeaa5e6652bf923356ae457074ae43697750f819ddb31934b55c9d9",
+    "afterSHA256": "2c7596db6b70126e71bda2902b4aeec92c3f1d883963ad1f175fdb4f0667e073",
+    "nodes": 204,
+    "unchangedNodes": 202,
+    "changedNodes": [
+      {
+        "path": "docs/gcsp/models/fucq115-activation-resources.py",
+        "changedFields": [
+          "bytes",
+          "sha256"
+        ],
+        "before": {
+          "kind": "file",
+          "device": 16777232,
+          "inode": 173156473,
+          "mode": 420,
+          "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/docs/gcsp/models/fucq115-activation-resources.py",
+          "targetDevice": 16777232,
+          "targetInode": 173156473,
+          "bytes": 23276,
+          "sha256": "362b879cbb29da02ffb4fae8bc641b98bee95ac3ba29cd8b52514b2657684c41"
+        },
+        "after": {
+          "kind": "file",
+          "device": 16777232,
+          "inode": 173156473,
+          "mode": 420,
+          "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/docs/gcsp/models/fucq115-activation-resources.py",
+          "targetDevice": 16777232,
+          "targetInode": 173156473,
+          "bytes": 26788,
+          "sha256": "b759c332df8393a7a0ded5f287406631295aba2c706105a332afc7961c7f4c55"
+        }
+      },
+      {
+        "path": "docs/gcsp/models/fucq115-activation-supervisor.py",
+        "changedFields": [
+          "bytes",
+          "sha256"
+        ],
+        "before": {
+          "kind": "file",
+          "device": 16777232,
+          "inode": 173144852,
+          "mode": 420,
+          "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/docs/gcsp/models/fucq115-activation-supervisor.py",
+          "targetDevice": 16777232,
+          "targetInode": 173144852,
+          "bytes": 15200,
+          "sha256": "1e5a0811b8cad6cf449905f72c1da49c59d9f6f486c95c791e40b3d496deefe9"
+        },
+        "after": {
+          "kind": "file",
+          "device": 16777232,
+          "inode": 173144852,
+          "mode": 420,
+          "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/docs/gcsp/models/fucq115-activation-supervisor.py",
+          "targetDevice": 16777232,
+          "targetInode": 173144852,
+          "bytes": 15378,
+          "sha256": "0c9c5d6241ec5cd56349ecb099dc2036b07a22f90128ae632e651eae1630d230"
+        }
+      }
+    ],
+    "allOtherAdmissionFieldsUnchanged": true,
+    "installedFiles": 138,
+    "packages": 14,
+    "absenceProbes": 37,
+    "sourceFiles": 77,
+    "sourceBytes": 4349951,
+    "sourcePlanSHA256": "f884ae94ff85455aa8d56c38e0ed7e2be58d960a862e99359f5f318694fa65aa"
+  },
+  "authorChecks": [
+    {
+      "path": "docs/gcsp/models/fucq115-activation-resources.py",
+      "sha256": "b759c332df8393a7a0ded5f287406631295aba2c706105a332afc7961c7f4c55",
+      "AST": "passed",
+      "compileWithoutExecution": "passed"
+    },
+    {
+      "path": "docs/gcsp/models/fucq115-activation-supervisor.py",
+      "sha256": "0c9c5d6241ec5cd56349ecb099dc2036b07a22f90128ae632e651eae1630d230",
+      "AST": "passed",
+      "compileWithoutExecution": "passed"
+    },
+    {
+      "path": "docs/gcsp/models/fucq115-activation-freeze.py",
+      "sha256": "28ad3a2fa5af1a8a6fa37244dfa15481c7fe1dfa5725f032d7f45b69c9e0b192",
+      "AST": "passed",
+      "compileWithoutExecution": "passed"
+    }
+  ],
+  "unchangedEvidenceAndEntryPaths": [
+    "docs/gcsp/models/fucq115-activation-source-plan.json",
+    "docs/gcsp/models/fucq115-activation-run.mjs",
+    "docs/gcsp/models/fucq115-activation-launch.mjs",
+    "docs/gcsp/models/fucq115-activation-freeze.py",
+    "docs/gcsp/models/fucq115-activation-run-receipt.json",
+    "docs/gcsp/models/fucq115-activation-result.md",
+    "docs/gcsp/models/fucq115-activation-success-receipt.json",
+    "docs/gcsp/models/fucq115-activation-success-report.json",
+    "docs/gcsp/models/fucq115-activation-published-command.json",
+    "docs/gcsp/models/artifacts/2ce1109d986c7709bf9505f8e388e9c1479ff3c36e7cae86f656ff29bb973c7d.json"
+  ],
+  "execution": {
+    "newGrant": null,
+    "testRuns": 0,
+    "JavaScriptImports": 0,
+    "NodeLaunches": 0,
+    "processQueries": 0,
+    "resourceReservations": 0,
+    "scratchAllocations": 0,
+    "trainingSettingsMetricsRuns": 0,
+    "fullSuiteRuns": 0,
+    "metadataOnlyFreeze": true,
+    "lifecycleRuntimeResult": "unproved; authoring/static checks only"
+  },
+  "sharedIntegrationSnapshot": {
+    "ref": "refs/heads/gcsp-poc",
+    "commit": "bef528ba2f3a37ccee7faf75d4f09a09f3a4bd8c",
+    "basis": "Read-only local ref at fixed commit; no fetch/merge/source installation or latest-remote claim",
+    "counts": {
+      "same": 37,
+      "different": 7,
+      "absent": 33
+    },
+    "files": [
+      {
+        "path": "blocks/vehicle-matcher/feedback-actions.js",
+        "state": "same",
+        "acceptedSHA256": "eb6dcfb82aed8045228797f870a5e337ef7f0a8f3e136eb46804995d71838744",
+        "sharedSHA256": "eb6dcfb82aed8045228797f870a5e337ef7f0a8f3e136eb46804995d71838744"
+      },
+      {
+        "path": "docs/gcsp/evidence/fucq103/fucq115-dated-policy-command.json",
+        "state": "absent",
+        "acceptedSHA256": "f7424c94b73d6a027f89c6b794fe261ea81807469cfa9e0cfc36482bab35f579",
+        "sharedSHA256": null
+      },
+      {
+        "path": "docs/gcsp/models/artifacts/2ce1109d986c7709bf9505f8e388e9c1479ff3c36e7cae86f656ff29bb973c7d.json",
+        "state": "absent",
+        "acceptedSHA256": "a2ee4271a91a2a02182fa9d5797acd7723a9bc776207aad19f5190cb223ddd86",
+        "sharedSHA256": null
+      },
+      {
+        "path": "docs/gcsp/models/choice-training-dataset.json",
+        "state": "absent",
+        "acceptedSHA256": "49738aadd1f22ffee43df4d6d9e06695cb1ada6cca3c033bc8c0913b13dc6926",
+        "sharedSHA256": null
+      },
+      {
+        "path": "docs/gcsp/models/choice-training-policy-base.json",
+        "state": "absent",
+        "acceptedSHA256": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31",
+        "sharedSHA256": null
+      },
+      {
+        "path": "docs/gcsp/models/choice-training-policy.json",
+        "state": "absent",
+        "acceptedSHA256": "c2079525f409b0b8b94e23d2fbd0b0b8cba0dfe54bc22d46476ae3ec8a3b0f85",
+        "sharedSHA256": null
+      },
+      {
+        "path": "scripts/gcsp/generate-learning-records.mjs",
+        "state": "absent",
+        "acceptedSHA256": "bc58997977e3bc4f7e3e165b07d4e01efa7e0fd446b936954ee835d2cfa0bb61",
+        "sharedSHA256": null
+      },
+      {
+        "path": "scripts/gcsp/train-choice-model.mjs",
+        "state": "absent",
+        "acceptedSHA256": "67e8558fc7dbfa228ac83cbdf2e4947f5bfd6f682b820f7fc8c141fe69260609",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/brands.js",
+        "state": "same",
+        "acceptedSHA256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+        "sharedSHA256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2"
+      },
+      {
+        "path": "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json",
+        "state": "same",
+        "acceptedSHA256": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa",
+        "sharedSHA256": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa"
+      },
+      {
+        "path": "server/engine.js",
+        "state": "same",
+        "acceptedSHA256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
+        "sharedSHA256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550"
+      },
+      {
+        "path": "server/gcsp/brief/activity.js",
+        "state": "same",
+        "acceptedSHA256": "dbf317b5aba98b1f6a723692e108a1b1a83637fb61e76ca33729dd90fe8b8f6f",
+        "sharedSHA256": "dbf317b5aba98b1f6a723692e108a1b1a83637fb61e76ca33729dd90fe8b8f6f"
+      },
+      {
+        "path": "server/gcsp/brief/editor.js",
+        "state": "same",
+        "acceptedSHA256": "df70b807923069db3b9d2b4a99ecd3ca887bc7683c5e536065c145c2664e8dc1",
+        "sharedSHA256": "df70b807923069db3b9d2b4a99ecd3ca887bc7683c5e536065c145c2664e8dc1"
+      },
+      {
+        "path": "server/gcsp/brief/index.js",
+        "state": "same",
+        "acceptedSHA256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418",
+        "sharedSHA256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418"
+      },
+      {
+        "path": "server/gcsp/clock/index.js",
+        "state": "different",
+        "acceptedSHA256": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
+        "sharedSHA256": "a1726ddc4ad11deb0b7044480d745180d4c7dff42b34e77305a090b35d38e40a"
+      },
+      {
+        "path": "server/gcsp/comparison/generator.js",
+        "state": "same",
+        "acceptedSHA256": "596c26adfaef43443914e90f2675b528309e85d5fee5459aedc661845b0917cc",
+        "sharedSHA256": "596c26adfaef43443914e90f2675b528309e85d5fee5459aedc661845b0917cc"
+      },
+      {
+        "path": "server/gcsp/fixtures/principals.js",
+        "state": "same",
+        "acceptedSHA256": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f",
+        "sharedSHA256": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f"
+      },
+      {
+        "path": "server/gcsp/fixtures/scenario-v1.js",
+        "state": "same",
+        "acceptedSHA256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
+        "sharedSHA256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4"
+      },
+      {
+        "path": "server/gcsp/fixtures/scenarios/catalogue-v1.js",
+        "state": "same",
+        "acceptedSHA256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c",
+        "sharedSHA256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c"
+      },
+      {
+        "path": "server/gcsp/fixtures/scenarios/index.js",
+        "state": "same",
+        "acceptedSHA256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4",
+        "sharedSHA256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4"
+      },
+      {
+        "path": "server/gcsp/greg/index.js",
+        "state": "same",
+        "acceptedSHA256": "2457f2a122a9c1ee9b4014a65ae384f36bf83916d496fce744bcc8fc24182e0b",
+        "sharedSHA256": "2457f2a122a9c1ee9b4014a65ae384f36bf83916d496fce744bcc8fc24182e0b"
+      },
+      {
+        "path": "server/gcsp/greg/publish/fit.js",
+        "state": "absent",
+        "acceptedSHA256": "eb0187dcf268f9d27befdec0f2a5b99aa72f2fe22b5b0824edf24b4c1643ff6c",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/greg/publish/index.js",
+        "state": "absent",
+        "acceptedSHA256": "fdfaeee63bf42f39c66ecae357a4a940f2813db7f4b97b94dcb1503e9d79a6fb",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/identity/http.js",
+        "state": "same",
+        "acceptedSHA256": "c9f004bd943a7ed9b975cbe20aa23a5270760d61427e0360b966cb21490fd8d7",
+        "sharedSHA256": "c9f004bd943a7ed9b975cbe20aa23a5270760d61427e0360b966cb21490fd8d7"
+      },
+      {
+        "path": "server/gcsp/identity/index.js",
+        "state": "different",
+        "acceptedSHA256": "4c60cd226ecceefcedd86c7da73a410bfabbeddbb05aab1aa997c98639f7612c",
+        "sharedSHA256": "7b23c7a6f251edaa54ce8921eb29734976447239afd3cb58343d79f9e153c152"
+      },
+      {
+        "path": "server/gcsp/manual-context/fixtures.js",
+        "state": "same",
+        "acceptedSHA256": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6",
+        "sharedSHA256": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6"
+      },
+      {
+        "path": "server/gcsp/manual-context/index.js",
+        "state": "same",
+        "acceptedSHA256": "13601990b08dc420ffe51948a874de7299fce88991924b8447192c29c0acedf7",
+        "sharedSHA256": "13601990b08dc420ffe51948a874de7299fce88991924b8447192c29c0acedf7"
+      },
+      {
+        "path": "server/gcsp/manual-context/ports.js",
+        "state": "same",
+        "acceptedSHA256": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267",
+        "sharedSHA256": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267"
+      },
+      {
+        "path": "server/gcsp/migrations/index.js",
+        "state": "same",
+        "acceptedSHA256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+        "sharedSHA256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f"
+      },
+      {
+        "path": "server/gcsp/policy/activation.js",
+        "state": "absent",
+        "acceptedSHA256": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/policy/adoption.js",
+        "state": "absent",
+        "acceptedSHA256": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/policy/file-provider.js",
+        "state": "same",
+        "acceptedSHA256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+        "sharedSHA256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad"
+      },
+      {
+        "path": "server/gcsp/policy/index.js",
+        "state": "different",
+        "acceptedSHA256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+        "sharedSHA256": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c"
+      },
+      {
+        "path": "server/gcsp/policy/memory-provider.js",
+        "state": "same",
+        "acceptedSHA256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+        "sharedSHA256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53"
+      },
+      {
+        "path": "server/gcsp/policy/postgres-provider.js",
+        "state": "same",
+        "acceptedSHA256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+        "sharedSHA256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12"
+      },
+      {
+        "path": "server/gcsp/policy/publish.js",
+        "state": "different",
+        "acceptedSHA256": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+        "sharedSHA256": "5731771b1b7607028cd923c33038a0a0da113d463b8042fdd0b60d9f0a63d023"
+      },
+      {
+        "path": "server/gcsp/policy/reviewed-definitions.js",
+        "state": "absent",
+        "acceptedSHA256": "4bb860c1f3f06c897924a4f6a4f849e2c95c4dd12ccbb2ab136f14bbfb337507",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json",
+        "state": "absent",
+        "acceptedSHA256": "89565ec7fa05db042e623c6c88c132542505f7757848e61784f38d49b8391987",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/policy/reviewed/greg-publish-editor-v1.json",
+        "state": "absent",
+        "acceptedSHA256": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json",
+        "state": "absent",
+        "acceptedSHA256": "1f1b632be83ddef1a5656288b4e40c0378736cda5c21fcf03de68544dfbe688f",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/policy/reviewed/presenter-controls-v1.json",
+        "state": "absent",
+        "acceptedSHA256": "0e09fc7cde7677724153265042eb1f7a122c88115762a736a4bdf02a4b2e470a",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/policy/seed-v1.json",
+        "state": "different",
+        "acceptedSHA256": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31",
+        "sharedSHA256": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6"
+      },
+      {
+        "path": "server/gcsp/predict/model/artifact.js",
+        "state": "absent",
+        "acceptedSHA256": "f470c4512e09259a443ea4ceb81e29602d1606893a4179b7385ec9338983808b",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/model/baselines.js",
+        "state": "absent",
+        "acceptedSHA256": "812f7d5236d2ef020610e24b2369906cd68db483a02f5e5f6d5463a590717660",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/model/dataset.js",
+        "state": "absent",
+        "acceptedSHA256": "9972b1823a2d4c929c9067940ccd95deb46ce27265fa5f081864a974738b36dc",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/model/features.js",
+        "state": "absent",
+        "acceptedSHA256": "36983ebd66dffa5bd79bbea6cf274232882a203572d174ffc0977787f9d54878",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/model/index.js",
+        "state": "absent",
+        "acceptedSHA256": "dc95fea1e7a1615bcca954c9b0a80e0442c4667b649a134fcf49cfdfe1dd9369",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/model/metrics.js",
+        "state": "absent",
+        "acceptedSHA256": "73537e5718796ff4afc669119e15ee7fa10e30195749991673757fb15bb10be7",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/model/optimizer.js",
+        "state": "absent",
+        "acceptedSHA256": "f7dee4b01895f1e4d0f2d3c335fe657cb44ac3eefd5cd3fb43e67e47b15c9e1b",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/model/pipeline.js",
+        "state": "absent",
+        "acceptedSHA256": "68a50080d5207e11372954e6ecd822b9c894702e35541d885c22cbec1af4ac23",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/model/policy.js",
+        "state": "absent",
+        "acceptedSHA256": "8b576970039f35ca28269b16db81085c35ee430690395e157e3c87bdf3c6bf83",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/model/split.js",
+        "state": "absent",
+        "acceptedSHA256": "7865dcb3c41921f5598918db268860ee68c5ab4b20a2577c393f3c86cd80b154",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/records/dataset.js",
+        "state": "absent",
+        "acceptedSHA256": "5d5eaf954def2ee605a0ed27410de6915c8fc691a3bcf02c15e6a4f33107b423",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/records/generator.js",
+        "state": "absent",
+        "acceptedSHA256": "a0f3703e5d9dc7fad3491db8a2206ce7165807011d819421c711e1c5e6d099c9",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/records/index.js",
+        "state": "absent",
+        "acceptedSHA256": "e623314a8cca26b7418e32656addafc7e13a1cc7a93d80c51dc03698e2968221",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/records/observed.js",
+        "state": "absent",
+        "acceptedSHA256": "913a6c11d6c874b16a2ae4eb151edf5d72984180b9d13b8e392e5d88244511e0",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/records/policy-definitions.json",
+        "state": "absent",
+        "acceptedSHA256": "c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/predict/records/schema.js",
+        "state": "absent",
+        "acceptedSHA256": "429fcc4abcb6bcf92e1b94291f9ea19a20f3883dc8d1add630a2434f84c394f5",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/presenter-controls/commands.js",
+        "state": "absent",
+        "acceptedSHA256": "89b21a616e479c27f54d0004fe54d3b93e2cfd557e803b8bc38c717e619a627a",
+        "sharedSHA256": null
+      },
+      {
+        "path": "server/gcsp/recommendation/index.js",
+        "state": "same",
+        "acceptedSHA256": "f0595fa37434b139d953db0ca89754ada08c9f6902abf3ea924addd2b72b6036",
+        "sharedSHA256": "f0595fa37434b139d953db0ca89754ada08c9f6902abf3ea924addd2b72b6036"
+      },
+      {
+        "path": "server/gcsp/repository/core.js",
+        "state": "same",
+        "acceptedSHA256": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+        "sharedSHA256": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311"
+      },
+      {
+        "path": "server/gcsp/repository/index.js",
+        "state": "same",
+        "acceptedSHA256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+        "sharedSHA256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16"
+      },
+      {
+        "path": "server/gcsp/repository/memory.js",
+        "state": "same",
+        "acceptedSHA256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+        "sharedSHA256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866"
+      },
+      {
+        "path": "server/gcsp/repository/postgres.js",
+        "state": "same",
+        "acceptedSHA256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+        "sharedSHA256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da"
+      },
+      {
+        "path": "server/gcsp/repository/schema.js",
+        "state": "same",
+        "acceptedSHA256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+        "sharedSHA256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a"
+      },
+      {
+        "path": "server/gcsp/runtime.js",
+        "state": "different",
+        "acceptedSHA256": "25e7c02cda0c3f09f0daec33d191514f88a9ccd2074d90ef6adb687ef1c34aa8",
+        "sharedSHA256": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16"
+      },
+      {
+        "path": "server/gcsp/vehicle-evidence/corpus-publisher.js",
+        "state": "same",
+        "acceptedSHA256": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
+        "sharedSHA256": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49"
+      },
+      {
+        "path": "server/gcsp/vehicle-evidence/synthetic-registry.js",
+        "state": "same",
+        "acceptedSHA256": "758f3a20ec9d0bbb6fd4853df16e0e3c8e891f732165a5584d7de5698aa7221f",
+        "sharedSHA256": "758f3a20ec9d0bbb6fd4853df16e0e3c8e891f732165a5584d7de5698aa7221f"
+      },
+      {
+        "path": "server/gcsp/vehicle-evidence/vin-allocation.js",
+        "state": "same",
+        "acceptedSHA256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+        "sharedSHA256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e"
+      },
+      {
+        "path": "server/gcsp/vehicle-evidence/vin-generator.js",
+        "state": "same",
+        "acceptedSHA256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+        "sharedSHA256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f"
+      },
+      {
+        "path": "server/gcsp/vehicle-evidence/vin-profiles.js",
+        "state": "same",
+        "acceptedSHA256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+        "sharedSHA256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd"
+      },
+      {
+        "path": "server/package.json",
+        "state": "same",
+        "acceptedSHA256": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+        "sharedSHA256": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+      },
+      {
+        "path": "server/questions.js",
+        "state": "same",
+        "acceptedSHA256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
+        "sharedSHA256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d"
+      },
+      {
+        "path": "server/scenarios/employee/index.js",
+        "state": "different",
+        "acceptedSHA256": "50e3b25317158c29605420af080c1ec6bd76ded94d298d33badfc90a4dc0d91c",
+        "sharedSHA256": "43f50c04794902dd1d10a008f7882d335c1b5179f1c57a3f4ab9ea1293f7d844"
+      },
+      {
+        "path": "server/vehicle-evidence/bmw-catalogue-adapter.js",
+        "state": "same",
+        "acceptedSHA256": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+        "sharedSHA256": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1"
+      },
+      {
+        "path": "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json",
+        "state": "same",
+        "acceptedSHA256": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+        "sharedSHA256": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3"
+      },
+      {
+        "path": "server/vehicles/index.js",
+        "state": "same",
+        "acceptedSHA256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc",
+        "sharedSHA256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc"
+      }
+    ]
+  },
+  "authoredFullRequirement": {
+    "story": "_dev/in-progress/DEV-2026-11-04-092.md validate: npm test passes",
+    "packageCommand": "node --test server/test/**/*.test.js",
+    "status": "unrun; no full stamp",
+    "prerequisites": "Dispatcher-agreed combined source including published canonical103, actual113 and own model/artifact, exact current caller/contract delta selection, resource-owned serial launcher and independent repair admission; no native/corpus boundary waived"
+  },
+  "remaining": "See fucq115-final-validation-plan.md for exact proposed fault boundaries and conditional selected integration checks; no execution grant or story completion."
+}

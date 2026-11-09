@@ -82,7 +82,7 @@ test('existing pure v2 enrichment uses the accepted catalogue and captured repre
 });
 
 test('prepared runner refuses absent release; isolated complete fixture persists tuple before one asset and emits existing enrichment output', async (t) => {
-  const { mkdtemp, mkdir, rm, symlink, writeFile, copyFile } = await import('node:fs/promises');
+  const { mkdtemp, mkdir, rm, symlink, writeFile, copyFile, realpath } = await import('node:fs/promises');
   const { tmpdir } = await import('node:os'); const { join, dirname } = await import('node:path'); const { fileURLToPath } = await import('node:url');
   const { execFile } = await import('node:child_process'); const { promisify } = await import('node:util');
   const actualRoot = fileURLToPath(new URL('../../', import.meta.url)); const relative = 'docs/gcsp/evidence/fucq60/v2-image-capture-2026-11-07';
@@ -95,16 +95,25 @@ test('prepared runner refuses absent release; isolated complete fixture persists
     if (before[index] === null) await assert.rejects(readFile(join(actualBase, name)), { code: 'ENOENT' });
     else assert.deepEqual(await readFile(join(actualBase, name)), before[index]);
   }
-  const root = await mkdtemp(join(tmpdir(), 'f60-capture-')); t.after(() => rm(root, { recursive: true, force: true }));
+  // The runner compares its pinned primary with its own resolved path, so a symlinked TMPDIR (/tmp, /var) must be resolved.
+  const root = await realpath(await mkdtemp(join(tmpdir(), 'f60-capture-'))); t.after(() => rm(root, { recursive: true, force: true }));
   for (const name of ['scripts', 'server', '_tools']) await symlink(join(actualRoot, name), join(root, name), 'dir');
   const allocation = JSON.parse(await readFile(join(actualBase, 'execution-plan.json'))); const base = join(root, relative);
+  // The retained plan pins 7 Nov code; the fixture run exercises the runner flow against current code (FUCQ-230).
+  const { createHash } = await import('node:crypto');
+  for (const k of Object.keys(allocation.codePins).filter((p) => !p.startsWith('docs/'))) allocation.codePins[k] = createHash('sha256').update(await readFile(join(actualRoot, k))).digest('hex');
   const copied = [...Object.keys(allocation.codePins).filter((p) => p.startsWith('docs/')), allocation.acceptedSource.path, allocation.technical.path];
   for (const p of copied) { await mkdir(dirname(join(root, p)), { recursive: true }); await copyFile(join(actualRoot, p), join(root, p)); }
   allocation.primary = join(base, 'image-checkpoint.json'); await writeFile(join(base, 'execution-plan.json'), JSON.stringify(allocation));
   const loader = join(root, 'fixture.mjs');
   await writeFile(loader, `import { readFile } from 'node:fs/promises';\nconst bytes=await readFile(${JSON.stringify(join(actualRoot, 'server/vehicle-evidence/assets/bmw-gb-i5-images-2026-11-01.v1/alpine-white.webp'))});\nlet calls=0;globalThis.fetch=async(url)=>{calls+=1;if(calls>4)throw new Error('extra-call');if(url.includes('/configure/'))return new Response('settings.fixture.json',{headers:{'content-type':'text/html'}});if(url.includes('/settings.'))return Response.json({APP:{backend:{settingsCosy:{baseUrl:'https://prod.cosy.bmw.cloud','x-api-key':'ephemeral-fixture-secret'}}}});if(url.includes('/image-urls/'))return Response.json({'stage-fullscreen-views-legacy-newnames':{desktop:{metaData:{width:2560,height:1646},namedImages:[{name:'FixtureActualGroup',images:[{viewImage:${JSON.stringify(assetUrl)},distinctionParameters:{POV:'HEROFRONT',X:'1720',Y:'500',BKGND:'sand'}}]}]}}});if(url===${JSON.stringify(assetUrl)}){const primary=JSON.parse(await readFile(${JSON.stringify(join(base, 'image-checkpoint.json'))}));if(primary.selectedVariant?.namedImage!=='FixtureActualGroup')throw new Error('variant-not-retained-before-asset');return new Response(bytes,{headers:{'content-type':'image/webp'}});}throw new Error('unallocated-url');};`);
+  // The retained runner only runs on its plan's qualification day (FUCQ-230); pin the child's clock to it.
+  const datePin = (day) => `const Real = Date; const offset = Real.parse('${day}T12:00:00.000Z') - Real.now();\n`
+    + `globalThis.Date = class extends Real { constructor(...a) { super(...(a.length ? a : [Real.now() + offset])); } static now() { return Real.now() + offset; } };\n`;
+  const day = JSON.parse(await readFile(join(actualBase, 'image-plan.json'))).qualificationDate;
+  const datePinPath = join(root, 'date-pin.mjs'); await writeFile(datePinPath, datePin(day));
   const env = { PATH: process.env.PATH, F60_V2_IMAGE_SOURCE_GRANT: allocation.id };
-  await promisify(execFile)(process.execPath, ['--import', loader, join(base, 'run-live.mjs')], { env, timeout: 20000 });
+  await promisify(execFile)(process.execPath, ['--import', datePinPath, '--import', loader, join(base, 'run-live.mjs')], { env, timeout: 20000 });
   const receipt = JSON.parse(await readFile(join(base, 'receipt.json'))); assert.equal(receipt.status, 'captured');
   assert.equal(receipt.ledger.requestCount, 4); assert.equal(receipt.ledger.imageCount, 1); assert.equal(receipt.opaqueAssetUrlRetained, false);
   const out = JSON.parse(await readFile(join(base, 'enrichment.json'))); assert.equal(out.records[0].facts.seats.value, 5); assert.ok(out.records[0].image);
@@ -112,9 +121,9 @@ test('prepared runner refuses absent release; isolated complete fixture persists
   for (const name of ['receipt.json', 'image-checkpoint.json', 'image.json', 'enrichment.json']) {
     const retained = await readFile(join(base, name), 'utf8'); assert.equal(retained.includes('fixture-never-retain'), false); assert.equal(retained.includes('ephemeral-fixture-secret'), false);
   }
-  await assert.rejects(promisify(execFile)(process.execPath, ['--import', loader, join(base, 'run-live.mjs')], { env, timeout: 10000 }),
+  await assert.rejects(promisify(execFile)(process.execPath, ['--import', datePinPath, '--import', loader, join(base, 'run-live.mjs')], { env, timeout: 10000 }),
     (error) => error.stderr.includes('existing-output-preserved'));
   allocation.planDigest = '0'.repeat(64); await writeFile(join(base, 'execution-plan.json'), JSON.stringify(allocation));
-  await assert.rejects(promisify(execFile)(process.execPath, ['--import', loader, join(base, 'run-live.mjs')], { env, timeout: 10000 }),
+  await assert.rejects(promisify(execFile)(process.execPath, ['--import', datePinPath, '--import', loader, join(base, 'run-live.mjs')], { env, timeout: 10000 }),
     (error) => error.stderr.includes('source-plan-date-mismatch'));
 });

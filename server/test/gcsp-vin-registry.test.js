@@ -189,3 +189,34 @@ test('source-backed presentation survives restart, replay and failed activation 
   await writeFile(join(path, 'configurations.jsonl'), '{'); assert.equal((await restarted.publish(path)).status, 'invalid-corpus');
   assert.deepEqual(restarted.getConfiguration(id), before); assert.equal(calls, 0);
 });
+
+test('a failed selected version keeps its specific diagnostic while the previous valid selection stays readable', async (t) => {
+  const root = await temporary(t); const first = await corpusInput(); const port = registry(root);
+  await port.publish(await candidate(root, 'v1', first));
+  const added = await corpusInput({ count: 2, version: '2', datasetId: 'later-dataset', inventory: first.allocationInventory });
+  assert.equal((await port.publish(await candidate(root, 'v2', added))).status, 'ok');
+  const vin = first.allocationInventory.records[0].vin17; const versions = join(root, 'store', 'versions');
+  const [older, newer] = (await readdir(versions)).sort((a, b) => (a === port.status().active.manifestDigest ? 1 : 0) - (b === port.status().active.manifestDigest ? 1 : 0));
+  await writeFile(join(versions, newer, 'configurations.jsonl'), '{"a":1}\nbroken\n');
+  const reopened = registry(root); const result = await reopened.load();
+  assert.equal(result.status, 'source-unavailable'); assert.equal(result.recovered, true); assert.equal(result.stillActive.version, '1');
+  assert.deepEqual(result.failure, { code: 'selected-corpus-invalid', message: 'The selected complete corpus failed validation.' });
+  assert.equal(result.diagnostic.selection, 'selected'); assert.equal(result.diagnostic.cause.code, 'malformed-jsonl');
+  assert.deepEqual({ ...result.diagnostic, cause: undefined }, { selection: 'selected', cause: undefined, phase: 'index:configurations.jsonl',
+    file: 'configurations.jsonl', check: 'parse', record: 2, offset: 8 });
+  assert.equal(result.previousDiagnostic, undefined);
+  assert.equal(reopened.getVin(vin).status, 'partial'); assert.equal(reopened.getVin(vin).identityKind, 'synthetic');
+  assert.equal(Object.hasOwn(presentCorpusLoad(result), 'diagnostic'), false);
+  assert.equal(JSON.stringify(presentCorpusLoad(result)).includes('configurations.jsonl'), false);
+  await writeFile(join(versions, older, 'vins.jsonl'), 'broken');
+  const both = await registry(root).load();
+  assert.equal(both.failure.code, 'selected-corpus-invalid'); assert.equal(both.recovered, undefined);
+  assert.equal(both.diagnostic.selection, 'selected'); assert.equal(both.previousDiagnostic.selection, 'previous');
+  assert.equal(both.previousDiagnostic.phase, 'index:vins.jsonl');
+});
+test('store and history load failures keep the error name and errno beside the unchanged failure', async (t) => {
+  const root = await temporary(t); const port = registry(root); await port.publish(await candidate(root, 'v1', await corpusInput()));
+  await writeFile(join(root, 'store', 'identity-inventory.json'), '{');
+  const result = await registry(root).load();
+  assert.equal(result.failure.code, 'identity-inventory-unavailable'); assert.deepEqual(result.diagnostic, { errorName: 'SyntaxError' });
+});

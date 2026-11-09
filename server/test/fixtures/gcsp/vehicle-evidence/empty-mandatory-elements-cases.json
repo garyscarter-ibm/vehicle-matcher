@@ -1,0 +1,849 @@
+{
+ "source": "docs/gcsp/evidence/fucq62/fleet-dot7-offline/diagnose-results.json",
+ "sourceSha256": "426cff2529efac4f3dfd166f44d39f13b196978f459dc4a805cdc3499a1668c6",
+ "manifestDigest": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+ "cases": [
+  {
+   "vgModelCode": "1F7A",
+   "request": {
+    "id": "MUY3QTpGS1VTVyxQMEM2UixTMDFDQixTMDFDRSxTMDFERixTMDFIMixTMDIzMCxTMDJQQSxTMDJURixTMDJWQixTMDJWRCxTMDMwMixTMDQyOCxTMDQzVCxTMDQ3OCxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc2MCxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURw==",
+    "kind": "configuration"
+   },
+   "direct": {
+    "completeness": {
+     "availableOptions": "unknown",
+     "images": "unknown",
+     "measurements": "unknown",
+     "optionDefinitions": "unknown",
+     "record": "partial",
+     "selectedOptions": "complete",
+     "verifiedFitted": "unknown"
+    },
+    "contractVersion": "1.0.0",
+    "description": {
+     "bodyType": {
+      "completeness": "unknown",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "source-evidence-unavailable",
+      "state": "unknown",
+      "value": null
+     },
+     "derivative": {
+      "completeness": "unknown",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "source-evidence-unavailable",
+      "state": "unknown",
+      "value": null
+     },
+     "generation": {
+      "completeness": "partial",
+      "provenance": {
+       "kind": "observed",
+       "observedDate": "2026-11-07",
+       "source": [
+        "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/1F7A/options/languages/en",
+        "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=F70&future-models=true&closest-fallback=true",
+        "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/1F7A?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKUSW%2CP0C6R%2CS01H2&mandatory-elements="
+       ]
+      },
+      "state": "known",
+      "value": "F70"
+     },
+     "model": {
+      "completeness": "unknown",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "source-evidence-unavailable",
+      "state": "unknown",
+      "value": null
+     },
+     "paint": {
+      "reason": "source-selection-unavailable",
+      "selections": [],
+      "state": "unknown"
+     },
+     "powertrain": {
+      "drive": {
+       "completeness": "unknown",
+       "provenance": {
+        "kind": "unknown",
+        "observedDate": null,
+        "source": null
+       },
+       "reason": "source-evidence-unavailable",
+       "state": "unknown",
+       "value": null
+      },
+      "engine": {
+       "completeness": "unknown",
+       "provenance": {
+        "kind": "unknown",
+        "observedDate": null,
+        "source": null
+       },
+       "reason": "source-evidence-unavailable",
+       "state": "unknown",
+       "value": null
+      },
+      "fuel": {
+       "completeness": "unknown",
+       "provenance": {
+        "kind": "unknown",
+        "observedDate": null,
+        "source": null
+       },
+       "reason": "source-evidence-unavailable",
+       "state": "unknown",
+       "value": null
+      },
+      "transmission": {
+       "completeness": "unknown",
+       "provenance": {
+        "kind": "unknown",
+        "observedDate": null,
+        "source": null
+       },
+       "reason": "source-evidence-unavailable",
+       "state": "unknown",
+       "value": null
+      }
+     },
+     "upholstery": {
+      "reason": "source-selection-unavailable",
+      "selections": [],
+      "state": "unknown"
+     }
+    },
+    "equipment": {
+     "available": {
+      "codes": [],
+      "complete": false,
+      "completeness": "unknown",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "state": "unknown"
+     },
+     "definitions": [],
+     "selected": {
+      "accessories": [],
+      "accessoryCodesComplete": true,
+      "accessoryQuantitiesComplete": true,
+      "factoryComplete": true,
+      "options": [
+       "FKUSW",
+       "P0C6R",
+       "S01CB",
+       "S01CE",
+       "S01DF",
+       "S01H2",
+       "S0230",
+       "S02PA",
+       "S02TF",
+       "S02VB",
+       "S02VD",
+       "S0302",
+       "S0428",
+       "S043T",
+       "S0478",
+       "S0494",
+       "S0534",
+       "S05AS",
+       "S05AV",
+       "S05DM",
+       "S0654",
+       "S06AE",
+       "S06AF",
+       "S06PA",
+       "S0760",
+       "S0812",
+       "S0850",
+       "S0853",
+       "S088K",
+       "S08KA",
+       "S08R3",
+       "S08R9",
+       "S08SM",
+       "S08TF",
+       "S08TG"
+      ],
+      "provenance": {
+       "kind": "observed",
+       "observedDate": "2026-11-07",
+       "source": "BMW UK catalogue"
+      },
+      "state": "known"
+     },
+     "verifiedFitted": {
+      "codes": null,
+      "reason": "source-does-not-verify-fitting",
+      "state": "unknown"
+     }
+    },
+    "failure": null,
+    "identity": {
+     "configurationId": "MUY3QTpGS1VTVyxQMEM2UixTMDFDQixTMDFDRSxTMDFERixTMDFIMixTMDIzMCxTMDJQQSxTMDJURixTMDJWQixTMDJWRCxTMDMwMixTMDQyOCxTMDQzVCxTMDQ3OCxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc2MCxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURw==",
+     "datasetId": "gcsp-source-fleet",
+     "identityKind": "synthetic",
+     "kind": "configuration",
+     "orderNumber": null,
+     "orderUuid": null,
+     "originatingDatasetId": "gcsp-source-fleet",
+     "usage": "configuration",
+     "vehicleId": null,
+     "vin": null
+    },
+    "images": {
+     "items": [],
+     "label": "Images unavailable",
+     "state": "unknown"
+    },
+    "presentation": {
+     "associationLabel": "Fictional identity association to retained configuration evidence; not a factory build or authentication.",
+     "imageLabel": "Images unavailable",
+     "sourceLabel": "Dated catalogue snapshot",
+     "syntheticLabel": "Synthetic identity",
+     "unknownLabel": "Unknown",
+     "verifiedFittedLabel": "VIN-fitted equipment unknown"
+    },
+    "provider": "local-vehicle-evidence",
+    "providerVersion": "1",
+    "requested": {
+     "id": "MUY3QTpGS1VTVyxQMEM2UixTMDFDQixTMDFDRSxTMDFERixTMDFIMixTMDIzMCxTMDJQQSxTMDJURixTMDJWQixTMDJWRCxTMDMwMixTMDQyOCxTMDQzVCxTMDQ3OCxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc2MCxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURw==",
+     "kind": "configuration"
+    },
+    "resolved": {
+     "configurationId": "MUY3QTpGS1VTVyxQMEM2UixTMDFDQixTMDFDRSxTMDFERixTMDFIMixTMDIzMCxTMDJQQSxTMDJURixTMDJWQixTMDJWRCxTMDMwMixTMDQyOCxTMDQzVCxTMDQ3OCxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc2MCxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURw==",
+     "id": "MUY3QTpGS1VTVyxQMEM2UixTMDFDQixTMDFDRSxTMDFERixTMDFIMixTMDIzMCxTMDJQQSxTMDJURixTMDJWQixTMDJWRCxTMDMwMixTMDQyOCxTMDQzVCxTMDQ3OCxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc2MCxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURw==",
+     "kind": "configuration"
+    },
+    "routing": {
+     "liveEligible": false,
+     "mode": "offline"
+    },
+    "schemaVersion": "1",
+    "source": {
+     "agModelCode": "82GE",
+     "catalogueDate": "2026-11-07",
+     "catalogueValidity": null,
+     "completeVinDecoded": false,
+     "confidence": "Complete source factory selection; physical build unknown",
+     "configurationIdentity": {
+      "agModelCode": "82GE",
+      "factoryOptionCodes": [
+       "FKUSW",
+       "P0C6R",
+       "S01CB",
+       "S01CE",
+       "S01DF",
+       "S01H2",
+       "S0230",
+       "S02PA",
+       "S02TF",
+       "S02VB",
+       "S02VD",
+       "S0302",
+       "S0428",
+       "S043T",
+       "S0478",
+       "S0494",
+       "S0534",
+       "S05AS",
+       "S05AV",
+       "S05DM",
+       "S0654",
+       "S06AE",
+       "S06AF",
+       "S06PA",
+       "S0760",
+       "S0812",
+       "S0850",
+       "S0853",
+       "S088K",
+       "S08KA",
+       "S08R3",
+       "S08R9",
+       "S08SM",
+       "S08TF",
+       "S08TG"
+      ],
+      "provenance": {
+       "kind": "observed",
+       "observedDate": "2026-11-07",
+       "source": "BMW UK catalogue"
+      },
+      "vgModelCode": "1F7A"
+     },
+     "identityProvenance": {
+      "kind": "observed",
+      "observedDate": "2026-11-07",
+      "source": "BMW UK catalogue"
+     },
+     "kind": "dated-snapshot",
+     "market": "GB",
+     "modelYear": null,
+     "observedDate": "2026-11-07",
+     "productionDate": null,
+     "productionEra": null,
+     "profile": null,
+     "profileConfidence": null,
+     "profileSources": null,
+     "references": [
+      "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/1F7A/options/languages/en",
+      "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=F70&future-models=true&closest-fallback=true",
+      "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/1F7A?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKUSW%2CP0C6R%2CS01H2&mandatory-elements="
+     ],
+     "region": null,
+     "registrationDate": null,
+     "requestedIdentity": {
+      "bindingDigest": "228a2d3a03be336c7b96514300c5cade8b6dc29d592433a92a01493c00b8fb06",
+      "configurationId": "MUY3QTpGS1VTVyxQMEM2UixTMDFDQixTMDFDRSxTMDFERixTMDFIMixTMDIzMCxTMDJQQSxTMDJURixTMDJWQixTMDJWRCxTMDMwMixTMDQyOCxTMDQzVCxTMDQ3OCxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc2MCxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURw==",
+      "snapshotVersion": "f70-model-breadth-pilot-20261107.v2"
+     },
+     "resolvedIdentity": {
+      "bindingDigest": "228a2d3a03be336c7b96514300c5cade8b6dc29d592433a92a01493c00b8fb06",
+      "configurationId": "MUY3QTpGS1VTVyxQMEM2UixTMDFDQixTMDFDRSxTMDFERixTMDFIMixTMDIzMCxTMDJQQSxTMDJURixTMDJWQixTMDJWRCxTMDMwMixTMDQyOCxTMDQzVCxTMDQ3OCxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc2MCxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURw==",
+      "snapshotVersion": "f70-model-breadth-pilot-20261107.v2"
+     },
+     "retrievedDate": "2026-11-07",
+     "steering": null,
+     "unresolvedFacts": [
+      "model",
+      "derivative",
+      "body",
+      "powertrain",
+      "drive",
+      "transmission",
+      "engineCode",
+      "region",
+      "steering",
+      "modelYear",
+      "productionEra",
+      "productionDate",
+      "plant"
+     ],
+     "vgModelCode": "1F7A"
+    },
+    "status": "partial",
+    "technical": {
+     "acceleration": {
+      "completeness": "unknown",
+      "definition": "0–100 KM/H",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "no-resolved-evidence",
+      "state": "unknown",
+      "unit": "SECONDS",
+      "value": null
+     },
+     "bodyLength": {
+      "completeness": "unknown",
+      "definition": "BODY LENGTH",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "no-resolved-evidence",
+      "state": "unknown",
+      "unit": "MILLIMETRES",
+      "value": null
+     },
+     "luggageExpanded": {
+      "completeness": "unknown",
+      "definition": "EXPANDED",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "no-resolved-evidence",
+      "state": "unknown",
+      "unit": "LITRES",
+      "value": null
+     },
+     "luggageNormal": {
+      "completeness": "unknown",
+      "definition": "NORMAL",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "no-resolved-evidence",
+      "state": "unknown",
+      "unit": "LITRES",
+      "value": null
+     },
+     "seats": {
+      "completeness": "unknown",
+      "definition": "SEATS",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "no-resolved-evidence",
+      "state": "unknown",
+      "unit": "COUNT",
+      "value": null
+     }
+    },
+    "versions": {
+     "corpus": "2026-11-07.7",
+     "generator": null,
+     "manifestDigest": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+     "profileRegistry": null,
+     "snapshot": "f70-model-breadth-pilot-20261107.v2"
+    }
+   }
+  },
+  {
+   "vgModelCode": "1F7C",
+   "request": {
+    "id": "MUY3QzpGS1VNWSxQMEM1NixTMDFDQixTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDNNMSxTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc1NCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMixTMDlUQSxTMDlUQg==",
+    "kind": "configuration"
+   },
+   "direct": {
+    "completeness": {
+     "availableOptions": "unknown",
+     "images": "unknown",
+     "measurements": "unknown",
+     "optionDefinitions": "unknown",
+     "record": "partial",
+     "selectedOptions": "complete",
+     "verifiedFitted": "unknown"
+    },
+    "contractVersion": "1.0.0",
+    "description": {
+     "bodyType": {
+      "completeness": "unknown",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "source-evidence-unavailable",
+      "state": "unknown",
+      "value": null
+     },
+     "derivative": {
+      "completeness": "unknown",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "source-evidence-unavailable",
+      "state": "unknown",
+      "value": null
+     },
+     "generation": {
+      "completeness": "partial",
+      "provenance": {
+       "kind": "observed",
+       "observedDate": "2026-11-07",
+       "source": [
+        "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/1F7C/options/languages/en",
+        "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=F70&future-models=true&closest-fallback=true",
+        "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/1F7C?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKUMY%2CP0C56%2CS01H5&mandatory-elements="
+       ]
+      },
+      "state": "known",
+      "value": "F70"
+     },
+     "model": {
+      "completeness": "unknown",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "source-evidence-unavailable",
+      "state": "unknown",
+      "value": null
+     },
+     "paint": {
+      "reason": "source-selection-unavailable",
+      "selections": [],
+      "state": "unknown"
+     },
+     "powertrain": {
+      "drive": {
+       "completeness": "unknown",
+       "provenance": {
+        "kind": "unknown",
+        "observedDate": null,
+        "source": null
+       },
+       "reason": "source-evidence-unavailable",
+       "state": "unknown",
+       "value": null
+      },
+      "engine": {
+       "completeness": "unknown",
+       "provenance": {
+        "kind": "unknown",
+        "observedDate": null,
+        "source": null
+       },
+       "reason": "source-evidence-unavailable",
+       "state": "unknown",
+       "value": null
+      },
+      "fuel": {
+       "completeness": "unknown",
+       "provenance": {
+        "kind": "unknown",
+        "observedDate": null,
+        "source": null
+       },
+       "reason": "source-evidence-unavailable",
+       "state": "unknown",
+       "value": null
+      },
+      "transmission": {
+       "completeness": "unknown",
+       "provenance": {
+        "kind": "unknown",
+        "observedDate": null,
+        "source": null
+       },
+       "reason": "source-evidence-unavailable",
+       "state": "unknown",
+       "value": null
+      }
+     },
+     "upholstery": {
+      "reason": "source-selection-unavailable",
+      "selections": [],
+      "state": "unknown"
+     }
+    },
+    "equipment": {
+     "available": {
+      "codes": [],
+      "complete": false,
+      "completeness": "unknown",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "state": "unknown"
+     },
+     "definitions": [],
+     "selected": {
+      "accessories": [],
+      "accessoryCodesComplete": true,
+      "accessoryQuantitiesComplete": true,
+      "factoryComplete": true,
+      "options": [
+       "FKUMY",
+       "P0C56",
+       "S01CB",
+       "S01DF",
+       "S01H5",
+       "S0230",
+       "S02PA",
+       "S02TE",
+       "S02VB",
+       "S02VD",
+       "S02VF",
+       "S0302",
+       "S03M1",
+       "S0420",
+       "S0428",
+       "S043Z",
+       "S0478",
+       "S0481",
+       "S0494",
+       "S0534",
+       "S05AS",
+       "S05AV",
+       "S05DM",
+       "S0654",
+       "S0674",
+       "S06AE",
+       "S06AF",
+       "S06PA",
+       "S0754",
+       "S0760",
+       "S0775",
+       "S0812",
+       "S0850",
+       "S0853",
+       "S088K",
+       "S08KA",
+       "S08R3",
+       "S08R9",
+       "S08SM",
+       "S08TF",
+       "S08TG",
+       "S09T1",
+       "S09T2",
+       "S09TA",
+       "S09TB"
+      ],
+      "provenance": {
+       "kind": "observed",
+       "observedDate": "2026-11-07",
+       "source": "BMW UK catalogue"
+      },
+      "state": "known"
+     },
+     "verifiedFitted": {
+      "codes": null,
+      "reason": "source-does-not-verify-fitting",
+      "state": "unknown"
+     }
+    },
+    "failure": null,
+    "identity": {
+     "configurationId": "MUY3QzpGS1VNWSxQMEM1NixTMDFDQixTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDNNMSxTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc1NCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMixTMDlUQSxTMDlUQg==",
+     "datasetId": "gcsp-source-fleet",
+     "identityKind": "synthetic",
+     "kind": "configuration",
+     "orderNumber": null,
+     "orderUuid": null,
+     "originatingDatasetId": "gcsp-source-fleet",
+     "usage": "configuration",
+     "vehicleId": null,
+     "vin": null
+    },
+    "images": {
+     "items": [],
+     "label": "Images unavailable",
+     "state": "unknown"
+    },
+    "presentation": {
+     "associationLabel": "Fictional identity association to retained configuration evidence; not a factory build or authentication.",
+     "imageLabel": "Images unavailable",
+     "sourceLabel": "Dated catalogue snapshot",
+     "syntheticLabel": "Synthetic identity",
+     "unknownLabel": "Unknown",
+     "verifiedFittedLabel": "VIN-fitted equipment unknown"
+    },
+    "provider": "local-vehicle-evidence",
+    "providerVersion": "1",
+    "requested": {
+     "id": "MUY3QzpGS1VNWSxQMEM1NixTMDFDQixTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDNNMSxTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc1NCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMixTMDlUQSxTMDlUQg==",
+     "kind": "configuration"
+    },
+    "resolved": {
+     "configurationId": "MUY3QzpGS1VNWSxQMEM1NixTMDFDQixTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDNNMSxTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc1NCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMixTMDlUQSxTMDlUQg==",
+     "id": "MUY3QzpGS1VNWSxQMEM1NixTMDFDQixTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDNNMSxTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc1NCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMixTMDlUQSxTMDlUQg==",
+     "kind": "configuration"
+    },
+    "routing": {
+     "liveEligible": false,
+     "mode": "offline"
+    },
+    "schemaVersion": "1",
+    "source": {
+     "agModelCode": "22GE",
+     "catalogueDate": "2026-11-07",
+     "catalogueValidity": null,
+     "completeVinDecoded": false,
+     "confidence": "Complete source factory selection; physical build unknown",
+     "configurationIdentity": {
+      "agModelCode": "22GE",
+      "factoryOptionCodes": [
+       "FKUMY",
+       "P0C56",
+       "S01CB",
+       "S01DF",
+       "S01H5",
+       "S0230",
+       "S02PA",
+       "S02TE",
+       "S02VB",
+       "S02VD",
+       "S02VF",
+       "S0302",
+       "S03M1",
+       "S0420",
+       "S0428",
+       "S043Z",
+       "S0478",
+       "S0481",
+       "S0494",
+       "S0534",
+       "S05AS",
+       "S05AV",
+       "S05DM",
+       "S0654",
+       "S0674",
+       "S06AE",
+       "S06AF",
+       "S06PA",
+       "S0754",
+       "S0760",
+       "S0775",
+       "S0812",
+       "S0850",
+       "S0853",
+       "S088K",
+       "S08KA",
+       "S08R3",
+       "S08R9",
+       "S08SM",
+       "S08TF",
+       "S08TG",
+       "S09T1",
+       "S09T2",
+       "S09TA",
+       "S09TB"
+      ],
+      "provenance": {
+       "kind": "observed",
+       "observedDate": "2026-11-07",
+       "source": "BMW UK catalogue"
+      },
+      "vgModelCode": "1F7C"
+     },
+     "identityProvenance": {
+      "kind": "observed",
+      "observedDate": "2026-11-07",
+      "source": "BMW UK catalogue"
+     },
+     "kind": "dated-snapshot",
+     "market": "GB",
+     "modelYear": null,
+     "observedDate": "2026-11-07",
+     "productionDate": null,
+     "productionEra": null,
+     "profile": null,
+     "profileConfidence": null,
+     "profileSources": null,
+     "references": [
+      "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/1F7C/options/languages/en",
+      "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=F70&future-models=true&closest-fallback=true",
+      "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/1F7C?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKUMY%2CP0C56%2CS01H5&mandatory-elements="
+     ],
+     "region": null,
+     "registrationDate": null,
+     "requestedIdentity": {
+      "bindingDigest": "b54ca850eb00e4835f800c4d44969d8ffe342ec90cdc1f5b35e9f13fa8ea5d21",
+      "configurationId": "MUY3QzpGS1VNWSxQMEM1NixTMDFDQixTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDNNMSxTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc1NCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMixTMDlUQSxTMDlUQg==",
+      "snapshotVersion": "f70-model-breadth-pilot-20261107.v2"
+     },
+     "resolvedIdentity": {
+      "bindingDigest": "b54ca850eb00e4835f800c4d44969d8ffe342ec90cdc1f5b35e9f13fa8ea5d21",
+      "configurationId": "MUY3QzpGS1VNWSxQMEM1NixTMDFDQixTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDNNMSxTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc1NCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMixTMDlUQSxTMDlUQg==",
+      "snapshotVersion": "f70-model-breadth-pilot-20261107.v2"
+     },
+     "retrievedDate": "2026-11-07",
+     "steering": null,
+     "unresolvedFacts": [
+      "model",
+      "derivative",
+      "body",
+      "powertrain",
+      "drive",
+      "transmission",
+      "engineCode",
+      "region",
+      "steering",
+      "modelYear",
+      "productionEra",
+      "productionDate",
+      "plant"
+     ],
+     "vgModelCode": "1F7C"
+    },
+    "status": "partial",
+    "technical": {
+     "acceleration": {
+      "completeness": "unknown",
+      "definition": "0–100 KM/H",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "no-resolved-evidence",
+      "state": "unknown",
+      "unit": "SECONDS",
+      "value": null
+     },
+     "bodyLength": {
+      "completeness": "unknown",
+      "definition": "BODY LENGTH",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "no-resolved-evidence",
+      "state": "unknown",
+      "unit": "MILLIMETRES",
+      "value": null
+     },
+     "luggageExpanded": {
+      "completeness": "unknown",
+      "definition": "EXPANDED",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "no-resolved-evidence",
+      "state": "unknown",
+      "unit": "LITRES",
+      "value": null
+     },
+     "luggageNormal": {
+      "completeness": "unknown",
+      "definition": "NORMAL",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "no-resolved-evidence",
+      "state": "unknown",
+      "unit": "LITRES",
+      "value": null
+     },
+     "seats": {
+      "completeness": "unknown",
+      "definition": "SEATS",
+      "provenance": {
+       "kind": "unknown",
+       "observedDate": null,
+       "source": null
+      },
+      "reason": "no-resolved-evidence",
+      "state": "unknown",
+      "unit": "COUNT",
+      "value": null
+     }
+    },
+    "versions": {
+     "corpus": "2026-11-07.7",
+     "generator": null,
+     "manifestDigest": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+     "profileRegistry": null,
+     "snapshot": "f70-model-breadth-pilot-20261107.v2"
+    }
+   }
+  }
+ ]
+}

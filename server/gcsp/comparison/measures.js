@@ -61,34 +61,40 @@ function validRule(ruleRow) {
   return rule;
 }
 
-function entry(measure, betterWhen, pairs, rule) {
-  const current = summariseSeeds(pairs.map(([c]) => c));
-  const buddy = summariseSeeds(pairs.map(([, b]) => b));
-  const both = pairs.filter(([c, b]) => numeric(c) && numeric(b));
-  const diffs = both.map(([c, b]) => round(b - c));
-  const difference = Object.freeze({ mean: current.observedSeeds && buddy.observedSeeds ? round(buddy.mean - current.mean) : null,
+// left/right name the two sides; difference is right minus left, and wins name the verdict for each side.
+function entry(measure, betterWhen, pairs, rule, [left, right], [leftWins, rightWins]) {
+  const l = summariseSeeds(pairs.map(([a]) => a));
+  const r = summariseSeeds(pairs.map(([, b]) => b));
+  const both = pairs.filter(([a, b]) => numeric(a) && numeric(b));
+  const diffs = both.map(([a, b]) => round(b - a));
+  const difference = Object.freeze({ mean: l.observedSeeds && r.observedSeeds ? round(r.mean - l.mean) : null,
     min: diffs.length ? Math.min(...diffs) : null, max: diffs.length ? Math.max(...diffs) : null });
   let verdict;
   if (both.length < rule.minimumSeeds) verdict = 'insufficient-seeds';
   else {
-    const overlap = rule.overlapInclusive ? current.min <= buddy.max && buddy.min <= current.max
-      : current.min < buddy.max && buddy.min < current.max;
+    const overlap = rule.overlapInclusive ? l.min <= r.max && r.min <= l.max : l.min < r.max && r.min < l.max;
     // A shared single point is not a difference even when overlap is exclusive.
-    const samePoint = current.min === current.max && buddy.min === buddy.max && current.min === buddy.min;
+    const samePoint = l.min === l.max && r.min === r.max && l.min === r.min;
     if (overlap || samePoint) verdict = 'no-clear-difference';
-    else verdict = (buddy.min > current.max) === (betterWhen === 'higher') ? 'buddy-better' : 'current-better';
+    else verdict = (r.min > l.max) === (betterWhen === 'higher') ? rightWins : leftWins;
   }
-  return { measure, betterWhen, current, buddy, difference, verdict };
+  return { measure, betterWhen, [left]: l, [right]: r, difference, verdict };
+}
+
+function compareSides(perSeed, ruleRow, sides, wins) {
+  const rule = validRule(ruleRow);
+  const [left, right] = sides;
+  if (!Array.isArray(perSeed)) refuse('perSeed');
+  const groups = [...new Set(perSeed.flatMap((seed) => sides.flatMap((side) => Object.keys(seed[side]?.accessGroupCoverage ?? {}))))].sort(byId);
+  const pairsOf = (read) => perSeed.map((seed) => [read(seed[left]), read(seed[right])]);
+  return freezeVehicleData([
+    ...SCALAR_MEASURES.map((name) => entry(name, rule.betterWhen[name], pairsOf((m) => m?.[name]), rule, sides, wins)),
+    ...groups.map((id) => entry(`${GROUP_PREFIX}${id}`, rule.betterWhen.accessGroupCoverage, pairsOf((m) => m?.accessGroupCoverage?.[id]), rule, sides, wins)),
+  ]);
 }
 
 /** One honest entry per measure and access group; nothing is dropped, so wins and losses both show. */
-export function compareRoutes(perSeed, ruleRow) {
-  const rule = validRule(ruleRow);
-  if (!Array.isArray(perSeed)) refuse('perSeed');
-  const groups = [...new Set(perSeed.flatMap((seed) => ['current', 'buddy'].flatMap((route) => Object.keys(seed[route]?.accessGroupCoverage ?? {}))))].sort(byId);
-  const pairsOf = (read) => perSeed.map((seed) => [read(seed.current), read(seed.buddy)]);
-  return freezeVehicleData([
-    ...SCALAR_MEASURES.map((name) => entry(name, rule.betterWhen[name], pairsOf((m) => m?.[name]), rule)),
-    ...groups.map((id) => entry(`${GROUP_PREFIX}${id}`, rule.betterWhen.accessGroupCoverage, pairsOf((m) => m?.accessGroupCoverage?.[id]), rule)),
-  ]);
-}
+export const compareRoutes = (perSeed, ruleRow) => compareSides(perSeed, ruleRow, ['current', 'buddy'], ['current-better', 'buddy-better']);
+
+/** Variant against baseline, paired by seed: entries as compareRoutes with baseline and variant sides, difference variant minus baseline. */
+export const compareArms = (perSeed, ruleRow) => compareSides(perSeed, ruleRow, ['baseline', 'variant'], ['baseline-better', 'variant-better']);

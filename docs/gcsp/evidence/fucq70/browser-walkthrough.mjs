@@ -1,10 +1,11 @@
-// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72.
+// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq237|fucq238 (fucq145, fucq222 and fucq224 also have chunk phone, 375x812; fucq223 and fucq238 have desktop, phone and narrow).
 // Spawns `node index.js` in server/ offline (GCSP_OFFLINE=1, memory repository). FUCQ70_* names still work as fallbacks for WALK_*.
 import { spawn, spawnSync } from 'node:child_process';
+import { createServer } from 'node:http';
 import { once } from 'node:events';
 import { randomBytes } from 'node:crypto';
-import { mkdir, writeFile, rm, readdir } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
+import { mkdir, writeFile, rm, readdir, readFile } from 'node:fs/promises';
+import { extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/index.mjs';
 
@@ -12,16 +13,17 @@ const HERE = fileURLToPath(new URL('.', import.meta.url));
 const SERVER_DIR = resolve(HERE, '../../../../server');
 const env = (name) => process.env[`WALK_${name}`] ?? process.env[`FUCQ70_${name}`];
 const story = process.env.WALK_STORY || 'fucq70';
-if (!['fucq70', 'fucq72'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72');
+if (!['fucq70', 'fucq72', 'fucq73', 'fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq237', 'fucq238'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq237|fucq238');
 const chunk = env('CHUNK');
-if (!['desktop', 'narrow'].includes(chunk)) throw new Error('Set WALK_CHUNK=desktop|narrow');
+const second = ['fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq237', 'fucq238'].includes(story) ? 'phone' : 'narrow';
+if (!['desktop', second, ...(['fucq223', 'fucq237', 'fucq238'].includes(story) ? ['narrow'] : [])].includes(chunk)) throw new Error(`Set WALK_CHUNK=desktop|${second}`);
 const scratch = resolve(env('SCRATCH') || process.env.TMPDIR || '');
 if (!scratch || scratch === '/') throw new Error('Set WALK_SCRATCH (or TMPDIR) to an owned scratch directory');
-const viewport = chunk === 'narrow' ? { width: 320, height: 720 } : { width: 1280, height: 900 };
+const viewport = chunk === 'narrow' ? { width: 320, height: 720 } : chunk === 'phone' ? { width: 375, height: 812 } : { width: 1280, height: 900 };
 const vp = String(viewport.width);
-const port = Number(env('PORT')) || (chunk === 'narrow' ? 8933 : 8932);
+const port = Number(env('PORT')) || (story === 'fucq237' ? { desktop: 8930, phone: 8931, narrow: 8932 }[chunk] : story === 'fucq238' ? { desktop: 8933, phone: 8934, narrow: 8935 }[chunk] : story === 'fucq223' ? { desktop: 8944, phone: 8945, narrow: 8946 }[chunk] : story === 'fucq224' ? (chunk === 'phone' ? 8943 : 8942) : story === 'fucq222' ? (chunk === 'phone' ? 8941 : 8940) : story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
 if (port < 8930 || port > 8949) throw new Error('WALK_PORT must be within 8930-8949');
-const outDir = story === 'fucq70' ? HERE : resolve(HERE, '..', story);
+const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story); // each other story writes to ../<story>
 const only = env('ONLY') ? `-${env('ONLY')}` : ''; // a partial run never overwrites the full run's files
 const shotDir = join(outDir, `browser${only}`);
 const resultsFile = join(outDir, `results-${chunk}${only}.json`);
@@ -29,11 +31,15 @@ const profile = join(scratch, `chrome-${chunk}`);
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const ACCESS_KEY = `walk-${randomBytes(9).toString('hex')}`;
 const report = { ...(story === 'fucq70' ? {} : { story }), chunk, entry: 'hosted-offline', viewport, state: 'incomplete', startedAt: new Date().toISOString(), steps: [], keyboard: [],
-  consoleErrors: [], pageErrors: [], failedRequests: [], badResponses: [], notes: [] };
-let shots = 0; let reviewedOrder = null; const orderPosts = []; let context; let page; let app; let child; let halted = null; let origin;
+  consoleErrors: [], pageErrors: [], failedRequests: [], badResponses: [], notes: [], ...(story === 'fucq73' ? { screens: [], rawIdFailures: [], defects: [], motion: [], focus: [], contrast: [] } : {}), ...(story === 'fucq224' || story === 'fucq237' ? { defects: [] } : {}) };
+let lastStock = null; let shots = 0; let reviewedOrder = null; const orderPosts = []; let context; let page; let app; let child; let halted = null; let origin;
 const wait = (ms) => new Promise((done) => setTimeout(done, ms));
-const save = () => { if (story === 'fucq72') report.orderPosts = orderPosts; if (env('TRACE')) report.trace = trace; return writeFile(resultsFile, `${JSON.stringify(report, null, 2)}\n`); };
-const killChrome = () => { try { spawnSync('/usr/bin/pkill', ['-f', `user-data-dir=${profile}`]); } catch { /* already gone */ } };
+const save = () => { if (story !== 'fucq70') report.orderPosts = orderPosts; if (env('TRACE')) report.trace = trace; return writeFile(resultsFile, `${JSON.stringify(report, null, 2)}\n`); };
+// Kill only this run's Chrome, by PID: other sessions run walkthroughs too.
+const killChrome = () => { try {
+  const ps = spawnSync('/bin/ps', ['-axo', 'pid=,command='], { encoding: 'utf8' }).stdout ?? '';
+  for (const line of ps.split('\n')) if (line.includes(`--user-data-dir=${profile}`)) { try { process.kill(Number(line.trim().split(/\s+/)[0])); } catch { /* gone */ } }
+} catch { /* already gone */ } };
 const killServer = () => { try { if (child && child.exitCode === null) child.kill('SIGKILL'); } catch { /* already gone */ } };
 process.on('SIGALRM', () => { killChrome(); killServer(); report.state = 'timeout'; process.exit(124); });
 process.on('exit', () => { killChrome(); killServer(); });
@@ -50,7 +56,17 @@ async function shot(name, full = true) {
   shots += 1;
   const file = `${vp}-${String(shots).padStart(2, '0')}-${name}.png`;
   await page.screenshot({ path: join(shotDir, file), fullPage: full });
+  if (story === 'fucq73') await rawIdCheck(file);
   return `browser/${file}`;
+}
+// FUCQ-73: every captured screen's visible text and aria/title/alt values are checked for raw internal ids.
+const RAW73 = ['slot-paula', 'choices-fs-uk', 'current:employee', 'demo-collection-centre', 'insurance-group', 'demo-bmw'];
+async function rawIdCheck(file) {
+  const t = await page.evaluate(() => [document.body.innerText, ...[...document.querySelectorAll('[aria-label],[title],img[alt]')].map((n) => n.getAttribute('aria-label') || n.getAttribute('title') || n.getAttribute('alt'))].join('\n')).catch(() => '');
+  const ids = RAW73.filter((id) => t.includes(id)); const kebab = [...new Set((t.match(/\b(?:[a-z0-9]+-){2,}[a-z0-9]+\b/g) ?? []).filter((x) => !/^\d/.test(x)))].slice(0, 8);
+  report.screens.push({ screen: file, h1: clip(await page.locator('h1').first().innerText().catch(() => ''), 60), rawIds: ids, ...(kebab.length ? { kebabCaseText: kebab } : {}) });
+  if (ids.length) report.rawIdFailures.push({ screen: file, ids });
+  if (kebab.includes('twelve-month-12000')) defect({ id: 'rawIdCheck', screenshots: [`browser/${file}`] }, 'D3', 'Medium', 'blocks/gcsp/manual-setup/gcsp-manual-setup.js:126 (reason list falls back to contractOptionId)', 'Setup lists "twelve-month-12000: Not available for this driver and scheme." Expected the contract option name (for example "12 months, 12000 mi/year") instead of the raw option id, as the dropdown already shows.');
 }
 const overflow = () => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth).catch(() => null);
 
@@ -66,6 +82,7 @@ async function step(id, name, run, { critical = false } = {}) {
     row.pass = out.pass !== false && row.overflowPx === 0; row.state = clip(out.state, 600);
     if (out.detail !== undefined) row.detail = out.detail;
     if (out.shot !== false) row.screenshots.push(await shot(out.shotName || id, out.full !== false));
+    if (story === 'fucq73') { const bad = report.rawIdFailures.filter((f) => row.screenshots.some((s) => s.endsWith(f.screen))); if (bad.length) { row.pass = false; row.rawIds = bad; } }
   } catch (error) {
     row.error = clip(error.message, 300); row.overflowPx = await overflow();
     try { row.screenshots.push(await shot(`${id}-failed`, false)); } catch { /* page gone */ }
@@ -74,7 +91,7 @@ async function step(id, name, run, { critical = false } = {}) {
   await save();
 }
 
-const isFocused = (locator) => locator.evaluate((el) => el === document.activeElement).catch(() => false);
+const isFocused = (locator) => locator.evaluate((el) => el === document.activeElement, undefined, { timeout: 2000 }).catch(() => false);
 async function tabTo(locator, { max = 120 } = {}) {
   await locator.first().waitFor({ state: 'attached', timeout: 30000 });
   for (let count = 0; count <= max; count += 1) {
@@ -109,7 +126,7 @@ const stripText = () => strip().evaluate((el) => el.innerText).catch(() => '');
 const clockOf = (text) => /DemoClock \(UTC\)\s+(\S+)/.exec(text)?.[1] ?? null;
 async function openStrip() {
   const root = strip(); await root.waitFor({ state: 'attached', timeout: 60000 });
-  if (!(await root.evaluate((el) => el.open))) await root.locator('summary').click();
+  if (!(await root.evaluate((el) => el.open))) await root.locator('summary').first().click();
   await until(async () => clockOf(await stripText()), { what: 'presenter clock readout' });
 }
 // Presses a presenter button and waits for the clock to move (or the action to finish when it does not).
@@ -173,7 +190,7 @@ async function enterAccessKey(row) {
   kb('access', 'Typing the demo key and Enter opens the demo', typed);
   return typed;
 }
-async function fillSetup(driverLabel = 'You: Paula (fictional)') {
+async function fillSetup(driverLabel = 'You: Paula (fictional)', { keyboard = false } = {}) {
   await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor({ timeout: 60000 });
   const pick = async (name) => {
     const select = page.locator(`select[name="${name}"]`);
@@ -195,8 +212,8 @@ async function fillSetup(driverLabel = 'You: Paula (fictional)') {
   const fillIfEmpty = async (selector, value) => { const c = page.locator(selector); if (!(await c.inputValue())) await c.fill(value); };
   await fillIfEmpty('input[name="phone"]', '07700900123');
   await fillIfEmpty('input[name="email"]', 'paula.test@example.test');
-  await fillIfEmpty('input[name="expectedReturnMileage"]', '24000');
-  await page.getByRole('button', { name: 'Save choices' }).click();
+  if (await page.locator('input[name="expectedReturnMileage"]').isVisible()) await fillIfEmpty('input[name="expectedReturnMileage"]', '24000'); // hidden for a new order
+  if (keyboard) { await tabTo(page.getByRole('button', { name: 'Save choices' })); await page.keyboard.press('Enter'); } else await page.getByRole('button', { name: 'Save choices' }).click();
   await page.getByText('Your choices are saved.').first().waitFor({ timeout: 60000 });
   return chosen;
 }
@@ -293,7 +310,7 @@ async function tickAll() {
 async function checkedCount() { return boxes().evaluateAll((list) => list.filter((b) => b.checked).length); }
 async function outcomeFacts() {
   const t = await text(page.locator('.gcsp-summary-outcome'));
-  return { heading: (await heading()).trim(), orderNumber: /Order number\s*:?\s*(\d+)/.exec(t)?.[1] ?? null, status: /Status\s*:?\s*([^\n]+)/.exec(t)?.[1]?.trim() ?? null,
+  return { heading: (await heading()).trim(), orderNumber: /order number\s*:?\s*(\d+)/i.exec(t)?.[1] ?? null, status: /Status\s*:?\s*([^\n]+)/.exec(t)?.[1]?.trim() ?? null,
     stages: await page.locator('.gcsp-stage-items li').allInnerTexts().then((l) => l.map((x) => clip(x, 80))),
     nextSteps: await page.locator('.gcsp-summary-steps li').allInnerTexts(), requestedCollection: clip(await sectionText('Requested collection'), 240),
     forbiddenWording: (t.match(/\b(approved|collected|booked)\b/gi) ?? []), rawIds: rawIdsIn(t), text: clip(t, 900) };
@@ -475,6 +492,842 @@ async function walk72() {
   report.orderPosts = orderPosts;
 }
 
+// ---- FUCQ-73: full manual journey (replacement and new order), states, keyboard, contrast, motion, print ----
+const kbPress = async (locator) => { await tabTo(locator); await page.keyboard.press('Enter'); };
+const enabledButton = (name) => page.locator('button:not([disabled])').filter({ hasText: name });
+const EMPTY_TITLES = /No cars have been released yet|No cars are available|No released cars are visible to you yet/;
+async function waitGalleryReady() {
+  await page.getByRole('heading', { name: 'Released cars', exact: true }).waitFor({ timeout: 60000 });
+  await until(async () => (await enabledButton('Review this car').count()) > 0 || EMPTY_TITLES.test(await bodyText()), { what: 'gallery cards or empty state' });
+}
+const galleryFacts = async () => ({ cards: await page.getByRole('button', { name: 'Review this car' }).count(), enabled: await enabledButton('Review this car').count(), status: clip(await text(page.locator('.vm-status')), 240) });
+async function keyboardSubmitToOutcome(row, tag, { atSummary = false } = {}) {
+  if (!atSummary) await toSummary();
+  row.screenshots.push(await shot(`${tag}-summary-unticked`));
+  const total = await boxes().count();
+  for (let i = 0; i < total; i += 1) { await tabTo(boxes().nth(i)); await page.keyboard.press('Space'); }
+  const ticked = await checkedCount(); const enabled = await until(async () => submitButton().isEnabled(), { timeout: 5000, what: 'Submit enabled' }).catch(() => false);
+  row.screenshots.push(await shot(`${tag}-summary-ticked`));
+  const posts0 = orderPosts.length;
+  await kbPress(submitButton()); await waitOutcome();
+  const o = await outcomeFacts(); reviewedOrder = o.orderNumber;
+  return { total, ticked, enabled, posts: orderPosts.length - posts0, o };
+}
+async function printOutcome(row, tag) {
+  await page.emulateMedia({ media: 'print' });
+  try {
+    const gone = await page.evaluate(() => { const vis = (el) => el.getClientRects().length > 0 && getComputedStyle(el.closest('.gcsp-print-hidden') ?? el).display !== 'none';
+      return { buttonsVisible: [...document.querySelectorAll('.gcsp-summary-outcome button')].filter(vis).length, presenterVisible: [...document.querySelectorAll('.gcsp-presenter-controls')].filter(vis).length }; });
+    row.screenshots.push(await shot(`${tag}-outcome-print`));
+    return gone;
+  } finally { await page.emulateMedia({ media: 'screen' }); }
+}
+const defect = (row, id, severity, fileGuess, text) => { const d = { id, severity, fileGuess, observedVsExpected: text, step: row.id, screenshot: row.screenshots.at(-1) ?? 'taken after the step' }; if (!report.defects.some((x) => x.id === id)) report.defects.push(d); };
+const closeStrip = () => page.evaluate(() => { const d = document.querySelector('.gcsp-presenter-controls'); if (d) d.open = false; }).catch(() => {});
+async function finishToAccount() {
+  await kbPress(page.getByRole('button', { name: 'Finish', exact: true }));
+  await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 60000 });
+  await wait(1200);
+}
+
+async function walkReplacement() {
+  await step('rep-account', 'Demo key opens the account for Paula (Tab+Enter, keyboard only)', async () => {
+    const typed = await enterAccessKey();
+    await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+    await wait(800);
+    const hasReplace = await page.getByRole('button', { name: 'Choose a replacement' }).count();
+    return { pass: typed && hasReplace > 0, state: await bodyText(), shotName: 'rep-account' };
+  }, { critical: true });
+  await step('rep-setup', 'Choose a replacement (Tab+Enter); setup saved with the nominated driver Casey', async () => {
+    await kbPress(page.getByRole('button', { name: 'Choose a replacement' }));
+    const chosen = await fillSetup('Nominated: Casey (fictional)', { keyboard: true });
+    return { pass: /Casey/.test(chosen.driver), state: `${await heading()} | ${JSON.stringify(chosen)}`, detail: chosen, shotName: 'rep-setup-saved' };
+  }, { critical: true });
+  await step('rep-empty-gallery', 'Continue before any release: empty gallery states the next action', async (row) => {
+    await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled after availability refresh' });
+    await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
+    await until(async () => EMPTY_TITLES.test(await bodyText()) || (await page.getByRole('button', { name: 'Review this car' }).count()) > 0, { what: 'empty gallery state' });
+    const g = await galleryFacts(); row.detail = g;
+    return { pass: EMPTY_TITLES.test(g.status) && g.cards === 0, state: `status "${g.status}"; cards ${g.cards}`, shotName: 'rep-gallery-empty' };
+  }, { critical: true });
+  await step('rep-release-gallery', 'Presenter Next release; Refresh availability (keyboard) shows released cars', async (row) => {
+    const { after } = await presenterPress('Next release'); await closeStrip();
+    const refresh = page.getByRole('button', { name: 'Refresh availability' });
+    if (await refresh.count()) await kbPress(refresh);
+    await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'released cards', timeout: 15000 }).catch(() => {});
+    const g = await galleryFacts(); row.detail = { ...g, stockStatus: lastStock?.status };
+    if (!g.enabled) defect(row, 'D1', 'Medium', 'blocks/gcsp/manual-gallery/gallery-controller.js (stock 400 mapping)', `After Next release the saved collection date left the window: GET stock answered ${lastStock?.status} invalid-manual-draft, and the gallery said "${g.status}". Expected a message that the collection date needs changing with a way to fix it; Refresh availability can never succeed.`);
+    return { pass: g.enabled > 0, state: `${g.cards} cards, ${g.enabled} enabled; stock ${lastStock?.status}; status "${g.status}"; ${clip(after, 100)}`, shotName: 'rep-gallery-after-release' };
+  });
+  await step('rep-date-recovery', 'Back to your choices, pick a date in the new window, Save, Continue: released cars', async (row) => {
+    if (!(await enabledButton('Review this car').count())) {
+      await kbPress(page.getByRole('button', { name: 'Back to your choices' }));
+      await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor({ timeout: 60000 });
+      const date = page.locator('input[name="requestedCollectionDate"]');
+      await until(async () => (await date.getAttribute('min')) && !(await date.isDisabled()), { what: 'refreshed collection window' });
+      const w = { min: await date.getAttribute('min'), max: await date.getAttribute('max'), was: await date.inputValue() }; row.detail = w;
+      await date.fill(w.min);
+      await kbPress(page.getByRole('button', { name: 'Save choices' }));
+      await until(async () => /Your choices are saved/.test(await bodyText()), { what: 'choices re-saved' });
+      await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled' });
+      await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
+    }
+    await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'released cards', timeout: 30000 });
+    const g = await galleryFacts(); row.detail = { ...row.detail, ...g };
+    return { pass: g.enabled > 0, state: `${g.cards} cards, ${g.enabled} enabled`, shotName: 'rep-gallery-released' };
+  }, { critical: true });
+  await step('rep-review', 'Review this car (Tab+Enter) opens the review with an active countdown', async (row) => {
+    await kbPress(enabledButton('Review this car'));
+    await page.getByRole('heading', { name: 'Review your car', exact: true }).waitFor({ timeout: 60000 });
+    await until(async () => /remaining/.test(await countdownOf()), { what: 'active countdown' });
+    const f = await reviewFacts(); row.detail = f;
+    return { pass: Boolean(f.vehicleName) && Boolean(f.phone), state: `${f.vehicleName} | ${f.countdown} | image caption ${f.hasRepresentativeCaption} placeholder ${f.noImagePlaceholder}`, shotName: 'rep-review' };
+  }, { critical: true });
+  await step('rep-final-review', 'Continue to order review, tick declarations (Space), Submit (Enter): outcome', async (row) => {
+    const r = await keyboardSubmitToOutcome(row, 'rep');
+    row.detail = { total: r.total, ticked: r.ticked, submitEnabled: r.enabled, posts: r.posts, outcome: { heading: r.o.heading, orderNumber: r.o.orderNumber, status: r.o.status, stages: r.o.stages, rawIds: r.o.rawIds } };
+    return { pass: r.total > 0 && r.ticked === r.total && r.enabled === true && r.posts === 1 && /^\d{7}$/.test(r.o.orderNumber ?? '') && !r.o.forbiddenWording.length, state: `${r.o.heading} | order ${r.o.orderNumber} | status ${r.o.status}; POSTs ${r.posts}`, shotName: 'rep-outcome' };
+  }, { critical: true });
+  await step('rep-print', 'Print media: outcome keeps the order, hides buttons and presenter controls', async (row) => {
+    const g = await printOutcome(row, 'rep'); row.detail = g;
+    return { pass: g.buttonsVisible === 0 && g.presenterVisible === 0, state: JSON.stringify(g), shot: false };
+  });
+  await step('rep-finish', 'Finish (Tab+Enter) returns to the account, which shows the order', async (row) => {
+    await finishToAccount(); const t0 = Date.now();
+    await until(async () => (await bodyText()).includes(reviewedOrder ?? '#none'), { timeout: 30000, what: 'order number on the account' }).catch(() => {});
+    const t = await bodyText(); const shown = reviewedOrder ? t.includes(reviewedOrder) : false;
+    const stale = /Replacement journey saved|New order journey saved/.test(t) && /This is not an order confirmation/.test(t);
+    row.detail = { orderShown: shown, shownAfterMs: Date.now() - t0, staleSavedJourneyCard: stale, text: clip(t, 700) };
+    if (stale) defect(row, 'D2', 'Low', 'blocks/gcsp/account/gcsp-account.js (saved journey card)', 'After the order was received the account still showed the "Replacement journey saved ... This is not an order confirmation. Your saved context has changed ... start the permitted journey again" card beside "Your order is in progress". Expected the saved-journey card to be cleared or reworded once the order exists.');
+    return { pass: shown, state: `order ${reviewedOrder} shown ${shown}; ${clip(t, 300)}`, shotName: 'rep-account-after-order' };
+  });
+}
+
+// Switches the acting principal with the presenter strip, then reloads so the account shows that person's actions.
+async function switchTo(principalId) {
+  await openStrip();
+  await page.locator(`.gcsp-presenter-controls [data-value="${principalId}"]`).first().click();
+  await page.getByRole('button', { name: 'Switch principal' }).click();
+  await wait(4000); await page.waitForLoadState('load').catch(() => {}); // the switch navigates to the new principal's account
+  await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+  await until(async () => (await page.getByRole('button', { name: /Refresh account/ }).count()) > 0, { what: 'account buttons' }); await wait(1500);
+  return { buttons: await page.getByRole('button').evaluateAll((b) => b.map((x) => x.textContent.trim()).filter(Boolean)), who: clip(await text(page.locator('.gcsp-shell-account, header').first()), 80) };
+}
+async function walkNewOrder() {
+  await freshHost();
+  let chosen = null; const tried = [{ principal: 'Paula', note: 'replacement journey (rep segment): Choose a replacement, no Start a new order' }];
+  await step('new-principal', 'Find a fictional principal whose account offers Start a new order (Alex, Sam tried after Paula)', async (row) => {
+    await enterAccessKey(); await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+    for (const [id, label] of [['demo-alex', 'Alex'], ['demo-sam', 'Sam']]) {
+      const r = await switchTo(id); const has = r.buttons.some((b) => /Start a new order/.test(b));
+      const nav = await page.getByRole('button', { name: /New order/ }).first().evaluate((n) => ({ disabled: n.disabled, ariaDisabled: n.getAttribute('aria-disabled'), text: n.innerText.trim(), title: n.title })).catch(() => null);
+      tried.push({ principal: label, actions: r.buttons.filter((b) => /Choose a replacement|Start a new order|Contact support/.test(b)), startNewOrder: has, sidebarNewOrder: nav, notice: clip((await bodyText()).match(/Ordering is not supported[^.]*\.|Replacement is unavailable[^.]*\./)?.[0], 120) });
+      if (has && !chosen) { chosen = { id, label }; break; }
+    }
+    row.detail = { tried, chosen };
+    if (!chosen) report.notes.push(`New-order journey not run: no fictional principal in the default scenario offers Start a new order. Tried ${JSON.stringify(tried.map((t) => [t.principal, t.actions ?? t.note]))}. Sam: Ordering is not supported for this scheme.`);
+    return { pass: true, state: chosen ? `chosen ${chosen.label}` : `none offers Start a new order: ${JSON.stringify(tried)}`, shotName: 'new-account-sam' };
+  }, { critical: true });
+}
+
+// ---- FUCQ-73 states: loading, outage, images, long data, motion, focus, contrast, pending, expired ----
+const STOCK_ROUTE = /\/api\/gcsp\/manual\/stock(\?.*)?$/;
+const CLAIM_READ_ROUTE = /\/api\/gcsp\/manual\/(claim|review-details)(\?.*)?$/;
+const IMAGE_ROUTE = (url) => /\.(png|jpe?g|webp|avif)(\?.*)?$/i.test(url.pathname) || /\/images\//.test(url.pathname);
+const continueButton = () => page.getByRole('button', { name: 'Continue', exact: true });
+// Walks the saved journey back to a screen: reload, Resume saved journey, Continue on setup, Review this car on the gallery.
+async function landOn(target, { reload = true } = {}) {
+  if (reload) await page.reload({ waitUntil: 'load' });
+  for (let i = 0; i < 8; i += 1) {
+    const h = (await heading()).trim(); if (env('LOG')) console.error(`  landOn ${target}: h="${h}"`);
+    if (h === target) return;
+    if (h === 'Your cars') { const b = page.getByRole('button', { name: /Resume saved journey|Choose a replacement/ }); await until(async () => (await b.count()) > 0, { what: 'journey button', timeout: 20000 }); await kbPress(b.first()).catch(() => {}); }
+    else if (h === 'Your order choices') { await until(async () => (await heading()).trim() !== 'Your order choices' || continueButton().isEnabled().catch(() => false), { what: 'Continue enabled or auto-advance' }); if ((await heading()).trim() === 'Your order choices') await kbPress(continueButton()); }
+    else if (h === 'Released cars' && target === 'Review your car' && (await enabledButton('Review this car').count()) > 0) await kbPress(enabledButton('Review this car')); // an active claim moves on to its review by itself
+    await wait(1500);
+  }
+  throw new Error(`Did not reach ${target}`);
+}
+// Longest computed transition or animation time (seconds) among rendered elements.
+const motionMax = () => page.evaluate(() => {
+  const secs = (v) => v.split(',').map((x) => { const n = parseFloat(x); return /ms$/.test(x.trim()) ? n / 1000 : n; });
+  let max = 0; let who = null;
+  for (const n of document.querySelectorAll('body *')) {
+    if (!n.getClientRects().length) continue;
+    const c = getComputedStyle(n);
+    const animated = c.animationName !== 'none' ? secs(c.animationDuration) : [0];
+    const t = Math.max(...secs(c.transitionDuration), ...animated);
+    if (t > max) { max = t; who = `${n.tagName.toLowerCase()}.${String(n.className).slice(0, 40)}`; }
+  }
+  return { maxSeconds: max, element: who };
+});
+async function motionCheck(stage) {
+  const normal = await motionMax();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  try { const reduced = await motionMax(); const row = { stage, normal, reduced, pass: reduced.maxSeconds <= 0.01 }; report.motion.push(row); return row; }
+  finally { await page.emulateMedia({ reducedMotion: 'no-preference' }); }
+}
+// WCAG contrast of every visible text element and the primary button; the lowest few are recorded.
+const contrastIn = () => page.evaluate(() => {
+  const ctx = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+  const rgba = (css) => { ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = '#000'; ctx.fillStyle = css; ctx.fillRect(0, 0, 1, 1); const d = ctx.getImageData(0, 0, 1, 1).data; return [d[0], d[1], d[2], d[3] / 255]; };
+  const lum = ([r, g, b]) => { const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+  const bgOf = (el) => { const layers = []; for (let n = el; n; n = n.parentElement) { const c = rgba(getComputedStyle(n).backgroundColor); if (c[3] > 0) { layers.push(c); if (c[3] >= 1) break; } } let base = [255, 255, 255]; for (const c of layers.reverse()) base = base.map((v, i) => c[i] * c[3] + v * (1 - c[3])); return base; };
+  const ratio = (el) => { const bg = bgOf(el); const fg = rgba(getComputedStyle(el).color); const f = fg.slice(0, 3).map((v, i) => v * fg[3] + bg[i] * (1 - fg[3])); const [a, b] = [lum(f), lum(bg)]; return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05); };
+  const rows = [];
+  for (const el of document.querySelectorAll('body *')) {
+    if (!el.getClientRects().length || ![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+    if (el.closest('[disabled],[aria-disabled="true"]') || el.disabled) continue;
+    const c = getComputedStyle(el); if (c.visibility === 'hidden' || c.opacity === '0') continue;
+    const size = parseFloat(c.fontSize); const large = size >= 24 || size >= 18.66 && Number(c.fontWeight) >= 700;
+    rows.push({ el: `${el.tagName.toLowerCase()}.${String(el.className).slice(0, 30)}`, text: el.textContent.trim().slice(0, 30), ratio: Math.round(ratio(el) * 100) / 100, large });
+  }
+  const primary = document.querySelector('.gcsp-review-body .vm-btn-primary:not([disabled])') ?? document.querySelector('.gcsp-summary-body .vm-btn-primary:not([disabled])') ?? document.querySelector('.vm-btn-primary:not([disabled])'); const ghost = document.querySelector('.vm-btn-ghost:not([disabled])');
+  const bodyRatio = Math.round(ratio(document.querySelector('.gcsp-review-body, .gcsp-summary-body, main') ?? document.body) * 100) / 100;
+  rows.sort((a, b) => a.ratio - b.ratio);
+  const failing = rows.filter((r) => r.ratio < (r.large ? 3 : 4.5));
+  return { bodyText: bodyRatio, primaryButton: primary ? { text: primary.textContent.trim(), ratio: Math.round(ratio(primary) * 100) / 100 } : null,
+    ghostButton: ghost ? { text: ghost.textContent.trim(), ratio: Math.round(ratio(ghost) * 100) / 100 } : null, checked: rows.length, lowest: rows.slice(0, 4), belowThreshold: failing.slice(0, 6), failingCount: failing.length };
+});
+// Tabs through every control once; each stop must show an outline or box-shadow.
+async function focusWalk(stage, { max = 70 } = {}) {
+  await page.evaluate(() => { document.activeElement?.blur?.(); window.scrollTo(0, 0); });
+  const stops = []; let first = null;
+  for (let i = 0; i < max; i += 1) {
+    await page.keyboard.press('Tab');
+    const info = await page.evaluate(() => { const a = document.activeElement; if (!a || a === document.body) return null; const c = getComputedStyle(a);
+      return { id: `${a.tagName.toLowerCase()}${a.id ? `#${a.id}` : ''}`, name: (a.getAttribute('aria-label') || a.textContent || a.value || a.name || '').trim().replace(/\s+/g, ' ').slice(0, 40),
+        outline: `${c.outlineStyle} ${c.outlineWidth} ${c.outlineColor}`, outlineVisible: c.outlineStyle !== 'none' && parseFloat(c.outlineWidth) > 0, boxShadow: c.boxShadow === 'none' ? null : c.boxShadow.slice(0, 60) }; });
+    if (!info) break;
+    const key = `${info.id}|${info.name}`; if (first === key) break; if (!first) first = key;
+    stops.push({ ...info, visibleIndicator: info.outlineVisible || Boolean(info.boxShadow) });
+  }
+  const missing = stops.filter((x) => !x.visibleIndicator);
+  const row = { stage, stops: stops.length, missingIndicator: missing.map((m) => `${m.id} "${m.name}"`), sample: stops.slice(0, 3).map((x) => `${x.id} "${x.name}" ${x.outline}`), pass: stops.length > 0 && !missing.length };
+  report.focus.push(row); return row;
+}
+const imageHits = []; const imageRoute = async (route) => { imageHits.push(bare(route.request().url()).replace(/^https?:\/\/[^/]+/, '')); await route.fulfill({ status: 404, body: '' }); };
+const IMAGE_GLOB = (url) => IMAGE_ROUTE(url);
+// Offline stock carries no photo, so responses are patched to point every car at a missing /images/ file that the 404 route then refuses.
+const PHOTO = '/images/gcsp-missing-car.jpg';
+const withPhotos = (node) => { if (Array.isArray(node)) node.forEach(withPhotos); else if (node && typeof node === 'object') { if (node.display && typeof node.display === 'object' && typeof node.display.name === 'string') { node.display.photo = PHOTO; node.display.images = [{ src: PHOTO, alt: node.display.name, caption: 'Representative image. See image provenance in vehicle details.' }]; patched.count += 1; } Object.values(node).forEach(withPhotos); } return node; };
+const patched = { count: 0 };
+const photoRoute = async (route) => { if (route.request().method() !== 'GET') return route.continue(); const r = await route.fetch(); const json = await r.json().catch(() => null); if (!json) return route.fulfill({ response: r }); return route.fulfill({ response: r, json: withPhotos(json) }); };
+async function layoutFacts(selector) {
+  return page.evaluate((sel) => { const root = document.querySelector(sel) ?? document.body; const wide = [...root.querySelectorAll('*')].filter((n) => n.scrollWidth > n.clientWidth + 1 && getComputedStyle(n).overflowX === 'visible').slice(0, 4).map((n) => `${n.tagName.toLowerCase()}.${String(n.className).slice(0, 40)}`);
+    return { docOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth, wideElements: wide, images: root.querySelectorAll('img').length, brokenImages: [...root.querySelectorAll('img')].filter((i) => i.complete && i.naturalWidth === 0).length,
+      fallbackText: [...root.querySelectorAll('*')].filter((n) => /No image for this car yet|Image unavailable|could not be loaded/i.test(n.textContent) && n.children.length === 0).length }; }, selector);
+}
+
+async function walkStates() {
+  await freshHost();
+  await reachGallery({ tag: 'st-' });
+  await closeStrip();
+  // Loading and outage: the saved journey is reopened with the stock read delayed, then refused.
+  await step('st-gallery-loading', 'GET stock delayed 3 s: gallery shows a loading status, then the cars', async (row) => {
+    await page.route(STOCK_ROUTE, async (route) => { if (route.request().method() !== 'GET') return route.continue(); await wait(3000); return route.continue(); });
+    try {
+      await page.reload({ waitUntil: 'load' });
+      await until(async () => (await heading()).trim() === 'Your cars', { what: 'account' });
+      const b = page.getByRole('button', { name: /Resume saved journey/ }); await until(async () => (await b.count()) > 0, { what: 'resume button' }); await kbPress(b.first());
+      let seenLoading = false;
+      const clicker = (async () => { for (let i = 0; i < 80 && !seenLoading; i += 1) { if ((await heading()).trim() === 'Your order choices' && await continueButton().isEnabled().catch(() => false)) { await continueButton().click().catch(() => {}); return; } await wait(300); } })();
+      await page.getByText('Loading released cars').first().waitFor({ state: 'visible', timeout: 40000 }); seenLoading = true; await clicker;
+      row.screenshots.push(await shot('st-gallery-loading')); const shotName = true;
+      row.detail = { loadingText: clip(await text(page.locator('.vm-status')), 160), heading: (await heading()).trim() };
+      await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'cards after delay', timeout: 60000 });
+      return { pass: Boolean(shotName), state: `loading text seen ${Boolean(shotName)}; ${clip(row.detail?.loadingText, 100)}; cards loaded after the delay`, shot: false };
+    } finally { await page.unroute(STOCK_ROUTE).catch(() => {}); }
+  }, { critical: true });
+
+  await step('st-setup-outage', 'GET stock answers 503 on the way to the gallery: outage state with a recovery button; unroute and recover', async (row) => {
+    await page.reload({ waitUntil: 'load' });
+    await until(async () => (await heading()).trim() === 'Your cars', { what: 'account' });
+    const b = page.getByRole('button', { name: /Resume saved journey/ }); await until(async () => (await b.count()) > 0, { what: 'resume button' }); await kbPress(b.first());
+    await until(async () => (await heading()).trim() === 'Your order choices' || /Released cars/.test(await heading()), { what: 'setup or gallery' });
+    if ((await heading()).trim() === 'Your order choices') await until(async () => continueButton().isEnabled(), { what: 'Continue enabled' });
+    let routed = 0;
+    await page.route(STOCK_ROUTE, (route) => { if (route.request().method() !== 'GET') return route.continue(); routed += 1; return route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ status: 'unavailable', retryable: true }) }); });
+    try {
+      let where = 'gallery';
+      if ((await heading()).trim() === 'Your order choices') {
+        await kbPress(continueButton()); await wait(3000);
+        where = /Availability cannot be checked right now/.test(await bodyText()) ? 'gallery' : 'setup';
+      } else { const r = page.getByRole('button', { name: 'Refresh availability' }); if (await r.count()) await kbPress(r); await wait(2000); }
+      const body = await bodyText();
+      const outage = { where, heading: (await heading()).trim(), galleryStatus: clip(await text(page.locator('.vm-status')), 200), setupNotice: clip((body.match(/Availability could not be refreshed[^]*?Retry availability/) ?? [''])[0], 200), routed,
+        recoveryButtons: await page.getByRole('button', { name: /Refresh availability|Retry availability/ }).allInnerTexts() };
+      row.screenshots.push(await shot(`st-outage-${where}`));
+      await page.unroute(STOCK_ROUTE);
+      await kbPress(page.getByRole('button', { name: /Refresh availability|Retry availability/ }));
+      await until(async () => (await heading()).trim() === 'Released cars' || (await enabledButton('Review this car').count()) > 0 || continueButton().isEnabled().catch(() => false), { timeout: 30000, what: 'recovery' });
+      if ((await heading()).trim() === 'Your order choices') { await until(async () => continueButton().isEnabled(), { what: 'Continue enabled' }); await kbPress(continueButton()); }
+      await until(async () => (await enabledButton('Review this car').count()) > 0, { timeout: 30000, what: 'recovered cards' });
+      row.detail = { outage, recoveredCards: await enabledButton('Review this car').count() };
+      return { pass: outage.recoveryButtons.length >= 1 && (/Retry/.test(outage.galleryStatus) || Boolean(outage.setupNotice)), state: `${where}: "${outage.galleryStatus || outage.setupNotice}"; recovery buttons ${outage.recoveryButtons.join(' | ')}; recovered ${row.detail.recoveredCards} cards`, shot: false };
+    } finally { await page.unroute(STOCK_ROUTE).catch(() => {}); }
+  });
+
+  await step('st-gallery-outage', 'GET stock answers 503 on the gallery (presenter tick re-reads): outage status with Refresh availability; recovers', async (row) => {
+    await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'gallery cards' });
+    await page.route(STOCK_ROUTE, (route) => { if (route.request().method() !== 'GET') return route.continue(); return route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ status: 'unavailable', retryable: true }) }); });
+    try {
+      await tick(); await closeStrip();
+      await until(async () => /Availability cannot be checked right now/.test(await bodyText()), { timeout: 30000, what: 'gallery outage' });
+      const status = clip(await text(page.locator('.vm-status')), 200); const buttons = await page.getByRole('button', { name: 'Refresh availability' }).count();
+      row.screenshots.push(await shot('st-gallery-outage'));
+      await page.unroute(STOCK_ROUTE);
+      await kbPress(page.getByRole('button', { name: 'Refresh availability' }));
+      await until(async () => (await enabledButton('Review this car').count()) > 0, { timeout: 30000, what: 'recovered cards' });
+      row.detail = { status, refreshButtons: buttons, recoveredCards: await enabledButton('Review this car').count() };
+      return { pass: buttons === 1 && /Retry/.test(status), state: `"${status}"; Refresh availability buttons ${buttons}; recovered ${row.detail.recoveredCards} cards`, shot: false };
+    } finally { await page.unroute(STOCK_ROUTE).catch(() => {}); }
+  });
+
+  await step('st-gallery-images', 'Every image request 404s on the gallery: fallback text, layout intact, no overflow', async (row) => {
+    imageHits.length = 0; patched.count = 0; await page.route(IMAGE_GLOB, imageRoute); await page.route(STOCK_ROUTE, photoRoute);
+    try {
+      await landOn('Released cars'); await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'cards' });
+      // Lazy images load (and fail) as they scroll in, so sweep the page until no card still holds a photo.
+      for (let pass = 0; pass < 3 && (await page.locator('.vm-card-media.has-photo').count()); pass += 1) {
+        const height = await page.evaluate(() => document.documentElement.scrollHeight);
+        for (let y = 0; y < height; y += 400) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(150); }
+        await wait(1500);
+      }
+      await page.evaluate(() => window.scrollTo(0, 0)); await wait(800);
+      const l = await layoutFacts('main, body'); const wells = await page.evaluate(() => ({ cards: document.querySelectorAll('.vm-card-media').length, withPhotoClass: document.querySelectorAll('.vm-card-media.has-photo').length, photoImgs: document.querySelectorAll('img.vm-card-photo').length }));
+      row.detail = { ...l, ...wells, stockResponsesPatched: patched.count, imageRequestsRouted404: imageHits.length, sampleRequests: imageHits.slice(0, 2), placeholders: await page.getByText('No image for this car yet').count() };
+      return { pass: l.docOverflow === 0 && imageHits.length > 0 && wells.withPhotoClass === 0 && wells.photoImgs === 0, state: `photo URLs injected ${patched.count}; image requests 404ed ${imageHits.length}; cards ${wells.cards}, still showing a photo ${wells.withPhotoClass}; fallback texts ${row.detail.placeholders}; overflow ${l.docOverflow}`, shotName: 'st-gallery-images-404' };
+    } finally { await page.unroute(IMAGE_GLOB).catch(() => {}); await page.unroute(STOCK_ROUTE).catch(() => {}); }
+  });
+
+  await step('st-gallery-motion', 'Gallery under prefers-reduced-motion', async (row) => {
+    const m = await motionCheck('gallery'); row.detail = m; return { pass: m.pass, state: JSON.stringify(m), shot: false };
+  });
+
+}
+
+async function walkStatesB() {
+  await freshHost();
+  await reachGallery({ tag: 'stb-' });
+  await closeStrip();
+  await step('st-review-loading', 'GET claim/review-details delayed 3 s: review shows a loading state, then the car', async (row) => {
+    let delayed = 0; const matcher = CLAIM_READ_ROUTE;
+    await page.route(matcher, async (route) => { if (route.request().method() !== 'GET') return route.continue(); delayed += 1; await wait(3000); return route.continue(); });
+    try {
+      await kbPress(enabledButton('Review this car'));
+      const seen = []; let shotTaken = false;
+      for (let i = 0; i < 24 && !shotTaken; i += 1) { const t = await bodyText(); seen.push(clip(await heading(), 40)); if (/Review your car/.test(await heading()) || /Reserving|Checking|Loading/i.test(t) && delayed > 0) { row.screenshots.push(await shot('st-review-loading')); shotTaken = true; row.detail = { heading: await heading(), status: clip(await text(page.locator('.gcsp-review-body, .vm-status, [role=status]').first()), 200), countdown: await countdownOf() }; } await wait(200); }
+      await page.getByRole('heading', { name: 'Review your car', exact: true }).waitFor({ timeout: 60000 });
+      if (!/remaining/.test(await countdownOf())) row.screenshots.push(await shot('st-review-loading-review-page'));
+      await until(async () => /remaining/.test(await countdownOf()), { timeout: 60000, what: 'active countdown after delay' });
+      row.detail = { ...row.detail, delayedReads: delayed, headingsSeen: [...new Set(seen)] };
+      return { pass: shotTaken && delayed > 0, state: `delayed claim reads ${delayed}; loading state ${JSON.stringify(row.detail)}`, shot: false };
+    } finally { await page.unroute(matcher).catch(() => {}); }
+  }, { critical: true });
+
+  await step('st-review-images', 'Every image request 404s on the review: fallback text, layout intact', async (row) => {
+    imageHits.length = 0; patched.count = 0; await page.route(IMAGE_GLOB, imageRoute); await page.route(CLAIM_READ_ROUTE, photoRoute);
+    try {
+      await landOn('Review your car'); await until(async () => /remaining/.test(await countdownOf()), { what: 'active countdown' }); await wait(1500);
+      const l = await layoutFacts('.gcsp-review-body'); const f = await reviewFacts();
+      const wells = await page.evaluate(() => ({ withPhotoClass: document.querySelectorAll('.vm-card-media.has-photo').length, photoImgs: document.querySelectorAll('img.vm-card-photo').length }));
+      row.detail = { ...l, ...wells, responsesPatched: patched.count, imageRequestsRouted404: imageHits.length, noImagePlaceholder: f.noImagePlaceholder, caption: f.hasRepresentativeCaption };
+      return { pass: l.docOverflow === 0 && wells.withPhotoClass === 0 && wells.photoImgs === 0 && f.noImagePlaceholder, state: `photo URLs injected ${patched.count}; image requests 404ed ${imageHits.length}; still showing a photo ${wells.withPhotoClass}; placeholder ${f.noImagePlaceholder}; overflow ${l.docOverflow}`, shotName: 'st-review-images-404' };
+    } finally { await page.unroute(IMAGE_GLOB).catch(() => {}); await page.unroute(CLAIM_READ_ROUTE).catch(() => {}); }
+  }, { critical: true });
+
+  await step('st-review-a11y', 'Review: reduced motion, Tab focus indicators, contrast', async (row) => {
+    const m = await motionCheck('review'); const f = await focusWalk('review'); const c = await contrastIn(); report.contrast.push({ stage: 'review', ...c });
+    row.detail = { motion: m, focus: f, contrast: c };
+    return { pass: m.pass && f.pass && c.bodyText >= 4.5 && (c.primaryButton?.ratio ?? 0) >= 4.5 && !c.failingCount, state: `motion max ${m.reduced.maxSeconds}s reduced; focus stops ${f.stops}, missing ${f.missingIndicator.length}; body ${c.bodyText}; primary ${c.primaryButton?.ratio}; below threshold ${c.failingCount}`, shot: false };
+  });
+
+  await step('st-review-long-data', '500 characters of unbroken words in Special requirements: no overflow on review and final review', async (row) => {
+    const area = page.locator('textarea[name="specialRequirements"]'); const word = 'Unbroken'.repeat(12);
+    await area.click(); await area.fill(''); await area.fill(Array(6).fill(word).join(' ').slice(0, 500));
+    await page.keyboard.press('Tab'); const len = await area.evaluate((e) => e.value.length);
+    const onReview = await layoutFacts('.gcsp-review-body'); row.screenshots.push(await shot('st-review-long-data'));
+    await toSummary(); await wait(500);
+    const onSummary = await layoutFacts('.gcsp-summary-body');
+    row.detail = { length: len, onReview, onSummary, shownOnSummary: (await sectionText('Contact and requirements')).includes(word.slice(0, 40)) };
+    return { pass: len === 500 && onReview.docOverflow === 0 && onSummary.docOverflow === 0 && !onSummary.wideElements.length && !onReview.wideElements.length, state: `typed ${len}; review overflow ${onReview.docOverflow}, wide ${onReview.wideElements.join(',') || 'none'}; final review overflow ${onSummary.docOverflow}, wide ${onSummary.wideElements.join(',') || 'none'}`, shotName: 'st-final-review-long-data' };
+  }, { critical: true });
+
+  await step('st-summary-a11y', 'Final review: reduced motion, Tab focus indicators, contrast', async (row) => {
+    const m = await motionCheck('final review'); const f = await focusWalk('final review'); const c = await contrastIn(); report.contrast.push({ stage: 'final review', ...c });
+    row.detail = { motion: m, focus: f, contrast: c };
+    return { pass: m.pass && f.pass && c.bodyText >= 4.5 && (c.primaryButton?.ratio ?? 0) >= 4.5 && !c.failingCount, state: `motion max ${m.reduced.maxSeconds}s reduced; focus stops ${f.stops}, missing ${f.missingIndicator.length}; body ${c.bodyText}; primary ${c.primaryButton?.ratio}; below threshold ${c.failingCount}`, shot: false };
+  });
+
+  await step('st-pending', 'Lost response: one POST, could-not-confirm notice, Check order status recovers the order', async (row) => {
+    await tickAll(); const posts0 = orderPosts.length; let reached = null;
+    await page.route(ORDER_ROUTE, async (route) => {
+      if (route.request().method() !== 'POST') return route.continue();
+      try { const r = await route.fetch(); reached = { status: r.status(), body: clip(await r.text(), 120) }; } catch (e) { reached = { error: clip(e.message, 100) }; }
+      return route.abort('failed');
+    });
+    try {
+      await kbPress(submitButton());
+      await until(async () => /could not confirm whether your order was placed/.test(await summaryText()), { timeout: 30000, what: 'could-not-confirm notice' });
+      const notice = clip(await text(page.locator('.gcsp-summary-body .gcsp-note').first()), 240); const statusButton = await page.getByRole('button', { name: 'Check order status' }).count();
+      row.screenshots.push(await shot('st-pending-could-not-confirm'));
+      await page.unroute(ORDER_ROUTE);
+      await kbPress(page.getByRole('button', { name: 'Check order status' })); await waitOutcome();
+      const o = await outcomeFacts(); const posts = orderPosts.length - posts0; reviewedOrder = o.orderNumber;
+      row.detail = { postsFromPage: posts, serverReceived: reached, notice, outcome: { heading: o.heading, orderNumber: o.orderNumber, status: o.status } };
+      return { pass: posts === 1 && Boolean(reached?.status) && statusButton > 0 && /^\d{7}$/.test(o.orderNumber ?? ''), state: `POSTs ${posts}; server answered ${JSON.stringify(reached)}; notice "${notice}"; outcome "${o.heading}" ${o.orderNumber}`, shotName: 'st-pending-outcome' };
+    } finally { await page.unroute(ORDER_ROUTE).catch(() => {}); }
+  });
+}
+
+async function walkExpired() {
+  await freshHost();
+  await reachGallery({ tag: 'exp-' }); await closeStrip();
+  await step('exp-review-loaded', 'Expiry run: review loaded', async () => { await reviewFirstCar(); return { state: `${await heading()} | ${await countdownOf()}`, shot: false }; }, { critical: true });
+  await step('exp-expired', 'Presenter ticks expire the hold at the final review: expiry message, Submit disabled, Refresh stock', async (row) => {
+    await toSummary(); await tickAll();
+    let ticks = 0; const expiredShown = async () => /Your reservation has expired|This deadline has passed/.test(await bodyText());
+    while (ticks < 60 && !(await expiredShown())) { await tick(); ticks += 1; await until(expiredShown, { timeout: 6000, what: 'expiry' }).catch(() => {}); }
+    await until(expiredShown, { timeout: 30000, what: 'expired message' });
+    await until(async () => page.getByRole('button', { name: 'Refresh stock' }).count(), { timeout: 12000, what: 'Refresh stock' }).catch(() => {});
+    if (!(await page.getByRole('button', { name: 'Refresh stock' }).count())) { await tick(); await until(async () => page.getByRole('button', { name: 'Refresh stock' }).count(), { timeout: 8000, what: 'Refresh stock' }).catch(() => {}); }
+    await closeStrip();
+    const f = { ticks, submitPresent: await submitButton().count(), submitDisabled: (await submitButton().count()) ? await submitButton().isDisabled() : null, refreshStock: await page.getByRole('button', { name: 'Refresh stock' }).count(),
+      notice: clip(await text(page.locator('.gcsp-summary-body .gcsp-note').first()), 240), hint: clip(await text(page.locator('.gcsp-summary-body .gcsp-field-hint').last()), 120) };
+    row.detail = f;
+    return { pass: (!f.submitPresent || f.submitDisabled) && f.refreshStock >= 1, state: `ticks ${ticks}; notice "${f.notice}"; hint "${f.hint}"; Submit present ${Boolean(f.submitPresent)} disabled ${f.submitDisabled}; Refresh stock ${f.refreshStock}`, shotName: 'exp-expired' };
+  });
+}
+
+// The retail demo pages and the GCSP component gallery are static files: served here by a throwaway server on the chunk's sibling port.
+async function startStatic(staticPort) {
+  const root = resolve(HERE, '../../../..'); const types = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
+  const server = createServer(async (req, res) => {
+    const path = decodeURIComponent(new URL(req.url, 'http://x').pathname); const file = resolve(root, `.${path === '/' ? '/index.html' : path}`);
+    if (!file.startsWith(root) || /\/(\.git|node_modules|server)\//.test(file)) { res.writeHead(404); return res.end(); }
+    try { const data = await readFile(file); res.writeHead(200, { 'Content-Type': types[extname(file)] ?? 'application/octet-stream' }); res.end(data); } catch { res.writeHead(404); res.end(); }
+  });
+  await new Promise((done) => server.listen(staticPort, '127.0.0.1', done));
+  return { origin: `http://127.0.0.1:${staticPort}`, stop: () => new Promise((done) => server.close(done)) };
+}
+async function walkAdjacent() {
+  const paths = ['/', '/block.html?brand=bmw', '/components.html'];
+  await step('adj-hosted-entry', 'Same origin as the GCSP host: which retail and gallery pages it serves', async (row) => {
+    const out = []; for (const path of paths) { const r = await page.request.get(`${origin}${path}`, { failOnStatusCode: false }).catch(() => null); out.push({ path, status: r?.status() ?? null }); }
+    row.detail = out; return { pass: true, state: `${JSON.stringify(out)} (401 or 404: not served by the hosted GCSP entry)`, shot: false };
+  });
+  const staticPort = port === 8936 ? 8937 : 8936; const stat = await startStatic(staticPort);
+  try {
+    await page.route((url) => url.origin !== stat.origin && url.origin !== origin, (route) => route.abort('blockedbyclient')); // no live retail feeds
+    for (const path of paths) {
+      await step(`adj-${path === '/' ? 'home' : path.replace(/[^a-z]+/gi, '-').replace(/^-|-$/g, '')}`, `Static ${path} (retail demo picker, block harness, GCSP component gallery)`, async (row) => {
+        const errs0 = report.consoleErrors.length; const fails0 = report.failedRequests.length;
+        const resp = await page.goto(`${stat.origin}${path}`, { waitUntil: 'load', timeout: 60000 }); await wait(2000);
+        const info = { path, status: resp?.status(), title: await page.title(), h1: clip(await heading(), 80), consoleErrors: report.consoleErrors.slice(errs0).map((e) => clip(`${e.text} @ ${e.url.replace(stat.origin, '')}`, 140)),
+          blockedExternal: report.failedRequests.slice(fails0).filter((f) => /BLOCKED_BY_CLIENT/i.test(f.error ?? '')).length };
+        row.detail = info;
+        return { pass: info.status === 200 && Boolean(info.title), state: JSON.stringify(info), shotName: `adj-static-${path === '/' ? 'home' : path.replace(/[^a-z]+/gi, '-').replace(/^-|-$/g, '')}` };
+      });
+    }
+  } finally { await stat.stop(); }
+}
+
+async function walk73() {
+  const want = (id) => !env('ONLY') || env('ONLY').split(',').includes(id);
+  if (want('rep')) await walkReplacement();
+  if (want('new')) await walkNewOrder();
+  if (want('st')) await walkStates();
+  if (want('stb')) await walkStatesB();
+  if (want('exp')) await walkExpired();
+  if (want('adj')) await walkAdjacent();
+}
+
+// FUCQ-145: after an account Resume, keyboard focus must land on the final review heading, never rest on BODY.
+const FOCUS_POLL = () => {
+  const fp = window.__fp = { samples: [], enterAt: null };
+  const read = () => {
+    const a = document.activeElement; const h = document.querySelector('main h1'); const c = [...document.querySelectorAll('button')].find((b) => b.textContent.trim() === 'Continue to order review');
+    return { t: Math.round(performance.now() * 10) / 10, tag: a ? a.tagName : 'NONE', text: a && a.tagName !== 'BODY' ? (a.innerText || a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60) : '', main1: Boolean(a && a.matches('main h1')),
+      h1: h ? h.textContent.trim() : null, ready: Boolean(h && h.textContent.trim() === 'Review your car' && c && !c.disabled && c.getAttribute('aria-disabled') !== 'true') };
+  };
+  fp.id = setInterval(() => fp.samples.push(read()), 25);
+};
+const activeFacts = () => page.evaluate(() => {
+  const a = document.activeElement; const cs = getComputedStyle(a);
+  return { tag: a.tagName, text: (a.innerText || a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60), insideMain: Boolean(a.closest('main')), isMainH1: a.matches('main h1'), tabindex: a.getAttribute('tabindex'),
+    outline: `${cs.outlineStyle} ${cs.outlineWidth} ${cs.outlineColor}`, boxShadow: cs.boxShadow, focusVisible: a.matches(':focus-visible') };
+});
+function analyse(samples, enterAt) {
+  const seq = []; for (const s of samples) { const key = `${s.tag}|${s.text}`; if (seq.at(-1)?.key !== key) seq.push({ key, tag: s.tag, text: s.text, atMs: Math.round(s.t - enterAt) }); }
+  const after = samples.filter((s) => s.t >= enterAt);
+  const firstAt = (fn) => samples.find(fn)?.t ?? null;
+  const renderedAt = firstAt((s) => s.h1 === 'Review your car'); const readyAt = firstAt((s) => s.ready);
+  const bodyAfter = (from) => (from === null ? null : samples.filter((s) => s.t >= from && s.tag === 'BODY').length);
+  let maxBodyMs = 0; let run = null;
+  for (const s of after) { if (s.tag === 'BODY') run ??= s.t; else if (run !== null) { maxBodyMs = Math.max(maxBodyMs, s.t - run); run = null; } }
+  if (run !== null) maxBodyMs = Math.max(maxBodyMs, after.at(-1).t - run + 25);
+  return { sampleCount: samples.length, transitionSequence: seq.filter((x) => x.atMs >= 0).map(({ tag, text, atMs }) => ({ tag, text, atMs })), tabPathSequence: seq.filter((x) => x.atMs < 0).map(({ tag, text }) => ({ tag, text })),
+    renderedAtMs: renderedAt === null ? null : Math.round(renderedAt - enterAt), readyAtMs: readyAt === null ? null : Math.round(readyAt - enterAt),
+    focusOnHeadingAtMs: (() => { const h = samples.find((s) => s.t >= enterAt && s.main1 && s.text === 'Review your car'); return h ? Math.round(h.t - enterAt) : null; })(),
+    bodySamplesAfterRender: bodyAfter(renderedAt), bodySamplesAfterReady: bodyAfter(readyAt), maxBodyMsDuringTransition: Math.round(maxBodyMs) };
+}
+const accountResume = () => page.getByRole('button', { name: /Resume saved journey/ });
+async function reloadToAccount(n) {
+  await page.reload({ waitUntil: 'load' });
+  await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 60000 });
+  await until(async () => (await accountResume().count()) > 0, { what: 'Resume saved journey button' });
+  return { state: `reload ${n}: heading "${await heading()}"; Resume saved journey offered`, shotName: `reload-${n}-account-resume`, full: false };
+}
+async function resumeAndWatch(n, row) {
+  await page.evaluate(FOCUS_POLL);
+  const before = await activeFacts(); const hops = await tabTo(accountResume());
+  await page.evaluate(() => { window.__fp.enterAt = performance.now(); });
+  await page.keyboard.press('Enter');
+  await until(async () => (await page.locator('main h1').first().innerText().catch(() => '')).trim() === 'Review your car' && await page.getByRole('button', { name: 'Continue to order review' }).isEnabled().catch(() => false), { timeout: 60000, what: 'final review rendered, Continue enabled' });
+  await wait(600);
+  const { samples, enterAt } = await page.evaluate(() => { clearInterval(window.__fp.id); return window.__fp; });
+  const final = await activeFacts(); const a = analyse(samples, enterAt);
+  const ok = final.isMainH1 && final.text === 'Review your car' && a.bodySamplesAfterRender === 0;
+  row.detail = { focusBeforeTab: `${before.tag} "${before.text}"`, tabPresses: hops, final, ...a };
+  kb('review', `Resume ${n}: Enter on Resume saved journey leaves focus on the main h1 "Review your car"`, ok, { final: `${final.tag} "${final.text}"`, bodyAfterRender: a.bodySamplesAfterRender, maxBodyMs: a.maxBodyMsDuringTransition });
+  return { pass: ok, state: `resume ${n}: focus before Tab ${before.tag}, ${hops} Tab presses; final ${final.tag} "${final.text}" (main h1 ${final.isMainH1}); BODY samples after render ${a.bodySamplesAfterRender}, after ready ${a.bodySamplesAfterReady}; max BODY ${a.maxBodyMsDuringTransition} ms; sequence ${a.transitionSequence.map((x) => `${x.tag}${x.text ? ` "${x.text}"` : ''}`).join(' > ')}`, shotName: `resume-${n}-review-focus`, full: false };
+}
+async function walk145() {
+  await reachGallery();
+  await step('claim-review', 'Review this car: a claim exists and the review is shown', async () => {
+    await reviewFirstCar(); const hold = (await claimNow()).hold;
+    return { pass: hold?.state === 'active', state: `${await heading()} | ${await countdownOf()} | claim ${hold?.state}`, shotName: 'review-claimed', full: false };
+  }, { critical: true });
+  await step('reload-1-account', 'Reload: Your cars shows Resume saved journey', () => reloadToAccount(1), { critical: true });
+  await step('resume-1-focus', 'Keyboard Resume: focus ends on the review heading, never BODY after render', (row) => resumeAndWatch(1, row), { critical: true });
+  await step('tab-after-heading', 'Tab then Shift+Tab from the heading', async (row) => {
+    await page.keyboard.press('Tab'); await wait(200);
+    const next = await activeFacts();
+    const expected = await page.evaluate(() => { const h = document.querySelector('main h1'); const sel = 'a[href],button:not([disabled]),input:not([disabled]):not([type=hidden]),select:not([disabled]),textarea:not([disabled]),summary,[tabindex]:not([tabindex="-1"])';
+      const f = [...document.querySelectorAll(sel)].find((el) => h.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING && el.getClientRects().length); return f ? (f.innerText || f.getAttribute('aria-label') || f.name || f.tagName).replace(/\s+/g, ' ').trim().slice(0, 60) : null; });
+    row.screenshots.push(await shot('tab-1-first-control', false));
+    await page.keyboard.press('Shift+Tab'); await wait(200);
+    const back = await activeFacts();
+    row.screenshots.push(await shot('shift-tab-back', false));
+    row.detail = { tab: next, firstFocusableAfterHeading: expected, shiftTab: back };
+    const visible = next.focusVisible && (/^(solid|auto)/.test(next.outline) && !/ 0px /.test(next.outline) || next.boxShadow !== 'none');
+    kb('review', 'Tab moves from the heading to the first control after it, with a visible focus ring', visible && next.text === expected, { tab: `${next.tag} "${next.text}"`, expected, shiftTab: `${back.tag} "${back.text}"` });
+    return { pass: visible && next.text === expected, state: `Tab: ${next.tag} "${next.text}" outline [${next.outline}] shadow [${next.boxShadow}] (first after heading "${expected}"); Shift+Tab: ${back.tag} "${back.text}" main h1 ${back.isMainH1}`, shot: false };
+  });
+  await step('reload-2-account', 'Second reload: Your cars shows Resume saved journey', () => reloadToAccount(2), { critical: true });
+  await step('resume-2-focus', 'Second keyboard Resume: same focus result (stable)', (row) => resumeAndWatch(2, row));
+  await step('errors', 'No page errors; only expected 404s in console and responses', async (row) => {
+    const bad = report.badResponses.filter((r) => r.status !== 404); const con = report.consoleErrors.filter((c) => !/404|favicon/i.test(`${c.text} ${c.url}`)); const failed = report.failedRequests.filter((f) => f.error !== 'net::ERR_ABORTED'); // reload aborts in-flight reads
+    row.detail = { pageErrors: report.pageErrors, consoleErrors: report.consoleErrors, badResponses: report.badResponses.map((r) => `${r.status} ${r.url}`), failedRequests: report.failedRequests };
+    return { pass: !report.pageErrors.length && !bad.length && !con.length && !failed.length, state: `page errors ${report.pageErrors.length}; console errors ${report.consoleErrors.length} (unexpected ${con.length}); HTTP >=400: ${report.badResponses.map((r) => `${r.status} ${r.url}`).join(', ') || 'none'}; failed requests ${report.failedRequests.length} (${failed.length} other than aborted)`, shot: false };
+  });
+}
+
+// FUCQ-222: after Next release passes the saved date, the gallery offers one Back to your choices; keyboard recovery to released cars.
+const statusButtons = () => page.locator('.vm-status button').evaluateAll((list) => list.map((b) => b.innerText.replace(/\s+/g, ' ').trim()));
+async function walk222() {
+  await step('access-key', 'Demo key form opens the offline hosted demo', async () => {
+    const typed = await enterAccessKey();
+    await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+    return { pass: typed, state: await bodyText(), shot: false };
+  }, { critical: true });
+  await step('setup-saved', 'Choose a replacement; Paula saves the earliest permitted date', async () => {
+    await page.getByRole('button', { name: 'Choose a replacement' }).click();
+    const chosen = await fillSetup(DEFAULT_DRIVER);
+    return { state: `${await heading()} | ${JSON.stringify(chosen)}`, detail: chosen, shotName: 'setup-saved' };
+  }, { critical: true });
+  await step('gallery-before-release', 'Continue (keyboard) opens the gallery before any release', async (row) => {
+    await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled' });
+    await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
+    await waitGalleryReady(); row.detail = await galleryFacts();
+    return { state: `status "${row.detail.status}"; cards ${row.detail.cards}`, shotName: 'gallery-before-release' };
+  }, { critical: true });
+  await step('stale-date-gallery', 'Next release passes the saved date: one Back to your choices, no Refresh availability', async (row) => {
+    const { after } = await presenterPress('Next release'); await closeStrip();
+    const stale = async () => /Your saved choices need updating/.test(await text(page.locator('.vm-status')));
+    const settled = await until(stale, { timeout: 8000, what: 'stale-date status' }).catch(() => false);
+    if (!settled) { const refresh = page.getByRole('button', { name: 'Refresh availability' }); if (await refresh.count()) await kbPress(refresh); await until(stale, { timeout: 20000, what: 'stale-date status after refresh' }).catch(() => {}); }
+    const status = clip(await text(page.locator('.vm-status')), 300); const buttons = await statusButtons();
+    row.detail = { status, statusButtons: buttons, pageRefreshButtons: await page.getByRole('button', { name: 'Refresh availability' }).count(), stockStatus: lastStock?.status, clock: clockOf(after) };
+    const ok = /Your saved choices need updating/.test(status) && /pick a new date/.test(status) && buttons.length === 1 && buttons[0] === 'Back to your choices' && !buttons.includes('Refresh availability');
+    return { pass: ok, state: `status "${status}"; status buttons [${buttons.join(' | ')}]; stock ${lastStock?.status}`, shotName: 'stale-date-gallery' };
+  }, { critical: true });
+  await step('back-keyboard', 'Tab to the status Back to your choices, Enter: setup screen; focus recorded', async (row) => {
+    const back = page.locator('.vm-status').getByRole('button', { name: 'Back to your choices' });
+    const hops = await tabTo(back);
+    row.detail = { tabHops: hops, backButtons: await page.evaluate(() => [...document.querySelectorAll('button')].filter((b) => b.textContent.trim() === 'Back to your choices').map((b) => ({ disabled: b.disabled, inStatus: Boolean(b.closest('.vm-status')) }))), notes: await page.locator('.gcsp-note').allInnerTexts() };
+    const t0 = Date.now(); // the page-level Back stays disabled while the reservation check runs; record whether it ever frees up
+    row.detail.pageBackEnabledAfterMs = await until(async () => (await page.evaluate(() => [...document.querySelectorAll('button')].some((x) => x.textContent.trim() === 'Back to your choices' && !x.closest('.vm-status') && !x.disabled))), { timeout: 10000, what: 'page Back enabled' }).then(() => Date.now() - t0).catch(() => null);
+    row.detail.focusBeforeEnter = await page.evaluate(() => { const a = document.activeElement; return `${a.tagName} "${(a.innerText || '').trim().slice(0, 40)}" inStatus ${Boolean(a.closest('.vm-status'))}`; });
+    const lost = !/inStatus true/.test(row.detail.focusBeforeEnter); // a redraw after the reservation check drops focus from the status button
+    if (lost) { report.notes.push(`FUCQ-222 defect: focus left the status Back button before Enter (${row.detail.focusBeforeEnter}); Enter did nothing. Retabbed once settled.`); await tabTo(back); }
+    row.detail.focusLostEarly = lost;
+    await page.keyboard.press('Enter');
+    await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor({ timeout: 20000 }); await wait(400);
+    const focus = await page.evaluate(() => { const a = document.activeElement; return { tag: a.tagName, id: a.id, text: (a.innerText || a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60) }; });
+    row.detail = { ...row.detail, focus }; kb('gallery', 'Tab reaches the status Back to your choices; Enter opens the setup screen', true, { hops, focus });
+    return { pass: !lost, state: `${lost ? 'FOCUS LOST EARLY (Enter did nothing until retab); ' : ''}setup "${await heading()}"; focus ${focus.tag}#${focus.id} "${focus.text}"`, shotName: 'setup-after-back' };
+  }, { critical: true });
+  await step('date-recovery', 'Pick a later valid date, Save and Continue (keyboard): released cars', async (row) => {
+    const date = page.locator('input[name="requestedCollectionDate"]');
+    await until(async () => (await date.getAttribute('min')) && !(await date.isDisabled()), { what: 'refreshed collection window' });
+    const w = { min: await date.getAttribute('min'), max: await date.getAttribute('max'), was: await date.inputValue() };
+    await tabTo(date); await date.fill(w.min); w.now = await date.inputValue();
+    await kbPress(page.getByRole('button', { name: 'Save choices' }));
+    await until(async () => /Your choices are saved/.test(await bodyText()), { what: 'choices re-saved' });
+    await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled' });
+    await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
+    await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'released cards', timeout: 30000 });
+    const g = await galleryFacts(); row.detail = { window: w, ...g }; kb('setup', 'Save choices and Continue by keyboard reach the released cars', g.enabled > 0, g);
+    return { pass: g.enabled > 0 && w.now !== w.was, state: `window ${JSON.stringify(w)}; ${g.cards} cards, ${g.enabled} enabled`, shotName: 'gallery-released' };
+  }, { critical: true });
+  await step('errors', 'No page errors; only the one expected stock 400 and 404s', async (row) => {
+    const stock400 = report.badResponses.filter((r) => r.status === 400 && /\/api\/gcsp\/manual\/stock$/.test(r.url));
+    const bad = report.badResponses.filter((r) => r.status !== 404 && !stock400.includes(r)); const con = report.consoleErrors.filter((c) => !/404|400|favicon/i.test(`${c.text} ${c.url}`));
+    row.detail = { pageErrors: report.pageErrors, consoleErrors: report.consoleErrors, badResponses: report.badResponses.map((r) => `${r.status} ${r.method} ${r.url} ${r.body}`), stock400s: stock400.length, failedRequests: report.failedRequests };
+    return { pass: !report.pageErrors.length && !bad.length && !con.length && !report.failedRequests.some((f) => f.error !== 'net::ERR_ABORTED') && stock400.length >= 1, state: `page errors ${report.pageErrors.length}; unexpected console ${con.length}; stock 400s ${stock400.length}; HTTP >=400: ${report.badResponses.map((r) => `${r.status} ${r.url}`).join(', ') || 'none'}; failed requests ${report.failedRequests.length}`, shot: false };
+  });
+}
+
+// FUCQ-223: the manual journey at narrow widths. Gallery paging, fact grids, selects and the header account name.
+const PAGE_SIZE_223 = 6;
+// Measures, per fact grid, its columns and any value word wider than its column (a forced mid-word break), plus each select's text fit.
+const layout223 = () => page.evaluate(() => {
+  const ctx = document.createElement('canvas').getContext('2d'); const vis = (n) => n.getClientRects().length > 0;
+  const grids = [...document.querySelectorAll('.vm-facts')].filter(vis).map((g) => {
+    const cols = getComputedStyle(g).gridTemplateColumns.split(' ').length; const forced = [];
+    for (const v of g.querySelectorAll('.vm-fact-value, .vm-fact-label')) {
+      const cs = getComputedStyle(v); ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+      for (const word of v.textContent.split(/[\s-]+/)) if (word && !/[@_.]|^[0-9a-f:;]{20,}/.test(word) && ctx.measureText(word).width > v.clientWidth + 1) forced.push(`${v.closest('.vm-fact')?.querySelector('dt')?.textContent ?? '?'}: ${word.slice(0, 24)}`);
+    }
+    return { cols, width: Math.round(g.clientWidth), forced };
+  });
+  const selects = [...document.querySelectorAll('select')].filter(vis).map((s) => {
+    const cs = getComputedStyle(s); ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+    const text = s.selectedOptions[0]?.textContent ?? ''; const room = s.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 20;
+    return { name: s.name, text, textPx: Math.round(ctx.measureText(text).width), roomPx: Math.round(room), width: Math.round(s.getBoundingClientRect().width), fits: ctx.measureText(text).width <= room };
+  });
+  const name = document.querySelector('.gcsp-account-name');
+  return { grids, selects, forcedWords: grids.flatMap((g) => g.forced), twoColAtNarrow: window.innerWidth < 360 ? grids.filter((g) => g.cols > 1).length : 0,
+    header: name ? { text: name.textContent, title: name.title, clipped: name.scrollWidth > name.clientWidth, ellipsis: getComputedStyle(name).textOverflow } : null };
+});
+const galleryNow223 = () => page.evaluate(() => ({ cards: document.querySelectorAll('.gcsp-gallery-grid .vm-card').length, count: document.querySelector('.gcsp-show-more-count')?.textContent ?? null,
+  more: [...document.querySelectorAll('.gcsp-show-more button')].filter((b) => !b.hidden).map((b) => b.textContent), pageHeight: document.documentElement.scrollHeight,
+  focusIndex: [...document.querySelectorAll('.gcsp-gallery-grid .vm-card')].indexOf(document.activeElement) }));
+async function walk223() {
+  await step('s223-setup', 'Demo key, Choose a replacement: setup screen at width (fact grids, selects, header)', async (row) => {
+    const typed = await enterAccessKey(); await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+    await page.getByRole('button', { name: 'Choose a replacement' }).click();
+    const chosen = await fillSetup('Nominated: Casey (fictional)', {}).catch(async () => fillSetup(DEFAULT_DRIVER));
+    const l = await layout223(); row.detail = { chosen, ...l };
+    return { pass: typed && l.selects.every((s) => s.fits) && !l.forcedWords.length && !l.twoColAtNarrow && (!l.header || l.header.title === l.header.text), state: `selects ${JSON.stringify(l.selects.map((s) => [s.name, s.textPx, s.roomPx, s.fits]))}; grids ${JSON.stringify(l.grids.map((g) => g.cols))}; forced ${JSON.stringify(l.forcedWords)}; header ${JSON.stringify(l.header)}`, shotName: 'setup' };
+  }, { critical: true });
+  await step('s223-gallery-first-page', 'Next release, Continue: the first page of cars, the count line and Show more cars', async (row) => {
+    await presenterPress('Next release'); await closeStrip();
+    const date = page.locator('input[name="requestedCollectionDate"]');
+    await until(async () => (await date.getAttribute('min')) && !(await date.isDisabled()), { what: 'refreshed collection window' });
+    const min = await date.getAttribute('min');
+    if ((await date.inputValue()) !== min) { await date.fill(min); await page.getByRole('button', { name: 'Save choices' }).click(); await until(async () => /Your choices are saved/.test(await bodyText()), { what: 'choices re-saved' }); }
+    await page.getByRole('button', { name: 'Continue', exact: true }).click(); await waitGalleryReady();
+    const g = await galleryNow223(); const l = await layout223(); row.detail = { ...g, forcedWords: l.forcedWords, grids: l.grids.map((x) => x.cols) };
+    report.notes.push(`${vp}px gallery first page height ${g.pageHeight}px, ${g.cards} cards, count "${g.count}"`);
+    return { pass: g.cards === PAGE_SIZE_223 && /^Showing 6 of \d+ cars$/.test(g.count ?? '') && g.more.join() === 'Show more cars' && !l.forcedWords.length && !l.twoColAtNarrow, state: `${JSON.stringify(g)}; forced ${JSON.stringify(l.forcedWords)}`, shotName: 'gallery-first-page' };
+  }, { critical: true });
+  await step('s223-show-more-keyboard', 'Tab to Show more cars, Enter: next page and focus on the first new card; a sort change resets paging', async (row) => {
+    const before = await galleryNow223(); const more = page.getByRole('button', { name: 'Show more cars' });
+    const hops = await tabTo(more); await page.keyboard.press('Enter'); await wait(300);
+    const after = await galleryNow223(); const focus = await page.evaluate(() => { const a = document.activeElement; return `${a.tagName} "${a.getAttribute('aria-label') ?? a.textContent.slice(0, 40)}"`; });
+    kb('gallery', 'Tab to Show more cars and Enter reveals the next page and focuses its first card', after.focusIndex === PAGE_SIZE_223, { hops, focus });
+    const sort = page.locator('select[name="sort"]'); await sort.selectOption('points'); await wait(300); const reset = await galleryNow223();
+    row.detail = { before: before.cards, after, focus, afterSort: reset, hops };
+    const ok = after.cards === 2 * PAGE_SIZE_223 && after.focusIndex === PAGE_SIZE_223 && /^Showing 12 of \d+ cars$/.test(after.count ?? '') && reset.cards === PAGE_SIZE_223;
+    await sort.selectOption('name'); await wait(300); await page.getByRole('button', { name: 'Show more cars' }).click(); await wait(300);
+    return { pass: ok, state: `${before.cards} -> ${after.cards} cards, focus index ${after.focusIndex} (${focus}); "${after.count}"; after sort ${reset.cards} cards`, shotName: 'show-more-keyboard' };
+  }, { critical: true });
+  await step('s223-review', 'Review a car: review screen at width', async (row) => {
+    await reviewFirstCar(); const l = await layout223(); row.detail = { selects: l.selects, grids: l.grids, forcedWords: l.forcedWords };
+    return { pass: !l.forcedWords.length && !l.twoColAtNarrow && l.selects.every((s) => s.fits), state: `${await heading()}; grids ${JSON.stringify(l.grids)}; forced ${JSON.stringify(l.forcedWords)}`, shotName: 'review' };
+  }, { critical: true });
+  await step('s223-summary', 'Continue to order review: summary at width', async (row) => {
+    await toSummary(); const l = await layout223(); row.detail = { grids: l.grids, forcedWords: l.forcedWords };
+    return { pass: !l.forcedWords.length && !l.twoColAtNarrow, state: `${await heading()}; grids ${JSON.stringify(l.grids)}; forced ${JSON.stringify(l.forcedWords)}`, shotName: 'summary' };
+  });
+  // Slice 2: the shell and type on the pages after the summary, and the other surfaces that share the shell.
+  await step('s223b-outcome', 'Tick the declarations and submit by keyboard: outcome', async (row) => {
+    const r = await keyboardSubmitToOutcome(row, 's223b', { atSummary: true }); row.detail = { posts: r.posts, heading: r.o.heading, orderNumber: r.o.orderNumber };
+    return { pass: r.total > 0 && r.ticked === r.total && r.posts === 1 && /^\d{7}$/.test(r.o.orderNumber ?? ''), state: `${r.o.heading} | order ${r.o.orderNumber}; POSTs ${r.posts}`, shotName: 's223b-outcome' };
+  }, { critical: true });
+  await step('s223b-account-after-order', 'Finish returns to the account: kicker, and a compact order image well', async (row) => {
+    await finishToAccount(); await until(async () => !/Loading your order/.test(await bodyText()), { timeout: 15000, what: 'order progress loaded' }).catch(() => {});
+    const m = await page.evaluate(() => ({ kicker: document.querySelector('.gcsp-account-body .vm-kicker')?.textContent ?? null,
+      media: [...document.querySelectorAll('.gcsp-order-media, .gcsp-order-car .vm-media, .gcsp-order-car img')].map((n) => `${n.className || n.tagName}:${Math.round(n.getBoundingClientRect().height)}`) }));
+    row.detail = m;
+    return { pass: m.kicker === 'Choices' && m.media.every((x) => Number(x.split(':').pop()) <= 260), state: JSON.stringify(m), shotName: 's223b-account-after-order' };
+  });
+  if (chunk === 'desktop') {
+    await step('s223b-presenter-strip', 'Presenter strip opened on the account', async (row) => {
+      await openStrip(); const t = await stripText(); row.detail = { text: clip(t, 200) };
+      return { pass: /DemoClock/.test(t), state: clip(t, 200), shotName: 's223b-presenter-strip', full: false };
+    });
+    await step('s223b-greg', "Greg's dashboard harness at desktop width (shared shell)", async (row) => {
+      await page.goto(`${origin}/gcsp-greg.html?fixture=populated`, { waitUntil: 'load', timeout: 60000 }); await wait(1500);
+      row.detail = { h1: clip(await page.locator('h1').first().innerText().catch(() => ''), 60) };
+      return { pass: row.detail.h1.length > 0, state: row.detail.h1, shotName: 's223b-greg' };
+    });
+    for (const [id, path, label] of [['offer', '/blocks/gcsp/offer/preview.html?fixture=pending', 'The offer page (fixture)']]) {
+      await step(`s223b-${id}`, `${label} at desktop width (shared shell)`, async (row) => {
+        await page.goto(`${origin}${path}`, { waitUntil: 'load', timeout: 60000 }); await page.locator('h1').first().waitFor({ timeout: 20000 }).catch(() => {}); await wait(1000);
+        row.detail = { h1: clip(await page.locator('h1').first().innerText().catch(() => ''), 60) };
+        return { pass: row.detail.h1.length > 0, state: row.detail.h1, shotName: `s223b-${id}` };
+      });
+    }
+  }
+}
+
+// FUCQ-238: compact gallery cards (Car facts disclosure) and the Renewal cases region ending at its content.
+const gallery238 = () => page.evaluate(() => {
+  const card = document.querySelector('.gcsp-gallery-grid .vm-card'); const header = document.querySelector('header');
+  const sections = [...document.querySelectorAll('.gcsp-gallery-grid details.gcsp-gallery-fact-section')];
+  return { pageHeight: document.documentElement.scrollHeight, cards: document.querySelectorAll('.gcsp-gallery-grid .vm-card').length, cardHeight: card ? Math.round(card.getBoundingClientRect().height) : null,
+    mediaRatio: card ? getComputedStyle(card.querySelector('.vm-card-media')).aspectRatio : null, headerHeight: header ? Math.round(header.getBoundingClientRect().height) : null,
+    gridTop: Math.round(document.querySelector('.gcsp-gallery-grid').getBoundingClientRect().top + scrollY), gridHeight: Math.round(document.querySelector('.gcsp-gallery-grid').getBoundingClientRect().height),
+    parts: card ? [...card.querySelectorAll(':scope > *, .vm-card-body > *')].map((n) => `${n.className.split(' ')[0] || n.tagName.toLowerCase()}:${Math.round(n.getBoundingClientRect().height)}`) : [],
+    sections: sections.length, open: sections.filter((d) => d.open).length, summaries: [...new Set(sections.map((d) => d.querySelector('summary')?.textContent))] };
+});
+const renewal238 = () => page.evaluate(() => {
+  const region = document.querySelector('[aria-label="Renewal cases"]'); if (!region) return null;
+  const r = region.getBoundingClientRect(); let last = 0;
+  for (const n of region.querySelectorAll('*')) { const b = n.getBoundingClientRect(); if (b.width > 0 && b.height > 0 && getComputedStyle(n).visibility !== 'hidden') last = Math.max(last, b.bottom); }
+  const q = region.querySelector('.gcsp-case-queue'); const w = q?.parentElement; const cs = w && getComputedStyle(w);
+  return { regionHeight: Math.round(r.height), regionBottom: Math.round(r.bottom), lastContentBottom: Math.round(last), gapBelowContent: Math.round(r.bottom - last),
+    wrapper: w ? { tag: w.tagName.toLowerCase(), className: w.className, minHeight: cs.minHeight, background: cs.backgroundColor, height: Math.round(w.getBoundingClientRect().height) } : null, viewportHeight: window.innerHeight };
+});
+async function walk238() {
+  const PS238 = viewport.width > 600 ? 6 : 3; // the gallery pages 3 cars at 600px and below, 6 wider
+  await step('s238-setup', 'Demo key, Choose a replacement: setup screen', async (row) => {
+    const typed = await enterAccessKey(); await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+    await page.getByRole('button', { name: 'Choose a replacement' }).click();
+    const chosen = await fillSetup('Nominated: Casey (fictional)', {}).catch(async () => fillSetup(DEFAULT_DRIVER)); row.detail = { chosen };
+    return { pass: typed, state: JSON.stringify(chosen), shotName: 'setup', full: false };
+  }, { critical: true });
+  await step('s238-gallery-first-page', 'Next release, Continue: first page height, card height and Car facts disclosure state', async (row) => {
+    await presenterPress('Next release'); await closeStrip();
+    const date = page.locator('input[name="requestedCollectionDate"]');
+    await until(async () => (await date.getAttribute('min')) && !(await date.isDisabled()), { what: 'refreshed collection window' });
+    const min = await date.getAttribute('min');
+    if ((await date.inputValue()) !== min) { await date.fill(min); await page.getByRole('button', { name: 'Save choices' }).click(); await until(async () => /Your choices are saved/.test(await bodyText()), { what: 'choices re-saved' }); }
+    await page.getByRole('button', { name: 'Continue', exact: true }).click(); await waitGalleryReady();
+    const g = await gallery238(); row.detail = g; const wide = viewport.width > 600;
+    report.notes.push(`${vp}px gallery first page height ${g.pageHeight}px, first card ${g.cardHeight}px, header ${g.headerHeight}px, ${g.open}/${g.sections} Car facts open`);
+    return { pass: g.cards === PS238 && g.sections === g.cards && g.summaries.join() === 'Car facts' && g.open === (wide ? g.cards : 0), state: JSON.stringify(g), shotName: 'gallery-first-page', full: chunk === 'narrow' };
+  }, { critical: true });
+  await step('s238-facts-keyboard', 'Tab to the first Car facts summary, Enter toggles it', async (row) => {
+    const summary = page.locator('.gcsp-gallery-grid .vm-card').first().locator('summary'); const d = () => summary.evaluate((n) => n.parentElement.open);
+    const before = await d(); const hops = await tabTo(summary); await page.keyboard.press('Enter'); await wait(200); const after = await d();
+    const shotRow = await shot('facts-keyboard', false); row.screenshots.push(shotRow);
+    kb('gallery', 'Tab to Car facts and Enter toggles the disclosure', before !== after, { before, after, hops });
+    row.detail = { before, after, hops, firstCardHeightAfter: await page.evaluate(() => Math.round(document.querySelector('.gcsp-gallery-grid .vm-card').getBoundingClientRect().height)) };
+    await page.keyboard.press('Enter'); await wait(200);
+    return { pass: before !== after && (await d()) === before, state: JSON.stringify(row.detail), shot: false };
+  }, { critical: true });
+  await step('s238-show-more-keyboard', 'Tab to Show more cars, Enter: next page and focus on the first new card', async (row) => {
+    const before = await galleryNow223(); const more = page.getByRole('button', { name: 'Show more cars' });
+    const hops = await tabTo(more); await page.keyboard.press('Enter'); await wait(300);
+    const after = await galleryNow223(); kb('gallery', 'Tab to Show more cars and Enter reveals the next page and focuses its first card', after.focusIndex === PS238, { hops });
+    row.detail = { before: before.cards, after };
+    return { pass: after.cards === 2 * PS238 && after.focusIndex === PS238, state: `${before.cards} -> ${after.cards} cards, focus index ${after.focusIndex}`, shotName: 'show-more-keyboard', full: false };
+  }, { critical: true });
+  await step('s238-greg-renewal-cases', "Greg's harness: Renewal cases region ends at its content", async (row) => {
+    await page.goto(`${origin}/gcsp-greg.html?fixture=populated`, { waitUntil: 'load', timeout: 60000 });
+    await page.locator('[aria-label="Renewal cases"] .gcsp-case-queue-content').first().waitFor({ timeout: 30000 }); await wait(1500);
+    await page.locator('[aria-label="Renewal cases"]').evaluate((n) => n.scrollIntoView({ block: 'end' })); await wait(300);
+    const m = await renewal238(); row.detail = m;
+    report.notes.push(`${vp}px Renewal cases: region bottom minus last content bottom ${m?.gapBelowContent}px, wrapper ${JSON.stringify(m?.wrapper)}`);
+    return { pass: Boolean(m) && m.gapBelowContent >= 0 && m.gapBelowContent < 40 && m.wrapper?.minHeight === '0px', state: JSON.stringify(m), shotName: 'greg-renewal-cases', full: false };
+  });
+}
+
+// FUCQ-224: the new-order route for Jordan (fictional), then the account after the order.
+async function walk224() {
+  const tag = story === 'fucq237' ? 'n237' : 'n224'; const is237 = story === 'fucq237'; // FUCQ-237 adds three checks to the FUCQ-224 walk
+  await freshHost();
+  await step(`${tag}-account`, 'Demo key, switch to Jordan: the account offers Start a new order and no Choose a replacement', async () => {
+    const typed = await enterAccessKey(); await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+    const r = await switchTo('demo-jordan'); const t = await bodyText();
+    const start = r.buttons.some((b) => /Start a new order/.test(b)); const replace = r.buttons.some((b) => /Choose a replacement/.test(b));
+    return { pass: typed && start && !replace && /Jordan/.test(t), state: `start ${start}; replacement ${replace}; ${clip(t, 400)}`, detail: { buttons: r.buttons }, shotName: `${tag}-account` };
+  }, { critical: true });
+  await step(`${tag}-setup`, 'Start a new order (Tab+Enter); setup saved for You: Jordan (fictional), no returning-car mileage', async (row) => {
+    await kbPress(page.getByRole('button', { name: 'Start a new order' }));
+    const chosen = await fillSetup('You: Jordan (fictional)', { keyboard: true });
+    const mileageVisible = await page.locator('input[name="expectedReturnMileage"]').isVisible(); row.detail = { ...chosen, returningMileageVisible: mileageVisible };
+    if (is237) { // setup page text and select options both count
+      const all = `${await bodyText()} ${await page.locator('option').evaluateAll((o) => o.map((x) => x.textContent).join(' '))}`;
+      const site = /Fictional company site/.test(all); const na = /Not available for this driver and contract/.test(all);
+      row.detail.noStrayLocation = { fictionalCompanySite: site, notAvailableForDriverAndContract: na, pass: !site && !na };
+      return { pass: /Jordan/.test(chosen.driver) && !mileageVisible && !site && !na, state: `no "Fictional company site" ${!site}; no "Not available for this driver and contract" ${!na}; ${await heading()}`, shotName: `${tag}-setup-saved` };
+    }
+    return { pass: /Jordan/.test(chosen.driver) && !mileageVisible, state: `${await heading()} | ${JSON.stringify(row.detail)}`, shotName: `${tag}-setup-saved` };
+  }, { critical: true });
+  await step(`${tag}-empty-gallery`, 'Continue before any release: empty gallery', async (row) => {
+    await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled' });
+    await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
+    await until(async () => EMPTY_TITLES.test(await bodyText()) || (await page.getByRole('button', { name: 'Review this car' }).count()) > 0, { what: 'empty gallery state' });
+    row.detail = await galleryFacts();
+    return { pass: row.detail.cards === 0, state: `status "${row.detail.status}"; cards ${row.detail.cards}`, shotName: `${tag}-gallery-empty`, full: false };
+  }, { critical: true });
+  await step(`${tag}-gallery`, 'Next release; released cars (back to choices for a new date if the window moved)', async (row) => {
+    await presenterPress('Next release'); await closeStrip();
+    const refresh = page.getByRole('button', { name: 'Refresh availability' });
+    if (await refresh.count()) await kbPress(refresh);
+    await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'released cards', timeout: 15000 }).catch(() => {});
+    if (!(await enabledButton('Review this car').count())) {
+      await kbPress(page.getByRole('button', { name: 'Back to your choices' }));
+      await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor({ timeout: 60000 });
+      const date = page.locator('input[name="requestedCollectionDate"]');
+      await until(async () => (await date.getAttribute('min')) && !(await date.isDisabled()), { what: 'refreshed collection window' });
+      await date.fill(await date.getAttribute('min'));
+      await kbPress(page.getByRole('button', { name: 'Save choices' }));
+      await until(async () => /Your choices are saved/.test(await bodyText()), { what: 'choices re-saved' });
+      await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled' });
+      await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
+      row.detail = { dateRecovery: true };
+    }
+    await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'released cards', timeout: 30000 });
+    row.detail = { ...row.detail, ...(await galleryFacts()) };
+    return { pass: row.detail.enabled > 0, state: `${row.detail.cards} cards, ${row.detail.enabled} enabled`, shotName: `${tag}-gallery-released` };
+  }, { critical: true });
+  await step(`${tag}-review`, 'Review this car (Tab+Enter): review with an active countdown', async (row) => {
+    await kbPress(enabledButton('Review this car'));
+    await page.getByRole('heading', { name: 'Review your car', exact: true }).waitFor({ timeout: 60000 });
+    await until(async () => /remaining/.test(await countdownOf()), { what: 'active countdown' });
+    const f = await reviewFacts(); row.detail = f;
+    return { pass: Boolean(f.vehicleName) && Boolean(f.phone), state: `${f.vehicleName} | ${f.countdown}`, shotName: `${tag}-review` };
+  }, { critical: true });
+  if (is237) await step(`${tag}-summary`, 'Continue to order review: Before you submit has no replacement wording; declarations are the terms and driver checkboxes', async (row) => {
+    await toSummary();
+    const card = await sectionText('Before you submit'); const ids = await boxes().evaluateAll((l) => l.map((b) => b.dataset.declaration));
+    const replacement = /For a replacement/.test(card); const exact = ids.length === 2 && ids.includes('terms') && ids.includes('driver');
+    row.detail = { wordingCard: clip(card, 500), declarationIds: ids, replacementSentence: replacement, declarationsExact: exact };
+    return { pass: Boolean(card) && !replacement && exact, state: `no "For a replacement" ${!replacement}; declarations ${ids.join(', ')}; ${clip(card, 300)}`, shotName: `${tag}-summary-wording` };
+  }, { critical: true });
+  await step(`${tag}-summary-outcome`, 'Continue to order review, tick declarations, Submit: outcome', async (row) => {
+    const r = await keyboardSubmitToOutcome(row, tag, { atSummary: is237 });
+    row.detail = { total: r.total, ticked: r.ticked, submitEnabled: r.enabled, posts: r.posts, outcome: { heading: r.o.heading, orderNumber: r.o.orderNumber, status: r.o.status, rawIds: r.o.rawIds } };
+    return { pass: r.total > 0 && r.ticked === r.total && r.enabled === true && r.posts === 1 && /^\d{7}$/.test(r.o.orderNumber ?? '') && !r.o.forbiddenWording.length && !r.o.rawIds.length, state: `${r.o.heading} | order ${r.o.orderNumber} | status ${r.o.status}; POSTs ${r.posts}`, shotName: `${tag}-outcome` };
+  }, { critical: true });
+  await step(`${tag}-account-after-order`, 'Finish returns to the account: order in progress, no saved-journey card', async (row) => {
+    await finishToAccount();
+    await until(async () => (await bodyText()).includes(reviewedOrder ?? '#none'), { timeout: 30000, what: 'order number on the account' }).catch(() => {});
+    await until(async () => !/Loading your order/.test(await bodyText()), { timeout: 15000, what: 'order progress loaded' }).catch(() => {});
+    const t = await bodyText(); const inProgress = /Your order is in progress/.test(t); const stale = /journey saved|not an order confirmation/i.test(t);
+    const noCar = /No current car/.test(t); row.detail = { orderShown: t.includes(reviewedOrder ?? '#none'), inProgress, staleSavedJourneyCard: stale, text: clip(t, 700), ...(is237 ? { noCurrentCarShown: noCar } : {}) };
+    if (stale) defect(row, 'D-224', 'Medium', 'blocks/gcsp/account/gcsp-account.js (saved journey card)', 'After the order the account still shows the saved-journey card.');
+    return { pass: inProgress && !stale && !(is237 && noCar), state: `in progress ${inProgress}; stale card ${stale}${is237 ? `; No current car shown ${noCar}` : ''}; ${clip(t, 400)}`, shotName: `${tag}-account-after-order` };
+  });
+}
+
 async function run() {
   await mkdir(shotDir, { recursive: true }); await mkdir(scratch, { recursive: true });
   await rm(join(scratch, 'gcsp-stock-inventory'), { recursive: true, force: true }); // a killed earlier run can leave a torn inventory file
@@ -487,6 +1340,7 @@ async function run() {
     p.on('pageerror', (e) => report.pageErrors.push(clip(e.message, 200)));
     p.on('requestfailed', (r) => report.failedRequests.push({ url: bare(r.url()), error: r.failure()?.errorText, method: r.method() }));
     p.on('response', async (r) => {
+      if (/\/api\/gcsp\/manual\/stock$/.test(bare(r.url()))) lastStock = { status: r.status(), url: bare(r.url()) };
       if (r.status() < 400) return;
       report.badResponses.push({ status: r.status(), url: bare(r.url()), method: r.request().method(), body: clip(await r.text().catch(() => ''), 200) });
     });
@@ -495,6 +1349,12 @@ async function run() {
   if (env('TRACE')) context.on('page', traceRequests);
   page = await context.newPage();
   if (story === 'fucq72') { await walk72(); return; }
+  if (story === 'fucq73') { await walk73(); return; }
+  if (story === 'fucq145') { await walk145(); return; }
+  if (story === 'fucq222') { await walk222(); return; }
+  if (story === 'fucq224' || story === 'fucq237') { await walk224(); return; }
+  if (story === 'fucq223') { await walk223(); return; }
+  if (story === 'fucq238') { await walk238(); return; }
 
   await reachGallery();
 

@@ -179,6 +179,197 @@ essential, driver, eligibility, allowance, required-by, availability and complet
 Outcome states, exact candidate decisions, reasons/trade-offs and all source/policy/clock versions follow FUCQ-29.
 The approved public recommendation route still requires a positive version and excludes browser charging essentials.
 
+## LearningRecord schema v1 · FUCQ-113 bounded observed slice
+
+`server/gcsp/predict/records/index.js` exports `validateLearningRecord(record)` and
+`createObservedLearningRecordService({ repository, identity, clock })`. The validator returns the common
+`ok` envelope with a detached validated record, or `invalid` with `code: invalid-learning-record` and typed
+field reasons. It rejects undeclared fields recursively, including source blobs, free-text reason fields and
+fit-score/satisfaction substitutions. This is an additive in-process contract; no route, table, runtime
+dependency or training loader is introduced. It is **not** a completed synthetic-generation or manifest contract.
+
+Every `LearningRecord` has exactly these fields:
+
+| Field | Shape and authority |
+|---|---|
+| `schemaVersion`, `recordId`, `runId` | `1`, opaque deterministic record reference and current run. Record references distinguish offers, unoffered quotes and unmatched current briefs. |
+| `subject` | `{ employeeRef, entitlementSlotRef, renewalRef }`; references are run-scoped digests, absent slot/renewal references are null. No name, principal, contact or raw source record. |
+| `target` | `{ offerRef, holdRef, quoteRef, orderRef, configurationId }`; absent references are null; immutable configuration identity is known only from the saved quote, otherwise explicitly unknown. This target is not the historical full choice set. |
+| `renewal` | `{ cohort, period }`; cohort is a known identifier or unknown, period is known `{ from, until }` UTC instants or unknown. Current calendar time and an opaque renewal reference do not establish a cohort or period. |
+| `entitlement` | `{ schemeId, gradeId, allowanceBand }`, each known typed category or unknown. Historical scheme/grade require the dated saved quote's allowance context. Present employee context is never promoted into historical evidence; no recorded band means unknown. |
+| `brief` | `{ briefVersion, policyVersion, confirmedAt, preferences, essentials }`, from the immutable confirmed saved version associated with this offer/quote/decision, never a current substitute. Preferences retain only `{ value, importance, valueState, importanceState }`; essentials retain only `{ value, operator, unit, state }`. |
+| `choiceSet` | Known array of `{ configurationId, eligible, available, exposure, terms }`, optionally with opaque `orderRef` for an exact car, or unknown. Multiple alternatives may share a configuration; their exact-car references distinguish supply/exposure. Both old and extended shapes remain closed. Eligibility/availability are boolean or null; exposure is known `{ from, until, seconds }` with matching elapsed duration, or unknown. Empty known set means explicitly captured no alternatives, never missing capture. The observed port currently emits unknown because no authoritative historical full-set/exposure capture is bound. |
+| `terms` | Known `{ quoteRef, configurationId, monthlyPoints, allowance, unit: points/month, quotedAt, validUntil, policyVersion }`, or unknown. Both numeric points quantities and actual dated quote evidence are required; no recalculation from current policy or current stock. Terms on each alternative use the same shape. |
+| `outcomes` | Independent `offered`, `selection`, `acceptance`, `decline`, `expiry`, `wait`, `satisfaction` fields described below. Fit scores and current-car feedback never supply an outcome or satisfaction. |
+| `timestamps` | `{ projectedAt, clockVersion }` from `DemoClock.now(context)`; confirmed brief time and quoted time retain their captured DemoClock instants. Missing event times stay null; repository storage `createdAt`/`updatedAt` are not assumed to be business clock events. |
+| `provenance` | Exactly `{ kind: observed }` or `{ kind: synthetic, generatorVersion, seed }`. Observed means a projection of saved run rows, including explicitly fictional demonstration runs; it does not assert real BMW employee history. Generator version/seed are permitted only for synthetic records. |
+
+Unknown evidence is exactly `{ status: unknown, reason }`, with a typed reason `not-captured`, `missing-quote`,
+`missing-context` or `not-applicable`. Known evidence is exactly `{ status: known, value }`. Required unknown
+fields are retained rather than omitted. Current schema v1 preserves the existing brief-contract slider scale
+and initial preference keys (`body`, `fuel`, `sportiness`, `comfort`, `economy`, `size`), plus the registered
+`seats`, `boot`, `equipment`, `body`, `fuel`, `frontIsofix`, `rearIsofix`, `modelLine`, `charging` essentials.
+Unknown keys and source/confirmation actor metadata are excluded from the observed projection; no arbitrary
+preference object or nested free text is copied. A malformed value in a retained field makes the read unavailable.
+
+Each outcome carries `{ state, at }`; `at` is a captured UTC instant or null. Allowed states are `offered`/`unknown`,
+`selected`/`pending`/`unknown`, `accepted`/`pending`/`unknown`, `expired`/`unknown`, and
+`satisfied`/`dissatisfied`/`unknown` respectively. Decline adds `reasonType`, with `declined`/`unknown` state;
+observed declines record the reviewed `offer.declineReasons.v1` code at the run's policy version, any other code
+becomes `unclassified`, and a missing or invalid registry makes the observed read unavailable; synthetic declines use
+`just-not-this-one`. Reason prose never survives.
+Wait adds `reasonType`, with `waited`/`unknown` state and `no-acceptable-choice` only for an actual recorded wait.
+Unknown decline/wait reason and event time are null. Accepted and selected are independent: selecting does not
+imply acceptance, accepting does not imply completed allocation, and a pending accept is neither. Decline,
+confirmed acceptance/selection and explicit offer expiry cannot contradict one another. Passing `expiresAt`
+is not a recorded expiry or decline. Satisfaction remains unknown in this observed binding because no dedicated
+later observation is bound. Absence of offers does not establish waiting or no acceptable choice.
+A recorded `waited` result cannot coexist with offered, selected, accepted, declined or expired evidence in the
+same outcome observation. The canonical offer state `rejected` projects to `declined`; the historical compatibility
+alias `declined` remains accepted. A rejected offer without a typed decision reason becomes `unclassified`.
+
+The observed reader retains only the following explicit business-clock event fields when present on its public
+read inputs. Missing/null fields stay null; it never substitutes `createdAt`/`updatedAt` or a quote's creation time.
+These optional read bindings do not assert that the current repository schema or producers persist them yet;
+regressions use labelled public-port overlays until actual producer capture is integrated.
+
+| Learning outcome | Explicit source timestamp binding |
+|---|---|
+| `offered.at` | `offers.offeredAt`. |
+| `acceptance.at` | `offers.acceptedAt` and `decisions.decidedAt` for a corresponding completed `accept` decision. |
+| `selection.at` | `offers.selectedAt`, `holds.selectedAt`, and `decisions.decidedAt` for a corresponding completed `select`/`selected` decision. |
+| `decline.at` | `offers.rejectedAt`/`offers.declinedAt`, and `decisions.decidedAt` for a corresponding completed `decline` decision. |
+| `expiry.at` | `offers.expiredAt` with an explicit expired state. An expiry deadline remains different evidence. |
+| Pending acceptance/selection | `offers.pendingAt`/`holds.pendingAt` while currently pending, or `decisions.decidedAt` for a corresponding pending accept. Canonical `decision-pending` and compatibility `selection-pending` offer states remain uncertainty. A past pending start retained on a completed source does not replace its completed event time. |
+
+Completed decisions have no failure/pending envelope; pending decision timestamps cannot label confirmed success.
+Explicit source fields must be valid UTC instants at or before the projection clock. Conflicting supplied times for
+the same outcome, timestamps without their corresponding outcome and business events before a supplied offer time
+fail safely as unavailable. The validator also rejects future outcome times, confirmed brief times and quoted times
+(including alternative quotes). Quote validity may extend beyond the projection time. No ordering between acceptance
+and selection is inferred or imposed.
+
+`readRecords(context)` requires server-owned `identity.requireRole(context, greg)`, repository public `query`
+and `clock.now`. It returns `ok.value = { runId, asOf, projectionVersion, records }`. It reads all saved briefs,
+employees, entitlement slots, offers, holds, decisions, quotes and stock in the current run, then fences a second
+complete read, DemoClock read and role check before publishing. Stock is consulted only to corroborate an allocated
+hold; it never reconstructs earlier eligible/available alternatives, terms or exposure. Concurrent changes return
+`conflict` with refresh guidance. Source failures, malformed/mixed-run inputs, missing confirmed versions and
+inconsistent owner/order/brief references fail safely as unavailable (or propagate the source's typed refusal).
+Missing dependencies are unavailable; role/reset refusals retain `forbidden`/`stale-run` semantics.
+
+There is one record per saved offer; independent saved quotes with a positive confirmed `briefVersion` are retained
+without inventing an offer. Draft-only quotes have no confirmed-intent learning record. Offer, quote and decision
+brief references must agree and resolve the actual saved historical version. Missing quote data leaves terms and
+configuration unknown if the offer still supplies a valid confirmed brief version. Unmatched current confirmed
+briefs remain separate records with unknown outcome; superseded unreferenced brief versions are not extra choices.
+Rows and results remain transient; no projection state or DTO store exists.
+
+Backend presentation evidence is the validator-checked `server/test/fixtures/gcsp-learning-record.json` and
+`docs/gcsp/evidence/fucq113/README.md`. These are labelled contract/repository fixtures, not outcome-producer
+integration, historical-extract or real-corpus acceptance. The additive synthetic module below supplies generation
+and manifest-gated input; observed outcome-producer integration remains outstanding. The module uses no
+new local business-policy defaults. No screen changes; the shared Density theme, supplied shell references and
+body reference revision `a7fc178` remain applicable to future consuming screens.
+
+## Synthetic learning datasets · FUCQ-113
+
+`loadLearningPolicy({ policyService, policyRead, corpus })` performs the I/O preparation. `policyRead` supplies
+an explicit run, `asOf` instant and pinned policy version. It reads the existing comparison snapshot and all
+seven `learning.*` rows through PolicyService, then snapshots `getEligibility` and `getPointsCost` for every
+configured grade/configuration pair. Mixed envelope or nested row versions, missing keys, unavailable ports,
+malformed features and unsupported inputs fail with `LearningInputError` (`code`, `field`); there is no consumer
+default or policy publication. The returned complete snapshot is deeply frozen and content addressed.
+
+The candidate `server/gcsp/predict/records/policy-definitions.json` has schema 1, definition-set ID
+`fucq113-learning-v1` and revision `learning-definitions.v1`. Its `definitions` array and canonical `digest`
+match FUCQ-103's reviewed additive bundle schema. Each assumption carries key, value, unit, assumed
+status, basis, source and source date. It deliberately has no active policy version/effective date: reviewed
+FUCQ-103 adoption into an additive successor supplies those. Seed-v1 and stored historical versions stay
+immutable. Candidate values are finite demonstration assumptions, not measured BMW behaviour:
+
+| Policy key | Candidate value |
+|---|---|
+| `learning.cohortSize` | 12 employees |
+| `learning.cycles` | 3 cycles |
+| `learning.cycleSpacingDays` | 180 days |
+| `learning.maximumGeneratedRecords` | 240 records |
+| `learning.maximumChoiceEntries` | 4096 alternative entries |
+| `learning.noChoiceRate` | 0.12 |
+| `learning.response.v1` | `{ declineRate: 0.12, expiryRate: 0.08, selectionAfterAcceptRate: 0.95, utilityNoise: 0.15 }` |
+
+`generateLearningRecords(seed, snapshot)` is pure, version `learning-records.sha256.v1`, and returns immutable
+`{ records, cycles }`. The bound `cohortSize * cycles` and worst-case alternative bound
+`cohortSize * cycles * round(cohortSize * carsPerEmployee)` are checked before comparison inputs/choice sets
+are materialised; invalid time horizons also refuse. Existing comparison distributions provide fictional
+employees, latent preferences, confirmed noisy stated briefs, allowances, renewal timing, access/response
+latency, exact synthetic stock and release cadence. Employee/slot identity and underlying preference draws
+remain stable over cycles; record, renewal, exact-car, offer and quote references include their cycle.
+Each cycle explicitly overlays `comparison.cohortSize` and `comparison.startsAt`; its metadata retains those
+actual values and hashes, input hash, counts and release schedule.
+
+The simulation visits employees by choice instant (renewal minus hold duration, no earlier than cycle start,
+then access latency), with stable tie-breaking. It records only already released, uncommitted cars permitted
+by the pinned eligibility, confirmed essential-fact and affordable-points gates. A current offer occupies an
+exact car until acceptance, decline or expiry. Acceptance commits the car for that cycle; decline/expiry makes
+it available from the explicit event instant, so exposure records the continuous available period before
+that employee's choice. This is supply-availability exposure and may include time before the employee's
+personal renewal/access window; it does not claim personal impressions, viewing or consideration duration.
+Cars sharing one configuration remain distinct by `orderRef`. Missing essential
+facts remain unknown and exclude the alternative. Supported configuration values are explicitly allowlisted
+and typed; no absent seats, space, equipment, charging readiness or driver eligibility facts are invented.
+This bounded synthetic simulation does not execute live allocation/offer lifecycle services.
+
+Preference utility uses the shared scorer against generated latent preferences plus an addressed seeded
+utility perturbation. Independent policy-keyed draws govern waiting and expiry/decline/acceptance; recorded
+selection can follow acceptance independently. Expiry also occurs when response latency reaches the earlier
+of hold expiry and saved quote validity. Offered, acceptance, selection, typed decline, expiry and wait remain
+separate fields; satisfaction is always unknown. Utility/fit is never stored as an outcome. The explicit start,
+cycle offsets and event offsets form a fictional simulation clock; no wall clock or global random source is read.
+Changing `learning.noChoiceRate` changes outcomes through the central source without a code edit.
+
+`createLearningDataset(seed, snapshot)` returns `{ manifest, records }`. The manifest has schema 1 and
+`datasetKind: synthetic`, seed, generator version, policy version, full snapshot and snapshot/policy/configuration/
+data hashes, counts by outcome and provenance, and complete cycle metadata. Configuration identity includes
+the exact source kind/dataset/version/manifest digest (for corpus), immutable configuration IDs/versions and
+allowlisted feature snapshots. Hashes establish consistency and reproducibility, not authenticity or real-data
+calibration. `validateLearningDataset(dataset)` and `readLearningDataset(jsonOrObject)` return the common
+`ok`/`invalid` envelope. Training must use this boundary: missing manifest, incomplete identities/counts,
+duplicate IDs, any observed/mixed/incorrect synthetic provenance, altered data or inconsistent snapshot/manifest
+are refused. Validation regenerates the bounded dataset and compares the complete manifest and records.
+This version accepts wholly synthetic datasets only; it does not silently merge observed records.
+
+`server/test/fixtures/gcsp-learning-dataset.json` is a six-record/two-cycle structural sample with an explicit
+fixture successor policy (cohort 3), labelled reviewed configurations and enriched synthetic feature inputs.
+It proves reproduction and the manifest reader, not actual FUCQ-77 adapter execution or employee behaviour.
+The corpus binding supports the exact existing `getConfiguration(id)` read contract, refuses mismatched
+active dataset/version/digest or configuration version and never substitutes reviewed fixtures. Known corpus
+facts carry the demo-confirmed `synthetic-scenario` assurance that generated stock uses; unknown ones stay unknown and
+fail the essential gates. FUCQ-103 registered the exact bundle at `8284915` and the default CLI now adopts it in memory
+(tests `gcsp-learning-records*.test.js`). PostgreSQL adoption and observed outcome-producer acceptance remain separate
+outstanding work.
+
+### Learning dataset CLI
+
+`scripts/gcsp/generate-learning-records.mjs --seed SEED` starts from unchanged seed-v1 in an in-memory
+PolicyService run, adopts `fucq113-learning-v1` as Greg at the demo clock's start (`clock.scenario.v1`, never the
+wall clock) and reads the adopted successor. It generates over the real `demo-fleet.v1` builds through the registry
+adapter, with `demo-enrichment.v1` supplying seats, boot and 0-100 km/h only where observed. Body, fuel, economy and
+other unobserved facts stay unknown, so the essential gates exclude those cars. The corpus set and model-line mix are
+derived from the published store (model line from `stock.eligibilityModelKeys.v1`); the manifest's
+`configurationSource` records the dataset, version, manifest digest and the sidecar digests. It writes
+`records.json`, then the required `manifest.json`, reports counts/provenance and paths as JSON and refuses existing
+paths. No database is opened. `--policy-file`, `--policy-version`, `--as-of`, `--run-id` and `--corpus-store`
+select explicit immutable inputs instead; `--policy-version`, `--as-of` and `--run-id` need `--policy-file`.
+Without an as-of override, the validated selected source header's `effectiveFrom` is used.
+
+`--snapshot FILE` is a replay path for a complete prepared snapshot, mutually exclusive with policy/corpus
+selection. `--allow-fixtures` explicitly permits labelled structural configurations on an explicit policy file;
+otherwise a corpus source is required. Readers combine the two output files into `{ manifest, records }` and must call
+`readLearningDataset`. An explicit seed-v1 `--policy-file` still refuses at `learning.cohortSize`.
+CLI failures emit bounded typed JSON and exit 2 without source details. The evidence README documents the
+explicit structural-sample trial and its limits.
+
 ## Exact stock, holds and offers
 
 `orderUuid` is the exact-stock UUID v4 and the foreign key for claims, holds, offers and allocations. `orderNumber` is a unique **7-digit string per run**, retaining leading zeros; `wholesalerOrderId` is an 8-digit integer. `configurationId` identifies immutable configuration facts and is never an exclusive-car key. Two cars can share it. VIN is attached only to delivered/current cars, never required for stock browsing, matching or holding (Q13).
@@ -820,6 +1011,10 @@ model of the dated research, not a reproduction of BMW operations. Calculated fi
 and FUCQ-93 `CapturedTransport`. It never reads or writes the live demo run and sends no mail. Comparison runs use the
 memory repository's opt-in `snapshot: 'shallow'` mode, which copies table arrays rather than every row; core rows are
 replaced, never mutated in place, so transaction isolation is unchanged. The live demo keeps the default deep copy.
+The run's identity digest, which names its environment and run and so seeds every derived id and the allocation
+lottery, covers seed, route, `inputHash`, `policyVersion`, `policyHash` and `generatorVersion` only. `codeRevision` is
+provenance: it is recorded in the run metadata, the outcome record and the result manifest, but changes no outcome
+(FUCQ-242), so the same inputs give the same measures on any commit.
 
 **Shared evaluation.** `evaluateComparisonSeed({ inputs, policy })` in `evaluation.js` runs FUCQ-29's stored-subject
 evaluator once per employee for the stated brief and once for the underlying needs, gates first and then explained
@@ -879,8 +1074,11 @@ service. Each release applies, then the route calls FUCQ-96 `allocate` at that i
 (the harness release writes no stock-release receipt for the clock stage to read, so it calls the method the stage calls).
 Allocation runs before any non-participant acts on that release. Offer emails go to the captured transport only.
 Non-participants run `createManualReplay` with `comparison.manualRoute.v1` for the same releases and compete for cars the
-buddy has not held. After a decline or an expiry nothing re-runs allocation: the live triggers are stock release and
-brief change, so the car rejoins the pool at the next release (and the manual listing meanwhile).
+buddy has not held. After a decline or an expiry nothing re-runs allocation here: the replay's triggers are stock release and
+brief change, so the car rejoins the pool at the next release (and the manual listing meanwhile). Live allocation re-offers
+a lapsed car at once (FUCQ-227, `offer.expiredHold.reallocation`) and a declined car on the next tick (FUCQ-233,
+`offer.declinedHold.reallocation`); this replay does neither, because at 300 employees the cars then circulate among
+non-responders and the run is over 5 times slower. Its record states the expiry case in `limitations`.
 
 **Responses.** An employee answers at offer creation plus their generated `responseSeconds`. A response at or after the
 hold deadline never happens: the offer expires through FUCQ-100's clock handler, counted as an offer expiry. They accept
@@ -950,7 +1148,8 @@ FUCQ-133 policy hash is unchanged.
 **Runner and result.** `runComparison({ experimentId: 'process-only', seeds?, overlay? }, { policy, codeRevision, now,
 onRecord? })` in `experiments.js` generates each seed's inputs and evaluation once, replays `current` then `buddy` on the
 identical inputs, one run at a time, and keeps measures, totals and a `recordDigest` per route rather than the records.
-Any other experiment (order mix, points, hold sweeps) is refused; those are FUCQ-174. The frozen result has
+`recordDigest` is `outcomeRecordDigest(record)`: the digest of the record without its `codeRevision` provenance.
+Order-mix, points and hold-sweep experiments are described in [Comparison experiments](#comparison-experiments--fucq-174). The frozen result has
 `schemaVersion`, `kind: 'process-comparison'`, `experimentId`, `completedAt`, `manifest` (`experimentId`, `seeds`,
 `policyVersion`, `policyHash`, `generatorVersion`, `overlays`, `codeRevision`, `inputHashes`), `perSeed`, `measures` (per
 route, per measure and access group), `differences`, `rule`, `assumptions` (every consumed row with `status` and `basis`,
@@ -968,6 +1167,161 @@ result again changes nothing and editing is refused (`immutable-row`).
 `completedAt` then `resultId` as `{ result, resultId, storedAt, policyVersion, activePolicyVersion, policyCurrent }`;
 `policyCurrent` is false once PolicyService's active version at `asOf` differs from the recorded one. No result is
 `not-found`.
+
+## Offline preparation and stored read · FUCQ-137
+
+Presenter-run preparation only. Nothing runs at startup or on a timer, and the browser cannot start a comparison.
+
+**Command.** `node scripts/gcsp-comparison.mjs --experiment process [--seeds a,b,c] [--out <file>]` runs FUCQ-136's shared runner, prints the measures table and stores the immutable result through the configured repository (`GCSP_REPOSITORY_MODE`: memory by default, or `postgres` with `GCSP_DATABASE_URL`). The replay always runs in memory in the command's own process, with policy from the reviewed repository seed, in either mode; only the result goes to the configured repository, so a PostgreSQL run makes no policy queries and gives the same measures and digests as a memory run (FUCQ-241). `--out` writes the verified file after a successful run and before storing, so a storage failure keeps it. `--import <file>` stores an existing file without running anything. Exit codes: 0 stored, 2 refused input or file, 1 execution or storage failure. A failed run stores nothing; memory mode keeps nothing after the command ends.
+
+**What-if experiments.** The command line now runs the what-if experiments too; see "Command line" under Comparison worker jobs · FUCQ-175.
+
+**Result file.** `{ format: 'gcsp-process-comparison-result-v1', digest, result }`. Import refuses a changed digest, another format, or a result this version does not understand (kind, experiment, schema version or caveat), and stores nothing.
+
+**Runtime load.** `GCSP_COMPARISON_RESULT_FILE=<file>` opts in to loading a file when the runtime opens. It stores through the same immutable path, so reopening changes nothing. A missing or refused file logs one warning and startup continues.
+
+**Read route.** `GET /api/gcsp/comparison/process/latest` serves Greg and presenter; other roles get 403 `forbidden`, and any query gets 400 `unsupported-query`. Success is `200 { status: 'ok', value: { result, resultId, storedAt, policyVersion, activePolicyVersion, policyCurrent } }`; `policyCurrent` is false once the active policy version at `asOf` differs from the stored one. `404 not-found` means nothing is stored; `503 unavailable` is a read failure. `asOf` comes from the demo clock.
+
+**Read shape for FUCQ-138.** `result.measures.current` and `result.measures.buddy` hold each measure as `{ mean, min, max, observedSeeds }`, with `accessGroupCoverage` keyed by group. `result.differences` has one entry per measure and access group: `{ measure, betterWhen, current, buddy, difference, verdict }`, where verdict is `insufficient-seeds`, `no-clear-difference`, `buddy-better` or `current-better`. Also read `result.assumptions` (each with `status` and `basis`), `result.manifest.seeds`, `policyVersion`, `completedAt`, `caveat` and `limitations`. The buddy route's limitations include: after an offer expires the live service re-offers its car at once (FUCQ-227); the replay leaves it for the next release.
+
+## Comparison experiments · FUCQ-174
+
+What-if experiments that sit beside the process-only comparison: each changes one explicit input, so the source of a difference is clear. Fictional cohort and assumed behaviour. Calculated fit is not observed satisfaction. Backend only; the control and panel are FUCQ-175 and FUCQ-176. Nothing a what-if uses is ever published as live policy.
+
+**Inputs.** `runComparison` and `validateExperiment` in `server/gcsp/comparison/experiments.js` accept `EXPERIMENT_IDS`: `process-only` (unchanged, see FUCQ-136), `order-mix`, `points` and `hold-sweep`. Shapes: `{ experimentId: 'order-mix' | 'points', change: { value, basis }, seeds?, overlay? }` and `{ experimentId: 'hold-sweep', change: { values, basis }, seeds?, overlay? }`. `value` is a model-line mix (`comparison.modelLineMix`) or an allowance multiplier (`comparison.pointsAllowanceMultiplier`); `values` is a list of hold durations in seconds (`hold.buddy.durationSeconds`). Any other field is refused. `overlay` is shared by every arm and may not carry the changed key.
+
+| Policy key | Unit / purpose |
+|---|---|
+| `comparison.experiments.v1` | `{ schemaVersion: 1, experiments: { 'order-mix' \| 'points' \| 'hold-sweep': { key, unit, minimum?, maximum?, maximumValues? } } }`: the key each experiment may change, its canonical unit and its bounds. |
+
+`assumed`, sourced here, dated 9 November 2026, read through PolicyService. Validation runs before any replay and refuses with `invalid-input` naming the boundary: the changed key's unit must match the canonical unit, the value must be in range (points 0 to 3, hold 900 to 86,400 seconds), a sweep has at most `maximumValues` (5) distinct integer values, no value equals the baseline, `change.basis` is non-empty text, the shared overlay does not carry the changed key, and the mix or overlay must generate inputs.
+
+**Arms.** The baseline arm comes first (`armId: 'baseline'`, the canonical value); then `variant` for order-mix and points, or `hold-<seconds>` per swept value. Every arm replays both routes for every seed, `current` then `buddy`, one run at a time. Hold arms share the generated inputs and the one evaluation per seed, since a hold changes only the buddy route. Points arms see scaled allowances in memory only: the run's `getAllowance` is wrapped by the multiplier so the harness's allowance check and the route services agree. Nothing is written to PolicyService.
+
+**Validation and progress for FUCQ-175.** `validateExperiment(experiment, { policy, now })` returns the frozen plan `{ experimentId, seeds, arms: [{ armId, value, overlay }], steps }`, where `steps` is arms times seeds times 2. `runComparison` options add `onProgress({ experimentId, armId, seed, route, completed, total })` after each route replay and `onRecord(record, { armId })` for each outcome record.
+
+**Result.** Frozen, `kind: 'experiment-comparison'`, with `schemaVersion`, `experimentId`, `completedAt` and:
+
+- `manifest`: `experimentId`, `seeds`, `policyVersion`, `policyHash`, `generatorVersion`, `overlays` (the shared overlay), `codeRevision`, `change` (`key`, `unit`, `status: 'what-if'`, `basis`, `baselineValue`, `baselineBasis`, `baselineStatus`, `definitionKey`, and `value` or `values`) and `arms` (`armId`, `value`, `overlay`, `overlayHash`, `inputHashes` per seed).
+- `arms`: per arm `{ armId, value, perSeed, measures, differences }`, where `perSeed`, `measures` and `differences` have the process-comparison shapes (`differences` is buddy against today's route within that arm).
+- `effects`: per non-baseline arm `{ armId, value, routes: { current, buddy } }`; each route holds one `compareArms` entry per measure and access group: `{ measure, betterWhen, baseline, variant, difference: { mean, min, max }, verdict }`. `difference` is the arm minus the baseline. Verdict is `insufficient-seeds`, `no-clear-difference`, `variant-better` or `baseline-better`, by the same `comparison.noClearDifferenceRule`; a baseline win is reported as plainly as a variant win.
+- `rule`, `assumptions` (every consumed row, plus the rule and `comparison.experiments.v1`), the fixed `caveat` "Calculated fit is not observed satisfaction." and `limitations` (the route limitations plus "What-if experiment: the changed values were never published as live policy.").
+
+**Storage and reads.** No migration: the `comparison_results` table (`0005`) already carries `experiment_id` and keeps the whole result in `data`. `storeComparisonResult` accepts an experiment result and stores it once, immutably, in the same results environment; `resultId` is `<experimentId>-comparison-` plus a digest of `completedAt`, manifest and arms (process results keep `process-comparison-` and their digest). A live demo reset cannot reach them. `readLatestComparisonResult(repository, context, policy, { asOf, experimentId })` defaults to `process-only` and returns the same `{ result, resultId, storedAt, policyVersion, activePolicyVersion, policyCurrent }` for any known id (unknown id is `invalid`, no result is `not-found`). `readLatestComparisonResults(repository, context, policy, { asOf })` returns `{ activePolicyVersion, experiments: [{ experimentId, latest }] }` in `EXPERIMENT_IDS` order, `latest` being that same object or `null`; FUCQ-176's picker reads it. Older runs stay readable by query.
+
+**Fixture.** The small-overlay hold-sweep result, in its stored read shape, is `storedResult` in `server/test/fixtures/gcsp-comparison-experiment-result.json`. The process-only comparison, its route `GET /api/gcsp/comparison/process/latest`, the job and the process fixtures are unchanged.
+
+## Comparison worker jobs · FUCQ-175
+
+Greg or the presenter starts a what-if or process comparison from the browser and watches it run. The comparison runs in a Node `worker_threads` worker, so the backend keeps answering other requests (measured: a hold sweep running for about 2.5 s left `process/latest` and `jobs/latest` answering in 5 ms or less). One job runs at a time. Fictional cohort; calculated fit is not observed satisfaction. FUCQ-176 (the dashboard picker) builds on these routes.
+
+**Code.** `createComparisonJobService({ repository, policy, clock, identity, ... })` (`jobs.js`), `parseExperimentRequest(body)` (`requests.js`, shape checks, shared with the CLI) and `createComparisonJobRoutes(jobService, resultService)` (`http.js`). The runtime composes the service as `dependencies.gcspComparisonJobs` and closes it first. Creating it spawns and schedules nothing. `overlay`, `fixedNow` and `codeRevision` are test seams the browser never supplies.
+
+| Policy key | Unit / purpose |
+|---|---|
+| `comparison.jobs.v1` | `{ schemaVersion: 1, timeoutSeconds: 1800, workerHeapMb: 128, workerYoungGenerationMb: 16 }`: the wall-clock limit for one job, the worker's old-generation heap allowance and its young-generation cap (peak process memory of the default 1,000-employee job fell from 510 MB to 428 MB with it). |
+
+`assumed`, read through PolicyService when a job starts (missing or malformed is `unavailable`, naming the key). The worker replays against the reviewed seed held in memory, as the FUCQ-137 command does, and stores the FUCQ-137/174 result shape through `storeComparisonResult`.
+
+### Routes
+
+All are Greg or presenter only (an employee gets 403, checked before the body is described), use the server-owned context, and answer `Cache-Control: no-store`. Every body also carries `contractVersion`, left out of the examples below.
+
+| Method and path | Input | Answers |
+|---|---|---|
+| `POST /api/gcsp/comparison/jobs` | `{ experimentId, change? }` | 202 `pending` job view; 400 `invalid`; 403; 409 `conflict`; 503 `unavailable` |
+| `GET /api/gcsp/comparison/jobs/latest` | optional `?jobId=` | 200 job view (the active job first, else the most recent); 400; 403; 404 when no job exists |
+| `GET /api/gcsp/comparison/results/latest` | optional `?experimentId=` | 200 stored result(s); 400; 403; 404 when that experiment has none |
+
+`GET /api/gcsp/comparison/process/latest` (FUCQ-137) is unchanged.
+
+**Start body.** `experimentId` is one of `process-only`, `order-mix`, `points`, `hold-sweep`. `process-only` takes no `change`. `order-mix` and `points` take `change: { value, basis }` (a model-line mix, or an allowance multiplier); `hold-sweep` takes `change: { values: [whole seconds], basis }`. `basis` is a non-empty string of at most 500 characters. Seeds and shared settings cannot be sent: the policy's are used, and `seeds` or `overlay` is refused by name. Nothing is started, and no worker spawned, for a shape failure; the worker then checks range, unit, count and "same as today" against PolicyService, still before a job is stored.
+
+**Job view.** `{ jobId, experimentId, status, progress: { seedsDone, seedsTotal, stepsDone, stepsTotal }, startedAt, finishedAt, resultId, reason, request: { experimentId, change } }`. `status` is `starting` (before the plan; seen only by `jobs/latest`), `running`, `succeeded`, `failed` or `interrupted`. `seedsDone` counts seeds with every arm and both routes finished. `resultId` is set on success and matches `results/latest`. `reason` is short plain text for `failed` and `interrupted`. In these examples `startedAt` is the fixed test clock.
+
+**Polling.** After a 202, poll `GET jobs/latest?jobId=<jobId>` about every 2 seconds while `status` is `starting` or `running`, show `stepsDone` of `stepsTotal`, and stop on `succeeded`, `failed` or `interrupted`. On `succeeded`, read `results/latest?experimentId=<experimentId>` and check its `resultId` equals the job's. A page that was closed can resume with `jobs/latest` (no id), which returns the running job first.
+
+**Examples** (captured from `server/test/gcsp-comparison-job-routes.test.js` runs; ids shortened where marked).
+
+202 on start (`hold-sweep`, `change` as sent):
+
+```json
+{ "status": "pending", "value": { "jobId": "comparison-job-db195101-...", "experimentId": "hold-sweep", "status": "running",
+  "progress": { "seedsDone": 0, "seedsTotal": 3, "stepsDone": 0, "stepsTotal": 36 },
+  "startedAt": "2026-11-08T12:00:00.000Z", "finishedAt": null, "resultId": null, "reason": null,
+  "request": { "experimentId": "hold-sweep", "change": { "values": [3600, 10800, 21600, 43200, 86400], "basis": "Does a longer hold help?" } } } }
+```
+
+`jobs/latest` before the plan (`status: "starting"`, all progress counts 0), running with progress, then succeeded (only the changing fields shown; the rest as above):
+
+```json
+{ "status": "ok", "value": { "status": "running", "progress": { "seedsDone": 0, "seedsTotal": 3, "stepsDone": 4, "stepsTotal": 36 }, "finishedAt": null, "resultId": null, "reason": null } }
+{ "status": "ok", "value": { "status": "succeeded", "progress": { "seedsDone": 3, "seedsTotal": 3, "stepsDone": 36, "stepsTotal": 36 },
+  "finishedAt": "2026-11-08T12:00:00.000Z", "resultId": "hold-sweep-comparison-999835b7de06fd9aa8abee00d4a1afea", "reason": null } }
+```
+
+Failed and interrupted (a process-only job; `request.change` is `null`; no result is stored for either):
+
+```json
+{ "status": "ok", "value": { "status": "failed", "resultId": null, "reason": "The comparison could not be completed." } }
+{ "status": "ok", "value": { "status": "interrupted", "resultId": null, "reason": "The backend stopped before the comparison finished." } }
+```
+
+Other failure reasons: `The comparison was stopped at its limit of 1800 seconds.`, `The comparison used more than its 128 MB memory allowance and was stopped.`, `The comparison worker stopped before it finished.`, and `The backend restarted before the comparison finished.` (a row left running by another backend instance, marked when next read or started).
+
+409 when a job is already active (`jobId` is the running job):
+
+```json
+{ "status": "conflict", "code": "job-running", "jobId": "comparison-job-c8e368e2-...", "reason": "A comparison is already running. Wait for it to finish." }
+```
+
+400 for the shape, one reason per field and every problem at once (`key` is the policy key the field changes, else `null`):
+
+```json
+{ "status": "invalid", "code": "invalid-experiment", "reasons": [
+  { "field": "seeds", "key": null, "reason": "The seeds and shared settings are not chosen here. The policy values are used." },
+  { "field": "overlay", "key": null, "reason": "The seeds and shared settings are not chosen here. The policy values are used." },
+  { "field": "change.extra", "key": null, "reason": "This field is not recognised for this experiment." },
+  { "field": "change.value", "key": "comparison.pointsAllowanceMultiplier", "reason": "Give a number." },
+  { "field": "change.basis", "key": null, "reason": "Say why this change is worth trying." } ] }
+```
+
+400 from the worker's canonical check (a hold of 7200 s is today's value; 100 s is below the minimum). `change.value` is used for `order-mix` and `points`:
+
+```json
+{ "status": "invalid", "code": "invalid-experiment", "reasons": [ { "field": "change.values", "key": "hold.buddy.durationSeconds",
+  "reason": "Give no more holds than the policy allows, each within the allowed range, different from the others and from the hold used today." } ] }
+```
+
+Other 400s: `{ "status": "invalid", "code": "unsupported-query", "reasons": [{ "field": "view", "reason": "Only jobId can be given here." }] }` for a query field a route does not take, and `{ "code": "invalid-experiment", "reasons": [{ "field": "experimentId", "key": null, "reason": "Choose one of the known comparison experiments." }] }` for a bad `?experimentId=`. 403: `{ "status": "forbidden", "reason": "This person cannot perform that action." }`. 404: `{ "status": "not-found", "resourceType": "comparison_jobs" }` (no job) or `"comparison_results"` (nothing stored for that experiment). 503 `unavailable` carries `reason` and `retryable: true`.
+
+`results/latest?experimentId=hold-sweep` (`result` is the stored FUCQ-137/174 result, omitted here):
+
+```json
+{ "status": "ok", "value": { "result": { "...": "..." }, "resultId": "hold-sweep-comparison-999835b7de06fd9aa8abee00d4a1afea",
+  "storedAt": "2026-11-08T12:00:00.000Z", "policyVersion": "gcsp-policy-v1", "activePolicyVersion": "gcsp-policy-v1", "policyCurrent": true } }
+```
+
+`results/latest` with no query lists every experiment in `EXPERIMENT_IDS` order, `latest: null` where none is stored:
+
+```json
+{ "status": "ok", "value": { "activePolicyVersion": "gcsp-policy-v1", "experiments": [
+  { "experimentId": "process-only", "latest": null }, { "experimentId": "order-mix", "latest": null }, { "experimentId": "points", "latest": null },
+  { "experimentId": "hold-sweep", "latest": { "result": { "...": "..." }, "resultId": "hold-sweep-comparison-999835b7de06fd9aa8abee00d4a1afea",
+    "storedAt": "2026-11-08T12:00:00.000Z", "policyVersion": "gcsp-policy-v1", "activePolicyVersion": "gcsp-policy-v1", "policyCurrent": true } } ] } }
+```
+
+Show `policyCurrent: false` as "from an earlier policy version".
+
+**Outcomes.** Success stores the result and sets `resultId`. A worker error, a heap overrun, a failed message or the timeout marks the job `failed` and stores nothing. `close()` (the runtime's first step on close) marks the active job `interrupted`.
+
+**Storage.** Additive migration `0008_comparison_jobs.sql` adds the mutable `comparison_jobs` table (`runId jobId`; `experimentId status request progress startedAt finishedAt resultId reason requestedBy instanceId`). Rows live in the comparison results run, so a live demo reset does not remove them. Progress writes are serialised per job and coalesced. Backend-only: no screen was built, so no screenshots; the response shapes above are the record.
+
+### Command line
+
+`node scripts/gcsp-comparison.mjs --experiment <process|order-mix|points|hold-sweep> [--change <json>] [--seeds a,b,c] [--out <file>]` runs the same experiments as the browser worker. `--change` is the browser body's `change` as JSON (required for the three what-ifs, refused for `process`, which means `process-only`); it goes through `parseExperimentRequest`, so a bad request prints every problem as `<field> (<policy key>): <reason>` and exits 2 with nothing stored. A value the runner refuses (out of range, repeated, the same as today, too many values) reads the same way, through the shared `refusalFor`. `--seeds` is CLI-only and joins after that check. The replay uses `createReplayPolicy` and `runComparison`, and the result goes through `storeComparisonResult`, so the CLI and the worker store identical results for the same request. Exit codes: 0 stored, 1 failed, 2 refused input or file. The command prints the change (key, unit, value used today, value or values tried, basis) and one table per tried value and route, then the caveat and limitations. `--import <file>` cannot be combined with the run options.
+
+**Result files.** `--out` writes `{ format, digest, result }` with format `gcsp-process-comparison-result-v1` for a process result or `gcsp-experiment-comparison-result-v1` for a what-if result. `--import` and `GCSP_COMPARISON_RESULT_FILE` accept either, check the digest, and refuse a file whose kind, experiment id, schema version or caveat this version does not understand. Importing again changes nothing.
 
 ## Named scenario catalogue and preparation · FUCQ-125
 
@@ -1015,6 +1369,30 @@ Policy key `orderPlan.gregEditableKeys` lists what Greg may change: `orderPlan.m
 
 FUCQ-121 additively adds `presentation: { forecastBasis, editableKeys, currency, derivatives: [{ derivativeId, modelId, model, derivative }], models: [{ modelId, model }] }` to the `readPlan` and `previewPlan` values, with names read from the policy catalogue. No other field changes.
 
+## Learned demand forecast · FUCQ-123
+
+A second planner run uses a synthetic-trained model beside the baseline plan. Trained on synthetic data; it claims nothing about validated BMW employee behaviour. Code: `server/gcsp/predict/forecast/` and `createLearnedOrderPlanService` in `server/gcsp/predict/plan/compose.js`.
+
+**PredictionInput** (`createPredictionInput`, closed, validated by `validatePredictionInput`): `{ contractVersion '1.0.0', runId, asOf, policyVersion, horizon: { start, end }, cohort: { version, entitlements: [{ entitlementId, employeeId, cohortKey, renewalAt, requiredBy?, period 'YYYY-MM', brief: { preferences, essentials }, permittedChoices: [{ derivativeId, configurationId, vehicleClass, attributes: { body, fuel, seats, boot, monthlyPoints, allowance }, termsVersion }] }] }, terms: { version } }`. Each employee and each derivative occurs once; unreadable terms make the input unavailable.
+
+**DemandForecast** (`createLearnedDemandForecastProvider(...).forecast(context, input, policyRead)`): `{ status 'ok', basis 'synthetic-trained-model', label, version, input, model: { artifactId, featureVersion, modelVersion, activationPolicyVersion, activationEffectiveFrom }, data: { dataHash, datasetKind, generatorVersion, trainingPolicyVersion }, settings, employees: [{ entitlementId, choices: [{ derivativeId, probability }], waitProbability, acceptanceProbability }], aggregate: [{ vehicleClass, period, employees, expected, low, high }], evaluation, limitations }`. Per employee the choice probabilities plus `waitProbability` sum to 1. There is no fit or score field.
+
+**Gates first.** The permitted set per employee is the FUCQ-29 gate result built by the expressed provider; the model only scores and narrows it, so it cannot add a derivative or relax a gate. The learned path reads the repository and never writes.
+
+**Pinned activation.** `choice.model.reference` (`{ artifactId, featureVersion, schemaVersion }`) in the policy version a read is pinned to names the model, read from `docs/gcsp/models/artifacts/` by digest. Activating another artifact is a dated policy publication; an earlier read keeps the artifact it used.
+
+**Fallback.** No result is substituted or partly modelled. The adapter returns `{ status: 'fallback', reason, limitation, coverage?, model? }` for `no-active-model`, `artifact-missing`, `artifact-invalid`, `outside-coverage` or `forecast-policy-unavailable`. Coverage is all-or-nothing: every employee cohort and permitted vehicle class must be in the classes the artifact was evaluated on. Held-out cohorts count as outside coverage, as do `wait` and `unknown` classes; one uncovered employee or class falls the whole cohort back.
+
+**`forecast.learned.v1`** (assumed, synthetic): `choiceMassThreshold` (0.8) keeps the likeliest permitted choices covering that share of non-wait probability; `waitExclusionThreshold` (0.5) leaves out employees whose wait probability is above it; `intervalZ` (1.96) sets the aggregate interval width. Malformed or out-of-range values fall back as `forecast-policy-unavailable`.
+
+**Plan operations.** `readPlan` and `previewPlan` gain one additive field, `learned`; every other field is unchanged and `presentation.forecastBasis` stays `expressed-saved-demand`. A preview's learned plan runs under the same draft policy as its preview plan. A learned failure never changes the baseline response. Shapes:
+- `{ status: 'available', label: 'Synthetic-trained model', recommended: false, submittable: false, plan, forecast: { version, model, data, settings, modelExpectsWait, aggregate, evaluation, limitations }, differences }`.
+- `{ status: 'fallback', label, recommended: false, submittable: false, reason, limitation, coverage?, model? }`, taken from the adapter.
+- `{ status: 'unavailable', label, recommended: false, submittable: false, reason, limitation }` for any other learned failure.
+- `differences`: `{ comparable, coverage, orderQuantity, spendMinor, unmetNeeds, derivatives: [{ derivativeId, baseline, learned, delta, changed }] }`, each count `{ baseline, learned, delta }` with delta = learned minus baseline. Coverage is `expectedAcceptableCoverage.covered`; unmet needs is the count. The baseline is the current plan on `readPlan` and the preview plan on `previewPlan`. If either plan is not feasible, `comparable` is false and every quantity and delta is null.
+
+**Baseline stays recommended (HLD Q10).** The baseline plan, built from expressed saved demand, is the only recommended and the only submittable plan. `submitPlan` recomputes the baseline, so a learned plan id gets `conflict` `replan-needed`; there is no learned submit path.
+
 ## Ownership and extensions
 
 FUCQ-53's [synthetic identity allocation contract](synthetic-identity-allocation.md) adds offline `allocateSyntheticIdentities` / `allocateInventoryFile` ports, immutable whole-inventory replay, delivered/current-only VIN generation and `publishStockOrders` through the existing repository transaction port. Stock imports start unreleased, carry no VIN and preserve current operational state; `runs.versions.syntheticIdentityInventory` records the artifact revision/digest. Only the seven-digit order reference is exposed by the employee projection. File publication and PostgreSQL import are separate stages with independently atomic failure; this adds no repository table, public write endpoint or scheme-policy source.
@@ -1051,6 +1429,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
+| 1.0.0 / 2026-11-09 / FUCQ-123 | Adds the PredictionInput to DemandForecast contract, the learned planner forecast and `createLearnedOrderPlanService`, and an additive `learned` field on `readPlan` / `previewPlan`. Assumed `forecast.learned.v1` (`choiceMassThreshold`, `waitExclusionThreshold`, `intervalZ`); consumes `choice.model.reference`. The baseline stays the recommended and only submittable plan. No table, route or migration. |
 | 1.0.0 / 2026-11-07 / FUCQ-117 | Adds the order-plan service, policy-backed catalog and future-terms providers and canonical composition; seven assumed `orderPlan.*` keys (horizon, budget, currency, model/derivative bounds, objective weights, synthetic catalogue). No table, route or UI. |
 | 1.0.0 / 2026-11-07 / FUCQ-114 | Adds LifecycleAppointmentService, `lifecycle-appointments` handler, appointment routes, `ordering.appointments.v1` capability and live stub, versioned receipt projection (no table) and per-step pending operations; assumed `lifecycle.appointments.{slots,confirmation,scenario,ownership}.v1`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
 | 1.0.0 / 2026-11-06 / FUCQ-116 | Adds LifecycleDocumentService, `lifecycle-documents` handler, document routes, `ordering.documentStatus.v1` capability and live stub, versioned receipt projection (no table) and keyed exception receipts with order-specific renewal identity; assumed `lifecycle.documents.{v1,scenario.v1,exceptions.v1}`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
@@ -1074,6 +1453,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 | 1.0.0 / 2026-11-05 / FUCQ-99 | Adds Greg-only current-run saved-demand/actual-outcome/stock projection with per-aggregate brief/policy versions, canonical small-count banding (`greg.demand.smallCountThreshold`), optional registered model-line essential and truthful backend presentation/scenario contract. Reuses repository/identity/clock/shared gates without migrations or existing method/retail changes. |
 | 1.0.0 / 2026-11-05 / FUCQ-23 | Additive retail member decision and exact display facts; representative v1 fields and caps remain compatible. The card/refinement consume exact decisions, with truthful mixed-version fallback. No scoring retune, policy key or GCSP transaction change. |
 | 1.0.0 / 2026-11-05 / FUCQ-30 | Adds local exact/group exclusion, retail predicate, confirmed preference/essential change and reversible undo/reset actions. The shared canonical helper replaces duplicate FUCQ-91 field-change/no-op logic while retaining its public command, transaction, versioning, audit and consent semantics. Complete read-only employee decisions recompute through existing policy/ranker gates. No new policy key, durable lifecycle operation or existing contract meaning change. |
+| 1.0.0 / 2026-11-05 / FUCQ-113 | Adds closed LearningRecord schema v1, validator and stateless observed current-run projection over public repository/identity/clock ports. Historical brief versions, independent pending/accepted/selected/decline/expiry states and explicit unknown historical choice/context/terms preserve provenance and privacy. Backend contract fixtures only; generator, manifests, real corpus and outcome-producer integration remain outstanding. |
 | 1.0.0 / 2026-11-05 / FUCQ-65 | Adds ManualContextService, five read ports, guarded account/draft/stock routes and assumed `manual.context.v1`. Existing identity/time/policy/repository and typed FUCQ-29 gates remain authority. Additive JSON/receipt conventions preserve consumers. Backend presentation fixtures cover synthetic/mapped employee reads; claims/quotes/expiry, screens, live integration and diagram rendering remain separate. |
 | 1.0.0 / 2026-11-05 / FUCQ-85 | Adds repository currentRun/resetRun, persisted DemoClock/registry/startup/reset and presenter HTTP binding. Adds canonical `clock.commands.v1`, `clock.handler.order.v1`, `clock.scenario.v1`; additive inventory snapshot retains allocator provenance. Same identity authority and employee time port; no existing consumer meaning changes. Backend response fixtures and memory/SQL-driver parity; managed PostgreSQL and draw.io rendering remain unverified. |
 | 1.0.0 / 2026-11-05 / FUCQ-29 | Adds the stateless employee recommendation consumer and `employee.recommendation.v1` calibration through the existing PolicyService. Reuses exact snapshots/typed terms, context and clock ports; no existing method meanings change. The authorised trusted cash-filter opt-out preserves retail defaults and avoids invented employee prices. |

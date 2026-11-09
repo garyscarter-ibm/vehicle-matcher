@@ -14,6 +14,7 @@ export const activityCopy = Object.freeze({
   reviewBrief: 'Review your brief',
   keepNote: 'Buddy will keep searching with your brief as it is.',
   previewOnly: 'Preview only',
+  noRenewalDate: 'Buddy cannot hold a car for you yet. There is no renewal date on your record to set your place in the queue, so you are left out of allocation until one is recorded.',
 });
 const offerStates = Object.freeze({ active: 'Waiting for you', 'decision-pending': 'Being processed', 'release-pending': 'Being processed',
   accepted: 'Accepted', rejected: 'Declined', declined: 'Declined', expired: 'Expired' });
@@ -33,6 +34,7 @@ export function searchLines(value, paused) {
   if (check && Number.isFinite(Date.parse(check.checkedAt))) {
     const found = check.outcome === 'offer-held' ? ' Found a car for you.' : '';
     lines.push(`Last check ${demoTime(check.checkedAt)}: ${count(check.carsChecked, 'car')} checked, ${check.suitableCars} suitable.${found}`);
+    if (!paused && check.limitation === 'renewal-deadline-unknown') lines.push(activityCopy.noRenewalDate);
   }
   return lines;
 }

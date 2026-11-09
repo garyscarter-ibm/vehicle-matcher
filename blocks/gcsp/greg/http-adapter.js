@@ -1,6 +1,7 @@
 import { isAccessLapsed } from '../kit/run-restarted.js';
 import { createGregPublishHttpAdapter } from './publish/http-adapter.js';
 import { createOrderPlanHttpAdapter } from './plan/http-adapter.js';
+import { createComparisonHttpAdapter } from './comparison/http-adapter.js';
 // HTTP adapter for the Greg dashboard. The server owns role and run checks; this only maps replies to view states.
 
 export const MESSAGES = Object.freeze({
@@ -26,6 +27,7 @@ export function createGregHttpAdapter({ base = '', fetchImpl = globalThis.fetch 
   return {
     publish: createGregPublishHttpAdapter({ base, fetchImpl }),
     orderPlan: createOrderPlanHttpAdapter({ base, fetchImpl }),
+    comparison: createComparisonHttpAdapter({ base, fetchImpl }),
     async loadDemand({ signal } = {}) {
       let response;
       try {

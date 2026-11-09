@@ -5,6 +5,7 @@ import { startGcspDemo } from '../../scripts/gcsp-demo.mjs';
 import { createDemoStockProvider } from '../gcsp/stock/demo-provider.js';
 import { createLocalHttpsFixture } from './helpers/local-https.js';
 import { createRouteClient, runDeclineChangeRoute } from './helpers/gcsp-decline-change-route.js';
+import { expandEvaluation } from '../gcsp/allocation/evaluation-rows.js';
 
 const SCENARIO = 'decline-then-change-waiting';
 const good = (outcome) => { assert.equal(outcome?.status, 'ok', JSON.stringify(outcome)); return outcome.value; };
@@ -67,7 +68,7 @@ async function replay(services, client, label) {
   assert.deepEqual(offers.filter((row) => row.employeeId === paula).map((row) => row.offerId), [first.offerId]);
   assert.ok(!run.later.offers.some((row) => row.runId === run.runId && row.offerId !== first.offerId));
   const passes = receipts.sort((a, b) => a.updatedAt.localeCompare(b.updatedAt))
-    .map((row) => slices.find((slice) => slice.eventId === `${row.eventId}:${paula}`)?.outcome.value.evaluation).filter(Boolean);
+    .map((row) => slices.find((slice) => slice.eventId === `${row.eventId}:${paula}`)?.outcome.value.evaluation).filter(Boolean).map(expandEvaluation);
   const last = passes.at(-1);
   assert.equal(last.briefVersion ?? 2, 2);
   assert.ok(last.decisions.length > 0);

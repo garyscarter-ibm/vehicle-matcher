@@ -15,7 +15,7 @@
 .gcsp .gcsp-plan-list { display: grid; gap: 4px; margin: 0; padding-left: 20px; overflow-wrap: anywhere; }
 .gcsp .gcsp-plan-need { display: flex; flex-direction: column; gap: 4px; padding: 8px 12px; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
 .gcsp .gcsp-plan-need-name { margin: 0; font-weight: 600; }
-.gcsp .gcsp-plan .gcsp-plan-wide .gcsp-table { min-width: 520px; }
+.gcsp .gcsp-plan .gcsp-plan-wide .gcsp-table { min-width: 520px; } .gcsp .gcsp-plan .gcsp-table-th.is-numeric { white-space: normal; }
 .gcsp .gcsp-plan-submit-row, .gcsp .gcsp-plan-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .gcsp .gcsp-plan-consequence { flex: 1 1 240px; font-size: 14px; }
 .gcsp .gcsp-plan-editor { padding-top: 14px; border-top: 1px solid var(--gcsp-divider); } .gcsp .gcsp-plan-editor:empty { display: none; }

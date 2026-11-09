@@ -4,7 +4,7 @@ import { lstat, mkdir, open, rename, rm } from 'node:fs/promises';
 import { basename, dirname, isAbsolute, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fleetReleases, approvedAssetUrl, DEFAULT_ARTIFACT_ROOT, releaseLimits, EMPTY_SHA256 } from './fleet-release.js';
-import { durableCopy } from './corpus-publisher.js';
+import { boundDiagnostic, durableCopy } from './corpus-publisher.js';
 import { createSyntheticRegistry } from './synthetic-registry.js';
 import { createPolicyService } from '../policy/index.js';
 import { APPROVED_CORPUS_IMAGES } from './registered-corpus-images.js';
@@ -13,7 +13,11 @@ const absent = async (p) => { try { await lstat(p); return false; } catch (e) { 
 const SAFE_CODE = /^[A-Z][A-Z0-9_]*$/;
 const tag = (e, artifactCode, retryable, extra = {}) => Object.assign(e !== null && typeof e === 'object' ? e : new Error('Artifact transfer failed'), { artifactCode, retryable }, extra);
 const rejected = (message, artifactCode) => tag(new TypeError(message), artifactCode, false);
-const coded = (message, artifactCode) => Object.assign(new TypeError(message), { artifactCode });
+const coded = (message, artifactCode, extra = {}) => Object.assign(new TypeError(message), { artifactCode }, extra);
+/** Build the restore validation error with its bounded first-failure diagnostic. Grants no release approval. */
+export const validationFailed = (message, stage, result, release) => coded(message, 'validation-failed', { validation: boundDiagnostic({
+  stage, status: result.status, failure: result.failure, diagnostic: result.diagnostic, previousDiagnostic: result.previousDiagnostic,
+  manifestDigestMatches: result.active?.manifestDigest === release.manifestDigest }) });
 // A URL-free hint for the build log: a system error code, else a timeout marker.
 function transportDetail(e, signal) {
   const code = e?.cause?.code ?? e?.code;
@@ -107,12 +111,12 @@ export async function restoreFleetRelease({ releaseId, store, cacheRoot = DEFAUL
     const options = { policyService: createPolicyService(), policyRead: { runId: 'fleet-artifact-restore', asOf },
       jsonlLimitsForManifest: releaseLimits, sourceArtifactDirectory: cached, approvedImages: APPROVED_CORPUS_IMAGES };
     const candidateStore = join(cached, 'store'); const input = createSyntheticRegistry({ root: candidateStore, ...options }); const validated = await input.load();
-    if (validated.status !== 'ok' || validated.active.manifestDigest !== release.manifestDigest) throw coded('Cached store failed full validation', 'validation-failed');
+    if (validated.status !== 'ok' || validated.active.manifestDigest !== release.manifestDigest) throw validationFailed('Cached store failed full validation', 'cached', validated, release);
     if (await absent(store)) {
       step = 'stage-store'; await mkdir(dirname(store), { recursive: true }); ownedStage = join(dirname(store), '.restore-store-' + randomUUID()); await mkdir(ownedStage);
       for (const asset of release.assets.filter((a) => a.role === 'corpus')) { const target = join(ownedStage, asset.path.slice('store/'.length)); await mkdir(dirname(target), { recursive: true }); await durableCopy(join(cached, asset.path), target, asset.bytes || 1); }
       const check = await createSyntheticRegistry({ root: ownedStage, ...options }).load();
-      if (check.status !== 'ok' || check.active.manifestDigest !== release.manifestDigest) throw coded('Staged store failed validation', 'validation-failed');
+      if (check.status !== 'ok' || check.active.manifestDigest !== release.manifestDigest) throw validationFailed('Staged store failed validation', 'staged', check, release);
       await rename(ownedStage, store); ownedStage = null;
       return { status: 'ok', mode: 'cold-restore', active: check.active, externalCalls };
     }

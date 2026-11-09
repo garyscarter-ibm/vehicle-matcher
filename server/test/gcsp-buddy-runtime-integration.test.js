@@ -32,9 +32,9 @@ async function request(server, path, { body, session, headers = {} } = {}) {
   await server.listeners('request')[0](req, response);
   return { ...response, json: response.body ? JSON.parse(response.body) : null };
 }
-async function setup(t, { start = true, sessionTag = '', store = createMemoryStore(), policy, repository = createMemoryRepository({ store }) } = {}) {
+async function setup(t, { start = true, sessionTag = '', store = createMemoryStore(), policy, repository = createMemoryRepository({ store }), adoptOfferJourney = false } = {}) {
   const opened = good(await createGcspRuntime({ mode: 'memory', repository, policy, environmentId: 'buddy-runtime-test',
-    policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z' }));
+    policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z', adoptOfferJourney }));
   t.after(() => opened.close());
   const registrations = []; const register = opened.clock.registerHandler.bind(opened.clock);
   opened.clock.registerHandler = async (input) => { registrations.push(input.handlerId); return register(input); };
@@ -137,7 +137,7 @@ test('normal runtime shares services, registers before startup, and serves real 
   assert.equal(f.registrations.length, HANDLERS.length);
   const catalogue = await request(f.server, '/api/gcsp/presenter/scenarios', { session: f.presenterCookie });
   assert.equal(catalogue.status, 200); assert.ok(catalogue.json.value.scenarios.length);
-  assert.ok(catalogue.json.value.scenarios.filter((s) => s.kind === 'journey' && !['main-successful-journey', 'no-suitable-match', 'decline-then-change', 'data-unavailable', 'uncertain-handoff', 'uncertain-handoff-rejected', 'decline-then-change-waiting'].includes(s.scenarioId)).every((s) => s.availability.missingCapabilities.length));
+  assert.ok(catalogue.json.value.scenarios.filter((s) => s.kind === 'journey' && !['main-successful-journey', 'no-suitable-match', 'decline-then-change', 'offer-expires', 'data-unavailable', 'uncertain-handoff', 'uncertain-handoff-rejected', 'decline-then-change-waiting'].includes(s.scenarioId)).every((s) => s.availability.missingCapabilities.length));
   await adoptPresenter(f);
   const controls = await request(f.server, '/api/gcsp/presenter/controls', { session: f.presenterCookie }); assert.equal(controls.status, 200);
   const state = good(await f.clock.now(f.presenter));
@@ -201,7 +201,7 @@ for (const first of ['manual', 'buddy']) test(`normal composed ${first} claim ex
 });
 
 test('reviewed publication activates the shared provider while preserving pinned buddy quote and access', async (t) => {
-  const f = await setup(t); const allocated = await allocate(f); const before = structuredClone(allocated.quote);
+  const f = await setup(t, { adoptOfferJourney: true }); const allocated = await allocate(f); const before = structuredClone(allocated.quote);
   const input = offerInput(f, allocated.offer); await adoptPresenter(f);
   assert.equal(good(await f.repository.currentRun('buddy-runtime-test')).versions.policy, 'runtime-reviewed-v2');
   const time = good(await f.clock.now(f.presenter));

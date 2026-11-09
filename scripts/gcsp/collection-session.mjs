@@ -333,7 +333,11 @@ export async function createCollectionSession({ identity: stageIdentity, operati
         checkDeadline(); const descriptor = operations[operation];
         const cacheKey = inputDigest({ operation, ...sources[operation], request });
         const cached = descriptor.cache !== false && state.cache.find((row) => row.cacheKey === cacheKey && row.expiresAt > now());
-        if (cached) { state.counts.cacheHits[operation] += 1; return structuredClone(cached.payload); }
+        // A descriptor may restore its in-memory guards from a validated cached payload; errors are not transport retries.
+        if (cached) {
+          if (typeof descriptor.restore === 'function') await descriptor.restore(structuredClone(cached.payload), structuredClone(request));
+          state.counts.cacheHits[operation] += 1; return structuredClone(cached.payload);
+        }
         for (let attempt = 0; attempt < limits.maxAttempts; attempt += 1) {
           checkDeadline();
           if (state.counts.operations[operation] >= limits.requestBudgets[operation]) stop('request-budget');

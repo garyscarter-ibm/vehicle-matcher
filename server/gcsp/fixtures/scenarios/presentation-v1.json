@@ -1,5 +1,5 @@
 {
-  "description": "Verified backend projection for later presenter controls. Fictional mechanics succeeds; main-successful-journey, no-suitable-match, decline-then-change, its waiting variant, data-unavailable and both uncertain-handoff entries have reviewed start loaders and one journey service preparation remains unavailable.",
+  "description": "Verified backend projection for later presenter controls. Fictional mechanics succeeds; main-successful-journey, no-suitable-match, decline-then-change, its waiting variant, offer-expires, data-unavailable and both uncertain-handoff entries have reviewed start loaders. The unavailable sample is the refusal shape for a journey without one.",
   "catalogueVersion": "gcsp-scenario-catalogue-v1",
   "journeyIds": ["main-successful-journey", "no-suitable-match", "decline-then-change", "offer-expires", "data-unavailable", "uncertain-handoff", "uncertain-handoff-rejected", "decline-then-change-waiting"],
   "mechanics": {

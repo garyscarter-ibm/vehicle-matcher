@@ -70,6 +70,14 @@ test('failed email exchange offers reopening the original email without pretendi
   assert.equal(state.canAccept, false); c.destroy();
 });
 
+// FUCQ-228: the stale link was the one just opened, so never send the reader back to it.
+test('an earlier-run link explains the earlier run instead of sending the reader back to the same link', async () => {
+  const c = createOfferController({ read: async () => ({ status: 'stale-run', accessExchange: 'failed' }) });
+  const state = await c.refresh(); assert.equal(state.state, 'earlier-run');
+  assert.match(state.message, /earlier demo run/); assert.doesNotMatch(state.message, /original email link/);
+  assert.equal(state.canAccept, false); c.destroy();
+});
+
 test('a stale or destroyed read never replaces newer current state', async () => {
   const first = deferred(); let reads = 0;
   const c = createOfferController({ read: () => ++reads === 1 ? first.promise : Promise.resolve(pending({ state: 'declined' })) });

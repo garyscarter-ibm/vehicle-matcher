@@ -46,8 +46,19 @@ test('missing image has a useful fallback and terminal states have no decision c
     view.update({ ...data, state });
     assert.equal(root.querySelectorAll('[data-offer-action="accept"], [data-offer-action="decline"]').length, 0);
     assert.equal(root.querySelectorAll('h1').length, 1);
-    if (['earlier-run', 'not-found', 'error', 'loading'].includes(state)) assert.equal(root.querySelector('.vm-card'), null);
+    if (['earlier-run', 'not-found', 'error', 'loading', 'expired'].includes(state)) assert.equal(root.querySelector('.vm-card'), null);
   }
+});
+
+// FUCQ-228: an expired offer shows that it expired and the next step, not the offer's fit.
+test('expired offer shows only its expiry and next step', () => {
+  const { root, view, data } = render('pending');
+  view.update({ ...data, state: 'expired' });
+  assert.equal(root.querySelector('h1').textContent, 'Offer expired');
+  assert.match(root.textContent, /no longer available to accept\. Open your account to check for a new offer\./);
+  assert.doesNotMatch(root.textContent, /Eligible|Why it suits you|Your current car/);
+  assert.equal(root.querySelector('.vm-card'), null);
+  assert.ok(root.querySelector('[data-offer-action="refresh"]'));
 });
 
 test('live announcements are bounded and refresh retains visible keyboard focus', () => {
@@ -64,6 +75,18 @@ test('live announcements are bounded and refresh retains visible keyboard focus'
   view.update({ ...data, state: 'expired' });
   assert.equal(live.textContent, 'Offer expired');
   assert.equal(document.activeElement.dataset.offerAction, 'refresh');
+});
+
+test('the live announcement is visually hidden with the kit utility, so the title shows once', async () => {
+  const { root, view, data } = render('pending');
+  const live = root.querySelector('[data-offer-announcement]');
+  view.update({ ...data, state: 'expired' });
+  assert.equal(live.textContent, 'Offer expired');
+  assert.deepEqual([live.className, live.getAttribute('role'), live.getAttribute('aria-live')], ['gcsp-vh', 'status', 'polite']);
+  assert.equal(root.querySelector('h1').textContent, 'Offer expired');
+  const css = await readFile(new URL('../../blocks/gcsp/shell/gcsp-shell.css', import.meta.url), 'utf8');
+  assert.match(css, /\.gcsp-vh \{[^}]*position: absolute;[^}]*clip-path: inset\(50%\);/);
+  assert.match(await readFile(new URL('../../gcsp-offer.html', import.meta.url), 'utf8'), /gcsp-shell\.css/);
 });
 
 test('multiple embeds have unique descriptions and text is rendered without HTML execution', () => {

@@ -1,0 +1,514 @@
+{
+  "story": "fucq145",
+  "chunk": "desktop",
+  "entry": "hosted-offline",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "state": "passed",
+  "startedAt": "2026-11-08T22:01:13.060Z",
+  "steps": [
+    {
+      "id": "access-key",
+      "name": "Demo key form opens the offline hosted demo",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Your cars New order Order history Drivers and licences Scheme guidelines Show labels Presenter controls YOUR CARS Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car evidence. Choose "
+    },
+    {
+      "id": "setup-saved",
+      "name": "Choose a replacement; setup choices saved for Paula",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-01-setup-saved.png"
+      ],
+      "overflowPx": 0,
+      "state": "Your order choices | {\"driver\":\"You: Paula (fictional)\",\"contract\":\"six-month-8000\",\"date\":\"2026-11-12\",\"location\":\"demo-collection-centre\"}",
+      "detail": {
+        "driver": "You: Paula (fictional)",
+        "contract": "six-month-8000",
+        "date": "2026-11-12",
+        "location": "demo-collection-centre"
+      }
+    },
+    {
+      "id": "release-and-gallery",
+      "name": "Next release, Continue, Released cars gallery",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-02-release-and-gallery.png"
+      ],
+      "overflowPx": 0,
+      "state": "Released cars; 20 review buttons; Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-06T11:30:00.000Z",
+      "detail": {
+        "cards": 20
+      }
+    },
+    {
+      "id": "claim-review",
+      "name": "Review this car: a claim exists and the review is shown",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-03-review-claimed.png"
+      ],
+      "overflowPx": 0,
+      "state": "Review your car | Car reservation: 2:00 remaining | claim active"
+    },
+    {
+      "id": "reload-1-account",
+      "name": "Reload: Your cars shows Resume saved journey",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-04-reload-1-account-resume.png"
+      ],
+      "overflowPx": 0,
+      "state": "reload 1: heading \"Your cars\"; Resume saved journey offered"
+    },
+    {
+      "id": "resume-1-focus",
+      "name": "Keyboard Resume: focus ends on the review heading, never BODY after render",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-05-resume-1-review-focus.png"
+      ],
+      "detail": {
+        "focusBeforeTab": "H1 \"Your cars\"",
+        "tabPresses": 2,
+        "final": {
+          "tag": "H1",
+          "text": "Review your car",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "sampleCount": 669,
+        "transitionSequence": [
+          {
+            "tag": "H1",
+            "text": "Your cars",
+            "atMs": 21
+          },
+          {
+            "tag": "BODY",
+            "text": "",
+            "atMs": 1027
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your saved journey",
+            "atMs": 2927
+          },
+          {
+            "tag": "BODY",
+            "text": "",
+            "atMs": 4402
+          },
+          {
+            "tag": "H1",
+            "text": "Released cars",
+            "atMs": 5727
+          },
+          {
+            "tag": "BODY",
+            "text": "",
+            "atMs": 10003
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your car",
+            "atMs": 12927
+          },
+          {
+            "tag": "H1",
+            "text": "Review your car",
+            "atMs": 15754
+          }
+        ],
+        "tabPathSequence": [],
+        "renderedAtMs": 15754,
+        "readyAtMs": 15754,
+        "focusOnHeadingAtMs": 15754,
+        "bodySamplesAfterRender": 0,
+        "bodySamplesAfterReady": 0,
+        "maxBodyMsDuringTransition": 2924
+      },
+      "overflowPx": 0,
+      "state": "resume 1: focus before Tab H1, 2 Tab presses; final H1 \"Review your car\" (main h1 true); BODY samples after render 0, after ready 0; max BODY 2924 ms; sequence H1 \"Your cars\" > BODY > H2 \"Checking your saved journey\" > BODY > H1 \"Released cars\" > BODY > H2 \"Checking your car\" > H1 \"Review your car\""
+    },
+    {
+      "id": "tab-after-heading",
+      "name": "Tab then Shift+Tab from the heading",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-06-tab-1-first-control.png",
+        "browser/1280-07-shift-tab-back.png"
+      ],
+      "detail": {
+        "tab": {
+          "tag": "BUTTON",
+          "text": "Check current claim",
+          "insideMain": true,
+          "isMainH1": false,
+          "tabindex": null,
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "firstFocusableAfterHeading": "Check current claim",
+        "shiftTab": {
+          "tag": "SUMMARY",
+          "text": "Presenter controls",
+          "insideMain": false,
+          "isMainH1": false,
+          "tabindex": null,
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        }
+      },
+      "overflowPx": 0,
+      "state": "Tab: BUTTON \"Check current claim\" outline [solid 2px rgb(2, 145, 183)] shadow [none] (first after heading \"Check current claim\"); Shift+Tab: SUMMARY \"Presenter controls\" main h1 false"
+    },
+    {
+      "id": "reload-2-account",
+      "name": "Second reload: Your cars shows Resume saved journey",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-08-reload-2-account-resume.png"
+      ],
+      "overflowPx": 0,
+      "state": "reload 2: heading \"Your cars\"; Resume saved journey offered"
+    },
+    {
+      "id": "resume-2-focus",
+      "name": "Second keyboard Resume: same focus result (stable)",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-09-resume-2-review-focus.png"
+      ],
+      "detail": {
+        "focusBeforeTab": "H1 \"Your cars\"",
+        "tabPresses": 2,
+        "final": {
+          "tag": "H1",
+          "text": "Review your car",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "sampleCount": 644,
+        "transitionSequence": [
+          {
+            "tag": "H1",
+            "text": "Your cars",
+            "atMs": 10
+          },
+          {
+            "tag": "BODY",
+            "text": "",
+            "atMs": 828
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your saved journey",
+            "atMs": 2653
+          },
+          {
+            "tag": "BODY",
+            "text": "",
+            "atMs": 4678
+          },
+          {
+            "tag": "H1",
+            "text": "Released cars",
+            "atMs": 6504
+          },
+          {
+            "tag": "BODY",
+            "text": "",
+            "atMs": 10505
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your car",
+            "atMs": 12329
+          },
+          {
+            "tag": "H1",
+            "text": "Review your car",
+            "atMs": 15405
+          }
+        ],
+        "tabPathSequence": [],
+        "renderedAtMs": 15405,
+        "readyAtMs": 15405,
+        "focusOnHeadingAtMs": 15405,
+        "bodySamplesAfterRender": 0,
+        "bodySamplesAfterReady": 0,
+        "maxBodyMsDuringTransition": 1826
+      },
+      "overflowPx": 0,
+      "state": "resume 2: focus before Tab H1, 2 Tab presses; final H1 \"Review your car\" (main h1 true); BODY samples after render 0, after ready 0; max BODY 1826 ms; sequence H1 \"Your cars\" > BODY > H2 \"Checking your saved journey\" > BODY > H1 \"Released cars\" > BODY > H2 \"Checking your car\" > H1 \"Review your car\""
+    },
+    {
+      "id": "errors",
+      "name": "No page errors; only expected 404s in console and responses",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "pageErrors": [],
+        "consoleErrors": [
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8938/favicon.ico",
+            "page": "http://127.0.0.1:8938/gcsp/access"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8938/api/gcsp/manual/draft",
+            "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8938/api/gcsp/manual/draft",
+            "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8938/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8938/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8938/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8938/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:8938/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+          }
+        ],
+        "badResponses": [
+          "404 http://127.0.0.1:8938/api/gcsp/manual/draft",
+          "404 http://127.0.0.1:8938/api/gcsp/manual/draft",
+          "404 http://127.0.0.1:8938/api/gcsp/manual/order",
+          "404 http://127.0.0.1:8938/api/gcsp/manual/claim",
+          "404 http://127.0.0.1:8938/api/gcsp/manual/claim",
+          "404 http://127.0.0.1:8938/api/gcsp/manual/order",
+          "404 http://127.0.0.1:8938/api/gcsp/manual/order"
+        ],
+        "failedRequests": [
+          {
+            "url": "http://127.0.0.1:8938/api/gcsp/manual/stock",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:8938/api/gcsp/presenter/scenarios",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:8938/api/gcsp/manual/stock",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:8938/api/gcsp/context",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:8938/api/gcsp/presenter/scenarios",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          }
+        ]
+      },
+      "overflowPx": 0,
+      "state": "page errors 0; console errors 8 (unexpected 0); HTTP >=400: 404 http://127.0.0.1:8938/api/gcsp/manual/draft, 404 http://127.0.0.1:8938/api/gcsp/manual/draft, 404 http://127.0.0.1:8938/api/gcsp/manual/order, 404 http://127.0.0.1:8938/api/gcsp/manual/claim, 404 http://127.0.0.1:8938/api/gcsp/manual/claim, 404 http://127.0.0.1:8938/api/gcsp/manual/order, 404 http://127.0.0.1:8938/api/gcsp/manual/order; failed requests 5 (0 other than aborted)"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "review",
+      "check": "Resume 1: Enter on Resume saved journey leaves focus on the main h1 \"Review your car\"",
+      "pass": true,
+      "detail": {
+        "final": "H1 \"Review your car\"",
+        "bodyAfterRender": 0,
+        "maxBodyMs": 2924
+      }
+    },
+    {
+      "page": "review",
+      "check": "Tab moves from the heading to the first control after it, with a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tab": "BUTTON \"Check current claim\"",
+        "expected": "Check current claim",
+        "shiftTab": "SUMMARY \"Presenter controls\""
+      }
+    },
+    {
+      "page": "review",
+      "check": "Resume 2: Enter on Resume saved journey leaves focus on the main h1 \"Review your car\"",
+      "pass": true,
+      "detail": {
+        "final": "H1 \"Review your car\"",
+        "bodyAfterRender": 0,
+        "maxBodyMs": 1826
+      }
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8938/favicon.ico",
+      "page": "http://127.0.0.1:8938/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8938/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8938/api/gcsp/presenter/scenarios",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8938/api/gcsp/context",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8938/api/gcsp/presenter/scenarios",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8938/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    }
+  ],
+  "notes": [
+    "Collection window after release: {\"min\":\"2026-11-13\",\"max\":\"2026-12-01\",\"was\":\"2026-11-12\"}"
+  ],
+  "origin": "http://127.0.0.1:8938",
+  "orderPosts": [],
+  "finishedAt": "2026-11-08T22:03:04.169Z",
+  "counts": {
+    "steps": 10,
+    "passed": 10,
+    "screenshots": 9,
+    "keyboardChecks": 4
+  }
+}

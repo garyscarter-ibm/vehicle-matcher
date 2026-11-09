@@ -3,6 +3,17 @@ import { CONTRACT_VERSION, TABLES, FOUNDATION_TABLES, OCCUPYING_STATES } from '.
 export { CONTRACT_VERSION, TABLES, FOUNDATION_TABLES, OCCUPYING_STATES, createState } from './schema.js';
 export const result = (status, content = {}) => ({ status, ...content, contractVersion: CONTRACT_VERSION });
 export const ok = (value) => result('ok', { value });
+// Copies JSON data (plain objects, arrays, primitives) about five times faster than structuredClone.
+export function cloneJson(value) {
+  if (value === null || typeof value !== 'object') return value;
+  if (Array.isArray(value)) { const copy = new Array(value.length); for (let i = 0; i < value.length; i += 1) copy[i] = cloneJson(value[i]); return copy; }
+  const copy = {};
+  for (const key of Object.keys(value)) {
+    if (key === '__proto__') Object.defineProperty(copy, key, { value: cloneJson(value[key]), enumerable: true, writable: true, configurable: true });
+    else copy[key] = cloneJson(value[key]);
+  }
+  return copy;
+}
 const invalid = (code, field, reason) => result('invalid', { code, reasons: [{ field, reason }] });
 const conflict = (reason, current = {}) => result('conflict', { reason, current });
 const plain = (value) => value !== null && typeof value === 'object' && !Array.isArray(value)
@@ -25,7 +36,8 @@ export const inputDigest = (value) => {
   if (!jsonValue(value)) throw new TypeError('Digest input must be JSON data');
   return createHash('sha256').update(JSON.stringify(canonical(value))).digest('hex');
 };
-const equal = (a, b) => JSON.stringify(canonical(a)) === JSON.stringify(canonical(b));
+// Two strings are canonically equal exactly when identical; this keeps key scans cheap.
+const equal = (a, b) => typeof a === 'string' && typeof b === 'string' ? a === b : JSON.stringify(canonical(a)) === JSON.stringify(canonical(b));
 const matches = (row, filter) => Object.entries(filter).every(([key, value]) => equal(row[key], value));
 const occupied = (row) => OCCUPYING_STATES.includes(row.state);
 const summary = (row) => Object.fromEntries(['state', 'version', 'orderUuid', 'entitlementSlotId', 'capacity'].filter((key) => row[key] !== undefined).map((key) => [key, row[key]]));
@@ -75,24 +87,55 @@ function contextError(context, state, write = false) {
   return null;
 }
 
-export function createTransaction(context, state, now = () => new Date().toISOString(), supportedTables = FOUNDATION_TABLES) {
+// Shallow memory snapshots share rows and only append receipts or replace them in place (keys fixed),
+// so positions indexed once stay exact for every later snapshot whose last indexed row is unchanged.
+export const createReceiptIndex = () => ({ positions: new Map(), count: 0, last: undefined });
+const receiptKey = (runId, consumerId, eventId) => `${runId}\u0000${consumerId}\u0000${eventId}`;
+const isReceipt = (row, runId, consumerId, eventId) => row.runId === runId && row.consumerId === consumerId && row.eventId === eventId;
+/** Position of the first receipt with this key in `receipts`, or -1; the index only ever shortcuts the scan. */
+export function findReceipt(index, receipts, runId, consumerId, eventId) {
+  if (index && [runId, consumerId, eventId].every((part) => typeof part === 'string')) {
+    if (receipts.length < index.count || (index.count > 0 && receipts[index.count - 1] !== index.last)) { index.positions.clear(); index.count = 0; }
+    for (; index.count < receipts.length; index.count += 1) {
+      const row = receipts[index.count]; const key = receiptKey(row.runId, row.consumerId, row.eventId);
+      if (!index.positions.has(key)) index.positions.set(key, index.count);
+    }
+    index.last = receipts[index.count - 1];
+    const position = index.positions.get(receiptKey(runId, consumerId, eventId));
+    if (position === undefined) return -1;
+    if (isReceipt(receipts[position], runId, consumerId, eventId)) return position;
+  }
+  return receipts.findIndex((row) => isReceipt(row, runId, consumerId, eventId));
+}
+const RECEIPT_KEY = Object.freeze(['consumerId', 'eventId', 'runId']);
+
+export function createTransaction(context, state, now = () => new Date().toISOString(), supportedTables = FOUNDATION_TABLES, receiptIndex = undefined) {
   let failure;
   let active = true;
   const remember = (outcome, lookup = false) => {
     if (outcome.status !== 'ok' && outcome.status !== 'pending' && !(lookup && outcome.status === 'not-found')) failure ||= outcome;
-    return structuredClone(outcome);
+    return cloneJson(outcome);
   };
   const guarded = (operation, lookup = false) => async (...args) => {
     if (!active) return invalid('transaction-closed', 'transaction', 'Transaction has finished');
-    if (failure) return structuredClone(failure);
+    if (failure) return cloneJson(failure);
     return remember(operation(...args), lookup);
   };
   const supported = (table) => TABLES[table] && !supportedTables.includes(table) ? invalid('unsupported-table', 'table', 'Table requires an additional migration') : null;
   const rows = (table) => state.tables[table].filter((row) => row.runId === context.runId);
+  const receiptPosition = (consumerId, eventId) => findReceipt(receiptIndex, state.tables.event_receipts, context.runId, consumerId, eventId);
+  // An exact receipt key in this run, looked up through the index; any other key keeps the plain scan.
+  const exactReceipt = (table, key) => table === 'event_receipts' && key.runId === context.runId
+    && Object.keys(key).sort().join() === RECEIPT_KEY.join() && typeof key.consumerId === 'string' && typeof key.eventId === 'string';
+  const locate = (table, key) => {
+    if (!exactReceipt(table, key)) return rows(table).find((item) => matches(item, key));
+    const position = receiptPosition(key.consumerId, key.eventId);
+    return position < 0 ? undefined : state.tables.event_receipts[position];
+  };
   const get = (ref) => {
     const error = validateRef(ref) || supported(ref.table) || scope(context, ref.key);
     if (error) return error;
-    const row = rows(ref.table).find((item) => matches(item, ref.key));
+    const row = locate(ref.table, ref.key);
     return row ? ok(row) : notFound(ref.table);
   };
   const list = (table, filter = {}) => {
@@ -140,26 +183,29 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     const schema = TABLES[table];
     const replayId = inputDigest(Object.fromEntries(schema.key.map((key) => [key, input[key]])));
     const digest = inputDigest(contentRow(input));
-    const original = rows('event_receipts').find((item) => item.consumerId === `repository:insert:${table}` && item.eventId === replayId);
+    const originalAt = receiptPosition(`repository:insert:${table}`, replayId);
+    const original = originalAt < 0 ? undefined : state.tables.event_receipts[originalAt];
     if (original) {
       if (original.inputDigest !== digest) return conflict('idempotency-input-changed');
-      const outcome = structuredClone(original.outcome);
+      const outcome = cloneJson(original.outcome);
       // Rehydrate only from the digest-validated original command, never the mutable job.
       if (table === 'notification_outbox' && original.inputVersions?.offerLinkFromInsertInput === 1) {
-        outcome.value.payload.offerLink = structuredClone(input.payload.offerLink);
+        outcome.value.payload.offerLink = cloneJson(input.payload.offerLink);
       }
       return outcome;
     }
-    const existing = rows(table).find((row) => schema.key.every((key) => equal(row[key], input[key])));
+    const keyOf = Object.fromEntries(schema.key.map((key) => [key, input[key]]));
+    const existing = exactReceipt(table, keyOf) ? locate(table, keyOf) : rows(table).find((row) => schema.key.every((key) => equal(row[key], input[key])));
     if (existing) return equal(contentRow(existing), contentRow(input)) ? ok(existing) : conflict('duplicate-key', summary(existing));
     const timestamp = now();
-    const row = { ...structuredClone(input), version: input.version ?? 1, createdAt: input.createdAt ?? timestamp, updatedAt: input.updatedAt ?? timestamp };
+    const row = { ...cloneJson(input), version: input.version ?? 1, createdAt: input.createdAt ?? timestamp, updatedAt: input.updatedAt ?? timestamp };
     const violation = constraint(table, row);
     if (violation) return violation;
     state.tables[table].push(row);
     if (table !== 'event_receipts') {
-      const outcome = structuredClone(ok(row));
       const omitLink = table === 'notification_outbox' && plain(row.payload) && Object.hasOwn(row.payload, 'offerLink');
+      // Shallow snapshots (those with a receipt index) never mutate a stored row, so the receipt can share it.
+      const outcome = receiptIndex && !omitLink ? ok(row) : cloneJson(ok(row));
       if (omitLink) delete outcome.value.payload.offerLink;
       state.tables.event_receipts.push({ runId: context.runId, consumerId: `repository:insert:${table}`, eventId: replayId,
         inputDigest: digest, state: 'completed', outcome, ...(omitLink ? { inputVersions: { offerLinkFromInsertInput: 1 } } : {}),
@@ -176,21 +222,24 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     if (Object.keys(patch).some((key) => [...schema.key, 'version', 'createdAt', 'updatedAt'].includes(key))) return invalid('immutable-field', 'patch', 'Identity and version fields cannot be patched');
     const found = get(ref);
     if (found.status !== 'ok') return found;
-    const previous = rows(ref.table).find((row) => matches(row, ref.key));
+    const previous = locate(ref.table, ref.key);
     if (previous.version !== expectedVersion) return stale(ref.table, ref.key, expectedVersion, previous.version);
     if (schema.immutable) return invalid('immutable-row', 'table', 'Append a new historical version');
     if (['holds', 'claims'].includes(ref.table) && !occupied(previous) && occupied({ ...previous, ...patch })) return conflict('terminal-state');
-    const row = { ...previous, ...structuredClone(patch), version: previous.version + 1, updatedAt: now() };
+    const row = { ...previous, ...cloneJson(patch), version: previous.version + 1, updatedAt: now() };
     const violation = constraint(ref.table, row, previous);
     if (violation) return violation;
-    state.tables[ref.table][state.tables[ref.table].indexOf(previous)] = row;
+    const position = state.tables[ref.table].indexOf(previous);
+    state.tables[ref.table][position] = row;
+    if (receiptIndex && ref.table === 'event_receipts' && position === receiptIndex.count - 1) receiptIndex.last = row;
     return ok(row);
   };
   const recordReceipt = (receipt) => {
     if (!plain(receipt) || !identifier(receipt.consumerId) || !identifier(receipt.eventId) || !identifier(receipt.inputDigest) || receipt.outcome === undefined) return invalid('invalid-receipt', 'receipt', 'Receipt IDs, digest and outcome are required');
     const error = scope(context, receipt);
     if (error) return error;
-    const existing = rows('event_receipts').find((row) => row.consumerId === receipt.consumerId && row.eventId === receipt.eventId);
+    const existingAt = receiptPosition(receipt.consumerId, receipt.eventId);
+    const existing = existingAt < 0 ? undefined : state.tables.event_receipts[existingAt];
     if (existing) return existing.inputDigest === receipt.inputDigest ? ok(existing) : conflict('idempotency-input-changed');
     return insert('event_receipts', { ...receipt, runId: context.runId });
   };
@@ -290,14 +339,14 @@ export function createRepository(backend) {
         const receipt = state.tables.event_receipts.find((row) => row.runId === context.runId
           && row.consumerId === 'command:reset-run' && row.eventId === command.commandId);
         if (receipt) return { commit: false, outcome: receipt.inputDigest === command.inputDigest
-          ? structuredClone(receipt.outcome) : conflict('idempotency-input-changed') };
+          ? cloneJson(receipt.outcome) : conflict('idempotency-input-changed') };
         const current = state.tables.runs.find((row) => row.environmentId === context.environmentId && (row.current === true || row.status === 'active'));
         if ((current?.runId ?? null) !== expectedCurrentRunId || current && current.runId !== context.runId) {
           return { commit: false, outcome: result('stale-run', { reason: 'The current run has changed' }) };
         }
         if (state.tables.runs.some((row) => row.runId === nextRun.runId)) return { commit: false, outcome: conflict('run-id-exists') };
         if (current) {
-          const previous = createTransaction(context, state, backend.now, backend.supportedTables);
+          const previous = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
           const retired = await previous.tx.compareAndSwap({ table: 'runs', key: { runId: current.runId } }, expectedRunVersion, { current: false, status: 'historical' });
           if (retired.status !== 'ok') return { commit: false, outcome: retired };
           // Only reset crosses historical scopes. Retire outstanding jobs in
@@ -310,7 +359,7 @@ export function createRepository(backend) {
           previous.finish();
         }
         const nextContext = { ...context, runId: nextRun.runId };
-        const seed = createTransaction(nextContext, state, backend.now, backend.supportedTables);
+        const seed = createTransaction(nextContext, state, backend.now, backend.supportedTables, backend.receiptIndex);
         let outcome = await seed.tx.insert('runs', nextRun);
         for (const [table, row] of rows) {
           if (outcome.status !== 'ok') break;
@@ -320,7 +369,7 @@ export function createRepository(backend) {
         const failure = seed.finish();
         if (failure || outcome.status !== 'ok') return { commit: false, outcome: failure || outcome };
         const stored = ok({ previousRunId: expectedCurrentRunId, runId: nextRun.runId, now: nextRun.clockInstant ?? null, versions: nextRun.versions ?? {} });
-        const recorder = createTransaction(context, state, backend.now, backend.supportedTables);
+        const recorder = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
         const recorded = await recorder.tx.recordReceipt({ consumerId: 'command:reset-run', eventId: command.commandId, inputDigest: command.inputDigest, state: 'completed', outcome: stored });
         recorder.finish();
         return { commit: recorded.status === 'ok', outcome: recorded.status === 'ok' ? stored : recorded };
@@ -334,11 +383,12 @@ export function createRepository(backend) {
         const refused = contextError(context, state);
         if (refused) return { commit: false, outcome: refused };
         const consumerId = 'command:transaction';
-        const receipt = state.tables.event_receipts.find((row) => row.runId === context.runId && row.consumerId === consumerId && row.eventId === command.commandId);
-        if (receipt) return { commit: false, outcome: receipt.inputDigest === command.inputDigest ? structuredClone(receipt.outcome) : conflict('idempotency-input-changed') };
+        const receiptAt = findReceipt(backend.receiptIndex, state.tables.event_receipts, context.runId, consumerId, command.commandId);
+        const receipt = receiptAt < 0 ? undefined : state.tables.event_receipts[receiptAt];
+        if (receipt) return { commit: false, outcome: receipt.inputDigest === command.inputDigest ? cloneJson(receipt.outcome) : conflict('idempotency-input-changed') };
         const historical = contextError(context, state, true);
         if (historical) return { commit: false, outcome: historical };
-        const session = createTransaction(context, state, backend.now, backend.supportedTables);
+        const session = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
         let outcome;
         try { outcome = await work(session.tx); } catch (error) { diagnose('transaction.work', error); session.finish(); return { commit: false, outcome: unavailable() }; }
         const failure = session.finish();
@@ -346,8 +396,8 @@ export function createRepository(backend) {
         if (!plain(outcome) || !identifier(outcome.status) || !jsonValue(outcome)) return { commit: false, outcome: invalid('invalid-outcome', 'work', 'Callback must return a contract outcome') };
         if (!['ok', 'pending'].includes(outcome.status)) return { commit: false, outcome: { ...outcome, contractVersion: CONTRACT_VERSION } };
         if ((outcome.status === 'ok' && !Object.hasOwn(outcome, 'value')) || (outcome.status === 'pending' && !['operationId', 'operationType', 'lastKnownState'].every((key) => identifier(outcome[key])))) return { commit: false, outcome: invalid('invalid-outcome', 'work', 'Callback must return a complete contract outcome') };
-        const storedOutcome = { ...structuredClone(outcome), contractVersion: CONTRACT_VERSION };
-        const recorder = createTransaction(context, state, backend.now, backend.supportedTables);
+        const storedOutcome = { ...cloneJson(outcome), contractVersion: CONTRACT_VERSION };
+        const recorder = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
         const recorded = await recorder.tx.recordReceipt({ consumerId, eventId: command.commandId, inputDigest: command.inputDigest, state: 'completed', outcome: storedOutcome });
         recorder.finish();
         committed = recorded.status === 'ok';
@@ -365,7 +415,7 @@ export function createRepository(backend) {
       return safe('read', () => backend.read(context, async (state) => {
         const error = contextError(context, state);
         if (error) return error;
-        const session = createTransaction(context, state, backend.now, backend.supportedTables);
+        const session = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
         const outcome = await session.tx.get(ref); session.finish(); return outcome;
       }));
     },
@@ -374,7 +424,7 @@ export function createRepository(backend) {
       return safe('query', () => backend.read(context, async (state) => {
         const error = contextError(context, state);
         if (error) return error;
-        const session = createTransaction(context, state, backend.now, backend.supportedTables);
+        const session = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
         const outcome = await session.tx.list(table, filter); session.finish(); return outcome;
       }));
     },
