@@ -1,4 +1,4 @@
-// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq237|fucq238 (fucq145, fucq222 and fucq224 also have chunk phone, 375x812; fucq223 and fucq238 have desktop, phone and narrow).
+// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq237|fucq238|fucq149 (fucq145, fucq149, fucq222 and fucq224 also have chunk phone, 375x812; fucq223 and fucq238 have desktop, phone and narrow).
 // Spawns `node index.js` in server/ offline (GCSP_OFFLINE=1, memory repository). FUCQ70_* names still work as fallbacks for WALK_*.
 import { spawn, spawnSync } from 'node:child_process';
 import { createServer } from 'node:http';
@@ -13,16 +13,16 @@ const HERE = fileURLToPath(new URL('.', import.meta.url));
 const SERVER_DIR = resolve(HERE, '../../../../server');
 const env = (name) => process.env[`WALK_${name}`] ?? process.env[`FUCQ70_${name}`];
 const story = process.env.WALK_STORY || 'fucq70';
-if (!['fucq70', 'fucq72', 'fucq73', 'fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq237', 'fucq238'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq237|fucq238');
+if (!['fucq70', 'fucq72', 'fucq73', 'fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq237', 'fucq238', 'fucq149'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq237|fucq238|fucq149');
 const chunk = env('CHUNK');
-const second = ['fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq237', 'fucq238'].includes(story) ? 'phone' : 'narrow';
+const second = ['fucq145', 'fucq149', 'fucq222', 'fucq224', 'fucq223', 'fucq237', 'fucq238'].includes(story) ? 'phone' : 'narrow';
 if (!['desktop', second, ...(['fucq223', 'fucq237', 'fucq238'].includes(story) ? ['narrow'] : [])].includes(chunk)) throw new Error(`Set WALK_CHUNK=desktop|${second}`);
 const scratch = resolve(env('SCRATCH') || process.env.TMPDIR || '');
 if (!scratch || scratch === '/') throw new Error('Set WALK_SCRATCH (or TMPDIR) to an owned scratch directory');
 const viewport = chunk === 'narrow' ? { width: 320, height: 720 } : chunk === 'phone' ? { width: 375, height: 812 } : { width: 1280, height: 900 };
 const vp = String(viewport.width);
-const port = Number(env('PORT')) || (story === 'fucq237' ? { desktop: 8930, phone: 8931, narrow: 8932 }[chunk] : story === 'fucq238' ? { desktop: 8933, phone: 8934, narrow: 8935 }[chunk] : story === 'fucq223' ? { desktop: 8944, phone: 8945, narrow: 8946 }[chunk] : story === 'fucq224' ? (chunk === 'phone' ? 8943 : 8942) : story === 'fucq222' ? (chunk === 'phone' ? 8941 : 8940) : story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
-if (port < 8930 || port > 8949) throw new Error('WALK_PORT must be within 8930-8949');
+const port = Number(env('PORT')) || (story === 'fucq149' ? (chunk === 'phone' ? 9081 : 9080) : story === 'fucq237' ? { desktop: 8930, phone: 8931, narrow: 8932 }[chunk] : story === 'fucq238' ? { desktop: 8933, phone: 8934, narrow: 8935 }[chunk] : story === 'fucq223' ? { desktop: 8944, phone: 8945, narrow: 8946 }[chunk] : story === 'fucq224' ? (chunk === 'phone' ? 8943 : 8942) : story === 'fucq222' ? (chunk === 'phone' ? 8941 : 8940) : story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
+if ((port < 8930 || port > 8949) && (port < 9080 || port > 9089)) throw new Error('WALK_PORT must be within 8930-8949 or 9080-9089');
 const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story); // each other story writes to ../<story>
 const only = env('ONLY') ? `-${env('ONLY')}` : ''; // a partial run never overwrites the full run's files
 const shotDir = join(outDir, `browser${only}`);
@@ -1024,6 +1024,83 @@ async function walk145() {
   });
 }
 
+// FUCQ-149: keyboard Resume through the current claim; no-claim Back/save, quoted review and guarded uncertain recovery.
+async function walk149() {
+  const posts = []; page.on('request', (r) => { if (r.method() === 'POST' && /\/api\/gcsp\//.test(r.url())) posts.push(bare(r.url()).replace(origin, '')); });
+  const since = (n) => posts.slice(n).filter((p) => !/presenter/.test(p));
+  const press = async (name) => { const l = page.getByRole('button', { name, exact: true }); await tabTo(l); await page.keyboard.press('Enter'); };
+  const headingFocus = async (name) => { await until(async () => (await activeFacts()).text === name, { timeout: 30000, what: `focus on "${name}"` }).catch(() => null); return activeFacts(); };
+  await reachGallery();
+  await step('noclaim-back', 'No claim: keyboard Back to your choices, then Back to account (saves)', async (row) => {
+    await press('Back to your choices'); await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor({ timeout: 60000 });
+    const saved = await page.locator('input[name="requestedCollectionDate"]').inputValue(); const before = posts.length;
+    await press('Back to account'); await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 60000 });
+    const focus = await headingFocus('Your cars'); row.detail = { saved, backPosts: posts.slice(before), focus };
+    kb('account', 'Back to account by keyboard lands focus on the Your cars heading', /^H[12]$/.test(focus.tag) && focus.text === 'Your cars', focus);
+    report.notes.push(`No-claim saved date ${saved}`); return { state: `Back posts ${JSON.stringify(posts.slice(before))}; focus ${focus.tag} "${focus.text}"`, full: false };
+  }, { critical: true });
+  await step('noclaim-resume', 'No claim: keyboard Resume opens setup with the saved choices and no write', async (row) => {
+    const before = posts.length; await press('Resume saved journey');
+    await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor({ timeout: 60000 });
+    const focus = await headingFocus('Your order choices'); const date = await page.locator('input[name="requestedCollectionDate"]').inputValue();
+    const ok = since(before).length === 0 && focus.isMainH1 && /No-claim saved date (\S+)/.exec(report.notes.join(' '))?.[1] === date;
+    row.detail = { posts: since(before), focus, date }; kb('setup', 'Resume with no claim reaches setup, focus on its main h1, no POST', ok, { focus: `${focus.tag} "${focus.text}"` });
+    return { pass: ok, state: `posts ${JSON.stringify(since(before))}; focus ${focus.tag} "${focus.text}"; date ${date}`, full: false };
+  }, { critical: true });
+  await step('claim-review', 'Continue to the gallery and review a car (one claim)', async () => {
+    await press('Continue'); await reviewFirstCar(); const hold = (await claimNow()).hold;
+    return { pass: hold?.state === 'active', state: `${await heading()} | claim ${hold?.state}`, shotName: 'review-claimed', full: false };
+  }, { critical: true });
+  for (const n of [1, 2]) {
+    await step(`reload-${n}`, 'Reload: Your cars offers Resume saved journey', () => reloadToAccount(n), { critical: true });
+    await step(`quoted-resume-${n}`, 'Keyboard Resume: checking state, then focus on the review heading, no write', async (row) => {
+      const before = posts.length; const out = await resumeAndWatch(n, row);
+      const checking = row.detail.transitionSequence.some((x) => /Checking your saved journey/.test(x.text));
+      row.detail.posts = since(before); row.detail.checkingFocused = checking;
+      kb('checking', `Resume ${n}: the checking heading takes focus while the claim is read`, checking);
+      return { ...out, pass: out.pass && checking && since(before).length === 0 };
+    });
+  }
+  await step('tab-after-heading', 'Tab from the review heading shows a visible focus ring', async () => {
+    await page.keyboard.press('Tab'); await wait(200); const next = await activeFacts();
+    const visible = next.focusVisible && (/^(solid|auto)/.test(next.outline) && !/ 0px /.test(next.outline) || next.boxShadow !== 'none');
+    kb('review', 'Tab from the heading reaches a control with a visible focus ring', visible, next);
+    return { pass: visible, state: `${next.tag} "${next.text}" outline [${next.outline}]`, shotName: 'tab-focus-ring', full: false };
+  });
+  await step('uncertain-resume', 'Claim read fails: keyboard Resume stays in guarded recovery with Check status', async (row) => {
+    await reloadToAccount(3); await page.route('**/api/gcsp/manual/claim', (r) => (r.request().method() === 'GET' ? r.abort() : r.continue()));
+    const before = posts.length; await press('Resume saved journey');
+    const check = page.getByRole('button', { name: 'Check status', exact: true });
+    await until(async () => check.first().isVisible(), { what: 'Check status' });
+    const back = page.getByRole('button', { name: 'Back to your choices', exact: true });
+    const facts = { review: await page.locator('.gcsp-review-form').count(), setup: await page.locator('select[name="driverId"]').count(),
+      backDisabled: await back.first().isDisabled().catch(() => null), reviewEnabled: await page.getByRole('button', { name: 'Review this car' }).evaluateAll((l) => l.filter((b) => !b.disabled).length), focus: await activeFacts() };
+    const ok = facts.review === 0 && facts.setup === 0 && facts.backDisabled === true && facts.reviewEnabled === 0 && since(before).length === 0;
+    row.detail = { ...facts, posts: since(before) }; kb('gallery', 'Uncertain claim read blocks review, setup and Back; Check status offered', ok, facts);
+    return { pass: ok, state: `${await heading()} | ${JSON.stringify(facts)}`, shotName: 'uncertain-guarded', full: false };
+  }, { critical: true });
+  await step('uncertain-check-status', 'Read recovers: keyboard Check status reaches the same review, no write', async (row) => {
+    await page.unroute('**/api/gcsp/manual/claim'); const before = posts.length; const hold = (await claimNow()).hold;
+    await press('Check status');
+    await page.getByRole('heading', { name: 'Review your car', exact: true }).waitFor({ timeout: 60000 });
+    const focus = await headingFocus('Review your car'); const after = (await claimNow()).hold;
+    const ok = focus.isMainH1 && after?.holdId === hold?.holdId && since(before).length === 0;
+    row.detail = { focus, posts: since(before), sameHold: after?.holdId === hold?.holdId };
+    kb('review', 'Check status by keyboard reaches the review with focus on its main h1', ok, { focus: `${focus.tag} "${focus.text}"` });
+    return { pass: ok, state: `focus ${focus.tag} "${focus.text}"; same hold ${after?.holdId === hold?.holdId}; posts ${JSON.stringify(since(before))}`, full: false };
+  });
+  await step('errors', 'No page errors; only expected 404s, aborted claim reads and the release-window setup validation', async (row) => {
+    // Next release can move the window under the saved date before the prelude re-saves it: a designed 400.
+    const window400 = (r) => r.status === 400 && /\/api\/gcsp\/manual\/stock$/.test(r.url) && /invalid-manual-draft.*requestedCollectionDate/.test(r.body);
+    const expected = report.badResponses.filter(window400).length; if (expected) report.notes.push(`Expected release-window validation 400s on stock: ${expected}`);
+    const bad = report.badResponses.filter((r) => r.status !== 404 && !window400(r));
+    let allowed = expected; const con = report.consoleErrors.filter((c) => !/404|favicon|ERR_FAILED|Failed to fetch/i.test(`${c.text} ${c.url}`) && !(/status of 400/.test(c.text) && /\/manual\/stock$/.test(c.url) && allowed-- > 0));
+    const failed = report.failedRequests.filter((f) => f.error !== 'net::ERR_ABORTED' && !(f.error === 'net::ERR_FAILED' && /\/api\/gcsp\/manual\/claim$/.test(f.url)));
+    row.detail = { pageErrors: report.pageErrors, consoleErrors: report.consoleErrors, badResponses: report.badResponses.map((r) => `${r.status} ${r.url}`), failedRequests: report.failedRequests, posts };
+    return { pass: !report.pageErrors.length && !bad.length && !con.length && !failed.length, state: `page errors ${report.pageErrors.length}; unexpected console ${con.length}; unexpected failed ${failed.length}`, shot: false };
+  });
+}
+
 // FUCQ-222: after Next release passes the saved date, the gallery offers one Back to your choices; keyboard recovery to released cars.
 const statusButtons = () => page.locator('.vm-status button').evaluateAll((list) => list.map((b) => b.innerText.replace(/\s+/g, ' ').trim()));
 async function walk222() {
@@ -1351,6 +1428,7 @@ async function run() {
   if (story === 'fucq72') { await walk72(); return; }
   if (story === 'fucq73') { await walk73(); return; }
   if (story === 'fucq145') { await walk145(); return; }
+  if (story === 'fucq149') { await walk149(); return; }
   if (story === 'fucq222') { await walk222(); return; }
   if (story === 'fucq224' || story === 'fucq237') { await walk224(); return; }
   if (story === 'fucq223') { await walk223(); return; }
