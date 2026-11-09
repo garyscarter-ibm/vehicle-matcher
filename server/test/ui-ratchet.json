@@ -19,7 +19,8 @@
     "blocks/gcsp/kit/stage-list.js",
     "blocks/gcsp/kit/action-menu.js",
     "blocks/gcsp/kit/stage-tracker.js",
-    "blocks/gcsp/kit/task-list.js"
+    "blocks/gcsp/kit/task-list.js",
+    "blocks/gcsp/kit/range-bar.js"
   ],
   "extensions": [
     ".js",
@@ -100,6 +101,11 @@
       "re": "el\\('section', 'gcsp-task-list'",
       "flags": "g",
       "use": "taskList({ heading, groups }) (blocks/gcsp/kit/task-list.js)"
+    },
+    "range-bar": {
+      "re": "el\\('figure', 'gcsp-range-bar'",
+      "flags": "g",
+      "use": "rangeBar({ label, rows, scale, format }) (blocks/gcsp/kit/range-bar.js)"
     }
   },
   "stylesheets": [
@@ -242,6 +248,10 @@
     {
       "path": "blocks/gcsp/kit/task-list.css",
       "max_lines": 16
+    },
+    {
+      "path": "blocks/gcsp/kit/range-bar.css",
+      "max_lines": 13
     },
     {
       "path": "blocks/gcsp/order-progress/gcsp-order-progress.css",
