@@ -9,8 +9,9 @@ import { brief, stock, providerValue, fact, preference, instant } from './employ
 export async function allocationFixture({ rule, cars = 2, claimResult, reverse = false, canonicalPeople = false } = {}) {
   const source = JSON.parse(await readFile(new URL('../../gcsp/policy/seed-v1.json', import.meta.url)));
   if (rule) source.assumptions.find((a) => a.key === 'allocation.tieBreak.rule').value = rule;
-  // Explicit alternative test population: three same-scheme fictional people compete fairly.
-  const people = source.assumptions.find((a) => a.key === 'identity.demo.principals').value;
+  // Explicit alternative test population: three same-scheme fictional people compete fairly; FUCQ-224's new-order Jordan is left out.
+  const listed = source.assumptions.find((a) => a.key === 'identity.demo.principals');
+  const people = listed.value = listed.value.filter((p) => p.principalId !== 'demo-jordan');
   const originals = people.filter((p) => p.roles.includes('employee'));
   const first = originals[0];
   if (!canonicalPeople) for (const p of originals) for (const k of ['companyId', 'schemeId', 'gradeId']) p[k] = first[k];
