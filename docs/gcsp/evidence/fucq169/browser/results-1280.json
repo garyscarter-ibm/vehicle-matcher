@@ -1,0 +1,739 @@
+{
+  "state": "passed",
+  "chunk": "desktop",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "boundary": "Real buildServer routes, memory repository and canonical services over loopback HTTP, hosted on gcsp-account.html. Offer read routes only are stubbed in capture 07.",
+  "cookieMode": "fallback: Secure and SameSite=None refused on http://127.0.0.1, bootstrap cookie stored Lax, not Secure",
+  "checks": [
+    {
+      "id": "01-handover-completed:layout",
+      "name": "01-handover-completed: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "01-handover-completed:copy",
+      "name": "01-handover-completed: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "01-handover-completed:console",
+      "name": "01-handover-completed: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "01-handover-completed:\"Handover complete: <time>\"",
+      "name": "01-handover-completed: \"Handover complete: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "01-handover-completed:completion sentence",
+      "name": "01-handover-completed: completion sentence",
+      "pass": true
+    },
+    {
+      "id": "01-handover-completed:owner row",
+      "name": "01-handover-completed: owner row",
+      "pass": true
+    },
+    {
+      "id": "01-handover-completed:next step row",
+      "name": "01-handover-completed: next step row",
+      "pass": true
+    },
+    {
+      "id": "01-handover-completed:no-\"Booked:\" or \"Not booked yet\" (live state)",
+      "name": "01-handover-completed: absent: \"Booked:\" or \"Not booked yet\" (live state)",
+      "pass": true
+    },
+    {
+      "id": "01:no-handover-buttons",
+      "name": "01: no handover buttons",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "id": "01:no-booked-handover",
+      "name": "01: handover section never says \"Booked:\" or \"Not booked yet\" (the history lists a past Booked event)",
+      "pass": true,
+      "detail": "Handover Handover complete: 7 Nov 2026, 12:30 Owner You Next step Your handover is complete. Handover history All dates are demo time (UTC). 7 Nov 2026, 12:00 Requested 7 Nov 2026, 12:30 Booked 7 Nov 2026, 12:30 Handover complete"
+    },
+    {
+      "id": "07:stub",
+      "name": "07: selected-offer host (offer read stubbed, order progress routes real) shows the embedded order progress",
+      "pass": true,
+      "detail": {
+        "attempts": 1,
+        "stubbedRoutes": [
+          "GET /api/gcsp/offers/buddy-offer%3A6a617ef0d42fa32b788b34e00a684d0037382fad83db7e4b03a499cd4e5a1cdf"
+        ]
+      }
+    },
+    {
+      "id": "07-offer-host-completed:layout",
+      "name": "07-offer-host-completed: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "07-offer-host-completed:copy",
+      "name": "07-offer-host-completed: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "07-offer-host-completed:console",
+      "name": "07-offer-host-completed: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "07-offer-host-completed:embedded order number",
+      "name": "07-offer-host-completed: embedded order number",
+      "pass": true
+    },
+    {
+      "id": "07-offer-host-completed:\"Handover complete: <time>\"",
+      "name": "07-offer-host-completed: \"Handover complete: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "07-offer-host-completed:no-\"Booked:\" or \"Not booked yet\" (live state)",
+      "name": "07-offer-host-completed: absent: \"Booked:\" or \"Not booked yet\" (live state)",
+      "pass": true
+    },
+    {
+      "id": "07:embedded",
+      "name": "07: progress is inside the \"Your order progress\" region",
+      "pass": true
+    },
+    {
+      "id": "07:no-handover-buttons",
+      "name": "07: no handover buttons",
+      "pass": true
+    },
+    {
+      "id": "02-handover-no-show:layout",
+      "name": "02-handover-no-show: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "02-handover-no-show:copy",
+      "name": "02-handover-no-show: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "02-handover-no-show:console",
+      "name": "02-handover-no-show: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "02-handover-no-show:\"Handover missed: <time>\"",
+      "name": "02-handover-no-show: \"Handover missed: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "02-handover-no-show:owner row",
+      "name": "02-handover-no-show: owner row",
+      "pass": true
+    },
+    {
+      "id": "02-handover-no-show:rebook buttons \"Request <time>\"",
+      "name": "02-handover-no-show: rebook buttons \"Request <time>\"",
+      "pass": true
+    },
+    {
+      "id": "02-handover-no-show:no-\"Booked:\" or \"Not booked yet\" (live state)",
+      "name": "02-handover-no-show: absent: \"Booked:\" or \"Not booked yet\" (live state)",
+      "pass": true
+    },
+    {
+      "id": "02:rebook-buttons",
+      "name": "02: every handover button is \"Request <time>\"",
+      "pass": true,
+      "detail": [
+        "Request 9 Nov 2026, 09:00",
+        "Request 9 Nov 2026, 13:00",
+        "Request 10 Nov 2026, 09:00",
+        "Request 10 Nov 2026, 13:00",
+        "Request 11 Nov 2026, 09:00",
+        "Request 11 Nov 2026, 13:00"
+      ]
+    },
+    {
+      "id": "03:tab",
+      "name": "03: Tab alone reaches the first rebook button",
+      "pass": true,
+      "detail": {
+        "tabs": 3,
+        "lastStops": [
+          "Refresh account",
+          "View order progress",
+          "Request 9 Nov 2026, 09:00"
+        ]
+      }
+    },
+    {
+      "id": "03:focus-visible",
+      "name": "03: the rebook button shows a visible focus ring (:focus-visible with outline or box-shadow)",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "role": null,
+        "label": "Request 9 Nov 2026, 09:00",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "03:first-button",
+      "name": "03: the focused control is the first \"Request <time>\" button",
+      "pass": true,
+      "detail": "Request 9 Nov 2026, 09:00"
+    },
+    {
+      "id": "03-rebook-keyboard:layout",
+      "name": "03-rebook-keyboard: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "03-rebook-keyboard:copy",
+      "name": "03-rebook-keyboard: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "03-rebook-keyboard:console",
+      "name": "03-rebook-keyboard: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "03-rebook-keyboard:\"Handover missed: <time>\" still shown",
+      "name": "03-rebook-keyboard: \"Handover missed: <time>\" still shown",
+      "pass": true
+    },
+    {
+      "id": "03:status",
+      "name": "03: Enter produces the role=status message \"Handover time requested.\"",
+      "pass": true,
+      "detail": [
+        "status:Presenter controls ready",
+        "alert:The demo was restarted. Reload the page to continue.Reload",
+        "status:",
+        "status:Your order is in progressOrder referenceGCSP-000001Car order number9100001Current step: Sent to ordering.View order progress",
+        "status:Handover time requested."
+      ]
+    },
+    {
+      "id": "03:focus-kept",
+      "name": "03: focus is not lost to the page body after the re-read",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "role": "status",
+        "label": "Handover time requested.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "03:focus-after-ring",
+      "name": "03: the control focused after the command shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "role": "status",
+        "label": "Handover time requested.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "03b-rebooked:layout",
+      "name": "03b-rebooked: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "03b-rebooked:copy",
+      "name": "03b-rebooked: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "03b-rebooked:console",
+      "name": "03b-rebooked: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "03b-rebooked:\"Requested ... Not booked yet.\"",
+      "name": "03b-rebooked: \"Requested ... Not booked yet.\"",
+      "pass": true
+    },
+    {
+      "id": "03b-rebooked:\"Earlier handover missed: <time>\"",
+      "name": "03b-rebooked: \"Earlier handover missed: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "03b-rebooked:status message \"Handover time requested.\" visible",
+      "name": "03b-rebooked: status message \"Handover time requested.\" visible",
+      "pass": true
+    },
+    {
+      "id": "03b-rebooked:no-\"Booked:\"",
+      "name": "03b-rebooked: absent: \"Booked:\"",
+      "pass": true
+    },
+    {
+      "id": "03b-rebooked:no-\"Handover missed:\" as the current state",
+      "name": "03b-rebooked: absent: \"Handover missed:\" as the current state",
+      "pass": true
+    },
+    {
+      "id": "03b:role-status",
+      "name": "03b: the message is in a role=\"status\" region",
+      "pass": true
+    },
+    {
+      "id": "04-return-returned:layout",
+      "name": "04-return-returned: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "04-return-returned:copy",
+      "name": "04-return-returned: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "04-return-returned:console",
+      "name": "04-return-returned: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "04-return-returned:\"Returned: <time>\"",
+      "name": "04-return-returned: \"Returned: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "04-return-returned:\"Return reference (synthetic)\" with SYN-RET-",
+      "name": "04-return-returned: \"Return reference (synthetic)\" with SYN-RET-",
+      "pass": true
+    },
+    {
+      "id": "04-return-returned:\"Current car\" row",
+      "name": "04-return-returned: \"Current car\" row",
+      "pass": true
+    },
+    {
+      "id": "04-return-returned:\"Returned car\" row",
+      "name": "04-return-returned: \"Returned car\" row",
+      "pass": true
+    },
+    {
+      "id": "04-return-returned:handover also complete",
+      "name": "04-return-returned: handover also complete",
+      "pass": true
+    },
+    {
+      "id": "04-return-returned:no-\"Return missed\"",
+      "name": "04-return-returned: absent: \"Return missed\"",
+      "pass": true
+    },
+    {
+      "id": "04-return-returned:no-\"Return booked:\" (live state; history lists a past event)",
+      "name": "04-return-returned: absent: \"Return booked:\" (live state; history lists a past event)",
+      "pass": true
+    },
+    {
+      "id": "04:separate-section",
+      "name": "04: the return outcome is in its own section, separate from Handover",
+      "pass": true
+    },
+    {
+      "id": "04:current-car-new",
+      "name": "04: \"Current car\" is the new (ordered) car",
+      "pass": true,
+      "detail": {
+        "newCar": "Synthetic TEST composition car",
+        "returnText": "Returning your current car Current car Synthetic TEST composition car Returned car Fictional BMW 320i Touring Return place Fictional collection centre Returned: 9 Nov 2026, 14:30 Owner Retailer Next step Your current car has been returned. Nothing more is needed from you. Return reference (synthetic) SYN-RET-6B58A618134C Return history All dates are demo time (UTC). 7 Nov 2026, 12:30 Return requested 7 Nov 2026, 13:00 Return booked 9 Nov 2026, 14:30 Returned"
+      }
+    },
+    {
+      "id": "04:returned-car-old",
+      "name": "04: \"Returned car\" is a different car from the current one",
+      "pass": true,
+      "detail": "Returning your current car Current car Synthetic TEST composition car Returned car Fictional BMW 320i Touring Return place Fictional collection centre Returned: 9 Nov 2026, 14:30 Owner Retailer Next step Your current car has been returned. Nothing more is needed from you. Return reference (synthetic) SYN-RET-6B58A618134C Return history All dates are demo time (UTC). 7 Nov 2026, 12:30 Return requested 7 Nov 2026, 13:00 Return booked 9 Nov 2026, 14:30 Returned"
+    },
+    {
+      "id": "06-reload:layout",
+      "name": "06-reload: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "06-reload:copy",
+      "name": "06-reload: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "06-reload:console",
+      "name": "06-reload: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "06-reload:\"Returned: <time>\" after reload",
+      "name": "06-reload: \"Returned: <time>\" after reload",
+      "pass": true
+    },
+    {
+      "id": "06-reload:\"SYN-RET-\" after reload",
+      "name": "06-reload: \"SYN-RET-\" after reload",
+      "pass": true
+    },
+    {
+      "id": "06:readback",
+      "name": "06: after reload the order progress text equals the text before reload",
+      "pass": true
+    },
+    {
+      "id": "05-return-missed:layout",
+      "name": "05-return-missed: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "05-return-missed:copy",
+      "name": "05-return-missed: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "05-return-missed:console",
+      "name": "05-return-missed: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "05-return-missed:\"Return missed: <time>\"",
+      "name": "05-return-missed: \"Return missed: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "05-return-missed:owner \"Scheme team\"",
+      "name": "05-return-missed: owner \"Scheme team\"",
+      "pass": true
+    },
+    {
+      "id": "05-return-missed:\"Current car\" row",
+      "name": "05-return-missed: \"Current car\" row",
+      "pass": true
+    },
+    {
+      "id": "05-return-missed:old car stays yours",
+      "name": "05-return-missed: old car stays yours",
+      "pass": true
+    },
+    {
+      "id": "05-return-missed:handover still booked and separate",
+      "name": "05-return-missed: handover still booked and separate",
+      "pass": true
+    },
+    {
+      "id": "05-return-missed:no-\"Returned\"",
+      "name": "05-return-missed: absent: \"Returned\"",
+      "pass": true
+    },
+    {
+      "id": "05-return-missed:no-\"Return reference\"",
+      "name": "05-return-missed: absent: \"Return reference\"",
+      "pass": true
+    },
+    {
+      "id": "05:no-return-buttons",
+      "name": "05: no return buttons on a missed return",
+      "pass": true
+    },
+    {
+      "id": "05:current-car-old",
+      "name": "05: current car is still the old car (not the new car name, no \"Returned car\" row)",
+      "pass": true,
+      "detail": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Return place Fictional collection centre Your current car stays yours until it is returned. Return missed: 9 Nov 2026, 13:00 Owner Scheme team Next step The scheme team will contact you to rearrange the return of your current car. Return history All dates are demo time (UTC). 7 Nov 2026, 12:30 Return requested 7 Nov 2026, 13:00 Return booked 9 Nov 2026, 14:30 Return missed"
+    }
+  ],
+  "captures": [
+    {
+      "name": "1280-01-handover-completed",
+      "file": "1280-01-handover-completed.png",
+      "bytesPng": 359088,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-07-offer-host-completed",
+      "file": "1280-07-offer-host-completed.png",
+      "bytesPng": 294429,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-02-handover-no-show",
+      "file": "1280-02-handover-no-show.png",
+      "bytesPng": 386871,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-03-rebook-keyboard",
+      "file": "1280-03-rebook-keyboard.png",
+      "bytesPng": 387182,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-03b-rebooked",
+      "file": "1280-03b-rebooked.png",
+      "bytesPng": 379756,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-04-return-returned",
+      "file": "1280-04-return-returned.png",
+      "bytesPng": 385093,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-06-reload",
+      "file": "1280-06-reload.png",
+      "bytesPng": 385093,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-05-return-missed",
+      "file": "1280-05-return-missed.png",
+      "bytesPng": 381651,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    }
+  ],
+  "errors": [],
+  "requests": {
+    "GET /api/gcsp/presenter/controls 200 ok": 7,
+    "GET /api/gcsp/manual/account 200 ok": 7,
+    "GET /api/gcsp/manual/draft 200 ok": 6,
+    "GET /api/gcsp/offers/current 200 ok": 6,
+    "GET /api/gcsp/orders/progress/all 200 ok": 6,
+    "GET /api/gcsp/context 200 ok": 7,
+    "GET /api/gcsp/presenter/scenarios 200 ok": 7,
+    "GET /api/gcsp/presenter/scenarios/faults 200 ok": 7,
+    "GET /api/gcsp/manual/order 200 ok": 6,
+    "GET /api/gcsp/orders/progress 200 ok": 8,
+    "GET /api/gcsp/documents 200 ok": 8,
+    "GET /api/gcsp/appointments 200 ok": 8,
+    "GET /api/gcsp/return-plan 200 ok": 8,
+    "GET /api/gcsp/offers/buddy-offer%3A6a617ef0d42fa32b788b34e00a684d0037382fad83db7e4b03a499cd4e5a1cdf 200 ok": 1,
+    "POST /api/gcsp/appointments/request 200 ok": 1
+  },
+  "processes": {
+    "chrome": {
+      "pid": 83258,
+      "group": 83258,
+      "debugPort": 9159
+    },
+    "server-completed": {
+      "pid": 83255,
+      "port": 9150
+    },
+    "server-noshow": {
+      "pid": 83255,
+      "port": 9151
+    },
+    "server-returned": {
+      "pid": 83255,
+      "port": 9152
+    },
+    "server-missed": {
+      "pid": 83255,
+      "port": 9153
+    }
+  },
+  "notes": [],
+  "facts": {
+    "01": {
+      "handover": "Handover Handover complete: 7 Nov 2026, 12:30 Owner You Next step Your handover is complete. Handover history All dates are demo time (UTC). 7 Nov 2026, 12:00 Requested 7 Nov 2026, 12:30 Booked 7 Nov 2026, 12:30 Handover complete"
+    },
+    "02": {
+      "handover": "Handover Handover missed: 9 Nov 2026, 09:00 Owner You Next step Your handover was missed. Choose a new slot to rebook. Choose a new handover time. Request 9 Nov 2026, 09:00 Request 9 Nov 2026, 13:00 Request 10 Nov 2026, 09:00 Request 10 Nov 2026, 13:00 Request 11 Nov 2026, 09:00 Request 11 Nov 2026, 13:00 Handover history All dates are demo time (UTC). 7 Nov 2026, 12:00 Requested 7 Nov 2026, 12:30 Booked 7 Nov 2026, 12:30 Handover missed",
+      "buttons": [
+        "Request 9 Nov 2026, 09:00",
+        "Request 9 Nov 2026, 13:00",
+        "Request 10 Nov 2026, 09:00",
+        "Request 10 Nov 2026, 13:00",
+        "Request 11 Nov 2026, 09:00",
+        "Request 11 Nov 2026, 13:00"
+      ]
+    },
+    "03-focus-after-command": {
+      "tag": "p",
+      "role": "status",
+      "label": "Handover time requested.",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+    },
+    "03b": {
+      "handover": "Handover Requested 9 Nov 2026, 09:00. Not booked yet. Owner Retailer Next step Waiting for the retailer to confirm your slot. Earlier handover missed: 9 Nov 2026, 09:00 Handover history All dates are demo time (UTC). 7 Nov 2026, 12:00 Requested 7 Nov 2026, 12:30 Booked 7 Nov 2026, 12:30 Handover missed 7 Nov 2026, 12:30 Requested",
+      "status": [
+        "status:Presenter controls ready",
+        "alert:The demo was restarted. Reload the page to continue.Reload",
+        "status:",
+        "status:Your order is in progressOrder referenceGCSP-000001Car order number9100001Current step: Sent to ordering.View order progress",
+        "status:Handover time requested."
+      ]
+    },
+    "04": {
+      "newCar": "Synthetic TEST composition car",
+      "returnSection": "Returning your current car Current car Synthetic TEST composition car Returned car Fictional BMW 320i Touring Return place Fictional collection centre Returned: 9 Nov 2026, 14:30 Owner Retailer Next step Your current car has been returned. Nothing more is needed from you. Return reference (synthetic) SYN-RET-6B58A618134C Return history All dates are demo time (UTC). 7 Nov 2026, 12:30 Return requested 7 Nov 2026, 13:00 Return booked 9 Nov 2026, 14:30 Returned",
+      "handover": "Handover Handover complete: 7 Nov 2026, 13:00 Owner You Next step Your handover is complete. Handover history All dates are demo time (UTC). 7 Nov 2026, 12:00 Requested 7 Nov 2026, 12:30 Booked 7 Nov 2026, 13:00 Handover complete"
+    },
+    "05": {
+      "returnSection": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Return place Fictional collection centre Your current car stays yours until it is returned. Return missed: 9 Nov 2026, 13:00 Owner Scheme team Next step The scheme team will contact you to rearrange the return of your current car. Return history All dates are demo time (UTC). 7 Nov 2026, 12:30 Return requested 7 Nov 2026, 13:00 Return booked 9 Nov 2026, 14:30 Return missed",
+      "newCar": "Synthetic TEST composition car"
+    }
+  },
+  "summary": {
+    "checks": 77,
+    "failed": [],
+    "captures": 8
+  }
+}
