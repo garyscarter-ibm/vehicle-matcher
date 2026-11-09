@@ -158,21 +158,19 @@ test('employees accept or decline with a typed reason, one response time after t
 test('an offer unanswered by its deadline expires through the clock, or lapses when its terms have', async (t) => {
   const base = withOverlay(shortPair, { 'comparison.accessGroups': accessing(8000) });
   const { run, record } = await replay(t, base);
-  // FUCQ-227: the first lapse hands the car once to the other participant; that second lapse returns it to nobody.
-  assert.deepEqual([record.totals.offersMade, record.totals.offerExpiries, record.totals.declines, record.totals.taken], [4, 4, 0, 0]);
+  assert.deepEqual([record.totals.offersMade, record.totals.offerExpiries, record.totals.declines, record.totals.taken], [3, 3, 0, 0]);
   const persisted = await run.snapshot();
   assert.ok(persisted.holds.every((hold) => hold.state === 'expired' && hold.releaseReason === 'buddy-expired'));
   assert.ok(persisted.offers.every((offer) => offer.state === 'expired'));
   assert.equal(persisted.decisions.length, 0);
-  assert.equal(persisted.event_receipts.filter((row) => row.consumerId === 'buddy-expiry').length, 4);
-  assert.deepEqual(allocationsOf(persisted, 'buddy-expired').map((row) => row.assignments.length), [1, 0, 0]);
+  assert.equal(persisted.event_receipts.filter((row) => row.consumerId === 'buddy-expiry').length, 3);
   assert.ok(persisted.tick_runs.some((tick) => tick.handlerOrder.some((row) => row.handlerId === 'buddy-expiry')));
   assert.ok(persisted.stock.every((car) => car.state === 'released' && car.available === true && car.held === false));
-  assert.equal(record.totals.buddyHeldNotTakenHours, 8);
-  assert.deepEqual(record.cars.map((car) => [car.outcome, car.holdsNotTaken, car.heldNotTakenSeconds]).sort(), [['held-not-taken', 3, 21600], ['held-not-taken', 1, 7200]].sort());
+  assert.equal(record.totals.buddyHeldNotTakenHours, 6);
+  assert.deepEqual(record.cars.map((car) => [car.outcome, car.holdsNotTaken, car.heldNotTakenSeconds]).sort(), [['held-not-taken', 2, 14400], ['held-not-taken', 1, 7200]].sort());
   // A response exactly at the deadline is too late (the deadline is inclusive).
   const edge = await replay(t, withOverlay(shortPair, { 'comparison.accessGroups': accessing(7200) }));
-  assert.equal(edge.record.totals.offerExpiries, 4);
+  assert.equal(edge.record.totals.offerExpiries, 3);
   // Answered inside the hold but after the quote's terms lapsed: only decline is left, so a keen employee lets it lapse.
   const lapsed = await replay(t, withOverlay(shortPair, { 'comparison.accessGroups': accessing(4000) }));
   const totals = lapsed.record.totals;
@@ -200,8 +198,7 @@ test('declines name the attribute that falls shortest, with a keyed fallback rea
 // FUCQ-209: each employee's evaluation is its own row; rejoin them for these assertions.
 const sliceOf = (persisted, row, id) => expandEvaluation(persisted.event_receipts.find((slice) => slice.consumerId === 'buddy-allocation-evaluation'
   && slice.eventId === `${row.eventId}:${id}`).outcome.value.evaluation);
-// Release allocations only; FUCQ-227's expiry allocations are read separately.
-const allocationsOf = (persisted, type = 'stock-released') => persisted.event_receipts.filter((row) => row.consumerId === 'buddy-allocation' && row.eventType === type)
+const allocationsOf = (persisted) => persisted.event_receipts.filter((row) => row.consumerId === 'buddy-allocation')
   .map((row) => ({ ...row.outcome.value, evaluations: row.outcome.value.evaluationRefs.employeeIds.map((id) => sliceOf(persisted, row, id)) }))
   .sort((a, b) => byId(a.event.occurredAt, b.event.occurredAt));
 
@@ -289,9 +286,8 @@ test('the hold-duration override is recorded and never published', async (t) => 
   for (const hold of stored.holds) {
     assert.equal(Date.parse(hold.expiresAt) - Date.parse(stored.quotes.find((quote) => quote.quoteId === hold.quoteId).quotedAt), seconds * 1000);
   }
-  // FUCQ-227: one extra offer, as the first lapsed car is handed once to the other participant.
-  assert.deepEqual([record.totals.offerExpiries, record.totals.offersAccepted], [4, 0], 'a 600 s answer now arrives after the 300 s hold');
-  assert.equal(record.totals.buddyHeldNotTakenHours, 0.333333);
+  assert.deepEqual([record.totals.offerExpiries, record.totals.offersAccepted], [3, 0], 'a 600 s answer now arrives after the 300 s hold');
+  assert.equal(record.totals.buddyHeldNotTakenHours, 0.25);
   // The canonical policy is untouched, through the run's view of it and through a fresh reader.
   const read = { runId: 'comparison-after-override', asOf: origin };
   assert.equal((await policy.getAssumption('hold.buddy.durationSeconds', read)).value.value, 7200);

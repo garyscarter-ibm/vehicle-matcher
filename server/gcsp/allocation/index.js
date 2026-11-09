@@ -49,7 +49,7 @@ function compare(rule) {
 }
 
 // FUCQ-227: holds lapsing at one instant return their cars in one allocation, keyed by the lapsed holds.
-// Shared with the comparison's buddy route, which calls allocate itself; null means a malformed receipt.
+// Returns null for a malformed completed receipt.
 export function buddyExpiryEvents(runId, receipts) {
   const lapses = new Map();
   for (const row of receipts.filter((r) => r.consumerId === 'buddy-expiry' && r.state === 'completed' && r.outcome?.status === 'ok')) {
