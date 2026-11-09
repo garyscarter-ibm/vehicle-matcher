@@ -78,7 +78,7 @@
    "BMW 3 Series Touring 320i",
    "BMW 3 Series Saloon 320i",
    "BMW 1 Series Sports Hatch 120",
-   "BMW i5 40 Touring"
+   "BMW i5 eDrive40 Touring"
   ],
   "fallbacks": [
    "No image for this car yet"
@@ -119,7 +119,7 @@
   "screen": "offer",
   "file": "1280-offer.png",
   "viewport": "1280x900",
-  "url": "/gcsp/offer?offerId=buddy-offer%3Aa7451c87cd6bc5df049ffa842a704f0ccebea3efd7ae8c9715dc5dd3a968afbc&runId=demo-207c00dd4e1311a5435c7422a9cf747c",
+  "url": "/gcsp/offer?offerId=buddy-offer%3A63cf8a5abd19009286463a713a3931305cc3f33e2011af0e62d795406a7551c2&runId=demo-b0420ee5438f6ad349358f618a397709",
   "h1": "Your car offer",
   "names": [
    "BMW 3 Series Touring 320i",
