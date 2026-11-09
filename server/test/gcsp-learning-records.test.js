@@ -7,7 +7,9 @@ import { PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { BriefService } from '../gcsp/brief/index.js';
 import { createObservedLearningRecordService, validateLearningRecord } from '../gcsp/predict/records/index.js';
-import { preference, essential, stock } from './helpers/employee-recommendation.js';
+import { createGcspRuntime } from '../gcsp/runtime.js';
+import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
+import { preference, essential, stock, fact } from './helpers/employee-recommendation.js';
 
 const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
 async function setup() {
@@ -56,8 +58,8 @@ async function outcome(f, id, state = 'active', decision, options = {}) {
     if (r.status !== 'ok') return r;
     const quote = { runId: f.context.runId, quoteId: `quote-${id}`, orderUuid: candidate.orderUuid, employeeId: f.employee.employeeId,
       entitlementSlotId: f.employee.entitlementSlotId, briefVersion: options.quoteBriefVersion ?? briefVersion, policyVersion: f.context.policyVersion,
-      configurationId: candidate.configurationId, monthlyPoints: 1100,
-      allowance: { monthlyPoints: 1300, unit: 'points/month', schemeId: f.employee.schemeId, gradeId: f.employee.gradeId,
+      configurationId: candidate.configurationId,
+      monthlyPoints: { value: 1100, unit: 'points' }, allowance: { allowance: { value: 1300, unit: 'points' },
         name: 'PRIVATE-ALLOWANCE', source: { contact: 'PRIVATE-CONTACT' } },
       quotedAt: now, validUntil: '2026-11-06T09:00:00.000Z', facts: { privateBlob: 'PRIVATE-QUOTE' }, ...options.quote };
     r = await tx.insert('quotes', quote); if (r.status !== 'ok') return r;
@@ -121,7 +123,8 @@ test('repository fixtures keep offered, selected, accepted, declined, expired an
   assert.equal(selected.outcomes.acceptance.state, 'unknown');
   assert.equal(rows.find((r) => r.outcomes.decline.state === 'declined').outcomes.decline.reasonType, 'body');
   assert.equal(rows.every((r) => r.outcomes.satisfaction.state === 'unknown'), true);
-  assert.equal(rows.every((r) => r.outcomes.offered.at === null), true);
+  const now = (await f.clock.now(f.context)).value.now;
+  assert.equal(rows.every((r) => r.outcomes.offered.at === now), true);
 });
 
 test('historical version association retains original preferences and unmatched current brief', async () => {
@@ -141,7 +144,8 @@ test('dated saved quote terms and context are allowlisted; current stock never s
   });
   const [row] = await records(f);
   assert.equal(row.terms.value.monthlyPoints, 1100); assert.equal(row.terms.value.unit, 'points/month');
-  assert.equal(row.entitlement.schemeId.value, f.employee.schemeId); assert.equal(row.entitlement.gradeId.value, f.employee.gradeId);
+  assert.equal(row.terms.value.allowance, 1300);
+  for (const field of ['schemeId', 'gradeId']) assert.deepEqual(row.entitlement[field], { status: 'unknown', reason: 'missing-context' });
   assert.deepEqual(row.choiceSet, { status: 'unknown', reason: 'not-captured' });
   assert.equal(row.outcomes.expiry.state, 'unknown');
   for (const forbidden of ['PRIVATE-', 'currentCarFeedback', 'tripHistory', 'usageHistory', 'tokenHash', 'score', 'name', 'source', 'contact']) {
@@ -691,4 +695,99 @@ test('learning adoption is a dated in-memory successor that leaves the base vers
     assert.equal(base.status, 'ok'); assert.equal(base.policyVersion, adoption.baseVersion);
   } finally { await runtime.close(); }
   assert.equal(await sha256Of(), before);
+});
+
+// The rows below are written by the real runtime producers (brief, buddy offer, decision, expiry), with no fixture inserts but stock.
+async function produce(t) {
+  const good = (out) => { assert.equal(out.status, 'ok', JSON.stringify(out)); return out.value; };
+  const rt = good(await createGcspRuntime({ mode: 'memory', environmentId: 'learning-producers', policyAsOf: '2026-11-05T09:00:00.000Z',
+    commandId: 'bootstrap', adoptOfferJourney: true, sessionNow: () => '2026-11-05T12:00:00.000Z' }));
+  t.after(() => rt.close());
+  const { repository, clock, identity, brief, buddy } = rt;
+  const presenter = good(await identity.createPresenterSession('producer-presenter')).context;
+  const advanceTo = async (instant, commandId) => {
+    const now = good(await clock.now(presenter));
+    return good(await clock.advance(presenter, { commandId, expectedClockVersion: now.clockVersion, bySeconds: (Date.parse(instant) - Date.parse(now.now)) / 1000 }));
+  };
+  await advanceTo('2026-11-05T12:00:00.000Z', 'noon');
+  const greg = good(await identity.switchPrincipal(presenter, 'demo-greg', 'producer-greg')).context;
+  const importance = { paula: 60, alex: 80, sam: 40 }; const people = {};
+  for (const name of Object.keys(importance)) {
+    const context = good(await identity.switchPrincipal(presenter, `demo-${name}`, `producer-${name}`)).context;
+    good(await seedManualDemoContext({ repository, identity, clock, context }));
+    good(await brief.saveDraft(context, { commandId: `draft-${name}`, expectedBriefVersion: 0, expectedDraftVersion: 0, brief: { schemaVersion: 1,
+      preferences: { body: preference('estate', importance[name]) }, essentials: { seats: essential(5) } } }));
+    good(await brief.confirm(context, { commandId: `confirm-${name}`, expectedBriefVersion: 0, expectedDraftVersion: 1, consent: { search: true, hold: true } }));
+    people[name] = context;
+  }
+  const read = async (context, table, key) => good(await repository.read(context, { table, key: { runId: context.runId, ...key } }));
+  let carId = 0;
+  for (const name of Object.keys(people)) {
+    const context = people[name]; const id = ++carId;
+    // Alex's grade is not entitled to the default car, so Alex gets an entitled model line instead.
+    const car = stock(id, name === 'alex' ? { eligibilityModelKey: fact('U11 X1|20i') } : {});
+    good(await repository.transaction(greg, { commandId: `release-${id}`, inputDigest: inputDigest(id) }, (tx) => tx.insert('stock', {
+      runId: greg.runId, orderUuid: car.orderUuid, orderNumber: String(9000000 + id), configurationId: car.configurationId, state: 'released',
+      available: true, held: false, allocated: false, facts: car.snapshot, release: { eventId: `release-${id}`, availability: car.availability },
+      visibility: { companyIds: [context.companyId], schemeIds: [context.schemeId], employeeIds: null } })));
+    good(await buddy.allocate(context, { commandId: `allocate-${name}`, orderUuid: car.orderUuid, expectedBriefVersion: 1,
+      expectedStockVersion: (await read(context, 'stock', { orderUuid: car.orderUuid })).version,
+      expectedEmployeeVersion: (await read(context, 'employees', { employeeId: context.employeeId })).version,
+      expectedSlotVersion: (await read(context, 'entitlement_slots', { entitlementSlotId: context.entitlementSlotId })).version }));
+  }
+  // The server startup registers these handlers; accepting needs the ordering one and expiry needs the buddy one.
+  good(await rt.manualOrder.registerClockHandler()); good(await buddy.start());
+  const decide = async (name, decision, extra = {}) => {
+    const context = people[name]; const offer = good(await repository.query(greg, 'offers')).find((row) => row.employeeId === context.employeeId);
+    const selector = { runId: offer.runId, offerId: offer.offerId };
+    const terms = decision === 'accept' ? good(await rt.manualOrder.readTerms(context)) : null;
+    const accepting = terms ? { termsDigest: terms.termsDigest, declarations: Object.fromEntries(terms.declarations
+      .filter((d) => ['all', 'replacement'].includes(d.appliesTo)).map((d) => [d.id, true])) } : {};
+    const access = good(await rt.offerAccess.fromAccount(context, selector));
+    return rt.offerDecisions.decide(access.context, { ...selector, commandId: `decide-${name}`, decision, ...accepting, ...extra,
+      expectedOfferVersion: offer.version, expectedHoldVersion: (await read(context, 'holds', { holdId: offer.holdId })).version,
+      expectedQuoteVersion: (await read(context, 'quotes', { quoteId: offer.quoteId })).version });
+  };
+  await advanceTo('2026-11-05T12:05:00.000Z', 'accept-time'); good(await decide('paula', 'accept'));
+  await advanceTo('2026-11-05T12:10:00.000Z', 'decline-time'); good(await decide('sam', 'decline', { reasonCode: 'body-style' }));
+  await advanceTo('2026-11-05T14:00:00.000Z', 'expiry-time');
+  const now = good(await clock.now(presenter));
+  good(await clock.tick(presenter, { eventId: 'expiry-tick', inputDigest: inputDigest('expiry-tick'), expectedClockVersion: now.clockVersion }));
+  return { rt, greg, people, names: Object.fromEntries(await Promise.all(Object.entries(people).map(async ([name, context]) =>
+    [name, (await read(context, 'employees', { employeeId: context.employeeId })).name]))) };
+}
+
+test('observed records from the real brief, offer, decision and expiry producers keep every outcome distinct', async (t) => {
+  const { rt, greg, people, names } = await produce(t);
+  const out = await createObservedLearningRecordService({ repository: rt.repository, identity: rt.identity, clock: rt.clock }).readRecords(greg);
+  assert.equal(out.status, 'ok', JSON.stringify(out));
+  const rows = out.value.records; assert.equal(rows.length, 3);
+  const byImportance = (value) => { const found = rows.filter((r) => r.brief.preferences.body.importance === value);
+    assert.equal(found.length, 1, String(value)); return found[0]; };
+  const [paula, alex, sam] = [60, 80, 40].map(byImportance);
+  const clockNow = (await rt.clock.now(greg)).value;
+  for (const r of rows) {
+    assert.deepEqual(r.provenance, { kind: 'observed' }); assert.equal(validateLearningRecord(r).status, 'ok');
+    assert.equal(r.timestamps.projectedAt, clockNow.now);
+    assert.equal(r.brief.briefVersion, 1); assert.deepEqual(r.brief.essentials.seats, { value: 5, operator: 'gte', unit: 'count', state: 'confirmed' });
+    assert.equal(r.brief.preferences.body.value, 'estate'); assert.equal(r.brief.preferences.body.importanceState, 'confirmed');
+    assert.equal(r.outcomes.offered.state, 'offered'); assert.equal(r.outcomes.offered.at, '2026-11-05T12:00:00.000Z');
+    assert.equal(r.terms.status, 'known'); assert.equal(r.terms.value.unit, 'points/month');
+    assert.equal(r.outcomes.wait.state, 'unknown'); assert.equal(r.outcomes.satisfaction.state, 'unknown');
+    assert.equal(/score|fit/i.test(JSON.stringify(r.outcomes)), false);
+  }
+  assert.equal(paula.outcomes.acceptance.state, 'accepted'); assert.equal(paula.outcomes.acceptance.at, '2026-11-05T12:05:00.000Z');
+  assert.equal(paula.outcomes.selection.state, 'selected'); assert.equal(paula.outcomes.selection.at, '2026-11-05T12:05:00.000Z');
+  for (const key of ['decline', 'expiry']) assert.equal(paula.outcomes[key].state, 'unknown');
+  assert.deepEqual(sam.outcomes.decline, { state: 'declined', at: '2026-11-05T12:10:00.000Z', reasonType: 'body' });
+  for (const key of ['acceptance', 'selection', 'expiry']) assert.equal(sam.outcomes[key].state, 'unknown');
+  assert.deepEqual(alex.outcomes.expiry, { state: 'expired', at: '2026-11-05T14:00:00.000Z' });
+  for (const key of ['acceptance', 'selection', 'decline']) assert.equal(alex.outcomes[key].state, 'unknown');
+  // The producers store no wait event, so a wait with no acceptable choice is not proved here.
+  const keys = (v) => (v && typeof v === 'object' ? Object.entries(v).flatMap(([k, x]) => [k, ...keys(x)]) : []);
+  assert.deepEqual(keys(rows).filter((k) => /^(name|email|phone|address|trip\w*|usage\w*|tokenHash|contact|source)$/i.test(k)), []);
+  const text = JSON.stringify(out.value);
+  for (const [name, context] of Object.entries(people)) {
+    assert.equal(text.includes(names[name]), false, name); assert.equal(text.includes(context.employeeId), false, name);
+  }
 });
