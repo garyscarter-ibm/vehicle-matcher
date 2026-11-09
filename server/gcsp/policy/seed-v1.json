@@ -12890,6 +12890,14 @@
     {
       "key": "renewalCase.lifecycle.exceptionCopy",
       "value": {
+        "approval-declined": {
+          "label": "Order approval declined",
+          "reason": "An approval for the selected car was declined. The scheme team will agree the next step."
+        },
+        "appointment-no-show": {
+          "label": "Missed handover appointment",
+          "reason": "The handover appointment was missed. The scheme team will check it is rebooked."
+        },
         "return-missed": {
           "label": "Missed return of current car",
           "reason": "The return of the current car was missed. The scheme team will rearrange it."
@@ -12897,7 +12905,7 @@
       },
       "unit": "case trigger label and reason by lifecycle event type key; a type without an entry keeps the general reason",
       "status": "assumed",
-      "basis": "A missed return needs its own wording so the scheme team can tell it from a missed handover; plausible demo copy.",
+      "basis": "A missed return needs its own wording so the scheme team can tell it from a missed handover; a missed handover and a declined approval are named too, with the case view's existing words (FUCQ-262). Plausible demo copy.",
       "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
       "sourceDate": "2026-11-09",
       "policyVersion": "gcsp-policy-v1",
