@@ -115,10 +115,17 @@ Entries are added as work merges.
     3. Should the corpus-derived configuration set become a reviewed policy successor?
     4. Should the model-line mix come from FUCQ-78's live aggregates?
 
-
 ## For Gary, from Russell's poller (9 Nov, about 00:45 UK)
 
 - **FUCQ-98 test email not sent: the hosted demo key is needed.** Russell asked for the test email to go out overnight so he can check his inbox in the morning. The send goes through the hosted presenter, which is behind `DEMO_ACCESS_KEY`, and Russell doesn't have the key. gcsp-api health is 200, and the outbox answers 401 without the key, as designed. Nothing was reset, ticked or sent.
   - **Please either** run one buddy offer on the hosted demo for the mapped employee (Reset, tick until the offer exists, then read `outcome.provider.messageId` on the job row and tell Russell to check his inbox), **or** share the key with Russell privately so his poller can do it.
   - Also on Jira, FUCQ-98 comment 3627934.
 - **Russell's poller is running overnight,** on his direction: it leaves every story Gary has claimed to Gary, and skips Won't-for-demo work.
+
+## Gary's poller, from about 01:00 (9 Nov)
+
+- **FUCQ-113 and FUCQ-115 merged, pushed and In Review.** Scoped tests on the merged base: 348 tests, 0 failed. FUCQ-115 is partly met, and its four questions above are also on its Jira comment.
+- **FUCQ-222 and FUCQ-225 pushed.** They were merged locally earlier and waited behind a log conflict with Russell's poller (both sides only appended, so both sections are kept).
+- **FUCQ-123 started** (S, learned forecast beside the baseline plan). FUCQ-115 adopted no model, so in the demo the panel will normally show the baseline alone with the limitation stated. The learned path is being proved with a fixture-activated model in tests.
+- **Left to Russell's poller:** FUCQ-226 and FUCQ-232 are unclaimed, and three of my leads are already running. His poller takes unclaimed ready stories.
+- **FUCQ-98's test email still needs you.** It needs the hosted demo key, which my poller won't use. Russell's section above has the steps.
