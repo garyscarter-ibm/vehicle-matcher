@@ -441,7 +441,8 @@ export async function enrichFleet({ session, accepted, catalogueOperation = 'cat
             output.sources.technical = qualified.source; output.measurementEvidence = qualified.measurementEvidence;
             output.unmappedMeasurements.push(...qualified.unmappedKeys.map(() => ({ state: 'unknown', value: null, reason: 'unmapped-meaning' })));
             const measured = Object.keys(METRICS).map((name) => output.facts[name]);
-            output.completeness.measurements = measured.every((fact) => fact.state === 'known' && fact.completeness === 'complete') ? 'complete' : 'partial';
+            output.completeness.measurements = measured.every((fact) => fact.state === 'unknown') ? 'unknown'
+              : measured.every((fact) => fact.state === 'known' && fact.completeness === 'complete') ? 'complete' : 'partial';
           } else output.sources.technical = { outcome: 'source-unavailable', execution: { status: 'stopped', reason: technicalStop.code } };
         }
         output.scope = 'session-enrichment'; output.completeness.sharedAccounting = 'shared-session-offline';
