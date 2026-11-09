@@ -12792,6 +12792,38 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "comparison.experiments.v1",
+      "value": {
+        "schemaVersion": 1,
+        "experiments": {
+          "order-mix": {
+            "key": "comparison.modelLineMix",
+            "unit": "weighted model-line mix"
+          },
+          "points": {
+            "key": "comparison.pointsAllowanceMultiplier",
+            "unit": "allowance multiplier",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "hold-sweep": {
+            "key": "hold.buddy.durationSeconds",
+            "unit": "seconds",
+            "minimum": 900,
+            "maximum": 86400,
+            "maximumValues": 5
+          }
+        }
+      },
+      "unit": "versioned what-if experiment definitions",
+      "basis": "Illustrative what-if bounds. A hold sweep of 15 minutes to 24 hours brackets the 2-hour baseline for the demo brief's longer-hold question; five values keep a 1,000-employee sweep within a presenter preparation slot. Points range from no allowance to three times the canonical allowance. Each experiment changes one key only, so the source of a difference is clear.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-experiments--fucq-174",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "renewalCase.deadline.enabled",
       "value": true,
       "unit": "boolean",

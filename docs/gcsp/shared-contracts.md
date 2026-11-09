@@ -1149,7 +1149,7 @@ FUCQ-133 policy hash is unchanged.
 onRecord? })` in `experiments.js` generates each seed's inputs and evaluation once, replays `current` then `buddy` on the
 identical inputs, one run at a time, and keeps measures, totals and a `recordDigest` per route rather than the records.
 `recordDigest` is `outcomeRecordDigest(record)`: the digest of the record without its `codeRevision` provenance.
-Any other experiment (order mix, points, hold sweeps) is refused; those are FUCQ-174. The frozen result has
+Order-mix, points and hold-sweep experiments are described in [Comparison experiments](#comparison-experiments--fucq-174). The frozen result has
 `schemaVersion`, `kind: 'process-comparison'`, `experimentId`, `completedAt`, `manifest` (`experimentId`, `seeds`,
 `policyVersion`, `policyHash`, `generatorVersion`, `overlays`, `codeRevision`, `inputHashes`), `perSeed`, `measures` (per
 route, per measure and access group), `differences`, `rule`, `assumptions` (every consumed row with `status` and `basis`,
@@ -1181,6 +1181,33 @@ Presenter-run preparation only. Nothing runs at startup or on a timer, and the b
 **Read route.** `GET /api/gcsp/comparison/process/latest` serves Greg and presenter; other roles get 403 `forbidden`, and any query gets 400 `unsupported-query`. Success is `200 { status: 'ok', value: { result, resultId, storedAt, policyVersion, activePolicyVersion, policyCurrent } }`; `policyCurrent` is false once the active policy version at `asOf` differs from the stored one. `404 not-found` means nothing is stored; `503 unavailable` is a read failure. `asOf` comes from the demo clock.
 
 **Read shape for FUCQ-138.** `result.measures.current` and `result.measures.buddy` hold each measure as `{ mean, min, max, observedSeeds }`, with `accessGroupCoverage` keyed by group. `result.differences` has one entry per measure and access group: `{ measure, betterWhen, current, buddy, difference, verdict }`, where verdict is `insufficient-seeds`, `no-clear-difference`, `buddy-better` or `current-better`. Also read `result.assumptions` (each with `status` and `basis`), `result.manifest.seeds`, `policyVersion`, `completedAt`, `caveat` and `limitations`. The buddy route's limitations include: after an offer expires the live service re-offers its car at once (FUCQ-227); the replay leaves it for the next release.
+
+## Comparison experiments · FUCQ-174
+
+What-if experiments that sit beside the process-only comparison: each changes one explicit input, so the source of a difference is clear. Fictional cohort and assumed behaviour. Calculated fit is not observed satisfaction. Backend only; the control and panel are FUCQ-175 and FUCQ-176. Nothing a what-if uses is ever published as live policy.
+
+**Inputs.** `runComparison` and `validateExperiment` in `server/gcsp/comparison/experiments.js` accept `EXPERIMENT_IDS`: `process-only` (unchanged, see FUCQ-136), `order-mix`, `points` and `hold-sweep`. Shapes: `{ experimentId: 'order-mix' | 'points', change: { value, basis }, seeds?, overlay? }` and `{ experimentId: 'hold-sweep', change: { values, basis }, seeds?, overlay? }`. `value` is a model-line mix (`comparison.modelLineMix`) or an allowance multiplier (`comparison.pointsAllowanceMultiplier`); `values` is a list of hold durations in seconds (`hold.buddy.durationSeconds`). Any other field is refused. `overlay` is shared by every arm and may not carry the changed key.
+
+| Policy key | Unit / purpose |
+|---|---|
+| `comparison.experiments.v1` | `{ schemaVersion: 1, experiments: { 'order-mix' \| 'points' \| 'hold-sweep': { key, unit, minimum?, maximum?, maximumValues? } } }`: the key each experiment may change, its canonical unit and its bounds. |
+
+`assumed`, sourced here, dated 9 November 2026, read through PolicyService. Validation runs before any replay and refuses with `invalid-input` naming the boundary: the changed key's unit must match the canonical unit, the value must be in range (points 0 to 3, hold 900 to 86,400 seconds), a sweep has at most `maximumValues` (5) distinct integer values, no value equals the baseline, `change.basis` is non-empty text, the shared overlay does not carry the changed key, and the mix or overlay must generate inputs.
+
+**Arms.** The baseline arm comes first (`armId: 'baseline'`, the canonical value); then `variant` for order-mix and points, or `hold-<seconds>` per swept value. Every arm replays both routes for every seed, `current` then `buddy`, one run at a time. Hold arms share the generated inputs and the one evaluation per seed, since a hold changes only the buddy route. Points arms see scaled allowances in memory only: the run's `getAllowance` is wrapped by the multiplier so the harness's allowance check and the route services agree. Nothing is written to PolicyService.
+
+**Validation and progress for FUCQ-175.** `validateExperiment(experiment, { policy, now })` returns the frozen plan `{ experimentId, seeds, arms: [{ armId, value, overlay }], steps }`, where `steps` is arms times seeds times 2. `runComparison` options add `onProgress({ experimentId, armId, seed, route, completed, total })` after each route replay and `onRecord(record, { armId })` for each outcome record.
+
+**Result.** Frozen, `kind: 'experiment-comparison'`, with `schemaVersion`, `experimentId`, `completedAt` and:
+
+- `manifest`: `experimentId`, `seeds`, `policyVersion`, `policyHash`, `generatorVersion`, `overlays` (the shared overlay), `codeRevision`, `change` (`key`, `unit`, `status: 'what-if'`, `basis`, `baselineValue`, `baselineBasis`, `baselineStatus`, `definitionKey`, and `value` or `values`) and `arms` (`armId`, `value`, `overlay`, `overlayHash`, `inputHashes` per seed).
+- `arms`: per arm `{ armId, value, perSeed, measures, differences }`, where `perSeed`, `measures` and `differences` have the process-comparison shapes (`differences` is buddy against today's route within that arm).
+- `effects`: per non-baseline arm `{ armId, value, routes: { current, buddy } }`; each route holds one `compareArms` entry per measure and access group: `{ measure, betterWhen, baseline, variant, difference: { mean, min, max }, verdict }`. `difference` is the arm minus the baseline. Verdict is `insufficient-seeds`, `no-clear-difference`, `variant-better` or `baseline-better`, by the same `comparison.noClearDifferenceRule`; a baseline win is reported as plainly as a variant win.
+- `rule`, `assumptions` (every consumed row, plus the rule and `comparison.experiments.v1`), the fixed `caveat` "Calculated fit is not observed satisfaction." and `limitations` (the route limitations plus "What-if experiment: the changed values were never published as live policy.").
+
+**Storage and reads.** No migration: the `comparison_results` table (`0005`) already carries `experiment_id` and keeps the whole result in `data`. `storeComparisonResult` accepts an experiment result and stores it once, immutably, in the same results environment; `resultId` is `<experimentId>-comparison-` plus a digest of `completedAt`, manifest and arms (process results keep `process-comparison-` and their digest). A live demo reset cannot reach them. `readLatestComparisonResult(repository, context, policy, { asOf, experimentId })` defaults to `process-only` and returns the same `{ result, resultId, storedAt, policyVersion, activePolicyVersion, policyCurrent }` for any known id (unknown id is `invalid`, no result is `not-found`). `readLatestComparisonResults(repository, context, policy, { asOf })` returns `{ activePolicyVersion, experiments: [{ experimentId, latest }] }` in `EXPERIMENT_IDS` order, `latest` being that same object or `null`; FUCQ-176's picker reads it. Older runs stay readable by query.
+
+**Fixture.** The small-overlay hold-sweep result, in its stored read shape, is `storedResult` in `server/test/fixtures/gcsp-comparison-experiment-result.json`. The process-only comparison, its route `GET /api/gcsp/comparison/process/latest`, the job and the process fixtures are unchanged.
 
 ## Named scenario catalogue and preparation · FUCQ-125
 
