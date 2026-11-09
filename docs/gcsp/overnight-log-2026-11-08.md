@@ -143,3 +143,5 @@ Entries are added as work merges.
   4. FUCQ-230: is it OK that the fixture test re-pins code pins only in its temporary copy?
 - **Flake seen:** render.test.js "no em dashes in painted copy" hit its 5 s limit once under load; it passes on its own.
 - **FUCQ-174, 175 and 176 (C) are claimed but waiting.** They change the same comparison code as FUCQ-137/138, which are building now, so they run after 138, as you asked. I claimed them early so that Russell's poller doesn't start them in parallel.
+- **About 02:00:** **FUCQ-230** (bug, not in MoSCoW, Low) is now merged, pushed and In Review. The remaining failure was a temp-path symlink on macOS (/var/folders and /tmp); the test now resolves the real path. The only failures left in that area are FUCQ-159's two `unapproved-image` tests.
+- **FUCQ-232 started** (bug, not in MoSCoW, Medium). Russell's poller hadn't taken it after an hour. I added the required headings to its Jira description so it passes the story check. FUCQ-226 is left unclaimed, because it overlaps the comparison code FUCQ-137 is changing.
