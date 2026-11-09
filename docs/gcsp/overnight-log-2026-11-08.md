@@ -246,3 +246,10 @@ For Russell or Gary:
   - FUCQ-176 (C) lead started on d19bb3f0.
   - FUCQ-178 closed as partly met (merged aa4f9879), In Review. The 984 unused BMW requests lapse; the 46 pending model lines would need a new story and approval.
   - Started: FUCQ-150 (bug, not in MoSCoW, P3; verifying 3712a143) and FUCQ-166 (bug, not in MoSCoW, P3; offline only, no Pages publish). Next by capacity: FUCQ-167, 168, then 169, 171 (W, after demo), FUCQ-27 then 28, FUCQ-218.
+- **About 12:15 9 Nov, backlog clear-down.**
+  - Gary's answers: FUCQ-46/47/48 build with live calls (limits set by the dispatcher: named public BMW UK hosts plus the page's own back-ends, concurrency 1, 500 requests across the chain, no sign-in, credentials, API keys or forms, stop on 401, 403, 429, challenge or 3 failures); FUCQ-149 approved as written; FUCQ-218 built with assumed stand-in names for Russell to swap; FUCQ-181 option (c), merged today.
+  - **Question for Gary (open):** the catalogue chain asked to copy the anonymous x-api-key that BMW's public configurator page serves and use it from our backend for FUCQ-48. The dispatcher said no (outside the limits); the chain may only drive the real page headlessly. If that can't meet FUCQ-48's live criterion, it is recorded as unmet pending Gary.
+  - Two parallel sessions started: catalogue-chain (FUCQ-46, 47, 48) and handover-chain (FUCQ-167, 168, 169, 171).
+  - **FUCQ-181 closed** (merged 26ba5401, docs only), In Review: the same-site rule and option (c) are in the HLD and the Render guide. Option (a) is the route for the real EDS integration.
+  - **FUCQ-150 closed** (merged fb09215c), In Review: verified fixed by 3712a143 (queue 227 to 1184 of 1184 px at 1280, all 7 columns); no code change.
+  - FUCQ-149 lead started. Still building: FUCQ-176, FUCQ-166. Next: FUCQ-218, then FUCQ-27 and 28.
