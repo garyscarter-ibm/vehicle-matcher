@@ -1,0 +1,58 @@
+{
+ "story": "FUCQ-318",
+ "host": "offline (GCSP_OFFLINE=1, memory repository), ports 9512-9513",
+ "results": {
+  "1280": [
+   {
+    "screen": "offer-compare",
+    "file": "1280-offer-compare.png",
+    "viewport": "1280x900",
+    "h1": "Your car offer",
+    "heads": [
+     {
+      "text": "Detail",
+      "lines": 4
+     },
+     {
+      "text": "This offer BMW 3 Series Touring 320i",
+      "lines": 4
+     },
+     {
+      "text": "Your current car BMW 3 Series Touring 320i, 320i M Sport Touring",
+      "lines": 4
+     }
+    ],
+    "overflowX": 0,
+    "checks": [
+     "headers keep the car names"
+    ]
+   }
+  ],
+  "375": [
+   {
+    "screen": "offer-compare",
+    "file": "375-offer-compare.png",
+    "viewport": "375x812",
+    "h1": "Your car offer",
+    "heads": [
+     {
+      "text": "Detail",
+      "lines": 1
+     },
+     {
+      "text": "This offer",
+      "lines": 1
+     },
+     {
+      "text": "Your current car",
+      "lines": 1
+     }
+    ],
+    "overflowX": 0,
+    "checks": [
+     "headers read This offer and Your current car, at most two lines"
+    ]
+   }
+  ]
+ }
+}
