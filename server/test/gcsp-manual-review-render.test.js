@@ -78,7 +78,8 @@ test('FUCQ-316: unknown pinned facts collapse into one line on the card and in t
   assert.equal(card.querySelectorAll('.vm-facts-more').length, 1); assert.equal(card.querySelector('.vm-facts-more').textContent, 'More details not supplied');
   assert.ok(![...pinned.querySelectorAll('dt')].some((node) => /Transmission/.test(node.textContent)));
   assert.ok([...pinned.querySelectorAll('dt')].some((node) => node.textContent === 'Model'));
-  assert.ok(pinned.querySelectorAll('.vm-facts-more').length >= 1);
+  assert.equal(pinned.querySelectorAll('.vm-facts-more').length, 1);
+  assert.doesNotMatch(f.root.textContent, /Not supplied/);
 });
 test('invalid Continue focuses linked summary, retains fields, and Cancel releases without validation', async (t) => {
   const f = setup(t); await settle(() => control(f, 'contact.phone'));

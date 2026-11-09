@@ -128,15 +128,14 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
     if (lastVehicle !== signature || !nodes.vehicle.childNodes.length) {
       lastVehicle = signature;
       const technical = el('details', 'gcsp-details'); technical.append(el('summary', '', 'Pinned vehicle details'),
-        rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), ['body', 'bodyType'].includes(key) ? bodyFact(value) : value]), MORE_MISSING),
-        rows([['Quote valid until', Number.isFinite(Date.parse(model.quote.validUntil)) ? `${demoTime(model.quote.validUntil)} (demo time)` : model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]], MORE_MISSING));
+        rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), ['body', 'bodyType'].includes(key) ? bodyFact(value) : value]).concat([['Quote valid until', Number.isFinite(Date.parse(model.quote.validUntil)) ? `${demoTime(model.quote.validUntil)} (demo time)` : model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]]), MORE_MISSING));
       nodes.vehicle.replaceChildren(
         matchCard(null, { view: reviewVehicleView(model), showScore: false, hideMissing: MORE_MISSING }), technical);
     }
     nodes.context.replaceChildren(el('h2', 'gcsp-h2', 'Collection and current contract'), rows([
       ['Journey', model.mode === 'replacement' ? 'Replacement' : 'New order'], ['Requested collection date', longDate(model.requestedCollection?.date) ?? model.requestedCollection?.date],
       ['Contract term', model.contract?.months, 'months'], ['Annual mileage', model.contract?.annualMileage, model.contract?.mileageUnit],
-      ...(model.mode === 'replacement' ? [['Returning car', model.currentContract?.model], ['Registration', model.currentContract?.registration]] : [])]),
+      ...(model.mode === 'replacement' ? [['Returning car', model.currentContract?.model], ['Registration', model.currentContract?.registration]] : [])], MORE_MISSING),
     el('p', 'gcsp-field-hint', 'Collection is requested, not a confirmed appointment.'));
     const errors = new Map((state.errors ?? []).map((entry) => [entry.field, entry.reason]));
     for (const [key, control] of Object.entries(controls)) {
