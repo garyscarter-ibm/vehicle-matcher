@@ -198,3 +198,6 @@ For Russell or Gary:
 - **New Low bug FUCQ-239:** the offer handoff wording and Order history ignore new-order employees and placed orders.
 - **Still building:** FUCQ-226 (root cause) and FUCQ-238. **Waiting:** FUCQ-236 (Low, claim after these tests) and FUCQ-174, 175 and 176 (C, after FUCQ-226).
 - **Seen by a lead:** gcsp-cases-local-demo.test.js:154 fails on base. The full suite will confirm.
+- **About 04:55, merged, pushed and In Review:** **FUCQ-235** (Low, kit dataTable `stack`), **FUCQ-237** (Low, new-order wording), **FUCQ-238** (Low, gallery 3,462 px at 320, down from 7,285; Renewal cases empty block gone). FUCQ-238's walkthrough-script conflict with 237 is resolved by keeping both stories. Scoped tests: 918 and 594 tests, 0 real failures.
+- **Regression found and fixed:** gcsp-cases-local-demo.test.js failed on gcsp-poc because FUCQ-232 made the decline-reasons registry required, and that test builds its own runtime without `adoptOfferJourney: true`. Real launches (host.js) adopt it, so the demo was never affected. Fixed in the test (7991d4bc).
+- **Started:** FUCQ-236 (Low, learning records read the reviewed reason policy), then FUCQ-239 (Low, offer handoff wording and Order history).
