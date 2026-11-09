@@ -282,8 +282,10 @@ test('card facts sit in one Car facts disclosure, closed at every width, supplie
   for (const card of full.root.querySelectorAll('.vm-card')) {
     const sections = card.querySelectorAll('details.gcsp-gallery-fact-section'); assert.equal(sections.length, 1);
     assert.equal(sections[0].querySelector('summary').textContent, 'Car facts'); assert.equal(sections[0].open, false);
-    assert.equal(card.querySelector('.vm-card-facts > details'), sections[0]); assert.equal(sections[0].querySelector('.vm-facts-more'), null);
+    assert.equal(card.querySelector('.vm-card-facts > details'), sections[0]);
   }
+  // The first fixture car supplies all six card facts, so it shows no summary line.
+  assert.equal(full.root.querySelector('.vm-card details').querySelector('.vm-facts-more'), null);
   const wide = await mount(t, { adapter: sparseAdapter() });
   for (const card of wide.root.querySelectorAll('.vm-card')) {
     const section = card.querySelector('details.gcsp-gallery-fact-section'); assert.equal(section.open, false);
