@@ -70,7 +70,7 @@ details .table-wrap{border:0;border-radius:0}
 <tr><td class="t">7:00</td><td>The better second offer</td><td><b>Tick</b> once, then open the new offer (a Saloon), tick the declarations and <b>Accept</b>.</td></tr>
 <tr><td class="t">8:30</td><td>To a handover plan</td><td><b>Order progress</b>: <b>Tick</b> 6 times for the approvals. <b>Request</b> a handover slot, then <b>Tick to target</b> <code>2026-11-05T10:07:00.000Z</code> to show it booked. The old-car return is planned separately.</td></tr>
 <tr><td class="t">10:00</td><td>Greg</td><td>Reset <b>Decline then change</b> and switch to <b>Greg</b>. In <b>Next order</b> set Min 2, <b>Preview</b>, <b>Request from Production</b>, confirm it under <b>Synthetic production controls</b>: "Replanned".</td></tr>
-<tr><td class="t">12:00</td><td>Is it better?</td><td>The route comparison panel on Greg's dashboard, with assumptions expanded.</td></tr>
+<tr><td class="t">12:00</td><td>Is it better? Not yet, and this shows why</td><td>The route comparison panel on Greg's dashboard, with assumptions expanded. Say it straight: over three seeded runs of 1,000 fictional employees, <b>Covered before renewal</b> was 14.8% on today's route and 11.8% on the buddy route. Then the why, from the panel: buddy held cars for people who declined or let the offer run out (about 64 days of <b>Car time held but not taken</b>, against under a day today), and employees with delayed access did worst (3.6% covered, against 15.8%). That points at the levers: how long a hold lasts, and how fast a lapsed car goes back out. This replay also leaves an expired car for the next release, where the live service re-offers it at once, so it understates buddy. The point is that the scheme can see this before rollout, not after. <span class="warn">Don't start a rerun live.</span></td></tr>
 <tr><td class="t">13:00</td><td>How we built it, and the ask</td><td>The delivery numbers. Ask for a 2027 roadmap conversation, then: "What would you change?"</td></tr>
 </tbody></table></div>
 
@@ -79,7 +79,7 @@ details .table-wrap{border:0;border-radius:0}
 <li><b>Freeze pushes to gcsp-poc</b> (say, Wednesday 18:00) and stop the pollers. Every push redeploys, and the demo state lives in memory.</li>
 <li><b>Rehearse the full run once</b> on the hosted demo, timed.</li>
 <li><b>Send one real offer email</b> and check it arrives. Otherwise show the outbox viewer.</li>
-<li><b>Read the stored comparison result together.</b> Quote no numbers until you have. It is prepared offline (see render-postgres-setup.md).</li>
+<li><b>Comparison figures:</b> the 12:00 numbers were checked on 9 Nov against the stored result (server/data/gcsp/comparison/process-only.json, stored 9 Nov 18:12). If it is re-stored, check them again before quoting.</li>
 <li><b>30 minutes before:</b> reset <b>Main successful journey</b>, switch to Paula, and open the outbox in a second tab.</li>
 </ul>
 

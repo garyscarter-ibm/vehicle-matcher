@@ -5,6 +5,7 @@ import { createBriefController } from './brief-controller.js';
 import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { decisionView, previewSummary } from './brief-view-model.js';
 import { BEST_MATCH } from '../kit/plain-copy.js';
+import { focusHeading } from '../kit/arrival-focus.js';
 
 let sequence = 0;
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -16,13 +17,15 @@ const scaleEnds = { sportiness: ['Less sporty', 'More sporty'], comfort: ['Less 
 /** Mount one controller-owned draft. Async updates patch controls and never replace the editing form. */
 export function mountBriefBody(main, adapters = {}) {
   const abort = new AbortController();
-  let alive = true; let controller; let unsubscribe; let generation = 0;
+  let alive = true; let controller; let unsubscribe; let generation = 0; let landFocus = false;
   const prefix = `gcsp-brief-${++sequence}`;
   const cleanup = () => { alive = false; abort.abort(); unsubscribe?.(); controller?.destroy(); main.replaceChildren(); };
   const loading = el('p', 'gcsp-note', 'Loading your brief.'); loading.setAttribute('role', 'status'); main.replaceChildren(loading);
   const externalAbort = () => cleanup();
   adapters.signal?.addEventListener('abort', externalAbort, { once: true });
   const finish = () => { adapters.signal?.removeEventListener('abort', externalAbort); cleanup(); };
+  // A reload started from a control that is about to vanish lands on the new h1.
+  const land = () => { if (landFocus) { landFocus = false; focusHeading(main.querySelector('h1')); } };
   function unavailable() {
     main.replaceChildren(statusScreen({ title: 'Your brief could not be loaded', message: 'Your account and brief are unavailable. Try loading them again.',
       actions: [button({ label: 'Try again', onClick: () => load() })] }));
@@ -53,7 +56,7 @@ export function mountBriefBody(main, adapters = {}) {
     const needs = Object.entries(context.practicalQuestions).filter(([key]) => brief.essentials[key]).map(([key, q]) => ({ label: q.label, value: answer(q, brief.essentials[key]) }));
     page.append(note, el('h2', null, 'What matters to you'), factList(prefs), el('h2', null, 'What your car needs to do'), factList(needs),
       button({ label: 'See your order progress', href: '/gcsp-order-progress-live.html' }));
-    main.replaceChildren(page);
+    main.replaceChildren(page); land();
   }
   function draw(editor) {
     if (!alive) return;
@@ -178,7 +181,7 @@ export function mountBriefBody(main, adapters = {}) {
     const cards = el('div', 'gcsp-brief-cards');
     const retry = button({ label: 'Retry preview', variant: 'ghost', onClick: () => controller.requestPreview() }); retry.hidden = true;
     const live = el('p', 'gcsp-brief-live'); live.setAttribute('role', 'status'); live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true');
-    preview.append(status, retry, cards); layout.append(form, preview); page.append(layout, live); main.replaceChildren(page);
+    preview.append(status, retry, cards); layout.append(form, preview); page.append(layout, live); main.replaceChildren(page); land();
     let lastPreview;
     const patch = (state) => {
       if (state.restarted) { restarted(); return; }
@@ -232,6 +235,7 @@ export function mountBriefBody(main, adapters = {}) {
   function load(useInitial = false) {
     const current = ++generation;
     unsubscribe?.(); controller?.destroy(); unsubscribe = undefined; controller = undefined;
+    landFocus = main.contains(main.ownerDocument.activeElement) && main.ownerDocument.activeElement !== main;
     main.replaceChildren(loading);
     if (useInitial && adapters.editor) { draw(adapters.editor); return; }
     if (typeof adapters.loadEditor !== 'function') { unavailable(); return; }

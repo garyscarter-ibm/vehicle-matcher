@@ -3,6 +3,7 @@
 import { el } from '../../vehicle-matcher/ui.js';
 import { mountPresenterControls } from '../presenter-controls/controls.js';
 import { isRunRestarted } from '../kit/run-restarted.js';
+import { installArrivalFocus } from '../kit/arrival-focus.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const DEFAULT_REASON = 'Not available in this demo';
@@ -162,10 +163,11 @@ function accountContent(state, retryButton) {
 /**
  * The shell. Returns { root, main, setAccount, setActive, setBreadcrumbs, destroy }.
  * navigation is an item list for accountNavigation; onNavigate(key) is called for available items only.
+ * arrivalFocus focuses the main h1 on arrival, until the first user input.
  */
 export function portalShell({
   title = 'Group Car Schemes Portal', account = { status: 'loading' }, navigation = [], active = null,
-  breadcrumbs = [], onNavigate, onRetryAccount, presenterControls = {},
+  breadcrumbs = [], onNavigate, onRetryAccount, presenterControls = {}, arrivalFocus = false,
 } = {}) {
   const id = `gcsp-shell-${++uid}`;
   const mainId = `${id}-main`;
@@ -276,6 +278,7 @@ export function portalShell({
 
   setAccount(account);
   setBreadcrumbs(breadcrumbs);
+  const stopFocus = installArrivalFocus({ root, main, arrive: arrivalFocus });
 
   return {
     root,
@@ -289,6 +292,7 @@ export function portalShell({
       root.removeEventListener('keydown', onKeydown);
       skip.removeEventListener('click', onSkip);
       accountBox.removeEventListener('click', onAccountClick);
+      stopFocus();
       presenter?.destroy();
       nav.destroy();
       root.remove();

@@ -267,22 +267,42 @@ test('cards lead with points and allowance fit, keep key facts concise, and chip
   assert.match(detail.textContent, /Within your allowance, 200 points left/);
 });
 
-test('card facts sit in one Car facts disclosure, open wide and closed at 600px and below (FUCQ-238)', async (t) => {
-  const labels = ['Engine', 'Exterior', 'Interior', 'Transmission', 'Earliest collection', 'WLTP CO2'];
-  const wide = await mount(t);
-  for (const card of wide.root.querySelectorAll('.vm-card')) {
+// Stock that supplies only an exterior colour, as the live feed does.
+function sparseAdapter() {
+  const envelope = createManualGalleryFixture();
+  for (const decision of envelope.value.decisions) {
+    const { facts } = decision.snapshot;
+    for (const key of ['engine', 'interior', 'transmission', 'earliestCollection', 'wltpCo2']) facts[key] = { status: 'unknown', value: null, unit: null, provenance: facts[key].provenance };
+  }
+  return { browseStock: async () => structuredClone(envelope) };
+}
+
+test('card facts sit in one Car facts disclosure, closed at every width, supplied facts only (FUCQ-238, FUCQ-277)', async (t) => {
+  const full = await mount(t);
+  for (const card of full.root.querySelectorAll('.vm-card')) {
     const sections = card.querySelectorAll('details.gcsp-gallery-fact-section'); assert.equal(sections.length, 1);
-    assert.equal(sections[0].querySelector('summary').textContent, 'Car facts'); assert.equal(sections[0].open, true);
-    assert.deepEqual([...sections[0].querySelectorAll('dt')].map((node) => node.textContent), labels);
+    assert.equal(sections[0].querySelector('summary').textContent, 'Car facts'); assert.equal(sections[0].open, false);
     assert.equal(card.querySelector('.vm-card-facts > details'), sections[0]);
   }
+  // The first fixture car supplies all six card facts, so it shows no summary line.
+  assert.equal(full.root.querySelector('.vm-card details').querySelector('.vm-facts-more'), null);
+  const wide = await mount(t, { adapter: sparseAdapter() });
+  for (const card of wide.root.querySelectorAll('.vm-card')) {
+    const section = card.querySelector('details.gcsp-gallery-fact-section'); assert.equal(section.open, false);
+    assert.deepEqual([...section.querySelectorAll('dt')].map((node) => node.textContent), ['Exterior']);
+    assert.equal(section.querySelector('.is-missing'), null); assert.doesNotMatch(card.textContent, /Not supplied/);
+    assert.deepEqual([...section.querySelectorAll('.vm-facts-more')].map((node) => node.textContent), ['More details not supplied']);
+  }
+  assert.equal(wide.root.querySelectorAll('.gcsp-synthetic').length, 1);
+  assert.equal(wide.root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
+  assert.doesNotMatch(wide.root.textContent, /Representative image\. See image provenance/);
   const listeners = new Set(); let matches = true;
   const stub = (query) => ({ get matches() { return query === '(max-width: 600px)' && matches; },
     addEventListener: (_, fn) => listeners.add(fn), removeEventListener: (_, fn) => listeners.delete(fn) });
   window.matchMedia = stub; t.after(() => { delete window.matchMedia; });
   const narrow = await mount(t); const open = () => [...narrow.root.querySelectorAll('details.gcsp-gallery-fact-section')].map((node) => node.open);
   assert.deepEqual(open(), [false, false, false]); assert.equal(listeners.size, 1);
-  matches = false; listeners.forEach((fn) => fn()); assert.deepEqual(open(), [true, true, true]);
+  matches = false; listeners.forEach((fn) => fn()); assert.deepEqual(open(), [false, false, false]); // wide again: still closed
   narrow.teardown(); assert.equal(listeners.size, 0);
 });
 

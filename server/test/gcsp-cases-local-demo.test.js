@@ -157,7 +157,7 @@ test('local HTTPS launcher serves case entries and connects trusted Paula and Gr
     await readyAfter(queueHost, () => { destroyQueue = mountCaseQueue(queueHost,
       { adapter: schemeTeam.cases, embedded: true, commandId: () => 'cases-local-update' }); });
     assert.match(queueHost.textContent, /Paula/); assert.ok(queueHost.textContent.includes(reason));
-    field(queueHost, 'selection', c.caseId, 'change'); button(queueHost, 'Open selected case').click();
+    queueHost.querySelector('button[aria-label^="Open case for Paula"]').click();
     await waitFor(() => queueHost.querySelector('[id$="-status"]'));
     const projection = await schemeTeam.read(`scheme-team/cases/options?${new URLSearchParams({ caseId: c.caseId })}`);
     assert.equal(projection.case.caseId, c.caseId); assert.ok(projection.nextStatuses.includes('in-progress'));
@@ -193,7 +193,7 @@ test('local HTTPS launcher serves case entries and connects trusted Paula and Gr
     destroyHelp(); destroyHelp = null;
     await readyAfter(helpHost, () => { destroyHelp = mountHelp(helpHost, helpOptions); });
     assert.ok(helpHost.textContent.includes(nextAction)); assert.ok(helpHost.textContent.includes(decision));
-    assert.ok(helpHost.textContent.includes(c.caseId)); assert.match(helpHost.textContent, /In progress/);
+    assert.ok(helpHost.textContent.includes(c.caseId.replace(/^renewal-/, '').slice(0, 8).toUpperCase())); assert.match(helpHost.textContent, /In progress/);
     assert.match(helpHost.textContent, /Dated case history/);
     assert.match(helpHost.textContent, /No specific next car or greater priority is guaranteed/);
     assert.deepEqual(await ownCases(), [updated], 'Reload preserves the recorded case');

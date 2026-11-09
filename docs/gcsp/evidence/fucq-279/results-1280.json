@@ -1,0 +1,141 @@
+[
+ {
+  "screen": "account",
+  "file": "1280-account.png",
+  "viewport": "1280x900",
+  "url": "/gcsp-presenter.html",
+  "h1": "Your cars",
+  "names": [
+   "BMW 3 Series Touring 320i"
+  ],
+  "fallbacks": [
+   "No image for this car yet"
+  ],
+  "overflowX": 0,
+  "badNameCopy": null,
+  "syntheticLine": [
+   "Synthetic example data. Account as of 5 November 2026 at 09:00."
+  ],
+  "checks": [
+   "current car name follows the rule",
+   "synthetic footer present"
+  ]
+ },
+ {
+  "screen": "gallery",
+  "file": "1280-gallery.png",
+  "viewport": "1280x900",
+  "url": "/gcsp-presenter.html",
+  "h1": "Released cars",
+  "names": [
+   "BMW 1 Series Sports Hatch 120 in Alpine White",
+   "BMW 1 Series Sports Hatch 120 in Skyscraper Grey",
+   "BMW 1 Series Sports Hatch 120 in Thundernight"
+  ],
+  "fallbacks": [
+   "No image for this car yet"
+  ],
+  "overflowX": 0,
+  "badNameCopy": null,
+  "syntheticLine": [
+   "Synthetic example data."
+  ],
+  "checks": [
+   "card names follow the rule, colour after \"in\"",
+   "one image fallback string",
+   "synthetic footer present"
+  ]
+ },
+ {
+  "screen": "review",
+  "file": "1280-review.png",
+  "viewport": "1280x900",
+  "url": "/gcsp-presenter.html",
+  "h1": "Review your car",
+  "names": [
+   "BMW 1 Series Sports Hatch 120 in Alpine White"
+  ],
+  "fallbacks": [
+   "No image for this car yet"
+  ],
+  "overflowX": 0,
+  "badNameCopy": null,
+  "syntheticLine": [
+   "Synthetic example data."
+  ],
+  "checks": [
+   "review car name follows the rule",
+   "synthetic footer present"
+  ]
+ },
+ {
+  "screen": "brief",
+  "file": "1280-brief.png",
+  "viewport": "1280x900",
+  "url": "/gcsp-brief-live.html",
+  "h1": "Your car brief",
+  "names": [
+   "BMW 3 Series Touring 320i",
+   "BMW 3 Series Saloon 320i",
+   "BMW 1 Series Sports Hatch 120",
+   "BMW i5 eDrive40 Touring"
+  ],
+  "fallbacks": [
+   "No image for this car yet"
+  ],
+  "overflowX": 0,
+  "badNameCopy": null,
+  "syntheticLine": [
+   "Synthetic local demo · Brief version 1"
+  ],
+  "checks": [
+   "brief card names follow the rule",
+   "synthetic line present"
+  ]
+ },
+ {
+  "screen": "activity",
+  "file": "1280-activity.png",
+  "viewport": "1280x900",
+  "url": "/gcsp-activity-live.html",
+  "h1": "Your buddy",
+  "names": [
+   "BMW 3 Series Touring 320i"
+  ],
+  "fallbacks": [
+   "No image for this car yet"
+  ],
+  "overflowX": 0,
+  "badNameCopy": null,
+  "syntheticLine": [
+   "Synthetic example data."
+  ],
+  "checks": [
+   "buddy activity offer name follows the rule",
+   "fallback is the one kit string"
+  ]
+ },
+ {
+  "screen": "offer",
+  "file": "1280-offer.png",
+  "viewport": "1280x900",
+  "url": "/gcsp/offer?offerId=buddy-offer%3A63cf8a5abd19009286463a713a3931305cc3f33e2011af0e62d795406a7551c2&runId=demo-b0420ee5438f6ad349358f618a397709",
+  "h1": "Your car offer",
+  "names": [
+   "BMW 3 Series Touring 320i",
+   "Your current car"
+  ],
+  "fallbacks": [
+   "No image for this car yet"
+  ],
+  "overflowX": 0,
+  "badNameCopy": null,
+  "syntheticLine": [
+   "Synthetic example data."
+  ],
+  "checks": [
+   "offer title and comparison names follow the rule",
+   "synthetic line present"
+  ]
+ }
+]

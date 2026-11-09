@@ -1,0 +1,105 @@
+{
+ "width": 375,
+ "viewport": {
+  "width": 375,
+  "height": 812
+ },
+ "allPass": true,
+ "checks": [
+  {
+   "name": "confirmation names the lead principal",
+   "pass": true,
+   "detail": "Reset into Main successful journey as Paula (fictional)? This starts a new run."
+  },
+  {
+   "name": "status reads Reset done, new run, Acting as Paula",
+   "pass": true,
+   "detail": "Reset done. New run: demo-57ca4aded1dfe80f03dd2396aef3f5e0. Acting as Paula (fictional)."
+  },
+  {
+   "name": "focus is on the status in the strip at load",
+   "pass": true,
+   "detail": {
+    "tag": "P",
+    "role": "status",
+    "text": "Reset done. New run: demo-57ca4aded1dfe80f03dd2396aef3f5e0. Acting as Paula (fictional).",
+    "inStrip": true,
+    "isBody": false,
+    "stripOpen": true,
+    "scrollY": 2474,
+    "top": 372,
+    "viewportH": 812
+   }
+  },
+  {
+   "name": "focus still in the strip after the journey settles",
+   "pass": true,
+   "detail": {
+    "tag": "P",
+    "role": "status",
+    "text": "Reset done. New run: demo-57ca4aded1dfe80f03dd2396aef3f5e0. Acting as Paula (fictional).",
+    "inStrip": true,
+    "isBody": false,
+    "stripOpen": true,
+    "scrollY": 2474,
+    "top": 372,
+    "viewportH": 812
+   }
+  },
+  {
+   "name": "page is the employee journey, not the placeholder",
+   "pass": true,
+   "detail": "Skip to contentGroup Car Schemes PortalPPaula (fictional)Paula (fictional)Grade G7Your carsYour carsNew orderNew order: Not available in this demoOrder historyOrder history: Not available in this demo"
+  }
+ ],
+ "steps": [
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  },
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  },
+  {
+   "step": "paula-confirm",
+   "confirmText": "Reset into Main successful journey as Paula (fictional)? This starts a new run."
+  },
+  {
+   "shot": "375-paula-confirm-reset.png",
+   "url": "/gcsp-presenter.html"
+  },
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  },
+  {
+   "step": "paula-after-reset",
+   "doneText": "Reset done. New run: demo-57ca4aded1dfe80f03dd2396aef3f5e0. Acting as Paula (fictional).",
+   "focusAtLoad": {
+    "tag": "P",
+    "role": "status",
+    "text": "Reset done. New run: demo-57ca4aded1dfe80f03dd2396aef3f5e0. Acting as Paula (fictional).",
+    "inStrip": true,
+    "isBody": false,
+    "stripOpen": true,
+    "scrollY": 2474,
+    "top": 372,
+    "viewportH": 812
+   },
+   "focusLater": {
+    "tag": "P",
+    "role": "status",
+    "text": "Reset done. New run: demo-57ca4aded1dfe80f03dd2396aef3f5e0. Acting as Paula (fictional).",
+    "inStrip": true,
+    "isBody": false,
+    "stripOpen": true,
+    "scrollY": 2474,
+    "top": 372,
+    "viewportH": 812
+   },
+   "pageBody": "Skip to contentGroup Car Schemes PortalPPaula (fictional)Paula (fictional)Grade G7Your carsYour carsNew orderNew order: Not available in this demoOrder historyOrder history: Not available in this demo"
+  },
+  {
+   "shot": "375-paula-after-reset.png",
+   "url": "/gcsp-presenter.html"
+  }
+ ]
+}

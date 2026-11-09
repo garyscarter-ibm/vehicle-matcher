@@ -3,8 +3,8 @@
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { mediaWell } from '../../vehicle-matcher/modes/result-card.js';
 import { svgIcon } from '../shell/portal-shell.js';
+import { NO_IMAGE_TEXT as NO_IMAGE } from '../kit/plain-copy.js';
 
-const NO_IMAGE = 'No image for this car yet';
 const CHECK = ['M5 12.5l4.5 4.5L19 7.5'];
 const WARN = ['M12 8v5', 'M12 16.5v.01', 'M4 19h16L12 5z'];
 const CLOCK = ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M12 7.5V12l3 2'];

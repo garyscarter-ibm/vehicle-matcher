@@ -7,18 +7,15 @@ gcsp-help { display: block; }
 .gcsp .gcsp-case-content { display: grid; gap: var(--vm-space-6); min-width: 0; }
 .gcsp .gcsp-case-status { min-height: 1.5em; color: var(--gcsp-text-muted); }
 .gcsp .gcsp-case-entry, .gcsp .gcsp-case-detail, .gcsp .gcsp-case-confirmation { min-width: 0; padding: var(--vm-space-6); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); overflow-wrap: anywhere; }
-.gcsp .gcsp-case-entry > summary, .gcsp .gcsp-case-history > summary { cursor: pointer; padding-block: var(--vm-space-3); min-height: 48px; box-sizing: border-box; font-weight: var(--gcsp-font-strong-weight); }
-.gcsp .gcsp-case-entry > summary:focus-visible, .gcsp .gcsp-case-history > summary:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }
-.gcsp .gcsp-case-entry[open] > summary { margin-bottom: var(--vm-space-4); }
+.gcsp .gcsp-case-history > summary { cursor: pointer; padding-block: var(--vm-space-3); min-height: 48px; box-sizing: border-box; font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-case-history > summary:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }
 .gcsp .gcsp-case-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--vm-space-3); margin-block-start: var(--vm-space-4); }
 .gcsp .gcsp-case-actions .vm-btn { max-width: 100%; min-height: 48px; white-space: normal; }
 .gcsp .gcsp-case-form { display: grid; gap: var(--vm-space-4); margin-block-start: var(--vm-space-5); }
 .gcsp .gcsp-case-remedy { border-block-start: 1px solid var(--gcsp-divider); padding-block-start: var(--vm-space-5); margin-block-start: var(--vm-space-5); }
 .gcsp .gcsp-case-events { margin: 0; padding-inline-start: var(--vm-space-5); }
-.gcsp .gcsp-case-event { padding-block: var(--vm-space-4); border-block-start: 1px solid var(--gcsp-divider); }
-.gcsp .gcsp-case-history { margin-block-start: var(--vm-space-5); }
-.gcsp .gcsp-case-facts { min-width: 0; }
-.gcsp .gcsp-case-facts dd { overflow-wrap: anywhere; }
+.gcsp .gcsp-case-event { padding-block: var(--vm-space-4); border-block-start: 1px solid var(--gcsp-divider); } .gcsp .gcsp-case-history { margin-block-start: var(--vm-space-5); }
+.gcsp .gcsp-case-facts { min-width: 0; } .gcsp .gcsp-case-facts dd { overflow-wrap: anywhere; }
 .gcsp .gcsp-case-reason { white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (max-width: 600px) {
   .gcsp .gcsp-cases-body { padding: var(--vm-space-4); }
@@ -26,3 +23,6 @@ gcsp-help { display: block; }
   .gcsp .gcsp-case-actions { align-items: stretch; flex-direction: column; }
   .gcsp .gcsp-case-actions .vm-btn { width: 100%; }
 }
+.gcsp :is(.gcsp-case-queue, .gcsp-cases-body) h2.vm-title { margin: 0 0 var(--vm-space-2); font-size: 20px; line-height: 1.25; } /* kit heading scale (FUCQ-297) */
+.gcsp :is(.gcsp-case-queue, .gcsp-cases-body) h3.vm-title { margin: 0 0 var(--vm-space-2); font-size: 18px; line-height: 1.25; }
+.gcsp :is(.gcsp-case-queue, .gcsp-cases-body) :is(h4, h5, h6).vm-title { margin: 0 0 var(--vm-space-2); font-size: 16px; line-height: 1.3; }

@@ -145,7 +145,7 @@ test('projection never mutates the immutable server response', () => {
   assert.deepEqual(input, before);
 });
 
-test('approved partial metadata displays only the model and dated source with all eight facts unknown', () => {
+test('approved partial metadata displays only the model and dated source with every shared fact unknown', () => {
   const dto = partial(); const before = structuredClone(dto);
   const outcome = toOfferPresentation(envelope(dto)); assert.equal(outcome.status, 'ok');
   const v = outcome.value; const car = v.currentCar;
@@ -153,7 +153,9 @@ test('approved partial metadata displays only the model and dated source with al
   assert.deepEqual(car.display, { name: dto.comparison.currentCar.model }); assert.deepEqual(car.media, {});
   assert.deepEqual(car.source, dto.comparison.currentCar.source);
   assert.equal(car.provenance, undefined);
-  assert.deepEqual(car.facts.map((f) => f.label), ['Configuration', 'Body', 'Fuel', 'Seats', 'Boot', 'MPG', '0–62 mph', 'Points a month']);
+  assert.deepEqual(car.facts.map((f) => [f.key, f.label]), [['body', 'Body style'], ['fuel', 'Fuel'], ['seats', 'Seats'], ['boot', 'Boot'],
+    ['zeroTo62', '0 to 62 mph'], ['mpg', 'Fuel economy'], ['points', 'Points a month']]);
+  assert.equal(car.configuration, null);
   assert.ok(car.facts.every((f) => f.value === null && f.missingLabel === 'Unknown'));
   assert.equal(v.card.members[0].terms[0].value, 1100); assert.equal(v.card.members[0].terms[0].allowance, 1300);
   car.source.sourceVersion = 'local edit'; car.facts[0].value = 'local edit'; assert.deepEqual(dto, before);
@@ -221,8 +223,9 @@ test('recorded current-car facts display formatted beside Unknown ones', () => {
   const dto = recorded(partial(), { configuration: '320i M Sport Touring', body: 'estate', boot: 500, mpg: 42.8, zeroTo62: 7.6, points: 1100 });
   const { value } = toOfferPresentation(envelope(dto)); const by = Object.fromEntries(value.currentCar.facts.map((f) => [f.label, f.value]));
   assert.equal(value.comparisonAvailable, true); assert.equal(value.currentCar.status, 'partial');
-  assert.deepEqual(by, { Configuration: '320i M Sport Touring', Body: 'Estate', Fuel: null, Seats: null, Boot: '500 litres',
-    MPG: '42.8 mpg', '0–62 mph': '7.6 s', 'Points a month': '1,100 points' });
+  assert.equal(value.currentCar.configuration, '320i M Sport Touring');
+  assert.deepEqual(by, { 'Body style': 'Estate', Fuel: null, Seats: null, Boot: '500 litres',
+    'Fuel economy': '42.8 mpg', '0 to 62 mph': '7.6 s', 'Points a month': '1,100 points' });
 });
 
 test('all eight recorded facts give an available comparison with no unknowns', () => {

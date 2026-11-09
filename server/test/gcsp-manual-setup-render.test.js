@@ -68,10 +68,13 @@ test('grouped setup preserves native controls and focus through edits and displa
   assert.equal(control(f, 'driverId').value, ''); assert.equal(control(f, 'phone').value, '01632 960000');
   const phone = control(f, 'phone'); phone.focus(); input(f, 'phone', '01632 960005');
   assert.equal(control(f, 'phone'), phone); assert.equal(document.activeElement, phone);
-  assert.match(f.root.textContent, /Employee facts are read-only/); assert.match(f.root.textContent, /Driver and licence facts are read-only/);
+  assert.match(f.root.textContent, /Employee facts are read-only/);
+  // FUCQ-277: before a driver is chosen the licence facts, their hint and every "Not supplied" are absent, with the synthetic footer.
+  assert.doesNotMatch(f.root.textContent, /Not supplied|Driver and licence facts are read-only|Synthetic monthly demo|Not a verified/);
+  assert.equal(f.root.querySelector('.gcsp-setup-source').childNodes.length, 0); assert.equal(f.root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
   assert.match(f.root.textContent, /1,300 points a month/); assert.equal(control(f, 'schemeId'), null);
   input(f, 'driverId', `nominated:${f.context.employeeId}`);
-  assert.match(f.root.textContent, /spouse/); assert.match(f.root.textContent, /FICTIONAL-NOMINEE/);
+  assert.match(f.root.textContent, /Driver and licence facts are read-only/); assert.match(f.root.textContent, /spouse/); assert.match(f.root.textContent, /FICTIONAL-NOMINEE/);
   assert.ok(control(f, 'contractOptionId').querySelector('[value="twelve-month-12000"]').disabled);
   const reason = control(f, 'contractOptionId').querySelector('[value="twelve-month-12000"]').textContent; // FUCQ-197: named, not its id
   assert.match(reason, /^12 months, 12000 mi\/year \(.+\)$/); assert.equal(reason.includes('twelve-month-12000'), false);
@@ -122,7 +125,7 @@ test('account journey event enters trusted setup and Back returns to the account
   const f = await setup(t, { journey: true }); click(f, 'Choose a replacement');
   await waitFor(() => f.root.querySelector('h1')?.textContent === 'Your order choices'); fill(f); click(f, 'Back to account');
   await waitFor(() => f.root.querySelector('h1')?.textContent === 'Your cars');
-  assert.equal(f.root.querySelectorAll('main').length, 1); assert.match(f.root.textContent, /Fictional BMW 320i Touring/);
+  assert.equal(f.root.querySelectorAll('main').length, 1); assert.match(f.root.textContent, /BMW 3 Series Touring 320i/);
   click(f, 'Resume saved journey'); await waitFor(() => f.root.querySelector('h1')?.textContent === 'Your order choices');
   assert.equal(control(f, 'requestedCollectionDate').value, '2026-11-20');
 });

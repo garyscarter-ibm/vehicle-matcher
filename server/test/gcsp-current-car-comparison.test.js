@@ -8,7 +8,7 @@ function input() {
   const source = { mode: 'synthetic', sourceRef: 'fixture:current-contract', sourceVersion: 'v1',
     schemaVersion: '1', effectiveFrom: '2026-11-05T09:00:00.000Z', observedAt: '2026-11-05T09:00:00.000Z' };
   const contract = { contractId: 'current-one', employeeId: context.employeeId, slotId: context.entitlementSlotId,
-    schemeId: context.schemeId, status: 'current', model: 'Fictional BMW 320i Touring', source };
+    schemeId: context.schemeId, status: 'current', model: 'BMW 3 Series Touring 320i', source };
   return { context, now: '2026-11-05T12:00:00.000Z', employee: { ...context, version: 2,
     contract: { manualContext: { source, contracts: [contract] } } },
   slot: { runId: context.runId, employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId,
@@ -18,7 +18,7 @@ function input() {
 test('current contract yields only truthful model/provenance and explicit unknown comparisons', () => {
   const x = input(); const pin = createCurrentCarComparison(x);
   assert.equal(pin.schemaVersion, '1'); assert.equal(pin.comparisonAvailable, false);
-  assert.equal(pin.display.state, 'partial'); assert.equal(pin.display.model, 'Fictional BMW 320i Touring');
+  assert.equal(pin.display.state, 'partial'); assert.equal(pin.display.model, 'BMW 3 Series Touring 320i');
   assert.deepEqual(pin.display.source, { mode: 'synthetic', sourceVersion: 'v1', observedAt: x.now.replace('12:', '09:') });
   assert.deepEqual(pin.display.unknowns, ['configuration', 'body', 'fuel', 'seats', 'boot', 'mpg', 'zeroTo62', 'points']);
   assert.equal(pin.binding.contractId, x.slot.contractId); assert.equal(pin.binding.employeeVersion, 2); assert.equal(pin.binding.slotVersion, 3);
@@ -44,7 +44,7 @@ test('snapshot copies and freezes its metadata instead of retaining a mutable so
   x.employee.contract.manualContext.contracts[0].model = 'Changed';
   x.employee.contract.manualContext.source.sourceVersion = 'changed';
   x.employee.version = 99;
-  assert.equal(pin.display.model, 'Fictional BMW 320i Touring'); assert.equal(pin.binding.source.sourceVersion, 'v1');
+  assert.equal(pin.display.model, 'BMW 3 Series Touring 320i'); assert.equal(pin.binding.source.sourceVersion, 'v1');
   assert.equal(pin.binding.employeeVersion, 2);
   assert.throws(() => { pin.display.model = 'Overwritten'; }, TypeError);
   assert.throws(() => pin.display.unknowns.push('invented'), TypeError);

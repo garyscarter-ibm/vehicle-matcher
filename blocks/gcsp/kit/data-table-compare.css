@@ -1,0 +1,7 @@
+@import "./gcsp-kit.css";
+/* dataTable compare variant (FUCQ-275): row header | value | value at any width; long values wrap. */
+.gcsp .is-compare .gcsp-table { table-layout: fixed; }
+.gcsp .is-compare .gcsp-table-th:first-child { width: 30%; }
+.gcsp .is-compare .gcsp-table-th, .gcsp .is-compare .gcsp-table-rowhead, .gcsp .is-compare .gcsp-table-td { min-width: 0; overflow-wrap: anywhere; vertical-align: top; }
+.gcsp .is-compare .gcsp-table-rowhead { font-weight: 400; color: var(--gcsp-text-muted); }
+.gcsp .gcsp-table-th-sub { display: block; margin-top: 2px; color: var(--gcsp-text); font-weight: 600; }

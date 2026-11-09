@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
 import { readFile } from 'node:fs/promises';
 import { createOfferView } from '../../blocks/gcsp/offer/offer-view.js';
-import { offerFixture } from '../../blocks/gcsp/offer/fixtures.js';
+import { offerFixture, FIXTURE_NAMES } from '../../blocks/gcsp/offer/fixtures.js';
 import { createOfferController } from '../../blocks/gcsp/offer/offer-controller.js';
 import { createOfferHttpAdapter } from '../../blocks/gcsp/offer/http-adapter.js';
 import { toOfferPresentation } from '../../blocks/gcsp/offer/offer-projection.js';
@@ -33,9 +33,41 @@ test('exact shared card, points and current car comparison preserve supplied unk
   assert.match(root.textContent, /Fitted equipment unknown/);
   assert.match(root.textContent, /Representative BMW brand image, not this exact car/);
   assert.match(root.textContent, /Synthetic presentation example/);
+  assert.equal(root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
   assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
   const reason = root.querySelector('[data-offer-action="accept"]').getAttribute('aria-describedby');
   assert.match(root.querySelector(`#${reason}`).textContent, /Decisions are unavailable/);
+});
+
+// FUCQ-275: a phone-length offer put the deadline last, repeated facts and listed them one per row.
+test('FUCQ-275: a pending offer leads with the deadline and has one comparison table with shared rows', async () => {
+  const { root, data } = render('pending');
+  const [intro, clock, asOf] = [...root.querySelector('.gcsp-offer-content').children];
+  assert.ok(intro.querySelector('h1')); assert.ok(clock.classList.contains('gcsp-countdown'));
+  assert.equal(clock.textContent, '2 hours remaining'); assert.ok(asOf.classList.contains('gcsp-note')); assert.match(asOf.textContent, /Demo time/);
+  assert.equal(root.querySelectorAll('.gcsp-countdown').length, 1);
+  const tables = root.querySelectorAll('[data-offer-comparison] table'); assert.equal(tables.length, 1);
+  const labels = [...tables[0].querySelectorAll('tbody th[scope="row"]')].map((node) => node.textContent);
+  assert.deepEqual(labels, ['Body style', 'Fuel', 'Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Points a month']);
+  const rows = [...tables[0].querySelectorAll('tbody tr')];
+  assert.ok(rows.every((row) => row.querySelectorAll('td').length === 2));
+  assert.deepEqual([...rows[3].querySelectorAll('td')].map((node) => node.textContent), ['500 litres', '480 litres']);
+  assert.deepEqual([...rows[6].querySelectorAll('td')].map((node) => node.textContent), ['1,100 points', 'Unknown']);
+  const heads = [...tables[0].querySelectorAll('thead th')].map((node) => node.textContent);
+  assert.match(heads[1], /^This offer .*BMW 320i/); assert.match(heads[2], /^Your current car 320i M Sport Touring$/);
+  assert.equal(root.querySelector('.gcsp-offer-current h2'), null); assert.doesNotMatch([...root.querySelectorAll('h2, h3')].map((h) => h.textContent).join('|'), /Your current car/);
+  const facts = root.querySelector('.vm-card .vm-facts'); assert.ok(facts.classList.contains('vm-facts-pair'));
+  const shown = [...facts.querySelectorAll('dt')].map((node) => node.textContent);
+  assert.deepEqual(shown, ['Derivative', 'Colour', 'Options']); assert.ok(data);
+  assert.doesNotMatch(root.textContent, /0–62 mph|MPG|\bBody\b(?! style)/);
+});
+
+test('FUCQ-275: without a current car the card keeps its specs and the note stands in for the table', () => {
+  const { root, view, data } = render('pending');
+  view.update({ ...data, currentCar: null, comparisonAvailable: false, canAccept: false, canDecline: false, decisionUnavailable: true, countdown: '2 hours remaining' });
+  assert.equal(root.querySelectorAll('table').length, 0); assert.match(root.textContent, /Current-car details not supplied/);
+  const shown = [...root.querySelectorAll('.vm-card .vm-facts dt')].map((node) => node.textContent);
+  assert.deepEqual(shown.slice(0, 7), ['Body style', 'Fuel', 'Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Derivative']);
 });
 
 test('missing image has a useful fallback and terminal states have no decision controls', () => {
@@ -136,11 +168,13 @@ test('recorded current-car facts render formatted beside Unknown ones with the s
   const root = document.createElement('div'); document.body.append(root);
   const ctl = createOfferController(adapter); const view = createOfferView(root); const unsub = ctl.subscribe(view.update);
   try {
-    await ctl.refresh(); const text = root.querySelector('.gcsp-offer-current').textContent;
+    await ctl.refresh(); const section = root.querySelector('[data-offer-comparison]'); const text = section.textContent;
     assert.match(text, /Partial comparison\. Some current-car facts are unknown\./);
     for (const known of [/500 litres/, /42\.8 mpg/, /7\.6 s/]) assert.match(text, known);
-    assert.equal(root.querySelectorAll('.gcsp-offer-current dd.is-missing').length, 5);
-    assert.equal(root.querySelectorAll('.gcsp-offer-current dd').length, 8);
+    assert.equal(section.querySelectorAll('td.is-missing').length, 4);
+    assert.equal(section.querySelectorAll('tbody tr').length, 7);
+    const unknown = [...section.querySelectorAll('tbody tr')].map((row) => row.children[2].textContent);
+    assert.deepEqual(unknown, ['Unknown', 'Unknown', 'Unknown', '500 litres', '7.6 s', '42.8 mpg', 'Unknown']);
   } finally { unsub(); ctl.destroy(); view.destroy(); }
 });
 
@@ -151,18 +185,18 @@ test('approved partial DTO renders dated provenance and eight unknowns through H
   const root = document.createElement('div'); document.body.append(root);
   const c = createOfferController(adapter); const view = createOfferView(root); const unsubscribe = c.subscribe(view.update);
   try {
-    const model = await c.refresh(); const comparison = root.querySelector('.gcsp-offer-current');
-    assert.equal(comparison.querySelector('h3').textContent, 'Fictional BMW 320i Touring');
+    const model = await c.refresh(); const comparison = root.querySelector('[data-offer-comparison]');
+    assert.match(comparison.querySelector('thead th:nth-child(3)').textContent, /Your current car\s*Fictional BMW 320i Touring/);
     assert.match(comparison.textContent, /Partial comparison\. Current-car specifications and points are unknown\./);
     assert.doesNotMatch(comparison.textContent, /Synthetic source|manual-records-v1|2026-11-05T11|Observed|Source not supplied/);
-    assert.equal(comparison.querySelectorAll('dd').length, 8);
-    assert.ok([...comparison.querySelectorAll('dd')].every((node) => node.textContent === 'Unknown'));
-    assert.match(comparison.textContent, /No image for this car yet/); assert.equal(comparison.querySelector('img'), null);
+    const currentCells = [...comparison.querySelectorAll('tbody tr')].map((row) => row.children[2]);
+    assert.equal(currentCells.length, 7); assert.ok(currentCells.every((node) => node.textContent === 'Unknown'));
+    assert.equal(comparison.querySelector('img'), null);
     assert.equal(model.comparisonAvailable, false); assert.equal(model.seconds, 7200);
     assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
     const refresh = root.querySelector('[data-offer-action="refresh"]'); refresh.focus();
     dto.serverNow = '2026-11-05T12:00:05.000Z'; await c.refresh();
-    assert.equal(root.querySelector('.gcsp-offer-current'), comparison); assert.equal(document.activeElement, refresh);
+    assert.equal(root.querySelector('[data-offer-comparison]'), comparison); assert.equal(document.activeElement, refresh);
     dto.comparison.currentCar.source.observedAt = '2026-11-05T12:00:00.001Z'; await c.refresh();
     assert.match(root.textContent, /Current-car details not supplied/); assert.match(root.textContent, /Order no\. 0999987/);
     assert.doesNotMatch(root.textContent, /Fictional BMW 320i Touring/);
@@ -176,7 +210,7 @@ test('partial model and provenance use text nodes for untrusted display strings'
   const { toOfferPresentation } = await import('../../blocks/gcsp/offer/offer-projection.js');
   const root = document.createElement('div'); const view = createOfferView(root);
   view.update(toOfferPresentation({ status: 'ok', value: dto }).value);
-  const comparison = root.querySelector('.gcsp-offer-current');
+  const comparison = root.querySelector('[data-offer-comparison]');
   assert.equal(comparison.querySelectorAll('script, img, [onerror]').length, 0);
   assert.match(comparison.textContent, /<img src=x onerror=alert\(1\)>/);
   assert.doesNotMatch(comparison.textContent, /script/); view.destroy();
@@ -204,7 +238,7 @@ test('published decline-only DTO updates mounted actions and accessible explanat
     const reason = root.querySelector(`#${accept.getAttribute('aria-describedby')}`);
     assert.equal(reason.textContent, 'Acceptance is unavailable. You can still decline this offer.');
     assert.match(root.textContent, /1 hour remaining/); assert.match(root.textContent, /Order no\. 0123456/);
-    assert.match(root.textContent, /Partial comparison/); assert.equal(root.querySelectorAll('.gcsp-offer-current dd.is-missing').length, 8);
+    assert.match(root.textContent, /Partial comparison/); assert.equal(root.querySelectorAll('[data-offer-comparison] td.is-missing').length, 7);
     accept.click(); assert.deepEqual(calls, []);
     delete dto.comparison; await c.refresh();
     assert.match(root.textContent, /Current-car details not supplied/); assert.equal(root.querySelector('[data-offer-action="decline"]').disabled, false);
@@ -220,6 +254,24 @@ test('scoped offer sources and harness obey embed CSP and composition styling bo
   const css = await readFile(new URL('../../blocks/gcsp/offer/gcsp-offer.css', import.meta.url), 'utf8');
   assert.doesNotMatch(css, /\.vm-card|\.vm-btn|#[\da-f]{3,8}\b/i);
   assert.match(css, /minmax\(0, 1fr\)/);
+});
+
+// FUCQ-275: the comparison table is a kit dataTable, so its kit stylesheet must be in the offer page's chain.
+test('the offer stylesheet chain loads the kit table styles and keeps card and table side by side from 800 px', async () => {
+  const seen = new Set();
+  const walk = async (file) => {
+    if (seen.has(file.href)) return; seen.add(file.href);
+    const text = await readFile(file, 'utf8');
+    for (const [, rel] of text.matchAll(/@import\s+"([^"]+)"/g)) await walk(new URL(rel, file));
+  };
+  const entry = new URL('../../blocks/gcsp/offer/gcsp-offer.css', import.meta.url); await walk(entry);
+  const root = new URL('../../', import.meta.url).href;
+  const chain = [...seen].map((href) => href.slice(root.length));
+  for (const sheet of ['blocks/gcsp/kit/gcsp-kit.css', 'blocks/gcsp/kit/data-table-compare.css']) assert.ok(chain.includes(sheet), chain.join(', '));
+  const kit = await readFile(new URL('../../blocks/gcsp/kit/data-table-compare.css', import.meta.url), 'utf8');
+  assert.match(kit, /\.gcsp \.is-compare \.gcsp-table \{ table-layout: fixed;/);
+  const css = await readFile(entry, 'utf8');
+  assert.match(css, /@media \(min-width: 800px\) \{\s*\.gcsp \.gcsp-offer-comparison \{ grid-template-columns: minmax\(0, 1fr\) minmax\(0, 1fr\); \}/);
 });
 
 const stageText = (root) => [...root.querySelectorAll('.gcsp-stage-item')].map((row) => [...row.children].map((node) => node.textContent));
@@ -271,13 +323,14 @@ for (const [name, headline, stages] of [
     ['sales-manager approval', 'Waiting'], ['sent to ordering', 'Not started']]],
   ['selection-pending', 'Sending your selection to ordering. Ordering owns the next step. You do not need to do anything.', [['selection received', 'Sending'], ['HR approval', 'Not started'],
     ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
-  ['selection-failed', 'Your selection was not accepted for ordering. The car stays reserved. Contact scheme support.', [['selection received', 'Not accepted'],
-    ['HR approval', 'Not started'], ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
+  ['selection-failed', 'The car stays reserved for you. Nothing has been ordered. Contact scheme support and quote order reference GCSP-000123.',
+    [['selection received', 'Not accepted'], ['HR approval', 'Not started'], ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
 ]) test(`accepted offer shows the server's stage names and states: ${name}`, async () => {
   const { root, stop } = await mountFixture(name);
   try {
-    assert.equal(root.querySelector('h1').textContent, 'Offer accepted');
-    assert.equal(root.querySelector('p.gcsp-note').textContent, headline);
+    const refused = name === 'selection-failed';
+    assert.equal(root.querySelector('h1').textContent, refused ? 'Your selection was not sent to ordering' : 'Offer accepted');
+    assert.equal(root.querySelector(refused ? '.vm-status .vm-lede' : 'p.gcsp-note').textContent, headline);
     assert.deepEqual(stageText(root), stages);
     assert.equal(root.querySelector('.gcsp-stage-heading').textContent, 'Your selection');
     const ids = [...root.querySelector('.gcsp-stage-heading').closest('.gcsp-offer-current').querySelectorAll('dl > div')].map((d) => [d.querySelector('dt').textContent, d.querySelector('dd').textContent]);
@@ -285,6 +338,35 @@ for (const [name, headline, stages] of [
     assert.doesNotMatch(root.textContent, /Order number/); assert.equal(root.querySelector('[aria-label="Before you accept"]'), null);
     assert.doesNotMatch(root.textContent, /\bapproved\b/i); assert.equal(root.querySelector('[data-offer-action="accept"]'), null);
   } finally { stop(); }
+});
+
+test('FUCQ-300: a refused handoff states the outcome, links Renewal help and mounts no tracker', () => {
+  const refusedModel = () => ({ ...offerFixture('selection-failed').value, canAccept: false, canDecline: false, orderUuid: ORDER });
+  const links = { orderProgress: '/gcsp-order-progress-live.html', cars: '/gcsp-account.html', help: '/gcsp-help.html' };
+  const mounts = []; const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root, { links, mountOrder: (host, input) => { mounts.push(input); host.textContent = 'tracker'; return () => {}; } });
+  view.update(refusedModel());
+  assert.equal(root.querySelector('h1').textContent, 'Your selection was not sent to ordering'); assert.equal(root.querySelectorAll('h1').length, 1);
+  const status = root.querySelector('.vm-status'); assert.ok(status); assert.equal(status.querySelector('h1.vm-title').textContent, root.querySelector('h1').textContent);
+  assert.equal(status.querySelector('.vm-lede').textContent, 'The car stays reserved for you. Nothing has been ordered. Quote order reference GCSP-000123 when you contact scheme support.');
+  const help = [...status.querySelectorAll('a.vm-btn')].find((a) => a.textContent === 'Contact scheme support');
+  assert.equal(help.getAttribute('href'), '/gcsp-help.html');
+  assert.equal(status.querySelector('a[href="/gcsp-account.html"]').textContent, 'Back to Your cars');
+  assert.equal(mounts.length, 0); assert.equal(root.querySelector('.gcsp-offer-order'), null);
+  assert.doesNotMatch(root.textContent, /View order progress|Offer accepted|not accepted for ordering/);
+  assert.equal(root.querySelector('a[href="/gcsp-order-progress-live.html"]'), null);
+  assert.equal(root.querySelector('.gcsp-stage-heading').textContent, 'Your selection'); assert.equal(root.querySelectorAll('.vm-card').length, 1);
+  assert.equal(root.querySelector('[data-offer-announcement]').textContent, 'Your selection was not sent to ordering');
+  assert.doesNotMatch(root.textContent, /\u2014/);
+  const bare = document.createElement('div'); document.body.append(bare);
+  createOfferView(bare, {}).update(refusedModel());
+  assert.equal(bare.querySelector('a[href="/gcsp-help.html"]'), null); assert.equal(bare.querySelectorAll('a.vm-btn').length, 0);
+  assert.match(bare.querySelector('.vm-status .vm-lede').textContent, /Nothing has been ordered\. Contact scheme support and quote order reference GCSP-000123\./);
+  // A normal acknowledged selection keeps its heading and the tracker.
+  const ok = document.createElement('div'); document.body.append(ok); let hosted = 0;
+  const okView = createOfferView(ok, { links, mountOrder: (host) => { hosted += 1; return () => {}; } });
+  okView.update({ ...offerFixture('selection-hr').value, canAccept: false, canDecline: false, orderUuid: ORDER });
+  assert.equal(ok.querySelector('h1').textContent, 'Offer accepted'); assert.equal(hosted, 1); assert.equal(ok.querySelector('.vm-status'), null);
 });
 
 test('an accepted offer without a selection record keeps the recorded message and no stage list', async () => {
@@ -371,7 +453,7 @@ test('the offer-hosted progress shows completed and missed handovers, rebooks th
   const missed = await host('appointment-no-show', (rebooked) => ({ requestAppointment: async (input) => { requests.push(input.slotId); rebooked(); return { status: 'ok', value: {} }; } }));
   assert.match(missed.area().textContent, /Handover missed: 8 Nov 2026, 09:00/);
   const offered = all['appointment-no-show'].appointment.value.offeredSlots;
-  const buttons = [...missed.area().querySelectorAll('button')]; assert.equal(buttons.length, offered.length); assert.equal(buttons[0].textContent, 'Request 9 Nov 2026, 09:00');
+  const buttons = [...missed.area().querySelectorAll('button')]; assert.equal(buttons.length, offered.length); assert.equal(buttons[0].getAttribute('aria-label'), 'Request 9 Nov 2026, 09:00');
   buttons[0].click();
   for (let n = 0; n < 60 && !/Not booked yet/.test(missed.area()?.textContent ?? ''); n += 1) await new Promise((done) => setTimeout(done, 15));
   assert.deepEqual(requests, [offered[0].slotId]);
@@ -515,4 +597,14 @@ test('GC-041: mountOffer shows the host navigation in the rail, and an empty rai
   const stopAnonymous = mountOffer(anonymous, { read, account: { status: 'unavailable' }, ...signedInPortal({ status: 'unavailable' }, location) });
   await new Promise((done) => setTimeout(done, 20));
   assert.equal(anonymous.querySelectorAll('nav button[data-key]').length, 0); assert.equal(anonymous.querySelectorAll('a.vm-btn').length, 0); stopAnonymous();
+});
+
+test('FUCQ-286: every offer state has one h1 and its heading levels never skip', () => {
+  for (const name of FIXTURE_NAMES) {
+    const { root } = render(name);
+    const levels = [...root.querySelectorAll('h1,h2,h3,h4,h5,h6')].map((h) => Number(h.tagName[1]));
+    assert.equal(levels.filter((level) => level === 1).length, 1, `${name}: ${levels}`);
+    levels.forEach((level, i) => assert.ok(level <= (levels[i - 1] ?? 0) + 1, `${name} skips a level: ${levels}`));
+  }
+  assert.equal(render('pending').root.querySelector('.vm-card-name').tagName, 'H2');
 });

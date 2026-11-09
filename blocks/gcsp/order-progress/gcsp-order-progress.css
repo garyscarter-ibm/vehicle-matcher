@@ -1,8 +1,7 @@
 @import "../../vehicle-matcher/gcsp-kit.css";
 @import "../kit/activity-timeline.css";
-@import "../kit/stage-tracker.css";
+@import "../kit/stage-tracker.css"; @import "../kit/slot-picker.css";
 @import "../kit/task-list.css";
-
 .gcsp .gcsp-order-progress { max-width: 1120px; display: flex; flex-direction: column; gap: 32px; }
 .gcsp .gcsp-order-intro .vm-title { margin: 0; font-size: 34px; line-height: 1.15; }
 .gcsp .gcsp-order-note, .gcsp .gcsp-order-number, .gcsp .gcsp-order-choice-reason { margin: 0; font-size: 14px; color: var(--gcsp-text-muted); }
@@ -16,7 +15,8 @@
 .gcsp .gcsp-order-car-name { margin: 0 0 6px; font-size: 24px; line-height: 1.25; font-weight: 600; overflow-wrap: anywhere; }
 .gcsp .gcsp-order-statement { margin: 0; font-size: 18px; font-weight: 600; overflow-wrap: anywhere; }
 .gcsp .gcsp-order-failure { margin: 0; font-size: 16px; color: var(--gcsp-text-muted); }
-.gcsp .gcsp-order-actions, .gcsp .gcsp-order-slots { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px 12px; list-style: none; margin: 0; padding: 0; }
+.gcsp .gcsp-order-actions { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px 12px; list-style: none; margin: 0; padding: 0; }
+.gcsp .gcsp-order-todo-list { margin: 0; padding-left: 20px; overflow-wrap: anywhere; }
 .gcsp .gcsp-order-choice { display: grid; gap: 8px; width: 100%; }
 .gcsp .gcsp-order-choice-label { margin: 0; font-size: 16px; font-weight: 600; }
 .gcsp .gcsp-order-progress .vm-screen { animation: none; }
@@ -26,5 +26,5 @@
   .gcsp .gcsp-order-progress { gap: 24px; }
   .gcsp .gcsp-order-intro .vm-title { font-size: 30px; }
   .gcsp .gcsp-order-car { grid-template-columns: minmax(0, 1fr); }
-  .gcsp .gcsp-order-slots .vm-btn, .gcsp .gcsp-order-actions .vm-btn { width: 100%; }
+  .gcsp .gcsp-order-actions .vm-btn { width: 100%; }
 }

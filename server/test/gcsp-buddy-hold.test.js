@@ -74,7 +74,7 @@ test('atomic local allocation pins truthful quote, hold, offer and one notificat
   const currentCar = quote.eligibility.currentCarComparison;
   assert.equal(currentCar.comparisonAvailable, true); assert.equal(currentCar.display.state, 'available');
   assert.deepEqual(currentCar.display.unknowns, []); assert.equal(currentCar.display.facts.boot.value, 500);
-  assert.equal(currentCar.display.model, 'Fictional BMW 320i Touring');
+  assert.equal(currentCar.display.model, 'BMW 3 Series Touring 320i');
   assert.equal(currentCar.binding.employeeVersion, f.input.expectedEmployeeVersion);
   assert.equal(currentCar.binding.slotVersion, f.input.expectedSlotVersion);
   const timing = await f.policy.getAssumption('hold.buddy.durationSeconds', { runId: f.context.runId,
@@ -119,7 +119,7 @@ test('local quote preserves current-car metadata after the authenticated employe
   assert.equal((await patch(f, 'employees', { employeeId: f.context.employeeId }, { contract: changed })).status, 'ok');
   const quote = (await f.repository.read(f.context, rowRef(f, 'quotes', { quoteId: original.value.quote.quoteId }))).value;
   assert.deepEqual(quote, original.value.quote);
-  assert.equal(quote.eligibility.currentCarComparison.display.model, 'Fictional BMW 320i Touring');
+  assert.equal(quote.eligibility.currentCarComparison.display.model, 'BMW 3 Series Touring 320i');
 });
 
 test('plaintext token remains only in the outbox link, including repository receipts', async (t) => {

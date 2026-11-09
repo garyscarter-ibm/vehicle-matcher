@@ -3,14 +3,14 @@ import { el } from '../../vehicle-matcher/ui.js';
 
 const LEVELS = ['headline', 'standard', 'compact'];
 
-/** Value (string, number or { label, isBand, fewerThan }) -> { label, isBand, fewerThan, missing }. */
+/** Value (string, number, { label, isBand, fewerThan } or { label, missing }) -> { label, isBand, fewerThan, missing }. */
 export function readValue(value) {
   if (value === null || value === undefined || value === '') return { label: 'Not supplied', isBand: false, missing: true };
   if (typeof value === 'object') {
     const label = value.label === null || value.label === undefined || value.label === '' ? null : String(value.label);
     if (label === null) return { label: 'Not supplied', isBand: false, missing: true };
     const isBand = Boolean(value.isBand);
-    return { label, isBand, fewerThan: isBand && Number.isFinite(value.fewerThan) ? value.fewerThan : null, missing: false };
+    return { label, isBand, fewerThan: isBand && Number.isFinite(value.fewerThan) ? value.fewerThan : null, missing: value.missing === true };
   }
   return { label: typeof value === 'number' ? value.toLocaleString('en-GB') : String(value), isBand: false, missing: false };
 }

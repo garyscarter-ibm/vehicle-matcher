@@ -1,0 +1,562 @@
+{
+  "story": "FUCQ-280",
+  "passed": true,
+  "origin": "https://localhost:9460",
+  "runtime": "memory",
+  "pageErrors": [],
+  "captures": [
+    {
+      "page": "offer",
+      "viewport": 1280,
+      "url": "/gcsp-offer.html (pending offer)",
+      "h1Text": "Your car offer",
+      "focused": {
+        "tagName": "H1",
+        "text": "Your car offer",
+        "isPageH1": true
+      },
+      "ringVisible": {
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "boxShadow": "none",
+        "focusVisible": true,
+        "quietMarker": true,
+        "visible": false
+      },
+      "outlineRulesMatching": [
+        ".gcsp a:focus-visible, .gcsp button:focus-visible, .gcsp summary:focus-visible, .gcsp [tabindex]:focus-visible { outline: 2px solid var(--gcsp-focus); outline-o",
+        ".gcsp .gcsp-main :is(h1, h2, h3)[tabindex=\"-1\"]:focus-visible { outline-offset: 6px; }",
+        ".gcsp [data-gcsp-quiet-focus]:focus { outline: none !important; }",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f"
+      ],
+      "contentStartX": {
+        "main": 72,
+        "firstChild": 72,
+        "firstTextBlock": 120,
+        "h1": 120
+      },
+      "crumb": "YOUR OFFER",
+      "kicker": null,
+      "nav": [
+        {
+          "label": "Your cars",
+          "ariaDisabled": false,
+          "shown": true
+        },
+        {
+          "label": "Your car brief",
+          "ariaDisabled": false,
+          "shown": true
+        },
+        {
+          "label": "Buddy activity",
+          "ariaDisabled": false,
+          "shown": true
+        },
+        {
+          "label": "Order progress",
+          "ariaDisabled": false,
+          "shown": true
+        }
+      ],
+      "presenterStrip": {
+        "rect": {
+          "left": 0,
+          "top": 0,
+          "width": 0,
+          "height": 0
+        },
+        "open": false,
+        "leftVsH1": -120
+      },
+      "overflowPx": 0,
+      "screenshot": "docs/gcsp/evidence/fucq-280/1280-offer.png",
+      "pass": true
+    },
+    {
+      "page": "offer",
+      "viewport": 375,
+      "url": "/gcsp-offer.html (pending offer)",
+      "h1Text": "Your car offer",
+      "focused": {
+        "tagName": "H1",
+        "text": "Your car offer",
+        "isPageH1": true
+      },
+      "ringVisible": {
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "boxShadow": "none",
+        "focusVisible": true,
+        "quietMarker": true,
+        "visible": false
+      },
+      "outlineRulesMatching": [
+        ".gcsp a:focus-visible, .gcsp button:focus-visible, .gcsp summary:focus-visible, .gcsp [tabindex]:focus-visible { outline: 2px solid var(--gcsp-focus); outline-o",
+        ".gcsp .gcsp-main :is(h1, h2, h3)[tabindex=\"-1\"]:focus-visible { outline-offset: 6px; }",
+        ".gcsp [data-gcsp-quiet-focus]:focus { outline: none !important; }",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f"
+      ],
+      "contentStartX": {
+        "main": 12,
+        "firstChild": 12,
+        "firstTextBlock": 16,
+        "h1": 16
+      },
+      "crumb": "YOUR OFFER",
+      "kicker": null,
+      "nav": [
+        {
+          "label": "Your cars",
+          "ariaDisabled": false,
+          "shown": false
+        },
+        {
+          "label": "Your car brief",
+          "ariaDisabled": false,
+          "shown": false
+        },
+        {
+          "label": "Buddy activity",
+          "ariaDisabled": false,
+          "shown": false
+        },
+        {
+          "label": "Order progress",
+          "ariaDisabled": false,
+          "shown": false
+        }
+      ],
+      "presenterStrip": {
+        "rect": {
+          "left": 0,
+          "top": 0,
+          "width": 0,
+          "height": 0
+        },
+        "open": false,
+        "leftVsH1": -16
+      },
+      "overflowPx": 0,
+      "screenshot": "docs/gcsp/evidence/fucq-280/375-offer.png",
+      "pass": true
+    },
+    {
+      "page": "your-cars",
+      "viewport": 1280,
+      "url": "/gcsp-account.html",
+      "h1Text": "Your cars",
+      "focused": {
+        "tagName": "H1",
+        "text": "Your cars",
+        "isPageH1": true
+      },
+      "ringVisible": {
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "boxShadow": "none",
+        "focusVisible": true,
+        "quietMarker": true,
+        "visible": false
+      },
+      "outlineRulesMatching": [
+        ".gcsp a:focus-visible, .gcsp button:focus-visible, .gcsp summary:focus-visible, .gcsp [tabindex]:focus-visible { outline: 2px solid var(--gcsp-focus); outline-o",
+        ".gcsp .gcsp-main :is(h1, h2, h3)[tabindex=\"-1\"]:focus-visible { outline-offset: 6px; }",
+        ".gcsp [data-gcsp-quiet-focus]:focus { outline: none !important; }",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f"
+      ],
+      "contentStartX": {
+        "main": 72,
+        "firstChild": 72,
+        "firstTextBlock": 72,
+        "h1": 72
+      },
+      "crumb": "YOUR CARS",
+      "kicker": "CHOICES",
+      "nav": [
+        {
+          "label": "Your cars",
+          "ariaDisabled": false,
+          "shown": true
+        },
+        {
+          "label": "New order",
+          "ariaDisabled": true,
+          "shown": true
+        },
+        {
+          "label": "Order history",
+          "ariaDisabled": true,
+          "shown": true
+        },
+        {
+          "label": "Drivers and licences",
+          "ariaDisabled": true,
+          "shown": true
+        },
+        {
+          "label": "Scheme guidelines",
+          "ariaDisabled": true,
+          "shown": true
+        }
+      ],
+      "presenterStrip": {
+        "rect": {
+          "left": 0,
+          "top": 0,
+          "width": 0,
+          "height": 0
+        },
+        "open": false,
+        "leftVsH1": -72
+      },
+      "overflowPx": 0,
+      "screenshot": "docs/gcsp/evidence/fucq-280/1280-your-cars.png",
+      "pass": true
+    },
+    {
+      "page": "brief",
+      "viewport": 1280,
+      "url": "/gcsp-brief-live.html",
+      "h1Text": "Your buddy found your car",
+      "focused": {
+        "tagName": "H1",
+        "text": "Your buddy found your car",
+        "isPageH1": true
+      },
+      "ringVisible": {
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "boxShadow": "none",
+        "focusVisible": true,
+        "quietMarker": true,
+        "visible": false
+      },
+      "outlineRulesMatching": [
+        ".gcsp a:focus-visible, .gcsp button:focus-visible, .gcsp summary:focus-visible, .gcsp [tabindex]:focus-visible { outline: 2px solid var(--gcsp-focus); outline-o",
+        ".gcsp .gcsp-main :is(h1, h2, h3)[tabindex=\"-1\"]:focus-visible { outline-offset: 6px; }",
+        ".gcsp [data-gcsp-quiet-focus]:focus { outline: none !important; }",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f"
+      ],
+      "contentStartX": {
+        "main": 72,
+        "firstChild": 72,
+        "firstTextBlock": 120,
+        "h1": 120
+      },
+      "crumb": "YOUR CAR BRIEF",
+      "kicker": null,
+      "nav": [
+        {
+          "label": "Your car brief",
+          "ariaDisabled": false,
+          "shown": true
+        }
+      ],
+      "presenterStrip": {
+        "rect": {
+          "left": 0,
+          "top": 0,
+          "width": 0,
+          "height": 0
+        },
+        "open": false,
+        "leftVsH1": -120
+      },
+      "overflowPx": 0,
+      "screenshot": "docs/gcsp/evidence/fucq-280/1280-brief.png",
+      "pass": true
+    },
+    {
+      "page": "activity",
+      "viewport": 1280,
+      "url": "/gcsp-activity-live.html",
+      "h1Text": "Your buddy",
+      "focused": {
+        "tagName": "H1",
+        "text": "Your buddy",
+        "isPageH1": true
+      },
+      "ringVisible": {
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "boxShadow": "none",
+        "focusVisible": true,
+        "quietMarker": true,
+        "visible": false
+      },
+      "outlineRulesMatching": [
+        ".gcsp a:focus-visible, .gcsp button:focus-visible, .gcsp summary:focus-visible, .gcsp [tabindex]:focus-visible { outline: 2px solid var(--gcsp-focus); outline-o",
+        ".gcsp .gcsp-main :is(h1, h2, h3)[tabindex=\"-1\"]:focus-visible { outline-offset: 6px; }",
+        ".gcsp [data-gcsp-quiet-focus]:focus { outline: none !important; }",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f"
+      ],
+      "contentStartX": {
+        "main": 72,
+        "firstChild": 72,
+        "firstTextBlock": 152,
+        "h1": 152
+      },
+      "crumb": "BUDDY ACTIVITY",
+      "kicker": null,
+      "nav": [
+        {
+          "label": "Your car brief",
+          "ariaDisabled": false,
+          "shown": true
+        },
+        {
+          "label": "Buddy activity",
+          "ariaDisabled": false,
+          "shown": true
+        }
+      ],
+      "presenterStrip": {
+        "rect": {
+          "left": 0,
+          "top": 0,
+          "width": 0,
+          "height": 0
+        },
+        "open": false,
+        "leftVsH1": -152
+      },
+      "overflowPx": 0,
+      "screenshot": "docs/gcsp/evidence/fucq-280/1280-activity.png",
+      "pass": true
+    },
+    {
+      "page": "your-cars",
+      "viewport": 375,
+      "url": "/gcsp-account.html",
+      "h1Text": "Your cars",
+      "focused": {
+        "tagName": "H1",
+        "text": "Your cars",
+        "isPageH1": true
+      },
+      "ringVisible": {
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "boxShadow": "none",
+        "focusVisible": true,
+        "quietMarker": true,
+        "visible": false
+      },
+      "outlineRulesMatching": [
+        ".gcsp a:focus-visible, .gcsp button:focus-visible, .gcsp summary:focus-visible, .gcsp [tabindex]:focus-visible { outline: 2px solid var(--gcsp-focus); outline-o",
+        ".gcsp .gcsp-main :is(h1, h2, h3)[tabindex=\"-1\"]:focus-visible { outline-offset: 6px; }",
+        ".gcsp [data-gcsp-quiet-focus]:focus { outline: none !important; }",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f"
+      ],
+      "contentStartX": {
+        "main": 12,
+        "firstChild": 12,
+        "firstTextBlock": 12,
+        "h1": 12
+      },
+      "crumb": "YOUR CARS",
+      "kicker": "CHOICES",
+      "nav": [
+        {
+          "label": "Your cars",
+          "ariaDisabled": false,
+          "shown": false
+        },
+        {
+          "label": "New order",
+          "ariaDisabled": true,
+          "shown": false
+        },
+        {
+          "label": "Order history",
+          "ariaDisabled": true,
+          "shown": false
+        },
+        {
+          "label": "Drivers and licences",
+          "ariaDisabled": true,
+          "shown": false
+        },
+        {
+          "label": "Scheme guidelines",
+          "ariaDisabled": true,
+          "shown": false
+        }
+      ],
+      "presenterStrip": {
+        "rect": {
+          "left": 0,
+          "top": 0,
+          "width": 0,
+          "height": 0
+        },
+        "open": false,
+        "leftVsH1": -12
+      },
+      "overflowPx": 0,
+      "screenshot": "docs/gcsp/evidence/fucq-280/375-your-cars.png",
+      "pass": true
+    },
+    {
+      "page": "brief",
+      "viewport": 375,
+      "url": "/gcsp-brief-live.html",
+      "h1Text": "Your buddy found your car",
+      "focused": {
+        "tagName": "H1",
+        "text": "Your buddy found your car",
+        "isPageH1": true
+      },
+      "ringVisible": {
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "boxShadow": "none",
+        "focusVisible": true,
+        "quietMarker": true,
+        "visible": false
+      },
+      "outlineRulesMatching": [
+        ".gcsp a:focus-visible, .gcsp button:focus-visible, .gcsp summary:focus-visible, .gcsp [tabindex]:focus-visible { outline: 2px solid var(--gcsp-focus); outline-o",
+        ".gcsp .gcsp-main :is(h1, h2, h3)[tabindex=\"-1\"]:focus-visible { outline-offset: 6px; }",
+        ".gcsp [data-gcsp-quiet-focus]:focus { outline: none !important; }",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f"
+      ],
+      "contentStartX": {
+        "main": 12,
+        "firstChild": 12,
+        "firstTextBlock": 16,
+        "h1": 16
+      },
+      "crumb": "YOUR CAR BRIEF",
+      "kicker": null,
+      "nav": [
+        {
+          "label": "Your car brief",
+          "ariaDisabled": false,
+          "shown": false
+        }
+      ],
+      "presenterStrip": {
+        "rect": {
+          "left": 0,
+          "top": 0,
+          "width": 0,
+          "height": 0
+        },
+        "open": false,
+        "leftVsH1": -16
+      },
+      "overflowPx": 0,
+      "screenshot": "docs/gcsp/evidence/fucq-280/375-brief.png",
+      "pass": true
+    },
+    {
+      "page": "activity",
+      "viewport": 375,
+      "url": "/gcsp-activity-live.html",
+      "h1Text": "Your buddy",
+      "focused": {
+        "tagName": "H1",
+        "text": "Your buddy",
+        "isPageH1": true
+      },
+      "ringVisible": {
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "boxShadow": "none",
+        "focusVisible": true,
+        "quietMarker": true,
+        "visible": false
+      },
+      "outlineRulesMatching": [
+        ".gcsp a:focus-visible, .gcsp button:focus-visible, .gcsp summary:focus-visible, .gcsp [tabindex]:focus-visible { outline: 2px solid var(--gcsp-focus); outline-o",
+        ".gcsp .gcsp-main :is(h1, h2, h3)[tabindex=\"-1\"]:focus-visible { outline-offset: 6px; }",
+        ".gcsp [data-gcsp-quiet-focus]:focus { outline: none !important; }",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f",
+        ".gcsp .vm button:focus-visible, .gcsp .vm a:focus-visible, .gcsp .vm summary:focus-visible, .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-f"
+      ],
+      "contentStartX": {
+        "main": 12,
+        "firstChild": 12,
+        "firstTextBlock": 16,
+        "h1": 16
+      },
+      "crumb": "BUDDY ACTIVITY",
+      "kicker": null,
+      "nav": [
+        {
+          "label": "Your car brief",
+          "ariaDisabled": false,
+          "shown": false
+        },
+        {
+          "label": "Buddy activity",
+          "ariaDisabled": false,
+          "shown": false
+        }
+      ],
+      "presenterStrip": {
+        "rect": {
+          "left": 0,
+          "top": 0,
+          "width": 0,
+          "height": 0
+        },
+        "open": false,
+        "leftVsH1": -16
+      },
+      "overflowPx": 0,
+      "screenshot": "docs/gcsp/evidence/fucq-280/375-activity.png",
+      "pass": true
+    }
+  ],
+  "keyboard": {
+    "afterTab": {
+      "tagName": "BUTTON",
+      "text": "Refresh account",
+      "outlineStyle": "solid",
+      "outlineWidth": "2px",
+      "focusVisible": true,
+      "visible": true
+    },
+    "afterShiftTab": {
+      "tagName": "BUTTON",
+      "text": "Show labels",
+      "outlineStyle": "solid",
+      "outlineWidth": "2px",
+      "focusVisible": true,
+      "visible": true
+    },
+    "headingAfterKeyboard": {
+      "tagName": "H1",
+      "text": "Your cars",
+      "outlineStyle": "solid",
+      "outlineWidth": "2px",
+      "focusVisible": true,
+      "visible": true,
+      "isPageH1": true
+    },
+    "screenshot": "docs/gcsp/evidence/fucq-280/1280-your-cars-keyboard.png",
+    "pass": true
+  }
+}

@@ -4,6 +4,7 @@ import { mountEmployee } from '../employee/gcsp-employee.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 import { checkboxField, errorSummary } from '../kit/form-controls.js';
 import { stageList } from '../kit/stage-list.js';
+import { syntheticNote } from '../kit/synthetic-note.js';
 import { orderIdentityRows } from '../kit/order-identity.js';
 import { reviewVehicleView } from '../manual-review/gcsp-manual-review.js';
 import { createManualSummaryController } from './summary-controller.js';
@@ -116,7 +117,7 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
     const layout = el('div', 'gcsp-review-layout'); layout.append(nodes.left, nodes.right);
     nodes.declarationsCard = section('Before you submit', nodes.declarations);
     nodes.declarationsCard.querySelector('.gcsp-card-body').append(nodes.hint, actions);
-    panel.append(screenIntro({ title: 'Review your order', level: 1 }), nodes.notice, time, nodes.recovery, nodes.summary.root, layout, nodes.declarationsCard);
+    panel.append(screenIntro({ title: 'Review your order', level: 1 }), nodes.notice, time, nodes.recovery, nodes.summary.root, layout, nodes.declarationsCard, syntheticNote());
     root.replaceChildren(panel);
   }
   function after() {
@@ -160,7 +161,7 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
       ? `Order review: ${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')} remaining` : 'Reservation time unavailable';
     nodes.consequence.textContent = unconfirmed ? 'This car is not shown as reserved until the claim is confirmed. Check current claim.'
       : t?.expired ? 'This deadline has passed. You cannot submit with this reservation.'
-        : 'This car is reserved until the deadline. Submitting places your order. Time follows the presenter clock.';
+        : 'This car is reserved until the deadline. Submitting places your order.';
     if (c.announcement?.id !== announcedId) { announcedId = c.announcement?.id; nodes.live.textContent = c.announcement?.text ?? ''; }
     // A lapsed server deadline stays visible with its recovery while a slow recheck runs.
     const lapsed = !unconfirmed && Boolean(t?.expired);
@@ -173,7 +174,11 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
     nodes.hint.textContent = why; nodes.hint.hidden = !why;
     nodes.submit.disabled = !state.canSubmit;
     nodes.submit.textContent = state.status === 'submitting' ? 'Submitting order' : state.unresolved ? 'Retry the same submission' : 'Submit order';
-    const extra = [button({ label: 'Check current claim', variant: 'ghost', disabled: state.busy, onClick: () => controller.reconcile() })];
+    // A confirmed, settled claim needs no re-check control; every other state keeps it.
+    const hold = c.model?.hold?.state ?? '';
+    const settled = !unconfirmed && !lapsed && !state.unresolved && !state.notice && !state.actions.length && !claimMessages[c.status] && !c.retryAction
+      && !/-pending$/.test(hold) && !['released', 'cancelled', 'expired', 'claim-failed'].includes(hold);
+    const extra = settled ? [] : [button({ label: 'Check current claim', variant: 'ghost', disabled: state.busy, onClick: () => controller.reconcile() })];
     if (state.actions.includes('status')) extra.push(button({ label: 'Check order status', variant: 'ghost', disabled: state.status === 'submitting', onClick: () => controller.checkOrder() }));
     if (state.actions.includes('terms')) extra.push(button({ label: 'Reload terms', variant: 'ghost', disabled: state.busy, onClick: () => controller.reloadTerms({ clearTicks: false }) }));
     if (state.actions.includes('browse') || lapsed || ['expired', 'released'].includes(c.status)) extra.push(button({ label: 'Refresh stock', variant: 'ghost', onClick: browse }));

@@ -82,6 +82,13 @@ test('the hosted entry serves the gated demo and drives Paula to a captured offe
   // Retail API paths fall through the front untouched.
   assert.equal((await get('/health')).status, 200);
 
+  // The bare host sends a browser to the access page, revealing nothing the 401 hid; the favicon is a quiet 204.
+  const bare = await get('/');
+  assert.equal(bare.status, 303); assert.equal(bare.headers.get('location'), '/gcsp/access?next=%2Fgcsp-presenter.html');
+  assert.equal(bare.text, ''); assert.deepEqual(bare.headers.getSetCookie(), []);
+  assert.equal((await get('/favicon.ico')).status, 204);
+  assert.equal((await get('/', { method: 'POST' })).status, 401);
+
   // Pages need the demo key; the offer page does not.
   const gated = await get('/gcsp-presenter.html');
   assert.equal(gated.status, 303); assert.equal(gated.headers.get('location'), '/gcsp/access?next=%2Fgcsp-presenter.html');
@@ -98,6 +105,10 @@ test('the hosted entry serves the gated demo and drives Paula to a captured offe
   assert.equal(right.status, 303); assert.equal(right.headers.get('location'), '/gcsp-presenter.html');
   const access = right.headers.getSetCookie().find((line) => line.startsWith('GCSP_HOST_ACCESS='));
   assert.match(access, /; Path=\/; HttpOnly; Secure; SameSite=Lax; Max-Age=43200$/);
+
+  const bareWithAccess = await get('/');
+  assert.equal(bareWithAccess.status, 303); assert.equal(bareWithAccess.headers.get('location'), '/gcsp-presenter.html');
+  assert.equal(bareWithAccess.text, '');
 
   // The page issues the server-side demo session (Paula, plus presenter control) on the API path only.
   const page = await get('/gcsp-presenter.html');

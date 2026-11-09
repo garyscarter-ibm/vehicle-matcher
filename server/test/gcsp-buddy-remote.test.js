@@ -115,7 +115,7 @@ function offered(f) {
   assert.equal(offer.quoteId, operation(f).payload.quoteId); assert.equal(offer.state, 'active');
   const currentCar = operation(f).payload.quote.eligibility.currentCarComparison;
   assert.equal(currentCar.display.state, 'available'); assert.equal(currentCar.comparisonAvailable, true);
-  assert.equal(currentCar.display.model, 'Fictional BMW 320i Touring');
+  assert.equal(currentCar.display.model, 'BMW 3 Series Touring 320i');
   assert.equal(currentCar.binding.employeeVersion, f.input.expectedEmployeeVersion);
   assert.equal(currentCar.binding.slotVersion, f.input.expectedSlotVersion);
   const url = new URL(job.payload.offerLink, 'https://demo.invalid');

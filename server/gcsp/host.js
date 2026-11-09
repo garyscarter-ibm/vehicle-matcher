@@ -21,7 +21,7 @@ const ACCESS_COOKIE = 'GCSP_HOST_ACCESS';
 const ACCESS_PATH = '/gcsp/access';
 const ACCESS_MAX_AGE = 43200;
 const ACCESS_BODY_LIMIT = 4096;
-const publicPath = (path) => sessionPage(path) || ['/gcsp/offer', '/gcsp-offer.html', '/gcsp-employee.css', '/favicon.ico'].includes(path)
+const publicPath = (path) => sessionPage(path) || ['/gcsp/offer', '/gcsp-offer.html', '/gcsp-employee.css'].includes(path)
   || path.startsWith('/blocks/') || path.startsWith('/assets/');
 
 // The launcher's composition, shared. Callers pass only the defaults that differ.
@@ -31,7 +31,7 @@ export function gcspRuntimeOptions({ env = process.env, defaultMode, defaultEnvi
   // One synthetic ordering upstream confirms supply and releases it on top of the run's chosen stock source.
   const upstream = createDemoUpstream();
   const environmentId = env.GCSP_ENVIRONMENT_ID || defaultEnvironmentId;
-  const runtime = { mode, stockProvider: (deps) => withConfirmedSupply(stock(deps), upstream), production: upstream.production,
+  const runtime = { mode, stockProvider: (deps) => withConfirmedSupply(stock(deps), upstream, { policy: deps.policy }), production: upstream.production,
     repositoryOptions: { connectionString: env.GCSP_DATABASE_URL }, environmentId,
     policyAsOf: new Date().toISOString(), commandId, adoptOfferJourney: true,
     comparisonResultFile: env.GCSP_COMPARISON_RESULT_FILE, mail: { env } };
@@ -121,6 +121,12 @@ export function createGcspFront({ root, services, api, origin, accessKey, access
         if (hostOk && accessKey && (!gated || hasAccess(req))) req.headers['x-access-key'] = accessKey;
         api.emit('request', req, res); return;
       }
+      // The bare host and favicon get a browser answer rather than the retail API's 401 or a 404.
+      if (hostOk && req.method === 'GET' && path === '/') {
+        const location = !gated || hasAccess(req) ? '/gcsp-presenter.html' : `${ACCESS_PATH}?next=%2Fgcsp-presenter.html`;
+        res.writeHead(303, { Location: location, 'Cache-Control': 'no-store' }).end(); return;
+      }
+      if (hostOk && req.method === 'GET' && path === '/favicon.ico') { res.writeHead(204, { 'Cache-Control': 'max-age=86400' }).end(); return; }
       if (fallThrough && (!hostOk || !(publicPath(path) || gated && path === ACCESS_PATH))) { api.emit('request', req, res); return; }
       if (gated && path === ACCESS_PATH) { await accessRoute(req, res, url); return; }
       if (req.method !== 'GET' || !publicPath(path)) { res.writeHead(404).end('Not found'); return; }

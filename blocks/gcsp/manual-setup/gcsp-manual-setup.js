@@ -1,6 +1,7 @@
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
+import { syntheticNote } from '../kit/synthetic-note.js';
 import { createManualSetupController } from './setup-controller.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 
@@ -51,8 +52,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     const employeeSummary = el('summary', '', 'Employee details');
     nodes.employee.append(employeeSummary, nodes.employeeFacts, support('hr-support'));
     const form = el('form', 'gcsp-setup-form'); form.noValidate = true;
-    const driver = group('Driver and licence', field('driverId', 'Driver', 'select'),
-      el('p', 'gcsp-field-hint', 'Driver and licence facts are read-only.'), nodes.driverFacts, support('driver-support'));
+    const driver = group('Driver and licence', field('driverId', 'Driver', 'select'), nodes.driverFacts, support('driver-support'));
     const collection = group('Term and collection', field('contractOptionId', 'Contract term and annual mileage', 'select'),
       field('requestedCollectionDate', 'Requested collection date', 'input', 'date',
         'A requested date, not stock availability or a confirmed appointment.'),
@@ -70,7 +70,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     form.append(driver, collection, contact, actions);
     form.addEventListener('submit', (event) => { event.preventDefault(); save('continue'); });
     panel.append(screenIntro({ title: 'Your order choices', level: 1 }), nodes.context, nodes.allowance, nodes.employee,
-      nodes.notice, nodes.recovery, summary.root, form, nodes.invalidation, nodes.availability);
+      nodes.notice, nodes.recovery, summary.root, form, nodes.invalidation, nodes.availability, syntheticNote());
     main.replaceChildren(panel);
   }
   function select(key, rows, idKey, label) {
@@ -100,7 +100,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     nodes.allowance.replaceChildren(el('h2', 'gcsp-h2', 'Your monthly allowance'),
       facts([['Monthly allowance', o.allowanceReady ? o.allowance.monthlyPoints : null, 'points a month']]),
       el('p', 'gcsp-note', 'Cars must fit your monthly points allowance. Monthly points are checked before selection.'),
-      el('p', 'gcsp-field-hint', o.allowance?.basis ?? 'Allowance needs confirmation.'));
+      ...(o.allowanceReady ? [] : [el('p', 'gcsp-field-hint', 'Allowance needs confirmation.')]));
     nodes.employeeFacts.replaceChildren(el('p', 'gcsp-field-hint', 'Employee facts are read-only. Contact details below are editable.'),
       facts([['Name', a.account?.name], ...(a.account?.company ? [['Company', a.account.company]] : []), ['Grade', a.account?.gradeId],
       ['Employee number', a.account?.employeeNumber]]));
@@ -121,8 +121,10 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     controls.specialRequirements.maxLength = o.rules?.maximumSpecialRequirements ?? 0;
     nodes.count.textContent = `${c.specialRequirements.length} / ${o.rules?.maximumSpecialRequirements ?? 0} characters`;
     const driver = o.selectedDriver; const licence = driver?.licence;
-    nodes.driverFacts.replaceChildren(facts([['Relationship', driver?.relationship ?? (driver?.kind === 'employee' ? 'Self' : null)],
-      ['Licence number', licence?.displayNumber], ['Categories', licence?.categories?.join(', ')], ['Valid from', licence?.validFrom], ['Valid until', licence?.validUntil]]));
+    // Licence facts and their hint wait for a chosen driver, so an empty form never reads "Not supplied".
+    nodes.driverFacts.replaceChildren(...(driver ? [el('p', 'gcsp-field-hint', 'Driver and licence facts are read-only.'),
+      facts([['Relationship', driver.relationship ?? (driver.kind === 'employee' ? 'Self' : null)],
+        ['Licence number', licence?.displayNumber], ['Categories', licence?.categories?.join(', ')], ['Valid from', licence?.validFrom], ['Valid until', licence?.validUntil]])] : []));
     const errors = Object.entries(state.errors).map(([key, message]) => ({
       id: controls[key === 'contact' ? 'phone' : key]?.id ?? nodes.notice.id, message })); summary.update(errors);
     nodes.notice.textContent = state.pending ? state.status === 'saving' ? 'Saving your choices.' : 'Refreshing your context.'

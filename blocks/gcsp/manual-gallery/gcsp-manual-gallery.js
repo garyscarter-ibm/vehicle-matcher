@@ -4,7 +4,8 @@ import { renderOptionList } from '../../vehicle-matcher/modes/question-ui.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { labelledField } from '../kit/form-controls.js';
 import { showMore } from '../kit/show-more.js';
-import { bodyStyleLabel } from '../kit/plain-copy.js';
+import { syntheticNote } from '../kit/synthetic-note.js';
+import { bodyStyleLabel, NO_IMAGE_TEXT } from '../kit/plain-copy.js';
 import { createManualGalleryController } from './gallery-controller.js';
 import { createManualClaimController } from './claim-controller.js';
 import { createManualGalleryHttpAdapter } from './http-adapter.js';
@@ -56,12 +57,11 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
   onClaimConfirmed, onClaimState, commandId } = {}) {
   const prefix = `gcsp-gallery-${++sequence}`; const controls = {}; const cards = new Map();
   let nodes; let statusKey = null; let noticeKey = null; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin; let limit; let pageKey; let paging;
-  // Car facts open on wide screens and closed at 600px and below; no matchMedia (jsdom) means open.
+  // Car facts stay closed at every width; the page size is smaller at 600px and below (no matchMedia, as in jsdom, means wide).
   const narrowQuery = root.ownerDocument.defaultView.matchMedia?.('(max-width: 600px)') ?? null;
-  const factsOpen = () => !narrowQuery?.matches;
-  const pageSize = () => (factsOpen() ? MANUAL_GALLERY_PAGE_SIZE : MANUAL_GALLERY_NARROW_PAGE_SIZE);
+  const pageSize = () => (narrowQuery?.matches ? MANUAL_GALLERY_NARROW_PAGE_SIZE : MANUAL_GALLERY_PAGE_SIZE);
   limit = pageSize();
-  const syncFacts = () => { cards.forEach(({ facts }) => { facts.open = factsOpen(); }); limit = Math.max(limit, pageSize()); if (nodes && galleryState) draw(); };
+  const syncFacts = () => { limit = Math.max(limit, pageSize()); if (nodes && galleryState) draw(); };
   narrowQuery?.addEventListener?.('change', syncFacts);
   const notify = (name, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(name, { detail, bubbles: true, composed: true }));
   const canGoBack = () => !disposed && (adapter.readOnly === true || claimState?.blocked === false);
@@ -104,8 +104,8 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
   }
   function choose(id) { if (!claimState.blocked && !adapter.readOnly) gallery.review(id); }
   function closeDetail() { gallery.closeDetail(); (detailOrigin?.isConnected ? detailOrigin : controls.query)?.focus(); }
-  function detailSection(title, rows) {
-    const section = el('details', 'gcsp-gallery-fact-section'); section.append(el('summary', '', title), factList(factRows(rows)));
+  function detailSection(title, rows, options) {
+    const section = el('details', 'gcsp-gallery-fact-section'); section.append(el('summary', '', title), factList(factRows(rows), options));
     return section;
   }
   function renderDetail() {
@@ -115,7 +115,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     if (detailId === car.id) return;
     detailId = car.id; const { detail } = car;
     const heading = el('h2', 'gcsp-h2', car.view.members[0].display.name); heading.tabIndex = -1;
-    const { media } = mediaWell(null, '', { view: car.view.members[0], placeholder: 'No image for this car yet' });
+    const { media } = mediaWell(null, '', { view: car.view.members[0], placeholder: NO_IMAGE_TEXT });
     const reason = el('p', 'gcsp-note', car.view.members[0].actions[0].disabledReason ?? 'Reviewing reserves this exact car while you check its details.');
     reason.id = `${prefix}-detail-review-reason`;
     const review = button({ label: 'Review this car', onClick: () => choose(car.id), disabled: car.view.members[0].actions[0].disabled, describedBy: reason.id });
@@ -140,7 +140,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
   }
   function drawHistory() {
     const value = galleryState.releaseHistory; nodes.history.hidden = !value;
-    if (!value) { nodes.historySummary.textContent = ''; nodes.historyTime.textContent = ''; nodes.historySource.textContent = ''; return; }
+    if (!value) { nodes.historySummary.textContent = ''; nodes.historyTime.textContent = ''; return; }
     const h = value.history;
     nodes.historySummary.textContent = h.state === 'none-visible' ? 'No confirmed releases are visible to you yet.'
       : `Release history: ${h.releasedCarCount.toLocaleString('en-GB')} ${h.releasedCarCount === 1 ? 'car' : 'cars'} in ${h.releaseCount.toLocaleString('en-GB')} ${h.releaseCount === 1 ? 'release' : 'releases'} visible to you.`;
@@ -148,7 +148,6 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     nodes.historyTime.textContent = h.latestReleasedAt === null ? '' : `Latest visible release: ${new Intl.DateTimeFormat('en-GB', {
       timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
     }).format(new Date(h.latestReleasedAt))} UTC (demo time).`;
-    nodes.historySource.textContent = 'Current source version: unknown.';
   }
   // FUCQ-278: a held offer or one taken car shows above a list that stays in place.
   function drawNotice() {
@@ -202,7 +201,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
         const view = structuredClone(car.view); const rows = view.members[0].facts.filter((fact) => CARD_FACTS.includes(fact.key)); view.members[0].facts = [];
         if (adapter.readOnly) view.members[0].actions[0] = { ...view.members[0].actions[0], disabled: true, disabledReason: 'Read-only gallery example.' };
         const card = matchCard(null, { view, showScore: false, onAction: () => choose(car.id) }); card.classList.add('gcsp-card'); card.tabIndex = -1; card.setAttribute('aria-label', car.view.members[0].display.name);
-        const facts = detailSection('Car facts', rows.map((row) => ({ ...row, missingLabel: `Not supplied${row.unit ? ` (${row.unit})` : ''}` }))); facts.open = factsOpen();
+        const facts = detailSection('Car facts', rows, { hideMissing: 'More details not supplied' });
         card.querySelector('.vm-card-facts').replaceChildren(facts);
         card.querySelector('.vm-card-head').after(el('p', 'gcsp-note', `Order no. ${car.identity.orderNumber}`));
         card.querySelector('.vm-card-terms')?.replaceChildren(...costSummary(car.cost));
@@ -236,16 +235,16 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
       grid: el('div', 'gcsp-gallery-grid'), results: el('div', 'gcsp-gallery-results'), detail: el('section', 'gcsp-gallery-detail'),
       claimMessage: el('p', 'gcsp-note'), check: button({ label: 'Check status', variant: 'ghost', onClick: () => claim.checkStatus() }),
       retry: button({ label: 'Retry this reservation', variant: 'ghost', onClick: () => claim.retry() }),
-      history: el('section', ''), historySummary: el('p', 'gcsp-note'), historyTime: el('p', 'gcsp-note'), historySource: el('p', 'gcsp-note'),
+      history: el('section', ''), historySummary: el('p', 'gcsp-note'), historyTime: el('p', 'gcsp-note'),
       backReason: el('p', 'gcsp-note'), back: button({ label: 'Back to your choices', variant: 'ghost', describedBy: `${prefix}-back-reason`,
         onClick() { if (!canGoBack()) return; onBack?.(); notify('gcsp:manual-gallery-back', {}); } }) };
     paging = showMore({ onShowMore: showMoreCars }); nodes.counts.setAttribute('role', 'status'); nodes.claimMessage.setAttribute('role', 'status'); nodes.detail.hidden = true;
     nodes.history.setAttribute('aria-label', 'Release history'); nodes.history.dataset.releaseHistory = '';
-    nodes.history.append(nodes.historySummary, nodes.historyTime, nodes.historySource); nodes.backReason.id = `${prefix}-back-reason`;
+    nodes.history.append(nodes.historySummary, nodes.historyTime); nodes.backReason.id = `${prefix}-back-reason`;
     const claimNotice = el('section', 'gcsp-gallery-claim'); claimNotice.setAttribute('aria-label', 'Reservation status'); claimNotice.append(nodes.claimMessage, nodes.check, nodes.retry);
     nodes.results.append(nodes.status, nodes.grid);
     panel.append(screenIntro({ kicker: 'Choose your car', title: 'Released cars', lede: 'Browse the available cars. Review one to reserve it while you check the details.', level: 1 }),
-      nodes.allowance, nodes.history, navField('series', 'Series'), navField('body', 'Body style'), filters, nodes.counts, nodes.notice, claimNotice, nodes.results, nodes.detail, nodes.back, nodes.backReason);
+      nodes.allowance, nodes.history, navField('series', 'Series'), navField('body', 'Body style'), filters, nodes.counts, nodes.notice, claimNotice, nodes.results, nodes.detail, nodes.back, nodes.backReason, syntheticNote());
     if (adapter.readOnly) panel.prepend(el('p', 'gcsp-note', 'Read-only synthetic gallery · 5 November 2026'));
     main.replaceChildren(panel); draw();
     if (!started) { started = true; gallery.load(); claim.load(); }

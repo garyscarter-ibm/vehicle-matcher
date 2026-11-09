@@ -65,23 +65,26 @@ export function button({ label, variant = 'primary', onClick, href, disabled = f
   return node;
 }
 
-/** Error, empty or no-match screen shell: kicker, h2 title, message and action nodes. */
-export function statusScreen({ kicker, title, message, actions = [], role = 'status' } = {}) {
+/** Error, empty or no-match screen shell: kicker, title (h2 unless level is given), message and action nodes. */
+export function statusScreen({ kicker, title, message, actions = [], role = 'status', level = 2 } = {}) {
   const screen = el('div', 'vm-screen vm-status');
   screen.setAttribute('role', role);
   if (kicker) screen.append(el('p', 'vm-kicker', kicker));
-  screen.append(el('h2', 'vm-title', title));
+  screen.append(el(`h${level}`, 'vm-title', title));
   if (message) screen.append(el('p', 'vm-lede', message));
   screen.append(...actions);
   return screen;
 }
 
-/** Label/value facts as a <dl>. Rows: { label, value, unit, missingLabel }; a null or undefined value reads "Not supplied". */
-export function factList(rows = [], { className } = {}) {
+/** Label/value facts as a <dl>. Rows: { label, value, unit, missingLabel }; a null or undefined value reads "Not supplied".
+ * `hideMissing` (a line of text) drops missing rows and, if any were dropped, shows that line once instead. */
+export function factList(rows = [], { className, hideMissing } = {}) {
+  const isMissing = (row) => row.value === null || row.value === undefined || row.value === '';
+  const shownRows = hideMissing ? rows.filter((row) => !isMissing(row)) : rows;
   const list = el('dl', `vm-facts${className ? ` ${className}` : ''}`);
-  for (const row of rows) {
+  for (const row of shownRows) {
     const item = el('div', 'vm-fact');
-    const missing = row.value === null || row.value === undefined || row.value === '';
+    const missing = isMissing(row);
     const shown = typeof row.value === 'number' ? row.value.toLocaleString('en-GB') : row.value;
     item.append(
       el('dt', 'vm-fact-label', row.label),
@@ -89,5 +92,9 @@ export function factList(rows = [], { className } = {}) {
     );
     list.append(item);
   }
-  return list;
+  if (!hideMissing || shownRows.length === rows.length) return list;
+  const wrap = el('div', 'vm-facts-wrap');
+  if (shownRows.length) wrap.append(list);
+  wrap.append(el('p', 'gcsp-note vm-facts-more', hideMissing));
+  return wrap;
 }

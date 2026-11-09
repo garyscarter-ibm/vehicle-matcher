@@ -1,0 +1,291 @@
+{
+ "width": 375,
+ "viewport": {
+  "width": 375,
+  "height": 812
+ },
+ "allPass": true,
+ "checks": [
+  {
+   "name": "Ask for help is visible without expanding anything",
+   "pass": true,
+   "detail": {
+    "inDetails": false
+   }
+  },
+  {
+   "name": "caveat is hint text tied to the button",
+   "pass": true,
+   "detail": "Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed."
+  },
+  {
+   "name": "pressing Ask for help moves focus to the first field",
+   "pass": true,
+   "detail": {
+    "tag": "TEXTAREA",
+    "text": "",
+    "cls": "",
+    "isBody": false
+   }
+  },
+  {
+   "name": "Cancel hides the form and returns focus to the button",
+   "pass": true,
+   "detail": {
+    "tag": "BUTTON",
+    "text": "Ask for help",
+    "cls": "vm-btn vm-btn-primary gcsp-case-ask",
+    "isBody": false
+   }
+  },
+  {
+   "name": "case reference is the short form",
+   "pass": true,
+   "detail": {
+    "ref": "4952ACC9",
+    "full": "renewal-4952acc9e662f3161e5f816d87071fd9c2f2803a"
+   }
+  },
+  {
+   "name": "Paula case heading is below page-title size",
+   "pass": true,
+   "detail": {
+    "h": {
+     "tag": "H2",
+     "text": "Open",
+     "px": 20
+    },
+    "p": {
+     "tag": "H1",
+     "text": "Renewal help",
+     "px": 32
+    }
+   }
+  },
+  {
+   "name": "row Open button, no Case to work select",
+   "pass": true,
+   "detail": {}
+  },
+  {
+   "name": "Renewal cases h2 matches the dashboard h2 size",
+   "pass": true,
+   "detail": {
+    "sectionH2": {
+     "tag": "H2",
+     "text": "At a glance",
+     "px": 20
+    },
+    "casesH2": {
+     "tag": "H2",
+     "text": "Renewal cases",
+     "px": 20
+    }
+   }
+  },
+  {
+   "name": "opening a case focuses its heading",
+   "pass": true,
+   "detail": {
+    "tag": "H3",
+    "text": "Paula (fictional)",
+    "cls": "vm-title",
+    "isBody": false
+   }
+  },
+  {
+   "name": "employee-name heading is below page-title size",
+   "pass": true,
+   "detail": {
+    "tag": "H3",
+    "text": "Paula (fictional)",
+    "px": 18
+   }
+  },
+  {
+   "name": "remedy options are short names; reasons are hint text",
+   "pass": true,
+   "detail": {
+    "options": [
+     "Keep the current remedy, if any",
+     "Manual decision"
+    ],
+    "hint": "Not available: Suitable available cars: No suitable available car is currently recorded; One preference change: A current confirmed brief and an unused recorded decline are required; Reviewed later release: No reviewed future release date and source are recorded for this case; Contract extension: The current policy does not permit a contract extension."
+   }
+  },
+  {
+   "name": "closing returns focus to the row Open button",
+   "pass": true,
+   "detail": {
+    "tag": "BUTTON",
+    "text": "Open case for Paula (fictional)",
+    "cls": "vm-btn vm-btn-ghost gcsp-table-action",
+    "isBody": false
+   }
+  },
+  {
+   "name": "fixture queue has an Open button on every row",
+   "pass": true,
+   "detail": 5
+  },
+  {
+   "name": "fixture: focus on the case heading",
+   "pass": true,
+   "detail": {
+    "tag": "H2",
+    "text": "Synthetic employee 1",
+    "cls": "vm-title",
+    "isBody": false
+   }
+  }
+ ],
+ "steps": [
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "at": "/gcsp/access?next=%2Fgcsp-presenter.html"
+  },
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "at": "/gcsp-presenter.html"
+  },
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "at": "/gcsp-presenter.html"
+  },
+  {
+   "step": "help-initial",
+   "visible": true,
+   "inDetails": false,
+   "describedBy": "Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed."
+  },
+  {
+   "shot": "375-01-help-ask-button.png"
+  },
+  {
+   "step": "help-revealed",
+   "focus": {
+    "tag": "TEXTAREA",
+    "text": "",
+    "cls": "",
+    "isBody": false
+   }
+  },
+  {
+   "shot": "375-02-help-form-revealed.png"
+  },
+  {
+   "step": "help-cancelled",
+   "focus": {
+    "tag": "BUTTON",
+    "text": "Ask for help",
+    "cls": "vm-btn vm-btn-primary gcsp-case-ask",
+    "isBody": false
+   }
+  },
+  {
+   "step": "help-case",
+   "reference": "4952ACC9",
+   "fullInDataAttr": "renewal-4952acc9e662f3161e5f816d87071fd9c2f2803a",
+   "text": "Renewal help Your help request was recorded. Get help with your renewal The scheme team can review a delayed or uncertain renewal and explain the next action. Opening help changes nothing. Ask for help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. RENEWAL CASE Open Case reference 4952ACC9 Owner Scheme team Reason My replacement may miss my contract end. Latest update My replacement may miss my contract end. Opened from Help request Next action "
+  },
+  {
+   "step": "paula-heading-sizes",
+   "caseHeading": {
+    "tag": "H2",
+    "text": "Open",
+    "px": 20
+   },
+   "pageTitle": {
+    "tag": "H1",
+    "text": "Renewal help",
+    "px": 32
+   }
+  },
+  {
+   "shot": "375-03-help-case-short-reference.png"
+  },
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "at": "/gcsp-presenter.html"
+  },
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "at": "/gcsp-presenter.html"
+  },
+  {
+   "step": "greg-queue",
+   "rowButtons": [
+    "Open case for Paula (fictional)"
+   ],
+   "picker": 0,
+   "sectionH2": {
+    "tag": "H2",
+    "text": "At a glance",
+    "px": 20
+   },
+   "casesH2": {
+    "tag": "H2",
+    "text": "Renewal cases",
+    "px": 20
+   }
+  },
+  {
+   "shot": "375-04-greg-queue-row-open.png"
+  },
+  {
+   "step": "greg-case-opened",
+   "focus": {
+    "tag": "H3",
+    "text": "Paula (fictional)",
+    "cls": "vm-title",
+    "isBody": false
+   }
+  },
+  {
+   "step": "greg-heading-sizes",
+   "caseHeading": {
+    "tag": "H3",
+    "text": "Paula (fictional)",
+    "px": 18
+   }
+  },
+  {
+   "shot": "375-05-greg-case-opened-focus-heading.png"
+  },
+  {
+   "step": "remedy-hint",
+   "options": [
+    "Keep the current remedy, if any",
+    "Manual decision"
+   ],
+   "hint": "Not available: Suitable available cars: No suitable available car is currently recorded; One preference change: A current confirmed brief and an unused recorded decline are required; Reviewed later release: No reviewed future release date and source are recorded for this case; Contract extension: The current policy does not permit a contract extension."
+  },
+  {
+   "shot": "375-06-greg-remedy-hint.png"
+  },
+  {
+   "step": "greg-case-closed",
+   "focus": {
+    "tag": "BUTTON",
+    "text": "Open case for Paula (fictional)",
+    "cls": "vm-btn vm-btn-ghost gcsp-table-action",
+    "isBody": false
+   }
+  },
+  {
+   "shot": "375-07-fixture-queue-rows.png"
+  },
+  {
+   "step": "fixture-case-opened",
+   "focus": {
+    "tag": "H2",
+    "text": "Synthetic employee 1",
+    "cls": "vm-title",
+    "isBody": false
+   }
+  },
+  {
+   "shot": "375-08-fixture-case-opened.png"
+  }
+ ]
+}

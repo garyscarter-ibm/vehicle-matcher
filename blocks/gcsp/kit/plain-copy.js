@@ -1,6 +1,9 @@
 // Plain employee copy: reason sentences, long dates and body labels. Pure, no DOM.
 import { SPEC_LABELS, FUEL_SPEC } from '../../vehicle-matcher/modes/result-card.js';
 
+/** The one fallback line for a car with no image (GCSP cards, account, activity, order progress). */
+export const NO_IMAGE_TEXT = 'No image for this car yet';
+
 const FIELDS = { body: 'Body style', fuel: 'Fuel', seats: 'Seats', boot: 'Boot', zeroTo62: '0 to 62 mph', mpg: 'Fuel economy',
   sportiness: 'Sportiness', comfort: 'Comfort', economy: 'Economy', size: 'Size', equipment: 'Equipment', charging: 'Charging',
   mileage: 'Mileage', colour: 'Colour', gearbox: 'Gearbox', doors: 'Doors', evRange: 'Electric range', insuranceGroup: 'Insurance group' };
@@ -8,7 +11,7 @@ const spaced = (v) => String(v).replaceAll(/([a-z0-9])([A-Z])/g, '$1 $2').replac
 const upperFirst = (v) => v.charAt(0).toUpperCase() + v.slice(1);
 /** A field key as a lower-case phrase ("body style"); never a raw key. */
 const fieldWords = (key) => (FIELDS[key] ? FIELDS[key].replace(/^./, (c) => c.toLowerCase()) : key ? spaced(key) : 'requirement');
-const fieldLabel = (key) => FIELDS[key] ?? upperFirst(fieldWords(key));
+export const fieldLabel = (key) => FIELDS[key] ?? upperFirst(fieldWords(key));
 const count = (n) => n.toLocaleString('en-GB');
 const finite = (n) => typeof n === 'number' && Number.isFinite(n);
 

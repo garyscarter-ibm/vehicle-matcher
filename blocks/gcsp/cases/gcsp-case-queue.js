@@ -65,7 +65,7 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
   signal, commandId = () => `case-update-${globalThis.crypto.randomUUID()}` } = {}) {
   headingLevel = Number.isInteger(headingLevel) && headingLevel >= 1 && headingLevel <= 3 ? headingLevel : embedded ? 2 : 1;
   const abort = new AbortController(); let done = false; let queueGeneration = 0; let detailGeneration = 0; let saveGeneration = 0;
-  let rows = []; let order = 'deadline'; let selection = ''; let selected = ''; let projection = null;
+  let rows = []; let order = 'deadline'; let selected = ''; let projection = null;
   let queueLoading = true; let detailLoading = false; let saving = false; let queueError = null; let detailError = null;
   let message = ''; let draft = null; let review = null; let errors = {}; let mustRefresh = false;
   const commands = new Map(); const id = `gcsp-case-queue-${++serial}`;
@@ -115,7 +115,9 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
     const remedy = nativeSelect(choices.map((choice) => [choice.key, choice.label]), draft.remedyKey, 'Keep the current remedy, if any');
     remedy.addEventListener('change', () => { changeDraft('remedyKey', remedy.value); draft.preferenceValue = ''; draft.decision = ''; draft.until = ''; draw();
       content.querySelector(`#${id}-remedyKey`)?.focus(); });
-    form.append(field('remedyKey', 'Remedy to record', remedy));
+    const reasons = Object.entries(remedyLabels).filter(([key]) => projection.options[key]?.available === false)
+      .map(([key, label]) => `${label}: ${(projection.options[key].reason ?? 'Unavailable').replace(/\.$/, '')}`);
+    form.append(field('remedyKey', 'Remedy to record', remedy, reasons.length ? `Not available: ${reasons.join('; ')}.` : ''));
     const choice = choices.find((value) => value.key === draft.remedyKey)?.item;
     if (choice?.type === 'preference-relaxation') {
       form.append(el('p', 'gcsp-note', `${preferenceLabel(choice.path)} is currently ${shown(choice.before)}. The employee must confirm this single change through their brief.`));
@@ -134,8 +136,6 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
     else if (choice?.type === 'later-release') form.append(facts([['Reviewed release, demo clock (UTC)', clockTime(choice.releaseAt)], ['Source', choice.source]]));
     else if (choice?.type === 'alternative-car') form.append(facts([['Proposed car', carName(projection.options, choice.orderUuid)],
       ['Exact car reference', choice.orderUuid], ['Configuration', choice.configurationId]]));
-    for (const [key, label] of Object.entries(remedyLabels)) if (projection.options[key]?.available === false)
-      form.append(el('p', 'gcsp-note', `${label}: ${projection.options[key].reason ?? 'Unavailable.'}`));
     const pending = projection.options.alternativeCars?.needsConfirmation;
     if (Array.isArray(pending) && pending.length) form.append(el('p', 'gcsp-note', 'Cars that need confirmation before they can be proposed:'),
       facts(carOptionNames(pending).map((name, i) => [name, (pending[i].unknowns ?? []).map((code) => gateInfo(code).label).join(', ') || 'Needs confirmation'])));
@@ -165,23 +165,21 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
       { key: 'employee', label: 'Employee' }, { key: 'deadline', label: 'Renewal deadline (calendar date)' }, { key: 'trigger', label: 'Trigger or request' },
       { key: 'reason', label: 'Reason' }, { key: 'status', label: 'Status' }, { key: 'owner', label: 'Owner' }, { key: 'due', label: 'Next action due, demo clock (UTC)' },
     ], rows: sorted.map((c) => ({ employee: c.employeeName ?? c.employeeId, deadline: c.renewalDeadline ?? 'Needs confirmation', trigger: triggerLabel(c),
-      reason: c.reason, status: caseStatus(c.status), owner: [...new Set([c.owner?.name, c.owner?.role && roleLabel(c.owner.role)].filter(Boolean))].join(' · '), due: clockTime(c.dueAt) })) }));
-    const picker = nativeSelect(sorted.map((c) => [c.caseId, `${c.employeeName ?? c.employeeId} · ${caseStatus(c.status)}`]), selection, 'Choose a case');
-    picker.disabled = saving;
-    const open = button({ label: 'Open selected case', disabled: saving || !selection, onClick: () => openCase(selection) });
-    picker.addEventListener('change', () => { selection = picker.value; open.disabled = saving || !selection; });
-    const pickerActions = el('div', 'gcsp-case-actions'); pickerActions.append(open);
-    content.append(labelledField({ id: `${id}-selection`, label: 'Case to work', control: picker }).root, pickerActions);
+      reason: c.reason, status: caseStatus(c.status), owner: [...new Set([c.owner?.name, c.owner?.role && roleLabel(c.owner.role)].filter(Boolean))].join(' · '), due: clockTime(c.dueAt) })),
+    rowAction: { label: 'Open', name: (row) => `Open case for ${row.employee}`, disabled: saving, onSelect: (row, i) => openCase(sorted[i].caseId) } }));
     if (!selected) return;
     const detail = el('section', 'gcsp-case-work');
     const close = button({ label: 'Close case details', variant: 'ghost', disabled: saving, onClick: () => {
-      detailGeneration += 1; selected = ''; projection = null; review = null; detailError = null; detailLoading = false; draw();
-      content.querySelector(`#${id}-selection`)?.focus();
+      const closed = selected; detailGeneration += 1; selected = ''; projection = null; review = null; detailError = null; detailLoading = false; draw();
+      const index = sortCases(rows, order).findIndex((c) => c.caseId === closed);
+      content.querySelectorAll('.gcsp-table-action')[index]?.focus();
     } }); detail.append(close);
     if (detailLoading) detail.append(statusScreen({ title: 'Loading case options', message: 'Reading the server’s current options.' }));
     else if (detailError) detail.append(failureNode(detailError, 'Case options are unavailable', { label: 'Refresh case options', action: () => openCase(selected) }));
     if (projection && !detailLoading) {
-      detail.append(screenIntro({ title: projection.case.employeeName ?? projection.case.employeeId, level: headingLevel + 1 }),
+      const name = screenIntro({ title: projection.case.employeeName ?? projection.case.employeeId, level: headingLevel + 1 });
+      const caseHeading = name.querySelector('.vm-title'); caseHeading.tabIndex = -1; caseHeading.dataset.caseHeading = '';
+      detail.append(name,
         renderCaseContent(projection.case, { headingLevel: headingLevel + 2, audience: 'scheme-team' }),
         facts([['Options as of, demo clock (UTC)', clockTime(projection.asOf)], ['Policy version', projection.policyVersion]]));
       if (!mustRefresh && !blocked()) {
@@ -211,7 +209,6 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
       queueError = response?.status === 'ok' ? unavailable : response ?? unavailable; rows = []; emit('gcsp:unavailable', queueError.status);
     } else {
       rows = response.value.cases;
-      if (!rows.some((c) => c.caseId === selection)) selection = '';
       if (!rows.some((c) => c.caseId === selected)) selected = '';
       if (!keepMessage) message = `${rows.length} renewal case${rows.length === 1 ? '' : 's'} loaded.`;
       if (selected) await openCase(selected, { focusAfter: false, keepMessage: true });
@@ -222,7 +219,7 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
   }
   async function openCase(caseId, { focusAfter = true, keepMessage = false } = {}) {
     if (done || saving || !caseId) return;
-    const generation = ++detailGeneration; selected = caseId; selection = caseId; projection = null; draft = null; review = null;
+    const generation = ++detailGeneration; selected = caseId; projection = null; draft = null; review = null;
     detailLoading = true; detailError = null; errors = {}; mustRefresh = false; if (!keepMessage) message = ''; draw();
     const response = await call('readOptions', { caseId }); if (!current(generation, 'detail')) return;
     detailLoading = false;
@@ -233,7 +230,7 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
         remedyKey: '', preferenceValue: '', decision: '', until: '' };
       if (!keepMessage) message = 'Current case options loaded.';
     }
-    draw(); if (focusAfter) focusStatus();
+    draw(); if (focusAfter) (content.querySelector('[data-case-heading]') ?? status).focus();
   }
   function prepare() {
     if (done || saving || blocked() || !draft || !projection) return;

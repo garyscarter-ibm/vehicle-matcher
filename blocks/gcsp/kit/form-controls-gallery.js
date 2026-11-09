@@ -3,6 +3,7 @@ import { labelledField, errorSummary, checkboxField } from './form-controls.js';
 import { stageList } from './stage-list.js';
 import { rangeBar } from './range-bar.js';
 import { showMore } from './show-more.js';
+import { installArrivalFocus, focusHeading } from './arrival-focus.js';
 import { runRestartedScreen, runRestartedNotice, accessLapsedScreen } from './run-restarted.js';
 
 export function formControlsExample() {
@@ -71,4 +72,15 @@ export function showMoreExample() {
   body.append(list, paging.root, factList([{ label: 'Contact email', value: 'employee-paula@example.invalid' }, { label: 'Licence number', value: 'FICTIONAL-NOMINEE' },
     { label: 'Collection point', value: 'Fictional collection centre' }, { label: 'Requested collection date', value: '13 November 2026' }]));
   scope.append(body); section.append(scope); return section;
+}
+
+export function arrivalFocusExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-arrival-focus';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP arrival focus'));
+  const scope = el('div', 'gcsp'); const main = el('main', 'gcsp-main'); main.append(el('h1', 'vm-title', 'Page heading'));
+  const note = el('p', 'gcsp-note', 'Move focus to the heading with the button. A pointer click shows no ring; press Tab first and it shows.');
+  const move = button({ label: 'Move focus to the heading', variant: 'ghost', onClick: () => focusHeading(main.querySelector('h1')) });
+  main.append(note, move); scope.append(main); section.append(scope);
+  installArrivalFocus({ root: scope, main });
+  return section;
 }

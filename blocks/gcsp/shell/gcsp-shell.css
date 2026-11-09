@@ -1,6 +1,7 @@
 @import "./gcsp-tokens.css";
 @import "../presenter-controls/presenter-controls.css";
 @import "../kit/form-controls.css";
+@import "../kit/arrival-focus.css";
 .gcsp {
   position: relative;
   display: flex;
@@ -13,14 +14,6 @@
   line-height: 1.4;
 }
 .gcsp *, .gcsp *::before, .gcsp *::after { box-sizing: border-box; }
-
-.gcsp a:focus-visible,
-.gcsp button:focus-visible,
-.gcsp summary:focus-visible,
-.gcsp [tabindex]:focus-visible {
-  outline: 2px solid var(--gcsp-focus);
-  outline-offset: 2px;
-}
 
 .gcsp-vh {
   position: absolute;

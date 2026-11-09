@@ -187,8 +187,8 @@ test('missing policy, unsupported coverage and registry changes fail without pub
   const named = await setup({ plan: { ...configurationPlan, titles: { 'fixture-a': 'A1 Code', 'fixture-b': 'B1 Code' }, displayNames: { 'fixture-a': 'Plain Name' } } });
   assert.equal((await named.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'ok');
   const rows = generated(await stock(named.repository, 'run-a'));
-  assert.ok(rows.some((row) => fact(row, 'modelLine') === 'A1 Code' && row.facts.display.name.startsWith('Plain Name in ')));
-  assert.ok(rows.some((row) => fact(row, 'modelLine') === 'B1 Code' && row.facts.display.name.startsWith('B1 Code in ')));
+  assert.ok(rows.some((row) => fact(row, 'modelLine') === 'A1 Code' && row.facts.display.name.startsWith('BMW Plain Name in ')));
+  assert.ok(rows.some((row) => fact(row, 'modelLine') === 'B1 Code' && row.facts.display.name.startsWith('BMW B1 Code in ')));
 });
 
 test('a failed repository mutation rolls back every generated stock row and report', async () => {
@@ -557,7 +557,7 @@ test('generated facts are a valid synthetic VehicleSnapshot with no VIN key, and
     assert.equal(row.facts.identityKind, 'exact-stock'); assert.equal(row.facts.sourceKeys.stockId, row.orderUuid);
     assert.equal(fact(row, 'stockIdentityKind'), 'synthetic');
     assert.equal(row.facts.facts.leadTimeWeeks.unit, 'weeks');
-    assert.equal(row.facts.display.name, `${DISPLAY_NAMES[fact(row, 'modelLine')]} in ${fact(row, 'colour')}`);
+    assert.equal(row.facts.display.name, `BMW ${DISPLAY_NAMES[fact(row, 'modelLine')]} in ${fact(row, 'colour')}`);
     assert.doesNotMatch(row.facts.display.name, /\b[FG]\d{2}\b/);
     assert.match(fact(row, 'eligibilityModelKey'), /^key-/); assert.equal(fact(row, 'boot'), 300);
     assert.ok(keysDeep(row).every((key) => !['vin', 'vin7', 'vin17'].includes(key.toLowerCase())));
@@ -568,6 +568,21 @@ test('generated facts are a valid synthetic VehicleSnapshot with no VIN key, and
     assert.equal(refused.outcomes[0].status, 'invalid', JSON.stringify(bad));
     assert.equal(generated(await stock(refused.repository, 'run-a')).length, 0);
     assert.equal((await readAllocationInventory(refused.allocationInventoryPath)).inventory.records.length, 0, 'refused before reserving identifiers');
+  }
+});
+
+test('generated names follow the one display-name rule: the model key supplies the engine, else the line alone', async () => {
+  const keys = { 'f70-sports-hatch': 'F70 Sports Hatch|120', 'g42-coupe': 'G42 Coupe|220i', 'g61-i5': 'G61 i5|i5 40' };
+  const keyed = await realRun([['run-a', 'real-seed']], { factsForConfiguration: (binding) => ({ eligibilityModelKey: { value: keys[binding.modelLineId], unit: null } }) });
+  const plain = await realRun([['run-a', 'real-seed']]);
+  const base = { 'F70 Sports Hatch': ['BMW 1 Series Sports Hatch 120', 'BMW 1 Series Sports Hatch'], 'G42 Coupe': ['BMW 2 Series Coupe 220i', 'BMW 2 Series Coupe'],
+    'G61 i5': ['BMW i5 40 Touring', 'BMW i5 Touring'] };
+  for (const [env, at] of [[keyed, 0], [plain, 1]]) {
+    const rows = generated(await stock(env.repository, 'run-a')); assert.ok(rows.length > 0);
+    for (const row of rows) {
+      assert.equal(row.facts.display.name, `${base[fact(row, 'modelLine')][at]} in ${fact(row, 'colour')}`);
+      assert.doesNotMatch(row.facts.display.name, /Synthetic|Fictional|\b[FGU]\d{2}\b/);
+    }
   }
 });
 
