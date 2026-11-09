@@ -3,7 +3,7 @@
 Raised by the dispatcher from the FUCQ-247 performance review (docs/gcsp/performance-review-2026-11-09.md) and the
 FUCQ-248 UI and UX review (docs/gcsp/ux-review-2026-11-09.md). One ticket per recommendation, deduplicated across
 the two reviews. Fixes are Bugs; anything that would change agreed direction is a separate Story labelled
- and , for collaborator review and prioritisation before build. Nothing here is built yet.
+`proposal` and `needs-review`, for collaborator review and prioritisation before build. Nothing here is built yet.
 
 Merged or skipped: UX finding 19 and performance R2-4 (Greg's Next order 503) are FUCQ-265, already being fixed.
 UX finding 20 and performance R2-2 (stored comparison for the demo) are one ticket. Performance R1-5 and R2-3 (tick
