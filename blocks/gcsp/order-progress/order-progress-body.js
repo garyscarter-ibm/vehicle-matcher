@@ -38,7 +38,7 @@ function handoverStep(a) {
   const step = { id: 'handover-booked', label: copy.handoverBooked, state: 'upcoming' };
   if (!a) return step;
   const booked = a.state === 'scheduled' && a.booked === true;
-  if (a.state === 'not-requested') step.state = a.eligibility?.eligible === false ? 'upcoming' : 'current';
+  if (a.state === 'not-requested') step.state = 'upcoming';
   else if (booked) Object.assign(step, { state: 'done', note: when('Booked for', a.slot) });
   else if (a.state === 'completed') Object.assign(step, { state: 'done', note: dated(copy.complete, a.outcome?.at) });
   else if (a.state === 'no-show') Object.assign(step, { state: 'current', note: dated(copy.missed, a.slot?.start) });
@@ -53,15 +53,16 @@ function readyStep(c, a, handover) {
   return { id: 'ready-for-handover', label: copy.ready, state: ready ? 'done' : handover.state === 'done' ? 'current' : 'upcoming' };
 }
 
-// One Next line, on the latest current step, from the envelope that owns it; earlier steps carry none.
+// One Next line, on the latest current step (or an unrequested handover), from the envelope that owns it; earlier steps carry none.
 function trackerStages(c, value) {
   const rows = approvalRows(value);
   if (rows.some((row) => row.id === 'handover')) return rows;
   const a = usable(c.progress.appointment) ? c.progress.appointment.value : undefined;
   const handover = handoverStep(a); const ready = readyStep(c, a, handover); const later = [handover, ready];
-  const focus = later.findLast((step) => step.state === 'current');
+  const open = a?.state === 'not-requested' && a.eligibility?.eligible !== false;
+  const focus = open ? handover : later.findLast((step) => step.state === 'current');
   if (focus) Object.assign(focus, { owner: withOwner(a.owner), next: a.nextStep });
-  if (later.some((step) => step.state !== 'upcoming')) for (const row of rows) { row.owner = undefined; row.next = undefined; }
+  if (open || later.some((step) => step.state !== 'upcoming')) for (const row of rows) { row.owner = undefined; row.next = undefined; }
   return [...rows, ...later];
 }
 

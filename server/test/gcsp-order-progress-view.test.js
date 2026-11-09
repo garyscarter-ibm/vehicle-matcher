@@ -499,15 +499,24 @@ test('FUCQ-299: with the handover booked the Steps list continues to Handover an
   assert.equal(rows.at(-3).querySelector('.gcsp-stage-owner'), null);
 });
 
-test('FUCQ-299: an open, requested or proposed handover is the current step with the appointment next step', () => {
+test('FUCQ-299: a requested or proposed handover is the current step with the appointment next step', () => {
   for (const [name, next] of [['sent-to-ordering-no-slot', 'Choose a handover slot.'], ['appointment-requested', 'Waiting for the retailer to confirm your slot.'],
     ['appointment-change-proposed', 'Accept the new time to confirm your handover.'], ['appointment-no-show', 'Your handover was missed. Choose a new slot to rebook.']]) {
     const node = view(name); const rows = stepRows(node);
-    assert.equal(stepState(rows.at(-2)), 'Current step', name); assert.equal(stepState(rows.at(-1)), name === 'appointment-no-show' ? 'Done' : 'Not started', name);
+    assert.equal(stepState(rows.at(-2)), name === 'sent-to-ordering-no-slot' ? 'Not started' : 'Current step', name); assert.equal(stepState(rows.at(-1)), name === 'appointment-no-show' ? 'Done' : 'Not started', name);
     assert.deepEqual([...node.querySelectorAll('.gcsp-stage-next')].map((n) => n.textContent), [`Next: ${next}`], name);
     assert.ok(rows.at(-2).querySelector('.gcsp-stage-next'), name); document.body.replaceChildren();
   }
   assert.match(stepRows(view('appointment-requested')).at(-2).textContent, /Requested 8 Nov 2026, 09:00\. Not booked yet\./);
+});
+
+test('FUCQ-317: an unrequested eligible handover is not started, with one owner and Next line and no current step', () => {
+  const node = view('sent-to-ordering-no-slot'); const rows = stepRows(node); const handover = rows.at(-2);
+  assert.equal(stepState(handover), 'Not started'); assert.equal(handover.getAttribute('aria-current'), null);
+  assert.equal(node.querySelector('.gcsp-stage-tracker [aria-current]'), null); assert.doesNotMatch(node.querySelector('.gcsp-stage-tracker').textContent, /Current step/);
+  assert.match(handover.textContent, /With you/);
+  const next = [...node.querySelectorAll('.gcsp-stage-next')]; assert.deepEqual(next.map((n) => n.textContent), ['Next: Choose a handover slot.']); assert.ok(handover.contains(next[0]));
+  const sent = rows.find((r) => /Sent to ordering/.test(r.textContent)); assert.equal(sent.querySelector('.gcsp-stage-owner'), null); assert.equal(stepState(sent), 'Done');
 });
 
 test('FUCQ-299: ready and handed over steps are done with no Next line; a closed handover stays not started', () => {
