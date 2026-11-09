@@ -17,8 +17,10 @@ const scratch = resolve(process.env.FUCQ89_SCRATCH || process.env.TMPDIR || '');
 if (!scratch || scratch === '/') throw new Error('Set FUCQ89_SCRATCH (or TMPDIR) to an owned scratch directory');
 const viewport = chunk === 'narrow' ? { width: 375, height: 812 } : { width: 1280, height: 900 };
 const vp = String(viewport.width);
-const shotDir = join(HERE, 'browser');
-const resultsFile = join(HERE, `results-${chunk}.json`);
+// FUCQ89_OUT lets a later story keep its own evidence (FUCQ-250: ../fucq-250) without overwriting this story's.
+const OUT = process.env.FUCQ89_OUT ? resolve(process.env.FUCQ89_OUT) : HERE;
+const shotDir = join(OUT, 'browser');
+const resultsFile = join(OUT, `results-${chunk}.json`);
 const profile = join(scratch, `chrome-${chunk}`);
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const ACCESS_KEY = `walk-${randomBytes(9).toString('hex')}`;
@@ -132,13 +134,13 @@ const runOf = (text) => /\bRun\s+(\S+)/.exec(text)?.[1] ?? null;
 const actingOf = (text) => /Acting principal\s+(.+)/.exec(text)?.[1]?.trim() ?? null;
 async function openStrip() {
   const root = strip(); await root.waitFor({ state: 'attached', timeout: 60000 });
-  if (!(await root.evaluate((el) => el.open))) await root.locator('summary').click();
+  if (!(await root.evaluate((el) => el.open))) await root.locator('summary').first().click();
   await until(async () => clockOf(await stripText()), { what: 'presenter clock readout', timeout: 60000 });
 }
 // Open the strip with Tab and Enter, as a keyboard user would.
 async function openStripByKeyboard() {
   const root = strip(); await root.waitFor({ state: 'attached', timeout: 60000 });
-  if (!(await root.evaluate((el) => el.open))) { await tabTo(root.locator('summary')); await page.keyboard.press('Enter'); }
+  if (!(await root.evaluate((el) => el.open))) { await tabTo(root.locator('summary').first()); await page.keyboard.press('Enter'); }
   const ok = await root.evaluate((el) => el.open);
   kb('presenter', 'Enter on "Presenter controls" opens the strip', ok);
   await until(async () => clockOf(await stripText()), { what: 'presenter clock readout', timeout: 60000 });
@@ -348,6 +350,14 @@ async function run() {
     return { state: `${facts.eligibleCount} eligible; lines ${JSON.stringify(facts.modelLines)}`, pass: facts.eligibleCount > 0, full: false };
   });
   if (report.firstRelease) report.firstRelease.screenshot = report.steps.at(-1).screenshots.at(-1) ?? null;
+  // FUCQ-250 (opt-in, FUCQ89_IMAGE_CARD=1): the 1 Series card shows its approved, digest-named corpus image.
+  if (process.env.FUCQ89_IMAGE_CARD === '1') await step('brief-image-card', 'The 1 Series card shows its approved representative image', async () => {
+    const card = page.locator('gcsp-brief .gcsp-brief-cards article.vm-card', { hasText: '1 Series Sports Hatch' }).first();
+    await card.scrollIntoViewIfNeeded();
+    const img = await until(() => card.locator('img').first().evaluate((el) => (el.complete && el.naturalWidth > 0 ? { src: el.getAttribute('src'), alt: el.alt, width: el.naturalWidth } : null)).catch(() => null), { timeout: 30000, what: 'card image to load' });
+    const approved = /\/assets\/gcsp-vehicle-evidence\/9704a8616835a1c1ce3b6d65f80e91cabb9edbfc0f83eca06b467bb3b1d236e3\.webp$/.test(img.src);
+    return { state: `img ${img.src} (${img.width}px) alt "${img.alt}"`, detail: img, pass: approved, full: false };
+  });
 
   // 5 Activity shows the offer
   await step('activity-offer', 'Paula\'s activity shows the first offer and the search result', async (row) => {
