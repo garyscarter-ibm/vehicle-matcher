@@ -200,7 +200,9 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
       button({ label: 'View your offer', disabled: pending, onClick: () => controls.openOffer(offers[0]) }));
     wrap.append(offer);
   }
-  if (draft?.status === 'ok') {
+  // FUCQ-224: once the slot has an order, its progress replaces the saved journey card.
+  const superseded = ordered && draft?.status === 'ok' && draft.value.choices?.slotId === order.entitlementSlotId;
+  if (draft?.status === 'ok' && !superseded) {
     const value = draft.value;
     const choices = value.choices;
     const saved = el('section', 'gcsp-summary');
@@ -212,7 +214,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     else saved.append(button({ label: 'Resume saved journey', disabled: pending, onClick: controls.resume }));
     if (journey) saved.append(button({ label: 'Back to account', variant: 'ghost', disabled: pending, onClick: controls.back }));
     wrap.append(saved);
-  } else if (draft && draft.status !== 'not-found') {
+  } else if (draft && !['ok', 'not-found'].includes(draft.status)) {
     wrap.append(statusScreen({ title: 'Saved journey could not be read', message: 'Refresh before starting or resuming a journey.' }));
   }
   if (model.account) {
