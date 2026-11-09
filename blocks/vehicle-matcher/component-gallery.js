@@ -22,7 +22,7 @@ import { activityBody } from '../gcsp/activity/activity-body.js';
 import { activityOffer } from '../gcsp/activity/activity-offer.js';
 import { activityFixtures } from '../gcsp/activity/activity-fixtures.js';
 import { activityEvents } from '../gcsp/activity/activity-copy.js';
-import { formControlsExample, stageListExample, rangeBarExample, runRestartedExample, showMoreExample } from '../gcsp/kit/form-controls-gallery.js';
+import { arrivalFocusExample, formControlsExample, stageListExample, rangeBarExample, runRestartedExample, showMoreExample } from '../gcsp/kit/form-controls-gallery.js';
 import { stageTracker } from '../gcsp/kit/stage-tracker.js';
 import { slotPicker } from '../gcsp/kit/slot-picker.js';
 import { taskList } from '../gcsp/kit/task-list.js';
@@ -518,7 +518,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), gregPublishExample(), gregOrderPlanExample(), gregComparisonExample(), launcherExamples(), activityExamples(), orderProgressExamples(), formControlsExample(), stageListExample(), rangeBarExample(), showMoreExample(), runRestartedExample());
+  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), arrivalFocusExample(), gregKitExamples(), gregPublishExample(), gregOrderPlanExample(), gregComparisonExample(), launcherExamples(), activityExamples(), orderProgressExamples(), formControlsExample(), stageListExample(), rangeBarExample(), showMoreExample(), runRestartedExample());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

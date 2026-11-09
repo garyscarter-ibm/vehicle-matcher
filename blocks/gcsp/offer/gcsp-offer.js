@@ -32,7 +32,7 @@ function followupMount(port) {
 /** Standalone embeddable offer surface. A trusted host supplies real read and decision adapters. */
 export function mountOffer(root, adapter = {}) {
   const shell = portalShell({ title: 'Group Car Schemes Portal', account: adapter.account || { status: 'unavailable', message: 'Account details not supplied.' },
-    navigation: adapter.navigation || [], breadcrumbs: [{ label: 'Your offer' }], onNavigate: adapter.onNavigate });
+    navigation: adapter.navigation || [], breadcrumbs: [{ label: 'Your offer' }], onNavigate: adapter.onNavigate, arrivalFocus: true });
   root.replaceChildren(shell.root);
   const controller = createOfferController({ read: adapter.read || (async () => ({ status: 'unavailable' })),
     decide: adapter.decide, readReasons: adapter.readReasons, createCommandId: adapter.createCommandId });
