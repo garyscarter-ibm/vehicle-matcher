@@ -2,7 +2,7 @@ import { inputDigest, ok, result } from '../../repository/index.js';
 import { validInstant } from '../../policy/file-provider.js';
 import { OPERATION_TYPES } from '../../adapters/synthetic-appointments.js';
 import { observeStage } from '../documents/index.js';
-import { APPOINTMENT_KEYS, loadAppointmentPolicy } from './policy.js';
+import { APPOINTMENT_KEYS, loadAppointmentPolicy, policyUnavailable } from './policy.js';
 import { applyCurrentCarEvent } from '../current-car/index.js';
 
 export const APPOINTMENT_CONTRACT = 'lifecycle.appointments.v1';
@@ -43,7 +43,7 @@ function expected(step, op, r) {
 }
 
 export class LifecycleAppointmentService {
-  #repository; #policy; #clock; #identity; #stages; #provider; #start; #cfg; #ownershipKey; #slotSource; #fields; #readiness; #outcomesKey;
+  #repository; #policy; #clock; #identity; #stages; #provider; #start; #cfg; #ownershipKey; #slotSource; #fields; #readiness; #outcomesKey; #outcomePort;
   // Options default to the handover purpose. `slotSource` replaces provider.offerSlots; `requestFields` are extra caller-validated request keys.
   // `readiness` (FUCQ-116's readReadiness) gates completion; `outcomesKey` is unset for the return purpose, which has no terminal outcomes.
   constructor({ repository, policy, clock, identity, lifecycleStages, provider, purpose = 'handover', ownershipKey, slotSource, requestFields = [], readiness,
@@ -56,6 +56,24 @@ export class LifecycleAppointmentService {
   }
 
   #stateRef(runId, orderUuid) { return { table: 'event_receipts', key: { runId, consumerId: this.#cfg.consumer, eventId: orderUuid } }; }
+
+  // FUCQ-253: server-internal read of a completed handover for FUCQ-111's projection, with its keyed tracker stage.
+  // Stored state only, never the stage port, so the two projections cannot recurse; null until completed.
+  outcomePort() {
+    this.#outcomePort ??= Object.freeze({ read: (context, { orderUuid, asOf } = {}) => this.#safe(async () => {
+      if (!this.#outcomesKey || !this.#repository || !this.#policy) return ok(null);
+      const found = await this.#repository.read(context, this.#stateRef(context.runId, orderUuid));
+      if (found.status === 'not-found') return ok(null); if (found.status !== 'ok') return found;
+      const p = found.value.outcome?.value;
+      if (p?.state !== 'completed' || p.outcome?.state !== 'completed' || !validInstant(p.outcome.at)) return ok(null);
+      const config = await this.#config(context, asOf ?? p.outcome.at, p.policyVersion); if (config.status !== 'ok') return config;
+      const done = config.value.outcomes.states.completed;
+      if (!text(done.stage, 128)) return policyUnavailable();
+      return ok({ stage: done.stage, state: 'completed', at: p.outcome.at, providerReference: p.outcome.providerReference ?? null,
+        owner: done.owner, nextStep: done.nextStep, policyVersion: config.value.policyVersion });
+    }) });
+    return this.#outcomePort;
+  }
   // Attempt 1 keeps the original IDs; a rebooking (attempt n > 1) adds `:a<n>` so each attempt writes under its own keys.
   #operationIds(runId, orderUuid, attempt = 1) {
     const base = `${this.#cfg.opBase}:${inputDigest([runId, orderUuid]).slice(0, 32)}${attempt > 1 ? `:a${attempt}` : ''}`;

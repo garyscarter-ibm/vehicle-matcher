@@ -1565,6 +1565,10 @@ consumer opens a renewal case from it when renewal authority is validated.
 | `lifecycle.approval.ownership.v1` | owner and next step per stage and outcome |
 
 Response shapes for the later order progress screen are `server/test/fixtures/gcsp-lifecycle-approval-outcomes.json`.
+Completed handover (FUCQ-253): once FUCQ-167's handover outcome is `completed`, reads of a `sent-to-ordering` order append the stage
+named by `lifecycle.appointments.outcomes.v1` `states.completed.stage` (default `handover`), approved at the completion time with its
+provider reference, and set `currentStage` to it, `outcome: handed-over` and the keyed completed owner/next step. This is derived at read
+time from the appointment port; no revision is written. A missing or failing outcome read keeps the `sent-to-ordering` view.
 Remaining: FUCQ-71's selection-acknowledged receipt lacks top-level `renewalId`/`orderUuid`/`occurredAt`, and no
 validated renewal authority is seeded, so decline cases stay unopened in the default run; runtime composition is FUCQ-100's lane.
 

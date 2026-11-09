@@ -22,9 +22,10 @@ const unavailable = () => result('unavailable', { retryable: true, reason: 'Orde
 const systemContext = (context) => ({ environmentId: context.environmentId, runId: context.runId, principalId: HANDLER_ID, roles: [] });
 
 export class LifecycleApprovalService {
-  #repository; #policy; #clock; #identity; #status; #start; #port;
-  constructor({ repository, policy, clock, identity, status } = {}) {
-    this.#repository = repository; this.#policy = policy; this.#clock = clock; this.#identity = identity; this.#status = status;
+  #repository; #policy; #clock; #identity; #status; #start; #port; #handover;
+  // `handover` is FUCQ-167's appointment outcome port; its completed handover becomes the final tracker stage (FUCQ-253).
+  constructor({ repository, policy, clock, identity, status, handover } = {}) {
+    this.#repository = repository; this.#policy = policy; this.#clock = clock; this.#identity = identity; this.#status = status; this.#handover = handover;
   }
 
   start() {
@@ -67,8 +68,16 @@ export class LifecycleApprovalService {
         : { stage, state: 'not-started', at: null, providerReference: null, operationId: null }) };
   }
 
-  #project(record, policy, renewalId, operation, asOf) {
-    const step = record.outcome === 'in-progress' ? policy.ownership.stages[record.currentStage] : policy.ownership.outcomes[record.outcome];
+  // A completed handover is derived at read time from the appointment projection; the stored revision is unchanged.
+  #handedOver(record, handover) {
+    if (!handover || record.stageList.includes(handover.stage)) return record;
+    const row = { stage: handover.stage, state: 'approved', at: handover.at, providerReference: handover.providerReference, operationId: null };
+    return { ...record, stageList: [...record.stageList, handover.stage], stages: [...record.stages, row], currentStage: handover.stage, outcome: 'handed-over' };
+  }
+
+  #project(stored, policy, renewalId, operation, asOf, handover = null) {
+    const record = this.#handedOver(stored, handover);
+    const step = record !== stored ? handover : record.outcome === 'in-progress' ? policy.ownership.stages[record.currentStage] : policy.ownership.outcomes[record.outcome];
     const blocked = operation?.state === 'pending' && operation.lastKnownState === 'unsupported'
       ? { code: operation.outcome?.code ?? 'unsupported', reason: operation.outcome?.reason ?? 'This approval update is not supported.' }
       : operation?.state === 'pending' && operation.lastKnownState === 'unknown'
@@ -143,7 +152,17 @@ export class LifecycleApprovalService {
       const found = await this.#repository.read(context, ref(context.runId, 'pending_operations', { operationId: decisionId(context.runId, source.orderUuid, record.currentStage) }));
       if (found.status === 'ok') operation = found.value; else if (found.status !== 'not-found') return found;
     }
-    return ok(this.#project(record, policy.value, renewal.value.renewalId, operation, asOf));
+    return ok(this.#project(record, policy.value, renewal.value.renewalId, operation, asOf, await this.#handoverOf(context, record, asOf)));
+  }
+
+  // Only a sent order can be handed over. A failing outcome read keeps today's view rather than hiding the order.
+  async #handoverOf(context, record, asOf) {
+    if (record.outcome !== 'sent-to-ordering' || typeof this.#handover?.read !== 'function') return null;
+    try {
+      const found = await this.#handover.read(context, { orderUuid: record.orderUuid, asOf });
+      const v = found?.status === 'ok' ? found.value : null;
+      return v && typeof v.stage === 'string' && v.stage && typeof v.at === 'string' && typeof v.owner === 'string' && typeof v.nextStep === 'string' ? v : null;
+    } catch { return null; }
   }
 
   async #tick({ context, tickId, now }) {
