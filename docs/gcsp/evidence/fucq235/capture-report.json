@@ -1,0 +1,1017 @@
+{
+  "story": "FUCQ-235",
+  "startedAt": "2026-11-09T03:16:07.106Z",
+  "widths": [
+    1280,
+    375,
+    320
+  ],
+  "captures": [
+    {
+      "kind": "plan",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq235/learned-1280.png",
+      "pass": true,
+      "tableScrollWidth": 1044,
+      "tableClientWidth": 1044,
+      "rows": 8,
+      "trDisplay": "table-row",
+      "theadVisible": true,
+      "tdBefore": "none",
+      "checks": [
+        {
+          "check": "wrapper has is-stack",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text (visually hidden thead excluded)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "comparison region fits",
+          "ok": true,
+          "detail": "1044 vs 1044"
+        },
+        {
+          "check": "table layout: thead visible",
+          "ok": true,
+          "detail": "table-header-group"
+        },
+        {
+          "check": "table layout: tbody tr is table-row",
+          "ok": true,
+          "detail": "table-row"
+        },
+        {
+          "check": "no ::before label in table layout",
+          "ok": true,
+          "detail": "none"
+        },
+        {
+          "check": "caption present",
+          "ok": true,
+          "detail": "Plan comparison"
+        },
+        {
+          "check": "no em dash in section text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "heading is \"Synthetic-trained model\"",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console or page errors",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    },
+    {
+      "kind": "plan",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq235/learned-375.png",
+      "pass": true,
+      "tableScrollWidth": 315,
+      "tableClientWidth": 315,
+      "rows": 8,
+      "trDisplay": "block",
+      "theadVisible": false,
+      "tdBefore": "\"Recommended plan\" / \"\"",
+      "checks": [
+        {
+          "check": "wrapper has is-stack",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text (visually hidden thead excluded)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "comparison region does not scroll sideways",
+          "ok": true,
+          "detail": "315 vs 315"
+        },
+        {
+          "check": "thead visually hidden",
+          "ok": true,
+          "detail": "block"
+        },
+        {
+          "check": "tbody tr is display:block",
+          "ok": true,
+          "detail": "block"
+        },
+        {
+          "check": "each td shows its data-label via ::before",
+          "ok": true,
+          "detail": "\"Recommended plan\" / \"\" / \"Difference\" / \"\""
+        },
+        {
+          "check": "last cell labelled Difference",
+          "ok": true,
+          "detail": "Difference / \"Difference\" / \"\""
+        },
+        {
+          "check": "caption present",
+          "ok": true,
+          "detail": "Plan comparison"
+        },
+        {
+          "check": "no em dash in section text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "heading is \"Synthetic-trained model\"",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console or page errors",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    },
+    {
+      "kind": "plan",
+      "width": 320,
+      "png": "docs/gcsp/evidence/fucq235/learned-320.png",
+      "pass": true,
+      "tableScrollWidth": 260,
+      "tableClientWidth": 260,
+      "rows": 8,
+      "trDisplay": "block",
+      "theadVisible": false,
+      "tdBefore": "\"Recommended plan\" / \"\"",
+      "checks": [
+        {
+          "check": "wrapper has is-stack",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text (visually hidden thead excluded)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "comparison region does not scroll sideways",
+          "ok": true,
+          "detail": "260 vs 260"
+        },
+        {
+          "check": "thead visually hidden",
+          "ok": true,
+          "detail": "block"
+        },
+        {
+          "check": "tbody tr is display:block",
+          "ok": true,
+          "detail": "block"
+        },
+        {
+          "check": "each td shows its data-label via ::before",
+          "ok": true,
+          "detail": "\"Recommended plan\" / \"\" / \"Difference\" / \"\""
+        },
+        {
+          "check": "last cell labelled Difference",
+          "ok": true,
+          "detail": "Difference / \"Difference\" / \"\""
+        },
+        {
+          "check": "caption present",
+          "ok": true,
+          "detail": "Plan comparison"
+        },
+        {
+          "check": "no em dash in section text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "heading is \"Synthetic-trained model\"",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console or page errors",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    },
+    {
+      "kind": "gallery",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq235/gallery-stack-1280.png",
+      "pass": true,
+      "tableScrollWidth": 1094,
+      "tableClientWidth": 1094,
+      "rows": 2,
+      "trDisplay": "table-row",
+      "theadVisible": true,
+      "tdBefore": "none",
+      "checks": [
+        {
+          "check": "wrapper has is-stack",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text (visually hidden thead excluded)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "comparison region fits",
+          "ok": true,
+          "detail": "1094 vs 1094"
+        },
+        {
+          "check": "table layout: thead visible",
+          "ok": true,
+          "detail": "table-header-group"
+        },
+        {
+          "check": "table layout: tbody tr is table-row",
+          "ok": true,
+          "detail": "table-row"
+        },
+        {
+          "check": "no ::before label in table layout",
+          "ok": true,
+          "detail": "none"
+        },
+        {
+          "check": "caption present",
+          "ok": true,
+          "detail": "Plan comparison (stacks under 640 px)"
+        },
+        {
+          "check": "no em dash in section text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console or page errors",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    },
+    {
+      "kind": "gallery",
+      "width": 320,
+      "png": "docs/gcsp/evidence/fucq235/gallery-stack-320.png",
+      "pass": true,
+      "tableScrollWidth": 204,
+      "tableClientWidth": 204,
+      "rows": 2,
+      "trDisplay": "block",
+      "theadVisible": false,
+      "tdBefore": "\"Recommended plan\" / \"\"",
+      "checks": [
+        {
+          "check": "wrapper has is-stack",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text (visually hidden thead excluded)",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "comparison region does not scroll sideways",
+          "ok": true,
+          "detail": "204 vs 204"
+        },
+        {
+          "check": "thead visually hidden",
+          "ok": true,
+          "detail": "block"
+        },
+        {
+          "check": "tbody tr is display:block",
+          "ok": true,
+          "detail": "block"
+        },
+        {
+          "check": "each td shows its data-label via ::before",
+          "ok": true,
+          "detail": "\"Recommended plan\" / \"\" / \"Difference\" / \"\""
+        },
+        {
+          "check": "last cell labelled Difference",
+          "ok": true,
+          "detail": "Difference / \"Difference\" / \"\""
+        },
+        {
+          "check": "caption present",
+          "ok": true,
+          "detail": "Plan comparison (stacks under 640 px)"
+        },
+        {
+          "check": "no em dash in section text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console or page errors",
+          "ok": true,
+          "detail": "0"
+        }
+      ]
+    }
+  ],
+  "keyboard": {
+    "320": {
+      "stops": 27,
+      "planComparisonStop": 7,
+      "afterAlternativePlans": true,
+      "beforeLimitsEditor": true,
+      "matchesFucq123": true,
+      "fucq123Stops": 27,
+      "everyStopVisible": true,
+      "order": [
+        {
+          "n": 1,
+          "focus": "button: Request 3 vehicles from Production",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 2,
+          "focus": "div[region]: Proposed order",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 3,
+          "focus": "div[region]: Order totals by model",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 4,
+          "focus": "div[region]: Unmatched supply by source",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 5,
+          "focus": "div[region]: Binding constraints",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 6,
+          "focus": "div[region]: Alternative plans",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 7,
+          "focus": "div[region]: Plan comparison",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 8,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 9,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 10,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 11,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 12,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 13,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 14,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 15,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 16,
+          "focus": "input: 3 Series Saloon 320i maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 17,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 18,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 19,
+          "focus": "input: 3 Series Saloon 330e maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 20,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 21,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 22,
+          "focus": "input: 3 Series Touring 320i maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 23,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 24,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 25,
+          "focus": "input: i5 Touring eDrive40 M Sport Pro with Technology Plus and Comfort Packs maximum s",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 26,
+          "focus": "input: Order budget (pounds)",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 27,
+          "focus": "button: Preview with these limits",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        }
+      ]
+    },
+    "375": {
+      "stops": 27,
+      "planComparisonStop": 7,
+      "afterAlternativePlans": true,
+      "beforeLimitsEditor": true,
+      "matchesFucq123": true,
+      "fucq123Stops": 27,
+      "everyStopVisible": true,
+      "order": [
+        {
+          "n": 1,
+          "focus": "button: Request 3 vehicles from Production",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 2,
+          "focus": "div[region]: Proposed order",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 3,
+          "focus": "div[region]: Order totals by model",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 4,
+          "focus": "div[region]: Unmatched supply by source",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 5,
+          "focus": "div[region]: Binding constraints",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 6,
+          "focus": "div[region]: Alternative plans",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 7,
+          "focus": "div[region]: Plan comparison",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 8,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 9,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 10,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 11,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 12,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 13,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 14,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 15,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 16,
+          "focus": "input: 3 Series Saloon 320i maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 17,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 18,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 19,
+          "focus": "input: 3 Series Saloon 330e maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 20,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 21,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 22,
+          "focus": "input: 3 Series Touring 320i maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 23,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 24,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 25,
+          "focus": "input: i5 Touring eDrive40 M Sport Pro with Technology Plus and Comfort Packs maximum s",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 26,
+          "focus": "input: Order budget (pounds)",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 27,
+          "focus": "button: Preview with these limits",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        }
+      ]
+    },
+    "1280": {
+      "stops": 27,
+      "planComparisonStop": 7,
+      "afterAlternativePlans": true,
+      "beforeLimitsEditor": true,
+      "matchesFucq123": true,
+      "fucq123Stops": 27,
+      "everyStopVisible": true,
+      "order": [
+        {
+          "n": 1,
+          "focus": "button: Request 3 vehicles from Production",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 2,
+          "focus": "div[region]: Proposed order",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 3,
+          "focus": "div[region]: Order totals by model",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 4,
+          "focus": "div[region]: Unmatched supply by source",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 5,
+          "focus": "div[region]: Binding constraints",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 6,
+          "focus": "div[region]: Alternative plans",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 7,
+          "focus": "div[region]: Plan comparison",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 8,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 9,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 10,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 11,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 12,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 13,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 14,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 15,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 16,
+          "focus": "input: 3 Series Saloon 320i maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 17,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 18,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 19,
+          "focus": "input: 3 Series Saloon 330e maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 20,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 21,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 22,
+          "focus": "input: 3 Series Touring 320i maximum slider",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 23,
+          "focus": "input: Min",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 24,
+          "focus": "input: Max",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 25,
+          "focus": "input: i5 Touring eDrive40 M Sport Pro with Technology Plus and Comfort Packs maximum s",
+          "focusVisible": true,
+          "outline": "none 3px rgb(16, 16, 16)"
+        },
+        {
+          "n": 26,
+          "focus": "input: Order budget (pounds)",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        },
+        {
+          "n": 27,
+          "focus": "button: Preview with these limits",
+          "focusVisible": true,
+          "outline": "solid 2px rgb(2, 145, 183)"
+        }
+      ]
+    }
+  },
+  "console": [],
+  "pageErrors": [],
+  "badResponses": [
+    {
+      "stage": "plan-1280",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "plan-1280",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "plan-1280",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "plan-1280",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "plan-1280",
+      "url": "/favicon.ico",
+      "status": 404
+    },
+    {
+      "stage": "plan-375",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "plan-375",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "plan-320",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "plan-320",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "plan-1280",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "plan-1280",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "plan-375",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "plan-375",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    },
+    {
+      "stage": "plan-320",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "plan-320",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 404
+    }
+  ],
+  "cleanup": {
+    "chrome": "stopped (process group), profile removed"
+  },
+  "chromeDebugPort": 58641,
+  "finishedAt": "2026-11-09T03:16:25.352Z",
+  "pass": true
+}
