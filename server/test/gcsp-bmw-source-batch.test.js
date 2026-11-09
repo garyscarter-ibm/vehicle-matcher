@@ -165,6 +165,10 @@ async function interrupted(context, phase = 'outcome') {
   fixture.originalState = JSON.parse(fixture.originalBytes).content;
   return fixture;
 }
+async function rewritePredecessor(fixture, mutate) {
+  const envelope = JSON.parse(fixture.originalBytes); mutate(envelope.content); envelope.contentDigest = inputDigest(envelope.content);
+  fixture.originalBytes = Buffer.from(JSON.stringify(envelope)); await writeFile(fixture.input.statePath, fixture.originalBytes);
+}
 function continuationInput(fixture, id = 'fixture-continuation') {
   const { input } = fixture;
   return { ...input, statePath: join(input.statePath, '..', `${id}.json`),
@@ -173,22 +177,22 @@ function continuationInput(fixture, id = 'fixture-continuation') {
     http: { ...input.http, allocation: { ...input.http.allocation, id, attempts: 5 } } };
 }
 
-test('continuation preserves predecessor and admissions while fresh explicit bootstrap completes only pending work', async (context) => {
+test('continuation preserves predecessor and admissions while reused bootstrap evidence completes only pending work', async (context) => {
   const f = await interrupted(context); const originalCalls = [...f.calls]; const next = continuationInput(f);
   const result = await (await createFleetCollector(next)).run();
   assert.equal(result.status, 'complete'); assert.equal(result.accepted.length, 2);
   assert.deepEqual(result.accepted[0], f.originalState.accepted[0]);
-  assert.equal(result.counts.httpAttempts, 10); assert.equal(result.allocationCounts.prior.httpAttempts, 5);
-  assert.equal(result.allocationCounts.fresh.httpAttempts, 5);
-  assert.equal(f.calls.length, 10); assert.equal(f.calls.filter((url) => url === originalCalls.at(-1)).length, 1);
+  assert.equal(result.counts.httpAttempts, 7); assert.equal(result.allocationCounts.prior.httpAttempts, 5);
+  assert.equal(result.allocationCounts.fresh.httpAttempts, 2);
+  assert.equal(f.calls.length, 7); assert.equal(f.calls.filter((url) => url === originalCalls.at(-1)).length, 1);
   assert.deepEqual(await readFile(f.input.statePath), f.originalBytes);
-  assert.equal((await (await createFleetCollector(next)).run()).accepted.length, 2); assert.equal(f.calls.length, 10);
+  assert.equal((await (await createFleetCollector(next)).run()).accepted.length, 2); assert.equal(f.calls.length, 7);
 });
 
 test('continuation recovers retained solver cache without repeating its spent request', async (context) => {
   const f = await interrupted(context, 'cached'); const spent = f.calls.at(-1); const next = continuationInput(f);
   const result = await (await createFleetCollector(next)).run();
-  assert.equal(result.accepted.length, 2); assert.equal(result.counts.httpAttempts, 10);
+  assert.equal(result.accepted.length, 2); assert.equal(result.counts.httpAttempts, 7);
   assert.equal(f.calls.filter((url) => url === spent).length, 1);
   assert.equal(result.continuation.recoveredSolverResponses, 1);
   assert.deepEqual(await readFile(f.input.statePath), f.originalBytes);
@@ -209,7 +213,7 @@ test('continuation refuses changed predecessor, allocation reuse and destination
   const next = continuationInput(f); await (await createFleetCollector(next)).run();
   const rebound = { ...next, statePath: join(next.statePath, '..', 'rebound.json') };
   await assert.rejects(async () => (await createFleetCollector(rebound)).run(), { code: 'continuation-allocation-used' });
-  assert.equal(f.calls.length, calls + 5);
+  assert.equal(f.calls.length, calls + 2);
 });
 
 test('FUCQ-152: a second fresh allocation cannot fork a predecessor that already has a successor', async (context) => {
@@ -269,7 +273,7 @@ test('continuation records a spent solver without retained response as rejected 
   const result = await (await createFleetCollector(continuationInput(f))).run();
   assert.equal(result.accepted.length, 1); assert.equal(result.coverage.processedCandidates, 2);
   assert.deepEqual(result.rejected, [{ candidateId: 'candidate-0', code: 'source-request-spent' }]);
-  assert.equal(f.calls.filter((url) => url === spent).length, 1); assert.equal(result.counts.httpAttempts, 10);
+  assert.equal(f.calls.filter((url) => url === spent).length, 1); assert.equal(result.counts.httpAttempts, 7);
 });
 
 test('continuation refuses durable access rate source refusal substitution and shape stops before marker or traffic', async (context) => {
@@ -290,7 +294,10 @@ test('continuation refuses durable access rate source refusal substitution and s
 
 test('continuation source change fails closed before pending solver and finite attempt budget remains effective', async (context) => {
   for (const variant of ['changed', 'budget']) {
-    const f = await interrupted(context); const next = continuationInput(f); const before = f.calls.length;
+    const f = await interrupted(context);
+    // Expired safe entries refresh within the allowance; the changed options then fail closed against the retained context.
+    if (variant === 'changed') await rewritePredecessor(f, (content) => { for (const row of content.cache) if (row.operation !== 'solve') row.expiresAt = 0; });
+    const next = continuationInput(f); const before = f.calls.length;
     if (variant === 'changed') {
       const fetch = next.http.fetch;
       next.http.fetch = async (url, options) => {
@@ -299,10 +306,10 @@ test('continuation source change fails closed before pending solver and finite a
         const value = await response.json(); value.P0300.phrases = { longDescription: 'changed source text' };
         return new Response(JSON.stringify(value), { headers: { 'content-type': 'application/json' } });
       };
-    } else next.continuation.limits.sourceAttempts = 4;
+    } else next.continuation.limits.sourceAttempts = 1;
     const result = await (await createFleetCollector(next)).run();
     assert.equal(result.reason, variant === 'changed' ? 'continuation-source-changed' : 'source-attempt-budget');
-    assert.equal(result.accepted.length, 1); assert.equal(f.calls.length, before + 4);
+    assert.equal(result.accepted.length, 1); assert.equal(f.calls.length, before + (variant === 'changed' ? 4 : 1));
     assert.deepEqual(await readFile(f.input.statePath), f.originalBytes);
   }
 });
@@ -317,9 +324,9 @@ test('a second interrupted continuation needs another fresh allocation and retai
   delete next.onPhase;
   const finalInput = continuationInput({ input: next, originalBytes: secondBytes }, 'fixture-continuation-third');
   const result = await (await createFleetCollector(finalInput)).run();
-  assert.equal(result.accepted.length, 2); assert.equal(result.counts.httpAttempts, 14);
-  assert.equal(result.allocationCounts.prior.httpAttempts, 10); assert.equal(result.allocationCounts.fresh.httpAttempts, 4);
-  assert.equal(f.calls.length, calls + 4); assert.equal(f.calls.filter((url) => url === secondSolver).length, 1);
+  assert.equal(result.accepted.length, 2); assert.equal(result.counts.httpAttempts, 8);
+  assert.equal(result.allocationCounts.prior.httpAttempts, 7); assert.equal(result.allocationCounts.fresh.httpAttempts, 1);
+  assert.equal(f.calls.length, calls + 1); assert.equal(f.calls.filter((url) => url === secondSolver).length, 1);
   assert.deepEqual(await readFile(next.statePath), secondBytes); assert.deepEqual(await readFile(f.input.statePath), f.originalBytes);
 });
 
@@ -363,4 +370,71 @@ test('FUCQ-151: tampering after a cached binding validation is still refused wit
     assert.equal(calls.length, 8); assert.equal(collector.catalogueRegistrations.length, 4);
   }
   await writeFile(input.statePath, pristine); assert.deepEqual((await collector.run()).accepted, result.accepted); assert.equal(calls.length, 8);
+});
+
+const BOOTSTRAP = ['page', 'discover', 'options'];
+const LATER = () => Date.parse('2026-11-07T02:00:00.000Z');
+
+test('FUCQ-156: continuation reuses page, tree and options with original times, hashes and expiry and refreshes only settings', async (context) => {
+  const f = await interrupted(context); const next = continuationInput(f); next.now = LATER;
+  const result = await (await createFleetCollector(next)).run();
+  assert.equal(f.calls.length, 7, 'five predecessor GETs plus two fresh');
+  const { fresh } = result.allocationCounts; assert.equal(fresh.httpAttempts, 2);
+  for (const [name, hits, ops] of [['page', 1, 0], ['settings', 0, 1], ['discover', 1, 0], ['options', 1, 0], ['solve', 0, 1]]) {
+    assert.equal(fresh.cacheHits[name], hits, `${name} cache hits`); assert.equal(fresh.operations[name], ops, `${name} operations`);
+  }
+  assert.deepEqual(result.continuation.bootstrap, { reused: BOOTSTRAP, refreshed: ['settings'] });
+  const successor = JSON.parse(await readFile(next.statePath)).content; const predecessor = f.originalState;
+  for (const name of BOOTSTRAP) assert.deepEqual(successor.cache.find((row) => row.operation === name), predecessor.cache.find((row) => row.operation === name));
+  assert.equal(successor.cache.some((row) => row.operation === 'settings'), false);
+  assert.deepEqual(successor.activeBatchEvidence, predecessor.batchEvidence);
+  assert.deepEqual(successor.batchEvidence, predecessor.batchEvidence);
+  assert.equal(predecessor.batchEvidence.tree.retrievedAt, '2026-11-07T01:00:00.000Z');
+  assert.equal(successor.sourceCaptures[1].solver.retrievedAt, '2026-11-07T02:00:00.000Z');
+  assert.deepEqual(result.accepted[0], predecessor.accepted[0]);
+  assert.equal(result.accepted[0].configurationId, predecessor.accepted[0].configurationId);
+  assert.deepEqual(await readFile(f.input.statePath), f.originalBytes);
+  assert.equal((await (await createFleetCollector(next)).run()).accepted.length, 2); assert.equal(f.calls.length, 7);
+});
+
+test('FUCQ-156: no bootstrap header value enters the successor checkpoint, report or cache', async (context) => {
+  const f = await interrupted(context); const next = continuationInput(f);
+  const result = await (await createFleetCollector(next)).run(); const bytes = (await readFile(next.statePath, 'utf8')) + JSON.stringify(result);
+  for (const secret of ['private-tree-fixture', 'private-options-fixture', 'private-solver-fixture']) assert.equal(bytes.includes(secret), false, secret);
+});
+
+test('FUCQ-156: entries that expired refresh within the one-request allowance with honest counts', async (context) => {
+  const all = await interrupted(context);
+  await rewritePredecessor(all, (content) => { for (const row of content.cache) if (row.operation !== 'solve') row.expiresAt = 0; });
+  const result = await (await createFleetCollector(continuationInput(all))).run();
+  assert.equal(result.status, 'complete'); assert.equal(all.calls.length, 10);
+  for (const name of BOOTSTRAP) { assert.equal(result.allocationCounts.fresh.cacheHits[name], 0); assert.equal(result.allocationCounts.fresh.operations[name], 1); }
+  assert.deepEqual(result.continuation.bootstrap, { reused: [], refreshed: ['page', 'settings', 'discover', 'options'] });
+
+  // Only options expires: the restored tree guard must let the refreshed options qualify.
+  const part = await interrupted(context);
+  await rewritePredecessor(part, (content) => { content.cache.find((row) => row.operation === 'options').expiresAt = 0; });
+  const next = continuationInput(part); const partial = await (await createFleetCollector(next)).run();
+  assert.equal(partial.status, 'complete'); assert.equal(part.calls.length, 8);
+  const { fresh } = partial.allocationCounts;
+  assert.deepEqual([fresh.cacheHits.page, fresh.cacheHits.discover, fresh.cacheHits.options], [1, 1, 0]);
+  assert.deepEqual([fresh.operations.settings, fresh.operations.options, fresh.operations.solve], [1, 1, 1]);
+});
+
+test('FUCQ-156: corrupt or incompatible retained bootstrap evidence is refused before markers or traffic', async (context) => {
+  const rebind = (content) => { content.cache.find((row) => row.operation === 'discover').payload = structuredClone(content.cache.find((row) => row.operation === 'page').payload); };
+  for (const tamper of [
+    (content) => { const row = content.cache.find((entry) => entry.operation === 'discover'); row.payload.document.report.tampered = true;
+      row.payload.sha256 = sha(JSON.stringify(row.payload.document) + '\n'); },
+    rebind,
+    (content) => { content.cache.push({ cacheKey: sha('settings'), operation: 'settings', payload: { publicProfilesQualified: true }, expiresAt: Date.parse('2026-11-08T00:00:00Z') }); },
+    (content) => { content.cache.find((row) => row.operation === 'options').expiresAt = Date.parse('2026-12-01T00:00:00Z'); },
+    (content) => { content.cache.find((row) => row.operation === 'options').payload.document.observation.request.url += '&x=1'; },
+  ]) {
+    const f = await interrupted(context); const calls = f.calls.length;
+    await rewritePredecessor(f, (content) => { tamper(content); for (const row of content.cache) row.payloadDigest = inputDigest(row.payload); });
+    const directory = join(f.input.statePath, '..'); const before = (await readdir(directory)).sort();
+    await assert.rejects(async () => (await createFleetCollector(continuationInput(f))).run(), { code: 'cache-corrupt' });
+    assert.equal(f.calls.length, calls); assert.deepEqual((await readdir(directory)).sort(), before);
+  }
 });
