@@ -12,13 +12,17 @@ import { createGregDemandService } from '../gcsp/greg/index.js';
 import { createGregRoutes } from '../gcsp/greg/http.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { preference, essential, stock, fact } from './helpers/employee-recommendation.js';
+import { getReviewedDefinitionSet } from '../gcsp/policy/reviewed-definitions.js';
 
 const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
-async function setup({ threshold = 1, missingThreshold = false, canonical = false } = {}) {
+const REVIEWED_REASONS = getReviewedDefinitionSet('offer-decline-reasons-v1').definitions.find((d) => d.key === 'offer.declineReasons.v1');
+async function setup({ threshold = 1, missingThreshold = false, canonical = false, declineReasons = REVIEWED_REASONS.value } = {}) {
   const source = structuredClone(seed);
   if (!canonical) source.assumptions = source.assumptions.filter((a) => a.key !== 'greg.demand.smallCountThreshold');
   if (!canonical && !missingThreshold) source.assumptions.push({ ...source.assumptions[0], key: 'greg.demand.smallCountThreshold', value: threshold,
     unit: 'count', status: 'assumed', basis: 'Explicit alternative fixture privacy threshold.' });
+  if (declineReasons !== null) source.assumptions.push({ ...source.assumptions[0], key: REVIEWED_REASONS.key, value: structuredClone(declineReasons),
+    unit: REVIEWED_REASONS.unit, status: REVIEWED_REASONS.status, basis: REVIEWED_REASONS.basis });
   const policy = new PolicyService({ provider: { async loadVersions() { return [source]; } } });
   const repository = createMemoryRepository({ store: createMemoryStore() });
   assert.equal((await repository.open()).status, 'ok');
@@ -147,12 +151,12 @@ async function offer(f, id, state, decision, reason) {
 
 test('real offer/decision/hold/allocation records drive outcomes with typed declines and versions', async () => {
   const f = await setup(); await confirm(f);
-  await offer(f, 1, 'accepted', 'accept'); await offer(f, 2, 'declined', 'decline', { type: 'body', text: 'PRIVATE-DECLINE' });
+  await offer(f, 1, 'accepted', 'accept'); await offer(f, 2, 'declined', 'decline', { code: 'body-style', label: 'Body style', attribute: 'body', text: 'PRIVATE-DECLINE' });
   await offer(f, 3, 'expired'); await offer(f, 4, 'selected', 'select'); await offer(f, 5, 'active');
   const out = await read(f);
   assert.equal(exact(out.offers.made), 5); assert.equal(exact(out.offers.accepted), 1);
   assert.equal(exact(out.offers.declined), 1); assert.equal(exact(out.offers.expired), 1); assert.equal(exact(out.offers.selected), 1);
-  assert.equal(exact(bucket(out.offers.declinedByReason, 'body')), 1);
+  assert.equal(exact(bucket(out.offers.declinedByReason, 'body-style')), 1);
   assert.equal(exact(out.holds.active), 1); assert.equal(exact(out.holds.total), 5);
   const counts = bucket(out.stock.byModelLine, 'G21 Touring');
   assert.equal(exact(counts.held), 1); assert.equal(exact(counts.allocated), 1); assert.equal(exact(counts.released), 3);
@@ -162,7 +166,7 @@ test('real offer/decision/hold/allocation records drive outcomes with typed decl
 });
 
 test('all counts below canonical threshold are bands without a raw count or personal fields', async () => {
-  const f = await setup({ threshold: 5 }); await confirm(f); await offer(f, 1, 'declined', 'decline', { type: 'body', text: 'PRIVATE-DECLINE' });
+  const f = await setup({ threshold: 5 }); await confirm(f); await offer(f, 1, 'declined', 'decline', { code: 'body-style', label: 'Body style', attribute: 'body', text: 'PRIVATE-DECLINE' });
   const out = await read(f); const text = JSON.stringify(out);
   assert.deepEqual(out.demand.activeBriefs.count, { kind: 'band', fewerThan: 5, label: 'fewer than 5' });
   for (const forbidden of ['employeeId', 'principalId', 'orderUuid', 'offerId', 'holdId', 'Paula', 'PRIVATE-', 'tripHistory', 'usageHistory', 'annualMileage', 'driverEligible', 'score']) assert.equal(text.includes(forbidden), false, forbidden);
@@ -274,10 +278,52 @@ test('unmet evaluation reads all repository candidates beyond a retail-sized dis
 
 test('unregistered decline types and free text are replaced with a counted unclassified reason', async () => {
   const f = await setup(); await confirm(f);
-  await offer(f, 1, 'declined', 'decline', { type: 'PRIVATE-NAME', text: 'PRIVATE-HISTORY' });
+  await offer(f, 1, 'declined', 'decline', { code: 'PRIVATE-NAME', text: 'PRIVATE-HISTORY' });
   const out = await read(f);
   assert.equal(exact(bucket(out.offers.declinedByReason, 'unclassified')), 1);
   assert.equal(JSON.stringify(out).includes('PRIVATE-'), false);
+});
+
+for (const r of REVIEWED_REASONS.value.reasons) {
+  test(`reviewed decline reason ${r.code} is counted in its own Greg category`, async () => {
+    const f = await setup(); await confirm(f);
+    await offer(f, 1, 'declined', 'decline', { code: r.code, label: r.label, attribute: r.attribute });
+    const out = await read(f);
+    assert.equal(exact(bucket(out.offers.declinedByReason, r.code)), 1);
+    assert.equal(bucket(out.offers.declinedByReason, 'unclassified'), undefined);
+  });
+}
+
+test('a reason added to the decline policy becomes a Greg category without a code change', async () => {
+  const extended = { ...structuredClone(REVIEWED_REASONS.value), reasons: [...REVIEWED_REASONS.value.reasons, { code: 'colour', label: 'Colour', attribute: 'colour' }] };
+  const f = await setup({ declineReasons: extended }); await confirm(f);
+  await offer(f, 1, 'declined', 'decline', { code: 'colour', label: 'Colour', attribute: 'colour' });
+  const out = await read(f);
+  assert.equal(exact(bucket(out.offers.declinedByReason, 'colour')), 1);
+  assert.equal(bucket(out.offers.declinedByReason, 'unclassified'), undefined);
+  const plain = await setup(); await confirm(plain);
+  await offer(plain, 1, 'declined', 'decline', { code: 'colour', label: 'Colour', attribute: 'colour' });
+  const plainOut = await read(plain);
+  assert.equal(exact(bucket(plainOut.offers.declinedByReason, 'unclassified')), 1);
+  assert.equal(bucket(plainOut.offers.declinedByReason, 'colour'), undefined);
+});
+
+test('a reason outside the decline policy is still counted as unclassified', async () => {
+  const f = await setup(); await confirm(f);
+  await offer(f, 1, 'declined', 'decline', { code: 'timing' });
+  await offer(f, 2, 'declined', 'decline', { code: 'body-style', label: 'Body style', attribute: 'body' });
+  const out = await read(f);
+  assert.equal(exact(out.offers.declined), 2);
+  assert.equal(exact(bucket(out.offers.declinedByReason, 'unclassified')), 1);
+  assert.equal(exact(bucket(out.offers.declinedByReason, 'body-style')), 1);
+});
+
+test('without the decline policy every decline is counted as unclassified and the view stays available', async () => {
+  const f = await setup({ declineReasons: null }); await confirm(f);
+  await offer(f, 1, 'declined', 'decline', { code: 'body-style', label: 'Body style', attribute: 'body' });
+  const out = await read(f);
+  assert.equal(exact(bucket(out.offers.declinedByReason, 'unclassified')), 1);
+  assert.equal(bucket(out.offers.declinedByReason, 'body-style'), undefined);
 });
 
 

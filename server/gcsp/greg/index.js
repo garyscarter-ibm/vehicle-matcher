@@ -3,6 +3,7 @@ import { validInstant } from '../policy/file-provider.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { projectRecommendationFacts } from '../manual-context/recommendation-facts.js';
 import { readStockSourceStatus } from '../stock/source-status.js';
+import { DECLINE_REASONS_KEY } from '../offers/decision.js';
 
 const THRESHOLD_KEY = 'greg.demand.smallCountThreshold';
 const tables = ['briefs', 'employees', 'entitlement_slots', 'stock', 'holds', 'offers', 'decisions', 'quotes'];
@@ -50,6 +51,8 @@ export function createGregDemandService({ repository, policy, clock, identity } 
         const threshold = await policy.getAssumption(THRESHOLD_KEY, read);
         const calibration = await policy.getAssumption('employee.recommendation.v1', read);
         const declinedPolicy = await policy.getAssumption('offer.declinedCar.exclusion', read);
+        const reasonPolicy = await policy.getAssumption(DECLINE_REASONS_KEY, read);
+        const reasonRegistry = reasonPolicy.status === 'ok' && reasonPolicy.policyVersion === context.policyVersion ? reasonPolicy.value : null;
         if (declinedPolicy.status !== 'ok' || declinedPolicy.policyVersion !== context.policyVersion
           || declinedPolicy.value.value !== 'untilRelevantConfirmedBriefChange' || threshold.status !== 'ok' || calibration.status !== 'ok' || threshold.policyVersion !== context.policyVersion
           || calibration.policyVersion !== context.policyVersion || !Number.isSafeInteger(threshold.value.value) || threshold.value.value < 1) return unavailable('privacy-policy-unavailable');
@@ -124,11 +127,12 @@ export function createGregDemandService({ repository, policy, clock, identity } 
           || rows.holds.some((h) => h.holdId === o.holdId && h.state === 'allocated'
             && rows.stock.some((s) => s.orderUuid === h.orderUuid && (s.state === 'allocated' || s.allocated === true))));
         const expired = rows.offers.filter((o) => o.state === 'expired' && !accepted.includes(o) && !selected.includes(o) && !declined.includes(o));
-        const reasonTypes = new Set([...Object.keys(calibration.value.value.preferences), ...Object.keys(calibration.value.value.essentials),
-          'other', 'timing', 'points', 'no-longer-needed', 'just-not-this-one']);
+        // Greg's decline categories are the reviewed reason codes; any other code, or no registry, counts as unclassified.
+        const reasonTypes = new Set((Array.isArray(reasonRegistry?.value?.reasons) ? reasonRegistry.value.reasons : [])
+          .map((r) => r?.code).filter((code) => typeof code === 'string' && code.length > 0));
         const reason = (offer) => {
           const recorded = rows.decisions.find((d) => d.offerId === offer.offerId && d.decision === 'decline');
-          const type = recorded?.reason?.type ?? recorded?.reason?.code;
+          const type = recorded?.reason?.code;
           return reasonTypes.has(type) ? type : 'unclassified';
         };
         const holdVersions = (hold) => [hold, ...rows.quotes.filter((q) => q.quoteId === hold.quoteId), ...rows.offers.filter((o) => o.holdId === hold.holdId)];
@@ -144,7 +148,7 @@ export function createGregDemandService({ repository, policy, clock, identity } 
         if (inputDigest(rows) !== inputDigest(after) || time.value.clockVersion !== end.value.clockVersion) return result('conflict', {
           reason: 'Demand inputs changed during the read. Refresh the projection.' });
         const authorized = await identity.requireRole(context, 'greg'); if (authorized.status !== 'ok') return authorized;
-        return ok({ runId: context.runId, asOf: time.value.now, projectionVersion: inputDigest({ rows, policy: context.policyVersion, configuration: [threshold.value, calibration.value, declinedPolicy.value], clock: time.value.clockVersion }),
+        return ok({ runId: context.runId, asOf: time.value.now, projectionVersion: inputDigest({ rows, policy: context.policyVersion, configuration: [threshold.value, calibration.value, declinedPolicy.value, reasonRegistry], clock: time.value.clockVersion }),
           basis: 'expressed-saved-demand', versions: { ...provenance(briefs), clock: time.value.clockVersion },
           privacy: { thresholdKey: THRESHOLD_KEY, threshold: minimum, policyVersion: threshold.policyVersion, status: threshold.value.status },
           demand: { activeBriefs: aggregate(briefs), byModelLine: group(briefs, (b) => String(desired(b, 'modelLine'))),

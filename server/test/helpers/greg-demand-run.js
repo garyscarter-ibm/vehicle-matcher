@@ -8,18 +8,22 @@ import { BriefService } from '../../gcsp/brief/index.js';
 import { createGregDemandService } from '../../gcsp/greg/index.js';
 import { seedManualDemoContext } from '../../gcsp/manual-context/fixtures.js';
 import { preference, essential, stock, fact } from './employee-recommendation.js';
+import { getReviewedDefinitionSet } from '../../gcsp/policy/reviewed-definitions.js';
 
 export { fact };
 const seed = JSON.parse(await readFile(new URL('../../gcsp/policy/seed-v1.json', import.meta.url)));
+const REVIEWED_REASONS = getReviewedDefinitionSet('offer-decline-reasons-v1').definitions.find((d) => d.key === 'offer.declineReasons.v1');
 
 /** Fresh in-memory run. `threshold` is an explicit alternative; `canonical` keeps the seed value (5). */
-export async function setup({ threshold = 1, canonical = false, policyProvider, wrapRepository = (repository) => repository } = {}) {
+export async function setup({ threshold = 1, canonical = false, policyProvider, wrapRepository = (repository) => repository, declineReasons = REVIEWED_REASONS.value } = {}) {
   const source = structuredClone(seed);
   if (!canonical) {
     source.assumptions = source.assumptions.filter((a) => a.key !== 'greg.demand.smallCountThreshold');
     source.assumptions.push({ ...source.assumptions[0], key: 'greg.demand.smallCountThreshold', value: threshold,
       unit: 'count', status: 'assumed', basis: 'Explicit alternative fixture privacy threshold.' });
   }
+  if (declineReasons !== null) source.assumptions.push({ ...source.assumptions[0], key: REVIEWED_REASONS.key, value: structuredClone(declineReasons),
+    unit: REVIEWED_REASONS.unit, status: REVIEWED_REASONS.status, basis: REVIEWED_REASONS.basis });
   const policy = new PolicyService({ provider: policyProvider ? policyProvider(source) : { async loadVersions() { return [source]; } } });
   const repository = wrapRepository(createMemoryRepository({ store: createMemoryStore() }));
   assert.equal((await repository.open()).status, 'ok');
