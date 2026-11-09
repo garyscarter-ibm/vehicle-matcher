@@ -7,6 +7,8 @@ import { openComparisonRun } from '../gcsp/comparison/harness.js';
 import { evaluateComparisonSeed, statedCandidates, acceptable, carFit } from '../gcsp/comparison/evaluation.js';
 import { replayCurrentRoute } from '../gcsp/comparison/routes/current.js';
 import { ManualClaimsService } from '../gcsp/manual-claims/index.js';
+import { deriveBuddyHandoffInputs, prepareBuddySelection } from '../gcsp/offers/buddy-conversion.js';
+import { validContact } from '../gcsp/manual-context/index.js';
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-current-outcomes.json', import.meta.url), 'utf8'));
 const policy = new PolicyService({ provider: new FilePolicyProvider() });
@@ -299,4 +301,28 @@ test("ordering closes when FUCQ-66's collection lead time no longer fits before 
   }
   assert.equal((await run.snapshot()).holds.length, 0);
   assert.equal(record.totals.carsUnused, setup.inputs.stock.length);
+});
+
+// FUCQ-207: an ordering handoff on accept refuses records without contact, current model or odometer.
+test('generated manual records pass the ordering handoff contact and vehicle checks', async (t) => {
+  const handoff = async (seed) => {
+    const setup = await mechanics(seed); const run = await openComparisonRun(setup); t.after(() => run.close());
+    const today = setup.inputs.manifest.startsAt.slice(0, 10);
+    return Promise.all(setup.inputs.employees.map(async (employee) => {
+      const context = run.employeeContext(employee.employeeId);
+      const row = requireOk(await run.repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: employee.employeeId } }));
+      const derived = deriveBuddyHandoffInputs(row, { entitlementSlotId: context.entitlementSlotId, today });
+      assert.ok(validContact(derived.contact) && derived.driver && derived.returnOk && derived.mode === 'replacement', employee.employeeId);
+      assert.ok(derived.returnCar.model.trim() && Number.isSafeInteger(derived.returnCar.currentOdometer.value)
+        && derived.returnCar.currentOdometer.unit === 'mi', employee.employeeId);
+      const prepared = requireOk(await prepareBuddySelection({ repository: run.repository, clock: run.clock }, context, { expectedDraftVersion: 1 }));
+      assert.deepEqual(prepared.draft.choices.returnOdometer, derived.returnCar.currentOdometer);
+      return { employeeId: employee.employeeId, contact: derived.contact, returnCar: derived.returnCar };
+    }));
+  };
+  const first = await handoff(fixture.seed);
+  assert.deepEqual(await handoff(fixture.seed), first, 'deterministic per seed');
+  const other = await handoff('fucq207-other-seed');
+  assert.notDeepEqual(other.map((row) => row.contact), first.map((row) => row.contact));
+  assert.ok(first.every((row) => row.contact.email.endsWith('@example.invalid')), 'synthetic contact only');
 });
