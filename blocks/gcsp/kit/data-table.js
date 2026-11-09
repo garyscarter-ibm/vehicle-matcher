@@ -1,20 +1,22 @@
-// dataTable: a real <table> in a keyboard-scrollable region. Cells are strings, numbers, { label, isBand } or { label, emphasis } (bold).
+// dataTable: a real <table> in a keyboard-scrollable region. Cells are strings, numbers, { label, isBand }, { label, emphasis } (bold) or { label, missing }.
 import { el } from '../../vehicle-matcher/ui.js';
 import { fillValue } from './metric-tile.js';
 
 let uid = 0;
 
 /**
- * { caption, columns: [{ key, label, numeric }], rows: [{ [key]: value }], emptyText, id, stack } -> the scroll region (div).
+ * { caption, columns: [{ key, label, numeric, detail }], rows: [{ [key]: value }], emptyText, id, stack, compare } -> the scroll region (div).
  * First column cells are row headers. `stack` adds data-label and explicit roles so CSS can stack rows under 640 px.
+ * `compare` keeps row header | value | value as columns at any width, wrapping long values; `detail` names a column's subject.
  */
-export function dataTable({ caption, columns = [], rows = [], emptyText = 'Nothing to show', id, stack = false } = {}) {
+export function dataTable({ caption, columns = [], rows = [], emptyText = 'Nothing to show', id, stack = false, compare = false } = {}) {
   const base = id || `gcsp-table-${++uid}`;
   const captionId = `${base}-caption`;
   const region = el('div', 'gcsp-table-wrap');
   region.setAttribute('role', 'region');
   region.tabIndex = 0;
   region.setAttribute('aria-labelledby', captionId);
+  if (compare) { stack = false; region.classList.add('is-compare'); }
   if (stack) region.classList.add('is-stack');
   const table = el('table', 'gcsp-table');
   table.id = base;
@@ -24,6 +26,7 @@ export function dataTable({ caption, columns = [], rows = [], emptyText = 'Nothi
   for (const column of columns) {
     const th = el('th', `gcsp-table-th${column.numeric ? ' is-numeric' : ''}`, column.label);
     th.scope = 'col';
+    if (column.detail) th.append(' ', el('span', 'gcsp-table-th-sub', column.detail));
     if (stack) th.setAttribute('role', 'columnheader');
     headRow.append(th);
   }

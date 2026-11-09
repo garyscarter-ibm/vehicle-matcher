@@ -17,7 +17,7 @@ const unitText = (f) => f.kind === 'price' ? ` ${f.unitLabel}` : '';
 const versionLabel = (id, names) => String(id).split('+').map((part) => (Object.hasOwn(names, part) ? names[part]
   : part.startsWith('greg-') ? "Greg's change" : 'Unnamed update')).join(' with ');
 const safeNumber = (v) => /^\d+$/.test(v) && Number.isSafeInteger(Number(v)) && Number(v) >= 0;
-const countValue = (c) => ({ label: c.label, isBand: c.kind === 'band' });
+const countValue = (c) => (c.kind === 'band' && Number.isFinite(c.fewerThan) ? { label: c.label, isBand: true, fewerThan: c.fewerThan } : { label: c.label, isBand: c.kind === 'band' });
 const scoreValue = (s) => s.status === 'available' ? `${s.value.toFixed(1)} / 100` : 'Suppressed for privacy';
 const difference = (a, b) => a.kind === 'exact' && b.kind === 'exact' ? String(b.value - a.value) : 'Unknown (privacy bands)';
 

@@ -227,7 +227,7 @@ test('acknowledged reset navigates to fresh actual-context workspace without ano
     reset: async () => ok({ runId: 'fresh-run', presenterSession: { status: 'ok' } }) });
   await settle(); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
   assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
-  assert.doesNotMatch(f.navigation[0], /\?/); assert.equal(reads, 1); assert.equal(contexts, 1);
+  assert.doesNotMatch(f.navigation[0], /\?/); assert.equal(reads, 1); assert.equal(contexts, 2); // One read for the strip, one confirming the switch to the lead.
   assert.match(f.host.textContent, /Reset done. New run: fresh-run/); f.control.destroy();
 });
 test('unknown reset delivery preserves original retry and navigates only after acknowledged replay', async () => {
@@ -756,4 +756,78 @@ test('only a saved Production response asks the order plan to take focus; other 
   await f.done.ready; changed('stepProduction'); changed('submit'); changed();
   f.host.dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } }));
   assert.deepEqual(calls, [true, false, false, undefined]); f.done();
+});
+
+// FUCQ-272: a reset must not strand the presenter on a blank page with focus on BODY.
+const lead = { principalId: 'demo-paula', name: 'Paula (fictional)', roles: ['employee'] };
+const people = [lead, { principalId: 'demo-greg', name: 'Greg (fictional)', roles: ['greg'] }, { principalId: 'demo-presenter', name: 'Presenter', roles: ['presenter'] }];
+const leadCatalogue = { policyVersion: 'policy-test', scenarios: [
+  { scenarioId: 'main', name: 'Main successful journey', scenarioVersion: 'v1', fixtureVersion: 'f1', availability: { available: true }, principals: people }] };
+function resetFixture(overrides = {}) {
+  const switches = []; let acting = 'demo-presenter'; const f = setup({
+    readControls: async () => ok({ ...state(), runId: 'run-new', principals: people, currentScenario: { scenarioId: 'main', name: 'Main successful journey' } }),
+    readContext: async () => { const row = people.find((p) => p.principalId === acting); return ok({ principalId: row.principalId, name: row.name, roles: row.roles }); },
+    readScenarios: async () => ok(leadCatalogue),
+    reset: async () => ok({ runId: 'run-new' }),
+    switchPrincipal: async (payload) => { switches.push(payload); acting = payload.principalId; return ok({ principalId: acting }); }, ...overrides });
+  return { ...f, switches };
+}
+const resetNote = () => window.sessionStorage.getItem('gcsp:presenter-reset-done');
+test('confirm reset names the lead principal, switches to Paula through the adapter, then opens the workspace', async () => {
+  window.sessionStorage.clear(); const f = resetFixture(); await settle();
+  f.click('Reset scenario'); assert.match(f.host.textContent, /Reset into Main successful journey as Paula \(fictional\)\? This starts a new run\./);
+  assert.doesNotMatch(f.host.textContent, /—/);
+  f.click('Confirm reset'); await settle();
+  assert.equal(f.switches.length, 1); assert.equal(f.switches[0].principalId, 'demo-paula'); assert.ok(f.switches[0].commandId);
+  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
+  assert.deepEqual(JSON.parse(resetNote()), { runId: 'run-new', name: 'Paula (fictional)' }); f.control.destroy();
+});
+test('a non-presenter principal chosen in the picker before confirming is the reset target (Greg on request)', async () => {
+  window.sessionStorage.clear(); const f = resetFixture(); await settle();
+  choice(f, 'Acting principal', 'demo-greg').click(); f.click('Reset scenario');
+  assert.match(f.host.textContent, /Reset into Main successful journey as Greg \(fictional\)\?/);
+  f.click('Confirm reset'); await settle();
+  assert.deepEqual(f.switches.map((row) => row.principalId), ['demo-greg']); assert.equal(f.navigation.length, 1);
+  assert.equal(JSON.parse(resetNote()).name, 'Greg (fictional)'); f.control.destroy();
+});
+test('the remounted strip opens, says Reset done and focuses that status once, then forgets the note', async () => {
+  window.sessionStorage.setItem('gcsp:presenter-reset-done', JSON.stringify({ runId: 'run-new', name: 'Paula (fictional)' }));
+  const f = resetFixture(); await settle();
+  const status = f.host.querySelector('[role="status"]');
+  assert.equal(status.textContent, 'Reset done. New run: run-new. Acting as Paula (fictional).');
+  assert.equal(document.activeElement, status); assert.equal(f.control.root.open, true); assert.equal(status.tabIndex, -1);
+  assert.equal(resetNote(), null); f.control.destroy();
+  const g = resetFixture(); await settle(); assert.notEqual(document.activeElement, g.host.querySelector('[role="status"]')); g.control.destroy();
+});
+test('a note for another run is dropped without moving focus or changing the status', async () => {
+  window.sessionStorage.setItem('gcsp:presenter-reset-done', JSON.stringify({ runId: 'run-old', name: 'Paula (fictional)' }));
+  const f = resetFixture(); await settle();
+  assert.match(f.host.textContent, /Presenter controls ready/); assert.equal(document.activeElement, document.body);
+  assert.equal(resetNote(), null); f.control.destroy();
+});
+test('a refused switch after a good reset stays on the strip, keeps focus on the status and leaves Switch principal usable', async () => {
+  window.sessionStorage.clear(); const f = resetFixture({ switchPrincipal: async () => ({ status: 'forbidden', reason: 'Not permitted.' }) }); await settle();
+  f.click('Reset scenario'); f.click('Confirm reset'); await settle();
+  const status = f.host.querySelector('[role="status"]');
+  assert.equal(f.navigation.length, 0); assert.equal(resetNote(), null);
+  assert.equal(status.textContent, 'Reset done. New run: run-new. Switch to Paula (fictional) not confirmed: Not permitted.');
+  assert.equal(document.activeElement, status); assert.equal(selected(f, 'Acting principal'), 'demo-paula');
+  const retry = [...f.host.querySelectorAll('button')].find((node) => node.textContent === 'Switch principal');
+  assert.equal(retry.disabled, false); f.control.destroy();
+});
+test('a switch the server does not reflect in the acting context is not navigated away from', async () => {
+  window.sessionStorage.clear(); const f = resetFixture({ switchPrincipal: async () => ok({}) }); await settle();
+  f.click('Reset scenario'); f.click('Confirm reset'); await settle();
+  assert.equal(f.navigation.length, 0); assert.match(f.host.textContent, /Switch to Paula \(fictional\) not confirmed: the server did not confirm the acting principal\./);
+  f.control.destroy();
+});
+test('the employee journey does not pull focus out of the presenter strip when its heading renders', async () => {
+  const { mountManualJourney } = await import('../../blocks/gcsp/manual-setup/journey.js');
+  const { accountFixture } = await import('../../blocks/gcsp/account/fixtures.js');
+  const strip = document.createElement('div'); strip.className = 'gcsp-presenter-controls';
+  const status = document.createElement('p'); status.tabIndex = -1; strip.append(status); document.body.append(strip); status.focus();
+  const host = document.createElement('div'); document.body.append(host);
+  const stop = mountManualJourney(host, { adapter: { readAccount: async () => structuredClone(accountFixture('ready')), readDraft: async () => ({ status: 'not-found' }) },
+    orderAdapter: { listOrders: async () => ({ status: 'ok', value: { orders: [] } }) } });
+  await settle(); assert.ok(host.querySelector('main h1, main h2')); assert.equal(document.activeElement, status); stop();
 });

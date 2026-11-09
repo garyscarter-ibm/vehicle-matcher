@@ -8,7 +8,7 @@ const spaced = (v) => String(v).replaceAll(/([a-z0-9])([A-Z])/g, '$1 $2').replac
 const upperFirst = (v) => v.charAt(0).toUpperCase() + v.slice(1);
 /** A field key as a lower-case phrase ("body style"); never a raw key. */
 const fieldWords = (key) => (FIELDS[key] ? FIELDS[key].replace(/^./, (c) => c.toLowerCase()) : key ? spaced(key) : 'requirement');
-const fieldLabel = (key) => FIELDS[key] ?? upperFirst(fieldWords(key));
+export const fieldLabel = (key) => FIELDS[key] ?? upperFirst(fieldWords(key));
 const count = (n) => n.toLocaleString('en-GB');
 const finite = (n) => typeof n === 'number' && Number.isFinite(n);
 

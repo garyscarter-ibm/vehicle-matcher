@@ -1,5 +1,4 @@
 @import "../gcsp/shell/gcsp-tokens.css";
-
 /* kit primitives under the GCSP theme */
 .gcsp .vm-title { font-weight: 600; text-transform: none; letter-spacing: -0.01em; }
 .gcsp .vm-lede { font-weight: 400; line-height: 1.5; }
@@ -14,6 +13,7 @@
 .gcsp .vm summary:focus-visible,
 .gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
 .gcsp .vm-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 14px 24px; margin: 0; }
+.gcsp .vm-facts.vm-facts-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; }
 .gcsp .vm-fact { min-width: 0; margin: 0; }
 .gcsp .vm-fact-label { color: var(--gcsp-text-muted); font-size: 13px; overflow-wrap: break-word; }
 .gcsp .vm-fact-value { margin: 2px 0 0; overflow-wrap: break-word; font-size: 16px; font-weight: 600; }

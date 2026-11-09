@@ -1,0 +1,42 @@
+# FUCQ-286 heading outline of the offer view, every fixture state (2026-11-09T20:31Z)
+# Rendered with createOfferView in jsdom from blocks/gcsp/offer/fixtures.js; order tracker mount stubbed as one h2. Card names cut at 60 chars.
+
+## Before (base 15aa8306)
+pending: h1 Your car offer | h3 BMW 320i M Sport Touring with Individual extended leather an | h2 Check your choices  SKIP h1->h3 "BMW 320i M Sport Touring with Individual extended leather an"
+accepted: h1 Offer accepted | h3 BMW 320i M Sport Touring with Individual extended leather an  SKIP h1->h3 "BMW 320i M Sport Touring with Individual extended leather an"
+declined: h1 Offer declined
+expired: h1 Offer expired
+earlier-run: h1 Offer from an earlier demo run
+not-found: h1 Offer not found
+uncertain: h1 Checking your decision | h3 BMW 320i M Sport Touring with Individual extended leather an  SKIP h1->h3 "BMW 320i M Sport Touring with Individual extended leather an"
+loading: h1 Loading your offer
+error: h1 Your offer could not be loaded
+no-image: h1 Your car offer | h3 BMW 320i M Sport Touring with Individual extended leather an | h2 Check your choices  SKIP h1->h3 "BMW 320i M Sport Touring with Individual extended leather an"
+low-time: h1 Your car offer | h3 BMW 320i M Sport Touring with Individual extended leather an | h2 Check your choices  SKIP h1->h3 "BMW 320i M Sport Touring with Individual extended leather an"
+checking-expiry: h1 Your car offer | h3 BMW 320i M Sport Touring with Individual extended leather an | h2 Check your choices  SKIP h1->h3 "BMW 320i M Sport Touring with Individual extended leather an"
+handoff-replacement: h1 Your car offer | h3 BMW 320i M Sport Touring with Individual extended leather an | h2 Before you accept | h2 Check your choices  SKIP h1->h3 "BMW 320i M Sport Touring with Individual extended leather an"
+handoff-blocked: h1 Your car offer | h3 BMW 320i M Sport Touring with Individual extended leather an | h2 Before you accept | h2 Check your choices  SKIP h1->h3 "BMW 320i M Sport Touring with Individual extended leather an"
+selection-hr: h1 Offer accepted | h2 Your selection | h3 BMW 320i M Sport Touring with Individual extended leather an
+selection-no-hr: h1 Offer accepted | h2 Your selection | h3 BMW 320i M Sport Touring with Individual extended leather an
+selection-pending: h1 Offer accepted | h2 Your selection | h3 BMW 320i M Sport Touring with Individual extended leather an
+selection-failed: h1 Your selection was not sent to ordering | h2 Your selection | h3 BMW 320i M Sport Touring with Individual extended leather an
+
+## After (this branch)
+pending: h1 Your car offer | h2 BMW 320i M Sport Touring with Individual extended leather an | h2 Check your choices
+accepted: h1 Offer accepted | h2 BMW 320i M Sport Touring with Individual extended leather an
+declined: h1 Offer declined
+expired: h1 Offer expired
+earlier-run: h1 Offer from an earlier demo run
+not-found: h1 Offer not found
+uncertain: h1 Checking your decision | h2 BMW 320i M Sport Touring with Individual extended leather an
+loading: h1 Loading your offer
+error: h1 Your offer could not be loaded
+no-image: h1 Your car offer | h2 BMW 320i M Sport Touring with Individual extended leather an | h2 Check your choices
+low-time: h1 Your car offer | h2 BMW 320i M Sport Touring with Individual extended leather an | h2 Check your choices
+checking-expiry: h1 Your car offer | h2 BMW 320i M Sport Touring with Individual extended leather an | h2 Check your choices
+handoff-replacement: h1 Your car offer | h2 BMW 320i M Sport Touring with Individual extended leather an | h2 Before you accept | h2 Check your choices
+handoff-blocked: h1 Your car offer | h2 BMW 320i M Sport Touring with Individual extended leather an | h2 Before you accept | h2 Check your choices
+selection-hr: h1 Offer accepted | h2 Your selection | h2 BMW 320i M Sport Touring with Individual extended leather an
+selection-no-hr: h1 Offer accepted | h2 Your selection | h2 BMW 320i M Sport Touring with Individual extended leather an
+selection-pending: h1 Offer accepted | h2 Your selection | h2 BMW 320i M Sport Touring with Individual extended leather an
+selection-failed: h1 Your selection was not sent to ordering | h2 Your selection | h2 BMW 320i M Sport Touring with Individual extended leather an

@@ -1,0 +1,35 @@
+{
+ "story": "FUCQ-275",
+ "host": "offline (GCSP_OFFLINE=1, memory repository), port 9421",
+ "section": "offer: Paula, Decline then change, first release",
+ "before": {
+  "tree": "054bf4c4 (gcsp-poc + GC-048)",
+  "375": {
+   "height": 3704,
+   "h1Top": 243,
+   "deadlineTop": 3300,
+   "acceptTop": 3468
+  },
+  "1280": {
+   "height": 2074,
+   "h1Top": 247,
+   "deadlineTop": 1746,
+   "acceptTop": 1890
+  }
+ },
+ "after": {
+  "tree": "06262132 (fix e1a73111 merged with gcsp-poc)",
+  "375": {
+   "height": 2838,
+   "h1Top": 243,
+   "deadlineTop": 321,
+   "acceptTop": 2602
+  },
+  "1280": {
+   "height": 1892,
+   "h1Top": 247,
+   "deadlineTop": 335,
+   "acceptTop": 1708
+  }
+ }
+}

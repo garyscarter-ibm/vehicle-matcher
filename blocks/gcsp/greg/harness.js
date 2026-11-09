@@ -15,8 +15,20 @@ const requested = params.get('fixture');
 const plan = params.get('plan');
 const comparison = params.get('comparison');
 const host = document.querySelector('gcsp-greg-dashboard');
+function addFixtureNotice() {
+  const page = host?.querySelector('.gcsp-greg');
+  if (!page || page.querySelector('.gcsp-fixture-notice')) return;
+  const notice = el('div', 'gcsp-greg-bar gcsp-fixture-notice');
+  notice.setAttribute('role', 'note');
+  const link = el('a', '', 'Open Greg\u2019s live view in the presenter workspace');
+  link.href = './gcsp-presenter.html';
+  notice.append(el('p', 'gcsp-note', 'This is a fixture gallery. Every figure is made up, and panels marked as not built are not wired to the live demo.'), link);
+  page.prepend(notice);
+}
+addFixtureNotice();
 host?.addEventListener('gcsp:ready', (event) => {
   if (event.target !== host) return;
+  addFixtureNotice();
   const region = host.regions?.caseQueue;
   if (region) {
     const queue = el('gcsp-case-queue');

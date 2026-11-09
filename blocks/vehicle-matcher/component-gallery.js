@@ -131,6 +131,10 @@ function gcspExamples() {
     { label: 'Monthly cost', value: 1100, unit: 'points a month' },
     { label: 'WLTP CO2', value: null },
   ]));
+  group('factList: two columns at narrow width (className vm-facts-pair)').append(factList([
+    { label: 'Derivative', value: 'M Sport Touring' }, { label: 'Colour', value: 'Mineral White metallic' },
+    { label: 'Gearbox', value: 'Automatic' }, { label: 'Options', value: null, missingLabel: 'Fitted equipment unknown' },
+  ], { className: 'vm-facts-pair' }));
   const well = group('mediaWell placeholder');
   well.append(mediaWell({ name: 'Synthetic car', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: 'No image for this car yet' }).media);
   const accounts = [
@@ -180,7 +184,7 @@ function gregKitExamples() {
   section.setAttribute('aria-label', 'GCSP Greg kit');
   section.append(
     el('h2', 'vm-gallery-title', 'GCSP Greg kit'),
-    el('p', 'vm-gallery-copy', 'Dense operational figures for the Greg dashboard: metricTile and dataTable. A privacy band shows its own text and is never turned into a number. Synthetic examples only.'),
+    el('p', 'vm-gallery-copy', 'Dense operational figures for the Greg dashboard: metricTile and dataTable. A privacy band shows plain "<N" (spoken as its label) and is never turned into a number. Synthetic examples only.'),
   );
   const scope = el('div', 'gcsp vm-gallery-gcsp');
   const group = (title) => {
@@ -195,12 +199,12 @@ function gregKitExamples() {
   const tileRow = el('div', 'gcsp-tile-row');
   tileRow.append(
     metricTile({ label: 'Active briefs', count: { label: '28', isBand: false }, level: 'headline' }),
-    metricTile({ label: 'Declined', count: { label: 'fewer than 5', isBand: true }, note: 'Small counts are banded.' }),
+    metricTile({ label: 'Declined', count: { label: 'fewer than 5', isBand: true, fewerThan: 5 }, note: 'Small counts are banded.' }),
     metricTile({ label: 'Offers made', count: { label: '30', isBand: false }, note: 'Counted once each.', level: 'compact' }),
   );
   tiles.append(tileRow);
   const rows = [
-    { name: 'U06 Active Tourer Plug-in Hybrid xDrive25e M Sport Pro with extended range', released: { label: '7', isBand: false }, held: { label: 'fewer than 5', isBand: true }, allocated: { label: '3', isBand: false } },
+    { name: 'U06 Active Tourer Plug-in Hybrid xDrive25e M Sport Pro with extended range', released: { label: '7', isBand: false }, held: { label: 'fewer than 5', isBand: true, fewerThan: 5 }, allocated: { label: '3', isBand: false } },
     { name: 'G21 Touring', released: { label: '12', isBand: false }, held: { label: '3', isBand: false }, allocated: { label: '4', isBand: false } },
   ];
   const columns = [{ key: 'name', label: 'Model line' }, { key: 'released', label: 'Released', numeric: true },
@@ -213,6 +217,10 @@ function gregKitExamples() {
   group('dataTable: stacked rows on narrow screens').append(dataTable({ caption: 'Plan comparison (stacks under 640 px)', id: 'gallery-greg-stack', stack: true,
     columns: [{ key: 'name', label: 'Vehicle' }, { key: 'a', label: 'Recommended plan', numeric: true }, { key: 'b', label: 'Other plan', numeric: true }, { key: 'd', label: 'Difference', numeric: true }],
     rows: [{ name: bold('G21 Touring 320i', true), a: '2', b: bold('1', true), d: bold('-1', true) }, { name: 'G20 Saloon 330e', a: '1', b: '1', d: 'No change' }] }));
+  const unknown = { label: 'Unknown', missing: true };
+  group('dataTable: comparison, label | this offer | current car at any width (compare)').append(dataTable({ caption: 'Compared with your current car', id: 'gallery-greg-compare', compare: true,
+    columns: [{ key: 'l', label: 'Detail' }, { key: 'a', label: 'This offer', detail: 'BMW 320i M Sport Touring with extended leather' }, { key: 'b', label: 'Your current car', detail: 'Fictional BMW 320i Touring' }],
+    rows: [{ l: 'Body style', a: 'Estate', b: 'Estate' }, { l: 'Boot', a: '500 litres', b: unknown }, { l: '0 to 62 mph', a: '7.6 s', b: unknown }, { l: 'Points a month', a: '1,100 points', b: unknown }] }));
   group('dataTable: empty state').append(dataTable({ caption: 'Stock by model line (empty)', columns, rows: [], emptyText: 'No stock has been released yet', id: 'gallery-greg-empty' }));
   section.append(scope);
   return section;

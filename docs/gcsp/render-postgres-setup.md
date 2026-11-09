@@ -21,8 +21,9 @@ All three build from `gcsp-poc` in Frankfurt, on free plans, and redeploy on eve
 
 **What works once it's live (FUCQ-180, 7 November 2026).** `gcsp-api` runs the whole GCSP demo runtime, the same
 composition as the local launcher (`server/gcsp/host.js`), and serves the live GCSP pages from its own address:
-`https://gcsp-api.onrender.com/gcsp-presenter.html` for the presenter, `/gcsp-account.html` for Paula, `/gcsp-greg.html`
-for Greg, `/gcsp-outbox.html` for the captured emails and `/gcsp/offer` for emailed offer links. One origin keeps the
+`https://gcsp-api.onrender.com/gcsp-presenter.html` for the presenter (and Greg's live view, in its Greg branch),
+`/gcsp-account.html` for Paula, `/gcsp-greg.html` for the fixture gallery of made-up Greg figures (not the live view),
+`/gcsp-outbox.html` for the captured emails and `/gcsp/offer` for emailed offer links. One origin keeps the
 server-issued session cookies first-party; `gcsp-site` and `gcsp-api` are different sites on `onrender.com`, and Safari
 would drop cross-site cookies. `gcsp-site` redirects those page addresses to `gcsp-api`. **Rule (FUCQ-181):** pages and the API must be
 same-site or same-origin, because sessions use cookies; never point a signed-in page at `gcsp-api` from `gcsp-site`.
