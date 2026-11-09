@@ -1863,8 +1863,8 @@
             <mxGeometry height="70" width="260" x="82.75" y="669" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="2 · FUCQ-27/28 shared core&lt;br&gt;FUCQ-27 built · FUCQ-28 open" type="service" status="in-progress" feature="migration" id="m-extract">
-          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#82b366;fillColor=#d5e8d4;" vertex="1">
+        <UserObject label="2 · FUCQ-27/28 shared core&lt;br&gt;FUCQ-27/28 built" type="service" status="built" feature="migration" id="m-extract">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1">
             <mxGeometry height="70" width="260" x="93.75" y="918" as="geometry" />
           </mxCell>
         </UserObject>
