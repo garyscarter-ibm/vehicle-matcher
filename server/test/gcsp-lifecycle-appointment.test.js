@@ -24,6 +24,7 @@ const SLOTS = seedValue('lifecycle.appointments.slots.v1');
 const DELAY = seedValue('lifecycle.appointments.confirmation.v1').confirmDelaySeconds;
 const OWNERSHIP = seedValue('lifecycle.appointments.ownership.v1');
 const OUTCOMES = seedValue('lifecycle.appointments.outcomes.v1');
+const TIMING = seedValue('lifecycle.appointments.outcomeTiming.v1');
 const ORDER = '7d1c0b6e-2f4a-4c1e-9b7a-1a2b3c4d5e6f';
 const HOUR = 3600; const DAY = 86400;
 const STAGES = ['selection received', 'HR approval', 'sales-manager approval', 'sent to ordering'];
@@ -69,7 +70,7 @@ function flaky(inner) {
 }
 
 // `documents` composes the real FUCQ-116 service as the readiness port (counting its reads); `readiness` replaces it.
-async function setup(t, { policy, live = false, stages = stagePort(), documents = false, readiness } = {}) {
+async function setup(t, { policy, live = false, stages = stagePort(), documents = false, readiness, slotSource } = {}) {
   policy ??= await policyWith();
   const store = createMemoryStore();
   const repository = createMemoryRepository({ store }); await repository.open();
@@ -92,7 +93,7 @@ async function setup(t, { policy, live = false, stages = stagePort(), documents 
     readiness = { readReadiness: (...args) => { gate.reads += 1; return docs.readReadiness(...args); } };
   }
   const deps = { repository, policy, clock, identity, lifecycleStages: port, readiness };
-  const service = createLifecycleAppointmentService({ ...deps, provider });
+  const service = createLifecycleAppointmentService({ ...deps, provider, ...(slotSource ? { slotSource } : {}) });
   assert.equal((await service.start()).status, 'ok');
   t.after(() => repository.close());
   const p = presenter.value.context; let n = 0;
@@ -491,6 +492,13 @@ async function ready(f) {
   assert.equal((await f.docs.completeTask(f.paula, ACK)).status, 'ok');
   assert.equal((await f.docs.readReadiness(f.greg, { orderUuid: ORDER })).value.ready, true);
 }
+// FUCQ-260: a scheduled handover at the keyed earliest no-show time.
+async function missable(f) { await scheduled(f); await atSlot(f, TIMING.noShowAfterSlotStartSeconds); }
+// FUCQ-260: advance the demo clock to the booked slot start plus the keyed offset (an outcome is refused before it).
+async function atSlot(f, offset = 0) {
+  const by = (Date.parse((await read(f)).slot.start) - Date.parse(await f.now())) / 1000 + offset;
+  if (by > 0) await f.advance(by);
+}
 
 test('completion is refused until documents and car readiness are complete, then records the outcome once', async (t) => {
   const f = await setup(t, { documents: true }); await scheduled(f);
@@ -698,7 +706,7 @@ const FACTS = ['employees', 'entitlement_slots', 'briefs', 'stock', 'holds', 'cl
 const allocation = (f) => JSON.stringify(FACTS.map((table) => f.store.state.tables[table]));
 
 test('a presenter records a no-show: it reads no-show with its outcome and fresh slots, and the original exception receipt is written once', async (t) => {
-  const f = await setup(t); await scheduled(f);
+  const f = await setup(t); await missable(f);
   const at = await f.now();
   const done = await noShow(f); assert.equal(done.status, 'ok', JSON.stringify(done));
   const view = done.value;
@@ -728,7 +736,7 @@ test('the no-show receipt is the original lifecycle exception that FUCQ-112 turn
   const f = await setup(t);
   const cases = createRenewalCaseService({ repository: f.repository, policy: f.deps.policy, clock: f.clock, identity: f.identity });
   assert.equal((await cases.start()).status, 'ok', 'registered in the same runtime before the first tick');
-  await scheduled(f);
+  await missable(f);
   assert.equal((await cases.readOwn(f.paula)).value.cases.length, 0, 'a scheduled handover raises nothing');
   assert.equal((await noShow(f)).status, 'ok');
   await f.tick();
@@ -743,7 +751,7 @@ test('the no-show receipt is the original lifecycle exception that FUCQ-112 turn
 });
 
 test('a missing renewal authority is recorded as missing, never as the employee\'s default renewal', async (t) => {
-  const f = await setup(t); await scheduled(f);
+  const f = await setup(t); await missable(f);
   const original = f.stages.read;
   f.stages.read = async (context, input) => {
     const r = await original(context, input);
@@ -752,14 +760,14 @@ test('a missing renewal authority is recorded as missing, never as the employee\
   assert.equal((await noShow(f)).status, 'ok');
   const [exc] = await exceptions(f);
   assert.deepEqual([exc.outcome.value.renewalId, exc.outcome.value.entitlementSlotId, exc.outcome.value.renewalAuthority], [null, null, 'missing']);
-  const g = await setup(t); await scheduled(g);
+  const g = await setup(t); await missable(g);
   g.stages.read = async () => { throw new Error('stage producer down'); };
   assert.equal((await noShow(g)).status, 'unavailable', 'a failed authority read is returned as is');
   assert.deepEqual([(await operations(g, 'noShow')).length, (await exceptions(g)).length, (await read(g)).state], [0, 0, 'scheduled']);
 });
 
 test('a no-show leaves the order allocated: no order, hold, allocation or slot row changes', async (t) => {
-  const f = await setup(t); await scheduled(f);
+  const f = await setup(t); await missable(f);
   assert.ok(f.store.state.tables.employees.length > 0 && f.store.state.tables.entitlement_slots.length > 0);
   const before = allocation(f); const stage = JSON.stringify(await f.stages.read(f.paula, { orderUuid: ORDER }));
   assert.equal((await noShow(f)).status, 'ok');
@@ -771,7 +779,7 @@ test('a no-show leaves the order allocated: no order, hold, allocation or slot r
 });
 
 test('Paula rebooks a new offered slot: attempt 2 keeps the no-show on record, uses its own operation IDs and completes through the readiness gate', async (t) => {
-  const f = await setup(t, { documents: true }); await scheduled(f);
+  const f = await setup(t, { documents: true }); await missable(f);
   const missed = (await read(f)).slot;
   assert.equal((await noShow(f)).status, 'ok');
   const idsBefore = (await f.repository.query(f.paula, 'pending_operations', {})).value.map((o) => o.operationId).filter((id) => id.startsWith('appointment:'));
@@ -819,20 +827,22 @@ test('Paula rebooks a new offered slot: attempt 2 keeps the no-show on record, u
 });
 
 test('a second no-show on the rebooked attempt records its own exception and can be rebooked again', async (t) => {
-  const f = await setup(t); await scheduled(f);
+  const f = await setup(t); await missable(f);
   assert.equal((await noShow(f)).status, 'ok');
   const slots = (await read(f)).offeredSlots;
   assert.equal((await request(f, slots[1].slotId)).status, 'ok');
   await f.advance(DELAY); await f.tick();
   assert.equal((await read(f)).state, 'scheduled');
+  await atSlot(f, TIMING.noShowAfterSlotStartSeconds);
   const second = await noShow(f); assert.equal(second.status, 'ok', JSON.stringify(second));
   assert.deepEqual([second.value.state, second.value.attempt, second.value.previousAttempts.length], ['no-show', 2, 1]);
   const list = await exceptions(f);
   assert.deepEqual([list.length, list[0].outcome.value.attempt, list[1].outcome.value.attempt, new Set(list.map((e) => e.eventId)).size], [2, 1, 2, 2]);
   assert.match(list.find((e) => e.outcome.value.attempt === 2).eventId, /:a2:no-show$/);
-  const third = await request(f, slots[2].slotId); assert.equal(third.status, 'ok', JSON.stringify(third));
+  const [next] = (await read(f)).offeredSlots;
+  const third = await request(f, next.slotId); assert.equal(third.status, 'ok', JSON.stringify(third));
   assert.deepEqual([third.value.attempt, third.value.previousAttempts.map((a) => a.attempt), third.value.state], [3, [1, 2], 'requested']);
-  assert.deepEqual((await request(f, slots[2].slotId)).value, third.value);
+  assert.deepEqual((await request(f, next.slotId)).value, third.value);
   await f.advance(DELAY); await f.tick();
   assert.deepEqual([(await read(f)).state, (await read(f)).attempt], ['scheduled', 3]);
 });
@@ -856,7 +866,7 @@ test('no-show refusals: not scheduled, completed, wrong role, malformed, return 
   const late = await noShow(f); assert.deepEqual([late.status, late.code], ['conflict', 'appointment-not-scheduled']);
   assert.deepEqual([(await exceptions(f)).length, (await read(f)).state], [0, 'completed']);
 
-  const g = await setup(t); await scheduled(g);
+  const g = await setup(t); await missable(g);
   assert.equal((await noShow(g)).status, 'ok');
   const done = await complete(g, g.presenter);
   assert.deepEqual([done.status, done.code], ['conflict', 'appointment-not-scheduled'], 'a no-show cannot then be completed');
@@ -867,7 +877,7 @@ test('no-show refusals: not scheduled, completed, wrong role, malformed, return 
 });
 
 test('the live stub refuses a no-show as unsupported: the appointment and the exception record are unchanged', async (t) => {
-  const f = await setup(t); await scheduled(f);
+  const f = await setup(t); await missable(f);
   const live = createLifecycleAppointmentService({ ...f.deps, provider: createLiveAppointmentsStub() });
   const stuck = await live.recordNoShow(f.presenter, { orderUuid: ORDER });
   assert.deepEqual([stuck.status, stuck.code, stuck.appointment.state, stuck.appointment.outcome, stuck.appointment.provider.mode], ['unsupported', 'live-appointments-unsupported', 'scheduled', null, 'live']);
@@ -883,7 +893,7 @@ for (const fault of ['lost', 'throw-after', 'hang']) {
     const policy = () => policyWith((get) => { get('lifecycle.appointments.confirmation.v1').providerTimeoutMs = 20; });
     const recorded = fault === 'throw-after';
     const uncertain = async () => {
-      const f = await setup(t, { policy: await policy() }); await scheduled(f);
+      const f = await setup(t, { policy: await policy() }); await missable(f);
       f.provider.fault.recordNoShow = fault;
       const pending = await noShow(f); assert.equal(pending.status, 'ok', JSON.stringify(pending));
       assert.deepEqual([pending.value.state, pending.value.pending.step, pending.value.outcome, pending.value.owner, pending.value.nextStep],
@@ -916,7 +926,7 @@ for (const fault of ['lost', 'throw-after', 'hang']) {
 }
 
 test('/api/gcsp/appointments/no-show is gated, server-scoped and ignores browser identity; rebooking is Paula\'s own request', async (t) => {
-  const f = await setup(t); await scheduled(f);
+  const f = await setup(t); await missable(f);
   const call = http(f);
   const forged = { orderUuid: ORDER, employeeId: 'employee-alex', runId: 'other', roles: ['employee'] };
   assert.equal((await call('/appointments/no-show', { body: { orderUuid: ORDER } })).code, 403, 'the employee cannot record a no-show');
@@ -940,7 +950,7 @@ test('the no-show and rebooked response shapes match the recorded fixture', asyn
   const want = shapes.states['no-show'];
   assert.deepEqual([want.owner, want.nextStep], [NO_SHOW.owner, NO_SHOW.nextStep]);
   assert.deepEqual(shapes.readModelKeys.filter((k) => ['attempt', 'previousAttempts', 'outcome'].includes(k)).sort(), ['attempt', 'outcome', 'previousAttempts']);
-  const f = await setup(t); await scheduled(f);
+  const f = await setup(t); await missable(f);
   const view = (await noShow(f)).value;
   assert.deepEqual(keys(view), [...shapes.readModelKeys].sort());
   assert.deepEqual([view.state, view.booked, view.owner, view.nextStep, view.pending?.step ?? null, view.blocked?.code ?? null, view.attempt, view.previousAttempts], [want.state, want.booked, want.owner, want.nextStep, want.pendingStep, want.blockedCode, want.attempt, []]);
@@ -956,4 +966,47 @@ test('the no-show and rebooked response shapes match the recorded fixture', asyn
   const [exc] = await exceptions(f);
   assert.deepEqual(keys(exc.outcome.value), [...shapes.exceptionReceipt.valueKeys].sort());
   assert.deepEqual([exc.consumerId, exc.eventType], [shapes.exceptionReceipt.consumerId, OUTCOMES.exceptionTypes.noShow]);
+});
+
+test('FUCQ-260: a completion or no-show before the slot starts is refused with the keyed owner and next step and writes nothing', async (t) => {
+  const f = await setup(t, { readiness: { readReadiness: async () => ok({ ready: true, documentsRevision: 1 }) } }); await scheduled(f);
+  const { slot } = await read(f); assert.ok(Date.parse(await f.now()) < Date.parse(slot.start)); const count = (await receipts(f)).length;
+  const from = { complete: new Date(Date.parse(slot.start) + TIMING.completeAfterSlotStartSeconds * 1000).toISOString(),
+    noShow: new Date(Date.parse(slot.start) + TIMING.noShowAfterSlotStartSeconds * 1000).toISOString() };
+  for (const [step, write] of [['noShow', noShow], ['complete', complete]]) {
+    const early = await write(f, f.greg);
+    assert.deepEqual([early.status, early.code, early.owner, early.nextStep, early.reason, early.availableFrom],
+      ['conflict', 'appointment-outcome-too-early', TIMING.tooEarly.owner, TIMING.tooEarly.nextStep, TIMING.tooEarly.nextStep, from[step]]);
+    assert.deepEqual([early.appointment.state, early.appointment.booked, early.appointment.outcome], ['scheduled', true, null]);
+  }
+  assert.deepEqual([(await operations(f, 'complete')).length, (await operations(f, 'noShow')).length, (await exceptions(f)).length, (await receipts(f)).length],
+    [0, 0, 0, count], 'an early outcome writes nothing');
+  await atSlot(f, TIMING.noShowAfterSlotStartSeconds - 1);
+  assert.equal((await noShow(f)).code, 'appointment-outcome-too-early', 'still early one second before');
+  await f.advance(1);
+  const done = await noShow(f); assert.equal(done.status, 'ok', JSON.stringify(done));
+  assert.deepEqual(await noShow(f), done, 'a repeat of the recorded outcome still returns it');
+
+  const g = await setup(t, { policy: await policyWith((get) => { get('lifecycle.appointments.outcomeTiming.v1').noShowAfterSlotStartSeconds = 1800; }) });
+  await scheduled(g); await atSlot(g);
+  const graced = await noShow(g);
+  assert.deepEqual([graced.code, graced.availableFrom], ['appointment-outcome-too-early', new Date(Date.parse((await read(g)).slot.start) + 1800 * 1000).toISOString()], 'the keyed offset moves the rule');
+  await g.advance(1800); assert.equal((await noShow(g)).status, 'ok');
+
+  const seedless = structuredClone(SEED); seedless.assumptions = seedless.assumptions.filter((a) => a.key !== 'lifecycle.appointments.outcomeTiming.v1');
+  const h = await setup(t, { policy: new PolicyService({ provider: { async loadVersions() { return [seedless]; } } }) }); await scheduled(h); await atSlot(h);
+  assert.deepEqual([(await noShow(h)).status, (await noShow(h)).code, (await read(h)).state], ['unavailable', 'appointment-policy-unavailable', 'scheduled'], 'no default timing');
+});
+
+test('FUCQ-260: after a no-show the missed slot is not offered or rebooked again, even when the slot source still lists it', async (t) => {
+  const first = Date.parse('2026-11-08T09:00:00.000Z');
+  const fixed = [0, 1, 2].map((i) => ({ slotId: `fixed-${i}`, start: new Date(first + i * DAY * 1000).toISOString(), end: new Date(first + (i * DAY + HOUR) * 1000).toISOString() }));
+  const f = await setup(t, { slotSource: async () => ({ slots: fixed }) }); await scheduled(f);
+  assert.equal((await read(f)).slot.slotId, 'fixed-0');
+  await atSlot(f, TIMING.noShowAfterSlotStartSeconds); assert.equal((await noShow(f)).status, 'ok');
+  assert.deepEqual((await offered(f)).map((s) => s.slotId), ['fixed-1', 'fixed-2'], 'the missed slot is not offered again');
+  assert.equal((await request(f, 'fixed-0')).status, 'invalid', 'the missed slot cannot be rebooked');
+  assert.equal((await request(f, 'fixed-1')).status, 'ok'); await f.advance(DELAY); await f.tick();
+  await atSlot(f, TIMING.noShowAfterSlotStartSeconds); assert.equal((await noShow(f)).status, 'ok');
+  assert.deepEqual((await offered(f)).map((s) => s.slotId), ['fixed-2'], 'every earlier missed slot stays excluded');
 });

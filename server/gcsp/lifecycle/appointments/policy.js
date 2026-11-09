@@ -6,6 +6,7 @@ export const APPOINTMENT_KEYS = Object.freeze({
   scenario: 'lifecycle.appointments.scenario.v1',
   ownership: 'lifecycle.appointments.ownership.v1',
   outcomes: 'lifecycle.appointments.outcomes.v1',
+  outcomeTiming: 'lifecycle.appointments.outcomeTiming.v1',
 });
 export const OWNERS = Object.freeze(['employee', 'retailer', 'scheme-team']);
 export const STATES = Object.freeze(['not-requested', 'requested', 'change-proposed', 'scheduled']);
@@ -44,4 +45,13 @@ export async function loadAppointmentPolicy(policy, read, ownershipKey = APPOINT
     scenario: { proposeChange: scenario.proposeChange, proposedSlot: scenario.proposedSlot, proposalReason: scenario.proposalReason }, ownership,
     assumptions: rows.map(({ value, policyVersion }) => ({ key: value.key, status: value.status, unit: value.unit, basis: value.basis,
       source: value.source, sourceDate: value.sourceDate, policyVersion })) } };
+}
+
+// FUCQ-260: the earliest demo time each handover outcome may be recorded, relative to the booked slot start; no defaults.
+export async function loadOutcomeTiming(policy, read) {
+  let row; try { row = await policy?.getAssumption?.(APPOINTMENT_KEYS.outcomeTiming, read); } catch { return policyUnavailable(); }
+  const v = row?.value?.value;
+  if (row?.status !== 'ok' || row.policyVersion !== read.policyVersion || !['assumed', 'verified'].includes(row.value.status) || !object(v)
+    || !int(v.completeAfterSlotStartSeconds, 0, 86400) || !int(v.noShowAfterSlotStartSeconds, 0, 86400) || !step(v.tooEarly)) return policyUnavailable();
+  return { status: 'ok', value: { complete: v.completeAfterSlotStartSeconds, noShow: v.noShowAfterSlotStartSeconds, tooEarly: v.tooEarly } };
 }

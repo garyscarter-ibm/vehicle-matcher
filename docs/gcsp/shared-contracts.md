@@ -1685,6 +1685,12 @@ attempt n > 1 uses `appointment:<digest>:a<n>:<step>`. Repeating the rebook retu
 any retry and use the server-owned principal and run. `server/test/fixtures/gcsp-lifecycle-appointment-outcomes.json` publishes the completed
 and no-show response shapes (and the exception receipt keys) for the order-progress UI.
 
+Outcome timing (FUCQ-260): a new completion or no-show is accepted only once the demo clock reaches the booked slot start plus
+`lifecycle.appointments.outcomeTiming.v1` (`completeAfterSlotStartSeconds`, `noShowAfterSlotStartSeconds`, both 0 by default). Earlier is a
+`conflict` `appointment-outcome-too-early` with `availableFrom`, the keyed `tooEarly` owner/nextStep and the unchanged `appointment`; nothing
+is written. Completion checks readiness first. A repeat of a recorded outcome and the reconciliation of a pending one are unaffected. After a
+no-show, the missed slot of this and every earlier attempt is left out of `offeredSlots` and refused by the rebook request (`invalid`).
+
 ## Lifecycle return plan · FUCQ-118
 
 `LifecycleReturnPlanService` (`server/gcsp/lifecycle/return-plan/`) plans the return of Paula's current car in its own right,

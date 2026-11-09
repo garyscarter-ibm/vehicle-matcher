@@ -95,6 +95,13 @@ const open = async (f, options) => {
 const value = (controller, section) => controller.getState().progress[section].value;
 const readOf = async (f) => ({ runId: f.employee.runId, policyVersion: f.employee.policyVersion, asOf: good(await f.clock.now(f.presenter)).now });
 const keyed = async (f, key) => good(await f.policy.getAssumption(key, await readOf(f))).value;
+// FUCQ-260: ticks to the booked handover slot start plus the keyed offset, the earliest time an outcome may be recorded.
+async function toOutcomeTime(f, orderUuid, tag, step = 'complete') {
+  const timing = await keyed(f, 'lifecycle.appointments.outcomeTiming.v1'); const { slot } = await handoverOf(f, orderUuid);
+  const offset = step === 'complete' ? timing.completeAfterSlotStartSeconds : timing.noShowAfterSlotStartSeconds;
+  const gap = (Date.parse(slot.start) + offset * 1000 - Date.parse(good(await f.clock.now(f.presenter)).now)) / 1000;
+  if (gap > 0) good(await tick(f, `${tag}-slot-start`, gap));
+}
 async function delays(f) {
   const docs = await keyed(f, 'lifecycle.documents.v1');
   return { appointment: (await keyed(f, 'lifecycle.appointments.confirmation.v1')).confirmDelaySeconds, documents: Math.max(...docs.items.map((row) => row.progressSeconds ?? 0)) };
@@ -400,6 +407,7 @@ async function runHandover() {
       via('02a', 'browser', 'Paula acknowledges the agreement with Tab and Enter (the only document task she owns).');
       good(await tick(world, 'h2-documents-ready', w.documents)); await controller.refresh();
       rec('02:ready', '02: after the keyed document and preparation times the order is ready', value(controller, 'documents').orders[0].readiness.ready === true);
+      await toOutcomeTime(world, car.orderUuid, 'h2');
       const done = await world.api(`${APPT}/complete`, { body: { orderUuid: car.orderUuid } });
       rec('02:completed', '02: the presenter completion route answers 200 with state completed and the keyed owner and next step',
         done.status === 200 && done.json.value.state === 'completed' && done.json.value.owner === outcomes.states.completed.owner && done.json.value.nextStep === outcomes.states.completed.nextStep, { status: done.status, state: done.json.value?.state });
@@ -426,7 +434,7 @@ async function runNoShow() {
     const paula = await openActor(world, 'paula', world.setCookie, '/api/gcsp/manual/account'); const { page } = paula;
     const { car, controller } = await newOrder(world); let w;
     await step('03', async () => {
-      ({ wait: w } = await toScheduled(world, controller, 'n3'));
+      ({ wait: w } = await toScheduled(world, controller, 'n3')); await toOutcomeTime(world, car.orderUuid, 'n3', 'noShow');
       const missed = await world.api(`${APPT}/no-show`, { body: { orderUuid: car.orderUuid } });
       rec('03:no-show', '03: the presenter no-show route answers 200 with state no-show', missed.status === 200 && missed.json.value.state === 'no-show', { status: missed.status });
       via('03a', 'api', 'Presenter route POST /api/gcsp/appointments/no-show (200). The browser has no no-show control.', "'FUCQ-171 no-show then rebooking' step 2");
@@ -443,6 +451,7 @@ async function runNoShow() {
       good(await tick(world, 'n4-confirm2', w.appointment));
       const booked = await handoverOf(world, car.orderUuid);
       rec('04b:attempt2', '04b: the retailer confirms attempt 2 on the keyed delay, with the missed attempt kept on record', booked.state === 'scheduled' && booked.attempt === 2 && booked.previousAttempts.length === 1, { state: booked.state, attempt: booked.attempt });
+      await toOutcomeTime(world, car.orderUuid, 'n4');
       const done = await world.api(`${APPT}/complete`, { body: { orderUuid: car.orderUuid } });
       rec('04b:completed', '04b: attempt 2 completes (200)', done.status === 200 && done.json.value.state === 'completed' && done.json.value.attempt === 2, { status: done.status });
       via('04b', 'api', 'Retailer confirmation is a service tick; completion is the presenter route. No PNG: the completed state is captured in 02.', "'FUCQ-171 no-show then rebooking' steps 5 and 6");

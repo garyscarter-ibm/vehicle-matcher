@@ -2,7 +2,7 @@ import { inputDigest, ok, result } from '../../repository/index.js';
 import { validInstant } from '../../policy/file-provider.js';
 import { OPERATION_TYPES } from '../../adapters/synthetic-appointments.js';
 import { observeStage } from '../documents/index.js';
-import { APPOINTMENT_KEYS, loadAppointmentPolicy, policyUnavailable } from './policy.js';
+import { APPOINTMENT_KEYS, loadAppointmentPolicy, loadOutcomeTiming, policyUnavailable } from './policy.js';
 import { applyCurrentCarEvent } from '../current-car/index.js';
 
 export const APPOINTMENT_CONTRACT = 'lifecycle.appointments.v1';
@@ -25,6 +25,9 @@ const text = (v, max = 512) => typeof v === 'string' && v.length > 0 && v.length
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const slotShape = (s) => object(s) && text(s.slotId, 64) && validInstant(s.start) && validInstant(s.end);
 const plusSeconds = (instant, seconds) => new Date(Date.parse(instant) + seconds * 1000).toISOString();
+// A missed slot (this attempt's after a no-show, and every earlier attempt's) is never offered again.
+const notMissed = (slots, p) => { const missed = [p.slot, ...(p.previousAttempts ?? []).map((a) => a.slot)].filter(Boolean);
+  return slots.filter((s) => !missed.some((m) => m.slotId === s.slotId || m.start === s.start)); };
 const opRef = (runId, operationId) => ({ table: 'pending_operations', key: { runId, operationId } });
 const invalid = (field, reason) => result('invalid', { code: 'invalid-appointment-command', reasons: [{ field, reason }], action: 'review-and-retry' });
 const unavailable = () => result('unavailable', { code: 'appointments-unavailable', retryable: true, reason: 'Appointments are unavailable. Try again shortly.' });
@@ -159,7 +162,7 @@ export class LifecycleAppointmentService {
         const seen = await this.#observe(context, orderUuid, config.value);
         if (!seen.error && seen.observed.status === 'open') {
           const offer = await this.#offer(context, config.value, prepared.now, orderUuid);
-          return ok(this.#present(p, config.value, { eligibility: { eligible: true, code: null, reason: null }, offeredSlots: offer.slots ?? [], blocked: offer.blocked ?? null }));
+          return ok(this.#present(p, config.value, { eligibility: { eligible: true, code: null, reason: null }, offeredSlots: notMissed(offer.slots ?? [], p), blocked: offer.blocked ?? null }));
         }
       }
       return ok(this.#present(p, config.value, { eligibility: { eligible: true, code: null, reason: null } }));
@@ -240,7 +243,7 @@ export class LifecycleAppointmentService {
     }
     const offer = await this.#offer(context, config.value, prepared.now, orderUuid);
     if (offer.blocked) return result('unsupported', { code: offer.blocked.code, reason: offer.blocked.reason });
-    const slot = offer.slots.find((s) => s.slotId === slotId);
+    const slot = notMissed(offer.slots, p).find((s) => s.slotId === slotId);
     if (!slot) return invalid('slotId', 'Choose one of the offered slots.');
     const attempt = (p.attempt ?? 1) + 1;
     const operationId = this.#operationIds(context.runId, orderUuid, attempt).request;
@@ -297,6 +300,17 @@ export class LifecycleAppointmentService {
     return this.#after(context, orderUuid, prepared, label);
   }); }
 
+  // FUCQ-260: a new outcome waits for the keyed time after the slot start; null when it may be recorded now.
+  async #tooEarly(context, scope, orderUuid, prepared, p, step) {
+    const timing = await loadOutcomeTiming(this.#policy, { runId: context.runId, asOf: prepared.now, policyVersion: p.policyVersion });
+    if (timing.status !== 'ok') return timing;
+    const availableFrom = plusSeconds(p.slot.start, timing.value[step]);
+    if (Date.parse(prepared.now) >= Date.parse(availableFrom)) return null;
+    const model = await this.#readModel(context, scope, orderUuid, prepared); if (model.status !== 'ok') return model;
+    const { owner, nextStep } = timing.value.tooEarly;
+    return result('conflict', { code: 'appointment-outcome-too-early', reason: nextStep, owner, nextStep, availableFrom, appointment: model.value });
+  }
+
   // Completion is the one terminal write the gate allows: FUCQ-116 must report documents and the car ready before any operation exists.
   complete(context, input = {}) { return this.#safe(async () => {
     const role = await this.#role(context, ['presenter', 'greg']); if (role.status !== 'ok') return role;
@@ -330,6 +344,7 @@ export class LifecycleAppointmentService {
         return result('conflict', { code: 'handover-not-ready', reason: wait.nextStep, owner: wait.owner, nextStep: wait.nextStep,
           readiness: { state, documentsComplete, vehicleReady, blocking: blocking ?? [] }, appointment: model.value });
       }
+      const early = await this.#tooEarly(context, role.value, orderUuid, prepared, p, 'complete'); if (early) return early;
       const opened = await this.#ensure(context, orderUuid, 'complete', (ids) => this.#operation(context, ids.complete, 'complete', orderUuid, p.slot,
         { completedAt: prepared.now, readiness: { documentsRevision: ready.value.documentsRevision ?? null } }), p.attempt ?? 1);
       if (opened.status !== 'ok') return opened;
@@ -364,6 +379,7 @@ export class LifecycleAppointmentService {
       if (settled.status !== 'ok') return settled;
       label = settled.value;
     } else if (!prior) {
+      const early = await this.#tooEarly(context, role.value, orderUuid, prepared, p, 'noShow'); if (early) return early;
       // The renewal authority is the order's own (FUCQ-111); a missing one stays missing, never the employee's default renewal.
       const seen = await this.#observe(context, orderUuid, config.value); if (seen.error) return seen.error;
       const order = seen.observed.status === 'open' ? seen.observed.order : NO_AUTHORITY;
