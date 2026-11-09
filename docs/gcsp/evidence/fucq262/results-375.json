@@ -1,0 +1,426 @@
+{
+  "state": "passed",
+  "chunk": "narrow",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "startedAt": "2026-11-09T15:39:08.689Z",
+  "boundary": "Real buildServer routes, canonical services and the memory repository over loopback HTTP; the runner serves the same HTML, CSS and blocks from a plain file server. No live external calls, no PostgreSQL.",
+  "cookieMode": {
+    "noshow:paula": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure",
+    "noshow:greg": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure"
+  },
+  "checks": [
+    {
+      "id": "03:no-show",
+      "name": "03: the presenter no-show route answers 200 with state no-show",
+      "pass": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "id": "03g:label",
+      "name": "03g: Greg's queue names the no-show case by its keyed label and reason",
+      "pass": true,
+      "detail": [
+        [
+          "Paula (fictional)",
+          "2026-12-01",
+          "Missed handover appointment",
+          "The handover appointment was missed. The scheme team will check it is rebooked.",
+          "Open",
+          "Scheme team",
+          "2026-11-08 12:30:00 UTC"
+        ]
+      ]
+    },
+    {
+      "id": "03g-no-show-case-greg-queue:layout",
+      "name": "03g-no-show-case-greg-queue: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "03g-no-show-case-greg-queue:copy",
+      "name": "03g-no-show-case-greg-queue: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "03g-no-show-case-greg-queue:console",
+      "name": "03g-no-show-case-greg-queue: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "03g-no-show-case-greg-queue:keyed label",
+      "name": "03g-no-show-case-greg-queue: keyed label",
+      "pass": true
+    },
+    {
+      "id": "03g-no-show-case-greg-queue:no-raw \"lifecycle-exception\"",
+      "name": "03g-no-show-case-greg-queue: absent: raw \"lifecycle-exception\"",
+      "pass": true
+    },
+    {
+      "id": "03:rebook:tab",
+      "name": "03:rebook: Tab alone reaches the control (3 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 3
+      }
+    },
+    {
+      "id": "03:rebook:focus-ring",
+      "name": "03:rebook: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Request 9 Nov 2026, 09:00",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "03:first-button",
+      "name": "03: the focused control is the first \"Request <time>\" button",
+      "pass": true,
+      "detail": "Request 9 Nov 2026, 09:00"
+    },
+    {
+      "id": "03-no-show-rebook-focus:layout",
+      "name": "03-no-show-rebook-focus: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "03-no-show-rebook-focus:copy",
+      "name": "03-no-show-rebook-focus: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "03-no-show-rebook-focus:console",
+      "name": "03-no-show-rebook-focus: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "03-no-show-rebook-focus:\"Handover missed: <time>\"",
+      "name": "03-no-show-rebook-focus: \"Handover missed: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "03-no-show-rebook-focus:owner row",
+      "name": "03-no-show-rebook-focus: owner row",
+      "pass": true
+    },
+    {
+      "id": "03-no-show-rebook-focus:rebook buttons \"Request <time>\"",
+      "name": "03-no-show-rebook-focus: rebook buttons \"Request <time>\"",
+      "pass": true
+    },
+    {
+      "id": "03-no-show-rebook-focus:no-\"Booked:\" or \"Not booked yet\" (live state)",
+      "name": "03-no-show-rebook-focus: absent: \"Booked:\" or \"Not booked yet\" (live state)",
+      "pass": true
+    },
+    {
+      "id": "03:rebook:status",
+      "name": "03:rebook: Enter produces the status message \"Handover time requested.\"",
+      "pass": true,
+      "detail": [
+        "status:Presenter controls ready",
+        "alert:The demo was restarted. Reload the page to continue.Reload",
+        "status:",
+        "status:Your order is in progressOrder referenceGCSP-000001Car order number9100001Current step: Sent to ordering.View order progress",
+        "status:Handover time requested."
+      ]
+    },
+    {
+      "id": "03:rebook:focus-kept",
+      "name": "03:rebook: focus is not lost to the page body",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "id": null,
+        "label": "Handover time requested.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "04-rebooked:layout",
+      "name": "04-rebooked: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "04-rebooked:copy",
+      "name": "04-rebooked: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "04-rebooked:console",
+      "name": "04-rebooked: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "04-rebooked:\"Requested ... Not booked yet.\"",
+      "name": "04-rebooked: \"Requested ... Not booked yet.\"",
+      "pass": true
+    },
+    {
+      "id": "04-rebooked:\"Earlier handover missed: <time>\"",
+      "name": "04-rebooked: \"Earlier handover missed: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "04-rebooked:no-\"Booked:\"",
+      "name": "04-rebooked: absent: \"Booked:\"",
+      "pass": true
+    },
+    {
+      "id": "04b:attempt2",
+      "name": "04b: the retailer confirms attempt 2 on the keyed delay, with the missed attempt kept on record",
+      "pass": true,
+      "detail": {
+        "state": "scheduled",
+        "attempt": 2
+      }
+    },
+    {
+      "id": "04b:completed",
+      "name": "04b: attempt 2 completes (200)",
+      "pass": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "id": "04b:current-car",
+      "name": "04b: the new order is the current car after attempt 2",
+      "pass": true,
+      "detail": {
+        "kind": "order",
+        "orderUuid": "f1000000-0000-4000-8000-000000000001",
+        "vin": null
+      }
+    },
+    {
+      "id": "04c-attempt2-completed:layout",
+      "name": "04c-attempt2-completed: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "04c-attempt2-completed:copy",
+      "name": "04c-attempt2-completed: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "04c-attempt2-completed:console",
+      "name": "04c-attempt2-completed: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "04c-attempt2-completed:\"Handover complete: <time>\"",
+      "name": "04c-attempt2-completed: \"Handover complete: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "04c-attempt2-completed:\"Earlier handover missed: <time>\"",
+      "name": "04c-attempt2-completed: \"Earlier handover missed: <time>\"",
+      "pass": true
+    }
+  ],
+  "captures": [
+    {
+      "name": "375-03g-no-show-case-greg-queue",
+      "as": "greg",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [
+        "table.gcsp-table 1050px"
+      ],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-03g-no-show-case-greg-queue.png",
+      "bytesPng": 40723
+    },
+    {
+      "name": "375-03-no-show-rebook-focus",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-03-no-show-rebook-focus.png",
+      "bytesPng": 362779
+    },
+    {
+      "name": "375-04-rebooked",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-04-rebooked.png",
+      "bytesPng": 346391
+    },
+    {
+      "name": "375-04c-attempt2-completed",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    }
+  ],
+  "steps": [
+    {
+      "id": "03g",
+      "via": "api+browser",
+      "what": "One service tick opens the case; Greg reads /gcsp-case-queue.html with the table scrolled to the trigger column."
+    },
+    {
+      "id": "03a",
+      "via": "api",
+      "what": "Presenter route POST /api/gcsp/appointments/no-show (200). The browser has no no-show control.",
+      "repeatedBy": "'FUCQ-171 no-show then rebooking' step 2"
+    },
+    {
+      "id": "03b",
+      "via": "browser",
+      "what": "Paula rebooks with Tab and Enter on the first offered slot."
+    },
+    {
+      "id": "04b",
+      "via": "api",
+      "what": "Retailer confirmation is a service tick; completion is the presenter route. No PNG: the completed state is captured in 02.",
+      "repeatedBy": "'FUCQ-171 no-show then rebooking' steps 5 and 6"
+    }
+  ],
+  "observations": [],
+  "errors": [],
+  "requests": {
+    "greg GET /api/gcsp/scheme-team/cases 200 ok": 1,
+    "paula GET /api/gcsp/presenter/controls 200 ok": 2,
+    "paula GET /api/gcsp/manual/account 200 ok": 2,
+    "paula GET /api/gcsp/manual/draft 200 ok": 2,
+    "paula GET /api/gcsp/offers/current 200 ok": 2,
+    "paula GET /api/gcsp/orders/progress/all 200 ok": 2,
+    "paula GET /api/gcsp/context 200 ok": 2,
+    "paula GET /api/gcsp/presenter/scenarios 200 ok": 2,
+    "paula GET /api/gcsp/presenter/scenarios/faults 200 ok": 2,
+    "paula GET /api/gcsp/manual/order 200 ok": 2,
+    "paula GET /api/gcsp/orders/progress 200 ok": 3,
+    "paula GET /api/gcsp/documents 200 ok": 3,
+    "paula GET /api/gcsp/appointments 200 ok": 3,
+    "paula GET /api/gcsp/return-plan 200 ok": 3,
+    "paula POST /api/gcsp/appointments/request 200 ok": 1
+  },
+  "failedRequests": [],
+  "processes": {
+    "chrome": {
+      "pid": 97122,
+      "group": 97122,
+      "debugPort": 9169
+    },
+    "server-noshow": {
+      "pid": 97113,
+      "port": 9160,
+      "note": "in-process loopback server"
+    }
+  },
+  "notes": [],
+  "facts": {
+    "03g": {
+      "rows": [
+        [
+          "Paula (fictional)",
+          "2026-12-01",
+          "Missed handover appointment",
+          "The handover appointment was missed. The scheme team will check it is rebooked.",
+          "Open",
+          "Scheme team",
+          "2026-11-08 12:30:00 UTC"
+        ]
+      ],
+      "copy": {
+        "label": "Missed handover appointment",
+        "reason": "The handover appointment was missed. The scheme team will check it is rebooked."
+      }
+    },
+    "04": {
+      "announced": true,
+      "handover": "Handover Handover time requested. Requested 9 Nov 2026, 09:00. Not booked yet. Owner Retailer Next step Waiting for the retailer to confirm your slot. Earlier handover missed: 9 Nov 2026, 09:00 Handover history All dates are demo time (UTC). 7 Nov 2026, 12:00 Requested 7 Nov 2026, 12:30 Booked 7 Nov 2026, 12:30 Handover missed 7 Nov 2026, 12:30 Requested"
+    }
+  },
+  "finishedAt": "2026-11-09T15:39:23.148Z",
+  "summary": {
+    "checks": 33,
+    "passed": 33,
+    "failed": [],
+    "captures": 4,
+    "pngs": 3
+  }
+}

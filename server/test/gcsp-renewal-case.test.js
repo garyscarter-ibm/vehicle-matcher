@@ -112,12 +112,18 @@ caseTest('keyed lifecycle event types open once, reject foreign renewal/employee
   await event(g, 'custom', 'custom-reviewed-event'); await tick(g, 'custom');
   assert.equal((await g.service.readOwn(g.context)).value.cases.length, 1);
 });
-caseTest('FUCQ-259: keyed exception copy names a missed return; a handover no-show keeps the general reason and no label', async (t) => {
+caseTest('FUCQ-259/262: keyed exception copy names a missed return, a missed handover and a declined approval; an unlisted type keeps the general reason', async (t) => {
   const generic = 'A configured lifecycle exception needs scheme-team review.';
-  const f = await setup(t); await event(f, 'no-show', 'appointment-no-show'); await f.service.start(); await tick(f, 'no-show');
-  const [noShow] = (await f.service.readOwn(f.context)).value.cases;
-  assert.deepEqual([noShow.reason, noShow.trigger], [generic, { type: 'lifecycle-exception', eventType: 'appointment-no-show',
-    sourceId: 'fixture:lifecycle:no-show', orderUuid: 'order-fixture', reason: generic }]);
+  for (const [type, label] of [['appointment-no-show', 'Missed handover appointment'], ['approval-declined', 'Order approval declined']]) {
+    const f = await setup(t); await event(f, type, type); await f.service.start(); await tick(f, type);
+    const [opened] = (await f.service.readOwn(f.context)).value.cases;
+    assert.equal(opened.trigger.label, label); assert.notEqual(opened.reason, generic); assert.equal(opened.trigger.reason, opened.reason);
+  }
+  const u = await setup(t, { policy: await withPolicy({ 'renewalCase.lifecycle.eventTypes': ['custom-reviewed-event'] }) });
+  await event(u, 'custom', 'custom-reviewed-event'); await u.service.start(); await tick(u, 'custom');
+  const [unlisted] = (await u.service.readOwn(u.context)).value.cases;
+  assert.deepEqual([unlisted.reason, unlisted.trigger], [generic, { type: 'lifecycle-exception', eventType: 'custom-reviewed-event',
+    sourceId: 'fixture:lifecycle:custom', orderUuid: 'order-fixture', reason: generic }]);
   const g = await setup(t); await event(g, 'missed', 'return-missed'); await g.service.start(); await tick(g, 'missed');
   const [missed] = (await g.service.readOwn(g.context)).value.cases;
   assert.deepEqual([missed.trigger.eventType, missed.trigger.label, missed.reason],

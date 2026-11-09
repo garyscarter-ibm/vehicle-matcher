@@ -1,4 +1,6 @@
+import { PRESENTER_COOKIE } from './index.js';
 const protectedFields = new Set(['principalId', 'employeeId', 'roles', 'role', 'grade', 'gradeId', 'scheme', 'schemeId', 'companyId', 'runId', 'context', 'entitlementSlotId', 'token', 'session', 'sessionId']);
+const hasCookie = (header, name) => typeof header === 'string' && header.split(';').some((part) => part.trim().startsWith(`${name}=`));
 const statusCode = (status) => ({
   ok: 200, pending: 202, invalid: 400, 'missing-session': 401, 'unknown-session': 401,
   'expired-session': 401, 'unknown-principal': 404, forbidden: 403,
@@ -73,7 +75,8 @@ export function createGcspHandler({ identity, routes = [], allowedOrigins = [], 
         || Object.keys(body).some((key) => protectedFields.has(key) && !(switching && key === 'principalId'))) {
         return send({ status: 'invalid', code: 'browser-context-forbidden', reasons: [{ field: 'context', reason: 'Identity and run context are server-owned.' }], contractVersion: '1.0.0' });
       }
-      if (req.method === 'GET' && pathname === '/api/gcsp/context') return send(resolved);
+      // presenterControl says only whether a presenter cookie was sent; presenter routes still check authority.
+      if (req.method === 'GET' && pathname === '/api/gcsp/context') return send({ ...resolved, presenterControl: hasCookie(req.headers.cookie, PRESENTER_COOKIE) });
       if (switching) {
         if (Object.keys(body).some((key) => !['principalId', 'commandId'].includes(key))) return send({ status: 'invalid', code: 'unknown-field', reasons: [{ field: 'body', reason: 'Supply only principalId and commandId.' }], contractVersion: '1.0.0' });
         const presenter = await identity.resolveSession({ authorized: true, cookie: req.headers.cookie, purpose: 'presenter-control' });

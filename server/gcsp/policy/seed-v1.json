@@ -12890,6 +12890,14 @@
     {
       "key": "renewalCase.lifecycle.exceptionCopy",
       "value": {
+        "approval-declined": {
+          "label": "Order approval declined",
+          "reason": "An approval for the selected car was declined. The scheme team will agree the next step."
+        },
+        "appointment-no-show": {
+          "label": "Missed handover appointment",
+          "reason": "The handover appointment was missed. The scheme team will check it is rebooked."
+        },
         "return-missed": {
           "label": "Missed return of current car",
           "reason": "The return of the current car was missed. The scheme team will rearrange it."
@@ -12897,7 +12905,7 @@
       },
       "unit": "case trigger label and reason by lifecycle event type key; a type without an entry keeps the general reason",
       "status": "assumed",
-      "basis": "A missed return needs its own wording so the scheme team can tell it from a missed handover; plausible demo copy.",
+      "basis": "A missed return needs its own wording so the scheme team can tell it from a missed handover; a missed handover and a declined approval are named too, with the case view's existing words (FUCQ-262). Plausible demo copy.",
       "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
       "sourceDate": "2026-11-09",
       "policyVersion": "gcsp-policy-v1",
@@ -13303,7 +13311,7 @@
         },
         "states": {
           "completed": {
-            "owner": "employee",
+            "owner": "retailer",
             "nextStep": "Your handover is complete.",
             "stage": "handover"
           },
@@ -13319,7 +13327,7 @@
       },
       "unit": "lifecycle exception type key; owner and next-step label per terminal appointment state and per not-ready refusal",
       "status": "assumed",
-      "basis": "Terminal handover outcomes (FUCQ-167): completion is allowed only when documents and car readiness are complete, and a missed appointment is reported with the keyed exception type. A completed handover is shown as the final order-progress stage named here (FUCQ-253). Owners and copy are concise demo wording, not BMW workflow text.",
+      "basis": "Terminal handover outcomes (FUCQ-167): completion is allowed only when documents and car readiness are complete, and a missed appointment is reported with the keyed exception type. A completed handover is shown as the final order-progress stage named here (FUCQ-253). Nothing is left for the employee after completion, so its owner is the retailer that recorded the handover, as for a confirmed return (FUCQ-261). Owners and copy are concise demo wording, not BMW workflow text.",
       "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
       "sourceDate": "2026-11-09",
       "policyVersion": "gcsp-policy-v1",
