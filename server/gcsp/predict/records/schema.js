@@ -9,6 +9,8 @@ const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
   && [Object.prototype, null].includes(Object.getPrototypeOf(v));
 const exact = (v, keys) => object(v) && Object.keys(v).length === keys.length && keys.every((k) => Object.hasOwn(v, k));
 const text = (v) => typeof v === 'string' && v.length > 0 && v.length <= 512;
+// Real configuration ids are padded Base64 of every factory code and run past 512 characters.
+const configurationId = (v) => typeof v === 'string' && v.length > 0 && v.length <= 2048;
 const positive = (v) => Number.isSafeInteger(v) && v > 0;
 const nonnegative = (v) => Number.isFinite(v) && v >= 0;
 const instant = (v) => v === null || validInstant(v);
@@ -47,7 +49,7 @@ const exposure = (v) => evidence(v, (x) => exact(x, ['from', 'until', 'seconds']
   && validInstant(x.until) && Date.parse(x.until) >= Date.parse(x.from)
   && nonnegative(x.seconds) && x.seconds === (Date.parse(x.until) - Date.parse(x.from)) / 1000);
 const terms = (v) => evidence(v, (x) => exact(x, ['quoteRef', 'configurationId', 'monthlyPoints', 'allowance', 'unit', 'quotedAt', 'validUntil', 'policyVersion'])
-  && text(x.quoteRef) && text(x.configurationId) && nonnegative(x.monthlyPoints) && nonnegative(x.allowance)
+  && text(x.quoteRef) && configurationId(x.configurationId) && nonnegative(x.monthlyPoints) && nonnegative(x.allowance)
   && x.unit === 'points/month' && validInstant(x.quotedAt) && validInstant(x.validUntil)
   && Date.parse(x.validUntil) >= Date.parse(x.quotedAt) && text(x.policyVersion));
 const event = (v, allowed) => exact(v, ['state', 'at']) && allowed.includes(v.state) && instant(v.at)
@@ -66,7 +68,7 @@ export function validateLearningRecord(record) {
     && text(r.subject.employeeRef) && [r.subject.entitlementSlotRef, r.subject.renewalRef].every((v) => v === null || text(v)));
   check('target', exact(r.target, ['offerRef', 'holdRef', 'quoteRef', 'orderRef', 'configurationId'])
     && [r.target.offerRef, r.target.holdRef, r.target.quoteRef, r.target.orderRef].every((v) => v === null || text(v))
-    && evidence(r.target.configurationId, text));
+    && evidence(r.target.configurationId, configurationId));
   check('renewal', exact(r.renewal, ['cohort', 'period']) && evidence(r.renewal.cohort, text)
     && evidence(r.renewal.period, (v) => exact(v, ['from', 'until']) && validInstant(v.from) && validInstant(v.until) && Date.parse(v.until) >= Date.parse(v.from)));
   check('entitlement', exact(r.entitlement, ['schemeId', 'gradeId', 'allowanceBand'])
@@ -76,7 +78,7 @@ export function validateLearningRecord(record) {
     && preferences(r.brief.preferences) && essentials(r.brief.essentials));
   check('choiceSet', evidence(r.choiceSet, (v) => Array.isArray(v) && v.every((a) => (exact(a, ['configurationId', 'eligible', 'available', 'exposure', 'terms'])
     || exact(a, ['configurationId', 'orderRef', 'eligible', 'available', 'exposure', 'terms']) && text(a.orderRef))
-    && text(a.configurationId) && [a.eligible, a.available].every((x) => x === null || typeof x === 'boolean') && exposure(a.exposure) && terms(a.terms))));
+    && configurationId(a.configurationId) && [a.eligible, a.available].every((x) => x === null || typeof x === 'boolean') && exposure(a.exposure) && terms(a.terms))));
   check('terms', terms(r.terms));
   const o = r.outcomes;
   check('outcomes', exact(o, ['offered', 'selection', 'acceptance', 'decline', 'expiry', 'wait', 'satisfaction'])

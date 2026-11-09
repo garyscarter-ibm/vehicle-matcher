@@ -53,7 +53,7 @@ function bounds(snapshot) {
   return { v, records, stock };
 }
 
-function features(row, source, observedAt) {
+function features(row, observedAt) {
   const c = row.configuration;
   const supplied = { body: c.body, fuel: c.powertrain, seats: c.seats, boot: c.boot, zeroTo62: c.zeroTo62,
     mpg: c.mpg, sizeClass: c.sizeClass, equipment: c.equipment, frontIsofix: c.frontIsofix, rearIsofix: c.rearIsofix,
@@ -76,7 +76,8 @@ function features(row, source, observedAt) {
   const facts = Object.fromEntries(Object.entries(supplied).map(([field, value]) => [field, {
     status: value === undefined || value === null ? 'unknown' : 'known', value: value ?? null, unit: units[field] ?? null,
     provenance: { sourceRef: `configuration:${row.configurationId}`, version: row.snapshotVersion, observedAt,
-      assurance: value == null ? 'unknown' : source.kind === 'reviewed-fixtures' ? 'synthetic-scenario' : 'derived' },
+      // Known facts get the demo-confirmed label that generated stock uses; unknown ones never default.
+      assurance: value == null ? 'unknown' : 'synthetic-scenario' },
   }]));
   return { configurationId: row.configurationId, snapshotVersion: row.snapshotVersion, display: { name: row.modelLine }, facts };
 }
@@ -115,8 +116,10 @@ export async function loadLearningPolicy({ policyService, policyRead, corpus } =
       && validInstant(row.effectiveFrom), field, 'incoherent-policy');
     assumptions[field] = row;
   }
+  const bound = structuredClone(comparison);
+  if (corpus?.enrichment !== undefined) bound.configurationSource.enrichment = structuredClone(corpus.enrichment);
   const snapshot = { schemaVersion: 1, policyVersion: comparison.policyVersion, policyRead: read, assumptions,
-    comparison: structuredClone(comparison), features: comparison.configurations.map((row) => features(row, comparison.configurationSource, read.asOf)), candidatePolicies: [] };
+    comparison: bound, features: comparison.configurations.map((row) => features(row, read.asOf)), candidatePolicies: [] };
   bounds(snapshot);
   for (const context of comparison.assumptions['comparison.gradeDistribution'].value) {
     for (const row of snapshot.features) {
@@ -145,7 +148,7 @@ export function generateLearningRecords(seed, snapshot) {
     && snapshot.policyRead.policyVersion === snapshot.policyVersion
     && LEARNING_KEYS.every((k) => snapshot.assumptions[k].key === k && snapshot.assumptions[k].policyVersion === snapshot.policyVersion), 'assumptions', 'incoherent-policy');
   requireInput(inputDigest(snapshot.features) === inputDigest(snapshot.comparison.configurations.map((row) =>
-    features(row, snapshot.comparison.configurationSource, snapshot.policyRead.asOf))), 'features', 'snapshot-invalid');
+    features(row, snapshot.policyRead.asOf))), 'features', 'snapshot-invalid');
   const candidateKeys = snapshot.comparison.assumptions['comparison.gradeDistribution'].value.flatMap((context) =>
     snapshot.features.map((row) => key(context, row.configurationId)));
   requireInput(Array.isArray(snapshot.candidatePolicies) && snapshot.candidatePolicies.length === candidateKeys.length

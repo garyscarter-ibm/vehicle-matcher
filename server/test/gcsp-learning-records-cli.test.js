@@ -5,11 +5,14 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { runCli } from '../../scripts/gcsp/generate-learning-records.mjs';
 import { readLearningDataset } from '../gcsp/predict/records/index.js';
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp-learning-dataset.json', import.meta.url), 'utf8'));
 const cli = fileURLToPath(new URL('../../scripts/gcsp/generate-learning-records.mjs', import.meta.url));
+const seedPath = fileURLToPath(new URL('../gcsp/policy/seed-v1.json', import.meta.url));
+const sha256 = async (path) => createHash('sha256').update(await readFile(path)).digest('hex');
 async function setup(t) {
   const root = await mkdtemp(join(tmpdir(), 'learning-cli-'));
   t.after(() => rm(root, { recursive: true, force: true }));
@@ -80,13 +83,40 @@ test('CLI reads a complete successor through FilePolicyProvider and produces ide
   assert.deepEqual(await datasetAt(secondOutput), await datasetAt(f.output));
 });
 
-test('actual CLI process refuses missing canonical learning adoption without creating output', async (t) => {
+test('actual CLI process refuses an explicit policy file without adopted learning keys and creates no output', async (t) => {
   const f = await setup(t);
-  const child = spawnSync(process.execPath, [cli, '--seed', '1', '--output', f.output],
+  const child = spawnSync(process.execPath, [cli, '--seed', '1', '--policy-file', seedPath, '--allow-fixtures', '--output', f.output],
     { cwd: f.root, encoding: 'utf8', timeout: 15000, maxBuffer: 65536, env: process.env });
   assert.equal(child.status, 2); assert.equal(child.stdout, '');
   assert.deepEqual(JSON.parse(child.stderr), { status: 'unavailable', code: 'policy-unavailable', field: 'learning.cohortSize' });
   await assert.rejects(stat(f.output), { code: 'ENOENT' });
+});
+
+test('default CLI adopts the learning keys in memory and generates from the real demo-fleet builds, identically on rerun', async (t) => {
+  const f = await setup(t); const before = await sha256(seedPath);
+  const databases = { DATABASE_URL: 'postgres://127.0.0.1:1/unused', GCSP_DATABASE_URL: 'postgres://127.0.0.1:1/unused', PGHOST: '127.0.0.1', PGPORT: '1' };
+  const child = spawnSync(process.execPath, [cli, '--seed', '1', '--output', f.output],
+    { cwd: f.root, encoding: 'utf8', timeout: 60000, maxBuffer: 65536, env: { ...process.env, ...databases } });
+  assert.equal(child.status, 0, child.stderr); assert.equal(child.stderr, '');
+  const summary = JSON.parse(child.stdout);
+  assert.equal(summary.status, 'ok'); assert.equal(summary.configurationSource, 'corpus'); assert.equal(summary.datasetKind, 'synthetic');
+  assert.equal(summary.policyVersion, 'gcsp-policy-v1+fucq113-learning-v1');
+  assert.ok(summary.counts.records > 0 && summary.counts.cycles > 0);
+  const first = await datasetAt(f.output);
+  assert.equal(readLearningDataset(first).status, 'ok');
+  const { manifest } = first; const source = manifest.snapshot.comparison.configurationSource;
+  assert.equal(source.kind, 'corpus'); assert.equal(source.datasetId, 'gcsp-demo-fleet'); assert.equal(source.configurationCount, 240);
+  assert.match(source.manifestDigest, /^[a-f0-9]{64}$/); assert.match(source.enrichment.checksum, /^[a-f0-9]{64}$/);
+  assert.equal(manifest.policyVersion, summary.policyVersion);
+  for (const key of ['learning.cohortSize', 'learning.noChoiceRate']) {
+    assert.equal(manifest.snapshot.assumptions[key].policyVersion, summary.policyVersion);
+    assert.equal(manifest.snapshot.assumptions[key].effectiveFrom, manifest.snapshot.policyRead.asOf);
+  }
+  const second = await invoke(['--seed', '1', '--output', join(f.root, 'second')]);
+  assert.equal(second.rc, 0, second.stderr);
+  const rerun = await datasetAt(join(f.root, 'second'));
+  assert.equal(rerun.manifest.dataHash, manifest.dataHash); assert.deepEqual(rerun, first);
+  assert.equal(await sha256(seedPath), before);
 });
 
 test('CLI argument and corpus-store refusals remain typed and help performs no generation', async (t) => {
@@ -94,6 +124,8 @@ test('CLI argument and corpus-store refusals remain typed and help performs no g
   for (const argv of [[], ['--seed'], ['--seed', '1', '--seed', '2'], ['--seed', '1', '--unsupported'], ['--seed', '1', '--as-of', 'not-a-date']]) {
     const out = await invoke(argv); assert.equal(out.rc, 2); assert.equal(JSON.parse(out.stderr).code, 'invalid-arguments');
   }
+  const pinned = await invoke(['--seed', '1', '--as-of', '2026-11-05T09:00:00.000Z', '--output', f.output]);
+  assert.equal(pinned.rc, 2); assert.equal(JSON.parse(pinned.stderr).code, 'incompatible-options');
   const corpus = await invoke(['--seed', '1', '--corpus-store', join(f.root, 'absent-corpus'), '--output', f.output]);
   assert.equal(JSON.parse(corpus.stderr).code, 'corpus-unavailable');
   const help = await invoke(['--help']); assert.equal(help.rc, 0); assert.match(help.stdout, /--allow-fixtures/);

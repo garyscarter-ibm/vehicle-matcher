@@ -5,14 +5,15 @@ import { FilePolicyProvider, PolicyService } from '../../server/gcsp/policy/inde
 import { validInstant } from '../../server/gcsp/policy/file-provider.js';
 import { createSyntheticRegistry } from '../../server/gcsp/vehicle-evidence/synthetic-registry.js';
 import { inputDigest } from '../../server/gcsp/repository/index.js';
-import { createLearningDataset, loadLearningPolicy, LearningInputError, validateLearningDataset } from '../../server/gcsp/predict/records/index.js';
+import { adoptLearningPolicy, createLearningDataset, loadLearningPolicy, LearningInputError, validateLearningDataset } from '../../server/gcsp/predict/records/index.js';
+import { bindDemoFleet } from './learning-demo-fleet.mjs';
 
 const MAX_INPUT_BYTES = 8 * 1024 * 1024;
 const valueOptions = new Set(['seed', 'output', 'snapshot', 'policy-file', 'policy-version', 'as-of', 'run-id', 'corpus-store']);
 const help = `Generate a bounded synthetic learning dataset and required manifest.
 Usage: node scripts/gcsp/generate-learning-records.mjs --seed SEED [options]
   --output DIR          New output directory; existing paths are preserved
-  --policy-file FILE    Complete immutable PolicyService source (default: seed-v1)
+  --policy-file FILE    Complete immutable PolicyService source instead of the default
   --policy-version ID   Pin a version from that file
   --as-of ISO           Policy read instant (default: that source's effectiveFrom)
   --run-id ID           Policy read scope (default: learning-cli)
@@ -20,7 +21,8 @@ Usage: node scripts/gcsp/generate-learning-records.mjs --seed SEED [options]
   --snapshot FILE       Replay a complete prepared learning-policy snapshot
   --allow-fixtures      Explicitly permit labelled structural fixture configurations
   --help                Show this help
-No policy adoption, database connection or corpus publication is performed.
+Default: seed-v1 in memory plus the reviewed learning keys adopted as Greg, over the real demo-fleet.v1 builds.
+No database connection or corpus publication is performed.
 `;
 class CliError extends Error {
   constructor(code, field) { super(code); this.code = code; this.field = field; }
@@ -49,8 +51,20 @@ async function readSnapshot(path) {
     return JSON.parse(await readFile(path, 'utf8'));
   } catch { throw new CliError('snapshot-unavailable', 'snapshot'); }
 }
+// Default: memory-only adoption of the reviewed learning keys over seed-v1, then the real demo-fleet.v1 builds.
+async function prepareDefault() {
+  const runtime = await adoptLearningPolicy();
+  try {
+    const fleet = await bindDemoFleet({ policyService: runtime.policyService, policyRead: runtime.policyRead });
+    return await loadLearningPolicy({ policyService: fleet.policyService, policyRead: runtime.policyRead, corpus: fleet.corpus });
+  } finally { await runtime.close(); }
+}
 async function prepare(options) {
   if (options.snapshot) return readSnapshot(resolve(options.snapshot));
+  if (!options['policy-file'] && !options['corpus-store']) {
+    if (['policy-version', 'as-of', 'run-id'].some((key) => options[key])) throw new CliError('incompatible-options', 'policy-file');
+    return prepareDefault();
+  }
   const provider = new FilePolicyProvider(options['policy-file'] ? { filePath: resolve(options['policy-file']) } : {});
   let versions;
   try { versions = await provider.loadVersions(); } catch { throw new CliError('policy-unavailable', 'policy-file'); }

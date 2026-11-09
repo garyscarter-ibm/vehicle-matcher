@@ -267,7 +267,7 @@ Rows and results remain transient; no projection state or DTO store exists.
 Backend presentation evidence is the validator-checked `server/test/fixtures/gcsp-learning-record.json` and
 `docs/gcsp/evidence/fucq113/README.md`. These are labelled contract/repository fixtures, not outcome-producer
 integration, historical-extract or real-corpus acceptance. The additive synthetic module below supplies generation
-and manifest-gated input; canonical `learning.*` policy adoption and actual FUCQ-77 corpus execution remain outstanding. The module uses no
+and manifest-gated input; observed outcome-producer integration remains outstanding. The module uses no
 new local business-policy defaults. No screen changes; the shared Density theme, supplied shell references and
 body reference revision `a7fc178` remain applicable to future consuming screens.
 
@@ -342,28 +342,30 @@ This version accepts wholly synthetic datasets only; it does not silently merge 
 fixture successor policy (cohort 3), labelled reviewed configurations and enriched synthetic feature inputs.
 It proves reproduction and the manifest reader, not actual FUCQ-77 adapter execution or employee behaviour.
 The corpus binding supports the exact existing `getConfiguration(id)` read contract, refuses mismatched
-active dataset/version/digest or configuration version and never substitutes reviewed fixtures. Mapping real
-catalogue measurements/provenance to confirmed essential facts still needs real-corpus integration evidence;
-unconfirmed derived corpus features cannot satisfy confirmed essential gates. FUCQ-103 registered the exact bundle at `8284915`; isolated same-provider memory adoption and this
-learning caller passed2/2 (evidence `docs/gcsp/evidence/fucq113/adoption-proof.md`). Actual shared/runtime
-integration, PostgreSQL adoption, real corpus execution and observed outcome-producer acceptance remain
-separate outstanding work.
+active dataset/version/digest or configuration version and never substitutes reviewed fixtures. Known corpus
+facts carry the demo-confirmed `synthetic-scenario` assurance that generated stock uses; unknown ones stay unknown and
+fail the essential gates. FUCQ-103 registered the exact bundle at `8284915` and the default CLI now adopts it in memory
+(tests `gcsp-learning-records*.test.js`). PostgreSQL adoption and observed outcome-producer acceptance remain separate
+outstanding work.
 
 ### Learning dataset CLI
 
-`scripts/gcsp/generate-learning-records.mjs --seed SEED` prepares through file-backed PolicyService,
-requires the complete adopted learning keys and corpus input, then writes a new directory containing
-`records.json` and required `manifest.json` (written last). It reports counts/provenance and paths as JSON;
-existing paths are refused. `--policy-file`, `--policy-version`, `--as-of`, `--run-id` and `--corpus-store`
-select explicit immutable inputs. Without an as-of override, the validated selected source header's
-`effectiveFrom` is used; no wall clock is sampled. Registry use is read-only and recovered/unavailable
-selection is refused. No environment-driven database connection or policy adoption occurs.
+`scripts/gcsp/generate-learning-records.mjs --seed SEED` starts from unchanged seed-v1 in an in-memory
+PolicyService run, adopts `fucq113-learning-v1` as Greg at the demo clock's start (`clock.scenario.v1`, never the
+wall clock) and reads the adopted successor. It generates over the real `demo-fleet.v1` builds through the registry
+adapter, with `demo-enrichment.v1` supplying seats, boot and 0-100 km/h only where observed. Body, fuel, economy and
+other unobserved facts stay unknown, so the essential gates exclude those cars. The corpus set and model-line mix are
+derived from the published store (model line from `stock.eligibilityModelKeys.v1`); the manifest's
+`configurationSource` records the dataset, version, manifest digest and the sidecar digests. It writes
+`records.json`, then the required `manifest.json`, reports counts/provenance and paths as JSON and refuses existing
+paths. No database is opened. `--policy-file`, `--policy-version`, `--as-of`, `--run-id` and `--corpus-store`
+select explicit immutable inputs instead; `--policy-version`, `--as-of` and `--run-id` need `--policy-file`.
+Without an as-of override, the validated selected source header's `effectiveFrom` is used.
 
 `--snapshot FILE` is a replay path for a complete prepared snapshot, mutually exclusive with policy/corpus
-selection. `--allow-fixtures` explicitly permits labelled structural configurations; otherwise a corpus
-source is required. Readers combine the two output files into `{ manifest, records }` and must call
-`readLearningDataset`. Default seed-v1 currently lacks learning keys, so the authored `--seed 1` command
-refuses safely until canonical reviewed inputs are available; it has not met real-corpus generation acceptance.
+selection. `--allow-fixtures` explicitly permits labelled structural configurations on an explicit policy file;
+otherwise a corpus source is required. Readers combine the two output files into `{ manifest, records }` and must call
+`readLearningDataset`. An explicit seed-v1 `--policy-file` still refuses at `learning.cohortSize`.
 CLI failures emit bounded typed JSON and exit 2 without source details. The evidence README documents the
 explicit structural-sample trial and its limits.
 

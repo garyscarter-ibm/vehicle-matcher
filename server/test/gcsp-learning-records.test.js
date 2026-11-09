@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
 import { PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -494,7 +495,9 @@ test('choice gates retain release, eligibility, essential facts, affordability a
   const unknownSeats = scarceSource(); assumption(unknownSeats, 'comparison.needs.v1').value.essentials = [{ weight: 1, value: { seats: { operator: 'gte', value: 4, unit: 'count' } } }];
   delete assumption(unknownSeats, 'comparison.configurationSet.v1').value.configurations[0].configuration.seats;
   assert.ok(generateLearningRecords('missing-feature', await prepareLearning(unknownSeats)).records.every((r) => r.choiceSet.value.length === 0));
-  const delayed = scarceSource({ 'comparison.accessGroups': fixedAccess(3600) });
+  const delayed = scarceSource();
+  // A response at the policy's own quote validity is expired, whatever the seed value.
+  assumption(delayed, 'comparison.accessGroups').value = fixedAccess(assumption(delayed, 'employee.recommendation.v1').value.termValiditySeconds);
   const out = generateLearningRecords('quote-validity', await prepareLearning(delayed));
   assert.ok(out.records.some((r) => r.outcomes.expiry.state === 'expired'));
   assert.ok(out.records.every((r) => r.outcomes.acceptance.state !== 'accepted'));
@@ -614,4 +617,78 @@ test('learning definition candidate matches the reviewed additive bundle schema 
     assert.deepEqual(Object.keys(row).sort(), ['key', 'value', 'unit', 'status', 'basis', 'source', 'sourceDate'].sort());
     assert.equal(row.status, 'assumed'); assert.equal(row.sourceDate, '2026-11-05');
   }
+});
+
+// Real FUCQ-77 builds through the existing registry adapter, with the learning keys adopted in memory. No fixtures or database.
+const { adoptLearningPolicy } = await import('../gcsp/predict/records/index.js');
+const { bindDemoFleet } = await import('../../scripts/gcsp/learning-demo-fleet.mjs');
+const evidenceRoot = new URL('../data/gcsp/vehicle-evidence/', import.meta.url);
+const readJson = async (path) => JSON.parse(await readFile(new URL(path, evidenceRoot), 'utf8'));
+const readLines = async (path) => (await readFile(new URL(path, evidenceRoot), 'utf8')).split('\n').filter(Boolean).map((line) => JSON.parse(line));
+let realRun;
+const realSnapshot = () => realRun ??= (async () => {
+  const runtime = await adoptLearningPolicy();
+  try {
+    const fleet = await bindDemoFleet({ policyService: runtime.policyService, policyRead: runtime.policyRead });
+    return { adoption: runtime.adoption, snapshot: await loadLearningPolicy({ policyService: fleet.policyService, policyRead: runtime.policyRead, corpus: fleet.corpus }) };
+  } finally { await runtime.close(); }
+})();
+
+test('real demo-fleet generation offers only published configurations and leaves unobserved facts unknown', async () => {
+  const { snapshot, adoption } = await realSnapshot();
+  const digest = (await readJson('demo-fleet.v1/active.json')).selected.manifestDigest;
+  const published = await readJson(`demo-fleet.v1/versions/${digest}/manifest.json`);
+  const ids = new Set((await readLines(`demo-fleet.v1/versions/${digest}/configurations.jsonl`)).map((row) => row.configurationId));
+  const sidecar = await readJson('demo-enrichment.v1/manifest.json');
+  const entries = new Map((await readLines('demo-enrichment.v1/enrichment.jsonl')).map((row) => [row.configurationId, row]));
+  const dataset = createLearningDataset('real-corpus', snapshot);
+  assert.equal(validateLearningDataset(dataset).status, 'ok'); assert.equal(dataset.manifest.policyVersion, adoption.policyVersion);
+  const source = dataset.manifest.snapshot.comparison.configurationSource;
+  assert.deepEqual([source.kind, source.datasetId, source.version, source.manifestDigest, source.configurationCount],
+    ['corpus', published.datasetId, published.version, digest, ids.size]);
+  assert.deepEqual([source.enrichment.demoManifestDigest, source.enrichment.checksum],
+    [sidecar.demoManifestDigest, sidecar.checksums['enrichment.jsonl']]);
+  const alternatives = dataset.records.flatMap((r) => r.choiceSet.value ?? []);
+  assert.ok(dataset.records.length > 0 && alternatives.length > 0);
+  assert.ok(alternatives.every((a) => ids.has(a.configurationId)) && dataset.records.every((r) => r.target.configurationId.value === undefined || ids.has(r.target.configurationId.value)));
+  const mapped = { seats: 'seats', luggageNormal: 'boot', acceleration: 'zeroTo62' };
+  for (const feature of snapshot.features) {
+    assert.ok(ids.has(feature.configurationId));
+    for (const [fact, name] of Object.entries(mapped)) {
+      const observed = entries.get(feature.configurationId)?.facts?.[fact];
+      assert.equal(feature.facts[name].status, observed?.state === 'known' ? 'known' : 'unknown', `${fact} ${feature.configurationId}`);
+      if (observed?.state === 'known') assert.equal(feature.facts[name].value, observed.value);
+    }
+    for (const name of ['body', 'fuel', 'mpg', 'sizeClass', 'equipment', 'tags']) assert.equal(feature.facts[name].status, 'unknown', name);
+  }
+  assert.ok(snapshot.features.some((f) => f.facts.seats.status === 'unknown') && snapshot.features.some((f) => f.facts.seats.status === 'known'));
+  for (const r of dataset.records) {
+    assert.deepEqual(r.provenance, { kind: 'synthetic', generatorVersion: LEARNING_GENERATOR_VERSION, seed: 'real-corpus' });
+    const needsSeats = r.brief.essentials.seats?.value != null;
+    for (const a of r.choiceSet.value ?? []) {
+      if (needsSeats) assert.equal(snapshot.features.find((f) => f.configurationId === a.configurationId).facts.seats.status, 'known');
+    }
+  }
+  const personal = /^(name|firstname|lastname|email|phone|address|vin\w*|trip\w*|usage\w*|mileage\w*)$/i;
+  const keys = (v) => (v && typeof v === 'object' ? Object.entries(v).flatMap(([k, x]) => [k, ...keys(x)]) : []);
+  assert.deepEqual(keys(dataset.records).filter((k) => personal.test(k)), []);
+});
+
+test('learning adoption is a dated in-memory successor that leaves the base version and seed-v1 readable and unchanged', async () => {
+  const sha256Of = async () => createHash('sha256').update(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url))).digest('hex');
+  const before = await sha256Of(); const runtime = await adoptLearningPolicy();
+  try {
+    const { adoption, policyService, policyRead } = runtime;
+    assert.equal(adoption.baseVersion, seed.policyVersion); assert.notEqual(adoption.policyVersion, adoption.baseVersion);
+    assert.equal(adoption.effectiveFrom, assumption(seed, 'clock.scenario.v1').value.startsAt); assert.equal(adoption.digest, learningDefinitions.digest);
+    for (const key of LEARNING_KEYS) {
+      const row = await policyService.getAssumption(key, policyRead);
+      assert.equal(row.status, 'ok'); assert.equal(row.policyVersion, adoption.policyVersion);
+      assert.equal(row.value.effectiveFrom, adoption.effectiveFrom); assert.equal(row.value.policyVersion, adoption.policyVersion);
+      assert.notEqual((await policyService.getAssumption(key, { ...policyRead, policyVersion: adoption.baseVersion })).status, 'ok');
+    }
+    const base = await policyService.getAssumption('comparison.cohortSize', { ...policyRead, policyVersion: adoption.baseVersion });
+    assert.equal(base.status, 'ok'); assert.equal(base.policyVersion, adoption.baseVersion);
+  } finally { await runtime.close(); }
+  assert.equal(await sha256Of(), before);
 });
