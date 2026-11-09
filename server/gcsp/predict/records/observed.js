@@ -1,10 +1,14 @@
 import { inputDigest, ok, result } from '../../repository/index.js';
 import { validInstant } from '../../policy/file-provider.js';
+import { DECISION_EVENTS } from '../../offers/decision.js';
 import { DECLINE_TYPES, projectBriefIntent, unknown, validateLearningRecord } from './schema.js';
 
 const tables = ['briefs', 'employees', 'entitlement_slots', 'offers', 'holds', 'decisions', 'quotes', 'stock'];
+// Producer receipts carry the demo-clock instants that the offer, hold and decision rows do not store.
+const RECEIPTS = [DECISION_EVENTS, 'buddy-expiry', 'brief-selection:v1'];
 const unavailable = (code) => result('unavailable', { code, reason: 'Learning records are unavailable.', retryable: true });
 const ref = (runId, kind, id) => id == null ? null : `${kind}:${inputDigest([runId, kind, id])}`;
+const points = (v) => v?.unit === 'points' && Number.isFinite(v.value) ? v.value : NaN;
 const known = (value) => ({ status: 'known', value });
 const event = (state = 'unknown', ...times) => {
   const captured = times.filter((at) => at != null);
@@ -30,6 +34,7 @@ function project(rows, context, time) {
   for (const quote of rows.quotes) if (!usedQuotes.has(quote.quoteId) && Number.isSafeInteger(quote.briefVersion) && quote.briefVersion > 0) entries.push({ quoteId: quote.quoteId });
   if (rows.decisions.some((d) => !rows.offers.some((o) => o.offerId === d.offerId))) throw new Error('orphan-decision');
   const records = [];
+  const receipt = (consumerId, match) => rows.receipts.find((r) => r.consumerId === consumerId && r.outcome?.status === 'ok' && match(r));
   const append = ({ offer, quoteId, brief: unmatched }) => {
     const decisions = rows.decisions.filter((d) => offer && d.offerId === offer.offerId);
     const quote = rows.quotes.find((q) => q.quoteId === quoteId);
@@ -65,35 +70,41 @@ function project(rows, context, time) {
     const expired = offer?.state === 'expired';
     if (declined && (accepted || selected || expired) || expired && (accepted || selected)) throw new Error('contradictory-outcomes');
     const decline = decisions.find((d) => d.decision === 'decline' && complete(d));
-    const declineType = decline?.reason?.type ?? decline?.reason?.code;
+    // The reviewed decline set records a code and an attribute; the first one the closed learning list knows is used.
+    const declineType = [decline?.reason?.type, decline?.reason?.code, decline?.reason?.attribute].find((t) => DECLINE_TYPES.includes(t));
     const pending = ['decision-pending', 'selection-pending'].includes(offer?.state) || hold?.state === 'selection-pending'
       || decisions.some((d) => d.decision === 'accept' && [d.outcome?.status, d.originalResponse?.status].includes('pending'));
     if (pending && (accepted || selected || declined || expired)) throw new Error('contradictory-pending');
-    const decisionTimes = (values, isComplete) => decisions.filter((d) => values.includes(d.decision) && isComplete(d)).map((d) => d.decidedAt);
+    const decidedAt = (d) => d.decidedAt ?? receipt(DECISION_EVENTS, (r) => r.outcome.value?.event?.decisionId === d.decisionId)?.outcome.value.event.occurredAt;
+    const decisionTimes = (values, isComplete) => decisions.filter((d) => values.includes(d.decision) && isComplete(d)).map(decidedAt);
+    const picked = receipt('brief-selection:v1', (r) => offer && r.outcome.value?.offerId === offer.offerId)?.outcome.value.selectedAt;
+    const expiredAt = offer?.expiredAt ?? receipt('buddy-expiry', (r) => offer && r.outcome.value?.offerId === offer.offerId)?.outcome.value.expiredAt;
+    // A local offer is written in the quote's transaction; a remote one follows its pending claim, so its time stays unknown.
+    const offeredAt = offer?.offeredAt ?? (offer && quote && !hold?.operationId ? quote.quotedAt : undefined);
     const pendingDecision = (d) => [d.outcome?.status, d.originalResponse?.status].includes('pending');
-    validateTimes(time.now, [offer?.offeredAt, offer?.acceptedAt, offer?.rejectedAt, offer?.declinedAt, offer?.expiredAt,
-      offer?.selectedAt, offer?.pendingAt, hold?.selectedAt, hold?.pendingAt, quote?.quotedAt, ...decisions.map((d) => d.decidedAt)]);
+    validateTimes(time.now, [offeredAt, offer?.acceptedAt, offer?.rejectedAt, offer?.declinedAt, expiredAt,
+      offer?.selectedAt, offer?.pendingAt, hold?.selectedAt, hold?.pendingAt, quote?.quotedAt, picked, ...decisions.map(decidedAt)]);
     const pendingTimes = pending ? [offer?.pendingAt, hold?.pendingAt, ...decisionTimes(['accept'], pendingDecision)] : [];
     const outcomes = {
-      offered: event(offer ? 'offered' : 'unknown', offer?.offeredAt),
-      selection: event(selected ? 'selected' : pending ? 'pending' : 'unknown', offer?.selectedAt, hold?.selectedAt,
+      offered: event(offer ? 'offered' : 'unknown', offeredAt),
+      selection: event(selected ? 'selected' : pending ? 'pending' : 'unknown', offer?.selectedAt, hold?.selectedAt, picked,
         ...decisionTimes(['select', 'selected'], complete), ...pendingTimes),
       acceptance: event(accepted ? 'accepted' : pending ? 'pending' : 'unknown', offer?.acceptedAt,
         ...decisionTimes(['accept'], complete), ...pendingTimes),
       decline: { ...event(declined ? 'declined' : 'unknown', offer?.rejectedAt, offer?.declinedAt,
         ...decisionTimes(['decline'], complete)), reasonType: declined ? DECLINE_TYPES.includes(declineType) ? declineType : 'unclassified' : null },
-      expiry: event(expired ? 'expired' : 'unknown', offer?.expiredAt), wait: { ...event(), reasonType: null }, satisfaction: event(),
+      expiry: event(expired ? 'expired' : 'unknown', expiredAt), wait: { ...event(), reasonType: null }, satisfaction: event(),
     };
     if (outcomes.offered.at !== null && Object.entries(outcomes).some(([key, value]) => key !== 'offered'
       && value.at !== null && Date.parse(value.at) < Date.parse(outcomes.offered.at))) throw new Error('event-before-offer');
     let terms = unknown(quote ? 'not-captured' : 'missing-quote');
     // Only the dated saved quote can establish historical terms. Repository createdAt is
     // storage time, so it never substitutes for a missing DemoClock event timestamp.
-    if (quote && Number.isFinite(quote.monthlyPoints) && Number.isFinite(quote.allowance?.monthlyPoints)
-      && quote.allowance.unit === 'points/month' && validInstant(quote.quotedAt) && validInstant(quote.validUntil ?? quote.expiresAt)
+    const monthly = points(quote?.monthlyPoints); const allowance = points(quote?.allowance?.allowance);
+    if (quote && Number.isFinite(monthly) && Number.isFinite(allowance) && validInstant(quote.quotedAt) && validInstant(quote.validUntil ?? quote.expiresAt)
       && typeof quote.configurationId === 'string' && typeof quote.policyVersion === 'string') {
       terms = known({ quoteRef: ref(context.runId, 'quote', quote.quoteId), configurationId: quote.configurationId,
-        monthlyPoints: quote.monthlyPoints, allowance: quote.allowance.monthlyPoints, unit: 'points/month',
+        monthlyPoints: monthly, allowance, unit: 'points/month',
         quotedAt: quote.quotedAt, validUntil: quote.validUntil ?? quote.expiresAt, policyVersion: quote.policyVersion });
     }
     const record = { schemaVersion: 1, recordId: ref(context.runId, 'record', offer ? ['offer', offer.offerId] : quote ? ['quote', quote.quoteId] : ['brief', employeeId, brief.briefVersion]),
@@ -103,8 +114,7 @@ function project(rows, context, time) {
         quoteRef: ref(context.runId, 'quote', quoteId), orderRef: ref(context.runId, 'order', orderUuid),
         configurationId: quote?.configurationId ? known(quote.configurationId) : unknown() },
       renewal: { cohort: unknown(), period: unknown() },
-      entitlement: { schemeId: terms.status === 'known' && quote.allowance.schemeId ? known(quote.allowance.schemeId) : unknown('missing-context'),
-        gradeId: terms.status === 'known' && quote.allowance.gradeId ? known(quote.allowance.gradeId) : unknown('missing-context'), allowanceBand: unknown() },
+      entitlement: { schemeId: unknown('missing-context'), gradeId: unknown('missing-context'), allowanceBand: unknown() },
       brief: { briefVersion: brief.briefVersion, policyVersion: brief.policyVersion, confirmedAt: brief.confirmedAt, ...projectBriefIntent(brief) },
       choiceSet: unknown(), terms,
       outcomes,
@@ -129,11 +139,14 @@ export function createObservedLearningRecordService({ repository, identity, cloc
         if (time.status !== 'ok') return time;
         if (!validClock(time, context)) return unavailable('clock-invalid');
         const load = async () => {
-          const values = await Promise.all(tables.map((table) => repository.query(context, table)));
+          const values = await Promise.all([...tables.map((table) => repository.query(context, table)),
+            ...RECEIPTS.map((consumerId) => repository.query(context, 'event_receipts', { consumerId }))]);
           const failure = values.find((v) => v.status !== 'ok');
           if (failure) return { failure };
           if (values.some((v) => !Array.isArray(v.value) || v.value.some((r) => r.runId !== context.runId))) return { failure: unavailable('source-invalid') };
-          return Object.fromEntries(tables.map((table, i) => [table, values[i].value]));
+          const receipts = new Map(values.slice(tables.length).flatMap((v) => v.value).filter((r) => RECEIPTS.includes(r.consumerId))
+            .map((r) => [`${r.consumerId}\n${r.eventId}`, r]));
+          return { ...Object.fromEntries(tables.map((table, i) => [table, values[i].value])), receipts: [...receipts.values()] };
         };
         const rows = await load(); if (rows.failure) return rows.failure;
         const records = project(rows, context, time.value);
