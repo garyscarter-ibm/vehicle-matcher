@@ -131,13 +131,14 @@ const INFEASIBLE = () => {
 };
 
 const request = (state, quantity, derivativeId = TOURING) => ({ requestId: `request-fixture-${derivativeId === TOURING ? 1 : 2}`, commandId: `sub-1:${derivativeId}`, derivativeId, quantity, state, requestedAt: T0 });
+const MIN_TWO = () => [{ key: 'orderPlan.derivativeBounds', value: CATALOGUE.map((d) => ({ derivativeId: d.id, min: d.id === TOURING ? 2 : 0, max: d.max })) }];
 const submittedRequests = () => [request('requested', 2), request('requested', 1, I5)];
 const SUBMITTED = () => readValue(planned({ supply: { requests: submittedRequests(), responses: [] } }),
-  { status: 'unchanged-since-submission', submittedPlanId: 'order-plan-ready0001', submittedAt: T0, currentPlanId: 'order-plan-ready0001', requests: submittedRequests(), responses: [] });
+  { status: 'unchanged-since-submission', submittedPlanId: 'order-plan-ready0001', submittedAt: T0, currentPlanId: 'order-plan-ready0001', changes: MIN_TWO(), requests: submittedRequests(), responses: [] });
 // Min 2 was set only in the draft that was submitted, so the plan under the active limits orders nothing (FUCQ-290).
 const REQUESTED_NO_ORDER = () => readValue(feasible({ id: 'noorder001', q: {}, covered: 1, total: 4, risk: [0, 1], binding: [...ZERO_MINIMUMS, { id: 'derivative:g21-touring-320i:min', detail: 'Quantity meets minimum 0.' }],
   supply: { requests: [request('requested', 2)], responses: [] } }),
-{ status: 'unchanged-since-submission', submittedPlanId: 'order-plan-preview001', submittedAt: T0, currentPlanId: 'order-plan-noorder001', requests: [request('requested', 2)], responses: [] });
+{ status: 'unchanged-since-submission', submittedPlanId: 'order-plan-preview001', submittedAt: T0, currentPlanId: 'order-plan-noorder001', changes: MIN_TWO(), requests: [request('requested', 2)], responses: [] });
 const REPLANNED = () => {
   const after = { kind: 'partly-confirmed', requestId: 'request-fixture-1', supplyId: 'supply-1', quantity: 1, at: T1 };
   const plan = feasible({ id: 'replanned1', at: T1, clock: 2, q: { [TOURING]: 1, [I5]: 1 }, covered: 3, total: 4, risk: [1, 4, [{ sourceId: 'supply:supply-1', quantity: 1 }]],
@@ -145,7 +146,7 @@ const REPLANNED = () => {
     alternatives: [{ kind: 'zero-new-orders-baseline', spec: { quantities: CATALOGUE.map((d) => ({ derivativeId: d.id, modelId: d.modelId, quantity: 0 })), spendMinor: 0, orderQuantity: 0,
       expectedAcceptableCoverage: { covered: 2, total: 4, fraction: 0.5, basis: BASIS }, unallocatedStockRisk: { quantity: 0, totalSupply: 1, basis: 'unmatched-supply-within-horizon', bySource: [] } } }],
     supply: { requests: [request('partly-confirmed', 2)], responses: [after] } });
-  return readValue(plan, { status: 'replanned', submittedPlanId: 'order-plan-ready0001', submittedAt: T0, currentPlanId: plan.planId, requests: [request('partly-confirmed', 2)], responses: [after], after });
+  return readValue(plan, { status: 'replanned', submittedPlanId: 'order-plan-ready0001', submittedAt: T0, currentPlanId: plan.planId, changes: MIN_TWO(), requests: [request('partly-confirmed', 2)], responses: [after], after });
 };
 const SUBMISSION = () => ({ submissionId: 'submission-fixture0001', planId: 'order-plan-ready0001', message: 'Requested. Production has not confirmed any of this yet.',
   requests: [TOURING, I5].map((derivativeId, i) => ({ derivativeId, commandId: `fixture-submit:${derivativeId}`, quantity: touring2[derivativeId], status: 'ok',

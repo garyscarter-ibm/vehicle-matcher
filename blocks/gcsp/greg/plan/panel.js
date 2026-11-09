@@ -5,8 +5,8 @@ import { dataTable } from '../../kit/data-table.js';
 import { isRunRestarted, runRestartedNotice } from '../../kit/run-restarted.js';
 import { metricTile } from '../../kit/metric-tile.js';
 import { presenterBar } from '../../kit/presenter-bar.js';
-import { toPlanView, toChanges, staleView } from './plan-view.js';
-import { quantityLabel, requestedNotice, REQUEST_LINK, ORDER_REQUESTS_ID } from './plan-copy.js';
+import { toPlanView, toChanges, staleView, requestedLimitText } from './plan-view.js';
+import { quantityLabel, requestedNotice, requestedLimitsNote, REQUEST_LINK, ORDER_REQUESTS_ID } from './plan-copy.js';
 
 let sequence = 0;
 const UNAVAILABLE = 'The order plan could not be loaded. Try again in a moment.';
@@ -157,6 +157,8 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
     previewButton = button({ label: 'Preview with these limits', variant: 'ghost', onClick: () => runPreview() });
     resetButton = button({ label: 'Reset limits', variant: 'ghost', onClick: () => { buildEditor(); resetButton.focus(); setState(page.dataset.state, 'Limits reset to the current plan.'); } });
     actions.append(previewButton, resetButton);
+    const asked = current.submission?.status === 'submitted' ? requestedLimitText(current.submission.changes, current.limits) : [];
+    if (asked.length) inner.append(note(requestedLimitsNote(asked)));
     inner.append(note('Change a limit, then preview the effect. Previewing saves and orders nothing.'), summary.root,
       ...draft.map((g, gi) => (g.kind === 'budget' ? budgetGroup(g, gi) : boundsGroup(g, gi))), actions); limitsBar.panel.replaceChildren(inner);
     sync();
