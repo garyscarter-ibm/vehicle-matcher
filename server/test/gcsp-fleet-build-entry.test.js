@@ -117,3 +117,21 @@ test('a missing pin, unapproved pin or failed restore fails the build', async ()
   await assert.rejects(prepareFleetBuild({ env, config: yaml, restore: async () => { throw Error('restore failed'); } }));
   await assert.rejects(prepareFleetBuild({ env, config: yaml, restore: async () => ({ status: 'ok', active: { manifestDigest: 'b'.repeat(64) } }) }));
 });
+
+test('a validation failure prints the bounded stage, failure and diagnostic on the same URL-free line', async (t) => {
+  const stub = `
+    export async function restoreFleetRelease() { throw Object.assign(new TypeError('Cached store failed full validation'),
+      { artifactCode: 'validation-failed', step: 'validate-cache', validation: { stage: 'cached', status: 'source-unavailable',
+        failure: { code: 'selected-corpus-invalid', message: 'The selected complete corpus failed validation.' },
+        diagnostic: { selection: 'selected', cause: { code: 'checksum-mismatch' }, phase: 'index:vins.jsonl' }, manifestDigestMatches: false } }); }
+    export async function packFleetRelease() { return {}; }
+  `;
+  const child = await runArtifactCommand(t, { env: gcspRender, stub });
+  assert.equal(child.code, 1); assert.equal(child.stdout.trim().split('\n').length, 1);
+  assert.equal(child.value.code, 'validation-failed'); assert.equal(child.value.step, 'validate-cache');
+  assert.equal(child.value.reason, 'Cached store failed full validation');
+  assert.deepEqual(child.value.validation, { stage: 'cached', status: 'source-unavailable',
+    failure: { code: 'selected-corpus-invalid', message: 'The selected complete corpus failed validation.' },
+    diagnostic: { selection: 'selected', cause: { code: 'checksum-mismatch' }, phase: 'index:vins.jsonl' }, manifestDigestMatches: false });
+  assert.doesNotMatch(child.stdout, /:\/\//);
+});

@@ -4,7 +4,7 @@ import { chmod, mkdtemp, readFile, stat, writeFile, rm } from 'node:fs/promises'
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { inputDigest } from '../gcsp/repository/core.js';
-import { canonicalContent, writeCorpusCandidate, validateCorpusDirectory } from '../gcsp/vehicle-evidence/corpus-publisher.js';
+import { boundDiagnostic, canonicalContent, writeCorpusCandidate, validateCorpusDirectory } from '../gcsp/vehicle-evidence/corpus-publisher.js';
 import { createSyntheticRegistry } from '../gcsp/vehicle-evidence/synthetic-registry.js';
 import { corpusInput, options } from './helpers/vin-corpus-fixture.js';
 
@@ -82,4 +82,31 @@ test('published lazy reads stay available after ctime-only drift on the active a
   assert.equal(after.mtimeNs, before.mtimeNs); assert.notEqual(after.ctimeNs, before.ctimeNs);
   const result = registry.getConfiguration(id);
   assert.equal(result.status, 'partial', JSON.stringify(result)); assert.deepEqual(result.record, expected);
+});
+test('a rejected corpus keeps its phase, file, check and record in a bounded diagnostic beside the unchanged failure', async (t) => {
+  const root = await temporary(t); const directory = join(root, 'candidate');
+  assert.equal((await writeCorpusCandidate(directory, await corpusInput({ count: 2 }), options)).status, 'ok');
+  const indexedOptions = { ...options, indexed: true };
+  assert.equal(Object.hasOwn(await validateCorpusDirectory(directory, indexedOptions), 'diagnostic'), false);
+  const vins = await readFile(join(directory, 'vins.jsonl'), 'utf8'); const configurations = await readFile(join(directory, 'configurations.jsonl'), 'utf8');
+  await writeFile(join(directory, 'vins.jsonl'), vins + '{}\n');
+  const mismatch = await validateCorpusDirectory(directory, indexedOptions);
+  assert.deepEqual(Object.keys(mismatch.failure), ['code', 'message']); assert.equal(mismatch.failure.code, 'checksum-mismatch');
+  assert.deepEqual(mismatch.diagnostic, { phase: 'index:vins.jsonl' });
+  await writeFile(join(directory, 'vins.jsonl'), vins); await writeFile(join(directory, 'configurations.jsonl'), '{"a":1}\nbroken\n');
+  const parsed = await validateCorpusDirectory(directory, indexedOptions);
+  assert.equal(parsed.failure.code, 'malformed-jsonl');
+  assert.deepEqual(parsed.diagnostic, { phase: 'index:configurations.jsonl', file: 'configurations.jsonl', check: 'parse', record: 2, offset: 8 });
+  await writeFile(join(directory, 'configurations.jsonl'), configurations); await rm(join(directory, 'images.jsonl'));
+  const missing = await validateCorpusDirectory(directory, indexedOptions);
+  assert.equal(missing.failure.code, 'artifact-unavailable');
+  assert.deepEqual(missing.diagnostic, { phase: 'index:images.jsonl', errorName: 'Error', errno: 'ENOENT', syscall: 'open' });
+  assert.equal(JSON.stringify(missing).includes(root), false);
+});
+test('diagnostics are clamped to bounded depth, size and URL-free strings', () => {
+  const bounded = boundDiagnostic({ long: 'x'.repeat(500), url: 'see https://example.org/a', list: Array.from({ length: 30 }, (_, i) => i),
+    deep: { a: { b: { c: 'too deep' } } }, kept: { a: { b: 'ok' } }, nothing: undefined, bad: Infinity });
+  assert.equal(bounded.long.length, 200); assert.equal(Object.hasOwn(bounded, 'url'), false); assert.equal(bounded.list.length, 10);
+  assert.deepEqual(bounded.deep, { a: {} }); assert.deepEqual(bounded.kept, { a: { b: 'ok' } });
+  assert.equal(Object.hasOwn(bounded, 'nothing'), false); assert.equal(Object.hasOwn(bounded, 'bad'), false);
 });

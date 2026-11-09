@@ -3,7 +3,7 @@ import { mkdir, open, readFile, readdir, rename, rm, unlink } from 'node:fs/prom
 import { isAbsolute, join, resolve } from 'node:path';
 import { inputDigest } from '../repository/core.js';
 import { calculateVinCheckDigit } from './vin-generator.js';
-import { canonicalContent, CORPUS_FILES, durableCopy, durableWrite, readCorpusFile,
+import { boundDiagnostic, canonicalContent, CORPUS_FILES, durableCopy, durableWrite, readCorpusFile,
   syncDirectory, validateCorpusDirectory } from './corpus-publisher.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -17,7 +17,9 @@ const activeInfo = (snapshot) => snapshot ? { datasetId: snapshot.manifest.datas
   manifestDigest: snapshot.manifestDigest, counts: structuredClone(snapshot.manifest.counts),
   sourceContexts: structuredClone(snapshot.manifest.sourceContexts), completeness: structuredClone(snapshot.manifest.completeness) } : null;
 const failure = (status, code, message) => ({ status, failure: { code, message } });
-const unavailable = (code, message) => failure('source-unavailable', code, message);
+const unavailable = (code, message, diagnostic) => ({ ...failure('source-unavailable', code, message),
+  ...(diagnostic ? { diagnostic: boundDiagnostic(diagnostic) } : {}) });
+const caught = (error) => ({ errorName: error?.name, ...(typeof error?.code === 'string' && /^E[A-Z0-9]+$/.test(error.code) ? { errno: error.code } : {}) });
 const duplicate = (rows, field) => new Set(rows.map((row) => row[field])).size !== rows.length;
 function validHistory(value) {
   try {
@@ -141,15 +143,21 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
           if (!entries.includes('active.json') && !entries.includes('last-good.json') && versions.length === 0) return { status: 'ok', history: emptyHistory() };
         } catch { /* Unreadable stores are never interpreted as a fresh inventory. */ }
       }
-      return unavailable('identity-inventory-unavailable', 'Restore the retained synthetic identity inventory before loading; no synthetic identity may be forwarded live.');
+      return unavailable('identity-inventory-unavailable', 'Restore the retained synthetic identity inventory before loading; no synthetic identity may be forwarded live.', caught(error));
     }
   }
-  async function openSelection(selection, historyValue) {
+  async function openSelection(selection, historyValue, which = 'selected') {
     if (!validSelection(selection)) return unavailable('selection-invalid', 'The selected version reference is invalid.');
     const loaded = await validateCorpusDirectory(join(root, 'versions', selection.directory), options);
-    if (loaded.status !== 'ok' || loaded.manifestDigest !== selection.manifestDigest) return unavailable('selected-corpus-invalid', 'The selected complete corpus failed validation.');
+    if (loaded.status !== 'ok' || loaded.manifestDigest !== selection.manifestDigest) {
+      return unavailable('selected-corpus-invalid', 'The selected complete corpus failed validation.',
+        { selection: which, cause: loaded.failure ?? { code: 'manifest-digest-mismatch' }, ...loaded.diagnostic });
+    }
     const merged = mergeHistory(historyValue, loaded.corpus, loaded.manifestDigest);
-    if (merged.status !== 'ok' || merged.changed) return unavailable('selection-history-mismatch', 'The selected corpus is absent from or conflicts with durable identity history.');
+    if (merged.status !== 'ok' || merged.changed) {
+      return unavailable('selection-history-mismatch', 'The selected corpus is absent from or conflicts with durable identity history.',
+        { selection: which, ...(merged.status !== 'ok' ? { cause: merged.failure } : { changed: true }) });
+    }
     return { ...loaded, selection };
   }
   function select(loaded) {
@@ -183,11 +191,12 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
         try { const good = JSON.parse(await readCorpusFile(root, 'last-good.json')); previous = good.schemaVersion === '1' ? good.selected : null; } catch { previous = null; }
       }
       if (validSelection(previous)) {
-        const loaded = await openSelection(previous, retained);
+        const loaded = await openSelection(previous, retained, 'previous');
         if (loaded.status === 'ok') { select(loaded); return { ...report(failed), recovered: true, active: info() }; }
+        return report({ ...failed, ...(loaded.diagnostic ? { previousDiagnostic: loaded.diagnostic } : {}) });
       }
       return report(failed);
-    } catch { return report(unavailable('store-unavailable', 'The corpus store is unavailable. The last complete in-memory version remains readable.')); }
+    } catch (error) { return report(unavailable('store-unavailable', 'The corpus store is unavailable. The last complete in-memory version remains readable.', caught(error))); }
   }
   async function publish(candidatePath) {
     let unlock; let staging;

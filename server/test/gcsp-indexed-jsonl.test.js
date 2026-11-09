@@ -6,6 +6,7 @@ import { chmod, mkdtemp, writeFile, rm, rename, stat, utimes } from 'node:fs/pro
 import { syncBuiltinESMExports } from 'node:module';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { pathToFileURL } from 'node:url';
 import { indexJsonl } from '../gcsp/vehicle-evidence/indexed-jsonl.js';
 
 async function fixture(t, content) {
@@ -155,4 +156,36 @@ test('per-row digests reject corrupted record bytes even when file identity is u
   try { assert.throws(() => indexed.get('b'), { code: 'artifact-changed' }); assert.ok(corrupted); }
   finally { restore(); }
   assert.deepEqual(indexed.get('b'), { id: 'b', value: 2 });
+});
+// FUCQ-164: failures keep a bounded, path-free reason alongside the unchanged code and message.
+test('a damaged indexed row reports its file, check, offset and 1-based record', async (t) => {
+  const first = '{"id":"a","value":1}\n';
+  const path = await fixture(t, first + '{"id":"b","value":2}\n');
+  const indexed = await indexJsonl(path, { key: (row) => row.id }); let corrupted = false;
+  const restore = patchFs('readSync', (original) => function (fd, buffer, offset, ...args) {
+    const count = original.call(this, fd, buffer, offset, ...args);
+    if (!corrupted && count) { buffer[offset + count - 3] ^= 1; corrupted = true; }
+    return count;
+  });
+  try {
+    assert.throws(() => indexed.get('b'), (error) => error.code === 'artifact-changed'
+      && error.message === 'Indexed record bytes changed.'
+      && JSON.stringify(error.detail) === JSON.stringify({ file: 'rows.jsonl', check: 'row-digest', offset: Buffer.byteLength(first), record: 2 }));
+  } finally { restore(); }
+});
+test('indexing and changed-file failures name the check without a path', async (t) => {
+  await assert.rejects(indexJsonl(await fixture(t, '{"id":1}\nbroken\n')), (error) => error.code === 'malformed-jsonl'
+    && JSON.stringify(error.detail) === JSON.stringify({ file: 'rows.jsonl', check: 'parse', record: 2, offset: 9 }));
+  const path = await fixture(t, '{"id":"a","value":1}\n');
+  const indexed = await indexJsonl(path, { key: (row) => row.id });
+  await writeFile(path, '{"id":"a","value":10}\n');
+  assert.throws(() => indexed.get('a'), (error) => error.code === 'artifact-changed' && error.detail.check === 'confirm-identity'
+    && error.detail.file === 'rows.jsonl' && error.detail.changedFields.includes('size') && !error.detail.changedFields.includes('ctimeNs')
+    && error.detail.record === 1 && !JSON.stringify(error.detail).includes(tmpdir()));
+  await rm(path);
+  assert.throws(() => indexed.get('a'), (error) => error.detail.check === 'inaccessible' && error.detail.errno === 'ENOENT' && error.detail.record === 1);
+});
+test('a file URL source indexes and names its file in failure detail', async (t) => {
+  const url = pathToFileURL(await fixture(t, '{"id":"a"}\nbroken\n'));
+  await assert.rejects(indexJsonl(url), (error) => error.detail.file === 'rows.jsonl' && error.detail.record === 2);
 });
