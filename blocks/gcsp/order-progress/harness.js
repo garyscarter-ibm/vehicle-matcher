@@ -10,10 +10,14 @@ import { ORDER_PROGRESS_DESTINATION } from './gcsp-order-progress.js';
 const labels = { 'waiting-hr': 'Waiting for HR', 'waiting-sales-manager': 'Waiting for sales manager', 'no-hr': 'No HR step', declined: 'Declined',
   'provider-unsupported': 'Update not supported', 'sent-to-ordering-no-slot': 'Choose handover time', 'appointment-requested': 'Handover requested',
   'appointment-change-proposed': 'New handover time', 'appointment-pending': 'Handover update pending', 'appointment-scheduled': 'Handover booked',
+  'appointment-completed': 'Handover complete', 'appointment-no-show': 'Handover missed', 'appointment-rebooked': 'Handover rebooked',
+  'appointment-outcome-pending': 'Handover outcome pending',
   'documents-waiting-for-you': 'Task waiting for you', 'documents-in-progress': 'Documents in progress', 'documents-overdue': 'Task overdue',
   'documents-failed': 'Check failed', 'ready-for-handover': 'Ready for handover', 'return-unavailable': 'Return not open yet',
   'return-not-planned': 'Choose return', 'return-requested': 'Return requested', 'return-change-proposed': 'New return time',
-  'return-scheduled': 'Return booked', 'return-buddy-home': 'Buddy return from home', 'return-buddy-no-address': 'Buddy return, no address', 'new-order': 'New order, no return', loading: 'Loading', unavailable: 'Unavailable', 'partial-failure': 'Partly unavailable' };
+  'return-scheduled': 'Return booked', 'return-returned': 'Car returned', 'return-returned-first': 'Returned before handover', 'return-missed': 'Return missed',
+  'return-handover-complete': 'Handover done, return booked', 'return-outcome-pending': 'Return outcome pending', 'return-outcome-refused': 'Return update refused',
+  'return-buddy-home': 'Buddy return from home', 'return-buddy-no-address': 'Buddy return, no address', 'new-order': 'New order, no return', loading: 'Loading', unavailable: 'Unavailable', 'partial-failure': 'Partly unavailable' };
 const text = (name) => labels[name] ?? name.replace(/-/g, ' ');
 const requested = new URLSearchParams(globalThis.location?.search || '').get('fixture');
 const initial = orderProgressFixtureNames.includes(requested) ? requested : 'appointment-requested';

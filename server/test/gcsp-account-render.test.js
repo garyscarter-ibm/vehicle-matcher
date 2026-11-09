@@ -548,6 +548,70 @@ test('account with an order embeds its progress with the order number, stage nam
   assert.equal(root.querySelector('.gcsp-account-order'), null);
 });
 
+test('account shows handover outcomes from the server read: completed, then no-show rebooked through the real controller and re-read', async () => {
+  const fixtures = orderProgressFixtures().states;
+  const completed = orderAdapter('appointment-completed');
+  const done = await domMount({ ...readOnlyAdapter(), readOrder: selection(completed.uuid, { name: 'Synthetic i5 eDrive40 Touring' }) }, { orderAdapter: completed });
+  try {
+    await settleOrder(done.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-handover'));
+    const handover = done.root.querySelector('.gcsp-account-order .gcsp-order-handover');
+    assert.match(handover.textContent, /Handover complete: 8 Nov 2026, 10:00/); assert.doesNotMatch(handover.textContent, /Not booked yet/); assert.equal(handover.querySelector('button'), null);
+  } finally { done.destroy(); }
+  const missed = orderAdapter('appointment-no-show'); const requests = []; let current = fixtures['appointment-no-show'].appointment;
+  missed.readAppointment = async () => structuredClone(current);
+  missed.requestAppointment = async (input) => { requests.push(input.slotId); current = fixtures['appointment-rebooked'].appointment; return { status: 'ok', value: {} }; };
+  const mounted = await domMount({ ...readOnlyAdapter(), readOrder: selection(missed.uuid, { name: 'Synthetic i5 eDrive40 Touring' }) }, { orderAdapter: missed });
+  try {
+    const area = () => mounted.root.querySelector('.gcsp-account-order .gcsp-order-handover');
+    await settleOrder(mounted.root, () => area());
+    assert.match(area().textContent, /Handover missed: 8 Nov 2026, 09:00/);
+    const rebook = findButton(area(), 'Request 9 Nov 2026, 13:00'); assert.ok(rebook); rebook.click();
+    await settleOrder(mounted.root, () => /Not booked yet/.test(area()?.textContent ?? ''));
+    assert.deepEqual(requests, [fixtures['appointment-no-show'].appointment.value.offeredSlots[1].slotId]);
+    assert.match(area().textContent, /Requested 9 Nov 2026, 09:00\. Not booked yet\./); assert.match(area().textContent, /Earlier handover missed: 8 Nov 2026, 09:00/);
+  } finally { mounted.destroy(); }
+  const reopened = await domMount({ ...readOnlyAdapter(), readOrder: selection(missed.uuid, { name: 'Synthetic i5 eDrive40 Touring' }) }, { orderAdapter: missed });
+  try {
+    await settleOrder(reopened.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-handover'));
+    assert.match(reopened.root.querySelector('.gcsp-account-order .gcsp-order-handover').textContent, /Not booked yet/);
+  } finally { reopened.destroy(); }
+});
+
+test('account shows return outcomes from the server read: booked, then returned on reopen, missed, and a failing return read', async () => {
+  const all = orderProgressFixtures().states; const car = { name: 'Synthetic i5 eDrive40 Touring' };
+  const returnArea = (root) => root.querySelector('.gcsp-account-order .gcsp-order-return');
+  const before = orderAdapter('return-scheduled'); let current = all['return-scheduled'];
+  before.readAppointment = async () => structuredClone(current.appointment); before.readReturnPlan = async () => structuredClone(current.returnPlan);
+  const first = await domMount({ ...readOnlyAdapter(), readOrder: selection(before.uuid, car) }, { orderAdapter: before });
+  try {
+    await settleOrder(first.root, (node) => returnArea(node));
+    assert.match(returnArea(first.root).textContent, /Return booked: 12 Nov 2026, 09:00/); assert.doesNotMatch(returnArea(first.root).textContent, /Returned:|Return missed/);
+  } finally { first.destroy(); }
+  current = all['return-returned'];
+  const reopened = await domMount({ ...readOnlyAdapter(), readOrder: selection(before.uuid, car) }, { orderAdapter: before });
+  try {
+    await settleOrder(reopened.root, (node) => /Returned:/.test(returnArea(node)?.textContent ?? ''));
+    const pairs = factPairs(returnArea(reopened.root));
+    assert.match(returnArea(reopened.root).textContent, /Returned: 12 Nov 2026, 10:30/); assert.deepEqual(pairs.slice(0, 2), [['Current car', car.name], ['Returned car', 'Fictional BMW 320i Touring']]);
+    assert.ok(pairs.some(([label, value]) => label === 'Return reference (synthetic)' && /^SYN-RET-/.test(value)));
+    assert.match(reopened.root.querySelector('.gcsp-account-order .gcsp-order-handover').textContent, /Handover complete/);
+  } finally { reopened.destroy(); }
+  const missed = orderAdapter('return-missed');
+  const gone = await domMount({ ...readOnlyAdapter(), readOrder: selection(missed.uuid, car) }, { orderAdapter: missed });
+  try {
+    await settleOrder(gone.root, (node) => returnArea(node));
+    assert.match(returnArea(gone.root).textContent, /Return missed: 12 Nov 2026, 09:00/); assert.match(returnArea(gone.root).textContent, /Scheme team/);
+    assert.equal(returnArea(gone.root).querySelector('button'), null); assert.doesNotMatch(returnArea(gone.root).textContent, /Returned:/);
+  } finally { gone.destroy(); }
+  const failing = orderAdapter('return-returned'); failing.readReturnPlan = async () => ({ status: 'unavailable', retryable: true });
+  const broken = await domMount({ ...readOnlyAdapter(), readOrder: selection(failing.uuid, car) }, { orderAdapter: failing });
+  try {
+    await settleOrder(broken.root, (node) => returnArea(node));
+    assert.match(returnArea(broken.root).textContent, /Return plan unavailable/); assert.doesNotMatch(returnArea(broken.root).textContent, /Returned|Return missed/);
+    assert.match(broken.root.querySelector('.gcsp-account-order .gcsp-order-handover').textContent, /Handover complete/);
+  } finally { broken.destroy(); }
+});
+
 test('account shows no order area without an order, on a failed list, or for another order car', async () => {
   const none = await domMount(readOnlyAdapter(), { orderAdapter: orderAdapter('appointment-requested', []) });
   await tick(); assert.equal(none.root.querySelector('.gcsp-account-order'), null); assert.doesNotMatch(none.root.textContent, /No order yet/); none.destroy();

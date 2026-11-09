@@ -26,11 +26,13 @@ before(async () => {
 after(() => dom?.window.close());
 const words = (progress) => orderProgressBody({ progress }).textContent.replace(/\s+/g, ' ');
 
-async function setup(t, { proposeChange = false } = {}) {
+async function setup(t, { proposeChange = false, returnOutcome = null } = {}) {
   const profile = createCompositionTestProfile();
   let policy;
-  if (proposeChange) {
-    const seed = structuredClone(SEED); seed.assumptions.find((a) => a.key === 'lifecycle.appointments.scenario.v1').value.proposeChange = true;
+  if (proposeChange || returnOutcome) {
+    const seed = structuredClone(SEED); const key = (name) => seed.assumptions.find((a) => a.key === name).value;
+    if (proposeChange) key('lifecycle.appointments.scenario.v1').proposeChange = true;
+    if (returnOutcome) Object.assign(key('lifecycle.return.outcome.v1'), { enabled: true, outcome: returnOutcome });
     policy = new PolicyService({ provider: new MemoryPolicyProvider({ seedProvider: { async loadVersions() { return [seed]; } } }) });
   }
   const runtime = good(await createGcspRuntime({ mode: 'memory', stockProvider: profile, ...(policy ? { policy } : {}),
@@ -186,6 +188,115 @@ test('a proposed handover time and a proposed return time are accepted through t
     const done = await controller.acceptReturn(returning.proposalId);
     assert.deepEqual(done.message, { text: 'New return time accepted.', error: false });
     returning = value(controller, 'returnPlan'); assert.deepEqual([returning.state, returning.scheduled, returning.currentCar], ['return-scheduled', true, carBefore]);
+  } finally { controller.destroy(); }
+});
+
+// Drives a real order to a booked handover with documents and the car ready; returns the slot booked.
+async function toScheduled(f, controller, tag) {
+  await approve(f, controller); const wait = await delays(f);
+  const docs = value(controller, 'documents').orders[0]; const task = docs.tasks.find((row) => row.actionable);
+  await controller.completeTask(task.itemId); good(await tick(f, `${tag}-documents-ready`, wait.documents)); await controller.refresh();
+  const slot = slotOf(value(controller, 'appointment').offeredSlots);
+  await controller.requestAppointment(slot.slotId); good(await tick(f, `${tag}-confirm`, wait.appointment)); await controller.refresh();
+  assert.deepEqual([value(controller, 'appointment').state, value(controller, 'documents').orders[0].readiness.ready], ['scheduled', true]);
+  return slot;
+}
+
+test('a presenter completes a ready handover and the screen reads Handover complete with no actions', async (t) => {
+  const f = await setup(t); const orderUuid = await submitOrder(f); const controller = await open(f, { orderUuid });
+  try {
+    const slot = await toScheduled(f, controller, 'op-complete');
+    good(await f.dependencies.gcspAppointments.complete(f.presenter, { orderUuid })); await controller.refresh();
+    const appointment = value(controller, 'appointment');
+    assert.deepEqual([appointment.state, appointment.booked, appointment.outcome.state, appointment.owner], ['completed', false, 'completed', 'employee']);
+    assert.deepEqual(appointment.slot, slot);
+    const node = orderProgressBody({ progress: controller.getState().progress }); const handover = node.querySelector('.gcsp-order-handover');
+    assert.match(handover.textContent, /Handover complete: /); assert.match(handover.textContent, /Your handover is complete\./);
+    assert.doesNotMatch(handover.textContent, /Not booked yet|Booked:/); assert.equal(handover.querySelector('button'), null);
+    const reopened = await open(f, { orderUuid }); assert.deepEqual(reopened.getState().progress.appointment, controller.getState().progress.appointment); reopened.destroy();
+  } finally { controller.destroy(); }
+});
+
+test('a recorded no-show offers fresh slots and Paula rebooks through the controller as attempt 2', async (t) => {
+  const f = await setup(t); const orderUuid = await submitOrder(f); const controller = await open(f, { orderUuid });
+  try {
+    const missedSlot = await toScheduled(f, controller, 'op-missed');
+    good(await f.dependencies.gcspAppointments.recordNoShow(f.presenter, { orderUuid })); await controller.refresh();
+    let appointment = value(controller, 'appointment');
+    assert.deepEqual([appointment.state, appointment.booked, appointment.outcome.state, appointment.attempt], ['no-show', false, 'no-show', 1]);
+    assert.ok(appointment.offeredSlots.length > 0);
+    const missed = orderProgressBody({ progress: controller.getState().progress }).querySelector('.gcsp-order-handover');
+    assert.match(missed.textContent, /Handover missed: /); assert.equal(missed.querySelectorAll('button').length, 0, 'no callbacks, no controls');
+    const again = slotOf(appointment.offeredSlots); const state = await controller.requestAppointment(again.slotId);
+    assert.deepEqual(state.message, { text: 'Handover time requested.', error: false });
+    appointment = value(controller, 'appointment');
+    assert.deepEqual([appointment.state, appointment.attempt, appointment.booked, appointment.requestedSlot], ['requested', 2, false, again]);
+    assert.equal(appointment.previousAttempts[0].state, 'no-show'); assert.deepEqual(appointment.previousAttempts[0].slot, missedSlot);
+    const text = words(state.progress); assert.match(text, /Requested .*Not booked yet\./); assert.match(text, /Earlier handover missed: /);
+    assert.deepEqual(appointment.history.map((row) => row.state), ['requested', 'scheduled', 'no-show', 'requested']);
+  } finally { controller.destroy(); }
+});
+
+// Plans a separate-day return on a scheduled handover and lets the tick book it; returns the booked slot.
+async function returnScheduled(f, controller, wait, tag) {
+  const plan = value(controller, 'returnPlan'); const pick = slotOf(plan.offeredSlots.separate);
+  await controller.requestReturn({ choice: 'separate', slotId: pick.slotId }); good(await tick(f, `${tag}-return-confirm`, wait.appointment)); await controller.refresh();
+  const returning = value(controller, 'returnPlan'); assert.deepEqual([returning.state, returning.scheduled, returning.slot], ['return-scheduled', true, pick]);
+  assert.equal(returning.relationship.currentCar.kind, 'contract'); return pick;
+}
+
+// Ticks past the return slot end plus the keyed delay, so the synthetic provider confirms the pinned outcome.
+async function pastReturn(f, controller, slot, tag) {
+  const read = { runId: f.employee.runId, policyVersion: f.employee.policyVersion, asOf: good(await f.clock.now(f.presenter)).now };
+  const { delaySecondsAfterSlotEnd } = good(await f.policy.getAssumption('lifecycle.return.outcome.v1', read)).value;
+  const gap = (Date.parse(slot.end) + delaySecondsAfterSlotEnd * 1000 - Date.parse(read.asOf)) / 1000;
+  good(await tick(f, `${tag}-return-outcome`, Math.max(gap + 1, 1))); await controller.refresh();
+}
+
+test('a presenter-confirmed returned outcome reads Returned with a synthetic reference, and a reload shows the same', async (t) => {
+  const f = await setup(t, { returnOutcome: 'returned' }); const orderUuid = await submitOrder(f); const controller = await open(f, { orderUuid });
+  try {
+    await toScheduled(f, controller, 'ro-returned'); const wait = await delays(f); const slot = await returnScheduled(f, controller, wait, 'ro-returned');
+    assert.doesNotMatch(words(controller.getState().progress), /Returned:/);
+    await pastReturn(f, controller, slot, 'ro-returned');
+    const returning = value(controller, 'returnPlan');
+    assert.deepEqual([returning.state, returning.scheduled, returning.outcome.state, returning.owner], ['returned', false, 'returned', 'retailer']);
+    assert.match(returning.outcome.providerReference, /^SYN-RET-/); assert.equal(returning.relationship.oldCar.status, 'returned');
+    assert.equal(returning.relationship.currentCar, null, 'the handover is not confirmed, so there is no current car yet');
+    const text = words(controller.getState().progress); assert.match(text, /Returned: /); assert.match(text, /Current carNone/); assert.match(text, /Returned carFictional|Returned car/);
+    assert.match(text, /Return reference \(synthetic\)SYN-RET-/); assert.doesNotMatch(text, /stays yours until it is returned/);
+    const reopened = await open(f, { orderUuid }); assert.deepEqual(reopened.getState().progress.returnPlan, controller.getState().progress.returnPlan); reopened.destroy();
+  } finally { controller.destroy(); }
+});
+
+test('a presenter-recorded missed return reads Return missed, owned by the scheme team, and the old car stays current', async (t) => {
+  const f = await setup(t, { returnOutcome: 'missed' }); const orderUuid = await submitOrder(f); const controller = await open(f, { orderUuid });
+  try {
+    await toScheduled(f, controller, 'ro-missed'); const wait = await delays(f); const slot = await returnScheduled(f, controller, wait, 'ro-missed');
+    await pastReturn(f, controller, slot, 'ro-missed');
+    const returning = value(controller, 'returnPlan');
+    assert.deepEqual([returning.state, returning.scheduled, returning.owner, returning.relationship.currentCar.kind, returning.relationship.oldCar.status],
+      ['return-missed', false, 'scheme-team', 'contract', 'held']);
+    const node = orderProgressBody({ progress: controller.getState().progress }); const plan = node.querySelector('.gcsp-order-return');
+    assert.match(plan.textContent, /Return missed: /); assert.match(plan.textContent, /Scheme team/); assert.match(plan.textContent, /stays yours until it is returned/);
+    assert.doesNotMatch(plan.textContent, /Returned:|Return reference/); assert.equal(plan.querySelector('button'), null);
+    assert.match(node.querySelector('.gcsp-order-handover').textContent, /Booked:/, 'the handover stays separate');
+  } finally { controller.destroy(); }
+});
+
+test('a handover completed before the return outcome makes the new car current, then the return is confirmed', async (t) => {
+  const f = await setup(t, { returnOutcome: 'returned' }); const orderUuid = await submitOrder(f); const controller = await open(f, { orderUuid });
+  const car = { name: 'Synthetic new car' };
+  try {
+    await toScheduled(f, controller, 'ro-both'); const wait = await delays(f); const slot = await returnScheduled(f, controller, wait, 'ro-both');
+    good(await f.dependencies.gcspAppointments.complete(f.presenter, { orderUuid })); await controller.refresh();
+    let returning = value(controller, 'returnPlan'); assert.deepEqual([returning.state, returning.relationship.currentCar.kind, returning.relationship.oldCar.status], ['return-scheduled', 'order', 'held']);
+    let plan = orderProgressBody({ progress: controller.getState().progress, car }).querySelector('.gcsp-order-return').textContent;
+    assert.match(plan, /Current carSynthetic new car/); assert.match(plan, /Car to returnFictional/); assert.match(plan, /Return booked: /); assert.doesNotMatch(plan, /Returned:|stays yours until it is returned/);
+    await pastReturn(f, controller, slot, 'ro-both'); returning = value(controller, 'returnPlan');
+    assert.deepEqual([returning.state, returning.relationship.currentCar.kind, returning.relationship.oldCar.status], ['returned', 'order', 'returned']);
+    plan = orderProgressBody({ progress: controller.getState().progress, car }).querySelector('.gcsp-order-return').textContent;
+    assert.match(plan, /Returned: /); assert.match(plan, /Current carSynthetic new car/); assert.match(plan, /Returned carFictional/); assert.doesNotMatch(plan, /Car to return/);
   } finally { controller.destroy(); }
 });
 

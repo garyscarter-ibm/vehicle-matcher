@@ -122,6 +122,26 @@ test('refusals map to concise messages: unsupported reason, changed order, and a
   assert.equal(controller.getState().phase, 'ready');
 });
 
+test('a refused rebook after a no-show keeps the re-read no-show state, and a repeat while pending sends nothing', async () => {
+  const f = fake('appointment-no-show'); const { controller } = make(f); await controller.refresh();
+  const slotId = f.server.progress.appointment.value.offeredSlots[0].slotId; const reason = 'Live handover times are not connected in this demonstration.';
+  const gate = deferred(); f.server.outcome = () => gate.promise;
+  const first = controller.requestAppointment(slotId); await new Promise((r) => setTimeout(r, 5));
+  assert.equal(controller.getState().pending, true); await controller.requestAppointment(slotId);
+  assert.equal(f.calls.filter(([key]) => key === 'requestAppointment').length, 1);
+  gate.resolve({ status: 'unsupported', code: 'live-appointments-unsupported', reason });
+  const state = await first;
+  assert.deepEqual([state.pending, state.message], [false, { text: `Not done. ${reason}`, error: true }]);
+  assert.equal(state.progress.appointment.value.state, 'no-show'); assert.equal(f.calls.find(([key]) => key === 'requestAppointment')[1].slotId, slotId);
+});
+
+test('after a rebook succeeds the re-read shows the new requested attempt', async () => {
+  const f = fake('appointment-no-show'); const { controller } = make(f); await controller.refresh();
+  f.server.outcome = () => { f.server.progress = progress('appointment-rebooked'); return { status: 'ok', value: {} }; };
+  const state = await controller.requestAppointment(f.server.progress.appointment.value.offeredSlots[0].slotId);
+  assert.deepEqual([state.progress.appointment.value.state, state.progress.appointment.value.attempt, state.message.error], ['requested', 2, false]);
+});
+
 test('a task without a command id is not sent, and a command that cannot be sent leaves the screen alone', async () => {
   const f = fake(); const { controller } = make(f, { createCommandId: () => { throw new Error('no crypto'); } }); await controller.refresh();
   const state = await controller.completeTask('item-1');

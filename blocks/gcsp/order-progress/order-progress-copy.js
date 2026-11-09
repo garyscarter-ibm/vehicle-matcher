@@ -25,6 +25,10 @@ export const orderCopy = Object.freeze({
   noSlots: 'No handover times are available yet.',
   waiting: 'Waiting for confirmation of your last update.',
   notBooked: 'Not booked yet.',
+  complete: 'Handover complete',
+  missed: 'Handover missed',
+  earlierMissed: 'Earlier handover missed',
+  chooseNew: 'Choose a new handover time.',
   accept: 'Accept new time',
   help: 'Get help',
   cantMakeIt: "Can't make it? Get help",
@@ -33,6 +37,13 @@ export const orderCopy = Object.freeze({
   homeAddress: 'Collection from your home address',
   returnPlace: 'Return place',
   chooseReturn: 'Choose when to return your current car.',
+  returned: 'Returned',
+  returnMissed: 'Return missed',
+  returnRef: 'Return reference (synthetic)',
+  returnedCar: 'Returned car',
+  carToReturn: 'Car to return',
+  newCar: 'Your new car',
+  none: 'None',
 });
 
 export const sentence = (text) => (typeof text === 'string' && text ? text[0].toUpperCase() + text.slice(1) : '');
@@ -65,8 +76,10 @@ export function itemTone(item) {
   return item.status === 'in-progress' ? 'in-progress' : 'todo';
 }
 
-const historyLabels = Object.freeze({ requested: 'Requested', 'change-proposed': 'New time proposed', scheduled: 'Booked' });
-const returnLabels = Object.freeze({ requested: 'Return requested', 'change-proposed': 'New return time proposed', scheduled: 'Return booked' });
+const historyLabels = Object.freeze({ requested: 'Requested', 'change-proposed': 'New time proposed', scheduled: 'Booked',
+  completed: 'Handover complete', 'no-show': 'Handover missed' });
+const returnLabels = Object.freeze({ requested: 'Return requested', 'change-proposed': 'New return time proposed', scheduled: 'Return booked',
+  returned: 'Returned', 'return-missed': 'Return missed' });
 /** Dated history rows from the server's own history; the return plan reads its appointmentState. */
 export function historyEvents(history, forReturn = false) {
   const labels = forReturn ? returnLabels : historyLabels;
