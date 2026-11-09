@@ -1,4 +1,4 @@
-// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223 (fucq145, fucq222 and fucq224 also have chunk phone, 375x812; fucq223 has desktop, phone and narrow).
+// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq238 (fucq145, fucq222 and fucq224 also have chunk phone, 375x812; fucq223 and fucq238 have desktop, phone and narrow).
 // Spawns `node index.js` in server/ offline (GCSP_OFFLINE=1, memory repository). FUCQ70_* names still work as fallbacks for WALK_*.
 import { spawn, spawnSync } from 'node:child_process';
 import { createServer } from 'node:http';
@@ -13,15 +13,15 @@ const HERE = fileURLToPath(new URL('.', import.meta.url));
 const SERVER_DIR = resolve(HERE, '../../../../server');
 const env = (name) => process.env[`WALK_${name}`] ?? process.env[`FUCQ70_${name}`];
 const story = process.env.WALK_STORY || 'fucq70';
-if (!['fucq70', 'fucq72', 'fucq73', 'fucq145', 'fucq222', 'fucq224', 'fucq223'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223');
+if (!['fucq70', 'fucq72', 'fucq73', 'fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq238'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq238');
 const chunk = env('CHUNK');
-const second = ['fucq145', 'fucq222', 'fucq224', 'fucq223'].includes(story) ? 'phone' : 'narrow';
-if (!['desktop', second, ...(story === 'fucq223' ? ['narrow'] : [])].includes(chunk)) throw new Error(`Set WALK_CHUNK=desktop|${second}`);
+const second = ['fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq238'].includes(story) ? 'phone' : 'narrow';
+if (!['desktop', second, ...(['fucq223', 'fucq238'].includes(story) ? ['narrow'] : [])].includes(chunk)) throw new Error(`Set WALK_CHUNK=desktop|${second}`);
 const scratch = resolve(env('SCRATCH') || process.env.TMPDIR || '');
 if (!scratch || scratch === '/') throw new Error('Set WALK_SCRATCH (or TMPDIR) to an owned scratch directory');
 const viewport = chunk === 'narrow' ? { width: 320, height: 720 } : chunk === 'phone' ? { width: 375, height: 812 } : { width: 1280, height: 900 };
 const vp = String(viewport.width);
-const port = Number(env('PORT')) || (story === 'fucq223' ? { desktop: 8944, phone: 8945, narrow: 8946 }[chunk] : story === 'fucq224' ? (chunk === 'phone' ? 8943 : 8942) : story === 'fucq222' ? (chunk === 'phone' ? 8941 : 8940) : story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
+const port = Number(env('PORT')) || (story === 'fucq238' ? { desktop: 8933, phone: 8934, narrow: 8935 }[chunk] : story === 'fucq223' ? { desktop: 8944, phone: 8945, narrow: 8946 }[chunk] : story === 'fucq224' ? (chunk === 'phone' ? 8943 : 8942) : story === 'fucq222' ? (chunk === 'phone' ? 8941 : 8940) : story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
 if (port < 8930 || port > 8949) throw new Error('WALK_PORT must be within 8930-8949');
 const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story); // fucq145 -> ../fucq145, fucq222 -> ../fucq222, fucq224 -> ../fucq224
 const only = env('ONLY') ? `-${env('ONLY')}` : ''; // a partial run never overwrites the full run's files
@@ -1185,6 +1185,69 @@ async function walk223() {
   }
 }
 
+// FUCQ-238: compact gallery cards (Car facts disclosure) and the Renewal cases region ending at its content.
+const gallery238 = () => page.evaluate(() => {
+  const card = document.querySelector('.gcsp-gallery-grid .vm-card'); const header = document.querySelector('header');
+  const sections = [...document.querySelectorAll('.gcsp-gallery-grid details.gcsp-gallery-fact-section')];
+  return { pageHeight: document.documentElement.scrollHeight, cards: document.querySelectorAll('.gcsp-gallery-grid .vm-card').length, cardHeight: card ? Math.round(card.getBoundingClientRect().height) : null,
+    mediaRatio: card ? getComputedStyle(card.querySelector('.vm-card-media')).aspectRatio : null, headerHeight: header ? Math.round(header.getBoundingClientRect().height) : null,
+    gridTop: Math.round(document.querySelector('.gcsp-gallery-grid').getBoundingClientRect().top + scrollY), gridHeight: Math.round(document.querySelector('.gcsp-gallery-grid').getBoundingClientRect().height),
+    parts: card ? [...card.querySelectorAll(':scope > *, .vm-card-body > *')].map((n) => `${n.className.split(' ')[0] || n.tagName.toLowerCase()}:${Math.round(n.getBoundingClientRect().height)}`) : [],
+    sections: sections.length, open: sections.filter((d) => d.open).length, summaries: [...new Set(sections.map((d) => d.querySelector('summary')?.textContent))] };
+});
+const renewal238 = () => page.evaluate(() => {
+  const region = document.querySelector('[aria-label="Renewal cases"]'); if (!region) return null;
+  const r = region.getBoundingClientRect(); let last = 0;
+  for (const n of region.querySelectorAll('*')) { const b = n.getBoundingClientRect(); if (b.width > 0 && b.height > 0 && getComputedStyle(n).visibility !== 'hidden') last = Math.max(last, b.bottom); }
+  const q = region.querySelector('.gcsp-case-queue'); const w = q?.parentElement; const cs = w && getComputedStyle(w);
+  return { regionHeight: Math.round(r.height), regionBottom: Math.round(r.bottom), lastContentBottom: Math.round(last), gapBelowContent: Math.round(r.bottom - last),
+    wrapper: w ? { tag: w.tagName.toLowerCase(), className: w.className, minHeight: cs.minHeight, background: cs.backgroundColor, height: Math.round(w.getBoundingClientRect().height) } : null, viewportHeight: window.innerHeight };
+});
+async function walk238() {
+  const PS238 = viewport.width > 600 ? 6 : 3; // the gallery pages 3 cars at 600px and below, 6 wider
+  await step('s238-setup', 'Demo key, Choose a replacement: setup screen', async (row) => {
+    const typed = await enterAccessKey(); await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+    await page.getByRole('button', { name: 'Choose a replacement' }).click();
+    const chosen = await fillSetup('Nominated: Casey (fictional)', {}).catch(async () => fillSetup(DEFAULT_DRIVER)); row.detail = { chosen };
+    return { pass: typed, state: JSON.stringify(chosen), shotName: 'setup', full: false };
+  }, { critical: true });
+  await step('s238-gallery-first-page', 'Next release, Continue: first page height, card height and Car facts disclosure state', async (row) => {
+    await presenterPress('Next release'); await closeStrip();
+    const date = page.locator('input[name="requestedCollectionDate"]');
+    await until(async () => (await date.getAttribute('min')) && !(await date.isDisabled()), { what: 'refreshed collection window' });
+    const min = await date.getAttribute('min');
+    if ((await date.inputValue()) !== min) { await date.fill(min); await page.getByRole('button', { name: 'Save choices' }).click(); await until(async () => /Your choices are saved/.test(await bodyText()), { what: 'choices re-saved' }); }
+    await page.getByRole('button', { name: 'Continue', exact: true }).click(); await waitGalleryReady();
+    const g = await gallery238(); row.detail = g; const wide = viewport.width > 600;
+    report.notes.push(`${vp}px gallery first page height ${g.pageHeight}px, first card ${g.cardHeight}px, header ${g.headerHeight}px, ${g.open}/${g.sections} Car facts open`);
+    return { pass: g.cards === PS238 && g.sections === g.cards && g.summaries.join() === 'Car facts' && g.open === (wide ? g.cards : 0), state: JSON.stringify(g), shotName: 'gallery-first-page', full: chunk === 'narrow' };
+  }, { critical: true });
+  await step('s238-facts-keyboard', 'Tab to the first Car facts summary, Enter toggles it', async (row) => {
+    const summary = page.locator('.gcsp-gallery-grid .vm-card').first().locator('summary'); const d = () => summary.evaluate((n) => n.parentElement.open);
+    const before = await d(); const hops = await tabTo(summary); await page.keyboard.press('Enter'); await wait(200); const after = await d();
+    const shotRow = await shot('facts-keyboard', false); row.screenshots.push(shotRow);
+    kb('gallery', 'Tab to Car facts and Enter toggles the disclosure', before !== after, { before, after, hops });
+    row.detail = { before, after, hops, firstCardHeightAfter: await page.evaluate(() => Math.round(document.querySelector('.gcsp-gallery-grid .vm-card').getBoundingClientRect().height)) };
+    await page.keyboard.press('Enter'); await wait(200);
+    return { pass: before !== after && (await d()) === before, state: JSON.stringify(row.detail), shot: false };
+  }, { critical: true });
+  await step('s238-show-more-keyboard', 'Tab to Show more cars, Enter: next page and focus on the first new card', async (row) => {
+    const before = await galleryNow223(); const more = page.getByRole('button', { name: 'Show more cars' });
+    const hops = await tabTo(more); await page.keyboard.press('Enter'); await wait(300);
+    const after = await galleryNow223(); kb('gallery', 'Tab to Show more cars and Enter reveals the next page and focuses its first card', after.focusIndex === PS238, { hops });
+    row.detail = { before: before.cards, after };
+    return { pass: after.cards === 2 * PS238 && after.focusIndex === PS238, state: `${before.cards} -> ${after.cards} cards, focus index ${after.focusIndex}`, shotName: 'show-more-keyboard', full: false };
+  }, { critical: true });
+  await step('s238-greg-renewal-cases', "Greg's harness: Renewal cases region ends at its content", async (row) => {
+    await page.goto(`${origin}/gcsp-greg.html?fixture=populated`, { waitUntil: 'load', timeout: 60000 });
+    await page.locator('[aria-label="Renewal cases"] .gcsp-case-queue-content').first().waitFor({ timeout: 30000 }); await wait(1500);
+    await page.locator('[aria-label="Renewal cases"]').evaluate((n) => n.scrollIntoView({ block: 'end' })); await wait(300);
+    const m = await renewal238(); row.detail = m;
+    report.notes.push(`${vp}px Renewal cases: region bottom minus last content bottom ${m?.gapBelowContent}px, wrapper ${JSON.stringify(m?.wrapper)}`);
+    return { pass: Boolean(m) && m.gapBelowContent >= 0 && m.gapBelowContent < 40 && m.wrapper?.minHeight === '0px', state: JSON.stringify(m), shotName: 'greg-renewal-cases', full: false };
+  });
+}
+
 // FUCQ-224: the new-order route for Jordan (fictional), then the account after the order.
 async function walk224() {
   await freshHost();
@@ -1277,6 +1340,7 @@ async function run() {
   if (story === 'fucq222') { await walk222(); return; }
   if (story === 'fucq224') { await walk224(); return; }
   if (story === 'fucq223') { await walk223(); return; }
+  if (story === 'fucq238') { await walk238(); return; }
 
   await reachGallery();
 
