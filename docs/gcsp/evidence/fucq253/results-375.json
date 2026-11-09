@@ -1,0 +1,148 @@
+{
+  "state": "passed",
+  "chunk": "narrow",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "boundary": "Real buildServer routes, memory repository and canonical services over loopback HTTP, hosted on gcsp-account.html. Offer read routes only are stubbed in capture 07.",
+  "cookieMode": "fallback: Secure and SameSite=None refused on http://127.0.0.1, bootstrap cookie stored Lax, not Secure",
+  "checks": [
+    {
+      "id": "01-handover-tracker:layout",
+      "name": "01-handover-tracker: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "01-handover-tracker:copy",
+      "name": "01-handover-tracker: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "01-handover-tracker:console",
+      "name": "01-handover-tracker: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "01-handover-tracker:\"Handover complete: <time>\"",
+      "name": "01-handover-tracker: \"Handover complete: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "01-handover-tracker:account card current step",
+      "name": "01-handover-tracker: account card current step",
+      "pass": true
+    },
+    {
+      "id": "01-handover-tracker:order history status",
+      "name": "01-handover-tracker: order history status",
+      "pass": true
+    },
+    {
+      "id": "01-handover-tracker:no-\"Current step: Sent to ordering\"",
+      "name": "01-handover-tracker: absent: \"Current step: Sent to ordering\"",
+      "pass": true
+    },
+    {
+      "id": "01:one-current",
+      "name": "01: exactly one tracker row carries the owner and next step",
+      "pass": true,
+      "detail": [
+        "Selection received Done 5 Nov 2026, 12:00",
+        "HR approval Done 5 Nov 2026, 12:00",
+        "Sales-manager approval Done 5 Nov 2026, 12:00",
+        "Sent to ordering Done 5 Nov 2026, 12:00",
+        "Handover Done 7 Nov 2026, 12:30 With you Next: Your handover is complete."
+      ]
+    },
+    {
+      "id": "01:handover-current",
+      "name": "01: that row is the keyed \"Handover\" stage with the keyed next step",
+      "pass": true,
+      "detail": [
+        "Handover Done 7 Nov 2026, 12:30 With you Next: Your handover is complete."
+      ]
+    },
+    {
+      "id": "01:sent-done",
+      "name": "01: Sent to ordering is Done with no next step",
+      "pass": true,
+      "detail": [
+        "Selection received Done 5 Nov 2026, 12:00",
+        "HR approval Done 5 Nov 2026, 12:00",
+        "Sales-manager approval Done 5 Nov 2026, 12:00",
+        "Sent to ordering Done 5 Nov 2026, 12:00",
+        "Handover Done 7 Nov 2026, 12:30 With you Next: Your handover is complete."
+      ]
+    }
+  ],
+  "captures": [
+    {
+      "name": "375-01-handover-tracker",
+      "file": "375-01-handover-tracker.png",
+      "bytesPng": 358091,
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    }
+  ],
+  "errors": [],
+  "requests": {
+    "GET /api/gcsp/presenter/controls 200 ok": 1,
+    "GET /api/gcsp/manual/account 200 ok": 1,
+    "GET /api/gcsp/manual/draft 200 ok": 1,
+    "GET /api/gcsp/offers/current 200 ok": 1,
+    "GET /api/gcsp/orders/progress/all 200 ok": 1,
+    "GET /api/gcsp/context 200 ok": 1,
+    "GET /api/gcsp/presenter/scenarios 200 ok": 1,
+    "GET /api/gcsp/presenter/scenarios/faults 200 ok": 1,
+    "GET /api/gcsp/manual/order 200 ok": 1,
+    "GET /api/gcsp/orders/progress 200 ok": 1,
+    "GET /api/gcsp/documents 200 ok": 1,
+    "GET /api/gcsp/appointments 200 ok": 1,
+    "GET /api/gcsp/return-plan 200 ok": 1
+  },
+  "processes": {
+    "chrome": {
+      "pid": 44662,
+      "group": 44662,
+      "debugPort": 9249
+    },
+    "server-completed": {
+      "pid": 44660,
+      "port": 9240
+    }
+  },
+  "notes": [],
+  "facts": {
+    "01": {
+      "tracker": [
+        "Selection received Done 5 Nov 2026, 12:00",
+        "HR approval Done 5 Nov 2026, 12:00",
+        "Sales-manager approval Done 5 Nov 2026, 12:00",
+        "Sent to ordering Done 5 Nov 2026, 12:00",
+        "Handover Done 7 Nov 2026, 12:30 With you Next: Your handover is complete."
+      ]
+    }
+  },
+  "summary": {
+    "checks": 10,
+    "failed": [],
+    "captures": 1
+  }
+}

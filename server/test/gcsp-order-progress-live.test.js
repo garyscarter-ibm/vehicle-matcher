@@ -217,6 +217,27 @@ test('a presenter completes a ready handover and the screen reads Handover compl
   } finally { controller.destroy(); }
 });
 
+// FUCQ-253: the stage name and its owner/next step come from the policy row, never from the view.
+test('a completed handover moves the stage tracker and the order list on to the keyed handover stage', async (t) => {
+  const f = await setup(t); const orderUuid = await submitOrder(f); const controller = await open(f, { orderUuid });
+  try {
+    const keyed = SEED.assumptions.find((row) => row.key === 'lifecycle.appointments.outcomes.v1').value.states.completed;
+    await toScheduled(f, controller, 'op-tracker');
+    const before = value(controller, 'stages');
+    assert.deepEqual([before.currentStage, before.outcome, before.stages.some((row) => row.stage === keyed.stage)], ['sent to ordering', 'sent-to-ordering', false]);
+    good(await f.dependencies.gcspAppointments.complete(f.presenter, { orderUuid })); await controller.refresh();
+    const stages = value(controller, 'stages'); const outcome = value(controller, 'appointment').outcome;
+    assert.deepEqual([stages.currentStage, stages.outcome, stages.owner, stages.nextStep], [keyed.stage, 'handed-over', keyed.owner, keyed.nextStep]);
+    assert.deepEqual(stages.stages.at(-1), { stage: keyed.stage, state: 'approved', at: outcome.at, providerReference: outcome.providerReference, operationId: null });
+    assert.equal(stages.stageList.at(-1), keyed.stage); assert.equal(stages.stages.find((row) => row.stage === 'sent to ordering').state, 'approved');
+    const listed = good(await f.request('/api/gcsp/orders/progress/all')).orders.find((row) => row.orderUuid === orderUuid);
+    assert.deepEqual([listed.currentStage, listed.outcome], [keyed.stage, 'handed-over']);
+    const steps = [...orderProgressBody({ progress: controller.getState().progress }).querySelectorAll('.gcsp-stage-tracker li.gcsp-stage')];
+    const current = steps.filter((row) => /Next: /.test(row.textContent));
+    assert.equal(current.length, 1); assert.match(current[0].textContent, /^Handover/); assert.match(current[0].textContent, /Your handover is complete\./);
+  } finally { controller.destroy(); }
+});
+
 test('a recorded no-show offers fresh slots and Paula rebooks through the controller as attempt 2', async (t) => {
   const f = await setup(t); const orderUuid = await submitOrder(f); const controller = await open(f, { orderUuid });
   try {

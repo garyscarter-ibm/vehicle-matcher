@@ -143,7 +143,9 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     orderingAdapter.documentStatus = createSyntheticDocumentStatus({ repository });
     const manualOrder = createManualOrderService({ repository, policy, clock, identity, adapter: orderingAdapter, reviewDetails: manualReview,
       converters: { cart: createManualOrderConversion({ claims: manualClaims, manual: account }) } });
-    const lifecycle = createLifecycleApprovalService({ repository, policy, clock, identity, status: orderingAdapter.status });
+    // The handover outcome port is bound lazily: appointments reads the stage port, so it is built after lifecycle.
+    const handover = { read: (context, input) => appointments.outcomePort().read(context, input) };
+    const lifecycle = createLifecycleApprovalService({ repository, policy, clock, identity, status: orderingAdapter.status, handover });
     const documents = createLifecycleDocumentService({ repository, policy, clock, identity,
       lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.documentStatus });
     orderingAdapter.appointments = createSyntheticAppointments({ repository });

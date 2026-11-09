@@ -13269,7 +13269,8 @@
         "states": {
           "completed": {
             "owner": "employee",
-            "nextStep": "Your handover is complete."
+            "nextStep": "Your handover is complete.",
+            "stage": "handover"
           },
           "no-show": {
             "owner": "employee",
@@ -13283,7 +13284,7 @@
       },
       "unit": "lifecycle exception type key; owner and next-step label per terminal appointment state and per not-ready refusal",
       "status": "assumed",
-      "basis": "Terminal handover outcomes (FUCQ-167): completion is allowed only when documents and car readiness are complete, and a missed appointment is reported with the keyed exception type. Owners and copy are concise demo wording, not BMW workflow text.",
+      "basis": "Terminal handover outcomes (FUCQ-167): completion is allowed only when documents and car readiness are complete, and a missed appointment is reported with the keyed exception type. A completed handover is shown as the final order-progress stage named here (FUCQ-253). Owners and copy are concise demo wording, not BMW workflow text.",
       "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
       "sourceDate": "2026-11-09",
       "policyVersion": "gcsp-policy-v1",
