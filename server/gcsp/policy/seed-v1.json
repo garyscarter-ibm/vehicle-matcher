@@ -11135,6 +11135,17 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "offer.declinedHold.reallocation",
+      "value": "declinersSitOutAndTheDeclinedCarStaysExcluded",
+      "unit": "enum",
+      "status": "assumed",
+      "basis": "Assumed demo rule (FUCQ-233): a declined buddy offer returns its car to allocation on the next tick, so another eligible employee is offered it at once rather than at the next release. The employee who declined sits out that allocation, and offer.declinedCar.exclusion still keeps that car from them until a relevant confirmed brief change.",
+      "source": "docs/gcsp/allocation-contract.md",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "choices.topUp.gbpPerPoint",
       "value": 1,
       "unit": "GBP per point",
