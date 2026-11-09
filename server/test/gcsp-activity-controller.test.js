@@ -49,3 +49,26 @@ test('uncloneable adapter data fails closed instead of rejecting refresh or leav
   const c=make({adapter:{readActivity:async () => input}});await c.refresh();
   assert.equal(c.getState().phase,'unavailable');assert.equal(c.getState().result,null);c.destroy();
 });
+
+const shown = () => { const s = structuredClone(activityFixtures.snapshots.offer); s.value.runId = 'run-1'; return s; };
+test('ready state carries the adapter offer display once; failures and absent readers give null', async () => {
+  const seen = []; const display = { offerRef: { offerId: 'layout-offer' }, title: 'T', images: [] }; let call;
+  const adapter = { readActivity: async () => shown(), readOfferDisplay: async (input) => { call = input; return display; } };
+  const c = make({ adapter, onChange: (s) => seen.push(s.phase) }); await c.refresh();
+  assert.equal(c.getState().phase, 'ready'); assert.deepEqual(c.getState().offerDisplay, display);
+  assert.deepEqual([call.offerId, call.runId, call.signal instanceof AbortSignal], ['layout-offer', 'run-1', true]);
+  assert.deepEqual(seen, ['loading', 'ready']);
+  for (const readOfferDisplay of [async () => { throw new Error('x'); }, undefined]) {
+    const d = make({ adapter: { readActivity: async () => shown(), readOfferDisplay } }); await d.refresh();
+    assert.equal(d.getState().phase, 'ready'); assert.equal(d.getState().offerDisplay, null); d.destroy();
+  }
+  const none = make({ adapter: { readActivity: async () => active(), readOfferDisplay: async () => { throw new Error('no call'); } } });
+  await none.refresh(); assert.equal(none.getState().offerDisplay, null); c.destroy();
+});
+test('a stale generation discards a late offer display', async () => {
+  const slow = deferred(); let calls = 0; const changes = [];
+  const c = make({ adapter: { readActivity: async () => shown(), readOfferDisplay: () => ++calls === 1 ? slow.promise : Promise.resolve(null) }, onChange: (s) => changes.push(s) });
+  const a = c.refresh(); await Promise.resolve(); await Promise.resolve(); const b = c.refresh(); await b;
+  slow.resolve({ offerRef: { offerId: 'layout-offer' }, images: [] }); await a;
+  assert.equal(c.getState().offerDisplay, null); assert.equal(changes.filter((s) => s.phase === 'ready').length, 1); c.destroy();
+});

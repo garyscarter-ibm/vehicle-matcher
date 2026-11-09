@@ -46,7 +46,7 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, o
           body = el('div', 'vm gcsp-activity');
           body.append(screenIntro({ title: 'Buddy activity' }), runRestartedScreen({ reload }));
         } else {
-          body = activityBody({ result: state.result, pending: state.pending, offerDisplay,
+          body = activityBody({ result: state.result, pending: state.pending, offerDisplay: state.offerDisplay ?? offerDisplay,
             onRetry: account.status === 'ready' ? () => controller?.refresh() : undefined,
             onPause: typeof adapter.pause === 'function' ? () => controller?.pause() : undefined,
             onResume: typeof adapter.resume === 'function' ? () => controller?.resume() : undefined,

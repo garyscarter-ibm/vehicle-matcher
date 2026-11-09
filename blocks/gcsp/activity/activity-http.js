@@ -1,4 +1,5 @@
 import { isAccessLapsed } from '../kit/run-restarted.js';
+import { toOfferPresentation } from '../offer/offer-projection.js';
 // Fixed browser endpoints. Trusted identity/run/access remain server and host responsibilities.
 const unavailable = () => ({ status: 'unavailable' });
 export function createActivityHttpAdapter({ fetch: request = globalThis.fetch, loadAccount } = {}) {
@@ -17,6 +18,14 @@ export function createActivityHttpAdapter({ fetch: request = globalThis.fetch, l
     if (typeof commandId !== 'string' || !commandId.trim() || !Number.isSafeInteger(expectedBriefVersion) || expectedBriefVersion < 1) return Promise.resolve({ status: 'invalid' });
     return send(`/api/gcsp/brief/${operation}`, 'POST', { commandId, expectedBriefVersion }, signal);
   };
+  // Display only: the offer view's own validation decides trust; anything else is no display.
+  async function readOfferDisplay({ offerId, runId, signal } = {}) {
+    if (typeof offerId !== 'string' || !offerId.trim() || typeof runId !== 'string' || !runId.trim()) return null;
+    const out = await send(`/api/gcsp/offers/${encodeURIComponent(offerId)}?runId=${encodeURIComponent(runId)}`, 'GET', undefined, signal);
+    if (toOfferPresentation(out, { reference: { offerId, runId } }).status !== 'ok') return null;
+    const display = out.value.quote.facts.display;
+    return { offerRef: { offerId }, title: display.name, images: display.images.map(({ src, alt, caption, fidelity }) => ({ src, alt, caption, fidelity })) };
+  }
   return { loadAccount, readActivity: ({ signal } = {}) => send('/api/gcsp/activity', 'GET', undefined, signal),
-    pause: (input) => command('pause', input), resume: (input) => command('resume', input) };
+    readOfferDisplay, pause: (input) => command('pause', input), resume: (input) => command('resume', input) };
 }

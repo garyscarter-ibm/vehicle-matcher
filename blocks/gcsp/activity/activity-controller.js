@@ -22,7 +22,12 @@ export function createActivityController({ adapter = {}, onChange, createCommand
     if (isRunRestarted(out)) { publish({ phase: 'restarted', result: null, pending: false, message: '' }); return getState(); }
     let snapshot;
     try { if (projection(out)) snapshot = structuredClone(out); } catch { snapshot = null; }
-    if (snapshot) publish({ phase: 'ready', result: snapshot, pending: false, message });
+    let offerDisplay = null; const offerId = snapshot?.value.currentOffer?.offerRef?.offerId;
+    if (snapshot && offerId && typeof adapter.readOfferDisplay === 'function') {
+      try { offerDisplay = await adapter.readOfferDisplay({ offerId, runId: snapshot.value.runId, signal: abort.signal }) ?? null; } catch { offerDisplay = null; }
+      if (disposed || abort.signal.aborted || current !== generation) return getState();
+    }
+    if (snapshot) publish({ phase: 'ready', result: snapshot, pending: false, message, offerDisplay });
     else publish({ phase: 'unavailable', result: null, pending: false, message: 'Activity unavailable. Try again.' });
     return getState();
   }
