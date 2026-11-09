@@ -3864,6 +3864,34 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-151",
+      "title": "Bound repeated source-binding validation and checkpoint cost during fleet collection",
+      "status": "In Review",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-151",
+      "branch": "dev/DEV-2026-11-07-GC-001",
+      "observed_at": "2026-11-09T02:45:00Z",
+      "slices": [
+        {
+          "id": "binding-cache",
+          "status": "complete",
+          "title": "Digest-keyed binding cache and set membership in collect-fleet.mjs (AC1-2)",
+          "observed_at": "2026-11-09T02:45:00Z",
+          "evidence": "8eb00e86; offline stub: 32 sources 20.1s->2.7s, 100 sources capped at 90 by old code vs 16.3s new, retained 200-record check 9.0s->3.0s; targeted 274/274; merged 21150c11."
+        },
+        {
+          "id": "bounded-live-chunk",
+          "status": "not-started",
+          "title": "Real bounded chunk completes or stops honestly (AC3)",
+          "observed_at": "2026-11-09T02:45:00Z",
+          "evidence": "Needs an explicit finite source allocation (e.g. one 32-request chunk); not run overnight. Zero-network replay of retained source32 checkpoint is partial evidence only."
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
