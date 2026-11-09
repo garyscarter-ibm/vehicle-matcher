@@ -215,8 +215,9 @@ preference object or nested free text is copied. A malformed value in a retained
 Each outcome carries `{ state, at }`; `at` is a captured UTC instant or null. Allowed states are `offered`/`unknown`,
 `selected`/`pending`/`unknown`, `accepted`/`pending`/`unknown`, `expired`/`unknown`, and
 `satisfied`/`dissatisfied`/`unknown` respectively. Decline adds `reasonType`, with `declined`/`unknown` state;
-its typed reason is a registered preference/essential key or `other`, `timing`, `points`, `no-longer-needed`,
-`just-not-this-one`, `unclassified`. Unrecognised reasons become `unclassified`; reason prose never survives.
+observed declines record the reviewed `offer.declineReasons.v1` code at the run's policy version, any other code
+becomes `unclassified`, and a missing or invalid registry makes the observed read unavailable; synthetic declines use
+`just-not-this-one`. Reason prose never survives.
 Wait adds `reasonType`, with `waited`/`unknown` state and `no-acceptable-choice` only for an actual recorded wait.
 Unknown decline/wait reason and event time are null. Accepted and selected are independent: selecting does not
 imply acceptance, accepting does not imply completed allocation, and a pending accept is neither. Decline,

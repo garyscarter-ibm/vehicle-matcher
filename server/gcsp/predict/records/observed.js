@@ -1,7 +1,7 @@
 import { inputDigest, ok, result } from '../../repository/index.js';
 import { validInstant } from '../../policy/file-provider.js';
-import { DECISION_EVENTS } from '../../offers/decision.js';
-import { DECLINE_TYPES, projectBriefIntent, unknown, validateLearningRecord } from './schema.js';
+import { DECISION_EVENTS, DECLINE_REASONS_KEY } from '../../offers/decision.js';
+import { projectBriefIntent, unknown, validateLearningRecord } from './schema.js';
 
 const tables = ['briefs', 'employees', 'entitlement_slots', 'offers', 'holds', 'decisions', 'quotes', 'stock'];
 // Producer receipts carry the demo-clock instants that the offer, hold and decision rows do not store.
@@ -26,7 +26,17 @@ const validClock = (time, context) => time?.status === 'ok' && time.value?.runId
   && validInstant(time.value.now) && (typeof time.value.clockVersion === 'string' && time.value.clockVersion.length > 0
     || Number.isSafeInteger(time.value.clockVersion) && time.value.clockVersion > 0);
 
-function project(rows, context, time) {
+// The reviewed decline codes at this run's policy version; any other registry fails the read closed.
+const declineCodes = (registry, context) => {
+  const reasons = registry.value?.value?.reasons;
+  const codes = Array.isArray(reasons) ? reasons.map((r) => r?.code) : [];
+  const valid = registry.status === 'ok' && registry.policyVersion === context.policyVersion
+    && registry.value?.value?.schemaVersion === 1 && codes.length > 0 && codes.every((code) => typeof code === 'string' && code.length > 0)
+    && new Set(codes).size === codes.length;
+  return valid ? codes : null;
+};
+
+function project(rows, context, time, codes) {
   const briefs = rows.briefs.filter((b) => b.status === 'confirmed');
   const covered = new Set();
   const entries = rows.offers.map((offer) => ({ offer, quoteId: offer.quoteId ?? rows.holds.find((h) => h.holdId === offer.holdId)?.quoteId }));
@@ -70,8 +80,8 @@ function project(rows, context, time) {
     const expired = offer?.state === 'expired';
     if (declined && (accepted || selected || expired) || expired && (accepted || selected)) throw new Error('contradictory-outcomes');
     const decline = decisions.find((d) => d.decision === 'decline' && complete(d));
-    // The reviewed decline set records a code and an attribute; the first one the closed learning list knows is used.
-    const declineType = [decline?.reason?.type, decline?.reason?.code, decline?.reason?.attribute].find((t) => DECLINE_TYPES.includes(t));
+    // The reviewed reason code is recorded; any other code is unclassified.
+    const declineType = decline?.reason?.code;
     const pending = ['decision-pending', 'selection-pending'].includes(offer?.state) || hold?.state === 'selection-pending'
       || decisions.some((d) => d.decision === 'accept' && [d.outcome?.status, d.originalResponse?.status].includes('pending'));
     if (pending && (accepted || selected || declined || expired)) throw new Error('contradictory-pending');
@@ -92,7 +102,7 @@ function project(rows, context, time) {
       acceptance: event(accepted ? 'accepted' : pending ? 'pending' : 'unknown', offer?.acceptedAt,
         ...decisionTimes(['accept'], complete), ...pendingTimes),
       decline: { ...event(declined ? 'declined' : 'unknown', offer?.rejectedAt, offer?.declinedAt,
-        ...decisionTimes(['decline'], complete)), reasonType: declined ? DECLINE_TYPES.includes(declineType) ? declineType : 'unclassified' : null },
+        ...decisionTimes(['decline'], complete)), reasonType: declined ? (codes.includes(declineType) ? declineType : 'unclassified') : null },
       expiry: event(expired ? 'expired' : 'unknown', expiredAt), wait: { ...event(), reasonType: null }, satisfaction: event(),
     };
     if (outcomes.offered.at !== null && Object.entries(outcomes).some(([key, value]) => key !== 'offered'
@@ -119,7 +129,7 @@ function project(rows, context, time) {
       choiceSet: unknown(), terms,
       outcomes,
       timestamps: { projectedAt: time.now, clockVersion: time.clockVersion }, provenance: { kind: 'observed' } };
-    const validated = validateLearningRecord(record);
+    const validated = validateLearningRecord(record, { declineReasonCodes: codes });
     if (validated.status !== 'ok') throw new Error('invalid-record');
     records.push(validated.value);
   };
@@ -128,16 +138,20 @@ function project(rows, context, time) {
   return records.sort((a, b) => a.recordId.localeCompare(b.recordId));
 }
 
-export function createObservedLearningRecordService({ repository, identity, clock } = {}) {
+export function createObservedLearningRecordService({ repository, identity, clock, policy } = {}) {
   return {
     async readRecords(context) {
-      if (!repository || !identity || !clock) return unavailable('not-configured');
+      if (!repository || !identity || !clock || !policy) return unavailable('not-configured');
       try {
         const allowed = await identity.requireRole(context, 'greg');
         if (allowed.status !== 'ok') return allowed;
         const time = await clock.now(context);
         if (time.status !== 'ok') return time;
         if (!validClock(time, context)) return unavailable('clock-invalid');
+        const registry = await policy.getAssumption(DECLINE_REASONS_KEY, { runId: context.runId, policyVersion: context.policyVersion,
+          asOf: time.value.now });
+        const codes = declineCodes(registry, context);
+        if (!codes) return unavailable('decline-reasons-unavailable');
         const load = async () => {
           const values = await Promise.all([...tables.map((table) => repository.query(context, table)),
             ...RECEIPTS.map((consumerId) => repository.query(context, 'event_receipts', { consumerId }))]);
@@ -149,7 +163,7 @@ export function createObservedLearningRecordService({ repository, identity, cloc
           return { ...Object.fromEntries(tables.map((table, i) => [table, values[i].value])), receipts: [...receipts.values()] };
         };
         const rows = await load(); if (rows.failure) return rows.failure;
-        const records = project(rows, context, time.value);
+        const records = project(rows, context, time.value, codes);
         // Two complete reads fence concurrent revisions without a private repository snapshot.
         const after = await load(); if (after.failure) return after.failure;
         const end = await clock.now(context); if (end.status !== 'ok') return end;
@@ -157,7 +171,7 @@ export function createObservedLearningRecordService({ repository, identity, cloc
         if (inputDigest(rows) !== inputDigest(after) || inputDigest(time.value) !== inputDigest(end.value)) return result('conflict', {
           reason: 'Learning inputs changed during the read. Refresh the projection.' });
         const authorized = await identity.requireRole(context, 'greg'); if (authorized.status !== 'ok') return authorized;
-        return ok({ runId: context.runId, asOf: time.value.now, projectionVersion: inputDigest({ rows, clock: time.value }), records });
+        return ok({ runId: context.runId, asOf: time.value.now, projectionVersion: inputDigest({ rows, clock: time.value, declineReasons: registry.value.value }), records });
       } catch { return unavailable('source-invalid'); }
     },
   };
