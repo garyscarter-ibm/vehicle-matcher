@@ -265,3 +265,7 @@ For Russell or Gary:
   - **catalogue-chain:** FUCQ-46 (ad8384b7) and FUCQ-47 (fe89dc84) merged and In Review. FUCQ-48's live run is held: that session's auto-mode safety check refused the agent that would use BMW's page key, despite Gary's approval, and it was not reworded to get past the check. The offline harness, tests and runbook are being built; 0 of 500 live requests used. **For Gary:** to run the live check, run the harness with `--live` yourself once FUCQ-48 merges, or approve it directly in that session.
   - handover-chain: FUCQ-167 closed and In Review; FUCQ-168 building on it.
   - FUCQ-27 (13 points, sliced) lead started; FUCQ-28 waits on it.
+- **About 15:00 9 Nov.**
+  - **catalogue-chain done:** FUCQ-46 (ad8384b7), 47 (fe89dc84) and 48 (3fd5fec5) merged, closed and In Review. FUCQ-48's live positive check (AC2) is unmet because the key-based live run was refused by that session's safety check; 0 of 500 BMW requests used. **For Gary:** the opt-in harness (`verify-live-catalogue.mjs --live`) can be run by you with the key in env.
+  - **handover-chain:** FUCQ-168 merged da4207b0, closed and In Review; new Low bug FUCQ-251 raised from it. FUCQ-169 building; FUCQ-171 after it.
+  - New Low bugs waiting for pickup: FUCQ-246, FUCQ-249, FUCQ-251.
