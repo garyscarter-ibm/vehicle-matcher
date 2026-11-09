@@ -12,7 +12,8 @@ export function createActivityController({ adapter = {}, onChange, createCommand
   let generation = 0; let disposed = false; let readAbort; let commandAbort;
   const getState = () => structuredClone(state);
   function publish(next) { state = next; if (!disposed) onChange?.(getState()); }
-  async function load({ pending = false, message = '' } = {}) {
+  const signature = (value) => JSON.stringify([value.result, value.offerDisplay ?? null]);
+  async function load({ pending = false, message = '', quiet = false } = {}) {
     if (disposed) return getState();
     const current = ++generation; readAbort?.abort(); const abort = new AbortController(); readAbort = abort;
     if (!pending) publish({ phase: 'loading', result: null, pending: false, message: '' });
@@ -27,11 +28,17 @@ export function createActivityController({ adapter = {}, onChange, createCommand
       try { offerDisplay = await adapter.readOfferDisplay({ offerId, runId: snapshot.value.runId, signal: abort.signal }) ?? null; } catch { offerDisplay = null; }
       if (disposed || abort.signal.aborted || current !== generation) return getState();
     }
-    if (snapshot) publish({ phase: 'ready', result: snapshot, pending: false, message, offerDisplay });
+    if (snapshot) {
+      const next = { phase: 'ready', result: snapshot, pending: false, message, offerDisplay };
+      if (quiet) next.message = state.phase === 'ready' && signature(next) === signature(state) ? '' : 'Activity updated.';
+      publish(next);
+    }
     else publish({ phase: 'unavailable', result: null, pending: false, message: 'Activity unavailable. Try again.' });
     return getState();
   }
   const refresh = () => state.pending ? Promise.resolve(getState()) : load();
+  // A presenter action re-reads without a loading paint; only a changed snapshot is announced.
+  const sync = () => state.pending || state.phase === 'restarted' ? Promise.resolve(getState()) : load({ pending: true, quiet: true });
   async function command(operation) {
     const value = state.result?.value;
     if (disposed || state.pending || state.phase !== 'ready' || !positive(value?.briefVersion)
@@ -55,6 +62,6 @@ export function createActivityController({ adapter = {}, onChange, createCommand
     await load({ pending: true, message }); commandAbort = null;
     return getState();
   }
-  return { getState, refresh, pause: () => command('pause'), resume: () => command('resume'),
+  return { getState, refresh, sync, pause: () => command('pause'), resume: () => command('resume'),
     destroy() { if (disposed) return; disposed = true; generation += 1; readAbort?.abort(); commandAbort?.abort(); } };
 }

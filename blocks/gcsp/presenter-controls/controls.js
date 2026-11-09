@@ -8,6 +8,7 @@ import { adapterLabel, modeLabel, faultChange } from './fault-copy.js';
 import { tickSummary, stepLine, missingStagesLine, findOutcome } from './tick-copy.js';
 
 let sequence = 0;
+const ACTION_KEY = 'gcsp:presenter-action';
 // Only sentences are shown: objects and internal codes (kebab-case ids) never reach the screen.
 const explain = (value) => { const text = typeof value === 'string' ? value.trim() : ''; return /^[a-z0-9]+(-[a-z0-9]+)+$/.test(text) ? '' : text.length > 240 ? `${text.slice(0, 240)} ... (truncated)` : text; };
 // Plain wording per status, used only when the server gave no reason; raw codes are never shown.
@@ -320,6 +321,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       if (reply.status === 'ok' && command.kind !== 'reset' && command.kind !== 'switchPrincipal') {
         const Event = host.ownerDocument?.defaultView?.CustomEvent;
         if (Event) host.dispatchEvent(new Event('gcsp:presenter-action', { bubbles: true, detail: { kind: command.kind } }));
+        try { host.ownerDocument?.defaultView?.localStorage?.setItem(ACTION_KEY, JSON.stringify({ kind: command.kind, at: Date.now() })); } catch { /* storage blocked */ }
       }
       busy = false;
       const fresh = await refreshState();
@@ -348,13 +350,16 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     target.input.removeEventListener('input', onChange); root.remove(); } };
 }
 
-// Presenter commands announce success on the DOM; consumers get a bare, idempotent subscription.
+// Success is announced on the DOM (this page) and via localStorage (other tabs); the subscription is bare and idempotent.
 export function subscribePresenterActions(target) {
   return (listener) => {
     const handler = () => listener();
+    const win = target.ownerDocument?.defaultView;
+    const crossTab = (event) => { if (event.key === ACTION_KEY) listener(); };
     target.addEventListener('gcsp:presenter-action', handler);
+    win?.addEventListener('storage', crossTab);
     let active = true;
-    return () => { if (active) { active = false; target.removeEventListener('gcsp:presenter-action', handler); } };
+    return () => { if (active) { active = false; target.removeEventListener('gcsp:presenter-action', handler); win?.removeEventListener('storage', crossTab); } };
   };
 }
 

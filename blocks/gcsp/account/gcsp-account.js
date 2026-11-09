@@ -11,6 +11,7 @@ import { latestOrderId } from '../order-progress/order-progress-controller.js';
 import { orderCar } from '../order-progress/order-car.js';
 import { sentence } from '../order-progress/order-progress-copy.js';
 import { orderIdentityRows, orderReferenceOf } from '../kit/order-identity.js';
+import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 
 let serial = 0;
 const MISSING = 'Not supplied';
@@ -309,6 +310,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   const abort = new AbortController();
   let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
   let generation = 0; let teardown; let loading; let finishPrint; let orderHost; let orderRow; let orderVehicle; let stopOrder; let restarted = false;
+  let syncVersion = 0; const live = el('p', 'gcsp-vh'); live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true');
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
   const read = async (name) => {
@@ -352,16 +354,28 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     renderAccountBody(main, { model: toAccountView(envelope), draft, offers, pending, message, journey, controls, orderHost, order: orderRow, orderVehicle, restarted, reload });
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
   }
-  // Only a listed order shows the area; a failed list leaves the account as it was.
-  async function findOrder() {
-    if (typeof orderAdapter?.listOrders !== 'function') return null;
+  // Only a listed order shows the area; a failed list leaves the account as it was (null = failed, orderUuid null = none).
+  async function listLatest() {
+    if (typeof orderAdapter?.listOrders !== 'function') return { orderUuid: null };
     try {
       const listed = await orderAdapter.listOrders({ signal: abort.signal });
-      const orderUuid = listed?.status === 'ok' ? latestOrderId(listed.value?.orders) : null;
-      if (!orderUuid) return null;
-      const order = typeof adapter.readOrder === 'function' ? await read('readOrder') : null;
-      return { orderUuid, car: orderCar(order, orderUuid), row: listed.value.orders.find((item) => item?.orderUuid === orderUuid) };
+      return listed?.status === 'ok' ? { orderUuid: latestOrderId(listed.value?.orders), orders: listed.value?.orders } : null;
     } catch { return null; }
+  }
+  async function describeOrder({ orderUuid, orders }) {
+    try {
+      const order = typeof adapter.readOrder === 'function' ? await read('readOrder') : null;
+      return { orderUuid, car: orderCar(order, orderUuid), row: orders.find((item) => item?.orderUuid === orderUuid) };
+    } catch { return null; }
+  }
+  async function findOrder() {
+    const latest = await listLatest();
+    return latest?.orderUuid ? describeOrder(latest) : null;
+  }
+  function mountOrder({ row, ...mount }) {
+    orderRow = row; orderVehicle = mount.car;
+    orderHost = el('section', 'gcsp-account-order'); orderHost.setAttribute('aria-label', 'Your order'); orderHost.id = `gcsp-account-order-${++serial}`;
+    stopOrder = mountOrderProgress(orderHost, { ...mount, adapter: orderAdapter, helpAdapter, embedded: true, headingLevel: 2, signal: abort.signal });
   }
   async function loadAccount() {
     const version = ++generation;
@@ -369,11 +383,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       typeof adapter.readOffers === 'function' ? read('readOffers') : null, findOrder()]);
     if (disposed || version !== generation) return { status: 'unavailable' };
     stopOrder?.(); stopOrder = null; orderHost = null; orderRow = null; orderVehicle = null;
-    if (found) {
-      const { row, ...mount } = found; orderRow = row; orderVehicle = found.car;
-      orderHost = el('section', 'gcsp-account-order'); orderHost.setAttribute('aria-label', 'Your order'); orderHost.id = `gcsp-account-order-${++serial}`;
-      stopOrder = mountOrderProgress(orderHost, { ...mount, adapter: orderAdapter, helpAdapter, embedded: true, headingLevel: 2, signal: abort.signal });
-    }
+    if (found) mountOrder(found);
     envelope = accountResult; draft = draftResult; offers = offerResult?.status === 'ok' ? offerResult.value.offers : [];
     const model = toAccountView(envelope);
     if (isRunRestarted(envelope)) return { status: envelope.status };
@@ -384,8 +394,32 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     if (pending || disposed) return;
     pending = true; message = null; restarted = false; draw();
     teardown(); main = null;
-    teardown = mountEmployee(root, { brand, ...shellAdapter });
+    teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
     try { await loading; } finally { pending = false; draw(true); }
+  }
+  // Quiet re-read after a presenter action: the shell and order card stay mounted; a failed read leaves the view as it was.
+  const FOCUSABLE = 'button, a[href]'; const ORDER_SECTION = '.gcsp-order-section';
+  const keepLive = () => { if (!live.isConnected) root.append(live); };
+  async function sync() {
+    if (pending || disposed || !main) return;
+    const version = ++syncVersion; const base = generation;
+    const [accountResult, draftResult, offerResult, latest] = await Promise.all([read('readAccount'), read('readDraft'),
+      typeof adapter.readOffers === 'function' ? read('readOffers') : null, listLatest()]);
+    if (disposed || pending || !main || version !== syncVersion || base !== generation) return;
+    if (accountResult?.status !== 'ok' || !['ok', 'not-found'].includes(draftResult?.status) || !latest) return;
+    const before = JSON.stringify([envelope, draft, offers, orderRow?.orderUuid]);
+    const same = Boolean(latest.orderUuid) && latest.orderUuid === orderRow?.orderUuid;
+    const next = latest.orderUuid && !same ? await describeOrder(latest) : null;
+    if (disposed || pending || !main || version !== syncVersion || base !== generation || latest.orderUuid && !same && !next) return;
+    if (same) { orderRow = latest.orders.find((item) => item?.orderUuid === latest.orderUuid) ?? orderRow; void stopOrder?.sync?.(); }
+    else { stopOrder?.(); stopOrder = null; orderHost = null; orderRow = null; orderVehicle = null; if (next) mountOrder(next); }
+    envelope = accountResult; draft = draftResult; if (offerResult?.status === 'ok') offers = offerResult.value.offers;
+    if (JSON.stringify([envelope, draft, offers, orderRow?.orderUuid]) === before) return;
+    const win = root.ownerDocument.defaultView; const held = main.contains(root.ownerDocument.activeElement) && root.ownerDocument.activeElement.closest(FOCUSABLE);
+    const key = held ? focusKeyOf(held, ORDER_SECTION) : null;
+    keepScroll(win, () => draw());
+    if (key) { const target = findByFocusKey(main, key, FOCUSABLE, ORDER_SECTION) || main.querySelector('h1'); if (target?.tagName === 'H1') target.tabIndex = -1; target?.focus(); }
+    keepLive(); live.textContent = ''; live.textContent = 'Account updated.';
   }
   function emitSaved() {
     const value = draft.value;
@@ -434,9 +468,10 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   }
   const shellAdapter = { loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
-  teardown = mountEmployee(root, { brand, ...shellAdapter });
-  const destroy = () => { disposed = true; generation += 1; abort.abort(); finishPrint?.(); stopOrder?.(); teardown(); };
+  teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
+  const destroy = () => { disposed = true; generation += 1; abort.abort(); finishPrint?.(); stopOrder?.(); teardown(); live.remove(); };
   destroy.refresh = refresh;
+  destroy.sync = sync;
   return destroy;
 }
 

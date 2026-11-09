@@ -6,6 +6,7 @@ import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { messageList } from './message-list.js';
 import { fixtureAdapter } from './fixtures.js';
 import { plural } from './outbox-copy.js';
+import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 
 const NOT_BUILT = 'Not available in this demo';
 const item = (key, label, icon, available = false) => Object.freeze({
@@ -28,9 +29,9 @@ function note(text, role = 'status') {
 }
 
 /**
- * Mount the outbox in root. ctx: { loadMessages({ signal }) -> state, signal, onUnavailable(reason) }.
+ * Mount the outbox in root. ctx: { loadMessages({ signal }) -> state, subscribeClock(listener) -> stop, signal, onUnavailable(reason) }.
  * State: { status: 'ready', messages } | { status: 'empty' } | { status: 'unavailable' | 'refused', message }.
- * Returns a teardown function with refresh().
+ * Returns a teardown function with refresh() and sync() (a quiet re-read).
  */
 export function mountOutbox(root, ctx = {}) {
   const abort = new AbortController();
@@ -42,6 +43,9 @@ export function mountOutbox(root, ctx = {}) {
   let keep = null;
   let done = false;
   let run = 0;
+  let loading = false;
+  let resync = false;
+  let snapshot = null;
   const shell = portalShell({
     title: 'Group Car Schemes Portal', account: ACCOUNT, navigation: PRESENTER_NAVIGATION, active: 'outbox', breadcrumbs: ['Captured emails'],
   });
@@ -64,6 +68,7 @@ export function mountOutbox(root, ctx = {}) {
 
   function draw(state) {
     clearList();
+    snapshot = state.status === 'ready' || state.status === 'empty' ? JSON.stringify(Array.isArray(state.messages) ? state.messages : []) : null;
     if (state.status === 'ready' && Array.isArray(state.messages) && state.messages.length) {
       status.textContent = `${plural(state.messages.length, 'captured email')}, newest first.`;
       list = messageList({ messages: state.messages, selectedId: keep });
@@ -88,6 +93,7 @@ export function mountOutbox(root, ctx = {}) {
 
   async function load() {
     const mine = ++run;
+    loading = true;
     keep = list?.getSelected() ?? keep;
     clearList();
     status.textContent = 'Loading captured emails.';
@@ -106,14 +112,38 @@ export function mountOutbox(root, ctx = {}) {
       if (!abort.signal.aborted && state.status === 'unavailable') ctx.onUnavailable?.('source-unavailable');
     }
     if (abort.signal.aborted || done || mine !== run) return;
+    loading = false;
     draw(state);
+    if (resync) { resync = false; sync(); }
+  }
+
+  // Re-reads with no loading note; the view repaints only when the list changed, keeping selection, focus and scroll.
+  async function sync() {
+    if (done || typeof ctx.loadMessages !== 'function') return;
+    if (loading) { resync = true; return; }
+    const mine = ++run;
+    let state;
+    try { state = await ctx.loadMessages({ signal: abort.signal }); } catch { return; }
+    if (abort.signal.aborted || done || mine !== run || (state?.status !== 'ready' && state?.status !== 'empty')) return;
+    if (JSON.stringify(Array.isArray(state.messages) ? state.messages : []) === snapshot) return;
+    const doc = root.ownerDocument; const active = doc.activeElement;
+    const row = body.contains(active) ? active.closest('.gcsp-mail-row')?.dataset.id : null;
+    const held = body.contains(active) && !row ? active.closest('button, a[href]') : null;
+    const key = held ? focusKeyOf(held) : null;
+    keep = list?.getSelected() ?? keep;
+    keepScroll(doc.defaultView, () => draw(state));
+    if (!row && !key) return;
+    const rows = [...body.querySelectorAll('.gcsp-mail-row')];
+    (rows.find((node) => node.dataset.id === row) || (key && findByFocusKey(body, key, 'button, a[href]')) || refresh).focus();
   }
 
   load();
+  const unsubscribe = ctx.subscribeClock?.(() => { void sync(); });
 
   function teardown() {
     if (done) return;
     done = true;
+    unsubscribe?.();
     abort.abort();
     ctx.signal?.removeEventListener('abort', onExternalAbort);
     clearList();
@@ -121,6 +151,7 @@ export function mountOutbox(root, ctx = {}) {
     root.replaceChildren();
   }
   teardown.refresh = load;
+  teardown.sync = sync;
   return teardown;
 }
 
@@ -164,6 +195,7 @@ export class GcspOutboxElement extends HTMLElement {
     const adapter = this._adapter || (fixtureName ? fixtureAdapter(fixtureName) : null);
     this._teardown = mountOutbox(this, {
       loadMessages: adapter?.loadMessages,
+      subscribeClock: adapter?.subscribeClock,
       onUnavailable: (reason) => {
         this._emit('gcsp:unavailable', { reason: reason === 'no-adapter' && fixtureName ? 'unknown-fixture' : reason });
       },

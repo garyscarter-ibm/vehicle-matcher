@@ -5,6 +5,7 @@ import { mountHelp } from '../cases/gcsp-help.js';
 import { activityBody } from './activity-body.js';
 import { createActivityController } from './activity-controller.js';
 import { runRestartedScreen } from '../kit/run-restarted.js';
+import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 
 export const ACTIVITY_DESTINATION = Object.freeze({ key: 'activity', label: 'Buddy activity', available: true,
   icon: Object.freeze(['M4 5h16', 'M4 12h16', 'M4 19h16', 'M8 3v4', 'M8 10v4', 'M8 17v4']) });
@@ -25,7 +26,7 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, o
     onNavigate: (to) => onNavigate?.(to),
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
     renderBody(main, { account }) {
-      let body; let stopped = false; let restoringFocus = false;
+      let body; let stopped = false; let restoringFocus = false; let unsubscribeClock;
       const announcement = el('p', 'gcsp-vh gcsp-activity-announcement'); announcement.setAttribute('aria-live', 'polite'); announcement.setAttribute('aria-atomic', 'true');
       const content = el('div');
       // Help sits outside the repainted body so a repaint never resets an open help form.
@@ -34,10 +35,12 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, o
       main.replaceChildren(...[content, helpRegion, announcement].filter(Boolean));
       const ownedHelp = helpRegion ? mountHelp(helpRegion, { embedded: true, adapter: helpAdapter, headingLevel: 2 }) : null;
       stopHelp = ownedHelp;
+      const FOCUSABLE = 'button, a[href]';
       const paint = (state) => {
         if (done || stopped) return;
         const active = root.ownerDocument.activeElement;
         const ownedFocus = body?.contains(active) || restoringFocus && active === main;
+        const held = body?.contains(active) && active.closest(FOCUSABLE) ? focusKeyOf(active.closest(FOCUSABLE)) : null;
         body?.destroy?.();
         if (state.phase === 'loading') {
           body = el('div', 'vm gcsp-activity');
@@ -52,11 +55,11 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, o
             onResume: typeof adapter.resume === 'function' ? () => controller?.resume() : undefined,
             onReviewBrief: typeof onNavigate === 'function' ? () => onNavigate('brief') : undefined });
         }
-        content.replaceChildren(body); announcement.textContent = state.message;
+        keepScroll(root.ownerDocument.defaultView, () => content.replaceChildren(body)); announcement.textContent = ''; announcement.textContent = state.message;
         if (ownedFocus) {
           if (state.phase === 'loading') { main.tabIndex = -1; main.focus(); restoringFocus = true; }
           else {
-            const target = body.querySelector('.gcsp-action-trigger') || body.querySelector('button:not(:disabled)') || body.querySelector('h1');
+            const target = (held && findByFocusKey(body, held, FOCUSABLE)) || body.querySelector('.gcsp-action-trigger') || body.querySelector('button:not(:disabled)') || body.querySelector('h1');
             if (target) { if (target.tagName === 'H1') target.tabIndex = -1; target.focus(); }
             restoringFocus = false;
           }
@@ -66,9 +69,10 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, o
       else {
         controller = createActivityController({ adapter, onChange: paint });
         controller.refresh();
+        unsubscribeClock = adapter.subscribeClock?.(() => controller?.sync());
       }
       const ownedController = controller;
-      return () => { stopped = true; body?.destroy?.(); ownedHelp?.(); ownedController?.destroy(); if (controller === ownedController) controller = null; };
+      return () => { stopped = true; unsubscribeClock?.(); body?.destroy?.(); ownedHelp?.(); ownedController?.destroy(); if (controller === ownedController) controller = null; };
     },
   });
   if (done) stopShell();
