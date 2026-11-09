@@ -1,6 +1,6 @@
 @import "./gcsp-cases.css";
 @import "../kit/gcsp-kit.css";
-gcsp-case-queue { display: block; min-width: 0; }
+gcsp-case-queue { display: block; min-width: 0; } .gcsp:has(> .gcsp-case-queue.is-embedded) { min-height: 0; background: transparent; }
 .gcsp .gcsp-case-queue { max-width: 1440px; margin-inline: auto; padding: var(--vm-space-6); color: var(--gcsp-text); font-family: var(--gcsp-font); }
 .gcsp .gcsp-case-queue.is-embedded { padding: 0; }
 .gcsp .gcsp-greg-region:has(.gcsp-case-queue.is-embedded) { grid-column: 1 / -1; border-style: solid; padding: 20px; background: var(--gcsp-surface); }

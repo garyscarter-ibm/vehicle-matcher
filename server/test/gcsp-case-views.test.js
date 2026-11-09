@@ -227,6 +227,10 @@ test('embedded queue spans the Greg dashboard grid like the publish panel', () =
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
   assert.match(css, /\.gcsp-greg-region:has\(\.gcsp-case-queue\.is-embedded\) \{[^}]*grid-column: 1 \/ -1/);
 });
+test('embedded queue drops the page shell height and grey ground, so the region ends at its content (FUCQ-238)', () => {
+  const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
+  assert.match(css, /\.gcsp:has\(> \.gcsp-case-queue\.is-embedded\) \{ min-height: 0; background: transparent; \}/);
+});
 test('alternative-car remedies show the car name, never a raw id, to the employee and a secondary reference to the scheme team', async () => {
   const named = { ...caseFixture('waiting'), remedy: { type: 'alternative-car', orderUuid: 'raw-order-uuid-123', carName: 'Synthetic BMW iX1' } };
   const unnamed = { ...named, remedy: { type: 'alternative-car', orderUuid: 'raw-order-uuid-123' } };
