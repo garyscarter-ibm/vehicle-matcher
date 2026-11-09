@@ -8,25 +8,27 @@ import { createOrderProgressController } from './order-progress-controller.js';
 import { createOrderProgressHttpAdapter } from './order-progress-http.js';
 import { orderCopy } from './order-progress-copy.js';
 import { runRestartedScreen } from '../kit/run-restarted.js';
+import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 
 export const ORDER_PROGRESS_DESTINATION = Object.freeze({ key: 'order-progress', label: 'Order progress', available: true,
   icon: Object.freeze(['M4 6l2 2 3-3', 'M4 14l2 2 3-3', 'M12 7h8', 'M12 15h8']) });
 
 const SECTION_OF = { completeTask: 'documents', requestAppointment: 'handover', acceptAppointment: 'handover', requestReturn: 'return', acceptReturn: 'return' };
-const keyOf = (control) => ({ section: control.closest('.gcsp-order-section')?.className ?? '', label: control.textContent });
-const sameKey = (control, key) => !control.disabled && control.textContent === key.label && (control.closest('.gcsp-order-section')?.className ?? '') === key.section;
+const SECTION = '.gcsp-order-section';
+const changeKey = (state) => JSON.stringify(state.phase === 'ready' ? [state.progress.stages, state.progress.documents, state.progress.appointment, state.progress.returnPlan] : state.phase);
 
 // Paints the controller's state into `host`; returns its teardown. Focus stays on a surviving control, else moves to the message.
 function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = true, reload }) {
   let body; let controller; let stopped = false; let focusKey = null; let helps = []; let acted = null;
-  const content = el('div'); host.replaceChildren(content);
+  const content = el('div'); const live = el('p', 'gcsp-vh'); live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true');
+  host.replaceChildren(content, live);
   const stopHelps = () => { helps.splice(0).forEach((stop) => { try { stop?.(); } catch { /* help already gone */ } }); };
   const has = (name) => (ready && typeof adapter[name] === 'function' ? (...args) => { acted = SECTION_OF[name]; return controller?.[name](...args); } : undefined);
   const paint = (state) => {
     if (stopped) return;
     const active = host.ownerDocument.activeElement;
     const owned = Boolean(body?.contains(active));
-    if (owned && active.closest('button')) focusKey = keyOf(active.closest('button'));
+    if (owned && active.closest('button')) focusKey = focusKeyOf(active.closest('button'), SECTION);
     stopHelps();
     if (!state.pending && !state.message) acted = null;
     if (state.phase === 'none') {
@@ -41,10 +43,10 @@ function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = 
         onAcceptAppointment: has('acceptAppointment'), onRequestReturn: has('requestReturn'), onAcceptReturn: has('acceptReturn'),
         mountHelp: (node) => { helps.push(mountHelp(node, { embedded: true, adapter: helpAdapter, headingLevel: Math.min(level + 2, 4) })); } });
     }
-    content.replaceChildren(body);
+    keepScroll(host.ownerDocument.defaultView, () => content.replaceChildren(body));
     if (!owned) { focusKey = null; return; }
     const control = state.phase === 'restarted' ? body.querySelector('button')
-      : !state.pending && focusKey ? [...body.querySelectorAll('button')].find((node) => sameKey(node, focusKey)) : null;
+      : !state.pending && focusKey ? findByFocusKey(body, focusKey, 'button', SECTION) : null;
     const target = control || body.querySelector('.gcsp-order-message') || body.querySelector('h1,h2,h3,h4');
     if (!control && !state.pending) focusKey = null;
     if (target) { if (!control) target.tabIndex = -1; target.focus(); }
@@ -52,8 +54,18 @@ function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = 
   if (!ready) paint({ phase: 'unavailable', progress: { phase: 'unavailable' }, pending: false, message: null });
   else { controller = createOrderProgressController({ adapter, orderUuid, onChange: paint }); controller.refresh(); }
   const owner = controller;
-  const stop = () => { stopped = true; stopHelps(); owner?.destroy(); };
+  // Re-reads in place and announces once, only when the order actually changed.
+  const sync = async () => {
+    if (!owner) return;
+    const before = changeKey(owner.getState());
+    const after = await owner.sync();
+    if (stopped || after.phase !== 'ready' || changeKey(after) === before) return;
+    live.textContent = ''; live.textContent = 'Order progress updated.';
+  };
+  const unsubscribeClock = ready ? adapter.subscribeClock?.(() => { void sync(); }) : undefined;
+  const stop = () => { stopped = true; unsubscribeClock?.(); stopHelps(); owner?.destroy(); };
   stop.refresh = () => owner?.refresh() || Promise.resolve();
+  stop.sync = sync;
   return stop;
 }
 
@@ -66,6 +78,7 @@ export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand =
     signal?.removeEventListener('abort', teardown); root.replaceChildren();
   };
   teardown.refresh = () => stopBody?.refresh() || Promise.resolve();
+  teardown.sync = () => stopBody?.sync() || Promise.resolve();
   if (signal?.aborted) { teardown(); return teardown; }
   signal?.addEventListener('abort', teardown, { once: true });
   if (embedded) {

@@ -57,6 +57,8 @@ export function createOrderProgressController({ adapter = {}, orderUuid, onChang
     return getState();
   }
   const refresh = () => (state.pending ? Promise.resolve(getState()) : load());
+  // A presenter action re-reads in place: no loading paint, no command message.
+  const sync = () => (state.pending || state.phase === 'restarted' ? Promise.resolve(getState()) : load({ keep: true }));
 
   async function command(operation, args) {
     if (disposed || state.pending || state.phase !== 'ready' || typeof adapter[operation] !== 'function') return getState();
@@ -73,7 +75,7 @@ export function createOrderProgressController({ adapter = {}, orderUuid, onChang
     await load({ keep: true, message: message(operation, out) }); commandAbort = null;
     return getState();
   }
-  return { getState, refresh,
+  return { getState, refresh, sync,
     completeTask: (itemId) => command('completeTask', { itemId }), requestAppointment: (slotId) => command('requestAppointment', { slotId }),
     acceptAppointment: (proposalId) => command('acceptAppointment', { proposalId }),
     requestReturn: ({ choice, slotId } = {}) => command('requestReturn', { choice, slotId }), acceptReturn: (proposalId) => command('acceptReturn', { proposalId }),

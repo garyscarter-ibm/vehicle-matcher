@@ -3,6 +3,7 @@ import { createOrderProgressHttpAdapter } from './order-progress-http.js';
 import { createCaseHttpAdapter } from '../cases/http-adapter.js';
 import { createAccountHttpAdapter as createOrderReadAdapter } from '../account/http-adapter.js';
 import { loadLatestOrderCar } from './order-car.js';
+import { subscribePresenterActions } from '../presenter-controls/controls.js';
 import { ORDER_PROGRESS_DESTINATION, defineGcspOrderProgress } from './gcsp-order-progress.js';
 
 const host = globalThis.document?.querySelector('gcsp-order-progress[data-live]');
@@ -18,7 +19,7 @@ if (host) {
     signal: globalThis.AbortSignal?.timeout?.(8000) });
   host.helpAdapter = createCaseHttpAdapter();
   host.car = car;
-  host.adapter = { ...orders, navigation };
+  host.adapter = { ...orders, navigation, subscribeClock: subscribePresenterActions(host) };
   defineGcspOrderProgress();
   host.addEventListener('gcsp:navigate', (event) => {
     const page = { brief: '/gcsp-brief-live.html', activity: '/gcsp-activity-live.html' }[event.detail?.to];
