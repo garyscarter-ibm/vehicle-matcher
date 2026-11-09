@@ -152,7 +152,7 @@ test('approved partial metadata displays only the model and dated source with al
   assert.equal(v.comparisonAvailable, false); assert.equal(car.status, 'partial');
   assert.deepEqual(car.display, { name: dto.comparison.currentCar.model }); assert.deepEqual(car.media, {});
   assert.deepEqual(car.source, dto.comparison.currentCar.source);
-  assert.equal(car.provenance, 'Synthetic source: manual-records-v1. Observed 2026-11-05T11:00:00.000Z.');
+  assert.equal(car.provenance, undefined);
   assert.deepEqual(car.facts.map((f) => f.label), ['Configuration', 'Body', 'Fuel', 'Seats', 'Boot', 'MPG', '0–62 mph', 'Points a month']);
   assert.ok(car.facts.every((f) => f.value === null && f.missingLabel === 'Unknown'));
   assert.equal(v.card.members[0].terms[0].value, 1100); assert.equal(v.card.members[0].terms[0].allowance, 1300);

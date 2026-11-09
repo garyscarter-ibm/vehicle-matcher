@@ -257,6 +257,10 @@ The shared GCSP adaptation of `screenIntro`, `button`, `factList`, `statusScreen
 
 A data helper, not a component. `orderIdentityRows(orderReference, carOrderNumber)` returns `factList` rows labelled "Order reference" (only when the server sent a well-formed `^[A-Za-z0-9-]{1,32}$` reference) and "Car order number"; `orderReferenceOf` is the same check. The manual confirmation, buddy handoff, account order card and history, and order progress all use it, so an earlier order shows only the car's number and nothing is derived on the client.
 
+### GCSP plain copy (`blocks/gcsp/kit/plain-copy.js`, FUCQ-267)
+
+A data helper, not a component (pure, no DOM). `reasonText(entry, kind)` turns any server reason, trade-off, blocker or unknown (`kind` is `reasons`, `tradeOffs`, `blockers` or `unknowns`) into one plain sentence; supplied `text`/`reason` wins, and an unmapped code gets a neutral sentence per kind, never the code or its fields. `longDate(value)` formats a date or ISO instant as "Friday 13 November 2026" (null when invalid). `bodyStyleLabel(value)` reuses `SPEC_LABELS` and title-cases the rest. The brief and offer cards (`decisionView`), the manual gallery, review and summary use it; filter values and sort keys stay raw.
+
 ### GCSP account consumer (`blocks/gcsp/account/`)
 
 `mountAccount(root, { adapter, brand, onSupport, print })` and `<gcsp-account>` compose `mountEmployee`, `screenIntro`, `button`, `statusScreen`, `factList`, `formatTerm`, `mediaWell`, the existing countdown and native labelled details for delivered cars, read-only account/licence facts and grouped histories. A current car has no stock decision, so this is page composition rather than a new decision-card primitive. `gcsp-account.css` imports the employee composition and has its own ratchet cap; harness `gcsp-account.html` uses the HTTP adapter by default and explicit read-only snapshots with `?fixture=`.
