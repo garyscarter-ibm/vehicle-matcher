@@ -273,6 +273,16 @@ test('FUCQ-263: a closed case with an unconfirmed change asks Paula for nothing 
   assert.match(open.textContent, /Waiting for your confirmation\. Only this preference value will change\./);
   assert.ok(findButton(open, 'Review body change')); assert.doesNotMatch(open.textContent, /was not confirmed before/);
 });
+test('FUCQ-264: Greg sees an unconfirmed change recorded as not confirmed on a closed or resolved case', () => {
+  const remedy = { type: 'preference-relaxation', path: 'preferences.body.value', value: 'hatchback', expectedBriefVersion: 1, confirmationState: 'employee-confirmation-required' };
+  const text = (status) => { const root = host(); root.append(renderCaseContent({ ...queueCaseFixtures()[0], status, remedy }, { audience: 'scheme-team' })); return root.textContent; };
+  for (const [status, ended] of [['closed', 'closed'], ['resolved', 'was resolved']]) {
+    assert.doesNotMatch(text(status), /confirms this preference through their brief|before this case can be resolved/);
+    assert.match(text(status), new RegExp(`Recorded remedy.*The employee did not confirm this change before the case ${ended}\\.`, 's'));
+  }
+  assert.match(text('remedy-proposed'), /The employee confirms this preference through their brief\. Confirmation is checked before this case can be resolved\./);
+  assert.doesNotMatch(text('remedy-proposed'), /did not confirm/);
+});
 test('embedded queue spans the Greg dashboard grid like the publish panel', () => {
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
   assert.match(css, /\.gcsp-greg-region:has\(\.gcsp-case-queue\.is-embedded\) \{[^}]*grid-column: 1 \/ -1/);

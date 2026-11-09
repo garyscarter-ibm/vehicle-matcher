@@ -65,12 +65,14 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
         ? [['Preference', preferenceLabel(remedy.path)], ['Proposed value', remedy.value], ['Expected brief version', remedy.expectedBriefVersion]]
         : [['Preference', preferenceLabel(remedy.path)], ['Current value', c.relaxation?.before],
           ['Proposed value', remedy.value], ['Current brief version', c.relaxation?.currentBriefVersion]]));
-      const closed = ['resolved', 'closed'].includes(c.status); // FUCQ-261: no review is pending once the case is closed
+      // FUCQ-261/263/264: a resolved or closed case promises no further review or confirmation
+      const closed = ['resolved', 'closed'].includes(c.status); const ended = c.status === 'resolved' ? 'was resolved' : 'closed';
       if (audience === 'scheme-team') section.append(el('p', 'gcsp-note', remedy.confirmationState === 'employee-confirmed'
         ? `Employee confirmation is recorded.${closed ? '' : ' Review the case before resolving it.'}`
-        : 'The employee confirms this preference through their brief. Confirmation is checked before this case can be resolved.'));
+        : closed ? `The employee did not confirm this change before the case ${ended}.`
+          : 'The employee confirms this preference through their brief. Confirmation is checked before this case can be resolved.'));
       else if (c.relaxation?.confirmed === true || remedy.confirmationState === 'employee-confirmed') section.append(el('p', 'gcsp-note', `You confirmed this preference change.${closed ? '' : ' The scheme team will review the case.'}`));
-      else if (closed) section.append(el('p', 'gcsp-note', `This change was not confirmed before the case ${c.status === 'resolved' ? 'was resolved' : 'closed'}.`)); // FUCQ-263
+      else if (closed) section.append(el('p', 'gcsp-note', `This change was not confirmed before the case ${ended}.`));
       else {
         section.append(el('p', 'gcsp-note', applicable ? 'Waiting for your confirmation. Only this preference value will change.'
           : 'This proposal no longer matches your current brief. Ask the scheme team to review it.'));
