@@ -51,7 +51,7 @@ const stepsFor = (request) => {
 function framesFor(name, request) {
   const total = stepsFor(request); const third = total / SEEDS;
   const run = (n) => jobBody(request, 'running', n * third, total);
-  if (name === 'job-running') return [run(1), run(2)];
+  if (name === 'job-running' || name === 'start-conflict') return [run(1), run(2)];
   if (name === 'job-succeeds') return [run(1), run(2), jobBody(request, 'succeeded', total, total, { finishedAt: FINISHED_AT, resultId: NEW_RESULT_ID })];
   if (name === 'job-fails') return [run(1), jobBody(request, 'failed', third, total, { finishedAt: FINISHED_AT, reason: REASONS.failed })];
   if (name === 'job-interrupted') return [run(1), jobBody(request, 'interrupted', third, total, { finishedAt: FINISHED_AT, reason: REASONS.interrupted })];
@@ -90,6 +90,8 @@ export function experimentFixtureAdapter(name) {
     start: async ({ experimentId, change } = {}) => {
       if (name === 'start-refused') return startOutcomeToState(403, FORBIDDEN);
       if (name === 'start-invalid') return startOutcomeToState(400, { status: 'invalid', code: 'invalid-experiment', reasons: [{ field: 'change.values', key: 'hold.buddy.durationSeconds', reason: REASONS.invalid }] });
+      // The 409 names a job someone else started just now, so readJob can then watch it.
+      if (name === 'start-conflict' && !started) begin(DEFAULT_REQUEST);
       if (name === 'start-conflict' || name === 'job-running') return startOutcomeToState(409, { status: 'conflict', code: 'job-running', jobId: JOB_ID, reason: REASONS.conflict });
       begin({ experimentId: experimentId ?? DEFAULT_REQUEST.experimentId, change: change ?? DEFAULT_REQUEST.change });
       return startOutcomeToState(202, { status: 'pending', value: current() });

@@ -279,6 +279,17 @@ test('a conflict shows the reason and watches the running job', async () => {
   assert.match(text(strip), /Steps: 4 of 12/); assert.equal(submit(root).disabled, true);
 });
 
+test('the start-conflict fixture itself watches the job its 409 names, never losing contact', async () => {
+  const { root, calls } = await mount('start-conflict');
+  assert.equal(calls.readJob.length, 1); assert.doesNotMatch(text(root), /running\./);
+  await choose(root, 'hold-sweep'); await run(root, '1', 'x');
+  const strip = root.querySelector('.gcsp-comparison-job');
+  await until(() => /Steps: 12 of 18/.test(text(strip)));
+  assert.ok(calls.readJob.some((q) => q?.jobId === JOB)); assert.deepEqual(calls.start, [{ experimentId: 'hold-sweep', change: { values: [3600], basis: 'x' } }]);
+  assert.match(text(strip), /A comparison is already running\. Wait for it to finish\./); assert.match(text(strip), /Hold duration: running\./);
+  assert.doesNotMatch(text(root), /Lost contact/); assert.equal(submit(root).disabled, true);
+});
+
 test('a refused start names who can start one, an unavailable start is retryable, and neither polls', async () => {
   const refused = await mount('start-refused'); await choose(refused.root, 'hold-sweep'); await run(refused.root, '1', 'x');
   const message = refused.root.querySelector('.gcsp-comparison-form [role="alert"]');
