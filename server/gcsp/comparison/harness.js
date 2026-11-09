@@ -98,19 +98,28 @@ export function comparisonEmployeeFacts(employee, adapterRow, now) {
     essentials: underlyingEssentials(employee), requiredBy: typedFact({ status: 'known', value: employee.renewalAt, unit: null }, adapterRow, now) };
 }
 export const comparisonDriverFact = (adapterRow, now) => typedFact(adapterRow.value.driver.eligible, adapterRow, now);
-function manualRecords(employee, adapterRow, now) {
+// Seeded through employeeId, so the cohort's inputHash and every other generated value stay unchanged.
+const share = (id, field) => parseInt(inputDigest([id, 'comparison-current-contract', field]).slice(0, 8), 16) / 0x100000000;
+function manualRecords(employee, adapterRow, now, modelLines) {
   const adapter = adapterRow.value;
   const id = employee.employeeId;
+  const mileage = adapter.employeeFacts.annualMileage;
+  check(mileage?.status === 'known' && Number.isSafeInteger(mileage.value) && mileage.unit === 'mi/year'
+    && Array.isArray(modelLines) && modelLines.length > 0 && typeof adapter.contact?.phone === 'string', 'comparison.recordAdapter.v1');
   const source = { mode: 'synthetic', sourceRef: adapterRow.source, schemaVersion: '1',
     sourceVersion: `${adapterRow.policyVersion}:${adapter.fixtureVersion}`, effectiveFrom: now, observedAt: now };
   const licence = { ...structuredClone(adapter.driver.licence), source };
   const contract = { contractId: contractId(id), employeeId: id, schemeId: employee.schemeId,
     slotId: slotId(id), driverId: driverId(id), status: 'current',
     contractEndDate: employee.renewalAt.slice(0, 10), earliestCollectionDate: now.slice(0, 10),
-    latestCollectionDate: employee.renewalAt.slice(0, 10), source };
+    latestCollectionDate: employee.renewalAt.slice(0, 10), source,
+    // Up to one year at the policy's annual mileage; the model is one of the scheme's configured lines.
+    model: modelLines[Math.floor(share(id, 'model') * modelLines.length)].replace('|', ' '),
+    currentOdometer: { value: Math.floor(share(id, 'odometer') * mileage.value), unit: 'mi' } };
   return { recordSetId: `comparison:${id}:${adapter.fixtureVersion}`, source,
     account: { employeeId: id, name: `${id} (fictional)`, companyId: employee.companyId,
-      gradeId: employee.gradeId, schemeId: employee.schemeId, allowanceOverride: null },
+      gradeId: employee.gradeId, schemeId: employee.schemeId, allowanceOverride: null,
+      contact: { phone: adapter.contact.phone, email: adapter.contact.emailTemplate.replace('{employeeId}', id) } },
     drivers: [{ driverId: driverId(id), employeeId: id, name: `${id} (fictional)`, kind: adapter.driver.kind,
       eligible: typedFact(adapter.driver.eligible, adapterRow, now), licence }],
     employeeFacts: comparisonEmployeeFacts(employee, adapterRow, now),
@@ -202,7 +211,7 @@ export async function openComparisonRun(options = {}) {
         const slot = await tx.get(ref(context, 'entitlement_slots', { entitlementSlotId: context.entitlementSlotId }));
         if (slot.status !== 'ok') return slot;
         const saved = await tx.compareAndSwap(ref(context, 'employees', { employeeId: employee.employeeId }), found.value.version,
-          { contract: { manualContext: manualRecords(employee, adapterRow, manifest.startsAt) } });
+          { contract: { manualContext: manualRecords(employee, adapterRow, manifest.startsAt, manifest.configurationSource.modelLines) } });
         if (saved.status !== 'ok') return saved;
         return tx.compareAndSwap(ref(context, 'entitlement_slots', { entitlementSlotId: context.entitlementSlotId }), slot.value.version,
           { contractId: contractId(employee.employeeId), renewalId: renewalId(employee.employeeId), state: 'entitled' });
