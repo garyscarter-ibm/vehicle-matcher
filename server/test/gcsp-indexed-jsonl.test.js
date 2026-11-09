@@ -112,3 +112,47 @@ test('bytes changed during a scan still fail when their modification time is res
     }
   } }), { code: 'artifact-changed' });
 });
+// FUCQ-153: each remaining guard has a regression that fails if that guard alone is removed.
+function patchFs(name, replacement) {
+  const original = fs[name]; fs[name] = replacement(original); syncBuiltinESMExports();
+  return () => { fs[name] = original; syncBuiltinESMExports(); };
+}
+test('metadata confirmation rejects identity movement during its whole-file hash', async (t) => {
+  const path = await fixture(t, '{"id":"a"}\n{"id":"b"}\n'); await chmod(path, 0o600);
+  let injected = false;
+  const restore = patchFs('readSync', (original) => function (fd, buffer, ...args) {
+    if (!injected && buffer.length === 64 * 1024) { fs.fchmodSync(fd, 0o600); injected = true; }
+    return original.call(this, fd, buffer, ...args);
+  });
+  try {
+    await assert.rejects(indexJsonl(path, { onRow: async (_row, entry) => {
+      if (entry.key === 0) await chmod(path, 0o640);
+    } }), { code: 'artifact-changed' });
+    assert.ok(injected);
+  } finally { restore(); }
+});
+test('metadata confirmation rejects a rewrite between its first and latest stat', async (t) => {
+  const content = '{"id":"a","value":1}\n'; const path = await fixture(t, content);
+  await utimes(path, 1700000000, 1700000000); await chmod(path, 0o600);
+  const indexed = await indexJsonl(path, { key: (row) => row.id }); const target = await stat(path, { bigint: true });
+  await chmod(path, 0o640); let calls = 0;
+  const restore = patchFs('fstatSync', (original) => function (fd, ...args) {
+    const info = original.call(this, fd, ...args);
+    if (String(info.ino) !== String(target.ino) || ++calls !== 2) return info;
+    fs.writeFileSync(path, content); return original.call(this, fd, ...args);
+  });
+  try { assert.throws(() => indexed.get('a'), { code: 'artifact-changed' }); assert.equal(calls >= 2, true); }
+  finally { restore(); }
+});
+test('per-row digests reject corrupted record bytes even when file identity is unchanged', async (t) => {
+  const path = await fixture(t, '{"id":"a","value":1}\n{"id":"b","value":2}\n');
+  const indexed = await indexJsonl(path, { key: (row) => row.id }); let corrupted = false;
+  const restore = patchFs('readSync', (original) => function (fd, buffer, offset, ...args) {
+    const count = original.call(this, fd, buffer, offset, ...args);
+    if (!corrupted && count) { buffer[offset + count - 3] ^= 1; corrupted = true; }
+    return count;
+  });
+  try { assert.throws(() => indexed.get('b'), { code: 'artifact-changed' }); assert.ok(corrupted); }
+  finally { restore(); }
+  assert.deepEqual(indexed.get('b'), { id: 'b', value: 2 });
+});
