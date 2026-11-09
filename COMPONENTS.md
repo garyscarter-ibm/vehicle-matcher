@@ -263,7 +263,7 @@ The shared GCSP adaptation of `screenIntro`, `button`, `factList`, `statusScreen
 
 ### GCSP synthetic note (`blocks/gcsp/kit/synthetic-note.js`, FUCQ-277)
 
-A data helper over `el`, no stylesheet (it uses the existing `.gcsp .gcsp-synthetic` rule). `syntheticNote()` returns the one footer line "Synthetic example data." (`SYNTHETIC_NOTE`) that keeps a scenario screen identified as made-up data once its per-field caveats (allowance basis, "Time follows the presenter clock") are gone. Setup, the released-car browser, review and the final summary end with it; the account keeps its own longer footer with source and date. The gallery's `syntheticNote` group shows it.
+A data helper over `el`, no stylesheet (it uses the existing `.gcsp .gcsp-synthetic` rule). `syntheticNote()` returns the one footer line "Synthetic example data." (`SYNTHETIC_NOTE`) that keeps a scenario screen identified as made-up data once its per-field caveats (allowance basis, "Time follows the presenter clock") are gone. Setup, the released-car browser, review, the final summary, buddy activity and the offer page end with it; the account keeps its own longer footer with source and date, and the brief its "Synthetic local demo" draft line. The gallery's `syntheticNote` group shows it.
 
 ### GCSP order identity (`blocks/gcsp/kit/order-identity.js`, FUCQ-220)
 
@@ -271,7 +271,7 @@ A data helper, not a component. `orderIdentityRows(orderReference, carOrderNumbe
 
 ### GCSP plain copy (`blocks/gcsp/kit/plain-copy.js`, FUCQ-267)
 
-A data helper, not a component (pure, no DOM). `reasonText(entry, kind)` turns any server reason, trade-off, blocker or unknown (`kind` is `reasons`, `tradeOffs`, `blockers` or `unknowns`) into one plain sentence; supplied `text`/`reason` wins, and an unmapped code gets a neutral sentence per kind, never the code or its fields. `longDate(value)` formats a date or ISO instant as "Friday 13 November 2026" (null when invalid). `bodyStyleLabel(value)` reuses `SPEC_LABELS` and title-cases the rest. The brief and offer cards (`decisionView`), the manual gallery, review and summary use it; filter values and sort keys stay raw.
+A data helper, not a component (pure, no DOM). `reasonText(entry, kind)` turns any server reason, trade-off, blocker or unknown (`kind` is `reasons`, `tradeOffs`, `blockers` or `unknowns`) into one plain sentence; supplied `text`/`reason` wins, and an unmapped code gets a neutral sentence per kind, never the code or its fields. `longDate(value)` formats a date or ISO instant as "Friday 13 November 2026" (null when invalid). `bodyStyleLabel(value)` reuses `SPEC_LABELS` and title-cases the rest. The brief and offer cards (`decisionView`), the manual gallery, review and summary use it; filter values and sort keys stay raw. `NO_IMAGE_TEXT` (FUCQ-279) is the one image fallback line, "No image for this car yet", used as the `mediaWell` placeholder by the account, gallery, activity offer and order progress; the kit gallery's `mediaWell placeholder` group shows it. Car names are not built on the client: the server names every car by one rule ("BMW " plus the `policy.displayLabels.v1` model template with the engine filled in, `server/gcsp/policy/car-name.js`), so cards, account, brief, offer and activity read the same name.
 
 ### GCSP account consumer (`blocks/gcsp/account/`)
 

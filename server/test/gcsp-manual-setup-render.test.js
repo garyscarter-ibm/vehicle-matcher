@@ -124,7 +124,7 @@ test('account journey event enters trusted setup and Back returns to the account
   const f = await setup(t, { journey: true }); click(f, 'Choose a replacement');
   await waitFor(() => f.root.querySelector('h1')?.textContent === 'Your order choices'); fill(f); click(f, 'Back to account');
   await waitFor(() => f.root.querySelector('h1')?.textContent === 'Your cars');
-  assert.equal(f.root.querySelectorAll('main').length, 1); assert.match(f.root.textContent, /Fictional BMW 320i Touring/);
+  assert.equal(f.root.querySelectorAll('main').length, 1); assert.match(f.root.textContent, /BMW 3 Series Touring 320i/);
   click(f, 'Resume saved journey'); await waitFor(() => f.root.querySelector('h1')?.textContent === 'Your order choices');
   assert.equal(control(f, 'requestedCollectionDate').value, '2026-11-20');
 });

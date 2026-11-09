@@ -26,6 +26,7 @@ test('never-checked state separates active permission from unavailable check evi
   assert.equal(node.querySelectorAll('h2').length, 2);
   assert.equal(node.querySelector('.gcsp-activity-status svg').getAttribute('aria-hidden'), 'true');
   assert.equal(node.querySelector('a[href]'), null); assert.match(node.textContent, /No current offer/);
+  assert.equal(node.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
   node.destroy();
 });
 

@@ -1,4 +1,5 @@
 import { demoTime } from '../kit/activity-timeline.js';
+import { NO_IMAGE_TEXT } from '../kit/plain-copy.js';
 
 export const orderCopy = Object.freeze({
   title: 'Order progress',
@@ -8,7 +9,7 @@ export const orderCopy = Object.freeze({
   unavailable: 'Your order could not be loaded. Try again.',
   order: 'Your order',
   noCar: 'Car details not supplied',
-  noImage: 'No image for this car yet',
+  noImage: NO_IMAGE_TEXT,
   steps: 'Steps',
   handover: 'Handover',
   documents: 'Documents and checks',

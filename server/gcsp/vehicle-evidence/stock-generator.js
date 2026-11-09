@@ -3,6 +3,7 @@ import { isAbsolute } from 'node:path';
 import { inputDigest, ok, result } from '../repository/core.js';
 import { createVehicleSnapshot } from '../../vehicles/index.js';
 import { allocateInventoryFile, readAllocationInventory } from './vin-allocation.js';
+import { readCarNamer } from '../policy/car-name.js';
 
 export const STOCK_GENERATOR_VERSION = 'stock-generator.v1';
 export const STOCK_GENERATOR_NAMESPACE = `synthetic:${STOCK_GENERATOR_VERSION}`;
@@ -137,6 +138,7 @@ export function createStockGenerator({ repository, registry, policyService, cont
           ? ok({ generated: previous.report.totalCars, report: structuredClone(previous.report) })
           : result('conflict', { reason: 'stock-generation-request-mismatch', current: {} });
         const read = { runId, asOf: run.clockInstant, policyVersion };
+        const carName = await readCarNamer(policyService, read);
         const keys = ['supply.release.size', 'supply.weeklyReleaseVolume', 'supply.release.cadence', ...Object.values(plan.aggregateKeys)];
         const values = new Map(); const provenance = [];
         for (const key of keys) {
@@ -252,8 +254,9 @@ export function createStockGenerator({ repository, registry, policyService, cont
             const { modelLineId, colour } = car.binding;
             const aggregateRef = `policy:${plan.aggregateKeys[modelLineId]}`;
             const title = plan.titles?.[modelLineId] ?? modelLineId; const displayName = plan.displayNames?.[modelLineId] ?? title;
+            const name = carName(extras.get(identity.configurationId)?.eligibilityModelKey?.value ?? title, displayName);
             const facts = createVehicleSnapshot({ sourceNamespace: STOCK_GENERATOR_NAMESPACE, identityKind: 'exact-stock',
-              sourceKeys: { stockId: identity.orderUuid }, snapshotVersion, observedAt, display: { name: `${displayName} in ${colour}` },
+              sourceKeys: { stockId: identity.orderUuid }, snapshotVersion, observedAt, display: { name: `${name} in ${colour}` },
               facts: { ...extras.get(identity.configurationId), stockIdentityKind: own('synthetic'), modelLine: known(title, aggregateRef), colour: known(colour, aggregateRef),
                 leadTimeWeeks: known(car.leadTimeWeeks, aggregateRef, 'weeks'),
                 confirmedDeliveryWeek: known(confirmedWeek(horizonEnd, car.leadTimeWeeks, timeZone), aggregateRef),

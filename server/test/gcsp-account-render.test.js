@@ -298,7 +298,7 @@ test('representative image provenance survives a broken image fallback without c
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
     const media = root.querySelector('.gcsp-media');
-    assert.equal(media.querySelector('img').alt, 'Fictional BMW 320i Touring: representative image');
+    assert.equal(media.querySelector('img').alt, 'BMW 3 Series Touring 320i: representative image');
     assert.match(media.textContent, /Representative model image/);
     media.querySelector('img').dispatchEvent(new window.Event('error'));
     assert.equal(media.querySelector('img'), null); assert.equal(media.classList.contains('has-photo'), false);
@@ -375,7 +375,7 @@ test('guarded replacement reconciles draft, suppresses duplicate writes, emits e
     assert.equal(root.querySelector('main h1').textContent, 'Your saved journey');
     assert.equal(document.activeElement, root.querySelector('main h1'));
     assert.match(root.textContent, /No car has been selected or ordered/);
-    assert.match(root.querySelector('.gcsp-feature').textContent, /Fictional BMW 320i Touring/);
+    assert.match(root.querySelector('.gcsp-feature').textContent, /BMW 3 Series Touring 320i/);
     findButton(root, 'Back to account').click(); assert.equal(root.querySelector('main h1').textContent, 'Your cars');
     await destroy.refresh(); assert.ok(findButton(root, 'Resume saved journey'));
     findButton(root, 'Resume saved journey').click(); await tick(); await tick();
@@ -386,7 +386,7 @@ test('guarded replacement reconciles draft, suppresses duplicate writes, emits e
     assert.equal((await f.service.readAccount(f.context)).value.currentContract.contractEndDate, '2026-12-01');
   } finally { destroy(); root.remove(); document.body.removeEventListener('gcsp:journey-start', listen); }
   const reloaded = await domMount(serviceAdapter(f));
-  try { assert.ok(findButton(reloaded.root, 'Resume saved journey')); assert.match(reloaded.root.querySelector('.gcsp-summary').textContent, /Current carFictional BMW 320i Touring/); }
+  try { assert.ok(findButton(reloaded.root, 'Resume saved journey')); assert.match(reloaded.root.querySelector('.gcsp-summary').textContent, /Current carBMW 3 Series Touring 320i/); }
   finally { reloaded.destroy(); reloaded.root.remove(); }
 });
 
