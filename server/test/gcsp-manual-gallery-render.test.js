@@ -317,3 +317,44 @@ test('body styles read as labels and ineligible reasons as sentences, while filt
   assert.equal(models.allCars[2].view.members[0].decision.blockers[1].text, 'Insurance group 22 is above your limit of 20.');
   assert.equal(toManualGallery(envelope, { body: 'estate' }).cars.length, 1);
 });
+
+const heldBrowse = () => { const stock = createManualGalleryFixture(); stock.value.heldOffer = { offerId: 'buddy-offer:7', runId: 'run-7' }; return stock; };
+const reviewReason = (root) => [...root.querySelectorAll('[data-action-id="review-car"]')].map((node) => [node.disabled,
+  document.getElementById(node.getAttribute('aria-describedby'))?.textContent]);
+
+test('FUCQ-278: a held offer shows a notice with a link above the list and disables Review with a reason', async (t) => {
+  const f = await mount(t, { adapter: { browseStock: async () => heldBrowse() } });
+  const notice = f.root.querySelector('.vm-status h2'); assert.equal(notice.textContent, 'You already have a car offer');
+  assert.match(f.root.textContent, /Your buddy is holding a car for you\. Decide on that offer before reserving another car\./);
+  const link = [...f.root.querySelectorAll('a')].find((node) => node.textContent === 'View your offer');
+  assert.equal(link.getAttribute('href'), '/gcsp/offer?offerId=buddy-offer%3A7&runId=run-7');
+  assert.ok(notice.compareDocumentPosition(f.root.querySelector('.vm-card')) & window.Node.DOCUMENT_POSITION_FOLLOWING);
+  assert.match(f.root.textContent, /3 released cars/); assert.match(f.root.textContent, /Your allowance: 1,300 points a month/);
+  assert.deepEqual(reviewReason(f.root), [...Array(2).fill([true, 'Decide on your car offer first.']), [true, 'This car is not eligible.']]);
+});
+
+test('FUCQ-278: an offer-held claim answer shows the same notice and keeps the list', async (t) => {
+  const f = await mount(t, { adapter: { readClaim: async () => ({ status: 'not-found' }),
+    claim: async () => ({ status: 'conflict', reason: 'offer-held', offerId: 'buddy-offer:8', runId: 'run-8', view: { action: 'view-offer' } }) } });
+  assert.equal(f.root.querySelector('a[href^="/gcsp/offer"]'), null);
+  f.root.querySelector('[data-action-id="review-car"]').click();
+  await waitFor(() => f.root.querySelector('a[href^="/gcsp/offer"]'));
+  assert.equal(f.root.querySelector('a[href^="/gcsp/offer"]').getAttribute('href'), '/gcsp/offer?offerId=buddy-offer%3A8&runId=run-8');
+  assert.equal(f.root.querySelectorAll('.vm-card').length, 3); assert.match(f.root.textContent, /Your allowance: 1,300 points a month/);
+  assert.doesNotMatch(f.root.textContent, /could not be reserved/);
+  assert.ok([...f.root.querySelectorAll('[data-action-id="review-car"]')].every((node) => node.disabled));
+});
+
+test('FUCQ-278: a single-car conflict keeps the list, counts and allowance and blocks only that car', async (t) => {
+  const f = await mount(t, { adapter: { readClaim: async () => ({ status: 'not-found' }),
+    claim: async () => ({ status: 'conflict', reason: 'stock-unavailable', view: { action: 'refresh-review' } }) } });
+  f.root.querySelector('[data-action-id="review-car"]').click();
+  await waitFor(() => /This car is no longer available/.test(f.root.querySelector('.vm-status')?.textContent ?? ''));
+  assert.match(f.root.textContent, /Choose another car or refresh availability\./);
+  assert.equal(f.root.querySelectorAll('.vm-card').length, 3); assert.match(f.root.textContent, /3 released cars · 2 eligible/);
+  assert.match(f.root.textContent, /Your allowance: 1,300 points a month/);
+  const [first, second] = reviewReason(f.root);
+  assert.deepEqual(first, [true, 'This car is no longer available.']); assert.equal(second[0], false);
+  click(f.root, 'Refresh availability'); await waitFor(() => !f.root.querySelector('.vm-status'));
+  assert.equal(reviewReason(f.root)[0][0], false);
+});

@@ -5,7 +5,7 @@ import { createAccountHttpAdapter } from '../account/http-adapter.js';
 export function createManualGalleryController({ adapter = createAccountHttpAdapter(), onChange = () => {}, onReview,
   commandId = () => globalThis.crypto.randomUUID() } = {}) {
   let destroyed = false; let generation = 0; let request; let envelope; let controls = {};
-  let selectedId = null; const attempts = new Map();
+  let selectedId = null; const attempts = new Map(); let extras = {};
   let state = { ...toManualGallery(null), state: 'idle', selectedId: null, detail: null };
   const snapshot = () => structuredClone(state);
   function publish(view, selected = selectedId) {
@@ -24,13 +24,13 @@ export function createManualGalleryController({ adapter = createAccountHttpAdapt
     try { response = await adapter.browseStock({ signal: request.signal }); }
     catch { response = { status: 'unavailable', retryable: true }; }
     if (destroyed || ticket !== generation) return snapshot();
-    envelope = response;
-    return publish(toManualGallery(envelope, controls));
+    envelope = response; extras = {};
+    return publish(toManualGallery(envelope, controls, extras));
   }
   function setControls(changes) {
     controls = { ...controls, ...Object.fromEntries(Object.entries(changes).filter(([key]) => ['query', 'body', 'series', 'sort'].includes(key))) };
     if (destroyed || state.state === 'loading' || !envelope) return snapshot();
-    return publish(toManualGallery(envelope, controls));
+    return publish(toManualGallery(envelope, controls, extras));
   }
   function openDetail(orderUuid) {
     if (destroyed || !state.allCars.some((car) => car.id === orderUuid)) return null;
@@ -46,12 +46,18 @@ export function createManualGalleryController({ adapter = createAccountHttpAdapt
     onReview(handoff);
     return { status: 'ok', value: handoff };
   }
-  function reportOutcome(outcome) {
+  // A single-car conflict keeps the list: the offer-held reason or the taken car is overlaid on the last browse (FUCQ-278).
+  function reportOutcome(outcome, selection = null) {
     if (destroyed) return snapshot();
     generation += 1; request?.abort();
+    if (outcome?.status === 'conflict' && envelope?.status === 'ok') {
+      extras = outcome.reason === 'offer-held' ? { heldOffer: { offerId: outcome.offerId, runId: outcome.runId } }
+        : { carTaken: true, takenIds: [...(extras.takenIds ?? []), ...(selection?.orderUuid ? [selection.orderUuid] : [])] };
+      return publish(toManualGallery(envelope, controls, extras));
+    }
     const next = outcome?.status === 'stale-version' || outcome?.status === 'stale-run' ? 'context-refresh'
       : outcome?.status === 'conflict' ? 'car-taken' : 'source-unavailable';
-    envelope = { ...outcome, view: { ...outcome?.view, state: next } };
+    extras = {}; envelope = { ...outcome, view: { ...outcome?.view, state: next } };
     return publish({ ...toManualGallery(null, controls), state: next, outcome: structuredClone(outcome) }, null);
   }
   return { load: refresh, refresh, getState: snapshot, setControls, openDetail, resetReviewAttempts: () => attempts.clear(),

@@ -38,9 +38,10 @@ const states = {
   'no-suitable-stock': ['No suitable cars are available', 'Review the eligibility reasons or return to your choices.'],
   'source-unavailable': ['Availability cannot be checked right now', 'Retry to check current released cars.'],
   'context-refresh': ['Your choices need refreshing', 'Return to your choices or refresh availability.'],
-  'car-taken': ['This car is no longer available', 'Refresh to see the current released cars.'],
+  'car-taken': ['This car is no longer available', 'Choose another car or refresh availability.'],
   'choices-invalid': ['Your saved choices need updating', 'One of your saved choices is no longer available. Go back to your choices to update it.'],
 };
+const heldOfferCopy = ['You already have a car offer', 'Your buddy is holding a car for you. Decide on that offer before reserving another car.'];
 const invalidMessages = { requestedCollectionDate: 'Your requested collection date is no longer available. Go back to your choices and pick a new date.' };
 const claimMessages = { checking: 'Checking your current reservation.', claiming: 'Reserving this exact car for review.',
   pending: 'Your reservation is still being checked. Check its status before choosing another car.',
@@ -54,7 +55,7 @@ claimMessages.released = 'Your previous reservation has ended. Availability has 
 export function mountManualGallery(root, { adapter = createManualGalleryHttpAdapter(), brand = 'bmw', onBack,
   onClaimConfirmed, onClaimState, commandId } = {}) {
   const prefix = `gcsp-gallery-${++sequence}`; const controls = {}; const cards = new Map();
-  let nodes; let statusKey = null; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin; let limit; let pageKey; let paging;
+  let nodes; let statusKey = null; let noticeKey = null; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin; let limit; let pageKey; let paging;
   // Car facts open on wide screens and closed at 600px and below; no matchMedia (jsdom) means open.
   const narrowQuery = root.ownerDocument.defaultView.matchMedia?.('(max-width: 600px)') ?? null;
   const factsOpen = () => !narrowQuery?.matches;
@@ -66,7 +67,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
   const canGoBack = () => !disposed && (adapter.readOnly === true || claimState?.blocked === false);
   const claim = createManualClaimController({ adapter, onChange(next) { claimState = next; onClaimState?.(next); draw(); },
     onConfirmed(detail) { if (!disposed) { onClaimConfirmed?.(detail); notify('gcsp:manual-claim-confirmed', detail); } },
-    onFailure(outcome) { gallery.resetReviewAttempts(); gallery.reportOutcome(outcome); },
+    onFailure(outcome, selection) { gallery.resetReviewAttempts(); gallery.reportOutcome(outcome, selection); },
     onReleased() { gallery.resetReviewAttempts(); gallery.refresh(); } });
   const gallery = createManualGalleryController({ adapter, commandId, onChange(next) { galleryState = next; draw(); },
     onReview(selection) { if (!adapter.readOnly) claim.review(selection); } });
@@ -149,6 +150,20 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     }).format(new Date(h.latestReleasedAt))} UTC (demo time).`;
     nodes.historySource.textContent = 'Current source version: unknown.';
   }
+  // FUCQ-278: a held offer or one taken car shows above a list that stays in place.
+  function drawNotice() {
+    const { notice, heldOffer } = galleryState; const key = `${notice}|${heldOffer?.offerId}|${heldOffer?.runId}`;
+    if (key === noticeKey) return;
+    noticeKey = key; nodes.notice.replaceChildren();
+    if (notice === 'offer-held') {
+      const link = heldOffer.offerId && heldOffer.runId ? [button({ label: 'View your offer',
+        href: `/gcsp/offer?offerId=${encodeURIComponent(heldOffer.offerId)}&runId=${encodeURIComponent(heldOffer.runId)}` })] : [];
+      nodes.notice.append(statusScreen({ title: heldOfferCopy[0], message: heldOfferCopy[1], actions: link }));
+    } else if (notice === 'car-taken') {
+      nodes.notice.append(statusScreen({ title: states['car-taken'][0], message: states['car-taken'][1],
+        actions: [button({ label: 'Refresh availability', variant: 'ghost', onClick: () => gallery.refresh() })] }));
+    }
+  }
   function draw() {
     if (!nodes || disposed) return;
     drawHistory();
@@ -171,6 +186,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
           : [button({ label: 'Refresh availability', variant: 'ghost', onClick: () => gallery.refresh() })];
       nodes.status.append(statusScreen({ title: message[0], message: (invalid && invalidMessages[galleryState.invalidField]) || message[1], actions }));
     }
+    drawNotice();
     // A new search, sort, filter or reload starts again at the first page.
     const nextKey = `${galleryState.state === 'loading'}|${JSON.stringify(galleryState.controls)}`;
     if (nextKey !== pageKey) { pageKey = nextKey; limit = pageSize(); }
@@ -200,7 +216,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     desired.forEach((card, index) => { if (nodes.grid.children[index] !== card) nodes.grid.insertBefore(card, nodes.grid.children[index] ?? null); });
     renderDetail();
     panel.querySelectorAll('[data-review-id]').forEach((control) => { control.disabled = adapter.readOnly || claimState.blocked || control.dataset.baseDisabled === 'true'; });
-    nodes.claimMessage.textContent = claimMessages[claimState.state] ?? '';
+    nodes.claimMessage.textContent = galleryState.notice ? '' : claimMessages[claimState.state] ?? '';
     nodes.check.hidden = !claimState.blocked || ['claiming', 'checking'].includes(claimState.state);
     nodes.check.disabled = ['claiming', 'checking'].includes(claimState.state);
     nodes.retry.hidden = claimState.state !== 'retry-available';
@@ -214,7 +230,8 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     const filters = el('div', 'gcsp-gallery-filters'); filters.setAttribute('role', 'search'); filters.setAttribute('aria-label', 'Filter released cars');
     filters.append(field('query', 'Search cars and equipment'),
       field('sort', 'Sort by', [['name', 'Model name'], ['points', 'Monthly points'], ['earliest-collection', 'Earliest collection']]));
-    nodes = { counts: el('p', 'gcsp-note'), allowance: el('p', 'gcsp-gallery-allowance'), status: el('div', ''),
+    noticeKey = null;
+    nodes = { notice: el('div', ''), counts: el('p', 'gcsp-note'), allowance: el('p', 'gcsp-gallery-allowance'), status: el('div', ''),
       grid: el('div', 'gcsp-gallery-grid'), results: el('div', 'gcsp-gallery-results'), detail: el('section', 'gcsp-gallery-detail'),
       claimMessage: el('p', 'gcsp-note'), check: button({ label: 'Check status', variant: 'ghost', onClick: () => claim.checkStatus() }),
       retry: button({ label: 'Retry this reservation', variant: 'ghost', onClick: () => claim.retry() }),
@@ -227,7 +244,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     const claimNotice = el('section', 'gcsp-gallery-claim'); claimNotice.setAttribute('aria-label', 'Reservation status'); claimNotice.append(nodes.claimMessage, nodes.check, nodes.retry);
     nodes.results.append(nodes.status, nodes.grid);
     panel.append(screenIntro({ kicker: 'Choose your car', title: 'Released cars', lede: 'Browse the available cars. Review one to reserve it while you check the details.', level: 1 }),
-      nodes.allowance, nodes.history, navField('series', 'Series'), navField('body', 'Body style'), filters, nodes.counts, claimNotice, nodes.results, nodes.detail, nodes.back, nodes.backReason);
+      nodes.allowance, nodes.history, navField('series', 'Series'), navField('body', 'Body style'), filters, nodes.counts, nodes.notice, claimNotice, nodes.results, nodes.detail, nodes.back, nodes.backReason);
     if (adapter.readOnly) panel.prepend(el('p', 'gcsp-note', 'Read-only synthetic gallery · 5 November 2026'));
     main.replaceChildren(panel); draw();
     if (!started) { started = true; gallery.load(); claim.load(); }

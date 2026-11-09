@@ -11,7 +11,12 @@ const unavailable = () => result('unavailable', { code: 'manual-claims-unavailab
   reason: 'Reservation storage or its authority is unavailable. No successful reservation is implied.', view: view('unavailable', 'retry') });
 const invalid = (field) => result('invalid', { code: 'invalid-manual-claim', reasons: [{ field, reason: 'Supply only the registered command fields and expected versions.' }],
   view: view('validation', 'correct-fields') });
-const conflict = (reason) => result('conflict', { reason, view: view('conflict', reason === 'release-required' ? 'release-before-change' : 'refresh-review') });
+const conflictAction = { 'release-required': 'release-before-change', 'offer-held': 'view-offer' };
+const conflict = (reason, extra = {}) => result('conflict', { reason, ...extra, view: view('conflict', conflictAction[reason] ?? 'refresh-review') });
+// The buddy's live offer hold on this slot; ids stay null if its offers row is not found.
+const heldOf = (holds, offers) => { const hold = holds.find((h) => h.type === 'buddy-offer' && occupying(h));
+  const offer = hold && offers.find((o) => o.holdId === hold.holdId);
+  return hold ? { offerId: offer?.offerId ?? null, runId: offer?.runId ?? hold.runId ?? null } : null; };
 const stale = (resource, expectedVersion, currentVersion) => result('stale-version', { resource, expectedVersion, currentVersion, view: view('conflict', 'refresh-review') });
 const termsDigest = (decision) => inputDigest({ policy: decision.versions.policy, points: decision.terms?.points,
   allowanceInputs: decision.terms?.allowanceInputs, contribution: decision.terms?.contribution,
@@ -242,12 +247,15 @@ export class ManualClaimsService {
   browseStock(context) { return this.#read(context, async () => {
     const stock = await this.#manual.browseStock(context); if (stock.status !== 'ok') return stock;
     const rows = await this.#repository.query(context, 'stock'); if (rows.status !== 'ok') return rows;
+    const holds = await this.#repository.query(context, 'holds', { employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId }); if (holds.status !== 'ok') return holds;
+    const buddy = holds.value.find((h) => h.type === 'buddy-offer' && occupying(h));
+    const offers = buddy ? await this.#repository.query(context, 'offers', { holdId: buddy.holdId }) : ok([]); if (offers.status !== 'ok') return offers;
     const decisions = stock.value.decisions.map((decision) => ({ ...decision,
       claimInput: decision.gateStatus === 'eligible' ? { orderUuid: decision.orderUuid,
         expectedStockVersion: rows.value.find((r) => r.orderUuid === decision.orderUuid)?.version ?? null,
         expectedDraftVersion: decision.draftVersion, expectedContextVersion: stock.value.versions.context,
         expectedTermsDigest: termsDigest(decision) } : null }));
-    return ok({ ...stock.value, decisions, cars: decisions.filter((d) => d.gateStatus === 'eligible') });
+    return ok({ ...stock.value, decisions, cars: decisions.filter((d) => d.gateStatus === 'eligible'), heldOffer: heldOf(holds.value, offers.value) });
   }); }
   saveDraft(context, input) { return this.#read(context, () => this.#manual.saveDraft(context, input)); }
   claim(context, input) { return this.#safe(async () => {
@@ -270,7 +278,11 @@ export class ManualClaimsService {
     const claimed = await this.#repository.transaction(context, replay.command, async (tx) => {
       const checked = await this.#assertCurrent(tx, context, account.value, draft.value, time.value); if (checked.status !== 'ok') return checked;
       const occupied = await tx.list('holds', { employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId }); if (occupied.status !== 'ok') return occupied;
-      if (occupied.value.some((h) => occupying(h) || h.state === 'allocated')) return conflict('release-required');
+      if (occupied.value.some((h) => occupying(h) || h.state === 'allocated')) {
+        const buddy = occupied.value.find((h) => h.type === 'buddy-offer' && occupying(h)); if (!buddy) return conflict('release-required');
+        const offers = await tx.list('offers', { holdId: buddy.holdId }); if (offers.status !== 'ok') return offers;
+        return conflict('offer-held', heldOf(occupied.value, offers.value));
+      }
       const car = await tx.get(ref(context, 'stock', { orderUuid: input.orderUuid })); if (car.status !== 'ok') return car;
       if (car.value.version !== input.expectedStockVersion) return stale('stock', input.expectedStockVersion, car.value.version);
       if (car.value.state !== 'released' || car.value.available !== true || car.value.held === true || car.value.allocated === true) return conflict('stock-unavailable');
