@@ -46,7 +46,7 @@ test('local HTTPS launcher serves case entries and connects trusted Paula and Gr
   try {
     app = good(await startGcspDemo({ port: 0, tls: https.configuration, runtime: {
       mode: 'memory', environmentId: 'cases-local-demo', policyAsOf: '2026-11-06T09:00:00.000Z',
-      commandId: 'cases-local-bootstrap', sessionNow: () => '2026-11-06T09:00:00.000Z',
+      commandId: 'cases-local-bootstrap', sessionNow: () => '2026-11-06T09:00:00.000Z', adoptOfferJourney: true,
     } }));
     const { services, origin } = app;
     assert.ok(services.cases, 'The central runtime supplies the case service');
