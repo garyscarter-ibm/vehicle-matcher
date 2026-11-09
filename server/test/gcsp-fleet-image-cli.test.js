@@ -22,16 +22,20 @@ async function fixture(t) {
   const root = await mkdtemp(join(tmpdir(), 'fleet-image-cli-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const app = join(root, 'app'); await mkdir(app);
+  // The input holds one configuration; reference only the registry images bound to it.
+  const input = await sourceBackedInput(); const ids = new Set(input.configurations.map((row) => row.configurationId));
+  const images = APPROVED_CORPUS_IMAGES.filter((image) => ids.has(image.configurationId));
+  assert.equal(images.length, 1, 'exactly one approved image matches the source-backed configuration');
   for (const path of ['server/gcsp', 'server/vehicle-evidence', 'scripts/gcsp',
     'server/package.json', 'package.json', 'server/scripts/fleet-artifacts.mjs',
-    'server/data/gcsp/vehicle-evidence/vin-profiles.v1.json', APPROVED_CORPUS_IMAGES[0].asset]) {
+    'server/data/gcsp/vehicle-evidence/vin-profiles.v1.json', images[0].asset]) {
     await mkdir(dirname(join(app, path)), { recursive: true });
     await cp(join(project, path), join(app, path), { recursive: true, force: false, errorOnExist: true });
   }
   await symlink(await realpath(join(project, 'server/node_modules')), join(app, 'server/node_modules'), 'dir');
   const approved = { ...options, approvedImages: APPROVED_CORPUS_IMAGES };
-  const input = await sourceBackedInput(); const candidate = join(root, 'candidate');
-  const prepared = await writeCorpusCandidate(candidate, { ...input, images: APPROVED_CORPUS_IMAGES }, approved);
+  const candidate = join(root, 'candidate');
+  const prepared = await writeCorpusCandidate(candidate, { ...input, images }, approved);
   assert.equal(prepared.status, 'ok', JSON.stringify(prepared));
   const digest = hash(await readFile(join(candidate, 'manifest.json')));
   const cache = join(app, 'server/data/gcsp/vehicle-evidence/fleet-artifacts.v1');
@@ -71,7 +75,7 @@ process.on('exit',()=>writeFileSync(process.env.F62_CLI_EGRESS,JSON.stringify({c
     assert.equal(result.code, expectedCode, `${result.stdout}\n${result.stderr}`);
     return JSON.parse(result.stdout);
   }
-  return { root, app, digest, cache, retained, cli };
+  return { root, app, digest, cache, retained, cli, image: images[0] };
 }
 
 test('real restore CLI admits only code-owned image approval on cold and repeated offline restore', async (t) => {
@@ -81,7 +85,7 @@ test('real restore CLI admits only code-owned image approval on cold and repeate
   const repeated = await f.cli('server/scripts/fleet-artifacts.mjs', args);
   assert.equal(repeated.status, 'ok'); assert.equal(repeated.idempotent, true);
   const before = await readFile(join(store, 'active.json'));
-  const asset = join(f.app, APPROVED_CORPUS_IMAGES[0].asset); const bytes = await readFile(asset);
+  const asset = join(f.app, f.image.asset); const bytes = await readFile(asset);
   for (const mutation of ['missing', 'corrupt']) {
     if (mutation === 'missing') await rm(asset);
     else { const changed = Buffer.from(bytes); changed[0] ^= 1; await writeFile(asset, changed); }
