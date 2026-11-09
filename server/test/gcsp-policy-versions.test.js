@@ -171,6 +171,20 @@ const configured = Object.hasOwn(process.env, 'GCSP_DATABASE_URL');
 if (configured) providerContract('PostgreSQL (configured native target)', nativeFixture);
 else test('PostgreSQL native parity: NOT RUN; GCSP_DATABASE_URL unset, Render integration gate remains blocked', { skip: true }, () => {});
 
+test('memory provider returns one stable snapshot per run until a publish (FUCQ-226)', async () => {
+  const provider = new MemoryPolicyProvider();
+  const first = await provider.loadVersions({ runId: 'fucq226-r1' });
+  const second = await provider.loadVersions({ runId: 'fucq226-r1' });
+  assert.equal(first, second);
+  const other = await provider.loadVersions({ runId: 'fucq226-r2' });
+  assert.notEqual(other, first); assert.deepEqual(other, first);
+  const retag = (value) => JSON.parse(JSON.stringify(value, (key, item) => (key === 'policyVersion' ? 'fucq226-v2' : item)));
+  const outcome = await provider.publish({ runId: 'fucq226-r1' }, async (records) => ({
+    record: { ...records[0], seed: { ...retag(records[0].seed), effectiveFrom: nextDate } }, outcome: 'done' }));
+  assert.equal(outcome, 'done');
+  assert.notEqual(await provider.loadVersions({ runId: 'fucq226-r1' }), first);
+});
+
 test('additive migration discovery retains existing 0001 and 0003 and includes dated policy tables', async () => {
   const migrations = await loadMigrations();
   // 0004 is FUCQ-104's supply records, 0005 FUCQ-136's comparison results, 0006 FUCQ-220's order reference index, 0007 FUCQ-78's observed aggregate status.
