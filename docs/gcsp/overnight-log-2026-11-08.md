@@ -142,3 +142,4 @@ Entries are added as work merges.
   3. FUCQ-228: is "Open your account to check for a new offer" the right next step?
   4. FUCQ-230: is it OK that the fixture test re-pins code pins only in its temporary copy?
 - **Flake seen:** render.test.js "no em dashes in painted copy" hit its 5 s limit once under load; it passes on its own.
+- **FUCQ-174, 175 and 176 (C) are claimed but waiting.** They change the same comparison code as FUCQ-137/138, which are building now, so they run after 138, as you asked. I claimed them early so that Russell's poller doesn't start them in parallel.
