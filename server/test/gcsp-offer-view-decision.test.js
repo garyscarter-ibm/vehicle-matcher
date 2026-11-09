@@ -86,6 +86,23 @@ test('reason keyboard focus remains usable when the authoritative hold deadline 
   assert.equal(f.calls.some((call) => call.options.method === 'POST'), false);
 });
 
+test('GC-042: opening Decline focuses the reason select once reasons load, and a poll mid-read never parks focus on Cancel', async (t) => {
+  const waits = []; const f = setup(t, { reasonRead: ({ reasons }) => { const wait = deferred(); waits.push(wait); return wait.promise.then(() => response({ status: 'ok', value: reasons })); } });
+  const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root, { decide: (kind, options) => f.controller.decision(kind, options), cancelDecline: f.controller.cancelDecline,
+    selectReason: f.controller.selectDeclineReason, refreshReasons: f.controller.refreshDeclineReasons });
+  t.after(() => view.destroy()); f.controller.subscribe(view.update); await f.controller.refresh();
+  root.querySelector('[data-offer-action="decline"]').focus(); const opening = f.controller.decision('decline');
+  const select = root.querySelector('select'); assert.equal(select.disabled, true);
+  assert.equal(document.activeElement.getAttribute('role'), 'status'); assert.match(document.activeElement.textContent, /Loading reasons/);
+  waits.shift().resolve(); await opening; await turn();
+  assert.equal(select.disabled, false); assert.equal(document.activeElement, select);
+  const poll = f.controller.refresh(); await turn();
+  assert.notEqual(document.activeElement.dataset.offerAction, 'decline-cancel'); assert.equal(document.activeElement.getAttribute('role'), 'status');
+  waits.shift().resolve(); await poll; await turn();
+  assert.equal(document.activeElement, select); assert.equal(select.disabled, false);
+});
+
 test('nested offer preview composes existing base and shell styles before offer styles', async () => {
   const preview = new URL('../../blocks/gcsp/offer/preview.html', import.meta.url);
   const html = await readFile(preview, 'utf8');

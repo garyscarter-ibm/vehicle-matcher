@@ -6,6 +6,7 @@ import { mountFollowupBody } from '../offer-followup/gcsp-offer-followup.js';
 import { mountOrderProgress } from '../order-progress/gcsp-order-progress.js';
 import { createOrderProgressHttpAdapter } from '../order-progress/order-progress-http.js';
 import { createCaseHttpAdapter } from '../cases/http-adapter.js';
+import { PORTAL_ROUTES, signedInPortal } from './portal-links.js';
 
 // Both account reads use the ordinary employee session; offer access remains independently scoped.
 export function mountOfferEntry(root, { fetch: request = globalThis.fetch, location = globalThis.location,
@@ -23,11 +24,11 @@ export function mountOfferEntry(root, { fetch: request = globalThis.fetch, locat
     const current = await account.loadAccount({ signal: abort.signal });
     if (disposed) return;
     root.removeAttribute('aria-busy');
-    cleanup = mountOffer(root, { ...offer, account: current,
+    cleanup = mountOffer(root, { ...offer, account: current, ...signedInPortal(current, location),
       order: { mount: (host, { orderUuid, car }) => mountOrderProgress(host, { adapter: progress, helpAdapter, orderUuid, car,
         embedded: true, headingLevel: 2, signal: abort.signal }) },
       followup: { loadAccount: account.loadAccount,
-        mount: (host, { decisionId, signal }) => mountFollowupBody(host, { decisionId, signal, hostRefresh: true,
+        mount: (host, { decisionId, signal }) => mountFollowupBody(host, { decisionId, signal, hostRefresh: true, headingLevel: 2, activityHref: PORTAL_ROUTES.activity,
           fetchImpl: request, projectOffer: toOfferPresentation,
           openOffer: ({ offerId, runId }) => location.assign(`/gcsp/offer?offerId=${encodeURIComponent(offerId)}&runId=${encodeURIComponent(runId)}`) }) } });
   })();

@@ -3,6 +3,7 @@ import { renderOptionList, renderRangeSlider } from '../../vehicle-matcher/modes
 import { matchCard } from '../../vehicle-matcher/modes/result-card.js';
 import { labelledField } from '../kit/form-controls.js';
 import { dataTable } from '../kit/data-table.js';
+import { bodyStyleLabel, longDate } from '../kit/plain-copy.js';
 import { ACCESS_LAPSED_TITLE, ACCESS_LAPSED_MESSAGE, accessLapsedScreen } from '../kit/run-restarted.js';
 
 let sequence = 0;
@@ -37,7 +38,7 @@ function sources(comparison) {
     const offer = comparison[key].offer; const quote = offer.quote;
     section.append(el('h3', null, name), factList([
       { label: 'Quote', value: quote.quoteId }, { label: 'Brief version at quote', value: quote.briefVersion },
-      { label: 'Policy at quote', value: quote.policyVersion }, { label: 'Quoted at', value: quote.quotedAt },
+      { label: 'Policy at quote', value: quote.policyVersion }, { label: 'Quoted at', value: longDate(quote.quotedAt) },
     ]));
   }
   for (const row of comparison.requirements) {
@@ -49,8 +50,7 @@ function sources(comparison) {
       for (const [field, fact] of Object.entries(row[key] ?? {})) {
         section.append(el('h4', null, `${name}: ${label(field)}`), factList([
           { label: 'Quoted value', value: fact?.status === 'known' ? valueText(fact.value) : null, unit: fact?.unit },
-          { label: 'Source', value: fact?.provenance?.sourceRef }, { label: 'Source version', value: fact?.provenance?.version },
-          { label: 'Observed at', value: fact?.provenance?.observedAt }, { label: 'Assurance', value: fact?.provenance?.assurance },
+          { label: 'Checked on', value: longDate(fact?.provenance?.observedAt) }, { label: 'Assurance', value: fact?.provenance?.assurance },
         ]));
       }
     }
@@ -59,20 +59,22 @@ function sources(comparison) {
 }
 
 /** Shared controls remain mounted while an answer changes. projectOffer is FUCQ-105's public projector.
- * hostRefresh: the embedding page already shows "Check current state", so this view omits its own. */
-export function createFollowupView(root, { choose, confirm, refresh, projectOffer, openOffer, hostRefresh = false } = {}) {
+ * hostRefresh: the embedding page already shows "Check current state", so this view omits its own.
+ * headingLevel: 1 on the standalone page; an embedding page that owns the h1 passes 2.
+ * activityHref: when given, a saved change offers a primary link to buddy activity. */
+export function createFollowupView(root, { choose, confirm, refresh, projectOffer, openOffer, hostRefresh = false, headingLevel = 1, activityHref } = {}) {
   const prefix = `gcsp-followup-${++sequence}`;
   const page = el('div', 'vm gcsp-followup'); const content = el('div', 'gcsp-followup-content');
   const live = el('p', 'gcsp-followup-live'); live.setAttribute('role', 'status');
   live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true');
   page.append(content, live); root.replaceChildren(page);
-  let structure; let control; let field; let error; let reason; let confirmButton; let lastAnnouncement = '';
+  let structure; let control; let field; let error; let reason; let confirmButton; let lastAnnouncement = ''; let saving = false;
   const action = (name, text, onClick, variant = 'ghost') => {
     const node = button({ label: text, onClick, variant }); node.dataset.followupAction = name; return node;
   };
   const refreshAction = () => (hostRefresh ? [] : [action('refresh', 'Check current state', () => refresh?.())]);
   function drawQuestion(model) {
-    content.append(screenIntro({ title: 'One change to your brief', level: 1 }));
+    content.append(screenIntro({ title: 'One change to your brief', level: headingLevel }));
     const form = el('form', 'gcsp-followup-question'); form.addEventListener('submit', (event) => { event.preventDefault(); confirm?.(); });
     const question = model.question;
     const adding = question.currentValue === null;
@@ -80,7 +82,9 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
     if (adding) field.append(el('p', 'gcsp-note', 'Not in your brief yet. Your answer adds it.'));
     const host = el('div', 'gcsp-followup-control'); field.append(host);
     if (question.control.kind === 'options') {
-      control = renderOptionList({ id: prefix, options: question.control.options }, null,
+      // The reviewed policy labels "Coupe" and "MPV"; the shared body-style copy reads Coupé and Family carrier.
+      const options = question.control.options.map((o) => ({ ...o, label: question.path === 'preferences.body.value' ? bodyStyleLabel(o.value) ?? o.label : o.label }));
+      control = renderOptionList({ id: prefix, options }, null,
         { value: model.value, ariaLabel: question.prompt, onValueChange: (v) => choose?.(v) }); host.append(control.list);
     } else if (question.control.kind === 'slider') {
       control = renderRangeSlider(host, { id: prefix, min: question.control.minimum, max: question.control.maximum, step: 1 }, null,
@@ -111,10 +115,10 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
       if (previous?.status !== 'ok' || next?.status !== 'ok'
         || previous.value.card?.members?.length !== 1 || next.value.card?.members?.length !== 1) return false;
     } catch { return false; }
-    content.append(screenIntro({ title: 'Your next car offer', level: 1, lede: 'Compare the quoted cars with your confirmed answers.' }));
+    content.append(screenIntro({ title: 'Your next car offer', level: headingLevel, lede: 'Compare the quoted cars with your confirmed answers.' }));
     const columns = el('div', 'gcsp-followup-cars');
     for (const [name, presented] of [['Declined offer', previous], ['Next offer', next]]) {
-      const section = el('section', 'gcsp-followup-car'); section.append(el('h2', null, name));
+      const section = el('section', 'gcsp-followup-car'); section.append(el(`h${headingLevel + 1}`, null, name));
       const card = structuredClone(presented.value.card); card.members[0].actions = [];
       section.append(matchCard(null, { view: card, big: true, showScore: false }));
       section.querySelectorAll('[aria-live]').forEach((node) => node.removeAttribute('aria-live')); columns.append(section);
@@ -128,7 +132,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
     content.append(...refreshAction()); return true;
   }
   function draw(model) {
-    const hadFocus = content.contains(root.ownerDocument.activeElement); content.replaceChildren();
+    const active = root.ownerDocument.activeElement; const hadFocus = content.contains(active) || active === root; content.replaceChildren();
     control = null; field = null; error = null; reason = null; confirmButton = null;
     let ready = false;
     if (model.state === 'ready') {
@@ -143,6 +147,9 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
       const [title, message] = messages[key] || messages.unavailable;
       const actions = [];
       if (key === 'confirmation-uncertain') actions.push(action('retry', 'Retry the same change', () => confirm?.(), 'primary'));
+      if (activityHref && model.savedChange && ['change-saved', 'waiting', 'no-match'].includes(key)) {
+        const link = button({ label: 'See your buddy activity', variant: 'primary', href: activityHref }); link.dataset.followupLink = 'activity'; actions.push(link);
+      }
       if (!['idle', 'loading', 'forbidden', 'stale-run'].includes(key)) actions.push(...refreshAction());
       const checked = model.evaluation?.carsChecked;
       const head = checked === 1 ? 'The 1 car checked does not fit your updated brief.'
@@ -155,11 +162,18 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
       const note = el('p', 'gcsp-note', `Your change is saved in brief version ${model.savedChange.briefVersion}.`);
       note.dataset.followupSaved = ''; content.prepend(note);
     }
-    if (hadFocus) { const heading = content.querySelector('h1, h2'); if (heading) { heading.tabIndex = -1; heading.focus(); } }
+    if (hadFocus) focusHeading();
   }
+  function focusHeading() { const heading = content.querySelector('h1, h2'); if (heading) { heading.tabIndex = -1; heading.focus(); } }
   function update(model) {
     const next = JSON.stringify([model.state, model.question?.questionVersion, model.comparison, model.savedChange, model.evaluation]);
     if (next !== structure) { draw(model); structure = next; }
+    // The disabled Confirm drops focus to body, so the outcome heading takes it once the save settles.
+    if (model.busy && ['question', 'confirmation-uncertain'].includes(model.state)) saving = true;
+    else if (saving && !model.busy) {
+      saving = false; const active = root.ownerDocument.activeElement;
+      if (!active || active === root.ownerDocument.body || active.disabled) focusHeading();
+    }
     page.setAttribute('aria-busy', String(model.busy));
     if (model.state === 'question' && control) {
       field.disabled = Boolean(model.busy); control.update({ value: model.value, disabled: Boolean(model.busy) });
@@ -170,7 +184,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
     }
     content.querySelectorAll('[data-followup-action]').forEach((node) => { if (node !== confirmButton) node.disabled = Boolean(model.busy); });
     const announcement = model.state === 'question' ? model.busy ? 'Saving your change.' : model.error || model.question.prompt
-      : model.state === 'ready' ? content.querySelector('h1')?.textContent || 'Next-offer status unavailable'
+      : model.state === 'ready' ? content.querySelector(`h${headingLevel}`)?.textContent || 'Next-offer status unavailable'
         : (messages[model.state] || messages.unavailable)[0];
     if (announcement !== lastAnnouncement) { live.textContent = announcement; lastAnnouncement = announcement; }
   }

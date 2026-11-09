@@ -1,0 +1,672 @@
+[
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp/access?next=%2Fgcsp-presenter.html"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "scenarioOption": "radio false"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "step": "brief",
+  "h1": "Your car brief",
+  "focus": "BODY:Skip to contentGroup Car Schemes PortalPPaula (fic"
+ },
+ {
+  "dump": "brief",
+  "buttons": [
+   "Go to your preview",
+   "Hatchback",
+   "Saloon",
+   "Estate",
+   "SUV",
+   "Coupé",
+   "Convertible",
+   "Family carrier",
+   "I don't mind",
+   "Petrol",
+   "Diesel",
+   "Plug-in hybrid",
+   "Electric",
+   "I don't mind",
+   "I don't mind",
+   "I don't mind",
+   "I don't mind",
+   "I don't mind",
+   "Yes",
+   "No",
+   "Not sure yet",
+   "Yes",
+   "No",
+   "Not sure yet",
+   "Yes",
+   "No",
+   "Not sure yet",
+   "Yes",
+   "No",
+   "Not sure yet"
+  ]
+ },
+ {
+  "shot": {
+   "file": "paula-offer-1280-01-brief.png",
+   "url": "/gcsp-brief-live.html",
+   "h1": "Your car brief",
+   "audit": {
+    "title": "Your car brief · GCSP",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Your car brief",
+     "H3:Synthetic 3 Series Touring 320i",
+     "H3:Synthetic 1 Series Sports Hatch 120",
+     "H3:Synthetic 3 Series Saloon 320i",
+     "H3:Synthetic 3 Series Saloon 320i",
+     "H3:Synthetic 3 Series Touring 320i",
+     "H3:Synthetic i5 eDrive40 Touring",
+     "H2:What matters to you",
+     "H2:What your car needs to do",
+     "H2:Cars for your brief",
+     "H3:Synthetic 3 Series Touring 320i",
+     "H3:Synthetic 1 Series Sports Hatch 120",
+     "H3:Synthetic 3 Series Saloon 320i",
+     "H3:Synthetic 3 Series Saloon 320i",
+     "H3:Synthetic 3 Series Touring 320i",
+     "H3:Synthetic i5 eDrive40 Touring"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Save brief"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "statuspolite:\"4 eligible cars.\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 11,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 82
+   }
+  }
+ },
+ {
+  "reflow320": "brief",
+  "x": 0,
+  "wide": []
+ },
+ {
+  "tab": "brief",
+  "stops": 33,
+  "order": [
+   "A:Skip to content",
+   "SUMMARY:Account details for Paula (fictional)",
+   "BUTTON:Your car brief",
+   "BUTTON:Show labels",
+   "SUMMARY:Presenter controls",
+   "A:Go to your preview",
+   "SUMMARY:Your scheme and starting answers",
+   "BUTTON:Estate",
+   "INPUT:Body style: how much it matters",
+   "BUTTON:I don't mind",
+   "BUTTON:Petrol",
+   "INPUT:Fuel: how much it matters",
+   "BUTTON:I don't mind",
+   "INPUT:Sportiness: what you prefer",
+   "INPUT:Sportiness: how much it matters",
+   "BUTTON:I don't mind",
+   "INPUT:Comfort: what you prefer",
+   "INPUT:Comfort: how much it matters",
+   "BUTTON:I don't mind",
+   "INPUT:Economy: what you prefer",
+   "INPUT:Economy: how much it matters",
+   "BUTTON:I don't mind",
+   "INPUT:Size: what you prefer",
+   "INPUT:Size: how much it matters",
+   "BUTTON:I don't mind",
+   "BUTTON:Yes",
+   "BUTTON:Not sure yet",
+   "BUTTON:Not sure yet",
+   "BUTTON:No",
+   "BUTTON:Search for cars for me",
+   "BUTTON:Hold a suitable car for me",
+   "BUTTON:Save this brief",
+   "BODY:Skip to contentGroup Car Schemes PortalP"
+  ],
+  "noRing": [
+   "INPUT:Body style: how much it matters",
+   "INPUT:Fuel: how much it matters",
+   "INPUT:Sportiness: what you prefer",
+   "INPUT:Sportiness: how much it matters",
+   "INPUT:Comfort: what you prefer",
+   "INPUT:Comfort: how much it matters",
+   "INPUT:Economy: what you prefer",
+   "INPUT:Economy: how much it matters",
+   "INPUT:Size: what you prefer",
+   "INPUT:Size: how much it matters"
+  ],
+  "bodyHit": true
+ },
+ {
+  "dump": "activity-before",
+  "buttons": [
+   "Search actions",
+   "View offer"
+  ]
+ },
+ {
+  "shot": {
+   "file": "paula-offer-1280-02-activity-before-release.png",
+   "url": "/gcsp-activity-live.html",
+   "h1": "Your buddy",
+   "audit": {
+    "title": "Buddy activity · GCSP",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Your buddy",
+     "H2:Your offer",
+     "H3:Synthetic 3 Series Touring 320i",
+     "H2:Activity",
+     "H2:Renewal help",
+     "H2:No renewal case"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Activity",
+     "section:Renewal help"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "status:\"Active\"",
+     "statuspolite:\"\"",
+     "status:\"No renewal caseHelp is available if you need the scheme team\"",
+     "polite:\"\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 0,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 43
+   }
+  }
+ },
+ {
+  "nextReleaseDisabled": "Presenter controls Scenario Decline then change Run demo-ddb79862f9bffd9eef200b496c32fd6b DemoClock (UTC) 2026-11-05T09:30:00.000Z Acting principal Paula (fictional) (employee) Tick (60 seconds) Named time or UTC target Tick to target Next release Next release unavailable: No future release cue is configured. Scenario Main successful journey Available No suitable match Available Decline then chang"
+ },
+ {
+  "step": "activity-after",
+  "h1": "Your buddy"
+ },
+ {
+  "dump": "activity-after",
+  "buttons": [
+   "Search actions",
+   "View offer"
+  ]
+ },
+ {
+  "shot": {
+   "file": "paula-offer-1280-03-activity-found.png",
+   "url": "/gcsp-activity-live.html",
+   "h1": "Your buddy",
+   "audit": {
+    "title": "Buddy activity · GCSP",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Your buddy",
+     "H2:Your offer",
+     "H3:Synthetic 3 Series Touring 320i",
+     "H2:Activity",
+     "H2:Renewal help",
+     "H2:No renewal case"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Activity",
+     "section:Renewal help"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "status:\"Active\"",
+     "statuspolite:\"\"",
+     "status:\"No renewal caseHelp is available if you need the scheme team\"",
+     "polite:\"\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 0,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 43
+   }
+  }
+ },
+ {
+  "reflow320": "activity",
+  "x": 0,
+  "wide": []
+ },
+ {
+  "tab": "activity",
+  "stops": 4,
+  "order": [
+   "BUTTON:Search actions",
+   "A:View offer",
+   "SUMMARY:Get help with your renewal",
+   "BODY:Skip to contentGroup Car Schemes PortalP"
+  ],
+  "noRing": [],
+  "bodyHit": true
+ },
+ {
+  "offerLink": "A View offer /gcsp/offer?offerId=buddy-offer%3Aa2f67500ae4b1313e376ff84ade1bcea8731f33fb60514b2e6baccbbf94dc516&runId=demo-ddb79862f9bffd9eef200b496c32fd6b"
+ },
+ {
+  "step": "offer",
+  "h1": "Your car offer",
+  "url": "/gcsp/offer?offerId=buddy-offer%3Aa2f67500ae4b1313e376ff84ade1bcea8731f33fb60514b2e6baccbbf94dc516&runId=demo-ddb79862f9bffd9eef200b496c32fd6b",
+  "focus": "BODY:Skip to contentGroup Car Schemes PortalPPaula (fic"
+ },
+ {
+  "dump": "offer",
+  "buttons": [
+   "Accept this offer",
+   "Decline this offer",
+   "Check current state"
+  ]
+ },
+ {
+  "shot": {
+   "file": "paula-offer-1280-04-offer.png",
+   "url": "/gcsp/offer?offerId=buddy-offer%3Aa2f67500ae4b1313e376ff84ade1bcea8731f33fb60514b2e6baccbbf94dc516&runId=demo-ddb79862f9bffd9eef200b496c32fd6b",
+   "h1": "Your car offer",
+   "audit": {
+    "title": "GCSP your offer",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Your car offer",
+     "H3:Synthetic 3 Series Touring 320i",
+     "H2:Your current car",
+     "H3:Fictional BMW 320i Touring",
+     "H2:Before you accept"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:The offered car",
+     "section:Before you accept",
+     "section:Decline this offer",
+     "section:Check your choices"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "polite:\"EligibleWhy it suits youAvailable by Tuesday 1 December 2026\"",
+     "status:\"\"",
+     "statuspolite:\"Your car offer\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 0,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 43
+   }
+  }
+ },
+ {
+  "reflow320": "offer",
+  "x": 0,
+  "wide": []
+ },
+ {
+  "tab": "offer",
+  "stops": 10,
+  "order": [
+   "A:Skip to content",
+   "SUMMARY:Account details for Paula (fictional)",
+   "BUTTON:Show labels",
+   "SUMMARY:Presenter controls",
+   "INPUT:on",
+   "INPUT:on",
+   "INPUT:on",
+   "BUTTON:Decline this offer",
+   "BUTTON:Check current state",
+   "BODY:Skip to contentGroup Car Schemes PortalP"
+  ],
+  "noRing": [],
+  "bodyHit": true
+ },
+ {
+  "step": "decline-form",
+  "h1": "Your car offer",
+  "focus": "SELECT:Choose a reasonBody styleSizeFuel typeEquipment"
+ },
+ {
+  "dump": "decline",
+  "buttons": [
+   "Accept this offer",
+   "Confirm decline",
+   "Cancel",
+   "Check reasons again",
+   "Check current state"
+  ]
+ },
+ {
+  "shot": {
+   "file": "paula-offer-1280-05-decline-form.png",
+   "url": "/gcsp/offer?offerId=buddy-offer%3Aa2f67500ae4b1313e376ff84ade1bcea8731f33fb60514b2e6baccbbf94dc516&runId=demo-ddb79862f9bffd9eef200b496c32fd6b",
+   "h1": "Your car offer",
+   "audit": {
+    "title": "GCSP your offer",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Your car offer",
+     "H3:Synthetic 3 Series Touring 320i",
+     "H2:Your current car",
+     "H3:Fictional BMW 320i Touring",
+     "H2:Before you accept"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:The offered car",
+     "section:Before you accept",
+     "section:Decline this offer",
+     "section:Check your choices"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "polite:\"EligibleWhy it suits youAvailable by Tuesday 1 December 2026\"",
+     "status:\"\"",
+     "statuspolite:\"Your car offer\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 0,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 46
+   }
+  }
+ },
+ {
+  "tab": "decline",
+  "stops": 5,
+  "order": [
+   "BUTTON:Confirm decline",
+   "BUTTON:Cancel",
+   "BUTTON:Check reasons again",
+   "BUTTON:Check current state",
+   "BODY:Skip to contentGroup Car Schemes PortalP"
+  ],
+  "noRing": [],
+  "bodyHit": true
+ },
+ {
+  "step": "decline-no-reason",
+  "focus": "H2:Check your choices",
+  "text": "Choose a reason Body style Size Fuel type Equipment Choose a reason. Confirm decline Cancel Check reasons again Check current state Your car offer"
+ },
+ {
+  "shot": {
+   "file": "paula-offer-1280-06-decline-no-reason.png",
+   "url": "/gcsp/offer?offerId=buddy-offer%3Aa2f67500ae4b1313e376ff84ade1bcea8731f33fb60514b2e6baccbbf94dc516&runId=demo-ddb79862f9bffd9eef200b496c32fd6b",
+   "h1": "Your car offer",
+   "audit": {
+    "title": "GCSP your offer",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Your car offer",
+     "H3:Synthetic 3 Series Touring 320i",
+     "H2:Your current car",
+     "H3:Fictional BMW 320i Touring",
+     "H2:Before you accept",
+     "H2:Check your choices"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:The offered car",
+     "section:Before you accept",
+     "section:Decline this offer",
+     "section:Check your choices"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "polite:\"EligibleWhy it suits youAvailable by Tuesday 1 December 2026\"",
+     "status:\"\"",
+     "statuspolite:\"Your car offer\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 0,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 47
+   }
+  }
+ },
+ {
+  "step": "decline-reason-chosen",
+  "text": "Choose a reason Body style Size Fuel type Equipment Confirm decline Cancel Check reasons again Check current state Your car offer"
+ },
+ {
+  "shot": {
+   "file": "paula-offer-1280-07-decline-reason-body-style.png",
+   "url": "/gcsp/offer?offerId=buddy-offer%3Aa2f67500ae4b1313e376ff84ade1bcea8731f33fb60514b2e6baccbbf94dc516&runId=demo-ddb79862f9bffd9eef200b496c32fd6b",
+   "h1": "Your car offer",
+   "audit": {
+    "title": "GCSP your offer",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Your car offer",
+     "H3:Synthetic 3 Series Touring 320i",
+     "H2:Your current car",
+     "H3:Fictional BMW 320i Touring",
+     "H2:Before you accept"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:The offered car",
+     "section:Before you accept",
+     "section:Decline this offer",
+     "section:Check your choices"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "polite:\"EligibleWhy it suits youAvailable by Tuesday 1 December 2026\"",
+     "status:\"\"",
+     "statuspolite:\"Your car offer\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 0,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 46
+   }
+  }
+ },
+ {
+  "step": "declined",
+  "h1": "Offer declined",
+  "url": "/gcsp/offer?offerId=buddy-offer%3Aa2f67500ae4b1313e376ff84ade1bcea8731f33fb60514b2e6baccbbf94dc516&runId=demo-ddb79862f9bffd9eef200b496c32fd6b",
+  "focus": "H2:One change to your brief",
+  "buttons": [
+   "Hatchback",
+   "Saloon",
+   "Estate",
+   "SUV",
+   "Coupé",
+   "Convertible",
+   "Family carrier",
+   "Confirm this change",
+   "Check current state"
+  ]
+ },
+ {
+  "dump": "declined",
+  "buttons": [
+   "Hatchback",
+   "Saloon",
+   "Estate",
+   "SUV",
+   "Coupé",
+   "Convertible",
+   "Family carrier",
+   "Confirm this change",
+   "Check current state"
+  ]
+ },
+ {
+  "shot": {
+   "file": "paula-offer-1280-08-declined.png",
+   "url": "/gcsp/offer?offerId=buddy-offer%3Aa2f67500ae4b1313e376ff84ade1bcea8731f33fb60514b2e6baccbbf94dc516&runId=demo-ddb79862f9bffd9eef200b496c32fd6b",
+   "h1": "Offer declined",
+   "audit": {
+    "title": "GCSP your offer",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Offer declined",
+     "H2:One change to your brief"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Your next offer"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "alert:\"\"",
+     "statuspolite:\"Which body style would you prefer?\"",
+     "statuspolite:\"Offer declined\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 0,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 46
+   }
+  }
+ },
+ {
+  "tab": "declined",
+  "stops": 3,
+  "order": [
+   "BUTTON:Estate",
+   "BUTTON:Check current state",
+   "BODY:Skip to contentGroup Car Schemes PortalP"
+  ],
+  "noRing": [],
+  "bodyHit": true
+ },
+ {
+  "reflow320": "declined",
+  "x": 0,
+  "wide": []
+ },
+ {
+  "done": true
+ }
+]

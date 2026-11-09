@@ -424,3 +424,60 @@ test('a lapsed access key links to the access form, back to the account, since a
   assert.equal(document.activeElement, link); assert.equal(root.querySelectorAll('button').length, 0); assert.doesNotMatch(root.textContent, /Reload|could not be loaded|Try again/);
   view.destroy(); root.remove();
 });
+
+test('GC-041: an accepted offer leads on to order progress and Your cars beside the heading, only when the host supplies the routes', () => {
+  const links = { orderProgress: '/gcsp-order-progress-live.html', cars: '/gcsp-account.html' };
+  const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root, { links, mountOrder: (host) => { host.append(document.createElement('p')); return () => {}; } });
+  view.update(acceptedModel());
+  const [progress, cars] = [...root.querySelectorAll('a.vm-btn')];
+  assert.equal(progress.textContent, 'View order progress'); assert.equal(progress.getAttribute('href'), links.orderProgress);
+  assert.ok(progress.classList.contains('vm-btn-primary'));
+  assert.equal(cars.textContent, 'Back to Your cars'); assert.equal(cars.getAttribute('href'), links.cars); assert.ok(cars.classList.contains('vm-btn-ghost'));
+  const before = (a, b) => Boolean(a.compareDocumentPosition(b) & dom.window.Node.DOCUMENT_POSITION_FOLLOWING);
+  assert.ok(before(root.querySelector('h1'), progress)); assert.ok(before(cars, root.querySelector('.vm-card')));
+  assert.ok(before(cars, root.querySelector('.gcsp-offer-order'))); assert.ok(before(progress, root.querySelector('[data-offer-action=refresh]')));
+  for (const state of ['pending', 'declined', 'expired', 'uncertain']) { view.update(acceptedModel(state)); assert.equal(root.querySelectorAll('a.vm-btn').length, 0, state); }
+  view.destroy(); root.remove();
+  const bare = document.createElement('div'); document.body.append(bare); const plain = createOfferView(bare, {});
+  plain.update(acceptedModel()); assert.equal(bare.querySelectorAll('a.vm-btn').length, 0); plain.destroy(); bare.remove();
+});
+
+test('GC-041: after Accept focus moves to the Offer accepted heading, and a background change to accepted leaves focus alone', () => {
+  const root = document.createElement('div'); document.body.append(root);
+  const pending = { ...offerFixture('pending').value, canAccept: true, canDecline: true, countdown: '2 hours remaining' };
+  let view; const decide = () => { view.update({ ...acceptedModel('uncertain'), message: 'Checking your decision. Please wait.' }); view.update(acceptedModel()); };
+  view = createOfferView(root, { decide });
+  view.update(pending); root.querySelector('[data-offer-action=accept]').focus(); root.querySelector('[data-offer-action=accept]').click();
+  const heading = root.querySelector('h1'); assert.equal(heading.textContent, 'Offer accepted');
+  assert.equal(document.activeElement, heading); assert.equal(heading.getAttribute('tabindex'), '-1');
+  view.update({ ...acceptedModel(), now: '2026-11-06T12:00:00Z' }); assert.equal(document.activeElement, heading);
+  view.update(pending); root.querySelector('[data-offer-action=accept]').focus(); view.update(acceptedModel());
+  assert.notEqual(document.activeElement, root.querySelector('h1'));
+  view.destroy(); root.remove();
+});
+
+test('GC-041: mountOffer shows the host navigation in the rail, and an empty rail without one', async () => {
+  const { mountOffer } = await import('../../blocks/gcsp/offer/gcsp-offer.js');
+  const { signedInPortal, PORTAL_ROUTES } = await import('../../blocks/gcsp/offer/portal-links.js');
+  const assigned = []; const location = { assign: (to) => assigned.push(to) };
+  const read = async () => offerFixture('accepted');
+  const signedIn = document.createElement('div'); document.body.append(signedIn);
+  const portal = signedInPortal({ status: 'ready', name: 'Paula' }, location);
+  const stop = mountOffer(signedIn, { read, account: { status: 'ready', name: 'Paula' }, ...portal });
+  await new Promise((done) => setTimeout(done, 20));
+  const items = [...signedIn.querySelectorAll('nav button[data-key]')];
+  assert.deepEqual(items.map((node) => node.dataset.key), ['cars', 'brief', 'activity', 'order-progress']);
+  assert.ok(items.every((node) => node.getAttribute('aria-disabled') !== 'true'));
+  assert.equal(items.find((node) => node.dataset.key === 'activity').textContent.includes('Buddy activity'), true);
+  for (const item of items) item.click();
+  assert.deepEqual(assigned, [PORTAL_ROUTES.cars, PORTAL_ROUTES.brief, PORTAL_ROUTES.activity, PORTAL_ROUTES['order-progress']]);
+  assert.equal(PORTAL_ROUTES.brief, '/gcsp-brief-live.html');
+  assert.deepEqual([...signedIn.querySelectorAll('a.vm-btn')].map((a) => a.getAttribute('href')), [PORTAL_ROUTES['order-progress'], PORTAL_ROUTES.cars]);
+  stop();
+  assert.deepEqual(signedInPortal({ status: 'unavailable' }, location), {}); assert.deepEqual(signedInPortal(undefined, location), {});
+  const anonymous = document.createElement('div'); document.body.append(anonymous);
+  const stopAnonymous = mountOffer(anonymous, { read, account: { status: 'unavailable' }, ...signedInPortal({ status: 'unavailable' }, location) });
+  await new Promise((done) => setTimeout(done, 20));
+  assert.equal(anonymous.querySelectorAll('nav button[data-key]').length, 0); assert.equal(anonymous.querySelectorAll('a.vm-btn').length, 0); stopAnonymous();
+});

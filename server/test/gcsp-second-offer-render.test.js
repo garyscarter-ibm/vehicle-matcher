@@ -134,7 +134,7 @@ test('comparison uses the supplied offer projector, shared cards/table and exact
     ] } });
   assert.deepEqual(calls, ['first-car', 'second-car']); assert.equal(root.querySelectorAll('.gcsp-followup-car').length, 2);
   assert.match(root.querySelector('table').textContent, /At least 430 \(L\)/); assert.match(root.querySelector('table').textContent, /400 \(L\)/);
-  assert.match(root.querySelector('table').textContent, /Not supplied/); assert.match(root.querySelector('details').textContent, /dated-source/);
+  assert.match(root.querySelector('table').textContent, /Not supplied/); assert.match(root.querySelector('details').textContent, /Checked on.*Thursday 5 November 2026/);
   assert.match(root.querySelector('details').textContent, /policy-1/); assert.doesNotMatch(root.textContent, /better fit|90%/i);
   root.querySelector('[data-followup-action=open]').click(); assert.deepEqual(opened, [{ offerId: 'second-car' }]);
   assert.equal(root.querySelector('table th').scope, 'col'); assert.equal(root.querySelector('.gcsp-table-wrap').tabIndex, 0);
@@ -183,4 +183,120 @@ test('a lapsed access key links to the access form with no refresh', (t) => {
   assert.match(root.textContent, /Demo access needed/); assert.equal(root.querySelectorAll('button').length, 0);
   assert.equal(root.querySelector('a.vm-btn').getAttribute('href'), '/gcsp/access?next=%2Fgcsp-account.html');
   assert.equal(root.querySelector('[data-followup-action=refresh]'), null); assert.doesNotMatch(root.textContent, /unavailable/i);
+});
+
+const bodyOptions = ['hatchback', 'saloon', 'estate', 'suv', 'coupe', 'convertible', 'mpv'];
+const reviewed = { hatchback: 'Hatchback', saloon: 'Saloon', estate: 'Estate', suv: 'SUV', coupe: 'Coupe', convertible: 'Convertible', mpv: 'MPV' };
+
+test('GC-042: body-style options read Coupé and Family carrier, send the same values and leave other questions alone', (t) => {
+  const choices = []; const { root, view } = host(t, { choose: (v) => choices.push(v) }); const model = question();
+  model.question.path = 'preferences.body.value'; model.question.control.options = bodyOptions.map((value) => ({ value, label: reviewed[value] }));
+  view.update({ ...model, value: 'estate' });
+  assert.deepEqual([...root.querySelectorAll('[role=radio]')].map((node) => node.textContent),
+    ['Hatchback', 'Saloon', 'Estate', 'SUV', 'Coupé', 'Convertible', 'Family carrier']);
+  [...root.querySelectorAll('[role=radio]')].find((node) => node.textContent === 'Coupé').click(); assert.deepEqual(choices, ['coupe']);
+  const fuel = question(); fuel.question.path = 'preferences.fuel.value'; fuel.question.questionVersion = 'question-two'; fuel.value = 'phev';
+  fuel.question.control.options = [{ value: 'phev', label: 'Plug-in hybrid' }, { value: 'ev', label: 'Electric' }];
+  view.update(fuel); assert.deepEqual([...root.querySelectorAll('[role=radio]')].map((node) => node.textContent), ['Plug-in hybrid', 'Electric']);
+});
+
+test('GC-042: an embedding page owns the h1, so the follow-up uses h2 in every state; standalone keeps h1', (t) => {
+  const offer = (id) => ({ offerId: id, quote: { quoteId: `quote-${id}`, briefVersion: 1, policyVersion: 'p', quotedAt: '2026-11-06T00:00:00Z' } });
+  const projector = ({ value }) => ({ status: 'ok', value: { reference: { offerId: value.offerId }, card: { schemaVersion: 1,
+    selectedId: value.offerId, members: [{ id: value.offerId, display: { name: value.offerId }, media: {}, facts: [], terms: [],
+      decision: { gateStatus: 'eligible', score: 90, reasons: [], blockers: [], unknowns: [], tradeOffs: [] }, actions: [] }] } } });
+  const models = [{ state: 'idle' }, { state: 'loading' }, question(), { state: 'change-saved', savedChange: saved }, { state: 'waiting', savedChange: saved },
+    { state: 'no-match', evaluation: { carsChecked: 2 } }, { state: 'unavailable' }, { state: 'refresh-required' }, { state: 'confirmation-uncertain' },
+    { state: 'stale-run' }, { state: 'forbidden' }, { state: 'access-lapsed' },
+    { state: 'ready', comparison: { currentBriefVersion: 2, previous: { offer: offer('a') }, next: { offer: offer('b') }, requirements: [] } }];
+  const embedded = host(t, { hostRefresh: true, headingLevel: 2, projectOffer: projector });
+  const standalone = host(t, { projectOffer: projector });
+  for (const model of models) {
+    embedded.view.update({ busy: false, ...model }); assert.equal(embedded.root.querySelectorAll('h1').length, 0, `embedded ${model.state}`);
+    assert.ok(embedded.root.querySelector('h2'), `embedded ${model.state} has an h2`);
+    standalone.view.update({ busy: false, ...model });
+    if (['question', 'ready'].includes(model.state)) assert.equal(standalone.root.querySelectorAll('h1').length, 1, `standalone ${model.state}`);
+  }
+  embedded.view.update({ busy: false, ...models[2] }); assert.equal(embedded.root.querySelector('h2').textContent, 'One change to your brief');
+});
+
+test('GC-042: focus on the follow-up root moves to its first heading on each draw', (t) => {
+  const { root, view } = host(t, { hostRefresh: true, headingLevel: 2 }); root.tabIndex = -1; root.focus();
+  view.update({ state: 'loading', busy: true }); assert.equal(document.activeElement.textContent, 'Checking your next offer');
+  view.update(question()); assert.equal(document.activeElement.tagName, 'H2'); assert.equal(document.activeElement.textContent, 'One change to your brief');
+});
+
+test('GC-042: quote sources show Checked on and Quoted at as long dates, with no raw source or observed-at rows', (t) => {
+  const projector = ({ value }) => ({ status: 'ok', value: { reference: { offerId: value.offerId }, card: { schemaVersion: 1, selectedId: value.offerId,
+    members: [{ id: value.offerId, display: { name: value.offerId }, media: {}, facts: [], terms: [],
+      decision: { gateStatus: 'eligible', score: 90, reasons: [], blockers: [], unknowns: [], tradeOffs: [] }, actions: [] }] } } });
+  const { root, view } = host(t, { projectOffer: projector });
+  const source = (observedAt) => ({ sourceRef: 'dated-source', version: 'snapshot-one', observedAt, assurance: 'confirmed-build' });
+  const offer = (id) => ({ offerId: id, quote: { quoteId: `quote-${id}`, briefVersion: 1, policyVersion: 'p', quotedAt: '2026-11-06T09:30:00Z' } });
+  view.update({ state: 'ready', busy: false, savedChange: saved, comparison: { currentBriefVersion: 2, previous: { offer: offer('a') }, next: { offer: offer('b') },
+    requirements: [{ kind: 'essential', key: 'boot', value: 430, operator: 'gte', unit: 'L',
+      previousFacts: { boot: { status: 'known', value: 400, unit: 'L', provenance: source('2026-11-05T09:00:00.000Z') } },
+      nextFacts: { boot: { status: 'known', value: 450, unit: 'L', provenance: source('not a date') } } }] } });
+  const text = root.querySelector('details').textContent;
+  assert.match(text, /Checked onThursday 5 November 2026/); assert.match(text, /Quoted atFriday 6 November 2026/);
+  assert.match(text, /Checked onNot supplied/); assert.match(text, /Assurance/);
+  assert.doesNotMatch(text, /Observed at|Source version|dated-source|snapshot-one|2026-11-0\dT/); assert.doesNotMatch(text, /Source/);
+});
+
+// jsdom keeps focus on a disabled button; a browser drops it to body.
+const dropFocus = () => { const node = document.activeElement; const was = node.disabled; node.disabled = false; node.blur(); node.disabled = was; };
+
+test('GC-041: a saved change leads on to buddy activity when the host supplies the route; nothing else does', (t) => {
+  const link = (root) => root.querySelector('[data-followup-link=activity]');
+  const { root, view } = host(t, { hostRefresh: true, headingLevel: 2, activityHref: '/gcsp-activity-live.html' });
+  for (const model of [{ state: 'change-saved', savedChange: saved }, { state: 'waiting', savedChange: saved },
+    { state: 'no-match', savedChange: saved, evaluation: { carsChecked: 2 } }]) {
+    view.update({ busy: false, ...model });
+    const node = link(root);
+    assert.ok(node, model.state); assert.equal(node.tagName, 'A'); assert.equal(node.textContent, 'See your buddy activity');
+    assert.equal(node.getAttribute('href'), '/gcsp-activity-live.html'); assert.ok(node.classList.contains('vm-btn-primary'));
+  }
+  for (const model of [question(), { state: 'unavailable' }, { state: 'refresh-required' }, { state: 'confirmation-uncertain' }, { state: 'forbidden' }]) {
+    view.update({ busy: false, ...model }); assert.equal(link(root), null, model.state);
+  }
+  const bare = host(t, { hostRefresh: true, headingLevel: 2 });
+  bare.view.update({ busy: false, state: 'change-saved', savedChange: saved }); assert.equal(link(bare.root), null);
+});
+
+test('GC-041: focus lands on the outcome heading after Confirm even when the browser dropped it to body', (t) => {
+  const outcomes = [{ state: 'change-saved', savedChange: saved }, { state: 'waiting', savedChange: saved },
+    { state: 'no-match', savedChange: saved, evaluation: { carsChecked: 2 } },
+    { state: 'ready', savedChange: saved, comparison: { currentBriefVersion: 2, previous: { offer: { offerId: 'a', quote: { quoteId: 'q', briefVersion: 1, policyVersion: 'p', quotedAt: '2026-11-06T00:00:00Z' } } },
+      next: { offer: { offerId: 'b', quote: { quoteId: 'q', briefVersion: 1, policyVersion: 'p', quotedAt: '2026-11-06T00:00:00Z' } } }, requirements: [] } }];
+  const projector = ({ value }) => ({ status: 'ok', value: { reference: { offerId: value.offerId }, card: { schemaVersion: 1, selectedId: value.offerId,
+    members: [{ id: value.offerId, display: { name: value.offerId }, media: {}, facts: [], terms: [],
+      decision: { gateStatus: 'eligible', score: 90, reasons: [], blockers: [], unknowns: [], tradeOffs: [] }, actions: [] }] } } });
+  for (const outcome of outcomes) {
+    const { root, view } = host(t, { hostRefresh: true, headingLevel: 2, projectOffer: projector });
+    const model = { ...question(), value: 'estate', canConfirm: true }; view.update(model);
+    const confirm = root.querySelector('[data-followup-action=confirm]'); confirm.focus();
+    view.update({ ...model, busy: true, canConfirm: false }); dropFocus();
+    assert.equal(document.activeElement, document.body);
+    view.update({ busy: false, ...outcome });
+    assert.equal(document.activeElement.tagName, 'H2', outcome.state);
+    assert.equal(document.activeElement.textContent, root.querySelector('h2').textContent);
+    assert.notEqual(document.activeElement.dataset.followupAction, 'refresh');
+  }
+  const { root, view } = host(t, { hostRefresh: true, headingLevel: 2 });
+  const model = { ...question(), value: 'estate', canConfirm: true }; view.update(model);
+  root.querySelector('[data-followup-action=confirm]').focus(); view.update({ ...model, busy: true, canConfirm: false });
+  dropFocus(); view.update({ busy: false, state: 'change-saved', savedChange: saved });
+  assert.equal(document.activeElement.textContent, 'Change saved');
+});
+
+test('GC-041: a rejected save returns focus to the heading, and a background poll never takes focus', (t) => {
+  const { root, view } = host(t, { hostRefresh: true, headingLevel: 2 });
+  const model = { ...question(), value: 'estate', canConfirm: true }; view.update(model);
+  root.querySelector('[data-followup-action=confirm]').focus(); view.update({ ...model, busy: true, canConfirm: false });
+  dropFocus(); view.update({ ...model, busy: false, error: 'Review your answer and choose a different value.' });
+  assert.equal(document.activeElement.textContent, 'One change to your brief');
+  // A poll while the person works elsewhere leaves focus alone.
+  const other = document.createElement('input'); document.body.append(other); other.focus(); t.after(() => other.remove());
+  view.update({ state: 'loading', busy: true }); view.update({ busy: false, state: 'waiting', savedChange: saved });
+  assert.equal(document.activeElement, other);
 });
