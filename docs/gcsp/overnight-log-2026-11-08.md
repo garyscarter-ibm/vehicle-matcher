@@ -253,3 +253,4 @@ For Russell or Gary:
   - **FUCQ-181 closed** (merged 26ba5401, docs only), In Review: the same-site rule and option (c) are in the HLD and the Render guide. Option (a) is the route for the real EDS integration.
   - **FUCQ-150 closed** (merged fb09215c), In Review: verified fixed by 3712a143 (queue 227 to 1184 of 1184 px at 1280, all 7 columns); no code change.
   - FUCQ-149 lead started. Still building: FUCQ-176, FUCQ-166. Next: FUCQ-218, then FUCQ-27 and 28.
+- **FUCQ-166 closed** (bug, not in MoSCoW, Medium; merged 2dc6049d), In Review, partly met. pages.yml now fails unless the public product-map data.json matches the upload within 10 minutes, and writes a receipt; the stale-serving cause is still open. **For Russell:** it takes effect only on main, so merge it there via PR.
