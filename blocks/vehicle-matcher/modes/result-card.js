@@ -179,9 +179,9 @@ export function mediaWell(car, extraClass = '', { placeholder = 'Images coming s
 export function matchCard(match, {
   big = false, compact = false, brand: brandKey = 'bmw',
   showScore = true, showPaint = false,
-  rejectOptions, rejectLabel, rejectPrompt, onListingSelect, view, onAction,
+  rejectOptions, rejectLabel, rejectPrompt, onListingSelect, view, onAction, scoreLabel,
 } = {}) {
-  if (view) return explicitViewCard(view, { compact, showScore, onListingSelect, onAction });
+  if (view) return explicitViewCard(view, { compact, showScore, scoreLabel, onListingSelect, onAction });
   const { car } = match;
   const listings = listingsOf(match);
   const copy = BRAND_COPY[brandKey] || BRAND_COPY.bmw;
@@ -620,7 +620,7 @@ const gateLabels = { eligible: 'Eligible', ineligible: 'Not eligible', 'needs-co
 const decisionText = (entry) => typeof entry === 'string' ? entry : entry?.text || entry?.reason || entry?.code?.replaceAll('-', ' ') || 'Not supplied';
 
 // The explicit projection is display data only; the caller owns decisions, transport and state.
-function explicitViewCard(view, { compact, showScore, onListingSelect, onAction }) {
+function explicitViewCard(view, { compact, showScore, scoreLabel, onListingSelect, onAction }) {
   const members = listingsOf(null, { view });
   if (!members.length) throw new TypeError('An explicit card view requires exact members');
   let selected = members.find((member) => member.id === view.selectedId) || members[0];
@@ -648,9 +648,11 @@ function explicitViewCard(view, { compact, showScore, onListingSelect, onAction 
     const exact = selected.decision;
     const eligible = exact?.gateStatus === 'eligible';
     card.dataset.gate = exact?.gateStatus || 'unknown';
-    score.hidden = !showScore || !Number.isFinite(exact?.score);
-    score.textContent = score.hidden ? '' : `${exact.score}%`;
-    score.title = 'Preference match score';
+    // scoreLabel (string, { text, title } or null) replaces the percentage badge; unset keeps it.
+    const label = typeof scoreLabel === 'string' ? { text: scoreLabel } : scoreLabel;
+    score.hidden = scoreLabel === undefined ? !showScore || !Number.isFinite(exact?.score) : !label?.text;
+    score.textContent = score.hidden ? '' : label ? label.text : `${exact.score}%`;
+    score.title = label?.title || 'Preference match score';
     showPhoto(selected.media?.src, { ...selected.display, ...selected.media });
     terms.replaceChildren(...(selected.terms?.length ? selected.terms : [{}]).map((term) => el('p', 'vm-specs', formatTerm(term))));
     facts.replaceChildren(factList((selected.facts || []).map((row) => ({ ...row, missingLabel: row.missingLabel || `Not supplied${row.unit ? ` (${row.unit})` : ''}` }))));

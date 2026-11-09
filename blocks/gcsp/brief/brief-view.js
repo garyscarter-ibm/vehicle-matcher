@@ -4,6 +4,7 @@ import { matchCard, previewTile, SPEC_LABELS, FUEL_SPEC } from '../../vehicle-ma
 import { createBriefController } from './brief-controller.js';
 import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { decisionView, previewSummary } from './brief-view-model.js';
+import { BEST_MATCH } from '../kit/plain-copy.js';
 
 let sequence = 0;
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -101,7 +102,7 @@ export function mountBriefBody(main, adapters = {}) {
       valueWrap.append(el('p', 'gcsp-brief-axis-label', 'Preference')); importanceWrap.append(el('p', 'gcsp-brief-axis-label', 'Importance'));
       const range = (host, value, label, onValueChange) => {
         const control = renderRangeSlider(host, { id: `${prefix}-${key}-${label}`, min: context.slider.minimum, max: context.slider.maximum, step: 1 }, null,
-          { single: true, value, disabled: !definition.editable, ariaLabel: `${definition.label}: ${label}`, onValueChange });
+          { single: true, value, unknownText: 'Not set', disabled: !definition.editable, ariaLabel: `${definition.label}: ${label}`, onValueChange });
         const ends = label === 'how much it matters' ? ['Not important', 'Very important'] : scaleEnds[key] || ['Less', 'More'];
         const scale = el('div', 'gcsp-brief-scale'); ends.forEach((text) => scale.append(el('span', null, text))); host.append(scale);
         return control;
@@ -206,14 +207,18 @@ export function mountBriefBody(main, adapters = {}) {
         lastPreview = identity;
         cards.replaceChildren(); checks.replaceChildren();
         if (state.preview.outcome?.status === 'ok') {
-          for (const decision of state.preview.outcome.value.decisions) {
+          const decisions = state.preview.outcome.value.decisions;
+          const scores = decisions.filter((d) => d.gateStatus === 'eligible' && Number.isFinite(d.score)).map((d) => d.score);
+          const top = Math.max(...scores);
+          const informative = top > 0 && scores.some((score) => score < top);
+          for (const decision of decisions) {
             const view = decisionView(decision);
             const member = view.members[0];
             if (member.checks.length) {
               const list = el('ul', 'gcsp-note'); member.checks.forEach((entry) => list.append(el('li', null, entry.text)));
               checks.append(el('h3', null, member.display.name), list);
             }
-            const card = decision.gateStatus === 'eligible' ? matchCard(null, { view }) : previewTile(null, { view });
+            const card = decision.gateStatus === 'eligible' ? matchCard(null, { view, scoreLabel: informative && decision.score === top ? BEST_MATCH : null }) : previewTile(null, { view });
             card.querySelectorAll('[aria-live]').forEach((node) => node.removeAttribute('aria-live'));
             cards.append(card);
           }
