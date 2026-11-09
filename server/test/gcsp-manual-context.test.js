@@ -530,7 +530,9 @@ test('manual HTTP rejects caller authority and hostile origins; another employee
     assert.equal((await request('/account', { origin: 'https://hostile.test' })).status, 403);
     assert.equal((await request('/account', { session: f.presenter })).status, 403);
     const other = await f.identity.switchPrincipal(f.presenter.value.context, 'demo-alex', 'alex');
-    assert.equal((await request('/draft', { session: other })).status, 404);
+    // FUCQ-319: an absent draft reads as 200 not-found; another employee still gets nothing of Paula's.
+    const otherDraft = await request('/draft', { session: other });
+    assert.equal(otherDraft.status, 200); assert.equal(otherDraft.json.status, 'not-found'); assert.equal(otherDraft.json.value, undefined);
     const state = (await f.clock.readState(f.presenter.value.context)).value;
     await f.clock.reset(f.presenter.value.context, { commandId: 'reset', expectedRunId: state.runId, expectedRunVersion: state.runVersion,
       scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture });
