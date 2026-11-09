@@ -135,7 +135,7 @@ Looked at: `el`, `button`, `screenIntro`, `statusScreen`, `factList` (all reused
 
 | Call | Use for |
 |---|---|
-| `messageList({ messages, selectedId, onSelect, label })` (`message-list.js`) | Rows (real buttons, `aria-current` on the open one) and a detail pane: heading that takes focus, facts, the HTML body in a sandboxed `srcdoc` iframe, the plain-text alternative and a safe `target=_blank rel=noopener` offer link. Unrendered messages show the status explanation. Returns `{ root, select, update, getSelected, destroy }`. |
+| `messageList({ messages, selectedId, onSelect, label })` (`message-list.js`) | Rows (real buttons, `aria-current` on the open one) and a detail pane: heading that takes focus, facts, the HTML body in a sandboxed `srcdoc` iframe, the plain-text alternative and a safe `target=_blank rel=noopener` offer link. A sent message whose `transport` is `captured` is labelled "Captured, not sent". Unrendered messages show the status explanation. Returns `{ root, select, update, getSelected, destroy }`. |
 | `mountOutbox(root, ctx)` / `<gcsp-outbox>` (`gcsp-outbox.js`) | The presenter-only viewer in `portalShell`. Contract in [docs/gcsp/presenter-outbox-contract.md](docs/gcsp/presenter-outbox-contract.md). Harness: [`gcsp-outbox.html`](gcsp-outbox.html). |
 
 Gallery: the GCSP section of [`components.html`](components.html) shows `messageList` with sent, retrying and failed messages.

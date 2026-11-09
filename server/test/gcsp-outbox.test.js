@@ -6,6 +6,8 @@ import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
 import { NotificationDispatcher, CapturedTransport, MailTransport, renderOfferMessage } from '../gcsp/notify/index.js';
+import { publicOrigin } from '../gcsp/public-origin.js';
+import { createMailTransport } from '../gcsp/notify/index.js';
 import { buildServer } from '../index.js';
 
 const token = 'fictional-outbox-access-value';
@@ -29,12 +31,12 @@ async function setup(t, { policy = createPolicyService(), transport, logger } = 
 }
 const jobRef = (f, jobId = 'job-one') => ({ table: 'notification_outbox', key: { runId: f.context.runId, jobId } });
 const job = async (f, jobId) => (await f.repository.read(f.context, jobRef(f, jobId))).value;
-async function seed(f, { id = 'one', offerPatch = {}, jobPatch = {}, rollback = false, employeeId = 'employee-paula', entitlementSlotId = 'slot-paula', stockIndex = 0 } = {}) {
+async function seed(f, { id = 'one', offerPatch = {}, jobPatch = {}, quotePatch = {}, rollback = false, employeeId = 'employee-paula', entitlementSlotId = 'slot-paula', stockIndex = 0 } = {}) {
   const runId = f.context.runId;
   const stock = (await f.repository.query(f.context, 'stock')).value[stockIndex];
   return f.repository.transaction(f.context, cmd(`seed:${id}`), async (tx) => {
     const rows = [
-      ['quotes', { quoteId: `quote-${id}`, orderUuid: stock.orderUuid, employeeId, policyVersion: 'gcsp-policy-v1', facts: { model: 'BMW 320i Touring' } }],
+      ['quotes', { quoteId: `quote-${id}`, orderUuid: stock.orderUuid, employeeId, policyVersion: 'gcsp-policy-v1', facts: { model: 'BMW 320i Touring' }, ...quotePatch }],
       ['holds', { holdId: `hold-${id}`, orderUuid: stock.orderUuid, employeeId, entitlementSlotId,
         type: 'buddy-offer', state: 'active', quoteId: `quote-${id}`, expiresAt: '2026-11-05T11:00:00.000Z' }],
       ['offers', { offerId: `offer-${id}`, holdId: `hold-${id}`, employeeId, orderUuid: stock.orderUuid,
@@ -324,4 +326,96 @@ test('registered tick retries a due committed job after restart without disconne
   assert.equal(tick.status, 'ok'); assert.equal((await job(f)).state, 'sent'); assert.equal(calls, 2);
   assert.equal((await f.clock.tick(f.context, { eventId: 'retry-tick', expectedClockVersion: state.clockVersion, inputDigest: inputDigest('retry-tick') })).status, 'ok');
   assert.equal(calls, 2);
+});
+
+const buddyQuote = { facts: { display: { name: 'BMW 320i Touring', model: '3 Series', derivative: '320i Touring' } },
+  terms: { points: { value: 1250, unit: 'points' } } };
+const offer = { state: 'active', expiresAt: '2026-11-05T11:30:00.000Z' };
+const render = (patch = {}) => renderOfferMessage({ offer, quote: buddyQuote, employee: { employeeId: 'employee-paula', name: 'Paula (fictional)' },
+  offerLink: link, now: '2026-11-05T09:00:00.000Z', ...patch });
+
+test('the offer email names the car and monthly points, gives the deadline in words and greets without the fixture marker', () => {
+  const message = render();
+  const document = new JSDOM(message.htmlBody).window.document;
+  assert.equal(document.querySelector('h2').textContent, 'BMW 320i Touring');
+  assert.equal(document.querySelector('h2').nextElementSibling.textContent, '1,250 points a month');
+  assert.match(message.textBody, /BMW 320i Touring\n\n1,250 points a month\n\nRespond by 11:30 on Thursday 5 November\./);
+  assert.match(document.body.textContent, /Respond by 11:30 on Thursday 5 November\./);
+  assert.doesNotMatch(message.textBody + message.htmlBody, /2026-11-05T11|Your scheme vehicle|available until/);
+  assert.match(message.textBody, /^Hello Paula,\n/);
+  assert.match(message.htmlBody, /<p>Hello Paula,<\/p>/);
+  assert.doesNotMatch(message.textBody + message.htmlBody, /Hello Paula \(fictional\)/);
+  assert.deepEqual(message.recipient, { employeeId: 'employee-paula', name: 'Paula (fictional)', fictional: true });
+  assert.match(message.textBody, /for a fictional employee/);
+  assert.doesNotMatch(message.textBody + message.htmlBody + message.subject, /\u2014/);
+  assert.match(render({ employee: {} }).textBody, /^Hello,\n/);
+  assert.equal(render({ employee: {} }).recipient.name, 'Scheme employee (fictional)');
+});
+
+test('vehicle name falls back through display parts, the old fact keys and the generic label; bad points are omitted', () => {
+  const only = (quote) => render({ quote });
+  assert.match(only({ facts: { display: { model: '3 Series', derivative: '320i Touring' } } }).textBody, /\n3 Series 320i Touring\n/);
+  assert.match(only({ facts: { model: 'BMW 320i Touring' } }).textBody, /\nBMW 320i Touring\n/);
+  assert.match(only({ facts: {} }).textBody, /\nYour scheme vehicle\n/);
+  assert.match(only({ facts: { display: { name: 'X' } }, terms: { points: { value: 1000000, unit: 'points' } } }).textBody, /1,000,000 points a month/);
+  assert.match(only({ facts: { display: { name: 'X' } }, monthlyPoints: { value: 0, unit: 'points' } }).textBody, /0 points a month/);
+  for (const points of [{ value: -1, unit: 'points' }, { value: Number.NaN, unit: 'points' }, { value: '5', unit: 'points' }, { value: 5, unit: 'gbp' }, undefined]) {
+    const message = only({ facts: { display: { name: 'X' } }, terms: { points } });
+    assert.doesNotMatch(message.textBody + message.htmlBody, /points a month/);
+  }
+});
+
+test('the deadline is shown in UK time, on the day it falls in summer and winter', () => {
+  const at = (expiresAt) => renderOfferMessage({ offer: { state: 'active', expiresAt }, quote: buddyQuote, employee: {}, offerLink: link, now: '2026-01-01T00:00:00.000Z' }).textBody;
+  assert.match(at('2026-07-05T23:30:00.000Z'), /Respond by 00:30 on Monday 6 July\./);
+  assert.match(at('2026-11-05T00:05:00.000Z'), /Respond by 00:05 on Thursday 5 November\./);
+});
+
+test('public origin validation accepts an exact https origin or local http and nothing else', () => {
+  assert.equal(publicOrigin('https://demo.example.test'), 'https://demo.example.test');
+  assert.equal(publicOrigin('http://localhost:8787'), 'http://localhost:8787');
+  for (const bad of ['', undefined, 'http://demo.example.test', 'https://demo.example.test/', 'https://demo.example.test/path', 'ftp://localhost', 'nonsense']) assert.equal(publicOrigin(bad), null);
+});
+
+const minted = '/gcsp/offer?offerId=buddy-offer%3Aabc#token=' + 'A'.repeat(43);
+async function capturedWith(t, publicOriginValue, offerLink = minted) {
+  const f = await setup(t, { transport: (repository) => new CapturedTransport({ repository, publicOrigin: publicOriginValue }) });
+  await seed(f, { quotePatch: { facts: buddyQuote.facts, terms: buddyQuote.terms }, jobPatch: { payload: { offerLink } } });
+  await f.dispatcher.dispatchPending();
+  return (await job(f)).outcome.message;
+}
+
+test('captured email shows an absolute link with the token in the fragment, and keeps the stored link relative', async (t) => {
+  const message = await capturedWith(t, 'https://demo.example.test');
+  const absolute = `https://demo.example.test${minted}`;
+  assert.equal(message.offerLink, minted);
+  assert.match(message.textBody, new RegExp(`Review your offer: ${absolute.replace(/[.?]/g, '\\$&')}\\n`));
+  const document = new JSDOM(message.htmlBody).window.document;
+  assert.equal(document.querySelector('a').getAttribute('href'), absolute);
+  assert.ok(document.body.textContent.includes(absolute));
+  assert.ok(!message.textBody.includes(` ${minted}`) && !message.htmlBody.includes(`"${minted}"`), 'no relative copy remains in either body');
+  const url = new URL(absolute);
+  assert.match(url.hash, /^#token=[A-Za-z0-9_-]{43}$/);
+  assert.ok(!url.search.includes('token'), 'the token is never in the query');
+  assert.match(message.textBody, /No email has been sent\.$/);
+});
+
+test('captured email keeps the relative link when no valid public origin is set', async (t) => {
+  for (const origin of [undefined, 'not an origin', 'http://demo.example.test']) {
+    const message = await capturedWith(t, origin);
+    assert.equal(message.offerLink, minted);
+    assert.ok(message.textBody.includes(`Review your offer: ${minted}\n`));
+    assert.ok(message.htmlBody.includes(`href="${minted}"`));
+  }
+});
+
+test('the default mail transport takes the captured public origin from the supplied env only', async (t) => {
+  const withEnv = async (env) => {
+    const f = await setup(t, { transport: (repository) => createMailTransport({ repository, env }) });
+    await seed(f, { jobPatch: { payload: { offerLink: minted } } });
+    await f.dispatcher.dispatchPending();
+    return (await job(f)).outcome.message;
+  };
+  assert.ok((await withEnv({ GCSP_PUBLIC_ORIGIN: 'https://demo.example.test' })).textBody.includes(`https://demo.example.test${minted}`));
+  assert.ok((await withEnv({})).textBody.includes(`Review your offer: ${minted}\n`));
 });
