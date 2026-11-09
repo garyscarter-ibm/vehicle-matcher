@@ -8,6 +8,7 @@ import { captureRetailContract, frozen } from './retail-compat-harness.js';
 import { captureClientContract } from './retail-compat-client-harness.js';
 import * as liveEngine from '../engine.js';
 import * as referenceEngine from './helpers/retail-reference-r1/engine.js';
+import * as usedRetailV1 from '../scenarios/retail/used-retail-v1.js';
 import { BRANDS, brandTuning } from '../brands.js';
 import { REFERENCE, verifyReferenceCopy, parityCorpus, diffEngines, firstDifference as parityDifference } from './helpers/retail-parity.js';
 
@@ -98,6 +99,26 @@ test('parity: reference and live engine agree on every corpus case, with no fetc
   assert.equal(run.fetchCalls, 0);
 });
 
+test('parity: used-retail-v1 composition agrees with the R1 reference on every corpus case, with no fetch', () => {
+  const run = diffEngines(referenceEngine, usedRetailV1, corpus);
+  assert.equal(run.difference, null, describeDiff(run));
+  assert.ok(run.comparisons >= 1000, `only ${run.comparisons} rankings compared`);
+  assert.equal(run.comparisons, corpus.length);
+  assert.equal(run.fetchCalls, 0);
+});
+
+test('parity: USED_RETAIL_V1 is a frozen composition of the module exports', () => {
+  const v1 = usedRetailV1.USED_RETAIL_V1;
+  assert.equal(v1.id, 'used-retail-v1');
+  assert.ok(Object.isFrozen(v1) && Object.isFrozen(v1.limits));
+  for (const name of ['rankCars', 'matchCars', 'groupListings', 'unmetWants', 'tradeOffs', 'budgetRange']) {
+    assert.equal(v1[name], usedRetailV1[name], name);
+  }
+  assert.equal(v1.tasteShare, usedRetailV1.TASTE_SHARE);
+  assert.deepEqual(v1.limits, Object.fromEntries(['TOP_MATCHES', 'CLUSTER_PTS', 'MAX_SHOWN', 'TASTE_PTS', 'ALTERNATIVES',
+    'LISTING_SAMPLE'].map((name) => [name, usedRetailV1[name]])));
+});
+
 const perturbations = {
   'one score +1': { rankCars: (rank) => rank.map((m, i) => (i === 0 ? { ...m, score: m.score + 1 } : m)) },
   'two reasons swapped': {
@@ -151,6 +172,10 @@ test('parity: TASTE_SHARE=0.3 reaches both paths (child process)', async () => {
   assert.equal(child.difference, null, `${child.difference?.caseId} ${child.difference?.path}`);
   assert.equal(child.comparisons, corpus.length);
   assert.equal(child.fetchCalls, 0);
+  assert.equal(child.usedRetailV1.difference, null, `${child.usedRetailV1.difference?.caseId} ${child.usedRetailV1.difference?.path}`);
+  assert.equal(child.usedRetailV1.comparisons, corpus.length);
+  assert.equal(child.usedRetailV1.fetchCalls, 0);
+  assert.equal(child.usedRetailV1.scoreDigest, child.scoreDigest);
   assert.notEqual(child.scoreDigest, base.scoreDigest, 'a 0.3 blend must change at least one score');
 });
 
