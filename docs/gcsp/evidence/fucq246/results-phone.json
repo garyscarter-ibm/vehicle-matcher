@@ -1,0 +1,791 @@
+{
+  "story": "fucq246",
+  "chunk": "phone",
+  "entry": "hosted-offline",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "state": "passed",
+  "startedAt": "2026-11-09T13:17:55.750Z",
+  "steps": [
+    {
+      "id": "access-key",
+      "name": "Demo key form opens the offline hosted demo",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR CARS CHOICES Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Scheme BMW Choices Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car evidence. Choose a replacement Order, collection and vehicle details Your all"
+    },
+    {
+      "id": "setup-saved",
+      "name": "Choose a replacement; setup choices saved for Paula",
+      "pass": true,
+      "screenshots": [
+        "browser/375-01-setup-saved.png"
+      ],
+      "overflowPx": 0,
+      "state": "Your order choices | {\"driver\":\"You: Paula (fictional)\",\"contract\":\"six-month-8000\",\"date\":\"2026-11-12\",\"location\":\"demo-collection-centre\"}",
+      "detail": {
+        "driver": "You: Paula (fictional)",
+        "contract": "six-month-8000",
+        "date": "2026-11-12",
+        "location": "demo-collection-centre"
+      }
+    },
+    {
+      "id": "release-and-gallery",
+      "name": "Next release, Continue, Released cars gallery",
+      "pass": true,
+      "screenshots": [
+        "browser/375-02-release-and-gallery.png"
+      ],
+      "overflowPx": 0,
+      "state": "Released cars; 3 review buttons; Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-06T11:30:00.000Z",
+      "detail": {
+        "cards": 3
+      }
+    },
+    {
+      "id": "noclaim-back",
+      "name": "No claim: keyboard Back to your choices, then Back to account (saves)",
+      "pass": true,
+      "screenshots": [
+        "browser/375-03-noclaim-back.png"
+      ],
+      "detail": {
+        "saved": "2026-11-13",
+        "backPosts": [
+          "/api/gcsp/manual/draft"
+        ],
+        "focus": {
+          "tag": "H1",
+          "text": "Your cars",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        }
+      },
+      "overflowPx": 0,
+      "state": "Back posts [\"/api/gcsp/manual/draft\"]; focus H1 \"Your cars\""
+    },
+    {
+      "id": "noclaim-resume",
+      "name": "No claim: keyboard Resume opens setup with the saved choices and no write",
+      "pass": true,
+      "screenshots": [
+        "browser/375-04-noclaim-resume.png"
+      ],
+      "detail": {
+        "posts": [],
+        "focus": {
+          "tag": "H1",
+          "text": "Your order choices",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "date": "2026-11-13"
+      },
+      "overflowPx": 0,
+      "state": "posts []; focus H1 \"Your order choices\"; date 2026-11-13"
+    },
+    {
+      "id": "claim-review",
+      "name": "Continue to the gallery and review a car (one claim)",
+      "pass": true,
+      "screenshots": [
+        "browser/375-05-review-claimed.png"
+      ],
+      "overflowPx": 0,
+      "state": "Review your car | claim active"
+    },
+    {
+      "id": "reload-1",
+      "name": "Reload: Your cars offers Resume saved journey",
+      "pass": true,
+      "screenshots": [
+        "browser/375-06-reload-1-account-resume.png"
+      ],
+      "overflowPx": 0,
+      "state": "reload 1: heading \"Your cars\"; Resume saved journey offered"
+    },
+    {
+      "id": "quoted-resume-1",
+      "name": "Keyboard Resume: checking state, then focus on the review heading, no write",
+      "pass": true,
+      "screenshots": [
+        "browser/375-07-resume-1-review-focus.png"
+      ],
+      "detail": {
+        "focusBeforeTab": "H1 \"Your cars\"",
+        "tabPresses": 2,
+        "final": {
+          "tag": "H1",
+          "text": "Review your car",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "sampleCount": 113,
+        "transitionSequence": [
+          {
+            "tag": "H1",
+            "text": "Your cars",
+            "atMs": 5
+          },
+          {
+            "tag": "P",
+            "text": "Loading your account and cars.",
+            "atMs": 118
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your saved journey",
+            "atMs": 343
+          },
+          {
+            "tag": "P",
+            "text": "Loading your account and cars.",
+            "atMs": 669
+          },
+          {
+            "tag": "H1",
+            "text": "Released cars",
+            "atMs": 869
+          },
+          {
+            "tag": "P",
+            "text": "Loading your account and cars.",
+            "atMs": 1294
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your car",
+            "atMs": 1494
+          },
+          {
+            "tag": "H1",
+            "text": "Review your car",
+            "atMs": 1894
+          }
+        ],
+        "tabPathSequence": [],
+        "renderedAtMs": 1894,
+        "readyAtMs": 1894,
+        "focusOnHeadingAtMs": 1894,
+        "bodySamplesAfterRender": 0,
+        "bodySamplesAfterReady": 0,
+        "maxBodyMsDuringTransition": 0,
+        "posts": [],
+        "checkingFocused": true
+      },
+      "overflowPx": 0,
+      "state": "resume 1: focus before Tab H1, 2 Tab presses; final H1 \"Review your car\" (main h1 true); BODY samples after render 0, after ready 0; max BODY 0 ms; sequence H1 \"Your cars\" > P \"Loading your account and cars.\" > H2 \"Checking your saved journey\" > P \"Loading your account and cars.\" > H1 \"Released cars\" > P \"Loading your account and cars.\" > H2 \"Checking your car\" > H1 \"Review your car\""
+    },
+    {
+      "id": "reload-2",
+      "name": "Reload: Your cars offers Resume saved journey",
+      "pass": true,
+      "screenshots": [
+        "browser/375-08-reload-2-account-resume.png"
+      ],
+      "overflowPx": 0,
+      "state": "reload 2: heading \"Your cars\"; Resume saved journey offered"
+    },
+    {
+      "id": "quoted-resume-2",
+      "name": "Keyboard Resume: checking state, then focus on the review heading, no write",
+      "pass": true,
+      "screenshots": [
+        "browser/375-09-resume-2-review-focus.png"
+      ],
+      "detail": {
+        "focusBeforeTab": "H1 \"Your cars\"",
+        "tabPresses": 2,
+        "final": {
+          "tag": "H1",
+          "text": "Review your car",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "sampleCount": 112,
+        "transitionSequence": [
+          {
+            "tag": "H1",
+            "text": "Your cars",
+            "atMs": 9
+          },
+          {
+            "tag": "P",
+            "text": "Loading your account and cars.",
+            "atMs": 122
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your saved journey",
+            "atMs": 346
+          },
+          {
+            "tag": "P",
+            "text": "Loading your account and cars.",
+            "atMs": 621
+          },
+          {
+            "tag": "H1",
+            "text": "Released cars",
+            "atMs": 796
+          },
+          {
+            "tag": "P",
+            "text": "Loading your account and cars.",
+            "atMs": 1223
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your car",
+            "atMs": 1446
+          },
+          {
+            "tag": "H1",
+            "text": "Review your car",
+            "atMs": 1846
+          }
+        ],
+        "tabPathSequence": [],
+        "renderedAtMs": 1846,
+        "readyAtMs": 1846,
+        "focusOnHeadingAtMs": 1846,
+        "bodySamplesAfterRender": 0,
+        "bodySamplesAfterReady": 0,
+        "maxBodyMsDuringTransition": 0,
+        "posts": [],
+        "checkingFocused": true
+      },
+      "overflowPx": 0,
+      "state": "resume 2: focus before Tab H1, 2 Tab presses; final H1 \"Review your car\" (main h1 true); BODY samples after render 0, after ready 0; max BODY 0 ms; sequence H1 \"Your cars\" > P \"Loading your account and cars.\" > H2 \"Checking your saved journey\" > P \"Loading your account and cars.\" > H1 \"Released cars\" > P \"Loading your account and cars.\" > H2 \"Checking your car\" > H1 \"Review your car\""
+    },
+    {
+      "id": "tab-after-heading",
+      "name": "Tab from the review heading shows a visible focus ring",
+      "pass": true,
+      "screenshots": [
+        "browser/375-10-tab-focus-ring.png"
+      ],
+      "overflowPx": 0,
+      "state": "BUTTON \"Check current claim\" outline [solid 2px rgb(2, 145, 183)]"
+    },
+    {
+      "id": "uncertain-resume",
+      "name": "Claim read fails: keyboard Resume stays in guarded recovery with Check status",
+      "pass": true,
+      "screenshots": [
+        "browser/375-11-uncertain-guarded.png"
+      ],
+      "detail": {
+        "review": 0,
+        "setup": 0,
+        "backDisabled": true,
+        "reviewEnabled": 0,
+        "focus": {
+          "tag": "H1",
+          "text": "Released cars",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "posts": [],
+        "transitionSequence": [
+          {
+            "tag": "H1",
+            "text": "Your cars",
+            "atMs": 10
+          },
+          {
+            "tag": "P",
+            "text": "Loading your account and cars.",
+            "atMs": 125
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your saved journey",
+            "atMs": 326
+          },
+          {
+            "tag": "P",
+            "text": "Loading your account and cars.",
+            "atMs": 401
+          },
+          {
+            "tag": "H1",
+            "text": "Released cars",
+            "atMs": 575
+          }
+        ],
+        "maxBodyMsDuringTransition": 0
+      },
+      "overflowPx": 0,
+      "state": "Released cars | {\"review\":0,\"setup\":0,\"backDisabled\":true,\"reviewEnabled\":0,\"focus\":{\"tag\":\"H1\",\"text\":\"Released cars\",\"insideMain\":true,\"isMainH1\":true,\"tabindex\":\"-1\",\"outline\":\"solid 2px rgb(2, 145, 183)\",\"boxShadow\":\"none\",\"focusVisible\":true}}"
+    },
+    {
+      "id": "uncertain-check-status",
+      "name": "Read recovers: keyboard Check status reaches the same review, no write",
+      "pass": true,
+      "screenshots": [
+        "browser/375-12-uncertain-check-status.png"
+      ],
+      "detail": {
+        "focus": {
+          "tag": "H1",
+          "text": "Review your car",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "posts": [],
+        "sameHold": true
+      },
+      "overflowPx": 0,
+      "state": "focus H1 \"Review your car\"; same hold true; posts []"
+    },
+    {
+      "id": "errors",
+      "name": "No page errors; only expected 404s, aborted claim reads and the release-window setup validation",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "pageErrors": [],
+        "consoleErrors": [
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9191/favicon.ico",
+            "page": "http://127.0.0.1:9191/gcsp/access"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/draft",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/draft",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: net::ERR_FAILED",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: net::ERR_FAILED",
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+          }
+        ],
+        "badResponses": [
+          "404 http://127.0.0.1:9191/api/gcsp/manual/draft",
+          "404 http://127.0.0.1:9191/api/gcsp/manual/draft",
+          "404 http://127.0.0.1:9191/api/gcsp/manual/order",
+          "404 http://127.0.0.1:9191/api/gcsp/manual/claim",
+          "404 http://127.0.0.1:9191/api/gcsp/manual/claim",
+          "404 http://127.0.0.1:9191/api/gcsp/manual/order",
+          "404 http://127.0.0.1:9191/api/gcsp/manual/claim",
+          "404 http://127.0.0.1:9191/api/gcsp/manual/claim",
+          "404 http://127.0.0.1:9191/api/gcsp/manual/order",
+          "404 http://127.0.0.1:9191/api/gcsp/manual/order",
+          "404 http://127.0.0.1:9191/api/gcsp/manual/order"
+        ],
+        "failedRequests": [
+          {
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/stock",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+            "error": "net::ERR_FAILED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:9191/api/gcsp/presenter/scenarios",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:9191/api/gcsp/presenter/scenarios/faults",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+            "error": "net::ERR_FAILED",
+            "method": "GET"
+          }
+        ],
+        "posts": [
+          "/api/gcsp/manual/draft",
+          "/api/gcsp/manual/draft",
+          "/api/gcsp/presenter/controls/tick",
+          "/api/gcsp/manual/draft",
+          "/api/gcsp/manual/draft",
+          "/api/gcsp/manual/draft",
+          "/api/gcsp/manual/draft",
+          "/api/gcsp/manual/claim"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "page errors 0; unexpected console 0; unexpected failed 0"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "account",
+      "check": "Back to account by keyboard lands focus on the Your cars heading",
+      "pass": true,
+      "detail": {
+        "tag": "H1",
+        "text": "Your cars",
+        "insideMain": true,
+        "isMainH1": true,
+        "tabindex": "-1",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "focusVisible": true
+      }
+    },
+    {
+      "page": "setup",
+      "check": "Resume with no claim reaches setup, focus on its main h1, no POST",
+      "pass": true,
+      "detail": {
+        "focus": "H1 \"Your order choices\""
+      }
+    },
+    {
+      "page": "review",
+      "check": "Resume 1: Enter on Resume saved journey leaves focus on the main h1 \"Review your car\"",
+      "pass": true,
+      "detail": {
+        "final": "H1 \"Review your car\"",
+        "bodyAfterRender": 0,
+        "maxBodyMs": 0,
+        "noBody": true
+      }
+    },
+    {
+      "page": "checking",
+      "check": "Resume 1: the checking heading takes focus while the claim is read",
+      "pass": true
+    },
+    {
+      "page": "review",
+      "check": "Resume 2: Enter on Resume saved journey leaves focus on the main h1 \"Review your car\"",
+      "pass": true,
+      "detail": {
+        "final": "H1 \"Review your car\"",
+        "bodyAfterRender": 0,
+        "maxBodyMs": 0,
+        "noBody": true
+      }
+    },
+    {
+      "page": "checking",
+      "check": "Resume 2: the checking heading takes focus while the claim is read",
+      "pass": true
+    },
+    {
+      "page": "review",
+      "check": "Tab from the heading reaches a control with a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "BUTTON",
+        "text": "Check current claim",
+        "insideMain": true,
+        "isMainH1": false,
+        "tabindex": null,
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "focusVisible": true
+      }
+    },
+    {
+      "page": "gallery",
+      "check": "Uncertain claim read blocks review, setup and Back; Check status offered",
+      "pass": true,
+      "detail": {
+        "review": 0,
+        "setup": 0,
+        "backDisabled": true,
+        "reviewEnabled": 0,
+        "focus": {
+          "tag": "H1",
+          "text": "Released cars",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        }
+      }
+    },
+    {
+      "page": "review",
+      "check": "Check status by keyboard reaches the review with focus on its main h1",
+      "pass": true,
+      "detail": {
+        "focus": "H1 \"Review your car\""
+      }
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9191/favicon.ico",
+      "page": "http://127.0.0.1:9191/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_FAILED",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_FAILED",
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:9191/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+      "error": "net::ERR_FAILED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:9191/api/gcsp/presenter/scenarios",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:9191/api/gcsp/presenter/scenarios/faults",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+      "error": "net::ERR_FAILED",
+      "method": "GET"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9191/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    }
+  ],
+  "notes": [
+    "Collection window after release: {\"min\":\"2026-11-13\",\"max\":\"2026-12-01\",\"was\":\"2026-11-12\"}",
+    "No-claim saved date 2026-11-13"
+  ],
+  "origin": "http://127.0.0.1:9191",
+  "orderPosts": [],
+  "finishedAt": "2026-11-09T13:18:43.241Z",
+  "counts": {
+    "steps": 14,
+    "passed": 14,
+    "screenshots": 12,
+    "keyboardChecks": 10
+  }
+}
