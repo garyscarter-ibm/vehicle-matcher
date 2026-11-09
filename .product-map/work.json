@@ -3843,6 +3843,27 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-154",
+      "title": "F70 proof scratch basename prevents standard abandoned-root reconciliation",
+      "status": "In Review",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-154",
+      "branch": "dev/DEV-2026-11-07-GC-004",
+      "observed_at": "2026-11-09T01:40:00Z",
+      "slices": [
+        {
+          "id": "standard-token-root",
+          "status": "complete",
+          "title": "Supervisor uses the standard token-owned scratch root; synthetic reconcile proof",
+          "observed_at": "2026-11-09T01:40:00Z",
+          "evidence": "ccc1f0cb removes the fixed Scratch.root override; _tools/tests/test_f70_scratch_reconcile.py 7/7 (abandoned root cleaned; foreign, replaced and open roots refused; primary and one-shot marker unchanged); test_test_resources 40/40; merged f2b11510."
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
