@@ -5,7 +5,7 @@ import { inputDigest, ok, result } from '../repository/index.js';
 export const APPOINTMENT_CONSUMER = 'synthetic-appointments:v1';
 export const APPOINTMENT_CAPABILITY = 'ordering.appointments.v1';
 export const OPERATION_TYPES = Object.freeze({ request: 'lifecycle-appointment-request', confirm: 'lifecycle-appointment-confirm',
-  accept: 'lifecycle-appointment-accept' });
+  accept: 'lifecycle-appointment-accept', complete: 'lifecycle-appointment-complete', noShow: 'lifecycle-appointment-no-show' });
 const DAY = 86400000;
 const text = (v, max = 512) => typeof v === 'string' && v.length > 0 && v.length <= max;
 const instant = (v) => typeof v === 'string' && Number.isFinite(Date.parse(v));
@@ -82,6 +82,15 @@ export function createSyntheticAppointments({ repository } = {}) {
       if (!valid(operation) || operation.payload.step !== 'accept' || !instant(operation.payload.acceptedAt) || !validSlot(operation.payload.proposedSlot)) return invalidOperation();
       return record(operation, 'synthetic-appointment-accepted', { status: 'scheduled', ...base(operation, { at: operation.payload.acceptedAt, slot: operation.payload.proposedSlot }) });
     },
+    // Terminal outcomes (FUCQ-167): each is receipted once per operation ID, on the instant the service passes in.
+    async complete(operation) {
+      if (!valid(operation) || operation.payload.step !== 'complete' || !instant(operation.payload.completedAt)) return invalidOperation();
+      return record(operation, 'synthetic-appointment-completed', { status: 'completed', ...base(operation, { at: operation.payload.completedAt }) });
+    },
+    async recordNoShow(operation) {
+      if (!valid(operation) || operation.payload.step !== 'noShow' || !instant(operation.payload.noShowAt)) return invalidOperation();
+      return record(operation, 'synthetic-appointment-no-show', { status: 'no-show', ...base(operation, { at: operation.payload.noShowAt }) });
+    },
     // The stored outcome for this operation, `not-found` when the provider never received it, or `conflict` if its input changed.
     async reconcile(operation) {
       if (!valid(operation)) return invalidOperation();
@@ -102,5 +111,7 @@ export function createLiveAppointmentsStub() {
     async requestSlot(operation) { return refuse(operation); },
     async confirm(operation) { return refuse(operation); },
     async acceptProposal(operation) { return refuse(operation); },
+    async complete(operation) { return refuse(operation); },
+    async recordNoShow(operation) { return refuse(operation); },
     async reconcile(operation) { return refuse(operation); } };
 }

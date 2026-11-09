@@ -10,5 +10,6 @@ export function createAppointmentRoutes(service) {
       return service[operation](context, method === 'GET' ? Object.fromEntries(query.filter((k) => searchParams.has(k)).map((k) => [k, searchParams.get(k)])) : body);
     } });
   return [route('/appointments', 'GET', 'read', ['orderUuid']), route('/appointments/request', 'POST', 'request'),
-    route('/appointments/accept', 'POST', 'acceptChange')];
+    route('/appointments/accept', 'POST', 'acceptChange'), route('/appointments/complete', 'POST', 'complete'),
+    route('/appointments/no-show', 'POST', 'recordNoShow')];
 }
