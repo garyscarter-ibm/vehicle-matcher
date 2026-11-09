@@ -6,6 +6,7 @@
   outline: 2px solid var(--gcsp-focus);
   outline-offset: 2px;
 }
-.gcsp :is(h1, h2, h3)[tabindex="-1"]:focus-visible { outline-offset: 6px; border-radius: var(--gcsp-radius); }
-.gcsp [data-gcsp-quiet-focus]:focus { outline: none; }
-.gcsp :is(h1, h2, h3)[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
+.gcsp .gcsp-main :is(h1, h2, h3)[tabindex="-1"]:focus-visible { outline-offset: 6px; border-radius: var(--gcsp-radius); }
+/* Wins over every ring rule, including .gcsp .vm [tabindex]:focus-visible in vehicle-matcher/gcsp-kit.css. */
+.gcsp [data-gcsp-quiet-focus]:focus { outline: none !important; }
+.gcsp .gcsp-main :is(h1, h2, h3)[tabindex="-1"]:focus:not(:focus-visible) { outline: none; }
