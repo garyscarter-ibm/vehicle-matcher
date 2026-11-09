@@ -32,7 +32,8 @@ Two deployables:
   backend with a `data-api` attribute.
 - **`server/`** — a zero-dependency Node HTTP API that runs the matching engine
   against the retailer's **live stock feed** (`stock.js` + `mapping.js`), scored
-  with the weights in `engine.js`. All of it stays server-side. Deploy it to
+  with the retail policy in `server/scenarios/retail/used-retail-v1.js`
+  (`engine.js` is its compatibility facade). All of it stays server-side. Deploy it to
   any Node host.
 
 Why the split: the tuned weights (and the live-stock request flow) are the
@@ -171,7 +172,9 @@ blocks/vehicle-matcher/
     podium.js         #   'podium' — a live-narrowing results podium
 server/
   index.js          # zero-dep Node API: /api/questions, /api/match, /health
-  engine.js         # brand-agnostic scoring engine (reads per-brand tuning)
+  engine.js         # retail compatibility facade: re-exports the used-retail-v1 engine API
+  recommendation/   # shared pure decision core (weights, blend, percent, stable ordering)
+  scenarios/retail/ # used-retail-v1 policy (dimensions, weights, rounding); server/index.js binds it
   brands.js         # brand registry: origin/retailer + per-brand engine tuning
   questions.js      # quiz definition + budget bands        (source of truth)
   stock.js          # live retailer-stock client (per-brand feeds)
@@ -374,7 +377,7 @@ Deterministic weighted scoring — transparent and unit-tested, no black box.
 | What you want to change | Where |
 |---|---|
 | Per-brand weights, priority boosts, stretch tolerance, hard-filter floors | that brand's `tuning` block in `server/brands.js` |
-| The BMW baseline / engine defaults | `WEIGHTS` / `PRIORITY_BOOSTS` / `STRETCH_FACTOR` in `server/engine.js` (sourced from `brandTuning('bmw')`) |
+| The BMW baseline / engine defaults | `WEIGHTS` / `PRIORITY_BOOSTS` / `STRETCH_FACTOR` in `server/scenarios/retail/dimensions.js`, re-exported by `server/engine.js` (tuning sourced from `brandTuning('bmw')`) |
 | Add a brand | new `tuning` block in `server/brands.js` + `MODEL_SPECS`/derivation in `server/mapping.js` — see `docs/onboard-brand-blueprint.md` |
 | New/updated model specs (0–62, boot, seats) | `MODEL_SPECS` in `server/mapping.js` — see [Updating the dataset](#updating-the-dataset) |
 | Test fixture cars | `server/data.js` (see field docs at top; used by `server/test/` only) |
