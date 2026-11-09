@@ -60,3 +60,5 @@ export function comparisonFixtureAdapter(name) {
   const read = outcomes[name] ?? (() => outcomeToState(200, { status: 'ok', value: FIXTURE_VALUES[name]() }));
   return { load: async () => read() };
 }
+
+export { EXPERIMENT_FIXTURE_NAMES, experimentFixtureAdapter } from './experiment-fixtures.js';

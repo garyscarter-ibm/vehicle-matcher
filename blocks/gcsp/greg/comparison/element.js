@@ -1,6 +1,6 @@
 import { mountGregComparison } from './panel.js';
 import { createComparisonHttpAdapter } from './http-adapter.js';
-import { comparisonFixtureAdapter } from './fixtures.js';
+import { comparisonFixtureAdapter, experimentFixtureAdapter } from './fixtures.js';
 
 export class GcspGregComparisonElement extends HTMLElement {
   static get observedAttributes() { return ['fixture']; }
@@ -14,7 +14,7 @@ export class GcspGregComparisonElement extends HTMLElement {
     this._teardown?.();
     this.classList.add('gcsp');
     const fixture = this.getAttribute('fixture');
-    const adapter = this._adapter || (fixture ? comparisonFixtureAdapter(fixture) : createComparisonHttpAdapter());
+    const adapter = this._adapter || (fixture ? comparisonFixtureAdapter(fixture) ?? experimentFixtureAdapter(fixture) : createComparisonHttpAdapter());
     this._teardown = mountGregComparison(this, { adapter });
   }
   refresh() { return this._teardown?.refresh(); }
