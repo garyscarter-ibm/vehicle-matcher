@@ -1,7 +1,8 @@
 // Pure view models for a stored what-if comparison and a worker job. Formatting only: every figure comes from the stored result. Throws on a malformed shape.
-import { BASELINE, BUDDY, BETTER_WHEN, FALLBACK_CAVEAT, JOB_STATUS, TODAY, measureLabel, measureKind, formatMeasure, formatDemoTime, oldPolicyText,
+import { BASELINE, BUDDY, BETTER_WHEN, FALLBACK_CAVEAT, JOB_STATUS, TODAY, measureLabel, measureKind, carTimeKind, formatMeasure, formatDemoTime, oldPolicyText,
   experimentLabel, experimentVerdict, experimentDifferenceText, formatExperimentValue, jobProgressText } from './comparison-copy.js';
-import { toComparisonView, readStats, scaleFor, toAssumption, object, text, finite, fail } from './comparison-view.js';
+import { parameterLabel } from './experiment-copy.js';
+import { toComparisonView, readStats, scaleFor, statValues, toAssumption, object, text, finite, fail } from './comparison-view.js';
 
 const DEFINITION = 'comparison.experiments.v1';
 const ROUTES = [['buddy', BUDDY], ['current', BASELINE]];
@@ -21,7 +22,7 @@ function readChange(result) {
   if (!object(change) || !text(change.key) || !('baselineValue' in change)) fail('change');
   const raw = Array.isArray(change.values) ? change.values : 'value' in change ? [change.value] : null;
   if (!raw?.length) fail('tried values');
-  return { key: change.key, unit: change.unit ?? '', status: change.status ?? 'what-if', basis: change.basis ?? '',
+  return { key: change.key, label: parameterLabel(change.key), unit: change.unit ?? '', status: change.status ?? 'what-if', basis: change.basis ?? '',
     baseline: { value: change.baselineValue, text: formatExperimentValue(id, change.baselineValue), basis: change.baselineBasis ?? '', status: change.baselineStatus ?? '' },
     values: raw, texts: raw.map((v) => formatExperimentValue(id, v)) };
 }
@@ -31,7 +32,6 @@ function routeView(result, arms, [routeKey, routeLabel], change) {
   if (!Array.isArray(first) || !first.length) fail(`${routeKey} route`);
   const measures = first.map((head, i) => {
     if (!object(head) || !text(head.measure) || !BETTER_WHEN[head.betterWhen]) fail('effect entry');
-    const kind = measureKind(head.measure);
     const entries = arms.map((arm, k) => {
       const entry = arm.routes?.[routeKey]?.[i];
       if (!object(entry) || entry.measure !== head.measure || entry.betterWhen !== head.betterWhen) fail('effect entry');
@@ -41,6 +41,8 @@ function routeView(result, arms, [routeKey, routeLabel], change) {
       return { entry, label, verdictText };
     });
     const baseline = readStats(head.baseline, 'baseline');
+    const stats = [baseline, ...entries.flatMap(({ entry }) => [readStats(entry.variant, 'variant'), readStats(entry.difference, 'difference')])];
+    const kind = carTimeKind(measureKind(head.measure), stats.flatMap(statValues));
     const rows = [{ label: `${change.baseline.text} (${TODAY})`, ...pick(baseline) },
       ...entries.map(({ entry, label }) => ({ label, ...pick(readStats(entry.variant, 'variant')) }))];
     return { key: head.measure, label: measureLabel(head.measure), kind, betterWhen: head.betterWhen, hint: BETTER_WHEN[head.betterWhen], rows, scale: scaleFor(kind, rows),
