@@ -1,0 +1,108 @@
+{
+ "story": "FUCQ-316",
+ "host": "offline (GCSP_OFFLINE=1, memory repository), ports 9510-9511",
+ "forbidden": "Not supplied|Fitted equipment unknown",
+ "line": "More details not supplied",
+ "results": {
+  "375": [
+   {
+    "screen": "account",
+    "file": "375-account.png",
+    "viewport": "375x812",
+    "url": "/gcsp-presenter.html",
+    "h1": "Your cars",
+    "region": ".gcsp-feature",
+    "regionCount": 1,
+    "forbiddenCopyFound": null,
+    "lineCount": 3,
+    "overflowX": 0,
+    "checks": [
+     "current car lists no Registration or Not supplied row",
+     "the More details not supplied line shown"
+    ]
+   },
+   {
+    "screen": "review",
+    "file": "375-review.png",
+    "viewport": "375x812",
+    "url": "/gcsp-presenter.html",
+    "h1": "Review your car",
+    "region": ".vm-card, details.gcsp-details:has(summary:text(\"Pinned vehicle details\"))",
+    "regionCount": 2,
+    "forbiddenCopyFound": null,
+    "lineCount": 2,
+    "overflowX": 0,
+    "checks": [
+     "card and pinned details list no Not supplied row",
+     "pinned details open"
+    ]
+   },
+   {
+    "screen": "offer",
+    "file": "375-offer.png",
+    "viewport": "375x812",
+    "url": "/gcsp/offer?offerId=buddy-offer%3A76f1b9bec74d27e8449bd2f8b185d9eb14935db55372d24c93d10228363e0266&runId=demo-e6089aa4712d998dd7f7bde355317136",
+    "h1": "Your car offer",
+    "region": ".vm-card",
+    "regionCount": 1,
+    "forbiddenCopyFound": null,
+    "lineCount": 1,
+    "overflowX": 0,
+    "checks": [
+     "offer card keeps Model and Derivative, drops Colour, Options, Interior and Gearbox rows",
+     "the More details not supplied line shown"
+    ]
+   }
+  ],
+  "1280": [
+   {
+    "screen": "account",
+    "file": "1280-account.png",
+    "viewport": "1280x900",
+    "url": "/gcsp-presenter.html",
+    "h1": "Your cars",
+    "region": ".gcsp-feature",
+    "regionCount": 1,
+    "forbiddenCopyFound": null,
+    "lineCount": 3,
+    "overflowX": 0,
+    "checks": [
+     "current car lists no Registration or Not supplied row",
+     "the More details not supplied line shown"
+    ]
+   },
+   {
+    "screen": "review",
+    "file": "1280-review.png",
+    "viewport": "1280x900",
+    "url": "/gcsp-presenter.html",
+    "h1": "Review your car",
+    "region": ".vm-card, details.gcsp-details:has(summary:text(\"Pinned vehicle details\"))",
+    "regionCount": 2,
+    "forbiddenCopyFound": null,
+    "lineCount": 2,
+    "overflowX": 0,
+    "checks": [
+     "card and pinned details list no Not supplied row",
+     "pinned details open"
+    ]
+   },
+   {
+    "screen": "offer",
+    "file": "1280-offer.png",
+    "viewport": "1280x900",
+    "url": "/gcsp/offer?offerId=buddy-offer%3A09410d6bf273e96e780a91e481a3dee9e34a34d0e756a1b17e4d3c8529f33177&runId=demo-2cd9f1d3e548caafa718f42bbc674b0a",
+    "h1": "Your car offer",
+    "region": ".vm-card",
+    "regionCount": 1,
+    "forbiddenCopyFound": null,
+    "lineCount": 1,
+    "overflowX": 0,
+    "checks": [
+     "offer card keeps Model and Derivative, drops Colour, Options, Interior and Gearbox rows",
+     "the More details not supplied line shown"
+    ]
+   }
+  ]
+ }
+}

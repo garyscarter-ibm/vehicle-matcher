@@ -30,7 +30,7 @@ test('exact shared card, points and current car comparison preserve supplied unk
   assert.match(root.textContent, /Order no\. 0123456/);
   assert.match(root.textContent, /1,100 points a month.*1,300 points a month allowance/);
   assert.match(root.textContent, /320i M Sport Touring/);
-  assert.match(root.textContent, /Fitted equipment unknown/);
+  assert.doesNotMatch(root.textContent, /Fitted equipment unknown/);
   assert.match(root.textContent, /Representative BMW brand image, not this exact car/);
   assert.match(root.textContent, /Synthetic presentation example/);
   assert.equal(root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
@@ -58,8 +58,25 @@ test('FUCQ-275: a pending offer leads with the deadline and has one comparison t
   assert.equal(root.querySelector('.gcsp-offer-current h2'), null); assert.doesNotMatch([...root.querySelectorAll('h2, h3')].map((h) => h.textContent).join('|'), /Your current car/);
   const facts = root.querySelector('.vm-card .vm-facts'); assert.ok(facts.classList.contains('vm-facts-pair'));
   const shown = [...facts.querySelectorAll('dt')].map((node) => node.textContent);
-  assert.deepEqual(shown, ['Derivative', 'Colour', 'Options']); assert.ok(data);
+  assert.deepEqual(shown, ['Derivative']); assert.ok(data);
   assert.doesNotMatch(root.textContent, /0–62 mph|MPG|\bBody\b(?! style)/);
+});
+
+// FUCQ-316: missing card facts collapse into one line, as on the gallery cards (FUCQ-277).
+test('FUCQ-316: a card with unknown Colour, Options, Interior and Gearbox lists none of them and shows one line', () => {
+  const { root, view, data } = render('pending');
+  const card = structuredClone(data.card);
+  for (const [label, value] of [['Colour', null], ['Options', null], ['Interior', null], ['Gearbox', null]]) {
+    const row = card.members[0].facts.find((fact) => fact.label === label);
+    if (row) row.value = value; else card.members[0].facts.push({ label, value, missingLabel: label === 'Options' ? 'Fitted equipment unknown' : 'Not supplied' });
+  }
+  view.update({ ...data, card, canAccept: false, canDecline: false, decisionUnavailable: true, countdown: '2 hours remaining' });
+  const body = root.querySelector('.vm-card');
+  assert.doesNotMatch(body.textContent, /Not supplied|Fitted equipment unknown/);
+  assert.equal(body.querySelectorAll('.is-missing').length, 0);
+  assert.deepEqual([...body.querySelectorAll('.vm-facts dt')].map((node) => node.textContent), ['Derivative']);
+  assert.equal(body.querySelectorAll('.vm-facts-more').length, 1);
+  assert.equal(body.querySelector('.vm-facts-more').textContent, 'More details not supplied');
 });
 
 test('FUCQ-275: without a current car the card keeps its specs and the note stands in for the table', () => {
@@ -152,7 +169,7 @@ test('approved DTO flows through the default HTTP adapter/controller into the sh
   const c = createOfferController(adapter); const view = createOfferView(root); const unsubscribe = c.subscribe(view.update);
   const model = await c.refresh();
   assert.match(root.textContent, /Order no\. 0999987/); assert.match(root.textContent, /1,100 points a month.*1,300 points a month allowance/);
-  assert.match(root.textContent, /Current-car details not supplied/); assert.match(root.textContent, /Fitted equipment unknown/);
+  assert.match(root.textContent, /Current-car details not supplied/); assert.doesNotMatch(root.textContent, /Fitted equipment unknown/);
   assert.match(root.textContent, /2 hours remaining/); assert.equal(model.seconds, 7200);
   assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
   unsubscribe(); c.destroy(); view.destroy();
