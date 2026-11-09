@@ -234,6 +234,16 @@ test('FUCQ-259: the queue and case show a missed return by its keyed label; an u
   assert.match(root.textContent, /Opened fromMissed return of current car/); assert.match(root.textContent, /Opened fromMissed handover appointment/);
   assert.doesNotMatch(root.textContent, /—/);
 });
+test('FUCQ-261: the queue stacks at narrow widths with every column labelled, and the picker label is short', async () => {
+  const { root, destroy } = await mountQueue();
+  const region = root.querySelector('table').closest('.gcsp-table-wrap'); assert.ok(region.classList.contains('is-stack'));
+  const cells = [...root.querySelector('tbody tr').querySelectorAll('td')].map((td) => td.dataset.label);
+  assert.ok(cells.includes('Status') && cells.includes('Owner'), cells.join());
+  const labels = [...root.querySelector('[id$="-selection"]').options].slice(1).map((o) => o.textContent);
+  assert.ok(labels.every((label) => label.split(' · ').length === 2), labels.join()); destroy();
+  const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
+  assert.match(css, /@media \(min-width: 641px\) \{ \.gcsp \.gcsp-case-queue \.gcsp-table \{ min-width: 1050px; \} \}/);
+});
 test('embedded queue spans the Greg dashboard grid like the publish panel', () => {
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
   assert.match(css, /\.gcsp-greg-region:has\(\.gcsp-case-queue\.is-embedded\) \{[^}]*grid-column: 1 \/ -1/);

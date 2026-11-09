@@ -161,12 +161,12 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
     sort.disabled = saving; sort.addEventListener('change', () => { order = sort.value; draw(); content.querySelector(`#${id}-sort`)?.focus(); });
     content.append(labelledField({ id: `${id}-sort`, label: 'Sort cases', control: sort }).root);
     const sorted = sortCases(rows, order);
-    content.append(dataTable({ caption: 'Renewal-risk cases', columns: [
+    content.append(dataTable({ caption: 'Renewal-risk cases', stack: true, columns: [
       { key: 'employee', label: 'Employee' }, { key: 'deadline', label: 'Renewal deadline (calendar date)' }, { key: 'trigger', label: 'Trigger or request' },
       { key: 'reason', label: 'Reason' }, { key: 'status', label: 'Status' }, { key: 'owner', label: 'Owner' }, { key: 'due', label: 'Next action due, demo clock (UTC)' },
     ], rows: sorted.map((c) => ({ employee: c.employeeName ?? c.employeeId, deadline: c.renewalDeadline ?? 'Needs confirmation', trigger: triggerLabel(c),
       reason: c.reason, status: caseStatus(c.status), owner: [...new Set([c.owner?.name, c.owner?.role && roleLabel(c.owner.role)].filter(Boolean))].join(' · '), due: clockTime(c.dueAt) })) }));
-    const picker = nativeSelect(sorted.map((c) => [c.caseId, `${c.employeeName ?? c.employeeId} · ${caseStatus(c.status)} · ${c.renewalDeadline ?? 'Deadline needs confirmation'}`]), selection, 'Choose a case');
+    const picker = nativeSelect(sorted.map((c) => [c.caseId, `${c.employeeName ?? c.employeeId} · ${caseStatus(c.status)}`]), selection, 'Choose a case');
     picker.disabled = saving;
     const open = button({ label: 'Open selected case', disabled: saving || !selection, onClick: () => openCase(selection) });
     picker.addEventListener('change', () => { selection = picker.value; open.disabled = saving || !selection; });
