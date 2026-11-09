@@ -65,7 +65,7 @@ const versions = (clock, policy = 'gcsp-policy-v1', tag = 'a') => ({ forecast: `
   catalog: `${policy}:order-plan-catalog.v1`, clock: String(clock) });
 
 // One feasible plan from plain numbers, with every key the live plan has.
-function feasible({ id, at = T0, clock = 1, policy = 'gcsp-policy-v1', q = {}, covered, total, risk, unmet = [], binding = [], alternatives = [], extra = {}, supply }) {
+function feasible({ id, at = T0, clock = 1, policy = 'gcsp-policy-v1', q = {}, covered, total, risk, unmet = [], binding = [], alternatives = [], extra = {}, supply, unbound }) {
   const quantities = CATALOGUE.map((d) => ({ derivativeId: d.id, modelId: d.modelId, quantity: q[d.id] ?? 0 }));
   const modelQuantities = Object.keys(MODEL_MAX).map((modelId) => ({ modelId, quantity: quantities.filter((x) => x.modelId === modelId).reduce((n, x) => n + x.quantity, 0) }));
   const spendMinor = quantities.reduce((n, x) => n + x.quantity * CATALOGUE.find((d) => d.id === x.derivativeId).cost, 0);
@@ -81,7 +81,8 @@ function feasible({ id, at = T0, clock = 1, policy = 'gcsp-policy-v1', q = {}, c
     solver: { method: 'bounded-exhaustive-integer-search-with-capacity-matching', limits: { derivatives: 12, entitlements: 128, supplyLots: 256, candidatePlans: 50000, matchingSteps: 2000000 },
       complete: true, optimalWithinDeclaredModel: true, visited: 72, feasibleCount: 13, matchingSteps: 13 },
     status: 'feasible', ...view, alternatives: alternatives.map((a) => alt(a.kind, { ...view, ...a.spec }, a.same === true)),
-    currentDraftComparison: null, policyProvenance: provenance(policy, extra.provenance), supplyActivity: supply ?? { requests: [], responses: [] } };
+    currentDraftComparison: null, policyProvenance: provenance(policy, extra.provenance), supplyActivity: supply ?? { requests: [], responses: [] },
+    unboundStock: unbound ?? { count: 0, models: [] } };
 }
 
 const touring2 = { [TOURING]: 2, [I5]: 1 };
@@ -121,7 +122,7 @@ const INFEASIBLE = () => {
     solver: { method: 'bounded-exhaustive-integer-search-with-capacity-matching', limits: { derivatives: 12, entitlements: 128, supplyLots: 256, candidatePlans: 50000, matchingSteps: 2000000 }, complete: true, visited: 144 },
     status: 'infeasible', quantities: [], conflicts: [{ id: 'budget', detail: 'Spend 6200000 exceeds 5000000 GBP minor units.' }, { id: 'model:g61-i5:min', detail: 'Minimum 1.' }],
     conflictAnalysis: 'explanatory-non-minimal-constraint-set', alternatives: [], policyProvenance: provenance(policy, { budget: 5000000, modelMin: { 'g61-i5': 1 } }),
-    supplyActivity: { requests: [], responses: [] } };
+    supplyActivity: { requests: [], responses: [] }, unboundStock: { count: 0, models: [] } };
   return { mode: 'preview', preview: true, writes: 'none', message: 'Preview only. Nothing is saved, published or ordered.', activePolicyVersion: 'gcsp-policy-v1',
     draftPolicyVersion: policy, changes: [{ key: 'orderPlan.budgetMinor', value: 5000000 }, { key: 'orderPlan.modelBounds', value: Object.entries(MODEL_MAX).map(([modelId, max]) => ({ modelId, min: modelId === 'g61-i5' ? 1 : 0, max })) }],
     plan, activePlan: planned(), presentation: presentation(), learned: learnedFallback() };

@@ -2,7 +2,7 @@
 import {
   FORECAST_LABEL, FORECAST_QUALIFIER, FORECAST_NOTE, PREVIEW_FALLBACK, NO_ORDER, INFEASIBLE_ACTION, NO_DEMAND_ACTION, NO_DEMAND_NOTE,
   alternativeLabel, changeLabel, detailText, formatDate, formatDemoTime, gateText, humanise, inputLabel, money, plural,
-  requestStateLabel, responseLabel, SUBMISSION_LABELS, LEARNED_LABEL, LEARNED_UNREADABLE,
+  requestStateLabel, responseLabel, SUBMISSION_LABELS, LEARNED_LABEL, LEARNED_UNREADABLE, UNBOUND_TITLE, unboundStockText,
 } from './plan-copy.js';
 
 export const LIMIT_KEYS = Object.freeze({ models: 'orderPlan.modelBounds', derivatives: 'orderPlan.derivativeBounds', budget: 'orderPlan.budgetMinor' });
@@ -186,6 +186,14 @@ function learnedOf(value, names, currency) {
       policy: text(model.activationPolicyVersion), data: text(f.data?.datasetKind) }, limitations: strings(f.limitations) };
 }
 
+// Cars the server left out because no catalogue entry lists them; nothing is shown for none.
+function unboundOf(v) {
+  const count = object(v) ? v.count : 0;
+  if (!Number.isSafeInteger(count) || count < 1) return null;
+  const models = list(v.models).filter((m) => typeof m === 'string' && m.trim());
+  return { count, models, title: UNBOUND_TITLE, message: unboundStockText(count, models) };
+}
+
 /** Read or preview value -> everything the panel renders (see the keys below). Throws PlanViewError without a plan. */
 export function toPlanView(value) {
   const plan = value?.plan;
@@ -204,7 +212,7 @@ export function toPlanView(value) {
   const alternatives = infeasible ? [] : list(plan.alternatives).map((a) => alternativeOf(a, names, currency));
   return {
     kind, preview, previewMessage: preview ? (value.message || PREVIEW_FALLBACK) : null, submission: preview ? null : submissionOf(value.replan, names),
-    action, note: kind === 'no-demand' ? NO_DEMAND_NOTE : null, currency, orderQuantity: infeasible ? 0 : (plan.orderQuantity ?? 0),
+    unbound: unboundOf(plan.unboundStock), action, note: kind === 'no-demand' ? NO_DEMAND_NOTE : null, currency, orderQuantity: infeasible ? 0 : (plan.orderQuantity ?? 0),
     canSubmit: !infeasible && kind !== 'no-demand' && orders.length > 0,
     lines, orders, models: infeasible ? [] : list(plan.modelQuantities).map((m) => ({ modelId: m.modelId, model: names.model(m.modelId), quantity: m.quantity, zero: m.quantity === 0 })),
     spend: infeasible || !Number.isFinite(plan.spendMinor) ? null : money(plan.spendMinor, currency), spendMinor: infeasible ? null : (plan.spendMinor ?? null),

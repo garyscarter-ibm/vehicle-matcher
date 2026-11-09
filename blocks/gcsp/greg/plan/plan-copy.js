@@ -17,6 +17,13 @@ export const INFEASIBLE_ACTION = 'No plan meets these limits';
 export const NO_DEMAND_ACTION = 'No saved demand to plan for yet';
 export const NO_DEMAND_NOTE = 'Employees need to save and confirm a brief with a renewal date before a plan can be made.';
 
+export const UNBOUND_TITLE = 'Cars left out of this plan';
+/** Server count and model names of cars not in the ordering list -> the one notice sentence. */
+export function unboundStockText(count, models = []) {
+  const one = count === 1;
+  return `${count} new ${one ? "car isn't" : "cars aren't"} in the ordering list yet, so this plan leaves ${one ? 'it' : 'them'} out${models.length ? `: ${models.join(', ')}` : ''}.`;
+}
+
 const INPUT_LABELS = Object.freeze({
   stock: 'Stock', supply: 'Production requests and supply', policy: 'Limits and rules', plan: 'The plan itself',
   clock: 'Demo clock', forecast: 'Demand forecast', cohort: 'Employee group', catalog: 'Vehicle catalogue',
