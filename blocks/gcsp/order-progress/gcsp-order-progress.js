@@ -12,21 +12,23 @@ import { runRestartedScreen } from '../kit/run-restarted.js';
 export const ORDER_PROGRESS_DESTINATION = Object.freeze({ key: 'order-progress', label: 'Order progress', available: true,
   icon: Object.freeze(['M4 6l2 2 3-3', 'M4 14l2 2 3-3', 'M12 7h8', 'M12 15h8']) });
 
+const SECTION_OF = { completeTask: 'documents', requestAppointment: 'handover', acceptAppointment: 'handover', requestReturn: 'return', acceptReturn: 'return' };
 const keyOf = (control) => ({ section: control.closest('.gcsp-order-section')?.className ?? '', label: control.textContent });
 const sameKey = (control, key) => !control.disabled && control.textContent === key.label && (control.closest('.gcsp-order-section')?.className ?? '') === key.section;
 
 // Paints the controller's state into `host`; returns its teardown. Focus stays on a surviving control, else moves to the message.
 function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = true, reload }) {
-  let body; let controller; let stopped = false; let focusKey = null; let helps = [];
+  let body; let controller; let stopped = false; let focusKey = null; let helps = []; let acted = null;
   const content = el('div'); host.replaceChildren(content);
   const stopHelps = () => { helps.splice(0).forEach((stop) => { try { stop?.(); } catch { /* help already gone */ } }); };
-  const has = (name) => (ready && typeof adapter[name] === 'function' ? (...args) => controller?.[name](...args) : undefined);
+  const has = (name) => (ready && typeof adapter[name] === 'function' ? (...args) => { acted = SECTION_OF[name]; return controller?.[name](...args); } : undefined);
   const paint = (state) => {
     if (stopped) return;
     const active = host.ownerDocument.activeElement;
     const owned = Boolean(body?.contains(active));
     if (owned && active.closest('button')) focusKey = keyOf(active.closest('button'));
     stopHelps();
+    if (!state.pending && !state.message) acted = null;
     if (state.phase === 'none') {
       body = el('div', 'vm gcsp-order-progress');
       body.append(screenIntro({ title: orderCopy.title, level }), statusScreen({ title: 'No order yet' }));
@@ -34,7 +36,7 @@ function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = 
       body = el('div', 'vm gcsp-order-progress');
       body.append(screenIntro({ title: orderCopy.title, level }), runRestartedScreen({ reload }));
     } else {
-      body = orderProgressBody({ progress: state.progress, car, pending: state.pending, message: state.message || undefined, level,
+      body = orderProgressBody({ progress: state.progress, car, pending: state.pending, message: state.message || undefined, messageSection: acted || undefined, level,
         onRetry: ready ? () => controller?.refresh() : undefined, onCompleteTask: has('completeTask'), onRequestAppointment: has('requestAppointment'),
         onAcceptAppointment: has('acceptAppointment'), onRequestReturn: has('requestReturn'), onAcceptReturn: has('acceptReturn'),
         mountHelp: (node) => { helps.push(mountHelp(node, { embedded: true, adapter: helpAdapter, headingLevel: Math.min(level + 2, 4) })); } });

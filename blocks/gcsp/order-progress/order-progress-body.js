@@ -8,6 +8,7 @@ import { orderIdentityRows } from '../kit/order-identity.js';
 import { orderCopy as copy, sentence, slotText, withOwner, failureLine, itemStatus, itemOwner, itemTone, historyEvents, notDone } from './order-progress-copy.js';
 
 let sequence = 0;
+export const SECTIONS = Object.freeze(['stages', 'handover', 'documents', 'return']);
 const stageStates = Object.freeze({ approved: 'done', pending: 'current', declined: 'declined', 'not-started': 'upcoming' });
 const usable = (envelope) => envelope?.status === 'ok' && envelope.value && typeof envelope.value === 'object';
 const fn = (value) => (typeof value === 'function' ? value : null);
@@ -183,13 +184,14 @@ function returnSection(c) {
   return node;
 }
 
-export function orderProgressBody({ progress = {}, car, pending = false, message, onRetry, onCompleteTask, onRequestAppointment, onAcceptAppointment,
+export function orderProgressBody({ progress = {}, car, pending = false, message, messageSection, onRetry, onCompleteTask, onRequestAppointment, onAcceptAppointment,
   onRequestReturn, onAcceptReturn, onHelp, mountHelp, level = 1 } = {}) {
   const root = el('div', 'vm gcsp-order-progress');
   const sub = Math.min(level + 2, 6);
   root.append(screenIntro({ title: copy.title, level, className: 'gcsp-order-intro' }));
   const text = message?.text || (pending ? copy.updating : '');
-  if (text) { const live = el('p', `gcsp-order-message${message?.error ? ' is-error' : ''}`, text); live.setAttribute('role', message?.error ? 'alert' : 'status'); root.append(live); }
+  const live = text ? el('p', `gcsp-order-message${message?.error ? ' is-error' : ''}`, text) : null;
+  if (live) { live.setAttribute('role', message?.error ? 'alert' : 'status'); root.append(live); }
   if (progress.phase === 'loading') { root.append(statusScreen({ title: copy.loading })); return root; }
   if (progress.phase !== 'ready') {
     root.append(statusScreen({ title: copy.unavailableTitle, message: copy.unavailable, role: 'alert',
@@ -214,5 +216,8 @@ export function orderProgressBody({ progress = {}, car, pending = false, message
     } };
   root.append(el('p', 'gcsp-order-note', copy.timeNote));
   add(root, orderSection(c), handoverSection(c), documentsSection(c), returnSection(c));
+  // A command's message sits under the heading of the section acted in, so narrow views and focus stay there.
+  const heading = live && SECTIONS.includes(messageSection) ? root.querySelector(`:scope > .gcsp-order-${messageSection} > .gcsp-order-section-title`) : null;
+  heading?.after(live);
   return root;
 }

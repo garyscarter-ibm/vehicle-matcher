@@ -405,6 +405,23 @@ test('return outcome: requested, proposed and booked returns never read Returned
   }
 });
 
+test('FUCQ-254: a command message sits under the heading of the section acted in; otherwise it stays at the top', () => {
+  const node = view('appointment-rebooked', { message: { text: 'Handover time requested.' }, messageSection: 'handover' });
+  const live = node.querySelector('.gcsp-order-message'); const section = live.closest('.gcsp-order-section');
+  assert.ok(section?.classList.contains('gcsp-order-handover')); assert.equal(live.previousElementSibling, section.querySelector('.gcsp-order-section-title'));
+  assert.equal(live.getAttribute('role'), 'status'); assert.equal(node.querySelectorAll('.gcsp-order-message').length, 1);
+  for (const [name, section] of [['documents-waiting-for-you', 'documents'], ['return-requested', 'return']]) {
+    document.body.replaceChildren();
+    const alert = view(name, { message: { text: 'Not saved. Try again.', error: true }, messageSection: section }).querySelector('[role="alert"]');
+    assert.ok(alert.closest(`.gcsp-order-${section}`), section);
+  }
+  for (const messageSection of [undefined, 'elsewhere']) {
+    document.body.replaceChildren();
+    const top = view('appointment-rebooked', { message: { text: 'Handover time requested.' }, messageSection }).querySelector('.gcsp-order-message');
+    assert.equal(top.closest('.gcsp-order-section'), null); assert.equal(top.parentElement.className, 'vm gcsp-order-progress');
+  }
+});
+
 test('return outcome: the return section is its own section and the status message stays in the live region', () => {
   const node = view('return-returned', { message: { text: 'Your order is up to date.' } });
   const plan = section(node, 'return'); assert.equal(plan.closest('.gcsp-order-handover'), null); assert.equal(plan.tagName, 'SECTION');
