@@ -14,8 +14,9 @@ import { createVehicleEvidenceLookup } from '../gcsp/vehicle-evidence/vehicle-lo
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const producerRoot = process.env.F60_PRODUCER_ROOT || repository;
 assert.ok(isAbsolute(producerRoot), 'Select an absolute actual producer root.');
+// Re-pinned 9 Nov (FUCQ-230) to the 7 Nov collection-session revision (03f04ec8..dc228aba).
 const producerIdentity = {
-  'scripts/gcsp/collection-session.mjs': '1f22fe1cdf27d3e6f2be015e32b69b5ecc435c546fe9964396270e3db6e9421e',
+  'scripts/gcsp/collection-session.mjs': 'bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790',
   'scripts/gcsp/configuration-key.mjs': '2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60',
 };
 for (const [path, expected] of Object.entries(producerIdentity)) {
