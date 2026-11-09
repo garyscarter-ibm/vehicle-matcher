@@ -29,6 +29,6 @@ Tab from the top of the page at 1280, 375 and 320: 27 stops inside the panel, id
 
 ## Notes
 
-- In stacked mode the caption ("Plan comparison") sits in a narrow box and wraps onto two lines at 375 and 320 (and "Plan comparison (stacks under 640 px)" onto five in the gallery). It is readable and not clipped; left as is.
+- The first run showed the stacked caption in a narrow box, wrapping onto two lines (five in the gallery). The story-lead added `.is-stack .gcsp-table-caption { display: block; }` to the same kit line and re-ran the capture: the caption now spans the region. All 5 captures pass and the keyboard order still matches FUCQ-123.
 - The static server returns 404 for `/api/gcsp/presenter/controls`, `/api/gcsp/scheme-team/cases` and `/favicon.ico` (logged in `badResponses`); the plan is unaffected.
 - Layout was judged by reading each PNG; no automated contrast check was run.

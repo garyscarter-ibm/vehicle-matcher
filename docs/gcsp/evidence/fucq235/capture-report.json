@@ -1,6 +1,6 @@
 {
   "story": "FUCQ-235",
-  "startedAt": "2026-11-09T03:16:07.106Z",
+  "startedAt": "2026-11-09T03:17:28.639Z",
   "widths": [
     1280,
     375,
@@ -1004,6 +1004,11 @@
     },
     {
       "stage": "plan-320",
+      "url": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "stage": "plan-320",
       "url": "/api/gcsp/scheme-team/cases",
       "status": 404
     }
@@ -1011,7 +1016,7 @@
   "cleanup": {
     "chrome": "stopped (process group), profile removed"
   },
-  "chromeDebugPort": 58641,
-  "finishedAt": "2026-11-09T03:16:25.352Z",
+  "chromeDebugPort": 58697,
+  "finishedAt": "2026-11-09T03:17:47.035Z",
   "pass": true
 }
