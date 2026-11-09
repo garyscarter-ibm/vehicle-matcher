@@ -1,19 +1,21 @@
 {
-  "purpose": "Response shapes for the later appointment screen (FUCQ-120). Backend-only story: no screen, so screenshots are inapplicable. Asserted by server/test/gcsp-lifecycle-appointment.test.js.",
+  "purpose": "Response shapes for the later appointment screen (FUCQ-120) and the order-progress UI (FUCQ-167 completed outcome). Backend-only story: no screen, so screenshots are inapplicable. Asserted by server/test/gcsp-lifecycle-appointment.test.js.",
   "routes": {
     "GET /api/gcsp/appointments?orderUuid=": "ok readModel; employee (own order), greg or presenter; forbidden for another employee; unsupported query keys are invalid",
     "POST /api/gcsp/appointments/request": "{ orderUuid, slotId } -> ok readModel (state requested, booked false); employee only; repeat returns the same appointment; another slot is a conflict; before sent to ordering it is a conflict",
-    "POST /api/gcsp/appointments/accept": "{ orderUuid, proposalId } -> ok readModel (state scheduled, booked true); employee only; conflict when nothing is proposed"
+    "POST /api/gcsp/appointments/accept": "{ orderUuid, proposalId } -> ok readModel (state scheduled, booked true); employee only; conflict when nothing is proposed",
+    "POST /api/gcsp/appointments/complete": "{ orderUuid } -> ok readModel (state completed, booked false, outcome set); presenter or greg only; conflict handover-not-ready until FUCQ-116 reports documents and car ready; conflict appointment-not-scheduled; unavailable handover-readiness-unavailable without the readiness port; repeat returns the same outcome"
   },
   "readModelKeys": [
     "contractVersion", "runId", "orderUuid", "employeeId", "state", "booked", "slot", "requestedSlot", "proposedSlot", "proposalId",
-    "history", "owner", "nextStep", "pending", "blocked", "offeredSlots", "eligibility", "policyVersion", "assumptions", "provider", "fictional"
+    "history", "owner", "nextStep", "pending", "blocked", "offeredSlots", "eligibility", "policyVersion", "assumptions", "provider", "fictional", "outcome"
   ],
   "historyKeys": ["state", "at", "providerReference"],
   "slotKeys": ["slotId", "start", "end"],
   "pendingKeys": ["step", "reason"],
+  "outcomeKeys": ["state", "at", "providerReference"],
   "enums": {
-    "state": ["not-requested", "requested", "change-proposed", "scheduled"],
+    "state": ["not-requested", "requested", "change-proposed", "scheduled", "completed", "no-show"],
     "owner": ["employee", "retailer", "scheme-team"]
   },
   "states": {
@@ -36,7 +38,17 @@
     "scheduled": {
       "state": "scheduled", "booked": true, "owner": "retailer", "nextStep": "The retailer prepares your car for the handover.",
       "pendingStep": null, "blockedCode": null, "history": ["requested", "scheduled"]
+    },
+    "completed": {
+      "state": "completed", "booked": false, "owner": "employee", "nextStep": "Your handover is complete.",
+      "pendingStep": null, "blockedCode": null, "history": ["requested", "scheduled", "completed"]
     }
+  },
+  "notReady": {
+    "status": "conflict",
+    "code": "handover-not-ready",
+    "keys": ["appointment", "code", "contractVersion", "nextStep", "owner", "readiness", "reason", "status"],
+    "readinessKeys": ["blocking", "documentsComplete", "state", "vehicleReady"]
   },
   "unsupported": {
     "status": "unsupported",

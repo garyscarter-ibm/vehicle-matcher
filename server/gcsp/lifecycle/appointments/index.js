@@ -2,7 +2,7 @@ import { inputDigest, ok, result } from '../../repository/index.js';
 import { validInstant } from '../../policy/file-provider.js';
 import { OPERATION_TYPES } from '../../adapters/synthetic-appointments.js';
 import { observeStage } from '../documents/index.js';
-import { loadAppointmentPolicy } from './policy.js';
+import { APPOINTMENT_KEYS, loadAppointmentPolicy } from './policy.js';
 
 export const APPOINTMENT_CONTRACT = 'lifecycle.appointments.v1';
 export const APPOINTMENT_HANDLER_ID = 'lifecycle-appointments';
@@ -15,7 +15,8 @@ const PURPOSES = Object.freeze({
   return: { purpose: 'return', consumer: 'lifecycle-return-appointments:state:v1', handlerId: 'lifecycle-return-appointments', opBase: 'return-appointment',
     commands: 'lifecycle-return-appointments', eventType: 'lifecycle-return-appointment-state' },
 });
-const METHODS = { request: 'requestSlot', confirm: 'confirm', accept: 'acceptProposal' };
+const METHODS = { request: 'requestSlot', confirm: 'confirm', accept: 'acceptProposal', complete: 'complete', noShow: 'recordNoShow' };
+const TERMINAL = { complete: { state: 'completed', at: 'completedAt' }, noShow: { state: 'no-show', at: 'noShowAt' } };
 const text = (v, max = 512) => typeof v === 'string' && v.length > 0 && v.length <= max;
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const slotShape = (s) => object(s) && text(s.slotId, 64) && validInstant(s.start) && validInstant(s.end);
@@ -33,23 +34,27 @@ function expected(step, op, r) {
     return (r.status === 'scheduled' && r.slot?.slotId === op.payload.slot.slotId)
       || (r.status === 'proposed' && slotShape(r.proposedSlot) && r.proposedSlot.slotId !== op.payload.slot.slotId && text(r.proposalId));
   }
+  if (TERMINAL[step]) return r.status === TERMINAL[step].state && r.slot?.slotId === op.payload.slot.slotId && r.at === op.payload[TERMINAL[step].at];
   return r.status === 'scheduled' && r.slot?.slotId === op.payload.proposedSlot.slotId;
 }
 
 export class LifecycleAppointmentService {
-  #repository; #policy; #clock; #identity; #stages; #provider; #start; #cfg; #ownershipKey; #slotSource; #fields;
+  #repository; #policy; #clock; #identity; #stages; #provider; #start; #cfg; #ownershipKey; #slotSource; #fields; #readiness; #outcomesKey;
   // Options default to the handover purpose. `slotSource` replaces provider.offerSlots; `requestFields` are extra caller-validated request keys.
-  constructor({ repository, policy, clock, identity, lifecycleStages, provider, purpose = 'handover', ownershipKey, slotSource, requestFields = [] } = {}) {
+  // `readiness` (FUCQ-116's readReadiness) gates completion; `outcomesKey` is unset for the return purpose, which has no terminal outcomes.
+  constructor({ repository, policy, clock, identity, lifecycleStages, provider, purpose = 'handover', ownershipKey, slotSource, requestFields = [], readiness,
+    outcomesKey = purpose === 'handover' ? APPOINTMENT_KEYS.outcomes : null } = {}) {
     if (!Object.hasOwn(PURPOSES, purpose)) throw new TypeError('Unknown appointment purpose.');
     this.#repository = repository; this.#policy = policy; this.#clock = clock; this.#identity = identity;
     this.#stages = lifecycleStages; this.#provider = provider; this.#cfg = PURPOSES[purpose];
     this.#ownershipKey = ownershipKey; this.#slotSource = slotSource; this.#fields = Object.freeze([...requestFields]);
+    this.#readiness = readiness; this.#outcomesKey = outcomesKey;
   }
 
   #stateRef(runId, orderUuid) { return { table: 'event_receipts', key: { runId, consumerId: this.#cfg.consumer, eventId: orderUuid } }; }
   #operationIds(runId, orderUuid) {
     const base = `${this.#cfg.opBase}:${inputDigest([runId, orderUuid]).slice(0, 32)}`;
-    return { request: `${base}:request`, confirm: `${base}:confirm`, accept: `${base}:accept` };
+    return { request: `${base}:request`, confirm: `${base}:confirm`, accept: `${base}:accept`, complete: `${base}:complete`, noShow: `${base}:no-show` };
   }
   // Repository writes made by the tick handler carry a system principal, never the presenter's identity.
   #system(context) { return { environmentId: context.environmentId, runId: context.runId, principalId: this.#cfg.handlerId, roles: [] }; }
@@ -79,7 +84,7 @@ export class LifecycleAppointmentService {
     return { now: time.value.now, policyVersion: run.value.policyVersion };
   }
 
-  #config(context, now, policyVersion) { return loadAppointmentPolicy(this.#policy, { runId: context.runId, asOf: now, policyVersion }, this.#ownershipKey); }
+  #config(context, now, policyVersion) { return loadAppointmentPolicy(this.#policy, { runId: context.runId, asOf: now, policyVersion }, this.#ownershipKey, this.#outcomesKey); }
 
   // Classifies one FUCQ-111 stage read; a missing order is not found, anything not yet sent to ordering is not eligible.
   async #observe(context, orderUuid, config) {
@@ -110,12 +115,13 @@ export class LifecycleAppointmentService {
     const pending = p.pending ? { step: p.pending.step, reason: 'Waiting for the provider to confirm the last update.' } : null;
     const stuck = p.blocked ?? blocked;
     const unmet = p.state === 'not-requested' && !eligibility.eligible;
-    const step = pending ? config.ownership.pending : stuck ? config.ownership.blocked : unmet ? config.ownership.ineligible : config.ownership.states[p.state];
+    const step = pending ? config.ownership.pending : stuck ? config.ownership.blocked : unmet ? config.ownership.ineligible
+      : config.ownership.states[p.state] ?? config.outcomes?.states[p.state];
     return { contractVersion: APPOINTMENT_CONTRACT, ...(this.#cfg.purpose === 'return' ? { purpose: 'return' } : {}), runId: p.runId, orderUuid: p.orderUuid, employeeId: p.employeeId, state: p.state,
       booked: p.state === 'scheduled', slot: p.slot, requestedSlot: p.requestedSlot, proposedSlot: p.proposedSlot, proposalId: p.proposalId,
       history: p.history, owner: step.owner, nextStep: step.nextStep, pending, blocked: stuck ? { code: stuck.code, reason: stuck.reason } : null,
       offeredSlots, eligibility, policyVersion: p.policyVersion, assumptions: config.assumptions,
-      ...(this.#fields.length ? { plan: p.plan ?? null } : {}),
+      ...(this.#fields.length ? { plan: p.plan ?? null } : {}), ...(this.#outcomesKey ? { outcome: p.outcome ?? null } : {}),
       provider: { mode: this.#provider?.mode ?? null, synthetic: this.#provider?.mode === 'synthetic' }, fictional: true };
   }
 
@@ -221,9 +227,52 @@ export class LifecycleAppointmentService {
     return this.#after(context, orderUuid, prepared, label);
   }); }
 
+  // Completion is the one terminal write the gate allows: FUCQ-116 must report documents and the car ready before any operation exists.
+  complete(context, input = {}) { return this.#safe(async () => {
+    const role = await this.#role(context, ['presenter', 'greg']); if (role.status !== 'ok') return role;
+    if (!this.#outcomesKey) return result('unsupported', { code: 'appointment-outcome-unsupported', reason: 'This appointment cannot be completed here.' });
+    if (!object(input) || !text(input.orderUuid, 128) || Object.keys(input).some((key) => key !== 'orderUuid')) return invalid('orderUuid', 'Choose an order to complete.');
+    const prepared = await this.#prepare(context); if (prepared.error) return prepared.error;
+    const { orderUuid } = input;
+    const found = await this.#repository.read(context, this.#stateRef(context.runId, orderUuid));
+    if (found.status === 'not-found') return result('not-found', { resourceType: 'appointment', reason: 'No appointment was requested for this order.' });
+    if (found.status !== 'ok') return found;
+    const p = found.value.outcome.value;
+    if (p.state === 'completed') return this.#readModel(context, role.value, orderUuid, prepared);
+    if (p.state !== 'scheduled') return result('conflict', { code: 'appointment-not-scheduled', reason: 'Only a scheduled handover can be completed.' });
+    if (p.pending && p.pending.step !== 'complete') return result('conflict', { code: 'appointment-update-pending', reason: 'Another update to this appointment is still being confirmed.' });
+    const config = await this.#config(context, prepared.now, p.policyVersion); if (config.status !== 'ok') return config;
+    const prior = p.operations?.complete ? await this.#repository.read(context, opRef(context.runId, p.operations.complete)) : null;
+    if (prior && prior.status !== 'ok') return prior;
+    let label = 'repeat';
+    if (prior?.value.state === 'pending' && prior.value.lastKnownState === 'unsupported') label = 'blocked';
+    else if (prior?.value.state === 'pending') {
+      const settled = await this.#recover(context, config.value, prior.value, prepared.now, `repeat-${prior.value.attempts}`, true);
+      if (settled.status !== 'ok') return settled;
+      label = settled.value;
+    } else if (!prior) {
+      let ready; try { ready = await this.#readiness?.readReadiness(context, { orderUuid }); } catch { ready = null; }
+      if (ready?.status !== 'ok' || !object(ready.value)) return result('unavailable', { code: 'handover-readiness-unavailable', retryable: true,
+        reason: 'Documents and car preparation cannot be checked right now. Try again shortly.' });
+      if (ready.value.ready !== true) {
+        const { state, documentsComplete, vehicleReady, blocking } = ready.value; const wait = config.value.outcomes.notReady;
+        const model = await this.#readModel(context, role.value, orderUuid, prepared); if (model.status !== 'ok') return model;
+        return result('conflict', { code: 'handover-not-ready', reason: wait.nextStep, owner: wait.owner, nextStep: wait.nextStep,
+          readiness: { state, documentsComplete, vehicleReady, blocking: blocking ?? [] }, appointment: model.value });
+      }
+      const opened = await this.#ensure(context, orderUuid, 'complete', (ids) => this.#operation(context, ids.complete, 'complete', orderUuid, p.slot,
+        { completedAt: prepared.now, readiness: { documentsRevision: ready.value.documentsRevision ?? null } }));
+      if (opened.status !== 'ok') return opened;
+      const settled = opened.value.state === 'pending' ? await this.#write(context, config.value, opened.value, prepared.now, 'inline') : ok('settled');
+      if (settled.status !== 'ok') return settled;
+      label = settled.value;
+    }
+    return this.#after(context, orderUuid, prepared, label, role.value);
+  }); }
+
   // A refused write reports unsupported with the reason; an uncertain one shows as pending in the read model.
-  async #after(context, orderUuid, prepared, label) {
-    const model = await this.#readModel(context, 'employee', orderUuid, prepared); if (model.status !== 'ok') return model;
+  async #after(context, orderUuid, prepared, label, scope = 'employee') {
+    const model = await this.#readModel(context, scope, orderUuid, prepared); if (model.status !== 'ok') return model;
     return label === 'blocked' ? result('unsupported', { code: model.value.blocked.code, reason: model.value.blocked.reason, appointment: model.value }) : model;
   }
 
@@ -240,8 +289,8 @@ export class LifecycleAppointmentService {
     const operation = this.#operation(context, operationId, 'request', orderUuid, slot, { requestedAt: prepared.now });
     const projection = { schemaVersion: 1, runId: context.runId, orderUuid, employeeId: observed.employeeId, policyVersion: config.policyVersion,
       opening: observed.observation, providerMode: this.#provider?.mode ?? 'unavailable', state: 'not-requested', requestedSlot: slot, slot: null,
-      proposedSlot: null, proposalId: null, acceptedProposalId: null, history: [], ...(this.#fields.length ? { plan: extra } : {}),
-      pending: { step: 'request', operationId, lastKnownState: 'requesting' }, blocked: null, operations: { request: operationId, confirm: null, accept: null },
+      proposedSlot: null, proposalId: null, acceptedProposalId: null, history: [], outcome: null, ...(this.#fields.length ? { plan: extra } : {}),
+      pending: { step: 'request', operationId, lastKnownState: 'requesting' }, blocked: null, operations: { request: operationId, confirm: null, accept: null, complete: null, noShow: null },
       confirmation: { delaySeconds: config.confirmDelaySeconds, scenario: config.scenario, slotPolicy: config.slotPolicy } };
     return this.#repository.transaction(context, { commandId: `${this.#cfg.commands}:open:${orderUuid}`,
       inputDigest: inputDigest([orderUuid, slot.slotId, config.policyVersion]) }, async (tx) => {
@@ -267,7 +316,7 @@ export class LifecycleAppointmentService {
       const p = found.value.outcome.value;
       const inserted = await tx.insert('pending_operations', build(ids)); if (inserted.status !== 'ok') return inserted;
       const next = { ...p, operations: { ...p.operations, [step]: ids[step] },
-        ...(step === 'accept' ? { pending: { step, operationId: ids[step], lastKnownState: 'requesting' }, blocked: null } : {}) };
+        ...(['accept', 'complete', 'noShow'].includes(step) ? { pending: { step, operationId: ids[step], lastKnownState: 'requesting' }, blocked: null } : {}) };
       const changed = await tx.compareAndSwap(this.#stateRef(context.runId, orderUuid), found.value.version, { outcome: ok(next) });
       return changed.status === 'ok' ? ok(inserted.value) : changed;
     });
@@ -310,7 +359,7 @@ export class LifecycleAppointmentService {
       if (fresh.value.state !== 'pending') return ok('settled');
       const found = await tx.get(this.#stateRef(context.runId, orderUuid)); if (found.status !== 'ok') return found;
       const p = found.value.outcome.value;
-      const from = { request: 'not-requested', confirm: 'requested', accept: 'change-proposed' }[step];
+      const from = { request: 'not-requested', confirm: 'requested', accept: 'change-proposed', complete: 'scheduled', noShow: 'scheduled' }[step];
       if (p.state !== from) return ok('settled');
       const mine = p.pending?.operationId === operation.operationId;
       let next = { ...p, pending: mine ? null : p.pending };
@@ -318,6 +367,7 @@ export class LifecycleAppointmentService {
       const entry = (state) => ({ state, at: response.at, providerReference: response.providerReference });
       if (good) {
         if (step === 'request') next = { ...next, state: 'requested', blocked: null, history: [...p.history, entry('requested')] };
+        else if (TERMINAL[step]) next = { ...next, state: TERMINAL[step].state, outcome: entry(TERMINAL[step].state), blocked: null, history: [...p.history, entry(TERMINAL[step].state)] };
         else if (step === 'accept') next = { ...next, state: 'scheduled', slot: p.proposedSlot, acceptedProposalId: p.proposalId, blocked: null, history: [...p.history, entry('scheduled')] };
         else if (response.status === 'scheduled') next = { ...next, state: 'scheduled', slot: response.slot, blocked: null, history: [...p.history, entry('scheduled')] };
         else next = { ...next, state: 'change-proposed', proposedSlot: response.proposedSlot, proposalId: response.proposalId, blocked: null, history: [...p.history, entry('change-proposed')] };

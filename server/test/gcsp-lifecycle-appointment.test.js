@@ -11,6 +11,8 @@ import { createAppointmentRoutes } from '../gcsp/lifecycle/appointments/http.js'
 import { createGcspHandler } from '../gcsp/identity/http.js';
 import { createLifecycleApprovalService } from '../gcsp/lifecycle/approvals/index.js';
 import { createSyntheticOrderingStatus } from '../gcsp/adapters/synthetic-ordering-status.js';
+import { createLifecycleDocumentService } from '../gcsp/lifecycle/documents/index.js';
+import { createSyntheticDocumentStatus } from '../gcsp/adapters/synthetic-ordering-documents.js';
 import { createSyntheticAppointments, createLiveAppointmentsStub, APPOINTMENT_CONSUMER, OPERATION_TYPES } from '../gcsp/adapters/synthetic-appointments.js';
 import { createRealProducer } from './helpers/gcsp-lifecycle-approval.js';
 
@@ -20,8 +22,9 @@ const seedValue = (key) => SEED.assumptions.find((a) => a.key === key).value;
 const SLOTS = seedValue('lifecycle.appointments.slots.v1');
 const DELAY = seedValue('lifecycle.appointments.confirmation.v1').confirmDelaySeconds;
 const OWNERSHIP = seedValue('lifecycle.appointments.ownership.v1');
+const OUTCOMES = seedValue('lifecycle.appointments.outcomes.v1');
 const ORDER = '7d1c0b6e-2f4a-4c1e-9b7a-1a2b3c4d5e6f';
-const HOUR = 3600;
+const HOUR = 3600; const DAY = 86400;
 const STAGES = ['selection received', 'HR approval', 'sales-manager approval', 'sent to ordering'];
 
 // The canonical seed read only through PolicyService; `mutate` patches an alternative value by key.
@@ -48,7 +51,7 @@ function stagePort() {
 function flaky(inner) {
   const f = { mode: inner.mode, contractVersion: inner.contractVersion, capability: inner.capability, calls: [], fault: {},
     offerSlots: (input) => inner.offerSlots(input) };
-  for (const method of ['requestSlot', 'confirm', 'acceptProposal', 'reconcile']) {
+  for (const method of ['requestSlot', 'confirm', 'acceptProposal', 'complete', 'recordNoShow', 'reconcile']) {
     f[method] = async (...args) => {
       f.calls.push(method);
       const fault = f.fault[method]; delete f.fault[method];
@@ -64,7 +67,8 @@ function flaky(inner) {
   return f;
 }
 
-async function setup(t, { policy, live = false, stages = stagePort() } = {}) {
+// `documents` composes the real FUCQ-116 service as the readiness port (counting its reads); `readiness` replaces it.
+async function setup(t, { policy, live = false, stages = stagePort(), documents = false, readiness } = {}) {
   policy ??= await policyWith();
   const repository = createMemoryRepository({ store: createMemoryStore() }); await repository.open();
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'appointments-test', environmentKind: 'synthetic',
@@ -79,7 +83,14 @@ async function setup(t, { policy, live = false, stages = stagePort() } = {}) {
   const synthetic = createSyntheticAppointments({ repository });
   const provider = flaky(live ? createLiveAppointmentsStub() : synthetic);
   const port = typeof stages === 'function' ? await stages({ repository, clock, identity, policy }) : stages;
-  const service = createLifecycleAppointmentService({ repository, policy, clock, identity, lifecycleStages: port, provider });
+  let docs = null; const gate = { reads: 0 };
+  if (documents) {
+    docs = createLifecycleDocumentService({ repository, policy, clock, identity, lifecycleStages: port, provider: createSyntheticDocumentStatus({ repository }) });
+    assert.equal((await docs.start()).status, 'ok');
+    readiness = { readReadiness: (...args) => { gate.reads += 1; return docs.readReadiness(...args); } };
+  }
+  const deps = { repository, policy, clock, identity, lifecycleStages: port, readiness };
+  const service = createLifecycleAppointmentService({ ...deps, provider });
   assert.equal((await service.start()).status, 'ok');
   t.after(() => repository.close());
   const p = presenter.value.context; let n = 0;
@@ -95,7 +106,7 @@ async function setup(t, { policy, live = false, stages = stagePort() } = {}) {
   const order = (patch = {}) => stages.orders.set(ORDER, { employeeId: 'employee-paula', stageList: STAGES, approved: 4, revision: 4, ...patch });
   const now = async () => (await clock.now(p)).value.now;
   return { repository, clock, identity, service, stages, provider, synthetic, tick, advance, order, now, presenter: p, paula: paula.value.context,
-    alex: alex.value.context, greg: greg.value.context, sessions: { paula, alex, greg } };
+    alex: alex.value.context, greg: greg.value.context, sessions: { paula, alex, greg, presenter }, docs, gate, deps };
 }
 const read = async (f, context = f.paula) => { const r = await f.service.read(context, { orderUuid: ORDER }); assert.equal(r.status, 'ok', JSON.stringify(r)); return r.value; };
 const request = (f, slotId, context = f.paula) => f.service.request(context, { orderUuid: ORDER, slotId });
@@ -464,4 +475,214 @@ test('recorded appointment response shapes match real service output, with owner
   const refused = await request(h, (await offered(h))[0].slotId);
   assert.deepEqual(keys(refused), [...shapes.unsupported.keysWhenProviderRefusesAfterOffering].sort());
   assert.deepEqual([refused.appointment.owner, refused.appointment.nextStep, refused.appointment.booked], [OWNERSHIP.blocked.owner, OWNERSHIP.blocked.nextStep, false]);
+});
+
+// Terminal outcomes (FUCQ-167): completion is gated by the real FUCQ-116 readiness read.
+const complete = (f, context = f.presenter, input = { orderUuid: ORDER }) => f.service.complete(context, input);
+const ACK = { commandId: 'ack', orderUuid: ORDER, itemId: 'agreement-acknowledgement', acknowledgement: 'synthetic' };
+async function scheduled(f) {
+  f.order(); await request(f, (await offered(f))[0].slotId); await f.advance(DELAY); await f.tick();
+  assert.equal((await read(f)).state, 'scheduled');
+}
+async function ready(f) {
+  await f.advance(2 * DAY); await f.tick();
+  assert.equal((await f.docs.completeTask(f.paula, ACK)).status, 'ok');
+  assert.equal((await f.docs.readReadiness(f.greg, { orderUuid: ORDER })).value.ready, true);
+}
+
+test('completion is refused until documents and car readiness are complete, then records the outcome once', async (t) => {
+  const f = await setup(t, { documents: true }); await scheduled(f);
+  const early = await complete(f);
+  assert.deepEqual([early.status, early.code, early.owner, early.nextStep, early.reason], ['conflict', 'handover-not-ready', OUTCOMES.notReady.owner, OUTCOMES.notReady.nextStep, OUTCOMES.notReady.nextStep]);
+  assert.deepEqual([early.readiness.state, early.readiness.documentsComplete, early.readiness.vehicleReady], ['waiting', false, false]);
+  assert.ok(early.readiness.blocking.includes('vehicle-preparation'));
+  assert.deepEqual([early.appointment.state, early.appointment.booked, early.appointment.outcome], ['scheduled', true, null]);
+  assert.deepEqual([(await operations(f, 'complete')).length, (await receipts(f)).length], [0, 2], 'a refused completion writes nothing');
+
+  await f.advance(2 * DAY); await f.tick();
+  const partial = await complete(f);
+  assert.deepEqual([partial.code, partial.readiness.documentsComplete, partial.readiness.vehicleReady, partial.readiness.blocking], ['handover-not-ready', false, true, ['agreement-acknowledgement']]);
+  assert.equal((await f.docs.completeTask(f.paula, ACK)).status, 'ok');
+
+  const at = await f.now();
+  const done = await complete(f, f.greg); assert.equal(done.status, 'ok', JSON.stringify(done));
+  const view = done.value;
+  assert.deepEqual([view.state, view.booked, view.owner, view.nextStep, view.pending, view.blocked], ['completed', false, OUTCOMES.states.completed.owner, OUTCOMES.states.completed.nextStep, null, null]);
+  assert.deepEqual([view.outcome.state, view.outcome.at], ['completed', at]);
+  assert.match(view.outcome.providerReference, /^SYN-APT-[0-9A-F]{12}$/);
+  assert.deepEqual(view.history.map((h) => h.state), ['requested', 'scheduled', 'completed']);
+  assert.equal(view.history[2].at, at);
+  assert.equal(view.history[2].providerReference, view.outcome.providerReference);
+  assert.ok(view.assumptions.some((a) => a.key === 'lifecycle.appointments.outcomes.v1'));
+  const [op] = await operations(f, 'complete');
+  assert.deepEqual([op.state, op.payload.completedAt, op.payload.readiness.documentsRevision > 0, op.idempotencyKey], ['completed', at, true, op.operationId]);
+
+  const again = await complete(f, f.presenter);
+  assert.deepEqual(again, done, 'a repeat returns the same outcome');
+  assert.deepEqual([(await receipts(f)).length, f.provider.calls.filter((c) => c === 'complete').length, (await operations(f, 'complete')).length], [3, 1, 1]);
+  const paulaView = await read(f);
+  assert.deepEqual([paulaView.state, paulaView.outcome, paulaView.owner], ['completed', view.outcome, 'employee']);
+  await f.tick(); await f.tick();
+  assert.deepEqual([(await read(f)).outcome, (await receipts(f)).length], [view.outcome, 3], 'later ticks leave the outcome alone');
+});
+
+test('completion is unavailable without a working readiness port and refused when not scheduled or malformed', async (t) => {
+  const none = await setup(t); await scheduled(none);
+  const missing = await complete(none);
+  assert.deepEqual([missing.status, missing.code, missing.retryable], ['unavailable', 'handover-readiness-unavailable', true]);
+  assert.equal(typeof missing.reason, 'string');
+  const bad = [async () => { throw new Error('documents down'); }, async () => result('unavailable', { retryable: true }), async () => result('forbidden', {})];
+  for (const readReadiness of bad) {
+    const broken = await setup(t, { readiness: { readReadiness } }); await scheduled(broken);
+    assert.deepEqual([(await complete(broken)).code, (await complete(broken)).status], ['handover-readiness-unavailable', 'unavailable']);
+    assert.deepEqual([(await operations(broken, 'complete')).length, (await receipts(broken)).length, (await read(broken)).state], [0, 2, 'scheduled']);
+  }
+
+  const f = await setup(t, { documents: true });
+  assert.equal((await complete(f)).status, 'not-found');
+  f.order(); await request(f, (await offered(f))[0].slotId);
+  const requested = await complete(f);
+  assert.deepEqual([requested.status, requested.code], ['conflict', 'appointment-not-scheduled']);
+  assert.equal(f.gate.reads, 0, 'the gate is not consulted for an appointment that is not scheduled');
+  await f.advance(DELAY); await f.tick();
+  for (const input of [{}, { orderUuid: ORDER, runId: 'other' }, { orderUuid: ORDER, employeeId: 'employee-alex' }, { orderUuid: 7 }]) assert.equal((await complete(f, f.presenter, input)).status, 'invalid');
+
+  const proposing = await setup(t, { documents: true, policy: await policyWith((get) => { get('lifecycle.appointments.scenario.v1').proposeChange = true; }) }); proposing.order();
+  await request(proposing, (await offered(proposing))[0].slotId); await proposing.advance(DELAY); await proposing.tick();
+  assert.deepEqual([(await read(proposing)).state, (await complete(proposing)).code], ['change-proposed', 'appointment-not-scheduled']);
+
+  // The return purpose has no terminal outcomes: it never writes and never reads readiness.
+  const returned = createLifecycleAppointmentService({ ...f.deps, provider: f.provider, purpose: 'return' });
+  const unsupported = await returned.complete(f.presenter, { orderUuid: ORDER });
+  assert.deepEqual([unsupported.status, unsupported.code], ['unsupported', 'appointment-outcome-unsupported']);
+  assert.deepEqual([(await operations(f, 'complete')).length, f.gate.reads], [0, 0]);
+});
+
+test('only greg or the presenter completes; the employee and other employees are forbidden', async (t) => {
+  const f = await setup(t, { documents: true }); await scheduled(f); await ready(f);
+  for (const context of [f.paula, f.alex]) assert.equal((await complete(f, context)).status, 'forbidden');
+  assert.deepEqual([(await operations(f, 'complete')).length, (await read(f)).state, (await read(f, f.greg)).state], [0, 'scheduled', 'scheduled']);
+  assert.equal((await complete(f, f.presenter)).status, 'ok');
+  assert.equal((await f.service.read(f.alex, { orderUuid: ORDER })).status, 'forbidden', 'the outcome stays private to its employee');
+  assert.equal((await read(f, f.greg)).state, 'completed');
+  const other = await setup(t, { documents: true });
+  assert.equal((await complete(other, other.presenter)).status, 'not-found', 'another run holds no such appointment');
+});
+
+test('a refused terminal write leaves the appointment scheduled; the live stub reports unsupported and records nothing', async (t) => {
+  const f = await setup(t, { documents: true }); await scheduled(f); await ready(f);
+  f.provider.fault.complete = { refuse: { status: 'unsupported', code: 'live-appointments-unsupported', reason: 'Completion is not connected.' } };
+  const refused = await complete(f);
+  assert.deepEqual([refused.status, refused.code, refused.reason, refused.appointment.state, refused.appointment.outcome, refused.appointment.owner],
+    ['unsupported', 'live-appointments-unsupported', 'Completion is not connected.', 'scheduled', null, OWNERSHIP.blocked.owner]);
+  assert.deepEqual([(await receipts(f)).length, (await operations(f, 'complete'))[0].lastKnownState], [2, 'unsupported']);
+  assert.equal((await complete(f)).status, 'unsupported');
+  assert.equal(f.provider.calls.filter((c) => c === 'complete').length, 1, 'a repeat shows the same blocked appointment without another call');
+
+  // A live-mode service over the same stored appointment cannot complete it either.
+  const g = await setup(t, { documents: true }); await scheduled(g); await ready(g);
+  const live = createLifecycleAppointmentService({ ...g.deps, provider: createLiveAppointmentsStub() });
+  const stuck = await live.complete(g.presenter, { orderUuid: ORDER });
+  assert.deepEqual([stuck.status, stuck.code, stuck.appointment.state, stuck.appointment.provider.mode, stuck.appointment.outcome], ['unsupported', 'live-appointments-unsupported', 'scheduled', 'live', null]);
+  assert.equal((await receipts(g)).length, 2);
+  const stub = createLiveAppointmentsStub();
+  for (const write of ['complete', 'recordNoShow']) assert.equal((await stub[write]({})).code, 'live-appointments-unsupported');
+  assert.equal((await complete(g)).status, 'unsupported', 'the refusal stays recorded under the same operation');
+});
+
+for (const fault of ['lost', 'throw-after', 'hang']) {
+  test(`an uncertain completion (${fault}) stays pending under one key and is reconciled before any retry`, async (t) => {
+    const policy = () => policyWith((get) => { get('lifecycle.appointments.confirmation.v1').providerTimeoutMs = 20; });
+    const recorded = fault === 'throw-after';
+    const uncertain = async () => {
+      const f = await setup(t, { documents: true, policy: await policy() }); await scheduled(f); await ready(f);
+      f.provider.fault.complete = fault;
+      const pending = await complete(f); assert.equal(pending.status, 'ok', JSON.stringify(pending));
+      assert.deepEqual([pending.value.state, pending.value.booked, pending.value.pending.step, pending.value.outcome, pending.value.owner, pending.value.nextStep],
+        ['scheduled', true, 'complete', null, OWNERSHIP.pending.owner, OWNERSHIP.pending.nextStep]);
+      const [before] = await operations(f, 'complete');
+      assert.deepEqual([before.lastKnownState, (await receipts(f)).length], ['unknown', recorded ? 3 : 2]);
+      f.provider.calls.length = 0; f.gate.reads = 0;
+      return { f, before };
+    };
+    const expectDone = async ({ f, before }, view) => {
+      assert.deepEqual(f.provider.calls, recorded ? ['reconcile'] : ['reconcile', 'complete'], 'reconciled first; only not-found allows the same write again');
+      assert.deepEqual([view.state, view.pending, view.outcome.state], ['completed', null, 'completed']);
+      const after = await operations(f, 'complete');
+      assert.deepEqual([after.length, after[0].operationId, after[0].idempotencyKey, after[0].state], [1, before.operationId, before.idempotencyKey, 'completed']);
+      assert.equal((await receipts(f)).length, 3, 'exactly one completion receipt');
+    };
+
+    const viaRepeat = await uncertain();
+    const repeated = await complete(viaRepeat.f); assert.equal(repeated.status, 'ok', JSON.stringify(repeated));
+    assert.equal(viaRepeat.f.gate.reads, 0, 'a pending operation is reconciled without re-reading readiness');
+    await expectDone(viaRepeat, repeated.value);
+
+    const viaTick = await uncertain();
+    const summary = handled(await viaTick.f.tick());
+    assert.deepEqual([summary.status, summary.value.applied, summary.value.failed], ['ok', 1, []]);
+    await expectDone(viaTick, await read(viaTick.f));
+  });
+}
+
+test('a startup tick only reconciles an uncertain completion; the next presenter tick retries it', async (t) => {
+  const f = await setup(t, { documents: true }); await scheduled(f); await ready(f);
+  f.provider.fault.complete = 'lost';
+  assert.equal((await complete(f)).value.pending.step, 'complete');
+  f.provider.calls.length = 0;
+  assert.equal((await f.clock.reconcileStartup()).status, 'ok');
+  assert.deepEqual([(await read(f)).pending.step, f.provider.calls], ['complete', ['reconcile']], 'a startup tick never retries the write');
+  await f.tick();
+  assert.deepEqual([(await read(f)).state, (await receipts(f)).length], ['completed', 3]);
+});
+
+test('/api/gcsp/appointments/complete is gated, server-scoped and ignores browser identity', async (t) => {
+  const f = await setup(t, { documents: true }); await scheduled(f);
+  const call = http(f);
+  const forged = { orderUuid: ORDER, employeeId: 'employee-alex', runId: 'other', roles: ['employee'] };
+  assert.equal((await call('/appointments/complete', { body: { orderUuid: ORDER } })).code, 403, 'the employee cannot complete');
+  assert.equal((await call('/appointments/complete', { session: f.sessions.alex, body: { orderUuid: ORDER } })).code, 403);
+  const early = await call('/appointments/complete', { session: f.sessions.greg, body: forged });
+  assert.deepEqual([early.code, early.value.code, early.value.readiness.documentsComplete], [409, 'handover-not-ready', false]);
+  assert.deepEqual(Object.keys(early.value).sort(), [...shapes.notReady.keys].sort());
+  assert.deepEqual(Object.keys(early.value.readiness).sort(), [...shapes.notReady.readinessKeys].sort());
+  await ready(f);
+  const done = await call('/appointments/complete', { session: f.sessions.presenter, body: forged });
+  assert.equal(done.code, 200, JSON.stringify(done));
+  assert.deepEqual([done.value.value.state, done.value.value.employeeId, done.value.value.runId, done.value.value.outcome.state], ['completed', 'employee-paula', f.paula.runId, 'completed']);
+  assert.deepEqual((await call('/appointments/complete', { session: f.sessions.greg, body: { orderUuid: ORDER } })).value, done.value);
+  assert.deepEqual((await call('/appointments', { query: `orderUuid=${ORDER}` })).value.value, done.value.value);
+  assert.equal((await call('/appointments/complete', { session: f.sessions.greg, body: { orderUuid: ORDER, extra: 1 } })).code, 400);
+});
+
+test('the completed response shape and notReady refusal match the recorded fixture', async (t) => {
+  const keys = (v) => Object.keys(v).sort();
+  const want = shapes.states.completed;
+  assert.deepEqual([want.owner, want.nextStep], [OUTCOMES.states.completed.owner, OUTCOMES.states.completed.nextStep]);
+  const f = await setup(t, { documents: true }); await scheduled(f); await ready(f);
+  const view = (await complete(f)).value;
+  assert.deepEqual(keys(view), [...shapes.readModelKeys].sort());
+  assert.deepEqual([view.state, view.booked, view.owner, view.nextStep, view.pending?.step ?? null, view.blocked?.code ?? null], [want.state, want.booked, want.owner, want.nextStep, want.pendingStep, want.blockedCode]);
+  assert.deepEqual(view.history.map((h) => h.state), want.history);
+  assert.deepEqual(keys(view.outcome), [...shapes.outcomeKeys].sort());
+  for (const h of view.history) assert.deepEqual(keys(h), [...shapes.historyKeys].sort());
+  const g = await setup(t, { documents: true }); await scheduled(g);
+  const refused = await complete(g);
+  assert.deepEqual([refused.status, refused.code, keys(refused), keys(refused.readiness)], [shapes.notReady.status, shapes.notReady.code, [...shapes.notReady.keys].sort(), [...shapes.notReady.readinessKeys].sort()]);
+});
+
+test('a missing or malformed outcomes policy makes the handover appointment unavailable with no defaults; a changed entry changes the copy', async (t) => {
+  for (const mutate of [(v) => { delete v.notReady; }, (v) => { v.states.completed.owner = 'nobody'; }, (v) => { delete v.states['no-show']; }, (v) => { v.exceptionTypes.noShow = ''; },
+    (v) => { v.states.completed.nextStep = 'Done — finished.'; }]) {
+    const f = await setup(t, { documents: true, policy: await policyWith((get) => mutate(get('lifecycle.appointments.outcomes.v1'))) }); f.order();
+    assert.equal((await f.service.read(f.paula, { orderUuid: ORDER })).status, 'unavailable');
+  }
+  const seedless = structuredClone(SEED);
+  seedless.assumptions = seedless.assumptions.filter((a) => a.key !== 'lifecycle.appointments.outcomes.v1');
+  const f = await setup(t, { documents: true, policy: new PolicyService({ provider: { async loadVersions() { return [seedless]; } } }) }); f.order();
+  assert.equal((await f.service.read(f.paula, { orderUuid: ORDER })).status, 'unavailable');
+  const g = await setup(t, { documents: true, policy: await policyWith((get) => { Object.assign(get('lifecycle.appointments.outcomes.v1').states.completed, { owner: 'scheme-team', nextStep: 'Handover recorded.' }); }) });
+  await scheduled(g); await ready(g);
+  const view = (await complete(g)).value;
+  assert.deepEqual([view.owner, view.nextStep], ['scheme-team', 'Handover recorded.']);
 });

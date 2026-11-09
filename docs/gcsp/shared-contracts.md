@@ -1430,6 +1430,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
 | 1.0.0 / 2026-11-09 / FUCQ-123 | Adds the PredictionInput to DemandForecast contract, the learned planner forecast and `createLearnedOrderPlanService`, and an additive `learned` field on `readPlan` / `previewPlan`. Assumed `forecast.learned.v1` (`choiceMassThreshold`, `waitExclusionThreshold`, `intervalZ`); consumes `choice.model.reference`. The baseline stays the recommended and only submittable plan. No table, route or migration. |
+| 1.0.0 / 2026-11-09 / FUCQ-167 | Adds the handover `complete` and `recordNoShow` operations to `ordering.appointments.v1` (synthetic and live stub), terminal appointment states `completed` and `no-show`, `POST /api/gcsp/appointments/complete` gated on FUCQ-116's `readReadiness`, and an additive `outcome` field on the handover read model; assumed `lifecycle.appointments.outcomes.v1`. No table; no existing meaning changes. |
 | 1.0.0 / 2026-11-07 / FUCQ-117 | Adds the order-plan service, policy-backed catalog and future-terms providers and canonical composition; seven assumed `orderPlan.*` keys (horizon, budget, currency, model/derivative bounds, objective weights, synthetic catalogue). No table, route or UI. |
 | 1.0.0 / 2026-11-07 / FUCQ-114 | Adds LifecycleAppointmentService, `lifecycle-appointments` handler, appointment routes, `ordering.appointments.v1` capability and live stub, versioned receipt projection (no table) and per-step pending operations; assumed `lifecycle.appointments.{slots,confirmation,scenario,ownership}.v1`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
 | 1.0.0 / 2026-11-06 / FUCQ-116 | Adds LifecycleDocumentService, `lifecycle-documents` handler, document routes, `ordering.documentStatus.v1` capability and live stub, versioned receipt projection (no table) and keyed exception receipts with order-specific renewal identity; assumed `lifecycle.documents.{v1,scenario.v1,exceptions.v1}`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
@@ -1641,6 +1642,15 @@ Read model: `contractVersion`, `runId`, `orderUuid`, `employeeId`, `state`, `boo
 
 A refused write returns `unsupported` with `code`, `reason` and, once a slot was offered, the unchanged `appointment` (owner
 scheme-team). This backend-only story adds no screen.
+
+Terminal outcomes (FUCQ-167): `POST /api/gcsp/appointments/complete` `{orderUuid}` (presenter or Greg) moves a `scheduled` handover
+to `completed` only when FUCQ-116's `readReadiness` reports `ready`. Not ready is a `conflict` `handover-not-ready` with
+`readiness {state, documentsComplete, vehicleReady, blocking}`, the keyed `owner`/`nextStep` and the unchanged `appointment`; an absent or
+failing readiness port is `unavailable` `handover-readiness-unavailable`; a non-scheduled appointment is `conflict`
+`appointment-not-scheduled`. The write uses operation `appointment:<digest>:complete` under one idempotency key, is reconciled before any
+retry, and records the demo-clock time and provider reference in `history` and the read model's `outcome` `{state, at, providerReference}`
+(null until then). The live stub refuses it as `unsupported`. Owners and copy come from `lifecycle.appointments.outcomes.v1`, which also keys
+the no-show exception type for the later no-show slice. The return purpose has no terminal outcomes.
 
 ## Lifecycle return plan · FUCQ-118
 
