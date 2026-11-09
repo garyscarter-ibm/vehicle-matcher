@@ -878,13 +878,13 @@ All nine canonical keys below are dated **5 November 2026** (`renewalCase.lifecy
 | `renewalCase.deadline.withinDays` | 14; calendar days |
 | `renewalCase.lifecycle.enabled` | true; boolean |
 | `renewalCase.lifecycle.eventTypes` | approval-declined, appointment-no-show, return-missed; event type keys |
-| `renewalCase.lifecycle.exceptionCopy` | `return-missed`: label "Missed return of current car" and its reason; trigger label and reason by event type key |
+| `renewalCase.lifecycle.exceptionCopy` | `return-missed` ("Missed return of current car"), `appointment-no-show` ("Missed handover appointment") and `approval-declined` ("Order approval declined"), each with its reason (FUCQ-262); trigger label and reason by event type key |
 | `renewalCase.selection.eventTypes` | selection-acknowledged; event type keys |
 | `renewalCase.owner.role` | scheme-team; role |
 | `renewalCase.response.dueHours` | 24; hours, a review target rather than a service-level agreement |
 | `renewalCase.extension.permitted` | false; boolean |
 
-FUCQ-259: a lifecycle trigger whose event type has an `exceptionCopy` entry stores that `label` on the trigger and uses its `reason`; any other type keeps the general reason and no label, so handover no-show and approval-declined cases are unchanged. Label and reason are snapshots taken when the case opens, like the reason in its history; cases and receipts stored earlier are not relabelled. The views show `trigger.label` when supplied.
+FUCQ-259: a lifecycle trigger whose event type has an `exceptionCopy` entry stores that `label` on the trigger and uses its `reason`; any other type keeps the general reason and no label. FUCQ-262 adds entries for handover no-show and approval-declined, so only an unlisted type keeps the general reason. Label and reason are snapshots taken when the case opens, like the reason in its history; cases and receipts stored earlier are not relabelled. The views show `trigger.label` when supplied.
 
 `start()` registers `renewal-risk-cases` in the existing `pending-reconciliation` clock stage. A presenter tick evaluates the keyed deadline/no-acknowledged-selection rule and keyed lifecycle exceptions. Existing `event_receipts` are eligible only when completed with `outcome.status = ok` and `outcome.value = { employeeId, renewalId, orderUuid, occurredAt }` matching the renewal, with a nonfuture UTC instant. Selection acknowledgement suppresses only the deadline rule. Durable `renewal-case-trigger` receipts deduplicate each source; no approval/appointment producer or unattended scheduler is introduced. A selected, valid lifecycle exception for another renewal owned by the same employee (matching slot where `entitlementSlotId` is supplied) opens or updates no case. The tick records one keyed `renewal-case-trigger` receipt, event type `renewal-case-unsupported-renewal`, `outcome.status` invalid, code `renewal-not-supported`, and reports `unsupported` in its result. Unowned, null, foreign-employee, unselected and invalid renewals are still ignored. Receipts persisted before this rule are handled on the next tick.
 
