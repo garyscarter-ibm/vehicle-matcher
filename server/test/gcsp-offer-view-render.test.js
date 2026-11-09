@@ -291,6 +291,12 @@ test('the offer stylesheet chain loads the kit table styles and keeps card and t
   assert.match(css, /@media \(min-width: 800px\) \{\s*\.gcsp \.gcsp-offer-comparison \{ grid-template-columns: minmax\(0, 1fr\) minmax\(0, 1fr\); \}/);
 });
 
+test('FUCQ-318: on a phone the comparison headers read This offer and Your current car, not the full car names', async () => {
+  const kit = await readFile(new URL('../../blocks/gcsp/kit/data-table-compare.css', import.meta.url), 'utf8');
+  assert.match(kit, /@media \(max-width: 640px\) \{ \.gcsp \.is-compare \.gcsp-table-th-sub \{ display: none; \} \}/);
+  assert.match(kit, /^\.gcsp \.gcsp-table-th-sub \{ display: block;/m);
+});
+
 const stageText = (root) => [...root.querySelectorAll('.gcsp-stage-item')].map((row) => [...row.children].map((node) => node.textContent));
 async function mountFixture(name, decide) {
   const root = document.createElement('div'); document.body.append(root);
