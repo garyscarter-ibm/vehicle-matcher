@@ -1,0 +1,298 @@
+{
+  "state": "passed",
+  "chunk": "desktop",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "boundary": "Real buildServer routes, memory repository and canonical services over loopback HTTP, hosted on gcsp-account.html. No route is stubbed.",
+  "cookieMode": "fallback: Secure and SameSite=None refused on http://127.0.0.1, bootstrap cookie stored Lax, not Secure",
+  "checks": [
+    {
+      "id": "01-default-current-car:layout",
+      "name": "01-default-current-car: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "01-default-current-car:copy",
+      "name": "01-default-current-car: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "01-default-current-car:console",
+      "name": "01-default-current-car: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "01-default-current-car:\"Your current car\" card",
+      "name": "01-default-current-car: \"Your current car\" card",
+      "pass": true
+    },
+    {
+      "id": "01-default-current-car:\"Return booked:\"",
+      "name": "01-default-current-car: \"Return booked:\"",
+      "pass": true
+    },
+    {
+      "id": "01-default-current-car:no-\"No current car\"",
+      "name": "01-default-current-car: absent: \"No current car\"",
+      "pass": true
+    },
+    {
+      "id": "01-default-current-car:no-\"Returned:\"",
+      "name": "01-default-current-car: absent: \"Returned:\"",
+      "pass": true
+    },
+    {
+      "id": "01:old-contract-card",
+      "name": "01: one card, the old contract, as before the fix",
+      "pass": true,
+      "detail": {
+        "cards": [
+          {
+            "contractId": "current:employee-paula",
+            "orderUuid": null,
+            "heading": "Fictional BMW 320i Touring",
+            "text": "No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 22 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Scheme BMW Choices Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car"
+          }
+        ],
+        "newCar": "Synthetic TEST composition car"
+      }
+    },
+    {
+      "id": "01:tab",
+      "name": "01: Tab alone reaches \"Employee and contact details\" past the current-car card",
+      "pass": true,
+      "detail": {
+        "tabs": 4,
+        "label": "Employee and contact details"
+      }
+    },
+    {
+      "id": "01:focus-visible",
+      "name": "01: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "summary",
+        "role": null,
+        "label": "Employee and contact details",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "02:server-relationship",
+      "name": "02: the account read carries the confirmed relationship (new car current, old car returned)",
+      "pass": true,
+      "detail": {
+        "currentCar": {
+          "kind": "order",
+          "orderUuid": "f1000000-0000-4000-8000-000000000001",
+          "vin": null
+        },
+        "oldCar": "returned"
+      }
+    },
+    {
+      "id": "02-returned-current-car:layout",
+      "name": "02-returned-current-car: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "02-returned-current-car:copy",
+      "name": "02-returned-current-car: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "02-returned-current-car:console",
+      "name": "02-returned-current-car: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "02-returned-current-car:\"Returned: <time>\"",
+      "name": "02-returned-current-car: \"Returned: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "02-returned-current-car:\"Handover complete: <time>\"",
+      "name": "02-returned-current-car: \"Handover complete: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "02-returned-current-car:\"Your current car\" card",
+      "name": "02-returned-current-car: \"Your current car\" card",
+      "pass": true
+    },
+    {
+      "id": "02-returned-current-car:no-\"No current car\"",
+      "name": "02-returned-current-car: absent: \"No current car\"",
+      "pass": true
+    },
+    {
+      "id": "02-returned-current-car:no-\"Contract ends in\"",
+      "name": "02-returned-current-car: absent: \"Contract ends in\"",
+      "pass": true
+    },
+    {
+      "id": "02-returned-current-car:no-\"Choose a replacement\"",
+      "name": "02-returned-current-car: absent: \"Choose a replacement\"",
+      "pass": true
+    },
+    {
+      "id": "02:new-car-card",
+      "name": "02: one card, the collected order's car, named as in order progress",
+      "pass": true,
+      "detail": {
+        "cards": [
+          {
+            "contractId": null,
+            "orderUuid": "f1000000-0000-4000-8000-000000000001",
+            "heading": "Synthetic TEST composition car",
+            "text": "No image for this car yet YOUR CURRENT CAR Synthetic TEST composition car Status Current car Collected 7 November 2026 Order reference GCSP-000001 Car order number 9100001"
+          }
+        ],
+        "newCar": "Synthetic TEST composition car"
+      }
+    },
+    {
+      "id": "02:agrees",
+      "name": "02: the return section's \"Current car\" names the same car as the card",
+      "pass": true
+    },
+    {
+      "id": "02:tab",
+      "name": "02: Tab alone reaches \"Employee and contact details\" past the current-car card",
+      "pass": true,
+      "detail": {
+        "tabs": 3,
+        "label": "Employee and contact details"
+      }
+    },
+    {
+      "id": "02:focus-visible",
+      "name": "02: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "summary",
+        "role": null,
+        "label": "Employee and contact details",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    }
+  ],
+  "captures": [
+    {
+      "name": "1280-01-default-current-car",
+      "file": "1280-01-default-current-car.png",
+      "bytesPng": 373823,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-02-returned-current-car",
+      "file": "1280-02-returned-current-car.png",
+      "bytesPng": 344246,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    }
+  ],
+  "errors": [],
+  "requests": {
+    "GET /api/gcsp/presenter/controls 200 ok": 2,
+    "GET /api/gcsp/manual/account 200 ok": 2,
+    "GET /api/gcsp/manual/draft 200 ok": 2,
+    "GET /api/gcsp/offers/current 200 ok": 2,
+    "GET /api/gcsp/orders/progress/all 200 ok": 2,
+    "GET /api/gcsp/context 200 ok": 2,
+    "GET /api/gcsp/presenter/scenarios 200 ok": 2,
+    "GET /api/gcsp/presenter/scenarios/faults 200 ok": 2,
+    "GET /api/gcsp/manual/order 200 ok": 2,
+    "GET /api/gcsp/orders/progress 200 ok": 2,
+    "GET /api/gcsp/documents 200 ok": 2,
+    "GET /api/gcsp/appointments 200 ok": 2,
+    "GET /api/gcsp/return-plan 200 ok": 2
+  },
+  "processes": {
+    "chrome": {
+      "pid": 20788,
+      "group": 20788,
+      "debugPort": 9239
+    },
+    "server-default": {
+      "pid": 20779,
+      "port": 9230
+    },
+    "server-returned": {
+      "pid": 20779,
+      "port": 9231
+    }
+  },
+  "notes": [],
+  "facts": {
+    "01": {
+      "cards": [
+        {
+          "contractId": "current:employee-paula",
+          "orderUuid": null,
+          "heading": "Fictional BMW 320i Touring",
+          "text": "No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 22 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Scheme BMW Choices Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car"
+        }
+      ],
+      "newCar": "Synthetic TEST composition car"
+    },
+    "02": {
+      "cards": [
+        {
+          "contractId": null,
+          "orderUuid": "f1000000-0000-4000-8000-000000000001",
+          "heading": "Synthetic TEST composition car",
+          "text": "No image for this car yet YOUR CURRENT CAR Synthetic TEST composition car Status Current car Collected 7 November 2026 Order reference GCSP-000001 Car order number 9100001"
+        }
+      ],
+      "newCar": "Synthetic TEST composition car",
+      "returnSection": "Returning your current car Current car Synthetic TEST composition car Returned car Fictional BMW 320i Touring Return place Fictional collection centre Returned: 9 Nov 2026, 14:30 Owner Retailer Next step Your current car has been returned. Nothing more is needed from you. Return reference (synthetic) SYN-RET-26295D01EA3D Return history All dates are demo time (UTC). 7 Nov 2026, 12:30 Return requested 7 Nov 2026, 13:00 Return booked 9 Nov 2026, 14:30 Returned"
+    }
+  },
+  "summary": {
+    "checks": 24,
+    "failed": [],
+    "captures": 2
+  }
+}

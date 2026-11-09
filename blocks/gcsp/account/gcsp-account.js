@@ -176,7 +176,7 @@ function orderCurrentCar(car, order, orderVehicle) {
     alt: `${name ?? 'Car'}: representative image`, caption: 'Representative image, not your exact car' }, 'gcsp-media', { placeholder: 'No image for this car yet' });
   const copy = el('div', 'gcsp-feature-copy');
   copy.append(el('p', 'gcsp-eyebrow', 'Your current car'), heading,
-    facts([row('Status', status('current')), row('Collected', date(car.collectedAt?.slice(0, 10))), row('Delivered VIN', car.vin),
+    facts([row('Status', status('current')), row('Collected', date(car.collectedAt?.slice(0, 10))), ...(car.vin ? [row('Delivered VIN', car.vin)] : []),
       ...(same ? orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value)) : [])]));
   feature.append(media, copy);
   return feature;
