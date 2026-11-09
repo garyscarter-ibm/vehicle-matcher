@@ -879,16 +879,18 @@ service. Each release applies, then the route calls FUCQ-96 `allocate` at that i
 (the harness release writes no stock-release receipt for the clock stage to read, so it calls the method the stage calls).
 Allocation runs before any non-participant acts on that release. Offer emails go to the captured transport only.
 Non-participants run `createManualReplay` with `comparison.manualRoute.v1` for the same releases and compete for cars the
-buddy has not held. After a decline or an expiry nothing re-runs allocation: the live triggers are stock release and
-brief change, so the car rejoins the pool at the next release (and the manual listing meanwhile).
+buddy has not held. After an expiry the route calls FUCQ-96 `allocate` at once with the `buddy-expired` event that
+`buddyExpiryEvents` builds from the expiry receipts, as the clock's allocation stage does (FUCQ-227): the employees whose
+holds lapsed sit out that allocation and nobody is handed a car they let lapse, so it goes to a waiting participant once. After a decline nothing re-runs
+allocation, so a declined car rejoins the buddy pool at the next release (and the manual listing meanwhile).
 
 **Responses.** An employee answers at offer creation plus their generated `responseSeconds`. A response at or after the
 hold deadline never happens: the offer expires through FUCQ-100's clock handler, counted as an offer expiry. They accept
 (FUCQ-106 `decide`) only when the car passes their **underlying** gates with fit at or above
 `comparison.acceptableFitThreshold`; otherwise they decline with the registered reason whose `attribute` appears in the facts
 of the underlying component with the largest `(slider maximum - score) x importance`, else the keyed fallback reason.
-FUCQ-96 excludes a declined car for that employee until a relevant confirmed brief change; an expiry excludes nothing and
-gives no priority. The pinned quote lapses after `employee.recommendation.v1.termValiditySeconds`; an employee who would
+FUCQ-96 excludes a declined car for that employee until a relevant confirmed brief change; an expiry keeps the car from its
+lapsed holders only in expiry-triggered allocations (`offer.expiredHold.reallocation`) and gives no priority. The pinned quote lapses after `employee.recommendation.v1.termValiditySeconds`; an employee who would
 accept but answers after that can only decline, so the offer lapses at its deadline (`termsLapsed`, also an expiry). A
 participant is paused through the brief service once FUCQ-66 reports ordering closed (`orderingClosedAt`), as in today's route.
 

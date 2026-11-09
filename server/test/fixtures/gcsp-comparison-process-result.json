@@ -249,7 +249,7 @@
                 "buddyHeldNotTakenHours": 0.333333,
                 "heldNotTakenHours": 0.4
               },
-              "recordDigest": "12b11aa781759be4ba172926c6c2264e3d3a4d061d2e5fb0b7dc1433e2b4a79c"
+              "recordDigest": "19d6c1e0454521d7a8b5b3d0e1b044e753681974569fca46750e132dc13a413a"
             }
           }
         },
@@ -324,7 +324,7 @@
                 "buddyHeldNotTakenHours": 0,
                 "heldNotTakenHours": 0.066667
               },
-              "recordDigest": "e580c1f26770ec768943fff8054d580d010db0e4d5f9c877de650c22e4c929ed"
+              "recordDigest": "9499304e7a7de92b0c9274bc4f67c155e85d244a962e7a220c9fe42225292cd8"
             }
           }
         },
@@ -399,7 +399,7 @@
                 "buddyHeldNotTakenHours": 0.333333,
                 "heldNotTakenHours": 0.333333
               },
-              "recordDigest": "19dbcc0519df4df1d75eaa867d1a0b397ffce61bed9c0036b156f2175ef24601"
+              "recordDigest": "c1529a4afff5274caf62f01c1522b9ba34f39d604c722b7ba0737aa294271ecd"
             }
           }
         }
@@ -780,14 +780,14 @@
             "schemaVersion": 1,
             "participation": "generated-buddyParticipation",
             "consent": "search-and-hold-given-through-brief-service-with-stated-brief",
-            "allocation": "at-each-release-through-allocation-service",
+            "allocation": "at-each-release-and-hold-expiry-through-allocation-service",
             "orderingWindow": "participant-pauses-when-manual-ordering-closes",
             "response": "offer-creation-plus-generated-responseSeconds",
             "offerExpiry": "buddy-hold-deadline",
             "acceptance": "underlying-gates-and-fit-at-or-above-threshold",
             "declineReason": "registered-reason-for-largest-importance-weighted-shortfall",
             "declineReasonFallback": "size",
-            "afterDeclineOrExpiry": "no-trigger-until-next-release-or-brief-change",
+            "afterDeclineOrExpiry": "expiry-reallocates-at-once-without-lapsed-holders-decline-waits-for-next-release-or-brief-change",
             "nonParticipants": "comparison.manualRoute.v1"
           },
           "unit": "versioned synthetic buddy behaviour",
@@ -922,6 +922,15 @@
           "basis": "Assumed employee policy per HLD; unchanged declined `orderUuid` excluded, expiry excluded from dislike history.",
           "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
           "policyVersion": "gcsp-policy-v1"
+        },
+        {
+          "key": "offer.expiredHold.reallocation",
+          "value": "lapsedHoldersSitOutAndNobodyGetsBackACarTheyLetLapse",
+          "unit": "enum",
+          "status": "assumed",
+          "basis": "Assumed demo rule (FUCQ-227): a lapsed buddy hold returns its car to allocation on the same tick. The employees whose holds lapsed sit out that allocation, and an expiry allocation never offers anyone a car they already let lapse, so the car goes to a waiting employee once rather than circling between non-responders. An expiry is not a decline: at the next release or brief change everyone competes again, with no priority.",
+          "source": "docs/gcsp/allocation-contract.md",
+          "policyVersion": "gcsp-policy-v1"
         }
       ],
       "caveat": "Calculated fit is not observed satisfaction.",
@@ -935,7 +944,7 @@
         "Acceptance is recorded as a local offer decision; the ordering handoff is not replayed."
       ]
     },
-    "resultId": "process-comparison-d1677c0a2e63bb0a89ed36608d82e7c3",
+    "resultId": "process-comparison-2ce514cccc5e5a75dc6423000d9b7e5b",
     "storedAt": "2026-11-08T12:00:00.000Z",
     "policyVersion": "gcsp-policy-v1",
     "activePolicyVersion": "gcsp-policy-v1",

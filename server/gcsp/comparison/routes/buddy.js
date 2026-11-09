@@ -1,4 +1,5 @@
 import { comparisonAssumption } from '../harness.js';
+import { buddyExpiryEvents } from '../../allocation/index.js';
 import { acceptable, carFit } from '../evaluation.js';
 import { RANK, buildOutcomeRecord, byId, createManualReplay, iso, must, readRouteAssumptions, refuse } from './current.js';
 
@@ -6,15 +7,15 @@ const ROUTE_KEY = 'comparison.buddyRoute.v1';
 const HOLD_KEY = 'hold.buddy.durationSeconds';
 const REASONS_KEY = 'offer.declineReasons.v1';
 const SLIDER_KEY = 'brief.slider.maximum';
-const EXTRA_KEYS = [HOLD_KEY, REASONS_KEY, SLIDER_KEY, 'allocation.tieBreak.rule', 'offer.declinedCar.exclusion'];
+const EXTRA_KEYS = [HOLD_KEY, REASONS_KEY, SLIDER_KEY, 'allocation.tieBreak.rule', 'offer.declinedCar.exclusion', 'offer.expiredHold.reallocation'];
 // The route rules this replay implements; any other policy value is refused, never approximated.
 const SUPPORTED = Object.freeze({ participation: 'generated-buddyParticipation',
   consent: 'search-and-hold-given-through-brief-service-with-stated-brief',
-  allocation: 'at-each-release-through-allocation-service', orderingWindow: 'participant-pauses-when-manual-ordering-closes',
+  allocation: 'at-each-release-and-hold-expiry-through-allocation-service', orderingWindow: 'participant-pauses-when-manual-ordering-closes',
   response: 'offer-creation-plus-generated-responseSeconds', offerExpiry: 'buddy-hold-deadline',
   acceptance: 'underlying-gates-and-fit-at-or-above-threshold',
   declineReason: 'registered-reason-for-largest-importance-weighted-shortfall',
-  afterDeclineOrExpiry: 'no-trigger-until-next-release-or-brief-change', nonParticipants: 'comparison.manualRoute.v1' });
+  afterDeclineOrExpiry: 'expiry-reallocates-at-once-without-lapsed-holders-decline-waits-for-next-release-or-brief-change', nonParticipants: 'comparison.manualRoute.v1' });
 const hours = (seconds) => Math.round(seconds / 3600 * 1e6) / 1e6;
 
 /** Reads and validates the buddy route's values on top of the manual route's. */
@@ -64,7 +65,7 @@ export async function replayBuddyRoute(run) {
   const entries = [];
   const extra = new Map(inputs.stock.map((car) => [car.orderUuid, { offers: 0, declines: 0, offerExpiries: 0, declinedSeconds: 0, expiredSeconds: 0 }]));
   const declinesByReason = Object.fromEntries(buddy.reasons.map((reason) => [reason.code, 0]));
-  let ticks = 0;
+  let ticks = 0; const reallocated = new Set();
 
   async function offerState(person, entry) {
     const row = must(await run.repository.read(person.context, { table: 'offers',
@@ -93,6 +94,15 @@ export async function replayBuddyRoute(run) {
       Object.assign(extra.get(entry.orderUuid), { offerExpiries: extra.get(entry.orderUuid).offerExpiries + 1,
         expiredSeconds: extra.get(entry.orderUuid).expiredSeconds + (entry.deadline - entry.createdAt) / 1000 });
     });
+    // FUCQ-227: as the clock's allocation stage does, lapsed cars go at once to waiting participants, not their lapsed holders.
+    const receipts = must(await run.repository.query(run.presenter, 'event_receipts', { consumerId: 'buddy-expiry' }), 'expiry-receipts');
+    const lapses = buddyExpiryEvents(run.presenter.runId, receipts); if (!lapses) refuse('invalid-input', 'buddy-expiry');
+    for (const event of lapses.filter((row) => !reallocated.has(row.eventId))) {
+      reallocated.add(event.eventId);
+      const outcome = must(await services.allocation.allocate(run.presenter, event), 'allocation');
+      for (const assignment of outcome.assignments) offerMade(assignment, now);
+      if (outcome.assignments.length) must(await services.dispatcher.dispatchPending(run.presenter), 'notification-capture');
+    }
   }
 
   // A participant whose manual ordering window has closed (or renewal has passed) stops searching.

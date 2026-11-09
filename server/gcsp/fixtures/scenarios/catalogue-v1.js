@@ -31,9 +31,11 @@ export const SCENARIO_INPUTS_V1 = [
   journey('offer-expires', 'Offer expires', 'FUCQ-129', ['FUCQ-87', 'FUCQ-88', 'FUCQ-89', 'FUCQ-75'],
     ['FUCQ-96', 'FUCQ-100', 'FUCQ-102', 'FUCQ-106', 'FUCQ-129'],
     ['brief-confirmation', 'stock-release', 'buddy-allocation', 'buddy-offers', 'captured-notifications', 'offer-expiry'],
-    { briefs: [brief('demo-paula'), brief('demo-alex')], stockTranches: [{ source: 'published-demo-stock', cue: 'release' }], pendingOperations: [],
+    { briefs: [{ ...brief('demo-paula'), preferences: { body: { value: 'hatchback', importance: 80 } } }, brief('demo-alex')], stockTranches: [{ source: 'published-demo-stock', cue: 'release' }], pendingOperations: [],
       prepare: ['release-through-service', 'allocate-through-service', 'capture-notification-through-service'] },
-    [{ operation: 'advance', to: 'active-offer.expiresAt', policyKey: 'hold.buddy.durationSeconds' }, { operation: 'tick', purpose: 'expiry-before-reallocation' }, { operation: 'employee', purpose: 'reopen-old-offer-link' }]),
+    [{ operation: 'advance', to: 'active-offer.expiresAt', policyKey: 'hold.buddy.durationSeconds' }, { operation: 'tick', purpose: 'expiry-before-reallocation' }, { operation: 'employee', purpose: 'reopen-old-offer-link' }],
+    // v2 (FUCQ-227): Paula prefers the hatch, so Alex (G1-6, eligible only for it) waits and is offered it when hers lapses.
+    [], 'offer-expires-inputs-v2'),
   journey('data-unavailable', 'Data unavailable', 'FUCQ-130', ['FUCQ-87', 'FUCQ-90', 'FUCQ-75'],
     ['FUCQ-92', 'FUCQ-95', 'FUCQ-99', 'FUCQ-130'],
     ['brief-confirmation', 'stock-release', 'buddy-activity', 'greg-demand', 'synthetic-stock-fault'],
