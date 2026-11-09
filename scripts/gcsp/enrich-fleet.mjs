@@ -376,6 +376,10 @@ export async function enrichFleet({ session, accepted, catalogueOperation = 'cat
       && technicalOperation !== imageOperation && isV2Options(catalogueOptions) && object(technicalOptions))
     && date(asOf) && typeof onPhase === 'function',
   'invalid-enrichment', 'Inject a collector session, its accepted records, a dated policy and declared offline operations.');
+  // Options carry only registration/pins: the session owns the accepted row and operation artifact.
+  requireEnrichment(technicalOperation === null
+    || Object.keys(technicalOptions).every((key) => ['registration', 'pins'].includes(key)),
+  'technical-options-substitution', 'Technical options may add only registration and pins, never the accepted row or artifact.');
   // Snapshot caller input before any await; a changed selection/policy cannot resume prior outcomes.
   const input = structuredClone({ accepted, catalogueOperation, imageOperation, imageRequest,
     catalogueOptions, imageOptions, retention, asOf, ...(technicalOperation === null ? {} : { technicalOperation, technicalOptions }) });
@@ -436,7 +440,8 @@ export async function enrichFleet({ session, accepted, catalogueOperation = 'cat
           try { artifact = await execute(input.technicalOperation, record.catalogueRequest); }
           catch (error) { if (!error.stop) throw error; technicalStop = error; }
           if (!technicalStop) {
-            const qualified = qualifyBmwTechnicalObservation({ artifact, accepted: record, ...input.technicalOptions });
+            const qualified = qualifyBmwTechnicalObservation({ registration: input.technicalOptions.registration,
+              pins: input.technicalOptions.pins, artifact, accepted: record });
             for (const [name, fact] of Object.entries(qualified.facts)) if (fact.state === 'known') output.facts[name] = fact;
             output.sources.technical = qualified.source; output.measurementEvidence = qualified.measurementEvidence;
             output.unmappedMeasurements.push(...qualified.unmappedKeys.map(() => ({ state: 'unknown', value: null, reason: 'unmapped-meaning' })));
