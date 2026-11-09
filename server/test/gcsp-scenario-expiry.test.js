@@ -61,8 +61,9 @@ async function replay(ctx, label) {
   const outbox = route(await client.request('/api/gcsp/presenter/outbox')).messages.filter((m) => m.recipient.employeeId === paula);
   assert.equal(outbox.length, 1); assert.equal(outbox[0].state, 'sent');
   const old = link(outbox[0].offerLink, origin); assert.deepEqual([old.runId, old.offerId], [runId, offer.offerId]);
-  const mail = new RegExp(offer.expiresAt.slice(0, 19));
-  assert.match(outbox[0].textBody, mail);
+  // The email states the deadline in London time words, not raw ISO (FUCQ-291).
+  const at = new Date(offer.expiresAt); const fmt = (o) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', ...o }).format(at);
+  assert.ok(outbox[0].textBody.includes(`Respond by ${fmt({ hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })} on ${fmt({ weekday: 'long', day: 'numeric', month: 'long' })}.`), outbox[0].textBody);
 
   // Paula sees an active offer before the tick.
   await as('demo-paula', 'paula');
