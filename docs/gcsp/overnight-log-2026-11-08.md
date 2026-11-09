@@ -281,3 +281,8 @@ For Russell or Gary:
   - Dispatcher slip, fixed: a scoped test command with an unmatched zsh glob ran the whole suite at concurrency 2 for about 5 minutes; it was stopped through its own task. Test lists now come from `git ls-files`.
   - handover-chain: FUCQ-169 (ca507616) and FUCQ-251 (2d5be417) closed and In Review; new bugs FUCQ-252 (Medium), 253 and 254 (Low) raised and taken by the chain; FUCQ-171 and 252 building.
   - **Gary:** use generic agents for FUCQ-247/248, configured first. Two local agent definitions are ready (`.claude/agents/performance-sme.md`, `ux-sme.md`, git-ignored). The hosted demo can only be timed for unauthenticated requests.
+
+## 9 Nov, afternoon: FUCQ-250 partial merge, FUCQ-256 raised
+
+- FUCQ-250 (bug, High): partial fix merged at 4358ad85 and pushed. i5 Touring 40 and 1 Series 120 demo cars now show digest-checked approved images; every demo car has Model and Derivative. Targeted tests on the merged base: 358 run, 0 fail. No approved image exists for the 3 Series G20/G21 320i cars Paula sees, so they keep the placeholder. Waiting on Gary: MSG-2026-11-09-GC-001 (option B, a bounded live image capture, needs his approval).
+- FUCQ-256 raised (bug, Medium): the activity page's allowlist drops the new approved images. Imported as DEV-2026-11-09-GC-022, claimed at 2 points, story-lead building on ports 9270 to 9279.
