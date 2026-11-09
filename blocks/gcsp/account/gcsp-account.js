@@ -163,6 +163,25 @@ function currentCar(contract, model, controls) {
   return feature;
 }
 
+// FUCQ-252: a collected order the server reports as the current car; its name and image come from the order read.
+function orderCurrentCar(car, order, orderVehicle) {
+  const same = order?.orderUuid === car.orderUuid;
+  const name = same ? orderVehicle?.name : null;
+  const feature = el('section', 'gcsp-feature');
+  feature.dataset.orderUuid = car.orderUuid;
+  const heading = el('h2', 'gcsp-h2', name ?? 'Current car: model not supplied');
+  heading.id = `gcsp-account-car-${++serial}`;
+  feature.setAttribute('aria-labelledby', heading.id);
+  const { media } = mediaWell({ name: name ?? 'Current car', photo: same ? orderVehicle?.photo ?? '' : '', line: '',
+    alt: `${name ?? 'Car'}: representative image`, caption: 'Representative image, not your exact car' }, 'gcsp-media', { placeholder: 'No image for this car yet' });
+  const copy = el('div', 'gcsp-feature-copy');
+  copy.append(el('p', 'gcsp-eyebrow', 'Your current car'), heading,
+    facts([row('Status', status('current')), row('Collected', date(car.collectedAt?.slice(0, 10))), row('Delivered VIN', car.vin),
+      ...(same ? orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value)) : [])]));
+  feature.append(media, copy);
+  return feature;
+}
+
 export { orderCar };
 
 // The slot is allocated to this order, so its state replaces "No ordering entitlement". The link moves focus to the progress.
@@ -225,8 +244,11 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   }
   if (model.account) {
     for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls));
-    // FUCQ-237: an order in progress replaces "No current car"; a declined order keeps it.
-    if (!model.currentContracts.length && !(ordered && order.outcome !== 'declined')) wrap.append(statusScreen({ title: 'No current car', message: 'No current vehicle is supplied for your account.' }));
+    for (const car of model.currentOrders) wrap.append(orderCurrentCar(car, order, orderVehicle));
+    // FUCQ-237: an order in progress replaces "No current car"; a declined order keeps it. A confirmed return (FUCQ-252) shows it.
+    const none = !model.currentContracts.length && !model.currentOrders.length;
+    if (none && model.carReturned) wrap.append(statusScreen({ title: 'No current car', message: 'Your previous car has been returned. Your new car becomes current at handover.' }));
+    else if (none && !(ordered && order.outcome !== 'declined')) wrap.append(statusScreen({ title: 'No current car', message: 'No current vehicle is supplied for your account.' }));
     for (const action of model.actions.filter((item) => item.action === 'order')) wrap.append(controls.startButton(action));
     const allowance = el('section', 'gcsp-allowance');
     allowance.append(el('h2', 'gcsp-h2', 'Your allowance'), facts([
