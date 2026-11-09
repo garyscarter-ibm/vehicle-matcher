@@ -269,3 +269,8 @@ For Russell or Gary:
   - **catalogue-chain done:** FUCQ-46 (ad8384b7), 47 (fe89dc84) and 48 (3fd5fec5) merged, closed and In Review. FUCQ-48's live positive check (AC2) is unmet because the key-based live run was refused by that session's safety check; 0 of 500 BMW requests used. **For Gary:** the opt-in harness (`verify-live-catalogue.mjs --live`) can be run by you with the key in env.
   - **handover-chain:** FUCQ-168 merged da4207b0, closed and In Review; new Low bug FUCQ-251 raised from it. FUCQ-169 building; FUCQ-171 after it.
   - New Low bugs waiting for pickup: FUCQ-246, FUCQ-249, FUCQ-251.
+- **About 13:10 9 Nov. Gary: "we're aiming for zero todo today".**
+  - **FUCQ-249 closed** (merged 97dcb87f), In Review: fixture-only fault; the live adapter's 409 handling was already right.
+  - **FUCQ-250 (bug, not in MoSCoW, High), new:** every car in the demo journey shows "No image for this car yet". Imported as DEV-2026-11-09-GC-018 and a lead started at once, reusing FUCQ-60's approved corpus images with no new collection.
+  - Two stale waits from this morning were stopped. They looped while any `test-concurrency=1` run existed on the machine, so they could never finish; leads are now told to wait on their own PID or output file.
+  - To Do triage: in progress are FUCQ-246, 251, 169, 171, 27 and 250. FUCQ-28 waits on 27. FUCQ-247 and 248 (Gary's review stories) start once every functional ticket is delivered, today.
