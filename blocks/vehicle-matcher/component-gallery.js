@@ -137,6 +137,10 @@ function gcspExamples() {
     { label: 'WLTP CO2', value: null },
   ], { hideMissing: 'More details not supplied' }));
   group('syntheticNote').append(syntheticNote());
+  group('factList: two columns at narrow width (className vm-facts-pair)').append(factList([
+    { label: 'Derivative', value: 'M Sport Touring' }, { label: 'Colour', value: 'Mineral White metallic' },
+    { label: 'Gearbox', value: 'Automatic' }, { label: 'Options', value: null, missingLabel: 'Fitted equipment unknown' },
+  ], { className: 'vm-facts-pair' }));
   const well = group('mediaWell placeholder');
   well.append(mediaWell({ name: 'Synthetic car', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: 'No image for this car yet' }).media);
   const accounts = [
@@ -219,6 +223,10 @@ function gregKitExamples() {
   group('dataTable: stacked rows on narrow screens').append(dataTable({ caption: 'Plan comparison (stacks under 640 px)', id: 'gallery-greg-stack', stack: true,
     columns: [{ key: 'name', label: 'Vehicle' }, { key: 'a', label: 'Recommended plan', numeric: true }, { key: 'b', label: 'Other plan', numeric: true }, { key: 'd', label: 'Difference', numeric: true }],
     rows: [{ name: bold('G21 Touring 320i', true), a: '2', b: bold('1', true), d: bold('-1', true) }, { name: 'G20 Saloon 330e', a: '1', b: '1', d: 'No change' }] }));
+  const unknown = { label: 'Unknown', missing: true };
+  group('dataTable: comparison, label | this offer | current car at any width (compare)').append(dataTable({ caption: 'Compared with your current car', id: 'gallery-greg-compare', compare: true,
+    columns: [{ key: 'l', label: 'Detail' }, { key: 'a', label: 'This offer', detail: 'BMW 320i M Sport Touring with extended leather' }, { key: 'b', label: 'Your current car', detail: 'Fictional BMW 320i Touring' }],
+    rows: [{ l: 'Body style', a: 'Estate', b: 'Estate' }, { l: 'Boot', a: '500 litres', b: unknown }, { l: '0 to 62 mph', a: '7.6 s', b: unknown }, { l: 'Points a month', a: '1,100 points', b: unknown }] }));
   group('dataTable: empty state').append(dataTable({ caption: 'Stock by model line (empty)', columns, rows: [], emptyText: 'No stock has been released yet', id: 'gallery-greg-empty' }));
   section.append(scope);
   return section;

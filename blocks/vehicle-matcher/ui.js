@@ -65,12 +65,12 @@ export function button({ label, variant = 'primary', onClick, href, disabled = f
   return node;
 }
 
-/** Error, empty or no-match screen shell: kicker, h2 title, message and action nodes. */
-export function statusScreen({ kicker, title, message, actions = [], role = 'status' } = {}) {
+/** Error, empty or no-match screen shell: kicker, title (h2 unless level is given), message and action nodes. */
+export function statusScreen({ kicker, title, message, actions = [], role = 'status', level = 2 } = {}) {
   const screen = el('div', 'vm-screen vm-status');
   screen.setAttribute('role', role);
   if (kicker) screen.append(el('p', 'vm-kicker', kicker));
-  screen.append(el('h2', 'vm-title', title));
+  screen.append(el(`h${level}`, 'vm-title', title));
   if (message) screen.append(el('p', 'vm-lede', message));
   screen.append(...actions);
   return screen;

@@ -1,4 +1,5 @@
 import { employeeCardFixture } from '../../vehicle-matcher/employee-card-fixture.js';
+import { fieldLabel } from '../kit/plain-copy.js';
 
 export const HANDOFF_NAMES = Object.freeze(['handoff-replacement', 'handoff-blocked']);
 export const SELECTION_NAMES = Object.freeze(['selection-hr', 'selection-no-hr', 'selection-pending', 'selection-failed']);
@@ -27,6 +28,9 @@ export function offerFixture(name) {
   const source = structuredClone(employeeCardFixture);
   const member = source.members[0]; member.actions = [];
   member.display.line = 'Order no. 0123456 · synthetic presentation example';
+  // The shared comparison rows, labelled as the live card labels them.
+  member.facts = [['body', 'Estate'], ['fuel', 'Petrol'], ['seats', 5], ['boot', 500, 'litres'], ['zeroTo62', 7.6, 's'], ['mpg', 42.8, 'mpg']]
+    .map(([key, value, unit]) => ({ label: fieldLabel(key), value, ...unit ? { unit } : {} }));
   member.facts.push({ label: 'Derivative', value: 'M Sport Touring', provenance: 'Synthetic presentation example' },
     { label: 'Colour', value: null, missingLabel: 'Colour not supplied' },
     { label: 'Options', value: null, missingLabel: 'Fitted equipment unknown' });
@@ -38,9 +42,8 @@ export function offerFixture(name) {
     reference: { offerId: 'presentation-example', runId: 'presentation-example', offerVersion: 1, holdVersion: 1, quoteVersion: 1 },
     now: '2026-11-05T12:00:00.000Z', expiresAt: name === 'checking-expiry' ? '2026-11-05T12:00:00.000Z'
       : name === 'low-time' ? '2026-11-05T12:03:00.000Z' : '2026-11-05T14:00:00.000Z',
-    currentCar: { display: { name: '320i M Sport Touring' }, media: {},
-      facts: [{ label: 'Derivative', value: 'M Sport Touring' }, { label: 'Colour', value: null, missingLabel: 'Not supplied' },
-        { label: 'Options', value: null, missingLabel: 'Fitted equipment unknown' }],
-      provenance: 'Scenario name from the HLD. Presentation example; current-car equipment is unknown.' },
+    currentCar: { status: 'partial', display: { name: '320i M Sport Touring' }, media: {}, configuration: null,
+      facts: [['body', 'Estate'], ['fuel', 'Petrol'], ['seats', null], ['boot', '480 litres'], ['zeroTo62', null], ['mpg', '44 mpg'], ['points', null]]
+        .map(([key, value]) => ({ key, label: key === 'points' ? 'Points a month' : fieldLabel(key), value, missingLabel: 'Unknown' })) },
     fixtureNotice: 'Synthetic presentation example. This page does not read a real offer or record a decision.' } };
 }

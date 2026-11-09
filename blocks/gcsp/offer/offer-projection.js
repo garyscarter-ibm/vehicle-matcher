@@ -2,6 +2,7 @@
 import { decisionView } from '../brief/brief-view-model.js';
 import { followupHandle } from './followup-entry.js';
 import { orderReferenceOf } from '../kit/order-identity.js';
+import { fieldLabel } from '../kit/plain-copy.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const text = (v) => typeof v === 'string' && v.length > 0;
@@ -135,8 +136,10 @@ function selectionView(v) {
     stages: v.stages.map(({ name, state }) => ({ name, state })) };
 }
 
-const comparisonFields = { configuration: 'Configuration', body: 'Body', fuel: 'Fuel', seats: 'Seats', boot: 'Boot',
-  mpg: 'MPG', zeroTo62: '0–62 mph', points: 'Points a month' };
+// Rows shared by both cars, in this order. Configuration only validates the contract and heads the current column.
+const comparedKeys = ['body', 'fuel', 'seats', 'boot', 'zeroTo62', 'mpg', 'points'];
+const comparisonKeys = ['configuration', ...comparedKeys];
+const comparisonLabel = (key) => key === 'points' ? 'Points a month' : fieldLabel(key);
 const sourceModes = { synthetic: 'Synthetic', 'dated-snapshot': 'Dated snapshot', 'authorised-live': 'Authorised live' };
 
 function noLaterThan(value, limit) {
@@ -160,8 +163,8 @@ function currentCarFor(v, quotedAt) {
   if (!object(v) || !['partial', 'available'].includes(v.status) || v.comparisonAvailable !== known.length > 0
     || v.reason !== (known.length ? 'current-car-facts-recorded' : 'current-car-facts-unavailable')
     || !Array.isArray(v.unknowns) || new Set(v.unknowns).size !== v.unknowns.length
-    || v.unknowns.length + known.length !== 8 || (v.status === 'available') !== (v.unknowns.length === 0)
-    || ![...v.unknowns, ...known].every((key) => typeof key === 'string' && Object.hasOwn(comparisonFields, key))
+    || v.unknowns.length + known.length !== comparisonKeys.length || (v.status === 'available') !== (v.unknowns.length === 0)
+    || ![...v.unknowns, ...known].every((key) => typeof key === 'string' && comparisonKeys.includes(key))
     || known.some((key) => v.unknowns.includes(key) || !object(facts[key]) || formatCurrent(key, facts[key]) === null)
     || !object(car) || !text(car.model) || !car.model.trim() || car.model.length > 256
     || !object(source) || typeof source.mode !== 'string' || !Object.hasOwn(sourceModes, source.mode)
@@ -169,7 +172,8 @@ function currentCarFor(v, quotedAt) {
     || !instant(source.observedAt) || !noLaterThan(source.observedAt, quotedAt)) return null;
   // Only recorded contract facts cross; every other field stays labelled unknown.
   return { status: v.status, display: { name: car.model }, media: {},
-    facts: Object.entries(comparisonFields).map(([key, label]) => ({ label,
+    configuration: known.includes('configuration') ? formatCurrent('configuration', facts.configuration) : null,
+    facts: comparedKeys.map((key) => ({ key, label: comparisonLabel(key),
       value: known.includes(key) ? formatCurrent(key, facts[key]) : null, missingLabel: 'Unknown' })),
     source: { mode: source.mode, sourceVersion: source.sourceVersion, observedAt: source.observedAt } };
 }
@@ -228,7 +232,7 @@ export function toOfferPresentation(envelope, { reference } = {}) {
       reference: { offerId: v.offerId, runId: v.runId, offerVersion: v.offerVersion, holdVersion: v.holdVersion,
         quoteVersion: revisions.quote },
       now: v.serverNow, clockVersion: v.clockVersion, expiresAt: v.expiresAt, actionable: v.state === 'pending' && !uncertain,
-      actions, handoff, selection, orderUuid: quote.orderUuid, card: cardFor(quote), comparisonAvailable: currentCar?.facts.some((row) => row.value !== null) === true, currentCar,
+      actions, handoff, selection, orderUuid: quote.orderUuid, card: cardFor(quote), comparisonAvailable: Boolean(currentCar?.configuration) || currentCar?.facts.some((row) => row.value !== null) === true, currentCar,
       followup: followupHandle(v.followup, ['rejected', 'declined'].includes(v.offerState) && v.holdState === 'released' ? v.state : null) } };
   } catch { return { status: 'unavailable', retryable: true }; }
 }

@@ -388,6 +388,42 @@ test('dataTable: caption, scopes, numeric columns, scroll region, band cells and
   assert.notEqual(a.getAttribute('aria-labelledby'), b.getAttribute('aria-labelledby'));
 });
 
+test('dataTable compare (FUCQ-275): row header | value | value at any width, column detail, missing cells, never stacked', () => {
+  const columns = [{ key: 'l', label: 'Detail' }, { key: 'a', label: 'This offer', detail: 'Car A' }, { key: 'b', label: 'Your current car', detail: 'Car B, Sport' }];
+  const rows = [{ l: 'Boot', a: '500 litres', b: { label: 'Unknown', missing: true } }, { l: 'Seats', a: null, b: '5' }];
+  const region = table.dataTable({ caption: 'Compared', columns, rows, compare: true, stack: true });
+  assert.ok(region.classList.contains('is-compare')); assert.ok(!region.classList.contains('is-stack'));
+  assert.equal(region.getAttribute('role'), 'region'); assert.equal(region.tabIndex, 0);
+  const t = region.querySelector('table'); assert.equal(t.hasAttribute('role'), false);
+  assert.equal(t.querySelectorAll('[role]:not([role="region"]), [data-label]').length, 0);
+  const heads = [...t.querySelectorAll('thead th')];
+  assert.deepEqual(heads.map((h) => h.getAttribute('scope')), ['col', 'col', 'col']);
+  assert.equal(heads[0].querySelector('.gcsp-table-th-sub'), null);
+  assert.equal(heads[1].firstChild.textContent, 'This offer'); assert.equal(heads[1].querySelector('.gcsp-table-th-sub').textContent, 'Car A');
+  assert.equal(heads[2].querySelector('.gcsp-table-th-sub').textContent, 'Car B, Sport');
+  const [first, second] = t.querySelectorAll('tbody tr');
+  assert.deepEqual([...first.children].map((c) => c.tagName), ['TH', 'TD', 'TD']); assert.equal(first.children[0].getAttribute('scope'), 'row');
+  assert.equal(first.children[2].textContent, 'Unknown'); assert.ok(first.children[2].classList.contains('is-missing'));
+  assert.equal(first.children[1].classList.contains('is-missing'), false);
+  assert.equal(second.children[1].textContent, 'Not supplied'); assert.ok(second.children[1].classList.contains('is-missing'));
+  const plain = table.dataTable({ caption: 'Plain', columns, rows });
+  assert.ok(!plain.classList.contains('is-compare'));
+  const css = read('blocks/gcsp/kit/data-table-compare.css');
+  assert.match(css, /\.gcsp \.is-compare \.gcsp-table \{ table-layout: fixed; \}/); assert.doesNotMatch(css, /#[0-9a-fA-F]{3,8}\b/);
+  for (const selector of selectorsOf('blocks/gcsp/kit/data-table-compare.css')) assert.match(selector, /^\.gcsp /);
+});
+
+test('factList pair option (FUCQ-275): a class keeps two columns at narrow width; the default rule is unchanged', async () => {
+  const ui = await import('../../blocks/vehicle-matcher/ui.js');
+  const rows = [{ label: 'Model', value: 'X' }, { label: 'Colour', value: null }];
+  const list = ui.factList(rows, { className: 'vm-facts-pair' });
+  assert.ok(list.classList.contains('vm-facts') && list.classList.contains('vm-facts-pair'));
+  assert.equal(ui.factList(rows).className, 'vm-facts');
+  const css = read('blocks/vehicle-matcher/gcsp-kit.css');
+  assert.match(css, /\.gcsp \.vm-facts\.vm-facts-pair \{ grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/);
+  assert.match(css, /\.gcsp \.vm-facts \{ display: grid; grid-template-columns: repeat\(auto-fit, minmax\(min\(100%, 150px\), 1fr\)\);/);
+});
+
 // ---------- source scans ----------
 const walk = (dir) => readdirSync(dir).sort().map((n) => join(dir, n)).filter((p) => statSync(p).isFile());
 const sources = () => [...walk(join(ROOT, 'blocks/gcsp/greg')), ...walk(join(ROOT, 'blocks/gcsp/kit')), join(ROOT, 'gcsp-greg.html')];
@@ -491,13 +527,14 @@ test('the gallery shows both kit components; the catalogue and ratchet record th
   assert.ok(group.querySelectorAll('table').length >= 2);
   assert.ok(group.querySelector('td[data-band="true"]'));
   assert.ok(group.querySelector('.gcsp-table-empty'));
-  assert.ok(read('components.html').includes('blocks/gcsp/kit/gcsp-kit.css'));
+  assert.ok(group.querySelector('.gcsp-table-wrap.is-compare .gcsp-table-th-sub')); assert.ok(root.querySelector('.vm-facts.vm-facts-pair'));
+  assert.ok(read('components.html').includes('blocks/gcsp/kit/gcsp-kit.css')); assert.ok(read('components.html').includes('blocks/gcsp/kit/data-table-compare.css'));
   const doc = read('COMPONENTS.md');
   assert.match(doc, /metricTile/);
   assert.match(doc, /dataTable/);
   assert.match(doc, /mountGregDashboard/);
   const ratchet = JSON.parse(read('server/test/ui-ratchet.json'));
-  for (const path of ['blocks/gcsp/kit/gcsp-kit.css', 'blocks/gcsp/greg/gcsp-greg.css']) {
+  for (const path of ['blocks/gcsp/kit/gcsp-kit.css', 'blocks/gcsp/kit/data-table-compare.css', 'blocks/gcsp/greg/gcsp-greg.css']) {
     const entry = ratchet.stylesheets.find((s) => s.path === path);
     assert.ok(entry, path);
     assert.equal(entry.max_lines, read(path).split('\n').length, path);

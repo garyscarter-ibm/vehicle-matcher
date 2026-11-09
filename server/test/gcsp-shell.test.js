@@ -547,6 +547,8 @@ test('kit primitives: screenIntro, button, statusScreen, factList', async () => 
   assert.ok(status.classList.contains('vm-status'));
   assert.equal(status.querySelector('h2').textContent, 'Oops');
   assert.equal(ui.statusScreen({ title: 'E', role: 'alert' }).getAttribute('role'), 'alert');
+  const top = ui.statusScreen({ title: 'One', level: 1 });
+  assert.equal(top.querySelector('h1.vm-title').textContent, 'One'); assert.equal(top.querySelector('h2'), null);
 
   const facts = ui.factList([
     { label: 'A', value: 'one' },

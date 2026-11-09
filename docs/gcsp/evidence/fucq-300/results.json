@@ -1,0 +1,35 @@
+{
+ "story": "DEV-2026-11-09-GC-048",
+ "jira": "FUCQ-300",
+ "run": "GCSP_OFFLINE=1 memory repository, walk.mjs section refused, port 9420, scenario Uncertain handoff, rejected: accept, one Tick, reload",
+ "widths": {
+  "375": {
+   "afterAccept": {
+    "h1": "Offer accepted"
+   },
+   "afterTick": {
+    "h1": "Your selection was not sent to ordering",
+    "helpHref": "/gcsp-help.html",
+    "orderTrackers": 0,
+    "pageHeight": 3072,
+    "text": "Your selection was not sent to ordering The car stays reserved for you. Nothing has been ordered. Quote order reference GCSP-000001 when you contact scheme support. Contact scheme supportBack to Your cars Your selection Selection received Not accepted HR approval Not started Sales-manager approval Not started Sent to ordering Not started Order reference GCSP-000001 Car order number 4384966 No imag"
+   },
+   "errors": 5,
+   "shot": "375-refused.png"
+  },
+  "1280": {
+   "afterAccept": {
+    "h1": "Offer accepted"
+   },
+   "afterTick": {
+    "h1": "Your selection was not sent to ordering",
+    "helpHref": "/gcsp-help.html",
+    "orderTrackers": 0,
+    "pageHeight": 1878,
+    "text": "Your selection was not sent to ordering The car stays reserved for you. Nothing has been ordered. Quote order reference GCSP-000001 when you contact scheme support. Contact scheme supportBack to Your cars Your selection Selection received Not accepted HR approval Not started Sales-manager approval Not started Sent to ordering Not started Order reference GCSP-000001 Car order number 1358064 No imag"
+   },
+   "errors": 5,
+   "shot": "1280-refused.png"
+  }
+ }
+}
