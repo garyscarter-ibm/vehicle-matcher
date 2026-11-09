@@ -23,6 +23,7 @@ import { activityFixtures } from '../gcsp/activity/activity-fixtures.js';
 import { activityEvents } from '../gcsp/activity/activity-copy.js';
 import { formControlsExample, stageListExample, rangeBarExample, runRestartedExample, showMoreExample } from '../gcsp/kit/form-controls-gallery.js';
 import { stageTracker } from '../gcsp/kit/stage-tracker.js';
+import { slotPicker } from '../gcsp/kit/slot-picker.js';
 import { taskList } from '../gcsp/kit/task-list.js';
 import { orderProgressBody } from '../gcsp/order-progress/order-progress-body.js';
 import { orderProgressFixtures } from '../gcsp/order-progress/fixtures.js';
@@ -278,7 +279,10 @@ export function orderProgressExamples() {
       { id: 't2', label: 'Licence check', owner: 'Scheme team', status: 'Failed', tone: 'failed', reason: 'The check could not be completed.' },
       { id: 't3', label: 'Preparation', owner: 'Retailer', status: 'In progress', tone: 'in-progress', due: '2026-11-08T15:00:00.000Z' },
       { id: 't4', label: 'Delivery', owner: 'Retailer', status: 'Complete', tone: 'done', action: { label: 'Locked', disabled: true, reason: 'Done by the retailer.' } }] }] }),
-    taskList({ heading: 'Tasks (empty)', level: 4, groups: [], emptyText: 'No tasks.' }));
+    taskList({ heading: 'Tasks (empty)', level: 4, groups: [], emptyText: 'No tasks.' }),
+    el('h3', 'vm-gallery-gcsp-title', 'slotPicker'),
+    slotPicker({ actionLabel: 'Request return', onPick: () => {}, slots: [[7, 9], [7, 13], [8, 9], [8, 13], [9, 9], [10, 9], [10, 13]]
+      .map(([day, hour]) => ({ slotId: `example-${day}-${hour}`, start: `2026-11-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:00:00.000Z` })) }));
   section.append(kit);
   const fixtures = orderProgressFixtures();
   const labels = { 'waiting-hr': 'Waiting for HR', 'waiting-sales-manager': 'Waiting for the sales manager', 'no-hr': 'No HR approval stage', declined: 'Declined',

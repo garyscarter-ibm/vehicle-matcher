@@ -185,3 +185,13 @@ test('a stale-run order command shows the restarted screen and is neither resent
   await new Promise((r) => setTimeout(r, 20));
   assert.equal(a.calls.filter((c) => /^(request|accept|complete)/.test(c)).length, 1); assert.equal(a.calls.filter((c) => c === 'readStages').length, reads);
 });
+
+test('FUCQ-299: a quiet re-read puts focus back on the same slot when equal times fall on different days', async () => {
+  const server = { name: 'sent-to-ordering-no-slot' }; let tick; const a = adapter(server, { subscribeClock: (cb) => { tick = cb; return () => {}; } });
+  const node = root(); mount(node, { adapter: a }); await settle(node, (r) => r.querySelector('.gcsp-order-slots button'));
+  const slots = () => [...node.querySelectorAll('.gcsp-order-slots button')]; const third = slots()[2]; third.focus();
+  assert.equal(third.textContent, slots()[0].textContent); assert.equal(third.getAttribute('aria-label'), 'Request 9 Nov 2026, 09:00');
+  const reads = a.calls.filter((c) => c === 'readStages').length; tick(); await settle(node, () => a.calls.filter((c) => c === 'readStages').length > reads);
+  await new Promise((r) => setTimeout(r, 30));
+  assert.notEqual(slots()[2], third); assert.equal(document.activeElement, slots()[2]); assert.equal(document.activeElement.getAttribute('aria-label'), 'Request 9 Nov 2026, 09:00');
+});

@@ -3,6 +3,7 @@ import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-m
 import { mediaWell } from '../../vehicle-matcher/modes/result-card.js';
 import { stageTracker } from '../kit/stage-tracker.js';
 import { taskList } from '../kit/task-list.js';
+import { slotPicker } from '../kit/slot-picker.js';
 import { activityTimeline } from '../kit/activity-timeline.js';
 import { orderIdentityRows } from '../kit/order-identity.js';
 import { orderCopy as copy, sentence, slotText, withOwner, failureLine, itemStatus, itemOwner, itemTone, historyEvents, notDone } from './order-progress-copy.js';
@@ -23,13 +24,45 @@ const earlierMissed = (a) => { // the latest missed attempt, so a rebooked hando
 };
 const ownerRows = (v) => [{ label: 'Owner', value: itemOwner[v.owner] ?? v.owner }, { label: 'Next step', value: v.nextStep }];
 
-function trackerStages(value) {
+function approvalRows(value) {
   return (Array.isArray(value.stages) ? value.stages : []).map((row) => {
     const here = row.stage === value.currentStage;
     const blocked = here && value.blocked && row.state === 'pending';
     return { id: row.stage, label: sentence(row.stage), state: blocked ? 'blocked' : stageStates[row.state] || 'upcoming', at: row.at,
       owner: here ? withOwner(value.owner) : undefined, next: here ? value.nextStep : undefined, note: blocked ? value.blocked.reason : undefined };
   });
+}
+
+// Handover and Ready follow the appointment and documents envelopes; a missing or failed one reads as not started.
+function handoverStep(a) {
+  const step = { id: 'handover-booked', label: copy.handoverBooked, state: 'upcoming' };
+  if (!a) return step;
+  const booked = a.state === 'scheduled' && a.booked === true;
+  if (a.state === 'not-requested') step.state = a.eligibility?.eligible === false ? 'upcoming' : 'current';
+  else if (booked) Object.assign(step, { state: 'done', note: when('Booked for', a.slot) });
+  else if (a.state === 'completed') Object.assign(step, { state: 'done', note: dated(copy.complete, a.outcome?.at) });
+  else if (a.state === 'no-show') Object.assign(step, { state: 'current', note: dated(copy.missed, a.slot?.start) });
+  else if (a.state === 'requested' || a.state === 'scheduled') Object.assign(step, { state: 'current', note: `${when('Requested', a.requestedSlot)}. ${copy.notBooked}` });
+  else if (a.state === 'change-proposed') Object.assign(step, { state: 'current', note: `${when('New time proposed:', a.proposedSlot)}. ${copy.notBooked}` });
+  return step;
+}
+
+function readyStep(c, a, handover) {
+  const { documents, stages } = c.progress; const found = documentsOrder(documents, usable(stages) ? stages.value.orderUuid : undefined);
+  const ready = found.order?.readiness?.ready === true || a?.state === 'completed';
+  return { id: 'ready-for-handover', label: copy.ready, state: ready ? 'done' : handover.state === 'done' ? 'current' : 'upcoming' };
+}
+
+// One Next line, on the latest current step, from the envelope that owns it; earlier steps carry none.
+function trackerStages(c, value) {
+  const rows = approvalRows(value);
+  if (rows.some((row) => row.id === 'handover')) return rows;
+  const a = usable(c.progress.appointment) ? c.progress.appointment.value : undefined;
+  const handover = handoverStep(a); const ready = readyStep(c, a, handover); const later = [handover, ready];
+  const focus = later.findLast((step) => step.state === 'current');
+  if (focus) Object.assign(focus, { owner: withOwner(a.owner), next: a.nextStep });
+  if (later.some((step) => step.state !== 'upcoming')) for (const row of rows) { row.owner = undefined; row.next = undefined; }
+  return [...rows, ...later];
 }
 
 // Producer readItems lists orders (matched by order id, or the only one when stages are missing). A lone order or a not-open answer is accepted too.
@@ -45,17 +78,8 @@ function documentsOrder(envelope, orderUuid) {
   return v.opened === false || v.state === 'not-open' ? { closed: true } : { failed: true };
 }
 
-function slotButtons(slots, c, make, onPick) {
-  const list = el('ul', 'gcsp-order-slots');
-  for (const slot of slots) {
-    const item = el('li', 'gcsp-order-slot');
-    item.append(fn(onPick) ? button({ label: make(slot), variant: 'ghost', disabled: c.pending, onClick: () => onPick(slot) }) : el('span', '', slotText(slot)));
-    list.append(item);
-  }
-  return list;
-}
-
-const requestButtons = (slots, c) => slotButtons(slots, c, (slot) => `Request ${slotText(slot)}`, c.on.onRequestAppointment && ((slot) => c.on.onRequestAppointment(slot.slotId)));
+const slotList = (slots, c, actionLabel, onPick) => slotPicker({ slots, actionLabel, onPick, disabled: c.pending, className: 'gcsp-order-slots' });
+const requestButtons = (slots, c) => slotList(slots, c, 'Request', c.on.onRequestAppointment && ((slot) => c.on.onRequestAppointment(slot.slotId)));
 
 function orderSection(c) {
   const { stages, car } = c.progress; const node = c.section(copy.order, 'stages');
@@ -67,7 +91,7 @@ function orderSection(c) {
   if (source?.orderNumber) details.append(factList(orderIdentityRows(source.orderReference, source.orderNumber), { className: 'gcsp-order-number' }));
   head.append(media.media, details); node.append(head);
   if (!usable(stages)) { node.append(failure('order progress', stages)); return node; }
-  node.append(stageTracker({ heading: copy.steps, stages: trackerStages(stages.value), level: c.sub }));
+  node.append(stageTracker({ heading: copy.steps, stages: trackerStages(c, stages.value), level: c.sub }));
   if (stages.value.outcome === 'declined') add(node, c.help(copy.help));
   return node;
 }
@@ -108,6 +132,12 @@ function handoverSection(c) {
   return node;
 }
 
+function itemList(title, labels) {
+  const group = el('div', 'gcsp-order-todo gcsp-order-choice'); const head = el('p', 'gcsp-order-todo-title gcsp-order-choice-label', title); head.id = `gcsp-order-todo-${++sequence}`;
+  const list = el('ul', 'gcsp-order-todo-list'); list.setAttribute('aria-labelledby', head.id);
+  list.append(...labels.map((text) => el('li', '', text))); group.append(head, list); return group;
+}
+
 function documentsSection(c) {
   const { documents, stages } = c.progress; const node = c.section(copy.documents, 'documents');
   const found = documentsOrder(documents, usable(stages) ? stages.value.orderUuid : undefined);
@@ -116,8 +146,8 @@ function documentsSection(c) {
   const doc = found.order; const items = Array.isArray(doc.items) ? doc.items : []; const readiness = doc.readiness ?? {};
   const label = (id) => items.find((item) => item.itemId === id)?.label ?? id;
   const failed = readiness.failed ?? []; const todo = (readiness.blocking ?? []).filter((id) => !failed.includes(id));
-  node.append(statement(readiness.ready === true ? copy.ready : ['Not ready for handover.', failed.length && `Needs attention: ${failed.map(label).join(', ')}.`,
-    todo.length && `Still to do: ${todo.map(label).join(', ')}.`].filter(Boolean).join(' ')));
+  node.append(statement(readiness.ready === true ? copy.ready : copy.notReady));
+  if (readiness.ready !== true) for (const [title, ids] of [[copy.needsAttention, failed], [copy.stillToDo, todo]]) if (ids.length) node.append(itemList(title, ids.map(label)));
   const mine = (Array.isArray(doc.tasks) ? doc.tasks : []).map((task) => ({ id: task.itemId, label: task.label,
     status: itemStatus[task.status], tone: itemTone(task), due: task.status === 'complete' ? undefined : task.dueAt,
     reason: items.find((item) => item.itemId === task.itemId)?.reason ?? undefined, detail: task.actionable ? copy.synthetic : task.acknowledgement?.label,
@@ -133,8 +163,8 @@ function choiceGroup(choice, slots, c) {
   const title = el('p', 'gcsp-order-choice-label', choice.label); title.id = `gcsp-order-choice-${++sequence}`;
   group.setAttribute('aria-labelledby', title.id); group.append(title);
   if (!choice.available) { group.append(el('p', 'gcsp-order-choice-reason', choice.reason || 'Not available yet.')); return group; }
-  const make = choice.id === 'same-visit' ? (slot) => `Request return at handover, ${slotText(slot)}` : (slot) => `Request return ${slotText(slot)}`;
-  group.append(slotButtons(slots, c, make, c.on.onRequestReturn && ((slot) => c.on.onRequestReturn({ choice: choice.id, slotId: slot.slotId }))));
+  group.append(slotList(slots, c, choice.id === 'same-visit' ? 'Request return at handover,' : 'Request return',
+    c.on.onRequestReturn && ((slot) => c.on.onRequestReturn({ choice: choice.id, slotId: slot.slotId }))));
   return group;
 }
 

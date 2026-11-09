@@ -21,7 +21,8 @@
     "blocks/gcsp/kit/stage-tracker.js",
     "blocks/gcsp/kit/task-list.js",
     "blocks/gcsp/kit/range-bar.js",
-    "blocks/gcsp/kit/show-more.js"
+    "blocks/gcsp/kit/show-more.js",
+    "blocks/gcsp/kit/slot-picker.js"
   ],
   "extensions": [
     ".js",
@@ -112,6 +113,11 @@
       "re": "el\\('div', 'gcsp-show-more'",
       "flags": "g",
       "use": "showMore({ nouns, label, onShowMore }) (blocks/gcsp/kit/show-more.js)"
+    },
+    "slot-picker": {
+      "re": "el\\('ul', 'gcsp-slot-picker'",
+      "flags": "g",
+      "use": "slotPicker({ slots, actionLabel, onPick }) (blocks/gcsp/kit/slot-picker.js)"
     }
   },
   "stylesheets": [
@@ -282,6 +288,10 @@
     {
       "path": "blocks/gcsp/kit/show-more.css",
       "max_lines": 6
+    },
+    {
+      "path": "blocks/gcsp/kit/slot-picker.css",
+      "max_lines": 9
     },
     {
       "path": "blocks/gcsp/kit/data-table-compare.css",

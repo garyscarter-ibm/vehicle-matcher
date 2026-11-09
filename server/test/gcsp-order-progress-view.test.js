@@ -27,6 +27,7 @@ function callbacks(spy) {
 }
 const view = (name, extra = {}) => { const node = orderProgressBody({ progress: structuredClone(fixtures.states[name]), car: fixtures.car, ...extra }); document.body.append(node); return node; };
 const ids = (node) => [...node.querySelectorAll('.gcsp-order-number > div')].map((d) => [d.querySelector('dt').textContent, d.querySelector('dd').textContent]);
+const todoLists = (node) => Object.fromEntries([...node.querySelectorAll('.gcsp-order-todo')].map((g) => [g.querySelector('.gcsp-order-todo-title').textContent, [...g.querySelectorAll('li')].map((n) => n.textContent)]));
 const section = (node, name) => node.querySelector(`.gcsp-order-${name}`);
 const buttons = (node) => [...node.querySelectorAll('button')].map((b) => b.textContent);
 const said = (node) => [...node.querySelectorAll('.gcsp-order-statement')].map((n) => n.textContent).join(' ');
@@ -88,11 +89,11 @@ test('HR approval appears only when the server stage list contains it, and stage
   const withHr = view('waiting-sales-manager');
   const list = fixtures.states['waiting-sales-manager'].stages.value.stages.map((s) => s.stage);
   const labels = (node) => [...node.querySelectorAll('.gcsp-stage-label')].map((n) => n.textContent);
-  assert.deepEqual(labels(withHr), list.map((s) => s[0].toUpperCase() + s.slice(1)));
+  assert.deepEqual(labels(withHr), [...list.map((s) => s[0].toUpperCase() + s.slice(1)), 'Handover booked', 'Ready for handover']);
   assert.ok(labels(withHr).includes('HR approval'));
   document.body.replaceChildren();
   const without = view('no-hr');
-  assert.deepEqual(labels(without), ['Selection received', 'Sales-manager approval', 'Sent to ordering']);
+  assert.deepEqual(labels(without), ['Selection received', 'Sales-manager approval', 'Sent to ordering', 'Handover booked', 'Ready for handover']);
   assert.doesNotMatch(without.textContent, /HR/);
 });
 
@@ -146,7 +147,7 @@ test('handover: offered slots are one button each and request the exact slot', (
   const spy = log(); const node = view('sent-to-ordering-no-slot', callbacks(spy));
   const handover = section(node, 'handover'); const slots = [...handover.querySelectorAll('button')];
   const offered = fixtures.states['sent-to-ordering-no-slot'].appointment.value.offeredSlots;
-  assert.equal(slots.length, offered.length); assert.match(slots[0].textContent, /^Request 8 Nov 2026, 09:00$/);
+  assert.equal(slots.length, offered.length); assert.equal(slots[0].textContent, '09:00'); assert.equal(slots[0].getAttribute('aria-label'), 'Request 8 Nov 2026, 09:00');
   slots[1].click(); assert.deepEqual(spy.calls, [['request', offered[1].slotId]]);
   assert.doesNotMatch(handover.textContent, /Booked/);
 });
@@ -198,7 +199,7 @@ test('handover: a no-show offers one request button per fresh slot and rebooks t
   assert.match(said(handover), /Handover missed: 8 Nov 2026, 09:00/); assert.doesNotMatch(said(handover), /Booked|Not booked yet|Requested/);
   assert.match(handover.textContent, /Your handover was missed\. Choose a new slot to rebook\./); assert.match(handover.textContent, /Choose a new handover time\./);
   const slots = [...handover.querySelectorAll('button')]; assert.equal(slots.length, offered.length);
-  assert.match(slots[0].textContent, /^Request 9 Nov 2026, 09:00$/);
+  assert.equal(slots[0].textContent, '09:00'); assert.equal(slots[0].getAttribute('aria-label'), 'Request 9 Nov 2026, 09:00');
   slots[1].click(); assert.deepEqual(spy.calls, [['request', offered[1].slotId]]);
   assert.match([...handover.querySelectorAll('li')].map((n) => n.textContent).join(' '), /Handover missed/);
 });
@@ -257,7 +258,7 @@ test('documents: employee tasks come first with their action; others show owner 
 test('documents: completed acknowledgement keeps the server label and offers no action', () => {
   const docs = section(view('documents-in-progress', callbacks(log())), 'documents');
   assert.equal(docs.querySelector('button'), null); assert.match(docs.textContent, /Synthetic acknowledgement\. Not a signature\./);
-  assert.match(docs.textContent, /Still to do: Vehicle preparation, Delivery to the retailer/);
+  assert.deepEqual(todoLists(docs), { 'Still to do': ['Vehicle preparation', 'Delivery to the retailer'] });
 });
 
 test('documents: overdue and failed are distinct in text and class', () => {
@@ -267,7 +268,7 @@ test('documents: overdue and failed are distinct in text and class', () => {
   const failed = section(view('documents-failed'), 'documents');
   const broken = failed.querySelector('.gcsp-task.is-failed'); assert.match(broken.textContent, /Failed: The synthetic provider reported this step as failed\./);
   assert.doesNotMatch(broken.textContent, /Overdue/); assert.equal(failed.querySelector('.gcsp-task.is-overdue'), null);
-  assert.match(failed.textContent, /Needs attention: Driving licence check/);
+  assert.deepEqual(todoLists(failed)['Needs attention'], ['Driving licence check']);
 });
 
 test('documents: ready reads Ready for handover; closed says documents open once sent to ordering', () => {
@@ -460,7 +461,7 @@ test('without callbacks no control renders, but the facts, times and slots do', 
   for (const name of ['declined', 'sent-to-ordering-no-slot', 'appointment-change-proposed', 'documents-waiting-for-you', 'return-not-planned', 'return-change-proposed']) {
     const node = view(name); assert.equal(node.querySelectorAll('button, a[href]').length, 0, name); document.body.replaceChildren();
   }
-  assert.match(view('sent-to-ordering-no-slot').textContent, /8 Nov 2026, 09:00/);
+  assert.match(view('sent-to-ordering-no-slot').textContent, /Sun 8 Nov 2026.*09:00/);
 });
 
 test('pending disables every action and says the order is updating', () => {
@@ -482,4 +483,76 @@ test('messages render in a live region, and an error is an alert with the not-do
 
 test('no claim that the platform progresses on its own, and the states use plain wording', () => {
   for (const name of names) { const text = view(name, callbacks(log())).textContent; assert.doesNotMatch(text, /overnight|automatically|in the background/i, name); document.body.replaceChildren(); }
+});
+
+const stepRows = (node) => [...node.querySelectorAll('.gcsp-stage-tracker li.gcsp-stage')];
+const stepState = (row) => row.querySelector('.gcsp-stage-state').textContent;
+
+test('FUCQ-299: with the handover booked the Steps list continues to Handover and Ready, and Next comes from the appointment', () => {
+  const node = view('appointment-scheduled'); const rows = stepRows(node);
+  assert.deepEqual(rows.slice(-3).map((r) => r.querySelector('.gcsp-stage-label').textContent), ['Sent to ordering', 'Handover booked', 'Ready for handover']);
+  assert.deepEqual(rows.slice(-3).map(stepState), ['Done', 'Done', 'Current step']);
+  assert.match(rows.at(-2).textContent, /Booked for 8 Nov 2026, 09:00/);
+  const next = node.querySelectorAll('.gcsp-stage-next'); assert.equal(next.length, 1);
+  assert.equal(next[0].textContent, 'Next: The retailer prepares your car for the handover.'); assert.equal(rows.at(-1).getAttribute('aria-current'), 'step');
+  assert.ok(rows.at(-1).contains(next[0])); assert.doesNotMatch(node.querySelector('.gcsp-stage-tracker').textContent, /Appointment to be arranged/);
+  assert.equal(rows.at(-3).querySelector('.gcsp-stage-owner'), null);
+});
+
+test('FUCQ-299: an open, requested or proposed handover is the current step with the appointment next step', () => {
+  for (const [name, next] of [['sent-to-ordering-no-slot', 'Choose a handover slot.'], ['appointment-requested', 'Waiting for the retailer to confirm your slot.'],
+    ['appointment-change-proposed', 'Accept the new time to confirm your handover.'], ['appointment-no-show', 'Your handover was missed. Choose a new slot to rebook.']]) {
+    const node = view(name); const rows = stepRows(node);
+    assert.equal(stepState(rows.at(-2)), 'Current step', name); assert.equal(stepState(rows.at(-1)), name === 'appointment-no-show' ? 'Done' : 'Not started', name);
+    assert.deepEqual([...node.querySelectorAll('.gcsp-stage-next')].map((n) => n.textContent), [`Next: ${next}`], name);
+    assert.ok(rows.at(-2).querySelector('.gcsp-stage-next'), name); document.body.replaceChildren();
+  }
+  assert.match(stepRows(view('appointment-requested')).at(-2).textContent, /Requested 8 Nov 2026, 09:00\. Not booked yet\./);
+});
+
+test('FUCQ-299: ready and handed over steps are done with no Next line; a closed handover stays not started', () => {
+  const ready = stepRows(view('ready-for-handover'));
+  assert.deepEqual(ready.slice(-2).map(stepState), ['Done', 'Done']); assert.equal(document.querySelectorAll('.gcsp-stage-next').length, 0);
+  document.body.replaceChildren();
+  assert.deepEqual(stepRows(view('appointment-completed')).slice(-2).map(stepState), ['Done', 'Done']);
+  document.body.replaceChildren();
+  const early = view('waiting-hr'); const rows = stepRows(early);
+  assert.deepEqual(rows.slice(-2).map(stepState), ['Not started', 'Not started']); assert.equal(early.querySelectorAll('.gcsp-stage-next').length, 1);
+  assert.match(early.querySelector('[aria-current="step"]').textContent, /With HR/);
+});
+
+test('FUCQ-299: a failed or missing appointment or documents envelope leaves Handover and Ready not started', () => {
+  const progress = structuredClone(fixtures.states['appointment-scheduled']); progress.appointment = { status: 'unavailable' }; progress.documents = undefined;
+  const node = orderProgressBody({ progress, car: fixtures.car }); document.body.append(node);
+  assert.deepEqual(stepRows(node).slice(-2).map(stepState), ['Not started', 'Not started']);
+  assert.equal(node.querySelectorAll('.gcsp-stage-next').length, 1); assert.match(node.querySelector('.gcsp-stage-next').closest('li').textContent, /Sent to ordering/);
+  document.body.replaceChildren();
+  const noDocs = structuredClone(fixtures.states['appointment-scheduled']); noDocs.documents = { status: 'unavailable' };
+  const other = orderProgressBody({ progress: noDocs, car: fixtures.car }); document.body.append(other);
+  assert.equal(stepState(stepRows(other).at(-1)), 'Current step');
+});
+
+test('FUCQ-299: slots are grouped by day, one labelled group per day with compact time buttons', () => {
+  const progress = structuredClone(fixtures.states['return-not-planned']); const slots = [];
+  for (let day = 7; day <= 14; day += 1) for (const hour of [9, 13]) slots.push({ slotId: `r-${day}-${hour}`, start: `2026-11-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:00:00.000Z` });
+  progress.returnPlan.value.offeredSlots.separate = slots; const spy = log();
+  const plan = section(view('return-not-planned', callbacks(spy)), 'return'); document.body.replaceChildren();
+  const node = orderProgressBody({ progress, car: fixtures.car, ...callbacks(spy) }); document.body.append(node);
+  const picker = [...section(node, 'return').querySelectorAll('.gcsp-slot-picker')].at(-1);
+  const days = [...picker.querySelectorAll(':scope > .gcsp-slot-day')]; assert.equal(days.length, 8);
+  assert.equal(days[0].querySelector('.gcsp-slot-day-heading').textContent, 'Sat 7 Nov 2026');
+  assert.equal(days[0].querySelector('.gcsp-slot-times').getAttribute('aria-labelledby'), days[0].querySelector('.gcsp-slot-day-heading').id);
+  assert.deepEqual([...days[1].querySelectorAll('button')].map((b) => b.textContent), ['09:00', '13:00']);
+  assert.equal(days[1].querySelector('button').getAttribute('aria-label'), 'Request return 8 Nov 2026, 09:00');
+  assert.ok(plan); days[7].querySelectorAll('button')[1].click();
+  assert.deepEqual(spy.calls.at(-1), ['request-return', { choice: 'separate', slotId: 'r-14-13' }]);
+});
+
+test('FUCQ-299: not ready is a short statement followed by lists of the items, not a run-on line', () => {
+  const docs = section(view('documents-failed'), 'documents');
+  assert.equal(docs.querySelector('.gcsp-order-statement').textContent, 'Not ready for handover.');
+  assert.deepEqual(todoLists(docs), { 'Needs attention': ['Driving licence check'], 'Still to do': ['Vehicle preparation', 'Delivery to the retailer'] });
+  assert.ok([...docs.querySelectorAll('.gcsp-order-todo')].every((g) => g.querySelector('ul')?.getAttribute('aria-labelledby') === g.querySelector('p').id));
+  document.body.replaceChildren();
+  assert.deepEqual(todoLists(section(view('ready-for-handover'), 'documents')), {});
 });
