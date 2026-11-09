@@ -113,8 +113,22 @@ jobs:
         run: python3 -I -B _tools/product_map.py build --output _site/product-map
 
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - id: artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
+
+      # Deploy success is not public freshness: fail unless the served map matches the upload.
+      - name: Verify the public product map
+        timeout-minutes: 12
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          ARTIFACT_ID: ${{ steps.artifact.outputs.artifact_id }}
+        run: >-
+          python3 -I -B _tools/pages_readback.py
+          --file _site/product-map/data.json
+          --url "${PAGE_URL%/}/product-map/data.json"
+          --artifact-id "${ARTIFACT_ID}"
+          --receipt "$RUNNER_TEMP/product-map-readback.json"
