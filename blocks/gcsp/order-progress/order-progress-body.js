@@ -15,6 +15,11 @@ const when = (prefix, slot) => (slotText(slot) ? `${prefix} ${slotText(slot)}` :
 const add = (parent, ...nodes) => parent.append(...nodes.filter(Boolean));
 const statement = (value) => el('p', 'gcsp-order-statement', value);
 const failure = (what, envelope) => el('p', 'gcsp-order-failure', failureLine(what, envelope));
+const dated = (text, instant) => (slotText({ start: instant }) ? `${text}: ${slotText({ start: instant })}` : `${text}.`);
+const earlierMissed = (a) => { // the latest missed attempt, so a rebooked handover never hides it
+  const row = a.attempt > 1 && Array.isArray(a.previousAttempts) ? a.previousAttempts.filter((r) => r?.state === 'no-show').at(-1) : null;
+  return row ? el('p', 'gcsp-order-note', dated(copy.earlierMissed, row.slot?.start)) : null;
+};
 const ownerRows = (v) => [{ label: 'Owner', value: itemOwner[v.owner] ?? v.owner }, { label: 'Next step', value: v.nextStep }];
 
 function trackerStages(value) {
@@ -49,6 +54,8 @@ function slotButtons(slots, c, make, onPick) {
   return list;
 }
 
+const requestButtons = (slots, c) => slotButtons(slots, c, (slot) => `Request ${slotText(slot)}`, c.on.onRequestAppointment && ((slot) => c.on.onRequestAppointment(slot.slotId)));
+
 function orderSection(c) {
   const { stages, car } = c.progress; const node = c.section(copy.order, 'stages');
   const head = el('div', 'gcsp-order-car');
@@ -67,18 +74,31 @@ function orderSection(c) {
 function handoverSection(c) {
   const { appointment } = c.progress; const node = c.section(copy.handover, 'handover'); const a = appointment?.value;
   if (!usable(appointment)) { node.append(failure('handover details', appointment)); return node; }
-  if (a.pending) { node.append(statement(copy.waiting), factList(ownerRows(a))); return node; }
+  if (a.pending) { node.append(statement(copy.waiting), factList(ownerRows(a))); add(node, earlierMissed(a)); return node; }
   if (a.state === 'not-requested') {
     if (a.eligibility?.eligible === false) { node.append(statement(copy.handoverClosed)); return node; }
     const slots = Array.isArray(a.offeredSlots) ? a.offeredSlots : [];
     node.append(statement(slots.length ? copy.chooseHandover : a.blocked?.reason || copy.noSlots));
-    if (slots.length) node.append(slotButtons(slots, c, (slot) => `Request ${slotText(slot)}`, c.on.onRequestAppointment && ((slot) => c.on.onRequestAppointment(slot.slotId))));
+    add(node, earlierMissed(a));
+    if (slots.length) node.append(requestButtons(slots, c));
+    return node;
+  }
+  if (a.state === 'completed' || a.state === 'no-show') {
+    const done = a.state === 'completed'; const slots = Array.isArray(a.offeredSlots) ? a.offeredSlots : [];
+    node.append(statement(done ? dated(copy.complete, a.outcome?.at) : dated(copy.missed, a.slot?.start)), factList(ownerRows(a)));
+    add(node, earlierMissed(a));
+    if (!done) {
+      node.append(statement(slots.length ? copy.chooseNew : a.blocked?.reason || copy.noSlots));
+      if (slots.length) node.append(requestButtons(slots, c));
+    }
+    add(node, c.history(a, false));
     return node;
   }
   const proposed = a.state === 'change-proposed';
   const line = a.state === 'scheduled' && a.booked === true ? when('Booked:', a.slot)
     : `${proposed ? when('New time proposed:', a.proposedSlot) : when('Requested', a.requestedSlot)}. ${copy.notBooked}`;
   node.append(statement(line), factList(ownerRows(a)));
+  add(node, earlierMissed(a));
   if (proposed) {
     const accept = c.on.onAcceptAppointment && button({ label: copy.accept, disabled: c.pending, onClick: () => c.on.onAcceptAppointment(a.proposalId) });
     add(node, c.actions(accept), c.help(copy.cantMakeIt));

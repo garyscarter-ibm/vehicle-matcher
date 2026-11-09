@@ -189,6 +189,52 @@ test('a proposed handover time and a proposed return time are accepted through t
   } finally { controller.destroy(); }
 });
 
+// Drives a real order to a booked handover with documents and the car ready; returns the slot booked.
+async function toScheduled(f, controller, tag) {
+  await approve(f, controller); const wait = await delays(f);
+  const docs = value(controller, 'documents').orders[0]; const task = docs.tasks.find((row) => row.actionable);
+  await controller.completeTask(task.itemId); good(await tick(f, `${tag}-documents-ready`, wait.documents)); await controller.refresh();
+  const slot = slotOf(value(controller, 'appointment').offeredSlots);
+  await controller.requestAppointment(slot.slotId); good(await tick(f, `${tag}-confirm`, wait.appointment)); await controller.refresh();
+  assert.deepEqual([value(controller, 'appointment').state, value(controller, 'documents').orders[0].readiness.ready], ['scheduled', true]);
+  return slot;
+}
+
+test('a presenter completes a ready handover and the screen reads Handover complete with no actions', async (t) => {
+  const f = await setup(t); const orderUuid = await submitOrder(f); const controller = await open(f, { orderUuid });
+  try {
+    const slot = await toScheduled(f, controller, 'op-complete');
+    good(await f.dependencies.gcspAppointments.complete(f.presenter, { orderUuid })); await controller.refresh();
+    const appointment = value(controller, 'appointment');
+    assert.deepEqual([appointment.state, appointment.booked, appointment.outcome.state, appointment.owner], ['completed', false, 'completed', 'employee']);
+    assert.deepEqual(appointment.slot, slot);
+    const node = orderProgressBody({ progress: controller.getState().progress }); const handover = node.querySelector('.gcsp-order-handover');
+    assert.match(handover.textContent, /Handover complete: /); assert.match(handover.textContent, /Your handover is complete\./);
+    assert.doesNotMatch(handover.textContent, /Not booked yet|Booked:/); assert.equal(handover.querySelector('button'), null);
+    const reopened = await open(f, { orderUuid }); assert.deepEqual(reopened.getState().progress.appointment, controller.getState().progress.appointment); reopened.destroy();
+  } finally { controller.destroy(); }
+});
+
+test('a recorded no-show offers fresh slots and Paula rebooks through the controller as attempt 2', async (t) => {
+  const f = await setup(t); const orderUuid = await submitOrder(f); const controller = await open(f, { orderUuid });
+  try {
+    const missedSlot = await toScheduled(f, controller, 'op-missed');
+    good(await f.dependencies.gcspAppointments.recordNoShow(f.presenter, { orderUuid })); await controller.refresh();
+    let appointment = value(controller, 'appointment');
+    assert.deepEqual([appointment.state, appointment.booked, appointment.outcome.state, appointment.attempt], ['no-show', false, 'no-show', 1]);
+    assert.ok(appointment.offeredSlots.length > 0);
+    const missed = orderProgressBody({ progress: controller.getState().progress }).querySelector('.gcsp-order-handover');
+    assert.match(missed.textContent, /Handover missed: /); assert.equal(missed.querySelectorAll('button').length, 0, 'no callbacks, no controls');
+    const again = slotOf(appointment.offeredSlots); const state = await controller.requestAppointment(again.slotId);
+    assert.deepEqual(state.message, { text: 'Handover time requested.', error: false });
+    appointment = value(controller, 'appointment');
+    assert.deepEqual([appointment.state, appointment.attempt, appointment.booked, appointment.requestedSlot], ['requested', 2, false, again]);
+    assert.equal(appointment.previousAttempts[0].state, 'no-show'); assert.deepEqual(appointment.previousAttempts[0].slot, missedSlot);
+    const text = words(state.progress); assert.match(text, /Requested .*Not booked yet\./); assert.match(text, /Earlier handover missed: /);
+    assert.deepEqual(appointment.history.map((row) => row.state), ['requested', 'scheduled', 'no-show', 'requested']);
+  } finally { controller.destroy(); }
+});
+
 test('a run with no order is its own state; cases the default memory runtime cannot produce are skipped with their reason', async (t) => {
   await t.test('declined approval needs the decline scenario policy and a validated renewal, which this runtime does not seed', { skip: 'lifecycle.approval.declineScenario.v1 is disabled and no validated renewal is seeded (shared-contracts, FUCQ-111 Remaining).' }, () => {});
   await t.test('an unsupported provider answer needs the live-shaped ordering stub, not wired in the memory runtime', { skip: 'Only the live-shaped provider returns unsupported; the memory runtime composes the synthetic adapter (orderingAdapter.mode synthetic). The controller mapping is covered with a fake adapter.' }, () => {});

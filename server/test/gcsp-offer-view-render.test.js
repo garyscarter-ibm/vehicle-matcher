@@ -316,6 +316,34 @@ test('accepted offer mounts order progress with its own car and uuid; other stat
   assert.equal(mounts.length, count); // no order uuid on the read, so nothing is mounted
 });
 
+test('the offer-hosted progress shows completed and missed handovers, rebooks the exact slot and re-reads the new attempt', async () => {
+  const { mountOrderProgress } = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
+  const all = orderProgressFixtures().states;
+  const host = async (name, extra) => {
+    let current = all[name]; const adapter = { readStages: async () => structuredClone(current.stages), readDocuments: async () => structuredClone(current.documents),
+      readAppointment: async () => structuredClone(current.appointment), readReturnPlan: async () => structuredClone(current.returnPlan), ...extra(() => { current = all['appointment-rebooked']; }) };
+    const root = document.createElement('div'); document.body.append(root);
+    const view = createOfferView(root, { mountOrder: (node, { car }) => mountOrderProgress(node, { adapter, orderUuid: ORDER, car, embedded: true, headingLevel: 2 }) });
+    view.update(acceptedModel());
+    const area = () => root.querySelector('.gcsp-offer-order .gcsp-order-handover');
+    for (let n = 0; n < 60 && !area(); n += 1) await new Promise((done) => setTimeout(done, 15));
+    return { area, view, root };
+  };
+  const completed = await host('appointment-completed', () => ({}));
+  assert.match(completed.area().textContent, /Handover complete: 8 Nov 2026, 10:00/); assert.doesNotMatch(completed.area().textContent, /Not booked yet/);
+  assert.equal(completed.area().querySelector('button'), null); completed.view.destroy();
+  const requests = [];
+  const missed = await host('appointment-no-show', (rebooked) => ({ requestAppointment: async (input) => { requests.push(input.slotId); rebooked(); return { status: 'ok', value: {} }; } }));
+  assert.match(missed.area().textContent, /Handover missed: 8 Nov 2026, 09:00/);
+  const offered = all['appointment-no-show'].appointment.value.offeredSlots;
+  const buttons = [...missed.area().querySelectorAll('button')]; assert.equal(buttons.length, offered.length); assert.equal(buttons[0].textContent, 'Request 9 Nov 2026, 09:00');
+  buttons[0].click();
+  for (let n = 0; n < 60 && !/Not booked yet/.test(missed.area()?.textContent ?? ''); n += 1) await new Promise((done) => setTimeout(done, 15));
+  assert.deepEqual(requests, [offered[0].slotId]);
+  assert.match(missed.area().textContent, /Requested 9 Nov 2026, 09:00\. Not booked yet\./); assert.match(missed.area().textContent, /Earlier handover missed: 8 Nov 2026, 09:00/);
+  missed.view.destroy();
+});
+
 test('the DTO projection carries the quote order uuid and the real embedded progress shows the offer car and order number', async () => {
   const sample = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url)));
   const projected = toOfferPresentation({ status: 'ok', value: { ...structuredClone(sample), state: 'accepted', reason: 'accepted', offerState: 'accepted',

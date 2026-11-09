@@ -10,6 +10,8 @@ import { ORDER_PROGRESS_DESTINATION } from './gcsp-order-progress.js';
 const labels = { 'waiting-hr': 'Waiting for HR', 'waiting-sales-manager': 'Waiting for sales manager', 'no-hr': 'No HR step', declined: 'Declined',
   'provider-unsupported': 'Update not supported', 'sent-to-ordering-no-slot': 'Choose handover time', 'appointment-requested': 'Handover requested',
   'appointment-change-proposed': 'New handover time', 'appointment-pending': 'Handover update pending', 'appointment-scheduled': 'Handover booked',
+  'appointment-completed': 'Handover complete', 'appointment-no-show': 'Handover missed', 'appointment-rebooked': 'Handover rebooked',
+  'appointment-outcome-pending': 'Handover outcome pending',
   'documents-waiting-for-you': 'Task waiting for you', 'documents-in-progress': 'Documents in progress', 'documents-overdue': 'Task overdue',
   'documents-failed': 'Check failed', 'ready-for-handover': 'Ready for handover', 'return-unavailable': 'Return not open yet',
   'return-not-planned': 'Choose return', 'return-requested': 'Return requested', 'return-change-proposed': 'New return time',

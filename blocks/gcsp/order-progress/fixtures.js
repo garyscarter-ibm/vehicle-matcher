@@ -92,17 +92,18 @@ const OFFERED = [slot(8, 9), slot(8, 13), slot(9, 9), slot(9, 13), slot(10, 9), 
 const row = (state, at) => ({ state, at, providerReference: `synthetic-appointments:v1:${state}` });
 const OWNERS = { 'not-requested': ['employee', 'Choose a handover slot.'], requested: ['retailer', 'Waiting for the retailer to confirm your slot.'],
   'change-proposed': ['employee', 'Accept the new time to confirm your handover.'], scheduled: ['retailer', 'The retailer prepares your car for the handover.'],
+  completed: ['employee', 'Your handover is complete.'], 'no-show': ['employee', 'Your handover was missed. Choose a new slot to rebook.'],
   ineligible: ['scheme-team', 'Waiting for your order to be sent to ordering.'], pending: ['scheme-team', 'Waiting for the scheme team to confirm the last update.'] };
 
 function appointmentValue({ state, key = state, slot: confirmed = null, requestedSlot = null, proposedSlot = null, proposalId = null, history = [], pending = null,
-  offeredSlots = [], eligible = true }) {
+  offeredSlots = [], eligible = true, outcome = null, attempt = 1, previousAttempts = [] }) {
   const [owner, nextStep] = OWNERS[key];
   return { contractVersion: 'lifecycle.appointments.v1', runId: RUN, orderUuid: ORDER, employeeId: EMPLOYEE, state, booked: state === 'scheduled', slot: confirmed, requestedSlot,
     proposedSlot, proposalId, history, owner, nextStep, pending, blocked: null, offeredSlots,
     eligibility: eligible ? { eligible: true, code: null, reason: null } : { eligible: false, code: 'opening-stage-not-reached', reason: 'Your order has not been sent to ordering yet.' },
     policyVersion: 'gcsp-policy-v1', assumptions: [{ key: 'lifecycle.appointments.slots.v1', status: 'assumed', unit: 'days; minutes; UTC HH:MM start times',
       basis: 'Synthetic slot rules. Not BMW policy.', source: 'docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114', sourceDate: '2026-11-06', policyVersion: 'gcsp-policy-v1' }],
-    outcome: null, attempt: 1, previousAttempts: [], provider: { mode: 'synthetic', synthetic: true }, fictional: true };
+    outcome, attempt, previousAttempts, provider: { mode: 'synthetic', synthetic: true }, fictional: true };
 }
 const apptClosed = () => env(appointmentValue({ state: 'not-requested', key: 'ineligible', eligible: false }));
 const apptOpen = () => env(appointmentValue({ state: 'not-requested', offeredSlots: OFFERED }));
@@ -112,6 +113,16 @@ const apptProposed = () => env(appointmentValue({ state: 'change-proposed', requ
 const apptPending = () => env(appointmentValue({ state: 'requested', key: 'pending', requestedSlot: OFFERED[0], pending: { step: 'confirm', reason: 'Waiting for the provider to confirm the last update.' },
   history: [row('requested', t(16))] }));
 const apptScheduled = () => env(appointmentValue({ state: 'scheduled', slot: OFFERED[0], requestedSlot: OFFERED[0], history: [row('requested', t(16)), row('scheduled', t(17))] }));
+// FUCQ-167 outcomes: the missed handover keeps its slot; Paula rebooks as attempt 2 and the miss stays in previousAttempts.
+const apptCompleted = () => env(appointmentValue({ state: 'completed', slot: OFFERED[0], requestedSlot: OFFERED[0], outcome: row('completed', t(10, 8)),
+  history: [row('requested', t(16)), row('scheduled', t(17)), row('completed', t(10, 8))] }));
+const NO_SHOW_HISTORY = [row('requested', t(16)), row('scheduled', t(17)), row('no-show', t(10, 8))];
+const apptNoShow = () => env(appointmentValue({ state: 'no-show', slot: OFFERED[0], requestedSlot: OFFERED[0], outcome: row('no-show', t(10, 8)), history: NO_SHOW_HISTORY,
+  offeredSlots: [slot(9, 9), slot(9, 13), slot(10, 9)] }));
+const apptRebooked = () => env(appointmentValue({ state: 'requested', requestedSlot: slot(9, 9), attempt: 2, history: [...NO_SHOW_HISTORY, row('requested', t(11, 8))],
+  previousAttempts: [{ attempt: 1, state: 'no-show', slot: OFFERED[0], outcome: row('no-show', t(10, 8)) }] }));
+const apptOutcomePending = () => env(appointmentValue({ state: 'scheduled', key: 'pending', slot: OFFERED[0], requestedSlot: OFFERED[0],
+  pending: { step: 'complete', reason: 'Waiting for the provider to confirm the last update.' }, history: [row('requested', t(16)), row('scheduled', t(17))] }));
 
 // Return plan (FUCQ-118). A replacement order only; the handover must be scheduled before a choice opens.
 const CURRENT_CAR = { contractId: 'current:employee-paula', slotId: 'slot-paula', status: 'current', model: 'Fictional BMW 320i Touring',
@@ -177,6 +188,8 @@ export function orderProgressFixtures() {
       'sent-to-ordering-no-slot': afterSent(docsWaiting(), apptOpen()),
       'appointment-requested': afterSent(docsWaiting(), apptRequested()), 'appointment-change-proposed': afterSent(docsWaiting(), apptProposed()),
       'appointment-pending': afterSent(docsWaiting(), apptPending()), 'appointment-scheduled': afterSent(docsProgress(), apptScheduled()),
+      'appointment-completed': afterSent(docsReady(), apptCompleted()), 'appointment-no-show': afterSent(docsReady(), apptNoShow()),
+      'appointment-rebooked': afterSent(docsReady(), apptRebooked()), 'appointment-outcome-pending': afterSent(docsReady(), apptOutcomePending()),
       'documents-waiting-for-you': afterSent(docsWaiting(), apptScheduled()), 'documents-in-progress': afterSent(docsProgress(), apptScheduled()),
       'documents-overdue': afterSent(documents({ now: t(6, 8), status: WAITING, overdue: ['agreement-acknowledgement'] }), apptScheduled()),
       'documents-failed': afterSent(documents({ now: t(18), status: { ...WAITING, 'agreement-acknowledgement': 'complete', 'licence-check': 'failed' },

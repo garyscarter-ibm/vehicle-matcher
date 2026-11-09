@@ -25,6 +25,10 @@ export const orderCopy = Object.freeze({
   noSlots: 'No handover times are available yet.',
   waiting: 'Waiting for confirmation of your last update.',
   notBooked: 'Not booked yet.',
+  complete: 'Handover complete',
+  missed: 'Handover missed',
+  earlierMissed: 'Earlier handover missed',
+  chooseNew: 'Choose a new handover time.',
   accept: 'Accept new time',
   help: 'Get help',
   cantMakeIt: "Can't make it? Get help",
@@ -65,7 +69,8 @@ export function itemTone(item) {
   return item.status === 'in-progress' ? 'in-progress' : 'todo';
 }
 
-const historyLabels = Object.freeze({ requested: 'Requested', 'change-proposed': 'New time proposed', scheduled: 'Booked' });
+const historyLabels = Object.freeze({ requested: 'Requested', 'change-proposed': 'New time proposed', scheduled: 'Booked',
+  completed: 'Handover complete', 'no-show': 'Handover missed' });
 const returnLabels = Object.freeze({ requested: 'Return requested', 'change-proposed': 'New return time proposed', scheduled: 'Return booked' });
 /** Dated history rows from the server's own history; the return plan reads its appointmentState. */
 export function historyEvents(history, forReturn = false) {

@@ -548,6 +548,35 @@ test('account with an order embeds its progress with the order number, stage nam
   assert.equal(root.querySelector('.gcsp-account-order'), null);
 });
 
+test('account shows handover outcomes from the server read: completed, then no-show rebooked through the real controller and re-read', async () => {
+  const fixtures = orderProgressFixtures().states;
+  const completed = orderAdapter('appointment-completed');
+  const done = await domMount({ ...readOnlyAdapter(), readOrder: selection(completed.uuid, { name: 'Synthetic i5 eDrive40 Touring' }) }, { orderAdapter: completed });
+  try {
+    await settleOrder(done.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-handover'));
+    const handover = done.root.querySelector('.gcsp-account-order .gcsp-order-handover');
+    assert.match(handover.textContent, /Handover complete: 8 Nov 2026, 10:00/); assert.doesNotMatch(handover.textContent, /Not booked yet/); assert.equal(handover.querySelector('button'), null);
+  } finally { done.destroy(); }
+  const missed = orderAdapter('appointment-no-show'); const requests = []; let current = fixtures['appointment-no-show'].appointment;
+  missed.readAppointment = async () => structuredClone(current);
+  missed.requestAppointment = async (input) => { requests.push(input.slotId); current = fixtures['appointment-rebooked'].appointment; return { status: 'ok', value: {} }; };
+  const mounted = await domMount({ ...readOnlyAdapter(), readOrder: selection(missed.uuid, { name: 'Synthetic i5 eDrive40 Touring' }) }, { orderAdapter: missed });
+  try {
+    const area = () => mounted.root.querySelector('.gcsp-account-order .gcsp-order-handover');
+    await settleOrder(mounted.root, () => area());
+    assert.match(area().textContent, /Handover missed: 8 Nov 2026, 09:00/);
+    const rebook = findButton(area(), 'Request 9 Nov 2026, 13:00'); assert.ok(rebook); rebook.click();
+    await settleOrder(mounted.root, () => /Not booked yet/.test(area()?.textContent ?? ''));
+    assert.deepEqual(requests, [fixtures['appointment-no-show'].appointment.value.offeredSlots[1].slotId]);
+    assert.match(area().textContent, /Requested 9 Nov 2026, 09:00\. Not booked yet\./); assert.match(area().textContent, /Earlier handover missed: 8 Nov 2026, 09:00/);
+  } finally { mounted.destroy(); }
+  const reopened = await domMount({ ...readOnlyAdapter(), readOrder: selection(missed.uuid, { name: 'Synthetic i5 eDrive40 Touring' }) }, { orderAdapter: missed });
+  try {
+    await settleOrder(reopened.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-handover'));
+    assert.match(reopened.root.querySelector('.gcsp-account-order .gcsp-order-handover').textContent, /Not booked yet/);
+  } finally { reopened.destroy(); }
+});
+
 test('account shows no order area without an order, on a failed list, or for another order car', async () => {
   const none = await domMount(readOnlyAdapter(), { orderAdapter: orderAdapter('appointment-requested', []) });
   await tick(); assert.equal(none.root.querySelector('.gcsp-account-order'), null); assert.doesNotMatch(none.root.textContent, /No order yet/); none.destroy();

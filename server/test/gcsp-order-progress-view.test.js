@@ -29,10 +29,11 @@ const view = (name, extra = {}) => { const node = orderProgressBody({ progress: 
 const ids = (node) => [...node.querySelectorAll('.gcsp-order-number > div')].map((d) => [d.querySelector('dt').textContent, d.querySelector('dd').textContent]);
 const section = (node, name) => node.querySelector(`.gcsp-order-${name}`);
 const buttons = (node) => [...node.querySelectorAll('button')].map((b) => b.textContent);
+const said = (node) => [...node.querySelectorAll('.gcsp-order-statement')].map((n) => n.textContent).join(' ');
 const sorted = (o) => Object.keys(o).sort();
 
 test('every fixture state renders with one h1, labelled sections, no em dash and no markup injection', () => {
-  assert.equal(names.length, 27);
+  assert.equal(names.length, 31);
   for (const name of names) {
     const node = view(name, callbacks(log()));
     assert.equal(node.querySelectorAll('h1').length, 1, name);
@@ -174,6 +175,70 @@ test('handover: an uncertain write waits, with no actions', () => {
   const handover = section(view('appointment-pending', callbacks(log())), 'handover');
   assert.match(handover.textContent, /Waiting for confirmation of your last update/); assert.equal(handover.querySelector('button'), null);
   assert.doesNotMatch(handover.textContent, /Booked/);
+});
+
+test('handover: completed reads Handover complete with the server owner and next step, and no actions', () => {
+  const handover = section(view('appointment-completed', callbacks(log())), 'handover');
+  assert.match(said(handover), /^Handover complete: 8 Nov 2026, 10:00$/); assert.doesNotMatch(said(handover), /Booked|Not booked yet|Requested/);
+  assert.match(handover.textContent, /You/); assert.match(handover.textContent, /Your handover is complete\./); assert.equal(handover.querySelector('button'), null);
+  assert.match(handover.textContent, /Handover history/);
+  const labels = [...handover.querySelectorAll('.gcsp-activity-event, li')].map((n) => n.textContent).join(' ');
+  assert.match(labels, /Handover complete/); assert.match(labels, /Booked/);
+});
+
+test('handover: completed without a valid time still reads complete, never invalid', () => {
+  const progress = structuredClone(fixtures.states['appointment-completed']); progress.appointment.value.outcome.at = 'not a time';
+  const handover = section(orderProgressBody({ progress, car: fixtures.car }), 'handover');
+  assert.match(handover.textContent, /Handover complete\./); assert.doesNotMatch(handover.textContent, /Invalid|undefined|null/);
+});
+
+test('handover: a no-show offers one request button per fresh slot and rebooks the exact slot', () => {
+  const spy = log(); const handover = section(view('appointment-no-show', callbacks(spy)), 'handover');
+  const offered = fixtures.states['appointment-no-show'].appointment.value.offeredSlots;
+  assert.match(said(handover), /Handover missed: 8 Nov 2026, 09:00/); assert.doesNotMatch(said(handover), /Booked|Not booked yet|Requested/);
+  assert.match(handover.textContent, /Your handover was missed\. Choose a new slot to rebook\./); assert.match(handover.textContent, /Choose a new handover time\./);
+  const slots = [...handover.querySelectorAll('button')]; assert.equal(slots.length, offered.length);
+  assert.match(slots[0].textContent, /^Request 9 Nov 2026, 09:00$/);
+  slots[1].click(); assert.deepEqual(spy.calls, [['request', offered[1].slotId]]);
+  assert.match([...handover.querySelectorAll('li')].map((n) => n.textContent).join(' '), /Handover missed/);
+});
+
+test('handover: no-show buttons are disabled while a command is pending', () => {
+  const handover = section(view('appointment-no-show', { ...callbacks(log()), pending: true }), 'handover');
+  for (const b of handover.querySelectorAll('button')) assert.equal(b.disabled, true);
+});
+
+test('handover: a no-show with no fresh slots shows the reason and no buttons', () => {
+  const progress = structuredClone(fixtures.states['appointment-no-show']); progress.appointment.value.offeredSlots = [];
+  progress.appointment.value.blocked = { code: 'none', reason: 'No handover times are free this week.' };
+  const handover = section(orderProgressBody({ progress, car: fixtures.car, onRequestAppointment() {} }), 'handover');
+  assert.match(handover.textContent, /No handover times are free this week\./); assert.equal(handover.querySelector('button'), null);
+  progress.appointment.value.blocked = null;
+  assert.match(section(orderProgressBody({ progress, car: fixtures.car }), 'handover').textContent, /No handover times are available yet\./);
+});
+
+test('handover: a rebooked attempt is requested, not booked, and keeps the missed one in view', () => {
+  const handover = section(view('appointment-rebooked', callbacks(log())), 'handover');
+  assert.match(handover.textContent, /Requested 9 Nov 2026, 09:00\. Not booked yet\./); assert.doesNotMatch(handover.textContent, /Booked:/);
+  assert.match(handover.textContent, /Earlier handover missed: 8 Nov 2026, 09:00/); assert.equal(handover.querySelector('button'), null);
+  assert.match(handover.textContent, /Waiting for the retailer/);
+  for (const name of ['appointment-requested', 'appointment-scheduled', 'appointment-no-show']) {
+    document.body.replaceChildren(); const text = section(view(name), 'handover').textContent;
+    assert.equal(/Earlier handover missed/.test(text), false, name);
+  }
+});
+
+test('handover: an uncertain complete never shows an outcome', () => {
+  const handover = section(view('appointment-outcome-pending', callbacks(log())), 'handover');
+  assert.match(handover.textContent, /Waiting for confirmation of your last update\./); assert.match(handover.textContent, /Scheme team/);
+  assert.doesNotMatch(handover.textContent, /Handover complete|Handover missed|Booked/); assert.equal(handover.querySelector('button'), null);
+});
+
+test('handover outcomes: the status message stays in the live region', () => {
+  const node = view('appointment-no-show', { message: { text: 'Requested. Waiting for the retailer.' } });
+  const live = node.querySelector('.gcsp-order-message'); assert.equal(live.getAttribute('role'), 'status'); assert.match(live.textContent, /Waiting for the retailer/);
+  document.body.replaceChildren();
+  assert.equal(view('appointment-no-show', { message: { text: 'Not done. Try again.', error: true } }).querySelector('.gcsp-order-message').getAttribute('role'), 'alert');
 });
 
 test('documents: employee tasks come first with their action; others show owner and due time', () => {
