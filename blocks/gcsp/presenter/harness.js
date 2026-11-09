@@ -2,9 +2,10 @@
 import { defineGcspOutbox } from './gcsp-outbox.js';
 import { FIXTURE_NAMES } from './fixtures.js';
 import { createOutboxHttpAdapter } from './http-adapter.js';
+import { subscribePresenterActions } from '../presenter-controls/controls.js';
 
 const requested = new URLSearchParams(globalThis.location?.search || '').get('fixture');
 defineGcspOutbox();
 const host = document.querySelector('gcsp-outbox');
 if (host && FIXTURE_NAMES.includes(requested)) host.setAttribute('fixture', requested);
-else if (host) host.adapter = createOutboxHttpAdapter({ base: '' });
+else if (host) host.adapter = { ...createOutboxHttpAdapter({ base: '' }), subscribeClock: subscribePresenterActions(host) };

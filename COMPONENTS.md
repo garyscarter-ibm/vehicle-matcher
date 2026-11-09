@@ -140,6 +140,8 @@ Looked at: `el`, `button`, `screenIntro`, `statusScreen`, `factList` (all reused
 
 Gallery: the GCSP section of [`components.html`](components.html) shows `messageList` with sent, retrying and failed messages.
 
+`mountOutbox` takes `ctx.subscribeClock`; the live harness passes `subscribePresenterActions(host)` (fixtures do not). Each action runs `sync()`: a re-read with no loading note that repaints only when the message list changed, keeping the selected email, focus and scroll, with the count in the existing status text as the one announcement.
+
 ## GCSP Greg dashboard (`blocks/gcsp/greg/`, kit in `blocks/gcsp/kit/`)
 
 Looked at: `el`, `screenIntro`, `button`, `statusScreen` and `factList` (all reused: heading, Refresh/Retry, states and the meta strip), `portalShell` (the shell), the employee `gcsp-card` and the retail `matchCard`. None draws a dense figure tile or a data table, and the employee cards are image-led, so `metricTile` and `dataTable` are new. They live in GCSP-scoped kit files (`blocks/gcsp/kit/gcsp-kit.css`, every selector `.gcsp`, tokens only), not in `ui.js` or `tokens.css`. Counts are `{ label, isBand }` from `toDashboardView`; a band shows its own text ("fewer than 5") with a dashed outline and screen-reader text, and nothing is derived from it.
@@ -155,6 +157,8 @@ Gallery: the **GCSP Greg kit** section of [`components.html`](components.html) s
 `mountGregOrders(root, {adapter, productionControls, onChanged, signal})` and `<gcsp-greg-orders>` in `blocks/gcsp/greg-orders/` compose the existing `dataTable`, `labelledField`, `button`, `statusScreen` and `el`. This adds no competing kit primitive. Requested, confirmed and released counts stay separate; native model/derivative/quantity forms retain focus across refresh, and saved confirmations expose release-queue retry. The optional synthetic production disclosure uses the retained presenter cookie; the acting Greg cookie handles requests and queueing. The element accepts `adapter` as a property, emits `gcsp:orders-changed`, has `refresh()`, and aborts on disconnect. The [same-origin integration harness](blocks/gcsp/greg-orders/harness.html) mounts the panel in the existing dashboard region, requiring trusted backend session bootstrap and registered supply/demand routes. Its scoped composition stylesheet is capped separately; shared kit/gallery rows and existing caps remain intact. [Contract and browser evidence](docs/gcsp/greg-orders-contract.md).
 
 `attachGregOrders(dashboard, {adapter, productionControls, onChanged, signal})` in `blocks/gcsp/greg-orders/runtime.js` owns that existing region across dashboard remounts. It replaces prior listeners, refreshes the same demand dashboard after an order change, and restores the original reserved region on teardown or abort. Production controls default to hidden; the host selects disclosure. [Canonical host/source handoff](docs/gcsp/fucq104-source-runtime-handoff-2026-11-06.md).
+
+The standalone Greg harness (`gcsp-greg.html`) is fixtures only, with no live adapter, so it does not subscribe to presenter actions; the presenter workspace's Greg branch already refreshes on them.
 
 ## GCSP Greg order plan (`blocks/gcsp/greg/plan/`)
 
@@ -262,6 +266,8 @@ A data helper, not a component. `orderIdentityRows(orderReference, carOrderNumbe
 ### GCSP account consumer (`blocks/gcsp/account/`)
 
 `mountAccount(root, { adapter, brand, onSupport, print })` and `<gcsp-account>` compose `mountEmployee`, `screenIntro`, `button`, `statusScreen`, `factList`, `formatTerm`, `mediaWell`, the existing countdown and native labelled details for delivered cars, read-only account/licence facts and grouped histories. A current car has no stock decision, so this is page composition rather than a new decision-card primitive. `gcsp-account.css` imports the employee composition and has its own ratchet cap; harness `gcsp-account.html` uses the HTTP adapter by default and explicit read-only snapshots with `?fixture=`.
+
+`mountAccount` returns `destroy.sync()`, run by the manual journey's `subscribeClock` callback on the account view: a quiet re-read of account, draft, offers and orders that never remounts the shell or presenter strip, syncs the embedded order card when the order is unchanged (mounts a new one when it changed), keeps focus by key and scroll, and says "Account updated." once in a hidden polite region only when the data changed. A failed read leaves the view as it was.
 
 ### GCSP native form presentation (`blocks/gcsp/kit/form-controls.js`)
 

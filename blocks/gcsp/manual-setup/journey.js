@@ -135,6 +135,7 @@ export function mountManualJourney(root, options = {}) {
     if (disposed) return;
     if (view === 'gallery') { teardown?.gallery.refresh(); teardown?.claim.checkStatus(); }
     else if (['review', 'setup', 'summary'].includes(view)) teardown?.refresh();
+    else if (view === 'account') teardown?.sync?.();
   });
   account();
   return () => {
