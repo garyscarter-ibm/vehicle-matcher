@@ -197,10 +197,10 @@ test('ready account disclosure preserves full context, closes with Escape and re
   shell.destroy();
 });
 
-test('EMPLOYEE_NAVIGATION is frozen, with cars the only available destination', () => {
+test('EMPLOYEE_NAVIGATION is frozen: the four working Paula destinations, none disabled', () => {
   assert.ok(Object.isFrozen(emp.EMPLOYEE_NAVIGATION));
-  assert.deepEqual(emp.EMPLOYEE_NAVIGATION.map((i) => i.key), ['cars', 'order', 'history', 'drivers', 'help']);
-  assert.deepEqual(emp.EMPLOYEE_NAVIGATION.filter((i) => i.available).map((i) => i.key), ['cars']);
+  assert.deepEqual(emp.EMPLOYEE_NAVIGATION.map((i) => i.key), ['cars', 'brief', 'activity', 'order-progress']);
+  assert.deepEqual(emp.EMPLOYEE_NAVIGATION.filter((i) => i.available).map((i) => i.key), ['cars', 'brief', 'activity', 'order-progress']);
 });
 
 test('mountEmployee shows loading then ready, and teardown empties root and aborts the load', async () => {
@@ -303,20 +303,17 @@ test('element mounts on connect, emits ready, and tears down on disconnect', asy
   await tick();
   assert.deepEqual(events, [[{ view: 'cars', brand: 'bmw' }, true, true, false]]);
   assert.equal(el.querySelector('main').textContent, 'body:cars');
-  el.querySelector('[data-key="order"]').click();
-  assert.equal(el.getAttribute('view'), null);
+  el.querySelector('[data-key="brief"]').click();
+  assert.equal(el.getAttribute('view'), 'brief');
+  assert.equal(el.querySelector('main').textContent, 'body:brief');
   el.remove();
   assert.equal(el.childNodes.length, 0);
 });
 
 test('gcsp:navigate carries {from,to}, is cancelable, and switches the view only when not prevented', async () => {
   emp.defineGcspEmployee(window.customElements);
-  const nav = [
-    { key: 'cars', label: 'Your cars', icon: ['M1 1'], available: true },
-    { key: 'extra', label: 'Extra', icon: ['M2 2'], available: true },
-  ];
   const el = document.createElement('gcsp-employee');
-  el.adapter = { navigation: nav, loadAccount: async () => ({ status: 'ready', name: 'Test Person' }) };
+  el.adapter = { loadAccount: async () => ({ status: 'ready', name: 'Test Person' }) };
   document.body.append(el);
   await tick();
   const seen = [];
@@ -325,17 +322,17 @@ test('gcsp:navigate carries {from,to}, is cancelable, and switches the view only
     seen.push([e.detail, e.cancelable]);
     if (prevent) e.preventDefault();
   });
-  const go = () => el.querySelector('[data-key="extra"]').click();
+  const go = () => el.querySelector('[data-key="brief"]').click();
   go();
-  assert.deepEqual(seen, [[{ from: 'cars', to: 'extra' }, true]]);
+  assert.deepEqual(seen, [[{ from: 'cars', to: 'brief' }, true]]);
   assert.equal(el.getAttribute('view'), null);
   assert.equal(el.querySelector('[data-key="cars"]').getAttribute('aria-current'), 'page');
   prevent = false;
   go();
-  assert.equal(el.getAttribute('view'), 'extra');
-  assert.equal(el.querySelector('[data-key="extra"]').getAttribute('aria-current'), 'page');
-  assert.equal(el.querySelector('nav[aria-label="Breadcrumb"] [aria-current="page"]').textContent, 'Extra');
-  assert.equal(el.querySelector('main h1').textContent, 'Extra');
+  assert.equal(el.getAttribute('view'), 'brief');
+  assert.equal(el.querySelector('[data-key="brief"]').getAttribute('aria-current'), 'page');
+  assert.equal(el.querySelector('nav[aria-label="Breadcrumb"] [aria-current="page"]').textContent, 'Your car brief');
+  assert.equal(el.querySelector('main h1').textContent, 'Your car brief');
   el.remove();
 });
 
@@ -764,14 +761,14 @@ test('harness page loads the harness module and the body stylesheet; the element
   }
 });
 
-test('the activity live host navigates only to the fixed Brief page without URL-selected state', () => {
+test('the activity live host routes the rail through the shared helper without URL-selected state', () => {
   const host = read('blocks/gcsp/activity/live.js');
   assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
-    '../shell/account-runtime.js', './activity-http.js', '../cases/http-adapter.js', '../presenter-controls/controls.js', './gcsp-activity.js',
+    '../shell/account-runtime.js', './activity-http.js', '../cases/http-adapter.js', '../presenter-controls/controls.js',
+    '../employee/portal-navigation.js', './gcsp-activity.js',
   ]);
-  assert.match(host, /globalThis\.location\.assign\('\/gcsp-brief-live\.html'\)/);
-  assert.equal((host.match(/\blocation\b/g) || []).length, 1);
-  assert.doesNotMatch(host, /URLSearchParams|location\.(?:search|hash)|\bhistory\./);
+  assert.match(host, /routePortalEvents\(host\)/);
+  assert.doesNotMatch(host, /URLSearchParams|\blocation\b|\bhistory\./);
 });
 
 test('the order progress pages load the custom element through external modules only and navigate to fixed pages', () => {
@@ -785,11 +782,10 @@ test('the order progress pages load the custom element through external modules 
   const host = read('blocks/gcsp/order-progress/live.js');
   assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
     '../shell/account-runtime.js', './order-progress-http.js', '../cases/http-adapter.js', '../account/http-adapter.js', './order-car.js',
-    '../presenter-controls/controls.js', './gcsp-order-progress.js',
+    '../presenter-controls/controls.js', '../employee/portal-navigation.js', './gcsp-order-progress.js',
   ]);
-  assert.deepEqual([...host.matchAll(/location\.assign\(([^)]*)\)/g)].map((m) => m[1]), ['page']);
-  assert.deepEqual([...host.matchAll(/'(\/gcsp-[a-z-]+\.html)'/g)].map((m) => m[1]), ['/gcsp-brief-live.html', '/gcsp-activity-live.html']);
-  assert.doesNotMatch(host, /URLSearchParams|location\.(?:search|hash)|\bhistory\./);
+  assert.match(host, /routePortalEvents\(host\)/);
+  assert.doesNotMatch(host, /URLSearchParams|\blocation\b|\bhistory\./);
   assert.equal(read('blocks/gcsp/order-progress/register.js').includes('defineGcspOrderProgress()'), true);
   assert.match(read('server/gcsp/host.js'), /'\/gcsp-order-progress-live\.html'/);
 });

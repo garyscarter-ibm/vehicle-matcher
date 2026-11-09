@@ -103,7 +103,7 @@ test('ready shows the title, meta, the caveat outside the details, the measures 
   const { root } = await mount('no-clear-difference');
   assert.equal(state(root), 'ready');
   assert.equal(root.querySelector('h2').textContent, 'Route comparison');
-  assert.match(text(root.querySelector('.gcsp-comparison-head')), /Stored result of the fictional process comparison\. Both routes get the same employees, cars and releases\./);
+  assert.match(text(root.querySelector('.gcsp-comparison-head')), /Stored result of the process comparison\. Both routes get the same employees, cars and releases\./);
   const facts = text(root.querySelector('.gcsp-comparison-facts'));
   assert.match(facts, /Seeds\s*3/); assert.match(facts, /Policy version\s*gcsp-policy-v1/); assert.match(facts, /Made\s*8 Nov 2026/); assert.match(facts, /Employees\s*4/);
   const caveat = root.querySelector('.gcsp-comparison-caveat');
@@ -165,11 +165,11 @@ test('an older policy version is labelled with both versions and what to do', as
   assert.equal((await mount('no-clear-difference')).root.querySelector('.gcsp-comparison-notice'), null);
 });
 
-test('no stored comparison tells Greg the presenter prepares it, shows no command, and Reload reads again', async () => {
+test('no stored comparison says it is prepared offline, shows no command, and Reload reads again', async () => {
   const { root, calls } = await mount('empty');
-  assert.equal(state(root), 'empty'); assert.equal(root.querySelector('h2').textContent, 'No comparison has been run for this demo yet');
+  assert.equal(state(root), 'empty'); assert.equal(root.querySelector('h2').textContent, 'No stored comparison yet');
   assert.equal(root.querySelector('code'), null); assert.doesNotMatch(text(root), /node scripts|gcsp-comparison\.mjs/);
-  assert.match(text(root), /The presenter prepares it before the demo\. Reload to check again\./);
+  assert.match(text(root), /prepared offline and has not been run here\. Reload to check again\./);
   assert.equal(root.querySelector('table'), null); assert.equal(calls.load, 1);
   button(root, 'Reload').click(); await settle(); assert.equal(calls.load, 2);
 });

@@ -1,0 +1,15 @@
+{
+  "shot": "greg-1280-change-limits-note.png",
+  "url": "/gcsp-presenter.html",
+  "width": 1280,
+  "minBefore": "0",
+  "minAfterRequest": "0",
+  "note": "The limits below are the plan in force. Your request for 3 Series Saloon 320i minimum 2 is with Production.",
+  "noteNamesRequest": true,
+  "bannedInDisclosure": null,
+  "bannedInNote": null,
+  "bannedInPlanExceptLearnedLabel": null,
+  "emDash": false,
+  "replanned": true,
+  "noteAfterReplan": false
+}

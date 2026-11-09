@@ -10,6 +10,7 @@ const TABLE = 'comparison_jobs';
 const WORKER_URL = new URL('./worker.js', import.meta.url);
 const FAILED = 'The comparison could not be completed.';
 const EXITED = 'The comparison worker stopped before it finished.';
+const RERUNS_OFF = 'Reruns are prepared offline and are not started from this screen.';
 const BACKEND_STOPPED = 'The backend stopped before the comparison finished.';
 
 const plain = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -33,9 +34,10 @@ const startingView = (job) => view({ jobId: job.jobId, experimentId: job.request
   startedAt: job.startedAt, finishedAt: null, resultId: null, reason: null, request: shown(job.request) });
 
 // One comparison at a time in a worker thread, with its state in comparison_jobs (Greg or presenter only).
-// Creating the service spawns and schedules nothing.
+// Creating the service spawns and schedules nothing. Starting is off unless `reruns` (GCSP_COMPARISON_RERUNS=1) is on.
 export function createComparisonJobService({ repository, policy, clock, identity, instanceId = randomUUID(),
-  createWorker = (url, options) => new Worker(url, options), codeRevision, fixedNow, overlay } = {}) {
+  createWorker = (url, options) => new Worker(url, options), codeRevision, fixedNow, overlay,
+  reruns = process.env.GCSP_COMPARISON_RERUNS === '1' } = {}) {
   const wallClock = () => fixedNow ?? new Date().toISOString();
   let active = null;
   let sequence = 0;
@@ -187,9 +189,12 @@ export function createComparisonJobService({ repository, policy, clock, identity
   const busy = () => (active && !active.ended ? active : null);
 
   return {
+    get reruns() { return reruns === true; },
+
     async start(context, experiment) {
       const allowed = await requireGregOrPresenter(identity, context);
       if (allowed.status !== 'ok') return allowed;
+      if (reruns !== true) return result('forbidden', { code: 'comparison-reruns-off', reason: RERUNS_OFF });
       if (busy()) return running(busy());
       if (!plain(experiment) || typeof experiment.experimentId !== 'string') return refusalFor('experimentId');
       let request;

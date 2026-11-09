@@ -195,16 +195,16 @@ export class ManualContextService {
       || choices.mode === 'new' && (p.contract || choices.oldContractId != null)) return invalid('oldContractId', 'Keep the current contract separate; use the permitted Order or Replace action.');
     if (isIntent(choices)) return { intent: true, contract: null };
     const driver = p.drivers.drivers.find((d) => d.driverId === choices.driverId);
-    if (!driver) return invalid('driverId', 'Choose a supplied permitted driver.');
+    if (!driver) return invalid('driverId', 'Choose who will drive the car.');
     const contract = p.rules.contractOptions.find((c) => c.contractOptionId === choices.contractOptionId && c.schemeIds.includes(context.schemeId) && c.driverKinds.includes(driver.kind));
-    if (!contract) return invalid('contractOptionId', 'Choose a permitted term and annual-mileage combination.');
-    if (!p.rules.brands.includes(choices.brand)) return invalid('brand', 'Choose a supported ordering brand.');
+    if (!contract) return invalid('contractOptionId', 'Choose a contract length and annual mileage.');
+    if (!p.rules.brands.includes(choices.brand)) return invalid('brand', 'Choose a brand.');
     const location = p.rules.locations.find((l) => l.locationId === choices.collectionLocationId
       && l.contractOptionIds.includes(contract.contractOptionId) && l.driverKinds.includes(driver.kind));
-    if (!location) return invalid('collectionLocationId', 'This location is not permitted for the selected driver and contract.');
-    if (!calendarDate(choices.requestedCollectionDate)) return invalid('requestedCollectionDate', 'Supply a valid requested collection date.');
+    if (!location) return invalid('collectionLocationId', 'Choose where to collect the car.');
+    if (!calendarDate(choices.requestedCollectionDate)) return invalid('requestedCollectionDate', 'Enter the date you want to collect the car.');
     if (!this.#collectionDates(p).includes(choices.requestedCollectionDate)
-      || location.closedDates?.includes(choices.requestedCollectionDate)) return invalid('requestedCollectionDate', 'Choose a date inside the supplied collection and renewal window.');
+      || location.closedDates?.includes(choices.requestedCollectionDate)) return invalid('requestedCollectionDate', 'Choose a collection date inside your collection window.');
     const licence = driver.licence;
     if (!sourceValid(licence?.source) || Date.parse(licence.source.effectiveFrom) > Date.parse(p.now)
       || !calendarDate(licence?.validFrom) || !calendarDate(licence?.validUntil) || !Array.isArray(licence?.categories)) {
@@ -219,10 +219,10 @@ export class ManualContextService {
       || p.allowance.companyId !== context.companyId || p.allowance.gradeId !== context.gradeId) {
       return invalid('allowance', 'Monthly points allowance needs confirmation. Contact scheme support.', 'allowance-unconfirmed');
     }
-    if (!validContact(choices.contact)) return invalid('contact', 'Supply a contact telephone and email address.');
-    if (choices.mode === 'replacement' && (!Number.isSafeInteger(choices.expectedReturnMileage) || choices.expectedReturnMileage < 0
-      || choices.expectedReturnMileage > p.rules.maximumReturnMileage)
-      || choices.mode === 'new' && choices.expectedReturnMileage != null) return invalid('expectedReturnMileage', 'Supply returning-car mileage only for a replacement, in miles.');
+    if (!validContact(choices.contact)) return invalid('contact', 'Enter a phone number and an email address.');
+    if (choices.mode === 'new' && choices.expectedReturnMileage != null) return invalid('expectedReturnMileage', 'Mileage applies only when you replace a car.');
+    if (choices.mode === 'replacement' && (!Number.isSafeInteger(choices.expectedReturnMileage) || choices.expectedReturnMileage < 0)) return invalid('expectedReturnMileage', 'Enter the mileage your current car will have when you return it.');
+    if (choices.mode === 'replacement' && choices.expectedReturnMileage > p.rules.maximumReturnMileage) return invalid('expectedReturnMileage', `Enter a mileage of up to ${p.rules.maximumReturnMileage.toLocaleString('en-GB')} miles.`);
     if (typeof choices.specialRequirements !== 'string' || choices.specialRequirements.length > p.rules.maximumSpecialRequirements
       || /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(choices.specialRequirements)) return invalid('specialRequirements', `Use at most ${p.rules.maximumSpecialRequirements} characters. Requests do not change released stock.`);
     return { driver, contract, location };

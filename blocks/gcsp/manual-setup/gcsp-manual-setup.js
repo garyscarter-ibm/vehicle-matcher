@@ -43,7 +43,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     panel = el('div', 'vm gcsp-setup-body');
     nodes = { notice: el('p', 'gcsp-setup-notice'), context: el('div', 'gcsp-setup-context'),
       allowance: el('div', 'gcsp-setup-allowance'), driverFacts: el('div', 'gcsp-setup-source'),
-      reasons: el('ul', 'gcsp-setup-reasons'), invalidation: el('p', 'gcsp-setup-invalidation'),
+      invalidation: el('p', 'gcsp-setup-invalidation'),
       availability: el('section', 'gcsp-setup-availability'), recovery: el('div', 'gcsp-setup-actions'),
       count: el('p', 'gcsp-field-hint'), employee: el('details', 'gcsp-details'), employeeFacts: el('div', '') };
     nodes.availability.tabIndex = -1; status = viewStatus();
@@ -56,7 +56,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     const collection = group('Term and collection', field('contractOptionId', 'Contract term and annual mileage', 'select'),
       field('requestedCollectionDate', 'Requested collection date', 'input', 'date',
         'A requested date, not stock availability or a confirmed appointment.'),
-      field('collectionLocationId', 'Collection location', 'select'), field('brand', 'Brand', 'select'), nodes.reasons);
+      field('collectionLocationId', 'Collection location', 'select'), field('brand', 'Brand', 'select'));
     const contact = group('Contact and return', field('phone', 'Contact phone', 'input', 'tel'), field('email', 'Contact email', 'input', 'email'),
       field('expectedReturnMileage', 'Expected returning-car mileage (miles)', 'input', 'number', 'For the car you are replacing.'),
       field('specialRequirements', 'Special requirements (optional)', 'textarea', 'text', 'Requests do not change released stock.'), nodes.count);
@@ -75,7 +75,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
   }
   function select(key, rows, idKey, label) {
     const control = controls[key]; const values = [{ value: '', label: 'Choose an option', disabled: false }, ...rows.map((row) => ({
-      value: row[idKey], label: label(row), disabled: !!row.disabled }))];
+      value: row[idKey], label: row.disabled && row.reason ? `${label(row)} (${row.reason.replace(/\.$/, '')})` : label(row), disabled: !!row.disabled }))];
     const signature = JSON.stringify(values);
     if (control.dataset.options !== signature) {
       control.replaceChildren(...values.map((row) => { const option = el('option', '', row.label); option.value = row.value;
@@ -122,6 +122,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
       control.disabled = state.pending || actionPending || key === 'brand' && o.brands.length === 1;
       fields[key].setError(state.errors[key] ?? (['phone', 'email'].includes(key) ? state.errors.contact : ''));
     }
+    fields.email.setHint(/\.invalid$/i.test(c.contact?.email ?? '') ? 'Made-up demo address.' : '');
     controls.requestedCollectionDate.min = o.collectionWindow.min ?? ''; controls.requestedCollectionDate.max = o.collectionWindow.max ?? '';
     controls.expectedReturnMileage.max = o.rules?.maximumReturnMileage ?? ''; controls.expectedReturnMileage.required = c.mode === 'replacement';
     fields.expectedReturnMileage.root.hidden = c.mode !== 'replacement';
@@ -132,11 +133,6 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     nodes.driverFacts.replaceChildren(...(driver ? [el('p', 'gcsp-field-hint', 'Driver and licence facts are read-only.'),
       facts([['Relationship', driver.relationship ?? (driver.kind === 'employee' ? 'Self' : null)],
         ['Licence number', licence?.displayNumber], ['Categories', licence?.categories?.join(', ')], ['Valid from', licence?.validFrom], ['Valid until', licence?.validUntil]])] : []));
-    const reasons = [...o.drivers, ...o.contractOptions, ...o.collectionLocations].filter((row) => row.disabled && row.reason);
-    // Name each unavailable choice as its select does, never by its raw id (FUCQ-197).
-    const caption = (row) => row.contractOptionId ? `${row.months} months, ${row.annualMileage} ${row.mileageUnit}` : text(row.name ?? row.label);
-    nodes.reasons.replaceChildren(...reasons.map((row) => el('li', '', `${caption(row)}: ${row.reason}`)));
-    nodes.reasons.hidden = !reasons.length;
     const errors = Object.entries(state.errors).map(([key, message]) => ({
       id: controls[key === 'contact' ? 'phone' : key]?.id ?? nodes.notice.id, message })); summary.update(errors);
     nodes.notice.textContent = state.pending ? state.status === 'saving' ? 'Saving your choices.' : 'Refreshing your context.'

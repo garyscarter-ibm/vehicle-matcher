@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { planOutcome, createOrderPlanHttpAdapter, PLAN_MESSAGES } from '../../blocks/gcsp/greg/plan/http-adapter.js';
 import { createGregHttpAdapter } from '../../blocks/gcsp/greg/http-adapter.js';
-import { toPlanView, toChanges, staleView, PlanViewError } from '../../blocks/gcsp/greg/plan/plan-view.js';
+import { toPlanView, toChanges, staleView, trivialMinimum, requestedLimitText, PlanViewError } from '../../blocks/gcsp/greg/plan/plan-view.js';
 import { gateText } from '../../blocks/gcsp/greg/plan/plan-copy.js';
 import { FIXTURE_NAMES, FIXTURE_VALUES, planFixtureAdapter } from '../../blocks/gcsp/greg/plan/fixtures.js';
 
@@ -330,11 +330,46 @@ test('after a request the headline counts the requested vehicles, not the plan u
   assert.equal(toPlanView(previewing).submission, null); assert.match(toPlanView(previewing).action, /^Order /);
 });
 
+const setBound = (v, key, id, patch) => { v.plan.policyProvenance.find((p) => p.key === key).value.find((b) => (b.derivativeId ?? b.modelId) === id).min = patch; return v; };
+
 test('binding constraints leave out a minimum of 0 and keep every real limit', () => {
   assert.deepEqual(view('ready').binding.map((c) => c.id), ['derivative:g61-i5-40:max', 'model:g61-i5:max']);
   assert.deepEqual(view('requested-no-order').binding, []);
-  const real = value('ready'); real.plan.bindingConstraints = [{ id: 'derivative:g21-touring-320i:min', detail: 'Quantity meets minimum 2.' },
+  const real = setBound(value('ready'), 'orderPlan.derivativeBounds', 'g21-touring-320i', 2);
+  real.plan.bindingConstraints = [{ id: 'derivative:g21-touring-320i:min', detail: 'Quantity meets minimum 2.' },
     { id: 'model:g20-saloon:min', detail: 'Quantity meets minimum 0.' }, { id: 'budget', detail: 'Order spend meets the budget.' },
     { id: 'derivative:g20-saloon-330e:max', detail: 'Quantity meets maximum 0.' }];
   assert.deepEqual(toPlanView(real).binding.map((c) => c.id), ['derivative:g21-touring-320i:min', 'budget', 'derivative:g20-saloon-330e:max']);
+});
+
+test('a minimum is trivial from the plan\'s own bounds, whatever the solver text says (FUCQ-314)', () => {
+  const plan = setBound(setBound(value('ready'), 'orderPlan.derivativeBounds', 'g21-touring-320i', 2), 'orderPlan.modelBounds', 'g61-i5', 1).plan;
+  const min = (id, detail = 'Quantity meets minimum 0.') => trivialMinimum({ id, detail }, plan);
+  assert.equal(min('derivative:g20-saloon-320i:min', 'Minimum reached.'), true, 'min 0 is hidden even when the text differs');
+  assert.equal(min('model:g20-saloon:min'), true);
+  assert.equal(min('derivative:g21-touring-320i:min'), false, 'a real minimum of 2 is kept, even with the old text');
+  assert.equal(min('model:g61-i5:min'), false);
+  assert.equal(min('derivative:unknown:min'), false, 'no matching bound: kept');
+  assert.equal(trivialMinimum({ id: 'derivative:g20-saloon-320i:min' }, { policyProvenance: [] }), false);
+  assert.equal(min('derivative:g20-saloon-320i:max'), false); assert.equal(min('budget'), false); assert.equal(min('lead-time:g20-saloon-320i'), false);
+});
+
+test('requestedLimitText names each requested limit that differs from the plan in force and skips what it cannot read (FUCQ-314)', () => {
+  const { limits } = view('ready'); const bounds = (key, edit) => ({ key, value: clone(value('ready').plan.policyProvenance.find((p) => p.key === key).value).map(edit) });
+  const derivative = bounds('orderPlan.derivativeBounds', (b) => (b.derivativeId === 'g20-saloon-320i' ? { ...b, min: 2 } : b));
+  const model = bounds('orderPlan.modelBounds', (b) => (b.modelId === 'g20-saloon' ? { ...b, max: 5 } : b));
+  assert.deepEqual(requestedLimitText([derivative, model, { key: 'orderPlan.budgetMinor', value: 12000000 }], limits),
+    ['3 Series Saloon 320i minimum 2', '3 Series Saloon maximum 5', 'Order budget £120,000']);
+  assert.deepEqual(requestedLimitText([bounds('orderPlan.derivativeBounds', (b) => b)], limits), [], 'nothing differs');
+  assert.deepEqual(requestedLimitText([{ key: 'orderPlan.derivativeBounds', value: [{ derivativeId: 'gone', min: 2, max: 3 }, { derivativeId: 'g20-saloon-320i', min: 'x', max: null }, null] },
+    { key: 'orderPlan.budgetMinor', value: 'x' }, { key: 'other.key', value: 1 }, null], limits), []);
+  assert.deepEqual(requestedLimitText(undefined, limits), []); assert.deepEqual(requestedLimitText([derivative], undefined), []);
+});
+
+test('a submission carries the requested changes; older snapshots give none (FUCQ-314)', () => {
+  const v = view('submitted'); assert.equal(v.submission.status, 'submitted');
+  assert.deepEqual(v.submission.changes, value('submitted').replan.changes);
+  assert.deepEqual(requestedLimitText(v.submission.changes, v.limits), ['3 Series Touring 320i minimum 2']);
+  const old = value('submitted'); delete old.replan.changes; assert.deepEqual(toPlanView(old).submission.changes, []);
+  assert.deepEqual(view('replanned').submission.changes, value('replanned').replan.changes);
 });

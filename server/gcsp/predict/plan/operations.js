@@ -162,7 +162,7 @@ export function createOrderPlanOperations({ repository, policy, identity, clock,
     const ids = new Set(mine.map((r) => r.requestId));
     const responses = plan.supplyActivity.responses.filter((r) => ids.has(r.requestId) && Date.parse(r.at) >= Date.parse(submission.provenance.submittedAt));
     const head = { submittedPlanId: submission.output.plan.planId, submittedAt: submission.provenance.submittedAt, currentPlanId: plan.planId,
-      requests: mine, responses };
+      changes: submission.output.changes ?? [], requests: mine, responses };
     return ok(responses.length ? { status: 'replanned', ...head, after: responses.at(-1) } : { status: 'unchanged-since-submission', ...head });
   }
 
@@ -287,7 +287,7 @@ export function createOrderPlanOperations({ repository, policy, identity, clock,
         const saved = await repository.transaction(context, { commandId: `plan:submit:${context.principalId}:${input.commandId}`, inputDigest: digest },
           (tx) => tx.insert('plan_snapshots', { runId: context.runId, planId: submissionId, forecastId: current.versions.forecast, inputVersion: digest,
             constraintVersion: inputDigest(changes?.value ?? []), policyVersion: current.versions.policy,
-            output: clean({ plan: current, lines }),
+            output: clean({ plan: current, lines, changes: changes?.value ?? [] }),
             provenance: { kind: 'submission', submittedBy: context.principalId, submittedAt: base.value.now, commandId: input.commandId, basePolicyVersion: context.policyVersion } }));
         if (saved.status !== 'ok') return saved;
         return send(context, saved.value, submissionId);

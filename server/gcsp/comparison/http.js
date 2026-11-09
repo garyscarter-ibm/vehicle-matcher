@@ -82,7 +82,8 @@ export function createComparisonJobRoutes(jobService, resultService) {
         const jobId = one(searchParams, 'jobId');
         if (jobId.bad) return result('invalid', { code: 'invalid-query', reasons: [{ field: 'jobId', reason: 'Give one job id.' }] });
         if (typeof jobService?.read !== 'function') return notConfigured('job');
-        return jobService.read(context, jobId.absent ? {} : { jobId: jobId.value });
+        const read = await jobService.read(context, jobId.absent ? {} : { jobId: jobId.value });
+        return read.status === 'ok' || read.status === 'not-found' ? { ...read, reruns: jobService.reruns === true } : read;
       } },
     { method: 'GET', path: '/api/gcsp/comparison/results/latest',
       async handle({ context, searchParams }) {

@@ -79,7 +79,7 @@ function setup(t, options = {}) {
   window.print = () => { f.prints += 1; };
   const args = { adapter, commandId: () => `cmd-${++sequence}`, subscribeClock: (callback) => { tick = callback; return () => { tick = null; }; },
     onFinish: () => { f.finished += 1; }, onEditDetails: () => { f.edits += 1; }, onChangeCar: () => { f.car += 1; }, onChangeChoices: () => { f.choices += 1; }, onReleased: () => { f.released += 1; } };
-  const destroy = options.shell ? mountManualSummary(root, { ...args, loadAccount: async () => ({ status: 'ready', name: 'Fictional employee', context: 'Synthetic demo' }) }) : mountManualSummaryBody(root, args);
+  const destroy = options.shell ? mountManualSummary(root, { ...args, location: options.location, loadAccount: async () => ({ status: 'ready', name: 'Fictional employee', context: 'Synthetic demo' }) }) : mountManualSummaryBody(root, args);
   t.after(() => { destroy(); root.remove(); });
   return Object.assign(f, { root, destroy, adapter, tick: () => tick?.() });
 }
@@ -297,6 +297,13 @@ test('shell mount, nav leave and the custom element tear down owned content', as
   element.loadAccount = async () => ({ status: 'ready', name: 'Fictional employee', context: 'Synthetic demo' });
   document.body.append(element); await settle(() => element.querySelector('h1')); element.remove(); assert.equal(element.childNodes.length, 0);
   f.destroy(); assert.equal(f.root.childNodes.length, 0);
+});
+
+test('a rail click releases the reservation as Back does, then routes to the chosen page', async (t) => {
+  const assigned = []; const f = setup(t, { shell: true, location: { assign: (to) => assigned.push(to) } }); await ready(f);
+  f.root.querySelector('nav button[data-key="order-progress"]').click(); await settle(() => assigned.length);
+  assert.deepEqual(assigned, ['/gcsp-order-progress-live.html']); assert.deepEqual(f.calls.filter((entry) => entry.startsWith('release')), ['release:back']);
+  assert.equal(f.released, 1);
 });
 
 test('the HTTP adapter posts the body unchanged and treats transport loss as an uncertain outcome', async () => {

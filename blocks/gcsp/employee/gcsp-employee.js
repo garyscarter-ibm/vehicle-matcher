@@ -1,24 +1,11 @@
-// Employee entry: mountEmployee(root, ctx) and <gcsp-employee>. Account data comes only from an adapter
-// or a named fixture; location and history are never touched. See docs/gcsp/employee-entry-contract.md.
+// Employee entry: mountEmployee(root, ctx) and <gcsp-employee>. Account data comes only from an adapter or a named
+// fixture; only the default rail routing touches location. See docs/gcsp/employee-entry-contract.md.
 import { el } from '../../vehicle-matcher/ui.js';
 import { portalShell, svgIcon } from '../shell/portal-shell.js';
 import { fixtureAdapter } from './fixtures.js';
+import { PORTAL_NAVIGATION, routePortal } from './portal-navigation.js';
 
-const NOT_BUILT = 'Not available in this demo';
-const icon = (key, label, paths, available = false) => Object.freeze({
-  key, label, icon: Object.freeze(paths), available,
-  ...(available ? {} : { unavailableReason: NOT_BUILT }),
-});
-
-export const EMPLOYEE_NAVIGATION = Object.freeze([
-  icon('cars', 'Your cars', ['M3 14l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5', 'M3 14h18v4H3z', 'M7 18v2', 'M17 18v2'], true),
-  icon('order', 'New order', ['M12 5v14', 'M5 12h14']),
-  icon('history', 'Order history', ['M4 12a8 8 0 1 0 3-6.2', 'M4 4v4h4', 'M12 8v4l3 2']),
-  icon('drivers', 'Drivers and licences', ['M3 6h18v12H3z', 'M7 11h4', 'M7 15h6', 'M15 10h3v4h-3z']),
-  icon('help', 'Scheme guidelines', ['M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z', 'M5 17a3 3 0 0 1 3-3h11']),
-]);
-
-const LABELS = Object.fromEntries(EMPLOYEE_NAVIGATION.map((i) => [i.key, i.label]));
+export const EMPLOYEE_NAVIGATION = PORTAL_NAVIGATION;
 const DEFAULT_VIEW = 'cars';
 
 function defaultBody(main, { view, label }) {
@@ -41,9 +28,8 @@ function standalone(root, title, message) {
 }
 
 /**
- * Mount the employee shell in root. ctx: { brand, view, loadAccount({ signal }), renderBody(main, { view, account }), navigation, signal }.
- * Returns a teardown function with a setView(key) method. ctx.onNavigate(to) takes over navigation
- * when given; ctx.onUnavailable(reason) hears brand and account failures.
+ * Mount the employee shell: the rail is PORTAL_NAVIGATION; a click goes to ctx.onNavigate(key) or PORTAL_ROUTES via ctx.location.
+ * viewLabel is the crumb for a view outside the rail; returns a teardown with setView(key).
  */
 export function mountEmployee(root, ctx = {}) {
   const brand = String(ctx.brand || 'bmw').toLowerCase();
@@ -63,10 +49,12 @@ export function mountEmployee(root, ctx = {}) {
     cleanupStandalone = standalone(root, 'Not available for this brand', 'Employee cars are available for BMW only at present.');
     ctx.onUnavailable?.('brand-not-supported');
   } else {
-    const navigation = ctx.navigation || EMPLOYEE_NAVIGATION;
-    const available = new Set(navigation.filter((i) => i.available).map((i) => i.key));
-    const labelOf = (key) => navigation.find((i) => i.key === key)?.label || LABELS[key] || 'Your cars';
-    view = available.has(ctx.view) ? ctx.view : DEFAULT_VIEW;
+    const rail = new Set(PORTAL_NAVIGATION.map((i) => i.key));
+    const outside = ctx.viewLabel ? ctx.view : null;
+    const known = (key) => rail.has(key) || key === outside;
+    const labelOf = (key) => (key === outside ? ctx.viewLabel : PORTAL_NAVIGATION.find((i) => i.key === key)?.label || 'Your cars');
+    const activeOf = (key) => (rail.has(key) ? key : null);
+    view = known(ctx.view) ? ctx.view : DEFAULT_VIEW;
     let account = { status: 'loading' };
     const renderBody = () => {
       cleanupBody?.();
@@ -105,20 +93,20 @@ export function mountEmployee(root, ctx = {}) {
       title: 'Group Car Schemes Portal',
       presenterControls: ctx.presenterControls,
       arrivalFocus: true,
-      navigation,
-      active: view,
+      navigation: PORTAL_NAVIGATION,
+      active: activeOf(view),
       breadcrumbs: [labelOf(view)],
       onNavigate: (key) => {
-        if (key === view || !available.has(key)) return;
+        if (key === view || !rail.has(key)) return;
         if (ctx.onNavigate) ctx.onNavigate(key);
-        else setView(key);
+        else routePortal(key, ctx.location || root.ownerDocument.defaultView.location);
       },
       onRetryAccount: load,
     });
     setView = (key) => {
-      if (!available.has(key) || key === view) return;
+      if (!known(key) || key === view) return;
       view = key;
-      shell.setActive(view);
+      shell.setActive(activeOf(view));
       shell.setBreadcrumbs([labelOf(view)]);
       if (account.status !== 'loading') renderBody();
     };
@@ -196,7 +184,6 @@ export class GcspEmployeeElement extends HTMLElement {
       brand,
       view: this.view,
       loadAccount: adapter?.loadAccount,
-      navigation: adapter?.navigation,
       renderBody: adapter?.renderBody,
       onNavigate: (to) => {
         const event = this._emit('gcsp:navigate', { from: this._current, to }, true);

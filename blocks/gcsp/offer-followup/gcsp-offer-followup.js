@@ -1,11 +1,8 @@
-import { mountEmployee, EMPLOYEE_NAVIGATION } from '../employee/gcsp-employee.js';
+import { mountEmployee } from '../employee/gcsp-employee.js';
 import { statusScreen } from '../../vehicle-matcher/ui.js';
 import { createFollowupController } from './followup-controller.js';
 import { createFollowupHttpAdapter } from './http-adapter.js';
 import { createFollowupView } from './followup-view.js';
-
-const navigation = [EMPLOYEE_NAVIGATION[0], { key: 'offer-followup', label: 'Your next offer', available: true,
-  icon: ['M4 12h16', 'M14 6l6 6-6 6'] }];
 
 export function mountFollowupBody(root, ctx = {}) {
   const abort = new AbortController(); const onAbort = () => cleanup(); let done = false; let controller; let view; let unsubscribe;
@@ -29,7 +26,7 @@ export function mountFollowupBody(root, ctx = {}) {
 
 /** Host supplies trusted account loading and FUCQ-105's projector; no fixture or URL identity fallback. */
 export function mountOfferFollowup(root, ctx = {}) {
-  return mountEmployee(root, { ...ctx, view: 'offer-followup', navigation: ctx.navigation || navigation,
+  return mountEmployee(root, { ...ctx, view: 'offer-followup', viewLabel: 'Your next offer',
     renderBody(main, { account, view }) {
       if (view !== 'offer-followup') {
         if (ctx.renderBody) return ctx.renderBody(main, { account, view });

@@ -1,12 +1,7 @@
-import { mountEmployee, EMPLOYEE_NAVIGATION } from '../employee/gcsp-employee.js';
+import { mountEmployee } from '../employee/gcsp-employee.js';
 import { statusScreen } from '../../vehicle-matcher/ui.js';
 import { mountBriefBody } from './brief-view.js';
 import { createBriefTransport } from './brief-transport.js';
-
-const NAVIGATION = Object.freeze([
-  EMPLOYEE_NAVIGATION[0],
-  { key: 'brief', label: 'Your car brief', available: true, icon: ['M6 3h12v18H6z', 'M9 8h6', 'M9 12h6', 'M9 16h4'] },
-]);
 
 /** Compose the brief inside the existing employee shell; hosts may mount the body directly. */
 export function mountBrief(root, ctx = {}) {
@@ -14,7 +9,7 @@ export function mountBrief(root, ctx = {}) {
   const onAbort = () => abort.abort(); ctx.signal?.addEventListener('abort', onAbort, { once: true });
   if (ctx.signal?.aborted) { ctx.signal.removeEventListener('abort', onAbort); return () => {}; }
   const transport = ctx.transport || createBriefTransport({ fetch: ctx.fetch, baseURL: ctx.baseURL, signal: abort.signal });
-  const teardown = mountEmployee(root, { brand: ctx.brand, view: 'brief', navigation: ctx.navigation || NAVIGATION,
+  const teardown = mountEmployee(root, { brand: ctx.brand, view: 'brief',
     signal: abort.signal, loadAccount: ctx.loadAccount, onNavigate: ctx.onNavigate, onUnavailable: ctx.onUnavailable,
     renderBody(main, { account, view }) {
       if (account.status !== 'ready') { main.replaceChildren(statusScreen({ title: 'Your brief is unavailable', message: 'Load your account to review its car brief.' })); return undefined; }

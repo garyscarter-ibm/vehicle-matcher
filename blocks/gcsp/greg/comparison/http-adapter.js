@@ -44,10 +44,10 @@ export function startOutcomeToState(httpStatus, body) {
   return common(httpStatus, body) ?? unavailable(body);
 }
 
-/** Pure: jobs/latest -> { status: 'ok', job } | none | refused | access-required | unavailable. */
+/** Pure: jobs/latest -> { status: 'ok', job, reruns } | { none, reruns } | refused | access-required | unavailable. */
 export function jobOutcomeToState(httpStatus, body) {
-  if (httpStatus === 200 && body?.status === 'ok' && object(body.value) && text(body.value.jobId) && text(body.value.status)) return { status: 'ok', job: body.value };
-  if (httpStatus === 404 && body?.status === 'not-found') return { status: 'none' };
+  if (httpStatus === 200 && body?.status === 'ok' && object(body.value) && text(body.value.jobId) && text(body.value.status)) return { status: 'ok', job: body.value, reruns: body.reruns === true };
+  if (httpStatus === 404 && body?.status === 'not-found') return { status: 'none', reruns: body.reruns === true };
   return common(httpStatus, body) ?? unavailable(body);
 }
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);

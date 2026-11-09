@@ -1,6 +1,6 @@
 import { el, screenIntro, button, statusScreen } from '../../vehicle-matcher/ui.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
-import { mountEmployee, EMPLOYEE_NAVIGATION } from '../employee/gcsp-employee.js';
+import { mountEmployee } from '../employee/gcsp-employee.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 import { createCaseHttpAdapter } from './http-adapter.js';
 import { renderCaseContent, preferenceLabel, shown, caseNotice } from './case-content.js';
@@ -179,8 +179,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
 export function mountHelp(root, { adapter = createCaseHttpAdapter(), accountAdapter = createAccountHttpAdapter(), embedded = false, headingLevel = embedded ? 2 : 1, brand = 'bmw', announce } = {}) {
   if (embedded) return mountHelpBody(root, { adapter, headingLevel, announce });
   let body;
-  const shell = mountEmployee(root, { brand, view: 'help',
-    navigation: EMPLOYEE_NAVIGATION.map((item) => item.key === 'help' ? { ...item, available: true, label: 'Renewal help' } : item),
+  const shell = mountEmployee(root, { brand, view: 'help', viewLabel: 'Renewal help',
     onNavigate: (to) => emit(root, 'gcsp:navigate', { to }), loadAccount: (options) => accountAdapter.loadAccount(options),
     renderBody: (main) => { body = mountHelpBody(main, { adapter, headingLevel }); return body; },
     onUnavailable: (reason) => emit(root, 'gcsp:unavailable', { reason }) });

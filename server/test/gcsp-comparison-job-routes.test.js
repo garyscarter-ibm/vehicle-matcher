@@ -29,7 +29,7 @@ const PATHS = { jobs: '/api/gcsp/comparison/jobs', latest: '/api/gcsp/comparison
   process: '/api/gcsp/comparison/process/latest' };
 
 // A server over the small overlay seam, with greg, presenter and paula sessions; `fake` runs the fixture worker.
-async function serve({ fake } = {}) {
+async function serve({ fake, reruns = true } = {}) {
   const repository = createMemoryRepository({ store: createMemoryStore(), now: () => NOW });
   assert.equal((await repository.open()).status, 'ok');
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'comparison-routes-test', environmentKind: 'synthetic',
@@ -48,7 +48,7 @@ async function serve({ fake } = {}) {
     return worker;
   };
   const jobs = createComparisonJobService({ repository, policy, clock, identity, createWorker, codeRevision: 'routes-test', fixedNow: NOW,
-    overlay: buddyFixture.overlay });
+    overlay: buddyFixture.overlay, reruns });
   const results = createComparisonResultService({ repository, policy, clock, identity });
   const oldKey = process.env.DEMO_ACCESS_KEY;
   process.env.DEMO_ACCESS_KEY = ACCESS_KEY;
@@ -246,6 +246,33 @@ test('the latest-job and stored-result reads answer 404 when empty, and refuse o
   assert.equal(latestOf['process-only'].resultId, (await s.call('greg', 'GET', PATHS.latest)).body.value.resultId);
   assert.equal(latestOf['hold-sweep'], null);
   assert.equal((await s.call('greg', 'GET', `${PATHS.results}?experimentId=process-only`)).body.value.resultId, latestOf['process-only'].resultId);
+});
+
+test('with reruns off, POST jobs is refused, nothing runs, and jobs/latest says reruns false', async (t) => {
+  const s = await serve({ reruns: false });
+  t.after(s.close);
+  for (const who of ['greg', 'presenter']) {
+    const refused = await s.call(who, 'POST', PATHS.jobs, holdSweep);
+    assert.equal(refused.http, 403);
+    assert.equal(refused.body.code, 'comparison-reruns-off');
+  }
+  assert.equal(s.spawned.length, 0);
+  assert.deepEqual(await s.rows('comparison_jobs'), []);
+  const none = await s.call('greg', 'GET', PATHS.latest);
+  assert.equal(none.http, 404);
+  assert.equal(none.body.reruns, false);
+  assert.equal((await s.call('greg', 'GET', `${PATHS.latest}?jobId=comparison-job-missing`)).body.reruns, false);
+  assert.equal((await s.call('paula', 'GET', PATHS.latest)).body.reruns, undefined);
+});
+
+test('with reruns on, jobs/latest says reruns true on both the empty and the job reply', async (t) => {
+  const s = await serve();
+  t.after(s.close);
+  assert.equal((await s.call('greg', 'GET', PATHS.latest)).body.reruns, true);
+  const started = await s.call('greg', 'POST', PATHS.jobs, processOnly);
+  assert.equal(started.http, 202);
+  const final = await until(() => s.call('greg', 'GET', PATHS.latest), settled);
+  assert.equal(final.body.reruns, true);
 });
 
 test('the runtime exposes the job service, spawns no worker, and closes it first', async () => {
