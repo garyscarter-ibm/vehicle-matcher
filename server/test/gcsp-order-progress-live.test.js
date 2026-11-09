@@ -208,11 +208,11 @@ test('a presenter completes a ready handover and the screen reads Handover compl
     const slot = await toScheduled(f, controller, 'op-complete');
     good(await f.dependencies.gcspAppointments.complete(f.presenter, { orderUuid })); await controller.refresh();
     const appointment = value(controller, 'appointment');
-    assert.deepEqual([appointment.state, appointment.booked, appointment.outcome.state, appointment.owner], ['completed', false, 'completed', 'employee']);
+    assert.deepEqual([appointment.state, appointment.booked, appointment.outcome.state, appointment.owner], ['completed', false, 'completed', SEED.assumptions.find((row) => row.key === 'lifecycle.appointments.outcomes.v1').value.states.completed.owner]);
     assert.deepEqual(appointment.slot, slot);
     const node = orderProgressBody({ progress: controller.getState().progress }); const handover = node.querySelector('.gcsp-order-handover');
     assert.match(handover.textContent, /Handover complete: /); assert.match(handover.textContent, /Your handover is complete\./);
-    assert.doesNotMatch(handover.textContent, /Not booked yet|Booked:/); assert.equal(handover.querySelector('button'), null);
+    assert.doesNotMatch(handover.textContent, /Not booked yet|Booked:|OwnerYou/); assert.equal(handover.querySelector('button'), null);
     const reopened = await open(f, { orderUuid }); assert.deepEqual(reopened.getState().progress.appointment, controller.getState().progress.appointment); reopened.destroy();
   } finally { controller.destroy(); }
 });

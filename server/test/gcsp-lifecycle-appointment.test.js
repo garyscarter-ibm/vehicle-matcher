@@ -523,7 +523,7 @@ test('completion is refused until documents and car readiness are complete, then
   assert.deepEqual(again, done, 'a repeat returns the same outcome');
   assert.deepEqual([(await receipts(f)).length, f.provider.calls.filter((c) => c === 'complete').length, (await operations(f, 'complete')).length], [3, 1, 1]);
   const paulaView = await read(f);
-  assert.deepEqual([paulaView.state, paulaView.outcome, paulaView.owner], ['completed', view.outcome, 'employee']);
+  assert.deepEqual([paulaView.state, paulaView.outcome, paulaView.owner], ['completed', view.outcome, OUTCOMES.states.completed.owner]);
   await f.tick(); await f.tick();
   assert.deepEqual([(await read(f)).outcome, (await receipts(f)).length], [view.outcome, 3], 'later ticks leave the outcome alone');
 });
@@ -655,6 +655,13 @@ test('/api/gcsp/appointments/complete is gated, server-scoped and ignores browse
   assert.deepEqual((await call('/appointments/complete', { session: f.sessions.greg, body: { orderUuid: ORDER } })).value, done.value);
   assert.deepEqual((await call('/appointments', { query: `orderUuid=${ORDER}` })).value.value, done.value.value);
   assert.equal((await call('/appointments/complete', { session: f.sessions.greg, body: { orderUuid: ORDER, extra: 1 } })).code, 400);
+});
+
+test('FUCQ-261: a completed handover leaves nothing owned by the employee', async (t) => {
+  assert.notEqual(OUTCOMES.states.completed.owner, 'employee');
+  const f = await setup(t, { documents: true }); await scheduled(f); await ready(f);
+  const view = (await complete(f)).value;
+  assert.deepEqual([view.state, view.owner], ['completed', OUTCOMES.states.completed.owner]);
 });
 
 test('the completed response shape and notReady refusal match the recorded fixture', async (t) => {
