@@ -577,6 +577,41 @@ test('account shows handover outcomes from the server read: completed, then no-s
   } finally { reopened.destroy(); }
 });
 
+test('account shows return outcomes from the server read: booked, then returned on reopen, missed, and a failing return read', async () => {
+  const all = orderProgressFixtures().states; const car = { name: 'Synthetic i5 eDrive40 Touring' };
+  const returnArea = (root) => root.querySelector('.gcsp-account-order .gcsp-order-return');
+  const before = orderAdapter('return-scheduled'); let current = all['return-scheduled'];
+  before.readAppointment = async () => structuredClone(current.appointment); before.readReturnPlan = async () => structuredClone(current.returnPlan);
+  const first = await domMount({ ...readOnlyAdapter(), readOrder: selection(before.uuid, car) }, { orderAdapter: before });
+  try {
+    await settleOrder(first.root, (node) => returnArea(node));
+    assert.match(returnArea(first.root).textContent, /Return booked: 12 Nov 2026, 09:00/); assert.doesNotMatch(returnArea(first.root).textContent, /Returned:|Return missed/);
+  } finally { first.destroy(); }
+  current = all['return-returned'];
+  const reopened = await domMount({ ...readOnlyAdapter(), readOrder: selection(before.uuid, car) }, { orderAdapter: before });
+  try {
+    await settleOrder(reopened.root, (node) => /Returned:/.test(returnArea(node)?.textContent ?? ''));
+    const pairs = factPairs(returnArea(reopened.root));
+    assert.match(returnArea(reopened.root).textContent, /Returned: 12 Nov 2026, 10:30/); assert.deepEqual(pairs.slice(0, 2), [['Current car', car.name], ['Returned car', 'Fictional BMW 320i Touring']]);
+    assert.ok(pairs.some(([label, value]) => label === 'Return reference (synthetic)' && /^SYN-RET-/.test(value)));
+    assert.match(reopened.root.querySelector('.gcsp-account-order .gcsp-order-handover').textContent, /Handover complete/);
+  } finally { reopened.destroy(); }
+  const missed = orderAdapter('return-missed');
+  const gone = await domMount({ ...readOnlyAdapter(), readOrder: selection(missed.uuid, car) }, { orderAdapter: missed });
+  try {
+    await settleOrder(gone.root, (node) => returnArea(node));
+    assert.match(returnArea(gone.root).textContent, /Return missed: 12 Nov 2026, 09:00/); assert.match(returnArea(gone.root).textContent, /Scheme team/);
+    assert.equal(returnArea(gone.root).querySelector('button'), null); assert.doesNotMatch(returnArea(gone.root).textContent, /Returned:/);
+  } finally { gone.destroy(); }
+  const failing = orderAdapter('return-returned'); failing.readReturnPlan = async () => ({ status: 'unavailable', retryable: true });
+  const broken = await domMount({ ...readOnlyAdapter(), readOrder: selection(failing.uuid, car) }, { orderAdapter: failing });
+  try {
+    await settleOrder(broken.root, (node) => returnArea(node));
+    assert.match(returnArea(broken.root).textContent, /Return plan unavailable/); assert.doesNotMatch(returnArea(broken.root).textContent, /Returned|Return missed/);
+    assert.match(broken.root.querySelector('.gcsp-account-order .gcsp-order-handover').textContent, /Handover complete/);
+  } finally { broken.destroy(); }
+});
+
 test('account shows no order area without an order, on a failed list, or for another order car', async () => {
   const none = await domMount(readOnlyAdapter(), { orderAdapter: orderAdapter('appointment-requested', []) });
   await tick(); assert.equal(none.root.querySelector('.gcsp-account-order'), null); assert.doesNotMatch(none.root.textContent, /No order yet/); none.destroy();

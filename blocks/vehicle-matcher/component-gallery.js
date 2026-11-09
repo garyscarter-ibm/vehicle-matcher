@@ -280,7 +280,9 @@ export function orderProgressExamples() {
     'appointment-outcome-pending': 'Handover outcome pending', 'documents-waiting-for-you': 'Documents: waiting for you', 'documents-in-progress': 'Documents: in progress', 'documents-overdue': 'Documents: overdue',
     'documents-failed': 'Documents: a check failed', 'ready-for-handover': 'Ready for handover', 'return-unavailable': 'Return: handover not booked',
     'return-not-planned': 'Return: not planned', 'return-requested': 'Return requested', 'return-change-proposed': 'Return: new time proposed',
-    'return-scheduled': 'Return booked', 'new-order': 'New order, no return', loading: 'Loading', unavailable: 'Unavailable', 'partial-failure': 'One section unavailable' };
+    'return-scheduled': 'Return booked', 'return-returned': 'Return: car returned, new car is current', 'return-returned-first': 'Return: returned before the handover',
+    'return-missed': 'Return missed', 'return-handover-complete': 'Return booked, handover complete', 'return-outcome-pending': 'Return outcome pending',
+    'return-outcome-refused': 'Return update refused', 'new-order': 'New order, no return', loading: 'Loading', unavailable: 'Unavailable', 'partial-failure': 'One section unavailable' };
   for (const [name, progress] of Object.entries(fixtures.states)) {
     const example = el('div', 'vm-gallery-gcsp-group'); example.dataset.orderProgressExample = name;
     const status = el('p', 'gcsp-order-preview-status'); status.setAttribute('role', 'status');

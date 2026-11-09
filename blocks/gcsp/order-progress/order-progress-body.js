@@ -5,7 +5,7 @@ import { stageTracker } from '../kit/stage-tracker.js';
 import { taskList } from '../kit/task-list.js';
 import { activityTimeline } from '../kit/activity-timeline.js';
 import { orderIdentityRows } from '../kit/order-identity.js';
-import { orderCopy as copy, sentence, slotText, withOwner, failureLine, itemStatus, itemOwner, itemTone, historyEvents } from './order-progress-copy.js';
+import { orderCopy as copy, sentence, slotText, withOwner, failureLine, itemStatus, itemOwner, itemTone, historyEvents, notDone } from './order-progress-copy.js';
 
 let sequence = 0;
 const stageStates = Object.freeze({ approved: 'done', pending: 'current', declined: 'declined', 'not-started': 'upcoming' });
@@ -137,19 +137,41 @@ function choiceGroup(choice, slots, c) {
   return group;
 }
 
+// The server's current-car relationship decides who is "Current car"; no relationship, or the old contract, keeps the default rows.
+function returnFacts(c, r, place) {
+  const rel = r.relationship; const now = r.currentCar ?? {}; const old = rel?.oldCar?.status;
+  const carLabel = old === 'returned' ? copy.returnedCar : copy.carToReturn;
+  if (rel?.currentCar?.kind === 'order') {
+    const vin = rel.currentCar.vin;
+    return [{ label: 'Current car', value: c.progress.car?.name || copy.newCar }, ...(typeof vin === 'string' && vin ? [{ label: 'VIN', value: vin }] : []),
+      { label: carLabel, value: now.model }, place];
+  }
+  if (rel && rel.currentCar === null && old === 'returned') return [{ label: 'Current car', value: copy.none }, { label: copy.returnedCar, value: now.model }, place];
+  return null;
+}
+
 function returnSection(c) {
   const { returnPlan } = c.progress; const r = returnPlan?.value;
   if (usable(returnPlan) && r.applicable !== true) return null;
   const node = c.section(copy.returnCar, 'return');
   if (!usable(returnPlan)) { node.append(failure('return plan', returnPlan)); return node; }
-  const now = r.currentCar ?? {};
-  const place = { label: r.location?.kind === 'home-address' ? copy.homeAddress : copy.returnPlace, value: r.location?.label };
-  node.append(factList([{ label: 'Current car', value: now.model }, { label: 'Configuration', value: typeof now.vehicle === 'object' ? now.vehicle?.configuration : now.vehicle }, place]),
+  const now = r.currentCar ?? {}; const out = r.outcome;
+  const spot = r.state === 'returned' && out?.location?.label ? out.location : r.location;
+  const place = { label: spot?.kind === 'home-address' ? copy.homeAddress : copy.returnPlace, value: spot?.label };
+  const changed = returnFacts(c, r, place);
+  if (changed) node.append(factList(changed));
+  else node.append(factList([{ label: 'Current car', value: now.model }, { label: 'Configuration', value: typeof now.vehicle === 'object' ? now.vehicle?.configuration : now.vehicle }, place]),
     el('p', 'gcsp-order-note', copy.carStays));
   const proposed = r.state === 'return-requested' && r.appointment?.state === 'change-proposed';
   if (r.pending) node.append(statement(copy.waiting), factList(ownerRows(r)));
-  else if (r.state === 'return-scheduled' && r.scheduled === true) node.append(statement(when('Return booked:', r.slot)), factList(ownerRows(r)));
-  else if (r.state === 'return-requested') {
+  else if (r.state === 'returned') {
+    const ref = typeof out?.providerReference === 'string' && out.providerReference ? [{ label: copy.returnRef, value: out.providerReference }] : [];
+    node.append(statement(dated(copy.returned, out?.at)), factList([...ownerRows(r), ...ref]));
+  } else if (r.state === 'return-missed') node.append(statement(dated(copy.returnMissed, (r.slot ?? out?.appointment?.slot)?.start)), factList(ownerRows(r)));
+  else if (r.state === 'return-scheduled' && r.scheduled === true) {
+    node.append(statement(when('Return booked:', r.slot)), factList(ownerRows(r)));
+    if (r.blocked?.reason) node.append(el('p', 'gcsp-order-note', notDone(r.blocked.reason)));
+  } else if (r.state === 'return-requested') {
     node.append(statement(`${proposed ? when('New return time proposed:', r.proposedSlot) : when('Return requested', r.requestedSlot)}. ${copy.notBooked}`), factList(ownerRows(r)));
     if (proposed) add(node, c.actions(c.on.onAcceptReturn && button({ label: copy.accept, disabled: c.pending, onClick: () => c.on.onAcceptReturn(r.proposalId) })));
   } else if (r.state === 'not-planned') {

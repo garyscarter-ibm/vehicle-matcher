@@ -344,6 +344,34 @@ test('the offer-hosted progress shows completed and missed handovers, rebooks th
   missed.view.destroy();
 });
 
+test('the offer-hosted progress shows return outcomes: booked then returned on refresh, missed, and a failing return read', async () => {
+  const { mountOrderProgress } = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
+  const all = orderProgressFixtures().states; const carName = acceptedModel().card.members[0].display.name;
+  const host = async (name, override = {}) => {
+    let current = all[name]; let stop;
+    const adapter = { readStages: async () => structuredClone(current.stages), readDocuments: async () => structuredClone(current.documents),
+      readAppointment: async () => structuredClone(current.appointment), readReturnPlan: async () => structuredClone(current.returnPlan), ...override };
+    const root = document.createElement('div'); document.body.append(root);
+    const view = createOfferView(root, { mountOrder: (node, { car }) => { stop = mountOrderProgress(node, { adapter, orderUuid: ORDER, car, embedded: true, headingLevel: 2 }); return stop; } });
+    view.update(acceptedModel());
+    const area = () => root.querySelector('.gcsp-offer-order .gcsp-order-return');
+    for (let n = 0; n < 60 && !area(); n += 1) await new Promise((done) => setTimeout(done, 15));
+    return { area, view, root, switchTo: async (next, ready) => { current = all[next]; await stop.refresh(); for (let n = 0; n < 60 && !ready(); n += 1) await new Promise((done) => setTimeout(done, 15)); } };
+  };
+  const booked = await host('return-scheduled');
+  assert.match(booked.area().textContent, /Return booked: 12 Nov 2026, 09:00/); assert.doesNotMatch(booked.area().textContent, /Returned:/);
+  await booked.switchTo('return-returned', () => /Returned:/.test(booked.area().textContent));
+  const rows = [...booked.area().querySelectorAll('.vm-fact')].map((row) => [row.querySelector('dt').textContent, row.querySelector('dd').textContent]);
+  assert.match(booked.area().textContent, /Returned: 12 Nov 2026, 10:30/); assert.deepEqual(rows.slice(0, 2), [['Current car', carName], ['Returned car', 'Fictional BMW 320i Touring']]);
+  assert.doesNotMatch(booked.area().textContent, /stays yours until it is returned/); booked.view.destroy();
+  const missed = await host('return-missed');
+  assert.match(missed.area().textContent, /Return missed: 12 Nov 2026, 09:00/); assert.match(missed.area().textContent, /Scheme team/);
+  assert.equal(missed.area().querySelector('button'), null); assert.match(missed.area().textContent, /stays yours until it is returned/); missed.view.destroy();
+  const failing = await host('return-returned', { readReturnPlan: async () => ({ status: 'unavailable', retryable: true }) });
+  assert.match(failing.area().textContent, /Return plan unavailable/); assert.doesNotMatch(failing.area().textContent, /Returned|Return missed/);
+  assert.match(failing.root.querySelector('.gcsp-order-handover').textContent, /Handover complete/); failing.view.destroy();
+});
+
 test('the DTO projection carries the quote order uuid and the real embedded progress shows the offer car and order number', async () => {
   const sample = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url)));
   const projected = toOfferPresentation({ status: 'ok', value: { ...structuredClone(sample), state: 'accepted', reason: 'accepted', offerState: 'accepted',
