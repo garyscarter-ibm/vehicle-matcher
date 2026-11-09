@@ -1,0 +1,2798 @@
+{
+ "story": "FUCQ-261 (DEV-2026-11-09-GC-027)",
+ "runner": "docs/gcsp/evidence/fucq261/browser-capture.mjs",
+ "run": "FUCQ261_ONLY=help, FUCQ261_CHUNK=desktop then narrow, ports 9160 to 9169, memory repository, headless Chrome",
+ "pngsKept": [
+  "375-10-greg-resolved.png",
+  "1280-10-greg-resolved.png",
+  "375-11-paula-resolved.png",
+  "1280-11-paula-resolved.png"
+ ],
+ "runs": {
+  "1280": {
+   "state": "passed",
+   "chunk": "desktop",
+   "viewport": {
+    "width": 1280,
+    "height": 900
+   },
+   "startedAt": "2026-11-09T15:36:29.476Z",
+   "boundary": "Real buildServer routes, canonical services and the memory repository over loopback HTTP; the runner serves the same HTML, CSS and blocks from a plain file server. No live external calls, no PostgreSQL.",
+   "cookieMode": {
+    "help:paula": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure",
+    "help:greg": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure",
+    "help:presenter-as-paula": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure"
+   },
+   "checks": [
+    {
+     "id": "07a:auto-case",
+     "name": "07a: the keyed deadline rule has opened one owned case for Paula",
+     "pass": true,
+     "detail": [
+      [
+       "open",
+       "renewal-deadline"
+      ]
+     ]
+    },
+    {
+     "id": "07:auto-visible",
+     "name": "07: before asking, Paula already sees the Open case from the deadline rule, owned by the scheme team",
+     "pass": true,
+     "detail": "Skip to content Group Car Schemes Portal P Paula (fictional) Your cars New order Order history Drivers and licences Renewal help Show labels RENEWAL HELP Renewal help Remedies need the scheme team\u2019s decision. No specific next car or greater priority is guaranteed. Get help with your renewal RENEWAL CASE Open Case reference renewal-ff2e22135f01bf5484b595d18eddfaf61d780c98 Owner Scheme team Reason T"
+    },
+    {
+     "id": "07:summary:tab",
+     "name": "07:summary: Tab alone reaches the control (9 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 9
+     }
+    },
+    {
+     "id": "07:summary:focus-ring",
+     "name": "07:summary: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "summary",
+      "id": null,
+      "label": "Get help with your renewal",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "07:ask:tab",
+     "name": "07:ask: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "07:ask:focus-ring",
+     "name": "07:ask: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Ask for help",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "07:review:tab",
+     "name": "07:review: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "07:review:focus-ring",
+     "name": "07:review: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Review help request",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "07:confirm:tab",
+     "name": "07:confirm: Tab alone reaches the control (13 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 13
+     }
+    },
+    {
+     "id": "07:confirm:focus-ring",
+     "name": "07:confirm: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Confirm help request",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "07:confirm:status",
+     "name": "07:confirm: Enter produces the status message \"Your help request was recorded.\"",
+     "pass": true,
+     "detail": [
+      "status:Loading presenter controls",
+      "alert:The demo was restarted. Reload the page to continue.Reload",
+      "status:Loading readback",
+      "status:Your help request was recorded."
+     ]
+    },
+    {
+     "id": "07:confirm:focus-kept",
+     "name": "07:confirm: focus is not lost to the page body",
+     "pass": true,
+     "detail": {
+      "tag": "p",
+      "id": null,
+      "label": "Your help request was recorded.",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "07-paula-help-requested:layout",
+     "name": "07-paula-help-requested: no horizontal scroll, nothing wider than the viewport",
+     "pass": true,
+     "detail": {
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "wide": []
+     }
+    },
+    {
+     "id": "07-paula-help-requested:copy",
+     "name": "07-paula-help-requested: no em dash in body text",
+     "pass": true
+    },
+    {
+     "id": "07-paula-help-requested:console",
+     "name": "07-paula-help-requested: no console errors, failed resources or CSP violations",
+     "pass": true,
+     "detail": {
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "csp": []
+     }
+    },
+    {
+     "id": "07-paula-help-requested:\"Your help request was recorded.\"",
+     "name": "07-paula-help-requested: \"Your help request was recorded.\"",
+     "pass": true
+    },
+    {
+     "id": "07-paula-help-requested:her reason in the history",
+     "name": "07-paula-help-requested: her reason in the history",
+     "pass": true
+    },
+    {
+     "id": "07-paula-help-requested:owner \"Scheme team\"",
+     "name": "07-paula-help-requested: owner \"Scheme team\"",
+     "pass": true
+    },
+    {
+     "id": "07-paula-help-requested:status Open",
+     "name": "07-paula-help-requested: status Open",
+     "pass": true
+    },
+    {
+     "id": "07:one-case",
+     "name": "07: her request appended to the existing case rather than opening a second",
+     "pass": true,
+     "detail": [
+      2
+     ]
+    },
+    {
+     "id": "08a:pick:tab",
+     "name": "08a:pick: Tab alone reaches the control (4 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 4
+     }
+    },
+    {
+     "id": "08a:pick:focus-ring",
+     "name": "08a:pick: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-selection",
+      "label": "Choose a caseAlex (fictional) \u00b7 OpenPaula (fictional) \u00b7 Open",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:pick:chosen",
+     "name": "08a:pick: the select reads \"Paula (fictional) \u00b7 Open\"",
+     "pass": true,
+     "detail": "Paula (fictional) \u00b7 Open"
+    },
+    {
+     "id": "08a:open:tab",
+     "name": "08a:open: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08a:open:focus-ring",
+     "name": "08a:open: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Open selected case",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:status:tab",
+     "name": "08a:status: Tab alone reaches the control (8 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 8
+     }
+    },
+    {
+     "id": "08a:status:focus-ring",
+     "name": "08a:status: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-status",
+      "label": "Choose the next statusIn progressClosed",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:status:chosen",
+     "name": "08a:status: the select reads \"In progress\"",
+     "pass": true,
+     "detail": "In progress"
+    },
+    {
+     "id": "08a:reason:tab",
+     "name": "08a:reason: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08a:reason:focus-ring",
+     "name": "08a:reason: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "textarea",
+      "id": "gcsp-case-queue-1-reason",
+      "label": "",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:next:tab",
+     "name": "08a:next: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08a:next:focus-ring",
+     "name": "08a:next: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "textarea",
+      "id": "gcsp-case-queue-1-nextAction",
+      "label": "",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:review:tab",
+     "name": "08a:review: Tab alone reaches the control (9 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 9
+     }
+    },
+    {
+     "id": "08a:review:focus-ring",
+     "name": "08a:review: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Review case update",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:confirm:tab",
+     "name": "08a:confirm: Tab alone reaches the control (10 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 10
+     }
+    },
+    {
+     "id": "08a:confirm:focus-ring",
+     "name": "08a:confirm: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Confirm case update",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:confirm:status",
+     "name": "08a:confirm: Enter produces the status message \"The case update was recorded.\"",
+     "pass": true,
+     "detail": [
+      "status:The case update was recorded."
+     ]
+    },
+    {
+     "id": "08a:confirm:focus-kept",
+     "name": "08a:confirm: focus is not lost to the page body",
+     "pass": true,
+     "detail": {
+      "tag": "p",
+      "id": null,
+      "label": "The case update was recorded.",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:in-progress",
+     "name": "08a: the case is In progress after Greg's first update",
+     "pass": true,
+     "detail": "Confirm case update This records the update and any remedy for the employee to see on reload. Next status In progress Reason Scheme team has started work on this renewal. Next action Review options and propose a remedy. Due, demo clock (UTC) 2026-11-25 09:00:00 UTC Remedy Current remedy retained Con"
+    },
+    {
+     "id": "08:pick:tab",
+     "name": "08:pick: Tab alone reaches the control (4 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 4
+     }
+    },
+    {
+     "id": "08:pick:focus-ring",
+     "name": "08:pick: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-selection",
+      "label": "Choose a caseAlex (fictional) \u00b7 OpenPaula (fictional) \u00b7 In progress",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:pick:chosen",
+     "name": "08:pick: the select reads \"Paula (fictional) \u00b7 In progress\"",
+     "pass": true,
+     "detail": "Paula (fictional) \u00b7 In progress"
+    },
+    {
+     "id": "08:open:tab",
+     "name": "08:open: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08:open:focus-ring",
+     "name": "08:open: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Open selected case",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:status:tab",
+     "name": "08:status: Tab alone reaches the control (8 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 8
+     }
+    },
+    {
+     "id": "08:status:focus-ring",
+     "name": "08:status: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-status",
+      "label": "Choose the next statusRemedy proposedResolvedClosed",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:status:chosen",
+     "name": "08:status: the select reads \"Remedy proposed\"",
+     "pass": true,
+     "detail": "Remedy proposed"
+    },
+    {
+     "id": "08:reason:tab",
+     "name": "08:reason: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08:reason:focus-ring",
+     "name": "08:reason: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "textarea",
+      "id": "gcsp-case-queue-1-reason",
+      "label": "",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:next:tab",
+     "name": "08:next: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08:next:focus-ring",
+     "name": "08:next: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "textarea",
+      "id": "gcsp-case-queue-1-nextAction",
+      "label": "",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:remedy:tab",
+     "name": "08:remedy: Tab alone reaches the control (8 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 8
+     }
+    },
+    {
+     "id": "08:remedy:focus-ring",
+     "name": "08:remedy: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-remedyKey",
+      "label": "Keep the current remedy, if anyAlternative car: Synthetic 3 Series Saloon 320i, ",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:remedy:chosen",
+     "name": "08:remedy: the select reads \"Change body\"",
+     "pass": true,
+     "detail": "Change body"
+    },
+    {
+     "id": "08:value:tab",
+     "name": "08:value: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08:value:focus-ring",
+     "name": "08:value: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-preferenceValue",
+      "label": "Choose the proposed valuehatchbacksaloonsuvcoupeconvertiblempv",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:value:chosen",
+     "name": "08:value: ArrowDown selects the first real option",
+     "pass": true,
+     "detail": "hatchback"
+    },
+    {
+     "id": "08:review:tab",
+     "name": "08:review: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08:review:focus-ring",
+     "name": "08:review: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Review case update",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:confirm:tab",
+     "name": "08:confirm: Tab alone reaches the control (9 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 9
+     }
+    },
+    {
+     "id": "08:confirm:focus-ring",
+     "name": "08:confirm: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Confirm case update",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:confirm:status",
+     "name": "08:confirm: Enter produces the status message \"The case update was recorded.\"",
+     "pass": true,
+     "detail": [
+      "status:The case update was recorded."
+     ]
+    },
+    {
+     "id": "08:confirm:focus-kept",
+     "name": "08:confirm: focus is not lost to the page body",
+     "pass": true,
+     "detail": {
+      "tag": "p",
+      "id": null,
+      "label": "The case update was recorded.",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:review",
+     "name": "08: the review screen names a one-preference change that the employee must confirm",
+     "pass": true,
+     "detail": "Confirm case update This records the update and any remedy for the employee to see on reload. Next status Remedy proposed Reason A different body style is available; proposing one body style change. Next action Employee to confirm the body style change. Due, demo clock (UTC) 2026-11-25 09:00:00 UTC Remedy One preference change Preference Body Proposed value hatchback Employee confirmation Required through the employee brief Confirm case update Cancel update"
+    },
+    {
+     "id": "08:proposal-only",
+     "name": "08: the case holds a proposal and Paula's brief is still version 1 (estate): proposal and applied change stay distinct",
+     "pass": true,
+     "detail": {
+      "status": "remedy-proposed",
+      "remedy": {
+       "type": "preference-relaxation",
+       "decisionId": "offer-decision:03a16e3b3ca08331274c3f1261508343b6614a22ad8a54ee6a44a8ea73243b28",
+       "expectedBriefVersion": 1,
+       "path": "preferences.body.value",
+       "value": "hatchback",
+       "confirmationState": "employee-confirmation-required"
+      }
+     }
+    },
+    {
+     "id": "08-greg-remedy-proposed:layout",
+     "name": "08-greg-remedy-proposed: no horizontal scroll, nothing wider than the viewport",
+     "pass": true,
+     "detail": {
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "wide": []
+     }
+    },
+    {
+     "id": "08-greg-remedy-proposed:copy",
+     "name": "08-greg-remedy-proposed: no em dash in body text",
+     "pass": true
+    },
+    {
+     "id": "08-greg-remedy-proposed:console",
+     "name": "08-greg-remedy-proposed: no console errors, failed resources or CSP violations",
+     "pass": true,
+     "detail": {
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "csp": []
+     }
+    },
+    {
+     "id": "08-greg-remedy-proposed:status \"Remedy proposed\"",
+     "name": "08-greg-remedy-proposed: status \"Remedy proposed\"",
+     "pass": true
+    },
+    {
+     "id": "08-greg-remedy-proposed:proposed remedy section",
+     "name": "08-greg-remedy-proposed: proposed remedy section",
+     "pass": true
+    },
+    {
+     "id": "08-greg-remedy-proposed:\"Employee confirmation is recorded\" absent yet or confirmation required text",
+     "name": "08-greg-remedy-proposed: \"Employee confirmation is recorded\" absent yet or confirmation required text",
+     "pass": true
+    },
+    {
+     "id": "09:waiting",
+     "name": "09: Paula sees the proposed remedy waiting for her confirmation, not yet applied",
+     "pass": true,
+     "detail": "Skip to content Group Car Schemes Portal P Paula (fictional) Your cars New order Order history Drivers and licences Renewal help Show labels RENEWAL HELP Renewal help Remedies need the scheme team\u2019s decision. No specific next car or greater priority is guaranteed. Get help with your renewal RENEWAL CASE Remedy proposed Case reference renewal-ff2e22135f01bf5484b595d18eddfaf61d780c98 Owner Scheme team Reason The renewal deadline is close and no selection has been acknowledged. Latest update A different body style is available; proposing one body style change. Opened from Renewal deadline approac"
+    },
+    {
+     "id": "09:review:tab",
+     "name": "09:review: Tab alone reaches the control (10 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 10
+     }
+    },
+    {
+     "id": "09:review:focus-ring",
+     "name": "09:review: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Review body change",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "09:confirm:tab",
+     "name": "09:confirm: Tab alone reaches the control (13 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 13
+     }
+    },
+    {
+     "id": "09:confirm:focus-ring",
+     "name": "09:confirm: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Confirm preference change",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "09:confirm:status",
+     "name": "09:confirm: Enter produces the status message \"Your preference change was confirmed. The scheme team will review the current case.\"",
+     "pass": true,
+     "detail": [
+      "status:Loading presenter controls",
+      "alert:The demo was restarted. Reload the page to continue.Reload",
+      "status:Loading readback",
+      "status:Your preference change was confirmed. The scheme team will review the current case."
+     ]
+    },
+    {
+     "id": "09:confirm:focus-kept",
+     "name": "09:confirm: focus is not lost to the page body",
+     "pass": true,
+     "detail": {
+      "tag": "p",
+      "id": null,
+      "label": "Your preference change was confirmed. The scheme team will review the current ca",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "09-paula-confirmed-change:layout",
+     "name": "09-paula-confirmed-change: no horizontal scroll, nothing wider than the viewport",
+     "pass": true,
+     "detail": {
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "wide": []
+     }
+    },
+    {
+     "id": "09-paula-confirmed-change:copy",
+     "name": "09-paula-confirmed-change: no em dash in body text",
+     "pass": true
+    },
+    {
+     "id": "09-paula-confirmed-change:console",
+     "name": "09-paula-confirmed-change: no console errors, failed resources or CSP violations",
+     "pass": true,
+     "detail": {
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "csp": []
+     }
+    },
+    {
+     "id": "09-paula-confirmed-change:\"You confirmed this preference change\"",
+     "name": "09-paula-confirmed-change: \"You confirmed this preference change\"",
+     "pass": true
+    },
+    {
+     "id": "09-paula-confirmed-change:status still \"Remedy proposed\"",
+     "name": "09-paula-confirmed-change: status still \"Remedy proposed\"",
+     "pass": true
+    },
+    {
+     "id": "09-paula-confirmed-change:no-\"Resolved\"",
+     "name": "09-paula-confirmed-change: absent: \"Resolved\"",
+     "pass": true
+    },
+    {
+     "id": "09:brief2",
+     "name": "09: only now is there a confirmed brief version 2, with only the body style changed",
+     "pass": true,
+     "detail": {
+      "v": 2,
+      "body": "hatchback"
+     }
+    },
+    {
+     "id": "10:pick:tab",
+     "name": "10:pick: Tab alone reaches the control (4 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 4
+     }
+    },
+    {
+     "id": "10:pick:focus-ring",
+     "name": "10:pick: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-selection",
+      "label": "Choose a caseAlex (fictional) \u00b7 OpenPaula (fictional) \u00b7 Remedy proposed",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:pick:chosen",
+     "name": "10:pick: the select reads \"Paula (fictional) \u00b7 Remedy proposed\"",
+     "pass": true,
+     "detail": "Paula (fictional) \u00b7 Remedy proposed"
+    },
+    {
+     "id": "10:open:tab",
+     "name": "10:open: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "10:open:focus-ring",
+     "name": "10:open: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Open selected case",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:status:tab",
+     "name": "10:status: Tab alone reaches the control (8 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 8
+     }
+    },
+    {
+     "id": "10:status:focus-ring",
+     "name": "10:status: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-status",
+      "label": "Choose the next statusIn progressResolvedClosed",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:status:chosen",
+     "name": "10:status: the select reads \"Resolved\"",
+     "pass": true,
+     "detail": "Resolved"
+    },
+    {
+     "id": "10:reason:tab",
+     "name": "10:reason: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "10:reason:focus-ring",
+     "name": "10:reason: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "textarea",
+      "id": "gcsp-case-queue-1-reason",
+      "label": "",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:next:tab",
+     "name": "10:next: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "10:next:focus-ring",
+     "name": "10:next: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "textarea",
+      "id": "gcsp-case-queue-1-nextAction",
+      "label": "",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:review:tab",
+     "name": "10:review: Tab alone reaches the control (9 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 9
+     }
+    },
+    {
+     "id": "10:review:focus-ring",
+     "name": "10:review: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Review case update",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:confirm:tab",
+     "name": "10:confirm: Tab alone reaches the control (10 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 10
+     }
+    },
+    {
+     "id": "10:confirm:focus-ring",
+     "name": "10:confirm: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Confirm case update",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:confirm:status",
+     "name": "10:confirm: Enter produces the status message \"The case update was recorded.\"",
+     "pass": true,
+     "detail": [
+      "status:The case update was recorded."
+     ]
+    },
+    {
+     "id": "10:confirm:focus-kept",
+     "name": "10:confirm: focus is not lost to the page body",
+     "pass": true,
+     "detail": {
+      "tag": "p",
+      "id": null,
+      "label": "The case update was recorded.",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:resolved",
+     "name": "10: the case is resolved with the employee-confirmed remedy at brief version 2",
+     "pass": true,
+     "detail": {
+      "status": "resolved",
+      "remedy": {
+       "type": "preference-relaxation",
+       "decisionId": "offer-decision:03a16e3b3ca08331274c3f1261508343b6614a22ad8a54ee6a44a8ea73243b28",
+       "expectedBriefVersion": 1,
+       "path": "preferences.body.value",
+       "value": "hatchback",
+       "confirmationState": "employee-confirmed",
+       "confirmedBy": "demo-paula",
+       "confirmedAt": "2026-11-24T09:00:00.000Z",
+       "briefVersion": 2
+      }
+     }
+    },
+    {
+     "id": "10-greg-resolved:layout",
+     "name": "10-greg-resolved: no horizontal scroll, nothing wider than the viewport",
+     "pass": true,
+     "detail": {
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "wide": []
+     }
+    },
+    {
+     "id": "10-greg-resolved:copy",
+     "name": "10-greg-resolved: no em dash in body text",
+     "pass": true
+    },
+    {
+     "id": "10-greg-resolved:console",
+     "name": "10-greg-resolved: no console errors, failed resources or CSP violations",
+     "pass": true,
+     "detail": {
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "csp": []
+     }
+    },
+    {
+     "id": "10-greg-resolved:Paula's case \"Resolved\" in the queue",
+     "name": "10-greg-resolved: Paula's case \"Resolved\" in the queue",
+     "pass": true
+    },
+    {
+     "id": "10:picker",
+     "name": "10: the widest case picker label fits inside the select",
+     "pass": true,
+     "detail": {
+      "widestOption": 191,
+      "room": 1208,
+      "labels": [
+       "Choose a case",
+       "Alex (fictional) \u00b7 Open",
+       "Paula (fictional) \u00b7 Resolved"
+      ]
+     }
+    },
+    {
+     "id": "11-paula-resolved:layout",
+     "name": "11-paula-resolved: no horizontal scroll, nothing wider than the viewport",
+     "pass": true,
+     "detail": {
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "wide": []
+     }
+    },
+    {
+     "id": "11-paula-resolved:copy",
+     "name": "11-paula-resolved: no em dash in body text",
+     "pass": true
+    },
+    {
+     "id": "11-paula-resolved:console",
+     "name": "11-paula-resolved: no console errors, failed resources or CSP violations",
+     "pass": true,
+     "detail": {
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "csp": []
+     }
+    },
+    {
+     "id": "11-paula-resolved:status \"Resolved\"",
+     "name": "11-paula-resolved: status \"Resolved\"",
+     "pass": true
+    },
+    {
+     "id": "11-paula-resolved:\"Recorded remedy\"",
+     "name": "11-paula-resolved: \"Recorded remedy\"",
+     "pass": true
+    },
+    {
+     "id": "11-paula-resolved:\"You confirmed this preference change\"",
+     "name": "11-paula-resolved: \"You confirmed this preference change\"",
+     "pass": true
+    },
+    {
+     "id": "11-paula-resolved:no-\"Waiting for your confirmation\"",
+     "name": "11-paula-resolved: absent: \"Waiting for your confirmation\"",
+     "pass": true
+    },
+    {
+     "id": "11-paula-resolved:no-\"will review the case\" (FUCQ-261)",
+     "name": "11-paula-resolved: absent: \"will review the case\" (FUCQ-261)",
+     "pass": true
+    },
+    {
+     "id": "11:history",
+     "name": "11: the dated history shows system, employee and scheme-team entries in order",
+     "pass": true,
+     "detail": [
+      [
+       "system",
+       "open"
+      ],
+      [
+       "employee",
+       "open"
+      ],
+      [
+       "scheme-team",
+       "in-progress"
+      ],
+      [
+       "scheme-team",
+       "remedy-proposed"
+      ],
+      [
+       "scheme-team",
+       "resolved"
+      ]
+     ]
+    },
+    {
+     "id": "11:allocation",
+     "name": "11: across the whole case the only allocation input that moved is Paula's brief (the confirmed version 2)",
+     "pass": true,
+     "detail": [
+      "briefs"
+     ]
+    },
+    {
+     "id": "12:presenter-strip",
+     "name": "12: the presenter acting as Paula still gets the presenter strip on her help page",
+     "pass": true,
+     "detail": {
+      "present": true,
+      "hidden": false,
+      "summary": "Presenter controls"
+     }
+    },
+    {
+     "id": "12-presenter-help:layout",
+     "name": "12-presenter-help: no horizontal scroll, nothing wider than the viewport",
+     "pass": true,
+     "detail": {
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "wide": []
+     }
+    },
+    {
+     "id": "12-presenter-help:copy",
+     "name": "12-presenter-help: no em dash in body text",
+     "pass": true
+    },
+    {
+     "id": "12-presenter-help:console",
+     "name": "12-presenter-help: no console errors, failed resources or CSP violations",
+     "pass": true,
+     "detail": {
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "csp": []
+     }
+    },
+    {
+     "id": "run:no-403",
+     "name": "run: no presenter-controls 403 for the employee-only session (FUCQ-261)",
+     "pass": true
+    }
+   ],
+   "captures": [
+    {
+     "name": "1280-07-paula-help-requested",
+     "as": "paula",
+     "innerWidth": 1280,
+     "scrollWidth": 1280,
+     "horizontalScroll": false,
+     "wideElements": [],
+     "scrollContained": [],
+     "emDash": false,
+     "consoleErrors": [],
+     "resourceErrors": [],
+     "cspViolations": [],
+     "file": "browser/1280-07-paula-help-requested.png",
+     "bytesPng": 103826
+    },
+    {
+     "name": "1280-08-greg-remedy-proposed",
+     "as": "greg",
+     "innerWidth": 1280,
+     "scrollWidth": 1280,
+     "horizontalScroll": false,
+     "wideElements": [],
+     "scrollContained": [],
+     "emDash": false,
+     "consoleErrors": [],
+     "resourceErrors": [],
+     "cspViolations": [],
+     "file": "browser/1280-08-greg-remedy-proposed.png",
+     "bytesPng": 251539
+    },
+    {
+     "name": "1280-09-paula-confirmed-change",
+     "as": "paula",
+     "innerWidth": 1280,
+     "scrollWidth": 1280,
+     "horizontalScroll": false,
+     "wideElements": [],
+     "scrollContained": [],
+     "emDash": false,
+     "consoleErrors": [],
+     "resourceErrors": [],
+     "cspViolations": [],
+     "file": "browser/1280-09-paula-confirmed-change.png",
+     "bytesPng": 122368
+    },
+    {
+     "name": "1280-10-greg-resolved",
+     "as": "greg",
+     "innerWidth": 1280,
+     "scrollWidth": 1280,
+     "horizontalScroll": false,
+     "wideElements": [],
+     "scrollContained": [],
+     "emDash": false,
+     "consoleErrors": [],
+     "resourceErrors": [],
+     "cspViolations": [],
+     "file": "browser/1280-10-greg-resolved.png",
+     "bytesPng": 76707
+    },
+    {
+     "name": "1280-11-paula-resolved",
+     "as": "paula",
+     "innerWidth": 1280,
+     "scrollWidth": 1280,
+     "horizontalScroll": false,
+     "wideElements": [],
+     "scrollContained": [],
+     "emDash": false,
+     "consoleErrors": [],
+     "resourceErrors": [],
+     "cspViolations": [],
+     "file": "browser/1280-11-paula-resolved.png",
+     "bytesPng": 104685
+    },
+    {
+     "name": "1280-12-presenter-help",
+     "as": "presenter-as-paula",
+     "innerWidth": 1280,
+     "scrollWidth": 1280,
+     "horizontalScroll": false,
+     "wideElements": [],
+     "scrollContained": [],
+     "emDash": false,
+     "consoleErrors": [],
+     "resourceErrors": [],
+     "cspViolations": []
+    }
+   ],
+   "steps": [
+    {
+     "id": "07a",
+     "via": "api",
+     "what": "Setup: reset, briefs, release, the real first offer opened from its outbox link and declined for body style over the offer routes, then a presenter tick to one week before the contract end. These are the setup steps of the e2e test.",
+     "repeatedBy": "'FUCQ-171 advanced help' step 1"
+    },
+    {
+     "id": "07",
+     "via": "browser",
+     "what": "Paula asks, reviews and confirms on /gcsp-help.html with Tab and Enter."
+    },
+    {
+     "id": "08",
+     "via": "browser",
+     "what": "Greg moves the case to In progress, then to Remedy proposed with one body-style change, with Tab, type-ahead selects and Enter on /gcsp-case-queue.html (FUCQ-122 remainder)."
+    },
+    {
+     "id": "09",
+     "via": "browser",
+     "what": "Paula reviews and confirms the single change on /gcsp-help.html (POST /api/gcsp/brief/change-after-decline). The control exists.",
+     "repeatedBy": "'FUCQ-171 advanced help' step 7"
+    },
+    {
+     "id": "10",
+     "via": "browser",
+     "what": "Greg resolves the confirmed case on /gcsp-case-queue.html with Tab, type-ahead selects and Enter, keeping the confirmed remedy."
+    },
+    {
+     "id": "11",
+     "via": "browser",
+     "what": "Paula reloads /gcsp-help.html and reads the persisted outcome."
+    },
+    {
+     "id": "12",
+     "via": "browser",
+     "what": "The presenter, acting as Paula, opens /gcsp-help.html; the strip loads as before (no PNG)."
+    }
+   ],
+   "observations": [],
+   "errors": [],
+   "failedRequests": [],
+   "processes": {
+    "chrome": {
+     "pid": 95128,
+     "group": 95128,
+     "debugPort": 9169
+    },
+    "server-help": {
+     "pid": 95122,
+     "port": 9160,
+     "note": "in-process loopback server"
+    }
+   },
+   "notes": [
+    "08:value: ArrowDown did not change the select, used selectOption index 1"
+   ],
+   "facts": {
+    "queueFit": {
+     "width": 1280,
+     "stacked": true,
+     "tableWidth": 1230,
+     "status": {
+      "right": 947.578125,
+      "text": "Resolved"
+     },
+     "owner": {
+      "right": 1051.390625,
+      "text": "Scheme team"
+     },
+     "picker": {
+      "widestOption": 191,
+      "room": 1208,
+      "labels": [
+       "Choose a case",
+       "Alex (fictional) \u00b7 Open",
+       "Paula (fictional) \u00b7 Resolved"
+      ]
+     }
+    }
+   },
+   "finishedAt": "2026-11-09T15:36:52.815Z",
+   "summary": {
+    "checks": 124,
+    "passed": 124,
+    "failed": [],
+    "captures": 6,
+    "pngs": 5
+   }
+  },
+  "375": {
+   "state": "passed",
+   "chunk": "narrow",
+   "viewport": {
+    "width": 375,
+    "height": 812
+   },
+   "startedAt": "2026-11-09T15:38:14.528Z",
+   "boundary": "Real buildServer routes, canonical services and the memory repository over loopback HTTP; the runner serves the same HTML, CSS and blocks from a plain file server. No live external calls, no PostgreSQL.",
+   "cookieMode": {
+    "help:paula": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure",
+    "help:greg": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure",
+    "help:presenter-as-paula": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure"
+   },
+   "checks": [
+    {
+     "id": "07a:auto-case",
+     "name": "07a: the keyed deadline rule has opened one owned case for Paula",
+     "pass": true,
+     "detail": [
+      [
+       "open",
+       "renewal-deadline"
+      ]
+     ]
+    },
+    {
+     "id": "07:auto-visible",
+     "name": "07: before asking, Paula already sees the Open case from the deadline rule, owned by the scheme team",
+     "pass": true,
+     "detail": "Skip to content Group Car Schemes Portal Paula (fictional) RENEWAL HELP Renewal help Remedies need the scheme team\u2019s decision. No specific next car or greater priority is guaranteed. Get help with your renewal RENEWAL CASE Open Case reference renewal-ff2e22135f01bf5484b595d18eddfaf61d780c98 Owner Scheme team Reason The renewal deadline is close and no selection has been acknowledged. Latest update"
+    },
+    {
+     "id": "07:summary:tab",
+     "name": "07:summary: Tab alone reaches the control (4 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 4
+     }
+    },
+    {
+     "id": "07:summary:focus-ring",
+     "name": "07:summary: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "summary",
+      "id": null,
+      "label": "Get help with your renewal",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "07:ask:tab",
+     "name": "07:ask: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "07:ask:focus-ring",
+     "name": "07:ask: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Ask for help",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "07:review:tab",
+     "name": "07:review: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "07:review:focus-ring",
+     "name": "07:review: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Review help request",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "07:confirm:tab",
+     "name": "07:confirm: Tab alone reaches the control (8 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 8
+     }
+    },
+    {
+     "id": "07:confirm:focus-ring",
+     "name": "07:confirm: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Confirm help request",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "07:confirm:status",
+     "name": "07:confirm: Enter produces the status message \"Your help request was recorded.\"",
+     "pass": true,
+     "detail": [
+      "status:Loading presenter controls",
+      "alert:The demo was restarted. Reload the page to continue.Reload",
+      "status:Loading readback",
+      "status:Your help request was recorded."
+     ]
+    },
+    {
+     "id": "07:confirm:focus-kept",
+     "name": "07:confirm: focus is not lost to the page body",
+     "pass": true,
+     "detail": {
+      "tag": "p",
+      "id": null,
+      "label": "Your help request was recorded.",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "07-paula-help-requested:layout",
+     "name": "07-paula-help-requested: no horizontal scroll, nothing wider than the viewport",
+     "pass": true,
+     "detail": {
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "wide": []
+     }
+    },
+    {
+     "id": "07-paula-help-requested:copy",
+     "name": "07-paula-help-requested: no em dash in body text",
+     "pass": true
+    },
+    {
+     "id": "07-paula-help-requested:console",
+     "name": "07-paula-help-requested: no console errors, failed resources or CSP violations",
+     "pass": true,
+     "detail": {
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "csp": []
+     }
+    },
+    {
+     "id": "07-paula-help-requested:\"Your help request was recorded.\"",
+     "name": "07-paula-help-requested: \"Your help request was recorded.\"",
+     "pass": true
+    },
+    {
+     "id": "07-paula-help-requested:her reason in the history",
+     "name": "07-paula-help-requested: her reason in the history",
+     "pass": true
+    },
+    {
+     "id": "07-paula-help-requested:owner \"Scheme team\"",
+     "name": "07-paula-help-requested: owner \"Scheme team\"",
+     "pass": true
+    },
+    {
+     "id": "07-paula-help-requested:status Open",
+     "name": "07-paula-help-requested: status Open",
+     "pass": true
+    },
+    {
+     "id": "07:one-case",
+     "name": "07: her request appended to the existing case rather than opening a second",
+     "pass": true,
+     "detail": [
+      2
+     ]
+    },
+    {
+     "id": "08a:pick:tab",
+     "name": "08a:pick: Tab alone reaches the control (4 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 4
+     }
+    },
+    {
+     "id": "08a:pick:focus-ring",
+     "name": "08a:pick: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-selection",
+      "label": "Choose a caseAlex (fictional) \u00b7 OpenPaula (fictional) \u00b7 Open",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:pick:chosen",
+     "name": "08a:pick: the select reads \"Paula (fictional) \u00b7 Open\"",
+     "pass": true,
+     "detail": "Paula (fictional) \u00b7 Open"
+    },
+    {
+     "id": "08a:open:tab",
+     "name": "08a:open: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08a:open:focus-ring",
+     "name": "08a:open: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Open selected case",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:status:tab",
+     "name": "08a:status: Tab alone reaches the control (8 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 8
+     }
+    },
+    {
+     "id": "08a:status:focus-ring",
+     "name": "08a:status: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-status",
+      "label": "Choose the next statusIn progressClosed",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:status:chosen",
+     "name": "08a:status: the select reads \"In progress\"",
+     "pass": true,
+     "detail": "In progress"
+    },
+    {
+     "id": "08a:reason:tab",
+     "name": "08a:reason: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08a:reason:focus-ring",
+     "name": "08a:reason: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "textarea",
+      "id": "gcsp-case-queue-1-reason",
+      "label": "",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:next:tab",
+     "name": "08a:next: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08a:next:focus-ring",
+     "name": "08a:next: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "textarea",
+      "id": "gcsp-case-queue-1-nextAction",
+      "label": "",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:review:tab",
+     "name": "08a:review: Tab alone reaches the control (9 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 9
+     }
+    },
+    {
+     "id": "08a:review:focus-ring",
+     "name": "08a:review: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Review case update",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:confirm:tab",
+     "name": "08a:confirm: Tab alone reaches the control (10 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 10
+     }
+    },
+    {
+     "id": "08a:confirm:focus-ring",
+     "name": "08a:confirm: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Confirm case update",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:confirm:status",
+     "name": "08a:confirm: Enter produces the status message \"The case update was recorded.\"",
+     "pass": true,
+     "detail": [
+      "status:The case update was recorded."
+     ]
+    },
+    {
+     "id": "08a:confirm:focus-kept",
+     "name": "08a:confirm: focus is not lost to the page body",
+     "pass": true,
+     "detail": {
+      "tag": "p",
+      "id": null,
+      "label": "The case update was recorded.",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08a:in-progress",
+     "name": "08a: the case is In progress after Greg's first update",
+     "pass": true,
+     "detail": "Confirm case update This records the update and any remedy for the employee to see on reload. Next status In progress Reason Scheme team has started work on this renewal. Next action Review options and propose a remedy. Due, demo clock (UTC) 2026-11-25 09:00:00 UTC Remedy Current remedy retained Con"
+    },
+    {
+     "id": "08:pick:tab",
+     "name": "08:pick: Tab alone reaches the control (4 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 4
+     }
+    },
+    {
+     "id": "08:pick:focus-ring",
+     "name": "08:pick: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-selection",
+      "label": "Choose a caseAlex (fictional) \u00b7 OpenPaula (fictional) \u00b7 In progress",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:pick:chosen",
+     "name": "08:pick: the select reads \"Paula (fictional) \u00b7 In progress\"",
+     "pass": true,
+     "detail": "Paula (fictional) \u00b7 In progress"
+    },
+    {
+     "id": "08:open:tab",
+     "name": "08:open: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08:open:focus-ring",
+     "name": "08:open: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Open selected case",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:status:tab",
+     "name": "08:status: Tab alone reaches the control (8 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 8
+     }
+    },
+    {
+     "id": "08:status:focus-ring",
+     "name": "08:status: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-status",
+      "label": "Choose the next statusRemedy proposedResolvedClosed",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:status:chosen",
+     "name": "08:status: the select reads \"Remedy proposed\"",
+     "pass": true,
+     "detail": "Remedy proposed"
+    },
+    {
+     "id": "08:reason:tab",
+     "name": "08:reason: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08:reason:focus-ring",
+     "name": "08:reason: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "textarea",
+      "id": "gcsp-case-queue-1-reason",
+      "label": "",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:next:tab",
+     "name": "08:next: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08:next:focus-ring",
+     "name": "08:next: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "textarea",
+      "id": "gcsp-case-queue-1-nextAction",
+      "label": "",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:remedy:tab",
+     "name": "08:remedy: Tab alone reaches the control (8 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 8
+     }
+    },
+    {
+     "id": "08:remedy:focus-ring",
+     "name": "08:remedy: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-remedyKey",
+      "label": "Keep the current remedy, if anyAlternative car: Synthetic 3 Series Saloon 320i, ",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:remedy:chosen",
+     "name": "08:remedy: the select reads \"Change body\"",
+     "pass": true,
+     "detail": "Change body"
+    },
+    {
+     "id": "08:value:tab",
+     "name": "08:value: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08:value:focus-ring",
+     "name": "08:value: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-preferenceValue",
+      "label": "Choose the proposed valuehatchbacksaloonsuvcoupeconvertiblempv",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:value:chosen",
+     "name": "08:value: ArrowDown selects the first real option",
+     "pass": true,
+     "detail": "hatchback"
+    },
+    {
+     "id": "08:review:tab",
+     "name": "08:review: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "08:review:focus-ring",
+     "name": "08:review: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Review case update",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:confirm:tab",
+     "name": "08:confirm: Tab alone reaches the control (9 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 9
+     }
+    },
+    {
+     "id": "08:confirm:focus-ring",
+     "name": "08:confirm: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Confirm case update",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:confirm:status",
+     "name": "08:confirm: Enter produces the status message \"The case update was recorded.\"",
+     "pass": true,
+     "detail": [
+      "status:The case update was recorded."
+     ]
+    },
+    {
+     "id": "08:confirm:focus-kept",
+     "name": "08:confirm: focus is not lost to the page body",
+     "pass": true,
+     "detail": {
+      "tag": "p",
+      "id": null,
+      "label": "The case update was recorded.",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "08:review",
+     "name": "08: the review screen names a one-preference change that the employee must confirm",
+     "pass": true,
+     "detail": "Confirm case update This records the update and any remedy for the employee to see on reload. Next status Remedy proposed Reason A different body style is available; proposing one body style change. Next action Employee to confirm the body style change. Due, demo clock (UTC) 2026-11-25 09:00:00 UTC Remedy One preference change Preference Body Proposed value hatchback Employee confirmation Required through the employee brief Confirm case update Cancel update"
+    },
+    {
+     "id": "08:proposal-only",
+     "name": "08: the case holds a proposal and Paula's brief is still version 1 (estate): proposal and applied change stay distinct",
+     "pass": true,
+     "detail": {
+      "status": "remedy-proposed",
+      "remedy": {
+       "type": "preference-relaxation",
+       "decisionId": "offer-decision:03a16e3b3ca08331274c3f1261508343b6614a22ad8a54ee6a44a8ea73243b28",
+       "expectedBriefVersion": 1,
+       "path": "preferences.body.value",
+       "value": "hatchback",
+       "confirmationState": "employee-confirmation-required"
+      }
+     }
+    },
+    {
+     "id": "08-greg-remedy-proposed:layout",
+     "name": "08-greg-remedy-proposed: no horizontal scroll, nothing wider than the viewport",
+     "pass": true,
+     "detail": {
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "wide": []
+     }
+    },
+    {
+     "id": "08-greg-remedy-proposed:copy",
+     "name": "08-greg-remedy-proposed: no em dash in body text",
+     "pass": true
+    },
+    {
+     "id": "08-greg-remedy-proposed:console",
+     "name": "08-greg-remedy-proposed: no console errors, failed resources or CSP violations",
+     "pass": true,
+     "detail": {
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "csp": []
+     }
+    },
+    {
+     "id": "08-greg-remedy-proposed:status \"Remedy proposed\"",
+     "name": "08-greg-remedy-proposed: status \"Remedy proposed\"",
+     "pass": true
+    },
+    {
+     "id": "08-greg-remedy-proposed:proposed remedy section",
+     "name": "08-greg-remedy-proposed: proposed remedy section",
+     "pass": true
+    },
+    {
+     "id": "08-greg-remedy-proposed:\"Employee confirmation is recorded\" absent yet or confirmation required text",
+     "name": "08-greg-remedy-proposed: \"Employee confirmation is recorded\" absent yet or confirmation required text",
+     "pass": true
+    },
+    {
+     "id": "09:waiting",
+     "name": "09: Paula sees the proposed remedy waiting for her confirmation, not yet applied",
+     "pass": true,
+     "detail": "Skip to content Group Car Schemes Portal Paula (fictional) RENEWAL HELP Renewal help Remedies need the scheme team\u2019s decision. No specific next car or greater priority is guaranteed. Get help with your renewal RENEWAL CASE Remedy proposed Case reference renewal-ff2e22135f01bf5484b595d18eddfaf61d780c98 Owner Scheme team Reason The renewal deadline is close and no selection has been acknowledged. Latest update A different body style is available; proposing one body style change. Opened from Renewal deadline approaching Next action Employee to confirm the body style change. Due, demo clock (UTC) "
+    },
+    {
+     "id": "09:review:tab",
+     "name": "09:review: Tab alone reaches the control (5 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 5
+     }
+    },
+    {
+     "id": "09:review:focus-ring",
+     "name": "09:review: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Review body change",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "09:confirm:tab",
+     "name": "09:confirm: Tab alone reaches the control (8 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 8
+     }
+    },
+    {
+     "id": "09:confirm:focus-ring",
+     "name": "09:confirm: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Confirm preference change",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "09:confirm:status",
+     "name": "09:confirm: Enter produces the status message \"Your preference change was confirmed. The scheme team will review the current case.\"",
+     "pass": true,
+     "detail": [
+      "status:Loading presenter controls",
+      "alert:The demo was restarted. Reload the page to continue.Reload",
+      "status:Loading readback",
+      "status:Your preference change was confirmed. The scheme team will review the current case."
+     ]
+    },
+    {
+     "id": "09:confirm:focus-kept",
+     "name": "09:confirm: focus is not lost to the page body",
+     "pass": true,
+     "detail": {
+      "tag": "p",
+      "id": null,
+      "label": "Your preference change was confirmed. The scheme team will review the current ca",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "09-paula-confirmed-change:layout",
+     "name": "09-paula-confirmed-change: no horizontal scroll, nothing wider than the viewport",
+     "pass": true,
+     "detail": {
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "wide": []
+     }
+    },
+    {
+     "id": "09-paula-confirmed-change:copy",
+     "name": "09-paula-confirmed-change: no em dash in body text",
+     "pass": true
+    },
+    {
+     "id": "09-paula-confirmed-change:console",
+     "name": "09-paula-confirmed-change: no console errors, failed resources or CSP violations",
+     "pass": true,
+     "detail": {
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "csp": []
+     }
+    },
+    {
+     "id": "09-paula-confirmed-change:\"You confirmed this preference change\"",
+     "name": "09-paula-confirmed-change: \"You confirmed this preference change\"",
+     "pass": true
+    },
+    {
+     "id": "09-paula-confirmed-change:status still \"Remedy proposed\"",
+     "name": "09-paula-confirmed-change: status still \"Remedy proposed\"",
+     "pass": true
+    },
+    {
+     "id": "09-paula-confirmed-change:no-\"Resolved\"",
+     "name": "09-paula-confirmed-change: absent: \"Resolved\"",
+     "pass": true
+    },
+    {
+     "id": "09:brief2",
+     "name": "09: only now is there a confirmed brief version 2, with only the body style changed",
+     "pass": true,
+     "detail": {
+      "v": 2,
+      "body": "hatchback"
+     }
+    },
+    {
+     "id": "10:pick:tab",
+     "name": "10:pick: Tab alone reaches the control (4 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 4
+     }
+    },
+    {
+     "id": "10:pick:focus-ring",
+     "name": "10:pick: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-selection",
+      "label": "Choose a caseAlex (fictional) \u00b7 OpenPaula (fictional) \u00b7 Remedy proposed",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:pick:chosen",
+     "name": "10:pick: the select reads \"Paula (fictional) \u00b7 Remedy proposed\"",
+     "pass": true,
+     "detail": "Paula (fictional) \u00b7 Remedy proposed"
+    },
+    {
+     "id": "10:open:tab",
+     "name": "10:open: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "10:open:focus-ring",
+     "name": "10:open: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Open selected case",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:status:tab",
+     "name": "10:status: Tab alone reaches the control (8 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 8
+     }
+    },
+    {
+     "id": "10:status:focus-ring",
+     "name": "10:status: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "select",
+      "id": "gcsp-case-queue-1-status",
+      "label": "Choose the next statusIn progressResolvedClosed",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:status:chosen",
+     "name": "10:status: the select reads \"Resolved\"",
+     "pass": true,
+     "detail": "Resolved"
+    },
+    {
+     "id": "10:reason:tab",
+     "name": "10:reason: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "10:reason:focus-ring",
+     "name": "10:reason: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "textarea",
+      "id": "gcsp-case-queue-1-reason",
+      "label": "",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:next:tab",
+     "name": "10:next: Tab alone reaches the control (1 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 1
+     }
+    },
+    {
+     "id": "10:next:focus-ring",
+     "name": "10:next: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "textarea",
+      "id": "gcsp-case-queue-1-nextAction",
+      "label": "",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:review:tab",
+     "name": "10:review: Tab alone reaches the control (9 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 9
+     }
+    },
+    {
+     "id": "10:review:focus-ring",
+     "name": "10:review: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Review case update",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:confirm:tab",
+     "name": "10:confirm: Tab alone reaches the control (10 presses)",
+     "pass": true,
+     "detail": {
+      "tabs": 10
+     }
+    },
+    {
+     "id": "10:confirm:focus-ring",
+     "name": "10:confirm: the focused control shows a visible focus ring",
+     "pass": true,
+     "detail": {
+      "tag": "button",
+      "id": null,
+      "label": "Confirm case update",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:confirm:status",
+     "name": "10:confirm: Enter produces the status message \"The case update was recorded.\"",
+     "pass": true,
+     "detail": [
+      "status:The case update was recorded."
+     ]
+    },
+    {
+     "id": "10:confirm:focus-kept",
+     "name": "10:confirm: focus is not lost to the page body",
+     "pass": true,
+     "detail": {
+      "tag": "p",
+      "id": null,
+      "label": "The case update was recorded.",
+      "focusVisible": true,
+      "outline": "solid 2px",
+      "boxShadow": "none",
+      "ring": true
+     }
+    },
+    {
+     "id": "10:resolved",
+     "name": "10: the case is resolved with the employee-confirmed remedy at brief version 2",
+     "pass": true,
+     "detail": {
+      "status": "resolved",
+      "remedy": {
+       "type": "preference-relaxation",
+       "decisionId": "offer-decision:03a16e3b3ca08331274c3f1261508343b6614a22ad8a54ee6a44a8ea73243b28",
+       "expectedBriefVersion": 1,
+       "path": "preferences.body.value",
+       "value": "hatchback",
+       "confirmationState": "employee-confirmed",
+       "confirmedBy": "demo-paula",
+       "confirmedAt": "2026-11-24T09:00:00.000Z",
+       "briefVersion": 2
+      }
+     }
+    },
+    {
+     "id": "10-greg-resolved:layout",
+     "name": "10-greg-resolved: no horizontal scroll, nothing wider than the viewport",
+     "pass": true,
+     "detail": {
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "wide": []
+     }
+    },
+    {
+     "id": "10-greg-resolved:copy",
+     "name": "10-greg-resolved: no em dash in body text",
+     "pass": true
+    },
+    {
+     "id": "10-greg-resolved:console",
+     "name": "10-greg-resolved: no console errors, failed resources or CSP violations",
+     "pass": true,
+     "detail": {
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "csp": []
+     }
+    },
+    {
+     "id": "10-greg-resolved:Paula's case \"Resolved\" in the queue",
+     "name": "10-greg-resolved: Paula's case \"Resolved\" in the queue",
+     "pass": true
+    },
+    {
+     "id": "10:fit",
+     "name": "10: at 375 px the table stacks and Paula's Status and Owner are on screen without sideways scrolling",
+     "pass": true,
+     "detail": {
+      "width": 375,
+      "stacked": true,
+      "tableWidth": 341,
+      "status": {
+       "right": 358,
+       "text": "Resolved"
+      },
+      "owner": {
+       "right": 358,
+       "text": "Scheme team"
+      },
+      "picker": {
+       "widestOption": 191,
+       "room": 319,
+       "labels": [
+        "Choose a case",
+        "Alex (fictional) \u00b7 Open",
+        "Paula (fictional) \u00b7 Resolved"
+       ]
+      }
+     }
+    },
+    {
+     "id": "10:picker",
+     "name": "10: the widest case picker label fits inside the select",
+     "pass": true,
+     "detail": {
+      "widestOption": 191,
+      "room": 319,
+      "labels": [
+       "Choose a case",
+       "Alex (fictional) \u00b7 Open",
+       "Paula (fictional) \u00b7 Resolved"
+      ]
+     }
+    },
+    {
+     "id": "11-paula-resolved:layout",
+     "name": "11-paula-resolved: no horizontal scroll, nothing wider than the viewport",
+     "pass": true,
+     "detail": {
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "wide": []
+     }
+    },
+    {
+     "id": "11-paula-resolved:copy",
+     "name": "11-paula-resolved: no em dash in body text",
+     "pass": true
+    },
+    {
+     "id": "11-paula-resolved:console",
+     "name": "11-paula-resolved: no console errors, failed resources or CSP violations",
+     "pass": true,
+     "detail": {
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "csp": []
+     }
+    },
+    {
+     "id": "11-paula-resolved:status \"Resolved\"",
+     "name": "11-paula-resolved: status \"Resolved\"",
+     "pass": true
+    },
+    {
+     "id": "11-paula-resolved:\"Recorded remedy\"",
+     "name": "11-paula-resolved: \"Recorded remedy\"",
+     "pass": true
+    },
+    {
+     "id": "11-paula-resolved:\"You confirmed this preference change\"",
+     "name": "11-paula-resolved: \"You confirmed this preference change\"",
+     "pass": true
+    },
+    {
+     "id": "11-paula-resolved:no-\"Waiting for your confirmation\"",
+     "name": "11-paula-resolved: absent: \"Waiting for your confirmation\"",
+     "pass": true
+    },
+    {
+     "id": "11-paula-resolved:no-\"will review the case\" (FUCQ-261)",
+     "name": "11-paula-resolved: absent: \"will review the case\" (FUCQ-261)",
+     "pass": true
+    },
+    {
+     "id": "11:history",
+     "name": "11: the dated history shows system, employee and scheme-team entries in order",
+     "pass": true,
+     "detail": [
+      [
+       "system",
+       "open"
+      ],
+      [
+       "employee",
+       "open"
+      ],
+      [
+       "scheme-team",
+       "in-progress"
+      ],
+      [
+       "scheme-team",
+       "remedy-proposed"
+      ],
+      [
+       "scheme-team",
+       "resolved"
+      ]
+     ]
+    },
+    {
+     "id": "11:allocation",
+     "name": "11: across the whole case the only allocation input that moved is Paula's brief (the confirmed version 2)",
+     "pass": true,
+     "detail": [
+      "briefs"
+     ]
+    },
+    {
+     "id": "12:presenter-strip",
+     "name": "12: the presenter acting as Paula still gets the presenter strip on her help page",
+     "pass": true,
+     "detail": {
+      "present": true,
+      "hidden": false,
+      "summary": "Presenter controls"
+     }
+    },
+    {
+     "id": "12-presenter-help:layout",
+     "name": "12-presenter-help: no horizontal scroll, nothing wider than the viewport",
+     "pass": true,
+     "detail": {
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "wide": []
+     }
+    },
+    {
+     "id": "12-presenter-help:copy",
+     "name": "12-presenter-help: no em dash in body text",
+     "pass": true
+    },
+    {
+     "id": "12-presenter-help:console",
+     "name": "12-presenter-help: no console errors, failed resources or CSP violations",
+     "pass": true,
+     "detail": {
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "csp": []
+     }
+    },
+    {
+     "id": "run:no-403",
+     "name": "run: no presenter-controls 403 for the employee-only session (FUCQ-261)",
+     "pass": true
+    }
+   ],
+   "captures": [
+    {
+     "name": "375-07-paula-help-requested",
+     "as": "paula",
+     "innerWidth": 375,
+     "scrollWidth": 375,
+     "horizontalScroll": false,
+     "wideElements": [],
+     "scrollContained": [],
+     "emDash": false,
+     "consoleErrors": [],
+     "resourceErrors": [],
+     "cspViolations": [],
+     "file": "browser/375-07-paula-help-requested.png",
+     "bytesPng": 95936
+    },
+    {
+     "name": "375-08-greg-remedy-proposed",
+     "as": "greg",
+     "innerWidth": 375,
+     "scrollWidth": 375,
+     "horizontalScroll": false,
+     "wideElements": [],
+     "scrollContained": [],
+     "emDash": false,
+     "consoleErrors": [],
+     "resourceErrors": [],
+     "cspViolations": [],
+     "file": "browser/375-08-greg-remedy-proposed.png",
+     "bytesPng": 249925
+    },
+    {
+     "name": "375-09-paula-confirmed-change",
+     "as": "paula",
+     "innerWidth": 375,
+     "scrollWidth": 375,
+     "horizontalScroll": false,
+     "wideElements": [],
+     "scrollContained": [],
+     "emDash": false,
+     "consoleErrors": [],
+     "resourceErrors": [],
+     "cspViolations": [],
+     "file": "browser/375-09-paula-confirmed-change.png",
+     "bytesPng": 114018
+    },
+    {
+     "name": "375-10-greg-resolved",
+     "as": "greg",
+     "innerWidth": 375,
+     "scrollWidth": 375,
+     "horizontalScroll": false,
+     "wideElements": [],
+     "scrollContained": [],
+     "emDash": false,
+     "consoleErrors": [],
+     "resourceErrors": [],
+     "cspViolations": [],
+     "file": "browser/375-10-greg-resolved.png",
+     "bytesPng": 85139
+    },
+    {
+     "name": "375-11-paula-resolved",
+     "as": "paula",
+     "innerWidth": 375,
+     "scrollWidth": 375,
+     "horizontalScroll": false,
+     "wideElements": [],
+     "scrollContained": [],
+     "emDash": false,
+     "consoleErrors": [],
+     "resourceErrors": [],
+     "cspViolations": [],
+     "file": "browser/375-11-paula-resolved.png",
+     "bytesPng": 97697
+    },
+    {
+     "name": "375-12-presenter-help",
+     "as": "presenter-as-paula",
+     "innerWidth": 375,
+     "scrollWidth": 375,
+     "horizontalScroll": false,
+     "wideElements": [],
+     "scrollContained": [],
+     "emDash": false,
+     "consoleErrors": [],
+     "resourceErrors": [],
+     "cspViolations": []
+    }
+   ],
+   "steps": [
+    {
+     "id": "07a",
+     "via": "api",
+     "what": "Setup: reset, briefs, release, the real first offer opened from its outbox link and declined for body style over the offer routes, then a presenter tick to one week before the contract end. These are the setup steps of the e2e test.",
+     "repeatedBy": "'FUCQ-171 advanced help' step 1"
+    },
+    {
+     "id": "07",
+     "via": "browser",
+     "what": "Paula asks, reviews and confirms on /gcsp-help.html with Tab and Enter."
+    },
+    {
+     "id": "08",
+     "via": "browser",
+     "what": "Greg moves the case to In progress, then to Remedy proposed with one body-style change, with Tab, type-ahead selects and Enter on /gcsp-case-queue.html (FUCQ-122 remainder)."
+    },
+    {
+     "id": "09",
+     "via": "browser",
+     "what": "Paula reviews and confirms the single change on /gcsp-help.html (POST /api/gcsp/brief/change-after-decline). The control exists.",
+     "repeatedBy": "'FUCQ-171 advanced help' step 7"
+    },
+    {
+     "id": "10",
+     "via": "browser",
+     "what": "Greg resolves the confirmed case on /gcsp-case-queue.html with Tab, type-ahead selects and Enter, keeping the confirmed remedy."
+    },
+    {
+     "id": "11",
+     "via": "browser",
+     "what": "Paula reloads /gcsp-help.html and reads the persisted outcome."
+    },
+    {
+     "id": "12",
+     "via": "browser",
+     "what": "The presenter, acting as Paula, opens /gcsp-help.html; the strip loads as before (no PNG)."
+    }
+   ],
+   "observations": [],
+   "errors": [],
+   "failedRequests": [],
+   "processes": {
+    "chrome": {
+     "pid": 96468,
+     "group": 96468,
+     "debugPort": 9169
+    },
+    "server-help": {
+     "pid": 96464,
+     "port": 9160,
+     "note": "in-process loopback server"
+    }
+   },
+   "notes": [
+    "08:value: ArrowDown did not change the select, used selectOption index 1"
+   ],
+   "facts": {
+    "queueFit": {
+     "width": 375,
+     "stacked": true,
+     "tableWidth": 341,
+     "status": {
+      "right": 358,
+      "text": "Resolved"
+     },
+     "owner": {
+      "right": 358,
+      "text": "Scheme team"
+     },
+     "picker": {
+      "widestOption": 191,
+      "room": 319,
+      "labels": [
+       "Choose a case",
+       "Alex (fictional) \u00b7 Open",
+       "Paula (fictional) \u00b7 Resolved"
+      ]
+     }
+    }
+   },
+   "finishedAt": "2026-11-09T15:38:35.955Z",
+   "summary": {
+    "checks": 125,
+    "passed": 125,
+    "failed": [],
+    "captures": 6,
+    "pngs": 5
+   }
+  }
+ }
+}

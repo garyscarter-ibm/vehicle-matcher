@@ -6,7 +6,7 @@ gcsp-case-queue { display: block; min-width: 0; } .gcsp:has(> .gcsp-case-queue.i
 .gcsp .gcsp-greg-region:has(.gcsp-case-queue.is-embedded) { grid-column: 1 / -1; border-style: solid; padding: 20px; background: var(--gcsp-surface); }
 .gcsp .gcsp-case-queue-content, .gcsp .gcsp-case-work, .gcsp .gcsp-case-editor { display: grid; gap: var(--vm-space-5); min-width: 0; }
 .gcsp .gcsp-case-queue-content > .gcsp-case-actions { margin-block-start: 0; }
-.gcsp .gcsp-case-queue .gcsp-table { min-width: 1050px; }
+@media (min-width: 641px) { .gcsp .gcsp-case-queue .gcsp-table { min-width: 1050px; } } /* under 640 px the rows stack (FUCQ-261) */
 .gcsp .gcsp-case-work { padding-block-start: var(--vm-space-6); border-block-start: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-case-work > .vm-btn { justify-self: start; }
 .gcsp .gcsp-case-editor { max-width: 800px; }

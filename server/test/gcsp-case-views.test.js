@@ -234,6 +234,30 @@ test('FUCQ-259: the queue and case show a missed return by its keyed label; an u
   assert.match(root.textContent, /Opened fromMissed return of current car/); assert.match(root.textContent, /Opened fromMissed handover appointment/);
   assert.doesNotMatch(root.textContent, /—/);
 });
+test('FUCQ-261: the queue stacks at narrow widths with every column labelled, and the picker label is short', async () => {
+  const { root, destroy } = await mountQueue();
+  const region = root.querySelector('table').closest('.gcsp-table-wrap'); assert.ok(region.classList.contains('is-stack'));
+  const cells = [...root.querySelector('tbody tr').querySelectorAll('td')].map((td) => td.dataset.label);
+  assert.ok(cells.includes('Status') && cells.includes('Owner'), cells.join());
+  const labels = [...root.querySelector('[id$="-selection"]').options].slice(1).map((o) => o.textContent);
+  assert.ok(labels.every((label) => label.split(' · ').length === 2), labels.join()); destroy();
+  const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
+  assert.match(css, /@media \(min-width: 641px\) \{ \.gcsp \.gcsp-case-queue \.gcsp-table \{ min-width: 1050px; \} \}/);
+  const kit = readFileSync(new URL('../../blocks/gcsp/kit/gcsp-kit.css', import.meta.url), 'utf8');
+  assert.match(kit, /\.is-stack \.gcsp-table-td::before \{[^}]*min-width: min\(6em, 40%\)/, 'a stacked label cannot be squeezed by a long value');
+});
+test('FUCQ-261: a resolved case with a confirmed change promises no further review, for Paula or Greg', () => {
+  const remedy = { type: 'preference-relaxation', path: 'preferences.body.value', value: 'hatchback', expectedBriefVersion: 1, confirmationState: 'employee-confirmed' };
+  const base = { ...queueCaseFixtures()[0], remedy, relaxation: { applicable: false, confirmed: true, before: 'saloon', currentBriefVersion: 2 } };
+  const text = (c, audience) => { const root = host(); root.append(renderCaseContent(c, { audience })); return root.textContent; };
+  for (const status of ['resolved', 'closed']) {
+    assert.match(text({ ...base, status }, 'employee'), /You confirmed this preference change\./);
+    assert.doesNotMatch(text({ ...base, status }, 'employee'), /will review the case/);
+    assert.doesNotMatch(text({ ...base, status }, 'scheme-team'), /before resolving it/);
+  }
+  assert.match(text({ ...base, status: 'remedy-proposed' }, 'employee'), /The scheme team will review the case\./);
+  assert.match(text({ ...base, status: 'remedy-proposed' }, 'scheme-team'), /Review the case before resolving it\./);
+});
 test('embedded queue spans the Greg dashboard grid like the publish panel', () => {
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
   assert.match(css, /\.gcsp-greg-region:has\(\.gcsp-case-queue\.is-embedded\) \{[^}]*grid-column: 1 \/ -1/);
