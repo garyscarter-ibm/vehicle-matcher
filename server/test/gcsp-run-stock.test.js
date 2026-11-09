@@ -118,6 +118,23 @@ test('eligibility keys come from policy: evidenced AG codes map, others stay unm
   assert.ok(alt.every((row) => factOf(row, 'eligibilityModelKey') === 'G21 Touring|320i' && factOf(row, 'boot') === 500));
 });
 
+// FUCQ-229: live-sampled one-week lead times voided the second Next release.
+test('generated stock releases on every Next release across the run release windows', async (t) => {
+  const f = await compose(t, { environmentId: 'run-stock-every-window' });
+  const run = good(await f.repository.read(f.context, { table: 'runs', key: { runId: f.runId } }));
+  const windows = run.versions.stockGeneration.report.release.windows;
+  assert.ok(windows.length >= 2);
+  for (const [index, at] of windows.entries()) {
+    const reply = await tick(f, `every-window-${index}`);
+    assert.equal(reply.status, 'ok', JSON.stringify(reply));
+    const outcome = releaseOutcome(reply);
+    assert.equal(outcome.status, 'ok', JSON.stringify(outcome)); assert.equal(outcome.value.kind, 'stock-released');
+    assert.equal(outcome.value.releasedAt, at); assert.ok(outcome.value.orderUuids.length > 0);
+  }
+  const last = Date.parse(windows.at(-1));
+  assert.ok(generatedRows(await f.stock()).every((row) => Date.parse(`${factOf(row, 'confirmedDeliveryWeek')}T00:00:00.000Z`) > last));
+});
+
 test('generation unavailable or not configured falls back to demo stock and says why; a forced demo launcher skips it', async (t) => {
   const logs = [];
   const failing = { generate: async () => result('unavailable', { code: 'forced-failure', retryable: true }) };

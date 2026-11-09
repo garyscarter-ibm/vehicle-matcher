@@ -128,6 +128,18 @@ test('seeded stock is deterministic, weighted, explicitly fictional and unreleas
   assert.ok(a.reads.every((row) => row.runId === 'run-a' && row.policyVersion === 'fixture-policy-v1'));
 });
 
+// FUCQ-229: a window's backlog releases on later windows, so even a one-week lead must outlast every window.
+test('a one-week lead time keeps every confirmed delivery week after the last release window', async () => {
+  const a = await setup({ seeds: [await policyFixture([1, 1])] });
+  const result = await a.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(result.status, 'ok', JSON.stringify(result));
+  const last = Date.parse(result.value.report.release.windows.at(-1));
+  const rows = await stock(a.repository, 'run-a');
+  assert.ok(rows.length > 0 && rows.every((row) => fact(row, 'leadTimeWeeks') === 1));
+  assert.ok(rows.every((row) => Date.parse(`${fact(row, 'confirmedDeliveryWeek')}T00:00:00.000Z`) > last),
+    JSON.stringify([...new Set(rows.map((row) => fact(row, 'confirmedDeliveryWeek')))]));
+});
+
 test('idempotent regeneration and one new policy entry preserve other runs and retained run provenance', async () => {
   const first = await policyFixture();
   const changed = structuredClone(first); changed.policyVersion = 'fixture-policy-v2'; changed.effectiveFrom = '2026-11-06T00:00:00.000Z';
