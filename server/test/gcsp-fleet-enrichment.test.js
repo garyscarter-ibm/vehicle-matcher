@@ -214,3 +214,14 @@ test('v2 selection and source context substitutions are rejected before projecti
     assert.equal(output.resolvedConfiguration, undefined);
   }
 });
+
+test('v1 catalogue with every fact unknown keeps measurements completeness unknown (FUCQ-243)', async () => {
+  const source = await input(); const changed = structuredClone(snapshot); changed.measurements = {};
+  source.catalogue = await createBmwCatalogueAdapter({ loadSnapshot: async () => changed }).resolve(source.request);
+  const output = enrichConfiguration(source);
+  assert.ok(Object.values(output.facts).every((fact) => fact.state === 'unknown'));
+  assert.equal(output.completeness.measurements, 'unknown');
+  assert.equal(output.status, 'rejected');
+  const known = enrichConfiguration(await input());
+  assert.notEqual(known.completeness.measurements, 'unknown');
+});
