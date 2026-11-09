@@ -6,14 +6,21 @@ import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../g
 import { PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { BriefService } from '../gcsp/brief/index.js';
-import { createObservedLearningRecordService, validateLearningRecord } from '../gcsp/predict/records/index.js';
+import { createObservedLearningRecordService, SYNTHETIC_DECLINE_TYPE, validateLearningRecord } from '../gcsp/predict/records/index.js';
 import { createGcspRuntime } from '../gcsp/runtime.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { preference, essential, stock, fact } from './helpers/employee-recommendation.js';
+import { getReviewedDefinitionSet } from '../gcsp/policy/reviewed-definitions.js';
 
 const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
-async function setup() {
-  const policy = new PolicyService({ provider: { async loadVersions() { return [seed]; } } });
+const REVIEWED_REASONS = getReviewedDefinitionSet('offer-decline-reasons-v1').definitions.find((d) => d.key === 'offer.declineReasons.v1');
+const CODES = REVIEWED_REASONS.value.reasons.map((r) => r.code);
+// The registry is an assumption row, so each fixture publishes its own copy (null omits it).
+async function setup({ declineReasons = REVIEWED_REASONS.value } = {}) {
+  const source = structuredClone(seed);
+  if (declineReasons !== null) source.assumptions.push({ ...source.assumptions[0], key: REVIEWED_REASONS.key, value: structuredClone(declineReasons),
+    unit: REVIEWED_REASONS.unit, status: REVIEWED_REASONS.status, basis: REVIEWED_REASONS.basis });
+  const policy = new PolicyService({ provider: { async loadVersions() { return [source]; } } });
   const repository = createMemoryRepository({ store: createMemoryStore() });
   assert.equal((await repository.open()).status, 'ok');
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'learning-fixture', environmentKind: 'synthetic',
@@ -25,7 +32,7 @@ async function setup() {
   const paula = await identity.switchPrincipal(presenter.value.context, 'demo-paula', 'paula');
   const context = acting.value.context; const employee = paula.value.context;
   const brief = new BriefService({ repository, policy, clock, identity });
-  const service = createObservedLearningRecordService({ repository, clock, identity });
+  const service = createObservedLearningRecordService({ repository, clock, identity, policy });
   let sequence = 0;
   const write = async (work) => {
     const commandId = `fixture-${++sequence}`;
@@ -77,7 +84,7 @@ async function outcome(f, id, state = 'active', decision, options = {}) {
     if (decision) {
       r = await tx.insert('decisions', { runId: f.context.runId, decisionId: `decision-${id}`, commandId: `decision-${id}`,
         offerId: `offer-${id}`, employeeId: f.employee.employeeId, decision,
-        reason: { type: options.reasonType ?? 'body', text: 'PRIVATE-DECLINE', score: 99 },
+        reason: options.reason ?? { code: options.reasonCode ?? 'body-style', attribute: 'body', text: 'PRIVATE-DECLINE', score: 99 },
         versions: { brief: options.decisionBriefVersion ?? briefVersion, policy: f.context.policyVersion },
         outcome: { status: options.pending ? 'pending' : 'ok', score: 99, satisfaction: 99 }, actorId: 'PRIVATE-ACTOR' });
       if (r.status !== 'ok') return r;
@@ -121,7 +128,7 @@ test('repository fixtures keep offered, selected, accepted, declined, expired an
   assert.equal(accepted.outcomes.selection.state, 'unknown');
   const selected = rows.find((r) => r.outcomes.selection.state === 'selected');
   assert.equal(selected.outcomes.acceptance.state, 'unknown');
-  assert.equal(rows.find((r) => r.outcomes.decline.state === 'declined').outcomes.decline.reasonType, 'body');
+  assert.equal(rows.find((r) => r.outcomes.decline.state === 'declined').outcomes.decline.reasonType, 'body-style');
   assert.equal(rows.every((r) => r.outcomes.satisfaction.state === 'unknown'), true);
   const now = (await f.clock.now(f.context)).value.now;
   assert.equal(rows.every((r) => r.outcomes.offered.at === now), true);
@@ -179,9 +186,66 @@ test('missing or contradictory brief version references fail safely', async () =
 });
 
 test('unregistered decline reason becomes typed unclassified without free text', async () => {
-  const f = await setup(); await confirm(f); await outcome(f, 1, 'declined', 'decline', { reasonType: 'PRIVATE-NAME' });
+  const f = await setup(); await confirm(f); await outcome(f, 1, 'declined', 'decline', { reasonCode: 'PRIVATE-NAME' });
   const [r] = await records(f); assert.equal(r.outcomes.decline.reasonType, 'unclassified');
   assert.equal(JSON.stringify(r).includes('PRIVATE-'), false);
+});
+
+for (const r of REVIEWED_REASONS.value.reasons) {
+  test(`reviewed decline reason ${r.code} is recorded as its own learning reason`, async () => {
+    const f = await setup(); await confirm(f); await outcome(f, 1, 'declined', 'decline', { reasonCode: r.code });
+    const [row] = await records(f);
+    assert.equal(row.outcomes.decline.reasonType, r.code);
+    assert.equal(validateLearningRecord(row, { declineReasonCodes: CODES }).status, 'ok');
+  });
+}
+
+test('a reason added to the decline policy appears in learning records without a code change', async () => {
+  const added = { code: 'colour', label: 'Colour', attribute: 'colour' };
+  const f = await setup({ declineReasons: { schemaVersion: 1, reasons: [...REVIEWED_REASONS.value.reasons, added] } }); await confirm(f);
+  await outcome(f, 1, 'declined', 'decline', { reasonCode: added.code });
+  const [row] = await records(f); assert.equal(row.outcomes.decline.reasonType, 'colour');
+  assert.equal(validateLearningRecord(row, { declineReasonCodes: [...CODES, added.code] }).status, 'ok');
+  const plain = await setup(); await confirm(plain); await outcome(plain, 1, 'declined', 'decline', { reasonCode: added.code });
+  assert.equal((await records(plain))[0].outcomes.decline.reasonType, 'unclassified');
+});
+
+test('a reason outside the decline policy, or with no code, is unclassified and its text never survives', async () => {
+  const f = await setup(); await confirm(f);
+  await outcome(f, 1, 'declined', 'decline', { reasonCode: 'timing' });
+  await outcome(f, 2, 'declined', 'decline', { reason: { attribute: 'body', text: 'PRIVATE-DECLINE', score: 99 } });
+  const rows = await records(f);
+  assert.deepEqual(rows.map((r) => r.outcomes.decline.reasonType).sort(), ['unclassified', 'unclassified']);
+  assert.equal(JSON.stringify(rows).includes('PRIVATE-DECLINE'), false);
+});
+
+test('a missing, invalid or wrong-version decline policy fails closed instead of recording unclassified', async () => {
+  const missing = await setup({ declineReasons: null }); await confirm(missing);
+  const out = await read(missing);
+  assert.equal(out.status, 'unavailable'); assert.equal(out.code, 'decline-reasons-unavailable');
+  for (const declineReasons of [{ schemaVersion: 1, reasons: [] }, { schemaVersion: 1, reasons: [{ code: '' }] },
+    { schemaVersion: 1, reasons: [{ code: 'size' }, { code: 'size' }] }, { schemaVersion: 2, reasons: REVIEWED_REASONS.value.reasons }]) {
+    const invalid = await setup({ declineReasons }); await confirm(invalid);
+    assert.equal((await read(invalid)).code, 'decline-reasons-unavailable', JSON.stringify(declineReasons));
+  }
+  const f = await setup(); await confirm(f);
+  const real = f.policy.getAssumption.bind(f.policy);
+  const stale = Object.assign(Object.create(f.policy), { getAssumption: async (key, at) => {
+    const row = await real(key, at); return key === REVIEWED_REASONS.key ? { ...row, policyVersion: 'other-version' } : row; } });
+  assert.equal((await read(f, { policy: stale })).code, 'decline-reasons-unavailable');
+  assert.equal((await read(f)).status, 'ok');
+});
+
+test('validator checks observed decline codes against the reviewed list and keeps the synthetic type for synthetic records', async () => {
+  const f = await setup(); await confirm(f); await outcome(f, 1, 'declined', 'decline');
+  const [record] = await records(f);
+  assert.equal(record.outcomes.decline.reasonType, 'body-style');
+  assert.equal(validateLearningRecord(record).status, 'invalid');
+  assert.equal(validateLearningRecord(record, { declineReasonCodes: CODES }).status, 'ok');
+  const observed = structuredClone(record); observed.outcomes.decline.reasonType = SYNTHETIC_DECLINE_TYPE;
+  assert.equal(validateLearningRecord(observed, { declineReasonCodes: CODES }).status, 'invalid');
+  const synthetic = { ...observed, provenance: { kind: 'synthetic', generatorVersion: 'test-only', seed: 1 } };
+  assert.equal(validateLearningRecord(synthetic).status, 'ok');
 });
 
 test('validator rejects extra fields recursively, score outcomes and invalid synthetic provenance', async () => {
@@ -759,7 +823,7 @@ async function produce(t) {
 
 test('observed records from the real brief, offer, decision and expiry producers keep every outcome distinct', async (t) => {
   const { rt, greg, people, names } = await produce(t);
-  const out = await createObservedLearningRecordService({ repository: rt.repository, identity: rt.identity, clock: rt.clock }).readRecords(greg);
+  const out = await createObservedLearningRecordService({ repository: rt.repository, identity: rt.identity, clock: rt.clock, policy: rt.policy }).readRecords(greg);
   assert.equal(out.status, 'ok', JSON.stringify(out));
   const rows = out.value.records; assert.equal(rows.length, 3);
   const byImportance = (value) => { const found = rows.filter((r) => r.brief.preferences.body.importance === value);
@@ -767,7 +831,7 @@ test('observed records from the real brief, offer, decision and expiry producers
   const [paula, alex, sam] = [60, 80, 40].map(byImportance);
   const clockNow = (await rt.clock.now(greg)).value;
   for (const r of rows) {
-    assert.deepEqual(r.provenance, { kind: 'observed' }); assert.equal(validateLearningRecord(r).status, 'ok');
+    assert.deepEqual(r.provenance, { kind: 'observed' }); assert.equal(validateLearningRecord(r, { declineReasonCodes: CODES }).status, 'ok');
     assert.equal(r.timestamps.projectedAt, clockNow.now);
     assert.equal(r.brief.briefVersion, 1); assert.deepEqual(r.brief.essentials.seats, { value: 5, operator: 'gte', unit: 'count', state: 'confirmed' });
     assert.equal(r.brief.preferences.body.value, 'estate'); assert.equal(r.brief.preferences.body.importanceState, 'confirmed');
@@ -779,7 +843,7 @@ test('observed records from the real brief, offer, decision and expiry producers
   assert.equal(paula.outcomes.acceptance.state, 'accepted'); assert.equal(paula.outcomes.acceptance.at, '2026-11-05T12:05:00.000Z');
   assert.equal(paula.outcomes.selection.state, 'selected'); assert.equal(paula.outcomes.selection.at, '2026-11-05T12:05:00.000Z');
   for (const key of ['decline', 'expiry']) assert.equal(paula.outcomes[key].state, 'unknown');
-  assert.deepEqual(sam.outcomes.decline, { state: 'declined', at: '2026-11-05T12:10:00.000Z', reasonType: 'body' });
+  assert.deepEqual(sam.outcomes.decline, { state: 'declined', at: '2026-11-05T12:10:00.000Z', reasonType: 'body-style' });
   for (const key of ['acceptance', 'selection', 'expiry']) assert.equal(sam.outcomes[key].state, 'unknown');
   assert.deepEqual(alex.outcomes.expiry, { state: 'expired', at: '2026-11-05T14:00:00.000Z' });
   for (const key of ['acceptance', 'selection', 'decline']) assert.equal(alex.outcomes[key].state, 'unknown');

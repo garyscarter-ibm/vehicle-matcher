@@ -2,9 +2,7 @@ import { ok, result } from '../../repository/index.js';
 import { validInstant } from '../../policy/file-provider.js';
 
 export const LEARNING_RECORD_VERSION = 1;
-export const DECLINE_TYPES = Object.freeze(['body', 'fuel', 'sportiness', 'comfort', 'economy', 'size', 'seats', 'boot',
-  'equipment', 'frontIsofix', 'rearIsofix', 'modelLine', 'charging', 'other', 'timing', 'points', 'no-longer-needed',
-  'just-not-this-one', 'unclassified']);
+export const SYNTHETIC_DECLINE_TYPE = 'just-not-this-one';
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
   && [Object.prototype, null].includes(Object.getPrototypeOf(v));
 const exact = (v, keys) => object(v) && Object.keys(v).length === keys.length && keys.every((k) => Object.hasOwn(v, k));
@@ -55,9 +53,14 @@ const terms = (v) => evidence(v, (x) => exact(x, ['quoteRef', 'configurationId',
 const event = (v, allowed) => exact(v, ['state', 'at']) && allowed.includes(v.state) && instant(v.at)
   && (v.state !== 'unknown' || v.at === null);
 
+// Observed codes are the run's reviewed offer.declineReasons.v1 codes, so a classified observed decline needs them supplied.
+const validDeclineReason = (reasonType, provenance, declineReasonCodes) => reasonType === 'unclassified'
+  || provenance?.kind === 'synthetic' && reasonType === SYNTHETIC_DECLINE_TYPE
+  || provenance?.kind === 'observed' && Array.isArray(declineReasonCodes) && declineReasonCodes.includes(reasonType);
+
 // This closed envelope is also the synthetic generator's boundary. Extra fields are rejected
 // recursively rather than allowing source documents or personal free text into training input.
-export function validateLearningRecord(record) {
+export function validateLearningRecord(record, { declineReasonCodes } = {}) {
   const errors = [];
   const check = (field, valid) => { if (!valid) errors.push({ field, reason: 'Invalid learning-record field.' }); };
   const r = record;
@@ -85,7 +88,7 @@ export function validateLearningRecord(record) {
     && event(o.offered, ['offered', 'unknown']) && event(o.selection, ['selected', 'pending', 'unknown'])
     && event(o.acceptance, ['accepted', 'pending', 'unknown']) && event(o.expiry, ['expired', 'unknown'])
     && exact(o.decline, ['state', 'at', 'reasonType']) && event({ state: o.decline.state, at: o.decline.at }, ['declined', 'unknown'])
-    && (o.decline.state === 'declined' ? DECLINE_TYPES.includes(o.decline.reasonType) : o.decline.reasonType === null)
+    && (o.decline.state === 'declined' ? validDeclineReason(o.decline.reasonType, r.provenance, declineReasonCodes) : o.decline.reasonType === null)
     && exact(o.wait, ['state', 'at', 'reasonType']) && event({ state: o.wait.state, at: o.wait.at }, ['waited', 'unknown'])
     && (o.wait.state === 'waited' ? o.wait.reasonType === 'no-acceptable-choice' : o.wait.reasonType === null)
     && event(o.satisfaction, ['satisfied', 'dissatisfied', 'unknown']));
