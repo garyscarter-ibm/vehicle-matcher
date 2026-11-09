@@ -9,13 +9,13 @@ import { activityCopy as copy, activityEvents, searchLines, exclusionLines } fro
 
 let noteIds = 0;
 // Names the excluding essentials and offers two next steps; neither changes the brief.
-function nextSteps(lines, onReviewBrief) {
-  const box = el('div', 'gcsp-activity-why'); box.setAttribute('aria-live', 'polite');
+function nextSteps(lines, onReviewBrief, announce) {
+  const box = el('div', 'gcsp-activity-why');
   box.append(...lines.map((line) => el('p', '', line)));
   const actions = el('div', 'gcsp-activity-next'); const reviewable = typeof onReviewBrief === 'function';
   const review = button({ label: copy.reviewBrief, variant: 'ghost', onClick: reviewable ? () => onReviewBrief() : undefined, disabled: !reviewable });
   const keep = button({ label: copy.keepSearching, variant: 'ghost', onClick: () => {
-    const note = el('p', 'gcsp-activity-secondary', copy.keepNote); note.setAttribute('role', 'status');
+    const note = el('p', 'gcsp-activity-secondary', copy.keepNote); if (announce) announce(copy.keepNote); else note.setAttribute('role', 'status');
     keep.replaceWith(note); if (!reviewable) note.tabIndex = -1; (reviewable ? review : note).focus();
   } });
   if (!reviewable) {
@@ -25,22 +25,25 @@ function nextSteps(lines, onReviewBrief) {
   box.append(actions); return box;
 }
 
-export function activityBody({ result, onRetry, onPause, onResume, onReviewBrief, pending = false, offerDisplay, level = 1 } = {}) {
+export function activityBody({ result, onRetry, onPause, onResume, onReviewBrief, pending = false, offerDisplay, level = 1, announce } = {}) {
+  // A host that passes announce owns the view's one live region, so nothing here is live.
+  const hosted = typeof announce === 'function';
   const root = el('div', 'vm gcsp-activity'); root.destroy = () => {};
   const header = el('div', 'gcsp-activity-header');
   header.append(screenIntro({ title: copy.title, level, className: 'gcsp-activity-intro' })); root.append(header);
   if (result?.status !== 'ok' || !result.value) {
-    root.append(statusScreen({ title: 'Activity unavailable', message: copy.unavailable, role: 'alert',
+    if (hosted) announce(copy.unavailable);
+    root.append(statusScreen({ title: 'Activity unavailable', message: copy.unavailable, role: hosted ? null : 'alert',
       actions: [button({ label: 'Retry', onClick: onRetry, disabled: typeof onRetry !== 'function' })] }));
     return root;
   }
   const value = result.value;
-  if (!value.permission) { root.append(statusScreen({ title: 'No confirmed search', message: 'Confirm a search brief to begin.' }), syntheticNote()); return root; }
+  if (!value.permission) { root.append(statusScreen({ title: 'No confirmed search', message: 'Confirm a search brief to begin.', role: hosted ? null : 'status' }), syntheticNote()); return root; }
   const paused = value.permission.paused === true;
   // An accepted car ends the search, so it reads finished and offers no pause or resume.
   const finished = value.currentOffer?.state === 'accepted';
   const inactive = finished || paused || value.permission.canSearch !== true;
-  const status = el('p', `gcsp-activity-status${inactive ? ' is-inactive' : ''}`); status.setAttribute('role', 'status');
+  const status = el('p', `gcsp-activity-status${inactive ? ' is-inactive' : ''}`);
   status.append(svgIcon(inactive && !finished ? ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M9 8v8', 'M15 8v8']
     : ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M8 12l3 3 5-6']), document.createTextNode(finished ? copy.finished : inactive ? 'Inactive' : 'Active'));
   const state = el('div', 'gcsp-activity-state'); state.append(status); header.append(state);
@@ -63,7 +66,7 @@ export function activityBody({ result, onRetry, onPause, onResume, onReviewBrief
     feed.querySelector('.gcsp-timeline-note').after(checks); }
   const why = exclusionLines(value, paused);
   if (why.length) { const checks = feed.querySelector('.gcsp-activity-check-status');
-    if (checks) checks.after(nextSteps(why, onReviewBrief)); else feed.append(nextSteps(why, onReviewBrief)); }
+    if (checks) checks.after(nextSteps(why, onReviewBrief, hosted ? announce : undefined)); else feed.append(nextSteps(why, onReviewBrief, hosted ? announce : undefined)); }
   root.append(feed, syntheticNote());
   if (value.stateChangesEvidence?.status === 'incomplete') feed.append(el('p', 'gcsp-activity-secondary', 'Some activity could not be verified.'));
   return root;

@@ -18,7 +18,7 @@ test('mount waits for account, reads real adapter state and enables callback-own
   assert.equal(reads,0);loading.resolve(account);await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Active');
   const trigger=node.querySelector('.gcsp-action-trigger');trigger.focus();trigger.click();node.querySelector('[role="menuitem"]').click();
   await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Inactive');assert.equal(pauses,1);assert.equal(reads,2);
-  assert.equal(document.activeElement,node.querySelector('.gcsp-action-trigger'));assert.match(node.querySelector('.gcsp-activity-announcement[aria-live="polite"]').textContent,/paused/i);
+  assert.equal(document.activeElement,node.querySelector('.gcsp-action-trigger'));assert.match(node.querySelector('.gcsp-activity-announcement[role="status"]').textContent,/paused/i);
   node.querySelector('.gcsp-action-trigger').click();node.querySelector('[role="menuitem"]').click();await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Active');
   await stop.refresh();assert.equal(reads,4);stop();assert.equal(node.childElementCount,0);
 });

@@ -9,6 +9,7 @@ import { createOrderProgressHttpAdapter } from './order-progress-http.js';
 import { orderCopy } from './order-progress-copy.js';
 import { runRestartedScreen } from '../kit/run-restarted.js';
 import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
+import { viewStatus } from '../kit/view-status.js';
 
 export const ORDER_PROGRESS_DESTINATION = Object.freeze({ key: 'order-progress', label: 'Order progress', available: true,
   icon: Object.freeze(['M4 6l2 2 3-3', 'M4 14l2 2 3-3', 'M12 7h8', 'M12 15h8']) });
@@ -20,10 +21,11 @@ const changeKey = (state) => JSON.stringify(state.phase === 'ready' ? [state.pro
   (key, value) => (key === 'asOf' ? undefined : value));
 
 // Paints the controller's state into `host`; returns its teardown. Focus stays on a surviving control, else moves to the message.
-function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = true, reload }) {
+function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = true, reload, announce }) {
   let body; let controller; let stopped = false; let focusKey = null; let helps = []; let acted = null;
-  const content = el('div'); const live = el('p', 'gcsp-vh'); live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true');
-  host.replaceChildren(content, live);
+  // A host's announce replaces this view's own region, so the view never has two.
+  const content = el('div'); const own = typeof announce === 'function' ? null : viewStatus(); const say = own ? own.announce : announce;
+  host.replaceChildren(...[content, own?.root].filter(Boolean));
   const stopHelps = () => { helps.splice(0).forEach((stop) => { try { stop?.(); } catch { /* help already gone */ } }); };
   const has = (name) => (ready && typeof adapter[name] === 'function' ? (...args) => { acted = SECTION_OF[name]; return controller?.[name](...args); } : undefined);
   const paint = (state) => {
@@ -35,15 +37,15 @@ function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = 
     if (!state.pending && !state.message) acted = null;
     if (state.phase === 'none') {
       body = el('div', 'vm gcsp-order-progress');
-      body.append(screenIntro({ title: orderCopy.title, level }), statusScreen({ title: 'No order yet' }));
+      body.append(screenIntro({ title: orderCopy.title, level }), statusScreen({ title: 'No order yet', role: null }));
     } else if (state.phase === 'restarted') {
       body = el('div', 'vm gcsp-order-progress');
       body.append(screenIntro({ title: orderCopy.title, level }), runRestartedScreen({ reload }));
     } else {
       body = orderProgressBody({ progress: state.progress, car, pending: state.pending, message: state.message || undefined, messageSection: acted || undefined, level,
-        onRetry: ready ? () => controller?.refresh() : undefined, onCompleteTask: has('completeTask'), onRequestAppointment: has('requestAppointment'),
+        announce: say, onRetry: ready ? () => controller?.refresh() : undefined, onCompleteTask: has('completeTask'), onRequestAppointment: has('requestAppointment'),
         onAcceptAppointment: has('acceptAppointment'), onRequestReturn: has('requestReturn'), onAcceptReturn: has('acceptReturn'),
-        mountHelp: (node) => { helps.push(mountHelp(node, { embedded: true, adapter: helpAdapter, headingLevel: Math.min(level + 2, 4) })); } });
+        mountHelp: (node) => { helps.push(mountHelp(node, { embedded: true, adapter: helpAdapter, headingLevel: Math.min(level + 2, 4), announce: say })); } });
     }
     keepScroll(host.ownerDocument.defaultView, () => content.replaceChildren(body));
     if (!owned) { focusKey = null; return; }
@@ -62,7 +64,7 @@ function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = 
     const before = changeKey(owner.getState());
     const after = await owner.sync();
     if (stopped || after.phase !== 'ready' || changeKey(after) === before) return;
-    live.textContent = ''; live.textContent = 'Order progress updated.';
+    own?.clear(); say('Order progress updated.');
   };
   const unsubscribeClock = ready ? adapter.subscribeClock?.(() => { void sync(); }) : undefined;
   const stop = () => { stopped = true; unsubscribeClock?.(); stopHelps(); owner?.destroy(); };
@@ -71,7 +73,7 @@ function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = 
   return stop;
 }
 
-export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand = 'bmw', navigation, onNavigate, helpAdapter, embedded = false, headingLevel, signal, reload } = {}) {
+export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand = 'bmw', navigation, onNavigate, helpAdapter, embedded = false, headingLevel, signal, reload, announce } = {}) {
   let done = false; let stopBody; let stopShell;
   const abort = new AbortController();
   const teardown = () => {
@@ -85,7 +87,7 @@ export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand =
   signal?.addEventListener('abort', teardown, { once: true });
   if (embedded) {
     const wrap = el('div', 'gcsp'); root.replaceChildren(wrap);
-    stopBody = mountBody(wrap, { adapter, orderUuid, car, helpAdapter, level: headingLevel ?? 2, reload });
+    stopBody = mountBody(wrap, { adapter, orderUuid, car, helpAdapter, level: headingLevel ?? 2, reload, announce });
     return teardown;
   }
   stopShell = mountEmployee(root, { brand, view: ORDER_PROGRESS_DESTINATION.key, signal: abort.signal,
@@ -93,7 +95,7 @@ export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand =
     onNavigate: (to) => onNavigate?.(to),
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
     renderBody(main, { account }) {
-      stopBody = mountBody(main, { adapter, orderUuid, car, helpAdapter, level: headingLevel ?? 1, ready: account.status === 'ready', reload });
+      stopBody = mountBody(main, { adapter, orderUuid, car, helpAdapter, level: headingLevel ?? 1, ready: account.status === 'ready', reload, announce });
       const own = stopBody; return () => { own(); if (stopBody === own) stopBody = null; };
     } });
   if (done) stopShell();

@@ -19,7 +19,8 @@ export function caseFailure(envelope) {
 const emit = (root, type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
   { detail, bubbles: true, composed: true }));
 
-export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal, headingLevel = 1, commandId = () => `case-${globalThis.crypto.randomUUID()}` } = {}) {
+// announce: when a host passes it, the host owns the one live region and this body makes none.
+export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal, headingLevel = 1, announce, commandId = () => `case-${globalThis.crypto.randomUUID()}` } = {}) {
   headingLevel = Number.isInteger(headingLevel) && headingLevel >= 1 && headingLevel <= 4 ? headingLevel : 1;
   const childLevel = headingLevel + 1;
   const abort = new AbortController();
@@ -32,7 +33,8 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
   const id = `gcsp-help-${++serial}`;
   const wrap = el('div', 'gcsp');
   const page = el('div', 'vm gcsp-cases-body');
-  const status = el('p', 'gcsp-case-status'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
+  const status = el('p', 'gcsp-case-status');
+  if (typeof announce !== 'function') { status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite'); }
   status.tabIndex = -1;
   const content = el('div', 'gcsp-case-content');
   page.append(screenIntro({ title: 'Renewal help', level: headingLevel }), status, content); wrap.append(page); root.replaceChildren(wrap);
@@ -51,12 +53,13 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
   function draw(focusTo) {
     if (done) return;
     status.textContent = saving ? 'Saving your confirmed request.' : loading ? 'Loading renewal help.' : failure ? caseFailure(failure).title : message;
+    if (typeof announce === 'function' && !loading && status.textContent) announce(status.textContent);
     content.setAttribute('aria-busy', String(loading || saving));
     content.replaceChildren();
-    if (loading) { content.append(statusScreen({ title: 'Loading your cases', message: 'Reading the current demonstration run.' })); return; }
+    if (loading) { content.append(statusScreen({ title: 'Loading your cases', message: 'Reading the current demonstration run.', role: null })); return; }
     if (failure) {
       const shown = caseFailure(failure);
-      content.append(statusScreen({ title: shown.title, message: shown.text, role: 'alert',
+      content.append(statusScreen({ title: shown.title, message: shown.text, role: null,
         actions: [button({ label: 'Refresh cases', variant: 'ghost', disabled: saving, onClick: () => refresh() })] }));
       if (!cases.length && !review && !relaxation) return;
       if (cases.length) content.append(el('p', 'gcsp-note', 'Previously loaded case information is shown below. Refresh to check its current state.'));
@@ -93,7 +96,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
       confirmation.append(actions); entry.append(confirmation);
     }
     content.append(entry);
-    if (!cases.length) content.append(statusScreen({ title: 'No renewal case', message: 'Help is available if you need the scheme team to review your renewal.' }));
+    if (!cases.length) content.append(statusScreen({ title: 'No renewal case', message: 'Help is available if you need the scheme team to review your renewal.', role: null }));
     else {
       for (const c of cases) content.append(renderCaseContent(c, { headingLevel: childLevel, pending: saving || !!failure, onReviewRelaxation: (value) => {
         relaxation = value; draw('[data-confirm-relaxation]');
@@ -173,8 +176,8 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
   return destroy;
 }
 
-export function mountHelp(root, { adapter = createCaseHttpAdapter(), accountAdapter = createAccountHttpAdapter(), embedded = false, headingLevel = embedded ? 2 : 1, brand = 'bmw' } = {}) {
-  if (embedded) return mountHelpBody(root, { adapter, headingLevel });
+export function mountHelp(root, { adapter = createCaseHttpAdapter(), accountAdapter = createAccountHttpAdapter(), embedded = false, headingLevel = embedded ? 2 : 1, brand = 'bmw', announce } = {}) {
+  if (embedded) return mountHelpBody(root, { adapter, headingLevel, announce });
   let body;
   const shell = mountEmployee(root, { brand, view: 'help',
     navigation: EMPLOYEE_NAVIGATION.map((item) => item.key === 'help' ? { ...item, available: true, label: 'Renewal help' } : item),

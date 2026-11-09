@@ -108,7 +108,7 @@ test('FUCQ-215: after an accept the search reads finished and offers no pause or
   const accepted = structuredClone(fixtures['offer-declined']); accepted.value.currentOffer.state = 'accepted';
   const node = activityBody({ result: accepted, onPause: () => {}, onResume: () => {} }); document.body.append(node);
   const status = node.querySelector('.gcsp-activity-status');
-  assert.equal(status.textContent.trim(), 'Finished. You accepted a car.'); assert.equal(status.getAttribute('role'), 'status');
+  assert.equal(status.textContent.trim(), 'Finished. You accepted a car.'); assert.equal(status.hasAttribute('role'), false);
   assert.equal(node.querySelector('[aria-haspopup="menu"]'), null); assert.doesNotMatch(node.textContent, /Pause Search|Resume Search|\bActive\b|\u2014/);
   node.destroy?.(); node.remove();
 });
@@ -192,7 +192,7 @@ const step = (node, label) => [...node.querySelectorAll('button')].find((b) => b
 
 test('FUCQ-219: every car excluded by one essential reads "No released car has ..."', () => {
   const node = view('no-match-one'); assert.deepEqual(why(node), ['No released car has 5 seats.']);
-  assert.equal(node.querySelector('.gcsp-activity-why').getAttribute('aria-live'), 'polite'); clean(node);
+  assert.equal(node.querySelector('.gcsp-activity-why').hasAttribute('aria-live'), false); clean(node);
   assert.equal(lines(node)[0], 'Still searching. No match yet.'); node.destroy();
 });
 

@@ -402,12 +402,12 @@ test('failed draft reads and stale writes never emit success and refresh recover
     assert.equal(findButton(root, 'Choose a replacement').disabled, true);
     available = true; await destroy.refresh(); assert.equal(findButton(root, 'Choose a replacement').disabled, false);
     findButton(root, 'Choose a replacement').click(); await tick(); await tick();
-    assert.equal(starts, 1); assert.equal(events, 0); assert.match(root.querySelector('.gcsp-account-body [role="alert"]').textContent, /context has changed/);
+    assert.equal(starts, 1); assert.equal(events, 0); assert.match(root.querySelector('.gcsp-account-message').textContent, /context has changed/);
     assert.match(root.textContent, /Refresh and review/);
     const changed = accountFixture(); changed.value.account.name = 'Changed fictional employee';
     adapter.readAccount = async () => changed; await destroy.refresh();
     assert.match(root.querySelector('.gcsp-account-name').textContent, /Changed fictional employee/);
-    assert.equal(root.querySelector('.gcsp-account-body [role="alert"]'), null);
+    assert.equal(root.querySelector('.gcsp-account-message'), null);
   } finally { destroy(); root.remove(); }
 });
 
@@ -457,7 +457,7 @@ test('fresh account review can replace a stale intent using current source and d
     });
     findButton(root, 'Back to account').click();
     findButton(root, 'Choose a replacement').click(); await tick(); await tick();
-    assert.equal(events, 1); assert.match(root.querySelector('.gcsp-account-body [role="alert"]').textContent, /context has changed/);
+    assert.equal(events, 1); assert.match(root.querySelector('.gcsp-account-message').textContent, /context has changed/);
     assert.equal(calls.filter((call) => call.method === 'POST').length, 1);
     await destroy.refresh();
     assert.equal(findButton(root, 'Resume saved journey'), undefined);
@@ -481,7 +481,7 @@ test('new-order action retains the exact permitted scheme and empty slot intent 
     findButton(root, 'Start a new order').click(); await tick(); await tick();
     assert.deepEqual(request.action, accountFixture('no-current-car').value.actions[0]);
     assert.equal(request.action.action, 'order'); assert.equal(request.action.oldContractId, null);
-    assert.equal(events, 0); assert.match(root.querySelector('.gcsp-account-body [role="alert"]').textContent, /could not be saved/);
+    assert.equal(events, 0); assert.match(root.querySelector('.gcsp-account-message').textContent, /could not be saved/);
     assert.equal(root.querySelectorAll('.gcsp-feature').length, 0);
   } finally { destroy(); root.remove(); }
 });

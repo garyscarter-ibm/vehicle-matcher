@@ -5,6 +5,7 @@ import { createAccountHttpAdapter } from '../account/http-adapter.js';
 import { checkboxField, errorSummary } from '../kit/form-controls.js';
 import { stageList } from '../kit/stage-list.js';
 import { syntheticNote } from '../kit/synthetic-note.js';
+import { viewStatus } from '../kit/view-status.js';
 import { orderIdentityRows } from '../kit/order-identity.js';
 import { reviewVehicleView } from '../manual-review/gcsp-manual-review.js';
 import { createManualSummaryController } from './summary-controller.js';
@@ -54,7 +55,8 @@ function section(title, body, edit) {
 export function mountManualSummaryBody(root, { adapter = createManualSummaryHttpAdapter(), commandId, subscribeClock, onEditDetails,
   onChangeCar, onChangeChoices, onFinish, onBrowse, onReleased } = {}) {
   const prefix = `gcsp-summary-${++serial}`; let disposed = false; let leaving = null; let panel; let nodes; let outcomePanel; let outcome;
-  let signatures = {}; let declarationKey; let boxes = []; let announcedId; let outcomeKey;
+  let signatures = {}; let declarationKey; let boxes = []; let announcedId; let outcomeKey; let spokenNotice;
+  const status = viewStatus({ className: 'gcsp-vh gcsp-review-announcement' });
   const win = () => root.ownerDocument.defaultView;
   const notify = (type, detail) => root.dispatchEvent(new (win().CustomEvent)(type, { detail, bubbles: true, composed: true }));
   const controller = createManualSummaryController({ adapter, commandId, onChange: draw, onReleased(detail) {
@@ -70,7 +72,7 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
   const fill = (key, signature, host, build) => {
     if (signatures[key] === signature) return; signatures[key] = signature; host.replaceChildren(...build());
   };
-  function status(state) {
+  function statusFor(state) {
     const c = state.claim; const ready = c?.model && state.account && state.draft;
     if (state.phase === 'loading') return { title: 'Checking your order', message: 'Checking your order and reservation.', actions: [] };
     if (state.phase === 'unavailable') return { title: 'Order unavailable', message: 'We could not check your order. Your entries are retained. Check again.',
@@ -81,17 +83,16 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
       message: c?.model ? 'Your account or saved choices could not be read. Check again.' : claimMessages[c?.status] ?? claimMessages.unavailable, actions };
   }
   function drawStatus(state) {
-    const s = status(state); panel = null; outcomePanel = null; signatures = {};
+    const s = statusFor(state); panel = null; outcomePanel = null; signatures = {};
     root.replaceChildren(statusScreen({ title: s.title, message: s.message, actions: s.actions }));
   }
   function build() {
     panel = el('div', 'vm gcsp-summary-body'); signatures = {}; declarationKey = null; boxes = [];
-    nodes = { notice: el('p', 'gcsp-note'), timer: el('p', 'gcsp-review-countdown'), consequence: el('p', 'gcsp-note'), live: el('p', 'gcsp-review-announcement'),
+    nodes = { notice: el('p', 'gcsp-note'), timer: el('p', 'gcsp-review-countdown'), consequence: el('p', 'gcsp-note'),
       recovery: el('div', `gcsp-review-actions ${HIDE}`), vehicle: el('div', 'gcsp-review-vehicle'), left: el('div', 'gcsp-review-column'),
       right: el('div', 'gcsp-review-column'), declarations: el('div', 'gcsp-summary-declarations'), hint: el('p', 'gcsp-field-hint'),
       facts: {}, summary: errorSummary({ id: `${prefix}-errors`, title: 'Check your order', onSelect: (id) => root.ownerDocument.getElementById(id)?.focus() }) };
-    nodes.notice.id = `${prefix}-notice`; nodes.notice.tabIndex = -1; nodes.notice.setAttribute('role', 'status');
-    nodes.live.setAttribute('role', 'status'); nodes.live.setAttribute('aria-live', 'polite'); nodes.live.setAttribute('aria-atomic', 'true');
+    nodes.notice.id = `${prefix}-notice`; nodes.notice.tabIndex = -1;
     nodes.hint.id = `${prefix}-hint`;
     const edit = (label, hintText, run, ariaLabel) => {
       const area = el('div', `gcsp-summary-edit ${HIDE}`); const control = button({ label, variant: 'ghost', onClick: run });
@@ -113,7 +114,7 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
     nodes.right.append(nodes.sections.order, nodes.sections.driver, nodes.sections.contact, nodes.sections.returns);
     nodes.submit = button({ label: 'Submit order', describedBy: nodes.hint.id, onClick: () => controller.submit().then(after) });
     const actions = el('div', `gcsp-review-actions ${HIDE}`); actions.append(nodes.submit);
-    const time = el('section', 'gcsp-review-time'); time.append(nodes.timer, nodes.consequence, nodes.live);
+    const time = el('section', 'gcsp-review-time'); time.append(nodes.timer, nodes.consequence, status.root);
     const layout = el('div', 'gcsp-review-layout'); layout.append(nodes.left, nodes.right);
     nodes.declarationsCard = section('Before you submit', nodes.declarations);
     nodes.declarationsCard.querySelector('.gcsp-card-body').append(nodes.hint, actions);
@@ -162,12 +163,15 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
     nodes.consequence.textContent = unconfirmed ? 'This car is not shown as reserved until the claim is confirmed. Check current claim.'
       : t?.expired ? 'This deadline has passed. You cannot submit with this reservation.'
         : 'This car is reserved until the deadline. Submitting places your order.';
-    if (c.announcement?.id !== announcedId) { announcedId = c.announcement?.id; nodes.live.textContent = c.announcement?.text ?? ''; }
+    const spoken = [];
+    if (c.announcement?.id !== announcedId) { announcedId = c.announcement?.id; if (c.announcement?.text) spoken.push(c.announcement.text); }
     // A lapsed server deadline stays visible with its recovery while a slow recheck runs.
     const lapsed = !unconfirmed && Boolean(t?.expired);
     nodes.notice.textContent = state.status === 'submitting' ? 'Submitting your order.' : state.notice?.message
       ?? (lapsed && c.status === 'loading' ? claimMessages.expired : claimMessages[c.status])
       ?? (state.missing.length ? `Add the required details: ${state.missing.join(', ')}.` : '');
+    if (spokenNotice !== undefined && nodes.notice.textContent && nodes.notice.textContent !== spokenNotice) spoken.push(nodes.notice.textContent);
+    spokenNotice = nodes.notice.textContent; status.announce(spoken.join(' '));
     const why = state.canSubmit ? '' : state.missing.length ? `Add ${state.missing.join(', ').toLowerCase()} before you submit.`
       : !state.termsOk ? 'Submit is unavailable until the terms load.' : t?.expired ? 'Your reservation has expired.'
         : state.required.some((e) => state.ticks[e.id] !== true) ? 'Tick every declaration to submit.' : '';
@@ -190,12 +194,11 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
     const rb = readbackFor({ selection, account: state.account });
     const key = JSON.stringify([order.progress, order.operationState, order.order, state.account ? 1 : 0, state.busy]);
     if (!outcomePanel?.isConnected) {
-      outcomePanel = el('div', 'vm gcsp-summary-body gcsp-summary-outcome'); outcome = { live: el('p', 'gcsp-review-announcement'), body: el('div', 'gcsp-summary-outcome-body') };
-      outcome.live.setAttribute('role', 'status'); outcome.live.setAttribute('aria-atomic', 'true'); outcomePanel.append(outcome.live, outcome.body);
+      outcomePanel = el('div', 'vm gcsp-summary-body gcsp-summary-outcome'); outcome = { body: el('div', 'gcsp-summary-outcome-body') }; outcomePanel.append(status.root, outcome.body);
       panel = null; outcomeKey = null; root.replaceChildren(outcomePanel);
     }
     const announcement = `${v.title}. ${v.status}. ${rb.orderReference ? `Order reference ${rb.orderReference}. ` : ''}Car order number ${rb.orderNumber}.`;
-    if (outcome.live.textContent !== announcement) outcome.live.textContent = announcement;
+    status.announce(announcement);
     if (outcomeKey === key) return; outcomeKey = key;
     const focused = root.ownerDocument.activeElement?.textContent; const first = !outcome.body.childNodes.length;
     const data = sectionRows(rb); const mode = rb.mode === 'replacement';

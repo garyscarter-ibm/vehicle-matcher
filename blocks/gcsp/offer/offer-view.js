@@ -197,7 +197,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     if (hostsOrder) {
       const section = el('section', 'gcsp-offer-order'); section.setAttribute('aria-label', 'Your order progress');
       const { display, media } = model.card.members[0];
-      const cleanup = mountOrder(section, { orderUuid: model.orderUuid, car: { name: display?.name, photo: media?.src || undefined } });
+      const cleanup = mountOrder(section, { orderUuid: model.orderUuid, car: { name: display?.name, photo: media?.src || undefined }, announce });
       if (typeof cleanup === 'function') cleanupOrder = cleanup;
       content.append(section);
     }

@@ -2,6 +2,7 @@ import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-m
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
 import { syntheticNote } from '../kit/synthetic-note.js';
+import { viewStatus } from '../kit/view-status.js';
 import { createManualSetupController } from './setup-controller.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 
@@ -12,7 +13,7 @@ const facts = (rows) => factList(rows.map(([label, value, unit]) => ({ label, va
 export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', hint,
   onBack, onSupport, commandId } = {}) {
   const prefix = `gcsp-setup-${++sequence}`; const controls = {}; const fields = {};
-  let main; let panel; let summary; let state; let nodes; let disposed = false; let actionPending = false; let emitted = null;
+  let main; let panel; let summary; let state; let nodes; let status; const spoken = {}; let disposed = false; let actionPending = false; let emitted = null;
   const notify = (name, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(name,
     { detail, bubbles: true, composed: true }));
   const support = (route) => button({ label: route === 'hr-support' ? 'Correct employee details' : route === 'driver-support'
@@ -21,7 +22,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
       const message = route === 'hr-support' ? 'Contact HR support to correct employee details. No request has been sent.'
         : route === 'driver-support' ? 'Contact driver support to correct driver or licence details. No request has been sent.'
           : 'Contact scheme support to confirm your ordering details. No request has been sent.';
-      if (nodes) nodes.notice.textContent = message;
+      if (nodes) { nodes.notice.textContent = message; speak(); }
       else main.append(el('p', 'gcsp-note', message));
     } });
   const controller = createManualSetupController({ adapter, commandId, onChange: (next) => { state = next; draw(); } });
@@ -45,8 +46,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
       reasons: el('ul', 'gcsp-setup-reasons'), invalidation: el('p', 'gcsp-setup-invalidation'),
       availability: el('section', 'gcsp-setup-availability'), recovery: el('div', 'gcsp-setup-actions'),
       count: el('p', 'gcsp-field-hint'), employee: el('details', 'gcsp-details'), employeeFacts: el('div', '') };
-    nodes.notice.setAttribute('role', 'status'); nodes.invalidation.setAttribute('role', 'status');
-    nodes.availability.setAttribute('aria-live', 'polite'); nodes.availability.tabIndex = -1;
+    nodes.availability.tabIndex = -1; status = viewStatus();
     summary = errorSummary({ id: `${prefix}-errors`, onSelect: (id) => root.ownerDocument.getElementById(id)?.focus() });
     nodes.notice.tabIndex = -1; nodes.notice.id = `${prefix}-context`;
     const employeeSummary = el('summary', '', 'Employee details');
@@ -70,7 +70,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     form.append(driver, collection, contact, actions);
     form.addEventListener('submit', (event) => { event.preventDefault(); save('continue'); });
     panel.append(screenIntro({ title: 'Your order choices', level: 1 }), nodes.context, nodes.allowance, nodes.employee,
-      nodes.notice, nodes.recovery, summary.root, form, nodes.invalidation, nodes.availability, syntheticNote());
+      nodes.notice, nodes.recovery, summary.root, form, nodes.invalidation, nodes.availability, syntheticNote(), status.root);
     main.replaceChildren(panel);
   }
   function select(key, rows, idKey, label) {
@@ -80,6 +80,14 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     if (control.dataset.options !== signature) {
       control.replaceChildren(...values.map((row) => { const option = el('option', '', row.label); option.value = row.value;
         option.disabled = row.disabled; return option; })); control.dataset.options = signature;
+    }
+  }
+  // The one region speaks each changed notice, invalidation or availability result once.
+  function speak() {
+    const availability = nodes.availability.querySelector('h2, p')?.textContent ?? '';
+    for (const [key, text] of [['notice', nodes.notice.textContent], ['invalidation', nodes.invalidation.textContent], ['availability', availability]]) {
+      if (text && spoken[key] !== text) status.announce(text);
+      spoken[key] = text;
     }
   }
   function draw() {
@@ -150,6 +158,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
       el('p', 'gcsp-note', `${state.availability.value.total} eligible cars for your saved choices. Browsing does not reserve a car.`));
     else if (state.availability) nodes.availability.append(el('h2', 'gcsp-h2', 'Availability could not be refreshed'),
       el('p', 'gcsp-note', 'Your saved choices are retained.'), button({ label: 'Retry availability', variant: 'ghost', onClick: () => controller.refresh() }));
+    speak();
   }
   async function save(action) {
     if (actionPending || disposed) return;

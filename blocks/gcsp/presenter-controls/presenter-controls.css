@@ -3,7 +3,7 @@
 .gcsp-presenter-actions > .gcsp-field { flex: 1 1 220px; min-width: 0; }
 .gcsp-presenter-input { width: 100%; box-sizing: border-box; min-height: 44px; padding: 8px; color: var(--gcsp-text); background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); font: inherit; }
 .gcsp-presenter-confirmation, .gcsp-presenter-actions > p, .gcsp-presenter-results { flex-basis: 100%; overflow-wrap: anywhere; }
-.gcsp-presenter-confirmation[hidden] { display: none; }
+.gcsp-presenter-confirmation[hidden], .gcsp-presenter-controls .gcsp-note:empty { display: none; }
 .gcsp-presenter-handlers { padding-inline-start: 24px; overflow-wrap: anywhere; }
 @media (max-width: 600px) {
   .gcsp-presenter-actions > .gcsp-field, .gcsp-presenter-actions > button { flex: 1 1 100%; }

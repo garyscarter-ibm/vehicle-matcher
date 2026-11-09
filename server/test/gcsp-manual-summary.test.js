@@ -329,3 +329,15 @@ test('a slow recheck after expiry keeps the expiry message and Refresh stock', a
   await settle(() => /reservation has expired/i.test(f.root.querySelector('[id$="-notice"]')?.textContent ?? f.root.textContent));
   assert.doesNotMatch(f.root.textContent, /Checking your current claim/); assert.ok(named(f, 'Refresh stock'));
 });
+
+// FUCQ-285: the review and the placed order each speak through one region.
+const LIVE = '[aria-live]:not([aria-live="off"]),[role=status],[role=alert],[role=log],output';
+const liveRegions = (scope) => [...scope.querySelectorAll(LIVE)].filter((node) => !node.closest('.gcsp-presenter-controls, header'));
+test('FUCQ-285: the review and the placed order keep one live region and a plain notice', async (t) => {
+  const f = setup(t); await ready(f);
+  assert.ok(liveRegions(f.root).length <= 1, `review: ${liveRegions(f.root).map((n) => n.className).join(', ')}`);
+  assert.equal(f.root.querySelector('.gcsp-review-countdown').closest('[aria-live]'), null); assert.equal(f.root.querySelector('[id$="-notice"]').hasAttribute('role'), false);
+  tickAll(f); click(f, 'Submit order'); await settle(() => f.root.querySelector('.gcsp-summary-outcome'));
+  assert.equal(liveRegions(f.root).length, 1, 'outcome');
+  assert.match(f.root.querySelector('[role=status]').textContent, /Car order number 9000001/);
+});

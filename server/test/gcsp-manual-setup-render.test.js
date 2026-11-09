@@ -155,3 +155,14 @@ test('FUCQ-237: a site that cannot apply to the chosen contract and driver is ne
   assert.match(offered, /Fictional collection centre/); assert.equal(offered.includes('Fictional company site'), false);
   assert.equal(f.root.querySelector('.gcsp-setup-reasons').textContent.includes('Fictional company site'), false);
 });
+
+// FUCQ-285: setup speaks through one region; its notice and invalidation are plain.
+const LIVE = '[aria-live]:not([aria-live="off"]),[role=status],[role=alert],[role=log],output';
+const liveRegions = (scope) => [...scope.querySelectorAll(LIVE)].filter((node) => !node.closest('.gcsp-presenter-controls, header'));
+test('FUCQ-285: setup has one live region that speaks a changed notice', async (t) => {
+  const f = await setup(t); await waitFor(() => f.root.querySelector('form') && f.root.querySelector('.gcsp-setup-notice'));
+  assert.ok(liveRegions(f.root).length <= 1, liveRegions(f.root).map((n) => n.className).join(', '));
+  for (const node of f.root.querySelectorAll('.gcsp-setup-notice, .gcsp-setup-invalidation, .gcsp-setup-availability')) assert.equal(node.hasAttribute('role') || node.hasAttribute('aria-live'), false, node.className);
+  input(f, 'phone', '01632 960999'); await waitFor(() => /unsaved/.test(f.root.querySelector('.gcsp-setup-notice').textContent));
+  assert.equal(liveRegions(f.root).length, 1); assert.match(liveRegions(f.root)[0].textContent, /unsaved choices/);
+});

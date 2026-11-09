@@ -7,6 +7,7 @@ import { countdown } from '../employee/representative-body.js';
 import { toAccountView, journeyIntent } from './account-view.js';
 import { createAccountHttpAdapter } from './http-adapter.js';
 import { mountOrderProgress } from '../order-progress/gcsp-order-progress.js';
+import { viewStatus } from '../kit/view-status.js';
 import { latestOrderId } from '../order-progress/order-progress-controller.js';
 import { orderCar } from '../order-progress/order-car.js';
 import { sentence } from '../order-progress/order-progress-copy.js';
@@ -194,7 +195,7 @@ function orderStatus(order, host) {
   const link = button({ label: 'View order progress', variant: 'ghost', href: `#${host.id}`, onClick: (event) => {
     event.preventDefault(); host.tabIndex = -1; host.focus(); } });
   const node = statusScreen({ title: orderTitles[order.outcome] ?? 'Your order is in progress',
-    message: order.currentStage ? `Current step: ${sentence(order.currentStage)}.` : null, actions: [link] });
+    message: order.currentStage ? `Current step: ${sentence(order.currentStage)}.` : null, actions: [link], role: null });
   node.classList.add('gcsp-account-order-status');
   const { orderReference, orderNumber } = order.source ?? {};
   if (orderNumber || orderReferenceOf(orderReference)) node.querySelector('.vm-title').after(facts(orderIdentityRows(orderReference, orderNumber)));
@@ -216,13 +217,13 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   const toolbar = el('div', 'gcsp-actions');
   toolbar.append(button({ label: 'Refresh account', variant: 'ghost', disabled: pending, onClick: controls.refresh }));
   wrap.append(toolbar);
-  if (message) wrap.append(statusScreen({ title: message.title, message: message.text, role: message.error ? 'alert' : 'status' }));
+  if (message) { const note = statusScreen({ title: message.title, message: message.text, role: null }); note.classList.add('gcsp-account-message'); wrap.append(note); }
   const ordered = !journey && orderHost && model.state === 'no-entitlement' && order
     && model.slots.some((slot) => slot.entitlementSlotId === order.entitlementSlotId);
   if (ordered) wrap.append(orderStatus(order, orderHost));
   else if (states[model.state]) {
     const [title, text] = states[model.state];
-    wrap.append(statusScreen({ title, message: text, actions: [controls.supportButton(model.state === 'absent-hr-account'
+    wrap.append(statusScreen({ title, message: text, role: null, actions: [controls.supportButton(model.state === 'absent-hr-account'
       ? 'hr-support' : model.supportOwner, 'Contact support')] }));
   }
   if (!journey && orderHost) wrap.append(orderHost);
@@ -250,15 +251,15 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     if (journey) saved.append(button({ label: 'Back to account', variant: 'ghost', disabled: pending, onClick: controls.back }));
     wrap.append(saved);
   } else if (draft && !['ok', 'not-found'].includes(draft.status)) {
-    wrap.append(statusScreen({ title: 'Saved journey could not be read', message: 'Refresh before starting or resuming a journey.' }));
+    wrap.append(statusScreen({ title: 'Saved journey could not be read', message: 'Refresh before starting or resuming a journey.', role: null }));
   }
   if (model.account) {
     for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls));
     for (const car of model.currentOrders) wrap.append(orderCurrentCar(car, order, orderVehicle));
     // FUCQ-237: an order in progress replaces "No current car"; a declined order keeps it. A confirmed return (FUCQ-252) shows it.
     const none = !model.currentContracts.length && !model.currentOrders.length;
-    if (none && model.carReturned) wrap.append(statusScreen({ title: 'No current car', message: 'Your previous car has been returned. Your new car becomes current at handover.' }));
-    else if (none && !(ordered && order.outcome !== 'declined')) wrap.append(statusScreen({ title: 'No current car', message: 'No current vehicle is supplied for your account.' }));
+    if (none && model.carReturned) wrap.append(statusScreen({ title: 'No current car', message: 'Your previous car has been returned. Your new car becomes current at handover.', role: null }));
+    else if (none && !(ordered && order.outcome !== 'declined')) wrap.append(statusScreen({ title: 'No current car', message: 'No current vehicle is supplied for your account.', role: null }));
     for (const action of model.actions.filter((item) => item.action === 'order')) wrap.append(controls.startButton(action));
     const allowance = el('section', 'gcsp-allowance');
     allowance.append(el('h2', 'gcsp-h2', 'Your allowance'), facts([
@@ -317,7 +318,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   const abort = new AbortController();
   let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
   let generation = 0; let teardown; let loading; let finishPrint; let orderHost; let orderRow; let orderVehicle; let stopOrder; let restarted = false;
-  let syncVersion = 0; const live = el('p', 'gcsp-vh'); live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true');
+  let syncVersion = 0; const live = viewStatus();
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
   const read = async (name) => {
@@ -331,7 +332,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     resume: () => resume(),
     supportButton: (route, text) => button({ label: text, variant: 'ghost', onClick: () => {
       onSupport?.(route); notify('gcsp:support', { route });
-      message = { title: 'Support route', text: `${route}. This demo does not send a support request.` }; draw(true);
+      message = { title: 'Support route', text: `${route}. This demo does not send a support request.` }; live.clear(); draw(true);
     } }),
     startButton: (action) => button({ label: action.action === 'replace' ? 'Choose a replacement' : 'Start a new order',
       variant: !journey && offerHeld(offers) ? 'ghost' : 'primary',
@@ -360,6 +361,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   function draw(focus = false) {
     if (!main || disposed) return;
     renderAccountBody(main, { model: toAccountView(envelope), draft, offers, pending, message, journey, controls, orderHost, order: orderRow, orderVehicle, restarted, reload });
+    if (message) live.announce(`${message.title}. ${message.text}`);
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
   }
   // Only a listed order shows the area; a failed list leaves the account as it was (null = failed, orderUuid null = none).
@@ -383,7 +385,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   function mountOrder({ row, ...mount }) {
     orderRow = row; orderVehicle = mount.car;
     orderHost = el('section', 'gcsp-account-order'); orderHost.setAttribute('aria-label', 'Your order'); orderHost.id = `gcsp-account-order-${++serial}`;
-    stopOrder = mountOrderProgress(orderHost, { ...mount, adapter: orderAdapter, helpAdapter, embedded: true, headingLevel: 2, signal: abort.signal });
+    stopOrder = mountOrderProgress(orderHost, { ...mount, adapter: orderAdapter, helpAdapter, embedded: true, headingLevel: 2, signal: abort.signal, announce: live.announce });
   }
   async function loadAccount() {
     const version = ++generation;
@@ -400,14 +402,14 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   }
   async function refresh() {
     if (pending || disposed) return;
-    pending = true; message = null; restarted = false; draw();
+    pending = true; message = null; restarted = false; live.clear(); draw();
     teardown(); main = null;
     teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
     try { await loading; } finally { pending = false; draw(true); }
   }
   // Quiet re-read after a presenter action: the shell and order card stay mounted; a failed read leaves the view as it was.
   const FOCUSABLE = 'button, a[href]'; const ORDER_SECTION = '.gcsp-order-section';
-  const keepLive = () => { if (!live.isConnected) root.append(live); };
+  const keepLive = () => { if (!live.root.isConnected) root.append(live.root); };
   async function sync() {
     if (pending || disposed || !main) return;
     const version = ++syncVersion; const base = generation;
@@ -427,7 +429,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     const key = held ? focusKeyOf(held, ORDER_SECTION) : null;
     keepScroll(win, () => draw());
     if (key) { const target = findByFocusKey(main, key, FOCUSABLE, ORDER_SECTION) || main.querySelector('h1'); if (target?.tagName === 'H1') target.tabIndex = -1; target?.focus(); }
-    keepLive(); live.textContent = ''; live.textContent = 'Account updated.';
+    keepLive(); live.clear(); live.announce('Account updated.');
   }
   function emitSaved() {
     const value = draft.value;
@@ -477,7 +479,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   const shellAdapter = { loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
   teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
-  const destroy = () => { disposed = true; generation += 1; abort.abort(); finishPrint?.(); stopOrder?.(); teardown(); live.remove(); };
+  const destroy = () => { disposed = true; generation += 1; abort.abort(); finishPrint?.(); stopOrder?.(); teardown(); live.root.remove(); };
   destroy.refresh = refresh;
   destroy.sync = sync;
   return destroy;

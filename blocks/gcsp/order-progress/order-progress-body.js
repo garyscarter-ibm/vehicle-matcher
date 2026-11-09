@@ -215,16 +215,19 @@ function returnSection(c) {
 }
 
 export function orderProgressBody({ progress = {}, car, pending = false, message, messageSection, onRetry, onCompleteTask, onRequestAppointment, onAcceptAppointment,
-  onRequestReturn, onAcceptReturn, onHelp, mountHelp, level = 1 } = {}) {
+  onRequestReturn, onAcceptReturn, onHelp, mountHelp, level = 1, announce } = {}) {
+  // A host that passes announce owns the one live region; the message and status screens are then plain.
+  const hosted = typeof announce === 'function';
   const root = el('div', 'vm gcsp-order-progress');
   const sub = Math.min(level + 2, 6);
   root.append(screenIntro({ title: copy.title, level, className: 'gcsp-order-intro' }));
   const text = message?.text || (pending ? copy.updating : '');
   const live = text ? el('p', `gcsp-order-message${message?.error ? ' is-error' : ''}`, text) : null;
-  if (live) { live.setAttribute('role', message?.error ? 'alert' : 'status'); root.append(live); }
-  if (progress.phase === 'loading') { root.append(statusScreen({ title: copy.loading })); return root; }
+  if (live) { if (hosted) announce(text); else live.setAttribute('role', message?.error ? 'alert' : 'status'); root.append(live); }
+  if (progress.phase === 'loading') { root.append(statusScreen({ title: copy.loading, role: hosted ? null : 'status' })); return root; }
   if (progress.phase !== 'ready') {
-    root.append(statusScreen({ title: copy.unavailableTitle, message: copy.unavailable, role: 'alert',
+    if (hosted) announce(`${copy.unavailableTitle}. ${copy.unavailable}`);
+    root.append(statusScreen({ title: copy.unavailableTitle, message: copy.unavailable, role: hosted ? null : 'alert',
       actions: [button({ label: 'Retry', onClick: fn(onRetry) ? () => onRetry() : undefined, disabled: !fn(onRetry) })] }));
     return root;
   }
