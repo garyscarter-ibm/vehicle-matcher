@@ -1,5 +1,5 @@
 // FUCQ-248 run 1 UI/UX walk: presenter controls, Paula's journeys, offer decision. Offline host, memory repository.
-// Usage: WALK_W=1280|375 WALK_SECTION=<name> WALK_PORT=9290..9299 WALK_SCRATCH=<owned dir> node walk.mjs
+// Usage: [WALK_SECTIONS=sections-run2.mjs] WALK_W=1280|375 WALK_SECTION=<name> WALK_PORT=9290..9299 WALK_SCRATCH=<owned dir> node walk.mjs
 import { spawn } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
 import { mkdir, writeFile, appendFile } from 'node:fs/promises';
@@ -27,7 +27,7 @@ const note = (o) => { log.push(o); };
 
 async function startHost() {
   const env = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: join(scratch, 'tmp'), GCSP_RUNTIME: '1', GCSP_REPOSITORY_MODE: 'memory',
-    GCSP_OFFLINE: '1', GCSP_PUBLIC_ORIGIN: origin, DEMO_ACCESS_KEY: KEY, PORT: String(port) };
+    GCSP_OFFLINE: '1', GCSP_PUBLIC_ORIGIN: origin, DEMO_ACCESS_KEY: KEY, PORT: String(port), GCSP_COMPARISON_RESULT_FILE: process.env.WALK_COMPARISON || '' };
   child = spawn(process.execPath, ['index.js'], { cwd: SERVER_DIR, env, stdio: ['ignore', 'pipe', 'pipe'] });
   await appendFile(join(scratch, 'pids.txt'), `${child.pid} host ${port}\n`);
   let out = '';
@@ -151,7 +151,7 @@ async function main() {
   page.on('console', (m) => { if (m.type() === 'error') note({ consoleError: clip(m.text(), 200), at: page.url().replace(origin, '') }); });
   page.on('pageerror', (e) => note({ pageError: clip(e.message, 200) }));
   const H = { page: () => page, go, signIn, shot, tabWalk, ariaDump, reflow320, press, openStrip, dump, text, note, wait, clip, origin, W, OUT };
-  const mod = await import(join(HERE, 'sections.mjs'));
+  const mod = await import(join(HERE, process.env.WALK_SECTIONS || 'sections.mjs'));
   try { await mod[process.env.WALK_SECTION](H); note({ done: true }); } catch (e) { note({ error: clip(e.stack, 800) }); await shot('error', 'failure', { audit: false }).catch(() => {}); }
   await writeFile(join(OUT, 'log.json'), JSON.stringify(log, null, 1));
   await context.close().catch(() => {}); stop();
