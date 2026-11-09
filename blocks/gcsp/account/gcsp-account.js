@@ -200,6 +200,9 @@ function orderStatus(order, host) {
   return node;
 }
 
+// FUCQ-278: a pending newest offer is the one decision; manual car choices step back until it is made.
+const offerHeld = (offers) => offers?.[0]?.state === 'pending';
+
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
 export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls, orderHost, order, orderVehicle, restarted = false, reload } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
@@ -222,11 +225,13 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
       ? 'hr-support' : model.supportOwner, 'Contact support')] }));
   }
   if (!journey && orderHost) wrap.append(orderHost);
+  const held = !journey && offerHeld(offers) && Boolean(controls.openOffer);
   // An accepted newest offer has become an order, so its progress replaces the offer link.
   if (!journey && offers.length && offers[0].state !== 'accepted' && controls.openOffer) {
     const offer = el('section', 'gcsp-summary'); offer.setAttribute('aria-label', 'Your car offer');
     offer.append(el('h2', 'gcsp-h2', 'Your car offer'), el('p', 'gcsp-note', 'Your buddy found a car for you. Check its details and deadline.'),
-      button({ label: 'View your offer', disabled: pending, onClick: () => controls.openOffer(offers[0]) }));
+      button({ label: 'View your offer', disabled: pending, onClick: () => controls.openOffer(offers[0]) }),
+      ...(held ? [el('p', 'gcsp-note', 'Decide on your car offer before choosing another car.')] : []));
     wrap.append(offer);
   }
   // FUCQ-224: once the slot has an order, its progress replaces the saved journey card.
@@ -240,7 +245,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
         : 'Your order choices are saved. This is not an order confirmation.'),
       facts([row('Current car', contractModel(model, choices.oldContractId)), ...slotRows(model, choices.slotId)]));
     if (value.requiresRefresh) saved.append(el('p', 'gcsp-note', 'Your saved context has changed. Refresh, review the account below, then start the permitted journey again.'));
-    else saved.append(button({ label: 'Resume saved journey', disabled: pending, onClick: controls.resume }));
+    else saved.append(button({ label: 'Resume saved journey', variant: held ? 'ghost' : 'primary', disabled: pending, onClick: controls.resume }));
     if (journey) saved.append(button({ label: 'Back to account', variant: 'ghost', disabled: pending, onClick: controls.back }));
     wrap.append(saved);
   } else if (draft && !['ok', 'not-found'].includes(draft.status)) {
@@ -327,6 +332,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       message = { title: 'Support route', text: `${route}. This demo does not send a support request.` }; draw(true);
     } }),
     startButton: (action) => button({ label: action.action === 'replace' ? 'Choose a replacement' : 'Start a new order',
+      variant: !journey && offerHeld(offers) ? 'ghost' : 'primary',
       disabled: pending || draft?.status !== 'ok' && draft?.status !== 'not-found', onClick: () => start(action) }),
     print: (entry) => {
       const opened = [...entry.querySelectorAll('details')].filter((item) => !item.open);

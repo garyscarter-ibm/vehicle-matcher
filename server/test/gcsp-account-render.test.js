@@ -642,6 +642,28 @@ test('FUCQ-193: an accepted offer with its order in progress no longer offers "V
   assert.ok(findButton(pending.root, 'View your offer'), 'a pending newest offer keeps its link'); pending.destroy();
 });
 
+test('FUCQ-278: a held newest offer is the one primary action; saved journey and replacement step back but stay usable', async () => {
+  const draft = { status: 'ok', value: { draftStage: 'intent', choices: { mode: 'replacement', oldContractId: 'current:employee-paula',
+    slotId: 'slot-paula', schemeId: 'choices-fs-uk' }, draftVersion: 3, contextVersion: 'context', requiresRefresh: false } };
+  const adapter = (state) => ({ ...readOnlyAdapter(), readDraft: async () => draft,
+    readOffers: async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-1', runId: 'run-1', ...(state ? { state } : {}) }] } }) });
+  const held = await domMount(adapter('pending'));
+  try {
+    const variant = (text) => findButton(held.root, text).classList.contains('vm-btn-ghost');
+    assert.equal(findButton(held.root, 'View your offer').classList.contains('vm-btn-primary'), true);
+    assert.deepEqual(['Resume saved journey', 'Choose a replacement'].map(variant), [true, true]);
+    assert.ok(['Resume saved journey', 'Choose a replacement'].every((text) => !findButton(held.root, text).disabled));
+    assert.equal((held.root.textContent.match(/Decide on your car offer before choosing another car\./g) ?? []).length, 1);
+  } finally { held.destroy(); }
+  for (const state of ['declined', 'expired', undefined]) {
+    const other = await domMount(adapter(state));
+    try {
+      assert.deepEqual(['Resume saved journey', 'Choose a replacement'].map((text) => findButton(other.root, text).classList.contains('vm-btn-primary')), [true, true], String(state));
+      assert.doesNotMatch(other.root.textContent, /Decide on your car offer before/);
+    } finally { other.destroy(); }
+  }
+});
+
 test('FUCQ-193: the HTTP adapter reads the newest listed offer state, and a failed read keeps the link', async () => {
   const listed = { status: 'ok', value: { offers: [{ offerId: 'offer-2', runId: 'run-1', createdAt: null }, { offerId: 'offer-1', runId: 'run-1', createdAt: null }] } };
   const adapterFor = (offer) => { const urls = [];

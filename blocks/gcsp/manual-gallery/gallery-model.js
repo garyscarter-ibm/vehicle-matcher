@@ -55,7 +55,7 @@ function suppliedPoints(input) {
 }
 
 /** One exact decision becomes one shared-card view; source data remains intact in detail. */
-export function toManualCar(decision, versions = {}) {
+export function toManualCar(decision, versions = {}, { heldOffer = null, taken = false } = {}) {
   if (!exactDecision(decision)) throw new TypeError('Exact stock identity is required');
   const snapshot = decision.snapshot ?? {}; const facts = snapshot.facts ?? {}; const display = snapshot.display ?? {};
   const fields = {
@@ -79,6 +79,8 @@ export function toManualCar(decision, versions = {}) {
   const blockers = (decision.blockers ?? []).map((entry) => evidence(entry, 'blockers')); const unknowns = (decision.unknowns ?? []).map((entry) => evidence(entry, 'unknowns'));
   const reviewAvailable = gateStatus === 'eligible' && Boolean(issuedClaim(decision.claimInput, decision.orderUuid));
   const reason = gateStatus === 'ineligible' ? 'This car is not eligible.' : gateStatus === 'needs-confirmation' ? 'Confirm the missing information before reviewing this car.' : !reviewAvailable ? 'Refresh to review this car.' : null;
+  // FUCQ-278: a held buddy offer or a taken car blocks Review with a stated reason.
+  const blocked = heldOffer ? 'Decide on your car offer first.' : taken ? 'This car is no longer available.' : null;
   const identity = { orderUuid: decision.orderUuid, orderNumber: decision.orderNumber,
     configurationId: decision.configurationId, candidateKey: decision.candidateKey };
   const selectedImage = display.images?.find((image) => image.src === display.photo);
@@ -92,7 +94,7 @@ export function toManualCar(decision, versions = {}) {
     missingLabel: 'Not supplied', source: clone(contribution), provenance: clone(terms?.provenance) }], terms: [cost],
   decision: { gateStatus, score: null, reasons: [], tradeOffs: [], blockers, unknowns },
   versions: clone(decision.versions), evidence: clone(decision), actions: [{ id: 'review-car', kind: 'accept', label: 'Review this car',
-    disabled: !reviewAvailable, disabledReason: reason }] };
+    disabled: !reviewAvailable || Boolean(blocked), disabledReason: reason ?? blocked }] };
   const allFacts = Object.entries(facts).map(([key, source]) => row(key, factLabel(key), source)).map(shown);
   const exactFacts = allFacts.filter((fact) => ['confirmed-build', 'confirmed-listing', 'synthetic-scenario'].includes(fact.provenance?.assurance));
   const referenceFacts = allFacts.filter((fact) => fact.provenance?.assurance === 'model-reference');
@@ -139,8 +141,8 @@ function validReleaseHistory(value) {
 }
 
 /** History describes employee-visible releases, independently of current suitability. */
-export function toManualGallery(envelope, controls = {}) {
-  const empty = { cars: [], allCars: [], counts: { records: 0, eligible: 0, visible: 0, visibleEligible: 0 }, series: [], bodies: [], controls: { ...controls }, envelope: clone(envelope), releaseHistory: null };
+export function toManualGallery(envelope, controls = {}, extras = {}) {
+  const empty = { heldOffer: null, notice: null, cars: [], allCars: [], counts: { records: 0, eligible: 0, visible: 0, visibleEligible: 0 }, series: [], bodies: [], controls: { ...controls }, envelope: clone(envelope), releaseHistory: null };
   // A saved choice the server now refuses (a date past its window) needs the employee, not a retry (FUCQ-222).
   if (envelope?.status === 'invalid') return { ...empty, state: 'choices-invalid', invalidField: envelope.reasons?.[0]?.field ?? null };
   if (envelope?.status !== 'ok') return { ...empty, state: envelope?.status === 'stale-version' || envelope?.status === 'stale-run'
@@ -153,14 +155,17 @@ export function toManualGallery(envelope, controls = {}) {
     state: releaseHistory ? releaseHistory.history.state === 'none-visible' ? 'no-visible-releases' : 'empty-stock' : 'nothing-released-yet' };
   if (!['available-stock', 'no-eligible-stock', 'empty-stock'].includes(source?.state) || !Array.isArray(source?.decisions) || source.decisions.some((decision) => !exactDecision(decision))
     || new Set(source.decisions.map((d) => d.orderUuid)).size !== source.decisions.length) return { ...empty, state: 'source-unavailable' };
-  const allCars = source.decisions.map((decision) => toManualCar(decision, source.versions));
+  const held = extras.heldOffer ?? source.heldOffer; const takenIds = extras.takenIds ?? [];
+  const heldOffer = record(held) ? { offerId: text(held.offerId), runId: text(held.runId) } : null;
+  const notice = heldOffer ? 'offer-held' : extras.carTaken || takenIds.length ? 'car-taken' : null;
+  const allCars = source.decisions.map((decision) => toManualCar(decision, source.versions, { heldOffer, taken: takenIds.includes(decision.orderUuid) }));
   const query = String(controls.query ?? '').trim().toLocaleLowerCase('en-GB');
   const sort = MANUAL_SORTS.includes(controls.sort) ? controls.sort : 'name';
   const cars = allCars.filter((car) => (!query || searchable(car).includes(query)) && (!controls.series || car.series.value === controls.series)
     && (!controls.body || car.fields.body.value === controls.body)).sort((a, b) => optionalCompare(sortValue(a, sort), sortValue(b, sort))
       || compare(a.identity.orderNumber ?? a.id, b.identity.orderNumber ?? b.id) || compare(a.id, b.id));
   const eligible = allCars.filter((car) => car.gateStatus === 'eligible').length;
-  return { ...empty, state: !allCars.length ? releaseHistory?.history.state === 'none-visible' ? 'no-visible-releases' : 'empty-stock'
+  return { ...empty, heldOffer, notice, state: !allCars.length ? releaseHistory?.history.state === 'none-visible' ? 'no-visible-releases' : 'empty-stock'
     : !cars.length ? 'empty-search' : !eligible ? 'no-suitable-stock' : 'available-stock',
     releaseHistory, allCars, cars, counts: { records: allCars.length, eligible, visible: cars.length, visibleEligible: cars.filter((car) => car.gateStatus === 'eligible').length },
     series: options(allCars, (car) => car.series.value), bodies: options(allCars, (car) => car.fields.body.value), controls: { ...controls, sort },

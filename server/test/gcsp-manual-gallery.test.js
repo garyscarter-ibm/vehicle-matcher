@@ -131,10 +131,11 @@ test('controller browsing/detail/control operations have no write effect and onl
   assert.equal(result.value.configurationId, input.value.decisions[0].configurationId);
   assert.equal(controller.getState().cars[0].view.members[0].decision.score, null);
   assert.deepEqual(controller.getState().cars[0].view.members[0].decision.reasons, []);
-  controller.reportOutcome({ status: 'conflict', reason: 'occupied' }); assert.equal(controller.getState().state, 'car-taken');
-  controller.setControls({ query: '' }); assert.equal(controller.getState().state, 'car-taken');
+  controller.reportOutcome({ status: 'conflict', reason: 'occupied' }, { orderUuid: input.value.decisions[0].orderUuid });
+  assert.equal(controller.getState().state, 'available-stock'); assert.equal(controller.getState().notice, 'car-taken');
+  controller.setControls({ query: '' }); assert.equal(controller.getState().notice, 'car-taken');
   assert.equal(controller.review(input.value.decisions[0].orderUuid).status, 'unavailable');
-  await controller.refresh(); assert.equal(controller.getState().state, 'available-stock');
+  await controller.refresh(); assert.equal(controller.getState().state, 'available-stock'); assert.equal(controller.getState().notice, null);
   assert.equal(controller.review(input.value.decisions[0].orderUuid).value.commandId, result.value.commandId);
   assert.equal(commands, 1); controller.destroy();
 });
@@ -244,4 +245,45 @@ test('catalogue, mismatched snapshot stock and mismatched claim identities fail 
   }
   const incomplete = decision(1, { claimInput: { orderUuid: base.orderUuid } });
   assert.equal(toManualCar(incomplete).view.members[0].actions[0].disabled, true);
+});
+
+const claimed = (id = 1) => decision(id, { claimInput: { orderUuid: decision(id).orderUuid, expectedStockVersion: 3, expectedDraftVersion: 2,
+  expectedContextVersion: 'context-v1', expectedTermsDigest: 'digest' } });
+const withHeld = (cars, heldOffer) => { const input = envelope(cars); input.value.heldOffer = heldOffer; return input; };
+
+test('FUCQ-278: a held offer in browse blocks Review on every car with a stated reason and keeps the list and allowance', async () => {
+  const held = { offerId: 'buddy-offer:1', runId: 'run-1' };
+  const model = toManualGallery(withHeld([claimed(1), claimed(2)], held));
+  assert.deepEqual([model.state, model.notice, model.heldOffer, model.cars.length], ['available-stock', 'offer-held', held, 2]);
+  for (const car of model.cars) {
+    const action = car.view.members[0].actions[0];
+    assert.deepEqual([action.disabled, action.disabledReason], [true, 'Decide on your car offer first.']);
+  }
+  const free = toManualGallery(withHeld([claimed(1)], null));
+  assert.deepEqual([free.notice, free.heldOffer, free.cars[0].view.members[0].actions[0].disabled], [null, null, false]);
+  const handoffs = [];
+  const controller = createManualGalleryController({ adapter: { browseStock: async () => withHeld([claimed(1)], held) }, onReview: (v) => handoffs.push(v), commandId: () => 'id' });
+  await controller.load(); assert.equal(controller.review(claimed(1).orderUuid).status, 'unavailable'); assert.equal(handoffs.length, 0); controller.destroy();
+});
+
+test('FUCQ-278: an offer-held claim answer keeps the list, shows the held offer and blocks Review', async () => {
+  const controller = createManualGalleryController({ adapter: { browseStock: async () => envelope([claimed(1), claimed(2)]) }, onReview() {}, commandId: () => 'id' });
+  await controller.load(); assert.equal(controller.getState().notice, null);
+  controller.reportOutcome({ status: 'conflict', reason: 'offer-held', offerId: 'buddy-offer:9', runId: 'run-9', view: { action: 'view-offer' } }, { orderUuid: claimed(1).orderUuid });
+  const state = controller.getState();
+  assert.deepEqual([state.state, state.notice, state.heldOffer, state.cars.length], ['available-stock', 'offer-held', { offerId: 'buddy-offer:9', runId: 'run-9' }, 2]);
+  assert.ok(state.cars.every((car) => car.view.members[0].actions[0].disabled));
+  controller.destroy();
+});
+
+test('FUCQ-278: a single-car conflict keeps the list, counts and allowance and blocks only that car', async () => {
+  const controller = createManualGalleryController({ adapter: { browseStock: async () => envelope([claimed(1), claimed(2)]) }, onReview() {}, commandId: () => 'id' });
+  await controller.load(); const before = controller.getState().counts;
+  controller.reportOutcome({ status: 'conflict', reason: 'stock-unavailable' }, { orderUuid: claimed(1).orderUuid });
+  const state = controller.getState(); const [one, two] = state.cars.map((car) => car.view.members[0].actions[0]);
+  assert.deepEqual([state.state, state.notice, state.counts], ['available-stock', 'car-taken', before]);
+  assert.deepEqual([one.disabled, one.disabledReason, two.disabled], [true, 'This car is no longer available.', false]);
+  assert.equal(state.allCars[0].cost.allowance, 1300);
+  controller.reportOutcome({ status: 'unavailable' }); assert.equal(controller.getState().state, 'source-unavailable');
+  controller.destroy();
 });

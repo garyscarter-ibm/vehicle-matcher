@@ -58,9 +58,9 @@ export function createManualClaimController({ adapter, onChange = () => {}, onCo
     } else if (nonoccupying(claim) && resolvesAttempt(claim)) {
       attempt = null; publish({ state: 'released', blocked: false, claim, selection: null, commandId: null }); onReleased(claim);
     } else if (claim?.status === 'not-found' && (!attempt || definitive(attempt.receipt))) {
-      const failure = attempt?.receipt; attempt = null;
+      const failure = attempt?.receipt; const failed = attempt?.selection; attempt = null;
       publish({ state: failure ? 'failed' : 'ready', blocked: false, claim, selection: null, commandId: null, failure });
-      if (failure) onFailure(failure);
+      if (failure) onFailure(failure, failed);
     } else {
       const occupied = claim?.status === 'ok' && ['quoted', 'allocated'].includes(claim.value?.state);
       publish({ state: occupied ? attempt && claim.value.state !== 'allocated' ? 'readback-mismatch' : 'existing-claim'
