@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { createCollectionSession, assertCollectionHttpObservation } from './collection-session.mjs';
 import { publicBmwOperations, strictModelReport, bmwModelLineLocators, validatePublicBmwPlan } from './public-bmw-source.mjs';
-import { isBmwModelBatchPlan } from './bmw-public-registration.mjs';
+import { isBmwModelBatchPlan, bmwBatchPlanRequestUrls } from './bmw-public-registration.mjs';
 import { CollectionError, requireValue } from './configuration-key.mjs';
 
 export const BMW_SELECTION_CAPTURE_VERSION = 'bmw-complete-selection.v1';
@@ -69,7 +69,20 @@ export function publicBmwCompleteSelectionOperations(plan) {
     const bytes = encode(document);
     return { document, bytes: Buffer.byteLength(bytes), sha256: sha(bytes) };
   };
+  // A cached artifact has no live executor object, so its retained observation is checked field by field before any guard is restored.
+  const restoreArtifact = (name, descriptor) => async (artifact, request) => {
+    const document = artifact?.document; const observation = document?.observation; const urls = bmwBatchPlanRequestUrls(plan);
+    requireValue(object(artifact) && object(document) && document.schemaVersion === BMW_SELECTION_CAPTURE_VERSION && object(observation) && object(document.report)
+      && observation.operation === name && observation.sourceId === plan.source.id && observation.sourceVersion === plan.source.version
+      && typeof observation.observedAt === 'string' && observation.observedAt.slice(0, 10) === plan.qualificationDate
+      && inputDigest(observation.request) === inputDigest({ method: 'GET', url: urls[name] })
+      && artifact.sha256 === sha(encode(document)) && artifact.bytes === Buffer.byteLength(encode(document))
+      && document.requestSha256 === sha(encode(observation.request)) && document.rawSelectionSha256 === sha(encode(document.report)),
+    'capture-observation-mismatch', 'Retained observation evidence must match the selected plan, request and recorded hashes.');
+    await descriptor.restore(document.report, request); if (name === 'discover') treeObserved = true;
+  };
   return Object.fromEntries(Object.entries(base).map(([name, descriptor]) => [name, { ...descriptor, strictJson: true,
+    ...(typeof descriptor.restore === 'function' ? { restore: restoreArtifact(name, descriptor) } : {}),
     project: (value, request, metadata) => {
       if (name === 'discover') {
         const projected = descriptor.project(value, request, metadata);

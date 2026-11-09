@@ -1063,18 +1063,31 @@ function publicBmwBatchOperations(plan) {
   const requestRegistration = bmwBatchRequestRegistration(plan); const r = requestRegistration.model;
   const urls = bmwBatchPlanRequestUrls(plan); let treeHeader; let localisationHeader; let solverHeader; let qualifiedDefinitions;
   let treeQualified = false; let definitionsQualified = false;
+  const scanned = (result) => {
+    const secrets = [treeHeader, localisationHeader, solverHeader].flatMap((header) => header ? Object.values(header) : []);
+    JSON.stringify(result, (key, entry) => {
+      requireValue(secrets.every((secret) => !key.includes(secret) && (typeof entry !== 'string' || !entry.includes(secret))),
+        'source-sensitive-projection', 'No bootstrap profile value may enter any retained source projection.');
+      return entry;
+    });
+    return result;
+  };
   const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: plan.source.version,
     kind: 'read-only-http', capability, strictJson: true, requestRegistration, prepare: async () => ({ method: 'GET', url, headers: {} }),
-    project: (value, request, metadata) => {
-      const result = project(value, request, metadata);
-      const secrets = [treeHeader, localisationHeader, solverHeader].flatMap((header) => header ? Object.values(header) : []);
-      JSON.stringify(result, (key, entry) => {
-        requireValue(secrets.every((secret) => !key.includes(secret) && (typeof entry !== 'string' || !entry.includes(secret))),
-          'source-sensitive-projection', 'No bootstrap profile value may enter any retained source projection.');
-        return entry;
-      });
-      return result;
-    }, ...extra });
+    project: (value, request, metadata) => scanned(project(value, request, metadata)), ...extra });
+  // Shared by the fresh projector and the cache restore so both set the same in-memory guard.
+  const qualifyDefinitions = (report) => {
+    const definitions = report.candidates[0]?.definitions;
+    requireValue(report.status === 'schema-review-required' && report.candidates.length === 1 && report.candidates[0].pointer === ''
+      && definitions.every((row) => row.issues.length === 0), 'source-options-shape', 'Use one directly keyed typed source definition map.');
+    for (const request of requestRegistration.candidates) {
+      requireValue(request.includedElements.every((code) => definitions.some((row) => row.code === code && row.option === code))
+        && ['paint', 'fabric', 'rim'].every((type) => request.includedElements.filter((code) => definitions.some((row) => row.code === code && row.optionType === type)).length === 1),
+      'source-candidate-definition', 'Every candidate input and exactly one paint, fabric and rim must occur in the fresh source definitions.');
+      if (plan.source.version === BMW_MODEL_AXIS_BATCH_SOURCE_VERSION) validateBmwModelAxisBatchCandidateDefinitions(request, requestRegistration, definitions);
+    }
+    qualifiedDefinitions = definitions; definitionsQualified = true;
+  };
   const requested = (request) => {
     requireValue(requestRegistration.candidates.some((row) => same(row, request)), 'source-candidate-registration', 'Only the exact allocated candidate requests may execute.');
     return request;
@@ -1100,21 +1113,23 @@ function publicBmwBatchOperations(plan) {
     }, { prepare: async () => {
       requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only public tree header is unavailable.');
       return { method: 'GET', url: urls.discover, headers: treeHeader };
+    }, restore: (report) => {
+      requireValue(object(report) && (isBmwModelBatchPlan(plan) || Array.isArray(report.nodes) && report.nodes.length === r.aliases.length
+        && report.nodes.every((node) => object(node?.facts) && node.facts.modelCode === r.modelCode && node.facts.agModelCode === r.agModelCode
+          && node.facts.orderDate === r.orderDate && node.facts.effectDate === r.effectDate)),
+      'source-tree-shape', 'The retained model tree must match the registered full model.');
+      scanned(report); treeQualified = true;
     } }),
     options: descriptor('bmw-options', urls.options, (value) => {
-      const report = optionsShapeReport(value); const definitions = report.candidates[0]?.definitions;
-      requireValue(report.status === 'schema-review-required' && report.candidates.length === 1 && report.candidates[0].pointer === ''
-        && definitions.every((row) => row.issues.length === 0), 'source-options-shape', 'Use one directly keyed typed source definition map.');
-      for (const request of requestRegistration.candidates) {
-        requireValue(request.includedElements.every((code) => definitions.some((row) => row.code === code && row.option === code))
-          && ['paint', 'fabric', 'rim'].every((type) => request.includedElements.filter((code) => definitions.some((row) => row.code === code && row.optionType === type)).length === 1),
-        'source-candidate-definition', 'Every candidate input and exactly one paint, fabric and rim must occur in the fresh source definitions.');
-        if (plan.source.version === BMW_MODEL_AXIS_BATCH_SOURCE_VERSION) validateBmwModelAxisBatchCandidateDefinitions(request, requestRegistration, definitions);
-      }
-      qualifiedDefinitions = definitions; definitionsQualified = true; return report;
+      const report = optionsShapeReport(value); qualifyDefinitions(report); return report;
     }, { prepare: async () => {
       requireValue(treeQualified && localisationHeader, 'source-tree-required', 'Observe the full registered model before its options.');
       return { method: 'GET', url: urls.options, headers: localisationHeader };
+    }, restore: (report) => {
+      requireValue(treeQualified, 'source-tree-required', 'Restore the full registered model before its options.');
+      requireValue(object(report) && Array.isArray(report.candidates) && report.candidates.length === 1 && Array.isArray(report.candidates[0]?.definitions)
+        && report.candidates[0].definitions.every((row) => object(row) && Array.isArray(row.issues)), 'source-options-shape', 'Use one directly keyed typed source definition map.');
+      scanned(report); qualifyDefinitions(report);
     } }),
     solve: descriptor('bmw-solver', null, (value, request) => {
       requireValue(object(value) && typeof value.constructible === 'boolean', 'source-solver-shape', 'The source must declare constructibility.');
