@@ -26,6 +26,7 @@ export function gregOrderPlanExample() {
   section.append(screenIntro({ kicker: 'GCSP kit', title: 'Greg order plan: fixture', level: 2,
     lede: 'Synthetic states from fixtures. These panels do not call the order plan service.' }));
   for (const [name, title] of [['ready', 'Plan ready, with a long derivative name'], ['preview', 'Preview after a changed bound'],
+    ['learned', 'Synthetic-trained model beside the recommended plan'], ['learned-coverage', 'Synthetic-trained model outside its coverage'],
     ['infeasible', 'Infeasible preview'], ['stale', 'Replan needed']]) {
     const group = el('div', 'vm-gallery-gcsp-group'); const host = el('div', '');
     group.append(el('h3', 'vm-gallery-gcsp-title', title), host); section.append(group);
@@ -33,7 +34,7 @@ export function gregOrderPlanExample() {
     driveToState(host, name);
   }
   const links = el('p', 'gcsp-note', 'Every state on the dashboard harness: ');
-  for (const name of ['loading', 'ready', 'no-demand', 'preview', 'infeasible', 'stale', 'submitted', 'replanned', 'unavailable', 'refused']) {
+  for (const name of ['loading', 'ready', 'no-demand', 'preview', 'infeasible', 'stale', 'submitted', 'replanned', 'unavailable', 'refused', 'learned', 'learned-coverage']) {
     const link = el('a', '', name); link.href = `./gcsp-greg.html?fixture=populated&plan=${name}`; links.append(link, ' ');
   }
   section.append(links);

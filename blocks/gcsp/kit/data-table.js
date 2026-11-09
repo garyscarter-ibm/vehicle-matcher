@@ -1,4 +1,4 @@
-// dataTable: a real <table> in a keyboard-scrollable region. Cells are strings, numbers or { label, isBand }.
+// dataTable: a real <table> in a keyboard-scrollable region. Cells are strings, numbers, { label, isBand } or { label, emphasis } (bold).
 import { el } from '../../vehicle-matcher/ui.js';
 import { fillValue } from './metric-tile.js';
 
@@ -41,7 +41,8 @@ export function dataTable({ caption, columns = [], rows = [], emptyText = 'Nothi
       const first = i === 0;
       const cell = el(first ? 'th' : 'td', `${first ? 'gcsp-table-rowhead' : 'gcsp-table-td'}${column.numeric ? ' is-numeric' : ''}`);
       if (first) cell.scope = 'row';
-      fillValue(cell, data[column.key]);
+      const value = data[column.key];
+      if (value?.emphasis) { const strong = el('strong'); fillValue(strong, value); cell.append(strong); } else fillValue(cell, value);
       row.append(cell);
     });
     body.append(row);

@@ -263,3 +263,51 @@ test('a 401 with no status (lapsed access key) reads access-required; a status k
   assert.deepEqual(planOutcome(403, { error: 'Forbidden' }), { status: 'refused', message: PLAN_MESSAGES.refused });
   assert.deepEqual(planOutcome(401, { status: 'missing-session' }), { status: 'refused', message: PLAN_MESSAGES.refused });
 });
+
+// ---------- FUCQ-123: learned alternative ----------
+test('toPlanView maps an available learned result into rows, evaluation and model facts, in the presentation names', () => {
+  const l = view('learned').learned;
+  assert.deepEqual([l.status, l.label, l.comparable, l.changedCount], ['available', 'Synthetic-trained model', true, 5]);
+  const byName = Object.fromEntries(l.rows.map((r) => [r.name, r]));
+  assert.deepEqual([byName['3 Series Saloon 320i'].baseline, byName['3 Series Saloon 320i'].learned, byName['3 Series Saloon 320i'].difference, byName['3 Series Saloon 320i'].changed], ['0', '1', '+1', true]);
+  assert.deepEqual([byName['3 Series Touring 320i'].difference, byName['3 Series Touring 320i'].changed], ['-1', true]);
+  const i5 = l.rows.find((r) => r.name.startsWith('i5 Touring eDrive40 M Sport Pro')); assert.deepEqual([i5.difference, i5.changed], ['No change', false]);
+  assert.deepEqual([byName['Vehicles ordered'].difference, byName['Employees covered'].difference, byName['Unmet needs'].difference], ['No change', '+1', '-1']);
+  assert.deepEqual([byName.Spend.baseline, byName.Spend.learned, byName.Spend.difference], ['£146,000', '£143,000', '-£3,000']);
+  assert.deepEqual(l.rows.slice(0, 2).map((r) => r.changed), [true, true], 'changed derivatives come first');
+  assert.deepEqual([l.evaluation.learned.logLoss, l.evaluation.expressed.brier, l.evaluation.fit.logLoss, l.evaluation.count, l.evaluation.thin, l.evaluation.thinClasses],
+    ['0.912', '0.601', '1.086', 640, true, ['estate']]);
+  assert.match(l.model.artifact, /^[0-9a-f]{12}$/); assert.deepEqual([l.model.policy, l.model.data], ['gcsp-policy-v1', 'synthetic']);
+  assert.equal(l.limitations.length, 2);
+});
+
+test('toPlanView maps fallback and unavailable results with their limitation verbatim and coverage', () => {
+  const none = view('ready').learned; const raw = value('ready').learned;
+  assert.deepEqual([none.status, none.reason, none.limitation, none.coverage], ['fallback', 'no-active-model', raw.limitation, null]);
+  const out = view('learned-coverage').learned; assert.deepEqual([out.reason, out.coverage], ['outside-coverage', { cohorts: ['G8-10'], vehicleClasses: ['unknown'] }]);
+  assert.equal(out.limitation, value('learned-coverage').learned.limitation);
+  const v = value('ready'); v.learned = { status: 'unavailable', label: 'Synthetic-trained model', reason: 'x', limitation: 'Gone.' };
+  assert.deepEqual([toPlanView(v).learned.status, toPlanView(v).learned.limitation], ['unavailable', 'Gone.']);
+  v.learned = { status: 'mystery' }; assert.equal(toPlanView(v).learned.status, 'unavailable'); assert.match(toPlanView(v).learned.limitation, /only the baseline plan is shown/);
+  v.learned = { status: 'fallback', reason: 'r', limitation: '' }; assert.match(toPlanView(v).learned.limitation, /only the baseline plan is shown/);
+});
+
+test('an absent learned field maps to null and leaves every other view field unchanged', () => {
+  const v = value('ready'); const before = toPlanView(v); delete v.learned;
+  const after = toPlanView(v); assert.equal(after.learned, null);
+  assert.deepEqual({ ...before, learned: null }, after);
+  const a = value('learned'); const withLearned = toPlanView(a); a.learned = learnedFallbackFor(); assert.deepEqual({ ...withLearned, learned: null }, { ...toPlanView(a), learned: null });
+});
+function learnedFallbackFor() { return value('ready').learned; }
+
+test('an uncomparable learned result has no rows, and a result without metrics has no evaluation', () => {
+  const v = value('learned'); v.learned.differences = { comparable: false, derivatives: [] }; v.learned.forecast.evaluation = {};
+  const l = toPlanView(v).learned; assert.deepEqual([l.comparable, l.rows, l.evaluation], [false, [], null]);
+});
+
+test('the learned fixtures reach the adapter by name and the learned preview carries an available result', async () => {
+  for (const name of ['learned', 'learned-coverage']) assert.ok(FIXTURE_NAMES.includes(name));
+  assert.equal((await planFixtureAdapter('learned').previewPlan()).value.learned.status, 'available');
+  assert.equal((await planFixtureAdapter('ready').previewPlan()).value.learned.status, 'fallback');
+  for (const name of ['learned', 'learned-coverage']) assert.equal(JSON.stringify(value(name)).includes('—'), false);
+});
