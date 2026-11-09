@@ -1161,6 +1161,20 @@ result again changes nothing and editing is refused (`immutable-row`).
 `policyCurrent` is false once PolicyService's active version at `asOf` differs from the recorded one. No result is
 `not-found`.
 
+## Offline preparation and stored read · FUCQ-137
+
+Presenter-run preparation only. Nothing runs at startup or on a timer, and the browser cannot start a comparison.
+
+**Command.** `node scripts/gcsp-comparison.mjs --experiment process [--seeds a,b,c] [--out <file>]` runs FUCQ-136's shared runner, prints the measures table and stores the immutable result through the configured repository (`GCSP_REPOSITORY_MODE`: memory by default, or `postgres` with `GCSP_DATABASE_URL`). `--out` writes the verified file after a successful run and before storing, so a storage failure keeps it. `--import <file>` stores an existing file without running anything. Exit codes: 0 stored, 2 refused input or file, 1 execution or storage failure. A failed run stores nothing; memory mode keeps nothing after the command ends.
+
+**Result file.** `{ format: 'gcsp-process-comparison-result-v1', digest, result }`. Import refuses a changed digest, another format, or a result this version does not understand (kind, experiment, schema version or caveat), and stores nothing.
+
+**Runtime load.** `GCSP_COMPARISON_RESULT_FILE=<file>` opts in to loading a file when the runtime opens. It stores through the same immutable path, so reopening changes nothing. A missing or refused file logs one warning and startup continues.
+
+**Read route.** `GET /api/gcsp/comparison/process/latest` serves Greg and presenter; other roles get 403 `forbidden`, and any query gets 400 `unsupported-query`. Success is `200 { status: 'ok', value: { result, resultId, storedAt, policyVersion, activePolicyVersion, policyCurrent } }`; `policyCurrent` is false once the active policy version at `asOf` differs from the stored one. `404 not-found` means nothing is stored; `503 unavailable` is a read failure. `asOf` comes from the demo clock.
+
+**Read shape for FUCQ-138.** `result.measures.current` and `result.measures.buddy` hold each measure as `{ mean, min, max, observedSeeds }`, with `accessGroupCoverage` keyed by group. `result.differences` has one entry per measure and access group: `{ measure, betterWhen, current, buddy, difference, verdict }`, where verdict is `insufficient-seeds`, `no-clear-difference`, `buddy-better` or `current-better`. Also read `result.assumptions` (each with `status` and `basis`), `result.manifest.seeds`, `policyVersion`, `completedAt`, `caveat` and `limitations`. The buddy route's limitations include: after an offer expires the live service re-offers its car at once (FUCQ-227); the replay leaves it for the next release.
+
 ## Named scenario catalogue and preparation · FUCQ-125
 
 `createScenarioService({ repository, policy, clock, identity })` uses the opened application repository and the actual `PolicyService`, `DemoClock` and `DemoIdentityAdapter` instances. `readCatalogue(context)`, `readState(context)` and `reset(context, command)` are presenter-only. No schema, policy seed or runtime dependency is added. The catalogue is `gcsp-scenario-catalogue-v1`; its first six stable IDs are `main-successful-journey`, `no-suitable-match`, `decline-then-change`, `offer-expires`, `data-unavailable`, and `uncertain-handoff`. FUCQ-109 and FUCQ-127–131 own their business replays. A seventh `gcsp-clock-scenario-v1` entry is explicitly fictional clock/reset mechanics support, never evidence of those six journeys or the real corpus.

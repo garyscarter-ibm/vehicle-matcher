@@ -9,12 +9,17 @@ import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { runComparison } from '../gcsp/comparison/experiments.js';
-import { readLatestComparisonResult, COMPARISON_RESULTS_ENVIRONMENT, COMPARISON_RESULTS_RUN } from '../gcsp/comparison/results.js';
+import { readLatestComparisonResult, storeComparisonResult, COMPARISON_RESULTS_ENVIRONMENT, COMPARISON_RESULTS_RUN } from '../gcsp/comparison/results.js';
 import { parseComparisonArgs, runComparisonCli, writeComparisonResultFile, readComparisonResultFile, importComparisonResult,
   COMPARISON_CLI_CONTEXT } from '../gcsp/comparison/job.js';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/memory.js';
 import { createPostgresRepository } from '../gcsp/repository/postgres.js';
 import { inputDigest } from '../gcsp/repository/core.js';
+import { once } from 'node:events';
+import { createComparisonResultRoutes, createComparisonResultService } from '../gcsp/comparison/http.js';
+import { createDemoRuntime } from '../gcsp/clock/index.js';
+import { createGcspRuntime } from '../gcsp/runtime.js';
+import { buildServer } from '../index.js';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const buddyFixture = JSON.parse(readFileSync(new URL('./fixtures/gcsp-comparison-buddy-outcomes.json', import.meta.url), 'utf8'));
@@ -268,3 +273,140 @@ test('postgresql: the command stores into a temporary schema and reads the resul
     finally { await pool.end(); }
   }
 });
+
+// The stored read has its own environment, so identity and clock come from a separate demo runtime.
+const readFixture = async (repository) => {
+  const runtime = await createDemoRuntime({ repository, policy, environmentId: 'comparison-read-test', environmentKind: 'synthetic',
+    policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T00:00:00.000Z' });
+  assert.equal(runtime.status, 'ok', JSON.stringify(runtime));
+  const { clock, identity } = runtime.value;
+  const presenter = await identity.createPresenterSession('comparison-read-presenter');
+  const greg = await identity.switchPrincipal(presenter.value.context, 'demo-greg', 'comparison-read-greg');
+  const paula = await identity.switchPrincipal(presenter.value.context, 'demo-paula', 'comparison-read-paula');
+  return { clock, identity, sessions: { presenter, greg, paula } };
+};
+
+test('the stored read serves Greg and presenter, refuses employees, and reports whether the policy is current', async () => {
+  const repository = await openRepository();
+  const f = await readFixture(repository);
+  const [greg, paula, presenter] = [f.sessions.greg, f.sessions.paula, f.sessions.presenter].map((session) => session.value.context);
+  const service = createComparisonResultService({ repository, policy, clock: f.clock, identity: f.identity });
+  assert.equal((await service.readLatest(greg)).status, 'not-found');
+  assert.equal((await service.readLatest(paula)).status, 'forbidden');
+  const saved = await storeComparisonResult(repository, COMPARISON_CLI_CONTEXT, direct);
+  assert.equal(saved.status, 'ok', JSON.stringify(saved));
+  for (const context of [greg, presenter]) {
+    const found = await service.readLatest(context);
+    assert.equal(found.status, 'ok', JSON.stringify(found));
+    assert.deepEqual(found.value.result, direct);
+    assert.equal(found.value.resultId, saved.value.resultId);
+    assert.equal(found.value.policyVersion, direct.manifest.policyVersion);
+    assert.equal(found.value.activePolicyVersion, direct.manifest.policyVersion);
+    assert.equal(found.value.policyCurrent, true);
+  }
+  assert.equal((await service.readLatest(paula)).status, 'forbidden');
+
+  const drifted = { getActiveVersion: async () => ({ status: 'ok', policyVersion: 'gcsp-policy-drifted', value: {} }) };
+  const stale = await createComparisonResultService({ repository, policy: drifted, clock: f.clock, identity: f.identity }).readLatest(greg);
+  assert.equal(stale.status, 'ok');
+  assert.equal(stale.value.policyCurrent, false);
+  assert.equal(stale.value.activePolicyVersion, 'gcsp-policy-drifted');
+
+  const broken = { query: async () => { throw new Error('database-unavailable at postgres://secret-host'); } };
+  const unavailable = await createComparisonResultService({ repository: broken, policy, clock: f.clock, identity: f.identity }).readLatest(greg);
+  assert.equal(unavailable.status, 'unavailable');
+  assert.equal(unavailable.retryable, true);
+  assert.ok(!JSON.stringify(unavailable).includes('secret-host'));
+
+  const [route] = createComparisonResultRoutes(service);
+  const refused = await route.handle({ context: greg, searchParams: new URLSearchParams('view=full') });
+  assert.equal(refused.status, 'invalid');
+  assert.equal(refused.code, 'unsupported-query');
+  const unconfigured = await createComparisonResultRoutes(undefined)[0].handle({ context: greg, searchParams: new URLSearchParams() });
+  assert.equal(unconfigured.status, 'unavailable');
+});
+
+test('buildServer serves the stored read with no-store, 404 until stored, 403 for employees and 400 for a query', async () => {
+  const repository = await openRepository();
+  const f = await readFixture(repository);
+  const service = createComparisonResultService({ repository, policy, clock: f.clock, identity: f.identity });
+  const oldKey = process.env.DEMO_ACCESS_KEY;
+  const accessKey = 'comparison-read-fixture-key';
+  process.env.DEMO_ACCESS_KEY = accessKey;
+  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspComparison: service, gcspAllowedOrigins: ['https://greg.test'] });
+  server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  const cookie = (session) => [session.value.setCookie].flat().map((c) => c.split(';')[0]).join('; ');
+  const read = async (session, query = '') => {
+    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/comparison/process/latest${query}`, {
+      headers: { Origin: 'https://greg.test', Cookie: cookie(session), 'X-Access-Key': accessKey } });
+    return { status: response.status, body: await response.json(), cache: response.headers.get('Cache-Control') };
+  };
+  try {
+    const empty = await read(f.sessions.greg);
+    assert.equal(empty.status, 404); assert.equal(empty.body.status, 'not-found');
+    const saved = await storeComparisonResult(repository, COMPARISON_CLI_CONTEXT, direct);
+    assert.equal(saved.status, 'ok', JSON.stringify(saved));
+    const found = await read(f.sessions.greg);
+    assert.equal(found.status, 200, JSON.stringify(found.body));
+    assert.equal(found.cache, 'no-store');
+    assert.equal(found.body.value.resultId, saved.value.resultId);
+    assert.equal(found.body.value.policyCurrent, true);
+    assert.deepEqual(found.body.value.result, JSON.parse(JSON.stringify(direct)));
+    assert.equal((await read(f.sessions.presenter)).status, 200);
+    assert.equal((await read(f.sessions.paula)).status, 403);
+    const query = await read(f.sessions.greg, '?view=full');
+    assert.equal(query.status, 400); assert.equal(query.body.code, 'unsupported-query');
+  } finally {
+    server.closeAllConnections(); await new Promise((done) => server.close(done));
+    if (oldKey === undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY = oldKey;
+  }
+});
+
+// Captures the one-line log and warning the runtime writes while it opens with a result file.
+const openWithResultFile = async (comparisonResultFile) => {
+  const logs = []; const warnings = [];
+  const { log, warn } = console;
+  console.log = (text) => logs.push(String(text));
+  console.warn = (text) => warnings.push(String(text));
+  try {
+    const runtime = await createGcspRuntime({ mode: 'memory', comparisonResultFile, environmentId: 'comparison-import-test',
+      policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap' });
+    return { runtime, logs, warnings };
+  } finally { console.log = log; console.warn = warn; }
+};
+const gregContext = async ({ identity }) => {
+  const presenter = await identity.createPresenterSession('comparison-import-presenter');
+  return (await identity.switchPrincipal(presenter.value.context, 'demo-greg', 'comparison-import-greg')).value.context;
+};
+
+test('a result file named at runtime open is loaded for Greg; a missing or changed file leaves startup intact', () => scratch(async (dir) => {
+  const good = join(dir, 'good.json');
+  await writeComparisonResultFile(good, direct);
+  const resultId = (await storeComparisonResult(await openRepository(), COMPARISON_CLI_CONTEXT, direct)).value.resultId;
+  const envelope = JSON.parse(await readFile(good, 'utf8'));
+  const changed = join(dir, 'changed.json');
+  await writeFile(changed, JSON.stringify({ ...envelope, result: { ...envelope.result, completedAt: '2026-11-09T00:00:00.000Z' } }));
+  const missing = join(dir, 'missing.json');
+
+  const loaded = await openWithResultFile(good);
+  assert.equal(loaded.runtime.status, 'ok', JSON.stringify(loaded.runtime));
+  try {
+    assert.deepEqual(loaded.logs.filter((line) => line.startsWith('GCSP comparison')), [`GCSP comparison: loaded result ${resultId}.`]);
+    assert.deepEqual(loaded.warnings, []);
+    const read = await loaded.runtime.value.comparison.readLatest(await gregContext(loaded.runtime.value));
+    assert.equal(read.status, 'ok', JSON.stringify(read));
+    assert.equal(read.value.resultId, resultId);
+    assert.deepEqual(read.value.result, direct);
+    assert.equal(read.value.policyCurrent, true);
+  } finally { await loaded.runtime.value.close(); }
+
+  for (const path of [missing, changed]) {
+    const refused = await openWithResultFile(path);
+    assert.equal(refused.runtime.status, 'ok', JSON.stringify(refused.runtime));
+    try {
+      assert.equal(refused.warnings.length, 1);
+      assert.match(refused.warnings[0], /^GCSP comparison: the result file was not loaded \((The file .* does not exist|The file has changed)/);
+      assert.equal((await refused.runtime.value.comparison.readLatest(await gregContext(refused.runtime.value))).status, 'not-found');
+    } finally { await refused.runtime.value.close(); }
+  }
+}));

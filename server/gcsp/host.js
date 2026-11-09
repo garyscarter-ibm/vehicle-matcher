@@ -32,7 +32,8 @@ export function gcspRuntimeOptions({ env = process.env, defaultMode, defaultEnvi
   const environmentId = env.GCSP_ENVIRONMENT_ID || defaultEnvironmentId;
   const runtime = { mode, stockProvider: (deps) => withConfirmedSupply(stock(deps), upstream), production: upstream.production,
     repositoryOptions: { connectionString: env.GCSP_DATABASE_URL }, environmentId,
-    policyAsOf: new Date().toISOString(), commandId, adoptOfferJourney: true };
+    policyAsOf: new Date().toISOString(), commandId, adoptOfferJourney: true,
+    comparisonResultFile: env.GCSP_COMPARISON_RESULT_FILE };
   return { runtime, stock, mode, environmentId };
 }
 
