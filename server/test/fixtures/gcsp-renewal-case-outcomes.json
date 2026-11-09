@@ -84,7 +84,8 @@
       "key": "renewalCase.lifecycle.eventTypes",
       "value": [
         "approval-declined",
-        "appointment-no-show"
+        "appointment-no-show",
+        "return-missed"
       ],
       "unit": "event type keys",
       "status": "assumed",
@@ -124,6 +125,19 @@
       "status": "assumed",
       "basis": "Contract extension remains unavailable until the scheme explicitly permits it; no default entitlement.",
       "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "renewalCase.lifecycle.exceptionCopy",
+      "value": {
+        "return-missed": {
+          "label": "Missed return of current car",
+          "reason": "The return of the current car was missed. The scheme team will rearrange it."
+        }
+      },
+      "unit": "case trigger label and reason by lifecycle event type key; a type without an entry keeps the general reason",
+      "status": "assumed",
+      "basis": "A missed return needs its own wording so the scheme team can tell it from a missed handover; plausible demo copy.",
+      "sourceDate": "2026-11-09"
     }
   ]
 }

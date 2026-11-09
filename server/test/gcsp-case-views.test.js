@@ -5,6 +5,7 @@ import { JSDOM } from 'jsdom';
 import { createCaseHttpAdapter } from '../../blocks/gcsp/cases/http-adapter.js';
 import { fixtureAdapter, caseFixture, fixtureAccountAdapter } from '../../blocks/gcsp/cases/fixtures.js';
 import { queueFixtureAdapter, queueOptionsFixture, queueCaseFixtures } from '../../blocks/gcsp/cases/queue-fixtures.js';
+import { renderCaseContent } from '../../blocks/gcsp/cases/case-content.js';
 let help; let queue; let dom;
 before(async () => {
   dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://case.test/', pretendToBeVisual: true });
@@ -222,6 +223,16 @@ test('queue renders mixed statuses in workflow order for both sort choices with 
   queueField(f.root, 'sort', 'status', 'change');
   assert.deepEqual(shown(), ['c-open', 'c-open-none', 'c-progress', 'c-proposed', 'c-resolved', 'c-closed']);
   assert.match([...f.root.querySelectorAll('tbody tr')][1].textContent, /Needs confirmation/); f.destroy();
+});
+test('FUCQ-259: the queue and case show a missed return by its keyed label; an unlabelled no-show reads as before', async () => {
+  const missed = { ...sortRow('c-missed', 'open', '2026-11-09'), trigger: { type: 'lifecycle-exception', eventType: 'return-missed', label: 'Missed return of current car' } };
+  const noShow = { ...sortRow('c-no-show', 'open', '2026-11-10'), trigger: { type: 'lifecycle-exception', eventType: 'appointment-no-show' } };
+  const f = await mountQueue({ ...queueFixtureAdapter(), async listCases() { return { status: 'ok', value: { cases: [missed, noShow] } }; } });
+  assert.deepEqual([...f.root.querySelectorAll('tbody tr')].map((r) => r.children[2].textContent), ['Missed return of current car', 'lifecycle-exception']);
+  f.destroy();
+  const root = host(); root.append(renderCaseContent(missed, { audience: 'scheme-team' }), renderCaseContent(noShow, { audience: 'scheme-team' }));
+  assert.match(root.textContent, /Opened fromMissed return of current car/); assert.match(root.textContent, /Opened fromMissed handover appointment/);
+  assert.doesNotMatch(root.textContent, /—/);
 });
 test('embedded queue spans the Greg dashboard grid like the publish panel', () => {
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');

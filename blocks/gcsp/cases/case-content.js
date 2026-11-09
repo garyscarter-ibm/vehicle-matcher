@@ -10,7 +10,8 @@ const words = (value) => String(value ?? '').replace(/-/g, ' ').replace(/^./, (l
 // Readable labels for server keys; unknown keys stay visible rather than hidden.
 export const roleLabel = (value) => value == null ? 'Not supplied'
   : ({ 'scheme-team': 'Scheme team', employee: 'Employee', system: 'Automatic check' }[value] ?? words(value));
-export const triggerLabel = (t) => !t?.type ? 'Not supplied' : ({ 'employee-request': 'Help request',
+// A server label from keyed policy copy wins; older cases fall back to the type maps.
+export const triggerLabel = (t) => !t?.type ? 'Not supplied' : text(t.label) ? t.label : ({ 'employee-request': 'Help request',
   'renewal-deadline': 'Renewal deadline approaching' }[t.type] ?? ({ 'approval-declined': 'Order approval declined',
   'appointment-no-show': 'Missed handover appointment' }[t.eventType] ?? words(t.eventType ?? t.type)));
 export function clockTime(value) {

@@ -112,6 +112,21 @@ caseTest('keyed lifecycle event types open once, reject foreign renewal/employee
   await event(g, 'custom', 'custom-reviewed-event'); await tick(g, 'custom');
   assert.equal((await g.service.readOwn(g.context)).value.cases.length, 1);
 });
+caseTest('FUCQ-259: keyed exception copy names a missed return; a handover no-show keeps the general reason and no label', async (t) => {
+  const generic = 'A configured lifecycle exception needs scheme-team review.';
+  const f = await setup(t); await event(f, 'no-show', 'appointment-no-show'); await f.service.start(); await tick(f, 'no-show');
+  const [noShow] = (await f.service.readOwn(f.context)).value.cases;
+  assert.deepEqual([noShow.reason, noShow.trigger], [generic, { type: 'lifecycle-exception', eventType: 'appointment-no-show',
+    sourceId: 'fixture:lifecycle:no-show', orderUuid: 'order-fixture', reason: generic }]);
+  const g = await setup(t); await event(g, 'missed', 'return-missed'); await g.service.start(); await tick(g, 'missed');
+  const [missed] = (await g.service.readOwn(g.context)).value.cases;
+  assert.deepEqual([missed.trigger.eventType, missed.trigger.label, missed.reason],
+    ['return-missed', 'Missed return of current car', 'The return of the current car was missed. The scheme team will rearrange it.']);
+  for (const bad of [[], { 'return-missed': { label: '', reason: 'x' } }, { 'return-missed': { label: 'x' } }]) {
+    const h = await setup(t, { policy: await withPolicy({ 'renewalCase.lifecycle.exceptionCopy': bad }) });
+    assert.equal((await h.service.readHelp(h.context)).status, 'unavailable', JSON.stringify(bad));
+  }
+});
 const unsupported = (f) => f.repository.query(f.context, 'event_receipts', { consumerId: 'renewal-case-trigger' })
   .then((r) => r.value.filter((x) => x.eventType === 'renewal-case-unsupported-renewal'));
 const counts = (r) => r.value.outcomes.find((o) => o.handlerId === 'renewal-risk-cases').outcome.value;

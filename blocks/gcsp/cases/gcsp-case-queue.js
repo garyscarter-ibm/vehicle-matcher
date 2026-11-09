@@ -8,7 +8,8 @@ import { isRunRestarted, runRestartedNotice, runRestartedScreen } from '../kit/r
 
 let serial = 0;
 const unavailable = { status: 'unavailable', reason: 'The renewal-case source could not be reached. Try again.' };
-const triggerLabel = (c) => c.trigger?.type === 'employee-request' ? 'Help request' : shown(c.trigger?.type);
+const triggerLabel = (c) => c.trigger?.type === 'employee-request' ? 'Help request'
+  : typeof c.trigger?.label === 'string' && c.trigger.label.trim() ? c.trigger.label : shown(c.trigger?.type);
 const deadlineKey = (c) => c.renewalDeadline ?? '9999-99-99';
 const ranks = ['open', 'in-progress', 'remedy-proposed'];
 const terminal = (c) => ['resolved', 'closed'].includes(c.status);

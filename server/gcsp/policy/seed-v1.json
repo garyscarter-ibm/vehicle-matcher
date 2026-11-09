@@ -12876,13 +12876,30 @@
       "key": "renewalCase.lifecycle.eventTypes",
       "value": [
         "approval-declined",
-        "appointment-no-show"
+        "appointment-no-show",
+        "return-missed"
       ],
       "unit": "event type keys",
       "status": "assumed",
       "basis": "Read only keyed completed lifecycle receipt types; producers remain separately owned capabilities.",
       "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
       "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "renewalCase.lifecycle.exceptionCopy",
+      "value": {
+        "return-missed": {
+          "label": "Missed return of current car",
+          "reason": "The return of the current car was missed. The scheme team will rearrange it."
+        }
+      },
+      "unit": "case trigger label and reason by lifecycle event type key; a type without an entry keeps the general reason",
+      "status": "assumed",
+      "basis": "A missed return needs its own wording so the scheme team can tell it from a missed handover; plausible demo copy.",
+      "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
+      "sourceDate": "2026-11-09",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
@@ -13914,7 +13931,7 @@
         "enabled": false,
         "outcome": "returned",
         "delaySecondsAfterSlotEnd": 1800,
-        "exceptionType": "appointment-no-show",
+        "exceptionType": "return-missed",
         "ownership": {
           "returned": {
             "owner": "retailer",
@@ -13927,7 +13944,7 @@
         }
       },
       "unit": "scenario selection; seconds of demo time after the return slot ends; lifecycle-exception event type key",
-      "basis": "Physical return stays outside the main walkthrough, so it is off by default; a presenter scenario enables it and chooses returned or missed. Half an hour after the slot ends is a plausible time for the retailer to confirm. The exception type matches renewalCase.lifecycle.eventTypes.",
+      "basis": "Physical return stays outside the main walkthrough, so it is off by default; a presenter scenario enables it and chooses returned or missed. Half an hour after the slot ends is a plausible time for the retailer to confirm. The exception type return-missed is its own key, selected by renewalCase.lifecycle.eventTypes, so the case is not read as a missed handover.",
       "status": "assumed",
       "source": "docs/gcsp/shared-contracts.md#lifecycle-return-outcomes--fucq-168",
       "sourceDate": "2026-11-09",

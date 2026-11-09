@@ -341,9 +341,12 @@ export class RenewalCaseService {
         const actual = deadline(employee);
         if (p.config.deadlineEnabled && actual && Date.parse(actual.instant)-Date.parse(now) <= p.config.withinDays*86400000
           && !events.value.some((e) => p.config.acknowledgedTypes.includes(e.eventType) && belongs(e))) triggers.push({ type: 'renewal-deadline', sourceId: 'deadline:'+renewal.value.renewalId, reason: 'The renewal deadline is close and no selection has been acknowledged.' });
-        if (p.config.lifecycleEnabled) for (const event of events.value.filter((e) => p.config.eventTypes.includes(e.eventType) && belongs(e))) triggers.push({
-          type: 'lifecycle-exception', eventType: event.eventType, sourceId: `${event.consumerId}:${event.eventId}`, orderUuid: event.outcome.value.orderUuid,
-          reason: 'A configured lifecycle exception needs scheme-team review.' });
+        // Keyed copy names the exception (FUCQ-259); a type without an entry keeps the general reason and no label.
+        if (p.config.lifecycleEnabled) for (const event of events.value.filter((e) => p.config.eventTypes.includes(e.eventType) && belongs(e))) {
+          const copy = Object.hasOwn(p.config.exceptionCopy, event.eventType) ? p.config.exceptionCopy[event.eventType] : null;
+          triggers.push({ type: 'lifecycle-exception', eventType: event.eventType, sourceId: `${event.consumerId}:${event.eventId}`, orderUuid: event.outcome.value.orderUuid,
+            ...(copy ? { label: copy.label } : {}), reason: copy?.reason ?? 'A configured lifecycle exception needs scheme-team review.' });
+        }
         for (const trigger of triggers) {
           const eventId = inputDigest([employee.employeeId,renewal.value.renewalId,trigger.sourceId]);
           const receipt = await tx.getReceipt('renewal-case-trigger',eventId);
