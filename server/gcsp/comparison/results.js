@@ -8,9 +8,11 @@ const TABLE = 'comparison_results';
 const command = (commandId, input) => ({ commandId, inputDigest: inputDigest(input) });
 const scopeOf = (context) => ({ runId: COMPARISON_RESULTS_RUN, environmentId: COMPARISON_RESULTS_ENVIRONMENT,
   principalId: context?.principalId, roles: Array.isArray(context?.roles) ? [...context.roles] : [] });
+/** The repository scope for the comparison results run, carrying the caller's principal and roles. */
+export { scopeOf as comparisonResultsScope };
 const invalid = (field, reason) => result('invalid', { code: 'invalid-result', reasons: [{ field, reason }] });
 
-async function ensureResultsRun(repository, scope, startedAt) {
+export async function ensureResultsRun(repository, scope, startedAt) {
   const current = await repository.currentRun(COMPARISON_RESULTS_ENVIRONMENT);
   if (current.status === 'ok') return current.value.runId === COMPARISON_RESULTS_RUN ? ok(current.value) : result('conflict', { reason: 'unexpected-results-run' });
   if (current.status !== 'not-found') return current;

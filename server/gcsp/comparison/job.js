@@ -105,7 +105,8 @@ export async function importComparisonResult(repository, context, path) {
   return read.status === 'ok' ? storeComparisonResult(repository, context, read.value) : read;
 }
 
-function defaultCodeRevision(env) {
+/** The short git revision of this checkout, else GCSP_CODE_REVISION, else 'unknown'. Runs git synchronously. */
+export function defaultCodeRevision(env) {
   try {
     const out = execFileSync('git', ['rev-parse', '--short', 'HEAD'], { cwd: REPO_ROOT, timeout: 3000, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
     if (out) return out;
@@ -161,6 +162,9 @@ function printResult(stdout, result, { resultId, codeRevision }) {
 
 const sink = (stream) => (text) => { stream.write(text); };
 
+/** The replay's policy: the reviewed seed, held in memory. The CLI and the worker both read policy this way. */
+export const createReplayPolicy = () => new PolicyService({ provider: new MemoryPolicyProvider() });
+
 // The configured repository only stores the result; the replay's policy is always in memory (FUCQ-241),
 // so a PostgreSQL run makes no policy queries and matches a memory-mode run exactly.
 async function openBackend({ env, repository, policy }) {
@@ -170,7 +174,7 @@ async function openBackend({ env, repository, policy }) {
   const options = { connectionString: env.GCSP_DATABASE_URL };
   if (mode === 'postgres' && !options.connectionString) return { status: 'invalid', reason: 'GCSP_REPOSITORY_MODE is postgres but GCSP_DATABASE_URL is not set.' };
   const ownedRepository = repository ?? (mode === 'memory' ? createMemoryRepository({ store: createMemoryStore() }) : createPostgresRepository(options));
-  const ownedPolicy = policy ?? new PolicyService({ provider: new MemoryPolicyProvider() });
+  const ownedPolicy = policy ?? createReplayPolicy();
   const close = async () => {
     // Close failures are not worth a second error and may carry configuration.
     if (!repository) await Promise.resolve(ownedRepository.close()).catch(() => {});
@@ -185,7 +189,7 @@ async function openBackend({ env, repository, policy }) {
 }
 
 const seedsReason = 'The seeds are not valid. Give at least one seed, each different and not empty.';
-const describeFailure = (error) => {
+export const describeFailure = (error) => {
   if (error instanceof ComparisonRunError) {
     return error.code === 'invalid-input' && error.boundary === 'seeds' ? { exitCode: 2, reason: seedsReason }
       : { exitCode: error.code === 'invalid-input' ? 2 : 1, reason: error.message };

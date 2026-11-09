@@ -478,11 +478,11 @@ test('FUCQ-210: a swallowed failure keeps the safe unavailable result and logs o
 });
 test('memory: explicit store and complete foundation vocabulary', async () => {
   assert.equal((await createMemoryRepository().open()).code, 'missing-store');
-  assert.equal(FOUNDATION_TABLES.length, 21);
+  assert.equal(FOUNDATION_TABLES.length, 22);
   assert.ok(FOUNDATION_TABLES.includes('future_order_requests'));
   assert.ok(FOUNDATION_TABLES.includes('confirmed_supply'));
   assert.ok(FOUNDATION_TABLES.includes('comparison_results') && TABLES.comparison_results.immutable);
-  assert.equal(Object.keys(TABLES).length, 27);
+  assert.equal(Object.keys(TABLES).length, 28);
   assert.equal(inputDigest({ b: 2, a: 1 }), inputDigest({ a: 1, b: 2 }));
 });
 test('FUCQ-220: order reference is a unique pending_operations key backed by an additive partial index', async () => {

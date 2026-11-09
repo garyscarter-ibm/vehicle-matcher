@@ -1209,6 +1209,24 @@ What-if experiments that sit beside the process-only comparison: each changes on
 
 **Fixture.** The small-overlay hold-sweep result, in its stored read shape, is `storedResult` in `server/test/fixtures/gcsp-comparison-experiment-result.json`. The process-only comparison, its route `GET /api/gcsp/comparison/process/latest`, the job and the process fixtures are unchanged.
 
+## Comparison worker jobs · FUCQ-175
+
+`createComparisonJobService({ repository, policy, clock, identity, instanceId?, createWorker?, codeRevision?, fixedNow?, overlay? })` in `server/gcsp/comparison/jobs.js` runs `runComparison` in a Node `worker_threads` worker so the backend keeps serving requests. Creating the service spawns, reads and schedules nothing. Backend only in this slice: the routes and request-shape checks follow in the same story. `overlay`, `fixedNow` and `codeRevision` are test seams the browser never supplies.
+
+| Policy key | Unit / purpose |
+|---|---|
+| `comparison.jobs.v1` | `{ schemaVersion: 1, timeoutSeconds, workerHeapMb }`: the wall-clock limit for one job and the worker's heap allowance. |
+
+`assumed`, sourced here, dated 9 November 2026, read through PolicyService when a job starts (missing or malformed is `unavailable`, naming the key). The worker replays against the reviewed seed held in memory, as the FUCQ-137 command does (`createReplayPolicy`), and stores the same result shape through `storeComparisonResult`.
+
+**Calls.** `start(context, { experimentId, change? })` and `read(context, { jobId? })` are Greg or presenter only. `start` answers `pending` with the job view once the worker has validated and planned, `invalid` (`code: invalid-experiment`, `reasons: [{ field, key, reason }]` naming the policy key or field) with no job stored, `conflict` (`code: job-running`, `jobId`) while a job is active, or `unavailable`. `read` returns the given job, else the latest by `startedAt`; `not-found` when none.
+
+**Job view.** `{ jobId, experimentId, status, progress: { seedsDone, seedsTotal, stepsDone, stepsTotal }, startedAt, finishedAt, resultId, reason, request: { experimentId, change } }`. `status` is `starting` (in memory only, before the plan), `running`, `succeeded`, `failed` or `interrupted`. `seedsDone` counts seeds with every arm and both routes finished. Times are wall-clock ISO.
+
+**Outcomes.** Success stores the result and sets `resultId`. A worker error, a heap overrun (reason names the MB allowance), a failed message or the timeout (reason names the limit) marks the job `failed` and stores nothing. A row left `running` by another backend instance is marked `interrupted` the next time `start` or `read` runs; `close()` marks its own active job `interrupted`.
+
+**Storage.** Additive migration `0008_comparison_jobs.sql` adds the mutable `comparison_jobs` table (`runId jobId`; `experimentId status request progress startedAt finishedAt resultId reason requestedBy instanceId`). Rows live in the comparison results run, so a live demo reset does not remove them. Progress writes are serialised per job and coalesced.
+
 ## Named scenario catalogue and preparation · FUCQ-125
 
 `createScenarioService({ repository, policy, clock, identity })` uses the opened application repository and the actual `PolicyService`, `DemoClock` and `DemoIdentityAdapter` instances. `readCatalogue(context)`, `readState(context)` and `reset(context, command)` are presenter-only. No schema, policy seed or runtime dependency is added. The catalogue is `gcsp-scenario-catalogue-v1`; its first six stable IDs are `main-successful-journey`, `no-suitable-match`, `decline-then-change`, `offer-expires`, `data-unavailable`, and `uncertain-handoff`. FUCQ-109 and FUCQ-127–131 own their business replays. A seventh `gcsp-clock-scenario-v1` entry is explicitly fictional clock/reset mechanics support, never evidence of those six journeys or the real corpus.
