@@ -426,3 +426,31 @@ test('learned states have no em dashes, inline handlers or scripts', async () =>
     assert.ok(!html.includes('—') && !html.includes('–'), `${name} has a dash`); assert.ok(!/\son[a-z]+\s*=/i.test(html)); assert.ok(!/<script|style=/i.test(html));
   }
 });
+
+// FUCQ-310: one plain notice for cars the server left out of the plan, from the server's count and names.
+const notice = (root) => [...root.querySelectorAll('.gcsp-plan-banner')].find((b) => b.querySelector('h3')?.textContent === 'Cars left out of this plan');
+const withUnbound = (name, unboundStock) => { const value = valueOf(name); value.plan.unboundStock = unboundStock; return value; };
+
+test('cars left out of the plan get one notice naming them, with the server count', async () => {
+  const value = withUnbound('ready', { count: 2, models: ['X1 xDrive23i', '3 Series Touring'] });
+  const root = host(); panel.mountGregOrderPlan(root, { adapter: staticAdapter(() => value) }); await settle();
+  assert.equal(state(root), 'ready'); assert.equal(root.querySelectorAll('.gcsp-plan-banner').length, 1);
+  assert.equal(notice(root).querySelector('p').textContent, "2 new cars aren't in the ordering list yet, so this plan leaves them out: X1 xDrive23i, 3 Series Touring.");
+  assert.ok(!root.innerHTML.includes('—'));
+  const one = host(); panel.mountGregOrderPlan(one, { adapter: staticAdapter(() => withUnbound('ready', { count: 1, models: [] })) }); await settle();
+  assert.equal(notice(one).querySelector('p').textContent, "1 new car isn't in the ordering list yet, so this plan leaves it out.");
+});
+
+test('no left-out cars, or an unreadable count, shows no notice', async () => {
+  for (const unboundStock of [{ count: 0, models: [] }, undefined, { count: 'many', models: ['X1'] }, null]) {
+    const root = host(); panel.mountGregOrderPlan(root, { adapter: staticAdapter(() => withUnbound('ready', unboundStock)) }); await settle();
+    assert.equal(state(root), 'ready'); assert.equal(notice(root), undefined);
+  }
+});
+
+test('a preview shows the notice from the previewed plan', async () => {
+  const preview = valueOf('preview'); preview.plan.unboundStock = { count: 3, models: ['G42 Coupe'] };
+  const { root } = await mount('ready', {}, { previewPlan: async () => adapterMod.planOutcome(200, { status: 'ok', value: preview }) });
+  edit(limit(root, 'Derivative limits', 2).max, '1'); action(root, 'Preview with these limits').click(); await settle();
+  assert.equal(state(root), 'preview'); assert.match(notice(root).textContent, /3 new cars aren't in the ordering list yet, so this plan leaves them out: G42 Coupe\./);
+});

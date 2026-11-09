@@ -213,10 +213,50 @@ test('supply conversion refuses guesses, missing release receipts and crossed pr
   ]) { const source = supplyRecords(); change(source); assert.equal(resolveSupplyRecords(source).status, 'unavailable'); }
 });
 
-test('a released stock row whose configuration is not in the catalogue fails closed', () => {
+// A generated car released with no supply: real corpus configuration, in no catalogue derivative (FUCQ-310).
+const unboundCar = (id, name, over = {}) => ({ runId: 'planning-test', orderUuid: id, configurationId: `config-${id}`, state: 'released', available: true,
+  agModelCode: 'AG-1', visibility: { companyIds: ['company'], schemeIds: ['scheme'], employeeIds: null },
+  facts: { facts: name ? { modelLine: { status: 'known', value: name } } : {} },
+  release: { supplyId: null, trancheId: 'release-b', releasedAt: '2026-11-05T00:00:00.000Z' }, ...over });
+const withUnbound = (...cars) => { const source = supplyRecords(); source.rows.stock.push(...cars); return source; };
+
+test('a released stock row in no catalogue derivative is left out and named, never by identity', () => {
+  const none = resolveSupplyRecords(supplyRecords());
+  assert.deepEqual(none.value.unboundStock, { count: 0, models: [] });
+  const out = resolveSupplyRecords(withUnbound(unboundCar('b1', 'X1 xDrive23i'), unboundCar('b2', '3 Series Touring'), unboundCar('b3', 'X1 xDrive23i'),
+    unboundCar('b4', null, { agModelCode: 'AG-9' })));
+  assert.equal(out.status, 'ok');
+  assert.deepEqual(out.value.stock.map((s) => s.stockId), ['exact-a']);
+  assert.deepEqual(out.value.unboundStock, { count: 4, models: ['3 Series Touring', 'AG-9', 'X1 xDrive23i'] });
+  assert.ok(!JSON.stringify(out.value.unboundStock).match(/config-|b1|orderUuid/));
+});
+
+test('a left-out car still fails closed on unresolved holds, missing visibility and bad availability', () => {
+  const held = unboundCar('b1', 'X1 xDrive23i', { state: 'held', available: false });
+  assert.equal(resolveSupplyRecords(withUnbound(held)).code, 'planning-held-stock-unresolved');
+  const noVisibility = unboundCar('b1', 'X1 xDrive23i'); delete noVisibility.visibility;
+  assert.equal(resolveSupplyRecords(withUnbound(noVisibility)).code, 'planning-stock-visibility-missing');
+  const expired = withUnbound(held); expired.rows.holds = [{ runId: expired.runId, holdId: 'h1', orderUuid: 'b1', state: 'active',
+    entitlementSlotId: 'slot-a', expiresAt: expired.asOf }];
+  assert.equal(resolveSupplyRecords(expired).code, 'planning-held-stock-unresolved');
+  const live = withUnbound(held); live.rows.holds = [{ ...expired.rows.holds[0], expiresAt: '2026-11-07T00:00:00.000Z' }];
+  assert.deepEqual(resolveSupplyRecords(live).value.unboundStock, { count: 1, models: ['X1 xDrive23i'] });
+});
+
+test('a missing or future availability instant is its own error, mapped or not', () => {
+  for (const car of [(source) => source.rows.stock[0], (source) => source.rows.stock[1]]) {
+    for (const release of [{ supplyId: null }, { supplyId: null, releasedAt: '2026-11-30T00:00:00.000Z' }, { supplyId: null, releasedAt: 'soon' }]) {
+      const source = withUnbound(unboundCar('b1', 'X1 xDrive23i')); car(source).release = release;
+      assert.deepEqual([resolveSupplyRecords(source).status, resolveSupplyRecords(source).code], ['unavailable', 'planning-stock-availability-invalid']);
+    }
+  }
+});
+
+test('a car released against confirmed supply whose configuration does not bind still fails closed', () => {
   const source = supplyRecords(); source.rows.stock[0].configurationId = 'config-not-in-catalogue';
-  const out = resolveSupplyRecords(source);
-  assert.deepEqual([out.status, out.code], ['unavailable', 'planning-exact-stock-mapping-missing']);
+  assert.deepEqual([resolveSupplyRecords(source).status, resolveSupplyRecords(source).code], ['unavailable', 'planning-release-provenance-invalid']);
+  const noReceipt = supplyRecords(); noReceipt.rows.stock[0].configurationId = 'config-not-in-catalogue'; noReceipt.rows.event_receipts = [];
+  assert.equal(resolveSupplyRecords(noReceipt).code, 'planning-release-receipt-missing');
 });
 
 test('supply conversion preserves exact held slot and refuses unresolved expiry', () => {
@@ -276,6 +316,12 @@ test('read-only service enforces trusted context, policy pins, hold ownership an
   const out = await service.readPlan(f.context); assert.equal(out.status, 'feasible'); assert.equal(q(out, 'a'), 0);
   assert.equal(out.allocations.find((a) => a.source === 'stock').entitlementId, 'single');
   assert.equal(out.policyProvenance.length, 7);
+  assert.deepEqual(out.unboundStock, { count: 0, models: [] });
+  const left = { count: 2, models: ['X1 xDrive23i'] }; const before = out.planId;
+  const supplied = f.ports.supply.readSupply;
+  f.ports.supply = { async readSupply(...args) { const read = await supplied(...args); return { ...read, value: { ...read.value, unboundStock: left } }; } };
+  const again = await createOrderPlanService(f.ports).readPlan(f.context);
+  assert.deepEqual(again.unboundStock, left); assert.equal(again.planId, before, 'left-out cars do not change plan identity');
   f = serviceSetup(); f.change(); service = createOrderPlanService(f.ports);
   assert.equal((await service.readPlan(f.context)).code, 'planning-inputs-changed');
   assert.equal((await createOrderPlanService().readPlan(f.context)).code, 'planning-producers-not-configured');

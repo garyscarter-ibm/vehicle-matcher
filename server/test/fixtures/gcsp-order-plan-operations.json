@@ -449,6 +449,10 @@
         "supplyActivity": {
           "requests": [],
           "responses": []
+        },
+        "unboundStock": {
+          "count": 0,
+          "models": []
         }
       },
       "activePlan": {
@@ -931,6 +935,10 @@
         "supplyActivity": {
           "requests": [],
           "responses": []
+        },
+        "unboundStock": {
+          "count": 0,
+          "models": []
         }
       },
       "presentation": {
@@ -1527,6 +1535,10 @@
               "at": "2026-11-05T09:01:00.000Z"
             }
           ]
+        },
+        "unboundStock": {
+          "count": 0,
+          "models": []
         }
       },
       "replan": {
@@ -1848,6 +1860,10 @@
               "at": "2026-11-05T09:01:00.000Z"
             }
           ]
+        },
+        "unboundStock": {
+          "count": 0,
+          "models": []
         }
       },
       "activePlan": {
@@ -2358,6 +2374,10 @@
               "at": "2026-11-05T09:01:00.000Z"
             }
           ]
+        },
+        "unboundStock": {
+          "count": 0,
+          "models": []
         }
       },
       "presentation": {

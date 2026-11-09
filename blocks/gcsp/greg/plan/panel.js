@@ -189,6 +189,7 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
       const box = banner('danger', 'Limits that conflict').box; box.setAttribute('role', 'alert');
       box.append(bullets(view.conflicts.map((c) => `${c.label}: ${c.detail}`))); out.push(box);
     }
+    if (view.unbound) out.push(banner('info', view.unbound.title, note(view.unbound.message)).box);
     const s = view.submission;
     if (s) {
       const done = s.status === 'replanned';
