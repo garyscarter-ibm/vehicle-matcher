@@ -1,9 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { createBmwCatalogueAdapter, describeBmwEquipment, mergeBmwCatalogueFacts } from '../vehicle-evidence/bmw-catalogue-adapter.js';
-import { BMW_LIVE_CATALOGUE_OPERATION_POLICY, BMW_LIVE_CATALOGUE_PROVIDER, BMW_LIVE_CATALOGUE_SOURCE, bmwCatalogueProviderSelection, createBmwCatalogueProvider,
-  createBmwLiveCatalogueProvider, presentBmwLiveCatalogue, selectBmwCatalogueSnapshot } from '../vehicle-evidence/bmw-live-catalogue.js';
+import { BMW_OTD_MEASUREMENT_MAPPING_VERSION, bmwCatalogueLookupIdentity, createBmwCatalogueAdapter, describeBmwEquipment,
+  mergeBmwCatalogueFacts } from '../vehicle-evidence/bmw-catalogue-adapter.js';
+import { BMW_LIVE_CATALOGUE_OPERATION_POLICY, BMW_LIVE_CATALOGUE_PROVIDER, BMW_LIVE_CATALOGUE_SOURCE, bmwCatalogueProviderSelection,
+  bmwLiveCatalogueCacheKey, createBmwCatalogueProvider, createBmwLiveCatalogueProvider, presentBmwLiveCatalogue, selectBmwCatalogueSnapshot } from '../vehicle-evidence/bmw-live-catalogue.js';
 
 // Every response below is a synthetic fixture shaped like the 1 Nov 2026 evidence; no real upstream data or key is used.
 const snapshot = JSON.parse(await readFile(new URL('../vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json', import.meta.url)));
@@ -321,7 +322,7 @@ test('an explicit snapshot selection is a separate call that is never labelled l
   const result = await selectBmwCatalogueSnapshot(sample());
   assert.equal(result.provider, 'bmw-catalogue-snapshot'); assert.equal(result.sourceKind, 'dated-snapshot');
   assert.equal(result.status, 'ok');
-  assert.deepEqual(result.selection, { kind: 'explicit-snapshot', provider: 'bmw-catalogue-snapshot' });
+  assert.deepEqual(result.selection, { kind: 'explicit-snapshot', provider: 'bmw-catalogue-snapshot', observedDate: '2026-11-01' });
   const provider = createBmwCatalogueProvider({ env: { GCSP_CATALOGUE_PROVIDER: 'bmw-ucp-live' } });
   assert.equal((await provider.resolve(sample())).sourceKind, 'live');
   await done();
@@ -588,8 +589,9 @@ test('live resolves are serialised: at most one upstream request is ever in flig
   };
   const tracked = () => Object.fromEntries(Object.entries(happy()).map(([name, value]) => [name, track(value)]));
   const time = fakeTime(); time.timeouts = false;
-  const one = sim(tracked(), { time });
-  const two = sim(tracked(), { time });
+  const uncached = { ...BMW_LIVE_CATALOGUE_OPERATION_POLICY, cache: { ...BMW_LIVE_CATALOGUE_OPERATION_POLICY.cache, allowed: false } };
+  const one = sim(tracked(), { time, policy: uncached });
+  const two = sim(tracked(), { time, policy: uncached });
   const results = await Promise.all([one.provider.resolve(sample()), one.provider.resolve(sample()),
     two.provider.resolve(sample()), two.provider.resolve(sample())]);
   assert.deepEqual(results.map(({ status }) => status), ['partial', 'partial', 'partial', 'partial']);
@@ -613,12 +615,17 @@ test('the operation policy is frozen, recorded and validated at construction wit
   const policy = BMW_LIVE_CATALOGUE_OPERATION_POLICY;
   assert.deepEqual(policy, { version: 'bmw-ucp-operation-policy.v1', status: 'assumed', basis: 'docs/gcsp/evidence/fucq-16/operation-policy.md',
     concurrency: 1, attemptTimeoutMs: 5000, maxAttemptsPerRead: 2, retryDelayMs: 1000, resolveDeadlineMs: 20000,
-    rateLimit: { defaultRetryAfterMs: 60000, minRetryAfterMs: 1000, maxRetryAfterMs: 900000 }, authRefusalHoldMs: 1800000 });
-  assert.ok(Object.isFrozen(policy) && Object.isFrozen(policy.rateLimit));
+    rateLimit: { defaultRetryAfterMs: 60000, minRetryAfterMs: 1000, maxRetryAfterMs: 900000 }, authRefusalHoldMs: 1800000,
+    cache: { allowed: true, scope: 'process-memory', freshForMs: 600000, expiresAfterMs: 3600000, maxEntries: 32 } });
+  assert.ok(Object.isFrozen(policy) && Object.isFrozen(policy.rateLimit) && Object.isFrozen(policy.cache));
   const bad = [null, 'x', 5, {}, { ...policy, concurrency: 2 }, { ...policy, concurrency: 0 }, { ...policy, attemptTimeoutMs: 0 },
     { ...policy, maxAttemptsPerRead: 1.5 }, { ...policy, retryDelayMs: -1 }, { ...policy, resolveDeadlineMs: KEY }, { ...policy, authRefusalHoldMs: Infinity },
     { ...policy, rateLimit: undefined }, { ...policy, rateLimit: { ...policy.rateLimit, minRetryAfterMs: 0 } },
-    { ...policy, rateLimit: { ...policy.rateLimit, maxRetryAfterMs: 500 } }, { ...policy, version: KEY, attemptTimeoutMs: KEY }];
+    { ...policy, rateLimit: { ...policy.rateLimit, maxRetryAfterMs: 500 } }, { ...policy, version: KEY, attemptTimeoutMs: KEY },
+    { ...policy, cache: undefined }, { ...policy, cache: 'on' }, { ...policy, cache: { ...policy.cache, allowed: 'yes' } },
+    { ...policy, cache: { ...policy.cache, scope: 'disk' } }, { ...policy, cache: { ...policy.cache, freshForMs: 0 } },
+    { ...policy, cache: { ...policy.cache, expiresAfterMs: 1.5 } }, { ...policy, cache: { ...policy.cache, maxEntries: -1 } },
+    { ...policy, cache: { ...policy.cache, freshForMs: 3600001 } }, { ...policy, cache: { ...policy.cache, maxEntries: KEY } }];
   for (const candidate of bad) {
     for (const build of [() => createBmwLiveCatalogueProvider({ selected: true, policy: candidate }),
       () => createBmwCatalogueProvider({ env: { GCSP_CATALOGUE_PROVIDER: 'bmw-ucp-live', GCSP_BMW_UCP_API_KEY: KEY }, policy: candidate })]) {
@@ -833,6 +840,400 @@ test('presentation labels never cross: live envelopes are never snapshot and sna
     const shown = presentBmwLiveCatalogue(envelope);
     assert.equal(shown.sourceKind, 'dated-snapshot'); assert.ok(!/live/i.test(JSON.stringify(shown)));
   }
+});
+
+// ---- FUCQ-47 slice 2: cache identity, freshness, matching snapshot offer, presentation examples ----
+const POLICY = BMW_LIVE_CATALOGUE_OPERATION_POLICY;
+const MIN = 60000;
+const withCache = (over) => ({ ...POLICY, cache: { ...POLICY.cache, ...over } });
+const respondFor = (r) => ({
+  matrix: matrixBody([node({ modelCode: r.modelCode, modelRange: r.modelRange, rawModelRange: r.rawModelRange, agModelCode: r.agModelCode,
+    orderDate: r.orderDate, effectDate: r.effectDate, taxDate: r.taxDate, prodDate: r.productionDate.replaceAll('-', '') })]),
+  solver: solverBody({ modelCode: r.modelCode, codes: codesOf(r), types: Object.fromEntries(r.selectedAccessories.map(({ code }) => [code, 'accessory'])) }),
+  options: optionsBody(), otd: otdBody(four, 3) });
+// One provider that serves any request: each resolve names its request, so cache identity is tested end to end.
+function roaming({ policy, trace } = {}) {
+  const time = fakeTime();
+  const state = { request: sample(), over: {}, calls: [] };
+  const transport = async (call) => {
+    const found = Object.entries(urls(state.request)).find(([, url]) => url === call.url);
+    assert.ok(found, `unexpected request ${call.url}`);
+    state.calls.push(found[0]); seenUrls.push(call.url);
+    const value = { ...respondFor(state.request), ...state.over }[found[0]];
+    return typeof value === 'function' ? value(call) : { status: 200, body: JSON.stringify(value) };
+  };
+  const provider = createBmwLiveCatalogueProvider({ selected: true, transport, getCredential: () => KEY, clock: time.clock, sleep: time.sleep,
+    policy, trace });
+  const resolve = (request = sample(), over = {}) => { state.request = request; state.over = over; return provider.resolve(request); };
+  return { provider, time, calls: state.calls, resolve };
+}
+const usable = (result) => ['ok', 'partial'].includes(result.status);
+const minusCache = ({ freshness, ...rest }) => ({ ...rest, freshness: { ...freshness, cache: null } });
+
+test('AC2: the cache key covers every identity field and ignores only option order', () => {
+  const options = { provider: BMW_LIVE_CATALOGUE_PROVIDER, providerVersion: '1', snapshotVersion: BMW_LIVE_CATALOGUE_SOURCE };
+  const extra = [{ code: 'SE000001', type: 'accessory', quantity: 1 }, { code: 'SE000002', type: 'accessory', quantity: 2 }];
+  const lookup = bmwCatalogueLookupIdentity(sample({ selectedAccessories: extra }), options);
+  const key = bmwLiveCatalogueCacheKey(lookup);
+  const parsed = JSON.parse(key);
+  assert.deepEqual(Object.keys(parsed), ['policyVersion', 'mappingVersion', 'lookup']);
+  assert.equal(parsed.policyVersion, POLICY.version); assert.equal(parsed.mappingVersion, BMW_OTD_MEASUREMENT_MAPPING_VERSION);
+  assert.equal(parsed.lookup.provider, BMW_LIVE_CATALOGUE_PROVIDER); assert.equal(parsed.lookup.snapshotVersion, BMW_LIVE_CATALOGUE_SOURCE);
+  const shuffled = { ...lookup, selectedOptions: [...lookup.selectedOptions].reverse(), selectedAccessories: [...extra].reverse() };
+  assert.equal(bmwLiveCatalogueCacheKey(shuffled), key);
+  const keys = new Set([key]);
+  for (const name of Object.keys(lookup).filter((field) => !['selectedOptions', 'selectedAccessories'].includes(field))) {
+    keys.add(bmwLiveCatalogueCacheKey({ ...lookup, [name]: `${lookup[name]}X` }));
+  }
+  keys.add(bmwLiveCatalogueCacheKey({ ...lookup, market: 'FR', locale: 'fr-FR' }));
+  keys.add(bmwLiveCatalogueCacheKey({ ...lookup, selectedOptions: lookup.selectedOptions.slice(1) }));
+  keys.add(bmwLiveCatalogueCacheKey({ ...lookup, selectedAccessories: [extra[0], { ...extra[1], quantity: 3 }] }));
+  keys.add(bmwLiveCatalogueCacheKey(lookup, { ...POLICY, version: 'bmw-ucp-operation-policy.v2' }));
+  assert.equal(keys.size, Object.keys(lookup).length - 2 + 5, 'every field and both versions give a distinct key');
+  assert.equal(bmwLiveCatalogueCacheKey(null), null); assert.equal(bmwLiveCatalogueCacheKey([]), null);
+});
+
+test('AC2: option order alone hits; any other change to the identity misses and reads the chain again', async (context) => {
+  const done = guardNetwork(context);
+  const r = roaming();
+  const first = await r.resolve(sample());
+  assert.ok(usable(first)); assert.equal(first.freshness.cache, 'miss'); assert.equal(r.calls.length, 4);
+  const ordered = [...snapshot.selectedOptions];
+  const hit = await r.resolve(sample({ selectedOptions: ordered }));
+  assert.equal(r.calls.length, 4); assert.equal(hit.freshness.cache, 'hit'); assert.deepEqual(minusCache(hit), minusCache(first));
+  const options = sample().selectedOptions;
+  const other = options.find((code) => code !== 'S0337' && code !== 'P0300');
+  const variants = [['paint option', sample({ selectedOptions: options.map((code) => (code === 'P0300' ? 'P0475' : code)) })],
+    ['one option swapped', sample({ selectedOptions: options.map((code) => (code === other ? 'S09ZZ' : code)) })],
+    ['catalogue date', sample({ catalogueDate: '2026-10-30' })], ['order date', sample({ orderDate: '2026-11-02' })],
+    ['effect date', sample({ effectDate: '2027-01-06' })], ['production date', sample({ productionDate: '2027-01-06' })],
+    ['tax date', sample({ taxDate: '2027-01-06' })], ['model code', sample({ modelCode: 'T5MK' })], ['trim', sample({ trim: other })],
+    ['accessory code', sample({ selectedAccessories: [{ code: 'SE000002', type: 'accessory', quantity: 1 }] })],
+    ['accessory quantity', sample({ selectedAccessories: [{ code: 'SE000001', type: 'accessory', quantity: 2 }] })]];
+  for (const [name, request] of variants) {
+    const before = r.calls.length;
+    const result = await r.resolve(request);
+    assert.ok(usable(result), name); assert.equal(r.calls.length - before, 4, name); assert.equal(result.freshness.cache, 'miss', name);
+    const again = await r.resolve(request);
+    assert.equal(r.calls.length - before, 4, `${name} second read`); assert.equal(again.freshness.cache, 'hit', name);
+  }
+  assert.equal((await r.resolve(sample())).freshness.cache, 'hit'); assert.equal(r.calls.length, 4 * (variants.length + 1));
+  await done();
+});
+
+test('AC2: a saved answer is served fresh before freshForMs and refreshed at it, with no transport call on a hit', async () => {
+  const events = [];
+  const { provider, h, time } = sim(happy(sample(), { otd: otdBody(four, 0) }), { trace: (event) => events.push(event) });
+  const first = await provider.resolve(sample());
+  assert.equal(first.status, 'ok');
+  assert.deepEqual(first.freshness, { state: 'fresh', retrievedAt: '2026-11-09T10:00:00.000Z', freshUntil: '2026-11-09T10:10:00.000Z',
+    expiresAt: '2026-11-09T11:00:00.000Z', cache: 'miss', policyVersion: POLICY.version });
+  time.advance(9 * MIN + 59000);
+  const hit = await provider.resolve(sample());
+  assert.equal(h.calls.length, 4); assert.equal(hit.status, 'ok'); assert.equal(hit.retrievedDate, '2026-11-09');
+  assert.deepEqual(hit.freshness, { ...first.freshness, cache: 'hit' });
+  assert.deepEqual(events.at(-1), { type: 'cache', outcome: 'hit' });
+  time.advance(1000);
+  const renewed = await provider.resolve(sample());
+  assert.equal(h.calls.length, 8); assert.equal(renewed.freshness.cache, 'miss'); assert.equal(renewed.freshness.retrievedAt, '2026-11-09T10:10:00.000Z');
+  assert.equal(renewed.freshness.freshUntil, '2026-11-09T10:20:00.000Z');
+});
+
+test('AC2: a failed refresh inside the expiry serves the saved answer as stale partial with the reason, never as ok', async () => {
+  const modes = [['5xx after retry', reply(500), 'source-server-error'], ['timeout', never, 'source-timeout'],
+    ['transport throws', () => { throw new Error(KEY); }, 'source-failed'],
+    ['429', reply(429, { headers: { 'Retry-After': '30' } }), 'source-rate-limited'],
+    ['unexpected status', reply(302), 'source-failed']];
+  for (const [name, respond, code] of modes) {
+    const events = [];
+    const responses = happy(sample(), { otd: otdBody(four, 0) });
+    const { provider, h, time } = sim(responses, { trace: (event) => events.push(event) });
+    const first = await provider.resolve(sample());
+    assert.equal(first.status, 'ok', name);
+    time.advance(15 * MIN);
+    responses.matrix = respond;
+    const before = h.calls.length;
+    const stale = await provider.resolve(sample());
+    assert.ok(h.calls.length > before, name);
+    assert.equal(stale.status, 'partial', name); assert.equal(stale.failure, null); assert.equal(stale.snapshotChoice, null);
+    assert.equal(stale.freshness.state, 'stale'); assert.equal(stale.freshness.cache, 'stale');
+    assert.equal(stale.freshness.retrievedAt, first.freshness.retrievedAt); assert.equal(stale.freshness.expiresAt, first.freshness.expiresAt);
+    assert.equal(stale.freshness.staleReason.code, code, name);
+    assert.equal(stale.freshness.staleReason.retryAfterSeconds, code === 'source-rate-limited' ? 30 : undefined);
+    assert.deepEqual(stale.facts, first.facts); assert.deepEqual(stale.resolvedIdentity, first.resolvedIdentity);
+    assert.deepEqual(events.at(-1), { type: 'cache', outcome: 'stale' });
+    assert.ok(!JSON.stringify(stale).includes(KEY));
+  }
+});
+
+test('AC2: a rate cooldown serves a still-fresh answer fresh and a stale one stale, with no request', async () => {
+  const r = roaming();
+  const saved = await r.resolve(sample());
+  const blocked = await r.resolve(sample({ modelCode: 'T5MK' }), { matrix: reply(429, { headers: { 'Retry-After': '900' } }) });
+  assert.equal(blocked.failure.code, 'source-rate-limited'); assert.equal(blocked.failure.retryAfterSeconds, 900);
+  const calls = r.calls.length;
+  const fresh = await r.resolve(sample());
+  assert.equal(r.calls.length, calls); assert.equal(fresh.freshness.state, 'fresh'); assert.equal(fresh.freshness.cache, 'hit');
+  r.time.advance(11 * MIN);
+  const stale = await r.resolve(sample());
+  assert.equal(r.calls.length, calls); assert.equal(stale.freshness.state, 'stale'); assert.equal(stale.status, 'partial');
+  assert.equal(stale.freshness.staleReason.code, 'source-rate-limited'); assert.equal(stale.freshness.staleReason.retryAfterSeconds, 240);
+  assert.equal(stale.freshness.retrievedAt, saved.freshness.retrievedAt);
+  const none = await r.resolve(sample({ modelCode: 'T5ML' }));
+  assert.equal(none.failure.code, 'source-rate-limited'); assert.equal(r.calls.length, calls);
+});
+
+test('AC2: nothing is served past expiresAfterMs, and refusal, invalid, empty, application, not-found and mismatch are never stale', async () => {
+  const startFor = async (over, wait = 15 * MIN) => {
+    const r = roaming();
+    await r.resolve(sample());
+    r.time.advance(wait);
+    return { r, result: await r.resolve(sample(), over) };
+  };
+  const expired = await startFor({ matrix: reply(500) }, POLICY.cache.expiresAfterMs);
+  assertFailureEnvelope(expired.result, 'source-server-error');
+  assert.equal((await startFor({ matrix: reply(500) }, POLICY.cache.expiresAfterMs - 10000)).result.freshness.state, 'stale');
+  const never401 = await startFor({ solver: reply(401) });
+  assertFailureEnvelope(never401.result, 'source-auth-refused');
+  const held = await never401.r.resolve(sample());
+  assert.equal(held.failure.code, 'source-auth-refused'); assert.equal(held.freshness, null);
+  const none = [['invalid', { matrix: () => ({ status: 200, body: HTML }) }, 'source-invalid'], ['empty', { matrix: { ranges: [] } }, 'source-empty'],
+    ['application error', { matrix: reply(422) }, 'source-application-error'],
+    ['200 with error', { matrix: () => ({ status: 200, body: '{"error":"x"}' }) }, 'source-application-error']];
+  for (const [name, over, code] of none) assertFailureEnvelope((await startFor(over)).result, code, name);
+  const missing = (await startFor({ matrix: matrixBody([node({ modelCode: 'T5MK' })]) })).result;
+  assert.equal(missing.status, 'not-found'); assert.equal(missing.failure.code, 'live-not-found'); assert.equal(missing.freshness, null);
+  const differs = (await startFor({ matrix: matrixBody([node({ agModelCode: '72HJ' })]) })).result;
+  assert.equal(differs.status, 'identity-mismatch'); assert.equal(differs.failure.code, 'live-identity-mismatch'); assert.equal(differs.freshness, null);
+  const unsolved = (await startFor({ solver: solverBody({ constructible: false }) })).result;
+  assert.equal(unsolved.status, 'identity-mismatch'); assert.equal(unsolved.failure.code, 'live-not-constructible');
+});
+
+test('AC2: an auth refusal never serves a saved answer, even a fresh one', async () => {
+  const r = roaming();
+  await r.resolve(sample());
+  assert.equal((await r.resolve(sample({ modelCode: 'T5MK' }), { solver: reply(403) })).failure.code, 'source-auth-refused');
+  const calls = r.calls.length;
+  const held = await r.resolve(sample());
+  assertFailureEnvelope(held, 'source-auth-refused'); assert.equal(r.calls.length, calls);
+});
+
+test('AC2: cache.allowed false stores and serves nothing', async () => {
+  const r = roaming({ policy: withCache({ allowed: false }) });
+  for (let read = 1; read <= 2; read += 1) {
+    const result = await r.resolve(sample());
+    assert.equal(result.freshness.cache, 'miss'); assert.equal(r.calls.length, 4 * read);
+  }
+  r.time.advance(15 * MIN);
+  const failed = await r.resolve(sample(), { matrix: reply(500) });
+  assertFailureEnvelope(failed, 'source-server-error');
+});
+
+test('AC2: the cache is bounded by maxEntries and drops the oldest entry', async () => {
+  const r = roaming({ policy: withCache({ maxEntries: 2 }) });
+  const [a, b, c] = ['T5MJ', 'T5MK', 'T5ML'].map((modelCode) => sample({ modelCode }));
+  for (const request of [a, b, c]) await r.resolve(request);
+  assert.equal(r.calls.length, 12);
+  assert.equal((await r.resolve(b)).freshness.cache, 'hit'); assert.equal((await r.resolve(c)).freshness.cache, 'hit');
+  assert.equal(r.calls.length, 12);
+  assert.equal((await r.resolve(a)).freshness.cache, 'miss'); assert.equal(r.calls.length, 16);
+  assert.equal((await r.resolve(b)).freshness.cache, 'miss'); assert.equal(r.calls.length, 20);
+});
+
+test('AC2: callers cannot change a saved answer by mutating what they were given', async () => {
+  const r = roaming();
+  const first = await r.resolve(sample());
+  first.facts.seats.value = 99; first.resolvedIdentity.selectedOptions.push('S09ZZ'); first.freshness.state = 'stale';
+  const hit = await r.resolve(sample());
+  hit.facts.seats.value = 98; hit.equipment.definitions.length = 0; hit.freshness.cache = 'miss';
+  const next = await r.resolve(sample());
+  assert.equal(r.calls.length, 4); assert.equal(next.facts.seats.value, 5); assert.equal(next.resolvedIdentity.selectedOptions.length, 47);
+  assert.equal(next.equipment.definitions.length, 47); assert.deepEqual([next.freshness.state, next.freshness.cache], ['fresh', 'hit']);
+});
+
+test('AC1: a failure after the matrix read carries no observed date, retrieved date or freshness; mismatches keep their dates', async () => {
+  for (const stage of ['solver', 'options', 'otd']) {
+    for (const respond of [reply(500), reply(429), reply(401), () => ({ status: 200, body: HTML })]) {
+      const result = (await sim(happy(sample(), { [stage]: respond })).provider.resolve(sample()));
+      assert.equal(result.status, 'source-unavailable');
+      assert.equal(result.observedDate, null); assert.equal(result.retrievedDate, null); assert.equal(result.freshness, null);
+    }
+  }
+  const mismatch = (await sim(happy(sample(), { solver: solverBody({ constructible: false }) })).provider.resolve(sample()));
+  assert.equal(mismatch.status, 'identity-mismatch'); assert.equal(mismatch.observedDate, '2026-11-09'); assert.equal(mismatch.freshness, null);
+  const missing = (await sim({ matrix: matrixBody([node({ modelCode: 'T5MK' })]) }).provider.resolve(sample()));
+  assert.equal(missing.status, 'not-found'); assert.equal(missing.retrievedDate, '2026-11-09');
+});
+
+const SNAPSHOT_VERSION = 'bmw-gb-i5-2026-11-01.v1';
+const differing = () => sample({ selectedOptions: sample().selectedOptions.map((code) => (code === 'S0880' ? 'S09ZZ' : code)) });
+
+test('AC3: a live failure for the exact bundled snapshot identity offers it as a dated, non-automatic choice and substitutes nothing', async () => {
+  const exact = await createBmwCatalogueAdapter().resolve(sample());
+  assert.equal(exact.status, 'ok');
+  for (const [name, respond] of [['500', reply(500)], ['timeout', never], ['401', reply(401)], ['429', reply(429)], ['html', () => ({ status: 200, body: HTML })]]) {
+    const { provider } = sim(happy(sample(), { solver: respond }));
+    const result = await provider.resolve(sample());
+    assert.equal(result.status, 'source-unavailable', name);
+    assert.deepEqual(result.snapshotChoice, { kind: 'explicit-snapshot-selection', provider: 'bmw-catalogue-snapshot', snapshotVersion: SNAPSHOT_VERSION,
+      observedDate: '2026-11-01', resolvedIdentity: exact.resolvedIdentity, label: 'Use the dated snapshot observed on 1 November 2026', automatic: false });
+    allUnknown(result); assert.equal(result.resolvedIdentity, null); assert.equal(result.sourceKind, 'live'); assert.equal(result.snapshotVersion, null);
+    const text = JSON.stringify({ ...result, snapshotChoice: null });
+    assert.ok(!text.includes(SNAPSHOT_VERSION) && !text.includes('bmw-catalogue-snapshot'));
+  }
+});
+
+test('AC3: no matching snapshot means no offer: a differing request, another model, or a snapshot adapter that fails', async () => {
+  const closed = (request, options) => live(() => { throw new Error('unused'); }, { getCredential: () => undefined, ...options }).resolve(request);
+  for (const request of [differing(), sample({ modelCode: 'T5MK' }), sample({ effectDate: '2027-01-06' }),
+    sample({ selectedAccessories: [{ code: 'SE000001', type: 'accessory', quantity: 2 }] })]) {
+    const result = await closed(request);
+    assert.equal(result.status, 'source-unavailable'); assert.equal(result.failure.code, 'credentials-unavailable'); assert.equal(result.snapshotChoice, null);
+  }
+  const { provider } = sim({ matrix: reply(500) }, { request: differing() });
+  const failed = await provider.resolve(differing());
+  assert.equal(failed.failure.code, 'source-server-error'); assert.equal(failed.snapshotChoice, null); assert.equal(failed.status, 'source-unavailable');
+  const exact = await createBmwCatalogueAdapter().resolve(sample());
+  const bad = [{ resolve: () => { throw new Error('boom'); } }, { resolve: () => Promise.reject(new Error('boom')) }, { resolve: async () => null },
+    { resolve: async () => ({ ...exact, status: 'identity-mismatch' }) }, { resolve: async () => ({ ...exact, status: 'source-unavailable' }) },
+    { resolve: async () => ({ ...exact, provider: 'bmw-catalogue-live' }) }, { resolve: async () => ({ ...exact, observedDate: 'yesterday' }) },
+    { resolve: async () => ({ ...exact, resolvedIdentity: { ...exact.resolvedIdentity, trim: 'S0000' } }) }];
+  for (const snapshotAdapter of bad) assert.equal((await closed(sample(), { snapshotAdapter })).snapshotChoice, null);
+});
+
+test('AC3: the injected snapshot adapter is consulted only for failures that may offer it, and createBmwCatalogueProvider passes it through', async () => {
+  const exact = await createBmwCatalogueAdapter().resolve(sample());
+  const asked = [];
+  const snapshotAdapter = { resolve: async (request) => { asked.push(request); return exact; } };
+  const env = { GCSP_CATALOGUE_PROVIDER: 'bmw-ucp-live' };
+  const offered = await createBmwCatalogueProvider({ env, snapshotAdapter }).resolve(sample());
+  assert.equal(offered.failure.code, 'transport-unavailable'); assert.equal(offered.snapshotChoice.snapshotVersion, SNAPSHOT_VERSION);
+  assert.equal(asked.length, 1); assert.deepEqual(asked[0], sample());
+  const h = harness(sample(), happy());
+  const provider = createBmwCatalogueProvider({ env: { ...env, GCSP_BMW_UCP_API_KEY: KEY }, transport: h.transport, clock, snapshotAdapter });
+  assert.equal((await provider.resolve(sample())).snapshotChoice, null);
+  for (const request of [sample({ market: 'US', locale: 'en-US' }), { bad: true }]) assert.equal((await provider.resolve(request)).snapshotChoice, null);
+  const missing = await sim({ matrix: matrixBody([node({ modelCode: 'T5MK' })]) }).provider.resolve(sample());
+  assert.equal(missing.failure.code, 'live-not-found'); assert.equal(missing.snapshotChoice, null);
+  assert.equal(asked.length, 1);
+});
+
+test('AC3: the explicit snapshot selection keeps its own provider, version, date and identity; mismatches stay mismatches', async (context) => {
+  const done = guardNetwork(context);
+  const exact = await selectBmwCatalogueSnapshot(sample());
+  assert.equal(exact.provider, 'bmw-catalogue-snapshot'); assert.equal(exact.snapshotVersion, SNAPSHOT_VERSION);
+  assert.equal(exact.sourceKind, 'dated-snapshot'); assert.equal(exact.status, 'ok');
+  assert.equal(exact.observedDate, '2026-11-01'); assert.equal(exact.retrievedDate, '2026-11-01');
+  assert.deepEqual(exact.resolvedIdentity, (await createBmwCatalogueAdapter().resolve(sample())).resolvedIdentity);
+  assert.deepEqual(exact.selection, { kind: 'explicit-snapshot', provider: 'bmw-catalogue-snapshot', observedDate: '2026-11-01' });
+  assert.ok(!JSON.stringify(exact).includes('bmw-catalogue-live') && !('freshness' in exact));
+  const mismatch = await selectBmwCatalogueSnapshot(differing());
+  assert.equal(mismatch.status, 'identity-mismatch'); assert.equal(mismatch.failure.code, 'snapshot-identity-mismatch');
+  assert.equal(mismatch.provider, 'bmw-catalogue-snapshot'); assert.equal(mismatch.sourceKind, 'dated-snapshot');
+  assert.equal(mismatch.selection.observedDate, '2026-11-01');
+  assert.equal((await selectBmwCatalogueSnapshot(sample({ modelCode: 'T5MK' }))).status, 'not-found');
+  for (const shown of [exact, mismatch].map((result) => presentBmwLiveCatalogue(result))) assert.equal(shown.sourceKind, 'dated-snapshot');
+  await done();
+});
+
+const OK_FIELDS = (shown) => { clean(shown); assert.ok(!JSON.stringify(shown).includes('://')); return shown; };
+
+test('AC6 example: a fresh live answer states source, retrieval time and freshness', async () => {
+  const { result } = await run(happy());
+  const shown = OK_FIELDS(presentBmwLiveCatalogue(result, { now: new Date('2026-11-09T10:05:00Z') }));
+  assert.equal(shown.label, 'Live catalogue (unsupported demo route)'); assert.equal(shown.status, 'partial'); assert.equal(shown.failure, null);
+  assert.equal(shown.source, 'BMW UK configurator, live, retrieved 9 November 2026');
+  assert.equal(shown.freshness, 'Fresh: retrieved 9 November 2026 at 10:00 UTC, fresh until 10:10 UTC.');
+  assert.equal(presentBmwLiveCatalogue(result).freshness, shown.freshness);
+  const crossing = presentBmwLiveCatalogue({ ...result, freshness: { ...result.freshness, retrievedAt: '2026-11-09T23:55:00.000Z',
+    freshUntil: '2026-11-10T00:05:00.000Z', expiresAt: '2026-11-10T00:55:00.000Z' } });
+  assert.equal(crossing.freshness, 'Fresh: retrieved 9 November 2026 at 23:55 UTC, fresh until 10 November 2026 at 00:05 UTC.');
+});
+
+test('AC6 example: a stale live answer says it is stale, when it was retrieved and why the refresh failed', async () => {
+  const responses = happy(sample(), { otd: otdBody(four, 0) });
+  const { provider, time } = sim(responses);
+  const first = await provider.resolve(sample());
+  assert.equal(first.status, 'ok');
+  time.advance(15 * MIN);
+  for (const [respond, reason] of [[reply(500), 'The refresh failed. The live catalogue had a server problem. No facts were substituted.'],
+    [reply(429, { headers: { 'Retry-After': '30' } }), 'The refresh failed. The live catalogue asked us to slow down. Try again later. No facts were substituted. Try again in 30 seconds.']]) {
+    responses.matrix = respond;
+    const stale = await provider.resolve(sample());
+    const shown = OK_FIELDS(presentBmwLiveCatalogue(stale));
+    assert.equal(shown.label, 'Live catalogue, stale (unsupported demo route)'); assert.equal(shown.status, 'partial'); assert.equal(shown.failure, null);
+    assert.equal(shown.freshness, `Stale: retrieved 9 November 2026 at 10:00 UTC, fresh until 10:10 UTC. ${reason}`);
+    assert.equal(shown.source, 'BMW UK configurator, live, retrieved 9 November 2026 (stale)');
+    assert.ok(!/fresh:/i.test(shown.freshness) && shown.label !== 'Live catalogue (unsupported demo route)');
+    assert.ok(shown.measurements.includes('5 seats (observed)'));
+  }
+  const byClock = OK_FIELDS(presentBmwLiveCatalogue(first, { now: new Date('2026-11-09T10:10:00Z') }));
+  assert.equal(byClock.label, 'Live catalogue, stale (unsupported demo route)'); assert.equal(byClock.status, 'partial');
+  assert.equal(byClock.freshness, 'Stale: retrieved 9 November 2026 at 10:00 UTC, fresh until 10:10 UTC. It has not been refreshed.');
+  assert.match(presentBmwLiveCatalogue(first, { now: new Date('2026-11-09T10:09:59Z') }).freshness, /^Fresh:/);
+  assert.equal(presentBmwLiveCatalogue(first, { now: new Date('2026-11-09T10:59:59Z') }).label, 'Live catalogue, stale (unsupported demo route)');
+});
+
+test('AC6 example: an expired or untimed live answer is shown as unavailable, never as fresh', async () => {
+  const { result } = await run(happy());
+  const expired = OK_FIELDS(presentBmwLiveCatalogue(result, { now: new Date('2026-11-09T11:00:00Z') }));
+  assert.equal(expired.label, 'Live catalogue unavailable'); assert.equal(expired.status, 'source-unavailable');
+  assert.equal(expired.failure.code, 'live-data-expired');
+  assert.equal(expired.failure.message, 'The saved live catalogue answer has expired. No facts were substituted.');
+  assert.equal(expired.freshness, 'Expired: retrieved 9 November 2026 at 10:00 UTC, fresh until 10:10 UTC, expired 11:00 UTC.');
+  assert.deepEqual(expired.measurements, []); assert.deepEqual(expired.equipment, []); assert.equal(expired.source, null); assert.equal(expired.snapshotChoice, null);
+  const { freshness, ...untimed } = result;
+  const reversed = { ...result.freshness, freshUntil: result.freshness.retrievedAt };
+  for (const broken of [untimed, { ...result, freshness: null }, { ...result, freshness: { ...freshness, state: 'warm' } },
+    { ...result, freshness: reversed }, { ...result, freshness: { ...freshness, expiresAt: 'tomorrow' } }]) {
+    const shown = OK_FIELDS(presentBmwLiveCatalogue(broken));
+    assert.equal(shown.label, 'Live catalogue unavailable'); assert.equal(shown.status, 'source-unavailable');
+    assert.equal(shown.failure.code, 'source-failed'); assert.equal(shown.freshness, null); assert.deepEqual(shown.measurements, []);
+  }
+});
+
+test('AC6 example: an unavailable answer after a rate limit says when to try again', async () => {
+  const { provider } = sim(happy(sample(), { solver: reply(429, { headers: { 'Retry-After': '30' } }) }));
+  const shown = OK_FIELDS(presentBmwLiveCatalogue(await provider.resolve(sample())));
+  assert.equal(shown.label, 'Live catalogue unavailable'); assert.equal(shown.status, 'source-unavailable'); assert.equal(shown.freshness, null);
+  assert.equal(shown.failure.code, 'source-rate-limited'); assert.equal(shown.failure.retryAfter, 'Try again in 30 seconds.');
+  const one = presentBmwLiveCatalogue({ ...(await provider.resolve(sample())), failure: { code: 'source-rate-limited', retryAfterSeconds: 1 } });
+  assert.equal(one.failure.retryAfter, 'Try again in 1 second.');
+  for (const bad of [0, -3, 1.5, '30', null]) {
+    assert.ok(!('retryAfter' in presentBmwLiveCatalogue({ ...(await provider.resolve(sample())), failure: { code: 'source-rate-limited', retryAfterSeconds: bad } }).failure));
+  }
+});
+
+test('AC6 example: an unavailable answer offers the matching dated snapshot as a separate choice', async () => {
+  const { provider } = sim(happy(sample(), { solver: reply(500) }));
+  const shown = OK_FIELDS(presentBmwLiveCatalogue(await provider.resolve(sample())));
+  assert.equal(shown.label, 'Live catalogue unavailable'); assert.equal(shown.sourceKind, 'live'); assert.equal(shown.failure.code, 'source-server-error');
+  assert.equal(shown.snapshotChoice, 'Use the dated snapshot observed on 1 November 2026');
+  assert.deepEqual(shown.measurements, []); assert.equal(shown.freshness, null);
+  const forged = presentBmwLiveCatalogue({ ...(await provider.resolve(sample())), snapshotChoice: { kind: 'explicit-snapshot-selection',
+    provider: 'bmw-catalogue-snapshot', observedDate: '<b>x</b>', automatic: false } });
+  assert.equal(forged.snapshotChoice, null);
+  const automatic = presentBmwLiveCatalogue({ ...(await provider.resolve(sample())), snapshotChoice: { kind: 'explicit-snapshot-selection',
+    provider: 'bmw-catalogue-snapshot', observedDate: '2026-11-01', automatic: true } });
+  assert.equal(automatic.snapshotChoice, null);
+});
+
+test('AC6 example: an unavailable answer with no matching snapshot offers nothing and substitutes nothing', async () => {
+  const { provider } = sim({ matrix: reply(500) }, { request: differing() });
+  const shown = OK_FIELDS(presentBmwLiveCatalogue(await provider.resolve(differing())));
+  assert.equal(shown.label, 'Live catalogue unavailable'); assert.equal(shown.status, 'source-unavailable');
+  assert.equal(shown.failure.code, 'source-server-error'); assert.equal(shown.snapshotChoice, null);
+  assert.deepEqual(shown.measurements, []); assert.deepEqual(shown.equipment, []); assert.equal(shown.freshness, null);
+});
+
+test('AC6 example: an explicitly selected snapshot states its observation date and is never live or fresh', async () => {
+  const shown = OK_FIELDS(presentBmwLiveCatalogue(await selectBmwCatalogueSnapshot(sample())));
+  assert.equal(shown.label, 'Dated snapshot'); assert.equal(shown.sourceKind, 'dated-snapshot'); assert.equal(shown.status, 'ok');
+  assert.equal(shown.selection, 'Dated snapshot explicitly selected.');
+  assert.equal(shown.freshness, 'Observed snapshot from 1 November 2026.');
+  assert.ok(![shown.label, shown.source, shown.freshness, shown.selection].some((text) => /live|fresh/i.test(text)));
+  const mismatch = OK_FIELDS(presentBmwLiveCatalogue(await selectBmwCatalogueSnapshot(differing())));
+  assert.equal(mismatch.label, 'Dated snapshot unavailable'); assert.equal(mismatch.freshness, null); assert.equal(mismatch.status, 'identity-mismatch');
 });
 
 test('AC5: no request across any retry or failure path carries a captured UUID', () => {

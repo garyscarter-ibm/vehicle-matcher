@@ -1,5 +1,5 @@
 import { bmwCatalogueLookupIdentity, createBmwCatalogueAdapter, BMW_OTD_MEASUREMENT_MAPPING as MEASUREMENTS,
-  emptyFacts, presentBmwCatalogue, provenance, safeLabel, unknown, valueProblem } from './bmw-catalogue-adapter.js';
+  BMW_OTD_MEASUREMENT_MAPPING_VERSION, emptyFacts, presentBmwCatalogue, provenance, safeLabel, unknown, valueProblem } from './bmw-catalogue-adapter.js';
 
 export const BMW_LIVE_CATALOGUE_PROVIDER = 'bmw-catalogue-live';
 export const BMW_LIVE_CATALOGUE_SOURCE = 'bmw-ucp-gb-public-configurator.v1';
@@ -11,12 +11,13 @@ const HOST = 'prod.ucp.bmw.cloud';
 const MAX_BYTES = 4194304;
 const NONE = ' No facts were substituted.';
 
-/** Assumed operating limits (no BMW terms or rate limits are published); the basis doc is added with the cache policy. */
+/** Assumed operating limits and cache terms (BMW publishes none); values and basis are recorded in operation-policy.md. */
 export const BMW_LIVE_CATALOGUE_OPERATION_POLICY = Object.freeze({
   version: 'bmw-ucp-operation-policy.v1', status: 'assumed', basis: 'docs/gcsp/evidence/fucq-16/operation-policy.md',
   concurrency: 1, attemptTimeoutMs: 5000, maxAttemptsPerRead: 2, retryDelayMs: 1000, resolveDeadlineMs: 20000,
   rateLimit: Object.freeze({ defaultRetryAfterMs: 60000, minRetryAfterMs: 1000, maxRetryAfterMs: 900000 }),
   authRefusalHoldMs: 1800000,
+  cache: Object.freeze({ allowed: true, scope: 'process-memory', freshForMs: 600000, expiresAfterMs: 3600000, maxEntries: 32 }),
 });
 const LOOKUP_OPTIONS = { provider: BMW_LIVE_CATALOGUE_PROVIDER, providerVersion: '1', snapshotVersion: BMW_LIVE_CATALOGUE_SOURCE };
 const LOOKUP_ONLY = ['provider', 'providerVersion', 'schemaVersion', 'snapshotVersion'];
@@ -39,15 +40,45 @@ const FAILURES = {
   'source-invalid': [`The live catalogue returned data that could not be used.${NONE}`, false],
   'source-application-error': [`The live catalogue reported an error.${NONE}`, false],
   'live-not-found': ['The live catalogue has no such model for these dates.', false],
+  'live-data-expired': [`The saved live catalogue answer has expired.${NONE}`, true],
   'live-identity-mismatch': ['The live catalogue describes a different configuration or date. No facts were substituted.', false],
   'live-not-constructible': ['The live catalogue says this configuration cannot be built. No facts were substituted.', false],
 };
 const OFFER_SNAPSHOT = new Set(['source-not-selected', 'transport-unavailable', 'credentials-unavailable', 'source-failed',
   'source-auth-refused', 'source-rate-limited', 'source-server-error', 'source-timeout', 'source-empty', 'source-invalid',
   'source-application-error']);
+// A failed refresh may fall back to an unexpired saved answer, labelled stale; every other failure never does.
+const STALE_CODES = new Set(['source-failed', 'source-timeout', 'source-server-error', 'source-rate-limited']);
+const SNAPSHOT_PROVIDER = 'bmw-catalogue-snapshot';
 const failure = (code, extra) => ({ code, message: FAILURES[code][0], retryable: FAILURES[code][1], ...extra });
-const snapshotChoice = () => ({ kind: 'explicit-snapshot-selection', provider: 'bmw-catalogue-snapshot',
-  snapshotVersion: 'bmw-gb-i5-2026-11-01.v1', label: 'Use the dated snapshot observed on 1 November 2026', automatic: false });
+const snapshotLabel = (date) => `Use the dated snapshot observed on ${longDate(date)}`;
+
+/** Cache identity: policy and mapping versions plus the full lookup identity; option order never matters, anything else does. */
+export function bmwLiveCatalogueCacheKey(lookup, policy = BMW_LIVE_CATALOGUE_OPERATION_POLICY) {
+  if (!lookup || typeof lookup !== 'object' || Array.isArray(lookup)) return null;
+  const canonical = Object.fromEntries(Object.keys(lookup).sort().map((name) => {
+    const value = lookup[name];
+    if (name === 'selectedOptions' && Array.isArray(value)) return [name, [...value].sort()];
+    if (name === 'selectedAccessories' && Array.isArray(value)) {
+      return [name, value.map(({ code, type, quantity }) => ({ code, type, quantity })).sort((a, b) => (a.code < b.code ? -1 : a.code > b.code ? 1 : 0))];
+    }
+    return [name, value];
+  }));
+  return JSON.stringify({ policyVersion: policy?.version ?? null, mappingVersion: BMW_OTD_MEASUREMENT_MAPPING_VERSION, lookup: canonical });
+}
+
+/** Offer the snapshot only when it holds this exact identity; a descriptor, never facts. The snapshot adapter is local. */
+async function snapshotOffer(adapter, request) {
+  try {
+    const shot = await adapter.resolve(request);
+    const date = shot?.observedDate;
+    if (!['ok', 'partial'].includes(shot?.status) || shot.provider !== SNAPSHOT_PROVIDER || shot.sourceKind !== 'dated-snapshot'
+      || typeof shot.snapshotVersion !== 'string' || !isoDate(date) || !shot.resolvedIdentity
+      || JSON.stringify(shot.requestedIdentity) !== JSON.stringify(shot.resolvedIdentity)) return null;
+    return { kind: 'explicit-snapshot-selection', provider: shot.provider, snapshotVersion: shot.snapshotVersion, observedDate: date,
+      resolvedIdentity: structuredClone(shot.resolvedIdentity), label: snapshotLabel(date), automatic: false };
+  } catch { return null; }
+}
 
 export function bmwCatalogueProviderSelection(env = {}) {
   const value = env?.[BMW_CATALOGUE_PROVIDER_ENV];
@@ -59,13 +90,13 @@ export function createBmwCatalogueProvider({ env = process.env, transport, snaps
   const selection = bmwCatalogueProviderSelection(env);
   if (selection === 'snapshot') return snapshotAdapter;
   return createBmwLiveCatalogueProvider({ selected: selection === 'live', transport, getCredential: () => env?.[BMW_UCP_KEY_ENV], clock,
-    policy, sleep, trace });
+    policy, sleep, trace, snapshotAdapter });
 }
 
 /** The deliberate, separate snapshot choice; a live failure never calls this. */
 export async function selectBmwCatalogueSnapshot(request, { adapter = createBmwCatalogueAdapter() } = {}) {
   const result = await adapter.resolve(request);
-  return { ...result, selection: { kind: 'explicit-snapshot', provider: 'bmw-catalogue-snapshot' } };
+  return { ...result, selection: { kind: 'explicit-snapshot', provider: SNAPSHOT_PROVIDER, observedDate: result.observedDate ?? null } };
 }
 
 function base(lookup, requestedIdentity) {
@@ -73,7 +104,7 @@ function base(lookup, requestedIdentity) {
     provider: BMW_LIVE_CATALOGUE_PROVIDER, providerVersion: '1', schemaVersion: '1', snapshotVersion: null,
     sourceVersion: BMW_LIVE_CATALOGUE_SOURCE, sourceKind: 'live', sourceRoute: 'unsupported-demo',
     failure: null, lookupIdentity: lookup, resolvedLookupIdentity: null, status: 'source-unavailable',
-    observedDate: null, retrievedDate: null, catalogueValidity: null, requestedIdentity, resolvedIdentity: null,
+    observedDate: null, retrievedDate: null, freshness: null, catalogueValidity: null, requestedIdentity, resolvedIdentity: null,
     identityProvenance: null,
     resolution: { exact: false, constructible: null, differences: [],
       options: { added: [], removed: [], retyped: [], ignored: [], invalid: [], unrecognised: [] } },
@@ -90,7 +121,8 @@ function base(lookup, requestedIdentity) {
 function finish(out, status, code, extra) {
   out.status = status;
   out.failure = failure(code, extra);
-  out.snapshotChoice = OFFER_SNAPSHOT.has(code) ? snapshotChoice() : null;
+  out.snapshotChoice = null;
+  if (status === 'source-unavailable') out.observedDate = out.retrievedDate = out.freshness = null;
   return out;
 }
 
@@ -247,19 +279,26 @@ function measurements(body, retrievedDate, node) {
 }
 
 const positive = (value) => Number.isSafeInteger(value) && value > 0;
+function validCache(cache) {
+  return cache && typeof cache === 'object' && typeof cache.allowed === 'boolean' && cache.scope === 'process-memory'
+    && ['freshForMs', 'expiresAfterMs', 'maxEntries'].every((name) => positive(cache[name])) && cache.freshForMs <= cache.expiresAfterMs;
+}
 function validPolicy(policy) {
   const limits = policy?.rateLimit;
   return policy && typeof policy === 'object' && policy.concurrency === 1
     && ['attemptTimeoutMs', 'maxAttemptsPerRead', 'retryDelayMs', 'resolveDeadlineMs', 'authRefusalHoldMs'].every((name) => positive(policy[name]))
     && limits && typeof limits === 'object' && ['defaultRetryAfterMs', 'minRetryAfterMs', 'maxRetryAfterMs'].every((name) => positive(limits[name]))
-    && limits.minRetryAfterMs <= limits.defaultRetryAfterMs && limits.defaultRetryAfterMs <= limits.maxRetryAfterMs;
+    && limits.minRetryAfterMs <= limits.defaultRetryAfterMs && limits.defaultRetryAfterMs <= limits.maxRetryAfterMs
+    && validCache(policy.cache);
 }
 
 /** Live provider: transport and credential are injected, no network of its own. Keep one instance; hold and cooldown are per instance. */
 export function createBmwLiveCatalogueProvider({ selected = false, transport, getCredential, clock = () => new Date(),
-  policy = BMW_LIVE_CATALOGUE_OPERATION_POLICY, sleep, trace } = {}) {
+  policy = BMW_LIVE_CATALOGUE_OPERATION_POLICY, sleep, trace, snapshotAdapter = createBmwCatalogueAdapter() } = {}) {
   if (!validPolicy(policy)) throw new TypeError('Invalid live catalogue operation policy');
   const pause = typeof sleep === 'function' ? sleep : defaultSleep;
+  const { cache } = policy;
+  const store = new Map();
   let authHoldUntil = 0;
   let cooldownUntil = 0;
   const emit = (event) => {
@@ -267,7 +306,36 @@ export function createBmwLiveCatalogueProvider({ selected = false, transport, ge
     try { Promise.resolve(trace(Object.freeze(event))).catch(() => {}); } catch { /* a trace callback never affects a read */ }
   };
 
+  const freshnessOf = (at, state, cacheState, staleReason) => ({ state, retrievedAt: new Date(at).toISOString(),
+    freshUntil: new Date(at + cache.freshForMs).toISOString(), expiresAt: new Date(at + cache.expiresAfterMs).toISOString(),
+    cache: cacheState, policyVersion: policy.version, ...(staleReason ? { staleReason } : {}) });
+  const entryFor = (cacheKey, time) => {
+    const entry = cache.allowed ? store.get(cacheKey) : undefined;
+    if (!entry) return null;
+    if (time - entry.at < 0 || time - entry.at >= cache.expiresAfterMs) { store.delete(cacheKey); return null; }
+    return entry;
+  };
+  const serve = (entry, state, cacheState, staleReason) => {
+    const served = structuredClone(entry.envelope);
+    served.freshness = freshnessOf(entry.at, state, cacheState, staleReason);
+    if (state === 'stale') Object.assign(served, { status: 'partial', failure: null, snapshotChoice: null });
+    emit({ type: 'cache', outcome: cacheState });
+    return served;
+  };
+  const remember = (cacheKey, envelope, at, time) => {
+    store.delete(cacheKey);
+    for (const [name, entry] of store) if (time - entry.at >= cache.expiresAfterMs) store.delete(name);
+    store.set(cacheKey, { at, envelope: structuredClone(envelope) });
+    while (store.size > cache.maxEntries) store.delete(store.keys().next().value);
+  };
+
   async function resolve(request) {
+    const result = await attempt(request);
+    if (result.failure && OFFER_SNAPSHOT.has(result.failure.code)) result.snapshotChoice = await snapshotOffer(snapshotAdapter, request);
+    return result;
+  }
+
+  async function attempt(request) {
     const lookup = bmwCatalogueLookupIdentity(request, LOOKUP_OPTIONS);
     if (!lookup) return finish(base(null, null), 'invalid-input', 'invalid-request');
     const requested = Object.fromEntries(Object.entries(lookup).filter(([name]) => !LOOKUP_ONLY.includes(name)));
@@ -284,18 +352,26 @@ export function createBmwLiveCatalogueProvider({ selected = false, transport, ge
     if (!ISO_DATE.test(retrievedDate) || !Number.isFinite(startMs)) return finish(out, 'source-unavailable', 'source-failed');
     let lastMs = startMs;
     const now = () => { try { const time = clock().getTime(); if (Number.isFinite(time)) lastMs = time; } catch { /* keep the last reading */ } return lastMs; };
-    const held = () => {
+    const cacheKey = bmwLiveCatalogueCacheKey(lookup, policy);
+    const failed = (code, extra) => {
+      const entry = STALE_CODES.has(code) ? entryFor(cacheKey, now()) : null;
+      return entry ? serve(entry, 'stale', 'stale', failure(code, extra)) : finish(out, 'source-unavailable', code, extra);
+    };
+    const refuse = (code, extra) => {
+      emit({ type: 'hold', outcome: code, ...extra });
+      return failed(code, extra);
+    };
+    // Order: auth hold (never serves cache), fresh saved answer, rate cooldown (may serve stale).
+    const early = () => {
       const time = now();
-      if (time < authHoldUntil) return ['source-auth-refused', undefined];
-      if (time < cooldownUntil) return ['source-rate-limited', { retryAfterSeconds: Math.ceil((cooldownUntil - time) / 1000) }];
+      if (time < authHoldUntil) return refuse('source-auth-refused');
+      const entry = entryFor(cacheKey, time);
+      if (entry && time - entry.at < cache.freshForMs) return serve(entry, 'fresh', 'hit');
+      if (time < cooldownUntil) return refuse('source-rate-limited', { retryAfterSeconds: Math.ceil((cooldownUntil - time) / 1000) });
       return null;
     };
-    const refuse = (hold) => {
-      emit({ type: 'hold', outcome: hold[0], ...hold[1] });
-      return finish(out, 'source-unavailable', hold[0], hold[1]);
-    };
-    const early = held();
-    if (early) return refuse(early);
+    const first = early();
+    if (first) return first;
     const env = { transport, key, sleep: pause, now, policy };
     const get = async (family, path, finalise) => {
       for (let attempt = 1; ; attempt += 1) {
@@ -319,9 +395,9 @@ export function createBmwLiveCatalogueProvider({ selected = false, transport, ge
     let release = () => {};
     try {
       release = await acquireGate();
-      const queued = held();
-      if (queued) return refuse(queued);
-      if (now() - startMs >= policy.resolveDeadlineMs) return finish(out, 'source-unavailable', 'source-timeout');
+      const queued = early();
+      if (queued) return queued;
+      if (now() - startMs >= policy.resolveDeadlineMs) return failed('source-timeout');
       const { modelCode, modelRange, agModelCode, trim, orderDate, effectDate } = requested;
       const dated = `effect-dates/${effectDate}/order-dates/${orderDate}`;
       const matrix = await get('matrix', `/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/${requested.catalogueDate}/order-dates/${orderDate}?gfs-policy=none&cluster=default&model-ranges=${modelRange}&future-models=true&closest-fallback=true`, (body) => {
@@ -416,6 +492,8 @@ export function createBmwLiveCatalogueProvider({ selected = false, transport, ge
         optionDefinitions: definitions.every(({ label }) => label.state === 'known') ? 'complete' : 'partial',
         availableOptions: 'partial', selectedConfiguration: 'complete', verifiedFitted: 'unknown' };
       if (measured && out.completeness.optionDefinitions === 'complete' && definitions.length) out.status = 'ok';
+      out.freshness = freshnessOf(startMs, 'fresh', 'miss');
+      if (cache.allowed) remember(cacheKey, out, startMs, now());
       return out;
     } catch (error) {
       out.resolvedIdentity = out.resolvedLookupIdentity = out.identityProvenance = out.catalogueValidity = null;
@@ -427,7 +505,8 @@ export function createBmwLiveCatalogueProvider({ selected = false, transport, ge
         cooldownUntil = now() + wait;
         extra = { retryAfterSeconds: Math.ceil(wait / 1000) };
       }
-      return finish(Object.assign(out, { facts: emptyFacts(), unmappedMeasurements: [] }), 'source-unavailable', code, extra);
+      Object.assign(out, { facts: emptyFacts(), unmappedMeasurements: [] });
+      return failed(code, extra);
     } finally { release(); }
   }
   return Object.freeze({ provider: BMW_LIVE_CATALOGUE_PROVIDER, resolve });
@@ -487,28 +566,63 @@ function differenceLines(resolution) {
 function liveFailure(result, malformed) {
   const code = !malformed && Object.hasOwn(FAILURES, result?.failure?.code) ? result.failure.code : 'source-failed';
   const status = !malformed && FAILURE_STATUSES.has(result?.status) ? result.status : 'source-unavailable';
+  const offer = malformed ? null : result?.snapshotChoice;
+  const wait = !malformed && code === 'source-rate-limited' ? retryText(result.failure.retryAfterSeconds) : null;
   return { status, label: status === 'identity-mismatch' ? 'Live catalogue mismatch' : 'Live catalogue unavailable', sourceKind: 'live',
-    source: null, failure: { code, message: FAILURES[code][0] }, context: null, measurements: [], measurementEvidence: [], equipment: [],
-    completeness: null,
+    source: null, failure: { code, message: FAILURES[code][0], ...(wait ? { retryAfter: wait } : {}) }, context: null, measurements: [],
+    measurementEvidence: [], equipment: [], completeness: null, freshness: null,
     identities: { requested: identitySummary(malformed ? null : result.requestedIdentity),
       resolved: identitySummary(malformed ? null : result.resolvedIdentity) },
     differences: malformed ? [] : differenceLines(result.resolution),
-    snapshotChoice: !malformed && result.snapshotChoice?.automatic === false ? snapshotChoice().label : null };
+    snapshotChoice: offer?.automatic === false && offer.kind === 'explicit-snapshot-selection' && offer.provider === SNAPSHOT_PROVIDER
+      && isoDate(offer.observedDate) ? snapshotLabel(offer.observedDate) : null };
 }
 
-/** Plain text presentation of a live or snapshot envelope; labels never cross and nothing is mounted. */
-export function presentBmwLiveCatalogue(result) {
-  if (result?.provider === 'bmw-catalogue-snapshot' && result.sourceKind === 'dated-snapshot') {
+const STAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+const stampMs = (value) => (typeof value === 'string' && STAMP.test(value) && new Date(value).toISOString() === value ? Date.parse(value) : null);
+const utcTime = (ms) => `${new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'UTC' }).format(new Date(ms))} UTC`;
+const utcDay = (ms) => new Date(ms).toISOString().slice(0, 10);
+const when = (ms) => `${longDate(utcDay(ms))} at ${utcTime(ms)}`;
+const whenAfter = (ms, from) => (utcDay(ms) === utcDay(from) ? utcTime(ms) : when(ms));
+const retryText = (seconds) => (Number.isSafeInteger(seconds) && seconds > 0 ? `Try again in ${seconds} ${seconds === 1 ? 'second' : 'seconds'}.` : null);
+
+function freshnessOf(value) {
+  const [retrieved, until, expires] = [value?.retrievedAt, value?.freshUntil, value?.expiresAt].map(stampMs);
+  if (!['fresh', 'stale'].includes(value?.state) || retrieved === null || until === null || expires === null
+    || !(retrieved < until && until <= expires)) return null;
+  const code = STALE_CODES.has(value.staleReason?.code) ? value.staleReason.code : null;
+  return { state: value.state, retrieved, until, expires, code, retry: code === 'source-rate-limited' ? retryText(value.staleReason.retryAfterSeconds) : null };
+}
+
+/** Plain text presentation of a live or snapshot envelope; labels never cross and nothing is mounted. `now` is an optional Date. */
+export function presentBmwLiveCatalogue(result, { now } = {}) {
+  if (result?.provider === SNAPSHOT_PROVIDER && result.sourceKind === 'dated-snapshot') {
     const shown = presentBmwCatalogue(result);
     const usable = ['ok', 'partial'].includes(shown.status);
     return { ...shown, sourceKind: 'dated-snapshot', label: usable ? 'Dated snapshot' : 'Dated snapshot unavailable',
+      freshness: usable && isoDate(result.observedDate) ? `Observed snapshot from ${longDate(result.observedDate)}.` : null,
       selection: result.selection?.kind === 'explicit-snapshot' ? 'Dated snapshot explicitly selected.' : null };
   }
   if (result?.provider !== BMW_LIVE_CATALOGUE_PROVIDER || result.sourceKind !== 'live') return liveFailure(result, true);
   if (!['ok', 'partial'].includes(result.status)) return liveFailure(result, false);
-  if (result.resolution?.exact !== true || !isoDate(result.retrievedDate)) return liveFailure({ ...result, status: 'source-unavailable' }, false);
-  return { ...presentBmwCatalogue(result), sourceKind: 'live', label: 'Live catalogue (unsupported demo route)',
-    source: `BMW UK configurator, live, retrieved ${longDate(result.retrievedDate)}`,
-    identities: { requested: identitySummary(result.requestedIdentity), resolved: identitySummary(result.resolvedIdentity) },
-    differences: [], snapshotChoice: null };
+  const unavailable = () => liveFailure({ ...result, status: 'source-unavailable', failure: null }, false);
+  const fresh = freshnessOf(result.freshness);
+  if (result.resolution?.exact !== true || !isoDate(result.retrievedDate) || !fresh) return unavailable();
+  const nowMs = now instanceof Date && Number.isFinite(now.getTime()) ? now.getTime() : null;
+  const kept = `retrieved ${when(fresh.retrieved)}, fresh until ${whenAfter(fresh.until, fresh.retrieved)}`;
+  if (nowMs !== null && nowMs >= fresh.expires) {
+    return { ...liveFailure({ ...result, status: 'source-unavailable', failure: { code: 'live-data-expired' } }, false),
+      freshness: `Expired: ${kept}, expired ${whenAfter(fresh.expires, fresh.retrieved)}.` };
+  }
+  const stale = fresh.state === 'stale' || (nowMs !== null && nowMs >= fresh.until);
+  const shown = presentBmwCatalogue({ ...result, status: stale ? 'partial' : result.status });
+  const base = { ...shown, sourceKind: 'live', identities: { requested: identitySummary(result.requestedIdentity),
+    resolved: identitySummary(result.resolvedIdentity) }, differences: [], snapshotChoice: null };
+  if (!stale) {
+    return { ...base, label: 'Live catalogue (unsupported demo route)', freshness: `Fresh: ${kept}.`,
+      source: `BMW UK configurator, live, retrieved ${longDate(result.retrievedDate)}` };
+  }
+  const reason = fresh.code ? ` The refresh failed. ${FAILURES[fresh.code][0]}${fresh.retry ? ` ${fresh.retry}` : ''}` : ' It has not been refreshed.';
+  return { ...base, label: 'Live catalogue, stale (unsupported demo route)',
+    freshness: `Stale: ${kept}.${reason}`, source: `BMW UK configurator, live, retrieved ${longDate(result.retrievedDate)} (stale)` };
 }
