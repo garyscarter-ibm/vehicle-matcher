@@ -1,0 +1,128 @@
+{
+  "sourceCommit": "ddd884b33311b0d62225e107a4ba7d45a464c146",
+  "purpose": "Read-only exact transitive source closure for dispatcher review; no imports performed",
+  "files": {
+    "scripts/gcsp/generate-learning-records.mjs": {
+      "sha256": "bc58997977e3bc4f7e3e165b07d4e01efa7e0fd446b936954ee835d2cfa0bb61",
+      "current": "absent"
+    },
+    "server/brands.js": {
+      "sha256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+      "current": "identical"
+    },
+    "server/engine.js": {
+      "sha256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
+      "current": "identical"
+    },
+    "server/gcsp/comparison/generator.js": {
+      "sha256": "596c26adfaef43443914e90f2675b528309e85d5fee5459aedc661845b0917cc",
+      "current": "identical"
+    },
+    "server/gcsp/migrations/index.js": {
+      "sha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+      "current": "identical"
+    },
+    "server/gcsp/policy/file-provider.js": {
+      "sha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+      "current": "identical"
+    },
+    "server/gcsp/policy/index.js": {
+      "sha256": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c",
+      "current": "identical"
+    },
+    "server/gcsp/policy/memory-provider.js": {
+      "sha256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+      "current": "identical"
+    },
+    "server/gcsp/policy/postgres-provider.js": {
+      "sha256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+      "current": "identical"
+    },
+    "server/gcsp/policy/publish.js": {
+      "sha256": "5731771b1b7607028cd923c33038a0a0da113d463b8042fdd0b60d9f0a63d023",
+      "current": "identical"
+    },
+    "server/gcsp/predict/records/dataset.js": {
+      "sha256": "5d5eaf954def2ee605a0ed27410de6915c8fc691a3bcf02c15e6a4f33107b423",
+      "current": "absent"
+    },
+    "server/gcsp/predict/records/generator.js": {
+      "sha256": "a0f3703e5d9dc7fad3491db8a2206ce7165807011d819421c711e1c5e6d099c9",
+      "current": "absent"
+    },
+    "server/gcsp/predict/records/index.js": {
+      "sha256": "e623314a8cca26b7418e32656addafc7e13a1cc7a93d80c51dc03698e2968221",
+      "current": "absent"
+    },
+    "server/gcsp/predict/records/observed.js": {
+      "sha256": "913a6c11d6c874b16a2ae4eb151edf5d72984180b9d13b8e392e5d88244511e0",
+      "current": "absent"
+    },
+    "server/gcsp/predict/records/schema.js": {
+      "sha256": "429fcc4abcb6bcf92e1b94291f9ea19a20f3883dc8d1add630a2434f84c394f5",
+      "current": "absent"
+    },
+    "server/gcsp/repository/core.js": {
+      "sha256": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+      "current": "identical"
+    },
+    "server/gcsp/repository/index.js": {
+      "sha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+      "current": "identical"
+    },
+    "server/gcsp/repository/memory.js": {
+      "sha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+      "current": "identical"
+    },
+    "server/gcsp/repository/postgres.js": {
+      "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+      "current": "identical"
+    },
+    "server/gcsp/repository/schema.js": {
+      "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "current": "identical"
+    },
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": {
+      "sha256": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
+      "current": "identical"
+    },
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": {
+      "sha256": "758f3a20ec9d0bbb6fd4853df16e0e3c8e891f732165a5584d7de5698aa7221f",
+      "current": "identical"
+    },
+    "server/gcsp/vehicle-evidence/vin-generator.js": {
+      "sha256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+      "current": "identical"
+    },
+    "server/gcsp/vehicle-evidence/vin-profiles.js": {
+      "sha256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+      "current": "identical"
+    },
+    "server/questions.js": {
+      "sha256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
+      "current": "identical"
+    },
+    "server/scenarios/employee/index.js": {
+      "sha256": "43f50c04794902dd1d10a008f7882d335c1b5179f1c57a3f4ab9ea1293f7d844",
+      "current": "identical"
+    },
+    "server/test/fixtures/gcsp-learning-dataset.json": {
+      "sha256": "62d83d2caac6675a0f224cb86ff1d564d09f83596402458e506041facf0d5772",
+      "current": "absent"
+    },
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": {
+      "sha256": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+      "current": "identical"
+    },
+    "server/vehicles/index.js": {
+      "sha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc",
+      "current": "identical"
+    }
+  },
+  "additionalProposedSource": {
+    "server/gcsp/predict/records/policy-definitions.json": {
+      "sha256": "c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143",
+      "purpose": "Canonical learning-policy adoption proposal; not executable import"
+    }
+  }
+}

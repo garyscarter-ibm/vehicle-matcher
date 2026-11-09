@@ -1,6 +1,6 @@
 {
-  "version": 1,
   "observed_at": "2026-11-07T14:07:07Z",
+  "version": 1,
   "stories": [
     {
       "id": "FUCQ-2",
@@ -1193,7 +1193,7 @@
           "status": "in-progress",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
           "observed_at": "2026-11-06T00:30:56Z",
-          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100\u2192102 streamedHTTP\u2192105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
+          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100→102 streamedHTTP→105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
         },
         {
           "id": "decision-host",
@@ -1479,8 +1479,72 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115"
+      "observed_at": "2026-11-06T02:14:29Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115",
+      "slices": [
+        {
+          "id": "contract",
+          "status": "complete",
+          "title": "Contract-and-source-review",
+          "observed_at": "2026-11-05T23:57:58Z",
+          "evidence": "Lead read full story and contracts, verified existing demand-planning association, inspected published 113 transitive closure: docs/gcsp/models/fucq115-contract.md and source/policy proposals. Actual integrations retained as separate gates."
+        },
+        {
+          "id": "optimizer",
+          "status": "complete",
+          "title": "Features-splits-and-regularised-optimizer",
+          "observed_at": "2026-11-06T00:00:36Z",
+          "evidence": "Lead reviewed new pure optimizer/features/split modules and caller boundary; six scoped tests pass including 4000-choice coefficient recovery, gradients, meaningful interactions and leakage refusal. Exact identities/resources: docs/gcsp/models/fucq115-delivery.md. Integration gates remain open."
+        },
+        {
+          "id": "dataset",
+          "status": "complete",
+          "title": "Published-generator-and-meaningful-dataset",
+          "observed_at": "2026-11-06T00:48:33Z",
+          "evidence": "Lead inspected granted actual113 canonical CLI320-record dataset/manifest and leakage split:123train/152later/31unseen,10censored+4late excluded. Thin engineering support explicit:3train/7later chosen vehicles. Committed exact bytes and receipt; no corpus/calibration claim. docs/gcsp/models/fucq115-canonical-result.md"
+        },
+        {
+          "id": "evaluation",
+          "status": "complete",
+          "title": "Actual-baselines-and-held-out-evaluation",
+          "observed_at": "2026-11-06T01:04:24Z",
+          "evidence": "Lead inspected actual defaultCLI granted retained-input run: real99/29/learned later+unseen/familiar metrics, worseBrier/familiarfitloss retained; immutable2ce1109d artifact and safe summary verified. Thin3train7laterchoices, missing capacity facts and iteration-limit explicit. Cleanup/identities passed. docs/gcsp/models/fucq115-evaluation-result.md"
+        },
+        {
+          "id": "artifact",
+          "status": "complete",
+          "title": "Immutable-artifact-and-safe-summary",
+          "observed_at": "2026-11-06T01:04:24Z",
+          "evidence": "Lead inspected actual defaultCLI granted retained-input run: real99/29/learned later+unseen/familiar metrics, worseBrier/familiarfitloss retained; immutable2ce1109d artifact and safe summary verified. Thin3train7laterchoices, missing capacity facts and iteration-limit explicit. Cleanup/identities passed. docs/gcsp/models/fucq115-evaluation-result.md"
+        },
+        {
+          "id": "policy",
+          "status": "complete",
+          "title": "Canonical-policy-adoption-and-dated-activation",
+          "observed_at": "2026-11-06T01:58:17Z",
+          "evidence": "Actual canonical cookie/clock/publishPolicyVersion activation on73533d7 passed four checks; dispatcher261-check audit accepted exact77-row graph, original artifact and full cleanup. v4 historical reference unavailable; v5 effective2026-11-06T09:00:03Z. Original failed attempt/adverse metrics preserved. docs/gcsp/models/fucq115-activation-success.md"
+        },
+        {
+          "id": "acceptance",
+          "status": "blocked",
+          "title": "Integration-and-final-acceptance",
+          "observed_at": "2026-11-06T02:14:29Z",
+          "evidence": "Accepted activation/root261 unchanged. Author-only finalizer-entry/direct-handle repair refrozen5b15f6d4; budget/foreign-ledger/owner bounds AST-identical, no runtime proof. Independent helper review required; root actual100 composition/consumer repairs/source impact then combined npm-test gate. Corpus/outcome producers parked; original proofs reused; worker expired. docs/gcsp/models/fucq115-finalizer-repair.md"
+        }
+      ],
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Pluto",
+          "harness": "codex",
+          "role": "story-lead/author-only OS padding repair",
+          "observed_at": "2026-11-06T01:48:08.207979+00:00",
+          "expires_at": "2026-11-06T01:48:08.207979+00:00",
+          "source": "thread 01a1ae22-e1cc-74a0-9717-21082afb1fd1",
+          "status": "stopped; one read-only diagnosis and minimal lstart normalization proposal frozen; independent review/new grant needed; no retry"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-04-092"
     },
     {
       "id": "FUCQ-116",
@@ -1998,7 +2062,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",

@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-115",
+  "status": "isolated-activation-passed",
+  "sourceCommit": "73533d7c092911317f177469fc3e99fd37b5afaa",
+  "grant": "fucq115-activation-73533d7-0139",
+  "admissionSHA256": "1fc1376aadeaa5e6652bf923356ae457074ae43697750f819ddb31934b55c9d9",
+  "sourcePlanSHA256": "f884ae94ff85455aa8d56c38e0ed7e2be58d960a862e99359f5f318694fa65aa",
+  "command": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "docs/gcsp/models/fucq115-activation-supervisor.py",
+    "--execute",
+    "--admission-sha",
+    "1fc1376aadeaa5e6652bf923356ae457074ae43697750f819ddb31934b55c9d9",
+    "--dispatcher-grant",
+    "fucq115-activation-73533d7-0139"
+  ],
+  "attempts": 1,
+  "exitCode": 0,
+  "run": ".claude/test-runs/fucq115/artifact-activation-v2-7a50f0c2ad4942b8934ac117c9ef02e8",
+  "passed": true,
+  "pinsPreserved": true,
+  "scope": "Actual canonical MemoryPolicyProvider, real session cookie/HTTP handler/DemoClock and PolicyService in one isolated source mirror; existing artifact only. No production, runtime forecast, native database, corpus or calibration proof.",
+  "sourceComposition": {
+    "canonical103": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+    "actual113": "ddd884b33311b0d62225e107a4ba7d45a464c146",
+    "ownCorrection": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+    "sourceFiles": 77,
+    "sourceBytes": 4349951,
+    "frozenIdentities": 204,
+    "installedFiles": 138,
+    "packages": 14,
+    "absenceProbes": 37
+  },
+  "checks": [
+    "canonical missing-only learning/choice adoption; same-cookie activation; dated publication retry append-once; historical price/policy pins",
+    "Re-established actual v4 snapshot matches captured training policy; existing artifact content/provenance/settings verified; unavailable v4 reference retained",
+    "Actual publishPolicyVersion schedules only the model reference at09:00:03; same-cookie09:00:02 context remains v4; retry append-once",
+    "Same-cookie clock transition activates retained content-addressed artifact through actual PolicyService; historical v4 and all unrelated rows unchanged; artifact bytes unchanged; retry append-once"
+  ],
+  "activation": {
+    "policyVersion": "fucq115-trained-choice-v5",
+    "effectiveFrom": "2026-11-06T09:00:03.000Z",
+    "key": "choice.model.reference",
+    "artifactId": "sha256:2ce1109d986c7709bf9505f8e388e9c1479ff3c36e7cae86f656ff29bb973c7d",
+    "artifactFileSHA256": "a2ee4271a91a2a02182fa9d5797acd7723a9bc776207aad19f5190cb223ddd86",
+    "historicalPolicyVersion": "fucq115-dataset-80x4-v4",
+    "historicalReference": "unavailable"
+  },
+  "resources": {
+    "limits": {
+      "combinedBytes": 134217728,
+      "logBytes": 2097152,
+      "ramBytes": 805306368,
+      "retainedBytes": 2097152,
+      "seconds": 120,
+      "workerCount": 1
+    },
+    "guardedResourcePhaseWallSeconds": 3.651619333,
+    "wallScope": "Guarded resource phase only; excludes entire CLI/admission elapsed time",
+    "peakSampledAggregateRSSBytes": 252723200,
+    "peakCombinedAllocatedBytes": 4585985,
+    "peakScratchBytes": 4557153,
+    "combinedChildLogBytes": 2469,
+    "selectedRetainedAllocatedBytes": 8192,
+    "processObservations": 34,
+    "observedNodePids": 1,
+    "uncertainGroups": []
+  },
+  "cleanup": {
+    "groups": [
+      70888
+    ],
+    "groupsAbsent": true,
+    "joined": true,
+    "observedPids": 1,
+    "passed": true,
+    "pidsAbsent": true,
+    "reservationAbsent": true,
+    "sampledAt": 1793929971.5232892,
+    "scratchAbsent": true
+  },
+  "leadPostRunAudit": {
+    "evidence": {
+      "path": ".claude/test-runs/fucq115/artifact-activation-v2-7a50f0c2ad4942b8934ac117c9ef02e8/lead-post-run-audit.json",
+      "bytes": 1220,
+      "sha256": "795604fe5cde93f9b909c8f752f0d48842c7f367a60078ca34a3d37982dbc761"
+    },
+    "observedAt": "2026-11-06T01:54:19.866950+00:00",
+    "result": "passed; see exact external receipt"
+  },
+  "parentIndependentAudit": {
+    "evidence": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq115-activation-result-audit-0139.json",
+      "bytes": 38647,
+      "sha256": "2d0a5f1d358eb95733af11b646abfd3617603533881bd880e324f5618312112f"
+    },
+    "observedAt": "2026-11-06T01:55:49.871196+00:00",
+    "result": "PASS",
+    "checks": 261,
+    "allPassed": true,
+    "scope": "Single actualmemory datedPolicyServiceactivation existing synthetictrainedartifact; no calibration/full/native/corpus/forecastproof"
+  },
+  "evidence": {
+    "plan.json": {
+      "path": ".claude/test-runs/fucq115/artifact-activation-v2-7a50f0c2ad4942b8934ac117c9ef02e8/plan.json",
+      "bytes": 9436,
+      "sha256": "dba8829daaf99faf5294026663256d86d21f7f26ea4e2b45b16f77d8164e2144"
+    },
+    "summary.json": {
+      "path": ".claude/test-runs/fucq115/artifact-activation-v2-7a50f0c2ad4942b8934ac117c9ef02e8/summary.json",
+      "bytes": 9968,
+      "sha256": "b9f1616bd4ea4e2ad573f104cc6ebc16f798fabf66c74be8b37ae030f7f92693"
+    },
+    "checkpoint.json": {
+      "path": ".claude/test-runs/fucq115/artifact-activation-v2-7a50f0c2ad4942b8934ac117c9ef02e8/checkpoint.json",
+      "bytes": 437,
+      "sha256": "b75636353e66c4ed771a5cde06b9f6b756f65777434136a6f51c0d6d45e6802c"
+    },
+    "ownership/969e5c572d98483a933b2cdd28a90ef6.json": {
+      "path": ".claude/test-runs/fucq115/artifact-activation-v2-7a50f0c2ad4942b8934ac117c9ef02e8/ownership/969e5c572d98483a933b2cdd28a90ef6.json",
+      "bytes": 1132,
+      "sha256": "d46a747e7f03feefecb0f2a7a115fc1c13f5cc8aa46723686809801325b42c3d"
+    },
+    "test.log": {
+      "path": ".claude/test-runs/fucq115/artifact-activation-v2-7a50f0c2ad4942b8934ac117c9ef02e8/test.log",
+      "bytes": 2469,
+      "sha256": "63aa597c74db02ec0ce075e9840a0b0feb38cab861c0ccafbed16598b4b1b459"
+    },
+    "retained/run-summary.json": {
+      "path": ".claude/test-runs/fucq115/artifact-activation-v2-7a50f0c2ad4942b8934ac117c9ef02e8/retained/run-summary.json",
+      "bytes": 2469,
+      "sha256": "63aa597c74db02ec0ce075e9840a0b0feb38cab861c0ccafbed16598b4b1b459"
+    },
+    "retained/activation-command.json": {
+      "path": ".claude/test-runs/fucq115/artifact-activation-v2-7a50f0c2ad4942b8934ac117c9ef02e8/retained/activation-command.json",
+      "bytes": 672,
+      "sha256": "92ccaf2de4213aaab39d60bdf951be952016dba8a9c6b86b49573fff89893298"
+    },
+    "lead-post-run-audit.json": {
+      "path": ".claude/test-runs/fucq115/artifact-activation-v2-7a50f0c2ad4942b8934ac117c9ef02e8/lead-post-run-audit.json",
+      "bytes": 1220,
+      "sha256": "795604fe5cde93f9b909c8f752f0d48842c7f367a60078ca34a3d37982dbc761"
+    }
+  },
+  "committedExactCaptures": {
+    "fucq115-activation-success-report.json": {
+      "path": "docs/gcsp/models/fucq115-activation-success-report.json",
+      "bytes": 2469,
+      "sha256": "63aa597c74db02ec0ce075e9840a0b0feb38cab861c0ccafbed16598b4b1b459"
+    },
+    "fucq115-activation-published-command.json": {
+      "path": "docs/gcsp/models/fucq115-activation-published-command.json",
+      "bytes": 672,
+      "sha256": "92ccaf2de4213aaab39d60bdf951be952016dba8a9c6b86b49573fff89893298"
+    }
+  },
+  "priorFailure": {
+    "sourceCommit": "918ce04510fd327e860809e7de53bd636d1cf7da",
+    "receipt": "docs/gcsp/models/fucq115-activation-run-receipt.json",
+    "preservedUnchanged": true,
+    "diagnosis": "docs/gcsp/models/fucq115-activation-os-diagnosis.json",
+    "minimalRepair": "docs/gcsp/models/fucq115-activation-os-repair.md"
+  },
+  "limitations": [
+    "Synthetic structural fixtures, not actual corpus, BMW calibration or live producer evidence",
+    "Learned Brier worse than both actual baselines; familiar log loss worse than deterministic fit",
+    "Only three chosen training vehicles and seven later; all seat/boot facts unknown",
+    "Optimizer iteration-limit1500; gradient0.00023798911905714262 exceeds1e-6; convergence not claimed",
+    "No fresh current-integration scoped or full-suite stamp"
+  ],
+  "futureExecutionHold": "Dispatcher notice: make Popen-to-registration/persistence cancellation-safe and cleanup fail closed for any unregistered existing child handle before proposing any future execution. No reproduction or new execution granted; accepted completed run does not establish coverage of this cancellation edge.",
+  "remaining": "Dispatcher current-integration/test-evidence decision and authored full-suite gate; see fucq115-final-validation-plan.md. No built/accepted/Jira transition or automatic rerun."
+}
