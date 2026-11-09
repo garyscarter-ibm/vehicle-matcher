@@ -257,8 +257,8 @@ export function enrichConfiguration({ configurationId, request, catalogue, image
             label: claim.definition.label, provenance: structuredClone(claim.definition.provenance) }));
           output.appearance[name] = { state: selections.length ? 'known' : 'unknown', selections };
         }
-        output.completeness.measurements = Object.values(output.facts).every((fact) => fact.state === 'known'
-          && fact.completeness === 'complete') ? 'complete' : 'partial';
+        output.completeness.measurements = Object.values(output.facts).every((fact) => fact.state === 'unknown') ? 'unknown'
+          : Object.values(output.facts).every((fact) => fact.state === 'known' && fact.completeness === 'complete') ? 'complete' : 'partial';
         output.status = Object.values(output.facts).some((fact) => fact.state === 'known') ? 'partial' : 'rejected';
       }
     }
