@@ -27,7 +27,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
   signal?.addEventListener('abort', externalAbort, { once: true });
   let done = false; let generation = 0; let loading = true; let saving = false;
   let cases = []; let failure = null; let message = ''; let reason = ''; let error = ''; let editing = false;
-  let review = null; let relaxation = null; let opened = false;
+  let review = null; let relaxation = null;
   const commands = new Map();
   const id = `gcsp-help-${++serial}`;
   const wrap = el('div', 'gcsp');
@@ -35,7 +35,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
   const status = el('p', 'gcsp-case-status'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
   status.tabIndex = -1;
   const content = el('div', 'gcsp-case-content');
-  page.append(screenIntro({ title: 'Renewal help', level: headingLevel }), el('p', 'gcsp-note', caseNotice), status, content); wrap.append(page); root.replaceChildren(wrap);
+  page.append(screenIntro({ title: 'Renewal help', level: headingLevel }), status, content); wrap.append(page); root.replaceChildren(wrap);
   const current = (version) => !done && !abort.signal.aborted && version === generation;
   const commandFor = (input) => {
     const key = JSON.stringify(input);
@@ -61,13 +61,14 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
       if (!cases.length && !review && !relaxation) return;
       if (cases.length) content.append(el('p', 'gcsp-note', 'Previously loaded case information is shown below. Refresh to check its current state.'));
     }
-    const entry = el('details', 'gcsp-case-entry'); entry.open = opened;
-    entry.addEventListener('toggle', () => { opened = entry.open; });
-    entry.append(el('summary', '', 'Get help with your renewal'),
+    const entry = el('section', 'gcsp-case-entry'); const hintId = `${id}-ask-hint`;
+    entry.append(screenIntro({ title: 'Get help with your renewal', level: childLevel }),
       el('p', 'gcsp-note', 'The scheme team can review a delayed or uncertain renewal and explain the next action. Opening help changes nothing.'));
-    if (!editing && !review) entry.append(button({ label: 'Ask for help', disabled: saving || blocked(), onClick: () => {
-      editing = true; opened = true; draw('textarea');
-    } }));
+    if (!editing && !review) {
+      const ask = button({ label: 'Ask for help', disabled: saving || blocked(), describedBy: hintId, onClick: () => { editing = true; draw('textarea'); } });
+      ask.classList.add('gcsp-case-ask'); const ctl = el('div', 'gcsp-case-actions'); ctl.append(ask); entry.append(ctl);
+    }
+    const hint = el('p', 'gcsp-field-hint', caseNotice); hint.id = hintId; entry.append(hint);
     if (editing && !review) {
       const textarea = el('textarea', ''); textarea.value = reason; textarea.maxLength = 2000; textarea.disabled = saving || blocked();
       textarea.addEventListener('input', () => { reason = textarea.value; });
@@ -78,7 +79,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
       form.addEventListener('submit', (event) => { event.preventDefault(); prepareRequest(); });
       const actions = el('div', 'gcsp-case-actions');
       actions.append(button({ label: 'Review help request', disabled: saving || blocked(), onClick: prepareRequest }),
-        button({ label: 'Cancel', variant: 'ghost', disabled: saving, onClick: () => { editing = false; error = ''; draw('summary'); } }));
+        button({ label: 'Cancel', variant: 'ghost', disabled: saving, onClick: () => { editing = false; error = ''; draw('.gcsp-case-ask'); } }));
       form.append(summary.root, field.root, actions); entry.append(form);
     }
     if (review) {
@@ -88,7 +89,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
         el('p', 'gcsp-case-reason', review.reason));
       const actions = el('div', 'gcsp-case-actions');
       actions.append(button({ label: 'Confirm help request', disabled: saving || blocked(), onClick: submitRequest }),
-        button({ label: 'Cancel', variant: 'ghost', disabled: saving, onClick: () => { review = null; editing = false; draw('summary'); } }));
+        button({ label: 'Cancel', variant: 'ghost', disabled: saving, onClick: () => { review = null; editing = false; draw('.gcsp-case-ask'); } }));
       confirmation.append(actions); entry.append(confirmation);
     }
     content.append(entry);
@@ -116,7 +117,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
     if (done || saving || blocked()) return;
     if (!reason.trim() || reason.length > 2000) { error = 'Describe your renewal problem in 1 to 2,000 characters.'; draw('textarea'); return; }
     error = ''; review = { reason: reason.trim() }; review.commandId = commandFor({ request: review.reason });
-    opened = true; draw('.gcsp-case-confirmation button');
+    draw('.gcsp-case-confirmation button');
   }
   async function refresh({ keepMessage = false, focusAfter = true } = {}) {
     if (done || saving) return;

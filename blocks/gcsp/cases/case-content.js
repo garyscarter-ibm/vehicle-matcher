@@ -42,6 +42,8 @@ export function carOptionNames(cars = []) {
 // Employees see 'You' and the named owner, not principal ids.
 const actorLabel = (h, c, audience) => h.actorRole === 'system' ? 'Automatic check' : audience !== 'employee' ? h.actorId
   : h.actorId === c.employeeId || h.actorRole === 'employee' ? 'You' : h.actorRole === 'scheme-team' ? c.owner?.name ?? roleLabel(h.actorRole) : roleLabel(h.actorRole);
+// Plausible display assumption: the first 8 characters after the "renewal-" prefix identify a case; the full id stays in data-case-id.
+export const caseReference = (id) => typeof id === 'string' && id ? id.replace(/^renewal-/, '').slice(0, 8).toUpperCase() : 'Not supplied';
 export const caseNotice = 'Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.';
 
 export function renderCaseContent(c, { onReviewRelaxation, pending = false, headingLevel = 2, audience = 'employee' } = {}) {
@@ -49,7 +51,7 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
   root.dataset.caseId = c.caseId;
   const owner = c.owner?.name ?? (c.owner?.role == null ? null : roleLabel(c.owner.role)); const ownerRole = roleLabel(c.owner?.role);
   root.append(screenIntro({ kicker: 'Renewal case', title: caseStatus(c.status), level: headingLevel }), facts([
-    ['Case reference', c.caseId], ['Owner', owner], ...(ownerRole.toLowerCase() === String(owner ?? '').toLowerCase() ? [] : [['Owner role', ownerRole]]),
+    ['Case reference', caseReference(c.caseId)], ['Owner', owner], ...(ownerRole.toLowerCase() === String(owner ?? '').toLowerCase() ? [] : [['Owner role', ownerRole]]),
     ['Reason', c.reason], ['Latest update', c.history?.at(-1)?.reason ?? c.reason],
     ['Opened from', triggerLabel(c.trigger)], ['Next action', c.nextAction], ['Due, demo clock (UTC)', clockTime(c.dueAt)],
     ['Renewal deadline (calendar date)', c.renewalDeadline ?? 'Needs confirmation'],
