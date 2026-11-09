@@ -78,7 +78,8 @@ async function setup(t, { claim = true, defaults = false } = {}) {
       const url = new URL(path, origin); assert.equal(url.origin, origin, 'No external HTTP is admitted.');
       const claimRead = url.pathname === '/api/gcsp/manual/claim' && (options.method ?? 'GET') === 'GET';
       if (claimRead && f.claimTransportUnavailable) throw Error('Controlled claim read transport unavailable.');
-      const result = await request(url.pathname, { body: options.body === undefined ? undefined : JSON.parse(options.body) });
+      let result = await request(url.pathname, { body: options.body === undefined ? undefined : JSON.parse(options.body) });
+      if (claimRead && f.claimRewrite) { const body = await result.json(); result = { ...result, json: async () => f.claimRewrite(body) }; }
       if (claimRead && f.claimDelay) {
         const delay = f.claimDelay; f.claimDelay = null;
         options.signal?.addEventListener('abort', () => { f.aborted += 1; }, { once: true });
@@ -216,6 +217,31 @@ test('unavailable claim reads stay blocked until Check status recovers actual cu
   await expectReview(f);
   assert.equal(good(await f.request('/api/gcsp/manual/claim')).hold.holdId, f.claim.hold.holdId);
   assert.deepEqual(f.postsSince(offset), []);
+});
+
+test('pending and allocated claim reads keep Resume in guarded recovery without a duplicate write', async (t) => {
+  const f = await setup(t);
+  const outcomes = {
+    'pending envelope': () => ({ status: 'pending' }),
+    'pending operation': (body) => { body.value.pendingOperation = { kind: 'claim', commandId: 'resume-one-claim' }; return body; },
+    allocated: (body) => { body.value.state = 'allocated'; body.value.hold.state = 'allocated'; return body; },
+  };
+  for (const [name, rewrite] of Object.entries(outcomes)) {
+    f.claimRewrite = (body) => rewrite(structuredClone(body)); await f.mount(); const offset = f.requests.length;
+    click(f.root, 'Resume saved journey');
+    await waitFor(() => f.requests.slice(offset).filter((row) => row.path === '/api/gcsp/manual/claim').length >= 2
+      && !f.root.querySelector('[aria-busy="true"]'));
+    await new Promise((done) => setTimeout(done, 50));
+    assert.equal(f.root.querySelector('.gcsp-review-form'), null, name); assert.equal(f.root.querySelector('[name="driverId"]'), null, name);
+    const buttons = (label) => [...f.root.querySelectorAll('main button')].filter((node) => node.textContent === label && !node.hidden);
+    assert.ok(buttons('Review this car').length, name); assert.ok(buttons('Review this car').every((node) => node.disabled), name);
+    assert.equal(buttons('Back to your choices')[0]?.disabled, true, name);
+    const check = buttons('Check status')[0]; assert.ok(check && !check.disabled, name);
+    check.click(); await new Promise((done) => setTimeout(done, 50));
+    assert.equal(f.root.querySelector('.gcsp-review-form'), null, name); assert.deepEqual(f.postsSince(offset), [], name);
+  }
+  f.claimRewrite = null; await f.mount(); click(f.root, 'Resume saved journey'); await expectReview(f);
+  assert.equal(f.requests.filter((row) => row.method === 'POST' && row.path === '/api/gcsp/manual/claim').length, 1);
 });
 
 test('disposing a checking generation aborts its real read and fences late response and clock callbacks', async (t) => {

@@ -13261,6 +13261,35 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "lifecycle.appointments.outcomes.v1",
+      "value": {
+        "exceptionTypes": {
+          "noShow": "appointment-no-show"
+        },
+        "states": {
+          "completed": {
+            "owner": "employee",
+            "nextStep": "Your handover is complete."
+          },
+          "no-show": {
+            "owner": "employee",
+            "nextStep": "Your handover was missed. Choose a new slot to rebook."
+          }
+        },
+        "notReady": {
+          "owner": "retailer",
+          "nextStep": "The retailer finishes the documents and car preparation before the handover."
+        }
+      },
+      "unit": "lifecycle exception type key; owner and next-step label per terminal appointment state and per not-ready refusal",
+      "status": "assumed",
+      "basis": "Terminal handover outcomes (FUCQ-167): completion is allowed only when documents and car readiness are complete, and a missed appointment is reported with the keyed exception type. Owners and copy are concise demo wording, not BMW workflow text.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "supply.release.cadence",
       "value": {
         "timeZone": "Europe/London",

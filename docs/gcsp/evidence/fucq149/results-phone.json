@@ -1,0 +1,2311 @@
+{
+  "story": "fucq149",
+  "chunk": "phone",
+  "entry": "hosted-offline",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "state": "passed",
+  "startedAt": "2026-11-09T11:44:16.920Z",
+  "steps": [
+    {
+      "id": "access-key",
+      "name": "Demo key form opens the offline hosted demo",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Paula (fictional) Presenter controls YOUR CARS CHOICES Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car evidence. Choose a replacement Order, collection and vehicle details Your allowance Monthly allo"
+    },
+    {
+      "id": "setup-saved",
+      "name": "Choose a replacement; setup choices saved for Paula",
+      "pass": true,
+      "screenshots": [
+        "browser/375-01-setup-saved.png"
+      ],
+      "overflowPx": 0,
+      "state": "Your order choices | {\"driver\":\"You: Paula (fictional)\",\"contract\":\"six-month-8000\",\"date\":\"2026-11-12\",\"location\":\"demo-collection-centre\"}",
+      "detail": {
+        "driver": "You: Paula (fictional)",
+        "contract": "six-month-8000",
+        "date": "2026-11-12",
+        "location": "demo-collection-centre"
+      }
+    },
+    {
+      "id": "release-and-gallery",
+      "name": "Next release, Continue, Released cars gallery",
+      "pass": true,
+      "screenshots": [
+        "browser/375-02-release-and-gallery.png"
+      ],
+      "overflowPx": 0,
+      "state": "Released cars; 3 review buttons; Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-06T11:30:00.000Z",
+      "detail": {
+        "cards": 3
+      }
+    },
+    {
+      "id": "noclaim-back",
+      "name": "No claim: keyboard Back to your choices, then Back to account (saves)",
+      "pass": true,
+      "screenshots": [
+        "browser/375-03-noclaim-back.png"
+      ],
+      "detail": {
+        "saved": "2026-11-13",
+        "backPosts": [
+          "/api/gcsp/manual/draft"
+        ],
+        "focus": {
+          "tag": "H1",
+          "text": "Your cars",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        }
+      },
+      "overflowPx": 0,
+      "state": "Back posts [\"/api/gcsp/manual/draft\"]; focus H1 \"Your cars\""
+    },
+    {
+      "id": "noclaim-resume",
+      "name": "No claim: keyboard Resume opens setup with the saved choices and no write",
+      "pass": true,
+      "screenshots": [
+        "browser/375-04-noclaim-resume.png"
+      ],
+      "detail": {
+        "posts": [],
+        "focus": {
+          "tag": "H1",
+          "text": "Your order choices",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "date": "2026-11-13"
+      },
+      "overflowPx": 0,
+      "state": "posts []; focus H1 \"Your order choices\"; date 2026-11-13"
+    },
+    {
+      "id": "claim-review",
+      "name": "Continue to the gallery and review a car (one claim)",
+      "pass": true,
+      "screenshots": [
+        "browser/375-05-review-claimed.png"
+      ],
+      "overflowPx": 0,
+      "state": "Review your car | claim active"
+    },
+    {
+      "id": "reload-1",
+      "name": "Reload: Your cars offers Resume saved journey",
+      "pass": true,
+      "screenshots": [
+        "browser/375-06-reload-1-account-resume.png"
+      ],
+      "overflowPx": 0,
+      "state": "reload 1: heading \"Your cars\"; Resume saved journey offered"
+    },
+    {
+      "id": "quoted-resume-1",
+      "name": "Keyboard Resume: checking state, then focus on the review heading, no write",
+      "pass": true,
+      "screenshots": [
+        "browser/375-07-resume-1-review-focus.png"
+      ],
+      "detail": {
+        "focusBeforeTab": "H1 \"Your cars\"",
+        "tabPresses": 2,
+        "final": {
+          "tag": "H1",
+          "text": "Review your car",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "sampleCount": 315,
+        "transitionSequence": [
+          {
+            "tag": "H1",
+            "text": "Your cars",
+            "atMs": 13
+          },
+          {
+            "tag": "BODY",
+            "text": "",
+            "atMs": 160
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your saved journey",
+            "atMs": 5309
+          },
+          {
+            "tag": "BODY",
+            "text": "",
+            "atMs": 5585
+          },
+          {
+            "tag": "H1",
+            "text": "Released cars",
+            "atMs": 5784
+          },
+          {
+            "tag": "BODY",
+            "text": "",
+            "atMs": 6234
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your car",
+            "atMs": 6435
+          },
+          {
+            "tag": "H1",
+            "text": "Review your car",
+            "atMs": 6860
+          }
+        ],
+        "tabPathSequence": [
+          {
+            "tag": "BUTTON",
+            "text": "Resume saved journey"
+          }
+        ],
+        "renderedAtMs": 6860,
+        "readyAtMs": 6860,
+        "focusOnHeadingAtMs": 6860,
+        "bodySamplesAfterRender": 0,
+        "bodySamplesAfterReady": 0,
+        "maxBodyMsDuringTransition": 5149,
+        "posts": [],
+        "checkingFocused": true
+      },
+      "overflowPx": 0,
+      "state": "resume 1: focus before Tab H1, 2 Tab presses; final H1 \"Review your car\" (main h1 true); BODY samples after render 0, after ready 0; max BODY 5149 ms; sequence H1 \"Your cars\" > BODY > H2 \"Checking your saved journey\" > BODY > H1 \"Released cars\" > BODY > H2 \"Checking your car\" > H1 \"Review your car\""
+    },
+    {
+      "id": "reload-2",
+      "name": "Reload: Your cars offers Resume saved journey",
+      "pass": true,
+      "screenshots": [
+        "browser/375-08-reload-2-account-resume.png"
+      ],
+      "overflowPx": 0,
+      "state": "reload 2: heading \"Your cars\"; Resume saved journey offered"
+    },
+    {
+      "id": "quoted-resume-2",
+      "name": "Keyboard Resume: checking state, then focus on the review heading, no write",
+      "pass": true,
+      "screenshots": [
+        "browser/375-09-resume-2-review-focus.png"
+      ],
+      "detail": {
+        "focusBeforeTab": "H1 \"Your cars\"",
+        "tabPresses": 2,
+        "final": {
+          "tag": "H1",
+          "text": "Review your car",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "sampleCount": 113,
+        "transitionSequence": [
+          {
+            "tag": "H1",
+            "text": "Your cars",
+            "atMs": 12
+          },
+          {
+            "tag": "BODY",
+            "text": "",
+            "atMs": 115
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your saved journey",
+            "atMs": 362
+          },
+          {
+            "tag": "BODY",
+            "text": "",
+            "atMs": 663
+          },
+          {
+            "tag": "H1",
+            "text": "Released cars",
+            "atMs": 912
+          },
+          {
+            "tag": "BODY",
+            "text": "",
+            "atMs": 1387
+          },
+          {
+            "tag": "H2",
+            "text": "Checking your car",
+            "atMs": 1637
+          },
+          {
+            "tag": "H1",
+            "text": "Review your car",
+            "atMs": 2064
+          }
+        ],
+        "tabPathSequence": [
+          {
+            "tag": "BUTTON",
+            "text": "Resume saved journey"
+          }
+        ],
+        "renderedAtMs": 2064,
+        "readyAtMs": 2064,
+        "focusOnHeadingAtMs": 2064,
+        "bodySamplesAfterRender": 0,
+        "bodySamplesAfterReady": 0,
+        "maxBodyMsDuringTransition": 250,
+        "posts": [],
+        "checkingFocused": true
+      },
+      "overflowPx": 0,
+      "state": "resume 2: focus before Tab H1, 2 Tab presses; final H1 \"Review your car\" (main h1 true); BODY samples after render 0, after ready 0; max BODY 250 ms; sequence H1 \"Your cars\" > BODY > H2 \"Checking your saved journey\" > BODY > H1 \"Released cars\" > BODY > H2 \"Checking your car\" > H1 \"Review your car\""
+    },
+    {
+      "id": "tab-after-heading",
+      "name": "Tab from the review heading shows a visible focus ring",
+      "pass": true,
+      "screenshots": [
+        "browser/375-10-tab-focus-ring.png"
+      ],
+      "overflowPx": 0,
+      "state": "BUTTON \"Check current claim\" outline [solid 2px rgb(2, 145, 183)]"
+    },
+    {
+      "id": "uncertain-resume",
+      "name": "Claim read fails: keyboard Resume stays in guarded recovery with Check status",
+      "pass": true,
+      "screenshots": [
+        "browser/375-11-uncertain-guarded.png"
+      ],
+      "detail": {
+        "review": 0,
+        "setup": 0,
+        "backDisabled": true,
+        "reviewEnabled": 0,
+        "focus": {
+          "tag": "H1",
+          "text": "Released cars",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "posts": []
+      },
+      "overflowPx": 0,
+      "state": "Released cars | {\"review\":0,\"setup\":0,\"backDisabled\":true,\"reviewEnabled\":0,\"focus\":{\"tag\":\"H1\",\"text\":\"Released cars\",\"insideMain\":true,\"isMainH1\":true,\"tabindex\":\"-1\",\"outline\":\"solid 2px rgb(2, 145, 183)\",\"boxShadow\":\"none\",\"focusVisible\":true}}"
+    },
+    {
+      "id": "uncertain-check-status",
+      "name": "Read recovers: keyboard Check status reaches the same review, no write",
+      "pass": true,
+      "screenshots": [
+        "browser/375-12-uncertain-check-status.png"
+      ],
+      "detail": {
+        "focus": {
+          "tag": "H1",
+          "text": "Review your car",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        },
+        "posts": [],
+        "sameHold": true
+      },
+      "overflowPx": 0,
+      "state": "focus H1 \"Review your car\"; same hold true; posts []"
+    },
+    {
+      "id": "errors",
+      "name": "No page errors; only expected 404s and the deliberately aborted claim reads",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "pageErrors": [],
+        "consoleErrors": [
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9081/favicon.ico",
+            "page": "http://127.0.0.1:9081/gcsp/access"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/draft",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/draft",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: net::ERR_FAILED",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          },
+          {
+            "text": "Failed to load resource: net::ERR_FAILED",
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+            "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+          }
+        ],
+        "badResponses": [
+          "404 http://127.0.0.1:9081/api/gcsp/manual/draft",
+          "404 http://127.0.0.1:9081/api/gcsp/manual/draft",
+          "404 http://127.0.0.1:9081/api/gcsp/manual/order",
+          "404 http://127.0.0.1:9081/api/gcsp/manual/claim",
+          "404 http://127.0.0.1:9081/api/gcsp/manual/claim",
+          "404 http://127.0.0.1:9081/api/gcsp/manual/order",
+          "404 http://127.0.0.1:9081/api/gcsp/manual/claim",
+          "404 http://127.0.0.1:9081/api/gcsp/manual/claim",
+          "404 http://127.0.0.1:9081/api/gcsp/manual/order",
+          "404 http://127.0.0.1:9081/api/gcsp/manual/order",
+          "404 http://127.0.0.1:9081/api/gcsp/manual/order"
+        ],
+        "failedRequests": [
+          {
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/stock",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+            "error": "net::ERR_FAILED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:9081/api/gcsp/context",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:9081/api/gcsp/presenter/scenarios",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:9081/api/gcsp/presenter/scenarios/faults",
+            "error": "net::ERR_ABORTED",
+            "method": "GET"
+          },
+          {
+            "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+            "error": "net::ERR_FAILED",
+            "method": "GET"
+          }
+        ],
+        "posts": [
+          "/api/gcsp/manual/draft",
+          "/api/gcsp/manual/draft",
+          "/api/gcsp/presenter/controls/tick",
+          "/api/gcsp/manual/draft",
+          "/api/gcsp/manual/draft",
+          "/api/gcsp/manual/draft",
+          "/api/gcsp/manual/draft",
+          "/api/gcsp/manual/claim"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "page errors 0; unexpected console 0; unexpected failed 0"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "account",
+      "check": "Back to account by keyboard lands focus on the Your cars heading",
+      "pass": true,
+      "detail": {
+        "tag": "H1",
+        "text": "Your cars",
+        "insideMain": true,
+        "isMainH1": true,
+        "tabindex": "-1",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "focusVisible": true
+      }
+    },
+    {
+      "page": "setup",
+      "check": "Resume with no claim reaches setup, focus on its main h1, no POST",
+      "pass": true,
+      "detail": {
+        "focus": "H1 \"Your order choices\""
+      }
+    },
+    {
+      "page": "review",
+      "check": "Resume 1: Enter on Resume saved journey leaves focus on the main h1 \"Review your car\"",
+      "pass": true,
+      "detail": {
+        "final": "H1 \"Review your car\"",
+        "bodyAfterRender": 0,
+        "maxBodyMs": 5149
+      }
+    },
+    {
+      "page": "checking",
+      "check": "Resume 1: the checking heading takes focus while the claim is read",
+      "pass": true
+    },
+    {
+      "page": "review",
+      "check": "Resume 2: Enter on Resume saved journey leaves focus on the main h1 \"Review your car\"",
+      "pass": true,
+      "detail": {
+        "final": "H1 \"Review your car\"",
+        "bodyAfterRender": 0,
+        "maxBodyMs": 250
+      }
+    },
+    {
+      "page": "checking",
+      "check": "Resume 2: the checking heading takes focus while the claim is read",
+      "pass": true
+    },
+    {
+      "page": "review",
+      "check": "Tab from the heading reaches a control with a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "BUTTON",
+        "text": "Check current claim",
+        "insideMain": true,
+        "isMainH1": false,
+        "tabindex": null,
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "focusVisible": true
+      }
+    },
+    {
+      "page": "gallery",
+      "check": "Uncertain claim read blocks review, setup and Back; Check status offered",
+      "pass": true,
+      "detail": {
+        "review": 0,
+        "setup": 0,
+        "backDisabled": true,
+        "reviewEnabled": 0,
+        "focus": {
+          "tag": "H1",
+          "text": "Released cars",
+          "insideMain": true,
+          "isMainH1": true,
+          "tabindex": "-1",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "focusVisible": true
+        }
+      }
+    },
+    {
+      "page": "review",
+      "check": "Check status by keyboard reaches the review with focus on its main h1",
+      "pass": true,
+      "detail": {
+        "focus": "H1 \"Review your car\""
+      }
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9081/favicon.ico",
+      "page": "http://127.0.0.1:9081/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_FAILED",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_FAILED",
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:9081/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+      "error": "net::ERR_FAILED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:9081/api/gcsp/context",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:9081/api/gcsp/presenter/scenarios",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:9081/api/gcsp/presenter/scenarios/faults",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+      "error": "net::ERR_FAILED",
+      "method": "GET"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:9081/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    }
+  ],
+  "notes": [
+    "Collection window after release: {\"min\":\"2026-11-13\",\"max\":\"2026-12-01\",\"was\":\"2026-11-12\"}",
+    "No-claim saved date 2026-11-13"
+  ],
+  "origin": "http://127.0.0.1:9081",
+  "orderPosts": [],
+  "trace": [
+    {
+      "at": 19726,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +43ms",
+      "http": 200
+    },
+    {
+      "at": 19771,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +119ms",
+      "http": 200
+    },
+    {
+      "at": 19771,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +213ms",
+      "http": 200
+    },
+    {
+      "at": 19771,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +344ms",
+      "http": 404
+    },
+    {
+      "at": 19771,
+      "method": "GET",
+      "path": "/api/gcsp/offers/current",
+      "done": "done +385ms",
+      "http": 200
+    },
+    {
+      "at": 19771,
+      "method": "GET",
+      "path": "/api/gcsp/orders/progress/all",
+      "done": "done +431ms",
+      "http": 200
+    },
+    {
+      "at": 19892,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +343ms",
+      "http": 200
+    },
+    {
+      "at": 19892,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +390ms",
+      "http": 200
+    },
+    {
+      "at": 19892,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +431ms",
+      "http": 200
+    },
+    {
+      "at": 20351,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +101ms",
+      "http": 404
+    },
+    {
+      "at": 20452,
+      "method": "POST",
+      "path": "/draft",
+      "done": "done +125ms",
+      "http": 200
+    },
+    {
+      "at": 20586,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +111ms",
+      "http": 200
+    },
+    {
+      "at": 20587,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +234ms",
+      "http": 200
+    },
+    {
+      "at": 20588,
+      "method": "GET",
+      "path": "/order",
+      "done": "done +289ms",
+      "http": 404
+    },
+    {
+      "at": 20697,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +209ms",
+      "http": 200
+    },
+    {
+      "at": 20697,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +270ms",
+      "http": 200
+    },
+    {
+      "at": 20697,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +330ms",
+      "http": 200
+    },
+    {
+      "at": 20881,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +212ms",
+      "http": 404,
+      "env": "not-found",
+      "v": {
+        "editable": false,
+        "view": "no-claim"
+      }
+    },
+    {
+      "at": 21093,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +135ms",
+      "http": 200
+    },
+    {
+      "at": 21093,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +241ms",
+      "http": 200
+    },
+    {
+      "at": 21093,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +332ms",
+      "http": 200
+    },
+    {
+      "at": 21228,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +226ms",
+      "http": 200
+    },
+    {
+      "at": 21228,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +287ms",
+      "http": 200
+    },
+    {
+      "at": 21228,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +337ms",
+      "http": 200
+    },
+    {
+      "at": 21794,
+      "method": "POST",
+      "path": "/draft",
+      "done": "done +196ms",
+      "http": 200
+    },
+    {
+      "at": 21992,
+      "method": "GET",
+      "path": "/stock",
+      "done": "done +208ms",
+      "http": 200
+    },
+    {
+      "at": 22217,
+      "method": "POST",
+      "path": "/api/gcsp/presenter/controls/tick",
+      "done": "done +959ms",
+      "http": 200
+    },
+    {
+      "at": 23181,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +95ms",
+      "http": 200
+    },
+    {
+      "at": 23181,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +190ms",
+      "http": 200
+    },
+    {
+      "at": 23181,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +322ms",
+      "http": 200
+    },
+    {
+      "at": 23373,
+      "method": "GET",
+      "path": "/stock",
+      "done": "failed net::ERR_ABORTED"
+    },
+    {
+      "at": 23505,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +205ms",
+      "http": 200
+    },
+    {
+      "at": 23505,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +265ms",
+      "http": 200
+    },
+    {
+      "at": 23505,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +316ms",
+      "http": 200
+    },
+    {
+      "at": 23531,
+      "method": "POST",
+      "path": "/draft",
+      "done": "done +426ms",
+      "http": 200
+    },
+    {
+      "at": 23957,
+      "method": "GET",
+      "path": "/stock",
+      "done": "done +246ms",
+      "http": 200
+    },
+    {
+      "at": 24248,
+      "method": "POST",
+      "path": "/draft",
+      "done": "done +147ms",
+      "http": 200
+    },
+    {
+      "at": 24399,
+      "method": "GET",
+      "path": "/stock",
+      "done": "done +239ms",
+      "http": 200
+    },
+    {
+      "at": 24659,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +130ms",
+      "http": 200
+    },
+    {
+      "at": 24659,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +247ms",
+      "http": 200
+    },
+    {
+      "at": 24790,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +146ms",
+      "http": 200
+    },
+    {
+      "at": 24790,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +204ms",
+      "http": 200
+    },
+    {
+      "at": 24790,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +257ms",
+      "http": 200
+    },
+    {
+      "at": 24908,
+      "method": "GET",
+      "path": "/stock",
+      "done": "done +382ms",
+      "http": 200
+    },
+    {
+      "at": 24908,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +453ms",
+      "http": 404,
+      "env": "not-found",
+      "v": {
+        "editable": false,
+        "view": "no-claim"
+      }
+    },
+    {
+      "at": 25888,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +1960ms",
+      "http": 200
+    },
+    {
+      "at": 25889,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +2064ms",
+      "http": 200
+    },
+    {
+      "at": 25889,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +2163ms",
+      "http": 200
+    },
+    {
+      "at": 27849,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +232ms",
+      "http": 200
+    },
+    {
+      "at": 27849,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +302ms",
+      "http": 200
+    },
+    {
+      "at": 27849,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +348ms",
+      "http": 200
+    },
+    {
+      "at": 28056,
+      "method": "GET",
+      "path": "/stock",
+      "done": "done +395ms",
+      "http": 200
+    },
+    {
+      "at": 28820,
+      "method": "POST",
+      "path": "/draft",
+      "done": "done +845ms",
+      "http": 200
+    },
+    {
+      "at": 29667,
+      "method": "GET",
+      "path": "/stock",
+      "done": "done +243ms",
+      "http": 200
+    },
+    {
+      "at": 29928,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +127ms",
+      "http": 200
+    },
+    {
+      "at": 29928,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +214ms",
+      "http": 200
+    },
+    {
+      "at": 29928,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +313ms",
+      "http": 200
+    },
+    {
+      "at": 29928,
+      "method": "GET",
+      "path": "/api/gcsp/offers/current",
+      "done": "done +364ms",
+      "http": 200
+    },
+    {
+      "at": 29928,
+      "method": "GET",
+      "path": "/api/gcsp/orders/progress/all",
+      "done": "done +480ms",
+      "http": 200
+    },
+    {
+      "at": 30057,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +265ms",
+      "http": 200
+    },
+    {
+      "at": 30057,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +406ms",
+      "http": 200
+    },
+    {
+      "at": 30057,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +306ms",
+      "http": 200
+    },
+    {
+      "at": 30777,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +416ms",
+      "http": 200
+    },
+    {
+      "at": 31200,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +118ms",
+      "http": 200
+    },
+    {
+      "at": 31200,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +214ms",
+      "http": 200
+    },
+    {
+      "at": 31200,
+      "method": "GET",
+      "path": "/order",
+      "done": "done +278ms",
+      "http": 404
+    },
+    {
+      "at": 31318,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +191ms",
+      "http": 200
+    },
+    {
+      "at": 31318,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +248ms",
+      "http": 200
+    },
+    {
+      "at": 31318,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +301ms",
+      "http": 200
+    },
+    {
+      "at": 31478,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +214ms",
+      "http": 404,
+      "env": "not-found",
+      "v": {
+        "editable": false,
+        "view": "no-claim"
+      }
+    },
+    {
+      "at": 31693,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +125ms",
+      "http": 200
+    },
+    {
+      "at": 31693,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +214ms",
+      "http": 200
+    },
+    {
+      "at": 31693,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +309ms",
+      "http": 200
+    },
+    {
+      "at": 31820,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +211ms",
+      "http": 200
+    },
+    {
+      "at": 31820,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +268ms",
+      "http": 200
+    },
+    {
+      "at": 31820,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +315ms",
+      "http": 200
+    },
+    {
+      "at": 32003,
+      "method": "GET",
+      "path": "/stock",
+      "done": "done +349ms",
+      "http": 200
+    },
+    {
+      "at": 32769,
+      "method": "POST",
+      "path": "/draft",
+      "done": "done +525ms",
+      "http": 200
+    },
+    {
+      "at": 33299,
+      "method": "GET",
+      "path": "/stock",
+      "done": "done +229ms",
+      "http": 200
+    },
+    {
+      "at": 33546,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +108ms",
+      "http": 200
+    },
+    {
+      "at": 33546,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +197ms",
+      "http": 200
+    },
+    {
+      "at": 33656,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +115ms",
+      "http": 200
+    },
+    {
+      "at": 33656,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +165ms",
+      "http": 200
+    },
+    {
+      "at": 33656,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +208ms",
+      "http": 200
+    },
+    {
+      "at": 33746,
+      "method": "GET",
+      "path": "/stock",
+      "done": "done +346ms",
+      "http": 200
+    },
+    {
+      "at": 33746,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +417ms",
+      "http": 404,
+      "env": "not-found",
+      "v": {
+        "editable": false,
+        "view": "no-claim"
+      }
+    },
+    {
+      "at": 34394,
+      "method": "POST",
+      "path": "/claim",
+      "done": "done +297ms",
+      "http": 200
+    },
+    {
+      "at": 34691,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +105ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    },
+    {
+      "at": 34798,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +119ms",
+      "http": 200
+    },
+    {
+      "at": 34798,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +218ms",
+      "http": 200
+    },
+    {
+      "at": 34919,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +125ms",
+      "http": 200
+    },
+    {
+      "at": 34919,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +178ms",
+      "http": 200
+    },
+    {
+      "at": 34919,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +229ms",
+      "http": 200
+    },
+    {
+      "at": 35019,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +247ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    },
+    {
+      "at": 35019,
+      "method": "GET",
+      "path": "/review-details",
+      "done": "done +497ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "frozen": false,
+        "editable": true,
+        "view": "review"
+      }
+    },
+    {
+      "at": 35700,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +348ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    },
+    {
+      "at": 36337,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +42ms",
+      "http": 200
+    },
+    {
+      "at": 36383,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +123ms",
+      "http": 200
+    },
+    {
+      "at": 36383,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +225ms",
+      "http": 200
+    },
+    {
+      "at": 36383,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +338ms",
+      "http": 200
+    },
+    {
+      "at": 36383,
+      "method": "GET",
+      "path": "/api/gcsp/offers/current",
+      "done": "done +381ms",
+      "http": 200
+    },
+    {
+      "at": 36383,
+      "method": "GET",
+      "path": "/api/gcsp/orders/progress/all",
+      "done": "done +430ms",
+      "http": 200
+    },
+    {
+      "at": 36506,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +433ms",
+      "http": 200
+    },
+    {
+      "at": 36506,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +355ms",
+      "http": 200
+    },
+    {
+      "at": 36506,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +404ms",
+      "http": 200
+    },
+    {
+      "at": 37229,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +136ms",
+      "http": 200
+    },
+    {
+      "at": 37372,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +5074ms",
+      "http": 200
+    },
+    {
+      "at": 37372,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +5160ms",
+      "http": 200
+    },
+    {
+      "at": 37372,
+      "method": "GET",
+      "path": "/order",
+      "done": "done +5215ms",
+      "http": 404
+    },
+    {
+      "at": 42446,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +171ms",
+      "http": 200
+    },
+    {
+      "at": 42446,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +217ms",
+      "http": 200
+    },
+    {
+      "at": 42447,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +268ms",
+      "http": 200
+    },
+    {
+      "at": 42587,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +215ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    },
+    {
+      "at": 42804,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +112ms",
+      "http": 200
+    },
+    {
+      "at": 42804,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +199ms",
+      "http": 200
+    },
+    {
+      "at": 42916,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +116ms",
+      "http": 200
+    },
+    {
+      "at": 42916,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +165ms",
+      "http": 200
+    },
+    {
+      "at": 42916,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +211ms",
+      "http": 200
+    },
+    {
+      "at": 43006,
+      "method": "GET",
+      "path": "/stock",
+      "done": "done +344ms",
+      "http": 200
+    },
+    {
+      "at": 43006,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +442ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    },
+    {
+      "at": 43451,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +107ms",
+      "http": 200
+    },
+    {
+      "at": 43451,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +194ms",
+      "http": 200
+    },
+    {
+      "at": 43560,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +115ms",
+      "http": 200
+    },
+    {
+      "at": 43560,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +167ms",
+      "http": 200
+    },
+    {
+      "at": 43560,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +212ms",
+      "http": 200
+    },
+    {
+      "at": 43647,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +213ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    },
+    {
+      "at": 43647,
+      "method": "GET",
+      "path": "/review-details",
+      "done": "done +416ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "frozen": false,
+        "editable": true,
+        "view": "review"
+      }
+    },
+    {
+      "at": 45275,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +27ms",
+      "http": 200
+    },
+    {
+      "at": 45304,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +134ms",
+      "http": 200
+    },
+    {
+      "at": 45304,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +261ms",
+      "http": 200
+    },
+    {
+      "at": 45304,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +374ms",
+      "http": 200
+    },
+    {
+      "at": 45304,
+      "method": "GET",
+      "path": "/api/gcsp/offers/current",
+      "done": "done +423ms",
+      "http": 200
+    },
+    {
+      "at": 45306,
+      "method": "GET",
+      "path": "/api/gcsp/orders/progress/all",
+      "done": "done +494ms",
+      "http": 200
+    },
+    {
+      "at": 45439,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +526ms",
+      "http": 200
+    },
+    {
+      "at": 45439,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +426ms",
+      "http": 200
+    },
+    {
+      "at": 45439,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +487ms",
+      "http": 200
+    },
+    {
+      "at": 46164,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +102ms",
+      "http": 200
+    },
+    {
+      "at": 46277,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +125ms",
+      "http": 200
+    },
+    {
+      "at": 46277,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +233ms",
+      "http": 200
+    },
+    {
+      "at": 46277,
+      "method": "GET",
+      "path": "/order",
+      "done": "done +289ms",
+      "http": 404
+    },
+    {
+      "at": 46402,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +193ms",
+      "http": 200
+    },
+    {
+      "at": 46402,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +260ms",
+      "http": 200
+    },
+    {
+      "at": 46402,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +305ms",
+      "http": 200
+    },
+    {
+      "at": 46566,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +258ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    },
+    {
+      "at": 46824,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +137ms",
+      "http": 200
+    },
+    {
+      "at": 46824,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +243ms",
+      "http": 200
+    },
+    {
+      "at": 46961,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +144ms",
+      "http": 200
+    },
+    {
+      "at": 46961,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +201ms",
+      "http": 200
+    },
+    {
+      "at": 46961,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +249ms",
+      "http": 200
+    },
+    {
+      "at": 47074,
+      "method": "GET",
+      "path": "/stock",
+      "done": "done +361ms",
+      "http": 200
+    },
+    {
+      "at": 47074,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +467ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    },
+    {
+      "at": 47543,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +138ms",
+      "http": 200
+    },
+    {
+      "at": 47543,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +247ms",
+      "http": 200
+    },
+    {
+      "at": 47681,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +141ms",
+      "http": 200
+    },
+    {
+      "at": 47681,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +190ms",
+      "http": 200
+    },
+    {
+      "at": 47681,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +233ms",
+      "http": 200
+    },
+    {
+      "at": 47790,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +212ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    },
+    {
+      "at": 47790,
+      "method": "GET",
+      "path": "/review-details",
+      "done": "done +432ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "frozen": false,
+        "editable": true,
+        "view": "review"
+      }
+    },
+    {
+      "at": 49404,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +47ms",
+      "http": 200
+    },
+    {
+      "at": 49452,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +126ms",
+      "http": 200
+    },
+    {
+      "at": 49452,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +230ms",
+      "http": 200
+    },
+    {
+      "at": 49452,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +337ms",
+      "http": 200
+    },
+    {
+      "at": 49452,
+      "method": "GET",
+      "path": "/api/gcsp/offers/current",
+      "done": "done +378ms",
+      "http": 200
+    },
+    {
+      "at": 49452,
+      "method": "GET",
+      "path": "/api/gcsp/orders/progress/all",
+      "done": "done +426ms",
+      "http": 200
+    },
+    {
+      "at": 49580,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +328ms",
+      "http": 200
+    },
+    {
+      "at": 49580,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +399ms",
+      "http": 200
+    },
+    {
+      "at": 49580,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +463ms",
+      "http": 200
+    },
+    {
+      "at": 50295,
+      "method": "GET",
+      "path": "/draft",
+      "done": "done +125ms",
+      "http": 200
+    },
+    {
+      "at": 50430,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +138ms",
+      "http": 200
+    },
+    {
+      "at": 50431,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +230ms",
+      "http": 200
+    },
+    {
+      "at": 50431,
+      "method": "GET",
+      "path": "/order",
+      "done": "done +288ms",
+      "http": 404
+    },
+    {
+      "at": 50569,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "failed net::ERR_ABORTED"
+    },
+    {
+      "at": 50569,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "failed net::ERR_ABORTED"
+    },
+    {
+      "at": 50569,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "failed net::ERR_ABORTED"
+    },
+    {
+      "at": 50719,
+      "method": "GET",
+      "path": "/claim",
+      "done": "failed net::ERR_FAILED"
+    },
+    {
+      "at": 50727,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +247ms",
+      "http": 200
+    },
+    {
+      "at": 50727,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +364ms",
+      "http": 200
+    },
+    {
+      "at": 50977,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +154ms",
+      "http": 200
+    },
+    {
+      "at": 50977,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +460ms",
+      "http": 200
+    },
+    {
+      "at": 50977,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +613ms",
+      "http": 200
+    },
+    {
+      "at": 51098,
+      "method": "GET",
+      "path": "/stock",
+      "done": "done +269ms",
+      "http": 200
+    },
+    {
+      "at": 51098,
+      "method": "GET",
+      "path": "/claim",
+      "done": "failed net::ERR_FAILED"
+    },
+    {
+      "at": 51253,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +285ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    },
+    {
+      "at": 51599,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +115ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    },
+    {
+      "at": 51716,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "done": "done +125ms",
+      "http": 200
+    },
+    {
+      "at": 51716,
+      "method": "GET",
+      "path": "/account",
+      "done": "done +242ms",
+      "http": 200
+    },
+    {
+      "at": 51841,
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "done": "done +154ms",
+      "http": 200
+    },
+    {
+      "at": 51841,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "done": "done +211ms",
+      "http": 200
+    },
+    {
+      "at": 51841,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "done": "done +261ms",
+      "http": 200
+    },
+    {
+      "at": 51958,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +233ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    },
+    {
+      "at": 51958,
+      "method": "GET",
+      "path": "/review-details",
+      "done": "done +476ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "frozen": false,
+        "editable": true,
+        "view": "review"
+      }
+    },
+    {
+      "at": 52903,
+      "method": "GET",
+      "path": "/claim",
+      "done": "done +96ms",
+      "http": 200,
+      "env": "ok",
+      "v": {
+        "state": "active",
+        "phase": "preview",
+        "expiresAt": "2026-11-06T11:32:00.000Z",
+        "now": "2026-11-06T11:30:00.000Z",
+        "pendingOperation": null,
+        "view": "quoted",
+        "vstate": "quoted"
+      }
+    }
+  ],
+  "finishedAt": "2026-11-09T11:45:09.959Z",
+  "counts": {
+    "steps": 14,
+    "passed": 14,
+    "screenshots": 12,
+    "keyboardChecks": 10
+  }
+}

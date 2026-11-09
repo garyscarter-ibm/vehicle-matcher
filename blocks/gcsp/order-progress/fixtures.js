@@ -102,7 +102,7 @@ function appointmentValue({ state, key = state, slot: confirmed = null, requeste
     eligibility: eligible ? { eligible: true, code: null, reason: null } : { eligible: false, code: 'opening-stage-not-reached', reason: 'Your order has not been sent to ordering yet.' },
     policyVersion: 'gcsp-policy-v1', assumptions: [{ key: 'lifecycle.appointments.slots.v1', status: 'assumed', unit: 'days; minutes; UTC HH:MM start times',
       basis: 'Synthetic slot rules. Not BMW policy.', source: 'docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114', sourceDate: '2026-11-06', policyVersion: 'gcsp-policy-v1' }],
-    provider: { mode: 'synthetic', synthetic: true }, fictional: true };
+    outcome: null, attempt: 1, previousAttempts: [], provider: { mode: 'synthetic', synthetic: true }, fictional: true };
 }
 const apptClosed = () => env(appointmentValue({ state: 'not-requested', key: 'ineligible', eligible: false }));
 const apptOpen = () => env(appointmentValue({ state: 'not-requested', offeredSlots: OFFERED }));

@@ -200,6 +200,10 @@
       "max_lines": 31
     },
     {
+      "path": "blocks/gcsp/greg/comparison/experiments.css",
+      "max_lines": 20
+    },
+    {
       "path": "blocks/gcsp/presenter-controls/presenter-controls.css",
       "max_lines": 11
     },

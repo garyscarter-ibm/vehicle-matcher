@@ -6,7 +6,7 @@ import { FIXTURE_NAMES } from './fixtures.js';
 import { FIXTURE_NAMES as PLAN_FIXTURES } from './plan/fixtures.js';
 import { driveToState } from './plan/gallery.js';
 import './plan/register.js';
-import { FIXTURE_NAMES as COMPARISON_FIXTURES } from './comparison/fixtures.js';
+import { FIXTURE_NAMES as COMPARISON_FIXTURES, EXPERIMENT_FIXTURE_NAMES } from './comparison/fixtures.js';
 import './comparison/register.js';
 import '../cases/register.js';
 
@@ -35,7 +35,7 @@ host?.addEventListener('gcsp:ready', (event) => {
     driveToState(panel, plan);
   }
   const comparisonRegion = host.regions?.routeComparison;
-  if (comparisonRegion && COMPARISON_FIXTURES.includes(comparison)) {
+  if (comparisonRegion && (COMPARISON_FIXTURES.includes(comparison) || EXPERIMENT_FIXTURE_NAMES.includes(comparison))) {
     const panel = el('gcsp-greg-comparison');
     panel.setAttribute('fixture', comparison);
     comparisonRegion.removeAttribute('aria-labelledby');

@@ -148,7 +148,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.documentStatus });
     orderingAdapter.appointments = createSyntheticAppointments({ repository });
     const appointments = createLifecycleAppointmentService({ repository, policy, clock, identity,
-      lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.appointments });
+      lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.appointments, readiness: documents });
     const returnPlan = createLifecycleReturnPlanService({ repository, policy, clock, identity,
       lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.appointments, handover: appointments,
       outcomes: createSyntheticReturnOutcomes({ repository }) });

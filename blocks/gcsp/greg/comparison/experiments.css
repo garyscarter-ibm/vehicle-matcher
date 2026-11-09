@@ -1,0 +1,19 @@
+/* Experiment picker, hold rerun form and run strip. Every selector is .gcsp scoped, tokens only, hairlines and whitespace: no stripes, no tinted verdicts. */
+.gcsp .gcsp-comparison-job, .gcsp .gcsp-comparison-job-live, .gcsp .gcsp-comparison-stage, .gcsp .gcsp-comparison-picker, .gcsp .gcsp-comparison-route, .gcsp .gcsp-comparison-empty { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.gcsp .gcsp-comparison-stage { gap: 16px; }
+.gcsp .gcsp-comparison-job { padding: 12px 0; border-block: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-comparison-job[hidden] { display: none; }
+.gcsp .gcsp-comparison-job-line, .gcsp .gcsp-comparison-lead { margin: 0; overflow-wrap: anywhere; }
+.gcsp .gcsp-comparison-job:focus-visible, .gcsp .gcsp-comparison-h3:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
+.gcsp .gcsp-comparison-progress { width: 100%; max-width: 480px; height: 12px; accent-color: var(--gcsp-accent-strong); }
+.gcsp .gcsp-comparison-picker .vm-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 8px; margin: 0; }
+.gcsp .gcsp-comparison-picker .vm-option { width: 100%; min-width: 0; min-height: 44px; padding: 8px 10px; font: inherit; text-align: start; overflow-wrap: anywhere; }
+.gcsp .gcsp-comparison-picker .vm-option:focus-visible, .gcsp .gcsp-comparison-actions .vm-btn:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
+.gcsp .gcsp-comparison-form { display: flex; flex-direction: column; gap: 16px; max-width: 640px; padding: 16px 0; border-block: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-comparison-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.gcsp .gcsp-comparison-actions p, .gcsp .gcsp-comparison-lastrun { margin: 0; overflow-wrap: anywhere; }
+.gcsp .gcsp-comparison-arms { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.gcsp .gcsp-comparison-arm { display: flex; flex-wrap: wrap; gap: 4px 12px; overflow-wrap: anywhere; }
+.gcsp .gcsp-comparison-route > .gcsp-comparison-h3 { padding-top: 8px; }
+@media (max-width: 600px) { .gcsp .gcsp-comparison-actions .vm-btn { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .gcsp .gcsp-comparison-picker .vm-option { transition: none; } }
