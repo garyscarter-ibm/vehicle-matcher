@@ -118,6 +118,21 @@ test('read options is side-effect free, evaluates exact cars and excludes unsuit
   assert.equal(options.value.automaticRecoveryPriority, false);
   assert.deepEqual(f.store.state, before);
 });
+test('FUCQ-258: a plug-in car with unconfirmed charging is marked, not offered, and the read keeps feasible cars', async (t) => {
+  const f = await setup(t); const c = await progress(f);
+  const suitable = await car(f, 884); const plugIn = await car(f, 885, { fuel: fact('phev') });
+  const before = structuredClone(f.store.state);
+  const options = await read(f); assert.equal(options.status, 'ok', JSON.stringify(options));
+  const cars = options.value.options.alternativeCars;
+  assert.deepEqual(cars.items.map((entry) => entry.orderUuid), [suitable.orderUuid]);
+  assert.deepEqual(cars.needsConfirmation.map((entry) => [entry.type, entry.orderUuid, entry.unknowns]), [['alternative-car', plugIn.orderUuid, ['charging-unconfirmed']]]);
+  assert.equal((await propose(f, c, plugIn)).status, 'unavailable');
+  assert.deepEqual(f.store.state, before);
+  await patch(f, 'stock', { orderUuid: suitable.orderUuid }, 'sold', () => ({ state: 'allocated', allocated: true }));
+  const only = (await read(f)).value.options.alternativeCars;
+  assert.equal(only.available, false); assert.match(only.reason, /need confirmation first/);
+  assert.deepEqual(only.needsConfirmation.map((entry) => entry.orderUuid), [plugIn.orderUuid]);
+});
 test('extension follows canonical policy and known actual contract end; later release remains explicitly unknown', async (t) => {
   const f = await setup(t); const first = (await read(f)).value.options;
   assert.equal(first.contractExtension.available, false);

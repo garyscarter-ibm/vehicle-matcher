@@ -459,3 +459,14 @@ test('FUCQ-208: same-name alternative cars are told apart by supplied facts, nev
   findButton(f.root, 'Review case update').click();
   assert.match(f.root.querySelector('.gcsp-case-confirmation').textContent, /Proposed carBMW i4 in Black, delivery week of 2026-12-07/); f.destroy();
 });
+test('FUCQ-258: cars needing confirmation are listed with their reasons and are never remedy choices', async () => {
+  const value = queueOptionsFixture();
+  value.options.alternativeCars.needsConfirmation = [{ type: 'alternative-car', orderUuid: 'car-phev', configurationId: 'synthetic-configuration',
+    snapshot: { display: { name: 'BMW 330e Touring' }, facts: {} }, unknowns: ['charging-unconfirmed'] }];
+  const f = await mountQueue({ ...queueFixtureAdapter(), async readOptions() { return { status: 'ok', value }; } });
+  await openQueue(f.root);
+  assert.match(f.root.textContent, /Cars that need confirmation before they can be proposed:/);
+  assert.match(f.root.textContent, /BMW 330e TouringCharging access not confirmed/);
+  const labels = [...f.root.querySelectorAll('[id$="-remedyKey"] option')].map((o) => o.textContent);
+  assert.ok(labels.some((t) => t.startsWith('Alternative car')) && !labels.some((t) => t.includes('330e'))); f.destroy();
+});

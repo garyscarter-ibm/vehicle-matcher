@@ -4,6 +4,7 @@ import { dataTable } from '../kit/data-table.js';
 import { caseStatus, clockTime, preferenceLabel, renderCaseContent, caseNotice, shown, carNameText, carOptionNames, roleLabel } from './case-content.js';
 import { caseFailure } from './gcsp-help.js';
 import { createCaseHttpAdapter, isCaseRecord, isCaseOptionsProjection } from './http-adapter.js';
+import { gateInfo } from '../greg/demand-copy.js';
 import { isRunRestarted, runRestartedNotice, runRestartedScreen } from '../kit/run-restarted.js';
 
 let serial = 0;
@@ -134,6 +135,9 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
       ['Exact car reference', choice.orderUuid], ['Configuration', choice.configurationId]]));
     for (const [key, label] of Object.entries(remedyLabels)) if (projection.options[key]?.available === false)
       form.append(el('p', 'gcsp-note', `${label}: ${projection.options[key].reason ?? 'Unavailable.'}`));
+    const pending = projection.options.alternativeCars?.needsConfirmation;
+    if (Array.isArray(pending) && pending.length) form.append(el('p', 'gcsp-note', 'Cars that need confirmation before they can be proposed:'),
+      facts(carOptionNames(pending).map((name, i) => [name, (pending[i].unknowns ?? []).map((code) => gateInfo(code).label).join(', ') || 'Needs confirmation'])));
     const actions = el('div', 'gcsp-case-actions'); actions.append(button({ label: 'Review case update', disabled: saving || blocked(), onClick: prepare }));
     form.append(actions); return form;
   }

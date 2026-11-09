@@ -12,7 +12,10 @@ export function isCaseOptionsProjection(value) {
     return typeof group?.available === 'boolean' && (!group.available || Array.isArray(group.items) && group.items.length > 0
       && group.items.every((item) => item?.type === type && validate(item)));
   };
+  const pending = options.alternativeCars?.needsConfirmation;
   return validItems('alternativeCars', 'alternative-car', (item) => typeof item.orderUuid === 'string')
+    && (pending === undefined || Array.isArray(pending) && pending.every((item) => item?.type === 'alternative-car'
+      && typeof item.orderUuid === 'string' && Array.isArray(item.unknowns)))
     && validItems('preferenceRelaxations', 'preference-relaxation', (item) => typeof item.decisionId === 'string'
       && Number.isSafeInteger(item.expectedBriefVersion) && typeof item.path === 'string' && (item.valueType === 'enum'
         ? Array.isArray(item.values) && item.values.length > 0 : item.valueType === 'slider' && Number.isFinite(item.minimum) && Number.isFinite(item.maximum)))
