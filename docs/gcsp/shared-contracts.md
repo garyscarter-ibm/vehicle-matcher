@@ -1069,10 +1069,11 @@ service. Each release applies, then the route calls FUCQ-96 `allocate` at that i
 (the harness release writes no stock-release receipt for the clock stage to read, so it calls the method the stage calls).
 Allocation runs before any non-participant acts on that release. Offer emails go to the captured transport only.
 Non-participants run `createManualReplay` with `comparison.manualRoute.v1` for the same releases and compete for cars the
-buddy has not held. After a decline or an expiry nothing re-runs allocation: the live triggers are stock release and
-brief change, so the car rejoins the pool at the next release (and the manual listing meanwhile). Live allocation now also
-re-offers a lapsed car at once (FUCQ-227, `offer.expiredHold.reallocation`); this replay does not, because at 300 employees
-the cars then circulate among non-responders and the run is over 5 times slower. Its record says so in `limitations`.
+buddy has not held. After a decline or an expiry nothing re-runs allocation here: the replay's triggers are stock release and
+brief change, so the car rejoins the pool at the next release (and the manual listing meanwhile). Live allocation re-offers
+a lapsed car at once (FUCQ-227, `offer.expiredHold.reallocation`) and a declined car on the next tick (FUCQ-233,
+`offer.declinedHold.reallocation`); this replay does neither, because at 300 employees the cars then circulate among
+non-responders and the run is over 5 times slower. Its record states the expiry case in `limitations`.
 
 **Responses.** An employee answers at offer creation plus their generated `responseSeconds`. A response at or after the
 hold deadline never happens: the offer expires through FUCQ-100's clock handler, counted as an offer expiry. They accept
