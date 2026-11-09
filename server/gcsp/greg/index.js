@@ -52,8 +52,11 @@ export function createGregDemandService({ repository, policy, clock, identity } 
         const calibration = await policy.getAssumption('employee.recommendation.v1', read);
         const declinedPolicy = await policy.getAssumption('offer.declinedCar.exclusion', read);
         const reasonPolicy = await policy.getAssumption(DECLINE_REASONS_KEY, read);
-        const reasonRegistry = reasonPolicy.status === 'ok' && reasonPolicy.policyVersion === context.policyVersion ? reasonPolicy.value : null;
-        if (declinedPolicy.status !== 'ok' || declinedPolicy.policyVersion !== context.policyVersion
+        const reasons = reasonPolicy.value?.value?.reasons;
+        const reasonsValid = reasonPolicy.status === 'ok' && reasonPolicy.policyVersion === context.policyVersion && reasonPolicy.value.value?.schemaVersion === 1
+          && Array.isArray(reasons) && reasons.length > 0 && reasons.every((r) => typeof r?.code === 'string' && r.code.length > 0)
+          && new Set(reasons.map((r) => r.code)).size === reasons.length;
+        if (!reasonsValid || declinedPolicy.status !== 'ok' || declinedPolicy.policyVersion !== context.policyVersion
           || declinedPolicy.value.value !== 'untilRelevantConfirmedBriefChange' || threshold.status !== 'ok' || calibration.status !== 'ok' || threshold.policyVersion !== context.policyVersion
           || calibration.policyVersion !== context.policyVersion || !Number.isSafeInteger(threshold.value.value) || threshold.value.value < 1) return unavailable('privacy-policy-unavailable');
         const minimum = threshold.value.value;
@@ -127,9 +130,8 @@ export function createGregDemandService({ repository, policy, clock, identity } 
           || rows.holds.some((h) => h.holdId === o.holdId && h.state === 'allocated'
             && rows.stock.some((s) => s.orderUuid === h.orderUuid && (s.state === 'allocated' || s.allocated === true))));
         const expired = rows.offers.filter((o) => o.state === 'expired' && !accepted.includes(o) && !selected.includes(o) && !declined.includes(o));
-        // Greg's decline categories are the reviewed reason codes; any other code, or no registry, counts as unclassified.
-        const reasonTypes = new Set((Array.isArray(reasonRegistry?.value?.reasons) ? reasonRegistry.value.reasons : [])
-          .map((r) => r?.code).filter((code) => typeof code === 'string' && code.length > 0));
+        // Greg's decline categories are the reviewed reason codes; any other code counts as unclassified.
+        const reasonTypes = new Set(reasons.map((r) => r.code));
         const reason = (offer) => {
           const recorded = rows.decisions.find((d) => d.offerId === offer.offerId && d.decision === 'decline');
           const type = recorded?.reason?.code;
@@ -148,7 +150,7 @@ export function createGregDemandService({ repository, policy, clock, identity } 
         if (inputDigest(rows) !== inputDigest(after) || time.value.clockVersion !== end.value.clockVersion) return result('conflict', {
           reason: 'Demand inputs changed during the read. Refresh the projection.' });
         const authorized = await identity.requireRole(context, 'greg'); if (authorized.status !== 'ok') return authorized;
-        return ok({ runId: context.runId, asOf: time.value.now, projectionVersion: inputDigest({ rows, policy: context.policyVersion, configuration: [threshold.value, calibration.value, declinedPolicy.value, reasonRegistry], clock: time.value.clockVersion }),
+        return ok({ runId: context.runId, asOf: time.value.now, projectionVersion: inputDigest({ rows, policy: context.policyVersion, configuration: [threshold.value, calibration.value, declinedPolicy.value, reasonPolicy.value], clock: time.value.clockVersion }),
           basis: 'expressed-saved-demand', versions: { ...provenance(briefs), clock: time.value.clockVersion },
           privacy: { thresholdKey: THRESHOLD_KEY, threshold: minimum, policyVersion: threshold.policyVersion, status: threshold.value.status },
           demand: { activeBriefs: aggregate(briefs), byModelLine: group(briefs, (b) => String(desired(b, 'modelLine'))),

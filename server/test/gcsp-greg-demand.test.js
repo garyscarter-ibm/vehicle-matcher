@@ -318,12 +318,23 @@ test('a reason outside the decline policy is still counted as unclassified', asy
   assert.equal(exact(bucket(out.offers.declinedByReason, 'body-style')), 1);
 });
 
-test('without the decline policy every decline is counted as unclassified and the view stays available', async () => {
-  const f = await setup({ declineReasons: null }); await confirm(f);
-  await offer(f, 1, 'declined', 'decline', { code: 'body-style', label: 'Body style', attribute: 'body' });
-  const out = await read(f);
-  assert.equal(exact(bucket(out.offers.declinedByReason, 'unclassified')), 1);
-  assert.equal(bucket(out.offers.declinedByReason, 'body-style'), undefined);
+test('a missing, invalid or wrong-version decline policy makes the view unavailable, never silently unclassified', async () => {
+  const missing = await setup({ declineReasons: null }); await confirm(missing);
+  await offer(missing, 1, 'declined', 'decline', { code: 'body-style', label: 'Body style', attribute: 'body' });
+  const out = await missing.service.readDemand(missing.context);
+  assert.equal(out.status, 'unavailable'); assert.equal(out.code, 'privacy-policy-unavailable');
+  for (const declineReasons of [{ schemaVersion: 1, reasons: [] }, { schemaVersion: 1, reasons: [{ code: '' }] },
+    { schemaVersion: 1, reasons: [{ code: 'size' }, { code: 'size' }] }]) {
+    const invalid = await setup({ declineReasons }); await confirm(invalid);
+    assert.equal((await invalid.service.readDemand(invalid.context)).code, 'privacy-policy-unavailable', JSON.stringify(declineReasons));
+  }
+  const f = await setup(); await confirm(f);
+  const real = f.policy.getAssumption.bind(f.policy);
+  const stale = Object.assign(Object.create(f.policy), { getAssumption: async (key, read) => { const row = await real(key, read);
+    return key === 'offer.declineReasons.v1' ? { ...row, policyVersion: 'other-version' } : row; } });
+  const service = createGregDemandService({ repository: f.repository, policy: stale, clock: f.clock, identity: f.identity });
+  assert.equal((await service.readDemand(f.context)).code, 'privacy-policy-unavailable');
+  assert.equal((await f.service.readDemand(f.context)).status, 'ok');
 });
 
 
