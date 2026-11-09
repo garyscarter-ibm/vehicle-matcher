@@ -100,6 +100,18 @@ test('pending authority disables continuation and new orders omit return mileage
   assert.equal(f.destroy.controller.state.status, 'pending'); assert.equal(f.ready, 0); assert.equal(f.released, 0);
   assert.equal(control(f, 'contact.phone').disabled, true);
 });
+test('FUCQ-277: a confirmed claim shows no internal prose or re-check control, an unconfirmed one keeps its recovery', async (t) => {
+  const f = setup(t); await settle(() => control(f, 'contact.phone'));
+  const names = () => [...f.root.querySelectorAll('button')].map((b) => b.textContent);
+  assert.equal(names().includes('Check current claim'), false);
+  assert.doesNotMatch(f.root.textContent, /Time follows the presenter clock|pinned to your claim|current claim has been checked/i);
+  assert.match(f.root.textContent, /This car is reserved until the deadline\. Continuing does not place an order\./);
+  assert.equal(f.root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
+  f.setClaim({ status: 'unavailable', code: 'manual-claim-unavailable', retryable: true }); await f.destroy.refresh();
+  assert.equal(names().includes('Check current claim'), true); assert.match(f.root.textContent, /could not be confirmed/);
+  f.setClaim({ status: 'pending', operationId: 'uncertain' }); await f.destroy.refresh();
+  assert.equal(names().includes('Check current claim'), true);
+});
 test('shell mount and repeatable custom element registration tear down owned content', async (t) => {
   const f = setup(t, { shell: true }); await settle(() => control(f, 'contact.phone'));
   assert.equal(f.root.querySelectorAll('main').length, 1); assert.equal(defineGcspManualReview(), defineGcspManualReview());

@@ -87,7 +87,7 @@ test('rendered history shows visible past releases and unknown current version i
   const f = await mount(t); const region = f.root.querySelector('[aria-label="Release history"]');
   assert.equal(region.hidden, false); assert.match(region.textContent, /5 cars in 2 releases visible to you/);
   assert.match(region.textContent, /Latest visible release:.*UTC \(demo time\)/);
-  assert.match(region.textContent, /Current source version: unknown/);
+  assert.doesNotMatch(region.textContent, /source version|unknown/i);
   const text = region.textContent;
   f.teardown.gallery.setControls({ query: 'no matching car' });
   assert.match(f.root.textContent, /No cars match these filters/); assert.equal(region.textContent, text);

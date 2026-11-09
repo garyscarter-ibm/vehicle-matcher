@@ -1,0 +1,169 @@
+{
+ "story": "DEV-2026-11-09-GC-060 / FUCQ-277",
+ "host": "GCSP_OFFLINE=1 memory runtime, port 9440, headless Chrome",
+ "note": "forbiddenCopyFound 'Not supplied' on account and review is the current-car Registration fact and the pinned review card facts, which are outside this fix's listed items.",
+ "runs": [
+  {
+   "screen": "account-allowance",
+   "file": "1280-account-allowance.png",
+   "viewport": "1280x900",
+   "url": "/gcsp-presenter.html",
+   "h1": "Your cars",
+   "forbiddenCopyFound": "Not supplied",
+   "syntheticFooter": true,
+   "overflowX": 0,
+   "openFacts": 0,
+   "factSections": 0,
+   "checks": [
+    "Your allowance panel lists the monthly allowance only",
+    "no Allowance basis line",
+    "no Exact specification line"
+   ]
+  },
+  {
+   "screen": "setup-no-driver",
+   "file": "1280-setup-no-driver.png",
+   "viewport": "1280x900",
+   "url": "/gcsp-presenter.html",
+   "h1": "Your order choices",
+   "forbiddenCopyFound": null,
+   "syntheticFooter": true,
+   "overflowX": 0,
+   "openFacts": 0,
+   "factSections": 0,
+   "checks": [
+    "no licence facts and no Not supplied before a driver is chosen",
+    "no allowance basis prose"
+   ]
+  },
+  {
+   "screen": "setup-driver-chosen",
+   "note": "licence facts shown after choosing a driver",
+   "licenceVisible": true
+  },
+  {
+   "screen": "gallery-cards",
+   "file": "1280-gallery-cards.png",
+   "viewport": "1280x900",
+   "url": "/gcsp-presenter.html",
+   "h1": "Released cars",
+   "forbiddenCopyFound": null,
+   "syntheticFooter": true,
+   "overflowX": 0,
+   "openFacts": 0,
+   "factSections": 6,
+   "checks": [
+    "Car facts closed on every card",
+    "only supplied facts, with More details not supplied",
+    "no Current source version line"
+   ]
+  },
+  {
+   "screen": "review-confirmed-claim",
+   "file": "1280-review-confirmed-claim.png",
+   "viewport": "1280x900",
+   "url": "/gcsp-presenter.html",
+   "h1": "Review your car",
+   "forbiddenCopyFound": "Not supplied",
+   "syntheticFooter": true,
+   "overflowX": 0,
+   "openFacts": 0,
+   "factSections": 0,
+   "checks": [
+    "no Check current claim button in the confirmed state",
+    "no presenter-clock or pinned-claim prose"
+   ]
+  },
+  {
+   "screen": "review-buttons",
+   "buttons": [
+    "Back",
+    "Change car",
+    "Cancel review",
+    "Save details",
+    "Continue to order review"
+   ]
+  },
+  {
+   "screen": "account-allowance",
+   "file": "375-account-allowance.png",
+   "viewport": "375x812",
+   "url": "/gcsp-presenter.html",
+   "h1": "Your cars",
+   "forbiddenCopyFound": "Not supplied",
+   "syntheticFooter": true,
+   "overflowX": 0,
+   "openFacts": 0,
+   "factSections": 0,
+   "checks": [
+    "Your allowance panel lists the monthly allowance only",
+    "no Allowance basis line",
+    "no Exact specification line"
+   ]
+  },
+  {
+   "screen": "setup-no-driver",
+   "file": "375-setup-no-driver.png",
+   "viewport": "375x812",
+   "url": "/gcsp-presenter.html",
+   "h1": "Your order choices",
+   "forbiddenCopyFound": null,
+   "syntheticFooter": true,
+   "overflowX": 0,
+   "openFacts": 0,
+   "factSections": 0,
+   "checks": [
+    "no licence facts and no Not supplied before a driver is chosen",
+    "no allowance basis prose"
+   ]
+  },
+  {
+   "screen": "setup-driver-chosen",
+   "note": "licence facts shown after choosing a driver",
+   "licenceVisible": true
+  },
+  {
+   "screen": "gallery-cards",
+   "file": "375-gallery-cards.png",
+   "viewport": "375x812",
+   "url": "/gcsp-presenter.html",
+   "h1": "Released cars",
+   "forbiddenCopyFound": null,
+   "syntheticFooter": true,
+   "overflowX": 0,
+   "openFacts": 0,
+   "factSections": 3,
+   "checks": [
+    "Car facts closed on every card",
+    "only supplied facts, with More details not supplied",
+    "no Current source version line"
+   ]
+  },
+  {
+   "screen": "review-confirmed-claim",
+   "file": "375-review-confirmed-claim.png",
+   "viewport": "375x812",
+   "url": "/gcsp-presenter.html",
+   "h1": "Review your car",
+   "forbiddenCopyFound": "Not supplied",
+   "syntheticFooter": true,
+   "overflowX": 0,
+   "openFacts": 0,
+   "factSections": 0,
+   "checks": [
+    "no Check current claim button in the confirmed state",
+    "no presenter-clock or pinned-claim prose"
+   ]
+  },
+  {
+   "screen": "review-buttons",
+   "buttons": [
+    "Back",
+    "Change car",
+    "Cancel review",
+    "Save details",
+    "Continue to order review"
+   ]
+  }
+ ]
+}

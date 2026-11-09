@@ -313,6 +313,14 @@ test('the HTTP adapter posts the body unchanged and treats transport loss as an 
   assert.equal((await missing.readOrder()).status, 'not-found');
 });
 
+test('FUCQ-277: a settled claim shows no re-check control or presenter-clock prose; an unconfirmed one keeps its recovery', async (t) => {
+  const f = setup(t); await ready(f);
+  assert.equal(named(f, 'Check current claim'), undefined); assert.doesNotMatch(f.root.textContent, /Time follows the presenter clock|current claim has been checked/i);
+  assert.match(f.root.textContent, /Submitting places your order\./); assert.equal(f.root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
+  f.adapter.readClaim = async () => ({ status: 'unavailable', code: 'manual-claim-unavailable', retryable: true }); f.tick();
+  await settle(() => /Reservation not confirmed/.test(f.root.textContent)); assert.ok(named(f, 'Check current claim'));
+});
+
 test('a slow recheck after expiry keeps the expiry message and Refresh stock', async (t) => {
   const f = setup(t); await ready(f); tickAll(f);
   f.model.now = f.hold.expiresAt; f.model.clockVersion = '2'; f.tick();
