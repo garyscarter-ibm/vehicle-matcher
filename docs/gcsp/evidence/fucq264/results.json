@@ -1,0 +1,26 @@
+{
+  "pids": {
+    "server": 27526,
+    "chrome": 27527
+  },
+  "shots": [
+    {
+      "width": 1280,
+      "file": "docs/gcsp/evidence/fucq264/1280-greg-closed-unconfirmed.png",
+      "remedyText": "Recorded remedy\nPreference\nBody\nProposed value\nsuv\nExpected brief version\n3\n\nThe employee did not confirm this change before the case closed.",
+      "remedyButtons": 0,
+      "horizontalOverflow": false,
+      "errors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ]
+    },
+    {
+      "width": 375,
+      "file": "docs/gcsp/evidence/fucq264/375-greg-closed-unconfirmed.png",
+      "remedyText": "Recorded remedy\nPreference\nBody\nProposed value\nsuv\nExpected brief version\n3\n\nThe employee did not confirm this change before the case closed.",
+      "remedyButtons": 0,
+      "horizontalOverflow": false,
+      "errors": []
+    }
+  ]
+}
