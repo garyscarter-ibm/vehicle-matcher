@@ -77,6 +77,19 @@ test('a command keeps keyboard focus on a surviving control, otherwise on the me
   assert.equal(document.activeElement, node.querySelector('.gcsp-order-message')); assert.equal(node.querySelector('.gcsp-order-message').getAttribute('role'), 'status');
 });
 
+test('FUCQ-254: a keyboard rebook after a missed handover keeps the update and focus in the Handover section', async () => {
+  const server = { name: 'appointment-no-show' }; const a = adapter(server); const gate = deferred(); a.requestAppointment = () => gate.promise;
+  const node = root(); mount(node, { adapter: a }); await settle(node, (r) => r.querySelector('.gcsp-order-handover .gcsp-order-slots button'));
+  const slot = node.querySelector('.gcsp-order-handover .gcsp-order-slots button'); slot.focus(); slot.click();
+  await settle(node, (r) => r.querySelector('.gcsp-order-message'));
+  assert.equal(document.activeElement, node.querySelector('.gcsp-order-message')); assert.ok(document.activeElement.closest('.gcsp-order-handover'), 'pending update in Handover');
+  server.name = 'appointment-rebooked'; gate.resolve({ status: 'ok', value: {} });
+  await settle(node, (r) => r.textContent.includes('Handover time requested.'));
+  const live = node.querySelector('.gcsp-order-message');
+  assert.equal(live.getAttribute('role'), 'status'); assert.equal(live.textContent, 'Handover time requested.');
+  assert.equal(document.activeElement, live); assert.ok(live.closest('.gcsp-order-handover'), 'confirmation in Handover');
+});
+
 test('focus moved outside the body stays outside; the controls are disabled while a command is pending', async () => {
   const server = { name: 'sent-to-ordering-no-slot' }; const a = adapter(server); const gate = deferred(); a.requestAppointment = () => gate.promise;
   const outside = document.createElement('button'); outside.textContent = 'Outside'; document.body.append(outside);

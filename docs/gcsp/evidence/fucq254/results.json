@@ -1,0 +1,504 @@
+{
+  "375": {
+    "state": "passed",
+    "chunk": "narrow",
+    "viewport": {
+      "width": 375,
+      "height": 812
+    },
+    "boundary": "Real buildServer routes, memory repository and canonical services over loopback HTTP, hosted on gcsp-account.html.",
+    "cookieMode": "fallback: Secure and SameSite=None refused on http://127.0.0.1, bootstrap cookie stored Lax, not Secure",
+    "checks": [
+      {
+        "id": "tab",
+        "name": "Tab alone reaches the first \"Request <time>\" button in Handover",
+        "pass": true,
+        "detail": {
+          "tabs": 3,
+          "lastStops": [
+            "Refresh account",
+            "View order progress",
+            "Request 9 Nov 2026, 09:00"
+          ]
+        }
+      },
+      {
+        "id": "focus-ring",
+        "name": "the rebook button shows a visible focus ring",
+        "pass": true,
+        "detail": {
+          "tag": "button",
+          "role": null,
+          "label": "Request 9 Nov 2026, 09:00",
+          "focusVisible": true,
+          "outline": "solid 2px",
+          "boxShadow": "none",
+          "ring": true
+        }
+      },
+      {
+        "id": "rebook-keyboard:layout",
+        "name": "rebook-keyboard: no horizontal scroll, nothing wider than the viewport",
+        "pass": true,
+        "detail": {
+          "scrollWidth": 375,
+          "innerWidth": 375,
+          "wide": []
+        }
+      },
+      {
+        "id": "rebook-keyboard:copy",
+        "name": "rebook-keyboard: no em dash in body text",
+        "pass": true
+      },
+      {
+        "id": "rebook-keyboard:console",
+        "name": "rebook-keyboard: no console errors, failed resources or CSP violations",
+        "pass": true,
+        "detail": {
+          "consoleErrors": [],
+          "resourceErrors": [],
+          "csp": []
+        }
+      },
+      {
+        "id": "rebook-keyboard:\"Handover missed: <time>\"",
+        "name": "rebook-keyboard: \"Handover missed: <time>\"",
+        "pass": true
+      },
+      {
+        "id": "announced",
+        "name": "Enter produces the role=status message \"Handover time requested.\"",
+        "pass": true,
+        "detail": [
+          "status:Presenter controls ready",
+          "alert:The demo was restarted. Reload the page to continue.Reload",
+          "status:",
+          "status:Your order is in progressOrder referenceGCSP-000001Car order number9100001Current step: Sent to ordering.View order progress",
+          "status:Handover time requested."
+        ]
+      },
+      {
+        "id": "in-handover",
+        "name": "the one status message sits in Handover, straight after its heading",
+        "pass": true,
+        "detail": {
+          "messages": 1,
+          "inHandover": true,
+          "afterHeading": true,
+          "focused": true,
+          "messageTop": 186,
+          "messageBottom": 234,
+          "headingTop": 140,
+          "innerHeight": 812,
+          "scrollY": 1507
+        }
+      },
+      {
+        "id": "focus-on-message",
+        "name": "focus moves to that message, with a visible focus ring",
+        "pass": true,
+        "detail": {
+          "tag": "p",
+          "role": "status",
+          "label": "Handover time requested.",
+          "focusVisible": true,
+          "outline": "solid 2px",
+          "boxShadow": "none",
+          "ring": true
+        }
+      },
+      {
+        "id": "in-view",
+        "name": "the message and the Handover heading are both inside the viewport",
+        "pass": true,
+        "detail": {
+          "messages": 1,
+          "inHandover": true,
+          "afterHeading": true,
+          "focused": true,
+          "messageTop": 186,
+          "messageBottom": 234,
+          "headingTop": 140,
+          "innerHeight": 812,
+          "scrollY": 1507
+        }
+      },
+      {
+        "id": "rebooked:layout",
+        "name": "rebooked: no horizontal scroll, nothing wider than the viewport",
+        "pass": true,
+        "detail": {
+          "scrollWidth": 375,
+          "innerWidth": 375,
+          "wide": []
+        }
+      },
+      {
+        "id": "rebooked:copy",
+        "name": "rebooked: no em dash in body text",
+        "pass": true
+      },
+      {
+        "id": "rebooked:console",
+        "name": "rebooked: no console errors, failed resources or CSP violations",
+        "pass": true,
+        "detail": {
+          "consoleErrors": [],
+          "resourceErrors": [],
+          "csp": []
+        }
+      },
+      {
+        "id": "rebooked:\"Requested ... Not booked yet.\"",
+        "name": "rebooked: \"Requested ... Not booked yet.\"",
+        "pass": true
+      },
+      {
+        "id": "rebooked:status message",
+        "name": "rebooked: status message",
+        "pass": true
+      },
+      {
+        "id": "rebooked:no-\"Booked:\"",
+        "name": "rebooked: absent: \"Booked:\"",
+        "pass": true
+      }
+    ],
+    "captures": [
+      {
+        "name": "375-rebook-keyboard",
+        "file": "375-rebook-keyboard.png",
+        "bytesPng": 59781,
+        "innerWidth": 375,
+        "scrollWidth": 375,
+        "horizontalScroll": false,
+        "wideElements": [],
+        "emDash": false,
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "cspViolations": []
+      },
+      {
+        "name": "375-rebooked",
+        "file": "375-rebooked.png",
+        "bytesPng": 51911,
+        "innerWidth": 375,
+        "scrollWidth": 375,
+        "horizontalScroll": false,
+        "wideElements": [],
+        "emDash": false,
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "cspViolations": []
+      }
+    ],
+    "errors": [],
+    "requests": {
+      "GET /api/gcsp/presenter/controls 200 ok": 1,
+      "GET /api/gcsp/manual/account 200 ok": 1,
+      "GET /api/gcsp/manual/draft 200 ok": 1,
+      "GET /api/gcsp/offers/current 200 ok": 1,
+      "GET /api/gcsp/orders/progress/all 200 ok": 1,
+      "GET /api/gcsp/context 200 ok": 1,
+      "GET /api/gcsp/presenter/scenarios 200 ok": 1,
+      "GET /api/gcsp/presenter/scenarios/faults 200 ok": 1,
+      "GET /api/gcsp/manual/order 200 ok": 1,
+      "GET /api/gcsp/orders/progress 200 ok": 2,
+      "GET /api/gcsp/documents 200 ok": 2,
+      "GET /api/gcsp/appointments 200 ok": 2,
+      "GET /api/gcsp/return-plan 200 ok": 2,
+      "POST /api/gcsp/appointments/request 200 ok": 1
+    },
+    "processes": {
+      "chrome": {
+        "pid": 38319,
+        "group": 38319,
+        "debugPort": 9258
+      },
+      "server-rebook-375": {
+        "pid": 38315,
+        "port": 9250
+      }
+    },
+    "notes": [],
+    "facts": {
+      "rebook": {
+        "geo": {
+          "messages": 1,
+          "inHandover": true,
+          "afterHeading": true,
+          "focused": true,
+          "messageTop": 186,
+          "messageBottom": 234,
+          "headingTop": 140,
+          "innerHeight": 812,
+          "scrollY": 1507
+        },
+        "status": [
+          "status:Presenter controls ready",
+          "alert:The demo was restarted. Reload the page to continue.Reload",
+          "status:",
+          "status:Your order is in progressOrder referenceGCSP-000001Car order number9100001Current step: Sent to ordering.View order progress",
+          "status:Handover time requested."
+        ]
+      }
+    },
+    "summary": {
+      "checks": 16,
+      "failed": [],
+      "captures": 2
+    }
+  },
+  "1280": {
+    "state": "passed",
+    "chunk": "desktop",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "boundary": "Real buildServer routes, memory repository and canonical services over loopback HTTP, hosted on gcsp-account.html.",
+    "cookieMode": "fallback: Secure and SameSite=None refused on http://127.0.0.1, bootstrap cookie stored Lax, not Secure",
+    "checks": [
+      {
+        "id": "tab",
+        "name": "Tab alone reaches the first \"Request <time>\" button in Handover",
+        "pass": true,
+        "detail": {
+          "tabs": 3,
+          "lastStops": [
+            "Refresh account",
+            "View order progress",
+            "Request 9 Nov 2026, 09:00"
+          ]
+        }
+      },
+      {
+        "id": "focus-ring",
+        "name": "the rebook button shows a visible focus ring",
+        "pass": true,
+        "detail": {
+          "tag": "button",
+          "role": null,
+          "label": "Request 9 Nov 2026, 09:00",
+          "focusVisible": true,
+          "outline": "solid 2px",
+          "boxShadow": "none",
+          "ring": true
+        }
+      },
+      {
+        "id": "rebook-keyboard:layout",
+        "name": "rebook-keyboard: no horizontal scroll, nothing wider than the viewport",
+        "pass": true,
+        "detail": {
+          "scrollWidth": 1280,
+          "innerWidth": 1280,
+          "wide": []
+        }
+      },
+      {
+        "id": "rebook-keyboard:copy",
+        "name": "rebook-keyboard: no em dash in body text",
+        "pass": true
+      },
+      {
+        "id": "rebook-keyboard:console",
+        "name": "rebook-keyboard: no console errors, failed resources or CSP violations",
+        "pass": true,
+        "detail": {
+          "consoleErrors": [],
+          "resourceErrors": [],
+          "csp": []
+        }
+      },
+      {
+        "id": "rebook-keyboard:\"Handover missed: <time>\"",
+        "name": "rebook-keyboard: \"Handover missed: <time>\"",
+        "pass": true
+      },
+      {
+        "id": "announced",
+        "name": "Enter produces the role=status message \"Handover time requested.\"",
+        "pass": true,
+        "detail": [
+          "status:Presenter controls ready",
+          "alert:The demo was restarted. Reload the page to continue.Reload",
+          "status:",
+          "status:Your order is in progressOrder referenceGCSP-000001Car order number9100001Current step: Sent to ordering.View order progress",
+          "status:Handover time requested."
+        ]
+      },
+      {
+        "id": "in-handover",
+        "name": "the one status message sits in Handover, straight after its heading",
+        "pass": true,
+        "detail": {
+          "messages": 1,
+          "inHandover": true,
+          "afterHeading": true,
+          "focused": true,
+          "messageTop": 279,
+          "messageBottom": 327,
+          "headingTop": 233,
+          "innerHeight": 900,
+          "scrollY": 1289
+        }
+      },
+      {
+        "id": "focus-on-message",
+        "name": "focus moves to that message, with a visible focus ring",
+        "pass": true,
+        "detail": {
+          "tag": "p",
+          "role": "status",
+          "label": "Handover time requested.",
+          "focusVisible": true,
+          "outline": "solid 2px",
+          "boxShadow": "none",
+          "ring": true
+        }
+      },
+      {
+        "id": "in-view",
+        "name": "the message and the Handover heading are both inside the viewport",
+        "pass": true,
+        "detail": {
+          "messages": 1,
+          "inHandover": true,
+          "afterHeading": true,
+          "focused": true,
+          "messageTop": 279,
+          "messageBottom": 327,
+          "headingTop": 233,
+          "innerHeight": 900,
+          "scrollY": 1289
+        }
+      },
+      {
+        "id": "rebooked:layout",
+        "name": "rebooked: no horizontal scroll, nothing wider than the viewport",
+        "pass": true,
+        "detail": {
+          "scrollWidth": 1280,
+          "innerWidth": 1280,
+          "wide": []
+        }
+      },
+      {
+        "id": "rebooked:copy",
+        "name": "rebooked: no em dash in body text",
+        "pass": true
+      },
+      {
+        "id": "rebooked:console",
+        "name": "rebooked: no console errors, failed resources or CSP violations",
+        "pass": true,
+        "detail": {
+          "consoleErrors": [],
+          "resourceErrors": [],
+          "csp": []
+        }
+      },
+      {
+        "id": "rebooked:\"Requested ... Not booked yet.\"",
+        "name": "rebooked: \"Requested ... Not booked yet.\"",
+        "pass": true
+      },
+      {
+        "id": "rebooked:status message",
+        "name": "rebooked: status message",
+        "pass": true
+      },
+      {
+        "id": "rebooked:no-\"Booked:\"",
+        "name": "rebooked: absent: \"Booked:\"",
+        "pass": true
+      }
+    ],
+    "captures": [
+      {
+        "name": "1280-rebook-keyboard",
+        "file": "1280-rebook-keyboard.png",
+        "bytesPng": 84270,
+        "innerWidth": 1280,
+        "scrollWidth": 1280,
+        "horizontalScroll": false,
+        "wideElements": [],
+        "emDash": false,
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "cspViolations": []
+      },
+      {
+        "name": "1280-rebooked",
+        "file": "1280-rebooked.png",
+        "bytesPng": 76881,
+        "innerWidth": 1280,
+        "scrollWidth": 1280,
+        "horizontalScroll": false,
+        "wideElements": [],
+        "emDash": false,
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "cspViolations": []
+      }
+    ],
+    "errors": [],
+    "requests": {
+      "GET /api/gcsp/presenter/controls 200 ok": 1,
+      "GET /api/gcsp/manual/account 200 ok": 1,
+      "GET /api/gcsp/manual/draft 200 ok": 1,
+      "GET /api/gcsp/offers/current 200 ok": 1,
+      "GET /api/gcsp/orders/progress/all 200 ok": 1,
+      "GET /api/gcsp/context 200 ok": 1,
+      "GET /api/gcsp/presenter/scenarios 200 ok": 1,
+      "GET /api/gcsp/presenter/scenarios/faults 200 ok": 1,
+      "GET /api/gcsp/manual/order 200 ok": 1,
+      "GET /api/gcsp/orders/progress 200 ok": 2,
+      "GET /api/gcsp/documents 200 ok": 2,
+      "GET /api/gcsp/appointments 200 ok": 2,
+      "GET /api/gcsp/return-plan 200 ok": 2,
+      "POST /api/gcsp/appointments/request 200 ok": 1
+    },
+    "processes": {
+      "chrome": {
+        "pid": 38510,
+        "group": 38510,
+        "debugPort": 9259
+      },
+      "server-rebook-1280": {
+        "pid": 38500,
+        "port": 9251
+      }
+    },
+    "notes": [],
+    "facts": {
+      "rebook": {
+        "geo": {
+          "messages": 1,
+          "inHandover": true,
+          "afterHeading": true,
+          "focused": true,
+          "messageTop": 279,
+          "messageBottom": 327,
+          "headingTop": 233,
+          "innerHeight": 900,
+          "scrollY": 1289
+        },
+        "status": [
+          "status:Presenter controls ready",
+          "alert:The demo was restarted. Reload the page to continue.Reload",
+          "status:",
+          "status:Your order is in progressOrder referenceGCSP-000001Car order number9100001Current step: Sent to ordering.View order progress",
+          "status:Handover time requested."
+        ]
+      }
+    },
+    "summary": {
+      "checks": 16,
+      "failed": [],
+      "captures": 2
+    }
+  }
+}
