@@ -13878,6 +13878,32 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "lifecycle.return.outcome.v1",
+      "value": {
+        "enabled": false,
+        "outcome": "returned",
+        "delaySecondsAfterSlotEnd": 1800,
+        "exceptionType": "appointment-no-show",
+        "ownership": {
+          "returned": {
+            "owner": "retailer",
+            "nextStep": "Your current car has been returned. Nothing more is needed from you."
+          },
+          "missed": {
+            "owner": "scheme-team",
+            "nextStep": "The scheme team will contact you to rearrange the return of your current car."
+          }
+        }
+      },
+      "unit": "scenario selection; seconds of demo time after the return slot ends; lifecycle-exception event type key",
+      "basis": "Physical return stays outside the main walkthrough, so it is off by default; a presenter scenario enables it and chooses returned or missed. Half an hour after the slot ends is a plausible time for the retailer to confirm. The exception type matches renewalCase.lifecycle.eventTypes.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-return-outcomes--fucq-168",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "supply.release.windows",
       "value": {
         "cue": "release",

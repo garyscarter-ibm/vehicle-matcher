@@ -40,6 +40,7 @@ import { createLifecycleDocumentService } from './lifecycle/documents/index.js';
 import { createLifecycleAppointmentService } from './lifecycle/appointments/index.js';
 import { createLifecycleReturnPlanService } from './lifecycle/return-plan/index.js';
 import { createSyntheticAppointments } from './adapters/synthetic-appointments.js';
+import { createSyntheticReturnOutcomes } from './adapters/synthetic-return-outcomes.js';
 import { createManualOrderService, createManualOrderConversion } from './manual-order/index.js';
 
 const unavailable = () => result('unavailable', { reason: 'The trusted demo runtime is unavailable.', retryable: true });
@@ -149,7 +150,8 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const appointments = createLifecycleAppointmentService({ repository, policy, clock, identity,
       lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.appointments });
     const returnPlan = createLifecycleReturnPlanService({ repository, policy, clock, identity,
-      lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.appointments, handover: appointments });
+      lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.appointments, handover: appointments,
+      outcomes: createSyntheticReturnOutcomes({ repository }) });
     const buddy = createBuddyHoldService({ repository, policy, clock, identity, adapter, offerLandingUrl });
     // FUCQ-96 proposes claims on the clock's buddy-allocation stage; only the buddy port writes holds.
     const allocation = createAllocationService({ repository, policy, clock, identity, claim: buddy });

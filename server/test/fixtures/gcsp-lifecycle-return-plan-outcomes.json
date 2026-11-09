@@ -1,5 +1,5 @@
 {
-  "readModelKeys": ["contractVersion", "runId", "orderUuid", "employeeId", "applicable", "state", "scheduled", "oldContractId", "vehicleSlotId", "currentCar", "returnMileage", "choice", "location", "appointment", "handover", "slot", "requestedSlot", "proposedSlot", "proposalId", "providerReference", "history", "owner", "nextStep", "pending", "blocked", "choices", "offeredSlots", "policyVersion", "assumptions", "fictional"],
+  "readModelKeys": ["contractVersion", "runId", "orderUuid", "employeeId", "applicable", "state", "scheduled", "oldContractId", "vehicleSlotId", "currentCar", "returnMileage", "choice", "location", "appointment", "handover", "slot", "requestedSlot", "proposedSlot", "proposalId", "providerReference", "history", "owner", "nextStep", "pending", "blocked", "choices", "offeredSlots", "outcome", "relationship", "policyVersion", "assumptions", "fictional"],
   "historyKeys": ["state", "appointmentState", "at", "providerReference"],
   "currentCarKeys": ["contractId", "slotId", "status", "model", "vehicle", "source"],
   "returnMileageKeys": ["value", "unit", "recordedAt", "source"],
@@ -9,10 +9,19 @@
   "choiceKeys": ["id", "label", "available", "reason", "selected"],
   "offeredSlotsKeys": ["same-visit", "separate"],
   "slotKeys": ["slotId", "start", "end"],
+  "outcomeKeys": ["state", "at", "location", "appointment", "providerReference", "oldContractId"],
+  "outcomeAppointmentKeys": ["purpose", "slotId", "slot", "providerReference"],
+  "relationshipKeys": ["contractVersion", "runId", "orderUuid", "employeeId", "currentCar", "oldCar", "newCar", "changes", "fictional"],
+  "relationshipOldCarKeys": ["contractId", "slotId", "status", "returnedAt", "providerReference", "location"],
+  "relationshipNewCarKeys": ["orderUuid", "configurationId", "status", "collectedAt", "vin", "providerReference"],
+  "relationshipChangeKeys": ["type", "at", "providerReference", "appointment"],
+  "exceptionKeys": ["employeeId", "renewalId", "orderUuid", "occurredAt", "exceptionType", "oldContractId", "entitlementSlotId", "renewalAuthority", "location", "appointment", "providerReference", "policyVersion", "fictional"],
   "states": {
     "not-planned": { "state": "not-planned", "scheduled": false, "choice": null, "history": [], "owner": "employee", "nextStep": "Confirm your new car's handover first, then plan the return." },
     "return-requested": { "state": "return-requested", "scheduled": false, "choice": "separate", "history": ["return-requested"], "owner": "retailer", "nextStep": "Waiting for the retailer to confirm your return slot." },
-    "return-scheduled": { "state": "return-scheduled", "scheduled": true, "choice": "separate", "history": ["return-requested", "return-scheduled"], "owner": "retailer", "nextStep": "Keep driving your current car until the return." }
+    "return-scheduled": { "state": "return-scheduled", "scheduled": true, "choice": "separate", "history": ["return-requested", "return-scheduled"], "owner": "retailer", "nextStep": "Keep driving your current car until the return." },
+    "returned": { "state": "returned", "scheduled": false, "choice": "separate", "history": ["return-requested", "return-scheduled", "returned"], "owner": "retailer", "nextStep": "Your current car has been returned. Nothing more is needed from you.", "currentCar": null, "oldCarStatus": "returned" },
+    "return-missed": { "state": "return-missed", "scheduled": false, "choice": "separate", "history": ["return-requested", "return-scheduled", "return-missed"], "owner": "scheme-team", "nextStep": "The scheme team will contact you to rearrange the return of your current car.", "currentCar": "contract", "oldCarStatus": "held" }
   },
   "newOrder": { "applicable": false, "state": null, "scheduled": false },
   "errors": {

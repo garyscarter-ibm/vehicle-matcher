@@ -13,6 +13,10 @@ import { createGcspHandler } from '../gcsp/identity/http.js';
 import { createLifecycleApprovalService } from '../gcsp/lifecycle/approvals/index.js';
 import { createSyntheticOrderingStatus } from '../gcsp/adapters/synthetic-ordering-status.js';
 import { createSyntheticAppointments, APPOINTMENT_CONSUMER } from '../gcsp/adapters/synthetic-appointments.js';
+import { createSyntheticReturnOutcomes, createLiveReturnOutcomesStub, RETURN_OUTCOME_CONSUMER } from '../gcsp/adapters/synthetic-return-outcomes.js';
+import { RETURN_EXCEPTION_CONSUMER, RETURN_OUTCOME_STATE } from '../gcsp/lifecycle/return-plan/outcomes.js';
+import { applyCurrentCarEvent, recordCurrentCarEvent, readCurrentCar, CURRENT_CAR_EVENTS } from '../gcsp/lifecycle/current-car/index.js';
+import { RenewalCaseService } from '../gcsp/cases/index.js';
 import { prepareBuddySelection } from '../gcsp/offers/buddy-conversion.js';
 import { createRealProducer, acknowledgedSelection } from './helpers/gcsp-lifecycle-approval.js';
 
@@ -33,7 +37,8 @@ async function policyWith(mutate = () => {}) {
 }
 
 // Real FUCQ-71 producer and FUCQ-111 approvals feed the real handover (FUCQ-114) and return services.
-async function setup(t, { policy, order = 'replacement' } = {}) {
+// `outcomes` builds the return outcome step from the repository (synthetic by default); `cases` adds the renewal-risk trigger.
+async function setup(t, { policy, order = 'replacement', outcomes = (repository) => createSyntheticReturnOutcomes({ repository }), cases = false } = {}) {
   policy ??= await policyWith();
   const repository = createMemoryRepository({ store: createMemoryStore() }); await repository.open();
   t.after(() => repository.close());
@@ -51,11 +56,14 @@ async function setup(t, { policy, order = 'replacement' } = {}) {
   const provider = createSyntheticAppointments({ repository });
   const common = { repository, policy, clock, identity, lifecycleStages: approvals.stagePort(), provider };
   const handover = createLifecycleAppointmentService(common);
-  const returns = createLifecycleReturnPlanService({ ...common, handover });
+  const outcomeProvider = outcomes(repository);
+  const returns = createLifecycleReturnPlanService({ ...common, handover, outcomes: outcomeProvider });
   assert.equal((await handover.start()).status, 'ok'); assert.equal((await returns.start()).status, 'ok');
+  const renewalCases = cases ? new RenewalCaseService({ repository, policy, clock, identity }) : null;
+  if (renewalCases) assert.equal((await renewalCases.start()).status, 'ok');
   const producer = await createRealProducer({ repository, policy, clock, identity });
   const p = presenter.value.context; const ctx = paula.value.context; let n = 0;
-  const f = { repository, clock, identity, policy, handover, returns, producer, provider, presenter: p, paula: ctx, alex: alex.value.context, greg: greg.value.context,
+  const f = { repository, clock, identity, policy, handover, returns, producer, provider, outcomeProvider, renewalCases, presenter: p, paula: ctx, alex: alex.value.context, greg: greg.value.context,
     sessions: { paula, alex, greg, presenter } };
   f.tick = async () => {
     const now = await clock.now(p); const eventId = `tick-${++n}`;
@@ -419,5 +427,166 @@ test('recorded return-plan response shapes match real service output, with owner
     // The too-early case runs on a fresh order whose approval has not finished, so only its status and code are fixed.
     assert.deepEqual([got.status, got.code ?? null], [want.status, want.code], name);
     assert.deepEqual(keys(got), sorted(want.keys), name);
+  }
+});
+
+// FUCQ-168: returned and missed outcomes, the current-car relationship and the missed-return exception receipt.
+const OUTCOME = seedRow('lifecycle.return.outcome.v1').value;
+const outcomePolicy = (outcome) => policyWith((get) => Object.assign(get('lifecycle.return.outcome.v1'), { enabled: true, outcome }));
+async function scheduledReturn(f) {
+  await f.approve(); await f.scheduleHandover();
+  const slot = (await f.plan()).offeredSlots.separate[0];
+  assert.equal((await f.ask('separate', slot.slotId)).status, 'ok');
+  await f.advance(DELAY); await f.tick();
+  const plan = await f.plan(); assert.equal(plan.state, 'return-scheduled'); return plan;
+}
+// Moves the demo clock to `offsetSeconds` after the keyed outcome time of the scheduled return, then ticks.
+async function passReturn(f, plan, offsetSeconds = 1) {
+  const due = Date.parse(plan.slot.end) + OUTCOME.delaySecondsAfterSlotEnd * 1000 + offsetSeconds * 1000;
+  const by = Math.ceil((due - Date.parse(await f.now())) / 1000); if (by > 0) await f.advance(by);
+  await f.tick(); return f.plan();
+}
+const rows = async (f, consumerId) => (await f.repository.query(f.paula, 'event_receipts', { consumerId })).value;
+
+test('FUCQ-168: by default no outcome is reported, so the scheduled return and current car stay as they are', async (t) => {
+  const f = await setup(t);
+  const scheduled = await scheduledReturn(f);
+  const after = await passReturn(f, scheduled, 3 * HOUR); await f.tick();
+  assert.deepEqual([after.state, after.scheduled, after.outcome], ['return-scheduled', true, null]);
+  assert.deepEqual(after.relationship.currentCar, { kind: 'contract', contractId: f.contract.contractId, slotId: scheduled.vehicleSlotId });
+  assert.deepEqual([(await rows(f, RETURN_OUTCOME_STATE)).length, (await rows(f, RETURN_OUTCOME_CONSUMER)).length], [0, 0]);
+  await f.sameCar('default policy after the return slot');
+});
+
+test('FUCQ-168: a confirmed return is recorded with location, appointment, demo-clock time and provider reference, and only then changes the current car', async (t) => {
+  const f = await setup(t, { policy: await outcomePolicy('returned') });
+  const scheduled = await scheduledReturn(f);
+  const held = { kind: 'contract', contractId: f.contract.contractId, slotId: scheduled.vehicleSlotId };
+  assert.deepEqual([scheduled.relationship.currentCar, scheduled.relationship.oldCar.status, scheduled.relationship.newCar.status], [held, 'held', 'on-order'],
+    'acceptance, approval and scheduling never change the current car');
+  const early = await passReturn(f, scheduled, -60);
+  assert.deepEqual([early.state, early.outcome, early.pending, early.relationship.currentCar], ['return-scheduled', null, null, held], 'before the keyed time the retailer has not confirmed');
+  const done = await passReturn(f, scheduled); const at = await f.now();
+  assert.deepEqual([done.state, done.scheduled, done.owner, done.nextStep], ['returned', false, OUTCOME.ownership.returned.owner, OUTCOME.ownership.returned.nextStep]);
+  assert.deepEqual(done.outcome, { state: 'returned', at, location: scheduled.location, appointment: { purpose: 'return', slotId: scheduled.slot.slotId, slot: scheduled.slot,
+    providerReference: scheduled.providerReference }, providerReference: done.outcome.providerReference, oldContractId: f.contract.contractId });
+  assert.match(done.outcome.providerReference, /^SYN-RET-/);
+  assert.deepEqual(done.history.at(-1), { state: 'returned', appointmentState: null, at, providerReference: done.outcome.providerReference });
+  const r = done.relationship;
+  assert.equal(r.currentCar, null, 'returned before the new car handover is confirmed: no current car until FUCQ-167 confirms it');
+  assert.deepEqual([r.oldCar.status, r.oldCar.returnedAt, r.oldCar.providerReference, r.oldCar.location], ['returned', at, done.outcome.providerReference, scheduled.location]);
+  assert.deepEqual(r.changes.map((c) => [c.type, c.at, c.appointment.providerReference]), [['return-confirmed', at, scheduled.providerReference]]);
+  assert.ok(done.assumptions.some((a) => a.key === 'lifecycle.return.outcome.v1' && a.status === 'assumed'));
+  // Repeated ticks change nothing: one operation, one provider receipt, one relationship event.
+  await f.tick(); await f.advance(HOUR); await f.tick();
+  assert.deepEqual(await f.plan(), done);
+  const ops = (await f.repository.query(f.paula, 'pending_operations', { operationType: 'lifecycle-return-outcome' })).value;
+  assert.deepEqual([ops.length, ops[0].state, (await rows(f, RETURN_OUTCOME_CONSUMER)).length, (await rows(f, CURRENT_CAR_EVENTS)).length], [1, 'completed', 1, 1]);
+  assert.equal((await rows(f, RETURN_EXCEPTION_CONSUMER)).length, 0, 'a confirmed return raises no exception');
+  assert.equal((await f.handoverView()).state, 'scheduled', 'the handover is untouched');
+  assert.deepEqual((await f.plan(f.greg)).outcome, done.outcome, 'the scheme team reads the same outcome');
+  assert.equal((await f.returns.read(f.alex, { orderUuid: f.orderUuid })).status, 'forbidden');
+});
+
+test('FUCQ-168: a missed return keeps the current car and emits the keyed lifecycle-exception receipt the renewal-risk trigger opens a case from', async (t) => {
+  const f = await setup(t, { policy: await outcomePolicy('missed'), cases: true });
+  const scheduled = await scheduledReturn(f);
+  const missed = await passReturn(f, scheduled); const at = await f.now();
+  assert.deepEqual([missed.state, missed.scheduled, missed.owner, missed.nextStep], ['return-missed', false, OUTCOME.ownership.missed.owner, OUTCOME.ownership.missed.nextStep]);
+  assert.deepEqual([missed.outcome.state, missed.outcome.at, missed.outcome.location, missed.outcome.appointment.providerReference], ['return-missed', at, scheduled.location, scheduled.providerReference]);
+  assert.deepEqual([missed.relationship.currentCar, missed.relationship.oldCar.status, missed.relationship.changes],
+    [{ kind: 'contract', contractId: f.contract.contractId, slotId: scheduled.vehicleSlotId }, 'held', []]);
+  const receipts = await rows(f, RETURN_EXCEPTION_CONSUMER);
+  assert.equal(receipts.length, 1);
+  const [e] = receipts;
+  assert.deepEqual([e.eventId, e.eventType, e.state, e.outcome.status], [`${f.orderUuid}:return-missed`, OUTCOME.exceptionType, 'completed', 'ok']);
+  assert.ok(seedRow('renewalCase.lifecycle.eventTypes').value.includes(e.eventType), 'the renewal-risk trigger selects this exception type');
+  assert.deepEqual(keys(e.outcome.value), sorted(shapes.exceptionKeys));
+  assert.deepEqual([e.outcome.value.employeeId, e.outcome.value.renewalId, e.outcome.value.orderUuid, e.outcome.value.occurredAt, e.outcome.value.providerReference],
+    [f.paula.employeeId, `renewal:${f.paula.employeeId}`, f.orderUuid, at, missed.outcome.providerReference]);
+  await f.tick();
+  const cases = await f.renewalCases.list(f.greg); assert.equal(cases.status, 'ok', JSON.stringify(cases));
+  const opened = cases.value.cases.filter((c) => c.trigger?.sourceId === `${RETURN_EXCEPTION_CONSUMER}:${f.orderUuid}:return-missed`);
+  assert.equal(opened.length, 1, 'the renewal-risk trigger opened one case from the missed return');
+  await f.tick();
+  assert.equal((await rows(f, RETURN_EXCEPTION_CONSUMER)).length, 1, 'repeat ticks emit no second receipt');
+  await f.sameCar('missed return');
+});
+
+test('FUCQ-168: only a confirmed handover completion or return changes the current car, by exact order and contract identity', async (t) => {
+  const f = await setup(t);
+  const system = { environmentId: f.paula.environmentId, runId: f.paula.runId, principalId: 'lifecycle-appointments', roles: [] };
+  const appointment = { purpose: 'handover', slotId: 'slot-x', providerReference: 'SYN-APT-HANDOVER' };
+  const event = (over) => ({ type: 'handover-completed', orderUuid: f.orderUuid, employeeId: f.paula.employeeId, occurredAt: '2026-11-06T10:00:00.000Z',
+    providerReference: 'SYN-APT-DONE', appointment, ...over });
+  const before = (await readCurrentCar(f.repository, f.paula, f.orderUuid)).value;
+  assert.deepEqual([before.currentCar.kind, before.oldCar.contractId, before.newCar.orderUuid], ['contract', f.contract.contractId, f.orderUuid]);
+  for (const [name, bad, status, code] of [['acceptance is not an event', event({ type: 'offer-accepted' }), 'invalid', 'invalid-current-car-event'],
+    ['another employee', event({ employeeId: f.alex.employeeId }), 'forbidden', undefined],
+    ['another contract', event({ type: 'return-confirmed', oldContractId: 'contract-other' }), 'conflict', 'current-car-identity-mismatch'],
+    ['unknown order', event({ orderUuid: 'order-missing' }), 'not-found', undefined]]) {
+    const got = await recordCurrentCarEvent(f.repository, system, bad); assert.deepEqual([got.status, got.code], [status, code], name);
+  }
+  assert.deepEqual((await readCurrentCar(f.repository, f.paula, f.orderUuid)).value, before, 'refused events change nothing');
+  const collected = await recordCurrentCarEvent(f.repository, system, event());
+  assert.equal(collected.status, 'ok', JSON.stringify(collected));
+  assert.deepEqual([collected.value.applied, collected.value.relationship.currentCar], [true, { kind: 'order', orderUuid: f.orderUuid, vin: null }]);
+  assert.equal(collected.value.relationship.oldCar.status, 'held', 'the old car is still held until its return is confirmed');
+  const repeat = await recordCurrentCarEvent(f.repository, system, event());
+  assert.deepEqual([repeat.status, repeat.value.relationship, (await rows(f, CURRENT_CAR_EVENTS)).length], ['ok', collected.value.relationship, 1], 'a repeat replays, changing nothing');
+  const inner = await f.repository.transaction(system, { commandId: 'inner-repeat', inputDigest: inputDigest('inner') }, (tx) => applyCurrentCarEvent(tx, system.runId, event()));
+  assert.deepEqual([inner.status, inner.value.applied, inner.value.relationship], ['ok', false, collected.value.relationship], 'a repeat inside another transaction is a no-op');
+  const changed = await recordCurrentCarEvent(f.repository, system, event({ providerReference: 'SYN-APT-OTHER' }));
+  assert.deepEqual([changed.status, changed.code], ['conflict', 'idempotency-input-changed']);
+  const returned = await recordCurrentCarEvent(f.repository, system, event({ type: 'return-confirmed', oldContractId: f.contract.contractId,
+    appointment: { purpose: 'return', slotId: 'slot-y', providerReference: 'SYN-APT-RETURN' } }));
+  assert.deepEqual([returned.value.relationship.currentCar.kind, returned.value.relationship.oldCar.status, returned.value.relationship.changes.map((c) => c.type)],
+    ['order', 'returned', ['handover-completed', 'return-confirmed']]);
+  await f.sameCar('relationship events leave the account record alone');
+
+  const g = await setup(t, { order: 'new' });
+  const gs = { ...system, runId: g.paula.runId, environmentId: g.paula.environmentId };
+  const none = (await g.plan()).relationship;
+  assert.deepEqual([none.oldCar, none.currentCar, none.newCar.status], [null, null, 'on-order'], 'a new order has no old car and no return plan');
+  const refused = await recordCurrentCarEvent(g.repository, gs, { ...event({ orderUuid: g.orderUuid, employeeId: g.paula.employeeId }), type: 'return-confirmed', oldContractId: f.contract.contractId });
+  assert.deepEqual([refused.status, refused.code], ['conflict', 'return-not-applicable']);
+  const first = await recordCurrentCarEvent(g.repository, gs, event({ orderUuid: g.orderUuid, employeeId: g.paula.employeeId }));
+  assert.deepEqual(first.value.relationship.currentCar, { kind: 'order', orderUuid: g.orderUuid, vin: null });
+});
+
+test('FUCQ-168: an uncertain outcome stays pending and is reconciled under the same operation ID; the live stub blocks and changes nothing', async (t) => {
+  let fail = 1;
+  const flaky = (repository) => { const real = createSyntheticReturnOutcomes({ repository });
+    return { ...real, async confirmOutcome(op, now) { if (Date.parse(now) >= Date.parse(op.payload.confirmAfter) && fail-- > 0) throw new Error('timeout'); return real.confirmOutcome(op, now); } }; };
+  const f = await setup(t, { policy: await outcomePolicy('returned'), outcomes: flaky });
+  const scheduled = await scheduledReturn(f);
+  const unsure = await passReturn(f, scheduled);
+  assert.deepEqual([unsure.state, unsure.pending?.step, unsure.owner, unsure.relationship.oldCar.status], ['return-scheduled', 'outcome', OWNERSHIP.pending.owner, 'held']);
+  await f.tick();
+  const done = await f.plan();
+  assert.deepEqual([done.state, done.pending, done.relationship.oldCar.status], ['returned', null, 'returned']);
+  const ops = (await f.repository.query(f.paula, 'pending_operations', { operationType: 'lifecycle-return-outcome' })).value;
+  assert.deepEqual([ops.length, ops[0].attempts, (await rows(f, RETURN_OUTCOME_CONSUMER)).length], [1, 1, 1]);
+
+  const g = await setup(t, { policy: await outcomePolicy('returned'), outcomes: () => createLiveReturnOutcomesStub() });
+  const live = await passReturn(g, await scheduledReturn(g));
+  assert.deepEqual([live.state, live.blocked?.code, live.owner, live.relationship.oldCar.status], ['return-scheduled', 'live-return-outcomes-unsupported', OWNERSHIP.blocked.owner, 'held']);
+  assert.deepEqual([(await rows(g, CURRENT_CAR_EVENTS)).length, (await rows(g, RETURN_EXCEPTION_CONSUMER)).length], [0, 0]);
+  await g.sameCar('live stub');
+});
+
+test('FUCQ-168: recorded returned and missed response shapes match real service output', async (t) => {
+  for (const [outcome, name] of [['returned', 'returned'], ['missed', 'return-missed']]) {
+    const f = await setup(t, { policy: await outcomePolicy(outcome) });
+    const plan = await passReturn(f, await scheduledReturn(f)); const want = shapes.states[name];
+    assert.deepEqual(keys(plan), sorted(shapes.readModelKeys), name);
+    assert.deepEqual([plan.state, plan.scheduled, plan.choice, plan.owner, plan.nextStep, plan.history.map((h) => h.state)],
+      [want.state, want.scheduled, want.choice, want.owner, want.nextStep, want.history], name);
+    assert.deepEqual([want.owner, want.nextStep], [OUTCOME.ownership[outcome].owner, OUTCOME.ownership[outcome].nextStep], `fixture ${name} matches the policy seed`);
+    assert.deepEqual(keys(plan.outcome), sorted(shapes.outcomeKeys)); assert.deepEqual(keys(plan.outcome.appointment), sorted(shapes.outcomeAppointmentKeys));
+    assert.deepEqual(keys(plan.relationship), sorted(shapes.relationshipKeys)); assert.deepEqual(keys(plan.relationship.oldCar), sorted(shapes.relationshipOldCarKeys));
+    assert.deepEqual(keys(plan.relationship.newCar), sorted(shapes.relationshipNewCarKeys));
+    for (const c of plan.relationship.changes) assert.deepEqual(keys(c), sorted(shapes.relationshipChangeKeys));
+    assert.deepEqual([plan.relationship.currentCar?.kind ?? null, plan.relationship.oldCar.status], [want.currentCar, want.oldCarStatus], name);
   }
 });

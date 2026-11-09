@@ -124,6 +124,11 @@ const returnRow = (state, appointmentState, at) => ({ state, appointmentState, a
 const RETURN_PLAN_STATE = { 'not-requested': 'not-planned', requested: 'return-requested', 'change-proposed': 'return-requested', scheduled: 'return-scheduled' };
 
 const HOME = (label) => ({ locationId: null, kind: 'home-address', label, rule: 'home-address' });
+// FUCQ-168 current-car relationship before any confirmed handover or return.
+const relationship = (replacement) => ({ contractVersion: 'lifecycle.current-car.v1', runId: RUN, orderUuid: ORDER, employeeId: EMPLOYEE,
+  currentCar: replacement ? { kind: 'contract', contractId: CURRENT_CAR.contractId, slotId: 'slot-paula' } : null,
+  oldCar: replacement ? { contractId: CURRENT_CAR.contractId, slotId: 'slot-paula', status: 'held', returnedAt: null, providerReference: null, location: null } : null,
+  newCar: { orderUuid: ORDER, configurationId: null, status: 'on-order', collectedAt: null, vin: null, providerReference: null }, changes: [], fictional: true });
 function returnValue({ appt, handoverReady = true, slot: confirmed = null, requestedSlot = null, proposedSlot = null, proposalId = null, history = [], choice = null, location }) {
   const planned = appt !== 'not-requested'; const [owner, nextStep] = RETURN_OWNERS[appt === 'not-requested' ? 'not-planned' : appt];
   const idle = !planned && !handoverReady;
@@ -142,14 +147,14 @@ function returnValue({ appt, handoverReady = true, slot: confirmed = null, reque
     slot: confirmed, requestedSlot, proposedSlot, proposalId, providerReference: history.at(-1)?.providerReference ?? null, history,
     owner: idle ? 'employee' : owner, nextStep, pending: null, blocked: null, choices,
     offeredSlots: { 'same-visit': !planned && handoverReady ? [handoverSlot] : [], separate: !planned && handoverReady ? RETURN_SLOTS : [] },
-    policyVersion: 'gcsp-policy-v1', assumptions: [{ key: 'lifecycle.return.options.v1', status: 'assumed', unit: 'choice IDs with labels; handover states; days; minutes',
+    outcome: null, relationship: relationship(true), policyVersion: 'gcsp-policy-v1', assumptions: [{ key: 'lifecycle.return.options.v1', status: 'assumed', unit: 'choice IDs with labels; handover states; days; minutes',
       basis: 'Synthetic return choices. Not BMW policy.', source: 'docs/gcsp/shared-contracts.md#lifecycle-return-plan--fucq-118', sourceDate: '2026-11-07', policyVersion: 'gcsp-policy-v1' }],
     fictional: true };
 }
 const newOrder = () => env({ contractVersion: 'lifecycle.return-plan.v1', runId: RUN, orderUuid: ORDER, employeeId: EMPLOYEE, applicable: false, state: null, scheduled: false,
   oldContractId: null, vehicleSlotId: null, currentCar: null, returnMileage: null, choice: null, location: null, appointment: null, handover: null, slot: null,
   requestedSlot: null, proposedSlot: null, proposalId: null, providerReference: null, history: [], owner: null, nextStep: null, pending: null, blocked: null, choices: [],
-  offeredSlots: {}, policyVersion: 'gcsp-policy-v1', assumptions: [], fictional: true });
+  offeredSlots: {}, outcome: null, relationship: relationship(false), policyVersion: 'gcsp-policy-v1', assumptions: [], fictional: true });
 const retWaiting = () => env(returnValue({ appt: 'not-requested', handoverReady: false }));
 const retOpen = () => env(returnValue({ appt: 'not-requested' }));
 const retRequested = () => env(returnValue({ appt: 'requested', choice: 'separate', requestedSlot: RETURN_SLOTS[0], history: [returnRow('return-requested', 'requested', t(18))] }));

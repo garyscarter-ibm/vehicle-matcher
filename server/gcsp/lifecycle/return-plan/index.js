@@ -1,11 +1,14 @@
 import { ok, result } from '../../repository/index.js';
 import { LifecycleAppointmentService } from '../appointments/index.js';
 import { findSelectionOrder } from '../approvals/source.js';
-import { loadReturnPolicy, RETURN_KEYS } from './policy.js';
+import { readCurrentCar } from '../current-car/index.js';
+import { loadReturnOutcomePolicy, loadReturnPolicy, RETURN_KEYS } from './policy.js';
+import { ReturnOutcomeRecorder } from './outcomes.js';
 
 export const RETURN_PLAN_CONTRACT = 'lifecycle.return-plan.v1';
 // Plan states over the return appointment's own states; a proposed change is still a request, never a schedule.
 const PLAN_STATE = { 'not-requested': 'not-planned', requested: 'return-requested', 'change-proposed': 'return-requested', scheduled: 'return-scheduled' };
+const OUTCOME_STATE = { returned: 'returned', missed: 'return-missed' };
 const DAY = 86400000;
 const ADDRESS_LINES = ['line1', 'line2', 'line3', 'town', 'county', 'postcode'];
 const text = (v, max = 512) => typeof v === 'string' && v.length > 0 && v.length <= max;
@@ -15,14 +18,32 @@ const unavailable = () => result('unavailable', { code: 'return-plan-unavailable
 const badSource = () => result('unavailable', { code: 'return-plan-source-invalid', retryable: false, reason: 'The record of your current car could not be read.' });
 
 export class LifecycleReturnPlanService {
-  #repository; #policy; #clock; #identity; #provider; #handover; #returns;
-  constructor({ repository, policy, clock, identity, lifecycleStages, provider, handover } = {}) {
+  #repository; #policy; #clock; #identity; #provider; #handover; #returns; #outcomes;
+  // `outcomes` is the return outcome step of the appointment capability (FUCQ-168); without it no outcome is recorded.
+  constructor({ repository, policy, clock, identity, lifecycleStages, provider, handover, outcomes } = {}) {
     this.#repository = repository; this.#policy = policy; this.#clock = clock; this.#identity = identity; this.#provider = provider; this.#handover = handover;
     this.#returns = new LifecycleAppointmentService({ repository, policy, clock, identity, lifecycleStages, provider, purpose: 'return',
       ownershipKey: RETURN_KEYS.ownership, requestFields: ['choice'], slotSource: (context, args) => this.#slotSource(context, args) });
+    this.#outcomes = new ReturnOutcomeRecorder({ repository, policy, clock, provider: outcomes, describe: (system, a, now) => this.#describe(system, a, now) });
   }
 
-  start() { return this.#returns.start(); }
+  // The outcome handler registers after the return appointment's, so a return scheduled on one tick gets its outcome on a later one.
+  async start() {
+    const returns = await this.#returns.start(); if (returns.status !== 'ok') return returns;
+    const outcomes = await this.#outcomes.start(); return outcomes.status === 'ok' ? returns : outcomes;
+  }
+
+  // Exact identities and the planned location a recorded outcome keeps (FUCQ-168).
+  async #describe(system, a, now) {
+    const source = await this.#source(system, 'system', a.orderUuid); if (source.status !== 'ok') return source;
+    if (!source.value.applicable) return result('conflict', { code: 'return-not-applicable', reason: 'A new order has no current car to return.' });
+    const read = { runId: system.runId, asOf: now, policyVersion: a.policyVersion };
+    const config = await loadReturnPolicy(this.#policy, read); if (config.status !== 'ok') return config;
+    const account = await this.#account(system, source.value); if (account.status !== 'ok') return account;
+    const rule = a.plan?.choice ? config.value.rules[a.plan.choice]?.location ?? null : null;
+    return ok({ employeeId: source.value.employeeId, oldContractId: source.value.oldContract.contractId, entitlementSlotId: source.value.vehicleSlotId,
+      location: await this.#location(source.value, account.value, rule, read) });
+  }
 
   async #safe(work) { try { return await work(); } catch { return unavailable(); } }
 
@@ -118,18 +139,22 @@ export class LifecycleReturnPlanService {
   async #plan(context, scope, orderUuid, { now, policyVersion }) {
     const source = await this.#source(context, scope, orderUuid); if (source.status !== 'ok') return source;
     const s = source.value;
+    const relationship = await readCurrentCar(this.#repository, context, orderUuid); if (relationship.status !== 'ok') return relationship;
     if (!s.applicable) {
       return ok({ contractVersion: RETURN_PLAN_CONTRACT, runId: context.runId, orderUuid, employeeId: s.employeeId, applicable: false, state: null, scheduled: false,
         oldContractId: null, vehicleSlotId: null, currentCar: null, returnMileage: null, choice: null, location: null, appointment: null, handover: null,
         slot: null, requestedSlot: null, proposedSlot: null, proposalId: null, providerReference: null, history: [], owner: null, nextStep: null,
-        pending: null, blocked: null, choices: [], offeredSlots: {}, policyVersion, assumptions: [], fictional: true });
+        pending: null, blocked: null, choices: [], offeredSlots: {}, outcome: null, relationship: relationship.value, policyVersion, assumptions: [], fictional: true });
     }
     const appointment = await this.#returns.read(context, { orderUuid }); if (appointment.status !== 'ok') return appointment;
     const a = appointment.value; const read = { runId: context.runId, asOf: now, policyVersion: a.policyVersion };
     const config = await loadReturnPolicy(this.#policy, read); if (config.status !== 'ok') return config;
     const handover = await this.#handover.read(context, { orderUuid }); if (handover.status !== 'ok') return handover;
     const account = await this.#account(context, s); if (account.status !== 'ok') return account;
-    const state = PLAN_STATE[a.state]; const planning = state === 'not-planned';
+    const outcomeConfig = await loadReturnOutcomePolicy(this.#policy, read); if (outcomeConfig.status !== 'ok') return outcomeConfig;
+    const recorded = await this.#outcomes.read(context, orderUuid); if (recorded.status !== 'ok') return recorded;
+    const o = recorded.value; const done = o && OUTCOME_STATE[o.state];
+    const state = done ?? PLAN_STATE[a.state]; const planning = state === 'not-planned';
     const choices = []; const offeredSlots = {};
     for (const { id, label } of config.value.choices) {
       const offer = planning ? await this.#choiceOffer(config.value.rules[id], handover.value, now) : { available: false, slots: [], reason: 'Your return is already planned.' };
@@ -137,7 +162,10 @@ export class LifecycleReturnPlanService {
       offeredSlots[id] = offer.slots;
     }
     const idle = planning && !choices.some((c) => c.available);
-    const step = idle ? config.value.ownership.ineligible : { owner: a.owner, nextStep: a.nextStep };
+    const unsure = !a.pending && o?.pending?.lastKnownState === 'unknown' ? { step: 'outcome', reason: 'Waiting for the provider to confirm the last update.' } : null;
+    const step = done ? outcomeConfig.value.ownership[o.state] : unsure ? config.value.ownership.pending
+      : !a.blocked && o?.blocked ? config.value.ownership.blocked : idle ? config.value.ownership.ineligible : { owner: a.owner, nextStep: a.nextStep };
+    const outcome = done ? { state, at: o.at, location: o.location, appointment: o.appointment, providerReference: o.providerReference, oldContractId: o.oldContractId } : null;
     const { assumptions: _assumptions, offeredSlots: _offered, policyVersion: _policy, ...nested } = a;
     return ok({ contractVersion: RETURN_PLAN_CONTRACT, runId: context.runId, orderUuid, employeeId: s.employeeId, applicable: true, state, scheduled: state === 'return-scheduled',
       oldContractId: s.oldContract.contractId, vehicleSlotId: s.vehicleSlotId, currentCar: account.value.currentCar,
@@ -146,9 +174,11 @@ export class LifecycleReturnPlanService {
       appointment: nested, handover: { state: handover.value.state, booked: handover.value.booked, slot: handover.value.slot,
         providerReference: handover.value.history.at(-1)?.providerReference ?? null },
       slot: a.slot, requestedSlot: a.requestedSlot, proposedSlot: a.proposedSlot, proposalId: a.proposalId, providerReference: a.history.at(-1)?.providerReference ?? null,
-      history: a.history.map((h) => ({ state: PLAN_STATE[h.state], appointmentState: h.state, at: h.at, providerReference: h.providerReference })),
-      owner: step.owner, nextStep: step.nextStep, pending: a.pending, blocked: a.blocked, choices, offeredSlots,
-      policyVersion: a.policyVersion, assumptions: config.value.assumptions, fictional: true });
+      history: [...a.history.map((h) => ({ state: PLAN_STATE[h.state], appointmentState: h.state, at: h.at, providerReference: h.providerReference })),
+        ...(done ? [{ state, appointmentState: null, at: o.at, providerReference: o.providerReference }] : [])],
+      owner: step.owner, nextStep: step.nextStep, pending: a.pending ?? unsure, blocked: a.blocked ?? (o?.blocked ? { code: o.blocked.code, reason: o.blocked.reason } : null),
+      choices, offeredSlots, outcome, relationship: relationship.value,
+      policyVersion: a.policyVersion, assumptions: [...config.value.assumptions, outcomeConfig.value.assumption], fictional: true });
   }
 
   read(context, input = {}) { return this.#safe(async () => {
