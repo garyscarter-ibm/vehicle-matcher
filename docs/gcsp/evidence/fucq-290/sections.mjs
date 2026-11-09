@@ -95,7 +95,8 @@ async function gregBeat(H, J, api, { notice = false, detail = false } = {}) {
 // Tab from Min to Max to the maximum slider; log what the browser draws for the focused thumb and track (screenshot in view).
 async function sliderFocus(H, J, plan, min) {
   const p = H.page();
-  await min.focus(); await p.keyboard.press('Tab'); await p.keyboard.press('Tab');
+  await min.focus();
+  for (let i = 0; i < 60 && (await p.evaluate(() => document.activeElement?.type)) !== 'range'; i += 1) await p.keyboard.press('Tab');
   const style = await p.evaluate(() => { const e = document.activeElement; const s = getComputedStyle(e);
     return { type: e.type, label: e.getAttribute('aria-label'), outline: `${s.outlineStyle} ${s.outlineWidth} ${s.outlineColor}`, outlineOffset: s.outlineOffset,
       thumbShadow: getComputedStyle(e, '::-webkit-slider-thumb').boxShadow, focusVisible: e.matches(':focus-visible') }; });
