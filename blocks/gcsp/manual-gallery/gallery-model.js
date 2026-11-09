@@ -1,3 +1,5 @@
+import { reasonText, bodyStyleLabel, longDate } from '../kit/plain-copy.js';
+
 const clone = (value) => value === undefined ? undefined : structuredClone(value);
 const text = (value) => typeof value === 'string' && value.trim() ? value : null;
 const number = (value) => typeof value === 'number' && Number.isFinite(value) && value >= 0 ? value : null;
@@ -5,6 +7,9 @@ const words = (value) => String(value).replaceAll(/[-_]/g, ' ');
 const FACT_LABELS = { nedcCo2: 'NEDC CO2', wltpCo2: 'WLTP CO2', insuranceGroup: 'Insurance group', earliestCollection: 'Earliest collection' };
 // Detail rows read as sentence case; known acronyms keep their capitals.
 const factLabel = (key) => FACT_LABELS[key] ?? words(key).replaceAll(/([a-z])([A-Z])/g, '$1 $2').toLowerCase().replace(/^./, (c) => c.toUpperCase());
+// Display-only value: body enum as label, collection date as a long date. Raw values stay on the car for filter and sort.
+const shown = (field) => field.key === 'body' || field.key === 'bodyType' ? { ...field, value: bodyStyleLabel(field.value) ?? field.value }
+  : field.key.startsWith('earliestCollection') ? { ...field, value: longDate(field.value) ?? field.value } : field;
 const known = (fact) => fact?.status === 'known' && fact.value !== null && fact.value !== undefined;
 const valueOf = (fact) => known(fact) ? fact.value : null;
 const first = (...values) => values.find((value) => value !== null && value !== undefined) ?? null;
@@ -41,8 +46,8 @@ function emission(key, label, source, expected) {
     provenance: clone(source?.provenance), source: clone(source) };
 }
 
-function evidence(entry) {
-  return typeof entry === 'string' ? entry : { ...clone(entry), text: entry.text || entry.reason || words(entry.code || 'Not supplied') };
+function evidence(entry, kind) {
+  return typeof entry === 'string' ? entry : { ...clone(entry), text: reasonText(entry, kind) };
 }
 
 function suppliedPoints(input) {
@@ -71,7 +76,7 @@ export function toManualCar(decision, versions = {}) {
     && ['month', 'year', 'one-off'].includes(contribution.period) ? clone(contribution) : null;
   const cost = { kind: 'points-monthly', value: suppliedPoints(terms?.points), allowance: suppliedPoints(terms?.allowanceInputs?.allowance) };
   const gateStatus = ['eligible', 'ineligible', 'needs-confirmation'].includes(decision.gateStatus) ? decision.gateStatus : 'needs-confirmation';
-  const blockers = (decision.blockers ?? []).map(evidence); const unknowns = (decision.unknowns ?? []).map(evidence);
+  const blockers = (decision.blockers ?? []).map((entry) => evidence(entry, 'blockers')); const unknowns = (decision.unknowns ?? []).map((entry) => evidence(entry, 'unknowns'));
   const reviewAvailable = gateStatus === 'eligible' && Boolean(issuedClaim(decision.claimInput, decision.orderUuid));
   const reason = gateStatus === 'ineligible' ? 'This car is not eligible.' : gateStatus === 'needs-confirmation' ? 'Confirm the missing information before reviewing this car.' : !reviewAvailable ? 'Refresh to review this car.' : null;
   const identity = { orderUuid: decision.orderUuid, orderNumber: decision.orderNumber,
@@ -81,14 +86,14 @@ export function toManualCar(decision, versions = {}) {
     caption: text(selectedImage?.caption) || (display.photo ? 'Representative image. See image provenance in vehicle details.' : null),
     provenance: clone(selectedImage?.provenance), images: clone(display.images ?? []) };
   const member = { id: decision.orderUuid, identity, display: { name: text(display.name) || 'Car name not supplied',
-    line: [fields.model.value, fields.body.value, fields.engine.value].filter(Boolean).join(' · '), pickerLabel: decision.orderNumber },
-  media, facts: [...Object.values(fields), ...emissions, { key: 'contribution', label: 'Scheme contribution',
+    line: [fields.model.value, bodyStyleLabel(fields.body.value), fields.engine.value].filter(Boolean).join(' · '), pickerLabel: decision.orderNumber },
+  media, facts: [...Object.values(fields).map(shown), ...emissions, { key: 'contribution', label: 'Scheme contribution',
     value: cash?.amount ?? null, unit: cash ? `${cash.currency}/${cash.period}` : null, status: cash ? 'known' : 'unknown',
     missingLabel: 'Not supplied', source: clone(contribution), provenance: clone(terms?.provenance) }], terms: [cost],
   decision: { gateStatus, score: null, reasons: [], tradeOffs: [], blockers, unknowns },
   versions: clone(decision.versions), evidence: clone(decision), actions: [{ id: 'review-car', kind: 'accept', label: 'Review this car',
     disabled: !reviewAvailable, disabledReason: reason }] };
-  const allFacts = Object.entries(facts).map(([key, source]) => row(key, factLabel(key), source));
+  const allFacts = Object.entries(facts).map(([key, source]) => row(key, factLabel(key), source)).map(shown);
   const exactFacts = allFacts.filter((fact) => ['confirmed-build', 'confirmed-listing', 'synthetic-scenario'].includes(fact.provenance?.assurance));
   const referenceFacts = allFacts.filter((fact) => fact.provenance?.assurance === 'model-reference');
   return { id: decision.orderUuid, identity, gateStatus, fields, emissions, cost, contribution: cash,

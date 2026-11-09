@@ -45,7 +45,7 @@ export async function readRetainedCorpus(root) {
 export function classifyCorpus(rows, corpusModelLines, optionLabels) {
   const lines = {}; const excluded = { unmappedGeneration: {}, ambiguousPaint: 0, ambiguousUpholstery: 0, unlabelledPaint: 0, unlabelledUpholstery: 0 };
   for (const mapped of Object.values(corpusModelLines)) {
-    lines[mapped.modelLineId] = { modelLineId: mapped.modelLineId, title: mapped.title, rows: 0, colourCounts: {}, upholsteryCounts: {}, configurations: [] };
+    lines[mapped.modelLineId] = { modelLineId: mapped.modelLineId, title: mapped.title, displayName: mapped.displayName, rows: 0, colourCounts: {}, upholsteryCounts: {}, configurations: [] };
   }
   for (const row of rows) {
     const mapped = corpusModelLines[row.generation];
@@ -72,7 +72,7 @@ export function roundedShares(counts) {
   return Object.fromEntries(labels.map((label) => [label, units[label] / 10000]));
 }
 
-const validCorpusModelLines = (v) => object(v) && Object.keys(v).length > 0 && Object.values(v).every((row) => object(row) && text(row.modelLineId) && text(row.title));
+const validCorpusModelLines = (v) => object(v) && Object.keys(v).length > 0 && Object.values(v).every((row) => object(row) && text(row.modelLineId) && text(row.title) && (row.displayName === undefined || text(row.displayName)));
 const validLabels = (v) => object(v) && ['paint', 'upholstery'].every((kind) => object(v[kind]) && Object.values(v[kind]).every(text));
 
 /** Builds the trusted generator plan from the retained corpus; every label comes through PolicyService. */
@@ -90,11 +90,12 @@ export async function buildRetainedCorpusPlan({ root, policyService, read, fleet
     root = resolve(root);
     const corpus = await readRetainedCorpus(root);
     const { lines, excluded } = classifyCorpus(corpus.rows, corpusModelLines, optionLabels);
-    const configurations = []; const aggregateKeys = {}; const modelTitles = {};
+    const configurations = []; const aggregateKeys = {}; const modelTitles = {}; const modelDisplayNames = {};
     for (const line of Object.values(lines).sort((a, b) => byCode(a.modelLineId, b.modelLineId))) {
       if (!line.configurations.length) continue;
       aggregateKeys[line.modelLineId] = `stock.aggregate.${line.modelLineId}`;
       modelTitles[line.modelLineId] = line.title;
+      modelDisplayNames[line.modelLineId] = line.displayName ?? line.title;
       const groups = new Map();
       for (const row of line.configurations) groups.set(row.colour, [...(groups.get(row.colour) || []), row]);
       for (const colour of [...groups.keys()].sort(byCode)) {
@@ -114,6 +115,6 @@ export async function buildRetainedCorpusPlan({ root, policyService, read, fleet
     note: 'Only the scheme lines with retained corpus rows are covered; the rest are the FUCQ-77 coverage gap.' };
     if (!configurations.length) return invalid('no-usable-corpus-rows');
     return ok({ plan: { kind: 'retained-corpus', source: `FUCQ-61 retained corpus ${location}`, datasetId: corpus.datasetId,
-      corpusVersion: corpus.corpusVersion, configurations, aggregateKeys, titles: modelTitles }, coverage });
+      corpusVersion: corpus.corpusVersion, configurations, aggregateKeys, titles: modelTitles, displayNames: modelDisplayNames }, coverage });
   } catch { return unavailable('retained-corpus-unavailable'); }
 }

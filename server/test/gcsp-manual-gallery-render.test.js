@@ -300,3 +300,20 @@ test('a saved date the server now refuses offers Back to your choices, never a d
   assert.equal(recover.isConnected, true); assert.equal(document.activeElement, recover); // a re-render keeps focus
   recover.click(); assert.equal(back, 1);
 });
+
+test('body styles read as labels and ineligible reasons as sentences, while filters keep the raw enum', async (t) => {
+  const envelope = createManualGalleryFixture();
+  const bodies = ['estate', 'hatchback', 'coupe'];
+  envelope.value.decisions.forEach((d, i) => { d.snapshot.facts.body.value = bodies[i]; d.snapshot.facts.earliestCollection.value = '2026-12-14'; });
+  envelope.value.decisions[2].blockers = [{ code: 'policy-exclude' }, { code: 'insurance-grade-limit', maximum: 20, actual: 22 }];
+  const f = await mount(t, { adapter: { browseStock: async () => envelope } });
+  assert.deepEqual(chips(f.root, 'body').map((node) => node.querySelector('.vm-option-label').textContent), ['All body styles', 'Coupé', 'Estate', 'Hatchback']);
+  assert.doesNotMatch(f.root.textContent, /\b(estate|hatchback|coupe)\b|policy exclude|insurance grade limit|2026-12-14/);
+  assert.match(f.root.textContent, /Not offered under your scheme\./); assert.match(f.root.textContent, /Hatchback/); assert.match(f.root.textContent, /Monday 14 December 2026/);
+  change(f.root, 'body', 'Estate'); assert.equal(f.root.querySelectorAll('.vm-card').length, 1);
+  const models = toManualGallery(envelope);
+  assert.deepEqual(models.bodies, ['coupe', 'estate', 'hatchback']);
+  assert.equal(models.allCars[2].view.members[0].decision.blockers[0].text, 'Not offered under your scheme.');
+  assert.equal(models.allCars[2].view.members[0].decision.blockers[1].text, 'Insurance group 22 is above your limit of 20.');
+  assert.equal(toManualGallery(envelope, { body: 'estate' }).cars.length, 1);
+});

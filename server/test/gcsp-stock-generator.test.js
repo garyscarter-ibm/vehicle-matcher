@@ -182,6 +182,13 @@ test('missing policy, unsupported coverage and registry changes fail without pub
   assert.notEqual((await env.generator.generateStock('run-a', '', missing.policyVersion)).status, 'ok');
   const malformed = await setup({ plan: { ...configurationPlan, configurations: [null] } });
   assert.equal((await malformed.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'invalid');
+  const blank = await setup({ plan: { ...configurationPlan, displayNames: { 'fixture-a': '' } } });
+  assert.equal((await blank.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'invalid');
+  const named = await setup({ plan: { ...configurationPlan, titles: { 'fixture-a': 'A1 Code', 'fixture-b': 'B1 Code' }, displayNames: { 'fixture-a': 'Plain Name' } } });
+  assert.equal((await named.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'ok');
+  const rows = generated(await stock(named.repository, 'run-a'));
+  assert.ok(rows.some((row) => fact(row, 'modelLine') === 'A1 Code' && row.facts.display.name.startsWith('Plain Name in ')));
+  assert.ok(rows.some((row) => fact(row, 'modelLine') === 'B1 Code' && row.facts.display.name.startsWith('B1 Code in ')));
 });
 
 test('a failed repository mutation rolls back every generated stock row and report', async () => {
@@ -536,6 +543,8 @@ test('one policy entry changes the next run only: i5 lead times follow the new a
   assert.ok(generated(await stock(env.repository, 'run-c')).every((row) => fact(row, 'policyVersion') === changed.policyVersion));
 });
 
+const DISPLAY_NAMES = { 'F70 Sports Hatch': '1 Series Sports Hatch', 'G42 Coupe': '2 Series Coupé', 'G61 i5': 'i5 Touring' };
+
 test('generated facts are a valid synthetic VehicleSnapshot with no VIN key, and the extra-facts seam cannot override generator facts', async () => {
   const { createVehicleSnapshot } = await import('../vehicles/index.js');
   const seam = (binding) => ({ eligibilityModelKey: `key-${binding.modelLineId}`, body: 'hatch', boot: { value: 300, unit: 'L' } });
@@ -548,7 +557,8 @@ test('generated facts are a valid synthetic VehicleSnapshot with no VIN key, and
     assert.equal(row.facts.identityKind, 'exact-stock'); assert.equal(row.facts.sourceKeys.stockId, row.orderUuid);
     assert.equal(fact(row, 'stockIdentityKind'), 'synthetic');
     assert.equal(row.facts.facts.leadTimeWeeks.unit, 'weeks');
-    assert.equal(row.facts.display.name, `${fact(row, 'modelLine')} in ${fact(row, 'colour')}`);
+    assert.equal(row.facts.display.name, `${DISPLAY_NAMES[fact(row, 'modelLine')]} in ${fact(row, 'colour')}`);
+    assert.doesNotMatch(row.facts.display.name, /\b[FG]\d{2}\b/);
     assert.match(fact(row, 'eligibilityModelKey'), /^key-/); assert.equal(fact(row, 'boot'), 300);
     assert.ok(keysDeep(row).every((key) => !['vin', 'vin7', 'vin17'].includes(key.toLowerCase())));
     assert.ok(row.facts.facts.plannedRelease.value.releaseId.startsWith('run-a:stock:'));

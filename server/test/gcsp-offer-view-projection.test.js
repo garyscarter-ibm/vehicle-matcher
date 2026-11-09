@@ -36,7 +36,7 @@ test('approved102 DTO binds exact order string, pinned monthly points, shared re
   assert.equal(member.decision.gateStatus, 'eligible'); assert.equal(member.decision.reasons.length, 2);
   assert.equal(member.facts.find((f) => f.label === 'Derivative').value, null);
   assert.equal(member.facts.find((f) => f.label === 'Options').missingLabel, 'Fitted equipment unknown');
-  assert.equal(v.currentCar, null); assert.equal(JSON.stringify(v).includes('G21 320i M Sport Touring'), false);
+  assert.equal(v.currentCar, null); assert.equal(JSON.stringify(v).includes('320i M Sport Touring'), false);
 });
 
 test('hold deadline and supplied DemoClock govern countdown, never quote validity or current time', async () => {
@@ -152,7 +152,7 @@ test('approved partial metadata displays only the model and dated source with al
   assert.equal(v.comparisonAvailable, false); assert.equal(car.status, 'partial');
   assert.deepEqual(car.display, { name: dto.comparison.currentCar.model }); assert.deepEqual(car.media, {});
   assert.deepEqual(car.source, dto.comparison.currentCar.source);
-  assert.equal(car.provenance, 'Synthetic source: manual-records-v1. Observed 2026-11-05T11:00:00.000Z.');
+  assert.equal(car.provenance, undefined);
   assert.deepEqual(car.facts.map((f) => f.label), ['Configuration', 'Body', 'Fuel', 'Seats', 'Boot', 'MPG', '0–62 mph', 'Points a month']);
   assert.ok(car.facts.every((f) => f.value === null && f.missingLabel === 'Unknown'));
   assert.equal(v.card.members[0].terms[0].value, 1100); assert.equal(v.card.members[0].terms[0].allowance, 1300);
@@ -218,15 +218,15 @@ const recorded = (dto, facts) => {
 };
 
 test('recorded current-car facts display formatted beside Unknown ones', () => {
-  const dto = recorded(partial(), { configuration: 'G21 320i M Sport Touring', body: 'estate', boot: 500, mpg: 42.8, zeroTo62: 7.6, points: 1100 });
+  const dto = recorded(partial(), { configuration: '320i M Sport Touring', body: 'estate', boot: 500, mpg: 42.8, zeroTo62: 7.6, points: 1100 });
   const { value } = toOfferPresentation(envelope(dto)); const by = Object.fromEntries(value.currentCar.facts.map((f) => [f.label, f.value]));
   assert.equal(value.comparisonAvailable, true); assert.equal(value.currentCar.status, 'partial');
-  assert.deepEqual(by, { Configuration: 'G21 320i M Sport Touring', Body: 'Estate', Fuel: null, Seats: null, Boot: '500 litres',
+  assert.deepEqual(by, { Configuration: '320i M Sport Touring', Body: 'Estate', Fuel: null, Seats: null, Boot: '500 litres',
     MPG: '42.8 mpg', '0–62 mph': '7.6 s', 'Points a month': '1,100 points' });
 });
 
 test('all eight recorded facts give an available comparison with no unknowns', () => {
-  const dto = recorded(partial(), { configuration: 'G21 320i M Sport Touring', body: 'estate', fuel: 'petrol', seats: 5, boot: 500, mpg: 42.8, zeroTo62: 7.6, points: 1100 });
+  const dto = recorded(partial(), { configuration: '320i M Sport Touring', body: 'estate', fuel: 'petrol', seats: 5, boot: 500, mpg: 42.8, zeroTo62: 7.6, points: 1100 });
   const { value } = toOfferPresentation(envelope(dto));
   assert.equal(value.currentCar.status, 'available'); assert.ok(value.currentCar.facts.every((f) => f.value !== null));
   assert.equal(value.currentCar.facts.find((f) => f.label === 'Fuel').value, 'Petrol');

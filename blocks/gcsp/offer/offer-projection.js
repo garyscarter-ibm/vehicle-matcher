@@ -171,8 +171,7 @@ function currentCarFor(v, quotedAt) {
   return { status: v.status, display: { name: car.model }, media: {},
     facts: Object.entries(comparisonFields).map(([key, label]) => ({ label,
       value: known.includes(key) ? formatCurrent(key, facts[key]) : null, missingLabel: 'Unknown' })),
-    source: { mode: source.mode, sourceVersion: source.sourceVersion, observedAt: source.observedAt },
-    provenance: `${sourceModes[source.mode]} source: ${source.sourceVersion}. Observed ${source.observedAt}.` };
+    source: { mode: source.mode, sourceVersion: source.sourceVersion, observedAt: source.observedAt } };
 }
 
 function cardFor(quote) {

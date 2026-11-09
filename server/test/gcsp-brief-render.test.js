@@ -118,6 +118,17 @@ test('exact card projection preserves service evidence, identity and sourced ima
   assert.equal(member.terms[0].value, decision.terms.points.value); assert.equal(member.terms[0].allowance, decision.terms.allowanceInputs.allowance.value);
   assert.equal(member.decision.tradeOffs[0].score, decision.tradeOffs[0].score); assert.match(member.decision.tradeOffs[0].text, /Sportiness: 23%/);
 });
+
+test('brief card reasons read as plain sentences, with no code words, field names or units', async () => {
+  const { decisionView } = await import('../../blocks/gcsp/brief/brief-view-model.js');
+  const decision = structuredClone(fixture.preview.value.decisions[0]);
+  decision.blockers = [{ code: 'allowance-exceeded', allowance: 1300, monthlyPoints: 1400, unit: 'points/month' }, { code: 'brand-new-code', someField: 'raw-value' }];
+  decision.unknowns = [{ code: 'required-by-unconfirmed', fact: null }];
+  const { matchCard } = await import('../../blocks/vehicle-matcher/modes/result-card.js');
+  const text = matchCard(null, { view: decisionView(decision), showScore: false }).textContent;
+  assert.match(text, /Over your allowance by 100 points a month\./); assert.match(text, /does not meet one of your scheme's checks/);
+  assert.doesNotMatch(text, /allowance exceeded|monthlyPoints|points\/month|brand-new|raw-value|required by/);
+});
 const stale = { status: 'stale-run', reason: 'This request belongs to an earlier demonstration run.' };
 function assertRestarted(main, reloads) {
   assert.match(main.textContent, /Demo restarted/); assert.match(main.textContent, /Reload the page to continue/);
