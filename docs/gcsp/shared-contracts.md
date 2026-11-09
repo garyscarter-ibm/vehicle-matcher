@@ -1516,6 +1516,17 @@ reference such as `GCSP-000123`. The car's seven-digit `orderNumber` is unchange
 - **Migration:** additive `0006_order_reference.sql` adds a PostgreSQL partial unique index on `(run_id, data->>'orderReference')`
   where present. No table is added and the ordering adapter's external contract is unchanged.
 
+## Scheme display names · FUCQ-218
+
+Assumed canonical key `scheme.displayNames.v1`, `{ schemaVersion: 1, names: { <schemeId>: <name> } }`, read through PolicyService
+by `ManualContextService`. Each account `histories[]` entry gains an additive `label` only when the entry names that scheme id;
+the account page shows it as the history group title, a `Scheme` row on the current car and on each record (so Print record
+carries it). With no name the group stays "Scheme N" and no row shows. Nothing is invented client-side.
+
+- **Stand-ins:** approved by Gary Carter on 9 Nov 2026 until Russell supplies the real names: `choices-fs-uk` "BMW Choices",
+  `choices-rr-production` "Rolls-Royce and Production Choices", `pcs-ukfs-bmw` "PCS UK FS BMW", `motorcycle-choices` "Motorcycle Choices".
+- **Correction:** edit the one seed entry (status `verified` once confirmed); no consumer changes.
+
 ## Lifecycle approval stages · FUCQ-111
 
 `LifecycleApprovalService` (`server/gcsp/lifecycle/approvals/`) owns one approval lifecycle per acknowledged FUCQ-71

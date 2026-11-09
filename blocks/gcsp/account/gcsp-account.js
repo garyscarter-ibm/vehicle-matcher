@@ -63,6 +63,12 @@ const technicalLabels = { insuranceGroup: 'Insurance group', nedcCo2: 'NEDC CO2'
 const technicalLabel = (key) => technicalLabels[key] ?? label(key);
 const asOf = (value) => Number.isNaN(Date.parse(value ?? '')) ? MISSING
   : new Date(value).toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short', timeZone: 'UTC' });
+// Raw ids are not copy: a scheme row shows only the policy-supplied name; groups fall back to "Scheme N".
+const schemeTitle = (history, index) => history.label ?? `Scheme ${index + 1}`;
+const schemeRows = (model, schemeId) => {
+  const name = model.histories.find((history) => history.schemeId === schemeId)?.label;
+  return name ? [row('Scheme', name)] : [];
+};
 const contractModel = (model, id) => [...model.currentContracts, ...model.histories.flatMap((history) => history.entries)]
   .find((contract) => contract.contractId === id)?.model;
 const date = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value ?? '')
@@ -145,7 +151,7 @@ function currentCar(contract, model, controls) {
       : `Contract ${countdown(model.asOf.slice(0, 10), contract.contractEndDate)}, on ${date(contract.contractEndDate)}`),
     facts([row('Status', status(contract.status)), row('Driver', contract.driver?.name),
       row('Contract end', date(contract.contractEndDate)), row('Term', contract.months, 'months'),
-      row('Annual mileage', contract.annualMileage, contract.mileageUnit), ...slotRows(model, contract.slotId),
+      row('Annual mileage', contract.annualMileage, contract.mileageUnit), ...schemeRows(model, contract.schemeId), ...slotRows(model, contract.slotId),
       row('Registration', contract.registration)]),
     el('p', 'gcsp-account-terms', formatTerm(terms)),
     el('p', 'gcsp-note', 'Exact specification is not supplied unless confirmed by delivered-car evidence.'));
@@ -248,13 +254,13 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     }
     if (model.historyState === 'no-history' && !placed) histories.append(el('p', 'gcsp-note', 'No order history.'));
     for (const [index, history] of model.histories.entries()) {
-      const group = details(`${history.label ?? `Scheme ${index + 1}`} (${history.count} record${history.count === 1 ? '' : 's'})`);
+      const group = details(`${schemeTitle(history, index)} (${history.count} record${history.count === 1 ? '' : 's'})`);
       if (!history.orderingSupported) group.append(el('p', 'gcsp-note', 'History is available. Ordering is not supported for this scheme.'));
       if (!history.count) group.append(el('p', 'gcsp-note', 'No orders in this scheme.'));
       for (const contract of history.entries) {
         const entry = el('article', 'gcsp-account-history');
         entry.append(el('h3', 'gcsp-h2', contract.model ?? 'Model not supplied'),
-          facts([row('Status', status(contract.status)), row('Driver', contract.driver?.name), ...slotRows(model, contract.slotId),
+          facts([row('Status', status(contract.status)), row('Driver', contract.driver?.name), ...schemeRows(model, history.schemeId), ...slotRows(model, contract.slotId),
             row('Registration', contract.registration), row('Actual collection', date(contract.actualCollectionDate)),
             row('Contract end', date(contract.contractEndDate)), row('Returned', date(contract.returnedDate))]), contractDetails(contract, model),
           button({ label: printLabel(contract), variant: 'ghost',

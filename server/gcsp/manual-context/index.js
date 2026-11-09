@@ -61,6 +61,7 @@ export class ManualContextService {
           || h.entries.some((e) => e.employeeId !== context.employeeId || e.schemeId !== h.schemeId))) return { error: unavailable('employee-contract-invalid') };
       if (Date.parse(a.source.effectiveFrom) > Date.parse(p.now)) return { error: unavailable('employee-not-effective') };
       p.account = a;
+      p.schemeNames = await this.#schemeNames(read);
       const drivers = await this.#ports.driver.read(context, read);
       if (drivers.status !== 'ok' || !this.#scope(context, drivers.value) || !sourceValid(drivers.value.source)
         || Date.parse(drivers.value.source.effectiveFrom) > Date.parse(p.now)
@@ -137,6 +138,12 @@ export class ManualContextService {
         collection: { editable: orderable, supportOwner: 'collection-support' }, contact: { editable: orderable, supportOwner: 'employee' },
         expectedReturnMileage: { editable: orderable, supportOwner: 'employee' }, specialRequirements: { editable: orderable, supportOwner: 'employee' } } };
   }
+  // Display names are optional policy stand-ins; a missing or malformed entry leaves "Scheme N" on screen.
+  async #schemeNames(read) {
+    const row = await this.#policy.getAssumption('scheme.displayNames.v1', read);
+    const names = row.status === 'ok' && object(row.value?.value?.names) ? row.value.value.names : {};
+    return Object.fromEntries(Object.entries(names).filter(([, name]) => text(name)));
+  }
   #projection(context, p) {
     const view = this.#presentation(p);
     if (!p.account) return { state: p.state, asOf: p.now, account: null, drivers: [], contracts: [], slots: [], histories: [], actions: [], view };
@@ -147,7 +154,7 @@ export class ManualContextService {
         enabled: slot.entitlementSlotId === context.entitlementSlotId && p.state === 'ready',
         reason: slot.entitlementSlotId !== context.entitlementSlotId ? 'outside-trusted-context'
           : p.state === 'ready' ? null : p.state } })),
-      currentContract: p.contract ?? null, contractState: p.contract ? 'current-contract' : 'no-contract', histories: p.account.histories.map((h) => ({ ...h,
+      currentContract: p.contract ?? null, contractState: p.contract ? 'current-contract' : 'no-contract', histories: p.account.histories.map((h) => ({ ...h, ...(p.schemeNames?.[h.schemeId] ? { label: p.schemeNames[h.schemeId] } : {}),
         state: h.entries.length ? 'history' : 'empty-history', count: h.entries.length,
         orderingSupported: p.rules?.enabledSchemes.includes(h.schemeId) ?? false })), actions,
       choices: p.rules ? { schemeId: context.schemeId, slotId: p.slot?.entitlementSlotId ?? null,

@@ -176,6 +176,7 @@ export const ACCOUNT_SNAPSHOT = {
     "histories": [
       {
         "schemeId": "choices-fs-uk",
+        "label": "BMW Choices",
         "entries": [
           {
             "contractId": "current:employee-paula",
@@ -214,6 +215,7 @@ export const ACCOUNT_SNAPSHOT = {
       },
       {
         "schemeId": "pcs-ukfs-bmw",
+        "label": "PCS UK FS BMW",
         "entries": [
           {
             "contractId": "historic:employee-paula",
@@ -238,6 +240,7 @@ export const ACCOUNT_SNAPSHOT = {
       },
       {
         "schemeId": "motorcycle-choices",
+        "label": "Motorcycle Choices",
         "entries": [],
         "state": "empty-history",
         "count": 0,
@@ -726,6 +729,7 @@ export const UNSUPPORTED_SNAPSHOT = {
     "histories": [
       {
         "schemeId": "choices-rr-production",
+        "label": "Rolls-Royce and Production Choices",
         "entries": [
           {
             "contractId": "current:employee-sam",
@@ -764,6 +768,7 @@ export const UNSUPPORTED_SNAPSHOT = {
       },
       {
         "schemeId": "pcs-ukfs-bmw",
+        "label": "PCS UK FS BMW",
         "entries": [
           {
             "contractId": "historic:employee-sam",
@@ -788,6 +793,7 @@ export const UNSUPPORTED_SNAPSHOT = {
       },
       {
         "schemeId": "motorcycle-choices",
+        "label": "Motorcycle Choices",
         "entries": [],
         "state": "empty-history",
         "count": 0,

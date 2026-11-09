@@ -194,7 +194,9 @@ const { mountAccount, defineGcspAccount } = await import('../../blocks/gcsp/acco
 const tick = () => new Promise((done) => setTimeout(done, 0));
 const findButton = (root, text) => [...root.querySelectorAll('button')].find((node) => node.textContent === text);
 const findDetail = (root, text) => [...root.querySelectorAll('details')].find((node) => node.firstElementChild.textContent === text);
-const readOnlyAdapter = (name = 'ready') => ({ readAccount: async () => accountFixture(name),
+// Fixtures carry the policy stand-in scheme names; most render tests cover the unnamed "Scheme N" fallback.
+const unnamed = (name) => { const input = accountFixture(name); for (const history of input.value.histories) delete history.label; return input; };
+const readOnlyAdapter = (name = 'ready') => ({ readAccount: async () => unnamed(name),
   readDraft: async () => ({ status: 'not-found' }), startJourney: async () => ({ status: 'unavailable' }) });
 function domHost() { const node = document.createElement('div'); document.body.append(node); return node; }
 async function domMount(adapter = readOnlyAdapter(), options = {}) {
@@ -211,7 +213,7 @@ function serviceAdapter(f, calls = []) {
 }
 
 test('account composition preserves complete supplied facts, labelled details and dated vehicle hierarchy', async () => {
-  const input = accountFixture('multi-slot');
+  const input = unnamed('multi-slot');
   Object.assign(input.value.account, { dateOfBirth: '1990-01-01', allowanceOverride: { value: 1500, unit: 'points/month' },
     allowanceOverrideEndDate: '2026-12-01' });
   Object.assign(input.value.drivers[1], { status: 'Approved', dateOfBirth: '1992-02-02', address: { line1: '2 Fictional Avenue' },
@@ -392,7 +394,7 @@ test('pending reads cannot render or emit after teardown; native history details
   let release;
   const delayed = domHost(); const destroy = mountAccount(delayed, { adapter: { ...readOnlyAdapter(),
     readAccount: () => new Promise((done) => { release = done; }) } });
-  destroy(); release(accountFixture()); await tick(); assert.equal(delayed.children.length, 0); delayed.remove();
+  destroy(); release(unnamed()); await tick(); assert.equal(delayed.children.length, 0); delayed.remove();
   let printed;
   const active = await domMount(readOnlyAdapter(), { print: (entry) => { printed = entry; assert.ok(entry.querySelector('details').open); } });
   try {
@@ -461,6 +463,32 @@ test('new-order action retains the exact permitted scheme and empty slot intent 
     assert.equal(events, 0); assert.match(root.querySelector('.gcsp-account-body [role="alert"]').textContent, /could not be saved/);
     assert.equal(root.querySelectorAll('.gcsp-feature').length, 0);
   } finally { destroy(); root.remove(); }
+});
+
+test('FUCQ-218: policy scheme names title order history, the current car and the printed record; unnamed schemes stay "Scheme N"', async () => {
+  const named = accountFixture('multi-slot'); const [first, second] = named.value.histories;
+  assert.ok(first.label && second.label);
+  const shown = await domMount({ ...readOnlyAdapter(), readAccount: async () => named });
+  try {
+    assert.ok(findDetail(shown.root, `${first.label} (1 record)`)); assert.ok(findDetail(shown.root, `${second.label} (2 records)`));
+    assert.doesNotMatch(shown.root.querySelector('.gcsp-account-histories').textContent, /Scheme \d/);
+    assert.match(shown.root.querySelector('.gcsp-feature').textContent, new RegExp(`Scheme${first.label}`));
+    const group = findDetail(shown.root, `${first.label} (1 record)`); group.open = true;
+    assert.match(group.querySelector('.gcsp-account-history').textContent, new RegExp(`Scheme${first.label}`));
+    [...group.querySelectorAll('button')].find((item) => /Print/.test(item.textContent)).click();
+    assert.match(shown.root.querySelector('.gcsp-account-print-record').textContent, new RegExp(`Scheme${first.label}`));
+  } finally { shown.destroy(); shown.root.remove(); }
+  const partial = accountFixture('multi-slot'); delete partial.value.histories[1].label;
+  const mixed = await domMount({ ...readOnlyAdapter(), readAccount: async () => partial });
+  try {
+    assert.ok(findDetail(mixed.root, `${first.label} (1 record)`)); assert.ok(findDetail(mixed.root, 'Scheme 2 (2 records)'));
+    assert.doesNotMatch(findDetail(mixed.root, 'Scheme 2 (2 records)').textContent, /SchemePCS|Scheme[A-Z]/);
+  } finally { mixed.destroy(); mixed.root.remove(); }
+  const bare = await domMount({ ...readOnlyAdapter('multi-slot') });
+  try {
+    assert.ok(findDetail(bare.root, 'Scheme 1 (1 record)')); assert.ok(findDetail(bare.root, 'Scheme 2 (2 records)'));
+    assert.doesNotMatch(bare.root.querySelector('.gcsp-feature').textContent, /Scheme/);
+  } finally { bare.destroy(); bare.root.remove(); }
 });
 
 test('default print exposes only the chosen complete record and cleans its temporary view after printing', async () => {
@@ -655,7 +683,7 @@ test('FUCQ-239: Order history lists a placed order and no longer says "No order 
 });
 
 test('FUCQ-195: the current-car card shows readable labels and no raw identifiers', async () => {
-  const input = accountFixture('ready'); const value = input.value;
+  const input = unnamed('ready'); const value = input.value;
   const raw = [value.currentContract.contractId, value.currentContract.slotId, value.currentContract.schemeId,
     value.currentContract.source.sourceRef, value.currentContract.source.sourceVersion];
   const first = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
@@ -718,7 +746,7 @@ test('FUCQ-198: a start journey reply of stale-run shows the restart screen, not
 });
 
 test('FUCQ-197: order history, saved journey and footer show words, not raw identifiers', async () => {
-  const input = accountFixture('multi-slot'); const value = input.value;
+  const input = unnamed('multi-slot'); const value = input.value;
   const entries = value.histories.flatMap((history) => history.entries);
   const raw = [...new Set([...value.histories.map((history) => history.schemeId), ...entries.flatMap((entry) => [entry.contractId, entry.slotId]),
     value.versions.employeeContract.sourceRef, value.versions.employeeContract.sourceVersion, value.asOf])];
