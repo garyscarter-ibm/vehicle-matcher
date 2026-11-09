@@ -349,7 +349,7 @@ test('handler services can use their own repository boundary without nesting a c
   }]]);
   const outcome = await f.clock.tick(f.presenter, tickCommand('own-boundary'));
   assert.equal(outcome.status, 'ok');
-  assert.equal((await f.repository.query(f.presenter, 'decisions')).value[0].outcome.employees, 5);
+  assert.equal((await f.repository.query(f.presenter, 'decisions')).value[0].outcome.employees, 6);
 });
 
 test('retry after committed handler work and lost receipt reuses its repository command outcome', async () => {

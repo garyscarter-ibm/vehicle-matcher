@@ -11361,6 +11361,18 @@
           "entitlementSlotId": "slot-sam"
         },
         {
+          "principalId": "demo-jordan",
+          "employeeId": "employee-jordan",
+          "name": "Jordan (fictional)",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "entitlementSlotId": "slot-jordan"
+        },
+        {
           "principalId": "demo-greg",
           "employeeId": "operator-greg",
           "name": "Greg (fictional)",

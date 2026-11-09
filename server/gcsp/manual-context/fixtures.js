@@ -1,5 +1,8 @@
 import { inputDigest, ok } from '../repository/index.js';
 
+// FUCQ-224: Jordan (identity.demo.principals) starts with no current car, so presenters can walk the new-order route.
+const NEW_ORDER_EMPLOYEES = new Set(['employee-jordan']);
+
 // Explicit backend-only preparation for repeatable trials. Identity's seeded employee
 // and entitlement are read first; no URL or client command can choose this profile.
 export async function seedManualDemoContext({ repository, identity, clock, context }) {
@@ -25,6 +28,7 @@ export async function seedManualDemoContext({ repository, identity, clock, conte
       actualCollectionDate: '2026-06-01', contractEndDate: '2026-12-01', returnedDate: null,
       annualMileage: 12000, mileageUnit: 'mi/year', months: 6, currentOdometer: { value: 5200, unit: 'mi' },
       earliestCollectionDate: '2026-11-12', latestCollectionDate: '2026-12-01', source };
+    const fresh = NEW_ORDER_EMPLOYEES.has(context.employeeId);
     const manualContext = { recordSetId: `manual:${context.employeeId}:v1`, source,
       account: { employeeId: context.employeeId, name: found.value.name, companyId: context.companyId,
         gradeId: context.gradeId, schemeId: context.schemeId, employeeNumber: `DEMO-${context.employeeId}`,
@@ -38,15 +42,15 @@ export async function seedManualDemoContext({ repository, identity, clock, conte
         kind: 'nominated', relationship: 'spouse', eligible: fact(true),
         licence: { displayNumber: 'FICTIONAL-NOMINEE', categories: ['car'], validFrom: '2012-01-01', validUntil: '2030-01-01', source } }],
       employeeFacts: { essentials: {}, charging: fact('home'), requiredBy: fact('2026-12-01T23:59:59.999Z') },
-      contracts: [contract], histories: [{ schemeId: context.schemeId, entries: [contract] },
-        { schemeId: 'pcs-ukfs-bmw', entries: [{ contractId: `historic:${context.employeeId}`, employeeId: context.employeeId,
+      contracts: fresh ? [] : [contract], histories: [{ schemeId: context.schemeId, entries: fresh ? [] : [contract] },
+        { schemeId: 'pcs-ukfs-bmw', entries: fresh ? [] : [{ contractId: `historic:${context.employeeId}`, employeeId: context.employeeId,
           schemeId: 'pcs-ukfs-bmw', status: 'returned', actualCollectionDate: '2025-01-01', returnedDate: '2025-12-01', source }] },
         { schemeId: 'motorcycle-choices', entries: [] }] };
     const updated = await tx.compareAndSwap({ table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } }, found.value.version,
       { contract: { ...found.value.contract, manualContext } });
     if (updated.status !== 'ok') return updated;
     const entitled = await tx.compareAndSwap({ table: 'entitlement_slots', key: { runId: context.runId, entitlementSlotId: context.entitlementSlotId } },
-      slot.value.version, { contractId, renewalId: `renewal:${context.employeeId}`, state: 'entitled' });
+      slot.value.version, { contractId: fresh ? null : contractId, renewalId: `renewal:${context.employeeId}`, state: 'entitled' });
     return entitled.status === 'ok' ? ok({ fixtureVersion: 'manual-records-v1', employeeId: context.employeeId }) : entitled;
   });
 }
