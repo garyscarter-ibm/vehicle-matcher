@@ -479,8 +479,8 @@ Key names use lower camel-case dotted namespaces; a suffix states a dimensional 
 | `orderPlan.horizonDays` | 120 days | Assumed synthetic planning horizon covering the demo renewals (FUCQ-117). |
 | `orderPlan.budgetMinor` | 20000000 GBP minor units | Assumed hard synthetic procurement envelope; no BMW budget claim (FUCQ-117). |
 | `orderPlan.currency` | GBP | Assumed synthetic currency; catalogue costs must match (FUCQ-117). |
-| `orderPlan.modelBounds` | min/max new vehicles per model id | Assumed per-model limits over the catalogue's three models (FUCQ-117). |
-| `orderPlan.derivativeBounds` | min/max new vehicles per derivative id | Assumed per-derivative limits over the catalogue's four derivatives (FUCQ-117). |
+| `orderPlan.modelBounds` | min/max new vehicles per model id | Assumed per-model limits over the catalogue's four models (FUCQ-117, F70 added by FUCQ-265). |
+| `orderPlan.derivativeBounds` | min/max new vehicles per derivative id | Assumed per-derivative limits over the catalogue's five derivatives (FUCQ-117, F70 120 added by FUCQ-265). |
 | `orderPlan.objectiveWeights` | coverage 100, unallocatedStock 10, costMinor 0 | Assumed objective weights; budget stays hard (FUCQ-117). |
 | `orderPlan.catalog.v1` | Versioned derivatives, unit costs and configurations | Assumed synthetic catalogue bound to the reviewed structural configuration ids; not BMW prices (FUCQ-117). |
 

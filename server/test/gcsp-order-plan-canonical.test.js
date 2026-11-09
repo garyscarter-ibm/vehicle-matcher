@@ -66,14 +66,14 @@ test('planning policy and catalogue read from the unmodified seed, pinned to gcs
   assert.equal(out.status, 'ok'); const catalog = out.value;
   assert.equal(catalog.policyVersion, 'gcsp-policy-v1'); assert.equal(catalog.version, 'gcsp-policy-v1:order-plan-catalog.v1');
   assert.equal(catalog.currency, rules.value.currency);
-  assert.equal(catalog.derivatives.length, 4); assert.equal(catalog.configurations.length, 4);
-  assert.deepEqual(catalog.derivatives.map((d) => d.modelId).filter((id, i, all) => all.indexOf(id) === i).sort(), ['g20-saloon', 'g21-touring', 'g61-i5']);
+  assert.equal(catalog.derivatives.length, 5); assert.equal(catalog.configurations.length, 5);
+  assert.deepEqual(catalog.derivatives.map((d) => d.modelId).filter((id, i, all) => all.indexOf(id) === i).sort(), ['f70-hatch', 'g20-saloon', 'g21-touring', 'g61-i5']);
   // Bounds name exactly the catalogue identities.
   assert.deepEqual(rules.value.derivativeBounds.map((b) => b.derivativeId).sort(), catalog.derivatives.map((d) => d.derivativeId).sort());
   assert.deepEqual(rules.value.modelBounds.map((b) => b.modelId).sort(), [...new Set(catalog.derivatives.map((d) => d.modelId))].sort());
-  assert.ok(catalog.derivatives.every((d) => d.unitCostMinor >= 3800000 && d.unitCostMinor <= 6200000));
+  assert.ok(catalog.derivatives.every((d) => d.unitCostMinor >= 3300000 && d.unitCostMinor <= 6200000));
   const reused = (await f.policy.getAssumption('comparison.configurationSet.v1', f.read)).value.value.configurations.map((c) => c.configurationId);
-  assert.equal(catalog.configurations.filter((c) => reused.includes(c.configurationId)).length, 3);
+  assert.equal(catalog.configurations.filter((c) => reused.includes(c.configurationId)).length, 4);
   for (const c of catalog.configurations) for (const [key, value] of Object.entries(c.facts)) {
     assert.ok(['known', 'unknown'].includes(value.status), key);
     assert.equal(value.provenance.sourceRef, 'policy:orderPlan.catalog.v1');
@@ -127,7 +127,7 @@ test('canonical readPlan gives Greg a feasible integer plan inside every bound a
   const rules = await planning.readPlanningPolicy(f.policy, f.read);
   const plan = await f.planFor();
   assert.equal(plan.status, 'feasible', JSON.stringify(plan).slice(0, 400));
-  assert.equal(plan.quantities.length, 4);
+  assert.equal(plan.quantities.length, 5);
   for (const q of plan.quantities) {
     const b = bound(rules, 'derivativeBounds', 'derivativeId', q.derivativeId);
     assert.ok(Number.isInteger(q.quantity) && q.quantity >= b.min && q.quantity <= b.max, q.derivativeId);

@@ -1,0 +1,330 @@
+{
+ "story": "FUCQ-265",
+ "note": "Main successful journey on a cold host, Paula places a manual order, then Greg. Fails on base 2bfd13a1 and on fix 8c238888 with planning-exact-stock-mapping-missing: a second, distinct cause.",
+ "failingRowLoggedWithFixSeedAndTemporaryInstrumentation": {
+  "asOf": "2026-11-06T11:30:00.000Z",
+  "derivative": null,
+  "row": {
+   "orderUuid": "a2e199ec-dd50-4739-b72d-cd3db8f4ae93",
+   "state": "released",
+   "available": true,
+   "configurationId": "MUY3QTpGRUNJMixQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIMSxTMDIzMCxTMDJQQSxTMDJURixTMDJWQixTMDJWRCxTMDMwMixTMDQyOCxTMDQzVCxTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc2MCxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURw==",
+   "release": {
+    "trancheId": "stock-generator.v1:gcsp-policy-v1+offer-journey-v1:demo-ea3b050919d5058adfbcb7852fc98722:stock:15:0",
+    "windowId": "demo-ea3b050919d5058adfbcb7852fc98722:stock:15",
+    "supplyId": null,
+    "releasedAt": "2026-11-06T11:30:00.000Z",
+    "policyVersion": "gcsp-policy-v1+offer-journey-v1",
+    "sourceVersion": "stock-generator.v1:gcsp-policy-v1+offer-journey-v1",
+    "availability": {
+     "state": "available",
+     "availableFrom": "2026-11-06T11:30:00.000Z",
+     "version": "stock-generator.v1:gcsp-policy-v1+offer-journey-v1:demo-ea3b050919d5058adfbcb7852fc98722:stock:15:0",
+     "availableUntil": "2027-02-22T00:00:00.000Z"
+    }
+   },
+   "keys": [
+    "runId",
+    "orderUuid",
+    "orderNumber",
+    "wholesalerOrderId",
+    "configurationId",
+    "corpusVersion",
+    "revision",
+    "account",
+    "visibility",
+    "state",
+    "status",
+    "available",
+    "facts",
+    "version",
+    "createdAt",
+    "updatedAt",
+    "held",
+    "allocated",
+    "release"
+   ],
+   "configurationIdDecodedPrefix": "1F7A:FECI2,P"
+  }
+ },
+ "fix-1280": [
+  {
+   "step": "paula-ordered",
+   "h1": "Order received"
+  },
+  {
+   "shot": {
+    "file": "main-1280-01-paula-order-outcome.png",
+    "url": "/gcsp-presenter.html",
+    "h1": "Order received",
+    "audit": {
+     "title": "GCSP presenter workspace",
+     "lang": "en-GB",
+     "overflowX": 0,
+     "h1Count": 1,
+     "headings": [
+      "H3:Synthetic faults",
+      "H3:Last tick",
+      "H1:Order received",
+      "H3:F70 Sports Hatch in Alpine White",
+      "H2:Points and contract",
+      "H2:Requested collection",
+      "H2:Order",
+      "H2:Order progress",
+      "H2:Next steps",
+      "H2:Employee",
+      "H2:Driver and licence",
+      "H2:Contact and requirements",
+      "H2:Car you are returning"
+     ],
+     "landmarks": [
+      "header:",
+      "nav:Portal",
+      "nav:Breadcrumb",
+      "main:",
+      "section:Order progress"
+     ],
+     "live": [
+      "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+      "status:\"Presenter controls ready\"",
+      "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+      "status:\"\"",
+      "status:\"Order received. Awaiting approval. Order reference GCSP-0000\"",
+      "polite:\"Eligible\""
+     ],
+     "imgsNoAlt": 0,
+     "unnamed": [],
+     "small": [],
+     "under44": 0,
+     "lowContrast": [],
+     "lowContrastCount": 0,
+     "emDash": [],
+     "focusableCount": 43
+    }
+   }
+  },
+  {
+   "failed": "GET /api/gcsp/greg/order-plan 503",
+   "body": "{\"status\":\"unavailable\",\"code\":\"planning-exact-stock-mapping-missing\",\"contractVersion\":\"1.0.0\"}"
+  },
+  {
+   "failed": "GET /api/gcsp/greg/order-plan 503",
+   "body": "{\"status\":\"unavailable\",\"code\":\"planning-exact-stock-mapping-missing\",\"contractVersion\":\"1.0.0\"}"
+  },
+  {
+   "step": "plan",
+   "text": "NEXT ORDER The order plan is unavailable The order plan could not be loaded. Try again in a moment. Retry Order plan unavailable."
+  },
+  {
+   "shot": {
+    "file": "main-1280-02-next-order.png",
+    "url": "/gcsp-presenter.html",
+    "h1": "Demand and supply",
+    "audit": {
+     "title": "GCSP presenter workspace",
+     "lang": "en-GB",
+     "overflowX": 0,
+     "h1Count": 1,
+     "headings": [
+      "H3:Synthetic faults",
+      "H3:Last tick",
+      "H1:Demand and supply",
+      "H2:No briefs yet",
+      "H2:Stock",
+      "H2:Preview and publish",
+      "H2:Order requests",
+      "H3:Request cars",
+      "H2:The order plan is unavailable",
+      "H2:Route comparison",
+      "H3:No stored result yet",
+      "H2:Renewal cases",
+      "H2:No renewal cases"
+     ],
+     "landmarks": [
+      "header:",
+      "nav:Portal",
+      "nav:Breadcrumb",
+      "main:",
+      "section:Stock",
+      "section:Preview and publish policy",
+      "section:Check your choices",
+      "section:Order requests",
+      "section:Next order plan",
+      "section:Route comparison",
+      "section:Renewal cases"
+     ],
+     "live": [
+      "grouppolite:\"GRGregGregScheme ordering lead, synthetic demo run\"",
+      "status:\"Presenter controls ready\"",
+      "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+      "status:\"\"",
+      "status:\"Figures updated for 6 Nov 2026, 11:30 GMT.\"",
+      "status:\"DemandNo briefs yetNo employee has confirmed a brief yet, so\"",
+      "status:\"Draft. Change values, then preview their effect.\"",
+      "statuspolite:\"Orders up to date.\"",
+      "alert:\"Next orderThe order plan is unavailableThe order plan could \"",
+      "status:\"Order plan unavailable.\""
+     ],
+     "imgsNoAlt": 0,
+     "unnamed": [],
+     "small": [],
+     "under44": 1,
+     "lowContrast": [],
+     "lowContrastCount": 0,
+     "emDash": [],
+     "focusableCount": 72
+    }
+   }
+  },
+  {
+   "error": "Error: No Min field: plan did not load at gregBeat (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-09-GC-033/docs/gcsp/evidence/fucq-265/sections.mjs:48:35) at async Module.main (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-09-GC-033/docs/gcsp/evidence/fucq-265/sections.mjs:128:3) at async main (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-09-GC-033/docs/gcsp/evidence/fucq-265/walk.mjs:155:9)"
+  },
+  {
+   "shot": {
+    "file": "error-1280-03-failure.png",
+    "url": "/gcsp-presenter.html",
+    "h1": "Demand and supply"
+   }
+  }
+ ],
+ "fix-375": [
+  {
+   "step": "paula-ordered",
+   "h1": "Order received"
+  },
+  {
+   "shot": {
+    "file": "main-375-01-paula-order-outcome.png",
+    "url": "/gcsp-presenter.html",
+    "h1": "Order received",
+    "audit": {
+     "title": "GCSP presenter workspace",
+     "lang": "en-GB",
+     "overflowX": 0,
+     "h1Count": 1,
+     "headings": [
+      "H3:Synthetic faults",
+      "H3:Last tick",
+      "H1:Order received",
+      "H3:F70 Sports Hatch in Alpine White",
+      "H2:Points and contract",
+      "H2:Requested collection",
+      "H2:Order",
+      "H2:Order progress",
+      "H2:Next steps",
+      "H2:Employee",
+      "H2:Driver and licence",
+      "H2:Contact and requirements",
+      "H2:Car you are returning"
+     ],
+     "landmarks": [
+      "header:",
+      "nav:Portal",
+      "nav:Breadcrumb",
+      "main:",
+      "section:Order progress"
+     ],
+     "live": [
+      "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+      "status:\"Presenter controls ready\"",
+      "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+      "status:\"\"",
+      "status:\"Order received. Awaiting approval. Order reference GCSP-0000\"",
+      "polite:\"Eligible\""
+     ],
+     "imgsNoAlt": 0,
+     "unnamed": [],
+     "small": [],
+     "under44": 0,
+     "lowContrast": [],
+     "lowContrastCount": 0,
+     "emDash": [],
+     "focusableCount": 38
+    }
+   }
+  },
+  {
+   "failed": "GET /api/gcsp/greg/order-plan 503",
+   "body": "{\"status\":\"unavailable\",\"code\":\"planning-exact-stock-mapping-missing\",\"contractVersion\":\"1.0.0\"}"
+  },
+  {
+   "failed": "GET /api/gcsp/greg/order-plan 503",
+   "body": "{\"status\":\"unavailable\",\"code\":\"planning-exact-stock-mapping-missing\",\"contractVersion\":\"1.0.0\"}"
+  },
+  {
+   "step": "plan",
+   "text": "NEXT ORDER The order plan is unavailable The order plan could not be loaded. Try again in a moment. Retry Order plan unavailable."
+  },
+  {
+   "shot": {
+    "file": "main-375-02-next-order.png",
+    "url": "/gcsp-presenter.html",
+    "h1": "Demand and supply",
+    "audit": {
+     "title": "GCSP presenter workspace",
+     "lang": "en-GB",
+     "overflowX": 0,
+     "h1Count": 1,
+     "headings": [
+      "H3:Synthetic faults",
+      "H3:Last tick",
+      "H1:Demand and supply",
+      "H2:No briefs yet",
+      "H2:Stock",
+      "H2:Preview and publish",
+      "H2:Order requests",
+      "H3:Request cars",
+      "H2:The order plan is unavailable",
+      "H2:Route comparison",
+      "H3:No stored result yet",
+      "H2:Renewal cases",
+      "H2:No renewal cases"
+     ],
+     "landmarks": [
+      "header:",
+      "nav:Portal",
+      "nav:Breadcrumb",
+      "main:",
+      "section:Stock",
+      "section:Preview and publish policy",
+      "section:Check your choices",
+      "section:Order requests",
+      "section:Next order plan",
+      "section:Route comparison",
+      "section:Renewal cases"
+     ],
+     "live": [
+      "grouppolite:\"GRGregGregScheme ordering lead, synthetic demo run\"",
+      "status:\"Presenter controls ready\"",
+      "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+      "status:\"\"",
+      "status:\"Figures updated for 6 Nov 2026, 11:30 GMT.\"",
+      "status:\"DemandNo briefs yetNo employee has confirmed a brief yet, so\"",
+      "status:\"Draft. Change values, then preview their effect.\"",
+      "statuspolite:\"Orders up to date.\"",
+      "alert:\"Next orderThe order plan is unavailableThe order plan could \"",
+      "status:\"Order plan unavailable.\""
+     ],
+     "imgsNoAlt": 0,
+     "unnamed": [],
+     "small": [],
+     "under44": 1,
+     "lowContrast": [],
+     "lowContrastCount": 0,
+     "emDash": [],
+     "focusableCount": 68
+    }
+   }
+  },
+  {
+   "error": "Error: No Min field: plan did not load at gregBeat (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-09-GC-033/docs/gcsp/evidence/fucq-265/sections.mjs:48:35) at async Module.main (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-09-GC-033/docs/gcsp/evidence/fucq-265/sections.mjs:128:3) at async main (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-09-GC-033/docs/gcsp/evidence/fucq-265/walk.mjs:155:9)"
+  },
+  {
+   "shot": {
+    "file": "error-375-03-failure.png",
+    "url": "/gcsp-presenter.html",
+    "h1": "Demand and supply"
+   }
+  }
+ ]
+}
