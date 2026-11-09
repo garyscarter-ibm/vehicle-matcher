@@ -21,7 +21,8 @@
     "blocks/gcsp/kit/stage-tracker.js",
     "blocks/gcsp/kit/task-list.js",
     "blocks/gcsp/kit/range-bar.js",
-    "blocks/gcsp/kit/show-more.js"
+    "blocks/gcsp/kit/show-more.js",
+    "blocks/gcsp/kit/slot-picker.js"
   ],
   "extensions": [
     ".js",
@@ -112,6 +113,11 @@
       "re": "el\\('div', 'gcsp-show-more'",
       "flags": "g",
       "use": "showMore({ nouns, label, onShowMore }) (blocks/gcsp/kit/show-more.js)"
+    },
+    "slot-picker": {
+      "re": "el\\('ul', 'gcsp-slot-picker'",
+      "flags": "g",
+      "use": "slotPicker({ slots, actionLabel, onPick }) (blocks/gcsp/kit/slot-picker.js)"
     }
   },
   "stylesheets": [
@@ -173,7 +179,7 @@
     },
     {
       "path": "blocks/gcsp/kit/gcsp-kit.css",
-      "max_lines": 28
+      "max_lines": 26
     },
     {
       "path": "blocks/gcsp/greg/gcsp-greg.css",
@@ -197,7 +203,7 @@
     },
     {
       "path": "blocks/gcsp/greg/comparison/comparison.css",
-      "max_lines": 31
+      "max_lines": 29
     },
     {
       "path": "blocks/gcsp/greg/comparison/experiments.css",
@@ -265,7 +271,7 @@
     },
     {
       "path": "blocks/gcsp/kit/range-bar.css",
-      "max_lines": 13
+      "max_lines": 12
     },
     {
       "path": "blocks/gcsp/order-progress/gcsp-order-progress.css",
@@ -282,6 +288,14 @@
     {
       "path": "blocks/gcsp/kit/show-more.css",
       "max_lines": 6
+    },
+    {
+      "path": "blocks/gcsp/kit/slot-picker.css",
+      "max_lines": 9
+    },
+    {
+      "path": "blocks/gcsp/kit/data-table-compare.css",
+      "max_lines": 8
     }
   ],
   "baseline": {

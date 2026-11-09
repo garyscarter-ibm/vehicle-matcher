@@ -4,7 +4,7 @@ import { ORDER_PROGRESS_DESTINATION } from '../order-progress/gcsp-order-progres
 
 // The live employee pages the offer can lead to, keyed like the navigation items they belong to.
 export const PORTAL_ROUTES = Object.freeze({ cars: '/gcsp-account.html', brief: '/gcsp-brief-live.html', activity: '/gcsp-activity-live.html',
-  'order-progress': '/gcsp-order-progress-live.html' });
+  'order-progress': '/gcsp-order-progress-live.html', help: '/gcsp-help.html' });
 
 // Same key, label and icon as the brief item on the live journey pages.
 const BRIEF_DESTINATION = Object.freeze({ key: 'brief', label: 'Your car brief', available: true,
@@ -16,5 +16,5 @@ export function signedInPortal(account, location) {
   if (account?.status !== 'ready') return {};
   return { navigation: [CARS, BRIEF_DESTINATION, ACTIVITY_DESTINATION, ORDER_PROGRESS_DESTINATION],
     onNavigate: (key) => { if (PORTAL_ROUTES[key]) location.assign(PORTAL_ROUTES[key]); },
-    links: { orderProgress: PORTAL_ROUTES['order-progress'], cars: PORTAL_ROUTES.cars } };
+    links: { orderProgress: PORTAL_ROUTES['order-progress'], cars: PORTAL_ROUTES.cars, help: PORTAL_ROUTES.help } };
 }

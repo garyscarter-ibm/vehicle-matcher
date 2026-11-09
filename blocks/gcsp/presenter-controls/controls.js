@@ -9,6 +9,7 @@ import { tickSummary, stepLine, missingStagesLine, findOutcome } from './tick-co
 
 let sequence = 0;
 const ACTION_KEY = 'gcsp:presenter-action';
+const RESET_KEY = 'gcsp:presenter-reset-done'; // One-shot note so the remounted strip can announce a reset.
 // Only sentences are shown: objects and internal codes (kebab-case ids) never reach the screen.
 const explain = (value) => { const text = typeof value === 'string' ? value.trim() : ''; return /^[a-z0-9]+(-[a-z0-9]+)+$/.test(text) ? '' : text.length > 240 ? `${text.slice(0, 240)} ... (truncated)` : text; };
 // Plain wording per status, used only when the server gave no reason; raw codes are never shown.
@@ -51,7 +52,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   const abort = new AbortController();
   const options = { signal: abort.signal };
   let disposed = false; let busy = false; let authorized = false; let state; let context; let catalogue; let faults = null; let startStopped = false;
-  let focusAfterBusy = null;
+  let focusAfterBusy = null; let resetLead = null; let focusStatus = false;
   let original = null; let uncertain = false; let confirming = false; let restarted = false; let focusRestart = false;
   let receiptsOpen = false; // Step results stay collapsed (FUCQ-203) unless the presenter opens them.
   const bar = presenterBar();
@@ -111,7 +112,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   const confirm = action('Confirm reset', () => {
     const selected = catalogue?.scenarios?.find((row) => row.scenarioId === scenario.value);
     if (!selected?.availability?.available) return;
-    confirming = false; confirmation.hidden = true;
+    resetLead = leadFor(selected); confirming = false; confirmation.hidden = true;
     start('reset', { expectedRunId: state.runId, expectedRunVersion: state.runVersion, scenarioId: selected.scenarioId,
       scenarioVersion: selected.scenarioVersion, fixtureVersion: selected.fixtureVersion, policyVersion: catalogue.policyVersion });
   });
@@ -146,6 +147,12 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       entry.pick.project(entry.row.modes.map((mode) => ({ value: mode, label: modeLabel(entry.row.adapter, mode) })), entry.row.mode, disabled);
       entry.set.disabled ||= !entry.pick.value;
     }
+  }
+  // The scenario's first employee, or the non-presenter principal the presenter picked instead (Greg on request).
+  function leadFor(chosen) {
+    const usable = (Array.isArray(chosen?.principals) ? chosen.principals : state?.principals || []).filter((row) => text(row?.principalId) && !row.roles?.includes('presenter'));
+    const picked = principal.value && principal.value !== context?.principalId ? usable.find((row) => row.principalId === principal.value) : null;
+    return picked || usable.find((row) => row.roles?.includes('employee')) || null;
   }
   const switchButton = action('Switch principal', () => start('switchPrincipal', { principalId: principal.value }));
   const retry = action('Retry original action', () => execute()); retry.hidden = true;
@@ -195,7 +202,8 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       : `${chosen ? `Selected: ${chosen.name}. ` : ''}Not available yet: ${chosen?.availability?.missingCapabilities?.join(', ') || reason(catalogue) || 'Scenario catalogue unavailable'}`;
     reset.disabled ||= !chosen?.availability?.available; confirm.disabled ||= !chosen?.availability?.available;
     switchButton.disabled ||= !principal.value;
-    confirmText.textContent = `Reset into ${chosen?.name || 'selected scenario'}? This starts a new run.`;
+    const lead = leadFor(chosen);
+    confirmText.textContent = `Reset into ${chosen?.name || 'selected scenario'}${lead ? ` as ${lead.name || lead.principalId}` : ''}? This starts a new run.`;
     const last = state.lastTick;
     receiptsOpen = results.querySelector('.gcsp-presenter-receipts')?.open ?? receiptsOpen;
     const receiptsFocused = results.contains(root.ownerDocument.activeElement) && root.ownerDocument.activeElement.matches('.gcsp-presenter-receipts > summary');
@@ -250,9 +258,29 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       context = acting.status === 'ok' ? acting.value : null; catalogue = scenarios.status === 'ok' ? scenarios.value : scenarios;
       readMessage.textContent = acting.status === 'ok' ? '' : `Acting context unavailable: ${why(acting)}`;
       if (!original) message.textContent = 'Presenter controls ready';
+      announceReset();
       if (acting.status === 'ok') return { controls: read.value, context: acting.value };
     } catch { if (!disposed && authorized) readMessage.textContent = 'Backend unavailable'; }
-    finally { busy = false; update(); }
+    finally { busy = false; update(); if (focusStatus && !disposed) { focusStatus = false; message.tabIndex = -1; message.focus(); } }
+  }
+  // After a reset the page reloads: say so in the strip and keep keyboard focus there (WCAG 2.4.3).
+  function announceReset() {
+    let note = null; const win = host.ownerDocument?.defaultView;
+    try { const raw = win?.sessionStorage?.getItem(RESET_KEY); if (raw) { note = JSON.parse(raw); win.sessionStorage.removeItem(RESET_KEY); } } catch { /* storage blocked */ }
+    if (!note || note.runId !== state?.runId || !text(note.name)) return;
+    message.textContent = `Reset done. New run: ${note.runId}. Acting as ${note.name}.`;
+    root.open = true; focusStatus = true; // Focused after the final paint, so the scroll lands on it.
+  }
+  // The new run acts as the presenter, so the strip itself switches to the lead before the workspace loads.
+  async function switchToLead(lead) {
+    try {
+      const reply = await adapter.switchPrincipal({ commandId: commandId(), principalId: lead.principalId }, options); if (disposed) return { stop: true };
+      if (isRunRestarted(reply)) { enterRestarted(); return { stop: true }; }
+      const acting = await adapter.readContext(options); if (disposed) return { stop: true };
+      if (isRunRestarted(acting)) { enterRestarted(); return { stop: true }; }
+      if (acting.status === 'ok' && acting.value?.principalId === lead.principalId) return {};
+      return { reason: reply.status === 'ok' ? 'the server did not confirm the acting principal' : why(reply).replace(/\.$/, '') };
+    } catch { return disposed ? { stop: true } : { reason: 'Backend unavailable' }; }
   }
   async function setFaultMode(adapterId, mode) {
     if (busy || disposed || restarted || !authorized) return;
@@ -305,7 +333,19 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       if (reply.handlerOutcome) message.textContent += ` Handler: ${why(reply.handlerOutcome)}`;
       if (command.kind === 'reset' && reply.status === 'ok' && !stopped) {
         original = null;
-        navigate(workspace());
+        const lead = value.presenterSession?.status === 'unavailable' ? null : resetLead;
+        const name = lead && (lead.name || lead.principalId);
+        const switched = lead ? await switchToLead(lead) : {};
+        if (switched.stop) return;
+        if (!switched.reason) {
+          if (lead) try { host.ownerDocument.defaultView.sessionStorage.setItem(RESET_KEY, JSON.stringify({ runId: value.runId, name })); } catch { /* storage blocked */ }
+          navigate(workspace());
+          return;
+        }
+        principal.value = lead.principalId; principal.initial = true;
+        busy = false; await refreshState(); if (disposed || restarted) return;
+        message.textContent = `Reset done. New run: ${value.runId}. Switch to ${name} not confirmed: ${switched.reason}.`;
+        message.tabIndex = -1; message.focus();
         return;
       }
       if (command.kind === 'switchPrincipal') {

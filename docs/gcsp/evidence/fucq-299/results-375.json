@@ -1,0 +1,714 @@
+{
+ "width": 375,
+ "viewport": {
+  "width": 375,
+  "height": 812
+ },
+ "allPass": true,
+ "checks": [
+  {
+   "name": "open handover is the current step with the appointment Next",
+   "pass": true,
+   "detail": [
+    {
+     "label": "Selection received",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "HR approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sales-manager approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sent to ordering",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Handover booked",
+     "state": "Current step",
+     "next": "Next: Choose a handover slot.",
+     "note": null
+    },
+    {
+     "label": "Ready for handover",
+     "state": "Not started",
+     "next": null,
+     "note": null
+    }
+   ]
+  },
+  {
+   "name": "handover slots grouped by day, one row of times per day on desktop or wrapped on phone",
+   "pass": true,
+   "detail": [
+    {
+     "section": "gcsp-order-handover",
+     "days": [
+      {
+       "heading": "Sat 7 Nov 2026",
+       "times": [
+        "09:00",
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request 7 Nov 2026, 09:00",
+       "perRowFirstTwoSame": true
+      },
+      {
+       "heading": "Sun 8 Nov 2026",
+       "times": [
+        "09:00",
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request 8 Nov 2026, 09:00",
+       "perRowFirstTwoSame": true
+      },
+      {
+       "heading": "Mon 9 Nov 2026",
+       "times": [
+        "09:00",
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request 9 Nov 2026, 09:00",
+       "perRowFirstTwoSame": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "requested handover shows Not booked yet and one Next",
+   "pass": true,
+   "detail": [
+    {
+     "label": "Selection received",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "HR approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sales-manager approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sent to ordering",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Handover booked",
+     "state": "Current step",
+     "next": "Next: Waiting for the retailer to confirm your slot.",
+     "note": "Requested 7 Nov 2026, 09:00. Not booked yet."
+    },
+    {
+     "label": "Ready for handover",
+     "state": "Not started",
+     "next": null,
+     "note": null
+    }
+   ]
+  },
+  {
+   "name": "booked: Handover done, Ready current, one Next from the appointment, no stale approvals Next",
+   "pass": true,
+   "detail": [
+    {
+     "label": "Selection received",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "HR approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sales-manager approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sent to ordering",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Handover booked",
+     "state": "Done",
+     "next": null,
+     "note": "Booked for 7 Nov 2026, 09:00"
+    },
+    {
+     "label": "Ready for handover",
+     "state": "Current step",
+     "next": "Next: The retailer prepares your car for the handover.",
+     "note": null
+    }
+   ]
+  },
+  {
+   "name": "not ready is a statement plus lists",
+   "pass": true,
+   "detail": {
+    "docs": "Not ready for handover.",
+    "todo": [
+     {
+      "title": "Still to do",
+      "items": [
+       "Vehicle agreement",
+       "Driving licence check",
+       "Vehicle preparation",
+       "Delivery to the retailer"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "return slots are one group per day, each day one row of time buttons, times side by side",
+   "pass": true,
+   "detail": [
+    {
+     "h": "Sat 7 Nov 2026",
+     "n": 1,
+     "rows": 1
+    },
+    {
+     "h": "Sun 8 Nov 2026",
+     "n": 2,
+     "rows": 1
+    },
+    {
+     "h": "Mon 9 Nov 2026",
+     "n": 2,
+     "rows": 1
+    },
+    {
+     "h": "Tue 10 Nov 2026",
+     "n": 2,
+     "rows": 1
+    },
+    {
+     "h": "Wed 11 Nov 2026",
+     "n": 2,
+     "rows": 1
+    },
+    {
+     "h": "Thu 12 Nov 2026",
+     "n": 2,
+     "rows": 1
+    },
+    {
+     "h": "Fri 13 Nov 2026",
+     "n": 2,
+     "rows": 1
+    },
+    {
+     "h": "Sat 14 Nov 2026",
+     "n": 1,
+     "rows": 1
+    }
+   ]
+  },
+  {
+   "name": "focus stays on the same return slot after a quiet re-read",
+   "pass": true,
+   "detail": {
+    "want": "Request return 8 Nov 2026, 13:00",
+    "now": {
+     "tag": "BUTTON",
+     "name": "Request return 8 Nov 2026, 13:00",
+     "inStrip": false,
+     "isBody": false
+    }
+   }
+  },
+  {
+   "name": "no horizontal overflow",
+   "pass": true,
+   "detail": false
+  },
+  {
+   "name": "ready for handover step done with no Next line",
+   "pass": true,
+   "detail": [
+    {
+     "label": "Selection received",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "HR approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sales-manager approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sent to ordering",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Handover booked",
+     "state": "Done",
+     "next": null,
+     "note": "Booked for 7 Nov 2026, 09:00"
+    },
+    {
+     "label": "Ready for handover",
+     "state": "Done",
+     "next": null,
+     "note": null
+    }
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "at": "/gcsp/access?next=%2Fgcsp-presenter.html"
+  },
+  {
+   "failed": "404 GET /api/gcsp/manual/draft"
+  },
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "at": "/gcsp-presenter.html"
+  },
+  {
+   "failed": "404 GET /api/gcsp/manual/draft"
+  },
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "at": "/gcsp-presenter.html"
+  },
+  {
+   "step": "offer-page",
+   "url": "/gcsp/offer?offerId=buddy-offer%3A0f2902fe058e4dc1427866ab9119ffd55510c3b650647d50ca6b6d1bbc82b819&runId=demo-7fedbceec30265a165746edb3fc08d95"
+  },
+  {
+   "step": "accepted",
+   "h1": "Offer accepted"
+  },
+  {
+   "step": "handover-open",
+   "rows": [
+    {
+     "label": "Selection received",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "HR approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sales-manager approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sent to ordering",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Handover booked",
+     "state": "Current step",
+     "next": "Next: Choose a handover slot.",
+     "note": null
+    },
+    {
+     "label": "Ready for handover",
+     "state": "Not started",
+     "next": null,
+     "note": null
+    }
+   ],
+   "pickers": [
+    {
+     "section": "gcsp-order-handover",
+     "days": [
+      {
+       "heading": "Sat 7 Nov 2026",
+       "times": [
+        "09:00",
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request 7 Nov 2026, 09:00",
+       "perRowFirstTwoSame": true
+      },
+      {
+       "heading": "Sun 8 Nov 2026",
+       "times": [
+        "09:00",
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request 8 Nov 2026, 09:00",
+       "perRowFirstTwoSame": true
+      },
+      {
+       "heading": "Mon 9 Nov 2026",
+       "times": [
+        "09:00",
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request 9 Nov 2026, 09:00",
+       "perRowFirstTwoSame": true
+      }
+     ]
+    }
+   ],
+   "todo": [
+    {
+     "title": "Still to do",
+     "items": [
+      "Vehicle agreement",
+      "Driving licence check",
+      "Vehicle preparation",
+      "Delivery to the retailer"
+     ]
+    }
+   ],
+   "docs": "Not ready for handover.",
+   "nextCount": 1,
+   "overflowX": false
+  },
+  {
+   "shot": "order-375-01-steps-handover-open.png",
+   "url": "/gcsp-order-progress-live.html"
+  },
+  {
+   "shot": "order-375-02-handover-slot-picker.png",
+   "url": "/gcsp-order-progress-live.html"
+  },
+  {
+   "step": "handover-requested",
+   "label": "Request 7 Nov 2026, 09:00",
+   "rows": [
+    {
+     "label": "Selection received",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "HR approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sales-manager approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sent to ordering",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Handover booked",
+     "state": "Current step",
+     "next": "Next: Waiting for the retailer to confirm your slot.",
+     "note": "Requested 7 Nov 2026, 09:00. Not booked yet."
+    },
+    {
+     "label": "Ready for handover",
+     "state": "Not started",
+     "next": null,
+     "note": null
+    }
+   ],
+   "pickers": [],
+   "todo": [
+    {
+     "title": "Still to do",
+     "items": [
+      "Vehicle agreement",
+      "Driving licence check",
+      "Vehicle preparation",
+      "Delivery to the retailer"
+     ]
+    }
+   ],
+   "docs": "Not ready for handover.",
+   "nextCount": 1,
+   "overflowX": false
+  },
+  {
+   "shot": "order-375-03-steps-handover-requested.png",
+   "url": "/gcsp-order-progress-live.html"
+  },
+  {
+   "step": "handover-booked",
+   "rows": [
+    {
+     "label": "Selection received",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "HR approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sales-manager approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sent to ordering",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Handover booked",
+     "state": "Done",
+     "next": null,
+     "note": "Booked for 7 Nov 2026, 09:00"
+    },
+    {
+     "label": "Ready for handover",
+     "state": "Current step",
+     "next": "Next: The retailer prepares your car for the handover.",
+     "note": null
+    }
+   ],
+   "pickers": [
+    {
+     "section": "gcsp-order-return",
+     "days": [
+      {
+       "heading": "Sat 7 Nov 2026",
+       "times": [
+        "09:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request return at handover, 7 Nov 2026, 09:00",
+       "perRowFirstTwoSame": null
+      }
+     ]
+    },
+    {
+     "section": "gcsp-order-return",
+     "days": [
+      {
+       "heading": "Sat 7 Nov 2026",
+       "times": [
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request return 7 Nov 2026, 13:00",
+       "perRowFirstTwoSame": null
+      },
+      {
+       "heading": "Sun 8 Nov 2026",
+       "times": [
+        "09:00",
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request return 8 Nov 2026, 09:00",
+       "perRowFirstTwoSame": true
+      },
+      {
+       "heading": "Mon 9 Nov 2026",
+       "times": [
+        "09:00",
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request return 9 Nov 2026, 09:00",
+       "perRowFirstTwoSame": true
+      },
+      {
+       "heading": "Tue 10 Nov 2026",
+       "times": [
+        "09:00",
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request return 10 Nov 2026, 09:00",
+       "perRowFirstTwoSame": true
+      },
+      {
+       "heading": "Wed 11 Nov 2026",
+       "times": [
+        "09:00",
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request return 11 Nov 2026, 09:00",
+       "perRowFirstTwoSame": true
+      },
+      {
+       "heading": "Thu 12 Nov 2026",
+       "times": [
+        "09:00",
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request return 12 Nov 2026, 09:00",
+       "perRowFirstTwoSame": true
+      },
+      {
+       "heading": "Fri 13 Nov 2026",
+       "times": [
+        "09:00",
+        "13:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request return 13 Nov 2026, 09:00",
+       "perRowFirstTwoSame": true
+      },
+      {
+       "heading": "Sat 14 Nov 2026",
+       "times": [
+        "09:00"
+       ],
+       "rowTops": 1,
+       "label0": "Request return 14 Nov 2026, 09:00",
+       "perRowFirstTwoSame": null
+      }
+     ]
+    }
+   ],
+   "todo": [
+    {
+     "title": "Still to do",
+     "items": [
+      "Vehicle agreement",
+      "Driving licence check",
+      "Vehicle preparation",
+      "Delivery to the retailer"
+     ]
+    }
+   ],
+   "docs": "Not ready for handover.",
+   "nextCount": 1,
+   "overflowX": false
+  },
+  {
+   "shot": "order-375-04-steps-handover-booked.png",
+   "url": "/gcsp-order-progress-live.html"
+  },
+  {
+   "shot": "order-375-05-documents-not-ready.png",
+   "url": "/gcsp-order-progress-live.html"
+  },
+  {
+   "shot": "order-375-06-return-slot-picker.png",
+   "url": "/gcsp-order-progress-live.html"
+  },
+  {
+   "step": "focus-after-tick",
+   "want": "Request return 8 Nov 2026, 13:00",
+   "now": {
+    "tag": "BUTTON",
+    "name": "Request return 8 Nov 2026, 13:00",
+    "inStrip": false,
+    "isBody": false
+   }
+  },
+  {
+   "step": "ready-try",
+   "target": "2026-11-08T12:00:00.000Z",
+   "rows": [
+    {
+     "label": "Selection received",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "HR approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sales-manager approval",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Sent to ordering",
+     "state": "Done",
+     "next": null,
+     "note": null
+    },
+    {
+     "label": "Handover booked",
+     "state": "Done",
+     "next": null,
+     "note": "Booked for 7 Nov 2026, 09:00"
+    },
+    {
+     "label": "Ready for handover",
+     "state": "Done",
+     "next": null,
+     "note": null
+    }
+   ],
+   "docs": "Ready for handover",
+   "todo": []
+  },
+  {
+   "shot": "order-375-07-steps-ready.png",
+   "url": "/gcsp-order-progress-live.html"
+  }
+ ]
+}

@@ -25,7 +25,7 @@ State is `{ status: 'ready', projection }`, `{ status: 'conflict' | 'unavailable
 | ready | Meta strip, headline tiles, demand, unmet needs, offers and stock. |
 | empty (`flags.noBriefs`) | A status explanation that no employee has confirmed a brief; meta strip and stock stay. |
 | no stock (`flags.noStockReleased`) | Stock table row "No stock has been released yet"; unmet gates still show. |
-| banded | Counts below the policy threshold read "fewer than N" and are described as a privacy band; no number is derived. |
+| banded | Counts below the policy threshold show as plain "<N" (spoken as "fewer than N"); no number is derived. |
 | conflict | The message and Refresh. |
 | unavailable | `role="alert"` with Retry; `onUnavailable` is called. |
 | refused | `role="alert"`, no figures, no Retry, reserved regions hidden. |
