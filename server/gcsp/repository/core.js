@@ -192,8 +192,9 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     if (violation) return violation;
     state.tables[table].push(row);
     if (table !== 'event_receipts') {
-      const outcome = structuredClone(ok(row));
       const omitLink = table === 'notification_outbox' && plain(row.payload) && Object.hasOwn(row.payload, 'offerLink');
+      // Shallow snapshots (those with a receipt index) never mutate a stored row, so the receipt can share it.
+      const outcome = receiptIndex && !omitLink ? ok(row) : structuredClone(ok(row));
       if (omitLink) delete outcome.value.payload.offerLink;
       state.tables.event_receipts.push({ runId: context.runId, consumerId: `repository:insert:${table}`, eventId: replayId,
         inputDigest: digest, state: 'completed', outcome, ...(omitLink ? { inputVersions: { offerLinkFromInsertInput: 1 } } : {}),
