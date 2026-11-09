@@ -40,7 +40,7 @@ copied: it is a different source with different terms and it reflects stock chur
 | `source-timeout` | Attempt or resolve deadline exceeded | Once | None | Yes | If the snapshot holds this exact identity |
 | `source-server-error` | HTTP 5xx | Once | None | Yes | If the snapshot holds this exact identity |
 | `source-rate-limited` | HTTP 429 | Never | Cooldown from Retry-After (clamped) | Yes, also during the cooldown | If the snapshot holds this exact identity |
-| `source-auth-refused` | HTTP 401 or 403 | Never | 30 minute hold, no cache served | Never | If the snapshot holds this exact identity |
+| `source-auth-refused` | HTTP 401 or 403 | Never | 30 minute hold; saved answers dropped | Never | If the snapshot holds this exact identity |
 | `source-empty` | No models in the matrix | No | None | No | If the snapshot holds this exact identity |
 | `source-invalid` | Unparseable, oversize or wrongly shaped body | No | None | No | If the snapshot holds this exact identity |
 | `source-application-error` | Other 4xx, or an `error`/`errors` marker in a 200 | No | None | No | If the snapshot holds this exact identity |

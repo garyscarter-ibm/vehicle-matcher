@@ -499,7 +499,8 @@ export function createBmwLiveCatalogueProvider({ selected = false, transport, ge
       out.resolvedIdentity = out.resolvedLookupIdentity = out.identityProvenance = out.catalogueValidity = null;
       const code = error?.[FAIL] ?? 'source-failed';
       let extra;
-      if (code === 'source-auth-refused') authHoldUntil = now() + policy.authRefusalHoldMs;
+      // Access was refused: drop saved answers too, so none can stand in after the hold.
+      if (code === 'source-auth-refused') { authHoldUntil = now() + policy.authRefusalHoldMs; store.clear(); }
       if (code === 'source-rate-limited') {
         const wait = error.retryAfterMs;
         cooldownUntil = now() + wait;
@@ -622,7 +623,7 @@ export function presentBmwLiveCatalogue(result, { now } = {}) {
     return { ...base, label: 'Live catalogue (unsupported demo route)', freshness: `Fresh: ${kept}.`,
       source: `BMW UK configurator, live, retrieved ${longDate(result.retrievedDate)}` };
   }
-  const reason = fresh.code ? ` The refresh failed. ${FAILURES[fresh.code][0]}${fresh.retry ? ` ${fresh.retry}` : ''}` : ' It has not been refreshed.';
+  const reason = fresh.code ? ` The refresh failed. ${FAILURES[fresh.code][0].replace(NONE, '')}${fresh.retry ? ` ${fresh.retry}` : ''}` : ' It has not been refreshed.';
   return { ...base, label: 'Live catalogue, stale (unsupported demo route)',
     freshness: `Stale: ${kept}.${reason}`, source: `BMW UK configurator, live, retrieved ${longDate(result.retrievedDate)} (stale)` };
 }

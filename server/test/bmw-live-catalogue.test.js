@@ -1016,6 +1016,8 @@ test('AC2: an auth refusal never serves a saved answer, even a fresh one', async
   const calls = r.calls.length;
   const held = await r.resolve(sample());
   assertFailureEnvelope(held, 'source-auth-refused'); assert.equal(r.calls.length, calls);
+  r.time.advance(BMW_LIVE_CATALOGUE_OPERATION_POLICY.authRefusalHoldMs);
+  assertFailureEnvelope(await r.resolve(sample(), { matrix: reply(500) }), 'source-server-error');
 });
 
 test('AC2: cache.allowed false stores and serves nothing', async () => {
@@ -1156,8 +1158,8 @@ test('AC6 example: a stale live answer says it is stale, when it was retrieved a
   const first = await provider.resolve(sample());
   assert.equal(first.status, 'ok');
   time.advance(15 * MIN);
-  for (const [respond, reason] of [[reply(500), 'The refresh failed. The live catalogue had a server problem. No facts were substituted.'],
-    [reply(429, { headers: { 'Retry-After': '30' } }), 'The refresh failed. The live catalogue asked us to slow down. Try again later. No facts were substituted. Try again in 30 seconds.']]) {
+  for (const [respond, reason] of [[reply(500), 'The refresh failed. The live catalogue had a server problem.'],
+    [reply(429, { headers: { 'Retry-After': '30' } }), 'The refresh failed. The live catalogue asked us to slow down. Try again later. Try again in 30 seconds.']]) {
     responses.matrix = respond;
     const stale = await provider.resolve(sample());
     const shown = OK_FIELDS(presentBmwLiveCatalogue(stale));
