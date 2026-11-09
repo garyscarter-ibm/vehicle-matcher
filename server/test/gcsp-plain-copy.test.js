@@ -47,7 +47,30 @@ test('mapped sentences carry the right facts', () => {
   assert.equal(reasonText({ code: 'required-by-met', requiredBy: '2026-12-01T23:59:59.999Z' }, 'reasons'), 'Available by Tuesday 1 December 2026.');
   assert.equal(reasonText({ code: 'essential-met', field: 'body' }, 'reasons'), 'Meets your body style requirement.');
   assert.equal(reasonText({ code: 'essential-unmet', field: 'zeroTo62' }, 'blockers'), 'Does not meet your 0 to 62 mph requirement.');
-  assert.equal(reasonText({ code: 'preference-fit', field: 'sportiness', score: 62 }, 'tradeOffs'), 'Sportiness: 62% fit.');
+  assert.equal(reasonText({ code: 'preference-fit', field: 'sportiness', score: 62, desired: 90, observed: 13 }, 'tradeOffs'), 'Less sporty than you prefer.');
+});
+
+test('preference-fit reads in words for every preference key, with no percentage', () => {
+  const fit = (field, score, desired, observed, facts) => reasonText({ code: 'preference-fit', field, score, desired, observed, facts }, score >= 100 ? 'reasons' : 'tradeOffs');
+  const car = { body: { status: 'known', value: 'saloon' }, fuel: { status: 'known', value: 'diesel' } };
+  assert.equal(fit('body', 100, 'estate', 100, { body: { value: 'estate' } }), 'Estate, the body style you prefer.');
+  assert.equal(fit('body', 0, 'estate', 0, car), 'Saloon, not the estate you prefer.');
+  assert.equal(fit('body', 0, 'suv', 0, car), 'Saloon, not the SUV you prefer.');
+  assert.equal(fit('body', 0, 'estate', 0, {}), 'Not the estate you prefer.');
+  assert.equal(fit('fuel', 100, 'petrol', 100, {}), 'Petrol, the fuel you prefer.');
+  assert.equal(fit('fuel', 0, 'ev', 0, car), 'Diesel, not the electric you prefer.');
+  const sliders = { sportiness: ['Sportiness', 'Less sporty', 'Sportier'], comfort: ['Comfort', 'Less comfortable', 'More comfortable'],
+    economy: ['Economy', 'Less economical', 'More economical'], size: ['Size', 'Smaller', 'Larger'] };
+  for (const [key, [name, less, more]] of Object.entries(sliders)) {
+    assert.equal(fit(key, 100, 60, 60), `${name} matches your preference.`);
+    assert.equal(fit(key, 40, 90, 30), `${less} than you prefer.`);
+    assert.equal(fit(key, 40, 20, 70), `${more} than you prefer.`);
+    assert.equal(fit(key, 40, 20, undefined), `${name} differs from your preference.`);
+  }
+  assert.equal(fit('mystery', 30, 10, 40), 'Mystery differs from your preference.');
+  for (const field of ['body', 'fuel', 'sportiness', 'comfort', 'economy', 'size', 'mystery']) {
+    for (const score of [0, 37, 100]) assert.doesNotMatch(fit(field, score, 'estate', 5, car), /%|\bfit\.|—/, `${field} ${score}`);
+  }
 });
 
 test('supplied text is kept and unmapped codes never print the code or its fields', () => {

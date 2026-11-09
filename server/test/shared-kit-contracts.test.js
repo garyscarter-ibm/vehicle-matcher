@@ -29,6 +29,7 @@ test('legacy retail signatures retain listing identity, price, odometer, dealer 
   assert.equal(card.querySelector('.vm-card-link').textContent, `View at ${match.listings[0].retailerName} ›`);
   assert.match(card.querySelector('.vm-card-link').textContent, /View at/);
   assert.equal(card.querySelector('.vm-score').textContent, '96%');
+  assert.equal(matchCard(match, { scoreLabel: null }).querySelector('.vm-score').textContent, '96%', 'scoreLabel is for explicit views only');
   assert.equal(previewTile(match).tagName, 'A');
   assert.match(previewTile(match).textContent, /£30,000/);
   assert.equal(mediaWell({ name: 'Unknown car' }).media.querySelector('.vm-card-soon').textContent, 'Images coming soon');
@@ -40,6 +41,17 @@ test('typed terms never infer points from purchase money or invent unknown value
   assert.equal(formatTerm({ kind: 'points-monthly', value: 1100, allowance: 1300 }), '1,100 points a month · 1,300 points a month allowance');
   assert.equal(formatTerm({ kind: 'points-monthly', value: null, allowance: null }), 'Monthly points cost not supplied · monthly points allowance not supplied');
   assert.equal(formatTerm({ kind: 'purchase-money', currency: 'GBP', value: null }), 'Purchase price not supplied');
+});
+
+test('an explicit view keeps the percentage badge unless scoreLabel replaces or hides it', () => {
+  const view = fixture(); view.members[0].decision.score = 77; view.members[0].decision.gateStatus = 'eligible';
+  const badge = (options) => matchCard(null, { view, ...options }).querySelector('.vm-score');
+  assert.equal(badge({}).textContent, '77%');
+  assert.equal(badge({ scoreLabel: undefined }).textContent, '77%');
+  const named = badge({ scoreLabel: { text: 'Best match', title: 'Best match: the closest fit.' } });
+  assert.equal(named.textContent, 'Best match'); assert.equal(named.title, 'Best match: the closest fit.'); assert.equal(named.hidden, false);
+  assert.equal(badge({ scoreLabel: 'Top pick' }).textContent, 'Top pick');
+  assert.equal(badge({ scoreLabel: null }).hidden, true); assert.equal(badge({ scoreLabel: null }).textContent, '');
 });
 
 test('exact selection updates every field, decision, term, media and callback together without replacing focused picker', () => {
@@ -219,12 +231,18 @@ test('typed control units and unknown/unconfirmed/zero states stay distinct with
   assert.equal(formatSliderValue(30000, { format: 'gbp' }, { unit: { kind: 'points-monthly' } }), 'Unit not supplied');
   assert.equal(formatSliderValue(null, {}, { unit: { kind: 'percent' } }), 'Not supplied');
   assert.equal(formatSliderValue(0, {}, { unit: { kind: 'percent' } }), '0%');
+  assert.equal(formatSliderValue(null, {}, { unknownText: 'Not set' }), 'Not set');
   assert.equal(formatSliderValue(50, {}, { unit: { kind: 'percent' }, valueState: 'unconfirmed' }), 'Not confirmed (50%)');
   const host = document.createElement('div'); let calls = 0;
   renderRangeSlider(host, { id: 'preference', min: 0, max: 100, step: 1, default: 50 }, null, {
     single: true, value: null, disabled: true, onValueChange: () => { calls += 1; },
   });
   assert.equal(host.querySelector('output').textContent, 'Not supplied');
+  const worded = document.createElement('div');
+  const handle = renderRangeSlider(worded, { id: 'p', min: 0, max: 100, step: 1 }, null, { single: true, value: null, unknownText: 'Not set', onValueChange: () => {} });
+  assert.equal(worded.querySelector('output').textContent, 'Not set'); assert.equal(worded.querySelector('input').getAttribute('aria-valuetext'), 'Not set');
+  handle.update({ value: 40, valueState: 'confirmed' }); handle.update({ value: null, valueState: 'unknown' });
+  assert.equal(worded.querySelector('output').textContent, 'Not set');
   const input = host.querySelector('input'); assert.equal(input.disabled, true);
   input.dispatchEvent(new window.Event('input')); assert.equal(calls, 0);
   for (const valueState of ['unknown', 'unconfirmed']) {

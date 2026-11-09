@@ -1,5 +1,5 @@
 // Plain employee copy: reason sentences, long dates and body labels. Pure, no DOM.
-import { SPEC_LABELS } from '../../vehicle-matcher/modes/result-card.js';
+import { SPEC_LABELS, FUEL_SPEC } from '../../vehicle-matcher/modes/result-card.js';
 
 const FIELDS = { body: 'Body style', fuel: 'Fuel', seats: 'Seats', boot: 'Boot', zeroTo62: '0 to 62 mph', mpg: 'Fuel economy',
   sportiness: 'Sportiness', comfort: 'Comfort', economy: 'Economy', size: 'Size', equipment: 'Equipment', charging: 'Charging',
@@ -45,6 +45,36 @@ const FALLBACK = {
   unknowns: 'Something about this car still needs confirming.',
 };
 
+/** The badge on the top-scoring eligible cars when it is informative; never a percentage. */
+export const BEST_MATCH = { text: 'Best match', title: 'Best match: this car fits your preferences better than the other eligible cars.' };
+
+const lowerWord = (v) => /^[A-Z]{2,}$/.test(v) ? v : v.toLowerCase();
+const ENUM_LABELS = { body: bodyStyleLabel, fuel: (v) => (typeof v === 'string' && v ? FUEL_SPEC[v] ?? upperFirst(spaced(v)) : null) };
+const SLIDER_WORDS = {
+  sportiness: ['Sportiness', 'Less sporty than you prefer.', 'Sportier than you prefer.'],
+  comfort: ['Comfort', 'Less comfortable than you prefer.', 'More comfortable than you prefer.'],
+  economy: ['Economy', 'Less economical than you prefer.', 'More economical than you prefer.'],
+  size: ['Size', 'Smaller than you prefer.', 'Larger than you prefer.'],
+};
+
+/** A preference-fit entry in words: a full match is a reason, anything less a trade-off. */
+function preferenceFit(e) {
+  const matched = finite(e.score) && e.score >= 100;
+  if (Object.hasOwn(ENUM_LABELS, e.field)) {
+    const label = ENUM_LABELS[e.field];
+    const wanted = lowerWord(label(e.desired) ?? '') || null;
+    const noun = fieldWords(e.field);
+    if (matched) return wanted ? `${upperFirst(label(e.desired))}, the ${noun} you prefer.` : `This car matches your ${noun} preference.`;
+    const actual = label(e.facts?.[e.field]?.value);
+    if (!wanted) return `This car differs from your ${noun} preference.`;
+    return actual ? `${actual}, not the ${wanted} you prefer.` : `Not the ${wanted} you prefer.`;
+  }
+  const words = Object.hasOwn(SLIDER_WORDS, e.field) ? SLIDER_WORDS[e.field] : null;
+  if (matched) return `${words ? words[0] : fieldLabel(e.field)} matches your preference.`;
+  if (words && finite(e.desired) && finite(e.observed) && e.observed !== e.desired) return e.observed < e.desired ? words[1] : words[2];
+  return `${fieldLabel(e.field)} differs from your preference.`;
+}
+
 const SENTENCES = {
   'driver-eligible': () => 'Driver eligible.',
   'driver-ineligible': () => 'You are not eligible to drive this car.',
@@ -65,7 +95,7 @@ const SENTENCES = {
   'charging-ready': () => 'You have the charging access this car needs.',
   'charging-unavailable': () => 'You do not have the charging access this car needs.',
   'charging-unconfirmed': () => 'Charging access is unknown. Confirm home or work charging.',
-  'preference-fit': (e) => `${fieldLabel(e.field)}: ${e.score}% fit.`,
+  'preference-fit': preferenceFit,
   'preference-unconfirmed': (e) => `Your ${fieldWords(e.field)} preference still needs confirming.`,
   'preference-fact-unknown': (e) => `This car's details are not complete enough to judge ${fieldWords(e.field)}.`,
   'not-available': () => 'Already reserved or no longer available.',
