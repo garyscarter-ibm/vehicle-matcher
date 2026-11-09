@@ -21,14 +21,18 @@ export function mountManualJourney(root, options = {}) {
     disconnectFocus?.();
     teardown?.();
     const ticket = generation; let focused = null;
-    // Refocus when a transient loading heading is replaced and focus falls to the body.
+    // Focus the heading, or the loading status until one exists; never leave it on BODY or steal from the user.
     const focus = () => {
-      if (disposed || ticket !== generation || focused?.isConnected) return;
-      const active = root.ownerDocument.activeElement;
-      if (focused && active && active !== root.ownerDocument.body) return;
+      if (disposed || ticket !== generation) return;
+      const doc = root.ownerDocument; const active = doc.activeElement; const idle = !active || active === doc.body;
       const heading = root.querySelector('main h1, main h2');
-      if (!heading) return;
-      heading.tabIndex = -1; heading.focus(); focused = heading;
+      const target = heading ?? root.querySelector('main [role="status"]');
+      if (!target || target === focused) return;
+      if (focused) {
+        const staleStatus = focused.isConnected && focused.matches('[role="status"]') && heading && (idle || active === focused);
+        if (focused.isConnected ? !staleStatus : !idle) return;
+      }
+      target.tabIndex = -1; target.focus(); focused = target;
     };
     const observer = new root.ownerDocument.defaultView.MutationObserver(focus);
     observer.observe(root, { childList: true, subtree: true });

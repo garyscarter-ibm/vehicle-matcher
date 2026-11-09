@@ -1,4 +1,4 @@
-// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq237|fucq238|fucq149 (fucq145, fucq149, fucq222 and fucq224 also have chunk phone, 375x812; fucq223 and fucq238 have desktop, phone and narrow).
+// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq237|fucq238|fucq149|fucq246 (fucq145, fucq149, fucq246, fucq222 and fucq224 also have chunk phone, 375x812; fucq223 and fucq238 have desktop, phone and narrow).
 // Spawns `node index.js` in server/ offline (GCSP_OFFLINE=1, memory repository). FUCQ70_* names still work as fallbacks for WALK_*.
 import { spawn, spawnSync } from 'node:child_process';
 import { createServer } from 'node:http';
@@ -13,16 +13,16 @@ const HERE = fileURLToPath(new URL('.', import.meta.url));
 const SERVER_DIR = resolve(HERE, '../../../../server');
 const env = (name) => process.env[`WALK_${name}`] ?? process.env[`FUCQ70_${name}`];
 const story = process.env.WALK_STORY || 'fucq70';
-if (!['fucq70', 'fucq72', 'fucq73', 'fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq237', 'fucq238', 'fucq149'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq237|fucq238|fucq149');
+if (!['fucq70', 'fucq72', 'fucq73', 'fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq237', 'fucq238', 'fucq149', 'fucq246'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq237|fucq238|fucq149|fucq246');
 const chunk = env('CHUNK');
-const second = ['fucq145', 'fucq149', 'fucq222', 'fucq224', 'fucq223', 'fucq237', 'fucq238'].includes(story) ? 'phone' : 'narrow';
+const second = ['fucq145', 'fucq149', 'fucq246', 'fucq222', 'fucq224', 'fucq223', 'fucq237', 'fucq238'].includes(story) ? 'phone' : 'narrow';
 if (!['desktop', second, ...(['fucq223', 'fucq237', 'fucq238'].includes(story) ? ['narrow'] : [])].includes(chunk)) throw new Error(`Set WALK_CHUNK=desktop|${second}`);
 const scratch = resolve(env('SCRATCH') || process.env.TMPDIR || '');
 if (!scratch || scratch === '/') throw new Error('Set WALK_SCRATCH (or TMPDIR) to an owned scratch directory');
 const viewport = chunk === 'narrow' ? { width: 320, height: 720 } : chunk === 'phone' ? { width: 375, height: 812 } : { width: 1280, height: 900 };
 const vp = String(viewport.width);
-const port = Number(env('PORT')) || (story === 'fucq149' ? (chunk === 'phone' ? 9081 : 9080) : story === 'fucq237' ? { desktop: 8930, phone: 8931, narrow: 8932 }[chunk] : story === 'fucq238' ? { desktop: 8933, phone: 8934, narrow: 8935 }[chunk] : story === 'fucq223' ? { desktop: 8944, phone: 8945, narrow: 8946 }[chunk] : story === 'fucq224' ? (chunk === 'phone' ? 8943 : 8942) : story === 'fucq222' ? (chunk === 'phone' ? 8941 : 8940) : story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
-if ((port < 8930 || port > 8949) && (port < 9080 || port > 9089)) throw new Error('WALK_PORT must be within 8930-8949 or 9080-9089');
+const port = Number(env('PORT')) || (story === 'fucq246' ? (chunk === 'phone' ? 9191 : 9190) : story === 'fucq149' ? (chunk === 'phone' ? 9081 : 9080) : story === 'fucq237' ? { desktop: 8930, phone: 8931, narrow: 8932 }[chunk] : story === 'fucq238' ? { desktop: 8933, phone: 8934, narrow: 8935 }[chunk] : story === 'fucq223' ? { desktop: 8944, phone: 8945, narrow: 8946 }[chunk] : story === 'fucq224' ? (chunk === 'phone' ? 8943 : 8942) : story === 'fucq222' ? (chunk === 'phone' ? 8941 : 8940) : story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
+if ((port < 8930 || port > 8949) && (port < 9080 || port > 9089) && (port < 9190 || port > 9199)) throw new Error('WALK_PORT must be within 8930-8949, 9080-9089 or 9190-9199');
 const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story); // each other story writes to ../<story>
 const only = env('ONLY') ? `-${env('ONLY')}` : ''; // a partial run never overwrites the full run's files
 const shotDir = join(outDir, `browser${only}`);
@@ -988,9 +988,10 @@ async function resumeAndWatch(n, row) {
   await wait(600);
   const { samples, enterAt } = await page.evaluate(() => { clearInterval(window.__fp.id); return window.__fp; });
   const final = await activeFacts(); const a = analyse(samples, enterAt);
-  const ok = final.isMainH1 && final.text === 'Review your car' && a.bodySamplesAfterRender === 0;
+  const noBody = a.maxBodyMsDuringTransition === 0 && !a.transitionSequence.some((x) => x.tag === 'BODY'); // FUCQ-246: BODY never holds focus from Enter to the end
+  const ok = final.isMainH1 && final.text === 'Review your car' && a.bodySamplesAfterRender === 0 && (story !== 'fucq246' || noBody);
   row.detail = { focusBeforeTab: `${before.tag} "${before.text}"`, tabPresses: hops, final, ...a };
-  kb('review', `Resume ${n}: Enter on Resume saved journey leaves focus on the main h1 "Review your car"`, ok, { final: `${final.tag} "${final.text}"`, bodyAfterRender: a.bodySamplesAfterRender, maxBodyMs: a.maxBodyMsDuringTransition });
+  kb('review', `Resume ${n}: Enter on Resume saved journey leaves focus on the main h1 "Review your car"`, ok, { final: `${final.tag} "${final.text}"`, bodyAfterRender: a.bodySamplesAfterRender, maxBodyMs: a.maxBodyMsDuringTransition, noBody });
   return { pass: ok, state: `resume ${n}: focus before Tab ${before.tag}, ${hops} Tab presses; final ${final.tag} "${final.text}" (main h1 ${final.isMainH1}); BODY samples after render ${a.bodySamplesAfterRender}, after ready ${a.bodySamplesAfterReady}; max BODY ${a.maxBodyMsDuringTransition} ms; sequence ${a.transitionSequence.map((x) => `${x.tag}${x.text ? ` "${x.text}"` : ''}`).join(' > ')}`, shotName: `resume-${n}-review-focus`, full: false };
 }
 async function walk145() {
@@ -1069,14 +1070,21 @@ async function walk149() {
   });
   await step('uncertain-resume', 'Claim read fails: keyboard Resume stays in guarded recovery with Check status', async (row) => {
     await reloadToAccount(3); await page.route('**/api/gcsp/manual/claim', (r) => (r.request().method() === 'GET' ? r.abort() : r.continue()));
-    const before = posts.length; await press('Resume saved journey');
+    const strict = story === 'fucq246'; // FUCQ-246: BODY must never hold focus across the guarded Resume
+    if (strict) await page.evaluate(FOCUS_POLL);
+    const before = posts.length; if (strict) await tabTo(accountResume());
+    if (strict) await page.evaluate(() => { window.__fp.enterAt = performance.now(); });
+    await (strict ? page.keyboard.press('Enter') : press('Resume saved journey'));
     const check = page.getByRole('button', { name: 'Check status', exact: true });
     await until(async () => check.first().isVisible(), { what: 'Check status' });
+    let watch = null;
+    if (strict) { await wait(600); const { samples, enterAt } = await page.evaluate(() => { clearInterval(window.__fp.id); return window.__fp; }); watch = analyse(samples, enterAt); }
     const back = page.getByRole('button', { name: 'Back to your choices', exact: true });
     const facts = { review: await page.locator('.gcsp-review-form').count(), setup: await page.locator('select[name="driverId"]').count(),
       backDisabled: await back.first().isDisabled().catch(() => null), reviewEnabled: await page.getByRole('button', { name: 'Review this car' }).evaluateAll((l) => l.filter((b) => !b.disabled).length), focus: await activeFacts() };
-    const ok = facts.review === 0 && facts.setup === 0 && facts.backDisabled === true && facts.reviewEnabled === 0 && since(before).length === 0;
-    row.detail = { ...facts, posts: since(before) }; kb('gallery', 'Uncertain claim read blocks review, setup and Back; Check status offered', ok, facts);
+    const noBody = !watch || (watch.maxBodyMsDuringTransition === 0 && !watch.transitionSequence.some((x) => x.tag === 'BODY'));
+    const ok = facts.review === 0 && facts.setup === 0 && facts.backDisabled === true && facts.reviewEnabled === 0 && since(before).length === 0 && noBody;
+    row.detail = { ...facts, posts: since(before), ...(watch ? { transitionSequence: watch.transitionSequence, maxBodyMsDuringTransition: watch.maxBodyMsDuringTransition } : {}) }; kb('gallery', 'Uncertain claim read blocks review, setup and Back; Check status offered', ok, facts);
     return { pass: ok, state: `${await heading()} | ${JSON.stringify(facts)}`, shotName: 'uncertain-guarded', full: false };
   }, { critical: true });
   await step('uncertain-check-status', 'Read recovers: keyboard Check status reaches the same review, no write', async (row) => {
@@ -1428,7 +1436,7 @@ async function run() {
   if (story === 'fucq72') { await walk72(); return; }
   if (story === 'fucq73') { await walk73(); return; }
   if (story === 'fucq145') { await walk145(); return; }
-  if (story === 'fucq149') { await walk149(); return; }
+  if (story === 'fucq149' || story === 'fucq246') { await walk149(); return; }
   if (story === 'fucq222') { await walk222(); return; }
   if (story === 'fucq224' || story === 'fucq237') { await walk224(); return; }
   if (story === 'fucq223') { await walk223(); return; }

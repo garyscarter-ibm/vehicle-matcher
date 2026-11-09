@@ -35,6 +35,29 @@ async function expectReview(f) {
   assert.equal(f.root.querySelectorAll('main').length, 1);
 }
 
+// Samples activeElement on every DOM mutation (after other observers) and on a 1 ms timer.
+function watchFocus(t, f) {
+  const doc = f.root.ownerDocument; const seen = []; const focusin = []; let bodySamples = 0; const stray = [];
+  const sample = () => {
+    const el = doc.activeElement;
+    if (el === doc.body) bodySamples += 1;
+    else if (seen.at(-1) !== el) {
+      seen.push(el); if (!el.closest('main') || !el.matches('h1, h2, [role="status"]')) stray.push(el.outerHTML.slice(0, 80));
+    }
+  };
+  const observer = new doc.defaultView.MutationObserver(() => queueMicrotask(sample));
+  observer.observe(doc.body, { childList: true, subtree: true, attributes: true });
+  const onFocus = (event) => focusin.push(event.target); doc.addEventListener('focusin', onFocus, true);
+  const timer = setInterval(sample, 1); sample();
+  const watch = { seen, focusin, stray, get bodySamples() { return bodySamples; },
+    stop() { clearInterval(timer); observer.disconnect(); doc.removeEventListener('focusin', onFocus, true); } };
+  t.after(() => watch.stop()); return watch;
+}
+function assertInterimFocus(watch, label = '') {
+  assert.equal(watch.bodySamples, 0, `BODY held focus ${label}`);
+  assert.deepEqual(watch.stray, [], label);
+}
+
 async function setup(t, { claim = true, defaults = false } = {}) {
   const profile = createCompositionTestProfile();
   const runtime = good(await createGcspRuntime({ mode: 'memory', stockProvider: profile,
@@ -58,7 +81,7 @@ async function setup(t, { claim = true, defaults = false } = {}) {
   const session = cookies(local.setCookie);
   const presenter = good(await runtime.identity.resolveSession({ authorized: true, cookie: session, purpose: 'presenter-control' }));
   const server = buildServer({ ...runtime.dependencies, gcspAllowedOrigins: [origin] }); good(await server.gcspStartup);
-  const f = { runtime, profile, presenter, employee: local.context, requests: [], claimTransportUnavailable: false, claimDelay: null, aborted: 0 };
+  const f = { runtime, profile, presenter, employee: local.context, requests: [], claimTransportUnavailable: false, claimDelay: null, accountLag: 0, aborted: 0 };
   async function request(path, { body, cookie = session } = {}) {
     f.requests.push({ path, method: body === undefined ? 'GET' : 'POST' });
     const req = Readable.from(body === undefined ? [] : [Buffer.from(JSON.stringify(body))]);
@@ -80,6 +103,9 @@ async function setup(t, { claim = true, defaults = false } = {}) {
       if (claimRead && f.claimTransportUnavailable) throw Error('Controlled claim read transport unavailable.');
       let result = await request(url.pathname, { body: options.body === undefined ? undefined : JSON.parse(options.body) });
       if (claimRead && f.claimRewrite) { const body = await result.json(); result = { ...result, json: async () => f.claimRewrite(body) }; }
+      if (url.pathname === '/api/gcsp/manual/account' && (options.method ?? 'GET') === 'GET' && f.accountLag) {
+        await new Promise((done) => setTimeout(done, f.accountLag));
+      }
       if (claimRead && f.claimDelay) {
         const delay = f.claimDelay; f.claimDelay = null;
         options.signal?.addEventListener('abort', () => { f.aborted += 1; }, { once: true });
@@ -168,6 +194,27 @@ test('real account Resume recovers the same quoted claim through default HTTP wi
     assert.deepEqual(f.postsSince(offset), []);
   }
   assert.equal(f.requests.filter((row) => row.method === 'POST' && row.path === '/api/gcsp/manual/claim').length, 1);
+});
+
+test('Resume keeps focus off BODY through slow account reads and focuses the review heading once (FUCQ-246)', async (t) => {
+  const f = await setup(t, { defaults: true }); f.accountLag = 30; const watch = watchFocus(t, f);
+  click(f.root, 'Resume saved journey'); await expectReview(f); await new Promise((done) => setTimeout(done, 20)); watch.stop();
+  assertInterimFocus(watch); assert.ok(watch.seen.some((el) => el.matches('p[role="status"]')), 'Loading status was focused.');
+  assert.equal(document.activeElement, f.root.querySelector('main h1'));
+  assert.equal(watch.focusin.filter((el) => el === f.root.querySelector('main h1')).length, 1);
+});
+
+test('Guarded recovery keeps focus off BODY across its interim screens and recovery (FUCQ-246)', async (t) => {
+  const f = await setup(t); f.claimRewrite = () => ({ status: 'pending' }); await f.mount(); f.accountLag = 30;
+  const watch = watchFocus(t, f); click(f.root, 'Resume saved journey');
+  const check = () => [...f.root.querySelectorAll('main button')].find((node) => node.textContent === 'Check status' && !node.hidden);
+  await waitFor(() => check() && !f.root.querySelector('[aria-busy="true"]'));
+  await new Promise((done) => setTimeout(done, 50));
+  assert.ok(document.activeElement.matches('main h1, main h2'), 'A guarded screen heading holds focus.');
+  f.claimRewrite = null; check().click(); await expectReview(f);
+  await new Promise((done) => setTimeout(done, 20)); watch.stop(); assertInterimFocus(watch, 'in guarded recovery');
+  assert.ok(watch.seen.some((el) => el.matches('p[role="status"]')), 'Loading status was focused.');
+  assert.equal(document.activeElement, f.root.querySelector('main h1'));
 });
 
 test('Resume heading focus never steals from a field and stops at teardown (FUCQ-145)', async (t) => {
