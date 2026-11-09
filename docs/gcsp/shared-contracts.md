@@ -1430,7 +1430,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
 | 1.0.0 / 2026-11-09 / FUCQ-123 | Adds the PredictionInput to DemandForecast contract, the learned planner forecast and `createLearnedOrderPlanService`, and an additive `learned` field on `readPlan` / `previewPlan`. Assumed `forecast.learned.v1` (`choiceMassThreshold`, `waitExclusionThreshold`, `intervalZ`); consumes `choice.model.reference`. The baseline stays the recommended and only submittable plan. No table, route or migration. |
-| 1.0.0 / 2026-11-09 / FUCQ-167 | Adds the handover `complete` and `recordNoShow` operations to `ordering.appointments.v1` (synthetic and live stub), terminal appointment states `completed` and `no-show`, `POST /api/gcsp/appointments/complete` gated on FUCQ-116's `readReadiness`, and an additive `outcome` field on the handover read model; assumed `lifecycle.appointments.outcomes.v1`. No table; no existing meaning changes. |
+| 1.0.0 / 2026-11-09 / FUCQ-167 | Adds the handover `complete` and `recordNoShow` operations to `ordering.appointments.v1` (synthetic and live stub), terminal appointment states `completed` and `no-show`, `POST /api/gcsp/appointments/complete` gated on FUCQ-116's `readReadiness`, an additive `outcome` field on the handover read model, `POST /api/gcsp/appointments/no-show` with the `lifecycle-appointments:exceptions:v1` receipt, and rebooking through `request` (additive `attempt` and `previousAttempts`; attempt n > 1 operation IDs carry `:a<n>`); assumed `lifecycle.appointments.outcomes.v1`. No table; no existing meaning changes. |
 | 1.0.0 / 2026-11-07 / FUCQ-117 | Adds the order-plan service, policy-backed catalog and future-terms providers and canonical composition; seven assumed `orderPlan.*` keys (horizon, budget, currency, model/derivative bounds, objective weights, synthetic catalogue). No table, route or UI. |
 | 1.0.0 / 2026-11-07 / FUCQ-114 | Adds LifecycleAppointmentService, `lifecycle-appointments` handler, appointment routes, `ordering.appointments.v1` capability and live stub, versioned receipt projection (no table) and per-step pending operations; assumed `lifecycle.appointments.{slots,confirmation,scenario,ownership}.v1`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
 | 1.0.0 / 2026-11-06 / FUCQ-116 | Adds LifecycleDocumentService, `lifecycle-documents` handler, document routes, `ordering.documentStatus.v1` capability and live stub, versioned receipt projection (no table) and keyed exception receipts with order-specific renewal identity; assumed `lifecycle.documents.{v1,scenario.v1,exceptions.v1}`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
@@ -1650,7 +1650,22 @@ failing readiness port is `unavailable` `handover-readiness-unavailable`; a non-
 `appointment-not-scheduled`. The write uses operation `appointment:<digest>:complete` under one idempotency key, is reconciled before any
 retry, and records the demo-clock time and provider reference in `history` and the read model's `outcome` `{state, at, providerReference}`
 (null until then). The live stub refuses it as `unsupported`. Owners and copy come from `lifecycle.appointments.outcomes.v1`, which also keys
-the no-show exception type for the later no-show slice. The return purpose has no terminal outcomes.
+the no-show exception type. The return purpose has no terminal outcomes.
+
+No-show and rebooking (FUCQ-167): `POST /api/gcsp/appointments/no-show` `{orderUuid}` (presenter or Greg; no scenario key) moves a `scheduled`
+handover to `no-show` (readiness is not consulted; `appointment-not-scheduled` otherwise, `appointment-update-pending` while another step is
+pending; the live stub is `unsupported`). It reads the order's renewal authority from the FUCQ-111 stage port (`missing` stays `renewalId: null`),
+then in the same transaction as the outcome records one `completed` receipt under consumer `lifecycle-appointments:exceptions:v1`, eventId the
+no-show operation ID, eventType the keyed `exceptionTypes.noShow`, value `{employeeId, renewalId, orderUuid, occurredAt, entitlementSlotId,
+renewalAuthority, exceptionType, policyVersion, providerReference, attempt, fictional}`; this is the receipt FUCQ-112 turns into a
+`lifecycle-exception` case. Nothing is written to orders, holds, allocations or slots: the order stays allocated. In state `no-show` the read
+model has the keyed owner/nextStep, `booked: false`, `outcome` set and fresh `offeredSlots`. Paula rebooks with the existing `request`
+`{orderUuid, slotId}`: one transaction starts attempt n+1 (`attempt`, and `previousAttempts [{attempt, state, slot, outcome}]` hold the missed
+one), resets the state to `not-requested` then `requested` for the new slot, and keeps `history` append-only. Attempt 1 operation IDs are unchanged;
+attempt n > 1 uses `appointment:<digest>:a<n>:<step>`. Repeating the rebook returns the same appointment; another employee is `forbidden`.
+`attempt` and `previousAttempts` are additive on the handover read model only. Writes keep one idempotency key per operation, reconcile before
+any retry and use the server-owned principal and run. `server/test/fixtures/gcsp-lifecycle-appointment-outcomes.json` publishes the completed
+and no-show response shapes (and the exception receipt keys) for the order-progress UI.
 
 ## Lifecycle return plan · FUCQ-118
 

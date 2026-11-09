@@ -11,6 +11,7 @@ import { createAppointmentRoutes } from '../gcsp/lifecycle/appointments/http.js'
 import { createGcspHandler } from '../gcsp/identity/http.js';
 import { createLifecycleApprovalService } from '../gcsp/lifecycle/approvals/index.js';
 import { createSyntheticOrderingStatus } from '../gcsp/adapters/synthetic-ordering-status.js';
+import { createRenewalCaseService } from '../gcsp/cases/index.js';
 import { createLifecycleDocumentService } from '../gcsp/lifecycle/documents/index.js';
 import { createSyntheticDocumentStatus } from '../gcsp/adapters/synthetic-ordering-documents.js';
 import { createSyntheticAppointments, createLiveAppointmentsStub, APPOINTMENT_CONSUMER, OPERATION_TYPES } from '../gcsp/adapters/synthetic-appointments.js';
@@ -70,7 +71,8 @@ function flaky(inner) {
 // `documents` composes the real FUCQ-116 service as the readiness port (counting its reads); `readiness` replaces it.
 async function setup(t, { policy, live = false, stages = stagePort(), documents = false, readiness } = {}) {
   policy ??= await policyWith();
-  const repository = createMemoryRepository({ store: createMemoryStore() }); await repository.open();
+  const store = createMemoryStore();
+  const repository = createMemoryRepository({ store }); await repository.open();
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'appointments-test', environmentKind: 'synthetic',
     policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T00:00:00.000Z' });
   assert.equal(runtime.status, 'ok', JSON.stringify(runtime));
@@ -105,7 +107,7 @@ async function setup(t, { policy, live = false, stages = stagePort(), documents 
   };
   const order = (patch = {}) => stages.orders.set(ORDER, { employeeId: 'employee-paula', stageList: STAGES, approved: 4, revision: 4, ...patch });
   const now = async () => (await clock.now(p)).value.now;
-  return { repository, clock, identity, service, stages, provider, synthetic, tick, advance, order, now, presenter: p, paula: paula.value.context,
+  return { repository, store, clock, identity, service, stages, provider, synthetic, tick, advance, order, now, presenter: p, paula: paula.value.context,
     alex: alex.value.context, greg: greg.value.context, sessions: { paula, alex, greg, presenter }, docs, gate, deps };
 }
 const read = async (f, context = f.paula) => { const r = await f.service.read(context, { orderUuid: ORDER }); assert.equal(r.status, 'ok', JSON.stringify(r)); return r.value; };
@@ -685,4 +687,273 @@ test('a missing or malformed outcomes policy makes the handover appointment unav
   await scheduled(g); await ready(g);
   const view = (await complete(g)).value;
   assert.deepEqual([view.owner, view.nextStep], ['scheme-team', 'Handover recorded.']);
+});
+
+// No-show and rebooking (FUCQ-167): the presenter records the miss; Paula then requests a new slot through the same request path.
+const EXCEPTIONS = 'lifecycle-appointments:exceptions:v1';
+const noShow = (f, context = f.presenter, input = { orderUuid: ORDER }) => f.service.recordNoShow(context, input);
+const exceptions = (f) => receipts(f, EXCEPTIONS);
+const NO_SHOW = OUTCOMES.states['no-show'];
+const FACTS = ['employees', 'entitlement_slots', 'briefs', 'stock', 'holds', 'claims', 'quotes', 'offers', 'decisions'];
+const allocation = (f) => JSON.stringify(FACTS.map((table) => f.store.state.tables[table]));
+
+test('a presenter records a no-show: it reads no-show with its outcome and fresh slots, and the original exception receipt is written once', async (t) => {
+  const f = await setup(t); await scheduled(f);
+  const at = await f.now();
+  const done = await noShow(f); assert.equal(done.status, 'ok', JSON.stringify(done));
+  const view = done.value;
+  assert.deepEqual([view.state, view.booked, view.owner, view.nextStep, view.pending, view.blocked, view.attempt, view.previousAttempts],
+    ['no-show', false, NO_SHOW.owner, NO_SHOW.nextStep, null, null, 1, []]);
+  assert.deepEqual([view.outcome.state, view.outcome.at], ['no-show', at]);
+  assert.match(view.outcome.providerReference, /^SYN-APT-[0-9A-F]{12}$/);
+  assert.deepEqual(view.history.map((h) => [h.state]), [['requested'], ['scheduled'], ['no-show']]);
+  assert.deepEqual([view.history[2].at, view.history[2].providerReference], [at, view.outcome.providerReference]);
+  assert.equal(view.offeredSlots.length, SLOTS.daysOffered * SLOTS.dailyStartTimes.length, 'Paula can choose a new slot');
+  assert.deepEqual([view.eligibility.eligible, view.slot !== null], [true, true], 'the missed slot stays on the record');
+
+  const [op] = await operations(f, 'noShow');
+  assert.deepEqual([op.state, op.payload.noShowAt, op.payload.exceptionType, op.idempotencyKey], ['completed', at, OUTCOMES.exceptionTypes.noShow, op.operationId]);
+  const list = await exceptions(f); assert.equal(list.length, 1);
+  assert.deepEqual([list[0].eventId, list[0].eventType, list[0].handlerId, list[0].state], [op.operationId, 'appointment-no-show', APPOINTMENT_HANDLER_ID, 'completed']);
+  assert.deepEqual(list[0].outcome.value, { employeeId: 'employee-paula', renewalId: 'renewal:employee-paula', orderUuid: ORDER, occurredAt: at, entitlementSlotId: 'slot-paula',
+    renewalAuthority: 'validated', exceptionType: 'appointment-no-show', policyVersion: 'gcsp-policy-v1', providerReference: view.outcome.providerReference, attempt: 1, fictional: true });
+
+  assert.deepEqual(await noShow(f, f.greg), done, 'a repeat returns the same outcome');
+  await f.tick(); await f.tick();
+  assert.deepEqual([(await exceptions(f)).length, (await receipts(f)).length, f.provider.calls.filter((c) => c === 'recordNoShow').length], [1, 3, 1]);
+  assert.deepEqual([(await read(f)).state, (await read(f)).owner], ['no-show', NO_SHOW.owner]);
+});
+
+test('the no-show receipt is the original lifecycle exception that FUCQ-112 turns into a case for Paula\'s renewal, once', async (t) => {
+  const f = await setup(t);
+  const cases = createRenewalCaseService({ repository: f.repository, policy: f.deps.policy, clock: f.clock, identity: f.identity });
+  assert.equal((await cases.start()).status, 'ok', 'registered in the same runtime before the first tick');
+  await scheduled(f);
+  assert.equal((await cases.readOwn(f.paula)).value.cases.length, 0, 'a scheduled handover raises nothing');
+  assert.equal((await noShow(f)).status, 'ok');
+  await f.tick();
+  const opened = (await cases.readOwn(f.paula)).value.cases;
+  assert.equal(opened.length, 1, JSON.stringify(opened));
+  assert.deepEqual([opened[0].trigger.type, opened[0].trigger.eventType, opened[0].renewalId, opened[0].trigger.orderUuid],
+    ['lifecycle-exception', 'appointment-no-show', 'renewal:employee-paula', ORDER]);
+  await f.tick(); await f.tick();
+  assert.equal((await cases.readOwn(f.paula)).value.cases.length, 1, 'later ticks open no second case');
+  assert.equal((await f.service.recordNoShow(f.presenter, { orderUuid: ORDER })).status, 'ok');
+  assert.equal((await exceptions(f)).length, 1);
+});
+
+test('a missing renewal authority is recorded as missing, never as the employee\'s default renewal', async (t) => {
+  const f = await setup(t); await scheduled(f);
+  const original = f.stages.read;
+  f.stages.read = async (context, input) => {
+    const r = await original(context, input);
+    return r.status === 'ok' ? ok({ ...r.value, entitlementSlotId: null, renewalId: null, renewalAuthority: 'missing' }) : r;
+  };
+  assert.equal((await noShow(f)).status, 'ok');
+  const [exc] = await exceptions(f);
+  assert.deepEqual([exc.outcome.value.renewalId, exc.outcome.value.entitlementSlotId, exc.outcome.value.renewalAuthority], [null, null, 'missing']);
+  const g = await setup(t); await scheduled(g);
+  g.stages.read = async () => { throw new Error('stage producer down'); };
+  assert.equal((await noShow(g)).status, 'unavailable', 'a failed authority read is returned as is');
+  assert.deepEqual([(await operations(g, 'noShow')).length, (await exceptions(g)).length, (await read(g)).state], [0, 0, 'scheduled']);
+});
+
+test('a no-show leaves the order allocated: no order, hold, allocation or slot row changes', async (t) => {
+  const f = await setup(t); await scheduled(f);
+  assert.ok(f.store.state.tables.employees.length > 0 && f.store.state.tables.entitlement_slots.length > 0);
+  const before = allocation(f); const stage = JSON.stringify(await f.stages.read(f.paula, { orderUuid: ORDER }));
+  assert.equal((await noShow(f)).status, 'ok');
+  await f.tick();
+  assert.equal(allocation(f), before);
+  assert.equal(JSON.stringify(await f.stages.read(f.paula, { orderUuid: ORDER })), stage, 'the stage port still reports the order');
+  const ops = await f.repository.query(f.paula, 'pending_operations');
+  assert.deepEqual([...new Set(ops.value.map((o) => o.operationType))].sort(), [OPERATION_TYPES.confirm, OPERATION_TYPES.noShow, OPERATION_TYPES.request].sort());
+});
+
+test('Paula rebooks a new offered slot: attempt 2 keeps the no-show on record, uses its own operation IDs and completes through the readiness gate', async (t) => {
+  const f = await setup(t, { documents: true }); await scheduled(f);
+  const missed = (await read(f)).slot;
+  assert.equal((await noShow(f)).status, 'ok');
+  const idsBefore = (await f.repository.query(f.paula, 'pending_operations', {})).value.map((o) => o.operationId).filter((id) => id.startsWith('appointment:'));
+  assert.ok(idsBefore.every((id) => !id.includes(':a')), 'attempt 1 keeps the original IDs');
+
+  const view = await read(f);
+  const fresh = view.offeredSlots.find((s) => s.slotId !== missed.slotId);
+  assert.equal((await request(f, 'slot-nope')).status, 'invalid');
+  assert.equal((await request(f, fresh.slotId, f.alex)).status, 'forbidden', 'another employee cannot rebook Paula\'s order');
+  const rebookedAt = await f.now();
+  const made = await request(f, fresh.slotId); assert.equal(made.status, 'ok', JSON.stringify(made));
+  const a2 = made.value;
+  assert.deepEqual([a2.state, a2.booked, a2.attempt, a2.slot, a2.requestedSlot, a2.outcome, a2.pending, a2.blocked, a2.offeredSlots],
+    ['requested', false, 2, null, fresh, null, null, null, []]);
+  assert.deepEqual([a2.owner, a2.nextStep], [OWNERSHIP.states.requested.owner, OWNERSHIP.states.requested.nextStep]);
+  assert.equal(a2.previousAttempts.length, 1);
+  assert.deepEqual([a2.previousAttempts[0].attempt, a2.previousAttempts[0].state, a2.previousAttempts[0].slot, a2.previousAttempts[0].outcome.state], [1, 'no-show', missed, 'no-show']);
+  assert.deepEqual(a2.history.map((h) => h.state), ['requested', 'scheduled', 'no-show', 'requested'], 'history is append-only');
+  assert.equal(a2.history[3].at, rebookedAt);
+  const [reqOp] = (await operations(f, 'request')).filter((o) => o.payload.requestedAt === rebookedAt);
+  assert.match(reqOp.operationId, /^appointment:[0-9a-f]{32}:a2:request$/);
+
+  const again = await request(f, fresh.slotId);
+  assert.deepEqual(again, made, 'repeating the rebook returns the same appointment');
+  assert.equal((await operations(f, 'request')).length, 2);
+  assert.equal((await receipts(f)).length, 4, 'one new request receipt');
+  assert.equal((await request(f, view.offeredSlots.find((s) => s.slotId !== fresh.slotId && s.slotId !== missed.slotId).slotId)).code, 'appointment-already-requested');
+
+  await f.advance(DELAY - 1); await f.tick();
+  assert.equal((await read(f)).state, 'requested', 'attempt 2 confirms after its own delay');
+  await f.advance(1); const confirmedAt = await f.now(); await f.tick();
+  const booked = await read(f);
+  assert.deepEqual([booked.state, booked.booked, booked.slot, booked.attempt], ['scheduled', true, fresh, 2]);
+  assert.equal(booked.history[4].at, confirmedAt);
+  const [confirm2] = (await operations(f, 'confirm')).filter((o) => o.operationId.includes(':a2:'));
+  assert.match(confirm2.operationId, /:a2:confirm$/);
+
+  const early = await complete(f);
+  assert.deepEqual([early.status, early.code], ['conflict', 'handover-not-ready']);
+  await ready(f);
+  const done = await complete(f); assert.equal(done.status, 'ok', JSON.stringify(done));
+  assert.deepEqual([done.value.state, done.value.attempt, done.value.previousAttempts.length, done.value.outcome.state], ['completed', 2, 1, 'completed']);
+  assert.match((await operations(f, 'complete')).at(-1).operationId, /:a2:complete$/);
+  assert.equal((await exceptions(f)).length, 1, 'only the missed handover raised an exception');
+});
+
+test('a second no-show on the rebooked attempt records its own exception and can be rebooked again', async (t) => {
+  const f = await setup(t); await scheduled(f);
+  assert.equal((await noShow(f)).status, 'ok');
+  const slots = (await read(f)).offeredSlots;
+  assert.equal((await request(f, slots[1].slotId)).status, 'ok');
+  await f.advance(DELAY); await f.tick();
+  assert.equal((await read(f)).state, 'scheduled');
+  const second = await noShow(f); assert.equal(second.status, 'ok', JSON.stringify(second));
+  assert.deepEqual([second.value.state, second.value.attempt, second.value.previousAttempts.length], ['no-show', 2, 1]);
+  const list = await exceptions(f);
+  assert.deepEqual([list.length, list[0].outcome.value.attempt, list[1].outcome.value.attempt, new Set(list.map((e) => e.eventId)).size], [2, 1, 2, 2]);
+  assert.match(list.find((e) => e.outcome.value.attempt === 2).eventId, /:a2:no-show$/);
+  const third = await request(f, slots[2].slotId); assert.equal(third.status, 'ok', JSON.stringify(third));
+  assert.deepEqual([third.value.attempt, third.value.previousAttempts.map((a) => a.attempt), third.value.state], [3, [1, 2], 'requested']);
+  assert.deepEqual((await request(f, slots[2].slotId)).value, third.value);
+  await f.advance(DELAY); await f.tick();
+  assert.deepEqual([(await read(f)).state, (await read(f)).attempt], ['scheduled', 3]);
+});
+
+test('no-show refusals: not scheduled, completed, wrong role, malformed, return purpose and a withdrawn order', async (t) => {
+  const f = await setup(t, { documents: true });
+  assert.equal((await noShow(f)).status, 'not-found');
+  f.order(); await request(f, (await offered(f))[0].slotId);
+  const requested = await noShow(f);
+  assert.deepEqual([requested.status, requested.code], ['conflict', 'appointment-not-scheduled']);
+  await f.advance(DELAY); await f.tick();
+  for (const context of [f.paula, f.alex]) assert.equal((await noShow(f, context)).status, 'forbidden');
+  for (const input of [{}, { orderUuid: ORDER, runId: 'other' }, { orderUuid: ORDER, employeeId: 'employee-alex' }, { orderUuid: 7 }]) assert.equal((await noShow(f, f.presenter, input)).status, 'invalid');
+  assert.deepEqual([(await operations(f, 'noShow')).length, (await exceptions(f)).length, (await read(f)).state], [0, 0, 'scheduled']);
+
+  const returned = createLifecycleAppointmentService({ ...f.deps, provider: f.provider, purpose: 'return' });
+  const unsupported = await returned.recordNoShow(f.presenter, { orderUuid: ORDER });
+  assert.deepEqual([unsupported.status, unsupported.code], ['unsupported', 'appointment-outcome-unsupported']);
+
+  await ready(f); assert.equal((await complete(f)).status, 'ok');
+  const late = await noShow(f); assert.deepEqual([late.status, late.code], ['conflict', 'appointment-not-scheduled']);
+  assert.deepEqual([(await exceptions(f)).length, (await read(f)).state], [0, 'completed']);
+
+  const g = await setup(t); await scheduled(g);
+  assert.equal((await noShow(g)).status, 'ok');
+  const done = await complete(g, g.presenter);
+  assert.deepEqual([done.status, done.code], ['conflict', 'appointment-not-scheduled'], 'a no-show cannot then be completed');
+  const [slot] = (await read(g)).offeredSlots;
+  g.stages.orders.delete(ORDER);
+  assert.equal((await request(g, slot.slotId)).status, 'not-found', 'rebooking needs the order still known to ordering');
+  assert.deepEqual([(await g.service.read(g.paula, { orderUuid: ORDER })).value.state, (await g.service.read(g.paula, { orderUuid: ORDER })).value.offeredSlots], ['no-show', []]);
+});
+
+test('the live stub refuses a no-show as unsupported: the appointment and the exception record are unchanged', async (t) => {
+  const f = await setup(t); await scheduled(f);
+  const live = createLifecycleAppointmentService({ ...f.deps, provider: createLiveAppointmentsStub() });
+  const stuck = await live.recordNoShow(f.presenter, { orderUuid: ORDER });
+  assert.deepEqual([stuck.status, stuck.code, stuck.appointment.state, stuck.appointment.outcome, stuck.appointment.provider.mode], ['unsupported', 'live-appointments-unsupported', 'scheduled', null, 'live']);
+  assert.deepEqual([(await exceptions(f)).length, (await receipts(f)).length, (await read(f)).state], [0, 2, 'scheduled']);
+  assert.equal((await live.recordNoShow(f.presenter, { orderUuid: ORDER })).status, 'unsupported', 'the refusal stays recorded under the same operation');
+  f.provider.fault.recordNoShow = { refuse: { status: 'unsupported', code: 'live-appointments-unsupported', reason: 'Recording is not connected.' } };
+  assert.equal((await noShow(f)).status, 'unsupported');
+  assert.deepEqual([(await exceptions(f)).length, (await operations(f, 'noShow')).length], [0, 1]);
+});
+
+for (const fault of ['lost', 'throw-after', 'hang']) {
+  test(`an uncertain no-show (${fault}) stays pending under one key and is reconciled before any retry; one exception receipt`, async (t) => {
+    const policy = () => policyWith((get) => { get('lifecycle.appointments.confirmation.v1').providerTimeoutMs = 20; });
+    const recorded = fault === 'throw-after';
+    const uncertain = async () => {
+      const f = await setup(t, { policy: await policy() }); await scheduled(f);
+      f.provider.fault.recordNoShow = fault;
+      const pending = await noShow(f); assert.equal(pending.status, 'ok', JSON.stringify(pending));
+      assert.deepEqual([pending.value.state, pending.value.pending.step, pending.value.outcome, pending.value.owner, pending.value.nextStep],
+        ['scheduled', 'noShow', null, OWNERSHIP.pending.owner, OWNERSHIP.pending.nextStep]);
+      const [before] = await operations(f, 'noShow');
+      assert.deepEqual([before.lastKnownState, (await exceptions(f)).length], ['unknown', 0], 'nothing is reported until the outcome is known');
+      assert.equal((await complete(f, f.presenter)).code, 'appointment-update-pending');
+      f.provider.calls.length = 0;
+      return { f, before };
+    };
+    const expectDone = async ({ f, before }, view) => {
+      assert.deepEqual(f.provider.calls, recorded ? ['reconcile'] : ['reconcile', 'recordNoShow'], 'reconciled first; only not-found allows the same write again');
+      assert.deepEqual([view.state, view.pending, view.outcome.state], ['no-show', null, 'no-show']);
+      const after = await operations(f, 'noShow');
+      assert.deepEqual([after.length, after[0].operationId, after[0].idempotencyKey, after[0].state], [1, before.operationId, before.idempotencyKey, 'completed']);
+      assert.deepEqual([(await exceptions(f)).length, (await receipts(f)).length], [1, 3], 'exactly one adapter receipt and one exception receipt');
+      assert.equal((await exceptions(f))[0].eventId, before.operationId);
+    };
+    const viaRepeat = await uncertain();
+    const repeated = await noShow(viaRepeat.f, viaRepeat.f.greg); assert.equal(repeated.status, 'ok', JSON.stringify(repeated));
+    await expectDone(viaRepeat, repeated.value);
+
+    const viaTick = await uncertain();
+    const summary = handled(await viaTick.f.tick());
+    assert.deepEqual([summary.status, summary.value.applied, summary.value.failed], ['ok', 1, []]);
+    await expectDone(viaTick, await read(viaTick.f));
+    await viaTick.f.tick();
+    assert.equal((await exceptions(viaTick.f)).length, 1);
+  });
+}
+
+test('/api/gcsp/appointments/no-show is gated, server-scoped and ignores browser identity; rebooking is Paula\'s own request', async (t) => {
+  const f = await setup(t); await scheduled(f);
+  const call = http(f);
+  const forged = { orderUuid: ORDER, employeeId: 'employee-alex', runId: 'other', roles: ['employee'] };
+  assert.equal((await call('/appointments/no-show', { body: { orderUuid: ORDER } })).code, 403, 'the employee cannot record a no-show');
+  assert.equal((await call('/appointments/no-show', { session: f.sessions.alex, body: { orderUuid: ORDER } })).code, 403);
+  assert.equal((await call('/appointments/no-show', { session: f.sessions.greg, body: { orderUuid: ORDER, extra: 1 } })).code, 400);
+  const done = await call('/appointments/no-show', { session: f.sessions.presenter, body: forged });
+  assert.equal(done.code, 200, JSON.stringify(done));
+  assert.deepEqual([done.value.value.state, done.value.value.employeeId, done.value.value.runId, done.value.value.outcome.state], ['no-show', 'employee-paula', f.paula.runId, 'no-show']);
+  assert.deepEqual((await call('/appointments/no-show', { session: f.sessions.greg, body: { orderUuid: ORDER } })).value, done.value);
+  assert.deepEqual((await call('/appointments', { query: `orderUuid=${ORDER}` })).value.value, done.value.value);
+  assert.equal((await call('/appointments', { session: f.sessions.alex, query: `orderUuid=${ORDER}` })).code, 403);
+  const [slot] = done.value.value.offeredSlots.slice(1);
+  assert.equal((await call('/appointments/request', { session: f.sessions.alex, body: { orderUuid: ORDER, slotId: slot.slotId } })).code, 403);
+  const rebooked = await call('/appointments/request', { body: { orderUuid: ORDER, slotId: slot.slotId, employeeId: 'employee-alex' } });
+  assert.deepEqual([rebooked.code, rebooked.value.value.state, rebooked.value.value.attempt, rebooked.value.value.employeeId], [200, 'requested', 2, 'employee-paula']);
+  assert.equal((await call('/appointments/no-show', { session: f.sessions.greg, body: { orderUuid: ORDER } })).code, 409);
+});
+
+test('the no-show and rebooked response shapes match the recorded fixture', async (t) => {
+  const keys = (v) => Object.keys(v).sort();
+  const want = shapes.states['no-show'];
+  assert.deepEqual([want.owner, want.nextStep], [NO_SHOW.owner, NO_SHOW.nextStep]);
+  assert.deepEqual(shapes.readModelKeys.filter((k) => ['attempt', 'previousAttempts', 'outcome'].includes(k)).sort(), ['attempt', 'outcome', 'previousAttempts']);
+  const f = await setup(t); await scheduled(f);
+  const view = (await noShow(f)).value;
+  assert.deepEqual(keys(view), [...shapes.readModelKeys].sort());
+  assert.deepEqual([view.state, view.booked, view.owner, view.nextStep, view.pending?.step ?? null, view.blocked?.code ?? null, view.attempt, view.previousAttempts], [want.state, want.booked, want.owner, want.nextStep, want.pendingStep, want.blockedCode, want.attempt, []]);
+  assert.deepEqual(view.history.map((h) => h.state), want.history);
+  assert.deepEqual(keys(view.outcome), [...shapes.outcomeKeys].sort());
+  assert.ok(view.offeredSlots.length > 0 && view.offeredSlots.every((s) => keys(s).join() === [...shapes.slotKeys].sort().join()));
+  const rebooked = (await request(f, view.offeredSlots[1].slotId)).value;
+  assert.deepEqual(keys(rebooked), [...shapes.readModelKeys].sort());
+  assert.deepEqual([rebooked.state, rebooked.attempt], [shapes.rebooked.state, shapes.rebooked.attempt]);
+  assert.deepEqual(rebooked.history.map((h) => h.state), shapes.rebooked.history);
+  assert.deepEqual(keys(rebooked.previousAttempts[0]), [...shapes.previousAttemptKeys].sort());
+  assert.deepEqual(keys(rebooked.previousAttempts[0].outcome), [...shapes.outcomeKeys].sort());
+  const [exc] = await exceptions(f);
+  assert.deepEqual(keys(exc.outcome.value), [...shapes.exceptionReceipt.valueKeys].sort());
+  assert.deepEqual([exc.consumerId, exc.eventType], [shapes.exceptionReceipt.consumerId, OUTCOMES.exceptionTypes.noShow]);
 });
