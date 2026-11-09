@@ -1,0 +1,292 @@
+{
+  "state": "passed",
+  "chunk": "desktop",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "startedAt": "2026-11-09T14:51:18.018Z",
+  "boundary": "Real buildServer routes, canonical services and the memory repository over loopback HTTP; the runner serves the same HTML, CSS and blocks from a plain file server. No live external calls, no PostgreSQL.",
+  "cookieMode": {
+    "missed:paula": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure",
+    "missed:greg": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure"
+  },
+  "checks": [
+    {
+      "id": "01:receipt",
+      "name": "01: the missed-return receipt is keyed return-missed, event <orderUuid>:return-missed",
+      "pass": true,
+      "detail": [
+        [
+          "f1000000-0000-4000-8000-000000000001:return-missed",
+          "return-missed"
+        ]
+      ]
+    },
+    {
+      "id": "01:row",
+      "name": "01: Greg's queue row shows the keyed label and reason, not the raw trigger",
+      "pass": true,
+      "detail": [
+        [
+          "Paula (fictional)",
+          "2026-12-01",
+          "Missed return of current car",
+          "The return of the current car was missed. The scheme team will rearrange it.",
+          "Open",
+          "Scheme team",
+          "2026-11-10 14:30:01 UTC"
+        ]
+      ]
+    },
+    {
+      "id": "01:pick:tab",
+      "name": "01:pick: Tab alone reaches the control (4 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 4
+      }
+    },
+    {
+      "id": "01:pick:focus-ring",
+      "name": "01:pick: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "select",
+        "id": "gcsp-case-queue-1-selection",
+        "label": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "01:pick:chosen",
+      "name": "01:pick: the select reads \"Paula (fictional) · Open · 2026-12-01\"",
+      "pass": true,
+      "detail": "Paula (fictional) · Open · 2026-12-01"
+    },
+    {
+      "id": "01:open:tab",
+      "name": "01:open: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "01:open:focus-ring",
+      "name": "01:open: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Open selected case",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "01-missed-return-case-greg:layout",
+      "name": "01-missed-return-case-greg: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "01-missed-return-case-greg:copy",
+      "name": "01-missed-return-case-greg: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "01-missed-return-case-greg:console",
+      "name": "01-missed-return-case-greg: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "01-missed-return-case-greg:queue and case label",
+      "name": "01-missed-return-case-greg: queue and case label",
+      "pass": true
+    },
+    {
+      "id": "01-missed-return-case-greg:keyed reason",
+      "name": "01-missed-return-case-greg: keyed reason",
+      "pass": true
+    },
+    {
+      "id": "01-missed-return-case-greg:Opened from the missed return",
+      "name": "01-missed-return-case-greg: Opened from the missed return",
+      "pass": true
+    },
+    {
+      "id": "01-missed-return-case-greg:Paula",
+      "name": "01-missed-return-case-greg: Paula",
+      "pass": true
+    },
+    {
+      "id": "01-missed-return-case-greg:no-handover label",
+      "name": "01-missed-return-case-greg: absent: handover label",
+      "pass": true
+    },
+    {
+      "id": "01-missed-return-case-greg:no-raw trigger",
+      "name": "01-missed-return-case-greg: absent: raw trigger",
+      "pass": true
+    },
+    {
+      "id": "01-missed-return-case-greg:no-generic reason",
+      "name": "01-missed-return-case-greg: absent: generic reason",
+      "pass": true
+    },
+    {
+      "id": "02-missed-return-case-paula:layout",
+      "name": "02-missed-return-case-paula: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "02-missed-return-case-paula:copy",
+      "name": "02-missed-return-case-paula: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "02-missed-return-case-paula:console",
+      "name": "02-missed-return-case-paula: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "02-missed-return-case-paula:Opened from the missed return",
+      "name": "02-missed-return-case-paula: Opened from the missed return",
+      "pass": true
+    },
+    {
+      "id": "02-missed-return-case-paula:keyed reason",
+      "name": "02-missed-return-case-paula: keyed reason",
+      "pass": true
+    },
+    {
+      "id": "02-missed-return-case-paula:no-handover label",
+      "name": "02-missed-return-case-paula: absent: handover label",
+      "pass": true
+    },
+    {
+      "id": "02-missed-return-case-paula:no-generic reason",
+      "name": "02-missed-return-case-paula: absent: generic reason",
+      "pass": true
+    }
+  ],
+  "captures": [
+    {
+      "name": "1280-01-missed-return-case-greg",
+      "as": "greg",
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/1280-01-missed-return-case-greg.png",
+      "bytesPng": 215826
+    },
+    {
+      "name": "1280-02-missed-return-case-paula",
+      "as": "paula",
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    }
+  ],
+  "steps": [
+    {
+      "id": "01a",
+      "via": "api",
+      "what": "The missed outcome is the policy key lifecycle.return.outcome.v1 (enabled, missed, before boot) acting on its keyed delay.",
+      "repeatedBy": "'FUCQ-259: a missed return opens a case keyed and labelled as a missed return'"
+    },
+    {
+      "id": "01b",
+      "via": "api",
+      "what": "One service tick runs the renewal-risk rule that opens the owned case (renewalCase.lifecycle.eventTypes)."
+    },
+    {
+      "id": "01c",
+      "via": "browser",
+      "what": "Greg picks the case and opens it with Tab, a type-ahead select and Enter on /gcsp-case-queue.html."
+    },
+    {
+      "id": "02",
+      "via": "browser",
+      "what": "Paula reads her own case on /gcsp-help.html (text check, no PNG)."
+    }
+  ],
+  "observations": [],
+  "errors": [],
+  "requests": {
+    "greg GET /api/gcsp/scheme-team/cases 200 ok": 1,
+    "greg GET /api/gcsp/scheme-team/cases/options 200 ok": 1,
+    "paula GET /api/gcsp/presenter/controls 200 ok": 1,
+    "paula GET /api/gcsp/manual/account 200 ok": 1,
+    "paula GET /api/gcsp/context 200 ok": 1,
+    "paula GET /api/gcsp/presenter/scenarios 200 ok": 1,
+    "paula GET /api/gcsp/presenter/scenarios/faults 200 ok": 1,
+    "paula GET /api/gcsp/help 200 ok": 1,
+    "paula GET /api/gcsp/cases 200 ok": 1
+  },
+  "failedRequests": [],
+  "processes": {
+    "chrome": {
+      "pid": 70881,
+      "group": 70881,
+      "debugPort": 9149
+    },
+    "server-missed": {
+      "pid": 70877,
+      "port": 9140,
+      "note": "in-process loopback server"
+    }
+  },
+  "notes": [],
+  "facts": {
+    "01": {
+      "opened": true,
+      "text": "Renewal cases Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Current case options loaded. Refresh queue Sort cases Deadline, active cases first Status, then deadline Renewal-risk cases Employee Renewal deadline (calendar date) Trigger or request Reason Status Owner Next action due, demo clock (UTC) Paula (fictional) 2026-12-01 Missed return of current car The return of the current car was missed. The scheme team will rearrange it. Open Scheme team 2026-11-10 14:30:01 UTC Case to work Choose a case Paula (fictional) · Open · 2026-12-01 Open selected case Close case details Paula (fictional) RENEWAL CASE Open Case reference renewal-66881421d4db0cc6ae75f1c1aa7de1035bb7db22 Owner Scheme team Reason The return of the current car was missed. The scheme team will rearrange it. Latest update The return of the current car was missed. The scheme t"
+    }
+  },
+  "finishedAt": "2026-11-09T14:51:31.798Z",
+  "summary": {
+    "checks": 24,
+    "passed": 24,
+    "failed": [],
+    "captures": 2,
+    "pngs": 1
+  }
+}

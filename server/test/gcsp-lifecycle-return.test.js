@@ -18,6 +18,7 @@ import { createSyntheticReturnOutcomes, createLiveReturnOutcomesStub, RETURN_OUT
 import { RETURN_EXCEPTION_CONSUMER, RETURN_OUTCOME_STATE } from '../gcsp/lifecycle/return-plan/outcomes.js';
 import { applyCurrentCarEvent, recordCurrentCarEvent, readCurrentCar, CURRENT_CAR_EVENTS } from '../gcsp/lifecycle/current-car/index.js';
 import { RenewalCaseService } from '../gcsp/cases/index.js';
+import { triggerLabel } from '../../blocks/gcsp/cases/case-content.js';
 import { createLifecycleDocumentService } from '../gcsp/lifecycle/documents/index.js';
 import { createSyntheticDocumentStatus } from '../gcsp/adapters/synthetic-ordering-documents.js';
 import { prepareBuddySelection } from '../gcsp/offers/buddy-conversion.js';
@@ -517,6 +518,24 @@ test('FUCQ-168: a missed return keeps the current car and emits the keyed lifecy
   await f.tick();
   assert.equal((await rows(f, RETURN_EXCEPTION_CONSUMER)).length, 1, 'repeat ticks emit no second receipt');
   await f.sameCar('missed return');
+});
+
+test('FUCQ-259: a missed return opens a case keyed and labelled as a missed return, not a missed handover', async (t) => {
+  const f = await setup(t, { policy: await outcomePolicy('missed'), cases: true });
+  await passReturn(f, await scheduledReturn(f));
+  const [e] = await rows(f, RETURN_EXCEPTION_CONSUMER);
+  assert.deepEqual([e.consumerId, e.eventId, e.eventType, e.outcome.value.exceptionType],
+    [RETURN_EXCEPTION_CONSUMER, `${f.orderUuid}:return-missed`, 'return-missed', 'return-missed']);
+  assert.notEqual(e.eventType, seedRow('lifecycle.appointments.outcomes.v1').value.exceptionTypes.noShow, 'not the handover no-show type');
+  await f.tick();
+  const copy = seedRow('renewalCase.lifecycle.exceptionCopy').value['return-missed'];
+  const greg = (await f.renewalCases.list(f.greg)).value.cases.find((c) => c.trigger?.sourceId === `${RETURN_EXCEPTION_CONSUMER}:${e.eventId}`);
+  const own = (await f.renewalCases.readOwn(f.paula)).value.cases.find((c) => c.caseId === greg?.caseId);
+  for (const c of [greg, own]) {
+    assert.deepEqual([c.trigger.type, c.trigger.eventType, c.trigger.label, c.reason, c.history.at(-1).reason],
+      ['lifecycle-exception', 'return-missed', copy.label, copy.reason, copy.reason]);
+    assert.equal(triggerLabel(c.trigger), 'Missed return of current car');
+  }
 });
 
 test('FUCQ-168: only a confirmed handover completion or return changes the current car, by exact order and contract identity', async (t) => {
