@@ -309,6 +309,29 @@ test('metricTile: label, figure, note, level and band marking', () => {
   assert.match(tile.metricTile({ label: 'Plain', count: 1234 }).textContent, /1,234/);
 });
 
+test('dataTable stack: labelled cells and explicit roles only when asked', () => {
+  const columns = [{ key: 'name', label: 'Model line' }, { key: 'n', label: 'Released', numeric: true }, { key: 'd', label: 'Difference', numeric: true }];
+  const rows = [{ name: 'A', n: '2', d: { label: '+1', emphasis: true } }];
+  const on = table.dataTable({ caption: 'Stack', columns, rows, stack: true });
+  assert.ok(on.classList.contains('is-stack')); assert.equal(on.getAttribute('role'), 'region'); assert.equal(on.tabIndex, 0);
+  const t = on.querySelector('table');
+  assert.equal(t.getAttribute('role'), 'table');
+  assert.deepEqual([...t.querySelectorAll('thead, tbody')].map((n) => n.getAttribute('role')), ['rowgroup', 'rowgroup']);
+  assert.ok([...t.querySelectorAll('tr')].every((r) => r.getAttribute('role') === 'row'));
+  assert.deepEqual([...t.querySelectorAll('thead th')].map((n) => n.getAttribute('role')), ['columnheader', 'columnheader', 'columnheader']);
+  const [head, ...tds] = t.querySelector('tbody tr').children;
+  assert.equal(head.getAttribute('role'), 'rowheader'); assert.equal(head.dataset.label, undefined);
+  assert.deepEqual(tds.map((c) => [c.getAttribute('role'), c.dataset.label]), [['cell', 'Released'], ['cell', 'Difference']]);
+  assert.equal(tds[1].textContent, '+1');
+  const empty = table.dataTable({ caption: 'E', columns, rows: [], stack: true });
+  assert.equal(empty.querySelector('tbody td').getAttribute('role'), 'cell');
+  const off = table.dataTable({ caption: 'Plain', columns, rows });
+  assert.ok(!off.classList.contains('is-stack')); assert.equal(off.querySelector('table').hasAttribute('role'), false);
+  assert.equal(off.querySelectorAll('[role]:not([role="region"]), [data-label]').length, 0);
+  const css = read('blocks/gcsp/kit/gcsp-kit.css');
+  assert.match(css, /@media \(max-width: 640px\) \{[^\n]*\.gcsp \.gcsp-table-wrap\.is-stack thead/);
+});
+
 test('dataTable: caption, scopes, numeric columns, scroll region, band cells and empty row', () => {
   const columns = [{ key: 'name', label: 'Model line' }, { key: 'n', label: 'Released', numeric: true }];
   const region = table.dataTable({ caption: 'Stock', columns, rows: [{ name: 'A very long model name', n: { label: 'fewer than 5', isBand: true } }, { name: 'B', n: '7' }], id: 't1' });
