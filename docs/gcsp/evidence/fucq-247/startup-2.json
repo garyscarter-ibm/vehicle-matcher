@@ -1,0 +1,42 @@
+{
+ "story": "FUCQ-247",
+ "run": 1,
+ "profile": "desktop",
+ "runNo": 2,
+ "where": "local, macOS, offline memory host (GCSP_OFFLINE=1, GCSP_REPOSITORY_MODE=memory)",
+ "node": "v26.5.0",
+ "viewport": {
+  "width": 1280,
+  "height": 900
+ },
+ "throttling": null,
+ "startedAt": "2026-11-09T16:00:27.195Z",
+ "state": "passed",
+ "server": {
+  "spawnAt": 1794240027197,
+  "listeningMs": 10789,
+  "healthReadyMs": 20081,
+  "readyAt": 1794240047278,
+  "idleUntil": 1794240062281,
+  "peakRssToReadyMiB": 280,
+  "rssAtReadyMiB": 253,
+  "heapUsedAtReadyMiB": 44,
+  "idleRssEndMiB": 258,
+  "idleHeapUsedEndMiB": 59,
+  "cpuMsToReady": 20676,
+  "peakRssWholeRunMiB": 280,
+  "peakHeapUsedWholeRunMiB": 82,
+  "maxRssProcessMiB": 280,
+  "maxEventLoopDelayToReadyMs": 1262.5
+ },
+ "steps": [],
+ "errors": [],
+ "badResponses": [],
+ "startupOnly": true,
+ "serverRequests": {
+  "count": 20,
+  "uncompressed": 20,
+  "staticNoStoreBytes": 2213
+ },
+ "finishedAt": "2026-11-09T16:01:02.386Z"
+}

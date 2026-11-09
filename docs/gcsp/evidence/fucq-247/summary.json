@@ -1,0 +1,6317 @@
+{
+ "story": "FUCQ-247",
+ "run": 1,
+ "generatedAt": "2026-11-09T16:01:45.912Z",
+ "files": [
+  "results-desktop-1.json",
+  "results-desktop-2.json",
+  "results-desktop-3.json",
+  "results-phone-1.json",
+  "results-phone-2.json",
+  "results-phone-3.json"
+ ],
+ "profiles": {
+  "desktop": {
+   "runs": 3,
+   "states": [
+    "passed",
+    "passed",
+    "passed"
+   ],
+   "server": {
+    "listeningMs": {
+     "median": 10611,
+     "min": 10601,
+     "max": 11088,
+     "n": 3
+    },
+    "healthReadyMs": {
+     "median": 20802,
+     "min": 20112,
+     "max": 21219,
+     "n": 3
+    },
+    "peakRssToReadyMiB": {
+     "median": 276,
+     "min": 273,
+     "max": 282,
+     "n": 3
+    },
+    "rssAtReadyMiB": {
+     "median": 276,
+     "min": 273,
+     "max": 282,
+     "n": 3
+    },
+    "heapUsedAtReadyMiB": {
+     "median": 93,
+     "min": 92,
+     "max": 99,
+     "n": 3
+    },
+    "idleRssEndMiB": {
+     "median": 281,
+     "min": 212,
+     "max": 287,
+     "n": 3
+    },
+    "idleHeapUsedEndMiB": {
+     "median": 107,
+     "min": 80,
+     "max": 109,
+     "n": 3
+    },
+    "cpuMsToReady": {
+     "median": 21302,
+     "min": 20682,
+     "max": 21735,
+     "n": 3
+    },
+    "peakRssWholeRunMiB": {
+     "median": 316,
+     "min": 312,
+     "max": 360,
+     "n": 3
+    },
+    "peakHeapUsedWholeRunMiB": {
+     "median": 182,
+     "min": 170,
+     "max": 183,
+     "n": 3
+    },
+    "maxRssProcessMiB": {
+     "median": 316,
+     "min": 312,
+     "max": 360,
+     "n": 3
+    },
+    "maxEventLoopDelayToReadyMs": {
+     "median": 1267.7,
+     "min": 1263.5,
+     "max": 1316,
+     "n": 3
+    }
+   },
+   "steps": {
+    "signin-access-page": {
+     "name": "Open the presenter link: access key page usable",
+     "demo": "sign-in",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 40,
+      "min": 38,
+      "max": 43,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": {
+      "median": 39,
+      "min": 38,
+      "max": 41,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 4,
+      "min": 4,
+      "max": 10,
+      "n": 3
+     },
+     "dcl": {
+      "median": 14,
+      "min": 9,
+      "max": 15,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 11,
+      "min": 11,
+      "max": 11,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 23,
+      "min": 23,
+      "max": 23,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 273,
+      "min": 204,
+      "max": 275,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 199,
+      "min": 12,
+      "max": 213,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 15.7,
+      "min": 12.1,
+      "max": 143.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "signin-workspace": {
+     "name": "Type the key, Enter: workspace shows Your cars",
+     "demo": "sign-in",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1061,
+      "min": 1048,
+      "max": 1065,
+      "n": 3
+     },
+     "fcp": {
+      "median": 336,
+      "min": 304,
+      "max": 352,
+      "n": 3
+     },
+     "lcp": {
+      "median": 656,
+      "min": 592,
+      "max": 668,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 1018,
+      "min": 1003,
+      "max": 1021,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 155,
+      "min": 147,
+      "max": 164,
+      "n": 3
+     },
+     "dcl": {
+      "median": 262,
+      "min": 228,
+      "max": 274,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 144,
+      "min": 141,
+      "max": 144,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1069,
+      "min": 1062,
+      "max": 1069,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 47,
+      "min": 47,
+      "max": 47,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 454,
+      "min": 423,
+      "max": 458,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 273,
+      "min": 220,
+      "max": 275,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 755,
+      "min": 700,
+      "max": 764,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 234,
+      "min": 217.3,
+      "max": 237,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-open": {
+     "name": "Open Presenter controls: clock and controls ready",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 57,
+      "min": 55,
+      "max": 59,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 248,
+      "min": 220,
+      "max": 275,
+      "n": 2
+     },
+     "serverCpuMs": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 2
+     },
+     "serverMaxEldMs": {
+      "median": 18,
+      "min": 12.1,
+      "max": 23.5,
+      "n": 2
+     },
+     "errors": []
+    },
+    "presenter-tick-1": {
+     "name": "Tick on a fresh run",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1001,
+      "min": 988,
+      "max": 1024,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 41,
+      "min": 41,
+      "max": 41,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 41,
+      "min": 41,
+      "max": 41,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 849,
+      "min": 842,
+      "max": 908,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 264,
+      "min": 234,
+      "max": 289,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 948,
+      "min": 938,
+      "max": 1006,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 646.4,
+      "min": 77.7,
+      "max": 702,
+      "n": 3
+     },
+     "errors": []
+    },
+    "account-load": {
+     "name": "Account page (gcsp-account.html) load to Choose a replacement",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 840,
+      "min": 839,
+      "max": 855,
+      "n": 3
+     },
+     "fcp": {
+      "median": 84,
+      "min": 80,
+      "max": 96,
+      "n": 3
+     },
+     "lcp": {
+      "median": 400,
+      "min": 380,
+      "max": 408,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 839,
+      "min": 838,
+      "max": 854,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 2,
+      "min": 2,
+      "max": 3,
+      "n": 3
+     },
+     "dcl": {
+      "median": 66,
+      "min": 59,
+      "max": 79,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 104,
+      "min": 104,
+      "max": 104,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 853,
+      "min": 853,
+      "max": 853,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 47,
+      "min": 47,
+      "max": 47,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 417,
+      "min": 394,
+      "max": 418,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 265,
+      "min": 234,
+      "max": 289,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 550,
+      "min": 446,
+      "max": 556,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 227.9,
+      "min": 217.2,
+      "max": 228.5,
+      "n": 3
+     },
+     "errors": []
+    },
+    "setup-open": {
+     "name": "Choose a replacement: setup form usable",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1330,
+      "min": 820,
+      "max": 1333,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 15,
+      "min": 15,
+      "max": 15,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 98,
+      "min": 98,
+      "max": 98,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 15,
+      "min": 13,
+      "max": 15,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 98,
+      "min": 80,
+      "max": 98,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 907,
+      "min": 780,
+      "max": 1052,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 232,
+      "min": 229,
+      "max": 289,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1041,
+      "min": 874,
+      "max": 1041,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 178.9,
+      "min": 150.6,
+      "max": 200.3,
+      "n": 3
+     },
+     "errors": []
+    },
+    "setup-save": {
+     "name": "Save choices: saved confirmation",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 221,
+      "min": 213,
+      "max": 235,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 2,
+      "min": 2,
+      "max": 2,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 2,
+      "min": 2,
+      "max": 3,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 17,
+      "min": 17,
+      "max": 18,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 310,
+      "min": 289,
+      "max": 320,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 231,
+      "min": 229,
+      "max": 289,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 324,
+      "min": 112,
+      "max": 619,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 121.2,
+      "min": 118.6,
+      "max": 174.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-next-release": {
+     "name": "Next release from the setup page",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1434,
+      "min": 1315,
+      "max": 1481,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 115,
+      "min": 115,
+      "max": 115,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 115,
+      "min": 115,
+      "max": 115,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1243,
+      "min": 1186,
+      "max": 1322,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 231,
+      "min": 230,
+      "max": 289,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1544,
+      "min": 1510,
+      "max": 1691,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 752.9,
+      "min": 174.7,
+      "max": 811.6,
+      "n": 3
+     },
+     "errors": []
+    },
+    "gallery-open": {
+     "name": "Continue: Released cars gallery with enabled Review buttons",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1158,
+      "min": 1132,
+      "max": 1228,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1956,
+      "min": 1956,
+      "max": 1956,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 1956,
+      "min": 1956,
+      "max": 1956,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 910,
+      "min": 864,
+      "max": 954,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 239,
+      "min": 233,
+      "max": 291,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1407,
+      "min": 1279,
+      "max": 1440,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 241.6,
+      "min": 205.8,
+      "max": 254.5,
+      "n": 3
+     },
+     "errors": []
+    },
+    "review-open": {
+     "name": "Review this car: review page with countdown and Continue enabled",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1325,
+      "min": 1320,
+      "max": 1329,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 132,
+      "min": 132,
+      "max": 132,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 132,
+      "min": 132,
+      "max": 132,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 885,
+      "min": 805,
+      "max": 934,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 242,
+      "min": 234,
+      "max": 291,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1065,
+      "min": 854,
+      "max": 1109,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 281.3,
+      "min": 252.2,
+      "max": 291.2,
+      "n": 3
+     },
+     "errors": []
+    },
+    "resume-account": {
+     "name": "Reload: account offers Resume saved journey",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 822,
+      "min": 820,
+      "max": 832,
+      "n": 3
+     },
+     "fcp": {
+      "median": 84,
+      "min": 72,
+      "max": 112,
+      "n": 3
+     },
+     "lcp": {
+      "median": 436,
+      "min": 408,
+      "max": 472,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 822,
+      "min": 819,
+      "max": 832,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 2,
+      "min": 2,
+      "max": 3,
+      "n": 3
+     },
+     "dcl": {
+      "median": 75,
+      "min": 56,
+      "max": 98,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 104,
+      "min": 101,
+      "max": 104,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 886,
+      "min": 880,
+      "max": 886,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 80,
+      "min": 80,
+      "max": 80,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 456,
+      "min": 449,
+      "max": 474,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 242,
+      "min": 234,
+      "max": 291,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 601,
+      "min": 524,
+      "max": 751,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 107.7,
+      "min": 103.7,
+      "max": 243.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "resume-review": {
+     "name": "Resume saved journey: back on the review page, usable",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1832,
+      "min": 1831,
+      "max": 1843,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 22,
+      "min": 22,
+      "max": 22,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1198,
+      "min": 1198,
+      "max": 1198,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 22,
+      "min": 22,
+      "max": 22,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 1198,
+      "min": 1198,
+      "max": 1198,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1662,
+      "min": 1630,
+      "max": 1693,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 246,
+      "min": 237,
+      "max": 292,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1886,
+      "min": 1878,
+      "max": 1952,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 283.1,
+      "min": 281.3,
+      "max": 285.5,
+      "n": 3
+     },
+     "errors": []
+    },
+    "order-summary": {
+     "name": "Continue to order review: summary with declarations",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2329,
+      "min": 1819,
+      "max": 2331,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 210,
+      "min": 210,
+      "max": 210,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 210,
+      "min": 210,
+      "max": 210,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1794,
+      "min": 1679,
+      "max": 1819,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 269,
+      "min": 240,
+      "max": 292,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1903,
+      "min": 1761,
+      "max": 1937,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 443.3,
+      "min": 173.9,
+      "max": 446.4,
+      "n": 3
+     },
+     "errors": []
+    },
+    "order-submit": {
+     "name": "Submit order: outcome heading",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 654,
+      "min": 649,
+      "max": 752,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 30,
+      "min": 30,
+      "max": 30,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 30,
+      "min": 30,
+      "max": 30,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 555,
+      "min": 526,
+      "max": 629,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 269,
+      "min": 241,
+      "max": 274,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 590,
+      "min": 553,
+      "max": 644,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 558.4,
+      "min": 532.2,
+      "max": 638.1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "order-finish": {
+     "name": "Finish: account shows the order",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 798,
+      "min": 796,
+      "max": 800,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 13,
+      "min": 13,
+      "max": 13,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 127,
+      "min": 127,
+      "max": 127,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 13,
+      "min": 13,
+      "max": 13,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 127,
+      "min": 127,
+      "max": 127,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 908,
+      "min": 824,
+      "max": 924,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 269,
+      "min": 243,
+      "max": 273,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 926,
+      "min": 877,
+      "max": 991,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 288.4,
+      "min": 261.8,
+      "max": 302,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-page-load": {
+     "name": "Presenter page load (workspace and strip)",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1000,
+      "min": 918,
+      "max": 1019,
+      "n": 3
+     },
+     "fcp": {
+      "median": 276,
+      "min": 160,
+      "max": 292,
+      "n": 3
+     },
+     "lcp": {
+      "median": 820,
+      "min": 676,
+      "max": 844,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 999,
+      "min": 916,
+      "max": 1018,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 125,
+      "min": 44,
+      "max": 142,
+      "n": 3
+     },
+     "dcl": {
+      "median": 227,
+      "min": 121,
+      "max": 247,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 146,
+      "min": 142,
+      "max": 148,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1146,
+      "min": 1079,
+      "max": 1149,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 14,
+      "min": 14,
+      "max": 14,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 127,
+      "min": 127,
+      "max": 127,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 911,
+      "min": 849,
+      "max": 921,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 269,
+      "min": 244,
+      "max": 273,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1520,
+      "min": 1403,
+      "max": 1577,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 261.8,
+      "min": 238,
+      "max": 282.1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-reset-main": {
+     "name": "Reset to Main successful journey (confirm to settled strip)",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1202,
+      "min": 1150,
+      "max": 1234,
+      "n": 3
+     },
+     "fcp": {
+      "median": 152,
+      "min": 152,
+      "max": 160,
+      "n": 3
+     },
+     "lcp": {
+      "median": 252,
+      "min": 236,
+      "max": 260,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 485,
+      "min": 476,
+      "max": 492,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 16,
+      "min": 14,
+      "max": 19,
+      "n": 3
+     },
+     "dcl": {
+      "median": 110,
+      "min": 104,
+      "max": 116,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 139,
+      "min": 139,
+      "max": 139,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 986,
+      "min": 986,
+      "max": 986,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 22,
+      "min": 22,
+      "max": 22,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 829,
+      "min": 785,
+      "max": 840,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 270,
+      "min": 253,
+      "max": 274,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1424,
+      "min": 1397,
+      "max": 1692,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 278.9,
+      "min": 238,
+      "max": 555.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-tick-2": {
+     "name": "Tick after the reset",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1192,
+      "min": 1192,
+      "max": 1209,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 33,
+      "min": 33,
+      "max": 33,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 33,
+      "min": 33,
+      "max": 33,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1117,
+      "min": 1114,
+      "max": 1124,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 270,
+      "min": 253,
+      "max": 274,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1295,
+      "min": 1264,
+      "max": 1312,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 706.7,
+      "min": 179.6,
+      "max": 716.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-reset-decline": {
+     "name": "Reset to Decline then change (confirm to settled strip)",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2470,
+      "min": 2469,
+      "max": 2535,
+      "n": 3
+     },
+     "fcp": {
+      "median": 164,
+      "min": 144,
+      "max": 164,
+      "n": 3
+     },
+     "lcp": {
+      "median": 280,
+      "min": 260,
+      "max": 296,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 601,
+      "min": 537,
+      "max": 603,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 4,
+      "min": 4,
+      "max": 6,
+      "n": 3
+     },
+     "dcl": {
+      "median": 107,
+      "min": 93,
+      "max": 109,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 139,
+      "min": 139,
+      "max": 139,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1065,
+      "min": 1065,
+      "max": 1065,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 101,
+      "min": 101,
+      "max": 101,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 2128,
+      "min": 2051,
+      "max": 2139,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 310,
+      "min": 292,
+      "max": 355,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 2475,
+      "min": 2391,
+      "max": 2548,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 1822.4,
+      "min": 1761.6,
+      "max": 1826.6,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-switch-paula": {
+     "name": "Switch principal to Paula",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1512,
+      "min": 1354,
+      "max": 1620,
+      "n": 3
+     },
+     "fcp": {
+      "median": 428,
+      "min": 392,
+      "max": 460,
+      "n": 3
+     },
+     "lcp": {
+      "median": 428,
+      "min": 392,
+      "max": 460,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 1279,
+      "min": 1108,
+      "max": 1369,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 133,
+      "min": 125,
+      "max": 135,
+      "n": 3
+     },
+     "dcl": {
+      "median": 374,
+      "min": 338,
+      "max": 407,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 146,
+      "min": 142,
+      "max": 146,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1141,
+      "min": 1073,
+      "max": 1219,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 16,
+      "min": 16,
+      "max": 16,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 220,
+      "min": 220,
+      "max": 220,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1320,
+      "min": 1285,
+      "max": 1345,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 311,
+      "min": 294,
+      "max": 360,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1433,
+      "min": 1414,
+      "max": 1463,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 347.3,
+      "min": 140.8,
+      "max": 452.2,
+      "n": 3
+     },
+     "errors": []
+    },
+    "activity-load": {
+     "name": "Buddy activity load until the offer shows",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1322,
+      "min": 1310,
+      "max": 1658,
+      "n": 3
+     },
+     "fcp": {
+      "median": 84,
+      "min": 60,
+      "max": 284,
+      "n": 3
+     },
+     "lcp": {
+      "median": 1300,
+      "min": 1272,
+      "max": 1620,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 1320,
+      "min": 1309,
+      "max": 1656,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 2,
+      "min": 2,
+      "max": 201,
+      "n": 3
+     },
+     "dcl": {
+      "median": 53,
+      "min": 40,
+      "max": 278,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 70,
+      "min": 66,
+      "max": 70,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 667,
+      "min": 660,
+      "max": 667,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 12,
+      "min": 12,
+      "max": 12,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 368,
+      "min": 368,
+      "max": 368,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1242,
+      "min": 1200,
+      "max": 1326,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 312,
+      "min": 295,
+      "max": 332,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1289,
+      "min": 1257,
+      "max": 1785,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 497.8,
+      "min": 489.2,
+      "max": 521.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "outbox-load": {
+     "name": "Outbox load and open Paula's offer email",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 317,
+      "min": 310,
+      "max": 323,
+      "n": 3
+     },
+     "fcp": {
+      "median": 64,
+      "min": 60,
+      "max": 72,
+      "n": 3
+     },
+     "lcp": {
+      "median": 64,
+      "min": 60,
+      "max": 72,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 316,
+      "min": 309,
+      "max": 321,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 2,
+      "min": 2,
+      "max": 7,
+      "n": 3
+     },
+     "dcl": {
+      "median": 43,
+      "min": 42,
+      "max": 53,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 41,
+      "min": 38,
+      "max": 41,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 412,
+      "min": 403,
+      "max": 412,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 3,
+      "min": 3,
+      "max": 3,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 166,
+      "min": 166,
+      "max": 166,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 319,
+      "min": 305,
+      "max": 330,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 312,
+      "min": 294,
+      "max": 322,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 342,
+      "min": 326,
+      "max": 391,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 187.2,
+      "min": 180.4,
+      "max": 197.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "offer-open-1": {
+     "name": "Offer link: offer page usable (Accept visible)",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 721,
+      "min": 689,
+      "max": 814,
+      "n": 3
+     },
+     "fcp": {
+      "median": 272,
+      "min": 224,
+      "max": 300,
+      "n": 3
+     },
+     "lcp": {
+      "median": 388,
+      "min": 340,
+      "max": 428,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 720,
+      "min": 687,
+      "max": 812,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 52,
+      "min": 29,
+      "max": 211,
+      "n": 3
+     },
+     "dcl": {
+      "median": 260,
+      "min": 217,
+      "max": 295,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 88,
+      "min": 83,
+      "max": 91,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 775,
+      "min": 765,
+      "max": 793,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 7,
+      "max": 9,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 136,
+      "min": 118,
+      "max": 136,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 653,
+      "min": 612,
+      "max": 721,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 312,
+      "min": 298,
+      "max": 323,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1176,
+      "min": 941,
+      "max": 1333,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 187.2,
+      "min": 180.4,
+      "max": 197.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "offer-decline-reasons": {
+     "name": "Decline this offer: reasons list loaded",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 227,
+      "min": 224,
+      "max": 340,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 2,
+      "min": 1,
+      "max": 3,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 1,
+      "min": 1,
+      "max": 19,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 221,
+      "min": 136,
+      "max": 259,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 315,
+      "min": 312,
+      "max": 323,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 324,
+      "min": 278,
+      "max": 561,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 161.6,
+      "min": 136.4,
+      "max": 171.8,
+      "n": 3
+     },
+     "errors": []
+    },
+    "offer-decline-confirm": {
+     "name": "Confirm decline (Body style): follow-up question shown",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 819,
+      "min": 808,
+      "max": 821,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 4,
+      "min": 4,
+      "max": 4,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 18,
+      "min": 18,
+      "max": 18,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 4,
+      "min": 4,
+      "max": 4,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 18,
+      "min": 18,
+      "max": 18,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 542,
+      "min": 512,
+      "max": 620,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 312,
+      "min": 274,
+      "max": 315,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 613,
+      "min": 533,
+      "max": 743,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 176.6,
+      "min": 159.9,
+      "max": 191.5,
+      "n": 3
+     },
+     "errors": []
+    },
+    "offer-change-confirm": {
+     "name": "Confirm this change (Saloon): saved in a brief version",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 246,
+      "min": 243,
+      "max": 282,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 174,
+      "min": 165,
+      "max": 224,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 289,
+      "min": 274,
+      "max": 315,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 181,
+      "min": 173,
+      "max": 203,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 176.6,
+      "min": 165.7,
+      "max": 224.3,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-tick-3": {
+     "name": "Tick from the offer page: the second offer is made",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1964,
+      "min": 1850,
+      "max": 2081,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 329,
+      "min": 329,
+      "max": 329,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 329,
+      "min": 329,
+      "max": 329,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1821,
+      "min": 1710,
+      "max": 1930,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 313,
+      "min": 294,
+      "max": 316,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 2196,
+      "min": 2080,
+      "max": 2294,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 1497.4,
+      "min": 1398.8,
+      "max": 1528.8,
+      "n": 3
+     },
+     "errors": []
+    },
+    "outbox-load-2": {
+     "name": "Outbox reload and open the new offer email",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 360,
+      "min": 302,
+      "max": 432,
+      "n": 3
+     },
+     "fcp": {
+      "median": 64,
+      "min": 56,
+      "max": 76,
+      "n": 3
+     },
+     "lcp": {
+      "median": 64,
+      "min": 56,
+      "max": 76,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 358,
+      "min": 300,
+      "max": 430,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 2,
+      "min": 2,
+      "max": 3,
+      "n": 3
+     },
+     "dcl": {
+      "median": 45,
+      "min": 31,
+      "max": 58,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 39,
+      "min": 35,
+      "max": 40,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 327,
+      "min": 319,
+      "max": 333,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 3,
+      "min": 3,
+      "max": 3,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 317,
+      "min": 317,
+      "max": 317,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 397,
+      "min": 386,
+      "max": 436,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 313,
+      "min": 294,
+      "max": 316,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 422,
+      "min": 181,
+      "max": 453,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 162.7,
+      "min": 158.6,
+      "max": 181.1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "offer-open-2": {
+     "name": "Second offer link: offer page usable",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 873,
+      "min": 695,
+      "max": 889,
+      "n": 3
+     },
+     "fcp": {
+      "median": 348,
+      "min": 160,
+      "max": 356,
+      "n": 3
+     },
+     "lcp": {
+      "median": 492,
+      "min": 300,
+      "max": 500,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 872,
+      "min": 694,
+      "max": 887,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 83,
+      "min": 67,
+      "max": 116,
+      "n": 3
+     },
+     "dcl": {
+      "median": 330,
+      "min": 146,
+      "max": 344,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 82,
+      "min": 81,
+      "max": 83,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 839,
+      "min": 836,
+      "max": 840,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 7,
+      "min": 4,
+      "max": 8,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 192,
+      "min": 173,
+      "max": 210,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 757,
+      "min": 553,
+      "max": 768,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 313,
+      "min": 294,
+      "max": 316,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1008,
+      "min": 974,
+      "max": 1146,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 209.6,
+      "min": 186.5,
+      "max": 378.3,
+      "n": 3
+     },
+     "errors": []
+    },
+    "offer-accept": {
+     "name": "Accept this offer: accepted state",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 690,
+      "min": 662,
+      "max": 818,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 54,
+      "min": 54,
+      "max": 54,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 3,
+      "min": 3,
+      "max": 3,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 45,
+      "min": 45,
+      "max": 45,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 678,
+      "min": 666,
+      "max": 768,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 299,
+      "min": 288,
+      "max": 316,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 875,
+      "min": 858,
+      "max": 987,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 209.6,
+      "min": 186.5,
+      "max": 522.2,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-presenter": {
+     "name": "Warm reload of presenter",
+     "demo": "warm",
+     "warm": true,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1829,
+      "min": 1619,
+      "max": 2134,
+      "n": 3
+     },
+     "fcp": {
+      "median": 624,
+      "min": 620,
+      "max": 656,
+      "n": 3
+     },
+     "lcp": {
+      "median": 656,
+      "min": 620,
+      "max": 1692,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 1827,
+      "min": 1618,
+      "max": 2132,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 471,
+      "min": 460,
+      "max": 474,
+      "n": 3
+     },
+     "dcl": {
+      "median": 569,
+      "min": 564,
+      "max": 588,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 148,
+      "min": 140,
+      "max": 148,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1206,
+      "min": 1181,
+      "max": 1206,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 15,
+      "min": 14,
+      "max": 16,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 242,
+      "min": 239,
+      "max": 242,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1686,
+      "min": 1535,
+      "max": 2054,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 299,
+      "min": 275,
+      "max": 316,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1782,
+      "min": 1763,
+      "max": 2139,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 427.3,
+      "min": 187.7,
+      "max": 663.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-account": {
+     "name": "Warm reload of account",
+     "demo": "warm",
+     "warm": true,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1855,
+      "min": 1730,
+      "max": 1878,
+      "n": 3
+     },
+     "fcp": {
+      "median": 624,
+      "min": 508,
+      "max": 664,
+      "n": 3
+     },
+     "lcp": {
+      "median": 1688,
+      "min": 1504,
+      "max": 1772,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 1854,
+      "min": 1731,
+      "max": 1877,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 403,
+      "min": 59,
+      "max": 518,
+      "n": 3
+     },
+     "dcl": {
+      "median": 611,
+      "min": 489,
+      "max": 659,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 109,
+      "min": 109,
+      "max": 109,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 989,
+      "min": 989,
+      "max": 989,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 15,
+      "min": 15,
+      "max": 17,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 245,
+      "min": 242,
+      "max": 248,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1752,
+      "min": 1643,
+      "max": 1814,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 275,
+      "min": 255,
+      "max": 316,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1646,
+      "min": 1612,
+      "max": 1803,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 535,
+      "min": 460.8,
+      "max": 598.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-activity": {
+     "name": "Warm reload of activity",
+     "demo": "warm",
+     "warm": true,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1837,
+      "min": 1680,
+      "max": 2097,
+      "n": 3
+     },
+     "fcp": {
+      "median": 372,
+      "min": 324,
+      "max": 512,
+      "n": 3
+     },
+     "lcp": {
+      "median": 1624,
+      "min": 832,
+      "max": 1824,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 1836,
+      "min": 1680,
+      "max": 2096,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 316,
+      "min": 263,
+      "max": 444,
+      "n": 3
+     },
+     "dcl": {
+      "median": 365,
+      "min": 308,
+      "max": 506,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 69,
+      "min": 66,
+      "max": 70,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 741,
+      "min": 734,
+      "max": 742,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 13,
+      "min": 13,
+      "max": 15,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 672,
+      "min": 672,
+      "max": 675,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1691,
+      "min": 1610,
+      "max": 2007,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 276,
+      "min": 256,
+      "max": 316,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 2151,
+      "min": 2045,
+      "max": 2192,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 619.7,
+      "min": 588.8,
+      "max": 697.3,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-offer": {
+     "name": "Warm reload of offer",
+     "demo": "warm",
+     "warm": true,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 597,
+      "min": 591,
+      "max": 650,
+      "n": 3
+     },
+     "fcp": {
+      "median": 88,
+      "min": 72,
+      "max": 104,
+      "n": 3
+     },
+     "lcp": {
+      "median": 220,
+      "min": 212,
+      "max": 248,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 596,
+      "min": 590,
+      "max": 648,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 2,
+      "min": 2,
+      "max": 2,
+      "n": 3
+     },
+     "dcl": {
+      "median": 77,
+      "min": 61,
+      "max": 82,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 79,
+      "min": 79,
+      "max": 80,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 756,
+      "min": 756,
+      "max": 758,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 190,
+      "min": 190,
+      "max": 190,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 552,
+      "min": 514,
+      "max": 604,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 276,
+      "min": 236,
+      "max": 316,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 669,
+      "min": 644,
+      "max": 900,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 185.3,
+      "min": 175.9,
+      "max": 328.5,
+      "n": 3
+     },
+     "errors": []
+    }
+   }
+  },
+  "phone": {
+   "runs": 3,
+   "states": [
+    "passed",
+    "passed",
+    "passed"
+   ],
+   "server": {
+    "listeningMs": {
+     "median": 11031,
+     "min": 10984,
+     "max": 11064,
+     "n": 3
+    },
+    "healthReadyMs": {
+     "median": 20901,
+     "min": 20805,
+     "max": 21028,
+     "n": 3
+    },
+    "peakRssToReadyMiB": {
+     "median": 277,
+     "min": 272,
+     "max": 278,
+     "n": 3
+    },
+    "rssAtReadyMiB": {
+     "median": 277,
+     "min": 272,
+     "max": 278,
+     "n": 3
+    },
+    "heapUsedAtReadyMiB": {
+     "median": 90,
+     "min": 88,
+     "max": 93,
+     "n": 3
+    },
+    "idleRssEndMiB": {
+     "median": 282,
+     "min": 277,
+     "max": 283,
+     "n": 3
+    },
+    "idleHeapUsedEndMiB": {
+     "median": 105,
+     "min": 103,
+     "max": 108,
+     "n": 3
+    },
+    "cpuMsToReady": {
+     "median": 21487,
+     "min": 21438,
+     "max": 21615,
+     "n": 3
+    },
+    "peakRssWholeRunMiB": {
+     "median": 283,
+     "min": 277,
+     "max": 283,
+     "n": 3
+    },
+    "peakHeapUsedWholeRunMiB": {
+     "median": 138,
+     "min": 104,
+     "max": 144,
+     "n": 3
+    },
+    "maxRssProcessMiB": {
+     "median": 283,
+     "min": 277,
+     "max": 283,
+     "n": 3
+    },
+    "maxEventLoopDelayToReadyMs": {
+     "median": 1263.5,
+     "min": 1261.4,
+     "max": 1303.4,
+     "n": 3
+    }
+   },
+   "steps": {
+    "signin-access-page": {
+     "name": "Open the presenter link: access key page usable",
+     "demo": "sign-in",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 412,
+      "min": 411,
+      "max": 423,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": {
+      "median": 411,
+      "min": 411,
+      "max": 420,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 317,
+      "min": 317,
+      "max": 321,
+      "n": 3
+     },
+     "dcl": {
+      "median": 356,
+      "min": 351,
+      "max": 360,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 4,
+      "min": 4,
+      "max": 4,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 11,
+      "min": 11,
+      "max": 11,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 208,
+      "min": 116,
+      "max": 283,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 9,
+      "min": 6,
+      "max": 10,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 12.1,
+      "min": 12.1,
+      "max": 14,
+      "n": 3
+     },
+     "errors": []
+    },
+    "signin-workspace": {
+     "name": "Type the key, Enter: workspace shows Your cars",
+     "demo": "sign-in",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 6769,
+      "min": 6769,
+      "max": 6897,
+      "n": 3
+     },
+     "fcp": {
+      "median": 6332,
+      "min": 6268,
+      "max": 6448,
+      "n": 3
+     },
+     "lcp": {
+      "median": 6688,
+      "min": 6612,
+      "max": 6832,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 6723,
+      "min": 6719,
+      "max": 6848,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 326,
+      "min": 322,
+      "max": 370,
+      "n": 3
+     },
+     "dcl": {
+      "median": 6106,
+      "min": 6034,
+      "max": 6223,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 53,
+      "min": 51,
+      "max": 56,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 53,
+      "min": 51,
+      "max": 56,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 147,
+      "min": 147,
+      "max": 147,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1073,
+      "min": 1073,
+      "max": 1073,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 47,
+      "min": 47,
+      "max": 47,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 451,
+      "min": 445,
+      "max": 485,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 223,
+      "min": 201,
+      "max": 283,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 808,
+      "min": 790,
+      "max": 893,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 230.4,
+      "min": 156.6,
+      "max": 249.6,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-open": {
+     "name": "Open Presenter controls: clock and controls ready",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 219,
+      "min": 211,
+      "max": 241,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 223,
+      "min": 201,
+      "max": 275,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 111,
+      "min": 2,
+      "max": 128,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 12.2,
+      "min": 12.1,
+      "max": 30.1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-tick-1": {
+     "name": "Tick on a fresh run",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1321,
+      "min": 1315,
+      "max": 1448,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 41,
+      "min": 41,
+      "max": 41,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 41,
+      "min": 41,
+      "max": 41,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 854,
+      "min": 848,
+      "max": 926,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 231,
+      "min": 217,
+      "max": 278,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 949,
+      "min": 942,
+      "max": 1010,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 102.8,
+      "min": 92.9,
+      "max": 647,
+      "n": 3
+     },
+     "errors": []
+    },
+    "account-load": {
+     "name": "Account page (gcsp-account.html) load to Choose a replacement",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 5049,
+      "min": 5047,
+      "max": 5058,
+      "n": 3
+     },
+     "fcp": {
+      "median": 4640,
+      "min": 4612,
+      "max": 4648,
+      "n": 3
+     },
+     "lcp": {
+      "median": 4988,
+      "min": 4944,
+      "max": 4988,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 5049,
+      "min": 5045,
+      "max": 5058,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 151,
+      "min": 151,
+      "max": 152,
+      "n": 3
+     },
+     "dcl": {
+      "median": 4634,
+      "min": 4604,
+      "max": 4642,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 104,
+      "min": 104,
+      "max": 104,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 853,
+      "min": 853,
+      "max": 853,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 7,
+      "min": 7,
+      "max": 8,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 47,
+      "min": 47,
+      "max": 47,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 389,
+      "min": 375,
+      "max": 410,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 231,
+      "min": 217,
+      "max": 278,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 588,
+      "min": 581,
+      "max": 611,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 95.7,
+      "min": 90,
+      "max": 96.5,
+      "n": 3
+     },
+     "errors": []
+    },
+    "setup-open": {
+     "name": "Choose a replacement: setup form usable",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1383,
+      "min": 1364,
+      "max": 1383,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 12,
+      "min": 12,
+      "max": 12,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 80,
+      "min": 80,
+      "max": 80,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 16,
+      "min": 15,
+      "max": 16,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 99,
+      "min": 98,
+      "max": 99,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 948,
+      "min": 906,
+      "max": 1005,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 218,
+      "min": 211,
+      "max": 262,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1033,
+      "min": 1030,
+      "max": 1080,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 128.1,
+      "min": 123.9,
+      "max": 250.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "setup-save": {
+     "name": "Save choices: saved confirmation",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 261,
+      "min": 254,
+      "max": 275,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 2,
+      "min": 2,
+      "max": 2,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 2,
+      "min": 2,
+      "max": 2,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 291,
+      "min": 285,
+      "max": 301,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 218,
+      "min": 211,
+      "max": 262,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 115,
+      "min": 115,
+      "max": 292,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 88.3,
+      "min": 87.5,
+      "max": 186.6,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-next-release": {
+     "name": "Next release from the setup page",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2015,
+      "min": 2003,
+      "max": 2019,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 115,
+      "min": 115,
+      "max": 115,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 115,
+      "min": 115,
+      "max": 115,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1292,
+      "min": 1291,
+      "max": 1310,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 216,
+      "min": 211,
+      "max": 262,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1593,
+      "min": 1590,
+      "max": 1609,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 772.3,
+      "min": 186.6,
+      "max": 785.9,
+      "n": 3
+     },
+     "errors": []
+    },
+    "gallery-open": {
+     "name": "Continue: Released cars gallery with enabled Review buttons",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 15445,
+      "min": 15384,
+      "max": 15803,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 119,
+      "min": 116,
+      "max": 131,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 119,
+      "min": 116,
+      "max": 131,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1956,
+      "min": 1956,
+      "max": 1956,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 1956,
+      "min": 1956,
+      "max": 1956,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1125,
+      "min": 1124,
+      "max": 1617,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 235,
+      "min": 231,
+      "max": 265,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1502,
+      "min": 1410,
+      "max": 1668,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 251.5,
+      "min": 222.7,
+      "max": 408.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "review-open": {
+     "name": "Review this car: review page with countdown and Continue enabled",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1342,
+      "min": 1340,
+      "max": 1382,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 132,
+      "min": 132,
+      "max": 132,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 132,
+      "min": 132,
+      "max": 132,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 899,
+      "min": 858,
+      "max": 927,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 232,
+      "min": 201,
+      "max": 235,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 934,
+      "min": 901,
+      "max": 944,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 203.2,
+      "min": 191.4,
+      "max": 204.1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "resume-account": {
+     "name": "Reload: account offers Resume saved journey",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 5056,
+      "min": 5027,
+      "max": 5063,
+      "n": 3
+     },
+     "fcp": {
+      "median": 4644,
+      "min": 4620,
+      "max": 4648,
+      "n": 3
+     },
+     "lcp": {
+      "median": 5040,
+      "min": 4992,
+      "max": 5048,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 5054,
+      "min": 5027,
+      "max": 5063,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 152,
+      "min": 151,
+      "max": 152,
+      "n": 3
+     },
+     "dcl": {
+      "median": 4629,
+      "min": 4608,
+      "max": 4639,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 101,
+      "min": 101,
+      "max": 101,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 868,
+      "min": 868,
+      "max": 868,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 62,
+      "min": 62,
+      "max": 62,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 374,
+      "min": 346,
+      "max": 375,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 232,
+      "min": 200,
+      "max": 235,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 601,
+      "min": 566,
+      "max": 822,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 259.9,
+      "min": 247.9,
+      "max": 374.9,
+      "n": 3
+     },
+     "errors": []
+    },
+    "resume-review": {
+     "name": "Resume saved journey: back on the review page, usable",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2417,
+      "min": 2403,
+      "max": 2419,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 16,
+      "min": 16,
+      "max": 17,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 204,
+      "min": 204,
+      "max": 253,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 22,
+      "min": 22,
+      "max": 25,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 1198,
+      "min": 1198,
+      "max": 1217,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1728,
+      "min": 1683,
+      "max": 1745,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 187,
+      "min": 185,
+      "max": 205,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1796,
+      "min": 1758,
+      "max": 2011,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 220.2,
+      "min": 208,
+      "max": 265.9,
+      "n": 3
+     },
+     "errors": []
+    },
+    "order-summary": {
+     "name": "Continue to order review: summary with declarations",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2874,
+      "min": 2868,
+      "max": 2880,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 210,
+      "min": 210,
+      "max": 210,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 210,
+      "min": 210,
+      "max": 210,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1777,
+      "min": 1743,
+      "max": 1846,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 192,
+      "min": 190,
+      "max": 210,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1980,
+      "min": 1894,
+      "max": 2020,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 281.3,
+      "min": 220.2,
+      "max": 435.2,
+      "n": 3
+     },
+     "errors": []
+    },
+    "order-submit": {
+     "name": "Submit order: outcome heading",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 795,
+      "min": 790,
+      "max": 844,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 30,
+      "min": 30,
+      "max": 30,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 30,
+      "min": 30,
+      "max": 30,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 561,
+      "min": 548,
+      "max": 606,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 193,
+      "min": 191,
+      "max": 209,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 701,
+      "min": 683,
+      "max": 733,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 119.9,
+      "min": 104.3,
+      "max": 536.6,
+      "n": 3
+     },
+     "errors": []
+    },
+    "order-finish": {
+     "name": "Finish: account shows the order",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1345,
+      "min": 1331,
+      "max": 1348,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 13,
+      "min": 13,
+      "max": 13,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 127,
+      "min": 127,
+      "max": 127,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 13,
+      "min": 13,
+      "max": 13,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 127,
+      "min": 127,
+      "max": 127,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 882,
+      "min": 869,
+      "max": 917,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 193,
+      "min": 191,
+      "max": 210,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 940,
+      "min": 936,
+      "max": 963,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 125.5,
+      "min": 104.3,
+      "max": 139.3,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-page-load": {
+     "name": "Presenter page load (workspace and strip)",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 7139,
+      "min": 7121,
+      "max": 7192,
+      "n": 3
+     },
+     "fcp": {
+      "median": 6144,
+      "min": 6112,
+      "max": 6200,
+      "n": 3
+     },
+     "lcp": {
+      "median": 6980,
+      "min": 6952,
+      "max": 7028,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 7139,
+      "min": 7119,
+      "max": 7192,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 152,
+      "min": 151,
+      "max": 152,
+      "n": 3
+     },
+     "dcl": {
+      "median": 5964,
+      "min": 5932,
+      "max": 6028,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 148,
+      "min": 148,
+      "max": 148,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1149,
+      "min": 1149,
+      "max": 1149,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 14,
+      "min": 14,
+      "max": 14,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 127,
+      "min": 127,
+      "max": 127,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 935,
+      "min": 911,
+      "max": 935,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 193,
+      "min": 192,
+      "max": 210,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1061,
+      "min": 1054,
+      "max": 1068,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 281.8,
+      "min": 277.1,
+      "max": 312,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-reset-main": {
+     "name": "Reset to Main successful journey (confirm to settled strip)",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 7629,
+      "min": 7610,
+      "max": 7642,
+      "n": 3
+     },
+     "fcp": {
+      "median": 6148,
+      "min": 6108,
+      "max": 6212,
+      "n": 3
+     },
+     "lcp": {
+      "median": 6396,
+      "min": 6352,
+      "max": 6456,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 6814,
+      "min": 6806,
+      "max": 6816,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 154,
+      "min": 153,
+      "max": 154,
+      "n": 3
+     },
+     "dcl": {
+      "median": 5963,
+      "min": 5933,
+      "max": 6022,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 139,
+      "min": 139,
+      "max": 139,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 986,
+      "min": 986,
+      "max": 986,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 7,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 22,
+      "min": 22,
+      "max": 28,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 823,
+      "min": 817,
+      "max": 996,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 200,
+      "min": 199,
+      "max": 213,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1546,
+      "min": 1539,
+      "max": 1556,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 551,
+      "min": 550.5,
+      "max": 555.7,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-tick-2": {
+     "name": "Tick after the reset",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1485,
+      "min": 1471,
+      "max": 1489,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 33,
+      "min": 33,
+      "max": 33,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 33,
+      "min": 33,
+      "max": 33,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1110,
+      "min": 1100,
+      "max": 1121,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 205,
+      "min": 204,
+      "max": 218,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1222,
+      "min": 1215,
+      "max": 1239,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 146.5,
+      "min": 145.2,
+      "max": 147.3,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-reset-decline": {
+     "name": "Reset to Decline then change (confirm to settled strip)",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 8925,
+      "min": 8911,
+      "max": 9021,
+      "n": 3
+     },
+     "fcp": {
+      "median": 6100,
+      "min": 6100,
+      "max": 6144,
+      "n": 3
+     },
+     "lcp": {
+      "median": 6364,
+      "min": 6360,
+      "max": 6392,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 7006,
+      "min": 6992,
+      "max": 7085,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 154,
+      "min": 153,
+      "max": 154,
+      "n": 3
+     },
+     "dcl": {
+      "median": 5915,
+      "min": 5912,
+      "max": 5962,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 139,
+      "min": 139,
+      "max": 139,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1065,
+      "min": 1065,
+      "max": 1065,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 101,
+      "min": 101,
+      "max": 101,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 2065,
+      "min": 2030,
+      "max": 2069,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 268,
+      "min": 218,
+      "max": 280,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 2390,
+      "min": 2356,
+      "max": 2426,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 1721.8,
+      "min": 1689.3,
+      "max": 1728.1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-switch-paula": {
+     "name": "Switch principal to Paula",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 7721,
+      "min": 7591,
+      "max": 7797,
+      "n": 3
+     },
+     "fcp": {
+      "median": 6152,
+      "min": 6148,
+      "max": 6152,
+      "n": 3
+     },
+     "lcp": {
+      "median": 6152,
+      "min": 6152,
+      "max": 6868,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 7249,
+      "min": 7135,
+      "max": 7335,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 153,
+      "min": 153,
+      "max": 154,
+      "n": 3
+     },
+     "dcl": {
+      "median": 5970,
+      "min": 5966,
+      "max": 5976,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 145,
+      "min": 145,
+      "max": 146,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1083,
+      "min": 1083,
+      "max": 1141,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 13,
+      "min": 13,
+      "max": 13,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 201,
+      "min": 201,
+      "max": 201,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1183,
+      "min": 1164,
+      "max": 1337,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 268,
+      "min": 218,
+      "max": 280,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1311,
+      "min": 1306,
+      "max": 1326,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 153,
+      "min": 148.5,
+      "max": 281.3,
+      "n": 3
+     },
+     "errors": []
+    },
+    "activity-load": {
+     "name": "Buddy activity load until the offer shows",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 4245,
+      "min": 4201,
+      "max": 4332,
+      "n": 3
+     },
+     "fcp": {
+      "median": 3040,
+      "min": 2996,
+      "max": 3052,
+      "n": 3
+     },
+     "lcp": {
+      "median": 3344,
+      "min": 3284,
+      "max": 3360,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 4244,
+      "min": 4200,
+      "max": 4331,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 152,
+      "min": 151,
+      "max": 152,
+      "n": 3
+     },
+     "dcl": {
+      "median": 3026,
+      "min": 2981,
+      "max": 3040,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 65,
+      "min": 65,
+      "max": 65,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 601,
+      "min": 601,
+      "max": 601,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 12,
+      "min": 11,
+      "max": 12,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 368,
+      "min": 368,
+      "max": 368,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1228,
+      "min": 1217,
+      "max": 1294,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 232,
+      "min": 214,
+      "max": 240,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1366,
+      "min": 1346,
+      "max": 1366,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 211.4,
+      "min": 203.7,
+      "max": 212.3,
+      "n": 3
+     },
+     "errors": []
+    },
+    "outbox-load": {
+     "name": "Outbox load and open Paula's offer email",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2473,
+      "min": 2463,
+      "max": 2482,
+      "n": 3
+     },
+     "fcp": {
+      "median": 2164,
+      "min": 2160,
+      "max": 2168,
+      "n": 3
+     },
+     "lcp": {
+      "median": 2164,
+      "min": 2160,
+      "max": 2168,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 2472,
+      "min": 2461,
+      "max": 2480,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 151,
+      "min": 151,
+      "max": 152,
+      "n": 3
+     },
+     "dcl": {
+      "median": 2142,
+      "min": 2141,
+      "max": 2149,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 36,
+      "min": 36,
+      "max": 36,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 323,
+      "min": 323,
+      "max": 323,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 3,
+      "min": 3,
+      "max": 4,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 166,
+      "min": 166,
+      "max": 166,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 326,
+      "min": 322,
+      "max": 399,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 232,
+      "min": 214,
+      "max": 240,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 720,
+      "min": 715,
+      "max": 733,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 211.4,
+      "min": 203.7,
+      "max": 212.3,
+      "n": 3
+     },
+     "errors": []
+    },
+    "offer-open-1": {
+     "name": "Offer link: offer page usable (Accept visible)",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 4265,
+      "min": 4247,
+      "max": 4419,
+      "n": 3
+     },
+     "fcp": {
+      "median": 3584,
+      "min": 3580,
+      "max": 3716,
+      "n": 3
+     },
+     "lcp": {
+      "median": 4220,
+      "min": 4196,
+      "max": 4348,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 4265,
+      "min": 4246,
+      "max": 4418,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 151,
+      "min": 151,
+      "max": 151,
+      "n": 3
+     },
+     "dcl": {
+      "median": 3576,
+      "min": 3573,
+      "max": 3711,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 76,
+      "min": 76,
+      "max": 81,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 739,
+      "min": 739,
+      "max": 749,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 3,
+      "min": 3,
+      "max": 3,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 98,
+      "min": 98,
+      "max": 98,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 392,
+      "min": 383,
+      "max": 428,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 232,
+      "min": 214,
+      "max": 240,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 684,
+      "min": 649,
+      "max": 857,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 160.2,
+      "min": 150.9,
+      "max": 203.4,
+      "n": 3
+     },
+     "errors": []
+    },
+    "offer-decline-reasons": {
+     "name": "Decline this offer: reasons list loaded",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 245,
+      "min": 240,
+      "max": 250,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 140,
+      "min": 138,
+      "max": 142,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 225,
+      "min": 214,
+      "max": 232,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 354,
+      "min": 184,
+      "max": 362,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 168.6,
+      "min": 143,
+      "max": 168.6,
+      "n": 3
+     },
+     "errors": []
+    },
+    "offer-decline-confirm": {
+     "name": "Confirm decline (Body style): follow-up question shown",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1337,
+      "min": 1335,
+      "max": 1337,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 7,
+      "min": 7,
+      "max": 7,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 36,
+      "min": 36,
+      "max": 36,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 7,
+      "min": 7,
+      "max": 7,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 36,
+      "min": 36,
+      "max": 36,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 710,
+      "min": 688,
+      "max": 728,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 225,
+      "min": 214,
+      "max": 232,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 856,
+      "min": 735,
+      "max": 868,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 168.6,
+      "min": 167.5,
+      "max": 249,
+      "n": 3
+     },
+     "errors": []
+    },
+    "offer-change-confirm": {
+     "name": "Confirm this change (Saloon): saved in a brief version",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 277,
+      "min": 275,
+      "max": 283,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 174,
+      "min": 165,
+      "max": 183,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 226,
+      "min": 214,
+      "max": 232,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 179,
+      "min": 170,
+      "max": 188,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 140.9,
+      "min": 134,
+      "max": 149.8,
+      "n": 3
+     },
+     "errors": []
+    },
+    "presenter-tick-3": {
+     "name": "Tick from the offer page: the second offer is made",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 3580,
+      "min": 3534,
+      "max": 3692,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 335,
+      "min": 335,
+      "max": 335,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 335,
+      "min": 335,
+      "max": 335,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1929,
+      "min": 1839,
+      "max": 2007,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 240,
+      "min": 235,
+      "max": 241,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 2134,
+      "min": 2047,
+      "max": 2421,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 1405.1,
+      "min": 1342.2,
+      "max": 1463.8,
+      "n": 3
+     },
+     "errors": []
+    },
+    "outbox-load-2": {
+     "name": "Outbox reload and open the new offer email",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2466,
+      "min": 2461,
+      "max": 2542,
+      "n": 3
+     },
+     "fcp": {
+      "median": 2156,
+      "min": 2156,
+      "max": 2160,
+      "n": 3
+     },
+     "lcp": {
+      "median": 2156,
+      "min": 2156,
+      "max": 2160,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 2465,
+      "min": 2461,
+      "max": 2541,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 151,
+      "min": 151,
+      "max": 152,
+      "n": 3
+     },
+     "dcl": {
+      "median": 2136,
+      "min": 2135,
+      "max": 2136,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 36,
+      "min": 36,
+      "max": 36,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 326,
+      "min": 326,
+      "max": 326,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 3,
+      "min": 3,
+      "max": 3,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 317,
+      "min": 317,
+      "max": 317,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 391,
+      "min": 354,
+      "max": 398,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 240,
+      "min": 235,
+      "max": 241,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 446,
+      "min": 411,
+      "max": 447,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 207.1,
+      "min": 161.3,
+      "max": 236.2,
+      "n": 3
+     },
+     "errors": []
+    },
+    "offer-open-2": {
+     "name": "Second offer link: offer page usable",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 4333,
+      "min": 4309,
+      "max": 4354,
+      "n": 3
+     },
+     "fcp": {
+      "median": 3580,
+      "min": 3580,
+      "max": 3584,
+      "n": 3
+     },
+     "lcp": {
+      "median": 4296,
+      "min": 3816,
+      "max": 4324,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 4331,
+      "min": 4308,
+      "max": 4354,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 152,
+      "min": 151,
+      "max": 152,
+      "n": 3
+     },
+     "dcl": {
+      "median": 3576,
+      "min": 3574,
+      "max": 3579,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 76,
+      "min": 76,
+      "max": 76,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 814,
+      "min": 814,
+      "max": 814,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 3,
+      "min": 3,
+      "max": 3,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 173,
+      "min": 173,
+      "max": 173,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 466,
+      "min": 456,
+      "max": 507,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 240,
+      "min": 235,
+      "max": 241,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 846,
+      "min": 572,
+      "max": 1063,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 183.8,
+      "min": 181.9,
+      "max": 236.2,
+      "n": 3
+     },
+     "errors": []
+    },
+    "offer-accept": {
+     "name": "Accept this offer: accepted state",
+     "demo": "offer",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1159,
+      "min": 1143,
+      "max": 1456,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "usableSinceNavMs": null,
+     "ttfb": null,
+     "dcl": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 67,
+      "min": 67,
+      "max": 67,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 64,
+      "min": 64,
+      "max": 64,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 906,
+      "min": 887,
+      "max": 1460,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 220,
+      "min": 219,
+      "max": 241,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 955,
+      "min": 949,
+      "max": 977,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 474.2,
+      "min": 451.9,
+      "max": 551,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-presenter": {
+     "name": "Warm reload of presenter",
+     "demo": "warm",
+     "warm": true,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 8486,
+      "min": 8406,
+      "max": 8968,
+      "n": 3
+     },
+     "fcp": {
+      "median": 6424,
+      "min": 6388,
+      "max": 6788,
+      "n": 3
+     },
+     "lcp": {
+      "median": 7656,
+      "min": 7592,
+      "max": 8052,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 8485,
+      "min": 8404,
+      "max": 8964,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 478,
+      "min": 477,
+      "max": 773,
+      "n": 3
+     },
+     "dcl": {
+      "median": 6243,
+      "min": 6202,
+      "max": 6607,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 149,
+      "min": 148,
+      "max": 149,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1264,
+      "min": 1206,
+      "max": 1264,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 18,
+      "min": 18,
+      "max": 18,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 252,
+      "min": 252,
+      "max": 252,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 2082,
+      "min": 1980,
+      "max": 2304,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 221,
+      "min": 194,
+      "max": 241,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 2423,
+      "min": 2418,
+      "max": 2423,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 478.4,
+      "min": 455.6,
+      "max": 511.4,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-account": {
+     "name": "Warm reload of account",
+     "demo": "warm",
+     "warm": true,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 6046,
+      "min": 6042,
+      "max": 6049,
+      "n": 3
+     },
+     "fcp": {
+      "median": 4652,
+      "min": 4640,
+      "max": 4708,
+      "n": 3
+     },
+     "lcp": {
+      "median": 5900,
+      "min": 5856,
+      "max": 5984,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 6048,
+      "min": 6046,
+      "max": 6051,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 151,
+      "min": 151,
+      "max": 152,
+      "n": 3
+     },
+     "dcl": {
+      "median": 4647,
+      "min": 4632,
+      "max": 4704,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 108,
+      "min": 108,
+      "max": 108,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 971,
+      "min": 971,
+      "max": 983,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 10,
+      "min": 10,
+      "max": 10,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 217,
+      "min": 217,
+      "max": 229,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1114,
+      "min": 1075,
+      "max": 1213,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 221,
+      "min": 193,
+      "max": 223,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 937,
+      "min": 917,
+      "max": 1070,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 163.4,
+      "min": 83.4,
+      "max": 168,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-activity": {
+     "name": "Warm reload of activity",
+     "demo": "warm",
+     "warm": true,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 4789,
+      "min": 4738,
+      "max": 4854,
+      "n": 3
+     },
+     "fcp": {
+      "median": 3388,
+      "min": 3376,
+      "max": 3424,
+      "n": 3
+     },
+     "lcp": {
+      "median": 3748,
+      "min": 3708,
+      "max": 3800,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 4788,
+      "min": 4737,
+      "max": 4853,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 522,
+      "min": 486,
+      "max": 532,
+      "n": 3
+     },
+     "dcl": {
+      "median": 3380,
+      "min": 3368,
+      "max": 3412,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 61,
+      "min": 61,
+      "max": 61,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 501,
+      "min": 501,
+      "max": 501,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 13,
+      "min": 12,
+      "max": 13,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 672,
+      "min": 503,
+      "max": 672,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1647,
+      "min": 1625,
+      "max": 1689,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 203,
+      "min": 188,
+      "max": 206,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 2035,
+      "min": 1867,
+      "max": 2041,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 471.1,
+      "min": 264.1,
+      "max": 602.4,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-offer": {
+     "name": "Warm reload of offer",
+     "demo": "warm",
+     "warm": true,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 4245,
+      "min": 4210,
+      "max": 4256,
+      "n": 3
+     },
+     "fcp": {
+      "median": 3584,
+      "min": 3580,
+      "max": 3596,
+      "n": 3
+     },
+     "lcp": {
+      "median": 3804,
+      "min": 3792,
+      "max": 3812,
+      "n": 3
+     },
+     "usableSinceNavMs": {
+      "median": 4243,
+      "min": 4209,
+      "max": 4254,
+      "n": 3
+     },
+     "ttfb": {
+      "median": 152,
+      "min": 151,
+      "max": 152,
+      "n": 3
+     },
+     "dcl": {
+      "median": 3579,
+      "min": 3577,
+      "max": 3592,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 74,
+      "min": 74,
+      "max": 74,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 598,
+      "min": 598,
+      "max": 598,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 4,
+      "min": 4,
+      "max": 5,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 175,
+      "min": 175,
+      "max": 175,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 531,
+      "min": 518,
+      "max": 584,
+      "n": 3
+     },
+     "serverPeakRssMiB": {
+      "median": 203,
+      "min": 189,
+      "max": 206,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 503,
+      "min": 496,
+      "max": 517,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 161,
+      "min": 157.9,
+      "max": 170.1,
+      "n": 3
+     },
+     "errors": []
+    }
+   }
+  }
+ }
+}

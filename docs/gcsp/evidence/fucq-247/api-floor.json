@@ -1,0 +1,298 @@
+{
+ "story": "FUCQ-247",
+ "where": "local, macOS, offline memory host, fresh run (no reset, no journey)",
+ "node": "v26.5.0",
+ "measuredAt": "2026-11-09T15:59:40.833Z",
+ "sequential": {
+  "/api/gcsp/context": {
+   "st": 200,
+   "bytes": 583,
+   "medianMs": 22.3,
+   "minMs": 21.4,
+   "maxMs": 24.4
+  },
+  "/api/gcsp/presenter/controls": {
+   "st": 200,
+   "bytes": 17932,
+   "medianMs": 89.9,
+   "minMs": 83.2,
+   "maxMs": 129.2
+  },
+  "/api/gcsp/manual/account": {
+   "st": 200,
+   "bytes": 10073,
+   "medianMs": 73.5,
+   "minMs": 72.1,
+   "maxMs": 76.8
+  },
+  "/api/gcsp/manual/draft": {
+   "st": 404,
+   "bytes": 78,
+   "medianMs": 78.2,
+   "minMs": 72.8,
+   "maxMs": 118.4
+  },
+  "/api/gcsp/offers/current": {
+   "st": 200,
+   "bytes": 63,
+   "medianMs": 33.5,
+   "minMs": 32.2,
+   "maxMs": 37.3
+  },
+  "/api/gcsp/orders/progress/all": {
+   "st": 200,
+   "bytes": 165,
+   "medianMs": 37.1,
+   "minMs": 35.7,
+   "maxMs": 50.3
+  },
+  "/api/gcsp/presenter/scenarios": {
+   "st": 200,
+   "bytes": 18066,
+   "medianMs": 41,
+   "minMs": 39.3,
+   "maxMs": 46.9
+  },
+  "/api/gcsp/presenter/scenarios/faults": {
+   "st": 200,
+   "bytes": 435,
+   "medianMs": 37,
+   "minMs": 35.5,
+   "maxMs": 40.5
+  }
+ },
+ "burstOfNine": {
+  "medianWallMs": 410.9,
+  "minWallMs": 404.3,
+  "maxWallMs": 447.1
+ },
+ "sumOfSequentialMediansMs": 434.8,
+ "controlsBeforeTicks": {
+  "total": 17932,
+  "parts": {
+   "runId": 39,
+   "now": 26,
+   "clockVersion": 3,
+   "runVersion": 1,
+   "versions": {
+    "scenario": 24,
+    "fixture": 24,
+    "corpus": 27,
+    "policy": 33,
+    "syntheticIdentityInventory": 97,
+    "stockGeneration": 13138,
+    "lastTickId": 46
+   },
+   "lastTick": {
+    "runId": 39,
+    "tickId": 46,
+    "eventId": 46,
+    "now": 26,
+    "clockVersion": 3,
+    "kind": 9,
+    "handlerOrder": 625,
+    "missingStages": 2,
+    "outcomes": 1884,
+    "state": 11
+   },
+   "catalogueVersion": 28,
+   "currentScenario": {
+    "scenarioId": 24,
+    "name": 51,
+    "scenarioVersion": 24,
+    "fixtureVersion": 24,
+    "policyVersion": 33
+   },
+   "controls": {
+    "policyVersion": 33,
+    "step": 413,
+    "namedTimes": 74,
+    "nextRelease": 76
+   },
+   "principals": 462
+  }
+ },
+ "ticks": [
+  {
+   "st": 400,
+   "ms": 43.1,
+   "bytes": 242
+  },
+  {
+   "st": 400,
+   "ms": 42.2,
+   "bytes": 242
+  },
+  {
+   "st": 400,
+   "ms": 41.6,
+   "bytes": 242
+  },
+  {
+   "st": 400,
+   "ms": 40,
+   "bytes": 242
+  },
+  {
+   "st": 400,
+   "ms": 39.6,
+   "bytes": 242
+  },
+  {
+   "st": 400,
+   "ms": 40.4,
+   "bytes": 242
+  }
+ ],
+ "controlsAfterSixTicks": {
+  "total": 17932,
+  "parts": {
+   "runId": 39,
+   "now": 26,
+   "clockVersion": 3,
+   "runVersion": 1,
+   "versions": {
+    "scenario": 24,
+    "fixture": 24,
+    "corpus": 27,
+    "policy": 33,
+    "syntheticIdentityInventory": 97,
+    "stockGeneration": 13138,
+    "lastTickId": 46
+   },
+   "lastTick": {
+    "runId": 39,
+    "tickId": 46,
+    "eventId": 46,
+    "now": 26,
+    "clockVersion": 3,
+    "kind": 9,
+    "handlerOrder": 625,
+    "missingStages": 2,
+    "outcomes": 1884,
+    "state": 11
+   },
+   "catalogueVersion": 28,
+   "currentScenario": {
+    "scenarioId": 24,
+    "name": 51,
+    "scenarioVersion": 24,
+    "fixtureVersion": 24,
+    "policyVersion": 33
+   },
+   "controls": {
+    "policyVersion": 33,
+    "step": 413,
+    "namedTimes": 74,
+    "nextRelease": 76
+   },
+   "principals": 462
+  }
+ },
+ "cpuProfile": {
+  "note": "Samples from the sequential and burst read phases only (after start-up and warm-up, before the ticks). Self time by function.",
+  "totalMs": 20827,
+  "topSelf": [
+   {
+    "fn": "cloneJson server/gcsp/repository/core.js:7",
+    "ms": 18997,
+    "pct": 91.2
+   },
+   {
+    "fn": "(program) :0",
+    "ms": 704,
+    "pct": 3.4
+   },
+   {
+    "fn": "(idle) :0",
+    "ms": 485,
+    "pct": 2.3
+   },
+   {
+    "fn": "(garbage collector) :0",
+    "ms": 273,
+    "pct": 1.3
+   },
+   {
+    "fn": "structuredClone node:internal/worker/js_transferable:113",
+    "ms": 48,
+    "pct": 0.2
+   },
+   {
+    "fn": "writev :0",
+    "ms": 29,
+    "pct": 0.1
+   },
+   {
+    "fn": "validDay server/gcsp/policy/file-provider.js:22",
+    "ms": 20,
+    "pct": 0.1
+   },
+   {
+    "fn": "runMicrotasks :0",
+    "ms": 15,
+    "pct": 0.1
+   },
+   {
+    "fn": "result server/gcsp/repository/core.js:4",
+    "ms": 12,
+    "pct": 0.1
+   },
+   {
+    "fn": "Hash node:internal/crypto/hash:95",
+    "ms": 10,
+    "pct": 0
+   },
+   {
+    "fn": "sessionNow server/gcsp/runtime.js:52",
+    "ms": 9,
+    "pct": 0
+   },
+   {
+    "fn": "validateObject server/gcsp/repository/core.js:48",
+    "ms": 8,
+    "pct": 0
+   },
+   {
+    "fn": "#collectionDates server/gcsp/manual-context/index.js:118",
+    "ms": 8,
+    "pct": 0
+   },
+   {
+    "fn": "sendJson server/index.js:140",
+    "ms": 8,
+    "pct": 0
+   },
+   {
+    "fn": "loadDemoPrincipals server/gcsp/fixtures/principals.js:2",
+    "ms": 6,
+    "pct": 0
+   },
+   {
+    "fn": "inputDigest server/gcsp/repository/core.js:35",
+    "ms": 6,
+    "pct": 0
+   },
+   {
+    "fn": "(anonymous) server/gcsp/repository/core.js:52",
+    "ms": 6,
+    "pct": 0
+   },
+   {
+    "fn": "writevGeneric node:internal/stream_base_commons:121",
+    "ms": 5,
+    "pct": 0
+   },
+   {
+    "fn": "(anonymous) server/gcsp/fixtures/principals.js:16",
+    "ms": 5,
+    "pct": 0
+   },
+   {
+    "fn": "#run server/gcsp/identity/index.js:44",
+    "ms": 5,
+    "pct": 0
+   }
+  ]
+ }
+}

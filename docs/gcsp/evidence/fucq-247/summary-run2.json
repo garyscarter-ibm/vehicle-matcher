@@ -1,0 +1,4630 @@
+{
+ "story": "FUCQ-247",
+ "run": 2,
+ "generatedAt": "2026-11-09T16:58:21.013Z",
+ "files": [
+  "results2-desktop-1.json",
+  "results2-desktop-2.json",
+  "results2-desktop-3.json",
+  "results2-desktop-4.json",
+  "results2-phone-1.json",
+  "results2-phone-2.json",
+  "results2-phone-3.json"
+ ],
+ "profiles": {
+  "desktop": {
+   "runs": 4,
+   "states": [
+    "completed-with-failures",
+    "completed-with-failures",
+    "completed-with-failures",
+    "completed-with-failures"
+   ],
+   "server": {
+    "peakRssWholeRunMiB": {
+     "median": 381,
+     "min": 285,
+     "max": 416,
+     "n": 4
+    },
+    "peakHeapUsedWholeRunMiB": {
+     "median": 208,
+     "min": 199,
+     "max": 213,
+     "n": 4
+    },
+    "maxRssProcessMiB": {
+     "median": 381,
+     "min": 285,
+     "max": 416,
+     "n": 4
+    }
+   },
+   "steps": {
+    "signin-access-page": {
+     "name": "Open the presenter link: access key page usable",
+     "demo": "sign-in",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 38,
+      "min": 35,
+      "max": 68,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 11,
+      "min": 11,
+      "max": 11,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 23,
+      "min": 23,
+      "max": 23,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 211,
+      "min": 180,
+      "max": 226,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 156.5,
+      "min": 131.3,
+      "max": 180.9,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "signin-workspace": {
+     "name": "Type the key, Enter: workspace shows Your cars",
+     "demo": "sign-in",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 1082,
+      "min": 1014,
+      "max": 1158,
+      "n": 4
+     },
+     "fcp": {
+      "median": 348,
+      "min": 304,
+      "max": 500,
+      "n": 4
+     },
+     "lcp": {
+      "median": 614,
+      "min": 552,
+      "max": 900,
+      "n": 4
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 142,
+      "min": 137,
+      "max": 144,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 1064,
+      "min": 1049,
+      "max": 1070,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 47,
+      "min": 47,
+      "max": 47,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 454,
+      "min": 438,
+      "max": 522,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 772,
+      "min": 701,
+      "max": 884,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 237,
+      "min": 227.1,
+      "max": 277.1,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "presenter-open": {
+     "name": "Open Presenter controls: clock and controls ready",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 49,
+      "min": 45,
+      "max": 52,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 1,
+      "min": 1,
+      "max": 91,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 12,
+      "min": 11.7,
+      "max": 12.5,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "presenter-tick-1": {
+     "name": "Tick on a fresh run",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 971,
+      "min": 903,
+      "max": 1094,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 41,
+      "min": 41,
+      "max": 41,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 41,
+      "min": 41,
+      "max": 41,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 870,
+      "min": 844,
+      "max": 960,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 964,
+      "min": 927,
+      "max": 1050,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 678,
+      "min": 660.6,
+      "max": 744.5,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "account-load": {
+     "name": "Account page (gcsp-account.html) load to Choose a replacement",
+     "demo": "employee",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 846,
+      "min": 342,
+      "max": 882,
+      "n": 4
+     },
+     "fcp": {
+      "median": 98,
+      "min": 80,
+      "max": 160,
+      "n": 4
+     },
+     "lcp": {
+      "median": 398,
+      "min": 324,
+      "max": 448,
+      "n": 4
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 104,
+      "min": 102,
+      "max": 104,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 854,
+      "min": 836,
+      "max": 854,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 8,
+      "min": 6,
+      "max": 8,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 47,
+      "min": 29,
+      "max": 47,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 435,
+      "min": 335,
+      "max": 531,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 644,
+      "min": 293,
+      "max": 781,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 240,
+      "min": 224.7,
+      "max": 305.9,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "setup-open": {
+     "name": "Choose a replacement: setup form usable",
+     "demo": "employee",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 1081,
+      "min": 821,
+      "max": 1366,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 12,
+      "min": 11,
+      "max": 15,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 71,
+      "min": 62,
+      "max": 98,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 14,
+      "min": 13,
+      "max": 17,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 89,
+      "min": 80,
+      "max": 116,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 915,
+      "min": 840,
+      "max": 1034,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 1075,
+      "min": 752,
+      "max": 1111,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 186,
+      "min": 180.2,
+      "max": 202.8,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "setup-save": {
+     "name": "Save choices: saved confirmation",
+     "demo": "employee",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 232,
+      "min": 214,
+      "max": 293,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 3,
+      "min": 2,
+      "max": 4,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 26,
+      "min": 17,
+      "max": 35,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 3,
+      "min": 2,
+      "max": 4,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 26,
+      "min": 17,
+      "max": 35,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 339,
+      "min": 291,
+      "max": 394,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 289,
+      "min": 112,
+      "max": 298,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 120,
+      "min": 106.8,
+      "max": 188.4,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "presenter-next-release": {
+     "name": "Next release from the setup page",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 1470,
+      "min": 1431,
+      "max": 1701,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 115,
+      "min": 115,
+      "max": 115,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 115,
+      "min": 115,
+      "max": 115,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 1272,
+      "min": 1236,
+      "max": 1492,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 1586,
+      "min": 1496,
+      "max": 1765,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 769,
+      "min": 188.4,
+      "max": 888.7,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "gallery-open": {
+     "name": "Continue: Released cars gallery with enabled Review buttons",
+     "demo": "employee",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 1244,
+      "min": 1150,
+      "max": 1341,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 1956,
+      "min": 1956,
+      "max": 1956,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 1956,
+      "min": 1956,
+      "max": 1956,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 1033,
+      "min": 996,
+      "max": 1153,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 1439,
+      "min": 1257,
+      "max": 1483,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 261,
+      "min": 254.9,
+      "max": 293.6,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "review-open": {
+     "name": "Review this car: review page with countdown and Continue enabled",
+     "demo": "employee",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 1081,
+      "min": 819,
+      "max": 1333,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 132,
+      "min": 132,
+      "max": 132,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 8,
+      "max": 9,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 132,
+      "min": 132,
+      "max": 132,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 845,
+      "min": 815,
+      "max": 922,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 947,
+      "min": 891,
+      "max": 1072,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 224,
+      "min": 213.6,
+      "max": 232.7,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "resume-account": {
+     "name": "Reload: account offers Resume saved journey",
+     "demo": "employee",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 853,
+      "min": 830,
+      "max": 890,
+      "n": 4
+     },
+     "fcp": {
+      "median": 120,
+      "min": 100,
+      "max": 140,
+      "n": 4
+     },
+     "lcp": {
+      "median": 414,
+      "min": 388,
+      "max": 508,
+      "n": 4
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 104,
+      "min": 103,
+      "max": 104,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 887,
+      "min": 886,
+      "max": 887,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 8,
+      "max": 9,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 81,
+      "min": 80,
+      "max": 81,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 490,
+      "min": 466,
+      "max": 537,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 640,
+      "min": 616,
+      "max": 734,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 257,
+      "min": 243.3,
+      "max": 266.1,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "resume-review": {
+     "name": "Resume saved journey: back on the review page, usable",
+     "demo": "employee",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 1831,
+      "min": 1806,
+      "max": 1834,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 18,
+      "min": 17,
+      "max": 18,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 708,
+      "min": 253,
+      "max": 1162,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 22,
+      "min": 22,
+      "max": 22,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 1198,
+      "min": 1198,
+      "max": 1198,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 1750,
+      "min": 1655,
+      "max": 1868,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 1943,
+      "min": 1890,
+      "max": 1960,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 287,
+      "min": 283.6,
+      "max": 289.1,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "order-summary": {
+     "name": "Continue to order review: summary with declarations",
+     "demo": "employee",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 2072,
+      "min": 1814,
+      "max": 2326,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 210,
+      "min": 210,
+      "max": 210,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 210,
+      "min": 210,
+      "max": 210,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 1779,
+      "min": 1726,
+      "max": 1846,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 1926,
+      "min": 1861,
+      "max": 1971,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 317,
+      "min": 309.9,
+      "max": 333.7,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "order-submit": {
+     "name": "Submit order: outcome heading",
+     "demo": "employee",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 652,
+      "min": 649,
+      "max": 654,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 30,
+      "min": 30,
+      "max": 30,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 30,
+      "min": 30,
+      "max": 30,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 554,
+      "min": 540,
+      "max": 606,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 584,
+      "min": 571,
+      "max": 635,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 561,
+      "min": 546.8,
+      "max": 614.5,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "order-finish": {
+     "name": "Finish: account shows the order",
+     "demo": "employee",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 815,
+      "min": 800,
+      "max": 847,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 13,
+      "min": 13,
+      "max": 13,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 127,
+      "min": 127,
+      "max": 127,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 13,
+      "min": 11,
+      "max": 13,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 127,
+      "min": 117,
+      "max": 127,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 870,
+      "min": 860,
+      "max": 921,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 889,
+      "min": 640,
+      "max": 917,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 272,
+      "min": 269.2,
+      "max": 335.8,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "order-progress-load": {
+     "name": "Order progress page (gcsp-order-progress-live.html) load until settled",
+     "demo": "order-progress",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 1096,
+      "min": 1036,
+      "max": 2009,
+      "n": 4
+     },
+     "fcp": {
+      "median": 258,
+      "min": 244,
+      "max": 832,
+      "n": 4
+     },
+     "lcp": {
+      "median": 1060,
+      "min": 1036,
+      "max": 2012,
+      "n": 4
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 71,
+      "min": 67,
+      "max": 71,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 665,
+      "min": 657,
+      "max": 665,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 14,
+      "min": 14,
+      "max": 16,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 138,
+      "min": 138,
+      "max": 147,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 909,
+      "min": 895,
+      "max": 1704,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 1590,
+      "min": 1380,
+      "max": 1656,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 206,
+      "min": 202.1,
+      "max": 285.5,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "presenter-tick-order": {
+     "name": "Tick with an order placed",
+     "demo": "order-progress",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 1450,
+      "min": 1429,
+      "max": 1559,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 159,
+      "min": 159,
+      "max": 159,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 5,
+      "max": 6,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 165,
+      "min": 159,
+      "max": 165,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 1333,
+      "min": 1324,
+      "max": 1418,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 1871,
+      "min": 1732,
+      "max": 1937,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 555,
+      "min": 97.4,
+      "max": 948.4,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "order-progress-after-tick": {
+     "name": "Order progress reload after the tick",
+     "demo": "order-progress",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 1123,
+      "min": 1061,
+      "max": 1568,
+      "n": 4
+     },
+     "fcp": {
+      "median": 168,
+      "min": 160,
+      "max": 312,
+      "n": 4
+     },
+     "lcp": {
+      "median": 1106,
+      "min": 1072,
+      "max": 1528,
+      "n": 4
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 71,
+      "min": 67,
+      "max": 71,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 694,
+      "min": 686,
+      "max": 694,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 14,
+      "min": 14,
+      "max": 14,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 166,
+      "min": 166,
+      "max": 166,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 1046,
+      "min": 1007,
+      "max": 1397,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 1208,
+      "min": 1110,
+      "max": 1304,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 202,
+      "min": 177.3,
+      "max": 307.8,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "presenter-switch-greg": {
+     "name": "Switch principal to Greg: dashboard settled",
+     "demo": "greg",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 2479,
+      "min": 2454,
+      "max": 2972,
+      "n": 4
+     },
+     "fcp": {
+      "median": 396,
+      "min": 392,
+      "max": 800,
+      "n": 4
+     },
+     "lcp": {
+      "median": 396,
+      "min": 392,
+      "max": 800,
+      "n": 4
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 148,
+      "min": 148,
+      "max": 151,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 1193,
+      "min": 1193,
+      "max": 1288,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 21,
+      "min": 20,
+      "max": 21,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 276,
+      "min": 273,
+      "max": 276,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 1938,
+      "min": 1902,
+      "max": 2393,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 2253,
+      "min": 2167,
+      "max": 2651,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 538,
+      "min": 384.6,
+      "max": 613.4,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "greg-page-load": {
+     "name": "Greg dashboard page load until every region settles",
+     "demo": "greg",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 1381,
+      "min": 1316,
+      "max": 1543,
+      "n": 4
+     },
+     "fcp": {
+      "median": 158,
+      "min": 140,
+      "max": 200,
+      "n": 4
+     },
+     "lcp": {
+      "median": 158,
+      "min": 140,
+      "max": 200,
+      "n": 4
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 146,
+      "min": 139,
+      "max": 146,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 1192,
+      "min": 1174,
+      "max": 1192,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 12,
+      "min": 12,
+      "max": 12,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 169,
+      "min": 169,
+      "max": 169,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 1275,
+      "min": 1236,
+      "max": 1403,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 1443,
+      "min": 1418,
+      "max": 1578,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 486,
+      "min": 57.2,
+      "max": 541.6,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "greg-cases-refresh": {
+     "name": "Renewal cases: Refresh queue",
+     "demo": "greg",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 128,
+      "min": 124,
+      "max": 140,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 58,
+      "min": 55,
+      "max": 76,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 156,
+      "min": 110,
+      "max": 181,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 66,
+      "min": 57.2,
+      "max": 81.8,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "greg-comparison-reload": {
+     "name": "Route comparison and experiments: Reload",
+     "demo": "greg",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 127,
+      "min": 125,
+      "max": 189,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 2,
+      "min": 2,
+      "max": 2,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 2,
+      "min": 2,
+      "max": 2,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 94,
+      "min": 91,
+      "max": 104,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 98,
+      "min": 96,
+      "max": 109,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 55,
+      "min": 48.7,
+      "max": 55.8,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "greg-plan-preview": {
+     "name": "Next order plan: Preview",
+     "demo": "greg",
+     "warm": false,
+     "passed": "0/4",
+     "wallMs": null,
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": null,
+     "longTaskMaxMs": null,
+     "browserRequests": null,
+     "browserKB": null,
+     "apiCalls": null,
+     "apiKB": null,
+     "apiServerMs": null,
+     "serverCpuMs": null,
+     "serverMaxEldMs": null,
+     "skipped": [
+      "no enabled Preview",
+      "no enabled Preview",
+      "no enabled Preview",
+      "no enabled Preview"
+     ],
+     "errors": []
+    },
+    "greg-tick": {
+     "name": "Tick from Greg's dashboard: strip and dashboard refreshed",
+     "demo": "greg",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 2143,
+      "min": 2132,
+      "max": 2754,
+      "n": 4
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 220,
+      "min": 220,
+      "max": 220,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 220,
+      "min": 220,
+      "max": 220,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 2040,
+      "min": 2015,
+      "max": 2630,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 2188,
+      "min": 2172,
+      "max": 2553,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 1064,
+      "min": 1059.1,
+      "max": 1323.3,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "presenter-reset-decline": {
+     "name": "Reset to Decline then change from Greg's dashboard",
+     "demo": "outbox",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 2733,
+      "min": 2718,
+      "max": 3419,
+      "n": 4
+     },
+     "fcp": {
+      "median": 136,
+      "min": 132,
+      "max": 256,
+      "n": 4
+     },
+     "lcp": {
+      "median": 394,
+      "min": 168,
+      "max": 504,
+      "n": 4
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 139,
+      "min": 132,
+      "max": 139,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 1066,
+      "min": 1048,
+      "max": 1066,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 102,
+      "min": 102,
+      "max": 102,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 2378,
+      "min": 2349,
+      "max": 2941,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 2746,
+      "min": 2673,
+      "max": 3099,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 743,
+      "min": 737.7,
+      "max": 1637.9,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "outbox-load": {
+     "name": "Outbox page load, open the first offer email (outbox-load)",
+     "demo": "outbox",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 448,
+      "min": 408,
+      "max": 547,
+      "n": 4
+     },
+     "fcp": {
+      "median": 62,
+      "min": 52,
+      "max": 80,
+      "n": 4
+     },
+     "lcp": {
+      "median": 62,
+      "min": 52,
+      "max": 80,
+      "n": 4
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 45,
+      "min": 45,
+      "max": 45,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 490,
+      "min": 490,
+      "max": 490,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 103,
+      "min": 103,
+      "max": 103,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 430,
+      "min": 410,
+      "max": 500,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 471,
+      "min": 447,
+      "max": 588,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 149,
+      "min": 97,
+      "max": 179.6,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "outbox-after-tick": {
+     "name": "Outbox page load, open the first offer email (outbox-after-tick)",
+     "demo": "outbox",
+     "warm": false,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 540,
+      "min": 430,
+      "max": 644,
+      "n": 4
+     },
+     "fcp": {
+      "median": 60,
+      "min": 40,
+      "max": 116,
+      "n": 4
+     },
+     "lcp": {
+      "median": 60,
+      "min": 40,
+      "max": 116,
+      "n": 4
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 45,
+      "min": 41,
+      "max": 45,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 489,
+      "min": 481,
+      "max": 489,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 102,
+      "min": 102,
+      "max": 102,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 497,
+      "min": 424,
+      "max": 622,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 558,
+      "min": 448,
+      "max": 744,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 164,
+      "min": 107.9,
+      "max": 171.2,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "warm-greg": {
+     "name": "Warm reload of greg",
+     "demo": "warm",
+     "warm": true,
+     "passed": "0/4",
+     "wallMs": null,
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": null,
+     "longTaskMaxMs": null,
+     "browserRequests": null,
+     "browserKB": null,
+     "apiCalls": null,
+     "apiKB": null,
+     "apiServerMs": null,
+     "serverCpuMs": null,
+     "serverMaxEldMs": null,
+     "skipped": [],
+     "errors": [
+      "locator.waitFor: Timeout 90000ms exceeded. Call log: - waiting for getByRole('heading', { name: 'Demand and supply' }).first() to be visible",
+      "locator.waitFor: Timeout 90000ms exceeded. Call log: - waiting for getByRole('heading', { name: 'Demand and supply' }).first() to be visible",
+      "locator.waitFor: Timeout 90000ms exceeded. Call log: - waiting for getByRole('heading', { name: 'Demand and supply' }).first() to be visible",
+      "locator.waitFor: Timeout 90000ms exceeded. Call log: - waiting for getByRole('heading', { name: 'Demand and supply' }).first() to be visible"
+     ]
+    },
+    "warm-order-progress": {
+     "name": "Warm reload of order-progress",
+     "demo": "warm",
+     "warm": true,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 609,
+      "min": 596,
+      "max": 750,
+      "n": 4
+     },
+     "fcp": {
+      "median": 182,
+      "min": 160,
+      "max": 244,
+      "n": 4
+     },
+     "lcp": {
+      "median": 324,
+      "min": 312,
+      "max": 404,
+      "n": 4
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 65,
+      "min": 62,
+      "max": 65,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 637,
+      "min": 631,
+      "max": 637,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 100,
+      "min": 100,
+      "max": 100,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 581,
+      "min": 576,
+      "max": 655,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 767,
+      "min": 685,
+      "max": 946,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 161,
+      "min": 151.1,
+      "max": 185.1,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "warm-outbox": {
+     "name": "Warm reload of outbox",
+     "demo": "warm",
+     "warm": true,
+     "passed": "4/4",
+     "wallMs": {
+      "median": 470,
+      "min": 435,
+      "max": 616,
+      "n": 4
+     },
+     "fcp": {
+      "median": 52,
+      "min": 44,
+      "max": 64,
+      "n": 4
+     },
+     "lcp": {
+      "median": 52,
+      "min": 44,
+      "max": 64,
+      "n": 4
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 4
+     },
+     "browserRequests": {
+      "median": 45,
+      "min": 43,
+      "max": 45,
+      "n": 4
+     },
+     "browserKB": {
+      "median": 489,
+      "min": 486,
+      "max": 489,
+      "n": 4
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 4
+     },
+     "apiKB": {
+      "median": 102,
+      "min": 102,
+      "max": 102,
+      "n": 4
+     },
+     "apiServerMs": {
+      "median": 455,
+      "min": 425,
+      "max": 584,
+      "n": 4
+     },
+     "serverCpuMs": {
+      "median": 484,
+      "min": 456,
+      "max": 500,
+      "n": 4
+     },
+     "serverMaxEldMs": {
+      "median": 153,
+      "min": 137.4,
+      "max": 211.7,
+      "n": 4
+     },
+     "skipped": [],
+     "errors": []
+    }
+   }
+  },
+  "phone": {
+   "runs": 3,
+   "states": [
+    "completed-with-failures",
+    "completed-with-failures",
+    "completed-with-failures"
+   ],
+   "server": {
+    "peakRssWholeRunMiB": {
+     "median": 320,
+     "min": 313,
+     "max": 321,
+     "n": 3
+    },
+    "peakHeapUsedWholeRunMiB": {
+     "median": 166,
+     "min": 166,
+     "max": 177,
+     "n": 3
+    },
+    "maxRssProcessMiB": {
+     "median": 320,
+     "min": 313,
+     "max": 321,
+     "n": 3
+    }
+   },
+   "steps": {
+    "signin-access-page": {
+     "name": "Open the presenter link: access key page usable",
+     "demo": "sign-in",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 395,
+      "min": 388,
+      "max": 402,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 4,
+      "min": 4,
+      "max": 4,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 11,
+      "min": 11,
+      "max": 11,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 8,
+      "min": 6,
+      "max": 11,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 14.2,
+      "min": 12.9,
+      "max": 17.6,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "signin-workspace": {
+     "name": "Type the key, Enter: workspace shows Your cars",
+     "demo": "sign-in",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 6812,
+      "min": 6788,
+      "max": 6825,
+      "n": 3
+     },
+     "fcp": {
+      "median": 6444,
+      "min": 6388,
+      "max": 6460,
+      "n": 3
+     },
+     "lcp": {
+      "median": 6736,
+      "min": 6684,
+      "max": 6756,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 52,
+      "min": 50,
+      "max": 52,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 52,
+      "min": 50,
+      "max": 52,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 145,
+      "min": 145,
+      "max": 145,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1055,
+      "min": 1055,
+      "max": 1055,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 7,
+      "min": 7,
+      "max": 7,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 29,
+      "min": 29,
+      "max": 29,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 380,
+      "min": 372,
+      "max": 385,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 751,
+      "min": 750,
+      "max": 774,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 233.8,
+      "min": 232.4,
+      "max": 234.9,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "presenter-open": {
+     "name": "Open Presenter controls: clock and controls ready",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 526,
+      "min": 525,
+      "max": 547,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 2,
+      "min": 2,
+      "max": 2,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 18,
+      "min": 18,
+      "max": 18,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 2,
+      "min": 2,
+      "max": 2,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 18,
+      "min": 18,
+      "max": 18,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 81,
+      "min": 79,
+      "max": 81,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 173,
+      "min": 172,
+      "max": 174,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 48.7,
+      "min": 48.6,
+      "max": 49.6,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "presenter-tick-1": {
+     "name": "Tick on a fresh run",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1296,
+      "min": 1295,
+      "max": 1423,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 41,
+      "min": 41,
+      "max": 41,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 41,
+      "min": 41,
+      "max": 41,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 835,
+      "min": 832,
+      "max": 885,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 930,
+      "min": 927,
+      "max": 978,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 627,
+      "min": 626.5,
+      "max": 675.3,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "account-load": {
+     "name": "Account page (gcsp-account.html) load to Choose a replacement",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 5052,
+      "min": 5035,
+      "max": 5057,
+      "n": 3
+     },
+     "fcp": {
+      "median": 4660,
+      "min": 4652,
+      "max": 4712,
+      "n": 3
+     },
+     "lcp": {
+      "median": 4936,
+      "min": 4932,
+      "max": 4984,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 102,
+      "min": 102,
+      "max": 102,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 836,
+      "min": 836,
+      "max": 836,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 29,
+      "min": 29,
+      "max": 29,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 341,
+      "min": 340,
+      "max": 349,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 511,
+      "min": 507,
+      "max": 597,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 229.1,
+      "min": 228.1,
+      "max": 232.4,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "setup-open": {
+     "name": "Choose a replacement: setup form usable",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1373,
+      "min": 1373,
+      "max": 1376,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 14,
+      "min": 14,
+      "max": 14,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 80,
+      "min": 80,
+      "max": 80,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 15,
+      "min": 15,
+      "max": 15,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 98,
+      "min": 98,
+      "max": 98,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 903,
+      "min": 895,
+      "max": 935,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1007,
+      "min": 1000,
+      "max": 1068,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 157.5,
+      "min": 156.2,
+      "max": 169.2,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "setup-save": {
+     "name": "Save choices: saved confirmation",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 255,
+      "min": 253,
+      "max": 261,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 2,
+      "min": 2,
+      "max": 2,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 2,
+      "min": 2,
+      "max": 2,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 288,
+      "min": 283,
+      "max": 294,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 112,
+      "min": 109,
+      "max": 304,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 86,
+      "min": 83.7,
+      "max": 188.2,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "presenter-next-release": {
+     "name": "Next release from the setup page",
+     "demo": "presenter",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1858,
+      "min": 1857,
+      "max": 2002,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 115,
+      "min": 115,
+      "max": 115,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 115,
+      "min": 115,
+      "max": 115,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1220,
+      "min": 1220,
+      "max": 1273,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1541,
+      "min": 1539,
+      "max": 1792,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 736.1,
+      "min": 188.2,
+      "max": 739.2,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "gallery-open": {
+     "name": "Continue: Released cars gallery with enabled Review buttons",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 15495,
+      "min": 15475,
+      "max": 15495,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 116,
+      "min": 110,
+      "max": 118,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 116,
+      "min": 110,
+      "max": 118,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1956,
+      "min": 1956,
+      "max": 1956,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 1956,
+      "min": 1956,
+      "max": 1956,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1005,
+      "min": 1004,
+      "max": 1010,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1363,
+      "min": 1295,
+      "max": 1568,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 208.3,
+      "min": 208,
+      "max": 267.8,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "review-open": {
+     "name": "Review this car: review page with countdown and Continue enabled",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 1357,
+      "min": 1354,
+      "max": 1365,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 114,
+      "min": 114,
+      "max": 114,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 9,
+      "min": 9,
+      "max": 9,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 132,
+      "min": 132,
+      "max": 132,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 851,
+      "min": 841,
+      "max": 862,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 893,
+      "min": 882,
+      "max": 902,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 188,
+      "min": 186.8,
+      "max": 261,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "resume-account": {
+     "name": "Reload: account offers Resume saved journey",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 5041,
+      "min": 5023,
+      "max": 5048,
+      "n": 3
+     },
+     "fcp": {
+      "median": 4620,
+      "min": 4592,
+      "max": 4620,
+      "n": 3
+     },
+     "lcp": {
+      "median": 4916,
+      "min": 4900,
+      "max": 4928,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 101,
+      "min": 101,
+      "max": 101,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 820,
+      "min": 820,
+      "max": 820,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 62,
+      "min": 62,
+      "max": 62,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 376,
+      "min": 368,
+      "max": 379,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 667,
+      "min": 648,
+      "max": 669,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 251.9,
+      "min": 244.8,
+      "max": 253,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "resume-review": {
+     "name": "Resume saved journey: back on the review page, usable",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2389,
+      "min": 2370,
+      "max": 2398,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 16,
+      "min": 16,
+      "max": 16,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 204,
+      "min": 204,
+      "max": 204,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 20,
+      "min": 20,
+      "max": 20,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 1180,
+      "min": 1180,
+      "max": 1180,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1604,
+      "min": 1578,
+      "max": 1637,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1938,
+      "min": 1868,
+      "max": 1945,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 179.6,
+      "min": 176.4,
+      "max": 289.9,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "order-summary": {
+     "name": "Continue to order review: summary with declarations",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2875,
+      "min": 2863,
+      "max": 2883,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 210,
+      "min": 210,
+      "max": 210,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 17,
+      "min": 17,
+      "max": 17,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 210,
+      "min": 210,
+      "max": 210,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1778,
+      "min": 1766,
+      "max": 1810,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1927,
+      "min": 1884,
+      "max": 1928,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 222.3,
+      "min": 215.9,
+      "max": 285.7,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "order-submit": {
+     "name": "Submit order: outcome heading",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 798,
+      "min": 784,
+      "max": 805,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 30,
+      "min": 30,
+      "max": 30,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 30,
+      "min": 30,
+      "max": 30,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 569,
+      "min": 555,
+      "max": 570,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 600,
+      "min": 587,
+      "max": 627,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 530.1,
+      "min": 32.9,
+      "max": 543.7,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "order-finish": {
+     "name": "Finish: account shows the order",
+     "demo": "employee",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 858,
+      "min": 845,
+      "max": 875,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 12,
+      "min": 12,
+      "max": 12,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 109,
+      "min": 109,
+      "max": 109,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 99,
+      "min": 99,
+      "max": 99,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 510,
+      "min": 497,
+      "max": 513,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 525,
+      "min": 509,
+      "max": 557,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 265.9,
+      "min": 50.2,
+      "max": 272.9,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "order-progress-load": {
+     "name": "Order progress page (gcsp-order-progress-live.html) load until settled",
+     "demo": "order-progress",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 4829,
+      "min": 4820,
+      "max": 4848,
+      "n": 3
+     },
+     "fcp": {
+      "median": 3656,
+      "min": 3648,
+      "max": 3672,
+      "n": 3
+     },
+     "lcp": {
+      "median": 4588,
+      "min": 4580,
+      "max": 4596,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 68,
+      "min": 67,
+      "max": 68,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 658,
+      "min": 657,
+      "max": 658,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 19,
+      "min": 19,
+      "max": 19,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 166,
+      "min": 166,
+      "max": 166,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1282,
+      "min": 1272,
+      "max": 1317,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1421,
+      "min": 1409,
+      "max": 1463,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 205.3,
+      "min": 202.5,
+      "max": 369.4,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "presenter-tick-order": {
+     "name": "Tick with an order placed",
+     "demo": "order-progress",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2670,
+      "min": 2573,
+      "max": 2685,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 5,
+      "min": 5,
+      "max": 5,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 159,
+      "min": 159,
+      "max": 159,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 183,
+      "min": 183,
+      "max": 183,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1437,
+      "min": 1411,
+      "max": 1467,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1687,
+      "min": 1654,
+      "max": 1714,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 926.9,
+      "min": 120.6,
+      "max": 940.6,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "order-progress-after-tick": {
+     "name": "Order progress reload after the tick",
+     "demo": "order-progress",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 4841,
+      "min": 4834,
+      "max": 4843,
+      "n": 3
+     },
+     "fcp": {
+      "median": 3416,
+      "min": 3404,
+      "max": 3428,
+      "n": 3
+     },
+     "lcp": {
+      "median": 4400,
+      "min": 4372,
+      "max": 4424,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 67,
+      "min": 67,
+      "max": 67,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 686,
+      "min": 686,
+      "max": 686,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 14,
+      "min": 14,
+      "max": 14,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 166,
+      "min": 166,
+      "max": 166,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1044,
+      "min": 1005,
+      "max": 1049,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1133,
+      "min": 1088,
+      "max": 1135,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 226.4,
+      "min": 217.2,
+      "max": 228.7,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "presenter-switch-greg": {
+     "name": "Switch principal to Greg: dashboard settled",
+     "demo": "greg",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 9344,
+      "min": 8835,
+      "max": 9351,
+      "n": 3
+     },
+     "fcp": {
+      "median": 6244,
+      "min": 6212,
+      "max": 6284,
+      "n": 3
+     },
+     "lcp": {
+      "median": 6244,
+      "min": 6212,
+      "max": 6284,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 150,
+      "min": 150,
+      "max": 150,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1211,
+      "min": 1211,
+      "max": 1211,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 19,
+      "min": 18,
+      "max": 20,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 275,
+      "min": 272,
+      "max": 275,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1951,
+      "min": 1930,
+      "max": 2006,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 2263,
+      "min": 2180,
+      "max": 2296,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 593,
+      "min": 543.2,
+      "max": 601.9,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "greg-page-load": {
+     "name": "Greg dashboard page load until every region settles",
+     "demo": "greg",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 7568,
+      "min": 7326,
+      "max": 7609,
+      "n": 3
+     },
+     "fcp": {
+      "median": 6240,
+      "min": 6180,
+      "max": 6288,
+      "n": 3
+     },
+     "lcp": {
+      "median": 6240,
+      "min": 6180,
+      "max": 6288,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 146,
+      "min": 144,
+      "max": 146,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1192,
+      "min": 1174,
+      "max": 1192,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 12,
+      "min": 10,
+      "max": 12,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 169,
+      "min": 151,
+      "max": 169,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 1303,
+      "min": 1199,
+      "max": 1317,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 1598,
+      "min": 1488,
+      "max": 1608,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 539.5,
+      "min": 42.1,
+      "max": 549.5,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "greg-cases-refresh": {
+     "name": "Renewal cases: Refresh queue",
+     "demo": "greg",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 257,
+      "min": 199,
+      "max": 573,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 1,
+      "min": 1,
+      "max": 3,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 0,
+      "min": 0,
+      "max": 18,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 1,
+      "min": 1,
+      "max": 3,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 0,
+      "min": 0,
+      "max": 18,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 59,
+      "min": 56,
+      "max": 156,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 162,
+      "min": 160,
+      "max": 258,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 65.7,
+      "min": 55.6,
+      "max": 66.5,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "greg-comparison-reload": {
+     "name": "Route comparison and experiments: Reload",
+     "demo": "greg",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 250,
+      "min": 245,
+      "max": 253,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 2,
+      "min": 2,
+      "max": 2,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 2,
+      "min": 2,
+      "max": 2,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 94,
+      "min": 92,
+      "max": 96,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 99,
+      "min": 96,
+      "max": 101,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 55.6,
+      "min": 51.2,
+      "max": 58,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "greg-plan-preview": {
+     "name": "Next order plan: Preview",
+     "demo": "greg",
+     "warm": false,
+     "passed": "0/3",
+     "wallMs": null,
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": null,
+     "longTaskMaxMs": null,
+     "browserRequests": null,
+     "browserKB": null,
+     "apiCalls": null,
+     "apiKB": null,
+     "apiServerMs": null,
+     "serverCpuMs": null,
+     "serverMaxEldMs": null,
+     "skipped": [
+      "no enabled Preview",
+      "no enabled Preview",
+      "no enabled Preview"
+     ],
+     "errors": []
+    },
+    "greg-tick": {
+     "name": "Tick from Greg's dashboard: strip and dashboard refreshed",
+     "demo": "greg",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 3287,
+      "min": 3270,
+      "max": 3315,
+      "n": 3
+     },
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 220,
+      "min": 220,
+      "max": 220,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 8,
+      "min": 8,
+      "max": 8,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 220,
+      "min": 220,
+      "max": 220,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 2031,
+      "min": 2022,
+      "max": 2082,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 2231,
+      "min": 2211,
+      "max": 2296,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 1034.9,
+      "min": 1018.2,
+      "max": 1050.7,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "presenter-reset-decline": {
+     "name": "Reset to Decline then change from Greg's dashboard",
+     "demo": "outbox",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 9791,
+      "min": 9395,
+      "max": 9812,
+      "n": 3
+     },
+     "fcp": {
+      "median": 6152,
+      "min": 6144,
+      "max": 6192,
+      "n": 3
+     },
+     "lcp": {
+      "median": 6412,
+      "min": 6408,
+      "max": 6452,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 139,
+      "min": 139,
+      "max": 139,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1066,
+      "min": 1066,
+      "max": 1066,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 102,
+      "min": 102,
+      "max": 102,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 2361,
+      "min": 2343,
+      "max": 2430,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 2733,
+      "min": 2689,
+      "max": 2806,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 715.7,
+      "min": 697.8,
+      "max": 726.7,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "outbox-load": {
+     "name": "Outbox page load, open the first offer email (outbox-load)",
+     "demo": "outbox",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2448,
+      "min": 2444,
+      "max": 2481,
+      "n": 3
+     },
+     "fcp": {
+      "median": 2168,
+      "min": 2164,
+      "max": 2168,
+      "n": 3
+     },
+     "lcp": {
+      "median": 2168,
+      "min": 2164,
+      "max": 2168,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 39,
+      "min": 39,
+      "max": 39,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 464,
+      "min": 464,
+      "max": 464,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 4,
+      "min": 4,
+      "max": 4,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 85,
+      "min": 85,
+      "max": 85,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 292,
+      "min": 284,
+      "max": 296,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 334,
+      "min": 324,
+      "max": 339,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 164.2,
+      "min": 158.7,
+      "max": 165.8,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "outbox-after-tick": {
+     "name": "Outbox page load, open the first offer email (outbox-after-tick)",
+     "demo": "outbox",
+     "warm": false,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2442,
+      "min": 2435,
+      "max": 2460,
+      "n": 3
+     },
+     "fcp": {
+      "median": 2148,
+      "min": 2148,
+      "max": 2168,
+      "n": 3
+     },
+     "lcp": {
+      "median": 2148,
+      "min": 2148,
+      "max": 2168,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 38,
+      "min": 38,
+      "max": 39,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 382,
+      "min": 382,
+      "max": 463,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 4,
+      "min": 4,
+      "max": 4,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 84,
+      "min": 84,
+      "max": 84,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 305,
+      "min": 292,
+      "max": 311,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 390,
+      "min": 370,
+      "max": 453,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 167.8,
+      "min": 161.5,
+      "max": 169.3,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "warm-greg": {
+     "name": "Warm reload of greg",
+     "demo": "warm",
+     "warm": true,
+     "passed": "0/3",
+     "wallMs": null,
+     "fcp": null,
+     "lcp": null,
+     "longTaskTotalMs": null,
+     "longTaskMaxMs": null,
+     "browserRequests": null,
+     "browserKB": null,
+     "apiCalls": null,
+     "apiKB": null,
+     "apiServerMs": null,
+     "serverCpuMs": null,
+     "serverMaxEldMs": null,
+     "skipped": [],
+     "errors": [
+      "locator.waitFor: Timeout 90000ms exceeded. Call log: - waiting for getByRole('heading', { name: 'Demand and supply' }).first() to be visible",
+      "locator.waitFor: Timeout 90000ms exceeded. Call log: - waiting for getByRole('heading', { name: 'Demand and supply' }).first() to be visible",
+      "locator.waitFor: Timeout 90000ms exceeded. Call log: - waiting for getByRole('heading', { name: 'Demand and supply' }).first() to be visible"
+     ]
+    },
+    "warm-order-progress": {
+     "name": "Warm reload of order-progress",
+     "demo": "warm",
+     "warm": true,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 3297,
+      "min": 3265,
+      "max": 3380,
+      "n": 3
+     },
+     "fcp": {
+      "median": 3088,
+      "min": 3084,
+      "max": 3172,
+      "n": 3
+     },
+     "lcp": {
+      "median": 3264,
+      "min": 3260,
+      "max": 3348,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 57,
+      "min": 57,
+      "max": 57,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 472,
+      "min": 472,
+      "max": 472,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 6,
+      "min": 6,
+      "max": 6,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 82,
+      "min": 82,
+      "max": 82,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 426,
+      "min": 422,
+      "max": 452,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 530,
+      "min": 527,
+      "max": 558,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 156.8,
+      "min": 140.9,
+      "max": 164,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    },
+    "warm-outbox": {
+     "name": "Warm reload of outbox",
+     "demo": "warm",
+     "warm": true,
+     "passed": "3/3",
+     "wallMs": {
+      "median": 2379,
+      "min": 2373,
+      "max": 2435,
+      "n": 3
+     },
+     "fcp": {
+      "median": 2160,
+      "min": 2148,
+      "max": 2216,
+      "n": 3
+     },
+     "lcp": {
+      "median": 2160,
+      "min": 2148,
+      "max": 2216,
+      "n": 3
+     },
+     "longTaskTotalMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "longTaskMaxMs": {
+      "median": 0,
+      "min": 0,
+      "max": 0,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 37,
+      "min": 37,
+      "max": 41,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 324,
+      "min": 324,
+      "max": 331,
+      "n": 3
+     },
+     "apiCalls": {
+      "median": 4,
+      "min": 4,
+      "max": 4,
+      "n": 3
+     },
+     "apiKB": {
+      "median": 84,
+      "min": 84,
+      "max": 84,
+      "n": 3
+     },
+     "apiServerMs": {
+      "median": 320,
+      "min": 292,
+      "max": 325,
+      "n": 3
+     },
+     "serverCpuMs": {
+      "median": 397,
+      "min": 367,
+      "max": 418,
+      "n": 3
+     },
+     "serverMaxEldMs": {
+      "median": 157.7,
+      "min": 155.2,
+      "max": 175.4,
+      "n": 3
+     },
+     "skipped": [],
+     "errors": []
+    }
+   }
+  }
+ },
+ "stockPayload": {
+  "totalBytes": 960384,
+  "counts": {
+   "decisions": 20,
+   "cars": 12,
+   "assumptions": 1
+  },
+  "topLevelKB": {
+   "state": 0,
+   "decisions": 577,
+   "cars": 346,
+   "total": 0,
+   "ranked": 0,
+   "browsingReservesStock": 0,
+   "versions": 12,
+   "assumptions": 2,
+   "view": 0,
+   "releaseHistory": 0
+  },
+  "largestPaths": [
+   {
+    "p": "$.value.decisions",
+    "kb": 577
+   },
+   {
+    "p": "$.value.decisions[]",
+    "kb": 577
+   },
+   {
+    "p": "$.value.cars",
+    "kb": 346.4
+   },
+   {
+    "p": "$.value.cars[]",
+    "kb": 346.4
+   },
+   {
+    "p": "$.value.decisions[].versions",
+    "kb": 248.8
+   },
+   {
+    "p": "$.value.decisions[].versions.stock",
+    "kb": 240.1
+   },
+   {
+    "p": "$.value.decisions[].evidence",
+    "kb": 163.1
+   },
+   {
+    "p": "$.value.cars[].versions",
+    "kb": 149.3
+   },
+   {
+    "p": "$.value.cars[].versions.stock",
+    "kb": 144
+   },
+   {
+    "p": "$.value.decisions[].snapshot",
+    "kb": 107.3
+   },
+   {
+    "p": "$.value.decisions[].snapshot.facts",
+    "kb": 98.5
+   },
+   {
+    "p": "$.value.cars[].evidence",
+    "kb": 97.9
+   },
+   {
+    "p": "$.value.decisions[].evidence.assumptions",
+    "kb": 75.4
+   },
+   {
+    "p": "$.value.decisions[].evidence.assumptions[]",
+    "kb": 75.3
+   },
+   {
+    "p": "$.value.cars[].snapshot",
+    "kb": 64
+   },
+   {
+    "p": "$.value.decisions[].evidence.eligibility",
+    "kb": 61
+   },
+   {
+    "p": "$.value.cars[].snapshot.facts",
+    "kb": 58.8
+   },
+   {
+    "p": "$.value.decisions[].evidence.eligibility.provenance",
+    "kb": 58.6
+   },
+   {
+    "p": "$.value.cars[].evidence.assumptions",
+    "kb": 45.2
+   },
+   {
+    "p": "$.value.cars[].evidence.assumptions[]",
+    "kb": 45.2
+   },
+   {
+    "p": "$.value.cars[].evidence.eligibility",
+    "kb": 36.6
+   },
+   {
+    "p": "$.value.cars[].evidence.eligibility.provenance",
+    "kb": 35.2
+   },
+   {
+    "p": "$.value.decisions[].employeeFacts",
+    "kb": 13.4
+   },
+   {
+    "p": "$.value.versions",
+    "kb": 12.2
+   },
+   {
+    "p": "$.value.versions.stock",
+    "kb": 12
+   }
+  ],
+  "repeatedSubtrees": {
+   "distinct": 34,
+   "extraCopies": 105,
+   "wastedKB": 682,
+   "top": [
+    {
+     "p": "$.value.decisions[].versions",
+     "copies": 7,
+     "kb": 12.4
+    },
+    {
+     "p": "$.value.decisions[].evidence.assumptions",
+     "copies": 17,
+     "kb": 3.8
+    },
+    {
+     "p": "$.value.decisions[].versions",
+     "copies": 5,
+     "kb": 12.4
+    },
+    {
+     "p": "$.value.decisions[].versions",
+     "copies": 5,
+     "kb": 12.4
+    },
+    {
+     "p": "$.value.decisions[]",
+     "copies": 2,
+     "kb": 28.9
+    },
+    {
+     "p": "$.value.decisions[]",
+     "copies": 2,
+     "kb": 28.9
+    },
+    {
+     "p": "$.value.decisions[]",
+     "copies": 2,
+     "kb": 28.9
+    },
+    {
+     "p": "$.value.decisions[]",
+     "copies": 2,
+     "kb": 28.9
+    }
+   ]
+  }
+ },
+ "controlsPayload": {
+  "totalBytes": 108324,
+  "counts": {
+   "principals": 6
+  },
+  "topLevelKB": {
+   "runId": 0,
+   "now": 0,
+   "clockVersion": 0,
+   "runVersion": 0,
+   "versions": 13,
+   "lastTick": 91,
+   "catalogueVersion": 0,
+   "currentScenario": 0,
+   "controls": 1,
+   "principals": 0
+  },
+  "largestPaths": [
+   {
+    "p": "$.value.lastTick",
+    "kb": 91
+   },
+   {
+    "p": "$.value.lastTick.outcomes",
+    "kb": 89.9
+   },
+   {
+    "p": "$.value.lastTick.outcomes[]",
+    "kb": 89.8
+   },
+   {
+    "p": "$.value.lastTick.outcomes[].outcome",
+    "kb": 88.9
+   },
+   {
+    "p": "$.value.lastTick.outcomes[].outcome.value",
+    "kb": 88.4
+   },
+   {
+    "p": "$.value.versions",
+    "kb": 13.2
+   },
+   {
+    "p": "$.value.versions.stockGeneration",
+    "kb": 12.8
+   },
+   {
+    "p": "$.value.versions.stockGeneration.report",
+    "kb": 12.5
+   },
+   {
+    "p": "$.value.versions.stockGeneration.report.models",
+    "kb": 6
+   },
+   {
+    "p": "$.value.versions.stockGeneration.report.models[]",
+    "kb": 6
+   },
+   {
+    "p": "$.value.versions.stockGeneration.report.policyProvenance",
+    "kb": 5.8
+   },
+   {
+    "p": "$.value.versions.stockGeneration.report.policyProvenance[]",
+    "kb": 5.8
+   },
+   {
+    "p": "$.value.lastTick.handlerOrder",
+    "kb": 0.8
+   },
+   {
+    "p": "$.value.lastTick.handlerOrder[]",
+    "kb": 0.8
+   },
+   {
+    "p": "$.value.controls",
+    "kb": 0.6
+   },
+   {
+    "p": "$.value.principals",
+    "kb": 0.5
+   },
+   {
+    "p": "$.value.principals[]",
+    "kb": 0.4
+   },
+   {
+    "p": "$.value.controls.step",
+    "kb": 0.4
+   },
+   {
+    "p": "$.value.lastTick.handlerOrder[].handlerId",
+    "kb": 0.3
+   },
+   {
+    "p": "$.value.lastTick.outcomes[].handlerId",
+    "kb": 0.3
+   },
+   {
+    "p": "$.value.versions.stockGeneration.report.configurationSource",
+    "kb": 0.3
+   },
+   {
+    "p": "$.value.lastTick.handlerOrder[].stage",
+    "kb": 0.2
+   },
+   {
+    "p": "$.value.lastTick.outcomes[].stage",
+    "kb": 0.2
+   },
+   {
+    "p": "$.value.currentScenario",
+    "kb": 0.2
+   },
+   {
+    "p": "$.value.controls.step.basis",
+    "kb": 0.1
+   }
+  ],
+  "repeatedSubtrees": {
+   "distinct": 0,
+   "extraCopies": 0,
+   "wastedKB": 0,
+   "top": []
+  }
+ }
+}
