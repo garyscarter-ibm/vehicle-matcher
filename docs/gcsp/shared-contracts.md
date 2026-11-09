@@ -179,6 +179,196 @@ essential, driver, eligibility, allowance, required-by, availability and complet
 Outcome states, exact candidate decisions, reasons/trade-offs and all source/policy/clock versions follow FUCQ-29.
 The approved public recommendation route still requires a positive version and excludes browser charging essentials.
 
+## LearningRecord schema v1 · FUCQ-113 bounded observed slice
+
+`server/gcsp/predict/records/index.js` exports `validateLearningRecord(record)` and
+`createObservedLearningRecordService({ repository, identity, clock })`. The validator returns the common
+`ok` envelope with a detached validated record, or `invalid` with `code: invalid-learning-record` and typed
+field reasons. It rejects undeclared fields recursively, including source blobs, free-text reason fields and
+fit-score/satisfaction substitutions. This is an additive in-process contract; no route, table, runtime
+dependency or training loader is introduced. It is **not** a completed synthetic-generation or manifest contract.
+
+Every `LearningRecord` has exactly these fields:
+
+| Field | Shape and authority |
+|---|---|
+| `schemaVersion`, `recordId`, `runId` | `1`, opaque deterministic record reference and current run. Record references distinguish offers, unoffered quotes and unmatched current briefs. |
+| `subject` | `{ employeeRef, entitlementSlotRef, renewalRef }`; references are run-scoped digests, absent slot/renewal references are null. No name, principal, contact or raw source record. |
+| `target` | `{ offerRef, holdRef, quoteRef, orderRef, configurationId }`; absent references are null; immutable configuration identity is known only from the saved quote, otherwise explicitly unknown. This target is not the historical full choice set. |
+| `renewal` | `{ cohort, period }`; cohort is a known identifier or unknown, period is known `{ from, until }` UTC instants or unknown. Current calendar time and an opaque renewal reference do not establish a cohort or period. |
+| `entitlement` | `{ schemeId, gradeId, allowanceBand }`, each known typed category or unknown. Historical scheme/grade require the dated saved quote's allowance context. Present employee context is never promoted into historical evidence; no recorded band means unknown. |
+| `brief` | `{ briefVersion, policyVersion, confirmedAt, preferences, essentials }`, from the immutable confirmed saved version associated with this offer/quote/decision, never a current substitute. Preferences retain only `{ value, importance, valueState, importanceState }`; essentials retain only `{ value, operator, unit, state }`. |
+| `choiceSet` | Known array of `{ configurationId, eligible, available, exposure, terms }`, optionally with opaque `orderRef` for an exact car, or unknown. Multiple alternatives may share a configuration; their exact-car references distinguish supply/exposure. Both old and extended shapes remain closed. Eligibility/availability are boolean or null; exposure is known `{ from, until, seconds }` with matching elapsed duration, or unknown. Empty known set means explicitly captured no alternatives, never missing capture. The observed port currently emits unknown because no authoritative historical full-set/exposure capture is bound. |
+| `terms` | Known `{ quoteRef, configurationId, monthlyPoints, allowance, unit: points/month, quotedAt, validUntil, policyVersion }`, or unknown. Both numeric points quantities and actual dated quote evidence are required; no recalculation from current policy or current stock. Terms on each alternative use the same shape. |
+| `outcomes` | Independent `offered`, `selection`, `acceptance`, `decline`, `expiry`, `wait`, `satisfaction` fields described below. Fit scores and current-car feedback never supply an outcome or satisfaction. |
+| `timestamps` | `{ projectedAt, clockVersion }` from `DemoClock.now(context)`; confirmed brief time and quoted time retain their captured DemoClock instants. Missing event times stay null; repository storage `createdAt`/`updatedAt` are not assumed to be business clock events. |
+| `provenance` | Exactly `{ kind: observed }` or `{ kind: synthetic, generatorVersion, seed }`. Observed means a projection of saved run rows, including explicitly fictional demonstration runs; it does not assert real BMW employee history. Generator version/seed are permitted only for synthetic records. |
+
+Unknown evidence is exactly `{ status: unknown, reason }`, with a typed reason `not-captured`, `missing-quote`,
+`missing-context` or `not-applicable`. Known evidence is exactly `{ status: known, value }`. Required unknown
+fields are retained rather than omitted. Current schema v1 preserves the existing brief-contract slider scale
+and initial preference keys (`body`, `fuel`, `sportiness`, `comfort`, `economy`, `size`), plus the registered
+`seats`, `boot`, `equipment`, `body`, `fuel`, `frontIsofix`, `rearIsofix`, `modelLine`, `charging` essentials.
+Unknown keys and source/confirmation actor metadata are excluded from the observed projection; no arbitrary
+preference object or nested free text is copied. A malformed value in a retained field makes the read unavailable.
+
+Each outcome carries `{ state, at }`; `at` is a captured UTC instant or null. Allowed states are `offered`/`unknown`,
+`selected`/`pending`/`unknown`, `accepted`/`pending`/`unknown`, `expired`/`unknown`, and
+`satisfied`/`dissatisfied`/`unknown` respectively. Decline adds `reasonType`, with `declined`/`unknown` state;
+its typed reason is a registered preference/essential key or `other`, `timing`, `points`, `no-longer-needed`,
+`just-not-this-one`, `unclassified`. Unrecognised reasons become `unclassified`; reason prose never survives.
+Wait adds `reasonType`, with `waited`/`unknown` state and `no-acceptable-choice` only for an actual recorded wait.
+Unknown decline/wait reason and event time are null. Accepted and selected are independent: selecting does not
+imply acceptance, accepting does not imply completed allocation, and a pending accept is neither. Decline,
+confirmed acceptance/selection and explicit offer expiry cannot contradict one another. Passing `expiresAt`
+is not a recorded expiry or decline. Satisfaction remains unknown in this observed binding because no dedicated
+later observation is bound. Absence of offers does not establish waiting or no acceptable choice.
+A recorded `waited` result cannot coexist with offered, selected, accepted, declined or expired evidence in the
+same outcome observation. The canonical offer state `rejected` projects to `declined`; the historical compatibility
+alias `declined` remains accepted. A rejected offer without a typed decision reason becomes `unclassified`.
+
+The observed reader retains only the following explicit business-clock event fields when present on its public
+read inputs. Missing/null fields stay null; it never substitutes `createdAt`/`updatedAt` or a quote's creation time.
+These optional read bindings do not assert that the current repository schema or producers persist them yet;
+regressions use labelled public-port overlays until actual producer capture is integrated.
+
+| Learning outcome | Explicit source timestamp binding |
+|---|---|
+| `offered.at` | `offers.offeredAt`. |
+| `acceptance.at` | `offers.acceptedAt` and `decisions.decidedAt` for a corresponding completed `accept` decision. |
+| `selection.at` | `offers.selectedAt`, `holds.selectedAt`, and `decisions.decidedAt` for a corresponding completed `select`/`selected` decision. |
+| `decline.at` | `offers.rejectedAt`/`offers.declinedAt`, and `decisions.decidedAt` for a corresponding completed `decline` decision. |
+| `expiry.at` | `offers.expiredAt` with an explicit expired state. An expiry deadline remains different evidence. |
+| Pending acceptance/selection | `offers.pendingAt`/`holds.pendingAt` while currently pending, or `decisions.decidedAt` for a corresponding pending accept. Canonical `decision-pending` and compatibility `selection-pending` offer states remain uncertainty. A past pending start retained on a completed source does not replace its completed event time. |
+
+Completed decisions have no failure/pending envelope; pending decision timestamps cannot label confirmed success.
+Explicit source fields must be valid UTC instants at or before the projection clock. Conflicting supplied times for
+the same outcome, timestamps without their corresponding outcome and business events before a supplied offer time
+fail safely as unavailable. The validator also rejects future outcome times, confirmed brief times and quoted times
+(including alternative quotes). Quote validity may extend beyond the projection time. No ordering between acceptance
+and selection is inferred or imposed.
+
+`readRecords(context)` requires server-owned `identity.requireRole(context, greg)`, repository public `query`
+and `clock.now`. It returns `ok.value = { runId, asOf, projectionVersion, records }`. It reads all saved briefs,
+employees, entitlement slots, offers, holds, decisions, quotes and stock in the current run, then fences a second
+complete read, DemoClock read and role check before publishing. Stock is consulted only to corroborate an allocated
+hold; it never reconstructs earlier eligible/available alternatives, terms or exposure. Concurrent changes return
+`conflict` with refresh guidance. Source failures, malformed/mixed-run inputs, missing confirmed versions and
+inconsistent owner/order/brief references fail safely as unavailable (or propagate the source's typed refusal).
+Missing dependencies are unavailable; role/reset refusals retain `forbidden`/`stale-run` semantics.
+
+There is one record per saved offer; independent saved quotes with a positive confirmed `briefVersion` are retained
+without inventing an offer. Draft-only quotes have no confirmed-intent learning record. Offer, quote and decision
+brief references must agree and resolve the actual saved historical version. Missing quote data leaves terms and
+configuration unknown if the offer still supplies a valid confirmed brief version. Unmatched current confirmed
+briefs remain separate records with unknown outcome; superseded unreferenced brief versions are not extra choices.
+Rows and results remain transient; no projection state or DTO store exists.
+
+Backend presentation evidence is the validator-checked `server/test/fixtures/gcsp-learning-record.json` and
+`docs/gcsp/evidence/fucq113/README.md`. These are labelled contract/repository fixtures, not outcome-producer
+integration, historical-extract or real-corpus acceptance. The additive synthetic module below supplies generation
+and manifest-gated input; observed outcome-producer integration remains outstanding. The module uses no
+new local business-policy defaults. No screen changes; the shared Density theme, supplied shell references and
+body reference revision `a7fc178` remain applicable to future consuming screens.
+
+## Synthetic learning datasets · FUCQ-113
+
+`loadLearningPolicy({ policyService, policyRead, corpus })` performs the I/O preparation. `policyRead` supplies
+an explicit run, `asOf` instant and pinned policy version. It reads the existing comparison snapshot and all
+seven `learning.*` rows through PolicyService, then snapshots `getEligibility` and `getPointsCost` for every
+configured grade/configuration pair. Mixed envelope or nested row versions, missing keys, unavailable ports,
+malformed features and unsupported inputs fail with `LearningInputError` (`code`, `field`); there is no consumer
+default or policy publication. The returned complete snapshot is deeply frozen and content addressed.
+
+The candidate `server/gcsp/predict/records/policy-definitions.json` has schema 1, definition-set ID
+`fucq113-learning-v1` and revision `learning-definitions.v1`. Its `definitions` array and canonical `digest`
+match FUCQ-103's reviewed additive bundle schema. Each assumption carries key, value, unit, assumed
+status, basis, source and source date. It deliberately has no active policy version/effective date: reviewed
+FUCQ-103 adoption into an additive successor supplies those. Seed-v1 and stored historical versions stay
+immutable. Candidate values are finite demonstration assumptions, not measured BMW behaviour:
+
+| Policy key | Candidate value |
+|---|---|
+| `learning.cohortSize` | 12 employees |
+| `learning.cycles` | 3 cycles |
+| `learning.cycleSpacingDays` | 180 days |
+| `learning.maximumGeneratedRecords` | 240 records |
+| `learning.maximumChoiceEntries` | 4096 alternative entries |
+| `learning.noChoiceRate` | 0.12 |
+| `learning.response.v1` | `{ declineRate: 0.12, expiryRate: 0.08, selectionAfterAcceptRate: 0.95, utilityNoise: 0.15 }` |
+
+`generateLearningRecords(seed, snapshot)` is pure, version `learning-records.sha256.v1`, and returns immutable
+`{ records, cycles }`. The bound `cohortSize * cycles` and worst-case alternative bound
+`cohortSize * cycles * round(cohortSize * carsPerEmployee)` are checked before comparison inputs/choice sets
+are materialised; invalid time horizons also refuse. Existing comparison distributions provide fictional
+employees, latent preferences, confirmed noisy stated briefs, allowances, renewal timing, access/response
+latency, exact synthetic stock and release cadence. Employee/slot identity and underlying preference draws
+remain stable over cycles; record, renewal, exact-car, offer and quote references include their cycle.
+Each cycle explicitly overlays `comparison.cohortSize` and `comparison.startsAt`; its metadata retains those
+actual values and hashes, input hash, counts and release schedule.
+
+The simulation visits employees by choice instant (renewal minus hold duration, no earlier than cycle start,
+then access latency), with stable tie-breaking. It records only already released, uncommitted cars permitted
+by the pinned eligibility, confirmed essential-fact and affordable-points gates. A current offer occupies an
+exact car until acceptance, decline or expiry. Acceptance commits the car for that cycle; decline/expiry makes
+it available from the explicit event instant, so exposure records the continuous available period before
+that employee's choice. This is supply-availability exposure and may include time before the employee's
+personal renewal/access window; it does not claim personal impressions, viewing or consideration duration.
+Cars sharing one configuration remain distinct by `orderRef`. Missing essential
+facts remain unknown and exclude the alternative. Supported configuration values are explicitly allowlisted
+and typed; no absent seats, space, equipment, charging readiness or driver eligibility facts are invented.
+This bounded synthetic simulation does not execute live allocation/offer lifecycle services.
+
+Preference utility uses the shared scorer against generated latent preferences plus an addressed seeded
+utility perturbation. Independent policy-keyed draws govern waiting and expiry/decline/acceptance; recorded
+selection can follow acceptance independently. Expiry also occurs when response latency reaches the earlier
+of hold expiry and saved quote validity. Offered, acceptance, selection, typed decline, expiry and wait remain
+separate fields; satisfaction is always unknown. Utility/fit is never stored as an outcome. The explicit start,
+cycle offsets and event offsets form a fictional simulation clock; no wall clock or global random source is read.
+Changing `learning.noChoiceRate` changes outcomes through the central source without a code edit.
+
+`createLearningDataset(seed, snapshot)` returns `{ manifest, records }`. The manifest has schema 1 and
+`datasetKind: synthetic`, seed, generator version, policy version, full snapshot and snapshot/policy/configuration/
+data hashes, counts by outcome and provenance, and complete cycle metadata. Configuration identity includes
+the exact source kind/dataset/version/manifest digest (for corpus), immutable configuration IDs/versions and
+allowlisted feature snapshots. Hashes establish consistency and reproducibility, not authenticity or real-data
+calibration. `validateLearningDataset(dataset)` and `readLearningDataset(jsonOrObject)` return the common
+`ok`/`invalid` envelope. Training must use this boundary: missing manifest, incomplete identities/counts,
+duplicate IDs, any observed/mixed/incorrect synthetic provenance, altered data or inconsistent snapshot/manifest
+are refused. Validation regenerates the bounded dataset and compares the complete manifest and records.
+This version accepts wholly synthetic datasets only; it does not silently merge observed records.
+
+`server/test/fixtures/gcsp-learning-dataset.json` is a six-record/two-cycle structural sample with an explicit
+fixture successor policy (cohort 3), labelled reviewed configurations and enriched synthetic feature inputs.
+It proves reproduction and the manifest reader, not actual FUCQ-77 adapter execution or employee behaviour.
+The corpus binding supports the exact existing `getConfiguration(id)` read contract, refuses mismatched
+active dataset/version/digest or configuration version and never substitutes reviewed fixtures. Known corpus
+facts carry the demo-confirmed `synthetic-scenario` assurance that generated stock uses; unknown ones stay unknown and
+fail the essential gates. FUCQ-103 registered the exact bundle at `8284915` and the default CLI now adopts it in memory
+(tests `gcsp-learning-records*.test.js`). PostgreSQL adoption and observed outcome-producer acceptance remain separate
+outstanding work.
+
+### Learning dataset CLI
+
+`scripts/gcsp/generate-learning-records.mjs --seed SEED` starts from unchanged seed-v1 in an in-memory
+PolicyService run, adopts `fucq113-learning-v1` as Greg at the demo clock's start (`clock.scenario.v1`, never the
+wall clock) and reads the adopted successor. It generates over the real `demo-fleet.v1` builds through the registry
+adapter, with `demo-enrichment.v1` supplying seats, boot and 0-100 km/h only where observed. Body, fuel, economy and
+other unobserved facts stay unknown, so the essential gates exclude those cars. The corpus set and model-line mix are
+derived from the published store (model line from `stock.eligibilityModelKeys.v1`); the manifest's
+`configurationSource` records the dataset, version, manifest digest and the sidecar digests. It writes
+`records.json`, then the required `manifest.json`, reports counts/provenance and paths as JSON and refuses existing
+paths. No database is opened. `--policy-file`, `--policy-version`, `--as-of`, `--run-id` and `--corpus-store`
+select explicit immutable inputs instead; `--policy-version`, `--as-of` and `--run-id` need `--policy-file`.
+Without an as-of override, the validated selected source header's `effectiveFrom` is used.
+
+`--snapshot FILE` is a replay path for a complete prepared snapshot, mutually exclusive with policy/corpus
+selection. `--allow-fixtures` explicitly permits labelled structural configurations on an explicit policy file;
+otherwise a corpus source is required. Readers combine the two output files into `{ manifest, records }` and must call
+`readLearningDataset`. An explicit seed-v1 `--policy-file` still refuses at `learning.cohortSize`.
+CLI failures emit bounded typed JSON and exit 2 without source details. The evidence README documents the
+explicit structural-sample trial and its limits.
+
 ## Exact stock, holds and offers
 
 `orderUuid` is the exact-stock UUID v4 and the foreign key for claims, holds, offers and allocations. `orderNumber` is a unique **7-digit string per run**, retaining leading zeros; `wholesalerOrderId` is an 8-digit integer. `configurationId` identifies immutable configuration facts and is never an exclusive-car key. Two cars can share it. VIN is attached only to delivered/current cars, never required for stock browsing, matching or holding (Q13).
@@ -1074,6 +1264,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 | 1.0.0 / 2026-11-05 / FUCQ-99 | Adds Greg-only current-run saved-demand/actual-outcome/stock projection with per-aggregate brief/policy versions, canonical small-count banding (`greg.demand.smallCountThreshold`), optional registered model-line essential and truthful backend presentation/scenario contract. Reuses repository/identity/clock/shared gates without migrations or existing method/retail changes. |
 | 1.0.0 / 2026-11-05 / FUCQ-23 | Additive retail member decision and exact display facts; representative v1 fields and caps remain compatible. The card/refinement consume exact decisions, with truthful mixed-version fallback. No scoring retune, policy key or GCSP transaction change. |
 | 1.0.0 / 2026-11-05 / FUCQ-30 | Adds local exact/group exclusion, retail predicate, confirmed preference/essential change and reversible undo/reset actions. The shared canonical helper replaces duplicate FUCQ-91 field-change/no-op logic while retaining its public command, transaction, versioning, audit and consent semantics. Complete read-only employee decisions recompute through existing policy/ranker gates. No new policy key, durable lifecycle operation or existing contract meaning change. |
+| 1.0.0 / 2026-11-05 / FUCQ-113 | Adds closed LearningRecord schema v1, validator and stateless observed current-run projection over public repository/identity/clock ports. Historical brief versions, independent pending/accepted/selected/decline/expiry states and explicit unknown historical choice/context/terms preserve provenance and privacy. Backend contract fixtures only; generator, manifests, real corpus and outcome-producer integration remain outstanding. |
 | 1.0.0 / 2026-11-05 / FUCQ-65 | Adds ManualContextService, five read ports, guarded account/draft/stock routes and assumed `manual.context.v1`. Existing identity/time/policy/repository and typed FUCQ-29 gates remain authority. Additive JSON/receipt conventions preserve consumers. Backend presentation fixtures cover synthetic/mapped employee reads; claims/quotes/expiry, screens, live integration and diagram rendering remain separate. |
 | 1.0.0 / 2026-11-05 / FUCQ-85 | Adds repository currentRun/resetRun, persisted DemoClock/registry/startup/reset and presenter HTTP binding. Adds canonical `clock.commands.v1`, `clock.handler.order.v1`, `clock.scenario.v1`; additive inventory snapshot retains allocator provenance. Same identity authority and employee time port; no existing consumer meaning changes. Backend response fixtures and memory/SQL-driver parity; managed PostgreSQL and draw.io rendering remain unverified. |
 | 1.0.0 / 2026-11-05 / FUCQ-29 | Adds the stateless employee recommendation consumer and `employee.recommendation.v1` calibration through the existing PolicyService. Reuses exact snapshots/typed terms, context and clock ports; no existing method meanings change. The authorised trusted cash-filter opt-out preserves retail defaults and avoids invented employee prices. |

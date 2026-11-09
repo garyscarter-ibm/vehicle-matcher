@@ -1,0 +1,592 @@
+{
+  "blocks/vehicle-matcher/feedback-actions.js": {
+    "blob": "77234e1dc78cb56874c9cda761f470114a67b5f7",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "eb6dcfb82aed8045228797f870a5e337ef7f0a8f3e136eb46804995d71838744"
+  },
+  "package.json": {
+    "blob": "e69355381e41735f3cf4fbe3c44a7d18fee9d010",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1"
+  },
+  "server/adapters/retail-vehicle.js": {
+    "blob": "8ddea36ddc81a87c06c5f805c62712bdea0624d6",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "54163099d6fd2cec749ca20a53f3134b204d2c00c81b491e22243e78424801c2"
+  },
+  "server/adapters/synthetic-vehicle-fixtures.js": {
+    "blob": "855ae78fb665f13a0a637c298d70d795e70f5f36",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "ba347e8ec6e3780af239f7604b6c866c45d615773b11edf9cd3bc1ab9d1b627a"
+  },
+  "server/brands.js": {
+    "blob": "77f274168dc6c5b65dbf0af1c2c8cb60221733a4",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2"
+  },
+  "server/data.js": {
+    "blob": "a35570d68774e8d131b79ae24ae4a81dced19346",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "fc209b3ed1da04ef3aed6a2fa41c2e1d008e24c632985bf553456d83552d567b"
+  },
+  "server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json": {
+    "blob": "201b7b18ba283a2ec3e4d3dc7f2503740dfb2489",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "8c797f87d050687c6d4efd4392061c65c753e5ee0177e77f9b5cab86dc3383bb"
+  },
+  "server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json": {
+    "blob": "652d49fed947a712355bc1455404ee12aa9b87d6",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "dd702f37aa81480d61b7a8a74d761abe026d25b39f056cf1d50698bbdf0edd4f"
+  },
+  "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json": {
+    "blob": "091bd6b63c2aa2fb52edc6bf613998825004cecd",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709"
+  },
+  "server/data/gcsp/vehicle-evidence/publication-reference.v1/manifest.json": {
+    "blob": "091bd6b63c2aa2fb52edc6bf613998825004cecd",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709"
+  },
+  "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json": {
+    "blob": "b735284ad1a99008fb1a7e864b29c9301b0bd4e1",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa"
+  },
+  "server/dealers.js": {
+    "blob": "b12b9ee1e7015f389e812f1f0163777ed15ffeb2",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "7fd5b02df86c495971fc07ee310e8ffd02b351aecb09a124778d8d4d7147012e"
+  },
+  "server/engine.js": {
+    "blob": "a5318ab8871af80b7d36e4827f6e27a0cf2ec988",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550"
+  },
+  "server/ferrari-listing.js": {
+    "blob": "cf2542a48ea356086e4094d29ea36166358cef01",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "df483d2070913e193072f9e6561519bac7a2db670d55b058777f7010c4f83b4d"
+  },
+  "server/gcsp/brief/activity-http.js": {
+    "blob": "f42bb5dec59f0e851cbd1401f3c46397a86d0324",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "b4384eb61ea60afb31570a3d2819ea686dff6aad0724cfda3f0b96788c01f2c4"
+  },
+  "server/gcsp/brief/activity.js": {
+    "blob": "84e971aab8c2aa055ece06790e2bf1b48d715849",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "dbf317b5aba98b1f6a723692e108a1b1a83637fb61e76ca33729dd90fe8b8f6f"
+  },
+  "server/gcsp/brief/editor.js": {
+    "blob": "1c79cd04e38a3cbeee9a31dd803cd2df5bfaf585",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "df70b807923069db3b9d2b4a99ecd3ca887bc7683c5e536065c145c2664e8dc1"
+  },
+  "server/gcsp/brief/http.js": {
+    "blob": "85404875db23d44c82990739731bae87e182f3db",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "20a88f4cafa5c0009b54398682e1540cfabc2afea2b16935962b1406cbef8402"
+  },
+  "server/gcsp/brief/index.js": {
+    "blob": "70b50f2f90b56f8a308826e2fb876b158c80b3f5",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418"
+  },
+  "server/gcsp/cases/http.js": {
+    "blob": "38e102fb9a5ee1652c983cd66cfabf9d815667d3",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "53a2cbe7fec5079d5d84c0d7a3090cad94e94788779153607d38530c6b10431f"
+  },
+  "server/gcsp/cases/index.js": {
+    "blob": "a7513b877e1790758aca1859d20fd3af394b274d",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "7ea3de632c5845eafc3b0a429b847b640bf3dc9b4ad1ab43cd3e19871f47d1f7"
+  },
+  "server/gcsp/cases/notification.js": {
+    "blob": "949353fe8d16d74e4c0324b306dc27755bc3c0d8",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "44af7293f900f3a83bda7b98be094f50dd77de33383c279f8c582a013cbfa83e"
+  },
+  "server/gcsp/cases/policy.js": {
+    "blob": "4ca181cc16b9af5d9e82c44c41363ee31f6cdd5e",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "c6ee2d24b019695a8bf3663fe2dd22fee5705aac65a7fff834f21b5c219209e7"
+  },
+  "server/gcsp/clock/http.js": {
+    "blob": "c3fa39f7ab59b9f8644ddf226e453ec821cab455",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "da019f6f766ec6ff22ab7346091ca9ef6744cde2608465f20d942c07ec083535"
+  },
+  "server/gcsp/clock/index.js": {
+    "blob": "8e392c223a38805c64052094a0775f307e4019cf",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45"
+  },
+  "server/gcsp/comparison/generator.js": {
+    "blob": "c4d08b198c455ff20f1e4405d2f1dad5871d1b78",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "596c26adfaef43443914e90f2675b528309e85d5fee5459aedc661845b0917cc"
+  },
+  "server/gcsp/fixtures/principals.js": {
+    "blob": "47ea7ce2a3bfb6f9aa822aedfdd9d0702842c49c",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f"
+  },
+  "server/gcsp/fixtures/scenario-v1.js": {
+    "blob": "b44d26ce73cd494536fa7a076d169a8a1f2de0ed",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4"
+  },
+  "server/gcsp/fixtures/scenarios/catalogue-v1.js": {
+    "blob": "01cafcd62bed3fb293dbe8291d4d43d08f4bf911",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c"
+  },
+  "server/gcsp/fixtures/scenarios/index.js": {
+    "blob": "6959a38393ac5802561c41aacf65b2963bd55483",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4"
+  },
+  "server/gcsp/fixtures/scenarios/presentation-v1.json": {
+    "blob": "de9d948030c841fd1f42ac3f6bcf099f671a087b",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "ef41c930eed0e507cef1b3c8f3142b42ae7cb80de56f7bdcb9a32d582493f15b"
+  },
+  "server/gcsp/greg/http.js": {
+    "blob": "61dc45fd932e2d3a42aad37c7f17ce3dca9fbfa8",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "dfa42aedf5851af618311950100f9186a11880ce51d7a122bc115a2d8ea8aa2e"
+  },
+  "server/gcsp/greg/index.js": {
+    "blob": "c9811d10d83df03b7a0b61a1af8c96fd812c8d3e",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "2457f2a122a9c1ee9b4014a65ae384f36bf83916d496fce744bcc8fc24182e0b"
+  },
+  "server/gcsp/greg/publish/fit.js": {
+    "blob": "aa10930d33794ec9d365f82a399b4fb77bda9453",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "eb0187dcf268f9d27befdec0f2a5b99aa72f2fe22b5b0824edf24b4c1643ff6c"
+  },
+  "server/gcsp/greg/publish/http.js": {
+    "blob": "2cb1871119d5e594e43ebd3a293ed115b20a259e",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "237a98fa9894fc1421d2426d14fbd84134ccfffe8a7ab701a265d23ea63b048e"
+  },
+  "server/gcsp/greg/publish/index.js": {
+    "blob": "2f7cc6f5cbc5360c2e7c2a9be4df16d05e07b050",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "fdfaeee63bf42f39c66ecae357a4a940f2813db7f4b97b94dcb1503e9d79a6fb"
+  },
+  "server/gcsp/identity/http.js": {
+    "blob": "8a3bb0d2a70c4260aa91af255a1706e3e449df5c",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "c9f004bd943a7ed9b975cbe20aa23a5270760d61427e0360b966cb21490fd8d7"
+  },
+  "server/gcsp/identity/index.js": {
+    "blob": "a5f50ba9d14a8b06cfa70f7dcddfd68dadb79129",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "4c60cd226ecceefcedd86c7da73a410bfabbeddbb05aab1aa997c98639f7612c"
+  },
+  "server/gcsp/manual-context/fixtures.js": {
+    "blob": "faf95314da87037c6815bcd8664f4334a1ac3839",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6"
+  },
+  "server/gcsp/manual-context/http.js": {
+    "blob": "213fad774823934ff2f1a9829c54aabbb568ce1f",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "d49bbb756447e8b91ee90dd54e2240914b45e554d79428e54345a59585d4dc37"
+  },
+  "server/gcsp/manual-context/index.js": {
+    "blob": "d0b068f6e255661498c89e534dbe7c7109ba37c8",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "13601990b08dc420ffe51948a874de7299fce88991924b8447192c29c0acedf7"
+  },
+  "server/gcsp/manual-context/ports.js": {
+    "blob": "188bd06580edce4306c2f89a43081e1d2486e009",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267"
+  },
+  "server/gcsp/migrations/0001_transaction_foundation.sql": {
+    "blob": "e668c5c67b2ba22ff3e8b4e3fe6182101d9832da",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1"
+  },
+  "server/gcsp/migrations/0002_policy_tables.sql": {
+    "blob": "9b762bdb5272cbcc1a0dfe52971125b0f6880e9d",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0"
+  },
+  "server/gcsp/migrations/0003_renewal_cases.sql": {
+    "blob": "533f931b892a5b786ae78927d367a296b1a45d3c",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98"
+  },
+  "server/gcsp/migrations/index.js": {
+    "blob": "5d58a65ce5964be9caeec2380e0f739c86c0a3fc",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f"
+  },
+  "server/gcsp/notify/captured.js": {
+    "blob": "397ca5259e4c934ec9c6f9c6779a5e84b91b9b28",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "df162186e33887287ebde5852c56a926f3c20873f17c80654989938af6feff58"
+  },
+  "server/gcsp/notify/http.js": {
+    "blob": "b87eccdd27bdcdb218e4dd6d0b0217c659342c95",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "ae3fd2f84fa3ddf1cea1e3bc05fe01944c7fc2094843b34e8b9eb8a2f16231ed"
+  },
+  "server/gcsp/notify/index.js": {
+    "blob": "873007c53e7db9e6c804ca10a2af5062fbd82998",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "159deb2546525ca83b6e792392e001b0165c4423be499d75a53b517c7f7f6d32"
+  },
+  "server/gcsp/notify/port.js": {
+    "blob": "ddb58b0893a01ecca4e70a7f31a5a86edad9fbab",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "fa2895408bd05a5f5a7da2b1d4476df134886500578ca91342495b157f840a6e"
+  },
+  "server/gcsp/notify/templates.js": {
+    "blob": "39cef663a695f8165fa38bfc4222c138876c5759",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "fb9a3b9719c54000409553773698ef620bf35a5ba06c354f33b30cea7df839eb"
+  },
+  "server/gcsp/policy/activation.js": {
+    "blob": "b0ec9f184dd4150594d5014e56778d4929126cc7",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6"
+  },
+  "server/gcsp/policy/adoption.js": {
+    "blob": "ac3109f09e7ae2ec9779eb6eba2ccb85d1478a7c",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870"
+  },
+  "server/gcsp/policy/file-provider.js": {
+    "blob": "5924d7a1f982edcdcbef2b6352f318d631332dea",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad"
+  },
+  "server/gcsp/policy/index.js": {
+    "blob": "409dd26a25effc6ab4bf17007ad87740a14fdb13",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0"
+  },
+  "server/gcsp/policy/memory-provider.js": {
+    "blob": "91150990a6b482be0dc36dfee0f479881e017778",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53"
+  },
+  "server/gcsp/policy/postgres-provider.js": {
+    "blob": "34d13a241cc2a9275d287405aedda204f75f4ea8",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12"
+  },
+  "server/gcsp/policy/publish.js": {
+    "blob": "b05bfb12ff2f748d36c1c712ab432746aae5eb7d",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826"
+  },
+  "server/gcsp/policy/reviewed-definitions.js": {
+    "blob": "d0d64a7e1e7e9af4f2a2e73f289a4036b81b8688",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "8fa09f48202fd044638c2d602f9c816a440df5b20d4704666a187a45e1c256e8"
+  },
+  "server/gcsp/policy/reviewed/greg-publish-editor-v1.json": {
+    "blob": "54e125ce3a487363e653456f17183bcbc60ea1d4",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3"
+  },
+  "server/gcsp/policy/reviewed/presenter-controls-v1.json": {
+    "blob": "758e8ed8d84d20cb16a5ca28fb8c6dfcd57a5503",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "0e09fc7cde7677724153265042eb1f7a122c88115762a736a4bdf02a4b2e470a"
+  },
+  "server/gcsp/policy/seed-v1.json": {
+    "blob": "f92cae80fd724045da30bebac947fc86fa5056f5",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31"
+  },
+  "server/gcsp/predict/records/dataset.js": {
+    "blob": "e6508a73c1deb8266b36e764c24765870ef87aa0",
+    "ref": "ad2e3bfbce96e39fa16d6a0652cf0dd522da78df",
+    "sha256": "5d5eaf954def2ee605a0ed27410de6915c8fc691a3bcf02c15e6a4f33107b423"
+  },
+  "server/gcsp/predict/records/generator.js": {
+    "blob": "a38e66937da56272a7ef3438ec404a166a598857",
+    "ref": "ad2e3bfbce96e39fa16d6a0652cf0dd522da78df",
+    "sha256": "a0f3703e5d9dc7fad3491db8a2206ce7165807011d819421c711e1c5e6d099c9"
+  },
+  "server/gcsp/predict/records/index.js": {
+    "blob": "965ebc834a5099221892923fbcde2c94fbbef93a",
+    "ref": "ad2e3bfbce96e39fa16d6a0652cf0dd522da78df",
+    "sha256": "e623314a8cca26b7418e32656addafc7e13a1cc7a93d80c51dc03698e2968221"
+  },
+  "server/gcsp/predict/records/observed.js": {
+    "blob": "81c2e7049f1264e11bf0677d797000fcc1afab2a",
+    "ref": "ad2e3bfbce96e39fa16d6a0652cf0dd522da78df",
+    "sha256": "913a6c11d6c874b16a2ae4eb151edf5d72984180b9d13b8e392e5d88244511e0"
+  },
+  "server/gcsp/predict/records/policy-definitions.json": {
+    "blob": "a9bb08133e32f3c39458bbddf38b31648dd601c0",
+    "ref": "ad2e3bfbce96e39fa16d6a0652cf0dd522da78df",
+    "sha256": "c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143"
+  },
+  "server/gcsp/predict/records/schema.js": {
+    "blob": "96339de1775c2f766703182b1907b6168aa4d5e8",
+    "ref": "ad2e3bfbce96e39fa16d6a0652cf0dd522da78df",
+    "sha256": "429fcc4abcb6bcf92e1b94291f9ea19a20f3883dc8d1add630a2434f84c394f5"
+  },
+  "server/gcsp/presenter-controls/commands.js": {
+    "blob": "a575d0125e29489c29b671c85e194a81fbf639ed",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "89b21a616e479c27f54d0004fe54d3b93e2cfd557e803b8bc38c717e619a627a"
+  },
+  "server/gcsp/presenter-controls/http.js": {
+    "blob": "0acfde47af940cab119c91f649b90e68b906cf42",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "d575c0ea6b4ac3fb659fe05fa66535d942215342215c8e1a8ed73b000efaf672"
+  },
+  "server/gcsp/presenter-controls/index.js": {
+    "blob": "4887eb50c511b14e9be4d9e24efbc883a1c9311e",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "06a518dc1ee15919ded29e938a717943816d591b1b79c442114a2aa8239704bd"
+  },
+  "server/gcsp/recommendation/http.js": {
+    "blob": "9f63bed669ae8e053a72d51cac6f8eaedc63b3ff",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "166f6f3c7d972a04903039c5b25fe5e24ec23155bc345c859fee45f1e06a54fd"
+  },
+  "server/gcsp/recommendation/index.js": {
+    "blob": "a9e7d5c0e706d501cdfc41827b3f6864c313332e",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "f0595fa37434b139d953db0ca89754ada08c9f6902abf3ea924addd2b72b6036"
+  },
+  "server/gcsp/repository/core.js": {
+    "blob": "fdbf30e379d3230c77039bef33b0847a3ae732ab",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311"
+  },
+  "server/gcsp/repository/index.js": {
+    "blob": "5a160e63416460947308fe4124cd847ee5c712db",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16"
+  },
+  "server/gcsp/repository/memory.js": {
+    "blob": "6ae9360a70dbd2429632968ee30dc9fca9685592",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866"
+  },
+  "server/gcsp/repository/postgres.js": {
+    "blob": "220f4938787faf42d2ae05f653a10181f8832d97",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da"
+  },
+  "server/gcsp/repository/schema.js": {
+    "blob": "cf2dd782c5c837435639619c3d0c375c4227d6dc",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a"
+  },
+  "server/gcsp/runtime.js": {
+    "blob": "2bb6bd628ae0ca4e67d9a28f9ad4cb8e791f7d13",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "25e7c02cda0c3f09f0daec33d191514f88a9ccd2074d90ef6adb687ef1c34aa8"
+  },
+  "server/gcsp/scenarios/http.js": {
+    "blob": "f9ea39c811543b2060bfd34e1296bcd303946999",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "4170f3760f9fd23478c286ab5a3140e9ad201b6e7c11d00c7f7beb75be773085"
+  },
+  "server/gcsp/scenarios/index.js": {
+    "blob": "87de20a2ae6c89fae1a0c86ca5a5db4bfc0ab409",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "02ec280d1407b9723ec55c4eb740eb209614b236cb8939cb45cd53c2c67b143b"
+  },
+  "server/gcsp/vehicle-evidence/alternate-offline-adapter.js": {
+    "blob": "c72833771a959a56899d320cc6ed400efd3c0b94",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "3c962e8576da4b65141b29fbb53a9f8e3efd45e43b883bc262df68855fc38a9d"
+  },
+  "server/gcsp/vehicle-evidence/application-vehicle-details.js": {
+    "blob": "dfb485c2d02309a02c6848a56d1e2e9dbce089e4",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "e8f1019278446d3f15019458b586364d430c94568aaf7d1867ef4062afb5ac38"
+  },
+  "server/gcsp/vehicle-evidence/corpus-publisher.js": {
+    "blob": "2b9a6389fbf4a3ded325b766d9b0000855db17e7",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49"
+  },
+  "server/gcsp/vehicle-evidence/identity-routing.js": {
+    "blob": "5b100b5aca49076c05d620ffef6f9b99f48d83ff",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "89d805c94c5f7a9dd026daae40e42167355822961d07597bf0cf69c45b649088"
+  },
+  "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": {
+    "blob": "cecee3ea9365365bbc433de4799c03716a884def",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "c616bfed3ed62b4152a5636d6bcff442dbe0fa6793eb5b8efc894d0e486a8785"
+  },
+  "server/gcsp/vehicle-evidence/lookup-adapter.js": {
+    "blob": "49761765014b99c4cd1c0f2cc18c221e5daa105c",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "3060d1707c254ff28ee45c7eedf16802aa57aed9b7d9a52a96206bf0cef395e3"
+  },
+  "server/gcsp/vehicle-evidence/provider-read.js": {
+    "blob": "d5efa34531405b20bcd30bab91bd25578991fd90",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "e194fdeb9ff55faafaadd916b2e0ce34c9d8dce252dc37c3ce04aa8de77bb87b"
+  },
+  "server/gcsp/vehicle-evidence/synthetic-registry.js": {
+    "blob": "9781614f348deffd0151e2fb8ee410d90f3a00e9",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "758f3a20ec9d0bbb6fd4853df16e0e3c8e891f732165a5584d7de5698aa7221f"
+  },
+  "server/gcsp/vehicle-evidence/vehicle-details-contract.js": {
+    "blob": "da017388b54354ba8137bd8cbb9fa3fbed5703e3",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "3886ac9377f3688d2bfe2c2af5a6fe330bb4b49d2f18bb049c8cc7f71d485cc8"
+  },
+  "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js": {
+    "blob": "8658d1a5fdc2cb20066b454861da62a0af3381ec",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0"
+  },
+  "server/gcsp/vehicle-evidence/vehicle-lookup.js": {
+    "blob": "c7d972bde6e5a9cff977819d256a4abc1d4c7f64",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9"
+  },
+  "server/gcsp/vehicle-evidence/vin-allocation.js": {
+    "blob": "804e501082679962b139ff5b96abb515145c0e3b",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e"
+  },
+  "server/gcsp/vehicle-evidence/vin-generator.js": {
+    "blob": "ab7593af32ca88af7dc89a2b1195ed4ceb45e6b6",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f"
+  },
+  "server/gcsp/vehicle-evidence/vin-profiles.js": {
+    "blob": "3b29b9d72002b8b9c3ce3dd38c63b1f9de9bb93f",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd"
+  },
+  "server/geocode.js": {
+    "blob": "27b6500ddf418e2c51b906ed810994b682cbc5dd",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "861414be6b2f715bfd890e36286c51df004162ae295e6997287582342f3d892c"
+  },
+  "server/honda-listing.js": {
+    "blob": "a4a7b787ab7b245c508c78d47731cf8c04dc44a8",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "8fcc91b1adc729b0b7c0119c00608a8856d87144c6f16e08423924f100dd9534"
+  },
+  "server/index.js": {
+    "blob": "7bd013fd6bfd32a5921b160962df46ce6e60339d",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "91370902af5b578fd72f8791a8f029b08dcb2079dae157d94a9ecd3c99a1824d"
+  },
+  "server/mapping.js": {
+    "blob": "a35b6c7584cfa7abaf82ed587be25e122e066d34",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "142563394d5a3ba579c6d16787c97aa51dbaa8aa229947e2ac3534163f59585a"
+  },
+  "server/motorrad-listing.js": {
+    "blob": "d703d168cafccaa98c77a9df53bf92586c0a30c3",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "9666ef1e6fe931378111b783ffefc26732af9ddc2d80834d7da2326155ee05fe"
+  },
+  "server/package-lock.json": {
+    "blob": "600220842eceecf65062f8b042aeb57b831bca86",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+  },
+  "server/package.json": {
+    "blob": "74e7fbb6986c2e27d3d5f5ba4a2d33a7630f2563",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+  },
+  "server/questions.js": {
+    "blob": "dfcfc65b55867a100c34a83d83873c79ddc40996",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d"
+  },
+  "server/scenarios/employee/feedback.js": {
+    "blob": "281d07f5edc070d851812ce5a3feb7ed23f4ac08",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "1bf392969549170d9f97053a3751667c13d2db235417e7c1ec9f68dae81effa0"
+  },
+  "server/scenarios/employee/index.js": {
+    "blob": "07b24c2c237e0b18742fc8614dd8885adede878a",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "50e3b25317158c29605420af080c1ec6bd76ded94d298d33badfc90a4dc0d91c"
+  },
+  "server/scripts/generate-synthetic-vins.mjs": {
+    "blob": "9992164d778640675b3c90424df6096be266ec77",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "31807f7854cef8aab61309cfc95e8829d288d19b894295dffb36db43c62b039b"
+  },
+  "server/scripts/publish-synthetic-vin-dataset.mjs": {
+    "blob": "8fb03dce2e79cdc71ac183131bb6f09d97836234",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "109ef25e246c3bf3a60e6a66503184b0c30be851fe9b02750413e734f38e1434"
+  },
+  "server/stock.js": {
+    "blob": "299a2cb8905a525eee89edba71c622745d570050",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "a9b59844ea5b862cc5effe509e988d41462f2a77683624d97ae51a18e4a6c133"
+  },
+  "server/vehicle-evidence/bmw-catalogue-adapter.js": {
+    "blob": "af69248716e13b6d3d4e1303eb1f59a877eb2bca",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1"
+  },
+  "server/vehicle-evidence/bmw-drivers-guide-provider.js": {
+    "blob": "933723e9797758bb671fea2ac5ef28f7e435e450",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "b3098765b750132b23edc0beb108ef74b173a8c236bbccb44b262e2a54da8f99"
+  },
+  "server/vehicle-evidence/bmw-image-adapter.js": {
+    "blob": "12e373e9f3d674dd96486235e91e3776554895e9",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef"
+  },
+  "server/vehicle-evidence/bmw-live-imagery.js": {
+    "blob": "2e14af5b46f325ec198756ff2983e424f868f7da",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "876e7e21b98d33ae3a124e696102ad56e4e5d2e771fee0d370764a0b684ffc3d"
+  },
+  "server/vehicle-evidence/bmw-vin-guide-adapter.js": {
+    "blob": "b216dd88db651df1a0e6d9a5d6c4c5e0a3b62495",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "f910c56a1148831b01712fdce314ac152bb052c8302f5bfa32c95cd44131bba6"
+  },
+  "server/vehicle-evidence/bmw-vin-guide-synthetic.js": {
+    "blob": "59610b4649fbe7e1b1bd4e445578f8c442ad9caf",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "2a5c08d01d03ee07afd0495aef595721b74046ce8ea1a625630e8c4cfeb91f5e"
+  },
+  "server/vehicle-evidence/fixtures/bmw-vin-guide-synthetic.v1.json": {
+    "blob": "5b858ddfaeeb1512943021cb699b73a7ede2f67a",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "0d2f5eca90ae10a6a0a1591228d26f93c2c88c5ee91145ae46ec82508898c546"
+  },
+  "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": {
+    "blob": "0e7e6b36d88686e0a169f4b0da7c1748588b3bde",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3"
+  },
+  "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": {
+    "blob": "2e42f23244509fcae4d411895c795bd8dac58c81",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393"
+  },
+  "server/vehicles/index.js": {
+    "blob": "746ce1b91c83dba0c1d45a756b1fecaf58128a3b",
+    "ref": "82849155565edbfc792961553d7292b8b5965a35",
+    "sha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc"
+  }
+}

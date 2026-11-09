@@ -1404,8 +1404,63 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:00:25Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-113"
+      "observed_at": "2026-11-05T23:23:49Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-113",
+      "branch": "dev/DEV-2026-11-04-088",
+      "tracker_observed_at": "2026-11-05T23:00:25Z",
+      "workers": [],
+      "slices": [
+        {
+          "id": "projection",
+          "status": "complete",
+          "title": "LearningRecord contract and observed projection",
+          "observed_at": "2026-11-05T23:00:24Z",
+          "evidence": "Lead reviewed and pushed758efc8; parent offline node --test server/test/gcsp-learning-records.test.js20/20; receipt .claude/test-runs/fucq113-parent-projection/final-receipt.json. Historical unknowns preserved; actual producers excluded."
+        },
+        {
+          "id": "generator-manifest",
+          "status": "complete",
+          "title": "Seeded multi-cycle records and manifest validation",
+          "observed_at": "2026-11-05T23:06:01Z",
+          "evidence": "Lead reviewed generator/manifest; parent offline learning and comparison modules 52/52 zero skips,12.02s; frozen source and cleanup receipt .claude/test-runs/fucq113-parent-generator/final-receipt.json. Actual corpus/producers remain separate gates."
+        },
+        {
+          "id": "cli-fixtures",
+          "status": "complete",
+          "title": "Bounded generation CLI and training sample fixtures",
+          "observed_at": "2026-11-05T23:10:09Z",
+          "evidence": "Lead reviewed CLI and sample; scoped6/6 zero skips incl actual executable success/refusal, full file-backed successor, repeatability and no-overwrite;0.86s cleanup/source receipt .claude/test-runs/fucq113-parent-cli/final-receipt.json. Real corpus gate separate."
+        },
+        {
+          "id": "policy-adoption",
+          "status": "complete",
+          "title": "Reviewed learning assumptions adopted in successor PolicyService version",
+          "observed_at": "2026-11-05T23:23:49Z",
+          "evidence": "Lead verified exact103ref8284915 +113ad2e3bf composition: real writable memory runtime/identity/clock adopts frozen bundle; pinned learning caller deterministic and old pin immutable/refused,2/2 zero skips. Proof/source map/cleanup docs/gcsp/evidence/fucq113/adoption-proof.md. No native/deployed adoption claim."
+        },
+        {
+          "id": "real-corpus",
+          "status": "blocked",
+          "title": "Actual FUCQ-77 configuration corpus proof",
+          "observed_at": "2026-11-05T23:00:26Z",
+          "evidence": "Actual FUCQ77 real configuration corpus unavailable to this branch; fixtures do not meet this acceptance."
+        },
+        {
+          "id": "observed-producer",
+          "status": "blocked",
+          "title": "Actual saved offer outcome producer proof",
+          "observed_at": "2026-11-05T23:00:27Z",
+          "evidence": "Saved outcome fixtures and public-port event overlays are not actual offer/decision producer proof; integration remains required."
+        },
+        {
+          "id": "full-validation",
+          "status": "blocked",
+          "title": "Integrated authored validation and root full-suite lane",
+          "observed_at": "2026-11-05T23:11:20Z",
+          "evidence": "Three independent slices reviewed/pushed; authored npm test and defaultCLI success still unmet. Dispatcher retains serial full/native lane with no grant; actual policy/corpus/outcome-producer proof is outstanding. Scoped58tests are not full-story acceptance."
+        }
+      ],
+      "unsliced": false
     },
     {
       "id": "FUCQ-114",
