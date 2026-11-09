@@ -27,7 +27,8 @@ const MODELS = {
   touring: { model: '3 Series Touring', derivative: '320i', configurationId: 'Q01QRzIxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G21 Touring|320i',
     body: 'estate', fuel: 'petrol', boot: 500, zeroTo62: 7.4, sizeClass: 2, insuranceGroup: 30, mpg: 44, tags: ['family'] },
   // imageId: representative image of the line's approved corpus configuration; the car stays structural, so colour stays unknown.
-  i5: { imageId: 'bmw-i5-white-20261101-v1', model: 'i5 Touring', derivative: 'eDrive40', configurationId: 'Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G61 i5|i5 40',
+  // nameKey: the display name's engine wording where the eligibility key abbreviates it.
+  i5: { imageId: 'bmw-i5-white-20261101-v1', model: 'i5 Touring', derivative: 'eDrive40', configurationId: 'Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G61 i5|i5 40', nameKey: 'G61 i5|i5 eDrive40',
     body: 'estate', fuel: 'ev', boot: 490, zeroTo62: 6.1, sizeClass: 3, insuranceGroup: 35, tags: ['electric'] },
   // FUCQ-199: the G1-6-eligible line, so a G1-6 employee (Alex) has a car.
   hatch: { ...f70, imageId: 'bmw-1f7e-20261107-v2', model: '1 Series Sports Hatch', derivative: '120', configurationId: 'Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=', key: 'F70 Sports Hatch|120',
@@ -87,7 +88,7 @@ async function loadImages() {
 // FUCQ-279: the display name follows the one policy rule; the plain model and derivative are only its fallback.
 async function carNames(policy, request) {
   const name = await readCarNamer(policy, { runId: request.runId, asOf: request.asOf, policyVersion: request.policyVersion });
-  return Object.fromEntries(Object.entries(MODELS).map(([kind, model]) => [kind, name(model.key, `${model.model} ${model.derivative}`)]));
+  return Object.fromEntries(Object.entries(MODELS).map(([kind, model]) => [kind, name(model.nameKey ?? model.key, `${model.model} ${model.derivative}`)]));
 }
 function displayFor(model, image, name) {
   if (!image) return { name, model: model.model, derivative: model.derivative };
