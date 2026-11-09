@@ -137,8 +137,7 @@ test('embedded mode draws only the body, with no shell and no account read', asy
 test('navigation reports the destination and the order progress destination is exported', async () => {
   assert.deepEqual([mod.ORDER_PROGRESS_DESTINATION.key, mod.ORDER_PROGRESS_DESTINATION.label, mod.ORDER_PROGRESS_DESTINATION.available], ['order-progress', 'Order progress', true]);
   const to = []; const node = root();
-  mount(node, { adapter: adapter({ name: 'appointment-requested' }), onNavigate: (key) => to.push(key),
-    navigation: [{ key: 'brief', label: 'Your car brief', available: true, icon: ['M6 3h12'] }, mod.ORDER_PROGRESS_DESTINATION] });
+  mount(node, { adapter: adapter({ name: 'appointment-requested' }), onNavigate: (key) => to.push(key) });
   await settle(node, (r) => r.querySelector('.gcsp-order-handover'));
   const link = [...node.querySelectorAll('a, button')].find((n) => n.textContent.includes('Your car brief')); link.click(); assert.deepEqual(to, ['brief']);
 });

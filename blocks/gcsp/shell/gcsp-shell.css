@@ -2,6 +2,7 @@
 @import "../presenter-controls/presenter-controls.css";
 @import "../kit/form-controls.css";
 @import "../kit/arrival-focus.css";
+@import "./shell-inset.css";
 .gcsp {
   position: relative;
   display: flex;
@@ -209,7 +210,6 @@
 }
 .gcsp-nav[data-expanded="true"] .gcsp-nav-tip-available { display: none; }
 
-.gcsp-content { flex: 1 1 auto; min-width: 0; padding: 20px 24px 32px; }
 .gcsp-crumbs { margin: 0 0 12px; }
 .gcsp-crumb-list { display: flex; flex-wrap: wrap; gap: 4px 8px; margin: 0; padding: 0; list-style: none; }
 .gcsp-crumb {
@@ -282,7 +282,7 @@
   }
   .gcsp-nav[data-expanded] .gcsp-nav-tip-label,
   .gcsp-nav[data-expanded] .gcsp-nav-tip-available { display: none; }
-  .gcsp-content { padding: 16px 12px 24px; } .gcsp-content .vm { padding-inline: 4px; }
+  .gcsp-content { padding: 16px var(--gcsp-content-inset) 24px; } .gcsp-content .vm { padding-inline: 4px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

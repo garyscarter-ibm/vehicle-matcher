@@ -2,6 +2,7 @@ import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-m
 import { matchCard } from '../../vehicle-matcher/modes/result-card.js';
 import { syntheticNote } from '../kit/synthetic-note.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
+import { routeAfterRelease } from '../employee/portal-navigation.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
 import { bodyStyleLabel, longDate } from '../kit/plain-copy.js';
@@ -175,9 +176,12 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
   destroy.leave = (reason = 'back') => controller.release(reason); return destroy;
 }
 
-export function mountManualReview(root, { loadAccount = createAccountHttpAdapter().loadAccount, brand = 'bmw', ...options } = {}) {
+export function mountManualReview(root, { loadAccount = createAccountHttpAdapter().loadAccount, brand = 'bmw', location, ...options } = {}) {
   let body; let disposed = false;
-  const shell = mountEmployee(root, { brand, loadAccount, onNavigate: () => body?.leave('back'),
+  const held = () => { const state = body?.controller.getState(); return !state?.model || state.canRelease; };
+  const where = location || root.ownerDocument.defaultView?.location;
+  const shell = mountEmployee(root, { brand, loadAccount,
+    onNavigate: (key) => routeAfterRelease(key, { held, release: () => body?.leave('back'), location: where }),
     renderBody(main) { if (disposed) return; body?.(); body = mountManualReviewBody(main, options); } });
   const destroy = () => { disposed = true; body?.(); shell(); };
   Object.defineProperty(destroy, 'controller', { get: () => body?.controller });

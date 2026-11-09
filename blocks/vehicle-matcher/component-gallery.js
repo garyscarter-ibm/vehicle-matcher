@@ -32,6 +32,9 @@ import { orderProgressFixtures } from '../gcsp/order-progress/fixtures.js';
 import { toManualGallery } from '../gcsp/manual-gallery/gallery-model.js';
 import { createManualGalleryFixture } from '../gcsp/manual-gallery/fixtures.js';
 
+// The Paula rail plus one disabled item, so the gallery still shows the unavailable state.
+const GALLERY_NAVIGATION = [...EMPLOYEE_NAVIGATION, { key: 'soon', label: 'Scheme guidelines', icon: ['M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z'], available: false, unavailableReason: 'Not available in this demo' }];
+
 const browseSession = `gallery-${Date.now().toString(36)}`;
 let sessionSequence = 0;
 const nextId = (kind) => `${kind}:${++sessionSequence}`;
@@ -153,7 +156,7 @@ function gcspExamples() {
   ];
   for (const [title, account, detailsOpen] of accounts) {
     const frame = el('div', 'vm-gallery-gcsp-frame');
-    const shell = portalShell({ navigation: EMPLOYEE_NAVIGATION, active: 'cars', breadcrumbs: ['Your cars'], account, presenterControls: false });
+    const shell = portalShell({ navigation: GALLERY_NAVIGATION, active: 'cars', breadcrumbs: ['Your cars'], account, presenterControls: false });
     if (detailsOpen) shell.root.querySelector('.gcsp-account-details').open = true;
     shell.main.append(el('p', 'gcsp-note', 'Page content goes here.'));
     frame.append(shell.root);
@@ -161,7 +164,7 @@ function gcspExamples() {
   }
   for (const expanded of [false, true]) {
     const frame = el('div', 'vm-gallery-gcsp-frame vm-gallery-gcsp-nav');
-    frame.append(accountNavigation({ items: EMPLOYEE_NAVIGATION, active: 'cars', expanded }).root);
+    frame.append(accountNavigation({ items: GALLERY_NAVIGATION, active: 'cars', expanded }).root);
     group(`accountNavigation: ${expanded ? 'expanded' : 'collapsed'}, pale selected state and unavailable items`).append(frame);
   }
   group('messageList: sent, retrying and failed, first message open').append(messageList({ messages: fixtureMessages(), selectedId: 'job-004' }).root);

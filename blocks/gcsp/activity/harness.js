@@ -1,6 +1,6 @@
 // Design harness only: selection changes a supplied synthetic snapshot, never a saved search.
 import { el, button } from '../../vehicle-matcher/ui.js';
-import { mountEmployee, EMPLOYEE_NAVIGATION } from '../employee/gcsp-employee.js';
+import { mountEmployee } from '../employee/gcsp-employee.js';
 import { mountHelp } from '../cases/gcsp-help.js';
 import { fixtureAdapter } from '../cases/fixtures.js';
 import { activityBody } from './activity-body.js';
@@ -14,8 +14,6 @@ const initial = Object.hasOwn(names, requested) ? requested : 'offer';
 const root = document.getElementById('gcsp-activity-preview');
 if (root) mountEmployee(root, {
   view: 'activity',
-  navigation: [...EMPLOYEE_NAVIGATION.map((item) => ({ ...item, available: false, unavailableReason: 'Not part of this activity preview' })),
-    { key: 'activity', label: 'Buddy activity', available: true, icon: ['M4 5h16', 'M4 12h16', 'M4 19h16', 'M8 3v4', 'M8 10v4', 'M8 17v4'] }],
   loadAccount: async () => ({ status: 'ready', name: 'Paula (synthetic)', context: 'Choices, synthetic demonstration' }),
   renderBody(main) {
     const body = el('div', 'gcsp-activity-preview-body');

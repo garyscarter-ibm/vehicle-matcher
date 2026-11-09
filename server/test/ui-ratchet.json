@@ -296,6 +296,10 @@
     {
       "path": "blocks/gcsp/kit/data-table-compare.css",
       "max_lines": 8
+    },
+    {
+      "path": "blocks/gcsp/shell/shell-inset.css",
+      "max_lines": 10
     }
   ],
   "baseline": {

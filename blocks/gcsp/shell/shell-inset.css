@@ -1,0 +1,9 @@
+/* One content inset owned by the shell (FUCQ-284): crumbs, presenter strip and page roots start at the same x. */
+.gcsp-content { --gcsp-content-inset: 24px; flex: 1 1 auto; min-width: 0; padding: 20px var(--gcsp-content-inset) 32px; }
+@media (min-width: 900px) { .gcsp-content { --gcsp-content-inset: 72px; } }
+@media (max-width: 600px) { .gcsp-content { --gcsp-content-inset: 16px; } }
+/* A page root adds no inset or centring of its own (activity wraps its root in a bare div); .vm in cards is untouched. */
+.gcsp .gcsp-main > .vm, .gcsp .gcsp-main > :not([class]) > .vm { padding-inline: 0; margin-inline: 0; }
+/* The shell crumb is the only location label above the page h1, so a kicker placed right before it is dropped. */
+.gcsp .gcsp-main .vm-kicker:has(+ h1) { display: none; }
+.gcsp .gcsp-presenter-region .gcsp-presenter-bar { margin-inline: 0; }

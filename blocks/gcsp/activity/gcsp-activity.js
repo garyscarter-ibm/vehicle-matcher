@@ -1,16 +1,16 @@
 // Embeddable activity consumer. The injected adapter owns account, permission and command authority.
 import { el, screenIntro, statusScreen } from '../../vehicle-matcher/ui.js';
-import { mountEmployee, EMPLOYEE_NAVIGATION } from '../employee/gcsp-employee.js';
+import { mountEmployee } from '../employee/gcsp-employee.js';
+import { PORTAL_NAVIGATION } from '../employee/portal-navigation.js';
 import { mountHelp } from '../cases/gcsp-help.js';
 import { activityBody } from './activity-body.js';
 import { createActivityController } from './activity-controller.js';
 import { runRestartedScreen } from '../kit/run-restarted.js';
 import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 
-export const ACTIVITY_DESTINATION = Object.freeze({ key: 'activity', label: 'Buddy activity', available: true,
-  icon: Object.freeze(['M4 5h16', 'M4 12h16', 'M4 19h16', 'M8 3v4', 'M8 10v4', 'M8 17v4']) });
+export const ACTIVITY_DESTINATION = PORTAL_NAVIGATION.find((item) => item.key === 'activity');
 
-export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, onNavigate, signal, offerDisplay, helpAdapter, reload } = {}) {
+export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, signal, offerDisplay, helpAdapter, reload } = {}) {
   let done = false; let controller; let stopShell; let stopHelp;
   const abort = new AbortController();
   const teardown = () => {
@@ -22,8 +22,7 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, o
   if (signal?.aborted) { teardown(); return teardown; }
   signal?.addEventListener('abort', teardown, { once: true });
   stopShell = mountEmployee(root, { brand, view: 'activity', signal: abort.signal,
-    navigation: navigation || [...EMPLOYEE_NAVIGATION.map((item) => ({ ...item, available: false, unavailableReason: 'Not available in this demo' })), ACTIVITY_DESTINATION],
-    onNavigate: (to) => onNavigate?.(to),
+    onNavigate,
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
     renderBody(main, { account }) {
       let body; let stopped = false; let restoringFocus = false; let unsubscribeClock;
@@ -100,7 +99,7 @@ export class GcspActivityElement extends HTMLElement {
   _mount() {
     this._unmount();
     this._teardown = mountActivity(this, { adapter: this._adapter || {}, brand: this.brand,
-      navigation: this._adapter?.navigation, offerDisplay: this._adapter?.offerDisplay, helpAdapter: this._helpAdapter,
+      offerDisplay: this._adapter?.offerDisplay, helpAdapter: this._helpAdapter,
       onNavigate: (to) => {
         const EventType = this.ownerDocument.defaultView.CustomEvent;
         this.dispatchEvent(new EventType('gcsp:navigate', { detail: { from: 'activity', to }, bubbles: true, composed: true, cancelable: true }));
