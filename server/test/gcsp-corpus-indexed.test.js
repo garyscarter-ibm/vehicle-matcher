@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile, writeFile, rm } from 'node:fs/promises';
+import { chmod, mkdtemp, readFile, stat, writeFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { inputDigest } from '../gcsp/repository/core.js';
@@ -68,4 +68,18 @@ test('runtime lazy reads survive publication rename and fail closed after active
   const result = registry.getConfiguration(id);
   assert.equal(result.status, 'source-unavailable'); assert.equal(result.failure.code, 'indexed-corpus-changed');
   assert.equal(Object.hasOwn(result, 'record'), false);
+});
+test('published lazy reads stay available after ctime-only drift on the active artifact', async (t) => {
+  const root = await temporary(t); const input = await corpusInput(); const directory = join(root, 'candidate');
+  assert.equal((await writeCorpusCandidate(directory, input, options)).status, 'ok');
+  const registry = createSyntheticRegistry({ root: join(root, 'store'), ...options });
+  assert.equal((await registry.publish(directory)).status, 'ok');
+  const id = input.configurations[0].configurationId; const expected = registry.getConfiguration(id).record;
+  const active = registry.status().active;
+  const artifact = join(root, 'store', 'versions', active.manifestDigest, 'configurations.jsonl');
+  const before = await stat(artifact, { bigint: true }); await chmod(artifact, Number(before.mode & 0o777n) ^ 0o040);
+  const after = await stat(artifact, { bigint: true });
+  assert.equal(after.mtimeNs, before.mtimeNs); assert.notEqual(after.ctimeNs, before.ctimeNs);
+  const result = registry.getConfiguration(id);
+  assert.equal(result.status, 'partial', JSON.stringify(result)); assert.deepEqual(result.record, expected);
 });
