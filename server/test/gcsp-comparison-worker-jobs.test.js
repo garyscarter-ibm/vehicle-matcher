@@ -147,6 +147,29 @@ test('a what-if job stores the same result as the direct runner, with progress a
   assert.equal(row.experimentId, 'hold-sweep');
 });
 
+test('the command and the worker store the same what-if result for the same request', async () => {
+  const request = { experimentId: 'hold-sweep', change: { values: [3600, 14400], basis: 'Does a different hold help?' } };
+  const expected = await runComparison({ ...request, overlay: buddyFixture.overlay }, { policy, codeRevision: REVISION, now: () => NOW });
+  const { service, repository, f } = await build();
+  const started = await service.start(f.contexts.greg, request);
+  assert.equal(started.status, 'pending', JSON.stringify(started));
+  const done = (await finished(service, f.contexts.greg, started.value.jobId)).value;
+  assert.equal(done.status, 'succeeded', JSON.stringify(done));
+  const [workerRow] = await rowsOf(repository, 'comparison_results');
+
+  const cliRepository = await openRepository();
+  const err = [];
+  const cli = await runComparisonCli({ argv: ['--experiment', 'hold-sweep', '--change', JSON.stringify(request.change)], env: {}, now: () => NOW,
+    codeRevision: REVISION, overlay: buddyFixture.overlay, repository: cliRepository, policy, stdout: () => {}, stderr: (text) => err.push(text) });
+  assert.equal(cli.exitCode, 0, err.join(''));
+  const [cliRow] = await rowsOf(cliRepository, 'comparison_results');
+  assert.deepEqual(cliRow.result, workerRow.result);
+  assert.deepEqual(cliRow.result, expected);
+  assert.deepEqual(cli.result, expected);
+  assert.equal(cliRow.resultId, workerRow.resultId);
+  assert.equal(cli.stored.resultId, done.resultId);
+});
+
 test('the event loop and repository stay responsive while a job runs', async () => {
   const { service, repository, f } = await build();
   const started = await service.start(f.contexts.greg, holdSweep);

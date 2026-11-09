@@ -4,32 +4,43 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createMemoryRepository, createMemoryStore, createPostgresRepository, inputDigest } from '../repository/index.js';
 import { PolicyService, MemoryPolicyProvider } from '../policy/index.js';
-import { runComparison, PROCESS_EXPERIMENT_ID, PROCESS_COMPARISON_CAVEAT } from './experiments.js';
+import { runComparison, EXPERIMENT_IDS, PROCESS_EXPERIMENT_ID, PROCESS_COMPARISON_CAVEAT, EXPERIMENT_CAVEAT } from './experiments.js';
 import { ComparisonRunError } from './harness.js';
 import { ComparisonInputError } from './generator.js';
+import { parseExperimentRequest, refusalFor, refusedBoundary } from './requests.js';
 import { storeComparisonResult } from './results.js';
 
 export const COMPARISON_CLI_CONTEXT = Object.freeze({ principalId: 'gcsp-comparison-cli', roles: Object.freeze(['presenter']) });
 export const COMPARISON_RESULT_FORMAT = 'gcsp-process-comparison-result-v1';
-const EXPERIMENTS = Object.freeze({ process: PROCESS_EXPERIMENT_ID });
+export const EXPERIMENT_RESULT_FORMAT = 'gcsp-experiment-comparison-result-v1';
+// The command line calls the process-only comparison "process"; the what-if experiments keep their ids.
+const EXPERIMENTS = Object.freeze({ process: PROCESS_EXPERIMENT_ID, ...Object.fromEntries(EXPERIMENT_IDS.filter((id) => id !== PROCESS_EXPERIMENT_ID).map((id) => [id, id])) });
 const REPO_ROOT = fileURLToPath(new URL('../../../', import.meta.url));
-const FLAGS = Object.freeze({ '--experiment': 'experiment', '--seeds': 'seeds', '--out': 'out', '--import': 'import' });
+const FLAGS = Object.freeze({ '--experiment': 'experiment', '--change': 'change', '--seeds': 'seeds', '--out': 'out', '--import': 'import' });
 
 export const USAGE = `Usage:
   node scripts/gcsp-comparison.mjs --experiment process [--seeds a,b,c] [--out <file>]
+  node scripts/gcsp-comparison.mjs --experiment <order-mix|points|hold-sweep> --change <json> [--seeds a,b,c] [--out <file>]
   node scripts/gcsp-comparison.mjs --import <file>
   node scripts/gcsp-comparison.mjs --help
 
-Runs the process comparison (today's release route against the buddy route) offline and stores the result.
+Runs a comparison offline and stores the result: process (today's release route against the buddy route),
+or a what-if that changes one policy value. The browser worker runs the same experiments the same way.
+--experiment  process, order-mix, points or hold-sweep.
+--change      the change as JSON, as the browser sends it, with a basis saying why it is worth trying:
+                hold-sweep  {"values":[3600,14400],"basis":"..."}
+                points      {"value":1.5,"basis":"..."}
+                order-mix   {"value":[{"modelLine":"...","weight":1}],"basis":"..."}
 --seeds       comma-separated seeds; whole numbers are read as numbers. Default: the policy's comparison seeds.
 --out         also write the result to this file, to store later or load into the server.
 --import      store an existing result file without running anything.
+Exit codes: 0 stored, 2 refused input or file, 1 failed.
 The replay always runs in memory in this process, reading policy from the reviewed seed in the repository.
 Only the result is stored, through GCSP_REPOSITORY_MODE (memory by default, or postgres with GCSP_DATABASE_URL).`;
 
 const invalidArgs = (reason) => ({ status: 'invalid', reason });
 
-/** Reads argv (without node and script) into { experiment, seeds, out, import, help } or a refusal reason. */
+/** Reads argv (without node and script) into { experiment, change, seeds, out, import, help } or a refusal reason. */
 export function parseComparisonArgs(argv) {
   if (!Array.isArray(argv)) return invalidArgs('Arguments must be a list.');
   const value = {};
@@ -49,14 +60,17 @@ export function parseComparisonArgs(argv) {
     value[key] = String(given);
   }
   if (value.help) return { status: 'ok', value: { help: true } };
-  if (value.import !== undefined && ['experiment', 'seeds', 'out'].some((key) => key in value)) {
-    return invalidArgs('--import stores an existing file and cannot be combined with --experiment, --seeds or --out.');
+  if (value.import !== undefined && ['experiment', 'change', 'seeds', 'out'].some((key) => key in value)) {
+    return invalidArgs('--import stores an existing file and cannot be combined with --experiment, --change, --seeds or --out.');
   }
   if (value.import === undefined && value.experiment === undefined) {
-    return invalidArgs('Give --experiment process to run the comparison, or --import <file> to store a result file.');
+    return invalidArgs('Give --experiment to run a comparison, or --import <file> to store a result file.');
   }
-  if (value.experiment !== undefined && !(value.experiment in EXPERIMENTS)) {
-    return invalidArgs(`Unsupported experiment "${value.experiment}". The only supported experiment is process.`);
+  if (value.experiment !== undefined && !Object.hasOwn(EXPERIMENTS, value.experiment)) {
+    return invalidArgs(`Unsupported experiment "${value.experiment}". Choose ${Object.keys(EXPERIMENTS).join(', ')}.`);
+  }
+  if (value.change !== undefined) {
+    try { value.change = JSON.parse(value.change); } catch { return invalidArgs('--change is not valid JSON. Give the change as a JSON object.'); }
   }
   if (value.seeds !== undefined) {
     // A blank seed would only fail after the earlier seeds had run, so refuse it here.
@@ -69,7 +83,8 @@ export function parseComparisonArgs(argv) {
   return { status: 'ok', value };
 }
 
-const envelopeOf = (result) => ({ format: COMPARISON_RESULT_FORMAT, digest: inputDigest(result), result });
+const envelopeOf = (result) => ({ format: result.kind === 'process-comparison' ? COMPARISON_RESULT_FORMAT : EXPERIMENT_RESULT_FORMAT,
+  digest: inputDigest(result), result });
 
 /** Writes the digest-wrapped result atomically: a temporary file beside the target, then a rename. */
 export async function writeComparisonResultFile(path, result) {
@@ -89,13 +104,18 @@ export async function readComparisonResultFile(path) {
   catch (error) {
     return invalidArgs(error?.code === 'ENOENT' ? `The file ${path} does not exist.` : `The file ${path} could not be read as a result file.`);
   }
-  if (envelope?.format !== COMPARISON_RESULT_FORMAT) return invalidArgs(`The file is not a ${COMPARISON_RESULT_FORMAT} file.`);
+  const process = envelope?.format === COMPARISON_RESULT_FORMAT;
+  if (!process && envelope?.format !== EXPERIMENT_RESULT_FORMAT) {
+    return invalidArgs(`The file is not a ${COMPARISON_RESULT_FORMAT} or ${EXPERIMENT_RESULT_FORMAT} file.`);
+  }
   const { result } = envelope;
   if (!result || typeof result !== 'object' || envelope.digest !== inputDigest(result)) {
     return invalidArgs('The file has changed since it was written (its digest does not match). Run the comparison again.');
   }
-  if (result.kind !== 'process-comparison' || result.experimentId !== PROCESS_EXPERIMENT_ID || result.schemaVersion !== 1
-    || result.caveat !== PROCESS_COMPARISON_CAVEAT) return invalidArgs('The file does not hold a process comparison result this version understands.');
+  if (process && (result.kind !== 'process-comparison' || result.experimentId !== PROCESS_EXPERIMENT_ID || result.schemaVersion !== 1
+    || result.caveat !== PROCESS_COMPARISON_CAVEAT)) return invalidArgs('The file does not hold a process comparison result this version understands.');
+  if (!process && (result.kind !== 'experiment-comparison' || !EXPERIMENT_IDS.includes(result.experimentId) || result.experimentId === PROCESS_EXPERIMENT_ID
+    || result.schemaVersion !== 1 || result.caveat !== EXPERIMENT_CAVEAT)) return invalidArgs('The file does not hold an experiment comparison result this version understands.');
   return { status: 'ok', value: result };
 }
 
@@ -132,29 +152,66 @@ const figure = (number, kind, signed = false) => {
 const spread = (entry, kind, signed) => entry?.mean == null ? 'n/a'
   : `${figure(entry.mean, kind, signed)} (${figure(entry.min, kind)} to ${figure(entry.max, kind)})`;
 
-/** The measures table as plain text lines, one row per entry of result.differences. */
-export function formatMeasuresTable(result) {
-  const head = ['Measure', "Today's release route", 'Buddy route', 'Difference (buddy minus today)', 'Verdict'];
-  const rows = result.differences.map((entry) => {
-    const [label, kind] = labelOf(entry.measure);
-    return [label, spread(entry.current, kind), spread(entry.buddy, kind), spread(entry.difference, kind, true), VERDICTS[entry.verdict] ?? entry.verdict];
-  });
+const renderTable = (head, rows) => {
   const widths = head.map((title, column) => Math.max(title.length, ...rows.map((row) => row[column].length)));
   const line = (cells) => cells.map((cell, column) => cell.padEnd(widths[column])).join('  ').trimEnd();
   return [line(head), widths.map((width) => '-'.repeat(width)).join('  '), ...rows.map(line)];
+};
+
+/** The measures table as plain text lines, one row per entry of result.differences. */
+export function formatMeasuresTable(result) {
+  const head = ['Measure', "Today's release route", 'Buddy route', 'Difference (buddy minus today)', 'Verdict'];
+  return renderTable(head, result.differences.map((entry) => {
+    const [label, kind] = labelOf(entry.measure);
+    return [label, spread(entry.current, kind), spread(entry.buddy, kind), spread(entry.difference, kind, true), VERDICTS[entry.verdict] ?? entry.verdict];
+  }));
 }
+
+const ARM_VERDICTS = Object.freeze({ 'no-clear-difference': 'no clear difference', 'variant-better': 'tried value better',
+  'baseline-better': "today's value better", 'insufficient-seeds': 'too few seeds' });
+const ROUTE_LABELS = Object.freeze({ current: "today's release route", buddy: 'buddy route' });
+
+/** One effect's table for one route as plain text lines: baseline against the tried arm, one row per entry. */
+export function formatArmTable(entries) {
+  const head = ['Measure', "Today's value", 'Tried value', 'Difference (tried minus today)', 'Verdict'];
+  return renderTable(head, entries.map((entry) => {
+    const [label, kind] = labelOf(entry.measure);
+    return [label, spread(entry.baseline, kind), spread(entry.variant, kind), spread(entry.difference, kind, true), ARM_VERDICTS[entry.verdict] ?? entry.verdict];
+  }));
+}
+
+// A number reads with its unit; anything else (the model line mix) reads as compact JSON.
+const valueText = (value, unit) => (typeof value === 'number' ? `${value} ${unit}` : JSON.stringify(value));
+const triedText = (value, unit) => (typeof value === 'number' ? valueText(value, unit) : 'the tried mix');
+const todayText = (value, unit) => (typeof value === 'number' ? valueText(value, unit) : 'the mix used today');
 
 function printResult(stdout, result, { resultId, codeRevision }) {
   const out = (text = '') => stdout(`${text}\n`);
-  out('Process comparison: today\'s release route against the buddy route');
+  const whatIf = result.kind === 'experiment-comparison';
+  const { change } = result.manifest;
+  out(whatIf ? `What-if comparison: ${result.experimentId}` : 'Process comparison: today\'s release route against the buddy route');
   out(`Experiment: ${result.experimentId}`);
   out(`Seeds: ${result.manifest.seeds.join(', ')}`);
   out(`Policy version: ${result.manifest.policyVersion}`);
   out(`Completed at: ${result.completedAt}`);
   out(`Result id: ${resultId}`);
   out(`Code revision: ${codeRevision}`);
-  out();
-  for (const line of formatMeasuresTable(result)) out(line);
+  if (whatIf) {
+    out(`Change: ${change.key} (${change.unit})`);
+    out(`Used today: ${valueText(change.baselineValue, change.unit)}`);
+    out(`Tried: ${change.values ? change.values.map((value) => valueText(value, change.unit)).join(', ') : valueText(change.value, change.unit)}`);
+    out(`Basis: ${change.basis}`);
+    for (const effect of result.effects) {
+      for (const route of ['current', 'buddy']) {
+        out();
+        out(`${triedText(effect.value, change.unit)} against ${todayText(change.baselineValue, change.unit)}: ${ROUTE_LABELS[route]}`);
+        for (const line of formatArmTable(effect.routes[route])) out(line);
+      }
+    }
+  } else {
+    out();
+    for (const line of formatMeasuresTable(result)) out(line);
+  }
   out();
   out(result.caveat);
   for (const limitation of result.limitations) if (limitation !== result.caveat) out(`Limitation: ${limitation}`);
@@ -206,11 +263,20 @@ export async function runComparisonCli({ argv = [], env = process.env, stdout = 
   now = () => new Date().toISOString(), codeRevision, overlay, repository, policy } = {}) {
   const say = (text) => stdout(`${text}\n`);
   const fail = (exitCode, reason) => { stderr(`${reason}\n`); return { exitCode }; };
+  const refuse = (reasons) => fail(2, [...reasons.map(({ field, key, reason }) => `${field}${key ? ` (${key})` : ''}: ${reason}`), 'Nothing was stored.'].join('\n'));
   const parsed = parseComparisonArgs(argv);
   if (parsed.status !== 'ok') return fail(2, parsed.reason);
   const args = parsed.value;
   if (args.help) { say(USAGE); return { exitCode: 0 }; }
 
+  // The same shape check the browser request gets; --seeds is CLI-only and joins after it.
+  let request;
+  if (args.import === undefined) {
+    const body = { experimentId: EXPERIMENTS[args.experiment], ...('change' in args && { change: args.change }) };
+    const checked = parseExperimentRequest(body);
+    if (checked.status !== 'ok') return refuse(checked.reasons);
+    request = checked.value;
+  }
   let file;
   if (args.import !== undefined) {
     file = await readComparisonResultFile(args.import);
@@ -226,10 +292,15 @@ export async function runComparisonCli({ argv = [], env = process.env, stdout = 
   try {
     let result = file?.value;
     if (!result) {
-      const experiment = { experimentId: EXPERIMENTS[args.experiment], ...(args.seeds && { seeds: args.seeds }), ...(overlay && { overlay }) };
-      const onRecord = (record) => stderr(`Seed ${record.seed}: ${record.route === 'current' ? "today's release route" : 'buddy route'} replayed.\n`);
+      const experiment = { ...request, ...(args.seeds && { seeds: args.seeds }), ...(overlay && { overlay }) };
+      const onRecord = (record, { armId }) => stderr(`Seed ${record.seed}${request.change ? `, ${armId}` : ''}: ${record.route === 'current' ? "today's release route" : 'buddy route'} replayed.\n`);
       try { result = await runComparison(experiment, { policy: backend.policy, codeRevision: revision, now, onRecord }); }
-      catch (error) { const { exitCode, reason } = describeFailure(error); return fail(exitCode, `${reason} Nothing was stored.`); }
+      catch (error) {
+        const { exitCode, reason } = describeFailure(error);
+        // The seeds are the CLI's own option, so they keep their own reason; any other refused key reads as the browser's does.
+        const boundary = reason === seedsReason ? null : refusedBoundary(error);
+        return boundary && request.change ? refuse(refusalFor(boundary, request.experimentId).reasons) : fail(exitCode, `${reason} Nothing was stored.`);
+      }
       if (args.out) {
         try { await writeComparisonResultFile(args.out, result); }
         catch { return fail(1, `The result could not be written to ${args.out}. Nothing was stored.`); }

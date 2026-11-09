@@ -1174,6 +1174,8 @@ Presenter-run preparation only. Nothing runs at startup or on a timer, and the b
 
 **Command.** `node scripts/gcsp-comparison.mjs --experiment process [--seeds a,b,c] [--out <file>]` runs FUCQ-136's shared runner, prints the measures table and stores the immutable result through the configured repository (`GCSP_REPOSITORY_MODE`: memory by default, or `postgres` with `GCSP_DATABASE_URL`). The replay always runs in memory in the command's own process, with policy from the reviewed repository seed, in either mode; only the result goes to the configured repository, so a PostgreSQL run makes no policy queries and gives the same measures and digests as a memory run (FUCQ-241). `--out` writes the verified file after a successful run and before storing, so a storage failure keeps it. `--import <file>` stores an existing file without running anything. Exit codes: 0 stored, 2 refused input or file, 1 execution or storage failure. A failed run stores nothing; memory mode keeps nothing after the command ends.
 
+**What-if experiments.** The command line now runs the what-if experiments too; see "Command line" under Comparison worker jobs · FUCQ-175.
+
 **Result file.** `{ format: 'gcsp-process-comparison-result-v1', digest, result }`. Import refuses a changed digest, another format, or a result this version does not understand (kind, experiment, schema version or caveat), and stores nothing.
 
 **Runtime load.** `GCSP_COMPARISON_RESULT_FILE=<file>` opts in to loading a file when the runtime opens. It stores through the same immutable path, so reopening changes nothing. A missing or refused file logs one warning and startup continues.
@@ -1314,6 +1316,12 @@ Show `policyCurrent: false` as "from an earlier policy version".
 **Outcomes.** Success stores the result and sets `resultId`. A worker error, a heap overrun, a failed message or the timeout marks the job `failed` and stores nothing. `close()` (the runtime's first step on close) marks the active job `interrupted`.
 
 **Storage.** Additive migration `0008_comparison_jobs.sql` adds the mutable `comparison_jobs` table (`runId jobId`; `experimentId status request progress startedAt finishedAt resultId reason requestedBy instanceId`). Rows live in the comparison results run, so a live demo reset does not remove them. Progress writes are serialised per job and coalesced. Backend-only: no screen was built, so no screenshots; the response shapes above are the record.
+
+### Command line
+
+`node scripts/gcsp-comparison.mjs --experiment <process|order-mix|points|hold-sweep> [--change <json>] [--seeds a,b,c] [--out <file>]` runs the same experiments as the browser worker. `--change` is the browser body's `change` as JSON (required for the three what-ifs, refused for `process`, which means `process-only`); it goes through `parseExperimentRequest`, so a bad request prints every problem as `<field> (<policy key>): <reason>` and exits 2 with nothing stored. A value the runner refuses (out of range, repeated, the same as today, too many values) reads the same way, through the shared `refusalFor`. `--seeds` is CLI-only and joins after that check. The replay uses `createReplayPolicy` and `runComparison`, and the result goes through `storeComparisonResult`, so the CLI and the worker store identical results for the same request. Exit codes: 0 stored, 1 failed, 2 refused input or file. The command prints the change (key, unit, value used today, value or values tried, basis) and one table per tried value and route, then the caveat and limitations. `--import <file>` cannot be combined with the run options.
+
+**Result files.** `--out` writes `{ format, digest, result }` with format `gcsp-process-comparison-result-v1` for a process result or `gcsp-experiment-comparison-result-v1` for a what-if result. `--import` and `GCSP_COMPARISON_RESULT_FILE` accept either, check the digest, and refuse a file whose kind, experiment id, schema version or caveat this version does not understand. Importing again changes nothing.
 
 ## Named scenario catalogue and preparation · FUCQ-125
 

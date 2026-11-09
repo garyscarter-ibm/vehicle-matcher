@@ -1,21 +1,13 @@
 import { randomUUID } from 'node:crypto';
 import { Worker } from 'node:worker_threads';
 import { inputDigest, ok, result } from '../repository/core.js';
-import { EXPERIMENT_KEYS } from './experiments.js';
 import { requireGregOrPresenter } from './http.js';
+import { refusalFor } from './requests.js';
 import { COMPARISON_RESULTS_RUN, comparisonResultsScope, ensureResultsRun, storeComparisonResult } from './results.js';
 
 export const JOBS_KEY = 'comparison.jobs.v1';
 const TABLE = 'comparison_jobs';
 const WORKER_URL = new URL('./worker.js', import.meta.url);
-const BOUNDARY_REASONS = Object.freeze({
-  experimentId: 'Choose one of the known comparison experiments.',
-  change: 'Give the change in the shape this experiment takes.',
-  basis: 'Say why this change is worth trying.',
-  overlay: 'The shared settings are not valid for this experiment.',
-  seeds: 'Give at least one seed, each different and not empty.',
-});
-const KEY_REASON = 'This value is outside its allowed range, repeated, or the same as the value used today.';
 const FAILED = 'The comparison could not be completed.';
 const EXITED = 'The comparison worker stopped before it finished.';
 const BACKEND_STOPPED = 'The backend stopped before the comparison finished.';
@@ -23,22 +15,6 @@ const BACKEND_STOPPED = 'The backend stopped before the comparison finished.';
 const plain = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const command = (commandId, input) => ({ commandId, inputDigest: inputDigest(input) });
 const unavailable = (reason, extra = {}) => result('unavailable', { reason, retryable: true, ...extra });
-const KEY_REASONS = Object.freeze({
-  [EXPERIMENT_KEYS['hold-sweep']]: 'Each hold must be within the allowed range, different from the others and from the hold used today.',
-  [EXPERIMENT_KEYS.points]: 'The multiplier must be within the allowed range and different from the one used today.',
-  [EXPERIMENT_KEYS['order-mix']]: 'This mix is not valid, or is the same as the one used today.',
-});
-// A policy key the worker refuses is reported on the change field that carries it; the browser never sends an overlay.
-const invalidReasons = (boundary, experimentId) => {
-  const key = Object.values(EXPERIMENT_KEYS).includes(boundary) ? boundary
-    : boundary === 'overlay' && experimentId === 'order-mix' ? EXPERIMENT_KEYS['order-mix'] : null;
-  if (key) return result('invalid', { code: 'invalid-experiment', reasons: [{
-    field: key === EXPERIMENT_KEYS['hold-sweep'] ? 'change.values' : 'change.value', key, reason: KEY_REASONS[key] }] });
-  const field = boundary === 'basis' ? 'change.basis' : boundary;
-  return result('invalid', { code: 'invalid-experiment', reasons: [{
-    field, key: boundary.includes('.') ? boundary : null, reason: BOUNDARY_REASONS[boundary] ?? KEY_REASON }] });
-};
-
 const limitsOf = (outcome, context) => {
   const row = outcome?.value?.value;
   const good = outcome?.status === 'ok' && (typeof context.policyVersion !== 'string' || outcome.policyVersion === context.policyVersion)
@@ -159,7 +135,7 @@ export function createComparisonJobService({ repository, policy, clock, identity
     if (job.settled || !plain(message)) return;
     if (job.phase === 'recording') { job.backlog.push(message); return; }
     if (message.type === 'invalid' && job.phase === 'starting') {
-      return abandon(job, invalidReasons(typeof message.boundary === 'string' ? message.boundary : 'overlay', job.request.experimentId));
+      return abandon(job, refusalFor(typeof message.boundary === 'string' ? message.boundary : 'overlay', job.request.experimentId));
     }
     if (message.type === 'plan' && job.phase === 'starting') return onPlan(job, message);
     if (job.phase === 'starting') return abandon(job, unavailable(message.type === 'failed' ? reasonOf(message) : FAILED));
@@ -215,10 +191,10 @@ export function createComparisonJobService({ repository, policy, clock, identity
       const allowed = await requireGregOrPresenter(identity, context);
       if (allowed.status !== 'ok') return allowed;
       if (busy()) return running(busy());
-      if (!plain(experiment) || typeof experiment.experimentId !== 'string') return invalidReasons('experimentId');
+      if (!plain(experiment) || typeof experiment.experimentId !== 'string') return refusalFor('experimentId');
       let request;
       try { request = { experimentId: experiment.experimentId, ...(experiment.change !== undefined && { change: structuredClone(experiment.change) }) }; }
-      catch { return invalidReasons('change'); }
+      catch { return refusalFor('change'); }
       let limits;
       try {
         const time = await clock.now(context);

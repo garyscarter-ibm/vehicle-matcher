@@ -1,15 +1,7 @@
 import { isMainThread, parentPort, workerData } from 'node:worker_threads';
 import { runComparison, validateExperiment } from './experiments.js';
-import { ComparisonRunError } from './harness.js';
-import { ComparisonInputError } from './generator.js';
 import { createReplayPolicy, defaultCodeRevision, describeFailure } from './job.js';
-
-// The boundary a refused request names, or null when the failure is not an invalid request.
-const refusedBoundary = (error) => {
-  if (error instanceof ComparisonRunError && error.code === 'invalid-input') return error.boundary;
-  if (error instanceof ComparisonInputError && error.code.startsWith('invalid-')) return error.key;
-  return null;
-};
+import { refusedBoundary } from './requests.js';
 
 // Runs one comparison and reports to the parent: invalid, or plan then progress then result, or failed.
 async function runWorkerJob(port, { experiment, codeRevision, fixedNow, overlay }) {
