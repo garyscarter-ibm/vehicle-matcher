@@ -274,3 +274,10 @@ For Russell or Gary:
   - **FUCQ-250 (bug, not in MoSCoW, High), new:** every car in the demo journey shows "No image for this car yet". Imported as DEV-2026-11-09-GC-018 and a lead started at once, reusing FUCQ-60's approved corpus images with no new collection.
   - Two stale waits from this morning were stopped. They looped while any `test-concurrency=1` run existed on the machine, so they could never finish; leads are now told to wait on their own PID or output file.
   - To Do triage: in progress are FUCQ-246, 251, 169, 171, 27 and 250. FUCQ-28 waits on 27. FUCQ-247 and 248 (Gary's review stories) start once every functional ticket is delivered, today.
+- **About 14:00 9 Nov.**
+  - **FUCQ-27 closed** (merged 43a862f7), In Review, on Gary's same-day direction (overrides build-rules' "after 12 Nov"). engine.js is now a facade over `server/recommendation/` and `used-retail-v1`; 1,201 parity cases show no differences, and audit, audit:refine and personas output is byte-identical. Merged base: 338/338 engine and render tests, api 55/55. Rollback: revert 686d3295, then 16159c45.
+  - New proposal **FUCQ-255** (Story, needs review): move the employee pipeline onto the shared core.
+  - FUCQ-28 lead started on 43596a1b.
+  - Dispatcher slip, fixed: a scoped test command with an unmatched zsh glob ran the whole suite at concurrency 2 for about 5 minutes; it was stopped through its own task. Test lists now come from `git ls-files`.
+  - handover-chain: FUCQ-169 (ca507616) and FUCQ-251 (2d5be417) closed and In Review; new bugs FUCQ-252 (Medium), 253 and 254 (Low) raised and taken by the chain; FUCQ-171 and 252 building.
+  - **Gary:** use generic agents for FUCQ-247/248, configured first. Two local agent definitions are ready (`.claude/agents/performance-sme.md`, `ux-sme.md`, git-ignored). The hosted demo can only be timed for unauthenticated requests.
