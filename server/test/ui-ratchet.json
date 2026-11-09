@@ -282,6 +282,10 @@
     {
       "path": "blocks/gcsp/kit/show-more.css",
       "max_lines": 6
+    },
+    {
+      "path": "blocks/gcsp/kit/data-table-compare.css",
+      "max_lines": 8
     }
   ],
   "baseline": {

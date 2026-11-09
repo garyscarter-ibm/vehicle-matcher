@@ -179,9 +179,9 @@ export function mediaWell(car, extraClass = '', { placeholder = 'Images coming s
 export function matchCard(match, {
   big = false, compact = false, brand: brandKey = 'bmw',
   showScore = true, showPaint = false,
-  rejectOptions, rejectLabel, rejectPrompt, onListingSelect, view, onAction, scoreLabel,
+  rejectOptions, rejectLabel, rejectPrompt, onListingSelect, view, onAction, scoreLabel, factsClass,
 } = {}) {
-  if (view) return explicitViewCard(view, { compact, showScore, scoreLabel, onListingSelect, onAction });
+  if (view) return explicitViewCard(view, { compact, showScore, scoreLabel, factsClass, onListingSelect, onAction });
   const { car } = match;
   const listings = listingsOf(match);
   const copy = BRAND_COPY[brandKey] || BRAND_COPY.bmw;
@@ -620,7 +620,7 @@ const gateLabels = { eligible: 'Eligible', ineligible: 'Not eligible', 'needs-co
 const decisionText = (entry) => typeof entry === 'string' ? entry : entry?.text || entry?.reason || entry?.code?.replaceAll('-', ' ') || 'Not supplied';
 
 // The explicit projection is display data only; the caller owns decisions, transport and state.
-function explicitViewCard(view, { compact, showScore, scoreLabel, onListingSelect, onAction }) {
+function explicitViewCard(view, { compact, showScore, scoreLabel, factsClass, onListingSelect, onAction }) {
   const members = listingsOf(null, { view });
   if (!members.length) throw new TypeError('An explicit card view requires exact members');
   let selected = members.find((member) => member.id === view.selectedId) || members[0];
@@ -655,7 +655,7 @@ function explicitViewCard(view, { compact, showScore, scoreLabel, onListingSelec
     score.title = label?.title || 'Preference match score';
     showPhoto(selected.media?.src, { ...selected.display, ...selected.media });
     terms.replaceChildren(...(selected.terms?.length ? selected.terms : [{}]).map((term) => el('p', 'vm-specs', formatTerm(term))));
-    facts.replaceChildren(factList((selected.facts || []).map((row) => ({ ...row, missingLabel: row.missingLabel || `Not supplied${row.unit ? ` (${row.unit})` : ''}` }))));
+    facts.replaceChildren(factList((selected.facts || []).map((row) => ({ ...row, missingLabel: row.missingLabel || `Not supplied${row.unit ? ` (${row.unit})` : ''}` })), { className: factsClass }));
     decision.replaceChildren(el('p', 'vm-card-gate', gateLabels[exact?.gateStatus] || 'Decision not supplied'));
     for (const [key, label] of [['reasons', 'Why it suits you'], ['blockers', 'Why it is not eligible'], ['unknowns', 'Needs confirmation'], ['tradeOffs', 'Trade-offs']]) {
       if (!exact?.[key]?.length) continue;

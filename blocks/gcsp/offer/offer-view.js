@@ -1,7 +1,8 @@
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
-import { matchCard, mediaWell } from '../../vehicle-matcher/modes/result-card.js';
+import { matchCard } from '../../vehicle-matcher/modes/result-card.js';
 import { labelledField, errorSummary, checkboxField } from '../kit/form-controls.js';
 import { stageList } from '../kit/stage-list.js';
+import { dataTable } from '../kit/data-table.js';
 import { orderIdentityRows } from '../kit/order-identity.js';
 import { ACCESS_LAPSED_TITLE, RUN_RESTARTED_TITLE, accessLapsedScreen, runRestartedScreen } from '../kit/run-restarted.js';
 import { followupHandle } from './followup-entry.js';
@@ -55,20 +56,32 @@ const decisionReason = (model) => model.decisionUnavailable ? 'Decisions are una
     : model.canDecline && model.actions?.accept !== true ? 'Acceptance is unavailable. You can still decline this offer.'
       : 'Actions depend on current server availability.';
 
-function comparison(currentCar) {
-  const section = el('section', 'gcsp-panel gcsp-offer-current');
-  section.append(el('h2', 'gcsp-h2', 'Your current car'));
+// The offered value for a shared row: points from the term, the rest from the card fact with the same shared label.
+function offeredValue(member, row) {
+  if (row.key === 'points') {
+    const points = member.terms?.find((term) => term.kind === 'points-monthly')?.value;
+    return Number.isFinite(points) ? `${points.toLocaleString('en-GB')} points` : null;
+  }
+  const fact = member.facts?.find((entry) => entry.label === row.label);
+  if (fact?.value === null || fact?.value === undefined || fact?.value === '') return null;
+  return `${typeof fact.value === 'number' ? fact.value.toLocaleString('en-GB') : fact.value}${fact.unit ? ` ${fact.unit}` : ''}`;
+}
+const cell = (value, missingLabel) => value === null ? { label: missingLabel, missing: true } : value;
+
+function comparison(member, currentCar) {
+  const section = el('section', 'gcsp-offer-current'); section.dataset.offerComparison = '';
   if (!currentCar) {
     section.append(el('p', 'gcsp-note', 'Current-car details not supplied. Equipment is unknown.'));
     return section;
   }
   const name = currentCar.display?.name || 'Current car not supplied';
-  section.append(el('h3', null, name));
-  if (currentCar.status === 'partial') section.append(el('p', 'gcsp-note', currentCar.facts?.some((row) => row.value !== null)
+  section.append(dataTable({ caption: 'Compared with your current car', compare: true,
+    columns: [{ key: 'label', label: 'Detail' }, { key: 'offer', label: 'This offer', detail: member.display?.name },
+      { key: 'current', label: 'Your current car', detail: currentCar.configuration ? `${name}, ${currentCar.configuration}` : name }],
+    rows: currentCar.facts.map((row) => ({ label: row.label, offer: cell(offeredValue(member, row), 'Not supplied'),
+      current: cell(row.value, row.missingLabel || 'Unknown') })) }));
+  if (currentCar.status === 'partial') section.append(el('p', 'gcsp-note', currentCar.facts.some((row) => row.value !== null)
     ? 'Partial comparison. Some current-car facts are unknown.' : 'Partial comparison. Current-car specifications and points are unknown.'));
-  section.append(mediaWell(null, '', { placeholder: 'No image for this car yet', view: {
-    display: { name }, media: currentCar.media || {} } }).media);
-  section.append(factList(currentCar.facts || []));
   return section;
 }
 
@@ -156,6 +169,8 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       messageNode = screen.querySelector('.vm-lede'); content.append(screen);
     } else {
       content.append(screenIntro({ title: titleFor(model), level: 1 }));
+      // The deadline leads, directly under the heading, so it is not found below the declarations.
+      if (state === 'pending') { clockNode = el('p', 'gcsp-countdown'); asOfNode = el('p', 'gcsp-note'); content.append(clockNode, asOfNode); }
       messageNode = el('p', 'gcsp-note', messageFor(model, hostsOrder));
       messageNode.hidden = !messageFor(model, hostsOrder); content.append(messageNode);
     }
@@ -171,9 +186,11 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       const columns = el('div', 'gcsp-offer-comparison');
       const offer = el('section', 'gcsp-offer-exact');
       offer.setAttribute('aria-label', 'The offered car');
-      const card = structuredClone(model.card); card.members[0].actions = [];
-      offer.append(matchCard(null, { view: card, big: true, showScore: false }));
-      columns.append(offer, comparison(model.currentCar)); content.append(columns);
+      const card = structuredClone(model.card); const member = card.members[0]; member.actions = [];
+      // Compared specs live in the table, so the card keeps identity facts only (when there is a current car).
+      if (model.currentCar) { const shared = new Set(model.currentCar.facts.map((row) => row.label)); member.facts = member.facts.filter((row) => !shared.has(row.label)); }
+      offer.append(matchCard(null, { view: card, big: true, showScore: false, factsClass: 'vm-facts-pair' }));
+      columns.append(offer, comparison(model.card.members[0], model.currentCar)); content.append(columns);
     }
     const summary = state === 'declined' ? declinedSummary(model.card) : '';
     if (summary) { const line = el('p', 'gcsp-note', summary); line.dataset.offerDeclinedSummary = ''; content.append(line); }
@@ -186,8 +203,6 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       content.append(section);
     }
     if (state === 'pending') {
-      clockNode = el('p', 'gcsp-countdown'); asOfNode = el('p', 'gcsp-note');
-      content.append(clockNode, asOfNode);
       const actions = el('div', 'gcsp-offer-actions');
       const reason = el('p', 'gcsp-note', decisionReason(model));
       reason.id = `${page.id}-decision-reason`;

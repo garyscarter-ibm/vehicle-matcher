@@ -4,12 +4,12 @@ import { el } from '../../vehicle-matcher/ui.js';
 export const BAND_DESCRIPTION = ', a privacy band: the exact count is hidden';
 const LEVELS = ['headline', 'standard', 'compact'];
 
-/** Value (string, number or { label, isBand }) -> { label, isBand, missing }. */
+/** Value (string, number, { label, isBand } or { label, missing }) -> { label, isBand, missing }. */
 export function readValue(value) {
   if (value === null || value === undefined || value === '') return { label: 'Not supplied', isBand: false, missing: true };
   if (typeof value === 'object') {
     const label = value.label === null || value.label === undefined || value.label === '' ? null : String(value.label);
-    return label === null ? { label: 'Not supplied', isBand: false, missing: true } : { label, isBand: Boolean(value.isBand), missing: false };
+    return label === null ? { label: 'Not supplied', isBand: false, missing: true } : { label, isBand: Boolean(value.isBand), missing: value.missing === true };
   }
   return { label: typeof value === 'number' ? value.toLocaleString('en-GB') : String(value), isBand: false, missing: false };
 }
