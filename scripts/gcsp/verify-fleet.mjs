@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+import { realpathSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { isAbsolute, join, resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
 import { performance } from 'node:perf_hooks';
 import { once } from 'node:events';
@@ -305,4 +306,4 @@ export async function verifyFleetCli(argv = process.argv.slice(2), write = (valu
   }
   write(JSON.stringify(report) + '\n'); return ['verified-staged', 'verified-active'].includes(report.status) ? 0 : 1;
 }
-if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) process.exitCode = await verifyFleetCli();
+if (process.argv[1] && realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))) process.exitCode = await verifyFleetCli();
