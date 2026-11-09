@@ -8,14 +8,16 @@ export function labelledField({ id, label, control, hint = '', error = '' }) {
   const failure = el('p', 'gcsp-field-error'); failure.id = `${id}-error`;
   root.append(name, control, note, failure);
   const described = control.getAttribute('aria-describedby')?.split(/\s+/).filter(Boolean) ?? [];
-  function setError(value = '') {
-    failure.textContent = value; failure.hidden = !value;
-    control.setAttribute('aria-invalid', String(!!value));
-    const ids = [...new Set([...described, ...(hint ? [note.id] : []), ...(value ? [failure.id] : [])])];
+  let shownHint = hint; let shownError = '';
+  function refresh() {
+    control.setAttribute('aria-invalid', String(!!shownError));
+    const ids = [...new Set([...described, ...(shownHint ? [note.id] : []), ...(shownError ? [failure.id] : [])])];
     if (ids.length) control.setAttribute('aria-describedby', ids.join(' ')); else control.removeAttribute('aria-describedby');
   }
+  function setError(value = '') { failure.textContent = value; failure.hidden = !value; shownError = value; refresh(); }
+  function setHint(value = '') { note.textContent = value; note.hidden = !value; shownHint = value; refresh(); }
   setError(error);
-  return { root, setError };
+  return { root, setError, setHint };
 }
 
 /** Native checkbox with its label beside it. The caller owns the checked state. */

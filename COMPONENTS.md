@@ -286,7 +286,7 @@ Looked at `renderOptionList` and `renderRangeSlider`: they supply question butto
 
 | Call | Use for |
 |---|---|
-| `labelledField({ id, label, control, hint, error })` | Associates a unique id with a native control, label, optional hint and inline error. Returns `{ root, setError }`; updates preserve the control and manage `aria-invalid` and `aria-describedby`. |
+| `labelledField({ id, label, control, hint, error })` | Associates a unique id with a native control, label, optional hint and inline error. Returns `{ root, setError, setHint }`; updates preserve the control and manage `aria-invalid` and `aria-describedby`. `setHint(text)` swaps the hint for a value-dependent note (FUCQ-282: the made-up demo address note). |
 | `errorSummary({ id, title, errors: [{ id, message }], onSelect })` | Links validation messages to controls. Returns `{ root, update, focus }`; focus targets its heading and links target the relevant control. |
 | `checkboxField({ id, label, checked, onChange })` | A native checkbox with its label beside it, 24px control and visible focus, for declarations. Returns `{ root, input }`; the caller owns the checked state. Added in `form-controls.js` and `form-controls.css` for FUCQ-108. `labelledField` stacks its label above the control and suits text, select and date controls, not a tick box. |
 

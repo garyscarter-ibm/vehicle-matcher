@@ -378,3 +378,14 @@ test('FUCQ-278: a single-car conflict keeps the list, counts and allowance and b
   click(f.root, 'Refresh availability'); await waitFor(() => !f.root.querySelector('.vm-status'));
   assert.equal(reviewReason(f.root)[0][0], false);
 });
+
+test('FUCQ-282: the invalid-choices state shows Back to your choices once, and it still works', async (t) => {
+  const root = document.createElement('div'); document.body.append(root); let back = 0;
+  const invalid = { status: 'invalid', code: 'invalid-manual-draft', reasons: [{ field: 'requestedCollectionDate', reason: 'x' }] };
+  const teardown = mountManualGallery(root, { adapter: { ...createManualGalleryFixtureAdapter(), browseStock: async () => structuredClone(invalid) }, onBack: () => { back += 1; } });
+  t.after(() => { teardown(); root.remove(); });
+  await waitFor(() => teardown.gallery.getState().state === 'choices-invalid');
+  const visible = [...root.querySelectorAll('button')].filter((b) => b.textContent === 'Back to your choices' && !b.closest('[hidden]') && !b.hidden);
+  assert.equal(visible.length, 1); assert.ok(visible[0].closest('.gcsp-gallery-results'));
+  visible[0].click(); assert.equal(back, 1);
+});

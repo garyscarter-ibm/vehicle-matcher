@@ -1,3 +1,4 @@
+import { longDate } from '../kit/plain-copy.js';
 const list = (value) => Array.isArray(value) ? value : [];
 const object = (value) => value && typeof value === 'object' && !Array.isArray(value);
 export const setupFields = ['driverId', 'contractOptionId', 'requestedCollectionDate', 'collectionLocationId',
@@ -84,7 +85,7 @@ export function deriveSetupModel(account, choices) {
     .filter((location) => !selectedContract || (location.contractOptionIds?.includes(selectedContract.contractOptionId)
       && location.driverKinds?.includes(selectedDriver?.kind)))
     .map((location) => {
-      const reason = !selectedContract ? 'Choose a permitted term and mileage first.'
+      const reason = !selectedContract ? 'Choose a contract length and annual mileage first.'
         : location.closedDates?.includes(choices?.requestedCollectionDate) ? 'Closed on the requested collection date.' : null;
       return { ...location, disabled: !!reason, reason };
     });
@@ -96,18 +97,19 @@ export function deriveSetupModel(account, choices) {
   const max = [leadDate(rules?.maximumLeadDays), window?.latestCollectionDate].filter(Boolean).sort()[0] ?? null;
   if (!configured || !supplied || !intent || !choices || !matchesIntent(choices, intent)) fail('context', 'Refresh and review the trusted ordering context.');
   if (!allowanceReady) fail('allowance', 'Monthly points allowance needs confirmation. Contact scheme support.');
-  if (!drivers.some((d) => d.driverId === choices?.driverId)) fail('driverId', 'Choose a supplied driver.');
+  if (!drivers.some((d) => d.driverId === choices?.driverId)) fail('driverId', 'Choose who will drive the car.');
   else if (driverReason(selectedDriver, choices.requestedCollectionDate, account?.asOf)) fail('driverId', driverReason(selectedDriver, choices.requestedCollectionDate, account?.asOf));
-  if (!selectedContract) fail('contractOptionId', 'Choose a permitted term and annual mileage.');
-  if (!list(supplied?.brands).includes(choices?.brand)) fail('brand', 'Choose a supported brand.');
-  if (!collectionLocations.some((l) => l.locationId === choices?.collectionLocationId && !l.disabled)) fail('collectionLocationId', 'Choose an open, permitted collection location.');
-  if (!validDate(choices?.requestedCollectionDate)) fail('requestedCollectionDate', 'Supply a valid requested collection date.');
-  else if (!min || !max || choices.requestedCollectionDate < min || choices.requestedCollectionDate > max) fail('requestedCollectionDate', 'Choose a date inside the supplied collection and renewal window.');
+  if (!selectedContract) fail('contractOptionId', 'Choose a contract length and annual mileage.');
+  if (!list(supplied?.brands).includes(choices?.brand)) fail('brand', 'Choose a brand.');
+  if (!collectionLocations.some((l) => l.locationId === choices?.collectionLocationId && !l.disabled)) fail('collectionLocationId', 'Choose where to collect the car.');
+  if (!validDate(choices?.requestedCollectionDate)) fail('requestedCollectionDate', 'Enter the date you want to collect the car.');
+  else if (!min || !max || choices.requestedCollectionDate < min || choices.requestedCollectionDate > max) fail('requestedCollectionDate', min && max ? `Choose a collection date between ${longDate(min)} and ${longDate(max)}.` : 'Choose a date inside your collection window.');
   if (!object(choices?.contact) || Object.keys(choices.contact).some((k) => !['phone', 'email'].includes(k))
     || !/^\+?[0-9 ()-]{7,30}$/.test(choices?.contact?.phone ?? '') || typeof choices?.contact?.email !== 'string'
-    || choices.contact.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(choices.contact.email)) fail('contact', 'Supply a contact telephone and email address.');
-  if (intent?.mode === 'replacement' ? !Number.isSafeInteger(choices?.expectedReturnMileage) || choices.expectedReturnMileage < 0
-    || choices.expectedReturnMileage > rules?.maximumReturnMileage : choices?.expectedReturnMileage != null) fail('expectedReturnMileage', 'Supply returning-car mileage only for a replacement, in miles.');
+    || choices.contact.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(choices.contact.email)) fail('contact', 'Enter a phone number and an email address.');
+  if (intent?.mode !== 'replacement') { if (choices?.expectedReturnMileage != null) fail('expectedReturnMileage', 'Mileage applies only when you replace a car.'); }
+  else if (!Number.isSafeInteger(choices?.expectedReturnMileage) || choices.expectedReturnMileage < 0) fail('expectedReturnMileage', 'Enter the mileage your current car will have when you return it.');
+  else if (choices.expectedReturnMileage > rules?.maximumReturnMileage) fail('expectedReturnMileage', `Enter a mileage of up to ${rules.maximumReturnMileage.toLocaleString('en-GB')} miles.`);
   if (typeof choices?.specialRequirements !== 'string' || choices.specialRequirements.length > rules?.maximumSpecialRequirements
     || /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(choices.specialRequirements)) fail('specialRequirements', `Use at most ${rules?.maximumSpecialRequirements ?? 0} characters.`);
   return { intent, rules: rules ?? null, drivers, selectedDriver: selectedDriver ?? null, contractOptions, collectionLocations,

@@ -76,8 +76,9 @@ test('grouped setup preserves native controls and focus through edits and displa
   input(f, 'driverId', `nominated:${f.context.employeeId}`);
   assert.match(f.root.textContent, /Driver and licence facts are read-only/); assert.match(f.root.textContent, /spouse/); assert.match(f.root.textContent, /FICTIONAL-NOMINEE/);
   assert.ok(control(f, 'contractOptionId').querySelector('[value="twelve-month-12000"]').disabled);
-  const reasons = f.root.querySelector('.gcsp-setup-reasons').textContent; // FUCQ-197: a choice is named, not its id
-  assert.match(reasons, /12 months, 12000 mi\/year: /); assert.equal(reasons.includes('twelve-month-12000'), false);
+  const reason = control(f, 'contractOptionId').querySelector('[value="twelve-month-12000"]').textContent; // FUCQ-197: named, not its id
+  assert.match(reason, /^12 months, 12000 mi\/year \(.+\)$/); assert.equal(reason.includes('twelve-month-12000'), false);
+  assert.equal(f.root.querySelector('.gcsp-setup-reasons'), null); // FUCQ-282: no separate list of reasons
   click(f, 'Get help with drivers and licences'); assert.match(f.root.textContent, /Contact driver support.*No request has been sent/);
 });
 test('invalid Continue focuses error summary and links a field without discarding edits', async (t) => {
@@ -153,5 +154,25 @@ test('FUCQ-237: a site that cannot apply to the chosen contract and driver is ne
   await waitFor(() => control(f, 'collectionLocationId')?.options.length === 2);
   const offered = [...control(f, 'collectionLocationId').options].map((o) => o.textContent).join('|');
   assert.match(offered, /Fictional collection centre/); assert.equal(offered.includes('Fictional company site'), false);
-  assert.equal(f.root.querySelector('.gcsp-setup-reasons').textContent.includes('Fictional company site'), false);
+});
+
+test('FUCQ-282: an empty Continue says what to do in plain words, with no reasons list and no system phrasing', async (t) => {
+  const f = await setup(t); click(f, 'Continue');
+  await waitFor(() => document.activeElement.textContent === 'Check your choices');
+  const shown = f.root.querySelector('.gcsp-error-summary').textContent;
+  for (const message of ['Choose who will drive the car.', 'Choose a contract length and annual mileage.', 'Choose where to collect the car.',
+    'Enter the mileage your current car will have when you return it.']) assert.ok(shown.includes(message), message);
+  assert.doesNotMatch([...f.root.querySelectorAll('.gcsp-error-summary, .gcsp-field-error')].map((n) => n.textContent).join(' '), /Supply|supplied|permitted|supported/);
+  assert.equal(f.root.querySelector('.gcsp-setup-reasons'), null);
+  input(f, 'expectedReturnMileage', '900000'); click(f, 'Continue');
+  await waitFor(() => /up to 500,000 miles/.test(f.root.textContent));
+});
+
+test('FUCQ-282: a made-up .invalid contact address is labelled as one, a real-looking address is not', async (t) => {
+  const f = await setup(t); const hint = () => f.root.querySelector('#' + control(f, 'email').getAttribute('aria-describedby')?.split(' ')[0]);
+  assert.match(control(f, 'email').value, /@example\.invalid$/);
+  assert.equal(hint().textContent, 'Made-up demo address.'); assert.equal(hint().hidden, false);
+  input(f, 'email', 'paula@example.com');
+  assert.equal(control(f, 'email').getAttribute('aria-describedby'), null);
+  input(f, 'email', 'paula@example.invalid'); assert.equal(hint().textContent, 'Made-up demo address.');
 });
