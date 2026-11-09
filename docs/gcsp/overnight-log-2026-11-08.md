@@ -122,6 +122,25 @@ Entries are added as work merges.
   - Also on Jira, FUCQ-98 comment 3627934.
 - **Russell's poller is running overnight,** on his direction: it leaves every story Gary has claimed to Gary, and skips Won't-for-demo work.
 
+### Russell's poller, morning report (9 Nov, 02:50 UK)
+
+Built, merged to gcsp-poc, closed and **In Review** (none moved to Done):
+- **FUCQ-155** (bug, Medium), merged 409afd06. Verification only: the fix was already in b556ee34. Both supervisor gates use `is False`, and the True/False/None truth table and the supervisor pin are checked. *Check:* 30 other pins in contract 715a5ad2 are stale, so a new publication needs a fresh contract.
+- **FUCQ-153** (bug, Medium), merged f762fd31. Russell's 7 Nov repair was unchanged; this adds four guard regressions, and the pre-fix loader fails 5 of 13. Targeted checks: 45/45. **AC5 is open:** the >64 MiB OneDrive proof rerun needs a separate, authorised, reviewed run.
+- **FUCQ-154** (bug, Medium), merged f2b11510. The F70 supervisor now uses the standard token-owned scratch root, so `reconcile()` can clean it after a SIGKILL. New test 7/7; test_resources 40/40. *Check:* `execution-plan.json` deliberately keeps the old supervisor pin, because it records the code that ran.
+- **FUCQ-151** (bug, Medium), merged 21150c11. `collect-fleet.mjs` now caches validated bindings by the digest of their exact bytes. Offline results: 32 sources went from 20.1 s to 2.7 s; 100 sources took 16.3 s, where the old code stopped at 90 on its cap. Targeted checks: 274/274. **AC3 is open:** it needs one finite source allocation (for example a 32-request chunk). Also, 200 sources peaked at about 540 MB, above the 448 MiB child limit.
+
+Housekeeping:
+- Missing-headings comments are posted on FUCQ-181, 190, 207, 218, 226 and 232. FUCQ-184 and FUCQ-185 were skipped, because Gary's comments already say they're fixed in FUCQ-124. Their inbox records, DEV-2026-11-09-003 and 004, are stale and can be retired.
+- FUCQ-150's screenshot is downloaded and verified into the evidence cache.
+- Cleanup is complete for DEV-2026-11-04-031 to 034 and for tonight's four stories.
+
+For Russell or Gary:
+- **FUCQ-150:** Gary's 3712a143 (full-width Greg region) looks like the fix. The story still fails check-story (no `ui:` line); please confirm and close it.
+- **DEV-2026-11-04-035 and 036** stay `cleanup: pending`. Their worktrees hold untracked fucq58/62/63 result JSON: commit it or discard it.
+- **FUCQ-98:** the test email still needs the hosted demo key (see the section above).
+- **Not taken:** FUCQ-152 (fails check-story), FUCQ-218 (waiting on Russell), and everything Won't-for-demo or post-demo. FUCQ-233 overlapped Gary's allocation work, and his poller has since imported it.
+
 ## Gary's poller, from about 01:00 (9 Nov)
 
 - **FUCQ-113 and FUCQ-115 merged, pushed and In Review.** Scoped tests on the merged base: 348 tests, 0 failed. FUCQ-115 is partly met, and its four questions above are also on its Jira comment.
