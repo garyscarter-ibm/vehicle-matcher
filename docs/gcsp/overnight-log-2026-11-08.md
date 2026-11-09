@@ -92,3 +92,9 @@ Entries are added as work merges.
   - **Questions for Gary:**
     1. Should facts for rows carrying a dealer accessory be qualified from an accessory-free OTD request? My recommendation: no, leave them honestly rejected. That's what's built.
     2. Will you approve OTD meaning mappings for CO2 and range/economy?
+- **About 00:10, FUCQ-229 fixed and pushed.** Generated-stock lead times now count from the end of the run's release horizon, so every Next release works. The policy seed is unchanged. Scoped tests: 268/273, 0 failures, 4 skipped, 1 existing todo.
+  - **Generated runs started before the fix need a presenter reset.**
+  - Leftover edge case, raised as **FUCQ-231 (bug, not in MoSCoW, Medium):** a presenter time jump or a 0-week lead can still wedge later pulls. The proposed fix is to leave expired cars out of the pull.
+  - **Question for Gary:** generated runs' three Next releases release only window-0 cars, about 60 of 300 to 400. Is that intended?
+- **FUCQ-77 closed and pushed** (partly met). The open gates are on its Jira comment.
+- **FUCQ-113 and FUCQ-115** (the learned model) are now being finished on the real data, by a fresh lead.
