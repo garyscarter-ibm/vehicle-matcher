@@ -230,6 +230,8 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     if (busy || disposed || restarted) return;
     busy = true; readMessage.textContent = 'Loading readback'; update();
     try {
+      // FUCQ-261: with no presenter control cookie (server-reported) the controls read would only log a 403.
+      const gate = authorized ? null : await adapter.readContext?.(options); if (disposed || gate?.presenterControl === false) return;
       const read = await adapter.readControls(options); if (disposed) return;
       if (read.status !== 'ok') {
         if (!authorized) return;
@@ -238,7 +240,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
         readMessage.textContent = read.code === 'presenter-transport-unavailable' ? 'Backend unavailable. Refresh readback.' : `Readback unavailable: ${why(read)}`; return;
       }
       authorized = true; state = read.value; update();
-      const [acting, scenarios, faultRead] = await Promise.all([adapter.readContext(options), adapter.readScenarios(options),
+      const [acting, scenarios, faultRead] = await Promise.all([gate ?? adapter.readContext(options), adapter.readScenarios(options),
         Promise.resolve(adapter.readFaults?.(options)).catch(() => null)]);
       if (disposed) return;
       if (isRunRestarted(acting) || isRunRestarted(scenarios) || isRunRestarted(faultRead)) { enterRestarted(); return; }

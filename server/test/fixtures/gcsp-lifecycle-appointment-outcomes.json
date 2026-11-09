@@ -49,7 +49,7 @@
       "pendingStep": null, "blockedCode": null, "history": ["requested", "scheduled"]
     },
     "completed": {
-      "state": "completed", "booked": false, "owner": "employee", "nextStep": "Your handover is complete.",
+      "state": "completed", "booked": false, "owner": "retailer", "nextStep": "Your handover is complete.",
       "pendingStep": null, "blockedCode": null, "history": ["requested", "scheduled", "completed"]
     },
     "no-show": {

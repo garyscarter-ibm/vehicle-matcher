@@ -215,6 +215,18 @@ test('unknown configured principal and repository outage are explicit session ou
   assert.equal((await resolve(f, f.presenter)).status, 'unavailable');
 });
 
+test('FUCQ-261: the context reports whether a presenter control cookie came with the request', async () => {
+  const f = await setup();
+  const paula = await f.acting('demo-paula');
+  await withHttp(f, [], async (request) => {
+    const alone = await request('/api/gcsp/context', { session: paula });
+    assert.deepEqual([alone.status, alone.json.status, alone.json.presenterControl], [200, 'ok', false]);
+    assert.equal(alone.json.value.roles.includes('presenter'), false);
+    const presenter = await request('/api/gcsp/context');
+    assert.deepEqual([presenter.json.status, presenter.json.presenterControl], ['ok', true]);
+  });
+});
+
 test('every GCSP HTTP handler gets one server context and rejects query/body identity spoofing', async () => {
   const f = await setup();
   const paula = await f.acting('demo-paula');

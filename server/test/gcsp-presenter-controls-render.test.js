@@ -208,6 +208,18 @@ test('delayed catalogue selects the actual current scenario after unavailable fi
   assert.equal(selected(f, 'Scenario'), 'business'); assert.match(f.host.textContent, /actual-release-service/);
   f.control.destroy();
 });
+test('FUCQ-261: no presenter control cookie means no controls read, and the strip stays hidden', async () => {
+  let reads = 0;
+  const f = setup({ readControls: async () => { reads++; return ok(state()); },
+    readContext: async () => ({ ...ok({ principalId: 'demo-paula', roles: ['employee'] }), presenterControl: false }) });
+  await settle();
+  assert.equal(reads, 0); assert.equal(f.control.root.hidden, true); f.control.destroy();
+  let shown = 0;
+  const g = setup({ readControls: async () => { shown++; return ok(state()); },
+    readContext: async () => ({ ...ok({ principalId: 'demo-paula', roles: ['employee'] }), presenterControl: true }) });
+  await settle();
+  assert.equal(shown, 1); assert.equal(g.control.root.hidden, false); g.control.destroy();
+});
 test('acknowledged reset navigates to fresh actual-context workspace without another stale-page read', async () => {
   let reads = 0; let contexts = 0;
   const f = setup({ readControls: async () => { reads++; return ok(state()); },
@@ -272,7 +284,7 @@ test('cookie issuance conflict confirms actual principal before navigation; unkn
 });
 test('destroy aborts and ignores late readback', async () => {
   let finish; const f = setup({ readControls: () => new Promise((resolve) => { finish = resolve; }) });
-  f.control.destroy(); finish(ok(state())); await settle(); assert.equal(f.host.children.length, 0);
+  await settle(); f.control.destroy(); finish(ok(state())); await settle(); assert.equal(f.host.children.length, 0); // readback starts after the context gate
 });
 test('workspace chooses only actual context role and real adapter, never a query principal or fixture', async () => {
   for (const role of ['employee', 'greg']) {
