@@ -2,8 +2,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { captureRetailContract, frozen } from './retail-compat-harness.js';
 import { captureClientContract } from './retail-compat-client-harness.js';
+import * as liveEngine from '../engine.js';
+import * as referenceEngine from './helpers/retail-reference-r1/engine.js';
+import { BRANDS, brandTuning } from '../brands.js';
+import { REFERENCE, verifyReferenceCopy, parityCorpus, diffEngines, firstDifference as parityDifference } from './helpers/retail-parity.js';
 
 const directory = new URL('./fixtures/retail-compat-v1/', import.meta.url);
 const read = (name) => readFileSync(new URL(name, directory));
@@ -64,4 +70,90 @@ test('retail compatibility v1: fixed offline contract, repeated without fixture 
       assert.deepEqual(identity(name), originalIdentity[name], `${name}: fixture rewritten by compatibility command`);
     }
   }
+});
+
+// Differential parity: frozen R1 reference vs the live retail path, in memory.
+const corpus = parityCorpus();
+const tuningSnapshot = () => JSON.stringify(Object.keys(BRANDS).map((b) => [b, brandTuning(b)]));
+const registryBefore = tuningSnapshot();
+const describeDiff = (run) => run.difference && `${run.difference.caseId} ${run.difference.path}`;
+
+test('parity: the R1 reference copy is verbatim', () => {
+  assert.equal(verifyReferenceCopy(), REFERENCE.sha256);
+  assert.match(REFERENCE.revision, /^3f468f6b/);
+});
+
+test('parity: firstDifference fails on key order and array length', () => {
+  assert.equal(parityDifference({ a: 1, b: [1, 2] }, { a: 1, b: [1, 2] }), null);
+  assert.match(parityDifference({ a: 1, b: 2 }, { b: 2, a: 1 }).path, /keyOrder/);
+  assert.equal(parityDifference({ a: [1] }, { a: [1, 2] }).path, '$.a.length');
+  assert.ok(parityDifference({ a: 0 }, { a: -0 }));
+});
+
+test('parity: reference and live engine agree on every corpus case, with no fetch', () => {
+  const run = diffEngines(referenceEngine, liveEngine, corpus);
+  assert.equal(run.difference, null, describeDiff(run));
+  assert.ok(run.comparisons >= 1000, `only ${run.comparisons} rankings compared`);
+  assert.equal(run.comparisons, corpus.length);
+  assert.equal(run.fetchCalls, 0);
+});
+
+const perturbations = {
+  'one score +1': { rankCars: (rank) => rank.map((m, i) => (i === 0 ? { ...m, score: m.score + 1 } : m)) },
+  'two reasons swapped': {
+    rankCars: (rank) => {
+      const at = rank.findIndex((m) => m.reasons.length >= 2);
+      if (at < 0) return rank;
+      const reasons = [...rank[at].reasons];
+      [reasons[0], reasons[1]] = [reasons[1], reasons[0]];
+      return rank.map((m, i) => (i === at ? { ...m, reasons } : m));
+    },
+  },
+  'price tie-break reversed': {
+    rankCars: (rank) => [...rank].sort((a, b) => b.score - a.score || b.taste - a.taste
+      || b.car.priceMin - a.car.priceMin || a.car.name.localeCompare(b.car.name)),
+  },
+  'LISTING_SAMPLE-1 listings in one group': {
+    groupListings: (groups) => {
+      const at = groups.findIndex((g) => g.listings.length >= liveEngine.LISTING_SAMPLE);
+      return groups.map((g, i) => (i === at ? { ...g, listings: g.listings.slice(0, liveEngine.LISTING_SAMPLE - 1) } : g));
+    },
+  },
+  'one match key order changed': {
+    matchCars: (result) => {
+      if (!result.matches.length) return result;
+      const { score, ...rest } = result.matches[0];
+      return { ...result, matches: [{ ...rest, score }, ...result.matches.slice(1)] };
+    },
+  },
+};
+
+for (const [name, change] of Object.entries(perturbations)) {
+  test(`parity: deliberate change is detected (${name})`, () => {
+    const [fn, alter] = Object.entries(change)[0];
+    const candidate = { ...liveEngine, [fn]: (...args) => alter(liveEngine[fn](...args)) };
+    const run = diffEngines(referenceEngine, candidate, corpus);
+    assert.ok(run.difference, `${name} was not detected`);
+    assert.ok(run.difference.caseId && run.difference.path, 'difference names the case and path');
+  });
+}
+
+test('parity: TASTE_SHARE=0.3 reaches both paths (child process)', async () => {
+  assert.equal(Number(process.env.TASTE_SHARE ?? 0.2), 0.2, 'run the suite with TASTE_SHARE unset');
+  const base = diffEngines(referenceEngine, liveEngine, corpus);
+  const script = new URL('./helpers/retail-parity-child.js', import.meta.url);
+  const { stdout } = await promisify(execFile)(process.execPath, [script.pathname], {
+    timeout: 60_000,
+    env: { PATH: process.env.PATH, TMPDIR: process.env.TMPDIR, TASTE_SHARE: '0.3' },
+  });
+  const child = JSON.parse(stdout.trim().split('\n').at(-1));
+  assert.equal(child.tasteShare, '0.3');
+  assert.equal(child.difference, null, `${child.difference?.caseId} ${child.difference?.path}`);
+  assert.equal(child.comparisons, corpus.length);
+  assert.equal(child.fetchCalls, 0);
+  assert.notEqual(child.scoreDigest, base.scoreDigest, 'a 0.3 blend must change at least one score');
+});
+
+test('parity: registry tuning is untouched by the differential runs', () => {
+  assert.equal(tuningSnapshot(), registryBefore);
 });
