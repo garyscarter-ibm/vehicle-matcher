@@ -25,7 +25,6 @@ async function mount(name = 'none', adapter = fixtureAdapter(name)) {
   await tick(); return { root, destroy };
 }
 async function prepare(root, text = 'My replacement may miss the contract end.') {
-  const disclosure = root.querySelector('details.gcsp-case-entry'); disclosure.open = true;
   findButton(root, 'Ask for help').click();
   const input = root.querySelector('textarea'); input.value = text; input.dispatchEvent(new window.Event('input', { bubbles: true }));
   findButton(root, 'Review help request').click(); await tick();
@@ -34,7 +33,7 @@ test('opening help and review/cancel never writes; no-case entry explains its ef
   let writes = 0;
   const f = await mount('none', { ...fixtureAdapter('none'), requestHelp: async () => { writes += 1; } });
   assert.match(f.root.textContent, /No renewal case/);
-  assert.equal(f.root.querySelector('details').open, false);
+  assert.equal(f.root.querySelector('details.gcsp-case-entry'), null); assert.equal(f.root.querySelector('textarea'), null);
   await prepare(f.root);
   assert.match(f.root.textContent, /opens a scheme-team case or adds to your existing case/);
   assert.match(f.root.textContent, /No specific next car or greater priority is guaranteed/);
@@ -176,12 +175,16 @@ async function mountQueue(adapter = queueFixtureAdapter(), options = {}) {
   const root = host(); const destroy = queue.mountCaseQueue(root, { adapter, commandId: () => 'stable-update', ...options });
   await tick(); return { root, destroy };
 }
+const openRow = (root, caseId) => {
+  const button = root.querySelector(`button[aria-label="Open case for Synthetic employee ${Number(caseId.split('-').pop()) + 1}"]`);
+  assert.ok(button, `row action for ${caseId}`); button.click();
+};
 function queueField(root, name, value, event = 'input') {
   const input = root.querySelector(`[id$="-${name}"]`);
   assert.ok(input, `queue field ${name}`); input.value = value; input.dispatchEvent(new window.Event(event, { bubbles: true })); return input;
 }
 async function openQueue(root, caseId = 'synthetic-case-0') {
-  queueField(root, 'selection', caseId, 'change'); findButton(root, 'Open selected case').click(); await tick();
+  openRow(root, caseId); await tick();
 }
 function reviewQueue(root, remedyKey = '') {
   queueField(root, 'status', 'remedy-proposed', 'change');
@@ -239,8 +242,10 @@ test('FUCQ-261: the queue stacks at narrow widths with every column labelled, an
   const region = root.querySelector('table').closest('.gcsp-table-wrap'); assert.ok(region.classList.contains('is-stack'));
   const cells = [...root.querySelector('tbody tr').querySelectorAll('td')].map((td) => td.dataset.label);
   assert.ok(cells.includes('Status') && cells.includes('Owner'), cells.join());
-  const labels = [...root.querySelector('[id$="-selection"]').options].slice(1).map((o) => o.textContent);
-  assert.ok(labels.every((label) => label.split(' · ').length === 2), labels.join()); destroy();
+  assert.equal(root.querySelector('[id$="-selection"]'), null, 'the Case to work select is gone');
+  const actions = [...root.querySelectorAll('tbody .gcsp-table-action')]; assert.equal(actions.length, 5);
+  assert.ok(actions.every((a) => a.textContent === 'Open' && /^Open case for Synthetic employee \d$/.test(a.getAttribute('aria-label'))));
+  assert.equal(actions[0].closest('td').dataset.label, undefined); destroy();
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
   assert.match(css, /@media \(min-width: 641px\) \{ \.gcsp \.gcsp-case-queue \.gcsp-table \{ min-width: 1050px; \} \}/);
   const kit = readFileSync(new URL('../../blocks/gcsp/kit/gcsp-kit.css', import.meta.url), 'utf8');
@@ -419,7 +424,7 @@ test('queue uncertain retry retains command id; conflict/access/stale outcomes r
 });
 test('queue cleanup and newer selections suppress late reads/saves and hidden reloads', async () => {
   const late = deferred(); let signal; const f = await mountQueue({ ...queueFixtureAdapter(), async readOptions(input, options) { signal = options.signal; return late.promise; } });
-  queueField(f.root, 'selection', 'synthetic-case-0', 'change'); findButton(f.root, 'Open selected case').click(); f.destroy(); assert.equal(signal.aborted, true);
+  openRow(f.root, 'synthetic-case-0'); f.destroy(); assert.equal(signal.aborted, true);
   late.resolve({ status: 'ok', value: queueOptionsFixture() }); await tick(); assert.equal(f.root.children.length, 0);
   const save = deferred(); let lists = 0; let writes = 0; const adapter = queueFixtureAdapter();
   const other = await mountQueue({ ...adapter, async listCases(options) { lists += 1; return adapter.listCases(options); }, async updateCase() { writes += 1; return save.promise; } });
@@ -427,7 +432,7 @@ test('queue cleanup and newer selections suppress late reads/saves and hidden re
   other.destroy(); save.resolve({ status: 'ok', value: { case: queueCaseFixtures()[0] } }); await tick(); confirm.click();
   assert.equal(lists, 1); assert.equal(writes, 1); assert.equal(other.root.children.length, 0);
   const first = deferred(); const third = await mountQueue({ ...adapter, async readOptions(input) { return input.caseId === 'synthetic-case-0' ? first.promise : adapter.readOptions(input); } });
-  queueField(third.root, 'selection', 'synthetic-case-0', 'change'); findButton(third.root, 'Open selected case').click(); await openQueue(third.root, 'synthetic-case-1');
+  openRow(third.root, 'synthetic-case-0'); await openQueue(third.root, 'synthetic-case-1');
   first.resolve({ status: 'ok', value: queueOptionsFixture() }); await tick();
   assert.equal(third.root.querySelector('[data-case-id]').dataset.caseId, 'synthetic-case-1'); third.destroy();
 });
@@ -529,4 +534,59 @@ test('FUCQ-258: cars needing confirmation are listed with their reasons and are 
   assert.match(f.root.textContent, /BMW 330e TouringCharging access not confirmed/);
   const labels = [...f.root.querySelectorAll('[id$="-remedyKey"] option')].map((o) => o.textContent);
   assert.ok(labels.some((t) => t.startsWith('Alternative car')) && !labels.some((t) => t.includes('330e'))); f.destroy();
+});
+test('FUCQ-297: each queue row opens its case, focus lands on the case heading, and closing returns to that row', async () => {
+  const f = await mountQueue();
+  const rows = [...f.root.querySelectorAll('tbody tr')];
+  assert.equal(rows.length, 5); assert.ok(rows.every((r) => r.querySelector('button.gcsp-table-action')));
+  assert.equal(f.root.querySelector('[id$="-selection"]'), null); assert.equal(findButton(f.root, 'Open selected case'), undefined);
+  openRow(f.root, 'synthetic-case-2'); await tick();
+  const heading = f.root.querySelector('[data-case-heading]');
+  assert.equal(heading.textContent, 'Synthetic employee 3'); assert.equal(heading.tabIndex, -1);
+  assert.equal(document.activeElement, heading); assert.notEqual(document.activeElement, f.root.querySelector('.gcsp-case-status'));
+  assert.equal(f.root.querySelector('[data-case-id]').dataset.caseId, 'synthetic-case-2');
+  findButton(f.root, 'Close case details').click();
+  assert.equal(document.activeElement.getAttribute('aria-label'), 'Open case for Synthetic employee 3'); f.destroy();
+});
+test('FUCQ-297: unavailable remedies are hint text under the select, not option text', async () => {
+  const f = await mountQueue({ ...queueFixtureAdapter(), async readOptions({ caseId }) {
+    const value = queueOptionsFixture({ ...queueCaseFixtures()[0], caseId });
+    Object.assign(value.options, { alternativeCars: { available: false, reason: 'No suitable car is available.', items: [] },
+      preferenceRelaxations: { available: false, reason: 'No preference change would help.', items: [] },
+      laterRelease: { available: false, reason: 'No reviewed release is scheduled.', items: [] },
+      contractExtension: { available: false, reason: 'The contract cannot be extended.', items: [] } });
+    return { status: 'ok', value }; } });
+  await openQueue(f.root);
+  const select = f.root.querySelector('[id$="-remedyKey"]');
+  assert.deepEqual([...select.options].map((o) => o.textContent), ['Keep the current remedy, if any', 'Manual decision']);
+  const hint = f.root.querySelector(`#${select.id}-hint`); assert.equal(hint.hidden, false);
+  assert.match(select.getAttribute('aria-describedby'), new RegExp(`${select.id}-hint`));
+  assert.match(hint.textContent, /^Not available: Suitable available cars: No suitable car is available; One preference change: No preference change would help;/);
+  assert.match(hint.textContent, /Contract extension: The contract cannot be extended\.$/);
+  assert.equal([...f.root.querySelectorAll('.gcsp-note')].some((n) => /No suitable car/.test(n.textContent)), false); f.destroy();
+});
+test('FUCQ-297: the case headings use the kit scale rather than the page-title size, and the queue is not a form stack', () => {
+  const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-cases.css', import.meta.url), 'utf8');
+  assert.match(css, /h2\.vm-title[^}]*font-size: 20px/); assert.match(css, /h3\.vm-title[^}]*font-size: 18px/);
+});
+test('FUCQ-297: Paula sees an Ask for help button in view, tied to the caveat, that reveals and focuses the form and returns on Cancel', async () => {
+  const f = await mount('none');
+  const ask = findButton(f.root, 'Ask for help');
+  assert.ok(ask && !ask.closest('details'), 'the button is not inside a collapsed disclosure');
+  const hint = f.root.querySelector(`#${ask.getAttribute('aria-describedby')}`);
+  assert.match(hint.textContent, /^Remedies need the scheme team’s decision\. No specific next car or greater priority is guaranteed\.$/);
+  assert.equal(f.root.querySelector('.gcsp-cases-body > .gcsp-note'), null, 'the caveat is no longer a lead paragraph');
+  assert.equal(f.root.querySelector('textarea'), null);
+  ask.click(); const textarea = f.root.querySelector('textarea');
+  assert.ok(textarea); assert.equal(document.activeElement, textarea);
+  findButton(f.root, 'Cancel').click();
+  assert.equal(f.root.querySelector('textarea'), null); assert.equal(document.activeElement, findButton(f.root, 'Ask for help')); f.destroy();
+});
+test('FUCQ-297: the case reference is the short form in both views, with the full id kept in a data attribute', () => {
+  const c = { ...queueCaseFixtures()[0], caseId: 'renewal-b7cced03-1234-4abc-9def-0123456789ab' };
+  for (const audience of ['employee', 'scheme-team']) {
+    const root = host(); root.append(renderCaseContent(c, { audience }));
+    assert.match(root.textContent, /Case referenceB7CCED03(?!-)/); assert.equal(root.textContent.includes('renewal-b7cced03'), false);
+    assert.equal(root.querySelector('[data-case-id]').dataset.caseId, c.caseId);
+  }
 });

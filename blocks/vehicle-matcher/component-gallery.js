@@ -7,6 +7,7 @@ import { createPreviewFeed } from './modes/preview-feed.js';
 import { employeeCardFixture } from './employee-card-fixture.js';
 import { applyBrowseFeedback, applyConfirmedFeedbackChange, createFeedbackState, matchesFeedbackPredicate, reduceFeedback } from './feedback-actions.js';
 import { el, screenIntro, button, statusScreen, factList } from './ui.js';
+import { syntheticNote } from '../gcsp/kit/synthetic-note.js';
 import { feedbackButton, feedbackScope, feedbackUndo, matchCard, mediaWell, previewTile } from './modes/result-card.js';
 import { portalShell, accountNavigation } from '../gcsp/shell/portal-shell.js';
 import { EMPLOYEE_NAVIGATION } from '../gcsp/employee/gcsp-employee.js';
@@ -23,6 +24,7 @@ import { activityFixtures } from '../gcsp/activity/activity-fixtures.js';
 import { activityEvents } from '../gcsp/activity/activity-copy.js';
 import { arrivalFocusExample, formControlsExample, stageListExample, rangeBarExample, runRestartedExample, showMoreExample } from '../gcsp/kit/form-controls-gallery.js';
 import { stageTracker } from '../gcsp/kit/stage-tracker.js';
+import { slotPicker } from '../gcsp/kit/slot-picker.js';
 import { taskList } from '../gcsp/kit/task-list.js';
 import { orderProgressBody } from '../gcsp/order-progress/order-progress-body.js';
 import { orderProgressFixtures } from '../gcsp/order-progress/fixtures.js';
@@ -130,6 +132,12 @@ function gcspExamples() {
     { label: 'Monthly cost', value: 1100, unit: 'points a month' },
     { label: 'WLTP CO2', value: null },
   ]));
+  group('factList: hideMissing').append(factList([
+    { label: 'Exterior', value: 'Portimao Blue metallic' },
+    { label: 'Engine', value: null },
+    { label: 'WLTP CO2', value: null },
+  ], { hideMissing: 'More details not supplied' }));
+  group('syntheticNote').append(syntheticNote());
   group('factList: two columns at narrow width (className vm-facts-pair)').append(factList([
     { label: 'Derivative', value: 'M Sport Touring' }, { label: 'Colour', value: 'Mineral White metallic' },
     { label: 'Gearbox', value: 'Automatic' }, { label: 'Options', value: null, missingLabel: 'Fitted equipment unknown' },
@@ -216,6 +224,10 @@ function gregKitExamples() {
   group('dataTable: stacked rows on narrow screens').append(dataTable({ caption: 'Plan comparison (stacks under 640 px)', id: 'gallery-greg-stack', stack: true,
     columns: [{ key: 'name', label: 'Vehicle' }, { key: 'a', label: 'Recommended plan', numeric: true }, { key: 'b', label: 'Other plan', numeric: true }, { key: 'd', label: 'Difference', numeric: true }],
     rows: [{ name: bold('G21 Touring 320i', true), a: '2', b: bold('1', true), d: bold('-1', true) }, { name: 'G20 Saloon 330e', a: '1', b: '1', d: 'No change' }] }));
+  group('dataTable: row action (an Open button per row, named for the row)').append(dataTable({ caption: 'Renewal cases (row action)', id: 'gallery-greg-row-action', stack: true,
+    columns: [{ key: 'name', label: 'Employee' }, { key: 'status', label: 'Status' }],
+    rows: [{ name: 'Paula (fictional)', status: 'Open' }, { name: 'Sam (fictional)', status: 'Closed' }],
+    rowAction: { label: 'Open', name: (row) => `Open case for ${row.name}`, onSelect: () => {}, disabled: (row) => row.status === 'Closed' } }));
   const unknown = { label: 'Unknown', missing: true };
   group('dataTable: comparison, label | this offer | current car at any width (compare)').append(dataTable({ caption: 'Compared with your current car', id: 'gallery-greg-compare', compare: true,
     columns: [{ key: 'l', label: 'Detail' }, { key: 'a', label: 'This offer', detail: 'BMW 320i M Sport Touring with extended leather' }, { key: 'b', label: 'Your current car', detail: 'Fictional BMW 320i Touring' }],
@@ -278,7 +290,10 @@ export function orderProgressExamples() {
       { id: 't2', label: 'Licence check', owner: 'Scheme team', status: 'Failed', tone: 'failed', reason: 'The check could not be completed.' },
       { id: 't3', label: 'Preparation', owner: 'Retailer', status: 'In progress', tone: 'in-progress', due: '2026-11-08T15:00:00.000Z' },
       { id: 't4', label: 'Delivery', owner: 'Retailer', status: 'Complete', tone: 'done', action: { label: 'Locked', disabled: true, reason: 'Done by the retailer.' } }] }] }),
-    taskList({ heading: 'Tasks (empty)', level: 4, groups: [], emptyText: 'No tasks.' }));
+    taskList({ heading: 'Tasks (empty)', level: 4, groups: [], emptyText: 'No tasks.' }),
+    el('h3', 'vm-gallery-gcsp-title', 'slotPicker'),
+    slotPicker({ actionLabel: 'Request return', onPick: () => {}, slots: [[7, 9], [7, 13], [8, 9], [8, 13], [9, 9], [10, 9], [10, 13]]
+      .map(([day, hour]) => ({ slotId: `example-${day}-${hour}`, start: `2026-11-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:00:00.000Z` })) }));
   section.append(kit);
   const fixtures = orderProgressFixtures();
   const labels = { 'waiting-hr': 'Waiting for HR', 'waiting-sales-manager': 'Waiting for the sales manager', 'no-hr': 'No HR approval stage', declined: 'Declined',

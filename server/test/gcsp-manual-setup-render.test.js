@@ -68,10 +68,13 @@ test('grouped setup preserves native controls and focus through edits and displa
   assert.equal(control(f, 'driverId').value, ''); assert.equal(control(f, 'phone').value, '01632 960000');
   const phone = control(f, 'phone'); phone.focus(); input(f, 'phone', '01632 960005');
   assert.equal(control(f, 'phone'), phone); assert.equal(document.activeElement, phone);
-  assert.match(f.root.textContent, /Employee facts are read-only/); assert.match(f.root.textContent, /Driver and licence facts are read-only/);
+  assert.match(f.root.textContent, /Employee facts are read-only/);
+  // FUCQ-277: before a driver is chosen the licence facts, their hint and every "Not supplied" are absent, with the synthetic footer.
+  assert.doesNotMatch(f.root.textContent, /Not supplied|Driver and licence facts are read-only|Synthetic monthly demo|Not a verified/);
+  assert.equal(f.root.querySelector('.gcsp-setup-source').childNodes.length, 0); assert.equal(f.root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
   assert.match(f.root.textContent, /1,300 points a month/); assert.equal(control(f, 'schemeId'), null);
   input(f, 'driverId', `nominated:${f.context.employeeId}`);
-  assert.match(f.root.textContent, /spouse/); assert.match(f.root.textContent, /FICTIONAL-NOMINEE/);
+  assert.match(f.root.textContent, /Driver and licence facts are read-only/); assert.match(f.root.textContent, /spouse/); assert.match(f.root.textContent, /FICTIONAL-NOMINEE/);
   assert.ok(control(f, 'contractOptionId').querySelector('[value="twelve-month-12000"]').disabled);
   const reasons = f.root.querySelector('.gcsp-setup-reasons').textContent; // FUCQ-197: a choice is named, not its id
   assert.match(reasons, /12 months, 12000 mi\/year: /); assert.equal(reasons.includes('twelve-month-12000'), false);

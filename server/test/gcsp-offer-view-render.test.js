@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
 import { readFile } from 'node:fs/promises';
 import { createOfferView } from '../../blocks/gcsp/offer/offer-view.js';
-import { offerFixture } from '../../blocks/gcsp/offer/fixtures.js';
+import { offerFixture, FIXTURE_NAMES } from '../../blocks/gcsp/offer/fixtures.js';
 import { createOfferController } from '../../blocks/gcsp/offer/offer-controller.js';
 import { createOfferHttpAdapter } from '../../blocks/gcsp/offer/http-adapter.js';
 import { toOfferPresentation } from '../../blocks/gcsp/offer/offer-projection.js';
@@ -452,7 +452,7 @@ test('the offer-hosted progress shows completed and missed handovers, rebooks th
   const missed = await host('appointment-no-show', (rebooked) => ({ requestAppointment: async (input) => { requests.push(input.slotId); rebooked(); return { status: 'ok', value: {} }; } }));
   assert.match(missed.area().textContent, /Handover missed: 8 Nov 2026, 09:00/);
   const offered = all['appointment-no-show'].appointment.value.offeredSlots;
-  const buttons = [...missed.area().querySelectorAll('button')]; assert.equal(buttons.length, offered.length); assert.equal(buttons[0].textContent, 'Request 9 Nov 2026, 09:00');
+  const buttons = [...missed.area().querySelectorAll('button')]; assert.equal(buttons.length, offered.length); assert.equal(buttons[0].getAttribute('aria-label'), 'Request 9 Nov 2026, 09:00');
   buttons[0].click();
   for (let n = 0; n < 60 && !/Not booked yet/.test(missed.area()?.textContent ?? ''); n += 1) await new Promise((done) => setTimeout(done, 15));
   assert.deepEqual(requests, [offered[0].slotId]);
@@ -596,4 +596,14 @@ test('GC-041: mountOffer shows the host navigation in the rail, and an empty rai
   const stopAnonymous = mountOffer(anonymous, { read, account: { status: 'unavailable' }, ...signedInPortal({ status: 'unavailable' }, location) });
   await new Promise((done) => setTimeout(done, 20));
   assert.equal(anonymous.querySelectorAll('nav button[data-key]').length, 0); assert.equal(anonymous.querySelectorAll('a.vm-btn').length, 0); stopAnonymous();
+});
+
+test('FUCQ-286: every offer state has one h1 and its heading levels never skip', () => {
+  for (const name of FIXTURE_NAMES) {
+    const { root } = render(name);
+    const levels = [...root.querySelectorAll('h1,h2,h3,h4,h5,h6')].map((h) => Number(h.tagName[1]));
+    assert.equal(levels.filter((level) => level === 1).length, 1, `${name}: ${levels}`);
+    levels.forEach((level, i) => assert.ok(level <= (levels[i - 1] ?? 0) + 1, `${name} skips a level: ${levels}`));
+  }
+  assert.equal(render('pending').root.querySelector('.vm-card-name').tagName, 'H2');
 });

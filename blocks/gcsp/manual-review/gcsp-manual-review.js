@@ -1,5 +1,6 @@
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard } from '../../vehicle-matcher/modes/result-card.js';
+import { syntheticNote } from '../kit/synthetic-note.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
@@ -109,7 +110,7 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
     const time = el('section', 'gcsp-review-time'); time.append(nodes.timer, nodes.consequence, nodes.live);
     const layout = el('div', 'gcsp-review-layout'); const vehicle = el('div', 'gcsp-review-column');
     const review = el('div', 'gcsp-review-column'); vehicle.append(nodes.vehicle, nodes.context); review.append(summary.root, form);
-    layout.append(vehicle, review); panel.append(screenIntro({ title: 'Review your car', level: 1 }), nodes.notice, time, nodes.recovery, layout);
+    layout.append(vehicle, review); panel.append(screenIntro({ title: 'Review your car', level: 1 }), nodes.notice, time, nodes.recovery, layout, syntheticNote());
     root.replaceChildren(panel);
   }
   function draw(state = controller.getState()) {
@@ -127,7 +128,7 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
       const technical = el('details', 'gcsp-details'); technical.append(el('summary', '', 'Pinned vehicle details'),
         rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), ['body', 'bodyType'].includes(key) ? bodyFact(value) : value])),
         rows([['Quote valid until', Number.isFinite(Date.parse(model.quote.validUntil)) ? `${demoTime(model.quote.validUntil)} (demo time)` : model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]]));
-      nodes.vehicle.replaceChildren(el('p', 'gcsp-field-hint', 'Vehicle details, eligibility and points are pinned to your claim.'),
+      nodes.vehicle.replaceChildren(
         matchCard(null, { view: reviewVehicleView(model), showScore: false }), technical);
     }
     nodes.context.replaceChildren(el('h2', 'gcsp-h2', 'Collection and current contract'), rows([
@@ -152,14 +153,17 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
     nodes.consequence.textContent = unconfirmed ? 'This car is not shown as reserved until the claim is confirmed. Check current claim.'
       : state.status === 'pending' || model.hold.state.endsWith('-pending')
       ? 'This action is still being checked. This car stays unavailable until its status is confirmed.' : c?.expired ? 'This deadline has passed. You cannot continue with this reservation.'
-      : 'This car is reserved until the deadline. Continuing does not place an order. Time follows the presenter clock.';
+      : 'This car is reserved until the deadline. Continuing does not place an order.';
     if (state.announcement?.id !== announcementId) { announcementId = state.announcement?.id; nodes.live.textContent = state.announcement?.text ?? ''; }
     nodes.notice.textContent = state.conflict ? messages.conflict : messages[state.status]
       || (state.retryAction ? messages.pending : model.frozen ? 'Your details are locked while selection is checked.'
-        : state.dirty ? 'You have unsaved details.' : 'Your current claim has been checked.');
+        : state.dirty ? 'You have unsaved details.' : '');
     nodes.save.disabled = state.busy || !state.editable; nodes.continue.disabled = state.busy || !state.canContinue;
     for (const node of [nodes.back, nodes.change, nodes.cancel]) node.disabled = state.busy || !state.canRelease;
-    nodes.recovery.replaceChildren(button({ label: 'Check current claim', variant: 'ghost', disabled: state.busy, onClick: () => controller.reconcile() }));
+    // A confirmed, settled claim needs no re-check control; every other state keeps it.
+    const settled = !unconfirmed && !state.conflict && !state.retryAction && !messages[state.status] && !model.frozen
+      && !/-pending$/.test(model.hold.state) && !['released', 'cancelled', 'expired', 'claim-failed'].includes(model.hold.state);
+    nodes.recovery.replaceChildren(...settled ? [] : [button({ label: 'Check current claim', variant: 'ghost', disabled: state.busy, onClick: () => controller.reconcile() })]);
     if (state.conflict) nodes.recovery.append(button({ label: 'Discard local edits and load newer details', variant: 'ghost', disabled: state.busy, onClick: () => controller.discardLocalChanges() }));
     if (state.retryAction) nodes.recovery.append(button({ label: 'Retry the same action', disabled: state.busy, onClick: () => action(() =>
       state.retryAction === 'release' ? controller.release() : state.retryAction === 'continue' ? controller.continue() : controller.save()) }));

@@ -85,7 +85,7 @@ export function toManualCar(decision, versions = {}, { heldOffer = null, taken =
     configurationId: decision.configurationId, candidateKey: decision.candidateKey };
   const selectedImage = display.images?.find((image) => image.src === display.photo);
   const media = { src: text(display.photo), alt: text(selectedImage?.alt) || text(display.name) || 'Car',
-    caption: text(selectedImage?.caption) || (display.photo ? 'Representative image. See image provenance in vehicle details.' : null),
+    caption: text(selectedImage?.caption) || null,
     provenance: clone(selectedImage?.provenance), images: clone(display.images ?? []) };
   const member = { id: decision.orderUuid, identity, display: { name: text(display.name) || 'Car name not supplied',
     line: [fields.model.value, bodyStyleLabel(fields.body.value), fields.engine.value].filter(Boolean).join(' · '), pickerLabel: decision.orderNumber },

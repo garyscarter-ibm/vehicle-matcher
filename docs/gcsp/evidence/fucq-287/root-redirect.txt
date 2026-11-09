@@ -1,0 +1,5 @@
+# FUCQ-287 evidence, 2026-11-09T20:26:44.583Z, GCSP_OFFLINE=1 hosted entry on http://localhost:9450 (throwaway key, not the demo key; cookie values withheld)
+without access: GET / -> 303 Location: /gcsp/access?next=%2Fgcsp-presenter.html; body 0 bytes; Set-Cookie none
+without access: GET /favicon.ico -> 204; body 0 bytes; Set-Cookie none
+key accepted: POST /gcsp/access -> 303 Location: /gcsp-presenter.html
+with access: GET / -> 303 Location: /gcsp-presenter.html; body 0 bytes; Set-Cookie none

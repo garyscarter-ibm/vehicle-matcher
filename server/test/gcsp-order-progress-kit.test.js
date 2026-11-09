@@ -2,12 +2,14 @@ import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
 
-let dom; let stageTracker; let taskList;
+let dom; let stageTracker; let taskList; let slotPicker; let focus;
 before(async () => {
   dom = new JSDOM('<!doctype html><body></body>');
   globalThis.document = dom.window.document;
   ({ stageTracker } = await import('../../blocks/gcsp/kit/stage-tracker.js'));
   ({ taskList } = await import('../../blocks/gcsp/kit/task-list.js'));
+  ({ slotPicker } = await import('../../blocks/gcsp/kit/slot-picker.js'));
+  focus = await import('../../blocks/gcsp/kit/focus-key.js');
 });
 after(() => dom?.window.close());
 
@@ -81,4 +83,34 @@ test('taskList action uses the kit button, passes the item id, and a disabled re
 test('taskList empty state is explicit', () => {
   assert.match(taskList({ groups: [{ heading: 'None', items: [] }], emptyText: 'Nothing to do.' }).textContent, /Nothing to do\./);
   assert.match(taskList({}).textContent, /No tasks\./);
+});
+
+const slots = ['2026-11-08T09:00:00.000Z', '2026-11-08T13:00:00.000Z', '2026-11-09T09:00:00.000Z', 'not a date'].map((start, i) => ({ slotId: `s${i}`, start }));
+
+test('slotPicker groups times by day, keeps order, and names each time button in full', () => {
+  const picks = []; const node = slotPicker({ slots, actionLabel: 'Request return', onPick: (slot) => picks.push(slot.slotId), className: 'extra' });
+  assert.ok(node.classList.contains('gcsp-slot-picker')); assert.ok(node.classList.contains('extra'));
+  const days = [...node.querySelectorAll(':scope > li')];
+  assert.deepEqual(days.map((d) => d.querySelector('.gcsp-slot-day-heading').textContent), ['Sun 8 Nov 2026', 'Mon 9 Nov 2026']);
+  assert.deepEqual(days.map((d) => [...d.querySelectorAll('button')].map((b) => b.textContent)), [['09:00', '13:00'], ['09:00']]);
+  const first = days[0].querySelector('button'); assert.equal(first.getAttribute('aria-label'), 'Request return 8 Nov 2026, 09:00');
+  assert.equal(days[0].querySelector('ul').getAttribute('aria-labelledby'), days[0].querySelector('.gcsp-slot-day-heading').id);
+  days[1].querySelector('button').click(); assert.deepEqual(picks, ['s2']);
+  assert.equal(node.querySelectorAll('button').length, 3);
+});
+
+test('slotPicker disables its buttons while pending and renders plain times without a callback', () => {
+  assert.ok([...slotPicker({ slots, onPick: () => {}, disabled: true }).querySelectorAll('button')].every((b) => b.disabled));
+  const plain = slotPicker({ slots }); assert.equal(plain.querySelectorAll('button').length, 0); assert.match(plain.textContent, /Sun 8 Nov 2026.*09:00.*13:00.*Mon 9 Nov 2026.*09:00/);
+  assert.equal(slotPicker({ slots: [] }).children.length, 0);
+});
+
+test('focus keys tell equal times on different days apart, and plain buttons still key on their text', () => {
+  const node = slotPicker({ slots, onPick: () => {} }); document.body.append(node);
+  const [a, b, c] = [...node.querySelectorAll('button')]; const key = focus.focusKeyOf(c);
+  assert.equal(a.textContent, c.textContent); assert.equal(focus.findByFocusKey(node, key, 'button'), c); assert.notEqual(focus.findByFocusKey(node, key, 'button'), a);
+  assert.equal(focus.findByFocusKey(node, focus.focusKeyOf(b), 'button'), b);
+  const plain = document.createElement('button'); plain.textContent = ' Save '; node.append(plain);
+  assert.equal(focus.focusKeyOf(plain).label, 'Save'); assert.equal(focus.findByFocusKey(node, focus.focusKeyOf(plain), 'button'), plain);
+  node.remove();
 });

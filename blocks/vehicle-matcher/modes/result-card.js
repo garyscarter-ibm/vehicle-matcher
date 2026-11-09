@@ -179,9 +179,9 @@ export function mediaWell(car, extraClass = '', { placeholder = 'Images coming s
 export function matchCard(match, {
   big = false, compact = false, brand: brandKey = 'bmw',
   showScore = true, showPaint = false,
-  rejectOptions, rejectLabel, rejectPrompt, onListingSelect, view, onAction, scoreLabel, factsClass,
+  rejectOptions, rejectLabel, rejectPrompt, onListingSelect, view, onAction, scoreLabel, factsClass, headingLevel = 3,
 } = {}) {
-  if (view) return explicitViewCard(view, { compact, showScore, scoreLabel, factsClass, onListingSelect, onAction });
+  if (view) return explicitViewCard(view, { compact, showScore, scoreLabel, factsClass, onListingSelect, onAction, headingLevel });
   const { car } = match;
   const listings = listingsOf(match);
   const copy = BRAND_COPY[brandKey] || BRAND_COPY.bmw;
@@ -620,7 +620,7 @@ const gateLabels = { eligible: 'Eligible', ineligible: 'Not eligible', 'needs-co
 const decisionText = (entry) => typeof entry === 'string' ? entry : entry?.text || entry?.reason || entry?.code?.replaceAll('-', ' ') || 'Not supplied';
 
 // The explicit projection is display data only; the caller owns decisions, transport and state.
-function explicitViewCard(view, { compact, showScore, scoreLabel, factsClass, onListingSelect, onAction }) {
+function explicitViewCard(view, { compact, showScore, scoreLabel, factsClass, onListingSelect, onAction, headingLevel = 3 }) {
   const members = listingsOf(null, { view });
   if (!members.length) throw new TypeError('An explicit card view requires exact members');
   let selected = members.find((member) => member.id === view.selectedId) || members[0];
@@ -629,7 +629,7 @@ function explicitViewCard(view, { compact, showScore, scoreLabel, factsClass, on
   const { media, showPhoto } = mediaWell({}, '', { view: selected, placeholder: 'No image for this car yet' });
   const body = el('div', 'vm-card-body');
   const head = el('div', 'vm-card-head');
-  const name = el('h3', 'vm-card-name');
+  const name = el([2, 3, 4].includes(headingLevel) ? `h${headingLevel}` : 'h3', 'vm-card-name');
   const score = el('span', 'vm-score');
   head.append(name, score);
   const terms = el('div', 'vm-card-terms');

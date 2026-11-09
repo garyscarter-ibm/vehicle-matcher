@@ -118,7 +118,7 @@ test('authenticated HTTP help, scheme-team remedy, employee reload and single-ch
   await readyAfter(queueRoot, () => { closeQueue = mountCaseQueue(queueRoot, { adapter: f.gregAdapter }); });
   t.after(() => closeQueue());
   assert.match(queueRoot.textContent, /Paula/);
-  field(queueRoot, 'selection', c.caseId, 'change'); button(queueRoot, 'Open selected case').click();
+  queueRoot.querySelector('button[aria-label^="Open case for Paula"]').click();
   await waitFor(() => queueRoot.querySelector('[id$="-status"]'));
   const update = async (status, preference = false) => {
     field(queueRoot, 'status', status, 'change'); field(queueRoot, 'reason', 'Scheme team reviewed the renewal.');

@@ -192,7 +192,8 @@ for (const name of ['window', 'document', 'HTMLElement', 'Node', 'CustomEvent', 
 }
 const { mountAccount, defineGcspAccount } = await import('../../blocks/gcsp/account/gcsp-account.js');
 const tick = () => new Promise((done) => setTimeout(done, 0));
-const findButton = (root, text) => [...root.querySelectorAll('button')].find((node) => node.textContent === text);
+// Matches the accessible name: slot buttons show the time and carry the full name in aria-label (FUCQ-299).
+const findButton = (root, text) => [...root.querySelectorAll('button')].find((node) => (node.getAttribute('aria-label') ?? node.textContent) === text);
 const findDetail = (root, text) => [...root.querySelectorAll('details')].find((node) => node.firstElementChild.textContent === text);
 // Fixtures carry the policy stand-in scheme names; most render tests cover the unnamed "Scheme N" fallback.
 const unnamed = (name) => { const input = accountFixture(name); for (const history of input.value.histories) delete history.label; return input; };
@@ -252,6 +253,26 @@ test('account composition preserves complete supplied facts, labelled details an
     assert.equal(root.querySelectorAll('.vm-decision, .vm-card-score').length, 0);
     assert.match(root.textContent, /Synthetic example data/);
   } finally { destroy(); root.remove(); }
+});
+
+test('FUCQ-277: the allowance panel hides unsupplied overrides and internal prose, and the current car drops its specification caveat', async () => {
+  const plain = unnamed('multi-slot'); delete plain.value.account.allowanceOverride; delete plain.value.account.allowanceOverrideEndDate;
+  plain.value.allowance.basis = 'Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.';
+  const first = await domMount({ ...readOnlyAdapter(), readAccount: async () => plain });
+  try {
+    const panel = first.root.querySelector('.gcsp-allowance');
+    assert.deepEqual([...panel.querySelectorAll('dt')].map((node) => node.textContent), ['Monthly allowance']);
+    assert.doesNotMatch(first.root.textContent, /Allowance basis|Synthetic monthly demo|Not a verified|Exact specification is not supplied/);
+    assert.match(first.root.querySelector('.gcsp-synthetic:last-child').textContent, /^Synthetic example data/);
+  } finally { first.destroy(); first.root.remove(); }
+  const set = unnamed('multi-slot');
+  Object.assign(set.value.account, { allowanceOverride: { value: 1500, unit: 'points/month' }, allowanceOverrideEndDate: '2026-12-01' });
+  const second = await domMount({ ...readOnlyAdapter(), readAccount: async () => set });
+  try {
+    const panel = second.root.querySelector('.gcsp-allowance');
+    assert.deepEqual([...panel.querySelectorAll('dt')].map((node) => node.textContent), ['Monthly allowance', 'Allowance override', 'Override end']);
+    assert.doesNotMatch(panel.textContent, /Allowance basis|Synthetic monthly demo/);
+  } finally { second.destroy(); second.root.remove(); }
 });
 
 test('current contracts retain their explicit scheme allowance including zero and unknown', async () => {
