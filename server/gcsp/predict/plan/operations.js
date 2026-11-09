@@ -2,7 +2,9 @@ import { PolicyService } from '../../policy/index.js';
 import { activateRunPolicy } from '../../policy/activation.js';
 import { validInstant } from '../../policy/file-provider.js';
 import { inputDigest, ok, result } from '../../repository/core.js';
-import { createCanonicalOrderPlanService } from './compose.js';
+import { createCanonicalOrderPlanService, createLearnedOrderPlanService } from './compose.js';
+import { TRUSTED_ARTIFACT_DIRECTORY } from '../forecast/artifacts.js';
+import { LEARNED_LABEL } from '../forecast/provider.js';
 import { createPolicyOrderPlanCatalog } from './catalog.js';
 import { CONTRACT_VERSION, text, integer, compare } from './input.js';
 import { readPlanningPolicy } from './policy.js';
@@ -17,11 +19,12 @@ const unavailable = (code = 'order-plan-operations-unavailable') => result('unav
   reason: 'The order plan is unavailable. Try again.' });
 const isPlan = (p) => text(p?.planId) && ['feasible', 'infeasible'].includes(p.status);
 const latest = (rows, at) => rows.reduce((best, row, i) => (!best || Date.parse(at(row)) >= Date.parse(at(best.row)) ? { row, i } : best), null)?.row ?? null;
+const LEARNED_UNAVAILABLE = 'The learned forecast is unavailable right now, so only the baseline plan is shown.';
 const BOUNDS = { 'orderPlan.modelBounds': 'modelId', 'orderPlan.derivativeBounds': 'derivativeId' };
 
 // Greg's order-plan operations: preview, keep, publish, submit and replan. Each call is run-scoped
 // through the trusted context and starts and ends with the Greg role check.
-export function createOrderPlanOperations({ repository, policy, identity, clock, supply, requests } = {}) {
+export function createOrderPlanOperations({ repository, policy, identity, clock, supply, requests, artifactDirectory = TRUSTED_ARTIFACT_DIRECTORY } = {}) {
   const wired = () => repository && policy && identity && clock;
   const guard = (context) => (wired() ? identity.requireRole(context, 'greg') : unavailable('order-plan-operations-not-configured'));
 
@@ -66,11 +69,14 @@ export function createOrderPlanOperations({ repository, policy, identity, clock,
     return ok(out.sort((a, b) => compare(a.key, b.key)));
   }
 
-  // Active plan, or the plan under a disposable draft policy. Nothing is written.
-  async function planFor(context, base, changes) {
-    if (!changes) return createCanonicalOrderPlanService({ repository, policy, identity, clock, supply }).readPlan(context);
+  // Active plan, or the plan under a disposable draft policy. Nothing is written. `learned` runs the learned forecast
+  // and returns { plan, forecast } instead of the plan alone.
+  async function planFor(context, base, changes, learned = false) {
+    const run = (parts, ctx) => (learned ? createLearnedOrderPlanService({ ...parts, artifactDirectory }).readLearnedPlan(ctx)
+      : createCanonicalOrderPlanService(parts).readPlan(ctx));
+    if (!changes) return run({ repository, policy, identity, clock, supply }, context);
     const snapshot = await policy.getPolicySnapshot({ runId: context.runId, asOf: base.now, policyVersion: base.read.policyVersion });
-    if (snapshot.status !== 'ok') return snapshot;
+    if (snapshot.status !== 'ok') return learned ? { plan: snapshot } : snapshot;
     const draft = structuredClone(snapshot.value);
     draft.policyVersion = `preview-${inputDigest({ activeVersion: base.read.policyVersion, changes }).slice(0, 24)}`;
     for (const table of ['schemeRuleLinks', 'eligibilityRules', 'pricePlans', 'allowances', 'assumptions']) for (const row of draft[table]) row.policyVersion = draft.policyVersion;
@@ -88,8 +94,45 @@ export function createOrderPlanOperations({ repository, policy, identity, clock,
       if (!text(catalog) || !catalog.startsWith(`${active}:`)) return unavailable('planning-supply-catalog-version-invalid');
       return { ...out, value: { ...out.value, versions: { ...out.value.versions, catalog: `${draft.policyVersion}:${catalog.slice(active.length + 1)}` } } };
     } };
-    return createCanonicalOrderPlanService({ repository, policy: draftPolicy, identity: trusted, clock: fixedClock, supply: draftSupply })
-      .readPlan({ ...context, policyVersion: draft.policyVersion });
+    return run({ repository, policy: draftPolicy, identity: trusted, clock: fixedClock, supply: draftSupply }, { ...context, policyVersion: draft.policyVersion });
+  }
+
+  // Counts, spend and per-derivative quantities of the baseline against the learned plan. Delta is learned minus baseline.
+  function differencesOf(baseline, learned, derivativeIds) {
+    const comparable = baseline.status === 'feasible' && learned.status === 'feasible';
+    const pair = (read) => {
+      const [b, l] = comparable ? [read(baseline), read(learned)] : [null, null];
+      return { baseline: b, learned: l, delta: comparable ? l - b : null };
+    };
+    const quantity = (plan, id) => plan.quantities.find((q) => q.derivativeId === id)?.quantity ?? 0;
+    return { comparable, coverage: pair((p) => p.expectedAcceptableCoverage.covered), orderQuantity: pair((p) => p.orderQuantity),
+      spendMinor: pair((p) => p.spendMinor), unmetNeeds: pair((p) => p.unmetNeeds.length),
+      derivatives: derivativeIds.map((derivativeId) => {
+        const row = pair((p) => quantity(p, derivativeId));
+        return { derivativeId, ...row, changed: comparable && row.delta !== 0 };
+      }) };
+  }
+
+  // The learned plan beside the baseline one in the same response. Any failure here leaves the baseline untouched.
+  async function learnedFor(context, base, baseline, changes) {
+    const unavailableView = (reason) => ({ status: 'unavailable', label: LEARNED_LABEL, recommended: false, submittable: false, reason,
+      limitation: LEARNED_UNAVAILABLE });
+    try {
+      const { plan, forecast } = await planFor(context, base, changes, true);
+      if (plan?.code === 'learned-forecast-fallback' && plan.fallback?.status === 'fallback') {
+        const { reason, limitation, coverage, model } = plan.fallback;
+        return { status: 'fallback', label: LEARNED_LABEL, recommended: false, submittable: false, reason, limitation,
+          ...(coverage ? { coverage } : {}), ...(model ? { model } : {}) };
+      }
+      if (!isPlan(plan) || !forecast) return unavailableView(typeof plan?.code === 'string' ? plan.code : 'learned-plan-unavailable');
+      const catalog = await createPolicyOrderPlanCatalog({ policy }).readCatalog(context, base.read);
+      if (catalog.status !== 'ok') return unavailableView('learned-catalog-unavailable');
+      const model = forecast.demandForecast;
+      return clean({ status: 'available', label: LEARNED_LABEL, recommended: false, submittable: false, plan,
+        forecast: { version: forecast.version, model: model.model, data: model.data, settings: model.settings, modelExpectsWait: forecast.provenance.modelExpectsWait,
+          aggregate: model.aggregate, evaluation: model.evaluation, limitations: forecast.forecast.limitations },
+        differences: differencesOf(baseline, plan, catalog.value.derivatives.map((d) => d.derivativeId)) });
+    } catch { return unavailableView('learned-plan-unavailable'); }
   }
 
   // Display names and editor keys for the panel, from the policy catalogue (FUCQ-121).
@@ -131,7 +174,8 @@ export function createOrderPlanOperations({ repository, policy, identity, clock,
         const plan = await planFor(context, base.value); if (!isPlan(plan)) return plan;
         const replan = await replanFor(context, plan); if (replan.status !== 'ok') return replan;
         const presentation = await presentationFor(context, base.value); if (presentation.status !== 'ok') return presentation;
-        return finish(context, { mode: 'current', preview: false, plan, replan: replan.value, presentation: presentation.value });
+        const learned = await learnedFor(context, base.value, plan);
+        return finish(context, { mode: 'current', preview: false, plan, replan: replan.value, presentation: presentation.value, learned });
       } catch { return unavailable(); }
     },
 
@@ -143,9 +187,10 @@ export function createOrderPlanOperations({ repository, policy, identity, clock,
         const activePlan = await planFor(context, base.value); if (!isPlan(activePlan)) return activePlan;
         const plan = await planFor(context, base.value, changes.value); if (!isPlan(plan)) return plan;
         const presentation = await presentationFor(context, base.value); if (presentation.status !== 'ok') return presentation;
+        const learned = await learnedFor(context, base.value, plan, changes.value);
         return finish(context, { mode: 'preview', preview: true, writes: 'none', message: PREVIEW_MESSAGE,
           activePolicyVersion: base.value.read.policyVersion, draftPolicyVersion: plan.versions.policy, changes: changes.value, plan, activePlan,
-          presentation: presentation.value });
+          presentation: presentation.value, learned });
       } catch { return unavailable(); }
     },
 

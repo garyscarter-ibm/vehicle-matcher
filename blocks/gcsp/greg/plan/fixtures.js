@@ -18,6 +18,8 @@ const MODEL_MAX = { 'g20-saloon': 4, 'g21-touring': 3, 'g61-i5': 2 };
 const TOURING = 'g21-touring-320i';
 const I5 = 'g61-i5-40';
 
+const learned = () => ({ status: 'fallback', label: 'Synthetic-trained model', recommended: false, submittable: false, reason: 'no-active-model',
+  limitation: 'No learned model is active, so only the baseline plan from expressed demand is shown.' });
 const presentation = () => ({ forecastBasis: 'expressed-saved-demand', editableKeys: ['orderPlan.modelBounds', 'orderPlan.derivativeBounds', 'orderPlan.budgetMinor'],
   currency: 'GBP', derivatives: CATALOGUE.map((d) => ({ derivativeId: d.id, modelId: d.modelId, model: d.model, derivative: d.derivative })),
   models: Object.keys(MODEL_MAX).map((modelId) => ({ modelId, model: CATALOGUE.find((d) => d.modelId === modelId).model })) });
@@ -64,7 +66,7 @@ const planned = (extra = {}) => feasible({ id: 'ready0001', q: touring2, covered
     expectedAcceptableCoverage: { covered: 2, total: 4, fraction: 0.5, basis: BASIS }, unallocatedStockRisk: { quantity: 1, totalSupply: 3, basis: 'unmatched-supply-within-horizon', bySource: [{ sourceId: `order:${TOURING}`, quantity: 1 }] } } }],
   ...extra });
 
-const readValue = (plan, replan = { status: 'no-submission' }) => ({ mode: 'current', preview: false, plan, replan, presentation: presentation() });
+const readValue = (plan, replan = { status: 'no-submission' }) => ({ mode: 'current', preview: false, plan, replan, presentation: presentation(), learned: learned() });
 const READY = () => readValue(planned());
 const NO_DEMAND = () => readValue(feasible({ id: 'nodemand1', covered: 0, total: 0, risk: [0, 0],
   alternatives: [{ kind: 'zero-new-orders-baseline', same: true, spec: {} }] }));
@@ -79,7 +81,7 @@ const PREVIEW = () => {
       expectedAcceptableCoverage: { covered: 1, total: 4, fraction: 0.25, basis: BASIS }, unallocatedStockRisk: { quantity: 0, totalSupply: 1, basis: 'unmatched-supply-within-horizon', bySource: [] } } }],
     extra: { provenance: { derivativeMax: { [TOURING]: 1 } } } });
   return { mode: 'preview', preview: true, writes: 'none', message: 'Preview only. Nothing is saved, published or ordered.', activePolicyVersion: 'gcsp-policy-v1',
-    draftPolicyVersion: policy, changes: CHANGES, plan, activePlan: planned(), presentation: presentation() };
+    draftPolicyVersion: policy, changes: CHANGES, plan, activePlan: planned(), presentation: presentation(), learned: learned() };
 };
 const INFEASIBLE = () => {
   const policy = 'preview-fixture0002';
@@ -91,7 +93,7 @@ const INFEASIBLE = () => {
     supplyActivity: { requests: [], responses: [] } };
   return { mode: 'preview', preview: true, writes: 'none', message: 'Preview only. Nothing is saved, published or ordered.', activePolicyVersion: 'gcsp-policy-v1',
     draftPolicyVersion: policy, changes: [{ key: 'orderPlan.budgetMinor', value: 5000000 }, { key: 'orderPlan.modelBounds', value: Object.entries(MODEL_MAX).map(([modelId, max]) => ({ modelId, min: modelId === 'g61-i5' ? 1 : 0, max })) }],
-    plan, activePlan: planned(), presentation: presentation() };
+    plan, activePlan: planned(), presentation: presentation(), learned: learned() };
 };
 
 const request = (state, quantity) => ({ requestId: 'request-fixture-1', commandId: `sub-1:${TOURING}`, derivativeId: TOURING, quantity, state, requestedAt: T0 });

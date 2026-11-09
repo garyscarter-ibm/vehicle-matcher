@@ -354,3 +354,176 @@ test('the choice-mass threshold keeps the smallest set of likeliest permitted ch
   assert.notEqual(narrow.version, wide.version);
   assert.ok(narrow.forecast.entitlements[0].acceptableDerivativeIds.every((id) => permitted.includes(id)));
 });
+
+// FUCQ-123 slice 2: Greg's plan operations carry the learned plan beside the baseline one.
+const LABEL = 'Synthetic-trained model';
+const SHORT = 'The learned forecast is unavailable right now, so only the baseline plan is shown.';
+const good = (out) => { assert.equal(out.status, 'ok', JSON.stringify(out).slice(0, 400)); return out.value; };
+const setPolicy = (...edits) => (source) => { for (const edit of edits) edit(source); return { async loadVersions() { return [source]; } }; };
+const useModel = (source) => withModel(FIXTURE_ID)({}, source);
+const keepEmployee = (source) => settings({ waitExclusionThreshold: 0.9 })(Object.fromEntries(source.assumptions.map((a) => [a.key, a])));
+function submitStub() {
+  const calls = [];
+  return { calls, async submit(_context, line) { calls.push(line); return { status: 'ok', value: { request: { requestId: `request-${calls.length}`, commandId: line.commandId } } }; } };
+}
+function opsFor(f, extra = {}) {
+  return planning.createOrderPlanOperations({ repository: f.repository, policy: f.policy, identity: f.identity, clock: f.clock,
+    supply: supplyPort(f, f.policy), artifactDirectory: ARTIFACTS, ...extra });
+}
+const opsFixture = async (...edits) => { const f = await fixture(saved(), setPolicy(...edits)); f.requests = submitStub(); f.ops = opsFor(f, { requests: f.requests }); return f; };
+const touring = (min) => ({ key: 'orderPlan.derivativeBounds', value: seed.assumptions.find((a) => a.key === 'orderPlan.derivativeBounds').value
+  .map((b) => (b.derivativeId === TOURING ? { ...b, min } : b)) });
+const submissions = async (f) => good(await f.repository.query(f.context, 'plan_snapshots')).filter((r) => r.provenance?.kind === 'submission');
+
+const learned_ = async (f) => learned(f, f.policy).readForecast(f.context, await readOf(f));
+// Every number in `differences` is read back from the two plans it compares.
+function assertDifferences(differences, baseline, learnedPlan) {
+  assert.equal(differences.comparable, true);
+  const pairs = { coverage: (p) => p.expectedAcceptableCoverage.covered, orderQuantity: (p) => p.orderQuantity, spendMinor: (p) => p.spendMinor,
+    unmetNeeds: (p) => p.unmetNeeds.length };
+  for (const [name, read] of Object.entries(pairs)) {
+    assert.deepEqual(differences[name], { baseline: read(baseline), learned: read(learnedPlan), delta: read(learnedPlan) - read(baseline) }, name);
+  }
+  assert.deepEqual(differences.derivatives.map((d) => d.derivativeId), baseline.quantities.map((q) => q.derivativeId));
+  differences.derivatives.forEach((d, i) => {
+    const [b, l] = [baseline.quantities[i].quantity, learnedPlan.quantities.find((q) => q.derivativeId === d.derivativeId).quantity];
+    assert.deepEqual(d, { derivativeId: d.derivativeId, baseline: b, learned: l, delta: l - b, changed: l !== b });
+  });
+}
+
+test('without an active model the plan operations keep the baseline and add a learned fallback, on read and preview', async () => {
+  const f = await fixture(); const ops = opsFor(f);
+  const baseline = await baselineFor(f, f.policy).readPlan(f.context);
+  const read = good(await ops.readPlan(f.context));
+  assert.deepEqual(read.plan, baseline); assert.equal(read.presentation.forecastBasis, 'expressed-saved-demand');
+  assert.deepEqual(Object.keys(read).sort(), ['learned', 'mode', 'plan', 'presentation', 'preview', 'replan']);
+  assert.deepEqual(Object.keys(read.learned).sort(), ['label', 'limitation', 'reason', 'recommended', 'status', 'submittable']);
+  assert.deepEqual([read.learned.status, read.learned.label, read.learned.reason, read.learned.recommended, read.learned.submittable],
+    ['fallback', LABEL, 'no-active-model', false, false]);
+  assert.match(read.learned.limitation, /No learned model is active/);
+  const preview = good(await ops.previewPlan(f.context, { changes: [touring(2)] }));
+  assert.deepEqual(preview.activePlan, baseline); assert.equal(preview.presentation.forecastBasis, 'expressed-saved-demand');
+  assert.deepEqual([preview.learned.status, preview.learned.reason, preview.learned.recommended, preview.learned.submittable], ['fallback', 'no-active-model', false, false]);
+  assert.equal(Object.hasOwn(preview.learned, 'plan'), false);
+});
+
+test('an active model adds a labelled learned plan and numbers read straight from the two plans', async () => {
+  const f = await opsFixture(useModel, keepEmployee);
+  const baseline = await baselineFor(f, f.policy).readPlan(f.context);
+  const out = good(await f.ops.readPlan(f.context)); const { learned } = out;
+  assert.deepEqual(out.plan, baseline); assert.equal(out.presentation.forecastBasis, 'expressed-saved-demand');
+  assert.deepEqual([learned.status, learned.label, learned.recommended, learned.submittable], ['available', LABEL, false, false]);
+  assert.deepEqual(Object.keys(learned).sort(), ['differences', 'forecast', 'label', 'plan', 'recommended', 'status', 'submittable']);
+  assert.equal(learned.plan.status, 'feasible'); assert.equal(learned.plan.versions.forecast, learned.forecast.version);
+  assert.notEqual(learned.plan.planId, out.plan.planId);
+  assert.deepEqual(Object.keys(learned.forecast).sort(), ['aggregate', 'data', 'evaluation', 'limitations', 'model', 'modelExpectsWait', 'settings', 'version']);
+  assert.equal(learned.forecast.model.artifactId, FIXTURE_ID); assert.equal(learned.forecast.settings.waitExclusionThreshold, 0.9);
+  assert.equal(learned.forecast.modelExpectsWait, 0); assert.ok(learned.forecast.evaluation.partitionCounts && learned.forecast.evaluation.overall);
+  assert.ok(learned.forecast.aggregate.length > 0 && learned.forecast.limitations.length > 0);
+  const direct = await learned_(f);
+  assert.equal(direct.value.version, learned.forecast.version); assert.equal(direct.value.forecast.basis, 'synthetic-trained-model');
+  assert.deepEqual(direct.value.demandForecast.aggregate, learned.forecast.aggregate);
+  assertDifferences(learned.differences, out.plan, learned.plan);
+  assert.equal(JSON.stringify(learned).includes('—'), false);
+  assert.deepEqual(good(await f.ops.readPlan(f.context)), out);
+});
+
+test('a learned failure, or an infeasible plan on either side, never changes the baseline response', async () => {
+  const f = await opsFixture(useModel, keepEmployee);
+  const normal = good(await f.ops.readPlan(f.context));
+  for (const artifactDirectory of [42, '/private/nonexistent-gcsp-artifacts/']) {
+    const out = good(await opsFor(f, { artifactDirectory }).readPlan(f.context));
+    const { learned: shown, ...rest } = out; const { learned: _, ...expected } = normal;
+    assert.deepEqual(rest, expected);
+    assert.equal(shown.status, typeof artifactDirectory === 'number' ? 'unavailable' : 'fallback', JSON.stringify(shown));
+    if (shown.status === 'unavailable') assert.deepEqual([shown.reason, shown.limitation, shown.recommended, shown.submittable, shown.label],
+      ['learned-forecast-not-configured', SHORT, false, false, LABEL]);
+    else assert.equal(shown.reason, 'artifact-missing');
+  }
+  // A budget no order fits makes the baseline infeasible: both sides report it and compare nothing.
+  const tight = [{ key: 'orderPlan.budgetMinor', value: 5000000 }, { key: 'orderPlan.modelBounds',
+    value: seed.assumptions.find((a) => a.key === 'orderPlan.modelBounds').value.map((b) => (b.modelId === 'g61-i5' ? { ...b, min: 1 } : b)) }];
+  const preview = good(await f.ops.previewPlan(f.context, { changes: tight }));
+  assert.equal(preview.plan.status, 'infeasible'); assert.equal(preview.learned.status, 'available');
+  const { differences } = preview.learned;
+  assert.equal(differences.comparable, false);
+  for (const name of ['coverage', 'orderQuantity', 'spendMinor', 'unmetNeeds']) assert.deepEqual(differences[name], { baseline: null, learned: null, delta: null }, name);
+  assert.deepEqual(differences.derivatives.map((d) => d.derivativeId), normal.plan.quantities.map((q) => q.derivativeId));
+  assert.ok(differences.derivatives.every((d) => d.baseline === null && d.learned === null && d.delta === null && d.changed === false));
+});
+
+test('the learned plan is never a submit target: only the baseline plan submits', async () => {
+  const f = await opsFixture(useModel, keepEmployee);
+  const { plan, learned } = good(await f.ops.readPlan(f.context));
+  const input = (p, commandId) => ({ commandId, planId: p.planId, versions: p.versions });
+  const refused = await f.ops.submitPlan(f.context, input(learned.plan, 'learned-1'));
+  assert.deepEqual([refused.status, refused.code], ['conflict', 'replan-needed']);
+  assert.ok(refused.changedInputs.includes('forecast') && refused.changedInputs.includes('plan'), JSON.stringify(refused.changedInputs));
+  assert.equal(refused.current.planId, plan.planId);
+  assert.equal(f.requests.calls.length, 0); assert.deepEqual(await submissions(f), []);
+  const sent = good(await f.ops.submitPlan(f.context, input(plan, 'baseline-1')));
+  assert.equal(sent.planId, plan.planId); assert.equal(f.requests.calls.length, 1);
+  assert.equal(f.requests.calls[0].plan.planId, plan.planId); assert.equal(f.requests.calls[0].plan.versions.model, 'expressed-saved-demand');
+  assert.equal((await submissions(f)).length, 1);
+});
+
+test('editing only forecast.learned.v1 moves the learned plan and differences while the baseline stays put', async () => {
+  const f = await fixture(); const run = async (policy) => good(await opsFor(f, { policy }).readPlan(f.context));
+  const [a, b] = [await run(active(settings({ waitExclusionThreshold: 0.9 }))), await run(active())];
+  assert.deepEqual(a.plan, b.plan); assert.deepEqual(a.presentation, b.presentation);
+  assert.deepEqual([a.learned.status, b.learned.status], ['available', 'available']);
+  assert.deepEqual([a.learned.forecast.modelExpectsWait, b.learned.forecast.modelExpectsWait], [0, 1]);
+  assert.deepEqual([a.learned.plan.orderQuantity, b.learned.plan.orderQuantity], [1, 0]);
+  assert.notEqual(a.learned.plan.planId, b.learned.plan.planId); assert.notEqual(a.learned.forecast.version, b.learned.forecast.version);
+  assert.notDeepEqual(a.learned.differences, b.learned.differences);
+  assertDifferences(a.learned.differences, a.plan, a.learned.plan); assertDifferences(b.learned.differences, b.plan, b.learned.plan);
+  assert.equal(b.learned.differences.orderQuantity.delta, -a.plan.orderQuantity);
+});
+
+test('activating another artifact version changes the learned model and plan; the earlier read keeps its own', async (t) => {
+  const directory = await ownedDirectory(t);
+  await writeModelArtifact(directory, FIXTURE);
+  const second = variantPayload((p) => { p.coefficients[0] = 0.4; p.coefficients[9] = 2; });
+  await writeModelArtifact(directory, second);
+  const v2At = '2026-11-05T10:00:00.000Z';
+  const f = await fixture(saved(), (source) => {
+    source.assumptions.push(row(REFERENCE, reference(FIXTURE_ID), source));
+    source.assumptions.find((a) => a.key === 'forecast.learned.v1').value.waitExclusionThreshold = 0.95;
+    const v2 = structuredClone(source); v2.policyVersion = 'gcsp-policy-v2'; v2.effectiveFrom = v2At;
+    for (const table of Object.keys(v2).filter((key) => Array.isArray(v2[key]))) for (const r of v2[table]) r.policyVersion = v2.policyVersion;
+    v2.assumptions.find((a) => a.key === REFERENCE).value = reference(second.artifactId);
+    return { async loadVersions() { return [source, v2]; } };
+  });
+  const ops = opsFor(f, { artifactDirectory: directory });
+  const before = good(await ops.readPlan(f.context)); const retained = structuredClone(before);
+  assert.equal(before.learned.forecast.model.artifactId, FIXTURE_ID);
+  const session = f.presenter.value.context; const time = (await f.clock.now(session)).value;
+  assert.equal((await f.clock.advance(session, { commandId: 'step-past-v2', expectedClockVersion: time.clockVersion, bySeconds: 7200 })).status, 'ok');
+  assert.equal((await activateRunPolicy({ repository: f.repository, policy: f.policy }, f.context)).status, 'ok');
+  const next = good(await f.identity.switchPrincipal(session, 'demo-greg', 'greg-after-activation')).context;
+  const after = good(await ops.readPlan(next));
+  assert.equal(after.learned.status, 'available', JSON.stringify(after.learned).slice(0, 300));
+  assert.equal(after.learned.forecast.model.artifactId, second.artifactId);
+  assert.equal(after.learned.plan.versions.policy, 'gcsp-policy-v2'); assert.equal(after.learned.forecast.model.activationPolicyVersion, 'gcsp-policy-v2');
+  assert.notEqual(after.learned.plan.planId, before.learned.plan.planId); assert.notEqual(after.learned.forecast.version, before.learned.forecast.version);
+  assertDifferences(after.learned.differences, after.plan, after.learned.plan);
+  assertDifferences(before.learned.differences, before.plan, before.learned.plan);
+  assert.deepEqual(before, retained);
+});
+
+test('a preview carries a learned plan under the draft policy and compares it with the preview plan', async () => {
+  const f = await opsFixture(useModel, keepEmployee);
+  const preview = good(await f.ops.previewPlan(f.context, { changes: [touring(2)] }));
+  const { learned } = preview;
+  assert.equal(learned.status, 'available', JSON.stringify(learned).slice(0, 300));
+  assert.match(preview.draftPolicyVersion, /^preview-/);
+  assert.equal(preview.plan.versions.policy, preview.draftPolicyVersion); assert.equal(learned.plan.versions.policy, preview.draftPolicyVersion);
+  assert.equal(learned.forecast.model.activationPolicyVersion, preview.draftPolicyVersion);
+  assert.equal(learned.forecast.model.artifactId, FIXTURE_ID);
+  assert.equal(preview.plan.quantities.find((q) => q.derivativeId === TOURING).quantity, 2);
+  assert.equal(learned.plan.quantities.find((q) => q.derivativeId === TOURING).quantity, 2);
+  assertDifferences(learned.differences, preview.plan, learned.plan);
+  assert.equal(preview.presentation.forecastBasis, 'expressed-saved-demand');
+  assert.equal(preview.writes, 'none'); assert.deepEqual([learned.recommended, learned.submittable], [false, false]);
+  assert.deepEqual(await submissions(f), []);
+});

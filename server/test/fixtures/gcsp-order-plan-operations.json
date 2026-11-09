@@ -981,6 +981,14 @@
             "model": "i5 Touring"
           }
         ]
+      },
+      "learned": {
+        "status": "fallback",
+        "label": "Synthetic-trained model",
+        "recommended": false,
+        "submittable": false,
+        "reason": "no-active-model",
+        "limitation": "No learned model is active, so only the baseline plan from expressed demand is shown."
       }
     },
     "contractVersion": "1.0.0"
@@ -1601,6 +1609,14 @@
             "model": "i5 Touring"
           }
         ]
+      },
+      "learned": {
+        "status": "fallback",
+        "label": "Synthetic-trained model",
+        "recommended": false,
+        "submittable": false,
+        "reason": "no-active-model",
+        "limitation": "No learned model is active, so only the baseline plan from expressed demand is shown."
       }
     },
     "contractVersion": "1.0.0"
@@ -2392,6 +2408,14 @@
             "model": "i5 Touring"
           }
         ]
+      },
+      "learned": {
+        "status": "fallback",
+        "label": "Synthetic-trained model",
+        "recommended": false,
+        "submittable": false,
+        "reason": "no-active-model",
+        "limitation": "No learned model is active, so only the baseline plan from expressed demand is shown."
       }
     },
     "contractVersion": "1.0.0"
