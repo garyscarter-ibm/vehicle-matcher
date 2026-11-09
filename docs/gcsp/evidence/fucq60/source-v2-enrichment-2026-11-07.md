@@ -49,3 +49,9 @@ The follow-up summary is `.claude/f58-63-overnight-20261106/f60/current-f59-batc
 ## FUCQ-230 producer re-pin, 9 November 2026
 
 The F60 historical consumer pinned `scripts/gcsp/collection-session.mjs` at e07feb89 (`1f22fe1c…`). Seven intended 7 November source-qualification commits (03f04ec8 to faae0139, merged as dc228aba) changed it, so the frozen-producer check failed on every later run. `PRODUCER_PINS` in `scripts/gcsp/historical-enrichment.mjs` and the historical test's `producerIdentity` now pin `bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790`. Retained historical inputs and receipts are unchanged.
+
+## FUCQ-245 producer re-pin, 9 November 2026
+
+FUCQ-156 (3507792d) changed `scripts/gcsp/collection-session.mjs` from `bf86e5b9…` to `75298b96656df70056f656b4db1210d04e0d96e5d973cfd493c75883c62dc5f9`: a cache hit now calls an optional `descriptor.restore` hook. The historical catalogue descriptor has no `restore`, so its one cache hit behaves as before. Both `PRODUCER_PINS` and the historical test's `producerIdentity` now pin the new revision; the demo-fleet configuration rows keep their recorded `bf86e5b9…` provenance unchanged.
+
+Before re-pinning, the historical run was replayed offline (fetch refused, fixed clock, same owned paths) with the old producer from `3507792d^` in an owned tree copy and with the new producer. The run result (`dff127ba…`), candidate `manifest.json`/`configurations.jsonl`/`vins.jsonl`/`images.jsonl`, manifest digest `070aadf94abbb438bffdc2ccb0f3c1e761c1b7e330dded07df17ad032e18ee29`, sidecar file (`0033fe2b…`) and sidecars digest `3fab6a02…` were byte-identical, and so was the checkpoint (`d879d867…`) when both ran under the same pinned identity. After the re-pin, the checkpoint differs only by the recorded collection-session pin and its content digest. The re-pinned consumer refuses the old producer (`Frozen producer changed`, `historical-producer-required`).
