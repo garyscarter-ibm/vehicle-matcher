@@ -329,6 +329,10 @@ test('dataTable: caption, scopes, numeric columns, scroll region, band cells and
   assert.equal(row.children[1].dataset.band, 'true');
   assert.match(row.children[1].textContent, /fewer than 5/);
   assert.equal(tbl.querySelectorAll('tbody tr')[1].children[1].dataset.band, undefined);
+  const bold = table.dataTable({ caption: 'Bold', columns, rows: [{ name: { label: 'Changed', emphasis: true }, n: { label: '+1', emphasis: true } }, { name: 'Same', n: 'No change' }] });
+  const [changed, same] = bold.querySelectorAll('tbody tr');
+  assert.equal(changed.children[0].querySelector('strong').textContent, 'Changed'); assert.equal(changed.children[1].querySelector('strong').textContent, '+1');
+  assert.equal(changed.children[1].classList.contains('is-numeric'), true); assert.equal(same.querySelector('strong'), null);
   const empty = table.dataTable({ caption: 'None', columns, rows: [], emptyText: 'Nothing here' });
   const cell = empty.querySelector('tbody td');
   assert.equal(cell.textContent, 'Nothing here');

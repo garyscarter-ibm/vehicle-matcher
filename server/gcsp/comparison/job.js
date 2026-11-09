@@ -155,7 +155,7 @@ function printResult(stdout, result, { resultId, codeRevision }) {
   for (const line of formatMeasuresTable(result)) out(line);
   out();
   out(result.caveat);
-  for (const limitation of result.limitations) out(`Limitation: ${limitation}`);
+  for (const limitation of result.limitations) if (limitation !== result.caveat) out(`Limitation: ${limitation}`);
 }
 
 const sink = (stream) => (text) => { stream.write(text); };

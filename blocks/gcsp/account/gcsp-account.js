@@ -175,7 +175,7 @@ function orderStatus(order, host) {
 export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls, orderHost, order, restarted = false, reload } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
-  wrap.append(screenIntro({ title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
+  wrap.append(screenIntro({ kicker: 'Choices', title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
   // A restarted demo needs a reload, so nothing else on the page can work.
   if (restarted || model.state === 'restarted' || isRunRestarted(draft)) {
     wrap.append(runRestartedScreen({ reload })); main.replaceChildren(wrap); return () => wrap.remove();
@@ -200,7 +200,9 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
       button({ label: 'View your offer', disabled: pending, onClick: () => controls.openOffer(offers[0]) }));
     wrap.append(offer);
   }
-  if (draft?.status === 'ok') {
+  // FUCQ-224: once the slot has an order, its progress replaces the saved journey card.
+  const superseded = ordered && draft?.status === 'ok' && draft.value.choices?.slotId === order.entitlementSlotId;
+  if (draft?.status === 'ok' && !superseded) {
     const value = draft.value;
     const choices = value.choices;
     const saved = el('section', 'gcsp-summary');
@@ -212,7 +214,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     else saved.append(button({ label: 'Resume saved journey', disabled: pending, onClick: controls.resume }));
     if (journey) saved.append(button({ label: 'Back to account', variant: 'ghost', disabled: pending, onClick: controls.back }));
     wrap.append(saved);
-  } else if (draft && draft.status !== 'not-found') {
+  } else if (draft && !['ok', 'not-found'].includes(draft.status)) {
     wrap.append(statusScreen({ title: 'Saved journey could not be read', message: 'Refresh before starting or resuming a journey.' }));
   }
   if (model.account) {

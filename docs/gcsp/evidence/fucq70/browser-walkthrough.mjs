@@ -1,4 +1,4 @@
-// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222 (fucq145 and fucq222 also have chunk phone, 375x812).
+// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223 (fucq145, fucq222 and fucq224 also have chunk phone, 375x812; fucq223 has desktop, phone and narrow).
 // Spawns `node index.js` in server/ offline (GCSP_OFFLINE=1, memory repository). FUCQ70_* names still work as fallbacks for WALK_*.
 import { spawn, spawnSync } from 'node:child_process';
 import { createServer } from 'node:http';
@@ -13,17 +13,17 @@ const HERE = fileURLToPath(new URL('.', import.meta.url));
 const SERVER_DIR = resolve(HERE, '../../../../server');
 const env = (name) => process.env[`WALK_${name}`] ?? process.env[`FUCQ70_${name}`];
 const story = process.env.WALK_STORY || 'fucq70';
-if (!['fucq70', 'fucq72', 'fucq73', 'fucq145', 'fucq222'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222');
+if (!['fucq70', 'fucq72', 'fucq73', 'fucq145', 'fucq222', 'fucq224', 'fucq223'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223');
 const chunk = env('CHUNK');
-const second = ['fucq145', 'fucq222'].includes(story) ? 'phone' : 'narrow';
-if (!['desktop', second].includes(chunk)) throw new Error(`Set WALK_CHUNK=desktop|${second}`);
+const second = ['fucq145', 'fucq222', 'fucq224', 'fucq223'].includes(story) ? 'phone' : 'narrow';
+if (!['desktop', second, ...(story === 'fucq223' ? ['narrow'] : [])].includes(chunk)) throw new Error(`Set WALK_CHUNK=desktop|${second}`);
 const scratch = resolve(env('SCRATCH') || process.env.TMPDIR || '');
 if (!scratch || scratch === '/') throw new Error('Set WALK_SCRATCH (or TMPDIR) to an owned scratch directory');
 const viewport = chunk === 'narrow' ? { width: 320, height: 720 } : chunk === 'phone' ? { width: 375, height: 812 } : { width: 1280, height: 900 };
 const vp = String(viewport.width);
-const port = Number(env('PORT')) || (story === 'fucq222' ? (chunk === 'phone' ? 8941 : 8940) : story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
+const port = Number(env('PORT')) || (story === 'fucq223' ? { desktop: 8944, phone: 8945, narrow: 8946 }[chunk] : story === 'fucq224' ? (chunk === 'phone' ? 8943 : 8942) : story === 'fucq222' ? (chunk === 'phone' ? 8941 : 8940) : story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
 if (port < 8930 || port > 8949) throw new Error('WALK_PORT must be within 8930-8949');
-const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story); // fucq145 -> ../fucq145, fucq222 -> ../fucq222
+const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story); // fucq145 -> ../fucq145, fucq222 -> ../fucq222, fucq224 -> ../fucq224
 const only = env('ONLY') ? `-${env('ONLY')}` : ''; // a partial run never overwrites the full run's files
 const shotDir = join(outDir, `browser${only}`);
 const resultsFile = join(outDir, `results-${chunk}${only}.json`);
@@ -31,7 +31,7 @@ const profile = join(scratch, `chrome-${chunk}`);
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const ACCESS_KEY = `walk-${randomBytes(9).toString('hex')}`;
 const report = { ...(story === 'fucq70' ? {} : { story }), chunk, entry: 'hosted-offline', viewport, state: 'incomplete', startedAt: new Date().toISOString(), steps: [], keyboard: [],
-  consoleErrors: [], pageErrors: [], failedRequests: [], badResponses: [], notes: [], ...(story === 'fucq73' ? { screens: [], rawIdFailures: [], defects: [], motion: [], focus: [], contrast: [] } : {}) };
+  consoleErrors: [], pageErrors: [], failedRequests: [], badResponses: [], notes: [], ...(story === 'fucq73' ? { screens: [], rawIdFailures: [], defects: [], motion: [], focus: [], contrast: [] } : {}), ...(story === 'fucq224' ? { defects: [] } : {}) };
 let lastStock = null; let shots = 0; let reviewedOrder = null; const orderPosts = []; let context; let page; let app; let child; let halted = null; let origin;
 const wait = (ms) => new Promise((done) => setTimeout(done, ms));
 const save = () => { if (story !== 'fucq70') report.orderPosts = orderPosts; if (env('TRACE')) report.trace = trace; return writeFile(resultsFile, `${JSON.stringify(report, null, 2)}\n`); };
@@ -212,7 +212,7 @@ async function fillSetup(driverLabel = 'You: Paula (fictional)', { keyboard = fa
   const fillIfEmpty = async (selector, value) => { const c = page.locator(selector); if (!(await c.inputValue())) await c.fill(value); };
   await fillIfEmpty('input[name="phone"]', '07700900123');
   await fillIfEmpty('input[name="email"]', 'paula.test@example.test');
-  await fillIfEmpty('input[name="expectedReturnMileage"]', '24000');
+  if (await page.locator('input[name="expectedReturnMileage"]').isVisible()) await fillIfEmpty('input[name="expectedReturnMileage"]', '24000'); // hidden for a new order
   if (keyboard) { await tabTo(page.getByRole('button', { name: 'Save choices' })); await page.keyboard.press('Enter'); } else await page.getByRole('button', { name: 'Save choices' }).click();
   await page.getByText('Your choices are saved.').first().waitFor({ timeout: 60000 });
   return chosen;
@@ -310,7 +310,7 @@ async function tickAll() {
 async function checkedCount() { return boxes().evaluateAll((list) => list.filter((b) => b.checked).length); }
 async function outcomeFacts() {
   const t = await text(page.locator('.gcsp-summary-outcome'));
-  return { heading: (await heading()).trim(), orderNumber: /Order number\s*:?\s*(\d+)/.exec(t)?.[1] ?? null, status: /Status\s*:?\s*([^\n]+)/.exec(t)?.[1]?.trim() ?? null,
+  return { heading: (await heading()).trim(), orderNumber: /order number\s*:?\s*(\d+)/i.exec(t)?.[1] ?? null, status: /Status\s*:?\s*([^\n]+)/.exec(t)?.[1]?.trim() ?? null,
     stages: await page.locator('.gcsp-stage-items li').allInnerTexts().then((l) => l.map((x) => clip(x, 80))),
     nextSteps: await page.locator('.gcsp-summary-steps li').allInnerTexts(), requestedCollection: clip(await sectionText('Requested collection'), 240),
     forbiddenWording: (t.match(/\b(approved|collected|booked)\b/gi) ?? []), rawIds: rawIdsIn(t), text: clip(t, 900) };
@@ -501,8 +501,8 @@ async function waitGalleryReady() {
   await until(async () => (await enabledButton('Review this car').count()) > 0 || EMPTY_TITLES.test(await bodyText()), { what: 'gallery cards or empty state' });
 }
 const galleryFacts = async () => ({ cards: await page.getByRole('button', { name: 'Review this car' }).count(), enabled: await enabledButton('Review this car').count(), status: clip(await text(page.locator('.vm-status')), 240) });
-async function keyboardSubmitToOutcome(row, tag) {
-  await toSummary();
+async function keyboardSubmitToOutcome(row, tag, { atSummary = false } = {}) {
+  if (!atSummary) await toSummary();
   row.screenshots.push(await shot(`${tag}-summary-unticked`));
   const total = await boxes().count();
   for (let i = 0; i < total; i += 1) { await tabTo(boxes().nth(i)); await page.keyboard.press('Space'); }
@@ -1090,6 +1090,167 @@ async function walk222() {
   });
 }
 
+// FUCQ-223: the manual journey at narrow widths. Gallery paging, fact grids, selects and the header account name.
+const PAGE_SIZE_223 = 6;
+// Measures, per fact grid, its columns and any value word wider than its column (a forced mid-word break), plus each select's text fit.
+const layout223 = () => page.evaluate(() => {
+  const ctx = document.createElement('canvas').getContext('2d'); const vis = (n) => n.getClientRects().length > 0;
+  const grids = [...document.querySelectorAll('.vm-facts')].filter(vis).map((g) => {
+    const cols = getComputedStyle(g).gridTemplateColumns.split(' ').length; const forced = [];
+    for (const v of g.querySelectorAll('.vm-fact-value, .vm-fact-label')) {
+      const cs = getComputedStyle(v); ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+      for (const word of v.textContent.split(/[\s-]+/)) if (word && !/[@_.]|^[0-9a-f:;]{20,}/.test(word) && ctx.measureText(word).width > v.clientWidth + 1) forced.push(`${v.closest('.vm-fact')?.querySelector('dt')?.textContent ?? '?'}: ${word.slice(0, 24)}`);
+    }
+    return { cols, width: Math.round(g.clientWidth), forced };
+  });
+  const selects = [...document.querySelectorAll('select')].filter(vis).map((s) => {
+    const cs = getComputedStyle(s); ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+    const text = s.selectedOptions[0]?.textContent ?? ''; const room = s.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 20;
+    return { name: s.name, text, textPx: Math.round(ctx.measureText(text).width), roomPx: Math.round(room), width: Math.round(s.getBoundingClientRect().width), fits: ctx.measureText(text).width <= room };
+  });
+  const name = document.querySelector('.gcsp-account-name');
+  return { grids, selects, forcedWords: grids.flatMap((g) => g.forced), twoColAtNarrow: window.innerWidth < 360 ? grids.filter((g) => g.cols > 1).length : 0,
+    header: name ? { text: name.textContent, title: name.title, clipped: name.scrollWidth > name.clientWidth, ellipsis: getComputedStyle(name).textOverflow } : null };
+});
+const galleryNow223 = () => page.evaluate(() => ({ cards: document.querySelectorAll('.gcsp-gallery-grid .vm-card').length, count: document.querySelector('.gcsp-show-more-count')?.textContent ?? null,
+  more: [...document.querySelectorAll('.gcsp-show-more button')].filter((b) => !b.hidden).map((b) => b.textContent), pageHeight: document.documentElement.scrollHeight,
+  focusIndex: [...document.querySelectorAll('.gcsp-gallery-grid .vm-card')].indexOf(document.activeElement) }));
+async function walk223() {
+  await step('s223-setup', 'Demo key, Choose a replacement: setup screen at width (fact grids, selects, header)', async (row) => {
+    const typed = await enterAccessKey(); await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+    await page.getByRole('button', { name: 'Choose a replacement' }).click();
+    const chosen = await fillSetup('Nominated: Casey (fictional)', {}).catch(async () => fillSetup(DEFAULT_DRIVER));
+    const l = await layout223(); row.detail = { chosen, ...l };
+    return { pass: typed && l.selects.every((s) => s.fits) && !l.forcedWords.length && !l.twoColAtNarrow && (!l.header || l.header.title === l.header.text), state: `selects ${JSON.stringify(l.selects.map((s) => [s.name, s.textPx, s.roomPx, s.fits]))}; grids ${JSON.stringify(l.grids.map((g) => g.cols))}; forced ${JSON.stringify(l.forcedWords)}; header ${JSON.stringify(l.header)}`, shotName: 'setup' };
+  }, { critical: true });
+  await step('s223-gallery-first-page', 'Next release, Continue: the first page of cars, the count line and Show more cars', async (row) => {
+    await presenterPress('Next release'); await closeStrip();
+    const date = page.locator('input[name="requestedCollectionDate"]');
+    await until(async () => (await date.getAttribute('min')) && !(await date.isDisabled()), { what: 'refreshed collection window' });
+    const min = await date.getAttribute('min');
+    if ((await date.inputValue()) !== min) { await date.fill(min); await page.getByRole('button', { name: 'Save choices' }).click(); await until(async () => /Your choices are saved/.test(await bodyText()), { what: 'choices re-saved' }); }
+    await page.getByRole('button', { name: 'Continue', exact: true }).click(); await waitGalleryReady();
+    const g = await galleryNow223(); const l = await layout223(); row.detail = { ...g, forcedWords: l.forcedWords, grids: l.grids.map((x) => x.cols) };
+    report.notes.push(`${vp}px gallery first page height ${g.pageHeight}px, ${g.cards} cards, count "${g.count}"`);
+    return { pass: g.cards === PAGE_SIZE_223 && /^Showing 6 of \d+ cars$/.test(g.count ?? '') && g.more.join() === 'Show more cars' && !l.forcedWords.length && !l.twoColAtNarrow, state: `${JSON.stringify(g)}; forced ${JSON.stringify(l.forcedWords)}`, shotName: 'gallery-first-page' };
+  }, { critical: true });
+  await step('s223-show-more-keyboard', 'Tab to Show more cars, Enter: next page and focus on the first new card; a sort change resets paging', async (row) => {
+    const before = await galleryNow223(); const more = page.getByRole('button', { name: 'Show more cars' });
+    const hops = await tabTo(more); await page.keyboard.press('Enter'); await wait(300);
+    const after = await galleryNow223(); const focus = await page.evaluate(() => { const a = document.activeElement; return `${a.tagName} "${a.getAttribute('aria-label') ?? a.textContent.slice(0, 40)}"`; });
+    kb('gallery', 'Tab to Show more cars and Enter reveals the next page and focuses its first card', after.focusIndex === PAGE_SIZE_223, { hops, focus });
+    const sort = page.locator('select[name="sort"]'); await sort.selectOption('points'); await wait(300); const reset = await galleryNow223();
+    row.detail = { before: before.cards, after, focus, afterSort: reset, hops };
+    const ok = after.cards === 2 * PAGE_SIZE_223 && after.focusIndex === PAGE_SIZE_223 && /^Showing 12 of \d+ cars$/.test(after.count ?? '') && reset.cards === PAGE_SIZE_223;
+    await sort.selectOption('name'); await wait(300); await page.getByRole('button', { name: 'Show more cars' }).click(); await wait(300);
+    return { pass: ok, state: `${before.cards} -> ${after.cards} cards, focus index ${after.focusIndex} (${focus}); "${after.count}"; after sort ${reset.cards} cards`, shotName: 'show-more-keyboard' };
+  }, { critical: true });
+  await step('s223-review', 'Review a car: review screen at width', async (row) => {
+    await reviewFirstCar(); const l = await layout223(); row.detail = { selects: l.selects, grids: l.grids, forcedWords: l.forcedWords };
+    return { pass: !l.forcedWords.length && !l.twoColAtNarrow && l.selects.every((s) => s.fits), state: `${await heading()}; grids ${JSON.stringify(l.grids)}; forced ${JSON.stringify(l.forcedWords)}`, shotName: 'review' };
+  }, { critical: true });
+  await step('s223-summary', 'Continue to order review: summary at width', async (row) => {
+    await toSummary(); const l = await layout223(); row.detail = { grids: l.grids, forcedWords: l.forcedWords };
+    return { pass: !l.forcedWords.length && !l.twoColAtNarrow, state: `${await heading()}; grids ${JSON.stringify(l.grids)}; forced ${JSON.stringify(l.forcedWords)}`, shotName: 'summary' };
+  });
+  // Slice 2: the shell and type on the pages after the summary, and the other surfaces that share the shell.
+  await step('s223b-outcome', 'Tick the declarations and submit by keyboard: outcome', async (row) => {
+    const r = await keyboardSubmitToOutcome(row, 's223b', { atSummary: true }); row.detail = { posts: r.posts, heading: r.o.heading, orderNumber: r.o.orderNumber };
+    return { pass: r.total > 0 && r.ticked === r.total && r.posts === 1 && /^\d{7}$/.test(r.o.orderNumber ?? ''), state: `${r.o.heading} | order ${r.o.orderNumber}; POSTs ${r.posts}`, shotName: 's223b-outcome' };
+  }, { critical: true });
+  await step('s223b-account-after-order', 'Finish returns to the account: kicker, and a compact order image well', async (row) => {
+    await finishToAccount(); await until(async () => !/Loading your order/.test(await bodyText()), { timeout: 15000, what: 'order progress loaded' }).catch(() => {});
+    const m = await page.evaluate(() => ({ kicker: document.querySelector('.gcsp-account-body .vm-kicker')?.textContent ?? null,
+      media: [...document.querySelectorAll('.gcsp-order-media, .gcsp-order-car .vm-media, .gcsp-order-car img')].map((n) => `${n.className || n.tagName}:${Math.round(n.getBoundingClientRect().height)}`) }));
+    row.detail = m;
+    return { pass: m.kicker === 'Choices' && m.media.every((x) => Number(x.split(':').pop()) <= 260), state: JSON.stringify(m), shotName: 's223b-account-after-order' };
+  });
+  if (chunk === 'desktop') {
+    await step('s223b-presenter-strip', 'Presenter strip opened on the account', async (row) => {
+      await openStrip(); const t = await stripText(); row.detail = { text: clip(t, 200) };
+      return { pass: /DemoClock/.test(t), state: clip(t, 200), shotName: 's223b-presenter-strip', full: false };
+    });
+    await step('s223b-greg', "Greg's dashboard harness at desktop width (shared shell)", async (row) => {
+      await page.goto(`${origin}/gcsp-greg.html?fixture=populated`, { waitUntil: 'load', timeout: 60000 }); await wait(1500);
+      row.detail = { h1: clip(await page.locator('h1').first().innerText().catch(() => ''), 60) };
+      return { pass: row.detail.h1.length > 0, state: row.detail.h1, shotName: 's223b-greg' };
+    });
+    for (const [id, path, label] of [['offer', '/blocks/gcsp/offer/preview.html?fixture=pending', 'The offer page (fixture)']]) {
+      await step(`s223b-${id}`, `${label} at desktop width (shared shell)`, async (row) => {
+        await page.goto(`${origin}${path}`, { waitUntil: 'load', timeout: 60000 }); await page.locator('h1').first().waitFor({ timeout: 20000 }).catch(() => {}); await wait(1000);
+        row.detail = { h1: clip(await page.locator('h1').first().innerText().catch(() => ''), 60) };
+        return { pass: row.detail.h1.length > 0, state: row.detail.h1, shotName: `s223b-${id}` };
+      });
+    }
+  }
+}
+
+// FUCQ-224: the new-order route for Jordan (fictional), then the account after the order.
+async function walk224() {
+  await freshHost();
+  await step('n224-account', 'Demo key, switch to Jordan: the account offers Start a new order and no Choose a replacement', async () => {
+    const typed = await enterAccessKey(); await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+    const r = await switchTo('demo-jordan'); const t = await bodyText();
+    const start = r.buttons.some((b) => /Start a new order/.test(b)); const replace = r.buttons.some((b) => /Choose a replacement/.test(b));
+    return { pass: typed && start && !replace && /Jordan/.test(t), state: `start ${start}; replacement ${replace}; ${clip(t, 400)}`, detail: { buttons: r.buttons }, shotName: 'n224-account' };
+  }, { critical: true });
+  await step('n224-setup', 'Start a new order (Tab+Enter); setup saved for You: Jordan (fictional), no returning-car mileage', async (row) => {
+    await kbPress(page.getByRole('button', { name: 'Start a new order' }));
+    const chosen = await fillSetup('You: Jordan (fictional)', { keyboard: true });
+    const mileageVisible = await page.locator('input[name="expectedReturnMileage"]').isVisible(); row.detail = { ...chosen, returningMileageVisible: mileageVisible };
+    return { pass: /Jordan/.test(chosen.driver) && !mileageVisible, state: `${await heading()} | ${JSON.stringify(row.detail)}`, shotName: 'n224-setup-saved' };
+  }, { critical: true });
+  await step('n224-empty-gallery', 'Continue before any release: empty gallery', async (row) => {
+    await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled' });
+    await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
+    await until(async () => EMPTY_TITLES.test(await bodyText()) || (await page.getByRole('button', { name: 'Review this car' }).count()) > 0, { what: 'empty gallery state' });
+    row.detail = await galleryFacts();
+    return { pass: row.detail.cards === 0, state: `status "${row.detail.status}"; cards ${row.detail.cards}`, shotName: 'n224-gallery-empty', full: false };
+  }, { critical: true });
+  await step('n224-gallery', 'Next release; released cars (back to choices for a new date if the window moved)', async (row) => {
+    await presenterPress('Next release'); await closeStrip();
+    const refresh = page.getByRole('button', { name: 'Refresh availability' });
+    if (await refresh.count()) await kbPress(refresh);
+    await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'released cards', timeout: 15000 }).catch(() => {});
+    if (!(await enabledButton('Review this car').count())) {
+      await kbPress(page.getByRole('button', { name: 'Back to your choices' }));
+      await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor({ timeout: 60000 });
+      const date = page.locator('input[name="requestedCollectionDate"]');
+      await until(async () => (await date.getAttribute('min')) && !(await date.isDisabled()), { what: 'refreshed collection window' });
+      await date.fill(await date.getAttribute('min'));
+      await kbPress(page.getByRole('button', { name: 'Save choices' }));
+      await until(async () => /Your choices are saved/.test(await bodyText()), { what: 'choices re-saved' });
+      await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled' });
+      await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
+      row.detail = { dateRecovery: true };
+    }
+    await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'released cards', timeout: 30000 });
+    row.detail = { ...row.detail, ...(await galleryFacts()) };
+    return { pass: row.detail.enabled > 0, state: `${row.detail.cards} cards, ${row.detail.enabled} enabled`, shotName: 'n224-gallery-released' };
+  }, { critical: true });
+  await step('n224-review', 'Review this car (Tab+Enter): review with an active countdown', async (row) => {
+    await kbPress(enabledButton('Review this car'));
+    await page.getByRole('heading', { name: 'Review your car', exact: true }).waitFor({ timeout: 60000 });
+    await until(async () => /remaining/.test(await countdownOf()), { what: 'active countdown' });
+    const f = await reviewFacts(); row.detail = f;
+    return { pass: Boolean(f.vehicleName) && Boolean(f.phone), state: `${f.vehicleName} | ${f.countdown}`, shotName: 'n224-review' };
+  }, { critical: true });
+  await step('n224-summary-outcome', 'Continue to order review, tick declarations, Submit: outcome', async (row) => {
+    const r = await keyboardSubmitToOutcome(row, 'n224');
+    row.detail = { total: r.total, ticked: r.ticked, submitEnabled: r.enabled, posts: r.posts, outcome: { heading: r.o.heading, orderNumber: r.o.orderNumber, status: r.o.status, rawIds: r.o.rawIds } };
+    return { pass: r.total > 0 && r.ticked === r.total && r.enabled === true && r.posts === 1 && /^\d{7}$/.test(r.o.orderNumber ?? '') && !r.o.forbiddenWording.length && !r.o.rawIds.length, state: `${r.o.heading} | order ${r.o.orderNumber} | status ${r.o.status}; POSTs ${r.posts}`, shotName: 'n224-outcome' };
+  }, { critical: true });
+  await step('n224-account-after-order', 'Finish returns to the account: order in progress, no saved-journey card', async (row) => {
+    await finishToAccount();
+    await until(async () => (await bodyText()).includes(reviewedOrder ?? '#none'), { timeout: 30000, what: 'order number on the account' }).catch(() => {});
+    await until(async () => !/Loading your order/.test(await bodyText()), { timeout: 15000, what: 'order progress loaded' }).catch(() => {});
+    const t = await bodyText(); const inProgress = /Your order is in progress/.test(t); const stale = /journey saved|not an order confirmation/i.test(t);
+    row.detail = { orderShown: t.includes(reviewedOrder ?? '#none'), inProgress, staleSavedJourneyCard: stale, text: clip(t, 700) };
+    if (stale) defect(row, 'D-224', 'Medium', 'blocks/gcsp/account/gcsp-account.js (saved journey card)', 'After the order the account still shows the saved-journey card.');
+    return { pass: inProgress && !stale, state: `in progress ${inProgress}; stale card ${stale}; ${clip(t, 400)}`, shotName: 'n224-account-after-order' };
+  });
+}
+
 async function run() {
   await mkdir(shotDir, { recursive: true }); await mkdir(scratch, { recursive: true });
   await rm(join(scratch, 'gcsp-stock-inventory'), { recursive: true, force: true }); // a killed earlier run can leave a torn inventory file
@@ -1114,6 +1275,8 @@ async function run() {
   if (story === 'fucq73') { await walk73(); return; }
   if (story === 'fucq145') { await walk145(); return; }
   if (story === 'fucq222') { await walk222(); return; }
+  if (story === 'fucq224') { await walk224(); return; }
+  if (story === 'fucq223') { await walk223(); return; }
 
   await reachGallery();
 

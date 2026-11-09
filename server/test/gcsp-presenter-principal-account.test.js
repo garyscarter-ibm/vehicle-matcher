@@ -81,6 +81,12 @@ test('presenter switch and reset prepare each employee account from the server-i
     assert.equal(next.reply.json.value.runId, reset.json.value.runId);
     await ready(next.session);
   }
+  // FUCQ-224: Jordan has no current car, so the account offers a new order and no replacement.
+  const jordan = await switchTo('demo-jordan', 'switch-jordan-new-run');
+  assert.equal(jordan.reply.status, 200, jordan.reply.body);
+  const fresh = (await ready(jordan.session)).json.value;
+  assert.equal(fresh.currentContract, null); assert.equal(fresh.contractState, 'no-contract');
+  assert.deepEqual(fresh.actions.map((a) => a.action), ['order']);
   const rows = good(await opened.repository.query({ ...presenter.context, runId: reset.json.value.runId }, 'employees'));
-  assert.equal(rows.filter((row) => row.contract?.manualContext).length, 2);
+  assert.equal(rows.filter((row) => row.contract?.manualContext).length, 3);
 });

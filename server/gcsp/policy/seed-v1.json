@@ -11372,6 +11372,18 @@
           "entitlementSlotId": "slot-sam"
         },
         {
+          "principalId": "demo-jordan",
+          "employeeId": "employee-jordan",
+          "name": "Jordan (fictional)",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "entitlementSlotId": "slot-jordan"
+        },
+        {
           "principalId": "demo-greg",
           "employeeId": "operator-greg",
           "name": "Greg (fictional)",
@@ -14270,6 +14282,21 @@
       "basis": "Synthetic catalogue of four derivatives over three models, bound to the reviewed structural configuration ids (the 330e id is minted in the same Base64 format). Unit costs are synthetic GBP minor units, not BMW prices or procurement data; facts are compact assumed values, not a published corpus.",
       "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
       "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "forecast.learned.v1",
+      "value": {
+        "choiceMassThreshold": 0.8,
+        "waitExclusionThreshold": 0.5,
+        "intervalZ": 1.96
+      },
+      "unit": "forecast-settings",
+      "status": "assumed",
+      "basis": "Synthetic planning settings for the learned forecast: keep the likeliest permitted choices covering 80% of non-wait probability, leave out employees more likely to wait than not, and show a 95% normal interval. No BMW behaviour is claimed.",
+      "source": "docs/gcsp/shared-contracts.md",
+      "sourceDate": "2026-11-09",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }

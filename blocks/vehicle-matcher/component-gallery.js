@@ -21,7 +21,7 @@ import { activityBody } from '../gcsp/activity/activity-body.js';
 import { activityOffer } from '../gcsp/activity/activity-offer.js';
 import { activityFixtures } from '../gcsp/activity/activity-fixtures.js';
 import { activityEvents } from '../gcsp/activity/activity-copy.js';
-import { formControlsExample, stageListExample, rangeBarExample, runRestartedExample } from '../gcsp/kit/form-controls-gallery.js';
+import { formControlsExample, stageListExample, rangeBarExample, runRestartedExample, showMoreExample } from '../gcsp/kit/form-controls-gallery.js';
 import { stageTracker } from '../gcsp/kit/stage-tracker.js';
 import { taskList } from '../gcsp/kit/task-list.js';
 import { orderProgressBody } from '../gcsp/order-progress/order-progress-body.js';
@@ -205,6 +205,10 @@ function gregKitExamples() {
   const columns = [{ key: 'name', label: 'Model line' }, { key: 'released', label: 'Released', numeric: true },
     { key: 'held', label: 'Held', numeric: true }, { key: 'allocated', label: 'Allocated', numeric: true }];
   group('dataTable: long model name and a band cell').append(dataTable({ caption: 'Stock by model line', columns, rows, id: 'gallery-greg-table' }));
+  const bold = (label, on) => (on ? { label, emphasis: true } : label);
+  group('dataTable: emphasised cells for changed rows').append(dataTable({ caption: 'Plan comparison (changed rows in bold)', id: 'gallery-greg-emphasis',
+    columns: [{ key: 'name', label: 'Vehicle' }, { key: 'a', label: 'Recommended plan', numeric: true }, { key: 'b', label: 'Other plan', numeric: true }, { key: 'd', label: 'Difference', numeric: true }],
+    rows: [{ name: bold('G21 Touring 320i', true), a: '2', b: bold('1', true), d: bold('-1', true) }, { name: 'G20 Saloon 330e', a: '1', b: '1', d: 'No change' }] }));
   group('dataTable: empty state').append(dataTable({ caption: 'Stock by model line (empty)', columns, rows: [], emptyText: 'No stock has been released yet', id: 'gallery-greg-empty' }));
   section.append(scope);
   return section;
@@ -485,7 +489,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), gregPublishExample(), gregOrderPlanExample(), gregComparisonExample(), launcherExamples(), activityExamples(), orderProgressExamples(), formControlsExample(), stageListExample(), rangeBarExample(), runRestartedExample());
+  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), gregPublishExample(), gregOrderPlanExample(), gregComparisonExample(), launcherExamples(), activityExamples(), orderProgressExamples(), formControlsExample(), stageListExample(), rangeBarExample(), showMoreExample(), runRestartedExample());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

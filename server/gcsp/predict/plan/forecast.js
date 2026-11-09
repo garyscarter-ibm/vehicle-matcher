@@ -13,7 +13,7 @@ const currentBriefs = (rows) => [...rows.reduce((byEmployee, b) => {
 // preserving the joint choices its privacy-banded PUBLIC marginal DTO omits.
 // futureChoices must evaluate real future configurations and shared gates. There
 // is no fallback to synthetic exact stock or current availability evaluation.
-export function createExpressedOrderForecastProvider({ repository, identity, clock, catalog, futureChoices } = {}) {
+export function createExpressedOrderForecastProvider({ repository, identity, clock, catalog, futureChoices, predictionContext = false } = {}) {
   return Object.freeze({
     async readForecast(context, read) {
       if (!repository || !identity || !clock || typeof catalog?.readCatalog !== 'function'
@@ -33,7 +33,7 @@ export function createExpressedOrderForecastProvider({ repository, identity, clo
         if (choices.value.runId !== context.runId || choices.value.policyVersion !== context.policyVersion || choices.value.asOf !== read.asOf
           || !text(choices.value.version) || !Array.isArray(choices.value.derivatives)) return unavailable('planning-forecast-catalog-mismatch');
         const derivativeIds = new Set(choices.value.derivatives.map((d) => d.derivativeId));
-        const entitlements = []; const evaluations = []; const excluded = [];
+        const entitlements = []; const evaluations = []; const excluded = []; const contexts = [];
         for (const brief of currentBriefs(rows.briefs)) {
           const row = rows.employees.find((e) => e.employeeId === brief.employeeId);
           const linked = text(row?.entitlementSlotId) ? rows.entitlement_slots.find((s) => s.entitlementSlotId === row.entitlementSlotId) : undefined;
@@ -72,6 +72,8 @@ export function createExpressedOrderForecastProvider({ repository, identity, clo
           entitlements.push({ entitlementId: slot.entitlementSlotId, employeeId: employee.employeeId,
             renewalId: employee.renewalId, entitlementSlotId: slot.entitlementSlotId, companyId: employee.companyId, schemeId: employee.schemeId,
             renewalAt, acceptableDerivativeIds: [...value.acceptableDerivativeIds].sort(compare), gates: [...value.gates].sort(compare) });
+          contexts.push({ entitlementId: slot.entitlementSlotId, brief: structuredClone(brief), employee: Object.fromEntries(
+            ['employeeId', 'companyId', 'schemeId', 'gradeId', 'entitlementSlotId', 'renewalId'].map((k) => [k, employee[k]])) });
           if (value.excludedStockIds !== undefined) entitlements.at(-1).excludedStockIds = [...value.excludedStockIds].sort(compare);
           if (value.requiredBy !== undefined) entitlements.at(-1).requiredBy = value.requiredBy;
         }
@@ -88,7 +90,9 @@ export function createExpressedOrderForecastProvider({ repository, identity, clo
             limitations: [...new Set(['Saved confirmed briefs only; employees without a saved brief are not inferred.',
               'Deterministic permitted joint choices are not calibrated acceptance probabilities.', ...evaluations.flatMap((e) => e.limitations)])] },
           provenance: { source: 'F99-authoritative-saved-briefs-internal-extension', catalogVersion: choices.value.version,
-            evaluationVersions: evaluations.map((v) => v.version), excluded } } };
+            evaluationVersions: evaluations.map((v) => v.version), excluded },
+          // Opt-in: the saved briefs behind exactly the entitlements above, for a prediction port.
+          ...(predictionContext ? { predictionContext: { entitlements: contexts } } : {}) } };
       } catch { return unavailable('planning-expressed-forecast-unavailable'); }
     },
   });

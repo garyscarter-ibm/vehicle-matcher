@@ -46,8 +46,19 @@ test('missing image has a useful fallback and terminal states have no decision c
     view.update({ ...data, state });
     assert.equal(root.querySelectorAll('[data-offer-action="accept"], [data-offer-action="decline"]').length, 0);
     assert.equal(root.querySelectorAll('h1').length, 1);
-    if (['earlier-run', 'not-found', 'error', 'loading'].includes(state)) assert.equal(root.querySelector('.vm-card'), null);
+    if (['earlier-run', 'not-found', 'error', 'loading', 'expired'].includes(state)) assert.equal(root.querySelector('.vm-card'), null);
   }
+});
+
+// FUCQ-228: an expired offer shows that it expired and the next step, not the offer's fit.
+test('expired offer shows only its expiry and next step', () => {
+  const { root, view, data } = render('pending');
+  view.update({ ...data, state: 'expired' });
+  assert.equal(root.querySelector('h1').textContent, 'Offer expired');
+  assert.match(root.textContent, /no longer available to accept\. Open your account to check for a new offer\./);
+  assert.doesNotMatch(root.textContent, /Eligible|Why it suits you|Your current car/);
+  assert.equal(root.querySelector('.vm-card'), null);
+  assert.ok(root.querySelector('[data-offer-action="refresh"]'));
 });
 
 test('live announcements are bounded and refresh retains visible keyboard focus', () => {

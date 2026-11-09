@@ -26,9 +26,8 @@ plan = {'phase': 'live', 'identity': identity, 'changed_paths': list(identity), 
         'limits': {'workers': 1, 'scratch_bytes': 67108864, 'ram_bytes': 536870912, 'child_bytes': 469762048, 'seconds': 120}}
 R.atomic_json(OUT / 'live-plan.json', plan)
 policy = R.Policy({'chunk_scratch_mib': 64, 'chunk_ram_mib': 512, 'chunk_seconds': 120, 'log_mib': 1})
+# Keep the standard token-owned root so reconcile() can clean it after a SIGKILL (FUCQ-154).
 scratch = R.Scratch(OUT, ROOT, policy, expected=64 * R.MIB, checkpoint=PRIMARY)
-scratch.root = pathlib.Path('/tmp/vehicle-matcher-f58-63-20261106/f58/f70-options-qualification')
-scratch.record['root'] = str(scratch.root)
 host = R.HostBudget(policy); host._dead_owners = lambda: {}
 link = ROOT / 'server/node_modules'
 vendor = pathlib.Path('/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules')

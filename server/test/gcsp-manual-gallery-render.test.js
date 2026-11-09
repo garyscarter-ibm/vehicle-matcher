@@ -50,7 +50,7 @@ function change(root, name, value) {
 test('native labelled filters keep focus and expose every exact car, allowance and independent counts', async (t) => {
   const f = await mount(t); assert.equal(f.root.querySelectorAll('main').length, 1);
   assert.equal(f.root.querySelector('h1').textContent, 'Released cars');
-  assert.match(f.root.textContent, /3 released cars · 2 eligible · 3 shown · 2 eligible shown/);
+  assert.match(f.root.textContent, /3 released cars · 2 eligible · 3 matching · 2 eligible matching/);
   assert.match(f.root.textContent, /Your allowance: 1,300 points a month/);
   for (const name of ['query', 'sort']) {
     const control = f.root.querySelector(`[name="${name}"]`);

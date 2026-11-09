@@ -122,6 +122,25 @@ Entries are added as work merges.
   - Also on Jira, FUCQ-98 comment 3627934.
 - **Russell's poller is running overnight,** on his direction: it leaves every story Gary has claimed to Gary, and skips Won't-for-demo work.
 
+### Russell's poller, morning report (9 Nov, 02:50 UK)
+
+Built, merged to gcsp-poc, closed and **In Review** (none moved to Done):
+- **FUCQ-155** (bug, Medium), merged 409afd06. Verification only: the fix was already in b556ee34. Both supervisor gates use `is False`, and the True/False/None truth table and the supervisor pin are checked. *Check:* 30 other pins in contract 715a5ad2 are stale, so a new publication needs a fresh contract.
+- **FUCQ-153** (bug, Medium), merged f762fd31. Russell's 7 Nov repair was unchanged; this adds four guard regressions, and the pre-fix loader fails 5 of 13. Targeted checks: 45/45. **AC5 is open:** the >64 MiB OneDrive proof rerun needs a separate, authorised, reviewed run.
+- **FUCQ-154** (bug, Medium), merged f2b11510. The F70 supervisor now uses the standard token-owned scratch root, so `reconcile()` can clean it after a SIGKILL. New test 7/7; test_resources 40/40. *Check:* `execution-plan.json` deliberately keeps the old supervisor pin, because it records the code that ran.
+- **FUCQ-151** (bug, Medium), merged 21150c11. `collect-fleet.mjs` now caches validated bindings by the digest of their exact bytes. Offline results: 32 sources went from 20.1 s to 2.7 s; 100 sources took 16.3 s, where the old code stopped at 90 on its cap. Targeted checks: 274/274. **AC3 is open:** it needs one finite source allocation (for example a 32-request chunk). Also, 200 sources peaked at about 540 MB, above the 448 MiB child limit.
+
+Housekeeping:
+- Missing-headings comments are posted on FUCQ-181, 190, 207, 218, 226 and 232. FUCQ-184 and FUCQ-185 were skipped, because Gary's comments already say they're fixed in FUCQ-124. Their inbox records, DEV-2026-11-09-003 and 004, are stale and can be retired.
+- FUCQ-150's screenshot is downloaded and verified into the evidence cache.
+- Cleanup is complete for DEV-2026-11-04-031 to 034 and for tonight's four stories.
+
+For Russell or Gary:
+- **FUCQ-150:** Gary's 3712a143 (full-width Greg region) looks like the fix. The story still fails check-story (no `ui:` line); please confirm and close it.
+- **DEV-2026-11-04-035 and 036** stay `cleanup: pending`. Their worktrees hold untracked fucq58/62/63 result JSON: commit it or discard it.
+- **FUCQ-98:** the test email still needs the hosted demo key (see the section above).
+- **Not taken:** FUCQ-152 (fails check-story), FUCQ-218 (waiting on Russell), and everything Won't-for-demo or post-demo. FUCQ-233 overlapped Gary's allocation work, and his poller has since imported it.
+
 ## Gary's poller, from about 01:00 (9 Nov)
 
 - **FUCQ-113 and FUCQ-115 merged, pushed and In Review.** Scoped tests on the merged base: 348 tests, 0 failed. FUCQ-115 is partly met, and its four questions above are also on its Jira comment.
@@ -129,3 +148,32 @@ Entries are added as work merges.
 - **FUCQ-123 started** (S, learned forecast beside the baseline plan). FUCQ-115 adopted no model, so in the demo the panel will normally show the baseline alone with the limitation stated. The learned path is being proved with a fixture-activated model in tests.
 - **Left to Russell's poller:** FUCQ-226 and FUCQ-232 are unclaimed, and three of my leads are already running. His poller takes unclaimed ready stories.
 - **FUCQ-98's test email still needs you.** It needs the hosted demo key, which my poller won't use. Russell's section above has the steps.
+- **About 01:40, merged, pushed and In Review:**
+  - **FUCQ-227** (bug, not in MoSCoW, High): an expired buddy hold now re-allocates its car on the same tick. A new assumed key, `offer.expiredHold.reallocation`, makes the lapsed holder sit out, and nobody is re-offered a car they let lapse until the next release; without it, two non-responders passed one car back and forth. Scoped tests: 352, 0 failed. The comparison route deliberately doesn't re-offer, and says so as a limitation (modelling it cost more than 5 times the run time).
+  - **FUCQ-231** (bug, not in MoSCoW, Medium): an expired, unreleased car no longer voids the whole stock pull.
+  - **FUCQ-228** (bug, not in MoSCoW, Low): expired and stale-link offer copy. Keyboard checked at 1280 and 375.
+- **FUCQ-230 merged but not closed.** Its date-pin fix works, but the v2 image capture test then fails on `allocation-mismatch` (plan limits). It failed before too, so this isn't a regression. The lead is fixing it in the test harness.
+- **New bugs filed:** FUCQ-233 (Medium): a declined buddy car never re-triggers allocation. FUCQ-234 (Low): the offer page's live announcement shows as visible text.
+- **Started:** FUCQ-137, then FUCQ-138 (S). **Recommendation built:** the comparison result is stored through the runtime's repository (PostgreSQL on the hosted demo), and memory mode gets an explicit import path.
+- **Questions for Gary:**
+  1. FUCQ-227: is the expiry rule above the behaviour you want?
+  2. FUCQ-227: should the comparison model the immediate re-offer? That would be a new story.
+  3. FUCQ-228: is "Open your account to check for a new offer" the right next step?
+  4. FUCQ-230: is it OK that the fixture test re-pins code pins only in its temporary copy?
+- **Flake seen:** render.test.js "no em dashes in painted copy" hit its 5 s limit once under load; it passes on its own.
+- **FUCQ-174, 175 and 176 (C) are claimed but waiting.** They change the same comparison code as FUCQ-137/138, which are building now, so they run after 138, as you asked. I claimed them early so that Russell's poller doesn't start them in parallel.
+- **About 02:00:** **FUCQ-230** (bug, not in MoSCoW, Low) is now merged, pushed and In Review. The remaining failure was a temp-path symlink on macOS (/var/folders and /tmp); the test now resolves the real path. The only failures left in that area are FUCQ-159's two `unapproved-image` tests.
+- **FUCQ-232 started** (bug, not in MoSCoW, Medium). Russell's poller hadn't taken it after an hour. I added the required headings to its Jira description so it passes the story check. FUCQ-226 is left unclaimed, because it overlaps the comparison code FUCQ-137 is changing.
+- **About 02:30:** **FUCQ-123** (S) is merged, pushed and In Review, with all seven acceptance items met. Greg's plan panel gets a "Synthetic-trained model" column. Because FUCQ-115 adopted no model, the demo shows "No learned model is active" and the baseline plan alone.
+  - **Recommendations built:** training coverage is all-or-nothing, so the held-out G8-10 cohort makes the learned column fall back. `forecast.learned.v1` is 0.8 / 0.5 / 1.96; at 0.5, an employee about 0.7 likely to wait is left out of the learned plan.
+  - **New Low bug, FUCQ-235:** the comparison table scrolls about 100 px sideways at 375 px.
+- **FUCQ-232 is built, and I sent it back for one change.** Its lead had made a missing reason policy count every decline as "unclassified" without saying so. I asked for it to fail closed instead, like the other policy keys in Greg's view. The cause was Greg's hardcoded reason list. New Low bug **FUCQ-236**: learning records keep their own hardcoded list too.
+- **Flake, now recurring:** render.test.js "no em dashes in painted copy" times out at 5 s when the machine is busy, and passes on its own every time. It's only a test timeout; the on-screen copy is fine.
+- **About 02:25:** imported FUCQ-233 to 236 as DEV-2026-11-09-GC-002 to 005. I added the required headings to the Jira descriptions of 233 and 234 first, so they pass the story check. A new lead is building **FUCQ-233** (Medium, re-offer a declined car), then **FUCQ-234** (Low, the visible live announcement). FUCQ-235 and FUCQ-236 (both Low) are left unclaimed for now. 236 waits on FUCQ-232's merge.
+- **About 02:55, merged, pushed and In Review: the three manual bugs.** Scoped tests on the merged base: 1,243 tests, 0 real failures.
+  - **FUCQ-221** (bug, not in MoSCoW, Medium): the return plan uses the mileage frozen at review.
+  - **FUCQ-224** (bug, not in MoSCoW, Low): the "journey saved" card no longer shows once an order exists. A new fictional new-order principal, Jordan (`demo-jordan`), was added, as recommended earlier.
+  - **FUCQ-223** (bug, not in MoSCoW, Medium), **partly met.** The 320 px layout fixes are done, including a new kit `showMore` component for gallery paging.
+- **Question for Gary (FUCQ-223):** the shell items a to d (BMW Group logo, soft blue nav tile, condensed H1, bright blue bands) come from your 5 November shell alignment (9472dffd) and the Density theme; they aren't drift. Keep Density and mark the FUCQ-64 screenshots as superseded for those items, or go back to the teal reference? **Recommendation: keep Density.** Nothing was changed for these items.
+- **New Low bugs:** FUCQ-237 (new-order copy for someone with no current car) and FUCQ-238 (the 320 px gallery is still about 7,300 px tall, and an empty grey block ends Greg's Renewal cases).
+- **About 03:00:** imported FUCQ-237 and FUCQ-238. A new UI lead is building the three Low UI bugs: FUCQ-235, then 237, then 238.

@@ -1,5 +1,5 @@
 @import "../employee/gcsp-employee.css";
-
+@import "../order-progress/gcsp-order-progress.css";
 /* Account composition uses the approved employee feature and shared kit styles. */
 gcsp-account { display: block; }
 .gcsp .gcsp-account-body { width: 100%; min-width: 0; overflow-wrap: anywhere; }

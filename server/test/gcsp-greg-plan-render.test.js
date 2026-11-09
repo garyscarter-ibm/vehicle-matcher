@@ -259,8 +259,8 @@ test('driveToState reaches the driven states for the gallery and harness', async
     assert.equal(state(root), name);
   }
   const example = gallery.gregOrderPlanExample(); document.body.append(example); await tick(200);
-  assert.deepEqual([...example.querySelectorAll('.gcsp-plan')].map((p) => p.dataset.state), ['ready', 'preview', 'infeasible', 'stale']);
-  assert.equal(example.querySelectorAll('a[href*="plan="]').length, 10);
+  assert.deepEqual([...example.querySelectorAll('.gcsp-plan')].map((p) => p.dataset.state), ['ready', 'preview', 'ready', 'ready', 'infeasible', 'stale']);
+  assert.equal(example.querySelectorAll('a[href*="plan="]').length, 12);
 });
 
 test('the custom element mounts from a fixture, takes an adapter, emits submit and tears down', async () => {
@@ -310,4 +310,117 @@ test('a lapsed access key shows the compact restart notice with Reload and no Re
   assert.equal(state(later.root), 'ready'); await later.teardown.refresh(); await settle();
   assert.equal(state(later.root), 'restarted'); assert.equal(later.root.querySelector('table, input'), null);
   assert.deepEqual([...later.root.querySelectorAll('button')].map((b) => b.textContent), ['Reload']); later.teardown();
+});
+
+// ---------- FUCQ-123: the synthetic-trained model beside the recommended plan ----------
+const learnedSection = (root) => [...root.querySelectorAll('section')].find((sec) => sec.querySelector('h3')?.textContent === 'Synthetic-trained model');
+const learnedWith = (name, change) => { const v = valueOf(name); change(v); return v; };
+const tableOf = (node, caption) => [...node.querySelectorAll('table')].find((t) => t.caption.textContent === caption);
+const cells = (row) => [...row.cells].map((c) => c.textContent);
+
+test('an available learned plan shows beside the recommended plan with differences in text and emphasis', async () => {
+  const { root } = await mount('learned');
+  const sec = learnedSection(root); assert.ok(sec, 'learned section');
+  const h = sec.querySelector('h3'); assert.equal(h.textContent, 'Synthetic-trained model'); assert.equal(h.tabIndex, -1);
+  assert.equal(sec.getAttribute('aria-labelledby'), h.id);
+  assert.ok(root.querySelector('.gcsp-plan-content').lastElementChild === sec, 'after the baseline sections, before the limits editor');
+  assert.match(text(sec), /For comparison only\. Only the recommended plan can be requested from Production\./);
+  const table = tableOf(sec, 'Plan comparison'); assert.ok(table);
+  assert.deepEqual([...table.tHead.rows[0].cells].map((c) => c.textContent), ['Vehicle or measure', 'Recommended plan', 'Synthetic-trained model', 'Difference']);
+  assert.equal(table.closest('[role="region"]').tabIndex, 0);
+  const rows = Object.fromEntries([...table.tBodies[0].rows].map((r) => [r.cells[0].textContent, r]));
+  assert.deepEqual(cells(rows['3 Series Saloon 320i']), ['3 Series Saloon 320i', '0', '1', '+1']);
+  assert.deepEqual(cells(rows['3 Series Touring 320i']), ['3 Series Touring 320i', '2', '1', '-1']);
+  assert.ok(rows['3 Series Saloon 320i'].querySelector('strong'), 'a changed row is emphasised');
+  assert.equal(rows['3 Series Saloon 320i'].cells[3].querySelector('strong').textContent, '+1');
+  const long = [...table.tBodies[0].rows].find((r) => r.cells[0].textContent.startsWith('i5 Touring eDrive40 M Sport Pro with Technology Plus'));
+  assert.deepEqual([...long.cells].slice(1).map((c) => c.textContent), ['1', '1', 'No change']); assert.equal(long.querySelector('strong'), null);
+  assert.deepEqual(cells(rows['Vehicles ordered']).slice(1), ['3', '3', 'No change']);
+  assert.deepEqual(cells(rows['Employees covered']).slice(1), ['3', '4', '+1']);
+  assert.deepEqual(cells(rows['Unmet needs']).slice(1), ['1', '0', '-1']);
+  assert.match(cells(rows.Spend).slice(1).join('|'), /^£146,000\|£143,000\|-£3,000$/);
+  assert.equal([...table.tBodies[0].rows][0].querySelector('strong') !== null, true, 'changed rows come first');
+});
+
+test('the learned section gives the evaluation, model facts and limitations, and offers no button', async () => {
+  const { root } = await mount('learned');
+  const sec = learnedSection(root); const t = text(sec);
+  assert.match(t, /Evaluation\s*Synthetic-trained; offline evaluation/);
+  const tiles = [...sec.querySelectorAll('.gcsp-tile')].map((x) => x.textContent);
+  assert.equal(tiles.length, 3);
+  assert.match(tiles[0], /Held-out log loss0\.912Expressed demand 1\.204, Deterministic fit 1\.086\. Lower is better/);
+  assert.match(tiles[1], /Held-out Brier score0\.478Expressed demand 0\.601, Deterministic fit 0\.553/);
+  assert.match(tiles[2], /Held-out choices640/);
+  assert.match(t, /Thin support in: estate\. Treat these scores with care\./);
+  assert.match(t, /Model\s*[0-9a-f]{12}(?![0-9a-f])/); assert.match(t, /Activation policy\s*gcsp-policy-v1/); assert.match(t, /Training data\s*Synthetic/);
+  assert.ok(!t.includes('sha256'), 'only the short artifact id shows');
+  assert.equal(sec.querySelectorAll('.gcsp-plan-list li').length, 2); assert.match(t, /Trained on synthetic data; this does not describe validated BMW employee behaviour\./);
+  assert.equal(sec.querySelector('button'), null); assert.equal(sec.querySelector('a[href], input'), null);
+});
+
+test('the Request button still sends the baseline plan only, whatever the learned plan shows', async () => {
+  const { root, calls } = await mount('learned');
+  const request = requestButton(root); assert.equal(request.textContent, 'Request 3 vehicles from Production'); assert.equal(learnedSection(root).contains(request), false);
+  request.click(); await settle();
+  assert.equal(calls.submit.length, 1); assert.equal(calls.submit[0].planId, 'order-plan-ready0001'); assert.notEqual(calls.submit[0].planId, 'order-plan-learned001');
+  assert.deepEqual(calls.submit[0].versions, valueOf('learned').plan.versions); assert.deepEqual(calls.submit[0].changes, []);
+});
+
+test('no active model shows the baseline alone with the limitation verbatim and no figures', async () => {
+  const { root } = await mount('ready');
+  const sec = learnedSection(root); assert.ok(sec);
+  assert.equal(sec.querySelector('p.gcsp-note').textContent, valueOf('ready').learned.limitation);
+  assert.equal(sec.querySelector('table'), null); assert.equal(sec.querySelector('.gcsp-tile'), null); assert.equal(sec.querySelector('button'), null);
+  assert.equal(sec.querySelectorAll('p').length, 1, 'the limitation is the only text');
+  assert.ok(requestButton(root), 'the baseline can still be requested');
+});
+
+test('a cohort or class outside coverage shows the limitation and both coverage lists', async () => {
+  const { root } = await mount('learned-coverage');
+  const sec = learnedSection(root); const v = valueOf('learned-coverage');
+  assert.equal(sec.querySelector('p.gcsp-note').textContent, v.learned.limitation);
+  assert.match(text(sec), /Outside training coverage:/);
+  assert.deepEqual([...sec.querySelectorAll('li')].map((li) => li.textContent), ['Employee cohorts: G8-10', 'Vehicle classes: unknown']);
+  assert.equal(sec.querySelector('table'), null); assert.equal(sec.querySelector('.gcsp-tile'), null);
+});
+
+test('an unavailable learned result shows its limitation and an older response shows no section', async () => {
+  const unavailable = learnedWith('ready', (v) => { v.learned = { status: 'unavailable', label: 'Synthetic-trained model', recommended: false, submittable: false, reason: 'learned-plan-unavailable', limitation: 'The learned forecast is unavailable right now, so only the baseline plan is shown.' }; });
+  const a = host(); panel.mountGregOrderPlan(a, { adapter: staticAdapter(() => unavailable) }); await settle();
+  assert.equal(learnedSection(a).querySelector('p').textContent, unavailable.learned.limitation); assert.equal(learnedSection(a).querySelector('table'), null);
+  const older = learnedWith('ready', (v) => { delete v.learned; });
+  const b = host(); panel.mountGregOrderPlan(b, { adapter: staticAdapter(() => older) }); await settle();
+  assert.ok(!learnedSection(b)); assert.equal(state(b), 'ready');
+  assert.ok(![...b.querySelectorAll('h3')].some((x) => /Synthetic/.test(x.textContent)));
+});
+
+test('plans that cannot be compared show one plain note instead of numbers', async () => {
+  const value = learnedWith('learned', (v) => { v.learned.differences = { comparable: false, coverage: { baseline: null, learned: null, delta: null }, derivatives: [] }; });
+  const root = host(); panel.mountGregOrderPlan(root, { adapter: staticAdapter(() => value) }); await settle();
+  const sec = learnedSection(root); assert.equal(sec.querySelector('table'), null);
+  assert.match(text(sec), /The plans cannot be compared because one of them has no plan inside the limits\./);
+});
+
+test('a learned plan that matches the baseline says so, with no emphasised row', async () => {
+  const value = learnedWith('learned', (v) => { const d = v.learned.differences; for (const r of d.derivatives) { r.learned = r.baseline; r.delta = 0; r.changed = false; }
+    for (const k of ['coverage', 'orderQuantity', 'spendMinor', 'unmetNeeds']) { d[k].learned = d[k].baseline; d[k].delta = 0; } });
+  const root = host(); panel.mountGregOrderPlan(root, { adapter: staticAdapter(() => value) }); await settle();
+  const sec = learnedSection(root); assert.equal(sec.querySelector('table strong'), null); assert.match(text(sec), /The synthetic-trained model gives the same plan\./);
+});
+
+test('a preview shows the learned section from the preview response, and its Request still sends the previewed baseline', async () => {
+  const { root, calls } = await mount('learned');
+  edit(limit(root, 'Derivative limits', 2).max, '1'); action(root, 'Preview with these limits').click(); await settle();
+  assert.equal(state(root), 'preview'); const sec = learnedSection(root); assert.ok(sec); assert.ok(sec.querySelector('table'));
+  requestButton(root).click(); await settle();
+  assert.equal(calls.submit[0].planId, 'order-plan-preview001');
+  const fallback = await mount('preview'); edit(limit(fallback.root, 'Derivative limits', 2).max, '1'); action(fallback.root, 'Preview with these limits').click(); await settle();
+  assert.equal(learnedSection(fallback.root).querySelector('table'), null); assert.match(text(learnedSection(fallback.root)), /No learned model is active/);
+});
+
+test('learned states have no em dashes, inline handlers or scripts', async () => {
+  for (const name of ['learned', 'learned-coverage']) {
+    const { root } = await mount(name); const html = root.innerHTML;
+    assert.ok(!html.includes('—') && !html.includes('–'), `${name} has a dash`); assert.ok(!/\son[a-z]+\s*=/i.test(html)); assert.ok(!/<script|style=/i.test(html));
+  }
 });

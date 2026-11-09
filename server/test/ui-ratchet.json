@@ -20,7 +20,8 @@
     "blocks/gcsp/kit/action-menu.js",
     "blocks/gcsp/kit/stage-tracker.js",
     "blocks/gcsp/kit/task-list.js",
-    "blocks/gcsp/kit/range-bar.js"
+    "blocks/gcsp/kit/range-bar.js",
+    "blocks/gcsp/kit/show-more.js"
   ],
   "extensions": [
     ".js",
@@ -106,6 +107,11 @@
       "re": "el\\('figure', 'gcsp-range-bar'",
       "flags": "g",
       "use": "rangeBar({ label, rows, scale, format }) (blocks/gcsp/kit/range-bar.js)"
+    },
+    "show-more": {
+      "re": "el\\('div', 'gcsp-show-more'",
+      "flags": "g",
+      "use": "showMore({ nouns, label, onShowMore }) (blocks/gcsp/kit/show-more.js)"
     }
   },
   "stylesheets": [
@@ -268,6 +274,10 @@
     {
       "path": "blocks/gcsp/manual-summary/manual-summary.css",
       "max_lines": 19
+    },
+    {
+      "path": "blocks/gcsp/kit/show-more.css",
+      "max_lines": 6
     }
   ],
   "baseline": {

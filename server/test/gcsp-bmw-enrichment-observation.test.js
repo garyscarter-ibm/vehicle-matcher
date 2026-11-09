@@ -178,6 +178,10 @@ test('prepared executable rejects changed plan/code hashes before any consumed m
   const { fileURLToPath } = await import('node:url');
   const actualRoot = fileURLToPath(new URL('../../', import.meta.url));
   const relative = 'docs/gcsp/evidence/fucq60/actual-v2-observation-2026-11-07';
+  // The retained runner only runs on its plan's qualification day (FUCQ-230); pin the child's clock to it.
+  const datePin = (day) => `const Real = Date; const offset = Real.parse('${day}T12:00:00.000Z') - Real.now();\n`
+    + `globalThis.Date = class extends Real { constructor(...a) { super(...(a.length ? a : [Real.now() + offset])); } static now() { return Real.now() + offset; } };\n`;
+  const day = JSON.parse(await readFile(join(actualRoot, relative, 'observation-plan.json'))).qualificationDate;
   for (const changed of ['plan', 'code']) {
     const root = await mkdtemp(join(tmpdir(), 'f60-gate-')); t.after(() => rm(root, { recursive: true, force: true }));
     const base = join(root, relative); await mkdir(base, { recursive: true });
@@ -187,7 +191,8 @@ test('prepared executable rejects changed plan/code hashes before any consumed m
     if (changed === 'plan') allocation.planDigest = '0'.repeat(64);
     else allocation.codePins[Object.keys(allocation.codePins)[0]] = '0'.repeat(64);
     await writeFile(join(base, 'execution-plan.json'), JSON.stringify(allocation));
-    await assert.rejects(promisify(execFile)(process.execPath, [join(base, 'run-live.mjs')], {
+    await writeFile(join(root, 'date-pin.mjs'), datePin(day));
+    await assert.rejects(promisify(execFile)(process.execPath, ['--import', join(root, 'date-pin.mjs'), join(base, 'run-live.mjs')], {
       env: { PATH: process.env.PATH, F60_OBSERVATION_SOURCE_GRANT: allocation.id }, timeout: 10000 }),
     (error) => error.stderr.includes(changed === 'plan' ? 'source-plan-date-mismatch' : 'source-code-pin-mismatch'));
     for (const name of ['execution-once.json', 'observer-checkpoint.json', 'source-events.jsonl']) await assert.rejects(readFile(join(base, name)), { code: 'ENOENT' });

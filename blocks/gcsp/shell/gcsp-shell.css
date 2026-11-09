@@ -256,7 +256,7 @@
   .gcsp-menu-toggle { display: inline-flex; }
   .gcsp-mark { width: auto; height: 18px; }
   .gcsp-title { padding-left: 8px; font-size: 13px; }
-  @media (max-width: 400px) { .gcsp-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); padding: 0; border: 0; } }
+  @media (max-width: 400px) { .gcsp-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); padding: 0; border: 0; } .gcsp-avatar { display: none; } }
   .gcsp-account { max-width: 52%; gap: 6px; }
   .gcsp-body { flex-direction: column; }
   .gcsp:not(.gcsp-menu-open) .gcsp-nav { display: none; }
@@ -289,7 +289,7 @@
   }
   .gcsp-nav[data-expanded] .gcsp-nav-tip-label,
   .gcsp-nav[data-expanded] .gcsp-nav-tip-available { display: none; }
-  .gcsp-content { padding: 16px 12px 24px; }
+  .gcsp-content { padding: 16px 12px 24px; } .gcsp-content .vm { padding-inline: 4px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

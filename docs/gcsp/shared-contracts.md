@@ -1221,6 +1221,30 @@ Policy key `orderPlan.gregEditableKeys` lists what Greg may change: `orderPlan.m
 
 FUCQ-121 additively adds `presentation: { forecastBasis, editableKeys, currency, derivatives: [{ derivativeId, modelId, model, derivative }], models: [{ modelId, model }] }` to the `readPlan` and `previewPlan` values, with names read from the policy catalogue. No other field changes.
 
+## Learned demand forecast · FUCQ-123
+
+A second planner run uses a synthetic-trained model beside the baseline plan. Trained on synthetic data; it claims nothing about validated BMW employee behaviour. Code: `server/gcsp/predict/forecast/` and `createLearnedOrderPlanService` in `server/gcsp/predict/plan/compose.js`.
+
+**PredictionInput** (`createPredictionInput`, closed, validated by `validatePredictionInput`): `{ contractVersion '1.0.0', runId, asOf, policyVersion, horizon: { start, end }, cohort: { version, entitlements: [{ entitlementId, employeeId, cohortKey, renewalAt, requiredBy?, period 'YYYY-MM', brief: { preferences, essentials }, permittedChoices: [{ derivativeId, configurationId, vehicleClass, attributes: { body, fuel, seats, boot, monthlyPoints, allowance }, termsVersion }] }] }, terms: { version } }`. Each employee and each derivative occurs once; unreadable terms make the input unavailable.
+
+**DemandForecast** (`createLearnedDemandForecastProvider(...).forecast(context, input, policyRead)`): `{ status 'ok', basis 'synthetic-trained-model', label, version, input, model: { artifactId, featureVersion, modelVersion, activationPolicyVersion, activationEffectiveFrom }, data: { dataHash, datasetKind, generatorVersion, trainingPolicyVersion }, settings, employees: [{ entitlementId, choices: [{ derivativeId, probability }], waitProbability, acceptanceProbability }], aggregate: [{ vehicleClass, period, employees, expected, low, high }], evaluation, limitations }`. Per employee the choice probabilities plus `waitProbability` sum to 1. There is no fit or score field.
+
+**Gates first.** The permitted set per employee is the FUCQ-29 gate result built by the expressed provider; the model only scores and narrows it, so it cannot add a derivative or relax a gate. The learned path reads the repository and never writes.
+
+**Pinned activation.** `choice.model.reference` (`{ artifactId, featureVersion, schemaVersion }`) in the policy version a read is pinned to names the model, read from `docs/gcsp/models/artifacts/` by digest. Activating another artifact is a dated policy publication; an earlier read keeps the artifact it used.
+
+**Fallback.** No result is substituted or partly modelled. The adapter returns `{ status: 'fallback', reason, limitation, coverage?, model? }` for `no-active-model`, `artifact-missing`, `artifact-invalid`, `outside-coverage` or `forecast-policy-unavailable`. Coverage is all-or-nothing: every employee cohort and permitted vehicle class must be in the classes the artifact was evaluated on. Held-out cohorts count as outside coverage, as do `wait` and `unknown` classes; one uncovered employee or class falls the whole cohort back.
+
+**`forecast.learned.v1`** (assumed, synthetic): `choiceMassThreshold` (0.8) keeps the likeliest permitted choices covering that share of non-wait probability; `waitExclusionThreshold` (0.5) leaves out employees whose wait probability is above it; `intervalZ` (1.96) sets the aggregate interval width. Malformed or out-of-range values fall back as `forecast-policy-unavailable`.
+
+**Plan operations.** `readPlan` and `previewPlan` gain one additive field, `learned`; every other field is unchanged and `presentation.forecastBasis` stays `expressed-saved-demand`. A preview's learned plan runs under the same draft policy as its preview plan. A learned failure never changes the baseline response. Shapes:
+- `{ status: 'available', label: 'Synthetic-trained model', recommended: false, submittable: false, plan, forecast: { version, model, data, settings, modelExpectsWait, aggregate, evaluation, limitations }, differences }`.
+- `{ status: 'fallback', label, recommended: false, submittable: false, reason, limitation, coverage?, model? }`, taken from the adapter.
+- `{ status: 'unavailable', label, recommended: false, submittable: false, reason, limitation }` for any other learned failure.
+- `differences`: `{ comparable, coverage, orderQuantity, spendMinor, unmetNeeds, derivatives: [{ derivativeId, baseline, learned, delta, changed }] }`, each count `{ baseline, learned, delta }` with delta = learned minus baseline. Coverage is `expectedAcceptableCoverage.covered`; unmet needs is the count. The baseline is the current plan on `readPlan` and the preview plan on `previewPlan`. If either plan is not feasible, `comparable` is false and every quantity and delta is null.
+
+**Baseline stays recommended (HLD Q10).** The baseline plan, built from expressed saved demand, is the only recommended and the only submittable plan. `submitPlan` recomputes the baseline, so a learned plan id gets `conflict` `replan-needed`; there is no learned submit path.
+
 ## Ownership and extensions
 
 FUCQ-53's [synthetic identity allocation contract](synthetic-identity-allocation.md) adds offline `allocateSyntheticIdentities` / `allocateInventoryFile` ports, immutable whole-inventory replay, delivered/current-only VIN generation and `publishStockOrders` through the existing repository transaction port. Stock imports start unreleased, carry no VIN and preserve current operational state; `runs.versions.syntheticIdentityInventory` records the artifact revision/digest. Only the seven-digit order reference is exposed by the employee projection. File publication and PostgreSQL import are separate stages with independently atomic failure; this adds no repository table, public write endpoint or scheme-policy source.
@@ -1257,6 +1281,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
+| 1.0.0 / 2026-11-09 / FUCQ-123 | Adds the PredictionInput to DemandForecast contract, the learned planner forecast and `createLearnedOrderPlanService`, and an additive `learned` field on `readPlan` / `previewPlan`. Assumed `forecast.learned.v1` (`choiceMassThreshold`, `waitExclusionThreshold`, `intervalZ`); consumes `choice.model.reference`. The baseline stays the recommended and only submittable plan. No table, route or migration. |
 | 1.0.0 / 2026-11-07 / FUCQ-117 | Adds the order-plan service, policy-backed catalog and future-terms providers and canonical composition; seven assumed `orderPlan.*` keys (horizon, budget, currency, model/derivative bounds, objective weights, synthetic catalogue). No table, route or UI. |
 | 1.0.0 / 2026-11-07 / FUCQ-114 | Adds LifecycleAppointmentService, `lifecycle-appointments` handler, appointment routes, `ordering.appointments.v1` capability and live stub, versioned receipt projection (no table) and per-step pending operations; assumed `lifecycle.appointments.{slots,confirmation,scenario,ownership}.v1`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
 | 1.0.0 / 2026-11-06 / FUCQ-116 | Adds LifecycleDocumentService, `lifecycle-documents` handler, document routes, `ordering.documentStatus.v1` capability and live stub, versioned receipt projection (no table) and keyed exception receipts with order-specific renewal identity; assumed `lifecycle.documents.{v1,scenario.v1,exceptions.v1}`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
