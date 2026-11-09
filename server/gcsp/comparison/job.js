@@ -3,7 +3,7 @@ import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createMemoryRepository, createMemoryStore, createPostgresRepository, inputDigest } from '../repository/index.js';
-import { PolicyService, MemoryPolicyProvider, PostgresPolicyProvider } from '../policy/index.js';
+import { PolicyService, MemoryPolicyProvider } from '../policy/index.js';
 import { runComparison, PROCESS_EXPERIMENT_ID, PROCESS_COMPARISON_CAVEAT } from './experiments.js';
 import { ComparisonRunError } from './harness.js';
 import { ComparisonInputError } from './generator.js';
@@ -24,7 +24,8 @@ Runs the process comparison (today's release route against the buddy route) offl
 --seeds       comma-separated seeds; whole numbers are read as numbers. Default: the policy's comparison seeds.
 --out         also write the result to this file, to store later or load into the server.
 --import      store an existing result file without running anything.
-Storage follows GCSP_REPOSITORY_MODE (memory by default, or postgres with GCSP_DATABASE_URL).`;
+The replay always runs in memory in this process, reading policy from the reviewed seed in the repository.
+Only the result is stored, through GCSP_REPOSITORY_MODE (memory by default, or postgres with GCSP_DATABASE_URL).`;
 
 const invalidArgs = (reason) => ({ status: 'invalid', reason });
 
@@ -160,7 +161,8 @@ function printResult(stdout, result, { resultId, codeRevision }) {
 
 const sink = (stream) => (text) => { stream.write(text); };
 
-// Opens the configured repository and policy exactly as createGcspRuntime does for that mode.
+// The configured repository only stores the result; the replay's policy is always in memory (FUCQ-241),
+// so a PostgreSQL run makes no policy queries and matches a memory-mode run exactly.
 async function openBackend({ env, repository, policy }) {
   if (repository && policy) return { status: 'ok', repository, policy, close: async () => {} };
   const mode = env.GCSP_REPOSITORY_MODE || 'memory';
@@ -168,7 +170,7 @@ async function openBackend({ env, repository, policy }) {
   const options = { connectionString: env.GCSP_DATABASE_URL };
   if (mode === 'postgres' && !options.connectionString) return { status: 'invalid', reason: 'GCSP_REPOSITORY_MODE is postgres but GCSP_DATABASE_URL is not set.' };
   const ownedRepository = repository ?? (mode === 'memory' ? createMemoryRepository({ store: createMemoryStore() }) : createPostgresRepository(options));
-  const ownedPolicy = policy ?? new PolicyService({ provider: mode === 'memory' ? new MemoryPolicyProvider() : new PostgresPolicyProvider(options) });
+  const ownedPolicy = policy ?? new PolicyService({ provider: new MemoryPolicyProvider() });
   const close = async () => {
     // Close failures are not worth a second error and may carry configuration.
     if (!repository) await Promise.resolve(ownedRepository.close()).catch(() => {});

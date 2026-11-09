@@ -155,6 +155,16 @@ test('a repository that cannot be opened is a fixed-reason failure that never pr
   for (const text of ['demo-secret', 'demo-user', '127.0.0.1', 'demo-db']) assert.ok(!run.out.includes(text) && !run.err.includes(text), text);
 });
 
+test('postgres mode replays in memory: policy never comes from the database, only the result is stored (FUCQ-241)', async () => {
+  const repository = await openRepository();
+  const url = 'postgres://demo-user:demo-secret@127.0.0.1:1/demo-db';
+  const run = await cli(['--experiment', 'process'], { env: { GCSP_REPOSITORY_MODE: 'postgres', GCSP_DATABASE_URL: url }, repository });
+  assert.equal(run.exitCode, 0, run.err);
+  assert.deepEqual(run.result, direct);
+  assert.deepEqual((await latest(repository)).value.result, direct);
+  for (const text of ['demo-secret', 'demo-user', '127.0.0.1', 'demo-db']) assert.ok(!run.out.includes(text) && !run.err.includes(text), text);
+});
+
 test('--out writes a verified file that imports idempotently into a fresh repository', () => scratch(async (dir) => {
   const out = join(dir, 'nested', 'result.json');
   const run = await cli(['--experiment', 'process', '--out', out], { repository: await openRepository(), policy });
@@ -233,6 +243,8 @@ test('nothing runs on import, startup or a timer, and only the command runs the 
   const help = spawnSync(process.execPath, ['scripts/gcsp-comparison.mjs', '--help'], { cwd: ROOT, encoding: 'utf8', timeout: 30000 });
   assert.equal(help.status, 0);
   assert.match(help.stdout, /--experiment process/);
+  assert.match(help.stdout, /replay always runs in memory/);
+  assert.match(help.stdout, /Only the result is stored, through GCSP_REPOSITORY_MODE/);
   const refused = spawnSync(process.execPath, ['scripts/gcsp-comparison.mjs', '--experiment', 'order-mix'], { cwd: ROOT, encoding: 'utf8', timeout: 30000 });
   assert.equal(refused.status, 2);
   for (const file of ['server/gcsp/comparison/job.js', 'scripts/gcsp-comparison.mjs']) {
@@ -252,8 +264,15 @@ test('postgresql: the command stores into a temporary schema and reads the resul
     try { await pool.query(`CREATE SCHEMA "${schema}"`); created = true; }
     catch { throw new Error('PostgreSQL comparison fixture unavailable'); }
     assert.equal((await repository.open()).status, 'ok');
-    const run = await cli(['--experiment', 'process'], { repository, policy });
+    // The command picks its own policy here; only the result store may reach PostgreSQL (FUCQ-241).
+    const texts = []; const query = pg.Client.prototype.query;
+    pg.Client.prototype.query = function (config, ...rest) { texts.push(typeof config === 'string' ? config : config?.text ?? ''); return query.call(this, config, ...rest); };
+    let run;
+    try { run = await cli(['--experiment', 'process'], { repository, env: { GCSP_REPOSITORY_MODE: 'postgres', GCSP_DATABASE_URL: process.env.GCSP_DATABASE_URL } }); }
+    finally { pg.Client.prototype.query = query; }
     assert.equal(run.exitCode, 0, run.err);
+    assert.deepEqual(texts.filter((text) => /policy_versions|scheme_rule_links|eligibility_rules|price_plans|grade_allowances|policy_assumptions/.test(text)), []);
+    assert.ok(texts.length <= 20, `${texts.length} queries for one stored result`);
     const read = await latest(repository);
     assert.equal(read.status, 'ok');
     assert.deepEqual(read.value.result, direct);
