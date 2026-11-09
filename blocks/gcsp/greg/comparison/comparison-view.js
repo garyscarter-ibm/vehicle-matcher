@@ -1,6 +1,7 @@
 // Pure view model for the stored process comparison. Formatting only: every figure comes from the stored result. Throws on a malformed shape.
-import { BASELINE, BUDDY, VERDICTS, BETTER_WHEN, FALLBACK_CAVEAT, measureLabel, measureKind, formatMeasure, differenceText, statusLabel,
-  formatDemoTime, oldPolicyText } from './comparison-copy.js';
+import { parameterLabel } from './experiment-copy.js';
+import { BASELINE, BUDDY, VERDICTS, BETTER_WHEN, FALLBACK_CAVEAT, measureLabel, measureKind, carTimeKind, formatMeasure, differenceText, statusLabel,
+  formatDemoTime, oldPolicyText, coverageHeadline, countHeadline } from './comparison-copy.js';
 
 export const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 export const text = (v) => typeof v === 'string' && v.trim().length > 0;
@@ -24,18 +25,28 @@ export function scaleFor(kind, rows) {
 
 function toMeasure(entry) {
   if (!object(entry) || !text(entry.measure) || !BETTER_WHEN[entry.betterWhen] || !VERDICTS[entry.verdict]) fail('difference entry');
-  const kind = measureKind(entry.measure);
   const current = readStats(entry.current, 'current'); const buddy = readStats(entry.buddy, 'buddy'); const diff = readStats(entry.difference, 'difference');
+  const kind = carTimeKind(measureKind(entry.measure), [current, buddy, diff].flatMap(statValues));
   const rows = [{ label: BASELINE, ...pick(current) }, { label: BUDDY, ...pick(buddy) }];
   return { key: entry.measure, label: measureLabel(entry.measure), kind, betterWhen: entry.betterWhen, hint: BETTER_WHEN[entry.betterWhen],
     verdict: entry.verdict, verdictText: VERDICTS[entry.verdict], differenceText: differenceText(kind, diff), rows, scale: scaleFor(kind, rows),
     format: (v) => formatMeasure(kind, v) };
 }
 const pick = ({ mean, min, max }) => ({ mean, min, max });
+export const statValues = ({ mean, min, max }) => [mean, min, max];
+
+// The coverage verdict and means when stored, else a count of verdicts; counting is display only.
+function headlineFor(measures, seeds) {
+  const coverage = measures.find((m) => m.key === 'acceptableCoverage');
+  const [today, buddy] = coverage ? coverage.rows.map((r) => r.mean) : [];
+  if (finite(today) && finite(buddy)) return coverageHeadline(coverage.verdict, today, buddy, seeds);
+  const wins = (verdict) => measures.filter((m) => m.verdict === verdict).length;
+  return countHeadline(wins('buddy-better'), wins('current-better'), measures.length, seeds);
+}
 
 export function toAssumption(row) {
   if (!object(row) || !text(row.key) || !('value' in row)) fail('assumption');
-  return { key: row.key, value: compactValue(row.value), unit: row.unit ?? '', status: statusLabel(row.status), basis: row.basis ?? '' };
+  return { key: row.key, setting: parameterLabel(row.key), value: compactValue(row.value), unit: row.unit ?? '', status: statusLabel(row.status), basis: row.basis ?? '' };
 }
 
 /** stored = the read route's value -> { meta, oldPolicy, caveat, measures, limitations, assumptions, provenance }. */
@@ -52,6 +63,7 @@ export function toComparisonView(stored) {
   const made = formatDemoTime(result.completedAt); const stamped = formatDemoTime(stored.storedAt);
   const policyCurrent = stored.policyCurrent !== false;
   return {
+    headline: headlineFor(measures, manifest.seeds.length),
     meta: { seeds: manifest.seeds.length, policyVersion: stored.policyVersion, made, employees: finite(size) ? size : null, codeRevision: text(manifest.codeRevision) ? manifest.codeRevision : null },
     oldPolicy: policyCurrent ? null : oldPolicyText(stored.policyVersion, text(stored.activePolicyVersion) ? stored.activePolicyVersion : 'unknown'),
     caveat, measures, limitations, assumptions,

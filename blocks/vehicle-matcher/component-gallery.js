@@ -183,7 +183,7 @@ function gregKitExamples() {
   section.setAttribute('aria-label', 'GCSP Greg kit');
   section.append(
     el('h2', 'vm-gallery-title', 'GCSP Greg kit'),
-    el('p', 'vm-gallery-copy', 'Dense operational figures for the Greg dashboard: metricTile and dataTable. A privacy band shows its own text and is never turned into a number. Synthetic examples only.'),
+    el('p', 'vm-gallery-copy', 'Dense operational figures for the Greg dashboard: metricTile and dataTable. A privacy band shows plain "<N" (spoken as its label) and is never turned into a number. Synthetic examples only.'),
   );
   const scope = el('div', 'gcsp vm-gallery-gcsp');
   const group = (title) => {
@@ -198,12 +198,12 @@ function gregKitExamples() {
   const tileRow = el('div', 'gcsp-tile-row');
   tileRow.append(
     metricTile({ label: 'Active briefs', count: { label: '28', isBand: false }, level: 'headline' }),
-    metricTile({ label: 'Declined', count: { label: 'fewer than 5', isBand: true }, note: 'Small counts are banded.' }),
+    metricTile({ label: 'Declined', count: { label: 'fewer than 5', isBand: true, fewerThan: 5 }, note: 'Small counts are banded.' }),
     metricTile({ label: 'Offers made', count: { label: '30', isBand: false }, note: 'Counted once each.', level: 'compact' }),
   );
   tiles.append(tileRow);
   const rows = [
-    { name: 'U06 Active Tourer Plug-in Hybrid xDrive25e M Sport Pro with extended range', released: { label: '7', isBand: false }, held: { label: 'fewer than 5', isBand: true }, allocated: { label: '3', isBand: false } },
+    { name: 'U06 Active Tourer Plug-in Hybrid xDrive25e M Sport Pro with extended range', released: { label: '7', isBand: false }, held: { label: 'fewer than 5', isBand: true, fewerThan: 5 }, allocated: { label: '3', isBand: false } },
     { name: 'G21 Touring', released: { label: '12', isBand: false }, held: { label: '3', isBand: false }, allocated: { label: '4', isBand: false } },
   ];
   const columns = [{ key: 'name', label: 'Model line' }, { key: 'released', label: 'Released', numeric: true },

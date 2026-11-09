@@ -337,8 +337,9 @@ test('editing one forecast key changes the learned forecast and plan with no cod
 });
 
 test('the choice-mass threshold keeps the smallest set of likeliest permitted choices', async () => {
-  // Seats only: several derivatives pass the gates, so the threshold has something to cut.
-  const brief = { ...saved(), preferences: { body: preference('estate'), fuel: preference('petrol') }, essentials: { seats: essential(5) } };
+  // Seats and boot: several covered (estate, saloon) derivatives pass, the hatch (380 L) does not, so the threshold has something to cut.
+  const brief = { ...saved(), preferences: { body: preference('estate'), fuel: preference('petrol') },
+    essentials: { seats: essential(5), boot: essential(400, 'gte', 'L') } };
   const f = await fixture(brief);
   const run = async (patch) => {
     const out = await learned(f, active(settings({ waitExclusionThreshold: 1, ...patch }))).readForecast(f.context, await readOf(f));
@@ -347,12 +348,20 @@ test('the choice-mass threshold keeps the smallest set of likeliest permitted ch
   const wide = await run({ choiceMassThreshold: 1 });
   const permitted = wide.forecast.entitlements[0].acceptableDerivativeIds;
   assert.ok(permitted.length > 1, JSON.stringify(permitted));
+  assert.equal(permitted.includes('f70-hatch-120'), false, JSON.stringify(permitted));
   const probabilities = wide.demandForecast.employees[0].choices;
   const likeliest = [...probabilities].sort((a, b) => b.probability - a.probability || (a.derivativeId < b.derivativeId ? -1 : 1))[0].derivativeId;
   const narrow = await run({ choiceMassThreshold: 0.01 });
   assert.deepEqual(narrow.forecast.entitlements[0].acceptableDerivativeIds, [likeliest]);
   assert.notEqual(narrow.version, wide.version);
   assert.ok(narrow.forecast.entitlements[0].acceptableDerivativeIds.every((id) => permitted.includes(id)));
+});
+
+test('FUCQ-312 coverage regression: a brief that permits the orderable hatch falls back, since the artifact never saw hatchbacks', async () => {
+  const f = await fixture({ ...saved(), preferences: { body: preference('hatchback'), fuel: preference('petrol') }, essentials: { seats: essential(5) } });
+  const out = await learned(f, active(settings({ waitExclusionThreshold: 1 }))).readForecast(f.context, await readOf(f));
+  assert.equal(out.status, 'unavailable', JSON.stringify(out)); assert.equal(out.code, 'learned-forecast-fallback');
+  assert.equal(out.fallback.reason, 'outside-coverage'); assert.deepEqual(out.fallback.coverage.vehicleClasses, ['hatchback']);
 });
 
 // FUCQ-123 slice 2: Greg's plan operations carry the learned plan beside the baseline one.
@@ -385,6 +394,8 @@ function assertDifferences(differences, baseline, learnedPlan) {
     assert.deepEqual(differences[name], { baseline: read(baseline), learned: read(learnedPlan), delta: read(learnedPlan) - read(baseline) }, name);
   }
   assert.deepEqual(differences.derivatives.map((d) => d.derivativeId), baseline.quantities.map((q) => q.derivativeId));
+  // FUCQ-312: the seed lists the hatch last, but the order follows derivativeId like the plans.
+  assert.deepEqual(differences.derivatives.map((d) => d.derivativeId), differences.derivatives.map((d) => d.derivativeId).sort());
   differences.derivatives.forEach((d, i) => {
     const [b, l] = [baseline.quantities[i].quantity, learnedPlan.quantities.find((q) => q.derivativeId === d.derivativeId).quantity];
     assert.deepEqual(d, { derivativeId: d.derivativeId, baseline: b, learned: l, delta: l - b, changed: l !== b });

@@ -1,4 +1,5 @@
 // On-screen copy for the experiment picker, the hold rerun and the job strip. No DOM; the stored result and the server own every figure.
+import { humanise } from '../demand-copy.js';
 import { experimentLabel } from './comparison-copy.js';
 
 export const PICKER_LABEL = 'Experiment';
@@ -53,3 +54,25 @@ export const jobLine = (v) => `${v.label}: ${v.statusLabel.toLowerCase()}.${v.re
 export const STARTING = 'Starting the comparison.';
 export const LEDE = 'Stored results of the fictional comparison. Both routes get the same employees, cars and releases.';
 export const CONFLICT = 'A comparison is already running. Wait for it to finish.';
+
+// Plain names for policy and experiment keys. The raw key stays in the details table as provenance.
+export const SETTING_COLUMN = 'Setting';
+export const KEY_COLUMN = 'Key';
+export const PARAMETER_LABELS = Object.freeze({
+  'hold.buddy.durationSeconds': 'How long the buddy route holds a car',
+  'hold.cart.durationSeconds': 'How long a car stays in a cart',
+  'hold.cart.orderReview.durationSeconds': 'How long a car is held while the order is reviewed',
+  'brief.slider.minimum': 'Lowest slider setting in a brief',
+  'brief.slider.maximum': 'Highest slider setting in a brief',
+  'offer.declinedCar.exclusion': 'When a declined car can be offered again',
+  'allocation.tieBreak.rule': 'How ties between employees are settled',
+  'comparison.modelLineMix': 'Which model lines employees order',
+  'comparison.pointsAllowanceMultiplier': 'Multiplier on every points allowance',
+  'comparison.acceptableFitThreshold': 'Lowest calculated fit counted as acceptable',
+  'comparison.buddyRoute.v1': 'How the buddy route is modelled',
+  'comparison.manualRoute.v1': "How today's release route is modelled",
+  'comparison.noClearDifferenceRule': 'Rule for calling a difference clear',
+  'comparison.experiments.v1': 'What each experiment may change',
+  'offer.declineReasons.v1': 'Reasons an employee can give for declining',
+});
+export const parameterLabel = (key) => PARAMETER_LABELS[key] ?? humanise(String(key).replace(/\./g, ' '));

@@ -96,7 +96,7 @@ test('a what-if result shows the change, today first in each bar, every differen
   const { root } = await mount('experiments-ready'); await choose(root, 'hold-sweep');
   const stage = root.querySelector('.gcsp-comparison-stage');
   const facts = text(stage.querySelector('.gcsp-comparison-facts'));
-  assert.match(facts, /What changes\s*hold\.buddy\.durationSeconds/); assert.match(facts, /Unit\s*seconds/); assert.match(facts, /Today's value\s*2 h \(Assumed\)/);
+  assert.match(facts, /What changes\s*How long the buddy route holds a car/); assert.ok(!text(stage).replace(text(stage.querySelector('details')), '').includes('hold.buddy.durationSeconds')); assert.match(facts, /Unit\s*seconds/); assert.match(facts, /Today's value\s*2 h \(Assumed\)/);
   assert.match(facts, /Basis for today's value\s*Assumed new capability/); assert.match(facts, /Tried\s*15 min, 24 h/); assert.match(facts, /Why try these\s*Test basis/);
   assert.match(text(stage), /What-if: this value is tried here and never published as live policy\./);
   assert.deepEqual([...stage.querySelectorAll('.gcsp-comparison-route > h3')].map((h) => h.textContent), ['Buddy route', "Today's release route"]);

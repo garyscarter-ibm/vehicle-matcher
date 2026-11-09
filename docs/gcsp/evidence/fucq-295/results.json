@@ -1,0 +1,62 @@
+[
+  {
+    "width": 1280,
+    "name": "comparison-buddy-better",
+    "path": "/gcsp-greg.html?fixture=populated&comparison=buddy-better",
+    "file": "1280-comparison-buddy-better.png",
+    "errors": [],
+    "title": "GCSP Greg fixture gallery",
+    "height": 4640,
+    "text": "Stored comparison loaded.\n\nRoute comparison\n\nStored result of the fictional process comparison. Both routes get the same employees, cars and releases.\n\nReload\n\nBuddy route did better: it covered 50% before renewal, against 12.5% on today's release route, across 3 seeds.\n\nSeeds\n3\nPolicy version\ngcsp-policy-v1\nMade\n8 Nov 2026, 12:00 GMT\nEmployees\n4\nCode revision\nfucq136-test\n\nCalculated fit is not observed satisfaction.\n\nCovered before renewal\nMean and range across seeds\nToday's release route\n12.5% (0% to 25%)\nBuddy route\n50% (37.5% to 75%)\n\nDifference (buddy minus today): +37.5 pts (+12.5 pts t"
+  },
+  {
+    "width": 1280,
+    "name": "comparison-today-better",
+    "path": "/gcsp-greg.html?fixture=populated&comparison=today-better",
+    "file": "1280-comparison-today-better.png",
+    "errors": [],
+    "title": "GCSP Greg fixture gallery",
+    "height": 4640,
+    "text": "Stored comparison loaded.\n\nRoute comparison\n\nStored result of the fictional process comparison. Both routes get the same employees, cars and releases.\n\nReload\n\nToday's release route did better: it covered 75% before renewal, against 25% on the buddy route, across 3 seeds.\n\nSeeds\n3\nPolicy version\ngcsp-policy-v1\nMade\n8 Nov 2026, 12:00 GMT\nEmployees\n4\nCode revision\nfucq136-test\n\nCalculated fit is not observed satisfaction.\n\nCovered before renewal\nMean and range across seeds\nToday's release route\n75% (62.5% to 87.5%)\nBuddy route\n25% (12.5% to 37.5%)\n\nDifference (buddy minus today): -50 pts (-75 pt"
+  },
+  {
+    "width": 1280,
+    "name": "comparison-experiments",
+    "path": "/gcsp-greg.html?fixture=populated&comparison=experiments-ready",
+    "file": "1280-comparison-experiments.png",
+    "errors": [],
+    "title": "GCSP Greg fixture gallery",
+    "height": 4859,
+    "text": "Stored comparisons loaded.\n\nRoute comparison\n\nStored results of the fictional comparison. Both routes get the same employees, cars and releases.\n\nReload\n\nExperiment\n\nProcess only\nstored 8 Nov 2026, 12:00 GMT\nOrder mix\nnot run yet\nPoints allowance\nnot run yet\nHold duration\nstored 8 Nov 2026, 12:00 GMT\n\nCompares the buddy route with today's release route. Nothing else changes.\n\nStored result, made 8 Nov 2026, 12:00 GMT\n\nNo clear difference: the buddy route covered 8.3% before renewal and today's release route 0%, across 3 seeds.\n\nSeeds\n3\nPolicy version\ngcsp-policy-v1\nMade\n8 Nov 2026, 12:00 GMT\nE"
+  },
+  {
+    "width": 375,
+    "name": "comparison-buddy-better",
+    "path": "/gcsp-greg.html?fixture=populated&comparison=buddy-better",
+    "file": "375-comparison-buddy-better.png",
+    "errors": [],
+    "title": "GCSP Greg fixture gallery",
+    "height": 9273,
+    "text": "Stored comparison loaded.\n\nRoute comparison\n\nStored result of the fictional process comparison. Both routes get the same employees, cars and releases.\n\nReload\n\nBuddy route did better: it covered 50% before renewal, against 12.5% on today's release route, across 3 seeds.\n\nSeeds\n3\nPolicy version\ngcsp-policy-v1\nMade\n8 Nov 2026, 12:00 GMT\nEmployees\n4\nCode revision\nfucq136-test\n\nCalculated fit is not observed satisfaction.\n\nCovered before renewal\nMean and range across seeds\nToday's release route\n12.5% (0% to 25%)\nBuddy route\n50% (37.5% to 75%)\n\nDifference (buddy minus today): +37.5 pts (+12.5 pts t"
+  },
+  {
+    "width": 375,
+    "name": "comparison-today-better",
+    "path": "/gcsp-greg.html?fixture=populated&comparison=today-better",
+    "file": "375-comparison-today-better.png",
+    "errors": [],
+    "title": "GCSP Greg fixture gallery",
+    "height": 9297,
+    "text": "Stored comparison loaded.\n\nRoute comparison\n\nStored result of the fictional process comparison. Both routes get the same employees, cars and releases.\n\nReload\n\nToday's release route did better: it covered 75% before renewal, against 25% on the buddy route, across 3 seeds.\n\nSeeds\n3\nPolicy version\ngcsp-policy-v1\nMade\n8 Nov 2026, 12:00 GMT\nEmployees\n4\nCode revision\nfucq136-test\n\nCalculated fit is not observed satisfaction.\n\nCovered before renewal\nMean and range across seeds\nToday's release route\n75% (62.5% to 87.5%)\nBuddy route\n25% (12.5% to 37.5%)\n\nDifference (buddy minus today): -50 pts (-75 pt"
+  },
+  {
+    "width": 375,
+    "name": "comparison-experiments",
+    "path": "/gcsp-greg.html?fixture=populated&comparison=experiments-ready",
+    "file": "375-comparison-experiments.png",
+    "errors": [],
+    "title": "GCSP Greg fixture gallery",
+    "height": 9755,
+    "text": "Stored comparisons loaded.\n\nRoute comparison\n\nStored results of the fictional comparison. Both routes get the same employees, cars and releases.\n\nReload\n\nExperiment\n\nProcess only\nstored 8 Nov 2026, 12:00 GMT\nOrder mix\nnot run yet\nPoints allowance\nnot run yet\nHold duration\nstored 8 Nov 2026, 12:00 GMT\n\nCompares the buddy route with today's release route. Nothing else changes.\n\nStored result, made 8 Nov 2026, 12:00 GMT\n\nNo clear difference: the buddy route covered 8.3% before renewal and today's release route 0%, across 3 seeds.\n\nSeeds\n3\nPolicy version\ngcsp-policy-v1\nMade\n8 Nov 2026, 12:00 GMT\nE"
+  }
+]
