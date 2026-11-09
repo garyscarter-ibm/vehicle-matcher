@@ -38,6 +38,37 @@ test('exact shared card, points and current car comparison preserve supplied unk
   assert.match(root.querySelector(`#${reason}`).textContent, /Decisions are unavailable/);
 });
 
+// FUCQ-275: a phone-length offer put the deadline last, repeated facts and listed them one per row.
+test('FUCQ-275: a pending offer leads with the deadline and has one comparison table with shared rows', async () => {
+  const { root, data } = render('pending');
+  const [intro, clock, asOf] = [...root.querySelector('.gcsp-offer-content').children];
+  assert.ok(intro.querySelector('h1')); assert.ok(clock.classList.contains('gcsp-countdown'));
+  assert.equal(clock.textContent, '2 hours remaining'); assert.ok(asOf.classList.contains('gcsp-note')); assert.match(asOf.textContent, /Demo time/);
+  assert.equal(root.querySelectorAll('.gcsp-countdown').length, 1);
+  const tables = root.querySelectorAll('[data-offer-comparison] table'); assert.equal(tables.length, 1);
+  const labels = [...tables[0].querySelectorAll('tbody th[scope="row"]')].map((node) => node.textContent);
+  assert.deepEqual(labels, ['Body style', 'Fuel', 'Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Points a month']);
+  const rows = [...tables[0].querySelectorAll('tbody tr')];
+  assert.ok(rows.every((row) => row.querySelectorAll('td').length === 2));
+  assert.deepEqual([...rows[3].querySelectorAll('td')].map((node) => node.textContent), ['500 litres', '480 litres']);
+  assert.deepEqual([...rows[6].querySelectorAll('td')].map((node) => node.textContent), ['1,100 points', 'Unknown']);
+  const heads = [...tables[0].querySelectorAll('thead th')].map((node) => node.textContent);
+  assert.match(heads[1], /^This offer .*BMW 320i/); assert.match(heads[2], /^Your current car 320i M Sport Touring$/);
+  assert.equal(root.querySelector('.gcsp-offer-current h2'), null); assert.doesNotMatch([...root.querySelectorAll('h2, h3')].map((h) => h.textContent).join('|'), /Your current car/);
+  const facts = root.querySelector('.vm-card .vm-facts'); assert.ok(facts.classList.contains('vm-facts-pair'));
+  const shown = [...facts.querySelectorAll('dt')].map((node) => node.textContent);
+  assert.deepEqual(shown, ['Derivative', 'Colour', 'Options']); assert.ok(data);
+  assert.doesNotMatch(root.textContent, /0–62 mph|MPG|\bBody\b(?! style)/);
+});
+
+test('FUCQ-275: without a current car the card keeps its specs and the note stands in for the table', () => {
+  const { root, view, data } = render('pending');
+  view.update({ ...data, currentCar: null, comparisonAvailable: false, canAccept: false, canDecline: false, decisionUnavailable: true, countdown: '2 hours remaining' });
+  assert.equal(root.querySelectorAll('table').length, 0); assert.match(root.textContent, /Current-car details not supplied/);
+  const shown = [...root.querySelectorAll('.vm-card .vm-facts dt')].map((node) => node.textContent);
+  assert.deepEqual(shown.slice(0, 7), ['Body style', 'Fuel', 'Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Derivative']);
+});
+
 test('missing image has a useful fallback and terminal states have no decision controls', () => {
   const { root, view, data } = render('no-image');
   assert.match(root.textContent, /No image for this car yet|Images coming soon/);
@@ -136,11 +167,13 @@ test('recorded current-car facts render formatted beside Unknown ones with the s
   const root = document.createElement('div'); document.body.append(root);
   const ctl = createOfferController(adapter); const view = createOfferView(root); const unsub = ctl.subscribe(view.update);
   try {
-    await ctl.refresh(); const text = root.querySelector('.gcsp-offer-current').textContent;
+    await ctl.refresh(); const section = root.querySelector('[data-offer-comparison]'); const text = section.textContent;
     assert.match(text, /Partial comparison\. Some current-car facts are unknown\./);
     for (const known of [/500 litres/, /42\.8 mpg/, /7\.6 s/]) assert.match(text, known);
-    assert.equal(root.querySelectorAll('.gcsp-offer-current dd.is-missing').length, 5);
-    assert.equal(root.querySelectorAll('.gcsp-offer-current dd').length, 8);
+    assert.equal(section.querySelectorAll('td.is-missing').length, 4);
+    assert.equal(section.querySelectorAll('tbody tr').length, 7);
+    const unknown = [...section.querySelectorAll('tbody tr')].map((row) => row.children[2].textContent);
+    assert.deepEqual(unknown, ['Unknown', 'Unknown', 'Unknown', '500 litres', '7.6 s', '42.8 mpg', 'Unknown']);
   } finally { unsub(); ctl.destroy(); view.destroy(); }
 });
 
@@ -151,18 +184,18 @@ test('approved partial DTO renders dated provenance and eight unknowns through H
   const root = document.createElement('div'); document.body.append(root);
   const c = createOfferController(adapter); const view = createOfferView(root); const unsubscribe = c.subscribe(view.update);
   try {
-    const model = await c.refresh(); const comparison = root.querySelector('.gcsp-offer-current');
-    assert.equal(comparison.querySelector('h3').textContent, 'Fictional BMW 320i Touring');
+    const model = await c.refresh(); const comparison = root.querySelector('[data-offer-comparison]');
+    assert.match(comparison.querySelector('thead th:nth-child(3)').textContent, /Your current car\s*Fictional BMW 320i Touring/);
     assert.match(comparison.textContent, /Partial comparison\. Current-car specifications and points are unknown\./);
     assert.doesNotMatch(comparison.textContent, /Synthetic source|manual-records-v1|2026-11-05T11|Observed|Source not supplied/);
-    assert.equal(comparison.querySelectorAll('dd').length, 8);
-    assert.ok([...comparison.querySelectorAll('dd')].every((node) => node.textContent === 'Unknown'));
-    assert.match(comparison.textContent, /No image for this car yet/); assert.equal(comparison.querySelector('img'), null);
+    const currentCells = [...comparison.querySelectorAll('tbody tr')].map((row) => row.children[2]);
+    assert.equal(currentCells.length, 7); assert.ok(currentCells.every((node) => node.textContent === 'Unknown'));
+    assert.equal(comparison.querySelector('img'), null);
     assert.equal(model.comparisonAvailable, false); assert.equal(model.seconds, 7200);
     assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
     const refresh = root.querySelector('[data-offer-action="refresh"]'); refresh.focus();
     dto.serverNow = '2026-11-05T12:00:05.000Z'; await c.refresh();
-    assert.equal(root.querySelector('.gcsp-offer-current'), comparison); assert.equal(document.activeElement, refresh);
+    assert.equal(root.querySelector('[data-offer-comparison]'), comparison); assert.equal(document.activeElement, refresh);
     dto.comparison.currentCar.source.observedAt = '2026-11-05T12:00:00.001Z'; await c.refresh();
     assert.match(root.textContent, /Current-car details not supplied/); assert.match(root.textContent, /Order no\. 0999987/);
     assert.doesNotMatch(root.textContent, /Fictional BMW 320i Touring/);
@@ -176,7 +209,7 @@ test('partial model and provenance use text nodes for untrusted display strings'
   const { toOfferPresentation } = await import('../../blocks/gcsp/offer/offer-projection.js');
   const root = document.createElement('div'); const view = createOfferView(root);
   view.update(toOfferPresentation({ status: 'ok', value: dto }).value);
-  const comparison = root.querySelector('.gcsp-offer-current');
+  const comparison = root.querySelector('[data-offer-comparison]');
   assert.equal(comparison.querySelectorAll('script, img, [onerror]').length, 0);
   assert.match(comparison.textContent, /<img src=x onerror=alert\(1\)>/);
   assert.doesNotMatch(comparison.textContent, /script/); view.destroy();
@@ -204,7 +237,7 @@ test('published decline-only DTO updates mounted actions and accessible explanat
     const reason = root.querySelector(`#${accept.getAttribute('aria-describedby')}`);
     assert.equal(reason.textContent, 'Acceptance is unavailable. You can still decline this offer.');
     assert.match(root.textContent, /1 hour remaining/); assert.match(root.textContent, /Order no\. 0123456/);
-    assert.match(root.textContent, /Partial comparison/); assert.equal(root.querySelectorAll('.gcsp-offer-current dd.is-missing').length, 8);
+    assert.match(root.textContent, /Partial comparison/); assert.equal(root.querySelectorAll('[data-offer-comparison] td.is-missing').length, 7);
     accept.click(); assert.deepEqual(calls, []);
     delete dto.comparison; await c.refresh();
     assert.match(root.textContent, /Current-car details not supplied/); assert.equal(root.querySelector('[data-offer-action="decline"]').disabled, false);
@@ -220,6 +253,24 @@ test('scoped offer sources and harness obey embed CSP and composition styling bo
   const css = await readFile(new URL('../../blocks/gcsp/offer/gcsp-offer.css', import.meta.url), 'utf8');
   assert.doesNotMatch(css, /\.vm-card|\.vm-btn|#[\da-f]{3,8}\b/i);
   assert.match(css, /minmax\(0, 1fr\)/);
+});
+
+// FUCQ-275: the comparison table is a kit dataTable, so its kit stylesheet must be in the offer page's chain.
+test('the offer stylesheet chain loads the kit table styles and keeps card and table side by side from 800 px', async () => {
+  const seen = new Set();
+  const walk = async (file) => {
+    if (seen.has(file.href)) return; seen.add(file.href);
+    const text = await readFile(file, 'utf8');
+    for (const [, rel] of text.matchAll(/@import\s+"([^"]+)"/g)) await walk(new URL(rel, file));
+  };
+  const entry = new URL('../../blocks/gcsp/offer/gcsp-offer.css', import.meta.url); await walk(entry);
+  const root = new URL('../../', import.meta.url).href;
+  const chain = [...seen].map((href) => href.slice(root.length));
+  for (const sheet of ['blocks/gcsp/kit/gcsp-kit.css', 'blocks/gcsp/kit/data-table-compare.css']) assert.ok(chain.includes(sheet), chain.join(', '));
+  const kit = await readFile(new URL('../../blocks/gcsp/kit/data-table-compare.css', import.meta.url), 'utf8');
+  assert.match(kit, /\.gcsp \.is-compare \.gcsp-table \{ table-layout: fixed;/);
+  const css = await readFile(entry, 'utf8');
+  assert.match(css, /@media \(min-width: 800px\) \{\s*\.gcsp \.gcsp-offer-comparison \{ grid-template-columns: minmax\(0, 1fr\) minmax\(0, 1fr\); \}/);
 });
 
 const stageText = (root) => [...root.querySelectorAll('.gcsp-stage-item')].map((row) => [...row.children].map((node) => node.textContent));
