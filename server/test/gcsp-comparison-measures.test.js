@@ -6,7 +6,7 @@ import { COMPARISON_GENERATOR_VERSION } from '../gcsp/comparison/generator.js';
 import { ComparisonRunError } from '../gcsp/comparison/harness.js';
 import { routeMeasures, summariseSeeds, compareRoutes, compareArms, MEASURE_NAMES } from '../gcsp/comparison/measures.js';
 import { runComparison, validateExperiment, outcomeRecordDigest, PROCESS_COMPARISON_CAVEAT, EXPERIMENT_IDS, EXPERIMENT_CAVEAT } from '../gcsp/comparison/experiments.js';
-import { storeComparisonResult, readLatestComparisonResult, COMPARISON_RESULTS_ENVIRONMENT, COMPARISON_RESULTS_RUN } from '../gcsp/comparison/results.js';
+import { storeComparisonResult, readLatestComparisonResult, readLatestComparisonResults, COMPARISON_RESULTS_ENVIRONMENT, COMPARISON_RESULTS_RUN } from '../gcsp/comparison/results.js';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/memory.js';
 import { inputDigest } from '../gcsp/repository/core.js';
 
@@ -515,4 +515,108 @@ test('the process-only fixtures are untouched by the experiment runner', async (
   assert.equal(JSON.stringify(again), JSON.stringify(first));
   assert.equal(again.kind, 'process-comparison');
   assert.ok(!again.manifest.arms && !again.effects);
+});
+
+// ---- FUCQ-174: storing and reading experiment results ----
+const whatIfs = [['order-mix', mix], ['points', points], ['hold-sweep', hold]];
+const experimentFixture = await load('gcsp-comparison-experiment-result.json');
+
+test('each what-if result is stored once, as an immutable row with its own resultId', async () => {
+  const repository = await openRepository();
+  for (const [id, outcome] of whatIfs) {
+    const saved = await storeComparisonResult(repository, context, outcome);
+    assert.equal(saved.status, 'ok');
+    assert.match(saved.value.resultId, new RegExp(`^${id}-comparison-[0-9a-f]{32}$`));
+    const again = await storeComparisonResult(repository, context, outcome);
+    assert.equal(again.value.resultId, saved.value.resultId);
+    const rows = (await repository.query(resultsScope, 'comparison_results')).value.filter((row) => row.experimentId === id);
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].kind, 'experiment-comparison');
+    const edit = await repository.transaction(resultsScope, { commandId: `edit-${id}`, inputDigest: inputDigest(id) },
+      (tx) => tx.compareAndSwap({ table: 'comparison_results', key: { runId: COMPARISON_RESULTS_RUN, resultId: saved.value.resultId } }, 1, { experimentId: 'changed' }));
+    assert.equal(edit.code, 'immutable-row');
+  }
+  assert.equal((await repository.query(resultsScope, 'comparison_results')).value.length, 3);
+  const bad = await storeComparisonResult(repository, context, { ...hold, arms: [] });
+  assert.deepEqual([bad.status, bad.code], ['invalid', 'invalid-result']);
+  assert.equal((await storeComparisonResult(repository, context, { ...hold, experimentId: 'process-only' })).status, 'invalid');
+  assert.equal((await storeComparisonResult(repository, context, { ...hold, experimentId: 'other' })).status, 'invalid');
+  await repository.close();
+});
+
+test('the latest result is read per experiment, and process-only reads are unchanged', async () => {
+  const repository = await openRepository();
+  const empty = await readLatestComparisonResults(repository, context, policy, { asOf: NOW });
+  assert.deepEqual(empty.value.experiments.map((row) => [row.experimentId, row.latest]), EXPERIMENT_IDS.map((id) => [id, null]));
+  const ids = { 'process-only': (await storeComparisonResult(repository, context, first)).value.resultId };
+  for (const [id, outcome] of [['hold-sweep', hold], ['points', points], ['order-mix', mix]]) ids[id] = (await storeComparisonResult(repository, context, outcome)).value.resultId;
+  const all = await readLatestComparisonResults(repository, context, policy, { asOf: NOW });
+  assert.equal(all.status, 'ok');
+  assert.equal(all.value.activePolicyVersion, 'gcsp-policy-v1');
+  assert.deepEqual(all.value.experiments.map((row) => [row.experimentId, row.latest.resultId, row.latest.policyCurrent]),
+    EXPERIMENT_IDS.map((id) => [id, ids[id], true]));
+  const byDefault = await readLatestComparisonResult(repository, context, policy, { asOf: NOW });
+  assert.deepEqual(byDefault.value, all.value.experiments[0].latest);
+  assert.deepEqual(byDefault.value.result, JSON.parse(JSON.stringify(first)));
+  const holdRead = await readLatestComparisonResult(repository, context, policy, { asOf: NOW, experimentId: 'hold-sweep' });
+  assert.equal(holdRead.value.resultId, ids['hold-sweep']);
+  assert.deepEqual(holdRead.value.result, JSON.parse(JSON.stringify(hold)));
+
+  const newerHold = await runComparison(holdExperiment, { ...options, now: () => LATER });
+  const newerId = (await storeComparisonResult(repository, context, newerHold)).value.resultId;
+  assert.notEqual(newerId, ids['hold-sweep']);
+  const after = await readLatestComparisonResults(repository, context, policy, { asOf: LATER });
+  assert.deepEqual(after.value.experiments.map((row) => row.latest.resultId), [ids['process-only'], ids['order-mix'], ids.points, newerId]);
+  const rows = (await repository.query(resultsScope, 'comparison_results')).value;
+  assert.equal(rows.filter((row) => row.experimentId === 'hold-sweep').length, 2);
+  assert.equal(rows.find((row) => row.resultId === ids['hold-sweep']).result.completedAt, NOW);
+
+  const partial = await openRepository();
+  await storeComparisonResult(partial, context, points);
+  assert.equal((await readLatestComparisonResult(partial, context, policy, { asOf: NOW, experimentId: 'hold-sweep' })).status, 'not-found');
+  assert.equal((await readLatestComparisonResult(partial, context, policy, { asOf: NOW })).status, 'not-found');
+  const some = await readLatestComparisonResults(partial, context, policy, { asOf: NOW });
+  assert.deepEqual(some.value.experiments.map((row) => row.latest?.resultId ?? null).map((id) => id && id.split('-comparison-')[0]), [null, null, 'points', null]);
+  const unknown = await readLatestComparisonResult(partial, context, policy, { asOf: NOW, experimentId: 'nope' });
+  assert.deepEqual([unknown.status, unknown.code, unknown.reasons[0].field], ['invalid', 'invalid-result', 'experimentId']);
+  await partial.close();
+  await repository.close();
+});
+
+test('a live demo reset leaves experiment results untouched', async () => {
+  const repository = await openRepository();
+  const live = (runId) => ({ runId, environmentId: 'live-demo', principalId: 'presenter', roles: ['presenter'] });
+  const nextRun = (runId) => ({ runId, environmentId: 'live-demo', status: 'active', current: true, scenarioVersion: 's', fixtureVersion: 'f',
+    corpusVersion: 'c', policyVersion: 'gcsp-policy-v1', clockInstant: NOW, clockVersion: '1', versions: {} });
+  assert.equal((await repository.resetRun(live('live-1'), { commandId: 'live-1', inputDigest: inputDigest('1') },
+    { expectedCurrentRunId: null, nextRun: nextRun('live-1'), rows: [] })).status, 'ok');
+  const saved = await storeComparisonResult(repository, live('live-1'), hold);
+  assert.equal(saved.status, 'ok');
+  const reset = await repository.resetRun(live('live-1'), { commandId: 'live-2', inputDigest: inputDigest('2') },
+    { expectedCurrentRunId: 'live-1', expectedRunVersion: 1, nextRun: nextRun('live-2'), rows: [] });
+  assert.equal(reset.status, 'ok');
+  const read = await readLatestComparisonResult(repository, live('live-2'), policy, { asOf: NOW, experimentId: 'hold-sweep' });
+  assert.equal(read.value.resultId, saved.value.resultId);
+  await repository.close();
+});
+
+test('a superseded policy version is flagged on every experiment entry', async () => {
+  const repository = await openRepository();
+  for (const outcome of [first, hold, points, mix]) await storeComparisonResult(repository, context, outcome);
+  const read = await readLatestComparisonResults(repository, context, stubPolicy('gcsp-policy-v2'), { asOf: NOW });
+  assert.equal(read.value.activePolicyVersion, 'gcsp-policy-v2');
+  assert.equal(read.value.experiments.length, 4);
+  for (const row of read.value.experiments) {
+    assert.deepEqual([row.latest.policyVersion, row.latest.activePolicyVersion, row.latest.policyCurrent], ['gcsp-policy-v1', 'gcsp-policy-v2', false]);
+  }
+  await repository.close();
+});
+
+test('the published experiment-result shape is what a fresh run stores and reads', async () => {
+  assert.deepEqual(Object.keys(experimentFixture), ['storedResult']);
+  const repository = await openRepository();
+  await storeComparisonResult(repository, context, hold);
+  const read = await readLatestComparisonResult(repository, context, policy, { asOf: NOW, experimentId: 'hold-sweep' });
+  assert.deepEqual(JSON.parse(JSON.stringify(read.value)), experimentFixture.storedResult);
+  await repository.close();
 });
