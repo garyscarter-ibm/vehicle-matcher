@@ -1,4 +1,4 @@
-import { createRepository, createState, ok, result } from './core.js';
+import { createReceiptIndex, createRepository, createState, ok, result } from './core.js';
 
 // Stores are explicitly injected so reopen persistence cannot hide a missing durable provider.
 export function createMemoryStore() {
@@ -19,6 +19,8 @@ export function createMemoryRepository({ store, now, supportedTables, snapshot =
   return createRepository({
     now,
     supportedTables,
+    // Deep snapshots copy every row, so only shared shallow rows can keep a receipt index between transactions.
+    receiptIndex: snapshot === 'shallow' ? createReceiptIndex() : undefined,
     async open() {
       return valid ? ok({ provider: 'memory', migrationStatus: { current: true, appliedVersions: [], pendingVersions: [] } })
         : result('invalid', { code: 'missing-store', reasons: [{ field: 'store', reason: 'Inject a memory store explicitly' }] });

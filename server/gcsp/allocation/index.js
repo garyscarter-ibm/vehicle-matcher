@@ -223,9 +223,14 @@ export function createAllocationService({ repository, policy, clock, identity, c
       try {
         // DemoClock awaits each handler outside a repository transaction. Release/brief
         // producers have committed before this read; never nest under its transaction helper.
-        const loaded = await repository.query(context, 'event_receipts'); if (loaded.status !== 'ok') return loaded;
-        const sources = loaded.value.filter((row) => ['stock-release', 'brief:changes'].includes(row.consumerId)
-          && row.state === 'completed' && row.outcome?.status === 'ok');
+        // Only the trigger consumers' receipts are read (not every receipt); the events sort totally below.
+        const loaded = [];
+        for (const consumerId of ['stock-release', 'brief:changes', 'buddy-expiry', DECISION_EVENTS]) {
+          const rows = await repository.query(context, 'event_receipts', { consumerId }); if (rows.status !== 'ok') return rows;
+          loaded.push(rows.value);
+        }
+        const [releases, changes, expiries, decisions] = loaded;
+        const sources = [...releases, ...changes].filter((row) => row.state === 'completed' && row.outcome?.status === 'ok');
         const events = [];
         for (const source of sources) {
           const value = source.outcome.value;
@@ -242,7 +247,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
             sourceEventId: source.eventId, sourceReceipt: { consumerId: source.consumerId, eventId: source.eventId,
               inputDigest: source.inputDigest, inputVersions: structuredClone(source.inputVersions) }, occurredAt });
         }
-        const lapses = buddyExpiryEvents(context.runId, loaded.value); const declines = buddyDeclineEvents(context.runId, loaded.value);
+        const lapses = buddyExpiryEvents(context.runId, expiries); const declines = buddyDeclineEvents(context.runId, decisions);
         if (!lapses || !declines) return unavailable('allocation-trigger-invalid');
         events.push(...lapses, ...declines);
         events.sort((a, b) => ordinal(a.occurredAt, b.occurredAt)

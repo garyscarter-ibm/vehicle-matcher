@@ -4,7 +4,7 @@ import { inputDigest } from '../repository/core.js';
 export const createMemoryPolicyStore = () => ({ runs: new Map(), locks: new Map() });
 
 export class MemoryPolicyProvider {
-  #store; #seedProvider;
+  #store; #seedProvider; #snapshots = new WeakMap();
   constructor({ store = createMemoryPolicyStore(), seedProvider = new FilePolicyProvider() } = {}) {
     this.#store = store; this.#seedProvider = seedProvider;
   }
@@ -19,7 +19,14 @@ export class MemoryPolicyProvider {
     return this.#store.runs.get(read.runId);
   }
 
-  async loadVersions(read) { return snapshotVersions((await this.#records(read)).map(({ seed }) => seed)); }
+  // publish replaces the run's records array, so a cached snapshot is current until then (PolicyService caches by identity).
+  async loadVersions(read) {
+    const records = await this.#records(read);
+    if (this.#snapshots.has(records)) return this.#snapshots.get(records);
+    const snapshot = snapshotVersions(records.map(({ seed }) => seed));
+    this.#snapshots.set(records, snapshot);
+    return snapshot;
+  }
 
   async publish(read, build) {
     const previous = this.#store.locks.get(read.runId) ?? Promise.resolve();
