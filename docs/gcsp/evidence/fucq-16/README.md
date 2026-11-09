@@ -69,11 +69,13 @@ mismatch stays a mismatch.
 
 ## Status and open items
 
-- Validation is fixture proof through an injected transport only: 0 live requests in FUCQ-46. Live verification is pending FUCQ-48.
+- Validation is fixture proof through an injected transport only: 0 live requests in FUCQ-46 and FUCQ-48. FUCQ-48 added the opt-in
+  smoke harness `scripts/gcsp/verify-live-catalogue.mjs` ([runbook](live-verification-runbook.md)); its live run has not been executed,
+  so authorised live demo proof is still missing. The three kinds of claim are kept apart in [claims.md](claims.md).
 - Timeout, retry, cache, freshness and the failure taxonomy (FUCQ-47) are recorded, with every assumed value, in [operation-policy.md](operation-policy.md).
 - Nothing is wired into `server/index.js` or the demo journey; the retail feed and consumer screens are unchanged.
 - Fixture assumptions not yet proved live: the matrix tree shape (model nodes found by `modelCode`); solver change-list keys other
   than `addedElements` (removed, ignored and invalid are anticipated, not observed); and that the G21 substitution is modelled at the
   solver step.
 
-Verification: `node --test server/test/bmw-live-catalogue.test.js server/test/bmw-catalogue-adapter.test.js`
+Verification: `node --test server/test/bmw-live-catalogue.test.js server/test/bmw-catalogue-adapter.test.js server/test/verify-live-catalogue.test.js`
