@@ -60,14 +60,15 @@ function sources(comparison) {
 
 /** Shared controls remain mounted while an answer changes. projectOffer is FUCQ-105's public projector.
  * hostRefresh: the embedding page already shows "Check current state", so this view omits its own.
- * headingLevel: 1 on the standalone page; an embedding page that owns the h1 passes 2. */
-export function createFollowupView(root, { choose, confirm, refresh, projectOffer, openOffer, hostRefresh = false, headingLevel = 1 } = {}) {
+ * headingLevel: 1 on the standalone page; an embedding page that owns the h1 passes 2.
+ * activityHref: when given, a saved change offers a primary link to buddy activity. */
+export function createFollowupView(root, { choose, confirm, refresh, projectOffer, openOffer, hostRefresh = false, headingLevel = 1, activityHref } = {}) {
   const prefix = `gcsp-followup-${++sequence}`;
   const page = el('div', 'vm gcsp-followup'); const content = el('div', 'gcsp-followup-content');
   const live = el('p', 'gcsp-followup-live'); live.setAttribute('role', 'status');
   live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true');
   page.append(content, live); root.replaceChildren(page);
-  let structure; let control; let field; let error; let reason; let confirmButton; let lastAnnouncement = '';
+  let structure; let control; let field; let error; let reason; let confirmButton; let lastAnnouncement = ''; let saving = false;
   const action = (name, text, onClick, variant = 'ghost') => {
     const node = button({ label: text, onClick, variant }); node.dataset.followupAction = name; return node;
   };
@@ -146,6 +147,9 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
       const [title, message] = messages[key] || messages.unavailable;
       const actions = [];
       if (key === 'confirmation-uncertain') actions.push(action('retry', 'Retry the same change', () => confirm?.(), 'primary'));
+      if (activityHref && model.savedChange && ['change-saved', 'waiting', 'no-match'].includes(key)) {
+        const link = button({ label: 'See your buddy activity', variant: 'primary', href: activityHref }); link.dataset.followupLink = 'activity'; actions.push(link);
+      }
       if (!['idle', 'loading', 'forbidden', 'stale-run'].includes(key)) actions.push(...refreshAction());
       const checked = model.evaluation?.carsChecked;
       const head = checked === 1 ? 'The 1 car checked does not fit your updated brief.'
@@ -158,11 +162,18 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
       const note = el('p', 'gcsp-note', `Your change is saved in brief version ${model.savedChange.briefVersion}.`);
       note.dataset.followupSaved = ''; content.prepend(note);
     }
-    if (hadFocus) { const heading = content.querySelector('h1, h2'); if (heading) { heading.tabIndex = -1; heading.focus(); } }
+    if (hadFocus) focusHeading();
   }
+  function focusHeading() { const heading = content.querySelector('h1, h2'); if (heading) { heading.tabIndex = -1; heading.focus(); } }
   function update(model) {
     const next = JSON.stringify([model.state, model.question?.questionVersion, model.comparison, model.savedChange, model.evaluation]);
     if (next !== structure) { draw(model); structure = next; }
+    // The disabled Confirm drops focus to body, so the outcome heading takes it once the save settles.
+    if (model.busy && ['question', 'confirmation-uncertain'].includes(model.state)) saving = true;
+    else if (saving && !model.busy) {
+      saving = false; const active = root.ownerDocument.activeElement;
+      if (!active || active === root.ownerDocument.body || active.disabled) focusHeading();
+    }
     page.setAttribute('aria-busy', String(model.busy));
     if (model.state === 'question' && control) {
       field.disabled = Boolean(model.busy); control.update({ value: model.value, disabled: Boolean(model.busy) });

@@ -1,0 +1,117 @@
+{
+ "story": "DEV-2026-11-09-GC-041",
+ "jira": "FUCQ-270",
+ "run": "GCSP_OFFLINE=1 memory repository, walk.mjs section decision, ports 9371-9373",
+ "widths": {
+  "1280": {
+   "changeSaved": {
+    "focus": "H2:Change saved",
+    "actions": [
+     "See your buddy activity",
+     "Check current state"
+    ]
+   },
+   "activityHref": "/gcsp-activity-live.html",
+   "accepted": {
+    "h1": "Offer accepted",
+    "focus": "H1:Offer accepted"
+   },
+   "rail": [
+    "Your cars",
+    "Your car brief",
+    "Buddy activity",
+    "Order progress"
+   ],
+   "railClicks": [
+    {
+     "railClick": "cars",
+     "url": "/gcsp-account.html",
+     "h1": "Your cars"
+    },
+    {
+     "railClick": "brief",
+     "url": "/gcsp-brief-live.html",
+     "h1": "Your buddy found your car"
+    },
+    {
+     "railClick": "activity",
+     "url": "/gcsp-activity-live.html",
+     "h1": "Your buddy"
+    },
+    {
+     "railClick": "order-progress",
+     "url": "/gcsp-order-progress-live.html",
+     "h1": "Order progress"
+    }
+   ],
+   "linkClicks": [
+    {
+     "linkClick": "View order progress",
+     "url": "/gcsp-order-progress-live.html",
+     "h1": "Order progress"
+    },
+    {
+     "linkClick": "Back to Your cars",
+     "url": "/gcsp-account.html",
+     "h1": "Your cars"
+    }
+   ],
+   "done": true
+  },
+  "375": {
+   "changeSaved": {
+    "focus": "H2:Change saved",
+    "actions": [
+     "See your buddy activity",
+     "Check current state"
+    ]
+   },
+   "activityHref": "/gcsp-activity-live.html",
+   "accepted": {
+    "h1": "Offer accepted",
+    "focus": "H1:Offer accepted"
+   },
+   "rail": [
+    "Your cars",
+    "Your car brief",
+    "Buddy activity",
+    "Order progress"
+   ],
+   "railClicks": [
+    {
+     "railClick": "cars",
+     "url": "/gcsp-account.html",
+     "h1": "Your cars"
+    },
+    {
+     "railClick": "brief",
+     "url": "/gcsp-brief-live.html",
+     "h1": "Your buddy found your car"
+    },
+    {
+     "railClick": "activity",
+     "url": "/gcsp-activity-live.html",
+     "h1": "Your buddy"
+    },
+    {
+     "railClick": "order-progress",
+     "url": "/gcsp-order-progress-live.html",
+     "h1": "Order progress"
+    }
+   ],
+   "linkClicks": [
+    {
+     "linkClick": "View order progress",
+     "url": "/gcsp-order-progress-live.html",
+     "h1": "Order progress"
+    },
+    {
+     "linkClick": "Back to Your cars",
+     "url": "/gcsp-account.html",
+     "h1": "Your cars"
+    }
+   ],
+   "done": true
+  }
+ }
+}
