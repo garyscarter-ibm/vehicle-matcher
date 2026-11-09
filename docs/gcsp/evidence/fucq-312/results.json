@@ -1,0 +1,123 @@
+{
+ "tree": "0d0ba90e (pre-fix, gcsp-poc tip at claim)",
+ "host": "offline GCSP_OFFLINE=1, memory repository, ports 9410-9412, 1280 wide",
+ "runs": {
+  "learned-1280": [
+   {
+    "api": "GET /api/gcsp/greg/order-plan 200",
+    "learned": {
+     "status": "fallback",
+     "reason": "no-active-model",
+     "limitation": "No learned model is active, so only the baseline plan from expressed demand is shown."
+    },
+    "baseline": [
+     "f70-hatch-120",
+     "g20-saloon-320i",
+     "g20-saloon-330e",
+     "g21-touring-320i",
+     "g61-i5-40"
+    ]
+   },
+   {
+    "api": "GET /api/gcsp/greg/order-plan 200",
+    "learned": {
+     "status": "fallback",
+     "reason": "no-active-model",
+     "limitation": "No learned model is active, so only the baseline plan from expressed demand is shown."
+    },
+    "baseline": [
+     "f70-hatch-120",
+     "g20-saloon-320i",
+     "g20-saloon-330e",
+     "g21-touring-320i",
+     "g61-i5-40"
+    ]
+   },
+   {
+    "step": "decline",
+    "learnedText": "Synthetic-trained model No learned model is active, so only the baseline plan from expressed demand is shown."
+   },
+   {
+    "shot": {
+     "file": "decline-1280-01-learned-plan.png",
+     "emDash": [],
+     "overflowX": 0
+    }
+   },
+   {
+    "done": true
+   }
+  ],
+  "paula-1280": [
+   {
+    "step": "paula-ordered",
+    "h1": "Order received"
+   },
+   {
+    "shot": {
+     "file": "main-1280-01-paula-order-outcome.png",
+     "emDash": [],
+     "overflowX": 0
+    }
+   },
+   {
+    "api": "GET /api/gcsp/greg/order-plan 200",
+    "learned": {
+     "status": "fallback",
+     "reason": "no-active-model",
+     "limitation": "No learned model is active, so only the baseline plan from expressed demand is shown."
+    },
+    "baseline": [
+     "f70-hatch-120",
+     "g20-saloon-320i",
+     "g20-saloon-330e",
+     "g21-touring-320i",
+     "g61-i5-40"
+    ]
+   },
+   {
+    "api": "GET /api/gcsp/greg/order-plan 200",
+    "learned": {
+     "status": "fallback",
+     "reason": "no-active-model",
+     "limitation": "No learned model is active, so only the baseline plan from expressed demand is shown."
+    },
+    "baseline": [
+     "f70-hatch-120",
+     "g20-saloon-320i",
+     "g20-saloon-330e",
+     "g21-touring-320i",
+     "g61-i5-40"
+    ]
+   },
+   {
+    "step": "plan",
+    "text": "NEXT ORDER No saved demand to plan for yet Cars left out of this plan 19 new cars aren't in the ordering list yet, so this plan leaves them out: F70 Sports Hatch, G42 Coupe, G61 i5. Change limits Order plan updated for 6 Nov 2026, 11:30 GMT. Request from Production There is nothing to request yet. Forecast source Expressed demand (deterministic baseline) Policy version gcsp-policy-v1+offer-journey-v1 Plan for 6 Nov 2026, 11:30 GMT Built from what employees have saved and confirmed they need. It is not a prediction. Employees need to save and confirm a brief with a renewal date before a plan can be made."
+   },
+   {
+    "shot": {
+     "file": "main-1280-02-next-order.png",
+     "emDash": [],
+     "overflowX": 0
+    }
+   },
+   {
+    "earlierMainError": "No Min field: plan did not load"
+   },
+   {
+    "step": "main-after-paula",
+    "learnedText": "missing"
+   },
+   {
+    "shot": {
+     "file": "main-after-paula-1280-03-learned-plan.png",
+     "emDash": [],
+     "overflowX": 0
+    }
+   },
+   {
+    "done": true
+   }
+  ]
+ }
+}

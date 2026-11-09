@@ -131,7 +131,7 @@ export function createOrderPlanOperations({ repository, policy, identity, clock,
       return clean({ status: 'available', label: LEARNED_LABEL, recommended: false, submittable: false, plan,
         forecast: { version: forecast.version, model: model.model, data: model.data, settings: model.settings, modelExpectsWait: forecast.provenance.modelExpectsWait,
           aggregate: model.aggregate, evaluation: model.evaluation, limitations: forecast.forecast.limitations },
-        differences: differencesOf(baseline, plan, catalog.value.derivatives.map((d) => d.derivativeId)) });
+        differences: differencesOf(baseline, plan, catalog.value.derivatives.map((d) => d.derivativeId).sort(compare)) });
     } catch { return unavailableView('learned-plan-unavailable'); }
   }
 
