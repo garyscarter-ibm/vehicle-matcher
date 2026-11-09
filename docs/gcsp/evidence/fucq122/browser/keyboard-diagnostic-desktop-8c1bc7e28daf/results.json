@@ -1,0 +1,3753 @@
+{
+  "state": "passed",
+  "chunk": "keyboard-diagnostic-desktop",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "source": "471447665d006bb3d93e2f1b17d599cf288edae8",
+  "checks": [
+    {
+      "name": "Bounded native-keyboard diagnosis recorded; passing diagnostic execution does not establish working case selection",
+      "outcomes": [
+        {
+          "mode": "existing-page-order",
+          "targetSelected": false,
+          "openEnabled": false
+        },
+        {
+          "mode": "greg-brought-to-front",
+          "targetSelected": false,
+          "openEnabled": false
+        },
+        {
+          "mode": "foreground-typeahead",
+          "targetSelected": true,
+          "openEnabled": true,
+          "actualOptionsLoaded": true
+        }
+      ]
+    }
+  ],
+  "captures": [
+    {
+      "name": "diagnostic-existing-page-order",
+      "file": "diagnostic-existing-page-order.png",
+      "boundary": "native keyboard diagnostic; no completed journey acceptance",
+      "source": "471447665d006bb3d93e2f1b17d599cf288edae8",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "1 renewal case loaded."
+      ],
+      "text": "Renewal cases\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\n1 renewal case loaded.\n\nRefresh queue\nSort cases\nDeadline, then status\nStatus, then deadline\nRenewal-risk cases\nEmployee\tRenewal deadline (calendar date)\tTrigger or request\tReason\tStatus\tOwner\tNext action due, demo clock (UTC)\nPaula (fictional)\t2026-12-01\tHelp request\tSynthetic help case for native keyboard diagnosis.\tOpen\tScheme team · scheme-team\t2026-11-06 09:00:00 UTC\nCase to work\nChoose a case\nPaula (fictional) · Open · 2026-12-01\nOpen selected case",
+      "focus": {
+        "tag": "BODY",
+        "id": "",
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or greater priority is g",
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "outlineColor": "rgb(0, 0, 0)",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 900
+        },
+        "inViewport": true
+      },
+      "keyboardTraceThrough": 1
+    },
+    {
+      "name": "diagnostic-greg-brought-to-front",
+      "file": "diagnostic-greg-brought-to-front.png",
+      "boundary": "native keyboard diagnostic; no completed journey acceptance",
+      "source": "471447665d006bb3d93e2f1b17d599cf288edae8",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "1 renewal case loaded."
+      ],
+      "text": "Renewal cases\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\n1 renewal case loaded.\n\nRefresh queue\nSort cases\nDeadline, then status\nStatus, then deadline\nRenewal-risk cases\nEmployee\tRenewal deadline (calendar date)\tTrigger or request\tReason\tStatus\tOwner\tNext action due, demo clock (UTC)\nPaula (fictional)\t2026-12-01\tHelp request\tSynthetic help case for native keyboard diagnosis.\tOpen\tScheme team · scheme-team\t2026-11-06 09:00:00 UTC\nCase to work\nChoose a case\nPaula (fictional) · Open · 2026-12-01\nOpen selected case",
+      "focus": {
+        "tag": "BODY",
+        "id": "",
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or greater priority is g",
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "outlineColor": "rgb(0, 0, 0)",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 900
+        },
+        "inViewport": true
+      },
+      "keyboardTraceThrough": 2
+    },
+    {
+      "name": "diagnostic-foreground-typeahead",
+      "file": "diagnostic-foreground-typeahead.png",
+      "boundary": "native keyboard diagnostic; no completed journey acceptance",
+      "source": "471447665d006bb3d93e2f1b17d599cf288edae8",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "1 renewal case loaded."
+      ],
+      "text": "Renewal cases\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\n1 renewal case loaded.\n\nRefresh queue\nSort cases\nDeadline, then status\nStatus, then deadline\nRenewal-risk cases\nEmployee\tRenewal deadline (calendar date)\tTrigger or request\tReason\tStatus\tOwner\tNext action due, demo clock (UTC)\nPaula (fictional)\t2026-12-01\tHelp request\tSynthetic help case for native keyboard diagnosis.\tOpen\tScheme team · scheme-team\t2026-11-06 09:00:00 UTC\nCase to work\nChoose a case\nPaula (fictional) · Open · 2026-12-01\nOpen selected case",
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Open selected case",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 607.5,
+          "width": 199.09375,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "keyboardTraceThrough": 3
+    },
+    {
+      "name": "diagnostic-foreground-typeahead-opened",
+      "file": "diagnostic-foreground-typeahead-opened.png",
+      "boundary": "diagnostic actual options read only",
+      "source": "471447665d006bb3d93e2f1b17d599cf288edae8",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "Current case options loaded."
+      ],
+      "text": "Renewal cases\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\nCurrent case options loaded.\n\nRefresh queue\nSort cases\nDeadline, then status\nStatus, then deadline\nRenewal-risk cases\nEmployee\tRenewal deadline (calendar date)\tTrigger or request\tReason\tStatus\tOwner\tNext action due, demo clock (UTC)\nPaula (fictional)\t2026-12-01\tHelp request\tSynthetic help case for native keyboard diagnosis.\tOpen\tScheme team · scheme-team\t2026-11-06 09:00:00 UTC\nCase to work\nChoose a case\nPaula (fictional) · Open · 2026-12-01\nOpen selected case\nClose case details\nPaula (fictional)\n\nRENEWAL CASE\n\nOpen\nCase reference\nrenewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819\nOwner\nScheme team\nOwner role\nscheme-team\nReason\nSynthetic help case for native keyboard diagnosis.\nLatest update\nSynthetic help case for native keyboard diagnosis.\nOpened from\nemployee-request\nNext action\nScheme team to review your renewal and contact you.\nDue, demo clock (UTC)\n2026-11-06 09:00:00 UTC\nRenewal deadline (calendar date)\n2026-12-01\n\nSynthetic demonstration case.\n\nDated case history\nOptions as of, demo clock (UTC)\n2026-11-05 09:00:00 UTC\nPolicy version\ngcsp-policy-v1\nRecord next action\nNext case status\nChoose the next status\nIn progress\nClosed\nReason for this update\nNext action\nNext action due, demo clock (UTC)\n\nCurrent demo time: 2026-11-05 09:00:00 UTC.\n\nRemedy to record\nKeep the current remedy, if any\nManual decision\n\nSuitable available cars: A confirmed brief is required to evaluate suitable available cars.\n\nOne preference change: A current confirmed brief and an unused recorded decline are required.\n\nReviewed later release: No reviewed future release date and source are recorded for this case.\n\nContract extension: The current policy does not permit a contract extension.\n\nReview case update",
+      "focus": {
+        "tag": "P",
+        "id": "",
+        "text": "Current case options loaded.",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": -548,
+          "width": 1232,
+          "height": 24
+        },
+        "inViewport": false
+      },
+      "keyboardTraceThrough": 5
+    }
+  ],
+  "keyboard": [
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 4,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 4,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 4,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Open selected case",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 607.5,
+          "width": 199.09375,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Open selected case",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Open selected case",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 607.5,
+          "width": 199.09375,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "BODY",
+        "id": "",
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or greater priority is g",
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "outlineColor": "rgb(0, 0, 0)",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 935.890625
+        },
+        "inViewport": true
+      }
+    }
+  ],
+  "errors": [],
+  "network": [
+    {
+      "type": "setup-or-assertion-api",
+      "actor": "Paula",
+      "method": "POST",
+      "path": "/cases",
+      "request": {
+        "commandId": "diagnostic-help-setup",
+        "reason": "Synthetic help case for native keyboard diagnosis."
+      },
+      "status": "ok",
+      "case": {
+        "caseId": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+        "version": 1,
+        "status": "open"
+      }
+    },
+    {
+      "type": "browser",
+      "actor": "Greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "caseCount": 1
+    },
+    {
+      "type": "browser",
+      "actor": "Greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "caseCount": 1
+    },
+    {
+      "type": "browser",
+      "actor": "Greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "caseCount": 1
+    },
+    {
+      "type": "browser",
+      "actor": "Greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases/options",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "case": {
+        "caseId": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+        "version": 1,
+        "status": "open"
+      },
+      "nextStatuses": [
+        "in-progress",
+        "closed"
+      ],
+      "availability": {
+        "alternativeCars": false,
+        "preferenceRelaxations": false,
+        "laterRelease": false,
+        "manualDecision": true,
+        "contractExtension": false
+      }
+    }
+  ],
+  "expectedTransportFailures": [],
+  "setup": [
+    "Trusted backend bootstrap issues separate actual presenter, Paula and Greg sessions; synthetic manual-records-v1 supplies account/contract facts. Cookies are never retained in evidence.",
+    "Actual case request API creates one diagnostic case. No employee request UI or completed Greg journey is claimed."
+  ],
+  "boundary": "Actual isolated memory-services HTTP and repository assets. Delivered runtime/Greg host and offer/lifecycle producers remain separate acceptance.",
+  "cookieOverride": "localhost only: identity.session.sameSite=Lax, secureCookies=false",
+  "apiPort": 60231,
+  "chromeDebugPort": 60234,
+  "nativeSelectionDiagnostics": [
+    {
+      "mode": "existing-page-order",
+      "expectedIndex": 1,
+      "expectedValue": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+      "before": {
+        "documentFocus": true,
+        "visibility": "visible",
+        "active": true,
+        "index": 0,
+        "value": "",
+        "events": [
+          {
+            "type": "focus",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "Tab",
+            "code": "Tab",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "key": "Space",
+          "observed": {
+            "documentFocus": true,
+            "visibility": "visible",
+            "active": true,
+            "index": 0,
+            "value": "",
+            "events": [
+              {
+                "type": "focus",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Tab",
+                "code": "Tab",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              }
+            ]
+          }
+        },
+        {
+          "key": "Home",
+          "observed": {
+            "documentFocus": true,
+            "visibility": "visible",
+            "active": true,
+            "index": 0,
+            "value": "",
+            "events": [
+              {
+                "type": "focus",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Tab",
+                "code": "Tab",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "Home",
+                "code": "Home",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Home",
+                "code": "Home",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              }
+            ]
+          }
+        },
+        {
+          "key": "ArrowDown",
+          "observed": {
+            "documentFocus": true,
+            "visibility": "visible",
+            "active": true,
+            "index": 0,
+            "value": "",
+            "events": [
+              {
+                "type": "focus",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Tab",
+                "code": "Tab",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "Home",
+                "code": "Home",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Home",
+                "code": "Home",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "ArrowDown",
+                "code": "ArrowDown",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "ArrowDown",
+                "code": "ArrowDown",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              }
+            ]
+          }
+        },
+        {
+          "key": "Enter",
+          "observed": {
+            "documentFocus": true,
+            "visibility": "visible",
+            "active": true,
+            "index": 0,
+            "value": "",
+            "events": [
+              {
+                "type": "focus",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Tab",
+                "code": "Tab",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "Home",
+                "code": "Home",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Home",
+                "code": "Home",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "ArrowDown",
+                "code": "ArrowDown",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "ArrowDown",
+                "code": "ArrowDown",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "Enter",
+                "code": "Enter",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Enter",
+                "code": "Enter",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              }
+            ]
+          }
+        }
+      ],
+      "after": {
+        "documentFocus": false,
+        "visibility": "visible",
+        "active": false,
+        "index": 0,
+        "value": "",
+        "events": [
+          {
+            "type": "focus",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "Tab",
+            "code": "Tab",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "Home",
+            "code": "Home",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "Home",
+            "code": "Home",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "ArrowDown",
+            "code": "ArrowDown",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "ArrowDown",
+            "code": "ArrowDown",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "Enter",
+            "code": "Enter",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "Enter",
+            "code": "Enter",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "Tab",
+            "code": "Tab",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "blur",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          }
+        ]
+      },
+      "targetSelected": false,
+      "openEnabled": false
+    },
+    {
+      "mode": "greg-brought-to-front",
+      "expectedIndex": 1,
+      "expectedValue": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+      "before": {
+        "documentFocus": true,
+        "visibility": "visible",
+        "active": true,
+        "index": 0,
+        "value": "",
+        "events": [
+          {
+            "type": "focus",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "Tab",
+            "code": "Tab",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "key": "Space",
+          "observed": {
+            "documentFocus": true,
+            "visibility": "visible",
+            "active": true,
+            "index": 0,
+            "value": "",
+            "events": [
+              {
+                "type": "focus",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Tab",
+                "code": "Tab",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              }
+            ]
+          }
+        },
+        {
+          "key": "Home",
+          "observed": {
+            "documentFocus": true,
+            "visibility": "visible",
+            "active": true,
+            "index": 0,
+            "value": "",
+            "events": [
+              {
+                "type": "focus",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Tab",
+                "code": "Tab",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "Home",
+                "code": "Home",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Home",
+                "code": "Home",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              }
+            ]
+          }
+        },
+        {
+          "key": "ArrowDown",
+          "observed": {
+            "documentFocus": true,
+            "visibility": "visible",
+            "active": true,
+            "index": 0,
+            "value": "",
+            "events": [
+              {
+                "type": "focus",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Tab",
+                "code": "Tab",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "Home",
+                "code": "Home",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Home",
+                "code": "Home",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "ArrowDown",
+                "code": "ArrowDown",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "ArrowDown",
+                "code": "ArrowDown",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              }
+            ]
+          }
+        },
+        {
+          "key": "Enter",
+          "observed": {
+            "documentFocus": true,
+            "visibility": "visible",
+            "active": true,
+            "index": 0,
+            "value": "",
+            "events": [
+              {
+                "type": "focus",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Tab",
+                "code": "Tab",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "Home",
+                "code": "Home",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Home",
+                "code": "Home",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "ArrowDown",
+                "code": "ArrowDown",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "ArrowDown",
+                "code": "ArrowDown",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "Enter",
+                "code": "Enter",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Enter",
+                "code": "Enter",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              }
+            ]
+          }
+        }
+      ],
+      "after": {
+        "documentFocus": false,
+        "visibility": "visible",
+        "active": false,
+        "index": 0,
+        "value": "",
+        "events": [
+          {
+            "type": "focus",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "Tab",
+            "code": "Tab",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "Home",
+            "code": "Home",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "Home",
+            "code": "Home",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "ArrowDown",
+            "code": "ArrowDown",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "ArrowDown",
+            "code": "ArrowDown",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "Enter",
+            "code": "Enter",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "Enter",
+            "code": "Enter",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "Tab",
+            "code": "Tab",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "blur",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          }
+        ]
+      },
+      "targetSelected": false,
+      "openEnabled": false
+    },
+    {
+      "mode": "foreground-typeahead",
+      "expectedIndex": 1,
+      "expectedValue": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+      "before": {
+        "documentFocus": true,
+        "visibility": "visible",
+        "active": true,
+        "index": 0,
+        "value": "",
+        "events": [
+          {
+            "type": "focus",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "Tab",
+            "code": "Tab",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          }
+        ]
+      },
+      "steps": [
+        {
+          "key": "Space",
+          "observed": {
+            "documentFocus": true,
+            "visibility": "visible",
+            "active": true,
+            "index": 0,
+            "value": "",
+            "events": [
+              {
+                "type": "focus",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Tab",
+                "code": "Tab",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              }
+            ]
+          }
+        },
+        {
+          "key": {
+            "type": "Paula (fictional) · Open · 2026-12-01"
+          },
+          "observed": {
+            "documentFocus": true,
+            "visibility": "visible",
+            "active": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "events": [
+              {
+                "type": "focus",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Tab",
+                "code": "Tab",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "P",
+                "code": "KeyP",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "input",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "change",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "P",
+                "code": "KeyP",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "a",
+                "code": "KeyA",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "a",
+                "code": "KeyA",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "u",
+                "code": "KeyU",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "u",
+                "code": "KeyU",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "l",
+                "code": "KeyL",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "l",
+                "code": "KeyL",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "a",
+                "code": "KeyA",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "a",
+                "code": "KeyA",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "(",
+                "code": "Digit9",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "(",
+                "code": "Digit9",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "f",
+                "code": "KeyF",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "f",
+                "code": "KeyF",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "i",
+                "code": "KeyI",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "i",
+                "code": "KeyI",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "c",
+                "code": "KeyC",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "c",
+                "code": "KeyC",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "t",
+                "code": "KeyT",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "t",
+                "code": "KeyT",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "i",
+                "code": "KeyI",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "i",
+                "code": "KeyI",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "o",
+                "code": "KeyO",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "o",
+                "code": "KeyO",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "n",
+                "code": "KeyN",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "n",
+                "code": "KeyN",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "a",
+                "code": "KeyA",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "a",
+                "code": "KeyA",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "l",
+                "code": "KeyL",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "l",
+                "code": "KeyL",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": ")",
+                "code": "Digit0",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": ")",
+                "code": "Digit0",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "O",
+                "code": "KeyO",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "O",
+                "code": "KeyO",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "p",
+                "code": "KeyP",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "p",
+                "code": "KeyP",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "e",
+                "code": "KeyE",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "e",
+                "code": "KeyE",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "n",
+                "code": "KeyN",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "n",
+                "code": "KeyN",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "2",
+                "code": "Digit2",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "2",
+                "code": "Digit2",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "0",
+                "code": "Digit0",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "0",
+                "code": "Digit0",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "2",
+                "code": "Digit2",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "2",
+                "code": "Digit2",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "6",
+                "code": "Digit6",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "6",
+                "code": "Digit6",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "-",
+                "code": "Minus",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "-",
+                "code": "Minus",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "1",
+                "code": "Digit1",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "1",
+                "code": "Digit1",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "2",
+                "code": "Digit2",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "2",
+                "code": "Digit2",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "-",
+                "code": "Minus",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "-",
+                "code": "Minus",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "0",
+                "code": "Digit0",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "0",
+                "code": "Digit0",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "1",
+                "code": "Digit1",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "1",
+                "code": "Digit1",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              }
+            ]
+          }
+        },
+        {
+          "key": "Enter",
+          "observed": {
+            "documentFocus": true,
+            "visibility": "visible",
+            "active": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "events": [
+              {
+                "type": "focus",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Tab",
+                "code": "Tab",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "P",
+                "code": "KeyP",
+                "trusted": true,
+                "index": 0,
+                "value": "",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "input",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "change",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "P",
+                "code": "KeyP",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "a",
+                "code": "KeyA",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "a",
+                "code": "KeyA",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "u",
+                "code": "KeyU",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "u",
+                "code": "KeyU",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "l",
+                "code": "KeyL",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "l",
+                "code": "KeyL",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "a",
+                "code": "KeyA",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "a",
+                "code": "KeyA",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "(",
+                "code": "Digit9",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "(",
+                "code": "Digit9",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "f",
+                "code": "KeyF",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "f",
+                "code": "KeyF",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "i",
+                "code": "KeyI",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "i",
+                "code": "KeyI",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "c",
+                "code": "KeyC",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "c",
+                "code": "KeyC",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "t",
+                "code": "KeyT",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "t",
+                "code": "KeyT",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "i",
+                "code": "KeyI",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "i",
+                "code": "KeyI",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "o",
+                "code": "KeyO",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "o",
+                "code": "KeyO",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "n",
+                "code": "KeyN",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "n",
+                "code": "KeyN",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "a",
+                "code": "KeyA",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "a",
+                "code": "KeyA",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "l",
+                "code": "KeyL",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "l",
+                "code": "KeyL",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": ")",
+                "code": "Digit0",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": ")",
+                "code": "Digit0",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "O",
+                "code": "KeyO",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "O",
+                "code": "KeyO",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "p",
+                "code": "KeyP",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "p",
+                "code": "KeyP",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "e",
+                "code": "KeyE",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "e",
+                "code": "KeyE",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "n",
+                "code": "KeyN",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "n",
+                "code": "KeyN",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": " ",
+                "code": "Space",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "2",
+                "code": "Digit2",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "2",
+                "code": "Digit2",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "0",
+                "code": "Digit0",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "0",
+                "code": "Digit0",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "2",
+                "code": "Digit2",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "2",
+                "code": "Digit2",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "6",
+                "code": "Digit6",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "6",
+                "code": "Digit6",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "-",
+                "code": "Minus",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "-",
+                "code": "Minus",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "1",
+                "code": "Digit1",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "1",
+                "code": "Digit1",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "2",
+                "code": "Digit2",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "2",
+                "code": "Digit2",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "-",
+                "code": "Minus",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "-",
+                "code": "Minus",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "0",
+                "code": "Digit0",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "0",
+                "code": "Digit0",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "1",
+                "code": "Digit1",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "1",
+                "code": "Digit1",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keydown",
+                "key": "Enter",
+                "code": "Enter",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              },
+              {
+                "type": "keyup",
+                "key": "Enter",
+                "code": "Enter",
+                "trusted": true,
+                "index": 1,
+                "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+                "documentFocus": true,
+                "visibility": "visible"
+              }
+            ]
+          }
+        }
+      ],
+      "after": {
+        "documentFocus": true,
+        "visibility": "visible",
+        "active": false,
+        "index": 1,
+        "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+        "events": [
+          {
+            "type": "focus",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "Tab",
+            "code": "Tab",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "P",
+            "code": "KeyP",
+            "trusted": true,
+            "index": 0,
+            "value": "",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "input",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "change",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "P",
+            "code": "KeyP",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "a",
+            "code": "KeyA",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "a",
+            "code": "KeyA",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "u",
+            "code": "KeyU",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "u",
+            "code": "KeyU",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "l",
+            "code": "KeyL",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "l",
+            "code": "KeyL",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "a",
+            "code": "KeyA",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "a",
+            "code": "KeyA",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "(",
+            "code": "Digit9",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "(",
+            "code": "Digit9",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "f",
+            "code": "KeyF",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "f",
+            "code": "KeyF",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "i",
+            "code": "KeyI",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "i",
+            "code": "KeyI",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "c",
+            "code": "KeyC",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "c",
+            "code": "KeyC",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "t",
+            "code": "KeyT",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "t",
+            "code": "KeyT",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "i",
+            "code": "KeyI",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "i",
+            "code": "KeyI",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "o",
+            "code": "KeyO",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "o",
+            "code": "KeyO",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "n",
+            "code": "KeyN",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "n",
+            "code": "KeyN",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "a",
+            "code": "KeyA",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "a",
+            "code": "KeyA",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "l",
+            "code": "KeyL",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "l",
+            "code": "KeyL",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": ")",
+            "code": "Digit0",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": ")",
+            "code": "Digit0",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "O",
+            "code": "KeyO",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "O",
+            "code": "KeyO",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "p",
+            "code": "KeyP",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "p",
+            "code": "KeyP",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "e",
+            "code": "KeyE",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "e",
+            "code": "KeyE",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "n",
+            "code": "KeyN",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "n",
+            "code": "KeyN",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": " ",
+            "code": "Space",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "2",
+            "code": "Digit2",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "2",
+            "code": "Digit2",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "0",
+            "code": "Digit0",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "0",
+            "code": "Digit0",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "2",
+            "code": "Digit2",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "2",
+            "code": "Digit2",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "6",
+            "code": "Digit6",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "6",
+            "code": "Digit6",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "-",
+            "code": "Minus",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "-",
+            "code": "Minus",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "1",
+            "code": "Digit1",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "1",
+            "code": "Digit1",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "2",
+            "code": "Digit2",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "2",
+            "code": "Digit2",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "-",
+            "code": "Minus",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "-",
+            "code": "Minus",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "0",
+            "code": "Digit0",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "0",
+            "code": "Digit0",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "1",
+            "code": "Digit1",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "1",
+            "code": "Digit1",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "Enter",
+            "code": "Enter",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keyup",
+            "key": "Enter",
+            "code": "Enter",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "keydown",
+            "key": "Tab",
+            "code": "Tab",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          },
+          {
+            "type": "blur",
+            "trusted": true,
+            "index": 1,
+            "value": "renewal-fb2d2f6187b0d2c2810a9140b52ab13175dfc819",
+            "documentFocus": true,
+            "visibility": "visible"
+          }
+        ]
+      },
+      "targetSelected": true,
+      "openEnabled": true,
+      "actualOptionsLoaded": true
+    }
+  ],
+  "listenerClosed": true,
+  "chromeJoined": true
+}

@@ -1,0 +1,202 @@
+{
+  "scope": "scoped offline observation capability; no source traffic",
+  "codePins": {
+    "scripts/gcsp/bmw-public-registration.mjs": "965f1ccb0699ae75cbfdd74bb6f2855095bc6f66113158b08948d649eb384d2c",
+    "scripts/gcsp/collection-session.mjs": "918512334fa3a350f9578548f622e1b4de903eec7091b7c7aac05dc5e5344b2e",
+    "scripts/gcsp/public-bmw-source.mjs": "e1dbfe1c83c10a2319872677940e0f24a61f6067bc56661cda112a3fa69457a0",
+    "scripts/gcsp/enrichment-observation.mjs": "29d41aefcd2b3d74a876219ad960cc901f6677cc7e483710216eb710ab788a29",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "docs/gcsp/evidence/fucq60/actual-v2-observation-2026-11-07/run-live.mjs": "92046907573a2be75bdc20a4d13d68e85630f291611b49f77c1b45cd9afe619e",
+    "docs/gcsp/evidence/fucq60/actual-v2-observation-2026-11-07/supervise.py": "83630de60b4df2ef88b053d80f5737d82887d9c565d0890e4e1bcf18ea32a7af",
+    "docs/gcsp/evidence/fucq60/actual-v2-observation-2026-11-07/observation-plan.json": "d5b5ecd918e2f06af4a9a8d5ff41f72410c8ae02c71fdee9340c0e89e1ba61a7",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+  },
+  "allocationSha256": "e43fbbc06fd5529014c71069812e10f61f3f55e038c9d28c2de74a93bb188d23",
+  "planDigest": "dd190625f3de63f0c9a2740bb90b56a33228fa65d5ff7833940c70e07d39d93a",
+  "checks": {
+    "observationAndAdjacentModelTests": {
+      "pass": 48,
+      "fail": 0,
+      "skipped": 0,
+      "phase": "observation-gates"
+    },
+    "javascriptSyntax": "observer and runner passed",
+    "pythonSyntax": "offline/live supervisors passed ast.parse"
+  },
+  "earlierFailures": [
+    "red: 0/6 expected missing API",
+    "green: 2/6, discovered numeric OTD source status rejected before projection; fixed narrowly",
+    "final: 46/47, interruption test hook used wrong phase; corrected to actual before-rename/cache checkpoint boundary"
+  ],
+  "phases": [
+    {
+      "phase": "observation-red",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-red/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-red/ownership/9dacc0d5f23d4649b4652399c2be3306.json",
+        "peak_rss": 2211840,
+        "peak_scratch": 0,
+        "rc": 1,
+        "wall": 0.24824283300000002
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-red/ownership/9dacc0d5f23d4649b4652399c2be3306.json",
+        "removedScratchBytes": 0,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-red/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-9dacc0d5f23d4649b4652399c2be3306",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "observation-green",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-green/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-green/ownership/a5c42384202f426eaed7f582bafd3fde.json",
+        "peak_rss": 125550592,
+        "peak_scratch": 24800,
+        "rc": 1,
+        "wall": 0.757623542
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-green/ownership/a5c42384202f426eaed7f582bafd3fde.json",
+        "removedScratchBytes": 24800,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-green/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-a5c42384202f426eaed7f582bafd3fde",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "observation-green2",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-green2/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-green2/ownership/76d9154039e34e148cf00056ca388519.json",
+        "peak_rss": 127188992,
+        "peak_scratch": 24736,
+        "rc": 0,
+        "wall": 1.0341965419999999
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-green2/ownership/76d9154039e34e148cf00056ca388519.json",
+        "removedScratchBytes": 24736,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-green2/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-76d9154039e34e148cf00056ca388519",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "observation-final",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-final/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-final/ownership/e4ccc7803e9a49ecb0f7c4b6b008e1ad.json",
+        "peak_rss": 224952320,
+        "peak_scratch": 37024,
+        "rc": 1,
+        "wall": 6.6323391670000005
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-final/ownership/e4ccc7803e9a49ecb0f7c4b6b008e1ad.json",
+        "removedScratchBytes": 37024,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-final/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-e4ccc7803e9a49ecb0f7c4b6b008e1ad",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "observation-final2",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-final2/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-final2/ownership/133498f8b7e34f21a125f3ede14dbaa2.json",
+        "peak_rss": 235094016,
+        "peak_scratch": 45216,
+        "rc": 0,
+        "wall": 6.557814082999999
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-final2/ownership/133498f8b7e34f21a125f3ede14dbaa2.json",
+        "removedScratchBytes": 45216,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-final2/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-133498f8b7e34f21a125f3ede14dbaa2",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "observation-gates",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-gates/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-gates/ownership/ada0ad26d71741dbaacfdeb45e1c83e0.json",
+        "peak_rss": 221593600,
+        "peak_scratch": 41216,
+        "rc": 0,
+        "wall": 6.5399865
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-gates/ownership/ada0ad26d71741dbaacfdeb45e1c83e0.json",
+        "removedScratchBytes": 41216,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/observation-gates/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-ada0ad26d71741dbaacfdeb45e1c83e0",
+        "scratchAbsent": true
+      }
+    }
+  ],
+  "removedScratchBytesTotal": 172992,
+  "sourceCalls": 0,
+  "admission": false,
+  "binaryImages": 0,
+  "liveAllocationUnspent": true,
+  "coverageContexts": "not measured; reviewed ownership/fixture boundaries used",
+  "compatibilityException": null,
+  "leftovers": [],
+  "limits": {
+    "workers": 1,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "scratchMiB": 64,
+    "sourceSeconds": 90,
+    "supervisorSeconds": 120
+  },
+  "unrun": [
+    "actual four-GET observation pending parent exact grant",
+    "full suite excluded: narrowly versioned additive operation registration and scoped adjacent model boundaries",
+    "unchanged311/new9/source32 replays reused; not repeated",
+    "technical fact qualification, image fidelity, binary assets, runtime publication and F60 acceptance remain open"
+  ]
+}

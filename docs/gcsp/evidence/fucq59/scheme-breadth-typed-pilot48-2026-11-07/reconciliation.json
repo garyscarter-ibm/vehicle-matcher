@@ -1,0 +1,16 @@
+{
+  "canonicalEntries": 2459,
+  "admittedSourceConfigurations": 2456,
+  "spentSolverRequests": 3284,
+  "newlyAccepted": 32,
+  "actualOutcomes": {
+    "accepted": 32,
+    "duplicate": 0,
+    "rejected": 16
+  },
+  "allPriorEntriesPreserved": true,
+  "canonicalSha256": "439292c8de01fc312fc0262ab339c1d6b7bef43cb75095baeb2cf9671b19b115",
+  "spentSha256": "fa0af6da229b26e6936f682d1e6e27f57c855b28795a16a8b1686b66b891d7fd",
+  "strictBindingVerificationStillRequired": true,
+  "globalUnionRequired": true
+}

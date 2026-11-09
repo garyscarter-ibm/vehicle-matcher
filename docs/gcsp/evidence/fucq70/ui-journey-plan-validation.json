@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-70",
+  "observedAt": "2026-11-06T01:33:07.005033+00:00",
+  "result": "PASS static documentation/source review only",
+  "method": "Standard-library reads, JSON/relative-link/whitespace checks and immutable blob/SHA256 checks through shared scaffold_git. No product module imported or materialized; no Node/loader/test/browser/native/full command or resource allocation. Literal graph describes source candidates, not whole-program or asset admission.",
+  "sourceGraphSha256": "323a772709936a0cd3099254a82c613d369e5727e824c72f7b9e402aeb9a4c66",
+  "checks": 463,
+  "failedChecks": [],
+  "scope": [
+    "132 immutable candidate nodes/270 literal edges",
+    "six exact central source comparisons",
+    "reference-manifest hashes",
+    "all accepted proof exports and byte-identical131-check root audit",
+    "four completed and four open acceptance slices",
+    "local documentation links/JSON/whitespace"
+  ],
+  "documents": [
+    {
+      "path": ".product-map/work.json",
+      "sha256": "62390612a203fad5e90631649aec39bea2e23afbc8ca72a935b16abd580d98da",
+      "bytes": 51615
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/README.md",
+      "sha256": "33d9f9d113f0f09df89c8528bd0132ad99f83cc8ec791adf1079db95a4099481",
+      "bytes": 34174
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-validation.json",
+      "sha256": "848436cbe59d55b81275be378e3f8d02bb615b0c093393c111135c00a5595583",
+      "bytes": 13606
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/dispatcher-final-audit.json",
+      "sha256": "4f3191be5ca574199592ee7aef8056ec7a7aeed63ae7fe4e79e90ebb453b4be7",
+      "bytes": 20423
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/ui-journey-plan.md",
+      "sha256": "a0138e2ab2a86483608e090902199dd94af339b837b5306c57f8255f9145dbcc",
+      "bytes": 19893
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/ui-journey-sources.json",
+      "sha256": "323a772709936a0cd3099254a82c613d369e5727e824c72f7b9e402aeb9a4c66",
+      "bytes": 101448
+    },
+    {
+      "path": "docs/gcsp/manual-review-ui-contract.md",
+      "sha256": "1233a6f9260325ff7b3e1302932ebc6daeffe7e3e313b5c482fbe0974ad39c95",
+      "bytes": 10291
+    },
+    {
+      "path": "docs/gcsp/manual-review-details-contract.md",
+      "sha256": "53ef1f4b08a10261368382544cc5ac7619750baaa1f4311272c5d560213e8711",
+      "bytes": 11655
+    }
+  ],
+  "evidenceLimit": "Original success TAP is not retained and was not independently reparsed. Counts/selection/checkpoint and admitted supervisor enforcement remain; no unchanged rerun.",
+  "allocation": "none",
+  "executionAuthorised": false,
+  "storyBuilt": false,
+  "followup": {
+    "at": "2026-11-06T01:33:37.740219+00:00",
+    "checks": 3,
+    "result": "PASS documentation-only exact claimState.claim and central ownership clarification; all other document/sourceGraph hashes unchanged. Immutable graph checks reused without repeating source inspection."
+  }
+}

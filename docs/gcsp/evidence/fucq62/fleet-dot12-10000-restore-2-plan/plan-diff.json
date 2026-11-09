@@ -1,0 +1,111 @@
+{
+  "scope": "static-only original-to-attempt2 control diff",
+  "originalPlanSha256": "d5068c73528503e492fb4bff81ba8bc5648ea4000e6a04cb1db00a4def49d505",
+  "newPlanSha256": "e6f47f8e8c15d74f6e5bada85cf0d2c162a0043001cfd71238cfa40652b492aa",
+  "originalPlanUnchanged": true,
+  "publicTargetUnchanged": "15fde2c3c24b5da02206501576a3baeb19e9a78c",
+  "runtimeTarget": "b0f05852f93bad1de8c907b6090c56fc9982e4d8",
+  "runtimeChanged": [
+    {
+      "relativePath": "server/gcsp/vehicle-evidence/fleet-artifacts.js",
+      "oldRuntimeSha256": "8567ef55e6cf914c1ea8d6f8c7bbb7797f96116030163d58b46eb594feb05de6",
+      "newRuntimeSha256": "0bb5079b92a0a8df997708a6f266a2de84603ebd53efdf291a15edffd0d92811",
+      "behavior": "Production whole-transfer default30000ms\u2192120000ms; only2commentlines additionally change"
+    }
+  ],
+  "existingCorrectedReleaseModuleUnchanged": {
+    "path": "/Users/usget/Claude/vehicle-matcher/server/gcsp/vehicle-evidence/fleet-release.js",
+    "bytes": 4017,
+    "sha256": "1cadb13cbd9851eea93be14096328353970e3210b4f00e1ecf5ae8362f6289b4",
+    "relativePath": "server/gcsp/vehicle-evidence/fleet-release.js"
+  },
+  "ownedRoots": {
+    "outputRoot": {
+      "old": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public",
+      "new": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public-2"
+    },
+    "metadataRoot": {
+      "old": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot12-restore",
+      "new": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot12-restore-2"
+    },
+    "retainedRoot": {
+      "old": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public/retained",
+      "new": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public-2/retained"
+    },
+    "retainedStore": {
+      "old": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public/retained/store",
+      "new": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public-2/retained/store"
+    },
+    "retainedCache": {
+      "old": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public/retained/cache",
+      "new": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public-2/retained/cache"
+    }
+  },
+  "phaseIdentities": [
+    "download-2",
+    "offline-2",
+    "recovery-2",
+    "cleanup-2"
+  ],
+  "controlChanges": [
+    "Exact suffix2 phaseIdentity required",
+    "Exact separate runtimeTarget and git-show runtimeTargetPins required",
+    "Offline prior receipt must be attempt2 download-2",
+    "Recovery prior receipt must be attempt2 offline-2",
+    "Selection changedPaths mentions both external runtime inputs"
+  ],
+  "unchangedDrivers": [
+    "boundary.mjs",
+    "common.mjs",
+    "followthrough.mjs",
+    "recovery.mjs",
+    "verify-assets.mjs",
+    "group-proof.py"
+  ],
+  "unchangedLimits": {
+    "network": {
+      "downloadMaxFetchOperations": 124,
+      "downloadStatus200": 31,
+      "sourceRequests": 0,
+      "nativeRequests": 0,
+      "applicationPublicGETs": 0,
+      "anonymous": true,
+      "automaticRetry": false
+    },
+    "resources": {
+      "workers": 1,
+      "nodeHeapMiB": 512,
+      "cloudScratchMiB": 64,
+      "diskReservationMiB": 2048,
+      "hostRamMiB": 1024,
+      "groupRamMiB": 896,
+      "supervisorHeadroomMiB": 128,
+      "downloadSeconds": 300,
+      "offlineSeconds": 300,
+      "recoverySeconds": 300,
+      "cleanupSeconds": 60,
+      "retainedBytesExpectedUpperBound": 1150000000
+    },
+    "expected": {
+      "files": 31,
+      "sourceShards": 20,
+      "bytes": 574382841,
+      "configurations": 10001,
+      "sourceConfigurations": 10000,
+      "references": 10002,
+      "consumerErrors": 2707,
+      "allRequestSetSha256": "a0942f6f38cefceaff62dc67d206e2a0ba0a48d6e2863884405170e4d1259409",
+      "datasets": 13
+    },
+    "excluded": [
+      "Source collection",
+      "Native install/database/current-run UUID proof",
+      "Ordinary store publication",
+      "Full10002reference replay on corrected module",
+      "Consumer repair/full suite/Story Done",
+      "Linux/deployment/live requests without separate authorization"
+    ],
+    "acceptance": false
+  },
+  "execution": "unrun; no network or phase grant"
+}

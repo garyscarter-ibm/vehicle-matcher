@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-70",
+  "observedAt": "2026-11-06T01:38:28.671886+00:00",
+  "authoringBase": "0d7fe9bf72d0ef15ba3aa9da5aee7589116438c9",
+  "result": "PASS static review-leaf/source/documentation inspection only",
+  "checks": 130,
+  "failedChecks": [],
+  "leafGraphSha256": "c01837227e2d1648256272b4317efd53d07b5e5a3bc0d561990c5a8ffc5fe1c7",
+  "counts": {
+    "candidateNodes": 36,
+    "literalEdges": 44,
+    "unchangedOwnedSourceAndTestLeaves": 10,
+    "selectedExistingControllerCaseNames": 14,
+    "selectedExistingRenderCaseNames": 7
+  },
+  "conclusion": "No consumer/controller/test/helper change required for the existing allocated host ports. Exact concrete central host/runtime/release/reset/source pin and new69 journey-test/helper graph await publication; installed dependency/executable/input catalogue remains unadmitted. Actual71 interface unknown; no submission adapter or fabricated saved-event receipt.",
+  "method": "Standard-library and shared scaffold_git immutable byte/blob checks; source selections and fixture boundaries inspected. No product import/materialization, Node/loader/test/browser/native/full command, allocation or unchanged protocol rerun.",
+  "documents": [
+    {
+      "path": ".product-map/work.json",
+      "sha256": "897f56f0d089d5c6c38f1620dd55b3cec60b3b47907d21ee3c2e02d50bd1425e",
+      "bytes": 51706
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/README.md",
+      "sha256": "5a6029c66cb377c9d8998a80108321d14a5e37d0f8a635eb1a9894c90ab87e19",
+      "bytes": 35193
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/ui-journey-plan.md",
+      "sha256": "287333707189207056f2881075bddb9069df2826f836f165097581b1ccbe5ada",
+      "bytes": 21576
+    },
+    {
+      "path": "docs/gcsp/manual-review-ui-contract.md",
+      "sha256": "c1a33271a71380538f070cde18054204ca0fd0da8c46caaae53299258ccc0408",
+      "bytes": 10928
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/ui-review-leaf-sources.json",
+      "sha256": "c01837227e2d1648256272b4317efd53d07b5e5a3bc0d561990c5a8ffc5fe1c7",
+      "bytes": 30254
+    }
+  ],
+  "priorEvidence": "Accepted6case/8setup/131check service evidence and its raw-success-TAP limitation unchanged. Historical14/7 independent test results do not establish the proposed changed shared/central graph.",
+  "allocation": "none",
+  "executionAuthorised": false,
+  "storyBuilt": false,
+  "followup": {
+    "at": "2026-11-06T01:39:02.570743+00:00",
+    "result": "PASS read-only69 coordination-plan hashes, eight identical review product files and affected document/link/JSON checks",
+    "checks": 15,
+    "unchangedGraph": "36nodes/44literal edges and all130 earlier source/document checks retained; only coordination metadata and corresponding prose added. No source/test/helper/execution delta."
+  }
+}

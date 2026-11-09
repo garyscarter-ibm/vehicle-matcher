@@ -1,0 +1,25 @@
+{
+  "at": "2026-11-06T02:31:28.977793+00:00",
+  "result": "SCOPED_11_OF_11_PASS",
+  "passed": true,
+  "failed": [],
+  "originalRun": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-aeaff9d663d44e669821185ecfc96497",
+  "counts": {
+    "tests": 11,
+    "pass": 11,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "sourcePlanSHA256": "983a85e1e4630065d2fc1af428697d04b38a6277a52240a703746316244e1ebe",
+  "admissionSHA256": "418f8f5361a1717f38fb84e62b4f875466e4255109f1f0668a1971a9565c5344",
+  "peakAggregateRSS": 255672320,
+  "wall": 15.849328875000001,
+  "boundary": "Actual in-memory100/102/103/106/107 native-decline account-reload followup; explicit question-policy injection. No client/runtime/deployed/nativeDB/browser/full acceptance.",
+  "originalAudit": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq102-combined-result-root-0233.json",
+  "originalAuditBytes": 46604,
+  "originalAuditSHA256": "c344026fc88aea61aafe39d0d16dcf0dbf8da234b9ad2cd22ce756826b49eaa2",
+  "checksPassed": 360,
+  "scope": "Compact root audit receipt; complete independent checks remain at originalAudit. Scoped acceptance only."
+}

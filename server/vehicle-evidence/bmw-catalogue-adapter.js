@@ -1,4 +1,6 @@
 import { readFile } from 'node:fs/promises';
+import { bmwCatalogueV2LookupIdentity } from './bmw-catalogue-v2.js';
+export { validateBmwCatalogueV2Envelope } from './bmw-catalogue-v2.js';
 
 const VERSION = 'bmw-gb-i5-2026-11-01.v1';
 const PROVIDER = 'bmw-catalogue-snapshot';
@@ -9,12 +11,14 @@ const SNAPSHOTS = new Map([[VERSION, new URL('./snapshots/bmw-gb-i5-2026-11-01.v
 const IDENTITY_FIELDS = ['catalogueDate', 'market', 'locale', 'modelCode', 'modelRange', 'rawModelRange', 'agModelCode',
   'trim', 'orderDate', 'effectDate', 'productionDate', 'taxDate'];
 const DATE_FIELDS = ['orderDate', 'effectDate', 'productionDate', 'taxDate'];
-const MEASUREMENTS = {
-  seats: ['N_SITZE', 'SEATS', 'COUNT'],
-  luggageNormal: ['A_GEPR_V211', 'NORMAL', 'LITRES'],
-  luggageExpanded: ['A_GEPR_V214', 'EXPANDED', 'LITRES'],
-  acceleration: ['E_0_100KMH', '0–100 KM/H', 'SECONDS'],
-};
+export const BMW_OTD_MEASUREMENT_MAPPING_VERSION = 'bmw-otd-reference-code-mapping.v1';
+export const BMW_OTD_MEASUREMENT_MAPPING = Object.freeze({
+  seats: Object.freeze(['N_SITZE', 'SEATS', 'COUNT']),
+  luggageNormal: Object.freeze(['A_GEPR_V211', 'NORMAL', 'LITRES']),
+  luggageExpanded: Object.freeze(['A_GEPR_V214', 'EXPANDED', 'LITRES']),
+  acceleration: Object.freeze(['E_0_100KMH', '0–100 KM/H', 'SECONDS']),
+});
+const MEASUREMENTS = BMW_OTD_MEASUREMENT_MAPPING;
 const CODE = /^[A-Z0-9]{4,12}$/;
 const SOURCES = new Set(['BMW UK catalogue', 'BMW UK OTD']);
 const COMPLETENESS = new Set(['complete', 'partial']);
@@ -70,6 +74,7 @@ function identity(request) {
 
 /** Stable value identity only: JSON.stringify it for a cache key; no cache or live provider is enabled. */
 export function bmwCatalogueLookupIdentity(request, options = {}) {
+  if (options && Object.hasOwn(options, 'sourceContractVersion')) return bmwCatalogueV2LookupIdentity(request, options);
   if (!validRequest(request) || !options || typeof options !== 'object' || Array.isArray(options)) return null;
   const { provider = PROVIDER, providerVersion = PROVIDER_VERSION, schemaVersion = SCHEMA_VERSION,
     snapshotVersion = VERSION } = options;
@@ -247,13 +252,54 @@ export function describeBmwEquipment(result, code) {
 }
 
 /** Resolve a curated dated catalogue configuration through an injectable in-process port. */
-export function createBmwCatalogueAdapter({ loadSnapshot = loadLocalSnapshot, transport = rejectOutbound } = {}) {
+export function createBmwCatalogueAdapter({ loadSnapshot = loadLocalSnapshot, transport = rejectOutbound, sourceRegistrations = [] } = {}) {
+  if (!Array.isArray(sourceRegistrations) || sourceRegistrations.length > 10000) throw new TypeError('Invalid source registrations');
+  const registered = new Map();
+  for (const registration of sourceRegistrations) {
+    const lookup = registration?.lookupIdentity;
+    const options = lookup && Object.fromEntries(['provider', 'providerVersion', 'schemaVersion', 'sourceContractVersion', 'snapshotVersion']
+      .map((name) => [name, lookup[name]]));
+    const valid = lookup && bmwCatalogueV2LookupIdentity({ configurationId: lookup.configurationId, bindingDigest: lookup.bindingDigest }, options);
+    const key = valid && JSON.stringify(valid);
+    if (!valid || JSON.stringify(lookup) !== key || typeof registration.qualifySnapshot !== 'function' || registered.has(key)) {
+      throw new TypeError('Invalid source registration');
+    }
+    registered.set(key, registration.qualifySnapshot.bind(registration));
+  }
   return {
     async resolve(request, options = {}) {
       // Versions are bounded identifiers; a caller can never turn them into a file path.
       const lookup = bmwCatalogueLookupIdentity(request, options);
       if (!lookup) return envelope('invalid-input', null);
       const { snapshotVersion, schemaVersion, providerVersion, provider } = lookup;
+      if (Object.hasOwn(lookup, 'sourceContractVersion')) {
+        const requested = { snapshotVersion, bindingDigest: lookup.bindingDigest, configurationId: lookup.configurationId };
+        const result = { provider, providerVersion, schemaVersion, sourceContractVersion: lookup.sourceContractVersion, snapshotVersion,
+          sourceKind: 'dated-snapshot', status: 'unsupported', observedDate: null, retrievedDate: null,
+          requestedIdentity: requested, resolvedIdentity: null, lookupIdentity: lookup, resolvedLookupIdentity: null,
+          identityProvenance: null, sourceBinding: null, facts: emptyFacts(),
+          equipment: { definitions: [], available: { state: 'unknown', codes: [], complete: false, completeness: 'unknown',
+            provenance: provenance('unknown') }, selected: { state: 'unknown', options: [], accessories: [],
+            factoryComplete: false, accessoryCodesComplete: false, accessoryQuantitiesComplete: false, provenance: provenance('unknown') },
+          verifiedFitted: { state: 'unknown', codes: [], reason: 'provider-does-not-verify-fitting', provenance: provenance('unknown') } },
+          completeness: { factorySelection: 'unknown', accessoryCodes: 'unknown', accessoryQuantities: 'unknown',
+            measurements: 'unknown', definitions: 'unknown', availability: 'unknown', verifiedFitted: 'unknown' },
+          failure: failure('unsupported-snapshot') };
+        const qualify = registered.get(JSON.stringify(lookup));
+        if (!qualify) return result;
+        const unavailable = (reason) => ({ ...result, status: 'source-unavailable', failure: failure(reason) });
+        let snapshot;
+        try { snapshot = await loadSnapshot(snapshotVersion, { transport, lookupIdentity: structuredClone(lookup) }); }
+        catch (error) { return unavailable(error instanceof SyntaxError ? 'artifact-malformed'
+          : error?.code === 'ENOENT' ? 'artifact-missing' : 'artifact-unreadable'); }
+        try {
+          const qualified = await qualify(snapshot);
+          if (qualified?.status !== 'qualified' || JSON.stringify(qualified.envelope?.lookupIdentity) !== JSON.stringify(lookup)) {
+            return unavailable('artifact-malformed');
+          }
+          return structuredClone(qualified.envelope);
+        } catch { return unavailable('artifact-malformed'); }
+      }
       const requested = identity(request);
       const unavailable = (reason) => envelope('source-unavailable', snapshotVersion, requested, reason, lookup);
       if (schemaVersion !== SCHEMA_VERSION || providerVersion !== PROVIDER_VERSION || provider !== PROVIDER

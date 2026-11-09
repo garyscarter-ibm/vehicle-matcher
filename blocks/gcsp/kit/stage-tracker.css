@@ -1,0 +1,18 @@
+/* Shared ordered stages. State is always in text; marker shape and weight only reinforce it. */
+.gcsp .gcsp-stage-heading { margin: 0 0 16px; font-size: 20px; font-weight: 600; line-height: 1.25; }
+.gcsp .gcsp-stage-list { list-style: none; counter-reset: gcsp-stage; margin: 0; padding: 0; display: grid; gap: 0; }
+.gcsp .gcsp-stage { counter-increment: gcsp-stage; position: relative; display: grid; gap: 2px 0; padding: 0 0 20px 44px; min-width: 0; }
+.gcsp .gcsp-stage::before { content: counter(gcsp-stage); position: absolute; left: 0; top: 0; box-sizing: border-box; width: 30px; height: 30px; display: grid; place-items: center; border: 2px solid var(--gcsp-divider); border-radius: 50%; background: var(--gcsp-surface); color: var(--gcsp-text-muted); font-size: 14px; font-weight: 600; }
+.gcsp .gcsp-stage:not(:last-child)::after { content: ""; position: absolute; left: 14px; top: 34px; bottom: 4px; width: 2px; background: var(--gcsp-divider); }
+.gcsp .gcsp-stage.is-done::before { background: var(--gcsp-accent); border-color: var(--gcsp-accent); color: var(--gcsp-on-accent); }
+.gcsp .gcsp-stage.is-current::before, .gcsp .gcsp-stage.is-blocked::before { border-color: var(--gcsp-accent-strong); color: var(--gcsp-accent-strong); box-shadow: 0 0 0 3px var(--gcsp-accent-soft); }
+.gcsp .gcsp-stage.is-declined::before, .gcsp .gcsp-stage.is-blocked::before { border-style: dashed; }
+.gcsp .gcsp-stage.is-declined::before { border-color: var(--gcsp-danger); color: var(--gcsp-danger); }
+.gcsp .gcsp-stage-head { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.gcsp .gcsp-stage-label { font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
+.gcsp .gcsp-stage.is-upcoming .gcsp-stage-label { font-weight: 400; color: var(--gcsp-text-muted); }
+.gcsp .gcsp-stage-state { font-size: 14px; color: var(--gcsp-text-muted); }
+.gcsp .gcsp-stage.is-current .gcsp-stage-state, .gcsp .gcsp-stage.is-blocked .gcsp-stage-state { color: var(--gcsp-accent-strong); font-weight: 600; }
+.gcsp .gcsp-stage.is-declined .gcsp-stage-state { color: var(--gcsp-danger); font-weight: 600; }
+.gcsp .gcsp-stage-time, .gcsp .gcsp-stage-owner, .gcsp .gcsp-stage-next, .gcsp .gcsp-stage-note { margin: 0; font-size: 14px; color: var(--gcsp-text-muted); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.gcsp .gcsp-stage-owner { color: var(--gcsp-text); font-weight: 600; }

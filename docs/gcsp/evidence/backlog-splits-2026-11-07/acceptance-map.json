@@ -1,0 +1,778 @@
+{
+  "schemaVersion": 1,
+  "authorisation": "Russell Gowers, 7 November 2026",
+  "basis": "All original native acceptance clause labels agree with the local originals. Shared safeguards apply to each part; split clauses are divided by the explicit retained/remainder contracts in plan.json. No completion is inferred.",
+  "originalClauseCount": 67,
+  "clauses": [
+    {
+      "sourceKey": "FUCQ-114",
+      "clause": "Appointment port",
+      "originalClause": "- [ ] **Appointment port:** an appointment port with a synthetic adapter and a live-shaped stub, following FUCQ-111's pattern. The stub reports each write as unsupported with a reviewable reason and leaves the state where it was.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-114"
+      ],
+      "movedTo": [
+        "FUCQ-167"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-114",
+      "clause": "Target appointment states (Q19)",
+      "originalClause": "- [ ] **Target appointment states (Q19):** an appointment moves through requested, then scheduled (confirmed by the provider), then completed or no-show. Each state records its demo-clock time and provider reference. Requested is never shown or returned as booked.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-114"
+      ],
+      "movedTo": [
+        "FUCQ-167"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-114",
+      "clause": "Request rules",
+      "originalClause": "- [ ] **Request rules:** Paula can request a slot only after her order reaches sent to ordering in FUCQ-111. She chooses from slots the synthetic adapter offers, and earliest dates and slot lengths are PolicyService keys. Repeating the same request returns the same appointment.",
+      "disposition": "retained",
+      "retainedIn": [
+        "FUCQ-114"
+      ],
+      "movedTo": []
+    },
+    {
+      "sourceKey": "FUCQ-114",
+      "clause": "Confirmation on a tick",
+      "originalClause": "- [ ] **Confirmation on a tick:** the synthetic adapter confirms or proposes another slot from a tick handler on FUCQ-85's clock, after a keyed delay. A proposed change needs Paula's acceptance before it becomes scheduled.",
+      "disposition": "retained",
+      "retainedIn": [
+        "FUCQ-114"
+      ],
+      "movedTo": []
+    },
+    {
+      "sourceKey": "FUCQ-114",
+      "clause": "Completion gate",
+      "originalClause": "- [ ] **Completion gate:** an appointment can be marked completed only when the documents and the car's readiness from the documents Story in FUCQ-110 are all complete. If that Story is not yet merged, the gate reads a port that returns not ready, so completion is refused rather than assumed.",
+      "disposition": "moved",
+      "retainedIn": [],
+      "movedTo": [
+        "FUCQ-167"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-114",
+      "clause": "No-show",
+      "originalClause": "- [ ] **No-show:** a scenario key or presenter action can record a no-show. It records a lifecycle-exception event receipt of type no-show, leaves the order allocated, and lets Paula request a new slot.",
+      "disposition": "moved",
+      "retainedIn": [],
+      "movedTo": [
+        "FUCQ-167"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-114",
+      "clause": "Uncertain outcomes",
+      "originalClause": "- [ ] **Uncertain outcomes:** a timeout stays pending under the same idempotency key and is reconciled on FUCQ-85's reconciliation tick before any retry.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-114"
+      ],
+      "movedTo": [
+        "FUCQ-167"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-114",
+      "clause": "Read model and routes",
+      "originalClause": "- [ ] **Read model and routes:** `/api/gcsp` routes request a slot, accept a proposed change and read the current appointment, with who owns the next step (Paula, the retailer or the scheme team). Another employee's appointment is refused, and browser-supplied employee or run IDs are ignored.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-114"
+      ],
+      "movedTo": [
+        "FUCQ-167"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-118",
+      "clause": "Separate return plan",
+      "originalClause": "- [ ] **Separate return plan:** a replacement order has a return plan for the current car, linked to the old contract and vehicle slot FUCQ-71 recorded, and separate from the new car's handover appointment. A new order (no current car) has none.",
+      "disposition": "retained",
+      "retainedIn": [
+        "FUCQ-118"
+      ],
+      "movedTo": []
+    },
+    {
+      "sourceKey": "FUCQ-118",
+      "clause": "Return states",
+      "originalClause": "- [ ] **Return states:** the plan moves through not planned, return requested, return scheduled, then returned or missed. It records the return location, the slot from FUCQ-114's appointment port (the same port, a separate appointment), the demo-clock time and a provider reference. Requested is never shown as scheduled.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-118"
+      ],
+      "movedTo": [
+        "FUCQ-168"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-118",
+      "clause": "Same-visit or separate",
+      "originalClause": "- [ ] **Same-visit or separate:** Paula can ask to return the old car at the new car's handover or at a separate slot. The choice and its rules are PolicyService keys, labelled synthetic assumptions.",
+      "disposition": "retained",
+      "retainedIn": [
+        "FUCQ-118"
+      ],
+      "movedTo": []
+    },
+    {
+      "sourceKey": "FUCQ-118",
+      "clause": "Current-car relationship",
+      "originalClause": "- [ ] **Current-car relationship:** only a confirmed handover completion or a confirmed return changes Paula's current car. Acceptance, approval or a scheduled slot never does. A test proves her current car is unchanged until then.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-118"
+      ],
+      "movedTo": [
+        "FUCQ-168"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-118",
+      "clause": "Missed return",
+      "originalClause": "- [ ] **Missed return:** a missed return records a lifecycle-exception event receipt of a keyed type, for the renewal-risk trigger.",
+      "disposition": "moved",
+      "retainedIn": [],
+      "movedTo": [
+        "FUCQ-168"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-118",
+      "clause": "Return mileage",
+      "originalClause": "- [ ] **Return mileage:** the plan carries the return mileage FUCQ-70 captured, read-only, as recorded at selection.",
+      "disposition": "retained",
+      "retainedIn": [
+        "FUCQ-118"
+      ],
+      "movedTo": []
+    },
+    {
+      "sourceKey": "FUCQ-118",
+      "clause": "Read model and routes",
+      "originalClause": "- [ ] **Read model and routes:** `/api/gcsp` routes read the return plan and request a return slot, using FUCQ-84's server-owned context. Another employee's plan is refused, and browser-supplied employee or run IDs are ignored.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-118"
+      ],
+      "movedTo": [
+        "FUCQ-168"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-120",
+      "clause": "Order progress",
+      "originalClause": "- [ ] **Order progress:** on her account (FUCQ-67) and on the offer page (FUCQ-105) once selected, Paula sees the selected car (with `mediaWell` and its 7-digit `orderNumber`) and the approval stages from FUCQ-111 in the target's names. The current stage, its owner (HR, sales manager or ordering) and the expected next step are shown. HR approval appears only when the policy key includes it.",
+      "disposition": "retained",
+      "retainedIn": [
+        "FUCQ-120"
+      ],
+      "movedTo": []
+    },
+    {
+      "sourceKey": "FUCQ-120",
+      "clause": "Handover appointment",
+      "originalClause": "- [ ] **Handover appointment:** the appointment from FUCQ-114 shows as requested, scheduled, completed or no-show, never calling a requested slot booked. Paula can request a slot once the order is sent to ordering, and accept or refuse a proposed change.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-120"
+      ],
+      "movedTo": [
+        "FUCQ-169"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-120",
+      "clause": "Documents and readiness",
+      "originalClause": "- [ ] **Documents and readiness:** the items from FUCQ-116 show as a task list, with Paula's own tasks first and their actions, then items others own with their owner and due time. Overdue and failed items are distinct.",
+      "disposition": "retained",
+      "retainedIn": [
+        "FUCQ-120"
+      ],
+      "movedTo": []
+    },
+    {
+      "sourceKey": "FUCQ-120",
+      "clause": "Old-car return",
+      "originalClause": "- [ ] **Old-car return:** for a replacement order, the return plan from FUCQ-118 shows separately from the new car's handover, with her current car still shown as current until a confirmed completion or return.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-120"
+      ],
+      "movedTo": [
+        "FUCQ-169"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-120",
+      "clause": "Every state rendered",
+      "originalClause": "- [ ] **Every state rendered:**\n  waiting for HR or sales-manager approval;\n  approval declined, with what happens next and the help entry;\n  sent to ordering, no slot requested;\n  slot requested, then scheduled, and a proposed change;\n  documents waiting for Paula, in progress, overdue, failed;\n  ready for handover;\n  no-show, with a new request;\n  completed;\n  unsupported provider write, shown as not done rather than done;\n  loading and source failure.\n  Reload and reopening show the server's current state, never a cached client state.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-120"
+      ],
+      "movedTo": [
+        "FUCQ-169"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-120",
+      "clause": "Copy",
+      "originalClause": "- [ ] **Copy:** labels use the target's stage names and say plainly who is acting. The demo signing stand-in is labelled synthetic. No em dashes.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-120"
+      ],
+      "movedTo": [
+        "FUCQ-169"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-120",
+      "clause": "Shared kit",
+      "originalClause": "- [ ] **Shared kit:** the views are built from the shared kit per `COMPONENTS.md`. New or extended components go into the kit, the catalogue and the gallery in the same commit. The ratchet baseline only falls.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-120"
+      ],
+      "movedTo": [
+        "FUCQ-169"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-120",
+      "clause": "Embeddable (Q18)",
+      "originalClause": "- [ ] **Embeddable (Q18):** the block mounts as a custom element, with no inline scripts, inline handlers or `eval`. Keyboard access, visible focus and status announcements throughout.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-120"
+      ],
+      "movedTo": [
+        "FUCQ-169"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-122",
+      "clause": "Help entry for Paula",
+      "originalClause": "- [ ] **Help entry for Paula:** a help entry on her activity view (FUCQ-95) and order progress view explains what help can do. Opening it changes nothing. Asking for help states the effect before she confirms, then opens or adds to her case through FUCQ-112.",
+      "disposition": "retained",
+      "retainedIn": [
+        "FUCQ-122"
+      ],
+      "movedTo": []
+    },
+    {
+      "sourceKey": "FUCQ-122",
+      "clause": "Paula's case view",
+      "originalClause": "- [ ] **Paula's case view:** shows the case owner (the scheme team role), the reason, the next action and its due time in demo-clock time, the dated history and any remedy proposed for her. An employee-approved relaxation is confirmed through FUCQ-91's single-change operation and states what it changes.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-122"
+      ],
+      "movedTo": [
+        "FUCQ-170"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-122",
+      "clause": "Greg's case queue",
+      "originalClause": "- [ ] **Greg's case queue:** in Greg's dashboard (FUCQ-101), a queue of the run's cases shows employee, renewal deadline, trigger or request, reason, status, owner and next-action due time. It sorts by deadline and status.",
+      "disposition": "moved",
+      "retainedIn": [],
+      "movedTo": [
+        "FUCQ-170"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-122",
+      "clause": "Working a case",
+      "originalClause": "- [ ] **Working a case:** Greg can open a case and see feasible next options. They are other suitable available cars from the existing evaluation, a preference relaxation, a later release with its realistic date, a manual decision, and an extension only where the policy key permits it. He records an update or a remedy, which Paula's view shows on reload.",
+      "disposition": "moved",
+      "retainedIn": [],
+      "movedTo": [
+        "FUCQ-170"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-122",
+      "clause": "No priority promise",
+      "originalClause": "- [ ] **No priority promise:** no copy promises a specific next car or greater priority. The views say remedies need the scheme team's decision.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-122"
+      ],
+      "movedTo": [
+        "FUCQ-170"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-122",
+      "clause": "Every state rendered",
+      "originalClause": "- [ ] **Every state rendered:**\n  no case, help available;\n  case open from a request, and from a trigger;\n  in progress;\n  remedy proposed and waiting for Paula;\n  resolved and closed;\n  empty queue;\n  loading and source failure.\n  Reload shows the server's current state.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-122"
+      ],
+      "movedTo": [
+        "FUCQ-170"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-122",
+      "clause": "Shared kit",
+      "originalClause": "- [ ] **Shared kit:** the views are built from the shared kit per `COMPONENTS.md`. New or extended components go into the kit, the catalogue and the gallery in the same commit. The ratchet baseline only falls.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-122"
+      ],
+      "movedTo": [
+        "FUCQ-170"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-122",
+      "clause": "Embeddable (Q18)",
+      "originalClause": "- [ ] **Embeddable (Q18):** both blocks mount as custom elements, with no inline scripts, inline handlers or `eval`. Keyboard access, visible focus and status announcements throughout.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-122"
+      ],
+      "movedTo": [
+        "FUCQ-170"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-124",
+      "clause": "Happy path, buddy route",
+      "originalClause": "- [ ] **Happy path, buddy route:** from FUCQ-109's end state (Paula has selected her second offer), ticks move the order through HR approval (when on), sales-manager approval and sent to ordering. Paula requests a slot, it is scheduled, she completes her document tasks, the car becomes ready, her old-car return is scheduled, and the handover completes. Only then does her current car change.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-124"
+      ],
+      "movedTo": [
+        "FUCQ-171"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-124",
+      "clause": "Manual route",
+      "originalClause": "- [ ] **Manual route:** the same lifecycle runs for an order handed off through FUCQ-72, proving both routes share it.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-124"
+      ],
+      "movedTo": [
+        "FUCQ-171"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-124",
+      "clause": "Difficult cases",
+      "originalClause": "- [ ] **Difficult cases:** each runs from a scenario key on a fresh run:\n  HR approval switched off by its policy key;\n  an approval declined, which opens a renewal-risk case;\n  an appointment no-show, then a new request;\n  an overdue document task;\n  Paula asking for help near her deadline, and Greg recording a remedy she sees;\n  the live-shaped stub reporting an unsupported write, shown as not done.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-124"
+      ],
+      "movedTo": [
+        "FUCQ-171"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-124",
+      "clause": "Repeatable scenarios",
+      "originalClause": "- [ ] **Repeatable scenarios:** each path has a known starting state, reset through FUCQ-85, short click-through steps, the expected outcome and a place to record observed behaviour, following `docs/gcsp/manual-acceptance-scenarios.md` and FUCQ-75's shared setup.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-124"
+      ],
+      "movedTo": [
+        "FUCQ-171"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-124",
+      "clause": "Policy change proven",
+      "originalClause": "- [ ] **Policy change proven:** changing the HR-approval key and one delay key in the policy source changes the stages and timing consistently on every screen (`docs/gcsp/build-rules.md`, acceptance).",
+      "disposition": "retained",
+      "retainedIn": [
+        "FUCQ-124"
+      ],
+      "movedTo": []
+    },
+    {
+      "sourceKey": "FUCQ-124",
+      "clause": "No recovery priority",
+      "originalClause": "- [ ] **No recovery priority:** an automated check shows that opening and resolving a case leaves allocation input unchanged.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-124"
+      ],
+      "movedTo": [
+        "FUCQ-171"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-126",
+      "clause": "Controls",
+      "originalClause": "- [ ] **Controls:** a presenter control block, available only to the presenter role, offers:\n  **Tick:** advance by the policy's step, or to a named time, through FUCQ-85;\n  **Next release:** a tick that runs FUCQ-92's release handler, showing how many cars appeared;\n  **Reset:** reset into the current or a chosen scenario through FUCQ-125, with a confirmation step;\n  **Scenario picker:** FUCQ-125's catalogue, with the \"not available yet\" state for scenarios whose capabilities are missing;\n  **Acting principal:** switch between Paula, the competing employees and Greg through FUCQ-84's server-issued session, with no ID in the URL.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-126"
+      ],
+      "movedTo": [
+        "FUCQ-172"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-126",
+      "clause": "Read-back",
+      "originalClause": "- [ ] **Read-back:** the block always shows the current scenario, run ID, demo-clock time, acting principal and last tick outcome, including each handler's result in order.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-126"
+      ],
+      "movedTo": [
+        "FUCQ-172"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-126",
+      "clause": "Safe actions",
+      "originalClause": "- [ ] **Safe actions:** each action is idempotent by command ID, so a double click or a retry returns the original outcome. A failed or refused action shows its reason, and the screen never claims an outcome the backend did not report.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-126"
+      ],
+      "movedTo": [
+        "FUCQ-172"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-126",
+      "clause": "Placement",
+      "originalClause": "- [ ] **Placement:** the controls sit in a compact strip or drawer within FUCQ-64's shell. They can be collapsed during the walkthrough, and are hidden entirely for non-presenter roles. Switching principal reloads the employee or Greg surface with the new server context.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-126"
+      ],
+      "movedTo": [
+        "FUCQ-172"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-126",
+      "clause": "States",
+      "originalClause": "- [ ] **States:** idle, action in progress, tick result, reset done (new run), scenario not available yet, refused, and backend unavailable.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-126"
+      ],
+      "movedTo": [
+        "FUCQ-172"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-126",
+      "clause": "Kit and embedding (Q18)",
+      "originalClause": "- [ ] **Kit and embedding (Q18):** built from the shared kit. New components go into the kit, `COMPONENTS.md` and the gallery in the same commit, and the ratchet baseline only falls. Mounts as a custom element, with no inline scripts, inline handlers or `eval`. Keyboard operable throughout, with visible focus.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-126"
+      ],
+      "movedTo": [
+        "FUCQ-172"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-128",
+      "clause": "Fixture and catalogue entry",
+      "originalClause": "- [ ] **Fixture and catalogue entry:** a versioned \"decline then change\" start state in FUCQ-125's catalogue, with Paula holding a first offer. It has two variants:\n  a later release contains a car that suits the changed brief;\n  no released car suits it yet.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-128"
+      ],
+      "movedTo": [
+        "FUCQ-173"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-128",
+      "clause": "What happens",
+      "originalClause": "- [ ] **What happens:** Paula declines with a typed reason and confirms one preference change (FUCQ-107, Q16). The declined car is excluded from her later offers by employee policy, and it returns to the pool for others. Then:\n  in the first variant, the next release gives a second offer that reflects the change;\n  in the second, her screens show \"change saved, waiting for the next release\", with no offer.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-128"
+      ],
+      "movedTo": [
+        "FUCQ-173"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-128",
+      "clause": "Separate records",
+      "originalClause": "- [ ] **Separate records:** the decline, the brief change and any later satisfaction are separate records. The decline is not treated as an expiry.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-128"
+      ],
+      "movedTo": [
+        "FUCQ-173"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-128",
+      "clause": "Replay test",
+      "originalClause": "- [ ] **Replay test:** an automated replay drives both variants through the presenter and employee routes after a reset, and asserts these outcomes twice, across two resets.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-128"
+      ],
+      "movedTo": [
+        "FUCQ-173"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-128",
+      "clause": "Manual scenario",
+      "originalClause": "- [ ] **Manual scenario:** the scenario's entry in `docs/gcsp/manual-acceptance-scenarios.md` follows FUCQ-125's format, for both variants.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-128"
+      ],
+      "movedTo": [
+        "FUCQ-173"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-136",
+      "clause": "Experiment runner",
+      "originalClause": "- [ ] **Experiment runner:** `runComparison(experiment)` runs both routes for every seed in the experiment's seed list and returns one result. The experiment types are: process only (identical inputs), alternative order mix or points (an explicit overlay), and buddy hold-duration sweep (a list of `hold.buddy` values).",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-136"
+      ],
+      "movedTo": [
+        "FUCQ-174"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-136",
+      "clause": "Measures per route",
+      "originalClause": "- [ ] **Measures per route:** for each, the mean, minimum and maximum across seeds:\n  the share of employees with an acceptable car before renewal;\n  unused stock: released cars never allocated, and car-days held but not taken;\n  declined and expired offers, and failed claims and retries;\n  mean calculated fit of accepted cars;\n  the same coverage share for each access group.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-136"
+      ],
+      "movedTo": [
+        "FUCQ-174"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-136",
+      "clause": "Honest differences",
+      "originalClause": "- [ ] **Honest differences:** the result reports the difference between the routes with its range, and labels it \"no clear difference\" when the ranges overlap (rule key `comparison.noClearDifferenceRule`). It never reports only the measures where the buddy wins.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-136"
+      ],
+      "movedTo": [
+        "FUCQ-174"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-136",
+      "clause": "Immutable result",
+      "originalClause": "- [ ] **Immutable result:** each result is stored once in FUCQ-81's repository, with its manifest: experiment, seeds, policy version, overlays, generator version and code revision. It is never edited; a new run makes a new result. Results are outside the live run's reset (FUCQ-85), so a reset does not delete them.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-136"
+      ],
+      "movedTo": [
+        "FUCQ-174"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-136",
+      "clause": "Read model",
+      "originalClause": "- [ ] **Read model:** a read returns the latest result for each experiment, and whether its policy version is still the active one.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-136"
+      ],
+      "movedTo": [
+        "FUCQ-174"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-136",
+      "clause": "Labels",
+      "originalClause": "- [ ] **Labels:** the result carries the assumption set used (key, value, assumed or verified, basis) and the fixed caveat that calculated fit is not observed satisfaction.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-136"
+      ],
+      "movedTo": [
+        "FUCQ-174"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-137",
+      "clause": "Worker job",
+      "originalClause": "- [ ] **Worker job:** a comparison job runs FUCQ-136's `runComparison` in a Node `worker_threads` worker inside the GCSP backend. API requests stay responsive while it runs (a test checks a request is served mid-run). One job runs at a time; starting another while one runs is refused with the running job's ID.",
+      "disposition": "moved",
+      "retainedIn": [],
+      "movedTo": [
+        "FUCQ-175"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-137",
+      "clause": "Routes",
+      "originalClause": "- [ ] **Routes:** under `/api/gcsp`, start a job (experiment type, and an optional overlay or hold-duration list), read its progress (seeds done of total) and outcome, and read the latest result for each experiment. Starting a job is presenter-only and also allowed for Greg (FUCQ-84 roles); reading results is allowed for Greg and the presenter. Other roles are refused.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-137"
+      ],
+      "movedTo": [
+        "FUCQ-175"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-137",
+      "clause": "Validation",
+      "originalClause": "- [ ] **Validation:** overlays and sweep values are checked against each key's declared unit and range. An invalid request is refused with the key named, and starts nothing.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-137"
+      ],
+      "movedTo": [
+        "FUCQ-175"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-137",
+      "clause": "Clear outcomes",
+      "originalClause": "- [ ] **Clear outcomes:** a worker error or timeout (`comparison.jobTimeoutSeconds`) marks the job failed with a reason and stores no partial result. A backend restart marks any running job interrupted.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-137"
+      ],
+      "movedTo": [
+        "FUCQ-175"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-137",
+      "clause": "Command-line twin",
+      "originalClause": "- [ ] **Command-line twin:** `node scripts/gcsp-comparison.mjs --experiment <type> [--seeds ...]` runs the same module, prints the measures table and writes the result through the same repository port (in-memory or `GCSP_DATABASE_URL`). It is how the demo's results are prepared in advance.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-137"
+      ],
+      "movedTo": [
+        "FUCQ-175"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-137",
+      "clause": "No unattended work",
+      "originalClause": "- [ ] **No unattended work:** nothing starts a job on a timer or at startup (Q3).",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-137"
+      ],
+      "movedTo": [
+        "FUCQ-175"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-138",
+      "clause": "Panel in its own region",
+      "originalClause": "- [ ] **Panel in its own region:** a route comparison panel in a defined region of FUCQ-101's dashboard, inside FUCQ-64's shell. It loads the latest stored result for the chosen experiment at once, so the walkthrough never waits for a run.",
+      "disposition": "retained",
+      "retainedIn": [
+        "FUCQ-138"
+      ],
+      "movedTo": []
+    },
+    {
+      "sourceKey": "FUCQ-138",
+      "clause": "Side by side",
+      "originalClause": "- [ ] **Side by side:** for each measure (coverage before renewal, unused stock, declines, expiries, retries, fit of accepted cars, and coverage by access group), today's route and the buddy route with mean and range across seeds, and the difference. \"No clear difference\" and a result where today's route does better are shown as plainly as a buddy win.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-138"
+      ],
+      "movedTo": [
+        "FUCQ-176"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-138",
+      "clause": "Assumptions",
+      "originalClause": "- [ ] **Assumptions:** an expandable list of the assumptions used (key, value, unit, assumed or verified, basis), the seeds, the policy version and when the result was made. The caveat that calculated fit is not observed satisfaction is always visible.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-138"
+      ],
+      "movedTo": [
+        "FUCQ-176"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-138",
+      "clause": "Experiments and rerun",
+      "originalClause": "- [ ] **Experiments and rerun:** a picker for process only, alternative order mix or points, and hold-duration sweep. A hold-duration control starts FUCQ-137's job with chosen values, shows progress, and then the new result. While it runs, the previous result stays on screen, labelled as the previous result.",
+      "disposition": "moved",
+      "retainedIn": [],
+      "movedTo": [
+        "FUCQ-176"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-138",
+      "clause": "States",
+      "originalClause": "- [ ] **States:** no result yet (with a start action), running, failed (with the reason), result for an older policy version (labelled), source unavailable, and refused for a role other than Greg or the presenter.",
+      "disposition": "split",
+      "retainedIn": [
+        "FUCQ-138"
+      ],
+      "movedTo": [
+        "FUCQ-176"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-138",
+      "clause": "Respectful copy",
+      "originalClause": "- [ ] **Respectful copy:** the baseline is called \"today's release route\". Copy explains behaviours and does not disparage the delivered GCSP interface (demo-brief positioning). No em dashes.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-138"
+      ],
+      "movedTo": [
+        "FUCQ-176"
+      ]
+    },
+    {
+      "sourceKey": "FUCQ-138",
+      "clause": "Kit and embeddable (Q18)",
+      "originalClause": "- [ ] **Kit and embeddable (Q18):** new components go into the kit, `COMPONENTS.md` and the gallery in the same commit, and the ratchet baseline only falls. The panel mounts as part of the dashboard custom element, with no inline scripts, inline handlers or `eval`. Keyboard operable, with readable contrast.",
+      "disposition": "shared",
+      "retainedIn": [
+        "FUCQ-138"
+      ],
+      "movedTo": [
+        "FUCQ-176"
+      ]
+    }
+  ]
+}

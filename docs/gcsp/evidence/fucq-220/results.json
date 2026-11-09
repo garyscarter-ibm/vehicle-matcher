@@ -1,0 +1,550 @@
+{
+  "passed": true,
+  "origin": "https://localhost:8992",
+  "runtime": "memory",
+  "pageErrors": [],
+  "screens": [
+    {
+      "screen": 4,
+      "name": "manual-confirmation",
+      "viewport": 1280,
+      "url": "/gcsp-account.html (after Submit order)",
+      "identityFacts": [
+        [
+          "Car order number",
+          "8454399"
+        ],
+        [
+          "Order reference",
+          "GCSP-000001"
+        ],
+        [
+          "Car order number",
+          "8454399"
+        ]
+      ],
+      "overflowPx": 0,
+      "keyboard": {
+        "target": "Print order",
+        "reached": true,
+        "sequence": [
+          "Finish",
+          "Print order"
+        ],
+        "noVisibleFocus": [],
+        "visibleFocusEverywhere": true
+      },
+      "screenshot": "docs/gcsp/evidence/fucq-220/1280-manual-confirmation.png",
+      "printCalls": 1,
+      "pass": true,
+      "printMedia": [
+        {
+          "label": "Car order number",
+          "displayed": true,
+          "inHiddenAncestor": false
+        },
+        {
+          "label": "Order reference",
+          "displayed": true,
+          "inHiddenAncestor": false
+        },
+        {
+          "label": "Car order number",
+          "displayed": true,
+          "inHiddenAncestor": false
+        }
+      ],
+      "printScreenshot": "docs/gcsp/evidence/fucq-220/1280-manual-confirmation-print-media.png"
+    },
+    {
+      "screen": 4,
+      "name": "manual-confirmation",
+      "viewport": 375,
+      "url": "/gcsp-account.html (after Submit order)",
+      "identityFacts": [
+        [
+          "Car order number",
+          "7148335"
+        ],
+        [
+          "Order reference",
+          "GCSP-000001"
+        ],
+        [
+          "Car order number",
+          "7148335"
+        ]
+      ],
+      "overflowPx": 0,
+      "keyboard": {
+        "target": "Print order",
+        "reached": true,
+        "sequence": [
+          "Finish",
+          "Print order"
+        ],
+        "noVisibleFocus": [],
+        "visibleFocusEverywhere": true
+      },
+      "screenshot": "docs/gcsp/evidence/fucq-220/375-manual-confirmation.png",
+      "printCalls": 1,
+      "pass": true
+    },
+    {
+      "screen": 1,
+      "name": "buddy-handoff",
+      "viewport": 1280,
+      "url": "/gcsp-offer.html (accepted offer)",
+      "identityFacts": [
+        [
+          "Order reference",
+          "GCSP-000001"
+        ],
+        [
+          "Car order number",
+          "5219129"
+        ],
+        [
+          "Order reference",
+          "GCSP-000001"
+        ],
+        [
+          "Car order number",
+          "5219129"
+        ]
+      ],
+      "overflowPx": 0,
+      "keyboard": {
+        "target": null,
+        "reached": false,
+        "sequence": [
+          "Skip to content",
+          "Account details for Paula (fictional)",
+          "Show labels",
+          "Check current state",
+          "Skip to content",
+          "Account details for Paula (fictional)",
+          "Show labels",
+          "Check current state",
+          "(page body)",
+          "Skip to content",
+          "Account details for Paula (fictional)",
+          "Show labels",
+          "Check current state",
+          "Skip to content",
+          "Account details for Paula (fictional)",
+          "Show labels",
+          "Check current state",
+          "(page body)",
+          "Skip to content",
+          "Account details for Paula (fictional)",
+          "Show labels",
+          "Check current state",
+          "Skip to content",
+          "Account details for Paula (fictional)",
+          "Show labels",
+          "Check current state",
+          "(page body)",
+          "Skip to content",
+          "Account details for Paula (fictional)",
+          "Show labels",
+          "Check current state",
+          "Skip to content",
+          "Account details for Paula (fictional)",
+          "Show labels",
+          "Check current state",
+          "(page body)",
+          "Skip to content",
+          "Account details for Paula (fictional)",
+          "Show labels",
+          "Check current state"
+        ],
+        "noVisibleFocus": [],
+        "visibleFocusEverywhere": true
+      },
+      "pass": true,
+      "screenshot": "docs/gcsp/evidence/fucq-220/1280-buddy-handoff.png"
+    },
+    {
+      "screen": 2,
+      "name": "order-progress",
+      "viewport": 1280,
+      "url": "/gcsp-order-progress-live.html",
+      "identityFacts": [
+        [
+          "Order reference",
+          "GCSP-000001"
+        ],
+        [
+          "Car order number",
+          "5219129"
+        ]
+      ],
+      "overflowPx": 0,
+      "pass": true,
+      "screenshot": "docs/gcsp/evidence/fucq-220/1280-order-progress.png"
+    },
+    {
+      "screen": 3,
+      "name": "account-order-card",
+      "viewport": 1280,
+      "url": "/gcsp-account.html",
+      "identityFacts": [
+        [
+          "Order reference",
+          "GCSP-000001"
+        ],
+        [
+          "Car order number",
+          "5219129"
+        ]
+      ],
+      "factsAboveViewLink": true,
+      "gapFactsToLinkPx": 51,
+      "overflowPx": 0,
+      "keyboard": {
+        "target": "View order progress",
+        "reached": true,
+        "sequence": [
+          "Refresh account",
+          "View order progress"
+        ],
+        "noVisibleFocus": [],
+        "visibleFocusEverywhere": true
+      },
+      "pass": true,
+      "screenshot": "docs/gcsp/evidence/fucq-220/1280-account-order-card.png"
+    },
+    {
+      "screen": 5,
+      "name": "account-order-history",
+      "viewport": 1280,
+      "url": "/gcsp-account.html (Order history)",
+      "entries": 2,
+      "identityFacts": [
+        [
+          "Car order number",
+          "Not supplied"
+        ],
+        [
+          "Order date",
+          "Not supplied"
+        ],
+        [
+          "Order status",
+          "Not supplied"
+        ],
+        [
+          "Car order number",
+          "Not supplied"
+        ],
+        [
+          "Order date",
+          "Not supplied"
+        ],
+        [
+          "Order status",
+          "Not supplied"
+        ]
+      ],
+      "historyRows": [
+        {
+          "text": "Fictional BMW 320i Touring Status Current car Driver Paula (fictional) Registration Not supplied Actual collection 1 June 2026 Contract end 1 December 2026 Returned Not supplied Order, collection and vehicle details Car order number Not supplied Order date Not supplied Order status Not supplied Registration Not supplied Delivered VIN Not supplied Chassis number Not supplied Registration date Not s",
+          "facts": [
+            [
+              "Car order number",
+              "Not supplied"
+            ],
+            [
+              "Order date",
+              "Not supplied"
+            ],
+            [
+              "Order status",
+              "Not supplied"
+            ]
+          ]
+        },
+        {
+          "text": "Model not supplied Status Returned Driver Not supplied Registration Not supplied Actual collection 1 January 2025 Contract end Not supplied Returned 1 December 2025 Order, collection and vehicle details Car order number Not supplied Order date Not supplied Order status Not supplied Registration Not supplied Delivered VIN Not supplied Chassis number Not supplied Registration date Not supplied Reque",
+          "facts": [
+            [
+              "Car order number",
+              "Not supplied"
+            ],
+            [
+              "Order date",
+              "Not supplied"
+            ],
+            [
+              "Order status",
+              "Not supplied"
+            ]
+          ]
+        }
+      ],
+      "overflowPx": 0,
+      "pass": true,
+      "note": "Demo history records carry no reference; rows are listed as shown.",
+      "screenshot": "docs/gcsp/evidence/fucq-220/1280-account-order-history.png"
+    },
+    {
+      "screen": 6,
+      "name": "earlier-order-progress",
+      "viewport": 1280,
+      "url": "/gcsp-order-progress.html?fixture=earlier-order",
+      "identityFacts": [
+        [
+          "Car order number",
+          "1000001"
+        ]
+      ],
+      "overflowPx": 0,
+      "pass": true,
+      "screenshot": "docs/gcsp/evidence/fucq-220/1280-earlier-order-progress.png"
+    },
+    {
+      "screen": 6,
+      "name": "offer-selection-no-hr",
+      "viewport": 1280,
+      "url": "/blocks/gcsp/offer/preview.html?fixture=selection-no-hr",
+      "identityFacts": [
+        [
+          "Car order number",
+          "0123456"
+        ]
+      ],
+      "overflowPx": 0,
+      "pass": true,
+      "screenshot": "docs/gcsp/evidence/fucq-220/1280-offer-selection-no-hr.png"
+    },
+    {
+      "screen": 1,
+      "name": "buddy-handoff",
+      "viewport": 375,
+      "url": "/gcsp-offer.html (accepted offer)",
+      "identityFacts": [
+        [
+          "Order reference",
+          "GCSP-000001"
+        ],
+        [
+          "Car order number",
+          "5219129"
+        ],
+        [
+          "Order reference",
+          "GCSP-000001"
+        ],
+        [
+          "Car order number",
+          "5219129"
+        ]
+      ],
+      "overflowPx": 0,
+      "keyboard": {
+        "target": null,
+        "reached": false,
+        "sequence": [
+          "Skip to content",
+          "Menu",
+          "Account details for Paula (fictional)",
+          "Check current state",
+          "Skip to content",
+          "Menu",
+          "Account details for Paula (fictional)",
+          "Check current state",
+          "(page body)",
+          "Skip to content",
+          "Menu",
+          "Account details for Paula (fictional)",
+          "Check current state",
+          "Skip to content",
+          "Menu",
+          "Account details for Paula (fictional)",
+          "Check current state",
+          "(page body)",
+          "Skip to content",
+          "Menu",
+          "Account details for Paula (fictional)",
+          "Check current state",
+          "Skip to content",
+          "Menu",
+          "Account details for Paula (fictional)",
+          "Check current state",
+          "(page body)",
+          "Skip to content",
+          "Menu",
+          "Account details for Paula (fictional)",
+          "Check current state",
+          "Skip to content",
+          "Menu",
+          "Account details for Paula (fictional)",
+          "Check current state",
+          "(page body)",
+          "Skip to content",
+          "Menu",
+          "Account details for Paula (fictional)",
+          "Check current state"
+        ],
+        "noVisibleFocus": [],
+        "visibleFocusEverywhere": true
+      },
+      "pass": true,
+      "screenshot": "docs/gcsp/evidence/fucq-220/375-buddy-handoff.png"
+    },
+    {
+      "screen": 2,
+      "name": "order-progress",
+      "viewport": 375,
+      "url": "/gcsp-order-progress-live.html",
+      "identityFacts": [
+        [
+          "Order reference",
+          "GCSP-000001"
+        ],
+        [
+          "Car order number",
+          "5219129"
+        ]
+      ],
+      "overflowPx": 0,
+      "pass": true,
+      "screenshot": "docs/gcsp/evidence/fucq-220/375-order-progress.png"
+    },
+    {
+      "screen": 3,
+      "name": "account-order-card",
+      "viewport": 375,
+      "url": "/gcsp-account.html",
+      "identityFacts": [
+        [
+          "Order reference",
+          "GCSP-000001"
+        ],
+        [
+          "Car order number",
+          "5219129"
+        ]
+      ],
+      "factsAboveViewLink": true,
+      "gapFactsToLinkPx": 48,
+      "overflowPx": 0,
+      "keyboard": {
+        "target": "View order progress",
+        "reached": true,
+        "sequence": [
+          "Refresh account",
+          "View order progress"
+        ],
+        "noVisibleFocus": [],
+        "visibleFocusEverywhere": true
+      },
+      "pass": true,
+      "screenshot": "docs/gcsp/evidence/fucq-220/375-account-order-card.png"
+    },
+    {
+      "screen": 5,
+      "name": "account-order-history",
+      "viewport": 375,
+      "url": "/gcsp-account.html (Order history)",
+      "entries": 2,
+      "identityFacts": [
+        [
+          "Car order number",
+          "Not supplied"
+        ],
+        [
+          "Order date",
+          "Not supplied"
+        ],
+        [
+          "Order status",
+          "Not supplied"
+        ],
+        [
+          "Car order number",
+          "Not supplied"
+        ],
+        [
+          "Order date",
+          "Not supplied"
+        ],
+        [
+          "Order status",
+          "Not supplied"
+        ]
+      ],
+      "historyRows": [
+        {
+          "text": "Fictional BMW 320i Touring Status Current car Driver Paula (fictional) Registration Not supplied Actual collection 1 June 2026 Contract end 1 December 2026 Returned Not supplied Order, collection and vehicle details Car order number Not supplied Order date Not supplied Order status Not supplied Registration Not supplied Delivered VIN Not supplied Chassis number Not supplied Registration date Not s",
+          "facts": [
+            [
+              "Car order number",
+              "Not supplied"
+            ],
+            [
+              "Order date",
+              "Not supplied"
+            ],
+            [
+              "Order status",
+              "Not supplied"
+            ]
+          ]
+        },
+        {
+          "text": "Model not supplied Status Returned Driver Not supplied Registration Not supplied Actual collection 1 January 2025 Contract end Not supplied Returned 1 December 2025 Order, collection and vehicle details Car order number Not supplied Order date Not supplied Order status Not supplied Registration Not supplied Delivered VIN Not supplied Chassis number Not supplied Registration date Not supplied Reque",
+          "facts": [
+            [
+              "Car order number",
+              "Not supplied"
+            ],
+            [
+              "Order date",
+              "Not supplied"
+            ],
+            [
+              "Order status",
+              "Not supplied"
+            ]
+          ]
+        }
+      ],
+      "overflowPx": 0,
+      "pass": true,
+      "note": "Demo history records carry no reference; rows are listed as shown.",
+      "screenshot": "docs/gcsp/evidence/fucq-220/375-account-order-history.png"
+    },
+    {
+      "screen": 6,
+      "name": "earlier-order-progress",
+      "viewport": 375,
+      "url": "/gcsp-order-progress.html?fixture=earlier-order",
+      "identityFacts": [
+        [
+          "Car order number",
+          "1000001"
+        ]
+      ],
+      "overflowPx": 0,
+      "pass": true,
+      "screenshot": "docs/gcsp/evidence/fucq-220/375-earlier-order-progress.png"
+    },
+    {
+      "screen": 6,
+      "name": "offer-selection-no-hr",
+      "viewport": 375,
+      "url": "/blocks/gcsp/offer/preview.html?fixture=selection-no-hr",
+      "identityFacts": [
+        [
+          "Car order number",
+          "0123456"
+        ]
+      ],
+      "overflowPx": 0,
+      "pass": true,
+      "screenshot": "docs/gcsp/evidence/fucq-220/375-offer-selection-no-hr.png"
+    }
+  ]
+}

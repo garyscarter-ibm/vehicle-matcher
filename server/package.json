@@ -8,6 +8,7 @@
     "node": ">=18"
   },
   "scripts": {
+    "postinstall": "node --max-old-space-size=384 scripts/prepare-fleet-build.mjs",
     "start": "node index.js",
     "test": "node --test"
   },

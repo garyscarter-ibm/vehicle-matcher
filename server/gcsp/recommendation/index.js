@@ -55,10 +55,8 @@ function timingGates(candidate, employeeFacts, brief, now, config) {
   return { blockers, unknowns, reasons };
 }
 
-export function createEmployeeRecommendationService({ provider, policy, time } = {}) {
-  async function evaluate(context, request, preview = null) {
+async function evaluateRecommendation({ provider, policy, time }, context, request, preview = null) {
       if (!provider || typeof provider.resolve !== 'function' || !policy || typeof time?.now !== 'function') return unavailable('provider-not-configured');
-      if (!context?.roles?.includes('employee')) return result('forbidden', { reason: 'An employee context is required.' });
       if (!['runId', 'environmentId', 'employeeId', 'companyId', 'schemeId', 'gradeId', 'policyVersion'].every((key) => text(context[key]))) return invalid('invalid-context', [{ field: 'context', reason: 'The server must resolve a complete employee context.' }]);
       try {
         const clock = await time.now(context);
@@ -163,9 +161,18 @@ export function createEmployeeRecommendationService({ provider, policy, time } =
           ...(preview ? { preview: preview.metadata, brief: preview.original } : {}),
           state: !decisions.length ? 'no-stock' : ranked.length ? 'recommendations' : 'no-viable-stock', evaluatedAt: now,
           versions: { brief: briefVersion, facts: source.factsVersion, policy: allowance.policyVersion, stock: source.stockVersion, clock: clock.value.clockVersion },
-          decisions, recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length } }));
+          // The brief gallery shows best fit first; stored evaluations keep provider order for allocation records.
+          decisions: preview ? [...ranked, ...decisions.filter((entry) => entry.gateStatus !== 'eligible')] : decisions,
+          recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length } }));
       } catch { return unavailable('employee-source-invalid'); }
-  }
+}
+
+export function createEmployeeRecommendationService({ provider, policy, time } = {}) {
+  const evaluate = (context, request, preview = null) => {
+    if (!provider || typeof provider.resolve !== 'function' || !policy || typeof time?.now !== 'function') return Promise.resolve(unavailable('provider-not-configured'));
+    if (!context?.roles?.includes('employee')) return Promise.resolve(result('forbidden', { reason: 'An employee context is required.' }));
+    return evaluateRecommendation({ provider, policy, time }, context, request, preview);
+  };
   return {
     recommend: (context, request) => evaluate(context, request),
     // This in-process entry is deliberately absent from the public recommendations route.
@@ -179,6 +186,29 @@ export function createEmployeeRecommendationService({ provider, policy, time } =
       const { currentCarFeedback, ...content } = brief;
       const metadata = { kind: 'unsaved-draft', approved: false, baseBriefVersion, baseDraftVersion };
       return evaluate(context, { ...content, essentials }, { charging, baseBriefVersion, baseDraftVersion, metadata, original: structuredClone(brief) });
+    },
+  };
+}
+
+// In-process calculation only. The caller owns persisted-intent authority, current
+// consent and transactional source checks. This subject is data, never a session.
+// Keep this factory separate from the service object used by public HTTP routes.
+export function createStoredSubjectRecommendationEvaluator({ provider, policy, time } = {}) {
+  const keys = ['runId', 'environmentId', 'employeeId', 'companyId', 'schemeId', 'gradeId', 'policyVersion'];
+  return {
+    async evaluate(subject, confirmedBrief) {
+      try {
+        if (!only(subject, keys) || keys.some((key) => !text(subject[key]))) return invalid('invalid-stored-subject', [
+          { field: 'subject', reason: 'Supply only the complete server-owned calculation subject.' }]);
+        const bound = Object.freeze(Object.fromEntries(keys.map((key) => [key, subject[key]])));
+        const savedBrief = structuredClone(confirmedBrief);
+        const ports = { policy,
+          provider: provider && { resolve: (candidate) => candidate === bound ? provider.resolve(bound) : unavailable('subject-binding-mismatch') },
+          time: time && { now: (candidate) => candidate === bound ? time.now(bound) : unavailable('subject-binding-mismatch') } };
+        const outcome = await evaluateRecommendation(ports, bound, savedBrief);
+        if (outcome.status === 'ok' && outcome.value.versions.policy !== bound.policyVersion) return unavailable('stored-subject-policy-mismatch');
+        return outcome;
+      } catch { return unavailable('employee-source-invalid'); }
     },
   };
 }

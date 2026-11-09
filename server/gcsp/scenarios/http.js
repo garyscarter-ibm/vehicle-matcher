@@ -12,5 +12,6 @@ export function createScenarioRoutes(scenarios, clock) {
       const outcome = await scenarios[operation](context, body);
       return operation === 'reset' ? renewPresenterAfterReset({ clock, identity, context, outcome, setCookie }) : outcome;
     } });
-  return [route('', 'GET', 'readCatalogue'), route('/current', 'GET', 'readState'), route('/reset', 'POST', 'reset')];
+  return [route('', 'GET', 'readCatalogue'), route('/current', 'GET', 'readState'), route('/reset', 'POST', 'reset'),
+    route('/faults', 'GET', 'readFaults'), route('/faults', 'POST', 'setFault')];
 }

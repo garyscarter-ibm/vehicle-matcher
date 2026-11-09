@@ -1,0 +1,73 @@
+{
+  "passed": true,
+  "origin": "http://127.0.0.1:8987",
+  "runtime": "memory (GCSP_RUNTIME=1)",
+  "runs": [
+    {
+      "viewport": 1280,
+      "account": {
+        "header": "Group Car Schemes Portal P Paula (fictional)",
+        "rawInHeader": false,
+        "rawInPage": false,
+        "screenshot": "docs/gcsp/evidence/fucq-204/1280-account.png"
+      },
+      "handlerIds": [
+        "release-pull/stock-release",
+        "manual-expiry/manual-claim-expiry",
+        "buddy-expiry/buddy-expiry",
+        "pending-reconciliation/lifecycle-appointments",
+        "pending-reconciliation/lifecycle-approvals",
+        "pending-reconciliation/lifecycle-documents",
+        "pending-reconciliation/lifecycle-return-appointments",
+        "pending-reconciliation/renewal-risk-cases",
+        "pending-reconciliation/selection-order-reconciliation",
+        "buddy-allocation/buddy-allocation",
+        "outbox-dispatch/captured-outbox"
+      ],
+      "lastTick": {
+        "text": "Last tick Tick completed. 8 steps: 8 done. Step results (8) Manual claim expiry: Done. Buddy expiry: Done. Appointments: Done. Approvals: Done. Documents: Done. Return appointments: Done. Renewal risk cases: Done. Selection order reconciliation: Done. Release unavailable: no verified release result reported",
+        "json": false,
+        "tickId": false,
+        "summary": true,
+        "anotherStep": false,
+        "overflow": 0,
+        "screenshot": "docs/gcsp/evidence/fucq-204/1280-last-tick.png"
+      },
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "viewport": 375,
+      "account": {
+        "header": "Group Car Schemes Portal P Paula (fictional)",
+        "rawInHeader": false,
+        "rawInPage": false,
+        "screenshot": "docs/gcsp/evidence/fucq-204/375-account.png"
+      },
+      "handlerIds": [
+        "release-pull/stock-release",
+        "manual-expiry/manual-claim-expiry",
+        "buddy-expiry/buddy-expiry",
+        "pending-reconciliation/lifecycle-appointments",
+        "pending-reconciliation/lifecycle-approvals",
+        "pending-reconciliation/lifecycle-documents",
+        "pending-reconciliation/lifecycle-return-appointments",
+        "pending-reconciliation/renewal-risk-cases",
+        "pending-reconciliation/selection-order-reconciliation",
+        "buddy-allocation/buddy-allocation",
+        "outbox-dispatch/captured-outbox"
+      ],
+      "lastTick": {
+        "text": "Last tick Tick completed. 11 steps: 11 done. Step results (11) Stock release: Done. Manual claim expiry: Done. Buddy expiry: Done. Appointments: Done. Approvals: Done. Documents: Done. Return appointments: Done. Renewal risk cases: Done. Selection order reconciliation: Done. Buddy allocation: Done. Outbox dispatch: Done. 0 cars released",
+        "json": false,
+        "tickId": false,
+        "summary": true,
+        "anotherStep": false,
+        "overflow": 0,
+        "screenshot": "docs/gcsp/evidence/fucq-204/375-last-tick.png"
+      },
+      "pageErrors": [],
+      "passed": true
+    }
+  ]
+}

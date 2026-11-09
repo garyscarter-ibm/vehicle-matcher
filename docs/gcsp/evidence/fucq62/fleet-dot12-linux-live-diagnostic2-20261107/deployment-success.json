@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "render-deployment-observation.v1",
+  "source": "Root-relayed actual terminal success observation from Mike Wazowski; terminal evidence retained separately by observing agent",
+  "observedAt": "2026-11-07T12:28:20Z",
+  "githubDeploymentId": 7620961777,
+  "githubDeploymentStatusId": 21650333270,
+  "code": "c87b6f075c4e79bee93b71e1965ad23310ab8473",
+  "environment": "gcsp-poc - gcsp-api",
+  "createdAt": "2026-11-07T12:11:09Z",
+  "state": "success",
+  "completedAt": "2026-11-07T12:28:04Z",
+  "statusCreatedAt": "2026-11-07T12:28:04Z",
+  "statusUpdatedAt": "2026-11-07T12:28:04Z",
+  "actualDeploymentId": "dep-dbnhane8bjmc73a7v5qg",
+  "environmentUrl": "https://gcsp-api.onrender.com",
+  "logUrl": "https://dashboard.render.com/web/srv-dbm9cim1egvs73bo6g5g/deploys/dep-dbnhane8bjmc73a7v5qg",
+  "applicationGetPerformed": false
+}

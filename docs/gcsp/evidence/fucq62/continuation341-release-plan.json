@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "f62-continuation341-release-plan.v1",
+  "status": "prepared only; active corpus unchanged; parent release required",
+  "sourceCommit": "157b31f44465645acd06f4b262747de20ed65954",
+  "sharedBaseline": "f90aaecf",
+  "runId": "f62-continuation341-20261107",
+  "version": "2026-11-07.3",
+  "files": [
+    {
+      "path": "docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/phase-b/accepted.jsonl",
+      "sha256": "1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802",
+      "bytes": 21408,
+      "records": 1
+    }
+  ],
+  "registeredNovel": {
+    "path": "server/data/gcsp/vehicle-evidence/registered-sources/continuation1-2026-11-07.jsonl",
+    "sha256": "1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802",
+    "bytes": 21408,
+    "records": 1
+  },
+  "previousActive": {
+    "directory": "6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6",
+    "manifestDigest": "6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6"
+  },
+  "expected": {
+    "configurations": 342,
+    "distinctConfigurations": 342,
+    "vinMappings": 1,
+    "images": 0,
+    "sourceConfigurations": 341,
+    "qualifyingCompleteDistinctSourceConfigurations": 341
+  },
+  "publicationStore": "server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "scratchRoot": "/tmp/vehicle-matcher-f58-63-20261106/f62/continuation341-publication",
+  "resources": {
+    "scratchMiB": 64,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "seconds": 90,
+    "workers": 1,
+    "expectedRetainedOutputMiB": 15,
+    "expectedPeakAggregateMiB": 48
+  },
+  "candidateId": "candidate-c9eeb5c73605462a742f76bf",
+  "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+  "sourceRequests": 0,
+  "limitations": [
+    "Configuration-only one actual novel S03GD record; previous341 rows/VIN/versions unchanged",
+    "No new VIN/stock, images, physical inference or broader model/profile/WMI claim",
+    "Direct admitted-envelope projection; F60 enrichment not executed for this row",
+    "FullF59/F61/F62 acceptance remains open; greater-than64MiB proof and full10k excluded",
+    "Charlie owns indexed-jsonl.js repair; this increment does not modify it"
+  ],
+  "visualContract": {
+    "references": [
+      "docs/gcsp/experience-quality.md",
+      "docs/gcsp/screens/README.md",
+      "COMPONENTS.md"
+    ],
+    "scope": "No screen/component/style change. Existing response/presentation contracts and all-record localHTTP parity checked."
+  }
+}

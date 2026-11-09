@@ -1,0 +1,85 @@
+{
+  "at": "2026-11-06T14:36:07.087230+00:00",
+  "base": "ac39df9589aaaedddd67a02241494a500e85e0bb",
+  "changedPaths": [
+    "prepared supervise-settings.py",
+    "tests/supervisor-tests.py",
+    "dependent handoff/identity/impact/validation/resource evidence",
+    "own story result and F59-only expired map observation"
+  ],
+  "diagnosis": {
+    "affected": [
+      "supervise_once reservation finalizer and typed resource receipt",
+      "terminal summary/nonzero exit",
+      "dependent pinned handoff/preparation identity"
+    ],
+    "cause": "release exception records only reservationReleaseIssue; no independent token absence validation; main checks failure/process/leftovers only",
+    "evidence": "Sam CODE round0 and trusted main-root test_resources.py HostBudget.release lines300-304",
+    "nextCheck": "Injected exception, successful no-op release and verification I/O failure must all produce fixed cleanup failure/leftover and nonzero terminal result; actual test-owned tokens cleaned independently",
+    "reproduction": "HostBudget.release raises during locking or atomic ledger write; old supervisor catches it without promoting failure or leftovers, terminal can exit0",
+    "story": "FUCQ-59 / DEV-2026-11-04-032",
+    "storyLinkBasis": "Owned preparation wrapper fromac39df95 and Sam CODE review of0f069686..ac39df95"
+  },
+  "excluded": [
+    "Node18same runner/plan/test/runtime remains valid: Python supervisor not imported by Node helper tests; new handoffmain gate stays unexecuted",
+    "Canonical producer33exact sixfile identity unchanged; no duplicate producer/full/native/source/browser tests"
+  ],
+  "frozenProducer": {
+    "scripts/gcsp/collect-fleet.mjs": "8bc059fcec47c46c6e209b8e64fc11c519083fd62fde1652d7229d7c5adc689b",
+    "scripts/gcsp/collection-session.mjs": "b2cd36ec77c2f63fd58795e83125ef135732e6b768a9e1492caf194c94b9248c",
+    "scripts/gcsp/public-bmw-source.mjs": "68f5104c3c9f303af89a91e2e3c8c2474b66956e03271bf61bf42e703155d30f",
+    "scripts/gcsp/settings-shape-report.mjs": "e6f4bade6186fc4b122052749fb2a0e518f889f68d771b17524a4e63cc2f0113",
+    "server/test/gcsp-fleet-collector.test.js": "d8c7c7315faa05c6bd328a9b7f8ada58fe31bf5c229a51c0e63106d920057ff9",
+    "server/test/gcsp-settings-shape-report.test.js": "f1ca4f0b7cccb7a657a987dc6d882f6a8eaec1458ab62b83e88669ae34be4115"
+  },
+  "initialStatus": "?? _tools/__pycache__/test_resources.cpython-314.pyc\n",
+  "producerIdentity": "9d63aa36a7bbbb29432d4a8b03f2cd585abfdd4e53d671919a8798f28f674a1b",
+  "resources": {
+    "dependencyInstall": false,
+    "finalizer": "Trusted main-root test_resources.py ownership external before scratch, manifest/finalizer and machine reservation; own TMPs/process group cleanup; bounded receipts and independently verified absence",
+    "initialSwap": "vm.swapusage: total = 3072.00M  used = 2657.06M  free = 414.94M  (encrypted)",
+    "largeOutputExpected": false,
+    "logBytes": 1048576,
+    "overlay": false,
+    "rssTargetBytes": 402653184,
+    "scratchBytes": 67108864,
+    "seconds": 120,
+    "workers": 1
+  },
+  "review": {
+    "code": "round0FAIL; correction review pending",
+    "security": "No verdict; two child422 diagnostics retained by parent; never claimPASS"
+  },
+  "run": "devpoller-pass1423-f59-settings-supervisor-fix1",
+  "schemaVersion": "f59-settings-supervisor-fix1-selection.v1",
+  "selected": {
+    "green": [
+      "python3",
+      "-I",
+      "-B",
+      "tests/supervisor-tests.py"
+    ],
+    "red": [
+      "python3",
+      "-I",
+      "-B",
+      "tests/supervisor-tests.py",
+      "-k",
+      "reservation_release"
+    ]
+  },
+  "selector": {
+    "command": [
+      "python3",
+      "-I",
+      "-B",
+      "_tools/test_stamp.py",
+      "--affected",
+      "HEAD",
+      "--dry-run"
+    ],
+    "observed": "No plug-in for unspecified language; proposes npm test full fallback. Inspected only; broad fallback not run.",
+    "reason": "Only passive Python supervisor cleanup and its receipt/terminal caller change; explicit8existing+4new supervisor methods cover three release faults and successful verified completion."
+  },
+  "sourceAllocationAttempts": 0
+}

@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-06",
+  "scope": "root-accepted-default-Paula-HTTP-one-case-proof-only",
+  "run": "fucq103-backend-8a8f5645166649c283c471324798398b",
+  "testedRevision": "24bc2cd670be71268c0a9b5e036b526ed0bfdf55",
+  "sourcePlanSHA256": "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+  "grant": "fucq103-eligibility-default-24bc2cd-0708",
+  "grantStatus": "consumed-once-no-retry-no-nextmode",
+  "result": {
+    "tests": 1,
+    "pass": 1,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "childExitCode": 0,
+    "supervisorExitCode": 0
+  },
+  "observedSuccessfulCaseNames": [
+    "default Paula HTTP preparation preserves canonical driver parity and single-subject privacy suppression"
+  ],
+  "namePattern": "^default Paula HTTP",
+  "filteredSourceNames": [
+    "delivered memory runtime dependencies drive ordinary Greg publish and employee terms while protecting pinned history",
+    "combined runtime serves authenticated scenarios, canonical presenter step and real mechanics reset using original policy identity",
+    "explicit file policy stays read-only under a memory runtime and caller policy is not closed",
+    "runtime closes default policy exactly once and retains the existing injected-repository lifecycle",
+    "explicit postgres policy failure never falls back to memory or file"
+  ],
+  "filteredSourceCount": 5,
+  "filteredCasesExercised": false,
+  "leadAuditChecks": 521,
+  "rootAuditChecks": 993,
+  "files": [
+    {
+      "path": "summary.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-8a8f5645166649c283c471324798398b-summary.json",
+      "bytes": 3040,
+      "sha256": "a023ef246c8f53dd558bff018c4a73118d2596ad3fb7bddc86f312a2bdb82bb4",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "manifest.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-8a8f5645166649c283c471324798398b-manifest.json",
+      "bytes": 2151,
+      "sha256": "1aeeac14929991e79b7f386594654302bc9f1e2ccf1a4292bb001b964059e565",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "test.log",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-8a8f5645166649c283c471324798398b/test.log",
+      "bytes": 240,
+      "sha256": "4b4c8ffa428785e1a639ba5ec1b63d31af6498eabb25116eff779fe17e15b5bd",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "checkpoint.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-8a8f5645166649c283c471324798398b/checkpoint.json",
+      "bytes": 319,
+      "sha256": "d0ec43f5d1b197b57473e4f500493cf3ddf6f39a4dfcd1bb07ad9236d2e9a3cc",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "impact.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/impact/edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9-eligibility-default.json",
+      "bytes": 1304,
+      "sha256": "798c88f6239c96111409e5ec6d03d598a6253583c6b7b6a71e078e2da788e7c9",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "lead-audit.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-default-24bc2cd-lead-2026-11-06.json",
+      "bytes": 81962,
+      "sha256": "50a3abeba43723ed8cfd08380005ed7fb01d04fb5df3e456ab352b86dae5307c",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "root-audit.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-default1-root-0708.json",
+      "bytes": 2882,
+      "sha256": "8b8d98f02ffe3771700eb5aac8dcee3eb3a3e4daa155c3888533370530736929",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "root-acceptance.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-default1-acceptance-0708.json",
+      "bytes": 904,
+      "sha256": "20ab2154fbf574f71b6b4704eff165cc5f6f9ff25a800b4f0780abbb088560cd",
+      "copy": "exact-original-bytes"
+    }
+  ],
+  "originalCopyBytes": 92802,
+  "rootPublicationAuthorised": true,
+  "preservation": "All eight artifacts are exact copies. Original state/timestamps/paths are unchanged, including the lead unpublished marker and root audit request to bind the lead. root-acceptance.json records the later independent binding/publication authorisation. Earlier failed/core25/registry16 evidence is unchanged.",
+  "metrics": {
+    "wallSeconds": 4.493598416,
+    "peakAggregateRSSBytes": 1050279936,
+    "peakAggregateRSSMiB": 1001.625,
+    "aggregateRSSCapBytes": 1073741824,
+    "peakCombinedBytes": 4348476,
+    "scratchRemovedBytes": 4338401
+  },
+  "cleanup": "Runtime, lead and root verify owned PID/start/owner/group/port absence, scratch/dependency absence and exact token absent under strict full-bound no-follow locked ledger; no cleanup mutation. Raw predelete stat/lsof output is not separately retained; the exact admitted finalizer enforces those gates.",
+  "sourceFreeze": {
+    "sameExactHeadUpstreamRemote": true,
+    "cleanTestedTree": true,
+    "runtimeSourcesPreserved": true,
+    "leadVerifiedSourcePins": 219,
+    "installedBytePins": 251,
+    "executablePins": 8,
+    "physicalDependencyEntries": 307,
+    "resolverAbsences": 163,
+    "sourceDirectoryInventories": 3,
+    "productTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
+    "priorFailedCoreAndRegistryProofsUnchanged": true
+  },
+  "authoredParserFixtures": 38,
+  "executedParserFixtures": 0,
+  "boundaries": "Only one default Paula HTTP preparation/parity/privacy case. Five filtered source cases and 38 parser design fixtures are unexecuted. No weighted/publication/runtime variants, other integration, browser/native/full/deployed/producer/corpus/model/live or full-story acceptance. No next execution/merge/closure/Jira/product-map acceptance change inferred.",
+  "publicationPacketCapBytes": 1048576,
+  "nextAuthorOnlyProposal": "../eligibility-weighted-proposal-2026-11-06.json",
+  "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+}

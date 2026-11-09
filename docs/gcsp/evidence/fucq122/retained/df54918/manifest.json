@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Exact historical bindings retained before the unknown-RSS admission repair. Historical plans and diagnoses remain unchanged; these bindings do not grant execution.",
+  "base": "df5491859db6a11c8913c32e28b09e715c04935f",
+  "pins": {
+    "case-release-admission.json": {
+      "bytes": 16835,
+      "sha256": "2eea1f29e5155dfcf84448063295abc6e5f6a82d1c6f4b08eefba93c90e8bf21",
+      "gitRef": "df5491859db6a11c8913c32e28b09e715c04935f",
+      "gitPath": "docs/gcsp/evidence/fucq122/case-release-admission.json",
+      "retainedPath": "docs/gcsp/evidence/fucq122/retained/df54918/case-release-admission.json"
+    },
+    "case-release-freeze-audit.json": {
+      "bytes": 49052,
+      "sha256": "c571175285cd0b909661e1eb3854e52c9f6c46c8a00f927e11fdb820134f468e",
+      "gitRef": "df5491859db6a11c8913c32e28b09e715c04935f",
+      "gitPath": "docs/gcsp/evidence/fucq122/case-release-freeze-audit.json",
+      "retainedPath": "docs/gcsp/evidence/fucq122/retained/df54918/case-release-freeze-audit.json"
+    },
+    "case-release-source-plan.json": {
+      "bytes": 2485861,
+      "sha256": "e509ec368b0f5888e3623e9cb17f75af5f351653351a7c0d5b5979262f8d5d87",
+      "gitRef": "df5491859db6a11c8913c32e28b09e715c04935f",
+      "gitPath": "docs/gcsp/evidence/fucq122/case-release-source-plan.json"
+    },
+    "case-release-plan.md": {
+      "bytes": 20306,
+      "sha256": "9af49949f74fd197f79358ab432cd946b6586d3726484c1e5d90e55a3946e51c",
+      "gitRef": "df5491859db6a11c8913c32e28b09e715c04935f",
+      "gitPath": "docs/gcsp/evidence/fucq122/case-release-plan.md"
+    },
+    "case-release-accounting-repair.md": {
+      "bytes": 9803,
+      "sha256": "c40fa74bf1c8ffc52f5019d84f758cb96e20b54815924b7817c9aa448c3929d0",
+      "gitRef": "df5491859db6a11c8913c32e28b09e715c04935f",
+      "gitPath": "docs/gcsp/evidence/fucq122/case-release-accounting-repair.md"
+    },
+    "case-release-probe-cleanup-repair.md": {
+      "bytes": 10241,
+      "sha256": "a3b50f4d018fe367b8c73e5680adbf7c8e406972dc73c60186fbd078b06d461f",
+      "gitRef": "df5491859db6a11c8913c32e28b09e715c04935f",
+      "gitPath": "docs/gcsp/evidence/fucq122/case-release-probe-cleanup-repair.md"
+    },
+    "case-release-executable-admission-repair.md": {
+      "bytes": 7282,
+      "sha256": "0a44207318b64adb4e48efdcc3f1244ddab16cfec891c970ffe4d664d171f2b4",
+      "gitRef": "df5491859db6a11c8913c32e28b09e715c04935f",
+      "gitPath": "docs/gcsp/evidence/fucq122/case-release-executable-admission-repair.md"
+    },
+    "case-release-initialization-repair.md": {
+      "bytes": 6661,
+      "sha256": "1312691977fb62726f4c11c187c387d893452f17981e0e3468df21faf017fb02",
+      "gitRef": "df5491859db6a11c8913c32e28b09e715c04935f",
+      "gitPath": "docs/gcsp/evidence/fucq122/case-release-initialization-repair.md"
+    },
+    "case-release-brief-correction.md": {
+      "bytes": 8577,
+      "sha256": "62e2a9179bd6e1b9d1bf0d0daf5e118a1ca3d5258dbcdb5360b5a92085e517bf",
+      "gitRef": "df5491859db6a11c8913c32e28b09e715c04935f",
+      "gitPath": "docs/gcsp/evidence/fucq122/case-release-brief-correction.md"
+    },
+    "case-release-parser-diagnostics.md": {
+      "bytes": 12255,
+      "sha256": "e3f59492e78bb8b003b99b2ac62db0f74d1f3e6b67072d2e3afccd2dca4084a7",
+      "gitRef": "df5491859db6a11c8913c32e28b09e715c04935f",
+      "gitPath": "docs/gcsp/evidence/fucq122/case-release-parser-diagnostics.md"
+    },
+    "case-release-retained-diagnostics.md": {
+      "bytes": 7380,
+      "sha256": "a6bb01bf693d39d0801d69c2b19abc70f95b7e6eb971daa5fcd9b0fbaf84f9a0",
+      "gitRef": "df5491859db6a11c8913c32e28b09e715c04935f",
+      "gitPath": "docs/gcsp/evidence/fucq122/case-release-retained-diagnostics.md"
+    }
+  }
+}

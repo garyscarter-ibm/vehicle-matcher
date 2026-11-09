@@ -263,3 +263,11 @@ test('no em dash in any projected string, and no inline-script patterns in block
     assert.equal(/set(Timeout|Interval)\s*\(\s*['"`]/.test(source), false, `${file} string timer`);
   }
 });
+
+test('a 401 with no status (lapsed access key) reads access-required; a status keeps its refusal', async () => {
+  const respond = (status, body) => async () => ({ status, json: async () => { if (body === undefined) throw new SyntaxError('bad'); return body; } });
+  for (const body of [{ error: 'Unauthorized' }, undefined, null]) assert.deepEqual(outcomeToState(401, body), { status: 'access-required' });
+  for (const body of [{ error: 'Unauthorized' }, undefined]) assert.deepEqual(await createGregHttpAdapter({ fetchImpl: respond(401, body) }).loadDemand(), { status: 'access-required' });
+  assert.equal(outcomeToState(403, { error: 'Forbidden' }).status, 'refused');
+  assert.equal((await createGregHttpAdapter({ fetchImpl: respond(401, { status: 'missing-session' }) }).loadDemand()).status, 'refused');
+});

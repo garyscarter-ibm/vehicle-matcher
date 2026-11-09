@@ -1,0 +1,36 @@
+{
+  "variant": "single-process-heap48-concurrency1-ram128",
+  "command": [
+    "node",
+    "--max-old-space-size=48",
+    "--test",
+    "--test-isolation=none",
+    "--test-concurrency=1",
+    "server/test/gcsp-manual-order.test.js"
+  ],
+  "environment": {
+    "GCSP_F66_CONTRACT_ROOT": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069"
+  },
+  "scope": "scoped",
+  "attempts": 1,
+  "status": "not-admitted",
+  "tests_executed": 0,
+  "source_identity": {
+    "docs/gcsp/evidence/fucq71/response-fixtures.json": "13a9df42020c7b802011c03cd081f04e141b4667da4506bc5a6fb673d220a30d",
+    "server/gcsp/adapters/synthetic-ordering.js": "c2b83391dc0b32e811a407a546d600631254e73810fa90eecc4ad6f70c1392be",
+    "server/gcsp/manual-order/index.js": "0ef66892b4d2cb2e17ca09e04c44d01b3abe1ec6d9aa90bc85dce8d0bff7e018",
+    "server/gcsp/manual-order/manual-conversion.js": "214b7e56879ec925fcaa20ed0619901e64fcd1d81b16cfc68fd33f3da9545994",
+    "server/gcsp/manual-order/terms.js": "239f72b3abfb45944298ac3f0d504a36f501ef88fb3853c6e099a80337969eb6",
+    "server/test/gcsp-manual-order.test.js": "3936df9f7eb2d57a98caaf885d0c59f4ab52aa0c9e47b720a96036314b176509"
+  },
+  "identity_unchanged": true,
+  "requested_ram_bytes": 134217728,
+  "requested_scratch_bytes": 33554432,
+  "timeout_seconds": 120,
+  "available_ram_at_rejection": 0,
+  "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq71-admission-1abd320c1f5d48f28660340b1571381b.json",
+  "scratch_root_created": false,
+  "scratch_root_absent": true,
+  "active_owned_reservations": 0,
+  "followup": "Stop with retained work; no further retries or smaller variant under this instruction."
+}

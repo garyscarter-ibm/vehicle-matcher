@@ -1,0 +1,74 @@
+{
+  "version": "fleet-pilot-observations.v1",
+  "observedDate": "2026-11-05T15:49:55.588Z",
+  "source": "public-bmw-uk-configurator",
+  "providerStatus": "unsupported-public-website",
+  "authorisation": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+  "planSha256": "7eee9fbc7636d61e83fd93192f1003fac0f711233f0d459b372fabdec3547b0e",
+  "clientSha256": "5fa2142e2e1faac2286b52795f7ed2c891adbd99fe4a2d07781d736feb911efe",
+  "requestedContext": {
+    "market": "GB",
+    "steering": "RHD",
+    "locale": "en-GB",
+    "modelCode": "T5MJ",
+    "agModelCode": "72HH",
+    "modelRange": "G61E",
+    "generation": "G61",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05",
+    "catalogueDate": "2026-11-01"
+  },
+  "readOnly": true,
+  "writeRequests": 0,
+  "requests": [
+    {
+      "category": "bootstrap",
+      "attempt": 1,
+      "status": 200,
+      "bytes": 17763,
+      "elapsedMs": 352,
+      "contentType": "text/html"
+    },
+    {
+      "category": "bootstrap",
+      "attempt": 2,
+      "status": 200,
+      "bytes": 620646,
+      "elapsedMs": 78,
+      "contentType": "application/json"
+    },
+    {
+      "category": "catalogue",
+      "attempt": 3,
+      "status": 200,
+      "bytes": 139586,
+      "elapsedMs": 280,
+      "contentType": "application/json"
+    }
+  ],
+  "categoryCounts": {
+    "bootstrap": 2,
+    "catalogue": 1,
+    "solver": 0,
+    "otd": 0,
+    "manifest": 0,
+    "images": 0
+  },
+  "downloadedBytes": 777995,
+  "builds": [],
+  "catalogue": null,
+  "image": null,
+  "profileQualified": 0,
+  "unknownFields": [
+    "UK profile/year/era/plant",
+    "all scheme-model current catalogue joins",
+    "five-WMI multi-build coverage",
+    "verified fitted equipment"
+  ],
+  "status": "stopped",
+  "stopped": "catalogue-steering-unconfirmed",
+  "elapsedMs": 724,
+  "attempts": 3,
+  "distinctObserved": 0,
+  "additionalDistinct": 0
+}

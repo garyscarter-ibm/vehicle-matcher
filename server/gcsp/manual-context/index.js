@@ -1,4 +1,4 @@
-import { inputDigest, ok, result } from '../repository/index.js';
+import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { confirmedFact } from '../../scenarios/employee/index.js';
@@ -6,6 +6,9 @@ import { confirmedFact } from '../../scenarios/employee/index.js';
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const only = (v, keys) => object(v) && Object.keys(v).every((key) => keys.includes(key));
 const text = (v) => typeof v === 'string' && v.trim().length > 0;
+// One contact rule for the manual draft and the buddy handoff.
+export const validContact = (c) => only(c, ['phone', 'email']) && /^\+?[0-9 ()-]{7,30}$/.test(c.phone ?? '')
+  && typeof c.email === 'string' && c.email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email);
 const revision = (v) => Number.isSafeInteger(v) && v >= 0;
 const calendarDate = (v) => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
   && validInstant(`${v}T00:00:00.000Z`) && new Date(`${v}T00:00:00.000Z`).toISOString().slice(0, 10) === v;
@@ -76,15 +79,18 @@ export class ManualContextService {
       p.slot = a.slots.find((s) => s.entitlementSlotId === context.entitlementSlotId && s.employeeId === context.employeeId);
       p.contract = a.contracts.find((c) => c.contractId === p.slot?.contractId && c.slotId === p.slot.entitlementSlotId && c.schemeId === context.schemeId) ?? null;
       p.state = !p.rules.enabledSchemes.includes(context.schemeId) ? 'unsupported-scheme'
-        : !p.slot || !Number.isSafeInteger(p.slot.capacity) || p.slot.capacity < 1 || p.slot.state === 'disabled' ? 'no-entitlement'
+        : !p.slot || !Number.isSafeInteger(p.slot.capacity) || p.slot.capacity < 1 || ['disabled', 'allocated'].includes(p.slot.state) ? 'no-entitlement'
           : p.slot.contractId && !p.contract ? 'no-contract' : 'ready';
       const window = p.contract ?? p.slot;
       if (['earliestCollectionDate', 'latestCollectionDate'].some((key) => window?.[key] != null
         && !calendarDate(window[key]))) return { error: unavailable('renewal-window-invalid') };
       if (p.state === 'ready' && (window?.earliestCollectionDate || window?.latestCollectionDate)
-        && !this.#collectionDates(p).length) p.state = 'not-yet-eligible';
+        && !this.#collectionDates(p).length) p.state = this.#orderingClosed(p, window) ? 'ordering-closed' : 'not-yet-eligible';
       p.contextVersion = inputDigest({ runId: context.runId, employeeId: context.employeeId, schemeId: context.schemeId,
-        companyId: context.companyId, gradeId: context.gradeId, slot: p.slot ?? null, accountSource: a.source,
+        companyId: context.companyId, gradeId: context.gradeId,
+        // A claim bumps the slot CAS revision without changing its entitlement facts.
+        // Keep that revision in sources.slot for writes, not in the draft dependency digest.
+        slot: p.slot ? Object.fromEntries(Object.entries(p.slot).filter(([key]) => !['version', 'createdAt', 'updatedAt'].includes(key))) : null, accountSource: a.source,
         driverSource: p.drivers.source, repositoryVersion: a.repositoryVersion ?? null, recordSetId: a.recordSetId,
         policyVersion: context.policyVersion, configuration: p.configuration, orderingState: p.state });
       return p;
@@ -101,12 +107,18 @@ export class ManualContextService {
       && Number.isSafeInteger(r.maximumSpecialRequirements) && r.maximumSpecialRequirements > 0
       && Number.isSafeInteger(r.maximumReturnMileage) && r.maximumReturnMileage > 0 && object(r.insuranceMaximumByGrade);
   }
-  #collectionDates(p) {
+  // Closed, not early: no date up to the window's end can ever meet the minimum lead (FUCQ-200).
+  #orderingClosed(p, window) {
+    if (!window?.latestCollectionDate) return false;
+    const days = Math.floor((Date.parse(`${window.latestCollectionDate}T00:00:00.000Z`) - Date.parse(`${p.now.slice(0, 10)}T00:00:00.000Z`)) / 86400000);
+    return !this.#collectionDates(p, days).length;
+  }
+  #collectionDates(p, maximumLeadDays = p.rules.maximumLeadDays) {
     const today = Date.parse(`${p.now.slice(0, 10)}T00:00:00.000Z`); const day = 86400000;
     const window = p.contract ?? p.slot;
     const earliest = window?.earliestCollectionDate; const latest = window?.latestCollectionDate;
     const dates = [];
-    for (let lead = p.rules.minimumLeadDays; lead <= p.rules.maximumLeadDays; lead += 1) {
+    for (let lead = p.rules.minimumLeadDays; lead <= maximumLeadDays; lead += 1) {
       const date = new Date(today + lead * day).toISOString().slice(0, 10);
       if ((!earliest || date >= earliest) && (!latest || date <= latest)
         && p.rules.locations.some((location) => !location.closedDates?.includes(date)
@@ -194,8 +206,7 @@ export class ManualContextService {
       || p.allowance.companyId !== context.companyId || p.allowance.gradeId !== context.gradeId) {
       return invalid('allowance', 'Monthly points allowance needs confirmation. Contact scheme support.', 'allowance-unconfirmed');
     }
-    if (!only(choices.contact, ['phone', 'email']) || !/^\+?[0-9 ()-]{7,30}$/.test(choices.contact.phone ?? '')
-      || typeof choices.contact.email !== 'string' || choices.contact.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(choices.contact.email)) return invalid('contact', 'Supply a contact telephone and email address.');
+    if (!validContact(choices.contact)) return invalid('contact', 'Supply a contact telephone and email address.');
     if (choices.mode === 'replacement' && (!Number.isSafeInteger(choices.expectedReturnMileage) || choices.expectedReturnMileage < 0
       || choices.expectedReturnMileage > p.rules.maximumReturnMileage)
       || choices.mode === 'new' && choices.expectedReturnMileage != null) return invalid('expectedReturnMileage', 'Supply returning-car mileage only for a replacement, in miles.');
@@ -225,6 +236,10 @@ export class ManualContextService {
       // All provider reads stay outside its transaction; mutable refusals occur here.
       if (p.error) return p.error;
       if (p.state !== 'ready') return result('conflict', { reason: p.state, view: this.#presentation(p) });
+      const holds = await tx.list('holds', { employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId, type: 'cart' });
+      if (holds.status !== 'ok') return holds;
+      if (holds.value.some((h) => OCCUPYING_STATES.includes(h.state) || h.state === 'allocated')) return result('conflict', {
+        reason: 'release-required', view: { state: 'conflict', editable: false, supportOwner: 'employee', action: 'release-before-change' } });
       if (input.expectedContextVersion !== p.contextVersion) return stale('manual-context', input.expectedContextVersion, p.contextVersion);
       const validated = this.#validate(context, input.choices, p);
       if (validated.status) return validated;
@@ -258,7 +273,22 @@ export class ManualContextService {
     });
   }
 
-  async browseStock(context) {
+  async browseStock(context) { return this.#browseStock(context); }
+
+  // Backend-only revalidation of the current holder. Availability is relaxed only
+  // for this persisted employee/slot's own active car; all other gates run again.
+  async revalidateHeldSelection(context, holdId) {
+    if (!this.#repository || !this.#identity) return unavailable('configuration');
+    const guard = await this.#identity.requireRole(context, 'employee'); if (guard.status !== 'ok') return guard;
+    const held = await this.#repository.read(context, { table: 'holds', key: { runId: context.runId, holdId } });
+    if (held.status !== 'ok') return held;
+    if (held.value.employeeId !== context.employeeId || held.value.entitlementSlotId !== context.entitlementSlotId
+      || held.value.type !== 'cart') return result('forbidden', { reason: 'This claim belongs to another entitlement.' });
+    if (held.value.state !== 'active') return result('conflict', { reason: 'claim-not-active' });
+    return this.#browseStock(context, held.value.orderUuid);
+  }
+
+  async #browseStock(context, ownedOrderUuid = null) {
     const p = await this.#prepare(context); if (p.error) return p.error;
     if (p.state !== 'ready') return result('conflict', { reason: p.state, view: this.#presentation(p) });
     const saved = await this.readDraft(context); if (saved.status !== 'ok') return saved;
@@ -274,7 +304,9 @@ export class ManualContextService {
       const facts = { ...p.drivers.employeeFacts, driverEligible: selected.driver.eligible };
       const evaluator = createEmployeeRecommendationService({ policy: this.#policy, time: this.#clock, provider: { async resolve() {
         return ok({ ...source.value, factsVersion: inputDigest({ employee: p.account.source, driver: p.drivers.source, driverId: selected.driver.driverId }),
-          stockVersion: source.value.sourceVersion, employeeFacts: facts });
+          stockVersion: source.value.sourceVersion, employeeFacts: facts,
+          stock: source.value.stock.map((row) => row.orderUuid === ownedOrderUuid
+            ? { ...row, availability: { ...row.availability, state: 'available' } } : row) });
       } } });
       const checked = await evaluator.recommend(context, { schemaVersion: 1, briefVersion: draft.draftVersion, preferences: {}, essentials: {},
         requiredBy: `${draft.choices.requestedCollectionDate}T23:59:59.999Z` });

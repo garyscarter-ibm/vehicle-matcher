@@ -1,0 +1,27 @@
+{
+  "at": "2026-11-07T01:38:14.179284+00:00",
+  "decision": "release exact10GET proof in two conditional phases",
+  "topic": "9a1240be9b45e18b2f3cc1110f2091c5192a5093",
+  "grant": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-continuation-live-root-grant.json",
+  "grantSha256": "ecfb1c92e531568352668ea5e9da1201347f16652520c25608aeed1d6d3ce084",
+  "contractSha256": "850c5219c098d55aadd8833aa3b6b2e7c3f07234cd2ab489ce93e09a33bac28f",
+  "GET": 10,
+  "solver": 2,
+  "bootstrap": 8,
+  "sourceBytes": 4194304,
+  "retries": 0,
+  "workers": 1,
+  "sourceLaneClear": "Minnie3GETdiagnostic completed/exported/cleaned; no other source traffic released",
+  "review": "Parent read runner/supervisor/contract/grant and exact old plan/reservation; independent Lego CODE/SECURITY PASS.35code+6input+nodepins verified,405spentrequests exclude both candidates; primary/metadata roots absent. PhaseB only after A proofReady/export/cleanup; one operational successor mitigates deferredF152. Complete outcomes/novelty remain unknown.",
+  "limits": {
+    "phases": 2,
+    "attemptsPerPhase": 5,
+    "bytesPerPhase": 2097152,
+    "secondsPerPhase": 45,
+    "workers": 1,
+    "scratchMiB": 64,
+    "hostMiB": 512,
+    "childMiB": 448,
+    "chunkSeconds": 90
+  }
+}

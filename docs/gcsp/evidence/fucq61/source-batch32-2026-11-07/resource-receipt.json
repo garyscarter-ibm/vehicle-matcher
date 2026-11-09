@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "f61-source-resource-receipt.v1",
+  "validation": "scoped-offline-artifact-integrity; no additional source calls",
+  "selectedChecks": [
+    "checkpoint SHA",
+    "all28 retained solver hashes",
+    "fresh tree/options hashes",
+    "accepted/rejected/cursor counts",
+    "36source-attempt trace"
+  ],
+  "excluded": "No rerun of already-passing102 capability checks; no UI/runtime/publication/fullF61 acceptance claim",
+  "cleanup": {
+    "code_identity_unchanged": true,
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "groups_absent": true,
+    "removed_allocation_bytes": 3133440,
+    "reservation_absent": true,
+    "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/source32/live-result.json",
+    "scratch_absent": true
+  },
+  "performance": {
+    "first8SolverStartIntervalMeanMs": 327.6,
+    "last8SolverStartIntervalMeanMs": 1198.3,
+    "note": "Observed source plus checkpoint processing; last quartile is slower and300s batch cap remains fixed."
+  }
+}

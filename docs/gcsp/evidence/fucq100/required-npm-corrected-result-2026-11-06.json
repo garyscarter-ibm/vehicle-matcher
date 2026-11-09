@@ -1,0 +1,615 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-100",
+  "recordedAt": "2026-11-06T16:45:52.890721+00:00",
+  "kind": "Corrected required npm test: FAIL; source-only classification and preserved cleanup evidence; not acceptance",
+  "testedCommit": "0a061129f324f9de991327d34a2002f90728e8f7",
+  "testedTree": "22eaba3916234c4b9d18f7314f8ed26f12f758fd",
+  "productIntegrationCommit": "ef777c365b1d9d9e9aeed20bba5a0a6a2eb2decd",
+  "productIntegrationTree": "8a8edc30e148715c48e3041fc2da9dce47314118",
+  "integratedBase": "ecce0b34ffcce2c978d000c76995693ba78a52d4",
+  "command": "npm test",
+  "script": "node --test --test-concurrency=1 server/test/**/*.test.js",
+  "oneWorker": true,
+  "nodeVersion": "v26.5.0",
+  "reporter": "Node default spec; raw.log contains original output, not literal TAP",
+  "counts": {
+    "cancelled": 0,
+    "fail": 16,
+    "pass": 1569,
+    "skipped": 5,
+    "tests": 1590,
+    "todo": 0
+  },
+  "commandExit": 1,
+  "outerSupervisorExit": 1,
+  "workerSeconds": 200.562547875,
+  "wholeSeconds": 205.579758708,
+  "nodeReportedDurationMs": 200004.846875,
+  "peakSampledGroupAndSupervisorRssBytes": 472219648,
+  "peakCombinedChargedDiskBytes": 9479968,
+  "limits": {
+    "aggregateRssBytes": 2147483648,
+    "combinedDiskBytes": 268435456,
+    "logBytes": 4194304,
+    "metadataBytes": 1048576,
+    "totalSeconds": 660,
+    "workSeconds": 600
+  },
+  "physicalRamReserveBytes": 536870912,
+  "diskReserveBytes": 5368709120,
+  "sourceUnchanged": true,
+  "sourceBefore": "4b4fce84a8a1184a2d6b2fdc82eeabad7f704d32a4aba45e95f0ac2f8d403a55",
+  "sourceAfter": "4b4fce84a8a1184a2d6b2fdc82eeabad7f704d32a4aba45e95f0ac2f8d403a55",
+  "dependenciesUnchangedDuringCorrectedTest": true,
+  "dependenciesBefore": {
+    "roots": [
+      {
+        "exists": false,
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/node_modules",
+        "symlink": false
+      },
+      {
+        "allocatedBytes": 858816,
+        "exists": true,
+        "files": 139,
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/node_modules",
+        "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/node_modules",
+        "sha256": "6a9431d278540179144f8739f8200593931efc2b5f8104cf60e0695a590ba2a1",
+        "symlink": false
+      },
+      {
+        "allocatedBytes": 27138292,
+        "exists": true,
+        "files": 1834,
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules",
+        "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules",
+        "sha256": "818cc7e48db9882ae3ac7be389e8e8db5625f5e5870e4886ee1cca5b281c7a56",
+        "symlink": false
+      }
+    ],
+    "sha256": "f3553fb51f4f01d004343e30618bc3011a194e7c5e0f3f292a6d4823d793ad57"
+  },
+  "dependenciesAfter": {
+    "roots": [
+      {
+        "exists": false,
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/node_modules",
+        "symlink": false
+      },
+      {
+        "allocatedBytes": 858816,
+        "exists": true,
+        "files": 139,
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/node_modules",
+        "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/node_modules",
+        "sha256": "6a9431d278540179144f8739f8200593931efc2b5f8104cf60e0695a590ba2a1",
+        "symlink": false
+      },
+      {
+        "allocatedBytes": 27138292,
+        "exists": true,
+        "files": 1834,
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules",
+        "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules",
+        "sha256": "818cc7e48db9882ae3ac7be389e8e8db5625f5e5870e4886ee1cca5b281c7a56",
+        "symlink": false
+      }
+    ],
+    "sha256": "f3553fb51f4f01d004343e30618bc3011a194e7c5e0f3f292a6d4823d793ad57"
+  },
+  "executionIdentity": {
+    "code": "9555ffeb6c3ea14229f414a534f0f775856979fb5f7197c26d0036b6f1091428",
+    "environment": "8dc86332772203726a868da186dd7dc9589a4dc4ae9f729f3331db44a9998d40",
+    "inputs": {},
+    "interpreter": [
+      "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+      "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+    ],
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "scope": "full",
+    "selected": [
+      "npm test"
+    ],
+    "settings": "d5f5836572255f12f18f45c5b5f5b4d4ec5726b86f21c0bcebd04c88175ac197",
+    "variant": "default",
+    "version": 1
+  },
+  "helperIdentities": {
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq100-required-environment-adapter-20261106.py": "19ffc2d6d50892c24fe847679fa27f2407ee57b0b854e6e5886afd1f28a3052d",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-supervisor.py": "6d0ed076a44d2ae9be964ebd3b916310cb81e53ada39c9f3733d3e94c1047639"
+  },
+  "environmentCorrection": {
+    "command": "npm ci --prefix server --ignore-scripts --no-audit --no-fund",
+    "authorization": "Explicit dispatcher instruction after missing-pg diagnosis; amended bounded-resource contract retained",
+    "result": "PASS; 14 packages added; pg 8.23.1 now resolves from server/node_modules",
+    "commandExit": 0,
+    "outerSupervisorExit": 0,
+    "workerSeconds": 0.9451464170000001,
+    "wholeSeconds": 3.9750976660000004,
+    "sourceUnchanged": true,
+    "manifestsAndLocksUnchanged": true,
+    "dependenciesBefore": {
+      "roots": [
+        {
+          "exists": false,
+          "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/node_modules",
+          "symlink": false
+        },
+        {
+          "exists": false,
+          "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/node_modules",
+          "symlink": false
+        },
+        {
+          "allocatedBytes": 27138292,
+          "exists": true,
+          "files": 1834,
+          "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules",
+          "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules",
+          "sha256": "818cc7e48db9882ae3ac7be389e8e8db5625f5e5870e4886ee1cca5b281c7a56",
+          "symlink": false
+        }
+      ],
+      "sha256": "bf3ed7a218e1cab9f45e63cd41277f0b1dd6f5aec83238088b16d5bbc189ed4f"
+    },
+    "dependenciesAfter": {
+      "roots": [
+        {
+          "exists": false,
+          "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/node_modules",
+          "symlink": false
+        },
+        {
+          "allocatedBytes": 858816,
+          "exists": true,
+          "files": 139,
+          "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/node_modules",
+          "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/node_modules",
+          "sha256": "6a9431d278540179144f8739f8200593931efc2b5f8104cf60e0695a590ba2a1",
+          "symlink": false
+        },
+        {
+          "allocatedBytes": 27138292,
+          "exists": true,
+          "files": 1834,
+          "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules",
+          "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules",
+          "sha256": "818cc7e48db9882ae3ac7be389e8e8db5625f5e5870e4886ee1cca5b281c7a56",
+          "symlink": false
+        }
+      ],
+      "sha256": "f3553fb51f4f01d004343e30618bc3011a194e7c5e0f3f292a6d4823d793ad57"
+    },
+    "retainedEnvironment": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/node_modules",
+    "retainedEnvironmentIsDisposableScratch": false,
+    "records": {
+      "receipt": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-ci-421f4c4dcf4a476482c942c72281f976/receipt.json",
+        "sha256": "027efd745fed352ce9d2d6bbc39b6211237558253eef7c95712339fdb5f02e17"
+      },
+      "originalOutput": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-ci-421f4c4dcf4a476482c942c72281f976/raw.log",
+        "sha256": "095973687ab56722bc70858321dac01737b5b9d9d32a255b3f4aa7af9b138c74"
+      },
+      "ownership": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-ci-421f4c4dcf4a476482c942c72281f976/ownership/ac20b5d2fb2242e8972a48d5798f2751.json",
+        "sha256": "034d3af3b0c2ef6bdd6d6ffc1f9fda211f3b4039efd5f599e28cadebf61a7c0f"
+      },
+      "laneCollection": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-ci-421f4c4dcf4a476482c942c72281f976/lane-collection.json",
+        "sha256": "87b722d28cbc5935145fb0dc1da9ba71c9763b11ea9508d603649ceb3ce00718"
+      }
+    }
+  },
+  "firstAttempt": {
+    "publishedRecord": "docs/gcsp/evidence/fucq100/required-npm-result-2026-11-06.json",
+    "immutable": true,
+    "counts": {
+      "cancelled": 0,
+      "fail": 63,
+      "pass": 564,
+      "skipped": 0,
+      "tests": 627,
+      "todo": 0
+    },
+    "missingPgFailures": 57,
+    "missingPgMeaning": "56 file loads and one named case did not validate behavior. These errors are absent from the corrected run.",
+    "records": {
+      "receipt": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-61c9513623224f00b24dee01083e29b0/receipt.json",
+        "sha256": "6369dc18b4e4624cc26434b9c36504ffdd5a5a3549c108a0ce0d189c47618bbd"
+      },
+      "originalOutput": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-61c9513623224f00b24dee01083e29b0/raw.tap",
+        "sha256": "3cf196c668f168ce88c1c40526bec41c3b30bd78d6380ff59ce4931a8f505ba8"
+      },
+      "ownership": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-61c9513623224f00b24dee01083e29b0/ownership/67286d809a8b4caf9ec486da07e2694b.json",
+        "sha256": "a73541cb39fb42949b129c24d379b4123ee39efcb93527f28e67cde6538215d8"
+      },
+      "laneCollection": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-61c9513623224f00b24dee01083e29b0/lane-collection.json",
+        "sha256": "4da265bbd73c5e6811e59f13efe87ce96128268c86ab70b12b50a25b441b7691"
+      }
+    }
+  },
+  "failureClassification": {
+    "method": "Bounded source-only investigation against this tested source; exact failed titles/lines parsed from retained original default-spec failure section; no repair or further test execution",
+    "uniqueCauses": 10,
+    "productDefectCauses": 2,
+    "productDefectFailedCases": 3,
+    "fixtureOrScannerCauses": 8,
+    "fixtureOrScannerFailedCases": 13,
+    "severityAssessment": "Two Medium product interaction defects; eight Low fixture/scanner causes. No new Critical/High cause demonstrated by these 16 failures. Existing FUCQ-140\u2013143 severity review belongs to the separate reviewer and is not reassessed here.",
+    "groups": [
+      {
+        "id": "C1",
+        "title": "Root-wide assertions count hidden presenter DOM",
+        "failedTests": [
+          {
+            "file": "server/test/gcsp-account-render.test.js",
+            "testLine": 196,
+            "title": "account composition preserves complete supplied facts, labelled details and dated vehicle hierarchy",
+            "assertionLine": 231
+          },
+          {
+            "file": "server/test/gcsp-greg-dashboard.test.js",
+            "testLine": 179,
+            "title": "refused shows no figures, no Retry and hides the reserved regions",
+            "assertionLine": 185
+          }
+        ],
+        "classification": "fixture scope mismatch",
+        "severity": "Low",
+        "severityStatus": "proposed from observed impact; dispatcher disposition remains separate",
+        "diagnosis": "portalShell now mounts presenter controls by default. mountPresenterControls creates one text input while its root stays hidden until authorization. presenterBar creates factList([]), an empty dl. These explain the root-wide counts of one input on Account and one dl on refused Greg. Greg refusal clears body figures and metadata; the counted dl is an empty hidden presenter readback.",
+        "actualImpactAndSeverityBasis": "Test scope changed after composition; the inspected refused fixture does not expose demand figures. No authorization bypass or private demand disclosure is demonstrated. This conclusion covers the counted empty hidden region, not all presenter authorization behavior.",
+        "sourceOrigin": "FUCQ-100 shell composition 112fdfe275fc2019b830ac04976244513a56b642; presenter leaves f179ae6043414a2b07de3edb2b425338299ea37b. Account source/test fcc8e139dd71ebcdec3fe510179cf35e952a13ec and Greg fixture tests acee2bdd26ecadd2842003769c051a307f549499 predate the composition.",
+        "knownBugOverlap": "Same presenter composition area as FUCQ-143, but counting hidden DOM is not the custom-element registration finding. Unresolved: no confirmed matching Bug ID in the supplied lane record; dispatcher must deduplicate before intake.",
+        "remainingValidation": "Both cases remain failed. Account assertions after line 231 and Greg reserved-region assertion after line 185 were not reached. No new DOM/browser run was performed.",
+        "sourceEvidence": [
+          "blocks/gcsp/shell/portal-shell.js:206",
+          "blocks/gcsp/presenter-controls/controls.js:45",
+          "blocks/gcsp/presenter-controls/controls.js:60",
+          "blocks/gcsp/kit/presenter-bar.js:9",
+          "blocks/gcsp/greg/gcsp-greg.js:193"
+        ]
+      },
+      {
+        "id": "C2",
+        "title": "Three-handler fixture predates lifecycle composition",
+        "failedTests": [
+          {
+            "file": "server/test/gcsp-buddy-runtime-integration.test.js",
+            "testLine": 119,
+            "title": "normal runtime shares services, registers before startup, and serves real presenter scenario controls",
+            "assertionLine": 123
+          },
+          {
+            "file": "server/test/gcsp-buddy-runtime-integration.test.js",
+            "testLine": 159,
+            "title": "fresh composed backend reconciles overdue memory authority before dispatch",
+            "assertionLine": 166
+          },
+          {
+            "file": "server/test/gcsp-buddy-runtime-integration.test.js",
+            "testLine": 200,
+            "title": "normal named mechanics reset retains handlers and invalidates old employee and offer authority",
+            "assertionLine": 213
+          }
+        ],
+        "classification": "stale fixture expectation",
+        "severity": "Low",
+        "severityStatus": "proposed from observed impact; dispatcher disposition remains separate",
+        "diagnosis": "Expected handler IDs are manual-claim-expiry, buddy-expiry, captured-outbox. Actual registration also contains the intentionally composed selection-order-reconciliation, lifecycle-approvals, lifecycle-documents and renewal-risk-cases. All three old expected IDs remain present. Reset reports the four additional IDs in its actual post-reset order.",
+        "actualImpactAndSeverityBasis": "Exact-list test maintenance; observed differences add composed stages rather than lose the expected handlers. This does not prove all handler effects or ordering semantics.",
+        "sourceOrigin": "Fixture 95d77416361f54eb558bbcb40b382cbb45149c27; added lifecycle composition recorded in 0f46baf7677d7bc4c84f084c66911cac04a6c474 and docs/gcsp/evidence/fucq100/lifecycle-runtime-result.json.",
+        "knownBugOverlap": "Reset in the title does not establish overlap with FUCQ-140 manual context. Unresolved: no confirmed matching Bug ID in the supplied lane record; dispatcher must deduplicate before intake.",
+        "remainingValidation": "Cases stop at the exact-array assertions (123, 166, 213); subsequent assertions are not passing evidence.",
+        "sourceEvidence": [
+          "server/test/gcsp-buddy-runtime-integration.test.js:123",
+          "server/test/gcsp-buddy-runtime-integration.test.js:166",
+          "server/test/gcsp-buddy-runtime-integration.test.js:213"
+        ]
+      },
+      {
+        "id": "C3",
+        "title": "Reviewed-key setup requests a successor after keys already exist",
+        "failedTests": [
+          {
+            "file": "server/test/gcsp-buddy-runtime-integration.test.js",
+            "testLine": 187,
+            "title": "reviewed publication activates the shared provider while preserving pinned buddy quote and access",
+            "assertionLine": 15
+          }
+        ],
+        "classification": "stale fixture setup",
+        "severity": "Low",
+        "severityStatus": "proposed from observed impact; dispatcher disposition remains separate",
+        "diagnosis": "adoptPresenter calls adoptReviewedAssumptions for presenter-controls-v1 and unconditionally expects ok and runtime-reviewed-v2. Canonical seed already contains the reviewed assumption keys; the actual response is invalid-policy-change: All reviewed assumption keys already exist. No successor was created.",
+        "actualImpactAndSeverityBasis": "The observed refusal is consistent with already-adopted definitions. The test does not reach its pinned quote/access/publication assertions, so those obligations remain open in this case.",
+        "sourceOrigin": "Fixture 95d77416361f54eb558bbcb40b382cbb45149c27; seed latest change 0f46baf7677d7bc4c84f084c66911cac04a6c474 (FUCQ-100 lifecycle composition).",
+        "knownBugOverlap": "Unresolved: no confirmed matching Bug ID in the supplied lane record; dispatcher must deduplicate before intake.",
+        "remainingValidation": "A valid fresh-version publication setup and the remainder of the case are unvalidated here.",
+        "sourceEvidence": [
+          "server/test/gcsp-buddy-runtime-integration.test.js:81",
+          "server/gcsp/policy/seed-v1.json"
+        ]
+      },
+      {
+        "id": "C4",
+        "title": "Greg fixture overwrites required bound manual records",
+        "failedTests": [
+          {
+            "file": "server/test/gcsp-greg-dashboard-data.test.js",
+            "testLine": 15,
+            "title": "real service: each step of the demo changes the view figures and versions",
+            "assertionLine": 23
+          },
+          {
+            "file": "server/test/gcsp-greg-dashboard-data.test.js",
+            "testLine": 59,
+            "title": "real service: canonical threshold shows only \"fewer than 5\" bands and no other number",
+            "assertionLine": 63
+          },
+          {
+            "file": "server/test/gcsp-greg-dashboard-data.test.js",
+            "testLine": 104,
+            "title": "every fixture projection has the shape of a real readDemand value and the view accepts it",
+            "assertionLine": 109
+          }
+        ],
+        "classification": "stale fixture source contract",
+        "severity": "Low",
+        "severityStatus": "proposed from observed impact; dispatcher disposition remains separate",
+        "diagnosis": "helpers/greg-demand-run.js replaces employee.contract with manualContext containing only flattened employeeFacts. projectRecommendationFacts now requires manualContext.source, matching account identifiers, recordSetId and drivers, plus bound contracts where the slot has a contract. The helper deletes these fields. Greg readDemand correctly returns unavailable/source-invalid when briefs trigger projection.",
+        "actualImpactAndSeverityBasis": "Invalid helper input explains all three failures before dashboard values/privacy/shape assertions. This is evidence of a source-contract fixture mismatch; it neither demonstrates a live Greg outage nor supplies the missing aggregate/privacy acceptance proof.",
+        "sourceOrigin": "Helper 9af62b8b23f55af326acc6848a331daf36c9a7db (FUCQ-101); bound-record projector and Greg change 38be4f5d95823b5f010a56c3d4b6cbda4eca55e8 in FUCQ-100.",
+        "knownBugOverlap": "Unresolved: no confirmed matching Bug ID in the supplied lane record; dispatcher must deduplicate before intake.",
+        "remainingValidation": "All downstream figures, canonical privacy bands and fixture-shape comparisons in these failed cases remain unverified.",
+        "sourceEvidence": [
+          "server/test/helpers/greg-demand-run.js:42",
+          "server/gcsp/manual-context/recommendation-facts.js:36",
+          "server/gcsp/greg/index.js:79"
+        ]
+      },
+      {
+        "id": "C5",
+        "title": "CSS scanner consumes an import as selector text",
+        "failedTests": [
+          {
+            "file": "server/test/gcsp-greg-dashboard.test.js",
+            "testLine": 377,
+            "title": "stylesheets: every selector starts with .gcsp, tokens only, no side stripe, reduced motion honoured",
+            "assertionLine": 381
+          }
+        ],
+        "classification": "scanner mismatch",
+        "severity": "Low",
+        "severityStatus": "proposed from observed impact; dispatcher disposition remains separate",
+        "diagnosis": "gcsp-greg.css starts with @import ./publish/publish.css. The selector scanner reports the remaining quoted import path plus the first .gcsp selector as one unscoped selector.",
+        "actualImpactAndSeverityBasis": "The failing text is an import statement fragment, not evidence of an actual unscoped CSS selector. Later token/side-stripe/reduced-motion assertions in this case are not reached.",
+        "sourceOrigin": "Greg CSS adopted in FUCQ-100 composition 112fdfe275fc2019b830ac04976244513a56b642 from FUCQ-103 c5be593e3f023022f3e6da6e13253d086304d285; scanner fixture acee2bdd26ecadd2842003769c051a307f549499.",
+        "knownBugOverlap": "Unresolved: no confirmed matching Bug ID in the supplied lane record; dispatcher must deduplicate before intake.",
+        "remainingValidation": "No scanner repair, CSS parser execution or new rendered review was performed.",
+        "sourceEvidence": [
+          "blocks/gcsp/greg/gcsp-greg.css:1",
+          "server/test/gcsp-greg-dashboard.test.js:377"
+        ]
+      },
+      {
+        "id": "C6",
+        "title": "Price error-summary callback loses selection identity",
+        "failedTests": [
+          {
+            "file": "server/test/gcsp-greg-publish-render.test.js",
+            "testLine": 90,
+            "title": "an invalid hidden price row is selected and focused from the error summary",
+            "assertionLine": 95
+          },
+          {
+            "file": "server/test/gcsp-greg-publish-render.test.js",
+            "testLine": 98,
+            "title": "each invalid price summary link selects its own row while retaining the real native focus target",
+            "assertionLine": 106
+          }
+        ],
+        "classification": "actual product interaction defect",
+        "severity": "Medium",
+        "severityStatus": "proposed from observed impact; dispatcher disposition remains separate",
+        "diagnosis": "Publishing panel emits validationErrors with selectionId=field.id and expects onSelect(id, selectionId) to select the matching price row. Central kit errorSummary calls onSelect(value.id) only. All price rows share the mounted native input, so fallback focus retains price:gallery-cost instead of selecting price:second.",
+        "actualImpactAndSeverityBasis": "An error-summary link for another invalid price row fails to reveal that row, impairing correction and keyboard navigation. Users can still choose a price row using the native selector. No invalid publish or data mutation is demonstrated; validation returns before preview/publish.",
+        "sourceOrigin": "FUCQ-100 integration gap: panel and tests adopted in 112fdfe275fc2019b830ac04976244513a56b642 from FUCQ-103 c5be593e3f023022f3e6da6e13253d086304d285, whose shared helper passes both arguments. Central helper remains the one-argument version last changed at 2391224708cf28238cce07d6445c95a01bd5e2c9. Read-only Git diff confirms this exact omitted line.",
+        "knownBugOverlap": "Unresolved: no confirmed matching Bug ID in the supplied lane record; dispatcher must deduplicate before intake.",
+        "remainingValidation": "Two failures reproduce in the existing corrected run. No repair or rerun; rendered desktop/narrow/keyboard acceptance remains outstanding.",
+        "sourceEvidence": [
+          "blocks/gcsp/kit/form-controls.js:34",
+          "blocks/gcsp/greg/publish/panel.js:30",
+          "blocks/gcsp/greg/publish/panel.js:139"
+        ]
+      },
+      {
+        "id": "C7",
+        "title": "Resume loses focus when async review heading replaces initial heading",
+        "failedTests": [
+          {
+            "file": "server/test/gcsp-manual-journey-resume.test.js",
+            "testLine": 150,
+            "title": "real account Resume recovers the same quoted claim through default HTTP without another write",
+            "assertionLine": 156
+          }
+        ],
+        "classification": "actual product focus defect",
+        "severity": "Medium",
+        "severityStatus": "proposed from observed impact; dispatcher disposition remains separate",
+        "diagnosis": "Real account Resume reaches the review, but document.activeElement is HTMLBodyElement rather than the final main h1. journey mount focuses the first available heading and disconnects its MutationObserver. Async review can replace that initial checking/loading heading; this is the source-supported cause hypothesis for the observed focus loss.",
+        "actualImpactAndSeverityBasis": "Keyboard and assistive-technology orientation is lost at the review transition. Review content becomes available and no data loss is established. Subsequent no-write/read/quote invariants are not reached, so this failure cannot prove them.",
+        "sourceOrigin": "FUCQ-100 manual Resume change 6562e596ea8ff55352ee0a60b4c666d09303ff8a; journey.js lines 20-24 focus once before asynchronous replacement.",
+        "knownBugOverlap": "Distinct from FUCQ-141 clock-subscription seam and FUCQ-140 reset/switch context. Unresolved: no confirmed matching Bug ID in the supplied lane record; dispatcher must deduplicate before intake.",
+        "remainingValidation": "Failure reproduced in corrected full suite; precise async replacement cause is static inference, not independently instrumented. No repair or runtime remains authorised.",
+        "sourceEvidence": [
+          "blocks/gcsp/manual-setup/journey.js:20",
+          "server/test/gcsp-manual-journey-resume.test.js:150",
+          "blocks/gcsp/manual-review/gcsp-manual-review.js"
+        ]
+      },
+      {
+        "id": "C8",
+        "title": "Renewal alternative-car fixture seeds available instead of released",
+        "failedTests": [
+          {
+            "file": "server/test/gcsp-renewal-case.test.js",
+            "testLine": 19,
+            "title": "alternative car uses current eligibility, points, essentials and availability; unresolved charging stays unknown",
+            "assertionLine": 204
+          }
+        ],
+        "classification": "known fixture/source-state mismatch",
+        "severity": "Low",
+        "severityStatus": "proposed from observed impact; dispatcher disposition remains separate",
+        "diagnosis": "Fixture inserts stock state available, while alternative-car remedy requires released before recommendation evaluation. Actual response is invalid-case-command on remedy.orderUuid: This car is unavailable. Review current stock.",
+        "actualImpactAndSeverityBasis": "Fail-closed stock-state guard, not a demonstrated failed release or allocation corruption. Later eligibility/points/essentials/charging behavior in this case is not reached.",
+        "sourceOrigin": "Existing FUCQ-122 area: test e8bebc6f5244526ba7cbaf1da8fae23bda5f594e and adopted cases source f179ae6043414a2b07de3edb2b425338299ea37b. Already recorded in lifecycle-runtime-result.md and lifecycle-composition-source-plan.json.",
+        "knownBugOverlap": "Known overlap with existing FUCQ-122 regression, not a new cause. Bug ID unresolved; dispatcher must reuse/deduplicate. FUCQ-142 local release-provider finding is separate from this explicitly seeded state mismatch.",
+        "remainingValidation": "No baseline rerun or downstream alternative-car acceptance proof. Preserve prior FUCQ-122 diagnosis.",
+        "sourceEvidence": [
+          "server/test/gcsp-renewal-case.test.js:196",
+          "server/gcsp/cases/index.js:243",
+          "docs/gcsp/evidence/fucq100/lifecycle-runtime-result.md:7"
+        ]
+      },
+      {
+        "id": "C9",
+        "title": "Employee-element location ratchet scans the offer entry wrapper",
+        "failedTests": [
+          {
+            "file": "server/test/gcsp-shell.test.js",
+            "testLine": 729,
+            "title": "harness page loads the harness module and the body stylesheet; the element never reads location",
+            "assertionLine": 736
+          }
+        ],
+        "classification": "overbroad source ratchet",
+        "severity": "Low",
+        "severityStatus": "proposed from observed impact; dispatcher disposition remains separate",
+        "diagnosis": "Test title requires the employee element not to read location, but its walk scans every GCSP .js except harness.js. It flags offer/entry.js, the deliberate standalone wrapper that captures the offer fragment and supplies location/history to its adapter. The flagged file is not the employee or offer custom element.",
+        "actualImpactAndSeverityBasis": "The exact match is expected route-wrapper responsibility in existing offer composition evidence. The failure does not demonstrate token exposure or a custom element reading the host URL.",
+        "sourceOrigin": "Offer wrapper introduced in FUCQ-100 bc8a941adbf8bd74089b11b820c489551742ab12; existing employee contract scopes location isolation to the element, with a separate page harness.",
+        "knownBugOverlap": "Unresolved: no confirmed matching Bug ID in the supplied lane record; dispatcher must deduplicate before intake.",
+        "remainingValidation": "Ratchet scope/allowed wrapper boundaries still need explicit reconciliation; no global security waiver or new runtime proof.",
+        "sourceEvidence": [
+          "server/test/gcsp-shell.test.js:729",
+          "blocks/gcsp/offer/entry.js:8",
+          "docs/gcsp/employee-entry-contract.md:39",
+          "docs/gcsp/evidence/fucq100/offer-runtime-result.md:7"
+        ]
+      },
+      {
+        "id": "C10",
+        "title": "Future-offer fixture now coexists with a real direct offer page",
+        "failedTests": [
+          {
+            "file": "server/test/launcher-package.test.js",
+            "testLine": 48,
+            "title": "a future offer block and its own nested direct page are discovered without assembler edits",
+            "assertionLine": 57
+          }
+        ],
+        "classification": "fixture isolation/route-priority mismatch",
+        "severity": "Low",
+        "severityStatus": "proposed from observed impact; dispatcher disposition remains separate",
+        "diagnosis": "sourceCopy now includes real gcsp-offer.html. Assembler explicitly prefers an existing direct offer page and falls back to nested preview.html. The test still expects the future-only preview route. The prior assertion confirms the nested preview was included in manifest.pages.",
+        "actualImpactAndSeverityBasis": "No missing package/page is demonstrated; route priority changed the expected demoPages entry. Later verifySite and missing-file assertions in this case were not reached.",
+        "sourceOrigin": "Assembler/test db4fcbebd360006d81f3efd5fe1ac8d6f136dcea from merged base; real offer page adopted by FUCQ-100 offer composition bc8a941adbf8bd74089b11b820c489551742ab12.",
+        "knownBugOverlap": "Unresolved: no confirmed matching Bug ID in the supplied lane record; dispatcher must deduplicate before intake.",
+        "remainingValidation": "Reconcile fixture isolation or intended route priority; no assembler repair or packaging rerun in this lane.",
+        "sourceEvidence": [
+          "server/test/launcher-package.test.js:48",
+          "scripts/assemble-site.mjs:163"
+        ]
+      }
+    ],
+    "backlogDisposition": "Dispatcher owns linked independent Bug intake/deduplication and merge decision; no Jira write, acceptance update or repair in this lane."
+  },
+  "nativePostgresqlSkips": {
+    "count": 5,
+    "titles": [
+      "PostgreSQL native parity: NOT RUN; GCSP_DATABASE_URL unset, Render integration gate remains blocked",
+      "native PostgreSQL rows/dates, seed replay, immutable SQL and reopen agree with memory",
+      "native PostgreSQL mid-publication SQL failure rolls back every typed row and permits a valid retry",
+      "postgresql native constraints reject a second occupying hold and claim",
+      "postgresql: shared TransactionRepository contract"
+    ],
+    "reason": "GCSP_DATABASE_URL unset; native PostgreSQL integration was not run",
+    "gate": "Existing native-storage/Render acceptance limitation; skips are not passes",
+    "credentialsRead": false
+  },
+  "observedPassesAndLimits": {
+    "manualResumeSelection": "Six of seven selected Resume/host/setup cases passed within the full suite; one focus case failed. No whole-suite pass.",
+    "otherObservedPasses": [
+      "both directions of composed manual/buddy claim exclusion",
+      "actual buddy capture/token timing and exact-deadline expiry",
+      "authentic remote pending intent without invented offer/token",
+      "actual browser-cookie Greg switch/navigation",
+      "shared runtime/registry memoization and TEST stock pull"
+    ],
+    "limits": [
+      "Passed cases do not waive failed assertions or establish all downstream assertions in a case that stops early.",
+      "Rendered desktop/narrow/keyboard acceptance remains open.",
+      "No native PostgreSQL or live provider/email acceptance claimed."
+    ]
+  },
+  "cleanup": {
+    "scratchAbsent": true,
+    "ownedProcessesAbsent": true,
+    "ownedGroupsAbsent": true,
+    "launcherPidAbsent": true,
+    "reservationAbsent": true,
+    "rawLedgerRows": 0,
+    "finalizerOpenFileProof": true,
+    "cleanupMutation": false
+  },
+  "cleanupEvidence": "Existing finalizer manifest verifies joined direct handles and absent observed processes, groups and open files before exact owned scratch removal and exact token release. Separate lane collection at 2026-11-06T16:40:04.843870+00:00 records raw locked ledger zero rows and outer exec session 59072 joined exit 1. Dispatcher independent collection remains separate.",
+  "removedScratch": "/private/tmp/test-stamp-shard-45cd11acb42644e7b03c4ef9df8296f5",
+  "ownershipToken": "45cd11acb42644e7b03c4ef9df8296f5",
+  "records": {
+    "receipt": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-corrected-9f5484c6a611421eb8ce109685b9ea1a/receipt.json",
+      "sha256": "00c330a36dbcc2f7fc7ff141f578499d25695cd0c1d5c6f238e7e7dd82f6f357"
+    },
+    "originalOutput": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-corrected-9f5484c6a611421eb8ce109685b9ea1a/raw.log",
+      "sha256": "4678439e6f05dae94b7bbc5b0b6f78f4cf2bff85b4d70f2b45c6abd4cdd37b44"
+    },
+    "ownership": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-corrected-9f5484c6a611421eb8ce109685b9ea1a/ownership/45cd11acb42644e7b03c4ef9df8296f5.json",
+      "sha256": "1ba27065ac91966c48cdeb2b39f63d0ed3499998920d71a89d10389d2caceab5"
+    },
+    "laneCollection": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-corrected-9f5484c6a611421eb8ce109685b9ea1a/lane-collection.json",
+      "sha256": "b0b422f95bc9a395fc0e9bd5ae836b2449a55f8c570d6f039491159eae870cbc"
+    }
+  },
+  "grant": {
+    "amendment": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq100-required-validation-amendment-20261106.json",
+      "sha256": "4ed7c28abf547d7da3bd4e8db3d633031386aebb1788f54a4731a217801760d7"
+    },
+    "state": "Authorised install and corrected npm attempt consumed; no further runtime authorised"
+  },
+  "adapter": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq100-required-environment-adapter-20261106.py",
+    "sha256": "19ffc2d6d50892c24fe847679fa27f2407ee57b0b854e6e5886afd1f28a3052d"
+  },
+  "measurementBoundary": "Ordinary owned-process-group polling under dispatcher amendment; synchronous transient native children were not individually instrumented. Sampled RSS does not measure every millisecond peak. Strict locked raw ALL-row accounting; no pruning, discounting or foreign mutation.",
+  "accepted": false,
+  "fullSuitePassed": false,
+  "productRepairs": false,
+  "newJiraWrites": false,
+  "newAgents": false,
+  "newTestsDuringClassification": false,
+  "remaining": "Dispatcher must deduplicate/link backlog findings and decide merge under explicit deferrals and actual severity. Failed full suite and unmet UI/native acceptance remain visible; no product fix or further run is authorised in this lane."
+}

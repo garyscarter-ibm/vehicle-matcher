@@ -1,0 +1,29 @@
+{
+  "at": "2026-11-07T03:56:47.480224+00:00",
+  "scope": "independent exact pins and read-only source/supervisor/retention review",
+  "sourceAllocation": "g42-six-model-options-20261107-once",
+  "executionPlanSha256": "08ef0489dec0cabacdd4a96922c092b39ef4860437f45710d129ced3100c6328",
+  "planDigest": "bed0e64233f8ad760418e92e5e59c5b089b8d0a71117b2155174a406527c642c",
+  "codeInputPinsMatched": 45,
+  "runtimePinsMatched": 2,
+  "newAllocationUnspent": true,
+  "sourceBasis": "retained actual exact six included model/default/literal trim relationships, not rejected M_PERFORMANCE_LINE as trim",
+  "preparedEvidenceReused": "32/32 scoped checks, no rerun of identical code/inputs",
+  "publicGetCeiling": 24,
+  "decodedBytesCeiling": 25165824,
+  "sourceWrites": 0,
+  "solverRequests": 0,
+  "imageRequests": 0,
+  "admissions": 0,
+  "retainedOutputForecastBytes": 83886080,
+  "review": "pass exact six serial qualification only",
+  "sourceGrantReleased": true,
+  "acceptance": false,
+  "releasedAt": "2026-11-07T03:57:05.805143+00:00",
+  "grant": {
+    "BMW_G42_OPTIONS_SERIES_SOURCE_GRANT": "g42-six-model-options-20261107-once"
+  },
+  "executionTree": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+  "integratedHead": "d95c4cf0",
+  "conditions": "one exact24GET serial six-model qualification; stop firstfailure/incomplete; retainedprimary/export before cleanup; noautomaticreplay;0solver/images/admissions"
+}

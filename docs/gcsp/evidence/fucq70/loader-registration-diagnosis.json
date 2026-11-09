@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-70",
+  "date": "2026-11-06",
+  "status": "authored-unexecuted proposal; loader bootstrap cause not yet confirmed",
+  "scopeAuthorization": "Dispatcher 01a1ab10-6556-7211-92a0-0dd0345e3f0d authorised read-only diagnosis and owned helper correction authoring, exact delta review before another execution.",
+  "diagnosis": {
+    "reproduction": "Only the first admitted exact eba14ad command ran, once. It failed at actual66-loader.mjs:54:51 during ESM Hooks.register; no application imports journal or six-case execution.",
+    "verified": "Node registration stack called the strict resolver, which rejected a relative/entry target before journalling its specifier or parent. No application defect is established.",
+    "hypothesis": "Registration attempted to resolve the already-installed loader itself through the active hook chain. Exact rejected values were not preserved, so this remains a hypothesis.",
+    "affectedWritersReaders": "Owned strict-loader resolver/load hooks, supervisor-generated loader config, retained import/rejection evidence and failure classification. Existing source/dependency graph and original failed evidence are unchanged.",
+    "nextCheck": "Dispatcher reviews the one explicit proposed edge, new hashes and unused run identity. A separately admitted run must record any registration edge/rejection and fail on everything outside the finite graph.",
+    "basis": "Original exact failure/receipt at fec07bc; read-only upstream Node v26.5.0 hooks.js and worker.js inspection. No new execution."
+  },
+  "upstreamReadOnlyReferences": [
+    {
+      "url": "https://raw.githubusercontent.com/nodejs/node/v26.5.0/lib/internal/modules/esm/hooks.js",
+      "observation": "Hooks.register defaults its parent URL to getCWDURL().href and imports the specified loader through the ESM loader before appending custom hooks."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/nodejs/node/v26.5.0/lib/internal/modules/esm/worker.js",
+      "observation": "Loader-worker initialization registers each configured custom loader. This explains why registration is a separate bootstrap boundary; it does not identify the values lost by the first run."
+    }
+  ],
+  "proposedRegistration": {
+    "url": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs",
+    "parentUrl": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/",
+    "sha256": "96933bd1378aa6b243865bb81b9dd8ce9aec2823e42cadfec5610dd81a530052"
+  },
+  "specifierForms": [
+    "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs"
+  ],
+  "guard": "Exact specifier equality, exact cwd parent URL equality, SHA-256 verification before resolve and load. All other relative/entry imports retain manifest membership/edge checks. No application importer may use the exception.",
+  "diagnostics": {
+    "journalCapBytes": 262144,
+    "identityDisplayMaxCharacters": 512,
+    "safeUnknownSpecifierMaxCharacters": 160,
+    "unknownValues": "Known/pinned and checkout-file identities display bounded values; arbitrary URL credentials/query/fragment and opaque unknowns are withheld with SHA-256 identity.",
+    "failure": "Rejected reason/specifier/parent journalled before throwing; child failure is recorded before secondary graph-completeness enforcement. Rejection/registration events retained in receipt."
+  },
+  "unchanged": {
+    "applicationModules": 46,
+    "fileInputs": 6,
+    "externalCopies": 8,
+    "installedDependencyPackages": 14,
+    "installedDependencyFiles": 68,
+    "probeSha256": "dac68e081ab985f9d089e34868dba44a05477064cd2f745af1aefd71becb5778",
+    "topLevelCases": 6,
+    "plannedSetups": 8,
+    "producerSourcePins": {
+      "FUCQ-66": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+      "FUCQ-69": "8a3e3bf1c7df44f13f8d432ffc4e9b8598161bbf"
+    },
+    "singletonIdentity": [
+      {
+        "path": "server/gcsp/repository/index.js",
+        "fucq70Ref": "16a83dde4bfbd48721bce5c26f98b482f4f5db40",
+        "fucq66Ref": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+        "sha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+        "identical": true,
+        "runtimeRequirement": "one canonical module URL and shared runtime instance"
+      },
+      {
+        "path": "server/gcsp/repository/core.js",
+        "fucq70Ref": "16a83dde4bfbd48721bce5c26f98b482f4f5db40",
+        "fucq66Ref": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+        "sha256": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+        "identical": true,
+        "runtimeRequirement": "one canonical module URL and shared runtime instance"
+      },
+      {
+        "path": "server/gcsp/repository/memory.js",
+        "fucq70Ref": "16a83dde4bfbd48721bce5c26f98b482f4f5db40",
+        "fucq66Ref": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+        "sha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+        "identical": true,
+        "runtimeRequirement": "one canonical module URL and shared runtime instance"
+      },
+      {
+        "path": "server/gcsp/identity/index.js",
+        "fucq70Ref": "16a83dde4bfbd48721bce5c26f98b482f4f5db40",
+        "fucq66Ref": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+        "sha256": "7b23c7a6f251edaa54ce8921eb29734976447239afd3cb58343d79f9e153c152",
+        "identical": true,
+        "runtimeRequirement": "one canonical module URL and shared runtime instance"
+      },
+      {
+        "path": "server/gcsp/clock/index.js",
+        "fucq70Ref": "16a83dde4bfbd48721bce5c26f98b482f4f5db40",
+        "fucq66Ref": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+        "sha256": "a1726ddc4ad11deb0b7044480d745180d4c7dff42b34e77305a090b35d38e40a",
+        "identical": true,
+        "runtimeRequirement": "one canonical module URL and shared runtime instance"
+      }
+    ],
+    "originalEvidence": "docs/gcsp/evidence/fucq70/service-proof-run-20261106/*"
+  },
+  "newHashes": {
+    "loader": "96933bd1378aa6b243865bb81b9dd8ce9aec2823e42cadfec5610dd81a530052",
+    "supervisor": "4a1766de4b8e11f59749877241913eb2e032d59abb5c44b8c250c560216944b3",
+    "sourceManifest": "d5e2d2d1f122772329243d8ccd4a4dbce7835774cd0b9bb3c53d59d1db7c422a",
+    "harnessManifest": "e16cc7d9f1c426d21fbfd0c7e601eb73b009521ae781124019ccc5a8e5508c96"
+  },
+  "plannedScratch": "/private/tmp/test-stamp-shard-52a55a02e3bef795332d9f0cc4467671",
+  "plannedRecords": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/52a55a02e3bef795332d9f0cc4467671",
+  "newExecution": "none; fresh exact review/admission required",
+  "storyBuilt": false
+}

@@ -1,0 +1,113 @@
+{
+  "time": "2026-11-07T06:05:35.382448+00:00",
+  "scope": "scoped real monotonic new-cohort budget + expired original deadline checks; no public traffic",
+  "status": "passed",
+  "tests": {
+    "fail": 0,
+    "pass": 2,
+    "skipped": 0,
+    "tests": 2
+  },
+  "wallSeconds": 0.77923675,
+  "seriesPlanSha256": "d8dd8f5bcf6a6f6e084a45b58bd8f50844b418e248bd17e9d04140a9e484edc6",
+  "candidateManifestSha256": "571124e2128695af1bf4e3199c4a04dea5963dab67d16e578469fdac14502ee2",
+  "sourceTraffic": 0,
+  "diagnosis": "A broad replacement of started assignment also matched cohort_started and subtracted original phase age. Set only cohort_started to current monotonic; keep global original consumed clock and absolute deadline unchanged.",
+  "regression": "AST loads actual run() and cohort assignment with real monotonic900s-old phase; only process launch/wait and receipt writes are stubbed. Old code fails finite phase/cohort wall budget; corrected code admits bounded stage while retaining original900s age. Expired original marker refuses before ownership/output.",
+  "history": "clock-red had incomplete fixture datetime; clock-red-corrected reached actual wrong-budget failure; clock-green/clock-green-corrected exposed missing fixture ROOT/id; clock-final complete2/2. All retained; no source calls.",
+  "cleanup": [
+    {
+      "attempt": "clock-red",
+      "result": {
+        "fail": 1,
+        "pass": 0,
+        "skipped": 0,
+        "tests": 1
+      },
+      "scratchRoot": "/private/tmp/test-stamp-shard-c1f09c79247d43bc96de57419b1e419f",
+      "scratchAbsent": true,
+      "groups": [
+        46847
+      ],
+      "groupsAbsent": true,
+      "token": "c1f09c79247d43bc96de57419b1e419f",
+      "reservationAbsent": true,
+      "removedBytes": 360544
+    },
+    {
+      "attempt": "clock-red-corrected",
+      "result": {
+        "fail": 1,
+        "pass": 0,
+        "skipped": 0,
+        "tests": 1
+      },
+      "scratchRoot": "/private/tmp/test-stamp-shard-af1b2772271848e5a4ac544beba109bd",
+      "scratchAbsent": true,
+      "groups": [
+        46980
+      ],
+      "groupsAbsent": true,
+      "token": "af1b2772271848e5a4ac544beba109bd",
+      "reservationAbsent": true,
+      "removedBytes": 360544
+    },
+    {
+      "attempt": "clock-green",
+      "result": {
+        "fail": 1,
+        "pass": 1,
+        "skipped": 0,
+        "tests": 2
+      },
+      "scratchRoot": "/private/tmp/test-stamp-shard-efee1eb0f3ce4ca184f4b11eb10a22d9",
+      "scratchAbsent": true,
+      "groups": [
+        47099
+      ],
+      "groupsAbsent": true,
+      "token": "efee1eb0f3ce4ca184f4b11eb10a22d9",
+      "reservationAbsent": true,
+      "removedBytes": 4375583
+    },
+    {
+      "attempt": "clock-green-corrected",
+      "result": {
+        "fail": 1,
+        "pass": 1,
+        "skipped": 0,
+        "tests": 2
+      },
+      "scratchRoot": "/private/tmp/test-stamp-shard-540c77a2a15c4e22a877fe8aa1f0d8ed",
+      "scratchAbsent": true,
+      "groups": [
+        47352
+      ],
+      "groupsAbsent": true,
+      "token": "540c77a2a15c4e22a877fe8aa1f0d8ed",
+      "reservationAbsent": true,
+      "removedBytes": 4375583
+    },
+    {
+      "attempt": "clock-final",
+      "result": {
+        "fail": 0,
+        "pass": 2,
+        "skipped": 0,
+        "tests": 2
+      },
+      "scratchRoot": "/private/tmp/test-stamp-shard-55af8808b52d4cf78a6c5cd0cba9e53d",
+      "scratchAbsent": true,
+      "groups": [
+        47575
+      ],
+      "groupsAbsent": true,
+      "token": "55af8808b52d4cf78a6c5cd0cba9e53d",
+      "reservationAbsent": true,
+      "removedBytes": 4375583
+    }
+  ],
+  "removedBytes": 13847837,
+  "compatibilityException": null,
+  "leftovers": []
+}

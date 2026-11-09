@@ -1,0 +1,48 @@
+--- a/.github/workflows/gcsp-fleet-build.yml
++++ b/.github/workflows/gcsp-fleet-build.yml
+@@ -31,8 +31,20 @@
+           test ! -e "$task_root"
+           mkdir -p "$(dirname "$manifest")"
+           printf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":768,"seconds":570,"scope":"Node20Linux exact26asset restore and5scoped runtime references; full4668 proof not replayed;1313 original consumer failures; acceptance false"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"
++          phase=initializing
++          phase_started=$SECONDS
++          phase_start() { phase="$1"; phase_started=$SECONDS; printf 'phase=%s state=start elapsed_s=%s\n' "$phase" "$SECONDS"; }
++          phase_done() { printf 'phase=%s state=passed seconds=%s elapsed_s=%s\n' "$phase" "$((SECONDS-phase_started))" "$SECONDS"; }
+           cleanup() {
+             result=$?
++            printf 'phase=%s state=exit exit=%s phase_seconds=%s elapsed_s=%s\n' "$phase" "$result" "$((SECONDS-phase_started))" "$SECONDS"
++            for evidence in download offline; do
++              if test -f "$task_root/$evidence.json"; then
++                printf 'phase_evidence=%s bytes=%s\n' "$evidence" "$(wc -c < "$task_root/$evidence.json")"
++                head -c 8192 "$task_root/$evidence.json"
++                printf '\n'
++              fi
++            done
+             if test -d "$task_root"; then
+               du -sk "$task_root"
+               rm -rf -- "$task_root"
+@@ -46,13 +58,23 @@
+           export TMPDIR="$task_root" TMP="$task_root" TEMP="$task_root"
+           node --version
+           cd server
++          phase_start npm-ci
+           timeout 120s npm ci --ignore-scripts --no-audit --no-fund
++          phase_done
++          phase_start download
+           timeout 180s node --max-old-space-size=384 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network download > "$task_root/download.json"
+-          timeout 60s node --max-old-space-size=384 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network offline > "$task_root/offline.json"
++          phase_done
++          phase_start offline
++          timeout 120s node --max-old-space-size=384 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network offline > "$task_root/offline.json"
++          phase_done
+           cd ..
+           proof=docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan
++          phase_start verify-assets
+           timeout 30s node --max-old-space-size=384 "$proof/verify-assets.mjs" "$task_root/store" "$task_root/cache/$RELEASE"
++          phase_done
++          phase_start boundary
+           timeout 120s node --max-old-space-size=384 "$proof/boundary.mjs" "$task_root/store" "$task_root/cache/$RELEASE" "$task_root"
++          phase_done
+           node --input-type=module - "$task_root" <<'JS'
+           import assert from 'node:assert/strict';
+           import {readFile} from 'node:fs/promises';

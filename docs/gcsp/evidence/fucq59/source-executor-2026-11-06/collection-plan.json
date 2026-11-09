@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "1",
+  "planId": "f59-public-known-seed-20261106",
+  "version": "1",
+  "seed": "known-f58-t5mj",
+  "policyRead": {
+    "asOf": "2026-11-06T00:00:00.000Z",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "source": {
+    "id": "bmw-uk-public",
+    "version": "f58-20261105.v1",
+    "kind": "public-bmw-uk"
+  },
+  "context": {
+    "catalogueDate": "2026-11-01",
+    "market": "GB",
+    "locale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "models": [
+    "T5MJ"
+  ],
+  "target": 1,
+  "candidateCount": 1,
+  "knownSelection": {
+    "factoryCodes": [
+      "FKSFU",
+      "P0300",
+      "S0230",
+      "S02PA",
+      "S02VB",
+      "S02VD",
+      "S0302",
+      "S0337",
+      "S03DK",
+      "S03G9",
+      "S03M1",
+      "S0428",
+      "S043L",
+      "S0488",
+      "S0494",
+      "S04T2",
+      "S04U9",
+      "S04UR",
+      "S04V1",
+      "S0552",
+      "S05AS",
+      "S05AV",
+      "S05DM",
+      "S0654",
+      "S0674",
+      "S06AE",
+      "S06AF",
+      "S06AK",
+      "S06C4",
+      "S06NX",
+      "S06PA",
+      "S0704",
+      "S0710",
+      "S0760",
+      "S0775",
+      "S0812",
+      "S0853",
+      "S0880",
+      "S08R3",
+      "S08R9",
+      "S08SM",
+      "S08TF",
+      "S08TG",
+      "S08WM",
+      "S09QV",
+      "S09T1",
+      "S09T2"
+    ],
+    "accessoryCodes": [
+      "SE000001"
+    ]
+  },
+  "limits": {
+    "maxCandidates": 1,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "solve": 1
+    },
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 45000,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "cacheEntries": 16,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 1048576,
+    "imageRequests": 0,
+    "sourceAttempts": 4,
+    "sourceBytes": 2097152,
+    "responseBytes": 1048576
+  }
+}

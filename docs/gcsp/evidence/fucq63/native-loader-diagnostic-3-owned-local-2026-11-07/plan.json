@@ -1,0 +1,1027 @@
+{
+  "executionRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036",
+  "originalPlan": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/plan.json",
+    "bytes": 52496,
+    "sha256": "019c1db8d7b73f21a790f9224eca058297a0be6514a27d3055008e335d160d26"
+  },
+  "driver": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/install-bottle.rb",
+    "bytes": 1221,
+    "sha256": "a41ac616ff83c547bc402c8a0fe0520c02c0d4d555f7f631d2ee163a75d613aa"
+  },
+  "packages": [
+    {
+      "name": "ca-certificates",
+      "pkgVersion": "2026-10-20",
+      "bottleRebuild": 0,
+      "manifestTag": "2026-10-20",
+      "bottleTag": "2026-10-20.all",
+      "bottleSha256": "8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443",
+      "downloadBytes": 109619,
+      "installedBytes": 193035,
+      "url": "https://ghcr.io/v2/homebrew/core/ca-certificates/blobs/sha256:8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443",
+      "manifestSha256": "eef300d56bc7d8621f1cc3f36152f02a05ac66f93a06348c086f66b21ac1fc7a",
+      "formulaRubySha256": "535300ac0e99511a36340454bd5287cfff097191de9d7b9675ed924f3a692317",
+      "kegPath": "/opt/homebrew/Cellar/ca-certificates/2026-10-20",
+      "dependencies": [],
+      "postInstallSteps": [
+        {
+          "command": {
+            "base": "libexec",
+            "path": "post-install"
+          },
+          "type": "run",
+          "args": [
+            "{{pkgshare}}/cacert.pem",
+            "{{pkgetc}}/cert.pem"
+          ]
+        }
+      ],
+      "retainedArchive": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/ca-certificates--2026-10-20.all.bottle.tar.gz",
+        "bytes": 109619,
+        "sha256": "8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443"
+      },
+      "reviewedEmbeddedRuby": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/ca-certificates.rb",
+        "bytes": 7949,
+        "sha256": "4abe22fb50b45cd5e113747a92a115e0479c4017502d7e8a87132a340b742d84"
+      },
+      "embeddedMember": "ca-certificates/2026-10-20/.brew/ca-certificates.rb",
+      "canonicalArchiveName": "ca-certificates--2026-10-20.all.bottle.tar.gz"
+    },
+    {
+      "name": "libunistring",
+      "pkgVersion": "1.5",
+      "bottleRebuild": 0,
+      "manifestTag": "1.5",
+      "bottleTag": "1.5.arm64_golden_gate",
+      "bottleSha256": "fec6be46cabaefd1dc5d5ecd029c50aeaef6c93d9c7de4425968047811575e81",
+      "downloadBytes": 1899259,
+      "installedBytes": 5823609,
+      "url": "https://ghcr.io/v2/homebrew/core/libunistring/blobs/sha256:fec6be46cabaefd1dc5d5ecd029c50aeaef6c93d9c7de4425968047811575e81",
+      "manifestSha256": "b3cdb5514cf3add0e18f63a51437d7d800f4f5c5a56a312099194ed563c9daf9",
+      "formulaRubySha256": "e19b8847465634aa2ab365c7fa641216450ad26cc02bddfce08c8d17342d21dc",
+      "kegPath": "/opt/homebrew/Cellar/libunistring/1.5",
+      "dependencies": [],
+      "postInstallSteps": [],
+      "retainedArchive": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/libunistring--1.5.arm64_golden_gate.bottle.tar.gz",
+        "bytes": 1899259,
+        "sha256": "fec6be46cabaefd1dc5d5ecd029c50aeaef6c93d9c7de4425968047811575e81"
+      },
+      "reviewedEmbeddedRuby": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/libunistring.rb",
+        "bytes": 1725,
+        "sha256": "5a0ff014063865e7acebbe3b0e1e5b4434773b8124975898e235e78440279d6d"
+      },
+      "embeddedMember": "libunistring/1.5/.brew/libunistring.rb",
+      "canonicalArchiveName": "libunistring--1.5.arm64_golden_gate.bottle.tar.gz"
+    },
+    {
+      "name": "readline",
+      "pkgVersion": "8.3.6",
+      "bottleRebuild": 0,
+      "manifestTag": "8.3.6",
+      "bottleTag": "8.3.6.arm64_golden_gate",
+      "bottleSha256": "74b458562c5a589a612ebba8f8fc12f3ecbe083223eb4a368c723d88b26a454d",
+      "downloadBytes": 757018,
+      "installedBytes": 2639000,
+      "url": "https://ghcr.io/v2/homebrew/core/readline/blobs/sha256:74b458562c5a589a612ebba8f8fc12f3ecbe083223eb4a368c723d88b26a454d",
+      "manifestSha256": "cf6434889ede9b443c44a678b7467b6a196038eaebc74e310e5d72060d3903ac",
+      "formulaRubySha256": "ead60941ba0f81334499b208e26382eefda15eb1b9614c417d70f1d827dc2e64",
+      "kegPath": "/opt/homebrew/Cellar/readline/8.3.6",
+      "dependencies": [],
+      "postInstallSteps": [],
+      "retainedArchive": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/readline--8.3.6.arm64_golden_gate.bottle.tar.gz",
+        "bytes": 757018,
+        "sha256": "74b458562c5a589a612ebba8f8fc12f3ecbe083223eb4a368c723d88b26a454d"
+      },
+      "reviewedEmbeddedRuby": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/readline.rb",
+        "bytes": 3791,
+        "sha256": "a65ebe6faf79ab5f39e02d263cac7ec93d9813c4617658453f0ca341922555a0"
+      },
+      "embeddedMember": "readline/8.3.6/.brew/readline.rb",
+      "canonicalArchiveName": "readline--8.3.6.arm64_golden_gate.bottle.tar.gz"
+    },
+    {
+      "name": "icu4c@79",
+      "pkgVersion": "79.1",
+      "bottleRebuild": 0,
+      "manifestTag": "79.1",
+      "bottleTag": "79.1.arm64_golden_gate",
+      "bottleSha256": "8499235357ff52424e3fcc647a6ce57050af9f10904554df90319e6a088f665d",
+      "downloadBytes": 32063877,
+      "installedBytes": 88592070,
+      "url": "https://ghcr.io/v2/homebrew/core/icu4c/79/blobs/sha256:8499235357ff52424e3fcc647a6ce57050af9f10904554df90319e6a088f665d",
+      "manifestSha256": "b100e6d8b5225d02fb5fc4eabd3ab0c891be0611b1e2741ca73ebb725f0638f1",
+      "formulaRubySha256": "501b5029e184ab296555618fb394762996c08090b0ad1a44f675d97abf38afa1",
+      "kegPath": "/opt/homebrew/Cellar/icu4c@79/79.1",
+      "dependencies": [],
+      "postInstallSteps": [],
+      "retainedArchive": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/icu4c@79--79.1.arm64_golden_gate.bottle.tar.gz",
+        "bytes": 32063877,
+        "sha256": "8499235357ff52424e3fcc647a6ce57050af9f10904554df90319e6a088f665d"
+      },
+      "reviewedEmbeddedRuby": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/icu4c@79.rb",
+        "bytes": 1593,
+        "sha256": "dc4e8baf0e49e638e00554492f8ba77bf3c67d074f91dcb30d2346fd5da8dde6"
+      },
+      "embeddedMember": "icu4c@79/79.1/.brew/icu4c@79.rb",
+      "canonicalArchiveName": "icu4c@79--79.1.arm64_golden_gate.bottle.tar.gz"
+    },
+    {
+      "name": "openssl@4",
+      "pkgVersion": "4.1.0",
+      "bottleRebuild": 0,
+      "manifestTag": "4.1.0",
+      "bottleTag": "4.1.0.arm64_golden_gate",
+      "bottleSha256": "d239639f77a275caa217707e126790b3f5f5c86e5bc6e2a996e5df7fdaed44a6",
+      "downloadBytes": 11500729,
+      "installedBytes": 24609595,
+      "url": "https://ghcr.io/v2/homebrew/core/openssl/4/blobs/sha256:d239639f77a275caa217707e126790b3f5f5c86e5bc6e2a996e5df7fdaed44a6",
+      "manifestSha256": "5334787c00d0174476fcb17e00b3bd4ef11379589acec0ae3d2639d5bdddd541",
+      "formulaRubySha256": "50f58cda0dfd54aabc627e53205a88afc2e1780d83f43a99c525b58950c32049",
+      "kegPath": "/opt/homebrew/Cellar/openssl@4/4.1.0",
+      "dependencies": [
+        {
+          "ca-certificates": ":no_linkage"
+        }
+      ],
+      "postInstallSteps": [
+        {
+          "source": {
+            "path": "{{etc}}/ca-certificates/cert.pem"
+          },
+          "target": {
+            "path": "{{pkgetc}}/cert.pem"
+          },
+          "force": true,
+          "type": "symlink"
+        }
+      ],
+      "retainedArchive": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/openssl@4--4.1.0.arm64_golden_gate.bottle.tar.gz",
+        "bytes": 11500729,
+        "sha256": "d239639f77a275caa217707e126790b3f5f5c86e5bc6e2a996e5df7fdaed44a6"
+      },
+      "reviewedEmbeddedRuby": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/openssl@4.rb",
+        "bytes": 4740,
+        "sha256": "7ff5915f10c5e950f35e65471fae7e04711bc962689f1369e646e2f68b41b19d"
+      },
+      "embeddedMember": "openssl@4/4.1.0/.brew/openssl@4.rb",
+      "canonicalArchiveName": "openssl@4--4.1.0.arm64_golden_gate.bottle.tar.gz"
+    },
+    {
+      "name": "krb5",
+      "pkgVersion": "1.22.2_2",
+      "bottleRebuild": 0,
+      "manifestTag": "1.22.2_2",
+      "bottleTag": "1.22.2_2.arm64_golden_gate",
+      "bottleSha256": "678c05de46229f5b35631196808a7f6e4a32f9a18bc9574ec447f6c8290dfff7",
+      "downloadBytes": 1333379,
+      "installedBytes": 5203651,
+      "url": "https://ghcr.io/v2/homebrew/core/krb5/blobs/sha256:678c05de46229f5b35631196808a7f6e4a32f9a18bc9574ec447f6c8290dfff7",
+      "manifestSha256": "d848b80b199fb97bfe660066cc1a87fe4736bec11489bb2e3f2e2c5c1490aa0e",
+      "formulaRubySha256": "c110a8d383fbf33227f2b57bad52f554620f9c4383fac31c1820b9561425bf0d",
+      "kegPath": "/opt/homebrew/Cellar/krb5/1.22.2_2",
+      "dependencies": [
+        "openssl@4"
+      ],
+      "postInstallSteps": [],
+      "retainedArchive": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/krb5--1.22.2_2.arm64_golden_gate.bottle.tar.gz",
+        "bytes": 1333379,
+        "sha256": "678c05de46229f5b35631196808a7f6e4a32f9a18bc9574ec447f6c8290dfff7"
+      },
+      "reviewedEmbeddedRuby": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/krb5.rb",
+        "bytes": 1791,
+        "sha256": "dc3dd4e507c10cfc4b3db8ad18d79a26dda5cf1d67d227ce7b9067c54ab26e56"
+      },
+      "embeddedMember": "krb5/1.22.2_2/.brew/krb5.rb",
+      "canonicalArchiveName": "krb5--1.22.2_2.arm64_golden_gate.bottle.tar.gz"
+    },
+    {
+      "name": "postgresql@16",
+      "pkgVersion": "16.15_1",
+      "bottleRebuild": 1,
+      "manifestTag": "16.15_1-1",
+      "bottleTag": "16.15_1.arm64_golden_gate.1",
+      "bottleSha256": "31b8c98844e409376dc0fc7801e09f25c5c7b3c175c77b929ad9bb51aef3095d",
+      "downloadBytes": 19200246,
+      "installedBytes": 72060825,
+      "url": "https://ghcr.io/v2/homebrew/core/postgresql/16/blobs/sha256:31b8c98844e409376dc0fc7801e09f25c5c7b3c175c77b929ad9bb51aef3095d",
+      "manifestSha256": "7086129ff7bb9a0a5faaf21c4596f795f2449310b57a4f5503f0cdca10e0647e",
+      "formulaRubySha256": "63dd55f47d0c31de82b5ecb9f3bb0bddfc65d6754fb923800142e6d771d5a5a1",
+      "kegPath": "/opt/homebrew/Cellar/postgresql@16/16.15_1",
+      "dependencies": [
+        "icu4c@79",
+        "krb5",
+        "lz4",
+        "openssl@4",
+        "readline",
+        "zstd",
+        "gettext",
+        {
+          "gettext": ":build"
+        },
+        {
+          "pkgconf": ":build"
+        }
+      ],
+      "postInstallSteps": [
+        {
+          "path": {
+            "base": "var",
+            "path": "log"
+          },
+          "type": "mkdir_p"
+        },
+        {
+          "path": {
+            "base": "var",
+            "path": "postgresql@16"
+          },
+          "using": "postgresql_initdb",
+          "type": "init_data_dir"
+        }
+      ],
+      "retainedArchive": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/postgresql@16--16.15_1.arm64_golden_gate.1.bottle.tar.gz",
+        "bytes": 19200246,
+        "sha256": "31b8c98844e409376dc0fc7801e09f25c5c7b3c175c77b929ad9bb51aef3095d"
+      },
+      "reviewedEmbeddedRuby": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/postgresql@16.rb",
+        "bytes": 5107,
+        "sha256": "599376de22c948f095f50d290d2e4ea862da2a1facbe1c9850961fb32288a732"
+      },
+      "embeddedMember": "postgresql@16/16.15_1/.brew/postgresql@16.rb",
+      "canonicalArchiveName": "postgresql@16--16.15_1.arm64_golden_gate.bottle.1.tar.gz"
+    }
+  ],
+  "approvedPackages": [
+    {
+      "name": "ca-certificates",
+      "pkgVersion": "2026-10-20",
+      "kegPath": "/opt/homebrew/Cellar/ca-certificates/2026-10-20",
+      "bottleSha256": "8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443"
+    },
+    {
+      "name": "libunistring",
+      "pkgVersion": "1.5",
+      "kegPath": "/opt/homebrew/Cellar/libunistring/1.5",
+      "bottleSha256": "fec6be46cabaefd1dc5d5ecd029c50aeaef6c93d9c7de4425968047811575e81"
+    },
+    {
+      "name": "readline",
+      "pkgVersion": "8.3.6",
+      "kegPath": "/opt/homebrew/Cellar/readline/8.3.6",
+      "bottleSha256": "74b458562c5a589a612ebba8f8fc12f3ecbe083223eb4a368c723d88b26a454d"
+    },
+    {
+      "name": "icu4c@79",
+      "pkgVersion": "79.1",
+      "kegPath": "/opt/homebrew/Cellar/icu4c@79/79.1",
+      "bottleSha256": "8499235357ff52424e3fcc647a6ce57050af9f10904554df90319e6a088f665d"
+    },
+    {
+      "name": "openssl@4",
+      "pkgVersion": "4.1.0",
+      "kegPath": "/opt/homebrew/Cellar/openssl@4/4.1.0",
+      "bottleSha256": "d239639f77a275caa217707e126790b3f5f5c86e5bc6e2a996e5df7fdaed44a6"
+    },
+    {
+      "name": "krb5",
+      "pkgVersion": "1.22.2_2",
+      "kegPath": "/opt/homebrew/Cellar/krb5/1.22.2_2",
+      "bottleSha256": "678c05de46229f5b35631196808a7f6e4a32f9a18bc9574ec447f6c8290dfff7"
+    },
+    {
+      "name": "postgresql@16",
+      "pkgVersion": "16.15_1",
+      "kegPath": "/opt/homebrew/Cellar/postgresql@16/16.15_1",
+      "bottleSha256": "31b8c98844e409376dc0fc7801e09f25c5c7b3c175c77b929ad9bb51aef3095d"
+    }
+  ],
+  "reviewedEmbeddedRubyPins": [
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/ca-certificates.rb",
+      "bytes": 7949,
+      "sha256": "4abe22fb50b45cd5e113747a92a115e0479c4017502d7e8a87132a340b742d84"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/libunistring.rb",
+      "bytes": 1725,
+      "sha256": "5a0ff014063865e7acebbe3b0e1e5b4434773b8124975898e235e78440279d6d"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/readline.rb",
+      "bytes": 3791,
+      "sha256": "a65ebe6faf79ab5f39e02d263cac7ec93d9813c4617658453f0ca341922555a0"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/icu4c@79.rb",
+      "bytes": 1593,
+      "sha256": "dc4e8baf0e49e638e00554492f8ba77bf3c67d074f91dcb30d2346fd5da8dde6"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/openssl@4.rb",
+      "bytes": 4740,
+      "sha256": "7ff5915f10c5e950f35e65471fae7e04711bc962689f1369e646e2f68b41b19d"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/krb5.rb",
+      "bytes": 1791,
+      "sha256": "dc3dd4e507c10cfc4b3db8ad18d79a26dda5cf1d67d227ce7b9067c54ab26e56"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/postgresql@16.rb",
+      "bytes": 5107,
+      "sha256": "599376de22c948f095f50d290d2e4ea862da2a1facbe1c9850961fb32288a732"
+    }
+  ],
+  "catalog": {
+    "path": "/Users/usget/Library/Caches/Homebrew/api/internal/packages.arm64_golden_gate.jws.json.payload",
+    "sha256": "7b31ddfa8a43b7fbf2e874ef7a618cdeb39eec210481b258e49fa4c2c4f13b71",
+    "metadata": {
+      "homebrew_version": "7.0.12-12-g4f254c4",
+      "bottle_tag": "arm64_golden_gate",
+      "generated_at": 1793695303
+    }
+  },
+  "signedApiEnvelope": {
+    "path": "/Users/usget/Library/Caches/Homebrew/api/internal/packages.arm64_golden_gate.jws.json",
+    "bytes": 15973185,
+    "sha256": "5ce934895df1f66d1fd42da2e433922560f226c14cae8c36c74427a11fe60b4b"
+  },
+  "oldKegsBefore": {
+    "ca-certificates": [
+      "2026-07-16",
+      "2026-08-13"
+    ],
+    "libunistring": [
+      "1.4.2"
+    ],
+    "readline": [
+      "8.3.3"
+    ],
+    "icu4c@79": [],
+    "openssl@4": [],
+    "krb5": [],
+    "postgresql@16": []
+  },
+  "exactKegsBefore": {
+    "/opt/homebrew/Cellar/ca-certificates/2026-10-20": false,
+    "/opt/homebrew/Cellar/libunistring/1.5": false,
+    "/opt/homebrew/Cellar/readline/8.3.6": false,
+    "/opt/homebrew/Cellar/icu4c@79/79.1": false,
+    "/opt/homebrew/Cellar/openssl@4/4.1.0": false,
+    "/opt/homebrew/Cellar/krb5/1.22.2_2": false,
+    "/opt/homebrew/Cellar/postgresql@16/16.15_1": false
+  },
+  "optLinksBefore": {
+    "/opt/homebrew/opt/ca-certificates": "../Cellar/ca-certificates/2026-08-13",
+    "/opt/homebrew/opt/libunistring": "../Cellar/libunistring/1.4.2",
+    "/opt/homebrew/opt/readline": "../Cellar/readline/8.3.3",
+    "/opt/homebrew/opt/icu4c@79": null,
+    "/opt/homebrew/opt/openssl@4": null,
+    "/opt/homebrew/opt/krb5": null,
+    "/opt/homebrew/opt/postgresql@16": null,
+    "/opt/homebrew/opt/icu4c": "../Cellar/icu4c@78/78.3",
+    "/opt/homebrew/opt/openssl": "../Cellar/openssl@3/3.6.3"
+  },
+  "defaultPostgresCluster": {
+    "path": "/opt/homebrew/var/postgresql@16",
+    "exists": false
+  },
+  "policy": [
+    "HTTP422child responsesdiagnostic; continue while launcher can make necessary calls, preserveerror; credentialsunchanged",
+    "BelowHighdefects linkedbacklogBug; no Storyscope/ACexpansion",
+    "GCSP build-rules,experience-quality andequalcollaboratorauthority remainbinding"
+  ],
+  "schemaVersion": "native-seven-bottle-loader-diagnostic3-owned-local.v1",
+  "status": "prepared-unexecuted-exact-parent-diagnostic-grant-required",
+  "phase": "loader-diagnostic3-owned-local",
+  "priorInstall4Plan": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-4-signed-cache-2026-11-07/plan.json",
+    "bytes": 57597,
+    "sha256": "d00ca447b2c246a2805719a7f65c27e12810aedb0cc4fc9cbb56d8afb572bcef"
+  },
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/loader-diagnostic3-owned-local",
+  "metadataRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f63-native-postgres/loader-diagnostic3-owned-local",
+  "acceptance": false,
+  "resources": {
+    "workers": 1,
+    "seconds": 120,
+    "cloudScratchMiB": 128,
+    "diskReservationMiB": 144,
+    "hostRamMiB": 384,
+    "groupRamMiB": 320,
+    "supervisorHeadroomMiB": 64,
+    "retainedDiagnosticMaxMiB": 2,
+    "logMaxBytes": 1048576,
+    "expectedCopiedInputBytes": 97534874,
+    "expectedPeakDiskMiB": 124,
+    "compatibilityException": {
+      "kind": "bounded-active-Homebrew-cache-and-build-working-data",
+      "location": "exact owned /private/tmp/test-stamp-shard-<token>",
+      "maximumBytes": 134217728,
+      "reason": "Bash here-string temp files need the owned TMPDIR retained through brew env-i; cloud log write also timed out",
+      "retainedExport": "concise diagnostics exported to OneDrive; bounded local external metadata evidence retained for recovery",
+      "workingDataRemoved": true
+    }
+  },
+  "diagnostic": {
+    "publicRequests": 0,
+    "redownloadBytes": 0,
+    "sourceCalls": 0,
+    "installation": false,
+    "FormulaInstaller": false,
+    "postInstall": false,
+    "services": false,
+    "links": false,
+    "kegWrites": false,
+    "nativeDatabase": false,
+    "flagAssignment": "Ruby assigns HOMEBREW_INTERNAL_ALLOW_PACKAGES_FROM_PATHS=1 after brew.sh startup; no shell opt-out",
+    "forbiddenEnvironment": [
+      "HOMEBREW_DEVELOPER",
+      "HOMEBREW_NO_INSTALL_FROM_API"
+    ],
+    "sandbox": "deny network* and deny file-write*, permit file-write* only beneath exact owned local scratch or literal /dev/null",
+    "sourceCacheModified": false,
+    "signedSidecarsCopied": false,
+    "HomebrewSignatureVerificationRequired": true,
+    "boundedCount": 7,
+    "factoryRoute": true,
+    "retry": false,
+    "deviceWriteException": "/dev/null",
+    "temporaryEnvironmentRetainedThroughStartup": [
+      "TMPDIR",
+      "TMP",
+      "TEMP"
+    ]
+  },
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/audit-direct.mjs": "2625098705988e5ce980d0b91dd9493ed8014f343ec83a5fa36e60e4ddcef7bb",
+    "docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/common.mjs": "7129a8509d24ccfb732c878e08f0b358ca4e5c365c9b82e54e937509df874c88",
+    "docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/http-chunk.mjs": "25617dd58aa3f4e16f2b2fd021fc58b65fff6fb07e813fde5ea6cf2814c96e42",
+    "docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/publish-restart.mjs": "8eea7d9fc8b9d2b0f969a813da20413e563cedb5e8a56a4c157df99cecc453c9",
+    "docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/rollback.mjs": "4bbd8fd922fb712219e295d5b8d797c4f9ba79bd2331e5d8fee46a76bf8c2e51",
+    "docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/summarize.mjs": "c865557228b09bc1f9eda39f59bbdf542e35bee4f10ae24387a3aaf676911923",
+    "docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/supervise.py": "b9307eb1fb86b2cf9a10047d0fd85bef15ada76d051b04b992edd1b5dc9e53b2",
+    "scripts/gcsp/fleet-offline-guard.mjs": "881926639dfab681a917212696e50c6420a0a2b0dcd66dd1a126950283239e59",
+    "scripts/gcsp/verify-fleet.mjs": "0511976dbbaafcbad22672625bbf29bba644ed24848b9bbdb9375faad92f62f4",
+    "server/data/gcsp/vehicle-evidence/registered-sources/batch32-2026-11-07.jsonl": "a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265",
+    "server/data/gcsp/vehicle-evidence/registered-sources/continuation1-2026-11-07.jsonl": "1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802",
+    "server/data/gcsp/vehicle-evidence/registered-sources/f70-1f7e-core01-2026-11-07.jsonl": "5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7",
+    "server/data/gcsp/vehicle-evidence/registered-sources/f70-1f7e-core02-2026-11-07.jsonl": "14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6",
+    "server/data/gcsp/vehicle-evidence/registered-sources/f70-1f7e-core03-2026-11-07.jsonl": "c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06",
+    "server/data/gcsp/vehicle-evidence/registered-sources/f70-1f7e-core04-2026-11-07.jsonl": "acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d",
+    "server/data/gcsp/vehicle-evidence/registered-sources/f70-1f7e-first32-2026-11-07.jsonl": "845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080",
+    "server/data/gcsp/vehicle-evidence/registered-sources/f70-first8-2026-11-07.jsonl": "f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8",
+    "server/data/gcsp/vehicle-evidence/registered-sources/f70-model-axis790-2026-11-07.jsonl": "4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda",
+    "server/data/gcsp/vehicle-evidence/registered-sources/f70-model-trim264-2026-11-07.jsonl": "fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c",
+    "server/data/gcsp/vehicle-evidence/registered-sources/f70-typed-axis390-2026-11-07.jsonl": "6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11",
+    "server/data/gcsp/vehicle-evidence/registered-sources/global-union501-2026-11-07-9.jsonl": "00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064",
+    "server/data/gcsp/vehicle-evidence/registered-sources/pilot311-2026-11-07.jsonl": "00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a",
+    "server/data/gcsp/vehicle-evidence/registered-technical/1f7e-2026-11-07.json": "c113780f0a2529240a24c1cf49fe25a81986dee88dfefe0b047b7a50bd258a22",
+    "server/gcsp/adapters/manual-stock.js": "66e8d7de1662ac778ebc789aa9f93085abb9d2fafed528baf0fd90a9cb6bc771",
+    "server/gcsp/adapters/synthetic-ordering-documents.js": "1236e1099f8de4e8aca4d33967acb0872f751dd3eb5334a56014ba0430d813df",
+    "server/gcsp/adapters/synthetic-ordering-status.js": "3122f074ca1ee6614c58cc8bb53cb62ad7e10a5bcbc076dd8490b94b182390d2",
+    "server/gcsp/adapters/synthetic-ordering.js": "c2b83391dc0b32e811a407a546d600631254e73810fa90eecc4ad6f70c1392be",
+    "server/gcsp/brief/activity-http.js": "b4384eb61ea60afb31570a3d2819ea686dff6aad0724cfda3f0b96788c01f2c4",
+    "server/gcsp/brief/activity.js": "dbf317b5aba98b1f6a723692e108a1b1a83637fb61e76ca33729dd90fe8b8f6f",
+    "server/gcsp/brief/editor.js": "df70b807923069db3b9d2b4a99ecd3ca887bc7683c5e536065c145c2664e8dc1",
+    "server/gcsp/brief/http.js": "20a88f4cafa5c0009b54398682e1540cfabc2afea2b16935962b1406cbef8402",
+    "server/gcsp/brief/index.js": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418",
+    "server/gcsp/cases/http.js": "d1b48cf2b47e2d19f80c61c90fdd234098d1ae480a591878ebb38f9fb51f0d65",
+    "server/gcsp/cases/index.js": "a080a47479444a94f041de1b0c094974c3eea655a8076f771ec33f82ecb43379",
+    "server/gcsp/cases/notification.js": "44af7293f900f3a83bda7b98be094f50dd77de33383c279f8c582a013cbfa83e",
+    "server/gcsp/cases/policy.js": "c6ee2d24b019695a8bf3663fe2dd22fee5705aac65a7fff834f21b5c219209e7",
+    "server/gcsp/clock/http.js": "da019f6f766ec6ff22ab7346091ca9ef6744cde2608465f20d942c07ec083535",
+    "server/gcsp/clock/index.js": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
+    "server/gcsp/comparison/generator.js": "596c26adfaef43443914e90f2675b528309e85d5fee5459aedc661845b0917cc",
+    "server/gcsp/fixtures/principals.js": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f",
+    "server/gcsp/fixtures/scenario-v1.js": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
+    "server/gcsp/fixtures/scenarios/catalogue-v1.js": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c",
+    "server/gcsp/fixtures/scenarios/index.js": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4",
+    "server/gcsp/fixtures/scenarios/presentation-v1.json": "ef41c930eed0e507cef1b3c8f3142b42ae7cb80de56f7bdcb9a32d582493f15b",
+    "server/gcsp/greg/http.js": "dfa42aedf5851af618311950100f9186a11880ce51d7a122bc115a2d8ea8aa2e",
+    "server/gcsp/greg/index.js": "62452edd55d8834f029b1a4ab3dee2d252f3a4bc04c76431ad999909839f974c",
+    "server/gcsp/greg/publish/fit.js": "d3249720c2d3a15164a3bfb402e5316ea8f4016dfe58db028590c56e728d6674",
+    "server/gcsp/greg/publish/http.js": "237a98fa9894fc1421d2426d14fbd84134ccfffe8a7ab701a265d23ea63b048e",
+    "server/gcsp/greg/publish/index.js": "63621b317268cfc9e9d6b99b71306eb5327a102ab4e4a1b1f98542dfd6edd1ae",
+    "server/gcsp/identity/http.js": "86d3aa6bfc13ae6773c3861b7ef6c72fecfd31270b7c4f0609e240bd017b713e",
+    "server/gcsp/identity/index.js": "4c60cd226ecceefcedd86c7da73a410bfabbeddbb05aab1aa997c98639f7612c",
+    "server/gcsp/lifecycle/approvals/http.js": "49875b0b0cc3190518c07696a03e076525b7616c435ed4c93eb4f7a4398deafa",
+    "server/gcsp/lifecycle/approvals/index.js": "731ce7f165cfebfd38b147d22fce6dbdfa7d8526dcc2a836cbf72937ce710651",
+    "server/gcsp/lifecycle/approvals/policy.js": "233871181fe20478bcfa3a87a7fdaf7a01acd35fe0ef1a27853f91d73068f85e",
+    "server/gcsp/lifecycle/approvals/source.js": "99c50fbfe144e8beb67374d816ba428b427bd9844b14b4f886ff9f1da767eb74",
+    "server/gcsp/lifecycle/documents/http.js": "ba3e6791677490a9f8d5ea429be1f17f7710fcb9758610c65b64ee170a6005b4",
+    "server/gcsp/lifecycle/documents/index.js": "fea0fbf3b6bbb8cae82bc220494b6052917c22d05e50eb03d6b18ee539129a84",
+    "server/gcsp/lifecycle/documents/policy.js": "050ad3dc814eed07580687797b1de5a2dfe2fdfa833322063aee151d16c095ba",
+    "server/gcsp/manual-claims/http.js": "909926cc334b74b1d000fa12987fa8541d66eb445499d7fdaf03b241a29be6b7",
+    "server/gcsp/manual-claims/index.js": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059",
+    "server/gcsp/manual-context/fixtures.js": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6",
+    "server/gcsp/manual-context/http.js": "d49bbb756447e8b91ee90dd54e2240914b45e554d79428e54345a59585d4dc37",
+    "server/gcsp/manual-context/index.js": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43",
+    "server/gcsp/manual-context/ports.js": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267",
+    "server/gcsp/manual-context/recommendation-facts.js": "4901d85a1a718529e3d85bba64b8de098105e945ae444127796c931b239571ec",
+    "server/gcsp/manual-gallery/stock-read.js": "8d96ec48ca1fc9ff76f6dae6407a18a9c09844e3094b10a638a7b3215a7e549a",
+    "server/gcsp/manual-order/index.js": "a12f7c2abfb4e487355cee999359859b0936b9a22075755884087566c7a42c8c",
+    "server/gcsp/manual-order/manual-conversion.js": "330ff1613ad01a08578f32c8cfdeaa763e6a8aa7844b68e433abea4d0ab1cb1f",
+    "server/gcsp/manual-order/terms.js": "239f72b3abfb45944298ac3f0d504a36f501ef88fb3853c6e099a80337969eb6",
+    "server/gcsp/manual-review/http.js": "e37dbc4dd6764f533be77341d07d1c4a4e4fe18fadcf0bc15ead4bb34186b22e",
+    "server/gcsp/manual-review/index.js": "86b850450957e27bbc12dceffe49aa27b27efe8a458abe4ba533ebf65fa6f323",
+    "server/gcsp/manual-review/validation.js": "d70a4c1d51afd8acb180f6cc748de80a0bea37f157912db92a8e8ad1a4626d05",
+    "server/gcsp/migrations/index.js": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+    "server/gcsp/notify/captured.js": "df162186e33887287ebde5852c56a926f3c20873f17c80654989938af6feff58",
+    "server/gcsp/notify/http.js": "ae3fd2f84fa3ddf1cea1e3bc05fe01944c7fc2094843b34e8b9eb8a2f16231ed",
+    "server/gcsp/notify/index.js": "f7f132bd7fac580cec1ce0e619d613a9a5de77fcefb92ccf27383348aac50fb7",
+    "server/gcsp/notify/port.js": "fa2895408bd05a5f5a7da2b1d4476df134886500578ca91342495b157f840a6e",
+    "server/gcsp/notify/templates.js": "fb9a3b9719c54000409553773698ef620bf35a5ba06c354f33b30cea7df839eb",
+    "server/gcsp/offers/access-http.js": "f37533eeb5309cb4eff6c6dcf0af5ab8a8819afdaa4d08b4baee0147d360e868",
+    "server/gcsp/offers/access.js": "63fac0a89e50b8b4bd5c8bed581dd49bed42519c76b2b6232de155533d37fb3c",
+    "server/gcsp/offers/buddy-hold.js": "0bac9da60039a4947485ef98bf2cc292a65d0786b3baf37e832c62d3b950a8e4",
+    "server/gcsp/offers/buddy-remote.js": "1b7e7e38ee5cbffc76cb7c8cae60d696d1143cbc0cb07a338201151932c5e00e",
+    "server/gcsp/offers/current-car-comparison.js": "c5aaf8b2e3123301d50f3dade21e89e4f88abf12ede4e2c7ed801adbc56099cd",
+    "server/gcsp/offers/decision-http.js": "223e3358569602145ecb2a5f967abf5a9e3ca78d688667d0e6c8bbb0c1779b96",
+    "server/gcsp/offers/decision.js": "a934455a09beb13e3682c1f10ebea95f0549ff2fad8db03d54ff947e7ed7789a",
+    "server/gcsp/offers/followup-comparison.js": "8a7120e2f217b4a6842081e70d90cf0d170939ffa5b9e75ba1aec0330877395f",
+    "server/gcsp/offers/followup-http.js": "b9c1f59fa083a658d0c801fc59c335cb84ddf7b454d3fc60636fcc85306375d0",
+    "server/gcsp/offers/followup-policy-definitions.json": "2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d",
+    "server/gcsp/offers/followup-policy.js": "d65f690d498c0c9c668e4969c2663245da24b47010c7daff9da5c4920163dc39",
+    "server/gcsp/offers/followup.js": "29a439ef9b14b84b43dbb3a5ac91e4e4421866d94ab03bf03c5e463fc8a72028",
+    "server/gcsp/offers/offer-token.js": "6d1957788056f276b834df46144205e6cd73195aa60e966f380e1eea97cc930d",
+    "server/gcsp/policy/activation.js": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+    "server/gcsp/policy/adoption.js": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+    "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+    "server/gcsp/policy/publish.js": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+    "server/gcsp/policy/reviewed-definitions.js": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb",
+    "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json": "89565ec7fa05db042e623c6c88c132542505f7757848e61784f38d49b8391987",
+    "server/gcsp/policy/reviewed/greg-publish-editor-v1.json": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3",
+    "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json": "1f1b632be83ddef1a5656288b4e40c0378736cda5c21fcf03de68544dfbe688f",
+    "server/gcsp/policy/reviewed/offer-followup-questions-v1.json": "2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d",
+    "server/gcsp/policy/reviewed/presenter-controls-v1.json": "0e09fc7cde7677724153265042eb1f7a122c88115762a736a4bdf02a4b2e470a",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/gcsp/predict/records/policy-definitions.json": "c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143",
+    "server/gcsp/presenter-controls/commands.js": "89b21a616e479c27f54d0004fe54d3b93e2cfd557e803b8bc38c717e619a627a",
+    "server/gcsp/presenter-controls/http.js": "d575c0ea6b4ac3fb659fe05fa66535d942215342215c8e1a8ed73b000efaf672",
+    "server/gcsp/presenter-controls/index.js": "06a518dc1ee15919ded29e938a717943816d591b1b79c442114a2aa8239704bd",
+    "server/gcsp/recommendation/http.js": "166f6f3c7d972a04903039c5b25fe5e24ec23155bc345c859fee45f1e06a54fd",
+    "server/gcsp/recommendation/index.js": "08acfe895804cf60dcc178591ecbdd1816f12ce70944f832f1ae394902c7e172",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/index.js": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+    "server/gcsp/repository/memory.js": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+    "server/gcsp/repository/postgres.js": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/gcsp/runtime.js": "e08d994c5f473cad70768dff2de5db36772b7b78e7997fb82c91d5309366ca1d",
+    "server/gcsp/scenarios/http.js": "4170f3760f9fd23478c286ab5a3140e9ad201b6e7c11d00c7f7beb75be773085",
+    "server/gcsp/scenarios/index.js": "02ec280d1407b9723ec55c4eb740eb209614b236cb8939cb45cd53c2c67b143b",
+    "server/gcsp/stock/history-port.js": "4bbd6d6f668b806876e81cc672b8361d820308d03d88e4086c1999142ff3e6ba",
+    "server/gcsp/stock/index.js": "7a41fbb67e5349d26748b5f0be5103eb1f6b6765a9b90ebe71a7d5416f9ea9aa",
+    "server/gcsp/stock/port.js": "e6f466b8d319e064bd9c928050beab1265501a12aae1c30b5af4443ee2a93aa5",
+    "server/gcsp/stock/synthetic-provider.js": "2d194e674b9c1e2338bc879ce44bb6430770c385e117f3fc59c104d9161cbaf7",
+    "server/gcsp/vehicle-evidence/alternate-offline-adapter.js": "3c962e8576da4b65141b29fbb53a9f8e3efd45e43b883bc262df68855fc38a9d",
+    "server/gcsp/vehicle-evidence/application-vehicle-details.js": "64bb6073a90f8aca27766c314a08073ee9df320e2683122cd05b3c6fe49d808f",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "fa1618642c137c8aa2c0d7749d91e749554bcca6608bac71ae527b147c9ef9bc",
+    "server/gcsp/vehicle-evidence/fleet-artifacts.js": "8567ef55e6cf914c1ea8d6f8c7bbb7797f96116030163d58b46eb594feb05de6",
+    "server/gcsp/vehicle-evidence/fleet-release.js": "d6081dc483d9d28da4cce712c8ad762ff275c07ae012d216893d85963d495ff0",
+    "server/gcsp/vehicle-evidence/fleet-releases.json": "cc807e73c08447637b2c909e89ff08075af1236373e568756ab295d14b8fa32c",
+    "server/gcsp/vehicle-evidence/identity-routing.js": "89d805c94c5f7a9dd026daae40e42167355822961d07597bf0cf69c45b649088",
+    "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "2e68ff0141ad52aea1b0e707aeb391185acf789a463473db4ba45520465bc7db",
+    "server/gcsp/vehicle-evidence/lookup-adapter.js": "3060d1707c254ff28ee45c7eedf16802aa57aed9b7d9a52a96206bf0cef395e3",
+    "server/gcsp/vehicle-evidence/provider-read.js": "e194fdeb9ff55faafaadd916b2e0ce34c9d8dce252dc37c3ce04aa8de77bb87b",
+    "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "16d88f7d8974169ed25725b1e643d0c752aec564e6927aea74199e0e6a2841f3",
+    "server/gcsp/vehicle-evidence/registered-corpus-images.js": "47d27d11406e5ffe05790be8893395b6399b142d8befd268d30b5c60407b9e8e",
+    "server/gcsp/vehicle-evidence/registered-technical-facts.js": "0109334b8657a225e498d3ff78068827880e6f2d6bff527c349a265792d8018f",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": "38f86f5121fae767465b81a4615355b7577c35f6b74ed57263441240d617f1e4",
+    "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "28d09b0060646930cc3aa2dd08d4d6f744c65e32b40a2ebd55a1b59b392ca62f",
+    "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9",
+    "server/gcsp/vehicle-evidence/vin-allocation.js": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+    "server/gcsp/vehicle-evidence/vin-generator.js": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+    "server/gcsp/vehicle-evidence/vin-profiles.js": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+    "server/index.js": "378b6b6bf61167d172e558c9f321ecb00ca23251c5baae5f0662f6a5c7de85a7",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "server/vehicle-evidence/bmw-drivers-guide-provider.js": "b3098765b750132b23edc0beb108ef74b173a8c236bbccb44b262e2a54da8f99",
+    "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+    "server/vehicle-evidence/bmw-live-imagery.js": "40c9c7fd202e211034c540a5a4b7117ef9fd3f4a16b65ede59147bb1f5fe16ce",
+    "server/vehicle-evidence/bmw-vin-guide-adapter.js": "f910c56a1148831b01712fdce314ac152bb052c8302f5bfa32c95cd44131bba6",
+    "server/vehicle-evidence/bmw-vin-guide-synthetic.js": "2a5c08d01d03ee07afd0495aef595721b74046ce8ea1a625630e8c4cfeb91f5e",
+    "server/vehicle-evidence/fixtures/bmw-vin-guide-synthetic.v1.json": "0d2f5eca90ae10a6a0a1591228d26f93c2c88c5ee91145ae46ec82508898c546",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393",
+    "docs/gcsp/evidence/fucq63/order-reference-2026-11-07/prove-orders.mjs": "d768ba9636e564842433627750c6530cca8c4161836da0bb38f9e65dbf2f8847",
+    "server/gcsp/migrations/0001_transaction_foundation.sql": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1",
+    "server/gcsp/migrations/0002_policy_tables.sql": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0",
+    "server/gcsp/migrations/0003_renewal_cases.sql": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98",
+    "docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/seed.mjs": "94b206e64cebe40fd681a1f6db6f4d86ec854cf094dba458acc9afb948b5747d",
+    "docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/native.py": "05e870d11a835867eb225776a3e5568699f314888c103199dddef95c91e89a55",
+    "docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/install.py": "109b3c2b9fe040fc86c73e5aea3cba5d83d20078400fe3f2894538dce000be49",
+    "docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/package-metadata.json": "3c4432141dcb64fef2418c2b1a3bb298b4b8711e2b52467dcd7f161bd9f87112",
+    "docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/supervise.py": "98fbfa1d0664345dc0084316e1d88fbb636e9bcbeff16a6780826703710f2a0a",
+    "docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/install-bottle.rb": "a41ac616ff83c547bc402c8a0fe0520c02c0d4d555f7f631d2ee163a75d613aa",
+    "docs/gcsp/evidence/fucq63/native-install-3-local-archives-2026-11-07/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "docs/gcsp/evidence/fucq63/native-install-3-local-archives-2026-11-07/install-local.py": "91f636f64609712ca1b8cff153d507293777c5bce7856952b6586e2312a5c6fc",
+    "docs/gcsp/evidence/fucq63/native-install-3-local-archives-2026-11-07/supervise.py": "8f120397e60edd7c685f6c87b24817348563ed46097bf3b015d9f0570397a41f",
+    "docs/gcsp/evidence/fucq63/native-install-4-signed-cache-2026-11-07/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "docs/gcsp/evidence/fucq63/native-install-4-signed-cache-2026-11-07/install-local.py": "95bb52ddac4b77df90148e138ed25cc558f81ffa6d0fec3faf521dd86299ee02",
+    "docs/gcsp/evidence/fucq63/native-install-4-signed-cache-2026-11-07/supervise.py": "0bccc4ca59352feff88a83fb34625cf53c0bb46d346a6ae08f324593c5200e65",
+    "docs/gcsp/evidence/fucq63/native-loader-diagnostic-2026-11-07/diagnose.py": "8175fbedfc0102522f92879d25908652e51db5fd65b539ee55e9bd4147c4e67b",
+    "docs/gcsp/evidence/fucq63/native-loader-diagnostic-2026-11-07/loader-diagnostic.rb": "5e724e2f2dedb29d09d9e3b811b926420b3f0c0545cd8e6bfdf7e18153759764",
+    "docs/gcsp/evidence/fucq63/native-loader-diagnostic-2026-11-07/supervise.py": "85aeb47814e0d20ee65f371d3e445b6000a272f76e78f91687886805401e4c1d",
+    "docs/gcsp/evidence/fucq63/native-loader-diagnostic-2026-11-07/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "docs/gcsp/evidence/fucq63/native-loader-diagnostic-2-dev-null-2026-11-07/diagnose.py": "09dbb99d2903321b9f87f35563b214996c4f840153a45d5afa1350a5f61b3876",
+    "docs/gcsp/evidence/fucq63/native-loader-diagnostic-2-dev-null-2026-11-07/loader-diagnostic.rb": "5e724e2f2dedb29d09d9e3b811b926420b3f0c0545cd8e6bfdf7e18153759764",
+    "docs/gcsp/evidence/fucq63/native-loader-diagnostic-2-dev-null-2026-11-07/supervise.py": "d1580f37528a092e79256e3452c78161323b8d9edce02ccac1ec5e2c4914fc72",
+    "docs/gcsp/evidence/fucq63/native-loader-diagnostic-2-dev-null-2026-11-07/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "docs/gcsp/evidence/fucq63/native-loader-diagnostic-3-owned-local-2026-11-07/diagnose.py": "67fbd060648c67038e20bd5089482be9e3372611e42a1a95896aebafed59c5d1",
+    "docs/gcsp/evidence/fucq63/native-loader-diagnostic-3-owned-local-2026-11-07/loader-diagnostic.rb": "e34b8ffb4cecfc9aad29fa087db79148cacc5572bc1d5f759122b77736d3b36b",
+    "docs/gcsp/evidence/fucq63/native-loader-diagnostic-3-owned-local-2026-11-07/supervise.py": "f9ebec154df19e8c9059805ba47b3dbfb25b57b65c7c690d478fbe8068bf931b",
+    "docs/gcsp/evidence/fucq63/native-loader-diagnostic-3-owned-local-2026-11-07/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c"
+  },
+  "inputs": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/plan.json",
+      "bytes": 52496,
+      "sha256": "019c1db8d7b73f21a790f9224eca058297a0be6514a27d3055008e335d160d26"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/package-metadata.json",
+      "bytes": 7785,
+      "sha256": "3c4432141dcb64fef2418c2b1a3bb298b4b8711e2b52467dcd7f161bd9f87112"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/receipt.json",
+      "bytes": 12272,
+      "sha256": "eec1b946d50e41b3f01e7179c832931848227662065214031ab508282737f007"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-3-local-archives-2026-11-07/actual-seven-bottle-receipt.json",
+      "bytes": 12272,
+      "sha256": "eec1b946d50e41b3f01e7179c832931848227662065214031ab508282737f007"
+    },
+    {
+      "path": "/Users/usget/Library/Caches/Homebrew/api/internal/packages.arm64_golden_gate.jws.json.payload",
+      "sha256": "7b31ddfa8a43b7fbf2e874ef7a618cdeb39eec210481b258e49fa4c2c4f13b71",
+      "metadata": {
+        "homebrew_version": "7.0.12-12-g4f254c4",
+        "bottle_tag": "arm64_golden_gate",
+        "generated_at": 1793695303
+      }
+    },
+    {
+      "path": "/opt/homebrew/bin/brew",
+      "sha256": "c9a27029eb72dab04f4595041f7670bb03b4cb467297abba817883afb23e0bf3",
+      "bytes": 9158
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/cmd/install.rb",
+      "sha256": "edd557325582626f363e2ed2cbade08e7882b41bdea3bf9c5f5babce2ad3bda4",
+      "bytes": 26330
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/formulary.rb",
+      "sha256": "b4eae02fef6405002f22d1ab81187786cb103f7ec6967d58fcbb11918da1beac",
+      "bytes": 42914
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/formula_installer.rb",
+      "sha256": "095d36a20b77b98b4d2c791e9f8d76bc6a83d0830a91b81387f49e31752d3147",
+      "bytes": 69328
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/install.rb",
+      "bytes": 28210,
+      "sha256": "d360d4f0e5dc02a00d746f9dab54e73db913d7dab204400ea06ef450cedce965"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/install/check.rb",
+      "bytes": 7872,
+      "sha256": "4f0d8edb2d7e40cca56f5a24a10e37bed57cda7aa6bd4b3360acab118bbdec94"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/dev-cmd/ruby.rb",
+      "bytes": 1105,
+      "sha256": "e503619f96f6c86318a328d9f713c95cc09e119b92456ffafe66340e49ed419f"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/keg.rb",
+      "bytes": 30021,
+      "sha256": "18eae5f3fed5a35409dd78a7b43adb31902d463ed7290d24ee36ff7020606e41"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/ca-certificates--2026-10-20.all.bottle.tar.gz",
+      "bytes": 109619,
+      "sha256": "8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/libunistring--1.5.arm64_golden_gate.bottle.tar.gz",
+      "bytes": 1899259,
+      "sha256": "fec6be46cabaefd1dc5d5ecd029c50aeaef6c93d9c7de4425968047811575e81"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/readline--8.3.6.arm64_golden_gate.bottle.tar.gz",
+      "bytes": 757018,
+      "sha256": "74b458562c5a589a612ebba8f8fc12f3ecbe083223eb4a368c723d88b26a454d"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/icu4c@79--79.1.arm64_golden_gate.bottle.tar.gz",
+      "bytes": 32063877,
+      "sha256": "8499235357ff52424e3fcc647a6ce57050af9f10904554df90319e6a088f665d"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/openssl@4--4.1.0.arm64_golden_gate.bottle.tar.gz",
+      "bytes": 11500729,
+      "sha256": "d239639f77a275caa217707e126790b3f5f5c86e5bc6e2a996e5df7fdaed44a6"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/krb5--1.22.2_2.arm64_golden_gate.bottle.tar.gz",
+      "bytes": 1333379,
+      "sha256": "678c05de46229f5b35631196808a7f6e4a32f9a18bc9574ec447f6c8290dfff7"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/postgresql@16--16.15_1.arm64_golden_gate.1.bottle.tar.gz",
+      "bytes": 19200246,
+      "sha256": "31b8c98844e409376dc0fc7801e09f25c5c7b3c175c77b929ad9bb51aef3095d"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/ca-certificates.rb",
+      "bytes": 7949,
+      "sha256": "4abe22fb50b45cd5e113747a92a115e0479c4017502d7e8a87132a340b742d84"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/libunistring.rb",
+      "bytes": 1725,
+      "sha256": "5a0ff014063865e7acebbe3b0e1e5b4434773b8124975898e235e78440279d6d"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/readline.rb",
+      "bytes": 3791,
+      "sha256": "a65ebe6faf79ab5f39e02d263cac7ec93d9813c4617658453f0ca341922555a0"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/icu4c@79.rb",
+      "bytes": 1593,
+      "sha256": "dc4e8baf0e49e638e00554492f8ba77bf3c67d074f91dcb30d2346fd5da8dde6"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/openssl@4.rb",
+      "bytes": 4740,
+      "sha256": "7ff5915f10c5e950f35e65471fae7e04711bc962689f1369e646e2f68b41b19d"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/krb5.rb",
+      "bytes": 1791,
+      "sha256": "dc3dd4e507c10cfc4b3db8ad18d79a26dda5cf1d67d227ce7b9067c54ab26e56"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/postgresql@16.rb",
+      "bytes": 5107,
+      "sha256": "599376de22c948f095f50d290d2e4ea862da2a1facbe1c9850961fb32288a732"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-3-local-archives-2026-11-07/plan.json",
+      "bytes": 50016,
+      "sha256": "5ec34f1dd790d091409b48fc214a82d53b1a9e971a2b3a5d8490b2a8c31eb73d"
+    },
+    {
+      "path": "/Users/usget/Library/Caches/Homebrew/api/internal/packages.arm64_golden_gate.jws.json",
+      "bytes": 15973185,
+      "sha256": "5ce934895df1f66d1fd42da2e433922560f226c14cae8c36c74427a11fe60b4b"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/env_config.rb",
+      "bytes": 53339,
+      "sha256": "51606c42c397d90583e8e8b85e630c22672473423a777c995340568bacff2b1b"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/global.rb",
+      "bytes": 6654,
+      "sha256": "d9c28fbb1caa8136cfba56216ea20c8ffc0c68bf1ece4499dea77031016ec2df"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/api.rb",
+      "bytes": 24537,
+      "sha256": "6101919e4890fef71db07c43310d30557fd354bd2195822a3fa8cb705d506d83"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/api/internal.rb",
+      "bytes": 11412,
+      "sha256": "eb98dc96639bfa500261818f455fe894f6eda10150f5e62f1428a885586b2d03"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/tap.rb",
+      "bytes": 55257,
+      "sha256": "c8e13829ad436751a8347d73d80d13b0eace8ffc98f831b92a7911b36576693e"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/tap/core_tap.rb",
+      "bytes": 6208,
+      "sha256": "f0e949e1abe43801324639370088d19a950027525b9d4ddb9c2a7a50c5a7e970"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/tap/abstract_core_tap.rb",
+      "bytes": 1181,
+      "sha256": "580fa663435dc5caa04afbd1db4948924431943de0253139165456869cf35fb0"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-4-signed-cache-2026-11-07/actual-install3-result.json",
+      "bytes": 396,
+      "sha256": "6d9c826b41a17a02b6f5b50b2246fc8442ac18a6651ec5386583dd5fff80edc8"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-4-signed-cache-2026-11-07/actual-install3-failure.json",
+      "bytes": 2985,
+      "sha256": "a3d9021e5a9eec2fcec6305040f46744e547a9fbdafebf266858f06a6e415c0e"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-4-signed-cache-2026-11-07/actual-install3-ca.log",
+      "bytes": 4291,
+      "sha256": "037f5fcde0ae2f6771dac4e4a0b1a3b979d99a6e8587fbd51a819cccb336a075"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-4-signed-cache-2026-11-07/actual-install3-reconciled-cleanup.json",
+      "bytes": 904,
+      "sha256": "a8127cd691b6053f263f34af3e837650579bc1c03abff02d5807c49e1f16eb6a"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-4-signed-cache-2026-11-07/plan.json",
+      "bytes": 57597,
+      "sha256": "d00ca447b2c246a2805719a7f65c27e12810aedb0cc4fc9cbb56d8afb572bcef"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-4-signed-cache-2026-11-07/results.json",
+      "bytes": 5262,
+      "sha256": "d063113f79b7f7229cdb293c799979187d80d9a4ca64474ebb79fac545714726"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/brew.sh",
+      "bytes": 21997,
+      "sha256": "71b06cfa49ebc26357bf0b6ce259b827e893ad973e3510b793d2792f632bb855"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/brew_irb_helpers.rb",
+      "bytes": 566,
+      "sha256": "45ac5be9e703484f54ce8c5f13ac511100600b43b753d2691586a2c325ac1160"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-2026-11-07/plan.json",
+      "bytes": 55086,
+      "sha256": "c8e210f4617e7a97b67ff09ec47f58d9fd65fc302008a75839cdd31489fc4678"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-2026-11-07/results.json",
+      "bytes": 3004,
+      "sha256": "6d3896c724c7e563d1e289567e34af466eefd5949e598344e645dbf9479680e9"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-2-dev-null-2026-11-07/actual-diagnostic1-failure.json",
+      "bytes": 703,
+      "sha256": "37e096ccc697cb28b431a215060ef731d065d32ea53c2dcd5939aee2ce1b792e"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-2-dev-null-2026-11-07/actual-diagnostic1-loader.log",
+      "bytes": 133,
+      "sha256": "d9db715e0193093916f853c01a71e5089f3fda35a5fb64bb1f598695168d1c4c"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-2-dev-null-2026-11-07/actual-diagnostic1-cleanup.json",
+      "bytes": 1658,
+      "sha256": "f76e914043580f2af642c60624fdc1aa02400d49b3463f685a99357ba3511e48"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-2-dev-null-2026-11-07/actual-diagnostic1-result.json",
+      "bytes": 407,
+      "sha256": "14ce2f56608b814915d5b6f49eb8cc7a4ee094ec00722a8ad3a61621dea40067"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-2-dev-null-2026-11-07/plan.json",
+      "bytes": 58552,
+      "sha256": "4222108bf68f41103e5172e9f1651a39972a0abf28a908c3e417c96f45a43598"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-2-dev-null-2026-11-07/results.json",
+      "bytes": 2762,
+      "sha256": "0da0ec3c6a54ea3937d5b31b3bdfdab5ada646cda2037bb20612130f7165a2dc"
+    },
+    {
+      "path": "/opt/homebrew/Library/Homebrew/utils.sh",
+      "bytes": 3061,
+      "sha256": "02e1f44a2ba4f140f4bb563a8c334a7b713563fd75f4d726b389101b450f54db"
+    },
+    {
+      "path": "/bin/bash",
+      "bytes": 1961872,
+      "sha256": "e0236611691e8bca51b778405812219ff7b64b52057c12538f298dfcdab81e39"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-3-owned-local-2026-11-07/actual-diagnostic2-failure.json",
+      "bytes": 363,
+      "sha256": "6d26d4b8738ecac0a872c19c2558a6461c786157f1282a0ab21f0470a8ec10ea"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-3-owned-local-2026-11-07/actual-diagnostic2-loader.log",
+      "bytes": 236,
+      "sha256": "951e70ace0f7adb4093afdc60721a666a8e2fdcc0cda4e8ad342f645b0aca848"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-3-owned-local-2026-11-07/actual-diagnostic2-cleanup.json",
+      "bytes": 1679,
+      "sha256": "90ada4eed7994c34e3d31a4a4fb7af9c3b4de7046e46f489e100b4ba723753c7"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-3-owned-local-2026-11-07/actual-diagnostic2-result.json",
+      "bytes": 421,
+      "sha256": "deb3aa9f22c3b7d3b03748f4ffbcad8d2b4cf1fe1c8c8d3238f546a889296c69"
+    }
+  ],
+  "unrun": [
+    "This finite seven-bottle diagnostic (requires fresh exact parent grant)",
+    "Any corrected install5 packet and installation (prepare only after actual diagnostic review)",
+    "Native private cluster/repository/migrations/currentrun/orderUUID proof",
+    "Source/candidate/public fleet operations",
+    "Services/postinstall/defaultcluster/compilation (forbidden)",
+    "Full suite/Story acceptance/Done"
+  ],
+  "causalEvidence": {
+    "brewShellUnset": {
+      "path": "/opt/homebrew/Library/Homebrew/brew.sh",
+      "line": 655,
+      "statement": "unset HOMEBREW_INTERNAL_ALLOW_PACKAGES_FROM_PATHS"
+    },
+    "runtimeGuard": {
+      "path": "/opt/homebrew/Library/Homebrew/env_config.rb",
+      "line": 1038
+    },
+    "loader": {
+      "path": "/opt/homebrew/Library/Homebrew/formulary.rb",
+      "lines": "538-605"
+    },
+    "install4": "Actual failed rc1; no new kegs/opt changes. Preserve exact failed results; no native acceptance."
+  },
+  "priorDiagnosticPlan": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-2026-11-07/plan.json",
+    "bytes": 55086,
+    "sha256": "c8e210f4617e7a97b67ff09ec47f58d9fd65fc302008a75839cdd31489fc4678"
+  },
+  "priorDiagnosticObserved": {
+    "supervisorReturncode": 1,
+    "childReturncode": 127,
+    "wallSeconds": 0.5046181249999999,
+    "beforeRuby": true,
+    "events": 0,
+    "publicRequests": 0,
+    "installationAttempted": false,
+    "cause": "brew startup /dev/null redirection denied; repository resolution then became //Library/Homebrew/brew.sh",
+    "cleanup": "complete: 97,555,168 bytes removed; groups/scratch/reservation absent; immutable pins and installed state unchanged",
+    "preciseCorrection": "Allow file-write* to literal /dev/null only in addition to the original owned scratch permission"
+  },
+  "priorDiagnostic2Plan": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-loader-diagnostic-2-dev-null-2026-11-07/plan.json",
+    "bytes": 58552,
+    "sha256": "4222108bf68f41103e5172e9f1651a39972a0abf28a908c3e417c96f45a43598"
+  },
+  "brewEntrypoint": {
+    "path": "/opt/homebrew/bin/brew",
+    "bytes": 9158,
+    "sha256": "c9a27029eb72dab04f4595041f7670bb03b4cb467297abba817883afb23e0bf3"
+  },
+  "brewStartupProjection": {
+    "sourceSha256": "c9a27029eb72dab04f4595041f7670bb03b4cb467297abba817883afb23e0bf3",
+    "bytes": 9176,
+    "sha256": "7cda7960238a5e3f271cf87cfb9c1b9b534e85fbdb033e196a59df08ca81bd74",
+    "onlyChange": "Insert exact line: two spaces then TMPDIR TMP TEMP into ENV_VAR_NAMES immediately after its opening line",
+    "argv0": "/opt/homebrew/bin/brew",
+    "command": "/bin/bash -pu -c <exact projected source> /opt/homebrew/bin/brew ruby <pinned wrapper> <owned exact seven-bottle spec>"
+  },
+  "priorDiagnostic2Observed": {
+    "supervisorReturncode": 1,
+    "wallSeconds": 2.149490333,
+    "RubyEventsObserved": 0,
+    "publicRequests": 0,
+    "installationAttempted": false,
+    "hereStringErrors": 2,
+    "location": "/opt/homebrew/Library/Homebrew/utils.sh:144 numeric() read here-string",
+    "cloudLogWriteError": "TimeoutError / OSError60 during local driver write to cloud loader log",
+    "cleanupRemovedBytes": 104795040,
+    "cleanupComplete": true,
+    "preciseCorrection": "exact single-line startup whitelist projection, owned local active working-set exception and local small evidence staging"
+  }
+}

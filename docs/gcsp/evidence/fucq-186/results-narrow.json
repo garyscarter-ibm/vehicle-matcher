@@ -1,0 +1,316 @@
+{
+  "chunk": "narrow",
+  "entry": "hosted",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "stockMode": "default",
+  "state": "passed",
+  "startedAt": "2026-11-08T14:48:49.441Z",
+  "runIds": {
+    "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
+    "new": "demo-bdecce62ecf1393c5a230a1592a3c5ec"
+  },
+  "steps": [
+    {
+      "id": "access-key",
+      "name": "The demo key form opens the hosted demo, key typed by keyboard once",
+      "pass": true,
+      "screenshots": [
+        "browser/375-01-access-form.png"
+      ],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Presenter controls YOUR CARS Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status current Driver Paula (fictional) Scheme choices-fs-uk Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Vehicle slot slot-paula Registration Not supplied Month"
+    },
+    {
+      "id": "presenter-workspace",
+      "name": "Presenter workspace opens with the strip collapsed",
+      "pass": true,
+      "screenshots": [
+        "browser/375-02-presenter-workspace.png"
+      ],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Presenter controls YOUR CARS Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status current Driver Paula (fictional) Scheme choices-fs-uk Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Vehicle slot slot-paula Registration Not supplied Month"
+    },
+    {
+      "id": "presenter-strip-open",
+      "name": "Presenter controls open with the keyboard and show run, clock and release cue",
+      "pass": true,
+      "screenshots": [
+        "browser/375-03-presenter-strip-open.png"
+      ],
+      "detail": {
+        "run": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "clock": "2026-11-05T09:00:00.000Z",
+        "releaseCue": "2026-11-06T11:30:00.000Z",
+        "actingPrincipal": "Paula (fictional) (employee)"
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-05T09:00:00.000Z Acting principal Paula (fictional) (employee) Tick (60 seconds) Named time or UTC target Tick to ta"
+    },
+    {
+      "id": "scenario-main-reset",
+      "name": "Scenario \"Main successful journey\" chosen with arrow keys and reset confirmed by keyboard",
+      "pass": true,
+      "screenshots": [
+        "browser/375-04-reset-confirm.png",
+        "browser/375-05-scenario-main-reset.png"
+      ],
+      "detail": {
+        "previousRun": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "newRun": "demo-bdecce62ecf1393c5a230a1592a3c5ec",
+        "scenario": "Main successful journey",
+        "clock": "2026-11-05T09:00:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Main successful journey Run demo-bdecce62ecf1393c5a230a1592a3c5ec DemoClock (UTC) 2026-11-05T09:00:00.000Z Acting principal Presenter (fictional) (presenter) Tick (60 seconds) Named time or UTC target Tick to target Next release Rel"
+    },
+    {
+      "id": "presenter-after-reset",
+      "name": "Presenter workspace after the reset shows the new run in the strip",
+      "pass": true,
+      "screenshots": [
+        "browser/375-06-presenter-after-reset.png"
+      ],
+      "detail": {
+        "newRun": "demo-bdecce62ecf1393c5a230a1592a3c5ec",
+        "previousRun": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "actingPrincipal": "Presenter (fictional) (presenter)",
+        "scenario": "Main successful journey"
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Main successful journey Run demo-bdecce62ecf1393c5a230a1592a3c5ec DemoClock (UTC) 2026-11-05T09:00:00.000Z Acting principal Presenter (fictional) (presenter) Tick (60 seconds) Named time or UTC target Tick to target Next release Rel"
+    },
+    {
+      "id": "switch-to-paula",
+      "name": "Acting principal switched to Paula with the keyboard",
+      "pass": true,
+      "screenshots": [
+        "browser/375-07-switch-to-paula.png"
+      ],
+      "detail": {
+        "actingBefore": "Presenter (fictional) (presenter)",
+        "actingAfter": "Paula (fictional) (employee)"
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Main successful journey Run demo-bdecce62ecf1393c5a230a1592a3c5ec DemoClock (UTC) 2026-11-05T09:00:00.000Z Acting principal Paula (fictional) (employee) Tick (60 seconds) Named time or UTC target Tick to target Next release Release"
+    },
+    {
+      "id": "brief-confirmed",
+      "name": "Brief page shows Paula's confirmed brief and no cars before release",
+      "pass": true,
+      "screenshots": [
+        "browser/375-08-focus-brief.png",
+        "browser/375-09-brief-confirmed.png"
+      ],
+      "detail": {
+        "checkedOptions": [
+          "Estate",
+          "Yes",
+          "Not sure yet",
+          "Not sure yet",
+          "No",
+          "Search for cars for me",
+          "Hold a suitable car for me"
+        ],
+        "previewBeforeAnyRelease": {
+          "eligibleCount": 0,
+          "needConfirmation": 0,
+          "eligibleCardsShown": 0,
+          "modelLines": {},
+          "cardOrder": [],
+          "summary": "0 eligible cars. 0 eligible cars."
+        }
+      },
+      "overflowPx": 0,
+      "state": "Confirmed: Estate | Yes | Not sure yet | Not sure yet | No | Search for cars for me | Hold a suitable car for me. Preview: 0 eligible cars. 0 eligible cars."
+    },
+    {
+      "id": "activity-before-release",
+      "name": "Activity before any release shows an active buddy and no offer",
+      "pass": true,
+      "screenshots": [
+        "browser/375-10-activity-before-release.png"
+      ],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Presenter controls BUDDY ACTIVITY Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Not searched yet 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the"
+    },
+    {
+      "id": "presenter-first-release",
+      "name": "Presenter Next release publishes the first stock release",
+      "pass": true,
+      "screenshots": [
+        "browser/375-11-presenter-first-release.png"
+      ],
+      "detail": {
+        "clockBefore": "2026-11-05T09:00:00.000Z",
+        "clockAfter": "2026-11-05T09:30:00.000Z",
+        "carsReleased": 5,
+        "releaseCue": "2026-11-05T09:30:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Clock 2026-11-05T09:00:00.000Z to 2026-11-05T09:30:00.000Z; cars released 5"
+    },
+    {
+      "id": "brief-first-release-eligibility",
+      "name": "Brief preview after the first release counts the cars Paula sees",
+      "pass": true,
+      "screenshots": [
+        "browser/375-12-brief-first-release-eligibility.png"
+      ],
+      "detail": {
+        "eligibleCount": 3,
+        "needConfirmation": 0,
+        "eligibleCardsShown": 3,
+        "modelLines": {
+          "Synthetic 3 Series Touring 320i": 1,
+          "Synthetic 3 Series Saloon 320i": 2
+        },
+        "cardOrder": [
+          "Synthetic 3 Series Touring 320i (100%)",
+          "Synthetic 3 Series Saloon 320i (0%)",
+          "Synthetic 3 Series Saloon 320i (0%)"
+        ],
+        "summary": "3 eligible cars. No image for this car yet SCHEME STOCK Synthetic 3 Series Touring 320i 100% 1,100 points a month · 1,30"
+      },
+      "overflowPx": 0,
+      "state": "3 eligible; order Synthetic 3 Series Touring 320i (100%), Synthetic 3 Series Saloon 320i (0%), Synthetic 3 Series Saloon 320i (0%); fit ordered true"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Tab reaches the demo key field; typing the key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Main successful journey\" in \"Scenario\"",
+      "pass": true,
+      "detail": "Main successful journey Available"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Reset scenario\" then \"Confirm reset\" resets the run",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches the acting principal",
+      "pass": true
+    },
+    {
+      "page": "brief",
+      "check": "visible focus",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "Save this brief"
+      }
+    }
+  ],
+  "firstRelease": {
+    "eligibleCount": 3,
+    "needConfirmation": 0,
+    "eligibleCardsShown": 3,
+    "modelLines": {
+      "Synthetic 3 Series Touring 320i": 1,
+      "Synthetic 3 Series Saloon 320i": 2
+    },
+    "cardOrder": [
+      "Synthetic 3 Series Touring 320i (100%)",
+      "Synthetic 3 Series Saloon 320i (0%)",
+      "Synthetic 3 Series Saloon 320i (0%)"
+    ],
+    "summary": "3 eligible cars. No image for this car yet SCHEME STOCK Synthetic 3 Series Touring 320i 100% 1,100 points a month · 1,30",
+    "stockSource": "default generated run stock",
+    "screenshot": "browser/375-12-brief-first-release-eligibility.png",
+    "fitOrdered": true
+  },
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8883/favicon.ico",
+      "page": "http://127.0.0.1:8883/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8883/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8883/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8883/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8883/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8883/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8883/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8883/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8883/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8883/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8883/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8883/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8883/gcsp-activity-live.html"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8883/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8883/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8883/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8883/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8883/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8883/gcsp-presenter.html"
+    }
+  ],
+  "notes": [],
+  "origin": "http://127.0.0.1:8883",
+  "finishedAt": "2026-11-08T14:53:48.274Z",
+  "counts": {
+    "steps": 10,
+    "passed": 10,
+    "screenshots": 12,
+    "keyboardChecks": 7,
+    "keyboardPassed": 7
+  }
+}

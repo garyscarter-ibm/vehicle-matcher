@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "f59-local-scheme-profile-gap-assessment-validation.v1",
+  "observedAt": "2026-11-07T05:30:06.889155+00:00",
+  "scope": "46 scoped read-only JSON/hash/count/explicit-gap/release-pin checks; no application test or source replay",
+  "assessmentPath": "docs/gcsp/evidence/fucq59/scheme-profile-gap-assessment-2026-11-07.json",
+  "assessmentSha256": "c384069c071c3cdcab312d136872769c47a0b826c55245e91af8cc67a9771d9e",
+  "inputPinsVerified": 39,
+  "checksPassed": 46,
+  "checksFailed": 0,
+  "sourceTraffic": 0,
+  "scratchCreated": false,
+  "largeOutputsCreated": false,
+  "compatibilityException": null,
+  "leftovers": []
+}

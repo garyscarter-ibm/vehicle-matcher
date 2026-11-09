@@ -1,0 +1,132 @@
+{
+  "story": "FUCQ-104",
+  "observed_at": "2026-11-06T00:50:34.659317+00:00",
+  "interruption": "IBM Global explicit422 Advantage Credits exhausted; lead stopped before publication",
+  "scope": "scoped checkpoint only; blocked canonical runtime/source/native/final full acceptance",
+  "latest_scoped": 119,
+  "copy_guard": 2,
+  "actual_pinned_producer": 1,
+  "source_hashes_verified": 130,
+  "source_hash_mismatches": [],
+  "scope_note": "Original targeted code key3ff9d1ca includes the map row, which changed after testing; no new full/current-key stamp is asserted. Lead reported frozen application/tests; parent verified130 product-source hashes and selected test/baseline mtimes precede final scoped run.",
+  "resource_inventory": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/ownership/2d27cec478e24d038c73602c485d39f5.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/ownership/52a6e813d8ba4a88b805c7574543853b.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/ownership/7e4d2d50f53e495d976af70f8effd14b.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/ownership/a239b6f0c7694d2eb8b24fa3abab7935.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/ownership/bcccb5d64bb74671bf7788186a56e0cf.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/ownership/d8b8ba061430454bb2527d1986abc0f1.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/ownership/eaeef3d20f6a4eb2a2fded0a7165adca.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/runs/ownership/1d07cd21b3874e298a6d297d1952bdbf.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/runs/ownership/2a5a2442e4284df69d6d1dbafdebdd48.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/runs/ownership/30f2233af13446ddbf1b2dc4ec13a24b.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/runs/ownership/454910f2348540fabc441f2f088781b0.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/runs/ownership/71ec3cb1024847b4a20fa1360b74b3fb.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/runs/ownership/7bc89982f1d6409b8224841e2939bf51.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/runs/ownership/97da991420e34f0c80a5edac3021be65.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/runs/ownership/a0aa418beef14755a5fcd0f4d48c4bf1.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/runs/ownership/a0afcd072f7b4f44bf173c56e0d68a39.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/runs/ownership/a582d43b8a1a4418915bd2931f5eddf8.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/runs/ownership/b02cdea2396f4e87bb7c1b6e958195b0.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104/runs/ownership/d6e97284478f487c924c84b6016fc82a.json",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true
+    }
+  ],
+  "scratch_removed_recorded_bytes": 36765615,
+  "successful_logs_removed_bytes": 106843,
+  "overlays_absent": true,
+  "leftovers": []
+}

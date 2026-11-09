@@ -11,12 +11,14 @@ export const TABLES = Object.freeze({
   entitlement_slots: definition('runId entitlementSlotId', 'employeeId renewalId contractId capacity employeeCapacity state', [], [['employees', 'employeeId']]),
   briefs: definition('runId employeeId briefVersion', 'entitlementSlotId renewalId schemaVersion previousBriefVersion status preferences essentials currentCarFeedback knownFacts buddy policyVersion confirmedBy confirmedAt postDeclineChange', [], [['employees', 'employeeId']], true),
   stock: definition('runId orderUuid', 'orderNumber configurationId wholesalerOrderId revision release account visibility state status available held allocated agModelCode vgModelCode facts corpusVersion', [['orderNumber']]),
+  future_order_requests: definition('runId requestId', 'commandId model derivative quantity state requestedAt requestedBy policyVersion stockVersion providerReference provenance history plan', [['requestedBy', 'commandId'], ['providerReference']]),
+  confirmed_supply: definition('runId supplyId', 'requestId commandId quantity state confirmedAt expectedAt policyVersion sourceVersion providerReference provenance', [['providerReference']], [['future_order_requests', 'requestId']], true),
   holds: definition('runId holdId', 'orderUuid employeeId entitlementSlotId renewalId type state phase expiresAt policyVersion quoteId operationId reviewStartedAt releaseReason', [], [['stock', 'orderUuid'], ['employees', 'employeeId'], ['entitlement_slots', 'entitlementSlotId'], ['quotes', 'quoteId']]),
   claims: definition('runId claimId', 'holdId orderUuid employeeId entitlementSlotId renewalId type state expiresAt policyVersion quoteId operationId', [['holdId']], [['holds', 'holdId'], ['stock', 'orderUuid'], ['entitlement_slots', 'entitlementSlotId'], ['employees', 'employeeId']]),
   quotes: definition('runId quoteId', 'orderUuid employeeId entitlementSlotId configurationId facts eligibility terms briefVersion draftVersion policyVersion quotedAt validUntil expiresAt provenance monthlyPoints allowance', [], [], true),
   offers: definition('runId offerId', 'holdId employeeId orderUuid state briefVersion policyVersion quoteId expiresAt tokenHash environmentId tokenMetadata operationId', [['holdId']], [['holds', 'holdId'], ['quotes', 'quoteId']]),
   decisions: definition('runId decisionId', 'commandId offerId holdId employeeId decision reason actorId versions outcome originalResponse', [['commandId']]),
-  pending_operations: definition('runId operationId', 'operationType idempotencyKey inputDigest payload providerReference lastKnownState state attempts outcome intendedDecision holdId offerId', [['operationType', 'idempotencyKey']]),
+  pending_operations: definition('runId operationId', 'operationType idempotencyKey inputDigest payload providerReference lastKnownState state attempts outcome intendedDecision holdId offerId orderReference', [['operationType', 'idempotencyKey'], ['orderReference']]),
   event_receipts: definition('runId consumerId eventId', 'inputDigest eventType handlerId inputVersions state outcome'),
   notification_outbox: definition('runId jobId', 'idempotencyKey inputDigest offerId messageKind messageVersion recipientId recipientReference transport state outcome attempts payload', [['idempotencyKey']]),
   forecast_snapshots: definition('runId forecastId', 'inputVersion policyVersion modelVersion asOf output provenance', [], [], true),
@@ -30,6 +32,7 @@ export const TABLES = Object.freeze({
   identity_sessions: definition('runId sessionIdHash', 'principalId employeeId roles environmentId expiresAt actingPrincipalId'),
   renewal_cases: definition('runId caseId', 'employeeId renewalId owner status reason trigger nextAction dueAt openedAt lastUpdatedAt renewalDeadline renewalDeadlineState policyVersion history remedy fictional', [], [['employees', 'employeeId']]),
   tick_runs: definition('runId tickId', 'commandId eventId targetClock handlerOrder outcomes state inputDigest'),
+  comparison_results: definition('runId resultId', 'experimentId kind completedAt policyVersion manifest result', [], [], true),
 });
 export const createState = () => ({ tables: Object.fromEntries(Object.keys(TABLES).map((table) => [table, []])) });
 export const FOUNDATION_TABLES = Object.freeze(Object.keys(TABLES).filter((table) => !['policy_versions', 'scheme_rule_links', 'eligibility_rules', 'price_plans', 'grade_allowances', 'policy_assumptions'].includes(table)));

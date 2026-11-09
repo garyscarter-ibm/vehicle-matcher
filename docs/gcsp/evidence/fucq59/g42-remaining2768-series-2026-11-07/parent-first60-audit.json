@@ -1,0 +1,2503 @@
+{
+  "schemaVersion": "g42-first60-parent-audit.v1",
+  "observedAt": "2026-11-07T04:32:26.044384+00:00",
+  "scope": "read-only primary/prefix/actualevents/retainedscopedchecks/filesystem audit; no source/test replay",
+  "passed": true,
+  "checksPassed": 494,
+  "GET": 720,
+  "solver": 480,
+  "newAdmissions": 387,
+  "rejected": 93,
+  "admittedSource": 2358,
+  "canonical": 2361,
+  "spent": 3164,
+  "canonicalSha256": "1517e4ed603c7f9163e59113e2b71d3c01ea4cb601c729deb3e3e07f8264078d",
+  "spentSha256": "0173fd2b120370b152c1cd20198d4cf89b5b26b3f5151c95e15520a5880b18dd",
+  "sessions": [
+    {
+      "session": 1,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "b43971af6d7faa468e1573d17bdce3a13d8748bab5bfa2b7f0ac6d0cc9fa22f1",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 2,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "6f2dedc2ad689a3b2bc8ee3f66326549b392886dc6b77639bda25f95f25942b6",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 3,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "7c971aca418c46ccb6ab6fb04d3688dfe468f5792f626b5219f52ba23881a3b4",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 4,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "fc1a39a5d1d14b74069f32b8019a47df5a1ff686ece41d0cd1de66eb52792817",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 5,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "7d3fdc49773cc278b0c852b2f50702355c9e33bec3ece721782e44f107343b8e",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 6,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "218a79e7e6e5260e8b6396058bc74b223c2a225a60a9e2e79d08920b50291930",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 7,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "e7d93e6fc54393c98e1eedb731c048d8244b8ffc90b0be4fcdd20a460de7aa0a",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 8,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "7ce7bcc908c58052aa86ebe85a82efb811f34f9a7a70fd61ba4bba13c5f607de",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 9,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "b219ae70d9351c7422dbb4abacdba176f6e432f8746561f6a1a33a772b676aa1",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 10,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "351cbe3bea56f2735560fa92d73bb09d7743d15a2688653324edb3f3b0e84386",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 11,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "2636caa17a4892239e034150c72985e16ecb52df5d53477729b35895ee6e53f8",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 12,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "cecc8bf125bf78e44f40197f41b0f1a8754378f607807832f923e3f61179bb69",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 13,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "78e1a5ba28a1e428c1da901a5121f6aa5c52140d8b4a75de2995e51ff9daedd1",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 14,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "8bca439862df5b211edb6664d9cacc884c25096ea2c3b765e961c549a0ce1dfa",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 15,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "ceb416bbe8b806616fc3105dc6bd596490f2c58ff62ef959de5da2865a39b13d",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 16,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "71fb7f3b9465733e03476fbcbed924f404bbf4d7592a918c3b86f4303df315c1",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 17,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "83783f360315eb1ea22fa1694e41debbcc0056adc4716beabb9b98cd383349e1",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 18,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "f729e7229ae08f158bfe77b39c9722a3e53db7145f6603ef9cc8c80cf5924d1d",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 19,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "60876eb6503743992763bc87f231f96d484b4a1fb88ed775462b3c997aa69187",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 20,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "f46345d23e3fb2f9e809424cd918ad49c4cc0e83927e88d0734e981bbde36192",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 21,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "b3daa611bc13a04103550b5abb871fb99a7b9ee94b821e0a1aabbafe01d776ea",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 22,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "62740eeed745aa378595419d6e0316be4aad37d4bf0654893fd5ec6e7d5172d7",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 23,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "b397c895976896449b8735429b3c81e0a6fad9a6ee5ca9d87a38de65e01355ba",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 24,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "f0620037b4799600cea7dd315578cb23f480a0bfad07539786519b2f54722a5b",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 25,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "67151c2c9dc7bb5d409d036e3eb5de2ca29dc5d1ffcddef3f56a8b78aa623cd1",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 26,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "083907e10507ca05a5bd64d94d9161e3ccdf1d7b511e141126eb6f4387942dc4",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 27,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "7685a96ade7a89a26aea3cf82823051a6d2c0ad633f5f9c7cdd8af0844c01b4d",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 28,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "6e51a0ab33161816cf12a98ef1e6248acfd3978c266c87f9198eba1989e9eee3",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 29,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "4b25c5a3ad6883906c7fa709ebf0dc603af399108db5533d122dd3f212a7bb66",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 30,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "09dc375e3f600c842ef849f96bdaaaf5f266d69e40cc30fb89328222937e4e50",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 31,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "63630521303e497fddf40813664d4296d2696ca221624bede6b80cd21d982366",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 32,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "115bfad6c93eb756d892b7f24bfb1d1186c836abf2185efb55387e0b1e110479",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 33,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "78197ab7e93599a9560cc39630dc91d930e6c61b2c94ed885ee885b779be728d",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 34,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "faa23cfafe0ceae52025a7f7d163fa207deaaba2e772a40591a95c1a8b86eddd",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 35,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "308dde392a61bd1d558d32c0818f29d34f71b55a56f72c4baed600f657a34703",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 36,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "881f886b09e5c380504c3c81f4083bc7a5caa129b24941d1edca91c01bbb46be",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 37,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "ee72ad6d9cec3fdcdf239c1359221ba94cf425bc4b0b48da02fce72eb2a0bb79",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 38,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "4d6cb1e637182fecfa3e00a2a04950181fefe2d94facb156ee23fb0aa1c0b20f",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 39,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "26c9db01f15506f0adda935f10d888146f15c145e2321dc2d736149cd07c9469",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 40,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "88341bac285a13d627ab1bda4841d9740b33199aa271f8c4328ef8d6b7ec1a98",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 41,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "539b446b21e7097a3c383f287810f553f8e2868655ecc5fae863c6ca99153cee",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 42,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "32bdc6f8a5884f9c2c63b42d139c6c22418cfadda61916dac23577d8cfccdc75",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 43,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "2cbbd09f33a0df280483817a53d33d259decd5fd77db93f59e059eff869758dd",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 44,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "26bf31ed2d117428d64f6631629b645dcdb8a687b95e7ec47dc1565b504c6ef5",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 45,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "d847d2ac58886e8bd724441d78d26b73dd845f803b01374fb9da98f13fdf816b",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 46,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "18fdc546d931f67f195cf7980451fd86e3d85b8b39d4d2118b23c890164389f9",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 47,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "b7bd11e39a7831d215d6e3be5f79f71472328b0f46a322703ee9dd49b40cb7cd",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 48,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "6d3d294a763f1e8261904257205d06bc7763df17a245ff05512306f959bcc873",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 49,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "2d3d7c63e3e0970a8a293af5d572c980341980ab04dd30d3f7b213b361bb8284",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 50,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "7960954c37971828946ec111a2eaa24003b6270bb8e625c98dfb9b887eb12a6c",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 51,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "cfd16254f12bed2c0670485eedbdb05ccf46613df233219b060e457c3e57ed82",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 52,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "1d52660bdd1a38463954879dee816ae1148b6896341b7e74aaac50b2eecea793",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 53,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "2fb31477855c095ed1cd18813aca83ecdabda791b200a8857163d6ddb1b980fc",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 54,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "46dd0f2e7c60f0f9755e05f7b1fd435e956c50f3577b3712edb0c79007f12119",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 55,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "8e6b3f7fb632c2c8dfe67f5afc4c0513e99660a108209f5c3293e0d878401103",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 56,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "b738b0baf3b38679eaff16d72f2bd4b2a2e80800fea7d9358098a646014b2da4",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 57,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "ee5d4dbd5fc2ce0e0936aa4a9ee9a39129942788fc05a7c80da54731dab8ab6d",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 58,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "64fe8f18f7534ccce84127ac4520328fb529605266c2768edf62a993693fa913",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 59,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "88dcd8deae690ebf09f32c9b6e58eb870a9fcab7ac26423a864aee3e879fe59c",
+      "retainedPass": 5,
+      "retainedFail": 0
+    },
+    {
+      "session": 60,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "fc7436306e16f7c17b28ea7cf2d5b071fe7bf90fef3cbc4068a41dcb362cc9d3",
+      "retainedPass": 4,
+      "retainedFail": 1
+    }
+  ],
+  "session60EventCorroboration": {
+    "sources": [
+      {
+        "file": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-remaining-typed-pool-20261107-once/sessions/session060/source-events.jsonl",
+        "sha256": "95adadd4fb7d3db6686da5a1feef9b399748f43574b85024846f8543ecc229ea",
+        "bytes": 2632,
+        "rows": 23
+      },
+      {
+        "file": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-remaining-typed-pool-20261107-once/sessions/session060/source-events.jsonl 2.jsonl",
+        "sha256": "f0227308fd2d66a36313020c7acb7b4b1aad8207b220b80557be0abe0af0d7b7",
+        "bytes": 538,
+        "rows": 5
+      }
+    ],
+    "distinctActualRows": 24,
+    "exactDuplicates": 4,
+    "missingMainStartedEvent": 3,
+    "corroborated": true,
+    "originalFailedCheckPreserved": true,
+    "origin": "unestablished; no claim about synchronization cause",
+    "rewritesOrSynthesizedEvents": 0
+  },
+  "resourceEvidence": "per-session finalizers audited; child independent current process ownership/cleanup receipt to be pinned in release",
+  "originalSeriesFailurePreserved": true,
+  "sourceAcceptance": false,
+  "scratchCreated": false,
+  "checks": [
+    {
+      "check": "1:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "1:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "1:strict",
+      "pass": true
+    },
+    {
+      "check": "1:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "1:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "1:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "1:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "1:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "2:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "2:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "2:strict",
+      "pass": true
+    },
+    {
+      "check": "2:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "2:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "2:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "2:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "2:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "3:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "3:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "3:strict",
+      "pass": true
+    },
+    {
+      "check": "3:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "3:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "3:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "3:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "3:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "4:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "4:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "4:strict",
+      "pass": true
+    },
+    {
+      "check": "4:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "4:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "4:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "4:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "4:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "5:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "5:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "5:strict",
+      "pass": true
+    },
+    {
+      "check": "5:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "5:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "5:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "5:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "5:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "6:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "6:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "6:strict",
+      "pass": true
+    },
+    {
+      "check": "6:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "6:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "6:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "6:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "6:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "7:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "7:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "7:strict",
+      "pass": true
+    },
+    {
+      "check": "7:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "7:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "7:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "7:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "7:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "8:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "8:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "8:strict",
+      "pass": true
+    },
+    {
+      "check": "8:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "8:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "8:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "8:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "8:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "9:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "9:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "9:strict",
+      "pass": true
+    },
+    {
+      "check": "9:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "9:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "9:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "9:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "9:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "10:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "10:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "10:strict",
+      "pass": true
+    },
+    {
+      "check": "10:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "10:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "10:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "10:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "10:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "11:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "11:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "11:strict",
+      "pass": true
+    },
+    {
+      "check": "11:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "11:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "11:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "11:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "11:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "12:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "12:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "12:strict",
+      "pass": true
+    },
+    {
+      "check": "12:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "12:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "12:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "12:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "12:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "13:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "13:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "13:strict",
+      "pass": true
+    },
+    {
+      "check": "13:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "13:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "13:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "13:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "13:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "14:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "14:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "14:strict",
+      "pass": true
+    },
+    {
+      "check": "14:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "14:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "14:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "14:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "14:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "15:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "15:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "15:strict",
+      "pass": true
+    },
+    {
+      "check": "15:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "15:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "15:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "15:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "15:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "16:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "16:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "16:strict",
+      "pass": true
+    },
+    {
+      "check": "16:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "16:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "16:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "16:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "16:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "17:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "17:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "17:strict",
+      "pass": true
+    },
+    {
+      "check": "17:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "17:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "17:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "17:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "17:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "18:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "18:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "18:strict",
+      "pass": true
+    },
+    {
+      "check": "18:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "18:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "18:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "18:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "18:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "19:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "19:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "19:strict",
+      "pass": true
+    },
+    {
+      "check": "19:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "19:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "19:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "19:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "19:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "20:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "20:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "20:strict",
+      "pass": true
+    },
+    {
+      "check": "20:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "20:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "20:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "20:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "20:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "21:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "21:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "21:strict",
+      "pass": true
+    },
+    {
+      "check": "21:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "21:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "21:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "21:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "21:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "22:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "22:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "22:strict",
+      "pass": true
+    },
+    {
+      "check": "22:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "22:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "22:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "22:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "22:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "23:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "23:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "23:strict",
+      "pass": true
+    },
+    {
+      "check": "23:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "23:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "23:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "23:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "23:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "24:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "24:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "24:strict",
+      "pass": true
+    },
+    {
+      "check": "24:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "24:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "24:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "24:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "24:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "25:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "25:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "25:strict",
+      "pass": true
+    },
+    {
+      "check": "25:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "25:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "25:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "25:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "25:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "26:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "26:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "26:strict",
+      "pass": true
+    },
+    {
+      "check": "26:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "26:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "26:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "26:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "26:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "27:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "27:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "27:strict",
+      "pass": true
+    },
+    {
+      "check": "27:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "27:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "27:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "27:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "27:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "28:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "28:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "28:strict",
+      "pass": true
+    },
+    {
+      "check": "28:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "28:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "28:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "28:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "28:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "29:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "29:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "29:strict",
+      "pass": true
+    },
+    {
+      "check": "29:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "29:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "29:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "29:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "29:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "30:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "30:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "30:strict",
+      "pass": true
+    },
+    {
+      "check": "30:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "30:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "30:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "30:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "30:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "31:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "31:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "31:strict",
+      "pass": true
+    },
+    {
+      "check": "31:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "31:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "31:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "31:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "31:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "32:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "32:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "32:strict",
+      "pass": true
+    },
+    {
+      "check": "32:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "32:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "32:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "32:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "32:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "33:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "33:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "33:strict",
+      "pass": true
+    },
+    {
+      "check": "33:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "33:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "33:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "33:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "33:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "34:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "34:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "34:strict",
+      "pass": true
+    },
+    {
+      "check": "34:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "34:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "34:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "34:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "34:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "35:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "35:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "35:strict",
+      "pass": true
+    },
+    {
+      "check": "35:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "35:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "35:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "35:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "35:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "36:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "36:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "36:strict",
+      "pass": true
+    },
+    {
+      "check": "36:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "36:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "36:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "36:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "36:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "37:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "37:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "37:strict",
+      "pass": true
+    },
+    {
+      "check": "37:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "37:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "37:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "37:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "37:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "38:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "38:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "38:strict",
+      "pass": true
+    },
+    {
+      "check": "38:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "38:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "38:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "38:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "38:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "39:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "39:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "39:strict",
+      "pass": true
+    },
+    {
+      "check": "39:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "39:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "39:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "39:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "39:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "40:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "40:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "40:strict",
+      "pass": true
+    },
+    {
+      "check": "40:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "40:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "40:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "40:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "40:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "41:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "41:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "41:strict",
+      "pass": true
+    },
+    {
+      "check": "41:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "41:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "41:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "41:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "41:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "42:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "42:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "42:strict",
+      "pass": true
+    },
+    {
+      "check": "42:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "42:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "42:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "42:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "42:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "43:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "43:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "43:strict",
+      "pass": true
+    },
+    {
+      "check": "43:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "43:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "43:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "43:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "43:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "44:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "44:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "44:strict",
+      "pass": true
+    },
+    {
+      "check": "44:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "44:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "44:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "44:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "44:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "45:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "45:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "45:strict",
+      "pass": true
+    },
+    {
+      "check": "45:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "45:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "45:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "45:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "45:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "46:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "46:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "46:strict",
+      "pass": true
+    },
+    {
+      "check": "46:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "46:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "46:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "46:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "46:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "47:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "47:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "47:strict",
+      "pass": true
+    },
+    {
+      "check": "47:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "47:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "47:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "47:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "47:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "48:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "48:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "48:strict",
+      "pass": true
+    },
+    {
+      "check": "48:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "48:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "48:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "48:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "48:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "49:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "49:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "49:strict",
+      "pass": true
+    },
+    {
+      "check": "49:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "49:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "49:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "49:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "49:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "50:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "50:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "50:strict",
+      "pass": true
+    },
+    {
+      "check": "50:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "50:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "50:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "50:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "50:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "51:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "51:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "51:strict",
+      "pass": true
+    },
+    {
+      "check": "51:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "51:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "51:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "51:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "51:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "52:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "52:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "52:strict",
+      "pass": true
+    },
+    {
+      "check": "52:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "52:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "52:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "52:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "52:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "53:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "53:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "53:strict",
+      "pass": true
+    },
+    {
+      "check": "53:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "53:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "53:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "53:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "53:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "54:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "54:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "54:strict",
+      "pass": true
+    },
+    {
+      "check": "54:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "54:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "54:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "54:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "54:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "55:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "55:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "55:strict",
+      "pass": true
+    },
+    {
+      "check": "55:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "55:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "55:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "55:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "55:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "56:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "56:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "56:strict",
+      "pass": true
+    },
+    {
+      "check": "56:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "56:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "56:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "56:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "56:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "57:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "57:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "57:strict",
+      "pass": true
+    },
+    {
+      "check": "57:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "57:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "57:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "57:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "57:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "58:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "58:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "58:strict",
+      "pass": true
+    },
+    {
+      "check": "58:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "58:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "58:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "58:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "58:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "59:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "59:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "59:strict",
+      "pass": true
+    },
+    {
+      "check": "59:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "59:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "59:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "59:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "59:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "60:primaryhash",
+      "pass": true
+    },
+    {
+      "check": "60:12GET8solver",
+      "pass": true
+    },
+    {
+      "check": "60:strict",
+      "pass": true
+    },
+    {
+      "check": "60:canonicalprefix",
+      "pass": true
+    },
+    {
+      "check": "60:spentprefix",
+      "pass": true
+    },
+    {
+      "check": "60:actualadditions",
+      "pass": true
+    },
+    {
+      "check": "60:live-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "60:retained-cleanup.json",
+      "pass": true
+    },
+    {
+      "check": "actualunion24events",
+      "pass": true
+    },
+    {
+      "check": "union1:actualpair",
+      "pass": true
+    },
+    {
+      "check": "union2:actualpair",
+      "pass": true
+    },
+    {
+      "check": "union3:actualpair",
+      "pass": true
+    },
+    {
+      "check": "union4:actualpair",
+      "pass": true
+    },
+    {
+      "check": "union5:actualpair",
+      "pass": true
+    },
+    {
+      "check": "union6:actualpair",
+      "pass": true
+    },
+    {
+      "check": "union7:actualpair",
+      "pass": true
+    },
+    {
+      "check": "union8:actualpair",
+      "pass": true
+    },
+    {
+      "check": "union9:actualpair",
+      "pass": true
+    },
+    {
+      "check": "union10:actualpair",
+      "pass": true
+    },
+    {
+      "check": "union11:actualpair",
+      "pass": true
+    },
+    {
+      "check": "union12:actualpair",
+      "pass": true
+    },
+    {
+      "check": "final2361/2358/3164",
+      "pass": true
+    }
+  ]
+}

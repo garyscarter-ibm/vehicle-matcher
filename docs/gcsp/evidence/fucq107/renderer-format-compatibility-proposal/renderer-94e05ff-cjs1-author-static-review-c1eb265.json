@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "status": "static-authoring-only-unreviewed-unexecuted",
+  "at": "2026-11-06T02:44:28.227749+00:00",
+  "baseHEAD": "92691630d171ef69beea6c0ba236531708a3f61b",
+  "admissionSHA256": "91141d2838b6808304caed74eb1b602ffe598e6fc2055b18904d463737fa874e",
+  "checksPassed": 3128,
+  "categories": {
+    "physicalIdentities": 2112,
+    "absentResolutionCandidates": 129,
+    "pythonASTOnly": 5,
+    "immutableSourceRows": 22,
+    "oldExternalFilesUnchanged": 13,
+    "stableProductHashes": 2,
+    "finiteCommonjsHints": 205,
+    "typelessPackageRoots": 22,
+    "excludedTypelessJSAlternatives": 31
+  },
+  "manualReview": [
+    "Exact pinned byte hashes precede nextLoad. Only finite reviewed .js CJS files may receive commonjs for nullish input; each uses verified typeless nearest package metadata.",
+    "nextLoad context merging can mutate context; original input is captured before delegation. Returned nullish/unknown/native/TypeScript/CSS formats are not accepted.",
+    "Both validators require the seven exact load fields, known input-format tags, finite hint membership and matching bytes/output; mapped explicit commonjs remains unmodified; mapped contradictory explicit formats are refused.",
+    "New prefix relocation is mechanical. Product source, tests, dependency inventory, Node identity, launcher and accepted resource helper are byte-identical. Lifecycle and resource limits are unchanged.",
+    "No JavaScript syntax, hook behavior or renderer case ran. Source marker checks are static review aids and do not parse JavaScript or prove runtime execution."
+  ],
+  "gitAdapter": "Only scaffold_git library for required immutable Git reads; no other custom/helper/product/dependency imports.",
+  "notRun": [
+    "No launcher/supervisor/resource helper/auditor import or execution",
+    "No Node command, module import, probe, test, reservation, scratch, listener, browser or allocator",
+    "No process or ledger-content inspection; root cleanup proof is reused byte-identically"
+  ],
+  "rootFailedRunCleanupReceiptSHA256": "6867d2a016187bb498b4acb6dffec1fc6c3a5f532ebf848daefccf8fa6898e5d",
+  "unchangedOriginalAdmissionSHA256": "f547b6a33e40424af037694ef7d1aaf3b970c91e92d2e208214435b42a78293b",
+  "remaining": "Independent review, exact new grant and all nine renderer cases remain open; FUCQ-107 is not built."
+}

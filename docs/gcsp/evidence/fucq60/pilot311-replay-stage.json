@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "f60-pilot311-offline-replay-stage.v1",
+  "runtimeCode": "324c8a7b",
+  "chunks": [
+    {
+      "index": 1,
+      "expectedRows": 30,
+      "sourceDirectory": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01",
+      "plan": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq60/pilot311-replay-plans/chunk01.json",
+      "planSha256": "651bbd1fdf96fa55c8f5854003bc3a217e5c5b28e1319d225f028a9e37d6f356"
+    },
+    {
+      "index": 2,
+      "expectedRows": 32,
+      "sourceDirectory": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02",
+      "plan": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq60/pilot311-replay-plans/chunk02.json",
+      "planSha256": "0f040a506b390b86eef5a0392c6766c655e285a429095c58b48f38109f5d5822"
+    },
+    {
+      "index": 3,
+      "expectedRows": 31,
+      "sourceDirectory": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03",
+      "plan": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq60/pilot311-replay-plans/chunk03.json",
+      "planSha256": "140a617492efc65a93f756b1cd89809eccdb34bd3c650aad16c62bf721b075bd"
+    },
+    {
+      "index": 4,
+      "expectedRows": 31,
+      "sourceDirectory": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk04",
+      "plan": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq60/pilot311-replay-plans/chunk04.json",
+      "planSha256": "654f90caead0fa7cddc8380606f3688fb90747c0eaaef3de310e60eeacecdf7f"
+    },
+    {
+      "index": 5,
+      "expectedRows": 31,
+      "sourceDirectory": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk05",
+      "plan": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq60/pilot311-replay-plans/chunk05.json",
+      "planSha256": "008014e622d22411880cb43e3a5b7a544f6b5b0184a7137f9e56a82def20b801"
+    },
+    {
+      "index": 6,
+      "expectedRows": 32,
+      "sourceDirectory": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk06",
+      "plan": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq60/pilot311-replay-plans/chunk06.json",
+      "planSha256": "5482175ac13ed43e094cff51a045b2a8cef096d11a0145e8476d744d15053a0d"
+    },
+    {
+      "index": 7,
+      "expectedRows": 31,
+      "sourceDirectory": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07",
+      "plan": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq60/pilot311-replay-plans/chunk07.json",
+      "planSha256": "e4378be10ff46cfdb232ce2a8e3595ae1ebbc5426068e6becd0c935a7a711c08"
+    },
+    {
+      "index": 8,
+      "expectedRows": 31,
+      "sourceDirectory": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk08",
+      "plan": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq60/pilot311-replay-plans/chunk08.json",
+      "planSha256": "4e5a5cdba8ce0d78cdb19e696bae48111632edc28b4a3e5337a715e0c5202909"
+    },
+    {
+      "index": 9,
+      "expectedRows": 31,
+      "sourceDirectory": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk09",
+      "plan": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq60/pilot311-replay-plans/chunk09.json",
+      "planSha256": "93de5551847d250baf4b218f0c6f43599ebb244e0b5fa591c89d864ee95c75d2"
+    },
+    {
+      "index": 10,
+      "expectedRows": 31,
+      "sourceDirectory": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10",
+      "plan": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq60/pilot311-replay-plans/chunk10.json",
+      "planSha256": "ea0e54254670274c17a4ef93d703562eba1ae8648735d161068c7a2b2c1f83e8"
+    }
+  ],
+  "sourceCalls": 0,
+  "images": 0,
+  "workers": 1,
+  "limits": {
+    "scratchMiB": 64,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "secondsPerChunk": 90
+  },
+  "expected": {
+    "scratchMiB": 12,
+    "ramMiB": 384,
+    "secondsPerChunk": 8,
+    "retainedBytes": 1048576
+  },
+  "scope": "New explicitly budgeted offline sessions for311 actual retained selections; no original live-session enrichment, source capacity or full Story acceptance",
+  "exclusions": "No source/image/network calls, production modifications, native SQL, new profile or model breadth, corpus republish or second full suite"
+}

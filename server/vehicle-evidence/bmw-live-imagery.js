@@ -1,4 +1,6 @@
 import { createHash } from 'node:crypto';
+import { inputDigest } from '../gcsp/repository/core.js';
+import { validateBmwEnrichmentObservationRegistration } from '../../scripts/gcsp/bmw-public-registration.mjs';
 import { bmwImageLookupIdentity, createBmwImageAdapter, presentBmwImage } from './bmw-image-adapter.js';
 
 const PROVIDER = 'bmw-cosy-named-images';
@@ -55,7 +57,17 @@ function responseFailure(response, now) {
 }
 
 /** Canonical snapshot inputs plus an explicit named-image selection; no catalogue fetch is needed. */
-export function bmwLiveImageLookupIdentity(request) {
+export function bmwLiveImageLookupIdentity(request, registration) {
+  if (registration !== undefined) {
+    let r; try { r = validateBmwEnrichmentObservationRegistration(registration); } catch { return null; }
+    const pointer = '/stage-fullscreen-views-legacy-newnames/desktop/namedImages/0/images/0';
+    if (!object(request) || Object.keys(request).some((k) => !['configurationId', 'bindingDigest', 'viewport', 'viewpoint', 'size', 'variantPointer', 'role'].includes(k))
+      || request.configurationId !== r.configurationId || request.bindingDigest !== r.bindingDigest || request.viewport !== 'desktop'
+      || request.viewpoint !== 'HEROFRONT' || request.variantPointer !== pointer || request.size?.width !== 2560 || request.size?.height !== 1646) return null;
+    return { provider: PROVIDER, providerVersion: '2', schemaVersion: '2', snapshotVersion: 'bmw-uk-cosy-named-images.v2',
+      sourceContractVersion: 'bmw-public-solver-selection.v1', configurationId: r.configurationId, bindingDigest: r.bindingDigest,
+      requestRegistration: r, viewpoint: 'HEROFRONT', size: { width: 2560, height: 1646 }, viewport: 'desktop', variantPointer: pointer };
+  }
   if (!object(request) || !['desktop', 'tablet', 'mobile', 'thumbnails'].includes(request.viewport)
     || !token(request.namedImage) || !object(request.distinctions)
     || Object.keys(request.distinctions).some((key) => !DISTINCTIONS.includes(key))
@@ -69,12 +81,12 @@ export function bmwLiveImageLookupIdentity(request) {
 
 function identity(lookup) {
   if (!lookup) return null;
-  const { provider, providerVersion, schemaVersion, snapshotVersion, viewpoint, size, viewport, namedImage, distinctions, ...configuration } = lookup;
+  const { provider, providerVersion, schemaVersion, snapshotVersion, viewpoint, size, viewport, namedImage, distinctions, variantPointer, ...configuration } = lookup;
   return configuration;
 }
 
 function envelope(status, lookup, code) {
-  return { provider: PROVIDER, providerVersion: '1', schemaVersion: '1', snapshotVersion: VERSION,
+  return { provider: PROVIDER, providerVersion: lookup?.providerVersion || '1', schemaVersion: lookup?.schemaVersion || '1', snapshotVersion: lookup?.snapshotVersion || VERSION,
     sourceKind: 'authorised-live', sourceSupport: 'unsupported-public-website-demo', sourceProfile: PROFILE,
     status, failure: failure(code), lookupIdentity: lookup, resolvedLookupIdentity: null,
     requestedIdentity: identity(lookup), resolvedIdentity: null, manifestResolvedIdentity: null,
@@ -92,6 +104,21 @@ function assetReference(value) {
 }
 
 function selectNamed(manifest, lookup) {
+  if (lookup.providerVersion === '2') {
+    const viewport = manifest?.[COLLECTION]?.desktop; const group = viewport?.namedImages?.[0]; const image = group?.images?.[0];
+    const tuple = image?.distinctionParameters;
+    if (viewport?.metaData?.width !== 2560 || viewport?.metaData?.height !== 1646 || !token(group?.name)
+      || !object(tuple) || !assetReference(image?.viewImage) || tuple.POV !== 'HEROFRONT'
+      || inputDigest(Object.keys(tuple).sort()) !== inputDigest(['BKGND', 'POV', 'X', 'Y'])
+      || !Object.values(tuple).every((v) => typeof v === 'string' && /^[A-Za-z0-9_-]{1,32}$/.test(v))
+      || !Array.isArray(viewport.namedImages) || viewport.namedImages.length > 32
+      || !viewport.namedImages.every((g) => token(g?.name) && Array.isArray(g.images) && g.images.length <= 256)) return { code: 'manifest-unavailable' };
+    const candidates = viewport.namedImages.flatMap((g) => g.images.filter((entry) => g.name === group.name
+      && object(entry?.distinctionParameters) && inputDigest(entry.distinctionParameters) === inputDigest(tuple)));
+    if (candidates.length !== 1) return { code: 'manifest-unavailable' };
+    return { image, selectedVariant: { pointer: lookup.variantPointer, namedImage: group.name,
+      distinctions: Object.fromEntries(Object.entries(tuple).filter(([k]) => k !== 'POV').sort(([a], [b]) => a.localeCompare(b))) } };
+  }
   const collection = manifest?.[COLLECTION];
   if (!object(collection)) return { code: 'manifest-unavailable' };
   if (!Object.hasOwn(collection, lookup.viewport)) return { code: 'unsupported-request' };
@@ -143,16 +170,16 @@ function webpDimensions(bytes) {
 
 /** Trusted backend dependencies own transport, credentials and independent identity proof, never the caller. */
 export function createBmwLiveImageryProvider({ environment, sourceProfile, transport, getCredential,
-  resolveConfiguration, clock = () => new Date(), timeoutMs = 15000 } = {}) {
+  resolveConfiguration, sourceRegistration, onSelectedVariant = async () => {}, clock = () => new Date(), timeoutMs = 15000 } = {}) {
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 15000 || typeof clock !== 'function') throw new TypeError('Supply bounded image settings.');
   const selected = environment === 'gcsp-demo' && sourceProfile === PROFILE;
   const assets = new Map(); const active = new Set(); let generation = 0;
   return Object.freeze({
     async resolve(request) {
-      const lookup = bmwLiveImageLookupIdentity(request);
+      const lookup = bmwLiveImageLookupIdentity(request, sourceRegistration);
       if (!lookup) return envelope('invalid-input', null, 'invalid-request');
       if (!selected) return envelope('source-unavailable', lookup, 'source-not-selected');
-      if (lookup.market !== 'GB' || lookup.locale !== 'en-GB' || (request.role !== undefined && request.role !== ROLE)) return envelope('unsupported', lookup, 'unsupported-request');
+      if ((lookup.requestRegistration?.model.market || lookup.market) !== 'GB' || (lookup.requestRegistration?.model.locale || lookup.locale) !== 'en-GB' || (request.role !== undefined && request.role !== ROLE)) return envelope('unsupported', lookup, 'unsupported-request');
       if (typeof transport !== 'function' || typeof getCredential !== 'function') return envelope('source-unavailable', lookup, 'credentials-unavailable');
       if (active.size) return envelope('source-unavailable', lookup, 'source-busy');
       // An older delivery cannot become the fallback for a new resolution, including a failed one.
@@ -178,10 +205,10 @@ export function createBmwLiveImageryProvider({ environment, sourceProfile, trans
           if (!body || body.length > cap || typeof response.contentType !== 'string') throw Error('source');
           return { body, type: response.contentType.split(';')[0].trim().toLowerCase() };
         };
-        const query = new URLSearchParams({ effectdate: lookup.effectDate.replaceAll('-', ''), hub: 'CLOUD_PROD_INTERNET', imagetype: 'webp', options: lookup.selectedOptions.join(',') });
+        const query = new URLSearchParams({ effectdate: (lookup.requestRegistration?.model.effectDate || lookup.effectDate).replaceAll('-', ''), hub: 'CLOUD_PROD_INTERNET', imagetype: 'webp', options: (lookup.requestRegistration?.factoryOptionCodes || lookup.selectedOptions).join(',') });
         let manifest; let named;
         try {
-          const response = await get(`${ORIGIN}/image-urls/dynamic-named-images/mandators/connext-bmw/collections/${COLLECTION}/brands/bmwCar/models/${lookup.agModelCode}?${query}`, { 'x-api-key': key, Accept: 'application/json' }, MANIFEST_BYTES);
+          const response = await get(`${ORIGIN}/image-urls/dynamic-named-images/mandators/connext-bmw/collections/${COLLECTION}/brands/bmwCar/models/${lookup.requestRegistration?.model.agModelCode || lookup.agModelCode}?${query}`, { 'x-api-key': key, Accept: 'application/json' }, MANIFEST_BYTES);
           if (response.type !== 'application/json') throw Error('source');
           manifest = JSON.parse(response.body.toString('utf8')); named = selectNamed(manifest, lookup);
         } catch (error) {
@@ -197,16 +224,22 @@ export function createBmwLiveImageryProvider({ environment, sourceProfile, trans
         catch { proof = null; }
         if (controller.signal.aborted) return envelope('source-unavailable', lookup, 'timeout');
         const resolved = proof?.basis === 'independent-source-proof' && date(proof.observedDate)
-          ? bmwLiveImageLookupIdentity({ ...proof.identity, viewport: lookup.viewport, namedImage: lookup.namedImage, distinctions: lookup.distinctions, viewpoint: lookup.viewpoint, size: lookup.size }) : null;
+          ? lookup.providerVersion === '2'
+            ? proof.registrationDigest === inputDigest(lookup.requestRegistration) && proof.acceptedLineSha256 === lookup.requestRegistration.sourceAcceptedSha256
+              ? bmwLiveImageLookupIdentity({ ...proof.identity, viewport: lookup.viewport, variantPointer: lookup.variantPointer, viewpoint: lookup.viewpoint, size: lookup.size }, sourceRegistration) : null
+            : bmwLiveImageLookupIdentity({ ...proof.identity, viewport: lookup.viewport, namedImage: lookup.namedImage, distinctions: lookup.distinctions, viewpoint: lookup.viewpoint, size: lookup.size }) : null;
         if (!resolved) return envelope('source-unavailable', lookup, 'identity-unverified');
         const result = envelope('source-unavailable', lookup, 'asset-unavailable');
         result.resolvedLookupIdentity = resolved; result.resolvedIdentity = identity(resolved);
         result.observedDate = proof.observedDate; result.retrievedDate = retrievedDate;
-        result.identityProvenance = { kind: 'independent-source-proof', observedDate: proof.observedDate, manifestIdentityEchoed: false };
+        result.identityProvenance = { kind: 'independent-source-proof', observedDate: proof.observedDate, manifestIdentityEchoed: false,
+          ...(lookup.providerVersion === '2' ? { registrationDigest: proof.registrationDigest, acceptedLineSha256: proof.acceptedLineSha256 } : {}) };
+        if (named.selectedVariant) result.selectedVariant = named.selectedVariant;
         if (JSON.stringify(identity(resolved)) !== JSON.stringify(identity(lookup))) {
           result.status = 'identity-mismatch'; result.failure = failure('identity-mismatch'); return result;
         }
         try {
+          if (named.selectedVariant) await onSelectedVariant(structuredClone(named.selectedVariant));
           const response = await get(named.image.viewImage, { Accept: 'image/webp' }, IMAGE_BYTES);
           const dimensions = webpDimensions(response.body);
           if (response.type !== 'image/webp' || !dimensions || dimensions.width !== lookup.size.width || dimensions.height !== lookup.size.height) return result;
@@ -220,7 +253,7 @@ export function createBmwLiveImageryProvider({ environment, sourceProfile, trans
           result.freshness = { ...freshness(), retrievedAt: new Date(retrievedAt).toISOString(),
             handoffExpiresAt: new Date(expiresAt).toISOString() };
           result.image = { assetId, contentType: 'image/webp', bytes: response.body.length, sha256, size: dimensions,
-            viewpoint: lookup.viewpoint, viewport: lookup.viewport, namedImage: lookup.namedImage, role: ROLE,
+            viewpoint: lookup.viewpoint, viewport: lookup.viewport, namedImage: named.selectedVariant?.namedImage || lookup.namedImage, role: ROLE,
             representation: 'configuration', matchesRequestedConfiguration: true,
             fidelity: { ...UNKNOWN, model: proof.fidelity?.model === 'verified' ? 'verified' : 'unknown', paint: proof.fidelity?.paint === 'verified' ? 'verified' : 'unknown' },
             origin: 'BMW COSY public UK configurator', sourceDate: proof.observedDate, retrievedDate };

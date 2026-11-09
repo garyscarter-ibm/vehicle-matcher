@@ -1,0 +1,9 @@
+{
+  "authorized": true,
+  "phase": "summarize",
+  "planSha256": "1b329e5b0e8e45097e4753467a4d8a061cdee8e10bbbe421bde1e31555cf2f79",
+  "candidateReceiptSha256": "383d1b2f42b16229698995ac652bb00220956507b6aec215658694a617c7aa0a",
+  "manifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "sourceCalls": 0,
+  "ordinaryPublicationExecuted": false
+}

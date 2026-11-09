@@ -1,0 +1,23 @@
+{
+  "availableActions": [],
+  "clockVersion": "2",
+  "commandId": "decision-1",
+  "decisionId": "offer-decision:e2f0ee69de6b626ce375e104d3be1c6e7a34a2eb75294d451016b9bcd3e7d4ce",
+  "expiresAt": "2026-11-05T14:00:00.000Z",
+  "holdState": "released",
+  "holdVersion": 2,
+  "offerId": "buddy-offer:c34515cd929fa2420d39cbdbda25ad2af484d57d97151e5cd753e1181fe7a8d7",
+  "offerState": "rejected",
+  "offerVersion": 2,
+  "operationId": null,
+  "policyVersion": "gcsp-policy-v1",
+  "quoteId": "buddy-quote:c34515cd929fa2420d39cbdbda25ad2af484d57d97151e5cd753e1181fe7a8d7",
+  "quoteVersion": 1,
+  "reason": "declined",
+  "reconciliationRequired": false,
+  "requestedDecision": "decline",
+  "runId": "demo-e3951288ab788c679110fd55d9c495c0",
+  "schemaVersion": 1,
+  "serverNow": "2026-11-05T12:00:00.000Z",
+  "state": "declined"
+}

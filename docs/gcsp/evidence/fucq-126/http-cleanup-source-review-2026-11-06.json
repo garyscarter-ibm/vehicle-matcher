@@ -1,0 +1,109 @@
+{
+  "date": "2026-11-06",
+  "state": "HOLD-source-review-passed-runtime-unexecuted",
+  "claim": "DEV-2026-11-04-096",
+  "branch": "dev/DEV-2026-11-04-096",
+  "reviewedRevision": "9a9f66fdd19e84a7dd49838709b94542a11fd735",
+  "diffBase": "ee405af10c5c1459cdcbe8591652e2a93c57a820",
+  "reviewer": {
+    "name": "Doc Hudson",
+    "taskName": "/root/doc_hudson",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "fallback": null,
+    "effectiveRuntimeIndependentlyVerified": false,
+    "descendants": 0,
+    "titleToolResult": "Doc Hudson returned successfully; no sidebar inspection claimed",
+    "capacity": "can_start=1 running=5: 5.6 GB free less 3 GB reserve leaves room for 1 at 1.5 GB each"
+  },
+  "verdict": "PASS — no blocking or major issues found.",
+  "verdictScope": "Independent source review only; no execution admission",
+  "rawReport": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/results/codex-review-fucq126-cleanup-2026-11-06.md",
+    "sha256": "469a69c597cd93aea73539c03fa31db637aba08b94bc22e83b0413b6ef139109"
+  },
+  "report": {
+    "path": "docs/gcsp/evidence/fucq-126/http-cleanup-source-review-2026-11-06.md",
+    "sha256": "1600b9c6809cfe6133a5d10fc9c6e56621e8a22d8d9934e4300b50a7c42fe8ff"
+  },
+  "sourceDiff": {
+    "path": "docs/gcsp/evidence/fucq-126/http-cleanup-source-review-2026-11-06.patch",
+    "sha256": "f9ca02613baa277749ee11396e34262633378b8aceb577f02c96d5e5002678ed",
+    "bytes": 23191,
+    "paths": [
+      "docs/gcsp/evidence/fucq-126/strict-http-resources.py",
+      "docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
+      "docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py"
+    ]
+  },
+  "candidate": {
+    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-cleanup-repair-2026-11-06.json",
+    "sha256": "79252c795eb2bdffcfeac429183587b6c9f831ff2f11270c823e8e2300555071",
+    "method": "manual source-pin revision; dependency pins carried forward, not revalidated",
+    "unchangedAfterReview": true
+  },
+  "authoringReceipt": {
+    "path": "docs/gcsp/evidence/fucq-126/http-cleanup-authoring-repair-2026-11-06.json",
+    "sha256": "999b53834825f6b696cd74b663d2d0aa1a02fc2987c0263da1a7f1a8614dbad6",
+    "identityScope": "9a9f66fdd19e84a7dd49838709b94542a11fd735",
+    "unchangedAfterReview": true
+  },
+  "sourcePins": [
+    {
+      "path": "docs/gcsp/evidence/fucq-126/strict-http-resources.py",
+      "sha256": "e0c63effd13622961d32606954870185daf64e056806328225e600cc58784858",
+      "bytes": 44761
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
+      "sha256": "18758a02e4dfe68404e0739e18df8e53a28717bc7e43dff29c003e3025f0b554",
+      "bytes": 23970
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py",
+      "sha256": "c93e2238c1c6c6f52a271dea6e24a4e9b4d8204b89cce170653265d4e807c1c6",
+      "bytes": 18824
+    }
+  ],
+  "disposition": {
+    "N1": "Repaired in source; unexecuted",
+    "N2": "Repaired in source; unexecuted",
+    "N3": "Repaired in source; unexecuted",
+    "N4": "Provenance corrected; manual revision, reference preparation not executed or reproducing",
+    "N5": "OPEN/unverified: actual host ps output size/latency vs 2MiB cap"
+  },
+  "preservedContracts": [
+    "Budget class byte-identical to baseline; extracted-text SHA256 25c705f40f72b67a085a5b3f02f5597be2decaa3b99b6108e7ef817e2bb4e44c",
+    "Seven-key ALL-row ledger, no pruning, exact owner-start text, no-follow bounded locked reads, foreign-row preservation/readback, full reservation and complete release gates",
+    "138 source/reference plus1975 dependencies=2113rows/2111resolved files; exactly3 changed source pins;267edges/29classifications/sixcases unchanged"
+  ],
+  "historicalReview": {
+    "reviewer": "Granny",
+    "model": "claude-opus-5-5",
+    "reportedEffort": "LOW",
+    "verdict": "HOLD",
+    "reviewedRevision": "ee405af10c5c1459cdcbe8591652e2a93c57a820",
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/results/claude-assist-fucq126-2026-11-06-02.md",
+    "sha256": "bcaddfcfbd0b9d3430d9c8f770b376a70115b87edfec94436f5735b541a70a08"
+  },
+  "executionAuthorized": false,
+  "executionReady": false,
+  "executed": false,
+  "outputRoot": null,
+  "hostAnchors": null,
+  "reviewLimits": "Source/text/hash/JSON/Git metadata only; no reviewed-code/helper import or execution, AST/syntax/test/runtime/resource/process/RSS/lsof/ledger probe, browser/native/live/full lane, credentials, shared merge, Jira/foreign writes. Required launcher capacity check is scheduling metadata, not runtime validation.",
+  "resources": {
+    "testAllocations": false,
+    "scratch": null,
+    "cleanup": "No test resources allocated; no new disposable scratch or owned children; only bounded retained source diff/reports. Existing node_modules and server/node_modules symlinks preserved."
+  },
+  "remaining": [
+    "Separately admitted private-ledger lifecycle validation: four cases,1worker,32MiB scratch,64MiB RAM,20s/case,1MiB logs,external ownership/checkpoint and independent cleanup",
+    "Fresh ALL-row host/lock anchors,locale and bounded ps size/latency evidence; N5 open",
+    "Exact six-case admission and external output/impact/ownership plan;120/90/30s,768MiB RAM,128MiB disk,2MiB TAP,1worker",
+    "Fleet A5 dead-owner reaping and A6 generic run_process registration gaps remain open",
+    "Business preparation,positive new-run supply,C5,paused96,browser/native/full gates unchanged"
+  ]
+}

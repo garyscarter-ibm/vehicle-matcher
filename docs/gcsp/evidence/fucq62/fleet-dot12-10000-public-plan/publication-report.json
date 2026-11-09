@@ -1,0 +1,59 @@
+{
+  "scope": "actual immutable .12 publication evidence independently checked from retained local receipts; no fresh remote query",
+  "checkedAt": "2026-11-07T08:50:00.527844+00:00",
+  "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "tag": "fleet-2026-11-07-12",
+  "target": "15fde2c3c24b5da02206501576a3baeb19e9a78c",
+  "publicReleaseId": 437448005,
+  "assets": 31,
+  "bytes": 574382841,
+  "remoteMetadataExactPerActualPublisherReceipt": true,
+  "protectedDot10UnchangedPerActualPublisherAssertions": true,
+  "phases": [
+    {
+      "phase": "local-check",
+      "rc": 0,
+      "seconds": 0.49793608300000003,
+      "receiptSha256": "40ae36e0e39c9d0f5dadd356d427779ad1919793be6f131efab70cdbb4862503",
+      "apiCalls": 0,
+      "removedScratchPeakBytes": 1129276,
+      "physicalScratchAbsent": true,
+      "physicalGroupsAbsent": true,
+      "reservationTokenAbsent": true,
+      "ownedRuntimeLinkAbsent": true
+    },
+    {
+      "phase": "check",
+      "rc": 0,
+      "seconds": 3.095516417,
+      "receiptSha256": "a13fb76123b2cbfa50d805acc417877abfa3523fc38fc98d8d8b84b1367cda3b",
+      "apiCalls": 5,
+      "removedScratchPeakBytes": 1129276,
+      "physicalScratchAbsent": true,
+      "physicalGroupsAbsent": true,
+      "reservationTokenAbsent": true,
+      "ownedRuntimeLinkAbsent": true
+    },
+    {
+      "phase": "publish",
+      "rc": 0,
+      "seconds": 125.2208205,
+      "receiptSha256": "b7b66e3a5bf23ad5fbea7c79a5471bf654bd20051193cdb34271f1e79575c6bf",
+      "apiCalls": 40,
+      "removedScratchPeakBytes": 1129276,
+      "physicalScratchAbsent": true,
+      "physicalGroupsAbsent": true,
+      "reservationTokenAbsent": true,
+      "ownedRuntimeLinkAbsent": true
+    }
+  ],
+  "ordinaryStoreMutation": false,
+  "sourceRequests": 0,
+  "newApplicationGETs": 0,
+  "removedScratchPeakBytesSum": 3387828,
+  "retainedEvidenceDirectory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-public-plan",
+  "coldLinuxDeployment": "Separate; publication alone does not prove restore/build/live readiness",
+  "consumerFailures": 2707,
+  "nativeAcceptance": "Unrun",
+  "acceptance": false
+}

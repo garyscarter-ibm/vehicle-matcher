@@ -1,0 +1,33 @@
+{
+  "changedPaths": [
+    "render.gcsp.yaml",
+    "server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json",
+    "server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json",
+    "server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431"
+  ],
+  "regression": "Build restore anchor and ordinary active manifest must select same reviewedpublic .5; all350oldlinebytes/history/VIN remain unchanged",
+  "callers": [
+    "Render build shell",
+    "existing corpuspublisher",
+    "syntheticregistry",
+    "localvehiclelookup"
+  ],
+  "selected": [
+    "activate-fleet-dot5.mjs actualexistingpublisher under external run.py supervisor",
+    "Ruby YAML parse and shell syntax",
+    "render-blueprint.test.js narrow existingpathfiltertest"
+  ],
+  "excluded": "No repeated481audit/publicdownload/LinuxNode20checks for identicalcandidatebytes; no sourcecalls; no UI change; no fullsuite; actualdeployedparity follows newdeployment",
+  "budget": {
+    "workers": 1,
+    "hostRAMMiB": 512,
+    "childRAMMiB": 448,
+    "scratchMiB": 64,
+    "seconds": 90
+  },
+  "ownership": "R.Scratch externalmanifest beforecreate; rootfinalizer; manifestdeclares ordinaryrootstore intentionaldurableoutput, sourceidentity excludes expecteddatachanges",
+  "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62-dot5-ordinary",
+  "reusedLinuxRun": 42331038232,
+  "reusePublicRelease": 437276294,
+  "createdAt": "2026-11-07T02:53:45.432165+00:00"
+}

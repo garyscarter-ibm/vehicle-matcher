@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-11-06T01:03:43.605881+00:00",
+  "grant": "fucq106-typed-90cb70c-0033",
+  "authority": "Explicit new dispatcher grant in this chat, following root one-line correction review",
+  "reviewPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq106-typed-test-review-0033.json",
+  "reviewSha256": "0407071becc8df7205d1b3642ce59db2c3a6f1197403df7b1c93212b711090e7",
+  "source": "90cb70ce951a4c9de934e792b8b7fbee0665d934",
+  "plan_sha256": "db0dfa478ddef3594abe5c74c0aaeddeefc61e9bd8fcedee4c0ba832ec178746",
+  "scope": "fucq106-canonical-adoption",
+  "status": "PASS",
+  "execution_allowed": true,
+  "runs": 1,
+  "selectedCases": 3,
+  "limits": {
+    "childSeconds": 120,
+    "ramMiB": 768,
+    "scratchAndOutputMiB": 128,
+    "logMiB": 2,
+    "workers": 1
+  },
+  "restrictions": [
+    "no automatic retry",
+    "no source/provider/native/browser/full/remote71/108/employee-confirmation expansion"
+  ],
+  "priorPartialPreserved": true,
+  "reviewLimits": [
+    "Verify exact3pass/0fail/0skip/0cancel",
+    "Post-deletion lsof output is not a successful scan",
+    "Measure child execution separately from preparation and total wall"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "demo-enrichment.v1",
+  "demoManifestDigest": "7c9cc707ab44b36f9cb5eb64b54170b25d914d5ee7e31722384c737612c45a9c",
+  "sources": {
+    "technical": "BMW UK OTD",
+    "images": "BMW COSY",
+    "observationSourceVersion": "f60-enrichment-observation-20261107.v1"
+  },
+  "mapping": {
+    "version": "bmw-otd-reference-code-mapping.v1",
+    "digest": "df2b37a06501d5c0fe03c29193b99d0755cb9c0254f22936e934c7e77705b5ac"
+  },
+  "imageRule": {
+    "id": "first-desktop-herofront.v1",
+    "text": "Desktop views whose viewpoint is HEROFRONT, ordered by namedImages then images index; the first is the reference."
+  },
+  "facts": [
+    "acceleration",
+    "seats",
+    "luggageNormal",
+    "rangeOrEconomy",
+    "co2",
+    "luggageExpanded"
+  ],
+  "counts": {
+    "rows": 240,
+    "observed": 140,
+    "notObserved": 1,
+    "rejected": 99,
+    "rowsWithExteriorReference": 239,
+    "facts": {
+      "acceleration": {
+        "known": 140,
+        "unknown": 100
+      },
+      "seats": {
+        "known": 140,
+        "unknown": 100
+      },
+      "luggageNormal": {
+        "known": 110,
+        "unknown": 130
+      },
+      "rangeOrEconomy": {
+        "known": 0,
+        "unknown": 240
+      },
+      "co2": {
+        "known": 0,
+        "unknown": 240
+      },
+      "luggageExpanded": {
+        "known": 110,
+        "unknown": 130
+      }
+    }
+  },
+  "checksums": {
+    "enrichment.jsonl": "31cd5347adf6d7489d2d3c4327056ca5cbb22fc00a4350c98de25cbea6d4ff7c"
+  },
+  "observedDates": {
+    "first": "2026-11-08",
+    "last": "2026-11-08"
+  },
+  "requests": {
+    "total": 956,
+    "perHost": {
+      "configure.bmw.co.uk": 478,
+      "prod.ucp.bmw.cloud": 239,
+      "prod.cosy.bmw.cloud": 239
+    },
+    "perOperation": {
+      "page": 239,
+      "settings": 239,
+      "technical": 239,
+      "image-manifest": 239
+    },
+    "stop": null
+  }
+}

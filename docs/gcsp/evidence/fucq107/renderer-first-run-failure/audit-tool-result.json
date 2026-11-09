@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "scope": "Exact once-run pinned auditor tool result; no successful audit receipt was created",
+  "command": "/bin/zsh -lc '/usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-audit.py --admission-sha f547b6a33e40424af037694ef7d1aaf3b970c91e92d2e208214435b42a78293b --run /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-e4b7c26abd294bd78395d59c774ab8d7'",
+  "cwd": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085",
+  "exitCode": 1,
+  "status": "failed",
+  "durationMs": 716,
+  "output": {
+    "text": "Traceback (most recent call last):\n  File \"/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-audit.py\", line 257, in <module>\n    main()\n  File \"/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-audit.py\", line 94, in main\n    require(summary['passed'] is True and summary['failure'] is None and summary['pinsPreserved'] is True, 'reported-success')\n  File \"/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-audit.py\", line 59, in require\n    raise RuntimeError('Audit failed: ' + label)\nRuntimeError: Audit failed: reported-success\n",
+    "truncated": false
+  }
+}

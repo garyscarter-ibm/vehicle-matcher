@@ -1,0 +1,59 @@
+{
+  "affectedCallers": [
+    "main.finally reservation release",
+    "durable supervisor receipt",
+    "terminal summary",
+    "terminal return expression"
+  ],
+  "changedPaths": [
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/supervise-live.py"
+  ],
+  "checks": [
+    "12 unittest methods; bounded helper cases and exact finalizer/terminal AST statements",
+    "three historical silent-cleanup failures reproduced without invoking main",
+    "per-test observed function/line contexts during same command"
+  ],
+  "command": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/supervisor-regressions.py"
+  ],
+  "excluded": {
+    "network/SQL/install/browser": "outside offline allocation",
+    "runner/source producer/JavaScript/full suite": "unchanged runner and isolated Python cleanup-only delta; canonical producer current scoped evidence retained",
+    "source supervisor main": "source calls unallocated; never invoke"
+  },
+  "identityPaths": {
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/supervise-live.py": "2e992894ab193d7c65487c4fe1d241e008c4eac1e78c7fe91ad3090634522514",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/supervise-regressions.py": "2a39d3b69bee66d2329f39d695406f426d7ac14caa44df943818c66ff30dbaa5",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/supervisor-regressions.py": "a6a101b9ce6dade45c4407acf34322d2129f2af3a636026fb812b8f5b83d458f",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/supervise-live.py": "2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce",
+    "/Users/usget/Claude/vehicle-matcher/_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+  },
+  "integrationBoundaries": [
+    "trusted HostBudget.release",
+    "locked bounded ledger readback",
+    "unchanged scratch/process-group finalization"
+  ],
+  "parentLane": "root released Sam lane and explicitly allocated this one serial bounded turn",
+  "regression": "prior finalizer can report clean completion when owned reservation release fails or leaves token; current port must expose verified status and fail terminal completion",
+  "resources": {
+    "expectedRssBytes": 67108864,
+    "expectedScratchBytes": 1048576,
+    "expectedSeconds": 10,
+    "logBytes": 1048576,
+    "sampledRssBytes": 402653184,
+    "scratchBytes": 67108864,
+    "seconds": 120,
+    "workers": 1
+  },
+  "run": "f59-canonical-supervisor-port-20261106",
+  "schemaVersion": "f59-four-get-supervisor-regression-selection.v1",
+  "scope": "offline-four-get-reservation-cleanup-port-only",
+  "scratchOwnership": "trusted main-root Scratch registers absolute external ownership manifest before creating root; execute owns stop/join/finalizers; TMPDIR/TMP/TEMP inherited by test child",
+  "selectedAt": "2026-11-06T15:12:16.554779+00:00",
+  "selectionReason": "external preparation supervisor has no repository affected-test selector mapping; explicit regression/helper/finalizer/terminal ownership review is narrower and sufficient for this isolated port",
+  "sourceAttemptsAllocated": 0,
+  "teardown": "remove owned child scratch/logs; independently verify owned root/group/token absence; retain only concise identity/results/observed contexts outside scratch"
+}

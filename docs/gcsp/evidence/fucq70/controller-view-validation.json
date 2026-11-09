@@ -1,0 +1,111 @@
+{
+  "story": "FUCQ-70",
+  "slices": [
+    "controller",
+    "view"
+  ],
+  "observedAt": "2026-11-05T23:36:40.196541+00:00",
+  "base": "194d765d2cccb0d75fb33b1b2837a18d57ded3b7",
+  "scope": "Independent HTTP/controller/DOM/composition and shared ratchet boundaries; explicit service doubles, no rendered-browser or actual producer integration claim",
+  "source": {
+    "blocks/gcsp/manual-review/gcsp-manual-review.js": "4ef9173ff73be99c755dc357f0fc53c69b89086f5b9bfa1373bdb2a4a129822e",
+    "blocks/gcsp/manual-review/http-adapter.js": "5b8dd0157f3f61f57bca77a702fa944fd23a63f953a87118bdcc73ad3e98e847",
+    "blocks/gcsp/manual-review/review-controller.js": "b77c9f936cfae036d6cce50917bdd5d022fdfba2a14f4cb6b189a1b966347355",
+    "blocks/gcsp/manual-review/review-model.js": "6c6eb31b97ea679d57953392e77342234952f5a4b8250a92074c978aaf9ef281",
+    "blocks/gcsp/manual-review/manual-review.css": "15401a82eafdced5b06b17974c7a3bc263b8415bf673a43f0dd67f86333bab1c",
+    "server/test/gcsp-manual-review-controller.test.js": "d0a873208dad36eb3bbefd4adb3402a714b0e6d9d25f3d4cad035a8bc9dafa81",
+    "server/test/gcsp-manual-review-render.test.js": "ad164b11dcb8d2dc513bc61fd20bedb645bf8c1f81be677eaaf04982805ad653",
+    "server/test/ui-ratchet.json": "8860ae6297ee3f94d85918ba803e8c2581106fecb32f9ed22e2d20cab24e3b56"
+  },
+  "contractSha256": "3b7f97eb39a72ba74d60bd97a252113823a8fb67975a04305150643232c131f5",
+  "checks": [
+    {
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-manual-review-render.test.js"
+      ],
+      "tests": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "checkpoint": "9a47eb42590b43d172189d37fc68880ee7ce4abfc9d0cce95e9ddd7eef95cc3d",
+      "resources": [
+        {
+          "wallSeconds": 1.147291792,
+          "peakRssBytes": 241025024,
+          "peakScratchBytes": 0
+        }
+      ]
+    },
+    {
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/ui-ratchet.test.js"
+      ],
+      "tests": {
+        "pass": 44,
+        "fail": 0,
+        "skip": 0
+      },
+      "checkpoint": "1c3321c040f2fc2994c667742138fb8467fd6fd0689da998325a68687919f462",
+      "resources": [
+        {
+          "wallSeconds": 0.300119166,
+          "peakRssBytes": 31080448,
+          "peakScratchBytes": 0
+        }
+      ]
+    }
+  ],
+  "controllerReceipt": "controller-validation.json",
+  "controllerPass": 14,
+  "parentReview": [
+    "Reviewed complete adapter/model/controller/tests and all public callers",
+    "Parent combined boundary run passed all14 controller cases; DOM fixture initially omitted required quote version, corrected before final DOM run",
+    "Verified no claim POST API, source-owned limits and fixed deadlines, immutable command retries and same saved revision across uncertain transition",
+    "Fixed and regressed pending-past-deadline browse recovery; no free-stock implication while outcome pending"
+  ],
+  "parentAudit": {
+    "allocations": 6,
+    "allClean": true,
+    "dependencyLinkAbsent": true,
+    "dependenciesPreserved": true,
+    "packageHashesUnchanged": true
+  },
+  "unproved": [
+    "Actual frozen FUCQ-66 service and FUCQ-69 gallery producer journey",
+    "FUCQ-71 same-transaction freeze/submission/order readback",
+    "FUCQ-103 central routes/session/pending202 and host presenter-clock subscription",
+    "Native PostgreSQL",
+    "Rendered desktop/320px/keyboard/actual tick and browser timeout/back/reload",
+    "Authored serial full suite and strict stamp"
+  ],
+  "agents": [
+    {
+      "name": "Henery Hawk",
+      "requested": "gpt-6.1-sol/high",
+      "selected": "gpt-6.1-sol/high",
+      "effective": "gpt-6.1-sol/high",
+      "fallback": null
+    },
+    {
+      "name": "Sniffles",
+      "requested": "gpt-6.1-sol/medium",
+      "selected": "gpt-6.1-sol/medium",
+      "effective": "gpt-6.1-sol/medium",
+      "fallback": null
+    }
+  ],
+  "contractRefresh": {
+    "observedAt": "2026-11-05T23:43:59.276315+00:00",
+    "producerRef": "8a3e3bf1c7df44f13f8d432ffc4e9b8598161bbf",
+    "producerContractSha256": "436e7531249a9118af5f37bf7728b8d299432121bf817b92acd2aee2e3be6295",
+    "executableChanges": false,
+    "validation": "Reuse unchanged code/test/config identities; sole claim owner, handoff shape and authoritative reload are compatible. No test allocation or live producer proof."
+  }
+}

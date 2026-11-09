@@ -1,0 +1,53 @@
+{
+  "scope": "Full authored npm test on combined release/clock/repository checkpoint; actual corpus/producer/runtime integration incomplete",
+  "testedHead": "1fc492c1522136c4156bd19570956e64b5574130",
+  "command": "npm test",
+  "effectiveNodePrefix": [
+    "/opt/homebrew/bin/node",
+    "--test-concurrency=1",
+    "--test"
+  ],
+  "counts": {
+    "tests": 1262,
+    "pass": 1257,
+    "fail": 0,
+    "skip": 5
+  },
+  "skipReason": "GCSP_DATABASE_URL explicitly unset; no native PostgreSQL claim",
+  "skippedIds": [
+    "postgresql native constraints reject a second occupying hold and claim",
+    "postgresql: shared TransactionRepository contract",
+    "PostgreSQL native parity: NOT RUN; GCSP_DATABASE_URL unset, Render integration gate remains blocked",
+    "native PostgreSQL rows/dates, seed replay, immutable SQL and reopen agree with memory",
+    "native PostgreSQL mid-publication SQL failure rolls back every typed row and permits a valid retry"
+  ],
+  "strictStamp": "stamp: key 5307f70f762d (tree 19b370ff52e6, HEAD 1fc492c1), tests passed, wall 142s, 2026-11-05T23:19:46+0000, variant default, Python 3.14.7",
+  "strictStatusImmediatelyAfter": 0,
+  "codeKey": "5307f70f762d",
+  "wallSeconds": 142.5,
+  "peakRssBytes": 391004160,
+  "peakScratchBytes": 552064,
+  "credentialAliasesAbsent": true,
+  "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead92/full/strict/ownership/29fdf05eda494c55bf9b58acf0a91ccf.json",
+  "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead92/full/receipt-full.json",
+  "cleanup": [
+    {
+      "groupsAbsent": true,
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead92/full/strict/ownership/29fdf05eda494c55bf9b58acf0a91ccf.json",
+      "reservationAbsent": true,
+      "root": "/private/tmp/test-stamp-shard-29fdf05eda494c55bf9b58acf0a91ccf",
+      "rootAbsent": true,
+      "state": "removed"
+    }
+  ],
+  "dependenciesUnchanged": true,
+  "retainedDependencies": {
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-058/node_modules": "591730cb8bb430fdca6377fc63e84b30f49e1fd940c1a0afbea5c5f2e3bd96db",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-058/server/node_modules": "10195441734c41efe671ffff4d2d3baa169809431fe6f49139c3da2c29f37dbf"
+  },
+  "globalLockReleased": true,
+  "compatibilityException": null,
+  "leftovers": [],
+  "infrastructureObservation": "Shared HostBudget reservation disappeared twice; exact live original-owner token restored through HostBudget.acquire and immediate presence verified. Root cause unproven; no helper edits. Restoration receipts retained externally.",
+  "metadataAfterValidation": "Final documentation and worker-expiry/product-map facts change default strict code key; application and test source unchanged from tested head. Retain exact tested stamp; no repeated full suite for metadata."
+}

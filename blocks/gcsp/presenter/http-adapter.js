@@ -1,3 +1,5 @@
+import { isAccessLapsed } from '../kit/run-restarted.js';
+
 // HTTP adapter for the presenter outbox. The server owns role and run checks; this only maps replies to view states.
 
 const UNAVAILABLE = 'The captured emails could not be loaded. Try again in a moment.';
@@ -10,6 +12,7 @@ export function outcomeToState(httpStatus, body) {
     const messages = body.value.messages;
     return messages.length ? { status: 'ready', messages } : { status: 'empty' };
   }
+  if (isAccessLapsed(httpStatus, body)) return { status: 'access-required' };
   if (httpStatus === 401 || httpStatus === 403) return { status: 'refused', message: REFUSED };
   if (httpStatus === 409 && body?.status === 'stale-run') return { status: 'refused', message: RESET };
   return { status: 'unavailable', message: UNAVAILABLE };

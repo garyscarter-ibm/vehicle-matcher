@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "g42-six-model-options-preparation-validation.v1",
+  "status": "prepared-unspent; no source grant",
+  "scope": "scoped offline preparation only",
+  "qualificationDate": "2026-11-07",
+  "baseCommit": "4987d489dcd94be226a9b26f9603245d6c1faa7f",
+  "verification": {
+    "checkedAt": "2026-11-07T03:55:13.324867+00:00",
+    "codeAndInputPins": 45,
+    "runtimePins": 2,
+    "allMatch": true,
+    "executionPlanSha256": "08ef0489dec0cabacdd4a96922c092b39ef4860437f45710d129ced3100c6328",
+    "planDigest": "bed0e64233f8ad760418e92e5e59c5b089b8d0a71117b2155174a406527c642c",
+    "markersPrimariesEventsAndExportsAbsent": true,
+    "liveSupervisorOutputAbsent": true,
+    "ownedRuns": [
+      {
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/preparation/ownership/0541f9ed5be94923b4791803bf666e4f.json",
+        "root": "/private/tmp/test-stamp-shard-0541f9ed5be94923b4791803bf666e4f",
+        "state": "removed",
+        "removedBytes": 684192,
+        "scratchAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true
+      },
+      {
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/preparation/ownership/1370ec4f55f14a7bb2b8111af09bc402.json",
+        "root": "/private/tmp/test-stamp-shard-1370ec4f55f14a7bb2b8111af09bc402",
+        "state": "removed",
+        "removedBytes": 659200,
+        "scratchAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true
+      },
+      {
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/preparation/ownership/48d9c6e193b347e8b924a51848959197.json",
+        "root": "/private/tmp/test-stamp-shard-48d9c6e193b347e8b924a51848959197",
+        "state": "removed",
+        "removedBytes": 688288,
+        "scratchAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true
+      }
+    ],
+    "removedAllocationBytes": 2031680,
+    "nestedSupervisorProof": [
+      {
+        "fixtureStop": "context-failed-or-incomplete",
+        "fixtureSupervisorCleanup": {
+          "compatibilityException": null,
+          "groupsAbsent": true,
+          "manifest": "/private/tmp/test-stamp-shard-48d9c6e193b347e8b924a51848959197/g42-false-success-EccoyA/retained/2pma/ownership/5dabe9e1bc7e4c05b0023961892eae51.json",
+          "removedAllocationBytes": 0,
+          "reservationAbsent": true,
+          "scratchAbsent": true,
+          "scratchRoot": "/private/tmp/test-stamp-shard-5dabe9e1bc7e4c05b0023961892eae51"
+        },
+        "sourceAttempts": 0
+      }
+    ],
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "selectedChecks": {
+    "command": [
+      "/usr/bin/python3",
+      "-I",
+      "-B",
+      "docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/validate-prepared.py"
+    ],
+    "selectionRecord": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/preparation/selected-checks.json",
+    "selector": "Reviewed targeted dry-run; explicit JavaScript regression and boundary selection avoids unrelated non-Python full-suite fallback.",
+    "tests": {
+      "newPreparation": 10,
+      "existingModelOptions": 22,
+      "total": 32
+    },
+    "regression": "exact six source mappings; frozen pins and no-grant refusals; synthetic four-GET lifecycle, exporter/privacy/no-refetch; actual supervisor false-success stop",
+    "boundaries": [
+      "registered exact model/default/line/options URLs",
+      "full model and line identity",
+      "typed options validation",
+      "durable safe checkpoint/export",
+      "serial bounded supervisor and host resource cleanup"
+    ],
+    "excluded": [
+      "public source requests",
+      "full suite",
+      "production inventory repair",
+      "solver/images/admissions/capacity/publication"
+    ],
+    "coverage": "Node built-in runner has no measured per-test coverage contexts in this selected run; reviewed function/fixture boundaries retained in shared impact map."
+  },
+  "result": {
+    "rc": 0,
+    "wall": 5.410981415999999,
+    "issue": null,
+    "issue_kind": null,
+    "peak_scratch": 688288,
+    "peak_rss": 161447936,
+    "testCounts": {
+      "fail": 0,
+      "pass": 32,
+      "skipped": 0,
+      "tests": 32
+    },
+    "identityUnchanged": true,
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/preparation/ownership/48d9c6e193b347e8b924a51848959197.json"
+  },
+  "resourceCleanup": {
+    "compatibility_exception": null,
+    "groups_absent": true,
+    "leftovers": [],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/preparation/ownership/48d9c6e193b347e8b924a51848959197.json",
+    "removed_allocation_bytes": 688288,
+    "reservation_absent": true,
+    "scratchRoot": "/private/tmp/test-stamp-shard-48d9c6e193b347e8b924a51848959197",
+    "scratch_absent": true
+  },
+  "initialFailure": {
+    "result": {
+      "tests": 32,
+      "pass": 31,
+      "fail": 1,
+      "skipped": 0
+    },
+    "scope": "synthetic false-success supervisor test only",
+    "error": "CapacityError: chunk needs 67108864 bytes above the 5368709120-byte emergency reserve; available 66449664",
+    "cause": "Nested fixture asked for the full 64 MiB while the outer proof held about 659 KiB.",
+    "correction": "Evidence-local supervisor accepts the existing HostBudget reduced reservation above 8 MiB disk / 128 MiB RAM minima and passes the capped limits to run_process; upper ceilings unchanged.",
+    "failedResult": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/preparation/initial-resource-result.json",
+    "failedLog": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/preparation/initial-resource-check.log",
+    "failedLogSha256": "3e32f8098714b5e3329c89a6e065a092368aa139c491c4419518de7196c02b53",
+    "failedCleanup": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/preparation/initial-resource-cleanup.json",
+    "publicSourceAttempts": 0
+  },
+  "intermediateGreen": {
+    "tests": 32,
+    "pass": 32,
+    "fail": 0,
+    "skipped": 0,
+    "wallSeconds": 5.3734905,
+    "peakRssBytes": 163151872,
+    "removedScratchBytes": 684192,
+    "rerunReason": "Add structured nested cleanup evidence and correct changed_paths to the new evidence directory; executable/input pins refreshed before final proof."
+  },
+  "publicSourceAttempts": 0,
+  "sourceGrantReleased": false,
+  "productionInventoryBugFixed": false,
+  "admitted": 0,
+  "sourceCapacityCredit": 0,
+  "acceptance": false,
+  "agents": [
+    {
+      "name": "Charlie Dog",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "selectedModel": "gpt-6.1-sol",
+      "selectedEffort": "high",
+      "fallback": null,
+      "effectiveRuntimeVerified": false,
+      "descendants": []
+    }
+  ],
+  "integrity": {
+    "files": 16,
+    "types": {
+      ".json": 9,
+      ".md": 1,
+      ".py": 4,
+      ".mjs": 2
+    },
+    "pinsUnchanged": true,
+    "jsonPythonNodeAndWhitespace": "passed",
+    "initialHarnessIssue": "git diff --no-index --check returns 1 for differing untracked files even when no whitespace diagnostic exists. Initial wrapper treated that status as a failure; corrected wrapper accepts 0/1 only with empty stdout/stderr. No file change was needed."
+  }
+}

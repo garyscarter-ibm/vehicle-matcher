@@ -1,0 +1,156 @@
+{
+  "at": "2026-11-06T08:30:45.051108+00:00",
+  "passed": true,
+  "failure": null,
+  "command": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-uri1-audit.py",
+    "--admission-sha",
+    "d5893900496e23cc5d38907af05bb92672b6b9125b11ca7f4b2dceeea66ad866",
+    "--run",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0"
+  ],
+  "actualExit": 0,
+  "stdout": "{\"passed\": true, \"checks\": 19917, \"audit\": \"/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0/parent-audit.json\", \"sha256\": \"3fb6aef692a507447c093741bfd50bd3abbdb81d7660ca92b2bb44fe754a04c3\"}\n",
+  "stderr": "",
+  "peakAggregateRSSBytes": 67682304,
+  "wallSeconds": 49.556465334,
+  "observed": [
+    {
+      "pid": 29105,
+      "ppid": 29102,
+      "pgid": 29105,
+      "rss": 0,
+      "start": "Fri Nov  6 08:29:55 2026"
+    },
+    {
+      "pid": 29950,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 2375680,
+      "start": "Fri Nov  6 08:30:43 2026"
+    },
+    {
+      "pid": 29952,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 32768,
+      "start": "Fri Nov  6 08:30:43 2026"
+    },
+    {
+      "pid": 29956,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 32768,
+      "start": "Fri Nov  6 08:30:43 2026"
+    },
+    {
+      "pid": 29959,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 32768,
+      "start": "Fri Nov  6 08:30:43 2026"
+    },
+    {
+      "pid": 29962,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 32768,
+      "start": "Fri Nov  6 08:30:43 2026"
+    },
+    {
+      "pid": 29964,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 32768,
+      "start": "Fri Nov  6 08:30:43 2026"
+    },
+    {
+      "pid": 29969,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 32768,
+      "start": "Fri Nov  6 08:30:43 2026"
+    },
+    {
+      "pid": 29972,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 32768,
+      "start": "Fri Nov  6 08:30:44 2026"
+    },
+    {
+      "pid": 29975,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 32768,
+      "start": "Fri Nov  6 08:30:44 2026"
+    },
+    {
+      "pid": 29979,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 32768,
+      "start": "Fri Nov  6 08:30:44 2026"
+    },
+    {
+      "pid": 29982,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 32768,
+      "start": "Fri Nov  6 08:30:44 2026"
+    },
+    {
+      "pid": 29983,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 32768,
+      "start": "Fri Nov  6 08:30:44 2026"
+    },
+    {
+      "pid": 29986,
+      "ppid": 29105,
+      "pgid": 29105,
+      "rss": 32768,
+      "start": "Fri Nov  6 08:30:44 2026"
+    }
+  ],
+  "groupAbsent": true,
+  "originalsUnchanged": true,
+  "originals": {
+    "summary.json": {
+      "bytes": 2432,
+      "sha256": "81c6f537366240d84d5b7c51c6dc4907b27f9e96cdcaa366fcded2eb40a10b5c"
+    },
+    "checkpoint.json": {
+      "bytes": 337,
+      "sha256": "e675712478410c3716ccba2cf6d9773b4bfe9cbf9eebc156d93362a84881abaf"
+    },
+    "plan.json": {
+      "bytes": 1434,
+      "sha256": "3a74b2d3a5be7ca3256d8a1836d0cea3c09ab386a57da5969b9d210b09f033e3"
+    },
+    "output.log": {
+      "bytes": 2330,
+      "sha256": "0124963a55df2c32a0352e2ed239e6ed37f035536dd86652811200a97a5d1b7b"
+    },
+    "modules.jsonl": {
+      "bytes": 1401126,
+      "sha256": "cb1166a7e9b62b2c09c77d52f43c08399c802895f78cb773f414c9363f4214c2"
+    },
+    "lead-supervisor-tool-result.json": {
+      "bytes": 1682,
+      "sha256": "35afbd3822105c56c5382597665fd5a9a91e48c1383c9e2fe4339077c7d4e4ff"
+    },
+    "lead-original-cleanup-audit.json": {
+      "bytes": 5875,
+      "sha256": "e8102a77a0f2195349eebe97d4c7929d8c4c0f23ed0ab61af2bb1e12b0ba45fd"
+    }
+  },
+  "auditPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0/parent-audit.json",
+  "auditSHA256": "3fb6aef692a507447c093741bfd50bd3abbdb81d7660ca92b2bb44fe754a04c3",
+  "scratchAllocated": false,
+  "ledgerMutations": 0
+}

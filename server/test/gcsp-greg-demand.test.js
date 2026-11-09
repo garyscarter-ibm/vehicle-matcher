@@ -10,7 +10,8 @@ import { BriefService } from '../gcsp/brief/index.js';
 import { createGcspHandler } from '../gcsp/identity/http.js';
 import { createGregDemandService } from '../gcsp/greg/index.js';
 import { createGregRoutes } from '../gcsp/greg/http.js';
-import { preference, essential, stock, fact, providerValue } from './helpers/employee-recommendation.js';
+import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
+import { preference, essential, stock, fact } from './helpers/employee-recommendation.js';
 
 const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
 async function setup({ threshold = 1, missingThreshold = false, canonical = false } = {}) {
@@ -31,6 +32,7 @@ async function setup({ threshold = 1, missingThreshold = false, canonical = fals
   const context = acting.value.context; const employee = paula.value.context;
   const service = createGregDemandService({ repository, policy, clock, identity });
   const brief = new BriefService({ repository, policy, clock, identity });
+  assert.equal((await seedManualDemoContext({ repository, identity, clock, context: employee })).status, 'ok');
   let sequence = 0;
   const write = async (work) => {
     const commandId = `fixture-${++sequence}`;
@@ -40,7 +42,7 @@ async function setup({ threshold = 1, missingThreshold = false, canonical = fals
   await write(async (tx) => {
     const row = await tx.get({ table: 'employees', key: { runId: context.runId, employeeId: employee.employeeId } });
     return tx.compareAndSwap({ table: 'employees', key: { runId: context.runId, employeeId: employee.employeeId } }, row.value.version,
-      { contract: { manualContext: { employeeFacts: providerValue().employeeFacts }, tripHistory: ['PRIVATE-TRIP'], usageHistory: ['PRIVATE-USAGE'] } });
+      { contract: { ...row.value.contract, tripHistory: ['PRIVATE-TRIP'], usageHistory: ['PRIVATE-USAGE'] } });
   });
   return { repository, policy, clock, identity, presenter, acting, context, employee, service, brief, write };
 }
@@ -108,7 +110,9 @@ test('unmet demand distinguishes no released stock, shared essential gate, and s
 test('unknown employee authority stays needs-confirmation and stock visibility cannot widen eligibility', async () => {
   const f = await setup(); await confirm(f); await release(f);
   await f.write(async (tx) => { const row = await tx.get({ table: 'employees', key: { runId: f.context.runId, employeeId: f.employee.employeeId } });
-    return tx.compareAndSwap({ table: 'employees', key: { runId: f.context.runId, employeeId: f.employee.employeeId } }, row.value.version, { contract: {} }); });
+    const contract = structuredClone(row.value.contract);
+    contract.manualContext.drivers.find((driver) => driver.kind === 'employee').eligible = fact(null);
+    return tx.compareAndSwap({ table: 'employees', key: { runId: f.context.runId, employeeId: f.employee.employeeId } }, row.value.version, { contract }); });
   let out = await read(f);
   assert.equal(exact(bucket(out.demand.unmet.byGate, 'driver-unconfirmed')), 1);
   const row = (await f.repository.query(f.context, 'stock')).value.find((x) => x.state === 'released');

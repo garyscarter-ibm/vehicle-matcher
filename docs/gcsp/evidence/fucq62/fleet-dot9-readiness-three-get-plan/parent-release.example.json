@@ -1,0 +1,16 @@
+{
+  "authorized": false,
+  "phase": "readiness-first-dto",
+  "planSha256": "61beb7b879fd45d7bd61ee847dfb92684984007853b0ca6f9b117100ebb5dc01",
+  "code": "91fe6cae774161365b196a342f79cbfce8aef030",
+  "actualDeploymentId": "REPLACE_WITH_FRESH_SUCCESSFUL_DEPLOYMENT_ID",
+  "deploymentSucceeded": true,
+  "freshReadinessDeployment": true,
+  "manifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+  "sourceCalls": 0,
+  "newGetCeiling": 3,
+  "deploymentEvidence": {
+    "path": "/absolute/path/to/root-retained-deployment-evidence.json",
+    "sha256": "REPLACE_WITH_EXACT_EVIDENCE_SHA256"
+  }
+}

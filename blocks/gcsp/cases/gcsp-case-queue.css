@@ -1,0 +1,17 @@
+@import "./gcsp-cases.css";
+@import "../kit/gcsp-kit.css";
+gcsp-case-queue { display: block; min-width: 0; }
+.gcsp .gcsp-case-queue { max-width: 1440px; margin-inline: auto; padding: var(--vm-space-6); color: var(--gcsp-text); font-family: var(--gcsp-font); }
+.gcsp .gcsp-case-queue.is-embedded { padding: 0; }
+.gcsp .gcsp-greg-region:has(.gcsp-case-queue.is-embedded) { grid-column: 1 / -1; border-style: solid; padding: 20px; background: var(--gcsp-surface); }
+.gcsp .gcsp-case-queue-content, .gcsp .gcsp-case-work, .gcsp .gcsp-case-editor { display: grid; gap: var(--vm-space-5); min-width: 0; }
+.gcsp .gcsp-case-queue-content > .gcsp-case-actions { margin-block-start: 0; }
+.gcsp .gcsp-case-queue .gcsp-table { min-width: 1050px; }
+.gcsp .gcsp-case-work { padding-block-start: var(--vm-space-6); border-block-start: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-case-work > .vm-btn { justify-self: start; }
+.gcsp .gcsp-case-editor { max-width: 800px; }
+.gcsp .gcsp-case-editor textarea { min-height: 96px; resize: vertical; }
+@media (max-width: 600px) {
+  .gcsp .gcsp-case-queue:not(.is-embedded) { padding: var(--vm-space-4); }
+  .gcsp .gcsp-greg-region:has(.gcsp-case-queue.is-embedded) { padding: 12px; }
+}

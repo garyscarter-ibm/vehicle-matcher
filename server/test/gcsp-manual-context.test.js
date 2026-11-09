@@ -143,6 +143,24 @@ test('server clock intersects renewal dates with canonical lead policy and open 
   assert.equal((await f.service.readAccount(f.context)).value.state, 'ready');
 });
 
+test('ordering closes, not waits, once no collection date can fit the lead time before the window ends (FUCQ-200)', async () => {
+  const f = await setup();
+  // Clock 2026-11-05 plus the 7-day minimum lead is 2026-11-12, after this window's last date.
+  await changeRecords(f, (r) => { r.contracts[0].earliestCollectionDate = '2026-11-01'; r.contracts[0].latestCollectionDate = '2026-11-11'; });
+  const closed = await f.service.readAccount(f.context);
+  assert.equal(closed.value.state, 'ordering-closed'); assert.deepEqual(closed.value.actions, []);
+  assert.equal(closed.value.slots.find((s) => s.entitlementSlotId === f.context.entitlementSlotId).ordering.reason, 'ordering-closed');
+  assert.equal((await f.service.saveDraft(f.context, { commandId: 'too-late', expectedDraftVersion: 0,
+    expectedContextVersion: closed.value.contextVersion, choices: intent(f) })).reason, 'ordering-closed');
+  await changeRecords(f, (r) => { r.contracts[0].latestCollectionDate = '2026-11-12'; }, 'last-fitting-date');
+  assert.equal((await f.service.readAccount(f.context)).value.state, 'ready');
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
+  for (const location of seed.assumptions.find((a) => a.key === 'manual.context.v1').value.locations) location.closedDates = ['2026-11-12'];
+  const shut = await setup({ policy: new PolicyService({ provider: { async loadVersions() { return [seed]; } } }) });
+  await changeRecords(shut, (r) => { r.contracts[0].latestCollectionDate = '2026-11-12'; }, 'last-date-shut');
+  assert.equal((await shut.service.readAccount(shut.context)).value.state, 'ordering-closed');
+});
+
 test('future earliest collection alone permits replacement when canonical policy still offers dates', async () => {
   const f = await setup();
   await changeRecords(f, (r) => { r.contracts[0].earliestCollectionDate = '2026-11-20'; delete r.contracts[0].latestCollectionDate; });

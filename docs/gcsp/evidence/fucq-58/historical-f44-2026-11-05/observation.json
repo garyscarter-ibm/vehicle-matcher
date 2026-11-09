@@ -1,0 +1,67 @@
+{
+  "version": "historical-f44-observation.v1",
+  "run": "dev-poller-restart-20261105-fucq58",
+  "observedAt": "2026-11-05T23:45:06.050Z",
+  "source": "public-bmw-uk-configurator",
+  "providerStatus": "unsupported-public-website",
+  "requestedContext": {
+    "country": "gb",
+    "locale": "en_GB",
+    "requestOrderDate": "2024-10-01",
+    "requestEffectDate": "2024-10-01",
+    "futureModels": false,
+    "closestFallback": false
+  },
+  "readOnly": true,
+  "writes": 0,
+  "attempts": 3,
+  "decodedBytes": 638409,
+  "requests": [
+    {
+      "category": "page",
+      "attempt": 1,
+      "status": 200,
+      "decodedBytes": 17763,
+      "elapsedMs": 216,
+      "contentType": "text/html"
+    },
+    {
+      "category": "settings",
+      "attempt": 2,
+      "status": 200,
+      "decodedBytes": 620646,
+      "elapsedMs": 56,
+      "contentType": "application/json"
+    },
+    {
+      "category": "tree:F44",
+      "attempt": 3,
+      "status": 400,
+      "decodedBytes": 0,
+      "elapsedMs": 108,
+      "failure": "source-http-failure"
+    }
+  ],
+  "observations": [],
+  "status": "stopped",
+  "stop": "source-http-failure",
+  "newConfigurations": 0,
+  "profileActivations": 0,
+  "elapsedMs": 397,
+  "planSha256": "59792f1296ea0dfd1f6813b847ab37e856fc143f3f0d82662ee503d395fd5677",
+  "fileSha256": {
+    "discover.mjs": "bb0bc5c516ea15022998957bdb3c21387aef74e35553432ae21c6e73b0a55dc6",
+    "catalogue.mjs": "17c4e71c7a57bc58917e28c107dedcc9406dd0fb389336eddb3ed0ea47c2866f",
+    "catalogue.test.mjs": "6258ece658d7812e87686f22180bd117d11bf795b96ad732b906769e6a647cec"
+  },
+  "inputs": {
+    "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+    "docs/gcsp/bmw-interface-research.md": "82d4edba56abf474e693d45d1b2f79c4b8918e868fb2ff56d6d6ba96db00d00a",
+    "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/observation.json": "25636b87dfe942d385da5cee721fee8e59d53b216411277031d60626de36c4ec",
+    "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/catalogue.mjs": "52d053c2acf81815c3df1a49d4ee207e6434044a93d69e98aca77caf2e632051",
+    "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md": "9bc5c9d915373bc812d375823a65fa9a658f285223c45a622877eee2b66bf6d1"
+  },
+  "executionRecordSha256": "bb34f59a7fc30c4407516e3aa3594d6450976ce49be8dae53152c0f47b288c4a",
+  "authority": "Gary public UK read-only source/pilot/retention/display 2026-11-05; dispatcher continuation after70fc4c7",
+  "interpretation": "Historical F44 catalogue discovery only. A selected request date is not an observed source date or production era; returned model effect dates stay separate. Empty/refused historical response cannot establish global unavailability, current/discontinued production or a substitute generation. Constructibility/profile/every-model/five-WMI qualification remain unresolved."
+}

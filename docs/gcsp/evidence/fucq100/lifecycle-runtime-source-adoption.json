@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "baseRevision": "caedea52d2099c71515f5914ad23acfecef20258",
+  "integratedProducerRevision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+  "approvalProducerRevision": "2b3fee00853cd4fd5bd201f2f12d7777dd493c7c",
+  "status": "actual named lifecycle/manual composition applied; 3/3 new lifecycle, 2/2 offer, 19/20 renewal cases; root review pending",
+  "paths": [
+    {
+      "path": "server/gcsp/manual-order/index.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "b4b7798268cd51929b756ffb4c48e6f56579821094a0fa064f604d5886fcc352",
+      "bytes": 19660,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/manual-order/manual-conversion.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "330ff1613ad01a08578f32c8cfdeaa763e6a8aa7844b68e433abea4d0ab1cb1f",
+      "bytes": 2336,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/manual-order/terms.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "239f72b3abfb45944298ac3f0d504a36f501ef88fb3853c6e099a80337969eb6",
+      "bytes": 2207,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/adapters/synthetic-ordering.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "c2b83391dc0b32e811a407a546d600631254e73810fa90eecc4ad6f70c1392be",
+      "bytes": 2401,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/adapters/synthetic-ordering-status.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "3122f074ca1ee6614c58cc8bb53cb62ad7e10a5bcbc076dd8490b94b182390d2",
+      "bytes": 3425,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/adapters/synthetic-ordering-documents.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "1236e1099f8de4e8aca4d33967acb0872f751dd3eb5334a56014ba0430d813df",
+      "bytes": 2939,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/lifecycle/approvals/index.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "731ce7f165cfebfd38b147d22fce6dbdfa7d8526dcc2a836cbf72937ce710651",
+      "bytes": 20641,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/lifecycle/approvals/http.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "49875b0b0cc3190518c07696a03e076525b7616c435ed4c93eb4f7a4398deafa",
+      "bytes": 1081,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/lifecycle/approvals/policy.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "233871181fe20478bcfa3a87a7fdaf7a01acd35fe0ef1a27853f91d73068f85e",
+      "bytes": 3959,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/lifecycle/approvals/source.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "99c50fbfe144e8beb67374d816ba428b427bd9844b14b4f886ff9f1da767eb74",
+      "bytes": 6058,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/lifecycle/documents/index.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "fea0fbf3b6bbb8cae82bc220494b6052917c22d05e50eb03d6b18ee539129a84",
+      "bytes": 24433,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/lifecycle/documents/http.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "ba3e6791677490a9f8d5ea429be1f17f7710fcb9758610c65b64ee170a6005b4",
+      "bytes": 1193,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/lifecycle/documents/policy.js",
+      "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+      "sha256": "050ad3dc814eed07580687797b1de5a2dfe2fdfa833322063aee151d16c095ba",
+      "bytes": 3231,
+      "priorSha256": null,
+      "changed": true
+    }
+  ],
+  "seed": {
+    "path": "server/gcsp/policy/seed-v1.json",
+    "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+    "sourceSha256": "b022bceda2b8d5784f70605bffbeeeb2ef6f53c7fd76b6b0342a5d1b3dc001b5",
+    "priorSha256": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31",
+    "adoptedSha256": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "addedKeys": [
+      "ordering.terms.v1",
+      "ordering.approvalStages.v1",
+      "lifecycle.approval.ticks.v1",
+      "lifecycle.approval.declineScenario.v1",
+      "lifecycle.approval.ownership.v1",
+      "lifecycle.documents.v1",
+      "lifecycle.documents.scenario.v1",
+      "lifecycle.documents.exceptions.v1"
+    ],
+    "existingRowsPreserved": true
+  },
+  "claimAcceptanceChanged": false,
+  "contracts": {
+    "revision": "28de337c1ff4dc4dd3396524c3ad37116a7d282e",
+    "sharedPath": "docs/gcsp/shared-contracts.md",
+    "priorSha256": "d196eba70c004202105b1006a48ba01b3e8ee60ac4ab76b255a0ec9d970cd64e",
+    "priorSectionsPreserved": true,
+    "appendedSections": [
+      {
+        "heading": "Selection ordering checkpoint \u00b7 FUCQ-71",
+        "sha256": "0bb33d78b9f0703401abbe4983e180501818db7b4e999985d0ef284d1bda1777"
+      },
+      {
+        "heading": "Lifecycle approval stages \u00b7 FUCQ-111",
+        "sha256": "d2df5525a91a9e4b04c30879654641667d3b4f7d805fc19c28c1dab8b7c65c9a"
+      },
+      {
+        "heading": "Lifecycle documents and readiness \u00b7 FUCQ-116",
+        "sha256": "dfb1806e559870071bbaeeaf832c815bd4f1286c9329e55478fc36595bccec54"
+      }
+    ],
+    "manualOrderContract": {
+      "path": "docs/gcsp/manual-order-contract.md",
+      "sha256": "e585b84561fc72816cc3df8aead573112a1075de980ed27ba707f6837ddb4caa"
+    }
+  }
+}

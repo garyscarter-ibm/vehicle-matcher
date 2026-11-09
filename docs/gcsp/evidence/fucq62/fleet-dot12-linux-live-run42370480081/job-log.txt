@@ -1,0 +1,202 @@
+﻿2026-11-07T11:59:31.5769912Z Current runner version: '2.338.2'
+2026-11-07T11:59:31.5798017Z ##[group]Runner Image Provisioner
+2026-11-07T11:59:31.5799006Z Hosted Compute Agent
+2026-11-07T11:59:31.5799784Z Version: 20261028.624
+2026-11-07T11:59:31.5800527Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+2026-11-07T11:59:31.5801346Z Build Date: 2026-10-28T21:51:42Z
+2026-11-07T11:59:31.5802108Z Worker ID: {6d9e48db-1a9d-4850-9589-16804b7c0851}
+2026-11-07T11:59:31.5802909Z Region: westcentralus
+2026-11-07T11:59:31.5803590Z Cloud: Azure
+2026-11-07T11:59:31.5804620Z ##[endgroup]
+2026-11-07T11:59:31.5806546Z ##[group]Operating System
+2026-11-07T11:59:31.5807272Z Ubuntu
+2026-11-07T11:59:31.5807894Z 24.04.5
+2026-11-07T11:59:31.5808854Z LTS
+2026-11-07T11:59:31.5809451Z ##[endgroup]
+2026-11-07T11:59:31.5810048Z ##[group]Runner Image
+2026-11-07T11:59:31.5810782Z Image: ubuntu-24.04
+2026-11-07T11:59:31.5811446Z Version: 20261101.360.1
+2026-11-07T11:59:31.5812901Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261101.360/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-07T11:59:31.5814820Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261101.360
+2026-11-07T11:59:31.5816099Z ##[endgroup]
+2026-11-07T11:59:31.5817357Z ##[group]GITHUB_TOKEN Permissions
+2026-11-07T11:59:31.5820936Z Contents: read
+2026-11-07T11:59:31.5821905Z Metadata: read
+2026-11-07T11:59:31.5822910Z ##[endgroup]
+2026-11-07T11:59:31.5826058Z Secret source: Actions
+2026-11-07T11:59:31.5827661Z Cache mode: write
+2026-11-07T11:59:31.5829049Z Prepare workflow directory
+2026-11-07T11:59:31.6182091Z Prepare all required actions
+2026-11-07T11:59:31.6231507Z Getting action download info
+2026-11-07T11:59:31.9051554Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-11-07T11:59:32.0000386Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-11-07T11:59:32.1957464Z Complete job name: linux-live-three-get
+2026-11-07T11:59:32.2813299Z ##[group]Run actions/checkout@v4
+2026-11-07T11:59:32.2814398Z with:
+2026-11-07T11:59:32.2814882Z   persist-credentials: false
+2026-11-07T11:59:32.2815494Z   repository: garyscarter-ibm/vehicle-matcher
+2026-11-07T11:59:32.2819413Z   token: ***
+2026-11-07T11:59:32.2819875Z   ssh-strict: true
+2026-11-07T11:59:32.2820343Z   ssh-user: git
+2026-11-07T11:59:32.2820781Z   clean: true
+2026-11-07T11:59:32.2821248Z   sparse-checkout-cone-mode: true
+2026-11-07T11:59:32.2821802Z   fetch-depth: 1
+2026-11-07T11:59:32.2822251Z   fetch-tags: false
+2026-11-07T11:59:32.2822714Z   show-progress: true
+2026-11-07T11:59:32.2823174Z   lfs: false
+2026-11-07T11:59:32.2823601Z   submodules: false
+2026-11-07T11:59:32.2824220Z   set-safe-directory: true
+2026-11-07T11:59:32.2824751Z   allow-unsafe-pr-checkout: false
+2026-11-07T11:59:32.2825504Z ##[endgroup]
+2026-11-07T11:59:32.4941045Z Syncing repository: garyscarter-ibm/vehicle-matcher
+2026-11-07T11:59:32.4942931Z ##[group]Getting Git version info
+2026-11-07T11:59:32.4944105Z Working directory is '/home/runner/work/vehicle-matcher/vehicle-matcher'
+2026-11-07T11:59:32.4945614Z [command]/usr/bin/git version
+2026-11-07T11:59:32.5010817Z git version 2.56.0
+2026-11-07T11:59:32.5031372Z ##[endgroup]
+2026-11-07T11:59:32.5048258Z Temporarily overriding HOME='/home/runner/work/_temp/12c11432-b9ed-40e2-85c8-476adf066089' before making global git config changes
+2026-11-07T11:59:32.5050733Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-07T11:59:32.5054149Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/vehicle-matcher/vehicle-matcher
+2026-11-07T11:59:32.5116355Z Deleting the contents of '/home/runner/work/vehicle-matcher/vehicle-matcher'
+2026-11-07T11:59:32.5127966Z ##[group]Initializing the repository
+2026-11-07T11:59:32.5129218Z [command]/usr/bin/git init /home/runner/work/vehicle-matcher/vehicle-matcher
+2026-11-07T11:59:32.5216643Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-07T11:59:32.5218608Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-07T11:59:32.5219970Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-07T11:59:32.5220966Z hint: call:
+2026-11-07T11:59:32.5221399Z hint:
+2026-11-07T11:59:32.5222079Z hint: 	git config --global init.defaultBranch <name>
+2026-11-07T11:59:32.5223034Z hint:
+2026-11-07T11:59:32.5224117Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-07T11:59:32.5225593Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-07T11:59:32.5226604Z hint:
+2026-11-07T11:59:32.5227330Z hint: 	git branch -m <name>
+2026-11-07T11:59:32.5228080Z hint:
+2026-11-07T11:59:32.5229140Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-07T11:59:32.5230522Z Initialized empty Git repository in /home/runner/work/vehicle-matcher/vehicle-matcher/.git/
+2026-11-07T11:59:32.5237019Z [command]/usr/bin/git remote add origin https://github.com/garyscarter-ibm/vehicle-matcher
+2026-11-07T11:59:32.5284602Z ##[endgroup]
+2026-11-07T11:59:32.5285590Z ##[group]Disabling automatic garbage collection
+2026-11-07T11:59:32.5289141Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-07T11:59:32.5327193Z ##[endgroup]
+2026-11-07T11:59:32.5328323Z ##[group]Setting up auth
+2026-11-07T11:59:32.5335191Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-07T11:59:32.5373573Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-07T11:59:32.5769071Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-07T11:59:32.5819868Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-07T11:59:32.6096644Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-07T11:59:32.6145026Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-07T11:59:32.6427276Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-07T11:59:32.6481498Z ##[endgroup]
+2026-11-07T11:59:32.6482991Z ##[group]Fetching the repository
+2026-11-07T11:59:32.6494376Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +df3f3f439ba0aa2c4f464beaded903709e970ea1:refs/remotes/origin/gcsp-poc
+2026-11-07T11:59:38.3964788Z From https://github.com/garyscarter-ibm/vehicle-matcher
+2026-11-07T11:59:38.3966281Z  * [new ref]         df3f3f439ba0aa2c4f464beaded903709e970ea1 -> origin/gcsp-poc
+2026-11-07T11:59:38.3969459Z ##[endgroup]
+2026-11-07T11:59:38.3970446Z ##[group]Determining the checkout info
+2026-11-07T11:59:38.3995653Z ##[endgroup]
+2026-11-07T11:59:38.3996531Z [command]/usr/bin/git sparse-checkout disable
+2026-11-07T11:59:38.4051708Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-07T11:59:38.4106511Z ##[group]Checking out the ref
+2026-11-07T11:59:38.4107494Z [command]/usr/bin/git checkout --progress --force -B gcsp-poc refs/remotes/origin/gcsp-poc
+2026-11-07T11:59:39.4260715Z Updating files:  61% (6148/9966)
+2026-11-07T11:59:39.4309958Z Updating files:  62% (6179/9966)
+2026-11-07T11:59:39.4362155Z Updating files:  63% (6279/9966)
+2026-11-07T11:59:39.4410101Z Updating files:  64% (6379/9966)
+2026-11-07T11:59:39.4458286Z Updating files:  65% (6478/9966)
+2026-11-07T11:59:39.4506718Z Updating files:  66% (6578/9966)
+2026-11-07T11:59:39.4554396Z Updating files:  67% (6678/9966)
+2026-11-07T11:59:39.4603243Z Updating files:  68% (6777/9966)
+2026-11-07T11:59:39.4651758Z Updating files:  69% (6877/9966)
+2026-11-07T11:59:39.4701980Z Updating files:  70% (6977/9966)
+2026-11-07T11:59:39.4755113Z Updating files:  71% (7076/9966)
+2026-11-07T11:59:39.4805231Z Updating files:  72% (7176/9966)
+2026-11-07T11:59:39.4851195Z Updating files:  73% (7276/9966)
+2026-11-07T11:59:39.4903664Z Updating files:  74% (7375/9966)
+2026-11-07T11:59:39.4972841Z Updating files:  75% (7475/9966)
+2026-11-07T11:59:39.5052025Z Updating files:  76% (7575/9966)
+2026-11-07T11:59:39.5128902Z Updating files:  77% (7674/9966)
+2026-11-07T11:59:39.5288126Z Updating files:  78% (7774/9966)
+2026-11-07T11:59:39.5399958Z Updating files:  79% (7874/9966)
+2026-11-07T11:59:39.5541848Z Updating files:  80% (7973/9966)
+2026-11-07T11:59:39.5696948Z Updating files:  81% (8073/9966)
+2026-11-07T11:59:39.5849563Z Updating files:  82% (8173/9966)
+2026-11-07T11:59:39.6001759Z Updating files:  83% (8272/9966)
+2026-11-07T11:59:39.6150188Z Updating files:  84% (8372/9966)
+2026-11-07T11:59:39.6388914Z Updating files:  85% (8472/9966)
+2026-11-07T11:59:39.6584570Z Updating files:  86% (8571/9966)
+2026-11-07T11:59:39.6638000Z Updating files:  87% (8671/9966)
+2026-11-07T11:59:39.6712603Z Updating files:  88% (8771/9966)
+2026-11-07T11:59:39.6792148Z Updating files:  89% (8870/9966)
+2026-11-07T11:59:39.6916585Z Updating files:  90% (8970/9966)
+2026-11-07T11:59:39.6969549Z Updating files:  91% (9070/9966)
+2026-11-07T11:59:39.7027838Z Updating files:  92% (9169/9966)
+2026-11-07T11:59:39.7425034Z Updating files:  93% (9269/9966)
+2026-11-07T11:59:39.7733232Z Updating files:  94% (9369/9966)
+2026-11-07T11:59:39.9767932Z Updating files:  95% (9468/9966)
+2026-11-07T11:59:40.4403949Z Updating files:  96% (9568/9966)
+2026-11-07T11:59:40.4521881Z Updating files:  96% (9646/9966)
+2026-11-07T11:59:40.4599961Z Updating files:  97% (9668/9966)
+2026-11-07T11:59:40.4736264Z Updating files:  98% (9767/9966)
+2026-11-07T11:59:40.4826602Z Updating files:  99% (9867/9966)
+2026-11-07T11:59:40.4827134Z Updating files: 100% (9966/9966)
+2026-11-07T11:59:40.4827571Z Updating files: 100% (9966/9966), done.
+2026-11-07T11:59:40.4942358Z Switched to a new branch 'gcsp-poc'
+2026-11-07T11:59:40.4947839Z branch 'gcsp-poc' set up to track 'origin/gcsp-poc'.
+2026-11-07T11:59:40.5119178Z ##[endgroup]
+2026-11-07T11:59:40.5186863Z [command]/usr/bin/git log -1 --format=%H
+2026-11-07T11:59:40.5224142Z df3f3f439ba0aa2c4f464beaded903709e970ea1
+2026-11-07T11:59:40.5245538Z ##[group]Removing auth
+2026-11-07T11:59:40.5246614Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-07T11:59:40.5283463Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-07T11:59:40.5566523Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-07T11:59:40.5606204Z http.https://github.com/.extraheader
+2026-11-07T11:59:40.5616509Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-07T11:59:40.5662169Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-07T11:59:40.5937405Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-07T11:59:40.5981950Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-07T11:59:40.6258169Z ##[endgroup]
+2026-11-07T11:59:40.6527557Z ##[group]Run actions/setup-node@v4
+2026-11-07T11:59:40.6527871Z with:
+2026-11-07T11:59:40.6528095Z   node-version: 20
+2026-11-07T11:59:40.6528321Z   always-auth: false
+2026-11-07T11:59:40.6528555Z   check-latest: false
+2026-11-07T11:59:40.6531078Z   token: ***
+2026-11-07T11:59:40.6531320Z ##[endgroup]
+2026-11-07T11:59:40.8023347Z Attempting to download 20...
+2026-11-07T11:59:40.8183292Z (node:2489) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-07T11:59:40.8184735Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-07T11:59:41.7665414Z Acquiring 20.20.2 - x64 from https://github.com/actions/node-versions/releases/download/20.20.2-23521894959/node-20.20.2-linux-x64.tar.gz
+2026-11-07T11:59:42.3294616Z Extracting ...
+2026-11-07T11:59:42.3431303Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/9e060267-8d30-469b-8643-41f77dbf9b6e -f /home/runner/work/_temp/8dc9b4f6-b33b-4e9d-a57f-d17f9fd49724
+2026-11-07T11:59:43.4423094Z Adding to the cache ...
+2026-11-07T11:59:44.8877604Z ##[group]Environment details
+2026-11-07T11:59:45.1301329Z node: v20.20.2
+2026-11-07T11:59:45.1301852Z npm: 10.8.2
+2026-11-07T11:59:45.1302118Z yarn: 1.22.22
+2026-11-07T11:59:45.1302735Z ##[endgroup]
+2026-11-07T11:59:45.1557316Z ##[group]Run set -euo pipefail
+2026-11-07T11:59:45.1557680Z set -euo pipefail
+2026-11-07T11:59:45.1558207Z python3 -B -I docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/supervise.py
+2026-11-07T11:59:45.1586918Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-07T11:59:45.1587279Z env:
+2026-11-07T11:59:45.1587659Z   REVIEWED_PLAN_SHA256: 0b763e9d72c9fe9cfa1e8e20b988abf1916c2bea6e4eea2d24b2beeba10b5cce
+2026-11-07T11:59:45.1588123Z   REQUESTED_PLAN_SHA256: 
+2026-11-07T11:59:45.1588363Z ##[endgroup]
+2026-11-07T11:59:45.8647752Z {"phaseEvidence":{"receipt.json":{"schemaVersion":"linux-live-three-get-receipt.v1","diagnosticId":"fleet-dot12-linux-live-20261107-1","githubRunId":"42370480081","attempt":1,"environment":"Linux-GitHubActions","status":"failed","code":"e7cf50acd58bda6b0f2b3738c4408f1f374682f8","actualDeploymentId":"dep-dbnf8g3hf81s73b22ee0","manifestDigest":"3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30","requests":2,"newGetCeiling":3,"sourceCalls":0,"startedAt":"2026-11-07T11:59:45.249Z","finishedAt":"2026-11-07T11:59:45.775Z","pending":null,"observations":[{"label":"health","status":200,"bodySha256":"4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93","bodyBytes":11,"headersSha256":"6504c9103619535ff913836c0b784b8fed636023b752e8549f3424440bb1e0fb","elapsedMs":355.015132},{"label":"readiness","status":200,"bodySha256":"817ab012458b6b50802a7dfcc4b1f97663a288c28d96cc7dec018c8931f792e3","bodyBytes":169,"headersSha256":"28aa452523e636ac43f8a615cd1732873c0993a1290d179cc934221b72ab3b40","elapsedMs":163.88485699999995,"sanitizedReadiness":{"ok":true,"status":"ready","manifestDigest":"0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a","recovered":false}}],"failure":{"reason":"readiness-not-exact-ready","status":200,"readiness":{"ok":true,"status":"ready","manifestDigest":"0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a","recovered":false}},"expectedDtoSha256":"82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4","acceptance":false,"originalLocalTimeoutCauseProved":false},"progress.json":{"schemaVersion":"linux-live-three-get-receipt.v1","diagnosticId":"fleet-dot12-linux-live-20261107-1","githubRunId":"42370480081","attempt":1,"environment":"Linux-GitHubActions","status":"in-progress","code":"e7cf50acd58bda6b0f2b3738c4408f1f374682f8","actualDeploymentId":"dep-dbnf8g3hf81s73b22ee0","manifestDigest":"3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30","requests":2,"newGetCeiling":3,"sourceCalls":0,"startedAt":"2026-11-07T11:59:45.249Z","finishedAt":"2026-11-07T11:59:45.774Z","pending":null,"observations":[{"label":"health","status":200,"bodySha256":"4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93","bodyBytes":11,"headersSha256":"6504c9103619535ff913836c0b784b8fed636023b752e8549f3424440bb1e0fb","elapsedMs":355.015132},{"label":"readiness","status":200,"bodySha256":"817ab012458b6b50802a7dfcc4b1f97663a288c28d96cc7dec018c8931f792e3","bodyBytes":169,"headersSha256":"28aa452523e636ac43f8a615cd1732873c0993a1290d179cc934221b72ab3b40","elapsedMs":163.88485699999995,"sanitizedReadiness":{"ok":true,"status":"ready","manifestDigest":"0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a","recovered":false}}],"failure":null,"expectedDtoSha256":"82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4","acceptance":false,"originalLocalTimeoutCauseProved":false},"commandLogPrefixBase64":"eyJzdGF0dXMiOiJmYWlsZWQiLCJyZXF1ZXN0cyI6MiwiZmFpbHVyZSI6eyJyZWFzb24iOiJyZWFkaW5lc3Mtbm90LWV4YWN0LXJlYWR5Iiwic3RhdHVzIjoyMDAsInJlYWRpbmVzcyI6eyJvayI6dHJ1ZSwic3RhdHVzIjoicmVhZHkiLCJtYW5pZmVzdERpZ2VzdCI6IjBiZmUzMTM5NDkxODI2YzU2MDVjMGEyMjkxOGVjNThjNjg3Yjc5MjJiZDAwNjUwZDlkZGRlYWY0MDg2MDM5OWEiLCJyZWNvdmVyZWQiOmZhbHNlfX0sImFjY2VwdGFuY2UiOmZhbHNlfQo=","responseExcerpts":{"health-body.bin":{"bytes":11,"sha256":"4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93","prefixBase64":"eyJvayI6dHJ1ZX0=","prefixBytes":11},"health-headers.json":{"bytes":579,"sha256":"d619708438b6b89594a4a2a21061992e9b2318d0506d6bc0b9a01edf47998c13","prefixBase64":"W1siYWNjZXNzLWNvbnRyb2wtYWxsb3ctaGVhZGVycyIsIkNvbnRlbnQtVHlwZSwgWC1BY2Nlc3MtS2V5Il0sWyJhY2Nlc3MtY29udHJvbC1hbGxvdy1tZXRob2RzIiwiR0VULCBQT1NULCBPUFRJT05TIl0sWyJhY2Nlc3MtY29udHJvbC1hbGxvdy1vcmlnaW4iLCIqIl0sWyJhY2Nlc3MtY29udHJvbC1tYXgtYWdlIiwiODY0MDAiXSxbImFsdC1zdmMiLCJoMz1cIjo0NDNcIjsgbWE9ODY0MDAiXSxbImNmLWNhY2hlLXN0YXR1cyIsIkRZTkFNSUMiXSxbImNmLXJheSIsImE1NmMyYzc0ZmFkMzE0M2UtREZXIl0sWyJjb25uZWN0aW9uIiwia2VlcC1hbGl2ZSJdLFsiY29udGVudC1lbmNvZGluZyIsImJyIl0sWyJjb250ZW50LWxlbmd0aCIsIjE1Il0sWyJjb250ZW50LXR5cGUiLCJhcHBsaWNhdGlvbi9qc29uOyBjaGFyc2V0PXV0Zi04Il0sWyJkYXRlIiwiU2F0LCAwNyBOb3YgMjAyNiAxMTo1OTo0NSBHTVQiXSxbInJuZHItaWQiLCIwOGVkY2M1Yy01NDc4LTQyZTMiXSxbInNlcnZlciIsImNsb3VkZmxhcmUiXSxbInZhcnkiLCJBY2NlcHQtRW5jb2RpbmciXSxbIngtcmVuZGVyLW9yaWdpbi1zZXJ2ZXIiLCJSZW5kZXIiXV0K","prefixBytes":579},"readiness-body.bin":{"bytes":169,"sha256":"817ab012458b6b50802a7dfcc4b1f97663a288c28d96cc7dec018c8931f792e3","prefixBase64":"eyJvayI6dHJ1ZSwidmVoaWNsZUV2aWRlbmNlIjp7InN0YXR1cyI6InJlYWR5IiwiZWxhcHNlZE1zIjozMzk0OTMsIm1hbmlmZXN0RGlnZXN0IjoiMGJmZTMxMzk0OTE4MjZjNTYwNWMwYTIyOTE4ZWM1OGM2ODdiNzkyMmJkMDA2NTBkOWRkZGVhZjQwODYwMzk5YSIsInJlY292ZXJlZCI6ZmFsc2V9fQ==","prefixBytes":169},"readiness-headers.json":{"bytes":580,"sha256":"02f345c75f05650636af0b934ce3ac2046bcd7495a738980343c9e098080283f","prefixBase64":"W1siYWNjZXNzLWNvbnRyb2wtYWxsb3ctaGVhZGVycyIsIkNvbnRlbnQtVHlwZSwgWC1BY2Nlc3MtS2V5Il0sWyJhY2Nlc3MtY29udHJvbC1hbGxvdy1tZXRob2RzIiwiR0VULCBQT1NULCBPUFRJT05TIl0sWyJhY2Nlc3MtY29udHJvbC1hbGxvdy1vcmlnaW4iLCIqIl0sWyJhY2Nlc3MtY29udHJvbC1tYXgtYWdlIiwiODY0MDAiXSxbImFsdC1zdmMiLCJoMz1cIjo0NDNcIjsgbWE9ODY0MDAiXSxbImNmLWNhY2hlLXN0YXR1cyIsIkRZTkFNSUMiXSxbImNmLXJheSIsImE1NmMyYzc2MWI2ODE0M2UtREZXIl0sWyJjb25uZWN0aW9uIiwia2VlcC1hbGl2ZSJdLFsiY29udGVudC1lbmNvZGluZyIsImJyIl0sWyJjb250ZW50LWxlbmd0aCIsIjEzMiJdLFsiY29udGVudC10eXBlIiwiYXBwbGljYXRpb24vanNvbjsgY2hhcnNldD11dGYtOCJdLFsiZGF0ZSIsIlNhdCwgMDcgTm92IDIwMjYgMTE6NTk6NDUgR01UIl0sWyJybmRyLWlkIiwiZGIxMDMyYWQtNjliMS00OTM4Il0sWyJzZXJ2ZXIiLCJjbG91ZGZsYXJlIl0sWyJ2YXJ5IiwiQWNjZXB0LUVuY29kaW5nIl0sWyJ4LXJlbmRlci1vcmlnaW4tc2VydmVyIiwiUmVuZGVyIl1dCg==","prefixBytes":580}}}}
+2026-11-07T11:59:45.8688292Z {"cleanup":{"rc":1,"elapsedSeconds":0.6454866500000094,"scratchAbsent":true,"groupsAbsent":true,"removedScratchPeakBytes":4447,"peakGroupRssBytes":72683520,"peakSupervisorRssBytes":18018304,"aggregateRssUpperBoundBytes":90701824,"retainedArchive":false,"retainedLogBytesBeforeCleanupLine":5675,"leftovers":[]}}
+2026-11-07T11:59:45.8702193Z ##[error]Process completed with exit code 1.
+2026-11-07T11:59:45.8847654Z Post job cleanup.
+2026-11-07T11:59:45.9796107Z [command]/usr/bin/git version
+2026-11-07T11:59:45.9842238Z git version 2.56.0
+2026-11-07T11:59:45.9886447Z Temporarily overriding HOME='/home/runner/work/_temp/3ffea007-c7bc-450f-ae5b-b69571afd050' before making global git config changes
+2026-11-07T11:59:45.9887804Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-07T11:59:45.9892862Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/vehicle-matcher/vehicle-matcher
+2026-11-07T11:59:45.9937989Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-07T11:59:45.9980361Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-07T11:59:46.0292380Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-07T11:59:46.0332284Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-07T11:59:46.0641741Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-07T11:59:46.0689596Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-07T11:59:46.1150559Z Cleaning up orphan processes
+2026-11-07T11:59:46.1489958Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

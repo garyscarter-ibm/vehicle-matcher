@@ -1,0 +1,285 @@
+﻿2026-11-07T09:53:08.1741051Z Current runner version: '2.338.2'
+2026-11-07T09:53:08.1766505Z ##[group]Runner Image Provisioner
+2026-11-07T09:53:08.1767371Z Hosted Compute Agent
+2026-11-07T09:53:08.1768070Z Version: 20261028.624
+2026-11-07T09:53:08.1768715Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+2026-11-07T09:53:08.1769491Z Build Date: 2026-10-28T21:51:42Z
+2026-11-07T09:53:08.1770302Z Worker ID: {7fdd74f1-ba1a-4342-ba6a-6a11a11b652c}
+2026-11-07T09:53:08.1770999Z Region: westus3
+2026-11-07T09:53:08.1771610Z Cloud: Azure
+2026-11-07T09:53:08.1772160Z ##[endgroup]
+2026-11-07T09:53:08.1774274Z ##[group]Operating System
+2026-11-07T09:53:08.1775008Z Ubuntu
+2026-11-07T09:53:08.1775548Z 24.04.5
+2026-11-07T09:53:08.1776123Z LTS
+2026-11-07T09:53:08.1776651Z ##[endgroup]
+2026-11-07T09:53:08.1777210Z ##[group]Runner Image
+2026-11-07T09:53:08.1777954Z Image: ubuntu-24.04
+2026-11-07T09:53:08.1778536Z Version: 20261101.360.1
+2026-11-07T09:53:08.1779844Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261101.360/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-07T09:53:08.1781521Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261101.360
+2026-11-07T09:53:08.1782893Z ##[endgroup]
+2026-11-07T09:53:08.1784005Z ##[group]GITHUB_TOKEN Permissions
+2026-11-07T09:53:08.1786015Z Contents: read
+2026-11-07T09:53:08.1786644Z Metadata: read
+2026-11-07T09:53:08.1787737Z ##[endgroup]
+2026-11-07T09:53:08.1790223Z Secret source: Actions
+2026-11-07T09:53:08.1791298Z Cache mode: write
+2026-11-07T09:53:08.1792054Z Prepare workflow directory
+2026-11-07T09:53:08.2193510Z Prepare all required actions
+2026-11-07T09:53:08.2243182Z Getting action download info
+2026-11-07T09:53:08.5382287Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-11-07T09:53:08.6599891Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-11-07T09:53:08.8478218Z Complete job name: fleet-node20
+2026-11-07T09:53:08.9331271Z ##[group]Run actions/checkout@v4
+2026-11-07T09:53:08.9332180Z with:
+2026-11-07T09:53:08.9332922Z   persist-credentials: false
+2026-11-07T09:53:08.9333522Z   repository: garyscarter-ibm/vehicle-matcher
+2026-11-07T09:53:08.9337192Z   token: ***
+2026-11-07T09:53:08.9337641Z   ssh-strict: true
+2026-11-07T09:53:08.9338097Z   ssh-user: git
+2026-11-07T09:53:08.9338537Z   clean: true
+2026-11-07T09:53:08.9339002Z   sparse-checkout-cone-mode: true
+2026-11-07T09:53:08.9339543Z   fetch-depth: 1
+2026-11-07T09:53:08.9339996Z   fetch-tags: false
+2026-11-07T09:53:08.9340455Z   show-progress: true
+2026-11-07T09:53:08.9340932Z   lfs: false
+2026-11-07T09:53:08.9341358Z   submodules: false
+2026-11-07T09:53:08.9341822Z   set-safe-directory: true
+2026-11-07T09:53:08.9342339Z   allow-unsafe-pr-checkout: false
+2026-11-07T09:53:08.9343288Z ##[endgroup]
+2026-11-07T09:53:09.2032156Z Syncing repository: garyscarter-ibm/vehicle-matcher
+2026-11-07T09:53:09.2034974Z ##[group]Getting Git version info
+2026-11-07T09:53:09.2035956Z Working directory is '/home/runner/work/vehicle-matcher/vehicle-matcher'
+2026-11-07T09:53:09.2037075Z [command]/usr/bin/git version
+2026-11-07T09:53:09.2132874Z git version 2.56.0
+2026-11-07T09:53:09.2162684Z ##[endgroup]
+2026-11-07T09:53:09.2184458Z Temporarily overriding HOME='/home/runner/work/_temp/515fdef0-f017-447f-8ab2-ffc207dcae3a' before making global git config changes
+2026-11-07T09:53:09.2187306Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-07T09:53:09.2189608Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/vehicle-matcher/vehicle-matcher
+2026-11-07T09:53:09.2245047Z Deleting the contents of '/home/runner/work/vehicle-matcher/vehicle-matcher'
+2026-11-07T09:53:09.2250064Z ##[group]Initializing the repository
+2026-11-07T09:53:09.2257612Z [command]/usr/bin/git init /home/runner/work/vehicle-matcher/vehicle-matcher
+2026-11-07T09:53:09.2370732Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-07T09:53:09.2372243Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-07T09:53:09.2374143Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-07T09:53:09.2375021Z hint: call:
+2026-11-07T09:53:09.2375540Z hint:
+2026-11-07T09:53:09.2376161Z hint: 	git config --global init.defaultBranch <name>
+2026-11-07T09:53:09.2377062Z hint:
+2026-11-07T09:53:09.2377952Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-07T09:53:09.2379165Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-07T09:53:09.2380307Z hint:
+2026-11-07T09:53:09.2380848Z hint: 	git branch -m <name>
+2026-11-07T09:53:09.2381927Z hint:
+2026-11-07T09:53:09.2383524Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-07T09:53:09.2387566Z Initialized empty Git repository in /home/runner/work/vehicle-matcher/vehicle-matcher/.git/
+2026-11-07T09:53:09.2400804Z [command]/usr/bin/git remote add origin https://github.com/garyscarter-ibm/vehicle-matcher
+2026-11-07T09:53:09.2450658Z ##[endgroup]
+2026-11-07T09:53:09.2452274Z ##[group]Disabling automatic garbage collection
+2026-11-07T09:53:09.2456761Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-07T09:53:09.2496927Z ##[endgroup]
+2026-11-07T09:53:09.2498698Z ##[group]Setting up auth
+2026-11-07T09:53:09.2504931Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-07T09:53:09.2545340Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-07T09:53:09.3051097Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-07T09:53:09.3099444Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-07T09:53:09.3351393Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-07T09:53:09.3396736Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-07T09:53:09.3639717Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-07T09:53:09.3704026Z ##[endgroup]
+2026-11-07T09:53:09.3705505Z ##[group]Fetching the repository
+2026-11-07T09:53:09.3717783Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +21d34a173f024220806c36ec89567c0ed737a815:refs/remotes/origin/gcsp-poc
+2026-11-07T09:53:15.2000896Z From https://github.com/garyscarter-ibm/vehicle-matcher
+2026-11-07T09:53:15.2002161Z  * [new ref]         21d34a173f024220806c36ec89567c0ed737a815 -> origin/gcsp-poc
+2026-11-07T09:53:15.2006445Z ##[endgroup]
+2026-11-07T09:53:15.2008690Z ##[group]Determining the checkout info
+2026-11-07T09:53:15.2010338Z ##[endgroup]
+2026-11-07T09:53:15.2018858Z [command]/usr/bin/git sparse-checkout disable
+2026-11-07T09:53:15.2110220Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-07T09:53:15.2151519Z ##[group]Checking out the ref
+2026-11-07T09:53:15.2156023Z [command]/usr/bin/git checkout --progress --force -B gcsp-poc refs/remotes/origin/gcsp-poc
+2026-11-07T09:53:16.2582923Z Updating files:  60% (5974/9927)
+2026-11-07T09:53:16.2632886Z Updating files:  61% (6056/9927)
+2026-11-07T09:53:16.2686287Z Updating files:  62% (6155/9927)
+2026-11-07T09:53:16.2741914Z Updating files:  63% (6255/9927)
+2026-11-07T09:53:16.2793185Z Updating files:  64% (6354/9927)
+2026-11-07T09:53:16.2840545Z Updating files:  65% (6453/9927)
+2026-11-07T09:53:16.2890368Z Updating files:  66% (6552/9927)
+2026-11-07T09:53:16.2938570Z Updating files:  67% (6652/9927)
+2026-11-07T09:53:16.2988307Z Updating files:  68% (6751/9927)
+2026-11-07T09:53:16.3037909Z Updating files:  69% (6850/9927)
+2026-11-07T09:53:16.3088593Z Updating files:  70% (6949/9927)
+2026-11-07T09:53:16.3141642Z Updating files:  71% (7049/9927)
+2026-11-07T09:53:16.3193435Z Updating files:  72% (7148/9927)
+2026-11-07T09:53:16.3242068Z Updating files:  73% (7247/9927)
+2026-11-07T09:53:16.3294318Z Updating files:  74% (7346/9927)
+2026-11-07T09:53:16.3363148Z Updating files:  75% (7446/9927)
+2026-11-07T09:53:16.3439716Z Updating files:  76% (7545/9927)
+2026-11-07T09:53:16.3513262Z Updating files:  77% (7644/9927)
+2026-11-07T09:53:16.3639845Z Updating files:  78% (7744/9927)
+2026-11-07T09:53:16.3794759Z Updating files:  79% (7843/9927)
+2026-11-07T09:53:16.3968234Z Updating files:  80% (7942/9927)
+2026-11-07T09:53:16.4153297Z Updating files:  81% (8041/9927)
+2026-11-07T09:53:16.4333979Z Updating files:  82% (8141/9927)
+2026-11-07T09:53:16.4514018Z Updating files:  83% (8240/9927)
+2026-11-07T09:53:16.4566763Z Updating files:  84% (8339/9927)
+2026-11-07T09:53:16.4983410Z Updating files:  85% (8438/9927)
+2026-11-07T09:53:16.5212208Z Updating files:  86% (8538/9927)
+2026-11-07T09:53:16.5267615Z Updating files:  87% (8637/9927)
+2026-11-07T09:53:16.5344757Z Updating files:  88% (8736/9927)
+2026-11-07T09:53:16.5428521Z Updating files:  89% (8836/9927)
+2026-11-07T09:53:16.5559220Z Updating files:  90% (8935/9927)
+2026-11-07T09:53:16.5612651Z Updating files:  91% (9034/9927)
+2026-11-07T09:53:16.5673543Z Updating files:  92% (9133/9927)
+2026-11-07T09:53:16.6091876Z Updating files:  93% (9233/9927)
+2026-11-07T09:53:16.6379057Z Updating files:  94% (9332/9927)
+2026-11-07T09:53:16.8393169Z Updating files:  95% (9431/9927)
+2026-11-07T09:53:17.2812363Z Updating files:  96% (9530/9927)
+2026-11-07T09:53:17.3820355Z Updating files:  96% (9605/9927)
+2026-11-07T09:53:17.3901749Z Updating files:  97% (9630/9927)
+2026-11-07T09:53:17.4039813Z Updating files:  98% (9729/9927)
+2026-11-07T09:53:17.4131497Z Updating files:  99% (9828/9927)
+2026-11-07T09:53:17.4132059Z Updating files: 100% (9927/9927)
+2026-11-07T09:53:17.4133098Z Updating files: 100% (9927/9927), done.
+2026-11-07T09:53:17.4241913Z Switched to a new branch 'gcsp-poc'
+2026-11-07T09:53:17.4248184Z branch 'gcsp-poc' set up to track 'origin/gcsp-poc'.
+2026-11-07T09:53:17.4400369Z ##[endgroup]
+2026-11-07T09:53:17.4460860Z [command]/usr/bin/git log -1 --format=%H
+2026-11-07T09:53:17.4497627Z 21d34a173f024220806c36ec89567c0ed737a815
+2026-11-07T09:53:17.4509730Z ##[group]Removing auth
+2026-11-07T09:53:17.4514938Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-07T09:53:17.4561358Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-07T09:53:17.4822769Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-07T09:53:17.4860063Z http.https://github.com/.extraheader
+2026-11-07T09:53:17.4868967Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-07T09:53:17.4910035Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-07T09:53:17.5165394Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-07T09:53:17.5205339Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-07T09:53:17.5462300Z ##[endgroup]
+2026-11-07T09:53:17.5724858Z ##[group]Run actions/setup-node@v4
+2026-11-07T09:53:17.5725175Z with:
+2026-11-07T09:53:17.5725385Z   node-version: 20
+2026-11-07T09:53:17.5725606Z   always-auth: false
+2026-11-07T09:53:17.5725830Z   check-latest: false
+2026-11-07T09:53:17.5728049Z   token: ***
+2026-11-07T09:53:17.5728279Z ##[endgroup]
+2026-11-07T09:53:17.7224464Z Attempting to download 20...
+2026-11-07T09:53:17.7398962Z (node:2396) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-07T09:53:17.7400514Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-07T09:53:18.6939960Z Acquiring 20.20.2 - x64 from https://github.com/actions/node-versions/releases/download/20.20.2-23521894959/node-20.20.2-linux-x64.tar.gz
+2026-11-07T09:53:19.2517723Z Extracting ...
+2026-11-07T09:53:19.2653247Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/ce4b5221-505c-4a06-af57-e904d7e6f957 -f /home/runner/work/_temp/27fcf090-8630-4bcf-8e64-053d614f98d5
+2026-11-07T09:53:20.2549025Z Adding to the cache ...
+2026-11-07T09:53:21.8281571Z ##[group]Environment details
+2026-11-07T09:53:22.0739804Z node: v20.20.2
+2026-11-07T09:53:22.0740212Z npm: 10.8.2
+2026-11-07T09:53:22.0740873Z yarn: 1.22.22
+2026-11-07T09:53:22.0741636Z ##[endgroup]
+2026-11-07T09:53:22.0978425Z ##[group]Run set -euo pipefail
+2026-11-07T09:53:22.0978856Z set -euo pipefail
+2026-11-07T09:53:22.0979295Z task_root="$RUNNER_TEMP/gcsp-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+2026-11-07T09:53:22.0979972Z manifest="$GITHUB_WORKSPACE/.claude/test-runs/ci-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.json"
+2026-11-07T09:53:22.0980483Z test ! -e "$task_root"
+2026-11-07T09:53:22.0980764Z mkdir -p "$(dirname "$manifest")"
+2026-11-07T09:53:22.0981888Z printf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":2048,"seconds":690,"scope":"Node20Linux exact31asset restore and5scoped runtime references; full10002 proof not replayed;2707 original consumer failures; acceptance false"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"
+2026-11-07T09:53:22.0983307Z phase=initializing
+2026-11-07T09:53:22.0983566Z phase_started=$SECONDS
+2026-11-07T09:53:22.0984125Z phase_start() { phase="$1"; phase_started=$SECONDS; printf 'phase=%s state=start elapsed_s=%s\n' "$phase" "$SECONDS"; }
+2026-11-07T09:53:22.0984966Z phase_done() { printf 'phase=%s state=passed seconds=%s elapsed_s=%s\n' "$phase" "$((SECONDS-phase_started))" "$SECONDS"; }
+2026-11-07T09:53:22.0985518Z cleanup() {
+2026-11-07T09:53:22.0985732Z   result=$?
+2026-11-07T09:53:22.0986222Z   printf 'phase=%s state=exit exit=%s phase_seconds=%s elapsed_s=%s\n' "$phase" "$result" "$((SECONDS-phase_started))" "$SECONDS"
+2026-11-07T09:53:22.0986808Z   for evidence in download offline; do
+2026-11-07T09:53:22.0987166Z     if test -f "$task_root/$evidence.json"; then
+2026-11-07T09:53:22.0987676Z       printf 'phase_evidence=%s bytes=%s\n' "$evidence" "$(wc -c < "$task_root/$evidence.json")"
+2026-11-07T09:53:22.0988175Z       head -c 8192 "$task_root/$evidence.json"
+2026-11-07T09:53:22.0988493Z       printf '\n'
+2026-11-07T09:53:22.0988721Z     fi
+2026-11-07T09:53:22.0988910Z   done
+2026-11-07T09:53:22.0989115Z   if test -d "$task_root"; then
+2026-11-07T09:53:22.0989397Z     du -sk "$task_root"
+2026-11-07T09:53:22.0989648Z     rm -rf -- "$task_root"
+2026-11-07T09:53:22.0989890Z   fi
+2026-11-07T09:53:22.0990088Z   test ! -e "$task_root"
+2026-11-07T09:53:22.0990461Z   printf 'Owned scratch absent; no retained archive; exit=%s\n' "$result"
+2026-11-07T09:53:22.0990868Z   exit "$result"
+2026-11-07T09:53:22.0991082Z }
+2026-11-07T09:53:22.0991363Z trap cleanup EXIT
+2026-11-07T09:53:22.0991630Z mkdir "$task_root"
+2026-11-07T09:53:22.0991953Z export TMPDIR="$task_root" TMP="$task_root" TEMP="$task_root"
+2026-11-07T09:53:22.0992311Z node --version
+2026-11-07T09:53:22.0992805Z cd server
+2026-11-07T09:53:22.0993062Z phase_start npm-ci
+2026-11-07T09:53:22.0993410Z timeout 90s npm ci --ignore-scripts --no-audit --no-fund
+2026-11-07T09:53:22.0993773Z phase_done
+2026-11-07T09:53:22.0994005Z phase_start download
+2026-11-07T09:53:22.0995052Z timeout 240s node --max-old-space-size=512 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network download > "$task_root/download.json"
+2026-11-07T09:53:22.0995876Z phase_done
+2026-11-07T09:53:22.0996095Z phase_start offline
+2026-11-07T09:53:22.0996875Z timeout 180s node --max-old-space-size=512 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network offline > "$task_root/offline.json"
+2026-11-07T09:53:22.0997701Z phase_done
+2026-11-07T09:53:22.0997905Z cd ..
+2026-11-07T09:53:22.0998229Z proof=docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan
+2026-11-07T09:53:22.0998616Z phase_start verify-assets
+2026-11-07T09:53:22.0999313Z timeout 60s node --max-old-space-size=512 "$proof/verify-assets.mjs" "$task_root/store" "$task_root/cache/$RELEASE"
+2026-11-07T09:53:22.0999895Z phase_done
+2026-11-07T09:53:22.1000121Z phase_start boundary
+2026-11-07T09:53:22.1000654Z timeout 120s node --max-old-space-size=512 "$proof/boundary.mjs" "$task_root/store" "$task_root/cache/$RELEASE" "$task_root"
+2026-11-07T09:53:22.1001227Z phase_done
+2026-11-07T09:53:22.1001492Z node --input-type=module - "$task_root" <<'JS'
+2026-11-07T09:53:22.1001846Z import assert from 'node:assert/strict';
+2026-11-07T09:53:22.1002190Z import {readFile} from 'node:fs/promises';
+2026-11-07T09:53:22.1003046Z const root=process.argv[2];const read=async name=>JSON.parse(await readFile(`${root}/${name}.json`));
+2026-11-07T09:53:22.1003809Z const downloaded=await read('download'),offline=await read('offline'),boundary=await read('boundary-receipt');
+2026-11-07T09:53:22.1004925Z assert.equal(downloaded.status,'ok');assert.equal(downloaded.mode,'cold-restore');assert.equal(downloaded.active.manifestDigest,process.env.RELEASE);assert.ok(downloaded.externalCalls<=124);
+2026-11-07T09:53:22.1006047Z assert.equal(offline.status,'ok');assert.equal(offline.idempotent,true);assert.equal(offline.externalCalls,0);
+2026-11-07T09:53:22.1007093Z assert.equal(boundary.count,5);assert.equal(boundary.consumerErrors,2);assert.equal(boundary.sourceCalls+boundary.externalCalls,0);assert.equal(boundary.serverClosed,true);
+2026-11-07T09:53:22.1009034Z console.log(JSON.stringify({scope:'Linux scoped5boundary+exact31assets',runtime:process.version,platform:process.platform,manifestDigest:process.env.RELEASE,scopedReferences:5,scopedConsumerFailures:2,historical10002ProofReplayed:false,originalConsumerFailures:2707,buildHTTPSCalls:downloaded.externalCalls,fullSuiteRun:false,acceptance:false}));
+2026-11-07T09:53:22.1010481Z JS
+2026-11-07T09:53:22.1036671Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-07T09:53:22.1037026Z env:
+2026-11-07T09:53:22.1037364Z   RELEASE: 3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30
+2026-11-07T09:53:22.1037773Z ##[endgroup]
+2026-11-07T09:53:22.1178309Z v20.20.2
+2026-11-07T09:53:22.1179008Z phase=npm-ci state=start elapsed_s=0
+2026-11-07T09:53:22.7298436Z 
+2026-11-07T09:53:22.7299237Z added 14 packages in 550ms
+2026-11-07T09:53:22.7371869Z phase=npm-ci state=passed seconds=0 elapsed_s=0
+2026-11-07T09:53:22.7372871Z phase=download state=start elapsed_s=0
+2026-11-07T09:55:35.8664678Z phase=download state=passed seconds=133 elapsed_s=133
+2026-11-07T09:55:35.8665412Z phase=offline state=start elapsed_s=133
+2026-11-07T09:58:24.2275549Z phase=offline state=passed seconds=169 elapsed_s=302
+2026-11-07T09:58:24.2276320Z phase=verify-assets state=start elapsed_s=302
+2026-11-07T09:58:25.1276581Z {"status":"exact31assetcache-and-restored-store-passed","releaseId":"3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30","files":31,"bytes":574382841,"sourceCalls":0,"externalCalls":0,"fullReferenceProofReexecuted":false,"acceptance":false}
+2026-11-07T09:58:25.1355431Z phase=verify-assets state=passed seconds=1 elapsed_s=303
+2026-11-07T09:58:25.1356064Z phase=boundary state=start elapsed_s=303
+2026-11-07T10:00:17.3299412Z {"count":5,"consumerErrors":2,"externalCalls":0,"sourceCalls":0,"acceptance":false}
+2026-11-07T10:00:17.3494818Z phase=boundary state=passed seconds=112 elapsed_s=415
+2026-11-07T10:00:17.3794287Z {"scope":"Linux scoped5boundary+exact31assets","runtime":"v20.20.2","platform":"linux","manifestDigest":"3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30","scopedReferences":5,"scopedConsumerFailures":2,"historical10002ProofReplayed":false,"originalConsumerFailures":2707,"buildHTTPSCalls":62,"fullSuiteRun":false,"acceptance":false}
+2026-11-07T10:00:17.3819113Z phase=boundary state=exit exit=0 phase_seconds=112 elapsed_s=415
+2026-11-07T10:00:17.3964879Z phase_evidence=download bytes=1416
+2026-11-07T10:00:17.3982662Z {"status":"ok","mode":"cold-restore","active":{"datasetId":"gcsp-source-fleet","version":"2026-11-07.12","manifestDigest":"3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30","counts":{"configurations":10001,"distinctConfigurations":10001,"images":2,"qualifyingCompleteDistinctSourceConfigurations":10000,"sourceConfigurations":10000,"vinMappings":1},"sourceContexts":[{"catalogueDate":null,"market":"US","note":"Small structural reference fixture; no UK/RHD, full equipment or 200/10000 corpus claim","observedDate":"2026-11-01","sourceKind":"north-american-reference","steering":"LHD"},{"catalogueDate":"2026-11-01","market":"GB","note":"Exact retained FUCQ-39 GB catalogue; physical year, build, steering and plant remain unknown","observedDate":"2026-11-01","sourceKind":"dated-snapshot","steering":null},{"catalogueDate":"2026-11-07","market":"GB","note":"9999 actual admitted v2 factory selections and one retained historical source configuration; two representative images retain exact dated associations; four qualified measurements apply only to one exact configuration; physical build, visual fidelity and scheme breadth remain unverified","observedDate":"2026-11-07","sourceKind":"dated-snapshot","steering":null}],"completeness":{"imagesMissing":9999,"selectedOptions":{"complete":10000,"unknown":1},"sourceKinds":{"dated-snapshot":10000,"north-american-reference":1}}},"externalCalls":62}
+2026-11-07T10:00:17.3988194Z 
+2026-11-07T10:00:17.3993282Z phase_evidence=offline bytes=1437
+2026-11-07T10:00:17.4009764Z {"status":"ok","idempotent":true,"active":{"datasetId":"gcsp-source-fleet","version":"2026-11-07.12","manifestDigest":"3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30","counts":{"configurations":10001,"distinctConfigurations":10001,"images":2,"qualifyingCompleteDistinctSourceConfigurations":10000,"sourceConfigurations":10000,"vinMappings":1},"sourceContexts":[{"catalogueDate":null,"market":"US","note":"Small structural reference fixture; no UK/RHD, full equipment or 200/10000 corpus claim","observedDate":"2026-11-01","sourceKind":"north-american-reference","steering":"LHD"},{"catalogueDate":"2026-11-01","market":"GB","note":"Exact retained FUCQ-39 GB catalogue; physical year, build, steering and plant remain unknown","observedDate":"2026-11-01","sourceKind":"dated-snapshot","steering":null},{"catalogueDate":"2026-11-07","market":"GB","note":"9999 actual admitted v2 factory selections and one retained historical source configuration; two representative images retain exact dated associations; four qualified measurements apply only to one exact configuration; physical build, visual fidelity and scheme breadth remain unverified","observedDate":"2026-11-07","sourceKind":"dated-snapshot","steering":null}],"completeness":{"imagesMissing":9999,"selectedOptions":{"complete":10000,"unknown":1},"sourceKinds":{"dated-snapshot":10000,"north-american-reference":1}}},"mode":"publish-existing","externalCalls":0}
+2026-11-07T10:00:17.4015214Z 
+2026-11-07T10:00:17.4029798Z 903568	/home/runner/work/_temp/gcsp-fleet-42361586991-1
+2026-11-07T10:00:17.4900482Z Owned scratch absent; no retained archive; exit=0
+2026-11-07T10:00:17.5010421Z Post job cleanup.
+2026-11-07T10:00:17.6284414Z (node:2678) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-07T10:00:17.6285913Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-07T10:00:17.6482886Z Post job cleanup.
+2026-11-07T10:00:17.7469878Z [command]/usr/bin/git version
+2026-11-07T10:00:17.7518212Z git version 2.56.0
+2026-11-07T10:00:17.7563938Z Temporarily overriding HOME='/home/runner/work/_temp/7db4333b-76f3-4501-bbd9-c92189523da0' before making global git config changes
+2026-11-07T10:00:17.7565134Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-07T10:00:17.7570374Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/vehicle-matcher/vehicle-matcher
+2026-11-07T10:00:17.7618729Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-07T10:00:17.7669511Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-07T10:00:17.7968124Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-07T10:00:17.8007645Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-07T10:00:17.8318123Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-07T10:00:17.8365165Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-07T10:00:17.8821522Z Cleaning up orphan processes
+2026-11-07T10:00:17.9314782Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

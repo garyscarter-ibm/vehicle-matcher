@@ -4,7 +4,10 @@ import { createRepository, createState, ok, result } from './core.js';
 export function createMemoryStore() {
   return { state: createState(), queue: Promise.resolve() };
 }
-export function createMemoryRepository({ store, now, supportedTables } = {}) {
+// Rows are replaced, never mutated in place, so `shallow` copies only table arrays.
+const shallowCopy = (state) => ({ ...state, tables: Object.fromEntries(Object.entries(state.tables).map(([name, rows]) => [name, rows.slice()])) });
+export function createMemoryRepository({ store, now, supportedTables, snapshot = 'deep' } = {}) {
+  const copy = snapshot === 'shallow' ? shallowCopy : structuredClone;
   const valid = store && store.state?.tables && store.queue && typeof store.queue.then === 'function';
   const serialized = async (work) => {
     const predecessor = store.queue;
@@ -21,10 +24,10 @@ export function createMemoryRepository({ store, now, supportedTables } = {}) {
         : result('invalid', { code: 'missing-store', reasons: [{ field: 'store', reason: 'Inject a memory store explicitly' }] });
     },
     async migrationStatus() { return ok({ current: true, appliedVersions: [], pendingVersions: [] }); },
-    read(context, work) { return serialized(() => work(structuredClone(store.state))); },
+    read(context, work) { return serialized(() => work(copy(store.state))); },
     transaction(context, work) {
       return serialized(async () => {
-        const snapshot = structuredClone(store.state);
+        const snapshot = copy(store.state);
         const { commit, outcome } = await work(snapshot);
         if (commit) store.state = snapshot;
         return outcome;

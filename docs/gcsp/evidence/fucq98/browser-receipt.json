@@ -1,0 +1,69 @@
+{
+  "run": "fucq98-20261105-brevo-transport",
+  "browser": "isolated headless system Chrome",
+  "sources": {
+    "blocks/gcsp/presenter/gcsp-outbox.js": "91480c766b9672e248b53a25d86df35c1c489ee4dfadeea246bf319bdde934d7",
+    "blocks/gcsp/presenter/outbox-copy.js": "26984f81733b598596f6850933f8165c21f67f71b410a7a4914e476d5fc46d59",
+    "blocks/gcsp/presenter/message-list.js": "93c9574c00f270ca96bedace1a0014617089443df46ef08bc4e2816b26ef68e7",
+    "blocks/gcsp/presenter/gcsp-presenter.css": "60a067f3c4a43fd7bafe3511159d1f2f499618b1c1c37c88c81bcc7f04778ba7",
+    "docs/gcsp/evidence/fucq98/capture-outbox.mjs": "f107a6eb336cc6a696500a94876de77f192e802d84635668df4c63b30a52d82d"
+  },
+  "results": [
+    {
+      "state": "captured fixture",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "keyboardOpened": true,
+      "focus": "message heading",
+      "sandbox": "",
+      "file": "capture-desktop.png"
+    },
+    {
+      "state": "unconfirmed provider-window fixture",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "keyboardOpened": true,
+      "copy": "Your vehicle offer is ready to review\nTo\nPaula (fictional)\nStatus\nFailed\nDemo clock\n5 Nov 2026, 09:20 GMT\nAttempts\n2\nProblem\nAcceptance is not confirmed. The safe retry window has ended.\nOpen the offer\n(opens in a new tab)\nEmail as received\nPlain-text version\nHello Paula (fictional),\n\nYour vehicle offer is ready to review\n\nBMW 320i Touring\n\nYour offer is available until 2026-11-05T11:00:00.000Z. Open the offer to review the vehicle and make your decision.\n\nReview your offer: /gcsp/offer\n\nThis is a demonstration message for a fictional employee. Provider acceptance does not confirm inbox delivery.",
+      "file": "unconfirmed-desktop.png"
+    },
+    {
+      "state": "captured fixture",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "keyboardOpened": true,
+      "focus": "message heading",
+      "sandbox": "",
+      "file": "capture-narrow.png"
+    },
+    {
+      "state": "unconfirmed provider-window fixture",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "keyboardOpened": true,
+      "copy": "Your vehicle offer is ready to review\nTo\nPaula (fictional)\nStatus\nFailed\nDemo clock\n5 Nov 2026, 09:20 GMT\nAttempts\n2\nProblem\nAcceptance is not confirmed. The safe retry window has ended.\nOpen the offer\n(opens in a new tab)\nEmail as received\nPlain-text version\nHello Paula (fictional),\n\nYour vehicle offer is ready to review\n\nBMW 320i Touring\n\nYour offer is available until 2026-11-05T11:00:00.000Z. Open the offer to review the vehicle and make your decision.\n\nReview your offer: /gcsp/offer\n\nThis is a demonstration message for a fictional employee. Provider acceptance does not confirm inbox delivery.",
+      "file": "unconfirmed-narrow.png"
+    }
+  ],
+  "errors": [],
+  "compatibilityException": {
+    "profile": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq98-20261105-brevo-transport/headless-outbox-profile",
+    "expectedPeakMiB": 32,
+    "removedBy": "registered supervisor Scratch finalizer"
+  },
+  "limits": [
+    "Synthetic viewer presentation inputs only; no external network/mail",
+    "No layout, component or provider delivery claim"
+  ]
+}
