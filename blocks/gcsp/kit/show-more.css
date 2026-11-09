@@ -1,0 +1,5 @@
+/* GCSP kit: showMore paging footer. Scoped to .gcsp; colours come from tokens only. */
+.gcsp .gcsp-show-more { display: flex; flex-direction: column; align-items: stretch; gap: 12px; min-width: 0; }
+.gcsp .gcsp-show-more-count { margin: 0; color: var(--gcsp-text-muted); text-align: center; }
+.gcsp .gcsp-show-more .vm-btn { max-width: 100%; white-space: normal; }
+@media (min-width: 601px) { .gcsp .gcsp-show-more { align-items: center; } .gcsp .gcsp-show-more .vm-btn { min-width: 240px; } }

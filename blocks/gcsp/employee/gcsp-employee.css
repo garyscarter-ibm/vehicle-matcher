@@ -50,7 +50,7 @@
 .gcsp .gcsp-status .gcsp-icon { flex: none; width: 18px; height: 18px; margin-top: 1px; }
 .gcsp .gcsp-status.is-ok { color: var(--gcsp-success); }
 .gcsp .gcsp-status.is-over { color: var(--gcsp-danger); }
-.gcsp .gcsp-card .vm-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-card .vm-facts { grid-template-columns: repeat(auto-fit, minmax(max(140px, 40%), 1fr)); gap: 10px 16px; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-card .vm-fact-value { font-size: 14px; }
 .gcsp .gcsp-card-foot { display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; padding: 0 20px 20px; }
 .gcsp .gcsp-pick { width: 100%; }

@@ -1,6 +1,6 @@
 .gcsp .gcsp-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .gcsp .gcsp-field-label { color: var(--gcsp-text); font-weight: var(--gcsp-font-weight); }
-.gcsp .gcsp-field input, .gcsp .gcsp-field select, .gcsp .gcsp-field textarea { box-sizing: border-box; width: 100%; min-width: 0; max-width: 100%; min-height: 44px; padding: 10px 12px; font: inherit; color: var(--gcsp-text); background: var(--gcsp-surface); border: 1px solid var(--gcsp-text-muted); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-field input, .gcsp .gcsp-field select, .gcsp .gcsp-field textarea { box-sizing: border-box; text-overflow: ellipsis; width: 100%; min-width: 0; max-width: 100%; min-height: 44px; padding: 10px 12px; font: inherit; color: var(--gcsp-text); background: var(--gcsp-surface); border: 1px solid var(--gcsp-text-muted); border-radius: var(--gcsp-radius); }
 .gcsp .gcsp-field textarea { min-height: 100px; resize: vertical; }
 .gcsp .gcsp-field [aria-invalid="true"] { border-color: var(--gcsp-danger); border-width: 2px; }
 .gcsp .gcsp-field input:focus-visible, .gcsp .gcsp-field select:focus-visible, .gcsp .gcsp-field textarea:focus-visible, .gcsp .gcsp-error-summary :focus { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }
