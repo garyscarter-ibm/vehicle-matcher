@@ -8,3 +8,4 @@ export { CHOICE_TRAINING_KEYS, loadChoiceTrainingPolicy, readActiveChoiceModel }
 export { projectLearningChoices } from './dataset.js';
 export { trainChoiceDataset } from './pipeline.js';
 export { normalizeBaselineWeights, expressedDemandBaseline, prepareActualChoiceBaselines } from './baselines.js';
+export { CHOICE_ADOPTION_SETS, adoptChoiceTrainingPolicy } from './adoption.js';

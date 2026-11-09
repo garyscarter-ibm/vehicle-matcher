@@ -96,10 +96,18 @@ export async function prepareActualChoiceBaselines({ training, settings, policyS
         const schemeId = example.entitlement.schemeId.value; const gradeId = example.entitlement.gradeId.value;
         const matches = contexts.value.filter((c) => c.schemeId === schemeId && c.gradeIds.includes(gradeId));
         requireChoice(matches.length === 1, 'baseline.employee-context', 'baseline-unavailable');
+        const entitlementSlotId = `offline-slot-${employeeId}`; const companyId = matches[0].companyId;
+        // Greg's demand read needs a bound slot and a source-stamped manual record; no driver, so no eligibility claim.
+        const source = { mode: 'synthetic', sourceRef: 'offline-choice-training', schemaVersion: '1', sourceVersion: 'offline-v1',
+          effectiveFrom: read.asOf, observedAt: read.asOf };
+        const manualContext = { recordSetId: `offline:${employeeId}`, source, drivers: [],
+          account: { employeeId, companyId, schemeId, gradeId } };
         const employee = await tx.insert('employees', { runId: context.runId, employeeId, principalId: employeeId,
-          schemeId, gradeId, companyId: matches[0].companyId, roles: ['employee'] });
+          schemeId, gradeId, companyId, entitlementSlotId, roles: ['employee'], contract: { manualContext } });
         if (employee.status !== 'ok') return employee;
-        const brief = await tx.insert('briefs', { ...structuredClone(example.brief), runId: context.runId, employeeId,
+        const slot = await tx.insert('entitlement_slots', { runId: context.runId, employeeId, entitlementSlotId, capacity: 1, employeeCapacity: 1 });
+        if (slot.status !== 'ok') return slot;
+        const brief = await tx.insert('briefs', { ...structuredClone(example.brief), runId: context.runId, employeeId, entitlementSlotId,
           schemaVersion: 1, status: 'confirmed', confirmedBy: employeeId });
         if (brief.status !== 'ok') return brief;
       }

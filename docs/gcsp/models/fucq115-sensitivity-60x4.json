@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "label": "Offline sensitivity only: not a committed runtime default",
+  "changes": [
+    { "key": "learning.cohortSize", "value": 60 },
+    { "key": "learning.cycles", "value": 4 }
+  ],
+  "status": "assumed",
+  "basis": "Matches the reviewed four-cycle split and the earlier 80x4 evidence scale; offline sensitivity only. 60 x 4 = 240 keeps learning.maximumGeneratedRecords.",
+  "source": "docs/gcsp/models/fucq115-sensitivity-60x4.json",
+  "sourceDate": "2026-11-09"
+}
