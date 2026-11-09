@@ -327,3 +327,26 @@ test('continuation refuses partial retained bootstrap and honours a fresh lifeti
   assert.equal(result.reason, 'deadline'); assert.equal(result.accepted.length, 1);
   assert.equal(result.allocationCounts.fresh.httpAttempts, 1); assert.equal(f.calls.length, 6);
 });
+
+test('FUCQ-151: tampering after a cached binding validation is still refused without new traffic', async (context) => {
+  const mutate = ({ plan }) => { plan.candidates = ['FKSFU', 'FKSJX'].flatMap((fabric) => ['P0300', 'P0475'].map((paint) => [fabric, paint]))
+    .map((codes, i) => ({ candidateId: `candidate-${i}`, request: { includedElements: [...codes, 'S0337', 'S03G9', 'S043L'].sort(), mandatoryElements: ['S0337'] } })); };
+  const { input, calls } = await setup(context, { count: 4, mutate }); const collector = await createFleetCollector(input);
+  const result = await collector.run(); assert.equal(result.accepted.length, 4); assert.equal(calls.length, 8);
+  const pristine = await readFile(input.statePath, 'utf8');
+  const again = await collector.run(); assert.deepEqual(again.accepted, result.accepted); assert.equal(collector.catalogueRegistrations.length, 4);
+  for (const tamper of [
+    (content) => { content.records[2].resolvedOptions.pop(); },
+    (content) => { content.accepted[3].resolvedOptions.pop(); },
+    (content) => { content.sourceCaptures[1].solver.document.report.tampered = true; },
+    (content) => { const solver = content.sourceCaptures[0].solver; solver.document.report.tampered = true;
+      solver.sha256 = sha(JSON.stringify(solver.document) + '\n'); },
+    (content) => { content.batchEvidence.options.document.report.tampered = true; },
+  ]) {
+    const envelope = JSON.parse(pristine); tamper(envelope.content); envelope.contentDigest = inputDigest(envelope.content);
+    await writeFile(input.statePath, JSON.stringify(envelope));
+    await assert.rejects(collector.run(), { code: /^(source-selection-mismatch|invalid-selection-binding)$/ });
+    assert.equal(calls.length, 8); assert.equal(collector.catalogueRegistrations.length, 4);
+  }
+  await writeFile(input.statePath, pristine); assert.deepEqual((await collector.run()).accepted, result.accepted); assert.equal(calls.length, 8);
+});
