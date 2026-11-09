@@ -25,6 +25,7 @@ export function mountManualJourney(root, options = {}) {
     const focus = () => {
       if (disposed || ticket !== generation) return;
       const doc = root.ownerDocument; const active = doc.activeElement; const idle = !active || active === doc.body;
+      if (active?.closest?.('.gcsp-presenter-controls')) return; // Focus already in the presenter strip stays there.
       const heading = root.querySelector('main h1, main h2');
       const target = heading ?? root.querySelector('main [role="status"]');
       if (!target || target === focused) return;
