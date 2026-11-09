@@ -204,7 +204,7 @@ test('current105 reload opens actual102 persisted decline in employee-only107 an
       schedule: () => 1, cancel: () => {} });
     mounted = mountOffer(root, { ...reloaded, followup: { loadAccount: account.loadAccount,
       mount(body, input) {
-        assert.deepEqual(Object.keys(input).sort(), ['decisionId', 'signal']); assert.equal(input.decisionId, declined.followup.decisionId);
+        assert.deepEqual(Object.keys(input).sort(), ['announce', 'decisionId', 'signal']); assert.equal(input.decisionId, declined.followup.decisionId);
         signals.push(input.signal); mountCount += 1;
         const cleanup = mountFollowupBody(body, { ...input, hostRefresh: true, fetchImpl: employeeFetch, createCommandId: () => 'one-confirmed-change' });
         return () => { teardownCount += 1; cleanup(); };

@@ -61,13 +61,17 @@ function sources(comparison) {
 /** Shared controls remain mounted while an answer changes. projectOffer is FUCQ-105's public projector.
  * hostRefresh: the embedding page already shows "Check current state", so this view omits its own.
  * headingLevel: 1 on the standalone page; an embedding page that owns the h1 passes 2.
- * activityHref: when given, a saved change offers a primary link to buddy activity. */
-export function createFollowupView(root, { choose, confirm, refresh, projectOffer, openOffer, hostRefresh = false, headingLevel = 1, activityHref } = {}) {
+ * activityHref: when given, a saved change offers a primary link to buddy activity.
+ * announce: when given, the host owns the one live region, so this view makes none and speaks through it. */
+export function createFollowupView(root, { choose, confirm, refresh, projectOffer, openOffer, hostRefresh = false, headingLevel = 1, activityHref, announce } = {}) {
   const prefix = `gcsp-followup-${++sequence}`;
   const page = el('div', 'vm gcsp-followup'); const content = el('div', 'gcsp-followup-content');
-  const live = el('p', 'gcsp-followup-live'); live.setAttribute('role', 'status');
-  live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true');
-  page.append(content, live); root.replaceChildren(page);
+  const hosted = typeof announce === 'function'; let live;
+  if (!hosted) {
+    live = el('p', 'gcsp-followup-live'); live.setAttribute('role', 'status');
+    live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true');
+  }
+  page.append(...[content, live].filter(Boolean)); root.replaceChildren(page);
   let structure; let control; let field; let error; let reason; let confirmButton; let lastAnnouncement = ''; let saving = false;
   const action = (name, text, onClick, variant = 'ghost') => {
     const node = button({ label: text, onClick, variant }); node.dataset.followupAction = name; return node;
@@ -100,7 +104,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
         input.disabled = disabled;
       }, setError: wrapped.setError };
     }
-    error = el('p', 'gcsp-note'); error.id = `${prefix}-error`; error.setAttribute('role', 'alert');
+    error = el('p', 'gcsp-note'); error.id = `${prefix}-error`;
     reason = el('p', 'gcsp-note', 'Choose a different answer, then confirm.'); reason.id = `${prefix}-confirm-reason`;
     field.setAttribute('aria-describedby', error.id);
     confirmButton = button({ label: 'Confirm this change', disabled: true, describedBy: reason.id,
@@ -121,7 +125,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
       const section = el('section', 'gcsp-followup-car'); section.append(el(`h${headingLevel + 1}`, null, name));
       const card = structuredClone(presented.value.card); card.members[0].actions = [];
       section.append(matchCard(null, { view: card, big: true, showScore: false }));
-      section.querySelectorAll('[aria-live]').forEach((node) => node.removeAttribute('aria-live')); columns.append(section);
+      columns.append(section);
     }
     content.append(columns, el('p', 'gcsp-note', 'Each quote keeps its original brief and policy. No new match score is calculated.'));
     content.append(dataTable({ caption: `Your confirmed brief, version ${comparison.currentBriefVersion}`,
@@ -156,7 +160,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
         : `None of the ${checked} cars checked fit your updated brief.`;
       const shown = key === 'no-match' && checked > 0 ? `${head} ${message}`
         : model.savedChange && key === 'unavailable' ? 'Your change is saved. The next-offer status could not be checked.' : message;
-      content.append(statusScreen({ title, message: shown, actions }));
+      content.append(statusScreen({ title, message: shown, actions, role: null }));
     }
     if (model.savedChange) {
       const note = el('p', 'gcsp-note', `Your change is saved in brief version ${model.savedChange.briefVersion}.`);
@@ -186,7 +190,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
     const announcement = model.state === 'question' ? model.busy ? 'Saving your change.' : model.error || model.question.prompt
       : model.state === 'ready' ? content.querySelector(`h${headingLevel}`)?.textContent || 'Next-offer status unavailable'
         : (messages[model.state] || messages.unavailable)[0];
-    if (announcement !== lastAnnouncement) { live.textContent = announcement; lastAnnouncement = announcement; }
+    if (announcement !== lastAnnouncement) { lastAnnouncement = announcement; if (hosted) announce(announcement); else live.textContent = announcement; }
   }
   return { update, destroy() { page.remove(); } };
 }

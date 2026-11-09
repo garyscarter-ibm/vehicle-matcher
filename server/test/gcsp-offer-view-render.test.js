@@ -114,7 +114,7 @@ test('the live announcement is visually hidden with the kit utility, so the titl
   const live = root.querySelector('[data-offer-announcement]');
   view.update({ ...data, state: 'expired' });
   assert.equal(live.textContent, 'Offer expired');
-  assert.deepEqual([live.className, live.getAttribute('role'), live.getAttribute('aria-live')], ['gcsp-vh', 'status', 'polite']);
+  assert.deepEqual([live.className, live.getAttribute('role'), live.getAttribute('aria-live')], ['gcsp-vh', 'status', null]);
   assert.equal(root.querySelector('h1').textContent, 'Offer expired');
   const css = await readFile(new URL('../../blocks/gcsp/shell/gcsp-shell.css', import.meta.url), 'utf8');
   assert.match(css, /\.gcsp-vh \{[^}]*position: absolute;[^}]*clip-path: inset\(50%\);/);
@@ -356,7 +356,7 @@ test('FUCQ-300: a refused handoff states the outcome, links Renewal help and mou
   assert.doesNotMatch(root.textContent, /View order progress|Offer accepted|not accepted for ordering/);
   assert.equal(root.querySelector('a[href="/gcsp-order-progress-live.html"]'), null);
   assert.equal(root.querySelector('.gcsp-stage-heading').textContent, 'Your selection'); assert.equal(root.querySelectorAll('.vm-card').length, 1);
-  assert.equal(root.querySelector('[data-offer-announcement]').textContent, 'Your selection was not sent to ordering');
+  assert.equal(root.querySelector('[data-offer-announcement]').textContent, '', 'the heading carries the outcome when the offer lands');
   assert.doesNotMatch(root.textContent, /\u2014/);
   const bare = document.createElement('div'); document.body.append(bare);
   createOfferView(bare, {}).update(refusedModel());

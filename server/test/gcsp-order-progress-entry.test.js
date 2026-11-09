@@ -68,13 +68,15 @@ test('a command keeps keyboard focus on a surviving control, otherwise on the me
   server.outcome = () => ({ status: 'unsupported', code: 'live-appointments-unsupported', reason: 'Live handover times are not connected in this demonstration.' });
   const slot = node.querySelector('.gcsp-order-slots button'); const label = slot.textContent; slot.focus(); slot.click();
   await settle(node, (r) => r.querySelector('.gcsp-order-message.is-error'));
-  assert.equal(node.querySelector('.gcsp-order-message').getAttribute('role'), 'alert');
+  assert.equal(node.querySelector('.gcsp-order-message').hasAttribute('role'), false);
+  assert.match(node.querySelector('.gcsp-vh[role="status"]').textContent, /Not done\. Live handover times are not connected/);
   assert.match(text(node), /Not done\. Live handover times are not connected/);
   assert.equal(document.activeElement.textContent, label); assert.equal(document.activeElement.disabled, false);
   server.outcome = () => { server.name = 'appointment-requested'; return { status: 'ok', value: {} }; };
   document.activeElement.click(); await settle(node, (r) => r.textContent.includes('Handover time requested.'));
   assert.equal(node.querySelector('.gcsp-order-slots'), null); assert.match(text(node), /Handover time requested\./);
-  assert.equal(document.activeElement, node.querySelector('.gcsp-order-message')); assert.equal(node.querySelector('.gcsp-order-message').getAttribute('role'), 'status');
+  assert.equal(document.activeElement, node.querySelector('.gcsp-order-message')); assert.equal(node.querySelector('.gcsp-order-message').hasAttribute('role'), false);
+  assert.equal(node.querySelector('.gcsp-vh[role="status"]').textContent, 'Handover time requested.');
 });
 
 test('FUCQ-254: a keyboard rebook after a missed handover keeps the update and focus in the Handover section', async () => {
@@ -86,7 +88,8 @@ test('FUCQ-254: a keyboard rebook after a missed handover keeps the update and f
   server.name = 'appointment-rebooked'; gate.resolve({ status: 'ok', value: {} });
   await settle(node, (r) => r.textContent.includes('Handover time requested.'));
   const live = node.querySelector('.gcsp-order-message');
-  assert.equal(live.getAttribute('role'), 'status'); assert.equal(live.textContent, 'Handover time requested.');
+  assert.equal(live.hasAttribute('role'), false); assert.equal(live.textContent, 'Handover time requested.');
+  assert.equal(node.querySelector('.gcsp-vh[role="status"]').textContent, 'Handover time requested.');
   assert.equal(document.activeElement, live); assert.ok(live.closest('.gcsp-order-handover'), 'confirmation in Handover');
 });
 

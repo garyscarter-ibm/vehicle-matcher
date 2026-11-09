@@ -28,7 +28,7 @@ test('single-slider update keeps the focused node, projects state and disability
   control.update({ value: null, valueState: 'unknown', disabled: true });
   assert.equal(input.value, '85', 'unknown projection does not choose a default position');
   assert.equal(input.disabled, true);
-  assert.equal(root.querySelector('output').textContent, 'Not supplied');
+  assert.equal(root.querySelector('.vm-slider-value').textContent, 'Not supplied');
   assert.deepEqual(edits, []);
   control.update({ value: 0, valueState: 'confirmed', disabled: false });
   assert.equal(input.getAttribute('aria-valuetext'), '0');

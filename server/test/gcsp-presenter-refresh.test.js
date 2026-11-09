@@ -62,13 +62,13 @@ test('order progress: one presenter action re-reads once, keeps the focused butt
   const stop = orders.mountOrderProgress(node, { adapter }); cleanups.push(stop);
   const find = () => [...node.querySelectorAll('button')].find((b) => b.textContent === 'Acknowledge the agreement');
   await settle(node, () => find()); assert.equal(reads, 1);
-  const button = find(); button.focus(); const live = node.querySelector('.gcsp-vh[aria-live="polite"][aria-atomic="true"]');
+  const button = find(); button.focus(); const live = node.querySelector('.gcsp-vh[role="status"][aria-atomic="true"]');
   assert.ok(live); assert.equal(live.textContent, ''); const watch = loadingWatch(node, orderCopy.loading);
   name = 'documents-waiting-for-you'; act(node);
   await settle(node, () => reads === 2 && live.textContent !== ''); await pause();
   assert.equal(reads, 2); assert.deepEqual(watch.seen, []); assert.equal(live.textContent, 'Order progress updated.');
   assert.ok(find()); assert.equal(document.activeElement, find()); assert.equal(node.querySelector('.gcsp-order-message'), null);
-  assert.equal(node.querySelectorAll('.gcsp-vh[aria-live]').length, 1);
+  assert.equal(node.querySelectorAll('.gcsp-vh[role="status"]').length, 1);
   live.textContent = ''; act(node); await settle(node, () => reads === 3); await pause();
   assert.equal(live.textContent, ''); assert.equal(document.activeElement, find());
   watch.stop(); await stop.sync(); assert.equal(reads, 4); stop(); act(node); await pause(); assert.equal(reads, 4);
@@ -77,7 +77,8 @@ test('order progress: one presenter action re-reads once, keeps the focused butt
 test('account: one presenter action re-reads once, keeps the shell and order card, focus and announces only a change', async () => {
   const states = orderProgressFixtures().states['appointment-requested']; let uuid = states.stages.value.orderUuid;
   const n = { account: 0, draft: 0, list: 0, stages: 0 }; let asOf = '2026-11-05T09:00:00.000Z'; let accountOk = true;
-  const read = (field) => async () => { if (field === 'stages') n.stages += 1; return structuredClone(states[field]); };
+  const first = uuid;
+  const read = (field) => async () => { if (field === 'stages') n.stages += 1; return JSON.parse(JSON.stringify(states[field]).replaceAll(first, uuid)); };
   const orderAdapter = { listOrders: async () => { n.list += 1; return { status: 'ok', value: { orders: [{ orderUuid: uuid, source: { receivedAt: '2026-11-05T09:00:00.000Z' } }] } }; },
     readStages: read('stages'), readDocuments: read('documents'), readAppointment: read('appointment'), readReturnPlan: read('returnPlan') };
   const adapter = { readAccount: async () => { n.account += 1; if (!accountOk) return { status: 'unavailable' }; const out = structuredClone(accountFixture('ready')); out.value.asOf = asOf; return out; },
@@ -88,7 +89,7 @@ test('account: one presenter action re-reads once, keeps the shell and order car
   await settle(node, () => refreshButton() && node.querySelector('.gcsp-account-order .gcsp-order-progress')); await pause();
   assert.deepEqual(n, { account: 1, draft: 1, list: 1, stages: 1 });
   const shell = node.firstElementChild; const main = node.querySelector('main'); const area = node.querySelector('.gcsp-account-order'); const card = area.firstElementChild;
-  const live = [...node.children].find((child) => child.matches('.gcsp-vh[aria-live="polite"][aria-atomic="true"]')); assert.ok(live); assert.equal(live.textContent, '');
+  const live = [...node.children].find((child) => child.matches('.gcsp-vh[role="status"][aria-atomic="true"]')); assert.ok(live); assert.equal(live.textContent, '');
   const old = refreshButton(); old.focus(); const watch = loadingWatch(node, 'Loading your account and cars.');
   asOf = '2026-11-05T09:30:00.000Z'; act(node);
   await settle(node, () => live.textContent !== ''); await pause();

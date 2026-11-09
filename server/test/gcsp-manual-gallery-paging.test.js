@@ -46,7 +46,7 @@ function change(root, name, value) {
 test('the gallery shows one page of cars with a count line and a real Show more cars button', async (t) => {
   const root = await mount(t, 20);
   assert.equal(MANUAL_GALLERY_PAGE_SIZE, 6); assert.equal(cards(root).length, 6);
-  assert.equal(countLine(root), 'Showing 6 of 20 cars'); assert.equal(root.querySelector('.gcsp-show-more-count').getAttribute('role'), 'status');
+  assert.equal(countLine(root), 'Showing 6 of 20 cars'); assert.equal(root.querySelector('.gcsp-show-more-count').getAttribute('role'), null);
   const more = moreButton(root); assert.equal(more.tagName, 'BUTTON'); assert.equal(more.textContent, 'Show more cars'); assert.equal(more.hidden, false);
     assert.match(root.textContent, /20 released cars · 20 eligible · 20 matching · 20 eligible matching/);
   assert.deepEqual(cards(root).map((card) => card.getAttribute('aria-label')), Array.from({ length: 6 }, (_, i) => `BMW Test 0${i}`));

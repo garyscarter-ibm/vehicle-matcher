@@ -635,7 +635,6 @@ function explicitViewCard(view, { compact, showScore, scoreLabel, factsClass, on
   const terms = el('div', 'vm-card-terms');
   const facts = el('div', 'vm-card-facts');
   const decision = el('div', 'vm-card-decision');
-  decision.setAttribute('aria-live', 'polite');
   const actions = el('div', 'vm-card-actions');
   const picker = el('div', 'vm-pick');
   picker.setAttribute('role', 'group');

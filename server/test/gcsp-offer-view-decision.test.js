@@ -94,11 +94,11 @@ test('GC-042: opening Decline focuses the reason select once reasons load, and a
   t.after(() => view.destroy()); f.controller.subscribe(view.update); await f.controller.refresh();
   root.querySelector('[data-offer-action="decline"]').focus(); const opening = f.controller.decision('decline');
   const select = root.querySelector('select'); assert.equal(select.disabled, true);
-  assert.equal(document.activeElement.getAttribute('role'), 'status'); assert.match(document.activeElement.textContent, /Loading reasons/);
+  assert.equal(document.activeElement.tabIndex, -1); assert.match(document.activeElement.textContent, /Loading reasons/);
   waits.shift().resolve(); await opening; await turn();
   assert.equal(select.disabled, false); assert.equal(document.activeElement, select);
   const poll = f.controller.refresh(); await turn();
-  assert.notEqual(document.activeElement.dataset.offerAction, 'decline-cancel'); assert.equal(document.activeElement.getAttribute('role'), 'status');
+  assert.notEqual(document.activeElement.dataset.offerAction, 'decline-cancel'); assert.equal(document.activeElement.tabIndex, -1);
   waits.shift().resolve(); await poll; await turn();
   assert.equal(document.activeElement, select); assert.equal(select.disabled, false);
 });

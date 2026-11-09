@@ -65,10 +65,10 @@ export function button({ label, variant = 'primary', onClick, href, disabled = f
   return node;
 }
 
-/** Error, empty or no-match screen shell: kicker, title (h2 unless level is given), message and action nodes. */
+/** Error, empty or no-match screen shell: kicker, title (h2 unless level is given), message and action nodes. A null `role` leaves it plain content. */
 export function statusScreen({ kicker, title, message, actions = [], role = 'status', level = 2 } = {}) {
   const screen = el('div', 'vm-screen vm-status');
-  screen.setAttribute('role', role);
+  if (role) screen.setAttribute('role', role);
   if (kicker) screen.append(el('p', 'vm-kicker', kicker));
   screen.append(el(`h${level}`, 'vm-title', title));
   if (message) screen.append(el('p', 'vm-lede', message));

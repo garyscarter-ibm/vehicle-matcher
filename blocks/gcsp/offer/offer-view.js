@@ -5,6 +5,7 @@ import { stageList } from '../kit/stage-list.js';
 import { dataTable } from '../kit/data-table.js';
 import { orderIdentityRows } from '../kit/order-identity.js';
 import { syntheticNote } from '../kit/synthetic-note.js';
+import { viewStatus } from '../kit/view-status.js';
 import { ACCESS_LAPSED_TITLE, RUN_RESTARTED_TITLE, accessLapsedScreen, runRestartedScreen } from '../kit/run-restarted.js';
 import { followupHandle } from './followup-entry.js';
 
@@ -91,8 +92,7 @@ function handoffGroup(model, id, tick) {
   section.setAttribute('aria-label', 'Before you accept');
   section.append(el('h2', 'gcsp-h2', 'Before you accept'));
   if (handoff.blocker) {
-    const reason = el('p', 'gcsp-note', `${blockerText[handoff.blocker]} Contact scheme support.`);
-    reason.setAttribute('role', 'status'); section.append(reason); return section;
+    section.append(el('p', 'gcsp-note', `${blockerText[handoff.blocker]} Contact scheme support.`)); return section;
   }
   const rows = [{ label: 'Contact phone', value: handoff.contact.phone }, { label: 'Contact email', value: handoff.contact.email }];
   if (handoff.returnCar) {
@@ -124,12 +124,10 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
   // Once ordering holds the order its tracker is the one source of progress, so selection stages give way.
   const hostsOrderFor = (model) => model.state === 'accepted' && !isRefused(model) && typeof model.orderUuid === 'string' && typeof mountOrder === 'function' && model.card?.members?.length === 1;
   const content = el('div', 'gcsp-offer-content');
-  // FUCQ-234: screen-reader only; the heading already shows the state.
-  const announcement = el('p', 'gcsp-vh'); announcement.setAttribute('role', 'status');
-  announcement.dataset.offerAnnouncement = '';
-  announcement.setAttribute('aria-live', 'polite'); announcement.setAttribute('aria-atomic', 'true');
-  page.append(content, syntheticNote(), announcement); root.replaceChildren(page);
-  let lastAnnouncement = ''; let previousState; let previousIdentity; let structure;
+  // FUCQ-234: screen-reader only, and silent when the offer first lands because the heading already shows the state.
+  const status = viewStatus(); status.root.dataset.offerAnnouncement = '';
+  page.append(content, syntheticNote(), status.root); root.replaceChildren(page);
+  let previousState; let previousIdentity; let structure;
   let messageNode; let clockNode; let asOfNode; let reasonNode;
   let reasonForm; let reasonSelect; let reasonStatus; let reasonField; let reasonSummary;
   let confirmButton; let cancelButton; let reasonsRefresh; let optionsKey; let wasOpen = false; let lastError = '';
@@ -143,11 +141,11 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     try { cleanup?.(); } catch { /* Teardown cannot prevent the offer from updating. */ }
   };
   const refreshCurrent = () => { clearFollowup(); refresh?.(); };
-  const followupUnavailable = () => {
-    const note = el('p', 'gcsp-note', 'Follow-up unavailable. Check the current offer again.');
-    note.setAttribute('role', 'status'); followupRoot.replaceChildren(note);
+  const announce = (text) => status.announce(text);
+  const followupUnavailable = (spoken = true) => {
+    const text = 'Follow-up unavailable. Check the current offer again.';
+    followupRoot.replaceChildren(el('p', 'gcsp-note', text)); if (spoken) announce(text);
   };
-  const announce = (text) => { if (text !== lastAnnouncement) { announcement.textContent = text; lastAnnouncement = text; } };
   function draw(model) {
     const focused = root.ownerDocument.activeElement?.dataset?.offerAction;
     const followupFocused = followupRoot?.contains(root.ownerDocument.activeElement);
@@ -166,7 +164,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     if (refused) {
       const actions = [links?.help && button({ label: 'Contact scheme support', variant: 'primary', href: links.help }),
         links?.cars && button({ label: 'Back to Your cars', variant: 'ghost', href: links.cars })].filter(Boolean);
-      const screen = statusScreen({ title: REFUSED_TITLE, level: 1, message: messageFor(model, hostsOrder, links?.help), actions });
+      const screen = statusScreen({ title: REFUSED_TITLE, level: 1, message: messageFor(model, hostsOrder, links?.help), actions, role: null });
       messageNode = screen.querySelector('.vm-lede'); content.append(screen);
     } else {
       content.append(screenIntro({ title: titleFor(model), level: 1 }));
@@ -199,7 +197,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     if (hostsOrder) {
       const section = el('section', 'gcsp-offer-order'); section.setAttribute('aria-label', 'Your order progress');
       const { display, media } = model.card.members[0];
-      const cleanup = mountOrder(section, { orderUuid: model.orderUuid, car: { name: display?.name, photo: media?.src || undefined } });
+      const cleanup = mountOrder(section, { orderUuid: model.orderUuid, car: { name: display?.name, photo: media?.src || undefined }, announce });
       if (typeof cleanup === 'function') cleanupOrder = cleanup;
       content.append(section);
     }
@@ -215,7 +213,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       }
       content.append(reason, actions);
       reasonForm = el('section', 'gcsp-offer-content'); reasonForm.setAttribute('aria-label', 'Decline this offer');
-      reasonStatus = el('p', 'gcsp-note'); reasonStatus.setAttribute('role', 'status'); reasonStatus.tabIndex = -1;
+      reasonStatus = el('p', 'gcsp-note'); reasonStatus.tabIndex = -1;
       reasonSelect = el('select'); reasonSelect.required = true; reasonSelect.dataset.offerReason = '';
       reasonSelect.addEventListener('change', () => selectReason?.(reasonSelect.value));
       const fieldId = `${page.id}-decline-reason`;
@@ -259,10 +257,11 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     if (key === followupKey) return;
     const focused = followupRoot.contains(root.ownerDocument.activeElement);
     clearFollowup(); followupKey = key;
-    followupUnavailable();
-    if (handle && typeof mountFollowup === 'function') {
+    const mountable = handle && typeof mountFollowup === 'function';
+    followupUnavailable(!mountable);
+    if (mountable) {
       try {
-        const cleanup = mountFollowup(followupRoot, handle);
+        const cleanup = mountFollowup(followupRoot, { ...handle, announce });
         if (typeof cleanup === 'function') cleanupFollowup = cleanup;
         else followupUnavailable();
       } catch { followupUnavailable(); }
@@ -327,7 +326,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     const key = `${titleFor(model)}:${model.reference?.offerId || ''}`;
     if (model.state === 'pending' && model.checkingExpiry) announce('The deadline has been reached. Checking the current offer state.');
     else if (model.state === 'pending' && model.seconds !== null && model.seconds <= 300) announce('Less than five minutes remain on this offer.');
-    else if (model.state !== previousState || key !== previousIdentity) announce(titleFor(model));
+    else if (previousState !== undefined && previousState !== 'loading' && (model.state !== previousState || key !== previousIdentity)) announce(titleFor(model));
     previousState = model.state; previousIdentity = key;
   }
   return { update, destroy() { clearFollowup(); clearOrder(); page.remove(); } };

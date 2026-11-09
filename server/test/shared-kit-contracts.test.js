@@ -237,12 +237,12 @@ test('typed control units and unknown/unconfirmed/zero states stay distinct with
   renderRangeSlider(host, { id: 'preference', min: 0, max: 100, step: 1, default: 50 }, null, {
     single: true, value: null, disabled: true, onValueChange: () => { calls += 1; },
   });
-  assert.equal(host.querySelector('output').textContent, 'Not supplied');
+  assert.equal(host.querySelector('.vm-slider-value').textContent, 'Not supplied');
   const worded = document.createElement('div');
   const handle = renderRangeSlider(worded, { id: 'p', min: 0, max: 100, step: 1 }, null, { single: true, value: null, unknownText: 'Not set', onValueChange: () => {} });
-  assert.equal(worded.querySelector('output').textContent, 'Not set'); assert.equal(worded.querySelector('input').getAttribute('aria-valuetext'), 'Not set');
+  assert.equal(worded.querySelector('.vm-slider-value').textContent, 'Not set'); assert.equal(worded.querySelector('input').getAttribute('aria-valuetext'), 'Not set');
   handle.update({ value: 40, valueState: 'confirmed' }); handle.update({ value: null, valueState: 'unknown' });
-  assert.equal(worded.querySelector('output').textContent, 'Not set');
+  assert.equal(worded.querySelector('.vm-slider-value').textContent, 'Not set');
   const input = host.querySelector('input'); assert.equal(input.disabled, true);
   input.dispatchEvent(new window.Event('input')); assert.equal(calls, 0);
   for (const valueState of ['unknown', 'unconfirmed']) {
@@ -252,8 +252,8 @@ test('typed control units and unknown/unconfirmed/zero states stay distinct with
     });
     assert.equal(control.querySelector('.vm-slider-min').textContent, '0%');
     assert.equal(control.querySelector('.vm-slider-max').textContent, '100%');
-    assert.equal(control.querySelector('output').textContent, valueState === 'unknown' ? 'Not supplied' : 'Not confirmed (50%)');
-    assert.equal(control.querySelector('input').getAttribute('aria-valuetext'), control.querySelector('output').textContent);
+    assert.equal(control.querySelector('.vm-slider-value').textContent, valueState === 'unknown' ? 'Not supplied' : 'Not confirmed (50%)');
+    assert.equal(control.querySelector('input').getAttribute('aria-valuetext'), control.querySelector('.vm-slider-value').textContent);
   }
 });
 

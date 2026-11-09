@@ -9,6 +9,7 @@ import { tickSummary, stepLine, missingStagesLine, findOutcome } from './tick-co
 
 let sequence = 0;
 const ACTION_KEY = 'gcsp:presenter-action';
+const QUIET = new Set(['Presenter controls ready', 'Action recorded', 'Principal confirmed']);
 const RESET_KEY = 'gcsp:presenter-reset-done'; // One-shot note so the remounted strip can announce a reset.
 // Only sentences are shown: objects and internal codes (kebab-case ids) never reach the screen.
 const explain = (value) => { const text = typeof value === 'string' ? value.trim() : ''; return /^[a-z0-9]+(-[a-z0-9]+)+$/.test(text) ? '' : text.length > 240 ? `${text.slice(0, 240)} ... (truncated)` : text; };
@@ -48,7 +49,7 @@ function releasedCarCount(state) {
 
 // All controls retain their DOM identity while readback and results update.
 export function mountPresenterControls(host, { adapter = createPresenterHttpAdapter(),
-  commandId = () => globalThis.crypto.randomUUID(), navigate = (url) => { const link = el('a'); link.href = url; link.click(); }, reload } = {}) {
+  commandId = () => globalThis.crypto.randomUUID(), navigate = (url) => { const link = el('a'); link.href = url; link.click(); }, reload, clearAfter = 5000 } = {}) {
   const abort = new AbortController();
   const options = { signal: abort.signal };
   let disposed = false; let busy = false; let authorized = false; let state; let context; let catalogue; let faults = null; let startStopped = false;
@@ -60,6 +61,14 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   const results = el('div', 'gcsp-presenter-results');
   const message = el('p', 'gcsp-note', 'Loading presenter controls'); message.setAttribute('role', 'status');
   const readMessage = el('p', 'gcsp-note'); readMessage.setAttribute('role', 'status');
+  // Success text clears itself so it never lingers on later pages; failures and uncertainty stay until replaced.
+  let fadeTimer = null;
+  const fade = () => {
+    clearTimeout(fadeTimer); fadeTimer = null;
+    const text = message.textContent;
+    if (disposed || !QUIET.has(text)) return;
+    fadeTimer = setTimeout(() => { fadeTimer = null; if (!disposed && message.textContent === text) message.textContent = ''; }, clearAfter);
+  };
   const notice = runRestartedNotice({ reload }); notice.root.hidden = true;
   const actions = el('div', 'gcsp-presenter-actions');
   const controls = [];
@@ -257,7 +266,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
         && text(row.mode) && Array.isArray(row.modes) && row.modes.length > 0 && row.modes.every(text)) : null;
       context = acting.status === 'ok' ? acting.value : null; catalogue = scenarios.status === 'ok' ? scenarios.value : scenarios;
       readMessage.textContent = acting.status === 'ok' ? '' : `Acting context unavailable: ${why(acting)}`;
-      if (!original) message.textContent = 'Presenter controls ready';
+      if (!original) { message.textContent = 'Presenter controls ready'; fade(); }
       announceReset();
       if (acting.status === 'ok') return { controls: read.value, context: acting.value };
     } catch { if (!disposed && authorized) readMessage.textContent = 'Backend unavailable'; }
@@ -353,7 +362,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
         if (isRunRestarted(acting)) { enterRestarted(); return; }
         context = acting.status === 'ok' ? acting.value : null;
         if (context?.principalId === command.payload.principalId) {
-          uncertain = false; message.textContent = 'Principal confirmed'; navigate(workspace());
+          uncertain = false; message.textContent = 'Principal confirmed'; fade(); navigate(workspace());
         } else {
           uncertain = true; message.textContent = `Switch uncertain or refused: ${why(reply)}. Selected principal is not confirmed. Retry original or deliberately issue again.`;
         }
@@ -375,7 +384,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       if (deferRestart) { enterRestarted(); return; }
       if (!uncertain) original = null;
     } catch { if (!disposed) { uncertain = true; message.textContent = 'Backend unavailable. Retry the original action.'; } }
-    finally { busy = false; update(); }
+    finally { busy = false; update(); fade(); }
   }
   const onChange = () => update();
   target.input.addEventListener('input', onChange);
@@ -386,7 +395,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   };
   root.addEventListener('keydown', escape);
   refreshState();
-  return { root, refresh: refreshState, destroy() { disposed = true; abort.abort(); root.removeEventListener('keydown', escape);
+  return { root, refresh: refreshState, destroy() { disposed = true; clearTimeout(fadeTimer); abort.abort(); root.removeEventListener('keydown', escape);
     target.input.removeEventListener('input', onChange); root.remove(); } };
 }
 

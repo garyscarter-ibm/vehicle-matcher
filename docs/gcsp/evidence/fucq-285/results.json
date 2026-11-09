@@ -1,0 +1,1070 @@
+{
+ "story": "FUCQ-285",
+ "measured": "2026-11-09, offline host (GCSP_OFFLINE=1, memory repository), headless Chrome, walk.mjs over fucq-248/sections.mjs",
+ "counted": "[aria-live]:not([aria-live=off]),[role=status],[role=alert],[role=log],output; view = Paula page body; shell = header account box (FUCQ-284 shell, not changed); presenter = presenter strip",
+ "before": "f0fce2a7",
+ "after": "632ebb6a",
+ "screens": [
+  {
+   "walk": "decision-1280",
+   "screen": "paula-offer-1280 brief",
+   "url": "/gcsp-brief-live.html",
+   "viewBefore": 11,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "output[]:\"80\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "p[statuspolite]:\"4 eligible cars.\""
+   ],
+   "regionsAfter": [
+    "p[statuspolite]:\"4 eligible cars.\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-offer-1280 activity-before-release",
+   "url": "/gcsp-activity-live.html",
+   "viewBefore": 4,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"Active\"",
+    "p[statuspolite]:\"\"",
+    "div[status]:\"No renewal caseHelp is available if you need the s\"",
+    "p[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-offer-1280 activity-found",
+   "url": "/gcsp-activity-live.html",
+   "viewBefore": 4,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"Active\"",
+    "p[statuspolite]:\"\"",
+    "div[status]:\"No renewal caseHelp is available if you need the s\"",
+    "p[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-offer-1280 offer",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[status]:\"\"",
+    "p[statuspolite]:\"Your car offer\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-offer-1280 decline-form",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[status]:\"\"",
+    "p[statuspolite]:\"Your car offer\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-offer-1280 decline-no-reason",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[status]:\"\"",
+    "p[statuspolite]:\"Your car offer\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-offer-1280 decline-reason-body-style",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[status]:\"\"",
+    "p[statuspolite]:\"Your car offer\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-offer-1280 declined",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[alert]:\"\"",
+    "p[statuspolite]:\"Which body style would you prefer?\"",
+    "p[statuspolite]:\"Offer declined\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"Which body style would you prefer?\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-change-1280 saloon-chosen",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[alert]:\"\"",
+    "p[statuspolite]:\"Which body style would you prefer?\"",
+    "p[statuspolite]:\"Offer declined\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"Which body style would you prefer?\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-change-1280 change-saved",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[status]:\"Change savedCheck whether your next offer is ready\"",
+    "p[statuspolite]:\"Change saved\"",
+    "p[statuspolite]:\"Offer declined\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"Change saved\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-change-1280 activity-second-offer",
+   "url": "/gcsp-activity-live.html",
+   "viewBefore": 4,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"Active\"",
+    "p[statuspolite]:\"\"",
+    "div[status]:\"No renewal caseHelp is available if you need the s\"",
+    "p[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-change-1280 second-offer",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[status]:\"\"",
+    "p[statuspolite]:\"Your car offer\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-change-1280 second-declared",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[status]:\"\"",
+    "p[statuspolite]:\"Your car offer\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-change-1280 second-accepted",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[polite]:\"\"",
+    "p[statuspolite]:\"Offer accepted\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"Offer accepted\""
+   ]
+  },
+  {
+   "walk": "decision-1280",
+   "screen": "paula-change-1280 second-accepted-reload",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[polite]:\"\"",
+    "p[statuspolite]:\"Offer accepted\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-offer-375 brief",
+   "url": "/gcsp-brief-live.html",
+   "viewBefore": 11,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "output[]:\"80\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "output[]:\"Not set\"",
+    "p[statuspolite]:\"4 eligible cars.\""
+   ],
+   "regionsAfter": [
+    "p[statuspolite]:\"4 eligible cars.\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-offer-375 activity-before-release",
+   "url": "/gcsp-activity-live.html",
+   "viewBefore": 4,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"Active\"",
+    "p[statuspolite]:\"\"",
+    "div[status]:\"No renewal caseHelp is available if you need the s\"",
+    "p[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-offer-375 activity-found",
+   "url": "/gcsp-activity-live.html",
+   "viewBefore": 4,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"Active\"",
+    "p[statuspolite]:\"\"",
+    "div[status]:\"No renewal caseHelp is available if you need the s\"",
+    "p[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-offer-375 offer",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[status]:\"\"",
+    "p[statuspolite]:\"Your car offer\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-offer-375 decline-form",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[status]:\"\"",
+    "p[statuspolite]:\"Your car offer\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-offer-375 decline-no-reason",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[status]:\"\"",
+    "p[statuspolite]:\"Your car offer\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-offer-375 decline-reason-body-style",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[status]:\"\"",
+    "p[statuspolite]:\"Your car offer\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-offer-375 declined",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[alert]:\"\"",
+    "p[statuspolite]:\"Which body style would you prefer?\"",
+    "p[statuspolite]:\"Offer declined\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"Which body style would you prefer?\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-change-375 saloon-chosen",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[alert]:\"\"",
+    "p[statuspolite]:\"Which body style would you prefer?\"",
+    "p[statuspolite]:\"Offer declined\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"Which body style would you prefer?\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-change-375 change-saved",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[status]:\"Change savedCheck whether your next offer is ready\"",
+    "p[statuspolite]:\"Change saved\"",
+    "p[statuspolite]:\"Offer declined\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"Change saved\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-change-375 activity-second-offer",
+   "url": "/gcsp-activity-live.html",
+   "viewBefore": 4,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"Active\"",
+    "p[statuspolite]:\"\"",
+    "div[status]:\"No renewal caseHelp is available if you need the s\"",
+    "p[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-change-375 second-offer",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[status]:\"\"",
+    "p[statuspolite]:\"Your car offer\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-change-375 second-declared",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[status]:\"\"",
+    "p[statuspolite]:\"Your car offer\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-change-375 second-accepted",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[polite]:\"\"",
+    "p[statuspolite]:\"Offer accepted\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"Offer accepted\""
+   ]
+  },
+  {
+   "walk": "decision-375",
+   "screen": "paula-change-375 second-accepted-reload",
+   "url": "/gcsp/offer",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[polite]:\"EligibleWhy it suits youAvailable by Tuesday 1 Dec\"",
+    "p[polite]:\"\"",
+    "p[statuspolite]:\"Offer accepted\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 account",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 1,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 setup-empty",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"\"",
+    "p[status]:\"\"",
+    "section[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 setup-validation",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"\"",
+    "p[status]:\"\"",
+    "section[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 setup-saved",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"Your choices are saved.\"",
+    "p[status]:\"Availability refreshed. Previous selection and quo\"",
+    "section[polite]:\"Availability refreshed0 eligible cars for your sav\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"Refreshing availability.\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 gallery-before-release",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"0 released cars · 0 eligible · 0 matching · 0 elig\"",
+    "p[status]:\"\"",
+    "div[status]:\"No released cars are visible to you yetRefresh ava\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 gallery-after-release-date-outside",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"0 released cars · 0 eligible · 0 matching · 0 elig\"",
+    "p[status]:\"\"",
+    "div[status]:\"Your saved choices need updatingYour requested col\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 gallery-released",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 9,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"20 released cars · 13 eligible · 20 matching · 13 \"",
+    "p[status]:\"\"",
+    "div[polite]:\"Eligible\"",
+    "div[polite]:\"Eligible\"",
+    "div[polite]:\"Eligible\"",
+    "div[polite]:\"Eligible\"",
+    "div[polite]:\"Eligible\"",
+    "div[polite]:\"Eligible\"",
+    "p[status]:\"Showing 6 of 20 cars\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 review",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 2,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[statuspolite]:\"\"",
+    "div[polite]:\"Eligible\""
+   ],
+   "regionsAfter": [
+    "p[statuspolite]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 account-resume",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 1,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 review-resumed",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 2,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[statuspolite]:\"\"",
+    "div[polite]:\"Eligible\""
+   ],
+   "regionsAfter": [
+    "p[statuspolite]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 summary",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"\"",
+    "p[statuspolite]:\"\"",
+    "div[polite]:\"Eligible\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 summary-declared",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"\"",
+    "p[statuspolite]:\"\"",
+    "div[polite]:\"Eligible\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 outcome",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 2,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"Order received. Awaiting approval. Order reference\"",
+    "div[polite]:\"Eligible\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"Order received. Awaiting approval. Order reference\""
+   ]
+  },
+  {
+   "walk": "manual-1280",
+   "screen": "paula-manual-1280 account-ordered",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[status]:\"Your order is in progressOrder referenceGCSP-00000\"",
+    "p[polite]:\"\"",
+    "p[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 account",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 1,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 setup-empty",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"\"",
+    "p[status]:\"\"",
+    "section[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 setup-validation",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"\"",
+    "p[status]:\"\"",
+    "section[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 setup-saved",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"Your choices are saved.\"",
+    "p[status]:\"Your choices changed. Availability, selection and \"",
+    "section[polite]:\"Refreshing availability.\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"Refreshing availability.\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 gallery-before-release",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"0 released cars · 0 eligible · 0 matching · 0 elig\"",
+    "p[status]:\"\"",
+    "div[status]:\"No released cars are visible to you yetRefresh ava\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 gallery-after-release-date-outside",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"0 released cars · 0 eligible · 0 matching · 0 elig\"",
+    "p[status]:\"\"",
+    "div[status]:\"Your saved choices need updatingYour requested col\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 gallery-released",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 6,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"20 released cars · 13 eligible · 20 matching · 13 \"",
+    "p[status]:\"\"",
+    "div[polite]:\"Eligible\"",
+    "div[polite]:\"Eligible\"",
+    "div[polite]:\"Eligible\"",
+    "p[status]:\"Showing 3 of 20 cars\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 review",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 2,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[statuspolite]:\"\"",
+    "div[polite]:\"Eligible\""
+   ],
+   "regionsAfter": [
+    "p[statuspolite]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 account-resume",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 1,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 review-resumed",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 2,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[statuspolite]:\"\"",
+    "div[polite]:\"Eligible\""
+   ],
+   "regionsAfter": [
+    "p[statuspolite]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 summary",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"\"",
+    "p[statuspolite]:\"\"",
+    "div[polite]:\"Eligible\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 summary-declared",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"\"",
+    "p[statuspolite]:\"\"",
+    "div[polite]:\"Eligible\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 outcome",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 2,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "p[status]:\"Order received. Awaiting approval. Order reference\"",
+    "div[polite]:\"Eligible\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"Order received. Awaiting approval. Order reference\""
+   ]
+  },
+  {
+   "walk": "manual-375",
+   "screen": "paula-manual-375 account-ordered",
+   "url": "/gcsp-presenter.html",
+   "viewBefore": 3,
+   "viewAfter": 1,
+   "shell": 1,
+   "presenterBefore": 3,
+   "presenterAfter": 3,
+   "regionsBefore": [
+    "div[status]:\"Your order is in progressOrder referenceGCSP-00000\"",
+    "p[polite]:\"\"",
+    "p[polite]:\"\""
+   ],
+   "regionsAfter": [
+    "p[status]:\"\""
+   ]
+  }
+ ]
+}

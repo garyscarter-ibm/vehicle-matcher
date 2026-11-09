@@ -7,6 +7,7 @@ import { activityBody } from './activity-body.js';
 import { createActivityController } from './activity-controller.js';
 import { runRestartedScreen } from '../kit/run-restarted.js';
 import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
+import { viewStatus } from '../kit/view-status.js';
 
 export const ACTIVITY_DESTINATION = PORTAL_NAVIGATION.find((item) => item.key === 'activity');
 
@@ -26,35 +27,35 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, s
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
     renderBody(main, { account }) {
       let body; let stopped = false; let restoringFocus = false; let unsubscribeClock;
-      const announcement = el('p', 'gcsp-vh gcsp-activity-announcement'); announcement.setAttribute('aria-live', 'polite'); announcement.setAttribute('aria-atomic', 'true');
+      const announcement = viewStatus({ className: 'gcsp-vh gcsp-activity-announcement' });
       const content = el('div');
       // Help sits outside the repainted body so a repaint never resets an open help form.
       const helpRegion = helpAdapter && account.status === 'ready' ? el('section', 'gcsp-activity-help') : null;
       if (helpRegion) helpRegion.setAttribute('aria-label', 'Renewal help');
-      main.replaceChildren(...[content, helpRegion, announcement].filter(Boolean));
-      const ownedHelp = helpRegion ? mountHelp(helpRegion, { embedded: true, adapter: helpAdapter, headingLevel: 2 }) : null;
+      main.replaceChildren(...[content, helpRegion, announcement.root].filter(Boolean));
+      const ownedHelp = helpRegion ? mountHelp(helpRegion, { embedded: true, adapter: helpAdapter, headingLevel: 2, announce: announcement.announce }) : null;
       stopHelp = ownedHelp;
       const FOCUSABLE = 'button, a[href]';
       const paint = (state) => {
         if (done || stopped) return;
-        const active = root.ownerDocument.activeElement;
+        const active = root.ownerDocument.activeElement; announcement.clear();
         const ownedFocus = body?.contains(active) || restoringFocus && active === main;
         const held = body?.contains(active) && active.closest(FOCUSABLE) ? focusKeyOf(active.closest(FOCUSABLE)) : null;
         body?.destroy?.();
         if (state.phase === 'loading') {
           body = el('div', 'vm gcsp-activity');
-          body.append(screenIntro({ title: 'Buddy activity' }), statusScreen({ title: 'Loading activity' }));
+          body.append(screenIntro({ title: 'Buddy activity' }), statusScreen({ title: 'Loading activity', role: null }));
         } else if (state.phase === 'restarted') {
           body = el('div', 'vm gcsp-activity');
           body.append(screenIntro({ title: 'Buddy activity' }), runRestartedScreen({ reload }));
         } else {
-          body = activityBody({ result: state.result, pending: state.pending, offerDisplay: state.offerDisplay ?? offerDisplay,
+          body = activityBody({ announce: announcement.announce, result: state.result, pending: state.pending, offerDisplay: state.offerDisplay ?? offerDisplay,
             onRetry: account.status === 'ready' ? () => controller?.refresh() : undefined,
             onPause: typeof adapter.pause === 'function' ? () => controller?.pause() : undefined,
             onResume: typeof adapter.resume === 'function' ? () => controller?.resume() : undefined,
             onReviewBrief: typeof onNavigate === 'function' ? () => onNavigate('brief') : undefined });
         }
-        keepScroll(root.ownerDocument.defaultView, () => content.replaceChildren(body)); announcement.textContent = ''; announcement.textContent = state.message;
+        keepScroll(root.ownerDocument.defaultView, () => content.replaceChildren(body)); announcement.announce(state.message);
         if (ownedFocus) {
           if (state.phase === 'loading') { main.tabIndex = -1; main.focus(); restoringFocus = active?.tagName === 'H1' || restoringFocus === 'heading' ? 'heading' : true; }
           else {
