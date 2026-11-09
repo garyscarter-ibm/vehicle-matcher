@@ -1,0 +1,1212 @@
+{
+ "width": 1280,
+ "viewport": {
+  "width": 1280,
+  "height": 900
+ },
+ "allPass": false,
+ "checks": [
+  {
+   "name": "activity updated without reload",
+   "pass": true,
+   "detail": {
+    "changed": true,
+    "stale": false,
+    "nav": [
+     5,
+     5
+    ]
+   }
+  },
+  {
+   "name": "activity focus kept, not lost to body",
+   "pass": true,
+   "detail": {
+    "before": {
+     "tag": "BUTTON",
+     "name": "Search actions",
+     "inStrip": false,
+     "isBody": false
+    },
+    "after": {
+     "tag": "BUTTON",
+     "name": "Search actions",
+     "inStrip": false,
+     "isBody": false
+    }
+   }
+  },
+  {
+   "name": "activity scroll stayed within 40 px",
+   "pass": true,
+   "detail": {
+    "before": 1294,
+    "after": 1294,
+    "max": 2786
+   }
+  },
+  {
+   "name": "activity announcement present once",
+   "pass": true,
+   "detail": [
+    "Activity updated."
+   ]
+  },
+  {
+   "name": "order progress advanced on every Tick without reload",
+   "pass": true,
+   "detail": [
+    {
+     "step": "tick-1",
+     "mode": "near",
+     "visibleChanged": true,
+     "serverChanged": true,
+     "matchesServer": true,
+     "ann": [
+      "Order progress updated."
+     ]
+    },
+    {
+     "step": "tick-2",
+     "mode": "near",
+     "visibleChanged": false,
+     "serverChanged": false,
+     "matchesServer": true,
+     "ann": [
+      "Order progress updated."
+     ]
+    },
+    {
+     "step": "tick-3",
+     "mode": "deep",
+     "visibleChanged": true,
+     "serverChanged": true,
+     "matchesServer": true,
+     "ann": [
+      "Order progress updated."
+     ]
+    },
+    {
+     "step": "tick-4",
+     "mode": "deep",
+     "visibleChanged": false,
+     "serverChanged": false,
+     "matchesServer": true,
+     "ann": [
+      "Order progress updated."
+     ]
+    },
+    {
+     "step": "tick-5",
+     "mode": "deep",
+     "visibleChanged": true,
+     "serverChanged": true,
+     "matchesServer": true,
+     "ann": [
+      "Order progress updated."
+     ]
+    },
+    {
+     "step": "tick-6",
+     "mode": "deep",
+     "visibleChanged": true,
+     "serverChanged": true,
+     "matchesServer": true,
+     "ann": [
+      "Order progress updated."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "order handover booked without reload",
+   "pass": true,
+   "detail": {
+    "slots": [
+     "Request 7 Nov 2026, 09:00",
+     "Request 7 Nov 2026, 13:00",
+     "Request 8 Nov 2026, 09:00",
+     "Request 8 Nov 2026, 13:00",
+     "Request 9 Nov 2026, 09:00",
+     "Request 9 Nov 2026, 13:00"
+    ],
+    "stage": "Order progressAll times are demo time (UTC).Your orderNo image for this car yetSynthetic 3 Series Touring 320iOrder referenceGCSP-000001Car order number8140511StepsSelection received Done5 Nov 2026, 09:30HR approval Done5 Nov 2026, 09:33Sales-manager approval Done5 Nov 2026, 09:35Sent to ordering Done5 Nov 2026, 09:36With orderingNext: Appointment to be arrangedHandoverBooked: 7 Nov 2026, 09:00OwnerRetailerNext stepThe retailer prepares your car "
+   }
+  },
+  {
+   "name": "scroll stayed within 40 px",
+   "pass": true,
+   "detail": [
+    {
+     "step": "tick-1",
+     "mode": "near",
+     "y": [
+      207,
+      207
+     ]
+    },
+    {
+     "step": "tick-2",
+     "mode": "near",
+     "y": [
+      207,
+      207
+     ]
+    },
+    {
+     "step": "tick-3",
+     "mode": "deep",
+     "y": [
+      2021,
+      2021
+     ]
+    },
+    {
+     "step": "tick-4",
+     "mode": "deep",
+     "y": [
+      2021,
+      2021
+     ]
+    },
+    {
+     "step": "tick-5",
+     "mode": "deep",
+     "y": [
+      2021,
+      2021
+     ]
+    },
+    {
+     "step": "request-slot",
+     "mode": "in-page",
+     "y": [
+      654,
+      654
+     ]
+    },
+    {
+     "step": "tick-to-target",
+     "mode": "deep",
+     "y": [
+      2694,
+      2694
+     ]
+    }
+   ]
+  },
+  {
+   "name": "order focus not lost to body",
+   "pass": true,
+   "detail": [
+    {
+     "step": "tick-1",
+     "before": "Presenter controls",
+     "after": "Tick (60 seconds)",
+     "body": false
+    },
+    {
+     "step": "tick-2",
+     "before": "Presenter controls",
+     "after": "Tick (60 seconds)",
+     "body": false
+    },
+    {
+     "step": "tick-3",
+     "before": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+     "after": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+     "body": true
+    },
+    {
+     "step": "tick-4",
+     "before": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+     "after": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+     "body": true
+    },
+    {
+     "step": "tick-5",
+     "before": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+     "after": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+     "body": true
+    },
+    {
+     "step": "request-slot",
+     "after": "Handover time requested.",
+     "body": false
+    },
+    {
+     "step": "tick-to-target",
+     "before": "Acknowledge the agreement",
+     "after": "Acknowledge the agreement",
+     "body": false
+    }
+   ]
+  },
+  {
+   "name": "observation: focus on a heading inside the order body keeps scroll",
+   "pass": false,
+   "detail": {
+    "before": "Synthetic 3 Series Touring 320i",
+    "after": "Order progress",
+    "y": [
+     2021,
+     1379
+    ]
+   }
+  },
+  {
+   "name": "order announcement once per changed read",
+   "pass": true,
+   "detail": [
+    {
+     "step": "tick-1",
+     "ann": [
+      "Order progress updated."
+     ]
+    },
+    {
+     "step": "tick-3",
+     "ann": [
+      "Order progress updated."
+     ]
+    },
+    {
+     "step": "tick-5",
+     "ann": [
+      "Order progress updated."
+     ]
+    },
+    {
+     "step": "tick-6",
+     "ann": [
+      "Order progress updated."
+     ]
+    },
+    {
+     "step": "tick-to-target",
+     "ann": [
+      "Order progress updated."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "observation: no announcement when only the clock moved",
+   "pass": false,
+   "detail": [
+    {
+     "step": "tick-2",
+     "ann": [
+      "Order progress updated."
+     ],
+     "htmlChanged": true,
+     "htmlDiff": {
+      "at": 268,
+      "was": "es\" aria-labelledby=\"gcsp-order-section-7\"><h2 class=\"gcsp-order-section-title\" id=\"gcsp-order-section-7\">Your order</h2",
+      "now": "es\" aria-labelledby=\"gcsp-order-section-13\"><h2 class=\"gcsp-order-section-title\" id=\"gcsp-order-section-13\">Your order</"
+     }
+    },
+    {
+     "step": "tick-4",
+     "ann": [
+      "Order progress updated."
+     ],
+     "htmlChanged": true,
+     "htmlDiff": {
+      "at": 268,
+      "was": "es\" aria-labelledby=\"gcsp-order-section-19\"><h2 class=\"gcsp-order-section-title\" id=\"gcsp-order-section-19\">Your order</",
+      "now": "es\" aria-labelledby=\"gcsp-order-section-25\"><h2 class=\"gcsp-order-section-title\" id=\"gcsp-order-section-25\">Your order</"
+     }
+    }
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "at": "/gcsp/access?next=%2Fgcsp-presenter.html"
+  },
+  {
+   "failed": "404 GET /api/gcsp/manual/draft"
+  },
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "at": "/gcsp-presenter.html"
+  },
+  {
+   "failed": "404 GET /api/gcsp/manual/draft"
+  },
+  {
+   "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "at": "/gcsp-presenter.html"
+  },
+  {
+   "step": "activity-before",
+   "url": "http://127.0.0.1:9352/gcsp-activity-live.html",
+   "text": "Your buddyActivePause SearchYour offerNo current offerActivityAll dates are demo time (UTC).Not searched yet5 Nov 2026, 09:00Search confirmedRenewal helpRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.Get help with your renewalThe scheme team can review a delayed or uncertain renewal and explain the next action. Opening help changes nothing.Ask for helpNo renewal caseHelp is available if you need the scheme team to review your renewal.",
+   "focus": {
+    "tag": "BODY",
+    "name": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+    "inStrip": false,
+    "isBody": true
+   },
+   "navs": 5,
+   "offerLinks": 0
+  },
+  {
+   "shot": "activity-1280-01-before-release.png",
+   "url": "/gcsp-activity-live.html"
+  },
+  {
+   "step": "activity-after-release",
+   "mode": "deep",
+   "prep": {
+    "max": 2786,
+    "kind": "control",
+    "focused": ""
+   },
+   "scrollBefore": 1294,
+   "focusBefore": {
+    "tag": "BUTTON",
+    "name": "Search actions",
+    "inStrip": false,
+    "isBody": false
+   },
+   "scrollAfter": 1294,
+   "changed": true,
+   "urlBefore": "/gcsp-activity-live.html",
+   "urlAfter": "/gcsp-activity-live.html",
+   "navBefore": 5,
+   "navAfter": 5,
+   "announcements": [
+    "Activity updated."
+   ],
+   "liveRegion": [
+    "PPaula (fictional)Paula (fictional)Grade G7",
+    "Activity updated."
+   ],
+   "focusAfter": {
+    "tag": "BUTTON",
+    "name": "Search actions",
+    "inStrip": false,
+    "isBody": false
+   },
+   "text": "Your buddyActivePause SearchYour offerImage unavailableWaiting for youRespond by 5 Nov 2026, 11:30Synthetic 3 Series Touring 320iView offerActivityAll dates are demo time (UTC).Last check 5 Nov 2026, 09:30: 6 cars checked, 5 suitable. Found a car for you.5 Nov 2026, 09:00Search confirmedRenewal helpRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.Get help with your renewalThe scheme team can review a delayed or uncertain renewal and explain the next action. Opening help changes nothing.Ask for helpNo renewal caseHelp is available if you need the ",
+   "noOfferStale": false
+  },
+  {
+   "shot": "activity-1280-02-after-release-no-reload.png",
+   "url": "/gcsp-activity-live.html"
+  },
+  {
+   "step": "offer-page",
+   "url": "/gcsp/offer?offerId=buddy-offer%3A84abab756c5dd279173401c2dd1cdbb316fd8be735b6561ddc69c2783723fc9b&runId=demo-f05da9c20757ce99e5d425b3c822c093"
+  },
+  {
+   "step": "accepted",
+   "h1": "Offer accepted"
+  },
+  {
+   "step": "order-controls",
+   "controls": []
+  },
+  {
+   "step": "order-accepted",
+   "stage": "Order progressAll times are demo time (UTC).Your orderNo image for this car yetSynthetic 3 Series Touring 320iOrder referenceGCSP-000001Car order number8140511StepsSelection received Done5 Nov 2026, 09:30With orderingNext: Approval checks startHR approval Not startedSales-manager approval Not startedSent to ordering Not startedHandoverHandover times open once your order is sent to ordering.Documents and checksDocuments and checks open once your order is sent to ordering.Returning your current carCurrent carFictional BMW 320i TouringConfigurationG21 320i M Sport TouringCollection from your home address1 Fictional Way, Example Town, ZZ1 1ZZYour current car stays yours until it is returned.Retu",
+   "navs": 7
+  },
+  {
+   "shot": "order-1280-01-accepted.png",
+   "url": "/gcsp-order-progress-live.html"
+  },
+  {
+   "step": "tick-1",
+   "mode": "near",
+   "prep": null,
+   "scrollBefore": 207,
+   "focusBefore": {
+    "tag": "SUMMARY",
+    "name": "Presenter controls",
+    "inStrip": true,
+    "isBody": false
+   },
+   "scrollAfter": 207,
+   "scrollTrace": {
+    "scrolls": [
+     0,
+     207
+    ],
+    "replaced": [
+     "p.gcsp-note h=3127",
+     "div.gcsp-presenter-facts h=3127",
+     "datalist. h=3127",
+     "button.vm-btn vm-btn-ghost h=3127",
+     "div.gcsp-presenter-results h=3127",
+     "p.gcsp-note h=3150",
+     "div.gcsp-presenter-facts h=3150",
+     "datalist. h=3150"
+    ]
+   },
+   "apiDiff": {
+    "/api/gcsp/orders/progress": [
+     {
+      "path": ".value.lifecycleRevision",
+      "was": "0",
+      "now": "1"
+     },
+     {
+      "path": ".value.asOf",
+      "was": "\"2026-11-05T09:30:00.000Z\"",
+      "now": "\"2026-11-05T09:31:00.000Z\""
+     },
+     {
+      "path": ".value.currentStage",
+      "was": "\"selection received\"",
+      "now": "\"HR approval\""
+     },
+     {
+      "path": ".value.stages.1.state",
+      "was": "\"not-started\"",
+      "now": "\"pending\""
+     },
+     {
+      "path": ".value.stages.1.at",
+      "was": "null",
+      "now": "\"2026-11-05T09:31:00.000Z\""
+     },
+     {
+      "path": ".value.stages.1.operationId",
+      "was": "null",
+      "now": "\"lifecycle-approval:fc1e07684432a7b88ab3b6a7f251d3258c8a8860"
+     },
+     {
+      "path": ".value.owner",
+      "was": "\"ordering\"",
+      "now": "\"HR\""
+     }
+    ],
+    "/api/gcsp/documents": [
+     {
+      "path": ".value.now",
+      "was": "\"2026-11-05T09:30:00.000Z\"",
+      "now": "\"2026-11-05T09:31:00.000Z\""
+     }
+    ],
+    "/api/gcsp/appointments": [
+     {
+      "path": ".value.eligibility.code",
+      "was": "\"stage-revision-missing\"",
+      "now": "\"opening-stage-not-reached\""
+     },
+     {
+      "path": ".value.eligibility.reason",
+      "was": "\"Appointments are not available for this order yet.\"",
+      "now": "\"Your order has not been sent to ordering yet.\""
+     }
+    ],
+    "/api/gcsp/return-plan": [
+     {
+      "path": ".value.appointment.eligibility.code",
+      "was": "\"stage-revision-missing\"",
+      "now": "\"opening-stage-not-reached\""
+     },
+     {
+      "path": ".value.appointment.eligibility.reason",
+      "was": "\"Appointments are not available for this order yet.\"",
+      "now": "\"Your order has not been sent to ordering yet.\""
+     }
+    ]
+   },
+   "visibleChanged": true,
+   "htmlChanged": true,
+   "htmlDiff": null,
+   "serverChanged": true,
+   "matchesServer": true,
+   "announcements": [
+    "Order progress updated."
+   ],
+   "liveRegion": [
+    "PPaula (fictional)Paula (fictional)Grade G7",
+    "Order progress updated."
+   ],
+   "focusAfter": {
+    "tag": "BUTTON",
+    "name": "Tick (60 seconds)",
+    "inStrip": true,
+    "isBody": false
+   },
+   "stage": "Order progressAll times are demo time (UTC).Your orderNo image for this car yetSynthetic 3 Series Touring 320iOrder referenceGCSP-000001Car order number8140511StepsSelection received Done5 Nov 2026, 09:30HR approval Current step5 Nov 2026, 09:31With HRNext: HR decisionSales-manager approval Not startedSent to ordering Not startedHandoverHandover times open once your order is sent to ordering.Documents and checksDocuments and checks open once your",
+   "url": "/gcsp-order-progress-live.html",
+   "navs": 7
+  },
+  {
+   "shot": "order-1280-02-tick1.png",
+   "url": "/gcsp-order-progress-live.html"
+  },
+  {
+   "step": "tick-2",
+   "mode": "near",
+   "prep": null,
+   "scrollBefore": 207,
+   "focusBefore": {
+    "tag": "SUMMARY",
+    "name": "Presenter controls",
+    "inStrip": true,
+    "isBody": false
+   },
+   "scrollAfter": 207,
+   "scrollTrace": {
+    "scrolls": [
+     0,
+     207
+    ],
+    "replaced": [
+     "p.gcsp-note h=3150",
+     "div.gcsp-presenter-facts h=3150",
+     "datalist. h=3150",
+     "button.vm-btn vm-btn-ghost h=3150",
+     "div.gcsp-presenter-results h=3150",
+     "p.gcsp-note h=3173",
+     "div.gcsp-presenter-facts h=3173",
+     "datalist. h=3173"
+    ]
+   },
+   "apiDiff": {
+    "/api/gcsp/orders/progress": [
+     {
+      "path": ".value.asOf",
+      "was": "\"2026-11-05T09:31:00.000Z\"",
+      "now": "\"2026-11-05T09:32:00.000Z\""
+     }
+    ],
+    "/api/gcsp/documents": [
+     {
+      "path": ".value.now",
+      "was": "\"2026-11-05T09:31:00.000Z\"",
+      "now": "\"2026-11-05T09:32:00.000Z\""
+     }
+    ]
+   },
+   "visibleChanged": false,
+   "htmlChanged": true,
+   "htmlDiff": {
+    "at": 268,
+    "was": "es\" aria-labelledby=\"gcsp-order-section-7\"><h2 class=\"gcsp-order-section-title\" id=\"gcsp-order-section-7\">Your order</h2",
+    "now": "es\" aria-labelledby=\"gcsp-order-section-13\"><h2 class=\"gcsp-order-section-title\" id=\"gcsp-order-section-13\">Your order</"
+   },
+   "serverChanged": false,
+   "matchesServer": true,
+   "announcements": [
+    "Order progress updated."
+   ],
+   "liveRegion": [
+    "PPaula (fictional)Paula (fictional)Grade G7",
+    "Order progress updated."
+   ],
+   "focusAfter": {
+    "tag": "BUTTON",
+    "name": "Tick (60 seconds)",
+    "inStrip": true,
+    "isBody": false
+   },
+   "stage": "Order progressAll times are demo time (UTC).Your orderNo image for this car yetSynthetic 3 Series Touring 320iOrder referenceGCSP-000001Car order number8140511StepsSelection received Done5 Nov 2026, 09:30HR approval Current step5 Nov 2026, 09:31With HRNext: HR decisionSales-manager approval Not startedSent to ordering Not startedHandoverHandover times open once your order is sent to ordering.Documents and checksDocuments and checks open once your",
+   "url": "/gcsp-order-progress-live.html",
+   "navs": 7
+  },
+  {
+   "step": "tick-3",
+   "mode": "deep",
+   "prep": {
+    "max": 2250,
+    "kind": null,
+    "focused": null
+   },
+   "scrollBefore": 2021,
+   "focusBefore": {
+    "tag": "BODY",
+    "name": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+    "inStrip": false,
+    "isBody": true
+   },
+   "scrollAfter": 2021,
+   "scrollTrace": {
+    "scrolls": [
+     2021
+    ],
+    "replaced": [
+     "p.gcsp-note h=3150",
+     "div.gcsp-presenter-facts h=3150",
+     "datalist. h=3150",
+     "button.vm-btn vm-btn-ghost h=3150",
+     "div.gcsp-presenter-results h=3150",
+     "p.gcsp-note h=3173",
+     "div.gcsp-presenter-facts h=3173",
+     "datalist. h=3173"
+    ]
+   },
+   "apiDiff": {
+    "/api/gcsp/orders/progress": [
+     {
+      "path": ".value.lifecycleRevision",
+      "was": "1",
+      "now": "2"
+     },
+     {
+      "path": ".value.asOf",
+      "was": "\"2026-11-05T09:32:00.000Z\"",
+      "now": "\"2026-11-05T09:33:00.000Z\""
+     },
+     {
+      "path": ".value.currentStage",
+      "was": "\"HR approval\"",
+      "now": "\"sales-manager approval\""
+     },
+     {
+      "path": ".value.stages.1.state",
+      "was": "\"pending\"",
+      "now": "\"approved\""
+     },
+     {
+      "path": ".value.stages.1.at",
+      "was": "\"2026-11-05T09:31:00.000Z\"",
+      "now": "\"2026-11-05T09:33:00.000Z\""
+     },
+     {
+      "path": ".value.stages.1.providerReference",
+      "was": "null",
+      "now": "\"synthetic-ordering-status:v1:lifecycle-approval:fc1e0768443"
+     },
+     {
+      "path": ".value.stages.2.state",
+      "was": "\"not-started\"",
+      "now": "\"pending\""
+     }
+    ],
+    "/api/gcsp/documents": [
+     {
+      "path": ".value.now",
+      "was": "\"2026-11-05T09:32:00.000Z\"",
+      "now": "\"2026-11-05T09:33:00.000Z\""
+     }
+    ]
+   },
+   "visibleChanged": true,
+   "htmlChanged": true,
+   "htmlDiff": null,
+   "serverChanged": true,
+   "matchesServer": true,
+   "announcements": [
+    "Order progress updated."
+   ],
+   "liveRegion": [
+    "PPaula (fictional)Paula (fictional)Grade G7",
+    "Order progress updated."
+   ],
+   "focusAfter": {
+    "tag": "BODY",
+    "name": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+    "inStrip": false,
+    "isBody": true
+   },
+   "stage": "Order progressAll times are demo time (UTC).Your orderNo image for this car yetSynthetic 3 Series Touring 320iOrder referenceGCSP-000001Car order number8140511StepsSelection received Done5 Nov 2026, 09:30HR approval Done5 Nov 2026, 09:33Sales-manager approval Current step5 Nov 2026, 09:33With the sales managerNext: Sales-manager decisionSent to ordering Not startedHandoverHandover times open once your order is sent to ordering.Documents and check",
+   "url": "/gcsp-order-progress-live.html",
+   "navs": 7
+  },
+  {
+   "step": "tick-4",
+   "mode": "deep",
+   "prep": {
+    "max": 2273,
+    "kind": null,
+    "focused": null
+   },
+   "scrollBefore": 2021,
+   "focusBefore": {
+    "tag": "BODY",
+    "name": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+    "inStrip": false,
+    "isBody": true
+   },
+   "scrollAfter": 2021,
+   "scrollTrace": {
+    "scrolls": [],
+    "replaced": [
+     "p.gcsp-note h=3173",
+     "div.gcsp-presenter-facts h=3173",
+     "datalist. h=3173",
+     "button.vm-btn vm-btn-ghost h=3173",
+     "div.gcsp-presenter-results h=3173",
+     "p.gcsp-note h=3196",
+     "div.gcsp-presenter-facts h=3196",
+     "datalist. h=3196"
+    ]
+   },
+   "apiDiff": {
+    "/api/gcsp/orders/progress": [
+     {
+      "path": ".value.asOf",
+      "was": "\"2026-11-05T09:33:00.000Z\"",
+      "now": "\"2026-11-05T09:34:00.000Z\""
+     }
+    ],
+    "/api/gcsp/documents": [
+     {
+      "path": ".value.now",
+      "was": "\"2026-11-05T09:33:00.000Z\"",
+      "now": "\"2026-11-05T09:34:00.000Z\""
+     }
+    ]
+   },
+   "visibleChanged": false,
+   "htmlChanged": true,
+   "htmlDiff": {
+    "at": 268,
+    "was": "es\" aria-labelledby=\"gcsp-order-section-19\"><h2 class=\"gcsp-order-section-title\" id=\"gcsp-order-section-19\">Your order</",
+    "now": "es\" aria-labelledby=\"gcsp-order-section-25\"><h2 class=\"gcsp-order-section-title\" id=\"gcsp-order-section-25\">Your order</"
+   },
+   "serverChanged": false,
+   "matchesServer": true,
+   "announcements": [
+    "Order progress updated."
+   ],
+   "liveRegion": [
+    "PPaula (fictional)Paula (fictional)Grade G7",
+    "Order progress updated."
+   ],
+   "focusAfter": {
+    "tag": "BODY",
+    "name": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+    "inStrip": false,
+    "isBody": true
+   },
+   "stage": "Order progressAll times are demo time (UTC).Your orderNo image for this car yetSynthetic 3 Series Touring 320iOrder referenceGCSP-000001Car order number8140511StepsSelection received Done5 Nov 2026, 09:30HR approval Done5 Nov 2026, 09:33Sales-manager approval Current step5 Nov 2026, 09:33With the sales managerNext: Sales-manager decisionSent to ordering Not startedHandoverHandover times open once your order is sent to ordering.Documents and check",
+   "url": "/gcsp-order-progress-live.html",
+   "navs": 7
+  },
+  {
+   "step": "tick-5",
+   "mode": "deep",
+   "prep": {
+    "max": 2273,
+    "kind": null,
+    "focused": null
+   },
+   "scrollBefore": 2021,
+   "focusBefore": {
+    "tag": "BODY",
+    "name": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+    "inStrip": false,
+    "isBody": true
+   },
+   "scrollAfter": 2021,
+   "scrollTrace": {
+    "scrolls": [],
+    "replaced": [
+     "p.gcsp-note h=3173",
+     "div.gcsp-presenter-facts h=3173",
+     "datalist. h=3173",
+     "button.vm-btn vm-btn-ghost h=3173",
+     "div.gcsp-presenter-results h=3173",
+     "p.gcsp-note h=3196",
+     "div.gcsp-presenter-facts h=3196",
+     "datalist. h=3196"
+    ]
+   },
+   "apiDiff": {
+    "/api/gcsp/orders/progress": [
+     {
+      "path": ".value.lifecycleRevision",
+      "was": "2",
+      "now": "3"
+     },
+     {
+      "path": ".value.asOf",
+      "was": "\"2026-11-05T09:34:00.000Z\"",
+      "now": "\"2026-11-05T09:35:00.000Z\""
+     },
+     {
+      "path": ".value.currentStage",
+      "was": "\"sales-manager approval\"",
+      "now": "\"sent to ordering\""
+     },
+     {
+      "path": ".value.stages.2.state",
+      "was": "\"pending\"",
+      "now": "\"approved\""
+     },
+     {
+      "path": ".value.stages.2.at",
+      "was": "\"2026-11-05T09:33:00.000Z\"",
+      "now": "\"2026-11-05T09:35:00.000Z\""
+     },
+     {
+      "path": ".value.stages.2.providerReference",
+      "was": "null",
+      "now": "\"synthetic-ordering-status:v1:lifecycle-approval:a9df438b895"
+     },
+     {
+      "path": ".value.stages.3.state",
+      "was": "\"not-started\"",
+      "now": "\"pending\""
+     }
+    ],
+    "/api/gcsp/documents": [
+     {
+      "path": ".value.now",
+      "was": "\"2026-11-05T09:34:00.000Z\"",
+      "now": "\"2026-11-05T09:35:00.000Z\""
+     }
+    ]
+   },
+   "visibleChanged": true,
+   "htmlChanged": true,
+   "htmlDiff": null,
+   "serverChanged": true,
+   "matchesServer": true,
+   "announcements": [
+    "Order progress updated."
+   ],
+   "liveRegion": [
+    "PPaula (fictional)Paula (fictional)Grade G7",
+    "Order progress updated."
+   ],
+   "focusAfter": {
+    "tag": "BODY",
+    "name": "Skip to contentGroup Car Schemes PortalPPaula (fic",
+    "inStrip": false,
+    "isBody": true
+   },
+   "stage": "Order progressAll times are demo time (UTC).Your orderNo image for this car yetSynthetic 3 Series Touring 320iOrder referenceGCSP-000001Car order number8140511StepsSelection received Done5 Nov 2026, 09:30HR approval Done5 Nov 2026, 09:33Sales-manager approval Done5 Nov 2026, 09:35Sent to ordering Current step5 Nov 2026, 09:35With orderingNext: Ordering confirms the orderHandoverHandover times open once your order is sent to ordering.Documents and",
+   "url": "/gcsp-order-progress-live.html",
+   "navs": 7
+  },
+  {
+   "step": "tick-6",
+   "mode": "deep",
+   "prep": {
+    "max": 2296,
+    "kind": "heading",
+    "focused": "Synthetic 3 Series Touring 320i"
+   },
+   "scrollBefore": 2021,
+   "focusBefore": {
+    "tag": "H3",
+    "name": "Synthetic 3 Series Touring 320i",
+    "inStrip": false,
+    "isBody": false
+   },
+   "scrollAfter": 1379,
+   "scrollTrace": {
+    "scrolls": [
+     1379
+    ],
+    "replaced": [
+     "p.gcsp-note h=3196",
+     "div.gcsp-presenter-facts h=3196",
+     "datalist. h=3196",
+     "button.vm-btn vm-btn-ghost h=3196",
+     "div.gcsp-presenter-results h=3196",
+     "p.gcsp-note h=3219",
+     "div.gcsp-presenter-facts h=3219",
+     "datalist. h=3219"
+    ]
+   },
+   "apiDiff": {
+    "/api/gcsp/orders/progress": [
+     {
+      "path": ".value.lifecycleRevision",
+      "was": "3",
+      "now": "4"
+     },
+     {
+      "path": ".value.asOf",
+      "was": "\"2026-11-05T09:35:00.000Z\"",
+      "now": "\"2026-11-05T09:36:00.000Z\""
+     },
+     {
+      "path": ".value.stages.3.state",
+      "was": "\"pending\"",
+      "now": "\"approved\""
+     },
+     {
+      "path": ".value.stages.3.at",
+      "was": "\"2026-11-05T09:35:00.000Z\"",
+      "now": "\"2026-11-05T09:36:00.000Z\""
+     },
+     {
+      "path": ".value.stages.3.providerReference",
+      "was": "null",
+      "now": "\"synthetic-ordering-status:v1:lifecycle-approval:6cc8946d182"
+     },
+     {
+      "path": ".value.nextStep",
+      "was": "\"Ordering confirms the order\"",
+      "now": "\"Appointment to be arranged\""
+     },
+     {
+      "path": ".value.outcome",
+      "was": "\"in-progress\"",
+      "now": "\"sent-to-ordering\""
+     }
+    ],
+    "/api/gcsp/documents": [
+     {
+      "path": ".value.now",
+      "was": "\"2026-11-05T09:35:00.000Z\"",
+      "now": "\"2026-11-05T09:36:00.000Z\""
+     },
+     {
+      "path": ".value.orders.0",
+      "now": "{\"contractVersion\":\"lifecycle.documents.v1\",\"runId\":\"demo-f0"
+     }
+    ],
+    "/api/gcsp/appointments": [
+     {
+      "path": ".value.owner",
+      "was": "\"scheme-team\"",
+      "now": "\"employee\""
+     },
+     {
+      "path": ".value.nextStep",
+      "was": "\"Waiting for your order to be sent to ordering.\"",
+      "now": "\"Choose a handover slot.\""
+     },
+     {
+      "path": ".value.offeredSlots.0",
+      "now": "{\"slotId\":\"slot-20261107T0900Z\",\"start\":\"2026-11-07T09:00:00"
+     },
+     {
+      "path": ".value.offeredSlots.1",
+      "now": "{\"slotId\":\"slot-20261107T1300Z\",\"start\":\"2026-11-07T13:00:00"
+     },
+     {
+      "path": ".value.offeredSlots.2",
+      "now": "{\"slotId\":\"slot-20261108T0900Z\",\"start\":\"2026-11-08T09:00:00"
+     },
+     {
+      "path": ".value.offeredSlots.3",
+      "now": "{\"slotId\":\"slot-20261108T1300Z\",\"start\":\"2026-11-08T13:00:00"
+     },
+     {
+      "path": ".value.offeredSlots.4",
+      "now": "{\"slotId\":\"slot-20261109T0900Z\",\"start\":\"2026-11-09T09:00:00"
+     }
+    ],
+    "/api/gcsp/return-plan": [
+     {
+      "path": ".value.appointment.nextStep",
+      "was": "\"Confirm your new car's handover first, then plan the return",
+      "now": "\"Choose when to return your current car.\""
+     },
+     {
+      "path": ".value.appointment.eligibility.eligible",
+      "was": "false",
+      "now": "true"
+     },
+     {
+      "path": ".value.appointment.eligibility.code",
+      "was": "\"opening-stage-not-reached\"",
+      "now": "null"
+     },
+     {
+      "path": ".value.appointment.eligibility.reason",
+      "was": "\"Your order has not been sent to ordering yet.\"",
+      "now": "null"
+     }
+    ]
+   },
+   "visibleChanged": true,
+   "htmlChanged": true,
+   "htmlDiff": null,
+   "serverChanged": true,
+   "matchesServer": true,
+   "announcements": [
+    "Order progress updated."
+   ],
+   "liveRegion": [
+    "PPaula (fictional)Paula (fictional)Grade G7",
+    "Order progress updated."
+   ],
+   "focusAfter": {
+    "tag": "H1",
+    "name": "Order progress",
+    "inStrip": false,
+    "isBody": false
+   },
+   "stage": "Order progressAll times are demo time (UTC).Your orderNo image for this car yetSynthetic 3 Series Touring 320iOrder referenceGCSP-000001Car order number8140511StepsSelection received Done5 Nov 2026, 09:30HR approval Done5 Nov 2026, 09:33Sales-manager approval Done5 Nov 2026, 09:35Sent to ordering Done5 Nov 2026, 09:36With orderingNext: Appointment to be arrangedHandoverChoose a handover time.Request 7 Nov 2026, 09:00Request 7 Nov 2026, 13:00Reque",
+   "url": "/gcsp-order-progress-live.html",
+   "navs": 7
+  },
+  {
+   "shot": "order-1280-03-approvals-done.png",
+   "url": "/gcsp-order-progress-live.html"
+  },
+  {
+   "step": "slots",
+   "slots": [
+    "Request 7 Nov 2026, 09:00",
+    "Request 7 Nov 2026, 13:00",
+    "Request 8 Nov 2026, 09:00",
+    "Request 8 Nov 2026, 13:00",
+    "Request 9 Nov 2026, 09:00",
+    "Request 9 Nov 2026, 13:00"
+   ]
+  },
+  {
+   "step": "request-slot",
+   "mode": "in-page",
+   "scrollBefore": 654,
+   "scrollAfter": 654,
+   "visibleChanged": true,
+   "announcements": [],
+   "liveRegion": [
+    "PPaula (fictional)Paula (fictional)Grade G7",
+    "Order progress updated."
+   ],
+   "focusAfter": {
+    "tag": "P",
+    "name": "Handover time requested.",
+    "inStrip": false,
+    "isBody": false
+   },
+   "stage": "Order progressAll times are demo time (UTC).Your orderNo image for this car yetSynthetic 3 Series Touring 320iOrder referenceGCSP-000001Car order number8140511StepsSelection received Done5 Nov 2026, 09:30HR approval Done5 Nov 2026, 09:33Sales-manager approval Done5 Nov 2026, 09:35Sent to ordering Done5 Nov 2026, 09:36With orderingNext: Appointment to be arrangedHandoverHandover time requested.Requested 7 Nov 2026, 09:00. Not booked yet.OwnerRetai"
+  },
+  {
+   "step": "tick-to-target",
+   "mode": "deep",
+   "prep": {
+    "max": 2988,
+    "kind": "control",
+    "focused": "Acknowledge the agreement"
+   },
+   "scrollBefore": 2694,
+   "focusBefore": {
+    "tag": "BUTTON",
+    "name": "Acknowledge the agreement",
+    "inStrip": false,
+    "isBody": false
+   },
+   "scrollAfter": 2694,
+   "scrollTrace": {
+    "scrolls": [
+     0,
+     2694
+    ],
+    "replaced": [
+     "div.gcsp-presenter-facts h=3888",
+     "datalist. h=3888",
+     "button.vm-btn vm-btn-ghost h=3888",
+     "p.gcsp-note h=3888",
+     "div.gcsp-presenter-results h=3888",
+     "p.gcsp-note h=3910",
+     "div.gcsp-presenter-facts h=3910",
+     "datalist. h=3910"
+    ]
+   },
+   "apiDiff": {
+    "/api/gcsp/orders/progress": [
+     {
+      "path": ".value.asOf",
+      "was": "\"2026-11-05T09:36:00.000Z\"",
+      "now": "\"2026-11-05T10:07:00.000Z\""
+     }
+    ],
+    "/api/gcsp/documents": [
+     {
+      "path": ".value.now",
+      "was": "\"2026-11-05T09:36:00.000Z\"",
+      "now": "\"2026-11-05T10:07:00.000Z\""
+     }
+    ],
+    "/api/gcsp/appointments": [
+     {
+      "path": ".value.state",
+      "was": "\"requested\"",
+      "now": "\"scheduled\""
+     },
+     {
+      "path": ".value.booked",
+      "was": "false",
+      "now": "true"
+     },
+     {
+      "path": ".value.slot",
+      "was": "null",
+      "now": "{\"slotId\":\"slot-20261107T0900Z\",\"start\":\"2026-11-07T09:00:00"
+     },
+     {
+      "path": ".value.history.1",
+      "now": "{\"state\":\"scheduled\",\"at\":\"2026-11-05T10:07:00.000Z\",\"provid"
+     },
+     {
+      "path": ".value.nextStep",
+      "was": "\"Waiting for the retailer to confirm your slot.\"",
+      "now": "\"The retailer prepares your car for the handover.\""
+     }
+    ],
+    "/api/gcsp/return-plan": [
+     {
+      "path": ".value.handover.state",
+      "was": "\"requested\"",
+      "now": "\"scheduled\""
+     },
+     {
+      "path": ".value.handover.booked",
+      "was": "false",
+      "now": "true"
+     },
+     {
+      "path": ".value.handover.slot",
+      "was": "null",
+      "now": "{\"slotId\":\"slot-20261107T0900Z\",\"start\":\"2026-11-07T09:00:00"
+     },
+     {
+      "path": ".value.handover.providerReference",
+      "was": "\"SYN-APT-34CB488B1184\"",
+      "now": "\"SYN-APT-BF342D36048E\""
+     },
+     {
+      "path": ".value.nextStep",
+      "was": "\"Confirm your new car's handover first, then plan the return",
+      "now": "\"Choose when to return your current car.\""
+     },
+     {
+      "path": ".value.choices.0.available",
+      "was": "false",
+      "now": "true"
+     },
+     {
+      "path": ".value.choices.0.reason",
+      "was": "\"Confirm your new car's handover first.\"",
+      "now": "null"
+     }
+    ]
+   },
+   "visibleChanged": true,
+   "htmlChanged": true,
+   "htmlDiff": null,
+   "serverChanged": true,
+   "matchesServer": true,
+   "announcements": [
+    "Order progress updated."
+   ],
+   "liveRegion": [
+    "PPaula (fictional)Paula (fictional)Grade G7",
+    "Order progress updated."
+   ],
+   "focusAfter": {
+    "tag": "BUTTON",
+    "name": "Acknowledge the agreement",
+    "inStrip": false,
+    "isBody": false
+   },
+   "stage": "Order progressAll times are demo time (UTC).Your orderNo image for this car yetSynthetic 3 Series Touring 320iOrder referenceGCSP-000001Car order number8140511StepsSelection received Done5 Nov 2026, 09:30HR approval Done5 Nov 2026, 09:33Sales-manager approval Done5 Nov 2026, 09:35Sent to ordering Done5 Nov 2026, 09:36With orderingNext: Appointment to be arrangedHandoverBooked: 7 Nov 2026, 09:00OwnerRetailerNext stepThe retailer prepares your car ",
+   "url": "/gcsp-order-progress-live.html",
+   "navs": 7
+  },
+  {
+   "shot": "order-1280-04-handover-booked.png",
+   "url": "/gcsp-order-progress-live.html"
+  }
+ ]
+}

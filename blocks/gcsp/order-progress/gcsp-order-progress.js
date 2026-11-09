@@ -15,7 +15,9 @@ export const ORDER_PROGRESS_DESTINATION = Object.freeze({ key: 'order-progress',
 
 const SECTION_OF = { completeTask: 'documents', requestAppointment: 'handover', acceptAppointment: 'handover', requestReturn: 'return', acceptReturn: 'return' };
 const SECTION = '.gcsp-order-section';
-const changeKey = (state) => JSON.stringify(state.phase === 'ready' ? [state.progress.stages, state.progress.documents, state.progress.appointment, state.progress.returnPlan] : state.phase);
+// The read clock (asOf) moves on every Tick without changing what is shown, so it is not a change.
+const changeKey = (state) => JSON.stringify(state.phase === 'ready' ? [state.progress.stages, state.progress.documents, state.progress.appointment, state.progress.returnPlan] : state.phase,
+  (key, value) => (key === 'asOf' ? undefined : value));
 
 // Paints the controller's state into `host`; returns its teardown. Focus stays on a surviving control, else moves to the message.
 function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = true, reload }) {
