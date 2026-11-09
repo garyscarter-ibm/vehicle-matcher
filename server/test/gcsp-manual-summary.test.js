@@ -61,7 +61,7 @@ function setup(t, options = {}) {
     currentContract: mode === 'new' ? null : oldContract, oldContractId: mode === 'new' ? null : 'current:employee-paula',
     requestedCollection: { date: '2026-11-20', locationId: 'demo-collection-centre' }, contract: { months: 6, annualMileage: 8000, mileageUnit: 'mi/year' },
     frozen: false, editable: true, canContinue: true };
-  const f = { calls: [], posts: [], model, hold, terms: structuredClone(terms), order: options.order ?? null, submitOutcomes: [], orderReads: [...(options.orderReads ?? [])], finished: 0,
+  const f = { calls: [], posts: [], model, hold, terms: structuredClone(options.terms ?? terms), order: options.order ?? null, submitOutcomes: [], orderReads: [...(options.orderReads ?? [])], finished: 0,
     edits: 0, car: 0, choices: 0, released: 0, prints: 0 };
   const claim = () => ({ state: hold.state === 'active' ? 'quoted' : hold.state, hold, quote, now: model.now, clockVersion: model.clockVersion, pendingOperation: null });
   const adapter = {
@@ -109,6 +109,20 @@ test('a new order has no return section and one fewer declaration', async (t) =>
   assert.equal(returns.closest('section').hidden, true);
   assert.equal(boxes(f).length, 2);
   const replacement = setup(t); await ready(replacement); assert.equal(boxes(replacement).length, 3);
+});
+
+test('FUCQ-237: a new order leaves out the replacement sentence and its declaration; a replacement keeps both', async (t) => {
+  const seeded = { ...assumption('ordering.terms.v1').value, termsDigest: 'digest-1', approvalStages: terms.approvalStages };
+  const fresh = setup(t, { mode: 'new', terms: seeded }); await ready(fresh);
+  const wording = () => fresh.root.querySelector('.gcsp-summary-declarations .gcsp-note').textContent;
+  assert.equal(wording(), seeded.wordingByMode.new); assert.doesNotMatch(wording(), /For a replacement/);
+  assert.deepEqual(boxes(fresh).map((box) => box.dataset.declaration), ['terms', 'driver']);
+  tickAll(fresh); click(fresh, 'Submit order'); await settle(() => fresh.posts.length === 1);
+  assert.deepEqual(fresh.posts[0].declarations, { terms: true, driver: true });
+  const replacement = setup(t, { terms: seeded }); await ready(replacement);
+  assert.equal(replacement.root.querySelector('.gcsp-summary-declarations .gcsp-note').textContent, seeded.wording);
+  assert.match(replacement.root.querySelector('.gcsp-summary-declarations .gcsp-note').textContent, /For a replacement/);
+  assert.ok(boxes(replacement).some((box) => box.dataset.declaration === 'return'));
 });
 
 test('declarations start unchecked and Submit stays disabled until every applicable one is ticked', async (t) => {

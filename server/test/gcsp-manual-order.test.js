@@ -203,6 +203,17 @@ test('terms are versioned explicit fictional policy reads, missing central keys 
   assert.equal(changed.value.approvalStages[0], 'sales-manager approval'); assert.notEqual(changed.value.termsDigest, terms.value.termsDigest);
 });
 
+test('FUCQ-237: wordingByMode is optional and must map only new or replacement to text; the seed gives new orders their own wording', async () => {
+  const f = await runtime(createPolicyService());
+  const seeded = await new SchemeOrderTerms({ policy: f.policy }).read(f.context, { asOf: instant });
+  assert.equal(seeded.status, 'ok', JSON.stringify(seeded));
+  assert.doesNotMatch(seeded.value.wordingByMode.new, /For a replacement/); assert.match(seeded.value.wording, /For a replacement/);
+  for (const wordingByMode of [{ other: 'x' }, { new: '' }, { new: 3 }, ['new'], null]) {
+    const invalid = await new SchemeOrderTerms({ policy: await policyWith({ terms: { ...termsValue, wordingByMode } }) }).read(f.context, { asOf: instant });
+    assert.equal(invalid.status, 'unavailable', JSON.stringify(invalid)); assert.equal(invalid.reason, 'ordering-policy-invalid');
+  }
+});
+
 test('canonical PolicyService supplies coherent fictional ordering terms without a consumer fallback', async () => {
   const f = await runtime(createPolicyService());
   const terms = await new SchemeOrderTerms({ policy: f.policy }).read(f.context, { asOf: instant });

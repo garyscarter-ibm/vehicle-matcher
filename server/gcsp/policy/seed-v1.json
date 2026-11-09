@@ -12887,6 +12887,9 @@
         "termsVersion": "fictional-order-terms-v1",
         "fictional": true,
         "wording": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. For a replacement, the recorded old contract and expected return mileage must be correct. Approval, appointment and collection are separate decisions; submission does not end the current contract.",
+        "wordingByMode": {
+          "new": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. Approval, appointment and collection are separate decisions."
+        },
         "validUntil": "2026-12-01T00:00:00.000Z",
         "declarations": [
           {
