@@ -1,4 +1,4 @@
-import { el, screenIntro, button, factList } from '../../vehicle-matcher/ui.js';
+import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard, mediaWell } from '../../vehicle-matcher/modes/result-card.js';
 import { labelledField, errorSummary, checkboxField } from '../kit/form-controls.js';
 import { stageList } from '../kit/stage-list.js';
@@ -19,11 +19,20 @@ const blockerText = { 'contact-required': 'A valid contact phone and email are n
   'driver-review-required': 'Your driver details need review before you can accept.',
   'return-data-required': 'The details of the car you return are incomplete.',
   'ordering-terms-unavailable': 'The ordering terms are unavailable right now.' };
-const selectionHeadline = (selection, hostsOrder) => selection.selectionState === 'acknowledged'
+const REFUSED_TITLE = 'Your selection was not sent to ordering';
+const isRefused = (model) => model.state === 'accepted' && model.selection?.selectionState === 'handoff-failed';
+const titleFor = (model) => isRefused(model) ? REFUSED_TITLE : titles[model.state] || titles.error;
+// Without a help link the support pointer stays plain text, never a dead link.
+const refusedMessage = (selection, help) => {
+  const ref = selection.orderReference; const base = 'The car stays reserved for you. Nothing has been ordered.';
+  if (help) return ref ? `${base} Quote order reference ${ref} when you contact scheme support.` : base;
+  return `${base} Contact scheme support${ref ? ` and quote order reference ${ref}` : ''}.`;
+};
+const selectionHeadline = (selection, hostsOrder, help) => selection.selectionState === 'acknowledged'
   ? (hostsOrder ? 'Selection received. Your order is with ordering.'
     : `Selection received. Waiting for ${selection.stages.find((stage) => stage.state === 'waiting')?.name ?? selection.current}.`)
   : selection.selectionState === 'handoff-pending' ? 'Sending your selection to ordering. Ordering owns the next step. You do not need to do anything.'
-    : 'Your selection was not accepted for ordering. The car stays reserved. Contact scheme support.';
+    : refusedMessage(selection, help);
 // One line from the projected card, so a declined offer needs no second copy of the car.
 function declinedSummary(card) {
   const member = card?.members?.length === 1 ? card.members[0] : null; const name = member?.display?.name;
@@ -31,7 +40,7 @@ function declinedSummary(card) {
   const points = member.terms?.find((term) => term.kind === 'points-monthly')?.value;
   return `You declined the ${name}${Number.isFinite(points) ? `, ${points.toLocaleString('en-GB')} points a month` : ''}.`;
 }
-const messageFor = (model, hostsOrder) => model.message || (model.state === 'accepted' && model.selection ? selectionHeadline(model.selection, hostsOrder) : messages[model.state]);
+const messageFor = (model, hostsOrder, help) => model.message || (model.state === 'accepted' && model.selection ? selectionHeadline(model.selection, hostsOrder, help) : messages[model.state]);
 const longDate = (value) => /^\d{4}-\d\d-\d\d$/.test(value ?? '') && Number.isFinite(Date.parse(value))
   ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : value;
 // Readable demo time such as "6 Nov 2026, 11:30 UTC"; anything unparsable shows as given.
@@ -99,7 +108,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
   const page = el('div', 'vm gcsp-offer-body');
   page.id = `gcsp-offer-${++sequence}`;
   // Once ordering holds the order its tracker is the one source of progress, so selection stages give way.
-  const hostsOrderFor = (model) => model.state === 'accepted' && typeof model.orderUuid === 'string' && typeof mountOrder === 'function' && model.card?.members?.length === 1;
+  const hostsOrderFor = (model) => model.state === 'accepted' && !isRefused(model) && typeof model.orderUuid === 'string' && typeof mountOrder === 'function' && model.card?.members?.length === 1;
   const content = el('div', 'gcsp-offer-content');
   // FUCQ-234: screen-reader only; the heading already shows the state.
   const announcement = el('p', 'gcsp-vh'); announcement.setAttribute('role', 'status');
@@ -139,12 +148,19 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       messageNode = el('p'); messageNode.hidden = true; content.append(screen);
       if (focused || followupFocused) screen.querySelector('.vm-btn')?.focus(); return;
     }
-    content.append(screenIntro({ title: titles[state] || titles.error, level: 1 }));
-    const hostsOrder = hostsOrderFor(model);
-    messageNode = el('p', 'gcsp-note', messageFor(model, hostsOrder));
-    messageNode.hidden = !messageFor(model, hostsOrder); content.append(messageNode);
+    const hostsOrder = hostsOrderFor(model); const refused = isRefused(model);
+    if (refused) {
+      const actions = [links?.help && button({ label: 'Contact scheme support', variant: 'primary', href: links.help }),
+        links?.cars && button({ label: 'Back to Your cars', variant: 'ghost', href: links.cars })].filter(Boolean);
+      const screen = statusScreen({ title: REFUSED_TITLE, level: 1, message: messageFor(model, hostsOrder, links?.help), actions });
+      messageNode = screen.querySelector('.vm-lede'); content.append(screen);
+    } else {
+      content.append(screenIntro({ title: titleFor(model), level: 1 }));
+      messageNode = el('p', 'gcsp-note', messageFor(model, hostsOrder));
+      messageNode.hidden = !messageFor(model, hostsOrder); content.append(messageNode);
+    }
     if (model.fixtureNotice) content.append(el('p', 'gcsp-note', model.fixtureNotice));
-    if (state === 'accepted' && (links?.orderProgress || links?.cars)) {
+    if (state === 'accepted' && !refused && (links?.orderProgress || links?.cars)) {
       const leadOn = el('div', 'gcsp-offer-actions');
       if (links.orderProgress) leadOn.append(button({ label: 'View order progress', variant: 'primary', href: links.orderProgress }));
       if (links.cars) leadOn.append(button({ label: 'Back to Your cars', variant: 'ghost', href: links.cars }));
@@ -274,7 +290,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     const nextStructure = JSON.stringify([model.state, model.card, model.currentCar, model.fixtureNotice, model.handoff, model.selection, model.orderUuid]);
     // Keep the kit's own decision live region and keyboard controls mounted across clock reads.
     if (structure !== nextStructure) { draw(model); structure = nextStructure; }
-    messageNode.textContent = messageFor(model, hostsOrderFor(model)) || '';
+    messageNode.textContent = messageFor(model, hostsOrderFor(model), links?.help) || '';
     messageNode.hidden = !messageNode.textContent;
     if (model.state === 'pending') accepting = false;
     updateFollowup(model);
@@ -292,10 +308,10 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
           : content.querySelector('[data-offer-action="decline"]:enabled, [data-offer-action="accept"]:enabled, [data-offer-action="refresh"]'))?.focus();
       }
     }
-    const key = `${model.state}:${model.reference?.offerId || ''}`;
+    const key = `${titleFor(model)}:${model.reference?.offerId || ''}`;
     if (model.state === 'pending' && model.checkingExpiry) announce('The deadline has been reached. Checking the current offer state.');
     else if (model.state === 'pending' && model.seconds !== null && model.seconds <= 300) announce('Less than five minutes remain on this offer.');
-    else if (model.state !== previousState || key !== previousIdentity) announce(titles[model.state] || titles.error);
+    else if (model.state !== previousState || key !== previousIdentity) announce(titleFor(model));
     previousState = model.state; previousIdentity = key;
   }
   return { update, destroy() { clearFollowup(); clearOrder(); page.remove(); } };

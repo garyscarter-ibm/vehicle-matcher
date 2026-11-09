@@ -21,7 +21,7 @@ A view never styles a kit component's insides from the app stylesheet.
 | `cardinal(n)` / `CARDINALS` | Small counts as words ("three cars") in prose; falls back to the numeral above ten. |
 | `screenIntro({ kicker, title, lede, level = 2, className })` | Screen heading block (`vm-kicker` / `vm-title` / `vm-lede`); title is an `h<level>`. Retail modes have not migrated yet. |
 | `button({ label, variant: 'primary' \| 'ghost', onClick, href, disabled, describedBy })` | `vm-btn` button: `<button type="button">`, or `<a>` when `href` is given and not disabled. `describedBy` links a visible reason for a disabled action. Retail modes have not migrated yet. |
-| `statusScreen({ kicker, title, message, actions, role = 'status' })` | Error, empty or no-match shell (`vm-screen vm-status`). `actions` are nodes. Retail modes have not migrated yet. |
+| `statusScreen({ kicker, title, message, actions, role = 'status', level = 2 })` | Error, empty or no-match shell (`vm-screen vm-status`). `actions` are nodes; the title is an `h<level>`, so a page whose whole state is the screen can make it the h1. Retail modes have not migrated yet. |
 | `factList(rows, { className })` | `<dl>` of `{ label, value, unit, missingLabel }` rows. A null or undefined value reads "Not supplied" (or `missingLabel`) with the `is-missing` class, never "undefined" or blank. |
 
 ## Result cards (`modes/result-card.js`)

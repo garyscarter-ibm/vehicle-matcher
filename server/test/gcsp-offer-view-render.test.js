@@ -271,13 +271,14 @@ for (const [name, headline, stages] of [
     ['sales-manager approval', 'Waiting'], ['sent to ordering', 'Not started']]],
   ['selection-pending', 'Sending your selection to ordering. Ordering owns the next step. You do not need to do anything.', [['selection received', 'Sending'], ['HR approval', 'Not started'],
     ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
-  ['selection-failed', 'Your selection was not accepted for ordering. The car stays reserved. Contact scheme support.', [['selection received', 'Not accepted'],
-    ['HR approval', 'Not started'], ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
+  ['selection-failed', 'The car stays reserved for you. Nothing has been ordered. Contact scheme support and quote order reference GCSP-000123.',
+    [['selection received', 'Not accepted'], ['HR approval', 'Not started'], ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
 ]) test(`accepted offer shows the server's stage names and states: ${name}`, async () => {
   const { root, stop } = await mountFixture(name);
   try {
-    assert.equal(root.querySelector('h1').textContent, 'Offer accepted');
-    assert.equal(root.querySelector('p.gcsp-note').textContent, headline);
+    const refused = name === 'selection-failed';
+    assert.equal(root.querySelector('h1').textContent, refused ? 'Your selection was not sent to ordering' : 'Offer accepted');
+    assert.equal(root.querySelector(refused ? '.vm-status .vm-lede' : 'p.gcsp-note').textContent, headline);
     assert.deepEqual(stageText(root), stages);
     assert.equal(root.querySelector('.gcsp-stage-heading').textContent, 'Your selection');
     const ids = [...root.querySelector('.gcsp-stage-heading').closest('.gcsp-offer-current').querySelectorAll('dl > div')].map((d) => [d.querySelector('dt').textContent, d.querySelector('dd').textContent]);
@@ -285,6 +286,35 @@ for (const [name, headline, stages] of [
     assert.doesNotMatch(root.textContent, /Order number/); assert.equal(root.querySelector('[aria-label="Before you accept"]'), null);
     assert.doesNotMatch(root.textContent, /\bapproved\b/i); assert.equal(root.querySelector('[data-offer-action="accept"]'), null);
   } finally { stop(); }
+});
+
+test('FUCQ-300: a refused handoff states the outcome, links Renewal help and mounts no tracker', () => {
+  const refusedModel = () => ({ ...offerFixture('selection-failed').value, canAccept: false, canDecline: false, orderUuid: ORDER });
+  const links = { orderProgress: '/gcsp-order-progress-live.html', cars: '/gcsp-account.html', help: '/gcsp-help.html' };
+  const mounts = []; const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root, { links, mountOrder: (host, input) => { mounts.push(input); host.textContent = 'tracker'; return () => {}; } });
+  view.update(refusedModel());
+  assert.equal(root.querySelector('h1').textContent, 'Your selection was not sent to ordering'); assert.equal(root.querySelectorAll('h1').length, 1);
+  const status = root.querySelector('.vm-status'); assert.ok(status); assert.equal(status.querySelector('h1.vm-title').textContent, root.querySelector('h1').textContent);
+  assert.equal(status.querySelector('.vm-lede').textContent, 'The car stays reserved for you. Nothing has been ordered. Quote order reference GCSP-000123 when you contact scheme support.');
+  const help = [...status.querySelectorAll('a.vm-btn')].find((a) => a.textContent === 'Contact scheme support');
+  assert.equal(help.getAttribute('href'), '/gcsp-help.html');
+  assert.equal(status.querySelector('a[href="/gcsp-account.html"]').textContent, 'Back to Your cars');
+  assert.equal(mounts.length, 0); assert.equal(root.querySelector('.gcsp-offer-order'), null);
+  assert.doesNotMatch(root.textContent, /View order progress|Offer accepted|not accepted for ordering/);
+  assert.equal(root.querySelector('a[href="/gcsp-order-progress-live.html"]'), null);
+  assert.equal(root.querySelector('.gcsp-stage-heading').textContent, 'Your selection'); assert.equal(root.querySelectorAll('.vm-card').length, 1);
+  assert.equal(root.querySelector('[data-offer-announcement]').textContent, 'Your selection was not sent to ordering');
+  assert.doesNotMatch(root.textContent, /\u2014/);
+  const bare = document.createElement('div'); document.body.append(bare);
+  createOfferView(bare, {}).update(refusedModel());
+  assert.equal(bare.querySelector('a[href="/gcsp-help.html"]'), null); assert.equal(bare.querySelectorAll('a.vm-btn').length, 0);
+  assert.match(bare.querySelector('.vm-status .vm-lede').textContent, /Nothing has been ordered\. Contact scheme support and quote order reference GCSP-000123\./);
+  // A normal acknowledged selection keeps its heading and the tracker.
+  const ok = document.createElement('div'); document.body.append(ok); let hosted = 0;
+  const okView = createOfferView(ok, { links, mountOrder: (host) => { hosted += 1; return () => {}; } });
+  okView.update({ ...offerFixture('selection-hr').value, canAccept: false, canDecline: false, orderUuid: ORDER });
+  assert.equal(ok.querySelector('h1').textContent, 'Offer accepted'); assert.equal(hosted, 1); assert.equal(ok.querySelector('.vm-status'), null);
 });
 
 test('an accepted offer without a selection record keeps the recorded message and no stage list', async () => {
