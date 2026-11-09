@@ -422,6 +422,42 @@ repositoryContract('memory', async () => {
   return { repository: createMemoryRepository({ store }), reopen: () => createMemoryRepository({ store }) };
 });
 
+// FUCQ-226: the comparison replay's shallow snapshots and receipt index must keep the same contract.
+repositoryContract('memory (shallow snapshots, receipt index)', async () => {
+  const store = createMemoryStore();
+  return { repository: createMemoryRepository({ store, snapshot: 'shallow' }), reopen: () => createMemoryRepository({ store, snapshot: 'shallow' }) };
+});
+
+test('FUCQ-226: the shallow receipt index finds receipts committed where a rolled-back transaction had indexed others', async () => {
+  const repository = createMemoryRepository({ store: createMemoryStore(), snapshot: 'shallow' });
+  assert.equal((await repository.open()).status, 'ok'); await setup(repository);
+  const context = ctx(); const receipt = (eventId, value) => ({ consumerId: 'fucq226', eventId, inputDigest: inputDigest(eventId), state: 'completed', outcome: ok(value) });
+  // The refused work indexes its own appended receipts, then is rolled back.
+  const refused = await repository.transaction(context, command(), async (tx) => {
+    assert.equal((await tx.recordReceipt(receipt('lost-a', 1))).status, 'ok'); assert.equal((await tx.recordReceipt(receipt('lost-b', 2))).status, 'ok');
+    assert.equal((await tx.getReceipt('fucq226', 'lost-b')).status, 'ok');
+    return result('conflict', { code: 'refused-on-purpose' });
+  });
+  assert.equal(refused.status, 'conflict');
+  const kept = await repository.transaction(context, command(), async (tx) => {
+    assert.equal((await tx.getReceipt('fucq226', 'lost-a')).status, 'not-found');
+    assert.equal((await tx.recordReceipt(receipt('kept-a', 3))).status, 'ok'); assert.equal((await tx.recordReceipt(receipt('kept-b', 4))).status, 'ok');
+    return ok({ kept: true });
+  });
+  assert.equal(kept.status, 'ok');
+  for (const [eventId, status] of [['kept-a', 'ok'], ['kept-b', 'ok'], ['lost-a', 'not-found'], ['lost-b', 'not-found']]) {
+    assert.equal((await repository.read(context, ref('event_receipts', { consumerId: 'fucq226', eventId }))).status, status, eventId);
+  }
+  // An in-place update of the last indexed receipt is seen, and a duplicate record is refused as before.
+  const row = (await repository.read(context, ref('event_receipts', { consumerId: 'fucq226', eventId: 'kept-b' }))).value;
+  const updated = await repository.transaction(context, command(), (tx) => tx.compareAndSwap(ref('event_receipts', { consumerId: 'fucq226', eventId: 'kept-b' }), row.version, { state: 'pending' }));
+  assert.equal(updated.status, 'ok', JSON.stringify(updated));
+  assert.equal((await repository.read(context, ref('event_receipts', { consumerId: 'fucq226', eventId: 'kept-b' }))).value.state, 'pending');
+  const changed = await repository.transaction(context, command(), (tx) => tx.recordReceipt({ ...receipt('kept-a', 3), inputDigest: inputDigest('other') }));
+  assert.equal(changed.reason, 'idempotency-input-changed');
+  await repository.close();
+});
+
 test('FUCQ-210: a swallowed failure keeps the safe unavailable result and logs only the operation and error name', async (t) => {
   const lines = []; t.mock.method(console, 'error', (...args) => lines.push(args.map(String).join(' ')));
   const secret = 'row-employee-secret postgres://user:pw@host';
