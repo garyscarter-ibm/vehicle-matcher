@@ -158,7 +158,7 @@ Gallery: the **GCSP Greg kit** section of [`components.html`](components.html) s
 
 `attachGregOrders(dashboard, {adapter, productionControls, onChanged, signal})` in `blocks/gcsp/greg-orders/runtime.js` owns that existing region across dashboard remounts. It replaces prior listeners, refreshes the same demand dashboard after an order change, and restores the original reserved region on teardown or abort. Production controls default to hidden; the host selects disclosure. [Canonical host/source handoff](docs/gcsp/fucq104-source-runtime-handoff-2026-11-06.md).
 
-The standalone Greg harness (`gcsp-greg.html`) is a fixture gallery: `harness.js` prepends a `gcsp-greg-bar` note, with a link to the presenter workspace, saying the figures are made up and not the live demo. It has no live adapter, so it does not subscribe to presenter actions; the presenter workspace's Greg branch already refreshes on them.
+The standalone Greg harness (`gcsp-greg.html`) is a fixture gallery: `harness.js` puts a `gcsp-greg-bar` note at the top of the page, under the breadcrumbs, with a link to the presenter workspace, saying the figures are made up and not the live demo. It has no live adapter, so it does not subscribe to presenter actions; the presenter workspace's Greg branch already refreshes on them.
 
 ## GCSP Greg order plan (`blocks/gcsp/greg/plan/`)
 
