@@ -172,7 +172,7 @@ function orderStatus(order, host) {
 }
 
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
-export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls, orderHost, order, restarted = false, reload } = {}) {
+export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls, orderHost, order, orderVehicle, restarted = false, reload } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
   wrap.append(screenIntro({ kicker: 'Choices', title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
@@ -237,7 +237,16 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     wrap.append(drivers);
     const histories = el('section', 'gcsp-account-histories');
     histories.append(el('h2', 'gcsp-h2', 'Order history'));
-    if (model.historyState === 'no-history') histories.append(el('p', 'gcsp-note', 'No order history.'));
+    // FUCQ-239: a placed order is listed in Order history; the scheme groups list contract records only.
+    const placed = order && model.slots.some((slot) => slot.entitlementSlotId === order.entitlementSlotId);
+    if (placed) {
+      const entry = el('article', 'gcsp-account-history');
+      entry.append(el('h3', 'gcsp-h2', orderVehicle?.name ?? 'Model not supplied'),
+        facts([row('Status', status(order.outcome)), ...slotRows(model, order.entitlementSlotId),
+          ...orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value))]));
+      histories.append(entry);
+    }
+    if (model.historyState === 'no-history' && !placed) histories.append(el('p', 'gcsp-note', 'No order history.'));
     for (const [index, history] of model.histories.entries()) {
       const group = details(`${history.label ?? `Scheme ${index + 1}`} (${history.count} record${history.count === 1 ? '' : 's'})`);
       if (!history.orderingSupported) group.append(el('p', 'gcsp-note', 'History is available. Ordering is not supported for this scheme.'));
@@ -268,7 +277,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
 export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, print, orderAdapter, helpAdapter, reload } = {}) {
   const abort = new AbortController();
   let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
-  let generation = 0; let teardown; let loading; let finishPrint; let orderHost; let orderRow; let stopOrder; let restarted = false;
+  let generation = 0; let teardown; let loading; let finishPrint; let orderHost; let orderRow; let orderVehicle; let stopOrder; let restarted = false;
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
   const read = async (name) => {
@@ -309,7 +318,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   };
   function draw(focus = false) {
     if (!main || disposed) return;
-    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, pending, message, journey, controls, orderHost, order: orderRow, restarted, reload });
+    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, pending, message, journey, controls, orderHost, order: orderRow, orderVehicle, restarted, reload });
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
   }
   // Only a listed order shows the area; a failed list leaves the account as it was.
@@ -328,9 +337,9 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     const [accountResult, draftResult, offerResult, found] = await Promise.all([read('readAccount'), read('readDraft'),
       typeof adapter.readOffers === 'function' ? read('readOffers') : null, findOrder()]);
     if (disposed || version !== generation) return { status: 'unavailable' };
-    stopOrder?.(); stopOrder = null; orderHost = null; orderRow = null;
+    stopOrder?.(); stopOrder = null; orderHost = null; orderRow = null; orderVehicle = null;
     if (found) {
-      const { row, ...mount } = found; orderRow = row;
+      const { row, ...mount } = found; orderRow = row; orderVehicle = found.car;
       orderHost = el('section', 'gcsp-account-order'); orderHost.setAttribute('aria-label', 'Your order'); orderHost.id = `gcsp-account-order-${++serial}`;
       stopOrder = mountOrderProgress(orderHost, { ...mount, adapter: orderAdapter, helpAdapter, embedded: true, headingLevel: 2, signal: abort.signal });
     }
