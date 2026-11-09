@@ -70,3 +70,54 @@ export function differenceText(kind, diff) {
 
 export const STATUS_LABELS = Object.freeze({ assumed: 'Assumed', verified: 'Verified' });
 export const statusLabel = (s) => STATUS_LABELS[s] ?? String(s ?? '');
+
+// Experiments (FUCQ-176). Labels, plain descriptions and offline commands; the stored result owns every figure.
+export const EXPERIMENTS = Object.freeze({
+  'process-only': { label: 'Process only', summary: 'Compares the buddy route with today\'s release route. Nothing else changes.', command: 'node scripts/gcsp-comparison.mjs --experiment process' },
+  'order-mix': { label: 'Order mix', summary: 'Changes which model lines the fictional employees order.', command: "node scripts/gcsp-comparison.mjs --experiment order-mix --change '{...}'" },
+  points: { label: 'Points allowance', summary: 'Scales every employee\'s points allowance by one multiplier.', command: "node scripts/gcsp-comparison.mjs --experiment points --change '{...}'" },
+  'hold-sweep': { label: 'Hold duration', summary: 'Changes how long the buddy route holds a car, one run per chosen duration.', command: "node scripts/gcsp-comparison.mjs --experiment hold-sweep --change '{...}'" },
+});
+export const experimentLabel = (id) => EXPERIMENTS[id]?.label ?? humanise(id);
+export const WHAT_IF = 'What-if: this value is tried here and never published as live policy.';
+export const TODAY = 'today';
+export const EXPERIMENT_VERDICTS = Object.freeze({
+  'baseline-better': "Today's value better",
+  'no-clear-difference': VERDICTS['no-clear-difference'],
+  'insufficient-seeds': VERDICTS['insufficient-seeds'],
+});
+/** Verdict text for a tried value: a variant win names the value, a baseline win is as plain. Null for an unknown verdict. */
+export const experimentVerdict = (verdict, valueText) => (verdict === 'variant-better' ? `${valueText} better` : EXPERIMENT_VERDICTS[verdict] ?? null);
+export function experimentDifferenceText(kind, diff, valueText) {
+  const head = `Difference (${valueText} minus today)`;
+  if (!finite(diff?.mean)) return `${head}: ${NOT_OBSERVED}`;
+  const range = finite(diff.min) && finite(diff.max) ? ` (${formatChange(kind, diff.min)} to ${formatChange(kind, diff.max)})` : '';
+  return `${head}: ${formatChange(kind, diff.mean)}${range}`;
+}
+
+/** Whole seconds as "15 min", "2 h", "1 h 30 min"; anything else as plain seconds. */
+export function formatHold(seconds) {
+  if (!Number.isInteger(seconds) || seconds < 0) return String(seconds);
+  if (seconds === 0 || seconds % 60 !== 0) return `${seconds} s`;
+  const hours = Math.floor(seconds / 3600); const minutes = (seconds % 3600) / 60;
+  return [hours ? `${hours} h` : '', minutes ? `${minutes} min` : ''].filter(Boolean).join(' ');
+}
+const share = (v) => `${trim(v * 100, 1)}%`;
+function formatMix(mix) {
+  if (!Array.isArray(mix) || !mix.length || !mix.every((m) => m && typeof m.modelLine === 'string' && finite(m.weight) && m.weight >= 0)) return JSON.stringify(mix);
+  const total = mix.reduce((sum, m) => sum + m.weight, 0);
+  return total > 0 ? mix.map((m) => `${m.modelLine}: ${share(m.weight / total)}`).join(', ') : JSON.stringify(mix);
+}
+/** One stored value for people. experimentId picks the unit: hold seconds, points multiplier, or an order mix. */
+export function formatExperimentValue(experimentId, value) {
+  if (experimentId === 'hold-sweep') return formatHold(value);
+  if (experimentId === 'points') return finite(value) ? `${trim(value, 2)} times the allowance` : String(value);
+  if (experimentId === 'order-mix') return formatMix(value);
+  return typeof value === 'string' ? value : JSON.stringify(value);
+}
+
+// Jobs. Counts come from the server; these words only describe them.
+export const JOB_STATUS = Object.freeze({ starting: 'Starting', running: 'Running', succeeded: 'Finished', failed: 'Failed', interrupted: 'Stopped before it finished' });
+export const PREPARING = 'Preparing the run.';
+export const jobProgressText = ({ seedsDone, seedsTotal, stepsDone, stepsTotal }) => (stepsTotal === 0 ? PREPARING
+  : `Seeds done: ${seedsDone} of ${seedsTotal}. Steps: ${stepsDone} of ${stepsTotal}.`);

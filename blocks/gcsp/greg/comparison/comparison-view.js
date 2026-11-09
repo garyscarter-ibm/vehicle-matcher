@@ -2,20 +2,20 @@
 import { BASELINE, BUDDY, VERDICTS, BETTER_WHEN, FALLBACK_CAVEAT, measureLabel, measureKind, formatMeasure, differenceText, statusLabel,
   formatDemoTime, oldPolicyText } from './comparison-copy.js';
 
-const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
-const text = (v) => typeof v === 'string' && v.trim().length > 0;
-const finite = (v) => typeof v === 'number' && Number.isFinite(v);
+export const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
+export const text = (v) => typeof v === 'string' && v.trim().length > 0;
+export const finite = (v) => typeof v === 'number' && Number.isFinite(v);
 const nullable = (v) => v === null || finite(v);
-const fail = (what) => { throw new TypeError(`Malformed stored comparison: ${what}`); };
+export const fail = (what) => { throw new TypeError(`Malformed stored comparison: ${what}`); };
 
-const readStats = (stats, what) => {
+export const readStats = (stats, what) => {
   if (!object(stats) || !['mean', 'min', 'max'].every((k) => nullable(stats[k]))) fail(what);
   return stats;
 };
 const compactValue = (v) => (typeof v === 'string' ? v : typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v));
 
 // Shares sit on 0..1 and fit on 0..100; the rest on 0..the largest value either route reaches.
-function scaleFor(kind, rows) {
+export function scaleFor(kind, rows) {
   if (kind === 'share') return { min: 0, max: 1 };
   if (kind === 'fit') return { min: 0, max: 100 };
   const top = Math.max(0, ...rows.flatMap((r) => [r.mean, r.min, r.max]).filter(finite));
@@ -33,7 +33,7 @@ function toMeasure(entry) {
 }
 const pick = ({ mean, min, max }) => ({ mean, min, max });
 
-function toAssumption(row) {
+export function toAssumption(row) {
   if (!object(row) || !text(row.key) || !('value' in row)) fail('assumption');
   return { key: row.key, value: compactValue(row.value), unit: row.unit ?? '', status: statusLabel(row.status), basis: row.basis ?? '' };
 }
