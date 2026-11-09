@@ -1,0 +1,42 @@
+{
+ "width": 375,
+ "draft": {
+  "rawKeys": [],
+  "sourcesOpen": false,
+  "optgroups": [
+   "BMW Choices (73)",
+   "Rolls-Royce and Production Choices (74)"
+  ],
+  "firstOptions": [
+   "1 Series Sports Hatch 120",
+   "1 Series Sports Hatch M135",
+   "2 Series Gran Coupe 218i",
+   "2 Series Gran Coupe 220i"
+  ],
+  "hints": [
+   "Switch rows to edit another cost. Your pending edits are retained.",
+   "Now 800 points a month",
+   "Now 1",
+   "Now 1",
+   "Now 1",
+   "Now 1",
+   "Now 1",
+   "Now 1"
+  ],
+  "text": "POLICY Preview and publish Try points costs or recommendation weights, compare the preview, then publish on purpose. Active version Demo policy 1 with offer journey Effective from 5 Nov 2026, 09:00 GMT Demo time 5 Nov 2026, 09:30 GMT 1 held offer keeps its earlier terms. Published points row 1 Series Sports Hatch 120 1 Series Sports Hatch M135 2 Series Gran Coupe 218i 2 Series Gran Coupe 220i 2 Series Gran Coupe M235i 2 Series Coupe 220i 2 Series Coupe 230i 2 Series Coupe M240i 2 Series Active Tourer 220i 2 Series Active Tourer 225xe 2 Series Active Tourer 230e 3 Series Saloon 320i 3 Series Saloon 330e 3 Series Saloon M340i 3 Series Touring 320i 3 Series Touring 330e 3 Series Touring M340i 4 Series Coupe 420i 4 Series Coupe M440i 4 Series Convertible 420i 4 Series Convertible M440i 4 Series Gran Coupe 420i 4 Series Gran Coupe M440i 5 Series Saloon 520i 5 Series Saloon 530e 5 Series Saloo"
+ },
+ "sourcesOpen": {
+  "open": true,
+  "groups": 6,
+  "basisCount": 1,
+  "text": "Sources and assumptions Covers Points costs Status Assumed Source docs/gcsp/shared-contracts.md Date 2026-11-04 Basis Synthetic monthly demo cost for source class UKL; matrices contain no prices. Not a verified BMW amount. Covers Points costs Status Assumed Source docs/gcsp/shared-contracts.md Date 2026-11-04 Basis Synthetic monthly demo cost for source class KKL; matrices contain no prices. Not a verified BMW amount. Covers Points costs Status Assumed Source docs/gcsp/shared-contracts.md Date 2026-11-04 Basis Synthetic monthly demo cost for source class MKL; matrices contain no prices. Not a verified BMW amount. Covers Points costs Status Assumed Source docs/gcsp/shared-contracts.md Date 2026-11-04 Basis Synthetic monthly demo cost for source class M; matrices contain no prices. Not a verified BMW amount. Covers Recommendation weights Status Assumed Source docs/gcsp/shared-recommendation-design.md Date 2026-11-05 Basis Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Quote terms are pinned for at least the buddy hold (7,200 s) so a held offer can be accepted for its whole countdown. Demo calibration is revisable, not BMW policy. Version reference gcsp-policy-v1+offer-journey-v1"
+ },
+ "preview": {
+  "rawKeys": [],
+  "status": "Preview ready: one changed value. Review before publishing.",
+  "order": "actions before results",
+  "gapPx": 74,
+  "overflowX": 0,
+  "text": " fewer than 5 , a privacy band: the exact count is hidden Employees with a suitable released car. Privacy bands stay hidden. Preview outcomes Measure Active Preview Difference Briefs with unmet demand fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden Unknown (privacy bands) Employees with eligible stock fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden Unknown (privacy bands) Scored saved briefs fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden Unknown (privacy bands) Mean best recommendation fit Suppressed for privacy Suppressed for privacy Unknown (privacy suppression) Changed values in this preview Policy field Active Preview Unit Body style weight 1 2 weight 1 held offer keeps its earlier terms."
+ }
+}

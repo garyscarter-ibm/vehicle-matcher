@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { setup, confirm, saved, release, offer, fact } from './helpers/greg-demand-run.js';
 import { preference, stock, providerValue, provider, time, context as recommendationContext } from './helpers/employee-recommendation.js';
 import { PolicyService, MemoryPolicyProvider, createMemoryPolicyStore } from '../gcsp/policy/index.js';
-import { createGregPublishService } from '../gcsp/greg/publish/index.js';
+import { createGregPublishService, versionLabel } from '../gcsp/greg/publish/index.js';
 import { createGregPublishRoutes } from '../gcsp/greg/publish/http.js';
 import { createEmployeeRecommendationService } from '../gcsp/recommendation/index.js';
 import { scorePreferences } from '../scenarios/employee/index.js';
@@ -17,6 +17,7 @@ async function fixture(t, options) {
   let policyProvider;
   const f = await setup({ ...options, policyProvider(source) {
     const calibration = source.assumptions.find((row) => row.key === 'employee.recommendation.v1').value;
+    options?.seed?.(source);
     if (!options?.legacy) calibration.preferenceWeights = Object.fromEntries(Object.keys(calibration.preferences).map((key) => [key, 1]));
     policyProvider = new MemoryPolicyProvider({ store, seedProvider: { async loadVersions() { return [source]; } } });
     return policyProvider;
@@ -45,6 +46,46 @@ test('trusted policy snapshot is a cloned immutable validated snapshot; projecti
   assert.deepEqual(view.fields.filter((row) => row.kind === 'weight').map((row) => row.id), ['weight:body', 'weight:fuel', 'weight:sportiness', 'weight:comfort', 'weight:economy', 'weight:size']);
   assert.ok(view.fields.every((row) => row.source && row.basis && row.status && row.unit));
   assert.equal(Object.hasOwn(view, 'assumptions'), false);
+});
+
+test('projection labels every seed row from the policy source, with no raw keys or fallbacks', async (t) => {
+  const f = await fixture(t); const view = good(await f.publish.readPolicy(f.context));
+  const labels = f.source.assumptions.find((row) => row.key === 'policy.displayLabels.v1').value;
+  const prices = view.fields.filter((row) => row.kind === 'price');
+  for (const row of f.source.pricePlans) {
+    const model = row.matchValue.split('|')[0]; assert.ok(labels.models[model], `template for ${model}`);
+    assert.equal(prices.find((p) => p.key === row.key).label, labels.models[model].replace('{engine}', row.matchValue.split('|').slice(1).join('|')).trim());
+  }
+  assert.equal(prices.find((p) => p.key === f.price.key).label, '3 Series Touring 320i');
+  assert.equal(prices.find((p) => p.matchValue === 'F70 Sports Hatch|120').label, '1 Series Sports Hatch 120');
+  for (const scheme of new Set(prices.map((p) => p.schemeId))) {
+    const set = prices.filter((p) => p.schemeId === scheme).map((p) => p.label); assert.equal(new Set(set).size, set.length, scheme);
+  }
+  assert.ok(prices.every((p) => !p.label.includes('|') && !p.label.includes('eligibilityModelKey') && p.unitLabel === 'points a month' && p.schemeLabel !== p.schemeId));
+  assert.equal(view.fields.find((p) => p.id === 'weight:body').label, 'Body style weight');
+  assert.equal(view.fields.find((p) => p.id === 'weight:economy').label, 'Running costs weight');
+  assert.equal(view.fields.find((p) => p.id === 'weight:size').unitLabel, 'weight');
+  assert.equal(view.activeVersionLabel, 'Demo policy 1');
+  assert.equal(versionLabel('gcsp-policy-v1+offer-journey-v1', view.versionNames), 'Demo policy 1 with offer journey');
+  assert.equal(versionLabel('greg-abc', view.versionNames), "Greg's change"); assert.equal(versionLabel('preview-abc', view.versionNames), 'Unnamed update');
+});
+
+test('a changed label entry in an alternative seed changes the projected label, and missing labels fall back plainly', async (t) => {
+  const f = await fixture(t, { seed(source) {
+    const entry = source.assumptions.find((row) => row.key === 'policy.displayLabels.v1');
+    entry.value.models['G21 Touring'] = 'Touring estate {engine}'; entry.value.weights.body = 'Shape'; delete entry.value.models['G05 X5'];
+  } });
+  const view = good(await f.publish.readPolicy(f.context));
+  assert.equal(view.fields.find((p) => p.key === f.price.key).label, 'Touring estate 320i');
+  assert.equal(view.fields.find((p) => p.id === 'weight:body').label, 'Shape weight');
+  assert.equal(view.fields.find((p) => p.matchValue?.startsWith('G05 X5|')).label.includes('|'), false);
+});
+
+test('held-offer summary has singular, plural and zero wording', async (t) => {
+  const f = await fixture(t);
+  assert.equal(good(await f.publish.readPolicy(f.context)).heldOffers.message, 'No held offers are affected.');
+  await confirm(f); await offer(f, 1, 'active');
+  assert.equal(good(await f.publish.readPolicy(f.context)).heldOffers.message, '1 held offer keeps its earlier terms.');
 });
 
 test('preview uses real demand/points evaluation and writes no repository or policy records', async (t) => {
@@ -80,7 +121,7 @@ test('publish appends an immutable version and keeps pinned offers, holds and qu
   assert.equal(out.policyVersion, 'greg-policy-v2'); assert.equal(out.publisher, f.context.principalId);
   assert.equal(out.effectiveFrom, now); assert.equal(out.activationRequired, false);
   assert.equal(out.activation.status, 'active');
-  assert.equal(out.heldOffers.count, 1); assert.match(out.heldOffers.message, /1 held offers/);
+  assert.equal(out.heldOffers.count, 1); assert.equal(out.heldOffers.message, '1 held offer keeps its earlier terms.');
   const after = await queryAll(f);
   const { runs: beforeRuns, ...beforeRows } = before; const { runs: afterRuns, ...afterRows } = after;
   assert.deepEqual(afterRows, beforeRows);

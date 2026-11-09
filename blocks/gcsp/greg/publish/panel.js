@@ -10,8 +10,12 @@ import { validPolicy, validPreview, validPublished } from './http-adapter.js';
 let sequence = 0;
 const note = (text) => el('p', 'gcsp-note', text);
 const when = (iso) => formatDemoTime(iso) ?? 'Time not available';
-const fieldName = (f) => f.kind === 'weight' ? `${f.key[0].toUpperCase()}${f.key.slice(1)} weight`
-  : `${f.schemeId} · ${f.configurationId || `${f.matchField}: ${f.matchValue}`}`;
+const fieldName = (f) => f.label;
+const nowHint = (f) => `Now ${f.value}${f.kind === 'price' ? ` ${f.unitLabel}` : ''}`;
+const unitText = (f) => f.kind === 'price' ? ` ${f.unitLabel}` : '';
+// Mirrors the server versionLabel rule; names come from the projected policy.
+const versionLabel = (id, names) => String(id).split('+').map((part) => (Object.hasOwn(names, part) ? names[part]
+  : part.startsWith('greg-') ? "Greg's change" : 'Unnamed update')).join(' with ');
 const safeNumber = (v) => /^\d+$/.test(v) && Number.isSafeInteger(Number(v)) && Number(v) >= 0;
 const countValue = (c) => ({ label: c.label, isBand: c.kind === 'band' });
 const scoreValue = (s) => s.status === 'available' ? `${s.value.toFixed(1)} / 100` : 'Suppressed for privacy';
@@ -22,7 +26,7 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
   const abort = new AbortController();
   const stop = () => abort.abort(); signal?.addEventListener('abort', stop, { once: true });
   if (signal?.aborted) stop();
-  let disposed = false; let generation = 0; let revision = 0; let busy = false; let policy; let preview; let original;
+  let disposed = false; let generation = 0; let revision = 0; let busy = false; let policy; let preview; let original; let names = {};
   let validationErrors = [];
   let values = new Map(); let controls = new Map(); let selected; let points; let selector;
   const base = `greg-publish-${++sequence}`;
@@ -37,6 +41,7 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
     row?.input.focus();
   } });
   const form = el('div', 'gcsp-publish-form');
+  const sources = el('details', 'gcsp-publish-sources'); sources.hidden = true;
   const results = el('div', 'gcsp-publish-results');
   const message = note('Loading policy controls.'); message.setAttribute('role', 'status');
   const actions = el('div', 'gcsp-publish-actions');
@@ -45,7 +50,7 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
   const retry = button({ label: 'Retry original publication', variant: 'primary', onClick: () => runPublish(true) });
   const refresh = button({ label: 'Refresh policy', variant: 'ghost', onClick: () => load() });
   actions.append(previewButton, publishButton, retry, refresh);
-  page.append(intro, facts, summary.root, form, message, results, actions); root.replaceChildren(page);
+  page.append(intro, facts, summary.root, form, sources, actions, message, results); root.replaceChildren(page);
   function state(name, text) {
     page.dataset.state = name; message.textContent = text;
     const locked = busy || !!original || !policy;
@@ -66,22 +71,21 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
     for (const f of policy.fields.filter((f) => f.kind === 'price')) controls.set(f.id, points);
     points.wrapped.setError(''); points.syncSlider?.();
     const hint = points.wrapped.root.querySelector('.gcsp-field-hint');
-    hint.textContent = `${selected.unit}. Active: ${selected.value}. ${selected.status}; ${selected.source}, ${selected.sourceDate}. ${selected.basis}`;
+    hint.textContent = nowHint(selected);
   }
   function numberField(field) {
     const input = el('input', ''); input.type = 'number'; input.min = '0'; input.step = '1'; input.max = String(Number.MAX_SAFE_INTEGER);
     input.value = values.get(field.id);
     const wrapped = labelledField({ id: `${base}-field-${controls.size}`, label: field.kind === 'price' ? 'Monthly points cost' : fieldName(field),
-      control: input, hint: `${field.unit}. Active: ${field.value}. ${field.status}; ${field.source}, ${field.sourceDate}. ${field.basis}` });
+      control: input, hint: nowHint(field) });
     const control = { field, input, wrapped, root: el('div', 'gcsp-publish-control') };
     control.root.append(wrapped.root);
     if (field.presentationRange) {
       const initialRange = field.presentationRange;
       const sliderHost = el('div', 'gcsp-publish-slider');
-      const rangeNote = note('');
       const outside = note('');
       const descriptor = { id: `${input.id}-slider`, label: `${fieldName(field)} slider`,
-        min: initialRange.minimum, max: initialRange.maximum, step: initialRange.step, unit: ` ${field.unit}` };
+        min: initialRange.minimum, max: initialRange.maximum, step: initialRange.step, unit: unitText(field) };
       const sliderLabel = el('label', 'gcsp-field-label', descriptor.label); sliderLabel.htmlFor = descriptor.id;
       sliderHost.append(sliderLabel);
       const slider = renderRangeSlider(sliderHost, descriptor, {}, {
@@ -93,14 +97,13 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
       const sliderInput = sliderHost.querySelector('input'); sliderInput.id = descriptor.id;
       control.syncSlider = (locked = busy || !!original) => {
         const range = control.field.presentationRange;
-        if (!range) { sliderHost.hidden = true; rangeNote.hidden = true; outside.hidden = false;
+        if (!range) { sliderHost.hidden = true; outside.hidden = false;
           outside.textContent = 'Use exact values. A slider range is not supplied for this policy row.'; return; }
-        Object.assign(descriptor, { min: range.minimum, max: range.maximum, step: range.step, unit: ` ${control.field.unit}` });
+        Object.assign(descriptor, { min: range.minimum, max: range.maximum, step: range.step, unit: unitText(control.field) });
         sliderLabel.textContent = `${fieldName(control.field)} slider`;
         sliderInput.min = String(range.minimum); sliderInput.max = String(range.maximum); sliderInput.step = String(range.step);
         sliderHost.querySelector('.vm-slider-min').textContent = formatSliderValue(range.minimum, descriptor);
         sliderHost.querySelector('.vm-slider-max').textContent = formatSliderValue(range.maximum, descriptor);
-        rangeNote.hidden = false; rangeNote.textContent = `${range.status}: slider range from ${range.source}, ${range.sourceDate}. ${range.basis}`;
         const value = safeNumber(input.value) ? Number(input.value) : null;
         const within = value !== null && value >= range.minimum && value <= range.maximum;
         sliderHost.hidden = !within;
@@ -110,19 +113,23 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
         slider.update({ value: within ? value : null, valueState: within ? 'confirmed' : 'unknown', disabled: locked || !within });
         sliderInput.setAttribute('aria-label', sliderLabel.textContent);
       };
-      control.root.append(sliderHost, outside, rangeNote); control.syncSlider();
+      control.root.append(sliderHost, outside); control.syncSlider();
     }
     input.addEventListener('input', () => { values.set(control.field.id, input.value); wrapped.setError(''); invalidate(); control.syncSlider?.(); });
     controls.set(field.id, control); return control;
   }
   function build() {
-    values = new Map(policy.fields.map((f) => [f.id, String(f.value)])); controls = new Map();
-    facts.replaceChildren(factList([{ label: 'Active version', value: policy.activeVersion }, { label: 'Effective from', value: when(policy.effectiveFrom) },
+    names = policy.versionNames; values = new Map(policy.fields.map((f) => [f.id, String(f.value)])); controls = new Map();
+    facts.replaceChildren(factList([{ label: 'Active version', value: policy.activeVersionLabel }, { label: 'Effective from', value: when(policy.effectiveFrom) },
       { label: 'Demo time', value: when(policy.asOf) }]), note(policy.heldOffers.message));
     const prices = policy.fields.filter((f) => f.kind === 'price'); const rows = [];
     if (prices.length) {
       selector = el('select', '');
-      for (const f of prices) { const option = el('option', '', fieldName(f)); option.value = f.id; selector.append(option); }
+      const groups = new Map();
+      for (const f of prices) {
+        if (!groups.has(f.schemeId)) { const group = el('optgroup', ''); group.label = f.schemeLabel; groups.set(f.schemeId, group); selector.append(group); }
+        const option = el('option', '', fieldName(f)); option.value = f.id; groups.get(f.schemeId).append(option);
+      }
       const wrapped = labelledField({ id: `${base}-price`, label: 'Published points row', control: selector,
         hint: 'Switch rows to edit another cost. Your pending edits are retained.' });
       points = numberField(prices[0]); selector.addEventListener('change', selectPrice); selectPrice();
@@ -130,9 +137,26 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
     }
     const weights = el('div', 'gcsp-publish-weights');
     for (const f of policy.fields.filter((f) => f.kind === 'weight')) weights.append(numberField(f).root);
-    if (policy.weightsAdoptionRequired) rows.push(note('The server proposes neutral weights for this retained policy. Publishing a weight change adopts the complete proposed map.'));
-    if (!policy.fields.some((f) => f.presentationRange)) rows.push(note('Use exact values. Slider ranges are not supplied by this policy.'));
-    form.replaceChildren(...rows, weights);
+    if (policy.weightsAdoptionRequired) rows.push(note('Weights start at 1. Publishing a weight change saves all six.'));
+    form.replaceChildren(...rows, weights); drawSources();
+  }
+  function drawSources() {
+    const groups = new Map();
+    const add = (cover, p) => {
+      const key = [p.status, p.source, p.sourceDate, p.basis].join('\n'); const group = groups.get(key) ?? { p, covers: new Set() };
+      group.covers.add(cover); groups.set(key, group);
+    };
+    for (const f of policy.fields) {
+      add(f.kind === 'price' ? 'Points costs' : 'Recommendation weights', f);
+      if (f.presentationRange) add('Slider ranges', f.presentationRange);
+    }
+    const status = (s) => `${s[0].toUpperCase()}${s.slice(1)}`;
+    const list = el('div', 'gcsp-publish-facts');
+    list.append(...[...groups.values()].map(({ p, covers }) => factList([
+      { label: 'Covers', value: [...covers].join(', ') }, { label: 'Status', value: status(p.status) }, { label: 'Source', value: p.source },
+      { label: 'Date', value: p.sourceDate }, { label: 'Basis', value: p.basis }])), factList([{ label: 'Version reference', value: policy.activeVersion }]));
+    sources.replaceChildren(el('summary', '', 'Sources and assumptions'), list);
+    sources.hidden = false;
   }
   function changes() {
     const errors = []; const changed = [];
@@ -156,7 +180,7 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
   function failure(reply) {
     const restarted = isRunRestarted(reply);
     const name = restarted ? 'restarted' : ['refused', 'rejected'].includes(reply?.status) ? reply.status : 'unavailable';
-    if (name === 'refused' || restarted) { policy = null; form.hidden = true; }
+    if (name === 'refused' || restarted) { policy = null; form.hidden = true; sources.hidden = true; }
     if (restarted) { state(name, 'Demo restarted.'); results.replaceChildren(runRestartedNotice().root); return; }
     state(name, reply?.message || 'Policy controls are unavailable. Retry in a moment.');
     if (!policy) results.replaceChildren(statusScreen({ kicker: 'Policy', title: name === 'refused' ? 'Access refused' : 'Policy unavailable',
@@ -190,7 +214,8 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
           ? `${(draft.fit.meanBestScore.value - active.fit.meanBestScore.value).toFixed(1)} / 100` : 'Unknown (privacy suppression)' },
     ] }), dataTable({ caption: 'Changed values in this preview', columns: [{ key: 'name', label: 'Policy field' }, { key: 'before', label: 'Active' },
       { key: 'after', label: 'Preview' }, { key: 'unit', label: 'Unit' }], rows: value.differences.map((d) => ({
-      name: fieldName(policy.fields.find((f) => f.id === d.id)), before: d.before, after: d.after, unit: d.unit })) }), note(value.heldOffers.message));
+      name: fieldName(policy.fields.find((f) => f.id === d.id)), before: d.before, after: d.after,
+      unit: policy.fields.find((f) => f.id === d.id).unitLabel })) }), note(value.heldOffers.message));
   }
   async function runPreview() {
     if (busy || original || !policy) return;
@@ -229,8 +254,8 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
       results.replaceChildren(statusScreen({ kicker: 'Published', title: pending ? 'Saved, waiting for activation' : 'Policy published',
         message: pending ? 'The version is saved. Retry the original publication to activate it without publishing twice.'
           : value.activation.publishedVersionActive === false ? 'The saved version was published. A later policy is now active.' : 'New previews and allocations use the active policy.' }),
-      factList([{ label: 'Published version', value: value.policyVersion }, { label: 'Effective from', value: when(value.effectiveFrom) },
-        { label: 'Publisher', value: value.publisher }, { label: 'Active version', value: value.activation.policyVersion }]), note(value.heldOffers.message));
+      factList([{ label: 'Published version', value: versionLabel(value.policyVersion, names) }, { label: 'Effective from', value: when(value.effectiveFrom) },
+        { label: 'Publisher', value: value.publisher }, { label: 'Active version', value: versionLabel(value.activation.policyVersion, names) }]), note(value.heldOffers.message));
       preview = null;
       if (!pending) { original = null; policy = null; }
       state('published', pending ? 'Publication saved. Activation pending.' : 'Publication complete. Refresh policy before another change.');

@@ -13,11 +13,12 @@ const held = (v) => v && (v.count === null || integer(v.count)) && text(v.messag
 const presentation = (v) => v === undefined || v && integer(v.minimum) && integer(v.maximum) && v.maximum > v.minimum
   && v.step === 1 && ['assumptionKey', 'source', 'sourceDate', 'basis', 'status', 'unit'].every((key) => text(v[key]));
 const field = (v) => text(v?.id) && ['price', 'weight'].includes(v.kind) && text(v.key)
-  && v.id === `${v.kind}:${v.key}` && integer(v.value) && text(v.unit) && presentation(v.presentationRange)
+  && v.id === `${v.kind}:${v.key}` && integer(v.value) && text(v.unit) && text(v.label) && text(v.unitLabel) && presentation(v.presentationRange)
   && ['source', 'sourceDate', 'basis', 'status'].every((key) => text(v[key]))
-  && (v.kind !== 'price' || text(v.schemeId) && (text(v.configurationId) || text(v.matchField) && text(v.matchValue)));
+  && (v.kind !== 'price' || text(v.schemeId) && text(v.schemeLabel) && (text(v.configurationId) || text(v.matchField) && text(v.matchValue)));
+const names = (v) => v !== null && typeof v === 'object' && !Array.isArray(v) && Object.values(v).every(text);
 export function validPolicy(v) {
-  return text(v?.activeVersion) && instant(v.asOf) && instant(v.effectiveFrom) && held(v.heldOffers)
+  return text(v?.activeVersion) && text(v.activeVersionLabel) && names(v.versionNames) && instant(v.asOf) && instant(v.effectiveFrom) && held(v.heldOffers)
     && Array.isArray(v.fields) && v.fields.length > 0 && v.fields.every(field)
     && new Set(v.fields.map((f) => f.id)).size === v.fields.length
     && v.fields.filter((f) => f.kind === 'weight').length === 6;

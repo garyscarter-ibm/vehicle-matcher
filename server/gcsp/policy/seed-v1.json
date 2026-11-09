@@ -14550,6 +14550,62 @@
       "sourceDate": "2026-11-09",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "policy.displayLabels.v1",
+      "value": {
+        "schemaVersion": 1,
+        "models": {
+          "F44 Gran Coupe": "2 Series Gran Coupe {engine}",
+          "F70 Sports Hatch": "1 Series Sports Hatch {engine}",
+          "G01 X3": "X3 {engine}",
+          "G02 X4": "X4 {engine}",
+          "G05 X5": "X5 {engine}",
+          "G06 X6": "X6 {engine}",
+          "G20 Saloon": "3 Series Saloon {engine}",
+          "G21 Touring": "3 Series Touring {engine}",
+          "G22 Coupe": "4 Series Coupe {engine}",
+          "G23 Convertible": "4 Series Convertible {engine}",
+          "G26 Gran Coupe": "4 Series Gran Coupe {engine}",
+          "G26 i4": "{engine} Gran Coupe",
+          "G29 Z4": "Z4 {engine}",
+          "G42 Coupe": "2 Series Coupe {engine}",
+          "G60 Saloon": "5 Series Saloon {engine}",
+          "G60 i5": "{engine} Saloon",
+          "G61 Touring": "5 Series Touring {engine}",
+          "G61 i5": "{engine} Touring",
+          "M Power": "{engine}",
+          "U06 Active Tourer": "2 Series Active Tourer {engine}",
+          "U10 X2": "X2 {engine}",
+          "U10 iX2": "{engine}",
+          "U11 X1": "X1 {engine}",
+          "U11 iX1": "{engine}",
+          "i20 iX": "{engine}"
+        },
+        "weights": {
+          "body": "Body style",
+          "fuel": "Fuel type",
+          "sportiness": "Sportiness",
+          "comfort": "Comfort",
+          "economy": "Running costs",
+          "size": "Size"
+        },
+        "units": {
+          "points/month": "points a month",
+          "relative-weight": "weight"
+        },
+        "versions": {
+          "gcsp-policy-v1": "Demo policy 1",
+          "offer-journey-v1": "offer journey"
+        }
+      },
+      "unit": "display-labels",
+      "status": "assumed",
+      "basis": "Plain names for policy keys Greg sees, read from public BMW model naming. Not verified BMW copy.",
+      "source": "docs/gcsp/shared-contracts.md",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }
