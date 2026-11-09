@@ -98,3 +98,19 @@ Entries are added as work merges.
   - **Question for Gary:** generated runs' three Next releases release only window-0 cars, about 60 of 300 to 400. Is that intended?
 - **FUCQ-77 closed and pushed** (partly met). The open gates are on its Jira comment.
 - **FUCQ-113 and FUCQ-115** (the learned model) are now being finished on the real data, by a fresh lead.
+- **About 00:40, merged locally and waiting on tests:**
+  - **FUCQ-222** (bug, not in MoSCoW, Medium): a refused saved date now gets "Your saved choices need updating", with a Back to your choices button, instead of a Refresh that could never work.
+  - **FUCQ-225** (bug, not in MoSCoW, High): charging is aligned. A 1,000-employee comparison now finishes in 13.8 min (it didn't finish in 30 before). Peak memory is 4.06 GB, still over target (FUCQ-226).
+- **The comparison and manual side sessions ran out of context**, so fresh leads took over from their handover notes:
+  - comparison: FUCQ-227, then 137 and 138;
+  - manual: FUCQ-221, then 224 and 223.
+- **FUCQ-113 (learning records) is built.** Synthetic records cover all 240 real FUCQ-77 builds, observed records come from the real accept, decline and expiry producers, and the policy seed is unchanged. New bug **FUCQ-232 (bug, not in MoSCoW, Medium):** Greg's view counts body-style declines as "unclassified".
+- **FUCQ-115 (choice model) is built but partly met.** Activation is additive and dated, and **the baseline stays active, with no model adopted**. That's the safe default, built.
+  - On the real fleet (thin data: 12x3, 9 held-out choices), the model is worse than FUCQ-29: log loss 0.885 against 0.738.
+  - On the 80x4 fixture run, it's slightly better on log loss and slightly worse on Brier.
+  - The FUCQ-99 baseline can't run on the real fleet, because the 240 builds carry no body or fuel facts.
+  - **Questions for Gary:**
+    1. Approve a model-line-to-body/fuel mapping? My recommendation is to reuse the body and fuel facts already in the eligibility model specs.
+    2. What size should the sensitivity run be? About 100x4 is needed for a fair test.
+    3. Should the corpus-derived configuration set become a reviewed policy successor?
+    4. Should the model-line mix come from FUCQ-78's live aggregates?
