@@ -111,7 +111,7 @@ const kb = (pageName, action, pass, detail) => report.keyboard.push({ page: page
 async function startHost() {
   // Leads share this Mac, so a lead may pin FUCQ110_PORT; 127.0.0.1 keeps cookies apart from other localhost hosts.
   const port = Number(process.env.FUCQ110_PORT) || (chunk === 'narrow' ? 8841 : 8840);
-  if (!((port >= 8840 && port <= 8849) || (port >= 8860 && port <= 8869))) throw new Error('FUCQ110_PORT must be 8840-8849 or 8860-8869 (127.0.0.1 only)');
+  if (!((port >= 8840 && port <= 8849) || (port >= 8860 && port <= 8869) || (port >= 9220 && port <= 9229))) throw new Error('FUCQ110_PORT must be 8840-8849, 8860-8869 or 9220-9229 (127.0.0.1 only)');
   const origin = `http://127.0.0.1:${port}`;
   const env = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: scratch, GCSP_RUNTIME: '1', GCSP_REPOSITORY_MODE: 'memory',
     GCSP_PUBLIC_ORIGIN: origin, DEMO_ACCESS_KEY: ACCESS_KEY, PORT: String(port), ...(stockMode === 'demo' ? { GCSP_STOCK_SOURCE: 'demo' } : {}) };

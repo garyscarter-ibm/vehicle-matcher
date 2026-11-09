@@ -3,6 +3,7 @@ import { result } from '../repository/index.js';
 import { createVehicleSnapshot } from '../../vehicles/index.js';
 import { createSyntheticStockProvider } from './synthetic-provider.js';
 import { createSyntheticProductionAdapter } from '../supply/synthetic-production.js';
+import { publishedCorpusImage } from '../vehicle-evidence/registered-corpus-images.js';
 
 // Demo stock on the existing pull port. Cars use the four reviewed structural configurations
 // (policy comparison.configurationSet.v1); the stock rows on top are synthetic and run-bound.
@@ -24,10 +25,11 @@ const MODELS = {
     body: 'saloon', fuel: 'petrol', boot: 480, zeroTo62: 7.4, sizeClass: 2, insuranceGroup: 30, mpg: 45, tags: ['cruiser'] },
   touring: { model: '3 Series Touring', derivative: '320i', configurationId: 'Q01QRzIxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G21 Touring|320i', name: 'Synthetic 3 Series Touring 320i',
     body: 'estate', fuel: 'petrol', boot: 500, zeroTo62: 7.4, sizeClass: 2, insuranceGroup: 30, mpg: 44, tags: ['family'] },
-  i5: { model: 'i5 Touring', derivative: 'eDrive40', configurationId: 'Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G61 i5|i5 40', name: 'Synthetic i5 eDrive40 Touring',
+  // imageId: representative image of the line's approved corpus configuration; the car stays structural, so colour stays unknown.
+  i5: { imageId: 'bmw-i5-white-20261101-v1', model: 'i5 Touring', derivative: 'eDrive40', configurationId: 'Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G61 i5|i5 40', name: 'Synthetic i5 eDrive40 Touring',
     body: 'estate', fuel: 'ev', boot: 490, zeroTo62: 6.1, sizeClass: 3, insuranceGroup: 35, tags: ['electric'] },
   // FUCQ-199: the G1-6-eligible line, so a G1-6 employee (Alex) has a car.
-  hatch: { ...f70, model: '1 Series Sports Hatch', derivative: '120', configurationId: 'Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=', key: 'F70 Sports Hatch|120',
+  hatch: { ...f70, imageId: 'bmw-1f7e-20261107-v2', model: '1 Series Sports Hatch', derivative: '120', configurationId: 'Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=', key: 'F70 Sports Hatch|120',
     name: 'Synthetic 1 Series Sports Hatch 120', insuranceGroup: 22, tags: ['city'] },
 };
 // Generated-stock lines with no demo car (FUCQ-77 mappings): line specs from MODEL_SPECS, insurance group and tags synthetic.
@@ -76,26 +78,37 @@ async function windowsFor(policy, request) {
 
 const fact = (value, unit = null) => ({ status: 'known', value, unit,
   provenance: { sourceRef: `fixture:${VERSION}`, observedAt: OBSERVED_AT, version: VERSION, assurance: 'synthetic-scenario' } });
-function exactCar(kind, uuid, orderNumber, until, namespace = DEMO_STOCK_NAMESPACE) {
+// Verified approved images by car kind; a kind without a verified image keeps the honest placeholder.
+async function loadImages() {
+  const found = await Promise.all(Object.entries(MODELS).map(async ([kind, model]) => [kind, model.imageId ? await publishedCorpusImage(model.imageId) : null]));
+  return Object.fromEntries(found.filter(([, image]) => image));
+}
+function displayFor(model, image) {
+  if (!image) return { name: model.name, model: model.model, derivative: model.derivative };
+  return { name: model.name, model: model.model, derivative: model.derivative, photo: image.src,
+    images: [{ src: image.src, alt: `${model.name}: representative image`, fidelity: image.fidelity,
+      sourceRef: `registered-corpus-image:${image.imageId}, observed ${image.observedDate}` }] };
+}
+function exactCar(kind, uuid, orderNumber, until, namespace, images) {
   const model = MODELS[kind];
   return { orderUuid: uuid, orderNumber, configurationId: model.configurationId,
     corpusVersion: VERSION, revision: 1, visibility: structuredClone(VISIBILITY), availability: { availableUntil: until },
     facts: createVehicleSnapshot({ sourceNamespace: namespace, identityKind: 'exact-stock',
-      sourceKeys: { stockId: uuid }, snapshotVersion: VERSION, observedAt: OBSERVED_AT, display: { name: model.name }, facts: {
+      sourceKeys: { stockId: uuid }, snapshotVersion: VERSION, observedAt: OBSERVED_AT, display: displayFor(model, images[kind]), facts: {
         eligibilityModelKey: fact(model.key), ...Object.fromEntries(Object.entries(browseFacts(model)).map(([name, row]) => [name, fact(row.value, row.unit)])) } }) };
 }
 
-function planFor(runId, windowPlan) {
+function planFor(runId, windowPlan, images) {
   const base = 1000000 + digest(VERSION, runId, 'number').readUInt32BE(0) % 8000000;
   let index = 0;
   const windows = windowPlan.map((window) => ({ windowId: window.windowId, availableAt: window.availableAt, supplyId: null,
-    stock: window.cars.map((kind) => { const car = exactCar(kind, orderUuid(runId, index), String(base + index), UNTIL); index += 1; return car; }) }));
+    stock: window.cars.map((kind) => { const car = exactCar(kind, orderUuid(runId, index), String(base + index), UNTIL, DEMO_STOCK_NAMESPACE, images); index += 1; return car; }) }));
   return createSyntheticStockProvider({ runId, version: VERSION, label: LABEL, windows });
 }
 
 /** Resolves a run's plan on first pull from PolicyService, so a presenter reset (a new run) needs no re-preparation. */
 export function createDemoStockProvider({ policy } = {}) {
-  const plans = new Map();
+  const plans = new Map(); let images;
   const unavailable = () => result('unavailable', { reason: 'Stock source is unavailable.', retryable: true });
   return Object.freeze({
     async pull(request) {
@@ -104,7 +117,8 @@ export function createDemoStockProvider({ policy } = {}) {
         let windowPlan;
         try { windowPlan = await windowsFor(policy, request); } catch { windowPlan = null; }
         if (!windowPlan) return unavailable();
-        plans.set(request.runId, planFor(request.runId, windowPlan));
+        images ??= await loadImages();
+        plans.set(request.runId, planFor(request.runId, windowPlan, images));
       }
       return plans.get(request.runId).pull(request);
     },
@@ -114,10 +128,10 @@ export function createDemoStockProvider({ policy } = {}) {
 // Supply cars keep their own namespace, so the run-stock chooser never mistakes a generated run for demo stock.
 const SUPPLY_NAMESPACE = 'synthetic:demo-confirmed-supply-v1';
 // Seven-digit numbers from 9100000 up never meet the demo windows (at most 9000009).
-function supplyWindow(runId, row, held) {
+function supplyWindow(runId, row, held, images) {
   const first = 9100000 + digest(VERSION, runId, row.supplyId, 'number').readUInt32BE(0) % 800000;
   return { windowId: `supply-${row.supplyId}`, availableAt: row.eligibleFrom, supplyId: row.supplyId,
-    stock: Array.from({ length: held.quantity }, (_, i) => exactCar(held.kind, orderUuid(runId, `${row.supplyId}:${i}`), String(first + i), SUPPLY_UNTIL, SUPPLY_NAMESPACE)) };
+    stock: Array.from({ length: held.quantity }, (_, i) => exactCar(held.kind, orderUuid(runId, `${row.supplyId}:${i}`), String(first + i), SUPPLY_UNTIL, SUPPLY_NAMESPACE, images)) };
 }
 
 /** Synthetic stand-in for the ordering system. Its state is process memory, keyed by run and supply. */
@@ -141,10 +155,13 @@ export function createDemoUpstream() {
 /** Wraps any pull provider: eligible confirmed supply releases first, then the run's own source (demo or generated). */
 export function withConfirmedSupply(provider, upstream) {
   if (typeof provider?.pull !== 'function' || typeof upstream?.lookup !== 'function') throw new TypeError('Supply a pull provider and the demo upstream.');
+  let images;
   return Object.freeze({
     async pull(request) {
       const queued = typeof request?.runId === 'string' && Array.isArray(request.queuedSupply) ? request.queuedSupply : [];
-      const windows = queued.flatMap((row) => { const held = upstream.lookup(request.runId, row.supplyId); return held ? [supplyWindow(request.runId, row, held)] : []; });
+      const held = queued.filter((row) => upstream.lookup(request.runId, row.supplyId));
+      if (held.length) images ??= await loadImages();
+      const windows = held.map((row) => supplyWindow(request.runId, row, upstream.lookup(request.runId, row.supplyId), images));
       if (windows.length) {
         const out = await createSyntheticStockProvider({ runId: request.runId, version: VERSION, label: LABEL, windows }).pull(request);
         if (out.status !== 'ok' || out.value.tranche) return out;

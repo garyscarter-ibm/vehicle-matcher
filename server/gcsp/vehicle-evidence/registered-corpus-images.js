@@ -31,6 +31,23 @@ async function readPublishedAsset(image = APPROVED_CORPUS_IMAGES[0], expectedByt
   } finally { await file.close(); }
 }
 
+// Code-owned size and digest per approved image; kept apart because entries above are hashed by inputDigest.
+const PUBLISHED_IMAGE_CHECKS = Object.freeze({
+  'bmw-i5-white-20261101-v1': Object.freeze({ bytes: BYTES, sha256: SHA256 }),
+  'bmw-1f7e-20261107-v2': Object.freeze({ bytes: 77936, sha256: '9704a8616835a1c1ce3b6d65f80e91cabb9edbfc0f83eca06b467bb3b1d236e3' }),
+});
+
+/** A published, digest-checked approved image as { imageId, src, fidelity, observedDate }, or null on any failure. */
+export async function publishedCorpusImage(imageId, { loadPublishedAsset = readPublishedAsset } = {}) {
+  try {
+    const image = APPROVED_CORPUS_IMAGES.find((entry) => entry.imageId === imageId); const check = PUBLISHED_IMAGE_CHECKS[imageId];
+    if (!image || !check) return null;
+    const bytes = await loadPublishedAsset(image, check.bytes);
+    if (!Buffer.isBuffer(bytes) || bytes.length !== check.bytes || createHash('sha256').update(bytes).digest('hex') !== check.sha256) return null;
+    return { imageId, src: `/${image.asset}`, fidelity: image.fidelity, observedDate: image.observedDate };
+  } catch { return null; }
+}
+
 /** Trusted loaders may supply bytes; the registration, source identity and hashes remain code-owned. */
 export async function validateRegisteredCorpusImage(image, row, { loadPublishedAsset = readPublishedAsset } = {}) {
   try {

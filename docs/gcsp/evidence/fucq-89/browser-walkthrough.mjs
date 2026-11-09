@@ -17,8 +17,10 @@ const scratch = resolve(process.env.FUCQ89_SCRATCH || process.env.TMPDIR || '');
 if (!scratch || scratch === '/') throw new Error('Set FUCQ89_SCRATCH (or TMPDIR) to an owned scratch directory');
 const viewport = chunk === 'narrow' ? { width: 375, height: 812 } : { width: 1280, height: 900 };
 const vp = String(viewport.width);
-const shotDir = join(HERE, 'browser');
-const resultsFile = join(HERE, `results-${chunk}.json`);
+// FUCQ89_OUT lets a later story keep its own evidence (FUCQ-250: ../fucq-250) without overwriting this story's.
+const OUT = process.env.FUCQ89_OUT ? resolve(process.env.FUCQ89_OUT) : HERE;
+const shotDir = join(OUT, 'browser');
+const resultsFile = join(OUT, `results-${chunk}.json`);
 const profile = join(scratch, `chrome-${chunk}`);
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const ACCESS_KEY = `walk-${randomBytes(9).toString('hex')}`;
