@@ -1,0 +1,20 @@
+{
+  "kind": "fucq-178-live-run-receipt",
+  "issue": "FUCQ-178",
+  "approval": "Gary Carter, chat, 8 November 2026 about 21:40 UK: \"Yes, run live collection\"",
+  "budget": { "bmwRequests": 3000, "spent": 173, "remaining": 2827 },
+  "runs": [
+    { "story": "FUCQ-78", "branch": "dev/DEV-2026-11-04-057", "what": "stock-locator discovery and one bounded sampling run",
+      "bmwRequests": { "discovery": 8, "sampler": 165, "samplerPlanCap": 360, "samplerHardCap": 400 },
+      "stops": "none: no 401, 403, 429 or challenge; two discovery GETs returned 302 (query without location)",
+      "evidence": ["docs/gcsp/evidence/fucq-20/stock-aggregates-2026-11-08.json", "docs/gcsp/evidence/fucq-20/sampling-plan-2026-11-08.json", "docs/gcsp/evidence/fucq-20/live-sampling-authority-2026-11-08.json"],
+      "commits": ["ebdc5625", "244a678a", "536430a3", "e414e1e4"] },
+    { "story": "FUCQ-77", "branch": "dev/DEV-2026-11-04-056", "what": ".12 release restore and eligibility mappings; live BMW items not started",
+      "bmwRequests": 0, "githubRequests": 32,
+      "output": "/Users/garycarter/Library/CloudStorage/OneDrive-IBM/Claude/_agent-output/vehicle-matcher/fucq178-20261108/fleet-2026-11-07-12/",
+      "evidence": ["docs/gcsp/evidence/fucq77/release-12-restore-2026-11-08.json"],
+      "commits": ["52f6e53c", "f7ea7ec5", "3be4887b"] }
+  ],
+  "requestLog": "docs/gcsp/evidence/fucq-178/request-log-2026-11-08.csv lists every request made outside the sampler; the sampler's 165 are counted in its aggregate report (requestCount per model)",
+  "privacy": "no car-level record, VIN, order number, dealer, cookie or image URL kept; raw discovery bodies deleted after reading the response shape"
+}
