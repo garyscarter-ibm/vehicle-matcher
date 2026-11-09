@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/memory.js';
 import { createPostgresRepository } from '../gcsp/repository/postgres.js';
-import { ok, result, inputDigest, TABLES, FOUNDATION_TABLES, createRepository } from '../gcsp/repository/core.js';
+import { ok, result, inputDigest, TABLES, FOUNDATION_TABLES, createRepository, cloneJson } from '../gcsp/repository/core.js';
 import { migrate, migrationStatus, loadMigrations } from '../gcsp/migrations/index.js';
 const responseFixtures = JSON.parse(readFileSync(new URL('./fixtures/gcsp-repository-outcomes.json', import.meta.url), 'utf8'));
 
@@ -787,4 +787,13 @@ test('postgresql driver: mutating a returned row does not change the next read',
   tampered.state = 'tampered-again';
   assert.deepEqual((await repository.query(ctx(), 'stock')).value, original);
   await repository.close();
+});
+
+test('FUCQ-226: cloneJson copies JSON data exactly as structuredClone does, without sharing any object', () => {
+  const value = JSON.parse('{"a":[1,"x",null,{"b":true}],"__proto__":{"c":2},"d":{"e":[[]]},"f":-0}');
+  const copy = cloneJson(value);
+  assert.deepStrictEqual(copy, structuredClone(value));
+  assert.equal(Object.getPrototypeOf(copy), Object.prototype); assert.ok(Object.hasOwn(copy, '__proto__'));
+  assert.notEqual(copy.a, value.a); assert.notEqual(copy.a[3], value.a[3]); assert.notEqual(copy.d.e, value.d.e);
+  assert.ok(Object.is(copy.f, -0));
 });

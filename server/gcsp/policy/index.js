@@ -2,6 +2,7 @@ import { FilePolicyProvider, PolicySourceError, snapshotVersions, validInstant }
 import { PostgresPolicyProvider } from './postgres-provider.js';
 import { publishPolicyVersion } from './publish.js';
 import { adoptReviewedAssumptions } from './adoption.js';
+import { cloneJson } from '../repository/core.js';
 
 export { FilePolicyProvider } from './file-provider.js';
 export { PostgresPolicyProvider } from './postgres-provider.js';
@@ -10,7 +11,7 @@ const CONTRACT_VERSION = '1.0.0';
 const text = (value) => typeof value === 'string' && value.trim().length > 0;
 const activeAt = (row, instant) => Date.parse(row.effectiveFrom) <= instant
   && (row.effectiveTo === undefined || instant < Date.parse(row.effectiveTo));
-const outcome = (status, policyVersion, fields) => ({ status, ...structuredClone(fields), contractVersion: CONTRACT_VERSION, policyVersion });
+const outcome = (status, policyVersion, fields) => ({ status, ...cloneJson(fields), contractVersion: CONTRACT_VERSION, policyVersion });
 const invalid = (policyVersion, code, field, reason) => outcome('invalid', policyVersion, { code, reasons: [{ field, reason }] });
 const ok = (version, value) => outcome('ok', version, { value });
 
