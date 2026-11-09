@@ -10,9 +10,9 @@ const titles = { pending: 'Your car offer', accepted: 'Offer accepted', declined
   superseded: 'Offer superseded', 'earlier-run': 'Offer from an earlier demo run', 'not-found': 'Offer not found', refused: 'Offer unavailable',
   restarted: RUN_RESTARTED_TITLE, 'access-lapsed': ACCESS_LAPSED_TITLE, loading: 'Loading your offer', error: 'Your offer could not be loaded', uncertain: 'Checking your decision' };
 const messages = { accepted: 'Your selection is recorded. Ordering and approval are separate steps.',
-  declined: 'Your decline is recorded.', expired: 'This offer is no longer available to accept.',
+  declined: 'Your decline is recorded.', expired: 'This offer is no longer available to accept. Open your account to check for a new offer.',
   superseded: 'This offer has been replaced and cannot be changed.',
-  'earlier-run': 'This offer belongs to an earlier demo run. It cannot be changed.',
+  'earlier-run': 'This link is from an earlier demo run. Use your latest offer email or open the offer from your account.',
   'not-found': 'Check the offer link or open the offer from your account.', refused: 'Open the offer from your account or use its original email link.',
   loading: 'Please wait.', uncertain: 'The current outcome is being checked. Actions are unavailable.' };
 const blockerText = { 'contact-required': 'A valid contact phone and email are needed before you can accept.',
@@ -133,7 +133,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     messageNode.hidden = !messageFor(model); content.append(messageNode);
     if (model.fixtureNotice) content.append(el('p', 'gcsp-note', model.fixtureNotice));
     if (state === 'accepted' && model.selection) content.append(selectionGroup(model.selection));
-    if (['pending', 'accepted', 'declined', 'expired', 'superseded', 'uncertain'].includes(state) && model.card?.members?.length === 1) {
+    if (['pending', 'accepted', 'declined', 'superseded', 'uncertain'].includes(state) && model.card?.members?.length === 1) {
       const columns = el('div', 'gcsp-offer-comparison');
       const offer = el('section', 'gcsp-offer-exact');
       offer.setAttribute('aria-label', 'The offered car');
