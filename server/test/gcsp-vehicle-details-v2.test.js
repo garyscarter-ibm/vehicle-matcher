@@ -44,3 +44,36 @@ test('v2 consumer refuses identity substitution and malformed or overstated quan
     (w) => { w.source.references[0] = w.source.references[0].replace('prod.ucp.bmw.cloud', 'private.example'); },
   ]) { const w = wire(); mutate(w); assert.equal((await resolve(w)).status, 'source-unavailable'); }
 });
+
+// FUCQ-158: retained .7 1F7A/1F7C direct DTOs whose solver citation has a present-empty mandatory-elements value.
+const empty = JSON.parse(await readFile(new URL('./fixtures/gcsp/vehicle-evidence/empty-mandatory-elements-cases.json', import.meta.url)));
+const consume = (c, result = c.direct) => createConfiguredVehicleDetails({ lookup: { resolve: () => structuredClone(result),
+  classifyRequest: () => ({ status: 'ok', identityKind: 'synthetic', liveEligible: false, configurationId: c.request.id }) } })
+  .resolve({ kind: c.request.kind, id: c.request.id });
+
+test('configured consumer accepts the documented present-empty mandatory-elements citation for both retained models', async () => {
+  assert.deepEqual(empty.cases.map((c) => c.vgModelCode), ['1F7A', '1F7C']);
+  for (const c of empty.cases) {
+    assert.ok(c.direct.source.references.some((r) => r.endsWith('&mandatory-elements=')));
+    const result = await consume(c); assert.equal(result.status, 'partial', c.vgModelCode);
+    assert.deepEqual(result.vehicle.source.references, c.direct.source.references);
+    assert.deepEqual(result.vehicle.identity, c.direct.identity); assert.deepEqual(result.vehicle.equipment, c.direct.equipment);
+  }
+});
+
+test('configured consumer still rejects malformed v2 solver citations alongside the empty form', async () => {
+  const [c] = empty.cases; const at = c.direct.source.references.findIndex((r) => r.includes('/rulesolver/'));
+  for (const edit of [
+    (r) => `${r}&mandatory-elements=`, (r) => `${r}S01h2`, (r) => `${r}%2C`, (r) => `${r}%2CS01H2`, (r) => `${r}S01`,
+    (r) => `${r}%20`, (r) => `${r}&token=secret`, (r) => r.replace('&mandatory-elements=', '&mandatory-element='),
+    (r) => r.replace(/included-elements=[^&]*/, 'included-elements='),
+    (r) => r.replace('/models/1F7A?', '/models/1F7A/extra?'), (r) => r.replace('https:', 'http:'),
+    (r) => `${r}#fragment`,
+  ]) {
+    const w = structuredClone(c.direct); w.source.references[at] = edit(w.source.references[at]);
+    assert.equal((await consume(c, w)).status, 'source-unavailable', w.source.references[at]);
+  }
+  const w = structuredClone(c.direct); const local = w.source.references.findIndex((r) => r.includes('/localisations/'));
+  w.source.references[local] += '?mandatory-elements=';
+  assert.equal((await consume(c, w)).status, 'source-unavailable');
+});
