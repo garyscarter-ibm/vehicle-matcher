@@ -24,7 +24,10 @@ composition as the local launcher (`server/gcsp/host.js`), and serves the live G
 `https://gcsp-api.onrender.com/gcsp-presenter.html` for the presenter, `/gcsp-account.html` for Paula, `/gcsp-greg.html`
 for Greg, `/gcsp-outbox.html` for the captured emails and `/gcsp/offer` for emailed offer links. One origin keeps the
 server-issued session cookies first-party; `gcsp-site` and `gcsp-api` are different sites on `onrender.com`, and Safari
-would drop cross-site cookies. `gcsp-site` redirects those page addresses to `gcsp-api`. The demo runs in memory mode;
+would drop cross-site cookies. `gcsp-site` redirects those page addresses to `gcsp-api`. **Rule (FUCQ-181):** pages and the API must be
+same-site or same-origin, because sessions use cookies; never point a signed-in page at `gcsp-api` from `gcsp-site`.
+The design records the choice: `docs/design/gcsp-high-level-design.md`, "Technical deployment and recovery".
+The demo runs in memory mode;
 the database stays for the PostgreSQL proofs (FUCQ-83, FUCQ-66) and for `GCSP_REPOSITORY_MODE=postgres`.
 
 `DEMO_ACCESS_KEY` is required with `GCSP_RUNTIME=1`. The first live page in each browser asks for it once ("Open the demo"), then remembers it

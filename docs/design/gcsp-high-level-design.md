@@ -247,6 +247,13 @@ An always-running or scheduled runner is required for unattended background prom
 
 **GCSP environment (review Q1, Q2, Q12, 4 Nov).** GCSP runs in its own Render environment built from `gcsp-poc`: a Node backend service and a Render static site for the frontend, with managed PostgreSQL. GitHub Pages, `main` and EDS sync stay retail-only until after the demo. GCSP blocks never go to EDS; the demo wraps them in dummy pages hosted in this repository. Background work is presenter ticks, not an unattended runner (Q3).
 
+**Hosting rule: pages and API are same-site or same-origin (FUCQ-181, Gary, 9 Nov).** GCSP sessions use server-issued HttpOnly, Secure cookies, so every page that signs in must share a registrable domain with the API (same-site) or be served by it (same-origin). Two `onrender.com` addresses are different sites, and Safari and private windows drop the cookie between them.
+
+- **Chosen: option (c), same-origin from `gcsp-api`.** `gcsp-api` serves every live GCSP page and the API from one address (`server/gcsp/host.js`, FUCQ-180). `gcsp-site` keeps only what needs no session: the retail launcher, the component gallery and the fixture-only employee shell. Its redirects keep old live-page links working.
+- **Why:** it is the setup the demo already runs on and has been checked in, so it needs no new domain, DNS or Render change before 12 Nov.
+- **Not chosen:** (a) a custom domain for both services (`gcsp.<domain>` and `api.gcsp.<domain>`, `SameSite=Lax`, CORS limited to the site origin) is the shape of the real product, an EDS block on the brand domain with the API on a subdomain, and is the route to take for that integration. (b) `gcsp-site` forwarding `/api/*` to `gcsp-api` depends on Render static rewrites reaching an external destination, which is unverified.
+- Browser-supplied ids are still ignored, and the `DEMO_ACCESS_KEY` gate still applies.
+
 Retail source facts, which GCSP must not disturb:
 
 - [.github/workflows/pages.yml](../../.github/workflows/pages.yml) publishes the retail static site from `main` or manual dispatch and rewrites **`block.html`**'s `data-api` value. [index.html](../../index.html) resolves its remote default independently.
