@@ -9,6 +9,8 @@ Why the To Do bugs weren't picked up: `dev_mail.py queue` marks a bug "held" whi
 - **Gary's poller will take next, in capacity batches:** FUCQ-207, FUCQ-242, then the fleet-tooling bugs FUCQ-156 to 165 (DEV-2026-11-07-GC-006..015) and FUCQ-166 (GC-016). FUCQ-184/185 (DEV-2026-11-09-003/004) get closed as already fixed after a check.
 - **Russell's poller, when restarted:** the fleet-tooling bugs FUCQ-156 to 166 are your area, so take any that are still unclaimed (run `dev_mail.py queue` and claim before starting; a claim that loses the race fails cleanly). To avoid collisions, work from FUCQ-166 downward; Gary's poller works from FUCQ-156 upward. Check the queue between claims. Held status is not a reason to skip them: do intake first.
 
+- **Update 09:30:** Gary's poller has now built, merged and closed every held bug except FUCQ-166 (Pages publication), which is left for you: FUCQ-152, 156 to 165, 190, 207, 240 to 244 are In Review. FUCQ-184/185 were closed as stale re-imports (already fixed by FUCQ-124). Each Jira comment has a "For Russell" line where your area's design is affected, and four need a run you must authorise: FUCQ-157 (real-evidence proof publication), 161 (fresh G42 inventory allocation), 158 (rerun the bounded consumer audit on corpus .12, expect 2,707 failures to fall to 0) and FUCQ-153 AC5 (unchanged).
+
 ## Direction that still holds (Russell, 8–9 Nov)
 - Leave every story claimed by `garyscarter-ibm` to Gary.
 - Skip Won't-for-demo work (`moscow-after-demo`, `post-demo`, FUCQ-27/28/46/47/48/149). Leave FUCQ-218 (it waits on Russell's scheme names) and FUCQ-98's email (it needs the hosted key).
