@@ -21,7 +21,7 @@ export async function seedManualDemoContext({ repository, identity, clock, conte
       sourceRef: source.sourceRef, version: source.sourceVersion, observedAt: now, assurance: 'synthetic-scenario' } });
     const driverId = `driver:${context.employeeId}`; const contractId = `current:${context.employeeId}`;
     const contract = { contractId, employeeId: context.employeeId, schemeId: context.schemeId,
-      slotId: context.entitlementSlotId, driverId, status: 'current', model: 'Fictional BMW 320i Touring',
+      slotId: context.entitlementSlotId, driverId, status: 'current', model: 'BMW 3 Series Touring 320i',
       // Synthetic contract record of the car Paula drives now; shown in offer comparisons.
       vehicle: { configuration: '320i M Sport Touring', body: 'estate', fuel: 'petrol', seats: 5, boot: 500,
         mpg: 42.8, zeroTo62: 7.6, points: 1100 },

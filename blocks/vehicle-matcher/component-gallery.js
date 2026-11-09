@@ -8,6 +8,7 @@ import { employeeCardFixture } from './employee-card-fixture.js';
 import { applyBrowseFeedback, applyConfirmedFeedbackChange, createFeedbackState, matchesFeedbackPredicate, reduceFeedback } from './feedback-actions.js';
 import { el, screenIntro, button, statusScreen, factList } from './ui.js';
 import { syntheticNote } from '../gcsp/kit/synthetic-note.js';
+import { NO_IMAGE_TEXT } from '../gcsp/kit/plain-copy.js';
 import { feedbackButton, feedbackScope, feedbackUndo, matchCard, mediaWell, previewTile } from './modes/result-card.js';
 import { portalShell, accountNavigation } from '../gcsp/shell/portal-shell.js';
 import { EMPLOYEE_NAVIGATION } from '../gcsp/employee/gcsp-employee.js';
@@ -143,7 +144,7 @@ function gcspExamples() {
     { label: 'Gearbox', value: 'Automatic' }, { label: 'Options', value: null, missingLabel: 'Fitted equipment unknown' },
   ], { className: 'vm-facts-pair' }));
   const well = group('mediaWell placeholder');
-  well.append(mediaWell({ name: 'Synthetic car', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: 'No image for this car yet' }).media);
+  well.append(mediaWell({ name: 'Synthetic car', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: NO_IMAGE_TEXT }).media);
   const accounts = [
     ['portalShell: account loading', { status: 'loading' }],
     ['portalShell: compact account, long name', { status: 'ready', name: 'Bartholomew Featherstonehaugh-Cholmondeley-Wolverstone III (synthetic)', context: 'Choices, grade G7' }],

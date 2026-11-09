@@ -5,7 +5,7 @@ import { mountEmployee } from '../employee/gcsp-employee.js';
 import { labelledField } from '../kit/form-controls.js';
 import { showMore } from '../kit/show-more.js';
 import { syntheticNote } from '../kit/synthetic-note.js';
-import { bodyStyleLabel } from '../kit/plain-copy.js';
+import { bodyStyleLabel, NO_IMAGE_TEXT } from '../kit/plain-copy.js';
 import { createManualGalleryController } from './gallery-controller.js';
 import { createManualClaimController } from './claim-controller.js';
 import { createManualGalleryHttpAdapter } from './http-adapter.js';
@@ -115,7 +115,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     if (detailId === car.id) return;
     detailId = car.id; const { detail } = car;
     const heading = el('h2', 'gcsp-h2', car.view.members[0].display.name); heading.tabIndex = -1;
-    const { media } = mediaWell(null, '', { view: car.view.members[0], placeholder: 'No image for this car yet' });
+    const { media } = mediaWell(null, '', { view: car.view.members[0], placeholder: NO_IMAGE_TEXT });
     const reason = el('p', 'gcsp-note', car.view.members[0].actions[0].disabledReason ?? 'Reviewing reserves this exact car while you check its details.');
     reason.id = `${prefix}-detail-review-reason`;
     const review = button({ label: 'Review this car', onClick: () => choose(car.id), disabled: car.view.members[0].actions[0].disabled, describedBy: reason.id });

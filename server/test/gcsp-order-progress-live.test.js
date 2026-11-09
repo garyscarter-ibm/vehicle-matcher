@@ -324,11 +324,11 @@ test('a handover completed before the return outcome makes the new car current, 
     good(await f.dependencies.gcspAppointments.complete(f.presenter, { orderUuid })); await controller.refresh();
     let returning = value(controller, 'returnPlan'); assert.deepEqual([returning.state, returning.relationship.currentCar.kind, returning.relationship.oldCar.status], ['return-scheduled', 'order', 'held']);
     let plan = orderProgressBody({ progress: controller.getState().progress, car }).querySelector('.gcsp-order-return').textContent;
-    assert.match(plan, /Current carSynthetic new car/); assert.match(plan, /Car to returnFictional/); assert.match(plan, /Return booked: /); assert.doesNotMatch(plan, /Returned:|stays yours until it is returned/);
+    assert.match(plan, /Current carSynthetic new car/); assert.match(plan, /Car to returnBMW 3 Series Touring 320i/); assert.match(plan, /Return booked: /); assert.doesNotMatch(plan, /Returned:|stays yours until it is returned/);
     await pastReturn(f, controller, slot, 'ro-both'); returning = value(controller, 'returnPlan');
     assert.deepEqual([returning.state, returning.relationship.currentCar.kind, returning.relationship.oldCar.status], ['returned', 'order', 'returned']);
     plan = orderProgressBody({ progress: controller.getState().progress, car }).querySelector('.gcsp-order-return').textContent;
-    assert.match(plan, /Returned: /); assert.match(plan, /Current carSynthetic new car/); assert.match(plan, /Returned carFictional/); assert.doesNotMatch(plan, /Car to return/);
+    assert.match(plan, /Returned: /); assert.match(plan, /Current carSynthetic new car/); assert.match(plan, /Returned carBMW 3 Series Touring 320i/); assert.doesNotMatch(plan, /Car to return/);
   } finally { controller.destroy(); }
 });
 

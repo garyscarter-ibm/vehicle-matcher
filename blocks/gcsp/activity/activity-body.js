@@ -3,6 +3,7 @@ import { el, screenIntro, button, statusScreen } from '../../vehicle-matcher/ui.
 import { svgIcon } from '../shell/portal-shell.js';
 import { activityTimeline } from '../kit/activity-timeline.js';
 import { actionMenu } from '../kit/action-menu.js';
+import { syntheticNote } from '../kit/synthetic-note.js';
 import { activityOffer } from './activity-offer.js';
 import { activityCopy as copy, activityEvents, searchLines, exclusionLines } from './activity-copy.js';
 
@@ -34,7 +35,7 @@ export function activityBody({ result, onRetry, onPause, onResume, onReviewBrief
     return root;
   }
   const value = result.value;
-  if (!value.permission) { root.append(statusScreen({ title: 'No confirmed search', message: 'Confirm a search brief to begin.' })); return root; }
+  if (!value.permission) { root.append(statusScreen({ title: 'No confirmed search', message: 'Confirm a search brief to begin.' }), syntheticNote()); return root; }
   const paused = value.permission.paused === true;
   // An accepted car ends the search, so it reads finished and offers no pause or resume.
   const finished = value.currentOffer?.state === 'accepted';
@@ -63,7 +64,7 @@ export function activityBody({ result, onRetry, onPause, onResume, onReviewBrief
   const why = exclusionLines(value, paused);
   if (why.length) { const checks = feed.querySelector('.gcsp-activity-check-status');
     if (checks) checks.after(nextSteps(why, onReviewBrief)); else feed.append(nextSteps(why, onReviewBrief)); }
-  root.append(feed);
+  root.append(feed, syntheticNote());
   if (value.stateChangesEvidence?.status === 'incomplete') feed.append(el('p', 'gcsp-activity-secondary', 'Some activity could not be verified.'));
   return root;
 }

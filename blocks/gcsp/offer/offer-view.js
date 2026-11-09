@@ -4,6 +4,7 @@ import { labelledField, errorSummary, checkboxField } from '../kit/form-controls
 import { stageList } from '../kit/stage-list.js';
 import { dataTable } from '../kit/data-table.js';
 import { orderIdentityRows } from '../kit/order-identity.js';
+import { syntheticNote } from '../kit/synthetic-note.js';
 import { ACCESS_LAPSED_TITLE, RUN_RESTARTED_TITLE, accessLapsedScreen, runRestartedScreen } from '../kit/run-restarted.js';
 import { followupHandle } from './followup-entry.js';
 
@@ -127,7 +128,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
   const announcement = el('p', 'gcsp-vh'); announcement.setAttribute('role', 'status');
   announcement.dataset.offerAnnouncement = '';
   announcement.setAttribute('aria-live', 'polite'); announcement.setAttribute('aria-atomic', 'true');
-  page.append(content, announcement); root.replaceChildren(page);
+  page.append(content, syntheticNote(), announcement); root.replaceChildren(page);
   let lastAnnouncement = ''; let previousState; let previousIdentity; let structure;
   let messageNode; let clockNode; let asOfNode; let reasonNode;
   let reasonForm; let reasonSelect; let reasonStatus; let reasonField; let reasonSummary;

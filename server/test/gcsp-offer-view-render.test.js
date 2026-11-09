@@ -33,6 +33,7 @@ test('exact shared card, points and current car comparison preserve supplied unk
   assert.match(root.textContent, /Fitted equipment unknown/);
   assert.match(root.textContent, /Representative BMW brand image, not this exact car/);
   assert.match(root.textContent, /Synthetic presentation example/);
+  assert.equal(root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
   assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
   const reason = root.querySelector('[data-offer-action="accept"]').getAttribute('aria-describedby');
   assert.match(root.querySelector(`#${reason}`).textContent, /Decisions are unavailable/);
