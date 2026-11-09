@@ -120,6 +120,21 @@ test('calendar dates, canonical lead/renewal window, closed locations, contact a
   assert.equal((await persisted(f)).status, 'invalid');
 });
 
+test('FUCQ-237: a site that cannot apply to the chosen contract and driver is left out; a closed site keeps its reason', async () => {
+  const f = await setup(); await f.controller.load(); fill(f);
+  const state = f.controller.getState();
+  assert.deepEqual(state.options.collectionLocations.map((row) => row.locationId), ['demo-collection-centre']);
+  assert.equal(state.options.collectionLocations[0].disabled, false);
+  assert.equal(deriveSetupModel(state.account, { ...state.choices, collectionLocationId: 'demo-company-site' }).errors.collectionLocationId,
+    'Choose an open, permitted collection location.');
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
+  seed.assumptions.find((a) => a.key === 'manual.context.v1').value.locations[0].closedDates = ['2026-11-20'];
+  const closed = await setup({ policy: new PolicyService({ provider: { async loadVersions() { return [seed]; } } }) });
+  await closed.controller.load(); fill(closed);
+  assert.deepEqual(closed.controller.getState().options.collectionLocations.map((row) => [row.locationId, row.reason]),
+    [['demo-collection-centre', 'Closed on the requested collection date.']]);
+});
+
 test('missing, malformed, expired, future or wrong-category licence refuses complete save without changing history; intent still saves', async () => {
   for (const [index, mutate] of [
     (l) => { l.validUntil = '2026-11-19'; }, (l) => { l.validUntil = null; },

@@ -608,6 +608,26 @@ test('FUCQ-224: an order on the slot replaces the saved journey card; an order o
   } finally { other.destroy(); }
 });
 
+test('FUCQ-237: an order in progress replaces "No current car" for an employee with no current car, and a declined order keeps it', async () => {
+  const listed = (name) => { const row = structuredClone(orderProgressFixtures().states[name].stages.value); row.entitlementSlotId = 'slot-paula'; return [row]; };
+  const noCarAllocated = () => { const envelope = accountFixture('no-current-car'); Object.assign(envelope.value, { state: 'no-entitlement', actions: [] });
+    for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
+  const mount = (name) => { const orders = orderAdapter(name, listed(name));
+    return domMount({ ...readOnlyAdapter(), readAccount: async () => noCarAllocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders }); };
+  const ordered = await mount('appointment-requested');
+  try {
+    await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order-status'));
+    assert.ok(ordered.root.querySelector('.gcsp-account-order-status'), 'order status');
+    assert.doesNotMatch(ordered.root.textContent, /No current car/);
+  } finally { ordered.destroy(); }
+  const declined = await mount('declined');
+  try {
+    await settleOrder(declined.root, (node) => node.querySelector('.gcsp-account-order-status'));
+    assert.equal(declined.root.querySelector('.gcsp-account-order-status h2').textContent, 'Your order was declined');
+    assert.match(declined.root.textContent, /No current car/);
+  } finally { declined.destroy(); }
+});
+
 test('FUCQ-195: the current-car card shows readable labels and no raw identifiers', async () => {
   const input = accountFixture('ready'); const value = input.value;
   const raw = [value.currentContract.contractId, value.currentContract.slotId, value.currentContract.schemeId,

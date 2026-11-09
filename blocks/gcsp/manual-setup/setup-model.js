@@ -79,13 +79,15 @@ export function deriveSetupModel(account, choices) {
     return { ...option, disabled: !!reason, reason };
   });
   const selectedContract = contractOptions.find((c) => c.contractOptionId === choices?.contractOptionId && !c.disabled);
-  const collectionLocations = list(supplied?.collectionLocations).map((location) => {
-    const reason = !selectedContract ? 'Choose a permitted term and mileage first.'
-      : !location.contractOptionIds?.includes(selectedContract.contractOptionId) || !location.driverKinds?.includes(selectedDriver?.kind)
-        ? 'Not available for this driver and contract.' : location.closedDates?.includes(choices?.requestedCollectionDate)
-          ? 'Closed on the requested collection date.' : null;
-    return { ...location, disabled: !!reason, reason };
-  });
+  // A site that can never apply to this contract and driver is left out, not listed as unavailable (FUCQ-237).
+  const collectionLocations = list(supplied?.collectionLocations)
+    .filter((location) => !selectedContract || (location.contractOptionIds?.includes(selectedContract.contractOptionId)
+      && location.driverKinds?.includes(selectedDriver?.kind)))
+    .map((location) => {
+      const reason = !selectedContract ? 'Choose a permitted term and mileage first.'
+        : location.closedDates?.includes(choices?.requestedCollectionDate) ? 'Closed on the requested collection date.' : null;
+      return { ...location, disabled: !!reason, reason };
+    });
   const slot = list(account?.slots).find((s) => s.entitlementSlotId === intent?.slotId);
   const window = account?.currentContract ?? slot;
   const today = validDate(account?.asOf?.slice(0, 10)) ? Date.parse(`${account.asOf.slice(0, 10)}T00:00:00.000Z`) : NaN;
