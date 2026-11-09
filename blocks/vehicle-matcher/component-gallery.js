@@ -224,6 +224,10 @@ function gregKitExamples() {
   group('dataTable: stacked rows on narrow screens').append(dataTable({ caption: 'Plan comparison (stacks under 640 px)', id: 'gallery-greg-stack', stack: true,
     columns: [{ key: 'name', label: 'Vehicle' }, { key: 'a', label: 'Recommended plan', numeric: true }, { key: 'b', label: 'Other plan', numeric: true }, { key: 'd', label: 'Difference', numeric: true }],
     rows: [{ name: bold('G21 Touring 320i', true), a: '2', b: bold('1', true), d: bold('-1', true) }, { name: 'G20 Saloon 330e', a: '1', b: '1', d: 'No change' }] }));
+  group('dataTable: row action (an Open button per row, named for the row)').append(dataTable({ caption: 'Renewal cases (row action)', id: 'gallery-greg-row-action', stack: true,
+    columns: [{ key: 'name', label: 'Employee' }, { key: 'status', label: 'Status' }],
+    rows: [{ name: 'Paula (fictional)', status: 'Open' }, { name: 'Sam (fictional)', status: 'Closed' }],
+    rowAction: { label: 'Open', name: (row) => `Open case for ${row.name}`, onSelect: () => {}, disabled: (row) => row.status === 'Closed' } }));
   const unknown = { label: 'Unknown', missing: true };
   group('dataTable: comparison, label | this offer | current car at any width (compare)').append(dataTable({ caption: 'Compared with your current car', id: 'gallery-greg-compare', compare: true,
     columns: [{ key: 'l', label: 'Detail' }, { key: 'a', label: 'This offer', detail: 'BMW 320i M Sport Touring with extended leather' }, { key: 'b', label: 'Your current car', detail: 'Fictional BMW 320i Touring' }],
