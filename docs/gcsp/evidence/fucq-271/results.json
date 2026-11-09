@@ -1,0 +1,55 @@
+{
+ "story": "DEV-2026-11-09-GC-040",
+ "jira": "FUCQ-271",
+ "run": "GCSP_OFFLINE=1 memory repository, walk.mjs section decision, port 9374",
+ "widths": {
+  "1280": {
+   "accepted": {
+    "h1": "Offer accepted",
+    "focus": "H1:Offer accepted"
+   },
+   "trackers": {
+    "stageLists": 1,
+    "yourSelection": false,
+    "orderSections": 1,
+    "hrRows": [
+     "HR approval Not started",
+     "HR approval Not started",
+     "HR approval"
+    ]
+   },
+   "audit": {
+    "overflowX": 0,
+    "h1Count": 1,
+    "emDash": [],
+    "unnamed": [],
+    "lowContrastCount": 0
+   },
+   "done": true
+  },
+  "375": {
+   "accepted": {
+    "h1": "Offer accepted",
+    "focus": "H1:Offer accepted"
+   },
+   "trackers": {
+    "stageLists": 1,
+    "yourSelection": false,
+    "orderSections": 1,
+    "hrRows": [
+     "HR approval Not started",
+     "HR approval Not started",
+     "HR approval"
+    ]
+   },
+   "audit": {
+    "overflowX": 0,
+    "h1Count": 1,
+    "emDash": [],
+    "unnamed": [],
+    "lowContrastCount": 0
+   },
+   "done": true
+  }
+ }
+}

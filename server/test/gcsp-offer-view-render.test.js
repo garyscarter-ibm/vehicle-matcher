@@ -316,6 +316,18 @@ test('accepted offer mounts order progress with its own car and uuid; other stat
   assert.equal(mounts.length, count); // no order uuid on the read, so nothing is mounted
 });
 
+test('FUCQ-271: a hosted order tracker is the only progress list; without one the selection stages stay', () => {
+  const selected = { ...offerFixture('selection-hr').value, canAccept: false, canDecline: false };
+  const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root, { mountOrder: (host) => { host.append(document.createElement('ol')); return () => {}; } });
+  view.update({ ...selected, orderUuid: ORDER });
+  assert.equal(root.querySelector('.gcsp-stage-list'), null); assert.doesNotMatch(root.textContent, /Your selection/);
+  assert.equal(root.querySelectorAll('.gcsp-offer-order').length, 1);
+  const bare = document.createElement('div'); document.body.append(bare);
+  createOfferView(bare, {}).update({ ...selected, orderUuid: ORDER });
+  assert.equal(bare.querySelector('.gcsp-stage-heading').textContent, 'Your selection'); assert.equal(bare.querySelector('.gcsp-offer-order'), null);
+});
+
 test('the offer-hosted progress shows completed and missed handovers, rebooks the exact slot and re-reads the new attempt', async () => {
   const { mountOrderProgress } = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
   const all = orderProgressFixtures().states;

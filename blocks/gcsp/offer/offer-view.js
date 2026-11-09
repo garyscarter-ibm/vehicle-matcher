@@ -146,7 +146,9 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       if (links.cars) leadOn.append(button({ label: 'Back to Your cars', variant: 'ghost', href: links.cars }));
       content.append(leadOn);
     }
-    if (state === 'accepted' && model.selection) content.append(selectionGroup(model.selection));
+    // Once ordering holds the order its tracker is the one source of progress, so the selection stages give way.
+    const hostsOrder = state === 'accepted' && typeof model.orderUuid === 'string' && typeof mountOrder === 'function' && model.card?.members?.length === 1;
+    if (state === 'accepted' && model.selection && !hostsOrder) content.append(selectionGroup(model.selection));
     if (['pending', 'accepted', 'superseded', 'uncertain'].includes(state) && model.card?.members?.length === 1) {
       const columns = el('div', 'gcsp-offer-comparison');
       const offer = el('section', 'gcsp-offer-exact');
@@ -158,7 +160,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     const summary = state === 'declined' ? declinedSummary(model.card) : '';
     if (summary) { const line = el('p', 'gcsp-note', summary); line.dataset.offerDeclinedSummary = ''; content.append(line); }
     if (state === 'pending' && model.handoff) content.append(handoffGroup(model, page.id, tickDeclaration));
-    if (state === 'accepted' && typeof model.orderUuid === 'string' && typeof mountOrder === 'function' && model.card?.members?.length === 1) {
+    if (hostsOrder) {
       const section = el('section', 'gcsp-offer-order'); section.setAttribute('aria-label', 'Your order progress');
       const { display, media } = model.card.members[0];
       const cleanup = mountOrder(section, { orderUuid: model.orderUuid, car: { name: display?.name, photo: media?.src || undefined } });
