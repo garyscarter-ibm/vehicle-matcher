@@ -245,3 +245,18 @@ test('FUCQ-217: a pending run resumes from attempt rows, or from a cursor writte
     assert.deepEqual(out.value.assignments.map((a) => [a.employeeId, a.orderUuid, a.quote]), expected.value.assignments.map((a) => [a.employeeId, a.orderUuid, a.quote]));
   }
 });
+
+test('FUCQ-225: with no charging answer in the brief, a plug-in car needs confirmation and is never proposed to the hold service', async () => {
+  const f = await allocationFixture({ cars: 2 });
+  const plugIn = f.store.state.tables.stock.find((row) => row.orderNumber === '0000001');
+  plugIn.facts = { ...plugIn.facts, facts: { ...plugIn.facts.facts, fuel: { ...plugIn.facts.facts.fuel, value: 'phev' } } };
+  const out = await f.service.allocate(f.context, f.event); assert.equal(out.status, 'ok', JSON.stringify(out));
+  for (const evaluation of out.value.evaluations) {
+    const decision = evaluation.decisions.find((d) => d.orderUuid === plugIn.orderUuid);
+    assert.equal(decision.gateStatus, 'needs-confirmation');
+    assert.ok(decision.unknowns.some((u) => u.code === 'charging-unconfirmed'), JSON.stringify(decision.unknowns));
+  }
+  assert.ok(f.calls.length > 0 && f.calls.every(({ input }) => input.orderUuid !== plugIn.orderUuid), 'no claim for the plug-in car');
+  // The quote keeps the employee's stored facts, which the hold service compares.
+  assert.ok(out.value.assignments.every((a) => a.quote.employeeFacts.charging?.value === 'home'));
+});

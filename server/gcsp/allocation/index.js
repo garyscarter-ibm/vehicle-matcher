@@ -121,7 +121,10 @@ export function createAllocationService({ repository, policy, clock, identity, c
       // Employees seeing the same cars share one stock digest.
       const visibleKey = available.map((r) => r.orderUuid).join(',');
       if (!stockVersions.has(visibleKey)) stockVersions.set(visibleKey, inputDigest(available));
-      const inputs = { factsVersion: `employee:${employee.version}`, stockVersion: stockVersions.get(visibleKey), employeeFacts: facts,
+      // FUCQ-225: gates take charging from the brief only, as the hold service does; the quote keeps the stored facts it compares.
+      const gateFacts = { ...facts, charging: { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging?.value ?? null,
+        unit: null, provenance: { sourceRef: charging?.source ?? 'brief:unresolved', version: String(brief.briefVersion), observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } } };
+      const inputs = { factsVersion: `employee:${employee.version}`, stockVersion: stockVersions.get(visibleKey), employeeFacts: gateFacts, quoteFacts: facts,
         request: { schemaVersion: brief.schemaVersion, briefVersion: brief.briefVersion,
           preferences: brief.preferences, essentials: Object.fromEntries(Object.entries(brief.essentials).filter(([k]) => k !== 'charging')) } };
       const evaluated = await evaluate(context, employeeContext, instant, inputs, available.map((r) => entries.get(r.orderUuid)));
@@ -272,7 +275,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
           const entry = pool.get(contender.orderUuid); if (!quoteInputs || !entry) return unavailable('allocation-quote-unavailable');
           const evaluated = await evaluate(context, employeeContext, instant, quoteInputs, [entry]);
           const decision = evaluated.status === 'ok' ? evaluated.value.decisions[0] : null;
-          return decision?.orderUuid === contender.orderUuid && decision.gateStatus === 'eligible' ? ok(quoteOf(decision)) : unavailable('allocation-quote-unavailable');
+          return decision?.orderUuid === contender.orderUuid && decision.gateStatus === 'eligible' ? ok({ ...quoteOf(decision), employeeFacts: quoteInputs.quoteFacts ?? decision.employeeFacts }) : unavailable('allocation-quote-unavailable');
         };
         for (let n = 0; !legacy && n < progress.count; n += 1) {
           const saved = await repository.read(context, attemptRef(context, event.eventId, n)); if (saved.status !== 'ok') return saved;
