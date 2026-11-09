@@ -89,7 +89,7 @@ chooses the car.
 
 ## The numbers you can turn
 
-Six, all in `server/engine.js`:
+Six, all in the retail policy `server/scenarios/retail/used-retail-v1.js` (`server/engine.js` re-exports them; `STRETCH_FACTOR` lives in `server/scenarios/retail/dimensions.js`):
 
 | Constant | Now | What it does |
 |---|---|---|
@@ -137,7 +137,7 @@ in this repo was justified, and how two of them were caught being wrong.
 
 | File | Job |
 |---|---|
-| `server/engine.js` | Scoring, grouping, clustering. The whole brain. |
+| `server/scenarios/retail/` | The used-retail-v1 policy: scoring, grouping, clustering, over the shared pure core in `server/recommendation/`. `server/engine.js` is its compatibility facade. The whole brain. |
 | `server/brands.js` | Per-brand weights and tuning. BMW and MINI differ only here. |
 | `server/questions.js` | The question set. |
 | `server/stock.js` | Live retailer feed, plus paint fetched per shown car. |

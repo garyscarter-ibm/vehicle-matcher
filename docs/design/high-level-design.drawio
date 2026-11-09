@@ -751,13 +751,13 @@
             <mxGeometry height="70" width="260" x="530.6" y="34" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Retail pipeline&lt;br&gt;legacy answers + views" type="service" status="proposed" feature="shared-target" id="t-retail-pipeline">
-          <mxCell parent="t-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+        <UserObject label="Retail pipeline&lt;br&gt;legacy answers + views" type="service" status="built" feature="shared-target" id="t-retail-pipeline">
+          <mxCell parent="t-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1">
             <mxGeometry height="70" width="260" x="165.6" y="532" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="used-retail-v1&lt;br&gt;configured blend · default 80/20" type="service" status="proposed" feature="shared-target" id="t-retail-policy">
-          <mxCell parent="t-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+        <UserObject label="used-retail-v1&lt;br&gt;scenarios/retail/ · default 80/20 blend" type="service" status="built" feature="shared-target" id="t-retail-policy">
+          <mxCell parent="t-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1">
             <mxGeometry height="70" width="260" x="482.6" y="788" as="geometry" />
           </mxCell>
         </UserObject>
@@ -766,7 +766,7 @@
             <mxGeometry height="70" width="260" x="540.6" y="283" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Employee pipeline&lt;br&gt;gates first · rankCars() until FUCQ-27" type="service" status="proposed" feature="shared-target" id="t-emp-pipeline">
+        <UserObject label="Employee pipeline&lt;br&gt;gates first · rankCars() via retail facade" type="service" status="proposed" feature="shared-target" id="t-emp-pipeline">
           <mxCell parent="t-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="475.6" y="532" as="geometry" />
           </mxCell>
@@ -776,8 +776,8 @@
             <mxGeometry height="70" width="260" x="1474.6" y="788" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Shared pure decision core&lt;br&gt;FUCQ-27 · after the demo" type="service" status="proposed" feature="shared-target" id="t-core">
-          <mxCell parent="t-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+        <UserObject label="Shared pure decision core&lt;br&gt;server/recommendation/ · FUCQ-27" type="service" status="built" feature="shared-target" id="t-core">
+          <mxCell parent="t-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1">
             <mxGeometry height="70" width="260" x="1118.6" y="788" as="geometry" />
           </mxCell>
         </UserObject>
@@ -943,7 +943,7 @@
             <mxGeometry height="70" width="220" x="1025.75" y="80" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Blue = current · purple = proposed.&lt;br&gt;Demo: employee policy calls rankCars().&lt;br&gt;Core extraction follows FUCQ-21 baseline." type="note" status="proposed" feature="shared-target" id="t-status-note">
+        <UserObject label="Blue = current · purple = proposed.&lt;br&gt;Core and used-retail-v1 built (FUCQ-27).&lt;br&gt;FUCQ-28 and employee re-pointing remain proposed." type="note" status="proposed" feature="shared-target" id="t-status-note">
           <mxCell parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;spacingLeft=6;" vertex="1">
             <mxGeometry height="70" width="220" x="1025.75" y="160" as="geometry" />
           </mxCell>
@@ -1863,8 +1863,8 @@
             <mxGeometry height="70" width="260" x="82.75" y="669" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="2 · FUCQ-27/28 shared core&lt;br&gt;after the demo, under baseline" type="service" status="proposed" feature="migration" id="m-extract">
-          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+        <UserObject label="2 · FUCQ-27/28 shared core&lt;br&gt;FUCQ-27 built · FUCQ-28 open" type="service" status="in-progress" feature="migration" id="m-extract">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#82b366;fillColor=#d5e8d4;" vertex="1">
             <mxGeometry height="70" width="260" x="93.75" y="918" as="geometry" />
           </mxCell>
         </UserObject>
@@ -2027,8 +2027,8 @@
             <mxGeometry height="120" width="230" x="1167" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="retail differential parity passes" status="proposed" feature="migration" id="KaYjg3p3eB6bBnvc_5fs-1">
-          <mxCell edge="1" parent="1" source="m-extract" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="m-employee">
+        <UserObject label="retail differential parity passes" status="built" feature="migration" id="KaYjg3p3eB6bBnvc_5fs-1">
+          <mxCell edge="1" parent="1" source="m-extract" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#6c8ebf;exitX=0.5;exitY=1;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="m-employee">
             <mxGeometry relative="1" as="geometry">
               <mxPoint as="offset" />
               <Array as="points">
