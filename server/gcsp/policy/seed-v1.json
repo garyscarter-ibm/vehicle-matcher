@@ -14390,6 +14390,25 @@
       "sourceDate": "2026-11-09",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "scheme.displayNames.v1",
+      "value": {
+        "schemaVersion": 1,
+        "names": {
+          "choices-fs-uk": "BMW Choices",
+          "choices-rr-production": "Rolls-Royce and Production Choices",
+          "pcs-ukfs-bmw": "PCS UK FS BMW",
+          "motorcycle-choices": "Motorcycle Choices"
+        }
+      },
+      "unit": "display-names",
+      "status": "assumed",
+      "basis": "Stand-in scheme names approved by Gary Carter on 9 Nov 2026, each read plainly from its scheme id, until Russell supplies the real names. Order history and the account page show a name only when this entry supplies one.",
+      "source": "docs/gcsp/shared-contracts.md",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }

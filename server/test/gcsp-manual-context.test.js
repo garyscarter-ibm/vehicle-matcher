@@ -174,6 +174,23 @@ test('future earliest collection alone permits replacement when canonical policy
   assert.equal((await save(f, {}, { commandId: 'future-earliest-complete', expectedDraftVersion: 1 })).status, 'ok');
 });
 
+test('account histories carry the policy scheme display name, and none when policy supplies no name (FUCQ-218)', async () => {
+  const f = await setup(); const account = await f.service.readAccount(f.context);
+  const row = await f.policy.getAssumption('scheme.displayNames.v1', { runId: f.context.runId, asOf: instant, policyVersion: f.context.policyVersion });
+  const names = row.value.value.names; assert.equal(row.value.status, 'assumed');
+  assert.deepEqual(account.value.histories.map((h) => [h.schemeId, h.label]), account.value.histories.map((h) => [h.schemeId, names[h.schemeId]]));
+  assert.ok(account.value.histories.every((h) => typeof h.label === 'string' && h.label.length > 0));
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
+  const entry = seed.assumptions.find((a) => a.key === 'scheme.displayNames.v1'); delete entry.value.names['pcs-ukfs-bmw'];
+  const partial = await setup({ policy: new PolicyService({ provider: { async loadVersions() { return [seed]; } } }) });
+  const histories = (await partial.service.readAccount(partial.context)).value.histories;
+  assert.equal(histories[0].label, names['choices-fs-uk']); assert.equal(Object.hasOwn(histories[1], 'label'), false);
+  seed.assumptions = seed.assumptions.filter((a) => a.key !== 'scheme.displayNames.v1');
+  const bare = await setup({ policy: new PolicyService({ provider: { async loadVersions() { return [seed]; } } }) });
+  const read = await bare.service.readAccount(bare.context);
+  assert.equal(read.value.state, 'ready'); assert.ok(read.value.histories.every((h) => !Object.hasOwn(h, 'label')));
+});
+
 test('account uses identity-seeded principal and entitlement; history, licence and support ownership are explicit', async () => {
   const f = await setup(); const account = await f.service.readAccount(f.context);
   assert.equal(account.status, 'ok', JSON.stringify(account));
