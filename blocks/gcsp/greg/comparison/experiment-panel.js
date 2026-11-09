@@ -24,7 +24,7 @@ export function mountExperimentPanel(root, { adapter, signal, pollMs = 2000 } = 
   const stop = () => abort.abort(); signal?.addEventListener('abort', stop, { once: true });
   if (signal?.aborted) stop();
   let disposed = false; let gen = 0; let detailsOpen = false; let timer = null; let token = 0; let watched = null;
-  let entries = []; let selected = null; let job = null; let lastRun = null; let lost = false;
+  let entries = []; let selected = null; let job = null; let lastRun = null; let lost = false; let reruns = false; // reruns: only the server's explicit yes
   const previous = new Set(); const fresh = new Map(); const optionNodes = new Map();
   const page = el('div', 'vm gcsp-comparison'); const status = el('p', 'gcsp-vh'); status.setAttribute('role', 'status');
   const body = el('div', 'gcsp-comparison-body'); const stage = el('div', 'gcsp-comparison-stage');
@@ -51,7 +51,7 @@ export function mountExperimentPanel(root, { adapter, signal, pollMs = 2000 } = 
     const nodes = [];
     if (EXPERIMENTS[e.id]) nodes.push(el('p', 'gcsp-note', EXPERIMENTS[e.id].summary));
     if (lastRun?.experimentId === e.id) nodes.push(el('p', 'gcsp-note gcsp-comparison-lastrun', words.lastRun(lastRun.finishedAt, lastRun.reason)));
-    if (e.id === 'hold-sweep') nodes.push(form.root);
+    if (e.id === 'hold-sweep' && reruns) nodes.push(form.root);
     nodes.push(...(e.parsed ? resultNodes(e) : e.stored ? [el('p', 'gcsp-note', words.UNREADABLE_NOTE)] : emptyNodes(e)));
     stage.replaceChildren(...nodes);
   }
@@ -67,7 +67,7 @@ export function mountExperimentPanel(root, { adapter, signal, pollMs = 2000 } = 
   const updateOption = (id) => { const sub = optionNodes.get(id)?.querySelector('.vm-option-sub'); if (sub) sub.textContent = stateOf(entry(id)); };
 
   function problem(state) {
-    if (state.status === 'access-required') return { name: 'access-required', node: accessLapsedScreen(), text: 'Demo access needed.' };
+    if (state.status === 'access-required') return { name: 'access-required', node: accessLapsedScreen(), text: 'Access needed.' };
     reload.textContent = state.status === 'refused' ? 'Reload' : 'Retry';
     return state.status === 'refused'
       ? { name: 'refused', node: statusScreen({ kicker: TITLE, title: 'You cannot open this comparison', message: REFUSED, role: 'alert' }), text: 'Access refused.' }
@@ -136,6 +136,7 @@ export function mountExperimentPanel(root, { adapter, signal, pollMs = 2000 } = 
     const [list, latest] = await Promise.all([call('loadAll'), call('readJob', {})]);
     if (dead(mine)) return;
     if (list.status !== 'ready' || !list.experiments.length) { showScreen(problem(list.status === 'ready' ? { status: 'unavailable' } : list)); return; }
+    reruns = latest.reruns === true;
     entries = list.experiments.map(({ experimentId, latest: stored }) => makeEntry(experimentId, stored));
     previous.clear(); fresh.clear(); lastRun = null; lost = false; strip.reset();
     const last = latest.status === 'ok' ? attempt(() => toJobView(latest.job), null) : null;

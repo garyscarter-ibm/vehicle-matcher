@@ -36,8 +36,8 @@ const field = (root, which) => root.querySelector(`.gcsp-comparison-form [id$="-
 const stamp = (root) => root.querySelector('[data-result-heading]');
 const jobBody = (status, over = {}) => ({ jobId: JOB, experimentId: 'hold-sweep', status, progress: { seedsDone: 1, seedsTotal: 3, stepsDone: 4, stepsTotal: 12 },
   startedAt: '2026-11-09T12:00:00.000Z', finishedAt: null, resultId: null, reason: null, request: { experimentId: 'hold-sweep', change: { values: [3600], basis: 'Try one hour' } }, ...over });
-const okJob = (value) => adapterMod.jobOutcomeToState(200, { status: 'ok', value });
-const noJob = () => adapterMod.jobOutcomeToState(404, { status: 'not-found' });
+const okJob = (value, reruns = true) => adapterMod.jobOutcomeToState(200, { status: 'ok', value, reruns });
+const noJob = (reruns = true) => adapterMod.jobOutcomeToState(404, { status: 'not-found', reruns });
 
 // A spy over a fixture adapter. overrides replace single methods; gate holds each readJob until step().
 async function mount(name, { pollMs = 0, overrides = {}, gate = false } = {}) {
@@ -84,7 +84,7 @@ test('arrow keys move the choice and change only the body below, keeping focus o
   press(first, 'ArrowDown'); await settle();
   assert.equal(document.activeElement, optionOf(root, 'order-mix')); assert.equal(optionOf(root, 'order-mix').getAttribute('aria-checked'), 'true');
   assert.equal(root.querySelector('.gcsp-comparison-picker'), picker); assert.equal(root.querySelector('.gcsp-comparison-head'), head);
-  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No comparison has been run for this demo yet/);
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No stored result yet/);
   assert.equal(root.querySelector('code'), null);
   press(document.activeElement, 'End'); await settle();
   assert.equal(document.activeElement, optionOf(root, 'hold-sweep')); assert.ok(root.querySelector('.gcsp-comparison-form'));
@@ -135,15 +135,15 @@ test('the rerun form is prefilled from the stored result and its hint carries on
   assert.equal(submit(root).textContent, 'Run the hold comparison'); assert.equal(submit(root).disabled, false);
 });
 
-test('no stored result tells Greg the presenter prepares it, with no command, and, for the hold sweep, the form with a hint that has no bounds', async () => {
+test('no stored result says it is prepared offline, with no command, and, for the hold sweep, the form with a hint that has no bounds', async () => {
   const { root } = await mount('experiments-empty');
   assert.equal(optionOf(root, 'process-only').getAttribute('aria-checked'), 'true');
-  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No comparison has been run for this demo yet/);
-  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /The presenter prepares it before the demo\./);
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No stored result yet/);
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /prepared offline and has not been run here\./);
   assert.equal(root.querySelector('code'), null);
   assert.equal(root.querySelector('.gcsp-comparison-form'), null);
   await choose(root, 'hold-sweep');
-  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /The presenter prepares it before the demo\./); assert.equal(root.querySelector('code'), null);
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /prepared offline and has not been run here\./); assert.equal(root.querySelector('code'), null);
   assert.equal(field(root, 'hours').value, ''); assert.equal(field(root, 'basis').value, '');
   const hint = root.querySelector(`#${field(root, 'hours').id}-hint`).textContent;
   assert.doesNotMatch(hint, /From \d|Up to|Not the value/); assert.match(hint, /service checks the range/);
@@ -250,7 +250,7 @@ test('with no previous result a running job says so and a failed one says nothin
   release(); await until(() => root.querySelector('.gcsp-comparison-job [role="alert"]:not([hidden])'));
   const alert = text(root.querySelector('.gcsp-comparison-job [role="alert"]'));
   assert.ok(alert.includes('It stopped.')); assert.ok(alert.includes('No result was stored.')); assert.doesNotMatch(alert, /still the latest/);
-  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No comparison has been run for this demo yet/);
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No stored result yet/);
 });
 
 test('server reasons land on the duration and reason fields, and other fields go to the summary only', async () => {
@@ -271,10 +271,11 @@ test('server reasons land on the duration and reason fields, and other fields go
 });
 
 test('a conflict shows the reason and watches the running job', async () => {
-  const { root, calls } = await mount('start-conflict', { gate: false, overrides: {
-    readJob: async (q) => { calls.readJob.push(q); return q?.jobId ? okJob(jobBody('running')) : noJob(); } } });
+  const reads = [];
+  const { root } = await mount('start-conflict', { gate: false, overrides: {
+    readJob: async (q) => { reads.push(q); return q?.jobId ? okJob(jobBody('running')) : noJob(); } } });
   await choose(root, 'hold-sweep'); await run(root, '1', 'x');
-  assert.ok(calls.readJob.some((q) => q?.jobId === JOB));
+  assert.ok(reads.some((q) => q?.jobId === JOB));
   const strip = root.querySelector('.gcsp-comparison-job');
   assert.match(text(strip), /A comparison is already running\. Wait for it to finish\./); assert.match(text(strip), /Hold duration: running\./);
   assert.match(text(strip), /Steps: 4 of 12/); assert.equal(submit(root).disabled, true);
@@ -411,4 +412,25 @@ test('the element takes an experiment fixture name, and the harness and gallery 
 test('an adapter with only load keeps the process-only panel', async () => {
   const root = host(); teardowns.push(panel.mountGregComparison(root, { adapter: fixtures.comparisonFixtureAdapter('buddy-better') })); await settle();
   assert.equal(root.querySelector('.gcsp-comparison-picker'), null); assert.ok(root.querySelector('.gcsp-comparison-measure h3'));
+});
+
+// FUCQ-313: the form is offered only when jobs/latest says reruns are on (fail closed).
+test('the hold rerun form is hidden unless the server says reruns are on, and unrun experiments say they are prepared offline', async () => {
+  const cases = [['reruns false', () => noJob(false)], ['reruns absent', () => adapterMod.jobOutcomeToState(404, { status: 'not-found' })],
+    ['refused', () => adapterMod.jobOutcomeToState(403, {})], ['unavailable', () => adapterMod.jobOutcomeToState(503, {})],
+    ['job present, reruns false', () => okJob(jobBody('succeeded', { finishedAt: '2026-11-09T12:05:00.000Z', resultId: 'r1' }), false)]];
+  for (const [label, reply] of cases) {
+    document.body.replaceChildren();
+    const { root } = await mount('experiments-ready', { overrides: { readJob: async () => reply() } });
+    await choose(root, 'hold-sweep');
+    assert.equal(root.querySelector('.gcsp-comparison-form'), null, label);
+    assert.equal(submit(root), null, label);
+    assert.match(stamp(root).textContent, /^Stored result/, `${label}: the stored result still shows`);
+    await choose(root, 'order-mix');
+    assert.match(text(root), /No stored result yet/, label); assert.match(text(root), /prepared offline and has not been run here/, label);
+    assert.doesNotMatch(text(root), /presenter prepares|for this demo/, label);
+  }
+  const on = await mount('experiments-ready', { overrides: { readJob: async () => noJob(true) } });
+  await choose(on.root, 'hold-sweep');
+  assert.ok(on.root.querySelector('.gcsp-comparison-form')); assert.ok(submit(on.root));
 });

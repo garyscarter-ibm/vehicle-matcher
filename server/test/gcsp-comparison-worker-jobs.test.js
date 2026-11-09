@@ -68,11 +68,11 @@ const limitsPolicy = (override, called = new Set()) => new Proxy(policy, { get(t
   return member;
 } });
 
-const build = async ({ spawn = spawnLog(), policy: runtimePolicy = policy, instanceId, repository: shared, f: sharedFixture } = {}) => {
+const build = async ({ spawn = spawnLog(), policy: runtimePolicy = policy, instanceId, repository: shared, f: sharedFixture, reruns = true } = {}) => {
   const repository = shared ?? await openRepository();
   const f = sharedFixture ?? await fixture(repository);
   const service = createComparisonJobService({ repository, policy: runtimePolicy, clock: f.clock, identity: f.identity, instanceId,
-    createWorker: spawn.createWorker, codeRevision: REVISION, fixedNow: NOW, overlay: buddyFixture.overlay });
+    createWorker: spawn.createWorker, codeRevision: REVISION, fixedNow: NOW, overlay: buddyFixture.overlay, ...(reruns === 'env' ? {} : { reruns }) });
   return { repository, f, service, spawn };
 };
 const until = async (read, done, limitMs = 20000) => {
@@ -228,6 +228,26 @@ test('two starts at the same moment run exactly one job', async () => {
   const [a, b] = await Promise.all([service.start(f.contexts.greg, processOnly), service.start(f.contexts.greg, processOnly)]);
   assert.deepEqual([a.status, b.status].sort(), ['conflict', 'pending']);
   assert.equal(spawn.workers.length, 1);
+  await service.close();
+});
+
+test('with reruns off, start is refused with no worker, no policy read and no row; the default is off', async () => {
+  const offs = [await build({ reruns: false }), await build({ reruns: 'env' })];
+  for (const { service, spawn, repository, f } of offs) {
+    assert.equal(service.reruns, false);
+    for (const who of [f.contexts.greg, f.contexts.presenter]) {
+      const refused = await service.start(who, processOnly);
+      assert.equal(refused.status, 'forbidden');
+      assert.equal(refused.code, 'comparison-reruns-off');
+      assert.ok(!/demo|synthetic|fictional|example/i.test(refused.reason) && !refused.reason.includes('\u2014'));
+    }
+    assert.equal((await service.start(f.contexts.paula, processOnly)).code, undefined); // an employee is refused by role first
+    assert.equal(spawn.workers.length, 0);
+    assert.deepEqual(await rowsOf(repository, 'comparison_jobs'), []);
+  }
+  const { service, f } = await build();
+  assert.equal(service.reruns, true);
+  assert.equal((await service.start(f.contexts.greg, processOnly)).status, 'pending');
   await service.close();
 });
 
