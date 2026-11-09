@@ -1,4 +1,4 @@
-// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq238 (fucq145, fucq222 and fucq224 also have chunk phone, 375x812; fucq223 and fucq238 have desktop, phone and narrow).
+// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq237|fucq238 (fucq145, fucq222 and fucq224 also have chunk phone, 375x812; fucq223 and fucq238 have desktop, phone and narrow).
 // Spawns `node index.js` in server/ offline (GCSP_OFFLINE=1, memory repository). FUCQ70_* names still work as fallbacks for WALK_*.
 import { spawn, spawnSync } from 'node:child_process';
 import { createServer } from 'node:http';
@@ -13,17 +13,17 @@ const HERE = fileURLToPath(new URL('.', import.meta.url));
 const SERVER_DIR = resolve(HERE, '../../../../server');
 const env = (name) => process.env[`WALK_${name}`] ?? process.env[`FUCQ70_${name}`];
 const story = process.env.WALK_STORY || 'fucq70';
-if (!['fucq70', 'fucq72', 'fucq73', 'fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq238'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq238');
+if (!['fucq70', 'fucq72', 'fucq73', 'fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq237', 'fucq238'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222|fucq224|fucq223|fucq237|fucq238');
 const chunk = env('CHUNK');
-const second = ['fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq238'].includes(story) ? 'phone' : 'narrow';
-if (!['desktop', second, ...(['fucq223', 'fucq238'].includes(story) ? ['narrow'] : [])].includes(chunk)) throw new Error(`Set WALK_CHUNK=desktop|${second}`);
+const second = ['fucq145', 'fucq222', 'fucq224', 'fucq223', 'fucq237', 'fucq238'].includes(story) ? 'phone' : 'narrow';
+if (!['desktop', second, ...(['fucq223', 'fucq237', 'fucq238'].includes(story) ? ['narrow'] : [])].includes(chunk)) throw new Error(`Set WALK_CHUNK=desktop|${second}`);
 const scratch = resolve(env('SCRATCH') || process.env.TMPDIR || '');
 if (!scratch || scratch === '/') throw new Error('Set WALK_SCRATCH (or TMPDIR) to an owned scratch directory');
 const viewport = chunk === 'narrow' ? { width: 320, height: 720 } : chunk === 'phone' ? { width: 375, height: 812 } : { width: 1280, height: 900 };
 const vp = String(viewport.width);
-const port = Number(env('PORT')) || (story === 'fucq238' ? { desktop: 8933, phone: 8934, narrow: 8935 }[chunk] : story === 'fucq223' ? { desktop: 8944, phone: 8945, narrow: 8946 }[chunk] : story === 'fucq224' ? (chunk === 'phone' ? 8943 : 8942) : story === 'fucq222' ? (chunk === 'phone' ? 8941 : 8940) : story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
+const port = Number(env('PORT')) || (story === 'fucq237' ? { desktop: 8930, phone: 8931, narrow: 8932 }[chunk] : story === 'fucq238' ? { desktop: 8933, phone: 8934, narrow: 8935 }[chunk] : story === 'fucq223' ? { desktop: 8944, phone: 8945, narrow: 8946 }[chunk] : story === 'fucq224' ? (chunk === 'phone' ? 8943 : 8942) : story === 'fucq222' ? (chunk === 'phone' ? 8941 : 8940) : story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
 if (port < 8930 || port > 8949) throw new Error('WALK_PORT must be within 8930-8949');
-const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story); // fucq145 -> ../fucq145, fucq222 -> ../fucq222, fucq224 -> ../fucq224
+const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story); // each other story writes to ../<story>
 const only = env('ONLY') ? `-${env('ONLY')}` : ''; // a partial run never overwrites the full run's files
 const shotDir = join(outDir, `browser${only}`);
 const resultsFile = join(outDir, `results-${chunk}${only}.json`);
@@ -31,7 +31,7 @@ const profile = join(scratch, `chrome-${chunk}`);
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const ACCESS_KEY = `walk-${randomBytes(9).toString('hex')}`;
 const report = { ...(story === 'fucq70' ? {} : { story }), chunk, entry: 'hosted-offline', viewport, state: 'incomplete', startedAt: new Date().toISOString(), steps: [], keyboard: [],
-  consoleErrors: [], pageErrors: [], failedRequests: [], badResponses: [], notes: [], ...(story === 'fucq73' ? { screens: [], rawIdFailures: [], defects: [], motion: [], focus: [], contrast: [] } : {}), ...(story === 'fucq224' ? { defects: [] } : {}) };
+  consoleErrors: [], pageErrors: [], failedRequests: [], badResponses: [], notes: [], ...(story === 'fucq73' ? { screens: [], rawIdFailures: [], defects: [], motion: [], focus: [], contrast: [] } : {}), ...(story === 'fucq224' || story === 'fucq237' ? { defects: [] } : {}) };
 let lastStock = null; let shots = 0; let reviewedOrder = null; const orderPosts = []; let context; let page; let app; let child; let halted = null; let origin;
 const wait = (ms) => new Promise((done) => setTimeout(done, ms));
 const save = () => { if (story !== 'fucq70') report.orderPosts = orderPosts; if (env('TRACE')) report.trace = trace; return writeFile(resultsFile, `${JSON.stringify(report, null, 2)}\n`); };
@@ -1250,27 +1250,34 @@ async function walk238() {
 
 // FUCQ-224: the new-order route for Jordan (fictional), then the account after the order.
 async function walk224() {
+  const tag = story === 'fucq237' ? 'n237' : 'n224'; const is237 = story === 'fucq237'; // FUCQ-237 adds three checks to the FUCQ-224 walk
   await freshHost();
-  await step('n224-account', 'Demo key, switch to Jordan: the account offers Start a new order and no Choose a replacement', async () => {
+  await step(`${tag}-account`, 'Demo key, switch to Jordan: the account offers Start a new order and no Choose a replacement', async () => {
     const typed = await enterAccessKey(); await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
     const r = await switchTo('demo-jordan'); const t = await bodyText();
     const start = r.buttons.some((b) => /Start a new order/.test(b)); const replace = r.buttons.some((b) => /Choose a replacement/.test(b));
-    return { pass: typed && start && !replace && /Jordan/.test(t), state: `start ${start}; replacement ${replace}; ${clip(t, 400)}`, detail: { buttons: r.buttons }, shotName: 'n224-account' };
+    return { pass: typed && start && !replace && /Jordan/.test(t), state: `start ${start}; replacement ${replace}; ${clip(t, 400)}`, detail: { buttons: r.buttons }, shotName: `${tag}-account` };
   }, { critical: true });
-  await step('n224-setup', 'Start a new order (Tab+Enter); setup saved for You: Jordan (fictional), no returning-car mileage', async (row) => {
+  await step(`${tag}-setup`, 'Start a new order (Tab+Enter); setup saved for You: Jordan (fictional), no returning-car mileage', async (row) => {
     await kbPress(page.getByRole('button', { name: 'Start a new order' }));
     const chosen = await fillSetup('You: Jordan (fictional)', { keyboard: true });
     const mileageVisible = await page.locator('input[name="expectedReturnMileage"]').isVisible(); row.detail = { ...chosen, returningMileageVisible: mileageVisible };
-    return { pass: /Jordan/.test(chosen.driver) && !mileageVisible, state: `${await heading()} | ${JSON.stringify(row.detail)}`, shotName: 'n224-setup-saved' };
+    if (is237) { // setup page text and select options both count
+      const all = `${await bodyText()} ${await page.locator('option').evaluateAll((o) => o.map((x) => x.textContent).join(' '))}`;
+      const site = /Fictional company site/.test(all); const na = /Not available for this driver and contract/.test(all);
+      row.detail.noStrayLocation = { fictionalCompanySite: site, notAvailableForDriverAndContract: na, pass: !site && !na };
+      return { pass: /Jordan/.test(chosen.driver) && !mileageVisible && !site && !na, state: `no "Fictional company site" ${!site}; no "Not available for this driver and contract" ${!na}; ${await heading()}`, shotName: `${tag}-setup-saved` };
+    }
+    return { pass: /Jordan/.test(chosen.driver) && !mileageVisible, state: `${await heading()} | ${JSON.stringify(row.detail)}`, shotName: `${tag}-setup-saved` };
   }, { critical: true });
-  await step('n224-empty-gallery', 'Continue before any release: empty gallery', async (row) => {
+  await step(`${tag}-empty-gallery`, 'Continue before any release: empty gallery', async (row) => {
     await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled' });
     await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
     await until(async () => EMPTY_TITLES.test(await bodyText()) || (await page.getByRole('button', { name: 'Review this car' }).count()) > 0, { what: 'empty gallery state' });
     row.detail = await galleryFacts();
-    return { pass: row.detail.cards === 0, state: `status "${row.detail.status}"; cards ${row.detail.cards}`, shotName: 'n224-gallery-empty', full: false };
+    return { pass: row.detail.cards === 0, state: `status "${row.detail.status}"; cards ${row.detail.cards}`, shotName: `${tag}-gallery-empty`, full: false };
   }, { critical: true });
-  await step('n224-gallery', 'Next release; released cars (back to choices for a new date if the window moved)', async (row) => {
+  await step(`${tag}-gallery`, 'Next release; released cars (back to choices for a new date if the window moved)', async (row) => {
     await presenterPress('Next release'); await closeStrip();
     const refresh = page.getByRole('button', { name: 'Refresh availability' });
     if (await refresh.count()) await kbPress(refresh);
@@ -1289,28 +1296,35 @@ async function walk224() {
     }
     await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'released cards', timeout: 30000 });
     row.detail = { ...row.detail, ...(await galleryFacts()) };
-    return { pass: row.detail.enabled > 0, state: `${row.detail.cards} cards, ${row.detail.enabled} enabled`, shotName: 'n224-gallery-released' };
+    return { pass: row.detail.enabled > 0, state: `${row.detail.cards} cards, ${row.detail.enabled} enabled`, shotName: `${tag}-gallery-released` };
   }, { critical: true });
-  await step('n224-review', 'Review this car (Tab+Enter): review with an active countdown', async (row) => {
+  await step(`${tag}-review`, 'Review this car (Tab+Enter): review with an active countdown', async (row) => {
     await kbPress(enabledButton('Review this car'));
     await page.getByRole('heading', { name: 'Review your car', exact: true }).waitFor({ timeout: 60000 });
     await until(async () => /remaining/.test(await countdownOf()), { what: 'active countdown' });
     const f = await reviewFacts(); row.detail = f;
-    return { pass: Boolean(f.vehicleName) && Boolean(f.phone), state: `${f.vehicleName} | ${f.countdown}`, shotName: 'n224-review' };
+    return { pass: Boolean(f.vehicleName) && Boolean(f.phone), state: `${f.vehicleName} | ${f.countdown}`, shotName: `${tag}-review` };
   }, { critical: true });
-  await step('n224-summary-outcome', 'Continue to order review, tick declarations, Submit: outcome', async (row) => {
-    const r = await keyboardSubmitToOutcome(row, 'n224');
+  if (is237) await step(`${tag}-summary`, 'Continue to order review: Before you submit has no replacement wording; declarations are the terms and driver checkboxes', async (row) => {
+    await toSummary();
+    const card = await sectionText('Before you submit'); const ids = await boxes().evaluateAll((l) => l.map((b) => b.dataset.declaration));
+    const replacement = /For a replacement/.test(card); const exact = ids.length === 2 && ids.includes('terms') && ids.includes('driver');
+    row.detail = { wordingCard: clip(card, 500), declarationIds: ids, replacementSentence: replacement, declarationsExact: exact };
+    return { pass: Boolean(card) && !replacement && exact, state: `no "For a replacement" ${!replacement}; declarations ${ids.join(', ')}; ${clip(card, 300)}`, shotName: `${tag}-summary-wording` };
+  }, { critical: true });
+  await step(`${tag}-summary-outcome`, 'Continue to order review, tick declarations, Submit: outcome', async (row) => {
+    const r = await keyboardSubmitToOutcome(row, tag, { atSummary: is237 });
     row.detail = { total: r.total, ticked: r.ticked, submitEnabled: r.enabled, posts: r.posts, outcome: { heading: r.o.heading, orderNumber: r.o.orderNumber, status: r.o.status, rawIds: r.o.rawIds } };
-    return { pass: r.total > 0 && r.ticked === r.total && r.enabled === true && r.posts === 1 && /^\d{7}$/.test(r.o.orderNumber ?? '') && !r.o.forbiddenWording.length && !r.o.rawIds.length, state: `${r.o.heading} | order ${r.o.orderNumber} | status ${r.o.status}; POSTs ${r.posts}`, shotName: 'n224-outcome' };
+    return { pass: r.total > 0 && r.ticked === r.total && r.enabled === true && r.posts === 1 && /^\d{7}$/.test(r.o.orderNumber ?? '') && !r.o.forbiddenWording.length && !r.o.rawIds.length, state: `${r.o.heading} | order ${r.o.orderNumber} | status ${r.o.status}; POSTs ${r.posts}`, shotName: `${tag}-outcome` };
   }, { critical: true });
-  await step('n224-account-after-order', 'Finish returns to the account: order in progress, no saved-journey card', async (row) => {
+  await step(`${tag}-account-after-order`, 'Finish returns to the account: order in progress, no saved-journey card', async (row) => {
     await finishToAccount();
     await until(async () => (await bodyText()).includes(reviewedOrder ?? '#none'), { timeout: 30000, what: 'order number on the account' }).catch(() => {});
     await until(async () => !/Loading your order/.test(await bodyText()), { timeout: 15000, what: 'order progress loaded' }).catch(() => {});
     const t = await bodyText(); const inProgress = /Your order is in progress/.test(t); const stale = /journey saved|not an order confirmation/i.test(t);
-    row.detail = { orderShown: t.includes(reviewedOrder ?? '#none'), inProgress, staleSavedJourneyCard: stale, text: clip(t, 700) };
+    const noCar = /No current car/.test(t); row.detail = { orderShown: t.includes(reviewedOrder ?? '#none'), inProgress, staleSavedJourneyCard: stale, text: clip(t, 700), ...(is237 ? { noCurrentCarShown: noCar } : {}) };
     if (stale) defect(row, 'D-224', 'Medium', 'blocks/gcsp/account/gcsp-account.js (saved journey card)', 'After the order the account still shows the saved-journey card.');
-    return { pass: inProgress && !stale, state: `in progress ${inProgress}; stale card ${stale}; ${clip(t, 400)}`, shotName: 'n224-account-after-order' };
+    return { pass: inProgress && !stale && !(is237 && noCar), state: `in progress ${inProgress}; stale card ${stale}${is237 ? `; No current car shown ${noCar}` : ''}; ${clip(t, 400)}`, shotName: `${tag}-account-after-order` };
   });
 }
 
@@ -1338,7 +1352,7 @@ async function run() {
   if (story === 'fucq73') { await walk73(); return; }
   if (story === 'fucq145') { await walk145(); return; }
   if (story === 'fucq222') { await walk222(); return; }
-  if (story === 'fucq224') { await walk224(); return; }
+  if (story === 'fucq224' || story === 'fucq237') { await walk224(); return; }
   if (story === 'fucq223') { await walk223(); return; }
   if (story === 'fucq238') { await walk238(); return; }
 
