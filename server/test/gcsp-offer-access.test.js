@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Readable } from 'node:stream';
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { createPolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -452,6 +452,21 @@ test('a pending read carries the ordering handoff, and a blocker removes accept 
   const blocked = await f.service.read(first.value.context); assert.equal(blocked.status, 'ok');
   assert.equal(blocked.value.handoff.blocker, 'contact-required'); assert.equal(blocked.value.handoff.contact, null);
   assert.deepEqual(blocked.value.availableActions, ['decline']);
+});
+
+test('the handoff wording follows the employee mode: new-order wording without a current car, replacement wording unchanged', async () => {
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
+  const terms = seed.assumptions.find((row) => row.key === 'ordering.terms.v1').value;
+  const f = await fixture(); const first = await f.exchange(); assert.equal(first.status, 'ok');
+  assert.equal(first.value.offer.handoff.mode, 'replacement'); assert.equal(first.value.offer.handoff.wording, terms.wording);
+  assert.equal(first.value.offer.handoff.declarations.some((d) => d.id === 'return'), true);
+  const found = await f.repository.read(f.employeeContext, reference('employees', f.binding, { employeeId: f.employeeContext.employeeId }));
+  const manual = structuredClone(found.value.contract.manualContext); manual.contracts = [];
+  await f.patch('employees', { employeeId: f.employeeContext.employeeId }, { contract: { ...found.value.contract, manualContext: manual } });
+  const fresh = await f.service.read(first.value.context); assert.equal(fresh.status, 'ok');
+  assert.equal(fresh.value.handoff.mode, 'new'); assert.equal(fresh.value.handoff.wording, terms.wordingByMode.new);
+  assert.doesNotMatch(fresh.value.handoff.wording, /replacement/i);
+  assert.equal(fresh.value.handoff.declarations.some((d) => d.id === 'return'), false);
 });
 
 test('unavailable ordering terms block accept with a named reason and no terms', async () => {

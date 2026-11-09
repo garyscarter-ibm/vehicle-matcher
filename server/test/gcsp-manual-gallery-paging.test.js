@@ -8,7 +8,7 @@ const { window } = new JSDOM('<!doctype html><body></body>', { url: 'https://gal
 for (const key of ['window', 'document', 'HTMLElement', 'Node', 'CustomEvent', 'customElements']) {
   Object.defineProperty(globalThis, key, { value: key === 'window' ? window : window[key], configurable: true });
 }
-const { mountManualGallery, MANUAL_GALLERY_PAGE_SIZE } = await import('../../blocks/gcsp/manual-gallery/gcsp-manual-gallery.js');
+const { mountManualGallery, MANUAL_GALLERY_PAGE_SIZE, MANUAL_GALLERY_NARROW_PAGE_SIZE } = await import('../../blocks/gcsp/manual-gallery/gcsp-manual-gallery.js');
 const { showMore } = await import('../../blocks/gcsp/kit/show-more.js');
 const css = (path) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
 const waitFor = async (check) => {
@@ -50,6 +50,15 @@ test('the gallery shows one page of cars with a count line and a real Show more 
   const more = moreButton(root); assert.equal(more.tagName, 'BUTTON'); assert.equal(more.textContent, 'Show more cars'); assert.equal(more.hidden, false);
     assert.match(root.textContent, /20 released cars · 20 eligible · 20 matching · 20 eligible matching/);
   assert.deepEqual(cards(root).map((card) => card.getAttribute('aria-label')), Array.from({ length: 6 }, (_, i) => `BMW Test 0${i}`));
+});
+
+test('at 600px and below the gallery pages three cars at a time and focuses card four (FUCQ-238)', async (t) => {
+  window.matchMedia = (query) => ({ matches: query === '(max-width: 600px)', addEventListener() {}, removeEventListener() {} });
+  t.after(() => { delete window.matchMedia; });
+  const root = await mount(t, 20); assert.equal(MANUAL_GALLERY_NARROW_PAGE_SIZE, 3); assert.equal(cards(root).length, 3);
+  assert.equal(countLine(root), 'Showing 3 of 20 cars');
+  moreButton(root).click(); assert.equal(cards(root).length, 6); assert.equal(countLine(root), 'Showing 6 of 20 cars');
+  assert.equal(document.activeElement, cards(root)[3]);
 });
 
 test('Show more cars reveals the next page, announces the count and focuses the first new card', async (t) => {

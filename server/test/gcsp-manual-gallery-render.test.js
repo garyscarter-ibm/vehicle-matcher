@@ -267,6 +267,25 @@ test('cards lead with points and allowance fit, keep key facts concise, and chip
   assert.match(detail.textContent, /Within your allowance, 200 points left/);
 });
 
+test('card facts sit in one Car facts disclosure, open wide and closed at 600px and below (FUCQ-238)', async (t) => {
+  const labels = ['Engine', 'Exterior', 'Interior', 'Transmission', 'Earliest collection', 'WLTP CO2'];
+  const wide = await mount(t);
+  for (const card of wide.root.querySelectorAll('.vm-card')) {
+    const sections = card.querySelectorAll('details.gcsp-gallery-fact-section'); assert.equal(sections.length, 1);
+    assert.equal(sections[0].querySelector('summary').textContent, 'Car facts'); assert.equal(sections[0].open, true);
+    assert.deepEqual([...sections[0].querySelectorAll('dt')].map((node) => node.textContent), labels);
+    assert.equal(card.querySelector('.vm-card-facts > details'), sections[0]);
+  }
+  const listeners = new Set(); let matches = true;
+  const stub = (query) => ({ get matches() { return query === '(max-width: 600px)' && matches; },
+    addEventListener: (_, fn) => listeners.add(fn), removeEventListener: (_, fn) => listeners.delete(fn) });
+  window.matchMedia = stub; t.after(() => { delete window.matchMedia; });
+  const narrow = await mount(t); const open = () => [...narrow.root.querySelectorAll('details.gcsp-gallery-fact-section')].map((node) => node.open);
+  assert.deepEqual(open(), [false, false, false]); assert.equal(listeners.size, 1);
+  matches = false; listeners.forEach((fn) => fn()); assert.deepEqual(open(), [true, true, true]);
+  narrow.teardown(); assert.equal(listeners.size, 0);
+});
+
 test('a saved date the server now refuses offers Back to your choices, never a dead Refresh (FUCQ-222)', async (t) => {
   const root = document.createElement('div'); document.body.append(root); let back = 0; let reads = 0;
   const invalid = { status: 'invalid', code: 'invalid-manual-draft', reasons: [{ field: 'requestedCollectionDate', reason: 'Choose a date inside the supplied collection and renewal window.' }] };

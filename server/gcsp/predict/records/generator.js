@@ -3,7 +3,7 @@ import { loadComparisonPolicy, generateComparisonInputs } from '../../comparison
 import { validInstant } from '../../policy/file-provider.js';
 import { freezeVehicleData } from '../../../vehicles/index.js';
 import { evaluateEssentials, scorePreferences } from '../../../scenarios/employee/index.js';
-import { projectBriefIntent, unknown, validateLearningRecord } from './schema.js';
+import { projectBriefIntent, SYNTHETIC_DECLINE_TYPE, unknown, validateLearningRecord } from './schema.js';
 import { inputDigest } from '../../repository/index.js';
 
 export const LEARNING_GENERATOR_VERSION = 'learning-records.sha256.v1';
@@ -215,7 +215,7 @@ export function generateLearningRecords(seed, snapshot) {
         if (responseDraw < response.expiryRate || respondAt >= expiresAt) {
           projectedAt = expiresAt; outcomes.expiry = event('expired', iso(expiresAt)); chosen.car.availableFrom = expiresAt;
         } else if (responseDraw < response.expiryRate + response.declineRate) {
-          projectedAt = respondAt; outcomes.decline = { ...event('declined', iso(respondAt)), reasonType: 'just-not-this-one' }; chosen.car.availableFrom = respondAt;
+          projectedAt = respondAt; outcomes.decline = { ...event('declined', iso(respondAt)), reasonType: SYNTHETIC_DECLINE_TYPE }; chosen.car.availableFrom = respondAt;
         } else {
           projectedAt = respondAt; outcomes.acceptance = event('accepted', iso(respondAt)); chosen.car.committed = true;
           if (draw(seed, cycle, employee.employeeId, 'selection') < response.selectionAfterAcceptRate) outcomes.selection = event('selected', iso(respondAt));

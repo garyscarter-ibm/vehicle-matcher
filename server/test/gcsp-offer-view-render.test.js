@@ -77,6 +77,18 @@ test('live announcements are bounded and refresh retains visible keyboard focus'
   assert.equal(document.activeElement.dataset.offerAction, 'refresh');
 });
 
+test('the live announcement is visually hidden with the kit utility, so the title shows once', async () => {
+  const { root, view, data } = render('pending');
+  const live = root.querySelector('[data-offer-announcement]');
+  view.update({ ...data, state: 'expired' });
+  assert.equal(live.textContent, 'Offer expired');
+  assert.deepEqual([live.className, live.getAttribute('role'), live.getAttribute('aria-live')], ['gcsp-vh', 'status', 'polite']);
+  assert.equal(root.querySelector('h1').textContent, 'Offer expired');
+  const css = await readFile(new URL('../../blocks/gcsp/shell/gcsp-shell.css', import.meta.url), 'utf8');
+  assert.match(css, /\.gcsp-vh \{[^}]*position: absolute;[^}]*clip-path: inset\(50%\);/);
+  assert.match(await readFile(new URL('../../gcsp-offer.html', import.meta.url), 'utf8'), /gcsp-shell\.css/);
+});
+
 test('multiple embeds have unique descriptions and text is rendered without HTML execution', () => {
   const one = render('pending'); const two = render('pending');
   const ids = [...document.querySelectorAll('[data-offer-action="accept"]')].map((control) => control.getAttribute('aria-describedby'));

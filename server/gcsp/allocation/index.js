@@ -3,6 +3,7 @@ import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.j
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId, expandEvaluation, packEvaluation } from './evaluation-rows.js';
+import { DECISION_EVENTS } from '../offers/decision.js';
 
 export { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId };
 
@@ -14,6 +15,9 @@ export const ALLOCATION_ATTEMPT_CONSUMER = 'buddy-allocation-attempt';
 const keys = ['allocation.tieBreak.rule', 'allocation.tieBreak.seed', 'offer.declinedCar.exclusion'];
 // FUCQ-227: read only for a hold-expiry trigger, so other allocations keep their recorded assumptions.
 const EXPIRY_KEY = 'offer.expiredHold.reallocation'; const EXPIRY_RULE = 'lapsedHoldersSitOutAndNobodyGetsBackACarTheyLetLapse';
+// FUCQ-233: likewise read only for a decline trigger.
+const DECLINE_KEY = 'offer.declinedHold.reallocation'; const DECLINE_RULE = 'declinersSitOutAndTheDeclinedCarStaysExcluded';
+const RETURN_KEYS = { 'buddy-expired': [EXPIRY_KEY, EXPIRY_RULE], 'buddy-declined': [DECLINE_KEY, DECLINE_RULE] };
 const tables = ['briefs', 'employees', 'entitlement_slots', 'stock', 'holds', 'claims', 'offers', 'decisions'];
 const unavailable = (code) => result('unavailable', { code, reason: 'Allocation is unavailable.', retryable: true });
 const text = (v) => typeof v === 'string' && v.length > 0;
@@ -68,6 +72,20 @@ export function buddyExpiryEvents(runId, receipts) {
   });
 }
 
+// FUCQ-233: each completed decline returns its car in its own allocation. Returns null for a malformed receipt.
+export function buddyDeclineEvents(runId, receipts) {
+  const events = [];
+  for (const row of receipts.filter((r) => r.consumerId === DECISION_EVENTS && r.eventType === 'offer-declined' && r.state === 'completed' && r.outcome?.status === 'ok')) {
+    const event = row.outcome.value?.event;
+    if (!text(row.eventId) || !text(row.inputDigest) || event?.type !== 'offer-declined' || event.eventId !== row.eventId || event.runId !== runId
+      || !text(event.holdId) || !text(event.orderUuid) || !validInstant(event.occurredAt)) return null;
+    events.push({ eventId: `allocation:${inputDigest([DECISION_EVENTS, row.eventId])}`, eventType: 'buddy-declined', runId,
+      occurredAt: event.occurredAt, holdIds: [event.holdId], orderUuids: [event.orderUuid], sourceEventId: row.eventId,
+      sourceReceipt: { consumerId: DECISION_EVENTS, eventId: row.eventId, inputDigest: row.inputDigest, inputVersions: structuredClone(row.inputVersions ?? {}) } });
+  }
+  return events;
+}
+
 // Allocation proposes claims; the injected FUCQ-100 port alone owns stock/hold transactions.
 export function createAllocationService({ repository, policy, clock, identity, claim } = {}) {
   let registration;
@@ -110,9 +128,9 @@ export function createAllocationService({ repository, policy, clock, identity, c
     const pool = rows.stock.filter((r) => ['available', 'released'].includes(r.state) && r.available === true
       && r.held !== true && r.allocated !== true && ![...occupying, ...selected].some((h) => h.orderUuid === r.orderUuid))
       .sort((a, b) => ordinal(a.orderUuid, b.orderUuid));
-    // FUCQ-227: an expiry allocation skips this lapse's holders, and never hands anyone a car they already let lapse.
+    // FUCQ-227/233: an expiry or decline allocation skips the returned holds' holders; expiry also never hands back a lapsed car.
     const expiry = event.eventType === 'buddy-expired';
-    const lapsed = new Set(expiry ? rows.holds.filter((h) => event.holdIds.includes(h.holdId)).map((h) => h.employeeId) : []);
+    const lapsed = new Set(RETURN_KEYS[event.eventType] ? rows.holds.filter((h) => event.holdIds.includes(h.holdId)).map((h) => h.employeeId) : []);
     const letLapse = new Set(expiry ? rows.holds.filter((h) => h.state === 'expired' && h.releaseReason === 'buddy-expired').map((h) => `${h.employeeId}|${h.orderUuid}`) : []);
     const briefs = latest(rows.briefs).filter((b) => b.buddy?.searchConsent === true && b.buddy.paused === false)
       .sort((a, b) => ordinal(a.employeeId, b.employeeId));
@@ -207,11 +225,11 @@ export function createAllocationService({ repository, policy, clock, identity, c
         // producers have committed before this read; never nest under its transaction helper.
         // Only the trigger consumers' receipts are read (not every receipt); the events sort totally below.
         const loaded = [];
-        for (const consumerId of ['stock-release', 'brief:changes', 'buddy-expiry']) {
+        for (const consumerId of ['stock-release', 'brief:changes', 'buddy-expiry', DECISION_EVENTS]) {
           const rows = await repository.query(context, 'event_receipts', { consumerId }); if (rows.status !== 'ok') return rows;
           loaded.push(rows.value);
         }
-        const [releases, changes, expiries] = loaded;
+        const [releases, changes, expiries, decisions] = loaded;
         const sources = [...releases, ...changes].filter((row) => row.state === 'completed' && row.outcome?.status === 'ok');
         const events = [];
         for (const source of sources) {
@@ -229,8 +247,9 @@ export function createAllocationService({ repository, policy, clock, identity, c
             sourceEventId: source.eventId, sourceReceipt: { consumerId: source.consumerId, eventId: source.eventId,
               inputDigest: source.inputDigest, inputVersions: structuredClone(source.inputVersions) }, occurredAt });
         }
-        const lapses = buddyExpiryEvents(context.runId, expiries); if (!lapses) return unavailable('allocation-trigger-invalid');
-        events.push(...lapses);
+        const lapses = buddyExpiryEvents(context.runId, expiries); const declines = buddyDeclineEvents(context.runId, decisions);
+        if (!lapses || !declines) return unavailable('allocation-trigger-invalid');
+        events.push(...lapses, ...declines);
         events.sort((a, b) => ordinal(a.occurredAt, b.occurredAt)
           || ordinal(a.sourceReceipt.consumerId, b.sourceReceipt.consumerId) || ordinal(a.sourceEventId, b.sourceEventId));
         const allocations = [];
@@ -244,8 +263,8 @@ export function createAllocationService({ repository, policy, clock, identity, c
     async allocate(context, event) {
       if (!repository || !policy || !clock || typeof identity?.resolveEmployeeContext !== 'function' || typeof claim?.tryClaim !== 'function') return unavailable('not-configured');
       const allowed = await identity.requireRole(context, 'presenter'); if (allowed.status !== 'ok') return allowed;
-      if (!event || !text(event.eventId) || !['stock-released', 'brief-changed', 'buddy-expired'].includes(event.eventType)
-        || event.runId !== context.runId || event.eventType === 'buddy-expired'
+      if (!event || !text(event.eventId) || !['stock-released', 'brief-changed', 'buddy-expired', 'buddy-declined'].includes(event.eventType)
+        || event.runId !== context.runId || RETURN_KEYS[event.eventType]
           && (!Array.isArray(event.holdIds) || !event.holdIds.length || !event.holdIds.every(text))) return result('invalid', { code: 'invalid-allocation-event' });
       const digest = inputDigest(event);
       try {
@@ -257,12 +276,13 @@ export function createAllocationService({ repository, policy, clock, identity, c
           const time = await clock.now(context); if (time.status !== 'ok') return time;
           if (time.value?.runId !== context.runId || !validInstant(time.value.now)) return unavailable('clock-invalid');
           const read = { runId: context.runId, asOf: time.value.now, policyVersion: context.policyVersion };
-          const values = await Promise.all([...keys, ...(event.eventType === 'buddy-expired' ? [EXPIRY_KEY] : [])].map((key) => policy.getAssumption(key, read)));
+          const returned = RETURN_KEYS[event.eventType];
+          const values = await Promise.all([...keys, ...(returned ? [returned[0]] : [])].map((key) => policy.getAssumption(key, read)));
           if (values.some((v) => v.status !== 'ok' || v.policyVersion !== context.policyVersion)) return unavailable('policy-unavailable');
           const assumptions = values.map((v) => v.value);
           if (!compare(assumptions[0].value) || !text(assumptions[1].value)
             || assumptions[2].value !== 'untilRelevantConfirmedBriefChange'
-            || event.eventType === 'buddy-expired' && assumptions[3]?.value !== EXPIRY_RULE) return unavailable('policy-invalid');
+            || returned && assumptions[3]?.value !== returned[1]) return unavailable('policy-invalid');
           const planned = await prepare(context, event, time.value, assumptions); if (planned.status !== 'ok') return planned;
           const { plan: prepared, slices } = planned.value;
           const recorded = await repository.transaction(context, command(`allocation:prepare:${event.eventId}`, event), async (tx) => {

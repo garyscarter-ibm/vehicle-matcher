@@ -177,3 +177,35 @@ For Russell or Gary:
 - **Question for Gary (FUCQ-223):** the shell items a to d (BMW Group logo, soft blue nav tile, condensed H1, bright blue bands) come from your 5 November shell alignment (9472dffd) and the Density theme; they aren't drift. Keep Density and mark the FUCQ-64 screenshots as superseded for those items, or go back to the teal reference? **Recommendation: keep Density.** Nothing was changed for these items.
 - **New Low bugs:** FUCQ-237 (new-order copy for someone with no current car) and FUCQ-238 (the 320 px gallery is still about 7,300 px tall, and an empty grey block ends Greg's Renewal cases).
 - **About 03:00:** imported FUCQ-237 and FUCQ-238. A new UI lead is building the three Low UI bugs: FUCQ-235, then 237, then 238.
+- **About 03:30: FUCQ-137 and FUCQ-138 (S) are built and merged.** Scoped tests on the merged base are running, and both close once they pass. FUCQ-138 conflicted with FUCQ-223's new kit component in the kit catalogue, the gallery and the UI ratchet. Both sides only added entries, so I kept both and moved FUCQ-123's paragraph back to the plan section. 430 tests pass on the resolved branch. The claim step for FUCQ-226 pushed these merges before their scoped run finished; if the run fails, I'll fix forward.
+  - **Recommendations built:** the result is stored through the configured repository: PostgreSQL through the environment-only URL, or memory by default. Memory mode imports a result file with `--out` and `GCSP_COMPARISON_RESULT_FILE`, plus `--import`, and the files are digest-checked. The buddy route still doesn't re-offer at expiry, and both the command and the panel say so.
+  - **Not done:** the draw.io page 09 statuses aren't updated. To stay under its 38-line cap, gcsp-greg.css's two `@import` lines were put on one line; raising the cap is the alternative.
+- **FUCQ-226 raised to High and started.** FUCQ-137's default command (1,000 employees, 3 seeds) didn't finish in 90 minutes. At 100 employees each seed took about 6 minutes, against 85 s for all three seeds before. The cause isn't known yet: either the command's path differs from the probe's (for example, through PostgreSQL), or something merged since 8 Nov slowed the replay. A lead is finding the root cause. It must never touch the hosted database for timing runs.
+- **FUCQ-174, 175 and 176 (C) wait for FUCQ-226,** because they change the same comparison code.
+- **About 04:00, merged, pushed and In Review:**
+  - **FUCQ-137 and FUCQ-138** (S). Scoped tests: 633 tests, 0 real failures. FUCQ-137's default 1,000-employee run is still open under FUCQ-226. Until that's fixed, store the demo result from a smaller run.
+  - **FUCQ-232** (bug, Medium): Greg's decline categories come from the reviewed policy, and fail closed. 555 tests, 0 failed.
+  - **FUCQ-233** (bug, Medium): a declined buddy car is re-offered on the next tick. A new assumed key, `offer.declinedHold.reallocation`, makes the person who declined sit out. The 300-employee comparison is unchanged. 890 tests, 0 failed.
+  - **FUCQ-234** (bug, Low): the offer page's live announcement is visually hidden.
+- **Merged locally, tests running:**
+  - **FUCQ-235** (Low): the kit dataTable gets an opt-in `stack` layout under 640 px. Its COMPONENTS.md conflict with FUCQ-138 is resolved by keeping both.
+  - **FUCQ-237** (Low): new-order wording through the optional policy `wordingByMode.new`.
+- **Questions for Gary:**
+  1. FUCQ-233: do you want the decline sit-out rule?
+  2. FUCQ-233: should the comparison's limitations line also mention declines? Adding it re-pins two fixtures.
+  3. FUCQ-237: please check the new new-order wording in the seed.
+  4. FUCQ-238: is about 3,340 px for the first gallery page at 320 acceptable? It shows 3 cars per page under 601 px.
+- **New Low bug FUCQ-239:** the offer handoff wording and Order history ignore new-order employees and placed orders.
+- **Still building:** FUCQ-226 (root cause) and FUCQ-238. **Waiting:** FUCQ-236 (Low, claim after these tests) and FUCQ-174, 175 and 176 (C, after FUCQ-226).
+- **Seen by a lead:** gcsp-cases-local-demo.test.js:154 fails on base. The full suite will confirm.
+- **About 04:55, merged, pushed and In Review:** **FUCQ-235** (Low, kit dataTable `stack`), **FUCQ-237** (Low, new-order wording), **FUCQ-238** (Low, gallery 3,462 px at 320, down from 7,285; Renewal cases empty block gone). FUCQ-238's walkthrough-script conflict with 237 is resolved by keeping both stories. Scoped tests: 918 and 594 tests, 0 real failures.
+- **Regression found and fixed:** gcsp-cases-local-demo.test.js failed on gcsp-poc because FUCQ-232 made the decline-reasons registry required, and that test builds its own runtime without `adoptOfferJourney: true`. Real launches (host.js) adopt it, so the demo was never affected. Fixed in the test (7991d4bc).
+- **Started:** FUCQ-236 (Low, learning records read the reviewed reason policy), then FUCQ-239 (Low, offer handoff wording and Order history).
+- **About 06:45:**
+  - **FUCQ-236** (Low) is merged, pushed and In Review. Learning records now use the reviewed reason codes and fail closed. 204 tests, 0 failed.
+  - **FUCQ-239** (Low) is merged and its tests are running. The offer handoff now has new-order wording, and Order history shows placed orders. AC4 is partly met: Jordan's offer handoff couldn't be reached in the browser, so a test proves that wording instead.
+- **New High bug, FUCQ-240 (bug, not in MoSCoW): a fix lead is already working on it.** Once an employee with no current car saves an eligible brief with hold consent, buddy allocation returns 503 for the whole batch, so Paula's main-journey release fails too. Jordan arrived with FUCQ-224 and has been on the hosted demo since about 03:00. **Until it's fixed, don't save a brief as Jordan on the hosted demo.**
+  - **Recommendation being built:** fail per employee. Jordan uses a real needed-by date if one exists. Otherwise he's left out of buddy contention, with the limitation shown. No date is invented.
+- **Questions for Gary:**
+  1. FUCQ-239: does "Sent to ordering" read right as the Order history status?
+  2. FUCQ-236: observed learning records now carry `body-style` instead of `body`. Nothing downstream reads it.

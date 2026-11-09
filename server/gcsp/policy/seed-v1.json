@@ -11135,6 +11135,17 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "offer.declinedHold.reallocation",
+      "value": "declinersSitOutAndTheDeclinedCarStaysExcluded",
+      "unit": "enum",
+      "status": "assumed",
+      "basis": "Assumed demo rule (FUCQ-233): a declined buddy offer returns its car to allocation on the next tick, so another eligible employee is offered it at once rather than at the next release. The employee who declined sits out that allocation, and offer.declinedCar.exclusion still keeps that car from them until a relevant confirmed brief change.",
+      "source": "docs/gcsp/allocation-contract.md",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "choices.topUp.gbpPerPoint",
       "value": 1,
       "unit": "GBP per point",
@@ -12887,6 +12898,9 @@
         "termsVersion": "fictional-order-terms-v1",
         "fictional": true,
         "wording": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. For a replacement, the recorded old contract and expected return mileage must be correct. Approval, appointment and collection are separate decisions; submission does not end the current contract.",
+        "wordingByMode": {
+          "new": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. Approval, appointment and collection are separate decisions."
+        },
         "validUntil": "2026-12-01T00:00:00.000Z",
         "declarations": [
           {

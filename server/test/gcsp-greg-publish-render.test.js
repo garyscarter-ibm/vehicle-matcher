@@ -264,8 +264,14 @@ test('actual delivered memory runtime and registered HTTP routes drive the brows
   const { createGcspRuntime } = await import('../gcsp/runtime.js');
   const { startHttpServer } = await import('./helpers/employee-recommendation-http.js');
   const now = '2026-11-05T09:00:00.000Z';
+  // Greg's demand read needs the reviewed decline registry; seed it rather than adopt, so publish at `now` stays valid.
+  const { PolicyService, MemoryPolicyProvider } = await import('../gcsp/policy/index.js');
+  const { getReviewedDefinitionSet } = await import('../gcsp/policy/reviewed-definitions.js');
+  const source = JSON.parse(await (await import('node:fs/promises')).readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
+  const reasons = getReviewedDefinitionSet('offer-decline-reasons-v1').definitions.find((d) => d.key === 'offer.declineReasons.v1');
+  source.assumptions.push({ ...source.assumptions[0], key: reasons.key, value: reasons.value, unit: reasons.unit, status: reasons.status, basis: reasons.basis });
   const runtimeResult = await createGcspRuntime({ mode: 'memory', environmentId: 'publish-panel-http', policyAsOf: now,
-    commandId: 'panel-bootstrap', sessionNow: () => now });
+    commandId: 'panel-bootstrap', sessionNow: () => now, policy: new PolicyService({ provider: new MemoryPolicyProvider({ seedProvider: { async loadVersions() { return [source]; } } }) }) });
   assert.equal(runtimeResult.status, 'ok'); const runtime = runtimeResult.value;
   t.after(() => runtime.close());
   const session = await runtime.createLocalSession(); assert.equal(session.status, 'ok');
