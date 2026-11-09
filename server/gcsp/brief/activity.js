@@ -91,7 +91,9 @@ function projectCheck(receipt, context, mine) {
   return { eventId: receipt.eventId, checkedAt: value.evaluatedAt,
     ...(text(value.inputVersions?.clock) ? { clockVersion: value.inputVersions.clock } : {}),
     carsChecked: mine.decisions.length, suitableCars, exclusions: suitableCars ? [] : exclusionsOf(mine.decisions),
-    outcome: Array.isArray(value.assignments) && value.assignments.some((row) => row?.employeeId === context.employeeId) ? 'offer-held' : 'no-match' };
+    outcome: Array.isArray(value.assignments) && value.assignments.some((row) => row?.employeeId === context.employeeId) ? 'offer-held' : 'no-match',
+    // FUCQ-240: left out of contention for want of a renewal date.
+    ...(mine.decisions.some((row) => row?.blockers?.some((x) => x?.code === 'renewal-deadline-unknown')) ? { limitation: 'renewal-deadline-unknown' } : {}) };
 }
 
 // This read consumes stored receipts only. A clock tick or completed handler never

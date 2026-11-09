@@ -175,7 +175,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
       if (evaluated.status !== 'ok') return unavailable('employee-evaluation-unavailable');
       // Decisions arrive frozen; copy only what the decline check below changes.
       const decisions = evaluated.value.decisions.map((d) => ({ ...d, blockers: [...d.blockers] }));
-      let contending = false;
+      let contending = false; let excluded = false;
       for (const decision of decisions) {
         const declined = rows.decisions.filter((d) => d.employeeId === employee.employeeId && d.decision === 'decline'
           && rows.offers.some((o) => o.offerId === d.offerId && o.orderUuid === decision.orderUuid));
@@ -190,7 +190,11 @@ export function createAllocationService({ repository, policy, clock, identity, c
         const currentContract = currentContracts?.length === 1 ? currentContracts[0] : null;
         const end = currentContract?.contractEndDate;
         const due = typeof end === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(end) ? `${end}T00:00:00.000Z` : null;
-        if (!validInstant(due)) return unavailable('renewal-deadline-unavailable');
+        // FUCQ-240: no source date, so leave this employee out with a recorded blocker; never invent a date or fail the batch.
+        if (!validInstant(due)) {
+          decision.blockers.push({ code: 'renewal-deadline-unknown', currentContracts: currentContracts?.length ?? 0 });
+          excluded = true; continue;
+        }
         plan.contenders.push({ employeeId: employee.employeeId, entitlementSlotId: slot.entitlementSlotId, renewalId,
           orderUuid: decision.orderUuid, renewalDue: due, score: decision.score,
           lottery: lottery(assumptions[1].value, context.runId, employee.employeeId, decision.orderUuid),
@@ -200,6 +204,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
             { code: 'renewal-due', value: due }, { code: 'eligible-fit', score: decision.score }] });
         contending = true;
       }
+      if (excluded) (plan.excluded ??= []).push({ employeeId: employee.employeeId, code: 'renewal-deadline-unknown' });
       plan.evaluatedEmployees.push(employee.employeeId);
       // FUCQ-217: quotes are rebuilt for attempted contenders only, from these frozen inputs.
       slices.push({ employeeId: employee.employeeId, quoteInputs: contending ? inputs : null, evaluation: packEvaluation({ employeeId: employee.employeeId,
@@ -252,7 +257,9 @@ export function createAllocationService({ repository, policy, clock, identity, c
           const outcome = await service.allocate(context, event); if (outcome.status !== 'ok') return outcome;
           allocations.push(outcome.value);
         }
-        return ok({ runId: context.runId, allocations });
+        const left = allocations.at(-1)?.excluded;
+        return ok({ runId: context.runId, allocations,
+          ...(left?.length ? { limitations: [{ code: 'renewal-deadline-unknown', employees: new Set(left.map((row) => row.employeeId)).size }] } : {}) });
       } catch { return unavailable('allocation-source-invalid'); }
     },
     async allocate(context, event) {
@@ -369,7 +376,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
           : { evaluationRefs: { consumerId: ALLOCATION_EVALUATION_CONSUMER, employeeIds: plan.evaluatedEmployees } };
         const outcome = ok({ state: assignments.length ? 'allocated' : 'no-assignment', runId: context.runId, event: plan.trigger,
           evaluatedAt: plan.evaluatedAt, policyVersion: plan.policyVersion, assumptions: plan.assumptions,
-          inputVersions: plan.inputVersions, assignments, attempts, ...evaluated });
+          inputVersions: plan.inputVersions, assignments, attempts, ...evaluated, ...(plan.excluded ? { excluded: plan.excluded } : {}) });
         const finished = await repository.transaction(context, command(`allocation:complete:${event.eventId}`, outcome), async (tx) => {
           const closed = await tx.compareAndSwap(cursorRef, version, { state: 'completed' }); if (closed.status !== 'ok') return closed;
           const done = await tx.compareAndSwap(ref(context, event.eventId), row.version, { state: 'completed', outcome });

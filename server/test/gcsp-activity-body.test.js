@@ -251,3 +251,14 @@ test('FUCQ-219: no explanation while paused, finished, holding an offer, with a 
   const declined = withExclusions([need('seats', 5, 12, 'gte')]); declined.value.currentOffer = structuredClone(fixtures['offer-declined'].value.currentOffer);
   assert.deepEqual(none(declined), [1, true]);
 });
+
+test('FUCQ-240: a check that left the employee out for want of a renewal date says so, unless paused', () => {
+  const left = structuredClone(fixtures.searching); left.value.lastSuccessfulCheck.limitation = 'renewal-deadline-unknown';
+  const line = 'Buddy cannot hold a car for you yet. There is no renewal date on your record to set your place in the queue, so you are left out of allocation until one is recorded.';
+  const node = activityBody({ result: left });
+  assert.deepEqual(lines(node), ['Still searching. No match yet.', 'Last check 4 Nov 2026, 23:30: 12 cars checked, 0 suitable.', line]);
+  assert.doesNotMatch(node.textContent, /\u2014/); node.destroy();
+  assert.ok(!lines(view('searching')).includes(line), 'no limitation key, no line');
+  const paused = structuredClone(fixtures.paused); paused.value.lastSuccessfulCheck = { ...structuredClone(fixtures.searching.value.lastSuccessfulCheck), limitation: 'renewal-deadline-unknown' };
+  const quiet = activityBody({ result: paused }); assert.ok(!lines(quiet).includes(line)); quiet.destroy();
+});
