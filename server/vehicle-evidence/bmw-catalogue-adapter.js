@@ -135,18 +135,18 @@ function validSnapshot(data, version) {
     && data.selectedOptions.length === 47 && data.selectedOptions.includes(data.trim);
 }
 
-function provenance(kind, observedDate) {
+export function provenance(kind, observedDate) {
   if (kind === 'observed') return { kind, source: 'BMW UK catalogue', observedDate };
   if (kind === 'synthetic') return { kind, source: 'Illustrative fixture', observedDate: null };
   return { kind: 'unknown', source: null, observedDate: null };
 }
 
-function unknown(definition, unit, reason = 'no-resolved-evidence') {
+export function unknown(definition, unit, reason = 'no-resolved-evidence') {
   return { state: 'unknown', value: null, definition, unit, reason,
     completeness: 'unknown', provenance: provenance('unknown') };
 }
 
-function valueProblem(value) {
+export function valueProblem(value) {
   if (value === undefined || value === null || (typeof value === 'string' && !value.trim())) return 'missing-value';
   if (typeof value === 'string' && /^(?:-+|0{4}|N\/?A|null|unknown)$/i.test(value.trim())) return 'placeholder-value';
   if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) return 'malformed-value';
@@ -176,7 +176,7 @@ function fact(entry, definition, unit) {
     completeness: entry.completeness, provenance: entryProvenance(entry) };
 }
 
-function emptyFacts() {
+export function emptyFacts() {
   return {
     ...Object.fromEntries(Object.entries(MEASUREMENTS).map(([name, [, definition, unit]]) => [name, unknown(definition, unit)])),
     bodyLength: unknown('BODY LENGTH', 'MILLIMETRES'),
@@ -211,7 +211,7 @@ function definitions(data) {
     });
 }
 
-function safeLabel(value) {
+export function safeLabel(value) {
   return typeof value === 'string' && value.trim().length > 0 && value.length <= 256
     && !/[<>\u0000-\u001f\u007f]/.test(value);
 }
