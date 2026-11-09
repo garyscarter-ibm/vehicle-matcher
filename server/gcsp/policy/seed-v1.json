@@ -13278,6 +13278,24 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "lifecycle.appointments.outcomeTiming.v1",
+      "value": {
+        "completeAfterSlotStartSeconds": 0,
+        "noShowAfterSlotStartSeconds": 0,
+        "tooEarly": {
+          "owner": "retailer",
+          "nextStep": "The handover outcome can be recorded once the booked slot starts."
+        }
+      },
+      "unit": "seconds of demo time after the booked slot start; owner and next-step label for an early outcome",
+      "status": "assumed",
+      "basis": "Handover outcome timing (FUCQ-260): a handover can only be completed, or recorded as missed, once its booked slot has started. Zero seconds is the plainest plausible rule; a grace period for a late arrival is set here without code changes.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "lifecycle.appointments.outcomes.v1",
       "value": {
         "exceptionTypes": {

@@ -484,6 +484,12 @@ async function expectNotReady(f, r, session) {
   assert.deepEqual(await snapshot(), before, 'a refused completion changes nothing');
   return refusal;
 }
+/** FUCQ-260: ticks to the booked slot start plus the keyed offset, the earliest time a handover outcome may be recorded. */
+async function toOutcomeTime(f, r, step = 'complete') {
+  const timing = await assumption(f, 'lifecycle.appointments.outcomeTiming.v1');
+  const target = later((await r.handover()).slot.start, step === 'complete' ? timing.completeAfterSlotStartSeconds : timing.noShowAfterSlotStartSeconds);
+  if (Date.parse(target) > Date.parse(await r.clockNow())) await tickTo(f, `slot-start-${step}`, { mode: 'to', to: target });
+}
 /** The presenter's completion over the route; returns the read model. */
 async function completeHandover(f, r, session) {
   const reply = await f.api(`${APPOINTMENTS}/complete`, { body: { orderUuid: r.order }, session });
@@ -558,7 +564,7 @@ test('FUCQ-171 no-show then rebooking: the miss opens a case and changes nothing
     state.first = await bookHandover(f, m); state.held = await currentCar(f, m);
   });
   await step('the presenter records a no-show: the keyed state, owner and next step, a fresh slot list and the missed slot kept on record', async () => {
-    state.inputs = await allocatorInputs(f); const at = await m.clockNow();
+    await toOutcomeTime(f, m, 'noShow'); state.inputs = await allocatorInputs(f); const at = await m.clockNow();
     const reply = await f.api(`${APPOINTMENTS}/no-show`, { body: { orderUuid: order } });
     assert.equal(reply.status, 200, JSON.stringify(reply.json));
     const view = seenPolicy(f, reply.json.value); const keyed = outcomes.states['no-show'];
@@ -607,7 +613,7 @@ test('FUCQ-171 no-show then rebooking: the miss opens a case and changes nothing
     assert.deepEqual(await currentCar(f, m), state.held, 'rebooking does not change the current car');
   });
   await step('completion is refused until readiness, then the rebooked handover completes and the new order becomes the current car', async () => {
-    await expectNotReady(f, m); await finishDocuments(f, m, state.items);
+    await expectNotReady(f, m); await finishDocuments(f, m, state.items); await toOutcomeTime(f, m);
     const done = await completeHandover(f, m, await asPrincipal(f, 'greg'));
     assert.deepEqual([done.state, done.attempt, done.previousAttempts.length, done.outcome.state], ['completed', 2, 1, 'completed']);
     assert.match(done.outcome.providerReference, /^SYN-APT-/); assert.notEqual(done.outcome.providerReference, state.noShow.outcome.providerReference);

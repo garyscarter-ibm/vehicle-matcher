@@ -202,10 +202,19 @@ async function toScheduled(f, controller, tag) {
   return slot;
 }
 
+// FUCQ-260: ticks to the booked handover slot start plus the keyed offset, the earliest time its outcome may be recorded.
+async function atSlotStart(f, controller, tag, step = 'complete') {
+  const read = { runId: f.employee.runId, policyVersion: f.employee.policyVersion, asOf: good(await f.clock.now(f.presenter)).now };
+  const timing = good(await f.policy.getAssumption('lifecycle.appointments.outcomeTiming.v1', read)).value;
+  const offset = step === 'complete' ? timing.completeAfterSlotStartSeconds : timing.noShowAfterSlotStartSeconds;
+  const gap = (Date.parse(value(controller, 'appointment').slot.start) + offset * 1000 - Date.parse(read.asOf)) / 1000;
+  if (gap > 0) { good(await tick(f, `${tag}-slot-start`, gap)); await controller.refresh(); }
+}
+
 test('a presenter completes a ready handover and the screen reads Handover complete with no actions', async (t) => {
   const f = await setup(t); const orderUuid = await submitOrder(f); const controller = await open(f, { orderUuid });
   try {
-    const slot = await toScheduled(f, controller, 'op-complete');
+    const slot = await toScheduled(f, controller, 'op-complete'); await atSlotStart(f, controller, 'op-complete');
     good(await f.dependencies.gcspAppointments.complete(f.presenter, { orderUuid })); await controller.refresh();
     const appointment = value(controller, 'appointment');
     assert.deepEqual([appointment.state, appointment.booked, appointment.outcome.state, appointment.owner], ['completed', false, 'completed', 'employee']);
@@ -225,6 +234,7 @@ test('a completed handover moves the stage tracker and the order list on to the 
     await toScheduled(f, controller, 'op-tracker');
     const before = value(controller, 'stages');
     assert.deepEqual([before.currentStage, before.outcome, before.stages.some((row) => row.stage === keyed.stage)], ['sent to ordering', 'sent-to-ordering', false]);
+    await atSlotStart(f, controller, 'op-tracker');
     good(await f.dependencies.gcspAppointments.complete(f.presenter, { orderUuid })); await controller.refresh();
     const stages = value(controller, 'stages'); const outcome = value(controller, 'appointment').outcome;
     assert.deepEqual([stages.currentStage, stages.outcome, stages.owner, stages.nextStep], [keyed.stage, 'handed-over', keyed.owner, keyed.nextStep]);
@@ -241,7 +251,7 @@ test('a completed handover moves the stage tracker and the order list on to the 
 test('a recorded no-show offers fresh slots and Paula rebooks through the controller as attempt 2', async (t) => {
   const f = await setup(t); const orderUuid = await submitOrder(f); const controller = await open(f, { orderUuid });
   try {
-    const missedSlot = await toScheduled(f, controller, 'op-missed');
+    const missedSlot = await toScheduled(f, controller, 'op-missed'); await atSlotStart(f, controller, 'op-missed', 'noShow');
     good(await f.dependencies.gcspAppointments.recordNoShow(f.presenter, { orderUuid })); await controller.refresh();
     let appointment = value(controller, 'appointment');
     assert.deepEqual([appointment.state, appointment.booked, appointment.outcome.state, appointment.attempt], ['no-show', false, 'no-show', 1]);
@@ -310,6 +320,7 @@ test('a handover completed before the return outcome makes the new car current, 
   const car = { name: 'Synthetic new car' };
   try {
     await toScheduled(f, controller, 'ro-both'); const wait = await delays(f); const slot = await returnScheduled(f, controller, wait, 'ro-both');
+    await atSlotStart(f, controller, 'ro-both');
     good(await f.dependencies.gcspAppointments.complete(f.presenter, { orderUuid })); await controller.refresh();
     let returning = value(controller, 'returnPlan'); assert.deepEqual([returning.state, returning.relationship.currentCar.kind, returning.relationship.oldCar.status], ['return-scheduled', 'order', 'held']);
     let plan = orderProgressBody({ progress: controller.getState().progress, car }).querySelector('.gcsp-order-return').textContent;
