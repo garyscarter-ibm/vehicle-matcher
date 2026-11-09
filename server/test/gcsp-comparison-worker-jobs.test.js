@@ -227,23 +227,24 @@ test('invalid requests name the key, start nothing, store no job and never touch
   const called = new Set();
   const { service, spawn, repository, f } = await build({ policy: limitsPolicy({}, called) });
   const change = (extra) => ({ experimentId: 'hold-sweep', change: { values: [3600], basis: 'Trying it', ...extra } });
+  const hold = ['change.values', 'hold.buddy.durationSeconds'];
   const cases = [
-    [change({ values: [100] }), 'hold.buddy.durationSeconds'],
-    [change({ values: [7200] }), 'hold.buddy.durationSeconds'],
-    [change({ values: [3600, 100000] }), 'hold.buddy.durationSeconds'],
-    [{ experimentId: 'points', change: { value: 5, basis: 'Trying it' } }, 'comparison.pointsAllowanceMultiplier'],
-    [{ experimentId: 'order-mix', change: { value: [], basis: 'Trying it' } }, 'overlay'],
-    [{ experimentId: 'hold-sweep', change: { values: [3600] } }, 'basis'],
-    [{ experimentId: 'hold-sweep' }, 'change'],
-    [{ experimentId: 'nonsense' }, 'experimentId'],
-    [{ experimentId: 'points', change: { value: 2, basis: 'x', extra: 1 } }, 'change'],
+    [change({ values: [100] }), ...hold],
+    [change({ values: [7200] }), ...hold],
+    [change({ values: [3600, 100000] }), ...hold],
+    [{ experimentId: 'points', change: { value: 5, basis: 'Trying it' } }, 'change.value', 'comparison.pointsAllowanceMultiplier'],
+    [{ experimentId: 'order-mix', change: { value: [], basis: 'Trying it' } }, 'change.value', 'comparison.modelLineMix'],
+    [{ experimentId: 'hold-sweep', change: { values: [3600] } }, 'change.basis', null],
+    [{ experimentId: 'hold-sweep' }, 'change', null],
+    [{ experimentId: 'nonsense' }, 'experimentId', null],
+    [{ experimentId: 'points', change: { value: 2, basis: 'x', extra: 1 } }, 'change', null],
   ];
-  for (const [request, boundary] of cases) {
+  for (const [request, field, key] of cases) {
     const refused = await service.start(f.contexts.greg, request);
-    assert.equal(refused.status, 'invalid', `${boundary}: ${JSON.stringify(refused)}`);
+    assert.equal(refused.status, 'invalid', `${field}: ${JSON.stringify(refused)}`);
     assert.equal(refused.code, 'invalid-experiment');
-    assert.equal(refused.reasons[0].field, boundary);
-    assert.equal(refused.reasons[0].key, boundary.includes('.') ? boundary : null);
+    assert.equal(refused.reasons[0].field, field);
+    assert.equal(refused.reasons[0].key, key);
     assert.match(refused.reasons[0].reason, /\S/);
     assert.ok(!/[—–]/.test(refused.reasons[0].reason));
     assert.equal((await service.read(f.contexts.greg)).status, 'not-found');
@@ -300,7 +301,7 @@ test('the canonical timeout stops the worker, fails the job naming the limit and
 });
 
 test('the job limits are read from the policy; missing or malformed limits are unavailable and spawn nothing', async () => {
-  for (const override of [null, { timeoutSeconds: 0 }, { workerHeapMb: 'big' }, { schemaVersion: 2 }]) {
+  for (const override of [null, { timeoutSeconds: 0 }, { workerHeapMb: 'big' }, { workerYoungGenerationMb: 0 }, { workerYoungGenerationMb: undefined }, { schemaVersion: 2 }]) {
     const { service, spawn, f } = await build({ policy: limitsPolicy(override) });
     const refused = await service.start(f.contexts.greg, processOnly);
     assert.equal(refused.status, 'unavailable', JSON.stringify(override));
@@ -310,7 +311,7 @@ test('the job limits are read from the policy; missing or malformed limits are u
     assert.equal((await service.read(f.contexts.greg)).status, 'not-found');
   }
   const seeded = (await policy.getAssumption(JOBS_KEY, { runId: 'jobs-test', asOf: '2026-11-08T00:00:00.000Z' }));
-  assert.deepEqual(seeded.value.value, { schemaVersion: 1, timeoutSeconds: 1800, workerHeapMb: 128 });
+  assert.deepEqual(seeded.value.value, { schemaVersion: 1, timeoutSeconds: 1800, workerHeapMb: 128, workerYoungGenerationMb: 16 });
   assert.equal(seeded.value.status, 'assumed');
 });
 

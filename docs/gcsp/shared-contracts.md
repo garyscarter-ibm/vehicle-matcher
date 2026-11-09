@@ -1211,21 +1211,109 @@ What-if experiments that sit beside the process-only comparison: each changes on
 
 ## Comparison worker jobs · FUCQ-175
 
-`createComparisonJobService({ repository, policy, clock, identity, instanceId?, createWorker?, codeRevision?, fixedNow?, overlay? })` in `server/gcsp/comparison/jobs.js` runs `runComparison` in a Node `worker_threads` worker so the backend keeps serving requests. Creating the service spawns, reads and schedules nothing. Backend only in this slice: the routes and request-shape checks follow in the same story. `overlay`, `fixedNow` and `codeRevision` are test seams the browser never supplies.
+Greg or the presenter starts a what-if or process comparison from the browser and watches it run. The comparison runs in a Node `worker_threads` worker, so the backend keeps answering other requests (measured: a hold sweep running for about 2.5 s left `process/latest` and `jobs/latest` answering in 5 ms or less). One job runs at a time. Fictional cohort; calculated fit is not observed satisfaction. FUCQ-176 (the dashboard picker) builds on these routes.
+
+**Code.** `createComparisonJobService({ repository, policy, clock, identity, ... })` (`jobs.js`), `parseExperimentRequest(body)` (`requests.js`, shape checks, shared with the CLI) and `createComparisonJobRoutes(jobService, resultService)` (`http.js`). The runtime composes the service as `dependencies.gcspComparisonJobs` and closes it first. Creating it spawns and schedules nothing. `overlay`, `fixedNow` and `codeRevision` are test seams the browser never supplies.
 
 | Policy key | Unit / purpose |
 |---|---|
-| `comparison.jobs.v1` | `{ schemaVersion: 1, timeoutSeconds, workerHeapMb }`: the wall-clock limit for one job and the worker's heap allowance. |
+| `comparison.jobs.v1` | `{ schemaVersion: 1, timeoutSeconds: 1800, workerHeapMb: 128, workerYoungGenerationMb: 16 }`: the wall-clock limit for one job, the worker's old-generation heap allowance and its young-generation cap (peak process memory of the default 1,000-employee job fell from 510 MB to 428 MB with it). |
 
-`assumed`, sourced here, dated 9 November 2026, read through PolicyService when a job starts (missing or malformed is `unavailable`, naming the key). The worker replays against the reviewed seed held in memory, as the FUCQ-137 command does (`createReplayPolicy`), and stores the same result shape through `storeComparisonResult`.
+`assumed`, read through PolicyService when a job starts (missing or malformed is `unavailable`, naming the key). The worker replays against the reviewed seed held in memory, as the FUCQ-137 command does, and stores the FUCQ-137/174 result shape through `storeComparisonResult`.
 
-**Calls.** `start(context, { experimentId, change? })` and `read(context, { jobId? })` are Greg or presenter only. `start` answers `pending` with the job view once the worker has validated and planned, `invalid` (`code: invalid-experiment`, `reasons: [{ field, key, reason }]` naming the policy key or field) with no job stored, `conflict` (`code: job-running`, `jobId`) while a job is active, or `unavailable`. `read` returns the given job, else the latest by `startedAt`; `not-found` when none.
+### Routes
 
-**Job view.** `{ jobId, experimentId, status, progress: { seedsDone, seedsTotal, stepsDone, stepsTotal }, startedAt, finishedAt, resultId, reason, request: { experimentId, change } }`. `status` is `starting` (in memory only, before the plan), `running`, `succeeded`, `failed` or `interrupted`. `seedsDone` counts seeds with every arm and both routes finished. Times are wall-clock ISO.
+All are Greg or presenter only (an employee gets 403, checked before the body is described), use the server-owned context, and answer `Cache-Control: no-store`. Every body also carries `contractVersion`, left out of the examples below.
 
-**Outcomes.** Success stores the result and sets `resultId`. A worker error, a heap overrun (reason names the MB allowance), a failed message or the timeout (reason names the limit) marks the job `failed` and stores nothing. A row left `running` by another backend instance is marked `interrupted` the next time `start` or `read` runs; `close()` marks its own active job `interrupted`.
+| Method and path | Input | Answers |
+|---|---|---|
+| `POST /api/gcsp/comparison/jobs` | `{ experimentId, change? }` | 202 `pending` job view; 400 `invalid`; 403; 409 `conflict`; 503 `unavailable` |
+| `GET /api/gcsp/comparison/jobs/latest` | optional `?jobId=` | 200 job view (the active job first, else the most recent); 400; 403; 404 when no job exists |
+| `GET /api/gcsp/comparison/results/latest` | optional `?experimentId=` | 200 stored result(s); 400; 403; 404 when that experiment has none |
 
-**Storage.** Additive migration `0008_comparison_jobs.sql` adds the mutable `comparison_jobs` table (`runId jobId`; `experimentId status request progress startedAt finishedAt resultId reason requestedBy instanceId`). Rows live in the comparison results run, so a live demo reset does not remove them. Progress writes are serialised per job and coalesced.
+`GET /api/gcsp/comparison/process/latest` (FUCQ-137) is unchanged.
+
+**Start body.** `experimentId` is one of `process-only`, `order-mix`, `points`, `hold-sweep`. `process-only` takes no `change`. `order-mix` and `points` take `change: { value, basis }` (a model-line mix, or an allowance multiplier); `hold-sweep` takes `change: { values: [whole seconds], basis }`. `basis` is a non-empty string of at most 500 characters. Seeds and shared settings cannot be sent: the policy's are used, and `seeds` or `overlay` is refused by name. Nothing is started, and no worker spawned, for a shape failure; the worker then checks range, unit, count and "same as today" against PolicyService, still before a job is stored.
+
+**Job view.** `{ jobId, experimentId, status, progress: { seedsDone, seedsTotal, stepsDone, stepsTotal }, startedAt, finishedAt, resultId, reason, request: { experimentId, change } }`. `status` is `starting` (before the plan; seen only by `jobs/latest`), `running`, `succeeded`, `failed` or `interrupted`. `seedsDone` counts seeds with every arm and both routes finished. `resultId` is set on success and matches `results/latest`. `reason` is short plain text for `failed` and `interrupted`. In these examples `startedAt` is the fixed test clock.
+
+**Polling.** After a 202, poll `GET jobs/latest?jobId=<jobId>` about every 2 seconds while `status` is `starting` or `running`, show `stepsDone` of `stepsTotal`, and stop on `succeeded`, `failed` or `interrupted`. On `succeeded`, read `results/latest?experimentId=<experimentId>` and check its `resultId` equals the job's. A page that was closed can resume with `jobs/latest` (no id), which returns the running job first.
+
+**Examples** (captured from `server/test/gcsp-comparison-job-routes.test.js` runs; ids shortened where marked).
+
+202 on start (`hold-sweep`, `change` as sent):
+
+```json
+{ "status": "pending", "value": { "jobId": "comparison-job-db195101-...", "experimentId": "hold-sweep", "status": "running",
+  "progress": { "seedsDone": 0, "seedsTotal": 3, "stepsDone": 0, "stepsTotal": 36 },
+  "startedAt": "2026-11-08T12:00:00.000Z", "finishedAt": null, "resultId": null, "reason": null,
+  "request": { "experimentId": "hold-sweep", "change": { "values": [3600, 10800, 21600, 43200, 86400], "basis": "Does a longer hold help?" } } } }
+```
+
+`jobs/latest` before the plan (`status: "starting"`, all progress counts 0), running with progress, then succeeded (only the changing fields shown; the rest as above):
+
+```json
+{ "status": "ok", "value": { "status": "running", "progress": { "seedsDone": 0, "seedsTotal": 3, "stepsDone": 4, "stepsTotal": 36 }, "finishedAt": null, "resultId": null, "reason": null } }
+{ "status": "ok", "value": { "status": "succeeded", "progress": { "seedsDone": 3, "seedsTotal": 3, "stepsDone": 36, "stepsTotal": 36 },
+  "finishedAt": "2026-11-08T12:00:00.000Z", "resultId": "hold-sweep-comparison-999835b7de06fd9aa8abee00d4a1afea", "reason": null } }
+```
+
+Failed and interrupted (a process-only job; `request.change` is `null`; no result is stored for either):
+
+```json
+{ "status": "ok", "value": { "status": "failed", "resultId": null, "reason": "The comparison could not be completed." } }
+{ "status": "ok", "value": { "status": "interrupted", "resultId": null, "reason": "The backend stopped before the comparison finished." } }
+```
+
+Other failure reasons: `The comparison was stopped at its limit of 1800 seconds.`, `The comparison used more than its 128 MB memory allowance and was stopped.`, `The comparison worker stopped before it finished.`, and `The backend restarted before the comparison finished.` (a row left running by another backend instance, marked when next read or started).
+
+409 when a job is already active (`jobId` is the running job):
+
+```json
+{ "status": "conflict", "code": "job-running", "jobId": "comparison-job-c8e368e2-...", "reason": "A comparison is already running. Wait for it to finish." }
+```
+
+400 for the shape, one reason per field and every problem at once (`key` is the policy key the field changes, else `null`):
+
+```json
+{ "status": "invalid", "code": "invalid-experiment", "reasons": [
+  { "field": "seeds", "key": null, "reason": "The seeds and shared settings are not chosen here. The policy values are used." },
+  { "field": "overlay", "key": null, "reason": "The seeds and shared settings are not chosen here. The policy values are used." },
+  { "field": "change.extra", "key": null, "reason": "This field is not recognised for this experiment." },
+  { "field": "change.value", "key": "comparison.pointsAllowanceMultiplier", "reason": "Give a number." },
+  { "field": "change.basis", "key": null, "reason": "Say why this change is worth trying." } ] }
+```
+
+400 from the worker's canonical check (a hold of 7200 s is today's value; 100 s is below the minimum). `change.value` is used for `order-mix` and `points`:
+
+```json
+{ "status": "invalid", "code": "invalid-experiment", "reasons": [ { "field": "change.values", "key": "hold.buddy.durationSeconds",
+  "reason": "Each hold must be within the allowed range, different from the others and from the hold used today." } ] }
+```
+
+Other 400s: `{ "status": "invalid", "code": "unsupported-query", "reasons": [{ "field": "view", "reason": "Only jobId can be given here." }] }` for a query field a route does not take, and `{ "code": "invalid-experiment", "reasons": [{ "field": "experimentId", "key": null, "reason": "Choose one of the known comparison experiments." }] }` for a bad `?experimentId=`. 403: `{ "status": "forbidden", "reason": "This person cannot perform that action." }`. 404: `{ "status": "not-found", "resourceType": "comparison_jobs" }` (no job) or `"comparison_results"` (nothing stored for that experiment). 503 `unavailable` carries `reason` and `retryable: true`.
+
+`results/latest?experimentId=hold-sweep` (`result` is the stored FUCQ-137/174 result, omitted here):
+
+```json
+{ "status": "ok", "value": { "result": { "...": "..." }, "resultId": "hold-sweep-comparison-999835b7de06fd9aa8abee00d4a1afea",
+  "storedAt": "2026-11-08T12:00:00.000Z", "policyVersion": "gcsp-policy-v1", "activePolicyVersion": "gcsp-policy-v1", "policyCurrent": true } }
+```
+
+`results/latest` with no query lists every experiment in `EXPERIMENT_IDS` order, `latest: null` where none is stored:
+
+```json
+{ "status": "ok", "value": { "activePolicyVersion": "gcsp-policy-v1", "experiments": [
+  { "experimentId": "process-only", "latest": null }, { "experimentId": "order-mix", "latest": null }, { "experimentId": "points", "latest": null },
+  { "experimentId": "hold-sweep", "latest": { "result": { "...": "..." }, "resultId": "hold-sweep-comparison-999835b7de06fd9aa8abee00d4a1afea",
+    "storedAt": "2026-11-08T12:00:00.000Z", "policyVersion": "gcsp-policy-v1", "activePolicyVersion": "gcsp-policy-v1", "policyCurrent": true } } ] } }
+```
+
+Show `policyCurrent: false` as "from an earlier policy version".
+
+**Outcomes.** Success stores the result and sets `resultId`. A worker error, a heap overrun, a failed message or the timeout marks the job `failed` and stores nothing. `close()` (the runtime's first step on close) marks the active job `interrupted`.
+
+**Storage.** Additive migration `0008_comparison_jobs.sql` adds the mutable `comparison_jobs` table (`runId jobId`; `experimentId status request progress startedAt finishedAt resultId reason requestedBy instanceId`). Rows live in the comparison results run, so a live demo reset does not remove them. Progress writes are serialised per job and coalesced. Backend-only: no screen was built, so no screenshots; the response shapes above are the record.
 
 ## Named scenario catalogue and preparation · FUCQ-125
 

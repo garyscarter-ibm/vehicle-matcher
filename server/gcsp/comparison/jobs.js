@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { Worker } from 'node:worker_threads';
 import { inputDigest, ok, result } from '../repository/core.js';
+import { EXPERIMENT_KEYS } from './experiments.js';
 import { requireGregOrPresenter } from './http.js';
 import { COMPARISON_RESULTS_RUN, comparisonResultsScope, ensureResultsRun, storeComparisonResult } from './results.js';
 
@@ -22,15 +23,29 @@ const BACKEND_STOPPED = 'The backend stopped before the comparison finished.';
 const plain = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const command = (commandId, input) => ({ commandId, inputDigest: inputDigest(input) });
 const unavailable = (reason, extra = {}) => result('unavailable', { reason, retryable: true, ...extra });
-const invalidReasons = (boundary) => result('invalid', { code: 'invalid-experiment', reasons: [{
-  field: boundary, key: boundary.includes('.') ? boundary : null, reason: BOUNDARY_REASONS[boundary] ?? KEY_REASON }] });
+const KEY_REASONS = Object.freeze({
+  [EXPERIMENT_KEYS['hold-sweep']]: 'Each hold must be within the allowed range, different from the others and from the hold used today.',
+  [EXPERIMENT_KEYS.points]: 'The multiplier must be within the allowed range and different from the one used today.',
+  [EXPERIMENT_KEYS['order-mix']]: 'This mix is not valid, or is the same as the one used today.',
+});
+// A policy key the worker refuses is reported on the change field that carries it; the browser never sends an overlay.
+const invalidReasons = (boundary, experimentId) => {
+  const key = Object.values(EXPERIMENT_KEYS).includes(boundary) ? boundary
+    : boundary === 'overlay' && experimentId === 'order-mix' ? EXPERIMENT_KEYS['order-mix'] : null;
+  if (key) return result('invalid', { code: 'invalid-experiment', reasons: [{
+    field: key === EXPERIMENT_KEYS['hold-sweep'] ? 'change.values' : 'change.value', key, reason: KEY_REASONS[key] }] });
+  const field = boundary === 'basis' ? 'change.basis' : boundary;
+  return result('invalid', { code: 'invalid-experiment', reasons: [{
+    field, key: boundary.includes('.') ? boundary : null, reason: BOUNDARY_REASONS[boundary] ?? KEY_REASON }] });
+};
 
 const limitsOf = (outcome, context) => {
   const row = outcome?.value?.value;
   const good = outcome?.status === 'ok' && (typeof context.policyVersion !== 'string' || outcome.policyVersion === context.policyVersion)
     && plain(row) && row.schemaVersion === 1 && Number.isFinite(row.timeoutSeconds) && row.timeoutSeconds > 0
-    && Number.isSafeInteger(row.workerHeapMb) && row.workerHeapMb > 0;
-  return good ? { timeoutSeconds: row.timeoutSeconds, workerHeapMb: row.workerHeapMb } : null;
+    && Number.isSafeInteger(row.workerHeapMb) && row.workerHeapMb > 0
+    && Number.isSafeInteger(row.workerYoungGenerationMb) && row.workerYoungGenerationMb > 0;
+  return good ? { timeoutSeconds: row.timeoutSeconds, workerHeapMb: row.workerHeapMb, workerYoungGenerationMb: row.workerYoungGenerationMb } : null;
 };
 
 const emptyProgress = () => ({ seedsDone: 0, seedsTotal: 0, stepsDone: 0, stepsTotal: 0 });
@@ -144,7 +159,7 @@ export function createComparisonJobService({ repository, policy, clock, identity
     if (job.settled || !plain(message)) return;
     if (job.phase === 'recording') { job.backlog.push(message); return; }
     if (message.type === 'invalid' && job.phase === 'starting') {
-      return abandon(job, invalidReasons(typeof message.boundary === 'string' ? message.boundary : 'overlay'));
+      return abandon(job, invalidReasons(typeof message.boundary === 'string' ? message.boundary : 'overlay', job.request.experimentId));
     }
     if (message.type === 'plan' && job.phase === 'starting') return onPlan(job, message);
     if (job.phase === 'starting') return abandon(job, unavailable(message.type === 'failed' ? reasonOf(message) : FAILED));
@@ -155,7 +170,7 @@ export function createComparisonJobService({ repository, policy, clock, identity
   const stopped = (job, reason) => (job.phase === 'running' ? fail(job, reason) : abandon(job, unavailable(reason)));
 
   function spawn(job, limits) {
-    const worker = createWorker(WORKER_URL, { resourceLimits: { maxOldGenerationSizeMb: limits.workerHeapMb },
+    const worker = createWorker(WORKER_URL, { resourceLimits: { maxOldGenerationSizeMb: limits.workerHeapMb, maxYoungGenerationSizeMb: limits.workerYoungGenerationMb },
       workerData: { experiment: job.request, codeRevision, fixedNow, overlay } });
     job.worker = worker;
     // The timer is unref'd and cleared on every end, so it never keeps the backend alive.

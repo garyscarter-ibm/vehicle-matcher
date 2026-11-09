@@ -67,7 +67,7 @@ import { createReturnPlanRoutes } from './gcsp/lifecycle/return-plan/http.js';
 import { createVehicleEvidenceHandler, isVehicleEvidencePath } from './gcsp/vehicle-evidence/vehicle-evidence-handler.js';
 import { createLocalVehicleEvidenceLookup } from './gcsp/vehicle-evidence/local-vehicle-lookup.js';
 import { createGregRoutes } from './gcsp/greg/http.js';
-import { createComparisonResultRoutes } from './gcsp/comparison/http.js';
+import { createComparisonResultRoutes, createComparisonJobRoutes } from './gcsp/comparison/http.js';
 import { createSupplyRoutes } from './gcsp/supply/http.js';
 import { createGregPublishService } from './gcsp/greg/publish/index.js';
 import { createGregPublishRoutes } from './gcsp/greg/publish/http.js';
@@ -889,7 +889,7 @@ export function buildServer(deps = {}) {
     ...createOfferFollowupRoutes(deps.gcspOfferFollowup),
     ...createLifecycleApprovalRoutes(deps.gcspLifecycle), ...createDocumentRoutes(deps.gcspDocuments),
     ...createAppointmentRoutes(deps.gcspAppointments), ...createReturnPlanRoutes(deps.gcspReturnPlan),
-    ...createGregRoutes(deps.gcspGreg), ...createComparisonResultRoutes(deps.gcspComparison), ...createSupplyRoutes(deps.gcspSupply), ...createGregPublishRoutes(gregPublish), ...createOrderPlanRoutes(deps.gcspOrderPlan), ...(deps.gcspRoutes || [])],
+    ...createGregRoutes(deps.gcspGreg), ...createComparisonResultRoutes(deps.gcspComparison), ...createComparisonJobRoutes(deps.gcspComparisonJobs, deps.gcspComparison), ...createSupplyRoutes(deps.gcspSupply), ...createGregPublishRoutes(gregPublish), ...createOrderPlanRoutes(deps.gcspOrderPlan), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
   const handleOfferAccess = createOfferAccessHandler({ service: deps.gcspOfferAccess, identity: deps.gcspIdentity, allowedOrigins });
