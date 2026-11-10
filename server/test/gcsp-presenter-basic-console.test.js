@@ -102,3 +102,15 @@ test('a lost Start again reply retries the exact original command', async () => 
   const resets = f.calls.filter(([kind]) => kind === 'reset').map(([, body]) => body);
   assert.equal(resets.length, 2); assert.deepEqual(resets[1], resets[0]); f.api.destroy();
 });
+
+test('a second Start again after more releases sends the current run, not the first one', async () => {
+  const f = setup({ tick: async (payload) => { f.calls.push(['tick', payload]); f.set(state({ runId: 'run-b', runVersion: 4, now: payload.to, clockVersion: '9' })); return ok({}); } });
+  await f.api.ready; await settle();
+  const confirm = () => { f.api.basic.startAgain.click(); [...f.root.querySelectorAll('.gcsp-console-confirm button')].find((b) => b.textContent === 'Start again').click(); };
+  confirm(); await settle();
+  f.api.basic.release.click(); await settle();
+  confirm(); await settle();
+  const resets = f.calls.filter(([kind]) => kind === 'reset').map(([, body]) => body);
+  assert.equal(resets.length, 2); assert.equal(resets[0].expectedRunId, 'run-a');
+  assert.equal(resets[1].expectedRunId, 'run-b'); assert.equal(resets[1].expectedRunVersion, 4); f.api.destroy();
+});
