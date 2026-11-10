@@ -82,6 +82,27 @@ function confirmedWeek(releaseAt, weeks, timeZone) {
   date.setUTCDate(date.getUTCDate() - (date.getUTCDay() + 6) % 7);
   return date.toISOString().slice(0, 10);
 }
+// Whether `size` pairwise-different colours exist among the (colour, key) pairs with `needKeys` of them on different keys:
+// enough colours, plus a colour-to-key matching of that size (augmenting paths).
+function witnessExists(pairs, size, needKeys) {
+  const byColour = new Map();
+  for (const [colour, key] of pairs) byColour.set(colour, [...(byColour.get(colour) ?? []), ...(key === undefined ? [] : [key])]);
+  if (byColour.size < size) return false;
+  const owner = new Map();
+  const place = (colour, seen) => (byColour.get(colour) ?? []).some((key) => {
+    if (seen.has(key)) return false;
+    seen.add(key);
+    if (!owner.has(key) || place(owner.get(key), seen)) { owner.set(key, colour); return true; }
+    return false;
+  });
+  let matched = 0;
+  for (const colour of byColour.keys()) if (matched < needKeys && place(colour, new Set())) matched += 1;
+  return matched >= needKeys;
+}
+const uniquePairs = (items) => [...new Map(items.map(([colour, key]) => [JSON.stringify([colour, key]), [colour, key]])).values()];
+const validGuarantee = (v) => v === undefined || object(v) && text(v.principalId) && positive(v.minimumCars) && typeof v.qualifies === 'function'
+  && Array.isArray(v.distinct) && v.distinct.includes('colour') && v.distinct.every((name) => ['eligibilityModelKey', 'colour'].includes(name));
+
 function validPlan(plan) {
   return object(plan) && ['synthetic-fixture', 'accepted-f77', 'retained-corpus'].includes(plan.kind) && ['source', 'datasetId', 'corpusVersion'].every((key) => text(plan[key]))
     && (plan.titles === undefined || object(plan.titles) && Object.values(plan.titles).every(text))
@@ -111,8 +132,10 @@ function validAggregate(value, modelLineId, plan) {
 /** Trusted composition supplies the accepted configuration plan and existing read/write ports.
  * No transport, identity lookup, reset, release, policy loader, price or eligibility authority. */
 export function createStockGenerator({ repository, registry, policyService, contextForRun, configurationPlan, stockAccount, allocationInventoryPath,
-  visibility, factsForConfiguration } = {}) {
+  visibility, factsForConfiguration, guarantee } = {}) {
   const plan = structuredClone(configurationPlan);
+  const release = guarantee === undefined ? undefined : { principalId: guarantee.principalId, minimumCars: guarantee.minimumCars,
+    distinct: Array.isArray(guarantee.distinct) ? [...guarantee.distinct] : guarantee.distinct };
   const rowVisibility = visibility === undefined ? undefined : structuredClone(visibility);
   return Object.freeze({
     async generateStock(runId, seed, policyVersion) {
@@ -121,7 +144,7 @@ export function createStockGenerator({ repository, registry, policyService, cont
         || typeof contextForRun !== 'function' || typeof repository?.transaction !== 'function'
         || typeof repository?.read !== 'function' || typeof registry?.getConfiguration !== 'function'
         || typeof policyService?.getAssumption !== 'function' || !validVisibility(rowVisibility)
-        || factsForConfiguration !== undefined && typeof factsForConfiguration !== 'function') return invalid('invalid-generator-input');
+        || factsForConfiguration !== undefined && typeof factsForConfiguration !== 'function' || !validGuarantee(guarantee)) return invalid('invalid-generator-input');
       try {
         const context = await contextForRun(runId);
         if (context?.runId !== runId) return invalid('run-context-mismatch');
@@ -133,7 +156,7 @@ export function createStockGenerator({ repository, registry, policyService, cont
           return result('conflict', { reason: 'run-source-version-mismatch', current: {} });
         }
         const requestDigest = inputDigest({ generatorVersion: STOCK_GENERATOR_VERSION, runId, seed, policyVersion,
-          plan, stockAccount, clockInstant: run.clockInstant, ...(rowVisibility ? { visibility: rowVisibility } : {}) });
+          plan, stockAccount, clockInstant: run.clockInstant, ...(rowVisibility ? { visibility: rowVisibility } : {}), ...(release ? { guarantee: release } : {}) });
         const previous = run.versions?.stockGeneration;
         if (previous) return previous.requestDigest === requestDigest
           ? ok({ generated: previous.report.totalCars, report: structuredClone(previous.report) })
@@ -182,50 +205,21 @@ export function createStockGenerator({ repository, registry, policyService, cont
             && ['representative-model', 'representative-configuration'].includes(image.fidelity) && image.role === image.fidelity);
           configurations.set(binding.configurationId, { ...binding, record: response.record, images });
         }
-        const modelCounts = apportion(total, aggregates.map((row) => [row.modelLineId, row.observed.carCount]), [...entropy, 'models']);
-        const vehicles = []; const models = [];
-        for (const model of aggregates) {
-          const count = modelCounts.find((row) => row.key === model.modelLineId).count;
-          // Observed colours with no configuration for this line are dropped; the covered shares are renormalised.
-          const offered = Object.entries(model.observed.colourShares).sort(([a], [b]) => a.localeCompare(b));
-          const covered = offered.filter(([colour]) => [...configurations.values()].some((row) => row.modelLineId === model.modelLineId && row.colour === colour));
-          const coveredShare = covered.reduce((sum, [, share]) => sum + share, 0);
-          if (count && !covered.length) return invalid('unsupported-configuration-coverage');
-          const colours = apportion(count, covered, [...entropy, model.modelLineId]);
-          const modelCars = [];
-          for (const colour of colours) {
-            const candidates = [...configurations.values()].filter((row) => row.modelLineId === model.modelLineId && row.colour === colour.key);
-            if (colour.count && !candidates.length) return invalid('unsupported-configuration-coverage');
-            for (let i = 0; i < colour.count; i += 1) {
-              const binding = candidates[ordinal([...entropy, model.modelLineId, colour.key, i, 'configuration'], candidates.length)];
-              const vehicleId = `stock-${inputDigest([requestDigest, ...entropy, model.modelLineId, colour.key, i])}`;
-              const lead = model.observed.leadTimeWeeks;
-              const leadTimeWeeks = lead.min + ordinal([...entropy, vehicleId, 'lead'], lead.max - lead.min + 1);
-              const car = { vehicleId, binding, leadTimeWeeks }; modelCars.push(car); vehicles.push(car);
-            }
-          }
-          models.push({ modelLineId: model.modelLineId, sourceKind: model.observed.sourceKind, cars: count,
-            observedShare: model.observed.carCount / aggregates.reduce((sum, row) => sum + row.observed.carCount, 0), actualShare: count / total,
-            colourShares: Object.fromEntries(colours.map((row) => [row.key, count ? row.count / count : 0])),
-            plannedColourShares: Object.fromEntries(covered.map(([colour, share]) => [colour, share / coveredShare])),
-            coveredColourShare: Math.round(coveredShare * 10000) / 10000, uncoveredColourCount: offered.length - covered.length,
-            leadTimeWeeks: count ? { min: Math.min(...modelCars.map((row) => row.leadTimeWeeks)), max: Math.max(...modelCars.map((row) => row.leadTimeWeeks)) } : null,
-            observed: structuredClone(model.observed), aggregateKey: model.key });
-        }
-        const timeZone = values.get('supply.release.cadence').timeZone;
-        // Lead time counts from the close of the planned release horizon: a window's backlog can release on any later
-        // window, so a delivery week anchored on its own window could end before the car is released (FUCQ-229).
-        const horizonEnd = releaseAt[releaseAt.length - 1];
+        // Each tranche is drawn on its own, so every release mixes model lines and colours and no two releases repeat.
+        if (guarantee && guarantee.minimumCars > trancheSize) return invalid('unsupported-release-guarantee');
+        const windowCount = releaseAt.length - 1; const observedTotal = aggregates.reduce((sum, row) => sum + row.observed.carCount, 0);
+        const vehicles = []; const tally = new Map(aggregates.map((row) => [row.modelLineId, { cars: 0, colours: new Map(), planned: [], debt: new Map() }]));
+        const modelDebt = new Map();
         const observedAt = new Date(run.clockInstant).toISOString();
         const snapshotVersion = `${STOCK_GENERATOR_VERSION}:${policyVersion}`;
         const known = (value, sourceRef, unit = null) => ({ status: 'known', value, unit,
           provenance: { sourceRef, observedAt, version: snapshotVersion, assurance: 'synthetic-scenario' } });
         const own = (value, unit) => known(value, `generator:${STOCK_GENERATOR_VERSION}`, unit);
         const extras = new Map();
-        for (const car of vehicles) {
-          const id = car.binding.configurationId;
-          if (extras.has(id)) continue;
-          const extra = factsForConfiguration ? await factsForConfiguration(structuredClone(car.binding), structuredClone(car.binding.record)) : {};
+        async function ensureExtra(binding) {
+          const id = binding.configurationId;
+          if (extras.has(id)) return null;
+          const extra = factsForConfiguration ? await factsForConfiguration(structuredClone(binding), structuredClone(binding.record)) : {};
           if (!object(extra) || Object.keys(extra).some((key) => RESERVED_FACTS.includes(key) || ['vin', 'vin7', 'vin17'].includes(key.toLowerCase()))) return invalid('invalid-stock-facts');
           const wrapped = Object.fromEntries(Object.entries(extra).map(([name, value]) =>
             [name, object(value) && keysExactly(value, ['value', 'unit']) ? own(value.value, value.unit) : own(value)]));
@@ -233,16 +227,116 @@ export function createStockGenerator({ repository, registry, policyService, cont
           try { createVehicleSnapshot({ sourceNamespace: STOCK_GENERATOR_NAMESPACE, identityKind: 'exact-stock', sourceKeys: { stockId: id },
             snapshotVersion, observedAt, display: { name: id.slice(0, 32) }, facts: wrapped }); } catch { return invalid('invalid-stock-facts'); }
           extras.set(id, wrapped);
+          return null;
+        }
+        // The pool: every plan configuration the guarantee's principal qualifies for (computed once per configuration).
+        const keyOf = (binding) => extras.get(binding.configurationId)?.eligibilityModelKey?.value;
+        const qualifying = new Map(); let pool = []; let needKeys = 0; let substituted = 0;
+        if (guarantee) {
+          for (const binding of configurations.values()) {
+            const bad = await ensureExtra(binding);
+            if (bad) return bad;
+            qualifying.set(binding.configurationId, await guarantee.qualifies(structuredClone(binding), structuredClone(binding.record), structuredClone(extras.get(binding.configurationId))) === true);
+          }
+          pool = [...configurations.values()].filter((binding) => qualifying.get(binding.configurationId));
+          needKeys = !guarantee.distinct.includes('eligibilityModelKey') ? 0
+            : Math.min(guarantee.minimumCars, new Set(pool.map(keyOf).filter((key) => key !== undefined)).size);
+          if (!witnessExists(uniquePairs(pool.map((binding) => [binding.colour, keyOf(binding)])), guarantee.minimumCars, needKeys)) return invalid('unsupported-release-guarantee');
+        }
+        const isQualifying = (car) => qualifying.get(car.binding.configurationId) === true;
+        for (const model of aggregates) {
+          // Observed colours with no configuration for this line are dropped; the covered shares are renormalised.
+          const covered = Object.entries(model.observed.colourShares).sort(([a], [b]) => a.localeCompare(b))
+            .filter(([colour]) => [...configurations.values()].some((row) => row.modelLineId === model.modelLineId && row.colour === colour));
+          tally.get(model.modelLineId).planned = covered;
+        }
+        for (let tranche = 0; tranche * trancheSize < total; tranche += 1) {
+          const windowAt = releaseAt[tranche % windowCount];
+          const trancheEntropy = [windowAt, tranche];
+          const first = vehicles.length;
+          const trancheCars = Math.min(total, (tranche + 1) * trancheSize) - tranche * trancheSize;
+          // Each draw carries its rounding debt forward, so small tranches cannot bias the run-level shares.
+          const modelCounts = apportion(trancheCars, aggregates.map((row) => [row.modelLineId, Math.max(0,
+            trancheCars * row.observed.carCount / observedTotal + (modelDebt.get(row.modelLineId) ?? 0))]), [...entropy, 'models', ...trancheEntropy]);
+          for (const row of modelCounts) modelDebt.set(row.key, (modelDebt.get(row.key) ?? 0)
+            + trancheCars * aggregates.find((model) => model.modelLineId === row.key).observed.carCount / observedTotal - row.count);
+          for (const model of aggregates) {
+            const count = modelCounts.find((row) => row.key === model.modelLineId).count;
+            const covered = tally.get(model.modelLineId).planned;
+            if (count && !covered.length) return invalid('unsupported-configuration-coverage');
+            const line = tally.get(model.modelLineId); line.cars += count;
+            const coveredTotal = covered.reduce((sum, [, share]) => sum + share, 0);
+            const colours = count && covered.length ? apportion(count, covered.map(([colour, share]) => [colour, Math.max(0,
+              count * share / coveredTotal + (line.debt.get(colour) ?? 0))]), [...entropy, model.modelLineId, ...trancheEntropy]) : [];
+            if (count) for (const [colour, share] of covered) line.debt.set(colour, (line.debt.get(colour) ?? 0) + count * share / coveredTotal - colours.find((row) => row.key === colour).count);
+            for (const colour of colours) {
+              const candidates = [...configurations.values()].filter((row) => row.modelLineId === model.modelLineId && row.colour === colour.key);
+              if (colour.count && !candidates.length) return invalid('unsupported-configuration-coverage');
+              line.colours.set(colour.key, (line.colours.get(colour.key) ?? 0) + colour.count);
+              for (let i = 0; i < colour.count; i += 1) {
+                const binding = candidates[ordinal([...entropy, model.modelLineId, colour.key, ...trancheEntropy, i, 'configuration'], candidates.length)];
+                const vehicleId = `stock-${inputDigest([requestDigest, ...entropy, model.modelLineId, colour.key, ...trancheEntropy, i])}`;
+                const lead = model.observed.leadTimeWeeks;
+                const leadTimeWeeks = lead.min + ordinal([...entropy, vehicleId, 'lead'], lead.max - lead.min + 1);
+                vehicles.push({ vehicleId, binding, leadTimeWeeks, tranche, model: model.modelLineId });
+              }
+            }
+          }
+          // A release must hold enough cars the principal qualifies for: swap non-qualifying cars from the biggest line.
+          while (guarantee) {
+            const mine = vehicles.slice(first);
+            const held = mine.filter(isQualifying);
+            const colours = new Set(held.map((car) => car.binding.colour));
+            const keys = new Set(held.map((car) => keyOf(car.binding)).filter((key) => key !== undefined));
+            if (witnessExists(uniquePairs(held.map((car) => [car.binding.colour, keyOf(car.binding)])), guarantee.minimumCars, needKeys)) break;
+            const counts = new Map(mine.map((car) => [car.model, mine.filter((other) => other.model === car.model).length]));
+            let index = -1;
+            for (const [line] of [...counts].sort(([a, x], [b, y]) => y - x || a.localeCompare(b))) {
+              const options = []; for (let i = first; i < vehicles.length; i += 1) if (vehicles[i].model === line && !isQualifying(vehicles[i])) options.push(i);
+              if (options.length) { index = options[ordinal([...entropy, 'guarantee', ...trancheEntropy, 'replace', substituted], options.length)]; break; }
+            }
+            const scored = pool.map((binding) => ({ binding, score: (colours.has(binding.colour) ? 0 : 1)
+              + (keys.size < needKeys && keyOf(binding) !== undefined && !keys.has(keyOf(binding)) ? 1 : 0) }));
+            const best = Math.max(0, ...scored.map((row) => row.score));
+            if (index < 0) return invalid('unsupported-release-guarantee');
+            const top = scored.filter((row) => row.score === best);
+            const binding = top[ordinal([...entropy, 'guarantee', ...trancheEntropy, 'pick', substituted], top.length)].binding;
+            const old = vehicles[index]; const lead = aggregates.find((row) => row.modelLineId === binding.modelLineId).observed.leadTimeWeeks;
+            const vehicleId = `stock-${inputDigest([requestDigest, ...entropy, 'guarantee', ...trancheEntropy, index])}`;
+            const from = tally.get(old.model); const to = tally.get(binding.modelLineId);
+            from.cars -= 1; from.colours.set(old.binding.colour, from.colours.get(old.binding.colour) - 1);
+            to.cars += 1; to.colours.set(binding.colour, (to.colours.get(binding.colour) ?? 0) + 1);
+            vehicles[index] = { vehicleId, binding, tranche, model: binding.modelLineId,
+              leadTimeWeeks: lead.min + ordinal([...entropy, vehicleId, 'lead'], lead.max - lead.min + 1) };
+            substituted += 1;
+          }
+        }
+        const models = aggregates.map((model) => {
+          const { cars: count, colours, planned: covered } = tally.get(model.modelLineId);
+          const modelCars = vehicles.filter((car) => car.model === model.modelLineId);
+          const offered = Object.keys(model.observed.colourShares);
+          const coveredShare = covered.reduce((sum, [, share]) => sum + share, 0);
+          return { modelLineId: model.modelLineId, sourceKind: model.observed.sourceKind, cars: count,
+            observedShare: model.observed.carCount / observedTotal, actualShare: count / total,
+            colourShares: Object.fromEntries(covered.map(([colour]) => [colour, count ? (colours.get(colour) ?? 0) / count : 0])),
+            plannedColourShares: Object.fromEntries(covered.map(([colour, share]) => [colour, share / coveredShare])),
+            coveredColourShare: Math.round(coveredShare * 10000) / 10000, uncoveredColourCount: offered.length - covered.length,
+            leadTimeWeeks: count ? { min: Math.min(...modelCars.map((row) => row.leadTimeWeeks)), max: Math.max(...modelCars.map((row) => row.leadTimeWeeks)) } : null,
+            observed: structuredClone(model.observed), aggregateKey: model.key };
+        });
+        const timeZone = values.get('supply.release.cadence').timeZone;
+        // Lead time counts from the close of the planned release horizon: a window's backlog can release on any later
+        // window, so a delivery week anchored on its own window could end before the car is released (FUCQ-229).
+        const horizonEnd = releaseAt[releaseAt.length - 1];
+        for (const car of vehicles) {
+          const bad = await ensureExtra(car.binding);
+          if (bad) return bad;
         }
         const retained = await readAllocationInventory(allocationInventoryPath);
         if (retained.status !== 'ok') return unavailable('retained-allocation-inventory-unavailable');
-        const retainedStock = retained.inventory.records.filter((row) => row.runId === runId && row.vehicleId.startsWith('stock-'));
-        const plannedVehicles = new Set(vehicles.map((car) => car.vehicleId));
-        if (retainedStock.length && (retainedStock.length !== vehicles.length || retainedStock.some((row) =>
-          row.seed !== inputDigest(entropy) || row.corpusVersion !== plan.corpusVersion || row.originatingDatasetId !== plan.datasetId
-          || !plannedVehicles.has(row.vehicleId)))) return result('conflict', { reason: 'retained-stock-request-mismatch', current: {} });
+        // No generation is recorded for this run, so leftover inventory records were never used: replace them.
         const allocated = await allocateInventoryFile({ path: allocationInventoryPath, expectedRevision: retained.inventory.revision,
-          plan: { runId, seed: inputDigest(entropy),
+          plan: { runId, seed: inputDigest(entropy), replaceRunStock: true,
           corpusVersion: plan.corpusVersion, datasetId: plan.datasetId, vehicles: vehicles.map((car) => ({ vehicleId: car.vehicleId,
             configurationId: car.binding.configurationId, snapshotVersion: car.binding.record.snapshotVersion,
             configuration: car.binding.record.configuration, usage: 'stock' })) } });
@@ -250,10 +344,10 @@ export function createStockGenerator({ repository, registry, policyService, cont
         const identities = new Map(allocated.inventory.records.map((row) => [row.vehicleId, row]));
         let rows;
         try {
-          rows = vehicles.map((car, index) => {
+          rows = vehicles.map((car) => {
             const identity = identities.get(car.vehicleId);
-            const tranche = Math.floor(index / trancheSize);
-            const windowIndex = tranche % (releaseAt.length - 1);
+            const { tranche } = car;
+            const windowIndex = tranche % windowCount;
             const at = releaseAt[windowIndex];
             const { modelLineId, colour } = car.binding;
             const aggregateRef = `policy:${plan.aggregateKeys[modelLineId]}`;
@@ -275,7 +369,8 @@ export function createStockGenerator({ repository, registry, policyService, cont
         } catch { return invalid('invalid-stock-facts'); }
         const report = { runId, seed, policyVersion, generatorVersion: STOCK_GENERATOR_VERSION, totalCars: rows.length,
           configurationSource: { kind: plan.kind, source: plan.source, datasetId: plan.datasetId, corpusVersion: plan.corpusVersion, manifestDigest: activeDigest },
-          models, release: { trancheSize, weeklyVolume: total, windows: releaseAt.slice(0, -1) }, policyProvenance: provenance };
+          models, release: { trancheSize, weeklyVolume: total, windows: releaseAt.slice(0, -1),
+            ...(release ? { guarantee: { ...release, substituted } } : {}) }, policyProvenance: provenance };
         const digest = inputDigest({ plan, report, stockAccount, rows });
         return repository.transaction(context, { commandId: `stock-generation:${runId}`, inputDigest: digest }, async (tx) => {
           const current = await tx.get(ref);

@@ -22,6 +22,28 @@ FUCQ-250, the only open High bug, so the run stops once the epic is done.
   The overlap is mainly files (all six touch `blocks/gcsp/account/` and most touch `server/gcsp/brief/`). FUCQ-369 and
   FUCQ-370 depend on FUCQ-368's categories and contract.
 
+## Update, 23:05 GMT: the follow-on session takes over
+
+At Russell's request the poller moves to a fresh session. **Mulan and Shaggy stay subagents of the old session**
+(this file's author, Oluwaseun), because their reports can only go to the session that started them. The old session
+does nothing except forward each report to the follow-on session with `SendMessage`, and stop either one if you ask.
+The follow-on session is the dispatcher: it does step D (merge), step C (close), the Jira push, the next claims and
+the new story-leads, and it paces itself with `ScheduleWakeup`. To see progress without waiting for a relay, read their
+branches' `## Result` blocks or run the stall check against the old transcript
+(`/Users/usget/.claude/projects/-Users-usget-Claude-vehicle-matcher/69298e71-279e-478c-8b3b-491582e278f1.jsonl`,
+`--agent Mulan` or `--agent Shaggy`).
+
+- **Capacity:** `can_start` also applies the harness's 8-agent cap, which counts every Claude and Codex process on the
+  Mac. Russell waived that cap, so go by the "room for N" memory figure (5 at 23:04, 66% free, normal pressure). Russell
+  then asked for more help: each story-lead may run up to 2 implementers at once on slices whose files don't overlap,
+  and one slot is kept for runners and the Opus critique agent. Only one full suite runs at a time.
+- **Shaggy (FUCQ-368):** worktree `.claude/worktrees/DEV-2026-11-10-010`; slice briefs `brief-slice1.md` (server
+  contract, `POST /api/gcsp/brief/preferences` draft autosave) and `brief-slice2a.md` (kit `category-preferences` and
+  a `checkboxField` switch) are under `.claude/dev-poller-20261110-claude/DEV-2026-11-10-010/`. Slices 1 and 2a are now
+  running in parallel. The Account mount (slice 3) waits for GC-036 to merge; if it isn't merged, Shaggy reports
+  `blocked` and the dispatcher resumes them by relay once it is.
+- **Mulan (FUCQ-359):** building; no commits on the branch yet at 22:46.
+
 ## In flight (as at 22:05 GMT)
 
 | Story | Jira | Points | Story-lead | Branch | Notes |

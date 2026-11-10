@@ -1754,9 +1754,24 @@
             <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Portal shell stops hosting presenter controls (FUCQ-361). Release visual and feed: FUCQ-364 to 366." type="note" status="proposed" feature="presenter-revamp" id="e-presenter-shell-note">
+        <UserObject label="Portal shell stops hosting presenter controls (FUCQ-361). Release read: FUCQ-364; visual and feed: FUCQ-365, 366." type="note" status="proposed" feature="presenter-revamp" id="e-presenter-shell-note">
           <mxCell parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;spacingLeft=6;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="2728.93" y="130" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Latest release read · FUCQ-364 / GET /api/gcsp/presenter/releases/latest · presenter only · read only · no employee data" type="service" status="built" feature="presenter-revamp" id="e-presenter-releases">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1">
+            <mxGeometry height="70" width="260" x="2728.93" y="360" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="reads latest release" status="built" feature="presenter-revamp" id="e-presenter-releases-edge">
+          <mxCell edge="1" parent="1" source="e-presenter-console" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;edgeStyle=orthogonalEdgeStyle;" target="e-presenter-releases">
+            <mxGeometry relative="1" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="release receipts + stock rows, read only" status="built" feature="presenter-revamp" id="e-presenter-releases-store-edge">
+          <mxCell edge="1" parent="1" source="e-presenter-releases" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#6c8ebf;edgeStyle=orthogonalEdgeStyle;" target="e-store">
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </UserObject>
         <UserObject label="Outbox viewer · FUCQ-97 / captured offer emails" type="client" status="proposed" feature="gcsp-foundation" id="e-outbox-viewer">

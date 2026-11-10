@@ -13,8 +13,11 @@ export const SCENARIO_INPUTS_V1 = [
   journey('main-successful-journey', 'Main successful journey', 'FUCQ-109', ['FUCQ-86', 'FUCQ-87', 'FUCQ-88', 'FUCQ-89'],
     ['FUCQ-91', 'FUCQ-92', 'FUCQ-96', 'FUCQ-100', 'FUCQ-102', 'FUCQ-106', 'FUCQ-107', 'FUCQ-108', 'FUCQ-109'],
     ['brief-confirmation', 'stock-release', 'buddy-allocation', 'buddy-offers', 'captured-notifications', 'offer-decisions', 'brief-change', 'order-handoff'],
-    { briefs: [brief('demo-paula')], stockTranches: [{ source: 'published-demo-stock', cue: 'release' }], pendingOperations: [] },
-    [{ operation: 'advance', to: 'release' }, { operation: 'tick', purpose: 'release-and-allocation' }, { operation: 'employee', purpose: 'decline-change-review-and-accept' }, { operation: 'tick', purpose: 'reconciliation-if-pending' }]),
+    // v2: generated 100-car releases, each holding at least 3 cars of different colours and models that Paula qualifies for.
+    { briefs: [brief('demo-paula')], pendingOperations: [], stockTranches: [{ source: 'generated-stock', cue: 'release',
+      guarantee: { principalId: 'demo-paula', minimumCars: 3, distinct: ['eligibilityModelKey', 'colour'] } }] },
+    [{ operation: 'advance', to: 'release' }, { operation: 'tick', purpose: 'release-and-allocation' }, { operation: 'employee', purpose: 'decline-change-review-and-accept' }, { operation: 'tick', purpose: 'reconciliation-if-pending' }],
+    [], 'main-successful-journey-inputs-v2'),
   journey('no-suitable-match', 'No suitable match', 'FUCQ-127', ['FUCQ-87', 'FUCQ-90', 'FUCQ-75'],
     ['FUCQ-95', 'FUCQ-96', 'FUCQ-99', 'FUCQ-127'],
     ['brief-confirmation', 'stock-release', 'buddy-allocation', 'buddy-activity', 'greg-demand'],

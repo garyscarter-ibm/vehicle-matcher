@@ -12,7 +12,7 @@ let sequence = 0;
 
 /** Options for mountPresenterConsole: { adapter, onState, onRelease, onStartAgain }. Reads only the presenter adapter. */
 export function basicConsoleOptions({ adapter = createPresenterHttpAdapter() } = {}) {
-  let catalogue = null; let catalogueRun = null; let model = null; let reads = 0; let panel = null; let pendingReset = null; let resetting = false;
+  let catalogue = null; let catalogueRun = null; let model = null; let reads = 0; let panel = null; let pendingReset = null; let resetting = false; let latest = null;
 
   async function onState(state, basic) {
     const turn = ++reads;
@@ -51,8 +51,9 @@ export function basicConsoleOptions({ adapter = createPresenterHttpAdapter() } =
     root.setAttribute('aria-labelledby', `${id}-title`); root.setAttribute('aria-describedby', `${id}-text`);
     const title = el('h2', '', 'Start again?'); title.id = `${id}-title`;
     const text = el('p', 'gcsp-console-sub', CONFIRM); text.id = `${id}-text`;
-    const close = () => { root.hidden = true; ctx.basic.startAgain.disabled = false; ctx.basic.startAgain.focus(); };
-    const yes = button({ label: 'Start again', onClick: () => { root.hidden = true; reset(ctx).finally(() => { ctx.basic.startAgain.disabled = false; }); } });
+    // The panel is built once, so its buttons read the newest context: an old one holds a stale run id.
+    const close = () => { root.hidden = true; latest.basic.startAgain.disabled = false; latest.basic.startAgain.focus(); };
+    const yes = button({ label: 'Start again', onClick: () => { root.hidden = true; const now = latest; reset(now).finally(() => { now.basic.startAgain.disabled = false; }); } });
     const no = button({ label: 'Cancel', variant: 'ghost', onClick: close });
     const row = el('div', 'gcsp-console-actions'); row.append(yes, no);
     root.append(title, text, row);
@@ -88,7 +89,7 @@ export function basicConsoleOptions({ adapter = createPresenterHttpAdapter() } =
 
   function onStartAgain(ctx) {
     if (resetting) return;
-    const { root, yes } = confirmation(ctx);
+    latest = ctx; const { root, yes } = confirmation(ctx);
     root.hidden = false; ctx.basic.startAgain.disabled = true; yes.focus();
   }
 
