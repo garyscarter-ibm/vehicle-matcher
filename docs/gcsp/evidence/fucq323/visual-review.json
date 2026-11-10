@@ -62,7 +62,15 @@
       "severity": "Low/P3",
       "status": "To Do",
       "finding": "Selected-review badge is a clipped dark strip; full car and separate order number remain readable.",
-      "disposition": "Separate linked Bug to originating FUCQ-70 and discovery FUCQ-323. Deferred under standing scope policy; not repaired here. Jira attachment upload pending; repository screenshots retained."
+      "disposition": "Separate linked Bug to originating FUCQ-70 and discovery FUCQ-323. Deferred under standing scope policy; not repaired here. Screenshot937452 (06-selected-review-375.jpg,36706bytes,image/jpeg) uploaded and verified; repository screenshots retained.",
+      "evidence": [
+        {
+          "attachment_id": "937452",
+          "filename": "06-selected-review-375.jpg",
+          "mime_type": "image/jpeg",
+          "size": 36706
+        }
+      ]
     }
   ],
   "captureLimitations": [
