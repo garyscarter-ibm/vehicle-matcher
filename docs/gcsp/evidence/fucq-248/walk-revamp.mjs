@@ -16,7 +16,7 @@ if (port < 9290 || port > 9299) throw new Error('WALK_PORT must be 9290-9299');
 const scratch = resolve(process.env.WALK_SCRATCH || '');
 if (!scratch || scratch === '/') throw new Error('Set WALK_SCRATCH');
 const OUT = join(scratch, 'out', `${process.env.WALK_SECTION}-${W}`);
-const SHOTS = join(HERE, 'revamp-2026-11-10');
+const SHOTS = join(HERE, process.env.WALK_SHOTS || 'revamp-2026-11-10');
 const KEY = `walk-${randomBytes(9).toString('hex')}`;
 const origin = `http://127.0.0.1:${port}`;
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
