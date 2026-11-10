@@ -4206,6 +4206,81 @@
       "observed_at": "2026-11-10T14:18:29Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-342",
       "branch": "dev/DEV-2026-11-10-GC-023"
+    },
+    {
+      "id": "FUCQ-345",
+      "title": "Keep the selected-car order tag clear of its image caption",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "type": "Bug",
+      "assignee": "usget",
+      "branch": "dev/DEV-2026-11-10-004",
+      "observed_at": "2026-11-10T16:11:41Z",
+      "workers": [
+        {
+          "name": "Michigan J. Frog",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-10T16:11:41.105952+00:00",
+          "expires_at": "2026-11-10T16:11:41.105952+00:00",
+          "source": "Final fresh-base scoped handover:115/115;24owned roots absent, no further owned workers; parent owns base merge/archive/Jira lifecycle.",
+          "status": "stopped"
+        },
+        {
+          "name": "Grub",
+          "role": "implementer",
+          "harness": "codex",
+          "observed_at": "2026-11-10T16:02:09.270405+00:00",
+          "expires_at": "2026-11-10T16:02:09.270405+00:00",
+          "source": "Final handover2708d11e; implementer ended; retained evidence reused without more allocations.",
+          "status": "stopped"
+        },
+        {
+          "name": "Imhotep",
+          "role": "independent-reviewer-A",
+          "harness": "codex",
+          "observed_at": "2026-11-10T16:02:09.270405+00:00",
+          "expires_at": "2026-11-10T16:02:09.270405+00:00",
+          "source": "Independent A finalized blind scoped PASS29/40; exact reportSHA1aa23ab2; no descendants/scratch.",
+          "status": "stopped"
+        },
+        {
+          "name": "Wile E. Coyote",
+          "role": "independent-runner-B",
+          "harness": "codex",
+          "observed_at": "2026-11-10T16:02:09.270405+00:00",
+          "expires_at": "2026-11-10T16:02:09.270405+00:00",
+          "source": "Final B received;18currentcapture+19source hashes verified;9B scratch roots absent; no further allocations/descendants.",
+          "status": "stopped"
+        }
+      ],
+      "slices": [
+        {
+          "id": "repair",
+          "status": "complete",
+          "title": "Readable-selected-car-media",
+          "observed_at": "2026-11-10T15:00:02Z",
+          "evidence": "Repair5d1cfc33 on integratede81db95a; exact source/capture manifest2708d11e; lead scoped170/170 and corrected1280/375 inspection passed. Independent review remains a separate open slice."
+        },
+        {
+          "id": "review",
+          "status": "complete",
+          "title": "Independent-rendered-review",
+          "observed_at": "2026-11-10T16:02:09Z",
+          "evidence": "Independent blind A PASS29/40; B18 current1280/375 captures and41runtime findings classified. Lead original-resolution critique: all3 mediaACs pass. A-1 FUCQ-347 and B-1 FUCQ-349 separate Low/unfixed. See integrated-review.md and assessment-b/browser-provenance.json."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Scoped-delivery-validation",
+          "observed_at": "2026-11-10T16:11:41Z",
+          "evidence": "Fresh metadata-only base43e4c1be merged6880c502; selected-review+UIratchet targeted/default115/115,0skips,1.0s. All19rendered+42import/input hashes match; independent A/B reused.24owned roots absent,no pg/link/install,clean. fresh-base-validation-receipt.json. Original3ACs fixed; parent integration/Jira acceptance pending."
+        }
+      ],
+      "unsliced": false,
+      "delivery_status": "Built; final fresh-base scoped check complete; pending parent base merge and collaborator acceptance",
+      "jira_status_basis": "Last verified native status In Progress. Parent subsequent refresh failed OAuth unauthorized_client invalid refresh_token; lifecycle remains pending sign-in, no transition inferred.",
+      "integration_base": "43e4c1be2ca66951a0ddc4a1ff11332df48974be"
     }
   ]
 }
