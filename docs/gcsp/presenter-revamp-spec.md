@@ -187,18 +187,18 @@ the FUCQ-126/172 contract says. Advanced is the existing controller mounted in a
 
 ## Delivery: how I'd slice it
 
-Each line would be a separate backlog Story for collaborator review before build (build rules, scope
+Raised as backlog Stories on 10 November 2026 (label `presenter-revamp-20261110`), for collaborator review before build (build rules, scope
 control). MoSCoW is my suggestion for the 12 November demo.
 
-| # | Slice | Points | MoSCoW |
-|---|---|---|---|
-| 1 | Console page: own layout, Basic/Advanced toggle, Advanced mounts today's controller unchanged | 3 | M |
-| 2 | Remove the presenter rail item and flyout from the portal shell; nothing presenter-related loads on Paula's or Greg's pages | 2 | M |
-| 3 | Friendly time and state-driven primary button (reads existing `/controls` and `/context`) | 3 | M |
-| 4 | Main successful journey on generated stock, daily cadence, 100 per release, guaranteed Paula matches (policy + catalogue + generator) | 8 | M |
-| 5 | Presenter release projection route (read-only, from allocation receipts) | 5 | S |
-| 6 | Release visual: grid, funnel, winner animation, reduced motion, keyboard | 5 | S |
-| 7 | *What happened* feed with email side panel | 3 | C |
+| # | Story | Slice | Points | MoSCoW |
+|---|---|---|---|---|
+| 1 | [FUCQ-360](https://ibm-consulting.atlassian.net/browse/FUCQ-360) | Console page: own layout, Basic/Advanced toggle, Advanced mounts today's controller unchanged | 3 | M |
+| 2 | [FUCQ-361](https://ibm-consulting.atlassian.net/browse/FUCQ-361) | Remove the presenter rail item and flyout from the portal shell; nothing presenter-related loads on Paula's or Greg's pages | 2 | M |
+| 3 | [FUCQ-362](https://ibm-consulting.atlassian.net/browse/FUCQ-362) | Friendly time and state-driven primary button (reads existing `/controls` and `/context`) | 3 | M |
+| 4 | [FUCQ-363](https://ibm-consulting.atlassian.net/browse/FUCQ-363) | Main successful journey on generated stock, daily cadence, 100 per release, guaranteed Paula matches (policy + catalogue + generator) | 8 | M |
+| 5 | [FUCQ-364](https://ibm-consulting.atlassian.net/browse/FUCQ-364) | Presenter release projection route (read-only, from allocation receipts) | 5 | S |
+| 6 | [FUCQ-365](https://ibm-consulting.atlassian.net/browse/FUCQ-365) | Release visual: grid, funnel, winner animation, reduced motion, keyboard | 5 | S |
+| 7 | [FUCQ-366](https://ibm-consulting.atlassian.net/browse/FUCQ-366) | *What happened* feed with email side panel | 3 | C |
 
 Slices 1 to 3 give a clean, production-looking app and a two-button console without touching the
 engine. Slice 4 is the riskiest: it moves the main journey off fixed stock days before the demo.
