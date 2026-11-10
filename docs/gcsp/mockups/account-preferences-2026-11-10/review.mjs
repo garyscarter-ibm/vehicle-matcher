@@ -25,6 +25,10 @@ try {
   const page = await context.newPage();
   page.on('pageerror', (error) => receipt.consoleErrors.push(error.message));
   const stored = () => page.evaluate(() => JSON.parse(localStorage.getItem('gcsp:account-preferences-discussion:2026-11-10:v1')));
+  const colours = (selector) => page.locator(selector).first().evaluate((node) => {
+    const style = getComputedStyle(node.matches('.concept-category-open') ? node.parentElement : node);
+    return { background: style.backgroundColor, border: style.borderColor, colour: style.color };
+  });
   const snap = async (name) => { await page.evaluate(() => scrollTo(0, 0)); await page.screenshot({ path: `${output}/${name}.png`, fullPage: true }); receipt.screenshots.push(`${name}.png`); };
   const fit = async (name) => {
     await page.locator('.vm-card-photo').evaluate((image) => image.complete ? undefined : new Promise((resolve) => image.addEventListener('load', resolve, { once: true })));
@@ -48,6 +52,7 @@ try {
       && result.rating.y >= result.drawnImage.y + 4 && result.rating.y + result.rating.height <= result.drawnImage.y + result.drawnImage.height - 4);
     check(`${name}: media wraps the actual image without internal letterboxing`, Math.abs(result.media.height - result.drawnImage.height) < 1
       && Math.abs(result.media.y - result.drawnImage.y) < 1);
+    check(`${name}: rating sits at the right image edge`, Math.abs(result.drawnImage.x + result.drawnImage.width - result.rating.x - result.rating.width - 8) < 1);
     return result;
   };
   await page.goto(`${base}?state=empty`); await page.locator('.concept-page').waitFor(); await page.evaluate(() => document.fonts.ready);
@@ -58,6 +63,38 @@ try {
   check('Account header contains no allowance information', !/allowance|1,300|points/i.test(await page.locator('.concept-page-head').innerText()));
   check('Points cost lives in current-car facts with cost and budget', await page.locator('.concept-car .vm-fact').filter({ hasText: 'Points cost' }).innerText() === 'Points cost\n1,100 / 1,300 points per month');
   check('Preferences have no Save button', await page.getByRole('button', { name: /Save preferences/i }).count() === 0);
+  const sameInfo = page.getByRole('button', { name: 'About Same again, please!', exact: true });
+  const sameTip = page.locator('#same-again-help');
+  const ratingTip = page.locator('#rating-help');
+  const description = 'BMW 3 Series Touring 320i M Sport · Petrol';
+  check('Same again guidance lives in an initially hidden tooltip', !await sameTip.isVisible()
+    && await sameTip.textContent() === `Select this option if you just love everything about your current car, and your next best car would be another ${description}`);
+  await sameInfo.hover();
+  check('Same again info reveals help on hover', await sameTip.isVisible());
+  await snap('1440-same-tooltip');
+  await sameTip.hover();
+  check('Tooltip remains available when the pointer enters its text', await sameTip.isVisible());
+  await page.locator('h1').hover();
+  check('Hover tooltip closes after pointer leaves', !await sameTip.isVisible());
+  await sameInfo.focus();
+  check('Same again info reveals help on keyboard focus', await sameTip.isVisible());
+  await page.keyboard.press('Escape');
+  check('Escape dismisses help without moving focus', !await sameTip.isVisible() && await sameInfo.evaluate((node) => node === document.activeElement));
+  await sameInfo.click();
+  check('Tapping info opens help without selecting Same again', await sameTip.isVisible()
+    && !await page.getByRole('switch', { name: 'Same again, please!', exact: true }).isChecked());
+  await page.locator('h1').click();
+  check('Outside tap dismisses help', !await sameTip.isVisible());
+  await page.getByRole('radio', { name: '3 stars: It’s okay', exact: true }).hover();
+  check('Stars show the requested current-car tooltip on hover', await ratingTip.isVisible()
+    && await ratingTip.textContent() === `How highly do you rate your ${description}?`);
+  await snap('1440-rating-tooltip');
+  await page.getByRole('radio', { name: '3 stars: It’s okay', exact: true }).focus();
+  check('Stars also expose help on keyboard focus', await ratingTip.isVisible());
+  await page.keyboard.press('Escape');
+  check('Rating tooltip closes on Escape and retains radio focus', !await ratingTip.isVisible()
+    && await page.getByRole('radio', { name: '3 stars: It’s okay', exact: true }).evaluate((node) => node === document.activeElement));
+  await page.locator('h1').click();
   const lamp = async () => page.locator('.concept-buddy-lamp').evaluate((node) => { const style = getComputedStyle(node); return { colour: style.backgroundColor, animation: style.animationName }; });
   const red = await lamp();
   check('Disengaged lamp is static red', red.animation === 'none' && Number(red.colour.match(/\d+/g)[0]) > Number(red.colour.match(/\d+/g)[1]));
@@ -175,15 +212,22 @@ try {
   check('Chosen preference removes the obsolete selection hint', await importance.getAttribute('aria-describedby') === null
     && !await page.getByText('Choose a preference first.', { exact: true }).isVisible());
   await snap('1440-importance-medium');
+  const mediumColour = await colours('#category-body');
+  const mediumOptionColour = await colours('#category-options .vm-option.is-selected');
   const mediumScore = await page.locator('.concept-score-value').innerText();
   await page.locator('.concept-importance label').click();
   check('Clicking the importance label saves high', await importance.isChecked() && (await stored()).weights.body === 'high');
+  const highColour = await colours('#category-body');
+  check('High importance changes both category and selected-option colour', highColour.background !== mediumColour.background
+    && highColour.border !== mediumColour.border && (await colours('#category-options .vm-option.is-selected')).background !== mediumOptionColour.background);
+  check('High importance is announced as well as coloured', (await page.locator('#category-body').getAttribute('aria-label')).includes('really important'));
   check('Importance does not add categories or inflate understanding', await page.locator('.concept-score-value').innerText() === mediumScore
     && await page.locator('.concept-category.is-considered').count() === 1);
   await snap('1440-importance-high');
   await importance.focus(); await page.keyboard.press('Space');
   check('Space switches importance back to medium and keeps focus', !await importance.isChecked()
     && (await stored()).weights.body === 'medium' && await importance.evaluate((node) => node === document.activeElement));
+  check('Turning importance off restores normal selection colour', (await colours('#category-body')).background === mediumColour.background);
   await page.keyboard.press('Space');
   check('Space enables high importance without replacing the focused input', await importance.isChecked()
     && (await stored()).weights.body === 'high' && await importance.evaluate((node) => node === document.activeElement));
@@ -209,8 +253,14 @@ try {
   await page.getByRole('switch', { name: 'Same again, please!', exact: true }).check();
   check('Same again makes importance unavailable while retaining it', await importance.count() === 0
     && !await page.locator('#category-options').isVisible() && (await stored()).weights.body === 'high');
+  const overriddenColour = await colours('#category-body');
+  check('Same again removes blue and urgent selection colours', overriddenColour.background !== mediumColour.background
+    && overriddenColour.background !== highColour.background && overriddenColour.background === (await colours('#category-fuel')).background
+    && await page.locator('.concept-category.is-important').count() === 0);
+  await snap('1440-same-again-retained-high');
   await page.getByRole('switch', { name: 'Same again, please!', exact: true }).uncheck(); await page.locator('#category-body').click();
   check('Turning Same again off restores retained high importance', await importance.isChecked());
+  check('Turning Same again off restores urgent selection colour', (await colours('#category-body')).background === highColour.background);
   await page.setViewportSize({ width: 320, height: 1000 }); await page.goto(`${base}?state=empty`); await page.locator('#category-fuel').click();
   check('Unchosen Fuel is also unimportant', await importance.isDisabled() && !await importance.isChecked());
   await fit('320 importance unselected'); await snap('320-importance-unselected');
@@ -221,6 +271,22 @@ try {
   await hybrid.uncheck();
   check('Clearing final Fuel option also clears high importance', await importance.isDisabled() && !await importance.isChecked()
     && !Object.hasOwn((await stored()).weights, 'fuel'));
+  await page.goto(`${base}?state=long`); await page.locator('.concept-page').waitFor();
+  await sameInfo.click();
+  check('Narrow touch opens Same again tooltip', await sameTip.isVisible());
+  const helpBounds = await sameTip.boundingBox();
+  check('Long Same again guidance stays inside the 320px viewport', helpBounds.x >= 0 && helpBounds.x + helpBounds.width <= 320);
+  check('Tooltip uses the full long model and specification', (await sameTip.textContent()).includes('BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro · Plug-in hybrid · BMW Individual specification'));
+  await snap('320-same-tooltip-long');
+  await page.getByRole('switch', { name: 'Same again, please!', exact: true }).check();
+  await snap('320-same-again-neutral');
+  check('Narrow Same again keeps saved preferences neutral', (await colours('#category-body')).background === (await colours('#category-size')).background);
+  await page.getByRole('radio', { name: '4 stars: I really like it', exact: true }).click();
+  const ratingHelpBounds = await ratingTip.boundingBox();
+  check('Narrow touch reveals rating help without losing the rating', await ratingTip.isVisible()
+    && await page.getByRole('radio', { name: '4 stars: I really like it', exact: true }).isChecked());
+  check('Long rating tooltip remains in the 320px viewport', ratingHelpBounds.x >= 0 && ratingHelpBounds.x + ratingHelpBounds.width <= 320);
+  await snap('320-rating-tooltip-long');
   await page.setViewportSize({ width: 1440, height: 1100 });
   await page.evaluate(() => localStorage.setItem('gcsp:account-preferences-discussion:2026-11-10:v1', JSON.stringify({
     values: { body: ['estate'], fuel: [], comfort: '0', economy: 'invalid' },

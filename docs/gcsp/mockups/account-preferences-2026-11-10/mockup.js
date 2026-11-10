@@ -21,6 +21,7 @@ const ICONS = {
   bin: ['M3 6h18', 'M9 6V3h6v3', 'M5 6l1 15h12l1-15', 'M10 10v7', 'M14 10v7'],
   check: ['M5 12l4 4L19 6'],
   star: ['m12 2.8 2.8 5.7 6.3.9-4.6 4.4 1.1 6.3-5.6-3-5.6 3 1.1-6.3L2.9 9.4l6.3-.9Z'],
+  info: ['M12 16v-4', 'M12 8h.01', 'M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0'],
 };
 const options = (...pairs) => pairs.map(([value, label]) => ({ value, label }));
 const CATEGORIES = [
@@ -69,6 +70,31 @@ let pendingRemoval = null;
 const categoryNodes = new Map();
 const contract = ACCOUNT_SNAPSHOT.value.contracts[0];
 const account = ACCOUNT_SNAPSHOT.value.account;
+const modelName = mode === 'long' ? 'BMW 3 Series 330e xDrive M Sport Pro Touring' : 'BMW 3 Series Touring';
+const specification = mode === 'long' ? 'M Sport Pro · Plug-in hybrid · BMW Individual specification' : '320i M Sport · Petrol';
+const currentCarDescription = `${modelName} ${specification}`;
+
+// Discussion-only composition around native controls; no tooltip primitive exists in the kit.
+function attachTooltip({ root, triggers, id, text, className = '' }) {
+  const tip = el('p', `concept-tooltip ${className}`, text); tip.id = id;
+  tip.setAttribute('role', 'tooltip'); tip.hidden = true; root.append(tip);
+  const show = () => { tip.hidden = false; };
+  const hide = () => { tip.hidden = true; };
+  for (const trigger of triggers) {
+    const descriptions = new Set((trigger.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean));
+    descriptions.add(id); trigger.setAttribute('aria-describedby', [...descriptions].join(' '));
+    trigger.addEventListener('pointerenter', show); trigger.addEventListener('focus', show);
+    trigger.addEventListener('click', show);
+  }
+  tip.addEventListener('pointerenter', show);
+  root.addEventListener('pointerleave', () => { if (!triggers.includes(document.activeElement)) hide(); });
+  root.addEventListener('focusout', (event) => { if (!root.contains(event.relatedTarget) && !root.matches(':hover')) hide(); });
+  root.addEventListener('keydown', (event) => { if (event.key === 'Escape') hide(); });
+  const outside = (event) => { if (!root.contains(event.target)) hide(); };
+  document.addEventListener('pointerdown', outside);
+  window.addEventListener('pagehide', () => document.removeEventListener('pointerdown', outside), { once: true });
+  return tip;
+}
 const say = (text) => { message.textContent = text; message.classList.remove('is-error'); };
 const count = () => Object.keys(state.values).length;
 // Illustrative input completeness, not a model-confidence calculation. See README.
@@ -112,7 +138,7 @@ photo.append(media);
 
 const rating = el('div', 'concept-rating');
 const ratingGroup = el('fieldset');
-ratingGroup.append(el('legend', '', 'How do you feel about your car?'));
+ratingGroup.append(el('legend', '', `How highly do you rate your ${currentCarDescription}?`));
 const stars = el('div', 'concept-stars');
 const ratingCaption = el('p', 'concept-rating-caption'); ratingCaption.id = 'rating-description';
 const ratingWords = ['', 'Not for me', 'Ready for a change', 'It’s okay', 'I really like it', 'I love it'];
@@ -130,9 +156,11 @@ for (let value = 1; value <= 5; value++) {
   label.append(input, svgIcon(ICONS.star)); labels.push(label); stars.append(label);
 }
 ratingGroup.append(stars, ratingCaption); rating.append(ratingGroup); media.append(rating); updateRating();
+attachTooltip({ root: rating, triggers: labels.map((label) => label.querySelector('input')), id: 'rating-help',
+  text: `How highly do you rate your ${currentCarDescription}?`, className: 'concept-rating-tooltip' });
 const carCopy = el('div', 'concept-car-copy');
-const carTitle = el('h2', 'concept-car-title', mode === 'long' ? 'BMW 3 Series 330e xDrive M Sport Pro Touring' : 'BMW 3 Series Touring');
-carTitle.id = 'current-car-title'; carTitle.append(el('span', '', mode === 'long' ? 'M Sport Pro · Plug-in hybrid · BMW Individual specification' : '320i M Sport · Petrol'));
+const carTitle = el('h2', 'concept-car-title', modelName);
+carTitle.id = 'current-car-title'; carTitle.append(el('span', '', specification));
 const details = el('details', 'gcsp-details'); details.append(el('summary', 'gcsp-details-summary', 'Order, collection and vehicle details'),
   factList([{ label: 'Car order number', value: contract.orderNumber ?? '8074261' }, { label: 'Annual mileage', value: 12000, unit: 'mi/year' }, { label: 'Collected', value: '1 June 2026' }]));
 carCopy.append(carTitle, el('p', 'gcsp-countdown', 'Contract ends in 21 days · 1 December 2026'),
@@ -158,9 +186,16 @@ const modeRow = el('div', 'concept-mode');
 const toggle = checkboxField({ id: 'same-again', label: 'Same again, please!', checked: state.same,
   onChange: (same) => { state.same = same; openCategory = null; pendingRemoval = null; renderOptions(); savePreferences(); } });
 toggle.root.classList.add('concept-switch');
-toggle.input.setAttribute('role', 'switch'); toggle.input.setAttribute('aria-describedby', 'same-again-consequence');
-const modeNote = el('p', 'gcsp-note'); modeNote.id = 'same-again-consequence';
-modeRow.append(toggle.root, modeNote);
+toggle.root.classList.add('concept-same-switch'); toggle.input.setAttribute('role', 'switch');
+const sameInfo = button({ label: '', variant: 'ghost' }); sameInfo.classList.add('concept-info-button');
+sameInfo.setAttribute('aria-label', 'About Same again, please!'); sameInfo.append(svgIcon(ICONS.info));
+const sameLabel = toggle.root.querySelector('label');
+toggle.root.replaceChildren(sameLabel, sameInfo, toggle.input);
+const sameHelp = attachTooltip({ root: toggle.root, triggers: [sameInfo], id: 'same-again-help',
+  text: `Select this option if you just love everything about your current car, and your next best car would be another ${currentCarDescription}`,
+  className: 'concept-same-tooltip' });
+toggle.input.setAttribute('aria-describedby', sameHelp.id);
+modeRow.append(toggle.root);
 
 const categories = el('div', 'concept-categories');
 for (const category of CATEGORIES) {
@@ -246,8 +281,8 @@ function update() {
   scoreValue.textContent = `${score()} / 11`; scoreValue.setAttribute('aria-label', `Buddy understanding ${score()} out of 11`);
   [...meter.children].forEach((segment, i) => segment.classList.toggle('is-filled', i < score()));
   toggle.input.checked = state.same;
-  modeNote.textContent = state.same ? 'Your current car leads. Your other choices are kept.' : 'Love your current car? Let it guide your next one.';
   categories.classList.toggle('is-disabled', state.same);
+  optionPanel.classList.toggle('is-important', !state.same && state.values[openCategory] !== undefined && state.weights[openCategory] === 'high');
   const importanceInput = optionPanel.querySelector('[role="switch"]');
   if (importanceInput) {
     const considered = state.values[openCategory] !== undefined;
@@ -261,11 +296,13 @@ function update() {
     const nodes = categoryNodes.get(category.id); const selected = state.values[category.id];
     const values = Array.isArray(selected) ? selected : selected === undefined ? [] : [selected];
     const considered = values.length > 0;
+    const important = considered && state.weights[category.id] === 'high' && !state.same;
     nodes.root.classList.toggle('is-considered', considered); nodes.root.classList.toggle('is-open', openCategory === category.id);
+    nodes.root.classList.toggle('is-important', important);
     nodes.open.disabled = state.same; nodes.remove.disabled = state.same;
     nodes.open.setAttribute('aria-expanded', String(openCategory === category.id && !state.same));
     nodes.value.textContent = considered ? values.map((v) => category.options.find((o) => o.value === v)?.label).join(', ') : 'Choose';
-    nodes.open.setAttribute('aria-label', `${category.label}, ${considered ? `considered: ${nodes.value.textContent}` : 'choose a preference'}`);
+    nodes.open.setAttribute('aria-label', `${category.label}, ${considered ? `considered: ${nodes.value.textContent}${important ? ', really important' : ''}` : 'choose a preference'}`);
     nodes.remove.hidden = !considered;
   }
   removal.replaceChildren(); removal.hidden = !pendingRemoval || state.same;

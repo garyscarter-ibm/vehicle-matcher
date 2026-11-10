@@ -31,6 +31,50 @@
       "passed": true
     },
     {
+      "label": "Same again guidance lives in an initially hidden tooltip",
+      "passed": true
+    },
+    {
+      "label": "Same again info reveals help on hover",
+      "passed": true
+    },
+    {
+      "label": "Tooltip remains available when the pointer enters its text",
+      "passed": true
+    },
+    {
+      "label": "Hover tooltip closes after pointer leaves",
+      "passed": true
+    },
+    {
+      "label": "Same again info reveals help on keyboard focus",
+      "passed": true
+    },
+    {
+      "label": "Escape dismisses help without moving focus",
+      "passed": true
+    },
+    {
+      "label": "Tapping info opens help without selecting Same again",
+      "passed": true
+    },
+    {
+      "label": "Outside tap dismisses help",
+      "passed": true
+    },
+    {
+      "label": "Stars show the requested current-car tooltip on hover",
+      "passed": true
+    },
+    {
+      "label": "Stars also expose help on keyboard focus",
+      "passed": true
+    },
+    {
+      "label": "Rating tooltip closes on Escape and retains radio focus",
+      "passed": true
+    },
+    {
       "label": "Disengaged lamp is static red",
       "passed": true
     },
@@ -48,6 +92,10 @@
     },
     {
       "label": "1440 initial: media wraps the actual image without internal letterboxing",
+      "passed": true
+    },
+    {
+      "label": "1440 initial: rating sits at the right image edge",
       "passed": true
     },
     {
@@ -223,6 +271,10 @@
       "passed": true
     },
     {
+      "label": "1920 selected: rating sits at the right image edge",
+      "passed": true
+    },
+    {
       "label": "1100 selected: no horizontal page overflow",
       "passed": true
     },
@@ -236,6 +288,10 @@
     },
     {
       "label": "1100 selected: media wraps the actual image without internal letterboxing",
+      "passed": true
+    },
+    {
+      "label": "1100 selected: rating sits at the right image edge",
       "passed": true
     },
     {
@@ -255,6 +311,10 @@
       "passed": true
     },
     {
+      "label": "1024 selected: rating sits at the right image edge",
+      "passed": true
+    },
+    {
       "label": "900 selected: no horizontal page overflow",
       "passed": true
     },
@@ -268,6 +328,10 @@
     },
     {
       "label": "900 selected: media wraps the actual image without internal letterboxing",
+      "passed": true
+    },
+    {
+      "label": "900 selected: rating sits at the right image edge",
       "passed": true
     },
     {
@@ -287,6 +351,10 @@
       "passed": true
     },
     {
+      "label": "820 selected: rating sits at the right image edge",
+      "passed": true
+    },
+    {
       "label": "375 selected: no horizontal page overflow",
       "passed": true
     },
@@ -300,6 +368,10 @@
     },
     {
       "label": "375 selected: media wraps the actual image without internal letterboxing",
+      "passed": true
+    },
+    {
+      "label": "375 selected: rating sits at the right image edge",
       "passed": true
     },
     {
@@ -319,6 +391,10 @@
       "passed": true
     },
     {
+      "label": "320 long: rating sits at the right image edge",
+      "passed": true
+    },
+    {
       "label": "320 long options: no horizontal page overflow",
       "passed": true
     },
@@ -332,6 +408,10 @@
     },
     {
       "label": "320 long options: media wraps the actual image without internal letterboxing",
+      "passed": true
+    },
+    {
+      "label": "320 long options: rating sits at the right image edge",
       "passed": true
     },
     {
@@ -363,6 +443,10 @@
       "passed": true
     },
     {
+      "label": "320 remove confirmation: rating sits at the right image edge",
+      "passed": true
+    },
+    {
       "label": "Importance is one visible switch with no disclosure or three-choice control",
       "passed": true
     },
@@ -387,11 +471,23 @@
       "passed": true
     },
     {
+      "label": "High importance changes both category and selected-option colour",
+      "passed": true
+    },
+    {
+      "label": "High importance is announced as well as coloured",
+      "passed": true
+    },
+    {
       "label": "Importance does not add categories or inflate understanding",
       "passed": true
     },
     {
       "label": "Space switches importance back to medium and keeps focus",
+      "passed": true
+    },
+    {
+      "label": "Turning importance off restores normal selection colour",
       "passed": true
     },
     {
@@ -431,7 +527,15 @@
       "passed": true
     },
     {
+      "label": "Same again removes blue and urgent selection colours",
+      "passed": true
+    },
+    {
       "label": "Turning Same again off restores retained high importance",
+      "passed": true
+    },
+    {
+      "label": "Turning Same again off restores urgent selection colour",
       "passed": true
     },
     {
@@ -455,6 +559,10 @@
       "passed": true
     },
     {
+      "label": "320 importance unselected: rating sits at the right image edge",
+      "passed": true
+    },
+    {
       "label": "Fuel selection saves medium by default",
       "passed": true
     },
@@ -475,7 +583,35 @@
       "passed": true
     },
     {
+      "label": "320 importance high: rating sits at the right image edge",
+      "passed": true
+    },
+    {
       "label": "Clearing final Fuel option also clears high importance",
+      "passed": true
+    },
+    {
+      "label": "Narrow touch opens Same again tooltip",
+      "passed": true
+    },
+    {
+      "label": "Long Same again guidance stays inside the 320px viewport",
+      "passed": true
+    },
+    {
+      "label": "Tooltip uses the full long model and specification",
+      "passed": true
+    },
+    {
+      "label": "Narrow Same again keeps saved preferences neutral",
+      "passed": true
+    },
+    {
+      "label": "Narrow touch reveals rating help without losing the rating",
+      "passed": true
+    },
+    {
+      "label": "Long rating tooltip remains in the 320px viewport",
       "passed": true
     },
     {
@@ -504,6 +640,8 @@
     }
   ],
   "screenshots": [
+    "1440-same-tooltip.png",
+    "1440-rating-tooltip.png",
     "1440-initial.png",
     "1440-validation.png",
     "1440-slider-default.png",
@@ -526,16 +664,20 @@
     "1440-importance-unselected.png",
     "1440-importance-medium.png",
     "1440-importance-high.png",
+    "1440-same-again-retained-high.png",
     "320-importance-unselected.png",
     "320-importance-high.png",
+    "320-same-tooltip-long.png",
+    "320-same-again-neutral.png",
+    "320-rating-tooltip-long.png",
     "1440-missing-image.png"
   ],
   "consoleErrors": [],
   "failures": [],
   "codeIdentity": {
     "index.html": "424a1cffe33ef295db5faf0325c324ad86fddb1bb48926e7ef091d6e18455beb",
-    "mockup.js": "4926098bd945cd97edaa80927c5465da453f1b14fae071485aa10d57b56ca166",
-    "mockup.css": "a1ec3ec75e0117d190b4d792621678693fce4e0532252c27a9144ef2b689598d"
+    "mockup.js": "b1de76b150d7379b3bfac0d9725acd94fbbfd7590c3657c077d8d2ca726966e8",
+    "mockup.css": "848b0df72256e04b73a733dd287f04674b258ae9d008e7fad23b5a59d74dd077"
   },
   "independentReview": "See visual-review.md for independent critique and corrective review.",
   "viewports": [
@@ -563,7 +705,7 @@
         "height": 457.875
       },
       "rating": {
-        "x": 105,
+        "x": 683,
         "y": 579.9375,
         "width": 220,
         "height": 44
@@ -606,7 +748,7 @@
         "height": 673.875
       },
       "rating": {
-        "x": 153,
+        "x": 1115,
         "y": 792.875,
         "width": 220,
         "height": 44
@@ -649,7 +791,7 @@
         "height": 268.3125
       },
       "rating": {
-        "x": 105,
+        "x": 346,
         "y": 477.09375,
         "width": 220,
         "height": 44
@@ -692,7 +834,7 @@
         "height": 246.9375
       },
       "rating": {
-        "x": 105,
+        "x": 308,
         "y": 463.78125,
         "width": 220,
         "height": 44
@@ -735,7 +877,7 @@
         "height": 212.0625
       },
       "rating": {
-        "x": 105,
+        "x": 246,
         "y": 443.21875,
         "width": 220,
         "height": 44
@@ -778,7 +920,7 @@
         "height": 203.0625
       },
       "rating": {
-        "x": 81,
+        "x": 206,
         "y": 430.71875,
         "width": 220,
         "height": 44
@@ -821,7 +963,7 @@
         "height": 191.8125
       },
       "rating": {
-        "x": 25,
+        "x": 130,
         "y": 315,
         "width": 220,
         "height": 44
@@ -831,13 +973,13 @@
         "x": 16,
         "y": 72,
         "width": 343,
-        "height": 1670
+        "height": 1624
       },
       "content": {
         "x": 0,
         "y": 56,
         "width": 375,
-        "height": 1710
+        "height": 1664
       }
     },
     {
@@ -864,7 +1006,7 @@
         "height": 160.875
       },
       "rating": {
-        "x": 25,
+        "x": 75,
         "y": 284.0625,
         "width": 220,
         "height": 44
@@ -874,13 +1016,13 @@
         "x": 16,
         "y": 72,
         "width": 288,
-        "height": 1765.0625
+        "height": 1719.0625
       },
       "content": {
         "x": 0,
         "y": 56,
         "width": 320,
-        "height": 1805.0625
+        "height": 1759.0625
       }
     },
     {
@@ -890,40 +1032,40 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": -648.8125,
+        "y": -602.8125,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": -648.8125,
+        "y": -602.8125,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": -648.8125,
+        "y": -602.8125,
         "width": 286,
         "height": 160.875
       },
       "rating": {
-        "x": 25,
-        "y": -539.9375,
+        "x": 75,
+        "y": -493.9375,
         "width": 220,
         "height": 44
       },
       "ratingBackground": "rgba(0, 0, 0, 0)",
       "canvas": {
         "x": 16,
-        "y": -752,
+        "y": -706,
         "width": 288,
-        "height": 1999.0625
+        "height": 1953.0625
       },
       "content": {
         "x": 0,
-        "y": -768,
+        "y": -722,
         "width": 320,
-        "height": 2039.0625
+        "height": 1993.0625
       }
     },
     {
@@ -933,40 +1075,40 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": -664.8125,
+        "y": -618.8125,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": -664.8125,
+        "y": -618.8125,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": -664.8125,
+        "y": -618.8125,
         "width": 286,
         "height": 160.875
       },
       "rating": {
-        "x": 25,
-        "y": -555.9375,
+        "x": 75,
+        "y": -509.9375,
         "width": 220,
         "height": 44
       },
       "ratingBackground": "rgba(0, 0, 0, 0)",
       "canvas": {
         "x": 16,
-        "y": -768,
+        "y": -722,
         "width": 288,
-        "height": 1873.0625
+        "height": 1827.0625
       },
       "content": {
         "x": 0,
-        "y": -784,
+        "y": -738,
         "width": 320,
-        "height": 1913.0625
+        "height": 1867.0625
       }
     },
     {
@@ -976,40 +1118,40 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": -483.8125,
+        "y": -437.8125,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": -483.8125,
+        "y": -437.8125,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": -483.8125,
+        "y": -437.8125,
         "width": 286,
         "height": 160.875
       },
       "rating": {
-        "x": 25,
-        "y": -374.9375,
+        "x": 75,
+        "y": -328.9375,
         "width": 220,
         "height": 44
       },
       "ratingBackground": "rgba(0, 0, 0, 0)",
       "canvas": {
         "x": 16,
-        "y": -587,
+        "y": -541,
         "width": 288,
-        "height": 2076.0625
+        "height": 2030.0625
       },
       "content": {
         "x": 0,
-        "y": -603,
+        "y": -557,
         "width": 320,
-        "height": 2116.0625
+        "height": 2070.0625
       }
     },
     {
@@ -1019,40 +1161,40 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": -905.8125,
+        "y": -859.8125,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": -905.8125,
+        "y": -859.8125,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": -905.8125,
+        "y": -859.8125,
         "width": 286,
         "height": 160.875
       },
       "rating": {
-        "x": 25,
-        "y": -796.9375,
+        "x": 75,
+        "y": -750.9375,
         "width": 220,
         "height": 44
       },
       "ratingBackground": "rgba(0, 0, 0, 0)",
       "canvas": {
         "x": 16,
-        "y": -1009,
+        "y": -963,
         "width": 288,
-        "height": 2036.0625
+        "height": 1990.0625
       },
       "content": {
         "x": 0,
-        "y": -1025,
+        "y": -979,
         "width": 320,
-        "height": 2076.0625
+        "height": 2030.0625
       }
     }
   ]
