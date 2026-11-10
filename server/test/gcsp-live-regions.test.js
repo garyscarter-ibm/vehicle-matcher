@@ -210,7 +210,7 @@ test('account with an order has one live region and the new car row is plain con
 test('account support message and sync announce through the account region alone', async (t) => {
   const host = root(); const adapter = { readAccount: async () => accountFixture('ready'), readDraft: async () => ({ status: 'not-found' }), startJourney: async () => ({ status: 'unavailable' }) };
   t.after(mountAccount(host, { adapter })); await waitFor(() => host.querySelector('.gcsp-account-body'));
-  const support = [...host.querySelectorAll('button')].find((b) => /Contact support|Get help with employee details/.test(b.textContent)); assert.ok(support);
+  const support = [...host.querySelectorAll('button')].find((b) => /Contact support|Get help with your details/.test(b.textContent)); assert.ok(support);
   support.click(); await settle(); assertQuiet(host, 'account after a support route');
   assert.match(regions(host)[0].textContent, /Support route/);
 });

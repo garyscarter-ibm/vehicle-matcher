@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your cars, proposed layout (mockup)</title>
+<link rel="stylesheet" href="../../../blocks/vehicle-matcher/gcsp-kit.css">
+<style>
+  /* Mockup only: real GCSP tokens and the shared .vm-btn, no new colours or sizes. */
+  body { margin: 0; }
+  .gcsp { min-height: 100vh; background: var(--gcsp-surface-page); color: var(--gcsp-text);
+    font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); }
+  .gcsp p, .gcsp h1, .gcsp h2, .gcsp h3, .gcsp dl, .gcsp dd { margin: 0; }
+  .m-page { max-width: 1120px; padding: var(--gcsp-space-6); display: flex; flex-direction: column; gap: var(--gcsp-space-6); }
+  .m-muted { color: var(--gcsp-text-muted); }
+  .m-label { font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); color: var(--gcsp-text-muted); }
+
+  /* 1. Page head: title left, freshness and refresh right (was a toolbar row plus a footer line). */
+  .m-head { display: flex; align-items: center; justify-content: space-between; gap: var(--gcsp-space-4); flex-wrap: wrap; }
+  .m-fresh { display: flex; align-items: center; gap: var(--gcsp-space-3); }
+
+  /* 2. Current car: the one panel on the page. */
+  .m-panel { background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+  .m-car { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .m-media { padding: var(--gcsp-space-4); display: flex; flex-direction: column; gap: var(--gcsp-space-2); border-right: 1px solid var(--gcsp-divider); }
+  .m-media img { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: var(--gcsp-surface-muted); border-radius: var(--gcsp-radius); }
+  .m-body { padding: var(--gcsp-space-6); display: flex; flex-direction: column; gap: var(--gcsp-space-6); }
+  .m-title { display: flex; flex-direction: column; gap: var(--gcsp-space-1); }
+  .m-state { display: flex; align-items: baseline; gap: var(--gcsp-space-2); }
+  .m-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gcsp-warning); flex: none; transform: translateY(-1px); }
+  .m-state strong { font-weight: var(--gcsp-font-strong-weight); }
+  .m-key { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gcsp-space-4);
+    padding: var(--gcsp-space-4) 0; border-block: 1px solid var(--gcsp-divider); }
+  .m-key dd { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); font-weight: var(--gcsp-font-strong-weight); }
+  .m-key dd span { font-size: var(--gcsp-font-size-label); font-weight: var(--gcsp-font-weight); color: var(--gcsp-text-muted); }
+  .m-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gcsp-space-4) var(--gcsp-space-4); }
+  .m-facts div, .m-key div { display: flex; flex-direction: column; gap: var(--gcsp-space-half); min-width: 0; }
+  .m-actions { display: flex; align-items: center; gap: var(--gcsp-space-3); flex-wrap: wrap; }
+
+  /* Sections below: a heading and rows on the page background, no boxes. */
+  .m-section { display: flex; flex-direction: column; gap: var(--gcsp-space-3); }
+  .m-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--gcsp-space-4); }
+
+  /* 3. Order history: one table across schemes (kit dataTable) instead of three accordions. */
+  .m-table { width: 100%; border-collapse: collapse; background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+  .m-table th { text-align: left; font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label);
+    font-weight: var(--gcsp-font-table-header-weight); color: var(--gcsp-text-muted); padding: var(--gcsp-space-2) var(--gcsp-space-4); border-bottom: 1px solid var(--gcsp-divider); }
+  .m-table td { padding: var(--gcsp-space-3) var(--gcsp-space-4); border-bottom: 1px solid var(--gcsp-divider); vertical-align: middle; }
+  .m-table tr:last-child td { border-bottom: 0; }
+  .m-table td:last-child, .m-table th:last-child { text-align: right; }
+  .m-name { font-weight: var(--gcsp-font-strong-weight); }
+  .m-link { background: none; border: 0; padding: 0; font: inherit; color: var(--gcsp-link); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+  .m-link:hover { color: var(--gcsp-link-hover); }
+  .m-tag { font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
+  .m-tag-current { color: var(--gcsp-success); font-weight: var(--gcsp-font-strong-weight); }
+
+  /* 4. Your details: two summary rows, each with its one help link. */
+  .m-rows { background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+  .m-row { display: grid; grid-template-columns: 160px minmax(0, 1fr) auto; gap: var(--gcsp-space-4); padding: var(--gcsp-space-4); align-items: start; }
+  .m-row + .m-row { border-top: 1px solid var(--gcsp-divider); }
+  .m-row ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--gcsp-space-1); }
+
+  /* Car record drawer: the full record as headed sections, one disclosure level. */
+  .m-backdrop { position: fixed; inset: 0; background: var(--gcsp-backdrop); display: none; }
+  .m-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(480px, 100%); background: var(--gcsp-surface);
+    box-shadow: var(--gcsp-elevation-overlay); display: none; flex-direction: column; }
+  .m-open .m-backdrop { display: block; } .m-open .m-drawer { display: flex; }
+  .m-drawer-head { display: flex; justify-content: space-between; align-items: start; gap: var(--gcsp-space-4); padding: var(--gcsp-space-4) var(--gcsp-space-6); border-bottom: 1px solid var(--gcsp-divider); }
+  .m-drawer-body { padding: var(--gcsp-space-6); overflow-y: auto; display: flex; flex-direction: column; gap: var(--gcsp-space-6); flex: 1; }
+  .m-drawer-body section { display: flex; flex-direction: column; gap: var(--gcsp-space-3); }
+  .m-dl { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: var(--gcsp-space-2) var(--gcsp-space-4); }
+  .m-dl dt { color: var(--gcsp-text-muted); }
+  .m-drawer-foot { padding: var(--gcsp-space-4) var(--gcsp-space-6); border-top: 1px solid var(--gcsp-divider); display: flex; gap: var(--gcsp-space-3); }
+
+  @media (max-width: 600px) {
+    .m-page { padding: var(--gcsp-space-4); gap: var(--gcsp-space-6); }
+    .m-car { grid-template-columns: 1fr; }
+    .m-media { border-right: 0; border-bottom: 1px solid var(--gcsp-divider); }
+    .m-media img { aspect-ratio: 16 / 9; }
+    .m-body { padding: var(--gcsp-space-4); gap: var(--gcsp-space-4); }
+    .m-key { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .m-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .m-actions .vm-btn { width: 100%; }
+    .m-table thead { display: none; }
+    .m-table, .m-table tbody, .m-table tr, .m-table td { display: block; }
+    .m-table tr { padding: var(--gcsp-space-3) var(--gcsp-space-4); border-bottom: 1px solid var(--gcsp-divider); }
+    .m-table tr:last-child { border-bottom: 0; }
+    .m-table td { padding: 0; border: 0; text-align: left; }
+    .m-table td:last-child { text-align: left; margin-top: var(--gcsp-space-2); }
+    .m-table td[data-label]::before { content: attr(data-label) ": "; color: var(--gcsp-text-muted); }
+    .m-row { grid-template-columns: 1fr; gap: var(--gcsp-space-2); }
+    .m-dl { grid-template-columns: 1fr; gap: 0; }
+    .m-dl dd { margin-bottom: var(--gcsp-space-2); }
+  }
+</style>
+</head>
+<body>
+<div class="gcsp" id="root">
+  <main class="m-page">
+
+    <div class="m-head">
+      <h1 class="gcsp-page-title">Your cars</h1>
+      <div class="m-fresh">
+        <span class="m-label">Account as of 5 November 2026, 09:00</span>
+        <button class="vm-btn vm-btn-ghost" type="button">Refresh</button>
+      </div>
+    </div>
+
+    <section class="m-panel m-car" aria-labelledby="car-name">
+      <figure class="m-media" style="margin:0">
+        <img src="/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp" alt="BMW 3 Series Touring 320i: representative image">
+        <figcaption class="m-label">Representative image, not your exact car</figcaption>
+      </figure>
+      <div class="m-body">
+        <div class="m-title">
+          <p class="m-label">Current car · BMW Choices</p>
+          <h2 id="car-name">BMW 3 Series Touring 320i</h2>
+          <p class="m-state"><span class="m-dot" aria-hidden="true"></span><span><strong>Contract ends in 26 days</strong>
+            <span class="m-muted">on 1 December 2026</span></span></p>
+        </div>
+        <dl class="m-key">
+          <div><dt class="m-label">This car</dt><dd>1,100 <span>points a month</span></dd></div>
+          <div><dt class="m-label">Your allowance</dt><dd>1,300 <span>points a month</span></dd></div>
+          <div><dt class="m-label">Collect a replacement</dt><dd>12 Nov to 1 Dec</dd></div>
+        </dl>
+        <dl class="m-facts">
+          <div><dt class="m-label">Driver</dt><dd>Paula Mason</dd></div>
+          <div><dt class="m-label">Term</dt><dd>6 months</dd></div>
+          <div><dt class="m-label">Annual mileage</dt><dd>12,000 mi</dd></div>
+          <div><dt class="m-label">Collected</dt><dd>1 June 2026</dd></div>
+          <div><dt class="m-label">Current mileage</dt><dd>5,200 mi</dd></div>
+        </dl>
+        <div class="m-actions">
+          <button class="vm-btn vm-btn-primary" type="button">Choose a replacement</button>
+          <button class="vm-btn vm-btn-ghost" type="button" data-open>View car record</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="m-section" aria-labelledby="history">
+      <h2 id="history">Order history</h2>
+      <table class="m-table">
+        <thead><tr><th scope="col">Car</th><th scope="col">Scheme</th><th scope="col">Collected</th><th scope="col">Ended</th><th scope="col">Status</th><th scope="col"><span class="m-muted" style="position:absolute;clip:rect(0 0 0 0)">Record</span></th></tr></thead>
+        <tbody>
+          <tr><td class="m-name">BMW 3 Series Touring 320i</td><td data-label="Scheme">BMW Choices</td><td data-label="Collected">1 June 2026</td><td data-label="Ended">Ends 1 Dec 2026</td><td><span class="m-tag m-tag-current">Current car</span></td><td><button class="m-link" type="button" data-open>View record</button></td></tr>
+          <tr><td class="m-name m-muted">Model not supplied</td><td data-label="Scheme">PCS UK FS BMW</td><td data-label="Collected">1 January 2025</td><td data-label="Ended">Returned 1 Dec 2025</td><td><span class="m-tag">Returned</span></td><td><button class="m-link" type="button" data-open>View record</button></td></tr>
+        </tbody>
+      </table>
+      <p class="m-label">No Motorcycle Choices orders. PCS UK FS BMW and Motorcycle Choices show history only; you can't order through them here.</p>
+    </section>
+
+    <section class="m-section" aria-labelledby="details">
+      <h2 id="details">Your details</h2>
+      <div class="m-rows">
+        <div class="m-row">
+          <p class="m-label">Employee</p>
+          <ul>
+            <li><span class="m-name">Paula Mason</span> <span class="m-muted">· Employee number E749057 · Band G7</span></li>
+            <li class="m-muted">paula.mason@gcsp-demo.com · 01632 960000</li>
+            <li class="m-muted">27 Ashdown Road, Bracknell, RG12 9ZZ</li>
+          </ul>
+          <button class="m-link" type="button">Get help with your details</button>
+        </div>
+        <div class="m-row">
+          <p class="m-label">Drivers (2)</p>
+          <ul>
+            <li><span class="m-name">Paula Mason</span> <span class="m-muted">· You · Car licence valid until 1 January 2030</span></li>
+            <li><span class="m-name">Casey Ward</span> <span class="m-muted">· Nominated driver, spouse · Car licence valid until 1 January 2030</span></li>
+          </ul>
+          <button class="m-link" type="button">Get help with drivers</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="m-backdrop" data-close></div>
+  <aside class="m-drawer" role="dialog" aria-modal="true" aria-labelledby="record-title">
+    <div class="m-drawer-head">
+      <div><p class="m-label">Car record · BMW Choices</p><h2 id="record-title">BMW 3 Series Touring 320i</h2></div>
+      <button class="vm-btn vm-btn-ghost" type="button" data-close aria-label="Close car record">Close</button>
+    </div>
+    <div class="m-drawer-body">
+      <section><h3>Contract</h3>
+        <dl class="m-dl"><dt>Status</dt><dd>Current car</dd><dt>Driver</dt><dd>Paula Mason</dd><dt>Term</dt><dd>6 months</dd>
+          <dt>Annual mileage</dt><dd>12,000 mi a year</dd><dt>Contract end</dt><dd>1 December 2026</dd></dl></section>
+      <section><h3>Collection</h3>
+        <dl class="m-dl"><dt>Collected</dt><dd>1 June 2026</dd><dt>Replacement window</dt><dd>12 November to 1 December 2026</dd>
+          <dt>Current mileage</dt><dd>5,200 mi</dd></dl></section>
+      <section><h3>Order and vehicle</h3>
+        <p class="m-muted">Order number, registration and VIN are not supplied for this car.</p></section>
+      <section><h3>Technical specification and options</h3>
+        <p class="m-muted">Not supplied. Model or handbook evidence would not confirm the fitted equipment on your car.</p></section>
+    </div>
+    <div class="m-drawer-foot"><button class="vm-btn vm-btn-ghost" type="button">Print record</button></div>
+  </aside>
+</div>
+<script>
+  const root = document.getElementById('root');
+  const set = (open) => root.classList.toggle('m-open', open);
+  root.addEventListener('click', (event) => {
+    if (event.target.closest('[data-open]')) set(true);
+    if (event.target.closest('[data-close]')) set(false);
+  });
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape') set(false); });
+  if (location.hash === '#record') set(true);
+</script>
+</body>
+</html>

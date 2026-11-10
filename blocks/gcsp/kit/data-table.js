@@ -1,4 +1,4 @@
-// dataTable: a real <table> in a keyboard-scrollable region. Cells are strings, numbers, { label, isBand }, { label, emphasis } (bold) or { label, missing }.
+// dataTable: a real <table> in a keyboard-scrollable region. Cells are strings, numbers, { label, isBand }, { label, emphasis, tone: 'success' } (bold, success colour) or { label, missing }.
 // rowAction adds a last column with one button per row.
 import { el, button } from '../../vehicle-matcher/ui.js';
 import { fillValue } from './metric-tile.js';
@@ -53,7 +53,7 @@ export function dataTable({ caption, columns = [], rows = [], emptyText = 'Nothi
       if (first) cell.scope = 'row';
       if (stack) { cell.setAttribute('role', first ? 'rowheader' : 'cell'); if (!first) cell.dataset.label = column.label; }
       const value = data[column.key];
-      if (value?.emphasis) { const strong = el('strong'); fillValue(strong, value); cell.append(strong); } else fillValue(cell, value);
+      if (value?.emphasis) { const strong = el('strong', value.tone === 'success' ? 'is-success' : undefined); fillValue(strong, value); cell.append(strong); } else fillValue(cell, value);
       row.append(cell);
     });
     if (rowAction) {
@@ -62,7 +62,7 @@ export function dataTable({ caption, columns = [], rows = [], emptyText = 'Nothi
       const disabled = typeof rowAction.disabled === 'function' ? !!rowAction.disabled(data, index) : !!rowAction.disabled;
       const action = button({ label: rowAction.label ?? 'Open', variant: 'ghost', disabled, onClick: () => rowAction.onSelect?.(data, index) });
       action.classList.add('gcsp-table-action');
-      const name = rowAction.name?.(data, index); if (name) action.setAttribute('aria-label', name);
+      const name = rowAction.name?.(data, index); if (name) { action.setAttribute('aria-label', name); action.dataset.focusKey = name; }
       cell.append(action); row.append(cell);
     }
     body.append(row);

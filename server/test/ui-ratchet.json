@@ -141,7 +141,7 @@
     },
     {
       "path": "blocks/gcsp/account/gcsp-account.css",
-      "max_lines": 21
+      "max_lines": 56
     },
     {
       "path": "blocks/vehicle-matcher/question-controls.css",
@@ -185,7 +185,7 @@
     },
     {
       "path": "blocks/gcsp/kit/gcsp-kit.css",
-      "max_lines": 26
+      "max_lines": 27
     },
     {
       "path": "blocks/gcsp/greg/gcsp-greg.css",
@@ -298,6 +298,10 @@
     {
       "path": "blocks/gcsp/kit/slot-picker.css",
       "max_lines": 9
+    },
+    {
+      "path": "blocks/gcsp/kit/side-drawer.css",
+      "max_lines": 12
     },
     {
       "path": "blocks/gcsp/kit/data-table-compare.css",
