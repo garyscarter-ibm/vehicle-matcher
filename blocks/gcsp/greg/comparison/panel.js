@@ -35,7 +35,7 @@ export function mountGregComparison(root, { adapter, signal, pollMs = 2000 } = {
     if (view) return { name: 'ready', nodes: ready(view), text: 'Stored comparison loaded.' };
     if (state.status === 'empty') return { name: 'empty', nodes: [empty()], text: 'No stored comparison yet.' };
     if (state.status === 'refused') return { name: 'refused', nodes: [problem('You cannot open this comparison', copy.REFUSED, 'alert', false)], text: 'Access refused.' };
-    if (state.status === 'access-required') return { name: 'access-required', nodes: [accessLapsedScreen()], text: 'Access needed.' };
+    if (state.status === 'access-required') return { name: 'access-required', nodes: [accessLapsedScreen()], text: 'Session ended.' };
     return { name: 'unavailable', nodes: [problem('The comparison is unavailable', copy.UNAVAILABLE, 'alert', true)], text: 'Comparison unavailable.' };
   }
   async function load() {

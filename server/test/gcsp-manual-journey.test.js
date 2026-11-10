@@ -25,7 +25,7 @@ async function boot(t, { edit, environmentId = 'manual-journey' } = {}) {
   const store = createMemoryStore();
   const f = { store, seed, counter: 0, presenter: null, context: null, app: null, services: null, policy: null, origin: null };
   const open = async () => {
-    f.app = good(await startGcspDemo({ port: 0, accessKey: '', tls: https.configuration, runtime: { mode: 'memory',
+    f.app = good(await startGcspDemo({ port: 0, tls: https.configuration, runtime: { mode: 'memory',
       repository: createMemoryRepository({ store }), policy, stockProvider: createDemoStockProvider, adoptOfferJourney: true,
       environmentId, policyAsOf: seed.effectiveFrom, commandId: `${environmentId}-bootstrap` } }));
     Object.assign(f, { services: f.app.services, policy: f.app.services.policy, origin: f.app.origin });

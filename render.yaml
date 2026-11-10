@@ -19,16 +19,6 @@ services:
     envVars:
       - key: NODE_VERSION
         value: "20"
-      # Optional shared-password gate for the /api/* surface. Set the value in
-      # the Render dashboard (Environment tab) — NEVER commit it here, hence
-      # sync:false, which records that the var exists without carrying a value.
-      # When set, every /api/* call must send a matching X-Access-Key header
-      # (the frontend's login overlay captures it); /health stays open. When
-      # unset, the API runs fully open. Rotate by editing this one value in the
-      # dashboard: the service restarts and old sessions are re-prompted, with
-      # no frontend redeploy needed.
-      - key: DEMO_ACCESS_KEY
-        sync: false
       # GCSP offer-email landing page (full HTTPS URL of the GCSP static site's offer
       # page). Unset keeps the same-origin /gcsp/offer path used by the local demo.
       - key: GCSP_OFFER_LANDING_URL

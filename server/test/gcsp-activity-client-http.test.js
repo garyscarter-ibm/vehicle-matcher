@@ -6,7 +6,7 @@ import { createActivityController } from '../../blocks/gcsp/activity/activity-co
 import { createActivityHttpAdapter } from '../../blocks/gcsp/activity/activity-http.js';
 
 test('real client transport/controller follow BriefService pause/resume, stale versions and reset through HTTP',async () => {
-  const runtime=await createActivityClientRuntime(); const prior=process.env.DEMO_ACCESS_KEY;process.env.DEMO_ACCESS_KEY='';
+  const runtime=await createActivityClientRuntime();
   const server=runtime.server();let controller;
   try {
     await runtime.confirm();server.listen(0,'127.0.0.1');await once(server,'listening');
@@ -25,5 +25,5 @@ test('real client transport/controller follow BriefService pause/resume, stale v
       expectedRunVersion:state.runVersion,scenarioVersion:state.versions.scenario,fixtureVersion:state.versions.fixture});assert.equal(reset.status,'ok');
     await controller.refresh();assert.equal(controller.getState().phase,'restarted');assert.equal(controller.getState().result,null);
     assert.equal(calls.some((c) => c.path.includes('?')),false);
-  } finally {controller?.destroy();server.closeAllConnections();await new Promise((done) => server.close(done));await runtime.close();if(prior===undefined)delete process.env.DEMO_ACCESS_KEY;else process.env.DEMO_ACCESS_KEY=prior;}
+  } finally {controller?.destroy();server.closeAllConnections();await new Promise((done) => server.close(done));await runtime.close();}
 });

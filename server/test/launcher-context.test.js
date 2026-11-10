@@ -137,50 +137,27 @@ test('index picker retains mode/scope/API and starts each brand without old answ
   } finally { dom.window.close(); }
 });
 
-test('index retains local/remote API choice, override and demo gate including legacy-key removal', async () => {
+test('index retains local/remote API choice and override, mounts with no password, and strips a legacy key', () => {
   for (const [suffix, remote, expected] of [['?brand=bmw', false, 'http://localhost:8787'], ['?brand=bmw', true, 'https://bmw-matcher-api.onrender.com'], ['?brand=mini&api=http%3A%2F%2Flocalhost%3A8788', true, 'http://localhost:8788']]) {
-    const { dom, win, mounts } = bootAt(suffix, { remote, stored: 'stored-secret' });
+    const { dom, mounts } = bootAt(suffix, { remote });
     try { assert.equal(mounts.length, 1); assert.equal(mounts[0].dataset.api, expected); }
     finally { dom.window.close(); }
   }
-  const { dom, win, mounts } = bootAt('?experience=used-cars&key=demo-secret&key=second-secret#m=answers', { remote: true });
+  const { dom, win, ready } = bootAt('?experience=used-cars&key=demo-secret&key=second-secret#m=answers', { remote: true });
   try {
-    assert.equal(win.sessionStorage.getItem(win.ACCESS_KEY_STORAGE), 'demo-secret');
+    assert.equal(win.sessionStorage.getItem('vmAccessKey'), null);
     assert.equal(new URL(win.location.href).searchParams.has('key'), false);
     assert.equal(win.location.hash, '#m=answers');
-    assert.equal(mounts.length, 0);
     assert.equal(win.document.querySelector('.vm-gate'), null);
+    assert.equal(ready.length, 1);
     assert.equal(win.document.documentElement.innerHTML.includes('demo-secret'), false);
     for (const link of win.document.querySelectorAll('.demo-picker-tile')) assert.equal(new URL(link.href).searchParams.has('key'), false);
   } finally { dom.window.close(); }
-  const gated = bootAt('', { remote: true });
+  const open = bootAt('', { remote: true });
   try {
-    assert.ok(gated.win.document.querySelector('.vm-gate'));
-    assert.equal(gated.ready.length, 0);
-    gated.win.document.querySelector('input').value = 'typed-secret';
-    gated.win.document.querySelector('form').dispatchEvent(new gated.win.Event('submit', { bubbles: true, cancelable: true }));
-    await Promise.resolve();
-    assert.equal(gated.win.sessionStorage.getItem(gated.win.ACCESS_KEY_STORAGE), 'typed-secret');
-    assert.equal(gated.ready[0].state, 'launcher');
-  } finally { gated.dom.window.close(); }
-});
-
-test('a rejected stored demo password prompts once and remounts retail with the new session key', async () => {
-  const { dom, win, mounts } = bootAt('?brand=bmw', { remote: true, stored: 'old-secret' });
-  try {
-    win.sessionStorage.removeItem(win.ACCESS_KEY_STORAGE); // engine's 401 behaviour
-    win.dispatchEvent(new win.Event('vm-auth-failed'));
-    win.dispatchEvent(new win.Event('vm-auth-failed'));
-    assert.equal(win.document.querySelectorAll('.vm-gate').length, 1);
-    assert.match(win.document.querySelector('.vm-gate').textContent, /try again/i);
-    win.document.querySelector('input').value = 'replacement-secret';
-    win.document.querySelector('form').dispatchEvent(new win.Event('submit', { bubbles: true, cancelable: true }));
-    await Promise.resolve();
-    assert.equal(mounts.length, 2);
-    assert.equal(mounts[0], mounts[1]);
-    assert.equal(win.sessionStorage.getItem(win.ACCESS_KEY_STORAGE), 'replacement-secret');
-    assert.equal(win.document.getElementById('demo-root').innerHTML.includes('replacement-secret'), false);
-  } finally { dom.window.close(); }
+    assert.equal(open.win.document.querySelector('.vm-gate'), null);
+    assert.equal(open.ready[0].state, 'launcher');
+  } finally { open.dom.window.close(); }
 });
 
 test('an empty legacy key is removed before the route host and its links are exposed', () => {
@@ -192,13 +169,13 @@ test('an empty legacy key is removed before the route host and its links are exp
   } finally { dom.window.close(); }
 });
 
-test('standalone block retains retail boot, config overrides and key/session behaviour', () => {
+test('standalone block retains retail boot and config overrides, and strips a legacy key', () => {
   const { dom, win, mounts } = bootAt('?experience=employee-cars&brand=mini&mode=podium&scope=national&retailer=92&retailerName=Dealer&key=demo-secret', { standalone: true });
   try {
     assert.equal(mounts.length, 1);
     const rows = Object.fromEntries([...mounts[0].children].map((row) => [row.firstElementChild.textContent.toLowerCase(), row.lastElementChild.textContent]));
     assert.equal(rows.brand, 'mini'); assert.equal(rows['retailer id'], '92'); assert.equal(rows['retailer name'], 'Dealer');
-    assert.equal(win.sessionStorage.getItem(win.ACCESS_KEY_STORAGE), 'demo-secret');
+    assert.equal(win.sessionStorage.getItem('vmAccessKey'), null);
     assert.equal(new URL(win.location.href).searchParams.has('key'), false);
   } finally { dom.window.close(); }
 });

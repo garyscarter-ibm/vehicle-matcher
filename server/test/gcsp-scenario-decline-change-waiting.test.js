@@ -13,7 +13,7 @@ const route = (response) => { assert.equal(response.status, 200, JSON.stringify(
 
 async function setup(t) {
   const https = await createLocalHttpsFixture(t);
-  const app = good(await startGcspDemo({ port: 0, accessKey: '', tls: https.configuration, runtime: { mode: 'memory',
+  const app = good(await startGcspDemo({ port: 0, tls: https.configuration, runtime: { mode: 'memory',
     stockProvider: (deps) => createDemoStockProvider(deps), environmentId: 'decline-change-waiting', policyAsOf: '2026-11-05T09:00:00.000Z',
     commandId: 'decline-change-waiting-bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z', adoptOfferJourney: true } }));
   t.after(() => app.close());

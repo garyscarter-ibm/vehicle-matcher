@@ -21,7 +21,7 @@ const okRoute = (label, out) => { assert.equal(out.status, 200, `${label}: HTTP 
 async function setup(t, scenarioId, { requests = false } = {}) {
   const upstream = createDemoUpstream();
   const https = await createLocalHttpsFixture(t);
-  const app = good(await startGcspDemo({ port: 0, accessKey: '', tls: https.configuration, runtime: { mode: 'memory',
+  const app = good(await startGcspDemo({ port: 0, tls: https.configuration, runtime: { mode: 'memory',
     ...(requests ? { stockProvider: (deps) => withConfirmedSupply(createDemoStockProvider(deps), upstream), production: upstream.production } : { stockProvider: (deps) => createDemoStockProvider(deps) }), environmentId: `order-plan-${scenarioId}`, policyAsOf: '2026-11-05T09:00:00.000Z',
     commandId: `order-plan-${scenarioId}-bootstrap`, sessionNow: () => '2026-11-06T00:00:00.000Z', adoptOfferJourney: true } }));
   t.after(() => app.close());

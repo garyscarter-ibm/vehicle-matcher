@@ -52,8 +52,6 @@ services:
         value: "1"
       - key: GCSP_ALLOWED_ORIGINS  # must equal gcsp-site's address exactly; change here if Render adds a suffix
         value: https://gcsp-site.onrender.com
-      - key: DEMO_ACCESS_KEY       # demo password for /api/* and the GCSP pages' one-time key form
-        sync: false
       # FUCQ-180: the full GCSP runtime and its pages on this one origin (server/gcsp/host.js).
       - key: GCSP_RUNTIME
         value: "1"

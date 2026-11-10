@@ -488,13 +488,13 @@ test('FUCQ-170: cancelling a preference change returns focus; history and owner 
   assert.doesNotMatch(q.querySelector('table').textContent, /scheme-team/); stop();
 });
 
-test('FUCQ-213: a lapsed access key reads as access needed, not unavailable', async () => {
+test('FUCQ-213: a bare 401 reads as an ended session, not unavailable', async () => {
   const { caseFailure } = await import('../../blocks/gcsp/cases/gcsp-help.js');
   const adapter = createCaseHttpAdapter({ fetchImpl: async () => ({ ok: false, status: 401, json: async () => ({ error: 'Unauthorized' }) }) });
   const lapsed = await adapter.readHelp();
   assert.equal(lapsed.status, 'access-required');
   const shown = caseFailure(lapsed);
-  assert.equal(shown.title, 'Access needed'); assert.doesNotMatch(`${shown.title} ${shown.text}`, /unavailable/i);
+  assert.equal(shown.title, 'Session ended'); assert.doesNotMatch(`${shown.title} ${shown.text}`, /unavailable/i);
 });
 test('FUCQ-208: owner role is shown only when it adds to the owner name', async () => {
   const { renderCaseContent } = await import('../../blocks/gcsp/cases/case-content.js');

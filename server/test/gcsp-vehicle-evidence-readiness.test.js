@@ -55,11 +55,9 @@ test('a validated retained fallback is ready even when the selected pointer fail
   assert.equal(lookup.readiness().manifestDigest, previous.manifestDigest);
 });
 
-test('platform corpus readiness gates deployment while liveness and API key boundary stay usable', async () => {
+test('platform corpus readiness gates deployment while liveness stays usable', async () => {
   let state = { status: 'loading', elapsedMs: 12, manifestDigest: null, recovered: false };
   const lookup = { readiness: () => structuredClone(state), resolve: async () => assert.fail('health must not resolve a vehicle') };
-  const previousKey = process.env.DEMO_ACCESS_KEY;
-  process.env.DEMO_ACCESS_KEY = 'readiness-fixture-key';
   const server = await startTestServer({ gcspVehicleEvidence: { lookup } });
   try {
     const live = await get(server.base, '/health');
@@ -72,11 +70,8 @@ test('platform corpus readiness gates deployment while liveness and API key boun
     state = { status: 'unavailable', elapsedMs: 50, manifestDigest: null, recovered: false, code: 'corpus-absent' };
     const failed = await get(server.base, '/health/vehicle-evidence');
     assert.equal(failed.status, 503); assert.deepEqual(failed.json, { ok: false, vehicleEvidence: state });
-    assert.equal((await get(server.base, '/api/questions')).status, 401);
   } finally {
     await server.close();
-    if (previousKey === undefined) delete process.env.DEMO_ACCESS_KEY;
-    else process.env.DEMO_ACCESS_KEY = previousKey;
   }
 });
 

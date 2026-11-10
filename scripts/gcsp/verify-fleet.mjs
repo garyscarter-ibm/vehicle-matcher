@@ -150,8 +150,7 @@ function localHttpRead(endpoint, request) {
   const collection = { configuration: 'configurations', vin: 'vins', stock: 'stock' }[request.kind];
   const url = new URL(`/api/gcsp/vehicle-evidence/${collection}/${encodeURIComponent(request.id)}`, endpoint);
   return new Promise((resolve, reject) => {
-    const headers = process.env.DEMO_ACCESS_KEY ? { 'X-Access-Key': process.env.DEMO_ACCESS_KEY } : {};
-    const req = httpRequest(url, { headers }, (response) => {
+    const req = httpRequest(url, (response) => {
       let content = ''; let size = 0;
       response.setEncoding('utf8'); response.on('data', (part) => {
         size += Buffer.byteLength(part); if (size > 2 * 1024 * 1024) req.destroy(new Error('Local response exceeds audit bound.')); else content += part;
