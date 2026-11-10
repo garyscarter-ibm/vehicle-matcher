@@ -96,6 +96,28 @@ test('sharing keeps ordered JSON, special property names and unequal nested valu
   assert.equal(Object.hasOwn(stored[0], 'toString'), true);
 });
 
+for (const kind of ['frozen', 'read-only']) {
+  test(`normalizing ${kind} stored rows preserves values and shares repeated nested content`, () => {
+    const store = createComparisonStore();
+    const first = { quoteId: 'first', facts: payload() };
+    store.state = { ...store.state, tables: { ...store.state.tables, quotes: [first] } };
+    const second = { quoteId: 'second', facts: payload() };
+    if (kind === 'frozen') {
+      Object.freeze(second.facts.facts[0].provenance); Object.freeze(second.facts.facts[0]);
+      Object.freeze(second.facts.facts); Object.freeze(second.facts); Object.freeze(second);
+    } else Object.defineProperty(second, 'facts', { writable: false });
+    const original = structuredClone(second);
+    assert.doesNotThrow(() => {
+      store.state = { ...store.state, tables: { ...store.state.tables, quotes: [first, second] } };
+    });
+    const rows = store.state.tables.quotes;
+    assert.deepEqual(rows[1], original);
+    assert.deepEqual(second, original);
+    assert.equal(rows[0].facts, rows[1].facts);
+    assert.ok(Object.isFrozen(rows[1]) && Object.isFrozen(rows[1].facts));
+  });
+}
+
 const policy = new PolicyService({ provider: new FilePolicyProvider() });
 const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-buddy-outcomes.json', import.meta.url), 'utf8'));
 async function runFor(t, route) {

@@ -19,7 +19,13 @@ function shareImmutableRows() {
     if (value === null || typeof value !== 'object') return value;
     if (normalized.has(value)) return normalized.get(value);
     const array = Array.isArray(value); const keys = Object.keys(value);
-    const children = keys.map((key) => intern(value[key]));
+    const mutable = !Object.isFrozen(value);
+    const children = keys.map((key) => {
+      const child = intern(value[key]);
+      // Drafts own their mutable rows: release duplicate children as we go, before freezing the parent.
+      if (mutable && !Object.is(value[key], child) && Object.getOwnPropertyDescriptor(value, key).writable) value[key] = child;
+      return child;
+    });
     const prototype = Object.getPrototypeOf(value);
     // Keep only compact bucket keys; retaining full signatures duplicates the immutable row content.
     const signature = JSON.stringify([array ? 'array' : prototype === null ? 'null-object' : 'object',
