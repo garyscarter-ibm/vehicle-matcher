@@ -1,7 +1,7 @@
 // Discussion artifact only. Reuses the application kit; never calls an application API.
 import { el, screenIntro, button, factList } from '../../../../blocks/vehicle-matcher/ui.js';
 import { mediaWell } from '../../../../blocks/vehicle-matcher/modes/result-card.js';
-import { renderOptionList } from '../../../../blocks/vehicle-matcher/modes/question-ui.js';
+import { renderOptionList, renderRangeSlider } from '../../../../blocks/vehicle-matcher/modes/question-ui.js';
 import { portalShell, svgIcon } from '../../../../blocks/gcsp/shell/portal-shell.js';
 import { PORTAL_NAVIGATION } from '../../../../blocks/gcsp/employee/portal-navigation.js';
 import { checkboxField } from '../../../../blocks/gcsp/kit/form-controls.js';
@@ -9,8 +9,8 @@ import { ACCOUNT_SNAPSHOT } from '../../../../blocks/gcsp/account/fixtures.js';
 
 const KEY = 'gcsp:account-preferences-discussion:2026-11-10:v1';
 const mode = new URL(location.href).searchParams.get('state');
-const EMPTY = { values: {}, weights: {}, same: false, rating: 0 };
-const SELECTED = { values: { body: 'estate', fuel: 'petrol', comfort: '100' }, weights: {}, same: false, rating: 4 };
+const EMPTY = { values: {}, weights: {}, same: false, rating: 0, engaged: false };
+const SELECTED = { values: { body: 'estate', fuel: 'petrol', comfort: '100' }, weights: {}, same: false, rating: 4, engaged: false };
 const ICONS = {
   body: ['M3 14l2-5h14l2 5', 'M3 14h18v4H3z', 'M6 18v2', 'M18 18v2'],
   fuel: ['M5 21V4h9v17', 'M7 7h5v5H7z', 'M3 21h13', 'M14 8h3l3 3v6a2 2 0 0 1-4 0v-4'],
@@ -29,13 +29,13 @@ const CATEGORIES = [
   { id: 'fuel', label: 'Fuel', question: 'What would you like to drive?', multi: true,
     options: options(['petrol', 'Petrol'], ['diesel', 'Diesel'], ['phev', 'Plug-in hybrid'], ['ev', 'Electric']) },
   { id: 'sportiness', label: 'Sportiness', question: 'How do you like your car to feel?',
-    options: options(['0', 'Relaxed'], ['50', 'A little of both'], ['100', 'Sporty']) },
+    options: options(['0', 'Relaxed'], ['50', 'A bit of both'], ['100', 'Sporty']) },
   { id: 'comfort', label: 'Comfort', question: 'How much comfort would you like?',
-    options: options(['0', 'Simple and functional'], ['50', 'A comfortable balance'], ['100', 'As comfortable as possible']) },
+    options: options(['0', 'Simple and functional'], ['50', 'A bit of both'], ['100', 'As comfortable as possible']) },
   { id: 'economy', label: 'Economy', question: 'Where would you put the balance?',
-    options: options(['0', 'Driving comes first'], ['50', 'A balance of both'], ['100', 'Economy comes first']) },
+    options: options(['0', 'Driving comes first'], ['50', 'A bit of both'], ['100', 'Economy comes first']) },
   { id: 'size', label: 'Size', question: 'What size works for your life?',
-    options: options(['0', 'Compact'], ['50', 'Mid-size'], ['100', 'Spacious']) },
+    options: options(['0', 'Compact'], ['50', 'A bit of both'], ['100', 'Spacious']) },
 ];
 
 function validState(value) {
@@ -50,14 +50,16 @@ function validState(value) {
     } else if (allowed.has(supplied)) values[category.id] = category.multi ? [supplied] : supplied;
   }
   const weights = Object.fromEntries(Object.entries(value.weights ?? {}).filter(([key, v]) => CATEGORIES.some((c) => c.id === key) && ['low', 'medium', 'high'].includes(v)));
-  return { values, weights, same: value.same === true, rating: Number.isInteger(value.rating) && value.rating >= 1 && value.rating <= 5 ? value.rating : 0 };
+  return { values, weights, same: value.same === true, rating: Number.isInteger(value.rating) && value.rating >= 1 && value.rating <= 5 ? value.rating : 0,
+    engaged: value.engaged === true && (value.same === true || Object.keys(values).length >= 3) };
 }
 
 let state;
 try { state = validState(JSON.parse(localStorage.getItem(KEY))); } catch { state = structuredClone(EMPTY); }
 if (mode === 'empty') state = structuredClone(EMPTY);
-if (['selected', 'long', 'missing', 'same'].includes(mode)) state = validState(SELECTED);
+if (['selected', 'long', 'missing', 'same', 'engaged'].includes(mode)) state = validState(SELECTED);
 if (mode === 'same') state.same = true;
+if (mode === 'engaged') state.engaged = true;
 let openCategory = null;
 let pendingRemoval = null;
 const categoryNodes = new Map();
@@ -67,7 +69,16 @@ const say = (text) => { message.textContent = text; message.classList.remove('is
 const count = () => Object.keys(state.values).length;
 // Illustrative input completeness, not a model-confidence calculation. See README.
 const score = () => state.same ? 11 : [1, 3, 4, 6, 7, 9, 10][count()];
-const store = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { say('Your changes could not be kept. Check your browser storage.'); } };
+const store = () => {
+  try { localStorage.setItem(KEY, JSON.stringify(state)); return true; }
+  catch { say('Your changes could not be saved. Check your browser storage.'); message.classList.add('is-error'); return false; }
+};
+const savePreferences = (confirmation = 'Preferences saved automatically.') => {
+  const mustDisengage = state.engaged && !state.same && count() < 3;
+  if (mustDisengage) state.engaged = false;
+  update();
+  if (store()) say(mustDisengage ? 'Preferences saved. Buddy disengaged: choose at least 3 categories to engage again.' : confirmation);
+};
 
 const shell = portalShell({ account: { status: 'ready', name: account.name, email: account.contact.email, context: 'BMW Choices' },
   navigation: PORTAL_NAVIGATION.filter((item) => ['cars', 'brief'].includes(item.key)), active: 'cars',
@@ -83,9 +94,10 @@ const page = el('div', 'vm concept-page');
 const pageHead = el('div', 'concept-page-head');
 const intro = screenIntro({ title: 'Your cars', level: 1 });
 intro.querySelector('h1').tabIndex = -1;
-const allowance = el('p', 'concept-allowance');
-allowance.append(el('strong', '', '1,300 points a month'), 'Your BMW Choices allowance');
-pageHead.append(intro, allowance);
+const buddyStatus = el('p', 'concept-buddy-status'); buddyStatus.id = 'buddy-status'; buddyStatus.setAttribute('role', 'status'); buddyStatus.setAttribute('aria-atomic', 'true');
+const buddyLamp = el('span', 'concept-buddy-lamp'); buddyLamp.setAttribute('aria-hidden', 'true');
+const buddyStatusText = el('span'); buddyStatus.append(buddyLamp, buddyStatusText);
+pageHead.append(intro, buddyStatus);
 
 const car = el('section', 'concept-car'); car.setAttribute('aria-labelledby', 'current-car-title');
 const photo = el('div', 'concept-photo');
@@ -112,7 +124,7 @@ for (let value = 1; value <= 5; value++) {
   input.addEventListener('change', () => { state.rating = value; updateRating(); store(); });
   label.append(input, svgIcon(ICONS.star)); labels.push(label); stars.append(label);
 }
-ratingGroup.append(stars, ratingCaption); rating.append(ratingGroup); photo.append(rating); updateRating();
+ratingGroup.append(stars, ratingCaption); rating.append(ratingGroup); media.append(rating); updateRating();
 const carCopy = el('div', 'concept-car-copy');
 const carTitle = el('h2', 'concept-car-title', mode === 'long' ? 'BMW 3 Series 330e xDrive M Sport Pro Touring' : 'BMW 3 Series Touring');
 carTitle.id = 'current-car-title'; carTitle.append(el('span', '', mode === 'long' ? 'M Sport Pro · Plug-in hybrid · BMW Individual specification' : '320i M Sport · Petrol'));
@@ -122,8 +134,8 @@ carCopy.append(carTitle, el('p', 'gcsp-countdown', 'Contract ends in 21 days · 
   factList([{ label: 'Status', value: 'Current car' }, { label: 'Driver', value: account.name },
     { label: 'Contract end', value: '1 December 2026' }, { label: 'Term', value: 6, unit: 'months' },
     { label: 'Annual mileage', value: 12000, unit: 'mi/year' }, { label: 'Scheme', value: 'BMW Choices' },
-    { label: 'Registration', value: contract.registration ?? null, missingLabel: 'Not supplied' }, { label: 'Current mileage', value: 5200, unit: 'mi' }]),
-  el('p', 'concept-car-terms', '1,100 points a month'), details);
+    { label: 'Registration', value: contract.registration ?? null, missingLabel: 'Not supplied' }, { label: 'Current mileage', value: 5200, unit: 'mi' },
+    { label: 'Points cost', value: '1,100 / 1,300', unit: 'points per month' }]), details);
 car.append(photo, carCopy);
 
 const preferences = el('section', 'concept-preferences'); preferences.id = 'your-preferences'; preferences.setAttribute('aria-labelledby', 'preferences-heading');
@@ -139,7 +151,7 @@ preferenceHead.append(preferenceIntro, scorePanel);
 
 const modeRow = el('div', 'concept-mode');
 const toggle = checkboxField({ id: 'same-again', label: 'Same again, please!', checked: state.same,
-  onChange: (same) => { state.same = same; openCategory = null; pendingRemoval = null; say(''); renderOptions(); update(); store(); } });
+  onChange: (same) => { state.same = same; openCategory = null; pendingRemoval = null; renderOptions(); savePreferences(); } });
 toggle.input.setAttribute('role', 'switch'); toggle.input.setAttribute('aria-describedby', 'same-again-consequence');
 const modeNote = el('p', 'gcsp-note'); modeNote.id = 'same-again-consequence';
 modeRow.append(toggle.root, modeNote);
@@ -151,7 +163,13 @@ for (const category of CATEGORIES) {
   const top = el('span', 'concept-category-top'); top.append(svgIcon(ICONS[category.id]), el('span', '', category.label));
   const value = el('span', 'concept-category-value', 'Choose');
   open.append(top, value);
-  open.addEventListener('click', () => { openCategory = openCategory === category.id ? null : category.id; pendingRemoval = null; say(''); renderOptions(); update(); });
+  open.addEventListener('click', () => {
+    openCategory = openCategory === category.id ? null : category.id; pendingRemoval = null;
+    const selectDefault = openCategory && !category.multi && state.values[category.id] === undefined;
+    if (selectDefault) state.values[category.id] = '50';
+    say(''); renderOptions();
+    if (selectDefault) savePreferences(); else update();
+  });
   const remove = el('button', 'concept-category-remove'); remove.type = 'button'; remove.setAttribute('aria-label', `Remove ${category.label} preference`); remove.append(svgIcon(ICONS.bin));
   remove.addEventListener('click', () => { pendingRemoval = category.id; openCategory = null; renderOptions(); update(); removal.querySelector('button').focus(); });
   root.append(open, remove); categories.append(root); categoryNodes.set(category.id, { root, open, value, remove });
@@ -160,14 +178,17 @@ const optionPanel = el('div', 'concept-option-panel'); optionPanel.id = 'categor
 const removal = el('div', 'concept-removal'); removal.setAttribute('role', 'group'); removal.setAttribute('aria-labelledby', 'remove-title');
 const foot = el('div', 'concept-foot');
 const message = el('p', 'concept-save-message'); message.id = 'preference-status'; message.setAttribute('role', 'status');
-const save = button({ label: 'Save preferences', variant: 'primary', onClick: () => {
-  if (!state.same && count() < 3) {
-    message.textContent = `Choose ${3 - count()} more ${count() === 2 ? 'category' : 'categories'} to save your preferences.`;
+const buddyAction = button({ label: 'Engage Buddy', variant: 'primary', onClick: () => {
+  if (!state.engaged && !state.same && count() < 3) {
+    message.textContent = `Choose ${3 - count()} more ${count() === 2 ? 'category' : 'categories'} to engage Buddy. Your preferences save automatically.`;
     message.classList.add('is-error'); message.tabIndex = -1; message.focus(); return;
   }
-  store(); say(state.same ? 'Saved. Your buddy will look for more of what you love.' : 'Saved. Your buddy knows what matters to you.');
+  state.engaged = !state.engaged;
+  if (store()) say(state.engaged ? 'Buddy engaged. Your preferences will guide the search.' : 'Buddy disengaged. Your preferences are kept.');
+  else state.engaged = !state.engaged;
+  update();
 } });
-save.setAttribute('aria-describedby', message.id); foot.append(message, save);
+buddyAction.setAttribute('aria-describedby', `${message.id} ${buddyStatus.id}`); foot.append(message, buddyAction);
 preferences.append(preferenceHead, modeRow, categories, removal, optionPanel, foot);
 
 function renderOptions() {
@@ -176,21 +197,43 @@ function renderOptions() {
   const category = CATEGORIES.find((c) => c.id === openCategory);
   const heading = el('div', 'concept-option-heading'); const title = el('h3', '', category.question);
   title.id = 'open-category-heading';
-  const close = button({ label: 'Done', variant: 'ghost', onClick: () => { openCategory = null; renderOptions(); update(); categoryNodes.get(category.id).open.focus(); } });
+  const close = button({ label: 'Done', variant: 'ghost', onClick: () => {
+    openCategory = null; renderOptions(); update(); categoryNodes.get(category.id).open.focus();
+  } });
   heading.append(title, close);
-  const choice = renderOptionList(category, null, { value: state.values[category.id] ?? (category.multi ? [] : null),
-    ariaLabel: category.question, onValueChange: (value) => {
+  const setValue = (value) => {
       if (Array.isArray(value) && !value.length) delete state.values[category.id]; else state.values[category.id] = value;
-      say(''); update(); store();
-    } });
-  choice.list.classList.add('concept-options');
+      savePreferences();
+  };
+  let choices;
+  if (category.multi) {
+    const choice = renderOptionList(category, null, { value: state.values[category.id] ?? [], ariaLabel: category.question, onValueChange: setValue });
+    choices = choice.list; choices.classList.add('concept-options');
+  } else {
+    choices = el('div', 'concept-step-slider');
+    const labels = el('div', 'concept-slider-labels'); labels.setAttribute('aria-hidden', 'true');
+    const value = Number(state.values[category.id] ?? 50);
+    const syncLabels = (position) => {
+      [...labels.children].forEach((label, i) => label.classList.toggle('is-current', Number(category.options[i].value) === position));
+      choices.querySelector('input').setAttribute('aria-valuetext', category.options.find((option) => Number(option.value) === position).label);
+    };
+    renderRangeSlider(choices, { id: category.id, min: 0, max: 100, step: 50, default: 50 }, null,
+      { single: true, value, ariaLabel: category.question, onValueChange: (position) => { setValue(String(position)); syncLabels(position); } });
+    choices.querySelector('.vm-slider-value').hidden = true;
+    choices.querySelector('.vm-slider-bounds').hidden = true;
+    category.options.forEach((option) => labels.append(el('span', '', option.label)));
+    choices.append(labels); syncLabels(value);
+  }
   const importance = el('details', 'concept-importance'); importance.append(el('summary', '', 'How much does this matter?'));
   const weight = renderOptionList({ id: `importance-${category.id}`, options: options(['low', 'A little'], ['medium', 'Quite a bit'], ['high', 'A lot']) }, null,
-    { value: state.weights[category.id] ?? null, ariaLabel: `Importance of ${category.label}`, onValueChange: (value) => { state.weights[category.id] = value; store(); } });
-  importance.append(weight.list); optionPanel.append(heading, choice.list, importance);
+    { value: state.weights[category.id] ?? null, ariaLabel: `Importance of ${category.label}`, onValueChange: (value) => { state.weights[category.id] = value; savePreferences(); } });
+  importance.append(weight.list); optionPanel.append(heading, choices, importance);
 }
 
 function update() {
+  buddyStatus.classList.toggle('is-engaged', state.engaged);
+  buddyStatusText.textContent = state.engaged ? 'Buddy engaged' : 'Buddy disengaged';
+  buddyAction.textContent = state.engaged ? 'Disengage Buddy' : 'Engage Buddy';
   scoreValue.textContent = `${score()} / 11`; scoreValue.setAttribute('aria-label', `Buddy understanding ${score()} out of 11`);
   [...meter.children].forEach((segment, i) => segment.classList.toggle('is-filled', i < score()));
   toggle.input.checked = state.same;
@@ -203,8 +246,8 @@ function update() {
     nodes.root.classList.toggle('is-considered', considered); nodes.root.classList.toggle('is-open', openCategory === category.id);
     nodes.open.disabled = state.same; nodes.remove.disabled = state.same;
     nodes.open.setAttribute('aria-expanded', String(openCategory === category.id && !state.same));
-    nodes.open.setAttribute('aria-label', `${category.label}${considered ? ', considered' : ''}`);
     nodes.value.textContent = considered ? values.map((v) => category.options.find((o) => o.value === v)?.label).join(', ') : 'Choose';
+    nodes.open.setAttribute('aria-label', `${category.label}, ${considered ? `considered: ${nodes.value.textContent}` : 'choose a preference'}`);
     nodes.remove.hidden = !considered;
   }
   removal.replaceChildren(); removal.hidden = !pendingRemoval || state.same;
@@ -213,10 +256,10 @@ function update() {
     const prompt = el('p', '', `Remove your ${category.label.toLowerCase()} preference?`); prompt.id = 'remove-title';
     const actions = el('div', 'gcsp-actions');
     actions.append(button({ label: 'Keep it', variant: 'ghost', onClick: () => { pendingRemoval = null; update(); categoryNodes.get(category.id).remove.focus(); } }),
-      button({ label: 'Remove preference', variant: 'ghost', onClick: () => { delete state.values[category.id]; delete state.weights[category.id]; pendingRemoval = null; update(); store(); say(`${category.label} preference removed.`); categoryNodes.get(category.id).open.focus(); } }));
+      button({ label: 'Remove preference', variant: 'ghost', onClick: () => { delete state.values[category.id]; delete state.weights[category.id]; pendingRemoval = null; savePreferences(`${category.label} preference removed. Saved automatically.`); categoryNodes.get(category.id).open.focus(); } }));
     removal.append(prompt, actions);
   }
-  if (!message.textContent || /categor(?:y|ies) considered/.test(message.textContent)) message.textContent = state.same ? 'Your buddy understands: more like your current car.' : count() >= 3 ? `${count()} categories considered · Ready to save` : `${count()} of 3 categories considered`;
+  if (!message.textContent || /categor(?:y|ies) considered/.test(message.textContent)) message.textContent = state.same ? 'More like your current car. Preferences save automatically.' : count() >= 3 ? `${count()} categories considered · Saved automatically` : `${count()} of 3 categories considered · Preferences save automatically`;
 }
 
 const secondary = el('div', 'concept-secondary');
