@@ -184,7 +184,7 @@ test('basic.update changes only supplied keys, and the overrides replace the def
   const reason = f.root.querySelector('.gcsp-console-reason'); assert.equal(reason.textContent, 'Waiting for the release time'); assert.equal(basic.release.getAttribute('aria-describedby'), reason.id);
   basic.update({ primary: { disabled: false } }); assert.equal(basic.release.disabled, false); assert.equal(reason.hidden, true); assert.equal(basic.release.getAttribute('aria-describedby'), null);
   basic.setStatus('Hello'); assert.equal(f.root.querySelector('[role="status"]').textContent, 'Hello');
-  basic.release.click(); await settle(); assert.equal(f.calls.length, 0); assert.equal(seen.at(-1), 'adapter,basic,commandId,setMode,state');
+  basic.release.click(); await settle(); assert.equal(f.calls.length, 0); assert.equal(seen.at(-1), 'adapter,basic,commandId,refresh,setMode,state,tick');
   basic.startAgain.click(); assert.deepEqual(starts, ['run-a']); assert.equal(f.root.querySelector('.gcsp-console-advanced').hidden, false); f.api.destroy();
 });
 
