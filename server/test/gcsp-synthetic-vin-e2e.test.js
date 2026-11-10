@@ -41,7 +41,7 @@ test('five actual WMI allocations publish/load and agree through HTTP, in-proces
     if (consumed.vehicle) {
       const v = consumed.vehicle;
       assert.deepEqual(v, Object.fromEntries(Object.keys(v).map((key) => [key, http.body[key]])));
-      assert.equal(v.presentation.syntheticLabel, 'Synthetic identity');
+      assert.equal(v.presentation.syntheticLabel, 'Vehicle identity');
       assert.equal(v.equipment.verifiedFitted.state, 'unknown');
       assert.deepEqual(v.images, { state: 'unknown', label: 'Images unavailable', items: [] });
       assert.equal(v.technical.luggageNormal.unit, 'LITRES');

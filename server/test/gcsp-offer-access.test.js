@@ -167,7 +167,7 @@ test('unknown, malformed, tampered and incorrectly bound tokens return the same 
 test('a real reset returns minimal earlier-run only after full token or session verification', async () => {
   const f = await fixture(); const access = await f.exchange(); assert.equal(access.status, 'ok');
   await f.reset(); const stale = await f.exchange(); assert.equal(stale.status, 'stale-run');
-  assert.equal(stale.reason, 'This offer belongs to an earlier demo run.');
+  assert.equal(stale.reason, 'This offer is out of date. Open your latest offer from your account.');
   assert.deepEqual(Object.keys(stale).sort(), ['contractVersion', 'reason', 'status']);
   assert.deepEqual(await f.service.fromSession(f.selector, cookieOf(access.value.setCookie)), stale);
   assert.equal((await f.service.exchange({ ...f.selector, token: 'A'.repeat(43) })).status, 'not-found');

@@ -1,9 +1,9 @@
 import { el, button, statusScreen } from '../../vehicle-matcher/ui.js';
 
-export const RUN_RESTARTED_TITLE = 'Demo restarted';
-export const RUN_RESTARTED_MESSAGE = 'The demo was restarted. Reload the page to continue.';
-export const ACCESS_LAPSED_TITLE = 'Demo access needed';
-export const ACCESS_LAPSED_MESSAGE = 'Your demo access has lapsed. Enter the access key again, then open this offer from your account.';
+export const RUN_RESTARTED_TITLE = 'Restarted';
+export const RUN_RESTARTED_MESSAGE = 'This page was restarted. Reload to continue.';
+export const ACCESS_LAPSED_TITLE = 'Access needed';
+export const ACCESS_LAPSED_MESSAGE = 'Your access has lapsed. Enter the access key again, then open this offer from your account.';
 
 // A restart refuses the old run or session; a lapsed access key reads 'access-required'. A reload recovers.
 const RESTARTED = ['stale-run', 'unknown-session', 'access-required'];

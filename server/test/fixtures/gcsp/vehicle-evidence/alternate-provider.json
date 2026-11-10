@@ -344,8 +344,8 @@
             "images": "unknown"
           },
           "labels": {
-            "syntheticLabel": "Synthetic identity",
-            "associationLabel": "Fictional identity association to retained configuration evidence; not a factory build or authentication.",
+            "syntheticLabel": "Vehicle identity",
+            "associationLabel": "Identity association to retained configuration evidence; not a factory build or authentication.",
             "sourceLabel": "North American structural reference",
             "verifiedFittedLabel": "VIN-fitted equipment unknown",
             "unknownLabel": "Unknown",
@@ -1259,8 +1259,8 @@
             "images": "unknown"
           },
           "labels": {
-            "syntheticLabel": "Synthetic identity",
-            "associationLabel": "Fictional identity association to retained configuration evidence; not a factory build or authentication.",
+            "syntheticLabel": "Vehicle identity",
+            "associationLabel": "Identity association to retained configuration evidence; not a factory build or authentication.",
             "sourceLabel": "Dated catalogue snapshot",
             "verifiedFittedLabel": "VIN-fitted equipment unknown",
             "unknownLabel": "Unknown",
@@ -1648,8 +1648,8 @@
             "images": "unknown"
           },
           "labels": {
-            "syntheticLabel": "Synthetic identity",
-            "associationLabel": "Fictional identity association to retained configuration evidence; not a factory build or authentication.",
+            "syntheticLabel": "Vehicle identity",
+            "associationLabel": "Identity association to retained configuration evidence; not a factory build or authentication.",
             "sourceLabel": "North American structural reference",
             "verifiedFittedLabel": "VIN-fitted equipment unknown",
             "unknownLabel": "Unknown",
@@ -1999,8 +1999,8 @@
             "images": "unknown"
           },
           "labels": {
-            "syntheticLabel": "Synthetic identity",
-            "associationLabel": "Fictional identity association to retained configuration evidence; not a factory build or authentication.",
+            "syntheticLabel": "Vehicle identity",
+            "associationLabel": "Identity association to retained configuration evidence; not a factory build or authentication.",
             "sourceLabel": "North American structural reference",
             "verifiedFittedLabel": "VIN-fitted equipment unknown",
             "unknownLabel": "Unknown",

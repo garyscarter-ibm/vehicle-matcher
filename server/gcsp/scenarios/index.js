@@ -66,9 +66,9 @@ export class ScenarioService {
     const faults = this.#faults[input?.adapter];
     if (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).some((key) => !['commandId', 'adapter', 'mode'].includes(key))
       || !text(input.commandId) || !faults || !text(input.mode)) return result('invalid', { code: 'invalid-fault-command',
-      reasons: [{ field: 'fault', reason: 'Supply commandId, a configured synthetic adapter and one of its modes.' }] });
+      reasons: [{ field: 'fault', reason: 'Supply commandId, a configured adapter and one of its modes.' }] });
     const run = await this.#run(context); if (run.status !== 'ok') return run;
-    if (!run.value.current) return result('stale-run', { reason: 'This request belongs to an earlier demonstration run.' });
+    if (!run.value.current) return result('stale-run', { reason: 'This page is out of date. Reload to see the latest.' });
     if (!faults.set(context.runId, input.mode)) return result('invalid', { code: 'invalid-fault-command',
       reasons: [{ field: 'mode', reason: `Choose one of: ${faults.read(context.runId).modes.join(', ')}.` }] });
     return ok({ runId: context.runId, faults: Object.values(this.#faults).map((row) => row.read(context.runId)) });
@@ -79,7 +79,7 @@ export class ScenarioService {
     if (!input || typeof input !== 'object' || Array.isArray(input) || Object.keys(input).some((key) => !fields.includes(key))
       || !fields.filter((key) => key !== 'expectedRunVersion').every((key) => text(input[key]))
       || !Number.isSafeInteger(input.expectedRunVersion) || input.expectedRunVersion < 1) return invalid();
-    if (input.expectedRunId !== context.runId) return result('stale-run', { reason: 'This request belongs to another demonstration run.' });
+    if (input.expectedRunId !== context.runId) return result('stale-run', { reason: 'This page is out of date. Reload to see the latest.' });
     const run = await this.#run(context); if (run.status !== 'ok') return run;
     const catalogue = await loadScenarioCatalogue({ policy: this.#policy, read: this.#read(run.value) });
     if (catalogue.status !== 'ok') return catalogue;
@@ -90,7 +90,7 @@ export class ScenarioService {
     }
     // A historical presenter can only reach the clock's existing durable reset receipt.
     if (!allowed.value?.historical && input.expectedRunVersion !== run.value.version) return staleVersion('runVersion', input.expectedRunVersion, run.value.version);
-    if (allowed.value?.historical && scenario.kind !== 'mechanics') return result('stale-run', { reason: 'This request belongs to an earlier demonstration run.' });
+    if (allowed.value?.historical && scenario.kind !== 'mechanics') return result('stale-run', { reason: 'This page is out of date. Reload to see the latest.' });
     const fixture = await prepareScenarioFixture({ scenarioId: scenario.scenarioId, policy: this.#policy, read: this.#read(run.value) });
     if (fixture.status !== 'ok') return fixture;
     const journey = scenario.kind === 'journey' && hasScenarioStartLoader(scenario.scenarioId);

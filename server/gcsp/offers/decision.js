@@ -49,7 +49,7 @@ export class OfferDecisionService {
     const current = await this.#repository.currentRun(scope.environmentId);
     if (current.status !== 'ok') return { error: current };
     if (current.value.runId !== scope.runId || current.value.current !== true || current.value.status !== 'active') {
-      return { error: result('stale-run', { reason: 'This offer belongs to an earlier demo run.' }) };
+      return { error: result('stale-run', { reason: 'This offer is out of date. Open your latest offer from your account.' }) };
     }
     const time = await this.#clock.now(scope);
     if (time.status !== 'ok') return { error: time };
@@ -124,7 +124,7 @@ export class OfferDecisionService {
     }
     const { run, offer } = rows;
     if (run.environmentId !== scope.environmentId || run.current !== true || run.status !== 'active') {
-      return { error: result('stale-run', { reason: 'This offer belongs to an earlier demo run.' }) };
+      return { error: result('stale-run', { reason: 'This offer is out of date. Open your latest offer from your account.' }) };
     }
     if (run.clockInstant !== time.now || run.clockVersion !== time.clockVersion) return { error: conflict('clock-changed') };
     for (const [name, table, key] of [['hold', 'holds', { holdId: offer.holdId }],

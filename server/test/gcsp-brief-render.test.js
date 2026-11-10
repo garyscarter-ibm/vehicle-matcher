@@ -174,9 +174,9 @@ test('brief card reasons read as plain sentences, with no code words, field name
   assert.match(text, /Over your allowance by 100 points a month\./); assert.match(text, /does not meet one of your scheme's checks/);
   assert.doesNotMatch(text, /allowance exceeded|monthlyPoints|points\/month|brand-new|raw-value|required by/);
 });
-const stale = { status: 'stale-run', reason: 'This request belongs to an earlier demonstration run.' };
+const stale = { status: 'stale-run', reason: 'This page is out of date. Reload to see the latest.' };
 function assertRestarted(main, reloads) {
-  assert.match(main.textContent, /Demo restarted/); assert.match(main.textContent, /Reload the page to continue/);
+  assert.match(main.textContent, /Restarted/); assert.match(main.textContent, /Reload to continue/);
   assert.doesNotMatch(main.textContent, /stale-run|—|could not be loaded|Save failed|Preview unavailable/);
   const buttons = main.querySelectorAll('button'); assert.equal(buttons.length, 1);
   const [reload] = buttons; assert.equal(reload.type, 'button'); assert.equal(reload.disabled, false); assert.ok(reload.tabIndex >= 0);

@@ -359,7 +359,7 @@ test('a 401 with no status (lapsed access key) reads access-required; a status k
 
 test('a lapsed access key shows the compact restart notice with Reload instead of the policy form', async () => {
   const first = await setup({ readPolicy: async () => ({ status: 'access-required' }) });
-  assert.equal(state(first.root), 'restarted'); assert.match(first.root.querySelector('[role="alert"]').textContent, /Reload the page to continue/);
+  assert.equal(state(first.root), 'restarted'); assert.match(first.root.querySelector('[role="alert"]').textContent, /Reload to continue/);
   assert.equal(first.root.querySelectorAll('input').length, 0); assert.doesNotMatch(first.root.textContent, /Policy unavailable/); first.teardown();
   const later = await setup({ preview: async () => ({ status: 'access-required' }) }); await preview(later.root);
   assert.equal(state(later.root), 'restarted'); assert.equal(later.root.querySelector('.gcsp-publish-form').hidden, true);
@@ -368,7 +368,7 @@ test('a lapsed access key shows the compact restart notice with Reload instead o
 
 test('policy and published facts show readable dates, never raw ISO timestamps', async () => {
   const { root, calls } = await setup();
-  assert.match(root.textContent, /Effective from.*5 Nov 2026, 09:00 GMT/); assert.match(root.textContent, /Demo time.*5 Nov 2026, 10:00 GMT/);
+  assert.match(root.textContent, /Effective from.*5 Nov 2026, 09:00 GMT/); assert.match(root.textContent, /As of.*5 Nov 2026, 10:00 GMT/);
   await preview(root); action(root, 'Publish this preview').click(); await tick();
   assert.equal(calls.publish.length, 1); assert.match(root.textContent, /Effective from.*5 Nov 2026, 10:00 GMT/);
   assert.doesNotMatch(root.textContent, /\d{4}-\d{2}-\d{2}T\d{2}:/);

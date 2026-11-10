@@ -178,6 +178,8 @@ function submissionOf(replan, names) {
 
 const text = (v) => (typeof v === 'string' && v.trim() ? v : null);
 const strings = (v) => list(v).filter((x) => typeof x === 'string' && x);
+// Stored model limitations are digest-bearing; lines about the data's origin are not painted.
+const PAINTABLE = (x) => !/synthetic|fictional|demo|made[- ]?up|example|sample|invented|pretend/i.test(x);
 const metric = (m) => (object(m) && Number.isFinite(m.logLoss) && Number.isFinite(m.brier)
   ? { logLoss: m.logLoss.toFixed(3), brier: m.brier.toFixed(3), count: m.count, thin: m.thin === true } : null);
 const signedMoney = (delta, currency) => (!Number.isFinite(delta) || delta === 0 ? 'No change' : `${delta > 0 ? '+' : '-'}${money(Math.abs(delta), currency)}`);
@@ -207,7 +209,7 @@ function learnedOf(value, names, currency) {
       count: learnedScore.count, thin: learnedScore.thin || Boolean(ev.thin?.cohorts?.length || ev.thin?.vehicleClasses?.length),
       thinCohorts: strings(ev.thin?.cohorts), thinClasses: strings(ev.thin?.vehicleClasses) } : null,
     model: { artifact: typeof model.artifactId === 'string' ? model.artifactId.replace(/^sha256:/, '').slice(0, 12) : null,
-      policy: text(model.activationPolicyVersion), data: text(f.data?.datasetKind) }, limitations: strings(f.limitations) };
+      policy: text(model.activationPolicyVersion), data: text(f.data?.datasetKind) }, limitations: strings(f.limitations).filter(PAINTABLE) };
 }
 
 // Cars the server left out because no catalogue entry lists them; nothing is shown for none.

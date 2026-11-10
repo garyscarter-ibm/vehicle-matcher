@@ -212,10 +212,10 @@
      "state": "unknown"
     },
     "presentation": {
-     "associationLabel": "Fictional identity association to retained configuration evidence; not a factory build or authentication.",
+     "associationLabel": "Identity association to retained configuration evidence; not a factory build or authentication.",
      "imageLabel": "Images unavailable",
      "sourceLabel": "Dated catalogue snapshot",
-     "syntheticLabel": "Synthetic identity",
+     "syntheticLabel": "Vehicle identity",
      "unknownLabel": "Unknown",
      "verifiedFittedLabel": "VIN-fitted equipment unknown"
     },
@@ -633,10 +633,10 @@
      "state": "unknown"
     },
     "presentation": {
-     "associationLabel": "Fictional identity association to retained configuration evidence; not a factory build or authentication.",
+     "associationLabel": "Identity association to retained configuration evidence; not a factory build or authentication.",
      "imageLabel": "Images unavailable",
      "sourceLabel": "Dated catalogue snapshot",
-     "syntheticLabel": "Synthetic identity",
+     "syntheticLabel": "Vehicle identity",
      "unknownLabel": "Unknown",
      "verifiedFittedLabel": "VIN-fitted equipment unknown"
     },

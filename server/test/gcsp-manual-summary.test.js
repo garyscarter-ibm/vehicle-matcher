@@ -128,7 +128,7 @@ test('FUCQ-237: a new order leaves out the replacement sentence and its declarat
 test('declarations start unchecked and Submit stays disabled until every applicable one is ticked', async (t) => {
   const f = setup(t); await ready(f);
   assert.equal(boxes(f).every((box) => box.checked === false), true);
-  assert.match(f.root.textContent, /Synthetic demonstration wording, not BMW terms/); assert.match(f.root.textContent, /Fictional demonstration terms/);
+  assert.match(f.root.textContent, /Fictional demonstration terms/);
   assert.equal(named(f, 'Submit order').disabled, true); assert.match(f.root.textContent, /Tick every declaration to submit/);
   const [first, second, third] = boxes(f); first.checked = true; first.dispatchEvent(new window.Event('change', { bubbles: true }));
   second.checked = true; second.dispatchEvent(new window.Event('change', { bubbles: true }));
@@ -323,7 +323,7 @@ test('the HTTP adapter posts the body unchanged and treats transport loss as an 
 test('FUCQ-277: a settled claim shows no re-check control or presenter-clock prose; an unconfirmed one keeps its recovery', async (t) => {
   const f = setup(t); await ready(f);
   assert.equal(named(f, 'Check current claim'), undefined); assert.doesNotMatch(f.root.textContent, /Time follows the presenter clock|current claim has been checked/i);
-  assert.match(f.root.textContent, /Submitting places your order\./); assert.equal(f.root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
+  assert.match(f.root.textContent, /Submitting places your order\./); assert.equal(f.root.querySelector('.gcsp-synthetic'), null);
   f.adapter.readClaim = async () => ({ status: 'unavailable', code: 'manual-claim-unavailable', retryable: true }); f.tick();
   await settle(() => /Reservation not confirmed/.test(f.root.textContent)); assert.ok(named(f, 'Check current claim'));
 });

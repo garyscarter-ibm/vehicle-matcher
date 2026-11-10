@@ -65,7 +65,7 @@ function changesFor(seed, now, input, publishing) {
     || !Array.isArray(input.changes) || !input.changes.length || input.changes.length > 100
     || publishing && (!text(input.commandId) || !text(input.policyVersion)
       || !validInstant(input.effectiveFrom) || Date.parse(input.effectiveFrom) > Date.parse(now))) {
-    return { error: invalid('invalid-change-set', 'changeSet', 'Supply the active version and 1 to 100 editable changes; new publication takes effect at the current demo time; retries retain that instant.') };
+    return { error: invalid('invalid-change-set', 'changeSet', 'Supply the active version and 1 to 100 editable changes; new publication takes effect at the current time; retries retain that instant.') };
   }
   const editTime = publishing ? input.effectiveFrom : now;
   const editable = fields(seed, editTime); const seen = new Set(); const patches = new Map(); const differences = [];
@@ -90,7 +90,7 @@ function changesFor(seed, now, input, publishing) {
   if (!differences.length) return { error: invalid('no-policy-change', 'changes', 'Change at least one published value.') };
   for (const change of patches.values()) {
     Object.assign(change.patch, { source: 'greg-policy-publish', sourceDate: new Date(editTime).toISOString().slice(0, 10), status: 'assumed',
-      basis: 'Greg adjusted this synthetic points or preference-weight assumption for the demo.' });
+      basis: 'Greg adjusted this points or preference-weight assumption.' });
   }
   return { changes: [...patches.values()], differences };
 }

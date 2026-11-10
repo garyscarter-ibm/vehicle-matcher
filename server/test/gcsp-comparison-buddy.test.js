@@ -123,7 +123,7 @@ test('notifications are captured and none is sent', async (t) => {
   assert.ok(run.transport instanceof CapturedTransport);
   for (const job of outbox) {
     assert.deepEqual([job.state, job.transport, job.messageKind], ['sent', 'captured', 'offer']);
-    assert.match(job.outcome.message.textBody, /No email has been sent/);
+    assert.doesNotMatch(job.outcome.message.textBody, /No email has been sent|demonstration/);
     assert.equal(job.outcome.provider, undefined);
     assert.equal(job.outcome.message.recipient.fictional, true);
   }

@@ -62,7 +62,7 @@ export const SCENARIO_INPUTS_V1 = [
 ];
 
 export const MECHANICS_SCENARIO = {
-  scenarioId: 'gcsp-clock-scenario-v1', name: 'Clock/reset mechanics (fictional support fixture)', kind: 'mechanics', ownerStory: 'FUCQ-85',
+  scenarioId: 'gcsp-clock-scenario-v1', name: 'Clock and reset mechanics', kind: 'mechanics', ownerStory: 'FUCQ-85',
   epics: ['FUCQ-79', 'FUCQ-75'], stories: ['FUCQ-84', 'FUCQ-85', 'FUCQ-125'], principalIds: actors,
   requiredCapabilities: ['canonical-principals', 'canonical-clock-fixture'],
   inputs: { briefs: [], stockTranches: [{ source: 'canonical-clock-fixture', cue: 'release' }], pendingOperations: [] },

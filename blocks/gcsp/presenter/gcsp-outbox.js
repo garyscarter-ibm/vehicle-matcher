@@ -8,18 +8,18 @@ import { fixtureAdapter } from './fixtures.js';
 import { plural } from './outbox-copy.js';
 import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 
-const NOT_BUILT = 'Not available in this demo';
+const NOT_BUILT = 'Not available yet';
 const item = (key, label, icon, available = false) => Object.freeze({
   key, label, icon: Object.freeze(icon), available, ...(available ? {} : { unavailableReason: NOT_BUILT }),
 });
 
 export const PRESENTER_NAVIGATION = Object.freeze([
   item('outbox', 'Captured emails', ['M3 6h18v12H3z', 'M3 7l9 6 9-6'], true),
-  item('clock', 'Demo clock', ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M12 7.5V12l3 2']),
+  item('clock', 'Clock', ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M12 7.5V12l3 2']),
   item('scenarios', 'Scenarios', ['M5 4h14v16H5z', 'M9 9h6', 'M9 13h6']),
 ]);
 
-const ACCOUNT = Object.freeze({ status: 'ready', name: 'Presenter', initials: 'PR', context: 'Synthetic demo run' });
+const ACCOUNT = Object.freeze({ status: 'ready', name: 'Presenter', initials: 'PR' });
 const FAILED_LOAD = { status: 'unavailable', message: 'The captured emails could not be loaded. Try again in a moment.' };
 
 function note(text, role = 'status') {
@@ -78,7 +78,7 @@ export function mountOutbox(root, ctx = {}) {
       body.replaceChildren(statusScreen({ kicker: 'Outbox', title: 'No emails yet',
         message: 'When an offer is made, the email Paula would have received appears here. Nothing has been offered in this run.' }));
     } else if (isRunRestarted(state)) {
-      status.textContent = 'Demo restarted.';
+      status.textContent = 'Restarted';
       body.replaceChildren(runRestartedScreen());
     } else if (state.status === 'refused') {
       status.textContent = 'Access refused.';

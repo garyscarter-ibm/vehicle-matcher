@@ -81,7 +81,7 @@ export function createOrderPlanOperations({ repository, policy, identity, clock,
     draft.policyVersion = `preview-${inputDigest({ activeVersion: base.read.policyVersion, changes }).slice(0, 24)}`;
     for (const table of ['schemeRuleLinks', 'eligibilityRules', 'pricePlans', 'allowances', 'assumptions']) for (const row of draft[table]) row.policyVersion = draft.policyVersion;
     for (const { key, value } of changes) Object.assign(draft.assumptions.find((a) => a.key === key), { value, source: 'greg-order-plan-constraints',
-      sourceDate: base.now.slice(0, 10), status: 'assumed', basis: 'Greg edited this synthetic order-plan constraint.' });
+      sourceDate: base.now.slice(0, 10), status: 'assumed', basis: 'Greg edited this order-plan constraint.' });
     const draftPolicy = new PolicyService({ provider: { async loadVersions() { return [draft]; } } });
     // Internal pins are server-created; guards re-check the original trusted context.
     const trusted = { requireRole: () => identity.requireRole(context, 'greg') };
@@ -231,7 +231,7 @@ export function createOrderPlanOperations({ repository, policy, identity, clock,
         const base = await start(context); if (base.status !== 'ok') return base;
         const changes = checkChanges(base.value, input.changes); if (changes.status !== 'ok') return changes;
         const patches = changes.value.map(({ key, value }) => ({ table: 'assumptions', key, patch: { value, source: 'greg-order-plan-constraints',
-          sourceDate: base.value.now.slice(0, 10), status: 'assumed', basis: 'Greg published this synthetic order-plan constraint for the demo.' } }));
+          sourceDate: base.value.now.slice(0, 10), status: 'assumed', basis: 'Greg published this order-plan constraint.' } }));
         const published = await policy.publishPolicyVersion(context, { commandId: input.commandId, expectedActiveVersion: input.expectedActiveVersion,
           policyVersion: `greg-constraints-${inputDigest({ base: input.expectedActiveVersion, changes: changes.value }).slice(0, 16)}`,
           effectiveFrom: input.effectiveFrom ?? base.value.now, changes: patches });

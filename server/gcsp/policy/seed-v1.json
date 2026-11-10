@@ -11349,7 +11349,7 @@
         {
           "principalId": "demo-paula",
           "employeeId": "employee-paula",
-          "name": "Paula (fictional)",
+          "name": "Paula Mason",
           "roles": [
             "employee"
           ],
@@ -11361,7 +11361,7 @@
         {
           "principalId": "demo-alex",
           "employeeId": "employee-alex",
-          "name": "Alex (fictional)",
+          "name": "Alex Brennan",
           "roles": [
             "employee"
           ],
@@ -11373,7 +11373,7 @@
         {
           "principalId": "demo-sam",
           "employeeId": "employee-sam",
-          "name": "Sam (fictional)",
+          "name": "Sam Patel",
           "roles": [
             "employee"
           ],
@@ -11385,7 +11385,7 @@
         {
           "principalId": "demo-jordan",
           "employeeId": "employee-jordan",
-          "name": "Jordan (fictional)",
+          "name": "Jordan Hughes",
           "roles": [
             "employee"
           ],
@@ -11397,7 +11397,7 @@
         {
           "principalId": "demo-greg",
           "employeeId": "operator-greg",
-          "name": "Greg (fictional)",
+          "name": "Greg Lawson",
           "roles": [
             "greg"
           ],
@@ -11407,7 +11407,7 @@
         {
           "principalId": "demo-presenter",
           "employeeId": "operator-presenter",
-          "name": "Presenter (fictional)",
+          "name": "Presenter",
           "roles": [
             "presenter"
           ]
@@ -11808,7 +11808,7 @@
         "locations": [
           {
             "locationId": "demo-collection-centre",
-            "label": "Fictional collection centre",
+            "label": "Bracknell collection centre",
             "contractOptionIds": [
               "six-month-8000",
               "twelve-month-12000"
@@ -11821,7 +11821,7 @@
           },
           {
             "locationId": "demo-company-site",
-            "label": "Fictional company site",
+            "label": "Bracknell office",
             "contractOptionIds": [
               "twelve-month-12000"
             ],
@@ -12527,7 +12527,7 @@
         },
         "contact": {
           "phone": "01632 960000",
-          "emailTemplate": "{employeeId}@example.invalid"
+          "emailTemplate": "{employeeId}@bmwgroup.test"
         },
         "stockFactsByModelLine": {
           "G20 Saloon|320i": {
@@ -12970,15 +12970,15 @@
         "schemaVersion": 1,
         "termsVersion": "fictional-order-terms-v1",
         "fictional": true,
-        "wording": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. For a replacement, the recorded old contract and expected return mileage must be correct. Approval, appointment and collection are separate decisions; submission does not end the current contract.",
+        "wording": "Scheme terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. For a replacement, the recorded old contract and expected return mileage must be correct. Approval, appointment and collection are separate decisions; submission does not end the current contract.",
         "wordingByMode": {
-          "new": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. Approval, appointment and collection are separate decisions."
+          "new": "Scheme terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. Approval, appointment and collection are separate decisions."
         },
         "validUntil": "2026-12-01T00:00:00.000Z",
         "declarations": [
           {
             "id": "terms",
-            "label": "I accept these fictional scheme terms.",
+            "label": "I accept these scheme terms.",
             "appliesTo": "all"
           },
           {
@@ -13169,7 +13169,7 @@
       "key": "lifecycle.documents.scenario.v1",
       "value": {
         "failItemIds": [],
-        "failureReason": "The synthetic provider reported this step as failed."
+        "failureReason": "The provider reported this step as failed."
       },
       "unit": "item IDs selected to fail; reason text",
       "status": "assumed",
@@ -14267,7 +14267,7 @@
             "derivativeId": "g20-saloon-320i",
             "version": "order-plan-catalog.v1",
             "display": {
-              "name": "Synthetic 3 Series Saloon 320i"
+              "name": "3 Series Saloon 320i"
             },
             "facts": {
               "eligibilityModelKey": {
@@ -14319,7 +14319,7 @@
             "derivativeId": "g20-saloon-330e",
             "version": "order-plan-catalog.v1",
             "display": {
-              "name": "Synthetic 3 Series Saloon 330e"
+              "name": "3 Series Saloon 330e"
             },
             "facts": {
               "eligibilityModelKey": {
@@ -14367,7 +14367,7 @@
             "derivativeId": "g21-touring-320i",
             "version": "order-plan-catalog.v1",
             "display": {
-              "name": "Synthetic 3 Series Touring 320i"
+              "name": "3 Series Touring 320i"
             },
             "facts": {
               "eligibilityModelKey": {
@@ -14419,7 +14419,7 @@
             "derivativeId": "g61-i5-40",
             "version": "order-plan-catalog.v1",
             "display": {
-              "name": "Synthetic i5 eDrive40 Touring"
+              "name": "i5 eDrive40 Touring"
             },
             "facts": {
               "eligibilityModelKey": {
@@ -14467,7 +14467,7 @@
             "derivativeId": "f70-hatch-120",
             "version": "order-plan-catalog.v1",
             "display": {
-              "name": "Synthetic 1 Series Sports Hatch 120"
+              "name": "1 Series Sports Hatch 120"
             },
             "facts": {
               "eligibilityModelKey": {
@@ -14598,7 +14598,7 @@
           "relative-weight": "weight"
         },
         "versions": {
-          "gcsp-policy-v1": "Demo policy 1",
+          "gcsp-policy-v1": "Policy 1",
           "offer-journey-v1": "offer journey"
         }
       },

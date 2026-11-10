@@ -99,7 +99,7 @@ export const employeeCardFixture = {
                 "assurance": "synthetic-scenario"
               }
             },
-            "text": "Driver eligibility confirmed for this synthetic example."
+            "text": "Driver eligibility confirmed."
           },
           {
             "code": "policy-include",
@@ -287,7 +287,7 @@ export const employeeCardFixture = {
                 "assurance": "synthetic-scenario"
               }
             },
-            "text": "Driver eligibility confirmed for this synthetic example."
+            "text": "Driver eligibility confirmed."
           },
           {
             "code": "policy-include",
@@ -454,7 +454,7 @@ export const employeeCardFixture = {
                 "assurance": "synthetic-scenario"
               }
             },
-            "text": "Driver eligibility confirmed for this synthetic example."
+            "text": "Driver eligibility confirmed."
           },
           {
             "code": "policy-include",

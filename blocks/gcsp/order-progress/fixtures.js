@@ -43,7 +43,7 @@ const declined = () => approval({ revision: 3, asOf: t(14), steps: [['approved',
   owner: 'scheme team', nextStep: 'Scheme team reviews the decline', outcome: 'declined', validated: true });
 const unsupported = () => approval({ revision: 1, asOf: t(12), steps: [['pending', t(11)], ['not-started'], ['not-started']], currentStage: 'HR approval', owner: 'HR',
   nextStep: 'HR decision', outcome: 'in-progress', live: true,
-  blocked: { code: 'live-ordering-unsupported', reason: 'Live approval updates are not connected in this demonstration. The order stays at its current step.' } });
+  blocked: { code: 'live-ordering-unsupported', reason: 'Live approval updates are not connected yet. The order stays at its current step.' } });
 const sent = () => approval({ revision: 4, asOf: t(15), steps: [['approved', t(11)], ['approved', t(13)], ['approved', t(14)]], currentStage: 'sent to ordering',
   owner: 'ordering', nextStep: 'Appointment to be arranged', outcome: 'sent-to-ordering' });
 
@@ -54,7 +54,7 @@ const ASSUMPTION = { key: 'lifecycle.documents.v1', status: 'assumed', unit: 'do
 const REGISTRY = [['agreement-acknowledgement', 'document', 'Vehicle agreement', 'employee', 'Acknowledge the agreement', 2 * 24],
   ['licence-check', 'document', 'Driving licence check', 'scheme-team', null, 24], ['vehicle-preparation', 'readiness', 'Vehicle preparation', 'retailer', null, 3 * 24],
   ['delivery-to-retailer', 'readiness', 'Delivery to the retailer', 'retailer', null, 5 * 24]];
-const ACK = { kind: 'synthetic-acknowledgement', label: 'Synthetic acknowledgement. Not a signature.', at: t(16), actorId: 'demo-paula' };
+const ACK = { kind: 'synthetic-acknowledgement', label: 'Acknowledged. Not a signature.', at: t(16), actorId: 'demo-paula' };
 
 function documents({ now, status, overdue = [], reasons = {}, ready = false }) {
   const opened = t(15);
@@ -125,7 +125,7 @@ const apptOutcomePending = () => env(appointmentValue({ state: 'scheduled', key:
   pending: { step: 'complete', reason: 'Waiting for the provider to confirm the last update.' }, history: [row('requested', t(16)), row('scheduled', t(17))] }));
 
 // Return plan (FUCQ-118). A replacement order only; the handover must be scheduled before a choice opens.
-const CURRENT_CAR = { contractId: 'current:employee-paula', slotId: 'slot-paula', status: 'current', model: 'Fictional BMW 320i Touring',
+const CURRENT_CAR = { contractId: 'current:employee-paula', slotId: 'slot-paula', status: 'current', model: 'BMW 320i Touring',
   vehicle: { configuration: '320i M Sport Touring', body: 'estate', fuel: 'petrol', seats: 5 }, source: 'account' };
 const CHOICES = [{ id: 'same-visit', label: 'Return it when the new car is handed over' }, { id: 'separate', label: 'Return it on a separate day' }];
 const RETURN_OWNERS = { 'not-planned': ['employee', "Confirm your new car's handover first, then plan the return."], requested: ['retailer', 'Waiting for the retailer to confirm your return slot.'],
@@ -146,7 +146,7 @@ function returnValue({ appt, handoverReady = true, slot: confirmed = null, reque
   const idle = !planned && !handoverReady;
   const choices = CHOICES.map(({ id, label }) => ({ id, label, available: !planned && handoverReady,
     reason: planned ? 'Your return is already planned.' : handoverReady ? null : "Confirm your new car's handover first.", selected: choice === id }));
-  const handoverSlot = OFFERED[0]; const place = location ?? { locationId: 'handover-retailer', kind: 'collection-location', label: 'Fictional BMW retailer', rule: choice ? 'handover-retailer' : null };
+  const handoverSlot = OFFERED[0]; const place = location ?? { locationId: 'handover-retailer', kind: 'collection-location', label: 'Ashdown BMW', rule: choice ? 'handover-retailer' : null };
   const [outOwner, outNext] = outcome ? RETURN_OUTCOME_OWNERS[outcome.state] : [];
   return { contractVersion: 'lifecycle.return-plan.v1', runId: RUN, orderUuid: ORDER, employeeId: EMPLOYEE, applicable: true, state: outcome ? outcome.state : RETURN_PLAN_STATE[appt],
     scheduled: appt === 'scheduled' && !outcome, oldContractId: CURRENT_CAR.contractId, vehicleSlotId: 'slot-paula', currentCar: CURRENT_CAR,
@@ -191,7 +191,7 @@ const heldCar = (vin) => relationship(true, { currentCar: { kind: 'order', order
   newCar: { orderUuid: ORDER, configurationId: null, status: 'collected', collectedAt: t(10, 8), vin, providerReference: 'SYN-HAN-0001' }, changes: [change('handover-completed', t(10, 8), 'handover')] });
 const returnedCar = (current) => {
   const base = current ? heldCar(null) : relationship(true);
-  const old = { ...base.oldCar, status: 'returned', returnedAt: '2026-11-12T10:30:00.000Z', providerReference: 'SYN-RET-0001', location: { locationId: 'handover-retailer', kind: 'collection-location', label: 'Fictional BMW retailer', rule: 'handover-retailer' } };
+  const old = { ...base.oldCar, status: 'returned', returnedAt: '2026-11-12T10:30:00.000Z', providerReference: 'SYN-RET-0001', location: { locationId: 'handover-retailer', kind: 'collection-location', label: 'Ashdown BMW', rule: 'handover-retailer' } };
   return { ...base, currentCar: current ? base.currentCar : null, oldCar: old, changes: [...base.changes, change('return-confirmed', '2026-11-12T10:30:00.000Z', 'return')] };
 };
 const scheduledReturn = (extra = {}) => returnValue({ appt: 'scheduled', choice: 'separate', slot: RETURN_SLOTS[0], requestedSlot: RETURN_SLOTS[0], history: RETURN_HISTORY, ...extra });
@@ -210,7 +210,7 @@ const afterSent = (docs, appointment, returnPlan) => ready(sent(), docs, appoint
 export function orderProgressFixtures() {
   return {
     source: 'Synthetic, fictional examples in the shapes of the FUCQ-111, 114, 116 and 118 producers. Not integration evidence.',
-    car: { name: 'Fictional BMW i4 eDrive40 M Sport', photo: undefined, line: 'Fictional example' },
+    car: { name: 'BMW i4 eDrive40 M Sport', photo: undefined, line: '' },
     states: {
       'waiting-hr': early(pendingHr()), 'waiting-sales-manager': early(pendingSm()), 'no-hr': early(noHr()), 'earlier-order': early(earlierOrder()), declined: early(declined()), 'provider-unsupported': early(unsupported()),
       'sent-to-ordering-no-slot': afterSent(docsWaiting(), apptOpen()),
@@ -221,7 +221,7 @@ export function orderProgressFixtures() {
       'documents-waiting-for-you': afterSent(docsWaiting(), apptScheduled()), 'documents-in-progress': afterSent(docsProgress(), apptScheduled()),
       'documents-overdue': afterSent(documents({ now: t(6, 8), status: WAITING, overdue: ['agreement-acknowledgement'] }), apptScheduled()),
       'documents-failed': afterSent(documents({ now: t(18), status: { ...WAITING, 'agreement-acknowledgement': 'complete', 'licence-check': 'failed' },
-        reasons: { 'licence-check': 'The synthetic provider reported this step as failed.' } }), apptScheduled()),
+        reasons: { 'licence-check': 'The provider reported this step as failed.' } }), apptScheduled()),
       'ready-for-handover': afterSent(docsReady(), apptScheduled()),
       'return-unavailable': afterSent(docsProgress(), apptRequested(), retWaiting()), 'return-not-planned': afterSent(docsProgress(), apptScheduled(), retOpen()),
       'return-requested': afterSent(docsProgress(), apptScheduled(), retRequested()), 'return-change-proposed': afterSent(docsProgress(), apptScheduled(), retProposed()),
@@ -230,7 +230,7 @@ export function orderProgressFixtures() {
       'return-missed': afterSent(docsReady(), apptScheduled(), retMissed()), 'return-handover-complete': afterSent(docsReady(), apptCompleted(), retHandoverDone()),
       'return-outcome-pending': afterSent(docsReady(), apptScheduled(), retOutcomePending()), 'return-outcome-refused': afterSent(docsReady(), apptScheduled(), retRefused()),
       // FUCQ-194: the buddy route collects the old car from her home address, or says it is not supplied.
-      'return-buddy-home': afterSent(docsProgress(), apptScheduled(), env(returnValue({ appt: 'not-requested', location: HOME('1 Fictional Way, Example Town, ZZ1 1ZZ') }))),
+      'return-buddy-home': afterSent(docsProgress(), apptScheduled(), env(returnValue({ appt: 'not-requested', location: HOME('27 Ashdown Road, Bracknell, RG12 9ZZ') }))),
       'return-buddy-no-address': afterSent(docsProgress(), apptScheduled(), env(returnValue({ appt: 'not-requested', location: HOME(null) }))),
       'new-order': afterSent(docsProgress(), apptScheduled(), newOrder()),
       loading: { phase: 'loading' }, unavailable: { phase: 'unavailable' },

@@ -103,7 +103,7 @@
     "actionable": false,
     "acknowledgement": {
       "kind": "synthetic-acknowledgement",
-      "label": "Synthetic acknowledgement. Not a signature.",
+      "label": "Acknowledged. Not a signature.",
       "at": "2026-11-05T09:00:00.000Z",
       "actorId": "demo-paula"
     }

@@ -18,31 +18,31 @@ export const statusOf = (state, transport) => (state === 'sent' && transport ===
 
 // One table: safe error code from docs/gcsp/captured-outbox.md to a sentence for the presenter.
 export const ERROR_COPY = Object.freeze({
-  'mail-configuration-invalid': 'The demo sender configuration needs attention.',
-  'recipient-not-allowed': 'The recipient is not an approved demo address.',
-  'offer-link-invalid': 'The offer link is not a public demo address.',
+  'mail-configuration-invalid': 'The sender configuration needs attention.',
+  'recipient-not-allowed': 'The recipient is not an approved address.',
+  'offer-link-invalid': 'The offer link is not a public address.',
   'provider-authentication': 'The email provider refused the configured sender credentials.',
   'provider-rejected': 'The email provider refused this message.',
-  'provider-rate-limited': 'The email provider asked the demo to slow down.',
+  'provider-rate-limited': 'The email provider asked us to slow down.',
   'provider-unavailable': 'The email provider could not confirm acceptance.',
   'provider-timeout': 'The email provider timed out. Acceptance is not confirmed.',
   'provider-unconfirmed': 'The email provider has not confirmed acceptance.',
   'provider-window-expired': 'Acceptance is not confirmed. The safe retry window has ended.',
-  'transport-unavailable': 'The demo mail service could not be reached.',
+  'transport-unavailable': 'The mail service could not be reached.',
   'message-invalid': 'The email could not be built from the offer details.',
   'message-facts-unavailable': 'The offer or employee details needed for the email were not found.',
-  'fictional-recipient-required': 'The recipient is not a fictional demo employee, so nothing was sent.',
+  'fictional-recipient-required': 'The recipient is not on the approved list, so nothing was sent.',
   'recipient-mismatch': 'The offer belongs to a different employee from the recipient.',
-  'message-version-unsupported': 'The demo does not support this email version.',
+  'message-version-unsupported': 'This email version is not supported.',
   'offer-inactive': 'The offer is no longer active, so no email was created.',
   'offer-expired': 'The offer had expired before the email could be created.',
 });
-const UNKNOWN_ERROR = 'The email could not be delivered, for a reason the demo does not list.';
+const UNKNOWN_ERROR = 'The email could not be delivered, for a reason that is not listed.';
 export const errorSentence = (code) => (code ? ERROR_COPY[code] || UNKNOWN_ERROR : null);
 
 export const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
-/** Demo-clock instant as "5 Nov 2026, 10:05 GMT" (UK time, explicit zone). */
+/** Clock instant as "5 Nov 2026, 10:05 GMT" (UK time, explicit zone). */
 export function formatDemoTime(iso) {
   const ms = Date.parse(iso);
   if (typeof iso !== 'string' || Number.isNaN(ms)) return null;
@@ -60,7 +60,7 @@ export function explain(message) {
   const why = errorSentence(message.error);
   if (message.state === 'retrying') {
     const next = formatDemoTime(message.nextAttemptAt);
-    return `Delivery did not work on attempt ${attempts}. ${why || ''} ${next ? `The next attempt is due at ${next} (demo clock).` : 'Another attempt is due soon.'}`.replace(/\s+/g, ' ').trim();
+    return `Delivery did not work on attempt ${attempts}. ${why || ''} ${next ? `The next attempt is due at ${next}.` : 'Another attempt is due soon.'}`.replace(/\s+/g, ' ').trim();
   }
   if (message.state === 'failed') {
     return `Delivery failed after ${plural(attempts, 'attempt')}. ${why || UNKNOWN_ERROR} No further attempts will be made.`;

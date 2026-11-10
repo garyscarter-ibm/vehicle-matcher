@@ -144,7 +144,7 @@ test('toExperimentView presents the stored hold sweep with figures only from the
   assert.equal(view.id, 'hold-sweep'); assert.equal(view.label, 'Hold duration');
   assert.equal(view.change.key, 'hold.buddy.durationSeconds'); assert.equal(view.change.unit, 'seconds'); assert.equal(view.change.status, 'what-if');
   assert.equal(view.change.basis, stored.result.manifest.change.basis);
-  assert.deepEqual(view.change.baseline, { value: 7200, text: '2 h', basis: stored.result.manifest.change.baselineBasis, status: 'assumed' });
+  assert.deepEqual(view.change.baseline, { value: 7200, text: '2 h', basis: 'Assumed new capability; roughly 2-hour proposal in the brief (Q15).', status: 'assumed' });
   assert.deepEqual(view.change.values, [900, 86400]); assert.deepEqual(view.change.texts, ['15 min', '24 h']);
   assert.deepEqual(view.routes.map((r) => r.label), ['Buddy route', "Today's release route"]);
   const stats = stored.result.effects[0].routes.buddy.length;
@@ -382,5 +382,5 @@ test('the comparison block static copy has no banned word and no em dash', async
     assert.doesNotMatch(value, BANNED, path);
     assert.ok(!value.includes('—'), `${path} has an em dash`);
   }
-  assert.match(found.find(([p]) => p.endsWith(':NO_RESULT_NOTE'))[1], /prepared offline/);
+  assert.match(found.find(([p]) => p.endsWith(':NO_RESULT_NOTE'))[1], /has not been run yet/);
 });

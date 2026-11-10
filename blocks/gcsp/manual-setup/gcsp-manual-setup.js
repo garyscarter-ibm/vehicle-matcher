@@ -1,7 +1,6 @@
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
-import { syntheticNote } from '../kit/synthetic-note.js';
 import { viewStatus } from '../kit/view-status.js';
 import { createManualSetupController } from './setup-controller.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
@@ -70,7 +69,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     form.append(driver, collection, contact, actions);
     form.addEventListener('submit', (event) => { event.preventDefault(); save('continue'); });
     panel.append(screenIntro({ title: 'Your order choices', level: 1 }), nodes.context, nodes.allowance, nodes.employee,
-      nodes.notice, nodes.recovery, summary.root, form, nodes.invalidation, nodes.availability, syntheticNote(), status.root);
+      nodes.notice, nodes.recovery, summary.root, form, nodes.invalidation, nodes.availability, status.root);
     main.replaceChildren(panel);
   }
   function select(key, rows, idKey, label) {
@@ -122,7 +121,6 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
       control.disabled = state.pending || actionPending || key === 'brand' && o.brands.length === 1;
       fields[key].setError(state.errors[key] ?? (['phone', 'email'].includes(key) ? state.errors.contact : ''));
     }
-    fields.email.setHint(/\.invalid$/i.test(c.contact?.email ?? '') ? 'Made-up demo address.' : '');
     controls.requestedCollectionDate.min = o.collectionWindow.min ?? ''; controls.requestedCollectionDate.max = o.collectionWindow.max ?? '';
     controls.expectedReturnMileage.max = o.rules?.maximumReturnMileage ?? ''; controls.expectedReturnMileage.required = c.mode === 'replacement';
     fields.expectedReturnMileage.root.hidden = c.mode !== 'replacement';

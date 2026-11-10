@@ -7,7 +7,6 @@ import { createPreviewFeed } from './modes/preview-feed.js';
 import { employeeCardFixture } from './employee-card-fixture.js';
 import { applyBrowseFeedback, applyConfirmedFeedbackChange, createFeedbackState, matchesFeedbackPredicate, reduceFeedback } from './feedback-actions.js';
 import { el, screenIntro, button, statusScreen, factList } from './ui.js';
-import { syntheticNote } from '../gcsp/kit/synthetic-note.js';
 import { NO_IMAGE_TEXT } from '../gcsp/kit/plain-copy.js';
 import { feedbackButton, feedbackScope, feedbackUndo, matchCard, mediaWell, previewTile } from './modes/result-card.js';
 import { portalShell, accountNavigation } from '../gcsp/shell/portal-shell.js';
@@ -145,7 +144,6 @@ function gcspExamples() {
   hiddenView.members = hiddenView.members.slice(0, 1);
   hiddenView.members[0].actions = []; hiddenView.members[0].facts[1].value = null; hiddenView.members[0].facts[2].value = null;
   group('matchCard: hideMissing (view cards hide missing facts behind one line)').append(matchCard(null, { view: hiddenView, showScore: false, hideMissing: 'More details not supplied' }));
-  group('syntheticNote').append(syntheticNote());
   group('factList: two columns at narrow width (className vm-facts-pair)').append(factList([
     { label: 'Derivative', value: 'M Sport Touring' }, { label: 'Colour', value: 'Mineral White metallic' },
     { label: 'Gearbox', value: 'Automatic' }, { label: 'Options', value: null, missingLabel: 'Fitted equipment unknown' },

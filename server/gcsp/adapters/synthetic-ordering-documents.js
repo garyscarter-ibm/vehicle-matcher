@@ -39,6 +39,6 @@ export function createSyntheticDocumentStatus({ repository } = {}) {
 
 // Live-shaped stub: the same port, refusing every write rather than pretending a provider accepted it.
 export function createLiveDocumentStatusStub() {
-  const refused = () => result('unsupported', { reason: 'Live document and readiness writes are not supported in this demonstration.' });
+  const refused = () => result('unsupported', { reason: 'Live document and readiness writes are not supported yet.' });
   return { mode: 'live', contractVersion: '1.0.0', capability: DOCUMENT_STATUS_CAPABILITY, start: async () => refused(), progress: async () => refused() };
 }

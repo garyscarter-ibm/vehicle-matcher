@@ -32,7 +32,7 @@
     },
     {
       "key": "lifecycle.documents.scenario.v1",
-      "value": { "failItemIds": [], "failureReason": "The synthetic provider reported this step as failed." },
+      "value": { "failItemIds": [], "failureReason": "The provider reported this step as failed." },
       "unit": "item IDs selected to fail; reason text",
       "status": "assumed",
       "basis": "Difficult-case switch for the synthetic provider. Empty by default; a scenario version lists the scheme-team or retailer items that fail.",

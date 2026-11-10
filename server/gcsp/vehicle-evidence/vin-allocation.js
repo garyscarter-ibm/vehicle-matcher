@@ -260,7 +260,7 @@ export function presentSyntheticIdentity(result) {
       || 'The synthetic association could not be published. Review its status before continuing.' };
   const row = result.record;
   return { status: 'ok', identityKind: 'synthetic', orderReference: row.orderNumber,
-    notice: 'Fictional association to retained configuration facts. This is not a factory build or vehicle authentication.',
+    notice: 'Association to retained configuration facts. This is not a factory build or vehicle authentication.',
     ...(Number.isSafeInteger(result.collisions) && result.collisions > 0
       ? { collisionsResolved: result.collisions, collisionMessage: 'Synthetic identifier collisions were resolved before publication.' } : {}),
     ...(row.vin17 ? { referenceOnly: row.profile.referenceOnly, profileId: row.profile.profileId, confidence: row.confidence,

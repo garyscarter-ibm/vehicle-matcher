@@ -59,7 +59,7 @@ const slotRows = (model, slotId) => {
   return name ? [row('Vehicle slot', name)] : [];
 };
 const sourceLabel = (source) => typeof source === 'string' ? source
-  : source?.label ?? (source?.mode === 'synthetic' ? 'Synthetic example data' : null);
+  : source?.label ?? null;
 const technicalLabels = { insuranceGroup: 'Insurance group', nedcCo2: 'NEDC CO2', wltpCo2: 'WLTP CO2',
   fuelConsumptionLow: 'Fuel consumption, low', fuelConsumptionMedium: 'Fuel consumption, medium',
   fuelConsumptionHigh: 'Fuel consumption, high', fuelConsumptionExtraHigh: 'Fuel consumption, extra high',
@@ -211,7 +211,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
   wrap.append(screenIntro({ kicker: 'Choices', title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
-  // A restarted demo needs a reload, so nothing else on the page can work.
+  // A restarted run needs a reload, so nothing else on the page can work.
   if (restarted || model.state === 'restarted' || isRunRestarted(draft)) {
     wrap.append(runRestartedScreen({ reload })); main.replaceChildren(wrap); return () => wrap.remove();
   }
@@ -309,7 +309,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     }
     wrap.append(histories);
     const provenance = model.versions?.employeeContract;
-    if (provenance) wrap.append(el('p', 'gcsp-synthetic', `${provenance.mode === 'synthetic' ? 'Synthetic example data. ' : ''}${provenance.label ? `Source: ${provenance.label}. ` : ''}Account as of ${asOf(model.asOf)}.`));
+    if (provenance) wrap.append(el('p', 'gcsp-synthetic', `${provenance.label ? `Source: ${provenance.label}. ` : ''}Account as of ${asOf(model.asOf)}.`));
   }
   main.replaceChildren(wrap);
   return () => wrap.remove();
@@ -333,7 +333,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     resume: () => resume(),
     supportButton: (route, text) => button({ label: text, variant: 'ghost', onClick: () => {
       onSupport?.(route); notify('gcsp:support', { route });
-      message = { title: 'Support route', text: `${route}. This demo does not send a support request.` }; live.clear(); draw(true);
+      message = { title: 'Support route', text: `Support route: ${route}.` }; live.clear(); draw(true);
     } }),
     startButton: (action) => button({ label: action.action === 'replace' ? 'Choose a replacement' : 'Start a new order',
       variant: !journey && offerHeld(offers) ? 'ghost' : 'primary',
@@ -442,7 +442,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   function failed(result) {
     if (isRunRestarted(result)) { restarted = true; message = null; return; }
     if (result?.code === 'read-only-visual-fixture') {
-      message = { title: 'Read-only account preview', text: 'This example cannot save a journey. Open the connected demo to continue.' }; return;
+      message = { title: 'Read-only account preview', text: 'This preview is read-only, so the journey cannot be saved.' }; return;
     }
     const stale = ['stale-version', 'conflict'].includes(result?.status) || result?.value?.requiresRefresh;
     message = { error: true, title: stale ? 'Your context has changed' : 'Journey could not be saved',

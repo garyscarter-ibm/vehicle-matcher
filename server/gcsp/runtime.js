@@ -43,7 +43,7 @@ import { createSyntheticAppointments } from './adapters/synthetic-appointments.j
 import { createSyntheticReturnOutcomes } from './adapters/synthetic-return-outcomes.js';
 import { createManualOrderService, createManualOrderConversion } from './manual-order/index.js';
 
-const unavailable = () => result('unavailable', { reason: 'The trusted demo runtime is unavailable.', retryable: true });
+const unavailable = () => result('unavailable', { reason: 'The service is unavailable.', retryable: true });
 const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].every((key) => value?.[key] === context[key]);
 
 // Explicit composition only. A failed PostgreSQL open never changes providers.

@@ -98,7 +98,7 @@ test('reset restores versioned employees/time and new allocator identifiers whil
     assert.match(currentStock[i].orderNumber, /^[0-9]{7}$/);
     assert.equal(currentStock[i].vin, undefined);
   }
-  assert.equal((await f.repository.read(fresh.value.context, { table: 'employees', key: { runId: after.runId, employeeId: f.employee.employeeId } })).value.name, 'Paula (fictional)');
+  assert.equal((await f.repository.read(fresh.value.context, { table: 'employees', key: { runId: after.runId, employeeId: f.employee.employeeId } })).value.name, 'Paula Mason');
   assert.equal((await f.repository.read(oldScope, { table: 'employees', key: { runId: before.runId, employeeId: f.employee.employeeId } })).value.name, 'Changed during trial');
   assert.deepEqual((await f.repository.query(oldScope, 'stock')).value, stock);
   assert.equal((await f.clock.now(f.employee)).status, 'stale-run');

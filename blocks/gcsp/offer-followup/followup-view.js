@@ -20,7 +20,7 @@ const messages = {
   unavailable: ['Next-offer status unavailable', 'Try checking again.'],
   'confirmation-uncertain': ['Check your change', 'The save could not be confirmed.'],
   'refresh-required': ['Your brief has changed', 'Check the current state before choosing again.'],
-  'stale-run': ['Follow-up from an earlier demo run', 'Open your current account to continue.'],
+  'stale-run': ['This page is out of date', 'Open your current account to continue.'],
   forbidden: ['Follow-up unavailable', 'Open the offer from your account to continue.'],
   'access-lapsed': [ACCESS_LAPSED_TITLE, ACCESS_LAPSED_MESSAGE],
 };

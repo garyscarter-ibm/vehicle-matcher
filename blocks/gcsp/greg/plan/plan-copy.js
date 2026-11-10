@@ -8,7 +8,7 @@ export { humanise, plural, formatDemoTime };
 export const FORECAST_LABEL = 'Expressed demand';
 export const FORECAST_QUALIFIER = 'deterministic baseline';
 export const FORECAST_NOTE = 'Built from what employees have saved and confirmed they need. It is not a prediction.';
-export const LEARNED_LABEL = 'Synthetic-trained model';
+export const LEARNED_LABEL = 'Learned model';
 export const LEARNED_UNREADABLE = 'The learned forecast is unavailable right now, so only the baseline plan is shown.';
 export const PREVIEW_BADGE = 'Preview';
 export const PREVIEW_FALLBACK = 'Preview only. Nothing is saved, published or ordered.';
@@ -37,7 +37,7 @@ export function unboundStockText(count, models = []) {
 
 const INPUT_LABELS = Object.freeze({
   stock: 'Stock', supply: 'Production requests and supply', policy: 'Limits and rules', plan: 'The plan itself',
-  clock: 'Demo clock', forecast: 'Demand forecast', cohort: 'Employee group', catalog: 'Vehicle catalogue',
+  clock: 'Clock', forecast: 'Demand forecast', cohort: 'Employee group', catalog: 'Vehicle catalogue',
 });
 export const inputLabel = (key) => INPUT_LABELS[key] || humanise(key);
 

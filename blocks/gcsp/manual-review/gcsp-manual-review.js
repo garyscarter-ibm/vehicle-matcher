@@ -1,6 +1,5 @@
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard } from '../../vehicle-matcher/modes/result-card.js';
-import { syntheticNote } from '../kit/synthetic-note.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { routeAfterRelease } from '../employee/portal-navigation.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
@@ -112,7 +111,7 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
     const time = el('section', 'gcsp-review-time'); time.append(nodes.timer, nodes.consequence, nodes.live);
     const layout = el('div', 'gcsp-review-layout'); const vehicle = el('div', 'gcsp-review-column');
     const review = el('div', 'gcsp-review-column'); vehicle.append(nodes.vehicle, nodes.context); review.append(summary.root, form);
-    layout.append(vehicle, review); panel.append(screenIntro({ title: 'Review your car', level: 1 }), nodes.notice, time, nodes.recovery, layout, syntheticNote());
+    layout.append(vehicle, review); panel.append(screenIntro({ title: 'Review your car', level: 1 }), nodes.notice, time, nodes.recovery, layout);
     root.replaceChildren(panel);
   }
   function draw(state = controller.getState()) {
@@ -128,7 +127,7 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
     if (lastVehicle !== signature || !nodes.vehicle.childNodes.length) {
       lastVehicle = signature;
       const technical = el('details', 'gcsp-details'); technical.append(el('summary', '', 'Pinned vehicle details'),
-        rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), ['body', 'bodyType'].includes(key) ? bodyFact(value) : value]).concat([['Quote valid until', Number.isFinite(Date.parse(model.quote.validUntil)) ? `${demoTime(model.quote.validUntil)} (demo time)` : model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]]), MORE_MISSING));
+        rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), ['body', 'bodyType'].includes(key) ? bodyFact(value) : value]).concat([['Quote valid until', Number.isFinite(Date.parse(model.quote.validUntil)) ? `${demoTime(model.quote.validUntil)} (UTC)` : model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]]), MORE_MISSING));
       nodes.vehicle.replaceChildren(
         matchCard(null, { view: reviewVehicleView(model), showScore: false, hideMissing: MORE_MISSING }), technical);
     }

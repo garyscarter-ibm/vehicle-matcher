@@ -58,7 +58,7 @@ function renderDetail(message) {
   const facts = [
     { label: 'To', value: recipientName(message) },
     { label: 'Status', value: statusOf(message.state, message.transport).label },
-    { label: 'Demo clock', value: formatDemoTime(message.time) || 'No attempt yet' },
+    { label: 'Time', value: formatDemoTime(message.time) || 'No attempt yet' },
     { label: 'Attempts', value: String(message.attempts ?? 0) },
   ];
   if (message.state === 'retrying') facts.push({ label: 'Next attempt', value: formatDemoTime(message.nextAttemptAt) || 'Not scheduled' });

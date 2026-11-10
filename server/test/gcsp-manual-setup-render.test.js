@@ -71,10 +71,10 @@ test('grouped setup preserves native controls and focus through edits and displa
   assert.match(f.root.textContent, /Employee facts are read-only/);
   // FUCQ-277: before a driver is chosen the licence facts, their hint and every "Not supplied" are absent, with the synthetic footer.
   assert.doesNotMatch(f.root.textContent, /Not supplied|Driver and licence facts are read-only|Synthetic monthly demo|Not a verified/);
-  assert.equal(f.root.querySelector('.gcsp-setup-source').childNodes.length, 0); assert.equal(f.root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
+  assert.equal(f.root.querySelector('.gcsp-setup-source').childNodes.length, 0); assert.equal(f.root.querySelector('.gcsp-synthetic'), null);
   assert.match(f.root.textContent, /1,300 points a month/); assert.equal(control(f, 'schemeId'), null);
   input(f, 'driverId', `nominated:${f.context.employeeId}`);
-  assert.match(f.root.textContent, /Driver and licence facts are read-only/); assert.match(f.root.textContent, /spouse/); assert.match(f.root.textContent, /FICTIONAL-NOMINEE/);
+  assert.match(f.root.textContent, /Driver and licence facts are read-only/); assert.match(f.root.textContent, /spouse/); assert.match(f.root.textContent, /WARD9900000CW9XX/);
   assert.ok(control(f, 'contractOptionId').querySelector('[value="twelve-month-12000"]').disabled);
   const reason = control(f, 'contractOptionId').querySelector('[value="twelve-month-12000"]').textContent; // FUCQ-197: named, not its id
   assert.match(reason, /^12 months, 12000 mi\/year \(.+\)$/); assert.equal(reason.includes('twelve-month-12000'), false);
@@ -153,7 +153,7 @@ test('FUCQ-237: a site that cannot apply to the chosen contract and driver is ne
   const f = await setup(t); fill(f);
   await waitFor(() => control(f, 'collectionLocationId')?.options.length === 2);
   const offered = [...control(f, 'collectionLocationId').options].map((o) => o.textContent).join('|');
-  assert.match(offered, /Fictional collection centre/); assert.equal(offered.includes('Fictional company site'), false);
+  assert.match(offered, /Bracknell collection centre/); assert.equal(offered.includes('Bracknell office'), false);
 });
 
 test('FUCQ-282: an empty Continue says what to do in plain words, with no reasons list and no system phrasing', async (t) => {
@@ -168,13 +168,10 @@ test('FUCQ-282: an empty Continue says what to do in plain words, with no reason
   await waitFor(() => /up to 500,000 miles/.test(f.root.textContent));
 });
 
-test('FUCQ-282: a made-up .invalid contact address is labelled as one, a real-looking address is not', async (t) => {
-  const f = await setup(t); const hint = () => f.root.querySelector('#' + control(f, 'email').getAttribute('aria-describedby')?.split(' ')[0]);
-  assert.match(control(f, 'email').value, /@example\.invalid$/);
-  assert.equal(hint().textContent, 'Made-up demo address.'); assert.equal(hint().hidden, false);
-  input(f, 'email', 'paula@example.com');
+test('FUCQ-282: the contact address carries no hint, whatever the address', async (t) => {
+  const f = await setup(t);
   assert.equal(control(f, 'email').getAttribute('aria-describedby'), null);
-  input(f, 'email', 'paula@example.invalid'); assert.equal(hint().textContent, 'Made-up demo address.');
+  input(f, 'email', 'paula@example.com'); assert.equal(control(f, 'email').getAttribute('aria-describedby'), null);
 });
 
 // FUCQ-285: setup speaks through one region; its notice and invalidation are plain.

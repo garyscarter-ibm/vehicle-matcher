@@ -4,10 +4,10 @@ const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const copy = (v) => v === undefined ? null : structuredClone(v);
 const failures = {
   'invalid-input': ['invalid-vehicle-identifier', 'Use a canonical configuration ID, stock order UUID or 17-character VIN for the selected route.', 'correct-identifier', false],
-  'not-found': ['vehicle-not-found', 'This identifier is absent from the selected local data. Check the identifier and selected demo dataset.', 'check-identifier', false],
+  'not-found': ['vehicle-not-found', 'This identifier is absent from the selected local data. Check the identifier and selected dataset.', 'check-identifier', false],
   'source-unavailable': ['vehicle-source-unavailable', 'The local vehicle source is unavailable. Restore or configure its validated published inputs and retry.', 'retry-source', true],
   unsupported: ['vehicle-profile-unsupported', 'The selected source cannot satisfy this vehicle profile. Choose a supported dataset or contact scheme support.', 'review-profile', false],
-  'identity-mismatch': ['vehicle-identity-mismatch', 'The identity, configuration or current demo run does not match. Refresh the current context and review the source association.', 'refresh-review', false],
+  'identity-mismatch': ['vehicle-identity-mismatch', 'The identity, configuration or current session does not match. Refresh the current context and review the source association.', 'refresh-review', false],
 };
 const http = { complete: 200, partial: 200, 'invalid-input': 400, 'not-found': 404,
   'source-unavailable': 503, unsupported: 422, 'identity-mismatch': 409 };
@@ -111,8 +111,8 @@ export function vehicleEvidenceDetails(request, source, stock = null) {
       optionDefinitions: (catalogue?.schemaVersion === '2' ? catalogue.completeness?.definitions : catalogue?.completeness?.optionDefinitions) || 'unknown',
       availableOptions: (catalogue?.schemaVersion === '2' ? catalogue.completeness?.availability : catalogue?.completeness?.availableOptions) || 'unknown', verifiedFitted: 'unknown',
       images: images.length ? 'representative' : 'unknown' },
-    presentation: { syntheticLabel: 'Synthetic identity',
-      associationLabel: 'Fictional identity association to retained configuration evidence; not a factory build or authentication.',
+    presentation: { syntheticLabel: 'Vehicle identity',
+      associationLabel: 'Identity association to retained configuration evidence; not a factory build or authentication.',
       sourceLabel: evidence.sourceKind === 'dated-snapshot' ? 'Dated catalogue snapshot' : 'North American structural reference',
       verifiedFittedLabel: 'VIN-fitted equipment unknown',
       unknownLabel: 'Unknown', imageLabel: images.length ? 'Representative imagery' : 'Images unavailable' },

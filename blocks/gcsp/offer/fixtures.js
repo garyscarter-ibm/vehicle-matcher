@@ -3,12 +3,12 @@ import { fieldLabel } from '../kit/plain-copy.js';
 
 export const HANDOFF_NAMES = Object.freeze(['handoff-replacement', 'handoff-blocked']);
 export const SELECTION_NAMES = Object.freeze(['selection-hr', 'selection-no-hr', 'selection-pending', 'selection-failed']);
-const WORDING = 'Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. '
+const WORDING = 'Scheme terms: selection requests allocation of this exact scheme stock order under the recorded quote. '
   + 'Approval, appointment and collection are separate decisions; submission does not end the current contract.';
 const handoffFixture = (blocked) => ({ termsVersion: 'fictional-order-terms-v1', termsDigest: 'synthetic-terms-digest', wording: WORDING, fictional: true,
-  mode: 'replacement', blocker: blocked ? 'contact-required' : null, contact: blocked ? null : { phone: '07700 900123', email: 'paula@example.invalid' },
+  mode: 'replacement', blocker: blocked ? 'contact-required' : null, contact: blocked ? null : { phone: '07700 900123', email: 'paula.mason@bmwgroup.test' },
   returnCar: { model: 'G20 320d M Sport', contractEndDate: '2026-12-31', currentOdometer: { value: 41250, unit: 'miles' } },
-  declarations: [{ id: 'terms', label: 'I accept these fictional scheme terms.' }, { id: 'driver', label: 'The nominated driver and licence details are correct.' },
+  declarations: [{ id: 'terms', label: 'I accept these scheme terms.' }, { id: 'driver', label: 'The nominated driver and licence details are correct.' },
     { id: 'return', label: 'The old contract and expected return mileage are correct.' }] });
 const selectionFixture = (name) => {
   const hr = name !== 'selection-no-hr'; const approval = [...hr ? ['HR approval'] : [], 'sales-manager approval', 'sent to ordering'];
@@ -27,11 +27,11 @@ export function offerFixture(name) {
   if (!FIXTURE_NAMES.includes(name)) return null;
   const source = structuredClone(employeeCardFixture);
   const member = source.members[0]; member.actions = [];
-  member.display.line = 'Order no. 0123456 · synthetic presentation example';
+  member.display.line = 'Order no. 0123456';
   // The shared comparison rows, labelled as the live card labels them.
   member.facts = [['body', 'Estate'], ['fuel', 'Petrol'], ['seats', 5], ['boot', 500, 'litres'], ['zeroTo62', 7.6, 's'], ['mpg', 42.8, 'mpg']]
     .map(([key, value, unit]) => ({ label: fieldLabel(key), value, ...unit ? { unit } : {} }));
-  member.facts.push({ label: 'Derivative', value: 'M Sport Touring', provenance: 'Synthetic presentation example' },
+  member.facts.push({ label: 'Derivative', value: 'M Sport Touring' },
     { label: 'Colour', value: null, missingLabel: 'Colour not supplied' },
     { label: 'Options', value: null, missingLabel: 'Fitted equipment unknown' });
   if (name === 'no-image') member.media = {};
@@ -44,6 +44,5 @@ export function offerFixture(name) {
       : name === 'low-time' ? '2026-11-05T12:03:00.000Z' : '2026-11-05T14:00:00.000Z',
     currentCar: { status: 'partial', display: { name: '320i M Sport Touring' }, media: {}, configuration: null,
       facts: [['body', 'Estate'], ['fuel', 'Petrol'], ['seats', null], ['boot', '480 litres'], ['zeroTo62', null], ['mpg', '44 mpg'], ['points', null]]
-        .map(([key, value]) => ({ key, label: key === 'points' ? 'Points a month' : fieldLabel(key), value, missingLabel: 'Unknown' })) },
-    fixtureNotice: 'Synthetic presentation example. This page does not read a real offer or record a decision.' } };
+        .map(([key, value]) => ({ key, label: key === 'points' ? 'Points a month' : fieldLabel(key), value, missingLabel: 'Unknown' })) } } };
 }

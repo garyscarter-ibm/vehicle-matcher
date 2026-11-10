@@ -32,8 +32,7 @@ test('exact shared card, points and current car comparison preserve supplied unk
   assert.match(root.textContent, /320i M Sport Touring/);
   assert.doesNotMatch(root.textContent, /Fitted equipment unknown/);
   assert.match(root.textContent, /Representative BMW brand image, not this exact car/);
-  assert.match(root.textContent, /Synthetic presentation example/);
-  assert.equal(root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
+  assert.equal(root.querySelector('.gcsp-synthetic'), null);
   assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
   const reason = root.querySelector('[data-offer-action="accept"]').getAttribute('aria-describedby');
   assert.match(root.querySelector(`#${reason}`).textContent, /Decisions are unavailable/);
@@ -44,7 +43,7 @@ test('FUCQ-275: a pending offer leads with the deadline and has one comparison t
   const { root, data } = render('pending');
   const [intro, clock, asOf] = [...root.querySelector('.gcsp-offer-content').children];
   assert.ok(intro.querySelector('h1')); assert.ok(clock.classList.contains('gcsp-countdown'));
-  assert.equal(clock.textContent, '2 hours remaining'); assert.ok(asOf.classList.contains('gcsp-note')); assert.match(asOf.textContent, /Demo time/);
+  assert.equal(clock.textContent, '2 hours remaining'); assert.ok(asOf.classList.contains('gcsp-note')); assert.match(asOf.textContent, /Time at last check/);
   assert.equal(root.querySelectorAll('.gcsp-countdown').length, 1);
   const tables = root.querySelectorAll('[data-offer-comparison] table'); assert.equal(tables.length, 1);
   const labels = [...tables[0].querySelectorAll('tbody th[scope="row"]')].map((node) => node.textContent);
@@ -311,7 +310,7 @@ test('before accepting, the handoff shows contact, return car, wording and one c
   try {
     const group = root.querySelector('[aria-label="Before you accept"]');
     assert.equal(group.querySelector('h2').textContent, 'Before you accept');
-    for (const text of ['07700 900123', 'paula@example.invalid', 'G20 320d M Sport', '31 December 2026', '41,250 miles', 'Fictional demonstration terms']) assert.match(group.textContent, new RegExp(text));
+    for (const text of ['07700 900123', 'paula.mason@bmwgroup.test', 'G20 320d M Sport', '31 December 2026', '41,250 miles', 'Scheme terms']) assert.match(group.textContent, new RegExp(text));
     const boxes = [...group.querySelectorAll('input[type="checkbox"]')];
     assert.equal(boxes.length, 3); assert.ok(boxes.every((box) => box.labels[0].textContent.length > 10 && !box.checked));
     const accept = root.querySelector('[data-offer-action="accept"]'); assert.equal(accept.disabled, true);
@@ -502,7 +501,7 @@ test('the offer-hosted progress shows return outcomes: booked then returned on r
   assert.match(booked.area().textContent, /Return booked: 12 Nov 2026, 09:00/); assert.doesNotMatch(booked.area().textContent, /Returned:/);
   await booked.switchTo('return-returned', () => /Returned:/.test(booked.area().textContent));
   const rows = [...booked.area().querySelectorAll('.vm-fact')].map((row) => [row.querySelector('dt').textContent, row.querySelector('dd').textContent]);
-  assert.match(booked.area().textContent, /Returned: 12 Nov 2026, 10:30/); assert.deepEqual(rows.slice(0, 2), [['Current car', carName], ['Returned car', 'Fictional BMW 320i Touring']]);
+  assert.match(booked.area().textContent, /Returned: 12 Nov 2026, 10:30/); assert.deepEqual(rows.slice(0, 2), [['Current car', carName], ['Returned car', 'BMW 320i Touring']]);
   assert.doesNotMatch(booked.area().textContent, /stays yours until it is returned/); booked.view.destroy();
   const missed = await host('return-missed');
   assert.match(missed.area().textContent, /Return missed: 12 Nov 2026, 09:00/); assert.match(missed.area().textContent, /Scheme team/);
@@ -548,7 +547,7 @@ test('mountOffer forwards the host order port to an accepted offer only', async 
 test('the restarted state shows the restart screen with a single Reload button and no Try again', () => {
   const root = document.createElement('div'); document.body.append(root);
   const view = createOfferView(root, {}); view.update({ state: 'restarted', canAccept: false, canDecline: false });
-  assert.match(root.textContent, /Demo restarted/); assert.deepEqual([...root.querySelectorAll('button')].map((b) => b.textContent), ['Reload']);
+  assert.match(root.textContent, /Restarted/); assert.deepEqual([...root.querySelectorAll('button')].map((b) => b.textContent), ['Reload']);
   assert.doesNotMatch(root.textContent, /could not be loaded|Try again|Check current state/); assert.equal(root.querySelector('.vm-card'), null);
   view.update({ state: 'error', canAccept: false, canDecline: false }); root.querySelector('[data-offer-action="refresh"]').focus();
   view.update({ state: 'restarted', canAccept: false, canDecline: false });
@@ -559,7 +558,7 @@ test('a lapsed access key links to the access form, back to the account, since a
   const root = document.createElement('div'); document.body.append(root);
   const view = createOfferView(root, {}); view.update({ state: 'error', canAccept: false, canDecline: false }); root.querySelector('[data-offer-action="refresh"]').focus();
   view.update({ state: 'access-lapsed', canAccept: false, canDecline: false });
-  assert.match(root.textContent, /Demo access needed/); assert.match(root.textContent, /open this offer from your account/);
+  assert.match(root.textContent, /Access needed/); assert.match(root.textContent, /open this offer from your account/);
   const link = root.querySelector('a.vm-btn'); assert.equal(link.textContent, 'Enter the access key'); assert.equal(link.getAttribute('href'), '/gcsp/access?next=%2Fgcsp-account.html');
   assert.equal(document.activeElement, link); assert.equal(root.querySelectorAll('button').length, 0); assert.doesNotMatch(root.textContent, /Reload|could not be loaded|Try again/);
   view.destroy(); root.remove();

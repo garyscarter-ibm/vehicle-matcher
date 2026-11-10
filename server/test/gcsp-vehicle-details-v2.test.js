@@ -25,7 +25,7 @@ test('actual v2 source DTO retains factory selection and unknown accessory quant
   assert.equal(result.vehicle.completeness.availableOptions, record.catalogue.completeness.availability);
   assert.equal(result.vehicle.equipment.selected.accessories[0].quantity.state, 'unknown');
   assert.equal(result.vehicle.equipment.verifiedFitted.state, 'unknown');
-  assert.equal(result.vehicle.presentation.syntheticLabel, 'Synthetic identity');
+  assert.equal(result.vehicle.presentation.syntheticLabel, 'Vehicle identity');
 });
 
 test('v2 consumer refuses identity substitution and malformed or overstated quantity completeness', async () => {

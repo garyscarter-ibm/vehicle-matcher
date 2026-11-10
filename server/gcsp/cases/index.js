@@ -58,7 +58,7 @@ export class RenewalCaseService {
     const run = await tx.get({ table: 'runs', key: { runId: context.runId } });
     if (run.status !== 'ok') return run;
     return run.value.clockInstant === prepared.now && run.value.policyVersion === prepared.read.policyVersion ? ok(null)
-      : result('stale-version', { reason: 'Demonstration time or policy changed. Refresh this case before retrying.', action: 'refresh' });
+      : result('stale-version', { reason: 'The time or policy changed. Refresh this case before retrying.', action: 'refresh' });
   }
   async #renewal(tx, context, employeeId) {
     const found = await tx.get({ table: 'employees', key: { runId: context.runId, employeeId } }); if (found.status !== 'ok') return found;
@@ -304,7 +304,7 @@ export class RenewalCaseService {
       || !text(input.caseId,128) || !Number.isSafeInteger(input.expectedVersion) || input.expectedVersion < 1 || !text(input.reason) || !text(input.nextAction)
       || !validInstant(input.dueAt)) return invalid('update', 'Supply the current version, status, reason, next action and due date.');
     const p = await this.#prepare(context); if (p.error) return p.error;
-    if (Date.parse(input.dueAt) <= Date.parse(p.now)) return invalid('dueAt', 'Choose a future due time on the demonstration clock.');
+    if (Date.parse(input.dueAt) <= Date.parse(p.now)) return invalid('dueAt', 'Choose a future due time.');
     return this.#repository.transaction(context, { commandId: `case:update:${context.principalId}:${input.commandId}`, inputDigest: inputDigest(input) }, async (tx) => {
       const fresh = await this.#fresh(tx, context, p); if (fresh.status !== 'ok') return fresh;
       const found = await tx.get(ref(context,input.caseId)); if (found.status !== 'ok') return found;

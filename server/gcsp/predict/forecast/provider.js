@@ -7,7 +7,7 @@ import { FORECAST_CONTRACT_VERSION, validatePredictionInput } from './input.js';
 export const FORECAST_KEY = 'forecast.learned.v1';
 export const MODEL_REFERENCE_KEY = 'choice.model.reference';
 export const LEARNED_BASIS = 'synthetic-trained-model';
-export const LEARNED_LABEL = 'Synthetic-trained model';
+export const LEARNED_LABEL = 'Learned model';
 const SHA = /^sha256:[a-f0-9]{64}$/;
 const base = 'only the baseline plan from expressed demand is shown';
 const LIMITATIONS = Object.freeze({
@@ -106,7 +106,7 @@ export function createLearnedDemandForecastProvider({ policy, artifactDirectory 
             activationPolicyVersion: activation.policyVersion, activationEffectiveFrom: activation.effectiveFrom },
           data: { dataHash: manifest.dataHash, datasetKind: manifest.datasetKind, generatorVersion: manifest.generatorVersion, trainingPolicyVersion: payload.policyVersion },
           settings, employees, aggregate, evaluation: evaluationView(summary),
-          limitations: [...new Set(['Trained on synthetic data; this does not describe validated BMW employee behaviour.',
+          limitations: [...new Set(['Not validated on BMW employee choices.',
             'Probabilities are the model\'s estimate over each employee\'s permitted vehicles or waiting, not a fit score.', ...payload.limitations])] };
       } catch { return { status: 'unavailable', code: 'learned-forecast-unavailable', contractVersion: FORECAST_CONTRACT_VERSION }; }
     },

@@ -29,7 +29,7 @@ async function expectReview(f) {
   // The quote id is a raw reference, so it stays off screen (FUCQ-197).
   assert.ok(f.claim.quote.quoteId); assert.equal(vehicle.textContent.includes(f.claim.quote.quoteId), false);
   // Expiry shows in words, not raw ISO (FUCQ-267).
-  for (const value of [f.car.facts.display.name, f.car.orderNumber, `${demoTime(f.claim.quote.validUntil)} (demo time)`]) {
+  for (const value of [f.car.facts.display.name, f.car.orderNumber, `${demoTime(f.claim.quote.validUntil)} (UTC)`]) {
     assert.ok(value); assert.ok(vehicle.textContent.includes(value), 'Expected pinned claim detail.');
   }
   const contact = f.root.querySelector('[name="contact.phone"]'); assert.ok(contact);

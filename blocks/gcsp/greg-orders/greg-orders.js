@@ -28,7 +28,7 @@ function setOptions(control, values) {
 function numberInput() { const node = el('input'); node.type = 'number'; node.min = '1'; node.step = '1'; node.value = '1'; node.required = true; return node; }
 function message(out) {
   if (out.status === 'access-required') return RUN_RESTARTED_MESSAGE;
-  if (refused.has(out.status)) return out.status === 'stale-run' ? 'The demo was reset. Reopen the scheme ordering lead session.'
+  if (refused.has(out.status)) return out.status === 'stale-run' ? 'This page was restarted. Reopen the scheme ordering lead session.'
     : 'This action needs the scheme ordering lead and, for production controls, a presenter session.';
   if (['conflict', 'stale-version'].includes(out.status)) return 'The request or its inputs changed. Refresh before trying again.';
   if (out.status === 'invalid') return out.reasons?.map((r) => r.reason).filter(Boolean).join(' ') || 'Check your choices and try again.';
@@ -57,7 +57,7 @@ export function mountGregOrders(root, { adapter, productionControls = false, onC
   const submit = button({ label: 'Submit request' }); submit.type = 'submit'; controls.push(submit);
   requestForm.append(requestTitle, requestFields, submit);
   const production = el('details', 'gcsp-orders-production'); production.hidden = !productionControls;
-  production.append(el('summary', '', 'Synthetic production controls'));
+  production.append(el('summary', '', 'Production controls'));
   const productionForm = el('form', 'gcsp-orders-form'); const productionFields = el('div', 'gcsp-orders-fields'); const selected = el('select');
   const action = el('select'); action.append(option('confirm', 'Confirm now'), option('delay', 'Delay outstanding quantity'));
   const confirmQuantity = numberInput(); const delayUntil = el('input'); delayUntil.type = 'date'; const reason = el('input'); reason.type = 'text'; reason.maxLength = 512;
@@ -87,7 +87,7 @@ export function mountGregOrders(root, { adapter, productionControls = false, onC
   }
   function draw(value) {
     projection = value; body.replaceChildren();
-    source.textContent = `Synthetic production · as of ${date(value.asOf)}. Only released cars enter supply.`;
+    source.textContent = `Production · as of ${date(value.asOf)}. Only released cars enter supply.`;
     body.append(dataTable({ caption: 'Requested, confirmed and released cars', id: `${id}-table`, columns: [
       { key: 'car', label: 'Car' }, { key: 'stage', label: 'Stage' }, { key: 'requested', label: 'Requested', numeric: true },
       { key: 'confirmed', label: 'Confirmed', numeric: true }, { key: 'released', label: 'Released', numeric: true },

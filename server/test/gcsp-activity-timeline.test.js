@@ -11,7 +11,7 @@ before(async () => {
 after(() => dom?.window.close());
 beforeEach(() => document.body.replaceChildren());
 
-test('timeline preserves supplied order and exposes dates as demo time without inventing events', () => {
+test('timeline preserves supplied order and exposes dates as UTC without inventing events', () => {
   const node = activityTimeline({ events: [
     { id: 'b', occurredAt: '2026-11-05T11:30:00.000Z', label: 'Search paused', detail: 'Brief version 2' },
     { id: 'a', occurredAt: '2026-11-05T10:00:00.000Z', label: 'Search brief confirmed' },
@@ -22,7 +22,7 @@ test('timeline preserves supplied order and exposes dates as demo time without i
   assert.match(node.querySelector('li').textContent, /Search paused/);
   assert.equal(node.querySelector('time').dateTime, '2026-11-05T11:30:00.000Z');
   assert.match(node.querySelector('time').textContent, /5 Nov 2026.*11:30/);
-  assert.match(node.textContent, /demo time.*UTC/i);
+  assert.match(node.textContent, /All dates are UTC/);
   assert.doesNotMatch(node.textContent, /ago|successful check/i);
 });
 

@@ -50,7 +50,7 @@ export function toDashboardView(projection) {
   if (!isObject(projection.versions)) bad('no versions');
   if (!Number.isSafeInteger(privacy?.threshold) || privacy.threshold < 1) bad('no privacy threshold');
   const asOfText = formatDemoTime(projection.asOf);
-  if (!asOfText) bad('no demo-clock time');
+  if (!asOfText) bad('no as-of time');
   if (typeof projection.projectionVersion !== 'string' || !projection.projectionVersion) bad('no projection version');
 
   const briefVersions = versions(projection.versions.brief, 'versions.brief');
@@ -84,7 +84,7 @@ export function toDashboardView(projection) {
 
   const view = {
     meta: {
-      asOf: projection.asOf, asOfText, asOfLabel: `${asOfText} (demo clock)`,
+      asOf: projection.asOf, asOfText, asOfLabel: asOfText,
       basisLabel: BASIS_LABEL, basisNote: BASIS_NOTE,
       policyVersions: [...policyVersions], briefVersions: [...briefVersions], clockVersion: String(projection.versions.clock ?? ''),
       briefVersionsLabel: briefVersions.length ? briefVersions.join(', ') : 'None yet',

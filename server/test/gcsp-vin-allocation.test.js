@@ -264,7 +264,7 @@ test('employee presentation exposes orderNumber only and truthful synthetic/prof
   assert.equal(delivery.referenceOnly, true);
   assert.equal(delivery.productionDate, null);
   assert.equal(delivery.registrationDate, null);
-  assert.match(delivery.notice, /fictional/i);
+  assert.match(delivery.notice, /^Association to retained configuration facts\./); assert.doesNotMatch(delivery.notice, /fictional|synthetic/i);
   assert.ok(delivery.sources.length);
   for (const status of ['unsupported', 'identity-mismatch', 'source-unavailable', 'invalid-input', 'collision', 'exhausted', 'stale-revision', 'competing-writer']) {
     const shown = presentSyntheticIdentity({ status, reason: status });

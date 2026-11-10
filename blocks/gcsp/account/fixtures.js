@@ -6,19 +6,19 @@ export const ACCOUNT_SNAPSHOT = {
     "asOf": "2026-11-05T09:00:00.000Z",
     "account": {
       "employeeId": "employee-paula",
-      "name": "Paula (fictional)",
+      "name": "Paula Mason",
       "companyId": "demo-bmw-fs-uk",
       "gradeId": "G7",
       "schemeId": "choices-fs-uk",
-      "employeeNumber": "DEMO-employee-paula",
+      "employeeNumber": "E749057",
       "address": {
-        "line1": "1 Fictional Way",
-        "town": "Example Town",
-        "postcode": "ZZ1 1ZZ"
+        "line1": "27 Ashdown Road",
+        "town": "Bracknell",
+        "postcode": "RG12 9ZZ"
       },
       "contact": {
         "phone": "01632 960000",
-        "email": "employee-paula@example.invalid"
+        "email": "paula.mason@bmwgroup.test"
       },
       "allowanceOverride": null
     },
@@ -26,7 +26,7 @@ export const ACCOUNT_SNAPSHOT = {
       {
         "driverId": "driver:employee-paula",
         "employeeId": "employee-paula",
-        "name": "Paula (fictional)",
+        "name": "Paula Mason",
         "kind": "employee",
         "eligible": {
           "status": "known",
@@ -40,7 +40,7 @@ export const ACCOUNT_SNAPSHOT = {
           }
         },
         "licence": {
-          "displayNumber": "FICTIONAL-LICENCE",
+          "displayNumber": "MASON900000PM9XX",
           "categories": [
             "car"
           ],
@@ -59,7 +59,7 @@ export const ACCOUNT_SNAPSHOT = {
       {
         "driverId": "nominated:employee-paula",
         "employeeId": "employee-paula",
-        "name": "Casey (fictional)",
+        "name": "Casey Ward",
         "kind": "nominated",
         "relationship": "spouse",
         "eligible": {
@@ -74,7 +74,7 @@ export const ACCOUNT_SNAPSHOT = {
           }
         },
         "licence": {
-          "displayNumber": "FICTIONAL-NOMINEE",
+          "displayNumber": "WARD9900000CW9XX",
           "categories": [
             "car"
           ],
@@ -262,12 +262,12 @@ export const ACCOUNT_SNAPSHOT = {
       "drivers": [
         {
           "driverId": "driver:employee-paula",
-          "name": "Paula (fictional)",
+          "name": "Paula Mason",
           "kind": "employee"
         },
         {
           "driverId": "nominated:employee-paula",
-          "name": "Casey (fictional)",
+          "name": "Casey Ward",
           "kind": "nominated"
         }
       ],
@@ -301,7 +301,7 @@ export const ACCOUNT_SNAPSHOT = {
       "collectionLocations": [
         {
           "locationId": "demo-collection-centre",
-          "label": "Fictional collection centre",
+          "label": "Bracknell collection centre",
           "contractOptionIds": [
             "six-month-8000",
             "twelve-month-12000"
@@ -314,7 +314,7 @@ export const ACCOUNT_SNAPSHOT = {
         },
         {
           "locationId": "demo-company-site",
-          "label": "Fictional company site",
+          "label": "Bracknell office",
           "contractOptionIds": [
             "twelve-month-12000"
           ],
@@ -384,7 +384,7 @@ export const ACCOUNT_SNAPSHOT = {
           "locations": [
             {
               "locationId": "demo-collection-centre",
-              "label": "Fictional collection centre",
+              "label": "Bracknell collection centre",
               "contractOptionIds": [
                 "six-month-8000",
                 "twelve-month-12000"
@@ -397,7 +397,7 @@ export const ACCOUNT_SNAPSHOT = {
             },
             {
               "locationId": "demo-company-site",
-              "label": "Fictional company site",
+              "label": "Bracknell office",
               "contractOptionIds": [
                 "twelve-month-12000"
               ],
@@ -559,19 +559,19 @@ export const UNSUPPORTED_SNAPSHOT = {
     "asOf": "2026-11-05T09:00:00.000Z",
     "account": {
       "employeeId": "employee-sam",
-      "name": "Sam (fictional)",
+      "name": "Sam Patel",
       "companyId": "demo-bmw-rr-production",
       "gradeId": "PG1",
       "schemeId": "choices-rr-production",
-      "employeeNumber": "DEMO-employee-sam",
+      "employeeNumber": "E168167",
       "address": {
-        "line1": "1 Fictional Way",
-        "town": "Example Town",
-        "postcode": "ZZ1 1ZZ"
+        "line1": "27 Ashdown Road",
+        "town": "Bracknell",
+        "postcode": "RG12 9ZZ"
       },
       "contact": {
         "phone": "01632 960000",
-        "email": "employee-sam@example.invalid"
+        "email": "sam.patel@bmwgroup.test"
       },
       "allowanceOverride": null
     },
@@ -579,7 +579,7 @@ export const UNSUPPORTED_SNAPSHOT = {
       {
         "driverId": "driver:employee-sam",
         "employeeId": "employee-sam",
-        "name": "Sam (fictional)",
+        "name": "Sam Patel",
         "kind": "employee",
         "eligible": {
           "status": "known",
@@ -593,7 +593,7 @@ export const UNSUPPORTED_SNAPSHOT = {
           }
         },
         "licence": {
-          "displayNumber": "FICTIONAL-LICENCE",
+          "displayNumber": "PATEL900000SP9XX",
           "categories": [
             "car"
           ],
@@ -612,7 +612,7 @@ export const UNSUPPORTED_SNAPSHOT = {
       {
         "driverId": "nominated:employee-sam",
         "employeeId": "employee-sam",
-        "name": "Casey (fictional)",
+        "name": "Casey Ward",
         "kind": "nominated",
         "relationship": "spouse",
         "eligible": {
@@ -627,7 +627,7 @@ export const UNSUPPORTED_SNAPSHOT = {
           }
         },
         "licence": {
-          "displayNumber": "FICTIONAL-NOMINEE",
+          "displayNumber": "WARD9900000CW9XX",
           "categories": [
             "car"
           ],
@@ -807,12 +807,12 @@ export const UNSUPPORTED_SNAPSHOT = {
       "drivers": [
         {
           "driverId": "driver:employee-sam",
-          "name": "Sam (fictional)",
+          "name": "Sam Patel",
           "kind": "employee"
         },
         {
           "driverId": "nominated:employee-sam",
-          "name": "Casey (fictional)",
+          "name": "Casey Ward",
           "kind": "nominated"
         }
       ],
@@ -846,7 +846,7 @@ export const UNSUPPORTED_SNAPSHOT = {
       "collectionLocations": [
         {
           "locationId": "demo-collection-centre",
-          "label": "Fictional collection centre",
+          "label": "Bracknell collection centre",
           "contractOptionIds": [
             "six-month-8000",
             "twelve-month-12000"
@@ -859,7 +859,7 @@ export const UNSUPPORTED_SNAPSHOT = {
         },
         {
           "locationId": "demo-company-site",
-          "label": "Fictional company site",
+          "label": "Bracknell office",
           "contractOptionIds": [
             "twelve-month-12000"
           ],
@@ -929,7 +929,7 @@ export const UNSUPPORTED_SNAPSHOT = {
           "locations": [
             {
               "locationId": "demo-collection-centre",
-              "label": "Fictional collection centre",
+              "label": "Bracknell collection centre",
               "contractOptionIds": [
                 "six-month-8000",
                 "twelve-month-12000"
@@ -942,7 +942,7 @@ export const UNSUPPORTED_SNAPSHOT = {
             },
             {
               "locationId": "demo-company-site",
-              "label": "Fictional company site",
+              "label": "Bracknell office",
               "contractOptionIds": [
                 "twelve-month-12000"
               ],
