@@ -13,6 +13,7 @@ if (host && FIXTURE_NAMES.includes(requested)) {
     readOnly: true,
     readAccount: async () => accountFixture(requested),
     readDraft: async () => ({ status: 'not-found' }),
+    discardDraft: async () => ({ status: 'unavailable', code: 'read-only-visual-fixture' }),
     startJourney: async () => ({ status: 'unavailable', code: 'read-only-visual-fixture' }),
   };
   defineGcspAccount();

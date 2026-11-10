@@ -136,6 +136,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       readAccount: manualClaims.readAccount.bind(manualClaims),
       readDraft: manualClaims.readDraft.bind(manualClaims),
       saveDraft: manualClaims.saveDraft.bind(manualClaims),
+      discardDraft: manualClaims.discardDraft.bind(manualClaims),
       browseStock: galleryRead.browseStock.bind(galleryRead),
     });
     const manualReview = new ManualReviewDetailsService({ repository, policy, identity, manualClaims });

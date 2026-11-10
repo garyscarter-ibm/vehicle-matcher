@@ -374,8 +374,22 @@ function orderHistory(model, { order, orderVehicle, controls }) {
   return section;
 }
 
+// Inline confirmation; Escape acts as Keep it. Focus lands here when it opens.
+function discardConfirm(controls, pending) {
+  const box = el('div', 'gcsp-discard-confirm');
+  box.tabIndex = -1; box.setAttribute('role', 'group');
+  const question = el('p', 'gcsp-note', 'Discard this journey? Your current car and any offers are not affected.');
+  question.id = `gcsp-discard-question-${++serial}`; box.setAttribute('aria-labelledby', question.id);
+  const actions = el('div', 'gcsp-actions');
+  actions.append(button({ label: 'Discard journey', disabled: pending, onClick: controls.confirmDiscard }),
+    button({ label: 'Keep it', variant: 'ghost', disabled: pending, onClick: controls.keep }));
+  box.append(question, actions);
+  box.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !pending) { event.preventDefault(); controls.keep(); } });
+  return box;
+}
+
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
-export function renderAccountBody(main, { model, draft, offers = [], activity, pending = false, message, journey = false, controls, order, orderVehicle, restarted = false, reload } = {}) {
+export function renderAccountBody(main, { model, draft, offers = [], activity, pending = false, message, journey = false, confirmDiscard = false, controls, order, orderVehicle, restarted = false, reload } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
   const head = el('div', 'gcsp-account-head');
@@ -420,12 +434,17 @@ export function renderAccountBody(main, { model, draft, offers = [], activity, p
     const value = draft.value;
     const choices = value.choices;
     const saved = el('section', 'gcsp-summary');
-    saved.append(el('h2', 'gcsp-h2', choices.mode === 'replacement' ? 'Replacement journey saved' : 'New order journey saved'),
-      el('p', 'gcsp-note', value.draftStage === 'intent' ? 'Your starting context is saved. No car has been selected or ordered.'
-        : 'Your order choices are saved. This is not an order confirmation.'),
+    saved.append(el('h2', 'gcsp-h2', choices.mode === 'replacement' ? 'You started choosing a replacement' : 'You started a new car order'),
+      el('p', 'gcsp-note', value.draftStage === 'intent' ? 'Nothing is held or ordered yet.' : 'Your order choices are saved. Nothing is ordered yet.'),
       facts([row('Current car', contractModel(model, choices.oldContractId)), ...slotRows(model, choices.slotId)]));
     if (value.requiresRefresh) saved.append(el('p', 'gcsp-note', 'Your saved context has changed. Refresh, review the account below, then start the permitted journey again.'));
-    else saved.append(button({ label: 'Resume saved journey', variant: held ? 'ghost' : 'primary', disabled: pending, onClick: controls.resume }));
+    else if (confirmDiscard && controls.discard) saved.append(discardConfirm(controls, pending));
+    else {
+      const actions = el('div', 'gcsp-actions');
+      actions.append(button({ label: 'Carry on', variant: held ? 'ghost' : 'primary', disabled: pending, onClick: controls.resume }));
+      if (controls.discard) actions.append(button({ label: 'Discard', variant: 'ghost', disabled: pending, onClick: controls.askDiscard }));
+      saved.append(actions);
+    }
     if (journey) saved.append(button({ label: 'Back to account', variant: 'ghost', disabled: pending, onClick: controls.back }));
     wrap.append(saved);
   } else if (draft && !['ok', 'not-found'].includes(draft.status)) {
@@ -457,7 +476,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   const abort = new AbortController();
   let envelope; let draft; let offers; let activity; let main; let pending = false; let message = null; let journey = false; let disposed = false;
   let generation = 0; let teardown; let loading; let finishPrint; let drawer; let orderRow; let orderVehicle; let restarted = false;
-  let syncVersion = 0; const live = viewStatus();
+  let confirming = false; let syncVersion = 0; const live = viewStatus();
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
   const read = async (name) => {
@@ -469,6 +488,8 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     openOffer: ({ offerId, runId }) => root.ownerDocument.defaultView.location.assign(
       `/gcsp/offer?offerId=${encodeURIComponent(offerId)}&runId=${encodeURIComponent(runId)}`),
     resume: () => resume(),
+    ...(typeof adapter.discardDraft === 'function' ? {
+      discard: true, askDiscard: () => askDiscard(), keep: () => keepDraft(), confirmDiscard: () => discardJourney() } : {}),
     supportButton: (route, text) => button({ label: text, variant: 'ghost', onClick: () => {
       onSupport?.(route); notify('gcsp:support', { route });
       message = { title: 'Support route', text: `Support route: ${route}.` }; live.clear(); draw(true);
@@ -503,7 +524,8 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   };
   function draw(focus = false) {
     if (!main || disposed) return;
-    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, activity, pending, message, journey, controls, order: orderRow, orderVehicle, restarted, reload });
+    if (draft?.status !== 'ok') confirming = false;
+    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, activity, pending, message, journey, confirmDiscard: confirming, controls, order: orderRow, orderVehicle, restarted, reload });
     if (message) live.announce(`${message.title}. ${message.text}`);
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
   }
@@ -619,6 +641,45 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       if (draft.status === 'ok' && !draft.value.requiresRefresh && draft.value.contextVersion === envelope.value.contextVersion && action) emitSaved();
       else failed(draft);
     } finally { pending = false; draw(true); }
+  }
+  const focusIn = (selector) => { const node = main?.querySelector(selector); if (node) node.focus(); };
+  const discardButton = () => [...(main?.querySelectorAll('.gcsp-summary .gcsp-actions button') ?? [])].find((node) => node.textContent === 'Discard');
+  function askDiscard() {
+    if (pending || disposed) return;
+    confirming = true; message = null; draw(); focusIn('.gcsp-discard-confirm');
+  }
+  function keepDraft() {
+    if (pending || disposed) return;
+    confirming = false; draw(); discardButton()?.focus();
+  }
+  function discardFailed(result) {
+    if (isRunRestarted(result)) { restarted = true; message = null; return; }
+    if (result?.code === 'read-only-visual-fixture') {
+      message = { title: 'Read-only account preview', text: 'This preview is read-only, so the journey cannot be discarded.' }; return;
+    }
+    const held = result?.status === 'conflict' && result.reason === 'release-required';
+    const stale = ['stale-version', 'conflict'].includes(result?.status) && !held;
+    message = { error: true, title: stale ? 'Your journey has changed' : 'Journey could not be discarded',
+      text: held ? 'A car is held for you. Release it before discarding this journey.'
+        : stale ? 'We have reloaded it. Check it, then try again.' : 'Your journey is unchanged. Try again in a moment.' };
+  }
+  async function discardJourney() {
+    if (pending || disposed || draft?.status !== 'ok') return;
+    pending = true; message = null; draw();
+    let done = false;
+    try {
+      const result = await adapter.discardDraft({ commandId: `account-discard-${globalThis.crypto.randomUUID()}`,
+        expectedDraftVersion: draft.value.draftVersion }, { signal: abort.signal });
+      if (disposed) return;
+      // Already gone counts as discarded; stale means the draft moved on, so show the latest.
+      done = ['ok', 'not-found'].includes(result?.status);
+      if (done) { confirming = false; journey = false; await loadAccount(); }
+      else {
+        if (['stale-version', 'conflict'].includes(result?.status)) draft = await read('readDraft');
+        confirming = false; discardFailed(result);
+      }
+    } catch { if (!disposed) { confirming = false; discardFailed(failure); } }
+    finally { pending = false; if (!disposed) { draw(done); if (!done) discardButton()?.focus(); } }
   }
   const shellAdapter = { signOut, loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };

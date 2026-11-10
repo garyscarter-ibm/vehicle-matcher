@@ -258,6 +258,7 @@ export class ManualClaimsService {
     return ok({ ...stock.value, decisions, cars: decisions.filter((d) => d.gateStatus === 'eligible'), heldOffer: heldOf(holds.value, offers.value) });
   }); }
   saveDraft(context, input) { return this.#read(context, () => this.#manual.saveDraft(context, input)); }
+  discardDraft(context, input) { return this.#read(context, () => this.#manual.discardDraft(context, input)); }
   claim(context, input) { return this.#safe(async () => {
     const replay = await this.#replay(context, 'claim', input, ['commandId', 'orderUuid', 'expectedStockVersion', 'expectedDraftVersion', 'expectedContextVersion', 'expectedTermsDigest']);
     if (replay.error) return replay.error;

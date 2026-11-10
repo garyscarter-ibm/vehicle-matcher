@@ -14,5 +14,5 @@ export function createManualContextRoutes(service) {
       return operation === 'browseStock' && answer?.status === 'ok' ? { ...answer, value: compactStockPayload(answer.value) } : answer;
     } });
   return [route('/account', 'GET', 'readAccount'), route('/draft', 'GET', 'readDraft', { absentIs200: true }),
-    route('/draft', 'POST', 'saveDraft'), route('/stock', 'GET', 'browseStock')];
+    route('/draft', 'POST', 'saveDraft'), route('/draft/discard', 'POST', 'discardDraft'), route('/stock', 'GET', 'browseStock')];
 }
