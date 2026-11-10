@@ -1,0 +1,287 @@
+{
+  "recorded_at": "2026-11-10T16:50:50.693684+00:00",
+  "policy": {
+    "one_serial_worker": true,
+    "scratch_mib_per_chunk": 128,
+    "ram_mib_per_chunk": 1024,
+    "seconds_per_chunk": 600,
+    "log_mib": 2,
+    "allocation_basis": "preferred30GiB not met (~17.3GiB available during lead checks); small serial chunks; >5GiB emergency reserve; explicit human configured-agent-count override",
+    "large_output_root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude"
+  },
+  "manifests": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/ownership/11847309e7bb4e41985775a47afb20da.json",
+      "root": "/private/tmp/test-stamp-shard-11847309e7bb4e41985775a47afb20da",
+      "token": "11847309e7bb4e41985775a47afb20da",
+      "state": "removed",
+      "root_absent": true,
+      "owned_groups": [
+        51317
+      ],
+      "owned_groups_absent": true,
+      "measured_peak_bytes": 0,
+      "location": "local",
+      "local_scratch_reason": "Bounded active headless browser profile/IPC and Node test working set; no large output intended"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/ownership/6017cdb7de834d64a6e7e49f6f60a43c.json",
+      "root": "/private/tmp/test-stamp-shard-6017cdb7de834d64a6e7e49f6f60a43c",
+      "token": "6017cdb7de834d64a6e7e49f6f60a43c",
+      "state": "removed",
+      "root_absent": true,
+      "owned_groups": [
+        60099
+      ],
+      "owned_groups_absent": true,
+      "measured_peak_bytes": 0,
+      "location": "local",
+      "local_scratch_reason": "Bounded active headless browser profile/IPC and Node test working set; no large output intended"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/ownership/a3ef90fa2328433c9efedc7d9df8c65d.json",
+      "root": "/private/tmp/test-stamp-shard-a3ef90fa2328433c9efedc7d9df8c65d",
+      "token": "a3ef90fa2328433c9efedc7d9df8c65d",
+      "state": "removed",
+      "root_absent": true,
+      "owned_groups": [
+        62153
+      ],
+      "owned_groups_absent": true,
+      "measured_peak_bytes": 7083323,
+      "location": "local",
+      "local_scratch_reason": "Bounded active headless browser profile/IPC and Node test working set; no large output intended"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/ownership/b809295a56df4358abaf967a2b59e585.json",
+      "root": "/private/tmp/test-stamp-shard-b809295a56df4358abaf967a2b59e585",
+      "token": "b809295a56df4358abaf967a2b59e585",
+      "state": "removed",
+      "root_absent": true,
+      "owned_groups": [
+        63615
+      ],
+      "owned_groups_absent": true,
+      "measured_peak_bytes": 7083323,
+      "location": "local",
+      "local_scratch_reason": "Bounded active headless browser profile/IPC and Node test working set; no large output intended"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/ownership/c5bdc63bf9c74034b0dc6e2618a951c8.json",
+      "root": "/private/tmp/test-stamp-shard-c5bdc63bf9c74034b0dc6e2618a951c8",
+      "token": "c5bdc63bf9c74034b0dc6e2618a951c8",
+      "state": "removed",
+      "root_absent": true,
+      "owned_groups": [
+        68741
+      ],
+      "owned_groups_absent": true,
+      "measured_peak_bytes": 0,
+      "location": "local",
+      "local_scratch_reason": "Bounded active headless browser profile/IPC and Node test working set; no large output intended"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/ownership/c9ad8ab8704843168284c18043a3e4d2.json",
+      "root": "/private/tmp/test-stamp-shard-c9ad8ab8704843168284c18043a3e4d2",
+      "token": "c9ad8ab8704843168284c18043a3e4d2",
+      "state": "removed",
+      "root_absent": true,
+      "owned_groups": [
+        52288
+      ],
+      "owned_groups_absent": true,
+      "measured_peak_bytes": 6975803,
+      "location": "local",
+      "local_scratch_reason": "Bounded active headless browser profile/IPC and Node test working set; no large output intended"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/ownership/d44aafce4452447f8a1ddd79dd71388f.json",
+      "root": "/private/tmp/test-stamp-shard-d44aafce4452447f8a1ddd79dd71388f",
+      "token": "d44aafce4452447f8a1ddd79dd71388f",
+      "state": "removed",
+      "root_absent": true,
+      "owned_groups": [
+        55019
+      ],
+      "owned_groups_absent": true,
+      "measured_peak_bytes": 6975803,
+      "location": "local",
+      "local_scratch_reason": "Bounded active headless browser profile/IPC and Node test working set; no large output intended"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/ownership/f6509b2a70c24623a7afb3d6d76dabe2.json",
+      "root": "/private/tmp/test-stamp-shard-f6509b2a70c24623a7afb3d6d76dabe2",
+      "token": "f6509b2a70c24623a7afb3d6d76dabe2",
+      "state": "removed",
+      "root_absent": true,
+      "owned_groups": [
+        70419
+      ],
+      "owned_groups_absent": true,
+      "measured_peak_bytes": 0,
+      "location": "local",
+      "local_scratch_reason": "Bounded active headless browser profile/IPC and Node test working set; no large output intended"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/22c880ce8f594a8a83c0c278ef80a930.json",
+      "root": "/private/tmp/test-stamp-shard-22c880ce8f594a8a83c0c278ef80a930",
+      "token": "22c880ce8f594a8a83c0c278ef80a930",
+      "state": "removed",
+      "root_absent": true,
+      "owned_groups": [
+        51359
+      ],
+      "owned_groups_absent": true,
+      "measured_peak_bytes": 0,
+      "location": "local",
+      "local_scratch_reason": ""
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/5856b00885964df9bab8fc02c9a4ea19.json",
+      "root": "/private/tmp/test-stamp-shard-5856b00885964df9bab8fc02c9a4ea19",
+      "token": "5856b00885964df9bab8fc02c9a4ea19",
+      "state": "removed",
+      "root_absent": true,
+      "owned_groups": [
+        68780
+      ],
+      "owned_groups_absent": true,
+      "measured_peak_bytes": 0,
+      "location": "local",
+      "local_scratch_reason": ""
+    }
+  ],
+  "owned_roots_checked": 10,
+  "all_owned_roots_absent": true,
+  "all_owned_process_groups_absent": true,
+  "server_ports": [
+    {
+      "report": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/lead-browser-report.json",
+      "origin": "http://127.0.0.1:53663",
+      "port_closed": true
+    },
+    {
+      "report": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-a-browser-report.json",
+      "origin": "http://127.0.0.1:54557",
+      "port_closed": true
+    },
+    {
+      "report": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-browser-report.json",
+      "origin": "http://127.0.0.1:55982",
+      "port_closed": true
+    },
+    {
+      "report": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8-browser-report.json",
+      "origin": "http://127.0.0.1:56518",
+      "port_closed": true
+    }
+  ],
+  "owned_reservations_remaining": {},
+  "measured_peak_scratch_per_chunk_bytes": 7083323,
+  "sum_removed_root_measured_peaks_bytes": 28118252,
+  "measured_peak_rss_bytes": 350060544,
+  "scratch_metric_note": "Sum of distinct removed roots' measured high-water allocations; not an exact free-space delta.",
+  "local_compatibility_exception": "Bounded active headless browser profiles/IPC/test working data only; each owned root removed. No installed environment, working tree, user file or default browser context removed.",
+  "removed_duplicate_images": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-gallery-1440-long-open-overlay.png",
+      "bytes": 95778,
+      "sha256": "ec6f54269417f7f37b28a0b6b5d3145bbb617d8b75d51add54e4589a717160c7"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-gallery-390-long-open-overlay.png",
+      "bytes": 46866,
+      "sha256": "cd24b18c908928366d0a95c590ae3e053f31f41ab9b0f87940bd550619b9df39"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-gallery-390-unavailable-retry-overlay.png",
+      "bytes": 36397,
+      "sha256": "1d3c4917d6da85f92d56d2342db2488bcb585b22642101ef0a7e381e5fa1917c"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8-live-offer-1440-menu-overlay.png",
+      "bytes": 45192,
+      "sha256": "089f4df422fb3e416ecb02e3009f8ccecba3489c9dcc01cb4c2eac8ccad32163"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8-live-outbox-390-menu-overlay.png",
+      "bytes": 65070,
+      "sha256": "8be827b30171ec0325e3259cbd428cada6a611f734a3f3ee9bd5b381652fcbb0"
+    }
+  ],
+  "assessment_a_duplicate_capture_bytes_removed": 898723,
+  "assessment_a_duplicates_absent": true,
+  "removed_successful_logs": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-scoped/chunk-0001.log",
+      "bytes": 13265,
+      "sha256": "44a54deca0773a7cbd6046259113baf1211b5b61cef113bcfb412dc54ae0703b"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-browser/chunk-0001.log",
+      "bytes": 64,
+      "sha256": "161e0cea201bbe8a8ea02a003f9790e74aaee45d43e62f516d5fae48eda2f337"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-assessment-a-browser/chunk-0001.log",
+      "bytes": 64,
+      "sha256": "161e0cea201bbe8a8ea02a003f9790e74aaee45d43e62f516d5fae48eda2f337"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-assessment-b-live-utf8-browser/chunk-0001.log",
+      "bytes": 45,
+      "sha256": "3900236816073164f73678ef4a6a5017f81ae3b0c57485271a83822c0381d163"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-advanced-base-scoped/chunk-0001.log",
+      "bytes": 13300,
+      "sha256": "a0394ad871d3d5824abdfe07e3015b358b52af505e5dd7b34367b4c12d95392a"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-critique-persist/chunk-0001.log",
+      "bytes": 667,
+      "sha256": "40c2d847ccafe34a5b4f563f268cd331a6fb52fd7410a7417190c126d07537f6"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261110-162534-e1akil12/chunk-0001.log",
+      "bytes": 16415,
+      "sha256": "d182cc8c7563e44afbd9bf8b8e29d6c76a8a7fe6b43099c098d39fc2db19c9cc"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261110-164737-mfkmihf8/chunk-0001.log",
+      "bytes": 16753,
+      "sha256": "d16040f939b5eda3c955e10e87ff3992c0f9270929d3092d40ecd922f3252ae8"
+    }
+  ],
+  "retained_bounded_failure_or_findings_logs": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-assessment-b-detector/chunk-0001.log",
+      "bytes": 11257,
+      "sha256": "b150cede7814cc7e835d7ca52d5640946e63cffb44c06b51ef6d407344739574"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-assessment-b-browser/chunk-0001.log",
+      "bytes": 552,
+      "sha256": "bd96530615fdaa133288927ebbf3fb99b278d28476f4ea0d7350e366882d5eb2"
+    }
+  ],
+  "retained_summaries": [
+    "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/plan.json",
+    "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-a-summary.json",
+    "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-summary.json",
+    "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/lead-browser-report.json",
+    "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-a-browser-report.json",
+    "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-browser-report.json",
+    "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8-browser-report.json",
+    "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-b50b500bde23fe5677fb13dfd589f374e20390e5db2f47f9544f0e5505823a8b-default-1794327945336875000.json"
+  ],
+  "retained_images": 29,
+  "retained_image_bytes": 1188026,
+  "no_large_cloud_output_required": true,
+  "leftovers": [],
+  "free_disk_bytes_at_final_audit": 18129543168,
+  "rss_measurement_note": "Maximum measured RSS of one owned process group, accounting for both nested Node test groups. The conservative maximum of parent-plus-nested group peak sums is 390,234,112 bytes; component peaks need not be simultaneous.",
+  "removed_duplicate_image_bytes_total": 1188026,
+  "removed_successful_log_bytes_total": 60573,
+  "retained_critique_snapshot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-005/.impeccable/critique/2026-11-10T16-49-34Z__blocks-vehicle-matcher-component-gallery-js.md"
+}

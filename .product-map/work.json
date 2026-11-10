@@ -1193,7 +1193,7 @@
           "status": "in-progress",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
           "observed_at": "2026-11-06T00:30:56Z",
-          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100\u2192102 streamedHTTP\u2192105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
+          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100→102 streamedHTTP→105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
         },
         {
           "id": "decision-host",
@@ -2062,7 +2062,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
@@ -3917,7 +3917,7 @@
     },
     {
       "id": "FUCQ-326",
-      "title": "Use \u201cYour preferences\u201d consistently in the employee journey",
+      "title": "Use “Your preferences” consistently in the employee journey",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
@@ -4283,47 +4283,6 @@
       "integration_base": "43e4c1be2ca66951a0ddc4a1ff11332df48974be"
     },
     {
-      "id": "FUCQ-346",
-      "title": "Keep account menus and Retry readable in narrow component-gallery frames",
-      "status": "To Do",
-      "original_status": "To Do",
-      "type": "Bug",
-      "assignee": "",
-      "branch": "dev/DEV-2026-11-10-005",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-346",
-      "jira_observation_basis": "Imported claimed Bug; native OAuth unavailable; local slice evidence does not infer lifecycle acceptance",
-      "workers": [
-        {
-          "name": "Michigan J. Frog",
-          "role": "story lead; scoped gallery repair",
-          "status": "in-progress",
-          "observed_at": "2026-11-10T16:22:40.627257+00:00",
-          "expires_at": "2026-11-10T18:22:40.628274+00:00"
-        }
-      ],
-      "observed_at": "2026-11-10T16:22:41Z",
-      "slices": [
-        {
-          "id": "containment",
-          "status": "in-progress",
-          "title": "Gallery-account-containment",
-          "observed_at": "2026-11-10T16:22:41Z",
-          "evidence": "Lead verified all3 supplied attachment bytes and source containment cause; bounded gallery-only repair plan in shared test-runs/fucq346-20261110/plan.json. Tests and browser held pending dispatcher reservation release."
-        },
-        {
-          "id": "critique",
-          "status": "not-started",
-          "title": "Independent-rendered-review"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Shared-menu-boundary-integration"
-        }
-      ],
-      "unsliced": false
-    },
-    {
       "assignee": "usget",
       "branch": "dev/DEV-2026-11-10-007",
       "delivery_status": "Built; scoped fixture validation complete; parent integration and collaborator acceptance pending",
@@ -4361,6 +4320,86 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-346",
+      "title": "Keep account menus and Retry readable in narrow component-gallery frames",
+      "status": "To Do",
+      "original_status": "To Do",
+      "type": "Bug",
+      "assignee": "",
+      "branch": "dev/DEV-2026-11-10-005",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-346",
+      "jira_observation_basis": "Imported claimed Bug; native OAuth unavailable; local slice evidence does not infer lifecycle acceptance",
+      "workers": [
+        {
+          "name": "Michigan J. Frog",
+          "role": "story lead and small gallery CSS repair",
+          "harness": "codex",
+          "status": "stopped",
+          "observed_at": "2026-11-10T16:52:03.561622+00:00",
+          "expires_at": "2026-11-10T16:52:03.561622+00:00",
+          "requested_model": "gpt-6.1-sol",
+          "requested_effort": "xhigh",
+          "selected_model": "gpt-6.1-sol",
+          "selected_effort": "xhigh",
+          "source": "Final scoped delivery checks and independent A/B complete; ten owned roots absent; parent owns integration/Jira acceptance."
+        },
+        {
+          "name": "Lord Business",
+          "role": "independent AssessmentA reviewer",
+          "harness": "codex",
+          "status": "stopped",
+          "observed_at": "2026-11-10T16:52:03.561622+00:00",
+          "expires_at": "2026-11-10T16:52:03.561622+00:00",
+          "requested_model": "gpt-6.1-sol",
+          "requested_effort": "high",
+          "selected_model": "gpt-6.1-sol",
+          "selected_effort": "high",
+          "source": "Final scoped delivery checks and independent A/B complete; ten owned roots absent; parent owns integration/Jira acceptance."
+        },
+        {
+          "name": "Mr Troop",
+          "role": "independent AssessmentB detector/browser runner",
+          "harness": "codex",
+          "status": "stopped",
+          "observed_at": "2026-11-10T16:52:03.561622+00:00",
+          "expires_at": "2026-11-10T16:52:03.561622+00:00",
+          "requested_model": "gpt-6-luna",
+          "requested_effort": "high",
+          "selected_model": "gpt-6-luna",
+          "selected_effort": "high",
+          "source": "Final scoped delivery checks and independent A/B complete; ten owned roots absent; parent owns integration/Jira acceptance."
+        }
+      ],
+      "observed_at": "2026-11-10T16:52:03Z",
+      "slices": [
+        {
+          "id": "containment",
+          "status": "complete",
+          "title": "Gallery-account-containment",
+          "observed_at": "2026-11-10T16:52:03Z",
+          "evidence": "Gallery-only repair9cc11eb6; both390px clips reproduced with original CSS and corrected fulltext/popup/Retry/loading and keyboard proved. docs/gcsp/evidence/fucq346/validation.json"
+        },
+        {
+          "id": "critique",
+          "status": "complete",
+          "title": "Independent-rendered-review",
+          "observed_at": "2026-11-10T16:52:03Z",
+          "evidence": "Independent A unanchored31/36 PASS; all24fresh desktop/narrow captures viewed; B actual4view overlays196/114/4/2 classified; no actionable original-scope finding. Lead inspected corrected capture set. review.md"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Shared-menu-boundary-integration",
+          "observed_at": "2026-11-10T16:52:03Z",
+          "evidence": "Base829cf1a9 merged348fc769; final162/162 scoped shell/ratchet/direct narrowaccount import-layout checks,0skips. Exact rendered source/input hashes match9cc11eb6; no fullsuite/browser repeat. Ten owned roots absent; native Jira held."
+        }
+      ],
+      "unsliced": false,
+      "delivery_status": "Built; original4AC scoped proof complete; parent integration/native Jira/collaborator acceptance pending",
+      "integration_base": "829cf1a9fe10ad518cd0519c3f5e1ae9447421c1",
+      "integration_merge": "348fc7691feca61b2d3bc6136b6e8683296c6c47"
     }
   ]
 }

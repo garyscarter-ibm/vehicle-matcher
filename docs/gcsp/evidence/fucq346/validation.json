@@ -1,0 +1,1606 @@
+{
+  "story": "FUCQ-346",
+  "run": "fucq346-20261110",
+  "recorded_at": "2026-11-10T16:50:50.693684+00:00",
+  "status": "built; scoped proof complete; parent integration/native Jira/collaborator acceptance pending",
+  "branch": "dev/DEV-2026-11-10-005",
+  "claim_base": "7d146fe3dd99766ea2376e54bb6b2c668e1c2f3d",
+  "frozen_implementation_commit": "9cc11eb602e77858ee75945544b109fe96dc3c7c",
+  "frozen_implementation_tree": "67992d83a6ae4c92303db7cab475771d54783772",
+  "executable_change": [
+    "blocks/vehicle-matcher/component-gallery.css"
+  ],
+  "source_test_sha256": {
+    "blocks/vehicle-matcher/component-gallery.css": "4bf16c2db1dfafc0c83c988c7fcbab65da1e14e37c419dcb9db13fc29e7e3ad3",
+    "blocks/vehicle-matcher/component-gallery.js": "aede0b8d75c22d979e52d280c25c0402fea85f7119ca2c7b2323d88dbeb43e72",
+    "blocks/gcsp/shell/account-menu.css": "4e1d3020a3d9dc7c9721a3613b4cdf7fc2dfcf702b5bc107edf83ac50281751d",
+    "blocks/gcsp/shell/gcsp-shell.css": "786711b25e747ae88dd5f4bf5b6c0fc704179c263d00d061283bd62b1a62b874",
+    "blocks/gcsp/shell/portal-shell.js": "f676b8a30fe531705fc0a0fbce7809e444047cfed236b7581ef3d18d5b4c1186",
+    "server/test/gcsp-shell.test.js": "3a2f8d1e693bf0ea3de6119ddacd9e17c645445a0e18d42e40b7a2e0f50c8037",
+    "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7",
+    "server/test/ui-ratchet.json": "cd26bcb292d06c9043f06da7a1bd600dcc059e8b8194d84283a5411b1a17118b"
+  },
+  "source_test_identity": "e042e598370ef1c5f07a94ecfd3a13ce46f2023a8bd639bcebc2ec0267d3ea52",
+  "all_frozen_source_test_hashes_match": true,
+  "helpers": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/supervise.py",
+      "bytes": 2144,
+      "sha256": "e99f128c7fda61669dd154a81f524403e105f5002c4b18f5497e98e7b82cb50b"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/browser.mjs",
+      "bytes": 11768,
+      "sha256": "0a708a34b37f69008bfe7acba2b7c3c01138949d3b33edc932a78a9ae2ac08c4"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b.mjs",
+      "bytes": 11687,
+      "sha256": "461eed89b2ef0412ce7f70d30a5de53f17dbc7a046b26f770448ecb21a981caa"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8.mjs",
+      "bytes": 10456,
+      "sha256": "7981fc5d3b2f37b86d486ade4bcc51de90b7ba98deaaf19e441dc8a8b08ae1d1"
+    }
+  ],
+  "original_attachments": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/bug-evidence/DEV-2026-11-10-005/937462.image",
+      "filename": "gallery-390.png",
+      "bytes": 14466,
+      "sha256": "8d06171c270bec1e3f64ce370da347c5db4ae7ecda0ccbdb602fbcaf90b8c719",
+      "viewed_by": "Michigan J. Frog",
+      "viewed_at": "2026-11-10T16:22:40.627257+00:00"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/bug-evidence/DEV-2026-11-10-005/937463.image",
+      "filename": "gallery-1440.png",
+      "bytes": 32389,
+      "sha256": "fca3d86fffb4861fb31462f2105ce48c936177cf5e1c750f9afd6272184837c8",
+      "viewed_by": "Michigan J. Frog",
+      "viewed_at": "2026-11-10T16:22:40.627257+00:00"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/bug-evidence/DEV-2026-11-10-005/937464.image",
+      "filename": "gallery-unavailable-390.png",
+      "bytes": 12970,
+      "sha256": "c94f4bca75a9e95a78f68180aeeb691b8f3dcc8f4ebddf612dc1896eff0be8fa",
+      "viewed_by": "Michigan J. Frog",
+      "viewed_at": "2026-11-10T16:22:40.627257+00:00"
+    }
+  ],
+  "original_attachments_unchanged": true,
+  "selected_tests": {
+    "command": "node --test --test-concurrency=1 server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js",
+    "passed": 154,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 10.216868208,
+    "targeted_stamp": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-b50b500bde23fe5677fb13dfd589f374e20390e5db2f47f9544f0e5505823a8b-default-1794327945336875000.json",
+    "per_test_coverage": "Not supplied by the current Node runner/selector; no per-test coverage-context map claimed, no second suite solely to populate telemetry."
+  },
+  "targeted_stamp": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-b50b500bde23fe5677fb13dfd589f374e20390e5db2f47f9544f0e5505823a8b-default-1794327945336875000.json",
+    "sha256": "abe6fe8eb09d6159cc21db23509f83dde1ad923163c37992b607c34da1295289",
+    "scope": "targeted",
+    "variant": "default",
+    "result": "passed",
+    "code_key": "b50b500bde23fe5677fb13dfd589f374e20390e5db2f47f9544f0e5505823a8b",
+    "tree": "213efcbda213990f488656ce5a9d7f51ecd1ad97",
+    "head": "7d146fe3dd99766ea2376e54bb6b2c668e1c2f3d",
+    "base_commit": "7d146fe3dd99766ea2376e54bb6b2c668e1c2f3d",
+    "execution_identity": {
+      "code": "b50b500bde23fe5677fb13dfd589f374e20390e5db2f47f9544f0e5505823a8b",
+      "environment": "a17777dd888d4e85a96f6f9438f52168079ebcc94ed06d699e6bbdd3591dc8e4",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "targeted",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js"
+      ],
+      "settings": "446fd189d77b81650f94d1664580cff07bc7fe8c6845bebc05fc6d31aefd4da8",
+      "variant": "default",
+      "version": 1
+    },
+    "ran_field": null,
+    "ran_note": "Explicit Node runner leaves ran=null in stamp; full TAP proved154/154. Tested dirty repair source was then committed9cc11eb6; all source/test hashes still match. Final changes are evidence/docs/map only."
+  },
+  "selection_and_impact": {
+    "version": 1,
+    "story": "FUCQ-346",
+    "recorded_at": "2026-11-10T16:29:17.003491+00:00",
+    "implementation_commit": "9cc11eb602e77858ee75945544b109fe96dc3c7c",
+    "source_test_identity": "e042e598370ef1c5f07a94ecfd3a13ce46f2023a8bd639bcebc2ec0267d3ea52",
+    "sha256": {
+      "blocks/vehicle-matcher/component-gallery.css": "4bf16c2db1dfafc0c83c988c7fcbab65da1e14e37c419dcb9db13fc29e7e3ad3",
+      "blocks/vehicle-matcher/component-gallery.js": "aede0b8d75c22d979e52d280c25c0402fea85f7119ca2c7b2323d88dbeb43e72",
+      "blocks/gcsp/shell/account-menu.css": "4e1d3020a3d9dc7c9721a3613b4cdf7fc2dfcf702b5bc107edf83ac50281751d",
+      "blocks/gcsp/shell/gcsp-shell.css": "786711b25e747ae88dd5f4bf5b6c0fc704179c263d00d061283bd62b1a62b874",
+      "blocks/gcsp/shell/portal-shell.js": "f676b8a30fe531705fc0a0fbce7809e444047cfed236b7581ef3d18d5b4c1186",
+      "server/test/gcsp-shell.test.js": "3a2f8d1e693bf0ea3de6119ddacd9e17c645445a0e18d42e40b7a2e0f50c8037",
+      "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7",
+      "server/test/ui-ratchet.json": "cd26bcb292d06c9043f06da7a1bd600dcc059e8b8194d84283a5411b1a17118b"
+    },
+    "selected_modules": {
+      "server/test/gcsp-shell.test.js": {
+        "ownership": [
+          "portalShell disclosure, identity/context and Retry state/handler",
+          "actual component-gallery mounting, existing shell integration contracts"
+        ],
+        "fixture_config_edges": [
+          "jsdom30.0.1 in existing rootnode_modules",
+          "gallery ES imports and static fixture projections",
+          "CSS read assertions; no browser layout engine"
+        ]
+      },
+      "server/test/ui-ratchet.test.js": {
+        "ownership": [
+          "existing component use and falling stylesheet caps, including component-gallery/account-menu/shell"
+        ],
+        "fixture_config_edges": [
+          "server/test/ui-ratchet.json",
+          "tracked UI source scan"
+        ]
+      }
+    },
+    "observed_validation": {
+      "command": "node --test --test-concurrency=1 server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js",
+      "passed": 154,
+      "failed": 0,
+      "skipped": 0,
+      "duration_seconds": 10.216868208,
+      "targeted_stamp": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-b50b500bde23fe5677fb13dfd589f374e20390e5db2f47f9544f0e5505823a8b-default-1794327945336875000.json",
+      "per_test_coverage": "Not supplied by the current Node runner/selector; no per-test coverage-context map claimed, no second suite solely to populate telemetry."
+    },
+    "browser_boundary": {
+      "helper_sha256": "0a708a34b37f69008bfe7acba2b7c3c01138949d3b33edc932a78a9ae2ac08c4",
+      "css_sha256": "4bf16c2db1dfafc0c83c988c7fcbab65da1e14e37c419dcb9db13fc29e7e3ad3",
+      "cases": 4,
+      "live_default_menu_cases": 4,
+      "screenshots": 24,
+      "red": "same current markup/data with original base gallery CSS reproduces both390px clipping defects",
+      "green": "corrected actual rendered full text rectangles/popup/Retry/loading contained, pointer+keyboard activation and desktop geometry preserved",
+      "live_limit": "Actual default frontend mounts with synthetic reads and local503; genuine session revocation and deployed smoke outside scope"
+    },
+    "known_boundaries": [
+      "No JavaScript affected-selector plug-in; broad npm fallback reviewed and excluded.",
+      "CSS-only code change, no auth/session/mail/source/business logic edit.",
+      "Unobserved paths remain unknown; module ownership and browser boundary review support this scoped selection.",
+      "No new full suite or deployed/production smoke."
+    ]
+  },
+  "browser": {
+    "report": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/lead-browser-report.json",
+    "report_sha256": "fca3534733f3f8fc5aa16fdd07b7c8aa8425bf95cbe57f89c1367bf59da6aa89",
+    "method": "Owned isolated headless Chrome; actual components and live-default mountOffer/mountOutbox frontends with bounded synthetic read adapters; local logout503 only, no real authentication/source/mail/deployment",
+    "gallery_cases": 4,
+    "live_default_cases": 4,
+    "state": "passed",
+    "expected_original_red": "Both390px defects reproduced with original base gallery CSS and identical current markup/data",
+    "corrected_green": "Full name/context rectangles, popup, Retry and loading inside frames; Retry pointer+Enter; Escape/focus restore; desktop geometry unchanged",
+    "live_boundaries": [
+      {
+        "kind": "offer",
+        "width": 1440,
+        "panel": {
+          "x": 1104,
+          "y": 51.5,
+          "width": 320,
+          "height": 190
+        },
+        "errorPanel": {
+          "x": 1104,
+          "y": 51.5,
+          "width": 320,
+          "height": 218
+        },
+        "defaultSignOutPresent": true,
+        "pendingDisabled": true,
+        "errorRetryEnabled": true,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "api": "local injected503; genuine auth/session revocation outside this CSS boundary check"
+      },
+      {
+        "kind": "outbox",
+        "width": 1440,
+        "panel": {
+          "x": 1104,
+          "y": 51.5,
+          "width": 320,
+          "height": 106
+        },
+        "errorPanel": {
+          "x": 1104,
+          "y": 51.5,
+          "width": 320,
+          "height": 134
+        },
+        "defaultSignOutPresent": true,
+        "pendingDisabled": true,
+        "errorRetryEnabled": true,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "api": "local injected503; genuine auth/session revocation outside this CSS boundary check"
+      },
+      {
+        "kind": "offer",
+        "width": 390,
+        "panel": {
+          "x": 62,
+          "y": 57.5,
+          "width": 320,
+          "height": 202
+        },
+        "errorPanel": {
+          "x": 62,
+          "y": 57.5,
+          "width": 320,
+          "height": 230
+        },
+        "defaultSignOutPresent": true,
+        "pendingDisabled": true,
+        "errorRetryEnabled": true,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "api": "local injected503; genuine auth/session revocation outside this CSS boundary check"
+      },
+      {
+        "kind": "outbox",
+        "width": 390,
+        "panel": {
+          "x": 62,
+          "y": 57.5,
+          "width": 320,
+          "height": 118
+        },
+        "errorPanel": {
+          "x": 62,
+          "y": 57.5,
+          "width": 320,
+          "height": 146
+        },
+        "defaultSignOutPresent": true,
+        "pendingDisabled": true,
+        "errorRetryEnabled": true,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "api": "local injected503; genuine auth/session revocation outside this CSS boundary check"
+      }
+    ],
+    "page_errors": [],
+    "limits": [
+      "One local Chromium/Chrome run; no device, screen-reader or cross-browser certification.",
+      "Actual mountOffer/mountOutbox default shell frontends with synthetic read adapters and local injected503; no genuine revocation, real service/source/mail or deployment integration proved.",
+      "Gallery Retry proof demonstrates reachable pointer/keyboard activation; existing unit tests prove handler dispatch; gallery fixture supplies no actual account-loader retry.",
+      "Detector B not run or consumed by reviewer A."
+    ]
+  },
+  "review": {
+    "method": "dual-agent",
+    "assessment_a": {
+      "summary": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-a-summary.json",
+      "sha256": "618a097fc34ef6e3eae91ce1cb94e98039e6e276c5c85db595b1cda2236fa812",
+      "reviewer": {
+        "name": "Lord Business",
+        "pronouns": "they/them",
+        "thread_id": "01a1c649-ea9a-7cd2-aac7-745d6b478f2a",
+        "saved_title": "Lord Business",
+        "title_verified_by": "set_thread_title result and read_thread returned title",
+        "requested_model": "gpt-6.1-sol",
+        "requested_effort": "high",
+        "selected_model": "gpt-6.1-sol",
+        "selected_effort": "high",
+        "fallback": null,
+        "effective_runtime": "not independently verified"
+      },
+      "head": "9cc11eb602e77858ee75945544b109fe96dc3c7c",
+      "verdict": "PASS \u2014 no blocking or major issues found.",
+      "heuristics": [
+        {
+          "id": 1,
+          "name": "Visibility of system status",
+          "score": 3,
+          "basis": "Loading skeleton, unavailable label, pending label and local failure feedback visible."
+        },
+        {
+          "id": 2,
+          "name": "Match with real world",
+          "score": 4,
+          "basis": "Full name, scheme and grade appear in natural reading order; Retry uses familiar language."
+        },
+        {
+          "id": 3,
+          "name": "Control and freedom",
+          "score": 3,
+          "basis": "Native disclosure opens by Enter, closes by Escape and restores focus."
+        },
+        {
+          "id": 4,
+          "name": "Consistency and standards",
+          "score": 4,
+          "basis": "Shared shell and Density tokens retained; desktop geometry unchanged."
+        },
+        {
+          "id": 5,
+          "name": "Error prevention",
+          "score": 3,
+          "basis": "Live pending sign-out disables repeat activation; gallery adds no business action."
+        },
+        {
+          "id": 6,
+          "name": "Recognition rather than recall",
+          "score": 4,
+          "basis": "Complete long identity and context remain visible once disclosed; no memory bridge."
+        },
+        {
+          "id": 7,
+          "name": "Efficiency",
+          "score": 3,
+          "basis": "One disclosure action and direct Retry with visible keyboard focus."
+        },
+        {
+          "id": 8,
+          "name": "Aesthetic and minimalist design",
+          "score": 4,
+          "basis": "Readable panel inset and full-width unavailable row preserve hierarchy with no added prose."
+        },
+        {
+          "id": 9,
+          "name": "Error recovery",
+          "score": 3,
+          "basis": "Visible Retry and adjacent live local503 recovery explanation remain readable."
+        },
+        {
+          "id": 10,
+          "name": "Help and documentation",
+          "score": null,
+          "basis": "n/a: bounded identity disclosure and single recovery action need no separate help flow; example headings supply context."
+        }
+      ],
+      "score": 31,
+      "max_score": 36,
+      "findings": [],
+      "independent_images_viewed": 24,
+      "a_completed_before_detector_findings_in_parent": true
+    },
+    "assessment_b": {
+      "assessment": "Independent Assessment B \u2014 deterministic detector and browser overlay evidence",
+      "run": "FUCQ-346 / DEV-2026-11-10-005",
+      "status": "completed after the parent-authorized UTF-8 correction; the initial browser failure is preserved",
+      "identity": {
+        "desktop_title": "Mr Troop",
+        "desktop_thread_id": "01a1c64f-efb1-77c3-be8c-5f78a14ce27f",
+        "worktree": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-005",
+        "head": "9cc11eb602e77858ee75945544b109fe96dc3c7c",
+        "gallery_css_sha256": "4bf16c2db1dfafc0c83c988c7fcbab65da1e14e37c419dcb9db13fc29e7e3ad3",
+        "source_hashes": {
+          "blocks/vehicle-matcher/component-gallery.css": "4bf16c2db1dfafc0c83c988c7fcbab65da1e14e37c419dcb9db13fc29e7e3ad3",
+          "blocks/vehicle-matcher/component-gallery.js": "aede0b8d75c22d979e52d280c25c0402fea85f7119ca2c7b2323d88dbeb43e72",
+          "blocks/gcsp/shell/account-menu.css": "4e1d3020a3d9dc7c9721a3613b4cdf7fc2dfcf702b5bc107edf83ac50281751d",
+          "blocks/gcsp/shell/gcsp-shell.css": "786711b25e747ae88dd5f4bf5b6c0fc704179c263d00d061283bd62b1a62b874",
+          "blocks/gcsp/shell/portal-shell.js": "f676b8a30fe531705fc0a0fbce7809e444047cfed236b7581ef3d18d5b4c1186",
+          "server/test/gcsp-shell.test.js": "3a2f8d1e693bf0ea3de6119ddacd9e17c645445a0e18d42e40b7a2e0f50c8037",
+          "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+        },
+        "source_changes_by_this_agent": [],
+        "git_status_note": "The worktree showed an untracked docs/gcsp/evidence/fucq346/ directory; it was left untouched."
+      },
+      "runner": {
+        "role": "runner",
+        "requested_tier": "Haiku",
+        "requested_model": "gpt-6-luna",
+        "requested_effort": "high",
+        "selected_model": "gpt-6-luna",
+        "selected_effort": "high",
+        "effective_runtime": "not independently confirmed",
+        "fallback": null
+      },
+      "scope_and_validation": {
+        "changed_path_under_review": "blocks/vehicle-matcher/component-gallery.css",
+        "regression": "gallery popup containment and narrow unavailable Retry; live offer/outbox account menu usability",
+        "selected_checks": [
+          "bundled detect.mjs --json blocks/vehicle-matcher/component-gallery.js .",
+          "isolated headless Chrome detector overlay on components gallery 1440px and 390px",
+          "isolated synthetic live-default offer 1440px and outbox 390px overlay evidence"
+        ],
+        "excluded": [
+          "full test suite",
+          "repeat scoped regression/browser coverage already available to parent",
+          "authentication/source/mail/deployment"
+        ],
+        "selection_reason": "Assessment B only; CLI and overlay were the assigned independent detector/browser evidence. No implementation files were edited."
+      },
+      "cli": {
+        "command": [
+          "node",
+          "/Users/usget/.codex/skills/impeccable/scripts/detect.mjs",
+          "--json",
+          "blocks/vehicle-matcher/component-gallery.js",
+          "."
+        ],
+        "detector_exit_code": 2,
+        "supervisor_return_code": 1,
+        "interpretation": "Expected findings exit code 2; supervisor state complete. The supervisor wrapper returns 1 when the child is nonzero. This was not a detector crash.",
+        "finding_count": 22,
+        "counts_by_rule": {
+          "bounce-easing": 1,
+          "broken-image": 5,
+          "layout-transition": 4,
+          "overused-font": 2,
+          "side-tab": 10
+        },
+        "counts_by_file": {
+          "_tools/product_map_assets/map.css": 1,
+          "block.html": 1,
+          "blocks/gcsp/shell/gcsp-shell.css": 1,
+          "blocks/vehicle-matcher/tokens.css": 1,
+          "blocks/vehicle-matcher/vehicle-matcher.css": 9,
+          "docs/personas-pack.html": 4,
+          "server/honda-listing.js": 1,
+          "server/motorrad-listing.js": 4
+        },
+        "locations": [
+          {
+            "antipattern": "side-tab",
+            "name": "Side-tab accent border",
+            "description": "Thick colored border on one side of a card \u2014 the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "_tools/product_map_assets/map.css",
+            "line": 107,
+            "snippet": "border-left:3px solid #f1c21b"
+          },
+          {
+            "antipattern": "overused-font",
+            "name": "Overused font",
+            "description": "Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "block.html",
+            "line": 19,
+            "snippet": "font-family: 'Helvetica"
+          },
+          {
+            "antipattern": "layout-transition",
+            "name": "Layout property animation",
+            "description": "Animating width, height, padding, or margin causes layout thrash and janky performance. Use transform and opacity instead, or grid-template-rows for height animations.",
+            "severity": "warning",
+            "category": "quality",
+            "file": "blocks/gcsp/shell/gcsp-shell.css",
+            "line": 110,
+            "snippet": "transition: width"
+          },
+          {
+            "antipattern": "bounce-easing",
+            "name": "Bounce or elastic easing",
+            "description": "Bounce and elastic easing feel dated and tacky. Real objects decelerate smoothly \u2014 use exponential easing (ease-out-quart/quint/expo) instead.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "blocks/vehicle-matcher/tokens.css",
+            "line": 172,
+            "snippet": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+            "importedBy": [
+              "vehicle-matcher.css"
+            ]
+          },
+          {
+            "antipattern": "side-tab",
+            "name": "Side-tab accent border",
+            "description": "Thick colored border on one side of a card \u2014 the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "blocks/vehicle-matcher/vehicle-matcher.css",
+            "line": 1102,
+            "snippet": "border-left: 3px solid var(--vm-accent-spot)"
+          },
+          {
+            "antipattern": "side-tab",
+            "name": "Side-tab accent border",
+            "description": "Thick colored border on one side of a card \u2014 the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "blocks/vehicle-matcher/vehicle-matcher.css",
+            "line": 1287,
+            "snippet": "border-left: 3px solid var(--vm-accent-spot)"
+          },
+          {
+            "antipattern": "side-tab",
+            "name": "Side-tab accent border",
+            "description": "Thick colored border on one side of a card \u2014 the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "blocks/vehicle-matcher/vehicle-matcher.css",
+            "line": 1367,
+            "snippet": "border-left: 3px solid var(--vm-accent-spot)"
+          },
+          {
+            "antipattern": "side-tab",
+            "name": "Side-tab accent border",
+            "description": "Thick colored border on one side of a card \u2014 the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "blocks/vehicle-matcher/vehicle-matcher.css",
+            "line": 1728,
+            "snippet": "border-left: 3px solid var(--vm-accent)"
+          },
+          {
+            "antipattern": "side-tab",
+            "name": "Side-tab accent border",
+            "description": "Thick colored border on one side of a card \u2014 the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "blocks/vehicle-matcher/vehicle-matcher.css",
+            "line": 2751,
+            "snippet": "border-left: 3px solid var(--vm-ink)"
+          },
+          {
+            "antipattern": "side-tab",
+            "name": "Side-tab accent border",
+            "description": "Thick colored border on one side of a card \u2014 the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "blocks/vehicle-matcher/vehicle-matcher.css",
+            "line": 3649,
+            "snippet": "border-left: 3px solid var(--vm-accent-spot)"
+          },
+          {
+            "antipattern": "layout-transition",
+            "name": "Layout property animation",
+            "description": "Animating width, height, padding, or margin causes layout thrash and janky performance. Use transform and opacity instead, or grid-template-rows for height animations.",
+            "severity": "warning",
+            "category": "quality",
+            "file": "blocks/vehicle-matcher/vehicle-matcher.css",
+            "line": 826,
+            "snippet": "transition: width"
+          },
+          {
+            "antipattern": "layout-transition",
+            "name": "Layout property animation",
+            "description": "Animating width, height, padding, or margin causes layout thrash and janky performance. Use transform and opacity instead, or grid-template-rows for height animations.",
+            "severity": "warning",
+            "category": "quality",
+            "file": "blocks/vehicle-matcher/vehicle-matcher.css",
+            "line": 2251,
+            "snippet": "transition: width"
+          },
+          {
+            "antipattern": "layout-transition",
+            "name": "Layout property animation",
+            "description": "Animating width, height, padding, or margin causes layout thrash and janky performance. Use transform and opacity instead, or grid-template-rows for height animations.",
+            "severity": "warning",
+            "category": "quality",
+            "file": "blocks/vehicle-matcher/vehicle-matcher.css",
+            "line": 3258,
+            "snippet": "transition: width"
+          },
+          {
+            "antipattern": "side-tab",
+            "name": "Side-tab accent border",
+            "description": "Thick colored border on one side of a card \u2014 the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "docs/personas-pack.html",
+            "line": 102,
+            "snippet": "border-left: 3px solid #1c69d4"
+          },
+          {
+            "antipattern": "side-tab",
+            "name": "Side-tab accent border",
+            "description": "Thick colored border on one side of a card \u2014 the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "docs/personas-pack.html",
+            "line": 103,
+            "snippet": "border-left: 3px solid #01693e"
+          },
+          {
+            "antipattern": "side-tab",
+            "name": "Side-tab accent border",
+            "description": "Thick colored border on one side of a card \u2014 the most recognizable tell of AI-generated UIs. Use a subtler accent or remove it entirely.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "docs/personas-pack.html",
+            "line": 127,
+            "snippet": "border-left: 3px solid #1c69d4"
+          },
+          {
+            "antipattern": "overused-font",
+            "name": "Overused font",
+            "description": "Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality.",
+            "severity": "warning",
+            "category": "slop",
+            "file": "docs/personas-pack.html",
+            "line": 24,
+            "snippet": "font-family: 'Helvetica"
+          },
+          {
+            "antipattern": "broken-image",
+            "name": "Broken or placeholder image",
+            "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+            "severity": "warning",
+            "category": "quality",
+            "file": "server/honda-listing.js",
+            "line": 87,
+            "snippet": "<img[^>",
+            "importedBy": [
+              "stock.js",
+              "brand.test.js"
+            ]
+          },
+          {
+            "antipattern": "broken-image",
+            "name": "Broken or placeholder image",
+            "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+            "severity": "warning",
+            "category": "quality",
+            "file": "server/motorrad-listing.js",
+            "line": 44,
+            "snippet": "<img>",
+            "importedBy": [
+              "stock.js",
+              "brand.test.js"
+            ]
+          },
+          {
+            "antipattern": "broken-image",
+            "name": "Broken or placeholder image",
+            "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+            "severity": "warning",
+            "category": "quality",
+            "file": "server/motorrad-listing.js",
+            "line": 45,
+            "snippet": "<img \u2026>",
+            "importedBy": [
+              "stock.js",
+              "brand.test.js"
+            ]
+          },
+          {
+            "antipattern": "broken-image",
+            "name": "Broken or placeholder image",
+            "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+            "severity": "warning",
+            "category": "quality",
+            "file": "server/motorrad-listing.js",
+            "line": 50,
+            "snippet": "<img[^>",
+            "importedBy": [
+              "stock.js",
+              "brand.test.js"
+            ]
+          },
+          {
+            "antipattern": "broken-image",
+            "name": "Broken or placeholder image",
+            "description": "<img> tags with empty src, missing src, or placeholder values ship as broken-image boxes. Use real images, generated assets, or remove the tag.",
+            "severity": "warning",
+            "category": "quality",
+            "file": "server/motorrad-listing.js",
+            "line": 84,
+            "snippet": "<img[^>",
+            "importedBy": [
+              "stock.js",
+              "brand.test.js"
+            ]
+          }
+        ],
+        "raw_json_log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-assessment-b-detector/chunk-0001.log",
+        "source_scope": {
+          "gallery_javascript_findings": 0,
+          "gallery_css_findings": 0,
+          "modified_gallery_css_was_passed_as_target": false,
+          "note": "The required detector syntax excludes CSS-only target files; the additional dot scanned the repository. The only GCSP shell-file result is unchanged blocks/gcsp/shell/gcsp-shell.css line 110 (width transition). Other results are in vehicle-matcher retail CSS/tokens, project-map assets, demo/document examples and listing parser code. None targets the changed gallery CSS or supplied gallery JS."
+        },
+        "false_positives": {
+          "confirmed": [
+            {
+              "rule": "broken-image",
+              "file": "server/honda-listing.js",
+              "line": 87,
+              "basis": "<img> occurs in a JavaScript regular expression used to extract a real source URL, not a broken image element."
+            },
+            {
+              "rule": "broken-image",
+              "file": "server/motorrad-listing.js",
+              "line": 44,
+              "basis": "Comment describes input markup."
+            },
+            {
+              "rule": "broken-image",
+              "file": "server/motorrad-listing.js",
+              "line": 45,
+              "basis": "Comment includes a markup example."
+            },
+            {
+              "rule": "broken-image",
+              "file": "server/motorrad-listing.js",
+              "line": 50,
+              "basis": "JavaScript regular expression used to parse source markup."
+            },
+            {
+              "rule": "broken-image",
+              "file": "server/motorrad-listing.js",
+              "line": 84,
+              "basis": "JavaScript regular expression used to extract a real image URL."
+            }
+          ],
+          "other_warnings": "Not independently adjudicated as false positives; they are pre-existing warnings outside the changed gallery CSS. See the complete location list."
+        }
+      },
+      "browser": {
+        "cumulative_status": "passed on all four required view cases after a parent-authorized UTF-8-only correction",
+        "initial_attempt": {
+          "status": "failed and preserved",
+          "report": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-browser-report.json",
+          "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-browser-receipt.json",
+          "helper": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b.mjs",
+          "helper_sha256": "461eed89b2ef0412ce7f70d30a5de53f17dbc7a046b26f770448ecb21a981caa",
+          "exact_failure": "live-offer-1440: detector API available \u2014 false !== true. Captured page error: Invalid regular expression: /^[_|\\u00e2\\u2013\\u20ac-\\u00e2\\u2013\\u0178\\u00e2\\u2013\\u00a0\\u00e2\\u2013\\u00ae\\u00e2\\u009d\\u2122\\u00e2\\u009d\\u0161\\u00ef\\u00bd\\u0153]$/: Range out of order in character class. Parent traced this to missing UTF-8 declarations in the synthetic proof wrapper/script response; product source was unchanged.",
+          "completed_before_failure": [
+            "gallery-1440: 196 findings; injection and scan succeeded",
+            "gallery-390: 114 findings; injection and scan succeeded; full Retry bounds inside frame"
+          ],
+          "cleanup": {
+            "browserClosed": true,
+            "httpServerClosed": true,
+            "detachedChildren": 0
+          }
+        },
+        "corrected_attempt": {
+          "status": "passed",
+          "report": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8-browser-report.json",
+          "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8-browser-receipt.json",
+          "helper": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8.mjs",
+          "helper_sha256": "7981fc5d3b2f37b86d486ade4bcc51de90b7ba98deaaf19e441dc8a8b08ae1d1",
+          "detector_asset_sha256": "940ae66d818c2047e817bb8a49afe986a67066d3a3f0aef9a52043987f7379fc",
+          "charset": "proof meta charset=utf-8; text/html and text/javascript served with charset=utf-8; both pages reported UTF-8",
+          "pages_completed": [
+            "synthetic offer 1440px: 4 findings, account panel x1104..1424 within viewport",
+            "synthetic outbox 390px: 2 findings, account panel x62..382 within viewport"
+          ],
+          "page_errors": [],
+          "external_requests_blocked": [],
+          "cleanup": {
+            "browserClosed": true,
+            "httpServerClosed": true,
+            "detachedChildren": 0
+          }
+        },
+        "pages": [
+          {
+            "name": "gallery-1440",
+            "width": 1440,
+            "surface": "components.html compact long-name account",
+            "status": "passed",
+            "injection_succeeded": true,
+            "scan_ran": true,
+            "console_findings": 196,
+            "overlay_label_counts": {
+              "side-tab accent border": 3,
+              "undersized functional text": 13,
+              "line length too long": 80,
+              "cramped padding": 78,
+              "all-caps body text": 4,
+              "hairline border with wide shadow": 14,
+              "heading crowded against the previous block": 2,
+              "text occluded by an overlapping element": 1
+            },
+            "overlay_node_count": 391,
+            "screenshots": [
+              {
+                "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-gallery-1440-long-open-overlay.png",
+                "bytes": 95778,
+                "sha256": "ec6f54269417f7f37b28a0b6b5d3145bbb617d8b75d51add54e4589a717160c7"
+              }
+            ],
+            "retry_bounds": null
+          },
+          {
+            "name": "gallery-390",
+            "width": 390,
+            "surface": "components.html compact long-name account",
+            "status": "passed",
+            "injection_succeeded": true,
+            "scan_ran": true,
+            "console_findings": 114,
+            "overlay_label_counts": {
+              "side-tab accent border": 3,
+              "undersized functional text": 11,
+              "cramped padding": 78,
+              "all-caps body text": 4,
+              "hairline border with wide shadow": 14,
+              "heading crowded against the previous block": 2,
+              "text occluded by an overlapping element": 1
+            },
+            "overlay_node_count": 227,
+            "screenshots": [
+              {
+                "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-gallery-390-long-open-overlay.png",
+                "bytes": 46866,
+                "sha256": "cd24b18c908928366d0a95c590ae3e053f31f41ab9b0f87940bd550619b9df39"
+              },
+              {
+                "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-gallery-390-unavailable-retry-overlay.png",
+                "bytes": 36397,
+                "sha256": "1d3c4917d6da85f92d56d2342db2488bcb585b22642101ef0a7e381e5fa1917c"
+              }
+            ],
+            "retry_bounds": {
+              "text": "Retry",
+              "left": 267.96875,
+              "right": 324,
+              "frameLeft": 57,
+              "frameRight": 333,
+              "fullyInsideFrame": true
+            }
+          },
+          {
+            "name": "live-offer-1440",
+            "width": 1440,
+            "surface": "synthetic offer mount with live-default shell",
+            "status": "passed",
+            "document_character_set": "UTF-8",
+            "injection_succeeded": true,
+            "scan_ran": true,
+            "console_findings": 4,
+            "overlay_labels": [
+              "undersized functional text",
+              "hairline border with wide shadow"
+            ],
+            "overlay_node_count": 7,
+            "popup_bounds": {
+              "x": 1104,
+              "y": 51.5,
+              "width": 320,
+              "height": 190
+            },
+            "screenshots": [
+              {
+                "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8-live-offer-1440-menu-overlay.png",
+                "bytes": 45192,
+                "sha256": "089f4df422fb3e416ecb02e3009f8ccecba3489c9dcc01cb4c2eac8ccad32163"
+              }
+            ]
+          },
+          {
+            "name": "live-outbox-390",
+            "width": 390,
+            "surface": "synthetic outbox mount with live-default shell",
+            "status": "passed",
+            "document_character_set": "UTF-8",
+            "injection_succeeded": true,
+            "scan_ran": true,
+            "console_findings": 2,
+            "overlay_labels": [
+              "hairline border with wide shadow"
+            ],
+            "overlay_node_count": 3,
+            "popup_bounds": {
+              "x": 62,
+              "y": 57.5,
+              "width": 320,
+              "height": 118
+            },
+            "screenshots": [
+              {
+                "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8-live-outbox-390-menu-overlay.png",
+                "bytes": 65070,
+                "sha256": "8be827b30171ec0325e3259cbd428cada6a611f734a3f3ee9bd5b381652fcbb0"
+              }
+            ]
+          }
+        ],
+        "account_scope_classification": {
+          "false_positive": "The \u201chairline border with wide shadow\u201d label points at the existing account panel: CSS intentionally pairs a 1px divider border with the overlay elevation token. The rendered desktop and narrow menus remain clearly separated and usable; account-menu CSS was unchanged. Treat this detector label as a false positive for FUCQ-346.",
+          "actual_candidate": "No new account-menu defect was confirmed: the long identity/context are visible in the open gallery menu, Retry is fully inside the narrow frame, and the two live-default menus fit their viewports. The browser helper retained page-level labels but not target selectors for generic \u201cundersized functional text\u201d and \u201ctext occluded by an overlapping element\u201d warnings, so neither is attributable to the account popup from this run. The gallery-wide overlap label should not create another Bug; FUCQ-349 remains the separate earlier audit/demo footer item and was not edited."
+        },
+        "foreground_note": "All browser evidence used isolated headless Chrome. No foreground tab or user browser context was used; screenshots show the injected overlay in those isolated pages, not a user-visible foreground overlay."
+      },
+      "screenshots": [
+        {
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-gallery-1440-long-open-overlay.png",
+          "bytes": 95778,
+          "sha256": "ec6f54269417f7f37b28a0b6b5d3145bbb617d8b75d51add54e4589a717160c7"
+        },
+        {
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-gallery-390-long-open-overlay.png",
+          "bytes": 46866,
+          "sha256": "cd24b18c908928366d0a95c590ae3e053f31f41ab9b0f87940bd550619b9df39"
+        },
+        {
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-gallery-390-unavailable-retry-overlay.png",
+          "bytes": 36397,
+          "sha256": "1d3c4917d6da85f92d56d2342db2488bcb585b22642101ef0a7e381e5fa1917c"
+        },
+        {
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8-live-offer-1440-menu-overlay.png",
+          "bytes": 45192,
+          "sha256": "089f4df422fb3e416ecb02e3009f8ccecba3489c9dcc01cb4c2eac8ccad32163"
+        },
+        {
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8-live-outbox-390-menu-overlay.png",
+          "bytes": 65070,
+          "sha256": "8be827b30171ec0325e3259cbd428cada6a611f734a3f3ee9bd5b381652fcbb0"
+        }
+      ],
+      "resources": {
+        "limits_per_chunk": {
+          "scratch_mib": 128,
+          "ram_mib": 1024,
+          "seconds": 600,
+          "workers": 1
+        },
+        "chunks": [
+          {
+            "label": "assessment-b-detector",
+            "state": "complete",
+            "child_rc": 2,
+            "wall_seconds": 0.8440013329964131,
+            "peak_scratch_bytes": 0,
+            "peak_rss_bytes": 76283904,
+            "limits": {
+              "scratch_bytes": 134217728,
+              "rss_bytes": 1073741824,
+              "seconds": 600,
+              "workers": 1
+            },
+            "scratch_root": "/private/tmp/test-stamp-shard-6017cdb7de834d64a6e7e49f6f60a43c",
+            "scratch_removed_receipt": true,
+            "scratch_exists_now": false,
+            "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/ownership/6017cdb7de834d64a6e7e49f6f60a43c.json",
+            "bounded_log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-assessment-b-detector/chunk-0001.log"
+          },
+          {
+            "label": "assessment-b-browser",
+            "state": "complete",
+            "child_rc": 1,
+            "wall_seconds": 9.891996833030134,
+            "peak_scratch_bytes": 7083323,
+            "peak_rss_bytes": 186056704,
+            "limits": {
+              "scratch_bytes": 134217728,
+              "rss_bytes": 1073741824,
+              "seconds": 600,
+              "workers": 1
+            },
+            "scratch_root": "/private/tmp/test-stamp-shard-a3ef90fa2328433c9efedc7d9df8c65d",
+            "scratch_removed_receipt": true,
+            "scratch_exists_now": false,
+            "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/ownership/a3ef90fa2328433c9efedc7d9df8c65d.json",
+            "bounded_log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-assessment-b-browser/chunk-0001.log"
+          },
+          {
+            "label": "assessment-b-live-utf8-browser",
+            "state": "complete",
+            "child_rc": 0,
+            "wall_seconds": 6.149121374997776,
+            "peak_scratch_bytes": 7083323,
+            "peak_rss_bytes": 156893184,
+            "limits": {
+              "scratch_bytes": 134217728,
+              "rss_bytes": 1073741824,
+              "seconds": 600,
+              "workers": 1
+            },
+            "scratch_root": "/private/tmp/test-stamp-shard-b809295a56df4358abaf967a2b59e585",
+            "scratch_removed_receipt": true,
+            "scratch_exists_now": false,
+            "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/ownership/b809295a56df4358abaf967a2b59e585.json",
+            "bounded_log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-assessment-b-live-utf8-browser/chunk-0001.log"
+          }
+        ],
+        "max_peak_scratch_bytes": 7083323,
+        "max_peak_rss_bytes": 186056704,
+        "output_size_bytes": 289303,
+        "large_output_policy": "No output approached 256 MiB; no OneDrive output was required. Browser profile/IPC was a bounded local scratch exception and was removed."
+      },
+      "retained_artifacts": {
+        "summary": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-summary.json",
+        "browser_reports": [
+          {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-browser-report.json",
+            "sha256": "d18716299558bd0aded0551687b8a2da7e9328712d8b487d0c15ed2313f23632"
+          },
+          {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8-browser-report.json",
+            "sha256": "f361000b666fe36e6c8fdee715761fc7b6bb4bff2a9d1b14983afb5fbad43082"
+          }
+        ],
+        "receipts": [
+          "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-detector-receipt.json",
+          "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-browser-receipt.json",
+          "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-live-utf8-browser-receipt.json"
+        ],
+        "bounded_logs": [
+          "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-assessment-b-detector/chunk-0001.log",
+          "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-assessment-b-browser/chunk-0001.log",
+          "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/logs-assessment-b-live-utf8-browser/chunk-0001.log"
+        ]
+      },
+      "cleanup": {
+        "all_three_owned_scratch_roots_absent": true,
+        "all_three_supervisor_cleanup_receipts_removed": true,
+        "both_ephemeral_http_ports_closed": true,
+        "browser_contexts_and_processes_closed": true,
+        "screenshots_retained_for_parent_review": 5,
+        "successful_log_removal": "Parent owns final test-run cleanup; logs/reports/manifests are currently retained.",
+        "source_worktree_preserved": true
+      }
+    },
+    "assessment_b_summary": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq346-20261110/assessment-b-summary.json",
+      "sha256": "74d3a59292b113655aec04bc9351bb878f99b5e662d911c96e58d27d96c16b1a"
+    },
+    "lead_synthesis": "No actionable original-scope finding. Wholepage detector flags classified separately;5static parser falsepositives;17preexisting signals not all adjudicated. Generic smalltext/occlusion have no retained targetselectors; no new account-boundary defect established. Initial helper-only charset failure preserved; two unfinished views passed separate UTF8 correction.",
+    "lead_viewed_b_overlay_images": 5,
+    "report": "docs/gcsp/evidence/fucq346/review.md"
+  },
+  "agents": [
+    {
+      "name": "Michigan J. Frog",
+      "role": "story lead and small gallery CSS repair",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "xhigh",
+      "selected_model": "gpt-6.1-sol",
+      "selected_effort": "xhigh",
+      "basis": "explicit human override",
+      "effective_runtime": "not independently confirmed",
+      "fallback": null,
+      "thread_id": "01a1c5da-6a83-7781-a381-91a8cb9eb2d7",
+      "saved_title": "Michigan J. Frog",
+      "title_verified_by": "set_thread_title and read_thread,10November2026"
+    },
+    {
+      "name": "Lord Business",
+      "task": "/root/michigan_j_frog/lord_business",
+      "role": "independent AssessmentA reviewer",
+      "tool_tier": "Opus",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "selected_model": "gpt-6.1-sol",
+      "selected_effort": "high",
+      "fallback": null,
+      "effective_runtime": "not independently confirmed",
+      "capacity_basis": "fresh capacity can_start0/running8; explicit humanoverride + actual free4thslot and10.2GBfree; single bounded worker",
+      "thread_id": "01a1c649-ea9a-7cd2-aac7-745d6b478f2a",
+      "saved_title": "Lord Business",
+      "status": "completed",
+      "verdict": "PASS; no actionable findings"
+    },
+    {
+      "name": "Mr Troop",
+      "task": "/root/michigan_j_frog/mr_troop",
+      "role": "independent AssessmentB detector/browser runner",
+      "tool_tier": "Haiku",
+      "requested_model": "gpt-6-luna",
+      "requested_effort": "high",
+      "selected_model": "gpt-6-luna",
+      "selected_effort": "high",
+      "fallback": null,
+      "effective_runtime": "not independently confirmed",
+      "capacity_basis": "fresh advisory can_start0/running8,10.6GBfree; explicit human run override and actual fourth toolslot free; serial bounded worker",
+      "thread_id": "01a1c64f-efb1-77c3-be8c-5f78a14ce27f",
+      "status": "completed",
+      "saved_title": "Mr Troop",
+      "title_verified_by": "set_thread_title plus child and parent read_thread",
+      "verdict": "Completed; actual injection all4views; initial wrapper charset failure preserved and corrected in two unfinished views only"
+    }
+  ],
+  "captures": [
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/baseline-long-1440.png",
+      "bytes": 34055,
+      "sha256": "c9dc48d0ab5a428adf826d6c255d733649cfc95504c4e987b9fc98c16de9488c",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/baseline-unavailable-1440.png",
+      "bytes": 18454,
+      "sha256": "a24e68b075fd08e48af865f0d291e67434562ad4079fc0be7a5d5b083d7650c4",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/baseline-long-390.png",
+      "bytes": 14820,
+      "sha256": "cb07f77de66653736b74d5945ea0da3fa2ed346c347af26f2d0c518f18d803f0",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/baseline-unavailable-390.png",
+      "bytes": 11862,
+      "sha256": "4d1aabb2f1388f4fc29de4c745651f5d5262dbe666fb558446294142b23b91e4",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/corrected-closed-focus-1440.png",
+      "bytes": 23354,
+      "sha256": "45387ef4834c48af9fa7f965fdb39a05d04ab588847613b5ee9a25494e5c8468",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/corrected-loading-1440.png",
+      "bytes": 15635,
+      "sha256": "3cfa91b25e27905d8bb5942038e503f6206dcb677e7a985282ae97faa8463f07",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/corrected-long-1440.png",
+      "bytes": 33745,
+      "sha256": "de3c181bcabb93f51851af30de7cd1200bd96e830214647c222ce00e48193e12",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/corrected-unavailable-1440.png",
+      "bytes": 18825,
+      "sha256": "7f17992820d7890effd289ac1f259d264546f333f5ff01fcc900f2d8b13e5e3f",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/corrected-closed-focus-390.png",
+      "bytes": 11553,
+      "sha256": "3cdcaf7ecbcac2c3bb89d500023cef738bcbb79feccf1a93ab3891329a755aa3",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/corrected-loading-390.png",
+      "bytes": 9511,
+      "sha256": "6c43edc7d740a44a37837dbd802d05a17dfbd7d6e8ab0f74aafdb6606e5227fb",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/corrected-long-390.png",
+      "bytes": 17040,
+      "sha256": "1c2aec092d17b4ce853403c33a29fd04927c3dc139b704b898ab8999725d0f20",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/corrected-unavailable-390.png",
+      "bytes": 12403,
+      "sha256": "f086a28c9841544b107704cceec0d836ca23e041a1189ce90b5d584dcb05d78a",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/live-offer-open-1440.png",
+      "bytes": 49258,
+      "sha256": "64ae0ec0b04065cd9b0e4931f48660133987522b2155fe9638db07dd276cb749",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/live-offer-pending-1440.png",
+      "bytes": 49199,
+      "sha256": "4ae384cf89d84cd24099d71457fc96fc595481313fe8ad6da37deb4880d9a3f1",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/live-offer-error-1440.png",
+      "bytes": 51874,
+      "sha256": "1d90b1b404fa8511b5563f6a811763e2e82a9dab999d3ba4463e3008c5d4245c",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/live-outbox-open-1440.png",
+      "bytes": 85144,
+      "sha256": "b11e2c5b25476ae1cbde47fe0269299c2ecf6aa72b224df1c6fee6f83ab4afdd",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/live-outbox-pending-1440.png",
+      "bytes": 85039,
+      "sha256": "0ac0a6344ab4163ae3ec6227bc1bd4a5ec5eaa2d8a548daa32bfb66916842a69",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/live-outbox-error-1440.png",
+      "bytes": 88302,
+      "sha256": "3b20dca86cfcd9d081dc89b4b87c45f9a4e3c4c50f90f34a9f9e971164ec890d",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/live-offer-open-390.png",
+      "bytes": 26853,
+      "sha256": "8ff620d685b80c8d2afc008a6223e55dc501b777578e4ff2bea8f7a8d504b9c0",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/live-offer-pending-390.png",
+      "bytes": 26796,
+      "sha256": "7443ca9ee7d3c48a17bc00b6780a4e8b986e16fe4974fbb553353c9ba2b5178f",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/live-offer-error-390.png",
+      "bytes": 29652,
+      "sha256": "7ba508ddb0edf00f296f552a167209075ea8942eb15d4bd029d74a321a3f61e0",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/live-outbox-open-390.png",
+      "bytes": 61323,
+      "sha256": "0d66bc319b61758aabb5e6c173481b00aace559d7364d41d71002ea34bef28da",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/live-outbox-pending-390.png",
+      "bytes": 61195,
+      "sha256": "f11560732c766e704ae8cb2b543fc166fbfe0f747d30f94abb9400cda780eea2",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/lead/live-outbox-error-390.png",
+      "bytes": 62831,
+      "sha256": "f6b77a2ecc05f56326362763927676740d472f86e758dfd07b9610501aff1a1f",
+      "viewed_by": [
+        "Michigan J. Frog",
+        "Lord Business"
+      ],
+      "kind": "lead regression/state capture"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/detector/assessment-b-gallery-1440-long-open-overlay.png",
+      "bytes": 95778,
+      "sha256": "ec6f54269417f7f37b28a0b6b5d3145bbb617d8b75d51add54e4589a717160c7",
+      "viewed_by": [
+        "Mr Troop",
+        "Michigan J. Frog"
+      ],
+      "kind": "actual injected detector overlay"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/detector/assessment-b-gallery-390-long-open-overlay.png",
+      "bytes": 46866,
+      "sha256": "cd24b18c908928366d0a95c590ae3e053f31f41ab9b0f87940bd550619b9df39",
+      "viewed_by": [
+        "Mr Troop",
+        "Michigan J. Frog"
+      ],
+      "kind": "actual injected detector overlay"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/detector/assessment-b-gallery-390-unavailable-retry-overlay.png",
+      "bytes": 36397,
+      "sha256": "1d3c4917d6da85f92d56d2342db2488bcb585b22642101ef0a7e381e5fa1917c",
+      "viewed_by": [
+        "Mr Troop",
+        "Michigan J. Frog"
+      ],
+      "kind": "actual injected detector overlay"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/detector/assessment-b-live-utf8-live-offer-1440-menu-overlay.png",
+      "bytes": 45192,
+      "sha256": "089f4df422fb3e416ecb02e3009f8ccecba3489c9dcc01cb4c2eac8ccad32163",
+      "viewed_by": [
+        "Mr Troop",
+        "Michigan J. Frog"
+      ],
+      "kind": "actual injected detector overlay"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq346/detector/assessment-b-live-utf8-live-outbox-390-menu-overlay.png",
+      "bytes": 65070,
+      "sha256": "8be827b30171ec0325e3259cbd428cada6a611f734a3f3ee9bd5b381652fcbb0",
+      "viewed_by": [
+        "Mr Troop",
+        "Michigan J. Frog"
+      ],
+      "kind": "actual injected detector overlay"
+    }
+  ],
+  "resources": {
+    "file": "docs/gcsp/evidence/fucq346/resources.json",
+    "sha256": "280369685135c4f35524c5c7fb05a32972e7f54ca1a5f47ddc482753964b4c97",
+    "all_owned_roots_absent": true,
+    "roots": 10,
+    "peak_scratch_bytes": 7083323,
+    "peak_rss_bytes": 350060544,
+    "leftovers": []
+  },
+  "failed_skipped_unrun": {
+    "unit_test_failures": 0,
+    "unit_test_skips": 0,
+    "browser_helper_failure": "Initial B liveproof encoding error; actual rc1 preserved, product source unchanged; UTF8-only2case correction passed.",
+    "detector_findings_exit": "CLI rc2 expected22warnings; supervisor wrapperrc1 is nonzero-child status, not a crash.",
+    "full_suite": "not run; reviewed npm fallback excluded for CSS-only gallery repair",
+    "per_test_coverage_contexts": "unavailable in current Node runner/selector; not claimed",
+    "production_or_deployed_smoke": "not run; outside scope",
+    "real_session_revocation_source_mail": "not run; outside scope",
+    "cross_browser_device_screen_reader": "not run; no certification claimed"
+  },
+  "defects": {
+    "new_confirmed": [],
+    "existing_separate_reference": "FUCQ-349 remains separate earlier audit/demo finding; no backlog/Jira edit from this review"
+  },
+  "base_freshness": {
+    "root_checkpoint": "829cf1a9",
+    "changed_since_claim": [
+      ".product-map/components.json",
+      ".product-map/work.json",
+      "_dev/done/2026-11/DEV-2026-11-10-007.md",
+      "docs/gcsp/evidence/fucq348-fixture-version-2026-11-10.md",
+      "server/test/gcsp-identity-allocation.test.js",
+      "server/test/gcsp-manual-gallery-paging.test.js"
+    ],
+    "impact": "Only F348 test/lifecycle/map metadata. Gallery source and selected shell/ratchet/test inputs unchanged. Dispatcher integration may reconcile map rows; no broad-suite trigger."
+  },
+  "acceptance": {
+    "AC1": "met: complete390px long-name/context text inside frame",
+    "AC2": "met: full Retry pointer and Enter activation; loading remains inside frame",
+    "AC3": "met for frontend layout boundary: desktop geometry unchanged and live-default offer/outbox menus fit at1440/390 with pending/error states",
+    "AC4": "met: final162/162 scoped checks, independent A substantive1440/390 rendered critique complete, isolated B CLI and all4actual injected pages complete, lead synthesis no actionable original-scope finding"
+  },
+  "integration_owner": "parent dispatcher; no merge/archive/native Jira transition performed by this lead",
+  "advanced_base": {
+    "base": "829cf1a9",
+    "merge_conflict": "append-only F346/F348 map work rows; structural resolution retained both with original times/slices",
+    "selected_command": "node --test --test-concurrency=1 server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js server/test/gcsp-manual-gallery-paging.test.js",
+    "reason": "Parent-required integration checkpoint; actual base advance includes unchanged-product F348 identity fixture repair and separate narrow account CSS import/path assertion advance in manual-gallery paging test. Shell+ratchet+that small direct narrow-account boundary module; exact rendered product/input hashes reused.",
+    "excluded": "Full suite and identity-allocation module: no production identity change; root already validated unchanged F348 fixture repair independently. No new browser work.",
+    "notified_parent": true,
+    "recorded_at": "2026-11-10T16:47:35.771268+00:00",
+    "merge_commit": "348fc7691feca61b2d3bc6136b6e8683296c6c47",
+    "passed": 162,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 10.699061708,
+    "stamp": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-6edc7f1f8aaa479517c582c28e32f886a2001f725f099d4f9194b388df382b10-default-1794329268587785000.json",
+    "rendered_sources_inputs_unchanged": true,
+    "pushed": true,
+    "all_test_browser_allocations_complete": true,
+    "nested_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/5856b00885964df9bab8fc02c9a4ea19.json",
+    "impact_map": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq346-advanced-9ffa8686274cca301a3cc48dd53a4dde209bb9c5da0790309a0251b4af6b6707.json"
+  },
+  "final_scoped_tests": {
+    "command": "node --test --test-concurrency=1 server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js server/test/gcsp-manual-gallery-paging.test.js",
+    "duration_seconds": 10.699061708,
+    "failed": 0,
+    "passed": 162,
+    "per_test_coverage": "Current Node runner/selector supplies no measured per-test coverage contexts; reviewed ownership and browser boundaries only.",
+    "skipped": 0,
+    "targeted_stamp": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-6edc7f1f8aaa479517c582c28e32f886a2001f725f099d4f9194b388df382b10-default-1794329268587785000.json"
+  },
+  "final_impact_map": {
+    "advanced_base": {
+      "all_test_browser_allocations_complete": true,
+      "base": "829cf1a9",
+      "duration_seconds": 10.699061708,
+      "excluded": "Full suite and identity-allocation module: no production identity change; root already validated unchanged F348 fixture repair independently. No new browser work.",
+      "failed": 0,
+      "merge_commit": "348fc7691feca61b2d3bc6136b6e8683296c6c47",
+      "merge_conflict": "append-only F346/F348 map work rows; structural resolution retained both with original times/slices",
+      "nested_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/5856b00885964df9bab8fc02c9a4ea19.json",
+      "notified_parent": true,
+      "passed": 162,
+      "pushed": true,
+      "reason": "Parent-required integration checkpoint; actual base advance includes unchanged-product F348 identity fixture repair and separate narrow account CSS import/path assertion advance in manual-gallery paging test. Shell+ratchet+that small direct narrow-account boundary module; exact rendered product/input hashes reused.",
+      "recorded_at": "2026-11-10T16:47:35.771268+00:00",
+      "rendered_sources_inputs_unchanged": true,
+      "selected_command": "node --test --test-concurrency=1 server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js server/test/gcsp-manual-gallery-paging.test.js",
+      "skipped": 0,
+      "stamp": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-6edc7f1f8aaa479517c582c28e32f886a2001f725f099d4f9194b388df382b10-default-1794329268587785000.json"
+    },
+    "browser_boundary": {
+      "cases": 4,
+      "css_sha256": "4bf16c2db1dfafc0c83c988c7fcbab65da1e14e37c419dcb9db13fc29e7e3ad3",
+      "green": "corrected actual rendered full text rectangles/popup/Retry/loading contained, pointer+keyboard activation and desktop geometry preserved",
+      "helper_sha256": "0a708a34b37f69008bfe7acba2b7c3c01138949d3b33edc932a78a9ae2ac08c4",
+      "live_default_menu_cases": 4,
+      "live_limit": "Actual default frontend mounts with synthetic reads and local503; genuine session revocation and deployed smoke outside scope",
+      "red": "same current markup/data with original base gallery CSS reproduces both390px clipping defects",
+      "screenshots": 24
+    },
+    "implementation_commit": "9cc11eb602e77858ee75945544b109fe96dc3c7c",
+    "known_boundaries": [
+      "No JavaScript affected-selector plug-in; broad npm fallback reviewed and excluded.",
+      "CSS-only code change, no auth/session/mail/source/business logic edit.",
+      "Unobserved paths remain unknown; module ownership and browser boundary review support this scoped selection.",
+      "No new full suite or deployed/production smoke."
+    ],
+    "observed_validation": {
+      "command": "node --test --test-concurrency=1 server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js server/test/gcsp-manual-gallery-paging.test.js",
+      "duration_seconds": 10.699061708,
+      "failed": 0,
+      "passed": 162,
+      "per_test_coverage": "Current Node runner/selector supplies no measured per-test coverage contexts; reviewed ownership and browser boundaries only.",
+      "skipped": 0,
+      "targeted_stamp": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-6edc7f1f8aaa479517c582c28e32f886a2001f725f099d4f9194b388df382b10-default-1794329268587785000.json"
+    },
+    "recorded_at": "2026-11-10T16:29:17.003491+00:00",
+    "scope": "Final scoped advanced-base checkpoint;162/162pass; no full suite; rendered sources/inputs unchanged",
+    "selected_modules": {
+      "server/test/gcsp-manual-gallery-paging.test.js": {
+        "fixture_config_edges": [
+          "existing shell/account-menu CSS and gallery DOM imports",
+          "no production fixture change; current root advanced test assertions reviewed"
+        ],
+        "ownership": [
+          "narrow account-name ellipsis and account-menu stylesheet import/path boundary",
+          "existing manual-gallery paging contract (eight checks in the selected module)"
+        ]
+      },
+      "server/test/gcsp-shell.test.js": {
+        "fixture_config_edges": [
+          "jsdom30.0.1 in existing rootnode_modules",
+          "gallery ES imports and static fixture projections",
+          "CSS read assertions; no browser layout engine"
+        ],
+        "ownership": [
+          "portalShell disclosure, identity/context and Retry state/handler",
+          "actual component-gallery mounting, existing shell integration contracts"
+        ]
+      },
+      "server/test/ui-ratchet.test.js": {
+        "fixture_config_edges": [
+          "server/test/ui-ratchet.json",
+          "tracked UI source scan"
+        ],
+        "ownership": [
+          "existing component use and falling stylesheet caps, including component-gallery/account-menu/shell"
+        ]
+      }
+    },
+    "sha256": {
+      "blocks/gcsp/shell/account-menu.css": "4e1d3020a3d9dc7c9721a3613b4cdf7fc2dfcf702b5bc107edf83ac50281751d",
+      "blocks/gcsp/shell/gcsp-shell.css": "786711b25e747ae88dd5f4bf5b6c0fc704179c263d00d061283bd62b1a62b874",
+      "blocks/gcsp/shell/portal-shell.js": "f676b8a30fe531705fc0a0fbce7809e444047cfed236b7581ef3d18d5b4c1186",
+      "blocks/vehicle-matcher/component-gallery.css": "4bf16c2db1dfafc0c83c988c7fcbab65da1e14e37c419dcb9db13fc29e7e3ad3",
+      "blocks/vehicle-matcher/component-gallery.js": "aede0b8d75c22d979e52d280c25c0402fea85f7119ca2c7b2323d88dbeb43e72",
+      "server/test/gcsp-manual-gallery-paging.test.js": "87e0a224a015eb6e024e95ede78cfab8baf148de51721a6da092079f7e378c23",
+      "server/test/gcsp-shell.test.js": "3a2f8d1e693bf0ea3de6119ddacd9e17c645445a0e18d42e40b7a2e0f50c8037",
+      "server/test/ui-ratchet.json": "cd26bcb292d06c9043f06da7a1bd600dcc059e8b8194d84283a5411b1a17118b",
+      "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+    },
+    "source_test_identity": "9ffa8686274cca301a3cc48dd53a4dde209bb9c5da0790309a0251b4af6b6707",
+    "story": "FUCQ-346",
+    "version": 1
+  },
+  "final_targeted_stamp": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-6edc7f1f8aaa479517c582c28e32f886a2001f725f099d4f9194b388df382b10-default-1794329268587785000.json",
+    "sha256": "f5fa6e6f510ba67cab0106cd7e18adb239031cf1825fc8152c8b95162a3abaf0",
+    "scope": "targeted",
+    "variant": "default",
+    "result": "passed",
+    "code_key": "6edc7f1f8aaa479517c582c28e32f886a2001f725f099d4f9194b388df382b10",
+    "head": "9cc11eb602e77858ee75945544b109fe96dc3c7c",
+    "tree": "67992d83a6ae4c92303db7cab475771d54783772",
+    "base_commit": "829cf1a9fe10ad518cd0519c3f5e1ae9447421c1",
+    "execution_identity": {
+      "code": "6edc7f1f8aaa479517c582c28e32f886a2001f725f099d4f9194b388df382b10",
+      "environment": "a17777dd888d4e85a96f6f9438f52168079ebcc94ed06d699e6bbdd3591dc8e4",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "targeted",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js server/test/gcsp-manual-gallery-paging.test.js"
+      ],
+      "settings": "024f381e99bc0b745ab931acd092faaa2450d36b027f5a4426d554014704c6c3",
+      "variant": "default",
+      "version": 1
+    },
+    "ran_field": null,
+    "count_from_full_tap": 162
+  },
+  "critique_persistence": {
+    "target": "blocks/vehicle-matcher/component-gallery.js",
+    "metadata": {
+      "target": "FUCQ-346 gallery account containment",
+      "total_score": 31,
+      "max_score": 36,
+      "na_heuristics": "10",
+      "p0_count": 0,
+      "p1_count": 0
+    },
+    "write_output": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-005/.impeccable/critique/2026-11-10T16-49-34Z__blocks-vehicle-matcher-component-gallery-js.md",
+    "trend": [
+      {
+        "target": "FUCQ-346 gallery account containment",
+        "total_score": 31,
+        "max_score": 36,
+        "na_heuristics": 10,
+        "p0_count": 0,
+        "p1_count": 0,
+        "timestamp": "2026-11-10T16-49-34Z",
+        "slug": "blocks-vehicle-matcher-component-gallery-js"
+      }
+    ],
+    "temporary_body_deleted": true
+  },
+  "rendered_evidence_reuse": "All blocks/components.html/scripts/package inputs unchanged from9cc11eb6 after base829cf1a9 merge348fc769; frozen source/test identities and all29retainedcapture hashes rechecked. Advanced-base test assertion changes validated by162scoped checks."
+}
