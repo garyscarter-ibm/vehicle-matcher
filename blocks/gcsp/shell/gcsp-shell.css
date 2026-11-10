@@ -114,6 +114,9 @@
   transition: width var(--gcsp-motion) ease;
 }
 .gcsp-nav[data-expanded="true"] { width: var(--gcsp-sidebar-expanded); }
+/* Header and rail stay in view, so the rail's bottom items (presenter, collapse) sit at the viewport bottom. */
+.gcsp-header { position: sticky; top: 0; z-index: 28; }
+.gcsp-nav { position: sticky; top: var(--gcsp-header-height); align-self: flex-start; height: calc(100vh - var(--gcsp-header-height)); overflow-y: auto; }
 .gcsp-nav-list { display: flex; flex-direction: column; gap: var(--gcsp-space-half); margin: 0; padding: 0; list-style: none; }
 .gcsp-nav-item { position: relative; }
 .gcsp-nav-btn,
@@ -229,6 +232,8 @@
   .gcsp-body { flex-direction: column; }
   .gcsp:not(.gcsp-menu-open) .gcsp-nav { display: none; }
   .gcsp-nav[data-expanded] {
+    position: static;
+    height: auto;
     width: 100%;
     padding: var(--gcsp-space-2);
     border-right: 0;
