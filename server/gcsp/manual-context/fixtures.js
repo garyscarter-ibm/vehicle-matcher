@@ -1,4 +1,5 @@
 import { inputDigest, ok } from '../repository/index.js';
+import { modelDisplayImage } from '../vehicle-evidence/display-images.js';
 
 // FUCQ-224: Jordan (identity.demo.principals) starts with no current car, so presenters can walk the new-order route.
 const NEW_ORDER_EMPLOYEES = new Set(['employee-jordan']);
@@ -16,6 +17,7 @@ export async function seedManualDemoContext({ repository, identity, clock, conte
   const allowed = await identity.requireRole(context, 'employee'); if (allowed.status !== 'ok') return allowed;
   const time = await clock.now(context); if (time.status !== 'ok') return time;
   const now = time.value.now;
+  const image = await modelDisplayImage('G21 Touring|320i');
   return repository.transaction(context, { commandId: `manual:fixture:v1:${context.employeeId}`,
     inputDigest: inputDigest({ fixtureVersion: 'manual-records-v1', employeeId: context.employeeId }) }, async (tx) => {
     const found = await tx.get({ table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } });
@@ -29,6 +31,8 @@ export async function seedManualDemoContext({ repository, identity, clock, conte
     const driverId = `driver:${context.employeeId}`; const contractId = `current:${context.employeeId}`;
     const contract = { contractId, employeeId: context.employeeId, schemeId: context.schemeId,
       slotId: context.entitlementSlotId, driverId, status: 'current', model: 'BMW 3 Series Touring 320i',
+      ...(image ? { media: { src: `/${image.asset}`, alt: 'BMW 3 Series Touring: representative image',
+        caption: 'Representative image, not your exact car' } } : {}),
       // Synthetic contract record of the car Paula drives now; shown in offer comparisons.
       vehicle: { configuration: '320i M Sport Touring', body: 'estate', fuel: 'petrol', seats: 5, boot: 500,
         mpg: 42.8, zeroTo62: 7.6, points: 1100 },
@@ -40,7 +44,7 @@ export async function seedManualDemoContext({ repository, identity, clock, conte
       account: { employeeId: context.employeeId, name: found.value.name, companyId: context.companyId,
         gradeId: context.gradeId, schemeId: context.schemeId, employeeNumber: numberFor(context.employeeId),
         address: { line1: '27 Ashdown Road', town: 'Bracknell', postcode: 'RG12 9ZZ' },
-        contact: { phone: '01632 960000', email: emailFor(found.value.name) },
+        contact: { phone: '01632 960000', email: found.value.email || emailFor(found.value.name) },
         allowanceOverride: null },
       drivers: [{ driverId, employeeId: context.employeeId, name: found.value.name, kind: 'employee',
         eligible: fact(true), licence: { displayNumber: licenceFor(found.value.name), categories: ['car'],

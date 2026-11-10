@@ -37,7 +37,7 @@ export function activityBody({ result, onRetry, onPause, onResume, onReviewBrief
     return root;
   }
   const value = result.value;
-  if (!value.permission) { root.append(statusScreen({ title: 'No confirmed search', message: 'Confirm a search brief to begin.', role: hosted ? null : 'status' })); return root; }
+  if (!value.permission) { root.append(statusScreen({ title: 'No confirmed search', message: 'Save your preferences to start a search.', role: hosted ? null : 'status' })); return root; }
   const paused = value.permission.paused === true;
   // An accepted car ends the search, so it reads finished and offers no pause or resume.
   const finished = value.currentOffer?.state === 'accepted';

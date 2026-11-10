@@ -18,7 +18,7 @@ export const ACCOUNT_SNAPSHOT = {
       },
       "contact": {
         "phone": "01632 960000",
-        "email": "paula.mason@bmwgroup.test"
+        "email": "paula.mason@gcsp-demo.com"
       },
       "allowanceOverride": null
     },
@@ -100,6 +100,7 @@ export const ACCOUNT_SNAPSHOT = {
         "driverId": "driver:employee-paula",
         "status": "current",
         "model": "BMW 3 Series Touring 320i",
+        "media": { "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp", "alt": "BMW 3 Series Touring: representative image", "caption": "Representative image, not your exact car" },
         "vehicle": {"configuration": "320i M Sport Touring", "body": "estate", "fuel": "petrol", "seats": 5, "boot": 500, "mpg": 42.8, "zeroTo62": 7.6, "points": 1100},
         "actualCollectionDate": "2026-06-01",
         "contractEndDate": "2026-12-01",
@@ -150,6 +151,7 @@ export const ACCOUNT_SNAPSHOT = {
       "driverId": "driver:employee-paula",
       "status": "current",
       "model": "BMW 3 Series Touring 320i",
+        "media": { "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp", "alt": "BMW 3 Series Touring: representative image", "caption": "Representative image, not your exact car" },
       "vehicle": {"configuration": "320i M Sport Touring", "body": "estate", "fuel": "petrol", "seats": 5, "boot": 500, "mpg": 42.8, "zeroTo62": 7.6, "points": 1100},
       "actualCollectionDate": "2026-06-01",
       "contractEndDate": "2026-12-01",
@@ -186,6 +188,7 @@ export const ACCOUNT_SNAPSHOT = {
             "driverId": "driver:employee-paula",
             "status": "current",
             "model": "BMW 3 Series Touring 320i",
+        "media": { "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp", "alt": "BMW 3 Series Touring: representative image", "caption": "Representative image, not your exact car" },
             "vehicle": {"configuration": "320i M Sport Touring", "body": "estate", "fuel": "petrol", "seats": 5, "boot": 500, "mpg": 42.8, "zeroTo62": 7.6, "points": 1100},
             "actualCollectionDate": "2026-06-01",
             "contractEndDate": "2026-12-01",
@@ -447,7 +450,7 @@ export const ACCOUNT_SNAPSHOT = {
         "observedAt": "2026-11-05T09:00:00.000Z"
       },
       "recordSetId": "manual:employee-paula:v1",
-      "employee": 2,
+      "employee": 3,
       "slot": 2,
       "clock": "1"
     },
@@ -571,7 +574,7 @@ export const UNSUPPORTED_SNAPSHOT = {
       },
       "contact": {
         "phone": "01632 960000",
-        "email": "sam.patel@bmwgroup.test"
+        "email": "sam.patel@gcsp-demo.com"
       },
       "allowanceOverride": null
     },
@@ -653,6 +656,7 @@ export const UNSUPPORTED_SNAPSHOT = {
         "driverId": "driver:employee-sam",
         "status": "current",
         "model": "BMW 3 Series Touring 320i",
+        "media": { "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp", "alt": "BMW 3 Series Touring: representative image", "caption": "Representative image, not your exact car" },
         "vehicle": {"configuration": "320i M Sport Touring", "body": "estate", "fuel": "petrol", "seats": 5, "boot": 500, "mpg": 42.8, "zeroTo62": 7.6, "points": 1100},
         "actualCollectionDate": "2026-06-01",
         "contractEndDate": "2026-12-01",
@@ -703,6 +707,7 @@ export const UNSUPPORTED_SNAPSHOT = {
       "driverId": "driver:employee-sam",
       "status": "current",
       "model": "BMW 3 Series Touring 320i",
+        "media": { "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp", "alt": "BMW 3 Series Touring: representative image", "caption": "Representative image, not your exact car" },
       "vehicle": {"configuration": "320i M Sport Touring", "body": "estate", "fuel": "petrol", "seats": 5, "boot": 500, "mpg": 42.8, "zeroTo62": 7.6, "points": 1100},
       "actualCollectionDate": "2026-06-01",
       "contractEndDate": "2026-12-01",
@@ -739,6 +744,7 @@ export const UNSUPPORTED_SNAPSHOT = {
             "driverId": "driver:employee-sam",
             "status": "current",
             "model": "BMW 3 Series Touring 320i",
+        "media": { "src": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp", "alt": "BMW 3 Series Touring: representative image", "caption": "Representative image, not your exact car" },
             "vehicle": {"configuration": "320i M Sport Touring", "body": "estate", "fuel": "petrol", "seats": 5, "boot": 500, "mpg": 42.8, "zeroTo62": 7.6, "points": 1100},
             "actualCollectionDate": "2026-06-01",
             "contractEndDate": "2026-12-01",
@@ -992,7 +998,7 @@ export const UNSUPPORTED_SNAPSHOT = {
         "observedAt": "2026-11-05T09:00:00.000Z"
       },
       "recordSetId": "manual:employee-sam:v1",
-      "employee": 2,
+      "employee": 3,
       "slot": 2,
       "clock": "1"
     },

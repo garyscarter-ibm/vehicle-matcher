@@ -5,6 +5,7 @@ import { result } from '../repository/index.js';
 import { DEFAULT_VEHICLE_CORPUS_ROOT } from '../vehicle-evidence/local-vehicle-lookup.js';
 import { releaseLimits, DEFAULT_ARTIFACT_ROOT } from '../vehicle-evidence/fleet-release.js';
 import { APPROVED_CORPUS_IMAGES } from '../vehicle-evidence/registered-corpus-images.js';
+import { withDisplayImages } from '../vehicle-evidence/display-images.js';
 import { createSyntheticRegistry } from '../vehicle-evidence/synthetic-registry.js';
 import { buildRetainedCorpusPlan } from '../vehicle-evidence/stock-configuration-plan.js';
 import { createStockGenerator } from '../vehicle-evidence/stock-generator.js';
@@ -37,7 +38,7 @@ export function createDemoStockGeneration({ policy, repository, contextForRun, e
         policyRead: { runId: 'local-vehicle-evidence', asOf: new Date().toISOString() } });
       const loaded = await built.load();
       if (loaded.status !== 'ok') throw new Error('registry-unavailable');
-      return built;
+      return withDisplayImages(built);
     })();
     registry.catch(() => { registry = undefined; });
     return registry;

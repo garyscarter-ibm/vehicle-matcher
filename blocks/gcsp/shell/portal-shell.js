@@ -1,9 +1,11 @@
 // GCSP portal shell: header with account context, icon navigation, breadcrumbs, main.
 // Built with el() and createElementNS, never innerHTML.
-import { el } from '../../vehicle-matcher/ui.js';
+import { el, button } from '../../vehicle-matcher/ui.js';
+import { createSessionHttpAdapter } from '../login/http-adapter.js';
 import { mountPresenterControls } from '../presenter-controls/controls.js';
 import { isRunRestarted } from '../kit/run-restarted.js';
 import { installArrivalFocus } from '../kit/arrival-focus.js';
+import { announceSessionChange, installSessionLifecycle } from './session-lifecycle.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const DEFAULT_REASON = 'Not available yet';
@@ -123,8 +125,21 @@ function initialsOf(name) {
   return (first + last).toUpperCase();
 }
 
-function accountContent(state, retryButton) {
+// Account menu shortcuts: rail keys the host routes through onNavigate, shown above Sign out.
+function accountLinks(items) {
+  if (!items.length) return null;
+  const list = el('ul', 'gcsp-account-links');
+  for (const item of items) {
+    const link = el('button', 'gcsp-account-link', item.label);
+    link.type = 'button'; link.dataset.key = item.key;
+    const li = el('li'); li.append(link); list.append(li);
+  }
+  return list;
+}
+
+function accountContent(state, retryButton, signOutButton, menuItems = []) {
   const status = state?.status;
+  if (status === 'signed-out') return { label: null, busy: false, signedOut: true, nodes: [] };
   if (status === 'ready' && state.name) {
     const details = el('details', 'gcsp-account-details');
     const summary = el('summary', 'gcsp-account-summary');
@@ -134,7 +149,11 @@ function accountContent(state, retryButton) {
     summary.append(el('span', 'gcsp-avatar', state.initials || initialsOf(state.name)), name, svgIcon(CHEVRON, 'gcsp-icon gcsp-account-chevron'));
     const panel = el('div', 'gcsp-account-panel');
     panel.append(el('span', 'gcsp-account-detail-name', state.name));
+    if (state.email) panel.append(el('span', 'gcsp-account-email', state.email));
     if (state.context) panel.append(el('span', 'gcsp-account-context', state.context));
+    const links = accountLinks(menuItems);
+    if (links) panel.append(links);
+    if (signOutButton) panel.append(signOutButton);
     details.append(summary, panel);
     return {
       label: `Account: ${state.name}`,
@@ -250,7 +269,8 @@ function buildPresenterItem(root, flyout, body, id) {
  */
 export function portalShell({
   title = 'Group Car Schemes Portal', account = { status: 'loading' }, navigation = [], active = null,
-  breadcrumbs = [], onNavigate, onRetryAccount, presenterControls = {}, arrivalFocus = false,
+  breadcrumbs = [], onNavigate, onRetryAccount, presenterControls = {}, arrivalFocus = false, accountMenu = [],
+  signOut = true, sessionAdapter = createSessionHttpAdapter(), navigate, reload,
 } = {}) {
   const id = `gcsp-shell-${++uid}`;
   const mainId = `${id}-main`;
@@ -337,8 +357,39 @@ export function portalShell({
     event.preventDefault();
     main.focus();
   };
-  const onAccountClick = (event) => {
+  let signingOut = false;
+  let destroyed = false;
+  let invalidated = false;
+  function clearSession() {
+    invalidated = true; setAccount({ status: 'signed-out' });
+    main.replaceChildren(); presenterRegion.replaceChildren(); closeMenu();
+    content.hidden = true; root.inert = true;
+  }
+  const onAccountClick = async (event) => {
     if (event.target.closest?.('.gcsp-account-retry')) onRetryAccount?.();
+    const shortcut = event.target.closest?.('.gcsp-account-link');
+    if (shortcut) {
+      const details = shortcut.closest('details'); if (details) details.open = false;
+      closeMenu(); onNavigate?.(shortcut.dataset.key); return;
+    }
+    const action = event.target.closest?.('.gcsp-account-signout');
+    if (!action || signingOut) return;
+    signingOut = true; action.disabled = true; action.textContent = 'Signing out…';
+    const panel = action.closest('.gcsp-account-panel');
+    panel.querySelector('[role="alert"]')?.remove();
+    let result;
+    try { result = await sessionAdapter.signOut(); } catch { result = { status: 'unavailable' }; }
+    if (destroyed) return;
+    if (result?.status === 'ok') {
+      clearSession();
+      announceSessionChange(root.ownerDocument.defaultView);
+      if (navigate) navigate('/gcsp/login');
+      else root.ownerDocument.defaultView.location.replace('/gcsp/login');
+      return;
+    }
+    signingOut = false; action.disabled = false; action.textContent = 'Sign out';
+    const error = el('p', 'gcsp-account-signout-error', 'Sign-out is unavailable. Please try again.');
+    error.setAttribute('role', 'alert'); panel.append(error);
   };
   menuToggle.addEventListener('click', onMenuClick);
   root.addEventListener('keydown', onKeydown);
@@ -346,13 +397,16 @@ export function portalShell({
   accountBox.addEventListener('click', onAccountClick);
 
   function setAccount(state) {
+    if (invalidated && state?.status !== 'signed-out') return;
     const retry = el('button', 'gcsp-account-retry', 'Retry');
     retry.type = 'button';
-    const view = accountContent(state, retry);
+    const logout = signOut ? button({ label: 'Sign out', variant: 'ghost', disabled: signingOut }) : null;
+    if (logout) logout.classList.add('gcsp-account-signout');
+    const view = accountContent(state, retry, logout, accountMenu);
     if (view.label) accountBox.setAttribute('aria-label', view.label); else accountBox.removeAttribute('aria-label');
     accountBox.setAttribute('aria-busy', String(view.busy));
-    accountBox.dataset.status = view.restarted ? 'restarted'
-      : view.busy ? 'loading' : (view.label.startsWith('Account:') ? 'ready' : 'unavailable');
+    accountBox.dataset.status = view.signedOut ? 'signed-out' : view.restarted ? 'restarted'
+      : view.busy ? 'loading' : (view.label?.startsWith('Account:') ? 'ready' : 'unavailable');
     accountBox.replaceChildren(...view.nodes);
   }
 
@@ -376,6 +430,10 @@ export function portalShell({
 
   setAccount(account);
   setBreadcrumbs(breadcrumbs);
+  const stopSession = signOut ? installSessionLifecycle({ win: root.ownerDocument.defaultView,
+    active: () => accountBox.dataset.status !== 'signed-out', clear: clearSession,
+    reload: () => { if (reload) reload(); else root.ownerDocument.defaultView.location.reload(); },
+  }) : () => {};
   const stopFocus = installArrivalFocus({ root, main, arrive: arrivalFocus });
 
   return {
@@ -386,11 +444,13 @@ export function portalShell({
     setActive: (key) => nav.setActive(key),
     setBreadcrumbs,
     destroy() {
+      destroyed = true;
       menuToggle.removeEventListener('click', onMenuClick);
       root.removeEventListener('keydown', onKeydown);
       skip.removeEventListener('click', onSkip);
       accountBox.removeEventListener('click', onAccountClick);
       stopFocus();
+      stopSession();
       presenter?.destroy();
       nav.destroy();
       root.remove();

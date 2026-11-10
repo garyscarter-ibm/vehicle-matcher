@@ -335,8 +335,8 @@ export const createDemoClock = (configuration) => new DemoClock(configuration);
 
 // Trusted backend composition only: one repository current-run authority also feeds DemoIdentity.
 export async function createDemoRuntime(options) {
-  const { repository, policy, environmentId, sessionNow, secureCookies } = options;
-  const identity = new DemoIdentityAdapter({ repository, policy, sessionNow, secureCookies,
+  const { repository, policy, environmentId, sessionNow, secureCookies, loginAdapter } = options;
+  const identity = new DemoIdentityAdapter({ repository, policy, sessionNow, secureCookies, loginAdapter,
     currentRun: async () => {
       const current = await repository.currentRun(environmentId);
       return current.status === 'ok' ? { runId: current.value.runId, environmentId } : null;

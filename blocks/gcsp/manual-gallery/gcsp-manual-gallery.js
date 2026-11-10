@@ -54,7 +54,7 @@ claimMessages['retry-available'] = 'No current reservation was found. Retry this
 claimMessages.released = 'Your previous reservation has ended. Availability has been refreshed.';
 
 export function mountManualGallery(root, { adapter = createManualGalleryHttpAdapter(), brand = 'bmw', onBack,
-  onClaimConfirmed, onClaimState, commandId, initialStock } = {}) {
+  onClaimConfirmed, onClaimState, commandId, initialStock, signOut = adapter.readOnly !== true } = {}) {
   const prefix = `gcsp-gallery-${++sequence}`; const controls = {}; const cards = new Map();
   let nodes; let statusKey = null; let noticeKey = null; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin; let limit; let pageKey; let paging; let live; let spoken;
   // Car facts stay closed at every width; the page size is smaller at 600px and below (no matchMedia, as in jsdom, means wide).
@@ -238,7 +238,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
       ? 'Wait for the reservation check before returning to your choices.'
       : 'Resolve your current reservation before returning to your choices.';
   }
-  const shell = mountEmployee(root, { brand, loadAccount: adapter.loadAccount?.bind(adapter), renderBody(main) {
+  const shell = mountEmployee(root, { brand, signOut, loadAccount: adapter.loadAccount?.bind(adapter), renderBody(main) {
     panel = el('section', 'vm gcsp-gallery-body'); cards.clear(); detailId = null;
     const filters = el('div', 'gcsp-gallery-filters'); filters.setAttribute('role', 'search'); filters.setAttribute('aria-label', 'Filter released cars');
     filters.append(field('query', 'Search cars and equipment'),

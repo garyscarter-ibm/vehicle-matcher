@@ -6,6 +6,7 @@ import { createPolicyService, FilePolicyProvider } from '../policy/index.js';
 import { createSyntheticRegistry } from './synthetic-registry.js';
 import { createVehicleEvidenceLookup } from './vehicle-lookup.js';
 import { APPROVED_CORPUS_IMAGES } from './registered-corpus-images.js';
+import { withDisplayImages } from './display-images.js';
 
 export const DEFAULT_VEHICLE_CORPUS_ROOT = fileURLToPath(new URL('../../data/gcsp/vehicle-evidence/fleet-source.v1', import.meta.url));
 
@@ -29,7 +30,7 @@ export function createLocalVehicleEvidenceLookup({ root = DEFAULT_VEHICLE_CORPUS
     readiness = { status: 'unavailable', elapsedMs: elapsedMs(), manifestDigest: null,
       recovered: false, code: 'corpus-unavailable' };
   });
-  const lookup = createVehicleEvidenceLookup({ registry, repository });
+  const lookup = createVehicleEvidenceLookup({ registry: withDisplayImages(registry), repository });
   return Object.freeze({
     readiness() { return { ...readiness, elapsedMs: readiness.elapsedMs ?? elapsedMs() }; },
     async resolve(request, options) { await loaded; return lookup.resolve(request, options); },

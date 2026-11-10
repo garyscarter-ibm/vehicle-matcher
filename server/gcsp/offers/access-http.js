@@ -1,4 +1,5 @@
 import { OFFER_ACCESS_COOKIE } from './access.js';
+import { withVehicleDisplayImages } from '../vehicle-evidence/display-projection.js';
 
 const statusCode = (status) => ({ ok: 200, invalid: 400, 'missing-session': 401, 'unknown-session': 401,
   'expired-session': 401, forbidden: 403, 'unknown-principal': 404, 'not-found': 404,
@@ -30,9 +31,9 @@ export function createOfferAccessHandler({ service, identity, allowedOrigins = [
     const originAllowed = origin ? configured.has(origin) : ['GET', 'HEAD'].includes(req.method);
     const headers = { 'Access-Control-Allow-Origin': originAllowed && origin ? origin : 'null',
       'Access-Control-Allow-Credentials': 'true', Vary: 'Origin' };
-    const send = (value) => {
+    const send = async (value) => {
       res.setHeader('Cache-Control', 'no-store'); res.setHeader('Referrer-Policy', 'no-referrer');
-      return sendJson(res, statusCode(value.status), value, headers);
+      return sendJson(res, statusCode(value.status), await withVehicleDisplayImages(value), headers);
     };
     if (!originAllowed) return send(outcome('forbidden', 'This origin is not allowed to use GCSP.'));
     if (req.method === 'OPTIONS') {

@@ -3,14 +3,15 @@ import { inputDigest, ok, result } from '../repository/index.js';
 import { loadDemoPrincipalSeed } from '../fixtures/principals.js';
 import { activateRunPolicy } from '../policy/activation.js';
 import { validInstant } from '../policy/file-provider.js';
+import { DemoLoginAdapter, demoLoginProfile } from './login-adapter.js';
 
 export const SESSION_COOKIE = 'gcsp_session';
 export const PRESENTER_COOKIE = 'gcsp_presenter';
 const unavailable = () => result('unavailable', { reason: 'Identity service is unavailable.', retryable: true });
 const refused = (status) => result(status, { reason: ({
-  'missing-session': 'Choose an acting person using a presenter session.',
+  'missing-session': 'Sign in to continue.',
   'unknown-session': 'This session is not recognised.',
-  'expired-session': 'This session has expired. Start a new presenter session.',
+  'expired-session': 'Your session has expired. Sign in again.',
   'unknown-principal': 'This person is not configured.',
   'stale-run': 'This page is out of date. Reload to see the latest.',
   forbidden: 'This person cannot perform that action.',
@@ -28,9 +29,10 @@ export class DemoIdentityAdapter {
   #currentRun;
   #sessionNow;
   #secure;
+  #login;
   #contexts = new WeakMap();
 
-  constructor({ repository, policy, currentRun, sessionNow, secureCookies = true }) {
+  constructor({ repository, policy, currentRun, sessionNow, secureCookies = true, loginAdapter = new DemoLoginAdapter() }) {
     if (!repository || !policy || typeof currentRun !== 'function' || typeof sessionNow !== 'function') {
       throw new TypeError('Inject repository, PolicyService, currentRun and server sessionNow.');
     }
@@ -39,6 +41,8 @@ export class DemoIdentityAdapter {
     this.#currentRun = currentRun;
     this.#sessionNow = sessionNow;
     this.#secure = secureCookies;
+    if (typeof loginAdapter?.authenticate !== 'function') throw new TypeError('Inject a login adapter with authenticate.');
+    this.#login = loginAdapter;
   }
 
   async #run() {
@@ -76,19 +80,48 @@ export class DemoIdentityAdapter {
     if (state.error) return state.error;
     const config = await this.#configuration(state);
     if (config.error) return config.error;
-    return this.#repository.transaction(state.scope, command('identity:seed:v1', config), async (tx) => {
+    const seeded = await this.#repository.transaction(state.scope, command(`identity:seed:v2:${inputDigest(config)}`, config), async (tx) => {
       for (const principal of config.principals) {
-        const inserted = await tx.insert('employees', { ...principal, runId: state.scope.runId });
-        if (inserted.status !== 'ok') return inserted;
+        const existing = await tx.get({ table: 'employees', key: { runId: state.scope.runId, employeeId: principal.employeeId } });
+        if (existing.status === 'not-found') {
+          const inserted = await tx.insert('employees', { ...principal, runId: state.scope.runId });
+          if (inserted.status !== 'ok') return inserted;
+        } else if (existing.status !== 'ok') return existing;
         if (principal.roles.includes('employee')) {
-          const slot = await tx.insert('entitlement_slots', {
-            runId: state.scope.runId, employeeId: principal.employeeId, entitlementSlotId: principal.entitlementSlotId,
-            capacity: config.capacity, employeeCapacity: config.capacity,
-          });
-          if (slot.status !== 'ok') return slot;
+          const existingSlot = await tx.get({ table: 'entitlement_slots', key: { runId: state.scope.runId, entitlementSlotId: principal.entitlementSlotId } });
+          if (existingSlot.status === 'not-found') {
+            const slot = await tx.insert('entitlement_slots', {
+              runId: state.scope.runId, employeeId: principal.employeeId, entitlementSlotId: principal.entitlementSlotId,
+              capacity: config.capacity, employeeCapacity: config.capacity,
+            });
+            if (slot.status !== 'ok') return slot;
+          } else if (existingSlot.status !== 'ok') return existingSlot;
         }
       }
       return ok({ seeded: config.principals.length, runId: state.scope.runId });
+    });
+    if (seeded.status !== 'ok') return seeded;
+    return this.#repository.transaction(state.scope, command(`identity:profiles:v1:${inputDigest(config.principals)}`, config.principals), async (tx) => {
+      const emails = new Set();
+      for (const principal of config.principals) {
+        const ref = { table: 'employees', key: { runId: state.scope.runId, employeeId: principal.employeeId } };
+        const found = await tx.get(ref);
+        if (found.status !== 'ok') return found;
+        const profile = demoLoginProfile(principal, found.value);
+        if (emails.has(profile.email)) return unavailable();
+        emails.add(profile.email);
+        const patch = { ...profile };
+        const manual = found.value.contract?.manualContext;
+        if (manual?.account) patch.contract = { ...found.value.contract, manualContext: { ...manual,
+          account: { ...manual.account, name: profile.name, contact: { ...manual.account.contact, email: profile.email } },
+          ...(manual.drivers ? { drivers: manual.drivers.map((driver) => driver.kind === 'employee' ? { ...driver, name: profile.name } : driver) } : {}),
+        } };
+        if (Object.entries(patch).some(([key, value]) => inputDigest(value) !== inputDigest(found.value[key] ?? null))) {
+          const changed = await tx.compareAndSwap(ref, found.value.version, patch);
+          if (changed.status !== 'ok') return changed;
+        }
+      }
+      return seeded;
     });
   }
 
@@ -96,7 +129,7 @@ export class DemoIdentityAdapter {
     const context = freeze({
       environmentId: state.scope.environmentId, runId: state.scope.runId,
       ...structuredClone(principal), policyVersion: state.run.policyVersion,
-      principal: { principalId: principal.principalId, name: principal.name },
+      principal: { principalId: principal.principalId, name: principal.name, email: principal.email },
       schemeContext: principal.schemeId ? Object.fromEntries(['companyId', 'schemeId', 'gradeId', 'entitlementSlotId']
         .filter((key) => principal[key] !== undefined).map((key) => [key, principal[key]])) : null,
     });
@@ -127,8 +160,61 @@ export class DemoIdentityAdapter {
       (tx) => tx.insert('identity_sessions', session));
     if (inserted.status !== 'ok') return inserted;
     if (inserted.value.sessionIdHash !== session.sessionIdHash) return result('conflict', { reason: 'Session command already completed. Use a new command ID to issue another cookie.' });
-    const setCookie = `${SESSION_COOKIE}=${token}; Path=/api/gcsp; HttpOnly; SameSite=${sameSite.value.value}; Expires=${new Date(session.expiresAt).toUTCString()}${this.#secure ? '; Secure' : ''}`;
+    const setCookie = `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; SameSite=${sameSite.value.value}; Expires=${new Date(session.expiresAt).toUTCString()}${this.#secure ? '; Secure' : ''}`;
     return ok({ context: this.#context(state, session, principal), setCookie });
+  }
+
+  #expiredCookies() {
+    return [[SESSION_COOKIE, '/'], [SESSION_COOKIE, '/api/gcsp'], [PRESENTER_COOKIE, '/'], [PRESENTER_COOKIE, '/api/gcsp'],
+      ['gcsp_offer_access', '/api/gcsp/offers']].map(([name, path]) => `${name}=; Path=${path}; HttpOnly; SameSite=Lax; Max-Age=0${this.#secure ? '; Secure' : ''}`);
+  }
+
+  async signIn(credentials, commandId) {
+    if (!credentials || typeof credentials.email !== 'string' || credentials.email.length > 254
+      || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credentials.email.trim())
+      || typeof credentials.password !== 'string' || !credentials.password.length || credentials.password.length > 1024
+      || Object.keys(credentials).some((key) => !['email', 'password'].includes(key))) {
+      return result('invalid', { code: 'invalid-credentials-input', reasons: [{ field: 'credentials', reason: 'Enter your email and password.' }] });
+    }
+    const seeded = await this.seedPrincipals();
+    if (seeded.status !== 'ok') return seeded;
+    const state = await this.#adoptPolicy(await this.#run());
+    if (state.error) return state.error;
+    const config = await this.#configuration(state);
+    if (config.error) return config.error;
+    const principals = [];
+    for (const principal of config.principals) {
+      const found = await this.#repository.read(state.scope, { table: 'employees', key: { runId: state.scope.runId, employeeId: principal.employeeId } });
+      if (found.status !== 'ok') return unavailable();
+      principals.push({ ...principal, ...demoLoginProfile(principal, found.value) });
+    }
+    let authenticated;
+    try { authenticated = await this.#login.authenticate({ email: credentials.email.trim().toLowerCase(), password: credentials.password }, { principals: structuredClone(principals) }); }
+    catch { return unavailable(); }
+    if (authenticated?.status !== 'ok') return authenticated?.status === 'invalid-credentials'
+      ? result('invalid-credentials', { reason: 'Email or password did not match.' }) : unavailable();
+    const principal = principals.find((entry) => entry.principalId === authenticated.value?.principalId);
+    if (!principal || !principal.roles.some((role) => ['employee', 'greg'].includes(role))) return refused('forbidden');
+    const issued = await this.#issue(state, principal, principal, commandId);
+    if (issued.status !== 'ok') return issued;
+    return ok({ ...issued.value, redirectTo: principal.roles.includes('greg') ? '/gcsp-greg.html' : '/gcsp-account.html',
+      setCookie: [issued.value.setCookie, ...this.#expiredCookies().filter((c) => !c.startsWith(`${SESSION_COOKIE}=; Path=/;`))] });
+  }
+
+  async signOut({ cookie } = {}) {
+    const resolved = await this.resolveSession({ authorized: true, cookie });
+    if (resolved.status === 'ok') {
+      const context = resolved.value;
+      const auth = this.#contexts.get(context);
+      const revoked = await this.#repository.transaction(context, command(`identity:revoke:${auth.sessionIdHash}`, { sessionIdHash: auth.sessionIdHash }), async (tx) => {
+        const ref = { table: 'identity_sessions', key: { runId: context.runId, sessionIdHash: auth.sessionIdHash } };
+        const found = await tx.get(ref);
+        if (found.status !== 'ok') return found;
+        return found.value.revokedAt ? ok({}) : tx.compareAndSwap(ref, found.value.version, { revokedAt: this.#sessionNow() });
+      });
+      if (revoked.status !== 'ok') return revoked;
+    } else if (!['missing-session', 'unknown-session', 'expired-session', 'stale-run', 'unknown-principal'].includes(resolved.status)) return resolved;
+    return ok({ setCookie: this.#expiredCookies() });
   }
 
   // Trusted backend bootstrap only. There is deliberately no HTTP password-to-presenter endpoint.
@@ -144,6 +230,13 @@ export class DemoIdentityAdapter {
     if (issued.status !== 'ok') return issued;
     const actingCookie = issued.value.setCookie;
     return ok({ ...issued.value, setCookie: [actingCookie, actingCookie.replace(`${SESSION_COOKIE}=`, `${PRESENTER_COOKIE}=`)] });
+  }
+
+  async createPresenterControlSession(commandId) {
+    const presenter = await this.createPresenterSession(commandId);
+    if (presenter.status !== 'ok') return presenter;
+    return ok({ setCookie: [presenter.value.setCookie[1],
+      ...this.#expiredCookies().filter((cookie) => cookie.includes('; Path=/api/gcsp;'))] });
   }
 
   async resolveSession({ authorized, cookie, purpose = 'acting' } = {}) {
@@ -171,6 +264,7 @@ export class DemoIdentityAdapter {
     if (found.status === 'not-found') return refused('unknown-session');
     if (found.status !== 'ok') return unavailable();
     const session = found.value;
+    if (session.revokedAt) return refused('unknown-session');
     if (session.environmentId !== state.scope.environmentId) return refused('forbidden');
     if (!Number.isFinite(Date.parse(session.expiresAt))) return unavailable();
     if (Date.parse(state.instant) >= Date.parse(session.expiresAt)) return refused('expired-session');
@@ -184,7 +278,8 @@ export class DemoIdentityAdapter {
     const seeded = await this.#repository.read(state.scope, { table: 'employees', key: { runId: state.scope.runId, employeeId: principal.employeeId } });
     if (seeded.status === 'not-found') return refused('unknown-principal');
     if (seeded.status !== 'ok') return unavailable();
-    return ok(this.#context(state, session, principal));
+    return ok(this.#context(state, session, { ...principal, ...demoLoginProfile(principal, seeded.value),
+      ...(seeded.value.renewalId ? { renewalId: seeded.value.renewalId } : {}) }));
   }
 
   async #guard(context) {
@@ -194,6 +289,9 @@ export class DemoIdentityAdapter {
     if (state.error) return state;
     if (context.runId !== state.scope.runId || context.environmentId !== state.scope.environmentId) return { error: refused('stale-run') };
     if (Date.parse(state.instant) >= Date.parse(auth.expiresAt)) return { error: refused('expired-session') };
+    const stored = await this.#repository.read(state.scope, { table: 'identity_sessions', key: { runId: state.scope.runId, sessionIdHash: auth.sessionIdHash } });
+    if (stored.status !== 'ok') return { error: stored.status === 'not-found' ? refused('unknown-session') : unavailable() };
+    if (stored.value.revokedAt) return { error: refused('unknown-session') };
     return { ...state, auth };
   }
 
@@ -209,7 +307,9 @@ export class DemoIdentityAdapter {
     if (!presenter) return refused('forbidden');
     const principal = config.principals.find((p) => p.principalId === principalId);
     if (!principal) return refused('unknown-principal');
-    return this.#issue(state, presenter, principal, commandId);
+    const stored = await this.#repository.read(state.scope, { table: 'employees', key: { runId: state.scope.runId, employeeId: principal.employeeId } });
+    if (stored.status !== 'ok') return unavailable();
+    return this.#issue(state, presenter, { ...principal, ...demoLoginProfile(principal, stored.value) }, commandId);
   }
 
   async readPresenterPrincipals(context) {
@@ -242,7 +342,7 @@ export class DemoIdentityAdapter {
       || ['principalId', 'companyId', 'schemeId', 'gradeId', 'entitlementSlotId'].some((key) => seeded.value[key] !== principal[key])) return refused('forbidden');
     const slot = await this.#repository.read(state.scope, { table: 'entitlement_slots', key: { runId: state.scope.runId, entitlementSlotId: principal.entitlementSlotId } });
     if (slot.status !== 'ok' || slot.value.employeeId !== employeeId) return refused('forbidden');
-    return ok(this.#context(state, state.auth, { ...principal,
+    return ok(this.#context(state, state.auth, { ...principal, ...demoLoginProfile(principal, seeded.value),
       ...(seeded.value.renewalId ? { renewalId: seeded.value.renewalId } : {}) }));
   }
 

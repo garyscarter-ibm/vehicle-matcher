@@ -111,7 +111,7 @@ test('read-only brief has no more than one live region', (t) => {
   const main = document.createElement('main'); document.body.append(main);
   const editor = { ...structuredClone(briefFixture.edited.value), selection: { state: 'accepted', briefVersion: 1 } };
   t.after(mountBriefBody(main, { editor, transport: {} }));
-  assert.match(main.textContent, /This is your saved brief\. It is read only\./); assertQuiet(main, 'brief read-only');
+  assert.match(main.textContent, /These are your saved preferences\. They are read only\./); assertQuiet(main, 'brief read-only');
 });
 
 test('pending offer stays quiet on first paint and has one region that never repeats the heading', () => {

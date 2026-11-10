@@ -13,7 +13,7 @@ const account = { status: 'ready', name: 'Paula (synthetic)', context: 'Syntheti
 const loadAccount = async () => account;
 const tick = (ms = 30) => new Promise((done) => setTimeout(done, ms));
 const place = () => { const node = document.createElement('div'); document.body.append(node); return node; };
-const LABELS = ['Your cars', 'Your car brief', 'Buddy activity', 'Order progress'];
+const LABELS = ['Your cars', 'Your preferences', 'Buddy activity', 'Order progress'];
 const KEYS = ['cars', 'brief', 'activity', 'order-progress'];
 
 before(async () => {
@@ -50,7 +50,7 @@ const PAGES = {
     const root = place(); const location = fakeLocation();
     stops.push(emp.mountEmployee(root, { loadAccount, location })); return { root, location };
   } },
-  brief: { active: 'brief', crumb: 'Your car brief', mount: () => element('gcsp-brief', pages.brief.defineGcspBrief, unavailable) },
+  brief: { active: 'brief', crumb: 'Your preferences', mount: () => element('gcsp-brief', pages.brief.defineGcspBrief, unavailable) },
   activity: { active: 'activity', crumb: 'Buddy activity', mount: () => element('gcsp-activity', pages.activity.defineGcspActivity, unavailable) },
   'order progress': { active: 'order-progress', crumb: 'Order progress', mount: () => element('gcsp-order-progress', pages.order.defineGcspOrderProgress, unavailable) },
   help: { active: null, crumb: 'Renewal help', mount: () => element('gcsp-help', pages.help.defineGcspHelp, pages.cases.fixtureAdapter('request'),

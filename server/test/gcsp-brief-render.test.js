@@ -52,7 +52,7 @@ test('an accepted selection shows the saved brief read-only with labelled values
   assert.match(text, /Comfort/); assert.match(text, /Do you need a towbar\?/); assert.match(text, /Not confirmed|Needs confirmation|Yes|No/);
   assert.doesNotMatch(text, /\bseats\b|\bboot\b|could not be loaded|\u2014/);
   assert.equal(main.querySelector('a').getAttribute('href'), '/gcsp-order-progress-live.html');
-  assert.match(main.textContent, /This is your saved brief\. It is read only\./); assert.equal(main.querySelector('[role=status]'), null);
+  assert.match(main.textContent, /These are your saved preferences\. They are read only\./); assert.equal(main.querySelector('[role=status]'), null);
 });
 test('teardown cancels late load and missing adapter gives unavailable body', async () => {
   const main = document.createElement('main'); let resolve;
@@ -212,4 +212,46 @@ test('a stale-run confirmation shows the restarted screen after one draft and on
   t.after(() => { teardown(); main.remove(); }); await settle();
   main.querySelector('[data-save-brief]').click(); await settle();
   assertRestarted(main, reloads); await settle(); assert.deepEqual([drafts, confirms], [1, 1]);
+});
+test('FUCQ-326: the editor, its rail item and its states say Your preferences, never brief', async (t) => {
+  const { PORTAL_NAVIGATION } = await import('../../blocks/gcsp/employee/portal-navigation.js');
+  assert.deepEqual(PORTAL_NAVIGATION.find((item) => item.key === 'brief').label, 'Your preferences');
+  const main = document.createElement('main'); document.body.append(main);
+  const teardown = mountBriefBody(main, { editor: fixture.edited.value, transport: { preview: async () => fixture.preview,
+    saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }) } }); t.after(() => { teardown(); main.remove(); });
+  await settle();
+  assert.equal(main.querySelector('h1').textContent, 'Your preferences');
+  const visible = [main.textContent, ...[...main.querySelectorAll('[aria-label]')].map((n) => n.getAttribute('aria-label'))].join(' ');
+  assert.doesNotMatch(visible, /\bbriefs?\b(?![.:-])/i); // dotted policy ids such as brief.editor.v1 are identifiers, not copy
+  const failed = document.createElement('main'); const cleanup = mountBriefBody(failed, {}); await Promise.resolve();
+  assert.equal(failed.querySelector('h1, h2, h3').textContent, 'Your preferences could not be loaded'); assert.doesNotMatch(failed.textContent, /\bbrief\b/i); cleanup();
+});
+test('a saved brief with search on offers one onward step to buddy activity', async (t) => {
+  const main = document.createElement('main'); document.body.append(main); const went = [];
+  const base = fixture.edited.value.initial.briefVersion ?? 0; const draft = fixture.edited.value.initial.draftVersion ?? 0;
+  const teardown = mountBriefBody(main, { editor: fixture.edited.value, onNavigate: (to) => went.push(to), createCommandId: (kind) => kind,
+    transport: { preview: async () => fixture.preview, saveDraft: async () => ({ status: 'ok', value: { draftVersion: draft + 1, baseBriefVersion: base } }),
+      confirm: async () => ({ status: 'ok', value: { brief: { briefVersion: base + 1 } } }) } });
+  t.after(() => { teardown(); main.remove(); });
+  await settle();
+  const onward = [...main.querySelectorAll('button')].find((node) => node.textContent === 'See your buddy at work');
+  assert.equal(onward.hidden, true);
+  main.querySelector('[aria-label="Buddy permissions"] button').click();
+  main.querySelector('[data-save-brief]').click(); await settle();
+  assert.match(main.textContent, /saved\. Your selected buddy permissions apply\./);
+  assert.equal(onward.hidden, false); onward.click(); assert.deepEqual(went, ['activity']);
+});
+test('a presenter action re-runs the preview on the current edits, and teardown unsubscribes', async (t) => {
+  const main = document.createElement('main'); document.body.append(main); const requests = []; let listener; let stopped = 0;
+  const teardown = mountBriefBody(main, { editor: fixture.edited.value, createCommandId: (kind) => kind,
+    subscribeClock: (fn) => { listener = fn; return () => { stopped += 1; }; },
+    transport: { preview: async (v) => { requests.push(v); return fixture.preview; }, saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }) } });
+  t.after(() => main.remove());
+  await settle(); const before = requests.length;
+  const comfort = main.querySelector('[aria-label="Comfort: what you prefer"]'); comfort.value = '92'; comfort.dispatchEvent(new dom.window.Event('input'));
+  await settle(); const edited = requests.length;
+  listener(); await settle();
+  assert.ok(before >= 1 && edited > before && requests.length > edited, 'the action asked for a fresh preview');
+  assert.equal(requests.at(-1).brief.preferences.comfort.value, 92, 'unsaved edits are kept');
+  teardown(); assert.equal(stopped, 1);
 });

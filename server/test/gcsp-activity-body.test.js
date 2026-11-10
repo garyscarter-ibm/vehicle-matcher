@@ -218,23 +218,23 @@ test('FUCQ-219: each essential has plain wording, and unknown fields never show 
   assert.deepEqual(why(partial), ['3 of 12 cars do not meet one of your essentials.']); partial.destroy();
 });
 
-test('FUCQ-219: Review your brief calls the host and Keep searching only acknowledges, as keyboard buttons', () => {
+test('FUCQ-219: Review your preferences calls the host and Keep searching only acknowledges, as keyboard buttons', () => {
   let reviews = 0;
   const node = view('no-match-one', { onReviewBrief: () => { reviews += 1; } });
-  const keep = step(node, 'Keep searching'); const review = step(node, 'Review your brief');
+  const keep = step(node, 'Keep searching'); const review = step(node, 'Review your preferences');
   assert.ok(keep && review); assert.deepEqual([keep.type, review.type, review.disabled], ['button', 'button', false]);
   review.focus(); review.click(); assert.equal(reviews, 1); assert.ok(step(node, 'Keep searching'));
   keep.focus(); keep.click();
   const note = node.querySelector('.gcsp-activity-next [role="status"]');
-  assert.equal(note.textContent, 'Buddy will keep searching with your brief as it is.');
+  assert.equal(note.textContent, 'Buddy will keep searching with your preferences as they are.');
   assert.equal(step(node, 'Keep searching'), undefined); assert.equal(reviews, 1);
-  assert.equal(document.activeElement, step(node, 'Review your brief')); assert.deepEqual(why(node), ['No released car has 5 seats.']);
+  assert.equal(document.activeElement, step(node, 'Review your preferences')); assert.deepEqual(why(node), ['No released car has 5 seats.']);
   clean(node); node.destroy();
 });
 
-test('FUCQ-219: without a host callback Review your brief is disabled with a Preview only reason', () => {
+test('FUCQ-219: without a host callback Review your preferences is disabled with a Preview only reason', () => {
   const node = view('no-match-one');
-  const review = step(node, 'Review your brief'); assert.equal(review.disabled, true);
+  const review = step(node, 'Review your preferences'); assert.equal(review.disabled, true);
   assert.equal(document.getElementById(review.getAttribute('aria-describedby')).textContent, 'Preview only');
   step(node, 'Keep searching').click(); const note = node.querySelector('.gcsp-activity-next [role="status"]');
   assert.equal(document.activeElement, note); node.destroy();

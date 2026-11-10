@@ -1,0 +1,138 @@
+{
+  "checkedAt": "2026-11-10T12:46:15.427615+00:00",
+  "integration": {
+    "merged": "8862c9c0",
+    "published": "1157ee10",
+    "cleanupPublished": "98714a42"
+  },
+  "staticSite": {
+    "deploymentId": "7682157900",
+    "revision": "1157ee109e4b176429c2444be40a98869eefc3c0",
+    "state": "success",
+    "completedAt": "2026-11-10T12:32:50Z"
+  },
+  "backend": {
+    "latestDeploymentId": "7682268836",
+    "revision": "98714a420d944c1e30c83deb78e8088f302c6167",
+    "state": "success",
+    "startedAt": "2026-11-10T12:37:35Z",
+    "containsImageFix": true,
+    "precedingDeployment": {
+      "revision": "29c5b6364528e6ec21e4df18a86979deeae77def",
+      "startedAt": "2026-11-10T12:19:57Z",
+      "completedAt": "2026-11-10T12:28:39Z",
+      "state": "success"
+    },
+    "precedingObservedDeployment": {
+      "deploymentId": "7682079506",
+      "revision": "c64b1cf6cb9a3558de3cbe0dbd4117c8d59be257",
+      "state": "success",
+      "completedAt": "2026-11-10T12:37:34Z"
+    },
+    "completedAt": "2026-11-10T12:44:59Z"
+  },
+  "publicAssetProbes": [
+    {
+      "checkedAt": "2026-11-10T12:32:26.754092+00:00",
+      "host": "https://gcsp-api.onrender.com",
+      "checks": [
+        {
+          "path": "/health",
+          "status": 200,
+          "bytes": 11,
+          "contentType": "application/json; charset=utf-8",
+          "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+          "matchesLocal": false
+        },
+        {
+          "path": "/blocks/gcsp/kit/vehicle-media.css",
+          "status": 404
+        },
+        {
+          "path": "/blocks/gcsp/kit/vehicle-image-assets.js",
+          "status": 404
+        },
+        {
+          "path": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "checkedAt": "2026-11-10T12:33:30.739978+00:00",
+      "host": "https://gcsp-api.onrender.com",
+      "path": "/blocks/gcsp/kit/vehicle-media.css",
+      "status": 404
+    },
+    {
+      "checkedAt": "2026-11-10T12:37:28.444255+00:00",
+      "host": "https://gcsp-api.onrender.com",
+      "checks": [
+        {
+          "path": "/blocks/gcsp/kit/vehicle-media.css",
+          "status": 404
+        },
+        {
+          "path": "/blocks/gcsp/kit/vehicle-image-assets.js",
+          "status": 404
+        }
+      ]
+    }
+  ],
+  "authenticatedHostedSmoke": "Not run: there is no existing signed-in background demo tab. No foreground tab, credentials or session-copying used. Actual hosted cookie image routing was verified in local integration tests.",
+  "status": "deployed: image-fix backend revision98714a42 and static site1157ee10 succeeded; public health and reviewed image/code/style hashes verified",
+  "finalPublicProbe": {
+    "checkedAt": "2026-11-10T12:46:15.427615+00:00",
+    "host": "https://gcsp-api.onrender.com",
+    "checks": [
+      {
+        "path": "/health",
+        "status": 200,
+        "bytes": 11,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+        "matchesLocal": null
+      },
+      {
+        "path": "/health/vehicle-evidence",
+        "status": 200,
+        "bytes": 168,
+        "contentType": "application/json; charset=utf-8",
+        "sha256": "603bbf7cd045496555d299c04dd1054ff5f054f1f3c6f6f7af853cca79446c4b",
+        "matchesLocal": null
+      },
+      {
+        "path": "/blocks/gcsp/kit/vehicle-media.css",
+        "status": 200,
+        "bytes": 717,
+        "contentType": "text/css",
+        "sha256": "c5bdc9c3bb79f5e7dd613449ac9bfb5b26092eacce1cd468c03e2fcf9fe70e1b",
+        "matchesLocal": true
+      },
+      {
+        "path": "/blocks/gcsp/kit/vehicle-image-assets.js",
+        "status": 200,
+        "bytes": 78964,
+        "contentType": "text/javascript",
+        "sha256": "52198245f263309c1f5946b5a986b75e455d73e502c40c756790294efd4267e3",
+        "matchesLocal": true
+      },
+      {
+        "path": "/blocks/gcsp/account/gcsp-account.css",
+        "status": 200,
+        "bytes": 1557,
+        "contentType": "text/css",
+        "sha256": "4f5bc627372f7ad7044cab8dab9648f9fe70a29f239c0841f9bc3e66ba4874f8",
+        "matchesLocal": true
+      },
+      {
+        "path": "/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp",
+        "status": 200,
+        "bytes": 40050,
+        "contentType": "image/webp",
+        "sha256": "07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427",
+        "matchesLocal": true
+      }
+    ]
+  }
+}

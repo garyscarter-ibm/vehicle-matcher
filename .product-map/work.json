@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-07T14:07:07Z",
+  "observed_at": "2026-11-10T12:04:56Z",
   "version": 1,
   "stories": [
     {
@@ -3892,6 +3892,320 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-324",
+      "title": "Separate presenter controls from the normal employee journey",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-10T11:32:21Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-324",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-325",
+      "title": "Connect employee profile, preferences, activity and recommendations through visible navigation",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-10T11:32:22Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-325",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-326",
+      "title": "Use “Your preferences” consistently in the employee journey",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-10T11:32:22Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-326",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-327",
+      "title": "Improve Your Cars hierarchy and prominence of allowance and points",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-10T11:32:22Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-327",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-328",
+      "title": "Trace and display available scheme and starting-answer information",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-10T11:32:22Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-328",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-329",
+      "title": "Exclude ineligible cars from the employee recommendation list",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-10T11:32:22Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-329",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-330",
+      "title": "Clarify each preference value and its separate importance",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-10T11:32:22Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-330",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-331",
+      "title": "Refresh saved preference displays consistently across browsers for the same user and run",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-10T11:32:22Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-331",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-332",
+      "title": "Show the outcome of checking the current offer state",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-10T11:32:22Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-332",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-333",
+      "title": "Allow a valid issued offer to be accepted after preference-only changes",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "observed_at": "2026-11-10T12:04:56Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-333",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "decision",
+          "status": "complete",
+          "title": "Preference-only-precedence",
+          "observed_at": "2026-11-10T11:55:51Z",
+          "evidence": "3017d7f9; semantic essentials regression, quote/replay pins; independent code/security PASS; docs/gcsp/evidence/fucq333/README.md"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Decision-and-journey-regression",
+          "observed_at": "2026-11-10T11:59:28Z",
+          "evidence": "Integrated base 5d1bfe4a, tested ea885c60 production/test hashes in docs/gcsp/evidence/fucq333/validation.json; all selected tests passed with historical supervisor skips explicitly retained."
+        },
+        {
+          "id": "visual",
+          "status": "complete",
+          "title": "Rendered-offer-review",
+          "observed_at": "2026-11-10T11:55:51Z",
+          "evidence": "No UI source changed. Collaborator explicitly waived visual review on 2026-11-10. Existing display captures and presentation checks retained as incidental evidence; docs/gcsp/evidence/fucq333/README.md"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-334",
+      "title": "Confirm and retain presenter scenario, user and fault setup together",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T11:32:22Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-334",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-335",
+      "title": "Operate the audience's demo run from a separate client",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T11:32:23Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-335",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-336",
+      "title": "Advance the scenario clock and buddy processing automatically",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T11:32:23Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-336",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-337",
+      "title": "Compare meaningful options on the actual offered and current vehicle configurations",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T11:32:23Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-337",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-338",
+      "title": "Associate Paula's current car with a specific configuration and supported history",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T11:32:23Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-338",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-339",
+      "title": "Make the existing best-match recommendation easier to identify",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T11:32:23Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-339",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-340",
+      "title": "Prepare a repeatable second walkthrough where Paula requests an SUV",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T11:32:23Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-340",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-321",
+      "title": "Remove demo, synthetic and example-data disclaimers from the screens and the email",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-10T11:32:23Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-321",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-322",
+      "title": "Sign in as a demo user and retain their stored account throughout the live site",
+      "status": "In Review",
+      "original_status": "In Review",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-322",
+      "branch": "dev/DEV-2026-11-10-001",
+      "unsliced": false,
+      "observed_at": "2026-11-10T12:19:26Z",
+      "slices": [
+        {
+          "id": "authentication",
+          "status": "complete",
+          "title": "Credential adapter, profiles and session revocation",
+          "observed_at": "2026-11-10T12:19:25Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
+        },
+        {
+          "id": "experience",
+          "status": "complete",
+          "title": "Login and account menu",
+          "observed_at": "2026-11-10T12:19:25Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
+        },
+        {
+          "id": "context",
+          "status": "complete",
+          "title": "Live consumer identity and startup isolation",
+          "observed_at": "2026-11-10T12:19:26Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
+        },
+        {
+          "id": "persistence",
+          "status": "complete",
+          "title": "Native PostgreSQL restart and user isolation",
+          "observed_at": "2026-11-10T12:19:26Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Stable boundary checks, rendered critique and delivery",
+          "observed_at": "2026-11-10T12:19:26Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-323",
+      "title": "Complete correct vehicle image coverage across the GCSP demo",
+      "status": "In Review",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-323",
+      "observed_at": "2026-11-10T12:33:05Z",
+      "branch": "dev/DEV-2026-11-10-002",
+      "slices": [
+        {
+          "id": "source",
+          "status": "complete",
+          "title": "Validated-configuration-images",
+          "observed_at": "2026-11-10T12:02:48Z",
+          "evidence": "246 successful live renders; SHA-pinned catalogue247 associations/240 retained derivatives; 2424 GB image coverage; live G21 server delivery1536ms then1ms cached, safe receipt docs/gcsp/evidence/fucq323/live-smoke.json"
+        },
+        {
+          "id": "projection",
+          "status": "complete",
+          "title": "Complete-display-projection",
+          "observed_at": "2026-11-10T12:31:13Z",
+          "evidence": "Supported fleet bindings and saved/public current-stock-manual-offer-activity-order projections verified; 177/177 integrated scoped checks. docs/gcsp/evidence/fucq323/validation.json"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Rendered-integration-and-review",
+          "observed_at": "2026-11-10T12:31:13Z",
+          "evidence": "Independent substantive visual critique at1280/375 across40 captures passed after corrections. FUCQ-345 Low remains separate. docs/gcsp/evidence/fucq323/visual-review.json"
+        }
+      ],
+      "unsliced": false,
+      "original_status": "In Review"
+    },
+    {
+      "id": "FUCQ-342",
+      "title": "Disable live Sign out in named visual fixtures",
+      "status": "In Review",
+      "original_status": "In Review",
+      "type": "Bug",
+      "assignee": "Russell Gowers",
+      "observed_at": "2026-11-10T14:18:29Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-342",
+      "branch": "dev/DEV-2026-11-10-GC-023"
     }
   ]
 }

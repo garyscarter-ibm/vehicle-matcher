@@ -1,4 +1,4 @@
-@import "../gcsp/shell/gcsp-tokens.css";
+@import "../gcsp/shell/gcsp-tokens.css"; @import "../gcsp/kit/vehicle-media.css";
 /* kit primitives under the GCSP theme: Density sizes, weights and button anatomy */
 .gcsp .vm-title { font-weight: var(--gcsp-font-heading-weight); text-transform: var(--gcsp-font-transform-heading); letter-spacing: 0; margin: 0 0 var(--gcsp-space-2); }
 .gcsp .vm-lede { font-family: var(--gcsp-font); font-weight: var(--gcsp-font-weight); font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); color: var(--gcsp-text-muted); max-width: 72ch; margin: 0 0 var(--gcsp-space-6); }

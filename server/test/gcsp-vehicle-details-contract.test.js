@@ -50,7 +50,18 @@ test('both providers give the same complete/partial vehicle, provenance and fail
   for (const request of requests) {
     const a = await local.resolve(request, { context }); const b = await alternate.resolve(request, { context });
     assert.equal(a.status, request === complete ? 'complete' : 'partial');
-    assert.equal(b.status, a.status); assert.deepEqual(b.vehicle, a.vehicle);
+    assert.equal(b.status, a.status);
+    // The live local display catalogue adds reviewed imagery; the fictional offline fixture remains dated.
+    const withoutImages = (vehicle) => {
+      const copy = structuredClone(vehicle); delete copy.images;
+      delete copy.completeness.images; delete copy.presentation.imageLabel; return copy;
+    };
+    assert.deepEqual(withoutImages(b.vehicle), withoutImages(a.vehicle));
+    assert.equal(b.vehicle.images.state, 'unknown');
+    if (request === complete) {
+      assert.equal(a.vehicle.images.state, 'representative');
+      assert.equal(a.vehicle.images.items[0].fidelity, 'representative-configuration');
+    }
     assert.equal(a.vehicle.identity.identityKind, 'synthetic');
     assert.equal(a.transport.protocol, 'in-process'); assert.equal(a.transport.status, null);
     assert.equal(b.transport.protocol, 'offline'); assert.equal(b.transport.status, 200);
@@ -219,8 +230,10 @@ test('backend presentation keeps source/synthetic labels, unknowns, physical/cat
     assert.equal(full.source.configurationIdentity.provenance.kind, 'observed');
     assert.equal(full.identity.identityKind, 'synthetic'); assert.match(full.presentation.associationLabel, /Identity association/);
     assert.equal(full.source.catalogueValidity.productionDate, '2027-01-05'); assert.equal(full.source.productionDate, null);
-    assert.equal(full.source.observedDate, '2026-11-01'); assert.equal(full.images.state, 'unknown');
-    assert.equal(full.images.label, 'Images unavailable'); assert.equal(full.presentation.syntheticLabel, 'Vehicle identity');
+    assert.equal(full.source.observedDate, '2026-11-01');
+    assert.ok(['representative', 'unknown'].includes(full.images.state));
+    assert.equal(full.images.label, full.images.state === 'representative' ? 'Representative imagery' : 'Images unavailable');
+    assert.equal(full.presentation.syntheticLabel, 'Vehicle identity');
     full.technical.luggageNormal.value = 0;
     assert.equal((await consumer.resolve(complete)).vehicle.technical.luggageNormal.value, 570);
   }

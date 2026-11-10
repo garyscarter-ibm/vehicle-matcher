@@ -23,6 +23,7 @@ const requested = new URLSearchParams(globalThis.location?.search || '').get('fi
 const initial = orderProgressFixtureNames.includes(requested) ? requested : 'appointment-requested';
 const root = document.getElementById('gcsp-order-progress-preview');
 if (root) mountEmployee(root, {
+  signOut: false,
   view: ORDER_PROGRESS_DESTINATION.key,
   loadAccount: async () => ({ status: 'ready', name: 'Paula Mason', context: 'Choices' }),
   renderBody(main) {

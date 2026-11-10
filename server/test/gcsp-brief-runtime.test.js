@@ -11,17 +11,30 @@ import { createLocalHttpsFixture } from './helpers/local-https.js';
 
 const options = { mode: 'memory', environmentId: 'brief-live-test', policyAsOf: '2026-11-05T12:00:00.000Z',
   commandId: 'bootstrap', sessionNow: () => new Date().toISOString() };
-const cookie = (headers) => headers.getSetCookie().map((entry) => entry.split(';')[0]).join('; ');
+const cookie = (headers) => headers.getSetCookie().filter((entry) => !/Max-Age=0(?:;|$)/i.test(entry)).map((entry) => entry.split(';')[0]).join('; ');
+
+async function login(fetch, origin) {
+  const response = await fetch(`${origin}/api/gcsp/session/login`, { method: 'POST',
+    headers: { Origin: origin, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: 'paula.mason@gcsp-demo.com', password: 'fucq' }) });
+  assert.equal(response.status, 200); assert.equal((await response.json()).value.context.principalId, 'demo-paula');
+  const active = response.headers.getSetCookie().filter((entry) => !/Max-Age=0(?:;|$)/i.test(entry));
+  assert.equal(active.length, 1);
+  assert.ok(active[0].startsWith('gcsp_session=') && active[0].includes('; Path=/;') && active[0].includes('; HttpOnly') && active[0].includes('; Secure'));
+  return cookie(response.headers);
+}
 
 async function local(t) {
   const https = await createLocalHttpsFixture(t); const fetch = https.fetch;
   const app = await startGcspDemo({ runtime: options, port: 0, tls: https.configuration });
   assert.equal(app.status, 'ok'); t.after(() => app.value.close());
   const { origin } = app.value;
-  const page = await fetch(`${origin}/gcsp-brief-live.html`);
-  assert.equal(page.status, 200);
-  const session = cookie(page.headers);
-  assert.ok(session); assert.ok(page.headers.getSetCookie().every((v) => v.includes('HttpOnly') && v.includes('Secure')));
+  const anonymous = await fetch(`${origin}/gcsp-brief-live.html`);
+  assert.equal(anonymous.status, 303); assert.equal(anonymous.headers.get('location'), '/gcsp/login');
+  assert.equal(anonymous.headers.getSetCookie().length, 0);
+  const session = await login(fetch, origin);
+  const page = await fetch(`${origin}/gcsp-brief-live.html`, { headers: { Cookie: session } });
+  assert.equal(page.status, 200); assert.equal(page.headers.getSetCookie().length, 0);
   const request = async (path, body, headers = {}) => {
     const response = await fetch(`${origin}${path}`, { method: body === undefined ? 'GET' : 'POST',
       headers: { Cookie: session, Origin: origin, ...(body === undefined ? {} : { 'Content-Type': 'application/json' }), ...headers },
@@ -124,8 +137,12 @@ test('exact activity entry boundary establishes the same session without assumin
   const opened = await startGcspDemo({ runtime: options, root, tls: https.configuration }); assert.equal(opened.status, 'ok');
   t.after(() => opened.value.close());
   const { origin } = opened.value;
-  const page = await fetch(`${origin}/gcsp-activity-live.html`); assert.equal(page.status, 200);
-  const session = cookie(page.headers); assert.ok(session);
+  const anonymous = await fetch(`${origin}/gcsp-activity-live.html`);
+  assert.equal(anonymous.status, 303); assert.equal(anonymous.headers.get('location'), '/gcsp/login');
+  assert.equal(anonymous.headers.getSetCookie().length, 0);
+  const session = await login(fetch, origin);
+  const page = await fetch(`${origin}/gcsp-activity-live.html`, { headers: { Cookie: session } }); assert.equal(page.status, 200);
+  assert.equal(page.headers.getSetCookie().length, 0);
   const response = await fetch(`${origin}/api/gcsp/manual/account`, { headers: { Cookie: session } });
   assert.equal((await response.json()).value.state, 'ready');
   for (const path of ['/gcsp-activity-live.html/other', '/gcsp-activity.html', '/blocks/%2f..%2fgcsp-activity-live.html']) {

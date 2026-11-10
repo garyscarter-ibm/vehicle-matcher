@@ -1,0 +1,34 @@
+{
+  "run": "vehicle-images-20261110",
+  "checkedAt": "2026-11-10T12:30:24.702161+00:00",
+  "workers": 1,
+  "supervisorReceipts": 55,
+  "allSupervisorScratchRemoved": true,
+  "ownedScratchManifests": 59,
+  "scratchRootsStillPresent": [],
+  "peakRssBytes": 713244672,
+  "peakScratchBytes": 13931355,
+  "compatibilityException": "Active isolated headless browser profile and loopback TLS working set in owned local TMPDIR; context/server/children joined and scratch removed after each chunk.",
+  "disposableOutputRemovedBytes": 31308441,
+  "disposableOutputRemovedFiles": 338,
+  "cleanupManifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/vehicle-images-20261110-output-cleanup.json",
+  "leftovers": [],
+  "retainedSummary": "docs/gcsp/evidence/fucq323/{README.md,validation.json,visual-review.json,resource-cleanup.json,live-smoke.json,reviewed-code-identity.json}",
+  "retainedRunEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/vehicle-images-20261110",
+  "retainedRunPurpose": "Concise receipts, ownership manifests, bounded failure logs and reproduction/supervision scripts. Binary input/screenshot duplicates and successful verbose logs removed.",
+  "retainedScreenshotBytes": 916693,
+  "cloudOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/vehicle-images-20261110",
+  "cloudOutputExists": false,
+  "featureCleanup": {
+    "helperExit": 0,
+    "branch": "dev/DEV-2026-11-10-002",
+    "worktreeAbsent": true,
+    "leaseCleanup": "scaffold helper completed",
+    "checkedAt": "2026-11-10T12:34:56.252229+00:00"
+  },
+  "impactMap": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/vehicle-images-20261110.json",
+    "bytes": 33176,
+    "coverageContexts": "not collected"
+  }
+}

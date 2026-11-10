@@ -3,6 +3,7 @@
 @import "../kit/form-controls.css";
 @import "../kit/arrival-focus.css";
 @import "./shell-inset.css";
+@import "./account-menu.css";
 .gcsp {
   position: relative;
   display: flex;
@@ -40,15 +41,11 @@
 .gcsp-skip:focus { transform: translateY(0); clip-path: none; }
 
 /* ---------- header ---------- */
-.gcsp-header {
-  display: flex;
-  align-items: center;
-  gap: var(--gcsp-space-3);
-  min-height: var(--gcsp-header-height);
-  padding: var(--gcsp-space-1) var(--gcsp-space-4);
-  background: var(--gcsp-surface);
-  border-bottom: 1px solid var(--gcsp-divider);
-}
+.gcsp-header { display: flex; align-items: center; gap: var(--gcsp-space-3); min-height: var(--gcsp-header-height); padding: var(--gcsp-space-1) var(--gcsp-space-4); background: var(--gcsp-surface); border-bottom: 1px solid var(--gcsp-divider); view-transition-name: gcsp-header; }
+/* Same-origin page changes cross-fade the body; the header and rail stay put. */
+@view-transition { navigation: auto; }
+.gcsp-nav { view-transition-name: gcsp-rail; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
 .gcsp-marks { display: flex; flex: none; align-items: center; gap: var(--gcsp-space-2); }
 .gcsp-mark { display: block; width: auto; height: 22px; }
 .gcsp-title {
@@ -79,29 +76,7 @@
 }
 .gcsp-menu-toggle[aria-expanded="true"] { background: var(--gcsp-accent-soft); color: var(--gcsp-accent-strong); }
 
-/* ---------- account ---------- */
-.gcsp-account {
-  position: relative;
-  display: flex;
-  flex: 0 1 auto;
-  align-items: center;
-  gap: var(--gcsp-space-2);
-  min-width: 0;
-  max-width: 50%;
-  margin-left: auto;
-  font-size: var(--gcsp-font-size-regular);
-}
-.gcsp-account-details { min-width: 0; max-width: 100%; }
-.gcsp-account-summary { display: flex; align-items: center; gap: var(--gcsp-space-2); min-height: var(--gcsp-control-height); border-radius: var(--gcsp-radius); color: var(--gcsp-accent); list-style: none; cursor: pointer; }
-.gcsp-account-summary::-webkit-details-marker { display: none; }
-.gcsp-account-summary:hover { color: var(--gcsp-accent-strong); }
-.gcsp-avatar { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: var(--gcsp-text-muted); color: var(--gcsp-on-accent); font-size: var(--gcsp-font-size-smallprint); font-weight: var(--gcsp-font-weight); }
-.gcsp-account-name { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: var(--gcsp-font-weight); }
-.gcsp .gcsp-account-chevron { width: 14px; height: 14px; transform: rotate(90deg); }
-.gcsp-account-details[open] .gcsp-account-chevron { transform: rotate(-90deg); }
-.gcsp-account-panel { position: absolute; top: calc(100% + var(--gcsp-space-2)); right: 0; z-index: 35; width: min(320px, calc(100vw - var(--gcsp-space-4))); padding: var(--gcsp-space-4); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); color: var(--gcsp-text); box-shadow: var(--gcsp-elevation-overlay); overflow-wrap: anywhere; }
-.gcsp-account-detail-name { display: block; margin-bottom: var(--gcsp-space-1); font-weight: var(--gcsp-font-strong-weight); }
-.gcsp-account-context { display: block; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
+/* ---------- account loading ---------- */
 .gcsp-skel {
   display: block;
   height: 12px;

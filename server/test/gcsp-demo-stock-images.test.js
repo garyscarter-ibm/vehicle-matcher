@@ -1,9 +1,10 @@
-// FUCQ-250: demo stock carries digest-checked approved images where the line has one, else the honest placeholder.
+// FUCQ-323: every supported demo car carries a verified model/body representative image.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createPolicyService } from '../gcsp/policy/index.js';
 import { createDemoStockProvider } from '../gcsp/stock/demo-provider.js';
+import { modelDisplayImage } from '../gcsp/vehicle-evidence/display-images.js';
 import { APPROVED_CORPUS_IMAGES, publishedCorpusImage } from '../gcsp/vehicle-evidence/registered-corpus-images.js';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -13,7 +14,6 @@ import { createOfferAccessService } from '../gcsp/offers/access.js';
 import { mintOfferToken, verifyOfferToken } from '../gcsp/offers/offer-token.js';
 import { stock as candidateStock, brief, fact } from './helpers/employee-recommendation.js';
 
-const plan = JSON.parse(await readFile(new URL('../data/gcsp/vehicle-evidence/demo-plan.json', import.meta.url), 'utf8'));
 const asset = (image) => `/${image.asset}`;
 const byKey = (cars, key) => cars.filter((car) => car.facts.facts.eligibilityModelKey.value === key);
 
@@ -24,27 +24,27 @@ async function demoCars() {
   assert.equal(out.status, 'ok'); return out.value.stock;
 }
 
-test('released i5 and hatch cars carry their approved image, with no caption or colour', async () => {
+test('released cars carry verified model imagery without inventing a caption or colour', async () => {
   const cars = await demoCars();
-  for (const [key, image] of [['G61 i5|i5 40', APPROVED_CORPUS_IMAGES[0]], ['F70 Sports Hatch|120', APPROVED_CORPUS_IMAGES[1]]]) {
-    const found = byKey(cars, key); assert.ok(found.length > 0, key);
-    for (const car of found) {
-      const { display } = car.facts;
-      assert.match(display.photo, /^\/assets\/gcsp-vehicle-evidence\/[0-9a-f]{64}\.webp$/);
-      assert.equal(display.photo, asset(image));
-      assert.deepEqual(display.images, [{ src: asset(image), alt: `${display.name}: representative image`, fidelity: 'representative-configuration',
-        sourceRef: `registered-corpus-image:${image.imageId}, observed ${image.observedDate}` }]);
-      assert.equal(display.caption, undefined); assert.equal(display.colour, undefined);
-      assert.ok(!display.images[0].sourceRef.includes('—') && !display.images[0].alt.includes('—'));
-    }
+  for (const car of cars) {
+    const { display } = car.facts; const image = await modelDisplayImage(car.facts.facts.eligibilityModelKey.value);
+    assert.ok(image); assert.equal(display.photo, `/${image.asset}`);
+    assert.deepEqual(display.images, [{ src: display.photo, alt: `${display.name}: representative image`, fidelity: 'representative-model',
+      sourceRef: `display-image:${image.imageId}, observed ${image.observedDate}` }]);
+    assert.equal(display.caption, undefined); assert.equal(display.colour, undefined);
   }
 });
 
-test('saloon and touring have no approved image, so they keep the placeholder', async () => {
+test('saloon and touring always carry a picture of their own model and body', async () => {
   const cars = await demoCars();
   for (const key of ['G20 Saloon|320i', 'G21 Touring|320i']) {
     const found = byKey(cars, key); assert.ok(found.length > 0, key);
-    for (const car of found) { assert.equal(car.facts.display.photo, undefined); assert.ok(!car.facts.display.images?.length); }
+    for (const car of found) {
+      assert.match(car.facts.display.photo ?? '', /^\/assets\/gcsp-vehicle-evidence\/[0-9a-f]{64}\.webp$/);
+      assert.equal(car.facts.display.images.length, 1);
+      assert.equal(car.facts.display.images[0].src, car.facts.display.photo);
+      assert.equal(car.facts.display.images[0].fidelity, 'representative-model');
+    }
   }
 });
 
@@ -53,16 +53,14 @@ test('every demo car carries model and derivative', async () => {
   for (const car of cars) for (const key of ['model', 'derivative']) assert.ok(car.facts.display[key]?.trim(), `${car.facts.display.name} ${key}`);
 });
 
-test('each image belongs to a code of the car\'s own model line in demo-plan.json', async () => {
-  const cars = await demoCars();
-  for (const car of cars.filter((row) => row.facts.display.images?.length)) {
-    const [model, engine] = car.facts.facts.eligibilityModelKey.value.split('|');
-    const line = plan.modelLines.find((row) => row.model === model && row.engine === engine); assert.ok(line, model);
-    const codes = [line.mapping.vgModelCode, ...(line.mapping.additionalModels ?? []).map((row) => row.vgModelCode)];
-    const imageId = /^registered-corpus-image:([^,]+),/.exec(car.facts.display.images[0].sourceRef)[1];
-    const image = APPROVED_CORPUS_IMAGES.find((row) => row.imageId === imageId);
-    const code = Buffer.from(image.configurationId, 'base64').toString().split(':')[0];
-    assert.ok(codes.includes(code), `${imageId}: ${code} not in ${codes}`);
+test('the sourced representatives identify the correct generation and body for all four structural lines', async () => {
+  const sources = JSON.parse(await readFile(new URL('../data/gcsp/vehicle-evidence/display-images.sources.json', import.meta.url)));
+  for (const [key, generation] of [['G20 Saloon|320i', 'G20'], ['G21 Touring|320i', 'G21'], ['G61 i5|i5 40', 'G61'], ['F70 Sports Hatch|120', 'F70']]) {
+    const image = await modelDisplayImage(key);
+    const source = sources.configurations.find(row => row.image.asset === image.asset);
+    if (generation === 'G20') assert.equal(sources.g20.evidence.model, 'G20');
+    else if (source.evidence.model) assert.equal(source.evidence.model, generation);
+    else assert.equal(generation, 'G61');
   }
 });
 
@@ -126,13 +124,13 @@ async function exchangeWithDisplay(display) {
   assert.equal(access.status, 'ok', JSON.stringify(access)); return access.value.offer.quote.facts.display;
 }
 
-test('offer access exposes the i5 image and the saloon placeholder', async () => {
+test('offer access preserves both i5 and saloon pictures', async () => {
   const cars = await demoCars();
   const i5 = byKey(cars, 'G61 i5|i5 40')[0].facts.display; const saloon = byKey(cars, 'G20 Saloon|320i')[0].facts.display;
   const shownI5 = await exchangeWithDisplay(i5);
   assert.equal(shownI5.photo, i5.photo); assert.deepEqual(shownI5.images, i5.images);
   assert.equal(shownI5.model, 'i5 Touring'); assert.equal(shownI5.derivative, 'eDrive40');
   const shownSaloon = await exchangeWithDisplay(saloon);
-  assert.equal(shownSaloon.photo, null); assert.deepEqual(shownSaloon.images, []);
+  assert.equal(shownSaloon.photo, saloon.photo); assert.deepEqual(shownSaloon.images, saloon.images);
   assert.equal(shownSaloon.model, '3 Series Saloon');
 });

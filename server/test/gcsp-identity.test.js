@@ -57,7 +57,10 @@ async function resolve(fixture, session) {
 }
 
 async function withHttp(fixture, routes, work, options = {}) {
-  const server = buildServer({ gcspIdentity: fixture.identity, gcspRoutes: routes, gcspAllowedOrigins: options.allowedOrigins || ['https://identity.test'] });
+  // Identity routes do not use vehicle evidence. Avoid one unrelated full-corpus loader per HTTP case.
+  const server = buildServer({ gcspIdentity: fixture.identity, gcspRoutes: routes,
+    gcspVehicleEvidence: { lookup: { resolve: async () => ({ status: 'unavailable' }) } },
+    gcspAllowedOrigins: options.allowedOrigins || ['https://identity.test'] });
   server.listen(0, '127.0.0.1');
   await once(server, 'listening');
   const request = async (path, { session = fixture.presenter, body, headers = {}, method = body ? 'POST' : 'GET', noOrigin = false } = {}) => {
@@ -80,13 +83,15 @@ test('configured fictional people seed once per run, with exact policy-owned sch
     const acting = await f.acting(principal.principalId);
     const resolved = await resolve(f, acting);
     assert.equal(resolved.status, 'ok');
-    for (const key of Object.keys(principal)) assert.deepEqual(resolved.value[key], principal[key]);
+    for (const key of Object.keys(principal).filter((key) => key !== 'name')) assert.deepEqual(resolved.value[key], principal[key]);
+    assert.equal(resolved.value.name, principal.name === 'Presenter' ? 'Presenter Taylor' : principal.name);
     assert.equal(resolved.value.runId, read.runId);
     assert.ok(Object.isFrozen(resolved.value));
     assert.ok(Object.isFrozen(resolved.value.roles));
   }
   assert.equal((await f.repository.query(context(), 'entitlement_slots')).value.length, configured.value.value.filter((p) => p.roles.includes('employee')).length);
-  assert.ok(!JSON.stringify(employees.value).match(/@|licence|contact|Robinson/));
+  assert.ok(employees.value.every((person) => person.email.endsWith('@gcsp-demo.com') && person.lastName));
+  assert.ok(!JSON.stringify(employees.value).match(/licence|password/));
 });
 
 test('sessions require a successful shared gate and distinguish missing, unknown and expired', async () => {
@@ -111,7 +116,7 @@ test('session cookies are HttpOnly and secure; storage and transaction receipts 
     const attributes = cookie.split(';').slice(1).join(';');
     assert.match(attributes, /; HttpOnly; SameSite=None;/);
     assert.match(attributes, /; Secure$/);
-    assert.match(attributes, /Path=\/api\/gcsp;/);
+    assert.match(attributes, /Path=\/;/);
   }
   const token = f.presenter.value.setCookie[0].split(';')[0].split('=')[1];
   assert.ok(!JSON.stringify(f.store.state).includes(token));

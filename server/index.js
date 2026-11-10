@@ -64,6 +64,7 @@ import { createAppointmentRoutes } from './gcsp/lifecycle/appointments/http.js';
 import { createReturnPlanRoutes } from './gcsp/lifecycle/return-plan/http.js';
 import { createVehicleEvidenceHandler, isVehicleEvidencePath } from './gcsp/vehicle-evidence/vehicle-evidence-handler.js';
 import { createLocalVehicleEvidenceLookup } from './gcsp/vehicle-evidence/local-vehicle-lookup.js';
+import { createLiveDisplayImageHandler } from './gcsp/vehicle-evidence/live-display-images.js';
 import { createGregRoutes } from './gcsp/greg/http.js';
 import { createComparisonResultRoutes, createComparisonJobRoutes } from './gcsp/comparison/http.js';
 import { createSupplyRoutes } from './gcsp/supply/http.js';
@@ -909,6 +910,7 @@ export function buildServer(deps = {}) {
     resolveContext: deps.gcspVehicleEvidence?.resolveContext,
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
+  const handleVehicleImages = deps.gcspVehicleImages ?? createLiveDisplayImageHandler();
 
   const gcspStartup = deps.gcspClock ? Promise.resolve().then(async () => {
     if (deps.gcspStockRelease) {
@@ -967,6 +969,7 @@ export function buildServer(deps = {}) {
     const isOfferAccess = /^\/api\/gcsp\/offers\/[^/]+$/.test(pathname);
     const isOfferDecision = /^\/api\/gcsp\/offers\/[^/]+\/(decision|decision-reasons)$/.test(pathname);
     const isVehicleEvidence = isVehicleEvidencePath(req.url);
+    const isVehicleImage = pathname.startsWith('/api/gcsp/vehicle-images/');
 
     if (req.method === 'OPTIONS') {
       if (isOfferDecision) return handleOfferDecision({ req, res, pathname, searchParams, sendJson });
@@ -997,6 +1000,7 @@ export function buildServer(deps = {}) {
       return sendJson(res, 401, { error: 'Unauthorized' });
     }
 
+    if (isVehicleImage) return handleVehicleImages({ req, res, pathname });
     if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson });
 
     if (isGcsp) {

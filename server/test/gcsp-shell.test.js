@@ -183,7 +183,9 @@ test('ready account disclosure preserves full context, closes with Escape and re
   assert.equal(summary.querySelector('.gcsp-account-context'), null, 'scheme context lives in the disclosure');
   summary.click();
   assert.equal(details.open, true);
-  assert.equal(details.querySelector('.gcsp-account-panel').textContent, `${name}Choices, grade G7`);
+  assert.equal(details.querySelector('.gcsp-account-detail-name').textContent, name);
+  assert.equal(details.querySelector('.gcsp-account-context').textContent, 'Choices, grade G7');
+  assert.equal(details.querySelector('.gcsp-account-signout').textContent, 'Sign out');
   summary.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
   assert.equal(details.open, false);
   assert.equal(document.activeElement, summary);
@@ -303,7 +305,7 @@ test('element mounts on connect, emits ready, and tears down on disconnect', asy
   await tick();
   assert.deepEqual(events, [[{ view: 'cars', brand: 'bmw' }, true, true, false]]);
   assert.equal(el.querySelector('main').textContent, 'body:cars');
-  el.querySelector('[data-key="brief"]').click();
+  el.querySelector('.gcsp-nav [data-key="brief"]').click();
   assert.equal(el.getAttribute('view'), 'brief');
   assert.equal(el.querySelector('main').textContent, 'body:brief');
   el.remove();
@@ -322,7 +324,7 @@ test('gcsp:navigate carries {from,to}, is cancelable, and switches the view only
     seen.push([e.detail, e.cancelable]);
     if (prevent) e.preventDefault();
   });
-  const go = () => el.querySelector('[data-key="brief"]').click();
+  const go = () => el.querySelector('.gcsp-nav [data-key="brief"]').click();
   go();
   assert.deepEqual(seen, [[{ from: 'cars', to: 'brief' }, true]]);
   assert.equal(el.getAttribute('view'), null);
@@ -330,9 +332,9 @@ test('gcsp:navigate carries {from,to}, is cancelable, and switches the view only
   prevent = false;
   go();
   assert.equal(el.getAttribute('view'), 'brief');
-  assert.equal(el.querySelector('[data-key="brief"]').getAttribute('aria-current'), 'page');
-  assert.equal(el.querySelector('nav[aria-label="Breadcrumb"] [aria-current="page"]').textContent, 'Your car brief');
-  assert.equal(el.querySelector('main h1').textContent, 'Your car brief');
+  assert.equal(el.querySelector('.gcsp-nav [data-key="brief"]').getAttribute('aria-current'), 'page');
+  assert.equal(el.querySelector('nav[aria-label="Breadcrumb"] [aria-current="page"]').textContent, 'Your preferences');
+  assert.equal(el.querySelector('main h1').textContent, 'Your preferences');
   el.remove();
 });
 
@@ -781,11 +783,12 @@ test('the order progress pages load the custom element through external modules 
   assert.match(harness, /id="gcsp-order-progress-preview"/);
   const host = read('blocks/gcsp/order-progress/live.js');
   assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
-    '../shell/account-runtime.js', './order-progress-http.js', '../cases/http-adapter.js', '../account/http-adapter.js', './order-car.js',
+    '../shell/session-lifecycle.js', '../shell/account-runtime.js', './order-progress-http.js', '../cases/http-adapter.js', '../account/http-adapter.js', './order-car.js',
     '../presenter-controls/controls.js', '../employee/portal-navigation.js', './gcsp-order-progress.js',
   ]);
   assert.match(host, /routePortalEvents\(host\)/);
-  assert.doesNotMatch(host, /URLSearchParams|\blocation\b|\bhistory\./);
+  assert.match(host, /reload: \(\) => win\.location\.reload\(\)/);
+  assert.doesNotMatch(host.replace('win.location.reload()', ''), /URLSearchParams|\blocation\b|\bhistory\./);
   assert.equal(read('blocks/gcsp/order-progress/register.js').includes('defineGcspOrderProgress()'), true);
   assert.match(read('server/gcsp/host.js'), /'\/gcsp-order-progress-live\.html'/);
 });
@@ -916,4 +919,33 @@ test('standalone controls keep the details strip with a visible summary', async 
   const m = mountPresenterControls(host, { adapter: flyoutAdapter() }); await tick(20);
   assert.equal(m.root.hidden, false); assert.equal(m.root.open, false);
   assert.equal(m.root.classList.contains('gcsp-presenter-embedded'), false); assert.equal(m.root.querySelector('summary').tabIndex, 0); m.destroy();
+});
+
+test('account menu shortcuts sit above Sign out, close the disclosure and route through onNavigate', () => {
+  const heard = [];
+  const shell = shellMod.portalShell({ account: { status: 'ready', name: 'Paula Mason' }, onNavigate: (key) => heard.push(key),
+    accountMenu: [{ key: 'brief', label: 'Your preferences' }, { key: 'help', label: 'Renewal help' }] });
+  document.body.append(shell.root);
+  const details = shell.root.querySelector('.gcsp-account-details');
+  const links = [...details.querySelectorAll('.gcsp-account-link')];
+  assert.deepEqual(links.map((node) => node.textContent), ['Your preferences', 'Renewal help']);
+  assert.ok(links[1].compareDocumentPosition(details.querySelector('.gcsp-account-signout')) & window.Node.DOCUMENT_POSITION_FOLLOWING);
+  details.open = true; links[0].click();
+  assert.equal(details.open, false); assert.deepEqual(heard, ['brief']);
+  const bare = shellMod.portalShell({ account: { status: 'ready', name: 'Greg Lawson' } });
+  assert.equal(bare.root.querySelector('.gcsp-account-links'), null);
+  shell.destroy(); bare.destroy();
+});
+
+test('the employee shell menu routes preferences and help, and accountMenu false leaves it out', async () => {
+  const assigned = []; const location = { assign: (to) => assigned.push(to) };
+  const root = host();
+  const stop = emp.mountEmployee(root, { location, loadAccount: async () => ({ status: 'ready', name: 'Paula Mason' }) }); await tick();
+  const links = [...root.querySelectorAll('.gcsp-account-link')];
+  links.forEach((node) => node.click());
+  assert.deepEqual(assigned, ['/gcsp-brief-live.html', '/gcsp-help.html']);
+  stop();
+  const plain = host();
+  const stopPlain = emp.mountEmployee(plain, { location, accountMenu: false, loadAccount: async () => ({ status: 'ready', name: 'Paula Mason' }) }); await tick();
+  assert.equal(plain.querySelector('.gcsp-account-links'), null); stopPlain();
 });

@@ -1,3 +1,4 @@
+import { createContextHttpAdapter } from '../shell/account-runtime.js';
 import { isAccessLapsed } from '../kit/run-restarted.js';
 import { createGregPublishHttpAdapter } from './publish/http-adapter.js';
 import { createOrderPlanHttpAdapter } from './plan/http-adapter.js';
@@ -25,6 +26,7 @@ export function outcomeToState(httpStatus, body) {
 
 export function createGregHttpAdapter({ base = '', fetchImpl = globalThis.fetch } = {}) {
   return {
+    ...createContextHttpAdapter({ fetch: fetchImpl, baseURL: base }),
     publish: createGregPublishHttpAdapter({ base, fetchImpl }),
     orderPlan: createOrderPlanHttpAdapter({ base, fetchImpl }),
     comparison: createComparisonHttpAdapter({ base, fetchImpl }),

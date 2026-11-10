@@ -1,0 +1,80 @@
+{
+  "story": "FUCQ-322",
+  "testedHead": "c006a2b6c1e06220c0ac6c0bf8baf594e8005a90",
+  "testedTree": "e509df40c3b5ed706a0370378e9678f53fea4292",
+  "base": "7a9c17877bd9d289b1b7221fc0fc4a7733fc09d1",
+  "scope": "targeted; no full-suite claim",
+  "chunks": [
+    {
+      "name": "backend",
+      "commands": [
+        "env -u GCSP_DATABASE_URL GCSP_OFFLINE=1 node --test --test-force-exit --test-concurrency=1 server/test/gcsp-login.test.js server/test/gcsp-identity.test.js server/test/gcsp-host-cache.test.js server/test/gcsp-hosted-entry.test.js server/test/gcsp-demo-tls.test.js server/test/render-blueprint.test.js server/test/gcsp-runtime-composition.test.js server/test/gcsp-account-runtime.test.js server/test/gcsp-brief-runtime.test.js server/test/gcsp-repository-contract.test.js server/test/gcsp-offer-decisions.test.js"
+      ],
+      "counts": {
+        "tests": 170,
+        "pass": 165,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 5,
+        "todo": 0
+      },
+      "wallSeconds": 22.973244957975112,
+      "peakRssBytes": 401883136,
+      "peakScratchBytes": 798816,
+      "root": "/private/tmp/test-stamp-shard-c21c09f921ce4aaaaa7f2b3cfec28867",
+      "rootVerifiedAbsent": true,
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/c21c09f921ce4aaaaa7f2b3cfec28867.json",
+      "codeIdentity": "2c1d9aad796aa9c97f7a0df1feab5ad43cb2d93c3cd21d3d939b578e2976d90e",
+      "skippedCases": [
+        "\ufe63 postgresql native constraints reject a second occupying hold and claim (0.466375ms) # GCSP_DATABASE_URL is unset; native SQL constraints were not run",
+        "\ufe63 F71 ordering new-process readback (0.02875ms) # Fixture has no ordering-capable processRead; native new-process proof remains outstanding",
+        "\ufe63 F71 ordering new-process readback (0.037125ms) # Fixture has no ordering-capable processRead; native new-process proof remains outstanding",
+        "\ufe63 postgresql: shared TransactionRepository contract (0.060208ms) # GCSP_DATABASE_URL is unset; PostgreSQL integration was not run",
+        "\ufe63 F71 ordering new-process readback (0.110166ms) # Fixture has no ordering-capable processRead; native new-process proof remains outstanding"
+      ],
+      "knownConsoleErrors": null
+    },
+    {
+      "name": "frontend",
+      "commands": [
+        "env -u GCSP_DATABASE_URL GCSP_OFFLINE=1 node --test --test-force-exit --test-concurrency=1 server/test/gcsp-login-render.test.js server/test/gcsp-login-consumers.test.js server/test/gcsp-session-startup.test.js server/test/gcsp-shell.test.js server/test/gcsp-shell-navigation.test.js server/test/gcsp-account-runtime.test.js server/test/gcsp-greg-dashboard.test.js server/test/gcsp-greg-dashboard-data.test.js server/test/gcsp-order-progress-live-page.test.js server/test/gcsp-offer-runtime-composition.test.js server/test/gcsp-painted-copy-words.test.js server/test/ui-ratchet.test.js"
+      ],
+      "counts": {
+        "tests": 257,
+        "pass": 257,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "wallSeconds": 34.60627554100938,
+      "peakRssBytes": 436453376,
+      "peakScratchBytes": 12448,
+      "root": "/private/tmp/test-stamp-shard-4b2ef431650f435b93f1820858e257cb",
+      "rootVerifiedAbsent": true,
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/4b2ef431650f435b93f1820858e257cb.json",
+      "codeIdentity": "2c1d9aad796aa9c97f7a0df1feab5ad43cb2d93c3cd21d3d939b578e2976d90e",
+      "skippedCases": [],
+      "knownConsoleErrors": "FUCQ-344 presenter painted-copy hidden clicks; no presenter-state coverage claimed"
+    }
+  ],
+  "visualReviewDelta": [
+    "server/gcsp/offers/decision.js",
+    "server/gcsp/repository/core.js",
+    "server/gcsp/repository/memory.js"
+  ],
+  "nativePriorEvidenceDelta": [
+    "server/gcsp/offers/decision.js",
+    "server/gcsp/repository/core.js",
+    "server/gcsp/repository/memory.js"
+  ],
+  "nativeReuseReason": "Identity/authentication/revocation/profile/PG driver/schema sources unchanged. Incoming currentRun now returns a private clone; frozen-memory and offer gates reviewed independently and final repository/auth/account/brief/offer contract checks pass. Native restart was not rerun on the final integrated tree.",
+  "nativeRootsReverifiedAbsent": true,
+  "browserEvidence": "browser-summary.json and browser-resource-receipt.json; eight scenarios,18 captures",
+  "hostedRender": "Blueprint/env/deployed database restart unverified",
+  "knownBacklog": [
+    "FUCQ-342",
+    "FUCQ-343",
+    "FUCQ-344"
+  ]
+}

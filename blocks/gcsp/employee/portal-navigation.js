@@ -3,7 +3,7 @@ const item = (key, label, paths) => Object.freeze({ key, label, available: true,
 
 export const PORTAL_NAVIGATION = Object.freeze([
   item('cars', 'Your cars', ['M3 14l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5', 'M3 14h18v4H3z', 'M7 18v2', 'M17 18v2']),
-  item('brief', 'Your car brief', ['M6 3h12v18H6z', 'M9 8h6', 'M9 12h6', 'M9 16h4']),
+  item('brief', 'Your preferences', ['M6 3h12v18H6z', 'M9 8h6', 'M9 12h6', 'M9 16h4']),
   item('activity', 'Buddy activity', ['M4 5h16', 'M4 12h16', 'M4 19h16', 'M8 3v4', 'M8 10v4', 'M8 17v4']),
   item('order-progress', 'Order progress', ['M4 6l2 2 3-3', 'M4 14l2 2 3-3', 'M12 7h8', 'M12 15h8']),
 ]);
@@ -12,6 +12,11 @@ export const PORTAL_NAVIGATION = Object.freeze([
 export const PORTAL_ROUTES = Object.freeze({ cars: '/gcsp-account.html', brief: '/gcsp-brief-live.html', activity: '/gcsp-activity-live.html',
   'order-progress': '/gcsp-order-progress-live.html', help: '/gcsp-help.html' });
 
+// The account menu's shortcuts: one rail page and the help page, which has no rail item.
+export const ACCOUNT_MENU = Object.freeze([Object.freeze({ key: 'brief', label: 'Your preferences' }),
+  Object.freeze({ key: 'help', label: 'Renewal help' })]);
+export const MENU_KEYS = new Set([...PORTAL_NAVIGATION.map((entry) => entry.key), 'help']);
+
 /** Go to the live page of a rail key; false (and no navigation) for anything else. */
 export function routePortal(key, location) {
   if (!location || !PORTAL_NAVIGATION.some((entry) => entry.key === key)) return false;
@@ -19,13 +24,21 @@ export function routePortal(key, location) {
   return true;
 }
 
-/** Let a host element's cancelable gcsp:navigate event route every rail key. */
+/** As routePortal, and also the account menu's help page. */
+export function routeAccountMenu(key, location) {
+  if (key !== 'help') return routePortal(key, location);
+  if (!location) return false;
+  location.assign(PORTAL_ROUTES.help);
+  return true;
+}
+
+/** Let a host element's cancelable gcsp:navigate event route every rail and account-menu key. */
 export function routePortalEvents(host, location = host.ownerDocument?.defaultView?.location) {
-  host.addEventListener('gcsp:navigate', (event) => { if (routePortal(event.detail?.to, location)) event.preventDefault(); });
+  host.addEventListener('gcsp:navigate', (event) => { if (routeAccountMenu(event.detail?.to, location)) event.preventDefault(); });
 }
 
 /** Release a held reservation first, then route; a release that is not confirmed leaves the page where it is. */
 export async function routeAfterRelease(key, { held, release, location }) {
   try { if (held() && (await release())?.status !== 'ok') return false; } catch { return false; }
-  return routePortal(key, location);
+  return routeAccountMenu(key, location);
 }

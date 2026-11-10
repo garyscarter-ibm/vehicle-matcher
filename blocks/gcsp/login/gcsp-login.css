@@ -1,0 +1,18 @@
+body { margin: 0; }
+.gcsp-login-shell .gcsp-nav,
+.gcsp-login-shell .gcsp-menu-toggle { display: none; }
+.gcsp-login-shell .gcsp-content { display: flex; flex-direction: column; padding-block: clamp(40px, 10vh, 104px); }
+.gcsp-login-shell .gcsp-main { display: grid; justify-items: center; }
+.gcsp-login-shell .gcsp-main > .gcsp-login-panel { width: 100%; max-width: 440px; padding: var(--gcsp-space-8); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); }
+.gcsp-login-panel .vm-title { margin: 0 0 var(--gcsp-space-2); }
+.gcsp-login-panel .vm-lede { margin: 0; }
+.gcsp-login-form { display: grid; gap: var(--gcsp-space-4); margin-top: var(--gcsp-space-6); }
+.gcsp-login-form .gcsp-field { margin: 0; }
+.gcsp-login-form .vm-btn { width: 100%; justify-content: center; }
+.gcsp-login-error { margin: 0; padding: var(--gcsp-space-3); border: 1px solid var(--gcsp-danger-border); background: var(--gcsp-danger-surface); color: var(--gcsp-danger); font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); }
+.gcsp-login-error:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 4px; }
+.gcsp-login-status { margin: 0; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-regular); }
+@media (max-width: 600px) {
+  .gcsp-login-shell .gcsp-content { padding-block: var(--gcsp-space-8); }
+  .gcsp-login-shell .gcsp-main > .gcsp-login-panel { padding: var(--gcsp-space-6) var(--gcsp-space-5); }
+}

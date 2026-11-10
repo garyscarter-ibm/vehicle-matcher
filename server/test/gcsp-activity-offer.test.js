@@ -47,3 +47,13 @@ test('client image allowlist mirrors the server approved corpus exactly', async 
   const client = [...approvedImages].filter(([, fidelity]) => fidelity !== 'representative').sort();
   assert.deepEqual(client, APPROVED_CORPUS_IMAGES.map((image) => [`/${image.asset}`, image.fidelity]).sort());
 });
+
+test('new Touring catalogue imagery reaches activity without admitting unreviewed paths or false exact claims', async () => {
+  const { modelDisplayImage } = await import('../gcsp/vehicle-evidence/display-images.js');
+  const image = await modelDisplayImage('G21 Touring|320i');
+  const display = { title: 'BMW 3 Series Touring 320i', images: [{ src: `/${image.asset}`, alt: 'BMW 3 Series Touring', fidelity: image.fidelity }] };
+  const node = activityOffer({ offer: { state: 'active' }, display });
+  assert.equal(node.querySelector('img')?.getAttribute('src'), display.images[0].src);
+  const falseExact = structuredClone(display); falseExact.images[0].fidelity = 'exact';
+  assert.equal(activityOffer({ offer: { state: 'active' }, display: falseExact }).querySelector('img'), null);
+});

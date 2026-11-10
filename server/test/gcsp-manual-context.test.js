@@ -66,6 +66,15 @@ const variant = (f, ports) => new ManualContextService({ ...f, ports: { ...f.por
 const intent = (f, changes = {}) => ({ mode: 'replacement', oldContractId: `current:${f.context.employeeId}`,
   slotId: f.context.entitlementSlotId, schemeId: f.context.schemeId, ...changes });
 
+test('the seeded current Touring carries an image through the account read', async () => {
+  const f = await setup(); const account = await f.service.readAccount(f.context);
+  assert.equal(account.status, 'ok');
+  const car = account.value.currentContract;
+  assert.equal(car.model, 'BMW 3 Series Touring 320i');
+  assert.match(car.media?.src ?? '', /^\/assets\/gcsp-vehicle-evidence\/[0-9a-f]{64}\.webp$/);
+  assert.match(car.media.alt, /Touring/);
+});
+
 test('account inventory includes other supplied slots without granting them ordering authority', async () => {
   const f = await setup(); const actual = (await f.ports.employeeContract.read(f.context)).value;
   const extra = { ...actual.contracts[0], contractId: 'other-current', slotId: 'other-slot', schemeId: 'pcs-ukfs-bmw' };

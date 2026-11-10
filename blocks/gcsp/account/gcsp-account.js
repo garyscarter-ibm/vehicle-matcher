@@ -1,3 +1,4 @@
+import { accountIdentity } from '../shell/account-runtime.js';
 // Account page composition. Account authority and durable journey state stay in the adapter.
 import { el, screenIntro, button, statusScreen, factList, formatTerm } from '../../vehicle-matcher/ui.js';
 import { mediaWell } from '../../vehicle-matcher/modes/result-card.js';
@@ -14,6 +15,8 @@ import { sentence } from '../order-progress/order-progress-copy.js';
 import { orderIdentityRows, orderReferenceOf } from '../kit/order-identity.js';
 import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 import { NO_IMAGE_TEXT } from '../kit/plain-copy.js';
+import { demoTime } from '../kit/activity-timeline.js';
+import { routePortal } from '../employee/portal-navigation.js';
 
 let serial = 0;
 const MISSING = 'Not supplied';
@@ -134,7 +137,7 @@ function driverDetails(driver) {
   ]));
 }
 
-function currentCar(contract, model, controls) {
+function currentCar(contract, model, controls, buddy = false) {
   const terms = { kind: 'points-monthly', ...contract.terms };
   // The contract's vehicle record carries its monthly points (points-per-month in the offer comparison).
   if (!Object.hasOwn(terms, 'value') && Number.isFinite(contract.vehicle?.points)) terms.value = contract.vehicle.points;
@@ -160,7 +163,7 @@ function currentCar(contract, model, controls) {
       row('Registration', contract.registration)], MORE_MISSING),
     el('p', 'gcsp-account-terms', formatTerm(terms)));
   if (source?.provenance) copy.append(el('p', 'gcsp-synthetic', `Image source: ${shown(source.provenance)}`));
-  if (contract.action) copy.append(controls.startButton(contract.action));
+  if (contract.action) copy.append(controls.startButton(contract.action, buddy));
   else copy.append(el('p', 'gcsp-note', 'Replacement is unavailable for this contract and slot.'));
   copy.append(contractDetails(contract, model));
   feature.append(media, copy);
@@ -206,8 +209,26 @@ function orderStatus(order, host) {
 // FUCQ-278: a pending newest offer is the one decision; manual car choices step back until it is made.
 const offerHeld = (offers) => offers?.[0]?.state === 'pending';
 
+// The buddy card tells Paula what her buddy is doing; copy and buttons follow the saved permission.
+function buddyCard(value, { pending, controls }) {
+  const permission = value?.permission;
+  const check = value?.lastSuccessfulCheck; const lines = [];
+  const looking = permission?.canSearch === true && permission.paused !== true;
+  let text; let actions;
+  const go = (label, key, variant) => button({ label, variant, disabled: pending, onClick: () => controls.go(key) });
+  if (!permission) { text = 'Tell your buddy what matters and it will keep looking for a suitable car for you.'; actions = [go('Set your preferences', 'brief', 'primary')]; }
+  else if (looking) {
+    text = 'Your buddy is looking for a car for you.';
+    if (check && Number.isFinite(Date.parse(check.checkedAt))) lines.push(`Last check ${demoTime(check.checkedAt)}: ${check.carsChecked} ${check.carsChecked === 1 ? 'car' : 'cars'} checked, ${check.suitableCars} suitable.`);
+    actions = [go('See buddy activity', 'activity', 'primary'), go('Change your preferences', 'brief', 'ghost')];
+  } else { text = 'Your buddy is paused, so it is not looking for cars.'; actions = [go('Change your preferences', 'brief', 'primary'), go('See buddy activity', 'activity', 'ghost')]; }
+  const card = el('section', 'gcsp-summary'); card.setAttribute('aria-label', 'Your buddy');
+  card.append(el('h2', 'gcsp-h2', 'Your buddy'), el('p', 'gcsp-note', text), ...lines.map((line) => el('p', 'gcsp-note', line)), ...actions);
+  return { card, primary: !permission || looking };
+}
+
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
-export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls, orderHost, order, orderVehicle, restarted = false, reload } = {}) {
+export function renderAccountBody(main, { model, draft, offers = [], activity, pending = false, message, journey = false, controls, orderHost, order, orderVehicle, restarted = false, reload } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
   wrap.append(screenIntro({ kicker: 'Choices', title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
@@ -230,7 +251,12 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   if (!journey && orderHost) wrap.append(orderHost);
   const held = !journey && offerHeld(offers) && Boolean(controls.openOffer);
   // An accepted newest offer has become an order, so its progress replaces the offer link.
-  if (!journey && offers.length && offers[0].state !== 'accepted' && controls.openOffer) {
+  const offerShown = !journey && offers.length && offers[0].state !== 'accepted' && controls.openOffer;
+  let buddy = false;
+  if (!journey && !offerShown && !ordered && offers[0]?.state !== 'accepted' && activity?.status === 'ok' && controls.go) {
+    const built = buddyCard(activity.value, { pending, controls }); wrap.append(built.card); buddy = built.primary;
+  }
+  if (offerShown) {
     const offer = el('section', 'gcsp-summary'); offer.setAttribute('aria-label', 'Your car offer');
     offer.append(el('h2', 'gcsp-h2', 'Your car offer'), el('p', 'gcsp-note', 'Your buddy found a car for you. Check its details and deadline.'),
       button({ label: 'View your offer', disabled: pending, onClick: () => controls.openOffer(offers[0]) }),
@@ -255,13 +281,13 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     wrap.append(statusScreen({ title: 'Saved journey could not be read', message: 'Refresh before starting or resuming a journey.', role: null }));
   }
   if (model.account) {
-    for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls));
+    for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls, buddy));
     for (const car of model.currentOrders) wrap.append(orderCurrentCar(car, order, orderVehicle));
     // FUCQ-237: an order in progress replaces "No current car"; a declined order keeps it. A confirmed return (FUCQ-252) shows it.
     const none = !model.currentContracts.length && !model.currentOrders.length;
     if (none && model.carReturned) wrap.append(statusScreen({ title: 'No current car', message: 'Your previous car has been returned. Your new car becomes current at handover.', role: null }));
     else if (none && !(ordered && order.outcome !== 'declined')) wrap.append(statusScreen({ title: 'No current car', message: 'No current vehicle is supplied for your account.', role: null }));
-    for (const action of model.actions.filter((item) => item.action === 'order')) wrap.append(controls.startButton(action));
+    for (const action of model.actions.filter((item) => item.action === 'order')) wrap.append(controls.startButton(action, buddy));
     const allowance = el('section', 'gcsp-allowance');
     allowance.append(el('h2', 'gcsp-h2', 'Your allowance'), facts([
       row('Monthly allowance', model.allowance?.monthlyPoints ?? model.allowance?.value, 'points a month'),
@@ -302,7 +328,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
             onClick: () => controls.print(entry) }));
         const action = model.actions.find((item) => item.oldContractId === contract.contractId && item.slotId === contract.slotId
           && item.schemeId === history.schemeId);
-        if (history.orderingSupported && action) entry.append(controls.startButton(action));
+        if (history.orderingSupported && action) entry.append(controls.startButton(action, buddy));
         group.append(entry);
       }
       histories.append(group);
@@ -315,9 +341,9 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   return () => wrap.remove();
 }
 
-export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, print, orderAdapter, helpAdapter, reload } = {}) {
+export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, onNavigate, print, orderAdapter, helpAdapter, reload, signOut = adapter.readOnly !== true } = {}) {
   const abort = new AbortController();
-  let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
+  let envelope; let draft; let offers; let activity; let main; let pending = false; let message = null; let journey = false; let disposed = false;
   let generation = 0; let teardown; let loading; let finishPrint; let orderHost; let orderRow; let orderVehicle; let stopOrder; let restarted = false;
   let syncVersion = 0; const live = viewStatus();
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
@@ -335,8 +361,9 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       onSupport?.(route); notify('gcsp:support', { route });
       message = { title: 'Support route', text: `Support route: ${route}.` }; live.clear(); draw(true);
     } }),
-    startButton: (action) => button({ label: action.action === 'replace' ? 'Choose a replacement' : 'Start a new order',
-      variant: !journey && offerHeld(offers) ? 'ghost' : 'primary',
+    go: (key) => (onNavigate ?? ((to) => routePortal(to, root.ownerDocument.defaultView.location)))(key),
+    startButton: (action, buddy = false) => button({ label: action.action === 'replace' ? 'Choose a replacement' : 'Start a new order',
+      variant: !journey && (offerHeld(offers) || buddy) ? 'ghost' : 'primary',
       disabled: pending || draft?.status !== 'ok' && draft?.status !== 'not-found', onClick: () => start(action) }),
     print: (entry) => {
       const opened = [...entry.querySelectorAll('details')].filter((item) => !item.open);
@@ -361,7 +388,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   };
   function draw(focus = false) {
     if (!main || disposed) return;
-    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, pending, message, journey, controls, orderHost, order: orderRow, orderVehicle, restarted, reload });
+    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, activity, pending, message, journey, controls, orderHost, order: orderRow, orderVehicle, restarted, reload });
     if (message) live.announce(`${message.title}. ${message.text}`);
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
   }
@@ -390,15 +417,17 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   }
   async function loadAccount() {
     const version = ++generation;
-    const [accountResult, draftResult, offerResult, found] = await Promise.all([read('readAccount'), read('readDraft'),
-      typeof adapter.readOffers === 'function' ? read('readOffers') : null, findOrder()]);
+    const [accountResult, draftResult, offerResult, activityResult, found] = await Promise.all([read('readAccount'), read('readDraft'),
+      typeof adapter.readOffers === 'function' ? read('readOffers') : null,
+      typeof adapter.readActivity === 'function' ? read('readActivity') : null, findOrder()]);
     if (disposed || version !== generation) return { status: 'unavailable' };
     stopOrder?.(); stopOrder = null; orderHost = null; orderRow = null; orderVehicle = null;
     if (found) mountOrder(found);
     envelope = accountResult; draft = draftResult; offers = offerResult?.status === 'ok' ? offerResult.value.offers : [];
+    activity = activityResult;
     const model = toAccountView(envelope);
     if (isRunRestarted(envelope)) return { status: envelope.status };
-    return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', name: model.account?.name ?? 'Account unavailable',
+    return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', ...accountIdentity(model.account),
       context: [model.account?.company, model.account?.gradeId && `Grade ${model.account.gradeId}`].filter(Boolean).join(', ') };
   }
   async function refresh() {
@@ -414,18 +443,20 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   async function sync() {
     if (pending || disposed || !main) return;
     const version = ++syncVersion; const base = generation;
-    const [accountResult, draftResult, offerResult, latest] = await Promise.all([read('readAccount'), read('readDraft'),
-      typeof adapter.readOffers === 'function' ? read('readOffers') : null, listLatest()]);
+    const [accountResult, draftResult, offerResult, activityResult, latest] = await Promise.all([read('readAccount'), read('readDraft'),
+      typeof adapter.readOffers === 'function' ? read('readOffers') : null,
+      typeof adapter.readActivity === 'function' ? read('readActivity') : null, listLatest()]);
     if (disposed || pending || !main || version !== syncVersion || base !== generation) return;
     if (accountResult?.status !== 'ok' || !['ok', 'not-found'].includes(draftResult?.status) || !latest) return;
-    const before = JSON.stringify([envelope, draft, offers, orderRow?.orderUuid]);
+    const before = JSON.stringify([envelope, draft, offers, activity, orderRow?.orderUuid]);
     const same = Boolean(latest.orderUuid) && latest.orderUuid === orderRow?.orderUuid;
     const next = latest.orderUuid && !same ? await describeOrder(latest) : null;
     if (disposed || pending || !main || version !== syncVersion || base !== generation || latest.orderUuid && !same && !next) return;
     if (same) { orderRow = latest.orders.find((item) => item?.orderUuid === latest.orderUuid) ?? orderRow; void stopOrder?.sync?.(); }
     else { stopOrder?.(); stopOrder = null; orderHost = null; orderRow = null; orderVehicle = null; if (next) mountOrder(next); }
     envelope = accountResult; draft = draftResult; if (offerResult?.status === 'ok') offers = offerResult.value.offers;
-    if (JSON.stringify([envelope, draft, offers, orderRow?.orderUuid]) === before) return;
+    if (activityResult?.status === 'ok') activity = activityResult;
+    if (JSON.stringify([envelope, draft, offers, activity, orderRow?.orderUuid]) === before) return;
     const win = root.ownerDocument.defaultView; const held = main.contains(root.ownerDocument.activeElement) && root.ownerDocument.activeElement.closest(FOCUSABLE);
     const key = held ? focusKeyOf(held, ORDER_SECTION) : null;
     keepScroll(win, () => draw());
@@ -477,7 +508,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       else failed(draft);
     } finally { pending = false; draw(true); }
   }
-  const shellAdapter = { loadAccount: () => { loading = loadAccount(); return loading; },
+  const shellAdapter = { signOut, loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
   teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
   const destroy = () => { disposed = true; generation += 1; abort.abort(); finishPrint?.(); stopOrder?.(); teardown(); live.root.remove(); };

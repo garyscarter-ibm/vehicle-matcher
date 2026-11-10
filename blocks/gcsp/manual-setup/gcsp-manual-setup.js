@@ -1,3 +1,4 @@
+import { accountIdentity } from '../shell/account-runtime.js';
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
@@ -10,7 +11,7 @@ const text = (value) => value == null || value === '' ? 'Not supplied' : String(
 const facts = (rows) => factList(rows.map(([label, value, unit]) => ({ label, value, unit })));
 
 export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', hint,
-  onBack, onSupport, commandId } = {}) {
+  onBack, onSupport, commandId, signOut = adapter.readOnly !== true } = {}) {
   const prefix = `gcsp-setup-${++sequence}`; const controls = {}; const fields = {};
   let main; let panel; let summary; let state; let nodes; let status; const spoken = {}; let disposed = false; let actionPending = false; let emitted = null;
   const notify = (name, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(name,
@@ -172,9 +173,9 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
       }
     } finally { actionPending = false; draw(); }
   }
-  const teardown = mountEmployee(root, { brand, loadAccount: async () => {
+  const teardown = mountEmployee(root, { brand, signOut, loadAccount: async () => {
     state = await controller.load({ hint }); const account = state.account?.account;
-    return { status: account ? 'ready' : 'unavailable', name: account?.name ?? 'Account unavailable',
+    return { status: account ? 'ready' : 'unavailable', ...accountIdentity(account),
       context: [account?.company, account?.gradeId && `Grade ${account.gradeId}`].filter(Boolean).join(', ') };
   }, renderBody(target) { main = target; draw(); } });
   const destroy = () => { disposed = true; controller.destroy(); teardown(); };
