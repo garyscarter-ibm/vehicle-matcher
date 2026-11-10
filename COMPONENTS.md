@@ -267,10 +267,6 @@ The shared GCSP adaptation of `screenIntro`, `button`, `factList`, `statusScreen
 
 **Narrow widths (FUCQ-223).** `.gcsp .vm-facts` never asks a column to be wider than its container (`minmax(min(100%, 150px), 1fr)`) and the card variants (`.gcsp-card`, brief card facts) use `repeat(auto-fit, minmax(max(140px, 40%), 1fr))`, so a grid is one column below about 360 px and at most two wide. Fact labels and values wrap at spaces and hyphens (`overflow-wrap: break-word`); only a single word longer than its column, such as an email address or a hash, breaks inside the word. Below 600 px the shell's `.vm` panels lose their extra 16px side padding so native selects keep the full column width and show their selected text.
 
-### GCSP synthetic note (`blocks/gcsp/kit/synthetic-note.js`, FUCQ-277)
-
-A data helper over `el`, no stylesheet (it uses the existing `.gcsp .gcsp-synthetic` rule). `syntheticNote()` returns the one footer line "Synthetic example data." (`SYNTHETIC_NOTE`) that keeps a scenario screen identified as made-up data once its per-field caveats (allowance basis, "Time follows the presenter clock") are gone. Setup, the released-car browser, review, the final summary, buddy activity and the offer page end with it; the account keeps its own longer footer with source and date, and the brief its "Synthetic local demo" draft line. The gallery's `syntheticNote` group shows it.
-
 ### GCSP order identity (`blocks/gcsp/kit/order-identity.js`, FUCQ-220)
 
 A data helper, not a component. `orderIdentityRows(orderReference, carOrderNumber)` returns `factList` rows labelled "Order reference" (only when the server sent a well-formed `^[A-Za-z0-9-]{1,32}$` reference) and "Car order number"; `orderReferenceOf` is the same check. The manual confirmation, buddy handoff, account order card and history, and order progress all use it, so an earlier order shows only the car's number and nothing is derived on the client.

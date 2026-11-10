@@ -8,7 +8,7 @@ const PLAIN = Object.freeze([
   [/^Fictional facts for mechanics; /, 'Vehicle and driver facts are assumed; '],
   [/^Underlying needs are synthetic latent inputs, not a real employee confirmation\.$/, 'Underlying needs are modelled inputs, not an employee confirmation.'],
   [/ Not a verified BMW amount\.$/, ''], [/\bin demo brief\/Q15\b/, 'in the brief (Q15)'],
-  [/\b(?:synthetic|fictional|demonstration|demo)(?:[- ]clock)?[- ]?(?=\w)/gi, ''],
+  [/\b(?:synthetic|fictional|demonstration|demo)\b(?:[- ]clock)?[- ]?(?=\w)/gi, ''],
 ]);
 export function plainText(value) {
   if (typeof value !== 'string') return value;
