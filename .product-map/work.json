@@ -4215,7 +4215,7 @@
       "type": "Bug",
       "assignee": "usget",
       "branch": "dev/DEV-2026-11-10-004",
-      "observed_at": "2026-11-10T14:30:08Z",
+      "observed_at": "2026-11-10T15:00:02Z",
       "workers": [
         {
           "name": "Michigan J. Frog",
@@ -4231,28 +4231,41 @@
           "role": "implementer",
           "harness": "codex",
           "observed_at": "2026-11-10T14:30:08.599994Z",
-          "expires_at": "2026-11-10T15:30:08.599994Z",
-          "source": "observed spawn /root/michigan_j_frog/grub; requestedSol/xhigh; repair slice",
+          "expires_at": "2026-11-10T15:00:02.086490+00:00",
+          "source": "Observed final handover2708d11e; child ended, no active process/descendant",
+          "status": "stopped"
+        },
+        {
+          "name": "Imhotep",
+          "role": "independent-reviewer-A",
+          "harness": "codex",
+          "observed_at": "2026-11-10T15:00:02.086490+00:00",
+          "expires_at": "2026-11-10T16:00:02.086490+00:00",
+          "source": "Dispatcher observed resumed existing thread01a1c5ba-fbe9-7402-a343-dcb7518b90a1; requested/selectedSol/high",
           "status": "active"
         }
       ],
       "slices": [
         {
           "id": "repair",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Readable-selected-car-media",
-          "observed_at": "2026-11-10T14:28:44Z",
-          "evidence": "Current diagnosis and scope recorded; one implementer planned"
+          "observed_at": "2026-11-10T15:00:02Z",
+          "evidence": "Repair5d1cfc33 on integratede81db95a; exact source/capture manifest2708d11e; lead scoped170/170 and corrected1280/375 inspection passed. Independent review remains a separate open slice."
         },
         {
           "id": "review",
-          "status": "not-started",
-          "title": "Independent-rendered-review"
+          "status": "in-progress",
+          "title": "Independent-rendered-review",
+          "observed_at": "2026-11-10T15:00:02Z",
+          "evidence": "Dispatcher observed Imhotep Sol/high blindA on immutable packet; no detector findings read. AssessmentB pending afterA."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Scoped-delivery-validation"
+          "status": "in-progress",
+          "title": "Scoped-delivery-validation",
+          "observed_at": "2026-11-10T15:00:02Z",
+          "evidence": "Source/evidence pushed and lead strict-targeted170/170 default on e81db95a/aff66; final review/resource/result receipt pending."
         }
       ],
       "unsliced": false
