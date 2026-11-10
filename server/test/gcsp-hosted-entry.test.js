@@ -95,7 +95,10 @@ test('the hosted entry serves the gated demo and drives Paula to a captured offe
   const form = await get('/gcsp/access?next=%2Fgcsp-outbox.html');
   assert.equal(form.status, 200); assert.match(form.text, /type="password"/); assert.match(form.text, /value="\/gcsp-outbox\.html"/);
   assert.equal((await get('/gcsp/offer')).status, 200);
-  assert.equal((await get('/blocks/gcsp/shell/gcsp-shell.css')).status, 200);
+  const css = await get('/blocks/gcsp/shell/gcsp-shell.css');
+  assert.equal(css.status, 200); assert.equal(css.headers.get('cache-control'), 'private, no-cache');
+  assert.equal((await get('/blocks/gcsp/shell/gcsp-shell.css', { headers: { 'If-None-Match': css.headers.get('etag') } })).status, 304);
+  assert.equal(gated.headers.get('cache-control'), 'no-store');
   assert.equal((await get('/api/gcsp/context')).status, 401);
   const form401 = (key) => browser.request('/gcsp/access', { method: 'POST', body: new URLSearchParams({ key, next: '/gcsp-presenter.html' }).toString(),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
