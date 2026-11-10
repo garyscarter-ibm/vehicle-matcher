@@ -13,6 +13,7 @@ const requested = new URLSearchParams(globalThis.location?.search || '').get('fi
 const initial = Object.hasOwn(names, requested) ? requested : 'offer';
 const root = document.getElementById('gcsp-activity-preview');
 if (root) mountEmployee(root, {
+  signOut: false,
   view: 'activity',
   loadAccount: async () => ({ status: 'ready', name: 'Paula Mason', context: 'Choices' }),
   renderBody(main) {

@@ -112,6 +112,22 @@ never changes the quote. Check current eligibility rules separately at the curre
 run policy version. Validate quote time, facts/terms identity and essentials using
 the shared kernel; do not mint a role or mutate the quote to make it pass.
 
+**Preference-only precedence — FUCQ-333, authorised 10 November 2026.** An
+otherwise valid issued offer remains acceptable after the employee confirms
+different preference values or importance. Compare the latest confirmed
+essentials with the issued brief by field membership, value, operator, unit and
+confirmation state; confirmation timestamps and source metadata do not change
+their meaning, and `includes` values are unordered. A changed essential still
+requires review, including charging or lost confirmation. Revalidate the exact
+car with the latest brief and retain all existing eligibility, allowance,
+driver/selection permission, declarations, ownership, hold, quote and expiry
+gates. Keep the issued offer and quote immutable. The decision records both the
+latest checked `versions.brief` and issued `versions.pinnedBrief`; the selection
+receipt remains pinned to the issued quote's brief. Failed attempts need no data
+migration: a still-valid issued offer can be retried. This dated refinement
+supersedes the earlier preference comparison; FUCQ-106's original claimed
+acceptance criteria and historical evidence remain unchanged.
+
 Local confirmed acceptance atomically sets offer `accepted`, hold/claim
 `allocated`, stock `allocated` with unavailable flags, slot `allocated`, inserts
 the decision and emits its typed event. Allocated hold/slot authority stops new

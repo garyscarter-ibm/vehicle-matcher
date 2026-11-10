@@ -56,7 +56,8 @@ export async function allocationFixture({ rule, cars = 2, claimResult, reverse =
     }
     return ok({ seeded: true });
   });
-  if (reverse) { store.state.tables.employees.reverse(); store.state.tables.briefs.reverse(); store.state.tables.stock.reverse(); }
+  // Committed memory state is frozen (FUCQ-302), so fixtures replace tables rather than edit them.
+  if (reverse) { const t = store.state.tables; store.state = { ...store.state, tables: { ...t, employees: [...t.employees].reverse(), briefs: [...t.briefs].reverse(), stock: [...t.stock].reverse() } }; }
   const calls = []; const outcomes = new Map(); const occupied = new Set();
   const claim = { async tryClaim(employee, input) {
     assert.equal((await identity.requireRole(employee, 'employee')).status, 'ok');

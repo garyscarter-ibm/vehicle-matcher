@@ -18,21 +18,25 @@
       "policyVersion": "gcsp-policy-v1",
       "principal": {
         "principalId": "demo-paula",
-        "name": "Paula Mason"
+        "name": "Paula Mason",
+        "email": "paula.mason@gcsp-demo.com"
       },
       "schemeContext": {
         "companyId": "demo-bmw-fs-uk",
         "schemeId": "choices-fs-uk",
         "gradeId": "G7",
         "entitlementSlotId": "slot-paula"
-      }
+      },
+      "firstName": "Paula",
+      "lastName": "Mason",
+      "email": "paula.mason@gcsp-demo.com"
     },
     "contractVersion": "1.0.0"
   },
   "refusals": {
     "missing": {
       "status": "missing-session",
-      "reason": "Choose an acting person using a presenter session.",
+      "reason": "Sign in to continue.",
       "contractVersion": "1.0.0"
     },
     "unknown": {
@@ -42,7 +46,7 @@
     },
     "expired": {
       "status": "expired-session",
-      "reason": "This session has expired. Start a new presenter session.",
+      "reason": "Your session has expired. Sign in again.",
       "contractVersion": "1.0.0"
     },
     "principal": {

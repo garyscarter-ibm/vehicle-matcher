@@ -1,0 +1,179 @@
+{
+  "issue": "FUCQ-333",
+  "observedAt": "2026-11-10T12:04:56.019725+00:00",
+  "ownedAllocations": [
+    {
+      "root": "/private/tmp/test-stamp-shard-f4360295726c4bd9b926cd49f2e0b934",
+      "removed": true,
+      "peakBytes": 64,
+      "peakRssBytes": 254951424,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261110-115127-fnf3_gvl/chunk-0001.log",
+      "rc": 0,
+      "wallSeconds": 1.2208134169923142
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-80c365f909b14c75b04f7a9d463df21e",
+      "removed": true,
+      "peakBytes": 10371424,
+      "peakRssBytes": 504119296,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261110-115855-nnqbjn_1/chunk-0001.log",
+      "rc": 0,
+      "wallSeconds": 13.682881792017724
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-9d361b03e48a47188951dead7d2718db",
+      "removed": true,
+      "peakBytes": 0,
+      "peakRssBytes": 140279808,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261110-114315-3x3gnf3i/chunk-0001.log",
+      "rc": 1,
+      "wallSeconds": 0.5034204589901492
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-c4bf9ead2c0e4ee2b552795b177900a5",
+      "removed": true,
+      "peakBytes": 0,
+      "peakRssBytes": 301383680,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261110-115007-qel9aynd/chunk-0001.log",
+      "rc": 0,
+      "wallSeconds": 1.9152895840234123
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-172d357926624caeac6185debcdce1ca",
+      "removed": true,
+      "peakBytes": 0,
+      "peakRssBytes": 278446080,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261110-114353-hquo8w1s/chunk-0001.log",
+      "rc": 0,
+      "wallSeconds": 15.095883000001777
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-65d55aa19bdb415dbd64517b742c9284",
+      "removed": true,
+      "peakBytes": 64,
+      "peakRssBytes": 236421120,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261110-115038-jsn65452/chunk-0001.log",
+      "rc": 1,
+      "wallSeconds": 0.9688681670231745
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-0aee5a4fafed477ca024e22640208470",
+      "removed": true,
+      "peakBytes": 0,
+      "peakRssBytes": 497762304,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261110-114439-itirjoqc/chunk-0001.log",
+      "rc": 0,
+      "wallSeconds": 254.91382829099894
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-8d5940192af14b34942ef213711a1fd9",
+      "removed": true,
+      "peakBytes": 0,
+      "peakRssBytes": 497418240,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261110-120009-iivsis1y/chunk-0001.log",
+      "rc": 0,
+      "wallSeconds": 12.018705958034843
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-5dd77657949c40dc8fce78e6334d6f91",
+      "removed": true,
+      "peakBytes": 64,
+      "outcome": "interrupted after 10 tests passed; final force-exit rerun supersedes"
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-1ae32ec739bf475b9501609d54f2e126",
+      "removed": true,
+      "peakBytes": 150272,
+      "compatibilityException": "bounded active Chromium profile/cache"
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-51cc0718ea14456a8fcb6f148a0ae11c",
+      "removed": true,
+      "peakBytes": 150272,
+      "compatibilityException": "bounded active Chromium profile/cache"
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-48b1f76febee4298b64ca1638f5032c2",
+      "removed": true,
+      "peakBytes": 150272,
+      "compatibilityException": "bounded active Chromium profile/cache"
+    }
+  ],
+  "parentScratch": {
+    "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq333-20261110",
+    "removed": true,
+    "removedAllocatedBytes": 16384
+  },
+  "removedPeakAllocationBytes": 10838816,
+  "retainedSummary": "docs/gcsp/evidence/fucq333/README.md and validation.json; ignored local checkpoint/log/impact records",
+  "compatibilityException": "bounded active headless Chromium profile/cache only; measured browser receipt peak 150272 allocated bytes, final runner RSS 164544512 bytes. Profiles removed.",
+  "largeOutputs": "none; captures approximately 2 MiB",
+  "children": "Shaggy completed; no owned test/browser process remains after supervisor completion",
+  "leftovers": [],
+  "preserved": [
+    "pre-existing shared installed environments",
+    "shared checkout and unrelated files"
+  ],
+  "processGroupChecks": [
+    {
+      "processGroup": 67733,
+      "liveMembers": false
+    },
+    {
+      "processGroup": 66604,
+      "liveMembers": false
+    },
+    {
+      "processGroup": 66289,
+      "liveMembers": false
+    },
+    {
+      "processGroup": 53614,
+      "liveMembers": false
+    },
+    {
+      "processGroup": 84044,
+      "liveMembers": false
+    },
+    {
+      "processGroup": 54728,
+      "liveMembers": false
+    },
+    {
+      "processGroup": 56211,
+      "liveMembers": false
+    },
+    {
+      "processGroup": 70527,
+      "liveMembers": false
+    },
+    {
+      "processGroup": 80202,
+      "liveMembers": false
+    },
+    {
+      "processGroup": 65741,
+      "liveMembers": false
+    },
+    {
+      "processGroup": 67528,
+      "liveMembers": false
+    },
+    {
+      "processGroup": 65475,
+      "liveMembers": false
+    }
+  ],
+  "worktreeCleanup": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-003",
+    "removed": true,
+    "helper": "scaffold_git.py drop-branch --id DEV-2026-11-10-003",
+    "localBranchRemoved": true,
+    "leaseReleased": true
+  },
+  "ownedBytecode": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-003/_tools/__pycache__/test_resources.cpython-314.pyc",
+    "removed": true
+  },
+  "worktreeDependencies": "The task-local locked server dependency installation was removed with its merged disposable worktree by the configured drop-branch helper; pre-existing shared dependencies were preserved."
+}

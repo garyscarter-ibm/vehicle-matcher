@@ -151,7 +151,7 @@
     },
     {
       "path": "blocks/gcsp/shell/gcsp-shell.css",
-      "max_lines": 291
+      "max_lines": 270
     },
     {
       "path": "blocks/gcsp/shell/gcsp-tokens.css",
@@ -300,6 +300,14 @@
     {
       "path": "blocks/gcsp/shell/shell-inset.css",
       "max_lines": 10
+    },
+    {
+      "path": "blocks/gcsp/shell/account-menu.css",
+      "max_lines": 26
+    },
+    {
+      "path": "blocks/gcsp/login/gcsp-login.css",
+      "max_lines": 20
     },
     {
       "path": "blocks/gcsp/kit/vehicle-media.css",

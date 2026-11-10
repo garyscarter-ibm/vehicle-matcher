@@ -417,15 +417,15 @@ test('postgresql native constraints reject a second occupying hold and claim', {
   }
 });
 
+// FUCQ-302: the default (and hosted) memory repository shares frozen rows between shallow snapshots.
 repositoryContract('memory', async () => {
   const store = createMemoryStore();
   return { repository: createMemoryRepository({ store }), reopen: () => createMemoryRepository({ store }) };
 });
 
-// FUCQ-226: the comparison replay's shallow snapshots and receipt index must keep the same contract.
-repositoryContract('memory (shallow snapshots, receipt index)', async () => {
+repositoryContract('memory (deep snapshots)', async () => {
   const store = createMemoryStore();
-  return { repository: createMemoryRepository({ store, snapshot: 'shallow' }), reopen: () => createMemoryRepository({ store, snapshot: 'shallow' }) };
+  return { repository: createMemoryRepository({ store, snapshot: 'deep' }), reopen: () => createMemoryRepository({ store, snapshot: 'deep' }) };
 });
 
 test('FUCQ-226: the shallow receipt index finds receipts committed where a rolled-back transaction had indexed others', async () => {
@@ -796,4 +796,75 @@ test('FUCQ-226: cloneJson copies JSON data exactly as structuredClone does, with
   assert.equal(Object.getPrototypeOf(copy), Object.prototype); assert.ok(Object.hasOwn(copy, '__proto__'));
   assert.notEqual(copy.a, value.a); assert.notEqual(copy.a[3], value.a[3]); assert.notEqual(copy.d.e, value.d.e);
   assert.ok(Object.is(copy.f, -0));
+});
+
+const deeplyFrozen = (value, path = 'state') => {
+  if (value === null || typeof value !== 'object') return [];
+  return Object.isFrozen(value) ? Object.keys(value).flatMap((key) => deeplyFrozen(value[key], `${path}.${key}`)) : [path];
+};
+const nestedStock = (context, orderUuid) => ({ runId: context.runId, orderUuid, orderNumber: `n-${orderUuid}`, configurationId: 'same-config', state: 'available', facts: { engine: { kw: 100 }, tags: ['a'] } });
+
+test('FUCQ-302: the default memory repository deep-freezes committed state, so an in-place write throws', async () => {
+  const store = createMemoryStore(); const repository = createMemoryRepository({ store });
+  assert.equal((await repository.open()).status, 'ok'); await setup(repository);
+  const context = ctx();
+  assert.equal((await repository.transaction(context, command(), (tx) => tx.insert('stock', nestedStock(context, 'car-n')))).status, 'ok');
+  assert.deepEqual(deeplyFrozen(store.state), []);
+  const car = store.state.tables.stock.find((row) => row.orderUuid === 'car-n');
+  assert.throws(() => { car.state = 'held'; }, TypeError);
+  assert.throws(() => { car.facts.engine.kw = 1; }, TypeError);
+  assert.throws(() => { car.facts.tags.push('b'); }, TypeError);
+  assert.throws(() => { store.state.tables.stock.push({}); }, TypeError);
+  assert.throws(() => { store.state.tables.stock = []; }, TypeError);
+  await repository.close();
+});
+
+test('FUCQ-302: refused, failing and throwing transactions leave committed state untouched', async () => {
+  const store = createMemoryStore(); const repository = createMemoryRepository({ store });
+  assert.equal((await repository.open()).status, 'ok'); await setup(repository);
+  const context = ctx(); const before = store.state; const digest = inputDigest(store.state);
+  const car = (await repository.read(context, ref('stock', { orderUuid: 'car-a' }))).value;
+  const writes = async (tx) => {
+    assert.equal((await tx.insert('stock', nestedStock(context, 'car-x'))).status, 'ok');
+    assert.equal((await tx.compareAndSwap(ref('stock', { orderUuid: 'car-a' }), car.version, { state: 'held', facts: { changed: true } })).status, 'ok');
+  };
+  const outcomes = [
+    await repository.transaction(context, command(), async (tx) => { await writes(tx); return result('conflict', { code: 'refused-on-purpose' }); }),
+    await repository.transaction(context, command(), async (tx) => { await writes(tx); throw new Error('boom'); }),
+    await repository.transaction(context, command(), async (tx) => { await writes(tx); await tx.insert('stock', { ...nestedStock(context, 'car-a'), orderNumber: 'clash' }); return ok({}); }),
+    await repository.transaction(context, command(), async (tx) => { await writes(tx); return { status: 'ok' }; }),
+  ];
+  assert.deepEqual(outcomes.map((outcome) => outcome.status), ['conflict', 'unavailable', 'conflict', 'invalid']);
+  assert.equal(store.state, before);
+  assert.equal(inputDigest(store.state), digest);
+  assert.equal((await repository.read(context, ref('stock', { orderUuid: 'car-x' }))).status, 'not-found');
+  assert.equal((await repository.read(context, ref('stock', { orderUuid: 'car-a' }))).value.state, 'available');
+  await repository.close();
+});
+
+test('FUCQ-302: callers of the shared-row repository get private mutable copies, never committed rows', async () => {
+  const store = createMemoryStore(); const repository = createMemoryRepository({ store });
+  assert.equal((await repository.open()).status, 'ok');
+  const context = ctx('run-c');
+  const seeded = await repository.transaction(context, command(), async (tx) => {
+    await tx.insert('runs', { runId: context.runId, environmentId: context.environmentId, status: 'active', current: true });
+    return tx.insert('stock', nestedStock(context, 'car-c'));
+  });
+  assert.equal(seeded.status, 'ok', JSON.stringify(seeded));
+  const digest = inputDigest(store.state);
+  const run = await repository.currentRun(context.environmentId);
+  const read = await repository.read(context, ref('stock', { orderUuid: 'car-c' }, context));
+  const listed = await repository.query(context, 'stock');
+  for (const outcome of [seeded, run, read]) assert.equal(Object.isFrozen(outcome.value), false);
+  assert.doesNotThrow(() => { run.value.status = 'x'; read.value.facts.engine.kw = 1; listed.value[0].facts.tags.push('z'); seeded.value.state = 'x'; });
+  const inside = await repository.transaction(context, command(), async (tx) => {
+    const row = (await tx.get(ref('stock', { orderUuid: 'car-c' }, context))).value;
+    row.facts.engine.kw = 2; row.state = 'held';
+    return ok({ mutated: true });
+  });
+  assert.equal(inside.status, 'ok');
+  const after = (await repository.read(context, ref('stock', { orderUuid: 'car-c' }, context))).value;
+  assert.deepEqual([after.state, after.facts.engine.kw, after.facts.tags], ['available', 100, ['a']]);
+  assert.notEqual(inputDigest(store.state), digest);
+  await repository.close();
 });

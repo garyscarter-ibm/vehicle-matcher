@@ -92,6 +92,7 @@ export function mountEmployee(root, ctx = {}) {
     shell = portalShell({
       title: 'Group Car Schemes Portal',
       presenterControls: ctx.presenterControls,
+      signOut: ctx.signOut,
       arrivalFocus: true,
       navigation: PORTAL_NAVIGATION,
       active: activeOf(view),
@@ -184,6 +185,7 @@ export class GcspEmployeeElement extends HTMLElement {
       brand,
       view: this.view,
       loadAccount: adapter?.loadAccount,
+      signOut: fixtureName || adapter?.readOnly === true ? false : adapter?.signOut,
       renderBody: adapter?.renderBody,
       onNavigate: (to) => {
         const event = this._emit('gcsp:navigate', { from: this._current, to }, true);

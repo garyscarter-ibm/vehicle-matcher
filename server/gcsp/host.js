@@ -1,6 +1,6 @@
 // Shared GCSP host: runtime options, the same-origin page front and the hosted (Render) entry.
 // The launcher and server/index.js both compose through here, so there is one copy.
-import { createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
+import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, relative, resolve, sep } from 'node:path';
@@ -16,17 +16,22 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '
 const SESSION_PAGES = ['/gcsp-brief-live.html', '/gcsp-activity-live.html', '/gcsp-order-progress-live.html', '/gcsp-account.html',
   '/gcsp-help.html', '/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-presenter.html', '/gcsp-outbox.html'];
 const sessionPage = (path) => SESSION_PAGES.includes(path);
-const navigationCookie = 'GCSP_LOCAL_BOOTSTRAP';
+const LOGIN_PATH = '/gcsp/login';
+const loginPage = (path) => [LOGIN_PATH, '/gcsp-login.html'].includes(path);
+const presenterPage = (path) => ['/gcsp-presenter.html', '/gcsp-outbox.html'].includes(path);
+const gregPage = (path) => ['/gcsp-greg.html', '/gcsp-case-queue.html'].includes(path);
+const landing = (context) => context?.roles?.includes('greg') ? '/gcsp-greg.html'
+  : context?.roles?.includes('employee') ? '/gcsp-account.html' : LOGIN_PATH;
 const ACCESS_COOKIE = 'GCSP_HOST_ACCESS';
 const ACCESS_PATH = '/gcsp/access';
 const ACCESS_MAX_AGE = 43200;
 const ACCESS_BODY_LIMIT = 4096;
-const publicPath = (path) => sessionPage(path) || ['/gcsp/offer', '/gcsp-offer.html', '/gcsp-employee.css'].includes(path)
+const publicPath = (path) => loginPage(path) || sessionPage(path) || ['/gcsp/offer', '/gcsp-offer.html', '/gcsp-employee.css'].includes(path)
   || path.startsWith('/blocks/') || path.startsWith('/assets/');
 
 // The launcher's composition, shared. Callers pass only the defaults that differ.
 export function gcspRuntimeOptions({ env = process.env, defaultMode, defaultEnvironmentId, commandId } = {}) {
-  const mode = env.GCSP_REPOSITORY_MODE || defaultMode;
+  const mode = env.GCSP_REPOSITORY_MODE || defaultMode || 'postgres';
   const stock = createRunStockProviderFactory();
   // One synthetic ordering upstream confirms supply and releases it on top of the run's chosen stock source.
   const upstream = createDemoUpstream();
@@ -99,9 +104,8 @@ export function createGcspFront({ root, services, api, origin, accessKey, access
   };
   const html = (res, status, body, headers = {}) => res.writeHead(status, { 'Content-Type': TYPES['.html'],
     'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', ...headers }).end(body);
-  // The marker names this process, so a restart (Render sleep, deploy) bootstraps a fresh session.
-  const boot = randomBytes(12).toString('hex');
-  const nextPath = (value) => (sessionPage(value) ? value : '/gcsp-presenter.html');
+  const nextPath = (value) => (sessionPage(value) || loginPage(value) ? value : LOGIN_PATH);
+  const redirect = (res, location) => res.writeHead(303, { Location: location, 'Cache-Control': 'no-store' }).end();
 
   async function accessRoute(req, res, url) {
     if (req.method === 'GET') { html(res, 200, accessPage(nextPath(url.searchParams.get('next')))); return; }
@@ -127,36 +131,39 @@ export function createGcspFront({ root, services, api, origin, accessKey, access
       }
       // The bare host and favicon get a browser answer rather than the retail API's 401 or a 404.
       if (hostOk && req.method === 'GET' && path === '/') {
-        const location = !gated || hasAccess(req) ? '/gcsp-presenter.html' : `${ACCESS_PATH}?next=%2Fgcsp-presenter.html`;
-        res.writeHead(303, { Location: location, 'Cache-Control': 'no-store' }).end(); return;
+        if (gated && !hasAccess(req)) { redirect(res, `${ACCESS_PATH}?next=${encodeURIComponent(LOGIN_PATH)}`); return; }
+        const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
+        redirect(res, session.status === 'ok' ? landing(session.value) : LOGIN_PATH); return;
       }
       if (hostOk && req.method === 'GET' && path === '/favicon.ico') { res.writeHead(204, { 'Cache-Control': 'max-age=86400' }).end(); return; }
       if (fallThrough && (!hostOk || !(publicPath(path) || gated && path === ACCESS_PATH))) { api.emit('request', req, res); return; }
       if (gated && path === ACCESS_PATH) { await accessRoute(req, res, url); return; }
       if (req.method !== 'GET' || !publicPath(path)) { res.writeHead(404).end('Not found'); return; }
-      if (gated && sessionPage(path) && !hasAccess(req)) {
+      if (gated && (sessionPage(path) || loginPage(path)) && !hasAccess(req)) {
         res.writeHead(303, { Location: `${ACCESS_PATH}?next=${encodeURIComponent(path)}`, 'Cache-Control': 'no-store' }).end(); return;
       }
-      const assetPath = path === '/gcsp/offer' ? '/gcsp-offer.html' : path;
+      if (presenterPage(path)) {
+        const control = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie, purpose: 'presenter-control' });
+        if (control.status !== 'ok') {
+          const issued = await services.createPresenterControlSession();
+          if (issued.status !== 'ok') { html(res, 503, 'The service could not start.'); return; }
+          res.setHeader('Set-Cookie', issued.value.setCookie);
+        }
+      } else if (sessionPage(path) || loginPage(path)) {
+        const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
+        const destination = session.status === 'ok' ? landing(session.value) : LOGIN_PATH;
+        if (session.status === 'unavailable') { html(res, 503, 'The service is unavailable. Try again.'); return; }
+        if (loginPage(path)) {
+          if (destination !== LOGIN_PATH) { redirect(res, destination); return; }
+        } else if (destination === LOGIN_PATH || !session.value.roles.includes(gregPage(path) ? 'greg' : 'employee')) {
+          redirect(res, destination); return;
+        }
+      }
+      const assetPath = path === '/gcsp/offer' ? '/gcsp-offer.html' : loginPage(path) ? '/gcsp-login.html' : path;
       const file = resolve(root, `.${assetPath}`);
       const canonicalPath = `/${relative(resolve(root), file).split(sep).join('/')}`;
       if (!file.startsWith(`${resolve(root)}${sep}`) || !publicPath(canonicalPath) || canonicalPath !== assetPath
         || !(await stat(file)).isFile()) { res.writeHead(404).end('Not found'); return; }
-      // API cookies deliberately stay on /api/gcsp, so browsers do not send them
-      // on HTML navigation. This non-authority marker only prevents rebootstrap;
-      // every API request still authenticates the unchanged identity cookies.
-      const bootstrapped = req.headers.cookie?.split(';').some((value) => value.trim() === `${navigationCookie}=${boot}`);
-      if (sessionPage(path) && !bootstrapped) {
-        const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
-        if (session.status !== 'ok') {
-          const issued = await services.createLocalSession();
-          if (issued.status !== 'ok') { res.writeHead(503).end('The service could not start.'); return; }
-          const expires = issued.value.setCookie.at(-1).match(/; Expires=([^;]+)/)?.[1];
-          if (!expires) { res.writeHead(503).end('The service could not start.'); return; }
-          res.setHeader('Set-Cookie', [...issued.value.setCookie,
-            `${navigationCookie}=${boot}; Path=/; HttpOnly; Secure; SameSite=Strict; Expires=${expires}`]);
-        }
-      }
       const body = await readFile(file);
       const type = TYPES[extname(file)] || 'application/octet-stream';
       // Static files revalidate by content hash (no max-age, so a redeploy is never stale); pages stay no-store.
@@ -179,7 +186,8 @@ export async function startHostedGcsp({ buildServer, env = process.env, port, ro
   if (!origin) return failure('public-origin-required');
   // Fail closed: the hosted pages and /api/* are only open behind the demo key.
   if (!env.DEMO_ACCESS_KEY) return failure('access-key-required');
-  const options = gcspRuntimeOptions({ env, defaultMode: 'memory', defaultEnvironmentId: 'gcsp-hosted-demo', commandId: 'hosted-bootstrap' });
+  if (!env.GCSP_REPOSITORY_MODE && !env.GCSP_DATABASE_URL || env.GCSP_REPOSITORY_MODE === 'postgres' && !env.GCSP_DATABASE_URL) return failure('database-url-required');
+  const options = gcspRuntimeOptions({ env, defaultMode: 'postgres', defaultEnvironmentId: 'gcsp-hosted-demo', commandId: 'hosted-bootstrap' });
   const opened = await createGcspRuntime(options.runtime);
   if (opened.status !== 'ok') return opened;
   const services = opened.value;

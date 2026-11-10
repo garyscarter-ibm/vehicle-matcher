@@ -1,12 +1,12 @@
-# GCSP demo review: proposed defects and improvement stories
+# GCSP demo review: approved findings and Jira receipt
 
 Prepared 10 November 2026 for Russell Gowers and Gary Carter (GC).
 
-**Status: proposal for agreement. No Jira items have been created or changed, and no implementation is authorised by this document.** The D/S/A references below are local discussion references, not Jira keys.
+**Status: published to Jira on 10 November 2026: 10 new Bugs, 7 Stories and 1 retrospective Task; 2 findings reuse existing records. D01 is being worked on in another session and was not replicated. S01 has been removed because D01 supersedes it.** The D/S/A references below map to Jira in the receipt. This request created backlog records; it did not start an implementation run.
 
 Source: `Review demo and record defects_improvements.vtt`, supplied from `/Users/usget/Downloads/`. The transcript contains 515 cues and ends at **00:31:27**. All references below are elapsed recording times. The VTT does not establish the meeting's calendar date.
 
-This analysis combines repeat mentions, distinguishes observations from suspected causes, and follows later corrections and decisions. Defects are **reported in the meeting**, not independently reproduced against the current application. Story outcomes and checks are proposed refinements of the discussion, subject to agreement.
+This analysis combines repeat mentions, distinguishes observations from suspected causes, and follows later corrections and decisions. Defects are **reported in the meeting**, not independently reproduced against the current application. Russell approved creation of the remaining items after the exclusions above; current diagnosis and existing-work reconciliation still apply.
 
 ## What the meeting prioritised
 
@@ -14,7 +14,7 @@ At **00:29:51–00:30:36**, GC asks to see the proposed work first and focus on 
 
 1. Presenter controls: separate setup from the employee experience and simplify operation (**D03, S02, S03**).
 2. Time running automatically, so the buddy acts without repeated manual ticks (**S04**).
-3. Smooth, connected end-to-end navigation (**D04**, supported by **D05, S01**).
+3. Smooth, connected end-to-end navigation (**D04**, supported by **D05** and the separately owned **D01**).
 4. UI polish, including vehicle images (**D06, D07**).
 5. Vehicle configuration options that make the cars visibly different (**S05, S06**).
 
@@ -22,11 +22,52 @@ Separately, Russell explicitly calls the blocked offer acceptance a **P1 defect*
 
 The shortlist is a record of meeting emphasis, not an agreed delivery order or a severity assessment of every item. Other priorities remain for agreement. Existing defect severities and authorised deferrals must be preserved until properly reassessed.
 
-## Proposed identified defects
+## Jira publication receipt
+
+All 18 new records were read back as **To Do**, with their native types, descriptions, parent Epics, labels and related-issue links verified at **11:30 UTC on 10 November 2026**. No assignments, story points, blocking dependencies or existing Story acceptance criteria were changed. D13 carries the explicitly requested **P1**, mapped to Jira **Highest**; other new records retain the project default priority. Severity assessments are recorded separately in each Bug.
+
+| Ref | Jira record | Disposition |
+|---|---|---|
+| D01 | [FUCQ-322](https://ibm-consulting.atlassian.net/browse/FUCQ-322) | **Other session; excluded.** No duplicate, claim or implementation. |
+| D02 | [FUCQ-321](https://ibm-consulting.atlassian.net/browse/FUCQ-321) | Reused existing copy-cleanup Story; In Review at verification. |
+| D03 | [FUCQ-324](https://ibm-consulting.atlassian.net/browse/FUCQ-324) | New Bug: separate presenter controls from employee journey. |
+| D04 | [FUCQ-325](https://ibm-consulting.atlassian.net/browse/FUCQ-325) | New Bug: connect employee navigation; composed origin needs triage. |
+| D05 | [FUCQ-326](https://ibm-consulting.atlassian.net/browse/FUCQ-326) | New Bug: use “Your preferences”. |
+| D06 | [FUCQ-327](https://ibm-consulting.atlassian.net/browse/FUCQ-327) | New Bug: residual Your Cars hierarchy and allowance/points prominence. |
+| D07 | [FUCQ-323](https://ibm-consulting.atlassian.net/browse/FUCQ-323) | Reused existing imagery Bug; To Do at verification. |
+| D08 | [FUCQ-328](https://ibm-consulting.atlassian.net/browse/FUCQ-328) | New Bug: trace and display available starting facts. |
+| D09 | [FUCQ-329](https://ibm-consulting.atlassian.net/browse/FUCQ-329) | New Bug: filter ineligible employee recommendations. |
+| D10 | [FUCQ-330](https://ibm-consulting.atlassian.net/browse/FUCQ-330) | New Bug: clarify preference value versus importance. |
+| D11 | [FUCQ-331](https://ibm-consulting.atlassian.net/browse/FUCQ-331) | New Bug: residual cross-browser preference readback; coordinate FUCQ-322, diagnose before repair. |
+| D12 | [FUCQ-332](https://ibm-consulting.atlassian.net/browse/FUCQ-332) | New Bug: observable current-state check feedback. |
+| D13 | [FUCQ-333](https://ibm-consulting.atlassian.net/browse/FUCQ-333) | New Bug; **P1 / Highest**, High severity. |
+| S01 | — | **Removed; superseded by D01.** |
+| S02 | [FUCQ-334](https://ibm-consulting.atlassian.net/browse/FUCQ-334) | New Story: confirm and retain presenter setup. |
+| S03 | [FUCQ-335](https://ibm-consulting.atlassian.net/browse/FUCQ-335) | New Story: operate the audience's run from a separate client. |
+| S04 | [FUCQ-336](https://ibm-consulting.atlassian.net/browse/FUCQ-336) | New Story: automatic canonical clock and buddy processing. |
+| S05 | [FUCQ-337](https://ibm-consulting.atlassian.net/browse/FUCQ-337) | New Story: compare actual vehicle configurations/options. |
+| S06 | [FUCQ-338](https://ibm-consulting.atlassian.net/browse/FUCQ-338) | New Story: Paula's configured current-car record/history. |
+| S07 | [FUCQ-339](https://ibm-consulting.atlassian.net/browse/FUCQ-339) | New Story: best-match prominence; wider UI remains ahead of it. |
+| S08 | [FUCQ-340](https://ibm-consulting.atlassian.net/browse/FUCQ-340) | New Story: repeatable SUV preference-change walkthrough. |
+| A01 | [FUCQ-341](https://ibm-consulting.atlassian.net/browse/FUCQ-341) | New Task: agree future clickable-journey review step. |
+
+The saved authoring payloads and verification receipt are in [the publication record](review-meeting-jira-publication-2026-11-10.json). All 57 planned native **Relates** links were verified. These are origin/context links, not blocking dependencies. The intake marker `review-meeting-2026-11-10` returns exactly the 18 new records.
+
+### Scope reconciled during publication
+
+- **D03/S02/S03:** the recording accepted an overlay, but the later FUCQ-322 contract requires a separate presenter page without employee login. The new items preserve that contract and divide clean employee/operator separation, one-confirm setup, and cross-client operation.
+- **D04/D06:** reuse the specific work already tracked in FUCQ-270/277/279/284/316/321. New Bugs cover the remaining composed navigation and Your Cars hierarchy, without assuming those existing fixes failed. Activity exists; acceptance navigation was not independently disproved.
+- **D07:** FUCQ-323 expressly authorises image sourcing and full coverage. FUCQ-250's earlier scope and authorised deferral remain unchanged.
+- **D09:** FUCQ-29 intentionally returns eligible, ineligible and needs-confirmation decisions. The new report concerns their employee-facing consumption; it does not establish an engine fault. The count objection stays withdrawn.
+- **D11/S03:** FUCQ-292 excludes different browsers/devices. The new scope concerns residual cross-client readback/operation, while FUCQ-322 owns account persistence and identity. No second login or account store is authorised here.
+- **D13:** the latest-brief comparison was part of FUCQ-106's original acceptance contract. The approved preference-only precedence rule is an explicit refinement, retaining genuine eligibility, essentials, permission/consent, hold, quote, declarations and expiry checks. It does not silently amend FUCQ-106's claimed scope.
+- **S05/S06/S08:** preserve existing quote/configuration obligations, account interfaces and resettable replay; add richer comparison, a specific supported current-car record, and the SUV scenario variant. No fabricated history or forced match is requested.
+
+## Identified defects
 
 | Ref | Proposed defect | Evidence | Qualification |
 |---|---|---|---|
-| D01 | Demo entry requires an unwanted passcode/login step | 00:02:01–00:02:15 | Explicitly called a defect; the later direction retains lightweight persona selection. |
+| D01 | Demo entry requires an unwanted passcode/login step | 00:02:01–00:02:15 | **Being worked on in another session; do not replicate.** Existing login/account Story FUCQ-322. |
 | D02 | Employee-facing copy exposes distracting demo labels | 00:02:06–00:02:15; 00:25:16–00:25:26 | Paula is labelled fictional; synthetic/example references recur. A fix may already be awaiting merge. |
 | D03 | Presenter controls intrude into the employee journey | 00:03:17–00:04:03; 00:05:22–00:06:19 | Final direction permits a side overlay, with separate setup and live actions. |
 | D04 | Employee journey is fragmented across manually entered URLs | 00:07:21–00:08:09; 00:10:04–00:11:39; 00:14:47–00:15:55; 00:25:33–00:26:20 | Activity exists; the defect is joining up and presenting the experience. Acceptance navigation was not successfully exercised. |
@@ -42,11 +83,13 @@ The shortlist is a record of meeting emphasis, not an agreed delivery order or a
 
 ### D01 — Remove the unwanted demo passcode step
 
+**Ownership: being worked on in another session. Do not create a duplicate, claim it here or change its implementation.** The live existing record is FUCQ-322. Russell confirmed this exclusion on 10 November 2026. The separate persona-login proposal is removed and superseded by this work; its original lightweight-login suggestion is historical discussion, not a replacement for that session's later agreed login contract.
+
 **Reported:** GC explicitly asks to remove the login/passcode login at 00:02:01. Russell then requests a small “log in as Paula” interaction, and both converge on choosing a persona from the GCSP landing-page profile control.
 
-**Expected outcome:** the demonstrated journey does not require the current passcode-entry interruption. Persona choice is handled by **S01**. This is a change to the demonstration entry experience; the transcript does not specify a blanket removal of backend access controls.
+**Expected outcome:** follow the login/account contract already agreed in the other session. The transcript's original direction was to remove the passcode interruption while retaining deliberate user identity.
 
-**Validation target:** start from the agreed demo entry point and reach the chosen user's journey without the unwanted passcode form. Reconcile D01 and S01 as one deliverable if appropriate.
+**Validation target:** owned by the other session under FUCQ-322; no duplicate login work is created in this batch.
 
 ### D02 — Remove distracting “fictional”, “synthetic” and “example” labels from the main journey
 
@@ -136,7 +179,7 @@ After successful offer acceptance, the expected next destination is order progre
 
 **Unresolved cause:** GC suspects local storage. Later the eligible-car count changes, and Russell suggests that preferences may have changed while the view has failed to synchronise (00:22:40–00:22:59). Neither explanation is established.
 
-**Expected outcome:** the same user in the same demo run has one coherent saved profile and preference state across clients. Views read and display that state consistently; switching user/run must retain the appropriate separation. **S01** supplies the clear persona context; **S06** develops the actual configured current-car record.
+**Expected outcome:** the same user in the same demo run has one coherent saved profile and preference state across clients. Views read and display that state consistently; switching user/run must retain the appropriate separation. The separately owned D01 supplies the user context; **S06** develops the actual configured current-car record. Reconcile FUCQ-322's saved-account scope without duplicating its implementation.
 
 **Validation target:** save in browser A, reload/open in browser B for the same run/user, compare saved values and derived recommendations, and repeat after a user switch. Diagnose persistence, readback and view refresh separately rather than assuming browser-local storage is the cause.
 
@@ -158,23 +201,9 @@ After successful offer acceptance, the expected next destination is order progre
 
 **Validation target:** obtain an offer, change the user's brief, complete the declarations, accept it and confirm the recorded outcome and transition to order progress. Also check rejection and genuine expiry independently. Capture the exact application error during reproduction; the VTT wording is not a verified machine error code.
 
-## Proposed improvement user stories
+## Improvement user stories
 
-These are bounded proposals for agreement, not additions to an already claimed Story's acceptance criteria. References to related defects identify overlap; they do not prescribe duplicate tickets or blocking links.
-
-### S01 — Choose a demo persona from the GCSP profile control
-
-**As a presenter, I want to enter the GCSP landing page and choose Paula, Greg or another supported user from its profile control, so that the demonstration starts with a recognisable user journey.**
-
-**Evidence:** 00:02:17–00:03:00; reinforced by the user-as-a-real-record discussion at 00:22:02–00:22:35.
-
-**Proposed outcomes:**
-
-- Use the existing GCSP landing-page reference and a top-right profile/login control.
-- Make persona selection deliberate rather than always entering as Paula; show the active persona clearly.
-- Load that user's actual demo profile and relevant journey. A small simulated login is sufficient; full production authentication was not requested.
-
-**Validate:** choose and switch supported personas, then verify the displayed profile, current vehicle and preferences. Reconcile with D01 and D11.
+These bounded Stories are approved for backlog capture, not additions to an already claimed Story's acceptance criteria. References to related defects identify overlap; they do not prescribe duplicate tickets or blocking links. Open implementation details remain explicit in the saved records.
 
 ### S02 — Configure the presentation once, then confirm and retain it
 
@@ -293,7 +322,7 @@ Record this for the retrospective and workflow discussion, separately from produ
 | Separate admin panel instead of a side overlay, 00:05:22–00:05:38 | Withdrawn; the side overlay remains acceptable. |
 | Accept may be disabled because declarations are incomplete, 00:26:59–00:27:24 | GC confirms declarations are complete; the subsequent brief-conflict message grounds D13. |
 | Greg, other users and the rest of the lifecycle, 00:28:40–00:29:22 | Deferred to another recording. This document cannot stand as a review of those journeys. |
-| Start pollers and fix everything, 00:29:37–00:30:16 | The meeting finishes with a request to review the proposed work first and focus on key items. This task authorises the proposal only. |
+| Start pollers and fix everything, 00:29:37–00:30:16 | The meeting finishes with proposal review and focus on key items. The subsequent instruction authorises backlog creation, not fixing the whole backlog or starting pollers. |
 
 ## Existing work to reconcile before creation
 
@@ -311,18 +340,21 @@ The committed [9 November UI/UX review](ux-review-2026-11-09.md) is a useful ove
 | D08 | Finding 9 overlaps missing-value presentation; it does not establish that this meeting's source-data gaps were fixed. |
 | D11, S03, S04 | Finding 24 covers views staying stale after presenter actions. Compare that scope with user preference readback and autonomous time; they are not necessarily the same repair. |
 
-No live Jira status or originating-Story relationship has been verified in this analysis. Before creation, check current descriptions, comments, active work and deployment, and link/reuse existing issues where the report matches. Treat the references above as overlap candidates, not confirmed origin links. Reconcile D01/S01, D03/S02/S03 and D06/S07 to avoid overlapping acceptance or duplicate implementation work.
+The table above records the initial local-document overlap analysis. Live Jira reconciliation is now part of the approved publication pass; its results are recorded in the receipt below. Preserve existing descriptions, claims, statuses and deferrals. Reconcile D03/S02/S03 and D06/S07 to avoid overlapping acceptance or duplicate implementation work; D01 remains outside this batch.
 
-## Agreement and subsequent refinement
+## Remaining refinement
 
-Agree the proposed grouping, the immediate shortlist and which items should reuse existing reports. Resolve the open product details during refinement: setup persistence lifetime, clock pacing/control behaviour, the exact current-car history, and any proposed acceptance-policy change to the existing contract.
+The grouping and creation exclusions were approved on 10 November 2026. Existing-work reuse and origin/context relationships are recorded above. Refine setup persistence lifetime, clock pacing/control behaviour and minimal current-car history before implementation. D13 records the approved preference-only precedence ruling and requires its explicit contract documentation with the other legitimate gates preserved.
 
-For approved items only, prepare native Bugs or bounded Stories with current diagnosis, originating-Story evidence, severity/priority and observable acceptance. Use the existing `decided`, `acceptance` and `validate` sections; apply [build rules](build-rules.md), [experience quality](experience-quality.md), the [GCSP shell reference](screens/README.md) and [shared components](../../COMPONENTS.md). No existing claimed acceptance criteria, Jira statuses, dependencies, product-map progress or poller settings have been changed here.
+The created records contain diagnosis, originating-Story evidence or explicit uncertainty, severity/priority and observable acceptance. They use the existing `decided`, `acceptance` and `validate` sections and apply [build rules](build-rules.md), [experience quality](experience-quality.md), the [GCSP shell reference](screens/README.md) and [shared components](../../COMPONENTS.md). D04 and D11 retain `needs-triage` because their composed origin or failing layer remains unresolved. Existing claims, statuses, deferrals and acceptance criteria are preserved; product-map entries record observed backlog facts, without asserting development progress or acceptance.
 
 ## Analysis and validation record
 
 - Read all 515 cues; reconciled repeat discussions and later corrections. Source SHA-256: `5e24fbeccec53353ebe2f4b4db5129c93a07e0f8dd2967976284f44fe84307a2`.
-- Scope: one Markdown proposal. Checks selected: full transcript coverage, timestamp traceability, deduplication/corrections, independent completeness review, local-link checks and whitespace/diff review. Application code, live UI reproduction, Jira reconciliation and software test suites are excluded because this task is transcript analysis, not implementation or acceptance testing.
-- Results: all 22 D/S/A sections present, six local document links resolve, 81 timestamp ranges are ordered and within the recording, and whitespace checks pass. The independent full-transcript and draft review found no material omissions or unsupported causal claims; its one timestamp correction was applied.
+- Initial scope: transcript analysis and Markdown proposal. Checks selected: full transcript coverage, timestamp traceability, deduplication/corrections, independent completeness review, local-link checks and whitespace/diff review. The initial review found no material omissions or unsupported causal claims; its one timestamp correction was applied.
+- Publication scope: approved Jira intake, this receipt/publication JSON and bounded product-map associations. Checks selected: live duplicate/origin reconciliation, native type/parent metadata, independent payload review, saved-content and native-link readback, exact marker inventory, local-reference/JSON/whitespace checks. Application implementation, live UI reproduction and software test suites are excluded because no runtime code changed. This is intake verification, not proof that the reported Bugs are fixed.
+- Jira results: **18/18 created and verified**, matching native types (**10 Bugs, 7 Stories, 1 Task**); **57/57 Relates links verified**; saved descriptions equivalent after Jira's Markdown square-bracket escaping; zero duplicate marker records. D02/D07 reuse existing records; D01/S01 are excluded as directed.
+- Local results: **21 finding sections** remain (13 defects, 7 Stories, 1 action); all **79 timestamp ranges** are ordered and within the recording; **7 local links** resolve; JSON and whitespace checks pass. Product-map source records cover 19 verified product items with 27 component associations added; process Task A01 has no product component. Unrelated map rows, slices and claims are unchanged. Map deployment was not verified in this intake pass.
 - Independent reviewer: **Wile E. Coyote**, Opus tier; requested/selected `gpt-6.1-sol` / `high`, no fallback or descendants. Effective runtime settings were not independently confirmed.
-- Resource/cleanup receipt: reviewer completed; no test, browser, build or proof scratch was allocated, so disposable allocation removed is zero and scratch leftovers are zero. No large outputs or compatibility exceptions. Only this proposal is retained; no source transcript copy or recording credentials are included.
+- Publication reviewer: **Marvin the Martian**, Opus tier; requested/selected `gpt-6.1-sol` / `high`, no fallback or descendants. Reviewed local origins/overlaps and all 18 concrete payloads; no material problems. Effective runtime settings were not independently confirmed.
+- Resource/cleanup receipt: both reviewers completed; no test, browser, build or proof scratch was allocated. Disposable allocation removed: **0 bytes**; scratch leftovers: **zero**. No large outputs or compatibility exceptions. Retained outputs are this Markdown, the publication JSON and bounded product-map source updates; no source transcript copy or recording credentials are included.

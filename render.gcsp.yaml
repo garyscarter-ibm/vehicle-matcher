@@ -57,8 +57,8 @@ services:
       # FUCQ-180: the full GCSP runtime and its pages on this one origin (server/gcsp/host.js).
       - key: GCSP_RUNTIME
         value: "1"
-      - key: GCSP_REPOSITORY_MODE  # memory for the demo (state resets on restart); postgres stays available
-        value: memory
+      - key: GCSP_REPOSITORY_MODE  # account, preferences, sessions and active run survive restarts
+        value: postgres
       - key: GCSP_COMPARISON_RESULT_FILE  # stored route comparison loaded at boot (FUCQ-288); relative to server/
         value: data/gcsp/comparison/process-only.json
       - key: GCSP_PUBLIC_ORIGIN    # this service's own address, exactly; change here if Render adds a suffix
@@ -103,6 +103,12 @@ services:
     staticPublishPath: _site
     # The live GCSP pages run on gcsp-api's origin with its session cookies; keep in step with server/gcsp/host.js.
     routes:
+      - type: redirect
+        source: /gcsp/login
+        destination: https://gcsp-api.onrender.com/gcsp/login
+      - type: redirect
+        source: /gcsp-login.html
+        destination: https://gcsp-api.onrender.com/gcsp-login.html
       - type: redirect
         source: /gcsp-presenter.html
         destination: https://gcsp-api.onrender.com/gcsp-presenter.html

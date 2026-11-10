@@ -1,10 +1,11 @@
 import { PRESENTER_COOKIE } from './index.js';
 import { withVehicleDisplayImages } from '../vehicle-evidence/display-projection.js';
+import { randomUUID } from 'node:crypto';
 const protectedFields = new Set(['principalId', 'employeeId', 'roles', 'role', 'grade', 'gradeId', 'scheme', 'schemeId', 'companyId', 'runId', 'context', 'entitlementSlotId', 'token', 'session', 'sessionId']);
 const hasCookie = (header, name) => typeof header === 'string' && header.split(';').some((part) => part.trim().startsWith(`${name}=`));
 const statusCode = (status) => ({
   ok: 200, pending: 202, invalid: 400, 'missing-session': 401, 'unknown-session': 401,
-  'expired-session': 401, 'unknown-principal': 404, forbidden: 403,
+  'expired-session': 401, 'invalid-credentials': 401, 'unknown-principal': 404, forbidden: 403,
   'stale-run': 409, 'stale-version': 409, conflict: 409, 'not-found': 404, unavailable: 503,
 })[status] || 500;
 
@@ -49,19 +50,42 @@ export function createGcspHandler({ identity, routes = [], allowedOrigins = [], 
     }
     if (!identity) return send({ status: 'unavailable', reason: 'GCSP identity has not been configured.', retryable: true, contractVersion: '1.0.0' });
     try {
+      if (req.method === 'POST' && ['/api/gcsp/session/login', '/api/gcsp/session/logout'].includes(pathname)) {
+        const login = pathname.endsWith('/login');
+        let body;
+        try { body = await readBody(req); } catch {
+          return send({ status: 'invalid', code: 'invalid-request', reasons: [{ field: 'body', reason: 'Supply a JSON object of at most 16 KiB.' }], contractVersion: '1.0.0' });
+        }
+        if (searchParams.size || Object.keys(body).some((key) => !(login ? ['email', 'password'] : []).includes(key))) {
+          return send({ status: 'invalid', code: 'unknown-field', reasons: [{ field: 'body', reason: login ? 'Supply only email and password.' : 'Supply an empty object.' }], contractVersion: '1.0.0' });
+        }
+        const outcome = login ? await identity.signIn(body, randomUUID()) : await identity.signOut({ cookie: req.headers.cookie });
+        if (outcome.status !== 'ok') return send(outcome);
+        if (login && prepareEmployee && outcome.value.context.roles.includes('employee')) {
+          const prepared = await prepareEmployee(outcome.value.context);
+          if (prepared.status !== 'ok') return send(prepared);
+        }
+        res.setHeader('Set-Cookie', outcome.value.setCookie);
+        return send({ status: 'ok', ...(login ? { value: { context: outcome.value.context, redirectTo: outcome.value.redirectTo } } : {}), contractVersion: outcome.contractVersion });
+      }
       const route = routes.find((entry) => entry.method === req.method && entry.path === pathname);
-      let resolved = await identity.resolveSession({ authorized: true, cookie: req.headers.cookie, purpose: route?.purpose || 'acting' });
+      const switching = req.method === 'POST' && pathname === '/api/gcsp/session/switch';
+      let resolved = await identity.resolveSession({ authorized: true, cookie: req.headers.cookie, purpose: switching ? 'presenter-control' : route?.purpose || 'acting' });
+      // Presenter entry has its own control cookie and never grants an employee session.
+      if (resolved.status === 'missing-session' && req.method === 'GET' && pathname === '/api/gcsp/context'
+        && hasCookie(req.headers.cookie, PRESENTER_COOKIE)) {
+        resolved = await identity.resolveSession({ authorized: true, cookie: req.headers.cookie, purpose: 'presenter-control' });
+      }
       if (resolved.status === 'stale-run' && route?.resetReplay) {
         resolved = await identity.resolveSession({ authorized: true, cookie: req.headers.cookie, purpose: 'reset-replay' });
       }
-      if (resolved.status === 'missing-session' && route?.purpose === 'presenter-control') return send({ status: 'forbidden', reason: 'A presenter control session is required.', contractVersion: '1.0.0' });
+      if (resolved.status === 'missing-session' && (switching || route?.purpose === 'presenter-control')) return send({ status: 'forbidden', reason: 'A presenter control session is required.', contractVersion: '1.0.0' });
       if (resolved.status !== 'ok') return send(resolved);
       if (!resolved.value?.principalId || !resolved.value?.runId || !resolved.value?.environmentId
         || !Array.isArray(resolved.value?.roles) || !resolved.value.roles.every((role) => typeof role === 'string')) {
         return send({ status: 'forbidden', reason: 'A server-owned context is required.', contractVersion: '1.0.0' });
       }
       const context = resolved.value;
-      const switching = req.method === 'POST' && pathname === '/api/gcsp/session/switch';
       let body;
       try { body = req.method === 'POST' ? await readBody(req) : {}; } catch {
         return send({ status: 'invalid', code: 'invalid-request', reasons: [{ field: 'body', reason: 'Supply a JSON object of at most 16 KiB.' }], contractVersion: '1.0.0' });

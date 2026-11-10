@@ -21,15 +21,14 @@ All three build from `gcsp-poc` in Frankfurt, on free plans, and redeploy on eve
 
 **What works once it's live (FUCQ-180, 7 November 2026).** `gcsp-api` runs the whole GCSP demo runtime, the same
 composition as the local launcher (`server/gcsp/host.js`), and serves the live GCSP pages from its own address:
-`https://gcsp-api.onrender.com/gcsp-presenter.html` for the presenter (and Greg's live view, in its Greg branch),
-`/gcsp-account.html` for Paula, `/gcsp-greg.html` for the fixture gallery of made-up Greg figures (not the live view),
+`https://gcsp-api.onrender.com/gcsp/login` for employee and scheme-lead sign-in,
+`/gcsp-presenter.html` for the presenter, `/gcsp-account.html` for the signed-in employee and `/gcsp-greg.html` for Greg's live dashboard,
 `/gcsp-outbox.html` for the captured emails and `/gcsp/offer` for emailed offer links. One origin keeps the
 server-issued session cookies first-party; `gcsp-site` and `gcsp-api` are different sites on `onrender.com`, and Safari
 would drop cross-site cookies. `gcsp-site` redirects those page addresses to `gcsp-api`. **Rule (FUCQ-181):** pages and the API must be
 same-site or same-origin, because sessions use cookies; never point a signed-in page at `gcsp-api` from `gcsp-site`.
 The design records the choice: `docs/design/gcsp-high-level-design.md`, "Technical deployment and recovery".
-The demo runs in memory mode;
-the database stays for the PostgreSQL proofs (FUCQ-83, FUCQ-66) and for `GCSP_REPOSITORY_MODE=postgres`.
+The hosted runtime now uses PostgreSQL (FUCQ-322). It reuses the current run, saved accounts and preferences on restart or redeployment. Missing database configuration prevents startup; there is no fallback to memory. Memory remains an explicit isolated-test option.
 
 `DEMO_ACCESS_KEY` is required with `GCSP_RUNTIME=1`. The first live page in each browser asks for it once ("Open the demo"), then remembers it
 for 12 hours in an HttpOnly cookie. Emailed offer links (`/gcsp/offer`) never ask: they carry their own offer token.
@@ -39,7 +38,7 @@ for 12 hours in an HttpOnly cookie. Emailed offer links (`/gcsp/offer`) never as
 | Setting | Where it is set | Value |
 |---|---|---|
 | `GCSP_RUNTIME` | Blueprint | `1` turns the GCSP runtime on. Without it the backend is the retail API only, and `/api/gcsp/*` answers 503. |
-| `GCSP_REPOSITORY_MODE` | Blueprint | `memory` (default for the demo). `postgres` uses `gcsp-db`, at about 15 s a clock tick. |
+| `GCSP_REPOSITORY_MODE` | Blueprint | `postgres` (hosted default), using `gcsp-db`. Explicit `memory` is for isolated tests with disposable state. |
 | `GCSP_PUBLIC_ORIGIN` | Blueprint | `gcsp-api`'s own address, exactly. Pages and cookies are served on it. |
 | `GCSP_PUBLIC_BASE_URL` | Blueprint | The same address: the base of emailed offer links. |
 | `GCSP_ALLOWED_ORIGINS` | Blueprint | Extra origins allowed to call `/api/gcsp/*` (`gcsp-site`). `GCSP_PUBLIC_ORIGIN` is always allowed. |
@@ -52,10 +51,7 @@ for 12 hours in an HttpOnly cookie. Emailed offer links (`/gcsp/offer`) never as
 | `GCSP_BREVO_API_KEY` | Dashboard only | The Brevo API key. Never in git. |
 | `GCSP_ENVIRONMENT_ID`, `GCSP_STOCK_SOURCE` | Optional, dashboard | Default `gcsp-hosted-demo`; stock chosen per run. |
 
-**Free plan and memory mode.** The free instance sleeps after 15 minutes without traffic and takes about a minute to
-wake. In memory mode a sleep or redeploy starts a fresh run, so any demo state is lost. Before presenting, open
-`/health`, wait for `{"ok":true}`, then open the presenter page and press Reset so the run starts from the scenario's
-beginning, and keep the page in use. A paid `starter` instance does not sleep; whether to pay is Gary's call.
+**Stored state.** Restarts reuse the same PostgreSQL run and records. Presenter Reset intentionally starts a new isolated scenario; use it only when a fresh walkthrough is wanted. Opening the presenter page creates its control session without signing in an employee or replacing an existing employee session.
 
 ## Before you start
 
@@ -187,7 +183,7 @@ It takes about 28 minutes and about 1.5 GB. The default 128 MB worker job fails 
 | `/api/gcsp/*` returns "GCSP identity has not been configured" | `GCSP_RUNTIME` isn't `1` on `gcsp-api` | Check the Blueprint synced; redeploy. |
 | Deploy fails with "GCSP hosted startup: invalid (public-origin-required)" | `GCSP_PUBLIC_ORIGIN` is missing or not an exact `https://` origin | Set it to `gcsp-api`'s address, no trailing slash.
 | Deploy fails with "GCSP hosted startup: invalid (access-key-required)" | `DEMO_ACCESS_KEY` is empty on `gcsp-api` | Add it on the **Environment** page; redeploy. | |
-| Live pages show stale or empty state after a break | The free instance slept, so memory mode started a new run | Wait for `/health`, then Reset on the presenter page. |
+| Saved accounts disappear after redeployment | The existing service still explicitly selects memory mode | Sync the Blueprint's PostgreSQL setting and database link, then verify a restart. Presenter Reset intentionally starts a new run. |
 | Contract tests can't connect | URL is missing `?sslmode=require` | Add it to `.claude/gcsp-database-url`. |
 
 ## Rotating or removing

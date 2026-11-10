@@ -7,7 +7,7 @@ const definition = (key, fields, unique = [], refs = [], immutable = false) => O
 });
 export const TABLES = Object.freeze({
   runs: definition('runId', 'environmentId status current scenarioVersion fixtureVersion corpusVersion policyVersion clockInstant clockVersion versions', [['environmentId', '$current']]),
-  employees: definition('runId employeeId', 'principalId companyId gradeId schemeId entitlementSlotId roles contract renewalId name'),
+  employees: definition('runId employeeId', 'principalId companyId gradeId schemeId entitlementSlotId roles contract renewalId name firstName lastName email'),
   entitlement_slots: definition('runId entitlementSlotId', 'employeeId renewalId contractId capacity employeeCapacity state', [], [['employees', 'employeeId']]),
   briefs: definition('runId employeeId briefVersion', 'entitlementSlotId renewalId schemaVersion previousBriefVersion status preferences essentials currentCarFeedback knownFacts buddy policyVersion confirmedBy confirmedAt postDeclineChange', [], [['employees', 'employeeId']], true),
   stock: definition('runId orderUuid', 'orderNumber configurationId wholesalerOrderId revision release account visibility state status available held allocated agModelCode vgModelCode facts corpusVersion', [['orderNumber']]),
@@ -29,7 +29,7 @@ export const TABLES = Object.freeze({
   price_plans: definition('runId policyVersion pricePlanId priceEntryId', 'schemeId configurationId matchField matchKey value monthlyPoints unit effectiveFrom effectiveTo source status', [], [['policy_versions', 'policyVersion']], true),
   grade_allowances: definition('runId policyVersion companyId schemeId gradeId', 'monthlyPoints unit effectiveFrom effectiveTo source status', [], [['policy_versions', 'policyVersion']], true),
   policy_assumptions: definition('runId policyVersion key', 'value unit status basis source sourceDate effectiveFrom effectiveTo', [], [['policy_versions', 'policyVersion']], true),
-  identity_sessions: definition('runId sessionIdHash', 'principalId employeeId roles environmentId expiresAt actingPrincipalId'),
+  identity_sessions: definition('runId sessionIdHash', 'principalId employeeId roles environmentId expiresAt actingPrincipalId revokedAt'),
   renewal_cases: definition('runId caseId', 'employeeId renewalId owner status reason trigger nextAction dueAt openedAt lastUpdatedAt renewalDeadline renewalDeadlineState policyVersion history remedy fictional', [], [['employees', 'employeeId']]),
   tick_runs: definition('runId tickId', 'commandId eventId targetClock handlerOrder outcomes state inputDigest'),
   comparison_results: definition('runId resultId', 'experimentId kind completedAt policyVersion manifest result', [], [], true),

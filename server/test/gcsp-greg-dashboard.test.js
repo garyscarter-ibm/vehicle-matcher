@@ -33,7 +33,7 @@ const host = () => { const root = document.createElement('div'); document.body.a
 async function mountFixture(name, extra = {}) {
   const root = host();
   const adapter = fixtures.fixtureAdapter(name);
-  const teardown = dash.mountGregDashboard(root, { loadDemand: adapter.loadDemand, ...extra });
+  const teardown = dash.mountGregDashboard(root, { ...adapter, ...extra });
   await tick();
   return { root, teardown };
 }
@@ -267,6 +267,28 @@ test('an external abort signal also aborts the load', async () => {
   assert.equal(signal.aborted, true);
 });
 
+test('the custom element preserves its live adapter assigned before registration', async () => {
+  const node = document.createElement('gcsp-greg-dashboard');
+  let accountLoads = 0; let demandLoads = 0;
+  const fixture = fixtures.fixtureAdapter('populated');
+  const adapter = { ...fixture,
+    loadAccount: async () => { accountLoads += 1; return { status: 'ready', name: 'Avery Lead', email: 'avery.lead@gcsp-demo.com', context: 'Scheme ordering lead' }; },
+    loadDemand: async (options) => { demandLoads += 1; return fixture.loadDemand(options); },
+  };
+  node.adapter = adapter;
+  document.body.append(node);
+  dash.defineGcspGregDashboard(customElements);
+  await tick();
+  assert.equal(Object.hasOwn(node, 'adapter'), false, 'pre-upgrade property must not shadow the live setter');
+  assert.equal(node.adapter, adapter);
+  assert.equal(accountLoads, 1);
+  assert.equal(demandLoads, 1);
+  assert.equal(node.querySelector('.gcsp-account-name').textContent, 'Avery Lead');
+  assert.match(node.textContent, /avery\.lead@gcsp-demo\.com/);
+  assert.equal(tileByLabel(node, 'Active briefs').querySelector('.gcsp-tile-figure').textContent, '28');
+  node.remove();
+});
+
 test('the custom element reads fixture and adapter, emits events, exposes regions and refresh, and tears down', async () => {
   const first = dash.defineGcspGregDashboard(customElements);
   assert.equal(dash.defineGcspGregDashboard(customElements), first);
@@ -497,10 +519,16 @@ test('harness page, register module and fixture whitelist', () => {
   assert.equal(fixtures.fixtureAdapter('nope'), null);
 });
 
-test('harness page is labelled a fixture gallery with a link to the live presenter view', async () => {
+test('live landing retains an explicitly requested fixture gallery with a link back to live demand', async (t) => {
   const html = read('gcsp-greg.html');
-  assert.match(html, /<title>[^<]*fixture gallery[^<]*<\/title>/i);
-  assert.match(html, /<meta name="description" content="[^"]*fixture gallery[^"]*not the live demo/i);
+  assert.match(html, /<title>[^<]*Demand and supply[^<]*<\/title>/i);
+  assert.doesNotMatch(html, /<gcsp-greg-dashboard[^>]*fixture=/);
+  const location = Object.getOwnPropertyDescriptor(globalThis, 'location');
+  Object.defineProperty(globalThis, 'location', { configurable: true, value: { search: '?fixture=populated' } });
+  t.after(() => {
+    if (location) Object.defineProperty(globalThis, 'location', location);
+    else delete globalThis.location;
+  });
   document.body.replaceChildren();
   const host = document.createElement('gcsp-greg-dashboard');
   host.setAttribute('fixture', 'populated');
@@ -510,7 +538,7 @@ test('harness page is labelled a fixture gallery with a link to the live present
   assert.ok(notice, 'the harness renders the fixture notice');
   assert.match(notice.textContent, /fixture gallery/i);
   assert.match(notice.textContent, /not wired to the live demo/);
-  assert.equal(notice.querySelector('a').getAttribute('href'), './gcsp-presenter.html');
+  assert.equal(notice.querySelector('a').getAttribute('href'), '/gcsp-greg.html');
   assert.equal(host.querySelectorAll('h1').length, 1);
   assert.ok(notice.compareDocumentPosition(host.querySelector('h1')) & 4, 'the notice sits above the heading');
 });
