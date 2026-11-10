@@ -24,6 +24,7 @@ try {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1100 }, reducedMotion: 'reduce' });
   const page = await context.newPage();
   page.on('pageerror', (error) => receipt.consoleErrors.push(error.message));
+  const stored = () => page.evaluate(() => JSON.parse(localStorage.getItem('gcsp:account-preferences-discussion:2026-11-10:v1')));
   const snap = async (name) => { await page.evaluate(() => scrollTo(0, 0)); await page.screenshot({ path: `${output}/${name}.png`, fullPage: true }); receipt.screenshots.push(`${name}.png`); };
   const fit = async (name) => {
     await page.locator('.vm-card-photo').evaluate((image) => image.complete ? undefined : new Promise((resolve) => image.addEventListener('load', resolve, { once: true })));
@@ -158,7 +159,82 @@ try {
       await page.getByRole('switch', { name: 'Same again, please!', exact: true }).check(); await snap('320-same-again');
     }
   }
-  await page.setViewportSize({ width: 1440, height: 1100 }); await page.goto(`${base}?state=missing`); await page.locator('.concept-page').waitFor(); await snap('1440-missing-image');
+  await page.setViewportSize({ width: 1440, height: 1100 }); await page.goto(`${base}?state=empty`); await page.locator('.concept-page').waitFor();
+  await page.locator('#category-body').click();
+  const importance = page.getByRole('switch', { name: 'This is really important', exact: true });
+  const estate = page.getByRole('checkbox', { name: 'Touring / Estate', exact: true });
+  check('Importance is one visible switch with no disclosure or three-choice control', await importance.isVisible()
+    && await page.locator('#category-options details, #category-options input[type=radio]').count() === 0);
+  check('Unchosen preference disables and unchecks importance', await importance.isDisabled() && !await importance.isChecked());
+  check('Unchosen preference has an accessible selection hint', await importance.getAttribute('aria-describedby') === 'importance-hint'
+    && await page.getByText('Choose a preference first.', { exact: true }).isVisible());
+  await snap('1440-importance-unselected');
+  await estate.check();
+  check('Chosen preference automatically saves medium importance', (await stored()).weights.body === 'medium'
+    && await importance.isEnabled() && !await importance.isChecked());
+  check('Chosen preference removes the obsolete selection hint', await importance.getAttribute('aria-describedby') === null
+    && !await page.getByText('Choose a preference first.', { exact: true }).isVisible());
+  await snap('1440-importance-medium');
+  const mediumScore = await page.locator('.concept-score-value').innerText();
+  await page.locator('.concept-importance label').click();
+  check('Clicking the importance label saves high', await importance.isChecked() && (await stored()).weights.body === 'high');
+  check('Importance does not add categories or inflate understanding', await page.locator('.concept-score-value').innerText() === mediumScore
+    && await page.locator('.concept-category.is-considered').count() === 1);
+  await snap('1440-importance-high');
+  await importance.focus(); await page.keyboard.press('Space');
+  check('Space switches importance back to medium and keeps focus', !await importance.isChecked()
+    && (await stored()).weights.body === 'medium' && await importance.evaluate((node) => node === document.activeElement));
+  await page.keyboard.press('Space');
+  check('Space enables high importance without replacing the focused input', await importance.isChecked()
+    && (await stored()).weights.body === 'high' && await importance.evaluate((node) => node === document.activeElement));
+  await page.goto(base); await page.locator('.concept-page').waitFor(); await page.locator('#category-body').click();
+  check('Reload preserves high importance', await importance.isChecked() && (await stored()).weights.body === 'high');
+  await estate.uncheck();
+  check('Clearing the final option immediately clears importance', await importance.isDisabled() && !await importance.isChecked()
+    && !Object.hasOwn((await stored()).weights, 'body') && !Object.hasOwn((await stored()).values, 'body'));
+  await estate.check();
+  check('Choosing again after clearing starts at medium', (await stored()).weights.body === 'medium' && !await importance.isChecked());
+  await importance.check();
+  await page.getByRole('button', { name: 'Remove Body preference', exact: true }).click();
+  await page.getByRole('button', { name: 'Keep it', exact: true }).click();
+  check('Cancelling removal preserves high importance', (await stored()).weights.body === 'high');
+  await page.locator('#category-body').click();
+  check('Cancelled preference reopens with high importance', await importance.isChecked());
+  await page.getByRole('button', { name: 'Remove Body preference', exact: true }).click();
+  await page.getByRole('button', { name: 'Remove preference', exact: true }).click();
+  check('Confirmed bin removal clears its importance', !Object.hasOwn((await stored()).weights, 'body'));
+  await page.locator('#category-body').click(); await estate.check();
+  check('Choosing a removed category again defaults to medium', !await importance.isChecked() && (await stored()).weights.body === 'medium');
+  await importance.check();
+  await page.getByRole('switch', { name: 'Same again, please!', exact: true }).check();
+  check('Same again makes importance unavailable while retaining it', await importance.count() === 0
+    && !await page.locator('#category-options').isVisible() && (await stored()).weights.body === 'high');
+  await page.getByRole('switch', { name: 'Same again, please!', exact: true }).uncheck(); await page.locator('#category-body').click();
+  check('Turning Same again off restores retained high importance', await importance.isChecked());
+  await page.setViewportSize({ width: 320, height: 1000 }); await page.goto(`${base}?state=empty`); await page.locator('#category-fuel').click();
+  check('Unchosen Fuel is also unimportant', await importance.isDisabled() && !await importance.isChecked());
+  await fit('320 importance unselected'); await snap('320-importance-unselected');
+  const hybrid = page.getByRole('checkbox', { name: 'Plug-in hybrid', exact: true });
+  await hybrid.check();
+  check('Fuel selection saves medium by default', (await stored()).weights.fuel === 'medium' && !await importance.isChecked());
+  await importance.check(); await fit('320 importance high'); await snap('320-importance-high');
+  await hybrid.uncheck();
+  check('Clearing final Fuel option also clears high importance', await importance.isDisabled() && !await importance.isChecked()
+    && !Object.hasOwn((await stored()).weights, 'fuel'));
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await page.evaluate(() => localStorage.setItem('gcsp:account-preferences-discussion:2026-11-10:v1', JSON.stringify({
+    values: { body: ['estate'], fuel: [], comfort: '0', economy: 'invalid' },
+    weights: { body: 'low', fuel: 'high', comfort: 'high', sportiness: 'high', economy: 'high' },
+  })));
+  await page.goto(base); await page.locator('#category-body').click();
+  check('Legacy selected low importance normalizes to medium', await importance.isEnabled() && !await importance.isChecked());
+  await page.getByRole('radio', { name: '4 stars: I really like it', exact: true }).check();
+  const normalized = (await stored()).weights;
+  check('Normalized storage removes weights for empty or invalid preferences', normalized.body === 'medium' && normalized.comfort === 'high'
+    && Object.keys(normalized).length === 2);
+  await page.locator('#category-comfort').click();
+  check('A selected slider retains its high importance', await importance.isChecked());
+  await page.goto(`${base}?state=missing`); await page.locator('.concept-page').waitFor(); await snap('1440-missing-image');
   check('Missing car image has a useful fallback', await page.getByText('No image available for your car', { exact: true }).isVisible());
   const contrast = await page.locator('.vm-card-soon').evaluate((node) => {
     const luminance = (rgb) => {

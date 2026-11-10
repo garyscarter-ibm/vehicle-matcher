@@ -38,6 +38,10 @@ const CATEGORIES = [
     options: options(['0', 'Compact'], ['50', 'A bit of both'], ['100', 'Spacious']) },
 ];
 
+// No selected preference means no importance. Chosen preferences default to medium.
+const preferenceWeights = (values, weights) => Object.fromEntries(Object.keys(values)
+  .map((id) => [id, weights?.[id] === 'high' ? 'high' : 'medium']));
+
 function validState(value) {
   if (!value || typeof value !== 'object') return structuredClone(EMPTY);
   const values = {};
@@ -49,7 +53,7 @@ function validState(value) {
       if (selected.length) values[category.id] = selected;
     } else if (allowed.has(supplied)) values[category.id] = category.multi ? [supplied] : supplied;
   }
-  const weights = Object.fromEntries(Object.entries(value.weights ?? {}).filter(([key, v]) => CATEGORIES.some((c) => c.id === key) && ['low', 'medium', 'high'].includes(v)));
+  const weights = preferenceWeights(values, value.weights);
   return { values, weights, same: value.same === true, rating: Number.isInteger(value.rating) && value.rating >= 1 && value.rating <= 5 ? value.rating : 0,
     engaged: value.engaged === true && (value.same === true || Object.keys(values).length >= 3) };
 }
@@ -74,6 +78,7 @@ const store = () => {
   catch { say('Your changes could not be saved. Check your browser storage.'); message.classList.add('is-error'); return false; }
 };
 const savePreferences = (confirmation = 'Preferences saved automatically.') => {
+  state.weights = preferenceWeights(state.values, state.weights);
   const mustDisengage = state.engaged && !state.same && count() < 3;
   if (mustDisengage) state.engaged = false;
   update();
@@ -152,6 +157,7 @@ preferenceHead.append(preferenceIntro, scorePanel);
 const modeRow = el('div', 'concept-mode');
 const toggle = checkboxField({ id: 'same-again', label: 'Same again, please!', checked: state.same,
   onChange: (same) => { state.same = same; openCategory = null; pendingRemoval = null; renderOptions(); savePreferences(); } });
+toggle.root.classList.add('concept-switch');
 toggle.input.setAttribute('role', 'switch'); toggle.input.setAttribute('aria-describedby', 'same-again-consequence');
 const modeNote = el('p', 'gcsp-note'); modeNote.id = 'same-again-consequence';
 modeRow.append(toggle.root, modeNote);
@@ -224,10 +230,13 @@ function renderOptions() {
     category.options.forEach((option) => labels.append(el('span', '', option.label)));
     choices.append(labels); syncLabels(value);
   }
-  const importance = el('details', 'concept-importance'); importance.append(el('summary', '', 'How much does this matter?'));
-  const weight = renderOptionList({ id: `importance-${category.id}`, options: options(['low', 'A little'], ['medium', 'Quite a bit'], ['high', 'A lot']) }, null,
-    { value: state.weights[category.id] ?? null, ariaLabel: `Importance of ${category.label}`, onValueChange: (value) => { state.weights[category.id] = value; savePreferences(); } });
-  importance.append(weight.list); optionPanel.append(heading, choices, importance);
+  const importance = el('div', 'concept-importance');
+  const weight = checkboxField({ id: `importance-${category.id}`, label: 'This is really important',
+    checked: state.weights[category.id] === 'high',
+    onChange: (important) => { state.weights[category.id] = important ? 'high' : 'medium'; savePreferences(); } });
+  weight.root.classList.add('concept-switch'); weight.input.setAttribute('role', 'switch');
+  const hint = el('p', 'gcsp-note concept-importance-hint', 'Choose a preference first.'); hint.id = 'importance-hint';
+  importance.append(weight.root, hint); optionPanel.append(heading, choices, importance);
 }
 
 function update() {
@@ -239,6 +248,15 @@ function update() {
   toggle.input.checked = state.same;
   modeNote.textContent = state.same ? 'Your current car leads. Your other choices are kept.' : 'Love your current car? Let it guide your next one.';
   categories.classList.toggle('is-disabled', state.same);
+  const importanceInput = optionPanel.querySelector('[role="switch"]');
+  if (importanceInput) {
+    const considered = state.values[openCategory] !== undefined;
+    importanceInput.disabled = !considered || state.same;
+    importanceInput.checked = considered && state.weights[openCategory] === 'high';
+    optionPanel.querySelector('.concept-importance-hint').hidden = considered;
+    if (considered) importanceInput.removeAttribute('aria-describedby');
+    else importanceInput.setAttribute('aria-describedby', 'importance-hint');
+  }
   for (const category of CATEGORIES) {
     const nodes = categoryNodes.get(category.id); const selected = state.values[category.id];
     const values = Array.isArray(selected) ? selected : selected === undefined ? [] : [selected];

@@ -363,6 +363,134 @@
       "passed": true
     },
     {
+      "label": "Importance is one visible switch with no disclosure or three-choice control",
+      "passed": true
+    },
+    {
+      "label": "Unchosen preference disables and unchecks importance",
+      "passed": true
+    },
+    {
+      "label": "Unchosen preference has an accessible selection hint",
+      "passed": true
+    },
+    {
+      "label": "Chosen preference automatically saves medium importance",
+      "passed": true
+    },
+    {
+      "label": "Chosen preference removes the obsolete selection hint",
+      "passed": true
+    },
+    {
+      "label": "Clicking the importance label saves high",
+      "passed": true
+    },
+    {
+      "label": "Importance does not add categories or inflate understanding",
+      "passed": true
+    },
+    {
+      "label": "Space switches importance back to medium and keeps focus",
+      "passed": true
+    },
+    {
+      "label": "Space enables high importance without replacing the focused input",
+      "passed": true
+    },
+    {
+      "label": "Reload preserves high importance",
+      "passed": true
+    },
+    {
+      "label": "Clearing the final option immediately clears importance",
+      "passed": true
+    },
+    {
+      "label": "Choosing again after clearing starts at medium",
+      "passed": true
+    },
+    {
+      "label": "Cancelling removal preserves high importance",
+      "passed": true
+    },
+    {
+      "label": "Cancelled preference reopens with high importance",
+      "passed": true
+    },
+    {
+      "label": "Confirmed bin removal clears its importance",
+      "passed": true
+    },
+    {
+      "label": "Choosing a removed category again defaults to medium",
+      "passed": true
+    },
+    {
+      "label": "Same again makes importance unavailable while retaining it",
+      "passed": true
+    },
+    {
+      "label": "Turning Same again off restores retained high importance",
+      "passed": true
+    },
+    {
+      "label": "Unchosen Fuel is also unimportant",
+      "passed": true
+    },
+    {
+      "label": "320 importance unselected: no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "label": "320 importance unselected: car image has useful height",
+      "passed": true
+    },
+    {
+      "label": "320 importance unselected: rating is a compact transparent image overlay",
+      "passed": true
+    },
+    {
+      "label": "320 importance unselected: media wraps the actual image without internal letterboxing",
+      "passed": true
+    },
+    {
+      "label": "Fuel selection saves medium by default",
+      "passed": true
+    },
+    {
+      "label": "320 importance high: no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "label": "320 importance high: car image has useful height",
+      "passed": true
+    },
+    {
+      "label": "320 importance high: rating is a compact transparent image overlay",
+      "passed": true
+    },
+    {
+      "label": "320 importance high: media wraps the actual image without internal letterboxing",
+      "passed": true
+    },
+    {
+      "label": "Clearing final Fuel option also clears high importance",
+      "passed": true
+    },
+    {
+      "label": "Legacy selected low importance normalizes to medium",
+      "passed": true
+    },
+    {
+      "label": "Normalized storage removes weights for empty or invalid preferences",
+      "passed": true
+    },
+    {
+      "label": "A selected slider retains its high importance",
+      "passed": true
+    },
+    {
       "label": "Missing car image has a useful fallback",
       "passed": true
     },
@@ -395,14 +523,19 @@
     "320-slider-midpoint.png",
     "320-remove-confirmation.png",
     "320-same-again.png",
+    "1440-importance-unselected.png",
+    "1440-importance-medium.png",
+    "1440-importance-high.png",
+    "320-importance-unselected.png",
+    "320-importance-high.png",
     "1440-missing-image.png"
   ],
   "consoleErrors": [],
   "failures": [],
   "codeIdentity": {
     "index.html": "424a1cffe33ef295db5faf0325c324ad86fddb1bb48926e7ef091d6e18455beb",
-    "mockup.js": "0c375fc1f341ea9ebd45037927ff25f9160f900134676ec27ce92ad46c4af208",
-    "mockup.css": "02ab5d82eb09cecc724566a840122801ab280527d47a97e103862f88f3badc4f"
+    "mockup.js": "4926098bd945cd97edaa80927c5465da453f1b14fae071485aa10d57b56ca166",
+    "mockup.css": "a1ec3ec75e0117d190b4d792621678693fce4e0532252c27a9144ef2b689598d"
   },
   "independentReview": "See visual-review.md for independent critique and corrective review.",
   "viewports": [
@@ -784,13 +917,13 @@
         "x": 16,
         "y": -752,
         "width": 288,
-        "height": 1987.0625
+        "height": 1999.0625
       },
       "content": {
         "x": 0,
         "y": -768,
         "width": 320,
-        "height": 2027.0625
+        "height": 2039.0625
       }
     },
     {
@@ -834,6 +967,92 @@
         "y": -784,
         "width": 320,
         "height": 1913.0625
+      }
+    },
+    {
+      "name": "320 importance unselected",
+      "width": 320,
+      "scroll": 320,
+      "image": true,
+      "imageBox": {
+        "x": 17,
+        "y": -483.8125,
+        "width": 286,
+        "height": 160.875
+      },
+      "drawnImage": {
+        "x": 17,
+        "y": -483.8125,
+        "width": 286,
+        "height": 160.875
+      },
+      "media": {
+        "x": 17,
+        "y": -483.8125,
+        "width": 286,
+        "height": 160.875
+      },
+      "rating": {
+        "x": 25,
+        "y": -374.9375,
+        "width": 220,
+        "height": 44
+      },
+      "ratingBackground": "rgba(0, 0, 0, 0)",
+      "canvas": {
+        "x": 16,
+        "y": -587,
+        "width": 288,
+        "height": 2076.0625
+      },
+      "content": {
+        "x": 0,
+        "y": -603,
+        "width": 320,
+        "height": 2116.0625
+      }
+    },
+    {
+      "name": "320 importance high",
+      "width": 320,
+      "scroll": 320,
+      "image": true,
+      "imageBox": {
+        "x": 17,
+        "y": -905.8125,
+        "width": 286,
+        "height": 160.875
+      },
+      "drawnImage": {
+        "x": 17,
+        "y": -905.8125,
+        "width": 286,
+        "height": 160.875
+      },
+      "media": {
+        "x": 17,
+        "y": -905.8125,
+        "width": 286,
+        "height": 160.875
+      },
+      "rating": {
+        "x": 25,
+        "y": -796.9375,
+        "width": 220,
+        "height": 44
+      },
+      "ratingBackground": "rgba(0, 0, 0, 0)",
+      "canvas": {
+        "x": 16,
+        "y": -1009,
+        "width": 288,
+        "height": 2036.0625
+      },
+      "content": {
+        "x": 0,
+        "y": -1025,
+        "width": 320,
+        "height": 2076.0625
       }
     }
   ]

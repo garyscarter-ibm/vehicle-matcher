@@ -40,12 +40,14 @@ body { margin: 0; }
 .account-concept .concept-score-meter i:last-child { background: var(--gcsp-surface-muted); border: 1px solid var(--gcsp-divider); }
 .account-concept .concept-score-meter i:last-child.is-filled { background: var(--gcsp-accent-strong); border-color: var(--gcsp-accent-strong); }
 .account-concept .concept-mode { display: flex; align-items: center; justify-content: space-between; gap: var(--gcsp-space-4); padding-block: var(--gcsp-space-4); border-block: 1px solid var(--gcsp-divider); }
-.account-concept .concept-mode .gcsp-check { position: relative; display: flex; flex-direction: row-reverse; align-items: center; gap: var(--gcsp-space-3); margin: 0; min-height: 44px; }
-.account-concept .concept-mode .gcsp-check label { font-weight: var(--gcsp-font-strong-weight); cursor: pointer; }
-.account-concept .concept-mode .gcsp-check input { appearance: none; width: 44px; height: 26px; border: 1px solid var(--gcsp-text-muted); border-radius: 14px; background: var(--gcsp-surface-muted); position: relative; flex: none; cursor: pointer; margin: 0; }
-.account-concept .concept-mode .gcsp-check input::after { content: ''; display: block; width: 18px; height: 18px; background: var(--gcsp-text-muted); border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: transform var(--gcsp-motion) ease; }
-.account-concept .concept-mode .gcsp-check input:checked { background: var(--gcsp-accent); border-color: var(--gcsp-accent); }
-.account-concept .concept-mode .gcsp-check input:checked::after { background: var(--gcsp-on-accent); transform: translateX(18px); }
+.account-concept .concept-switch { position: relative; display: flex; flex-direction: row-reverse; align-items: center; gap: var(--gcsp-space-3); margin: 0; min-height: 44px; }
+.account-concept .concept-switch label { font-weight: var(--gcsp-font-strong-weight); cursor: pointer; }
+.account-concept .concept-switch input { appearance: none; width: 44px; height: 26px; border: 1px solid var(--gcsp-text-muted); border-radius: 14px; background: var(--gcsp-surface-muted); position: relative; flex: none; cursor: pointer; margin: 0; }
+.account-concept .concept-switch input::after { content: ''; display: block; width: 18px; height: 18px; background: var(--gcsp-text-muted); border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: transform var(--gcsp-motion) ease; }
+.account-concept .concept-switch input:checked { background: var(--gcsp-accent); border-color: var(--gcsp-accent); }
+.account-concept .concept-switch input:checked::after { background: var(--gcsp-on-accent); transform: translateX(18px); }
+.account-concept .concept-switch:has(input:disabled) { opacity: .5; }
+.account-concept .concept-switch:has(input:disabled) label { cursor: default; }
 .account-concept .concept-categories { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--gcsp-space-3); }
 .account-concept .concept-category { position: relative; display: flex; align-items: stretch; border: 1px solid var(--gcsp-divider); min-width: 0; }
 .account-concept .concept-category.is-considered { background: var(--gcsp-accent-soft); border-color: var(--gcsp-accent); }
@@ -74,8 +76,7 @@ body { margin: 0; }
 .account-concept .concept-slider-labels span:nth-child(2)::before { left: 50%; }
 .account-concept .concept-slider-labels span:last-child::before { left: auto; right: 9px; }
 .account-concept .concept-slider-labels .is-current { color: var(--gcsp-accent-strong); font-weight: var(--gcsp-font-strong-weight); }
-.account-concept .concept-importance { margin-top: var(--gcsp-space-4); max-width: 600px; }
-.account-concept .concept-importance summary { cursor: pointer; color: var(--gcsp-accent-strong); min-height: 32px; }
+.account-concept .concept-importance { display: flex; align-items: center; gap: var(--gcsp-space-4); flex-wrap: wrap; margin-top: var(--gcsp-space-4); max-width: 720px; }
 .account-concept .concept-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--gcsp-space-4); }
 .account-concept .concept-foot .vm-btn { min-height: 48px; padding-inline: var(--gcsp-space-6); font-size: var(--gcsp-font-size-regular); }
 .account-concept .concept-save-message { margin: 0; color: var(--gcsp-text-muted); }
