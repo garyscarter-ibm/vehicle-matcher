@@ -4206,6 +4206,56 @@
       "observed_at": "2026-11-10T14:18:29Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-342",
       "branch": "dev/DEV-2026-11-10-GC-023"
+    },
+    {
+      "id": "FUCQ-345",
+      "title": "Keep the selected-car order tag clear of its image caption",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "type": "Bug",
+      "assignee": "usget",
+      "branch": "dev/DEV-2026-11-10-004",
+      "observed_at": "2026-11-10T14:30:08Z",
+      "workers": [
+        {
+          "name": "Michigan J. Frog",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-10T14:28:44.420879Z",
+          "expires_at": "2026-11-10T16:28:44.420879Z",
+          "source": "observed active title/thread01a1c5da-6a83-7781-a381-91a8cb9eb2d7",
+          "status": "active"
+        },
+        {
+          "name": "Grub",
+          "role": "implementer",
+          "harness": "codex",
+          "observed_at": "2026-11-10T14:30:08.599994Z",
+          "expires_at": "2026-11-10T15:30:08.599994Z",
+          "source": "observed spawn /root/michigan_j_frog/grub; requestedSol/xhigh; repair slice",
+          "status": "active"
+        }
+      ],
+      "slices": [
+        {
+          "id": "repair",
+          "status": "in-progress",
+          "title": "Readable-selected-car-media",
+          "observed_at": "2026-11-10T14:28:44Z",
+          "evidence": "Current diagnosis and scope recorded; one implementer planned"
+        },
+        {
+          "id": "review",
+          "status": "not-started",
+          "title": "Independent-rendered-review"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Scoped-delivery-validation"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
