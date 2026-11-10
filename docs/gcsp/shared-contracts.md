@@ -1227,7 +1227,7 @@ Greg or the presenter starts a what-if or process comparison from the browser an
 
 | Policy key | Unit / purpose |
 |---|---|
-| `comparison.jobs.v1` | `{ schemaVersion: 1, timeoutSeconds: 1800, workerHeapMb: 128, workerYoungGenerationMb: 16 }`: the wall-clock limit for one job, the worker's old-generation heap allowance and its young-generation cap (peak process memory of the default 1,000-employee job fell from 510 MB to 428 MB with it). |
+| `comparison.jobs.v1` | `{ schemaVersion: 1, timeoutSeconds: 1800, workerHeapMb: 512, workerYoungGenerationMb: 16 }`: the wall-clock limit for one job, the worker's old-generation heap allowance and its young-generation cap. The 512 MiB heap is a FUCQ-309 candidate alongside the measured sharing, projection and disposal repairs; the full 1,000-employee, three-seed, six-step qualification must establish its peak memory and headroom before acceptance. |
 
 `assumed`, read through PolicyService when a job starts (missing or malformed is `unavailable`, naming the key). The worker replays against the reviewed seed held in memory, as the FUCQ-137 command does, and stores the FUCQ-137/174 result shape through `storeComparisonResult`.
 
