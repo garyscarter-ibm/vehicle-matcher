@@ -177,7 +177,7 @@
     },
     {
       "path": "blocks/demo-launcher/entry-host.css",
-      "max_lines": 44
+      "max_lines": 16
     },
     {
       "path": "blocks/vehicle-matcher/gcsp-kit.css",
