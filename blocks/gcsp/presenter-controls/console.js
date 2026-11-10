@@ -3,6 +3,7 @@ import { tabs } from '../kit/tabs.js';
 import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
 import { mountPresenterControls } from './controls.js';
+import { mountReleaseSection } from './release-section.js';
 import { mountHappenedFeed } from './happened-feed.js';
 
 export const PRESENTER_CONSOLE_MODE_KEY = 'gcsp:presenter-console-mode';
@@ -80,6 +81,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   const status = el('p', 'gcsp-console-status'); status.setAttribute('role', 'status');
   const stage = el('section', 'gcsp-console-stage'); stage.setAttribute('aria-labelledby', headline.id);
   stage.append(text, screen, actions, reasonText, status);
+  const releaseSection = mountReleaseSection(stage, { adapter }); // After the Start again confirmation, before the feed.
   const feed = mountHappenedFeed(stage, { adapter, storage: store() });
 
   const advancedHost = el('div', 'gcsp-console-controls');
@@ -114,15 +116,15 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   // tick(body, copy) runs the default release path with another tick body; refresh() re-reads the controls.
   const context = () => ({ adapter, state, basic, setMode, commandId, refresh: () => read(),
     tick: (body, copy) => defaultRelease({ adapter, state, basic, commandId }, body, copy) });
-  const showScreen = (node) => { screen.replaceChildren(node); actions.hidden = true; reasonText.hidden = true; feed.root.hidden = true; };
+  const showScreen = (node) => { screen.replaceChildren(node); actions.hidden = true; reasonText.hidden = true; feed.root.hidden = true; releaseSection.root.hidden = true; };
 
   function applyState(next) {
-    state = next; loaded = true; screen.replaceChildren(); actions.hidden = false;
+    state = next; loaded = true; screen.replaceChildren(); actions.hidden = false; releaseSection.root.hidden = false;
     if (!headlineSupplied) headline.textContent = state.currentScenario?.name || TITLE;
     const due = state.controls?.nextRelease;
     defaultDisabled = due?.status !== 'available';
     defaultReason = defaultDisabled ? `Release unavailable: ${sentence(due?.reason) || 'no release is due'}` : '';
-    paintPrimary(); feed.update(state); onState?.(state, basic);
+    paintPrimary(); feed.update(state); onState?.(state, basic); releaseSection.refresh();
   }
   async function read() {
     let reply;
@@ -193,7 +195,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   let saved = 'basic'; try { saved = store()?.getItem(PRESENTER_CONSOLE_MODE_KEY) === 'advanced' ? 'advanced' : 'basic'; } catch { /* storage blocked */ }
   if (saved === 'advanced') setMode('advanced');
   const ready = read();
-  const destroy = () => { disposed = true; abort.abort(); stopWatching(); feed.destroy(); controller?.destroy(); advancedHost.removeEventListener('gcsp:presenter-action', onAction); root.remove(); };
+  const destroy = () => { disposed = true; abort.abort(); stopWatching(); releaseSection.destroy(); feed.destroy(); controller?.destroy(); advancedHost.removeEventListener('gcsp:presenter-action', onAction); root.remove(); };
   return { root, basic, setMode, destroy, ready };
 }
 
