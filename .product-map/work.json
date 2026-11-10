@@ -4215,34 +4215,43 @@
       "type": "Bug",
       "assignee": "usget",
       "branch": "dev/DEV-2026-11-10-004",
-      "observed_at": "2026-11-10T15:00:02Z",
+      "observed_at": "2026-11-10T16:02:09Z",
       "workers": [
         {
           "name": "Michigan J. Frog",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-10T14:28:44.420879Z",
-          "expires_at": "2026-11-10T16:28:44.420879Z",
-          "source": "observed active title/thread01a1c5da-6a83-7781-a381-91a8cb9eb2d7",
-          "status": "active"
+          "observed_at": "2026-11-10T16:02:09.270405+00:00",
+          "expires_at": "2026-11-10T16:02:09.270405+00:00",
+          "source": "Lead final scoped Built handover; three original media ACs pass; final resource audit clean; parent owns integration/Jira acceptance.",
+          "status": "stopped"
         },
         {
           "name": "Grub",
           "role": "implementer",
           "harness": "codex",
-          "observed_at": "2026-11-10T14:30:08.599994Z",
-          "expires_at": "2026-11-10T15:00:02.086490+00:00",
-          "source": "Observed final handover2708d11e; child ended, no active process/descendant",
+          "observed_at": "2026-11-10T16:02:09.270405+00:00",
+          "expires_at": "2026-11-10T16:02:09.270405+00:00",
+          "source": "Final handover2708d11e; implementer ended; retained evidence reused without more allocations.",
           "status": "stopped"
         },
         {
           "name": "Imhotep",
           "role": "independent-reviewer-A",
           "harness": "codex",
-          "observed_at": "2026-11-10T15:00:02.086490+00:00",
-          "expires_at": "2026-11-10T16:00:02.086490+00:00",
-          "source": "Dispatcher observed resumed existing thread01a1c5ba-fbe9-7402-a343-dcb7518b90a1; requested/selectedSol/high",
-          "status": "active"
+          "observed_at": "2026-11-10T16:02:09.270405+00:00",
+          "expires_at": "2026-11-10T16:02:09.270405+00:00",
+          "source": "Independent A finalized blind scoped PASS29/40; exact reportSHA1aa23ab2; no descendants/scratch.",
+          "status": "stopped"
+        },
+        {
+          "name": "Wile E. Coyote",
+          "role": "independent-runner-B",
+          "harness": "codex",
+          "observed_at": "2026-11-10T16:02:09.270405+00:00",
+          "expires_at": "2026-11-10T16:02:09.270405+00:00",
+          "source": "Final B received;18currentcapture+19source hashes verified;9B scratch roots absent; no further allocations/descendants.",
+          "status": "stopped"
         }
       ],
       "slices": [
@@ -4255,20 +4264,22 @@
         },
         {
           "id": "review",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Independent-rendered-review",
-          "observed_at": "2026-11-10T15:00:02Z",
-          "evidence": "Dispatcher observed Imhotep Sol/high blindA on immutable packet; no detector findings read. AssessmentB pending afterA."
+          "observed_at": "2026-11-10T16:02:09Z",
+          "evidence": "Independent blind A PASS29/40; B18 current1280/375 captures and41runtime findings classified. Lead original-resolution critique: all3 mediaACs pass. A-1 FUCQ-347 and B-1 FUCQ-349 separate Low/unfixed. See integrated-review.md and assessment-b/browser-provenance.json."
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Scoped-delivery-validation",
-          "observed_at": "2026-11-10T15:00:02Z",
-          "evidence": "Source/evidence pushed and lead strict-targeted170/170 default on e81db95a/aff66; final review/resource/result receipt pending."
+          "observed_at": "2026-11-10T16:02:09Z",
+          "evidence": "Frozen5a5ae694/base95f39141 scoped/default shell+hosted-entry+ratchet159/159; prior unchanged-media170/170 reused. All19source+64historical hashes match. Final audit:23owned roots absent, pg link removed/target preserved,no leftovers. Result/evidence committed with handover; no full/deployed/live acceptance."
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "delivery_status": "built; pending parent integration and collaborator acceptance",
+      "jira_status_basis": "Last native observed In Progress; local completion does not infer acceptance or transition Jira."
     }
   ]
 }
