@@ -293,3 +293,19 @@ test('offline CLI repeats persisted allocation and fails without partial publica
   assert.equal(cli(0).status, 1);
   assert.equal(await readFile(file, 'utf8'), original);
 });
+
+test('replaceRunStock drops only the run\'s unplanned VIN-less stock and keeps everything else', async () => {
+  const seeded = await allocate(emptyAllocationInventory(), plan([car('keep'), car('drop'), delivered('vin-car')]));
+  const other = await allocate(seeded.inventory, plan([car('other')], { runId: 'run-b' }));
+  const before = other.inventory.records;
+  const replaced = await allocate(other.inventory, plan([car('keep'), car('new')], { corpusVersion: 'reference-corpus.v1', replaceRunStock: true }));
+  assert.equal(replaced.status, 'ok');
+  const ids = (runId) => replaced.inventory.records.filter((r) => r.runId === runId).map((r) => r.vehicleId).sort();
+  assert.deepEqual(ids('run-a'), ['keep', 'new', 'vin-car']);
+  assert.deepEqual(ids('run-b'), ['other']);
+  for (const id of ['keep', 'vin-car']) assert.deepEqual(replaced.inventory.records.find((r) => r.vehicleId === id && r.runId === 'run-a'), before.find((r) => r.vehicleId === id && r.runId === 'run-a'));
+  assert.equal(replaced.inventory.revision, other.inventory.revision + 1);
+  const otherCorpus = await allocate(replaced.inventory, plan([car('keep'), car('new')], { corpusVersion: 'reference-corpus.v2' }));
+  assert.equal(otherCorpus.status, 'version-conflict', 'without the flag a run keeps its corpus version check');
+  assert.equal((await allocate(replaced.inventory, plan([car('x')], { replaceRunStock: false }))).status, 'invalid-input');
+});
