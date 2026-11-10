@@ -4449,15 +4449,15 @@
     },
     {
       "id": "FUCQ-309",
-      "title": "Default 1,000-employee comparison runs out of worker heap in 3 of 3 runs",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "title": "Default 1,000-employee comparison runs out of worker heap in 3 of 3 runs after about 3 minutes",
+      "status": "In Review",
+      "original_status": "In Review",
       "assignee": "Russell Gowers",
       "type": "Bug",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-309",
       "branch": "dev/DEV-2026-11-10-GC-027",
-      "jira_source_updated_at": "2026-11-10T13:22:52.200Z",
-      "jira_observed_at": "2026-11-10T13:26:47.809069Z",
+      "jira_source_updated_at": "2026-11-10T19:06:20.527000Z",
+      "jira_observed_at": "2026-11-10T19:07:13.636Z",
       "workers": [
         {
           "name": "Ralph Wolf",
@@ -4469,7 +4469,7 @@
           "status": "Built; worker ended; parent final review/integration pending"
         }
       ],
-      "observed_at": "2026-11-10T18:57:44Z",
+      "observed_at": "2026-11-10T19:07:23Z",
       "slices": [
         {
           "id": "current-cause",
