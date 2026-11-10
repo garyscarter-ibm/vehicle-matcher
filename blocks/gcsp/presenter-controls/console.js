@@ -3,6 +3,8 @@ import { tabs } from '../kit/tabs.js';
 import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
 import { mountPresenterControls } from './controls.js';
+import { mountReleaseSection } from './release-section.js';
+import { mountHappenedFeed } from './happened-feed.js';
 
 export const PRESENTER_CONSOLE_MODE_KEY = 'gcsp:presenter-console-mode';
 const ACTION_KEY = 'gcsp:presenter-action'; // Same signal the controller writes, so open portal tabs refresh.
@@ -51,7 +53,7 @@ function regroup(controller) {
 }
 
 /** Standalone presenter console. Returns { root, basic, setMode(mode), destroy, ready }; `basic` is { update({ headline, sub, clock, primary: { label, disabled, reason } }), setStatus(text), release, startAgain }.
- * onRelease(ctx) / onStartAgain(ctx) replace the default handlers (ctx = { adapter, state, basic, setMode, commandId }); onState(state, basic) runs after each controls read. */
+ * onRelease(ctx) / onStartAgain(ctx) replace the default handlers (ctx = { adapter, state, basic, setMode, commandId, tick, refresh }); onState(state, basic) runs after each controls read. */
 export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapter(), commandId = () => globalThis.crypto.randomUUID(), reload, navigate,
   storage, onRelease, onStartAgain, onState } = {}) {
   const win = host.ownerDocument.defaultView; const abort = new AbortController();
@@ -79,6 +81,8 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   const status = el('p', 'gcsp-console-status'); status.setAttribute('role', 'status');
   const stage = el('section', 'gcsp-console-stage'); stage.setAttribute('aria-labelledby', headline.id);
   stage.append(text, screen, actions, reasonText, status);
+  const releaseSection = mountReleaseSection(stage, { adapter }); // After the Start again confirmation, before the feed.
+  const feed = mountHappenedFeed(stage, { adapter, storage: store() });
 
   const advancedHost = el('div', 'gcsp-console-controls');
   const advancedNote = el('p', 'gcsp-note', 'Loading presenter controls');
@@ -109,16 +113,18 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
     setStatus(value) { status.textContent = value ?? ''; },
     release, startAgain,
   };
-  const context = () => ({ adapter, state, basic, setMode, commandId });
-  const showScreen = (node) => { screen.replaceChildren(node); actions.hidden = true; reasonText.hidden = true; };
+  // tick(body, copy) runs the default release path with another tick body; refresh() re-reads the controls.
+  const context = () => ({ adapter, state, basic, setMode, commandId, refresh: () => read(),
+    tick: (body, copy) => defaultRelease({ adapter, state, basic, commandId }, body, copy) });
+  const showScreen = (node) => { screen.replaceChildren(node); actions.hidden = true; reasonText.hidden = true; feed.root.hidden = true; releaseSection.root.hidden = true; };
 
   function applyState(next) {
-    state = next; loaded = true; screen.replaceChildren(); actions.hidden = false;
+    state = next; loaded = true; screen.replaceChildren(); actions.hidden = false; releaseSection.root.hidden = false;
     if (!headlineSupplied) headline.textContent = state.currentScenario?.name || TITLE;
     const due = state.controls?.nextRelease;
     defaultDisabled = due?.status !== 'available';
     defaultReason = defaultDisabled ? `Release unavailable: ${sentence(due?.reason) || 'no release is due'}` : '';
-    paintPrimary(); onState?.(state, basic);
+    paintPrimary(); feed.update(state); onState?.(state, basic); releaseSection.refresh();
   }
   async function read() {
     let reply;
@@ -132,19 +138,20 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
     advancedNote.textContent = 'Presenter controls are not available.';
   }
 
-  async function defaultRelease({ adapter: api, state: current, basic: view, commandId: next }) {
-    view.setStatus('Releasing cars');
+  async function defaultRelease({ adapter: api, state: current, basic: view, commandId: next }, body = { mode: 'next-release' },
+    copy = { pending: 'Releasing cars', done: 'Cars released', failed: 'Release not completed' }) {
+    view.setStatus(copy.pending);
     let reply;
-    try { reply = await api.tick({ commandId: next(), expectedClockVersion: current.clockVersion, mode: 'next-release' }, { signal: abort.signal }); } catch { reply = { status: 'unavailable' }; }
+    try { reply = await api.tick({ commandId: next(), expectedClockVersion: current.clockVersion, ...body }, { signal: abort.signal }); } catch { reply = { status: 'unavailable' }; }
     if (disposed) return;
     if (isRunRestarted(reply)) { await read(); return; }
     if (reply?.status === 'ok') {
-      view.setStatus('Cars released');
+      view.setStatus(copy.done);
       const Event = win.CustomEvent;
       if (Event) host.dispatchEvent(new Event('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } }));
       try { win.localStorage.setItem(ACTION_KEY, JSON.stringify({ kind: 'tick', at: Date.now() })); } catch { /* storage blocked */ }
       controller?.refresh();
-    } else view.setStatus(`Release not completed: ${sentence(reply?.reason) || 'Try again'}`);
+    } else view.setStatus(`${copy.failed}: ${sentence(reply?.reason) || 'Try again'}`);
     await read();
   }
   async function runRelease() {
@@ -188,7 +195,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   let saved = 'basic'; try { saved = store()?.getItem(PRESENTER_CONSOLE_MODE_KEY) === 'advanced' ? 'advanced' : 'basic'; } catch { /* storage blocked */ }
   if (saved === 'advanced') setMode('advanced');
   const ready = read();
-  const destroy = () => { disposed = true; abort.abort(); stopWatching(); controller?.destroy(); advancedHost.removeEventListener('gcsp:presenter-action', onAction); root.remove(); };
+  const destroy = () => { disposed = true; abort.abort(); stopWatching(); releaseSection.destroy(); feed.destroy(); controller?.destroy(); advancedHost.removeEventListener('gcsp:presenter-action', onAction); root.remove(); };
   return { root, basic, setMode, destroy, ready };
 }
 

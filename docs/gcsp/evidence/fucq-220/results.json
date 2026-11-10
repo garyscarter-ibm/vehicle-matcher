@@ -1,6 +1,6 @@
 {
-  "passed": true,
-  "origin": "https://localhost:8992",
+  "passed": false,
+  "origin": "https://localhost:8990",
   "runtime": "memory",
   "pageErrors": [],
   "screens": [
@@ -220,8 +220,16 @@
       "name": "account-order-history",
       "viewport": 1280,
       "url": "/gcsp-account.html (Order history)",
-      "entries": 2,
+      "entries": 3,
       "identityFacts": [
+        [
+          "Order reference",
+          "GCSP-000001"
+        ],
+        [
+          "Car order number",
+          "5219129"
+        ],
         [
           "Car order number",
           "Not supplied"
@@ -249,7 +257,20 @@
       ],
       "historyRows": [
         {
-          "text": "Fictional BMW 320i Touring Status Current car Driver Paula (fictional) Registration Not supplied Actual collection 1 June 2026 Contract end 1 December 2026 Returned Not supplied Order, collection and vehicle details Car order number Not supplied Order date Not supplied Order status Not supplied Registration Not supplied Delivered VIN Not supplied Chassis number Not supplied Registration date Not s",
+          "text": "Synthetic 3 Series Saloon 320i Status In progress Order reference GCSP-000001 Car order number 5219129",
+          "facts": [
+            [
+              "Order reference",
+              "GCSP-000001"
+            ],
+            [
+              "Car order number",
+              "5219129"
+            ]
+          ]
+        },
+        {
+          "text": "Fictional BMW 320i Touring Status Current car Driver Paula (fictional) Scheme BMW Choices Registration Not supplied Actual collection 1 June 2026 Contract end 1 December 2026 Returned Not supplied Order, collection and vehicle details Car order number Not supplied Order date Not supplied Order status Not supplied Registration Not supplied Delivered VIN Not supplied Chassis number Not supplied Regi",
           "facts": [
             [
               "Car order number",
@@ -266,7 +287,7 @@
           ]
         },
         {
-          "text": "Model not supplied Status Returned Driver Not supplied Registration Not supplied Actual collection 1 January 2025 Contract end Not supplied Returned 1 December 2025 Order, collection and vehicle details Car order number Not supplied Order date Not supplied Order status Not supplied Registration Not supplied Delivered VIN Not supplied Chassis number Not supplied Registration date Not supplied Reque",
+          "text": "Model not supplied Status Returned Driver Not supplied Scheme PCS UK FS BMW Registration Not supplied Actual collection 1 January 2025 Contract end Not supplied Returned 1 December 2025 Order, collection and vehicle details Car order number Not supplied Order date Not supplied Order status Not supplied Registration Not supplied Delivered VIN Not supplied Chassis number Not supplied Registration da",
           "facts": [
             [
               "Car order number",
@@ -284,7 +305,7 @@
         }
       ],
       "overflowPx": 0,
-      "pass": true,
+      "pass": false,
       "note": "Demo history records carry no reference; rows are listed as shown.",
       "screenshot": "docs/gcsp/evidence/fucq-220/1280-account-order-history.png"
     },
@@ -448,8 +469,16 @@
       "name": "account-order-history",
       "viewport": 375,
       "url": "/gcsp-account.html (Order history)",
-      "entries": 2,
+      "entries": 3,
       "identityFacts": [
+        [
+          "Order reference",
+          "GCSP-000001"
+        ],
+        [
+          "Car order number",
+          "5219129"
+        ],
         [
           "Car order number",
           "Not supplied"
@@ -477,7 +506,20 @@
       ],
       "historyRows": [
         {
-          "text": "Fictional BMW 320i Touring Status Current car Driver Paula (fictional) Registration Not supplied Actual collection 1 June 2026 Contract end 1 December 2026 Returned Not supplied Order, collection and vehicle details Car order number Not supplied Order date Not supplied Order status Not supplied Registration Not supplied Delivered VIN Not supplied Chassis number Not supplied Registration date Not s",
+          "text": "Synthetic 3 Series Saloon 320i Status In progress Order reference GCSP-000001 Car order number 5219129",
+          "facts": [
+            [
+              "Order reference",
+              "GCSP-000001"
+            ],
+            [
+              "Car order number",
+              "5219129"
+            ]
+          ]
+        },
+        {
+          "text": "Fictional BMW 320i Touring Status Current car Driver Paula (fictional) Scheme BMW Choices Registration Not supplied Actual collection 1 June 2026 Contract end 1 December 2026 Returned Not supplied Order, collection and vehicle details Car order number Not supplied Order date Not supplied Order status Not supplied Registration Not supplied Delivered VIN Not supplied Chassis number Not supplied Regi",
           "facts": [
             [
               "Car order number",
@@ -494,7 +536,7 @@
           ]
         },
         {
-          "text": "Model not supplied Status Returned Driver Not supplied Registration Not supplied Actual collection 1 January 2025 Contract end Not supplied Returned 1 December 2025 Order, collection and vehicle details Car order number Not supplied Order date Not supplied Order status Not supplied Registration Not supplied Delivered VIN Not supplied Chassis number Not supplied Registration date Not supplied Reque",
+          "text": "Model not supplied Status Returned Driver Not supplied Scheme PCS UK FS BMW Registration Not supplied Actual collection 1 January 2025 Contract end Not supplied Returned 1 December 2025 Order, collection and vehicle details Car order number Not supplied Order date Not supplied Order status Not supplied Registration Not supplied Delivered VIN Not supplied Chassis number Not supplied Registration da",
           "facts": [
             [
               "Car order number",
@@ -512,7 +554,7 @@
         }
       ],
       "overflowPx": 0,
-      "pass": true,
+      "pass": false,
       "note": "Demo history records carry no reference; rows are listed as shown.",
       "screenshot": "docs/gcsp/evidence/fucq-220/375-account-order-history.png"
     },

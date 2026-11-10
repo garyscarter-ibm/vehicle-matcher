@@ -184,7 +184,7 @@ test('basic.update changes only supplied keys, and the overrides replace the def
   const reason = f.root.querySelector('.gcsp-console-reason'); assert.equal(reason.textContent, 'Waiting for the release time'); assert.equal(basic.release.getAttribute('aria-describedby'), reason.id);
   basic.update({ primary: { disabled: false } }); assert.equal(basic.release.disabled, false); assert.equal(reason.hidden, true); assert.equal(basic.release.getAttribute('aria-describedby'), null);
   basic.setStatus('Hello'); assert.equal(f.root.querySelector('[role="status"]').textContent, 'Hello');
-  basic.release.click(); await settle(); assert.equal(f.calls.length, 0); assert.equal(seen.at(-1), 'adapter,basic,commandId,setMode,state');
+  basic.release.click(); await settle(); assert.equal(f.calls.length, 0); assert.equal(seen.at(-1), 'adapter,basic,commandId,refresh,setMode,state,tick');
   basic.startAgain.click(); assert.deepEqual(starts, ['run-a']); assert.equal(f.root.querySelector('.gcsp-console-advanced').hidden, false); f.api.destroy();
 });
 
@@ -196,7 +196,7 @@ test('restarted and unavailable reads show a screen in the Basic body', async ()
   assert.match(b.root.querySelector('.vm-status').textContent, /Presenter controls unavailable.*Reload this page to start a presenter session\./); b.api.destroy();
   let reads = 0; const c = setup({ readControls: async () => (++reads === 1 ? { status: 'unavailable' } : ok(readState())) }); await c.api.ready;
   assert.match(c.root.querySelector('.vm-status').textContent, /Presenter controls unavailable/);
-  c.root.querySelector('.vm-status button').click(); await settle(); assert.equal(c.root.querySelector('.vm-status'), null); assert.equal(c.root.querySelector('h1').textContent, 'Clock mechanics'); c.api.destroy();
+  c.root.querySelector('.vm-status button').click(); await settle(); assert.equal(c.root.querySelector('.gcsp-console-screen .vm-status'), null); assert.equal(c.root.querySelector('h1').textContent, 'Clock mechanics'); c.api.destroy();
 });
 
 test('painted copy has no em dash and none of the banned words, and the adapter is the only data source', async () => {
@@ -208,7 +208,7 @@ test('painted copy has no em dash and none of the banned words, and the adapter 
   const shown = paint(g.root);
   assert.doesNotMatch(shown, /—/); assert.doesNotMatch(shown, /demo|demonstration|synthetic|fictional|example/i);
   assert.doesNotMatch(readFileSync(new URL('../../gcsp-presenter.html', import.meta.url), 'utf8').match(/<title>.*<\/title>/)[0], /demo|synthetic|fictional|example|—/i);
-  const bad = names.filter((n) => !['readControls', 'readContext', 'readScenarios', 'readFaults'].includes(n));
+  const bad = names.filter((n) => !['readControls', 'readContext', 'readScenarios', 'readFaults', 'readOutbox'].includes(n));
   assert.deepEqual(bad, []); assert.ok(names.includes('readControls'));
   assert.doesNotMatch(readFileSync(new URL('../../blocks/gcsp/presenter-controls/console.js', import.meta.url), 'utf8'), /createAccountHttpAdapter|createGregHttpAdapter|accountAdapter|gregAdapter|\/account\/|\/greg\//);
   g.api.destroy();

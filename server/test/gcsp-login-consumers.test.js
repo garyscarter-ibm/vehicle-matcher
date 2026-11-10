@@ -43,7 +43,7 @@ test('both employee account adapters preserve the server profile email for share
 test('employee shell forwards email and explicit preview sign-out opt-out', async () => {
   for (const signOut of [true, false]) {
     const root = host();
-    const stop = employee.mountEmployee(root, { signOut, presenterControls: false,
+    const stop = employee.mountEmployee(root, { signOut,
       loadAccount: async () => ({ status: 'ready', name: 'Ada Longworth', email: 'ada.longworth@gcsp-demo.com' }) });
     await tick();
     assert.equal(root.querySelector('.gcsp-account-email').textContent, 'ada.longworth@gcsp-demo.com');
@@ -83,7 +83,7 @@ test('Greg HTTP identity loader reads the current session context with no fixed 
 test('Greg live shell waits for injected identity and never falls back to a named account', async () => {
   let resolve;
   const root = host();
-  const stop = greg.mountGregDashboard(root, { presenterControls: false,
+  const stop = greg.mountGregDashboard(root, {
     loadDemand: async () => ({ status: 'ready', projection: gregFixtures.fixtureProjection('populated') }),
     loadAccount: () => new Promise((done) => { resolve = done; }) });
   assert.equal(root.querySelector('.gcsp-account').dataset.status, 'loading');

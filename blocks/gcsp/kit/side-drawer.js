@@ -2,7 +2,7 @@
 import { el, button } from '../../vehicle-matcher/ui.js';
 
 let uid = 0;
-const FOCUSABLE = 'button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])';
+const FOCUSABLE = 'button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, iframe, [tabindex]:not([tabindex="-1"])';
 
 // { host, context?, title, body, footer, opener, closeLabel, onClose } -> { root, panel, close(restoreFocus = true) }.
 // `host` is inside .gcsp; `opener` is an element or a function returning one, and is focused on close.

@@ -1,0 +1,198 @@
+{
+ "story": "FUCQ-328",
+ "host": "offline (GCSP_OFFLINE=1, memory repository), ports 9512-9513, signed in as paula.mason@gcsp-demo.com",
+ "page": "/gcsp-brief-live.html",
+ "forbidden": "Not supplied|Source not supplied|Unknown ·|policy:|undefined",
+ "results": {
+  "1280": [
+   {
+    "screen": "open",
+    "file": "1280-open.png",
+    "viewport": "1280x900",
+    "url": "/gcsp-brief-live.html",
+    "h1": "Your preferences",
+    "facts": [
+     [
+      "Current car",
+      "BMW 3 Series Touring 320i"
+     ],
+     [
+      "Contract ends",
+      "Tuesday 1 December 2026"
+     ],
+     [
+      "Drivers",
+      "Paula Mason, Casey Ward"
+     ],
+     [
+      "Annual mileage",
+      "12,000 mi/year"
+     ]
+    ],
+    "notes": [
+     "Scheme account. These facts are read-only. Starting answers are confirmed when saved.",
+     "Body style: Draft preference estate; draft importance 50",
+     "Fuel: Draft preference petrol; draft importance 50",
+     "Sportiness: Draft preference 50; draft importance 50",
+     "Comfort: Draft preference 50; draft importance 50",
+     "Economy: Draft preference 50; draft importance 50",
+     "Size: Draft preference 50; draft importance 50",
+     "Not answered yet: 4 questions about what your car needs to do."
+    ],
+    "hiddenRows": 4,
+    "forbiddenCopyFound": null,
+    "overflowX": 0,
+    "focus": "summary:Your scheme and starting answers",
+    "inlineHandlers": 0,
+    "inlineScripts": 0,
+    "checks": [
+     "summary opened by keyboard (focus stays on summary)",
+     "four facts from Paula's records, no Not supplied row",
+     "one line counts unanswered needs"
+    ]
+   },
+   {
+    "screen": "answered",
+    "file": "1280-answered.png",
+    "viewport": "1280x900",
+    "url": "/gcsp-brief-live.html",
+    "h1": "Your preferences",
+    "facts": [
+     [
+      "Current car",
+      "BMW 3 Series Touring 320i"
+     ],
+     [
+      "Contract ends",
+      "Tuesday 1 December 2026"
+     ],
+     [
+      "Drivers",
+      "Paula Mason, Casey Ward"
+     ],
+     [
+      "Annual mileage",
+      "12,000 mi/year"
+     ]
+    ],
+    "notes": [
+     "Scheme account. These facts are read-only. Starting answers are confirmed when saved.",
+     "Body style: Draft preference estate; draft importance 50",
+     "Fuel: Draft preference petrol; draft importance 50",
+     "Sportiness: Draft preference 50; draft importance 50",
+     "Comfort: Draft preference 50; draft importance 50",
+     "Economy: Draft preference 50; draft importance 50",
+     "Size: Draft preference 50; draft importance 50",
+     "Do you need a towbar?: Draft · Your answers",
+     "Not answered yet: 3 questions about what your car needs to do."
+    ],
+    "hiddenRows": 3,
+    "forbiddenCopyFound": null,
+    "overflowX": 0,
+    "focus": "button:No",
+    "inlineHandlers": 0,
+    "inlineScripts": 0,
+    "checks": [
+     "towbar answered No by keyboard",
+     "its provenance row appears as Draft · Your answers",
+     "pending count falls by one"
+    ]
+   }
+  ],
+  "375": [
+   {
+    "screen": "open",
+    "file": "375-open.png",
+    "viewport": "375x812",
+    "url": "/gcsp-brief-live.html",
+    "h1": "Your preferences",
+    "facts": [
+     [
+      "Current car",
+      "BMW 3 Series Touring 320i"
+     ],
+     [
+      "Contract ends",
+      "Tuesday 1 December 2026"
+     ],
+     [
+      "Drivers",
+      "Paula Mason, Casey Ward"
+     ],
+     [
+      "Annual mileage",
+      "12,000 mi/year"
+     ]
+    ],
+    "notes": [
+     "Scheme account. These facts are read-only. Starting answers are confirmed when saved.",
+     "Body style: Draft preference estate; draft importance 50",
+     "Fuel: Draft preference petrol; draft importance 50",
+     "Sportiness: Draft preference 50; draft importance 50",
+     "Comfort: Draft preference 50; draft importance 50",
+     "Economy: Draft preference 50; draft importance 50",
+     "Size: Draft preference 50; draft importance 50",
+     "Not answered yet: 4 questions about what your car needs to do."
+    ],
+    "hiddenRows": 4,
+    "forbiddenCopyFound": null,
+    "overflowX": 0,
+    "focus": "summary:Your scheme and starting answers",
+    "inlineHandlers": 0,
+    "inlineScripts": 0,
+    "checks": [
+     "summary opened by keyboard (focus stays on summary)",
+     "four facts from Paula's records, no Not supplied row",
+     "one line counts unanswered needs"
+    ]
+   },
+   {
+    "screen": "answered",
+    "file": "375-answered.png",
+    "viewport": "375x812",
+    "url": "/gcsp-brief-live.html",
+    "h1": "Your preferences",
+    "facts": [
+     [
+      "Current car",
+      "BMW 3 Series Touring 320i"
+     ],
+     [
+      "Contract ends",
+      "Tuesday 1 December 2026"
+     ],
+     [
+      "Drivers",
+      "Paula Mason, Casey Ward"
+     ],
+     [
+      "Annual mileage",
+      "12,000 mi/year"
+     ]
+    ],
+    "notes": [
+     "Scheme account. These facts are read-only. Starting answers are confirmed when saved.",
+     "Body style: Draft preference estate; draft importance 50",
+     "Fuel: Draft preference petrol; draft importance 50",
+     "Sportiness: Draft preference 50; draft importance 50",
+     "Comfort: Draft preference 50; draft importance 50",
+     "Economy: Draft preference 50; draft importance 50",
+     "Size: Draft preference 50; draft importance 50",
+     "Do you need a towbar?: Draft · Your answers",
+     "Not answered yet: 3 questions about what your car needs to do."
+    ],
+    "hiddenRows": 3,
+    "forbiddenCopyFound": null,
+    "overflowX": 0,
+    "focus": "button:No",
+    "inlineHandlers": 0,
+    "inlineScripts": 0,
+    "checks": [
+     "towbar answered No by keyboard",
+     "its provenance row appears as Draft · Your answers",
+     "pending count falls by one"
+    ]
+   }
+  ]
+ }
+}

@@ -4,7 +4,7 @@ import { accountFixture, FIXTURE_NAMES } from './fixtures.js';
 import { mountManualJourney } from '../manual-setup/journey.js';
 import { createOrderProgressHttpAdapter } from '../order-progress/order-progress-http.js';
 import { createCaseHttpAdapter } from '../cases/http-adapter.js';
-import { subscribePresenterActions } from '../presenter-controls/controls.js';
+import { subscribePresenterActions } from '../kit/presenter-actions.js';
 
 const requested = new URLSearchParams(globalThis.location?.search ?? '').get('fixture');
 const host = document.querySelector('gcsp-account');

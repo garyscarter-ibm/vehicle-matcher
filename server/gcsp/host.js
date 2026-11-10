@@ -9,6 +9,7 @@ import { createGcspRuntime } from './runtime.js';
 import { publicOrigin } from './public-origin.js';
 import { createRunStockProviderFactory } from './stock/index.js';
 import { createDemoUpstream, withConfirmedSupply } from './stock/demo-provider.js';
+import { createStaticVersioning, splitVersioned } from './static-version.js';
 
 export const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
@@ -50,14 +51,23 @@ export function createGcspFront({ root, services, api, origin, fallThrough = fal
   const html = (res, status, body, headers = {}) => res.writeHead(status, { 'Content-Type': TYPES['.html'],
     'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', ...headers }).end(body);
   const redirect = (res, location) => res.writeHead(303, { Location: location, 'Cache-Control': 'no-store' }).end();
+  const staticPath = (path) => path.startsWith('/blocks/') || path.startsWith('/assets/') || path === '/gcsp-employee.css';
+  const versioning = createStaticVersioning({ root, isPublic: staticPath });
 
   return async (req, res) => {
     try {
       const hostOk = req.headers.host === host;
       if (!hostOk && !fallThrough) { res.writeHead(403).end(); return; }
       const url = new URL(req.url, origin);
-      const path = decodeURIComponent(url.pathname);
+      let path = decodeURIComponent(url.pathname);
       if (path.startsWith('/api/gcsp/')) { api.emit('request', req, res); return; }
+      // FUCQ-374: /_v/<version>/ serves the same static file; a page under it goes back through its gate.
+      const versioned = hostOk ? splitVersioned(path) : null;
+      if (versioned) {
+        if (versioned.path.endsWith('.html') && publicPath(versioned.path)) { redirect(res, `${versioned.path}${url.search}`); return; }
+        if (!staticPath(versioned.path)) { res.writeHead(404).end('Not found'); return; }
+        path = versioned.path;
+      }
       // The bare host and favicon get a browser answer rather than the retail API's 401 or a 404.
       if (hostOk && req.method === 'GET' && path === '/') {
         const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
@@ -90,14 +100,16 @@ export function createGcspFront({ root, services, api, origin, fallThrough = fal
         || !(await stat(file)).isFile()) { res.writeHead(404).end('Not found'); return; }
       const body = await readFile(file);
       const type = TYPES[extname(file)] || 'application/octet-stream';
-      // Static files revalidate by content hash (no max-age, so a redeploy is never stale); pages stay no-store.
+      // Static files revalidate by content hash; under the current version they are immutable. Pages stay no-store.
       if (extname(file) !== '.html') {
-        const headers = { ETag: contentTag(body), 'Cache-Control': 'private, no-cache', 'Referrer-Policy': 'no-referrer' };
+        const immutable = versioned && versioned.version === await versioning.version();
+        const headers = { ETag: contentTag(body), 'Cache-Control': immutable ? 'private, max-age=31536000, immutable' : 'private, no-cache',
+          'Referrer-Policy': 'no-referrer' };
         if (tagMatches(req.headers['if-none-match'], headers.ETag)) { res.writeHead(304, headers).end(); return; }
         res.writeHead(200, { 'Content-Type': type, ...headers }).end(body); return;
       }
       res.writeHead(200, { 'Content-Type': type, 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' });
-      res.end(body);
+      res.end(await versioning.renderPage(assetPath, body.toString('utf8')));
     } catch { if (!res.headersSent) res.writeHead(404).end('Not found'); else res.end(); }
   };
 }

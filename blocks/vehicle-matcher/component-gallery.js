@@ -22,7 +22,7 @@ import { activityBody } from '../gcsp/activity/activity-body.js';
 import { activityOffer } from '../gcsp/activity/activity-offer.js';
 import { activityFixtures } from '../gcsp/activity/activity-fixtures.js';
 import { activityEvents } from '../gcsp/activity/activity-copy.js';
-import { arrivalFocusExample, formControlsExample, stageListExample, rangeBarExample, runRestartedExample, showMoreExample, tabsExample } from '../gcsp/kit/form-controls-gallery.js';
+import { arrivalFocusExample, formControlsExample, stageListExample, rangeBarExample, runRestartedExample, showMoreExample, tabsExample, releaseGridExample } from '../gcsp/kit/form-controls-gallery.js';
 import { stageTracker } from '../gcsp/kit/stage-tracker.js';
 import { slotPicker } from '../gcsp/kit/slot-picker.js';
 import { taskList } from '../gcsp/kit/task-list.js';
@@ -174,7 +174,7 @@ function gcspExamples() {
   ];
   for (const [title, account, detailsOpen] of accounts) {
     const frame = el('div', 'vm-gallery-gcsp-frame');
-    const shell = portalShell({ navigation: GALLERY_NAVIGATION, active: 'cars', breadcrumbs: ['Your cars'], account, presenterControls: false, signOut: false });
+    const shell = portalShell({ navigation: GALLERY_NAVIGATION, active: 'cars', breadcrumbs: ['Your cars'], account, signOut: false });
     if (detailsOpen) shell.root.querySelector('.gcsp-account-details').open = true;
     shell.main.append(el('p', 'gcsp-note', 'Page content goes here.'));
     frame.append(shell.root);
@@ -540,7 +540,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), arrivalFocusExample(), gregKitExamples(), gregPublishExample(), gregOrderPlanExample(), gregComparisonExample(), launcherExamples(), activityExamples(), orderProgressExamples(), formControlsExample(), stageListExample(), rangeBarExample(), showMoreExample(), tabsExample(), runRestartedExample());
+  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), arrivalFocusExample(), gregKitExamples(), gregPublishExample(), gregOrderPlanExample(), gregComparisonExample(), launcherExamples(), activityExamples(), orderProgressExamples(), formControlsExample(), stageListExample(), rangeBarExample(), showMoreExample(), tabsExample(), releaseGridExample(), runRestartedExample());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

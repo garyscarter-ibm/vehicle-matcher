@@ -44,3 +44,18 @@ test('timeline treats supplied labels as text and gives each heading an independ
   assert.notEqual(a.getAttribute('aria-labelledby'), b.getAttribute('aria-labelledby'));
   assert.equal(document.getElementById(a.getAttribute('aria-labelledby')).textContent, 'Activity history');
 });
+
+test('timeline formatTime words the time, a falsy note drops the paragraph and an action node sits in the detail', () => {
+  const action = document.createElement('button'); action.textContent = 'View email';
+  const node = activityTimeline({ events: [{ id: 'a', occurredAt: '2026-11-10T11:30:00.000Z', label: 'Offer email sent', detail: 'Queued', action }],
+    formatTime: () => 'Tue 10 Nov, 11:30am', note: null });
+  assert.equal(node.querySelector('time').textContent, 'Tue 10 Nov, 11:30am');
+  assert.equal(node.querySelector('time').dateTime, '2026-11-10T11:30:00.000Z');
+  assert.equal(node.querySelector('.gcsp-timeline-note'), null);
+  assert.doesNotMatch(node.textContent, /UTC/);
+  const kids = [...node.querySelector('.gcsp-timeline-detail').children];
+  assert.deepEqual(kids.map((n) => n.className || n.tagName), ['gcsp-timeline-label', 'gcsp-timeline-description', 'BUTTON']);
+  assert.equal(kids[2], action);
+  const plain = activityTimeline({ events: [{ id: 'b', occurredAt: '2026-11-10T11:30:00.000Z', label: 'Plain' }] });
+  assert.match(plain.textContent, /All dates are UTC/); assert.equal(plain.querySelector('.gcsp-timeline-detail').children.length, 1);
+});
