@@ -1,0 +1,70 @@
+{
+  "proofId": "clean-canonical-v4",
+  "createdAt": "2026-11-10T16:10:55.456833+00:00",
+  "artifacts": {
+    "canonical-inputs.json": {
+      "bytes": 2136,
+      "sha256": "96d54c2b24f753d3c779c9ed1ecac075076f4dbdc90bdc07bc7b8b63de2abcfa"
+    },
+    "cleanup-audit.json": {
+      "bytes": 18591,
+      "sha256": "4a262055a5b381aa2f365dd9f65030d01f32d7ae5c587b85e380c75c3ca2a06b"
+    },
+    "cleanup.json": {
+      "bytes": 684,
+      "sha256": "5f0b8d3ad4d32385e03049f00a3537a47660924dfc365a65b85d5583b3fa7786"
+    },
+    "collect.py": {
+      "bytes": 4505,
+      "sha256": "992c47c3800310759d5a1ec7330e0d799df396ef55377f23b6f8e0ca0b0c866c"
+    },
+    "dependency-resolve.mjs": {
+      "bytes": 392,
+      "sha256": "0e01fe0617792787b04b8dc499273b27b044de0850602f0bd5045ca6cf807e26"
+    },
+    "failure.log": {
+      "bytes": 1745,
+      "sha256": "431e9f6fb5d2bc502b371c29e19b62152ae29cce08f24c7497701d8ce197d47f"
+    },
+    "http.mjs": {
+      "bytes": 21321,
+      "sha256": "8d8a4ecf2ddf60bbd7ec0bd927a47e30a24ce77bb939f69741b6b8a22fa2c62f"
+    },
+    "identity-audit.json": {
+      "bytes": 338,
+      "sha256": "1839ca12ded995e7ce30beea7c417f64dde60533d7bce3d2f149bb49466aa390"
+    },
+    "input-identity.mjs": {
+      "bytes": 2484,
+      "sha256": "8a4748ce8beddd095e1e0d53d88233e673f6add668f71155b7a0a4da8a556a90"
+    },
+    "metrics.json": {
+      "bytes": 3545,
+      "sha256": "6bd2a35ef7263693f05247ed7dc59afae4ee6abfb0c7faf6624d4719461ffe58"
+    },
+    "ownership-manifest.json": {
+      "bytes": 549,
+      "sha256": "cc95ad91c74bc1b2c85a6c3cf8422db22c00452166f12e2eb9642b7bf717a69b"
+    },
+    "plan.json": {
+      "bytes": 55956,
+      "sha256": "a3989304f295e487a1f3f8acaef599b17e30d27a9eb124f9ca059b4aff3c1551"
+    },
+    "report.md": {
+      "bytes": 7084,
+      "sha256": "95012daa09f22277d9a63874c5fe111000b8bff8a2026e0f5f0f408349cfe562"
+    },
+    "summary.json": {
+      "bytes": 228757,
+      "sha256": "d02763fad5ec65bf6a6cd2e4282817cdf01c875d05f53455e2d3fd3faedfbb45"
+    },
+    "supervisor-receipt.json": {
+      "bytes": 2536,
+      "sha256": "16f15582cd5e6c2b4aca27d09d5c687a8516318754ece8c80d25ce4172cbe041"
+    },
+    "supervisor.py": {
+      "bytes": 4877,
+      "sha256": "761c0a13b0ba0d5c713bfcc8b4546fdcd6d0e9c290a7ee8a3f78b7c26843b797"
+    }
+  }
+}

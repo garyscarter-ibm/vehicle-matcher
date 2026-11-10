@@ -1,0 +1,92 @@
+{
+  "format": "fucq309.scalar-localization.transforms.v1",
+  "files": [
+    {
+      "path": "server/gcsp/comparison/experiments.js",
+      "originalSha256": "a8ca8c03a46f8daf21583099959658afa79f4d8fa221a8aa4394da994a27b13f",
+      "diagnosticSha256": "f935fd7731fba5ac616526e3a403098ca4d5a1989f5e126f88b020ca18e81991",
+      "replacements": [
+        {
+          "label": "target-route-identity",
+          "anchor": "const run = await openComparisonRun({ inputs, policy: armPolicy, route, codeRevision, evaluation });",
+          "replacement": "globalThis.__fucq309PreparationScalars.routeBefore(seed, route, manifest.inputHash, manifest.policyHash, inputs.employees.length, inputs.stock.length);\n        const run = await openComparisonRun({ inputs, policy: armPolicy, route, codeRevision, evaluation }); globalThis.__fucq309PreparationScalars.routeReady();",
+          "requiredAnchorCount": 1
+        },
+        {
+          "label": "target-route-close",
+          "anchor": "} finally { await run.close(); }",
+          "replacement": "} finally { await run.close(); globalThis.__fucq309PreparationScalars.routeClosed(); }",
+          "requiredAnchorCount": 1
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/allocation/index.js",
+      "originalSha256": "383e74788a26a1e00974b78d6d284edec4b58d66ca8c017a223dcea8ad91fde6",
+      "diagnosticSha256": "54ce0e79dcca538dd60248b4afdb720e18265236bdf40b4b98c3bc53919cd589",
+      "replacements": [
+        {
+          "label": "preparation-function-entry",
+          "anchor": "async function prepareAndRecord(context, event, instant, assumptions, digest) {",
+          "replacement": "async function prepareAndRecord(context, event, instant, assumptions, digest) { globalThis.__fucq309PreparationScalars.prepareEnter();",
+          "requiredAnchorCount": 1
+        },
+        {
+          "label": "prepared-counts-only",
+          "anchor": "const { plan: prepared, slices } = planned.value;",
+          "replacement": "const { plan: prepared, slices } = planned.value; globalThis.__fucq309PreparationScalars.prepared(slices.length, prepared.contenders.length);",
+          "requiredAnchorCount": 1
+        },
+        {
+          "label": "actual-preparation-callback-entry",
+          "anchor": "return repository.transaction(context, command(`allocation:prepare:${event.eventId}`, event), async (tx) => {",
+          "replacement": "return repository.transaction(context, command(`allocation:prepare:${event.eventId}`, event), async (tx) => {\n      globalThis.__fucq309PreparationScalars.phase('preparation-callback-enter');",
+          "requiredAnchorCount": 1
+        },
+        {
+          "label": "cursor-receipt-complete",
+          "anchor": "if (cursor.status !== 'ok') return cursor;\n      for (const slice of slices) {",
+          "replacement": "globalThis.__fucq309PreparationScalars.phase('cursor-receipt-complete', cursor.status);\n      if (cursor.status !== 'ok') return cursor;\n      for (const slice of slices) {",
+          "requiredAnchorCount": 1
+        },
+        {
+          "label": "bounded-slice-completion-count",
+          "anchor": "outcome: ok({ runId: context.runId, eventId: event.eventId, employeeId: slice.employeeId, evaluation: slice.evaluation, quoteInputs: slice.quoteInputs }) });\n        if (saved.status !== 'ok') return saved;",
+          "replacement": "outcome: ok({ runId: context.runId, eventId: event.eventId, employeeId: slice.employeeId, evaluation: slice.evaluation, quoteInputs: slice.quoteInputs }) });\n        globalThis.__fucq309PreparationScalars.sliceComplete(saved.status);\n        if (saved.status !== 'ok') return saved;",
+          "requiredAnchorCount": 1
+        },
+        {
+          "label": "large-plan-before-and-after",
+          "anchor": "const saved = await tx.recordReceipt({ consumerId: ALLOCATION_CONSUMER, eventId: event.eventId, eventType: event.eventType, inputDigest: digest,\n        inputVersions: prepared.inputVersions, state: 'pending', outcome: ok({ plan: prepared, next: 0, assignments: [], attempts: [] }) });",
+          "replacement": "globalThis.__fucq309PreparationScalars.phase('large-plan-receipt-before');\n      const saved = await tx.recordReceipt({ consumerId: ALLOCATION_CONSUMER, eventId: event.eventId, eventType: event.eventType, inputDigest: digest,\n        inputVersions: prepared.inputVersions, state: 'pending', outcome: ok({ plan: prepared, next: 0, assignments: [], attempts: [] }) });\n      globalThis.__fucq309PreparationScalars.phase('large-plan-receipt-complete', saved.status);",
+          "requiredAnchorCount": 1
+        },
+        {
+          "label": "helper-return",
+          "anchor": "const recorded = await prepareAndRecord(context, event, time.value, assumptions, digest);",
+          "replacement": "const recorded = await prepareAndRecord(context, event, time.value, assumptions, digest); globalThis.__fucq309PreparationScalars.helperReturned(recorded.status);",
+          "requiredAnchorCount": 1
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/comparison/private-repository.js",
+      "originalSha256": "268d80e381153f9110116f856a848a4f5da312c5e41d9d529ad6d051d8c625b9",
+      "diagnosticSha256": "f118064763465c377849b2f14366b7d609fbcf882983bb7a4fdbb524bca201ad",
+      "replacements": [
+        {
+          "label": "backend-work-before-and-after",
+          "anchor": "const { commit, outcome } = await work(draft);",
+          "replacement": "globalThis.__fucq309PreparationScalars.backend('backend-callback-before'); const { commit, outcome } = await work(draft); globalThis.__fucq309PreparationScalars.backend('backend-callback-complete', commit);",
+          "requiredAnchorCount": 1
+        },
+        {
+          "label": "normalization-before-and-after",
+          "anchor": "store.state = draft;",
+          "replacement": "globalThis.__fucq309PreparationScalars.backend('normalize-before'); store.state = draft; globalThis.__fucq309PreparationScalars.backend('normalize-after');",
+          "requiredAnchorCount": 1
+        }
+      ]
+    }
+  ]
+}

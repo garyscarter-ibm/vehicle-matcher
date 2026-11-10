@@ -1,0 +1,147 @@
+{
+  "at": "2026-11-10T18:55:23.316994+00:00",
+  "qualifiedProofHead": "e567b9b6a4e6b233ef988aaad88f6ba0a58848ed",
+  "integratedBase": "6ae669e8df38ffd3bb17c0450a043d6228d3abdb",
+  "metadataParentHead": "541e1fd04a7b60c4bd586aecef365bda35f22ed8",
+  "proofHeadRelabeled": false,
+  "productionFiles": 303,
+  "changedProductionFiles": [
+    "server/gcsp/policy/seed-v1.json"
+  ],
+  "structuralPolicyDiffPaths": [
+    [
+      "assumptions",
+      66,
+      "basis"
+    ],
+    [
+      "assumptions",
+      66,
+      "sourceDate"
+    ]
+  ],
+  "policyDiffAllowlist": [
+    [
+      "assumptions",
+      66,
+      "basis"
+    ],
+    [
+      "assumptions",
+      66,
+      "sourceDate"
+    ]
+  ],
+  "onlyAllowedPolicyMetadataChanged": true,
+  "jobsValueEqual": true,
+  "jobsStatus": "assumed",
+  "canonicalIdentityEquality": {
+    "plan": true,
+    "policyVersion": true,
+    "policyHash": true,
+    "generatorVersion": true,
+    "snapshotDigest": true,
+    "seeds": true
+  },
+  "canonicalInputs": {
+    "generatedAt": "2026-11-10T18:54:12.416Z",
+    "preflightOnly": true,
+    "noWorkerOrReplay": true,
+    "plan": {
+      "experimentId": "process-only",
+      "seeds": [
+        "comparison-a",
+        "comparison-b",
+        "comparison-c"
+      ],
+      "arms": [
+        {
+          "armId": "process",
+          "value": null,
+          "overlay": {}
+        }
+      ],
+      "steps": 6
+    },
+    "policyVersion": "gcsp-policy-v1",
+    "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+    "generatorVersion": "comparison-inputs.sha256.v1",
+    "snapshotDigest": "30451cb5ab0afed5d41b1912c57f499801a44ba9f2f2a9884038eb1f0d4c41dd",
+    "seeds": [
+      {
+        "seed": "comparison-a",
+        "inputHash": "53bcb43e78caefd6fef8c5c08e25454b1871c89af65369d624bb39af5b123509",
+        "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+        "generatorVersion": "comparison-inputs.sha256.v1",
+        "policyVersion": "gcsp-policy-v1",
+        "employees": 1000,
+        "cars": 850,
+        "releases": 9,
+        "accessGroups": [
+          "delayed-access",
+          "immediate-access",
+          "intermittent-access"
+        ]
+      },
+      {
+        "seed": "comparison-b",
+        "inputHash": "59c3ae5cd9a0425781f1b25bd0e587f828dcfee35935e23cb7b183f43220ccb2",
+        "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+        "generatorVersion": "comparison-inputs.sha256.v1",
+        "policyVersion": "gcsp-policy-v1",
+        "employees": 1000,
+        "cars": 850,
+        "releases": 9,
+        "accessGroups": [
+          "delayed-access",
+          "immediate-access",
+          "intermittent-access"
+        ]
+      },
+      {
+        "seed": "comparison-c",
+        "inputHash": "3793d4b7f30652d082a17756184714e86d263560e997ab37e87df7924766fe63",
+        "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+        "generatorVersion": "comparison-inputs.sha256.v1",
+        "policyVersion": "gcsp-policy-v1",
+        "employees": 1000,
+        "cars": 850,
+        "releases": 9,
+        "accessGroups": [
+          "delayed-access",
+          "immediate-access",
+          "intermittent-access"
+        ]
+      }
+    ]
+  },
+  "incomingPathsPreserved": 215,
+  "historicalFilesPreserved": 590,
+  "historicalHashSizeMtimeMismatch": [],
+  "canonicalRepeat": false,
+  "scope": "All 303 qualified production files match except the two allowlisted current jobs provenance fields. All215 incoming UI/docs/test paths equal the latest sharedbase. The final delivery HEAD is not relabelled as the executed proof HEAD.",
+  "latestIncomingCheckpoint": {
+    "pathCount": 27,
+    "runtimeAndSelectedTestBoundaryChanged": false,
+    "evidence": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-final-delivery-2026-11-10/latest-base-integration.json"
+  },
+  "productMapPreservation": {
+    "stories": 178,
+    "otherStoryObjectsChanged": 0,
+    "FUCQ309SliceCount": 4,
+    "allFourComplete": true,
+    "jiraStatusAndObservationFieldsPreserved": [
+      "status",
+      "original_status",
+      "jira_source_updated_at",
+      "jira_observed_at",
+      "assignee",
+      "url"
+    ],
+    "nativeJiraStatus": "In Progress",
+    "workerObservedAt": "2026-11-10T18:57:44.010794+00:00",
+    "workerExpiresAt": "2026-11-10T18:57:44.010794+00:00",
+    "workerActive": false,
+    "noDoneInference": true
+  }
+}

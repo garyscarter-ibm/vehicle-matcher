@@ -1,0 +1,3620 @@
+{
+  "scope": "scoped current-code diagnostics; not canonical worker acceptance",
+  "records": [
+    {
+      "kind": "bounded-current-code-retained-shape-census",
+      "cohort": 100,
+      "seed": "comparison-a",
+      "sources": {
+        "server/gcsp/comparison/harness.js": "7491478c5a5faf84b3a3c7167faf58bc26d38c07f444f317d097ce2b487b9357",
+        "server/gcsp/comparison/generator.js": "596c26adfaef43443914e90f2675b528309e85d5fee5459aedc661845b0917cc",
+        "server/gcsp/comparison/evaluation.js": "3e7a85f8ea3b710d39ce97290057846e47b59b73733a0e9b0ac5a9869cb35462",
+        "server/gcsp/comparison/experiments.js": "a8ca8c03a46f8daf21583099959658afa79f4d8fa221a8aa4394da994a27b13f",
+        "server/gcsp/comparison/measures.js": "1e7da5fd4e77a5307c79554908471c9dfd3b09cd19b19ce9b292f794fdb6200d",
+        "server/gcsp/comparison/routes/current.js": "0a44f96ee8f19e4f6a470b9aa29b9c6ccf36cbdd97d13402e0877f20acdc9735",
+        "server/gcsp/comparison/routes/buddy.js": "da3386f16e660a30f286a9b988bce2a749910c2b6ccd2e2ada465087d1ec8d4a",
+        "server/gcsp/repository/core.js": "8260f5eea2856075a7e3c1fcbeb86bb827b447085e23b1a793828a769cbe106c",
+        "server/gcsp/repository/memory.js": "172029073288cc191a5ceb51adc3da8266350d115d93aa7a394b74b085e51819",
+        "server/gcsp/allocation/index.js": "1c43791983f39e7c791cd846af8b19c119115592cbdb6c5e98b4f9895cf8655f",
+        "server/gcsp/allocation/evaluation-rows.js": "c898ebec1d9271802804e84b26cb87885f19b7b3a4a379c74485d100973b3f57",
+        "server/gcsp/offers/buddy-hold.js": "0bac9da60039a4947485ef98bf2cc292a65d0786b3baf37e832c62d3b950a8e4",
+        "server/gcsp/policy/seed-v1.json": "df662536da13cc1732c093c9969a34a7e3c9452aa9a39bfa63be45f6f6c77b0c"
+      },
+      "node": "v26.7.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "durationMs": 3030,
+      "result": {
+        "recordDigest": "8028b5ef7d25a37a11e5f59e22eb7353ac593a410f27750ee33118d683cea67f",
+        "totals": {
+          "employees": 100,
+          "taken": 10,
+          "noneByRenewal": 90,
+          "claims": 9,
+          "retries": 0,
+          "expiries": 3,
+          "carsAllocated": 10,
+          "carsHeldNotTaken": 36,
+          "carsUnused": 39,
+          "participants": 75,
+          "offersMade": 42,
+          "offersAccepted": 4,
+          "declines": 24,
+          "declinesByReason": {
+            "body-style": 8,
+            "size": 9,
+            "fuel": 7,
+            "equipment": 0
+          },
+          "offerExpiries": 14,
+          "termsLapsed": 0,
+          "notificationsCaptured": 42,
+          "buddyHeldNotTakenHours": 45.195278,
+          "heldNotTakenHours": 45.295278
+        },
+        "measures": {
+          "acceptableCoverage": 0.1,
+          "carsNeverAllocated": 75,
+          "heldNotTakenCarDays": 1.887303,
+          "declinedOffers": 24,
+          "expiredOffers": 14,
+          "failedClaims": 3,
+          "retries": 0,
+          "meanAcceptedFit": 84.1,
+          "accessGroupCoverage": {
+            "delayed-access": 0.1,
+            "immediate-access": 0.170732,
+            "intermittent-access": 0.025641
+          }
+        },
+        "decisionsDigest": "7dbdff134db43a4f7f8e54924034f80978048b801465c5d79580f2bb5c06ccfd"
+      },
+      "limitations": [
+        "Instrumented small buddy route only; not canonical acceptance or a heap retainer snapshot.",
+        "Expanded JSON bytes count repeated references repeatedly; no whole store is serialized.",
+        "Container model = 32 bytes per object/array + 16 bytes per object property + 8 bytes per array element.",
+        "Container model excludes V8 string allocation, hidden classes, Map/index storage and runtime overhead; it is not actual heap.",
+        "String code units count references, not unique allocated strings; string sharing cannot be established by JavaScript identity.",
+        "GC checkpoints perturb duration and allocation; measured process RSS/heap include instrumentation."
+      ],
+      "input": {
+        "seed": "comparison-a",
+        "policyVersion": "gcsp-policy-v1",
+        "generatorVersion": "comparison-inputs.sha256.v1",
+        "overlay": {
+          "comparison.cohortSize": 100
+        },
+        "overlayHash": "06800d8addb76381e5b20c22e9217b532d56f2e45881869c867dd3bf623b5cf1",
+        "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+        "configurationHash": "0a6085bfae9b761f96553b8432a4118ee78be8fef865c15dabc94b43253cb788",
+        "inputHash": "464076768e014db688b588bf9fe36f98a72a68738d45ce2dd4cab486cc72cced",
+        "startsAt": "2026-11-05T09:00:00.000Z",
+        "employees": 100,
+        "stock": 85,
+        "releases": [
+          {
+            "releaseId": "fictional-release-56fae64d2ca6667f60e969d5",
+            "at": "2026-11-05T09:00:00.000Z",
+            "count": 85
+          }
+        ]
+      },
+      "evaluation": {
+        "evaluatorCalls": 200,
+        "groups": 4,
+        "expandedJsonBytes": 148499,
+        "graph": {
+          "objects": 1848,
+          "arrays": 2546,
+          "properties": 7171,
+          "elements": 2411,
+          "sharedObjectEdges": 0,
+          "stringRefs": 3305,
+          "stringCodeUnits": 41100,
+          "containerModelBytes": 274632
+        }
+      },
+      "checkpoints": [
+        {
+          "label": "evaluation-complete",
+          "occurrence": 1,
+          "elapsedMs": 190,
+          "beforeGc": {
+            "rss": 112377856,
+            "heapTotal": 43057152,
+            "heapUsed": 23835512,
+            "external": 2426493,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 112394240,
+            "heapTotal": 41566208,
+            "heapUsed": 10854168,
+            "external": 2426533,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": false
+        },
+        {
+          "label": "run-open",
+          "occurrence": 1,
+          "elapsedMs": 348,
+          "beforeGc": {
+            "rss": 119144448,
+            "heapTotal": 48906240,
+            "heapUsed": 21288160,
+            "external": 2427634,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 119291904,
+            "heapTotal": 48906240,
+            "heapUsed": 13737104,
+            "external": 2427634,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 101,
+              "entitlement_slots": 100,
+              "stock": 85,
+              "event_receipts": 792,
+              "identity_sessions": 101
+            },
+            "expandedJsonBytes": 2532189,
+            "graph": {
+              "objects": 9640,
+              "arrays": 1664,
+              "properties": 58264,
+              "elements": 2816,
+              "sharedObjectEdges": 288,
+              "stringRefs": 42426,
+              "stringCodeUnits": 1237041,
+              "containerModelBytes": 1316480
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 303,
+                "expandedJsonBytes": 542403,
+                "additionalContainerModelBytes": 305144
+              },
+              {
+                "group": "table:employees",
+                "rows": 101,
+                "expandedJsonBytes": 496627,
+                "additionalContainerModelBytes": 336184
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 85,
+                "expandedJsonBytes": 400736,
+                "additionalContainerModelBytes": 21760
+              },
+              {
+                "group": "table:stock",
+                "rows": 85,
+                "expandedJsonBytes": 364441,
+                "additionalContainerModelBytes": 271288
+              },
+              {
+                "group": "receipt:repository:insert:identity_sessions",
+                "rows": 101,
+                "expandedJsonBytes": 100896,
+                "additionalContainerModelBytes": 25856
+              },
+              {
+                "group": "receipt:repository:insert:employees",
+                "rows": 101,
+                "expandedJsonBytes": 94588,
+                "additionalContainerModelBytes": 48416
+              },
+              {
+                "group": "receipt:repository:insert:entitlement_slots",
+                "rows": 100,
+                "expandedJsonBytes": 76300,
+                "additionalContainerModelBytes": 41600
+              },
+              {
+                "group": "table:identity_sessions",
+                "rows": 101,
+                "expandedJsonBytes": 56557,
+                "additionalContainerModelBytes": 25048
+              },
+              {
+                "group": "table:entitlement_slots",
+                "rows": 100,
+                "expandedJsonBytes": 49800,
+                "additionalContainerModelBytes": 20800
+              },
+              {
+                "group": "receipt:manual:draft:fictional-employee-324fb97809bf3bf5db157b0a",
+                "rows": 1,
+                "expandedJsonBytes": 3475,
+                "additionalContainerModelBytes": 2088
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-prepared",
+          "occurrence": 1,
+          "elapsedMs": 1035,
+          "beforeGc": {
+            "rss": 179175424,
+            "heapTotal": 107364352,
+            "heapUsed": 35433280,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 178978816,
+            "heapTotal": 92684288,
+            "heapUsed": 18364920,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 101,
+              "entitlement_slots": 100,
+              "briefs": 75,
+              "stock": 85,
+              "event_receipts": 1169,
+              "identity_sessions": 101
+            },
+            "expandedJsonBytes": 5598192,
+            "graph": {
+              "objects": 24763,
+              "arrays": 3915,
+              "properties": 137982,
+              "elements": 6653,
+              "sharedObjectEdges": 533,
+              "stringRefs": 97637,
+              "stringCodeUnits": 2670545,
+              "containerModelBytes": 3178632
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 455,
+                "expandedJsonBytes": 1885436,
+                "additionalContainerModelBytes": 1260208
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 534888,
+                "additionalContainerModelBytes": 19200
+              },
+              {
+                "group": "table:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 502788,
+                "additionalContainerModelBytes": 371288
+              },
+              {
+                "group": "table:employees",
+                "rows": 101,
+                "expandedJsonBytes": 496627,
+                "additionalContainerModelBytes": 336184
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 85,
+                "expandedJsonBytes": 400736,
+                "additionalContainerModelBytes": 43520
+              },
+              {
+                "group": "table:stock",
+                "rows": 85,
+                "expandedJsonBytes": 364186,
+                "additionalContainerModelBytes": 271288
+              },
+              {
+                "group": "receipt:repository:insert:identity_sessions",
+                "rows": 101,
+                "expandedJsonBytes": 100896,
+                "additionalContainerModelBytes": 25856
+              },
+              {
+                "group": "receipt:repository:insert:employees",
+                "rows": 101,
+                "expandedJsonBytes": 94588,
+                "additionalContainerModelBytes": 48416
+              },
+              {
+                "group": "receipt:repository:insert:entitlement_slots",
+                "rows": 100,
+                "expandedJsonBytes": 76300,
+                "additionalContainerModelBytes": 41600
+              },
+              {
+                "group": "receipt:brief:changes",
+                "rows": 75,
+                "expandedJsonBytes": 60375,
+                "additionalContainerModelBytes": 38400
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-stored",
+          "occurrence": 1,
+          "elapsedMs": 1119,
+          "beforeGc": {
+            "rss": 189317120,
+            "heapTotal": 93356032,
+            "heapUsed": 23420880,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 188694528,
+            "heapTotal": 89014272,
+            "heapUsed": 20751080,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 101,
+              "entitlement_slots": 100,
+              "briefs": 75,
+              "stock": 85,
+              "event_receipts": 1247,
+              "identity_sessions": 101
+            },
+            "expandedJsonBytes": 8670287,
+            "graph": {
+              "objects": 45653,
+              "arrays": 13942,
+              "properties": 230338,
+              "elements": 38190,
+              "sharedObjectEdges": 533,
+              "stringRefs": 161555,
+              "stringCodeUnits": 4452257,
+              "containerModelBytes": 5897968
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 1972675,
+                "additionalContainerModelBytes": 1591816
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 456,
+                "expandedJsonBytes": 1885935,
+                "additionalContainerModelBytes": 1260512
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 75,
+                "expandedJsonBytes": 1083396,
+                "additionalContainerModelBytes": 1109600
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 534888,
+                "additionalContainerModelBytes": 19200
+              },
+              {
+                "group": "table:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 502788,
+                "additionalContainerModelBytes": 371288
+              },
+              {
+                "group": "table:employees",
+                "rows": 101,
+                "expandedJsonBytes": 496627,
+                "additionalContainerModelBytes": 336184
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 85,
+                "expandedJsonBytes": 400736,
+                "additionalContainerModelBytes": 43520
+              },
+              {
+                "group": "table:stock",
+                "rows": 85,
+                "expandedJsonBytes": 364186,
+                "additionalContainerModelBytes": 271288
+              },
+              {
+                "group": "receipt:repository:insert:identity_sessions",
+                "rows": 101,
+                "expandedJsonBytes": 100896,
+                "additionalContainerModelBytes": 25856
+              },
+              {
+                "group": "receipt:repository:insert:employees",
+                "rows": 101,
+                "expandedJsonBytes": 94588,
+                "additionalContainerModelBytes": 48416
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-advance",
+          "occurrence": 1,
+          "elapsedMs": 1202,
+          "beforeGc": {
+            "rss": 192217088,
+            "heapTotal": 91783168,
+            "heapUsed": 31071824,
+            "external": 2429714,
+            "arrayBuffers": 209179
+          },
+          "afterGc": {
+            "rss": 190234624,
+            "heapTotal": 90062848,
+            "heapUsed": 22260680,
+            "external": 2429714,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 101,
+              "entitlement_slots": 100,
+              "briefs": 75,
+              "stock": 85,
+              "holds": 1,
+              "claims": 1,
+              "quotes": 1,
+              "offers": 1,
+              "event_receipts": 1255,
+              "notification_outbox": 1,
+              "identity_sessions": 101
+            },
+            "expandedJsonBytes": 8813188,
+            "graph": {
+              "objects": 46325,
+              "arrays": 14074,
+              "properties": 233716,
+              "elements": 38521,
+              "sharedObjectEdges": 536,
+              "stringRefs": 163966,
+              "stringCodeUnits": 4514261,
+              "containerModelBytes": 5980392
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 1972675,
+                "additionalContainerModelBytes": 1591816
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 458,
+                "expandedJsonBytes": 1920879,
+                "additionalContainerModelBytes": 1287344
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 75,
+                "expandedJsonBytes": 1083396,
+                "additionalContainerModelBytes": 1109600
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 534888,
+                "additionalContainerModelBytes": 19200
+              },
+              {
+                "group": "table:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 502788,
+                "additionalContainerModelBytes": 371288
+              },
+              {
+                "group": "table:employees",
+                "rows": 101,
+                "expandedJsonBytes": 496627,
+                "additionalContainerModelBytes": 336184
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 85,
+                "expandedJsonBytes": 400736,
+                "additionalContainerModelBytes": 43520
+              },
+              {
+                "group": "table:stock",
+                "rows": 85,
+                "expandedJsonBytes": 364182,
+                "additionalContainerModelBytes": 271288
+              },
+              {
+                "group": "receipt:repository:insert:identity_sessions",
+                "rows": 101,
+                "expandedJsonBytes": 100896,
+                "additionalContainerModelBytes": 25856
+              },
+              {
+                "group": "receipt:repository:insert:employees",
+                "rows": 101,
+                "expandedJsonBytes": 94588,
+                "additionalContainerModelBytes": 48416
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-advance",
+          "occurrence": 10,
+          "elapsedMs": 1310,
+          "beforeGc": {
+            "rss": 191725568,
+            "heapTotal": 92700672,
+            "heapUsed": 51125048,
+            "external": 2429810,
+            "arrayBuffers": 209275
+          },
+          "afterGc": {
+            "rss": 190398464,
+            "heapTotal": 91897856,
+            "heapUsed": 23568752,
+            "external": 2429810,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 101,
+              "entitlement_slots": 100,
+              "briefs": 75,
+              "stock": 85,
+              "holds": 10,
+              "claims": 10,
+              "quotes": 10,
+              "offers": 10,
+              "event_receipts": 1327,
+              "notification_outbox": 10,
+              "identity_sessions": 101
+            },
+            "expandedJsonBytes": 10082505,
+            "graph": {
+              "objects": 52247,
+              "arrays": 15262,
+              "properties": 263587,
+              "elements": 41470,
+              "sharedObjectEdges": 563,
+              "stringRefs": 185344,
+              "stringCodeUnits": 5066475,
+              "containerModelBytes": 6709440
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 476,
+                "expandedJsonBytes": 2231174,
+                "additionalContainerModelBytes": 1524576
+              },
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 1972675,
+                "additionalContainerModelBytes": 1591816
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 75,
+                "expandedJsonBytes": 1083396,
+                "additionalContainerModelBytes": 1109600
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 534888,
+                "additionalContainerModelBytes": 19200
+              },
+              {
+                "group": "table:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 502788,
+                "additionalContainerModelBytes": 371288
+              },
+              {
+                "group": "table:employees",
+                "rows": 101,
+                "expandedJsonBytes": 496627,
+                "additionalContainerModelBytes": 336184
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 85,
+                "expandedJsonBytes": 400736,
+                "additionalContainerModelBytes": 43520
+              },
+              {
+                "group": "table:stock",
+                "rows": 85,
+                "expandedJsonBytes": 364146,
+                "additionalContainerModelBytes": 271288
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 10,
+                "expandedJsonBytes": 344123,
+                "additionalContainerModelBytes": 264224
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 10,
+                "expandedJsonBytes": 323626,
+                "additionalContainerModelBytes": 2560
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-completed",
+          "occurrence": 1,
+          "elapsedMs": 1533,
+          "beforeGc": {
+            "rss": 206012416,
+            "heapTotal": 104546304,
+            "heapUsed": 48860840,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 198082560,
+            "heapTotal": 96878592,
+            "heapUsed": 28024152,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 101,
+              "entitlement_slots": 100,
+              "briefs": 75,
+              "stock": 85,
+              "holds": 42,
+              "claims": 42,
+              "quotes": 42,
+              "offers": 42,
+              "event_receipts": 1584,
+              "notification_outbox": 42,
+              "identity_sessions": 101
+            },
+            "expandedJsonBytes": 15986082,
+            "graph": {
+              "objects": 81531,
+              "arrays": 21110,
+              "properties": 414200,
+              "elements": 52517,
+              "sharedObjectEdges": 659,
+              "stringRefs": 297543,
+              "stringCodeUnits": 7783403,
+              "containerModelBytes": 10331848
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 541,
+                "expandedJsonBytes": 3344691,
+                "additionalContainerModelBytes": 2377552
+              },
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 3323757,
+                "additionalContainerModelBytes": 2594200
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 42,
+                "expandedJsonBytes": 1453578,
+                "additionalContainerModelBytes": 1117408
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 42,
+                "expandedJsonBytes": 1367426,
+                "additionalContainerModelBytes": 10752
+              },
+              {
+                "group": "table:quotes",
+                "rows": 42,
+                "expandedJsonBytes": 1349450,
+                "additionalContainerModelBytes": 1062304
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 75,
+                "expandedJsonBytes": 1083396,
+                "additionalContainerModelBytes": 1109600
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 534888,
+                "additionalContainerModelBytes": 19200
+              },
+              {
+                "group": "table:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 502788,
+                "additionalContainerModelBytes": 371288
+              },
+              {
+                "group": "table:employees",
+                "rows": 101,
+                "expandedJsonBytes": 496627,
+                "additionalContainerModelBytes": 336184
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 85,
+                "expandedJsonBytes": 400736,
+                "additionalContainerModelBytes": 43520
+              }
+            ]
+          }
+        },
+        {
+          "label": "snapshot-before",
+          "occurrence": 1,
+          "elapsedMs": 2044,
+          "beforeGc": {
+            "rss": 210681856,
+            "heapTotal": 121208832,
+            "heapUsed": 64194856,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 200802304,
+            "heapTotal": 109461504,
+            "heapUsed": 24931664,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 101,
+              "entitlement_slots": 100,
+              "briefs": 75,
+              "stock": 85,
+              "holds": 51,
+              "claims": 51,
+              "quotes": 51,
+              "offers": 42,
+              "decisions": 28,
+              "event_receipts": 1978,
+              "notification_outbox": 42,
+              "identity_sessions": 101,
+              "tick_runs": 4
+            },
+            "expandedJsonBytes": 17037927,
+            "graph": {
+              "objects": 85233,
+              "arrays": 21604,
+              "properties": 437137,
+              "elements": 53816,
+              "sharedObjectEdges": 661,
+              "stringRefs": 314635,
+              "stringCodeUnits": 8386434,
+              "containerModelBytes": 10843504
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 817,
+                "expandedJsonBytes": 3778601,
+                "additionalContainerModelBytes": 2654592
+              },
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 3323757,
+                "additionalContainerModelBytes": 2594200
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 51,
+                "expandedJsonBytes": 1469603,
+                "additionalContainerModelBytes": 13056
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 42,
+                "expandedJsonBytes": 1453578,
+                "additionalContainerModelBytes": 1117408
+              },
+              {
+                "group": "table:quotes",
+                "rows": 51,
+                "expandedJsonBytes": 1447775,
+                "additionalContainerModelBytes": 1128320
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 75,
+                "expandedJsonBytes": 1083396,
+                "additionalContainerModelBytes": 1109600
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 534888,
+                "additionalContainerModelBytes": 19200
+              },
+              {
+                "group": "table:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 502788,
+                "additionalContainerModelBytes": 371288
+              },
+              {
+                "group": "table:employees",
+                "rows": 101,
+                "expandedJsonBytes": 496627,
+                "additionalContainerModelBytes": 336184
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 85,
+                "expandedJsonBytes": 400736,
+                "additionalContainerModelBytes": 43520
+              }
+            ]
+          }
+        },
+        {
+          "label": "snapshot-after",
+          "occurrence": 1,
+          "elapsedMs": 2210,
+          "beforeGc": {
+            "rss": 209977344,
+            "heapTotal": 119750656,
+            "heapUsed": 49633376,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 200441856,
+            "heapTotal": 98451456,
+            "heapUsed": 34527512,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 101,
+              "entitlement_slots": 100,
+              "briefs": 75,
+              "stock": 85,
+              "holds": 51,
+              "claims": 51,
+              "quotes": 51,
+              "offers": 42,
+              "decisions": 28,
+              "event_receipts": 1978,
+              "notification_outbox": 42,
+              "identity_sessions": 101,
+              "tick_runs": 4
+            },
+            "expandedJsonBytes": 17037927,
+            "graph": {
+              "objects": 85233,
+              "arrays": 21604,
+              "properties": 437137,
+              "elements": 53816,
+              "sharedObjectEdges": 661,
+              "stringRefs": 314635,
+              "stringCodeUnits": 8386434,
+              "containerModelBytes": 10843504
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 817,
+                "expandedJsonBytes": 3778601,
+                "additionalContainerModelBytes": 2654592
+              },
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 3323757,
+                "additionalContainerModelBytes": 2594200
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 51,
+                "expandedJsonBytes": 1469603,
+                "additionalContainerModelBytes": 13056
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 42,
+                "expandedJsonBytes": 1453578,
+                "additionalContainerModelBytes": 1117408
+              },
+              {
+                "group": "table:quotes",
+                "rows": 51,
+                "expandedJsonBytes": 1447775,
+                "additionalContainerModelBytes": 1128320
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 75,
+                "expandedJsonBytes": 1083396,
+                "additionalContainerModelBytes": 1109600
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 534888,
+                "additionalContainerModelBytes": 19200
+              },
+              {
+                "group": "table:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 502788,
+                "additionalContainerModelBytes": 371288
+              },
+              {
+                "group": "table:employees",
+                "rows": 101,
+                "expandedJsonBytes": 496627,
+                "additionalContainerModelBytes": 336184
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 85,
+                "expandedJsonBytes": 400736,
+                "additionalContainerModelBytes": 43520
+              }
+            ]
+          },
+          "snapshot": {
+            "expandedJsonBytes": 17041021,
+            "graph": {
+              "objects": 100441,
+              "arrays": 24413,
+              "properties": 512777,
+              "elements": 59274,
+              "sharedObjectEdges": 0,
+              "stringRefs": 367524,
+              "stringCodeUnits": 9744077,
+              "containerModelBytes": 12673952
+            },
+            "combinedWithStore": {
+              "objects": 185675,
+              "arrays": 46017,
+              "properties": 949942,
+              "elements": 113090,
+              "sharedObjectEdges": 661,
+              "stringRefs": 682159,
+              "stringCodeUnits": 18130511,
+              "containerModelBytes": 23517936
+            }
+          }
+        },
+        {
+          "label": "snapshot-before",
+          "occurrence": 2,
+          "elapsedMs": 2455,
+          "beforeGc": {
+            "rss": 223969280,
+            "heapTotal": 131809280,
+            "heapUsed": 91966184,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 213762048,
+            "heapTotal": 103170048,
+            "heapUsed": 34641584,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 101,
+              "entitlement_slots": 100,
+              "briefs": 75,
+              "stock": 85,
+              "holds": 51,
+              "claims": 51,
+              "quotes": 51,
+              "offers": 42,
+              "decisions": 28,
+              "event_receipts": 1978,
+              "notification_outbox": 42,
+              "identity_sessions": 101,
+              "tick_runs": 4
+            },
+            "expandedJsonBytes": 17037927,
+            "graph": {
+              "objects": 85233,
+              "arrays": 21604,
+              "properties": 437137,
+              "elements": 53816,
+              "sharedObjectEdges": 661,
+              "stringRefs": 314635,
+              "stringCodeUnits": 8386434,
+              "containerModelBytes": 10843504
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 817,
+                "expandedJsonBytes": 3778601,
+                "additionalContainerModelBytes": 2654592
+              },
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 3323757,
+                "additionalContainerModelBytes": 2594200
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 51,
+                "expandedJsonBytes": 1469603,
+                "additionalContainerModelBytes": 13056
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 42,
+                "expandedJsonBytes": 1453578,
+                "additionalContainerModelBytes": 1117408
+              },
+              {
+                "group": "table:quotes",
+                "rows": 51,
+                "expandedJsonBytes": 1447775,
+                "additionalContainerModelBytes": 1128320
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 75,
+                "expandedJsonBytes": 1083396,
+                "additionalContainerModelBytes": 1109600
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 534888,
+                "additionalContainerModelBytes": 19200
+              },
+              {
+                "group": "table:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 502788,
+                "additionalContainerModelBytes": 371288
+              },
+              {
+                "group": "table:employees",
+                "rows": 101,
+                "expandedJsonBytes": 496627,
+                "additionalContainerModelBytes": 336184
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 85,
+                "expandedJsonBytes": 400736,
+                "additionalContainerModelBytes": 43520
+              }
+            ]
+          }
+        },
+        {
+          "label": "snapshot-after",
+          "occurrence": 2,
+          "elapsedMs": 2619,
+          "beforeGc": {
+            "rss": 215384064,
+            "heapTotal": 118849536,
+            "heapUsed": 59226488,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 200015872,
+            "heapTotal": 101597184,
+            "heapUsed": 34708816,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 101,
+              "entitlement_slots": 100,
+              "briefs": 75,
+              "stock": 85,
+              "holds": 51,
+              "claims": 51,
+              "quotes": 51,
+              "offers": 42,
+              "decisions": 28,
+              "event_receipts": 1978,
+              "notification_outbox": 42,
+              "identity_sessions": 101,
+              "tick_runs": 4
+            },
+            "expandedJsonBytes": 17037927,
+            "graph": {
+              "objects": 85233,
+              "arrays": 21604,
+              "properties": 437137,
+              "elements": 53816,
+              "sharedObjectEdges": 661,
+              "stringRefs": 314635,
+              "stringCodeUnits": 8386434,
+              "containerModelBytes": 10843504
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 817,
+                "expandedJsonBytes": 3778601,
+                "additionalContainerModelBytes": 2654592
+              },
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 3323757,
+                "additionalContainerModelBytes": 2594200
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 51,
+                "expandedJsonBytes": 1469603,
+                "additionalContainerModelBytes": 13056
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 42,
+                "expandedJsonBytes": 1453578,
+                "additionalContainerModelBytes": 1117408
+              },
+              {
+                "group": "table:quotes",
+                "rows": 51,
+                "expandedJsonBytes": 1447775,
+                "additionalContainerModelBytes": 1128320
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 75,
+                "expandedJsonBytes": 1083396,
+                "additionalContainerModelBytes": 1109600
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 534888,
+                "additionalContainerModelBytes": 19200
+              },
+              {
+                "group": "table:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 502788,
+                "additionalContainerModelBytes": 371288
+              },
+              {
+                "group": "table:employees",
+                "rows": 101,
+                "expandedJsonBytes": 496627,
+                "additionalContainerModelBytes": 336184
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 85,
+                "expandedJsonBytes": 400736,
+                "additionalContainerModelBytes": 43520
+              }
+            ]
+          },
+          "snapshot": {
+            "expandedJsonBytes": 17041021,
+            "graph": {
+              "objects": 100441,
+              "arrays": 24413,
+              "properties": 512777,
+              "elements": 59274,
+              "sharedObjectEdges": 0,
+              "stringRefs": 367524,
+              "stringCodeUnits": 9744077,
+              "containerModelBytes": 12673952
+            },
+            "combinedWithStore": {
+              "objects": 185675,
+              "arrays": 46017,
+              "properties": 949942,
+              "elements": 113090,
+              "sharedObjectEdges": 661,
+              "stringRefs": 682159,
+              "stringCodeUnits": 18130511,
+              "containerModelBytes": 23517936
+            }
+          }
+        },
+        {
+          "label": "closed-run-still-referenced",
+          "occurrence": 1,
+          "elapsedMs": 2868,
+          "beforeGc": {
+            "rss": 224952320,
+            "heapTotal": 135348224,
+            "heapUsed": 94111528,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 214106112,
+            "heapTotal": 99500032,
+            "heapUsed": 25291256,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 101,
+              "entitlement_slots": 100,
+              "briefs": 75,
+              "stock": 85,
+              "holds": 51,
+              "claims": 51,
+              "quotes": 51,
+              "offers": 42,
+              "decisions": 28,
+              "event_receipts": 1978,
+              "notification_outbox": 42,
+              "identity_sessions": 101,
+              "tick_runs": 4
+            },
+            "expandedJsonBytes": 17037927,
+            "graph": {
+              "objects": 85233,
+              "arrays": 21604,
+              "properties": 437137,
+              "elements": 53816,
+              "sharedObjectEdges": 661,
+              "stringRefs": 314635,
+              "stringCodeUnits": 8386434,
+              "containerModelBytes": 10843504
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 817,
+                "expandedJsonBytes": 3778601,
+                "additionalContainerModelBytes": 2654592
+              },
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 3323757,
+                "additionalContainerModelBytes": 2594200
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 51,
+                "expandedJsonBytes": 1469603,
+                "additionalContainerModelBytes": 13056
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 42,
+                "expandedJsonBytes": 1453578,
+                "additionalContainerModelBytes": 1117408
+              },
+              {
+                "group": "table:quotes",
+                "rows": 51,
+                "expandedJsonBytes": 1447775,
+                "additionalContainerModelBytes": 1128320
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 75,
+                "expandedJsonBytes": 1083396,
+                "additionalContainerModelBytes": 1109600
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 534888,
+                "additionalContainerModelBytes": 19200
+              },
+              {
+                "group": "table:briefs",
+                "rows": 75,
+                "expandedJsonBytes": 502788,
+                "additionalContainerModelBytes": 371288
+              },
+              {
+                "group": "table:employees",
+                "rows": 101,
+                "expandedJsonBytes": 496627,
+                "additionalContainerModelBytes": 336184
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 85,
+                "expandedJsonBytes": 400736,
+                "additionalContainerModelBytes": 43520
+              }
+            ]
+          }
+        },
+        {
+          "label": "run-reference-dropped",
+          "occurrence": 1,
+          "elapsedMs": 3025,
+          "beforeGc": {
+            "rss": 202702848,
+            "heapTotal": 83247104,
+            "heapUsed": 14228496,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 202702848,
+            "heapTotal": 83247104,
+            "heapUsed": 14228640,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": false
+        }
+      ],
+      "supervisor": {
+        "run": "census100a-v2",
+        "state": "complete",
+        "results": [
+          {
+            "rc": 0,
+            "wall": 3.2089468340000002,
+            "peak_rss": 214630400,
+            "peak_scratch": 0,
+            "cleanup": {
+              "local_scratch_reason": "",
+              "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-supervisor/ownership/a03e261ce80c4ea09f97312907b92760.json",
+              "peak": 0,
+              "removed": true,
+              "root": "/private/tmp/test-stamp-shard-a03e261ce80c4ea09f97312907b92760"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "bounded-current-code-retained-shape-census",
+      "cohort": 300,
+      "seed": "comparison-a",
+      "sources": {
+        "server/gcsp/comparison/harness.js": "7491478c5a5faf84b3a3c7167faf58bc26d38c07f444f317d097ce2b487b9357",
+        "server/gcsp/comparison/generator.js": "596c26adfaef43443914e90f2675b528309e85d5fee5459aedc661845b0917cc",
+        "server/gcsp/comparison/evaluation.js": "3e7a85f8ea3b710d39ce97290057846e47b59b73733a0e9b0ac5a9869cb35462",
+        "server/gcsp/comparison/experiments.js": "a8ca8c03a46f8daf21583099959658afa79f4d8fa221a8aa4394da994a27b13f",
+        "server/gcsp/comparison/measures.js": "1e7da5fd4e77a5307c79554908471c9dfd3b09cd19b19ce9b292f794fdb6200d",
+        "server/gcsp/comparison/routes/current.js": "0a44f96ee8f19e4f6a470b9aa29b9c6ccf36cbdd97d13402e0877f20acdc9735",
+        "server/gcsp/comparison/routes/buddy.js": "da3386f16e660a30f286a9b988bce2a749910c2b6ccd2e2ada465087d1ec8d4a",
+        "server/gcsp/repository/core.js": "8260f5eea2856075a7e3c1fcbeb86bb827b447085e23b1a793828a769cbe106c",
+        "server/gcsp/repository/memory.js": "172029073288cc191a5ceb51adc3da8266350d115d93aa7a394b74b085e51819",
+        "server/gcsp/allocation/index.js": "1c43791983f39e7c791cd846af8b19c119115592cbdb6c5e98b4f9895cf8655f",
+        "server/gcsp/allocation/evaluation-rows.js": "c898ebec1d9271802804e84b26cb87885f19b7b3a4a379c74485d100973b3f57",
+        "server/gcsp/offers/buddy-hold.js": "0bac9da60039a4947485ef98bf2cc292a65d0786b3baf37e832c62d3b950a8e4",
+        "server/gcsp/policy/seed-v1.json": "df662536da13cc1732c093c9969a34a7e3c9452aa9a39bfa63be45f6f6c77b0c"
+      },
+      "node": "v26.7.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "durationMs": 33914,
+      "result": {
+        "recordDigest": "23e59f45467dd297e4634f8f97671ba7f783d59d033d37b8be6a702d9e43acdc",
+        "totals": {
+          "employees": 300,
+          "taken": 37,
+          "noneByRenewal": 263,
+          "claims": 28,
+          "retries": 0,
+          "expiries": 13,
+          "carsAllocated": 37,
+          "carsHeldNotTaken": 118,
+          "carsUnused": 100,
+          "participants": 224,
+          "offersMade": 264,
+          "offersAccepted": 22,
+          "declines": 128,
+          "declinesByReason": {
+            "body-style": 46,
+            "size": 39,
+            "fuel": 43,
+            "equipment": 0
+          },
+          "offerExpiries": 114,
+          "termsLapsed": 0,
+          "notificationsCaptured": 264,
+          "buddyHeldNotTakenHours": 306.687222,
+          "heldNotTakenHours": 307.120556
+        },
+        "measures": {
+          "acceptableCoverage": 0.123333,
+          "carsNeverAllocated": 218,
+          "heldNotTakenCarDays": 12.79669,
+          "declinedOffers": 128,
+          "expiredOffers": 114,
+          "failedClaims": 13,
+          "retries": 0,
+          "meanAcceptedFit": 80.14,
+          "accessGroupCoverage": {
+            "delayed-access": 0.035088,
+            "immediate-access": 0.152,
+            "intermittent-access": 0.135593
+          }
+        },
+        "decisionsDigest": "a2867fef9670680a6b2fffc8af6e29328ff536e88b3907fc8d255ec22f3d5c90"
+      },
+      "limitations": [
+        "Instrumented small buddy route only; not canonical acceptance or a heap retainer snapshot.",
+        "Expanded JSON bytes count repeated references repeatedly; no whole store is serialized.",
+        "Container model = 32 bytes per object/array + 16 bytes per object property + 8 bytes per array element.",
+        "Container model excludes V8 string allocation, hidden classes, Map/index storage and runtime overhead; it is not actual heap.",
+        "String code units count references, not unique allocated strings; string sharing cannot be established by JavaScript identity.",
+        "GC checkpoints perturb duration and allocation; measured process RSS/heap include instrumentation."
+      ],
+      "input": {
+        "seed": "comparison-a",
+        "policyVersion": "gcsp-policy-v1",
+        "generatorVersion": "comparison-inputs.sha256.v1",
+        "overlay": {
+          "comparison.cohortSize": 300
+        },
+        "overlayHash": "8939c44a6edac40f142809b99cce230d5c1c69bb269f608d2dd76b14f623cd18",
+        "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+        "configurationHash": "0a6085bfae9b761f96553b8432a4118ee78be8fef865c15dabc94b43253cb788",
+        "inputHash": "6f94a2409a19984fa80d79f7e6d900337114e757c22b0068b3ead5f4124d4f3e",
+        "startsAt": "2026-11-05T09:00:00.000Z",
+        "employees": 300,
+        "stock": 255,
+        "releases": [
+          {
+            "releaseId": "fictional-release-56fae64d2ca6667f60e969d5",
+            "at": "2026-11-05T09:00:00.000Z",
+            "count": 100
+          },
+          {
+            "releaseId": "fictional-release-9d32b97542f3012e2675d2cc",
+            "at": "2026-11-12T09:00:00.000Z",
+            "count": 100
+          },
+          {
+            "releaseId": "fictional-release-c9e91fa5b1c9ba9ed1b7b5fc",
+            "at": "2026-11-19T09:00:00.000Z",
+            "count": 55
+          }
+        ],
+        "assumptionDigest": "57e44070630b9a8aed78634bb1dfbcc763196bba7c805aeecac238cb78cf071f",
+        "allowanceDigest": "261119c3e303c47b4d0b05410fb7806a4b6031ce53ddb76ed1f61a43afa9a907"
+      },
+      "evaluation": {
+        "evaluatorCalls": 600,
+        "groups": 4,
+        "expandedJsonBytes": 447572,
+        "graph": {
+          "objects": 5577,
+          "arrays": 7675,
+          "properties": 21657,
+          "elements": 7331,
+          "sharedObjectEdges": 0,
+          "stringRefs": 9995,
+          "stringCodeUnits": 123586,
+          "containerModelBytes": 829224
+        }
+      },
+      "checkpoints": [
+        {
+          "label": "evaluation-complete",
+          "occurrence": 1,
+          "elapsedMs": 386,
+          "beforeGc": {
+            "rss": 131432448,
+            "heapTotal": 59179008,
+            "heapUsed": 34562816,
+            "external": 2426493,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 131416064,
+            "heapTotal": 58163200,
+            "heapUsed": 12151072,
+            "external": 2426533,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": false
+        },
+        {
+          "label": "run-open",
+          "occurrence": 1,
+          "elapsedMs": 1086,
+          "beforeGc": {
+            "rss": 167002112,
+            "heapTotal": 92766208,
+            "heapUsed": 31661096,
+            "external": 2427634,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 166592512,
+            "heapTotal": 90062848,
+            "heapUsed": 19163736,
+            "external": 2427634,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "stock": 255,
+              "event_receipts": 2362,
+              "identity_sessions": 301
+            },
+            "expandedJsonBytes": 7576268,
+            "graph": {
+              "objects": 28853,
+              "arrays": 4929,
+              "properties": 174412,
+              "elements": 8421,
+              "sharedObjectEdges": 858,
+              "stringRefs": 126988,
+              "stringCodeUnits": 3702159,
+              "containerModelBytes": 3938984
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 903,
+                "expandedJsonBytes": 1623365,
+                "additionalContainerModelBytes": 913144
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 255,
+                "expandedJsonBytes": 1198940,
+                "additionalContainerModelBytes": 65280
+              },
+              {
+                "group": "table:stock",
+                "rows": 255,
+                "expandedJsonBytes": 1090055,
+                "additionalContainerModelBytes": 811328
+              },
+              {
+                "group": "receipt:manual:draft:employee-scoped",
+                "rows": 300,
+                "expandedJsonBytes": 1040971,
+                "additionalContainerModelBytes": 626400
+              },
+              {
+                "group": "receipt:repository:insert:identity_sessions",
+                "rows": 301,
+                "expandedJsonBytes": 300896,
+                "additionalContainerModelBytes": 77056
+              },
+              {
+                "group": "receipt:repository:insert:employees",
+                "rows": 301,
+                "expandedJsonBytes": 282298,
+                "additionalContainerModelBytes": 144416
+              },
+              {
+                "group": "receipt:repository:insert:entitlement_slots",
+                "rows": 300,
+                "expandedJsonBytes": 228900,
+                "additionalContainerModelBytes": 124800
+              },
+              {
+                "group": "table:identity_sessions",
+                "rows": 301,
+                "expandedJsonBytes": 168757,
+                "additionalContainerModelBytes": 74648
+              },
+              {
+                "group": "table:entitlement_slots",
+                "rows": 300,
+                "expandedJsonBytes": 149400,
+                "additionalContainerModelBytes": 62400
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-prepared",
+          "occurrence": 1,
+          "elapsedMs": 3731,
+          "beforeGc": {
+            "rss": 230932480,
+            "heapTotal": 149831680,
+            "heapUsed": 90572888,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 230965248,
+            "heapTotal": 128860160,
+            "heapUsed": 33058440,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 224,
+              "stock": 255,
+              "event_receipts": 3484,
+              "identity_sessions": 301
+            },
+            "expandedJsonBytes": 16743322,
+            "graph": {
+              "objects": 73983,
+              "arrays": 11650,
+              "properties": 411096,
+              "elements": 19723,
+              "sharedObjectEdges": 1282,
+              "stringRefs": 291160,
+              "stringCodeUnits": 7954056,
+              "containerModelBytes": 9475576
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 1353,
+                "expandedJsonBytes": 5633411,
+                "additionalContainerModelBytes": 3771512
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 224,
+                "expandedJsonBytes": 1601288,
+                "additionalContainerModelBytes": 57344
+              },
+              {
+                "group": "table:briefs",
+                "rows": 224,
+                "expandedJsonBytes": 1505416,
+                "additionalContainerModelBytes": 1113280
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 255,
+                "expandedJsonBytes": 1198940,
+                "additionalContainerModelBytes": 90880
+              },
+              {
+                "group": "table:stock",
+                "rows": 255,
+                "expandedJsonBytes": 1089755,
+                "additionalContainerModelBytes": 811328
+              },
+              {
+                "group": "receipt:manual:draft:employee-scoped",
+                "rows": 300,
+                "expandedJsonBytes": 1040971,
+                "additionalContainerModelBytes": 626400
+              },
+              {
+                "group": "receipt:repository:insert:identity_sessions",
+                "rows": 301,
+                "expandedJsonBytes": 300896,
+                "additionalContainerModelBytes": 77056
+              },
+              {
+                "group": "receipt:repository:insert:employees",
+                "rows": 301,
+                "expandedJsonBytes": 282298,
+                "additionalContainerModelBytes": 144416
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-stored",
+          "occurrence": 1,
+          "elapsedMs": 4018,
+          "beforeGc": {
+            "rss": 271155200,
+            "heapTotal": 133496832,
+            "heapUsed": 68622240,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 266698752,
+            "heapTotal": 108412928,
+            "heapUsed": 40655304,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 224,
+              "stock": 255,
+              "event_receipts": 3711,
+              "identity_sessions": 301
+            },
+            "expandedJsonBytes": 26910972,
+            "graph": {
+              "objects": 142155,
+              "arrays": 46661,
+              "properties": 715011,
+              "elements": 131087,
+              "sharedObjectEdges": 1282,
+              "stringRefs": 501528,
+              "stringCodeUnits": 13874346,
+              "containerModelBytes": 18530984
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 6639635,
+                "additionalContainerModelBytes": 5406088
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 1354,
+                "expandedJsonBytes": 5633910,
+                "additionalContainerModelBytes": 3771816
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 224,
+                "expandedJsonBytes": 3482129,
+                "additionalContainerModelBytes": 3597368
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 224,
+                "expandedJsonBytes": 1601288,
+                "additionalContainerModelBytes": 57344
+              },
+              {
+                "group": "table:briefs",
+                "rows": 224,
+                "expandedJsonBytes": 1505416,
+                "additionalContainerModelBytes": 1113280
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 255,
+                "expandedJsonBytes": 1198940,
+                "additionalContainerModelBytes": 90880
+              },
+              {
+                "group": "table:stock",
+                "rows": 255,
+                "expandedJsonBytes": 1089755,
+                "additionalContainerModelBytes": 811328
+              },
+              {
+                "group": "receipt:manual:draft:employee-scoped",
+                "rows": 300,
+                "expandedJsonBytes": 1040971,
+                "additionalContainerModelBytes": 626400
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-advance",
+          "occurrence": 1,
+          "elapsedMs": 4360,
+          "beforeGc": {
+            "rss": 281952256,
+            "heapTotal": 133365760,
+            "heapUsed": 72382456,
+            "external": 2429714,
+            "arrayBuffers": 209179
+          },
+          "afterGc": {
+            "rss": 258850816,
+            "heapTotal": 110247936,
+            "heapUsed": 45029144,
+            "external": 2429714,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 224,
+              "stock": 255,
+              "holds": 1,
+              "claims": 1,
+              "quotes": 1,
+              "offers": 1,
+              "event_receipts": 3719,
+              "notification_outbox": 1,
+              "identity_sessions": 301
+            },
+            "expandedJsonBytes": 27054009,
+            "graph": {
+              "objects": 142827,
+              "arrays": 46793,
+              "properties": 718389,
+              "elements": 131418,
+              "sharedObjectEdges": 1285,
+              "stringRefs": 503939,
+              "stringCodeUnits": 13936467,
+              "containerModelBytes": 18613408
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 6639635,
+                "additionalContainerModelBytes": 5406088
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 1356,
+                "expandedJsonBytes": 5668888,
+                "additionalContainerModelBytes": 3798648
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 224,
+                "expandedJsonBytes": 3482129,
+                "additionalContainerModelBytes": 3597368
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 224,
+                "expandedJsonBytes": 1601288,
+                "additionalContainerModelBytes": 57344
+              },
+              {
+                "group": "table:briefs",
+                "rows": 224,
+                "expandedJsonBytes": 1505416,
+                "additionalContainerModelBytes": 1113280
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 255,
+                "expandedJsonBytes": 1198940,
+                "additionalContainerModelBytes": 90880
+              },
+              {
+                "group": "table:stock",
+                "rows": 255,
+                "expandedJsonBytes": 1089751,
+                "additionalContainerModelBytes": 811328
+              },
+              {
+                "group": "receipt:manual:draft:employee-scoped",
+                "rows": 300,
+                "expandedJsonBytes": 1040971,
+                "additionalContainerModelBytes": 626400
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-advance",
+          "occurrence": 10,
+          "elapsedMs": 4717,
+          "beforeGc": {
+            "rss": 276856832,
+            "heapTotal": 134070272,
+            "heapUsed": 81178656,
+            "external": 2429746,
+            "arrayBuffers": 209211
+          },
+          "afterGc": {
+            "rss": 258539520,
+            "heapTotal": 115228672,
+            "heapUsed": 46111320,
+            "external": 2429746,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 224,
+              "stock": 255,
+              "holds": 10,
+              "claims": 10,
+              "quotes": 10,
+              "offers": 10,
+              "event_receipts": 3791,
+              "notification_outbox": 10,
+              "identity_sessions": 301
+            },
+            "expandedJsonBytes": 28336958,
+            "graph": {
+              "objects": 148851,
+              "arrays": 47981,
+              "properties": 748695,
+              "elements": 134391,
+              "sharedObjectEdges": 1312,
+              "stringRefs": 525584,
+              "stringCodeUnits": 14493358,
+              "containerModelBytes": 19352872
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 6639635,
+                "additionalContainerModelBytes": 5406088
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 1374,
+                "expandedJsonBytes": 5982591,
+                "additionalContainerModelBytes": 4039352
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 224,
+                "expandedJsonBytes": 3482129,
+                "additionalContainerModelBytes": 3597368
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 224,
+                "expandedJsonBytes": 1601288,
+                "additionalContainerModelBytes": 57344
+              },
+              {
+                "group": "table:briefs",
+                "rows": 224,
+                "expandedJsonBytes": 1505416,
+                "additionalContainerModelBytes": 1113280
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              },
+              {
+                "group": "receipt:repository:insert:stock",
+                "rows": 255,
+                "expandedJsonBytes": 1198940,
+                "additionalContainerModelBytes": 90880
+              },
+              {
+                "group": "table:stock",
+                "rows": 255,
+                "expandedJsonBytes": 1089715,
+                "additionalContainerModelBytes": 811328
+              },
+              {
+                "group": "receipt:manual:draft:employee-scoped",
+                "rows": 300,
+                "expandedJsonBytes": 1040971,
+                "additionalContainerModelBytes": 626400
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-advance",
+          "occurrence": 50,
+          "elapsedMs": 5234,
+          "beforeGc": {
+            "rss": 276332544,
+            "heapTotal": 143523840,
+            "heapUsed": 84406112,
+            "external": 2429714,
+            "arrayBuffers": 209179
+          },
+          "afterGc": {
+            "rss": 253542400,
+            "heapTotal": 119930880,
+            "heapUsed": 44479400,
+            "external": 2429714,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 224,
+              "stock": 255,
+              "holds": 50,
+              "claims": 50,
+              "quotes": 50,
+              "offers": 50,
+              "event_receipts": 4111,
+              "notification_outbox": 50,
+              "identity_sessions": 301
+            },
+            "expandedJsonBytes": 34015016,
+            "graph": {
+              "objects": 175413,
+              "arrays": 53243,
+              "properties": 882624,
+              "elements": 147529,
+              "sharedObjectEdges": 1432,
+              "stringRefs": 621451,
+              "stringCodeUnits": 16960653,
+              "containerModelBytes": 22619208
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 1454,
+                "expandedJsonBytes": 7370877,
+                "additionalContainerModelBytes": 5102424
+              },
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 6639635,
+                "additionalContainerModelBytes": 5406088
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 224,
+                "expandedJsonBytes": 3482129,
+                "additionalContainerModelBytes": 3597368
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 50,
+                "expandedJsonBytes": 1731404,
+                "additionalContainerModelBytes": 1331408
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 50,
+                "expandedJsonBytes": 1628834,
+                "additionalContainerModelBytes": 12800
+              },
+              {
+                "group": "table:quotes",
+                "rows": 50,
+                "expandedJsonBytes": 1607434,
+                "additionalContainerModelBytes": 1265808
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 224,
+                "expandedJsonBytes": 1601288,
+                "additionalContainerModelBytes": 57344
+              },
+              {
+                "group": "table:briefs",
+                "rows": 224,
+                "expandedJsonBytes": 1505416,
+                "additionalContainerModelBytes": 1113280
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-completed",
+          "occurrence": 1,
+          "elapsedMs": 5742,
+          "beforeGc": {
+            "rss": 272957440,
+            "heapTotal": 129679360,
+            "heapUsed": 81727072,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 263208960,
+            "heapTotal": 117833728,
+            "heapUsed": 44411960,
+            "external": 2429682,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 224,
+              "stock": 255,
+              "holds": 62,
+              "claims": 62,
+              "quotes": 62,
+              "offers": 62,
+              "event_receipts": 4208,
+              "notification_outbox": 62,
+              "identity_sessions": 301
+            },
+            "expandedJsonBytes": 34023255,
+            "graph": {
+              "objects": 169799,
+              "arrays": 52061,
+              "properties": 869630,
+              "elements": 131450,
+              "sharedObjectEdges": 1468,
+              "stringRefs": 631293,
+              "stringCodeUnits": 16683427,
+              "containerModelBytes": 22065200
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 1479,
+                "expandedJsonBytes": 7785955,
+                "additionalContainerModelBytes": 5419928
+              },
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 4951587,
+                "additionalContainerModelBytes": 3877032
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 224,
+                "expandedJsonBytes": 3482129,
+                "additionalContainerModelBytes": 3597368
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 62,
+                "expandedJsonBytes": 2144649,
+                "additionalContainerModelBytes": 1648800
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 62,
+                "expandedJsonBytes": 2017455,
+                "additionalContainerModelBytes": 15872
+              },
+              {
+                "group": "table:quotes",
+                "rows": 62,
+                "expandedJsonBytes": 1990919,
+                "additionalContainerModelBytes": 1567456
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 224,
+                "expandedJsonBytes": 1601288,
+                "additionalContainerModelBytes": 57344
+              },
+              {
+                "group": "table:briefs",
+                "rows": 224,
+                "expandedJsonBytes": 1505416,
+                "additionalContainerModelBytes": 1113280
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-prepared",
+          "occurrence": 2,
+          "elapsedMs": 11626,
+          "beforeGc": {
+            "rss": 255442944,
+            "heapTotal": 175767552,
+            "heapUsed": 98922904,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 255492096,
+            "heapTotal": 148504576,
+            "heapUsed": 51021384,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 235,
+              "stock": 255,
+              "holds": 80,
+              "claims": 80,
+              "quotes": 80,
+              "offers": 62,
+              "decisions": 38,
+              "event_receipts": 4902,
+              "notification_outbox": 62,
+              "identity_sessions": 301,
+              "tick_runs": 6
+            },
+            "expandedJsonBytes": 36135617,
+            "graph": {
+              "objects": 177740,
+              "arrays": 53132,
+              "properties": 917691,
+              "elements": 134213,
+              "sharedObjectEdges": 1684,
+              "stringRefs": 666671,
+              "stringCodeUnits": 17853205,
+              "containerModelBytes": 23144664
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:command:transaction",
+                "rows": 1961,
+                "expandedJsonBytes": 8725242,
+                "additionalContainerModelBytes": 6027144
+              },
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 1,
+                "expandedJsonBytes": 4951587,
+                "additionalContainerModelBytes": 3877032
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 224,
+                "expandedJsonBytes": 3482129,
+                "additionalContainerModelBytes": 3597368
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 80,
+                "expandedJsonBytes": 2221730,
+                "additionalContainerModelBytes": 20480
+              },
+              {
+                "group": "table:quotes",
+                "rows": 80,
+                "expandedJsonBytes": 2187490,
+                "additionalContainerModelBytes": 1699448
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 62,
+                "expandedJsonBytes": 2144649,
+                "additionalContainerModelBytes": 1648800
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 235,
+                "expandedJsonBytes": 1679980,
+                "additionalContainerModelBytes": 60160
+              },
+              {
+                "group": "table:briefs",
+                "rows": 235,
+                "expandedJsonBytes": 1579400,
+                "additionalContainerModelBytes": 1167752
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-stored",
+          "occurrence": 2,
+          "elapsedMs": 12516,
+          "beforeGc": {
+            "rss": 293928960,
+            "heapTotal": 171606016,
+            "heapUsed": 112335616,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 275333120,
+            "heapTotal": 132513792,
+            "heapUsed": 62713568,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 235,
+              "stock": 255,
+              "holds": 80,
+              "claims": 80,
+              "quotes": 80,
+              "offers": 62,
+              "decisions": 38,
+              "event_receipts": 5109,
+              "notification_outbox": 62,
+              "identity_sessions": 301,
+              "tick_runs": 6
+            },
+            "expandedJsonBytes": 51403967,
+            "graph": {
+              "objects": 279854,
+              "arrays": 108689,
+              "properties": 1371441,
+              "elements": 308485,
+              "sharedObjectEdges": 1684,
+              "stringRefs": 986504,
+              "stringCodeUnits": 26781473,
+              "containerModelBytes": 36844312
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 2,
+                "expandedJsonBytes": 14499818,
+                "additionalContainerModelBytes": 11616760
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 428,
+                "expandedJsonBytes": 9157546,
+                "additionalContainerModelBytes": 9506816
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 1962,
+                "expandedJsonBytes": 8725741,
+                "additionalContainerModelBytes": 6027448
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 80,
+                "expandedJsonBytes": 2221730,
+                "additionalContainerModelBytes": 20480
+              },
+              {
+                "group": "table:quotes",
+                "rows": 80,
+                "expandedJsonBytes": 2187490,
+                "additionalContainerModelBytes": 1699448
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 62,
+                "expandedJsonBytes": 2144649,
+                "additionalContainerModelBytes": 1648800
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 235,
+                "expandedJsonBytes": 1679980,
+                "additionalContainerModelBytes": 60160
+              },
+              {
+                "group": "table:briefs",
+                "rows": 235,
+                "expandedJsonBytes": 1579400,
+                "additionalContainerModelBytes": 1167752
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-completed",
+          "occurrence": 2,
+          "elapsedMs": 14236,
+          "beforeGc": {
+            "rss": 326287360,
+            "heapTotal": 210010112,
+            "heapUsed": 153505520,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 274513920,
+            "heapTotal": 154533888,
+            "heapUsed": 70466096,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 235,
+              "stock": 255,
+              "holds": 181,
+              "claims": 181,
+              "quotes": 181,
+              "offers": 163,
+              "decisions": 38,
+              "event_receipts": 5918,
+              "notification_outbox": 163,
+              "identity_sessions": 301,
+              "tick_runs": 6
+            },
+            "expandedJsonBytes": 64279780,
+            "graph": {
+              "objects": 333894,
+              "arrays": 119190,
+              "properties": 1665253,
+              "elements": 316087,
+              "sharedObjectEdges": 1987,
+              "stringRefs": 1223873,
+              "stringCodeUnits": 32072018,
+              "containerModelBytes": 43671432
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 2,
+                "expandedJsonBytes": 12987249,
+                "additionalContainerModelBytes": 10160552
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 2165,
+                "expandedJsonBytes": 12244451,
+                "additionalContainerModelBytes": 8723848
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 428,
+                "expandedJsonBytes": 9157546,
+                "additionalContainerModelBytes": 9506816
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 163,
+                "expandedJsonBytes": 5651639,
+                "additionalContainerModelBytes": 4346512
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 181,
+                "expandedJsonBytes": 5521286,
+                "additionalContainerModelBytes": 46336
+              },
+              {
+                "group": "table:quotes",
+                "rows": 181,
+                "expandedJsonBytes": 5443818,
+                "additionalContainerModelBytes": 4264648
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 235,
+                "expandedJsonBytes": 1679980,
+                "additionalContainerModelBytes": 60160
+              },
+              {
+                "group": "table:briefs",
+                "rows": 235,
+                "expandedJsonBytes": 1579400,
+                "additionalContainerModelBytes": 1167752
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-prepared",
+          "occurrence": 3,
+          "elapsedMs": 20090,
+          "beforeGc": {
+            "rss": 325664768,
+            "heapTotal": 225312768,
+            "heapUsed": 88835520,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 325844992,
+            "heapTotal": 179437568,
+            "heapUsed": 73225192,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 247,
+              "stock": 255,
+              "holds": 186,
+              "claims": 186,
+              "quotes": 186,
+              "offers": 163,
+              "decisions": 95,
+              "event_receipts": 6678,
+              "notification_outbox": 163,
+              "identity_sessions": 301,
+              "tick_runs": 11
+            },
+            "expandedJsonBytes": 65983063,
+            "graph": {
+              "objects": 339613,
+              "arrays": 119762,
+              "properties": 1702387,
+              "elements": 317829,
+              "sharedObjectEdges": 2080,
+              "stringRefs": 1250746,
+              "stringCodeUnits": 33097993,
+              "containerModelBytes": 44480824
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 2,
+                "expandedJsonBytes": 12987249,
+                "additionalContainerModelBytes": 10160552
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 2708,
+                "expandedJsonBytes": 12814537,
+                "additionalContainerModelBytes": 9082024
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 428,
+                "expandedJsonBytes": 9157546,
+                "additionalContainerModelBytes": 9506816
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 163,
+                "expandedJsonBytes": 5651639,
+                "additionalContainerModelBytes": 4346512
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 186,
+                "expandedJsonBytes": 5578039,
+                "additionalContainerModelBytes": 47616
+              },
+              {
+                "group": "table:quotes",
+                "rows": 186,
+                "expandedJsonBytes": 5498431,
+                "additionalContainerModelBytes": 4301312
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1765547,
+                "additionalContainerModelBytes": 63232
+              },
+              {
+                "group": "table:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1659831,
+                "additionalContainerModelBytes": 1226904
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-stored",
+          "occurrence": 3,
+          "elapsedMs": 21114,
+          "beforeGc": {
+            "rss": 417644544,
+            "heapTotal": 223625216,
+            "heapUsed": 155810152,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 374128640,
+            "heapTotal": 158466048,
+            "heapUsed": 86387168,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 247,
+              "stock": 255,
+              "holds": 186,
+              "claims": 186,
+              "quotes": 186,
+              "offers": 163,
+              "decisions": 95,
+              "event_receipts": 6864,
+              "notification_outbox": 163,
+              "identity_sessions": 301,
+              "tick_runs": 11
+            },
+            "expandedJsonBytes": 83359400,
+            "graph": {
+              "objects": 456943,
+              "arrays": 182953,
+              "properties": 2222065,
+              "elements": 513704,
+              "sharedObjectEdges": 2080,
+              "stringRefs": 1618536,
+              "stringCodeUnits": 43226163,
+              "containerModelBytes": 60139344
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 3,
+                "expandedJsonBytes": 23264824,
+                "additionalContainerModelBytes": 18480168
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 611,
+                "expandedJsonBytes": 16212858,
+                "additionalContainerModelBytes": 16796856
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 2709,
+                "expandedJsonBytes": 12815036,
+                "additionalContainerModelBytes": 9082328
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 163,
+                "expandedJsonBytes": 5651639,
+                "additionalContainerModelBytes": 4346512
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 186,
+                "expandedJsonBytes": 5578039,
+                "additionalContainerModelBytes": 47616
+              },
+              {
+                "group": "table:quotes",
+                "rows": 186,
+                "expandedJsonBytes": 5498431,
+                "additionalContainerModelBytes": 4301312
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1765547,
+                "additionalContainerModelBytes": 63232
+              },
+              {
+                "group": "table:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1659831,
+                "additionalContainerModelBytes": 1226904
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          }
+        },
+        {
+          "label": "allocation-completed",
+          "occurrence": 3,
+          "elapsedMs": 22884,
+          "beforeGc": {
+            "rss": 369410048,
+            "heapTotal": 182321152,
+            "heapUsed": 133729064,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 369410048,
+            "heapTotal": 175505408,
+            "heapUsed": 93551440,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 247,
+              "stock": 255,
+              "holds": 287,
+              "claims": 287,
+              "quotes": 287,
+              "offers": 264,
+              "decisions": 95,
+              "event_receipts": 7673,
+              "notification_outbox": 264,
+              "identity_sessions": 301,
+              "tick_runs": 11
+            },
+            "expandedJsonBytes": 95495923,
+            "graph": {
+              "objects": 505813,
+              "arrays": 192636,
+              "properties": 2492716,
+              "elements": 518101,
+              "sharedObjectEdges": 2383,
+              "stringRefs": 1841625,
+              "stringCodeUnits": 48098297,
+              "containerModelBytes": 66378632
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 3,
+                "expandedJsonBytes": 21016458,
+                "additionalContainerModelBytes": 16439056
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 2912,
+                "expandedJsonBytes": 16332867,
+                "additionalContainerModelBytes": 11777752
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 611,
+                "expandedJsonBytes": 16212858,
+                "additionalContainerModelBytes": 16796856
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 264,
+                "expandedJsonBytes": 9157773,
+                "additionalContainerModelBytes": 7043248
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 287,
+                "expandedJsonBytes": 8876716,
+                "additionalContainerModelBytes": 73472
+              },
+              {
+                "group": "table:quotes",
+                "rows": 287,
+                "expandedJsonBytes": 8753880,
+                "additionalContainerModelBytes": 6865536
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1765547,
+                "additionalContainerModelBytes": 63232
+              },
+              {
+                "group": "table:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1659831,
+                "additionalContainerModelBytes": 1226904
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          }
+        },
+        {
+          "label": "snapshot-before",
+          "occurrence": 1,
+          "elapsedMs": 24931,
+          "beforeGc": {
+            "rss": 292716544,
+            "heapTotal": 183844864,
+            "heapUsed": 101721016,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 292651008,
+            "heapTotal": 163938304,
+            "heapUsed": 80763376,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 247,
+              "stock": 255,
+              "holds": 292,
+              "claims": 292,
+              "quotes": 292,
+              "offers": 264,
+              "decisions": 150,
+              "event_receipts": 8378,
+              "notification_outbox": 264,
+              "identity_sessions": 301,
+              "tick_runs": 16
+            },
+            "expandedJsonBytes": 96887223,
+            "graph": {
+              "objects": 510207,
+              "arrays": 193033,
+              "properties": 2522172,
+              "elements": 519493,
+              "sharedObjectEdges": 2352,
+              "stringRefs": 1863371,
+              "stringCodeUnits": 48989137,
+              "containerModelBytes": 67014376
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 3,
+                "expandedJsonBytes": 21016458,
+                "additionalContainerModelBytes": 16439056
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 3426,
+                "expandedJsonBytes": 16776279,
+                "additionalContainerModelBytes": 12048208
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 611,
+                "expandedJsonBytes": 16212858,
+                "additionalContainerModelBytes": 16796856
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 264,
+                "expandedJsonBytes": 9157773,
+                "additionalContainerModelBytes": 7043248
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 292,
+                "expandedJsonBytes": 8933466,
+                "additionalContainerModelBytes": 74752
+              },
+              {
+                "group": "table:quotes",
+                "rows": 292,
+                "expandedJsonBytes": 8808490,
+                "additionalContainerModelBytes": 6902200
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1765547,
+                "additionalContainerModelBytes": 63232
+              },
+              {
+                "group": "table:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1659831,
+                "additionalContainerModelBytes": 1226904
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          }
+        },
+        {
+          "label": "snapshot-after",
+          "occurrence": 1,
+          "elapsedMs": 26207,
+          "beforeGc": {
+            "rss": 285704192,
+            "heapTotal": 182812672,
+            "heapUsed": 145828752,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 287227904,
+            "heapTotal": 184647680,
+            "heapUsed": 140479768,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 247,
+              "stock": 255,
+              "holds": 292,
+              "claims": 292,
+              "quotes": 292,
+              "offers": 264,
+              "decisions": 150,
+              "event_receipts": 8378,
+              "notification_outbox": 264,
+              "identity_sessions": 301,
+              "tick_runs": 16
+            },
+            "expandedJsonBytes": 96887223,
+            "graph": {
+              "objects": 510207,
+              "arrays": 193033,
+              "properties": 2522172,
+              "elements": 519493,
+              "sharedObjectEdges": 2352,
+              "stringRefs": 1863371,
+              "stringCodeUnits": 48989137,
+              "containerModelBytes": 67014376
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 3,
+                "expandedJsonBytes": 21016458,
+                "additionalContainerModelBytes": 16439056
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 3426,
+                "expandedJsonBytes": 16776279,
+                "additionalContainerModelBytes": 12048208
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 611,
+                "expandedJsonBytes": 16212858,
+                "additionalContainerModelBytes": 16796856
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 264,
+                "expandedJsonBytes": 9157773,
+                "additionalContainerModelBytes": 7043248
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 292,
+                "expandedJsonBytes": 8933466,
+                "additionalContainerModelBytes": 74752
+              },
+              {
+                "group": "table:quotes",
+                "rows": 292,
+                "expandedJsonBytes": 8808490,
+                "additionalContainerModelBytes": 6902200
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1765547,
+                "additionalContainerModelBytes": 63232
+              },
+              {
+                "group": "table:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1659831,
+                "additionalContainerModelBytes": 1226904
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          },
+          "snapshot": {
+            "expandedJsonBytes": 96898960,
+            "graph": {
+              "objects": 586455,
+              "arrays": 207772,
+              "properties": 2902253,
+              "elements": 550549,
+              "sharedObjectEdges": 0,
+              "stringRefs": 2130221,
+              "stringCodeUnits": 55747500,
+              "containerModelBytes": 76255704
+            },
+            "combinedWithStore": {
+              "objects": 1096663,
+              "arrays": 400805,
+              "properties": 5424453,
+              "elements": 1070042,
+              "sharedObjectEdges": 2352,
+              "stringRefs": 3993592,
+              "stringCodeUnits": 104736637,
+              "containerModelBytes": 143270560
+            }
+          }
+        },
+        {
+          "label": "snapshot-before",
+          "occurrence": 2,
+          "elapsedMs": 28263,
+          "beforeGc": {
+            "rss": 532807680,
+            "heapTotal": 432373760,
+            "heapUsed": 377615176,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 312492032,
+            "heapTotal": 211386368,
+            "heapUsed": 140525280,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 247,
+              "stock": 255,
+              "holds": 292,
+              "claims": 292,
+              "quotes": 292,
+              "offers": 264,
+              "decisions": 150,
+              "event_receipts": 8378,
+              "notification_outbox": 264,
+              "identity_sessions": 301,
+              "tick_runs": 16
+            },
+            "expandedJsonBytes": 96887223,
+            "graph": {
+              "objects": 510207,
+              "arrays": 193033,
+              "properties": 2522172,
+              "elements": 519493,
+              "sharedObjectEdges": 2352,
+              "stringRefs": 1863371,
+              "stringCodeUnits": 48989137,
+              "containerModelBytes": 67014376
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 3,
+                "expandedJsonBytes": 21016458,
+                "additionalContainerModelBytes": 16439056
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 3426,
+                "expandedJsonBytes": 16776279,
+                "additionalContainerModelBytes": 12048208
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 611,
+                "expandedJsonBytes": 16212858,
+                "additionalContainerModelBytes": 16796856
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 264,
+                "expandedJsonBytes": 9157773,
+                "additionalContainerModelBytes": 7043248
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 292,
+                "expandedJsonBytes": 8933466,
+                "additionalContainerModelBytes": 74752
+              },
+              {
+                "group": "table:quotes",
+                "rows": 292,
+                "expandedJsonBytes": 8808490,
+                "additionalContainerModelBytes": 6902200
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1765547,
+                "additionalContainerModelBytes": 63232
+              },
+              {
+                "group": "table:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1659831,
+                "additionalContainerModelBytes": 1226904
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          }
+        },
+        {
+          "label": "snapshot-after",
+          "occurrence": 2,
+          "elapsedMs": 29577,
+          "beforeGc": {
+            "rss": 459980800,
+            "heapTotal": 350502912,
+            "heapUsed": 295009960,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 368328704,
+            "heapTotal": 232357888,
+            "heapUsed": 140663688,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 247,
+              "stock": 255,
+              "holds": 292,
+              "claims": 292,
+              "quotes": 292,
+              "offers": 264,
+              "decisions": 150,
+              "event_receipts": 8378,
+              "notification_outbox": 264,
+              "identity_sessions": 301,
+              "tick_runs": 16
+            },
+            "expandedJsonBytes": 96887223,
+            "graph": {
+              "objects": 510207,
+              "arrays": 193033,
+              "properties": 2522172,
+              "elements": 519493,
+              "sharedObjectEdges": 2352,
+              "stringRefs": 1863371,
+              "stringCodeUnits": 48989137,
+              "containerModelBytes": 67014376
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 3,
+                "expandedJsonBytes": 21016458,
+                "additionalContainerModelBytes": 16439056
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 3426,
+                "expandedJsonBytes": 16776279,
+                "additionalContainerModelBytes": 12048208
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 611,
+                "expandedJsonBytes": 16212858,
+                "additionalContainerModelBytes": 16796856
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 264,
+                "expandedJsonBytes": 9157773,
+                "additionalContainerModelBytes": 7043248
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 292,
+                "expandedJsonBytes": 8933466,
+                "additionalContainerModelBytes": 74752
+              },
+              {
+                "group": "table:quotes",
+                "rows": 292,
+                "expandedJsonBytes": 8808490,
+                "additionalContainerModelBytes": 6902200
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1765547,
+                "additionalContainerModelBytes": 63232
+              },
+              {
+                "group": "table:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1659831,
+                "additionalContainerModelBytes": 1226904
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          },
+          "snapshot": {
+            "expandedJsonBytes": 96898960,
+            "graph": {
+              "objects": 586455,
+              "arrays": 207772,
+              "properties": 2902253,
+              "elements": 550549,
+              "sharedObjectEdges": 0,
+              "stringRefs": 2130221,
+              "stringCodeUnits": 55747500,
+              "containerModelBytes": 76255704
+            },
+            "combinedWithStore": {
+              "objects": 1096663,
+              "arrays": 400805,
+              "properties": 5424453,
+              "elements": 1070042,
+              "sharedObjectEdges": 2352,
+              "stringRefs": 3993592,
+              "stringCodeUnits": 104736637,
+              "containerModelBytes": 143270560
+            }
+          }
+        },
+        {
+          "label": "closed-run-still-referenced",
+          "occurrence": 1,
+          "elapsedMs": 32392,
+          "beforeGc": {
+            "rss": 550010880,
+            "heapTotal": 469680128,
+            "heapUsed": 382614176,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 339640320,
+            "heapTotal": 160268288,
+            "heapUsed": 80805864,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": true,
+          "store": {
+            "rowCounts": {
+              "runs": 1,
+              "employees": 301,
+              "entitlement_slots": 300,
+              "briefs": 247,
+              "stock": 255,
+              "holds": 292,
+              "claims": 292,
+              "quotes": 292,
+              "offers": 264,
+              "decisions": 150,
+              "event_receipts": 8378,
+              "notification_outbox": 264,
+              "identity_sessions": 301,
+              "tick_runs": 16
+            },
+            "expandedJsonBytes": 96887223,
+            "graph": {
+              "objects": 510207,
+              "arrays": 193033,
+              "properties": 2522172,
+              "elements": 519493,
+              "sharedObjectEdges": 2352,
+              "stringRefs": 1863371,
+              "stringCodeUnits": 48989137,
+              "containerModelBytes": 67014376
+            },
+            "largestExpandedGroups": [
+              {
+                "group": "receipt:buddy-allocation",
+                "rows": 3,
+                "expandedJsonBytes": 21016458,
+                "additionalContainerModelBytes": 16439056
+              },
+              {
+                "group": "receipt:command:transaction",
+                "rows": 3426,
+                "expandedJsonBytes": 16776279,
+                "additionalContainerModelBytes": 12048208
+              },
+              {
+                "group": "receipt:buddy-allocation-evaluation",
+                "rows": 611,
+                "expandedJsonBytes": 16212858,
+                "additionalContainerModelBytes": 16796856
+              },
+              {
+                "group": "receipt:buddy-allocation-attempt",
+                "rows": 264,
+                "expandedJsonBytes": 9157773,
+                "additionalContainerModelBytes": 7043248
+              },
+              {
+                "group": "receipt:repository:insert:quotes",
+                "rows": 292,
+                "expandedJsonBytes": 8933466,
+                "additionalContainerModelBytes": 74752
+              },
+              {
+                "group": "table:quotes",
+                "rows": 292,
+                "expandedJsonBytes": 8808490,
+                "additionalContainerModelBytes": 6902200
+              },
+              {
+                "group": "receipt:brief:draft:employee-scoped",
+                "rows": 224,
+                "expandedJsonBytes": 1870284,
+                "additionalContainerModelBytes": 1356544
+              },
+              {
+                "group": "receipt:repository:insert:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1765547,
+                "additionalContainerModelBytes": 63232
+              },
+              {
+                "group": "table:briefs",
+                "rows": 247,
+                "expandedJsonBytes": 1659831,
+                "additionalContainerModelBytes": 1226904
+              },
+              {
+                "group": "table:employees",
+                "rows": 301,
+                "expandedJsonBytes": 1489854,
+                "additionalContainerModelBytes": 1009208
+              }
+            ]
+          }
+        },
+        {
+          "label": "run-reference-dropped",
+          "occurrence": 1,
+          "elapsedMs": 33912,
+          "beforeGc": {
+            "rss": 345997312,
+            "heapTotal": 84819968,
+            "heapUsed": 14092256,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "afterGc": {
+            "rss": 345473024,
+            "heapTotal": 83509248,
+            "heapUsed": 14092400,
+            "external": 2426021,
+            "arrayBuffers": 209147
+          },
+          "storeAlive": false
+        }
+      ],
+      "supervisor": {
+        "run": "census300a-v3",
+        "state": "complete",
+        "results": [
+          {
+            "rc": 0,
+            "wall": 34.099399625000004,
+            "peak_rss": 549912576,
+            "peak_scratch": 0,
+            "cleanup": {
+              "local_scratch_reason": "",
+              "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-supervisor/ownership/3e2b97465b9b44299336fde196aeebae.json",
+              "peak": 0,
+              "removed": true,
+              "root": "/private/tmp/test-stamp-shard-3e2b97465b9b44299336fde196aeebae"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

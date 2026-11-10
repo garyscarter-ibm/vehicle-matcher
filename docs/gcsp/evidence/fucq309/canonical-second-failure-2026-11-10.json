@@ -1,0 +1,223 @@
+{
+  "proofId": "canonical-v2",
+  "status": "failed",
+  "exactHead": "5177e3b299d2ea6a75475392953787999b91830a",
+  "environment": {
+    "node": "v26.7.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "request": {
+    "experimentId": "process-only"
+  },
+  "overlay": null,
+  "fixedNow": "2026-11-10T12:00:00.000Z",
+  "canonicalInputs": {
+    "comparison.cohortSize": 1000,
+    "comparison.seeds": [
+      "comparison-a",
+      "comparison-b",
+      "comparison-c"
+    ],
+    "comparison.jobs.v1": {
+      "schemaVersion": 1,
+      "timeoutSeconds": 1800,
+      "workerHeapMb": 128,
+      "workerYoungGenerationMb": 16
+    }
+  },
+  "sourceHashes": {
+    "server/gcsp/comparison/private-repository.js": "afeb80d063990653348383fe47a1d2417d01138fd0d8e147fb3aceda7b27ca89",
+    "server/gcsp/comparison/harness.js": "9274600b9edd0ebfdf8f82adcfbade2a8254ece5f7d7410c4af7c90c26496c8f",
+    "server/gcsp/comparison/routes/current.js": "6dde40b8089be0fc8fd3ebfef18c95c8ae89115df1db2c9ea1e5271ddd7c5257",
+    "server/gcsp/comparison/routes/buddy.js": "111148563a4ee0349b878640953a97d99b8b737eaf5c92097061d25ff2b727c2",
+    "server/gcsp/comparison/experiments.js": "a8ca8c03a46f8daf21583099959658afa79f4d8fa221a8aa4394da994a27b13f",
+    "server/gcsp/comparison/jobs.js": "8d4a58f96630c8d52d8e6ab43034b77a66391f9528c2a77c7c81dc4327b8b59e",
+    "server/gcsp/comparison/worker.js": "777f89dd7c4a47150770a33f92b7dd07f33114c078bac0689450373c94ccf87b",
+    "server/gcsp/comparison/results.js": "03045401d9a4e528fc4fa3fbc748a7ac09747445f0c709096587bb8f3286759a",
+    "server/gcsp/policy/seed-v1.json": "df662536da13cc1732c093c9969a34a7e3c9452aa9a39bfa63be45f6f6c77b0c",
+    "server/gcsp/repository/core.js": "8260f5eea2856075a7e3c1fcbeb86bb827b447085e23b1a793828a769cbe106c",
+    "server/gcsp/repository/memory.js": "172029073288cc191a5ceb51adc3da8266350d115d93aa7a394b74b085e51819"
+  },
+  "workerLimits": [
+    {
+      "elapsedMs": 38.264792,
+      "resourceLimits": {
+        "maxOldGenerationSizeMb": 128,
+        "maxYoungGenerationSizeMb": 16
+      },
+      "data": {
+        "experiment": {
+          "experimentId": "process-only"
+        },
+        "codeRevision": "5177e3b299d2ea6a75475392953787999b91830a",
+        "fixedNow": "2026-11-10T12:00:00.000Z"
+      }
+    }
+  ],
+  "workerMessages": [
+    {
+      "elapsedMs": 138.47612499999997,
+      "message": {
+        "type": "plan",
+        "steps": 6,
+        "seeds": [
+          "comparison-a",
+          "comparison-b",
+          "comparison-c"
+        ],
+        "arms": [
+          "process"
+        ]
+      }
+    },
+    {
+      "elapsedMs": 169366.750125,
+      "message": {
+        "type": "progress",
+        "completed": 1,
+        "total": 6,
+        "armId": "process",
+        "seed": "comparison-a",
+        "route": "current"
+      }
+    }
+  ],
+  "workerErrors": [
+    {
+      "elapsedMs": 209451.023542,
+      "code": "ERR_WORKER_OUT_OF_MEMORY",
+      "message": "Worker terminated due to reaching memory limit: JS heap out of memory"
+    }
+  ],
+  "workerExits": [
+    {
+      "elapsedMs": 209451.991375,
+      "code": 1
+    }
+  ],
+  "final": {
+    "http": 200,
+    "ms": 961.3234589999774,
+    "body": {
+      "status": "ok",
+      "value": {
+        "jobId": "comparison-job-dc1ef887-41f7-4fdb-884a-c4f115fdb97b",
+        "experimentId": "process-only",
+        "status": "failed",
+        "progress": {
+          "seedsDone": 0,
+          "seedsTotal": 3,
+          "stepsDone": 1,
+          "stepsTotal": 6
+        },
+        "startedAt": "2026-11-10T12:00:00.000Z",
+        "finishedAt": "2026-11-10T12:00:00.000Z",
+        "resultId": null,
+        "reason": "The comparison used more than its 128 MB memory allowance and was stopped.",
+        "request": {
+          "experimentId": "process-only",
+          "change": null
+        }
+      },
+      "contractVersion": "1.0.0",
+      "reruns": true
+    }
+  },
+  "storedRowCount": 0,
+  "resultStored": false,
+  "peakWorkerUsedHeap": 130342480,
+  "peakRss": 342065152,
+  "elapsedMs": 211286.96637500002,
+  "closed": true,
+  "error": {
+    "name": "Error",
+    "message": "Canonical job failed: The comparison used more than its 128 MB memory allowance and was stopped.",
+    "stack": "Error: Canonical job failed: The comparison used more than its 128 MB memory allowance and was stopped.\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-canonical-http.mjs:142:11"
+  },
+  "kind": "fucq309-canonical-real-http-second-failure-v1",
+  "hostTiming": {
+    "health": {
+      "samples": 131,
+      "maximumMs": 5.003084000000001
+    },
+    "process": {
+      "samples": 131,
+      "maximumMs": 4.5189160000009
+    },
+    "latest": {
+      "samples": 131,
+      "maximumMs": 8.921666999998706
+    }
+  },
+  "cleanupReceipt": {
+    "completed": {
+      "b13712d895e709d6c5f9294da0a962a02619d8ac4620e9028313a6b8083baca4": {
+        "ids": [
+          "canonical-v2"
+        ],
+        "result": {
+          "cleanup": {
+            "local_scratch_reason": "",
+            "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-supervisor/ownership/1775325a50494dd79e6f878ebd69e0d2.json",
+            "peak": 0,
+            "removed": true,
+            "root": "/private/tmp/test-stamp-shard-1775325a50494dd79e6f878ebd69e0d2"
+          },
+          "issue": null,
+          "issue_kind": null,
+          "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-supervisor/logs/canonical-v2/chunk-0001.log",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-supervisor/ownership/1775325a50494dd79e6f878ebd69e0d2.json",
+          "peak_rss": 350568448,
+          "peak_scratch": 0,
+          "rc": 1,
+          "wall": 211.55009933399998
+        }
+      }
+    },
+    "identity": {
+      "command": [
+        "node",
+        "--import",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-local-deps.mjs",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-canonical-http.mjs",
+        "5177e3b299d2ea6a75475392953787999b91830a",
+        "canonical-v2"
+      ],
+      "command_files_sha256": {
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-canonical-http.mjs": "08d315b6e2464856e7a33b923943c3e8186a3c246a839b7c1c86b946fcb76e32",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-local-deps.mjs": "0e01fe0617792787b04b8dc499273b27b044de0850602f0bd5045ca6cf807e26"
+      },
+      "environment_sha256": "ea16e236bcd8616d0526db08c3665414a34b6352baf3b596540401895df5d82e",
+      "head": "5177e3b299d2ea6a75475392953787999b91830a",
+      "id": "canonical-v2",
+      "limits": {
+        "ram_mib": 1536,
+        "scratch_mib": 64,
+        "seconds": 1900
+      },
+      "story": "FUCQ-309",
+      "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "issues": [],
+    "selected": [
+      "canonical-v2"
+    ],
+    "state": "complete",
+    "units": [
+      {
+        "disk": 67108864,
+        "id": "canonical-v2",
+        "ram": 1610612736,
+        "seconds": 1900
+      }
+    ],
+    "updated": 1794319898.559904,
+    "version": 1,
+    "wall": 211.62
+  },
+  "limitations": [
+    "Approximately1second sampling may miss heap/RSS peaks; used heap differs from old-generation usage.",
+    "Actual isolated HTTP host and real canonical worker; not deployed/live-host or UI evidence. No complete result produced."
+  ]
+}

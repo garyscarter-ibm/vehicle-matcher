@@ -1,0 +1,13 @@
+{
+  "observed_at": "2026-11-10T16:20:12.364324+00:00",
+  "decision": "authorise one diagnostic scalar-preparation-v1 only after F348reservationrelease/root signal",
+  "review": "Parent read all11replacements,observer,inference table; primitives only,no graphref/WeakRef/forcedGC/yield/phase stop",
+  "limits": "original1000/3/6;128/16/1800;600souter;768MiB/32MiB;oneattempt;allcleanupverify",
+  "frozen_hashes": {
+    "observer.mjs": "6e7381d3ee2eec70703cf648de0078247337580719064d8c0247bd6453779d6d",
+    "transforms.json": "59430a226cdd18761bee273d04047d8222a73ae3ed1bb21ee49111cd942ec93c",
+    "planned-source-diff.patch": "92b7d40f6dc0bf42a99751e06d5ea160c2eba52b7bdc6e9af79f42d2537f60a4"
+  },
+  "meaning": "Diagnostic transformed source; interval bracketing only,not canonicalacceptance or exactcause",
+  "after_outcome": "stop/cleanup/push bounded evidence; no retry/localization/productionedit automatically"
+}

@@ -1,0 +1,72 @@
+{
+  "generatedAt": "2026-11-10T16:03:58.543Z",
+  "preflightOnly": true,
+  "noWorkerOrReplay": true,
+  "plan": {
+    "experimentId": "process-only",
+    "seeds": [
+      "comparison-a",
+      "comparison-b",
+      "comparison-c"
+    ],
+    "arms": [
+      {
+        "armId": "process",
+        "value": null,
+        "overlay": {}
+      }
+    ],
+    "steps": 6
+  },
+  "policyVersion": "gcsp-policy-v1",
+  "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+  "generatorVersion": "comparison-inputs.sha256.v1",
+  "snapshotDigest": "30451cb5ab0afed5d41b1912c57f499801a44ba9f2f2a9884038eb1f0d4c41dd",
+  "seeds": [
+    {
+      "seed": "comparison-a",
+      "inputHash": "53bcb43e78caefd6fef8c5c08e25454b1871c89af65369d624bb39af5b123509",
+      "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+      "generatorVersion": "comparison-inputs.sha256.v1",
+      "policyVersion": "gcsp-policy-v1",
+      "employees": 1000,
+      "cars": 850,
+      "releases": 9,
+      "accessGroups": [
+        "delayed-access",
+        "immediate-access",
+        "intermittent-access"
+      ]
+    },
+    {
+      "seed": "comparison-b",
+      "inputHash": "59c3ae5cd9a0425781f1b25bd0e587f828dcfee35935e23cb7b183f43220ccb2",
+      "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+      "generatorVersion": "comparison-inputs.sha256.v1",
+      "policyVersion": "gcsp-policy-v1",
+      "employees": 1000,
+      "cars": 850,
+      "releases": 9,
+      "accessGroups": [
+        "delayed-access",
+        "immediate-access",
+        "intermittent-access"
+      ]
+    },
+    {
+      "seed": "comparison-c",
+      "inputHash": "3793d4b7f30652d082a17756184714e86d263560e997ab37e87df7924766fe63",
+      "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+      "generatorVersion": "comparison-inputs.sha256.v1",
+      "policyVersion": "gcsp-policy-v1",
+      "employees": 1000,
+      "cars": 850,
+      "releases": 9,
+      "accessGroups": [
+        "delayed-access",
+        "immediate-access",
+        "intermittent-access"
+      ]
+    }
+  ]
+}

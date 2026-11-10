@@ -4446,6 +4446,61 @@
       ],
       "unsliced": false,
       "delivery_status": "Built; original3AC scoped source/rendered/independent proof complete; parent integration/native Jira/collaborator acceptance pending"
+    },
+    {
+      "id": "FUCQ-309",
+      "title": "Default 1,000-employee comparison runs out of worker heap in 3 of 3 runs",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-309",
+      "branch": "dev/DEV-2026-11-10-GC-027",
+      "jira_source_updated_at": "2026-11-10T13:22:52.200Z",
+      "jira_observed_at": "2026-11-10T13:26:47.809069Z",
+      "workers": [
+        {
+          "name": "Ralph Wolf",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-10T18:57:44.010794+00:00",
+          "expires_at": "2026-11-10T18:57:44.010794+00:00",
+          "source": "Existing lead requested/selected gpt-6.1-sol/xhigh; no fallback or new agents for final delivery",
+          "status": "Built; worker ended; parent final review/integration pending"
+        }
+      ],
+      "observed_at": "2026-11-10T18:57:44Z",
+      "slices": [
+        {
+          "id": "current-cause",
+          "status": "complete",
+          "title": "Current-code retained-data evidence",
+          "observed_at": "2026-11-10T18:57:43Z",
+          "evidence": "Lead and independent review passed retained-data evidence: original outcome values are preserved; scoped 100/300 census distinguishes expanded JSON, modeled containers and heap. Canonical clean512 succeeded at e567b9b6. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        },
+        {
+          "id": "retention-repair",
+          "status": "complete",
+          "title": "Evidenced replay memory and lifetime repair",
+          "observed_at": "2026-11-10T18:57:43Z",
+          "evidence": "Exact immutable sharing, narrow completion projections, compact pool and terminal disposal plus allocator ownership repair independently reviewed. Scoped wrappers/store/pool collect with run retained; clean canonical crosses all6 close boundaries. Larger heap alone is not repair. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        },
+        {
+          "id": "semantic-regression",
+          "status": "complete",
+          "title": "Semantic regression and affected-reader checks",
+          "observed_at": "2026-11-10T18:57:43Z",
+          "evidence": "100/300 full record/decision/totals/measures equality; replay/rollback/isolation/legacy checks passed. Matching14 integration passes include repaired identity boundary. Final policy/input identity and2 gate/limits tests pass. No unchanged1000 baseline or full/nativePG claim. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        },
+        {
+          "id": "canonical-integration",
+          "status": "complete",
+          "title": "Canonical six-step stored-result integration gate",
+          "observed_at": "2026-11-10T18:57:43Z",
+          "evidence": "Independent PASS original4AC at e567b9b6: actual default1000/3/6 completed1721.492s; one complete result f643cb89; sampled heap422.10/process874.11/group900.11MiB,1064health probes. Cleanup verified. Final basis/date-only equivalence and latest sharedbase6ae669e8 preserved. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
