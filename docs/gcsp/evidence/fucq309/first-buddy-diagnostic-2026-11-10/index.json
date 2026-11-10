@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "fucq309.first-buddy-evidence.v1",
+  "observedAt": "2026-11-10T15:45:42.685185+00:00",
+  "runId": "first-buddy-claim-v1",
+  "outcome": "diagnostic observer admission failure; first-buddy checkpoint unrun",
+  "originalCanonicalAcceptance": "open",
+  "artifactSha256": {
+    "cleanup.json": "4814096ff729147c6f5efa994b99d9f51210ff86186f9a8b917351e55bcd4780",
+    "failure.log": "4abd14fd4c64b4e35edd6369a2e451c61df7b03fd382fc456793077cc2153f32",
+    "http.mjs": "3620a29eb9d6eb2d78e74373c7122edcbfb4a1663246d3891472b8459a560240",
+    "local-deps.mjs": "0e01fe0617792787b04b8dc499273b27b044de0850602f0bd5045ca6cf807e26",
+    "observer.mjs": "7b4412f7be0e7b8d5cba4b7a0cb71d062dc8941b64ac090a10d5082e91b6bea3",
+    "ownership.json": "f18a7d99976a369722eb65eb74fd0e04ab22960ab619e00dd9d48d8b4c16f11e",
+    "plan.json": "e08e01b3975441e3efca364ac22bb41f795a43731afcaad5a583b4ebc36a83f0",
+    "report.md": "ffffb97f5fa5c5d82684305a467c00a0551e8a0105eb7ab6fbab680acf78d3fc",
+    "summary.json": "5c95a2e0498ebc1a3be0ac50237ed4731b7b287128fa93994cc458b2172d9c02",
+    "supervise.py": "8b6c308c2259e620cb82023f079f4d2f5da45baed835af2f326e8ae6d6963dfa",
+    "supervisor-plan.json": "b029afd98e9480e8355c03be411506f576a739f9e06ad8deef4ba066cf1c5a7b",
+    "supervisor-receipt.json": "3ea61233399320876301985deb8afec69332a1e2ea6579c4db71de17fd9c30a3"
+  },
+  "retainedBytes": 73907,
+  "nextGate": "Report measured failure and verified cleanup to parent before further proof; no retry launched"
+}

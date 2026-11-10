@@ -1,0 +1,900 @@
+{
+  "schemaVersion": "fucq309.first-buddy-plan.v1",
+  "story": "FUCQ-309",
+  "dev": "DEV-2026-11-10-GC-027",
+  "runId": "first-buddy-claim-v1",
+  "state": "persisted-before-launch",
+  "observedAt": "2026-11-10T15:43:39.706185+00:00",
+  "scope": "One authorised canonical-scale diagnostic, stopping immediately after first buddy claim.tryClaim return; no production edits or further canonical proof",
+  "authorization": "Parent confirmed single stop boundary and original configuration on this resume",
+  "implementation": {
+    "head": "9bcd3e865be5b4e9df43b031e8742f866f1f9fb2",
+    "tree": "2d5952d061300a469698da29dd8495cc34cb17a2",
+    "branch": "dev/DEV-2026-11-10-GC-027",
+    "worktreeClean": true,
+    "sourceHashes": {
+      "server/gcsp/comparison/private-repository.js": "268d80e381153f9110116f856a848a4f5da312c5e41d9d529ad6d051d8c625b9",
+      "server/gcsp/comparison/harness.js": "9274600b9edd0ebfdf8f82adcfbade2a8254ece5f7d7410c4af7c90c26496c8f",
+      "server/gcsp/comparison/generator.js": "596c26adfaef43443914e90f2675b528309e85d5fee5459aedc661845b0917cc",
+      "server/gcsp/comparison/evaluation.js": "3e7a85f8ea3b710d39ce97290057846e47b59b73733a0e9b0ac5a9869cb35462",
+      "server/gcsp/comparison/experiments.js": "a8ca8c03a46f8daf21583099959658afa79f4d8fa221a8aa4394da994a27b13f",
+      "server/gcsp/comparison/routes/current.js": "6dde40b8089be0fc8fd3ebfef18c95c8ae89115df1db2c9ea1e5271ddd7c5257",
+      "server/gcsp/comparison/routes/buddy.js": "111148563a4ee0349b878640953a97d99b8b737eaf5c92097061d25ff2b727c2",
+      "server/gcsp/comparison/jobs.js": "8d4a58f96630c8d52d8e6ab43034b77a66391f9528c2a77c7c81dc4327b8b59e",
+      "server/gcsp/comparison/worker.js": "777f89dd7c4a47150770a33f92b7dd07f33114c078bac0689450373c94ccf87b",
+      "server/gcsp/comparison/results.js": "03045401d9a4e528fc4fa3fbc748a7ac09747445f0c709096587bb8f3286759a",
+      "server/gcsp/comparison/job.js": "0a18fbf0175f25a219b3db14c4dae8e0f24d6fc5af94639a8d029b241f2d4b8c",
+      "server/gcsp/allocation/index.js": "383e74788a26a1e00974b78d6d284edec4b58d66ca8c017a223dcea8ad91fde6",
+      "server/gcsp/policy/seed-v1.json": "df662536da13cc1732c093c9969a34a7e3c9452aa9a39bfa63be45f6f6c77b0c",
+      "server/gcsp/repository/core.js": "8260f5eea2856075a7e3c1fcbeb86bb827b447085e23b1a793828a769cbe106c",
+      "server/gcsp/repository/memory.js": "172029073288cc191a5ceb51adc3da8266350d115d93aa7a394b74b085e51819",
+      "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+    }
+  },
+  "inputIdentity": {
+    "fixedNow": "2026-11-10T12:00:00.000Z",
+    "request": {
+      "experimentId": "process-only"
+    },
+    "overlay": null,
+    "canonicalPlan": {
+      "employees": 1000,
+      "seeds": [
+        "comparison-a",
+        "comparison-b",
+        "comparison-c"
+      ],
+      "routes": [
+        "current",
+        "buddy"
+      ],
+      "steps": 6
+    },
+    "policySeedSha256": "df662536da13cc1732c093c9969a34a7e3c9452aa9a39bfa63be45f6f6c77b0c",
+    "comparisonAssumptions": {
+      "comparison.cohortSize": 1000,
+      "comparison.seeds": [
+        "comparison-a",
+        "comparison-b",
+        "comparison-c"
+      ],
+      "comparison.startsAt": "2026-11-05T09:00:00.000Z",
+      "comparison.horizonDays": 90,
+      "comparison.gradeDistribution": [
+        {
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G1-6",
+          "weight": 40
+        },
+        {
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "weight": 30
+        },
+        {
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G8-10",
+          "weight": 20
+        },
+        {
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G11-14",
+          "weight": 10
+        }
+      ],
+      "comparison.pointsAllowanceMultiplier": 1,
+      "comparison.renewalDays": {
+        "min": 7,
+        "max": 90
+      },
+      "comparison.needs.v1": {
+        "essentials": [
+          {
+            "weight": 60,
+            "value": {
+              "seats": {
+                "operator": "gte",
+                "value": 4,
+                "unit": "count"
+              }
+            }
+          },
+          {
+            "weight": 30,
+            "value": {
+              "seats": {
+                "operator": "gte",
+                "value": 5,
+                "unit": "count"
+              },
+              "boot": {
+                "operator": "gte",
+                "value": 430,
+                "unit": "L"
+              }
+            }
+          },
+          {
+            "weight": 10,
+            "value": {}
+          }
+        ],
+        "preferences": {
+          "body": [
+            {
+              "value": "saloon",
+              "weight": 35
+            },
+            {
+              "value": "estate",
+              "weight": 40
+            },
+            {
+              "value": "suv",
+              "weight": 25
+            }
+          ],
+          "fuel": [
+            {
+              "value": "petrol",
+              "weight": 45
+            },
+            {
+              "value": "phev",
+              "weight": 25
+            },
+            {
+              "value": "ev",
+              "weight": 30
+            }
+          ],
+          "comfort": [
+            {
+              "value": 25,
+              "weight": 20
+            },
+            {
+              "value": 50,
+              "weight": 30
+            },
+            {
+              "value": 75,
+              "weight": 50
+            }
+          ],
+          "sportiness": [
+            {
+              "value": 25,
+              "weight": 40
+            },
+            {
+              "value": 50,
+              "weight": 35
+            },
+            {
+              "value": 75,
+              "weight": 25
+            }
+          ]
+        }
+      },
+      "comparison.importanceDistribution": [
+        {
+          "value": 0,
+          "weight": 10
+        },
+        {
+          "value": 25,
+          "weight": 20
+        },
+        {
+          "value": 50,
+          "weight": 30
+        },
+        {
+          "value": 75,
+          "weight": 25
+        },
+        {
+          "value": 100,
+          "weight": 15
+        }
+      ],
+      "comparison.briefNoise.v1": {
+        "accuratePreferenceProbability": 0.8,
+        "preserveEssentials": true
+      },
+      "comparison.accessGroups": [
+        {
+          "id": "immediate-access",
+          "weight": 40,
+          "accessSeconds": {
+            "min": 0,
+            "max": 300
+          },
+          "responseSeconds": {
+            "min": 60,
+            "max": 1800
+          }
+        },
+        {
+          "id": "intermittent-access",
+          "weight": 40,
+          "accessSeconds": {
+            "min": 900,
+            "max": 7200
+          },
+          "responseSeconds": {
+            "min": 1800,
+            "max": 10800
+          }
+        },
+        {
+          "id": "delayed-access",
+          "weight": 20,
+          "accessSeconds": {
+            "min": 10800,
+            "max": 28800
+          },
+          "responseSeconds": {
+            "min": 7200,
+            "max": 43200
+          }
+        }
+      ],
+      "comparison.buddyUptake": 0.75,
+      "comparison.carsPerEmployee": 0.85,
+      "comparison.modelLineMix": [
+        {
+          "modelLine": "G20 Saloon|320i",
+          "weight": 45
+        },
+        {
+          "modelLine": "G21 Touring|320i",
+          "weight": 35
+        },
+        {
+          "modelLine": "G61 i5|i5 40",
+          "weight": 20
+        },
+        {
+          "modelLine": "F70 Sports Hatch|120",
+          "weight": 40
+        }
+      ],
+      "comparison.releaseCadence": {
+        "firstReleaseDay": 0,
+        "intervalDays": 7,
+        "batchSize": 100
+      },
+      "comparison.configurationSet.v1": {
+        "kind": "reviewed-fixtures",
+        "version": "comparison-structural-fixtures.v1",
+        "reviewedOn": "2026-11-08",
+        "basis": "FUCQ-133 source review checks target Q13 identity structure and explicit fictional provenance. Four limited model labels are scenario references, not a published BMW corpus or verified constructible builds. FUCQ-199 (2026-11-08) adds F70 Sports Hatch|120 so grade G1-6 has an eligible line. Replace this key with corpus references when published.",
+        "configurations": [
+          {
+            "modelLine": "G20 Saloon|320i",
+            "configurationId": "Q01QRzIwOlJFRlBBSU5ULFJFRlRSSU0=",
+            "snapshotVersion": "comparison-structural-fixtures.v1",
+            "canonicalIdentity": {
+              "vgModelCode": "CMPG20",
+              "agModelCode": null,
+              "factoryOptionCodes": [
+                "REFPAINT",
+                "REFTRIM"
+              ],
+              "provenance": {
+                "kind": "synthetic",
+                "source": "FUCQ-133 reviewed structural fixture; CMP/REF codes are fictional, not observed BMW option/model codes",
+                "observedDate": null
+              }
+            },
+            "configuration": {
+              "model": "320i",
+              "generation": "G20",
+              "body": "saloon",
+              "powertrain": "petrol",
+              "vgModelCode": "CMPG20",
+              "market": "GB"
+            },
+            "sourceContext": {
+              "sourceRefs": [
+                "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133"
+              ],
+              "observedDate": "2026-11-05",
+              "sourceKind": "synthetic-structural-fixture",
+              "confidence": "Synthetic structural comparison fixture; descriptive labels only, no observed factory configuration, complete specifications or constructibility claim",
+              "unresolvedFacts": [
+                "exactFactoryOptions",
+                "exactEquipment",
+                "constructibility",
+                "fullSchemeModelCoverage"
+              ]
+            }
+          },
+          {
+            "modelLine": "G21 Touring|320i",
+            "configurationId": "Q01QRzIxOlJFRlBBSU5ULFJFRlRSSU0=",
+            "snapshotVersion": "comparison-structural-fixtures.v1",
+            "canonicalIdentity": {
+              "vgModelCode": "CMPG21",
+              "agModelCode": null,
+              "factoryOptionCodes": [
+                "REFPAINT",
+                "REFTRIM"
+              ],
+              "provenance": {
+                "kind": "synthetic",
+                "source": "FUCQ-133 reviewed structural fixture; CMP/REF codes are fictional, not observed BMW option/model codes",
+                "observedDate": null
+              }
+            },
+            "configuration": {
+              "model": "320i Touring",
+              "generation": "G21",
+              "body": "estate",
+              "powertrain": "petrol",
+              "vgModelCode": "CMPG21",
+              "market": "GB"
+            },
+            "sourceContext": {
+              "sourceRefs": [
+                "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133"
+              ],
+              "observedDate": "2026-11-05",
+              "sourceKind": "synthetic-structural-fixture",
+              "confidence": "Synthetic structural comparison fixture; descriptive labels only, no observed factory configuration, complete specifications or constructibility claim",
+              "unresolvedFacts": [
+                "exactFactoryOptions",
+                "exactEquipment",
+                "constructibility",
+                "fullSchemeModelCoverage"
+              ]
+            }
+          },
+          {
+            "modelLine": "G61 i5|i5 40",
+            "configurationId": "Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=",
+            "snapshotVersion": "comparison-structural-fixtures.v1",
+            "canonicalIdentity": {
+              "vgModelCode": "CMPG61",
+              "agModelCode": null,
+              "factoryOptionCodes": [
+                "REFPAINT",
+                "REFTRIM"
+              ],
+              "provenance": {
+                "kind": "synthetic",
+                "source": "FUCQ-133 reviewed structural fixture; CMP/REF codes are fictional, not observed BMW option/model codes",
+                "observedDate": null
+              }
+            },
+            "configuration": {
+              "model": "i5 eDrive40 Touring",
+              "generation": "G61",
+              "body": "estate",
+              "powertrain": "ev",
+              "vgModelCode": "CMPG61",
+              "market": "GB"
+            },
+            "sourceContext": {
+              "sourceRefs": [
+                "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133"
+              ],
+              "observedDate": "2026-11-05",
+              "sourceKind": "synthetic-structural-fixture",
+              "confidence": "Synthetic structural comparison fixture; descriptive labels only, no observed factory configuration, complete specifications or constructibility claim",
+              "unresolvedFacts": [
+                "exactFactoryOptions",
+                "exactEquipment",
+                "constructibility",
+                "fullSchemeModelCoverage"
+              ]
+            }
+          },
+          {
+            "modelLine": "F70 Sports Hatch|120",
+            "configurationId": "Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=",
+            "snapshotVersion": "comparison-structural-fixtures.v1",
+            "canonicalIdentity": {
+              "vgModelCode": "CMPF70",
+              "agModelCode": null,
+              "factoryOptionCodes": [
+                "REFPAINT",
+                "REFTRIM"
+              ],
+              "provenance": {
+                "kind": "synthetic",
+                "source": "FUCQ-133 reviewed structural fixture; CMP/REF codes are fictional, not observed BMW option/model codes",
+                "observedDate": null
+              }
+            },
+            "configuration": {
+              "model": "120",
+              "generation": "F70",
+              "body": "hatchback",
+              "powertrain": "petrol",
+              "vgModelCode": "CMPF70",
+              "market": "GB"
+            },
+            "sourceContext": {
+              "sourceRefs": [
+                "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133"
+              ],
+              "observedDate": "2026-11-08",
+              "sourceKind": "synthetic-structural-fixture",
+              "confidence": "Synthetic structural comparison fixture; descriptive labels only, no observed factory configuration, complete specifications or constructibility claim",
+              "unresolvedFacts": [
+                "exactFactoryOptions",
+                "exactEquipment",
+                "constructibility",
+                "fullSchemeModelCoverage"
+              ]
+            }
+          }
+        ],
+        "datasetId": "comparison-structural-fixtures"
+      },
+      "comparison.maximumGeneratedRows": 100000,
+      "comparison.acceptableFitThreshold": 70,
+      "comparison.manualRoute.v1": {
+        "schemaVersion": 1,
+        "participation": "every-employee-in-the-current-route; buddy non-participants reuse it",
+        "accessEvent": "once-per-release-at-generated-accessSeconds-until-taken-or-renewal",
+        "accessTies": "employeeId-ascending",
+        "eventOrder": [
+          "release",
+          "expiry",
+          "access",
+          "claim",
+          "decision"
+        ],
+        "candidateGate": "stated-brief-eligible-and-fit-at-or-above-threshold",
+        "candidateOrder": "stated-fit-descending-then-orderUuid",
+        "listingToClaimSeconds": 30,
+        "decisionSeconds": 60,
+        "conflict": "refresh-listing-and-claim-next-candidate",
+        "acceptance": "underlying-gates-and-fit-at-or-above-threshold",
+        "acceptedHold": "order-review-then-allocate",
+        "unacceptableHold": "expire-without-taking",
+        "abandonedCar": "not-claimed-again-by-that-employee",
+        "expiryReentry": "next-modelled-access-event",
+        "renewalDeadline": "inclusive",
+        "responseSeconds": "not-used; the manual decision happens in the portal session"
+      },
+      "comparison.recordAdapter.v1": {
+        "schemaVersion": 1,
+        "fixtureVersion": "comparison-records.synthetic.v1",
+        "kind": "synthetic-mechanics-only",
+        "stockAvailabilityDaysAfterHorizon": 1,
+        "orderReferences": "sequential-run-local-seven-digits",
+        "principalIds": "derived-from-generated-employeeId",
+        "collectionChoice": "first-permitted-driver-contract-location; renewal-date",
+        "expectedReturnMileage": 0,
+        "specialRequirements": "",
+        "driver": {
+          "eligible": {
+            "status": "known",
+            "value": true,
+            "unit": null
+          },
+          "kind": "employee",
+          "licence": {
+            "displayNumber": "FICTIONAL-COMPARISON-LICENCE",
+            "categories": [
+              "car"
+            ],
+            "validFrom": "2020-01-01",
+            "validUntil": "2030-12-31"
+          }
+        },
+        "employeeFacts": {
+          "charging": {
+            "status": "known",
+            "value": "home",
+            "unit": null
+          },
+          "annualMileage": {
+            "status": "known",
+            "value": 12000,
+            "unit": "mi/year"
+          }
+        },
+        "contact": {
+          "phone": "01632 960000",
+          "emailTemplate": "{employeeId}@bmwgroup.test"
+        },
+        "stockFactsByModelLine": {
+          "G20 Saloon|320i": {
+            "body": {
+              "status": "known",
+              "value": "saloon",
+              "unit": null
+            },
+            "fuel": {
+              "status": "known",
+              "value": "petrol",
+              "unit": null
+            },
+            "seats": {
+              "status": "known",
+              "value": 5,
+              "unit": "count"
+            },
+            "boot": {
+              "status": "known",
+              "value": 480,
+              "unit": "L"
+            },
+            "zeroTo62": {
+              "status": "known",
+              "value": 7.4,
+              "unit": "s"
+            },
+            "mpg": {
+              "status": "known",
+              "value": 45,
+              "unit": "mpg-imperial"
+            },
+            "sizeClass": {
+              "status": "known",
+              "value": 3,
+              "unit": "ordinal-1-5"
+            },
+            "tags": {
+              "status": "known",
+              "value": [
+                "cruiser"
+              ],
+              "unit": null
+            },
+            "insuranceGroup": {
+              "status": "known",
+              "value": 25,
+              "unit": "insurance-group"
+            },
+            "equipment": {
+              "status": "unknown",
+              "value": null,
+              "unit": "equipment-key"
+            },
+            "frontIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            },
+            "rearIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            }
+          },
+          "G21 Touring|320i": {
+            "body": {
+              "status": "known",
+              "value": "estate",
+              "unit": null
+            },
+            "fuel": {
+              "status": "known",
+              "value": "petrol",
+              "unit": null
+            },
+            "seats": {
+              "status": "known",
+              "value": 5,
+              "unit": "count"
+            },
+            "boot": {
+              "status": "known",
+              "value": 500,
+              "unit": "L"
+            },
+            "zeroTo62": {
+              "status": "known",
+              "value": 7.5,
+              "unit": "s"
+            },
+            "mpg": {
+              "status": "known",
+              "value": 44,
+              "unit": "mpg-imperial"
+            },
+            "sizeClass": {
+              "status": "known",
+              "value": 3,
+              "unit": "ordinal-1-5"
+            },
+            "tags": {
+              "status": "known",
+              "value": [
+                "cruiser"
+              ],
+              "unit": null
+            },
+            "insuranceGroup": {
+              "status": "known",
+              "value": 25,
+              "unit": "insurance-group"
+            },
+            "equipment": {
+              "status": "unknown",
+              "value": null,
+              "unit": "equipment-key"
+            },
+            "frontIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            },
+            "rearIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            }
+          },
+          "G61 i5|i5 40": {
+            "body": {
+              "status": "known",
+              "value": "estate",
+              "unit": null
+            },
+            "fuel": {
+              "status": "known",
+              "value": "ev",
+              "unit": null
+            },
+            "seats": {
+              "status": "known",
+              "value": 5,
+              "unit": "count"
+            },
+            "boot": {
+              "status": "known",
+              "value": 570,
+              "unit": "L"
+            },
+            "zeroTo62": {
+              "status": "known",
+              "value": 7.7,
+              "unit": "s"
+            },
+            "mpg": {
+              "status": "unknown",
+              "value": null,
+              "unit": "mpg-imperial"
+            },
+            "sizeClass": {
+              "status": "known",
+              "value": 4,
+              "unit": "ordinal-1-5"
+            },
+            "tags": {
+              "status": "known",
+              "value": [
+                "cruiser"
+              ],
+              "unit": null
+            },
+            "insuranceGroup": {
+              "status": "known",
+              "value": 25,
+              "unit": "insurance-group"
+            },
+            "equipment": {
+              "status": "unknown",
+              "value": null,
+              "unit": "equipment-key"
+            },
+            "frontIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            },
+            "rearIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            }
+          }
+        },
+        "unknownFieldRule": "retain-unknown-no-inference",
+        "suitabilityAvailability": "static-suitability-at-origin; release time, visibility and claims are rechecked by FUCQ-66 in the run",
+        "limitations": [
+          "Fictional facts for mechanics; not observed BMW configurations, insurance, licence or employee behaviour.",
+          "Underlying needs are synthetic latent inputs, not a real employee confirmation.",
+          "Equipment and ISOFIX facts are unknown; no factory-option or constructibility inference.",
+          "Live corpus realism/integration is separate acceptance evidence."
+        ]
+      },
+      "comparison.buddyRoute.v1": {
+        "schemaVersion": 1,
+        "participation": "generated-buddyParticipation",
+        "consent": "search-and-hold-given-through-brief-service-with-stated-brief",
+        "allocation": "at-each-release-through-allocation-service",
+        "orderingWindow": "participant-pauses-when-manual-ordering-closes",
+        "response": "offer-creation-plus-generated-responseSeconds",
+        "offerExpiry": "buddy-hold-deadline",
+        "acceptance": "underlying-gates-and-fit-at-or-above-threshold",
+        "declineReason": "registered-reason-for-largest-importance-weighted-shortfall",
+        "declineReasonFallback": "size",
+        "afterDeclineOrExpiry": "no-trigger-until-next-release-or-brief-change",
+        "nonParticipants": "comparison.manualRoute.v1"
+      },
+      "comparison.noClearDifferenceRule": {
+        "schemaVersion": 1,
+        "rule": "route-seed-ranges-overlap",
+        "overlapInclusive": true,
+        "minimumSeeds": 3,
+        "betterWhen": {
+          "acceptableCoverage": "higher",
+          "carsNeverAllocated": "lower",
+          "heldNotTakenCarDays": "lower",
+          "declinedOffers": "lower",
+          "expiredOffers": "lower",
+          "failedClaims": "lower",
+          "retries": "lower",
+          "meanAcceptedFit": "higher",
+          "accessGroupCoverage": "higher"
+        }
+      },
+      "comparison.experiments.v1": {
+        "schemaVersion": 1,
+        "experiments": {
+          "order-mix": {
+            "key": "comparison.modelLineMix",
+            "unit": "weighted model-line mix"
+          },
+          "points": {
+            "key": "comparison.pointsAllowanceMultiplier",
+            "unit": "allowance multiplier",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "hold-sweep": {
+            "key": "hold.buddy.durationSeconds",
+            "unit": "seconds",
+            "minimum": 900,
+            "maximum": 86400,
+            "maximumValues": 5
+          }
+        }
+      },
+      "comparison.jobs.v1": {
+        "schemaVersion": 1,
+        "timeoutSeconds": 1800,
+        "workerHeapMb": 128,
+        "workerYoungGenerationMb": 16
+      }
+    },
+    "exactGeneratedIdentity": "Deterministic generator/policy bytes and full canonical assumptions fixed before launch; first seed manifest inputHash/policyHash measured at route-open-before and checked for matching current/buddy values in result analysis"
+  },
+  "diagnostic": {
+    "stop": "After first actual buddy claim.tryClaim returns; injected throw follows scalar checkpoint, allocator converts to unavailable and run closes normally",
+    "observations": [
+      "original+transformed hook SHA256",
+      "current/buddy seed/input/policy hashes and sizes",
+      "prepare/snapshot/plan/record/receipt/cache/claim scalar phases",
+      "weak store/pool/snapshot/planned wrapper/plan/slices alive flags",
+      "1s heap/RSS and HTTP health/process/latest timings with wall+monotonic samples"
+    ],
+    "limits": {
+      "workerOldMiB": 128,
+      "workerYoungMiB": 16,
+      "applicationTimeoutSeconds": 1800,
+      "diagnosticStopCapSeconds": 570,
+      "supervisorHardTimeoutSeconds": 600,
+      "workerCount": 1,
+      "maxPhaseRecords": 256
+    },
+    "excluded": [
+      "full6step canonical completion/result immutability acceptance",
+      "larger heap or smaller cohort",
+      "graph walks or forced GC",
+      "semantic/production edits",
+      "full suite/PostgreSQL/F71 new-process readback"
+    ],
+    "limitations": [
+      "Observer transforms imported worker module bytes and adds scalar/WeakRef overhead; this is diagnostic only",
+      "Weak liveness without forced GC may remain inconclusive; no natural-GC ownership claim unless observed",
+      "Prior canonical-v3 sampling gap245.865s and unexplained clocks remain; this run does not erase them",
+      "backend-work-start occurs after queue acquisition and shallow draft creation; absence does not exclude pre-marker transaction entry"
+    ]
+  },
+  "resources": {
+    "expectedDurationSeconds": [
+      180,
+      450
+    ],
+    "expectedPeakProcessGroupMiB": 600,
+    "reservedProcessGroupMiB": 768,
+    "scratchBudgetMiB": 32,
+    "expectedScratchBytes": 0,
+    "retainedOutputBudgetMiB": 2,
+    "workers": 1,
+    "hostSnapshot": {
+      "headroom": {
+        "free": 16310419456,
+        "disk": 10941710336,
+        "ram": 2793570304,
+        "active": 0,
+        "low": true,
+        "parent": null
+      },
+      "memoryPressure": "The system has 17179869184 (1048576 pages with a page size of 16384).\nSystem-wide memory free percentage: 39%",
+      "swap": "vm.swapusage: total = 10240.00M  used = 9326.06M  free = 913.94M  (encrypted)",
+      "f345CombinedGroup2747": [],
+      "f345MeasuredGroupRssKiB": 0
+    },
+    "combinedDemand": "Host headroom includes all apps; F345 group2747 currently has no live members in ps snapshot, prior completed browser demand not double-counted; preserve any registry allocation appearing before admission",
+    "reservation": "test_resources.HostBudget acquire under machine-wide short lock before process spawn, actual process-group RSS sampled; no test worker concurrency",
+    "scratchOwnership": "Supervisor generates /private/tmp/test-stamp-shard-<token>; external manifest under shared/fucq309-supervisor/ownership written before mkdir; TMPDIR/TMP/TEMP propagated",
+    "finalizer": "Registered handled termination + cancel: stop and join owned process group, remove only manifest-owned scratch, verify absence, release host reservation; independently audit receipt+manifest+process group after exit",
+    "largeFiles": "No archive or >=256MiB output planned; if expected, direct OneDrive output policy applies",
+    "lowHeadroom": "16GB free-ish below30GiB preferred trigger: one worker, bounded scalar logs and32MiB scratch; preserve5GiB emergency reserve; failed admission means report, no bypass or repeated proof"
+  },
+  "command": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-supervise.py",
+    "--id",
+    "first-buddy-claim-v1",
+    "--seconds",
+    "300",
+    "--ram-mib",
+    "768",
+    "--scratch-mib",
+    "32",
+    "--",
+    "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+    "--import",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-local-deps.mjs",
+    "--import",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-first-buddy-observer.mjs",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-first-buddy-http.mjs",
+    "9bcd3e865be5b4e9df43b031e8742f866f1f9fb2",
+    "first-buddy-claim-v1"
+  ],
+  "harnessHashes": {
+    "fucq309-supervise.py": "8b6c308c2259e620cb82023f079f4d2f5da45baed835af2f326e8ae6d6963dfa",
+    "fucq309-local-deps.mjs": "0e01fe0617792787b04b8dc499273b27b044de0850602f0bd5045ca6cf807e26",
+    "fucq309-first-buddy-observer.mjs": "7b4412f7be0e7b8d5cba4b7a0cb71d062dc8941b64ac090a10d5082e91b6bea3",
+    "fucq309-first-buddy-http.mjs": "3620a29eb9d6eb2d78e74373c7122edcbfb4a1663246d3891472b8459a560240"
+  },
+  "runtime": {
+    "nodeExecutable": "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+    "nodeVersion": "v26.7.0",
+    "python": "/usr/bin/python3",
+    "platform": "Darwin"
+  },
+  "preflight": [
+    {
+      "command": [
+        "node",
+        "--check",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-first-buddy-observer.mjs"
+      ],
+      "exit": 0
+    },
+    {
+      "command": [
+        "node",
+        "--check",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-first-buddy-http.mjs"
+      ],
+      "exit": 0
+    }
+  ],
+  "nextGate": "Report measured checkpoint and cleanup to parent before any further canonical attempt",
+  "agents": "Ralph requested/selectedgpt-6.1-sol/xhigh,no fallback,no descendants"
+}
