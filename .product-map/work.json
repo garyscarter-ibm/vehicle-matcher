@@ -4195,6 +4195,64 @@
       ],
       "unsliced": false,
       "original_status": "In Review"
+    },
+    {
+      "id": "FUCQ-309",
+      "title": "Default 1,000-employee comparison runs out of worker heap in 3 of 3 runs",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-309",
+      "branch": "dev/DEV-2026-11-10-GC-027",
+      "jira_source_updated_at": "2026-11-10T13:22:52.200Z",
+      "jira_observed_at": "2026-11-10T13:26:47.809069Z",
+      "workers": [
+        {
+          "name": "Ralph Wolf",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-10T13:28:21.822401Z",
+          "expires_at": "2026-11-10T14:13:21.822401Z",
+          "source": "FUCQ-309 lead observed live collaboration agent",
+          "status": "current-code cause review"
+        },
+        {
+          "name": "Speedy Gonzales",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-10T13:28:21.822401Z",
+          "expires_at": "2026-11-10T14:13:21.822401Z",
+          "source": "FUCQ-309 lead observed live collaboration agent",
+          "status": "bounded census"
+        }
+      ],
+      "observed_at": "2026-11-10T13:28:22Z",
+      "slices": [
+        {
+          "id": "current-cause",
+          "status": "in-progress",
+          "title": "Current-code retained-data evidence",
+          "observed_at": "2026-11-10T13:27:09Z",
+          "evidence": "Bounded current-code census planned under .claude/dev-poller-20261110/fucq309-validation-plan.json; no runtime evidence yet."
+        },
+        {
+          "id": "retention-repair",
+          "status": "not-started",
+          "title": "Evidenced replay memory and lifetime repair"
+        },
+        {
+          "id": "semantic-regression",
+          "status": "not-started",
+          "title": "Semantic regression and affected-reader checks"
+        },
+        {
+          "id": "canonical-integration",
+          "status": "not-started",
+          "title": "Canonical six-step stored-result integration gate"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
