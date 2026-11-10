@@ -1193,7 +1193,7 @@
           "status": "in-progress",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
           "observed_at": "2026-11-06T00:30:56Z",
-          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100\u2192102 streamedHTTP\u2192105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
+          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100→102 streamedHTTP→105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
         },
         {
           "id": "decision-host",
@@ -2062,7 +2062,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
@@ -3917,7 +3917,7 @@
     },
     {
       "id": "FUCQ-326",
-      "title": "Use \u201cYour preferences\u201d consistently in the employee journey",
+      "title": "Use “Your preferences” consistently in the employee journey",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
@@ -4120,7 +4120,7 @@
       "status": "In Progress",
       "type": "Bug",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-323",
-      "observed_at": "2026-11-10T12:02:48Z",
+      "observed_at": "2026-11-10T12:31:13Z",
       "branch": "dev/DEV-2026-11-10-002",
       "slices": [
         {
@@ -4132,13 +4132,17 @@
         },
         {
           "id": "projection",
-          "status": "not-started",
-          "title": "Complete-display-projection"
+          "status": "complete",
+          "title": "Complete-display-projection",
+          "observed_at": "2026-11-10T12:31:13Z",
+          "evidence": "Supported fleet bindings and saved/public current-stock-manual-offer-activity-order projections verified; 177/177 integrated scoped checks. docs/gcsp/evidence/fucq323/validation.json"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Rendered-integration-and-review"
+          "status": "complete",
+          "title": "Rendered-integration-and-review",
+          "observed_at": "2026-11-10T12:31:13Z",
+          "evidence": "Independent substantive visual critique at1280/375 across40 captures passed after corrections. FUCQ-345 Low remains separate. docs/gcsp/evidence/fucq323/visual-review.json"
         }
       ],
       "unsliced": false

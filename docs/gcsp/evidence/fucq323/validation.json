@@ -1,0 +1,71 @@
+{
+  "task": "FUCQ-323",
+  "scope": "targeted",
+  "result": "passed",
+  "latestIntegration": {
+    "tests": 177,
+    "passed": 177,
+    "failed": 0,
+    "skipped": 0,
+    "wallSeconds": 2.7,
+    "peakRssBytes": 241844224,
+    "scratchBytes": 0,
+    "scratchRemoved": true,
+    "commands": [
+      "node --test --test-concurrency=1 server/test/gcsp-display-images.test.js server/test/gcsp-display-projection.test.js server/test/gcsp-live-display-images.test.js server/test/gcsp-live-image-route.test.js server/test/gcsp-identity.test.js server/test/gcsp-offer-decisions.test.js server/test/ui-ratchet.test.js"
+    ],
+    "codeKey": "acf49752a44b40c5c65fef7077ac383e5232dacb49124e420fd7163407f8a201",
+    "base": "29c5b636",
+    "assembledImplementation": "7f011ca1",
+    "variant": "default",
+    "targetedEvidence": ".claude/test-runs/targeted-acf49752a44b40c5c65fef7077ac383e5232dacb49124e420fd7163407f8a201-default-1794313322485768000.json",
+    "checkpoint": ".claude/test-runs/checkpoints/13518572bed1402898b53c1de2342942f321e2ca18f3e10c14e082affca8be12.json"
+  },
+  "integrationReassessment": "Latest base changes only backlog/claim/archive/evidence metadata. All274 reviewed application/test/asset hashes remain identical; inputs/environment/variant unchanged.",
+  "otherCompletedScopedRuns": [
+    "58/58 source/stock/current/generated",
+    "20/20 identity",
+    "74/74 offer boundaries",
+    "19/19 projection",
+    "6/6 account",
+    "153/153 media/activity/offer/progress/ratchet",
+    "109/109 final catalogue/projection/ratchet"
+  ],
+  "coverage": "All2424 supported GB configurations have a validated model/body image binding; one US G23 reference is excluded. No measured per-test coverage contexts were captured; test ownership/boundaries were reviewed.",
+  "boundaries": [
+    "Catalogue digest/retained byte verification",
+    "Canonical configuration, generation/body and paint associations",
+    "Saved public snapshots overlaid only after authority/digest validation",
+    "Private pending payloads and selection terms preserved",
+    "Current/manual/generated stock",
+    "Offer/activity/order-progress consumers",
+    "Actual cookie-gated hosted WebP delivery",
+    "Latest FUCQ322 identity and FUCQ333 offer decisions",
+    "Shared component CSS ratchet"
+  ],
+  "selector": "No JavaScript affected selector plugin; automatic full-suite fallback rejected and explicit affected commands selected.",
+  "excludedAndUnrun": [
+    "Full unrelated npm suite/simulations not run",
+    "PostgreSQL validation unrun without GCSP_DATABASE_URL",
+    "Browser detector did not execute because application CSP refused script; findings remain null"
+  ],
+  "historicalFailures": [
+    "Expected failing regression/activity/live-route red checks",
+    "Interim source probes redirect/404 and assembly input/path/model prerequisites",
+    "Interim read-model check missing live module/stale representative assertions",
+    "Projection alias mutation regression repaired and final projection checks passed",
+    "Repeated full-corpus fixture startup timed out240s; hermetic lookup stubs repaired it",
+    "Projection HTTP allocation exceeded384MiB and stopped; later scoped checks passed",
+    "Initial153-test HTTP/UI run had152pass/1CSS-cap fail; corrected and subsequent ratchet/media checks passed",
+    "Parent-cancelled HTTP/UI boundary run partial after9 activity checks, no complete receipt",
+    "Browser round1 timeout300s; round2 missing selected pair repaired by supplement",
+    "Selected-actions capture receipt incomplete for desktop phone viewport-only check, combined visual review passed"
+  ],
+  "relatedKnownIssues": [
+    "FUCQ-345 Low badge clipping; separate backlog",
+    "FUCQ-344 independently logged by login delivery for painted-copy JSDOM errors; no duplicate or product-fix claim"
+  ],
+  "liveSmoke": "live-smoke.json",
+  "visualReview": "visual-review.json",
+  "resourceReceipt": "resource-cleanup.json"
+}
