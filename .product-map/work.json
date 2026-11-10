@@ -4209,13 +4209,13 @@
           "name": "Daffy Duck",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-10T13:44:26Z",
-          "expires_at": "2026-11-10T13:49:00Z",
-          "status": "waiting-independent-review",
-          "source": "Lead checkpoint pushed; yielding slot for independent review, thread 01a1c5aa-99a3-7f50-91c6-677707d33fd4"
+          "observed_at": "2026-11-10T14:08:12Z",
+          "expires_at": "2026-11-10T14:08:12Z",
+          "status": "delivered-to-dispatcher",
+          "source": "Original branch acceptance complete after isolated A/B review; final Result/evidence recorded; no shared-base merge or Jira acceptance asserted"
         }
       ],
-      "observed_at": "2026-11-10T13:49:33Z",
+      "observed_at": "2026-11-10T14:08:13Z",
       "slices": [
         {
           "id": "fixture-boundaries",
@@ -4233,14 +4233,17 @@
         },
         {
           "id": "visual",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Independent-desktop-and-narrow-rendered-critique",
-          "observed_at": "2026-11-10T13:44:26Z"
+          "observed_at": "2026-11-10T14:08:12Z",
+          "evidence": "Independent Imhotep A: substantive desktop/narrow critique and code/security pass; isolated Bugs Bunny B: zero detector findings, repeated local HTTPS proof. Lead inspected B corrected captures. FUCQ-346 separately captured; review.md."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Reviewed-story-delivery-evidence"
+          "status": "complete",
+          "title": "Reviewed-story-delivery-evidence",
+          "observed_at": "2026-11-10T14:08:12Z",
+          "evidence": "Branch delivery acceptance/evidence/Result prepared against reviewed 34d59bd7; source/test identity unchanged and 242/242 scoped evidence reused. Dispatcher still owns live-claim/current-base integration, merge and native acceptance; no deployed/PostgreSQL assertion."
         }
       ],
       "unsliced": false,

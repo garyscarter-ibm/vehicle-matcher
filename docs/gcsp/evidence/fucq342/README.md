@@ -1,6 +1,6 @@
 # FUCQ-342 fixture session isolation evidence
 
-Checkpoint: **WAITING for independent visual review**. Source and scoped behavior checks pass; this evidence does not mark the Bug built, accepted or deployed.
+Status: **built for dispatcher integration**. All three original branch acceptance criteria are met. Source checkpoint `34d59bd71bacd055d9af54579cfb99e455e26ac4` passed isolated independent design/code/security and detector/browser reviews; see [review.md](review.md). This record does not mark Jira accepted or assert a merge/deployment.
 
 Named offer and outbox adapters now explicitly pass `signOut: false` through their existing wrapper boundaries. All four gallery shell examples do the same. Live compositions leave the option undefined, retaining the shared shell’s existing Sign out behavior. No shared shell or stylesheet changed.
 
@@ -30,10 +30,12 @@ Each filename ends with viewport width: **1440 × 1000** or **390 × 844**. Fixt
 | `gallery-loading`, `gallery-unavailable` | Account loading and unavailable examples |
 | `live-pending`, `live-error` | Live Sign out pending/disabled and failed/retry states; retained from the successful live API proof |
 
-The lead has inspected these desktop/narrow states. Independent Assessment A must judge hierarchy, proportions, control readability, identity, actions, focus and feedback before seeing detector or prior findings. Assessment B then supplies isolated detector/browser evidence. Both remain pending at this checkpoint.
+Imhotep’s isolated Assessment A inspected all 24 captures before reading prior findings or detector output, then passed the bounded code/security review. Bugs Bunny’s isolated Assessment B ran the detector once (zero findings) and independently repeated the local HTTPS browser proof. The lead inspected representative fresh B desktop/narrow offer/outbox and live pending/error pairs after both reports completed. Both reviewers found no in-scope correction; their sole gallery finding is tracked separately. See [review.md](review.md) for the substantive critique and its limits. The unchanged 242-test evidence was reused, not rerun.
 
 ## Separate finding and resources
 
-**FUCQ-346 (Low)** records the existing gallery frame clipping long account text and the unavailable Retry button at 390px. See `gallery-390.png` and `gallery-unavailable-390.png`. The dispatcher verified the origin/relationship and owns its native Jira capture. Its CSS is outside this Bug; it is not claimed fixed.
+**FUCQ-346 (Low)** records the existing gallery frame clipping long account text and the unavailable Retry button at 390px. See `gallery-390.png` and `gallery-unavailable-390.png`. The dispatcher verified origin FUCQ-322 and found-during FUCQ-342; native/local Bug DEV-2026-11-10-005 is To Do and unassigned with all three attachments ready and check-story passing. Its CSS is outside this Bug; it is not claimed fixed.
 
-Ten run-owned test/browser shards are verified absent, as are their owned processes. The read-only dependency symlink and generated Python bytecode were removed; the dependency target remains intact. The recorded scratch peaks total 15,996,696 bytes across sequential chunks; the maximum chunk was 7,181,756 bytes. Maximum recorded process RSS was 353,288,192 bytes. Local scratch held only bounded browser profiles/HTTPS/tool working data and was removed. Concise manifests, checkpoints and bounded diagnostics remain under `.claude/test-runs/fucq342-20261110/` and `.claude/dev-poller-20261110/`; no cloud output or large artifact was created.
+Twelve run-owned test/browser/detector shards and B’s tracking root are verified absent; reviewers and dispatcher verified owned process cleanup. The read-only dependency symlink and generated Python bytecode were removed; the dependency target remains intact. The recorded scratch peaks total 23,178,451 bytes across sequential chunks; the maximum chunk was 7,181,756 bytes. Maximum recorded process RSS was 353,288,192 bytes. Local scratch held only bounded browser profiles/HTTPS/tool working data and was removed. Concise manifests, checkpoints and bounded diagnostics remain under `.claude/test-runs/fucq342-20261110/` and `.claude/dev-poller-20261110/`; no cloud output or large artifact was created.
+
+B preserved a supervisor output-redirection failure before Chrome launch, then completed a browser-only retry without rerunning the detector. Its normalized capture hashes, source identity and resource result are appended to `validation.json`; no duplicate capture set is required for this final record.
