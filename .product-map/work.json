@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-10T11:32:21Z",
+  "observed_at": "2026-11-10T11:57:07Z",
   "version": 1,
   "stories": [
     {
@@ -3995,13 +3995,36 @@
     {
       "id": "FUCQ-333",
       "title": "Allow a valid issued offer to be accepted after preference-only changes",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
       "type": "Bug",
-      "observed_at": "2026-11-10T11:32:22Z",
+      "observed_at": "2026-11-10T11:59:28Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-333",
-      "unsliced": true
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "decision",
+          "status": "complete",
+          "title": "Preference-only-precedence",
+          "observed_at": "2026-11-10T11:55:51Z",
+          "evidence": "3017d7f9; semantic essentials regression, quote/replay pins; independent code/security PASS; docs/gcsp/evidence/fucq333/README.md"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Decision-and-journey-regression",
+          "observed_at": "2026-11-10T11:59:28Z",
+          "evidence": "Integrated base 5d1bfe4a, tested ea885c60 production/test hashes in docs/gcsp/evidence/fucq333/validation.json; all selected tests passed with historical supervisor skips explicitly retained."
+        },
+        {
+          "id": "visual",
+          "status": "complete",
+          "title": "Rendered-offer-review",
+          "observed_at": "2026-11-10T11:55:51Z",
+          "evidence": "No UI source changed. Collaborator explicitly waived visual review on 2026-11-10. Existing display captures and presentation checks retained as incidental evidence; docs/gcsp/evidence/fucq333/README.md"
+        }
+      ]
     },
     {
       "id": "FUCQ-334",

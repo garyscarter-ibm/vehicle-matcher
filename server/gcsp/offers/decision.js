@@ -12,6 +12,10 @@ const text = (v) => typeof v === 'string' && v.trim().length > 0 && v.length <= 
 const positive = (v) => Number.isSafeInteger(v) && v > 0;
 const instant = (v) => typeof v === 'string' && /Z$/.test(v) && Number.isFinite(Date.parse(v));
 const same = (a, b) => inputDigest(a) === inputDigest(b);
+const essentialMeaning = (essentials) => Object.fromEntries(Object.entries(essentials).map(([key, e]) => [key, {
+  value: e.operator === 'includes' && Array.isArray(e.value) ? [...e.value].sort() : e.value,
+  operator: e.operator, unit: e.unit, state: e.state,
+}]));
 const ref = (scope, table, key = {}) => ({ table, key: { runId: scope.runId, ...key } });
 const unavailable = (code = 'offer-decision-unavailable') => result('unavailable', {
   code, reason: 'Offer decisions are temporarily unavailable.', retryable: true });
@@ -184,8 +188,8 @@ export class OfferDecisionService {
   async #accept(tx, scope, rows, time) {
     if (typeof this.#evaluate !== 'function') return unavailable('stored-subject-evaluator-not-configured');
     const { employee, brief, pinnedBrief, quote, run, hold } = rows;
-    // A background pause is distinct from changing practical requirements.
-    if (!same(brief.preferences, pinnedBrief.preferences) || !same(brief.essentials, pinnedBrief.essentials)) {
+    // Issued offers survive preference changes and reconfirmation metadata; practical requirements still gate acceptance.
+    if (!same(essentialMeaning(brief.essentials), essentialMeaning(pinnedBrief.essentials))) {
       return conflict('brief-changed-review-required');
     }
     if (!instant(quote.validUntil) || Date.parse(time.now) >= Date.parse(quote.validUntil)
