@@ -58,7 +58,7 @@ reads as a control room for the scheme, not as a debug panel.
   11:31am  Offer email sent to paula.mason@gcsp-demo.com          View email
 ```
 
-### Buttons: my recommendation
+### Buttons: agreed, Gary, 10 November 2026
 
 Two buttons, one primary, plus a link out.
 
@@ -81,7 +81,7 @@ comes next:
 
 ### Alternatives I considered
 
-- **A. Two buttons (recommended).** Release and Start again, label changes with the state.
+- **A. Two buttons (agreed).** Release and Start again, label changes with the state.
 - **B. One "Next" button.** Steps a scripted storyboard (release, wait, move a day). Fewest buttons, but
   the presenter loses the feel of *causing* a release, and an off-script audience question has no answer.
 - **C. Day timeline.** A strip of seven days; click a day to jump to its release. Visually strong and
@@ -218,7 +218,7 @@ engine. Slice 4 is the riskiest: it moves the main journey off fixed stock days 
 
 ## Questions for Gary (each with my recommendation)
 
-1. **Two buttons, or one Next?** Recommend two (A).
+1. ~~Two buttons, or one Next?~~ **Decided: two buttons (A), Gary, 10 November 2026.**
 2. **Daily every day, or weekdays only?** Recommend weekdays only at 11:30, so "tomorrow" skips the
    weekend and the week stays close to the real volume.
 3. **Keep 100, or match the real 300 to 400 a week?** Recommend 100: it's the number the audience will
