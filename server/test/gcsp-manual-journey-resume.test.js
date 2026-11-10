@@ -307,12 +307,16 @@ test('disposing a checking generation aborts its real read and fences late respo
 });
 
 test('a presenter Tick past the hold expiry refreshes the mounted review without writing or losing the draft', async (t) => {
-  const f = await setup(t); const { subscribePresenterActions } = await import('../../blocks/gcsp/presenter-controls/controls.js');
-  await f.mount({ subscribeClock: subscribePresenterActions(f.root) });
+  const f = await setup(t); const { subscribePresenterActions } = await import('../../blocks/gcsp/kit/presenter-actions.js');
+  const { mountPresenterControls } = await import('../../blocks/gcsp/presenter-controls/controls.js');
+  await f.mount({ subscribeClock: subscribePresenterActions(f.root.ownerDocument.body) });
+  // The console is its own page now; mount it beside the journey the way a second tab would drive it.
+  const consoleHost = f.root.ownerDocument.createElement('div'); f.root.ownerDocument.body.append(consoleHost);
+  const strip = mountPresenterControls(consoleHost, { commandId: () => `resume-tick:${Math.random()}`, navigate() {} }); t.after(() => strip.destroy());
   click(f.root, 'Carry on'); await expectReview(f);
   const hold = good(await f.request('/api/gcsp/manual/claim')).hold; const offset = f.requests.length;
   const phone = f.root.querySelector('[name="contact.phone"]'); phone.value = '07700 900123'; phone.dispatchEvent(new f.root.ownerDocument.defaultView.Event('input', { bubbles: true }));
-  const tick = () => { const node = [...f.root.querySelectorAll('button')].find((row) => row.textContent.startsWith('Tick (')); assert.ok(node, 'Expected presenter Tick.'); node.click(); };
+  const tick = () => { const node = [...consoleHost.querySelectorAll('button')].find((row) => row.textContent.startsWith('Tick (')); assert.ok(node, 'Expected presenter Tick.'); node.click(); };
   const cont = () => [...f.root.querySelectorAll('button')].find((row) => row.textContent === 'Continue to order review');
   const posts = () => f.postsSince(offset).length;
   tick(); await waitFor(() => posts() === 1 && !f.root.querySelector('[aria-busy="true"]'));

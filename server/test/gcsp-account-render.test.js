@@ -262,9 +262,8 @@ test('account composition preserves complete supplied facts, labelled details an
     assert.ok(drivers.textContent.includes('Address Line1: 2 Fictional Avenue') || drivers.textContent.includes('2 Fictional Avenue'));
     assert.ok(rowsOf(root).some((tr) => cellsOf(tr)[1] === 'Scheme 2'));
     assert.doesNotMatch(root.textContent, /\[object Object\]|undefined|NaN|Invalid Date/);
-    // The shell's presenter bar (112fdfe2) stays hidden without a presenter session; the account itself has no controls.
-    assert.equal([...root.querySelectorAll('input, select, textarea')].filter((n) => !n.closest('.gcsp-presenter-region')).length, 0);
-    assert.equal(root.querySelector('.gcsp-presenter-controls').hidden, true);
+    assert.equal(root.querySelectorAll('input, select, textarea').length, 0);
+    assert.equal(root.querySelector('.gcsp-presenter-controls, .gcsp-presenter-flyout, .gcsp-nav-presenter-btn'), null);
     assert.equal(root.querySelectorAll('.vm-decision, .vm-card-score').length, 0);
     assert.doesNotMatch(root.textContent, /Synthetic example data/);
   } finally { destroy(); root.remove(); }
@@ -985,10 +984,9 @@ test('FUCQ-223: the account keeps the Choices kicker, and its stylesheet carries
     assert.equal(intro.querySelector('.vm-kicker').textContent, 'Choices');
     assert.ok(intro.querySelector('.vm-kicker').compareDocumentPosition(intro.querySelector('h1')) & 4, 'kicker sits above the title');
   } finally { destroy(); root.remove(); }
-  // gcsp-presenter.html loads only gcsp-account.css, so the order-progress sheet must come in through it.
+  // Pages load only gcsp-account.css, so the order-progress sheet must come in through it.
   const css = (path) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
   assert.match(css('blocks/gcsp/account/gcsp-account.css'), /@import "\.\.\/order-progress\/gcsp-order-progress\.css";/);
-  assert.match(css('gcsp-presenter.html'), /blocks\/gcsp\/account\/gcsp-account\.css/);
   assert.match(css('blocks/gcsp/order-progress/gcsp-order-progress.css'), /\.gcsp-order-car \{ display: grid;/);
 });
 

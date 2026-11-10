@@ -94,10 +94,9 @@ producers exist.
 ## UI consumer · FUCQ-126
 
 `blocks/gcsp/presenter-controls/controls.js` mounts the shared collapsible presenter strip;
-`register.js` registers `<gcsp-presenter-controls>`. The shell mounts it by default and reveals
-it only after a successful server CONTROL read, independently of the acting role. Embedders
-and isolated fixtures use `presenterControls: false`, or inject `{ adapter, commandId, navigate }`.
-The employee mount forwards `ctx.presenterControls` to the shell. The reusable `presenterBar`
+`register.js` registers `<gcsp-presenter-controls>`. The portal shell no longer mounts the strip (FUCQ-361);
+portal pages subscribe to console actions through `blocks/gcsp/kit/presenter-actions.js`.
+The reusable `presenterBar`
 kit helper owns the native disclosure, panel and supplied run/clock/principal facts; the controller
 owns authorization and commands. Scenario and Acting principal both use controlled `renderOptionList`
 with explicit radiogroup labels, `value`, `onValueChange` and in-place `update({ value, disabled })`.
@@ -130,10 +129,7 @@ successful controls/context reads agree on the same different run. This reconcil
 surface without labelling the original reset successful. Failed, partial, unchanged or mismatched
 fresh reads do not justify navigation. Unknown/lost outcomes retain the original retry.
 
-`gcsp-presenter.html` is the real context-selected workspace. Its runtime reads `/context` then
-mounts the existing employee account or Greg dashboard using HTTP adapters, or a presenter shell.
-It has no default fixture and no principal URL selector. Confirmed switches navigate to this
-workspace within the same packaged base path. `gcsp-greg.html` remains its separate fixture host.
+`gcsp-presenter.html` is now the standalone presenter console (FUCQ-360), with no portal shell. Basic is the default and offers release and start again; Advanced mounts this controller unchanged, grouped in tabs. Confirmed switches and resets navigate back to the console, and the acting principal's portal opens from "Open the portal". It has no default fixture and no principal URL selector.
 
 Last-tick readback renders the server's `handlerOrder` and matching `outcomes`, missing stages and
 pending/refused results. A release count requires exactly one registered `stock-release` /

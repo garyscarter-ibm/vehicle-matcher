@@ -1,0 +1,9 @@
+/* GCSP kit: tabs. The selected tab is marked by an underline; scoped to .gcsp, colours from tokens only. */
+.gcsp .gcsp-tabs { display: grid; gap: var(--gcsp-space-4); min-width: 0; }
+.gcsp .gcsp-tab-list { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-1); border-bottom: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-tab { min-height: var(--gcsp-control-height); margin-bottom: -1px; padding: 0 var(--gcsp-control-inline); border: 0; border-bottom: 3px solid transparent; background: transparent; color: var(--gcsp-text-muted); font: inherit; font-size: var(--gcsp-font-size-button); font-weight: var(--gcsp-font-button-weight); cursor: pointer; }
+.gcsp .gcsp-tab:hover { background: var(--gcsp-hover); color: var(--gcsp-text); }
+.gcsp .gcsp-tab[aria-selected="true"] { border-bottom-color: var(--gcsp-accent); color: var(--gcsp-text); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-tab:focus-visible, .gcsp .gcsp-tab-panel:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
+.gcsp .gcsp-tab-panel { min-width: 0; }
+.gcsp .gcsp-tab-panel[hidden] { display: none; }

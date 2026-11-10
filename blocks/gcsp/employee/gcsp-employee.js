@@ -90,7 +90,6 @@ export function mountEmployee(root, ctx = {}) {
     };
     shell = portalShell({
       title: 'Group Car Schemes Portal',
-      presenterControls: ctx.presenterControls,
       signOut: ctx.signOut,
       arrivalFocus: true,
       navigation: PORTAL_NAVIGATION,
