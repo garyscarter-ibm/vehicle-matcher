@@ -1,4 +1,5 @@
 import { result } from '../repository/index.js';
+import { compactStockPayload } from '../manual-gallery/stock-payload.js';
 
 export function createManualContextRoutes(service) {
   const route = (path, method, operation, extra) => ({ method, path: `/api/gcsp/manual${path}`, role: 'employee', ...extra,
@@ -8,7 +9,9 @@ export function createManualContextRoutes(service) {
       if (!service || typeof service[operation] !== 'function') return result('unavailable', {
         reason: 'The manual context service has not been configured.', retryable: true,
       });
-      return service[operation](context, body);
+      const answer = await service[operation](context, body);
+      // Wire only: in-process callers keep the full stock DTO.
+      return operation === 'browseStock' && answer?.status === 'ok' ? { ...answer, value: compactStockPayload(answer.value) } : answer;
     } });
   return [route('/account', 'GET', 'readAccount'), route('/draft', 'GET', 'readDraft', { absentIs200: true }),
     route('/draft', 'POST', 'saveDraft'), route('/stock', 'GET', 'browseStock')];

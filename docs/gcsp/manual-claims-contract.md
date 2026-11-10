@@ -14,7 +14,7 @@ All methods require the same server-issued employee context and current run. Cli
 
 | Method | Payload / result |
 |---|---|
-| GET `/api/gcsp/manual/stock` | Existing eligible, unranked browse projection, plus each eligible car's `claimInput`. Reading creates no reservation. |
+| GET `/api/gcsp/manual/stock` | Existing eligible, unranked browse projection, plus each eligible car's `claimInput`. Reading creates no reservation. Over HTTP the answer is sent in a compact wire shape that the browser adapter expands (see `manual-gallery-contract.md`, Stock wire shape). |
 | POST `/api/gcsp/manual/claim` | `commandId` plus the exact returned `claimInput`: `orderUuid`, numeric `expectedStockVersion`, `expectedDraftVersion`, `expectedContextVersion`, `expectedTermsDigest`. |
 | GET `/api/gcsp/manual/claim` or `/quote` | Current state, owned hold, pinned quote, pending-operation summary, current domain time/clock version and presentation action. No query selectors. |
 | POST `/api/gcsp/manual/claim/review` | `commandId`, `holdId`, `expectedHoldVersion`, `expectedDraftVersion`; explicit once-only progression to order-review. |

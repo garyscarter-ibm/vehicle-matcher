@@ -196,9 +196,12 @@ test('actual released TEST stock reaches the delivered host gallery and one quot
   const receipts = good(await repository.query(context, 'event_receipts', { consumerId: 'stock-release', state: 'completed' }));
   check(receipts.length === 1, 'Actual producer must commit one release receipt.');
   same(good(receipts[0].outcome), release, 'Committed receipt must match actual presenter tick outcome.');
+  const stockBeforeContinue = count('GET', '/api/gcsp/manual/stock');
   click('Continue');
   await waitFor(() => heading() === 'Released cars' && button('Review this car')?.disabled === false && pending.size === 0,
     'Actual setup-ready host transition must mount usable released stock.');
+  check(count('GET', '/api/gcsp/manual/stock') - stockBeforeContinue === 1,
+    'Continue to the gallery must fetch the stock answer once, not once for setup and again for the gallery.');
   const stock = await request('/api/gcsp/manual/stock');
   const raw = good(await runtime.manualClaims.browseStock(context));
   const decision = stock.decisions.find((row) => row.orderUuid === car.orderUuid);

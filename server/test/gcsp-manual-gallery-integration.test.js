@@ -4,6 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Readable } from 'node:stream';
 import { createGcspRuntime } from '../gcsp/runtime.js';
+import { expandStockPayload } from '../../blocks/gcsp/account/stock-payload.js';
 import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
@@ -100,7 +101,7 @@ async function tick(f, id) {
 }
 async function browse(f) {
   const response = await request(f.server, '/api/gcsp/manual/stock', { session: f.session });
-  assert.equal(response.status, 200); return good(response.json);
+  assert.equal(response.status, 200); return expandStockPayload(good(response.json));
 }
 async function reset(f) {
   const catalogue = good(await f.scenarios.readCatalogue(f.presenter));

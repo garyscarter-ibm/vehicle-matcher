@@ -2,6 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { startGcspDemo } from '../../scripts/gcsp-demo.mjs';
+import { expandStockPayload } from '../../blocks/gcsp/account/stock-payload.js';
 import { createDemoStockProvider } from '../gcsp/stock/demo-provider.js';
 import { createLocalHttpsFixture } from './helpers/local-https.js';
 import { createRouteClient, presenterTick } from './helpers/gcsp-decline-change-route.js';
@@ -59,7 +60,7 @@ test("FUCQ-278: a held buddy offer is reported by browse and refuses every manua
   const draft = await client.request('/api/gcsp/manual/draft', { commandId: 'offer-held-draft', expectedDraftVersion: 0, expectedContextVersion: account.contextVersion, choices });
   assert.equal(draft.status, 200, JSON.stringify(draft.json));
 
-  const stock = routeGood(await client.request('/api/gcsp/manual/stock'));
+  const stock = expandStockPayload(routeGood(await client.request('/api/gcsp/manual/stock')));
   assert.deepEqual(stock.heldOffer, { offerId: offer.offerId, runId: reset.runId });
   assert.ok(stock.cars.length > 0);
   for (const [index, car] of stock.cars.entries()) {
