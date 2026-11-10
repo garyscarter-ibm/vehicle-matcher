@@ -102,23 +102,30 @@ function mountConsole(options = {}) {
   return { api, adapter, host, setRelease: (value) => { release = value; } };
 }
 
-test('the console mounts the section last in the stage and refreshes it after Release', async () => {
+test('the console mounts the section just before the feed and refreshes it after Release', async () => {
   const f = mountConsole(); await f.api.ready; await settle();
-  const stage = f.api.root.querySelector('.gcsp-console-stage'); assert.equal(stage.lastElementChild.className, 'gcsp-console-release');
+  const stage = f.api.root.querySelector('.gcsp-console-stage'); assert.equal(stage.querySelector('.gcsp-console-release').nextElementSibling?.className, 'gcsp-happened');
   assert.match(stage.textContent, /Waiting for 11:30am/);
   f.api.basic.release.click(); await settle();
-  assert.equal(cells(stage).length, 5); assert.match(stage.textContent, /Released Tue 10 Nov, 11:30am/); assert.equal(stage.lastElementChild.className, 'gcsp-console-release');
+  assert.equal(cells(stage).length, 5); assert.match(stage.textContent, /Released Tue 10 Nov, 11:30am/); assert.equal(stage.querySelector('.gcsp-console-release').nextElementSibling?.className, 'gcsp-happened');
   f.api.destroy(); assert.equal(document.querySelector('.gcsp-console-release'), null);
 });
 
-test('through the Basic options the section follows Release, Start again and keeps its place after the confirmation', async () => {
+test('through the Basic options the section follows Release, Start again and keeps its place between the confirmation and the feed', async () => {
   const f = mountConsole({ basic: true }); await f.api.ready; await settle();
   f.api.basic.release.click(); await settle(); assert.equal(cells(f.api.root).length, 5);
   f.api.basic.startAgain.click(); await settle();
-  const stage = f.api.root.querySelector('.gcsp-console-stage'); assert.equal(stage.lastElementChild.className, 'gcsp-console-release');
+  const stage = f.api.root.querySelector('.gcsp-console-stage'); assert.equal(stage.querySelector('.gcsp-console-release').nextElementSibling?.className, 'gcsp-happened');
+  assert.ok(stage.querySelector('.gcsp-console-confirm').compareDocumentPosition(stage.querySelector('.gcsp-console-release')) & window.Node.DOCUMENT_POSITION_FOLLOWING);
   stage.querySelector('.gcsp-console-confirm button').click(); await settle();
   assert.equal(cells(f.api.root).length, 0); assert.match(stage.textContent, /No cars released yet/); assert.match(stage.textContent, /Waiting for 11:30am/);
   f.api.destroy();
+});
+
+test('an unavailable controls read hides the section with the feed, and a good read shows it again', async () => {
+  let reads = 0; const f = mountConsole({ adapter: { readControls: async () => (++reads === 1 ? { status: 'unavailable' } : ok(readState())) } }); await f.api.ready; await settle();
+  const section = f.api.root.querySelector('.gcsp-console-release'); assert.equal(section.hidden, true);
+  f.api.root.querySelector('.gcsp-console-screen .vm-status button').click(); await settle(); assert.equal(section.hidden, false); f.api.destroy();
 });
 
 test('painted copy has no em dash or banned word', async () => {

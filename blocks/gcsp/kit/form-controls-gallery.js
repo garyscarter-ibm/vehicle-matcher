@@ -115,7 +115,7 @@ export function releaseGridExample() {
   const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-release-grid';
   section.append(el('h2', 'vm-gallery-title', 'GCSP release grid'));
   const scope = el('div', 'gcsp'); const grid = releaseGrid({ label: 'Released cars', columns: 6 });
-  const tiles = RELEASE_CARS.map(([hash, model, paint], at) => ({ id: at, imageSrc: `./assets/gcsp-vehicle-evidence/${hash}.webp`, label: `${model}, ${paint}` }));
+  const tiles = RELEASE_CARS.map(([hash, model, paint], at) => ({ id: at, imageSrc: `./assets/gcsp-vehicle-evidence/${hash}`, label: `${model}, ${paint}` }));
   const replay = button({ label: 'Replay', variant: 'ghost', onClick: () => grid.show(tiles) });
-  scope.append(replay, grid.root); section.append(scope); grid.show(tiles, { animate: false }); return section;
+  const row = el('p'); row.append(replay); scope.append(row, grid.root); section.append(scope); grid.show(tiles, { animate: false }); return section;
 }

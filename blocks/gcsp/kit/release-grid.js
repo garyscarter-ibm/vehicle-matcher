@@ -37,8 +37,11 @@ export function releaseGrid({ label = 'Released cars', columns = 20, preload, ti
     cells.forEach((cell, at) => { cell.tabIndex = at === index ? 0 : -1; });
   }
   function showTip(cell) {
-    tip.textContent = cell.getAttribute('aria-label') ?? '';
-    tip.style.setProperty('left', `${cell.offsetLeft + cell.offsetWidth / 2}px`); tip.style.setProperty('top', `${cell.offsetTop}px`); tip.hidden = false;
+    tip.textContent = cell.getAttribute('aria-label') ?? ''; tip.hidden = false;
+    // Centred on the tile but kept inside the grid; the first row's tip sits below so it never covers the heading.
+    const half = tip.offsetWidth / 2; const centre = cell.offsetLeft + cell.offsetWidth / 2;
+    tip.style.setProperty('left', `${Math.max(half, Math.min(root.clientWidth - half, centre))}px`);
+    tip.classList.toggle('is-below', cell.offsetTop === 0); tip.style.setProperty('top', `${cell.offsetTop + (cell.offsetTop === 0 ? cell.offsetHeight : 0)}px`);
   }
   function paint(tiles, loaded, motion) {
     const step = tiles.length > 1 ? (CASCADE_MS - FADE_MS) / (tiles.length - 1) : 0;
@@ -49,7 +52,11 @@ export function releaseGrid({ label = 'Released cars', columns = 20, preload, ti
       if (tile.imageSrc && loaded.has(tile.imageSrc)) {
         const image = el('img'); image.src = tile.imageSrc; image.alt = ''; cell.append(image);
         image.addEventListener('error', () => image.replaceWith(el('span', 'gcsp-release-tile-label', tile.label)));
-      } else cell.append(el('span', 'gcsp-release-tile-label', tile.label));
+      } else {
+        // Not loaded by the deadline: show the label, and swap the image in if it arrives later.
+        const text = el('span', 'gcsp-release-tile-label', tile.label); cell.append(text);
+        if (tile.imageSrc) { const late = el('img'); late.alt = ''; late.addEventListener('load', () => text.replaceWith(late)); late.src = tile.imageSrc; }
+      }
       return cell;
     });
     const rows = [];
