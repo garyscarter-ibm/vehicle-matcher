@@ -11003,6 +11003,93 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "brief.accountPreferences.v1",
+      "value": {
+        "schemaVersion": 1,
+        "minimumCategories": 3,
+        "importance": { "medium": 50, "high": 100, "highFrom": 75 },
+        "order": ["body", "fuel", "sportiness", "comfort", "economy", "size"],
+        "categories": {
+          "body": {
+            "label": "Body",
+            "question": "Which body styles feel right?",
+            "kind": "multi",
+            "options": [
+              { "value": "hatchback", "label": "Hatchback" },
+              { "value": "saloon", "label": "Saloon" },
+              { "value": "estate", "label": "Touring / Estate" },
+              { "value": "suv", "label": "SUV" },
+              { "value": "coupe", "label": "Coupé" },
+              { "value": "convertible", "label": "Convertible" },
+              { "value": "mpv", "label": "MPV" }
+            ]
+          },
+          "fuel": {
+            "label": "Fuel",
+            "question": "What would you like to drive?",
+            "kind": "multi",
+            "options": [
+              { "value": "petrol", "label": "Petrol" },
+              { "value": "diesel", "label": "Diesel" },
+              { "value": "phev", "label": "Plug-in hybrid" },
+              { "value": "ev", "label": "Electric" }
+            ]
+          },
+          "sportiness": {
+            "label": "Sportiness",
+            "question": "How do you like your car to feel?",
+            "kind": "stops",
+            "openDefault": 50,
+            "stops": [
+              { "value": 0, "label": "Relaxed" },
+              { "value": 50, "label": "A bit of both" },
+              { "value": 100, "label": "Sporty" }
+            ]
+          },
+          "comfort": {
+            "label": "Comfort",
+            "question": "How much comfort would you like?",
+            "kind": "stops",
+            "openDefault": 50,
+            "stops": [
+              { "value": 0, "label": "Simple and functional" },
+              { "value": 50, "label": "A bit of both" },
+              { "value": 100, "label": "As comfortable as possible" }
+            ]
+          },
+          "economy": {
+            "label": "Economy",
+            "question": "Where would you put the balance?",
+            "kind": "stops",
+            "openDefault": 50,
+            "stops": [
+              { "value": 0, "label": "Driving comes first" },
+              { "value": 50, "label": "A bit of both" },
+              { "value": 100, "label": "Economy comes first" }
+            ]
+          },
+          "size": {
+            "label": "Size",
+            "question": "What size works for your life?",
+            "kind": "stops",
+            "openDefault": 50,
+            "stops": [
+              { "value": 0, "label": "Compact" },
+              { "value": 50, "label": "A bit of both" },
+              { "value": 100, "label": "Spacious" }
+            ]
+          }
+        }
+      },
+      "unit": "Account preference categories, stops and importance levels",
+      "status": "assumed",
+      "basis": "Revisable compact Account categories, three-stop labels and medium/high importance numbers on the shared 0-100 scale; no BMW policy claim.",
+      "source": "docs/gcsp/mockups/account-preferences-2026-11-10/FROZEN-REFERENCE.md",
+      "sourceDate": "2026-11-10",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "hold.cart.durationSeconds",
       "value": 120,
       "unit": "seconds",
@@ -11484,6 +11571,7 @@
           "body": {
             "dimension": "body",
             "type": "enum",
+            "multiple": true,
             "values": [
               "hatchback",
               "saloon",
@@ -11502,6 +11590,7 @@
           "fuel": {
             "dimension": "fuel",
             "type": "enum",
+            "multiple": true,
             "values": [
               "petrol",
               "diesel",

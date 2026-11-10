@@ -29,6 +29,17 @@ export function validateBrief(request, config, slider) {
   return validateBriefContent(content, config, slider);
 }
 
+// A multiple enum takes a legacy scalar or unique registered values in registry order (stable digests).
+export const validChoice = (value, definition) => !Array.isArray(definition.values) ? false
+  : definition.multiple === true && Array.isArray(value)
+    ? value.length > 0 && value.every((v, i) => definition.values.includes(v)
+      && (i === 0 || definition.values.indexOf(v) > definition.values.indexOf(value[i - 1])))
+    : definition.values.includes(value);
+// Compatible read: a scalar x reads as [x] for a multiple enum.
+export const choiceList = (value) => Array.isArray(value) ? value : [value];
+// Intent comparison: a scalar x and [x] are the same choice.
+export const intentValue = (value) => Array.isArray(value) && value.length === 1 ? value[0] : value;
+
 export function validateBriefContent(request, config, slider) {
   const errors = [];
   const add = (field) => errors.push({ field, reason: 'Unsupported or invalid brief field.' });
@@ -41,7 +52,7 @@ export function validateBriefContent(request, config, slider) {
     if (!definition || !only(p, ['value', 'importance', 'valueState', 'importanceState', 'source', 'confirmedAt'])
       || !within(p.importance) || !states.includes(p.valueState) || !states.includes(p.importanceState) || !text(p.source)
       || (p.confirmedAt !== undefined && !validInstant(p.confirmedAt))
-      || (definition.type === 'slider' ? !within(p.value) : !definition.values.includes(p.value))) add(`preferences.${key}`);
+      || (definition.type === 'slider' ? !within(p.value) : !validChoice(p.value, definition))) add(`preferences.${key}`);
   }
   for (const [key, e] of Object.entries(request.essentials)) {
     const d = Object.hasOwn(config.essentials, key) ? config.essentials[key] : null;
@@ -102,7 +113,7 @@ export function scorePreferences(snapshot, brief, employeeFacts, config, slider)
     if (fields.some((field) => snapshot.facts[field]?.status !== 'known')) {
       unknowns.push({ code: 'preference-fact-unknown', field: key, facts: fields }); continue;
     }
-    const answers = { ...d.answers, ...(d.answer ? { [d.answer]: [preference.value] } : {}) };
+    const answers = { ...d.answers, ...(d.answer ? { [d.answer]: choiceList(preference.value) } : {}) };
     if (confirmedFact(employeeFacts.charging, config)) answers.charging = employeeFacts.charging.value;
     if (key === 'economy' && confirmedFact(employeeFacts.annualMileage, config)) answers.mileage = employeeFacts.annualMileage.value;
     const tuning = { ...config.tuning, retailBudgetEnabled: config.retailBudgetEnabled,

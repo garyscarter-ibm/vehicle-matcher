@@ -110,7 +110,7 @@ test('a what-if result shows the change, today first in each bar, every differen
   assert.ok(stage.querySelector('.gcsp-comparison-omits li'));
   const details = stage.querySelector('details'); assert.equal(details.open, false);
   const inside = text(details);
-  for (const part of ['comparison-a, comparison-b, comparison-c', 'gcsp-policy-v1', '90da819d8ae5', 'comparison-inputs.sha256.v1', 'fucq136-test', HOLD.resultId, 'hold.buddy.durationSeconds']) assert.ok(inside.includes(part), part);
+  for (const part of ['comparison-a, comparison-b, comparison-c', 'gcsp-policy-v1', '97df1a052794', 'comparison-inputs.sha256.v1', 'fucq136-test', HOLD.resultId, 'hold.buddy.durationSeconds']) assert.ok(inside.includes(part), part);
   assert.equal(root.querySelector('.gcsp-comparison-measure h3'), null);
 });
 

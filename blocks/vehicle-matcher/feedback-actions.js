@@ -140,7 +140,9 @@ export function applyConfirmedFeedbackChange(brief, action, currentVersion = bri
   const value = structuredClone(action.target.value);
   if (section === 'essentials' && (!object(value) || value.state !== 'confirmed' || value.value === null || value.value === undefined)) return failure('confirmed-essential-required');
   const after = section === 'preferences' ? value : { ...value, source: 'employee', confirmedAt: action.confirmation.at };
-  if (same(section === 'essentials' ? essentialMeaning(before) : before, section === 'essentials' ? essentialMeaning(after) : after)) return failure('unchanged-value');
+  // A scalar preference choice x and the list [x] are one value.
+  const unwrap = (v) => Array.isArray(v) && v.length === 1 && typeof v[0] === 'string' ? v[0] : v;
+  if (same(section === 'essentials' ? essentialMeaning(before) : unwrap(before), section === 'essentials' ? essentialMeaning(after) : unwrap(after))) return failure('unchanged-value');
   const next = structuredClone(brief);
   if (section === 'preferences') next.preferences[key] = { ...next.preferences[key], [field]: after, source: 'employee',
     [field === 'importance' ? 'importanceState' : 'valueState']: 'confirmed', confirmedAt: action.confirmation.at };

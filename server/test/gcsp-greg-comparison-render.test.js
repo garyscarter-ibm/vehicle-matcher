@@ -82,7 +82,7 @@ test('toComparisonView gives one formatted row per stored difference and throws 
   assert.equal(v.assumptions.length, stored.result.assumptions.length); assert.equal(v.assumptions[0].status, 'Assumed');
   assert.equal(v.assumptions.find((a) => a.key === 'hold.buddy.durationSeconds').value, '7200');
   assert.match(v.assumptions.find((a) => a.key === 'comparison.noClearDifferenceRule').value, /^\{"schemaVersion":1/);
-  assert.equal(v.provenance.policyHash, '90da819d8ae5');
+  assert.equal(v.provenance.policyHash, '97df1a052794');
   assert.equal(v.limitations.includes(v.caveat), false); assert.ok(v.limitations.some((l) => /re-offers its car at once/.test(l)));
   for (const bad of [null, {}, { ...stored, result: { ...stored.result, kind: 'other' } }, { ...stored, result: { ...stored.result, differences: 'x' } }, { ...stored, policyVersion: '' },
     { ...stored, result: { ...stored.result, differences: [{ ...stored.result.differences[0], verdict: 'winner' }] } },
@@ -136,7 +136,7 @@ test('assumptions, seeds and provenance sit in a closed native details with one 
   assert.ok([...table.tBodies[0].rows].every((r) => r.cells[4].textContent === 'Assumed'));
   const facts = text(details.querySelector('.vm-facts'));
   for (const label of ['Seeds', 'Policy version', 'Policy hash', 'Generator version', 'Code revision', 'Result id', 'Made', 'Stored']) assert.match(facts, new RegExp(label));
-  assert.match(facts, /comparison-a, comparison-b, comparison-c/); assert.match(facts, /90da819d8ae5(?![0-9a-f])/);
+  assert.match(facts, /comparison-a, comparison-b, comparison-c/); assert.match(facts, /97df1a052794(?![0-9a-f])/);
   const value = fixtures.FIXTURE_VALUES['no-clear-difference'](); value.result.assumptions[0].status = 'verified';
   const verified = host(); panel.mountGregComparison(verified, { adapter: { load: async () => adapterMod.outcomeToState(200, { status: 'ok', value }) } }); await settle();
   assert.equal(verified.querySelector('tbody tr').cells[4].textContent, 'Verified');
