@@ -1,0 +1,1170 @@
+{
+  "proofId": "c7-phase-http-v1",
+  "status": "failed",
+  "exactHead": "c7a2958dfc82701305099a983b010bc68d1bb9b2",
+  "environment": {
+    "node": "v26.7.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "request": {
+    "experimentId": "process-only"
+  },
+  "overlay": null,
+  "fixedNow": "2026-11-10T12:00:00.000Z",
+  "canonicalInputs": {
+    "comparison.cohortSize": 1000,
+    "comparison.seeds": [
+      "comparison-a",
+      "comparison-b",
+      "comparison-c"
+    ],
+    "comparison.jobs.v1": {
+      "schemaVersion": 1,
+      "timeoutSeconds": 1800,
+      "workerHeapMb": 128,
+      "workerYoungGenerationMb": 16
+    }
+  },
+  "sourceHashes": {
+    "server/gcsp/comparison/private-repository.js": "674fd8370fc01fbdc2d92ce88c86ad000eaec3d5616f00a0585c0c0862b3a6f0",
+    "server/gcsp/comparison/harness.js": "9274600b9edd0ebfdf8f82adcfbade2a8254ece5f7d7410c4af7c90c26496c8f",
+    "server/gcsp/comparison/routes/current.js": "6dde40b8089be0fc8fd3ebfef18c95c8ae89115df1db2c9ea1e5271ddd7c5257",
+    "server/gcsp/comparison/routes/buddy.js": "111148563a4ee0349b878640953a97d99b8b737eaf5c92097061d25ff2b727c2",
+    "server/gcsp/comparison/experiments.js": "a8ca8c03a46f8daf21583099959658afa79f4d8fa221a8aa4394da994a27b13f",
+    "server/gcsp/comparison/jobs.js": "8d4a58f96630c8d52d8e6ab43034b77a66391f9528c2a77c7c81dc4327b8b59e",
+    "server/gcsp/comparison/worker.js": "777f89dd7c4a47150770a33f92b7dd07f33114c078bac0689450373c94ccf87b",
+    "server/gcsp/comparison/results.js": "03045401d9a4e528fc4fa3fbc748a7ac09747445f0c709096587bb8f3286759a",
+    "server/gcsp/policy/seed-v1.json": "df662536da13cc1732c093c9969a34a7e3c9452aa9a39bfa63be45f6f6c77b0c",
+    "server/gcsp/repository/core.js": "8260f5eea2856075a7e3c1fcbeb86bb827b447085e23b1a793828a769cbe106c",
+    "server/gcsp/repository/memory.js": "172029073288cc191a5ceb51adc3da8266350d115d93aa7a394b74b085e51819"
+  },
+  "workerLimits": [
+    {
+      "elapsedMs": 38.81854100000001,
+      "resourceLimits": {
+        "maxOldGenerationSizeMb": 128,
+        "maxYoungGenerationSizeMb": 16
+      },
+      "data": {
+        "experiment": {
+          "experimentId": "process-only"
+        },
+        "codeRevision": "c7a2958dfc82701305099a983b010bc68d1bb9b2",
+        "fixedNow": "2026-11-10T12:00:00.000Z"
+      }
+    }
+  ],
+  "workerMessages": [
+    {
+      "elapsedMs": 126.61095800000001,
+      "message": {
+        "type": "plan",
+        "steps": 6,
+        "seeds": [
+          "comparison-a",
+          "comparison-b",
+          "comparison-c"
+        ],
+        "arms": [
+          "process"
+        ]
+      }
+    },
+    {
+      "elapsedMs": 126407.744875,
+      "message": {
+        "type": "progress",
+        "completed": 1,
+        "total": 6,
+        "armId": "process",
+        "seed": "comparison-a",
+        "route": "current"
+      }
+    }
+  ],
+  "workerErrors": [
+    {
+      "elapsedMs": 146062.222125,
+      "code": "ERR_WORKER_OUT_OF_MEMORY",
+      "message": "Worker terminated due to reaching memory limit: JS heap out of memory"
+    }
+  ],
+  "workerExits": [
+    {
+      "elapsedMs": 146062.37575,
+      "code": 1
+    }
+  ],
+  "final": {
+    "http": 200,
+    "ms": 1002.1014579999901,
+    "body": {
+      "status": "ok",
+      "value": {
+        "jobId": "comparison-job-11867d35-2325-4d40-b3cc-37a678abea8c",
+        "experimentId": "process-only",
+        "status": "failed",
+        "progress": {
+          "seedsDone": 0,
+          "seedsTotal": 3,
+          "stepsDone": 1,
+          "stepsTotal": 6
+        },
+        "startedAt": "2026-11-10T12:00:00.000Z",
+        "finishedAt": "2026-11-10T12:00:00.000Z",
+        "resultId": null,
+        "reason": "The comparison used more than its 128 MB memory allowance and was stopped.",
+        "request": {
+          "experimentId": "process-only",
+          "change": null
+        }
+      },
+      "contractVersion": "1.0.0",
+      "reruns": true
+    }
+  },
+  "storedRowCount": 0,
+  "resultStored": false,
+  "peakWorkerUsedHeap": 119182160,
+  "peakRss": 370442240,
+  "elapsedMs": 147140.145625,
+  "closed": true,
+  "error": {
+    "name": "Error",
+    "message": "Canonical job failed: The comparison used more than its 128 MB memory allowance and was stopped.",
+    "stack": "Error: Canonical job failed: The comparison used more than its 128 MB memory allowance and was stopped.\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-canonical-http.mjs:142:11"
+  },
+  "kind": "fucq309-same-c7-actual-worker-phase-diagnostic-v1",
+  "diagnosticOnly": true,
+  "interpretation": "First private normalization and plan readback completed. OOM followed before any second backend transaction started. Exact operation between plan readback and the next transaction is not instrumented and remains unknown. These scalar phase samples do not establish retained-heap attribution or canonical acceptance.",
+  "excluded": "No production edit,policy bump,graph census,forcedGC,retained input roots or injected stop. Import instrumentation changes timing and may change memory behaviour.",
+  "phaseObservations": [
+    {
+      "fucq309Phase": true,
+      "threadId": 0,
+      "route": null,
+      "label": "source-hook",
+      "elapsedMs": 4.461084,
+      "observedAt": "2026-11-10T14:52:36.950Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 54198272,
+        "heapTotal": 8798208,
+        "heapUsed": 5680704,
+        "external": 2492230,
+        "arrayBuffers": 178714
+      },
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/repository/core.js",
+      "originalSha256": "8260f5eea2856075a7e3c1fcbeb86bb827b447085e23b1a793828a769cbe106c",
+      "diagnosticSha256": "fc98b25baafe18cd0988587634b96034841cd095d39bc64e660e24e6331da317"
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 0,
+      "route": null,
+      "label": "source-hook",
+      "elapsedMs": 14.008167,
+      "observedAt": "2026-11-10T14:52:36.959Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 55328768,
+        "heapTotal": 9584640,
+        "heapUsed": 7088944,
+        "external": 2688878,
+        "arrayBuffers": 375322
+      },
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/comparison/experiments.js",
+      "originalSha256": "a8ca8c03a46f8daf21583099959658afa79f4d8fa221a8aa4394da994a27b13f",
+      "diagnosticSha256": "5a2c45851b2191943a6183bd92817cdb8e323ce46b59745883fc4cb768a723e2"
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 0,
+      "route": null,
+      "label": "source-hook",
+      "elapsedMs": 19.819459,
+      "observedAt": "2026-11-10T14:52:36.965Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 56655872,
+        "heapTotal": 10895360,
+        "heapUsed": 6982448,
+        "external": 2635244,
+        "arrayBuffers": 321688
+      },
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/comparison/harness.js",
+      "originalSha256": "9274600b9edd0ebfdf8f82adcfbade2a8254ece5f7d7410c4af7c90c26496c8f",
+      "diagnosticSha256": "ad0810743f08c15d06e9c8fcefdc648953babe93ce1189473d1e1322d338f1dc"
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 0,
+      "route": null,
+      "label": "source-hook",
+      "elapsedMs": 20.151208999999998,
+      "observedAt": "2026-11-10T14:52:36.965Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 56737792,
+        "heapTotal": 10895360,
+        "heapUsed": 7051400,
+        "external": 2635244,
+        "arrayBuffers": 321688
+      },
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/comparison/private-repository.js",
+      "originalSha256": "674fd8370fc01fbdc2d92ce88c86ad000eaec3d5616f00a0585c0c0862b3a6f0",
+      "diagnosticSha256": "788ad9e6faa789bf01d194d33270f922778b2131f6b3021c0ac66e277b88e889"
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 0,
+      "route": null,
+      "label": "source-hook",
+      "elapsedMs": 26.294542000000003,
+      "observedAt": "2026-11-10T14:52:36.971Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 62259200,
+        "heapTotal": 12206080,
+        "heapUsed": 7864112,
+        "external": 2907853,
+        "arrayBuffers": 242822
+      },
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/allocation/index.js",
+      "originalSha256": "1c43791983f39e7c791cd846af8b19c119115592cbdb6c5e98b4f9895cf8655f",
+      "diagnosticSha256": "b7ce0f59d72e7ecccfa2063979b697a01a45b6848eba471897b08f790fb432ab"
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": null,
+      "label": "source-hook",
+      "elapsedMs": 0.8599169999999958,
+      "observedAt": "2026-11-10T14:52:37.101Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 136265728,
+        "heapTotal": 11960320,
+        "heapUsed": 7848720,
+        "external": 3831679,
+        "arrayBuffers": 78107
+      },
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/comparison/experiments.js",
+      "originalSha256": "a8ca8c03a46f8daf21583099959658afa79f4d8fa221a8aa4394da994a27b13f",
+      "diagnosticSha256": "5a2c45851b2191943a6183bd92817cdb8e323ce46b59745883fc4cb768a723e2"
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": null,
+      "label": "source-hook",
+      "elapsedMs": 1.319708999999989,
+      "observedAt": "2026-11-10T14:52:37.102Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 136298496,
+        "heapTotal": 11960320,
+        "heapUsed": 8083280,
+        "external": 3866780,
+        "arrayBuffers": 113170
+      },
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/repository/core.js",
+      "originalSha256": "8260f5eea2856075a7e3c1fcbeb86bb827b447085e23b1a793828a769cbe106c",
+      "diagnosticSha256": "fc98b25baafe18cd0988587634b96034841cd095d39bc64e660e24e6331da317"
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": null,
+      "label": "source-hook",
+      "elapsedMs": 4.9491669999999885,
+      "observedAt": "2026-11-10T14:52:37.105Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 138297344,
+        "heapTotal": 13271040,
+        "heapUsed": 8626424,
+        "external": 4110426,
+        "arrayBuffers": 143643
+      },
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/comparison/harness.js",
+      "originalSha256": "9274600b9edd0ebfdf8f82adcfbade2a8254ece5f7d7410c4af7c90c26496c8f",
+      "diagnosticSha256": "ad0810743f08c15d06e9c8fcefdc648953babe93ce1189473d1e1322d338f1dc"
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": null,
+      "label": "source-hook",
+      "elapsedMs": 5.496959000000004,
+      "observedAt": "2026-11-10T14:52:37.106Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 138313728,
+        "heapTotal": 13271040,
+        "heapUsed": 8696664,
+        "external": 4110426,
+        "arrayBuffers": 143643
+      },
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/comparison/private-repository.js",
+      "originalSha256": "674fd8370fc01fbdc2d92ce88c86ad000eaec3d5616f00a0585c0c0862b3a6f0",
+      "diagnosticSha256": "788ad9e6faa789bf01d194d33270f922778b2131f6b3021c0ac66e277b88e889"
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": null,
+      "label": "source-hook",
+      "elapsedMs": 13.491959000000008,
+      "observedAt": "2026-11-10T14:52:37.114Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 148340736,
+        "heapTotal": 15368192,
+        "heapUsed": 12237872,
+        "external": 4366543,
+        "arrayBuffers": 606470
+      },
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/allocation/index.js",
+      "originalSha256": "1c43791983f39e7c791cd846af8b19c119115592cbdb6c5e98b4f9895cf8655f",
+      "diagnosticSha256": "b7ce0f59d72e7ecccfa2063979b697a01a45b6848eba471897b08f790fb432ab"
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "current",
+      "label": "route-open-before",
+      "elapsedMs": 1054.782584,
+      "observedAt": "2026-11-10T14:52:38.155Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 256589824,
+        "heapTotal": 54411264,
+        "heapUsed": 34518232,
+        "external": 4088283,
+        "arrayBuffers": 143643
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "current",
+      "label": "bootstrap-complete",
+      "elapsedMs": 1245.4655,
+      "observedAt": "2026-11-10T14:52:38.346Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 256262144,
+        "heapTotal": 56115200,
+        "heapUsed": 33726832,
+        "external": 4088283,
+        "arrayBuffers": 143643
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "current",
+      "label": "manual-records-complete",
+      "elapsedMs": 5570.100417,
+      "observedAt": "2026-11-10T14:52:42.670Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 277495808,
+        "heapTotal": 70303744,
+        "heapUsed": 57263120,
+        "external": 4145461,
+        "arrayBuffers": 209243
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "current",
+      "label": "manual-drafts-complete",
+      "elapsedMs": 8184.498125,
+      "observedAt": "2026-11-10T14:52:45.285Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 305561600,
+        "heapTotal": 80658432,
+        "heapUsed": 68112368,
+        "external": 4145397,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "current",
+      "label": "run-ready",
+      "elapsedMs": 8184.722334,
+      "observedAt": "2026-11-10T14:52:45.285Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 305561600,
+        "heapTotal": 80658432,
+        "heapUsed": 68144192,
+        "external": 4145397,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "current",
+      "label": "route-closed",
+      "elapsedMs": 126339.32133400001,
+      "observedAt": "2026-11-10T14:54:43.440Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 292454400,
+        "heapTotal": 128696320,
+        "heapUsed": 103241848,
+        "external": 4145397,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "route-open-before",
+      "elapsedMs": 126340.032,
+      "observedAt": "2026-11-10T14:54:43.441Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 292519936,
+        "heapTotal": 128696320,
+        "heapUsed": 103250648,
+        "external": 4145397,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "bootstrap-complete",
+      "elapsedMs": 126521.529042,
+      "observedAt": "2026-11-10T14:54:43.622Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 301580288,
+        "heapTotal": 132464640,
+        "heapUsed": 116688920,
+        "external": 4145397,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "manual-records-complete",
+      "elapsedMs": 130113.36604200001,
+      "observedAt": "2026-11-10T14:54:47.214Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 207863808,
+        "heapTotal": 75563008,
+        "heapUsed": 58706304,
+        "external": 4210997,
+        "arrayBuffers": 274747
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "manual-drafts-complete",
+      "elapsedMs": 132475.442292,
+      "observedAt": "2026-11-10T14:54:49.576Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 161562624,
+        "heapTotal": 86687744,
+        "heapUsed": 67998680,
+        "external": 4145397,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "run-ready",
+      "elapsedMs": 132477.188792,
+      "observedAt": "2026-11-10T14:54:49.578Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 161710080,
+        "heapTotal": 86687744,
+        "heapUsed": 68096008,
+        "external": 4145397,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "allocation-prepare-start",
+      "elapsedMs": 135819.48266699997,
+      "observedAt": "2026-11-10T14:54:52.920Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 182108160,
+        "heapTotal": 96223232,
+        "heapUsed": 79923528,
+        "external": 4145397,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "allocation-snapshot-loaded",
+      "elapsedMs": 135832.40870899998,
+      "observedAt": "2026-11-10T14:54:52.933Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 182386688,
+        "heapTotal": 102137856,
+        "heapUsed": 85592672,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "prepare-employees",
+      "elapsedMs": 137272.48674999998,
+      "observedAt": "2026-11-10T14:54:54.373Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 208027648,
+        "heapTotal": 128335872,
+        "heapUsed": 88606208,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "count": 128
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "prepare-employees",
+      "elapsedMs": 138648.30533399998,
+      "observedAt": "2026-11-10T14:54:55.749Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 209698816,
+        "heapTotal": 129646592,
+        "heapUsed": 105357368,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "count": 256
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "prepare-employees",
+      "elapsedMs": 139997.65312499998,
+      "observedAt": "2026-11-10T14:54:57.098Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 213565440,
+        "heapTotal": 131743744,
+        "heapUsed": 106388416,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "count": 384
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "prepare-employees",
+      "elapsedMs": 141415.707125,
+      "observedAt": "2026-11-10T14:54:58.516Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 212713472,
+        "heapTotal": 130891776,
+        "heapUsed": 114424336,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "count": 512
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "prepare-employees",
+      "elapsedMs": 142969.584625,
+      "observedAt": "2026-11-10T14:55:00.070Z",
+      "preparation": 0,
+      "transactions": 0,
+      "heap": {
+        "rss": 219643904,
+        "heapTotal": 131760128,
+        "heapUsed": 113987712,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "count": 640
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "allocation-prepared",
+      "elapsedMs": 144461.86229199998,
+      "observedAt": "2026-11-10T14:55:01.563Z",
+      "preparation": 1,
+      "transactions": 0,
+      "heap": {
+        "rss": 210075648,
+        "heapTotal": 128335872,
+        "heapUsed": 114562344,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "contenders": 29016,
+      "slices": 752
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "backend-work-start",
+      "elapsedMs": 144462.296542,
+      "observedAt": "2026-11-10T14:55:01.563Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 210075648,
+        "heapTotal": 128335872,
+        "heapUsed": 114815680,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "evaluation-slices-stored",
+      "elapsedMs": 144500.83625,
+      "observedAt": "2026-11-10T14:55:01.602Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 215449600,
+        "heapTotal": 129286144,
+        "heapUsed": 99989680,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "slices": 128
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "evaluation-slices-stored",
+      "elapsedMs": 144521.788209,
+      "observedAt": "2026-11-10T14:55:01.623Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 215449600,
+        "heapTotal": 129286144,
+        "heapUsed": 99868464,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "slices": 256
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "evaluation-slices-stored",
+      "elapsedMs": 144542.68354199998,
+      "observedAt": "2026-11-10T14:55:01.643Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 215449600,
+        "heapTotal": 129286144,
+        "heapUsed": 107161128,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "slices": 384
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "evaluation-slices-stored",
+      "elapsedMs": 144563.27445899998,
+      "observedAt": "2026-11-10T14:55:01.664Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 215482368,
+        "heapTotal": 129286144,
+        "heapUsed": 105653000,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "slices": 512
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "evaluation-slices-stored",
+      "elapsedMs": 144584.234167,
+      "observedAt": "2026-11-10T14:55:01.685Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 215531520,
+        "heapTotal": 129286144,
+        "heapUsed": 106216832,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "slices": 640
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "large-row-validate-start",
+      "elapsedMs": 144602.186042,
+      "observedAt": "2026-11-10T14:55:01.703Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 215547904,
+        "heapTotal": 129286144,
+        "heapUsed": 113136536,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "contenders": 29016
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "large-row-validate-end",
+      "elapsedMs": 144640.945167,
+      "observedAt": "2026-11-10T14:55:01.742Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 216956928,
+        "heapTotal": 129564672,
+        "heapUsed": 117938008,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "contenders": 29016
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "large-row-digest-start",
+      "elapsedMs": 144641.00425,
+      "observedAt": "2026-11-10T14:55:01.742Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 216956928,
+        "heapTotal": 129564672,
+        "heapUsed": 117942600,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "contenders": 29016
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "large-row-digest-end",
+      "elapsedMs": 144809.18616699998,
+      "observedAt": "2026-11-10T14:55:01.910Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 311410688,
+        "heapTotal": 151306240,
+        "heapUsed": 140925320,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "contenders": 29016
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "large-row-clone-start",
+      "elapsedMs": 144809.279709,
+      "observedAt": "2026-11-10T14:55:01.910Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 311410688,
+        "heapTotal": 151306240,
+        "heapUsed": 140931768,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "contenders": 29016
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "large-row-clone-end",
+      "elapsedMs": 144866.609167,
+      "observedAt": "2026-11-10T14:55:01.967Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 292323328,
+        "heapTotal": 132415488,
+        "heapUsed": 116614568,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "contenders": 29016
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "large-return-clone-start",
+      "elapsedMs": 144866.669042,
+      "observedAt": "2026-11-10T14:55:01.967Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 292323328,
+        "heapTotal": 132415488,
+        "heapUsed": 116617080,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "contenders": 29016
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "large-return-clone-end",
+      "elapsedMs": 144920.547875,
+      "observedAt": "2026-11-10T14:55:02.021Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 295583744,
+        "heapTotal": 135020544,
+        "heapUsed": 130249376,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "contenders": 29016
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "backend-work-complete",
+      "elapsedMs": 144920.732417,
+      "observedAt": "2026-11-10T14:55:02.021Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 295583744,
+        "heapTotal": 135020544,
+        "heapUsed": 130283984,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "normalize-start",
+      "elapsedMs": 144920.757709,
+      "observedAt": "2026-11-10T14:55:02.022Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 295583744,
+        "heapTotal": 135020544,
+        "heapUsed": 130285496,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "normalize-end",
+      "elapsedMs": 145706.998959,
+      "observedAt": "2026-11-10T14:55:02.808Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 292880384,
+        "heapTotal": 128499712,
+        "heapUsed": 121053480,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "allocation-prepare-transaction-returned",
+      "elapsedMs": 145707.148709,
+      "observedAt": "2026-11-10T14:55:02.808Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 292896768,
+        "heapTotal": 128499712,
+        "heapUsed": 121055928,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      }
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "large-return-clone-start",
+      "elapsedMs": 145707.240834,
+      "observedAt": "2026-11-10T14:55:02.808Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 292896768,
+        "heapTotal": 128499712,
+        "heapUsed": 121067192,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "contenders": 29016
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "large-return-clone-end",
+      "elapsedMs": 145777.075667,
+      "observedAt": "2026-11-10T14:55:02.878Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 300433408,
+        "heapTotal": 136200192,
+        "heapUsed": 131376976,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      },
+      "contenders": 29016
+    },
+    {
+      "fucq309Phase": true,
+      "threadId": 1,
+      "route": "buddy",
+      "label": "allocation-plan-read-returned",
+      "elapsedMs": 145777.204417,
+      "observedAt": "2026-11-10T14:55:02.878Z",
+      "preparation": 1,
+      "transactions": 1,
+      "heap": {
+        "rss": 300433408,
+        "heapTotal": 136200192,
+        "heapUsed": 131379584,
+        "external": 4147445,
+        "arrayBuffers": 209179
+      }
+    }
+  ],
+  "observerPlan": {
+    "id": "c7-phase-http-v1",
+    "kind": "diagnostic-only",
+    "head": "c7a2958dfc82701305099a983b010bc68d1bb9b2",
+    "sourceSha256": "674fd8370fc01fbdc2d92ce88c86ad000eaec3d5616f00a0585c0c0862b3a6f0",
+    "hypothesis": "Locate exact actual-worker first-buddy failure after third canonical failure; no fourth production repair before architectural assessment.",
+    "input": "Actual isolated HTTP process-only canonical job:1000employees,comparison-a/b/c,current+buddy,6steps,no overlay,original128old/16youngMiB,1800s application policy.",
+    "diagnostic": "Import-time phase-only source hook. Scalar counts and memoryUsage at route/bootstrap/preparation/slice/large-row-clone/private-normalization boundaries; max512points per isolate; no graph walk,forcedGC,retained roots or injected throw. Hook affects timing; result is diagnostic, not acceptance.",
+    "selected": [
+      "one same-c7 actual HTTP job with phase observer"
+    ],
+    "excluded": "No source edit,new validation suite,nativePG,live source,mail,UI,deployment or policy bump. Prior scoped tests reused; this observer only locates failure.",
+    "limits": {
+      "workers": 1,
+      "ramReservationMiB": 1024,
+      "expectedPeakRSSMiB": 512,
+      "scratchMiB": 64,
+      "expectedScratchMiB": 0,
+      "logMiB": 2,
+      "supervisorSeconds": 600,
+      "maximumPhasePoints": 512
+    },
+    "checkpoint": "Existing HTTP summary atomically checkpoints route/30host samples; synchronous phase lines retain last entered/completed phase. Supervisor retains bounded useful log.",
+    "teardown": "Existing HTTP worker/server/repository/policy finalizers; supervisor external manifest before owned scratch,TMPDIR/TMP/TEMP,reservation,timeout stop/join and scratch deletion/absence receipt.",
+    "authorization": "Parent after third canonical failure: bounded same-c7 phase observer then precise boundary report and release slot; no further production edit.",
+    "observerSha256": "2795ec546f6e59d9f3108f0146532f49e3884d330a4febf28960f3e136b40f34",
+    "plannedAt": "2026-11-10T14:52:30.384599+00:00"
+  },
+  "cleanupReceipt": {
+    "completed": {
+      "ab139084ba451475d4fb90aa455de9d5d5564222d71fd04dd56e229c8fb64e1b": {
+        "ids": [
+          "c7-phase-http-v1"
+        ],
+        "result": {
+          "cleanup": {
+            "local_scratch_reason": "",
+            "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-supervisor/ownership/662824a34fae46f780d7419a1bfe01b6.json",
+            "peak": 0,
+            "removed": true,
+            "root": "/private/tmp/test-stamp-shard-662824a34fae46f780d7419a1bfe01b6"
+          },
+          "issue": null,
+          "issue_kind": null,
+          "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-supervisor/logs/c7-phase-http-v1/chunk-0001.log",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-supervisor/ownership/662824a34fae46f780d7419a1bfe01b6.json",
+          "peak_rss": 370802688,
+          "peak_scratch": 0,
+          "rc": 1,
+          "wall": 147.3923162079882
+        }
+      }
+    },
+    "identity": {
+      "command": [
+        "node",
+        "--import",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-local-deps.mjs",
+        "--import",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-c7-phase-observer.mjs",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-canonical-http.mjs",
+        "c7a2958dfc82701305099a983b010bc68d1bb9b2",
+        "c7-phase-http-v1"
+      ],
+      "command_files_sha256": {
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-c7-phase-observer.mjs": "2795ec546f6e59d9f3108f0146532f49e3884d330a4febf28960f3e136b40f34",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-canonical-http.mjs": "08d315b6e2464856e7a33b923943c3e8186a3c246a839b7c1c86b946fcb76e32",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-local-deps.mjs": "0e01fe0617792787b04b8dc499273b27b044de0850602f0bd5045ca6cf807e26"
+      },
+      "environment_sha256": "c915b8f78ff242a98e7229d6a99fe2f45e6b8c932668c9dcdb81189f3d68251f",
+      "head": "c7a2958dfc82701305099a983b010bc68d1bb9b2",
+      "id": "c7-phase-http-v1",
+      "limits": {
+        "ram_mib": 1024,
+        "scratch_mib": 64,
+        "seconds": 600
+      },
+      "story": "FUCQ-309",
+      "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "issues": [],
+    "selected": [
+      "c7-phase-http-v1"
+    ],
+    "state": "complete",
+    "units": [
+      {
+        "disk": 67108864,
+        "id": "c7-phase-http-v1",
+        "ram": 1073741824,
+        "seconds": 600
+      }
+    ],
+    "updated": 1794322504.284323,
+    "version": 1,
+    "wall": 147.448
+  },
+  "independentCleanupAudit": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-supervisor/cleanup-independent-phase-final-audit.json",
+  "independentScratchRootsAbsent": 43,
+  "hostTiming": {
+    "health": {
+      "samples": 93,
+      "maximumObservedMs": 3.6052919999929145
+    },
+    "process": {
+      "samples": 93,
+      "maximumObservedMs": 2.5858750000006694
+    },
+    "latest": {
+      "samples": 93,
+      "maximumObservedMs": 2.9287079999994603
+    },
+    "maximumSamplingGapMs": 3909.1451669999997
+  },
+  "architectureAssessmentInput": {
+    "observed": [
+      "The first allocation prepares29016contenders and752evaluation slices.",
+      "Large insert validation,digest,stored-row clone,returned-row clone and first private normalization all complete.",
+      "The unchanged generic core then clones the large stored buddy plan for its caller; read completes at125.29MiB sampled used heap.",
+      "OOM occurs before second private backend transaction starts; cursor/read/quote/claim setup interval remains narrower unknown."
+    ],
+    "hypothesis": "Large detached plan readback overlaps retained private state and preparation data near heap limit. This observer bounds the interval but does not distinguish each retained owner or exact failing operation.",
+    "decision": "Three production repair attempts failed canonical proof. No fourth production edit/proof sequence; parent will arrange independent architecture assessment within existing authorised scope."
+  }
+}

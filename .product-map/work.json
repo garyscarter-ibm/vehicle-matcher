@@ -4207,46 +4207,36 @@
       "branch": "dev/DEV-2026-11-10-GC-027",
       "jira_source_updated_at": "2026-11-10T13:22:52.200Z",
       "jira_observed_at": "2026-11-10T13:26:47.809069Z",
-      "workers": [
-        {
-          "name": "Ralph Wolf",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-10T14:05:36.474865+00:00",
-          "expires_at": "2026-11-10T14:50:36.474865+00:00",
-          "source": "Lead observing own live session; no child active",
-          "status": "compact pool scoped checks; canonical128/16 failure remains open"
-        }
-      ],
-      "observed_at": "2026-11-10T14:16:51Z",
+      "workers": [],
+      "observed_at": "2026-11-10T14:56:44Z",
       "slices": [
         {
           "id": "current-cause",
-          "status": "complete",
+          "status": "in-progress",
           "title": "Current-code retained-data evidence",
-          "observed_at": "2026-11-10T13:37:44Z",
-          "evidence": "Lead reviewed raw-store graph/WeakRef and actual heap evidence from bounded 100/300 real-service buddy runs; same production source. docs/gcsp/evidence/fucq309/memory-repair-2026-11-10.md. This completes scoped cause selection only; canonical worker acceptance remains unrun."
+          "observed_at": "2026-11-10T14:56:44.103524+00:00",
+          "evidence": "Scoped retained-data causes measured. Third canonical c7 still fails after1/6. Same-source phase observer crosses first normalization and detached plan readback before OOM; exact later allocation operation unknown. Independent architectural assessment pending. docs/gcsp/evidence/fucq309/same-c7-worker-phase-2026-11-10.json"
         },
         {
           "id": "retention-repair",
-          "status": "complete",
+          "status": "in-progress",
           "title": "Evidenced replay memory and lifetime repair",
-          "observed_at": "2026-11-10T13:51:20Z",
-          "evidence": "Comparison-private sharing/projections/terminal disposal validated; generic core/memory/shared writers unchanged. Actual 100/300 store reduction and collection with run retained. docs/gcsp/evidence/fucq309/after-census-2026-11-10.json. Canonical worker envelope remains separate."
+          "observed_at": "2026-11-10T14:56:44.103693+00:00",
+          "evidence": "Private sharing/projections/disposal and early mutable-child replacement pass scoped checks with deterministic output equality. All3 actual canonical128/16 proofs fail first buddy,zero results. No fourth production edit before independent architectural assessment. docs/gcsp/evidence/fucq309/memory-repair-2026-11-10.md"
         },
         {
           "id": "semantic-regression",
           "status": "complete",
           "title": "Semantic regression and affected-reader checks",
-          "observed_at": "2026-11-10T13:51:20Z",
-          "evidence": "Exact100/300 input/record/decisions/totals/measures equality; focused6, routes/measures62, generic/private contracts25pass1skip each, corrected job/HTTP25pass. Initial harness failure retained; nativePG and full suite unrun. docs/gcsp/evidence/fucq309/memory-repair-2026-11-10.md"
+          "observed_at": "2026-11-10T14:56:44.103697+00:00",
+          "evidence": "Exact c7 input/record/decisions/totals/measures equality100/300;focused8+forced-collision8,private contracts25pass1existing skip,routes/measures62,worker/HTTP25. Scoped targeted evidence;failed invocation retained;full/nativePG/F71 unrun. Canonical acceptance open. docs/gcsp/evidence/fucq309/memory-repair-2026-11-10.md"
         },
         {
           "id": "canonical-integration",
           "status": "in-progress",
           "title": "Canonical six-step stored-result integration gate",
-          "observed_at": "2026-11-10T14:16:51Z",
-          "evidence": "Both actual128/16 canonical HTTP proofs failed after1/6:831a76cb OOM168.828s;5177e3b2 OOM209.451s,zero saved rows and responsive host. Scoped repair independently reviewed; acceptance open. Measuring actual1000-person first-buddy retained/model/transaction boundary before another production edit. docs/gcsp/evidence/fucq309/canonical-second-failure-2026-11-10.json"
+          "observed_at": "2026-11-10T14:56:44.103699+00:00",
+          "evidence": "All3 actual canonical1000/3seed/6step128/16 proofs OOM after1/6,zero results;latest c7 OOM391.402app seconds with245.865s sampling gap and clock caveat. Diagnostic crosses first normalization/plan readback before OOM. Acceptance open;43scratch roots absent. docs/gcsp/evidence/fucq309/canonical-third-failure-2026-11-10.json"
         }
       ],
       "unsliced": false
