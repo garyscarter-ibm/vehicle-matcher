@@ -4,7 +4,7 @@ import { mountEmployee } from '../employee/gcsp-employee.js';
 import { routeAfterRelease } from '../employee/portal-navigation.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
-import { bodyStyleLabel, longDate } from '../kit/plain-copy.js';
+import { bodyStyleLabel, longDate, IMAGE_DISCLAIMER } from '../kit/plain-copy.js';
 import { demoTime } from '../kit/activity-timeline.js';
 import { createManualReviewController } from './review-controller.js';
 import { createManualReviewHttpAdapter } from './http-adapter.js';
@@ -41,7 +41,7 @@ export function reviewVehicleView(model) {
   const member = { id: quote.orderUuid, identity: { orderUuid: quote.orderUuid, configurationId: quote.configurationId },
     display: { name: display.name || 'Car name not supplied', line: `Car order ${model.orderNumber}` },
     media: { src: display.photo || '', alt: image?.alt || `${display.name || 'Car'}: representative image`,
-      caption: image?.caption || 'Representative image, not your exact car' },
+      caption: image?.caption || IMAGE_DISCLAIMER },
     facts: [['Model', facts.model ?? facts.marketingModelRange ?? facts.modelRange], ['Body style', bodyFact(facts.body ?? facts.bodyType)],
       ['Engine', facts.engine], ['Exterior', facts.exterior ?? facts.colour], ['Interior', facts.interior ?? facts.upholsteryCode],
       ['Transmission', facts.transmission], ['Insurance group', facts.insuranceGroup]]

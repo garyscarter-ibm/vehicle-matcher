@@ -67,3 +67,9 @@ Gary agreed all eight slices on 10 November ("Build all eight"). Two changes fro
   Don't commit, stash, switch branch or run git commands that write. The main session reviews and commits.
 - **Report** in under 300 words: the files changed, what you removed, merged or demoted for each finding, the tests you ran
   and their results, and anything you skipped and why.
+
+## Deferred Stories filed, 10 November
+
+FUCQ-350 (larger demand cohort), FUCQ-351 (reset and switch to Greg), FUCQ-352 (offer email link label), FUCQ-353
+(Save and continue in setup), FUCQ-354 (UK local time), FUCQ-355 (manual route as rows), FUCQ-356 (case queue in the
+shell), FUCQ-357 (shared car summary component). All are To Do with the `backlog` label, for collaborator prioritisation.

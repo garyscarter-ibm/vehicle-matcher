@@ -4,6 +4,9 @@ import { SPEC_LABELS, FUEL_SPEC } from '../../vehicle-matcher/modes/result-card.
 /** The one fallback line for a car with no image (GCSP cards, account, activity, order progress). */
 export const NO_IMAGE_TEXT = 'No image for this car yet';
 
+/** The one caption under every representative car image. */
+export const IMAGE_DISCLAIMER = 'Representative image, not your exact car';
+
 const FIELDS = { body: 'Body style', fuel: 'Fuel', seats: 'Seats', boot: 'Boot', zeroTo62: '0 to 62 mph', mpg: 'Fuel economy',
   sportiness: 'Sportiness', comfort: 'Comfort', economy: 'Economy', size: 'Size', equipment: 'Equipment', charging: 'Charging',
   mileage: 'Mileage', colour: 'Colour', gearbox: 'Gearbox', doors: 'Doors', evRange: 'Electric range', insuranceGroup: 'Insurance group' };

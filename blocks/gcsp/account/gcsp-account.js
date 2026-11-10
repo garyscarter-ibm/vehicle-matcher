@@ -14,7 +14,7 @@ import { orderCar } from '../order-progress/order-car.js';
 import { sentence } from '../order-progress/order-progress-copy.js';
 import { orderIdentityRows, orderReferenceOf } from '../kit/order-identity.js';
 import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
-import { NO_IMAGE_TEXT } from '../kit/plain-copy.js';
+import { NO_IMAGE_TEXT, IMAGE_DISCLAIMER } from '../kit/plain-copy.js';
 import { demoTime } from '../kit/activity-timeline.js';
 import { routePortal } from '../employee/portal-navigation.js';
 
@@ -152,7 +152,7 @@ function currentCar(contract, model, controls, buddy = false) {
   const source = contract.media;
   const { media } = mediaWell({ name: contract.model ?? 'Current car', photo: source?.src ?? source?.photo ?? '',
     line: '', alt: source?.alt ?? `${contract.model ?? 'Car'}: representative image`,
-    caption: source?.caption ?? 'Representative image, not your exact car' }, 'gcsp-media', { placeholder: NO_IMAGE_TEXT });
+    caption: source?.caption ?? IMAGE_DISCLAIMER }, 'gcsp-media', { placeholder: NO_IMAGE_TEXT });
   const copy = el('div', 'gcsp-feature-copy');
   copy.append(el('p', 'gcsp-eyebrow', 'Your current car'), heading,
     el('p', 'gcsp-countdown', contract.daysRemaining == null ? 'Contract end: Not supplied'
@@ -180,7 +180,7 @@ function orderCurrentCar(car, order, orderVehicle) {
   heading.id = `gcsp-account-car-${++serial}`;
   feature.setAttribute('aria-labelledby', heading.id);
   const { media } = mediaWell({ name: name ?? 'Current car', photo: same ? orderVehicle?.photo ?? '' : '', line: '',
-    alt: `${name ?? 'Car'}: representative image`, caption: 'Representative image, not your exact car' }, 'gcsp-media', { placeholder: NO_IMAGE_TEXT });
+    alt: `${name ?? 'Car'}: representative image`, caption: IMAGE_DISCLAIMER }, 'gcsp-media', { placeholder: NO_IMAGE_TEXT });
   const copy = el('div', 'gcsp-feature-copy');
   copy.append(el('p', 'gcsp-eyebrow', 'Your current car'), heading,
     facts([row('Status', status('current')), row('Collected', date(car.collectedAt?.slice(0, 10))), ...(car.vin ? [row('Delivered VIN', car.vin)] : []),
