@@ -189,7 +189,7 @@
     },
     {
       "path": "blocks/demo-launcher/entry-host.css",
-      "max_lines": 17
+      "max_lines": 16
     },
     {
       "path": "blocks/vehicle-matcher/gcsp-kit.css",
@@ -229,7 +229,7 @@
     },
     {
       "path": "blocks/gcsp/presenter-controls/presenter-controls.css",
-      "max_lines": 17
+      "max_lines": 16
     },
     {
       "path": "blocks/gcsp/kit/activity-timeline.css",
@@ -285,7 +285,7 @@
     },
     {
       "path": "blocks/gcsp/kit/task-list.css",
-      "max_lines": 17
+      "max_lines": 16
     },
     {
       "path": "blocks/gcsp/kit/range-bar.css",
@@ -353,6 +353,10 @@
     },
     {
       "path": "blocks/gcsp/presenter-controls/release-section.css",
+      "max_lines": 17
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/happened-feed.css",
       "max_lines": 17
     }
   ],
