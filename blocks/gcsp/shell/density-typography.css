@@ -32,29 +32,24 @@
   --ds-typography-size-smallprint: var(--ds-typography-size-01);
   --ds-typography-size-title-lg: var(--ds-typography-size-08);
   --ds-typography-size-title-md: var(--ds-typography-size-05);
-  --ds-typography-size-title-sm: var(--ds-typography-size-03);
   --ds-typography-line-height-label: var(--ds-space-4x);
   --ds-typography-line-height-paragraph: var(--ds-space-6x);
   --ds-typography-line-height-regular: var(--ds-space-5x);
   --ds-typography-line-height-title-lg: var(--ds-space-7x);
   --ds-typography-line-height-title-md: var(--ds-space-6x);
-  --ds-typography-line-height-title-sm: var(--ds-space-4x);
   --ds-typography-family-base: var(--ds-typography-family-system);
   --ds-typography-family-code: var(--ds-typography-family-mono);
   --ds-typography-family-title: var(--ds-typography-family-brand);
   --ds-typography-family-title-lg: var(--ds-typography-family-title);
   --ds-typography-line-height-heading-lg: var(--ds-typography-line-height-title-lg);
   --ds-typography-line-height-heading-md: var(--ds-typography-line-height-title-md);
-  --ds-typography-line-height-heading-sm: var(--ds-typography-line-height-title-sm);
   --ds-typography-size-heading-lg: var(--ds-typography-size-title-lg);
   --ds-typography-size-heading-md: var(--ds-typography-size-title-md);
-  --ds-typography-size-heading-sm: var(--ds-typography-size-title-sm);
   --ds-typography-transform-heading-lg: var(--ds-typography-transform-uppercase);
   --ds-font-weight-table-header: var(--ds-typography-weight-medium);
   --ds-font-weight-input: var(--ds-typography-weight-regular);
-  --ds-typography-line-height-button-lg: var(--ds-typography-line-height-regular);
+  --ds-typography-line-height-button: var(--ds-typography-line-height-label);
   --ds-typography-size-button: var(--ds-typography-size-label);
-  --ds-typography-size-button-lg: var(--ds-typography-size-regular);
   --ds-typography-weight-button: var(--ds-typography-weight-strong);
   --gcsp-font: var(--ds-typography-family-base);
   --gcsp-font-heading: var(--ds-typography-family-title-lg);
@@ -70,8 +65,8 @@
   --gcsp-font-line-title: var(--ds-typography-line-height-heading-lg);
   --gcsp-font-size-heading: var(--ds-typography-size-heading-md);
   --gcsp-font-line-heading: var(--ds-typography-line-height-heading-md);
-  --gcsp-font-size-subheading: var(--ds-typography-size-heading-sm);
-  --gcsp-font-line-subheading: var(--ds-typography-line-height-heading-sm);
+  --gcsp-font-size-subheading: var(--ds-typography-size-regular);
+  --gcsp-font-line-subheading: var(--ds-typography-line-height-regular);
   --gcsp-font-size-body: var(--ds-typography-size-paragraph);
   --gcsp-font-line-body: var(--ds-typography-line-height-paragraph);
   --gcsp-font-size-regular: var(--ds-typography-size-regular);
@@ -79,16 +74,15 @@
   --gcsp-font-size-label: var(--ds-typography-size-label);
   --gcsp-font-line-label: var(--ds-typography-line-height-label);
   --gcsp-font-size-smallprint: var(--ds-typography-size-smallprint);
-  --gcsp-font-size-button: var(--ds-typography-size-button-lg);
-  --gcsp-font-line-button: var(--ds-typography-line-height-button-lg);
-  --gcsp-font-size-button-sm: var(--ds-typography-size-button);
+  --gcsp-font-size-button: var(--ds-typography-size-button);
+  --gcsp-font-line-button: var(--ds-typography-line-height-button);
   --gcsp-font-size-figure: var(--ds-typography-size-10);
   --gcsp-font-size-figure-lg: var(--ds-typography-size-12);
   font-family: var(--gcsp-font);
   font-weight: var(--gcsp-font-weight);
 }
 
-/* Density heading roles: large titles in the brand face, every heading level uppercase. */
+/* Page titles: Density title-lg, uppercase brand face. Section titles: sentence case, as the GCSP screens. */
 .gcsp h1.vm-title, .gcsp h1.gcsp-page-title {
   font-family: var(--gcsp-font-heading), var(--gcsp-font);
   font-weight: var(--gcsp-font-heading-weight);
@@ -98,7 +92,7 @@
 .gcsp h2, .gcsp h3, .gcsp h4, .gcsp h5, .gcsp h6, .gcsp legend {
   font-family: var(--gcsp-font);
   font-weight: var(--gcsp-font-strong-weight);
-  text-transform: var(--gcsp-font-transform-heading); letter-spacing: 0;
+  text-transform: none; letter-spacing: 0;
 }
 .gcsp h2 { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); }
 .gcsp h3, .gcsp h4, .gcsp h5, .gcsp h6 { font-size: var(--gcsp-font-size-subheading); line-height: var(--gcsp-font-line-subheading); }

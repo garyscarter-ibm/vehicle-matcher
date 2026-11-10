@@ -30,9 +30,9 @@
   --vm-text-h1: var(--gcsp-font-size-title);
   --vm-text-h2: var(--gcsp-font-size-heading);
   --vm-text-h2-lg: var(--gcsp-font-size-title);
-  --vm-text-h3: var(--gcsp-font-size-heading);
+  --vm-text-h3: var(--gcsp-font-size-regular);
   --vm-text-body: var(--gcsp-font-size-regular);
-  --vm-text-body-lg: var(--gcsp-font-size-body);
+  --vm-text-body-lg: var(--gcsp-font-size-regular);
   --vm-text-label: var(--gcsp-font-size-label);
   --vm-text-eyebrow: var(--gcsp-font-size-label);
   --vm-btn-height: var(--gcsp-control-height);

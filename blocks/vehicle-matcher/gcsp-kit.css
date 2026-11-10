@@ -1,7 +1,7 @@
 @import "../gcsp/shell/gcsp-tokens.css";
 /* kit primitives under the GCSP theme: Density sizes, weights and button anatomy */
 .gcsp .vm-title { font-weight: var(--gcsp-font-heading-weight); text-transform: var(--gcsp-font-transform-heading); letter-spacing: 0; margin: 0 0 var(--gcsp-space-2); }
-.gcsp .vm-lede { font-family: var(--gcsp-font); font-weight: var(--gcsp-font-weight); font-size: var(--gcsp-font-size-body); line-height: var(--gcsp-font-line-body); color: var(--gcsp-text-muted); margin: 0 0 var(--gcsp-space-6); }
+.gcsp .vm-lede { font-family: var(--gcsp-font); font-weight: var(--gcsp-font-weight); font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); color: var(--gcsp-text-muted); margin: 0 0 var(--gcsp-space-6); }
 .gcsp .vm-kicker { margin: 0 0 var(--gcsp-space-2); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); letter-spacing: 0; color: var(--gcsp-text-muted); }
 .gcsp .vm-btn { min-height: var(--gcsp-control-height); min-width: var(--gcsp-control-height); padding: 0 var(--gcsp-control-inline); border: 1px solid transparent; border-radius: var(--gcsp-radius); font-family: var(--gcsp-font); font-size: var(--gcsp-font-size-button); line-height: var(--gcsp-font-line-button); font-weight: var(--gcsp-font-button-weight); text-transform: none; letter-spacing: 0; display: inline-flex; align-items: center; justify-content: center; gap: var(--gcsp-space-2); text-decoration: none; transition: background var(--gcsp-motion) ease, border-color var(--gcsp-motion) ease, color var(--gcsp-motion) ease; }
 .gcsp .vm-btn-primary { background: var(--gcsp-accent); border-color: var(--gcsp-accent); color: var(--gcsp-on-accent); }

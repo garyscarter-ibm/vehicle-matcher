@@ -98,14 +98,14 @@
   --ds-color-surface-list-item-selected-bar: var(--ds-color-surface-action-strong-active);
   --ds-color-border-input: var(--ds-color-border-neutral-medium);
   --ds-color-border-input-hover: var(--ds-color-border-action-strong);
-  --ds-shape-size-y-input-large: 40px;
+  --ds-shape-size-y-input: 32px;
   --ds-color-surface-button-outline-hover: var(--ds-color-surface-action-mild);
   --ds-color-surface-button-primary: var(--ds-color-surface-action-strong);
   --ds-color-surface-button-primary-hover: var(--ds-color-surface-action-strong-hover);
   --ds-color-typography-button-primary: var(--ds-color-typography-invert);
   --ds-shape-size-ymin-button: 32px;
   --ds-shape-size-ymin-button-lg: 40px;
-  --ds-space-inline-start-button-lg: var(--ds-space-3x);
+  --ds-space-inline-start-button: var(--ds-space-3x);
   --ds-shape-radius-box: var(--ds-shape-radius-base);
 
   /* Local mapping into the existing shared component kit. */
@@ -159,8 +159,8 @@
   --gcsp-space-8: var(--ds-space-8x);
   --gcsp-space-10: var(--ds-space-10x);
   --gcsp-space-12: var(--ds-space-12x);
-  --gcsp-control-height: var(--ds-shape-size-ymin-button-lg);
-  --gcsp-control-height-sm: var(--ds-shape-size-ymin-button);
-  --gcsp-control-inline: var(--ds-space-inline-start-button-lg);
-  --gcsp-input-height: var(--ds-shape-size-y-input-large);
+  --gcsp-control-height: var(--ds-shape-size-ymin-button);
+  --gcsp-control-height-lg: var(--ds-shape-size-ymin-button-lg);
+  --gcsp-control-inline: var(--ds-space-inline-start-button);
+  --gcsp-input-height: var(--ds-shape-size-y-input);
 }
