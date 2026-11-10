@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { installDom, resetDom } from './dom-harness.js';
 import { matchCard, previewTile, listingsOf, mediaWell } from '../../blocks/vehicle-matcher/modes/result-card.js';
-import { formatTerm } from '../../blocks/vehicle-matcher/ui.js';
+import { formatTerm, formatPointsCost } from '../../blocks/vehicle-matcher/ui.js';
 import { employeeCardFixture } from '../../blocks/vehicle-matcher/employee-card-fixture.js';
 import { createSharedKitEmployeeFixture } from './helpers/shared-kit-fixture.js';
 
@@ -41,6 +41,17 @@ test('typed terms never infer points from purchase money or invent unknown value
   assert.equal(formatTerm({ kind: 'points-monthly', value: 1100, allowance: 1300 }), '1,100 points a month · 1,300 points a month allowance');
   assert.equal(formatTerm({ kind: 'points-monthly', value: null, allowance: null }), 'Monthly points cost not supplied · monthly points allowance not supplied');
   assert.equal(formatTerm({ kind: 'purchase-money', currency: 'GBP', value: null }), 'Purchase price not supplied');
+});
+
+test('formatPointsCost reads current cost / budget and says plainly what is missing', () => {
+  const term = (value, allowance) => ({ kind: 'points-monthly', value, allowance });
+  assert.equal(formatPointsCost(term(1100, 1300)), '1,100 / 1,300 points per month');
+  assert.equal(formatPointsCost(term(1100, undefined)), '1,100 points per month \u00b7 budget not supplied');
+  assert.equal(formatPointsCost(term(null, 1300)), 'Cost not supplied \u00b7 1,300 points per month budget');
+  assert.equal(formatPointsCost(term(0, 0)), '0 / 0 points per month', 'zero is a real amount');
+  assert.equal(formatPointsCost(term(undefined, undefined)), 'Not supplied');
+  assert.equal(formatPointsCost({ kind: 'purchase-money', currency: 'GBP', value: 32000 }), 'Not supplied');
+  assert.equal(formatPointsCost(), 'Not supplied');
 });
 
 test('an explicit view keeps the percentage badge unless scoreLabel replaces or hides it', () => {

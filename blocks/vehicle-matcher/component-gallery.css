@@ -78,7 +78,7 @@ main {
 .vm-gallery-gcsp-title { margin: 0 0 var(--vm-space-2); font-size: 15px; font-weight: 600; }
 .vm-gallery-gcsp-body { max-width: none; margin: 0; padding: var(--vm-space-4); background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); }
 .vm-gallery-gcsp-body .vm-btn { margin-right: var(--vm-space-3); }
-.vm-gallery-gcsp-media { max-width: 420px; }
+.vm-gallery-gcsp-media { max-width: 420px; } .vm-gallery-gcsp-whole { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 420px)); gap: var(--vm-space-3); }
 .vm-gallery-gcsp-frame { container: gcsp-gallery-frame / inline-size; height: 280px; overflow: auto; border: 1px solid var(--gcsp-divider); }
 .vm-gallery-gcsp-frame .gcsp { min-height: 100%; }
 .vm-gallery-gcsp-frame .gcsp-account-panel { width: min(320px, calc(100cqw - var(--gcsp-space-4))); }
