@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Presenter console mockup</title>
+  <link rel="stylesheet" href="/blocks/gcsp/shell/gcsp-tokens.css">
+  <link rel="stylesheet" href="./presenter-console.css">
+</head>
+<body class="gcsp">
+  <nav class="mk-review" aria-label="Mockup views">
+    <span class="mk-review-label">Mockup</span>
+    <div class="mk-review-group" role="group" aria-label="Screen">
+      <button type="button" data-view="basic" aria-pressed="true">Basic console</button>
+      <button type="button" data-view="advanced" aria-pressed="false">Advanced</button>
+      <button type="button" data-view="portal" aria-pressed="false">Paula's portal, no overlay</button>
+    </div>
+    <div class="mk-review-group" role="group" aria-label="Release grid alternative" data-only="basic">
+      <button type="button" data-grid="tiles" aria-pressed="true">Car tiles</button>
+      <button type="button" data-grid="dots" aria-pressed="false">Paint dots</button>
+    </div>
+  </nav>
+
+  <!-- Basic console -->
+  <div class="pc" data-pane="basic">
+    <header class="pc-head">
+      <div class="pc-brand"><img src="/assets/brand-logos/bmwgroup-bmw-mini.svg" alt="" width="88" height="24"><span>Group Car Schemes</span><strong>Presenter</strong></div>
+      <div class="pc-time" aria-live="polite">
+        <span class="pc-day" data-day>Day 1</span>
+        <span class="pc-clock" data-clock>Mon 9 Nov, 9:00am</span>
+      </div>
+      <button type="button" class="pc-mode" data-goto="advanced">Advanced</button>
+    </header>
+
+    <main class="pc-main">
+      <section class="pc-stage" aria-labelledby="pc-scenario">
+        <div class="pc-stage-text">
+          <p class="pc-eyebrow">Main successful journey</p>
+          <h1 id="pc-scenario" data-headline>Paula is ready for her buddy</h1>
+          <p class="pc-sub" data-sub>Preferences saved. Next release tomorrow, 11:30am.</p>
+        </div>
+        <div class="pc-actions">
+          <button type="button" class="pc-btn pc-btn-primary" data-release>Release tomorrow's cars</button>
+          <button type="button" class="pc-btn pc-btn-ghost" data-restart>Start again</button>
+          <a class="pc-link" href="#" data-goto="portal">Open Paula's portal</a>
+        </div>
+        <ol class="pc-week" aria-label="Scheme week" data-week></ol>
+      </section>
+
+      <section class="pc-release" aria-labelledby="pc-release-title" data-release-card>
+        <div class="pc-release-head">
+          <h2 id="pc-release-title" data-release-title>Today's release</h2>
+          <p class="pc-stats" data-stats>Waiting for 11:30am</p>
+        </div>
+        <div class="pc-grid" data-grid-host role="grid" aria-label="Released cars" tabindex="0"></div>
+        <div class="pc-release-foot">
+          <ol class="pc-funnel" data-funnel aria-label="How the buddy narrowed the cars">
+          <li data-step="released"><span class="pc-funnel-n">0</span><span>released</span></li>
+          <li data-step="eligible"><span class="pc-funnel-n">0</span><span>Paula can have</span></li>
+          <li data-step="suitable"><span class="pc-funnel-n">0</span><span>fit her brief</span></li>
+          <li data-step="offered"><span class="pc-funnel-n">0</span><span>offered</span></li>
+          </ol>
+          <section class="pc-winner" data-winner hidden aria-labelledby="pc-winner-title">
+          <p class="pc-eyebrow">Offered to Paula</p>
+          <img data-winner-img alt="">
+          <h2 id="pc-winner-title" data-winner-name></h2>
+          <p class="pc-winner-paint" data-winner-paint></p>
+          <ul class="pc-reasons" data-winner-reasons></ul>
+          <p class="pc-hold"><span>Held until</span> <strong data-winner-hold></strong></p>
+        </section>
+        </div>
+      </section>
+
+      <section class="pc-feed" aria-labelledby="pc-feed-title">
+          <div class="pc-feed-head"><h2 id="pc-feed-title">What happened</h2></div>
+          <ol data-feed><li><time>Mon 9 Nov, 9:00am</time><span>Paula's preferences confirmed</span></li></ol>
+      </section>
+    </main>
+
+    <div class="pc-dialog" data-confirm hidden role="dialog" aria-modal="true" aria-labelledby="pc-confirm-title">
+      <div class="pc-dialog-box">
+        <h2 id="pc-confirm-title">Start the journey again?</h2>
+        <p>Paula goes back to day 1 with her preferences saved. The next release brings a new set of cars.</p>
+        <div class="pc-actions"><button type="button" class="pc-btn pc-btn-primary" data-confirm-yes>Start again</button><button type="button" class="pc-btn pc-btn-ghost" data-confirm-no>Cancel</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Advanced: today's controls, regrouped, unchanged in behaviour -->
+  <div class="pc" data-pane="advanced" hidden>
+    <header class="pc-head">
+      <div class="pc-brand"><img src="/assets/brand-logos/bmwgroup-bmw-mini.svg" alt="" width="88" height="24"><span>Group Car Schemes</span><strong>Presenter</strong></div>
+      <div class="pc-time"><span class="pc-day">Day 1</span><span class="pc-clock">Mon 9 Nov, 9:00am</span></div>
+      <button type="button" class="pc-mode pc-mode-on" data-goto="basic">Basic</button>
+    </header>
+    <main class="pc-adv">
+      <div class="pc-tabs" role="tablist" aria-label="Advanced controls">
+        <button role="tab" aria-selected="true" data-tab="scenario">Scenario</button>
+        <button role="tab" aria-selected="false" data-tab="clock">Clock</button>
+        <button role="tab" aria-selected="false" data-tab="people">People</button>
+        <button role="tab" aria-selected="false" data-tab="faults">Faults</button>
+        <button role="tab" aria-selected="false" data-tab="tick">Last tick</button>
+      </div>
+      <section role="tabpanel" data-panel="scenario" class="pc-panel">
+        <h2>Scenario</h2>
+        <div class="pc-scenarios">
+          <label><input type="radio" name="sc" checked><span><strong>Main successful journey</strong><small>Available · current</small></span></label>
+          <label><input type="radio" name="sc"><span><strong>No suitable match</strong><small>Available</small></span></label>
+          <label><input type="radio" name="sc"><span><strong>Decline then change</strong><small>Available</small></span></label>
+          <label><input type="radio" name="sc"><span><strong>Decline then change, no second car yet</strong><small>Available</small></span></label>
+          <label><input type="radio" name="sc"><span><strong>Offer expires</strong><small>Available</small></span></label>
+          <label><input type="radio" name="sc"><span><strong>Data unavailable</strong><small>Available</small></span></label>
+          <label><input type="radio" name="sc"><span><strong>Uncertain handoff, acknowledged</strong><small>Available</small></span></label>
+          <label><input type="radio" name="sc"><span><strong>Uncertain handoff, rejected</strong><small>Available</small></span></label>
+          <label><input type="radio" name="sc"><span><strong>Clock and reset mechanics</strong><small>Available</small></span></label>
+        </div>
+        <div class="pc-actions"><button type="button" class="pc-btn pc-btn-primary">Reset scenario</button><button type="button" class="pc-btn pc-btn-ghost">Continue to workspace</button></div>
+      </section>
+      <section role="tabpanel" data-panel="clock" class="pc-panel" hidden>
+        <h2>Clock</h2>
+        <dl class="pc-facts"><div><dt>Clock (UTC)</dt><dd>2026-11-09T09:00:00.000Z</dd></div><div><dt>Run</dt><dd>ea3b050919d5058adfbcb7852fc98722</dd></div><div><dt>Release cue</dt><dd>2026-11-10T11:30:00.000Z</dd></div><div><dt>Step</dt><dd>60 seconds (clock.presenter.stepSeconds)</dd></div></dl>
+        <div class="pc-actions"><button type="button" class="pc-btn pc-btn-primary">Tick (60 seconds)</button><button type="button" class="pc-btn pc-btn-ghost">Next release</button></div>
+        <label class="pc-field"><span>Named time or UTC target</span><input type="text" placeholder="UTC ISO time or named cue"></label>
+        <button type="button" class="pc-btn pc-btn-ghost">Tick to target</button>
+      </section>
+      <section role="tabpanel" data-panel="people" class="pc-panel" hidden>
+        <h2>Acting principal</h2>
+        <div class="pc-scenarios">
+          <label><input type="radio" name="pp" checked><span><strong>Presenter Taylor</strong><small>presenter</small></span></label>
+          <label><input type="radio" name="pp"><span><strong>Paula Mason</strong><small>employee</small></span></label>
+          <label><input type="radio" name="pp"><span><strong>Alex Chen</strong><small>employee</small></span></label>
+          <label><input type="radio" name="pp"><span><strong>Greg Holt</strong><small>greg</small></span></label>
+        </div>
+        <div class="pc-actions"><button type="button" class="pc-btn pc-btn-primary">Switch principal</button></div>
+      </section>
+      <section role="tabpanel" data-panel="faults" class="pc-panel" hidden>
+        <h2>Faults</h2>
+        <fieldset class="pc-scenarios"><legend>Stock source</legend>
+          <label><input type="radio" name="ft" checked><span><strong>Working</strong></span></label>
+          <label><input type="radio" name="ft"><span><strong>Unavailable</strong></span></label>
+          <label><input type="radio" name="ft"><span><strong>Stale</strong></span></label>
+        </fieldset>
+        <div class="pc-actions"><button type="button" class="pc-btn pc-btn-ghost">Set stock source</button></div>
+      </section>
+      <section role="tabpanel" data-panel="tick" class="pc-panel" hidden>
+        <h2>Last tick</h2>
+        <p>Tick completed. 6 steps: 6 done.</p>
+        <ul class="pc-steps"><li>Stock release: Done. 100 cars released.</li><li>Manual claim expiry: Done.</li><li>Buddy expiry: Done.</li><li>Reconciliation: Done.</li><li>Buddy allocation: Done.</li><li>Outbox dispatch: Done.</li></ul>
+        <div class="pc-actions"><button type="button" class="pc-btn pc-btn-ghost">Refresh readback</button></div>
+      </section>
+      <p class="pc-adv-note">Everything here is today's controls, behaviour unchanged, grouped into tabs.</p>
+    </main>
+  </div>
+
+  <!-- Paula's portal with no presenter overlay -->
+  <div data-pane="portal" hidden>
+    <header class="pt-head">
+      <img src="/assets/brand-logos/bmwgroup-bmw-mini.svg" alt="BMW Group" width="88" height="24"><span class="pt-title">Group Car Schemes Portal</span>
+      <span class="pt-user"><span class="pt-avatar">PM</span>Paula Mason</span>
+    </header>
+    <div class="pt-body">
+      <nav class="pt-rail" aria-label="Portal"><span class="pt-ico pt-on" title="Your cars"></span><span class="pt-ico" title="Preferences"></span><span class="pt-ico" title="Activity"></span></nav>
+      <main class="pt-main">
+        <p class="pt-crumb">Your cars</p>
+        <h1>Your buddy found you a car</h1>
+        <article class="pt-offer">
+          <img data-portal-img alt="">
+          <div>
+            <h2 data-portal-name>i5 Touring eDrive40</h2>
+            <p data-portal-paint>Mineral White</p>
+            <p class="pt-hold">Held for you until <strong data-portal-hold>1:30pm</strong></p>
+            <div class="pc-actions"><button type="button" class="pc-btn pc-btn-primary">Review offer</button><button type="button" class="pc-btn pc-btn-ghost">Not for me</button></div>
+          </div>
+        </article>
+        <p class="pt-note">No rail item, no flyout, no presenter strip: the presenter console is on its own page.</p>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="./presenter-console.js"></script>
+</body>
+</html>
