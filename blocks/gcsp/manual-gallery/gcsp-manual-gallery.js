@@ -55,7 +55,7 @@ claimMessages['retry-available'] = 'No current reservation was found. Retry this
 claimMessages.released = 'Your previous reservation has ended. Availability has been refreshed.';
 
 export function mountManualGallery(root, { adapter = createManualGalleryHttpAdapter(), brand = 'bmw', onBack,
-  onClaimConfirmed, onClaimState, commandId } = {}) {
+  onClaimConfirmed, onClaimState, commandId, initialStock } = {}) {
   const prefix = `gcsp-gallery-${++sequence}`; const controls = {}; const cards = new Map();
   let nodes; let statusKey = null; let noticeKey = null; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin; let limit; let pageKey; let paging; let live; let spoken;
   // Car facts stay closed at every width; the page size is smaller at 600px and below (no matchMedia, as in jsdom, means wide).
@@ -70,7 +70,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     onConfirmed(detail) { if (!disposed) { onClaimConfirmed?.(detail); notify('gcsp:manual-claim-confirmed', detail); } },
     onFailure(outcome, selection) { gallery.resetReviewAttempts(); gallery.reportOutcome(outcome, selection); },
     onReleased() { gallery.resetReviewAttempts(); gallery.refresh(); } });
-  const gallery = createManualGalleryController({ adapter, commandId, onChange(next) { galleryState = next; draw(); },
+  const gallery = createManualGalleryController({ adapter, commandId, initialStock, onChange(next) { galleryState = next; draw(); },
     onReview(selection) { if (!adapter.readOnly) claim.review(selection); } });
   galleryState = gallery.getState(); claimState = claim.getState();
   function field(name, label, options) {

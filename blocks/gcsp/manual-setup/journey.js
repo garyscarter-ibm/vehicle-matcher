@@ -83,9 +83,9 @@ export function mountManualJourney(root, options = {}) {
     hint = nextHint;
     mount('setup', (ticket) => mountManualSetup(root, { ...shared, hint, onBack: () => later(ticket, account) }));
   }
-  function gallery() {
+  function gallery(initialStock) {
     mount('gallery', (ticket) => mountManualGallery(root, { brand: shared.brand, adapter: claimAdapter,
-      commandId: shared.commandId,
+      commandId: shared.commandId, initialStock,
       onBack() {
         // Keep the unresolved attempt and its retry command in its existing controller.
         if (teardown?.claim.getState().blocked !== false) return;
@@ -127,7 +127,12 @@ export function mountManualJourney(root, options = {}) {
   };
   const ready = (event) => {
     if (!disposed && event.target === root && view === 'setup') {
-      hint = event.detail; later(generation, gallery);
+      hint = event.detail;
+      // Setup's matching browse answer seeds the gallery's first paint; any other route fetches itself.
+      const { availability, versions } = teardown?.controller?.getState() ?? {};
+      const fresh = availability?.status === 'ok' && versions?.draft === event.detail.draftVersion
+        && versions?.context === event.detail.contextVersion;
+      later(generation, () => gallery(fresh ? availability : undefined));
     }
   };
   root.addEventListener('gcsp:journey-start', start);

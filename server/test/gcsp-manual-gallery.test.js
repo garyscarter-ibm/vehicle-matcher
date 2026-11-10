@@ -167,6 +167,19 @@ test('async refresh ignores superseded responses, aborts on destroy and recovers
   assert.equal(recover.getState().state, 'empty-stock'); recover.destroy();
 });
 
+test('controller uses an ok initial stock answer for its first load only', async () => {
+  let reads = 0; const adapter = { async browseStock() { reads += 1; return envelope([decision(2)]); } };
+  const seeded = createManualGalleryController({ adapter, initialStock: envelope([decision(1)]) });
+  await seeded.load(); assert.equal(reads, 0); assert.equal(seeded.getState().cars[0].identity.orderNumber, '0000001');
+  await seeded.refresh(); assert.equal(reads, 1); assert.equal(seeded.getState().cars[0].identity.orderNumber, '0000002'); seeded.destroy();
+  for (const initialStock of [{ status: 'unavailable', retryable: true }, null, undefined]) {
+    reads = 0; const plain = createManualGalleryController({ adapter, initialStock });
+    await plain.load(); assert.equal(reads, 1); plain.destroy();
+  }
+  reads = 0; const early = createManualGalleryController({ adapter, initialStock: envelope([decision(1)]) });
+  early.destroy(); await early.load(); assert.equal(reads, 0);
+});
+
 test('default read adapter only GETs the shared manual stock endpoint with trusted cookies', async () => {
   const calls = []; const input = envelope();
   const adapter = createAccountHttpAdapter({ fetchImpl: async (url, options) => { calls.push({ url, options }); return { ok: true, status: 200, json: async () => input }; } });

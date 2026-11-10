@@ -8,6 +8,10 @@ Implemented composition boundary, 5 November 2026. The DOM-free projection/contr
 
 The exact selection descriptor is `{ orderUuid, orderNumber, configurationId, candidateKey, snapshot, facts, terms, draftVersion, versions, decisionVersions, claimInput }`. The descriptor preserves all server-issued fields and passes `claimInput` verbatim. FUCQ-66's published contract is `f81855f:docs/gcsp/manual-claims-contract.md`, SHA-256 `9c31f6f368ed4ed616c755eed168ae6bd75869cf65c4efc811eb0a2cd0cff294`.
 
+## Stock wire shape
+
+The HTTP answer of `GET /api/gcsp/manual/stock` is compact (`server/gcsp/manual-gallery/stock-payload.js`). It carries `payloadShape: 'manual-stock-compact-v1'`, `sharedVersionKeys` (the `versions` keys every decision shares with the top-level `versions`, removed from each decision) and `carIds` (the `orderUuid` of each eligible car, in order) in place of `cars`. The in-process service answer is unchanged. The browser adapter (`blocks/gcsp/account/stock-payload.js`) rebuilds the full value, so the gallery sees the same value as before. An answer without the marker passes through unchanged; a missing shared key or unknown car id reads as `account-response-invalid`.
+
 ## One explicit claim
 
 The rendered FUCQ-69 action owner first reads the authenticated current claim. Existing or allocated claims, pending operations and unavailable authority block new choices. It handles **Review this car** only after an authoritative nonoccupying state. It invokes `POST /api/gcsp/manual/claim` with `{ commandId, ...claimInput }` once for the explicit selected-car attempt. The command ID remains stable for identical retries of that unresolved attempt. Repeated clicks coalesce while a request is in flight. Reading, repainting, filter changes and FUCQ-70 mounting cannot invoke this command.
