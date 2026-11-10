@@ -340,6 +340,10 @@
     {
       "path": "blocks/gcsp/presenter-controls/presenter-console.css",
       "max_lines": 39
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/happened-feed.css",
+      "max_lines": 17
     }
   ],
   "baseline": {

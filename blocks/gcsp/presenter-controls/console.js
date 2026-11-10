@@ -3,6 +3,7 @@ import { tabs } from '../kit/tabs.js';
 import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
 import { mountPresenterControls } from './controls.js';
+import { mountHappenedFeed } from './happened-feed.js';
 
 export const PRESENTER_CONSOLE_MODE_KEY = 'gcsp:presenter-console-mode';
 const ACTION_KEY = 'gcsp:presenter-action'; // Same signal the controller writes, so open portal tabs refresh.
@@ -79,6 +80,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   const status = el('p', 'gcsp-console-status'); status.setAttribute('role', 'status');
   const stage = el('section', 'gcsp-console-stage'); stage.setAttribute('aria-labelledby', headline.id);
   stage.append(text, screen, actions, reasonText, status);
+  const feed = mountHappenedFeed(stage, { adapter, storage: store() });
 
   const advancedHost = el('div', 'gcsp-console-controls');
   const advancedNote = el('p', 'gcsp-note', 'Loading presenter controls');
@@ -112,7 +114,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   // tick(body, copy) runs the default release path with another tick body; refresh() re-reads the controls.
   const context = () => ({ adapter, state, basic, setMode, commandId, refresh: () => read(),
     tick: (body, copy) => defaultRelease({ adapter, state, basic, commandId }, body, copy) });
-  const showScreen = (node) => { screen.replaceChildren(node); actions.hidden = true; reasonText.hidden = true; };
+  const showScreen = (node) => { screen.replaceChildren(node); actions.hidden = true; reasonText.hidden = true; feed.root.hidden = true; };
 
   function applyState(next) {
     state = next; loaded = true; screen.replaceChildren(); actions.hidden = false;
@@ -120,7 +122,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
     const due = state.controls?.nextRelease;
     defaultDisabled = due?.status !== 'available';
     defaultReason = defaultDisabled ? `Release unavailable: ${sentence(due?.reason) || 'no release is due'}` : '';
-    paintPrimary(); onState?.(state, basic);
+    paintPrimary(); feed.update(state); onState?.(state, basic);
   }
   async function read() {
     let reply;
@@ -191,7 +193,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   let saved = 'basic'; try { saved = store()?.getItem(PRESENTER_CONSOLE_MODE_KEY) === 'advanced' ? 'advanced' : 'basic'; } catch { /* storage blocked */ }
   if (saved === 'advanced') setMode('advanced');
   const ready = read();
-  const destroy = () => { disposed = true; abort.abort(); stopWatching(); controller?.destroy(); advancedHost.removeEventListener('gcsp:presenter-action', onAction); root.remove(); };
+  const destroy = () => { disposed = true; abort.abort(); stopWatching(); feed.destroy(); controller?.destroy(); advancedHost.removeEventListener('gcsp:presenter-action', onAction); root.remove(); };
   return { root, basic, setMode, destroy, ready };
 }
 
