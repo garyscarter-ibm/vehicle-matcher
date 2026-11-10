@@ -1,6 +1,5 @@
 import decorate from '../vehicle-matcher/vehicle-matcher.js';
 import { el, button, statusScreen } from '../vehicle-matcher/ui.js';
-import { ACCESS_KEY_STORAGE } from '../vehicle-matcher/engine.js';
 import { rememberRetailLocation, resolveEntryContext, retailReturnUrl } from './entry-context.js';
 import { createRetailChrome, observeRetailNavigation } from './retail-chrome.js';
 import { renderLauncher } from './launcher.js';
@@ -17,7 +16,6 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
   const cleanups = [];
   const routeCleanups = [];
   let routeIdentity;
-  let gatePending = false;
   const clearRoute = () => routeCleanups.splice(0).forEach((dispose) => dispose());
   const cleanup = () => {
     disposed = true;
@@ -26,61 +24,18 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
     if (root.demoEntryCleanup === cleanup) delete root.demoEntryCleanup;
   };
   root.demoEntryCleanup = cleanup;
-  const params = new URLSearchParams(window.location.search);
   const LOCAL_API = 'http://localhost:8787';
   const REMOTE_API = 'https://bmw-matcher-api.onrender.com';
   const pageIsLocal = window.location.protocol === 'file:'
     || ['localhost', '127.0.0.1', '::1', '[::1]', ''].includes(window.location.hostname);
   const DEFAULT_API = pageIsLocal ? LOCAL_API : REMOTE_API;
 
-  const keyFromUrl = params.get('key');
-  if (keyFromUrl) {
-    sessionStorage.setItem(ACCESS_KEY_STORAGE, keyFromUrl);
-  }
+  // Old shared links carry ?key=; drop it from the visible URL (nothing reads it now).
+  const params = new URLSearchParams(window.location.search);
   if (params.has('key')) {
     params.delete('key');
     const clean = params.toString();
-    window.history.replaceState(
-      {}, '',
-      window.location.pathname + (clean ? `?${clean}` : '') + window.location.hash,
-    );
-  }
-
-  function askForPassword(message) {
-    return new Promise((resolve) => {
-      const overlay = el('div');
-      overlay.className = 'vm-gate';
-      overlay.innerHTML = `
-        <form class="vm-gate-card" autocomplete="off">
-          <h1 class="vm-gate-title">Private demo</h1>
-          <p class="vm-gate-lede">Enter the password you were given to continue.</p>
-          ${message ? `<p class="vm-gate-error">${message}</p>` : ''}
-          <input class="vm-gate-input" type="password" name="vm-access"
-                 placeholder="Password" aria-label="Password" autofocus>
-          <button class="vm-gate-btn" type="submit">Enter</button>
-        </form>`;
-      const form = overlay.querySelector('.vm-gate-card');
-      const input = overlay.querySelector('.vm-gate-input');
-      if (root.entryContext?.state === 'employee') {
-        form.classList.add('vm');
-        const recovery = el('nav', 'demo-choice-actions');
-        recovery.setAttribute('aria-label', 'Leave employee cars');
-        recovery.append(button({ label: 'Car experiences', variant: 'ghost', href: root.entryContext.links.launcher }),
-          button({ label: 'Used cars', variant: 'ghost', href: retailReturnUrl(new URL(root.entryContext.location, window.location.href)) }));
-        form.append(recovery);
-      }
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const value = input.value.trim();
-        if (!value) return;
-        sessionStorage.setItem(ACCESS_KEY_STORAGE, value);
-        overlay.remove();
-        resolve();
-      });
-      cleanups.push(() => overlay.remove());
-      document.body.append(overlay);
-      input.focus();
-    });
+    window.history.replaceState({}, '', window.location.pathname + (clean ? `?${clean}` : '') + window.location.hash);
   }
 
   const available = employeeCapabilityAvailable(employeeCapability);
@@ -156,13 +111,6 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
       };
       routeCleanups.push(observeRetailNavigation(window, syncNavigation));
       syncNavigation();
-      const retryAuth = () => {
-        if (document.querySelector('.vm-gate')) return;
-        askForPassword('That password was not right. Please try again.')
-          .then(() => { if (!disposed && block.isConnected) decorateRetail(block); });
-      };
-      window.addEventListener('vm-auth-failed', retryAuth);
-      routeCleanups.push(() => window.removeEventListener('vm-auth-failed', retryAuth));
       decorateRetail(block);
     } else if (context.state === 'employee' && available) {
       employeeRoute(context);
@@ -171,32 +119,11 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
     });
     root.dispatchEvent(new CustomEvent('demo-entry-ready', { detail: context, bubbles: true }));
   }
-  const retryEmployeeAuth = () => {
-    if (disposed || root.entryContext?.state !== 'employee' || gatePending) return;
-    gatePending = true;
-    clearRoute();
-    askForPassword('That password was not right. Please try again.').then(() => {
-      gatePending = false;
-      if (!disposed) render();
-    });
-  };
-  window.addEventListener('vm-auth-failed', retryEmployeeAuth);
-  cleanups.push(() => window.removeEventListener('vm-auth-failed', retryEmployeeAuth));
   cleanups.push(observeRetailNavigation(window, () => {
-    if (disposed || gatePending || routeIdentity === undefined) return;
+    if (disposed || routeIdentity === undefined) return;
     const context = resolveEntryContext(window.location.href, { employeeAvailable: available });
     if (identity(context) !== routeIdentity) render();
   }));
-  const apiHost = (() => {
-    try { return new URL(params.get('api') || DEFAULT_API, window.location.href).hostname; }
-    catch { return ''; }
-  })();
-  const apiIsLocal = apiHost === 'localhost' || apiHost === '127.0.0.1' || apiHost === '::1';
-
-  if (sessionStorage.getItem(ACCESS_KEY_STORAGE) || pageIsLocal || apiIsLocal) {
-    render();
-  } else {
-    askForPassword().then(render);
-  }
+  render();
   return cleanup;
 }

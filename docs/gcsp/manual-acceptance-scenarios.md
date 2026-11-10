@@ -85,13 +85,13 @@ Feedback is recorded in this repository document and committed through the norma
 8 November 2026 (FUCQ-109): the journey is available and replayed in the browser. The start loader (`server/gcsp/scenarios/main-successful-journey.js`) confirms Paula's brief through BriefService in the new run; the presenter then releases stock and ticks. No offer, hold or winner is written by the fixture.
 
 - **Start state:** a freshly started hosted entry (memory repository), demo clock 5 November 2026 09:00 UTC. Paula (fictional) holds a Fictional BMW 320i Touring whose contract ends on 1 December 2026. After the reset her brief is confirmed: estate preferred, five seats, search and hold consent given. Nothing is released and she has no offer.
-- **Start the host:** from the repository root, `cd server && GCSP_RUNTIME=1 GCSP_REPOSITORY_MODE=memory GCSP_PUBLIC_ORIGIN=http://127.0.0.1:8813 DEMO_ACCESS_KEY=<a key you choose> PORT=8813 node index.js`. Wait for the line `GCSP hosted demo`. This is the Render start command with a local key; nothing is stubbed. A different free port works if `GCSP_PUBLIC_ORIGIN` names the same one.
+- **Start the host:** from the repository root, `cd server && GCSP_RUNTIME=1 GCSP_REPOSITORY_MODE=memory GCSP_PUBLIC_ORIGIN=http://127.0.0.1:8813 PORT=8813 node index.js`. Wait for the line `GCSP hosted demo`. This is the Render start command; nothing is stubbed. A different free port works if `GCSP_PUBLIC_ORIGIN` names the same one.
 - **Reset:** step 3 below. **Ticks:** step 7 (Next release, the 09:30 cue) and step 15 (one Tick of 60 seconds, because the generated run has one release window).
 - **Keyboard:** every step can be done with Tab, arrow keys, Space and Enter alone; the automated walkthrough does exactly that.
 
 | # | Action | Expected result |
 |---|---|---|
-| 1 | Open `http://127.0.0.1:8813/gcsp-presenter.html`. Type the demo key and press **Open the demo**. | First the "Open the demo" page with one Demo key field. Then the portal opens with **Presenter controls** collapsed at the top. |
+| 1 | Open `http://127.0.0.1:8813/gcsp-presenter.html`. | The portal opens with **Presenter controls** collapsed at the top. |
 | 2 | Open **Presenter controls**. | The strip shows the run ID, the demo clock, the acting person and the next release cue. Note the run ID. |
 | 3 | In **Scenario** choose **Main successful journey**. Press **Reset scenario**, then **Confirm reset**. | A new run ID, different from the one noted. Clock 5 Nov 2026, 09:00 UTC. The scenario reads Main successful journey. |
 | 4 | In **Acting principal** choose **Paula**, then press **Switch principal**. | The header now reads Paula (fictional). |
@@ -323,7 +323,7 @@ Start the local host: `GCSP_REPOSITORY_MODE=memory GCSP_TLS_KEY_FILE=... GCSP_TL
 trusted backend bootstrap with the separate presenter-control and acting cookies.
 Open `gcsp-presenter.html` through the packaged same-origin static/API host. The runtime selects
 its employee, Greg or presenter surface from actual `/api/gcsp/context`; no person belongs in the URL.
-A shared-key gate, where configured, must already be satisfied by the host. A missing control
+A missing control
 cookie hides the strip entirely even when the acting person is an employee or Greg.
 
 1. Open **Presenter controls**. Check scenario, run, DemoClock UTC time, actual acting person and

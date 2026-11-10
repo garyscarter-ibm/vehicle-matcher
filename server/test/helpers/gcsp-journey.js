@@ -32,7 +32,7 @@ export async function competingPolicy(edit) {
 export async function launch(t, { edit, environmentId = 'critical-path' } = {}) {
   const { seed, policy } = await competingPolicy(edit);
   const https = await createLocalHttpsFixture(t);
-  const app = good(await startGcspDemo({ port: 0, accessKey: '', tls: https.configuration, runtime: { mode: 'memory',
+  const app = good(await startGcspDemo({ port: 0, tls: https.configuration, runtime: { mode: 'memory',
     stockProvider: createDemoStockProvider, adoptOfferJourney: true, policy, environmentId, policyAsOf: seed.effectiveFrom, commandId: `${environmentId}-bootstrap` } }));
   t.after(() => app.close());
   const f = { app, services: app.services, policy: app.services.policy, origin: app.origin, seed, counter: 0, presenter: null, context: null };

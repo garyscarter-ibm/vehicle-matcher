@@ -15,7 +15,7 @@ async function setup(t) {
   // Alex takes Paula's grade (competingPolicy): at the canonical seed grade no car is within his allowance.
   const { seed, policy } = await competingPolicy();
   const https = await createLocalHttpsFixture(t);
-  const app = good(await startGcspDemo({ port: 0, accessKey: '', tls: https.configuration, runtime: { mode: 'memory',
+  const app = good(await startGcspDemo({ port: 0, tls: https.configuration, runtime: { mode: 'memory',
     stockProvider: createDemoStockProvider, adoptOfferJourney: true, policy, environmentId: 'no-match', policyAsOf: seed.effectiveFrom,
     commandId: 'no-match-bootstrap' } }));
   t.after(() => app.close());

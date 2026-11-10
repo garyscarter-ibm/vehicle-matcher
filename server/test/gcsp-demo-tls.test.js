@@ -29,10 +29,7 @@ test('local host refuses absent unreadable and invalid TLS before opening runtim
   assert.equal(opened, 0);
 });
 
-test('verified same-origin HTTPS serves real account and offer entry through the unchanged shared gate', async (t) => {
-  const previousKey = process.env.DEMO_ACCESS_KEY;
-  t.after(() => { if (previousKey === undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY = previousKey; });
-  process.env.DEMO_ACCESS_KEY = 'local-https-shared-test';
+test('verified same-origin HTTPS serves real account and offer entry with no access key', async (t) => {
   const https = await createLocalHttpsFixture(t);
   const opened = await startGcspDemo({ tls: https.configuration, runtime: { mode: 'memory',
     environmentId: 'local-https-test', policyAsOf: '2026-11-05T12:00:00.000Z', commandId: 'https-bootstrap' } });
@@ -77,16 +74,11 @@ test('verified same-origin HTTPS serves real account and offer entry through the
   assert.equal(foreignHost.status, 403);
   const unauthenticated = await https.fetch(app.origin + '/api/gcsp/context', { headers: { Origin: app.origin } });
   assert.equal(unauthenticated.status, 401);
-  try {
-    process.env.DEMO_ACCESS_KEY = 'different-local-https-shared-test';
-    const denied = await https.fetch(app.origin + '/api/gcsp/context', { headers: { Cookie: session, Origin: app.origin } });
-    assert.equal(denied.status, 401);
-  } finally { process.env.DEMO_ACCESS_KEY = 'local-https-shared-test'; }
 });
 
 test('root session cookies preserve explicit Greg login across HTML and API without presenter bootstrap', async (t) => {
   const https = await createLocalHttpsFixture(t);
-  const opened = await startGcspDemo({ tls: https.configuration, accessKey: '', runtime: { mode: 'memory',
+  const opened = await startGcspDemo({ tls: https.configuration, runtime: { mode: 'memory',
     environmentId: 'local-navigation-test', policyAsOf: '2026-11-05T12:00:00.000Z', commandId: 'navigation-bootstrap' } });
   assert.equal(opened.status, 'ok'); const app = opened.value; t.after(() => app.close());
   const jar = new CookieJar();

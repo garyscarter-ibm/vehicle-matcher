@@ -34,7 +34,7 @@ export async function measureStartupMemory({ serverDir = SERVER_DIR, ceilingMiB 
   const port = await freePort(); const report = join(scratch, 'report.json');
   const env = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: scratch, PORT: String(port),
     GCSP_RUNTIME: '1', GCSP_REPOSITORY_MODE: 'memory', GCSP_OFFLINE: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}`,
-    DEMO_ACCESS_KEY: `memory-check-${randomBytes(9).toString('hex')}`, GCSP_STARTUP_MEMORY_REPORT: report };
+    GCSP_STARTUP_MEMORY_REPORT: report };
   const child = spawn(process.execPath, ['--import', PROBE, 'index.js'], { cwd: resolve(serverDir), env, stdio: ['ignore', 'pipe', 'pipe'] });
   let output = ''; for (const stream of [child.stdout, child.stderr]) stream.on('data', (chunk) => { output = (output + chunk).slice(-4000); });
   const exited = once(child, 'exit'); const started = Date.now();

@@ -67,7 +67,7 @@ export function mountExperimentPanel(root, { adapter, signal, pollMs = 2000 } = 
   const updateOption = (id) => { const sub = optionNodes.get(id)?.querySelector('.vm-option-sub'); if (sub) sub.textContent = stateOf(entry(id)); };
 
   function problem(state) {
-    if (state.status === 'access-required') return { name: 'access-required', node: accessLapsedScreen(), text: 'Access needed.' };
+    if (state.status === 'access-required') return { name: 'access-required', node: accessLapsedScreen(), text: 'Session ended.' };
     reload.textContent = state.status === 'refused' ? 'Reload' : 'Retry';
     return state.status === 'refused'
       ? { name: 'refused', node: statusScreen({ kicker: TITLE, title: 'You cannot open this comparison', message: REFUSED, role: 'alert' }), text: 'Access refused.' }

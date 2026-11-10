@@ -374,11 +374,11 @@ test('HTTP gate and exact origins precede exchange, including missing, null and 
   assert.equal(f.store.state.tables.event_receipts.length, before);
 });
 
-test('HTTP preflight preserves the existing shared X-Access-Key contract without resolving a session', async () => {
+test('HTTP preflight advertises only Content-Type and resolves no session', async () => {
   const f = await fixture(); const before = f.store.state.tables.event_receipts.length;
   const response = await request(f, '/api/gcsp/offers/access', { method: 'OPTIONS' });
   assert.equal(response.status, 204);
-  assert.equal(response.headers['Access-Control-Allow-Headers'], 'Content-Type, X-Access-Key');
+  assert.equal(response.headers['Access-Control-Allow-Headers'], 'Content-Type');
   assert.equal(response.headers['Access-Control-Allow-Origin'], 'https://offer.test');
   assert.equal(f.store.state.tables.event_receipts.length, before);
 });
@@ -396,16 +396,15 @@ test('HTTP refuses token URLs, duplicate run selectors, identity claims and over
 });
 
 test('actual buildServer request listener registers exchange, reload, account and old-run reads without opening a port', async () => {
-  const f = await fixture(); const previous = process.env.DEMO_ACCESS_KEY;
-  process.env.DEMO_ACCESS_KEY = 'offer-access-test-gate';
+  const f = await fixture();
   const server = buildServer({ gcspIdentity:f.identity, gcspClock:f.clock, gcspOfferAccess:f.service, gcspAllowedOrigins:['https://offer.test'] });
-  try {
+  {
     const listener = server.listeners('request')[0];
     assert.equal(typeof listener, 'function'); assert.equal(server.listening, false);
-    const call = async (path, {method='GET',body,cookie,gate=true,origin='https://offer.test'}={}) => {
+    const call = async (path, {method='GET',body,cookie,origin='https://offer.test'}={}) => {
       const req = Readable.from(body ? [JSON.stringify(body)] : []);
       req.url = path; req.method = method;
-      req.headers = {host:'api.test',origin,...(gate ? {'x-access-key':'offer-access-test-gate'} : {}),
+      req.headers = {host:'api.test',origin,
         ...(cookie ? {cookie} : {}),...(body ? {'content-type':'application/json'} : {})};
       const headers = new Map();
       const res = { setHeader(key,value) { headers.set(key.toLowerCase(),value); },
@@ -417,8 +416,7 @@ test('actual buildServer request listener registers exchange, reload, account an
         getSetCookie:()=>[headers.get('set-cookie')].flat()},json:res.body?JSON.parse(res.body):null};
     };
     const body = {...f.selector,token:f.rawToken};
-    assert.equal((await call('/api/gcsp/offers/access',{method:'OPTIONS',gate:false})).status,204);
-    assert.equal((await call('/api/gcsp/offers/access',{method:'POST',body,gate:false})).status,401);
+    assert.equal((await call('/api/gcsp/offers/access',{method:'OPTIONS'})).status,204);
     assert.equal((await call('/api/gcsp/offers/access',{method:'POST',body,origin:'https://other.test'})).status,403);
     const exchange = await call('/api/gcsp/offers/access',{method:'POST',body}); assert.equal(exchange.status,200);
     const cookie = cookieOf(exchange.headers.getSetCookie());
@@ -432,8 +430,6 @@ test('actual buildServer request listener registers exchange, reload, account an
     await f.reset();
     const old = await call(path,{cookie}); assert.equal(old.status,409); assert.equal(old.json.status,'stale-run');
     assert.deepEqual(Object.keys(old.json).sort(),['contractVersion','reason','status']);
-  } finally {
-    if (previous===undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY=previous;
   }
 });
 

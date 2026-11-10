@@ -9,7 +9,7 @@ let serial = 0;
 const unavailable = { status: 'unavailable', reason: 'Renewal help could not be loaded. Try again.' };
 export function caseFailure(envelope) {
   const status = envelope?.status;
-  if (status === 'access-required') return { title: 'Access needed', text: 'Your access has lapsed. Enter the access key again.' };
+  if (status === 'access-required') return { title: 'Session ended', text: 'Your session has ended. Reload to continue.' };
   const titles = { forbidden: 'You cannot open these cases', 'stale-run': 'This page is out of date',
     'stale-version': 'The case or your preferences have changed', conflict: 'The case or your preferences have changed', invalid: 'Review your request' };
   const detail = envelope?.reason ?? envelope?.reasons?.map((r) => r.reason).join(' ');

@@ -17,8 +17,6 @@ export function cookieOf(session) {
 }
 
 export async function startHttpServer(dependencies = {}, allowedOrigins = [EMPLOYEE_ORIGIN]) {
-  const previousAccessKey = process.env.DEMO_ACCESS_KEY;
-  delete process.env.DEMO_ACCESS_KEY;
   const server = buildServer({ gcspAllowedOrigins: allowedOrigins, ...dependencies });
   server.listen(0, '127.0.0.1');
   await once(server, 'listening');
@@ -43,8 +41,6 @@ export async function startHttpServer(dependencies = {}, allowedOrigins = [EMPLO
         server.close(done);
         server.closeAllConnections();
       });
-      if (previousAccessKey === undefined) delete process.env.DEMO_ACCESS_KEY;
-      else process.env.DEMO_ACCESS_KEY = previousAccessKey;
     },
   };
 }

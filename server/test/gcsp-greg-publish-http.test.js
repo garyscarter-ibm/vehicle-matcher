@@ -103,9 +103,6 @@ test('registered policy routes retain gate, origin, roles and strict trusted-con
       body: { expectedActiveVersion: 'gcsp-policy-v1', changes: [{ id: 'weight:body', value: 0 }], ...patch } })).status, 400);
   }
   const before = await allRows(f);
-  process.env.DEMO_ACCESS_KEY = 'policy-http-test-key';
-  assert.equal((await f.request('/api/gcsp/greg/policy', { session: greg })).status, 401);
-  response(await f.request('/api/gcsp/greg/policy', { session: greg, headers: { 'X-Access-Key': 'policy-http-test-key' } }));
-  delete process.env.DEMO_ACCESS_KEY;
+  response(await f.request('/api/gcsp/greg/policy', { session: greg }));
   assert.deepEqual(await allRows(f), before);
 });

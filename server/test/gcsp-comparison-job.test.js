@@ -456,15 +456,12 @@ test('buildServer serves the stored read with no-store, 404 until stored, 403 fo
   const repository = await openRepository();
   const f = await readFixture(repository);
   const service = createComparisonResultService({ repository, policy, clock: f.clock, identity: f.identity });
-  const oldKey = process.env.DEMO_ACCESS_KEY;
-  const accessKey = 'comparison-read-fixture-key';
-  process.env.DEMO_ACCESS_KEY = accessKey;
   const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspComparison: service, gcspAllowedOrigins: ['https://greg.test'] });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
   const cookie = (session) => [session.value.setCookie].flat().map((c) => c.split(';')[0]).join('; ');
   const read = async (session, query = '') => {
     const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/comparison/process/latest${query}`, {
-      headers: { Origin: 'https://greg.test', Cookie: cookie(session), 'X-Access-Key': accessKey } });
+      headers: { Origin: 'https://greg.test', Cookie: cookie(session) } });
     return { status: response.status, body: await response.json(), cache: response.headers.get('Cache-Control') };
   };
   try {
@@ -484,7 +481,6 @@ test('buildServer serves the stored read with no-store, 404 until stored, 403 fo
     assert.equal(query.status, 400); assert.equal(query.body.code, 'unsupported-query');
   } finally {
     server.closeAllConnections(); await new Promise((done) => server.close(done));
-    if (oldKey === undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY = oldKey;
   }
 });
 

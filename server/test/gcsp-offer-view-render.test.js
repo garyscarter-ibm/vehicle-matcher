@@ -554,12 +554,12 @@ test('the restarted state shows the restart screen with a single Reload button a
   assert.equal(document.activeElement?.textContent, 'Reload'); view.destroy(); root.remove();
 });
 
-test('a lapsed access key links to the access form, back to the account, since a reload of the open offer page cannot recover', () => {
+test('an ended session links back to the account, since a reload of the open offer page cannot recover', () => {
   const root = document.createElement('div'); document.body.append(root);
   const view = createOfferView(root, {}); view.update({ state: 'error', canAccept: false, canDecline: false }); root.querySelector('[data-offer-action="refresh"]').focus();
   view.update({ state: 'access-lapsed', canAccept: false, canDecline: false });
-  assert.match(root.textContent, /Access needed/); assert.match(root.textContent, /open this offer from your account/);
-  const link = root.querySelector('a.vm-btn'); assert.equal(link.textContent, 'Enter the access key'); assert.equal(link.getAttribute('href'), '/gcsp/access?next=%2Fgcsp-account.html');
+  assert.match(root.textContent, /Session ended/); assert.match(root.textContent, /Open your account to continue/);
+  const link = root.querySelector('a.vm-btn'); assert.equal(link.textContent, 'Open your account'); assert.equal(link.getAttribute('href'), '/gcsp-account.html');
   assert.equal(document.activeElement, link); assert.equal(root.querySelectorAll('button').length, 0); assert.doesNotMatch(root.textContent, /Reload|could not be loaded|Try again/);
   view.destroy(); root.remove();
 });

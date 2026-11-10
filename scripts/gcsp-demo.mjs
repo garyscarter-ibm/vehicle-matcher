@@ -14,9 +14,8 @@ const tlsConfiguration = () => ({ keyFile: process.env.GCSP_TLS_KEY_FILE, certFi
 const tlsRefusal = (code) => ({ status: 'invalid', code,
   reason: 'Configure a valid local HTTPS certificate and private key.', retryable: false });
 
-// One HTTPS loopback origin serves both entries and the unchanged shared API gate.
-export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, accessKey = process.env.DEMO_ACCESS_KEY,
-  tls = tlsConfiguration() } = {}) {
+// One HTTPS loopback origin serves both entries.
+export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, tls = tlsConfiguration() } = {}) {
   if (!tls || typeof tls !== 'object' || Array.isArray(tls)
     || Object.keys(tls).some((key) => !['keyFile', 'certFile', 'passphrase'].includes(key))
     || !['keyFile', 'certFile'].every((key) => typeof tls[key] === 'string' && tls[key].trim())
@@ -44,7 +43,7 @@ export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, acces
     api = buildServer({ ...services.dependencies, gcspAllowedOrigins: [origin] });
     const startup = await api.gcspStartup;
     if (startup?.status !== 'ok') { await close(); return startup; }
-    front = createGcspFront({ root, services, api, origin, accessKey });
+    front = createGcspFront({ root, services, api, origin });
     return { status: 'ok', value: { origin, server, services, close } };
   } catch { await close(); return { status: 'unavailable', reason: 'The local demo could not start.', retryable: true }; }
 }

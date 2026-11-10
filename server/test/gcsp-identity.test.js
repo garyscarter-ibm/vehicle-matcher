@@ -286,24 +286,6 @@ test('HTTP principal switching sends credentials only in HttpOnly cookies, witho
   });
 });
 
-test('shared DEMO_ACCESS_KEY gate runs before identity and retail routes keep their response', async () => {
-  const f = await setup();
-  const previous = process.env.DEMO_ACCESS_KEY;
-  process.env.DEMO_ACCESS_KEY = 'identity-test-gate';
-  try {
-    await withHttp(f, [], async (request) => {
-      assert.deepEqual((await request('/api/gcsp/context')).json, { error: 'Unauthorized' });
-      const sharedOnly = await request('/api/gcsp/context', { session: null, headers: { 'X-Access-Key': process.env.DEMO_ACCESS_KEY } });
-      assert.equal(sharedOnly.json.status, 'missing-session');
-      const retail = await request('/api/questions', { session: null, headers: { 'X-Access-Key': process.env.DEMO_ACCESS_KEY } });
-      assert.equal(retail.status, 200);
-      assert.ok(Array.isArray(retail.json.questions));
-      assert.deepEqual((await request('/health', { session: null })).json, { ok: true });
-      assert.equal((await request('/api/gcsp/context', { headers: { 'X-Access-Key': process.env.DEMO_ACCESS_KEY } })).json.status, 'ok');
-    });
-  } finally { if (previous === undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY = previous; }
-});
-
 test('identity port replacement requires no route change and absent contexts fail closed', async () => {
   const trusted = { environmentId: 'sanctioned-test-environment', principalId: 'sanctioned-test-principal', runId: 'sanctioned-test-run', roles: ['employee'] };
   for (const value of [trusted, null]) {
@@ -387,7 +369,7 @@ test('GCSP supports credentialed static-site requests only from exact configured
     const preflight = await request('/api/gcsp/session/switch', { method: 'OPTIONS', session: null, headers: { Origin: 'https://gcsp.example' } });
     assert.equal(preflight.status, 204);
     assert.equal(preflight.headers.get('access-control-allow-origin'), 'https://gcsp.example');
-    assert.match(preflight.headers.get('access-control-allow-headers'), /X-Access-Key/);
+    assert.equal(preflight.headers.get('access-control-allow-headers'), 'Content-Type');
     assert.equal((await request('/api/gcsp/context', { noOrigin: true })).status, 200);
     assert.equal((await request('/api/gcsp/session/switch', { noOrigin: true, body: { principalId: 'demo-greg', commandId: 'missing-origin' } })).status, 403);
     for (const origin of ['https://gcsp.example.evil', 'https://other.example', 'null']) {

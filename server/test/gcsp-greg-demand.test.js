@@ -338,23 +338,20 @@ test('a missing, invalid or wrong-version decline policy makes the view unavaila
 });
 
 
-test('buildServer exposes a no-store trusted Greg GET, origin/session/gate refusal and stale-run protection', async () => {
+test('buildServer exposes a no-store trusted Greg GET, origin/session refusal and stale-run protection', async () => {
   const f = await setup(); await confirm(f);
-  const oldKey = process.env.DEMO_ACCESS_KEY;
-  process.env.DEMO_ACCESS_KEY = 'greg-demand-fixture-key';
   const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspGreg: f.service,
     gcspAllowedOrigins: ['https://greg.test'] });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
   const cookie = (session) => [session.value.setCookie].flat().map((c) => c.split(';')[0]).join('; ');
-  const request = async ({ session = f.acting, origin = 'https://greg.test', query = '', gate = true } = {}) => {
+  const request = async ({ session = f.acting, origin = 'https://greg.test', query = '' } = {}) => {
     const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/greg/demand${query}`, {
-      headers: { Origin: origin, ...(session ? { Cookie: cookie(session) } : {}), ...(gate ? { 'X-Access-Key': 'greg-demand-fixture-key' } : {}) } });
+      headers: { Origin: origin, ...(session ? { Cookie: cookie(session) } : {}) } });
     return { status: response.status, body: await response.json(), cache: response.headers.get('Cache-Control') };
   };
   try {
     const response = await request(); assert.equal(response.status, 200, JSON.stringify(response));
     assert.equal(response.cache, 'no-store'); assert.equal(response.body.value.runId, f.context.runId);
-    assert.equal((await request({ gate: false })).status, 401);
     assert.equal((await request({ session: null })).status, 401);
     assert.equal((await request({ origin: 'https://hostile.test' })).status, 403);
     const paula = await f.identity.switchPrincipal(f.presenter.value.context, 'demo-paula', 'http-employee');
@@ -366,7 +363,6 @@ test('buildServer exposes a no-store trusted Greg GET, origin/session/gate refus
     assert.equal((await request()).body.status, 'stale-run');
   } finally {
     server.closeAllConnections(); await new Promise((done) => server.close(done));
-    if (oldKey === undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY = oldKey;
   }
 });
 

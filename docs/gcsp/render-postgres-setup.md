@@ -30,8 +30,8 @@ same-site or same-origin, because sessions use cookies; never point a signed-in 
 The design records the choice: `docs/design/gcsp-high-level-design.md`, "Technical deployment and recovery".
 The hosted runtime now uses PostgreSQL (FUCQ-322). It reuses the current run, saved accounts and preferences on restart or redeployment. Missing database configuration prevents startup; there is no fallback to memory. Memory remains an explicit isolated-test option.
 
-`DEMO_ACCESS_KEY` is required with `GCSP_RUNTIME=1`. The first live page in each browser asks for it once ("Open the demo"), then remembers it
-for 12 hours in an HttpOnly cookie. Emailed offer links (`/gcsp/offer`) never ask: they carry their own offer token.
+The demo runs open: there is no access key or password page, and a `DEMO_ACCESS_KEY` left in the dashboard is ignored.
+Emailed offer links (`/gcsp/offer`) carry their own offer token.
 
 ### Backend settings on `gcsp-api`
 
@@ -44,7 +44,6 @@ for 12 hours in an HttpOnly cookie. Emailed offer links (`/gcsp/offer`) never as
 | `GCSP_ALLOWED_ORIGINS` | Blueprint | Extra origins allowed to call `/api/gcsp/*` (`gcsp-site`). `GCSP_PUBLIC_ORIGIN` is always allowed. |
 | `GCSP_OFFLINE` | Blueprint | `1`: no live retailer warmers at boot. |
 | `GCSP_DATABASE_URL` | Blueprint, from `gcsp-db` | Used only in postgres mode and by vehicle evidence. |
-| `DEMO_ACCESS_KEY` | Dashboard only | The demo key. Required: without it `gcsp-api` refuses to start (`access-key-required`). |
 | `GCSP_MAIL_TRANSPORT` | Dashboard only | `brevo` sends real email. Unset keeps every email captured in the outbox. |
 | `GCSP_MAIL_FROM`, `GCSP_MAIL_FROM_NAME` | Dashboard only | The verified Brevo sender. |
 | `GCSP_MAIL_RECIPIENTS` | Dashboard only | JSON map of demo principal to address. |
@@ -74,9 +73,7 @@ for 12 hours in an HttpOnly cookie. Emailed offer links (`/gcsp/offer`) never as
    - **Blueprint Path:** `render.gcsp.yaml`. This field matters most: left empty, Render reads the retail `render.yaml`.
 4. Render lists what it will create: `gcsp-db`, `gcsp-api` and `gcsp-site`. If you see `bmw-matcher-api`, stop: the
    Blueprint Path is wrong.
-5. It asks for one value, `DEMO_ACCESS_KEY`. Enter the demo password you want on the GCSP API. It is required: without
-   it `gcsp-api` refuses to start. You can change it later on `gcsp-api`'s **Environment** page.
-6. Click **Apply**. Render creates the database first, then builds both services. Wait until all three show **Live**
+5. Render asks for no secret values. Click **Apply**. Render creates the database first, then builds both services. Wait until all three show **Live**
    or **Available** (5 to 10 minutes).
 
 You don't run any SQL. The backend applies its own migrations the first time it opens the database.
@@ -137,7 +134,7 @@ database's external address. Render filled in the internal one for `gcsp-api`.
    - `/` shows the launcher. Choosing Used cars runs the retail matcher against `gcsp-api`.
    - `/gcsp-employee.html` shows the employee shell and reviewed body.
    - `/components.html` shows the component gallery.
-   - `/gcsp-presenter.html` redirects to `gcsp-api`, asks for the demo key once, and opens the presenter workspace.
+   - `/gcsp-presenter.html` redirects to `gcsp-api` and opens the presenter workspace.
 
 4. **Live demo**, on `gcsp-api`: Reset on the presenter page, a tick, Paula's offer and the outbox. The smoke steps
    are in the FUCQ-180 result.
@@ -167,7 +164,7 @@ It takes about 28 minutes and about 1.5 GB. The default 128 MB worker job fails 
 - Build filters skip commits that can't change what runs. `gcsp-api` redeploys for API code, GCSP operator modules and pinned vehicle-image assets, excluding
   its tests and server markdown. `gcsp-site` redeploys only for the files its build copies, so `_dev/` and `docs/` commits
   deploy nothing. If you add a file to the site's `cp` list, add it to `buildFilter.paths` too (a test checks).
-- Change GCSP's Render settings by editing `render.gcsp.yaml` and pushing. The exceptions are `DEMO_ACCESS_KEY` and
+- Change GCSP's Render settings by editing `render.gcsp.yaml` and pushing. The exception is
   the mail settings (`GCSP_MAIL_*`, `GCSP_BREVO_API_KEY`), which live only in the dashboard.
 - `main`, GitHub Pages and `bmw-matcher-api` are unaffected.
 
@@ -182,7 +179,6 @@ It takes about 28 minutes and about 1.5 GB. The default 128 MB worker job fails 
 | `/api/gcsp/*` returns "This origin is not allowed" | `GCSP_ALLOWED_ORIGINS` doesn't exactly match `gcsp-site`'s address | Do step 3. |
 | `/api/gcsp/*` returns "GCSP identity has not been configured" | `GCSP_RUNTIME` isn't `1` on `gcsp-api` | Check the Blueprint synced; redeploy. |
 | Deploy fails with "GCSP hosted startup: invalid (public-origin-required)" | `GCSP_PUBLIC_ORIGIN` is missing or not an exact `https://` origin | Set it to `gcsp-api`'s address, no trailing slash.
-| Deploy fails with "GCSP hosted startup: invalid (access-key-required)" | `DEMO_ACCESS_KEY` is empty on `gcsp-api` | Add it on the **Environment** page; redeploy. | |
 | Saved accounts disappear after redeployment | The existing service still explicitly selects memory mode | Sync the Blueprint's PostgreSQL setting and database link, then verify a restart. Presenter Reset intentionally starts a new run. |
 | Contract tests can't connect | URL is missing `?sslmode=require` | Add it to `.claude/gcsp-database-url`. |
 

@@ -123,13 +123,12 @@ test('direct and refreshed BMW entry mounts the real custom element once and ret
     return { ...entry, ...transport };
   }, fetchImpl: async (url, options) => {
     calls.push({ url, options });
-    if (mode === 'gate') return response({ error: 'Unauthorized' }, 401);
     if (mode === 'expired') return response({ status: 'expired-session' }, 401);
     if (mode === 'refused') return response({ status: 'forbidden', view: { supportOwner: 'scheme-support' } }, 403);
     return response(url.endsWith('/account') ? account : { status: 'not-found' }, url.endsWith('/account') ? 200 : 404);
   } });
   const { dom, win } = bootAt(`${employee}&employeeId=other&role=presenter&api=https%3A%2F%2Fname%3Apassword%40api.test%2Fbase%2F%3Ftoken%3Dprivate`,
-    { remote: true, stored: 'demo-test-password', employeeCapability: capability });
+    { remote: true, employeeCapability: capability });
   try {
     assert.equal(lazyLoads, 1); assert.equal(calls.length, 0);
     loaded.resolve(); await moduleReady.promise; await flush();
@@ -143,7 +142,7 @@ test('direct and refreshed BMW entry mounts the real custom element once and ret
     for (const { url, options } of calls) {
       assert.match(url, /^https:\/\/api\.test\/base\/api\/gcsp\/(manual\/(account|draft)|offers\/current)$/);
       assert.equal(options.credentials, 'include');
-      assert.equal(options.headers['X-Access-Key'], 'demo-test-password');
+      assert.equal(options.headers['X-Access-Key'], undefined);
       assert.equal(options.method ?? 'GET', 'GET'); assert.equal(options.body, undefined);
       assert.equal(Object.keys(options.headers).some((key) => /employee|role|cookie|authorization/i.test(key)), false);
     }
@@ -164,23 +163,9 @@ test('direct and refreshed BMW entry mounts the real custom element once and ret
       assert.match(root.textContent, /account|Account/);
       assert.ok(action(win, 'Used cars')); assert.ok(action(win, 'Car experiences'));
     }
-    mode = 'gate'; await root.querySelector('gcsp-employee-entry').refresh(); await flush();
-    assert.ok(win.document.querySelector('.vm-gate'));
-    const gateRecovery = win.document.querySelector('.vm-gate nav[aria-label="Leave employee cars"]');
-    assert.equal(gateRecovery.querySelectorAll('a').length, 2);
-    for (const link of gateRecovery.querySelectorAll('a')) assert.doesNotMatch(link.href, /key=|employeeId|role=/);
-    assert.equal(win.document.activeElement.type, 'password');
-    assert.equal(win.sessionStorage.getItem(win.ACCESS_KEY_STORAGE), null);
-    assert.ok(action(win, 'Used cars'));
-    mode = 'ready';
-    const form = win.document.querySelector('.vm-gate-card');
-    form.querySelector('input').value = 'replacement-test-password';
-    form.dispatchEvent(new win.Event('submit', { bubbles: true, cancelable: true })); await flush();
-    assert.equal(win.document.querySelector('.vm-gate'), null);
-    assert.equal(root.querySelectorAll('gcsp-employee-entry').length, 1);
+    mode = 'ready'; await root.querySelector('gcsp-employee-entry').refresh(); await flush();
     assert.match(root.textContent, /Contract Test Employee/);
     const latest = calls.slice(-3);
-    latest.forEach(({ options }) => assert.equal(options.headers['X-Access-Key'], 'replacement-test-password'));
     const signals = latest.map(({ options }) => options.signal);
     win.history.replaceState({}, '', employee); await flush();
     assert.equal(root.querySelectorAll('gcsp-employee-entry').length, 1);

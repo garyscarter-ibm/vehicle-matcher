@@ -1,6 +1,6 @@
 // Shared GCSP host: runtime options, the same-origin page front and the hosted (Render) entry.
 // The launcher and server/index.js both compose through here, so there is one copy.
-import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
+import { createHash } from 'node:crypto';
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, relative, resolve, sep } from 'node:path';
@@ -22,10 +22,6 @@ const presenterPage = (path) => ['/gcsp-presenter.html', '/gcsp-outbox.html'].in
 const gregPage = (path) => ['/gcsp-greg.html', '/gcsp-case-queue.html'].includes(path);
 const landing = (context) => context?.roles?.includes('greg') ? '/gcsp-greg.html'
   : context?.roles?.includes('employee') ? '/gcsp-account.html' : LOGIN_PATH;
-const ACCESS_COOKIE = 'GCSP_HOST_ACCESS';
-const ACCESS_PATH = '/gcsp/access';
-const ACCESS_MAX_AGE = 43200;
-const ACCESS_BODY_LIMIT = 4096;
 const publicPath = (path) => loginPage(path) || sessionPage(path) || ['/gcsp/offer', '/gcsp-offer.html', '/gcsp-employee.css'].includes(path)
   || path.startsWith('/blocks/') || path.startsWith('/assets/');
 
@@ -43,80 +39,17 @@ export function gcspRuntimeOptions({ env = process.env, defaultMode, defaultEnvi
   return { runtime, stock, mode, environmentId };
 }
 
-const digest = (value) => createHash('sha256').update(String(value)).digest();
-const keyMatches = (given, expected) => timingSafeEqual(digest(given), digest(expected));
-const accessToken = (accessKey) => createHmac('sha256', accessKey).update('gcsp-host-access-v1').digest('hex');
-const cookieValue = (header, name) => header?.split(';').map((part) => part.trim())
-  .find((part) => part.startsWith(`${name}=`))?.slice(name.length + 1);
 const contentTag = (body) => `"${createHash('sha256').update(body).digest('base64url').slice(0, 27)}"`;
 // If-None-Match uses weak comparison (RFC 9110), so a W/ prefix still matches.
 const tagMatches = (header, tag) => typeof header === 'string'
   && header.split(',').some((value) => { const given = value.trim(); return given === '*' || given.replace(/^W\//, '') === tag; });
 
-function accessPage(next, message) {
-  return `<!doctype html>
-<html lang="en-GB">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Access needed</title>
-  <link rel="stylesheet" href="/blocks/gcsp/shell/gcsp-shell.css">
-  <link rel="stylesheet" href="/gcsp-employee.css">
-  <style>
-    body { background: #f4f6f6; font: 16px/1.5 system-ui, sans-serif; color: #1f2226; }
-    main { max-width: 26rem; margin: 4rem auto; padding: 2rem 1.5rem; background: #fff; border: 1px solid #d5dadd; }
-    label { display: block; margin: 1rem 0 .25rem; font-weight: 600; }
-    input[type=password] { box-sizing: border-box; width: 100%; padding: .6rem; font: inherit; border: 1px solid #5d666d; }
-    button { margin-top: 1.25rem; padding: .7rem 1.4rem; font: inherit; font-weight: 600; color: #fff; background: #00779b; border: 0; cursor: pointer; }
-    :focus-visible { outline: 3px solid #1f2226; outline-offset: 2px; }
-  </style>
-</head>
-<body>
-  <main>
-    <h1>Access needed</h1>
-    ${message ? `<p role="alert">${message}</p>` : ''}
-    <form method="post" action="${ACCESS_PATH}">
-      <label for="key">Access key</label>
-      <input id="key" name="key" type="password" autocomplete="off" required>
-      <input type="hidden" name="next" value="${next}">
-      <button type="submit">Continue</button>
-    </form>
-  </main>
-</body>
-</html>
-`;
-}
-
-async function readLimited(req, limit) {
-  const chunks = []; let size = 0;
-  for await (const chunk of req) { size += chunk.length; if (size > limit) return null; chunks.push(chunk); }
-  return Buffer.concat(chunks).toString('utf8');
-}
-
-// Page serving and key injection need Host === origin's host. With fallThrough, every other path goes to api.
-export function createGcspFront({ root, services, api, origin, accessKey, accessGate = false, fallThrough = false } = {}) {
+// Page serving needs Host === origin's host. With fallThrough, every other path goes to api.
+export function createGcspFront({ root, services, api, origin, fallThrough = false } = {}) {
   const host = new URL(origin).host;
-  const gated = Boolean(accessGate && accessKey);
-  const token = gated ? accessToken(accessKey) : '';
-  const hasAccess = (req) => {
-    const given = cookieValue(req.headers.cookie, ACCESS_COOKIE);
-    return typeof given === 'string' && given.length === token.length && timingSafeEqual(Buffer.from(given), Buffer.from(token));
-  };
   const html = (res, status, body, headers = {}) => res.writeHead(status, { 'Content-Type': TYPES['.html'],
     'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', ...headers }).end(body);
-  const nextPath = (value) => (sessionPage(value) || loginPage(value) ? value : LOGIN_PATH);
   const redirect = (res, location) => res.writeHead(303, { Location: location, 'Cache-Control': 'no-store' }).end();
-
-  async function accessRoute(req, res, url) {
-    if (req.method === 'GET') { html(res, 200, accessPage(nextPath(url.searchParams.get('next')))); return; }
-    if (req.method !== 'POST') { res.writeHead(405, { Allow: 'GET, POST' }).end(); return; }
-    const body = await readLimited(req, ACCESS_BODY_LIMIT);
-    if (body === null) { res.writeHead(413).end(); return; }
-    const form = new URLSearchParams(body); const next = nextPath(form.get('next'));
-    if (!keyMatches(form.get('key') ?? '', accessKey)) { html(res, 401, accessPage(next, 'That key did not match. Try again.')); return; }
-    res.writeHead(303, { Location: next, 'Cache-Control': 'no-store',
-      'Set-Cookie': `${ACCESS_COOKIE}=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${ACCESS_MAX_AGE}` }).end();
-  }
 
   return async (req, res) => {
     try {
@@ -124,24 +57,15 @@ export function createGcspFront({ root, services, api, origin, accessKey, access
       if (!hostOk && !fallThrough) { res.writeHead(403).end(); return; }
       const url = new URL(req.url, origin);
       const path = decodeURIComponent(url.pathname);
-      if (path.startsWith('/api/gcsp/')) {
-        // Only this trusted host is a local client of the existing shared-key boundary.
-        if (hostOk && accessKey && (!gated || hasAccess(req))) req.headers['x-access-key'] = accessKey;
-        api.emit('request', req, res); return;
-      }
+      if (path.startsWith('/api/gcsp/')) { api.emit('request', req, res); return; }
       // The bare host and favicon get a browser answer rather than the retail API's 401 or a 404.
       if (hostOk && req.method === 'GET' && path === '/') {
-        if (gated && !hasAccess(req)) { redirect(res, `${ACCESS_PATH}?next=${encodeURIComponent(LOGIN_PATH)}`); return; }
         const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
         redirect(res, session.status === 'ok' ? landing(session.value) : LOGIN_PATH); return;
       }
       if (hostOk && req.method === 'GET' && path === '/favicon.ico') { res.writeHead(204, { 'Cache-Control': 'max-age=86400' }).end(); return; }
-      if (fallThrough && (!hostOk || !(publicPath(path) || gated && path === ACCESS_PATH))) { api.emit('request', req, res); return; }
-      if (gated && path === ACCESS_PATH) { await accessRoute(req, res, url); return; }
+      if (fallThrough && (!hostOk || !publicPath(path))) { api.emit('request', req, res); return; }
       if (req.method !== 'GET' || !publicPath(path)) { res.writeHead(404).end('Not found'); return; }
-      if (gated && (sessionPage(path) || loginPage(path)) && !hasAccess(req)) {
-        res.writeHead(303, { Location: `${ACCESS_PATH}?next=${encodeURIComponent(path)}`, 'Cache-Control': 'no-store' }).end(); return;
-      }
       if (presenterPage(path)) {
         const control = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie, purpose: 'presenter-control' });
         if (control.status !== 'ok') {
@@ -184,8 +108,6 @@ const failure = (code) => ({ status: 'invalid', code });
 export async function startHostedGcsp({ buildServer, env = process.env, port, root = REPO_ROOT } = {}) {
   const origin = publicOrigin(env.GCSP_PUBLIC_ORIGIN ?? '');
   if (!origin) return failure('public-origin-required');
-  // Fail closed: the hosted pages and /api/* are only open behind the demo key.
-  if (!env.DEMO_ACCESS_KEY) return failure('access-key-required');
   if (!env.GCSP_REPOSITORY_MODE && !env.GCSP_DATABASE_URL || env.GCSP_REPOSITORY_MODE === 'postgres' && !env.GCSP_DATABASE_URL) return failure('database-url-required');
   const options = gcspRuntimeOptions({ env, defaultMode: 'postgres', defaultEnvironmentId: 'gcsp-hosted-demo', commandId: 'hosted-bootstrap' });
   const opened = await createGcspRuntime(options.runtime);
@@ -202,7 +124,7 @@ export async function startHostedGcsp({ buildServer, env = process.env, port, ro
     api = buildServer({ ...services.dependencies, gcspAllowedOrigins: allowed });
     const startup = await api.gcspStartup;
     if (startup?.status !== 'ok') { await close(); return startup ?? { status: 'unavailable' }; }
-    server = createServer(createGcspFront({ root, services, api, origin, accessKey: env.DEMO_ACCESS_KEY, accessGate: true, fallThrough: true }));
+    server = createServer(createGcspFront({ root, services, api, origin, fallThrough: true }));
     await new Promise((done, reject) => { server.once('error', reject); server.listen(port, done); });
   } catch { await close(); return { status: 'unavailable' }; }
   console.log(`GCSP hosted demo (${options.mode}): ${origin}/gcsp-presenter.html`);

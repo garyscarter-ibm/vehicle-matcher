@@ -144,7 +144,7 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
   }
   function draw() {
     if (done) return;
-    // A lapsed access key or restarted run needs a reload, as on the rest of Greg's dashboard.
+    // An ended session or restarted run needs a reload, as on the rest of Greg's dashboard.
     if ([queueError, detailError].some(isRunRestarted)) {
       status.textContent = 'Restarted.'; content.removeAttribute('aria-busy');
       content.replaceChildren(embedded ? runRestartedNotice().root : runRestartedScreen()); return;
