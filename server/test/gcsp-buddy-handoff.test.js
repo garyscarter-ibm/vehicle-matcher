@@ -130,6 +130,31 @@ test('a single handoff through FUCQ-71 adapter', async (t) => {
   }
 });
 
+test('FUCQ-333: preferences changed after issue still accept through real access, declarations and ordering', async (t) => {
+  const f = await offered(t); const context = f.contexts.paula;
+  const quote = structuredClone(row(f, 'quotes', 'quoteId', f.allocated.quote.quoteId));
+  const before = good(await f.brief.readCurrent(context)).brief;
+  const time = good(await f.clock.now(f.presenter));
+  good(await f.clock.advance(f.presenter, { commandId: 'preference-time', expectedClockVersion: time.clockVersion, bySeconds: 120 }));
+  good(await f.brief.saveDraft(context, { commandId: 'preference-draft', expectedBriefVersion: 1, expectedDraftVersion: 1,
+    brief: { schemaVersion: 1, preferences: { body: preference('suv', 37) }, essentials: before.essentials } }));
+  const confirmed = good(await f.brief.confirm(context, { commandId: 'preference-confirm', expectedBriefVersion: 1,
+    expectedDraftVersion: 2, consent: { search: true, hold: true } })).brief;
+  assert.notEqual(confirmed.essentials.seats.confirmedAt, before.essentials.seats.confirmedAt);
+  const input = await acceptInput(f); const value = good(await f.offerDecisions.decide(f.offerContext, input));
+  assert.equal(value.state, 'accepted'); assert.equal(value.selection.orderReference, 'GCSP-000001');
+  assert.deepEqual(authority(f), { hold: 'allocated', claim: 'allocated', stock: 'allocated', slot: 'allocated', offer: 'accepted' });
+  assert.deepEqual(row(f, 'quotes', 'quoteId', quote.quoteId), quote);
+  const decision = row(f, 'decisions', 'decisionId', value.decisionId);
+  assert.equal(decision.versions.brief, 2); assert.equal(decision.versions.pinnedBrief, 1);
+  const selected = receipts(f, 'brief-selection:v1')[0];
+  assert.equal(selected.outcome.value.briefVersion, 1); assert.equal(selected.outcome.value.offerId, f.allocated.offer.offerId);
+  const order = good(await f.manualOrder.readOrder(context));
+  assert.equal(order.orderReference, value.selection.orderReference); assert.equal(order.view.state, 'awaiting-approval');
+  assert.deepEqual(good(await f.offerDecisions.decide(f.offerContext, input)), value);
+  assert.equal(operations(f).length, 1); assert.equal(table(f, 'decisions').length, 1);
+});
+
 test('hold to allocation in one transaction', async (t) => {
   const f = await offered(t); good(await accept(f));
   assert.deepEqual(authority(f), { hold: 'allocated', claim: 'allocated', stock: 'allocated', slot: 'allocated', offer: 'accepted' });

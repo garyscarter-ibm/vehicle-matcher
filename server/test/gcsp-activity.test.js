@@ -50,6 +50,12 @@ async function offerFixture(f, state = 'active', extra = {}) {
   assert.equal(inserted.status, 'ok', JSON.stringify(inserted));
   return inserted.value;
 }
+// Committed memory state is frozen (FUCQ-302): tamper by replacing a table, never by editing rows.
+const replaceTable = (f, table, change) => { f.store.state = { ...f.store.state, tables: { ...f.store.state.tables, [table]: change(f.store.state.tables[table]) } }; };
+const editRow = (f, table, match, change) => {
+  let done = false;
+  replaceTable(f, table, (rows) => rows.map((row, i) => { if (done || !match(row, i)) return row; done = true; const copy = structuredClone(row); change(copy); return copy; }));
+};
 const read = async (f) => {
   const outcome = await f.service.readActivity(f.context);
   assert.equal(outcome.status, 'ok', JSON.stringify(outcome)); return outcome.value;
@@ -128,8 +134,7 @@ activity('malformed, future, unsuccessful and mismatched own receipts cannot bec
       .map((patch) => ({ outcome: ok({ ...original.outcome.value, ...patch }) })),
   ];
   for (const patch of mutations) {
-    const row = f.store.state.tables.event_receipts.find((r) => r.consumerId === 'brief:changes');
-    Object.assign(row, structuredClone(original), patch);
+    editRow(f, 'event_receipts', (r) => r.consumerId === 'brief:changes', (row) => Object.assign(row, structuredClone(original), patch));
     const value = await read(f); assert.deepEqual(value.stateChanges, [], JSON.stringify(patch));
     assert.notEqual(value.stateChangesEvidence.status, 'recorded'); assert.equal(value.lastSuccessfulCheck, null);
   }
@@ -200,7 +205,7 @@ activity('concurrent brief or clock changes refuse mixed snapshots without writi
         else if (kind === 'clock') await f.clock.advance(f.presenter, { commandId: 'during-read', expectedClockVersion: '1', bySeconds: 1 });
         else if (kind === 'offer') await f.repository.transaction(f.context, command('during-read'), (tx) => tx.compareAndSwap(
           { table: 'offers', key: { runId: f.context.runId, offerId: 'offer' } }, 1, { state: 'rejected' }));
-        else f.store.state.tables.event_receipts.find((row) => row.consumerId === 'brief:changes').state = 'pending';
+        else editRow(f, 'event_receipts', (row) => row.consumerId === 'brief:changes', (row) => { row.state = 'pending'; });
       }
       return f.repository.query(context, table, filter);
     } };
@@ -211,12 +216,13 @@ activity('concurrent brief or clock changes refuse mixed snapshots without writi
 
 activity('malformed offer payloads refuse safely and valid timeline fields exclude arbitrary receipt data', async () => {
   const f = await setup(); await confirm(f); const original = await offerFixture(f);
-  const receipt = f.store.state.tables.event_receipts.find((row) => row.consumerId === 'brief:changes');
-  receipt.outcome.value.payload = { sessionHash: 'private-session-hash', otherEmployee: 'private-other-employee' };
+  editRow(f, 'event_receipts', (row) => row.consumerId === 'brief:changes', (receipt) => {
+    receipt.outcome.value.payload = { sessionHash: 'private-session-hash', otherEmployee: 'private-other-employee' };
+  });
   const valid = await read(f); assert.ok(!JSON.stringify(valid).includes('private-'));
   for (const patch of [{ state: { secret: 'private-state' } }, { policyVersion: { secret: 'private-policy' } },
     { expiresAt: 'tomorrow' }, { briefVersion: -1 }, { offerId: { secret: 'private-ref' } }]) {
-    Object.assign(f.store.state.tables.offers[0], structuredClone(original), patch);
+    editRow(f, 'offers', (_, i) => i === 0, (row) => Object.assign(row, structuredClone(original), patch));
     const outcome = await f.service.readActivity(f.context);
     assert.equal(outcome.status, 'unavailable', JSON.stringify(patch)); assert.ok(!JSON.stringify(outcome).includes('private-'));
   }
@@ -343,9 +349,9 @@ activity('the current offer is the newest by createdAt and carries the canonical
   const f = await setup(); await confirm(f); const first = await offerFixture(f);
   assert.equal((await read(f)).currentOffer.href, `/gcsp/offer?offerId=offer&runId=${encodeURIComponent(f.context.runId)}`);
   const older = { ...structuredClone(first), offerId: 'offer b&c', holdId: 'hold-2', createdAt: '2020-01-01T00:00:00.000Z' };
-  f.store.state.tables.offers.push(older);
+  replaceTable(f, 'offers', (rows) => [...rows, older]);
   let value = await read(f); assert.equal(value.currentOffer.offerRef.offerId, 'offer'); assert.equal(value.offers.length, 2);
-  f.store.state.tables.offers[1].createdAt = '2030-01-01T00:00:00.000Z';
+  editRow(f, 'offers', (_, i) => i === 1, (row) => { row.createdAt = '2030-01-01T00:00:00.000Z'; });
   value = await read(f); assert.equal(value.currentOffer.offerRef.offerId, 'offer b&c');
   assert.equal(value.currentOffer.href, `/gcsp/offer?offerId=offer%20b%26c&runId=${encodeURIComponent(f.context.runId)}`);
   assert.ok(!JSON.stringify(value).includes('private-'));
@@ -355,13 +361,13 @@ activity('source status distinguishes not-checked, ok, delayed and unavailable f
   const f = await setup(); await confirm(f); assert.equal((await read(f)).sourceStatus, 'not-checked');
   assert.equal((await tickWith(f, 'tick-ok', { 'release-pull': ok({ pulled: 0 }), 'buddy-allocation': ok({}) })).status, 'ok');
   assert.equal((await read(f)).sourceStatus, 'ok');
-  const row = () => f.store.state.tables.tick_runs.find((r) => r.tickId === 'tick-ok');
-  row().state = 'pending'; row().outcomes[0].outcome = pendingOutcome; assert.equal((await read(f)).sourceStatus, 'delayed');
-  row().state = 'running'; row().outcomes[0].outcome = ok({}); assert.equal((await read(f)).sourceStatus, 'delayed');
-  row().state = 'interrupted'; assert.equal((await read(f)).sourceStatus, 'unavailable');
-  row().state = 'completed'; row().outcomes[1].outcome = result('unavailable'); assert.equal((await read(f)).sourceStatus, 'unavailable');
-  row().outcomes = [row().outcomes[0]]; assert.equal((await read(f)).sourceStatus, 'unavailable');
-  row().outcomes = []; row().handlerOrder = [{ handlerId: 'other', stage: 'notifications' }]; assert.equal((await read(f)).sourceStatus, 'not-checked');
+  const edit = (change) => editRow(f, 'tick_runs', (r) => r.tickId === 'tick-ok', change);
+  edit((row) => { row.state = 'pending'; row.outcomes[0].outcome = pendingOutcome; }); assert.equal((await read(f)).sourceStatus, 'delayed');
+  edit((row) => { row.state = 'running'; row.outcomes[0].outcome = ok({}); }); assert.equal((await read(f)).sourceStatus, 'delayed');
+  edit((row) => { row.state = 'interrupted'; }); assert.equal((await read(f)).sourceStatus, 'unavailable');
+  edit((row) => { row.state = 'completed'; row.outcomes[1].outcome = result('unavailable'); }); assert.equal((await read(f)).sourceStatus, 'unavailable');
+  edit((row) => { row.outcomes = [row.outcomes[0]]; }); assert.equal((await read(f)).sourceStatus, 'unavailable');
+  edit((row) => { row.outcomes = []; row.handlerOrder = [{ handlerId: 'other', stage: 'notifications' }]; }); assert.equal((await read(f)).sourceStatus, 'not-checked');
 });
 
 activity('a handler that fails really marks the tick interrupted and the source unavailable', async () => {

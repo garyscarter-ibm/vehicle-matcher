@@ -1,0 +1,923 @@
+{
+  "version": 1,
+  "source": "docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md",
+  "source_transcript_sha256": "5e24fbeccec53353ebe2f4b4db5129c93a07e0f8dd2967976284f44fe84307a2",
+  "approved_on": "2026-11-10",
+  "marker": "review-meeting-2026-11-10",
+  "exclusions": [
+    {
+      "ref": "D01",
+      "key": "FUCQ-322",
+      "reason": "Being worked on in another session; no duplicate or changes here."
+    },
+    {
+      "ref": "S01",
+      "reason": "Removed; superseded by D01."
+    }
+  ],
+  "reused": [
+    {
+      "ref": "D02",
+      "key": "FUCQ-321",
+      "reason": "Existing copy cleanup Story fully covers the finding."
+    },
+    {
+      "ref": "D07",
+      "key": "FUCQ-323",
+      "reason": "Existing imagery Bug covers all demo vehicles, including 320i Touring. Preserve FUCQ-250's separate deferral/scope."
+    }
+  ],
+  "records": [
+    {
+      "ref": "D03",
+      "type": "Bug",
+      "parent": "FUCQ-75",
+      "summary": "Separate presenter controls from the normal employee journey",
+      "times": "00:03:17–00:04:03; 00:05:22–00:06:19",
+      "severity": "Medium",
+      "goal": "An employee sees a credible, clean GCSP journey while the operator deliberately accesses presenter controls.",
+      "ac": [
+        "Employee pages do not expose presenter setup or live controls by default.",
+        "Provide a deliberate, usable operator entry/exit consistent with the later FUCQ-322 separate-presenter-page contract; employee login must not grant presenter authority.",
+        "Keep setup and live-action placement coherent with S02/S03, without implementing their separate capabilities in this Bug."
+      ],
+      "areas": "GCSP employee shell/navigation; presenter entry/surface; shared kit; `blocks/gcsp/`.",
+      "decision": "Severity: Medium (provisional intake assessment): visible presenter machinery disrupts the employee demonstration, with operator access as a workaround. Diagnosis: meeting-reported UI intrusion; cause/build not established; readers are employee/operator views and writers are presenter controls; inspect current role/surface mounting next. The meeting accepted a side overlay and withdrew the admin-panel replacement. Later FUCQ-322 explicitly requires a separate presenter page without employee login; honour that newer contract rather than add a competing employee drawer. FUCQ-274 proposes compact-strip presentation only; preserve its existing scope/status.",
+      "out": "FUCQ-322 login/account implementation; S02 one-confirm setup; S03 cross-client operation; S04 autonomous clock; redesigning all presenter interactions.",
+      "validate": "Inspect the default employee route and deliberate operator entry/exit. Verify role isolation, keyboard operation and the operator's access to live actions. Compare current FUCQ-126/FUCQ-274 work before selecting the smallest residual repair.",
+      "origin": "FUCQ-126",
+      "basis": "FUCQ-126 is a verified native Story for the main presenter controls, whose AC already requires a compact collapsible strip/drawer hidden for non-presenters. The reported intrusion concerns that surface. Parent FUCQ-75.",
+      "links": [
+        "FUCQ-126",
+        "FUCQ-274",
+        "FUCQ-322"
+      ],
+      "steps": "1. Open the employee demo as Paula.\n2. Walk the normal employee flow with presenter controls present.\n3. Observe the controls intruding into that experience; try deliberate access/closure.",
+      "expected": "A clean employee view and a clearly separate deliberate operator surface.",
+      "actual": "Participants describe complicated controls making the employee experience appear unreal.",
+      "description": "## Goal\n\nAn employee sees a credible, clean GCSP journey while the operator deliberately accesses presenter controls.\n\n## Acceptance criteria\n\n- [ ] Employee pages do not expose presenter setup or live controls by default.\n- [ ] Provide a deliberate, usable operator entry/exit consistent with the later FUCQ-322 separate-presenter-page contract; employee login must not grant presenter authority.\n- [ ] Keep setup and live-action placement coherent with S02/S03, without implementing their separate capabilities in this Bug.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nGCSP employee shell/navigation; presenter entry/surface; shared kit; `blocks/gcsp/`.\n\n## Decided\n\nReview item: D03\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: bug\n\nEvidence times: 00:03:17–00:04:03; 00:05:22–00:06:19 (elapsed VTT time).\n\nevidence: []\n\nSeverity: Medium (provisional intake assessment): visible presenter machinery disrupts the employee demonstration, with operator access as a workaround. Diagnosis: meeting-reported UI intrusion; cause/build not established; readers are employee/operator views and writers are presenter controls; inspect current role/surface mounting next. The meeting accepted a side overlay and withdrew the admin-panel replacement. Later FUCQ-322 explicitly requires a separate presenter page without employee login; honour that newer contract rather than add a competing employee drawer. FUCQ-274 proposes compact-strip presentation only; preserve its existing scope/status.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nFUCQ-322 login/account implementation; S02 one-confirm setup; S03 cross-client operation; S04 autonomous clock; redesigning all presenter interactions.\n\n## Validate\n\nInspect the default employee route and deliberate operator entry/exit. Verify role isolation, keyboard operation and the operator's access to live actions. Compare current FUCQ-126/FUCQ-274 work before selecting the smallest residual repair.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.\n\n## Related story\n\nFUCQ-126\n\n## Story link basis\n\nFUCQ-126 is a verified native Story for the main presenter controls, whose AC already requires a compact collapsible strip/drawer hidden for non-presenters. The reported intrusion concerns that surface. Parent FUCQ-75.\n\n## Steps to reproduce\n\n1. Open the employee demo as Paula.\n2. Walk the normal employee flow with presenter controls present.\n3. Observe the controls intruding into that experience; try deliberate access/closure.\n\n## Expected behaviour\n\nA clean employee view and a clearly separate deliberate operator surface.\n\n## Actual behaviour\n\nParticipants describe complicated controls making the employee experience appear unreal.\n\n## Environment\n\nDemo reviewed in the supplied VTT. The recording does not identify the deployed build, exact client versions or run ID. No current-live reproduction has been performed during intake.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-324",
+      "verified": {
+        "type": "Bug",
+        "status": "To Do",
+        "parent": "FUCQ-75",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-126",
+          "FUCQ-274",
+          "FUCQ-322"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "D04",
+      "type": "Bug",
+      "parent": "FUCQ-7",
+      "summary": "Connect employee profile, preferences, activity and recommendations through visible navigation",
+      "times": "00:07:21–00:08:09; 00:10:04–00:11:39; 00:14:47–00:15:55; 00:25:33–00:26:20",
+      "severity": "Medium",
+      "needsTriage": true,
+      "goal": "Complete the composed employee journey from GCSP using discoverable navigation instead of typed page addresses.",
+      "ac": [
+        "From the employee profile/menu, reach preferences, current-car/account context, buddy activity and recommendations through visible controls.",
+        "Keep buddy activity (what the buddy did) distinct from recommendations (search outcomes), within one coherent employee experience.",
+        "Walk from a recommendation/offer to its next legitimate destination, including order progress after successful acceptance; first reuse FUCQ-270/FUCQ-284 for their already-tracked onward links and shell consistency."
+      ],
+      "areas": "Employee portal/profile navigation and composed GCSP routes; buddy activity/recommendations; offer and order-progress entry points.",
+      "decision": "Severity: Medium (provisional): repeated manual URLs impede the walkthrough, while the surfaces can be reached. Diagnosis: fragmentation/discoverability reported; activity is found later and exists; routing/composition cause and originating Story are unresolved. Readers are the employee shell, profile, activity, recommendations and offer/progress views. Next check: walk the current integrated route and inventory missing links against FUCQ-64/67/270/284. The failed acceptance does not independently prove its subsequent navigation broken. Keep this intake needing triage before repair; no existing Story's AC is expanded.",
+      "out": "Reimplementing existing activity, FUCQ-270 offer dead-end fixes or FUCQ-284 shared navigation; D01/FUCQ-322 identity; D13 acceptance policy; a prescribed frontend router or expanded profile editing.",
+      "validate": "Record a click-through from GCSP/profile to preferences, activity, recommendations, offer decision and order progress without typing addresses. Include empty activity/no recommendations and decline/change. Exercise the acceptance transition after D13 is resolved, recording any remaining gap separately.",
+      "origin": "unresolved: composed journey spans several Stories; FUCQ-64 (shared shell) and FUCQ-67 (Your Cars/account) are verified context candidates, not a proven single origin.",
+      "basis": "The VTT demonstrates gaps across existing composed routes, not one established failing component. FUCQ-64/67 supply shell/account intent; FUCQ-270 and FUCQ-284 already own specific onward-link and shell defects. Native Relates links below are context, not a claim that one candidate is the sole origin.",
+      "links": [
+        "FUCQ-64",
+        "FUCQ-67",
+        "FUCQ-270",
+        "FUCQ-284"
+      ],
+      "steps": "1. Start at GCSP and choose Paula.\n2. Try to reach preferences, activity and recommendations from the profile/navigation.\n3. Attempt offer follow-up without entering a page URL manually.",
+      "expected": "Visible navigation connects the existing employee surfaces; successful acceptance leads to order progress.",
+      "actual": "The walkthrough repeatedly needs manually supplied URLs. Activity is later found. Acceptance follow-up remains untested because acceptance fails (D13).",
+      "description": "## Goal\n\nComplete the composed employee journey from GCSP using discoverable navigation instead of typed page addresses.\n\n## Acceptance criteria\n\n- [ ] From the employee profile/menu, reach preferences, current-car/account context, buddy activity and recommendations through visible controls.\n- [ ] Keep buddy activity (what the buddy did) distinct from recommendations (search outcomes), within one coherent employee experience.\n- [ ] Walk from a recommendation/offer to its next legitimate destination, including order progress after successful acceptance; first reuse FUCQ-270/FUCQ-284 for their already-tracked onward links and shell consistency.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nEmployee portal/profile navigation and composed GCSP routes; buddy activity/recommendations; offer and order-progress entry points.\n\n## Decided\n\nReview item: D04\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: bug\n\nEvidence times: 00:07:21–00:08:09; 00:10:04–00:11:39; 00:14:47–00:15:55; 00:25:33–00:26:20 (elapsed VTT time).\n\nevidence: []\n\nSeverity: Medium (provisional): repeated manual URLs impede the walkthrough, while the surfaces can be reached. Diagnosis: fragmentation/discoverability reported; activity is found later and exists; routing/composition cause and originating Story are unresolved. Readers are the employee shell, profile, activity, recommendations and offer/progress views. Next check: walk the current integrated route and inventory missing links against FUCQ-64/67/270/284. The failed acceptance does not independently prove its subsequent navigation broken. Keep this intake needing triage before repair; no existing Story's AC is expanded.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nReimplementing existing activity, FUCQ-270 offer dead-end fixes or FUCQ-284 shared navigation; D01/FUCQ-322 identity; D13 acceptance policy; a prescribed frontend router or expanded profile editing.\n\n## Validate\n\nRecord a click-through from GCSP/profile to preferences, activity, recommendations, offer decision and order progress without typing addresses. Include empty activity/no recommendations and decline/change. Exercise the acceptance transition after D13 is resolved, recording any remaining gap separately.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.\n\n## Related story\n\nunresolved: composed journey spans several Stories; FUCQ-64 (shared shell) and FUCQ-67 (Your Cars/account) are verified context candidates, not a proven single origin.\n\n## Story link basis\n\nThe VTT demonstrates gaps across existing composed routes, not one established failing component. FUCQ-64/67 supply shell/account intent; FUCQ-270 and FUCQ-284 already own specific onward-link and shell defects. Native Relates links below are context, not a claim that one candidate is the sole origin.\n\n## Steps to reproduce\n\n1. Start at GCSP and choose Paula.\n2. Try to reach preferences, activity and recommendations from the profile/navigation.\n3. Attempt offer follow-up without entering a page URL manually.\n\n## Expected behaviour\n\nVisible navigation connects the existing employee surfaces; successful acceptance leads to order progress.\n\n## Actual behaviour\n\nThe walkthrough repeatedly needs manually supplied URLs. Activity is later found. Acceptance follow-up remains untested because acceptance fails (D13).\n\n## Environment\n\nDemo reviewed in the supplied VTT. The recording does not identify the deployed build, exact client versions or run ID. No current-live reproduction has been performed during intake.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact",
+        "needs-triage"
+      ],
+      "key": "FUCQ-325",
+      "verified": {
+        "type": "Bug",
+        "status": "To Do",
+        "parent": "FUCQ-7",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-64",
+          "FUCQ-67",
+          "FUCQ-270",
+          "FUCQ-284"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "D05",
+      "type": "Bug",
+      "parent": "FUCQ-86",
+      "summary": "Use “Your preferences” consistently in the employee journey",
+      "times": "00:07:42–00:08:01",
+      "severity": "Low",
+      "goal": "Use the agreed employee-facing name so users understand the preferences destination.",
+      "ac": [
+        "Replace employee-facing “Your car brief” with “Your preferences” in the heading and relevant navigation/actions.",
+        "Preserve internal brief terminology, interfaces and stored records unless a separate functional need requires a change."
+      ],
+      "areas": "`blocks/gcsp/brief/brief-view.js`; `blocks/gcsp/employee/portal-navigation.js`; relevant shared navigation/copy.",
+      "decision": "Severity: Low: ambiguous wording affects discovery but the screen is available. Diagnosis: transcript confusion and explicit replacement wording; bounded source inspection also finds the old heading/navigation label. Renderer and navigation copy are the readers; no storage writer change is indicated. Next check: enumerate employee-facing occurrences and ensure context-appropriate replacement.",
+      "out": "Domain/schema/API renaming; FUCQ-322 login; adding preference capabilities.",
+      "validate": "Follow the profile/navigation to the preferences view and check all affected labels, including narrow navigation and keyboard access. Use the existing copy/component checks appropriate to changed files.",
+      "origin": "FUCQ-94",
+      "basis": "Verified native Story FUCQ-94 owns the employee preferences/importance/essentials screen and preview, parent FUCQ-86. This is a newly agreed label correction to that experience.",
+      "links": [
+        "FUCQ-94"
+      ],
+      "steps": "1. Open employee navigation.\n2. Find/open “Your car brief”.\n3. Compare the destination's purpose with the agreed “Your preferences” label.",
+      "expected": "Employee-visible headings and links say “Your preferences” consistently.",
+      "actual": "GC does not understand “Your car brief” until opening it; both participants agree the replacement.",
+      "description": "## Goal\n\nUse the agreed employee-facing name so users understand the preferences destination.\n\n## Acceptance criteria\n\n- [ ] Replace employee-facing “Your car brief” with “Your preferences” in the heading and relevant navigation/actions.\n- [ ] Preserve internal brief terminology, interfaces and stored records unless a separate functional need requires a change.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\n`blocks/gcsp/brief/brief-view.js`; `blocks/gcsp/employee/portal-navigation.js`; relevant shared navigation/copy.\n\n## Decided\n\nReview item: D05\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: bug\n\nEvidence times: 00:07:42–00:08:01 (elapsed VTT time).\n\nevidence: []\n\nSeverity: Low: ambiguous wording affects discovery but the screen is available. Diagnosis: transcript confusion and explicit replacement wording; bounded source inspection also finds the old heading/navigation label. Renderer and navigation copy are the readers; no storage writer change is indicated. Next check: enumerate employee-facing occurrences and ensure context-appropriate replacement.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nDomain/schema/API renaming; FUCQ-322 login; adding preference capabilities.\n\n## Validate\n\nFollow the profile/navigation to the preferences view and check all affected labels, including narrow navigation and keyboard access. Use the existing copy/component checks appropriate to changed files.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.\n\n## Related story\n\nFUCQ-94\n\n## Story link basis\n\nVerified native Story FUCQ-94 owns the employee preferences/importance/essentials screen and preview, parent FUCQ-86. This is a newly agreed label correction to that experience.\n\n## Steps to reproduce\n\n1. Open employee navigation.\n2. Find/open “Your car brief”.\n3. Compare the destination's purpose with the agreed “Your preferences” label.\n\n## Expected behaviour\n\nEmployee-visible headings and links say “Your preferences” consistently.\n\n## Actual behaviour\n\nGC does not understand “Your car brief” until opening it; both participants agree the replacement.\n\n## Environment\n\nDemo reviewed in the supplied VTT. The recording does not identify the deployed build, exact client versions or run ID. No current-live reproduction has been performed during intake.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-326",
+      "verified": {
+        "type": "Bug",
+        "status": "To Do",
+        "parent": "FUCQ-86",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-94"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "D06",
+      "type": "Bug",
+      "parent": "FUCQ-7",
+      "summary": "Improve Your Cars hierarchy and prominence of allowance and points",
+      "times": "00:08:37–00:09:27; 00:14:25–00:14:40; 00:30:25–00:30:36",
+      "severity": "Medium",
+      "goal": "Make the residual Your Cars information hierarchy and controls quick to understand using the existing BMW/shared component direction.",
+      "ac": [
+        "Give current-car/account facts, allowance/points numbers and the primary action clear visual priority with concise decision-useful copy.",
+        "Use consistent shared controls for comparable actions; inspect the existing BMW/GCSP shell and consumer Used Cars body direction.",
+        "Scope repairs to remaining Your Cars hierarchy/control issues after reconciling FUCQ-277/279/284/316/321; retain S07 as the separately prioritised best-match enhancement."
+      ],
+      "areas": "Your Cars/account view and relevant shared cards, numbers, actions and layout; `COMPONENTS.md`.",
+      "decision": "Severity: Medium: hierarchy, prose density and inconsistent action presentation impair the principal employee screen. Diagnosis: qualitative UI observation from the VTT, not proof of incorrect numbers/data. Writers supply account/contract facts; readers are the Your Cars view and shared components. Next check: inspect the current delivered screen and separate remaining hierarchy from already-tracked caveat prose, names and shell consistency.",
+      "out": "Duplicate umbrella repair of FUCQ-277/279/284/316/321; S07 ranking-card emphasis; altering points/allowance calculations or all product screens.",
+      "validate": "Critique actual desktop/narrow Your Cars screens with long vehicle names, populated/empty account facts, selected/disabled controls, validation and confirmation states where applicable. Check information priority, numbers, scanability and consistent actions; fix and re-inspect remaining findings.",
+      "origin": "FUCQ-67",
+      "basis": "Verified native Story FUCQ-67 owns Your Cars, current contracts and account inventory/allowance/history, parent FUCQ-7. FUCQ-64/31 provide shell/shared-kit context.",
+      "links": [
+        "FUCQ-67",
+        "FUCQ-277",
+        "FUCQ-279",
+        "FUCQ-284",
+        "FUCQ-316",
+        "FUCQ-321"
+      ],
+      "steps": "1. Open Paula's Your Cars page.\n2. Locate current vehicle, allowance/points and main action.\n3. Compare hierarchy, prose volume and comparable controls.",
+      "expected": "Prominent meaningful facts and primary action, concise prose and consistent controls.",
+      "actual": "Participants report weak hierarchy, excessive words and mixed buttons, links and dropdowns; request prominent numeric allowance/points.",
+      "description": "## Goal\n\nMake the residual Your Cars information hierarchy and controls quick to understand using the existing BMW/shared component direction.\n\n## Acceptance criteria\n\n- [ ] Give current-car/account facts, allowance/points numbers and the primary action clear visual priority with concise decision-useful copy.\n- [ ] Use consistent shared controls for comparable actions; inspect the existing BMW/GCSP shell and consumer Used Cars body direction.\n- [ ] Scope repairs to remaining Your Cars hierarchy/control issues after reconciling FUCQ-277/279/284/316/321; retain S07 as the separately prioritised best-match enhancement.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nYour Cars/account view and relevant shared cards, numbers, actions and layout; `COMPONENTS.md`.\n\n## Decided\n\nReview item: D06\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: bug\n\nEvidence times: 00:08:37–00:09:27; 00:14:25–00:14:40; 00:30:25–00:30:36 (elapsed VTT time).\n\nevidence: []\n\nSeverity: Medium: hierarchy, prose density and inconsistent action presentation impair the principal employee screen. Diagnosis: qualitative UI observation from the VTT, not proof of incorrect numbers/data. Writers supply account/contract facts; readers are the Your Cars view and shared components. Next check: inspect the current delivered screen and separate remaining hierarchy from already-tracked caveat prose, names and shell consistency.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nDuplicate umbrella repair of FUCQ-277/279/284/316/321; S07 ranking-card emphasis; altering points/allowance calculations or all product screens.\n\n## Validate\n\nCritique actual desktop/narrow Your Cars screens with long vehicle names, populated/empty account facts, selected/disabled controls, validation and confirmation states where applicable. Check information priority, numbers, scanability and consistent actions; fix and re-inspect remaining findings.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.\n\n## Related story\n\nFUCQ-67\n\n## Story link basis\n\nVerified native Story FUCQ-67 owns Your Cars, current contracts and account inventory/allowance/history, parent FUCQ-7. FUCQ-64/31 provide shell/shared-kit context.\n\n## Steps to reproduce\n\n1. Open Paula's Your Cars page.\n2. Locate current vehicle, allowance/points and main action.\n3. Compare hierarchy, prose volume and comparable controls.\n\n## Expected behaviour\n\nProminent meaningful facts and primary action, concise prose and consistent controls.\n\n## Actual behaviour\n\nParticipants report weak hierarchy, excessive words and mixed buttons, links and dropdowns; request prominent numeric allowance/points.\n\n## Environment\n\nDemo reviewed in the supplied VTT. The recording does not identify the deployed build, exact client versions or run ID. No current-live reproduction has been performed during intake.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-327",
+      "verified": {
+        "type": "Bug",
+        "status": "To Do",
+        "parent": "FUCQ-7",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-67",
+          "FUCQ-277",
+          "FUCQ-279",
+          "FUCQ-284",
+          "FUCQ-316",
+          "FUCQ-321"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "D08",
+      "type": "Bug",
+      "parent": "FUCQ-86",
+      "summary": "Trace and display available scheme and starting-answer information",
+      "times": "00:10:49–00:11:07",
+      "severity": "Medium",
+      "goal": "Render the scheme/current-car starting facts actually available for the user and identify genuine source gaps.",
+      "ac": [
+        "Trace each reported unknown/not-supplied field from user/current-contract source through mapping to the preferences starting-answer view; record which values exist.",
+        "Render available supported values correctly; handle genuinely absent facts clearly without invented data or repetitive caveat rows.",
+        "Distinguish source/mapping gaps from FUCQ-277/FUCQ-316 missing-value presentation work and S05 richer configuration detail."
+      ],
+      "areas": "Preferences “Your scheme and starting answers”; account/current-contract/context projection and adapter sources; `blocks/gcsp/brief/brief-view.js`.",
+      "decision": "Severity: Medium (provisional): missing context reduces confidence and utility; source availability is unverified. Diagnosis: many unknown/source-not-supplied values were observed. The downloaded corpus does not prove the user's scheme fields are present. Account/context adapters write the facts and the preferences view reads them; next check is field-by-field source/projection/render reconciliation. No source-data loss or adapter defect is yet established.",
+      "out": "Fabricating unavailable facts; treating all downloaded vehicle data as scheme data; duplicating FUCQ-277/FUCQ-316 prose cleanup; S05/S06 configuration enrichment.",
+      "validate": "For the same user/run, compare minimal source records, response projection and screen for supplied, derived and unavailable examples. Check correct handling of each category and document any remaining source limitation.",
+      "origin": "FUCQ-94",
+      "basis": "Verified native Story FUCQ-94 requires known current-car/driver/contract facts from server context in this screen, parent FUCQ-86. FUCQ-65 supplies account/context adapter context.",
+      "links": [
+        "FUCQ-94",
+        "FUCQ-65",
+        "FUCQ-277",
+        "FUCQ-316"
+      ],
+      "steps": "1. Open Paula's preferences.\n2. Inspect “Your scheme and starting answers”.\n3. Compare the numerous unknown/unsupplied values with actual user/context records.",
+      "expected": "Available facts appear; genuinely absent facts are handled truthfully and concisely.",
+      "actual": "The section shows many unknown or source-not-supplied values. The VTT does not establish which are recoverable.",
+      "description": "## Goal\n\nRender the scheme/current-car starting facts actually available for the user and identify genuine source gaps.\n\n## Acceptance criteria\n\n- [ ] Trace each reported unknown/not-supplied field from user/current-contract source through mapping to the preferences starting-answer view; record which values exist.\n- [ ] Render available supported values correctly; handle genuinely absent facts clearly without invented data or repetitive caveat rows.\n- [ ] Distinguish source/mapping gaps from FUCQ-277/FUCQ-316 missing-value presentation work and S05 richer configuration detail.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nPreferences “Your scheme and starting answers”; account/current-contract/context projection and adapter sources; `blocks/gcsp/brief/brief-view.js`.\n\n## Decided\n\nReview item: D08\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: bug\n\nEvidence times: 00:10:49–00:11:07 (elapsed VTT time).\n\nevidence: []\n\nSeverity: Medium (provisional): missing context reduces confidence and utility; source availability is unverified. Diagnosis: many unknown/source-not-supplied values were observed. The downloaded corpus does not prove the user's scheme fields are present. Account/context adapters write the facts and the preferences view reads them; next check is field-by-field source/projection/render reconciliation. No source-data loss or adapter defect is yet established.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nFabricating unavailable facts; treating all downloaded vehicle data as scheme data; duplicating FUCQ-277/FUCQ-316 prose cleanup; S05/S06 configuration enrichment.\n\n## Validate\n\nFor the same user/run, compare minimal source records, response projection and screen for supplied, derived and unavailable examples. Check correct handling of each category and document any remaining source limitation.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.\n\n## Related story\n\nFUCQ-94\n\n## Story link basis\n\nVerified native Story FUCQ-94 requires known current-car/driver/contract facts from server context in this screen, parent FUCQ-86. FUCQ-65 supplies account/context adapter context.\n\n## Steps to reproduce\n\n1. Open Paula's preferences.\n2. Inspect “Your scheme and starting answers”.\n3. Compare the numerous unknown/unsupplied values with actual user/context records.\n\n## Expected behaviour\n\nAvailable facts appear; genuinely absent facts are handled truthfully and concisely.\n\n## Actual behaviour\n\nThe section shows many unknown or source-not-supplied values. The VTT does not establish which are recoverable.\n\n## Environment\n\nDemo reviewed in the supplied VTT. The recording does not identify the deployed build, exact client versions or run ID. No current-live reproduction has been performed during intake.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-328",
+      "verified": {
+        "type": "Bug",
+        "status": "To Do",
+        "parent": "FUCQ-86",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-94",
+          "FUCQ-65",
+          "FUCQ-277",
+          "FUCQ-316"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "D09",
+      "type": "Bug",
+      "parent": "FUCQ-86",
+      "summary": "Exclude ineligible cars from the employee recommendation list",
+      "times": "00:13:13–00:13:46",
+      "severity": "Medium",
+      "goal": "Keep the employee's eligible recommendations actionable without displaying a candidate she cannot take under her scheme.",
+      "ac": [
+        "Identify the reported list/candidate and its actual eligibility decision before choosing the repair boundary.",
+        "Employee eligible recommendations exclude ineligible candidates and keep the list/count coherent; any distinct stock-browsing surface remains clearly identified.",
+        "Preserve correct backend eligible/ineligible/needs-confirmation decisions and their diagnostic uses. Do not resurrect the withdrawn eligible-count allegation."
+      ],
+      "areas": "Employee preferences recommendation preview/list; eligibility-decision consumer and tests; recommendation/eligibility adapter boundary.",
+      "decision": "Severity: Medium (provisional): an unactionable recommendation misleads the employee, while no bypass of acceptance/eligibility is established. Diagnosis: apparently ineligible candidate displayed, exact candidate/rule unverified. FUCQ-29 intentionally returns eligible, ineligible and needs-confirmation decisions; that is not itself an engine fault. Readers include the employee list/count; writer is the eligibility decision pipeline. Next check: identify the actual view/candidate and inspect its decision and filtering. The separate claim that four eligible cars was wrong is explicitly withdrawn.",
+      "out": "Rewriting eligibility policy/ranking; removing diagnostic decision categories from backend APIs; an unsupported eligible-count Bug.",
+      "validate": "Use a scenario with eligible, ineligible and needs-confirmation candidates. Inspect actual decisions, employee list, count and empty/no-eligible state. Preserve diagnostics and meaningful explanations without exposing excluded recommendations.",
+      "origin": "FUCQ-94",
+      "basis": "Verified native Story FUCQ-94 owns the employee explained preference preview/list, parent FUCQ-86. FUCQ-29 is related eligibility-decision context; the exact consumer still requires reproduction.",
+      "links": [
+        "FUCQ-94",
+        "FUCQ-29"
+      ],
+      "steps": "1. Open the employee recommendation set in the demonstrated scenario.\n2. Identify the candidate described as ineligible.\n3. Compare its actual scheme decision with the displayed eligible set.",
+      "expected": "The eligible recommendation list contains actionable eligible vehicles.",
+      "actual": "An apparently ineligible vehicle is shown and Russell requests its removal. He withdraws the separate count objection.",
+      "description": "## Goal\n\nKeep the employee's eligible recommendations actionable without displaying a candidate she cannot take under her scheme.\n\n## Acceptance criteria\n\n- [ ] Identify the reported list/candidate and its actual eligibility decision before choosing the repair boundary.\n- [ ] Employee eligible recommendations exclude ineligible candidates and keep the list/count coherent; any distinct stock-browsing surface remains clearly identified.\n- [ ] Preserve correct backend eligible/ineligible/needs-confirmation decisions and their diagnostic uses. Do not resurrect the withdrawn eligible-count allegation.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nEmployee preferences recommendation preview/list; eligibility-decision consumer and tests; recommendation/eligibility adapter boundary.\n\n## Decided\n\nReview item: D09\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: bug\n\nEvidence times: 00:13:13–00:13:46 (elapsed VTT time).\n\nevidence: []\n\nSeverity: Medium (provisional): an unactionable recommendation misleads the employee, while no bypass of acceptance/eligibility is established. Diagnosis: apparently ineligible candidate displayed, exact candidate/rule unverified. FUCQ-29 intentionally returns eligible, ineligible and needs-confirmation decisions; that is not itself an engine fault. Readers include the employee list/count; writer is the eligibility decision pipeline. Next check: identify the actual view/candidate and inspect its decision and filtering. The separate claim that four eligible cars was wrong is explicitly withdrawn.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nRewriting eligibility policy/ranking; removing diagnostic decision categories from backend APIs; an unsupported eligible-count Bug.\n\n## Validate\n\nUse a scenario with eligible, ineligible and needs-confirmation candidates. Inspect actual decisions, employee list, count and empty/no-eligible state. Preserve diagnostics and meaningful explanations without exposing excluded recommendations.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.\n\n## Related story\n\nFUCQ-94\n\n## Story link basis\n\nVerified native Story FUCQ-94 owns the employee explained preference preview/list, parent FUCQ-86. FUCQ-29 is related eligibility-decision context; the exact consumer still requires reproduction.\n\n## Steps to reproduce\n\n1. Open the employee recommendation set in the demonstrated scenario.\n2. Identify the candidate described as ineligible.\n3. Compare its actual scheme decision with the displayed eligible set.\n\n## Expected behaviour\n\nThe eligible recommendation list contains actionable eligible vehicles.\n\n## Actual behaviour\n\nAn apparently ineligible vehicle is shown and Russell requests its removal. He withdraws the separate count objection.\n\n## Environment\n\nDemo reviewed in the supplied VTT. The recording does not identify the deployed build, exact client versions or run ID. No current-live reproduction has been performed during intake.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-329",
+      "verified": {
+        "type": "Bug",
+        "status": "To Do",
+        "parent": "FUCQ-86",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-94",
+          "FUCQ-29"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "D10",
+      "type": "Bug",
+      "parent": "FUCQ-86",
+      "summary": "Clarify each preference value and its separate importance",
+      "times": "00:13:53–00:14:02; 00:21:04–00:21:24",
+      "severity": "Medium",
+      "goal": "Let an employee understand the desired characteristic and how much that characteristic matters while editing preferences.",
+      "ac": [
+        "Each preference control clearly names its characteristic and distinguishes the selected value from its importance.",
+        "Make unset/indifferent and selected/weighted states understandable, including sportiness and propulsion examples.",
+        "Save and revisit values/importance accurately without changing ranking behaviour merely to compensate for confusing labels."
+      ],
+      "areas": "Preferences value/importance/indifference controls and shared form components; `blocks/gcsp/brief/brief-view.js`.",
+      "decision": "Severity: Medium: comprehension impedes meaningful preference entry. Diagnosis: Russell cannot tell what “very important” refers to, then separately edits sportiness; initial importance is unset. Source inspection already shows separate Preference/Importance axes technically, so their absence is not established. Writers are preference editing/save; readers are controls/readback and ranking input. Next check: inspect labels, grouping and selected/unset states with actual data. FUCQ-268 concerns misleading fit/unset rendering, not this whole interaction.",
+      "out": "A new ranking engine or unsupported ranking/explanation defect; duplicate FUCQ-268 fit-badge work.",
+      "validate": "Use the real controls to choose electric propulsion and a sportiness value with separate importance; inspect keyboard/narrow interaction, save and revisit. Include unset, indifferent, validation/error and saved feedback.",
+      "origin": "FUCQ-94",
+      "basis": "Verified native Story FUCQ-94 explicitly separates preference, importance and indifference, parent FUCQ-86. FUCQ-31 supplies shared-control context.",
+      "links": [
+        "FUCQ-94",
+        "FUCQ-31",
+        "FUCQ-268"
+      ],
+      "steps": "1. Open the preferences editor with unset values.\n2. Set importance to very important and identify its characteristic.\n3. Change sportiness separately, save and revisit.",
+      "expected": "The quality, desired value and importance are visibly distinct and understandable.",
+      "actual": "The presenter cannot tell which characteristic the importance setting applies to; unset values add confusion.",
+      "description": "## Goal\n\nLet an employee understand the desired characteristic and how much that characteristic matters while editing preferences.\n\n## Acceptance criteria\n\n- [ ] Each preference control clearly names its characteristic and distinguishes the selected value from its importance.\n- [ ] Make unset/indifferent and selected/weighted states understandable, including sportiness and propulsion examples.\n- [ ] Save and revisit values/importance accurately without changing ranking behaviour merely to compensate for confusing labels.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nPreferences value/importance/indifference controls and shared form components; `blocks/gcsp/brief/brief-view.js`.\n\n## Decided\n\nReview item: D10\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: bug\n\nEvidence times: 00:13:53–00:14:02; 00:21:04–00:21:24 (elapsed VTT time).\n\nevidence: []\n\nSeverity: Medium: comprehension impedes meaningful preference entry. Diagnosis: Russell cannot tell what “very important” refers to, then separately edits sportiness; initial importance is unset. Source inspection already shows separate Preference/Importance axes technically, so their absence is not established. Writers are preference editing/save; readers are controls/readback and ranking input. Next check: inspect labels, grouping and selected/unset states with actual data. FUCQ-268 concerns misleading fit/unset rendering, not this whole interaction.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nA new ranking engine or unsupported ranking/explanation defect; duplicate FUCQ-268 fit-badge work.\n\n## Validate\n\nUse the real controls to choose electric propulsion and a sportiness value with separate importance; inspect keyboard/narrow interaction, save and revisit. Include unset, indifferent, validation/error and saved feedback.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.\n\n## Related story\n\nFUCQ-94\n\n## Story link basis\n\nVerified native Story FUCQ-94 explicitly separates preference, importance and indifference, parent FUCQ-86. FUCQ-31 supplies shared-control context.\n\n## Steps to reproduce\n\n1. Open the preferences editor with unset values.\n2. Set importance to very important and identify its characteristic.\n3. Change sportiness separately, save and revisit.\n\n## Expected behaviour\n\nThe quality, desired value and importance are visibly distinct and understandable.\n\n## Actual behaviour\n\nThe presenter cannot tell which characteristic the importance setting applies to; unset values add confusion.\n\n## Environment\n\nDemo reviewed in the supplied VTT. The recording does not identify the deployed build, exact client versions or run ID. No current-live reproduction has been performed during intake.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-330",
+      "verified": {
+        "type": "Bug",
+        "status": "To Do",
+        "parent": "FUCQ-86",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-94",
+          "FUCQ-31",
+          "FUCQ-268"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "D11",
+      "type": "Bug",
+      "parent": "FUCQ-86",
+      "summary": "Refresh saved preference displays consistently across browsers for the same user and run",
+      "times": "00:20:24–00:22:35; 00:22:40–00:22:59",
+      "severity": "Medium",
+      "needsTriage": true,
+      "goal": "After saving preferences in one client, another client for the same user/run reads and displays the same canonical values.",
+      "ac": [
+        "Reproduce with two separate browsers and trace saved canonical values, user/run identity, read responses and rendered state independently.",
+        "Saving in browser A then refreshing/opening the preferences view in browser B for the same user/run shows the saved values and consistent derived recommendations.",
+        "Switching users/runs keeps their views isolated. Reconcile persistence/identity responsibility with the separately owned FUCQ-322; scope this Bug to residual preference readback/view synchronisation, not duplicate account/login implementation."
+      ],
+      "areas": "Preferences save/readback and view refresh; canonical preference/account context; client cache/subscription boundary.",
+      "decision": "Severity: Medium (provisional): the observed stale/inconsistent cross-client view disrupts the demo, but permanent loss/cross-user leakage is unproved. Diagnosis: browser A changes electric/saloon and sportiness; GC refreshes browser B without seeing them. Local storage and stale rendering are competing hypotheses; a later eligible count changes. Writers are brief/preference persistence; readers are browser state/views and recommendations. Next check: compare canonical records and GET responses before blaming persistence. FUCQ-292 explicitly excludes different browsers/devices and left brief pages unsubscribed. FUCQ-322 separately owns server sessions and stored account/preferences: do not replicate it; diagnose residual screen/cache behaviour against that implementation before repair.",
+      "out": "FUCQ-322 identity/session/account storage implementation or a second durable store; automatic rewriting of all pages; assuming browser-local persistence is the cause.",
+      "validate": "Use the same explicit user/run in two independent browser contexts: save A, refresh/reopen B, compare stored values, response and UI; then switch users/runs and repeat. Record reload versus live-refresh behaviour and recommendations. Coordinate with FUCQ-322 without changing its claims/status/AC.",
+      "origin": "unresolved between FUCQ-91 (durable versioned briefs) and FUCQ-94 (save/readback view); both verified native Stories provide context. FUCQ-322 persistence/login is separately owned.",
+      "basis": "FUCQ-91 owns user/run-scoped saved brief history, and FUCQ-94 owns the editor/readback. The VTT cannot isolate the failing layer. Native Relates links record context candidates rather than assert a proven persistence cause. Parent FUCQ-86.",
+      "links": [
+        "FUCQ-91",
+        "FUCQ-94",
+        "FUCQ-292",
+        "FUCQ-322"
+      ],
+      "steps": "1. Join the same run as Paula in separate browsers A and B.\n2. Change and save electric/saloon and sportiness in A.\n3. Refresh B and inspect preferences and recommendations.\n4. Compare canonical saved values and responses.",
+      "expected": "Both refreshed clients show the same saved values for that user/run, with proper user/run isolation.",
+      "actual": "GC does not see the saved edits after refreshing. Later a derived count changes, leaving persistence versus stale-view cause unresolved.",
+      "description": "## Goal\n\nAfter saving preferences in one client, another client for the same user/run reads and displays the same canonical values.\n\n## Acceptance criteria\n\n- [ ] Reproduce with two separate browsers and trace saved canonical values, user/run identity, read responses and rendered state independently.\n- [ ] Saving in browser A then refreshing/opening the preferences view in browser B for the same user/run shows the saved values and consistent derived recommendations.\n- [ ] Switching users/runs keeps their views isolated. Reconcile persistence/identity responsibility with the separately owned FUCQ-322; scope this Bug to residual preference readback/view synchronisation, not duplicate account/login implementation.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nPreferences save/readback and view refresh; canonical preference/account context; client cache/subscription boundary.\n\n## Decided\n\nReview item: D11\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: bug\n\nEvidence times: 00:20:24–00:22:35; 00:22:40–00:22:59 (elapsed VTT time).\n\nevidence: []\n\nSeverity: Medium (provisional): the observed stale/inconsistent cross-client view disrupts the demo, but permanent loss/cross-user leakage is unproved. Diagnosis: browser A changes electric/saloon and sportiness; GC refreshes browser B without seeing them. Local storage and stale rendering are competing hypotheses; a later eligible count changes. Writers are brief/preference persistence; readers are browser state/views and recommendations. Next check: compare canonical records and GET responses before blaming persistence. FUCQ-292 explicitly excludes different browsers/devices and left brief pages unsubscribed. FUCQ-322 separately owns server sessions and stored account/preferences: do not replicate it; diagnose residual screen/cache behaviour against that implementation before repair.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nFUCQ-322 identity/session/account storage implementation or a second durable store; automatic rewriting of all pages; assuming browser-local persistence is the cause.\n\n## Validate\n\nUse the same explicit user/run in two independent browser contexts: save A, refresh/reopen B, compare stored values, response and UI; then switch users/runs and repeat. Record reload versus live-refresh behaviour and recommendations. Coordinate with FUCQ-322 without changing its claims/status/AC.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.\n\n## Related story\n\nunresolved between FUCQ-91 (durable versioned briefs) and FUCQ-94 (save/readback view); both verified native Stories provide context. FUCQ-322 persistence/login is separately owned.\n\n## Story link basis\n\nFUCQ-91 owns user/run-scoped saved brief history, and FUCQ-94 owns the editor/readback. The VTT cannot isolate the failing layer. Native Relates links record context candidates rather than assert a proven persistence cause. Parent FUCQ-86.\n\n## Steps to reproduce\n\n1. Join the same run as Paula in separate browsers A and B.\n2. Change and save electric/saloon and sportiness in A.\n3. Refresh B and inspect preferences and recommendations.\n4. Compare canonical saved values and responses.\n\n## Expected behaviour\n\nBoth refreshed clients show the same saved values for that user/run, with proper user/run isolation.\n\n## Actual behaviour\n\nGC does not see the saved edits after refreshing. Later a derived count changes, leaving persistence versus stale-view cause unresolved.\n\n## Environment\n\nDemo reviewed in the supplied VTT. The recording does not identify the deployed build, exact client versions or run ID. No current-live reproduction has been performed during intake.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact",
+        "needs-triage"
+      ],
+      "key": "FUCQ-331",
+      "verified": {
+        "type": "Bug",
+        "status": "To Do",
+        "parent": "FUCQ-86",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-91",
+          "FUCQ-94",
+          "FUCQ-292",
+          "FUCQ-322"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "D12",
+      "type": "Bug",
+      "parent": "FUCQ-89",
+      "summary": "Show the outcome of checking the current offer state",
+      "times": "00:24:57–00:25:15",
+      "severity": "Medium",
+      "goal": "Make “Check current state” give a clear useful result even when nothing has changed.",
+      "ac": [
+        "Show understandable pending and completed feedback for the check; identify the current offer state when changed.",
+        "If unchanged, confirm that the check completed without implying a new action occurred; if readback fails, show useful error/retry feedback.",
+        "Keep the correct next action available for current/accepted/rejected/expired states, reusing existing offer navigation fixes."
+      ],
+      "areas": "`blocks/gcsp/offer/offer-view.js` refreshCurrent action; offer state readback/controller; shared feedback components.",
+      "decision": "Severity: Medium: the user cannot tell whether the requested check succeeded; a failed backend operation is not established. Diagnosis: GC clicks and sees no apparent effect. Source shows a Check current state control; readers are offer controller/rendered feedback and writer is state readback. Next check: distinguish unchanged response/no feedback, stale rendering and failed request. FUCQ-188's duplicate-button work and FUCQ-270 onward links are related but not this observed-result defect.",
+      "out": "Assuming a state-read backend failure; duplicating FUCQ-188/FUCQ-270; D13 acceptance policy.",
+      "validate": "Exercise unchanged, changed and failed readback with current/accepted/expired outcomes. Verify visible pending/completion/error feedback, no duplicate decision and a useful next step.",
+      "origin": "FUCQ-105",
+      "basis": "Verified native Story FUCQ-105 owns the offer presentation/controller/current-state experience and comparison/countdown, parent FUCQ-89.",
+      "links": [
+        "FUCQ-105",
+        "FUCQ-188",
+        "FUCQ-270"
+      ],
+      "steps": "1. Open the issued offer.\n2. Click “Check current state”.\n3. Observe any pending/completion/state or failure feedback.",
+      "expected": "A visible result confirms the completed check or explains its failure.",
+      "actual": "GC says it does not seem to do anything and explicitly requests a defect.",
+      "description": "## Goal\n\nMake “Check current state” give a clear useful result even when nothing has changed.\n\n## Acceptance criteria\n\n- [ ] Show understandable pending and completed feedback for the check; identify the current offer state when changed.\n- [ ] If unchanged, confirm that the check completed without implying a new action occurred; if readback fails, show useful error/retry feedback.\n- [ ] Keep the correct next action available for current/accepted/rejected/expired states, reusing existing offer navigation fixes.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\n`blocks/gcsp/offer/offer-view.js` refreshCurrent action; offer state readback/controller; shared feedback components.\n\n## Decided\n\nReview item: D12\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: bug\n\nEvidence times: 00:24:57–00:25:15 (elapsed VTT time).\n\nevidence: []\n\nSeverity: Medium: the user cannot tell whether the requested check succeeded; a failed backend operation is not established. Diagnosis: GC clicks and sees no apparent effect. Source shows a Check current state control; readers are offer controller/rendered feedback and writer is state readback. Next check: distinguish unchanged response/no feedback, stale rendering and failed request. FUCQ-188's duplicate-button work and FUCQ-270 onward links are related but not this observed-result defect.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nAssuming a state-read backend failure; duplicating FUCQ-188/FUCQ-270; D13 acceptance policy.\n\n## Validate\n\nExercise unchanged, changed and failed readback with current/accepted/expired outcomes. Verify visible pending/completion/error feedback, no duplicate decision and a useful next step.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.\n\n## Related story\n\nFUCQ-105\n\n## Story link basis\n\nVerified native Story FUCQ-105 owns the offer presentation/controller/current-state experience and comparison/countdown, parent FUCQ-89.\n\n## Steps to reproduce\n\n1. Open the issued offer.\n2. Click “Check current state”.\n3. Observe any pending/completion/state or failure feedback.\n\n## Expected behaviour\n\nA visible result confirms the completed check or explains its failure.\n\n## Actual behaviour\n\nGC says it does not seem to do anything and explicitly requests a defect.\n\n## Environment\n\nDemo reviewed in the supplied VTT. The recording does not identify the deployed build, exact client versions or run ID. No current-live reproduction has been performed during intake.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-332",
+      "verified": {
+        "type": "Bug",
+        "status": "To Do",
+        "parent": "FUCQ-89",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-105",
+          "FUCQ-188",
+          "FUCQ-270"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "D13",
+      "type": "Bug",
+      "parent": "FUCQ-89",
+      "priority": "Highest",
+      "summary": "Allow a valid issued offer to be accepted after preference-only changes",
+      "times": "00:26:47–00:27:49",
+      "severity": "High",
+      "goal": "Apply the approved offer-precedence ruling so later preference-only changes do not block accepting an otherwise valid issued offer.",
+      "ac": [
+        "Issue an offer, change only the employee's preferences, complete the required declarations and accept: the preference-version mismatch alone does not reject it.",
+        "Record the decision against the issued offer and its pinned terms, then expose the accepted outcome and order-progress destination.",
+        "Continue enforcing genuine eligibility/essentials, permission/consent, valid hold, pinned quote, declarations and expiry conditions; check negative cases independently.",
+        "Document the newly authorised preference-only precedence rule in the decision contract; preserve the historical original FUCQ-106 AC rather than silently rewriting an already claimed Story."
+      ],
+      "areas": "Offer decision/acceptance service and brief-version conflict classification; `docs/gcsp/offer-decisions-contract.md`; offer error/success/progress view.",
+      "decision": "Priority: P1 explicitly requested at 00:27:09, mapped to Jira Highest. Severity: High: the demonstrated primary offer-acceptance journey is blocked after declarations are confirmed. Diagnosis: acceptance produces wording transcribed as “Briefs conflict, brief changed review required”; exact machine error and build unverified. Writers are brief versions and offer/decision records; readers are acceptance revalidation and its UI. Next check: reproduce and capture the exact conflict, saved version, current non-preference conditions and pinned offer. Important policy refinement: FUCQ-106 original AC and `offer-decisions-contract.md` compare the latest confirmed brief and pinned versions. The meeting's new ruling, approved for capture on 10 November, changes preference-only precedence; it is not proof every existing gate is a regression. Preserve legitimate current eligibility/essentials/permission/expiry/quote checks.",
+      "out": "Bypassing all brief-derived eligibility/essential rules; allowing expired/invalid/unauthorised offers; changing quote terms or FUCQ-106's original claimed AC; treating declaration completion as the cause.",
+      "validate": "Reproduce issued-offer → preference-only change → declarations → accept → recorded decision/order progress. Capture the real error first. Add a scoped regression at the decision boundary and check genuine eligibility/essentials/consent/hold/quote/expiry failures and rejection independently. Verify accepted and error UI at desktop/narrow widths.",
+      "origin": "FUCQ-106",
+      "basis": "Verified native Story FUCQ-106 owns offer accept/decline/expiry and revalidation, parent FUCQ-89. This Bug records the demonstrated failure and newly approved preference-only precedence refinement; FUCQ-214's post-accept stale-version case is different.",
+      "links": [
+        "FUCQ-106",
+        "FUCQ-214"
+      ],
+      "steps": "1. Obtain a still-valid offer.\n2. Change and confirm preferences after it is issued.\n3. Complete the offer declarations.\n4. Accept and capture the conflict/decision response.",
+      "expected": "A preference-only version change does not invalidate an otherwise valid issued offer.",
+      "actual": "Acceptance fails with a brief-changed/review-required conflict after declarations are confirmed. Exact error code is unverified.",
+      "description": "## Goal\n\nApply the approved offer-precedence ruling so later preference-only changes do not block accepting an otherwise valid issued offer.\n\n## Acceptance criteria\n\n- [ ] Issue an offer, change only the employee's preferences, complete the required declarations and accept: the preference-version mismatch alone does not reject it.\n- [ ] Record the decision against the issued offer and its pinned terms, then expose the accepted outcome and order-progress destination.\n- [ ] Continue enforcing genuine eligibility/essentials, permission/consent, valid hold, pinned quote, declarations and expiry conditions; check negative cases independently.\n- [ ] Document the newly authorised preference-only precedence rule in the decision contract; preserve the historical original FUCQ-106 AC rather than silently rewriting an already claimed Story.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nOffer decision/acceptance service and brief-version conflict classification; `docs/gcsp/offer-decisions-contract.md`; offer error/success/progress view.\n\n## Decided\n\nReview item: D13\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: bug\n\nEvidence times: 00:26:47–00:27:49 (elapsed VTT time).\n\nevidence: []\n\nPriority: P1 explicitly requested at 00:27:09, mapped to Jira Highest. Severity: High: the demonstrated primary offer-acceptance journey is blocked after declarations are confirmed. Diagnosis: acceptance produces wording transcribed as “Briefs conflict, brief changed review required”; exact machine error and build unverified. Writers are brief versions and offer/decision records; readers are acceptance revalidation and its UI. Next check: reproduce and capture the exact conflict, saved version, current non-preference conditions and pinned offer. Important policy refinement: FUCQ-106 original AC and `offer-decisions-contract.md` compare the latest confirmed brief and pinned versions. The meeting's new ruling, approved for capture on 10 November, changes preference-only precedence; it is not proof every existing gate is a regression. Preserve legitimate current eligibility/essentials/permission/expiry/quote checks.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nBypassing all brief-derived eligibility/essential rules; allowing expired/invalid/unauthorised offers; changing quote terms or FUCQ-106's original claimed AC; treating declaration completion as the cause.\n\n## Validate\n\nReproduce issued-offer → preference-only change → declarations → accept → recorded decision/order progress. Capture the real error first. Add a scoped regression at the decision boundary and check genuine eligibility/essentials/consent/hold/quote/expiry failures and rejection independently. Verify accepted and error UI at desktop/narrow widths.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.\n\n## Related story\n\nFUCQ-106\n\n## Story link basis\n\nVerified native Story FUCQ-106 owns offer accept/decline/expiry and revalidation, parent FUCQ-89. This Bug records the demonstrated failure and newly approved preference-only precedence refinement; FUCQ-214's post-accept stale-version case is different.\n\n## Steps to reproduce\n\n1. Obtain a still-valid offer.\n2. Change and confirm preferences after it is issued.\n3. Complete the offer declarations.\n4. Accept and capture the conflict/decision response.\n\n## Expected behaviour\n\nA preference-only version change does not invalidate an otherwise valid issued offer.\n\n## Actual behaviour\n\nAcceptance fails with a brief-changed/review-required conflict after declarations are confirmed. Exact error code is unverified.\n\n## Environment\n\nDemo reviewed in the supplied VTT. The recording does not identify the deployed build, exact client versions or run ID. No current-live reproduction has been performed during intake.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-333",
+      "verified": {
+        "type": "Bug",
+        "status": "To Do",
+        "parent": "FUCQ-89",
+        "priority": "Highest",
+        "assignee": null,
+        "relations": [
+          "FUCQ-106",
+          "FUCQ-214"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "S02",
+      "parent": "FUCQ-75",
+      "summary": "Confirm and retain presenter scenario, user and fault setup together",
+      "times": "00:05:01–00:06:19",
+      "goal": "As a presenter, I want to select scenario, acting user and fault options before one confirmation, so preparation happens before the audience walkthrough.",
+      "ac": [
+        "Collect the related setup choices before one clear confirm/apply action; distinguish unconfirmed edits from the currently active setup.",
+        "Retain confirmed setup through navigation and reopening the operator controls until deliberately changed; refine and record the persistence lifetime before implementation.",
+        "Keep live actions such as stock release and scenario advancement separate from setup, with clear feedback when setup is applied or fails."
+      ],
+      "areas": "Presenter setup/scenario/principal/fault controls and run configuration; shared operator form/components.",
+      "decision": "Meeting setup/retention scope is new. Related FUCQ-125/126 already provide scenarios and live controls; FUCQ-274 compact-strip presentation and FUCQ-306 remount/read performance are not the one-confirm setup contract. D03 owns clean employee/operator separation; S03 owns separate clients; preserve FUCQ-322's separate presenter page without employee login. Refine setup lifetime without silently expanding an active Story.",
+      "out": "Employee login/account persistence; S03 cross-client view completion; S04 automatic time; a new scenario engine or duplicated FUCQ-274 layout Story.",
+      "validate": "Change several setup choices, verify no partial application before confirm, apply once, navigate/reopen and verify retention; deliberately change and reapply. Exercise invalid/failed confirmation and reset semantics after refinement.",
+      "links": [
+        "FUCQ-125",
+        "FUCQ-126",
+        "FUCQ-274",
+        "FUCQ-306",
+        "FUCQ-322"
+      ],
+      "type": "Story",
+      "description": "## Goal\n\nAs a presenter, I want to select scenario, acting user and fault options before one confirmation, so preparation happens before the audience walkthrough.\n\n## Acceptance criteria\n\n- [ ] Collect the related setup choices before one clear confirm/apply action; distinguish unconfirmed edits from the currently active setup.\n- [ ] Retain confirmed setup through navigation and reopening the operator controls until deliberately changed; refine and record the persistence lifetime before implementation.\n- [ ] Keep live actions such as stock release and scenario advancement separate from setup, with clear feedback when setup is applied or fails.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nPresenter setup/scenario/principal/fault controls and run configuration; shared operator form/components.\n\n## Decided\n\nReview item: S02\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: story\n\nEvidence times: 00:05:01–00:06:19 (elapsed VTT time).\n\nevidence: []\n\nMeeting setup/retention scope is new. Related FUCQ-125/126 already provide scenarios and live controls; FUCQ-274 compact-strip presentation and FUCQ-306 remount/read performance are not the one-confirm setup contract. D03 owns clean employee/operator separation; S03 owns separate clients; preserve FUCQ-322's separate presenter page without employee login. Refine setup lifetime without silently expanding an active Story.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nEmployee login/account persistence; S03 cross-client view completion; S04 automatic time; a new scenario engine or duplicated FUCQ-274 layout Story.\n\n## Validate\n\nChange several setup choices, verify no partial application before confirm, apply once, navigate/reopen and verify retention; deliberately change and reapply. Exercise invalid/failed confirmation and reset semantics after refinement.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-334",
+      "verified": {
+        "type": "Story",
+        "status": "To Do",
+        "parent": "FUCQ-75",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-125",
+          "FUCQ-126",
+          "FUCQ-274",
+          "FUCQ-306",
+          "FUCQ-322"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "S03",
+      "parent": "FUCQ-75",
+      "summary": "Operate the audience's demo run from a separate client",
+      "times": "00:06:24–00:06:47; 00:20:03–00:20:23",
+      "goal": "As a demo operator, I want to control the same run from a separate screen/browser, so the audience watches the employee journey while I advance real events.",
+      "ac": [
+        "Provide and document deliberate operator/audience entry to the same run while preserving appropriate independent user/role context.",
+        "Release stock/advance an event from the operator client and show the resulting real application state in the relevant audience views without manual URL work.",
+        "Record which affected audience views refresh automatically and complete any required refresh behaviour; do not claim the underlying shared run/clock is absent."
+      ],
+      "areas": "Presenter/audience run entry and context; affected employee refresh/readback consumers; shared run clock/event boundary; demo run sheet.",
+      "decision": "The meeting's cross-browser shared-clock experiment succeeds after refresh. This Story completes a usable operator/audience experience rather than replace the shared-run mechanism. FUCQ-292 explicitly covers same-browser/origin events and excludes different browsers/devices; it does not satisfy this Story. Coordinate D11 preference readback and FUCQ-322's separately owned user/session persistence and separate presenter page.",
+      "out": "Duplicate identity/account implementation in FUCQ-322; S02 setup or S04 autonomous time; assuming every screen already auto-refreshes; opening a presenter authority path through employee login.",
+      "validate": "Use two independent clients with the same run ID: operator actions, audience employee context, stock/activity/offer changes and cross-client refresh; include reload/reconnect, reset and wrong-run isolation. Record setup and short click-through instructions with observed results.",
+      "links": [
+        "FUCQ-126",
+        "FUCQ-84",
+        "FUCQ-292",
+        "FUCQ-322"
+      ],
+      "type": "Story",
+      "description": "## Goal\n\nAs a demo operator, I want to control the same run from a separate screen/browser, so the audience watches the employee journey while I advance real events.\n\n## Acceptance criteria\n\n- [ ] Provide and document deliberate operator/audience entry to the same run while preserving appropriate independent user/role context.\n- [ ] Release stock/advance an event from the operator client and show the resulting real application state in the relevant audience views without manual URL work.\n- [ ] Record which affected audience views refresh automatically and complete any required refresh behaviour; do not claim the underlying shared run/clock is absent.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nPresenter/audience run entry and context; affected employee refresh/readback consumers; shared run clock/event boundary; demo run sheet.\n\n## Decided\n\nReview item: S03\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: story\n\nEvidence times: 00:06:24–00:06:47; 00:20:03–00:20:23 (elapsed VTT time).\n\nevidence: []\n\nThe meeting's cross-browser shared-clock experiment succeeds after refresh. This Story completes a usable operator/audience experience rather than replace the shared-run mechanism. FUCQ-292 explicitly covers same-browser/origin events and excludes different browsers/devices; it does not satisfy this Story. Coordinate D11 preference readback and FUCQ-322's separately owned user/session persistence and separate presenter page.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nDuplicate identity/account implementation in FUCQ-322; S02 setup or S04 autonomous time; assuming every screen already auto-refreshes; opening a presenter authority path through employee login.\n\n## Validate\n\nUse two independent clients with the same run ID: operator actions, audience employee context, stock/activity/offer changes and cross-client refresh; include reload/reconnect, reset and wrong-run isolation. Record setup and short click-through instructions with observed results.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-335",
+      "verified": {
+        "type": "Story",
+        "status": "To Do",
+        "parent": "FUCQ-75",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-126",
+          "FUCQ-84",
+          "FUCQ-292",
+          "FUCQ-322"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "S04",
+      "parent": "FUCQ-75",
+      "kind": "code",
+      "summary": "Advance the scenario clock and buddy processing automatically",
+      "times": "00:17:55–00:19:30; 00:30:11–00:30:16",
+      "goal": "As a presenter, I want simulated time and buddy processing to advance automatically after starting a scenario, so releases and offers proceed without repeated Tick clicks.",
+      "ac": [
+        "Drive the existing canonical simulated clock at an explicitly agreed accelerated rate, with operator state/feedback that makes running versus paused/stopped behaviour clear.",
+        "Run the real due release/search/offer processing from that clock, including subsequent search after decline or changed preferences.",
+        "Refine and document pacing, start/pause/reset and client ownership/reconnect semantics before implementation; avoid duplicate schedulers or inconsistent client clocks."
+      ],
+      "areas": "Canonical demo clock and presenter lifecycle; due-work/tick pipeline; release, matching and offer processing adapters; operator status/control.",
+      "decision": "FUCQ-85 already owns manual canonical time progression and reset; FUCQ-126 supplies live controls. Autonomous progression is new. “24 hours in 48 minutes” is illustrative, not a fixed acceptance value. Use the existing real processing pipeline and single canonical time, preserving deterministic replay and run isolation.",
+      "out": "A cosmetic browser-only countdown, scripted fake offers, fixed pacing inferred from the example, or replacing release/matching rules.",
+      "validate": "From a prepared resettable run, start autonomous time, observe due release/search/offer, decline/change preferences and observe the next appropriate action without manual ticks. Verify the refined pause/reset/reconnect contract and absence of duplicate due processing with bounded deterministic time checks.",
+      "links": [
+        "FUCQ-85",
+        "FUCQ-126",
+        "FUCQ-92"
+      ],
+      "type": "Story",
+      "description": "## Goal\n\nAs a presenter, I want simulated time and buddy processing to advance automatically after starting a scenario, so releases and offers proceed without repeated Tick clicks.\n\n## Acceptance criteria\n\n- [ ] Drive the existing canonical simulated clock at an explicitly agreed accelerated rate, with operator state/feedback that makes running versus paused/stopped behaviour clear.\n- [ ] Run the real due release/search/offer processing from that clock, including subsequent search after decline or changed preferences.\n- [ ] Refine and document pacing, start/pause/reset and client ownership/reconnect semantics before implementation; avoid duplicate schedulers or inconsistent client clocks.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nCanonical demo clock and presenter lifecycle; due-work/tick pipeline; release, matching and offer processing adapters; operator status/control.\n\n## Decided\n\nReview item: S04\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: story\n\nEvidence times: 00:17:55–00:19:30; 00:30:11–00:30:16 (elapsed VTT time).\n\nevidence: []\n\nFUCQ-85 already owns manual canonical time progression and reset; FUCQ-126 supplies live controls. Autonomous progression is new. “24 hours in 48 minutes” is illustrative, not a fixed acceptance value. Use the existing real processing pipeline and single canonical time, preserving deterministic replay and run isolation.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nA cosmetic browser-only countdown, scripted fake offers, fixed pacing inferred from the example, or replacing release/matching rules.\n\n## Validate\n\nFrom a prepared resettable run, start autonomous time, observe due release/search/offer, decline/change preferences and observe the next appropriate action without manual ticks. Verify the refined pause/reset/reconnect contract and absence of duplicate due processing with bounded deterministic time checks.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:code",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-336",
+      "verified": {
+        "type": "Story",
+        "status": "To Do",
+        "parent": "FUCQ-75",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-85",
+          "FUCQ-126",
+          "FUCQ-92"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "S05",
+      "parent": "FUCQ-89",
+      "summary": "Compare meaningful options on the actual offered and current vehicle configurations",
+      "times": "00:23:34–00:24:38; 00:30:25–00:30:36",
+      "goal": "As an employee, I want to compare the offered car's actual colour, trim and valuable options with my current car, so I understand differences between individual vehicles.",
+      "ac": [
+        "Resolve each displayed vehicle to its associated configuration, including supplied colour, trim and meaningful/high-value options, with correct identity and provenance.",
+        "Present useful per-vehicle configuration differences in the existing praised current-versus-offered comparison, including two same-model cars with different configurations.",
+        "Preserve truthful concise handling of unavailable fields and representative imagery; record any source/adapter gap rather than filling it from a generic model specification."
+      ],
+      "areas": "Offer/current-car comparison; exact vehicle/configuration projection; supported options/specification and imagery adapters.",
+      "decision": "Extend useful configuration differentiation without duplicating FUCQ-105's existing model/derivative/colour/options obligations or changing quoted terms. Inspect those existing facts first and record unmet original obligations distinctly. The meeting's suggested dummy used-car table cause is a hypothesis. S06 supplies Paula's configured current-car record; reuse its agreed identity contract.",
+      "out": "Generic model facts presented as exact options; new quote/ranking policy; duplicate missing-image work FUCQ-323; rewriting FUCQ-105's claimed AC.",
+      "validate": "Use two real supported same-model configurations with different colours/trim/options; follow their identities from source to comparison and verify meaningful differences, missing-data handling and long option labels at desktop/narrow widths.",
+      "links": [
+        "FUCQ-105",
+        "FUCQ-26",
+        "FUCQ-60",
+        "FUCQ-323"
+      ],
+      "type": "Story",
+      "description": "## Goal\n\nAs an employee, I want to compare the offered car's actual colour, trim and valuable options with my current car, so I understand differences between individual vehicles.\n\n## Acceptance criteria\n\n- [ ] Resolve each displayed vehicle to its associated configuration, including supplied colour, trim and meaningful/high-value options, with correct identity and provenance.\n- [ ] Present useful per-vehicle configuration differences in the existing praised current-versus-offered comparison, including two same-model cars with different configurations.\n- [ ] Preserve truthful concise handling of unavailable fields and representative imagery; record any source/adapter gap rather than filling it from a generic model specification.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nOffer/current-car comparison; exact vehicle/configuration projection; supported options/specification and imagery adapters.\n\n## Decided\n\nReview item: S05\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: story\n\nEvidence times: 00:23:34–00:24:38; 00:30:25–00:30:36 (elapsed VTT time).\n\nevidence: []\n\nExtend useful configuration differentiation without duplicating FUCQ-105's existing model/derivative/colour/options obligations or changing quoted terms. Inspect those existing facts first and record unmet original obligations distinctly. The meeting's suggested dummy used-car table cause is a hypothesis. S06 supplies Paula's configured current-car record; reuse its agreed identity contract.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nGeneric model facts presented as exact options; new quote/ranking policy; duplicate missing-image work FUCQ-323; rewriting FUCQ-105's claimed AC.\n\n## Validate\n\nUse two real supported same-model configurations with different colours/trim/options; follow their identities from source to comparison and verify meaningful differences, missing-data handling and long option labels at desktop/narrow widths.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-337",
+      "verified": {
+        "type": "Story",
+        "status": "To Do",
+        "parent": "FUCQ-89",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-105",
+          "FUCQ-26",
+          "FUCQ-60",
+          "FUCQ-323"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "S06",
+      "parent": "FUCQ-7",
+      "kind": "data",
+      "summary": "Associate Paula's current car with a specific configuration and supported history",
+      "times": "00:22:02–00:22:35; 00:24:40–00:24:50",
+      "goal": "As an employee, I want my particular configured current car, colour, options and history associated with my user record, so the profile and comparison reflect my car.",
+      "ac": [
+        "Associate Paula's current vehicle/current contract with one specific supported configuration, retaining correct configured-car identity, colour and supplied option set.",
+        "Refine and record the minimal required history fields before implementation; retain only supported values with truthful source limitations.",
+        "Read the same configured current-car record in profile, Your Cars and offer comparison across reload/navigation, using the canonical account/context interfaces."
+      ],
+      "areas": "Paula scenario/current-contract seed or adapter record; configured-vehicle identity/options/history projection; profile/Your Cars/comparison consumers.",
+      "decision": "FUCQ-65/67 already supply account/current-contract context and its views; FUCQ-52–56 supply identity/configuration/order details. This is bounded configured-record completeness, not a new history-management product. FUCQ-322 separately owns account persistence/login; use its interfaces without replicating implementation. History fields were not specified in the meeting and require refinement.",
+      "out": "Invented service/ownership history; full history editing/management; duplicate account/session storage; S05 comparison layout beyond this record's consistency.",
+      "validate": "Trace Paula's current contract/user to the same configured vehicle in profile, Your Cars and comparison. Verify supplied colour/options and agreed history through reload/navigation, plus a genuinely unavailable field. Preserve source-backed identity across consumers.",
+      "links": [
+        "FUCQ-65",
+        "FUCQ-67",
+        "FUCQ-56",
+        "FUCQ-322"
+      ],
+      "type": "Story",
+      "description": "## Goal\n\nAs an employee, I want my particular configured current car, colour, options and history associated with my user record, so the profile and comparison reflect my car.\n\n## Acceptance criteria\n\n- [ ] Associate Paula's current vehicle/current contract with one specific supported configuration, retaining correct configured-car identity, colour and supplied option set.\n- [ ] Refine and record the minimal required history fields before implementation; retain only supported values with truthful source limitations.\n- [ ] Read the same configured current-car record in profile, Your Cars and offer comparison across reload/navigation, using the canonical account/context interfaces.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nPaula scenario/current-contract seed or adapter record; configured-vehicle identity/options/history projection; profile/Your Cars/comparison consumers.\n\n## Decided\n\nReview item: S06\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: story\n\nEvidence times: 00:22:02–00:22:35; 00:24:40–00:24:50 (elapsed VTT time).\n\nevidence: []\n\nFUCQ-65/67 already supply account/current-contract context and its views; FUCQ-52–56 supply identity/configuration/order details. This is bounded configured-record completeness, not a new history-management product. FUCQ-322 separately owns account persistence/login; use its interfaces without replicating implementation. History fields were not specified in the meeting and require refinement.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nInvented service/ownership history; full history editing/management; duplicate account/session storage; S05 comparison layout beyond this record's consistency.\n\n## Validate\n\nTrace Paula's current contract/user to the same configured vehicle in profile, Your Cars and comparison. Verify supplied colour/options and agreed history through reload/navigation, plus a genuinely unavailable field. Preserve source-backed identity across consumers.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:data",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-338",
+      "verified": {
+        "type": "Story",
+        "status": "To Do",
+        "parent": "FUCQ-7",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-65",
+          "FUCQ-67",
+          "FUCQ-56",
+          "FUCQ-322"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "S07",
+      "parent": "FUCQ-86",
+      "summary": "Make the existing best-match recommendation easier to identify",
+      "times": "00:14:22–00:14:40",
+      "goal": "As an employee, I want the top recommendation to stand out clearly, so I can find the suggested starting point without scanning every card.",
+      "ac": [
+        "Make the existing best-match indication easy to notice within the recommendation hierarchy at desktop and narrow widths.",
+        "Retain ranking, eligibility and truthful explanation behaviour; handle no recommendation/ties according to the existing contract.",
+        "Use the shared recommendation/card components and coordinate with D06 without duplicating its wider Your Cars hierarchy scope."
+      ],
+      "areas": "Employee recommendation preview/list and shared best-match indication/card treatment.",
+      "decision": "The participants agree the current indication is easy to miss. Russell explicitly prioritises broader UI issues ahead of this enhancement; preserve that sequencing note without inventing an agreed issue priority or blocking dependency. FUCQ-268's fit values and reasons are distinct.",
+      "out": "Ranking algorithm changes, forced top match, a second recommendation component, or an umbrella UI redesign.",
+      "validate": "Inspect realistic recommendation sets with long names, absent images and no results at desktop/narrow sizes. Independently assess how quickly the top recommendation is recognised; confirm ranking/order do not change.",
+      "links": [
+        "FUCQ-94",
+        "FUCQ-31",
+        "FUCQ-268"
+      ],
+      "type": "Story",
+      "description": "## Goal\n\nAs an employee, I want the top recommendation to stand out clearly, so I can find the suggested starting point without scanning every card.\n\n## Acceptance criteria\n\n- [ ] Make the existing best-match indication easy to notice within the recommendation hierarchy at desktop and narrow widths.\n- [ ] Retain ranking, eligibility and truthful explanation behaviour; handle no recommendation/ties according to the existing contract.\n- [ ] Use the shared recommendation/card components and coordinate with D06 without duplicating its wider Your Cars hierarchy scope.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nEmployee recommendation preview/list and shared best-match indication/card treatment.\n\n## Decided\n\nReview item: S07\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: story\n\nEvidence times: 00:14:22–00:14:40 (elapsed VTT time).\n\nevidence: []\n\nThe participants agree the current indication is easy to miss. Russell explicitly prioritises broader UI issues ahead of this enhancement; preserve that sequencing note without inventing an agreed issue priority or blocking dependency. FUCQ-268's fit values and reasons are distinct.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nRanking algorithm changes, forced top match, a second recommendation component, or an umbrella UI redesign.\n\n## Validate\n\nInspect realistic recommendation sets with long names, absent images and no results at desktop/narrow sizes. Independently assess how quickly the top recommendation is recognised; confirm ranking/order do not change.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-339",
+      "verified": {
+        "type": "Story",
+        "status": "To Do",
+        "parent": "FUCQ-86",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-94",
+          "FUCQ-31",
+          "FUCQ-268"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "S08",
+      "parent": "FUCQ-75",
+      "kind": "data",
+      "summary": "Prepare a repeatable second walkthrough where Paula requests an SUV",
+      "times": "00:27:59–00:28:21",
+      "goal": "As a presenter, I want a repeatable second scenario with Paula requesting an SUV instead of another 320i Touring, so the demo shows matching responding to changed needs.",
+      "ac": [
+        "First inspect/reuse the resettable FUCQ-125/FUCQ-128 scenarios and run sheet; add only the bounded SUV-input/stock preparation needed for this second walkthrough.",
+        "Use normal preference, matching and eligibility behaviour against documented stock; explain the computed result without forcing a named winner.",
+        "Reset and replay both contrasting walkthroughs with their known inputs and expected outcomes, updating presenter instructions to actual supported behaviour."
+      ],
+      "areas": "Resettable Paula scenario fixtures/stock/preferences; presenter run sheet and walkthrough evidence; normal matching integration.",
+      "decision": "FUCQ-128 already demonstrates a Touring-to-Saloon decline/change replay; this is the requested SUV variant, not a duplicate baseline replay. The meeting accepts variations in stock/recommendation mix; arbitrary stock cannot guarantee an SUV winner. This may require scenario preparation only rather than a product feature.",
+      "out": "Hard-coded match results; guaranteed arbitrary-stock outcomes; a new matching engine; Greg/other lifecycle journeys deferred to another recording.",
+      "validate": "Run the first scenario, reset, apply the documented SUV preference and suitable stock, then run the actual processing and record the computed result. Repeat from reset to prove the prepared walkthrough is reproducible. Exercise no eligible SUV truthfully if that case is part of preparation.",
+      "links": [
+        "FUCQ-125",
+        "FUCQ-128"
+      ],
+      "type": "Story",
+      "description": "## Goal\n\nAs a presenter, I want a repeatable second scenario with Paula requesting an SUV instead of another 320i Touring, so the demo shows matching responding to changed needs.\n\n## Acceptance criteria\n\n- [ ] First inspect/reuse the resettable FUCQ-125/FUCQ-128 scenarios and run sheet; add only the bounded SUV-input/stock preparation needed for this second walkthrough.\n- [ ] Use normal preference, matching and eligibility behaviour against documented stock; explain the computed result without forcing a named winner.\n- [ ] Reset and replay both contrasting walkthroughs with their known inputs and expected outcomes, updating presenter instructions to actual supported behaviour.\n- [ ] The affected interaction follows the shared GCSP shell/components, handles the relevant states below at desktop and narrow widths, and uses no inline scripts, inline event handlers, eval or equivalent CSP-breaking constructs.\n\n## Files or areas\n\nResettable Paula scenario fixtures/stock/preferences; presenter run sheet and walkthrough evidence; normal matching integration.\n\n## Decided\n\nReview item: S08\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: story\n\nEvidence times: 00:27:59–00:28:21 (elapsed VTT time).\n\nevidence: []\n\nFUCQ-128 already demonstrates a Touring-to-Saloon decline/change replay; this is the requested SUV variant, not a duplicate baseline replay. The meeting accepts variations in stock/recommendation mix; arbitrary stock cannot guarantee an SUV winner. This may require scenario preparation only rather than a product feature.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nHard-coded match results; guaranteed arbitrary-stock outcomes; a new matching engine; Greg/other lifecycle journeys deferred to another recording.\n\n## Validate\n\nRun the first scenario, reset, apply the documented SUV preference and suitable stock, then run the actual processing and record the computed result. Repeat from reset to prove the prepared walkthrough is reproducible. Exercise no eligible SUV truthfully if that case is part of preparation.\n\nInspect the actual rendered result at representative desktop and narrow widths with realistic long names and relevant loading/empty/error/success states. Check keyboard/focus where controls change. Obtain independent substantive usability/visual critique, address actionable findings, then inspect the corrected result. Select scoped regression, affected-caller and adapter-boundary checks from the actual change; intake itself does not prove those checks pass.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:data",
+        "review-meeting-2026-11-10",
+        "design-impact"
+      ],
+      "key": "FUCQ-340",
+      "verified": {
+        "type": "Story",
+        "status": "To Do",
+        "parent": "FUCQ-75",
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [
+          "FUCQ-125",
+          "FUCQ-128"
+        ],
+        "description_equivalent": true
+      }
+    },
+    {
+      "ref": "A01",
+      "type": "Task",
+      "kind": "docs",
+      "ui": false,
+      "summary": "Agree a clickable journey review step for future backend builds",
+      "times": "00:26:21–00:26:42",
+      "goal": "Record and agree the retrospective action to critique a clickable end-to-end journey before future backend implementation.",
+      "ac": [
+        "Discuss the meeting's retrospective finding and document the agreed lightweight clickable-flow review step, its timing and responsibility for future work.",
+        "Ensure the proposed flow covers the actual connected journey so navigation and decision gaps can be criticised before backend work.",
+        "Any mockup requesting comments has persistent feedback storage, an obvious delivery/export route and a tested way for the agent to retrieve actual submitted text after reload/restart."
+      ],
+      "areas": "GCSP retrospective/workflow notes and any explicitly agreed future process proposal; no current runtime changes.",
+      "decision": "This is a separate process action approved for backlog capture, not a product Story. It does not implicitly amend shared policy or overturn the current build-first delivery sequence in `docs/gcsp/experience-quality.md`. Any later policy change requires an explicit collaborator decision. Standing feedback-retrievability requirement is in AGENTS.md.",
+      "out": "Reworking the current backend; automatic edits to project-wide rules; implementing a new feedback platform or blocking the current delivery.",
+      "validate": "Review the proposed future workflow with a collaborator and retain the decision. If a commenting mockup is produced later, test save/reload/restart/export and agent retrieval of real submitted feedback before inviting comments.",
+      "links": [],
+      "description": "## Goal\n\nRecord and agree the retrospective action to critique a clickable end-to-end journey before future backend implementation.\n\n## Acceptance criteria\n\n- [ ] Discuss the meeting's retrospective finding and document the agreed lightweight clickable-flow review step, its timing and responsibility for future work.\n- [ ] Ensure the proposed flow covers the actual connected journey so navigation and decision gaps can be criticised before backend work.\n- [ ] Any mockup requesting comments has persistent feedback storage, an obvious delivery/export route and a tested way for the agent to retrieve actual submitted text after reload/restart.\n\n## Files or areas\n\nGCSP retrospective/workflow notes and any explicitly agreed future process proposal; no current runtime changes.\n\n## Decided\n\nReview item: A01\n\nintake_marker: review-meeting-2026-11-10\n\nwork_item_type: task\n\nEvidence times: 00:26:21–00:26:42 (elapsed VTT time).\n\nevidence: []\n\nThis is a separate process action approved for backlog capture, not a product Story. It does not implicitly amend shared policy or overturn the current build-first delivery sequence in `docs/gcsp/experience-quality.md`. Any later policy change requires an explicit collaborator decision. Standing feedback-retrievability requirement is in AGENTS.md.\n\nSource: approved review proposal `docs/gcsp/review-meeting-defects-improvements-proposal-2026-11-10.md`; VTT `Review demo and record defects_improvements.vtt` (meeting calendar date unknown). Collaborator authorised creation on 10 November 2026. This is backlog intake; no live reproduction, assignment or implementation claim.\n\nExperience contract: `docs/gcsp/experience-quality.md`; shell/palette reference `docs/gcsp/screens/README.md`; consumer Used Cars body and BMW/Density direction; reuse/extend the kit in `COMPONENTS.md`. Follow `docs/gcsp/build-rules.md` and the adapter boundaries in `docs/gcsp/demo-brief.md`. Keep product copy concise; no employee-facing demo disclaimers.\n\n## Out of scope\n\nReworking the current backend; automatic edits to project-wide rules; implementing a new feedback platform or blocking the current delivery.\n\n## Validate\n\nReview the proposed future workflow with a collaborator and retain the decision. If a commenting mockup is produced later, test save/reload/restart/export and agent retrieval of real submitted feedback before inviting comments.",
+      "state": "verified",
+      "labels": [
+        "backlog",
+        "kind:docs",
+        "review-meeting-2026-11-10"
+      ],
+      "key": "FUCQ-341",
+      "verified": {
+        "type": "Task",
+        "status": "To Do",
+        "parent": null,
+        "priority": "Medium",
+        "assignee": null,
+        "relations": [],
+        "description_equivalent": true
+      }
+    }
+  ],
+  "verified_at": "2026-11-10T11:30:30Z",
+  "verification": {
+    "marker_count": 18,
+    "duplicate_markers": 0,
+    "native_relates_verified": 57,
+    "description_normalisation": "Jira Markdown readback escapes square brackets; compared after unescaping those and normalising whitespace.",
+    "errors": [],
+    "description_mismatches": [],
+    "implementation_started": false,
+    "software_tests": "Not run: backlog intake and documentation only.",
+    "scratch_allocated_bytes": 0,
+    "scratch_leftovers": []
+  },
+  "local_verification": {
+    "finding_sections": 21,
+    "defect_sections": 13,
+    "story_sections": 7,
+    "action_sections": 1,
+    "timestamp_ranges_checked": 79,
+    "local_links_resolved": 7,
+    "product_map_items": 19,
+    "component_associations_added": 27,
+    "unrelated_map_rows_unchanged": true,
+    "map_deployment_verified": false,
+    "whitespace_check": "pass",
+    "independent_payload_review": "Marvin the Martian; requested/selected gpt-6.1-sol/high; no material problems; effective runtime unverified"
+  }
+}

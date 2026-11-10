@@ -1,0 +1,1553 @@
+{
+ "story": "FUCQ-302",
+ "note": "Median of 3 runs each; before = base 05be897d, after = 0e4bfe26. Times ms. ratio = after/before.",
+ "phases": {
+  "floor": {
+   "routes": {
+    "/context": {
+     "serverMedianMs": {
+      "before": 21.1,
+      "after": 0.4,
+      "ratio": 0.02
+     },
+     "serverP90Ms": {
+      "before": 21.6,
+      "after": 0.4,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 23.1,
+      "after": 2.2,
+      "ratio": 0.1
+     }
+    },
+    "/presenter/controls": {
+     "serverMedianMs": {
+      "before": 83.3,
+      "after": 0.9,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 84.8,
+      "after": 1,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 85.5,
+      "after": 2.7,
+      "ratio": 0.03
+     }
+    },
+    "/manual/account": {
+     "serverMedianMs": {
+      "before": 73.8,
+      "after": 0.9,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 75.7,
+      "after": 1.1,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 75.7,
+      "after": 2.6,
+      "ratio": 0.03
+     }
+    },
+    "/manual/draft": {
+     "serverMedianMs": {
+      "before": 72.9,
+      "after": 0.8,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 77.3,
+      "after": 0.9,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 75,
+      "after": 2.7,
+      "ratio": 0.04
+     }
+    },
+    "/offers/current": {
+     "serverMedianMs": {
+      "before": 31.4,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 31.8,
+      "after": 0.5,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 33.2,
+      "after": 2.1,
+      "ratio": 0.06
+     }
+    },
+    "/orders/progress/all": {
+     "serverMedianMs": {
+      "before": 34.6,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 35,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 36.6,
+      "after": 2.2,
+      "ratio": 0.06
+     }
+    },
+    "/presenter/scenarios": {
+     "serverMedianMs": {
+      "before": 38.6,
+      "after": 0.6,
+      "ratio": 0.02
+     },
+     "serverP90Ms": {
+      "before": 39.2,
+      "after": 0.7,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 40.6,
+      "after": 2.4,
+      "ratio": 0.06
+     }
+    },
+    "/presenter/scenarios/faults": {
+     "serverMedianMs": {
+      "before": 34.6,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 35.2,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 36.4,
+      "after": 2,
+      "ratio": 0.05
+     }
+    }
+   },
+   "sumOfServerMediansMs": {
+    "before": 388.3,
+    "after": 4.7,
+    "ratio": 0.01
+   }
+  },
+  "burst9": {
+   "routes": {
+    "/context": {
+     "serverMedianMs": {
+      "before": 20.7,
+      "after": 0.2,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 21.5,
+      "after": 0.4,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 214.9,
+      "after": 4,
+      "ratio": 0.02
+     }
+    },
+    "/presenter/controls": {
+     "serverMedianMs": {
+      "before": 82.4,
+      "after": 0.9,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 84.7,
+      "after": 1,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 105.4,
+      "after": 2.9,
+      "ratio": 0.03
+     }
+    },
+    "/manual/account": {
+     "serverMedianMs": {
+      "before": 72.7,
+      "after": 0.8,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 74.4,
+      "after": 0.9,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 177.9,
+      "after": 3.7,
+      "ratio": 0.02
+     }
+    },
+    "/manual/draft": {
+     "serverMedianMs": {
+      "before": 72.4,
+      "after": 0.7,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 74.2,
+      "after": 0.8,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 252,
+      "after": 4.5,
+      "ratio": 0.02
+     }
+    },
+    "/offers/current": {
+     "serverMedianMs": {
+      "before": 31.1,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 32.2,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 283.6,
+      "after": 4.8,
+      "ratio": 0.02
+     }
+    },
+    "/orders/progress/all": {
+     "serverMedianMs": {
+      "before": 34.6,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 35.4,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 317.8,
+      "after": 5.1,
+      "ratio": 0.02
+     }
+    },
+    "/presenter/scenarios": {
+     "serverMedianMs": {
+      "before": 38.5,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 39.5,
+      "after": 0.6,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 356.5,
+      "after": 5.7,
+      "ratio": 0.02
+     }
+    },
+    "/presenter/scenarios/faults": {
+     "serverMedianMs": {
+      "before": 34.4,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 35.3,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 391.3,
+      "after": 6,
+      "ratio": 0.02
+     }
+    }
+   },
+   "wallMedianMs": {
+    "before": 412.6,
+    "after": 6.8,
+    "ratio": 0.02
+   },
+   "wallP90Ms": {
+    "before": 420,
+    "after": 7.5,
+    "ratio": 0.02
+   },
+   "serverSumMedianMs": {
+    "before": 409.3,
+    "after": 4.6,
+    "ratio": 0.01
+   }
+  },
+  "presenterPage": {
+   "routes": {
+    "/context": {
+     "serverMedianMs": {
+      "before": 21.2,
+      "after": 0.2,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 22.2,
+      "after": 0.4,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 217.1,
+      "after": 3.9,
+      "ratio": 0.02
+     }
+    },
+    "/presenter/controls": {
+     "serverMedianMs": {
+      "before": 83.9,
+      "after": 0.8,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 84.9,
+      "after": 0.9,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 106.6,
+      "after": 3.1,
+      "ratio": 0.03
+     }
+    },
+    "/manual/account": {
+     "serverMedianMs": {
+      "before": 73.3,
+      "after": 0.8,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 75.1,
+      "after": 0.8,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 180.5,
+      "after": 3.9,
+      "ratio": 0.02
+     }
+    },
+    "/manual/draft": {
+     "serverMedianMs": {
+      "before": 73.8,
+      "after": 0.7,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 74.8,
+      "after": 0.8,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 254,
+      "after": 4.8,
+      "ratio": 0.02
+     }
+    },
+    "/offers/current": {
+     "serverMedianMs": {
+      "before": 31.4,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 32.3,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 285.7,
+      "after": 5.1,
+      "ratio": 0.02
+     }
+    },
+    "/orders/progress/all": {
+     "serverMedianMs": {
+      "before": 34.8,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 36,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 321.1,
+      "after": 5.4,
+      "ratio": 0.02
+     }
+    },
+    "/presenter/scenarios": {
+     "serverMedianMs": {
+      "before": 38.5,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 40.4,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 359.8,
+      "after": 6,
+      "ratio": 0.02
+     }
+    },
+    "/presenter/scenarios/faults": {
+     "serverMedianMs": {
+      "before": 34.7,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 36.3,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 394.1,
+      "after": 6.3,
+      "ratio": 0.02
+     }
+    },
+    "/manual/order": {
+     "serverMedianMs": {
+      "before": 41.7,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 43.9,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 458.5,
+      "after": 6.9,
+      "ratio": 0.02
+     }
+    },
+    "/orders/progress": {
+     "serverMedianMs": {
+      "before": 28.2,
+      "after": 0.2,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 29,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 487.4,
+      "after": 7.2,
+      "ratio": 0.01
+     }
+    },
+    "/documents": {
+     "serverMedianMs": {
+      "before": 38,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 39.3,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 525.9,
+      "after": 7.6,
+      "ratio": 0.01
+     }
+    },
+    "/appointments": {
+     "serverMedianMs": {
+      "before": 28.1,
+      "after": 0.2,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 28.7,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 553.5,
+      "after": 7.8,
+      "ratio": 0.01
+     }
+    },
+    "/return-plan": {
+     "serverMedianMs": {
+      "before": 28.1,
+      "after": 0.2,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 29.2,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 581.6,
+      "after": 8.1,
+      "ratio": 0.01
+     }
+    }
+   },
+   "wallMedianMs": {
+    "before": 582.2,
+    "after": 8.3,
+    "ratio": 0.01
+   },
+   "wallP90Ms": {
+    "before": 604.2,
+    "after": 9.6,
+    "ratio": 0.02
+   },
+   "serverSumMedianMs": {
+    "before": 579.5,
+    "after": 5.7,
+    "ratio": 0.01
+   }
+  },
+  "gregDashboard": {
+   "routes": {
+    "/context": {
+     "serverMedianMs": {
+      "before": 22.4,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 37.7,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 42.6,
+      "after": 2.6,
+      "ratio": 0.06
+     }
+    },
+    "/greg/policy": {
+     "serverMedianMs": {
+      "before": 138.4,
+      "after": 34.4,
+      "ratio": 0.25
+     },
+     "serverP90Ms": {
+      "before": 143.9,
+      "after": 62.9,
+      "ratio": 0.44
+     },
+     "wallMedianMs": {
+      "before": 200.5,
+      "after": 37.5,
+      "ratio": 0.19
+     }
+    },
+    "/greg/order-plan": {
+     "serverMedianMs": {
+      "before": 891.5,
+      "after": 464.3,
+      "ratio": 0.52
+     },
+     "serverP90Ms": {
+      "before": 926.8,
+      "after": 467.8,
+      "ratio": 0.5
+     },
+     "wallMedianMs": {
+      "before": 1081.8,
+      "after": 501.5,
+      "ratio": 0.46
+     }
+    },
+    "/comparison/results/latest": {
+     "serverMedianMs": {
+      "before": 34.8,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 36.8,
+      "after": 0.6,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 1115.9,
+      "after": 502.6,
+      "ratio": 0.45
+     }
+    },
+    "/comparison/jobs/latest": {
+     "serverMedianMs": {
+      "before": 35.2,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 36.5,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 1150.1,
+      "after": 503,
+      "ratio": 0.44
+     }
+    },
+    "/greg/demand": {
+     "serverMedianMs": {
+      "before": 156.2,
+      "after": 47,
+      "ratio": 0.3
+     },
+     "serverP90Ms": {
+      "before": 159.5,
+      "after": 48.2,
+      "ratio": 0.3
+     },
+     "wallMedianMs": {
+      "before": 1307.8,
+      "after": 550.2,
+      "ratio": 0.42
+     }
+    },
+    "/scheme-team/cases": {
+     "serverMedianMs": {
+      "before": 42.5,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 43.9,
+      "after": 0.7,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 1350.1,
+      "after": 550.8,
+      "ratio": 0.41
+     }
+    },
+    "/greg/orders": {
+     "serverMedianMs": {
+      "before": 167.1,
+      "after": 87.5,
+      "ratio": 0.52
+     },
+     "serverP90Ms": {
+      "before": 171.4,
+      "after": 90.2,
+      "ratio": 0.53
+     },
+     "wallMedianMs": {
+      "before": 1517.6,
+      "after": 640.4,
+      "ratio": 0.42
+     }
+    },
+    "/presenter/controls": {
+     "serverMedianMs": {
+      "before": 84.2,
+      "after": 1.1,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 89,
+      "after": 1.2,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 1606.2,
+      "after": 641.7,
+      "ratio": 0.4
+     }
+    },
+    "/presenter/scenarios": {
+     "serverMedianMs": {
+      "before": 38.5,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 40.6,
+      "after": 0.7,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 1647.1,
+      "after": 642.3,
+      "ratio": 0.39
+     }
+    },
+    "/presenter/scenarios/faults": {
+     "serverMedianMs": {
+      "before": 34.9,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 36.1,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 1683.3,
+      "after": 642.5,
+      "ratio": 0.38
+     }
+    }
+   },
+   "wallMedianMs": {
+    "before": 1683.7,
+    "after": 642.8,
+    "ratio": 0.38
+   },
+   "wallP90Ms": {
+    "before": 1729.7,
+    "after": 671.5,
+    "ratio": 0.39
+   },
+   "serverSumMedianMs": {
+    "before": 1689.6,
+    "after": 638.9,
+    "ratio": 0.38
+   }
+  },
+  "floorGrown": {
+   "routes": {
+    "/context": {
+     "serverMedianMs": {
+      "before": 21.7,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 22.2,
+      "after": 0.4,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 23.6,
+      "after": 2.1,
+      "ratio": 0.09
+     }
+    },
+    "/presenter/controls": {
+     "serverMedianMs": {
+      "before": 90.4,
+      "after": 1,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 91.3,
+      "after": 1,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 92.6,
+      "after": 2.7,
+      "ratio": 0.03
+     }
+    },
+    "/manual/account": {
+     "serverMedianMs": {
+      "before": 79.5,
+      "after": 0.9,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 80.7,
+      "after": 1,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 80.9,
+      "after": 2.6,
+      "ratio": 0.03
+     }
+    },
+    "/manual/draft": {
+     "serverMedianMs": {
+      "before": 79.2,
+      "after": 1,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 79.6,
+      "after": 1.1,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 81.3,
+      "after": 2.5,
+      "ratio": 0.03
+     }
+    },
+    "/offers/current": {
+     "serverMedianMs": {
+      "before": 34,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 34.6,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 35.7,
+      "after": 2.1,
+      "ratio": 0.06
+     }
+    },
+    "/orders/progress/all": {
+     "serverMedianMs": {
+      "before": 37.6,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 38.2,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 39.6,
+      "after": 2.1,
+      "ratio": 0.05
+     }
+    },
+    "/presenter/scenarios": {
+     "serverMedianMs": {
+      "before": 41.5,
+      "after": 0.6,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 42.1,
+      "after": 0.7,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 43.5,
+      "after": 2.4,
+      "ratio": 0.06
+     }
+    },
+    "/presenter/scenarios/faults": {
+     "serverMedianMs": {
+      "before": 38.2,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 38.7,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 40.2,
+      "after": 2,
+      "ratio": 0.05
+     }
+    }
+   },
+   "sumOfServerMediansMs": {
+    "before": 422,
+    "after": 5,
+    "ratio": 0.01
+   }
+  },
+  "burst9Grown": {
+   "routes": {
+    "/context": {
+     "serverMedianMs": {
+      "before": 22.7,
+      "after": 0.2,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 23.3,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 232.9,
+      "after": 4.1,
+      "ratio": 0.02
+     }
+    },
+    "/presenter/controls": {
+     "serverMedianMs": {
+      "before": 90.2,
+      "after": 0.8,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 92.3,
+      "after": 1,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 114.9,
+      "after": 3.2,
+      "ratio": 0.03
+     }
+    },
+    "/manual/account": {
+     "serverMedianMs": {
+      "before": 78.9,
+      "after": 0.9,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 82.1,
+      "after": 1,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 193.5,
+      "after": 4.2,
+      "ratio": 0.02
+     }
+    },
+    "/manual/draft": {
+     "serverMedianMs": {
+      "before": 78.9,
+      "after": 0.7,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 82.7,
+      "after": 0.8,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 273,
+      "after": 5.1,
+      "ratio": 0.02
+     }
+    },
+    "/offers/current": {
+     "serverMedianMs": {
+      "before": 34,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 36.5,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 307.6,
+      "after": 5.5,
+      "ratio": 0.02
+     }
+    },
+    "/orders/progress/all": {
+     "serverMedianMs": {
+      "before": 38,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 39.1,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 345.4,
+      "after": 5.8,
+      "ratio": 0.02
+     }
+    },
+    "/presenter/scenarios": {
+     "serverMedianMs": {
+      "before": 41.5,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 43,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 386.3,
+      "after": 6.4,
+      "ratio": 0.02
+     }
+    },
+    "/presenter/scenarios/faults": {
+     "serverMedianMs": {
+      "before": 37.4,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 41.1,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 423.4,
+      "after": 6.7,
+      "ratio": 0.02
+     }
+    }
+   },
+   "wallMedianMs": {
+    "before": 446.4,
+    "after": 7.2,
+    "ratio": 0.02
+   },
+   "wallP90Ms": {
+    "before": 459.4,
+    "after": 7.3,
+    "ratio": 0.02
+   },
+   "serverSumMedianMs": {
+    "before": 450.1,
+    "after": 4.6,
+    "ratio": 0.01
+   }
+  },
+  "presenterPageGrown": {
+   "routes": {
+    "/context": {
+     "serverMedianMs": {
+      "before": 22.9,
+      "after": 0.2,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 23.6,
+      "after": 0.4,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 233.5,
+      "after": 3.9,
+      "ratio": 0.02
+     }
+    },
+    "/presenter/controls": {
+     "serverMedianMs": {
+      "before": 91.2,
+      "after": 0.9,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 93.4,
+      "after": 1,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 115.6,
+      "after": 3.3,
+      "ratio": 0.03
+     }
+    },
+    "/manual/account": {
+     "serverMedianMs": {
+      "before": 79.2,
+      "after": 0.8,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 82.8,
+      "after": 0.9,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 194.7,
+      "after": 4.1,
+      "ratio": 0.02
+     }
+    },
+    "/manual/draft": {
+     "serverMedianMs": {
+      "before": 79.1,
+      "after": 0.7,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 81.7,
+      "after": 0.9,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 272.7,
+      "after": 4.8,
+      "ratio": 0.02
+     }
+    },
+    "/offers/current": {
+     "serverMedianMs": {
+      "before": 33.8,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 34.5,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 306.3,
+      "after": 5.2,
+      "ratio": 0.02
+     }
+    },
+    "/orders/progress/all": {
+     "serverMedianMs": {
+      "before": 37.8,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 38.8,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 345.6,
+      "after": 5.5,
+      "ratio": 0.02
+     }
+    },
+    "/presenter/scenarios": {
+     "serverMedianMs": {
+      "before": 41.8,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 42.9,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 387.4,
+      "after": 6.1,
+      "ratio": 0.02
+     }
+    },
+    "/presenter/scenarios/faults": {
+     "serverMedianMs": {
+      "before": 37.6,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 39.2,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 425.3,
+      "after": 6.4,
+      "ratio": 0.02
+     }
+    },
+    "/manual/order": {
+     "serverMedianMs": {
+      "before": 45.3,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 47,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 493.9,
+      "after": 7,
+      "ratio": 0.01
+     }
+    },
+    "/orders/progress": {
+     "serverMedianMs": {
+      "before": 30.2,
+      "after": 0.2,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 31.6,
+      "after": 0.2,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 525.2,
+      "after": 7.4,
+      "ratio": 0.01
+     }
+    },
+    "/documents": {
+     "serverMedianMs": {
+      "before": 41.2,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 42.8,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 565.2,
+      "after": 7.8,
+      "ratio": 0.01
+     }
+    },
+    "/appointments": {
+     "serverMedianMs": {
+      "before": 30.3,
+      "after": 0.2,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 31.1,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 595.7,
+      "after": 8,
+      "ratio": 0.01
+     }
+    },
+    "/return-plan": {
+     "serverMedianMs": {
+      "before": 30.3,
+      "after": 0.2,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 31.9,
+      "after": 0.2,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 626.7,
+      "after": 8.3,
+      "ratio": 0.01
+     }
+    }
+   },
+   "wallMedianMs": {
+    "before": 627,
+    "after": 8.6,
+    "ratio": 0.01
+   },
+   "wallP90Ms": {
+    "before": 646.2,
+    "after": 9.1,
+    "ratio": 0.01
+   },
+   "serverSumMedianMs": {
+    "before": 627,
+    "after": 5.8,
+    "ratio": 0.01
+   }
+  },
+  "gregDashboardGrown": {
+   "routes": {
+    "/context": {
+     "serverMedianMs": {
+      "before": 31.9,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 39.5,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 45.2,
+      "after": 2.7,
+      "ratio": 0.06
+     }
+    },
+    "/greg/policy": {
+     "serverMedianMs": {
+      "before": 146.6,
+      "after": 33.3,
+      "ratio": 0.23
+     },
+     "serverP90Ms": {
+      "before": 151.1,
+      "after": 61.7,
+      "ratio": 0.41
+     },
+     "wallMedianMs": {
+      "before": 216.4,
+      "after": 36.5,
+      "ratio": 0.17
+     }
+    },
+    "/greg/order-plan": {
+     "serverMedianMs": {
+      "before": 949.7,
+      "after": 476.2,
+      "ratio": 0.5
+     },
+     "serverP90Ms": {
+      "before": 983.7,
+      "after": 487.8,
+      "ratio": 0.5
+     },
+     "wallMedianMs": {
+      "before": 1164.5,
+      "after": 516.7,
+      "ratio": 0.44
+     }
+    },
+    "/comparison/results/latest": {
+     "serverMedianMs": {
+      "before": 38.2,
+      "after": 0.4,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 39.5,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 1202.2,
+      "after": 517,
+      "ratio": 0.43
+     }
+    },
+    "/comparison/jobs/latest": {
+     "serverMedianMs": {
+      "before": 37.2,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 37.9,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 1239.7,
+      "after": 517.3,
+      "ratio": 0.42
+     }
+    },
+    "/greg/demand": {
+     "serverMedianMs": {
+      "before": 164.4,
+      "after": 46.2,
+      "ratio": 0.28
+     },
+     "serverP90Ms": {
+      "before": 168.2,
+      "after": 49.1,
+      "ratio": 0.29
+     },
+     "wallMedianMs": {
+      "before": 1401.5,
+      "after": 564.3,
+      "ratio": 0.4
+     }
+    },
+    "/scheme-team/cases": {
+     "serverMedianMs": {
+      "before": 45.3,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 47,
+      "after": 0.6,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 1447,
+      "after": 564.8,
+      "ratio": 0.39
+     }
+    },
+    "/greg/orders": {
+     "serverMedianMs": {
+      "before": 179.8,
+      "after": 91.5,
+      "ratio": 0.51
+     },
+     "serverP90Ms": {
+      "before": 184,
+      "after": 95.6,
+      "ratio": 0.52
+     },
+     "wallMedianMs": {
+      "before": 1626.9,
+      "after": 658.1,
+      "ratio": 0.4
+     }
+    },
+    "/presenter/controls": {
+     "serverMedianMs": {
+      "before": 91.5,
+      "after": 1.1,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 93.7,
+      "after": 1.1,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 1718.1,
+      "after": 659.4,
+      "ratio": 0.38
+     }
+    },
+    "/presenter/scenarios": {
+     "serverMedianMs": {
+      "before": 41.8,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 43.3,
+      "after": 0.7,
+      "ratio": 0.02
+     },
+     "wallMedianMs": {
+      "before": 1760.1,
+      "after": 660.2,
+      "ratio": 0.38
+     }
+    },
+    "/presenter/scenarios/faults": {
+     "serverMedianMs": {
+      "before": 38.4,
+      "after": 0.3,
+      "ratio": 0.01
+     },
+     "serverP90Ms": {
+      "before": 40.3,
+      "after": 0.5,
+      "ratio": 0.01
+     },
+     "wallMedianMs": {
+      "before": 1799.3,
+      "after": 660.5,
+      "ratio": 0.37
+     }
+    }
+   },
+   "wallMedianMs": {
+    "before": 1799.5,
+    "after": 660.8,
+    "ratio": 0.37
+   },
+   "wallP90Ms": {
+    "before": 1847.6,
+    "after": 690.3,
+    "ratio": 0.37
+   },
+   "serverSumMedianMs": {
+    "before": 1806,
+    "after": 654.1,
+    "ratio": 0.36
+   }
+  }
+ },
+ "tick": {
+  "wallMs": {
+   "before": 640.3,
+   "after": 13.5,
+   "ratio": 0.02
+  },
+  "serverMs": {
+   "before": 638.8,
+   "after": 11.3,
+   "ratio": 0.02
+  },
+  "eldMaxMs": {
+   "before": 641,
+   "after": 38.4,
+   "ratio": 0.06
+  },
+  "readbackBytes": {
+   "before": 18821,
+   "after": 18821,
+   "ratio": 1
+  }
+ },
+ "rssPeakMiB": {
+  "before": 372,
+  "after": 445,
+  "ratio": 1.2
+ },
+ "runSeconds": {
+  "before": 133.6,
+  "after": 45.3,
+  "ratio": 0.34
+ },
+ "statusDiffBeforeAfter": [],
+ "afterServerLog": [
+  {
+   "bytes": 179,
+   "unavailable": 0,
+   "errorLines": []
+  },
+  {
+   "bytes": 179,
+   "unavailable": 0,
+   "errorLines": []
+  },
+  {
+   "bytes": 179,
+   "unavailable": 0,
+   "errorLines": []
+  }
+ ],
+ "afterNotes": [
+  [],
+  [],
+  []
+ ]
+}
