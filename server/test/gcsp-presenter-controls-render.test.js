@@ -340,7 +340,7 @@ test('Greg workspace mounts one order panel with production controls in the orde
   const f = gregFixture(); await f.done.ready; await settle();
   const region = f.region(); assert.equal(region.querySelectorAll('.gcsp-orders-tracking').length, 1);
   assert.equal(f.host.querySelectorAll('.gcsp-orders').length, 1); assert.equal(region.querySelector('h2').textContent, 'Order requests');
-  assert.equal(region.getAttribute('aria-labelledby'), region.querySelector('h2').id); assert.equal(region.querySelector('details.gcsp-orders-production').hidden, false);
+  assert.equal(region.getAttribute('aria-labelledby'), region.querySelector('h2').id); assert.equal(region.querySelector('details.gcsp-orders-production .gcsp-orders-production-form').hidden, false);
   assert.equal(f.counts.tracking, 1); f.done(); assert.equal(f.counts.destroyed, 1); assert.equal(f.host.querySelectorAll('.gcsp-orders').length, 0);
 });
 test('presenter-action event from inside the workspace refreshes dashboard and orders, and stops after destroy', async () => {
