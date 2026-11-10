@@ -6,7 +6,7 @@ import { renderOptionList, renderRangeSlider } from './modes/question-ui.js';
 import { createPreviewFeed } from './modes/preview-feed.js';
 import { employeeCardFixture } from './employee-card-fixture.js';
 import { applyBrowseFeedback, applyConfirmedFeedbackChange, createFeedbackState, matchesFeedbackPredicate, reduceFeedback } from './feedback-actions.js';
-import { el, screenIntro, button, statusScreen, factList } from './ui.js';
+import { el, screenIntro, button, statusScreen, factList, formatPointsCost } from './ui.js';
 import { NO_IMAGE_TEXT } from '../gcsp/kit/plain-copy.js';
 import { feedbackButton, feedbackScope, feedbackUndo, matchCard, mediaWell, previewTile } from './modes/result-card.js';
 import { portalShell, accountNavigation } from '../gcsp/shell/portal-shell.js';
@@ -150,6 +150,16 @@ function gcspExamples() {
   ], { className: 'vm-facts-pair' }));
   const well = group('mediaWell placeholder');
   well.append(mediaWell({ name: 'Synthetic car', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: NO_IMAGE_TEXT }).media);
+  const whole = el('div', 'vm-gallery-gcsp-whole');
+  for (const photo of ['/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp', '']) {
+    whole.append(mediaWell({ name: 'BMW 3 Series Touring', line: '', photo, alt: 'BMW 3 Series Touring' }, 'gcsp-media gcsp-media-whole', { placeholder: NO_IMAGE_TEXT }).media);
+  }
+  group('mediaWell: whole car at intrinsic ratio').append(whole);
+  group('factList: Points cost from formatPointsCost').append(factList([
+    { label: 'Contract end', value: '1 December 2026' },
+    { label: 'Points cost', value: formatPointsCost({ kind: 'points-monthly', value: 1100, allowance: 1300 }) },
+    { label: 'Points cost', value: formatPointsCost({ kind: 'points-monthly', value: 1100 }) },
+  ]));
   const reviewMedia = el('div', 'gcsp-review-layout');
   const reviewImage = employeeCardFixture.members[0].media;
   for (const src of [reviewImage.src, '']) reviewMedia.append(matchCard(null, { showScore: false,

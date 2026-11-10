@@ -153,7 +153,7 @@
     },
     {
       "path": "blocks/gcsp/account/gcsp-account.css",
-      "max_lines": 56
+      "max_lines": 54
     },
     {
       "path": "blocks/vehicle-matcher/question-controls.css",

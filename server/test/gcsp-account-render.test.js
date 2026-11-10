@@ -197,8 +197,13 @@ const findLink = (root, text) => [...root.querySelectorAll('a')].find((node) => 
 const findButton = (root, text) => [...root.querySelectorAll('button')].find((node) => (node.getAttribute('aria-label') ?? node.textContent) === text);
 const rowsOf = (root) => [...root.querySelectorAll('.gcsp-account-history tbody tr')];
 const cellsOf = (tr) => [...tr.children].map((cell) => cell.textContent);
-const openFrom = (root, text = 'View car record', index = 0) => { [...root.querySelectorAll('.gcsp-feature button')].filter((b) => b.textContent === text)[index].click(); return root.querySelector('.gcsp-side-drawer-panel'); };
 const openRecord = (root, index = 0) => { root.querySelectorAll('.gcsp-account-history tbody .gcsp-table-action')[index].click(); return root.querySelector('.gcsp-side-drawer-panel'); };
+// Records open only from the Order history table, below Your preferences.
+const openFrom = (root, index = 0) => openRecord(root, index);
+// The history table opens records from the history entry, a copy of the current contract.
+const mirrorHistory = (input, index = 0) => { const entries = input.value.histories.flatMap((h) => h.entries); const id = input.value.contracts[index].contractId; Object.assign(entries.find((e) => e.contractId === id), structuredClone(input.value.contracts[index])); };
+const pointsCosts = (scope) => [...scope.querySelectorAll('dl > div')].filter((d) => d.querySelector('dt').textContent === 'Points cost').map((d) => d.querySelector('dd').textContent);
+const pointsCost = (scope) => pointsCosts(scope)[0];
 const sectionOf = (drawer, title) => [...drawer.querySelectorAll('.gcsp-record-section')].find((node) => node.querySelector('h3').textContent === title);
 const detailsRow = (root, label) => [...root.querySelectorAll('.gcsp-account-row')].find((node) => node.querySelector('h3').textContent.startsWith(label));
 // Fixtures carry the policy stand-in scheme names; most render tests cover the unnamed "Scheme N" fallback.
@@ -233,25 +238,27 @@ test('account composition preserves complete supplied facts, labelled details an
     terms: { kind: 'points-monthly', value: 1100 }, technical: { wltpCo2: { value: 156, unit: 'g/km', basis: 'WLTP combined' },
       price: { kind: 'purchase-money', value: 55295, currency: 'GBP', basis: 'List price' },
       options: [{ code: 'SYN01', description: 'Fictional option' }], fittedEquipment: null } });
+  mirrorHistory(input);
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
     assert.equal(root.querySelectorAll('main h1').length, 1);
     assert.equal(root.querySelectorAll('.gcsp-feature').length, 2);
     const current = root.querySelector('.gcsp-feature');
-    assert.match(current.textContent, /Contract ends in 26 days on 1 December 2026/);
-    assert.deepEqual([...current.querySelectorAll('.gcsp-account-key > div')].map((cell) => cell.textContent),
-      ['This car1,100 points a month', 'Your allowance1,300 points a month', 'Collect a replacement12 Nov to 1 Dec']);
+    assert.equal(current.querySelector('.gcsp-countdown').textContent, 'Contract ends in 26 days \u00b7 1 December 2026');
+    assert.equal(pointsCost(current), '1,100 / 1,300 points per month');
     const otherScheme = root.querySelectorAll('.gcsp-feature')[1];
-    assert.match(otherScheme.querySelector('.gcsp-account-key').textContent, /Your allowanceNot supplied/);
-    assert.doesNotMatch(otherScheme.querySelector('.gcsp-account-key').textContent, /1,300/);
+    assert.equal(pointsCost(otherScheme), '1,100 points per month \u00b7 budget not supplied');
+    assert.doesNotMatch(otherScheme.textContent, /1,300/);
     assert.doesNotMatch(current.textContent, /current:employee-paula|slot-paula|choices-fs-uk/);
+    assert.match(current.querySelector('.gcsp-details').textContent, /Replacement collection12 Nov to 1 Dec/);
     // The record drawer carries the rest of the supplied contract, collection, order and technical facts.
     const drawer = openFrom(root);
     for (const text of ['7654321', '1 May 2026', '30 May 2026', '1 June 2026', '6,500', '6,420',
       'ZZSYNTHETIC000001', '156 g/km (WLTP combined)', '£55,295 (List price)', 'SYN01', 'Fictional option']) assert.ok(drawer.textContent.includes(text), text);
     root.querySelector('.gcsp-side-drawer .vm-btn').click();
     assert.deepEqual([...root.querySelectorAll('.gcsp-feature .gcsp-actions button')].map((b) => b.textContent),
-      ['Choose a replacement', 'View car record', 'View car record']);
+      ['Choose a replacement']);
+    assert.match(otherScheme.textContent, /Replacement is unavailable for this contract and slot\./);
     assert.equal(root.querySelectorAll('.gcsp-feature .vm-btn-primary').length, 1);
     assert.ok(detailsRow(root, 'Employee').textContent.includes('Allowance override: 1,500 points/month (ends 1 December 2026)'));
     const drivers = detailsRow(root, 'Drivers (2)');
@@ -269,15 +276,16 @@ test('account composition preserves complete supplied facts, labelled details an
   } finally { destroy(); root.remove(); }
 });
 
-test('FUCQ-277: the allowance shows in the key strip and the no-car line, hides unsupplied overrides and internal prose, and the current car drops its specification caveat', async () => {
+test('FUCQ-277: the allowance shows in the Points cost row and the no-car line, hides unsupplied overrides and internal prose, and the current car drops its specification caveat', async () => {
   const plain = unnamed('multi-slot'); delete plain.value.account.allowanceOverride; delete plain.value.account.allowanceOverrideEndDate;
   plain.value.allowance.basis = 'Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.';
   const first = await domMount({ ...readOnlyAdapter(), readAccount: async () => plain });
   try {
     assert.equal(first.root.querySelector('.gcsp-allowance'), null);
-    assert.match(first.root.querySelector('.gcsp-account-key').textContent, /Your allowance1,300 points a month/);
+    assert.equal(pointsCost(first.root.querySelector('.gcsp-feature')), '1,100 / 1,300 points per month');
+    assert.equal(first.root.querySelector('.gcsp-account-key'), null);
     assert.doesNotMatch(first.root.textContent, /Allowance override|Override end|Allowance basis|Synthetic monthly demo|Not a verified|Exact specification is not supplied/);
-    assert.match(first.root.querySelector('.gcsp-account-fresh .gcsp-synthetic').textContent, /^Account as of/);
+    assert.match(first.root.querySelector('.gcsp-account-body').lastElementChild.textContent, /Account as of/);
   } finally { first.destroy(); first.root.remove(); }
   const noCar = await domMount(readOnlyAdapter('no-current-car'));
   try {
@@ -310,31 +318,36 @@ test('current contracts retain their explicit scheme allowance including zero an
   const adapter = { ...readOnlyAdapter(), readAccount: async () => input };
   const first = await domMount(adapter);
   try {
-    const allowance = [...first.root.querySelectorAll('.gcsp-account-key')].map((node) => node.querySelectorAll('div')[1].textContent);
-    assert.equal(allowance[0], 'Your allowance0 points a month');
-    assert.equal(allowance[1], 'Your allowance950 points a month');
+    const cost = [...first.root.querySelectorAll('.gcsp-feature')].map(pointsCost);
+    assert.equal(cost[0], '1,100 / 0 points per month');
+    assert.equal(cost[1], '900 / 950 points per month');
   } finally { first.destroy(); first.root.remove(); }
   input.value.contracts[0].terms.allowance = null;
   const second = await domMount(adapter);
   try {
-    assert.equal(second.root.querySelector('.gcsp-account-key').querySelectorAll('div')[1].textContent, 'Your allowanceNot supplied');
+    assert.equal(pointsCost(second.root.querySelector('.gcsp-feature')), '1,100 points per month \u00b7 budget not supplied');
   } finally { second.destroy(); second.root.remove(); }
 });
 
-test('representative image provenance survives a broken image fallback without claiming exact equipment', async () => {
+test('the car shows no image caption or source line; a broken image keeps the placeholder and heading, and the record keeps the source', async () => {
   const input = accountFixture(); input.value.contracts[0].media = { src: '/fictional-missing.jpg',
     caption: 'Front three-quarter view', provenance: { source: 'dated illustration' } };
+  mirrorHistory(input);
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
     const media = root.querySelector('.gcsp-media');
+    assert.ok(media.classList.contains('gcsp-media-whole'));
     assert.equal(media.querySelector('img').alt, 'BMW 3 Series Touring 320i');
-    assert.match(media.textContent, /Front three-quarter view/);
+    assert.equal(media.querySelector('.vm-media-caption'), null);
+    assert.doesNotMatch(root.querySelector('.gcsp-feature').textContent, /Front three-quarter view|Image source|dated illustration/);
     media.querySelector('img').dispatchEvent(new window.Event('error'));
     assert.equal(media.querySelector('img'), null); assert.equal(media.classList.contains('has-photo'), false);
-    assert.match(media.textContent, /No image for this car yet/);
-    assert.match(root.textContent, /dated illustration/);
+    assert.match(media.textContent, /No image available for your car/);
+    assert.equal(root.querySelector('.gcsp-feature h2').textContent, 'BMW 3 Series Touring 320i');
     assert.doesNotMatch(root.textContent, /does not confirm the fitted equipment/);
-    assert.match(openFrom(root).textContent, /does not confirm the fitted equipment/);
+    const record = openFrom(root);
+    assert.match(record.textContent, /does not confirm the fitted equipment/);
+    assert.match(record.textContent, /Image source.*dated illustration/);
   } finally { destroy(); root.remove(); }
 });
 
@@ -393,7 +406,7 @@ test('guarded replacement reconciles draft, suppresses duplicate writes, emits e
   const listen = (event) => events.push(event);
   document.body.addEventListener('gcsp:journey-start', listen);
   try {
-    assert.deepEqual(calls.map((call) => call.url), ['/api/gcsp/manual/account', '/api/gcsp/manual/draft', '/api/gcsp/offers/current', '/api/gcsp/activity']);
+    assert.deepEqual(calls.map((call) => call.url), ['/api/gcsp/manual/account', '/api/gcsp/manual/draft', '/api/gcsp/offers/current']);
     blocked = true;
     const choose = findButton(root, 'Choose a replacement'); choose.click(); choose.click();
     assert.equal(root.querySelector('[aria-busy="true"]') != null, true);
@@ -527,7 +540,7 @@ test('FUCQ-218: policy scheme names fill the Scheme column, the current car and 
   try {
     assert.deepEqual(rowsOf(shown.root).map((tr) => cellsOf(tr)[1]), [first.label, second.label, second.label]);
     assert.doesNotMatch(shown.root.querySelector('.gcsp-account-history').textContent, /Scheme \d/);
-    assert.match(shown.root.querySelector('.gcsp-feature .gcsp-account-context').textContent, new RegExp(`Current car . ${first.label}`));
+    assert.deepEqual(factPairs(shown.root.querySelector('.gcsp-feature')).find(([label]) => label === 'Scheme'), ['Scheme', first.label]);
     const drawer = openRecord(shown.root);
     assert.equal(drawer.querySelector('.gcsp-side-drawer-context').textContent, `Car record \u00b7 ${first.label}`);
     drawer.querySelector('.gcsp-side-drawer-foot button').click();
@@ -771,8 +784,8 @@ test('FUCQ-252: after a confirmed handover or return the current-car card follow
       const [card, ...rest] = cards(view.root);
       assert.equal(rest.length, 0, `${oldStatus}: one current-car card`); assert.equal(card.dataset.contractId, undefined);
       assert.equal(card.dataset.orderUuid, orders.uuid); assert.equal(card.querySelector('h2').textContent, 'Synthetic 3 Series Saloon 320i');
-      assert.equal(card.querySelector('.gcsp-account-context').textContent, 'Current car');
-      assert.deepEqual(factPairs(card).slice(0, 2), [['Collected', '7 November 2026'], ['Delivered VIN', VIN]]);
+      assert.equal(card.querySelector('.gcsp-account-context'), null);
+      assert.deepEqual(factPairs(card).slice(0, 3), [['Status', 'Current car'], ['Collected', '7 November 2026'], ['Delivered VIN', VIN]]);
       assert.doesNotMatch(view.root.textContent, /No current car|Choose a replacement/);
     } finally { view.destroy(); }
   }
@@ -848,9 +861,8 @@ test('FUCQ-195: the current-car card shows readable labels and no raw identifier
     const record = openFrom(first.root).textContent; first.root.querySelector('.gcsp-side-drawer .vm-btn').click();
     for (const id of raw) { assert.ok(!shownText.some((text) => text.includes(id)), id); assert.ok(!record.includes(id), id); }
     assert.ok(![...card.querySelectorAll('dd')].some((node) => node.textContent === value.currentContract.status));
-    assert.equal(card.querySelector('.gcsp-account-context').textContent, 'Current car');
-    assert.doesNotMatch(card.textContent, /Status/);
-    assert.deepEqual([...card.querySelectorAll('.gcsp-account-key > div')].slice(0, 2).map((node) => node.textContent), ['This car1,100 points a month', 'Your allowance1,300 points a month']);
+    assert.deepEqual(factPairs(card)[0], ['Status', 'Current car']);
+    assert.equal(pointsCost(card), '1,100 / 1,300 points per month');
     assert.doesNotMatch(card.textContent, /Synthetic example data/);
     assert.doesNotMatch(card.textContent, /Vehicle slot|Scheme|Current contract|points cost not supplied|Wltp/);
   } finally { first.destroy(); first.root.remove(); }
@@ -911,15 +923,16 @@ test('FUCQ-197: order history, saved journey and footer show words, not raw iden
   const mounted = await domMount({ ...readOnlyAdapter(), readAccount: async () => input, readDraft: async () => draft });
   try {
     const body = mounted.root.querySelector('.gcsp-account-body');
-    const parts = ['.gcsp-summary', '.gcsp-account-history', '.gcsp-account-fresh'].map((selector) => body.querySelector(selector));
+    const fresh = body.lastElementChild;
+    const parts = [body.querySelector('.gcsp-summary'), body.querySelector('.gcsp-account-history'), fresh];
     const shownText = parts.flatMap((part) => [...part.querySelectorAll('dd, p, h2, h3, summary, button, td, th'), part]).map((node) => node.textContent);
     for (const id of raw) assert.ok(!shownText.some((text) => text.includes(id)), id);
     const saved = parts[0].textContent;
     assert.match(saved, /Current car/); assert.match(saved, new RegExp(value.currentContract.model));
     assert.doesNotMatch(saved, /Mode|Scheme|Draft version|replacement\b/);
     assert.deepEqual(rowsOf(mounted.root).map((tr) => cellsOf(tr)[1]), ['Scheme 1', 'Scheme 2', 'Scheme 2']);
-    assert.equal(body.querySelector('.gcsp-account-fresh .gcsp-synthetic').textContent, 'Account as of 5 November 2026 at 09:00.');
-    assert.equal(body.querySelector('.gcsp-account-head').lastElementChild, body.querySelector('.gcsp-account-fresh'));
+    assert.equal(fresh.textContent, 'Account as of 5 November 2026 at 09:00.');
+    assert.ok(fresh.classList.contains('gcsp-synthetic'), 'the freshness line closes the page, after Your details');
   } finally { mounted.destroy(); mounted.root.remove(); }
   value.histories[0].label = 'Fictional car scheme'; value.slots[0].label = 'Company car 1';
   const labelled = await domMount({ ...readOnlyAdapter(), readAccount: async () => input, readDraft: async () => draft });
@@ -977,12 +990,12 @@ test('FUCQ-220: order history names the car order number, and shows a reference 
   } finally { destroy(); }
 });
 
-test('FUCQ-223: the account keeps the Choices kicker, and its stylesheet carries the order-progress styles the hosted entry lacks', async () => {
+test('FUCQ-223: the account page head has the title and no kicker, and its stylesheet carries the order-progress styles the hosted entry lacks', async () => {
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => accountFixture('populated') });
   try {
     const intro = root.querySelector('.gcsp-account-body .gcsp-intro');
-    assert.equal(intro.querySelector('.vm-kicker').textContent, 'Choices');
-    assert.ok(intro.querySelector('.vm-kicker').compareDocumentPosition(intro.querySelector('h1')) & 4, 'kicker sits above the title');
+    assert.equal(intro.querySelector('.vm-kicker'), null, 'the frozen reference has no kicker');
+    assert.equal(intro.querySelector('h1').textContent, 'Your cars');
   } finally { destroy(); root.remove(); }
   // Pages load only gcsp-account.css, so the order-progress sheet must come in through it.
   const css = (path) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
@@ -990,63 +1003,20 @@ test('FUCQ-223: the account keeps the Choices kicker, and its stylesheet carries
   assert.match(css('blocks/gcsp/order-progress/gcsp-order-progress.css'), /\.gcsp-order-car \{ display: grid;/);
 });
 
-// The home "Your buddy" card follows the saved permission and routes to the rail pages.
-const buddyValue = (permission, extra = {}) => ({ status: 'ok', value: { state: 'searching', ...(permission ? { permission } : {}), ...extra } });
 const allowed = { searchConsent: true, holdConsent: true, paused: false, canSearch: true, canHold: true };
-async function buddyMount(activity, extra = {}) {
-  const keys = []; const adapter = { ...readOnlyAdapter(), ...(activity ? { readActivity: async () => activity } : {}), ...extra };
-  const mounted = await domMount(adapter, { onNavigate: (key) => keys.push(key) });
-  return { ...mounted, keys, card: mounted.root.querySelector('[aria-label="Your buddy"]') };
-}
 const ghost = (root, text) => findButton(root, text).classList.contains('vm-btn-ghost');
 
-test('buddy card without saved preferences sends Paula to set them', async () => {
-  const { root, destroy, keys, card } = await buddyMount(buddyValue(null));
+test('Account no longer shows the Your buddy card or reads buddy activity', async () => {
+  let reads = 0;
+  const activity = async () => { reads += 1; return { status: 'ok', value: { state: 'searching', permission: allowed } }; };
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readActivity: activity });
   try {
-    assert.equal(card.querySelector('h3').textContent, 'Your buddy');
-    assert.match(card.textContent, /Tell your buddy what matters and it will keep looking for a suitable car for you\./);
-    assert.equal(ghost(root, 'Choose a replacement') || findButton(root, 'Choose a replacement') === undefined, true);
-    findButton(root, 'Set your preferences').click(); assert.deepEqual(keys, ['brief']);
-  } finally { destroy(); }
-});
-
-test('buddy card while searching shows the last check and leads with activity', async () => {
-  const check = { checkedAt: '2026-11-05T09:30:00.000Z', carsChecked: 6, suitableCars: 5, outcome: 'offer-held' };
-  const { root, destroy, keys, card } = await buddyMount(buddyValue(allowed, { lastSuccessfulCheck: check }));
-  try {
-    assert.match(card.textContent, /Your buddy is looking for a car for you\./);
-    assert.match(card.textContent, /Last check .+: 6 cars checked, 5 suitable\./);
-    assert.equal(ghost(root, 'Change your preferences'), true); assert.equal(ghost(root, 'See buddy activity'), false);
-    assert.equal(ghost(root, 'Choose a replacement'), true);
-    findButton(root, 'See buddy activity').click(); findButton(root, 'Change your preferences').click();
-    assert.deepEqual(keys, ['activity', 'brief']);
-  } finally { destroy(); }
-  const bare = await buddyMount(buddyValue(allowed, { lastSuccessfulCheck: { checkedAt: 'nope', carsChecked: 1, suitableCars: 0 } }));
-  try { assert.doesNotMatch(bare.card.textContent, /Last check/); } finally { bare.destroy(); }
-});
-
-test('buddy card when paused or unable to search leads with preferences', async () => {
-  for (const permission of [{ ...allowed, paused: true }, { ...allowed, canSearch: false }]) {
-    const { root, destroy, keys, card } = await buddyMount(buddyValue(permission));
-    try {
-      assert.match(card.textContent, /Your buddy is paused, so it is not looking for cars\./);
-      assert.equal(ghost(root, 'Change your preferences'), false); assert.equal(ghost(root, 'See buddy activity'), true);
-      assert.equal(ghost(root, 'Choose a replacement'), false, 'the manual path stays primary when the buddy is paused');
-      findButton(root, 'Change your preferences').click(); findButton(root, 'See buddy activity').click();
-      assert.deepEqual(keys, ['brief', 'activity']);
-    } finally { destroy(); }
-  }
-});
-
-test('buddy card is absent without a readable activity, with a live offer, or after acceptance', async () => {
-  const none = await buddyMount(null); assert.equal(none.card, null); none.destroy();
-  const down = await buddyMount({ status: 'unavailable' }); assert.equal(down.card, null); down.destroy();
-  const throws = await buddyMount(null, { readActivity: async () => { throw new Error('offline'); } }); assert.equal(throws.card, null); throws.destroy();
-  const offers = (state) => async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-1', runId: 'run-1', state }] } });
-  for (const state of ['pending', 'active', 'accepted']) {
-    const listed = await buddyMount(buddyValue(allowed), { readOffers: offers(state) });
-    try { assert.equal(listed.card, null, state); } finally { listed.destroy(); }
-  }
+    await destroy.sync(); await tick();
+    assert.equal(reads, 0);
+    assert.equal(root.querySelector('[aria-label="Your buddy"]'), null);
+    for (const text of ['Set your preferences', 'Change your preferences', 'See buddy activity']) assert.equal(findButton(root, text), undefined, text);
+    assert.equal(ghost(root, 'Choose a replacement'), false, 'the replacement control stays primary');
+  } finally { destroy(); root.remove(); }
 });
 
 test('the HTTP adapter reads buddy activity, and any failure or abort is handled', async () => {
@@ -1061,60 +1031,203 @@ test('the HTTP adapter reads buddy activity, and any failure or abort is handled
   await assert.rejects(createAccountHttpAdapter({ fetchImpl: async () => { throw new Error('aborted'); } }).readActivity({ signal: abort.signal }));
 });
 
-test('a presenter sync repaints the buddy card when the activity read changes', async () => {
-  let permission = null; const keys = [];
-  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readActivity: async () => buddyValue(permission) }, { onNavigate: (key) => keys.push(key) });
-  try {
-    assert.ok(findButton(root, 'Set your preferences'));
-    permission = allowed; await destroy.sync(); await tick();
-    assert.ok(findButton(root, 'See buddy activity')); assert.equal(findButton(root, 'Set your preferences'), undefined);
-  } finally { destroy(); root.remove(); }
-});
-
-// Your cars layout (10 November): head row, key strip, record drawer, history table and details rows.
-test('the page head carries the title and freshness (Refresh only when stale); the current car shows a key strip with a dot inside 90 days', async () => {
+// Your cars layout (10 November): head row, car, Your preferences, then the secondary components.
+test('the page head carries the title only; the freshness line closes the page and Refresh shows only when stale', async () => {
   const input = unnamed('ready');
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
-    const head = root.querySelector('.gcsp-account-head');
-    assert.ok(head.querySelector('h1')); assert.equal(head.querySelector('.gcsp-intro .vm-kicker').textContent, 'Choices');
-    assert.equal(head.querySelector('.gcsp-account-fresh').textContent, 'Account as of 5 November 2026 at 09:00.');
-    assert.equal(root.querySelectorAll('.gcsp-account-body > .gcsp-actions').length, 0);
-    assert.equal(root.querySelectorAll('.gcsp-account-body > .gcsp-synthetic').length, 0);
-    const card = root.querySelector('.gcsp-feature');
-    assert.equal(card.querySelector('h2').textContent, 'BMW 3 Series Touring 320i');
-    assert.equal(card.querySelector('.gcsp-account-state').textContent, 'Contract ends in 26 days on 1 December 2026');
-    assert.ok(card.querySelector('.gcsp-account-state .gcsp-account-dot'));
-    assert.deepEqual([...card.querySelectorAll('.gcsp-account-key dt')].map((n) => n.textContent), ['This car', 'Your allowance', 'Collect a replacement']);
-    assert.equal(card.querySelector('.gcsp-account-key > div:last-child dd').textContent, '12 Nov to 1 Dec');
-    assert.deepEqual([...card.querySelectorAll('.gcsp-account-facts dt')].map((n) => n.textContent), ['Driver', 'Term', 'Annual mileage', 'Collected', 'Current mileage']);
-    assert.ok(card.querySelector('.vm-btn-primary').textContent === 'Choose a replacement');
-    assert.equal(card.querySelector('.gcsp-account-state').previousElementSibling.tagName, 'H2');
+    const body = root.querySelector('.gcsp-account-body');
+    const head = body.querySelector('.gcsp-account-head');
+    assert.ok(head.querySelector('h1')); assert.equal(head.querySelector('.vm-kicker'), null);
+    assert.equal(head.children.length, 1, 'nothing on the right of the head yet');
+    assert.equal(body.querySelector('.gcsp-account-fresh'), null);
+    assert.equal(body.lastElementChild.textContent, 'Account as of 5 November 2026 at 09:00.');
+    assert.ok(body.lastElementChild.classList.contains('gcsp-synthetic'));
+    assert.equal(head.querySelector('button'), null, 'Refresh account only when stale');
+    const secondary = body.querySelector('.gcsp-account-secondary');
+    assert.ok(secondary.contains(body.querySelector('.gcsp-account-history')) && secondary.querySelector('#gcsp-account-details-title'));
+    assert.equal(secondary.nextElementSibling, body.lastElementChild);
   } finally { destroy(); root.remove(); }
-  // Far from the end there is no dot; without a window the cell becomes Contract end.
-  const far = unnamed('ready'); const contract = far.value.contracts[0];
-  contract.contractEndDate = '2027-06-01'; delete contract.earliestCollectionDate; delete contract.latestCollectionDate;
-  far.value.currentContract = { ...far.value.currentContract, contractEndDate: '2027-06-01' };
-  const second = await domMount({ ...readOnlyAdapter(), readAccount: async () => far });
-  try {
-    const card = second.root.querySelector('.gcsp-feature');
-    assert.equal(card.querySelector('.gcsp-account-dot'), null);
-    assert.deepEqual([...card.querySelectorAll('.gcsp-account-key dt')].map((n) => n.textContent), ['This car', 'Your allowance', 'Contract end']);
-    assert.equal(card.querySelector('.gcsp-account-key > div:last-child dd').textContent, '1 June 2027');
-  } finally { second.destroy(); second.root.remove(); }
 });
 
-test('the car record drawer opens from the panel and from a history row, and Escape, Close and the scrim return focus to the opener', async () => {
+test('the current car: heading and specification, countdown, ordered facts, details and the one replacement action', async () => {
+  const input = unnamed('ready');
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
+  try {
+    const car = root.querySelector('.gcsp-feature');
+    assert.equal(car.querySelector('h2').textContent, 'BMW 3 Series Touring 320i');
+    assert.equal(car.querySelector('.gcsp-account-spec').textContent, '320i M Sport Touring \u00b7 Petrol');
+    assert.equal(car.querySelector('.gcsp-account-spec').previousElementSibling, car.querySelector('h2'));
+    const countdown = car.querySelector('.gcsp-countdown');
+    assert.equal(countdown.textContent, 'Contract ends in 26 days \u00b7 1 December 2026');
+    assert.equal(countdown.previousElementSibling.className, 'gcsp-account-title');
+    // Registration is unsupplied in the fixture, so its row is hidden; Points cost is last.
+    assert.deepEqual(factPairs(car.querySelector('.gcsp-account-car-facts')), [['Status', 'Current car'], ['Driver', 'Paula Mason'],
+      ['Contract end', '1 December 2026'], ['Term', '6 months'], ['Annual mileage', '12,000 mi/year'], ['Current mileage', '5,200 mi'],
+      ['Points cost', '1,100 / 1,300 points per month']]);
+    const details = car.querySelector('details.gcsp-details');
+    assert.equal(details.querySelector('summary.gcsp-details-summary').textContent, 'Order, collection and vehicle details');
+    assert.deepEqual(factPairs(details), [['Collected', '1 June 2026'], ['Replacement collection', '12 Nov to 1 Dec']]);
+    assert.deepEqual([...car.querySelectorAll('button')].map((node) => node.textContent), ['Choose a replacement']);
+    for (const gone of ['.gcsp-account-key', '.gcsp-account-context', '.gcsp-account-dot', '.vm-media-caption', '.gcsp-summary']) assert.equal(car.querySelector(gone), null, gone);
+    assert.doesNotMatch(car.textContent, /View car record|Image source|Your buddy|Your allowance/);
+    assert.equal(car.querySelector('.gcsp-media').classList.contains('gcsp-media-whole'), true);
+  } finally { destroy(); root.remove(); }
+  const sparse = unnamed('ready'); const contract = sparse.value.contracts[0];
+  for (const key of ['actualCollectionDate', 'earliestCollectionDate', 'latestCollectionDate']) delete contract[key];
+  delete contract.vehicle.configuration; delete contract.vehicle.fuel; contract.registration = 'AB12 CDE'; contract.vin = 'ZZSYNTHETIC000009';
+  const second = await domMount({ ...readOnlyAdapter(), readAccount: async () => sparse });
+  try {
+    const car = second.root.querySelector('.gcsp-feature');
+    assert.equal(car.querySelector('.gcsp-account-spec'), null, 'no specification line without supplied facts');
+    assert.ok(factPairs(car.querySelector('.gcsp-account-car-facts')).some(([label, value]) => label === 'Registration' && value === 'AB12 CDE'));
+    assert.deepEqual(factPairs(car.querySelector('details')), [['Delivered VIN', 'ZZSYNTHETIC000009']]);
+  } finally { second.destroy(); second.root.remove(); }
+  const bare = unnamed('ready'); const naked = bare.value.contracts[0];
+  for (const key of ['actualCollectionDate', 'earliestCollectionDate', 'latestCollectionDate', 'vin', 'orderNumber', 'orderReference']) delete naked[key];
+  delete naked.contractEndDate;
+  const third = await domMount({ ...readOnlyAdapter(), readAccount: async () => bare });
+  try {
+    const car = third.root.querySelector('.gcsp-feature');
+    assert.equal(car.querySelector('details'), null, 'no details element when nothing is supplied');
+    assert.equal(car.querySelector('.gcsp-note').textContent, 'Contract end: Not supplied');
+  } finally { third.destroy(); third.root.remove(); }
+});
+
+test('DOM order: Your cars, then Your preferences, then Order history and Your details; the car holds no record control or key strip', async () => {
+  const { root, destroy } = await domMount(readOnlyAdapter());
+  try {
+    const before = (a, b) => Boolean(a.compareDocumentPosition(b) & window.Node.DOCUMENT_POSITION_FOLLOWING);
+    const car = root.querySelector('.gcsp-feature'); const prefs = root.querySelector('.gcsp-account-preferences');
+    const history = root.querySelector('.gcsp-account-history'); const details = root.querySelector('#gcsp-account-details-title');
+    assert.ok(car && prefs && history && details);
+    assert.ok(before(car, prefs) && before(prefs, history) && before(history, details));
+    assert.ok(before(root.querySelector('.gcsp-account-head'), car));
+    assert.equal(root.querySelectorAll('.gcsp-account-key').length, 0);
+    assert.equal(root.querySelector('[aria-label="Your buddy"]'), null);
+    assert.equal(car.querySelector('.gcsp-actions').textContent, 'Choose a replacement');
+    for (const view of root.querySelectorAll('.gcsp-table-action')) assert.ok(history.contains(view));
+    assert.equal(findButton(root, 'View car record'), undefined);
+  } finally { destroy(); root.remove(); }
+});
+
+test('Points cost shows once, from the authoritative terms and allowance, and follows them', async () => {
+  const count = (root) => pointsCosts(root).length;
+  const ready = await domMount(readOnlyAdapter());
+  try {
+    assert.deepEqual(pointsCosts(ready.root), ['1,100 / 1,300 points per month']);
+    assert.doesNotMatch(ready.root.textContent, /Your allowance|points a month/);
+  } finally { ready.destroy(); ready.root.remove(); }
+  const render = async (edit, name = 'ready') => {
+    const input = accountFixture(name); edit(input.value);
+    const view = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
+    const text = pointsCost(view.root.querySelector('.gcsp-feature')); view.destroy(); view.root.remove(); return text;
+  };
+  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: 1250, allowance: 1500 }; }), '1,250 / 1,500 points per month');
+  assert.equal(await render((v) => { v.allowance.monthlyPoints = 1400; }), '1,100 / 1,400 points per month', 'the account allowance feeds the trusted scheme');
+  assert.equal(await render((v) => { v.contracts[0].vehicle.points = 1000; }), '1,000 / 1,300 points per month');
+  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: 1100, allowance: 0 }; }), '1,100 / 0 points per month', 'a zero budget is real');
+  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: 0, allowance: 1300 }; }), '0 / 1,300 points per month', 'a zero cost is real');
+  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', allowance: 1300 }; delete v.contracts[0].vehicle.points; }), 'Cost not supplied \u00b7 1,300 points per month budget');
+  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: 1100, allowance: null }; }), '1,100 points per month \u00b7 budget not supplied');
+  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: null, allowance: null }; delete v.contracts[0].vehicle.points; }), 'Not supplied');
+  assert.equal(await render((v) => { v.allowance = { status: 'unknown' }; }), '1,100 points per month \u00b7 budget not supplied', 'an unknown allowance is not supplied');
+  // Another scheme's allowance is never borrowed.
+  const multi = await domMount(readOnlyAdapter('multi-slot'));
+  try {
+    const cars = [...multi.root.querySelectorAll('.gcsp-feature')];
+    assert.equal(pointsCost(cars[1]), '1,100 points per month \u00b7 budget not supplied');
+    assert.equal(count(multi.root), 2);
+  } finally { multi.destroy(); multi.root.remove(); }
+});
+
+test('Your preferences is a mount point: default content, a supplied capability that survives quiet redraws, teardown on destroy', async () => {
+  const keys = [];
+  const plain = await domMount(readOnlyAdapter(), { onNavigate: (key) => keys.push(key) });
+  try {
+    const region = plain.root.querySelector('section.gcsp-account-preferences');
+    assert.equal(region.id, 'gcsp-account-preferences');
+    const title = region.querySelector('h2.gcsp-h2'); assert.equal(title.textContent, 'Your preferences');
+    assert.equal(region.getAttribute('aria-labelledby'), title.id);
+    assert.equal(region.querySelector('.gcsp-note').textContent, 'Tell your buddy what matters in your next car.');
+    const edit = findLink(region, 'Edit your preferences'); assert.ok(edit.classList.contains('vm-btn-ghost'));
+    assert.match(edit.getAttribute('href'), /gcsp-brief-live\.html$/);
+    edit.click(); assert.deepEqual(keys, ['brief']);
+  } finally { plain.destroy(); plain.root.remove(); }
+  let calls = 0; let torn = 0; let mountedRegion; let signal;
+  let rating = 1; const adapter = { ...readOnlyAdapter(), readAccount: async () => { const input = unnamed('ready'); input.value.contracts[0].annualMileage = 12000 + rating; return input; } };
+  const custom = await domMount(adapter, { preferences: (region, options) => {
+    calls += 1; mountedRegion = region; signal = options.signal;
+    const node = document.createElement('p'); node.className = 'capability'; node.textContent = 'capability mounted'; region.append(node);
+    return () => { torn += 1; };
+  } });
+  try {
+    const region = custom.root.querySelector('.gcsp-account-preferences');
+    assert.equal(region, mountedRegion); assert.equal(calls, 1); assert.ok(region.querySelector('.capability'));
+    assert.equal(region.querySelector('.gcsp-note'), null, 'the capability owns the whole region');
+    const capability = region.querySelector('.capability');
+    rating = 2; await custom.destroy.sync(); await tick();
+    assert.match(custom.root.querySelector('.gcsp-feature').textContent, /12,002/, 'the sync redrew with changed data');
+    assert.equal(custom.root.querySelector('.gcsp-account-preferences'), region, 'the same region node is reused');
+    assert.equal(region.querySelector('.capability'), capability); assert.equal(calls, 1); assert.equal(torn, 0);
+    assert.equal(signal.aborted, false);
+    custom.destroy();
+    assert.equal(torn, 1); assert.equal(signal.aborted, true);
+  } finally { custom.destroy(); custom.root.remove(); }
+});
+
+test('no Your preferences region appears when the account itself could not be read', async () => {
+  const view = await domMount(readOnlyAdapter('source-failure'));
+  try {
+    assert.equal(view.root.querySelector('.gcsp-account-preferences'), null);
+    assert.equal(view.root.querySelector('.gcsp-account-history'), null);
+  } finally { view.destroy(); view.root.remove(); }
+});
+
+test('the offer sits outside the car and opens the offer; a held offer ghosts Choose a replacement', async () => {
+  const offers = (state) => async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-1', runId: 'run-1', ...(state ? { state } : {}) }] } });
+  const held = await domMount({ ...readOnlyAdapter(), readOffers: offers('pending') });
+  try {
+    const offer = held.root.querySelector('[aria-label="Your car offer"]'); const car = held.root.querySelector('.gcsp-feature');
+    assert.ok(offer && !car.contains(offer) && !offer.contains(car));
+    assert.ok(offer.compareDocumentPosition(car) & window.Node.DOCUMENT_POSITION_FOLLOWING, 'the offer precedes the car');
+    assert.equal(offer.querySelector('h2').textContent, 'Your car offer');
+    assert.equal(findButton(offer, 'View your offer').classList.contains('vm-btn-primary'), true);
+    assert.match(offer.textContent, /Decide on your car offer before choosing another car\./);
+    assert.equal(ghost(held.root, 'Choose a replacement'), true);
+    assert.equal(findButton(held.root, 'Choose a replacement').disabled, false);
+  } finally { held.destroy(); held.root.remove(); }
+  const open = await domMount({ ...readOnlyAdapter(), readOffers: offers('declined') });
+  try {
+    assert.equal(ghost(open.root, 'Choose a replacement'), false);
+    assert.doesNotMatch(open.root.textContent, /Decide on your car offer before/);
+    assert.ok(findButton(open.root, 'View your offer'));
+  } finally { open.destroy(); open.root.remove(); }
+});
+
+test('a missing image keeps a readable placeholder in the whole-car well and the car identity', async () => {
+  const view = await domMount(readOnlyAdapter('missing-image'));
+  try {
+    const car = view.root.querySelector('.gcsp-feature');
+    const media = car.querySelector('.vm-card-media');
+    assert.ok(media.classList.contains('gcsp-media-whole')); assert.equal(media.classList.contains('has-photo'), false);
+    assert.equal(media.querySelector('.vm-card-soon').textContent, 'No image available for your car');
+    assert.equal(car.querySelector('h2').textContent, 'BMW 3 Series Touring 320i');
+    assert.equal(car.querySelector('.gcsp-account-spec').textContent, '320i M Sport Touring \u00b7 Petrol');
+  } finally { view.destroy(); view.root.remove(); }
+});
+
+test('the car record drawer opens from history rows only, and Escape, Close and the scrim return focus to the exact opener', async () => {
   const { root, destroy } = await domMount(readOnlyAdapter());
   const press = (key) => document.dispatchEvent(new window.KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
   try {
     assert.equal(root.querySelector('.gcsp-side-drawer'), null);
-    const opener = findButton(root, 'View car record'); opener.focus(); opener.click();
+    const opener = root.querySelectorAll('.gcsp-account-history tbody .gcsp-table-action')[0]; opener.focus(); opener.click();
     let panel = root.querySelector('.gcsp-side-drawer-panel');
     assert.equal(panel.getAttribute('role'), 'dialog'); assert.equal(panel.getAttribute('aria-modal'), 'true');
     const heading = panel.querySelector('h2'); assert.equal(panel.getAttribute('aria-labelledby'), heading.id);
     assert.equal(heading.textContent, 'BMW 3 Series Touring 320i'); assert.equal(document.activeElement, heading);
-    assert.equal(panel.querySelector('.gcsp-side-drawer-context').textContent, 'Car record');
+    assert.equal(panel.querySelector('.gcsp-side-drawer-context').textContent, 'Car record \u00b7 Scheme 1');
     assert.deepEqual([...panel.querySelectorAll('h3')].map((n) => n.textContent), ['Contract', 'Collection', 'Order and vehicle', 'Technical specification and options']);
     press('Escape'); assert.equal(root.querySelector('.gcsp-side-drawer'), null); assert.equal(document.activeElement, opener);
     // From a history row, with the Close button.
@@ -1180,7 +1293,7 @@ test('Your details is two rows, each with its help button, showing supplied valu
     const rows = [...root.querySelectorAll('.gcsp-account-row')];
     assert.equal(root.querySelector('#gcsp-account-details-title').textContent, 'Your details');
     assert.deepEqual(rows.map((node) => node.querySelector('h3').textContent), ['Employee', 'Drivers (2)']);
-    assert.equal(root.querySelectorAll('.gcsp-account-body details').length, 0);
+    assert.equal(root.querySelectorAll('.gcsp-account-secondary details').length, 0);
     assert.equal(rows[0].querySelector('strong').textContent, 'Paula Mason');
     assert.equal(rows[0].querySelector('.gcsp-account-lines').textContent,
       'Paula Mason · Employee number E749057 · Band G7paula.mason@gcsp-demo.com · 01632 96000027 Ashdown Road, Bracknell, RG12 9ZZ');
