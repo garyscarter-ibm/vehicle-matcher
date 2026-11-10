@@ -4115,39 +4115,6 @@
       "unsliced": true
     },
     {
-      "id": "FUCQ-323",
-      "title": "Complete correct vehicle image coverage across the GCSP demo",
-      "status": "In Progress",
-      "type": "Bug",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-323",
-      "observed_at": "2026-11-10T12:31:13Z",
-      "branch": "dev/DEV-2026-11-10-002",
-      "slices": [
-        {
-          "id": "source",
-          "status": "complete",
-          "title": "Validated-configuration-images",
-          "observed_at": "2026-11-10T12:02:48Z",
-          "evidence": "246 successful live renders; SHA-pinned catalogue247 associations/240 retained derivatives; 2424 GB image coverage; live G21 server delivery1536ms then1ms cached, safe receipt docs/gcsp/evidence/fucq323/live-smoke.json"
-        },
-        {
-          "id": "projection",
-          "status": "complete",
-          "title": "Complete-display-projection",
-          "observed_at": "2026-11-10T12:31:13Z",
-          "evidence": "Supported fleet bindings and saved/public current-stock-manual-offer-activity-order projections verified; 177/177 integrated scoped checks. docs/gcsp/evidence/fucq323/validation.json"
-        },
-        {
-          "id": "integration",
-          "status": "complete",
-          "title": "Rendered-integration-and-review",
-          "observed_at": "2026-11-10T12:31:13Z",
-          "evidence": "Independent substantive visual critique at1280/375 across40 captures passed after corrections. FUCQ-345 Low remains separate. docs/gcsp/evidence/fucq323/visual-review.json"
-        }
-      ],
-      "unsliced": false
-    },
-    {
       "id": "FUCQ-322",
       "title": "Sign in as a demo user and retain their stored account throughout the live site",
       "status": "In Review",
@@ -4194,6 +4161,40 @@
           "evidence": "docs/gcsp/evidence/fucq-322/README.md"
         }
       ]
+    },
+    {
+      "id": "FUCQ-323",
+      "title": "Complete correct vehicle image coverage across the GCSP demo",
+      "status": "In Review",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-323",
+      "observed_at": "2026-11-10T12:33:05Z",
+      "branch": "dev/DEV-2026-11-10-002",
+      "slices": [
+        {
+          "id": "source",
+          "status": "complete",
+          "title": "Validated-configuration-images",
+          "observed_at": "2026-11-10T12:02:48Z",
+          "evidence": "246 successful live renders; SHA-pinned catalogue247 associations/240 retained derivatives; 2424 GB image coverage; live G21 server delivery1536ms then1ms cached, safe receipt docs/gcsp/evidence/fucq323/live-smoke.json"
+        },
+        {
+          "id": "projection",
+          "status": "complete",
+          "title": "Complete-display-projection",
+          "observed_at": "2026-11-10T12:31:13Z",
+          "evidence": "Supported fleet bindings and saved/public current-stock-manual-offer-activity-order projections verified; 177/177 integrated scoped checks. docs/gcsp/evidence/fucq323/validation.json"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Rendered-integration-and-review",
+          "observed_at": "2026-11-10T12:31:13Z",
+          "evidence": "Independent substantive visual critique at1280/375 across40 captures passed after corrections. FUCQ-345 Low remains separate. docs/gcsp/evidence/fucq323/visual-review.json"
+        }
+      ],
+      "unsliced": false,
+      "original_status": "In Review"
     }
   ]
 }
