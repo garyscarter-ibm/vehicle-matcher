@@ -1,0 +1,1715 @@
+{
+  "run": "fucq359-strict-capture",
+  "implementationCommit": "77976fbb",
+  "reference": {
+    "commit": "193cbf07",
+    "dir": "docs/gcsp/mockups/account-preferences-2026-11-10/review",
+    "note": "Reference PNGs are not copied; cited by repo path."
+  },
+  "environment": {
+    "browser": "157.0.8103.51",
+    "deviceScaleFactor": 1,
+    "reducedMotion": "reduce",
+    "locale": "en-GB",
+    "capture": "fullPage"
+  },
+  "states": {
+    "1920-selected": {
+      "viewport": {
+        "width": 1920,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready",
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1920-selected.png",
+      "longVariant": false,
+      "overflow": false,
+      "scrollWidth": 1920,
+      "innerWidth": 1920,
+      "boxes": {
+        "body": {
+          "x": 144,
+          "y": 76,
+          "width": 1680,
+          "height": 1433.875
+        },
+        "feature": {
+          "x": 144,
+          "y": 154,
+          "width": 1680,
+          "height": 675.875
+        },
+        "featureMedia": {
+          "x": 145,
+          "y": 155,
+          "width": 1198,
+          "height": 673.875
+        },
+        "cardMedia": {
+          "x": 145,
+          "y": 155,
+          "width": 1198,
+          "height": 673.875
+        },
+        "drawnImage": {
+          "x": 145,
+          "y": 155,
+          "width": 1198,
+          "height": 673.875
+        },
+        "preferences": {
+          "x": 144,
+          "y": 853.875,
+          "width": 1680,
+          "height": 151
+        },
+        "history": {
+          "x": 144,
+          "y": 1028.875,
+          "width": 1680,
+          "height": 197
+        },
+        "details": {
+          "x": 144,
+          "y": 1249.875,
+          "width": 1680,
+          "height": 220
+        }
+      },
+      "mediaMinusDrawnHeight": 0,
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "visualTops": {
+        "car": 154,
+        "preferences": 853.875,
+        "history": 1028.875,
+        "details": 1249.875
+      },
+      "visualOrderIncreasing": true,
+      "absent": {
+        "accountKey": true,
+        "viewCarRecord": true,
+        "buddyCard": true
+      },
+      "pointsCostLine": "Points cost 1,100 / 1,300 points per month",
+      "pointsCostCount": 1,
+      "headings": [
+        "Your cars",
+        "BMW 3 Series Touring 320i",
+        "Your preferences",
+        "Order history",
+        "Your details"
+      ],
+      "currentModel": "BMW 3 Series Touring 320i",
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "sideBySide": {
+        "file": "1920-selected-side-by-side.jpg",
+        "cropTo4000": false,
+        "referenceSize": [
+          1920,
+          1766
+        ],
+        "implementationSize": [
+          1920,
+          1559
+        ]
+      },
+      "implementationImage": "1920-selected-implementation.png",
+      "featureMediaMinusDrawnHeight": 0.0
+    },
+    "1440-selected": {
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "url": "/gcsp-account.html?fixture=ready",
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1440-selected.png",
+      "longVariant": false,
+      "overflow": false,
+      "scrollWidth": 1440,
+      "innerWidth": 1440,
+      "boxes": {
+        "body": {
+          "x": 96,
+          "y": 76,
+          "width": 1296,
+          "height": 1259
+        },
+        "feature": {
+          "x": 96,
+          "y": 154,
+          "width": 1296,
+          "height": 501
+        },
+        "featureMedia": {
+          "x": 97,
+          "y": 155,
+          "width": 814,
+          "height": 499
+        },
+        "cardMedia": {
+          "x": 97,
+          "y": 175.5625,
+          "width": 814,
+          "height": 457.875
+        },
+        "drawnImage": {
+          "x": 97,
+          "y": 175.5625,
+          "width": 814,
+          "height": 457.875
+        },
+        "preferences": {
+          "x": 96,
+          "y": 679,
+          "width": 1296,
+          "height": 151
+        },
+        "history": {
+          "x": 96,
+          "y": 854,
+          "width": 1296,
+          "height": 197
+        },
+        "details": {
+          "x": 96,
+          "y": 1075,
+          "width": 1296,
+          "height": 220
+        }
+      },
+      "mediaMinusDrawnHeight": 0,
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "visualTops": {
+        "car": 154,
+        "preferences": 679,
+        "history": 854,
+        "details": 1075
+      },
+      "visualOrderIncreasing": true,
+      "absent": {
+        "accountKey": true,
+        "viewCarRecord": true,
+        "buddyCard": true
+      },
+      "pointsCostLine": "Points cost 1,100 / 1,300 points per month",
+      "pointsCostCount": 1,
+      "headings": [
+        "Your cars",
+        "BMW 3 Series Touring 320i",
+        "Your preferences",
+        "Order history",
+        "Your details"
+      ],
+      "currentModel": "BMW 3 Series Touring 320i",
+      "keyboard": {
+        "stops": [
+          {
+            "tag": "summary",
+            "name": "Order, collection and vehicle details",
+            "region": "car"
+          },
+          {
+            "tag": "button",
+            "name": "Choose a replacement",
+            "region": "car"
+          },
+          {
+            "tag": "a",
+            "name": "Edit your preferences",
+            "region": "preferences"
+          },
+          {
+            "tag": "div",
+            "name": "Order history Car Scheme Collected Ended Status Record BMW 3",
+            "region": "history"
+          },
+          {
+            "tag": "button",
+            "name": "View record for BMW 3 Series Touring 320i, BMW Choices, Ends",
+            "region": "history"
+          },
+          {
+            "tag": "button",
+            "name": "View record for Model not supplied, PCS UK FS BMW, Returned ",
+            "region": "history"
+          },
+          {
+            "tag": "button",
+            "name": "Get help with your details",
+            "region": "details"
+          },
+          {
+            "tag": "button",
+            "name": "Get help with drivers",
+            "region": "details"
+          }
+        ],
+        "regionSequence": [
+          "car",
+          "preferences",
+          "history",
+          "details"
+        ]
+      },
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "sideBySide": {
+        "file": "1440-selected-side-by-side.jpg",
+        "cropTo4000": false,
+        "referenceSize": [
+          1440,
+          1622
+        ],
+        "implementationSize": [
+          1440,
+          1384
+        ]
+      },
+      "implementationImage": "1440-selected-implementation.png",
+      "featureMediaMinusDrawnHeight": 41.125
+    },
+    "1100-selected": {
+      "viewport": {
+        "width": 1100,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready",
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1100-selected.png",
+      "longVariant": false,
+      "overflow": false,
+      "scrollWidth": 1100,
+      "innerWidth": 1100,
+      "boxes": {
+        "body": {
+          "x": 96,
+          "y": 76,
+          "width": 956,
+          "height": 1271.9375
+        },
+        "feature": {
+          "x": 96,
+          "y": 145.9375,
+          "width": 956,
+          "height": 501
+        },
+        "featureMedia": {
+          "x": 97,
+          "y": 146.9375,
+          "width": 477,
+          "height": 499
+        },
+        "cardMedia": {
+          "x": 97,
+          "y": 262.28125,
+          "width": 477,
+          "height": 268.3125
+        },
+        "drawnImage": {
+          "x": 97,
+          "y": 262.28125,
+          "width": 477,
+          "height": 268.3125
+        },
+        "preferences": {
+          "x": 96,
+          "y": 670.9375,
+          "width": 956,
+          "height": 151
+        },
+        "history": {
+          "x": 96,
+          "y": 845.9375,
+          "width": 956,
+          "height": 197
+        },
+        "details": {
+          "x": 96,
+          "y": 1066.9375,
+          "width": 956,
+          "height": 241
+        }
+      },
+      "mediaMinusDrawnHeight": 0,
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "visualTops": {
+        "car": 145.9375,
+        "preferences": 670.9375,
+        "history": 845.9375,
+        "details": 1066.9375
+      },
+      "visualOrderIncreasing": true,
+      "absent": {
+        "accountKey": true,
+        "viewCarRecord": true,
+        "buddyCard": true
+      },
+      "pointsCostLine": "Points cost 1,100 / 1,300 points per month",
+      "pointsCostCount": 1,
+      "headings": [
+        "Your cars",
+        "BMW 3 Series Touring 320i",
+        "Your preferences",
+        "Order history",
+        "Your details"
+      ],
+      "currentModel": "BMW 3 Series Touring 320i",
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "sideBySide": {
+        "file": "1100-selected-side-by-side.jpg",
+        "cropTo4000": false,
+        "referenceSize": [
+          1100,
+          1711
+        ],
+        "implementationSize": [
+          1100,
+          1397
+        ]
+      },
+      "implementationImage": "1100-selected-implementation.png",
+      "featureMediaMinusDrawnHeight": 230.6875
+    },
+    "1024-selected": {
+      "viewport": {
+        "width": 1024,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready",
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1024-selected.png",
+      "longVariant": false,
+      "overflow": false,
+      "scrollWidth": 1024,
+      "innerWidth": 1024,
+      "boxes": {
+        "body": {
+          "x": 96,
+          "y": 76,
+          "width": 880,
+          "height": 1290.3125
+        },
+        "feature": {
+          "x": 96,
+          "y": 143.3125,
+          "width": 880,
+          "height": 501
+        },
+        "featureMedia": {
+          "x": 97,
+          "y": 144.3125,
+          "width": 439,
+          "height": 499
+        },
+        "cardMedia": {
+          "x": 97,
+          "y": 270.34375,
+          "width": 439,
+          "height": 246.9375
+        },
+        "drawnImage": {
+          "x": 97,
+          "y": 270.34375,
+          "width": 439,
+          "height": 246.9375
+        },
+        "preferences": {
+          "x": 96,
+          "y": 668.3125,
+          "width": 880,
+          "height": 151
+        },
+        "history": {
+          "x": 96,
+          "y": 843.3125,
+          "width": 880,
+          "height": 197
+        },
+        "details": {
+          "x": 96,
+          "y": 1064.3125,
+          "width": 880,
+          "height": 262
+        }
+      },
+      "mediaMinusDrawnHeight": 0,
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "visualTops": {
+        "car": 143.3125,
+        "preferences": 668.3125,
+        "history": 843.3125,
+        "details": 1064.3125
+      },
+      "visualOrderIncreasing": true,
+      "absent": {
+        "accountKey": true,
+        "viewCarRecord": true,
+        "buddyCard": true
+      },
+      "pointsCostLine": "Points cost 1,100 / 1,300 points per month",
+      "pointsCostCount": 1,
+      "headings": [
+        "Your cars",
+        "BMW 3 Series Touring 320i",
+        "Your preferences",
+        "Order history",
+        "Your details"
+      ],
+      "currentModel": "BMW 3 Series Touring 320i",
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "sideBySide": {
+        "file": "1024-selected-side-by-side.jpg",
+        "cropTo4000": false,
+        "referenceSize": [
+          1024,
+          1729
+        ],
+        "implementationSize": [
+          1024,
+          1415
+        ]
+      },
+      "implementationImage": "1024-selected-implementation.png",
+      "featureMediaMinusDrawnHeight": 252.0625
+    },
+    "900-selected": {
+      "viewport": {
+        "width": 900,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready",
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/900-selected.png",
+      "longVariant": false,
+      "overflow": false,
+      "scrollWidth": 900,
+      "innerWidth": 900,
+      "boxes": {
+        "body": {
+          "x": 96,
+          "y": 76,
+          "width": 756,
+          "height": 1303.1875
+        },
+        "feature": {
+          "x": 96,
+          "y": 140.1875,
+          "width": 756,
+          "height": 501
+        },
+        "featureMedia": {
+          "x": 97,
+          "y": 141.1875,
+          "width": 377,
+          "height": 499
+        },
+        "cardMedia": {
+          "x": 97,
+          "y": 284.65625,
+          "width": 377,
+          "height": 212.0625
+        },
+        "drawnImage": {
+          "x": 97,
+          "y": 284.65625,
+          "width": 377,
+          "height": 212.0625
+        },
+        "preferences": {
+          "x": 96,
+          "y": 665.1875,
+          "width": 756,
+          "height": 151
+        },
+        "history": {
+          "x": 96,
+          "y": 840.1875,
+          "width": 756,
+          "height": 213
+        },
+        "details": {
+          "x": 96,
+          "y": 1077.1875,
+          "width": 756,
+          "height": 262
+        }
+      },
+      "mediaMinusDrawnHeight": 0,
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "visualTops": {
+        "car": 140.1875,
+        "preferences": 665.1875,
+        "history": 840.1875,
+        "details": 1077.1875
+      },
+      "visualOrderIncreasing": true,
+      "absent": {
+        "accountKey": true,
+        "viewCarRecord": true,
+        "buddyCard": true
+      },
+      "pointsCostLine": "Points cost 1,100 / 1,300 points per month",
+      "pointsCostCount": 1,
+      "headings": [
+        "Your cars",
+        "BMW 3 Series Touring 320i",
+        "Your preferences",
+        "Order history",
+        "Your details"
+      ],
+      "currentModel": "BMW 3 Series Touring 320i",
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "sideBySide": {
+        "file": "900-selected-side-by-side.jpg",
+        "cropTo4000": false,
+        "referenceSize": [
+          900,
+          1745
+        ],
+        "implementationSize": [
+          900,
+          1428
+        ]
+      },
+      "implementationImage": "900-selected-implementation.png",
+      "featureMediaMinusDrawnHeight": 286.9375
+    },
+    "820-selected": {
+      "viewport": {
+        "width": 820,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready",
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/820-selected.png",
+      "longVariant": false,
+      "overflow": false,
+      "scrollWidth": 820,
+      "innerWidth": 820,
+      "boxes": {
+        "body": {
+          "x": 72,
+          "y": 76,
+          "width": 724,
+          "height": 1308.1875
+        },
+        "feature": {
+          "x": 72,
+          "y": 140.1875,
+          "width": 724,
+          "height": 485
+        },
+        "featureMedia": {
+          "x": 73,
+          "y": 141.1875,
+          "width": 361,
+          "height": 483
+        },
+        "cardMedia": {
+          "x": 73,
+          "y": 281.15625,
+          "width": 361,
+          "height": 203.0625
+        },
+        "drawnImage": {
+          "x": 73,
+          "y": 281.15625,
+          "width": 361,
+          "height": 203.0625
+        },
+        "preferences": {
+          "x": 72,
+          "y": 649.1875,
+          "width": 724,
+          "height": 151
+        },
+        "history": {
+          "x": 72,
+          "y": 824.1875,
+          "width": 724,
+          "height": 213
+        },
+        "details": {
+          "x": 72,
+          "y": 1061.1875,
+          "width": 724,
+          "height": 283
+        }
+      },
+      "mediaMinusDrawnHeight": 0,
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "visualTops": {
+        "car": 140.1875,
+        "preferences": 649.1875,
+        "history": 824.1875,
+        "details": 1061.1875
+      },
+      "visualOrderIncreasing": true,
+      "absent": {
+        "accountKey": true,
+        "viewCarRecord": true,
+        "buddyCard": true
+      },
+      "pointsCostLine": "Points cost 1,100 / 1,300 points per month",
+      "pointsCostCount": 1,
+      "headings": [
+        "Your cars",
+        "BMW 3 Series Touring 320i",
+        "Your preferences",
+        "Order history",
+        "Your details"
+      ],
+      "currentModel": "BMW 3 Series Touring 320i",
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "sideBySide": {
+        "file": "820-selected-side-by-side.jpg",
+        "cropTo4000": false,
+        "referenceSize": [
+          820,
+          1803
+        ],
+        "implementationSize": [
+          820,
+          1433
+        ]
+      },
+      "implementationImage": "820-selected-implementation.png",
+      "featureMediaMinusDrawnHeight": 279.9375
+    },
+    "375-selected": {
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready",
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/375-selected.png",
+      "longVariant": false,
+      "overflow": false,
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "boxes": {
+        "body": {
+          "x": 16,
+          "y": 72,
+          "width": 343,
+          "height": 1915
+        },
+        "feature": {
+          "x": 16,
+          "y": 136.1875,
+          "width": 343,
+          "height": 688.8125
+        },
+        "featureMedia": {
+          "x": 17,
+          "y": 137.1875,
+          "width": 341,
+          "height": 191.8125
+        },
+        "cardMedia": {
+          "x": 17,
+          "y": 137.1875,
+          "width": 341,
+          "height": 191.8125
+        },
+        "drawnImage": {
+          "x": 17,
+          "y": 137.1875,
+          "width": 341,
+          "height": 191.8125
+        },
+        "preferences": {
+          "x": 16,
+          "y": 849,
+          "width": 343,
+          "height": 147
+        },
+        "history": {
+          "x": 16,
+          "y": 1020,
+          "width": 343,
+          "height": 447
+        },
+        "details": {
+          "x": 16,
+          "y": 1491,
+          "width": 343,
+          "height": 456
+        }
+      },
+      "mediaMinusDrawnHeight": 0,
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "visualTops": {
+        "car": 136.1875,
+        "preferences": 849,
+        "history": 1020,
+        "details": 1491
+      },
+      "visualOrderIncreasing": true,
+      "absent": {
+        "accountKey": true,
+        "viewCarRecord": true,
+        "buddyCard": true
+      },
+      "pointsCostLine": "Points cost 1,100 / 1,300 points per month",
+      "pointsCostCount": 1,
+      "headings": [
+        "Your cars",
+        "BMW 3 Series Touring 320i",
+        "Your preferences",
+        "Order history",
+        "Your details"
+      ],
+      "currentModel": "BMW 3 Series Touring 320i",
+      "keyboard": {
+        "stops": [
+          {
+            "tag": "summary",
+            "name": "Order, collection and vehicle details",
+            "region": "car"
+          },
+          {
+            "tag": "button",
+            "name": "Choose a replacement",
+            "region": "car"
+          },
+          {
+            "tag": "a",
+            "name": "Edit your preferences",
+            "region": "preferences"
+          },
+          {
+            "tag": "div",
+            "name": "Order history Car Scheme Collected Ended Status Record BMW 3",
+            "region": "history"
+          },
+          {
+            "tag": "button",
+            "name": "View record for BMW 3 Series Touring 320i, BMW Choices, Ends",
+            "region": "history"
+          },
+          {
+            "tag": "button",
+            "name": "View record for Model not supplied, PCS UK FS BMW, Returned ",
+            "region": "history"
+          },
+          {
+            "tag": "button",
+            "name": "Get help with your details",
+            "region": "details"
+          },
+          {
+            "tag": "button",
+            "name": "Get help with drivers",
+            "region": "details"
+          }
+        ],
+        "regionSequence": [
+          "car",
+          "preferences",
+          "history",
+          "details"
+        ]
+      },
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "sideBySide": {
+        "file": "375-selected-side-by-side.jpg",
+        "cropTo4000": false,
+        "referenceSize": [
+          375,
+          2521
+        ],
+        "implementationSize": [
+          375,
+          2028
+        ]
+      },
+      "implementationImage": "375-selected-implementation.png",
+      "featureMediaMinusDrawnHeight": 0.0
+    },
+    "375-engaged": {
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready",
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/375-engaged.png",
+      "longVariant": false,
+      "overflow": false,
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "boxes": {
+        "body": {
+          "x": 16,
+          "y": 72,
+          "width": 343,
+          "height": 1915
+        },
+        "feature": {
+          "x": 16,
+          "y": 136.1875,
+          "width": 343,
+          "height": 688.8125
+        },
+        "featureMedia": {
+          "x": 17,
+          "y": 137.1875,
+          "width": 341,
+          "height": 191.8125
+        },
+        "cardMedia": {
+          "x": 17,
+          "y": 137.1875,
+          "width": 341,
+          "height": 191.8125
+        },
+        "drawnImage": {
+          "x": 17,
+          "y": 137.1875,
+          "width": 341,
+          "height": 191.8125
+        },
+        "preferences": {
+          "x": 16,
+          "y": 849,
+          "width": 343,
+          "height": 147
+        },
+        "history": {
+          "x": 16,
+          "y": 1020,
+          "width": 343,
+          "height": 447
+        },
+        "details": {
+          "x": 16,
+          "y": 1491,
+          "width": 343,
+          "height": 456
+        }
+      },
+      "mediaMinusDrawnHeight": 0,
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "visualTops": {
+        "car": 136.1875,
+        "preferences": 849,
+        "history": 1020,
+        "details": 1491
+      },
+      "visualOrderIncreasing": true,
+      "absent": {
+        "accountKey": true,
+        "viewCarRecord": true,
+        "buddyCard": true
+      },
+      "pointsCostLine": "Points cost 1,100 / 1,300 points per month",
+      "pointsCostCount": 1,
+      "headings": [
+        "Your cars",
+        "BMW 3 Series Touring 320i",
+        "Your preferences",
+        "Order history",
+        "Your details"
+      ],
+      "currentModel": "BMW 3 Series Touring 320i",
+      "keyboard": {
+        "stops": [
+          {
+            "tag": "summary",
+            "name": "Order, collection and vehicle details",
+            "region": "car"
+          },
+          {
+            "tag": "button",
+            "name": "Choose a replacement",
+            "region": "car"
+          },
+          {
+            "tag": "a",
+            "name": "Edit your preferences",
+            "region": "preferences"
+          },
+          {
+            "tag": "div",
+            "name": "Order history Car Scheme Collected Ended Status Record BMW 3",
+            "region": "history"
+          },
+          {
+            "tag": "button",
+            "name": "View record for BMW 3 Series Touring 320i, BMW Choices, Ends",
+            "region": "history"
+          },
+          {
+            "tag": "button",
+            "name": "View record for Model not supplied, PCS UK FS BMW, Returned ",
+            "region": "history"
+          },
+          {
+            "tag": "button",
+            "name": "Get help with your details",
+            "region": "details"
+          },
+          {
+            "tag": "button",
+            "name": "Get help with drivers",
+            "region": "details"
+          }
+        ],
+        "regionSequence": [
+          "car",
+          "preferences",
+          "history",
+          "details"
+        ]
+      },
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "sideBySide": {
+        "file": "375-engaged-side-by-side.jpg",
+        "cropTo4000": false,
+        "referenceSize": [
+          375,
+          2542
+        ],
+        "implementationSize": [
+          375,
+          2028
+        ]
+      },
+      "implementationImage": "375-engaged-implementation.png",
+      "featureMediaMinusDrawnHeight": 0.0
+    },
+    "320-long": {
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready",
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/320-long.png",
+      "longVariant": true,
+      "overflow": false,
+      "scrollWidth": 320,
+      "innerWidth": 320,
+      "boxes": {
+        "body": {
+          "x": 16,
+          "y": 72,
+          "width": 288,
+          "height": 2054.0625
+        },
+        "feature": {
+          "x": 16,
+          "y": 136.1875,
+          "width": 288,
+          "height": 723.875
+        },
+        "featureMedia": {
+          "x": 17,
+          "y": 137.1875,
+          "width": 286,
+          "height": 160.875
+        },
+        "cardMedia": {
+          "x": 17,
+          "y": 137.1875,
+          "width": 286,
+          "height": 160.875
+        },
+        "drawnImage": {
+          "x": 17,
+          "y": 137.1875,
+          "width": 286,
+          "height": 160.875
+        },
+        "preferences": {
+          "x": 16,
+          "y": 884.0625,
+          "width": 288,
+          "height": 168
+        },
+        "history": {
+          "x": 16,
+          "y": 1076.0625,
+          "width": 288,
+          "height": 467
+        },
+        "details": {
+          "x": 16,
+          "y": 1567.0625,
+          "width": 288,
+          "height": 519
+        }
+      },
+      "mediaMinusDrawnHeight": 0,
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "visualTops": {
+        "car": 136.1875,
+        "preferences": 884.0625,
+        "history": 1076.0625,
+        "details": 1567.0625
+      },
+      "visualOrderIncreasing": true,
+      "absent": {
+        "accountKey": true,
+        "viewCarRecord": true,
+        "buddyCard": true
+      },
+      "pointsCostLine": "Points cost 1,100 / 1,300 points per month",
+      "pointsCostCount": 1,
+      "headings": [
+        "Your cars",
+        "BMW 3 Series 330e xDrive M Sport Pro Touring",
+        "Your preferences",
+        "Order history",
+        "Your details"
+      ],
+      "currentModel": "BMW 3 Series 330e xDrive M Sport Pro Touring",
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "sideBySide": {
+        "file": "320-long-side-by-side.jpg",
+        "cropTo4000": false,
+        "referenceSize": [
+          320,
+          2679
+        ],
+        "implementationSize": [
+          320,
+          2167
+        ]
+      },
+      "implementationImage": "320-long-implementation.png",
+      "featureMediaMinusDrawnHeight": 0.0
+    },
+    "1440-missing-image": {
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "url": "/gcsp-account.html?fixture=missing-image",
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1440-missing-image.png",
+      "longVariant": false,
+      "overflow": false,
+      "scrollWidth": 1440,
+      "innerWidth": 1440,
+      "boxes": {
+        "body": {
+          "x": 96,
+          "y": 76,
+          "width": 1296,
+          "height": 1259
+        },
+        "feature": {
+          "x": 96,
+          "y": 154,
+          "width": 1296,
+          "height": 501
+        },
+        "featureMedia": {
+          "x": 97,
+          "y": 155,
+          "width": 814,
+          "height": 499
+        },
+        "cardMedia": {
+          "x": 97,
+          "y": 175.5625,
+          "width": 814,
+          "height": 457.875
+        },
+        "drawnImage": null,
+        "preferences": {
+          "x": 96,
+          "y": 679,
+          "width": 1296,
+          "height": 151
+        },
+        "history": {
+          "x": 96,
+          "y": 854,
+          "width": 1296,
+          "height": 197
+        },
+        "details": {
+          "x": 96,
+          "y": 1075,
+          "width": 1296,
+          "height": 220
+        }
+      },
+      "mediaMinusDrawnHeight": null,
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "visualTops": {
+        "car": 154,
+        "preferences": 679,
+        "history": 854,
+        "details": 1075
+      },
+      "visualOrderIncreasing": true,
+      "absent": {
+        "accountKey": true,
+        "viewCarRecord": true,
+        "buddyCard": true
+      },
+      "pointsCostLine": "Points cost 1,100 / 1,300 points per month",
+      "pointsCostCount": 1,
+      "headings": [
+        "Your cars",
+        "BMW 3 Series Touring 320i",
+        "Your preferences",
+        "Order history",
+        "Your details"
+      ],
+      "currentModel": "BMW 3 Series Touring 320i",
+      "keyboard": {
+        "stops": [
+          {
+            "tag": "summary",
+            "name": "Order, collection and vehicle details",
+            "region": "car"
+          },
+          {
+            "tag": "button",
+            "name": "Choose a replacement",
+            "region": "car"
+          },
+          {
+            "tag": "a",
+            "name": "Edit your preferences",
+            "region": "preferences"
+          },
+          {
+            "tag": "div",
+            "name": "Order history Car Scheme Collected Ended Status Record BMW 3",
+            "region": "history"
+          },
+          {
+            "tag": "button",
+            "name": "View record for BMW 3 Series Touring 320i, BMW Choices, Ends",
+            "region": "history"
+          },
+          {
+            "tag": "button",
+            "name": "View record for Model not supplied, PCS UK FS BMW, Returned ",
+            "region": "history"
+          },
+          {
+            "tag": "button",
+            "name": "Get help with your details",
+            "region": "details"
+          },
+          {
+            "tag": "button",
+            "name": "Get help with drivers",
+            "region": "details"
+          }
+        ],
+        "regionSequence": [
+          "car",
+          "preferences",
+          "history",
+          "details"
+        ]
+      },
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "sideBySide": {
+        "file": "1440-missing-image-side-by-side.jpg",
+        "cropTo4000": false,
+        "referenceSize": [
+          1440,
+          1622
+        ],
+        "implementationSize": [
+          1440,
+          1384
+        ]
+      },
+      "implementationImage": "1440-missing-image-implementation.png",
+      "featureMediaMinusDrawnHeight": null
+    },
+    "1440-record-drawer": {
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready",
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1440-record-drawer.png",
+      "longVariant": false,
+      "overflow": false,
+      "scrollWidth": 1440,
+      "innerWidth": 1440,
+      "boxes": {
+        "body": {
+          "x": 96,
+          "y": 76,
+          "width": 1296,
+          "height": 1259
+        },
+        "feature": {
+          "x": 96,
+          "y": 154,
+          "width": 1296,
+          "height": 501
+        },
+        "featureMedia": {
+          "x": 97,
+          "y": 155,
+          "width": 814,
+          "height": 499
+        },
+        "cardMedia": {
+          "x": 97,
+          "y": 175.5625,
+          "width": 814,
+          "height": 457.875
+        },
+        "drawnImage": {
+          "x": 97,
+          "y": 175.5625,
+          "width": 814,
+          "height": 457.875
+        },
+        "preferences": {
+          "x": 96,
+          "y": 679,
+          "width": 1296,
+          "height": 151
+        },
+        "history": {
+          "x": 96,
+          "y": 854,
+          "width": 1296,
+          "height": 197
+        },
+        "details": {
+          "x": 96,
+          "y": 1075,
+          "width": 1296,
+          "height": 220
+        }
+      },
+      "mediaMinusDrawnHeight": 0,
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "visualTops": {
+        "car": 154,
+        "preferences": 679,
+        "history": 854,
+        "details": 1075
+      },
+      "visualOrderIncreasing": true,
+      "absent": {
+        "accountKey": true,
+        "viewCarRecord": true,
+        "buddyCard": true
+      },
+      "pointsCostLine": "Points cost 1,100 / 1,300 points per month",
+      "pointsCostCount": 1,
+      "headings": [
+        "Your cars",
+        "BMW 3 Series Touring 320i",
+        "Your preferences",
+        "Order history",
+        "Your details"
+      ],
+      "currentModel": "BMW 3 Series Touring 320i",
+      "drawer": {
+        "heading": "BMW 3 Series Touring 320i",
+        "sectionHeadings": [
+          "BMW 3 Series Touring 320i",
+          "Contract",
+          "Collection",
+          "Order and vehicle",
+          "Technical specification and options"
+        ],
+        "focusInsideDialog": true,
+        "dialogBox": {
+          "x": 960,
+          "y": 0,
+          "width": 480,
+          "height": 1000
+        },
+        "escape": {
+          "dialogGone": true,
+          "focusReturnedToOpener": true
+        },
+        "closeButton": {
+          "dialogGone": true,
+          "focusReturnedToOpener": true
+        }
+      },
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "sideBySide": {
+        "file": "1440-record-drawer-side-by-side.jpg",
+        "cropTo4000": false,
+        "referenceSize": [
+          1440,
+          1622
+        ],
+        "implementationSize": [
+          1440,
+          1384
+        ]
+      },
+      "implementationImage": "1440-record-drawer-implementation.png",
+      "featureMediaMinusDrawnHeight": 41.125
+    },
+    "375-record-drawer": {
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready",
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/375-record-drawer.png",
+      "longVariant": false,
+      "overflow": false,
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "boxes": {
+        "body": {
+          "x": 16,
+          "y": 72,
+          "width": 343,
+          "height": 1915
+        },
+        "feature": {
+          "x": 16,
+          "y": 136.1875,
+          "width": 343,
+          "height": 688.8125
+        },
+        "featureMedia": {
+          "x": 17,
+          "y": 137.1875,
+          "width": 341,
+          "height": 191.8125
+        },
+        "cardMedia": {
+          "x": 17,
+          "y": 137.1875,
+          "width": 341,
+          "height": 191.8125
+        },
+        "drawnImage": {
+          "x": 17,
+          "y": 137.1875,
+          "width": 341,
+          "height": 191.8125
+        },
+        "preferences": {
+          "x": 16,
+          "y": 849,
+          "width": 343,
+          "height": 147
+        },
+        "history": {
+          "x": 16,
+          "y": 1020,
+          "width": 343,
+          "height": 447
+        },
+        "details": {
+          "x": 16,
+          "y": 1491,
+          "width": 343,
+          "height": 456
+        }
+      },
+      "mediaMinusDrawnHeight": 0,
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "visualTops": {
+        "car": 136.1875,
+        "preferences": 849,
+        "history": 1020,
+        "details": 1491
+      },
+      "visualOrderIncreasing": true,
+      "absent": {
+        "accountKey": true,
+        "viewCarRecord": true,
+        "buddyCard": true
+      },
+      "pointsCostLine": "Points cost 1,100 / 1,300 points per month",
+      "pointsCostCount": 1,
+      "headings": [
+        "Your cars",
+        "BMW 3 Series Touring 320i",
+        "Your preferences",
+        "Order history",
+        "Your details"
+      ],
+      "currentModel": "BMW 3 Series Touring 320i",
+      "drawer": {
+        "heading": "BMW 3 Series Touring 320i",
+        "sectionHeadings": [
+          "BMW 3 Series Touring 320i",
+          "Contract",
+          "Collection",
+          "Order and vehicle",
+          "Technical specification and options"
+        ],
+        "focusInsideDialog": true,
+        "dialogBox": {
+          "x": 0,
+          "y": 0,
+          "width": 375,
+          "height": 1000
+        },
+        "escape": {
+          "dialogGone": true,
+          "focusReturnedToOpener": true
+        },
+        "closeButton": {
+          "dialogGone": true,
+          "focusReturnedToOpener": true
+        }
+      },
+      "errors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "sideBySide": {
+        "file": "375-record-drawer-side-by-side.jpg",
+        "cropTo4000": false,
+        "referenceSize": [
+          375,
+          2521
+        ],
+        "implementationSize": [
+          375,
+          2028
+        ]
+      },
+      "implementationImage": "375-record-drawer-implementation.png",
+      "featureMediaMinusDrawnHeight": 0.0
+    }
+  },
+  "neighbours": {
+    "gcsp-employee.html": {
+      "errors": {
+        "branch": [
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ],
+        "base": [
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "baseSize": [
+        1440,
+        1709
+      ],
+      "branchSize": [
+        1440,
+        1709
+      ],
+      "differingPixels": 0,
+      "bbox": null,
+      "identical": true
+    },
+    "gcsp-offer.html": {
+      "errors": {
+        "branch": [
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ],
+        "base": [
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "baseSize": [
+        1440,
+        1000
+      ],
+      "branchSize": [
+        1440,
+        1000
+      ],
+      "differingPixels": 0,
+      "bbox": null,
+      "identical": true
+    },
+    "gcsp-brief.html": {
+      "errors": {
+        "branch": [
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ],
+        "base": []
+      },
+      "baseSize": [
+        1440,
+        2343
+      ],
+      "branchSize": [
+        1440,
+        2343
+      ],
+      "differingPixels": 24,
+      "bbox": [
+        429,
+        1032,
+        839,
+        1150
+      ],
+      "identical": false,
+      "saved": [
+        "neighbour-gcsp-brief-base.jpg",
+        "neighbour-gcsp-brief-branch.jpg"
+      ]
+    },
+    "gcsp-greg.html": {
+      "errors": {
+        "branch": [
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ],
+        "base": [
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "baseSize": [
+        1440,
+        1000
+      ],
+      "branchSize": [
+        1440,
+        1000
+      ],
+      "differingPixels": 0,
+      "bbox": null,
+      "identical": true
+    },
+    "components.html": {
+      "errors": {
+        "branch": [],
+        "base": []
+      },
+      "baseSize": [
+        1440,
+        134111
+      ],
+      "branchSize": [
+        1440,
+        133511
+      ],
+      "differingPixels": 26553384,
+      "bbox": [
+        0,
+        10779,
+        1440,
+        134111
+      ],
+      "identical": false,
+      "saved": [
+        "neighbour-components-base.jpg",
+        "neighbour-components-branch.jpg"
+      ],
+      "windowFromY": 10579,
+      "windowNote": "JPEG limit: saved window is 8000px tall from windowFromY of the full page"
+    }
+  },
+  "notes": [
+    "320-long is a capture-time data variant: fixtures.js served via page.route with a longer model and specification in ACCOUNT_SNAPSHOT only (all occurrences of the current-car model/configuration strings).",
+    "375-engaged and 375-selected use the same ready fixture; the real page cannot start Buddy in a read-only fixture, so the reference Buddy-engaged state is not reproduced."
+  ],
+  "failure": "Error: compose.py exited 1\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-036/docs/gcsp/evidence/fucq359/capture.mjs:190:29"
+}
