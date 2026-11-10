@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Presenter console mockup</title>
-  <link rel="stylesheet" href="/blocks/gcsp/shell/gcsp-tokens.css">
+  <link rel="stylesheet" href="../../../blocks/gcsp/shell/gcsp-tokens.css">
   <link rel="stylesheet" href="./presenter-console.css">
 </head>
 <body class="gcsp">
@@ -24,7 +24,7 @@
   <!-- Basic console -->
   <div class="pc" data-pane="basic">
     <header class="pc-head">
-      <div class="pc-brand"><img src="/assets/brand-logos/bmwgroup-bmw-mini.svg" alt="" width="88" height="24"><span>Group Car Schemes</span><strong>Presenter</strong></div>
+      <div class="pc-brand"><img src="../../../assets/brand-logos/bmwgroup-bmw-mini.svg" alt="" width="88" height="24"><span>Group Car Schemes</span><strong>Presenter</strong></div>
       <div class="pc-time" aria-live="polite">
         <span class="pc-day" data-day>Day 1</span>
         <span class="pc-clock" data-clock>Mon 9 Nov, 9:00am</span>
@@ -89,7 +89,7 @@
   <!-- Advanced: today's controls, regrouped, unchanged in behaviour -->
   <div class="pc" data-pane="advanced" hidden>
     <header class="pc-head">
-      <div class="pc-brand"><img src="/assets/brand-logos/bmwgroup-bmw-mini.svg" alt="" width="88" height="24"><span>Group Car Schemes</span><strong>Presenter</strong></div>
+      <div class="pc-brand"><img src="../../../assets/brand-logos/bmwgroup-bmw-mini.svg" alt="" width="88" height="24"><span>Group Car Schemes</span><strong>Presenter</strong></div>
       <div class="pc-time"><span class="pc-day">Day 1</span><span class="pc-clock">Mon 9 Nov, 9:00am</span></div>
       <button type="button" class="pc-mode pc-mode-on" data-goto="basic">Basic</button>
     </header>
@@ -155,7 +155,7 @@
   <!-- Paula's portal with no presenter overlay -->
   <div data-pane="portal" hidden>
     <header class="pt-head">
-      <img src="/assets/brand-logos/bmwgroup-bmw-mini.svg" alt="BMW Group" width="88" height="24"><span class="pt-title">Group Car Schemes Portal</span>
+      <img src="../../../assets/brand-logos/bmwgroup-bmw-mini.svg" alt="BMW Group" width="88" height="24"><span class="pt-title">Group Car Schemes Portal</span>
       <span class="pt-user"><span class="pt-avatar">PM</span>Paula Mason</span>
     </header>
     <div class="pt-body">
@@ -177,6 +177,7 @@
     </div>
   </div>
 
-  <script type="module" src="./presenter-console.js"></script>
+  <script src="./mock-cars.js"></script>
+  <script src="./presenter-console.js"></script>
 </body>
 </html>

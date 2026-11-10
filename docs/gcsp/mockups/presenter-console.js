@@ -1,5 +1,6 @@
 // Mockup behaviour only: simulated releases over real display images. No API calls.
-import { CARS } from './mock-cars.js';
+(() => {
+const CARS = window.MOCK_CARS;
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -187,3 +188,4 @@ $$('[data-tab]').forEach((tab) => tab.addEventListener('click', () => {
 // Warm the image cache so the cascade shows cars, not empty frames; the build would use thumbnails.
 CARS.forEach((car) => { const img = new Image(); img.src = car.img; });
 renderWeek(); setDay();
+})();
