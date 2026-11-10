@@ -74,7 +74,7 @@ test('order progress: one presenter action re-reads once, keeps the focused butt
   watch.stop(); await stop.sync(); assert.equal(reads, 4); stop(); act(node); await pause(); assert.equal(reads, 4);
 });
 
-test('account: one presenter action re-reads once, keeps the shell and order card, focus and announces only a change', async () => {
+test('account: one presenter action re-reads once, keeps the shell and focus, shows the new car row and announces only a change', async () => {
   const states = orderProgressFixtures().states['appointment-requested']; let uuid = states.stages.value.orderUuid;
   const n = { account: 0, draft: 0, list: 0, stages: 0 }; let asOf = '2026-11-05T09:00:00.000Z'; let accountOk = true;
   const first = uuid;
@@ -85,24 +85,24 @@ test('account: one presenter action re-reads once, keeps the shell and order car
     readDraft: async () => { n.draft += 1; return { status: 'not-found' }; }, startJourney: async () => ({ status: 'unavailable' }) };
   const node = root();
   const stop = journey.mountManualJourney(node, { adapter, orderAdapter, subscribeClock: controls.subscribePresenterActions(node) }); cleanups.push(stop);
-  const refreshButton = () => [...node.querySelectorAll('button')].find((b) => b.textContent === 'Refresh account');
-  await settle(node, () => refreshButton() && node.querySelector('.gcsp-account-order .gcsp-order-progress')); await pause();
-  assert.deepEqual(n, { account: 1, draft: 1, list: 1, stages: 1 });
-  const shell = node.firstElementChild; const main = node.querySelector('main'); const area = node.querySelector('.gcsp-account-order'); const card = area.firstElementChild;
+  const refreshButton = () => [...node.querySelectorAll('button')].find((b) => b.textContent === 'Choose a replacement');
+  await settle(node, () => refreshButton() && node.querySelector('.gcsp-account-order-status')); await pause();
+  assert.deepEqual(n, { account: 1, draft: 1, list: 1, stages: 0 });
+  const shell = node.firstElementChild; const main = node.querySelector('main'); 
   const live = [...node.children].find((child) => child.matches('.gcsp-vh[role="status"][aria-atomic="true"]')); assert.ok(live); assert.equal(live.textContent, '');
   const old = refreshButton(); old.focus(); const watch = loadingWatch(node, 'Loading your account and cars.');
   asOf = '2026-11-05T09:30:00.000Z'; act(node);
   await settle(node, () => live.textContent !== ''); await pause();
-  assert.deepEqual(n, { account: 2, draft: 2, list: 2, stages: 2 }); assert.deepEqual(watch.seen, []); assert.equal(live.textContent, 'Account updated.');
-  assert.equal(node.firstElementChild, shell); assert.equal(node.querySelector('main'), main); assert.equal(node.querySelector('.gcsp-account-order'), area);
-  assert.equal(area.firstElementChild, card); assert.match(node.textContent, /Account as of/);
+  assert.deepEqual(n, { account: 2, draft: 2, list: 2, stages: 0 }); assert.deepEqual(watch.seen, []); assert.equal(live.textContent, 'Account updated.');
+  assert.equal(node.firstElementChild, shell); assert.equal(node.querySelector('main'), main); assert.ok(node.querySelector('.gcsp-account-order-status'));
+  assert.match(node.textContent, /Account as of/);
   assert.notEqual(refreshButton(), old); assert.equal(document.activeElement, refreshButton());
   live.textContent = ''; act(node); await settle(node, () => n.account === 3); await pause();
   assert.equal(n.list, 3); assert.equal(live.textContent, ''); assert.equal(document.activeElement, refreshButton());
   accountOk = false; act(node); await settle(node, () => n.account === 4); await pause();
-  assert.equal(live.textContent, ''); assert.equal(node.querySelector('main [role="alert"]'), null); assert.equal(node.querySelector('.gcsp-account-order'), area);
+  assert.equal(live.textContent, ''); assert.equal(node.querySelector('main [role="alert"]'), null); assert.ok(node.querySelector('.gcsp-account-order-status'));
   accountOk = true; uuid = 'order-changed'; act(node); await settle(node, () => live.textContent !== ''); await pause();
-  assert.equal(live.textContent, 'Account updated.'); assert.notEqual(node.querySelector('.gcsp-account-order'), area); assert.equal(node.querySelector('main'), main);
+  assert.equal(live.textContent, 'Account updated.'); assert.ok(node.querySelector('.gcsp-account-order-status')); assert.equal(node.querySelector('main'), main);
   watch.stop(); stop(); act(node); await pause(); assert.equal(n.account, 5);
 });
 

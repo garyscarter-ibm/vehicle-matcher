@@ -30,9 +30,9 @@ function taskRow(item) {
   return row;
 }
 
-/** Owned items grouped by who acts, with due times in demo time and an optional action. No requests; the caller owns effects. */
-export function taskList({ heading = 'Tasks', groups = [], emptyText = 'No tasks.', level = 2 } = {}) {
-  const root = el('section', 'gcsp-task-list');
+/** Owned items grouped by who acts, with due times in demo time and an optional action. `rows` draws dividers, not cards. No requests; the caller owns effects. */
+export function taskList({ heading = 'Tasks', groups = [], emptyText = 'No tasks.', level = 2, rows = false } = {}) {
+  const root = el('section', `gcsp-task-list${rows ? ' is-rows' : ''}`);
   const title = el(`h${level}`, 'gcsp-task-heading', heading);
   title.id = `gcsp-task-list-${++sequence}`;
   root.setAttribute('aria-labelledby', title.id);

@@ -2,7 +2,7 @@
 import { decisionView } from '../brief/brief-view-model.js';
 import { followupHandle } from './followup-entry.js';
 import { orderReferenceOf } from '../kit/order-identity.js';
-import { fieldLabel } from '../kit/plain-copy.js';
+import { fieldLabel, IMAGE_DISCLAIMER } from '../kit/plain-copy.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const text = (v) => typeof v === 'string' && v.length > 0;
@@ -186,7 +186,7 @@ function cardFor(quote) {
   member.display.line = quote.orderNumber === null ? 'Order number not supplied' : `Order no. ${quote.orderNumber}`;
   const photo = display.images.find((image) => image.src === display.photo);
   member.media = { src: display.photo, alt: photo?.alt || display.name,
-    caption: display.photo ? photo?.caption || 'Representative image; exact appearance and equipment unconfirmed.' : null };
+    caption: display.photo ? photo?.caption || IMAGE_DISCLAIMER : null };
   member.facts.unshift({ label: 'Model', value: display.model ?? null }, { label: 'Derivative', value: display.derivative ?? null },
     details.colour ? detailFact('Colour', details.colour) : { label: 'Colour', value: display.colour ?? null },
     detailFact('Options', details.options ?? details.equipment, 'Fitted equipment unknown'));

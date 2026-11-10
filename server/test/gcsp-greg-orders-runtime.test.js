@@ -42,12 +42,12 @@ test('order changes refresh the same real demand dashboard and keep production c
   assert.equal(typeof attachGregOrders, 'function');
   const host = dashboard('refresh'); const stop = attachGregOrders(host, { adapter }); await settle();
   assert.match(host.querySelector('.gcsp-greg-meta').textContent, /09:40/);
-  const orders = host.querySelector('gcsp-greg-orders'); assert.equal(orders.querySelector('details').hidden, true);
+  const orders = host.querySelector('gcsp-greg-orders'); assert.equal(orders.querySelector('details').open, false, 'the presenter disclosure starts closed'); assert.equal(orders.querySelector('.gcsp-orders-production-form').hidden, true);
   orders.dispatchEvent(new CustomEvent('gcsp:orders-changed', { bubbles: true })); await settle();
   assert.match(host.querySelector('.gcsp-greg-meta').textContent, /10:25/);
   assert.equal(host.querySelector('gcsp-greg-orders'), orders);
   stop(); const presenterStop = attachGregOrders(host, { adapter, productionControls: true }); await settle();
-  assert.equal(host.querySelector('gcsp-greg-orders details').hidden, false); presenterStop();
+  assert.equal(host.querySelector('gcsp-greg-orders .gcsp-orders-production-form').hidden, false); presenterStop();
 });
 
 // A leftover old attachment would keep obsolete ready listeners and recreate tracking after abort.

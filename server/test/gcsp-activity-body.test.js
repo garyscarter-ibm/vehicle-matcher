@@ -23,9 +23,9 @@ test('never-checked state separates active permission from unavailable check evi
   const pause = node.querySelector('[role="menuitem"]'); assert.equal(pause.textContent, 'Pause Search');
   assert.equal(pause.getAttribute('aria-disabled'), 'true');
   assert.match(document.getElementById(pause.getAttribute('aria-describedby')).textContent, /Preview only/);
-  assert.equal(node.querySelectorAll('h2').length, 2);
+  assert.equal(node.querySelectorAll('h2').length, 1); assert.equal(node.querySelector('.gcsp-activity-offer'), null);
   assert.equal(node.querySelector('.gcsp-activity-status svg').getAttribute('aria-hidden'), 'true');
-  assert.equal(node.querySelector('a[href]'), null); assert.match(node.textContent, /No current offer/);
+  assert.equal(node.querySelector('a[href]'), null); assert.doesNotMatch(node.textContent, /No current offer|Your offer/);
   assert.equal(node.querySelector('.gcsp-synthetic'), null);
   node.destroy();
 });
@@ -116,7 +116,7 @@ test('FUCQ-215: after an accept the search reads finished and offers no pause or
 test('searching with no offer and a healthy source says still searching, with the last check counts', () => {
   const node = view('searching');
   assert.deepEqual(lines(node), ['Still searching. No match yet.', 'Last check 4 Nov 2026, 23:30: 12 cars checked, 0 suitable.']);
-  assert.match(node.textContent, /No current offer/); assert.equal(node.querySelector('a[href]'), null);
+  assert.doesNotMatch(node.textContent, /No current offer/); assert.equal(node.querySelector('a[href]'), null);
   assert.doesNotMatch(node.textContent, /Source delayed|Couldn't check|Not searched yet/); clean(node); node.destroy();
 });
 
@@ -132,8 +132,9 @@ test('offer waiting shows its real state, respond-by time and a real View offer 
   const node = view('offer'); const link = node.querySelector('a[href]');
   assert.equal(link.textContent, 'View offer'); assert.equal(link.getAttribute('href'), currentOffer.href);
   assert.match(link.getAttribute('href'), /^\/gcsp\/offer\?offerId=layout-offer&runId=/);
-  assert.match(node.textContent, /Waiting for you/); assert.match(node.textContent, /Respond by 6 Nov 2026, 09:00/);
-  assert.deepEqual(lines(node), ['Last check 4 Nov 2026, 23:30: 12 cars checked, 3 suitable. Found a car for you.']);
+  assert.equal(node.querySelector('.gcsp-activity-section-title').textContent, 'Your buddy found a car'); assert.doesNotMatch(node.textContent, /Waiting for you/);
+  assert.equal(link.classList.contains('vm-btn-primary'), true); assert.match(node.textContent, /Respond by 6 Nov 2026, 09:00/);
+  assert.deepEqual(lines(node), ['Last check 4 Nov 2026, 23:30: 12 cars checked, 3 suitable.']);
   assert.doesNotMatch(node.textContent, /Offer access unavailable|No current offer|Still searching/); assert.equal(node.querySelector('.gcsp-activity-consequence'), null);
   clean(node); node.destroy();
 });
@@ -151,7 +152,7 @@ test('paused with an open offer says so once, keeps View offer and the Resume Se
   assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Inactive');
   assert.equal(node.querySelector('.gcsp-activity-consequence').textContent,
     'New searches and holds have stopped. Your offer is still open. View it to accept or decline.');
-  assert.equal(node.querySelector('a[href]').textContent, 'View offer'); assert.match(node.textContent, /Waiting for you/);
+  assert.equal(node.querySelector('a[href]').textContent, 'View offer'); assert.match(node.textContent, /found a car/);
   node.querySelector('.gcsp-action-trigger').click(); assert.equal(node.querySelector('[role="menuitem"]').textContent, 'Resume Search');
   assert.doesNotMatch(node.textContent, /Still searching|Source delayed/); clean(node); node.destroy();
 });
@@ -179,7 +180,7 @@ test('design display data applies only to the offer it references; the link and 
   assert.match(node.textContent, /Representative BMW brand image/); assert.equal(node.querySelector('a[href]').textContent, 'View offer');
   const foreign = view('offer', { offerDisplay: { offerRef: { offerId: 'foreign' }, title: 'Other car', images: activityFixtures.offerExample.images } });
   assert.equal(foreign.querySelector('img'), null); assert.doesNotMatch(foreign.textContent, /Other car/);
-  assert.match(foreign.textContent, /Waiting for you/); assert.equal(foreign.querySelector('a[href]').textContent, 'View offer');
+  assert.match(foreign.textContent, /Respond by/); assert.equal(foreign.querySelector('a[href]').textContent, 'View offer');
   node.destroy(); foreign.destroy();
 });
 

@@ -72,8 +72,6 @@ export function mountBriefBody(main, adapters = {}) {
     const page = el('div', 'vm gcsp-brief');
     page.append(screenIntro({ title: 'Your preferences', level: 1, lede: 'Choose what you enjoy and what your next car needs to do.' }));
     const draftNotice = el('p', 'gcsp-note gcsp-brief-draft'); draftNotice.id = `${prefix}-draft`; page.append(draftNotice);
-    const jump = button({ label: 'Go to your preview', href: `#${prefix}-preview`, variant: 'ghost' });
-    page.append(jump);
     const current = el('details', 'gcsp-brief-known');
     current.append(el('summary', null, 'Your scheme and starting answers'));
     const facts = context.knownFacts || {};
@@ -97,6 +95,8 @@ export function mountBriefBody(main, adapters = {}) {
     const preferences = el('section', 'gcsp-brief-section');
     preferences.append(el('h2', null, 'What matters to you'), el('p', 'gcsp-note', 'Set each preference and its importance. Comfort and sportiness can both be high.'));
     const handles = new Map();
+    // Slider attributes are the secondary group, closed by default; the choice attributes lead.
+    const more = el('details', 'gcsp-brief-more'); more.append(el('summary', null, 'Anything else?'));
     for (const [key, definition] of Object.entries(context.preferences)) {
       const initial = controller.snapshot().brief.preferences[key];
       const field = el('fieldset', 'gcsp-brief-preference');
@@ -122,10 +122,11 @@ export function mountBriefBody(main, adapters = {}) {
       const indifferent = button({ label: "I don't mind", variant: 'ghost', disabled: !definition.editable, onClick: () => controller.updatePreference(key, { importance: context.slider.minimum }) });
       indifferent.dataset.indifference = key;
       importanceWrap.append(indifferent);
-      axes.append(valueWrap, importanceWrap); field.append(axes); preferences.append(field);
+      axes.append(valueWrap, importanceWrap); field.append(axes); (definition.type === 'slider' ? more : preferences).append(field);
       field.setAttribute('aria-describedby', draftNotice.id);
-      handles.set(key, { value, importance, indifferent, label: definition.label });
+      handles.set(key, { value, importance, indifferent, importanceWrap, label: definition.label });
     }
+    if (more.children.length > 1) preferences.append(more);
     form.append(preferences);
     const practical = el('section', 'gcsp-brief-section');
     practical.append(el('h2', null, 'What your car needs to do'), el('p', 'gcsp-note', 'Not sure yet leaves that need unconfirmed.'));
@@ -163,14 +164,14 @@ export function mountBriefBody(main, adapters = {}) {
       practical.append(field);
     }
     form.append(practical);
-    const permission = el('fieldset', 'gcsp-brief-section'); permission.append(el('legend', null, 'What your buddy may do'));
+    // One closing region: what the buddy may do, then Save and its outcome.
+    const savePanel = el('section', 'gcsp-brief-section'); savePanel.setAttribute('aria-label', 'Save preferences');
+    const permission = el('fieldset', 'gcsp-brief-permission'); permission.append(el('legend', null, 'What your buddy may do'));
     const consent = renderOptionList({ id: 'brief-consent', multi: true, options: [{ value: 'search', label: 'Search for cars for me' }, { value: 'hold', label: 'Hold a suitable car for me' }] }, null,
       { value: [], ariaLabel: 'Buddy permissions', onValueChange: (v) => controller.setConsent({ search: v.includes('search'), hold: v.includes('hold') }) });
-    permission.append(consent.list, el('p', 'gcsp-note', 'Holding also needs search permission. With search off, your buddy stays off.')); form.append(permission);
-    const savePanel = el('section', 'gcsp-brief-section');
-    savePanel.setAttribute('aria-label', 'Save preferences');
+    permission.append(consent.list, el('p', 'gcsp-note', 'Holding also needs search permission. With search off, your buddy stays off.')); savePanel.append(permission);
     const saveButton = button({ label: 'Save your preferences', onClick: () => controller.save() }); saveButton.dataset.saveBrief = '';
-    const saveNote = el('p', 'gcsp-note');
+    const saveNote = el('p', 'gcsp-note'); saveNote.tabIndex = -1;
     if (adapters.saveUnavailableReason) savePanel.append(el('p', 'gcsp-note', adapters.saveUnavailableReason));
     const refresh = button({ label: 'Refresh and review', variant: 'ghost', onClick: () => { replacement.hidden = false; } }); refresh.hidden = true;
     const replacement = el('div', 'gcsp-brief-refresh'); replacement.hidden = true;
@@ -187,11 +188,14 @@ export function mountBriefBody(main, adapters = {}) {
     const retry = button({ label: 'Retry preview', variant: 'ghost', onClick: () => controller.requestPreview() }); retry.hidden = true;
     const live = el('p', 'gcsp-brief-live'); live.setAttribute('role', 'status'); live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true');
     preview.append(status, retry, cards); layout.append(form, preview); page.append(layout, live); main.replaceChildren(page); land();
-    let lastPreview;
+    let lastPreview; let savedBefore;
     const patch = (state) => {
       if (state.restarted) { restarted(); return; }
       for (const [key, h] of handles) {
-        const p = state.brief.preferences[key]; if (!p) continue;
+        const p = state.brief.preferences[key];
+        // Importance shows once the attribute has a value; an unset one stays unset.
+        h.importanceWrap.hidden = !(Number.isFinite(p?.value) || typeof p?.value === 'string');
+        if (!p) continue;
         h.value.update({ value: p.value, valueState: Number.isFinite(p.value) || typeof p.value === 'string' ? 'confirmed' : 'unknown' });
         h.importance.update({ value: p.importance, valueState: Number.isFinite(p.importance) ? 'confirmed' : 'unknown' });
         h.indifferent.setAttribute('aria-pressed', String(p.importance === context.slider.minimum));
@@ -199,7 +203,8 @@ export function mountBriefBody(main, adapters = {}) {
       }
       for (const [key, q] of questions) q.update(state.brief.essentials[key]);
       consent.update({ value: ['search', 'hold'].filter((k) => state.consent[k]) });
-      draftNotice.textContent = `${adapters.notice ? `${adapters.notice} · ` : ''}${state.dirty || (adapters.initialEdited && state.save.state !== 'saved') || state.briefVersion === 0 ? 'Unsaved draft' : `Version ${state.briefVersion}`}`;
+      const unsaved = state.dirty || (adapters.initialEdited && state.save.state !== 'saved') || state.briefVersion === 0;
+      draftNotice.textContent = [adapters.notice, unsaved ? 'Unsaved draft' : null].filter(Boolean).join(' · '); draftNotice.hidden = !draftNotice.textContent;
       saveButton.disabled = state.save.state === 'saving' || Boolean(adapters.saveUnavailableReason);
       saveButton.textContent = state.save.state === 'saving' ? 'Saving your preferences...' : 'Save your preferences';
       saveNote.textContent = state.save.state === 'saved' ? `Version ${state.briefVersion} saved. ${state.dirty ? 'Newer edits are still unsaved.' : state.consent.search ? 'Your selected buddy permissions apply.' : 'Your buddy is off.'}`
@@ -233,7 +238,9 @@ export function mountBriefBody(main, adapters = {}) {
           live.textContent = summary;
         } else if (state.preview.state === 'unavailable') live.textContent = `${summary}${adapters.previewUnavailableReason ? ` ${adapters.previewUnavailableReason}` : ''}`;
       }
-      if (state.save.state !== 'idle' && state.save.state !== 'saving') live.textContent = saveNote.textContent;
+      // The outcome is said once, by the focused message; focus would otherwise fall to the body when Save disables.
+      if (savedBefore === 'saving' && !['idle', 'saving'].includes(state.save.state)) saveNote.focus();
+      savedBefore = state.save.state;
     };
     const stopPatch = controller.subscribe(patch); patch(controller.snapshot()); controller.requestPreview();
     // A presenter release changes stock, so re-run the preview on the edits as they stand.

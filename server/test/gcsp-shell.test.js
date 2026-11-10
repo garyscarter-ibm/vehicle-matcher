@@ -57,6 +57,8 @@ test('shell exposes banner, Portal nav, main and a skip link to main', () => {
   const crumbs = shell.root.querySelector('nav[aria-label="Breadcrumb"] ol');
   assert.equal(crumbs.children.length, 2);
   assert.equal(crumbs.lastElementChild.getAttribute('aria-current'), 'page');
+  shell.setBreadcrumbs(['Alpha']);
+  assert.equal(shell.root.querySelector('nav[aria-label="Breadcrumb"]'), null, 'a one-item trail repeats the h1');
   shell.setBreadcrumbs([]);
   assert.equal(shell.root.querySelector('nav[aria-label="Breadcrumb"]'), null);
   shell.destroy();
@@ -333,7 +335,7 @@ test('gcsp:navigate carries {from,to}, is cancelable, and switches the view only
   go();
   assert.equal(el.getAttribute('view'), 'brief');
   assert.equal(el.querySelector('.gcsp-nav [data-key="brief"]').getAttribute('aria-current'), 'page');
-  assert.equal(el.querySelector('nav[aria-label="Breadcrumb"] [aria-current="page"]').textContent, 'Your preferences');
+  assert.equal(el.querySelector('nav[aria-label="Breadcrumb"]'), null, 'one-item trail is not rendered');
   assert.equal(el.querySelector('main h1').textContent, 'Your preferences');
   el.remove();
 });
@@ -898,7 +900,7 @@ test('a reset announcement opens the flyout and focuses the status; the open sta
   window.sessionStorage.setItem('gcsp:presenter-reset-done', JSON.stringify({ runId: 'run-a', name: 'Paula (fictional)' }));
   const { shell, flyout } = await flyoutShell(flyoutAdapter());
   assert.equal(flyout.hidden, false);
-  assert.match(flyout.textContent, /Reset done\. New run: run-a\. Acting as Paula \(fictional\)\./);
+  assert.match(flyout.textContent, /Reset done\. Acting as Paula \(fictional\)\./);
   assert.equal(document.activeElement.getAttribute('role'), 'status'); assert.equal(flyout.contains(document.activeElement), true);
   assert.equal(window.sessionStorage.getItem('gcsp:presenter-flyout-open'), 'true'); shell.destroy();
   const again = await flyoutShell(flyoutAdapter()); assert.equal(again.flyout.hidden, false, 'remembered across navigation'); again.shell.destroy();

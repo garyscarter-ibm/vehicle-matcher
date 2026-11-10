@@ -197,12 +197,12 @@ test('help given an announce option makes no region of its own', async (t) => {
   await waitFor(() => said.length > 0); assert.equal(regions(host).length, 0); assert.ok(said.some((text) => /unavailable|could not/i.test(text)), said.join());
 });
 
-test('account with an order has one live region and the order card is plain content', async (t) => {
+test('account with an order has one live region and the new car row is plain content', async (t) => {
   const host = root(); const orders = orderAdapter();
   const adapter = { readAccount: async () => accountFixture('no-entitlement'), readDraft: async () => ({ status: 'not-found' }), startJourney: async () => ({ status: 'unavailable' }),
     readOrder: async () => ({ status: 'ok', value: { selection: { stock: { orderUuid: orders.uuid, orderNumber: '1000001', facts: { display: { name: 'Fixture car' } } } } } }) };
   t.after(mountAccount(host, { adapter, orderAdapter: orders }));
-  await waitFor(() => host.querySelector('.gcsp-account-order .gcsp-order-progress') && host.querySelector('.gcsp-account-order-status'));
+  await waitFor(() => host.querySelector('.gcsp-account-order-status'));
   assertQuiet(host, 'account with an order');
   assert.equal(host.querySelector('.gcsp-account-order-status').hasAttribute('role'), false);
 });
@@ -224,13 +224,13 @@ test('standalone order progress keeps exactly one region and an announce option 
   await waitFor(() => hosted.querySelector('.gcsp-stage-tracker')); assert.equal(regions(hosted).length, 0, 'hosted order progress'); stopHosted();
 });
 
-test('offer after accepting hosts order progress with one live region', async (t) => {
-  const host = root(); const orders = orderAdapter(); let stop;
-  const view = createOfferView(host, { mountOrder: (target, input) => { stop = mountOrderProgress(target, { adapter: orders, orderUuid: input.orderUuid, car: input.car,
-    embedded: true, headingLevel: 2, announce: input.announce }); return stop; } });
+test('offer after accepting is a short confirmation with one live region and no embedded tracker', async (t) => {
+  const host = root(); const orders = orderAdapter(); let mounted = 0;
+  const view = createOfferView(host, { mountOrder: () => { mounted += 1; return () => {}; } });
   t.after(() => view.destroy());
   view.update({ ...offerFixture('accepted').value, canAccept: false, canDecline: false, orderUuid: orders.uuid });
-  await waitFor(() => host.querySelector('.gcsp-offer-order .gcsp-stage-tracker')); assertQuiet(host, 'offer with order progress');
+  assert.equal(mounted, 0); assert.equal(host.querySelector('.gcsp-stage-tracker'), null); assert.equal(host.querySelector('.gcsp-offer-order'), null);
+  assertQuiet(host, 'offer after accepting');
 });
 
 test('presenter success text clears after a short delay and failures stay', async (t) => {

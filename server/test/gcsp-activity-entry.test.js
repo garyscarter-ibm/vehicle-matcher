@@ -74,7 +74,7 @@ test('help mounts once beside the activity, survives repaints, sends no write an
   await settle(node,(r) => r.querySelector('.gcsp-activity-help .gcsp-cases-body'));await settle(node,() => help.calls.includes('readCases'));
   const region=node.querySelector('.gcsp-activity-help'),helpBody=region.querySelector('.gcsp-cases-body');
   assert.equal(node.querySelectorAll('.gcsp-activity-help').length,1);assert.equal(region.getAttribute('aria-label'),'Renewal help');
-  assert.equal(region.querySelector('h2').textContent,'Renewal help');assert.equal(help.calls.filter((c) => c==='readCases').length,1);
+  assert.equal(region.querySelector('h1,h2,h3'),null);const ask=region.querySelector('button');assert.equal(ask.textContent,'Get help with your renewal');assert.equal(ask.classList.contains('vm-btn-ghost'),true);assert.equal(region.querySelector('.gcsp-case-detail'),null);assert.equal(help.calls.filter((c) => c==='readCases').length,1);
   await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Active');
   node.querySelector('.gcsp-action-trigger').click();node.querySelector('[role="menuitem"]').click();
   await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Inactive');await stop.refresh();

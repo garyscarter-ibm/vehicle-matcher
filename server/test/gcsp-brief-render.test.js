@@ -255,3 +255,30 @@ test('a presenter action re-runs the preview on the current edits, and teardown 
   assert.equal(requests.at(-1).brief.preferences.comfort.value, 92, 'unsaved edits are kept');
   teardown(); assert.equal(stopped, 1);
 });
+
+test('the preferences page leads with essentials, hides importance until a value is set, and closes with one save region', async (t) => {
+  const editor = structuredClone(fixture.editor.value);
+  for (const key of ['fuel', 'sportiness']) delete editor.initial.brief.preferences[key];
+  const main = await mountWith(t, fixture.preview, editor);
+  assert.equal(main.querySelector('a[href^="#gcsp-brief"]'), null, 'no jump link above the form');
+  assert.doesNotMatch(main.textContent, /Go to your preview|Version \d(?! saved)/);
+  const more = main.querySelector('.gcsp-brief-more'); assert.equal(more.open, false);
+  assert.equal(more.querySelector('summary').textContent, 'Anything else?');
+  assert.deepEqual([...more.querySelectorAll('legend')].map((n) => n.textContent), ['Sportiness', 'Comfort', 'Economy', 'Size']);
+  const importance = (key) => main.querySelector(`[data-indifference="${key}"]`).parentElement;
+  assert.equal(importance('fuel').hidden, true, 'an unset attribute shows no importance'); assert.equal(importance('sportiness').hidden, true);
+  assert.equal(importance('body').hidden, false); assert.equal(importance('comfort').hidden, false);
+  const save = main.querySelector('[aria-label="Save preferences"]');
+  assert.ok(save.querySelector('[aria-label="Buddy permissions"]') && save.querySelector('[data-save-brief]'), 'permissions and Save share one region');
+  assert.equal(main.querySelectorAll('.gcsp-brief-section').length, 3);
+});
+test('after Save focus moves to the saved message, which is said once', async (t) => {
+  const main = document.createElement('main'); document.body.append(main);
+  const teardown = mountBriefBody(main, { editor: fixture.edited.value, createCommandId: (kind) => kind, transport: { preview: async () => fixture.preview,
+    saveDraft: async () => ({ status: 'ok', value: { draftVersion: 2, baseBriefVersion: 0 } }), confirm: async () => ({ status: 'ok', value: { brief: { briefVersion: 1 } } }) } });
+  t.after(() => { teardown(); main.remove(); });
+  await settle(); main.querySelector('[data-save-brief]').click(); await settle();
+  const note = [...main.querySelectorAll('.gcsp-note')].find((n) => /Version 1 saved\./.test(n.textContent));
+  assert.ok(note); assert.equal(document.activeElement, note);
+  assert.equal((main.textContent.match(/Version 1 saved\./g) ?? []).length, 1, 'the saved message shows once');
+});

@@ -32,7 +32,8 @@ export function searchLines(value, paused) {
     && ['searching', 'offer-closed'].includes(value.state) && value.currentOffer?.state !== 'accepted') lines.push(activityCopy.searching);
   else if (!check && !value.currentOffer) lines.push(activityCopy.notSearched);
   if (check && Number.isFinite(Date.parse(check.checkedAt))) {
-    const found = check.outcome === 'offer-held' ? ' Found a car for you.' : '';
+    // The offer section already announces a waiting car, so the check line does not.
+    const found = check.outcome === 'offer-held' && value.currentOffer?.state !== 'active' ? ' Found a car for you.' : '';
     lines.push(`Last check ${demoTime(check.checkedAt)}: ${count(check.carsChecked, 'car')} checked, ${check.suitableCars} suitable.${found}`);
     if (!paused && check.limitation === 'renewal-deadline-unknown') lines.push(activityCopy.noRenewalDate);
   }

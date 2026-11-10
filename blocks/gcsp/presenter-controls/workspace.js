@@ -53,7 +53,7 @@ export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAda
     }
     else {
       const shell = portalShell({ account: context?.name ? { status: 'ready', name: context.name } : { status: 'unavailable' },
-        presenterControls: { adapter, reload } });
+        presenterControls: { adapter, reload, openOnLoad: true } });
       shell.main.append(!context && isRunRestarted(reply) ? runRestartedScreen({ reload })
         : statusScreen({ title: context ? 'Presenter workspace' : 'Workspace unavailable',
           message: context ? 'Choose an acting principal in Presenter controls.' : 'Presenter context could not be read. Try again. If the session cannot be recovered, use trusted backend presenter-session bootstrap and reopen this workspace.' }));

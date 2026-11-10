@@ -142,7 +142,7 @@ test('composed offer entry reloads the real declined offer and saves the employe
   assert.deepEqual([...root.querySelectorAll('nav button[data-key]')].map((node) => node.dataset.key),
     ['cars', 'brief', 'activity', 'order-progress']);
   const onward = root.querySelector('[data-followup-link="activity"]');
-  assert.equal(onward.textContent, 'See your buddy activity'); assert.equal(onward.getAttribute('href'), '/gcsp-activity-live.html');
+  assert.equal(onward.textContent, 'See buddy activity'); assert.equal(onward.getAttribute('href'), '/gcsp-activity-live.html');
   assert.equal(dom.window.document.activeElement, root.querySelector('.gcsp-followup h2'));
   const afterSave = (await f.request('/api/gcsp/offer-followup' + selector)).json;
   // No allocation run has evaluated the new brief yet, so the server reports waiting.

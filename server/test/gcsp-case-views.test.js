@@ -32,7 +32,7 @@ async function prepare(root, text = 'My replacement may miss the contract end.')
 test('opening help and review/cancel never writes; no-case entry explains its effect before confirmation', async () => {
   let writes = 0;
   const f = await mount('none', { ...fixtureAdapter('none'), requestHelp: async () => { writes += 1; } });
-  assert.match(f.root.textContent, /No renewal case/);
+  assert.doesNotMatch(f.root.textContent, /No renewal case|Opening help changes nothing/); assert.equal(f.root.querySelectorAll('.vm-btn-primary').length, 1);
   assert.equal(f.root.querySelector('details.gcsp-case-entry'), null); assert.equal(f.root.querySelector('textarea'), null);
   await prepare(f.root);
   assert.match(f.root.textContent, /opens a scheme-team case or adds to your existing case/);
@@ -133,7 +133,7 @@ test('HTTP adapter includes credentials, sends no browser identity, rejects fals
 test('element upgrades injected adapters, has body-only embedding, remount cleanup and actual account header', async () => {
   const element = document.createElement('gcsp-help'); element.setAttribute('embedded', ''); element.adapter = fixtureAdapter('none');
   document.body.append(element); help.defineGcspHelp(); await tick();
-  assert.equal(element.adapter.readCases instanceof Function, true); assert.match(element.textContent, /No renewal case/); assert.equal(element.querySelector('main'), null); assert.equal(element.querySelector('h1'), null);
+  assert.equal(element.adapter.readCases instanceof Function, true); assert.doesNotMatch(element.textContent, /No renewal case/); assert.equal(element.querySelector('main'), null); assert.equal(element.querySelector('h1'), null);
   assert.equal(element.querySelector('h2').textContent, 'Renewal help');
   element.remove(); assert.equal(element.children.length, 0);
   const actual = document.createElement('gcsp-help'); actual.adapter = fixtureAdapter('request');
@@ -573,11 +573,11 @@ test('FUCQ-297: Paula sees an Ask for help button in view, tied to the caveat, t
   const f = await mount('none');
   const ask = findButton(f.root, 'Ask for help');
   assert.ok(ask && !ask.closest('details'), 'the button is not inside a collapsed disclosure');
-  const hint = f.root.querySelector(`#${ask.getAttribute('aria-describedby')}`);
-  assert.match(hint.textContent, /^Remedies need the scheme team’s decision\. No specific next car or greater priority is guaranteed\.$/);
+  assert.equal(ask.hasAttribute('aria-describedby'), false, 'the caveat waits until help is being asked for');
   assert.equal(f.root.querySelector('.gcsp-cases-body > .gcsp-note'), null, 'the caveat is no longer a lead paragraph');
   assert.equal(f.root.querySelector('textarea'), null);
   ask.click(); const textarea = f.root.querySelector('textarea');
+  assert.match(f.root.querySelector('.gcsp-field-hint').textContent, /^Remedies need the scheme team’s decision\. No specific next car or greater priority is guaranteed\.$/);
   assert.ok(textarea); assert.equal(document.activeElement, textarea);
   findButton(f.root, 'Cancel').click();
   assert.equal(f.root.querySelector('textarea'), null); assert.equal(document.activeElement, findButton(f.root, 'Ask for help')); f.destroy();

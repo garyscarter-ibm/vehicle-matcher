@@ -7,5 +7,5 @@ export function signedInPortal(account, location) {
   if (account?.status !== 'ready') return {};
   return { navigation: PORTAL_NAVIGATION, accountMenu: ACCOUNT_MENU,
     onNavigate: (key) => { routeAccountMenu(key, location); },
-    links: { orderProgress: PORTAL_ROUTES['order-progress'], cars: PORTAL_ROUTES.cars, help: PORTAL_ROUTES.help } };
+    links: { orderProgress: PORTAL_ROUTES['order-progress'], cars: PORTAL_ROUTES.cars, activity: PORTAL_ROUTES.activity, help: PORTAL_ROUTES.help } };
 }

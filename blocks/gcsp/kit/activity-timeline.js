@@ -7,8 +7,8 @@ const format = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short'
 /** UTC text for a valid ISO instant, shared by the timeline and its callers. */
 export const demoTime = (instant) => format.format(new Date(instant));
 
-/** Supplied event order is retained. No event, time or outcome is inferred by the kit. */
-export function activityTimeline({ events = [], heading = 'Activity history', emptyText = 'No activity is recorded.', level = 2 } = {}) {
+/** Supplied order is kept; collapseRepeats draws adjacent identical rows once. Nothing is inferred. */
+export function activityTimeline({ events = [], heading = 'Activity history', emptyText = 'No activity is recorded.', level = 2, collapseRepeats = false } = {}) {
   const root = el('section', 'gcsp-activity-timeline');
   const title = el(`h${level}`, 'gcsp-timeline-heading', heading);
   title.id = `gcsp-timeline-${++sequence}`;
@@ -16,7 +16,11 @@ export function activityTimeline({ events = [], heading = 'Activity history', em
   root.append(title, el('p', 'gcsp-timeline-note', 'All dates are UTC.'));
   if (!events.length) { root.append(el('p', 'gcsp-timeline-empty', emptyText)); return root; }
   const list = el('ol', 'gcsp-timeline-list');
+  let last = null;
   for (const event of events) {
+    const key = `${event.occurredAt}|${event.label}|${event.detail ?? ''}`;
+    if (collapseRepeats && key === last) continue;
+    last = key;
     const row = el('li', 'gcsp-timeline-event');
     const valid = typeof event.occurredAt === 'string' && Number.isFinite(Date.parse(event.occurredAt));
     const date = el(valid ? 'time' : 'span', 'gcsp-timeline-time', valid ? demoTime(event.occurredAt) : 'Time not available');

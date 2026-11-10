@@ -54,10 +54,13 @@ export function mountGregOrders(root, { adapter, productionControls = false, onC
     controls.push(control); parent.append(labelledField({ id: `${id}-${name}`, label, control, hint }).root); return control;
   }
   field(requestFields, 'model', model, 'Model'); field(requestFields, 'derivative', derivative, 'Derivative'); field(requestFields, 'quantity', quantity, 'Quantity');
-  const submit = button({ label: 'Submit request' }); submit.type = 'submit'; controls.push(submit);
+  const submit = button({ label: 'Submit request', variant: 'ghost' }); submit.type = 'submit'; controls.push(submit);
   requestForm.append(requestTitle, requestFields, submit);
-  const production = el('details', 'gcsp-orders-production'); production.hidden = !productionControls;
-  production.append(el('summary', '', 'Production controls'));
+  // One closed disclosure for the presenter: the plan's Request stays the only way a viewer orders cars.
+  const production = el('details', 'gcsp-orders-production');
+  production.append(el('summary', '', 'Presenter: manual request and production'), requestForm);
+  const productionTitle = el('h3', 'gcsp-h3', 'Production controls'); const productionBox = el('div', 'gcsp-orders-production-form');
+  productionBox.hidden = !productionControls;
   const productionForm = el('form', 'gcsp-orders-form'); const productionFields = el('div', 'gcsp-orders-fields'); const selected = el('select');
   const action = el('select'); action.append(option('confirm', 'Confirm now'), option('delay', 'Delay outstanding quantity'));
   const confirmQuantity = numberInput(); const delayUntil = el('input'); delayUntil.type = 'date'; const reason = el('input'); reason.type = 'text'; reason.maxLength = 512;
@@ -67,9 +70,9 @@ export function mountGregOrders(root, { adapter, productionControls = false, onC
   const reasonField = labelledField({ id: `${id}-reason`, label: 'Delay reason', control: reason });
   controls.push(confirmQuantity, delayUntil, reason); productionFields.append(confirmField.root, delayField.root, reasonField.root);
   const step = button({ label: 'Save production response' }); step.type = 'submit'; controls.push(step);
-  productionForm.append(productionFields, step); production.append(productionForm);
+  productionForm.append(productionFields, step); productionBox.append(productionTitle, productionForm); production.append(productionBox);
   const queues = el('div', 'gcsp-orders-queues');
-  root.replaceChildren(header, notice, source, body, requestForm, queues, production);
+  root.replaceChildren(header, notice, source, body, queues, production);
   function updateAction() {
     const delay = action.value === 'delay'; confirmField.root.hidden = delay; confirmQuantity.required = !delay;
     delayField.root.hidden = !delay; reasonField.root.hidden = !delay; delayUntil.required = delay; reason.required = delay;

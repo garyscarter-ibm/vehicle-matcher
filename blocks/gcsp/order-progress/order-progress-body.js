@@ -149,14 +149,16 @@ function documentsSection(c) {
   const label = (id) => items.find((item) => item.itemId === id)?.label ?? id;
   const failed = readiness.failed ?? []; const todo = (readiness.blocking ?? []).filter((id) => !failed.includes(id));
   node.append(statement(readiness.ready === true ? copy.ready : copy.notReady));
-  if (readiness.ready !== true) for (const [title, ids] of [[copy.needsAttention, failed], [copy.stillToDo, todo]]) if (ids.length) node.append(itemList(title, ids.map(label)));
   const mine = (Array.isArray(doc.tasks) ? doc.tasks : []).map((task) => ({ id: task.itemId, label: task.label,
     status: itemStatus[task.status], tone: itemTone(task), due: task.status === 'complete' ? undefined : task.dueAt,
     reason: items.find((item) => item.itemId === task.itemId)?.reason ?? undefined, detail: task.actionable ? copy.synthetic : task.acknowledgement?.label,
     action: task.actionable && c.on.onCompleteTask ? { label: task.action, onSelect: c.on.onCompleteTask, disabled: c.pending } : undefined }));
   const others = items.filter((item) => item.owner !== 'employee').map((item) => ({ id: item.itemId, label: item.label, owner: itemOwner[item.owner] ?? item.owner,
     status: itemStatus[item.status], tone: itemTone(item), due: item.status === 'complete' ? undefined : item.dueAt, reason: item.reason ?? undefined }));
-  node.append(taskList({ heading: copy.checklist, emptyText: copy.noTasks, level: c.sub, groups: [{ heading: copy.mine, items: mine }, { heading: copy.others, items: others }] }));
+  // The checklist already lists these items (failures carry their own flag), so only unlisted ones get a list.
+  const listed = new Set([...mine, ...others].map((row) => row.id)); const unlisted = todo.filter((id) => !listed.has(id));
+  if (readiness.ready !== true) for (const [title, ids] of [[copy.needsAttention, failed.filter((id) => !listed.has(id))], [copy.stillToDo, unlisted]]) if (ids.length) node.append(itemList(title, ids.map(label)));
+  node.append(taskList({ heading: copy.checklist, emptyText: copy.noTasks, level: c.sub, rows: true, groups: [{ heading: copy.mine, items: mine }, { heading: copy.others, items: others }] }));
   return node;
 }
 
@@ -210,7 +212,9 @@ function returnSection(c) {
   } else if (r.state === 'not-planned') {
     const choices = Array.isArray(r.choices) ? r.choices : [];
     if (choices.some((choice) => choice.available)) node.append(statement(copy.chooseReturn));
-    node.append(...choices.map((choice) => choiceGroup(choice, r.offeredSlots?.[choice.id] ?? [], c)));
+    // Until the handover is booked there is nothing to choose, so one line says why instead of a group per choice.
+    if (choices.some((choice) => choice.available)) node.append(...choices.map((choice) => choiceGroup(choice, r.offeredSlots?.[choice.id] ?? [], c)));
+    else for (const why of new Set(choices.map((choice) => choice.reason || 'Not available yet.'))) node.append(el('p', 'gcsp-order-choice-reason', why));
   }
   add(node, c.history(r, true));
   return node;
@@ -247,7 +251,10 @@ export function orderProgressBody({ progress = {}, car, pending = false, message
     actions(...nodes) { const row = el('div', 'gcsp-order-actions'); add(row, ...nodes); return row.children.length ? row : null; },
     history(value, forReturn) {
       const events = historyEvents(value.history, forReturn);
-      return events.length > 1 ? activityTimeline({ events, heading: forReturn ? 'Return history' : 'Handover history', level: sub }) : null;
+      if (events.length <= 1) return null;
+      const timeline = activityTimeline({ events, heading: forReturn ? 'Return history' : 'Handover history', level: sub });
+      timeline.querySelector('.gcsp-timeline-note')?.remove(); // The page says "All times are UTC." once, under the heading.
+      return timeline;
     } };
   root.append(el('p', 'gcsp-order-note', copy.timeNote));
   add(root, orderSection(c), handoverSection(c), documentsSection(c), returnSection(c));

@@ -141,6 +141,6 @@ test('destroy removes the listeners and the observer', () => {
 test('the kit stylesheet keeps the keyboard ring and removes the script one', async () => {
   const css = await readFile(new URL('../../blocks/gcsp/kit/arrival-focus.css', import.meta.url), 'utf8');
   assert.match(css, /\[data-gcsp-quiet-focus\]:focus\s*\{\s*outline:\s*none/);
-  assert.match(css, /:is\(h1, h2, h3\)\[tabindex="-1"\]:focus:not\(:focus-visible\)/);
+  assert.match(css, /:is\(h1, h2, h3, h4\)\[tabindex="-1"\]:focus-visible\s*\{\s*outline:\s*none/);
   assert.match(css, /\[tabindex\]:focus-visible\s*\{[^}]*outline:\s*2px solid/);
 });

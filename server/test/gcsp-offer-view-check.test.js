@@ -54,7 +54,7 @@ test('a check that finds the offer accepted names the new state and keeps the on
   assert.equal(m.root.querySelector('h1').textContent, 'Offer accepted');
   assert.equal(m.line().textContent, 'Check complete. Current state: accepted.');
   assert.equal(m.live().textContent, 'Check complete. Current state: accepted.');
-  assert.deepEqual([...m.root.querySelectorAll('.gcsp-offer-actions .vm-btn')].map((b) => b.textContent), ['View order progress', 'Back to Your cars']);
+  assert.deepEqual([...m.root.querySelectorAll('.gcsp-offer-actions .vm-btn')].map((b) => b.textContent), ['Track your order', 'Back to Your cars']);
   assert.equal(document.activeElement.dataset.offerAction, 'refresh');
   m.done();
 });
