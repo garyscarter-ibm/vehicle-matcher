@@ -52,7 +52,7 @@ test('Greg\'s order plan answers ok after Paula\'s manual order and a generated 
   const directory = await mkdtemp(join(tmpdir(), 'gcsp-plan-generated-'));
   t.after(() => rm(directory, { recursive: true, force: true }));
   const https = await createLocalHttpsFixture(t);
-  const app = good(await startGcspDemo({ port: 0, accessKey: '', tls: https.configuration, runtime: { mode: 'memory',
+  const app = good(await startGcspDemo({ port: 0, tls: https.configuration, runtime: { mode: 'memory',
     stockProvider: createRunStockProviderFactory({ env: { GCSP_STOCK_INVENTORY_PATH: join(directory, 'inventory.json') }, logger: () => {} }),
     environmentId: 'order-plan-generated', policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'order-plan-generated-bootstrap',
     sessionNow: () => '2026-11-06T00:00:00.000Z', adoptOfferJourney: true } }));

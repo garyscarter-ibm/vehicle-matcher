@@ -207,6 +207,7 @@ async function domMount(adapter = readOnlyAdapter(), options = {}) {
 function serviceAdapter(f, calls = []) {
   return createAccountHttpAdapter({ fetchImpl: async (url, options) => {
     calls.push({ url, method: options.method, body: options.body && JSON.parse(options.body) });
+    if (url.endsWith('/activity')) return response({ status: 'unavailable' }, 503);
     const result = options.method === 'POST' ? await f.service.saveDraft(f.context, JSON.parse(options.body))
       : url.endsWith('/account') ? await f.service.readAccount(f.context) : await f.service.readDraft(f.context);
     return response(result, result.status === 'ok' ? 200 : result.status === 'not-found' ? 404 : 409);
@@ -362,7 +363,7 @@ test('guarded replacement reconciles draft, suppresses duplicate writes, emits e
   const listen = (event) => events.push(event);
   document.body.addEventListener('gcsp:journey-start', listen);
   try {
-    assert.deepEqual(calls.map((call) => call.url), ['/api/gcsp/manual/account', '/api/gcsp/manual/draft', '/api/gcsp/offers/current']);
+    assert.deepEqual(calls.map((call) => call.url), ['/api/gcsp/manual/account', '/api/gcsp/manual/draft', '/api/gcsp/offers/current', '/api/gcsp/activity']);
     blocked = true;
     const choose = findButton(root, 'Choose a replacement'); choose.click(); choose.click();
     assert.equal(root.querySelector('[aria-busy="true"]') != null, true);
@@ -1003,4 +1004,85 @@ test('FUCQ-223: the account keeps the Choices kicker, and its stylesheet carries
   assert.match(css('blocks/gcsp/account/gcsp-account.css'), /@import "\.\.\/order-progress\/gcsp-order-progress\.css";/);
   assert.match(css('gcsp-presenter.html'), /blocks\/gcsp\/account\/gcsp-account\.css/);
   assert.match(css('blocks/gcsp/order-progress/gcsp-order-progress.css'), /\.gcsp-order-car \{ display: grid;/);
+});
+
+// The home "Your buddy" card follows the saved permission and routes to the rail pages.
+const buddyValue = (permission, extra = {}) => ({ status: 'ok', value: { state: 'searching', ...(permission ? { permission } : {}), ...extra } });
+const allowed = { searchConsent: true, holdConsent: true, paused: false, canSearch: true, canHold: true };
+async function buddyMount(activity, extra = {}) {
+  const keys = []; const adapter = { ...readOnlyAdapter(), ...(activity ? { readActivity: async () => activity } : {}), ...extra };
+  const mounted = await domMount(adapter, { onNavigate: (key) => keys.push(key) });
+  return { ...mounted, keys, card: mounted.root.querySelector('[aria-label="Your buddy"]') };
+}
+const ghost = (root, text) => findButton(root, text).classList.contains('vm-btn-ghost');
+
+test('buddy card without saved preferences sends Paula to set them', async () => {
+  const { root, destroy, keys, card } = await buddyMount(buddyValue(null));
+  try {
+    assert.equal(card.querySelector('h2').textContent, 'Your buddy');
+    assert.match(card.textContent, /Tell your buddy what matters and it will keep looking for a suitable car for you\./);
+    assert.equal(ghost(root, 'Choose a replacement') || findButton(root, 'Choose a replacement') === undefined, true);
+    findButton(root, 'Set your preferences').click(); assert.deepEqual(keys, ['brief']);
+  } finally { destroy(); }
+});
+
+test('buddy card while searching shows the last check and leads with activity', async () => {
+  const check = { checkedAt: '2026-11-05T09:30:00.000Z', carsChecked: 6, suitableCars: 5, outcome: 'offer-held' };
+  const { root, destroy, keys, card } = await buddyMount(buddyValue(allowed, { lastSuccessfulCheck: check }));
+  try {
+    assert.match(card.textContent, /Your buddy is looking for a car for you\./);
+    assert.match(card.textContent, /Last check .+: 6 cars checked, 5 suitable\./);
+    assert.equal(ghost(root, 'Change your preferences'), true); assert.equal(ghost(root, 'See buddy activity'), false);
+    assert.equal(ghost(root, 'Choose a replacement'), true);
+    findButton(root, 'See buddy activity').click(); findButton(root, 'Change your preferences').click();
+    assert.deepEqual(keys, ['activity', 'brief']);
+  } finally { destroy(); }
+  const bare = await buddyMount(buddyValue(allowed, { lastSuccessfulCheck: { checkedAt: 'nope', carsChecked: 1, suitableCars: 0 } }));
+  try { assert.doesNotMatch(bare.card.textContent, /Last check/); } finally { bare.destroy(); }
+});
+
+test('buddy card when paused or unable to search leads with preferences', async () => {
+  for (const permission of [{ ...allowed, paused: true }, { ...allowed, canSearch: false }]) {
+    const { root, destroy, keys, card } = await buddyMount(buddyValue(permission));
+    try {
+      assert.match(card.textContent, /Your buddy is paused, so it is not looking for cars\./);
+      assert.equal(ghost(root, 'Change your preferences'), false); assert.equal(ghost(root, 'See buddy activity'), true);
+      assert.equal(ghost(root, 'Choose a replacement'), false, 'the manual path stays primary when the buddy is paused');
+      findButton(root, 'Change your preferences').click(); findButton(root, 'See buddy activity').click();
+      assert.deepEqual(keys, ['brief', 'activity']);
+    } finally { destroy(); }
+  }
+});
+
+test('buddy card is absent without a readable activity, with a live offer, or after acceptance', async () => {
+  const none = await buddyMount(null); assert.equal(none.card, null); none.destroy();
+  const down = await buddyMount({ status: 'unavailable' }); assert.equal(down.card, null); down.destroy();
+  const throws = await buddyMount(null, { readActivity: async () => { throw new Error('offline'); } }); assert.equal(throws.card, null); throws.destroy();
+  const offers = (state) => async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-1', runId: 'run-1', state }] } });
+  for (const state of ['pending', 'active', 'accepted']) {
+    const listed = await buddyMount(buddyValue(allowed), { readOffers: offers(state) });
+    try { assert.equal(listed.card, null, state); } finally { listed.destroy(); }
+  }
+});
+
+test('the HTTP adapter reads buddy activity, and any failure or abort is handled', async () => {
+  const value = { permission: { canSearch: true, paused: false }, state: 'searching' }; const seen = [];
+  const reply = (ok, body) => createAccountHttpAdapter({ base: 'https://local.invalid', fetchImpl: async (url, init) => { seen.push([url, init.credentials]); return { ok, json: async () => body }; } });
+  assert.deepEqual(await reply(true, { status: 'ok', value }).readActivity(), { status: 'ok', value });
+  assert.deepEqual(seen[0], ['https://local.invalid/api/gcsp/activity', 'include']);
+  assert.deepEqual(await reply(false, { status: 'ok', value }).readActivity(), { status: 'unavailable' });
+  assert.deepEqual(await reply(true, { status: 'refused' }).readActivity(), { status: 'unavailable' });
+  assert.deepEqual(await createAccountHttpAdapter({ fetchImpl: async () => { throw new Error('offline'); } }).readActivity(), { status: 'unavailable' });
+  const abort = new AbortController(); abort.abort();
+  await assert.rejects(createAccountHttpAdapter({ fetchImpl: async () => { throw new Error('aborted'); } }).readActivity({ signal: abort.signal }));
+});
+
+test('a presenter sync repaints the buddy card when the activity read changes', async () => {
+  let permission = null; const keys = [];
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readActivity: async () => buddyValue(permission) }, { onNavigate: (key) => keys.push(key) });
+  try {
+    assert.ok(findButton(root, 'Set your preferences'));
+    permission = allowed; await destroy.sync(); await tick();
+    assert.ok(findButton(root, 'See buddy activity')); assert.equal(findButton(root, 'Set your preferences'), undefined);
+  } finally { destroy(); root.remove(); }
 });

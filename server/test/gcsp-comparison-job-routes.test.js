@@ -20,7 +20,6 @@ const buddyFixture = JSON.parse(readFileSync(new URL('./fixtures/gcsp-comparison
 const FIXTURE_WORKER = new URL('./fixtures/gcsp-comparison-fixture-worker.mjs', import.meta.url);
 const NOW = '2026-11-08T12:00:00.000Z';
 const ORIGIN = 'https://greg.test';
-const ACCESS_KEY = 'comparison-routes-fixture-key';
 const policy = new PolicyService({ provider: new FilePolicyProvider() });
 const scope = { runId: COMPARISON_RESULTS_RUN, environmentId: COMPARISON_RESULTS_ENVIRONMENT, ...COMPARISON_CLI_CONTEXT };
 const processOnly = { experimentId: 'process-only' };
@@ -50,14 +49,12 @@ async function serve({ fake, reruns = true } = {}) {
   const jobs = createComparisonJobService({ repository, policy, clock, identity, createWorker, codeRevision: 'routes-test', fixedNow: NOW,
     overlay: buddyFixture.overlay, reruns });
   const results = createComparisonResultService({ repository, policy, clock, identity });
-  const oldKey = process.env.DEMO_ACCESS_KEY;
-  process.env.DEMO_ACCESS_KEY = ACCESS_KEY;
   const server = buildServer({ gcspIdentity: identity, gcspClock: clock, gcspComparison: results, gcspComparisonJobs: jobs, gcspAllowedOrigins: [ORIGIN] });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
   const call = async (who, method, path, body) => {
     const started = performance.now();
     const response = await fetch(`http://127.0.0.1:${server.address().port}${path}`, { method,
-      headers: { Origin: ORIGIN, Cookie: cookies[who], 'X-Access-Key': ACCESS_KEY, ...(body !== undefined && { 'Content-Type': 'application/json' }) },
+      headers: { Origin: ORIGIN, Cookie: cookies[who], ...(body !== undefined && { 'Content-Type': 'application/json' }) },
       ...(body !== undefined && { body: JSON.stringify(body) }) });
     const parsed = await response.json();
     return { http: response.status, body: parsed, cache: response.headers.get('Cache-Control'), ms: performance.now() - started };
@@ -66,7 +63,6 @@ async function serve({ fake, reruns = true } = {}) {
     await jobs.close();
     await Promise.all(spawned.map((worker) => worker.terminate()));
     server.closeAllConnections(); await new Promise((done) => server.close(done));
-    if (oldKey === undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY = oldKey;
   };
   const rows = async (table) => (await repository.query(scope, table)).value ?? [];
   return { call, close, spawned, rows, jobs };

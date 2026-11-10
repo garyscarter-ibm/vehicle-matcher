@@ -3,13 +3,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
-import { randomBytes } from 'node:crypto';
 import { createServer } from 'node:net';
 import { fileURLToPath } from 'node:url';
 import { essential, preference } from './helpers/employee-recommendation.js';
 
 const SERVER_DIR = fileURLToPath(new URL('..', import.meta.url));
-const KEY = `test-${randomBytes(9).toString('hex')}`;
 
 async function freePort() {
   const probe = createServer();
@@ -74,8 +72,8 @@ function client(base) {
 }
 const good = (reply) => { assert.equal(reply.status, 200, reply.text.slice(0, 400)); assert.equal(reply.json?.status, 'ok', reply.text.slice(0, 400)); return reply.json.value; };
 
-test('the hosted entry serves the gated demo and drives Paula to a captured offer email over one origin', { timeout: 120000 }, async (t) => {
-  const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}`, DEMO_ACCESS_KEY: KEY }),
+test('the hosted entry serves the open demo and drives Paula to a captured offer email over one origin', { timeout: 120000 }, async (t) => {
+  const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}` }),
     '/gcsp-presenter.html');
   assert.match(app.output(), /GCSP hosted demo \(memory\)/);
   const browser = client(app.base);
@@ -85,36 +83,19 @@ test('the hosted entry serves the gated demo and drives Paula to a captured offe
   // Retail API paths fall through the front untouched.
   assert.equal((await get('/health')).status, 200);
 
-  // The bare host sends a browser to the access page, revealing nothing the 401 hid; the favicon is a quiet 204.
+  // The bare host sends a browser to the login page, revealing nothing; the favicon is a quiet 204.
   const bare = await get('/');
-  assert.equal(bare.status, 303); assert.equal(bare.headers.get('location'), '/gcsp/access?next=%2Fgcsp%2Flogin');
+  assert.equal(bare.status, 303); assert.equal(bare.headers.get('location'), '/gcsp/login');
   assert.equal(bare.text, ''); assert.deepEqual(bare.headers.getSetCookie(), []);
   assert.equal((await get('/favicon.ico')).status, 204);
-  assert.equal((await get('/', { method: 'POST' })).status, 401);
 
-  // Pages need the demo key; the offer page does not.
-  const gated = await get('/gcsp-presenter.html');
-  assert.equal(gated.status, 303); assert.equal(gated.headers.get('location'), '/gcsp/access?next=%2Fgcsp-presenter.html');
-  const form = await get('/gcsp/access?next=%2Fgcsp-outbox.html');
-  assert.equal(form.status, 200); assert.match(form.text, /type="password"/); assert.match(form.text, /value="\/gcsp-outbox\.html"/);
+  // No key form: the access route is gone and pages are served directly.
+  assert.notEqual((await get('/gcsp/access')).status, 200);
   assert.equal((await get('/gcsp/offer')).status, 200);
+  assert.equal((await get('/gcsp/login')).status, 200);
   const css = await get('/blocks/gcsp/shell/gcsp-shell.css');
   assert.equal(css.status, 200); assert.equal(css.headers.get('cache-control'), 'private, no-cache');
   assert.equal((await get('/blocks/gcsp/shell/gcsp-shell.css', { headers: { 'If-None-Match': css.headers.get('etag') } })).status, 304);
-  assert.equal(gated.headers.get('cache-control'), 'no-store');
-  assert.equal((await get('/api/gcsp/context')).status, 401);
-  const form401 = (key) => browser.request('/gcsp/access', { method: 'POST', body: new URLSearchParams({ key, next: '/gcsp-presenter.html' }).toString(),
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
-  const wrong = await form401('not-the-key');
-  assert.equal(wrong.status, 401); assert.match(wrong.text, /That key did not match\. Try again\./);
-  const right = await form401(KEY);
-  assert.equal(right.status, 303); assert.equal(right.headers.get('location'), '/gcsp-presenter.html');
-  const access = right.headers.getSetCookie().find((line) => line.startsWith('GCSP_HOST_ACCESS='));
-  assert.match(access, /; Path=\/; HttpOnly; Secure; SameSite=Lax; Max-Age=43200$/);
-
-  const bareWithAccess = await get('/');
-  assert.equal(bareWithAccess.status, 303); assert.equal(bareWithAccess.headers.get('location'), '/gcsp/login');
-  assert.equal(bareWithAccess.text, '');
 
   // Presenter entry grants only its control session. It never signs in an employee.
   const page = await get('/gcsp-presenter.html');
@@ -171,11 +152,8 @@ test('the hosted entry serves the gated demo and drives Paula to a captured offe
 });
 
 test('a fresh session reads its absent draft as 200 not-found, so sign-in logs no 404', { timeout: 90000 }, async (t) => {
-  const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}`, DEMO_ACCESS_KEY: KEY }), '/gcsp-presenter.html');
+  const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}` }), '/gcsp-presenter.html');
   const browser = client(app.base);
-  const signedIn = await browser.request('/gcsp/access', { method: 'POST', body: new URLSearchParams({ key: KEY, next: '/gcsp-presenter.html' }).toString(),
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
-  assert.equal(signedIn.status, 303);
   assert.equal((await browser.request('/gcsp/login')).status, 200);
   good(await browser.request('/api/gcsp/session/login', { method: 'POST', json: { email: 'paula.mason@gcsp-demo.com', password: 'fucq' } }));
   const draft = await browser.request('/api/gcsp/manual/draft');
@@ -192,15 +170,16 @@ test('without GCSP_RUNTIME the entry still answers GCSP routes as unconfigured',
   assert.equal((await client(app.base).request('/gcsp-presenter.html')).status, 404);
 });
 
-test('the hosted entry refuses to start without a demo key', async () => {
+test('the hosted entry starts without a demo key and ignores one', async () => {
   const { startHostedGcsp } = await import('../gcsp/host.js');
-  const started = await startHostedGcsp({ buildServer: () => assert.fail('must not build'), env: { GCSP_PUBLIC_ORIGIN: 'http://localhost:1' }, port: 0 });
-  assert.deepEqual(started, { status: 'invalid', code: 'access-key-required' });
+  const started = await startHostedGcsp({ buildServer: () => assert.fail('must not build'),
+    env: { GCSP_PUBLIC_ORIGIN: 'http://localhost:1' }, port: 0 });
+  assert.deepEqual(started, { status: 'invalid', code: 'database-url-required' });
 });
 
 test('the hosted entry requires a durable database unless memory is explicitly selected', async () => {
   const { startHostedGcsp } = await import('../gcsp/host.js');
   const started = await startHostedGcsp({ buildServer: () => assert.fail('must not build'),
-    env: { GCSP_PUBLIC_ORIGIN: 'http://localhost:1', DEMO_ACCESS_KEY: KEY }, port: 0 });
+    env: { GCSP_PUBLIC_ORIGIN: 'http://localhost:1' }, port: 0 });
   assert.deepEqual(started, { status: 'invalid', code: 'database-url-required' });
 });

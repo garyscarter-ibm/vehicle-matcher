@@ -1,0 +1,38 @@
+{
+  "schema_version": "fucq345-fresh-base-plan.v1",
+  "recorded_at": "2026-11-10T16:06:23.465639+00:00",
+  "run_id": "20261110-01a1c587-fucq345",
+  "original_criteria": "Three original media criteria fixed; no additions",
+  "old_base": "95f391414685638618f71665ab23630508f7aa45",
+  "fresh_base": "43e4c1be2ca66951a0ddc4a1ff11332df48974be",
+  "pre_merge_topic": "18d1af7af539b9523af787c0321ee9cf53cc68b0",
+  "changed_base_paths": [
+    "_dev/code-inbox/DEV-2026-11-10-006.md",
+    "_dev/code-inbox/DEV-2026-11-10-007.md",
+    "_dev/code-inbox/DEV-2026-11-10-008.md"
+  ],
+  "regression": "Review media tag/caption normal flow and unchanged7line shared CSS ratchet",
+  "affected_callers": "manual review and shared manual summary; offer/activity shared media preserved by exact current hashes and prior current rendered evidence",
+  "integration_boundary": "Metadata-only inbox import; no runtime/test/fixture/config boundary changed",
+  "selected_command": "node --test --test-concurrency=1 server/test/gcsp-manual-review-render.test.js server/test/ui-ratchet.test.js",
+  "selection_reason": "Parent final fresh-base integration gate; narrow original media regression and existing kit ratchet. Explicit command because configured affected selector has noJSplugin; no broad fallback.",
+  "excluded": "159test shell/entry rerun, loading/browser/independent review and full suite: exact source/input/fixture identities unchanged; live/deployed/nativeDB/fullaccessibility remain outside prior scoped proof.",
+  "environment": "Nodev26.7.0; jsdom resolves to existing root installed dependency. pg unavailable; no selected import requires pg; no link or installs needed.",
+  "resources": {
+    "workers": 1,
+    "scratch_bytes": 134217728,
+    "ram_bytes": 1073741824,
+    "seconds": 600,
+    "estimated_seconds": 15,
+    "estimated_scratch_bytes": 1048576,
+    "expected_ram_bytes": 300000000,
+    "supervisor": "existing fucq345-targeted.py invokes test_stamp/test_resources; run-owned absolute scratch/ownershipmanifest, TMPDIR/TMP/TEMP, shared machine reservation, process-group join/finalizer",
+    "checkpoint_root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110",
+    "output_prefix": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-fresh-base",
+    "large_output_destination": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/20261110-fucq345",
+    "large_output_expected": false,
+    "admission": "Ralph reports canonical teardown verified: group28070gone,scratch removed,shared registry0; admission released16:08:45UTC"
+  },
+  "fucq349": "Captured/unfixed/held for importer exactly-one-origin reconciliation; F70/F72 verified native Stories retained,4cacheimagesready0missing. No merge dependency.",
+  "launched_at": "2026-11-10T16:09:10.427884+00:00"
+}

@@ -21,7 +21,7 @@ async function waitFor(predicate) {
 async function setup(t) {
   const profile = createCompositionTestProfile();
   const https = await createLocalHttpsFixture(t); const fetch = https.fetch;
-  const app = good(await startGcspDemo({ port: 0, accessKey: '', tls: https.configuration, runtime: { mode: 'memory', stockProvider: profile,
+  const app = good(await startGcspDemo({ port: 0, tls: https.configuration, runtime: { mode: 'memory', stockProvider: profile,
     environmentId: 'offer-composition', policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'offer-bootstrap',
     sessionNow: () => '2026-11-06T00:00:00.000Z' } }));
   t.after(() => app.close());

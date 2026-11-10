@@ -1,0 +1,1727 @@
+{
+  "schemaVersion": 1,
+  "task": "FUCQ-345 Assessment B runtime diagnostics",
+  "sourceCheckpoint": "5a5ae694923c26c59acb81a121a56683e424159c",
+  "integratedBase": "95f391414685638618f71665ab23630508f7aa45",
+  "runtime": "offline local HTTP fixture; in-memory application runtime",
+  "browser": "fresh headless Chrome context; same-origin detector script; no screenshots",
+  "detector": {
+    "path": "/Users/usget/.codex/skills/impeccable/scripts/detector/detect-antipatterns-browser.js",
+    "sha256": "940ae66d818c2047e817bb8a49afe986a67066d3a3f0aef9a52043987f7379fc",
+    "api": "window.impeccableDetect()"
+  },
+  "helper": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-b-serve.mjs",
+    "sha256": "87810955701047d2b5add748761fbe4d4e70b9ec7317daf1c01fd3d5277fefa8"
+  },
+  "runner": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-b-runtime-diagnostics.js",
+    "sha256": "7d8f99d2ecbfb180d6372a633d084687c46bb2aaf7117e38c24fb7e02f873cd0"
+  },
+  "points": [
+    {
+      "state": "01-selected-review",
+      "viewportWidth": 375,
+      "pagePath": "/gcsp-account.html",
+      "api": "window.impeccableDetect()",
+      "findingGroupCount": 7,
+      "findingCount": 9,
+      "byType": {
+        "gpt-thin-border-wide-shadow": 1,
+        "cramped-padding": 1,
+        "overused-font": 1,
+        "skipped-heading": 1,
+        "monotonous-spacing": 1,
+        "text-occlusion": 4
+      },
+      "findings": [
+        {
+          "selector": "div.gcsp-account-panel",
+          "tagName": "div",
+          "rect": {
+            "x": 47,
+            "y": 57.5,
+            "width": 320,
+            "height": 271,
+            "top": 57.5,
+            "right": 367,
+            "bottom": 328.5,
+            "left": 47
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "gpt-thin-border-wide-shadow",
+              "category": "slop",
+              "severity": "advisory",
+              "advisory": false,
+              "detail": "1px border + 16px shadow blur",
+              "name": "Hairline border with wide shadow",
+              "description": "A hairline border paired with a wide, diffuse shadow is a recurring generated-UI signature. Commit to one — a defined edge or a soft elevation — rather than both at once."
+            }
+          ]
+        },
+        {
+          "selector": "div.gcsp-review-actions > button.vm-btn.vm-btn-primary",
+          "tagName": "button",
+          "rect": {
+            "x": 33,
+            "y": 2142.8125,
+            "width": 309,
+            "height": 44,
+            "top": 2142.8125,
+            "right": 342,
+            "bottom": 2186.8125,
+            "left": 33
+          },
+          "isPageLevel": false,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "cramped-padding",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "0px vertical padding (need ≥4.0px for 12px text)",
+              "name": "Cramped padding",
+              "description": "Text is too close to the edge of its container. Two shapes: (1) an element with its own text where the padding is too low for the font size, and (2) a wrapper with text-bearing children and near-zero padding against a visible boundary (border, outline, or non-transparent background) — children land flush against the boundary line. Add at least 8px (ideally 12–16px) of padding inside bordered, outlined, or colored containers."
+            }
+          ]
+        },
+        {
+          "selector": "body",
+          "tagName": "body",
+          "rect": null,
+          "isPageLevel": true,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "overused-font",
+              "category": "slop",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "Primary font: roboto (99% of text)",
+              "name": "Overused font",
+              "description": "Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality."
+            },
+            {
+              "type": "skipped-heading",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "<h1> \"Review your car\" followed by <h3> \"BMW 3 Series Saloon 320i\" (missing h2)",
+              "name": "Skipped heading level",
+              "description": "Heading levels should not skip (e.g. h1 then h3 with no h2). Screen readers use heading hierarchy for navigation. Skipping levels breaks the document outline."
+            },
+            {
+              "type": "monotonous-spacing",
+              "category": "slop",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "~4px used 9/10 times (90%)",
+              "name": "Monotonous spacing",
+              "description": "The same spacing value used everywhere — no rhythm, no variation. Use tight groupings for related items and generous separations between sections."
+            }
+          ]
+        },
+        {
+          "selector": "span.gcsp-account-context",
+          "tagName": "span",
+          "rect": {
+            "x": 64,
+            "y": 126.5,
+            "width": 286,
+            "height": 16,
+            "top": 126.5,
+            "right": 350,
+            "bottom": 142.5,
+            "left": 64
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "span.gcsp-account-context \"Grade G7\" is 100% covered by overlapping text (h1.vm-title)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        },
+        {
+          "selector": "li:nth-of-type(1) > button.gcsp-account-link",
+          "tagName": "button",
+          "rect": {
+            "x": 64,
+            "y": 163.5,
+            "width": 286,
+            "height": 44,
+            "top": 163.5,
+            "right": 350,
+            "bottom": 207.5,
+            "left": 64
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "button.gcsp-account-link \"Your preferences\" is 33% covered by an opaque element (section.gcsp-review-time)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        },
+        {
+          "selector": "li:nth-of-type(2) > button.gcsp-account-link",
+          "tagName": "button",
+          "rect": {
+            "x": 64,
+            "y": 207.5,
+            "width": 286,
+            "height": 44,
+            "top": 207.5,
+            "right": 350,
+            "bottom": 251.5,
+            "left": 64
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "button.gcsp-account-link \"Renewal help\" is 100% covered by overlapping text (p.gcsp-review-countdown)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        },
+        {
+          "selector": "div.gcsp-account-panel > button.vm-btn.vm-btn-ghost",
+          "tagName": "button",
+          "rect": {
+            "x": 64,
+            "y": 267.5,
+            "width": 286,
+            "height": 44,
+            "top": 267.5,
+            "right": 350,
+            "bottom": 311.5,
+            "left": 64
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "button.vm-btn.vm-btn-ghost.gcsp-account-signout \"Sign out\" is 100% covered by overlapping text (p.gcsp-review-countdown)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        }
+      ],
+      "console": [
+        {
+          "point": "selected-review",
+          "type": "startGroup",
+          "text": "[impeccable] 7 anti-patterns found"
+        },
+        {
+          "point": "selected-review",
+          "type": "log",
+          "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+        },
+        {
+          "point": "selected-review",
+          "type": "log",
+          "text": "cramped-padding 0px vertical padding (need ≥4.0px for 12px text)"
+        },
+        {
+          "point": "selected-review",
+          "type": "log",
+          "text": "overused-font Primary font: roboto (99% of text)"
+        },
+        {
+          "point": "selected-review",
+          "type": "log",
+          "text": "skipped-heading <h1> \"Review your car\" followed by <h3> \"BMW 3 Series Saloon 320i\" (missing h2)"
+        },
+        {
+          "point": "selected-review",
+          "type": "log",
+          "text": "text-occlusion span.gcsp-account-context \"Grade G7\" is 100% covered by overlapping text (h1.vm-title)"
+        },
+        {
+          "point": "selected-review",
+          "type": "log",
+          "text": "text-occlusion button.gcsp-account-link \"Your preferences\" is 33% covered by an opaque element (section.gcsp-review-time)"
+        },
+        {
+          "point": "selected-review",
+          "type": "log",
+          "text": "text-occlusion button.gcsp-account-link \"Renewal help\" is 100% covered by overlapping text (p.gcsp-review-countdown)"
+        },
+        {
+          "point": "selected-review",
+          "type": "log",
+          "text": "text-occlusion button.vm-btn.vm-btn-ghost.gcsp-account-signout \"Sign out\" is 100% covered by overlapping text (p.gcsp-review-countdown)"
+        },
+        {
+          "point": "selected-review",
+          "type": "endGroup",
+          "text": "console.groupEnd"
+        }
+      ]
+    },
+    {
+      "state": "02-order-review-summary",
+      "viewportWidth": 1280,
+      "pagePath": "/gcsp-account.html",
+      "api": "window.impeccableDetect()",
+      "findingGroupCount": 10,
+      "findingCount": 11,
+      "byType": {
+        "undersized-ui-text": 1,
+        "gpt-thin-border-wide-shadow": 2,
+        "cramped-padding": 2,
+        "line-length": 1,
+        "overused-font": 1,
+        "monotonous-spacing": 1,
+        "text-occlusion": 3
+      },
+      "findings": [
+        {
+          "selector": "span.gcsp-avatar",
+          "tagName": "span",
+          "rect": {
+            "x": 1132.203125,
+            "y": 17.5,
+            "width": 20,
+            "height": 20,
+            "top": 17.5,
+            "right": 1152.203125,
+            "bottom": 37.5,
+            "left": 1132.203125
+          },
+          "isPageLevel": false,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "10px functional text \"PM\" (below 11px floor)",
+              "name": "Undersized functional text",
+              "description": "Interactive and content-bearing UI text (links, buttons, nav items, labels, table cells, meta rows, timecodes) below 11px is a legibility failure, not a style choice. WCAG sets no absolute pixel floor, but functional text under 11px is a defensible quality bar: it fails on high-DPI and small viewports and it degrades tap and read targets. The 11px floor holds even inside a footer; only non-interactive legal smallprint gets the softer 10px floor. Being ON the DESIGN.md size ramp does not exempt a value here: adding 8px to the ramp launders the token=[redacted] not the legibility problem, and that is exactly the escape hatch this rule closes. Exempts sup/sub, visually-hidden (sr-only) text, and code/terminal contexts. Decorative letterspaced micro-labels are still functional and stay in scope."
+            }
+          ]
+        },
+        {
+          "selector": "div.gcsp-account-panel",
+          "tagName": "div",
+          "rect": {
+            "x": 944,
+            "y": 51.5,
+            "width": 320,
+            "height": 251,
+            "top": 51.5,
+            "right": 1264,
+            "bottom": 302.5,
+            "left": 944
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "gpt-thin-border-wide-shadow",
+              "category": "slop",
+              "severity": "advisory",
+              "advisory": false,
+              "detail": "1px border + 16px shadow blur",
+              "name": "Hairline border with wide shadow",
+              "description": "A hairline border paired with a wide, diffuse shadow is a recurring generated-UI signature. Commit to one — a defined edge or a soft elevation — rather than both at once."
+            }
+          ]
+        },
+        {
+          "selector": "#gcsp-shell-9-presenter",
+          "tagName": "div",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "gpt-thin-border-wide-shadow",
+              "category": "slop",
+              "severity": "advisory",
+              "advisory": false,
+              "detail": "1px border + 16px shadow blur",
+              "name": "Hairline border with wide shadow",
+              "description": "A hairline border paired with a wide, diffuse shadow is a recurring generated-UI signature. Commit to one — a defined edge or a soft elevation — rather than both at once."
+            }
+          ]
+        },
+        {
+          "selector": "section.gcsp-card.gcsp-summary-section:nth-of-type(3) > div.gcsp-card-body > div.gcsp-summary-edit.gcsp-print-hidden > button.vm-btn.vm-btn-ghost",
+          "tagName": "button",
+          "rect": {
+            "x": 751.21875,
+            "y": 906.5,
+            "width": 216.9375,
+            "height": 32,
+            "top": 906.5,
+            "right": 968.15625,
+            "bottom": 938.5,
+            "left": 751.21875
+          },
+          "isPageLevel": false,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "cramped-padding",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "0px vertical padding (need ≥4.0px for 12px text)",
+              "name": "Cramped padding",
+              "description": "Text is too close to the edge of its container. Two shapes: (1) an element with its own text where the padding is too low for the font size, and (2) a wrapper with text-bearing children and near-zero padding against a visible boundary (border, outline, or non-transparent background) — children land flush against the boundary line. Add at least 8px (ideally 12–16px) of padding inside bordered, outlined, or colored containers."
+            }
+          ]
+        },
+        {
+          "selector": "section.gcsp-card.gcsp-summary-section:nth-of-type(4) > div.gcsp-card-body > div.gcsp-summary-edit.gcsp-print-hidden > button.vm-btn.vm-btn-ghost",
+          "tagName": "button",
+          "rect": {
+            "x": 751.21875,
+            "y": 1223.5,
+            "width": 160.34375,
+            "height": 32,
+            "top": 1223.5,
+            "right": 911.5625,
+            "bottom": 1255.5,
+            "left": 751.21875
+          },
+          "isPageLevel": false,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "cramped-padding",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "0px vertical padding (need ≥4.0px for 12px text)",
+              "name": "Cramped padding",
+              "description": "Text is too close to the edge of its container. Two shapes: (1) an element with its own text where the padding is too low for the font size, and (2) a wrapper with text-bearing children and near-zero padding against a visible boundary (border, outline, or non-transparent background) — children land flush against the boundary line. Add at least 8px (ideally 12–16px) of padding inside bordered, outlined, or colored containers."
+            }
+          ]
+        },
+        {
+          "selector": "div.gcsp-summary-declarations > p.gcsp-note",
+          "tagName": "p",
+          "rect": {
+            "x": 113,
+            "y": 1639.359375,
+            "width": 1102,
+            "height": 63,
+            "top": 1639.359375,
+            "right": 1215,
+            "bottom": 1702.359375,
+            "left": 113
+          },
+          "isPageLevel": false,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "line-length",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "~157 chars/line (aim for <80)",
+              "name": "Line length too long",
+              "description": "Text lines wider than ~80 characters are hard to read. The eye loses its place tracking back to the start of the next line. Add a max-width (65ch to 75ch) to text containers."
+            }
+          ]
+        },
+        {
+          "selector": "body",
+          "tagName": "body",
+          "rect": null,
+          "isPageLevel": true,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "overused-font",
+              "category": "slop",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "Primary font: roboto (99% of text)",
+              "name": "Overused font",
+              "description": "Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality."
+            },
+            {
+              "type": "monotonous-spacing",
+              "category": "slop",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "~4px used 11/12 times (92%)",
+              "name": "Monotonous spacing",
+              "description": "The same spacing value used everywhere — no rhythm, no variation. Use tight groupings for related items and generous separations between sections."
+            }
+          ]
+        },
+        {
+          "selector": "span.gcsp-account-context",
+          "tagName": "span",
+          "rect": {
+            "x": 961,
+            "y": 120.5,
+            "width": 286,
+            "height": 16,
+            "top": 120.5,
+            "right": 1247,
+            "bottom": 136.5,
+            "left": 961
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "span.gcsp-account-context \"Grade G7\" is 96% covered by overlapping text (h1.vm-title)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        },
+        {
+          "selector": "li:nth-of-type(2) > button.gcsp-account-link",
+          "tagName": "button",
+          "rect": {
+            "x": 961,
+            "y": 197.5,
+            "width": 286,
+            "height": 40,
+            "top": 197.5,
+            "right": 1247,
+            "bottom": 237.5,
+            "left": 961
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "button.gcsp-account-link \"Renewal help\" is 96% covered by an opaque element (section.gcsp-review-time)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        },
+        {
+          "selector": "div.gcsp-account-panel > button.vm-btn.vm-btn-ghost",
+          "tagName": "button",
+          "rect": {
+            "x": 961,
+            "y": 253.5,
+            "width": 286,
+            "height": 32,
+            "top": 253.5,
+            "right": 1247,
+            "bottom": 285.5,
+            "left": 961
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "button.vm-btn.vm-btn-ghost.gcsp-account-signout \"Sign out\" is 96% covered by overlapping text (p.gcsp-note)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        }
+      ],
+      "console": [
+        {
+          "point": "summary",
+          "type": "startGroup",
+          "text": "[impeccable] 10 anti-patterns found"
+        },
+        {
+          "point": "summary",
+          "type": "log",
+          "text": "undersized-ui-text 10px functional text \"PM\" (below 11px floor)"
+        },
+        {
+          "point": "summary",
+          "type": "log",
+          "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+        },
+        {
+          "point": "summary",
+          "type": "log",
+          "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+        },
+        {
+          "point": "summary",
+          "type": "log",
+          "text": "cramped-padding 0px vertical padding (need ≥4.0px for 12px text)"
+        },
+        {
+          "point": "summary",
+          "type": "log",
+          "text": "cramped-padding 0px vertical padding (need ≥4.0px for 12px text)"
+        },
+        {
+          "point": "summary",
+          "type": "log",
+          "text": "line-length ~157 chars/line (aim for <80)"
+        },
+        {
+          "point": "summary",
+          "type": "log",
+          "text": "overused-font Primary font: roboto (99% of text)"
+        },
+        {
+          "point": "summary",
+          "type": "log",
+          "text": "text-occlusion span.gcsp-account-context \"Grade G7\" is 96% covered by overlapping text (h1.vm-title)"
+        },
+        {
+          "point": "summary",
+          "type": "log",
+          "text": "text-occlusion button.gcsp-account-link \"Renewal help\" is 96% covered by an opaque element (section.gcsp-review-time)"
+        },
+        {
+          "point": "summary",
+          "type": "log",
+          "text": "text-occlusion button.vm-btn.vm-btn-ghost.gcsp-account-signout \"Sign out\" is 96% covered by overlapping text (p.gcsp-note)"
+        },
+        {
+          "point": "summary",
+          "type": "endGroup",
+          "text": "console.groupEnd"
+        }
+      ]
+    },
+    {
+      "state": "03-confirmation",
+      "viewportWidth": 375,
+      "pagePath": "/gcsp-account.html",
+      "api": "window.impeccableDetect()",
+      "findingGroupCount": 6,
+      "findingCount": 7,
+      "byType": {
+        "gpt-thin-border-wide-shadow": 1,
+        "overused-font": 1,
+        "skipped-heading": 1,
+        "text-occlusion": 4
+      },
+      "findings": [
+        {
+          "selector": "div.gcsp-account-panel",
+          "tagName": "div",
+          "rect": {
+            "x": 47,
+            "y": 57.5,
+            "width": 320,
+            "height": 271,
+            "top": 57.5,
+            "right": 367,
+            "bottom": 328.5,
+            "left": 47
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "gpt-thin-border-wide-shadow",
+              "category": "slop",
+              "severity": "advisory",
+              "advisory": false,
+              "detail": "1px border + 16px shadow blur",
+              "name": "Hairline border with wide shadow",
+              "description": "A hairline border paired with a wide, diffuse shadow is a recurring generated-UI signature. Commit to one — a defined edge or a soft elevation — rather than both at once."
+            }
+          ]
+        },
+        {
+          "selector": "body",
+          "tagName": "body",
+          "rect": null,
+          "isPageLevel": true,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "overused-font",
+              "category": "slop",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "Primary font: roboto (99% of text)",
+              "name": "Overused font",
+              "description": "Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality."
+            },
+            {
+              "type": "skipped-heading",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "<h1> \"Order received\" followed by <h3> \"BMW 3 Series Saloon 320i\" (missing h2)",
+              "name": "Skipped heading level",
+              "description": "Heading levels should not skip (e.g. h1 then h3 with no h2). Screen readers use heading hierarchy for navigation. Skipping levels breaks the document outline."
+            }
+          ]
+        },
+        {
+          "selector": "span.gcsp-account-context",
+          "tagName": "span",
+          "rect": {
+            "x": 64,
+            "y": 126.5,
+            "width": 286,
+            "height": 16,
+            "top": 126.5,
+            "right": 350,
+            "bottom": 142.5,
+            "left": 64
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "span.gcsp-account-context \"Grade G7\" is 100% covered by overlapping text (h1.vm-title)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        },
+        {
+          "selector": "li:nth-of-type(1) > button.gcsp-account-link",
+          "tagName": "button",
+          "rect": {
+            "x": 64,
+            "y": 163.5,
+            "width": 286,
+            "height": 44,
+            "top": 163.5,
+            "right": 350,
+            "bottom": 207.5,
+            "left": 64
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "button.gcsp-account-link \"Your preferences\" is 67% covered by overlapping text (p.vm-lede)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        },
+        {
+          "selector": "li:nth-of-type(2) > button.gcsp-account-link",
+          "tagName": "button",
+          "rect": {
+            "x": 64,
+            "y": 207.5,
+            "width": 286,
+            "height": 44,
+            "top": 207.5,
+            "right": 350,
+            "bottom": 251.5,
+            "left": 64
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "button.gcsp-account-link \"Renewal help\" is 33% covered by an opaque element (button.vm-btn.vm-btn-primary)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        },
+        {
+          "selector": "div.gcsp-account-panel > button.vm-btn.vm-btn-ghost",
+          "tagName": "button",
+          "rect": {
+            "x": 64,
+            "y": 267.5,
+            "width": 286,
+            "height": 44,
+            "top": 267.5,
+            "right": 350,
+            "bottom": 311.5,
+            "left": 64
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "button.vm-btn.vm-btn-ghost.gcsp-account-signout \"Sign out\" is 67% covered by an opaque element (button.vm-btn.vm-btn-primary)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        }
+      ],
+      "console": [
+        {
+          "point": "confirmation",
+          "type": "startGroup",
+          "text": "[impeccable] 6 anti-patterns found"
+        },
+        {
+          "point": "confirmation",
+          "type": "log",
+          "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+        },
+        {
+          "point": "confirmation",
+          "type": "log",
+          "text": "overused-font Primary font: roboto (99% of text)"
+        },
+        {
+          "point": "confirmation",
+          "type": "log",
+          "text": "skipped-heading <h1> \"Order received\" followed by <h3> \"BMW 3 Series Saloon 320i\" (missing h2)"
+        },
+        {
+          "point": "confirmation",
+          "type": "log",
+          "text": "text-occlusion span.gcsp-account-context \"Grade G7\" is 100% covered by overlapping text (h1.vm-title)"
+        },
+        {
+          "point": "confirmation",
+          "type": "log",
+          "text": "text-occlusion button.gcsp-account-link \"Your preferences\" is 67% covered by overlapping text (p.vm-lede)"
+        },
+        {
+          "point": "confirmation",
+          "type": "log",
+          "text": "text-occlusion button.gcsp-account-link \"Renewal help\" is 33% covered by an opaque element (button.vm-btn.vm-btn-primary)"
+        },
+        {
+          "point": "confirmation",
+          "type": "log",
+          "text": "text-occlusion button.vm-btn.vm-btn-ghost.gcsp-account-signout \"Sign out\" is 67% covered by an opaque element (button.vm-btn.vm-btn-primary)"
+        },
+        {
+          "point": "confirmation",
+          "type": "endGroup",
+          "text": "console.groupEnd"
+        }
+      ]
+    },
+    {
+      "state": "04-offer",
+      "viewportWidth": 1280,
+      "pagePath": "/gcsp/offer",
+      "api": "window.impeccableDetect()",
+      "findingGroupCount": 9,
+      "findingCount": 10,
+      "byType": {
+        "undersized-ui-text": 1,
+        "gpt-thin-border-wide-shadow": 2,
+        "cramped-padding": 1,
+        "line-length": 1,
+        "overused-font": 1,
+        "monotonous-spacing": 1,
+        "text-occlusion": 3
+      },
+      "findings": [
+        {
+          "selector": "span.gcsp-avatar",
+          "tagName": "span",
+          "rect": {
+            "x": 1132.203125,
+            "y": 17.5,
+            "width": 20,
+            "height": 20,
+            "top": 17.5,
+            "right": 1152.203125,
+            "bottom": 37.5,
+            "left": 1132.203125
+          },
+          "isPageLevel": false,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "undersized-ui-text",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "10px functional text \"PM\" (below 11px floor)",
+              "name": "Undersized functional text",
+              "description": "Interactive and content-bearing UI text (links, buttons, nav items, labels, table cells, meta rows, timecodes) below 11px is a legibility failure, not a style choice. WCAG sets no absolute pixel floor, but functional text under 11px is a defensible quality bar: it fails on high-DPI and small viewports and it degrades tap and read targets. The 11px floor holds even inside a footer; only non-interactive legal smallprint gets the softer 10px floor. Being ON the DESIGN.md size ramp does not exempt a value here: adding 8px to the ramp launders the token=[redacted] not the legibility problem, and that is exactly the escape hatch this rule closes. Exempts sup/sub, visually-hidden (sr-only) text, and code/terminal contexts. Decorative letterspaced micro-labels are still functional and stay in scope."
+            }
+          ]
+        },
+        {
+          "selector": "div.gcsp-account-panel",
+          "tagName": "div",
+          "rect": {
+            "x": 944,
+            "y": 51.5,
+            "width": 320,
+            "height": 251,
+            "top": 51.5,
+            "right": 1264,
+            "bottom": 302.5,
+            "left": 944
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "gpt-thin-border-wide-shadow",
+              "category": "slop",
+              "severity": "advisory",
+              "advisory": false,
+              "detail": "1px border + 16px shadow blur",
+              "name": "Hairline border with wide shadow",
+              "description": "A hairline border paired with a wide, diffuse shadow is a recurring generated-UI signature. Commit to one — a defined edge or a soft elevation — rather than both at once."
+            }
+          ]
+        },
+        {
+          "selector": "#gcsp-shell-1-presenter",
+          "tagName": "div",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "gpt-thin-border-wide-shadow",
+              "category": "slop",
+              "severity": "advisory",
+              "advisory": false,
+              "detail": "1px border + 16px shadow blur",
+              "name": "Hairline border with wide shadow",
+              "description": "A hairline border paired with a wide, diffuse shadow is a recurring generated-UI signature. Commit to one — a defined edge or a soft elevation — rather than both at once."
+            }
+          ]
+        },
+        {
+          "selector": "div.gcsp-table-wrap.is-compare",
+          "tagName": "div",
+          "rect": {
+            "x": 672,
+            "y": 254,
+            "width": 560,
+            "height": 364,
+            "top": 254,
+            "right": 1232,
+            "bottom": 618,
+            "left": 672
+          },
+          "isPageLevel": false,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "cramped-padding",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "<div> \"gcsp-table-wrap\": children flush against border+bg on right/bottom/left (no inset)",
+              "name": "Cramped padding",
+              "description": "Text is too close to the edge of its container. Two shapes: (1) an element with its own text where the padding is too low for the font size, and (2) a wrapper with text-bearing children and near-zero padding against a visible boundary (border, outline, or non-transparent background) — children land flush against the boundary line. Add at least 8px (ideally 12–16px) of padding inside bordered, outlined, or colored containers."
+            }
+          ]
+        },
+        {
+          "selector": "section.gcsp-panel.gcsp-offer-current > p.gcsp-note",
+          "tagName": "p",
+          "rect": {
+            "x": 113,
+            "y": 1079.875,
+            "width": 1102,
+            "height": 63,
+            "top": 1079.875,
+            "right": 1215,
+            "bottom": 1142.875,
+            "left": 113
+          },
+          "isPageLevel": false,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "line-length",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "~157 chars/line (aim for <80)",
+              "name": "Line length too long",
+              "description": "Text lines wider than ~80 characters are hard to read. The eye loses its place tracking back to the start of the next line. Add a max-width (65ch to 75ch) to text containers."
+            }
+          ]
+        },
+        {
+          "selector": "body",
+          "tagName": "body",
+          "rect": null,
+          "isPageLevel": true,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "overused-font",
+              "category": "slop",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "Primary font: roboto (99% of text)",
+              "name": "Overused font",
+              "description": "Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality."
+            },
+            {
+              "type": "monotonous-spacing",
+              "category": "slop",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "~4px used 10/11 times (91%)",
+              "name": "Monotonous spacing",
+              "description": "The same spacing value used everywhere — no rhythm, no variation. Use tight groupings for related items and generous separations between sections."
+            }
+          ]
+        },
+        {
+          "selector": "span.gcsp-account-context",
+          "tagName": "span",
+          "rect": {
+            "x": 961,
+            "y": 120.5,
+            "width": 286,
+            "height": 16,
+            "top": 120.5,
+            "right": 1247,
+            "bottom": 136.5,
+            "left": 961
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "span.gcsp-account-context \"Grade G7\" is 96% covered by overlapping text (h1.vm-title)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        },
+        {
+          "selector": "li:nth-of-type(2) > button.gcsp-account-link",
+          "tagName": "button",
+          "rect": {
+            "x": 961,
+            "y": 197.5,
+            "width": 286,
+            "height": 40,
+            "top": 197.5,
+            "right": 1247,
+            "bottom": 237.5,
+            "left": 961
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "button.gcsp-account-link \"Renewal help\" is 64% covered by overlapping text (p.gcsp-note)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        },
+        {
+          "selector": "div.gcsp-account-panel > button.vm-btn.vm-btn-ghost",
+          "tagName": "button",
+          "rect": {
+            "x": 961,
+            "y": 253.5,
+            "width": 286,
+            "height": 32,
+            "top": 253.5,
+            "right": 1247,
+            "bottom": 285.5,
+            "left": 961
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "button.vm-btn.vm-btn-ghost.gcsp-account-signout \"Sign out\" is 96% covered by overlapping text (caption.gcsp-table-caption)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        }
+      ],
+      "console": [
+        {
+          "point": "offer",
+          "type": "startGroup",
+          "text": "[impeccable] 9 anti-patterns found"
+        },
+        {
+          "point": "offer",
+          "type": "log",
+          "text": "undersized-ui-text 10px functional text \"PM\" (below 11px floor)"
+        },
+        {
+          "point": "offer",
+          "type": "log",
+          "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+        },
+        {
+          "point": "offer",
+          "type": "log",
+          "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+        },
+        {
+          "point": "offer",
+          "type": "log",
+          "text": "cramped-padding <div> \"gcsp-table-wrap\": children flush against border+bg on right/bottom/left (no inset)"
+        },
+        {
+          "point": "offer",
+          "type": "log",
+          "text": "line-length ~157 chars/line (aim for <80)"
+        },
+        {
+          "point": "offer",
+          "type": "log",
+          "text": "overused-font Primary font: roboto (99% of text)"
+        },
+        {
+          "point": "offer",
+          "type": "log",
+          "text": "text-occlusion span.gcsp-account-context \"Grade G7\" is 96% covered by overlapping text (h1.vm-title)"
+        },
+        {
+          "point": "offer",
+          "type": "log",
+          "text": "text-occlusion button.gcsp-account-link \"Renewal help\" is 64% covered by overlapping text (p.gcsp-note)"
+        },
+        {
+          "point": "offer",
+          "type": "log",
+          "text": "text-occlusion button.vm-btn.vm-btn-ghost.gcsp-account-signout \"Sign out\" is 96% covered by overlapping text (caption.gcsp-table-caption)"
+        },
+        {
+          "point": "offer",
+          "type": "endGroup",
+          "text": "console.groupEnd"
+        }
+      ]
+    },
+    {
+      "state": "05-activity",
+      "viewportWidth": 375,
+      "pagePath": "/gcsp-activity-live.html",
+      "api": "window.impeccableDetect()",
+      "findingGroupCount": 4,
+      "findingCount": 4,
+      "byType": {
+        "gpt-thin-border-wide-shadow": 2,
+        "overused-font": 1,
+        "text-occlusion": 1
+      },
+      "findings": [
+        {
+          "selector": "div.gcsp-account-panel",
+          "tagName": "div",
+          "rect": {
+            "x": 47,
+            "y": 57.5,
+            "width": 320,
+            "height": 271,
+            "top": 57.5,
+            "right": 367,
+            "bottom": 328.5,
+            "left": 47
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "gpt-thin-border-wide-shadow",
+              "category": "slop",
+              "severity": "advisory",
+              "advisory": false,
+              "detail": "1px border + 16px shadow blur",
+              "name": "Hairline border with wide shadow",
+              "description": "A hairline border paired with a wide, diffuse shadow is a recurring generated-UI signature. Commit to one — a defined edge or a soft elevation — rather than both at once."
+            }
+          ]
+        },
+        {
+          "selector": "#gcsp-action-menu-1",
+          "tagName": "div",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "gpt-thin-border-wide-shadow",
+              "category": "slop",
+              "severity": "advisory",
+              "advisory": false,
+              "detail": "1px border + 16px shadow blur",
+              "name": "Hairline border with wide shadow",
+              "description": "A hairline border paired with a wide, diffuse shadow is a recurring generated-UI signature. Commit to one — a defined edge or a soft elevation — rather than both at once."
+            }
+          ]
+        },
+        {
+          "selector": "body",
+          "tagName": "body",
+          "rect": null,
+          "isPageLevel": true,
+          "isHidden": false,
+          "findings": [
+            {
+              "type": "overused-font",
+              "category": "slop",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "Primary font: roboto (99% of text)",
+              "name": "Overused font",
+              "description": "Inter, Roboto, Fraunces, Geist, Plus Jakarta Sans, and Space Grotesk are used on so many sites they no longer feel distinctive. Each new wave of AI-generated UIs converges on the same handful of faces. Choose a face that gives your interface personality."
+            }
+          ]
+        },
+        {
+          "selector": "span.gcsp-account-context",
+          "tagName": "span",
+          "rect": {
+            "x": 64,
+            "y": 126.5,
+            "width": 286,
+            "height": 16,
+            "top": 126.5,
+            "right": 350,
+            "bottom": 142.5,
+            "left": 64
+          },
+          "isPageLevel": false,
+          "isHidden": true,
+          "findings": [
+            {
+              "type": "text-occlusion",
+              "category": "quality",
+              "severity": "warning",
+              "advisory": false,
+              "detail": "span.gcsp-account-context \"Grade G7\" is 67% covered by overlapping text (h1.vm-title)",
+              "name": "Text occluded by an overlapping element",
+              "description": "Text is painted under an opaque element or a second text run, so part of it cannot be read. A decorative box, a stacked layer, or an inline element with leaked padding lands on the words instead of beside them. Give overlapping layers room, or move the text out from under the layer above it."
+            }
+          ]
+        }
+      ],
+      "console": [
+        {
+          "point": "activity",
+          "type": "startGroup",
+          "text": "[impeccable] 4 anti-patterns found"
+        },
+        {
+          "point": "activity",
+          "type": "log",
+          "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+        },
+        {
+          "point": "activity",
+          "type": "log",
+          "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+        },
+        {
+          "point": "activity",
+          "type": "log",
+          "text": "overused-font Primary font: roboto (99% of text)"
+        },
+        {
+          "point": "activity",
+          "type": "log",
+          "text": "text-occlusion span.gcsp-account-context \"Grade G7\" is 67% covered by overlapping text (h1.vm-title)"
+        },
+        {
+          "point": "activity",
+          "type": "endGroup",
+          "text": "console.groupEnd"
+        }
+      ]
+    }
+  ],
+  "httpErrors": [
+    {
+      "point": "selected-review",
+      "status": 404,
+      "path": "/api/gcsp/manual/order",
+      "resourceType": "fetch",
+      "method": "GET"
+    },
+    {
+      "point": "summary",
+      "status": 404,
+      "path": "/api/gcsp/manual/order",
+      "resourceType": "fetch",
+      "method": "GET"
+    },
+    {
+      "point": "summary",
+      "status": 404,
+      "path": "/api/gcsp/manual/order",
+      "resourceType": "fetch",
+      "method": "GET"
+    },
+    {
+      "point": "confirmation",
+      "status": 404,
+      "path": "/api/gcsp/manual/order",
+      "resourceType": "fetch",
+      "method": "GET"
+    },
+    {
+      "point": "confirmation",
+      "status": 404,
+      "path": "/api/gcsp/manual/order",
+      "resourceType": "fetch",
+      "method": "GET"
+    }
+  ],
+  "requestFailures": [
+    {
+      "point": "selected-review",
+      "path": "/api/gcsp/presenter/scenarios",
+      "resourceType": "fetch",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "point": "selected-review",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "resourceType": "fetch",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "point": "selected-review",
+      "path": "/api/gcsp/presenter/scenarios",
+      "resourceType": "fetch",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "point": "selected-review",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "resourceType": "fetch",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "point": "summary",
+      "path": "/api/gcsp/presenter/scenarios",
+      "resourceType": "fetch",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "point": "summary",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "resourceType": "fetch",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "point": "confirmation",
+      "path": "/api/gcsp/presenter/scenarios",
+      "resourceType": "fetch",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "point": "confirmation",
+      "path": "/api/gcsp/presenter/scenarios/faults",
+      "resourceType": "fetch",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "point": "activity",
+      "path": "/api/gcsp/context",
+      "resourceType": "fetch",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "point": "activity",
+      "path": "/api/gcsp/context",
+      "resourceType": "fetch",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "point": "activity",
+      "path": "/api/gcsp/context",
+      "resourceType": "fetch",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "console": [
+    {
+      "point": "selected-review",
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "point": "selected-review",
+      "type": "startGroup",
+      "text": "[impeccable] 7 anti-patterns found"
+    },
+    {
+      "point": "selected-review",
+      "type": "log",
+      "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+    },
+    {
+      "point": "selected-review",
+      "type": "log",
+      "text": "cramped-padding 0px vertical padding (need ≥4.0px for 12px text)"
+    },
+    {
+      "point": "selected-review",
+      "type": "log",
+      "text": "overused-font Primary font: roboto (99% of text)"
+    },
+    {
+      "point": "selected-review",
+      "type": "log",
+      "text": "skipped-heading <h1> \"Review your car\" followed by <h3> \"BMW 3 Series Saloon 320i\" (missing h2)"
+    },
+    {
+      "point": "selected-review",
+      "type": "log",
+      "text": "text-occlusion span.gcsp-account-context \"Grade G7\" is 100% covered by overlapping text (h1.vm-title)"
+    },
+    {
+      "point": "selected-review",
+      "type": "log",
+      "text": "text-occlusion button.gcsp-account-link \"Your preferences\" is 33% covered by an opaque element (section.gcsp-review-time)"
+    },
+    {
+      "point": "selected-review",
+      "type": "log",
+      "text": "text-occlusion button.gcsp-account-link \"Renewal help\" is 100% covered by overlapping text (p.gcsp-review-countdown)"
+    },
+    {
+      "point": "selected-review",
+      "type": "log",
+      "text": "text-occlusion button.vm-btn.vm-btn-ghost.gcsp-account-signout \"Sign out\" is 100% covered by overlapping text (p.gcsp-review-countdown)"
+    },
+    {
+      "point": "selected-review",
+      "type": "endGroup",
+      "text": "console.groupEnd"
+    },
+    {
+      "point": "summary",
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "point": "summary",
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "point": "summary",
+      "type": "startGroup",
+      "text": "[impeccable] 10 anti-patterns found"
+    },
+    {
+      "point": "summary",
+      "type": "log",
+      "text": "undersized-ui-text 10px functional text \"PM\" (below 11px floor)"
+    },
+    {
+      "point": "summary",
+      "type": "log",
+      "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+    },
+    {
+      "point": "summary",
+      "type": "log",
+      "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+    },
+    {
+      "point": "summary",
+      "type": "log",
+      "text": "cramped-padding 0px vertical padding (need ≥4.0px for 12px text)"
+    },
+    {
+      "point": "summary",
+      "type": "log",
+      "text": "cramped-padding 0px vertical padding (need ≥4.0px for 12px text)"
+    },
+    {
+      "point": "summary",
+      "type": "log",
+      "text": "line-length ~157 chars/line (aim for <80)"
+    },
+    {
+      "point": "summary",
+      "type": "log",
+      "text": "overused-font Primary font: roboto (99% of text)"
+    },
+    {
+      "point": "summary",
+      "type": "log",
+      "text": "text-occlusion span.gcsp-account-context \"Grade G7\" is 96% covered by overlapping text (h1.vm-title)"
+    },
+    {
+      "point": "summary",
+      "type": "log",
+      "text": "text-occlusion button.gcsp-account-link \"Renewal help\" is 96% covered by an opaque element (section.gcsp-review-time)"
+    },
+    {
+      "point": "summary",
+      "type": "log",
+      "text": "text-occlusion button.vm-btn.vm-btn-ghost.gcsp-account-signout \"Sign out\" is 96% covered by overlapping text (p.gcsp-note)"
+    },
+    {
+      "point": "summary",
+      "type": "endGroup",
+      "text": "console.groupEnd"
+    },
+    {
+      "point": "confirmation",
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "point": "confirmation",
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "point": "confirmation",
+      "type": "startGroup",
+      "text": "[impeccable] 6 anti-patterns found"
+    },
+    {
+      "point": "confirmation",
+      "type": "log",
+      "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+    },
+    {
+      "point": "confirmation",
+      "type": "log",
+      "text": "overused-font Primary font: roboto (99% of text)"
+    },
+    {
+      "point": "confirmation",
+      "type": "log",
+      "text": "skipped-heading <h1> \"Order received\" followed by <h3> \"BMW 3 Series Saloon 320i\" (missing h2)"
+    },
+    {
+      "point": "confirmation",
+      "type": "log",
+      "text": "text-occlusion span.gcsp-account-context \"Grade G7\" is 100% covered by overlapping text (h1.vm-title)"
+    },
+    {
+      "point": "confirmation",
+      "type": "log",
+      "text": "text-occlusion button.gcsp-account-link \"Your preferences\" is 67% covered by overlapping text (p.vm-lede)"
+    },
+    {
+      "point": "confirmation",
+      "type": "log",
+      "text": "text-occlusion button.gcsp-account-link \"Renewal help\" is 33% covered by an opaque element (button.vm-btn.vm-btn-primary)"
+    },
+    {
+      "point": "confirmation",
+      "type": "log",
+      "text": "text-occlusion button.vm-btn.vm-btn-ghost.gcsp-account-signout \"Sign out\" is 67% covered by an opaque element (button.vm-btn.vm-btn-primary)"
+    },
+    {
+      "point": "confirmation",
+      "type": "endGroup",
+      "text": "console.groupEnd"
+    },
+    {
+      "point": "offer",
+      "type": "startGroup",
+      "text": "[impeccable] 9 anti-patterns found"
+    },
+    {
+      "point": "offer",
+      "type": "log",
+      "text": "undersized-ui-text 10px functional text \"PM\" (below 11px floor)"
+    },
+    {
+      "point": "offer",
+      "type": "log",
+      "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+    },
+    {
+      "point": "offer",
+      "type": "log",
+      "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+    },
+    {
+      "point": "offer",
+      "type": "log",
+      "text": "cramped-padding <div> \"gcsp-table-wrap\": children flush against border+bg on right/bottom/left (no inset)"
+    },
+    {
+      "point": "offer",
+      "type": "log",
+      "text": "line-length ~157 chars/line (aim for <80)"
+    },
+    {
+      "point": "offer",
+      "type": "log",
+      "text": "overused-font Primary font: roboto (99% of text)"
+    },
+    {
+      "point": "offer",
+      "type": "log",
+      "text": "text-occlusion span.gcsp-account-context \"Grade G7\" is 96% covered by overlapping text (h1.vm-title)"
+    },
+    {
+      "point": "offer",
+      "type": "log",
+      "text": "text-occlusion button.gcsp-account-link \"Renewal help\" is 64% covered by overlapping text (p.gcsp-note)"
+    },
+    {
+      "point": "offer",
+      "type": "log",
+      "text": "text-occlusion button.vm-btn.vm-btn-ghost.gcsp-account-signout \"Sign out\" is 96% covered by overlapping text (caption.gcsp-table-caption)"
+    },
+    {
+      "point": "offer",
+      "type": "endGroup",
+      "text": "console.groupEnd"
+    },
+    {
+      "point": "activity",
+      "type": "startGroup",
+      "text": "[impeccable] 4 anti-patterns found"
+    },
+    {
+      "point": "activity",
+      "type": "log",
+      "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+    },
+    {
+      "point": "activity",
+      "type": "log",
+      "text": "gpt-thin-border-wide-shadow 1px border + 16px shadow blur"
+    },
+    {
+      "point": "activity",
+      "type": "log",
+      "text": "overused-font Primary font: roboto (99% of text)"
+    },
+    {
+      "point": "activity",
+      "type": "log",
+      "text": "text-occlusion span.gcsp-account-context \"Grade G7\" is 67% covered by overlapping text (h1.vm-title)"
+    },
+    {
+      "point": "activity",
+      "type": "endGroup",
+      "text": "console.groupEnd"
+    }
+  ],
+  "blockedExternalRequests": [],
+  "nativeContextDisruption": "A preparatory browser_run_code_unsafe attempt called clearCookies(), installed a context-wide route, and called close() on the supplied tool-managed context after its self-signed-HTTPS bootstrap failed. A separate certificate probe navigated that supplied page to chrome-error://chromewebdata/. Context ownership was not established; recorded as a disruption, not as preserved state. No app pages or screenshots were created by those native attempts.",
+  "status": "complete",
+  "summary": {
+    "pointCount": 5,
+    "detectorGroupCount": 36,
+    "findingCount": 41,
+    "httpErrorCount": 5,
+    "requestFailureCount": 11,
+    "consoleMessageCount": 53,
+    "blockedExternalRequestCount": 0
+  }
+}

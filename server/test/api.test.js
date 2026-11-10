@@ -88,98 +88,23 @@ test('OPTIONS preflight → 204 with CORS headers', async () => {
     assert.equal(headers.get('access-control-allow-origin'), '*');
     assert.match(headers.get('access-control-allow-methods'), /POST/);
     assert.match(headers.get('access-control-allow-headers'), /Content-Type/i);
-    // The shared-password header must be advertised or the browser preflight
-    // blocks it before the request reaches the handler.
-    assert.match(headers.get('access-control-allow-headers'), /X-Access-Key/i);
+    assert.doesNotMatch(headers.get('access-control-allow-headers'), /X-Access-Key/i);
   });
 });
 
-/* ------------------------------------------------------------------ *
- * Shared-password gate (DEMO_ACCESS_KEY)
- *
- * When the env var is unset, auth is off and the whole suite above runs open.
- * These tests set it around a single server instance (isAuthorized reads it
- * per-request) and restore it in a finally so it never leaks to sibling tests
- * — node --test runs them all in one process.
- * ------------------------------------------------------------------ */
-
-/** Run `fn` with DEMO_ACCESS_KEY set to `key`, restoring the prior value after. */
-async function withAccessKey(key, fn) {
+test('a DEMO_ACCESS_KEY in the environment is ignored: /api/* and /health stay open', async () => {
   const prev = process.env.DEMO_ACCESS_KEY;
-  process.env.DEMO_ACCESS_KEY = key;
+  process.env.DEMO_ACCESS_KEY = 's3cret';
   try {
-    return await fn();
+    await withServer({ fetchRetailerStock: fakeStock() }, async (base) => {
+      assert.equal((await get(base, '/api/questions?brand=bmw')).status, 200);
+      assert.equal((await post(base, '/api/match', { answers: FULL_BRIEF })).status, 200);
+      assert.equal((await get(base, '/health')).status, 200);
+    });
   } finally {
     if (prev === undefined) delete process.env.DEMO_ACCESS_KEY;
     else process.env.DEMO_ACCESS_KEY = prev;
   }
-}
-
-test('auth off (no key set) → /api/questions open with no header', async () => {
-  // Explicit guard that the unset-key path stays open (the suite above relies
-  // on it implicitly). Belt-and-braces: force it unset for this test.
-  const prev = process.env.DEMO_ACCESS_KEY;
-  delete process.env.DEMO_ACCESS_KEY;
-  try {
-    await withServer({}, async (base) => {
-      const { status } = await get(base, '/api/questions?brand=bmw');
-      assert.equal(status, 200);
-    });
-  } finally {
-    if (prev !== undefined) process.env.DEMO_ACCESS_KEY = prev;
-  }
-});
-
-test('gated: /api/questions with no key → 401', async () => {
-  await withAccessKey('s3cret', async () => {
-    await withServer({}, async (base) => {
-      const { status, json } = await get(base, '/api/questions?brand=bmw');
-      assert.equal(status, 401);
-      assert.equal(typeof json.error, 'string');
-    });
-  });
-});
-
-test('gated: wrong key → 401', async () => {
-  await withAccessKey('s3cret', async () => {
-    await withServer({}, async (base) => {
-      const { status } = await request(base, '/api/questions?brand=bmw', {
-        headers: { 'X-Access-Key': 'nope' },
-      });
-      assert.equal(status, 401);
-    });
-  });
-});
-
-test('gated: correct key → 200 with the normal questions shape', async () => {
-  await withAccessKey('s3cret', async () => {
-    await withServer({}, async (base) => {
-      const { status, json } = await request(base, '/api/questions?brand=bmw', {
-        headers: { 'X-Access-Key': 's3cret' },
-      });
-      assert.equal(status, 200);
-      assert.ok(Array.isArray(json.questions));
-    });
-  });
-});
-
-test('gated: POST /api/match without the key → 401 (POST routes are gated too)', async () => {
-  await withAccessKey('s3cret', async () => {
-    await withServer({ fetchRetailerStock: fakeStock() }, async (base) => {
-      const { status } = await post(base, '/api/match', { answers: FULL_BRIEF });
-      assert.equal(status, 401);
-    });
-  });
-});
-
-test('gated: /health stays open with no key (platform health check must not break)', async () => {
-  await withAccessKey('s3cret', async () => {
-    await withServer({}, async (base) => {
-      const { status, json } = await get(base, '/health');
-      assert.equal(status, 200);
-      assert.deepEqual(json, { ok: true });
-    });
-  });
 });
 
 test('every endpoint the client calls exists (contract guard for the /api/field-class bug)', async () => {

@@ -1,0 +1,20 @@
+{
+  "cases": [
+    {
+      "serviceWorkers": "block",
+      "errors": [
+        {
+          "message": "Failed to read the 'serviceWorker' property from 'Navigator': Service worker is disabled because the context is sandboxed and lacks the 'allow-same-origin' flag.",
+          "stack": "SecurityError: Failed to read the 'serviceWorker' property from 'Navigator': Service worker is disabled because the context is sandboxed and lacks the 'allow-same-origin' flag.\n    at <anonymous>:3:15\n    at <anonymous>:5:7"
+        }
+      ],
+      "sandboxFrames": 1
+    },
+    {
+      "serviceWorkers": "allow",
+      "errors": [],
+      "sandboxFrames": 1
+    }
+  ],
+  "status": "verified"
+}

@@ -89,7 +89,7 @@ export async function get(base, path) {
 
 /** Raw request with a caller-chosen method — for exercising route dispatch
  * (wrong method, OPTIONS preflight) where fetch's helpers would get in the way.
- * `headers` lets an auth test send an X-Access-Key (or omit it). */
+ * `headers` adds request headers. */
 export async function request(base, path, { method = 'GET', headers } = {}) {
   const res = await fetch(`${base}${path}`, { method, headers });
   const out = await readResponse(res);

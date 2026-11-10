@@ -20,6 +20,15 @@
         ],
         "createdAt": "2026-11-05T23:37:07.769Z",
         "reason": "Agent: intentional inherited demo-host system fallback, identical to existing block.html line 19; preserve launcher continuity and the agreed shared GCSP Density theme."
+      },
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "files": [
+          "blocks/gcsp/presenter/fixtures.js"
+        ],
+        "createdAt": "2026-11-10T13:39:12.808Z",
+        "reason": "Agent triage: intentional captured-email fixture at presenter/fixtures.js:7 matches existing server/gcsp/notify/templates.js:46; preserving email typography during FUCQ-342 sign-out isolation fix."
       }
     ]
   }

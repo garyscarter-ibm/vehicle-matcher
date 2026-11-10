@@ -25,16 +25,15 @@ async function setup() {
   const activity = createActivityService({ repository, identity, clock });
   return { store, repository, policy, identity, clock, presenter, acting, context, brief, activity };
 }
-async function withHttp(f, work, { service = f.activity, accessKey = '' } = {}) {
-  const previousKey = process.env.DEMO_ACCESS_KEY; process.env.DEMO_ACCESS_KEY = accessKey;
+async function withHttp(f, work, { service = f.activity } = {}) {
   // This activity boundary has no vehicle lookup; avoid starting the full retained corpus in each fixture.
   const server = buildServer({ gcspIdentity: f.identity, gcspActivity: service, gcspBrief: f.brief, gcspAllowedOrigins: [origin],
     gcspVehicleEvidence: { lookup: { resolve: async () => ({ status: 'unavailable' }) } } });
   try {
     server.listen(0, '127.0.0.1'); await once(server, 'listening');
-    const request = async (path = '/activity', { method = 'GET', body, session = f.acting, origin: requestedOrigin = origin, key } = {}) => {
+    const request = async (path = '/activity', { method = 'GET', body, session = f.acting, origin: requestedOrigin = origin } = {}) => {
       const headers = { ...(session ? { cookie: cookie(session) } : {}), ...(requestedOrigin ? { Origin: requestedOrigin } : {}),
-        ...(key ? { 'X-Access-Key': key } : {}), ...(body ? { 'Content-Type': 'application/json' } : {}) };
+        ...(body ? { 'Content-Type': 'application/json' } : {}) };
       const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp${path}`, {
         method, headers, ...(body ? { body: JSON.stringify(body) } : {}),
       });
@@ -43,7 +42,6 @@ async function withHttp(f, work, { service = f.activity, accessKey = '' } = {}) 
     return await work(request);
   } finally {
     server.closeAllConnections(); await new Promise((done) => server.close(done)); await f.repository.close();
-    if (previousKey === undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY = previousKey;
   }
 }
 async function confirm(request) {
@@ -173,17 +171,15 @@ test('repository failures propagate through the injected reader and thrown servi
   }, { service: { readActivity() { throw new Error('private-provider-error'); } } });
 });
 
-test('activity inherits the shared access gate and exact-origin boundaries', async () => {
+test('activity enforces the exact-origin boundary', async () => {
   const f = await setup();
   await withHttp(f, async (request) => {
-    assert.equal((await request()).status, 401);
-    assert.equal((await request('/activity', { key: 'wrong' })).status, 401);
-    const allowed = await request('/activity', { key: 'activity-test-key' }); assert.equal(allowed.status, 200);
-    const denied = await request('/activity', { key: 'activity-test-key', origin: 'https://other.test' });
+    const allowed = await request('/activity'); assert.equal(allowed.status, 200);
+    const denied = await request('/activity', { origin: 'https://other.test' });
     assert.equal(denied.status, 403); assert.equal(denied.json.status, 'forbidden');
     assert.equal(denied.headers.get('Access-Control-Allow-Origin'), 'null');
-    const native = await request('/activity', { key: 'activity-test-key', origin: null }); assert.equal(native.status, 200);
+    const native = await request('/activity', { origin: null }); assert.equal(native.status, 200);
     const preflight = await request('/activity', { method: 'OPTIONS', session: null }); assert.equal(preflight.status, 204);
     assert.equal(preflight.headers.get('Access-Control-Allow-Origin'), origin);
-  }, { accessKey: 'activity-test-key' });
+  });
 });

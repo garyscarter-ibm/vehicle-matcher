@@ -26,7 +26,7 @@ async function alternativePolicy(edit) {
 
 async function launch(t, stockProvider, policy) {
   const https = await createLocalHttpsFixture(t);
-  const app = good(await startGcspDemo({ port: 0, accessKey: '', tls: https.configuration, runtime: { mode: 'memory', stockProvider,
+  const app = good(await startGcspDemo({ port: 0, tls: https.configuration, runtime: { mode: 'memory', stockProvider,
     ...(policy ? { policy } : {}),
     environmentId: 'demo-release', policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'demo-release-bootstrap',
     sessionNow: () => '2026-11-06T00:00:00.000Z' } }));

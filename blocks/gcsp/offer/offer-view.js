@@ -21,6 +21,8 @@ const blockerText = { 'contact-required': 'A valid contact phone and email are n
   'driver-review-required': 'Your driver details need review before you can accept.',
   'return-data-required': 'The details of the car you return are incomplete.',
   'ordering-terms-unavailable': 'The ordering terms are unavailable right now.' };
+const stateWords = { pending: 'open for your decision', accepted: 'accepted', declined: 'declined', expired: 'expired',
+  superseded: 'replaced by a newer offer', 'earlier-run': 'out of date', 'not-found': 'not found', refused: 'unavailable', uncertain: 'waiting for your decision to be confirmed' };
 const REFUSED_TITLE = 'Your selection was not sent to ordering';
 const isRefused = (model) => model.state === 'accepted' && model.selection?.selectionState === 'handoff-failed';
 const titleFor = (model) => isRefused(model) ? REFUSED_TITLE : titles[model.state] || titles.error;
@@ -139,8 +141,29 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     const cleanup = cleanupOrder; cleanupOrder = undefined;
     try { cleanup?.(); } catch { /* Teardown cannot prevent the offer from updating. */ }
   };
-  const refreshCurrent = () => { clearFollowup(); refresh?.(); };
   const announce = (text) => status.announce(text);
+  // FUCQ-332: a visible line under the check control; the result is spoken through the one view status.
+  const checkNode = el('p', 'gcsp-note'); checkNode.dataset.offerCheck = ''; checkNode.hidden = true;
+  let checking = false; let lastModel;
+  const showCheck = (text) => { checkNode.textContent = text; checkNode.hidden = !text; };
+  const identity = (model) => `${titleFor(model)}:${model?.reference?.offerId || ''}`;
+  function finishCheck(before, beforeStructure) {
+    checking = false; const model = lastModel;
+    if (!model || !content.contains(checkNode)) { showCheck(''); if (model) announce(titleFor(model)); return; }
+    const now = isRefused(model) ? 'accepted, selection not sent to ordering' : stateWords[model.state] || 'updated';
+    const text = model.state === 'error' ? 'Check not completed. Try again in a moment.'
+      : before.startsWith(`${titles.error}:`) || identity(model) !== before ? `Check complete. Current state: ${now}.`
+        : structure !== beforeStructure ? 'Check complete. The offer details have been updated.'
+          : model.state === 'uncertain' ? 'Check complete. Your decision is still being confirmed.' : 'Check complete. Nothing has changed.';
+    showCheck(text); announce(text); checkNode.scrollIntoView?.({ block: 'nearest' });
+  }
+  const refreshCurrent = () => {
+    if (checking || typeof refresh !== 'function') return;
+    const before = identity(lastModel); const beforeStructure = structure;
+    checking = true; clearFollowup(); status.clear(); showCheck('Checking the current offer state.');
+    let pending; try { pending = refresh(); } catch { /* The read port reports failure through the model. */ }
+    Promise.resolve(pending).catch(() => {}).then(() => finishCheck(before, beforeStructure));
+  };
   const followupUnavailable = (spoken = true) => {
     const text = 'Follow-up unavailable. Check the current offer again.';
     followupRoot.replaceChildren(el('p', 'gcsp-note', text)); if (spoken) announce(text);
@@ -150,7 +173,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     const followupFocused = followupRoot?.contains(root.ownerDocument.activeElement);
     const inPage = content.contains(root.ownerDocument.activeElement);
     clearFollowup(); clearOrder(); followupRoot = undefined;
-    content.replaceChildren();
+    content.replaceChildren(); if (!checking) showCheck('');
     optionsKey = undefined; wasOpen = false; lastError = '';
     const state = model.state;
     if (state === 'restarted' || state === 'access-lapsed') {
@@ -238,7 +261,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     }
     if (state !== 'loading') {
       const control = button({ label: state === 'error' ? 'Try again' : 'Check current state', variant: 'ghost', onClick: refreshCurrent });
-      control.dataset.offerAction = 'refresh'; content.append(control);
+      control.dataset.offerAction = 'refresh'; content.append(control, checkNode);
     }
     if (state === 'accepted' && accepting) {
       // The accept button is gone, so the outcome heading takes focus once, never on a later poll.
@@ -301,6 +324,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     lastError = reason.error; wasOpen = reason.open;
   }
   function update(model) {
+    lastModel = model;
     const nextStructure = JSON.stringify([model.state, model.card, model.currentCar, model.fixtureNotice, model.handoff, model.selection, model.orderUuid]);
     // Keep the kit's own decision live region and keyboard controls mounted across clock reads.
     if (structure !== nextStructure) { draw(model); structure = nextStructure; }
@@ -325,7 +349,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     const key = `${titleFor(model)}:${model.reference?.offerId || ''}`;
     if (model.state === 'pending' && model.checkingExpiry) announce('The deadline has been reached. Checking the current offer state.');
     else if (model.state === 'pending' && model.seconds !== null && model.seconds <= 300) announce('Less than five minutes remain on this offer.');
-    else if (previousState !== undefined && previousState !== 'loading' && (model.state !== previousState || key !== previousIdentity)) announce(titleFor(model));
+    else if (!checking && previousState !== undefined && previousState !== 'loading' && (model.state !== previousState || key !== previousIdentity)) announce(titleFor(model));
     previousState = model.state; previousIdentity = key;
   }
   return { update, destroy() { clearFollowup(); clearOrder(); page.remove(); } };

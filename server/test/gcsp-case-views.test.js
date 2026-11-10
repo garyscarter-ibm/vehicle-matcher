@@ -488,13 +488,13 @@ test('FUCQ-170: cancelling a preference change returns focus; history and owner 
   assert.doesNotMatch(q.querySelector('table').textContent, /scheme-team/); stop();
 });
 
-test('FUCQ-213: a lapsed access key reads as access needed, not unavailable', async () => {
+test('FUCQ-213: a bare 401 reads as an ended session, not unavailable', async () => {
   const { caseFailure } = await import('../../blocks/gcsp/cases/gcsp-help.js');
   const adapter = createCaseHttpAdapter({ fetchImpl: async () => ({ ok: false, status: 401, json: async () => ({ error: 'Unauthorized' }) }) });
   const lapsed = await adapter.readHelp();
   assert.equal(lapsed.status, 'access-required');
   const shown = caseFailure(lapsed);
-  assert.equal(shown.title, 'Access needed'); assert.doesNotMatch(`${shown.title} ${shown.text}`, /unavailable/i);
+  assert.equal(shown.title, 'Session ended'); assert.doesNotMatch(`${shown.title} ${shown.text}`, /unavailable/i);
 });
 test('FUCQ-208: owner role is shown only when it adds to the owner name', async () => {
   const { renderCaseContent } = await import('../../blocks/gcsp/cases/case-content.js');
@@ -567,7 +567,7 @@ test('FUCQ-297: unavailable remedies are hint text under the select, not option 
 });
 test('FUCQ-297: the case headings use the kit scale rather than the page-title size, and the queue is not a form stack', () => {
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-cases.css', import.meta.url), 'utf8');
-  assert.match(css, /h2\.vm-title[^}]*font-size: 20px/); assert.match(css, /h3\.vm-title[^}]*font-size: 18px/);
+  assert.match(css, /h2\.vm-title[^}]*font-size: var\(--gcsp-font-size-heading\)/); assert.match(css, /h3[^}]*\.vm-title[^}]*font-size: var\(--gcsp-font-size-regular\)/);
 });
 test('FUCQ-297: Paula sees an Ask for help button in view, tied to the caveat, that reveals and focuses the form and returns on Cancel', async () => {
   const f = await mount('none');

@@ -9,7 +9,7 @@ const origin = 'https://example.test/vehicle-matcher/';
 
 // Execute the real extracted boot, resolver, gate, chrome and launcher in jsdom.
 // Only the retail network mount is replaced; standalone keeps its actual inline boot.
-export function bootAt(suffix = '', { remote = false, stored = null, standalone = false,
+export function bootAt(suffix = '', { remote = false, standalone = false,
   employeeCapability = null, retailReturn = null } = {}) {
   const page = standalone ? 'block.html' : 'index.html';
   const html = readFileSync(new URL(`../../../${page}`, import.meta.url), 'utf8');
@@ -28,10 +28,8 @@ export function bootAt(suffix = '', { remote = false, stored = null, standalone 
     });
   };
   win.decorate = (block) => { mounts.push(block); };
-  win.ACCESS_KEY_STORAGE = 'vmAccessKey';
   Object.assign(win, { el, button, statusScreen, retailReturnUrl, ENTRY_REGISTRY, resolveEntryContext, buildEntryUrl, rememberRetailLocation, createRetailChrome, observeRetailNavigation, renderLauncher, employeeCapability });
   if (retailReturn) win.sessionStorage.setItem('vm-retail-return', retailReturn);
-  if (stored) win.sessionStorage.setItem(win.ACCESS_KEY_STORAGE, stored);
   win.document.addEventListener('demo-entry-ready', (event) => ready.push(event.detail));
   const source = standalone ? html.match(/<script type="module">([\s\S]*?)<\/script>/)[1]
     : readFileSync(new URL('../../../blocks/demo-launcher/boot.js', import.meta.url), 'utf8');

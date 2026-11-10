@@ -39,7 +39,7 @@ export function createOfferAccessHandler({ service, identity, allowedOrigins = [
     if (req.method === 'OPTIONS') {
       res.setHeader('Cache-Control', 'no-store');
       res.writeHead(204, { ...headers, 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, X-Access-Key' }); return res.end();
+        'Access-Control-Allow-Headers': 'Content-Type' }); return res.end();
     }
     if (!gateAuthorized) {
       res.setHeader('Cache-Control', 'no-store');

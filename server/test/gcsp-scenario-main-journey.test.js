@@ -11,7 +11,7 @@ const routeGood = (response) => { assert.equal(response.status, 200, JSON.string
 
 test('main-successful-journey starts at Paula\'s confirmed brief with no stock released and no offer, then Next release offers her a car', async (t) => {
   const https = await createLocalHttpsFixture(t);
-  const app = good(await startGcspDemo({ port: 0, accessKey: '', tls: https.configuration, runtime: { mode: 'memory',
+  const app = good(await startGcspDemo({ port: 0, tls: https.configuration, runtime: { mode: 'memory',
     stockProvider: (deps) => createDemoStockProvider(deps), environmentId: 'main-journey', policyAsOf: '2026-11-05T09:00:00.000Z',
     commandId: 'main-journey-bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z', adoptOfferJourney: true } }));
   t.after(() => app.close());

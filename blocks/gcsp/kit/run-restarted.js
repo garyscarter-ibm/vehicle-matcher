@@ -2,13 +2,13 @@ import { el, button, statusScreen } from '../../vehicle-matcher/ui.js';
 
 export const RUN_RESTARTED_TITLE = 'Restarted';
 export const RUN_RESTARTED_MESSAGE = 'This page was restarted. Reload to continue.';
-export const ACCESS_LAPSED_TITLE = 'Access needed';
-export const ACCESS_LAPSED_MESSAGE = 'Your access has lapsed. Enter the access key again, then open this offer from your account.';
+export const ACCESS_LAPSED_TITLE = 'Session ended';
+export const ACCESS_LAPSED_MESSAGE = 'Your session has ended. Open your account to continue.';
 
-// A restart refuses the old run or session; a lapsed access key reads 'access-required'. A reload recovers.
+// A restart refuses the old run or session; a bare 401 reads 'access-required'. A reload recovers.
 const RESTARTED = ['stale-run', 'unknown-session', 'access-required'];
 export const isRunRestarted = (reply) => RESTARTED.includes(reply?.status);
-// A lapsed access key is the server's bare 401 (no string status); an adapter maps it to { status: 'access-required' }.
+// A bare 401 (no string status); an adapter maps it to { status: 'access-required' }.
 export const isAccessLapsed = (httpStatus, body) => httpStatus === 401 && typeof body?.status !== 'string';
 // An empty href resolves to this page without its fragment, so the click is a full reload.
 const defaultReload = () => { const link = el('a'); link.setAttribute('href', ''); link.click(); };
@@ -27,8 +27,8 @@ export function runRestartedNotice({ reload = defaultReload } = {}) {
   return { root, reload: reloadButton };
 }
 
-/** For the offer link, which the access gate leaves open, so a reload cannot reach the access form. */
+/** For the offer link, where a reload would not restore the session: one link back to the account. */
 export function accessLapsedScreen({ next = '/gcsp-account.html' } = {}) {
   return statusScreen({ title: ACCESS_LAPSED_TITLE, message: ACCESS_LAPSED_MESSAGE, role: 'alert',
-    actions: [button({ label: 'Enter the access key', href: `/gcsp/access?next=${encodeURIComponent(next)}` })] });
+    actions: [button({ label: 'Open your account', href: next })] });
 }

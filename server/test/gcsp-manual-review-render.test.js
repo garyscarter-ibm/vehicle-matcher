@@ -69,6 +69,29 @@ test('pinned card, typed points, current contract and requested collection use n
   assert.match(f.root.textContent, new RegExp(`${rules.value.maximumSpecialRequirements} / ${rules.value.maximumSpecialRequirements} characters`));
   assert.equal(f.root.querySelectorAll('script, [onclick]').length, 0); assert.equal(f.ready, 0);
 });
+test('selected review gives the image caption its own space and keeps a full fallback frame', async (t) => {
+  const style = document.createElement('style');
+  style.textContent = ['blocks/vehicle-matcher/vehicle-matcher.css', 'blocks/vehicle-matcher/decision-card.css', 'blocks/gcsp/kit/vehicle-media.css']
+    .map((path) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8')).join('\n');
+  document.head.append(style); t.after(() => style.remove());
+  const f = setup(t); const display = f.model.quote.facts.display;
+  display.photo = '/assets/brand-hero/bmw.jpg'; display.images = [{ src: display.photo, caption: 'Representative image, not your exact car' }];
+  await settle(() => f.root.querySelector('.vm-card-photo'));
+  const media = f.root.querySelector('.vm-card-media'); const tag = media.querySelector('.vm-card-line');
+  assert.equal(window.getComputedStyle(media.querySelector('.vm-media-caption')).position, 'static');
+  assert.equal(window.getComputedStyle(media.querySelector('.vm-card-photo')).objectFit, 'contain');
+  assert.equal(window.getComputedStyle(tag).position, 'static');
+  assert.equal(window.getComputedStyle(tag).overflowWrap, 'anywhere');
+  assert.equal(tag.textContent, 'Car order 9000001');
+  media.querySelector('img').dispatchEvent(new window.Event('error'));
+  assert.equal(media.querySelector('.vm-media-caption'), null); assert.equal(media.querySelector('img'), null);
+  assert.equal(window.getComputedStyle(media).aspectRatio, '16 / 9');
+  assert.equal(window.getComputedStyle(media.querySelector('.vm-card-soon')).display, 'flex');
+  assert.equal(window.getComputedStyle(media.querySelector('.vm-card-soon')).position, 'static');
+  assert.equal(window.getComputedStyle(tag).position, 'static');
+  assert.equal(tag.textContent, 'Car order 9000001');
+  tag.textContent = ''; assert.equal(window.getComputedStyle(tag).display, 'none');
+});
 test('FUCQ-316: unknown pinned facts collapse into one line on the card and in the pinned details', async (t) => {
   const f = setup(t); await settle(() => control(f, 'contact.phone'));
   const card = f.root.querySelector('.vm-card'); const pinned = [...f.root.querySelectorAll('details')].find((node) => node.firstElementChild.textContent === 'Pinned vehicle details');

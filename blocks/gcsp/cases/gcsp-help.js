@@ -4,12 +4,13 @@ import { mountEmployee } from '../employee/gcsp-employee.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 import { createCaseHttpAdapter } from './http-adapter.js';
 import { renderCaseContent, preferenceLabel, shown, caseNotice } from './case-content.js';
+import { loadingSkeleton } from '../kit/loading-skeleton.js';
 
 let serial = 0;
 const unavailable = { status: 'unavailable', reason: 'Renewal help could not be loaded. Try again.' };
 export function caseFailure(envelope) {
   const status = envelope?.status;
-  if (status === 'access-required') return { title: 'Access needed', text: 'Your access has lapsed. Enter the access key again.' };
+  if (status === 'access-required') return { title: 'Session ended', text: 'Your session has ended. Reload to continue.' };
   const titles = { forbidden: 'You cannot open these cases', 'stale-run': 'This page is out of date',
     'stale-version': 'The case or your preferences have changed', conflict: 'The case or your preferences have changed', invalid: 'Review your request' };
   const detail = envelope?.reason ?? envelope?.reasons?.map((r) => r.reason).join(' ');
@@ -56,7 +57,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
     if (typeof announce === 'function' && !loading && status.textContent) announce(status.textContent);
     content.setAttribute('aria-busy', String(loading || saving));
     content.replaceChildren();
-    if (loading) { content.append(statusScreen({ title: 'Loading your cases', message: 'Reading your cases.', role: null })); return; }
+    if (loading) { content.append(loadingSkeleton({ label: 'Loading your cases', layout: 'card', role: null })); return; }
     if (failure) {
       const shown = caseFailure(failure);
       content.append(statusScreen({ title: shown.title, message: shown.text, role: null,
@@ -179,7 +180,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
 export function mountHelp(root, { adapter = createCaseHttpAdapter(), accountAdapter = createAccountHttpAdapter(), embedded = false, headingLevel = embedded ? 2 : 1, brand = 'bmw', announce, signOut = accountAdapter.signOut !== false } = {}) {
   if (embedded) return mountHelpBody(root, { adapter, headingLevel, announce });
   let body;
-  const shell = mountEmployee(root, { brand, signOut, view: 'help', viewLabel: 'Renewal help',
+  const shell = mountEmployee(root, { brand, signOut, view: 'help', viewLabel: 'Renewal help', loadingLayout: 'card',
     onNavigate: (to) => emit(root, 'gcsp:navigate', { to }), loadAccount: (options) => accountAdapter.loadAccount(options),
     renderBody: (main) => { body = mountHelpBody(main, { adapter, headingLevel }); return body; },
     onUnavailable: (reason) => emit(root, 'gcsp:unavailable', { reason }) });

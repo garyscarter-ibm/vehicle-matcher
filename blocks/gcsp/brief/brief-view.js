@@ -6,6 +6,7 @@ import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { decisionView, previewSummary } from './brief-view-model.js';
 import { BEST_MATCH } from '../kit/plain-copy.js';
 import { focusHeading } from '../kit/arrival-focus.js';
+import { loadingSkeleton } from '../kit/loading-skeleton.js';
 
 let sequence = 0;
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -20,7 +21,7 @@ export function mountBriefBody(main, adapters = {}) {
   let alive = true; let controller; let unsubscribe; let generation = 0; let landFocus = false;
   const prefix = `gcsp-brief-${++sequence}`;
   const cleanup = () => { alive = false; abort.abort(); unsubscribe?.(); controller?.destroy(); main.replaceChildren(); };
-  const loading = el('p', 'gcsp-note', 'Loading your preferences.'); loading.setAttribute('role', 'status'); main.replaceChildren(loading);
+  const loading = loadingSkeleton({ label: 'Loading your preferences.', layout: 'form' }); main.replaceChildren(loading);
   const externalAbort = () => cleanup();
   adapters.signal?.addEventListener('abort', externalAbort, { once: true });
   const finish = () => { adapters.signal?.removeEventListener('abort', externalAbort); cleanup(); };
@@ -174,7 +175,11 @@ export function mountBriefBody(main, adapters = {}) {
     const refresh = button({ label: 'Refresh and review', variant: 'ghost', onClick: () => { replacement.hidden = false; } }); refresh.hidden = true;
     const replacement = el('div', 'gcsp-brief-refresh'); replacement.hidden = true;
     replacement.append(el('p', 'gcsp-note', 'Replace your edits and permissions with your saved preferences?'), button({ label: 'Replace draft with saved preferences', onClick: () => load() }));
-    savePanel.append(saveButton, saveNote, refresh, replacement); form.append(savePanel);
+    // After a save with search on, the next step is watching the buddy work.
+    const onward = typeof adapters.onNavigate === 'function'
+      ? button({ label: 'See your buddy at work', variant: 'ghost', onClick: () => adapters.onNavigate('activity') }) : null;
+    if (onward) onward.hidden = true;
+    savePanel.append(saveButton, saveNote, ...(onward ? [onward] : []), refresh, replacement); form.append(savePanel);
     const preview = el('section', 'gcsp-brief-preview'); preview.id = `${prefix}-preview`; preview.tabIndex = -1;
     preview.append(el('h2', null, 'Cars that suit your preferences'));
     const status = el('p', 'gcsp-brief-preview-status');
@@ -201,6 +206,7 @@ export function mountBriefBody(main, adapters = {}) {
         : state.save.state === 'refresh-required' ? 'A newer saved version needs review. Your edits and permissions are still here.'
           : state.save.state === 'failed' ? 'Save failed. Your edits and permissions are kept. Try again.' : '';
       saveNote.hidden = !saveNote.textContent;
+      if (onward) onward.hidden = !(state.save.state === 'saved' && !state.dirty && state.consent.search);
       refresh.hidden = state.save.state !== 'refresh-required';
       preview.setAttribute('aria-busy', String(state.preview.state === 'loading'));
       const summary = previewSummary(state.preview); status.textContent = `${summary}${state.preview.state === 'unavailable' && adapters.previewUnavailableReason ? ` ${adapters.previewUnavailableReason}` : ''}`;
@@ -229,7 +235,10 @@ export function mountBriefBody(main, adapters = {}) {
       }
       if (state.save.state !== 'idle' && state.save.state !== 'saving') live.textContent = saveNote.textContent;
     };
-    unsubscribe = controller.subscribe(patch); patch(controller.snapshot()); controller.requestPreview();
+    const stopPatch = controller.subscribe(patch); patch(controller.snapshot()); controller.requestPreview();
+    // A presenter release changes stock, so re-run the preview on the edits as they stand.
+    const stopClock = typeof adapters.subscribeClock === 'function' ? adapters.subscribeClock(() => controller?.requestPreview()) : null;
+    unsubscribe = () => { stopPatch?.(); stopClock?.(); };
   }
   function load(useInitial = false) {
     const current = ++generation;
