@@ -283,5 +283,14 @@
   "rss_measurement_note": "Maximum measured RSS of one owned process group, accounting for both nested Node test groups. The conservative maximum of parent-plus-nested group peak sums is 390,234,112 bytes; component peaks need not be simultaneous.",
   "removed_duplicate_image_bytes_total": 1188026,
   "removed_successful_log_bytes_total": 60573,
-  "retained_critique_snapshot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-005/.impeccable/critique/2026-11-10T16-49-34Z__blocks-vehicle-matcher-component-gallery-js.md"
+  "retained_critique_snapshot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-005/.impeccable/critique/2026-11-10T16-49-34Z__blocks-vehicle-matcher-component-gallery-js.md",
+  "post_commit_cleanup": [
+    {
+      "recorded_at": "2026-11-10T16:56:43.966560+00:00",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-005/_tools/__pycache__/scaffold_git.cpython-314.pyc",
+      "bytes_removed": 178633,
+      "cause": "Unintended Python import bytecode from final Git wrapper call; exact owned file removed, subsequent calls use python3 -B.",
+      "file_absent": true
+    }
+  ]
 }

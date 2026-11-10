@@ -1382,7 +1382,7 @@
   ],
   "resources": {
     "file": "docs/gcsp/evidence/fucq346/resources.json",
-    "sha256": "280369685135c4f35524c5c7fb05a32972e7f54ca1a5f47ddc482753964b4c97",
+    "sha256": "70de79c4b189382faea1e4d5ac6c83f070c30243a7651e42c1efa59b0ab7ce43",
     "all_owned_roots_absent": true,
     "roots": 10,
     "peak_scratch_bytes": 7083323,
@@ -1600,7 +1600,9 @@
         "slug": "blocks-vehicle-matcher-component-gallery-js"
       }
     ],
-    "temporary_body_deleted": true
+    "temporary_body_deleted": true,
+    "roster_clarification": "No separate implementer was spawned. Assessment A and B were direct lead children; neither reviewer nor runner spawned descendants.",
+    "snapshot_sha256": "c71d5ce7c678855285c1e50b141474c7fa82e0cb7820fd30062f7566fe42ac67"
   },
   "rendered_evidence_reuse": "All blocks/components.html/scripts/package inputs unchanged from9cc11eb6 after base829cf1a9 merge348fc769; frozen source/test identities and all29retainedcapture hashes rechecked. Advanced-base test assertion changes validated by162scoped checks."
 }

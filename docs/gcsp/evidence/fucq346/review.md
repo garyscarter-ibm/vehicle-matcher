@@ -82,7 +82,7 @@ The three supplied original screenshots were viewed and hash-verified by the lea
 | Lord Business | `gpt-6.1-sol` / `high`, mapped Opus reviewer | Isolated Assessment A; Lord Business | `01a1c649-ea9a-7cd2-aac7-745d6b478f2a` |
 | Mr Troop | `gpt-6-luna` / `high`, mapped Haiku runner | Isolated Assessment B; Mr Troop | `01a1c64f-efb1-77c3-be8c-5f78a14ce27f` |
 
-No model fallback was used. These are requested/selected pairs; effective runtime identity was not independently confirmed. Saved titles were verified using `set_thread_title` and `read_thread`. No implementer or descendant was spawned for this small repair.
+No model fallback was used. These are requested/selected pairs; effective runtime identity was not independently confirmed. Saved titles were verified using `set_thread_title` and `read_thread`. No separate implementer was spawned. Assessment A and B were direct lead children; neither reviewer nor runner spawned descendants.
 
 All four original criteria have scoped evidence. Final integration, native Jira lifecycle and collaborator acceptance remain dispatcher-owned; this critique does not establish a Done transition.
 
