@@ -1,0 +1,54 @@
+{
+  "schema_version": "fucq345-fresh-base-validation.v1",
+  "recorded_at": "2026-11-10T16:10:57.365875+00:00",
+  "result": "scoped-pass",
+  "merge_head": "6880c502c8c6739e3714fbaaab7396f4658693a5",
+  "merge_tree": "35c31c93a3c33021b16aba7f6398a5abdf99306c",
+  "fresh_base": "43e4c1be2ca66951a0ddc4a1ff11332df48974be",
+  "old_reviewed_base": "95f391414685638618f71665ab23630508f7aa45",
+  "reviewed_runtime_checkpoint": "5a5ae694923c26c59acb81a121a56683e424159c",
+  "parent_accepted_built_checkpoint": "18d1af7af539b9523af787c0321ee9cf53cc68b0",
+  "proof_path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/targeted-6396496c21d1cf5817977af2f6d1e4be6bde8b0003e424981fb9e3a58bf033b8-default-1794326953169044000.json",
+  "proof_sha256": "34c193bdd317fab0b4942ddeb30485ab7f3f4d2b05519b61c2aa03149d4242e9",
+  "proof_copy": "fresh-base-targeted-proof.json",
+  "checkpoint_path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/bbc65c73e883ccd55a46572d7f0a53223da76d23a6bba81ce052dc2a631bcd96.json",
+  "checkpoint_sha256": "fe169a18d006fdcb71aeedf81e2241afb300805051fdc5787ed633c3c99de275",
+  "command": "node --test --test-concurrency=1 server/test/gcsp-manual-review-render.test.js server/test/ui-ratchet.test.js",
+  "scope": "targeted",
+  "variant": "default",
+  "counts": {
+    "tests": 115,
+    "pass": 115,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "wall_seconds": 1.0,
+  "code_key": "6396496c21d1cf5817977af2f6d1e4be6bde8b0003e424981fb9e3a58bf033b8",
+  "execution_identity": {
+    "code": "6396496c21d1cf5817977af2f6d1e4be6bde8b0003e424981fb9e3a58bf033b8",
+    "environment": "a17777dd888d4e85a96f6f9438f52168079ebcc94ed06d699e6bbdd3591dc8e4",
+    "inputs": {},
+    "interpreter": [
+      "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+    ],
+    "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+    "scope": "targeted",
+    "selected": [
+      "node --test --test-concurrency=1 server/test/gcsp-manual-review-render.test.js server/test/ui-ratchet.test.js"
+    ],
+    "settings": "685e25a539fbdfc0861c04d0cf20e64cfce6292dc1feb171fdab7db2d051b37b",
+    "variant": "default",
+    "version": 1
+  },
+  "dirty": true,
+  "dirty_reason": "Only local product-map/evidence/finding metadata was pending. Targeted proof covers its exact stable working identity; no production/test/fixture/config file changed. Subsequent changes are final evidence/Result/map metadata only.",
+  "selected_reason": "Parent final fresh-base gate after three inbox-MD-only additions. Original media regression and unchanged shared UI ratchet selected explicitly; noJS affected-selector plugin/broad fallback.",
+  "reuse": "All19 current rendered source hashes and42selected import/fixture/config/CSS/package files match prior bytes. Existing independent A/B and original18current captures remain unchanged. No browser/newreview/shell-entry/full rerun.",
+  "static_audit": "fresh-base-static-audit.json",
+  "exclusions": "No159test shell-entry repeat, new browser/independent review, full suite, nativeDB/live adapters/deployed acceptance. Previous operational/provenance limits retained.",
+  "resource_receipt": "fresh-base-resource-receipt.json",
+  "fucq349": "Captured/unfixed/held for importer origin reconciliation; two verified native Story links retained;4cacheimagesready0missing; no merge dependency."
+}

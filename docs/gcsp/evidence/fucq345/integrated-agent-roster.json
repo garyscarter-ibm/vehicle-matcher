@@ -8,7 +8,7 @@
     "selected": "gpt-6.1-sol/xhigh",
     "effective": "not independently inspected",
     "fallback": null,
-    "state": "handover-ready"
+    "state": "fresh-base-handover-ready"
   },
   "implementer": {
     "name": "Grub",
@@ -70,7 +70,7 @@
       "id": "FUCQ-349",
       "finding": "B-1 selected-review/confirmation heading hierarchy",
       "severity": "Low",
-      "state": "To Do/unassigned; root verified native links to FUCQ-70/FUCQ-72/FUCQ-345/FUCQ-286",
+      "state": "To Do/unassigned/unfixed; local pickup held for importer exactly1origin reconciliation. Both verified native F70/F72 links retained;4cacheimagesready0missing.",
       "fixed": false
     }
   ]

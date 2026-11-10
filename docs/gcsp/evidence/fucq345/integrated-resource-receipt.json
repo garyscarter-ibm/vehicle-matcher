@@ -1,7 +1,7 @@
 {
   "schema_version": "fucq345-resource-final.v1",
   "run_id": "20261110-01a1c587-fucq345",
-  "recorded_at": "2026-11-10T15:59:56.484677+00:00",
+  "recorded_at": "2026-11-10T16:10:57.365875+00:00",
   "workers": "one supervised test/browser unit at a time; shared machine reservation",
   "selected_chunk_limits": {
     "scratch_bytes": 134217728,
@@ -142,6 +142,17 @@
       ]
     },
     {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/7ba47561906048ed984d7cf92722df22.json",
+      "root": "/private/tmp/test-stamp-shard-7ba47561906048ed984d7cf92722df22",
+      "state": "removed",
+      "recorded_removed": 1794326952.596266,
+      "verified_absent": true,
+      "measured_peak_bytes": 0,
+      "groups": [
+        34027
+      ]
+    },
+    {
       "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/7ce3ac8021fc47f8a4e88070c5b7f48e.json",
       "root": "/private/tmp/test-stamp-shard-7ce3ac8021fc47f8a4e88070c5b7f48e",
       "state": "removed",
@@ -263,7 +274,7 @@
       ]
     }
   ],
-  "allocation_count": 23,
+  "allocation_count": 24,
   "all_owned_roots_absent": true,
   "cumulative_measured_scratch_high_water_removed_bytes": 63043257,
   "maximum_measured_scratch_bytes": 9931131,
@@ -273,10 +284,9 @@
     "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-004/server/node_modules",
     "expected_target": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules",
     "target_existed_before": true,
-    "actual_target": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules",
-    "unlinked_only": true,
     "verified_absent": true,
-    "target_preserved": true
+    "target_preserved": true,
+    "fresh_base_check": "No dependency path/link recreated; selected modules require jsdom only. Prior owned symlink already removed and its installed target remains preserved."
   },
   "claim_hook": {
     "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-claim",
@@ -360,6 +370,29 @@
       "bytes": 466,
       "sha256": "4e984b95ecdadb9ad7446377cce33adb3cd25ebf9e005686731710050ebf1651",
       "verified_absent": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/logs/20261110-160911-dhbp6xa8/chunk-0001.log",
+      "bytes": 12812,
+      "sha256": "6178903ce19870835a1cdf81c2e664b6371dff96f2d1cdf40fccc5bb4d4f93e4",
+      "verified_absent": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-fresh-base-targeted.log",
+      "bytes": 13353,
+      "sha256": "19472ff7e464f15bd52451320a8a49a3389057644234ba5bf2abffb2e65d3cb9",
+      "verified_absent": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/logs/20261110-160911-dhbp6xa8/run.json",
+      "bytes": 99,
+      "record": {
+        "ended": 1794326952.597895,
+        "finished": true,
+        "owner": 33987,
+        "started": 1794326951.567399
+      },
+      "verified_absent": true
     }
   ],
   "retained_check_summaries": [
@@ -378,8 +411,7 @@
         "removed": true,
         "root": "/private/tmp/test-stamp-shard-85fbfde9a9b547939c49434e9586178c"
       },
-      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-green-logs/chunk-0001.log",
-      "successful_verbose_log": "removed after retaining compact result and output artifacts"
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-green-logs/chunk-0001.log"
     },
     {
       "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/1ceed81c464b62eaf6330366f2128fd130ce9779e652f57cc82e7f69f63e14f6.json",
@@ -414,8 +446,7 @@
         "removed": true,
         "root": "/private/tmp/test-stamp-shard-34bf79135fe04b48822d2ada3ff9ecef"
       },
-      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-assessment-b-direct2-logs/chunk-0001.log",
-      "successful_verbose_log": "removed after retaining compact result and output artifacts"
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-assessment-b-direct2-logs/chunk-0001.log"
     },
     {
       "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/2313a74391534f7d07c19c85b1cf41f1ce487b8a157f95cfcdd494921d81485c.json",
@@ -504,8 +535,7 @@
         "removed": true,
         "root": "/private/tmp/test-stamp-shard-151f42ecb1764628ad3cea7aa10e59b4"
       },
-      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-assessment-b-http2-logs/chunk-0001.log",
-      "successful_verbose_log": "removed after retaining compact result and output artifacts"
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-assessment-b-http2-logs/chunk-0001.log"
     },
     {
       "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/4da86ab09aa6324ec2015e89936088f798b4038506d13c31bda56a589d70c815.json",
@@ -522,8 +552,7 @@
         "removed": true,
         "root": "/private/tmp/test-stamp-shard-4d86d2160c9c42ad8e259d77f48d190c"
       },
-      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-assessment-b-logs/chunk-0001.log",
-      "successful_verbose_log": "removed after retaining compact result and output artifacts"
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-assessment-b-logs/chunk-0001.log"
     },
     {
       "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/5d5f344961c69993bf4990ef70cd431fb6609b7b88470523af9d2f45ec8dda33.json",
@@ -540,8 +569,7 @@
         "removed": true,
         "root": "/private/tmp/test-stamp-shard-aef7601b9f174f0597b7980889afb44e"
       },
-      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-gallery-media-logs/chunk-0001.log",
-      "successful_verbose_log": "removed after retaining compact result and output artifacts"
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-gallery-media-logs/chunk-0001.log"
     },
     {
       "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/6b53493d353b5e95570ff31e11019db9ff1fc16081651bfee7ff9a9b2e7f5d60.json",
@@ -558,8 +586,7 @@
         "removed": true,
         "root": "/private/tmp/test-stamp-shard-388ce9dc9e30471fac4080c2e9dc74a0"
       },
-      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-flow-browser-logs/chunk-0001.log",
-      "successful_verbose_log": "removed after retaining compact result and output artifacts"
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-flow-browser-logs/chunk-0001.log"
     },
     {
       "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/88e6aa98b12cad09337f4b60c953efb3e0067eb47d984e16d508a83e04f25428.json",
@@ -576,8 +603,7 @@
         "removed": true,
         "root": "/private/tmp/test-stamp-shard-7ce3ac8021fc47f8a4e88070c5b7f48e"
       },
-      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-flow-green-final-logs/chunk-0001.log",
-      "successful_verbose_log": "removed after retaining compact result and output artifacts"
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-flow-green-final-logs/chunk-0001.log"
     },
     {
       "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/8ec10a56571b940f274792377b828a52abdc7e2a0a564cade0e31aa5db529995.json",
@@ -612,8 +638,7 @@
         "removed": true,
         "root": "/private/tmp/test-stamp-shard-5d33d7819df44328844d4ad2cacdd9da"
       },
-      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-assessment-b-detector-logs/chunk-0001.log",
-      "successful_verbose_log": "removed after retaining compact result and output artifacts"
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-assessment-b-detector-logs/chunk-0001.log"
     },
     {
       "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/9691a8c8a45b75f4dc8fe763f95c1f9ef3b1b9b782caed7adba2375c44c9a4fd.json",
@@ -632,6 +657,25 @@
       },
       "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-flow-red-logs/chunk-0001.log",
       "retained_log_bytes": 1005
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/bbc65c73e883ccd55a46572d7f0a53223da76d23a6bba81ce052dc2a631bcd96.json",
+      "unit": "6b54e31113d781859ab31baf5a638934da9cd72ef217db838425e476f89f8ec3",
+      "rc": 0,
+      "wall_seconds": 0.9702227920060977,
+      "issue": null,
+      "peak_scratch_bytes": 0,
+      "peak_rss_bytes": 294567936,
+      "cleanup": {
+        "local_scratch_reason": "Bounded scoped Node checks; no large output intended",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/7ba47561906048ed984d7cf92722df22.json",
+        "peak": 0,
+        "removed": true,
+        "root": "/private/tmp/test-stamp-shard-7ba47561906048ed984d7cf92722df22"
+      },
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/logs/20261110-160911-dhbp6xa8/chunk-0001.log",
+      "retained_log_bytes": 12812,
+      "successful_verbose_log": "Removed exact owned finished log directory after retaining summary,hash,counts,targeted proof and checkpoint."
     },
     {
       "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/bf83cb804120d7c605a0863c0aa0a3377ece63fb6c99b846a6ddc1e9651e8422.json",
@@ -666,8 +710,7 @@
         "removed": true,
         "root": "/private/tmp/test-stamp-shard-6c7482ed4c324285b4ac5fed218ad57b"
       },
-      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-gallery-probe-logs/chunk-0001.log",
-      "successful_verbose_log": "removed after retaining compact result and output artifacts"
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-gallery-probe-logs/chunk-0001.log"
     },
     {
       "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/d30fb13212dfba7cc6ca86d72109f3c557b068238d5f6c984899d0b21083e091.json",
@@ -702,8 +745,7 @@
         "removed": true,
         "root": "/private/tmp/test-stamp-shard-930d33dda06c4c8786d2505b871597c3"
       },
-      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-assessment-b-diagnostics2-logs/chunk-0001.log",
-      "successful_verbose_log": "removed after retaining compact result and output artifacts"
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-assessment-b-diagnostics2-logs/chunk-0001.log"
     },
     {
       "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/ecf04fb1d0c7a3b5b583c30d63e4fcf7f8189a40f1f351935a22b30851ea1262.json",
@@ -720,8 +762,7 @@
         "removed": true,
         "root": "/private/tmp/test-stamp-shard-572287f46d6740729e5206952db7bae9"
       },
-      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-scoped-import-resolved-logs/chunk-0001.log",
-      "successful_verbose_log": "removed after retaining compact result and output artifacts"
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-scoped-import-resolved-logs/chunk-0001.log"
     },
     {
       "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/efa24db54c868c62773e0373abc186ab098257dec5ca69ac1bf1178e0cc5a889.json",
@@ -773,8 +814,7 @@
         "removed": true,
         "root": "/private/tmp/test-stamp-shard-23e0c6c5ebc54be6a1cbe3fcdf2e0f2f"
       },
-      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-critique-storage-logs/chunk-0001.log",
-      "successful_verbose_log": "removed after retaining compact result and output artifacts"
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-critique-storage-logs/chunk-0001.log"
     }
   ],
   "retained_evidence": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-004/docs/gcsp/evidence/fucq345",
@@ -793,5 +833,20 @@
     "allocated": false
   },
   "leftovers": [],
-  "status": "clean"
+  "status": "clean",
+  "prior_cleanup_receipt": {
+    "commit": "18d1af7af539b9523af787c0321ee9cf53cc68b0",
+    "path": "docs/gcsp/evidence/fucq345/integrated-resource-receipt.json",
+    "sha256": "ac0513a356a093e4eda895e84558e84f49c0d2dc8643a150a7c91ac6be2a9519",
+    "allocation_count": 23,
+    "dependency_unlink_evidence": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-004/server/node_modules",
+      "expected_target": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules",
+      "target_existed_before": true,
+      "actual_target": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules",
+      "unlinked_only": true,
+      "verified_absent": true,
+      "target_preserved": true
+    }
+  }
 }

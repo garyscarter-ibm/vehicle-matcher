@@ -4215,15 +4215,15 @@
       "type": "Bug",
       "assignee": "usget",
       "branch": "dev/DEV-2026-11-10-004",
-      "observed_at": "2026-11-10T16:02:09Z",
+      "observed_at": "2026-11-10T16:11:41Z",
       "workers": [
         {
           "name": "Michigan J. Frog",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-10T16:02:09.270405+00:00",
-          "expires_at": "2026-11-10T16:02:09.270405+00:00",
-          "source": "Lead final scoped Built handover; three original media ACs pass; final resource audit clean; parent owns integration/Jira acceptance.",
+          "observed_at": "2026-11-10T16:11:41.105952+00:00",
+          "expires_at": "2026-11-10T16:11:41.105952+00:00",
+          "source": "Final fresh-base scoped handover:115/115;24owned roots absent, no further owned workers; parent owns base merge/archive/Jira lifecycle.",
           "status": "stopped"
         },
         {
@@ -4273,13 +4273,14 @@
           "id": "integration",
           "status": "complete",
           "title": "Scoped-delivery-validation",
-          "observed_at": "2026-11-10T16:02:09Z",
-          "evidence": "Frozen5a5ae694/base95f39141 scoped/default shell+hosted-entry+ratchet159/159; prior unchanged-media170/170 reused. All19source+64historical hashes match. Final audit:23owned roots absent, pg link removed/target preserved,no leftovers. Result/evidence committed with handover; no full/deployed/live acceptance."
+          "observed_at": "2026-11-10T16:11:41Z",
+          "evidence": "Fresh metadata-only base43e4c1be merged6880c502; selected-review+UIratchet targeted/default115/115,0skips,1.0s. All19rendered+42import/input hashes match; independent A/B reused.24owned roots absent,no pg/link/install,clean. fresh-base-validation-receipt.json. Original3ACs fixed; parent integration/Jira acceptance pending."
         }
       ],
       "unsliced": false,
-      "delivery_status": "built; pending parent integration and collaborator acceptance",
-      "jira_status_basis": "Last native observed In Progress; local completion does not infer acceptance or transition Jira."
+      "delivery_status": "Built; final fresh-base scoped check complete; pending parent base merge and collaborator acceptance",
+      "jira_status_basis": "Last verified native status In Progress. Parent subsequent refresh failed OAuth unauthorized_client invalid refresh_token; lifecycle remains pending sign-in, no transition inferred.",
+      "integration_base": "43e4c1be2ca66951a0ddc4a1ff11332df48974be"
     }
   ]
 }

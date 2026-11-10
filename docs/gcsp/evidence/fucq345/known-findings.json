@@ -23,17 +23,19 @@
       "jira": "FUCQ-349",
       "severity": "Low",
       "design_priority": "P2",
-      "state": "To Do; unassigned; unfixed",
+      "state": "To Do; unassigned; unfixed; local pickup held for tooling reconciliation",
       "scope": "Incumbent selected-review/confirmation heading hierarchy; fixed mediaACs pass",
       "observed": "DefaultmatchCard headingh3 follows pageh1 without parenth2",
       "evidence": "heading-finding.json; assessment-b/runtime-diagnostics.json; diagnostic-classification.json",
-      "disposition": "Separate linked backlog Bug; no FUCQ-345 repair or merge dependency.",
+      "disposition": "Separate linked Low backlog Bug; captured/unfixed/held for importer reconciliation; no FUCQ-345 repair, scope expansion or merge dependency.",
       "originating_stories": [
         "FUCQ-70",
         "FUCQ-72"
       ],
       "root_verification": "Parent native readback verified Low/unassigned/To Do, parent FUCQ-7; Relates links to FUCQ-70/FUCQ-72, discovery FUCQ-345 and residual context FUCQ-286. All four supplied JPEG attachments matched sizes and were visually inspected by parent. FUCQ-72 verified as declarations/actual handoff originating Story.",
-      "source": "Parent dispatcher direct report, 10 November 2026"
+      "source": "Parent dispatcher direct report, 10 November 2026",
+      "pickup": "Held: importer currently requires exactly one native originating Story; verified FUCQ-70 and FUCQ-72 links are both retained. Captured does not mean pickup-ready.",
+      "cache": "DEV-2026-11-10-008 import committed/pushed at43e4c1be; all4 evidence cache entries verified ready,0missing by parent."
     }
   ],
   "incumbent_observations": [

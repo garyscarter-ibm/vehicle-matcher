@@ -1,0 +1,226 @@
+{
+  "version": 2,
+  "task": "FUCQ-345",
+  "run_id": "20261110-01a1c587-fucq345",
+  "status": "scoped-validated-independent-review-complete",
+  "identity_key": "6396496c21d1cf5817977af2f6d1e4be6bde8b0003e424981fb9e3a58bf033b8",
+  "applicationIdentity": {
+    "run_id": "20261110-01a1c587-fucq345",
+    "worktree": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-004",
+    "source_checkpoint": "5a5ae694923c26c59acb81a121a56683e424159c",
+    "integrated_base": "95f391414685638618f71665ab23630508f7aa45",
+    "source_sha256": {
+      "blocks/gcsp/kit/vehicle-media.css": "50ea18446b8b5fca69223ce74c39b32224b6dbdc04a0e992b6de79aaa14cb976",
+      "blocks/vehicle-matcher/component-gallery.js": "aede0b8d75c22d979e52d280c25c0402fea85f7119ca2c7b2323d88dbeb43e72",
+      "server/test/gcsp-manual-review-render.test.js": "9cd2ca49c9de7db3832a3a996f21a9bf18cbb67537539a4eb344f8ad30de4a17",
+      "blocks/gcsp/manual-review/gcsp-manual-review.js": "5aae587f77187083f8af937872122685d36d3b49c21f2fe8bb3c82299256e82d",
+      "blocks/gcsp/manual-summary/gcsp-manual-summary.js": "c1b14b61ab0455761b15f23e0474c415def0a6cf464fc5325c72c7c98bb08d7f",
+      "blocks/gcsp/shell/gcsp-shell.css": "786711b25e747ae88dd5f4bf5b6c0fc704179c263d00d061283bd62b1a62b874",
+      "blocks/gcsp/kit/loading-skeleton.css": "52842786c0442bd9d7ccaafa8dc54d0ae167f532696c413766181bc836b70d72",
+      "blocks/gcsp/kit/loading-skeleton.js": "fb4cdbccadaac29b531ba515210a30c42535ebaad38b889520f003d42b5017ea",
+      "server/test/ui-ratchet.json": "cd26bcb292d06c9043f06da7a1bd600dcc059e8b8194d84283a5411b1a17118b",
+      "COMPONENTS.md": "9484f8d05a0afd803ee4fc408dd26321b88abfb75d94231c83a4eb00781b0774",
+      "blocks/gcsp/shell/account-runtime.js": "7e3312a03ab84e6465d76c59006f70ab91f4fec257ba422bda2a4d181e4dadf0",
+      "server/index.js": "9403b9266b7e1f12cd870bde87ecf93b114674ada23f19e5f80d7722ad75c316",
+      "server/gcsp/host.js": "ad559298831d446beef0ba4993ca5918be4b6bb71523912891ccb9785c750aae",
+      "server/gcsp/offers/access-http.js": "a17f8af461cc9ccf6f9b3b94eec18cd7e98b7c394d8dd6f189848576f7cdd97d",
+      "server/gcsp/offers/decision-http.js": "49087b694b327e7d41f682a7997968f6e6e989ff868eb0ae8b0a8d7359c4da85",
+      "server/test/helpers/gcsp-decline-change-route.js": "9d2079250e40b87e17a6cdce465dfab66a52e23ce88c0358d297822ede4de7b7",
+      "server/test/gcsp-hosted-entry.test.js": "5dabd10c0ca8fb281b08c11486512417af8f39c8b7ef30a290dff6d73e57dfae",
+      "server/test/gcsp-shell.test.js": "3a2f8d1e693bf0ea3de6119ddacd9e17c645445a0e18d42e40b7a2e0f50c8037",
+      "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+    },
+    "policy": "Runtime/test source frozen for final corrected captures and independent review; report and evidence may be committed separately.",
+    "prior_media_review_source": "e81db95ae0198679f7d4daf08a2132ca3a3c942d",
+    "prior_evidence_checkpoint": "2708d11eec0e57af0acc3aa867a55482d2f68869",
+    "refresh_reason": "Latest fixed-header/rail and removed entry access gate; media/review production bytes unchanged. New integrated runtime/shell/adjacent evidence required."
+  },
+  "test_sha256": {
+    "server/test/gcsp-manual-review-render.test.js": "9cd2ca49c9de7db3832a3a996f21a9bf18cbb67537539a4eb344f8ad30de4a17",
+    "server/test/gcsp-shell.test.js": "3a2f8d1e693bf0ea3de6119ddacd9e17c645445a0e18d42e40b7a2e0f50c8037",
+    "server/test/gcsp-loading-skeleton.test.js": "668f717ea9551bc8fa0b29fa4e26dbdf890db74827ccce662582c4acd7f4aeea",
+    "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7",
+    "server/test/gcsp-hosted-entry.test.js": "5dabd10c0ca8fb281b08c11486512417af8f39c8b7ef30a290dff6d73e57dfae"
+  },
+  "environment": {
+    "node": "v26.7.0",
+    "jsdom": "installed existing dependency",
+    "pg": "8.23.1 via owned temporary symlink; no database connection"
+  },
+  "regression": "Shared selected-review bottom tag overlapped absolute caption; shared CSS now gives image, wrapping tag and caption separate flow and preserves16:9 absent/broken frame.",
+  "fileFunctionMap": [
+    {
+      "source": [
+        "blocks/gcsp/kit/vehicle-media.css",
+        "blocks/gcsp/manual-review/gcsp-manual-review.js::reviewVehicleView",
+        "blocks/gcsp/manual-summary/gcsp-manual-summary.js"
+      ],
+      "checks": [
+        "server/test/gcsp-manual-review-render.test.js"
+      ],
+      "edge": "real production retail/card/shared CSS loaded into jsdom; known image, error/fallback, empty tag, exact order tag, caption flow, object-fit; fixture adapters prove DOM not live service behavior"
+    },
+    {
+      "source": [
+        "blocks/gcsp/shell/gcsp-shell.css",
+        "blocks/gcsp/kit/loading-skeleton.js",
+        "blocks/gcsp/kit/loading-skeleton.css"
+      ],
+      "checks": [
+        "server/test/gcsp-shell.test.js",
+        "server/test/gcsp-loading-skeleton.test.js"
+      ],
+      "edge": "refreshed aff66 shell import, employee mount, account states, CSP, token isolation, reduced motion and helper layout roles"
+    },
+    {
+      "source": [
+        "blocks/vehicle-matcher/component-gallery.js",
+        "blocks/gcsp/kit/vehicle-media.css",
+        "COMPONENTS.md"
+      ],
+      "checks": [
+        "server/test/ui-ratchet.test.js",
+        "server/test/gcsp-manual-gallery-render.test.js (reused implementer flow-green-final)"
+      ],
+      "edge": "shared kit/catalogue/gallery and fixed7line media stylesheet cap; roots+UIratchet config filesystem scan; no baseline raised"
+    },
+    {
+      "source": [
+        "blocks/gcsp/offer",
+        "blocks/gcsp/activity",
+        "blocks/vehicle-matcher/modes/result-card.js"
+      ],
+      "checks": [
+        "server/test/gcsp-offer-view-render.test.js",
+        "server/test/shared-kit-contracts.test.js",
+        "server/test/exact-listing-decision.test.js (reused matching prior scoped evidence)",
+        "offline1280/375 adjacent offer/activity retained captures"
+      ],
+      "edge": "review-specific normal flow excluded from adjacent offer/activity top tag selector; retained no-photo frame applies to shared consumers; identity and contracts unchanged"
+    },
+    {
+      "source": [
+        "server/index.js",
+        "server/gcsp/host.js",
+        "server/gcsp/offers/access-http.js",
+        "server/gcsp/offers/decision-http.js",
+        "blocks/gcsp/shell/account-runtime.js"
+      ],
+      "checks": [
+        "server/test/gcsp-hosted-entry.test.js",
+        "server/test/gcsp-shell.test.js",
+        "independent B actual offline runtime:18 current1280/375 captures,20state/geometry records, lead visual critique"
+      ],
+      "edge": "Latest entry gate removal touches capture/bootstrap boundary; exact claim/quote logic unchanged. No comprehensive upstream access suite inferred."
+    }
+  ],
+  "fixtureConfigSubprocessEdges": [
+    "server/gcsp/policy/seed-v1.json; manual review policy fixture inputs and adapter doubles",
+    "node --test --test-concurrency=1; one subprocess worker through test_resources supervisor",
+    "server/test/ui-ratchet.json; shared CSS/card imports; no PostgreSQL runtime"
+  ],
+  "selection": {
+    "affected_selector": "NoJavaScript plugin; explicit narrow command, no broad fallback",
+    "command": "node --test --test-concurrency=1 server/test/gcsp-manual-review-render.test.js server/test/ui-ratchet.test.js",
+    "reason": "Parent final fresh-base gate after three inbox-MD-only additions. Original media regression and unchanged shared UI ratchet selected explicitly; noJS affected-selector plugin/broad fallback.",
+    "proof": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/targeted-6396496c21d1cf5817977af2f6d1e4be6bde8b0003e424981fb9e3a58bf033b8-default-1794326953169044000.json",
+    "code_key": "6396496c21d1cf5817977af2f6d1e4be6bde8b0003e424981fb9e3a58bf033b8",
+    "scope": "targeted",
+    "variant": "default",
+    "pass": 115,
+    "fail": 0,
+    "skipped": 0,
+    "wall_seconds": 1.0,
+    "reuse": "Original19reviewed source and42selected import/input bytes match; prior159/170/138 and independent A/B retained without overlapping sums or reruns."
+  },
+  "coverage_observation": {
+    "per_test_contexts": "unavailable in configured Node affected selector/test runner; no measured per-test coverage contexts were generated",
+    "basis": "reviewed imports, ownership and CSS boundaries plus actual regression and offline browser evidence; missing observations do not imply irrelevance",
+    "unknown": [
+      "unrun full suite",
+      "nativePostgreSQL",
+      "deployed integration",
+      "browser engines other than isolated Chromium"
+    ]
+  },
+  "regressionTiming": null,
+  "prior_failures": "Initial2module missingpg imports resolved by rerun35/35; initial browser serviceWorkers:block sandbox failure and intermediate eighth CSSline ratchet failure preserved in receipts; current selected checks passed.",
+  "cleanup": {
+    "status": "clean",
+    "receipt": "integrated-resource-receipt.json;fresh-base-resource-receipt.json",
+    "owned_scratch_roots_absent": 24,
+    "cumulative_measured_scratch_high_water_removed_bytes": 63043257,
+    "maximum_measured_scratch_bytes": 9931131,
+    "maximum_measured_group_rss_bytes": 419643392,
+    "dependency_link": "Unlinked only; existing target preserved",
+    "leftovers": []
+  },
+  "prior_identity_map": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq345-c48afc137542711121eb1b83ea34b40c142727236c586a67e7f95a57f7359201.json",
+  "recorded_at": "2026-11-10T16:10:57.365875+00:00",
+  "browser_review": {
+    "assessment_a": "assessment-a.md; independent blind scoped PASS,29/40;26 state captures reviewed before B detector output",
+    "assessment_b": "assessment-b/assessment-b.md;18currentcaptures,20stategeometryrecords; all19frozen source and18image hashes verified",
+    "cli": "exit0; raw[] for supported JS target; not a CSS/whole-product guarantee",
+    "runtime": "5loaded original injections emitted7/10/6/9/4groups; diagnostic followup41findings/36groups classified in diagnostic-classification.json",
+    "known_findings": [
+      "FUCQ-347:Low gallery caption/provenance; separate/unfixed",
+      "FUCQ-349:Low incumbent heading hierarchy; separate/unfixed/held for importer exactly1origin reconciliation; nativeF70/F72links retained,4cacheready"
+    ],
+    "score": "29/40;first recorded run,no trend yet",
+    "limitations": "Original capture-helper contemporaneous hash and original injected detector hash not retained; native tool-managed context disrupted;11aborted fetches lack precise abort timing. Offline memory/Chromium only."
+  },
+  "fresh_base_integration": {
+    "schema_version": "fucq345-fresh-base-validation.v1",
+    "recorded_at": "2026-11-10T16:10:57.365875+00:00",
+    "result": "scoped-pass",
+    "merge_head": "6880c502c8c6739e3714fbaaab7396f4658693a5",
+    "merge_tree": "35c31c93a3c33021b16aba7f6398a5abdf99306c",
+    "fresh_base": "43e4c1be2ca66951a0ddc4a1ff11332df48974be",
+    "old_reviewed_base": "95f391414685638618f71665ab23630508f7aa45",
+    "reviewed_runtime_checkpoint": "5a5ae694923c26c59acb81a121a56683e424159c",
+    "parent_accepted_built_checkpoint": "18d1af7af539b9523af787c0321ee9cf53cc68b0",
+    "proof_path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/targeted-6396496c21d1cf5817977af2f6d1e4be6bde8b0003e424981fb9e3a58bf033b8-default-1794326953169044000.json",
+    "proof_sha256": "34c193bdd317fab0b4942ddeb30485ab7f3f4d2b05519b61c2aa03149d4242e9",
+    "proof_copy": "fresh-base-targeted-proof.json",
+    "checkpoint_path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/checkpoints/bbc65c73e883ccd55a46572d7f0a53223da76d23a6bba81ce052dc2a631bcd96.json",
+    "checkpoint_sha256": "fe169a18d006fdcb71aeedf81e2241afb300805051fdc5787ed633c3c99de275",
+    "command": "node --test --test-concurrency=1 server/test/gcsp-manual-review-render.test.js server/test/ui-ratchet.test.js",
+    "scope": "targeted",
+    "variant": "default",
+    "counts": {
+      "tests": 115,
+      "pass": 115,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "wall_seconds": 1.0,
+    "code_key": "6396496c21d1cf5817977af2f6d1e4be6bde8b0003e424981fb9e3a58bf033b8",
+    "execution_identity": {
+      "code": "6396496c21d1cf5817977af2f6d1e4be6bde8b0003e424981fb9e3a58bf033b8",
+      "environment": "a17777dd888d4e85a96f6f9438f52168079ebcc94ed06d699e6bbdd3591dc8e4",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "targeted",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/gcsp-manual-review-render.test.js server/test/ui-ratchet.test.js"
+      ],
+      "settings": "685e25a539fbdfc0861c04d0cf20e64cfce6292dc1feb171fdab7db2d051b37b",
+      "variant": "default",
+      "version": 1
+    },
+    "dirty": true,
+    "dirty_reason": "Only local product-map/evidence/finding metadata was pending. Targeted proof covers its exact stable working identity; no production/test/fixture/config file changed. Subsequent changes are final evidence/Result/map metadata only.",
+    "selected_reason": "Parent final fresh-base gate after three inbox-MD-only additions. Original media regression and unchanged shared UI ratchet selected explicitly; noJS affected-selector plugin/broad fallback.",
+    "reuse": "All19 current rendered source hashes and42selected import/fixture/config/CSS/package files match prior bytes. Existing independent A/B and original18current captures remain unchanged. No browser/newreview/shell-entry/full rerun.",
+    "static_audit": "fresh-base-static-audit.json",
+    "exclusions": "No159test shell-entry repeat, new browser/independent review, full suite, nativeDB/live adapters/deployed acceptance. Previous operational/provenance limits retained.",
+    "resource_receipt": "fresh-base-resource-receipt.json",
+    "fucq349": "Captured/unfixed/held for importer origin reconciliation; two verified native Story links retained;4cacheimagesready0missing; no merge dependency."
+  }
+}

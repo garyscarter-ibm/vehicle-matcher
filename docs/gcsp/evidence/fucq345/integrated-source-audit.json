@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-10T16:03:01.228716+00:00",
+  "checked_at": "2026-11-10T16:12:06.610171+00:00",
   "integrated_source_checkpoint": "5a5ae694923c26c59acb81a121a56683e424159c",
   "integrated_base": "95f391414685638618f71665ab23630508f7aa45",
   "historical_manifest_sha256": "a4cd6ca924df46a8f8cb6986eaa5e0755c7de0d9f198d9354c004fc793ca8a2a",
@@ -48,5 +48,20 @@
       "original_absent_and_copy_hash_matches": true
     }
   ],
-  "audit_evaluator_correction": "Initial final hash evaluator incorrectly treated matching root/fallback names as ambiguous and expected intentionally removed B originals to exist. Root-relative manifest names now take priority; removed originals are verified absent with their hash-matching retained copies. No evidence bytes or runtime/test source changed."
+  "audit_evaluator_correction": "Initial final hash evaluator incorrectly treated matching root/fallback names as ambiguous and expected intentionally removed B originals to exist. Root-relative manifest names now take priority; removed originals are verified absent with their hash-matching retained copies. No evidence bytes or runtime/test source changed.",
+  "fresh_base_reassessment": {
+    "base": "43e4c1be2ca66951a0ddc4a1ff11332df48974be",
+    "merge_head": "6880c502c8c6739e3714fbaaab7396f4658693a5",
+    "only_added_paths": [
+      "_dev/code-inbox/DEV-2026-11-10-006.md",
+      "_dev/code-inbox/DEV-2026-11-10-007.md",
+      "_dev/code-inbox/DEV-2026-11-10-008.md"
+    ],
+    "static_audit": "fresh-base-static-audit.json",
+    "source_files_matching": 19,
+    "selected_graph_input_files_matching": 42,
+    "targeted_proof": "fresh-base-targeted-proof.json",
+    "scope": "targeted/default115/115; rendering source identity unchanged so independent current evidence reused",
+    "current_shared_impact_map": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq345-6396496c21d1cf5817977af2f6d1e4be6bde8b0003e424981fb9e3a58bf033b8.json"
+  }
 }

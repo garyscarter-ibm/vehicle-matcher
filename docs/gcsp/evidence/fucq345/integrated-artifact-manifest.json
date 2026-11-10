@@ -1,9 +1,9 @@
 {
   "schema_version": "fucq345-integrated-artifacts.v1",
-  "recorded_at": "2026-11-10T16:03:01.228716+00:00",
+  "recorded_at": "2026-11-10T16:12:06.610171+00:00",
   "source_checkpoint": "5a5ae694923c26c59acb81a121a56683e424159c",
   "integrated_base": "95f391414685638618f71665ab23630508f7aa45",
-  "scope": "Final retained evidence,Result and observed product-map bytes; self excluded to avoid recursive hashing. Runtime source identity remains separately frozen.",
+  "scope": "Final current evidence/Result/product-map bytes including metadata-only fresh-base reassessment; rendered source remains frozen at5a5ae694/base95f39141. Self excluded. Prior version retained in commit18d1af7a.",
   "artifacts": [
     {
       "path": ".impeccable/critique/2026-11-10T15-57-16Z__blocks-gcsp-manual-review-gcsp-manual-review-js.md",
@@ -12,13 +12,13 @@
     },
     {
       "path": ".product-map/work.json",
-      "bytes": 202887,
-      "sha256": "292bb5f012f3ff1f08ebebfb40600bebd60d0556fcc75f2b4a3c56352f25bc1e"
+      "bytes": 203098,
+      "sha256": "efc5e1879b9883e17419ee7e8d13caeb37ff97e333e899f4dac2a0264c262352"
     },
     {
       "path": "_dev/in-progress/DEV-2026-11-10-004.md",
-      "bytes": 12098,
-      "sha256": "7e45915448f6318da890f7131613d554736ecf71f6ab83e3570d77e82f9cd8c7"
+      "bytes": 15431,
+      "sha256": "baf91093d6050e12a68cee74d72104d28f9d32bd72da32c39f1219488ae0aeb8"
     },
     {
       "path": "docs/gcsp/evidence/fucq345/01-before-selected-1280.jpg",
@@ -446,9 +446,44 @@
       "sha256": "d77b0d2b39762585bdfcf2796c0a6230ea1c1b10ac770589061c203213b4f584"
     },
     {
+      "path": "docs/gcsp/evidence/fucq345/fresh-base-impact-map.json",
+      "bytes": 14275,
+      "sha256": "7c5f1c811db4bcccff1c6fce7628d66f65a3a865bad4aacd90a44eae13c8498a"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq345/fresh-base-plan.json",
+      "bytes": 2844,
+      "sha256": "274da9d502caab88ce8a3aa9d7568cd0f12a201a7d5af0a244ee8a7213c0d740"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq345/fresh-base-resource-receipt.json",
+      "bytes": 2500,
+      "sha256": "c7fa70b9ed721d51533f8034b3a40aa407f7efd65429bd234c8e9112f41ec1f8"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq345/fresh-base-static-audit.json",
+      "bytes": 9536,
+      "sha256": "e1b89dbcaafe1e76a0137f149c7e8b6c5c64bf73f0098f0d191e9f64b8376ab5"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq345/fresh-base-targeted-proof.json",
+      "bytes": 9455,
+      "sha256": "34c193bdd317fab0b4942ddeb30485ab7f3f4d2b05519b61c2aa03149d4242e9"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq345/fresh-base-targeted-summary.txt",
+      "bytes": 421,
+      "sha256": "248e8f2a003eaa6c4413c9fe13a81012621772471744e2bb36a42ff4440111c1"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq345/fresh-base-validation-receipt.json",
+      "bytes": 3508,
+      "sha256": "3e4e2eaaff05bd28b89c86d34e331dbb84267fbf8ccb2615fc13e4f2f49792d2"
+    },
+    {
       "path": "docs/gcsp/evidence/fucq345/heading-finding.json",
-      "bytes": 4278,
-      "sha256": "9b2d119b8dddffcf3e01b4cb0e5b82a6143b3915486d326aadae830d322d66b1"
+      "bytes": 4578,
+      "sha256": "471394be4049695d7aca7e832cfd8c0de03c72434b0d2727ed5fc2919e0f9edc"
     },
     {
       "path": "docs/gcsp/evidence/fucq345/impact-map.json",
@@ -457,33 +492,33 @@
     },
     {
       "path": "docs/gcsp/evidence/fucq345/integrated-agent-roster.json",
-      "bytes": 2936,
-      "sha256": "be235dedca0acde5e867f9bb36ffb3bd60759be55bfbff75219487a9779793a2"
+      "bytes": 3024,
+      "sha256": "6e485031684af581ff5a783498200e82a14736556eed69ad7b2fb39f968c9b38"
     },
     {
       "path": "docs/gcsp/evidence/fucq345/integrated-delivery.md",
-      "bytes": 3854,
-      "sha256": "65fbaf441cd2e6347c2895e7625b66d777e8b7191aad2e90567b69c43e421461"
+      "bytes": 4799,
+      "sha256": "47cd126050c440305023f4cb49a14f5612c5f0a5dca8fdcd9d750fee72be15a1"
     },
     {
       "path": "docs/gcsp/evidence/fucq345/integrated-impact-map.json",
-      "bytes": 10565,
-      "sha256": "3a7ea9d15f2902d22b277cc0803ea72255ec1982f70fa75ed907013d46964c2c"
+      "bytes": 14330,
+      "sha256": "9a10d35bdd263e3c5c813edbb198d3a1971f680a021605c039f042601bce03f2"
     },
     {
       "path": "docs/gcsp/evidence/fucq345/integrated-resource-receipt.json",
-      "bytes": 38640,
-      "sha256": "ac0513a356a093e4eda895e84558e84f49c0d2dc8643a150a7c91ac6be2a9519"
+      "bytes": 40731,
+      "sha256": "b3ecd91971ad4fbfc544c929a04687eb7a6228e8baca067bad4b8fc34d6d5d9a"
     },
     {
       "path": "docs/gcsp/evidence/fucq345/integrated-review.md",
-      "bytes": 13471,
-      "sha256": "b769c453ec685d4dcf3b59da6916ac732d4def878754ac9deea675c63f802146"
+      "bytes": 14148,
+      "sha256": "3662c7318ff18b70d914c101ff557f26472fc1d60d3395690ecc723718c364f0"
     },
     {
       "path": "docs/gcsp/evidence/fucq345/integrated-source-audit.json",
-      "bytes": 3217,
-      "sha256": "6824da7fd9b5e53e6edb662db20a51dc286cc45575cb54f9f580c0c8711a9d26"
+      "bytes": 4022,
+      "sha256": "14d43fb74b39be2c4126129d407b22b28ec72b9fe4d626ae408bb0efe191ef1c"
     },
     {
       "path": "docs/gcsp/evidence/fucq345/integrated-source-manifest.json",
@@ -497,8 +532,8 @@
     },
     {
       "path": "docs/gcsp/evidence/fucq345/known-findings.json",
-      "bytes": 2663,
-      "sha256": "f106fd29e401a4ccdef821e2e4e8e276ebc3c51d6a42420be657494691483500"
+      "bytes": 3099,
+      "sha256": "6e8b4de49ec9e90479079942e21c6e7d9f4980ab8b2ce5bde991b1c7cea67782"
     },
     {
       "path": "docs/gcsp/evidence/fucq345/proof/capture-flow-driver.py",
@@ -565,7 +600,18 @@
       "mismatches": []
     },
     "B_report_sha256": "ec03c9c4a00af5cb59f1e2f717a6c1b4aa3469be70ff4319333afa279e363cc7",
-    "A_report_sha256": "1aa23ab29cfcad02ca44082a7faa43c64c9d740af6e6878187cfc43e48173200"
+    "A_report_sha256": "1aa23ab29cfcad02ca44082a7faa43c64c9d740af6e6878187cfc43e48173200",
+    "fresh_base": {
+      "source_files": 19,
+      "selected_graph_and_inputs": 42,
+      "scope": "targeted/default",
+      "pass": 115,
+      "fail": 0,
+      "skipped": 0,
+      "mismatches": []
+    }
   },
-  "result": "pass"
+  "result": "pass",
+  "fresh_integration_base": "43e4c1be2ca66951a0ddc4a1ff11332df48974be",
+  "fresh_merge_head": "6880c502c8c6739e3714fbaaab7396f4658693a5"
 }

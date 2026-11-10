@@ -4,7 +4,7 @@
   "severity": "Low",
   "design_priority": "P2",
   "suggested_product_priority": "P3; minor structural accessibility issue, no blocked car-ordering action",
-  "state": "To Do; unassigned; unfixed",
+  "state": "To Do; unassigned; unfixed; local pickup held for tooling reconciliation",
   "source_checkpoint": "5a5ae694923c26c59acb81a121a56683e424159c",
   "integrated_base": "95f391414685638618f71665ab23630508f7aa45",
   "originating_story_basis": "Parent verified FUCQ-70 as selected-review composition and FUCQ-72 as declarations/actual handoff outcome. Native Relates links to both Stories, discovery FUCQ-345 and residual context FUCQ-286 read back. This final metadata supersedes the original packet origin caveat; its reproduction/source/image bytes are unchanged.",
@@ -77,5 +77,6 @@
     }
   ],
   "disposition": "Separate linked Low backlog Bug FUCQ-349; unfixed, no FUCQ-345 repair, added AC or merge dependency.",
-  "jira": "FUCQ-349"
+  "jira": "FUCQ-349",
+  "pickup_hold": "Current importer expects exactly one native originating Story while both verified FUCQ-70/FUCQ-72 links remain. Parent verified4cacheimagesready0missing. No native links/other-contributor claims changed; no FUCQ-345 merge dependency."
 }
