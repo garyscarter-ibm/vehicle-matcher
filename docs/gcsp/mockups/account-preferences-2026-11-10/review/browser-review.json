@@ -31,6 +31,26 @@
       "passed": true
     },
     {
+      "label": "Your Cars imports only GC’s replacement control",
+      "passed": true
+    },
+    {
+      "label": "GC history and details follow Preferences in both document and layout order",
+      "passed": true
+    },
+    {
+      "label": "GC components retain the single shared history table and Employee/Drivers rows",
+      "passed": true
+    },
+    {
+      "label": "GC record projection handles supplied hyphenated statuses",
+      "passed": true
+    },
+    {
+      "label": "Discussion replacement action does not navigate or submit an order",
+      "passed": true
+    },
+    {
       "label": "Same again guidance lives in an initially hidden tooltip",
       "passed": true
     },
@@ -715,6 +735,38 @@
       "passed": true
     },
     {
+      "label": "1440: GC record opens in the shared drawer",
+      "passed": true
+    },
+    {
+      "label": "1440: record sections identify contract, collection and vehicle",
+      "passed": true
+    },
+    {
+      "label": "1440: drawer fits the viewport",
+      "passed": true
+    },
+    {
+      "label": "1440: closing record returns focus to its named row",
+      "passed": true
+    },
+    {
+      "label": "375: GC record opens in the shared drawer",
+      "passed": true
+    },
+    {
+      "label": "375: record sections identify contract, collection and vehicle",
+      "passed": true
+    },
+    {
+      "label": "375: drawer fits the viewport",
+      "passed": true
+    },
+    {
+      "label": "375: closing record returns focus to its named row",
+      "passed": true
+    },
+    {
       "label": "No uncaught page errors",
       "passed": true
     }
@@ -750,14 +802,17 @@
     "320-same-tooltip-long.png",
     "320-same-again-neutral.png",
     "320-rating-tooltip-long.png",
-    "1440-missing-image.png"
+    "1440-missing-image.png",
+    "1440-record-drawer.png",
+    "375-record-drawer.png"
   ],
   "consoleErrors": [],
   "failures": [],
   "codeIdentity": {
     "index.html": "424a1cffe33ef295db5faf0325c324ad86fddb1bb48926e7ef091d6e18455beb",
-    "mockup.js": "39bbec3285160f0980755487fcc100e71988276f209cc0a96b379bb9f35276e0",
-    "mockup.css": "59264755ee5c91ddd9dbd4323da9eab4dc937ea1d5958882a3b773ac5bd237d2"
+    "mockup.js": "6e468e0eac00e7e914a5cfdd3419bb6cead39a42557bc1a95285fc6db4edff70",
+    "mockup.css": "97770f98bdad074ef06907d3fa23f6902f2d5961ce7dda40760d23ea3993dc59",
+    "gc-record-preview.js": "fa6939fe3ab24384f202d0d1298641ba1efc0c02ccad9389404651dbeef2a025"
   },
   "independentReview": "See visual-review.md for independent critique and corrective review.",
   "environment": {
@@ -822,7 +877,8 @@
         "visibleTooltips": [
           "same-again-help"
         ],
-        "feedback": "0 of 3 categories considered · Preferences save automatically",
+        "record": null,
+        "feedback": "The replacement journey opens here in the application. This discussion preview does not place an order.",
         "activeElement": ""
       }
     },
@@ -880,7 +936,8 @@
         "visibleTooltips": [
           "rating-help"
         ],
-        "feedback": "0 of 3 categories considered · Preferences save automatically",
+        "record": null,
+        "feedback": "The replacement journey opens here in the application. This discussion preview does not place an order.",
         "activeElement": ""
       }
     },
@@ -936,6 +993,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "0 of 3 categories considered · Preferences save automatically",
         "activeElement": ""
       }
@@ -992,6 +1050,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Choose 3 more categories to engage Buddy. Your preferences save automatically.",
         "activeElement": "preference-status"
       }
@@ -1048,6 +1107,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "Comfort, considered: A bit of both"
       }
@@ -1104,6 +1164,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       }
@@ -1160,6 +1221,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": "Body, considered: Touring / Estate"
       }
@@ -1216,6 +1278,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       }
@@ -1272,6 +1335,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "same-again"
       }
@@ -1328,6 +1392,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       }
@@ -1384,6 +1449,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       }
@@ -1440,6 +1506,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       }
@@ -1496,6 +1563,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       }
@@ -1552,6 +1620,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       }
@@ -1608,6 +1677,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       }
@@ -1664,6 +1734,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Buddy engaged. Your preferences will guide the search.",
         "activeElement": ""
       }
@@ -1720,6 +1791,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       }
@@ -1776,6 +1848,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": "Comfort, considered: As comfortable as possible"
       }
@@ -1832,6 +1905,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "How much comfort would you like?"
       }
@@ -1888,6 +1962,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": ""
       }
@@ -1944,6 +2019,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "same-again"
       }
@@ -2000,6 +2076,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "0 of 3 categories considered · Preferences save automatically",
         "activeElement": "Body, choose a preference"
       }
@@ -2056,6 +2133,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": ""
       }
@@ -2112,6 +2190,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "importance-body"
       }
@@ -2168,6 +2247,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "same-again"
       }
@@ -2224,6 +2304,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "0 of 3 categories considered · Preferences save automatically",
         "activeElement": "Fuel, choose a preference"
       }
@@ -2280,6 +2361,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "importance-fuel"
       }
@@ -2338,6 +2420,7 @@
         "visibleTooltips": [
           "same-again-help"
         ],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": "About Same again, please!"
       }
@@ -2394,6 +2477,7 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "same-again"
       }
@@ -2452,6 +2536,7 @@
         "visibleTooltips": [
           "rating-help"
         ],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "4 stars: I really like it"
       }
@@ -2508,8 +2593,123 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
+      }
+    },
+    {
+      "file": "1440-record-drawer.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=selected",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "record": "Car record · BMW Choices\n\nBMW 3 Series Touring 320i\nClose\nContract\nStatus\nCurrent car\nDriver\nPaula Mason\nTerm\n6 months\nAnnual mileage\n12,000 mi/year\nContract end\n1 December 2026\nCollection\nCollected\n1 June 2026\nReplacement window\n12 November 2026 to 1 December 2026\nCurrent mileage\n5,200 mi\nOrder and vehicle\n\nNot supplied for this car.\n\nTechnical specification and options\n\nModel or handbook evidence does not confirm the fitted equipment on your car.\n\nNot supplied for this car.\n\nPrint record",
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": "gcsp-side-drawer-1"
+      }
+    },
+    {
+      "file": "375-record-drawer.png",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=selected",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "record": "Car record · BMW Choices\n\nBMW 3 Series Touring 320i\nClose\nContract\nStatus\nCurrent car\nDriver\nPaula Mason\nTerm\n6 months\nAnnual mileage\n12,000 mi/year\nContract end\n1 December 2026\nCollection\nCollected\n1 June 2026\nReplacement window\n12 November 2026 to 1 December 2026\nCurrent mileage\n5,200 mi\nOrder and vehicle\n\nNot supplied for this car.\n\nTechnical specification and options\n\nModel or handbook evidence does not confirm the fitted equipment on your car.\n\nNot supplied for this car.\n\nPrint record",
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": "gcsp-side-drawer-1"
       }
     }
   ],
@@ -2521,25 +2721,25 @@
       "image": true,
       "imageBox": {
         "x": 97,
-        "y": 174.0625,
+        "y": 198.0625,
         "width": 814,
         "height": 457.875
       },
       "drawnImage": {
         "x": 97,
-        "y": 174.0625,
+        "y": 198.0625,
         "width": 814,
         "height": 457.875
       },
       "media": {
         "x": 97,
-        "y": 174.0625,
+        "y": 198.0625,
         "width": 814,
         "height": 457.875
       },
       "rating": {
         "x": 683,
-        "y": 579.9375,
+        "y": 603.9375,
         "width": 220,
         "height": 44
       },
@@ -2548,13 +2748,13 @@
         "x": 96,
         "y": 76,
         "width": 1296,
-        "height": 1064
+        "height": 1496
       },
       "content": {
         "x": 48,
         "y": 56,
         "width": 1392,
-        "height": 1116
+        "height": 1548
       },
       "buddyFont": 23,
       "buddyLamp": {
@@ -2598,13 +2798,13 @@
         "x": 144,
         "y": 76,
         "width": 1680,
-        "height": 1273.875
+        "height": 1657.875
       },
       "content": {
         "x": 48,
         "y": 56,
         "width": 1872,
-        "height": 1325.875
+        "height": 1709.875
       },
       "buddyFont": 23,
       "buddyLamp": {
@@ -2621,25 +2821,25 @@
       "image": true,
       "imageBox": {
         "x": 97,
-        "y": 260.78125,
+        "y": 284.78125,
         "width": 477,
         "height": 268.3125
       },
       "drawnImage": {
         "x": 97,
-        "y": 260.78125,
+        "y": 284.78125,
         "width": 477,
         "height": 268.3125
       },
       "media": {
         "x": 97,
-        "y": 260.78125,
+        "y": 284.78125,
         "width": 477,
         "height": 268.3125
       },
       "rating": {
         "x": 346,
-        "y": 477.09375,
+        "y": 501.09375,
         "width": 220,
         "height": 44
       },
@@ -2648,13 +2848,13 @@
         "x": 96,
         "y": 76,
         "width": 956,
-        "height": 1149.9375
+        "height": 1602.9375
       },
       "content": {
         "x": 48,
         "y": 56,
         "width": 1052,
-        "height": 1201.9375
+        "height": 1654.9375
       },
       "buddyFont": 23,
       "buddyLamp": {
@@ -2671,25 +2871,25 @@
       "image": true,
       "imageBox": {
         "x": 97,
-        "y": 268.84375,
+        "y": 292.84375,
         "width": 439,
         "height": 246.9375
       },
       "drawnImage": {
         "x": 97,
-        "y": 268.84375,
+        "y": 292.84375,
         "width": 439,
         "height": 246.9375
       },
       "media": {
         "x": 97,
-        "y": 268.84375,
+        "y": 292.84375,
         "width": 439,
         "height": 246.9375
       },
       "rating": {
         "x": 308,
-        "y": 463.78125,
+        "y": 487.78125,
         "width": 220,
         "height": 44
       },
@@ -2698,13 +2898,13 @@
         "x": 96,
         "y": 76,
         "width": 880,
-        "height": 1147.3125
+        "height": 1621.3125
       },
       "content": {
         "x": 48,
         "y": 56,
         "width": 976,
-        "height": 1199.3125
+        "height": 1673.3125
       },
       "buddyFont": 23,
       "buddyLamp": {
@@ -2721,25 +2921,25 @@
       "image": true,
       "imageBox": {
         "x": 97,
-        "y": 285.46875,
+        "y": 309.46875,
         "width": 377,
         "height": 212.0625
       },
       "drawnImage": {
         "x": 97,
-        "y": 285.46875,
+        "y": 309.46875,
         "width": 377,
         "height": 212.0625
       },
       "media": {
         "x": 97,
-        "y": 285.46875,
+        "y": 309.46875,
         "width": 377,
         "height": 212.0625
       },
       "rating": {
         "x": 246,
-        "y": 445.53125,
+        "y": 469.53125,
         "width": 220,
         "height": 44
       },
@@ -2748,13 +2948,13 @@
         "x": 96,
         "y": 76,
         "width": 756,
-        "height": 1146.5
+        "height": 1636.5
       },
       "content": {
         "x": 48,
         "y": 56,
         "width": 852,
-        "height": 1198.5
+        "height": 1688.5
       },
       "buddyFont": 23,
       "buddyLamp": {
@@ -2771,25 +2971,25 @@
       "image": true,
       "imageBox": {
         "x": 73,
-        "y": 281.96875,
+        "y": 305.96875,
         "width": 361,
         "height": 203.0625
       },
       "drawnImage": {
         "x": 73,
-        "y": 281.96875,
+        "y": 305.96875,
         "width": 361,
         "height": 203.0625
       },
       "media": {
         "x": 73,
-        "y": 281.96875,
+        "y": 305.96875,
         "width": 361,
         "height": 203.0625
       },
       "rating": {
         "x": 206,
-        "y": 433.03125,
+        "y": 457.03125,
         "width": 220,
         "height": 44
       },
@@ -2798,13 +2998,13 @@
         "x": 72,
         "y": 76,
         "width": 724,
-        "height": 1183.5
+        "height": 1694.5
       },
       "content": {
         "x": 48,
         "y": 56,
         "width": 772,
-        "height": 1235.5
+        "height": 1746.5
       },
       "buddyFont": 23,
       "buddyLamp": {
@@ -2848,13 +3048,13 @@
         "x": 16,
         "y": 72,
         "width": 343,
-        "height": 1640.5
+        "height": 2424.5
       },
       "content": {
         "x": 0,
         "y": 56,
         "width": 375,
-        "height": 1680.5
+        "height": 2464.5
       },
       "buddyFont": 23,
       "buddyLamp": {
@@ -2898,13 +3098,13 @@
         "x": 16,
         "y": 72,
         "width": 288,
-        "height": 1735.5625
+        "height": 2582.5625
       },
       "content": {
         "x": 0,
         "y": 56,
         "width": 320,
-        "height": 1775.5625
+        "height": 2622.5625
       },
       "buddyFont": 23,
       "buddyLamp": {
@@ -2921,45 +3121,45 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": -602.3125,
+        "y": -662.3125,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": -602.3125,
+        "y": -662.3125,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": -602.3125,
+        "y": -662.3125,
         "width": 286,
         "height": 160.875
       },
       "rating": {
         "x": 75,
-        "y": -493.4375,
+        "y": -553.4375,
         "width": 220,
         "height": 44
       },
       "ratingBackground": "rgba(0, 0, 0, 0)",
       "canvas": {
         "x": 16,
-        "y": -722,
+        "y": -782,
         "width": 288,
-        "height": 1969.5625
+        "height": 2816.5625
       },
       "content": {
         "x": 0,
-        "y": -738,
+        "y": -798,
         "width": 320,
-        "height": 2009.5625
+        "height": 2856.5625
       },
       "buddyFont": 23,
       "buddyLamp": {
         "x": 16,
-        "y": -649.5625,
+        "y": -709.5625,
         "width": 18,
         "height": 18
       }
@@ -2971,45 +3171,45 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": -619.3125,
+        "y": -838.3125,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": -619.3125,
+        "y": -838.3125,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": -619.3125,
+        "y": -838.3125,
         "width": 286,
         "height": 160.875
       },
       "rating": {
         "x": 75,
-        "y": -510.4375,
+        "y": -729.4375,
         "width": 220,
         "height": 44
       },
       "ratingBackground": "rgba(0, 0, 0, 0)",
       "canvas": {
         "x": 16,
-        "y": -739,
+        "y": -958,
         "width": 288,
-        "height": 1843.5625
+        "height": 2690.5625
       },
       "content": {
         "x": 0,
-        "y": -755,
+        "y": -974,
         "width": 320,
-        "height": 1883.5625
+        "height": 2730.5625
       },
       "buddyFont": 23,
       "buddyLamp": {
         "x": 16,
-        "y": -666.5625,
+        "y": -885.5625,
         "width": 18,
         "height": 18
       }
@@ -3021,45 +3221,45 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": -437.3125,
+        "y": -497.3125,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": -437.3125,
+        "y": -497.3125,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": -437.3125,
+        "y": -497.3125,
         "width": 286,
         "height": 160.875
       },
       "rating": {
         "x": 75,
-        "y": -328.4375,
+        "y": -388.4375,
         "width": 220,
         "height": 44
       },
       "ratingBackground": "rgba(0, 0, 0, 0)",
       "canvas": {
         "x": 16,
-        "y": -557,
+        "y": -617,
         "width": 288,
-        "height": 2046.5625
+        "height": 2893.5625
       },
       "content": {
         "x": 0,
-        "y": -573,
+        "y": -633,
         "width": 320,
-        "height": 2086.5625
+        "height": 2933.5625
       },
       "buddyFont": 23,
       "buddyLamp": {
         "x": 16,
-        "y": -484.5625,
+        "y": -544.5625,
         "width": 18,
         "height": 18
       }
@@ -3071,45 +3271,45 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": -859.3125,
+        "y": -919.3125,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": -859.3125,
+        "y": -919.3125,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": -859.3125,
+        "y": -919.3125,
         "width": 286,
         "height": 160.875
       },
       "rating": {
         "x": 75,
-        "y": -750.4375,
+        "y": -810.4375,
         "width": 220,
         "height": 44
       },
       "ratingBackground": "rgba(0, 0, 0, 0)",
       "canvas": {
         "x": 16,
-        "y": -979,
+        "y": -1039,
         "width": 288,
-        "height": 2006.5625
+        "height": 2853.5625
       },
       "content": {
         "x": 0,
-        "y": -995,
+        "y": -1055,
         "width": 320,
-        "height": 2046.5625
+        "height": 2893.5625
       },
       "buddyFont": 23,
       "buddyLamp": {
         "x": 16,
-        "y": -906.5625,
+        "y": -966.5625,
         "width": 18,
         "height": 18
       }

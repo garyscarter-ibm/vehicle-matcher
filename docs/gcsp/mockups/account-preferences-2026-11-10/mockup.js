@@ -6,6 +6,10 @@ import { portalShell, svgIcon } from '../../../../blocks/gcsp/shell/portal-shell
 import { PORTAL_NAVIGATION } from '../../../../blocks/gcsp/employee/portal-navigation.js';
 import { checkboxField } from '../../../../blocks/gcsp/kit/form-controls.js';
 import { ACCOUNT_SNAPSHOT } from '../../../../blocks/gcsp/account/fixtures.js';
+import { toAccountView } from '../../../../blocks/gcsp/account/account-view.js';
+import { renderAccountBody } from '../../../../blocks/gcsp/account/gcsp-account.js';
+import { sideDrawer } from '../../../../blocks/gcsp/kit/side-drawer.js';
+import { recordSections } from './gc-record-preview.js';
 
 const KEY = 'gcsp:account-preferences-discussion:2026-11-10:v1';
 const mode = new URL(location.href).searchParams.get('state');
@@ -179,6 +183,11 @@ carCopy.append(carTitle, el('p', 'gcsp-countdown', 'Contract ends in 21 days · 
     { label: 'Annual mileage', value: 12000, unit: 'mi/year' }, { label: 'Scheme', value: 'BMW Choices' },
     { label: 'Registration', value: contract.registration ?? null, missingLabel: 'Not supplied' }, { label: 'Current mileage', value: 5200, unit: 'mi' },
     { label: 'Points cost', value: '1,100 / 1,300', unit: 'points per month' }]), details);
+const replacementActions = el('div', 'gcsp-actions');
+replacementActions.append(button({ label: 'Choose a replacement', variant: 'primary', onClick: () => {
+  say('The replacement journey opens here in the application. This discussion preview does not place an order.');
+} }));
+carCopy.append(replacementActions);
 car.append(photo, carCopy);
 
 const preferences = el('section', 'concept-preferences'); preferences.id = 'your-preferences'; preferences.setAttribute('aria-labelledby', 'preferences-heading');
@@ -327,13 +336,21 @@ function update() {
   if (!message.textContent || /categor(?:y|ies) considered/.test(message.textContent)) message.textContent = state.same ? 'More like your current car. Preferences save automatically.' : count() >= 3 ? `${count()} categories considered · Saved automatically` : `${count()} of 3 categories considered · Preferences save automatically`;
 }
 
+// Reuse GC's rendered table and details rows, in the agreed position below Preferences.
+// The only imported change inside our current-car presentation is the replacement control above.
 const secondary = el('div', 'concept-secondary');
-for (const [title, rows] of [
-  ['Employee and contact details', [{ label: 'Name', value: account.name }, { label: 'Email', value: account.contact.email }, { label: 'Employee number', value: account.employeeNumber }]],
-  ['Drivers and licences', [{ label: 'Employee', value: account.name }, { label: 'Additional driver', value: 'Casey Ward' }]],
-  ['Order history', [{ label: 'Previous car', value: 'BMW 1 Series 118i M Sport' }, { label: 'Scheme', value: 'BMW Choices' }]],
-]) {
-  const disclosure = el('details', 'gcsp-details'); disclosure.append(el('summary', 'gcsp-details-summary', title), factList(rows)); secondary.append(disclosure);
-}
+const gcComposition = el('div');
+let recordDrawer;
+renderAccountBody(gcComposition, { model: toAccountView(ACCOUNT_SNAPSHOT), draft: { status: 'not-found' }, controls: {
+  startButton: () => el('span'),
+  supportButton: (route, label) => button({ label, variant: 'ghost', onClick: () => say(`The application opens ${label.toLowerCase()} here.`) }),
+  openRecord: (record, opener) => {
+    recordDrawer?.close(false);
+    recordDrawer = sideDrawer({ host: shell.root, title: record.title, context: record.context, body: recordSections(record), opener,
+      footer: [button({ label: record.contract.orderNumber ? `Print record ${record.contract.orderNumber}` : 'Print record', variant: 'ghost',
+        onClick: () => { say('Printing the full car record is available in the application.'); recordDrawer.close(); } })] });
+  },
+} });
+secondary.append(gcComposition.querySelector('.gcsp-account-history'), gcComposition.querySelector('.gcsp-account-section'));
 page.append(pageHead, car, preferences, secondary); shell.main.replaceChildren(page); renderOptions(); update();
-window.addEventListener('pagehide', () => shell.destroy(), { once: true });
+window.addEventListener('pagehide', () => { recordDrawer?.close(false); shell.destroy(); }, { once: true });

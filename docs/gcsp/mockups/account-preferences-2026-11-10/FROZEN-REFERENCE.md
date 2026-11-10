@@ -1,6 +1,8 @@
 # Account and Preferences frozen design reference
 
-Reference ID: **account-preferences-2026-11-10-final**, 10 November 2026. This is the visual and interaction baseline for Epic FUCQ-358. It incorporates Russell's final request for a more prominent Buddy status, immediate rating-tooltip dismissal and clearing a rating by selecting its current star again. Future Stories remain discussion only until a collaborator authorises implementation.
+Reference ID: **account-preferences-2026-11-10-gc-integration-r2**, 10 November 2026. This is the visual and interaction baseline for Epic FUCQ-358. It incorporates Russell's final request for a more prominent Buddy status, immediate rating-tooltip dismissal and clearing a rating by selecting its current star again. This revision also incorporates Russell’s GC integration direction: **Choose a replacement** is the sole addition from GC’s car design within the agreed Your Cars presentation; Order history, full-record access and Your details sit below Your Preferences. Future Stories remain discussion only until a collaborator authorises implementation.
+
+This is a new reference revision. The earlier freeze remains available unchanged at commit `bd27555aa6a80fd210485f6a30bd2683a60e1a4a`; it does not establish the later GC component placement. Never silently redefine either immutable commit.
 
 The immutable commit linked from each Jira Story pins this document, the interactive source, its imported kit/assets and all screenshots. [design-reference.json](design-reference.json) records SHA-256 identities, browser settings and every capture's exact viewport, fixture query and observed state. [review.mjs](review.mjs) is the deterministic replay recipe. Do not silently replace these reference images or redefine the baseline during implementation.
 
@@ -21,8 +23,10 @@ The immutable commit linked from each Jira Story pins this document, the interac
 | [Rating help](review/320-rating-tooltip-long.png) | 320 × 1000 | Long model/specification, help open before activation |
 | [Same again help](review/320-same-tooltip-long.png) | 320 × 1000 | Exact guidance with long model/specification |
 | [Missing image](review/1440-missing-image.png) | 1440 × 1100 | Identifiable car and readable image fallback |
+| [Desktop record](review/1440-record-drawer.png) | 1440 × 1000 | GC full-record composition in shared drawer |
+| [Narrow record](review/375-record-drawer.png) | 375 × 1000 | Full-width drawer with supplied record facts |
 
-All **31 captures**, including 1100, 1024, 900px and medium/unselected/long-label states, are indexed in the manifest. PNGs are full-page images; their height may exceed the viewport height. Every capture starts at scroll (0, 0), uses device scale 1, en-GB, reduced motion and the existing GCSP BMW theme/fonts. Browser version at capture: **157.0.8103.51**. The exact saved/painted state and visible tooltip IDs are in each manifest entry; a query name alone does not describe edits made later in the replay.
+All **33 captures**, including 1100, 1024, 900px and medium/unselected/long-label states, are indexed in the manifest. PNGs are full-page images; their height may exceed the viewport height. Every capture starts at scroll (0, 0), uses device scale 1, en-GB, reduced motion and the existing GCSP BMW theme/fonts. Browser version at capture: **157.0.8103.51**. The exact saved/painted state and visible tooltip IDs are in each manifest entry; a query name alone does not describe edits made later in the replay.
 
 ## Strict comparison acceptance
 
@@ -31,6 +35,10 @@ For every Story affecting this surface, reproduce its relevant named states with
 There must be **no unapproved difference in composition, image sizing/containment, alignment, spacing, typography, control size/placement, labels, selection/importance colours, status prominence or responsive behaviour**. Do not accept a broad pixel-difference threshold that conceals design drift. Browser font antialiasing is the only incidental rendering allowance; it cannot excuse changed geometry or colours. Use the recorded browser/environment where possible and explain any rendering-only variance. A collaborator must explicitly approve a deliberate design change and its new versioned reference before acceptance; an implementer or reviewer cannot silently update this baseline.
 
 An independent reviewer must substantively inspect desktop, intermediate and narrow renders, including realistic long content and relevant empty, selected, validation, disabled, confirmation and tooltip states. Judge proportions, space, hierarchy, record identification, selection effort, readable controls, action placement and feedback. Fix actionable findings and inspect the corrected result. Passing DOM assertions, a clean detector, screenshot existence or viewport-fit checks alone do not meet this AC. New loading/error states absent from this reference must follow the shared kit and receive explicit visual review without altering the frozen normal states.
+
+## GC integration boundary
+
+Preserve the agreed car/image/rating/facts/Points cost composition. Add only GC’s **Choose a replacement** control there, with future production behavior governed by its existing supplied action. Do not import his separate key-figure strip, car fact rearrangements or additional Buddy hero. GC’s actual rendered Order history table and Your details rows follow Preferences in DOM and visual order. Their named View record controls open the shared sideDrawer; the mockup retains GC’s exact supplied-fact record composition in `gc-record-preview.js` because its application helper is private. Future implementation must reuse/extract that existing composer. Replacement, Print and help clicks are discussion previews, with no application service writes.
 
 ## Interaction and contract anchors
 
@@ -43,4 +51,4 @@ An independent reviewer must substantively inspect desktop, intermediate and nar
 
 The production model does **not** currently accommodate a star rating and needs an explicit compatible extension. No suitable genuine model-confidence score exists. The displayed understanding values are an illustrative completeness mapping (0–6 categories → 1, 3, 4, 6, 7, 9, 10; Same again → 11), not calibrated confidence. Multi-choice Body/Fuel and sparse consideration also require production contract changes. The prototype persists only locally and starts no real Buddy search.
 
-Verification: **179 passing scoped browser checks**, 31 screenshots, no page errors; both JavaScript syntax checks and the changed-target Impeccable detector pass. Parent and independent Road Runner review passed. [visual-review.md](review/visual-review.md) records the substantive review, earlier corrections and resource limits. Production UI ratchet evidence is reused only for unchanged production UI source/test/config identities; no production implementation was built in this task.
+Verification: **192 passing scoped browser checks**, 33 screenshots, no page errors; all three JavaScript syntax checks and the changed-target Impeccable detector pass. Parent and independent Road Runner review passed. [visual-review.md](review/visual-review.md) records the substantive review, earlier corrections and resource limits. GC’s concurrent merge changed production UI/ratchet files, so the earlier production ratchet result is historical and is not claimed for this merged revision. No production implementation was built in this task; application suite/ratchet acceptance remains future Story validation.

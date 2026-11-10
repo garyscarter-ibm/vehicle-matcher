@@ -44,6 +44,7 @@ try {
         expanded: node.querySelector('.concept-category-open').getAttribute('aria-expanded'),
       })),
       visibleTooltips: [...document.querySelectorAll('[role=tooltip]:not([hidden])')].map((node) => node.id),
+      record: document.querySelector('[role=dialog]')?.innerText ?? null,
       feedback: document.querySelector('#preference-status').innerText,
       activeElement: document.activeElement?.getAttribute('aria-label') ?? document.activeElement?.id,
     }));
@@ -87,6 +88,28 @@ try {
   check('Account header contains no allowance information', !/allowance|1,300|points/i.test(await page.locator('.concept-page-head').innerText()));
   check('Points cost lives in current-car facts with cost and budget', await page.locator('.concept-car .vm-fact').filter({ hasText: 'Points cost' }).innerText() === 'Points cost\n1,100 / 1,300 points per month');
   check('Preferences have no Save button', await page.getByRole('button', { name: /Save preferences/i }).count() === 0);
+  check('Your Cars imports only GC’s replacement control', await page.locator('.concept-car').getByRole('button', { name: 'Choose a replacement', exact: true }).count() === 1
+    && await page.locator('.concept-car .gcsp-account-key, .concept-car .gcsp-summary-live, .concept-car .gcsp-account-rows, .concept-car .gcsp-data-table').count() === 0);
+  check('GC history and details follow Preferences in both document and layout order', await page.evaluate(() => {
+    const preferences = document.querySelector('#your-preferences'); const history = document.querySelector('.gcsp-account-history');
+    const details = document.querySelector('.gcsp-account-section');
+    return !!(preferences.compareDocumentPosition(history) & Node.DOCUMENT_POSITION_FOLLOWING)
+      && !!(history.compareDocumentPosition(details) & Node.DOCUMENT_POSITION_FOLLOWING)
+      && history.getBoundingClientRect().top >= preferences.getBoundingClientRect().bottom
+      && details.getBoundingClientRect().top >= history.getBoundingClientRect().bottom;
+  }));
+  check('GC components retain the single shared history table and Employee/Drivers rows', await page.locator('.concept-secondary table').count() === 1
+    && await page.locator('.gcsp-account-row').count() === 2 && await page.locator('.concept-secondary details').count() === 0);
+  check('GC record projection handles supplied hyphenated statuses', await page.evaluate(async () => {
+    const { recordSections } = await import('./gc-record-preview.js');
+    const sections = recordSections({ contract: { status: 'awaiting-order', orderStatus: 'awaiting-release' }, model: { slots: [] } });
+    return sections.map((node) => node.textContent).join(' ').includes('Awaiting order')
+      && sections.map((node) => node.textContent).join(' ').includes('Awaiting release');
+  }));
+  await page.getByRole('button', { name: 'Choose a replacement', exact: true }).click();
+  check('Discussion replacement action does not navigate or submit an order', page.url() === `${base}?state=empty`
+    && (await page.locator('#preference-status').innerText()).includes('does not place an order'));
+  await page.locator('h1').click();
   const sameInfo = page.getByRole('button', { name: 'About Same again, please!', exact: true });
   const sameTip = page.locator('#same-again-help');
   const ratingTip = page.locator('#rating-help');
@@ -358,11 +381,26 @@ try {
     return (Math.max(text, background) + .05) / (Math.min(text, background) + .05);
   });
   check('Missing-image text has readable contrast', contrast >= 4.5);
+  for (const width of [1440, 375]) {
+    await page.setViewportSize({ width, height: 1000 }); await page.goto(`${base}?state=selected`);
+    const record = page.locator('.gcsp-account-history tbody button').first();
+    await record.click();
+    const drawer = page.getByRole('dialog');
+    check(`${width}: GC record opens in the shared drawer`, await drawer.isVisible()
+      && await drawer.getByRole('heading', { name: 'BMW 3 Series Touring 320i', exact: true }).count() === 1);
+    check(`${width}: record sections identify contract, collection and vehicle`, await drawer.getByRole('heading', { name: 'Contract', exact: true }).count() === 1
+      && await drawer.getByRole('heading', { name: 'Order and vehicle', exact: true }).count() === 1);
+    const box = await drawer.boundingBox();
+    check(`${width}: drawer fits the viewport`, box.x >= 0 && box.x + box.width <= width);
+    await snap(`${width}-record-drawer`);
+    await page.keyboard.press('Escape');
+    check(`${width}: closing record returns focus to its named row`, !await drawer.count() && await record.evaluate((node) => node === document.activeElement));
+  }
   check('No uncaught page errors', receipt.consoleErrors.length === 0);
 } catch (error) { receipt.failures.push(error.stack); process.exitCode = 1; }
 finally {
   await browser?.close(); server.kill('SIGTERM'); await serverExit;
-  for (const name of ['index.html', 'mockup.js', 'mockup.css']) receipt.codeIdentity[name] = createHash('sha256').update(await readFile(`${folder}${name}`)).digest('hex');
+  for (const name of ['index.html', 'mockup.js', 'mockup.css', 'gc-record-preview.js']) receipt.codeIdentity[name] = createHash('sha256').update(await readFile(`${folder}${name}`)).digest('hex');
   await writeFile(`${output}/browser-review.json`, `${JSON.stringify(receipt, null, 2)}\n`);
   console.log(JSON.stringify({ checks: receipt.checks.length, screenshots: receipt.screenshots.length, failures: receipt.failures, consoleErrors: receipt.consoleErrors }));
 }

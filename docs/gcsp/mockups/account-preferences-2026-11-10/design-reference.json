@@ -1,12 +1,13 @@
 {
-  "reference_id": "account-preferences-2026-11-10-final",
+  "reference_id": "account-preferences-2026-11-10-gc-integration-r2",
   "frozen_on": "2026-11-10",
   "purpose": "Authoritative visual reference for FUCQ-358 future implementation; discussion-only hold remains",
   "sources": {
     "index.html": "424a1cffe33ef295db5faf0325c324ad86fddb1bb48926e7ef091d6e18455beb",
-    "mockup.js": "39bbec3285160f0980755487fcc100e71988276f209cc0a96b379bb9f35276e0",
-    "mockup.css": "59264755ee5c91ddd9dbd4323da9eab4dc937ea1d5958882a3b773ac5bd237d2",
-    "review.mjs": "5012e68ef45df71214495c322a6081b109ebfced636edd0aac5579533a039573"
+    "mockup.js": "6e468e0eac00e7e914a5cfdd3419bb6cead39a42557bc1a95285fc6db4edff70",
+    "mockup.css": "97770f98bdad074ef06907d3fa23f6902f2d5961ce7dda40760d23ea3993dc59",
+    "gc-record-preview.js": "fa6939fe3ab24384f202d0d1298641ba1efc0c02ccad9389404651dbeef2a025",
+    "review.mjs": "d06de8b8e8c3e1f758effb5321c9c97a1515aa881bf84c6a945b63c0e6b0ce5b"
   },
   "environment": {
     "browser": "157.0.8103.51",
@@ -72,14 +73,15 @@
         "visibleTooltips": [
           "same-again-help"
         ],
-        "feedback": "0 of 3 categories considered · Preferences save automatically",
+        "record": null,
+        "feedback": "The replacement journey opens here in the application. This discussion preview does not place an order.",
         "activeElement": ""
       },
       "path": "review/1440-same-tooltip.png",
-      "sha256": "154fa69ad032746496854a340cf605b4b7618f45824ab854a417dedd4f0aa571",
+      "sha256": "173db366fb01b73a74618bd6a9ac28542cd88c53961bf336367c3f8245c5567e",
       "png": {
         "width": 1440,
-        "height": 1172
+        "height": 1604
       },
       "scroll": {
         "x": 0,
@@ -140,14 +142,15 @@
         "visibleTooltips": [
           "rating-help"
         ],
-        "feedback": "0 of 3 categories considered · Preferences save automatically",
+        "record": null,
+        "feedback": "The replacement journey opens here in the application. This discussion preview does not place an order.",
         "activeElement": ""
       },
       "path": "review/1440-rating-tooltip.png",
-      "sha256": "1ace7f0b16d791f057d9dedb5ee3795c4ccec6c1c8f11cc0bce3787b9d98ec8b",
+      "sha256": "9044760ae7bf883b29ef6f169c6777ee29c02e74e4459d2424d3f581a7fe1220",
       "png": {
         "width": 1440,
-        "height": 1172
+        "height": 1604
       },
       "scroll": {
         "x": 0,
@@ -206,14 +209,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "0 of 3 categories considered · Preferences save automatically",
         "activeElement": ""
       },
       "path": "review/1440-initial.png",
-      "sha256": "9fbcc1d4335e95d7b43fcdc183f91794709d2a4d0e13cb3bc92a0a3d3aa79825",
+      "sha256": "78ce44b706ea3b2dd573e7228a7d7237a0ad6c76826fd8c1e5657ee33fd88d56",
       "png": {
         "width": 1440,
-        "height": 1172
+        "height": 1604
       },
       "scroll": {
         "x": 0,
@@ -272,14 +276,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Choose 3 more categories to engage Buddy. Your preferences save automatically.",
         "activeElement": "preference-status"
       },
       "path": "review/1440-validation.png",
-      "sha256": "dc1521ee603874af0f25473d1399dc59084268d29953dc7b6ab05b42f893209e",
+      "sha256": "767bccd8427c9ed7cc65cb9e6fb03ec86195458b286132d2b101c344b7db3a17",
       "png": {
         "width": 1440,
-        "height": 1172
+        "height": 1604
       },
       "scroll": {
         "x": 0,
@@ -338,14 +343,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "Comfort, considered: A bit of both"
       },
       "path": "review/1440-slider-default.png",
-      "sha256": "1b0e886ba225078bb8f580db93e18c2243e2ff0c3412beeebc4db499367d7036",
+      "sha256": "4e7baf3080ec854718bc51c3d6b2468a43514b5f0fa69e8fc00d7cdedc5fd6db",
       "png": {
         "width": 1440,
-        "height": 1374
+        "height": 1806
       },
       "scroll": {
         "x": 0,
@@ -404,14 +410,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       },
       "path": "review/1440-selected.png",
-      "sha256": "7a1aef7a12abc12543babcae0ab31c2229f80c8e5b51adad394652dccefa6cde",
+      "sha256": "bbffcf9a3d0265658217b2da515044d7f6ab8b5291cda6e26b5fb9fb2568fb73",
       "png": {
         "width": 1440,
-        "height": 1190
+        "height": 1622
       },
       "scroll": {
         "x": 0,
@@ -470,14 +477,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": "Body, considered: Touring / Estate"
       },
       "path": "review/1440-options.png",
-      "sha256": "ea3f0999721a70362dd81daca4b1f28d74f50327a0a4b9ef643eae65d5ab328c",
+      "sha256": "a723ec77746b4824f72c2fa37defd043351b0644b88f9ab070060c63bb50150a",
       "png": {
         "width": 1440,
-        "height": 1511
+        "height": 1943
       },
       "scroll": {
         "x": 0,
@@ -536,14 +544,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       },
       "path": "review/1440-remove-confirmation.png",
-      "sha256": "7c181d82a4faf768e3292f860b78763023d5782da8fb4550999e55a3311be54e",
+      "sha256": "a112e90a2794a1e6de134fa45f1acbc6a62cc66f2b97a8b3dd46832b0eb78ffb",
       "png": {
         "width": 1440,
-        "height": 1274
+        "height": 1706
       },
       "scroll": {
         "x": 0,
@@ -602,14 +611,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "same-again"
       },
       "path": "review/1440-same-again.png",
-      "sha256": "56c6a082f943b7e7e5fc48f0e9b5d3ddbc34dde027a5d5bd16d3f8f15bce5563",
+      "sha256": "93d4acd4baac2b7178eb20a7fe10561ece81c9ac9f3c59bdcd5e93bad9de40e5",
       "png": {
         "width": 1440,
-        "height": 1190
+        "height": 1622
       },
       "scroll": {
         "x": 0,
@@ -668,14 +678,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       },
       "path": "review/1920-selected.png",
-      "sha256": "5cbda1ef39d6ac58592552d92d6f0bc3b43e5de2e5c5ac88a0ee681dc2cfe7b0",
+      "sha256": "47096526c0fbbdbdfc044674168392014f382cee1a075eba33f6f48b095d6367",
       "png": {
         "width": 1920,
-        "height": 1382
+        "height": 1766
       },
       "scroll": {
         "x": 0,
@@ -734,14 +745,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       },
       "path": "review/1100-selected.png",
-      "sha256": "06b61a6769a7a372bc26c4b691e101a95e5def042efcadaa6cef96d215223518",
+      "sha256": "136a0fbc6b6ac104a1f1d8f3b4f20d92cdd3617b222dd7cf00bda11efc3050aa",
       "png": {
         "width": 1100,
-        "height": 1258
+        "height": 1711
       },
       "scroll": {
         "x": 0,
@@ -800,14 +812,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       },
       "path": "review/1024-selected.png",
-      "sha256": "b199d9f5b2438a2ebb0e627501582be01857ba933fb31b3908e4575ddbbe7e71",
+      "sha256": "16a758e03caad48c50f5b4b8362d319d10c1520625157fbac83412b493e4903e",
       "png": {
         "width": 1024,
-        "height": 1255
+        "height": 1729
       },
       "scroll": {
         "x": 0,
@@ -866,14 +879,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       },
       "path": "review/900-selected.png",
-      "sha256": "1f19dbeea7bd6551de509f93c9d32e7bd3911fde17a284daf0a91b1e05a7d79f",
+      "sha256": "84845ed14c32444ed943645c3cd1e914f6aa48892872488ccc0d7e02b307c2dd",
       "png": {
         "width": 900,
-        "height": 1255
+        "height": 1745
       },
       "scroll": {
         "x": 0,
@@ -932,14 +946,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       },
       "path": "review/820-selected.png",
-      "sha256": "4a6368d7f8e7da3d7da2cba787f1188ad3e72b8a8dd1590826b8cc62f97fe0e2",
+      "sha256": "9b6b606f178cac48f4f06a0ad8f75853a73681859eae674dd41387f9933454fd",
       "png": {
         "width": 820,
-        "height": 1292
+        "height": 1803
       },
       "scroll": {
         "x": 0,
@@ -998,14 +1013,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       },
       "path": "review/375-selected.png",
-      "sha256": "1b69b4349d56ca63e42103b521d79b1314b10304b711b9130285c6dcd24c25c2",
+      "sha256": "a033aeca7954711ac8f5ee1108bdad01743ca1f69d44ebd2e23d53b8225a61ee",
       "png": {
         "width": 375,
-        "height": 1737
+        "height": 2521
       },
       "scroll": {
         "x": 0,
@@ -1064,14 +1080,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Buddy engaged. Your preferences will guide the search.",
         "activeElement": ""
       },
       "path": "review/375-engaged.png",
-      "sha256": "faa6ebdde2bea42059642cf6a6b81c836f9c680f4f468f1ce1683d7886183c92",
+      "sha256": "99231cc48cd29166b1d0895b9c268bbd4e654d9d8b98c2e6e12e29dccdde07ae",
       "png": {
         "width": 375,
-        "height": 1758
+        "height": 2542
       },
       "scroll": {
         "x": 0,
@@ -1130,14 +1147,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       },
       "path": "review/320-long.png",
-      "sha256": "49af22050f513a28e531b26ff262ae7a0f3396304c2e6673fb6e85c5d7e0f04e",
+      "sha256": "983f76d108edd2cdfdcbcb94821d5586bbbc9d6a680bad59c9e0c190f81dc17f",
       "png": {
         "width": 320,
-        "height": 1832
+        "height": 2679
       },
       "scroll": {
         "x": 0,
@@ -1196,14 +1214,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": "Comfort, considered: As comfortable as possible"
       },
       "path": "review/320-long-options.png",
-      "sha256": "f39d25a90bc8dc55e0f72e978cfd26f5ec2366d6ce1bae2f17da5d6e5df5c87a",
+      "sha256": "d9414b5c83b2af46d305e0f98e1fbcb4d08d13bba9372133cd63a68fd94ad1c2",
       "png": {
         "width": 320,
-        "height": 2066
+        "height": 2913
       },
       "scroll": {
         "x": 0,
@@ -1262,14 +1281,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "How much comfort would you like?"
       },
       "path": "review/320-slider-midpoint.png",
-      "sha256": "f6c179e6c02a14dab508d0ffb97fdd71e8b50481712d02ddf6baa5e9b583b003",
+      "sha256": "5bc174c07f36a5b668b566ce63523c3b739cf1964b3f82f9667a656c4f8dc342",
       "png": {
         "width": 320,
-        "height": 2009
+        "height": 2856
       },
       "scroll": {
         "x": 0,
@@ -1328,14 +1348,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": ""
       },
       "path": "review/320-remove-confirmation.png",
-      "sha256": "59bf2d8a75ee818e86453e2b9eee5f5fe277840dc98689e361d2553ce9ba3f2c",
+      "sha256": "bfe0869dddbbd8438064be3cf606f0ee277219f3b8cb63c92ae3f0ad4f1bd2e1",
       "png": {
         "width": 320,
-        "height": 1940
+        "height": 2787
       },
       "scroll": {
         "x": 0,
@@ -1394,14 +1415,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "same-again"
       },
       "path": "review/320-same-again.png",
-      "sha256": "cce54b3e0cfadab04e2600b2b07702047f6d722f0e5d326b6bf661aed37d1df2",
+      "sha256": "f8135103f4a81a1e71a425bf354c7a5ee78662f927eeb583863080a40d0edab7",
       "png": {
         "width": 320,
-        "height": 1811
+        "height": 2658
       },
       "scroll": {
         "x": 0,
@@ -1460,14 +1482,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "0 of 3 categories considered · Preferences save automatically",
         "activeElement": "Body, choose a preference"
       },
       "path": "review/1440-importance-unselected.png",
-      "sha256": "da5dbc4870d08bd48e5e015c2ccf6644179ad58d272d9884d03e9dd571180a6b",
+      "sha256": "9777465475b74d874003e25d4f123adf647226a533e7d15251e95745cd7b5eee",
       "png": {
         "width": 1440,
-        "height": 1493
+        "height": 1925
       },
       "scroll": {
         "x": 0,
@@ -1526,14 +1549,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": ""
       },
       "path": "review/1440-importance-medium.png",
-      "sha256": "525f784288975f1c6998098de983cc76b53b204378ba05bcfb8ea27703df6a52",
+      "sha256": "dc0e13eee6a4cb66a8d6f054239099f6f61358d0a6bc2989524330518c804ec6",
       "png": {
         "width": 1440,
-        "height": 1493
+        "height": 1925
       },
       "scroll": {
         "x": 0,
@@ -1592,14 +1616,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "importance-body"
       },
       "path": "review/1440-importance-high.png",
-      "sha256": "bf74caca40d5a306a4e3b3100e420349c3d2d61cee66df4a9391a7c0e5009fb1",
+      "sha256": "171b81ff144c6335df353486d36d15ae8bab14f130965f2b5f0728d88c8cbd18",
       "png": {
         "width": 1440,
-        "height": 1493
+        "height": 1925
       },
       "scroll": {
         "x": 0,
@@ -1658,14 +1683,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "same-again"
       },
       "path": "review/1440-same-again-retained-high.png",
-      "sha256": "747a0455a107708e501208e6197008cc440cb92639a26e0a55526becc348c321",
+      "sha256": "721005857444a85165059adb1ca5aa73a96630faf4a53e12e731673f40adef53",
       "png": {
         "width": 1440,
-        "height": 1172
+        "height": 1604
       },
       "scroll": {
         "x": 0,
@@ -1724,14 +1750,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "0 of 3 categories considered · Preferences save automatically",
         "activeElement": "Fuel, choose a preference"
       },
       "path": "review/320-importance-unselected.png",
-      "sha256": "7537dac4549851e991698ad26a2aaf4446e7e5e03f7bbc686afc7630332f6869",
+      "sha256": "5942d49572cdb2b4d022f2c54389bdab7d69d188c8052cde224a949c5c0f1c8f",
       "png": {
         "width": 320,
-        "height": 2143
+        "height": 2990
       },
       "scroll": {
         "x": 0,
@@ -1790,14 +1817,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "importance-fuel"
       },
       "path": "review/320-importance-high.png",
-      "sha256": "bc705afd56e6fc925ba69d4f1d4ba3e85649d6af4672e32599d7a57fdce1c9ca",
+      "sha256": "18399d1a87ac81c387b660f553fe924293cddd3d1ccfc5c1800da578250cbecb",
       "png": {
         "width": 320,
-        "height": 2103
+        "height": 2950
       },
       "scroll": {
         "x": 0,
@@ -1858,14 +1886,15 @@
         "visibleTooltips": [
           "same-again-help"
         ],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": "About Same again, please!"
       },
       "path": "review/320-same-tooltip-long.png",
-      "sha256": "47d657ce68042f9e0999f2a51316d10b7cb9a6d02c602e8c1df75668f5c71516",
+      "sha256": "6f5fcea82251481a20df555c8e67a6f436705ea1caf2463dfe33bea1ca100054",
       "png": {
         "width": 320,
-        "height": 1832
+        "height": 2679
       },
       "scroll": {
         "x": 0,
@@ -1924,14 +1953,15 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "same-again"
       },
       "path": "review/320-same-again-neutral.png",
-      "sha256": "70c560aa2e7d17792db9530fe9f92455044e54f60ffa47199df033b7c273363d",
+      "sha256": "f8135103f4a81a1e71a425bf354c7a5ee78662f927eeb583863080a40d0edab7",
       "png": {
         "width": 320,
-        "height": 1811
+        "height": 2658
       },
       "scroll": {
         "x": 0,
@@ -1992,14 +2022,15 @@
         "visibleTooltips": [
           "rating-help"
         ],
+        "record": null,
         "feedback": "Preferences saved automatically.",
         "activeElement": "4 stars: I really like it"
       },
       "path": "review/320-rating-tooltip-long.png",
-      "sha256": "16b7bce72087889646c04afd05b79e4ecced0b43f1debd5d07b31c6d8e482ee0",
+      "sha256": "bc08fbcd7f1321cfce9c59950c4cbfe348d09d31ef5d1858757568baf4dc16bb",
       "png": {
         "width": 320,
-        "height": 1811
+        "height": 2658
       },
       "scroll": {
         "x": 0,
@@ -2058,14 +2089,149 @@
           }
         ],
         "visibleTooltips": [],
+        "record": null,
         "feedback": "3 categories considered · Saved automatically",
         "activeElement": ""
       },
       "path": "review/1440-missing-image.png",
-      "sha256": "a4893955586644ffa8239c10810120764c30799e396c332bc8be86a18a69c5e3",
+      "sha256": "3f930be8fa980d00173c072d501c32b36b0b0c790bec4cff8986fd6c23e70cab",
       "png": {
         "width": 1440,
-        "height": 1190
+        "height": 1622
+      },
+      "scroll": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "file": "1440-record-drawer.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=selected",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "record": "Car record · BMW Choices\n\nBMW 3 Series Touring 320i\nClose\nContract\nStatus\nCurrent car\nDriver\nPaula Mason\nTerm\n6 months\nAnnual mileage\n12,000 mi/year\nContract end\n1 December 2026\nCollection\nCollected\n1 June 2026\nReplacement window\n12 November 2026 to 1 December 2026\nCurrent mileage\n5,200 mi\nOrder and vehicle\n\nNot supplied for this car.\n\nTechnical specification and options\n\nModel or handbook evidence does not confirm the fitted equipment on your car.\n\nNot supplied for this car.\n\nPrint record",
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": "gcsp-side-drawer-1"
+      },
+      "path": "review/1440-record-drawer.png",
+      "sha256": "9ac4515e50589343ffec8619c2890f17a234ae7abaf7ed4d3660f1138ab8293f",
+      "png": {
+        "width": 1440,
+        "height": 1622
+      },
+      "scroll": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "file": "375-record-drawer.png",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=selected",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "record": "Car record · BMW Choices\n\nBMW 3 Series Touring 320i\nClose\nContract\nStatus\nCurrent car\nDriver\nPaula Mason\nTerm\n6 months\nAnnual mileage\n12,000 mi/year\nContract end\n1 December 2026\nCollection\nCollected\n1 June 2026\nReplacement window\n12 November 2026 to 1 December 2026\nCurrent mileage\n5,200 mi\nOrder and vehicle\n\nNot supplied for this car.\n\nTechnical specification and options\n\nModel or handbook evidence does not confirm the fitted equipment on your car.\n\nNot supplied for this car.\n\nPrint record",
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": "gcsp-side-drawer-1"
+      },
+      "path": "review/375-record-drawer.png",
+      "sha256": "80f74fa8068f6a851c917d6643deb1f3242a5caaa9bc27831acce16a91711968",
+      "png": {
+        "width": 375,
+        "height": 2521
       },
       "scroll": {
         "x": 0,
@@ -2074,10 +2240,16 @@
     }
   ],
   "validation": {
-    "checks_passed": 179,
+    "checks_passed": 192,
     "failures": [],
     "page_errors": [],
-    "independent_review": "Road Runner, Sol/high, PASS;11 final renders/source hashes/state metadata checked"
+    "independent_review": "Road Runner, Sol/high; final revision critique and correction/reinspection in review/visual-review.md"
   },
-  "comparison": "FROZEN-REFERENCE.md; compare all relevant named states at exact recorded CSS viewport sizes, with identical fixture/theme/fonts and DPR1; no unapproved layout, control, copy or color differences"
+  "comparison": "FROZEN-REFERENCE.md; compare all relevant named states at exact recorded CSS viewport sizes, with identical fixture/theme/fonts and DPR1; no unapproved layout, control, copy or color differences",
+  "supersedes": {
+    "commit": "bd27555aa6a80fd210485f6a30bd2683a60e1a4a",
+    "reference_id": "account-preferences-2026-11-10-final",
+    "reason": "Russell: preserve agreed Your Cars; add only GC replacement control there; put GC secondary Account components below Preferences."
+  },
+  "component_integration": "Only GC replacement action is added within agreed car composition. GC renderAccountBody/toAccountView supply actual shared history table and Your details below Preferences. sideDrawer uses exact GC private record projection in discussion-only gc-record-preview.js. Print/replacement/help actions are preview stubs; no production calls."
 }
