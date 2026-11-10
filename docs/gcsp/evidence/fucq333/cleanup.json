@@ -1,6 +1,6 @@
 {
   "issue": "FUCQ-333",
-  "observedAt": "2026-11-10T12:00:45.224548+00:00",
+  "observedAt": "2026-11-10T12:04:56.019725+00:00",
   "ownedAllocations": [
     {
       "root": "/private/tmp/test-stamp-shard-f4360295726c4bd9b926cd49f2e0b934",
@@ -163,5 +163,16 @@
       "processGroup": 65475,
       "liveMembers": false
     }
-  ]
+  ],
+  "worktreeCleanup": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-003",
+    "removed": true,
+    "helper": "scaffold_git.py drop-branch --id DEV-2026-11-10-003",
+    "localBranchRemoved": true,
+    "leaseReleased": true
+  },
+  "ownedBytecode": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-003/_tools/__pycache__/test_resources.cpython-314.pyc",
+    "removed": true
+  }
 }

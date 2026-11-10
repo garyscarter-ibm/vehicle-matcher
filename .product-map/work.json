@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-10T11:57:07Z",
+  "observed_at": "2026-11-10T12:04:56Z",
   "version": 1,
   "stories": [
     {
@@ -3995,11 +3995,11 @@
     {
       "id": "FUCQ-333",
       "title": "Allow a valid issued offer to be accepted after preference-only changes",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "In Review",
+      "original_status": "In Review",
       "assignee": "Russell Gowers",
       "type": "Bug",
-      "observed_at": "2026-11-10T11:59:28Z",
+      "observed_at": "2026-11-10T12:04:56Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-333",
       "unsliced": false,
       "slices": [
