@@ -95,6 +95,16 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
 - **Commit trailer** for commits Codex makes: `Co-Authored-By: Codex <noreply@openai.com>`.
 <!-- END agent-scaffolding -->
 
+## Concepts and mockups
+
+Gary's direction, 10 November 2026. When asked for a concept, mockup or design option, deliver
+visual screens he can quickly refine or approve: static HTML (or images) showing the key states,
+side by side where there are alternatives. Keep it fast and rough:
+
+- No working behaviour, animation logic, real data wiring or browser test passes beyond a quick look.
+- At most a short note of assumptions and open questions alongside the screens; no full written spec.
+- The spec, slicing and Stories follow only after Gary approves a direction.
+
 ## Commit and push during sessions
 
 - Commit and push each coherent, validated chunk of work during the session, including documentation changes.

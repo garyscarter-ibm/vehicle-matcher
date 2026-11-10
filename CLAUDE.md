@@ -9,6 +9,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Follow `AGENTS.md`, section "Equal collaborator authority", for contributor decisions and authorisation in every
 session, skill and workflow, including any requirement phrased as approval by a named person or owner.
 
+### Concepts and mockups
+Follow `AGENTS.md`, section "Concepts and mockups": concepts are quick visual screens to refine or approve,
+not working prototypes or full specs.
+
 ### Commit and push during sessions
 
 Follow `AGENTS.md`, section "Commit and push during sessions", for this repository's standing authorization
