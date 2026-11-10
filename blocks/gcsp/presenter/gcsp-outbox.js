@@ -48,6 +48,7 @@ export function mountOutbox(root, ctx = {}) {
   let snapshot = null;
   const shell = portalShell({
     title: 'Group Car Schemes Portal', account: ACCOUNT, navigation: PRESENTER_NAVIGATION, active: 'outbox', breadcrumbs: ['Captured emails'],
+    signOut: ctx.signOut,
   });
   const page = el('div', 'vm gcsp-presenter');
   const intro = screenIntro({ kicker: 'Presenter', title: 'Captured emails', level: 1, className: 'gcsp-intro',
@@ -196,6 +197,7 @@ export class GcspOutboxElement extends HTMLElement {
     this._teardown = mountOutbox(this, {
       loadMessages: adapter?.loadMessages,
       subscribeClock: adapter?.subscribeClock,
+      signOut: adapter?.signOut,
       onUnavailable: (reason) => {
         this._emit('gcsp:unavailable', { reason: reason === 'no-adapter' && fixtureName ? 'unknown-fixture' : reason });
       },

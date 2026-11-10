@@ -11,6 +11,6 @@ if (host && FIXTURE_NAMES.includes(requested)) {
   }) : async () => requested === 'error' ? { status: 'unavailable' } : offerFixture(shown),
   // Preview only: accepting the offer swaps to its acknowledged selection. Nothing is sent.
   ...HANDOFF_NAMES.includes(requested) ? { decide: async ({ kind }) => { if (kind === 'accept') shown = 'selection-hr'; return { status: 'ok' }; } } : {},
-  account: { status: 'ready', name: 'Paula Mason', scheme: 'Choices' } };
+  account: { status: 'ready', name: 'Paula Mason', scheme: 'Choices' }, signOut: false };
 } else if (host) host.adapter = createOfferHttpAdapter();
 defineGcspOffer();
