@@ -128,6 +128,32 @@ test('seeded stock is deterministic, weighted, explicitly fictional and unreleas
   assert.ok(a.reads.every((row) => row.runId === 'run-a' && row.policyVersion === 'fixture-policy-v1'));
 });
 
+test('every release tranche mixes the model lines and colours, and no two tranches hold the same cars', async () => {
+  const a = await setup();
+  const result = await a.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(result.status, 'ok', JSON.stringify(result));
+  const rows = await stock(a.repository, 'run-a');
+  const tranches = Map.groupBy(rows, (row) => fact(row, 'plannedRelease').releaseId);
+  assert.ok(tranches.size >= 2, `tranches ${tranches.size}`);
+  for (const [releaseId, cars] of tranches) {
+    assert.deepEqual([...new Set(cars.map((row) => fact(row, 'modelLine')))].sort(), ['fixture-a', 'fixture-b'], releaseId);
+    assert.deepEqual([...new Set(cars.map((row) => fact(row, 'colour')))].sort(), ['Black', 'White'], releaseId);
+  }
+  const [first, second] = [...tranches.values()];
+  const idsOf = (cars) => new Set(cars.map((row) => fact(row, 'syntheticVehicleId')));
+  assert.equal([...idsOf(first)].some((id) => idsOf(second).has(id)), false, 'tranches hold different vehicle ids');
+  assert.notDeepEqual(first.map((row) => row.configurationId), second.map((row) => row.configurationId));
+  for (const model of result.value.report.models) {
+    const cars = rows.filter((row) => fact(row, 'modelLine') === model.modelLineId);
+    assert.equal(model.cars, cars.length);
+    assert.ok(Math.abs(model.actualShare - model.observedShare) <= 0.05);
+    for (const [colour, share] of Object.entries(model.observed.colourShares)) {
+      assert.equal(model.colourShares[colour], cars.filter((row) => fact(row, 'colour') === colour).length / cars.length);
+      assert.ok(Math.abs(model.colourShares[colour] - share) <= 0.05);
+    }
+  }
+});
+
 // FUCQ-229: a window's backlog releases on later windows, so even a one-week lead must outlast every window.
 test('a one-week lead time keeps every confirmed delivery week after the last release window', async () => {
   const a = await setup({ seeds: [await policyFixture([1, 1])] });
@@ -482,7 +508,8 @@ test('generated stock is released by the existing release service in the runtime
   assert.ok([...before.values()].every((row) => row.state === 'unreleased' && row.release === undefined && row.visibility.schemeIds[0] === 'choices-fs-uk'));
   source = createGeneratedStockProvider({ repository, contextForRun: () => ctx });
   const [first] = generation.value.report.release.windows;
-  const request = { runId: state.runId, asOf: first, releaseSize: 20, released: [], queuedSupply: [], policyVersion: run.policyVersion };
+  const size = (await policy.getAssumption('supply.release.size', { runId: state.runId, asOf: run.clockInstant, policyVersion: run.policyVersion })).value.value;
+  const request = { runId: state.runId, asOf: first, releaseSize: size, released: [], queuedSupply: [], policyVersion: run.policyVersion };
   const early = validatePull(await source.pull({ ...request, asOf: '2026-11-05T09:30:00.000Z' }), { ...request, asOf: '2026-11-05T09:30:00.000Z' });
   assert.equal(early.status, 'ok'); assert.equal(early.value.tranche, null);
   const pulled = validatePull(await source.pull(request), request);

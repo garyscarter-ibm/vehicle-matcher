@@ -182,36 +182,61 @@ export function createStockGenerator({ repository, registry, policyService, cont
             && ['representative-model', 'representative-configuration'].includes(image.fidelity) && image.role === image.fidelity);
           configurations.set(binding.configurationId, { ...binding, record: response.record, images });
         }
-        const modelCounts = apportion(total, aggregates.map((row) => [row.modelLineId, row.observed.carCount]), [...entropy, 'models']);
-        const vehicles = []; const models = [];
+        // Each tranche is drawn on its own, so every release mixes model lines and colours and no two releases repeat.
+        const windowCount = releaseAt.length - 1; const observedTotal = aggregates.reduce((sum, row) => sum + row.observed.carCount, 0);
+        const vehicles = []; const tally = new Map(aggregates.map((row) => [row.modelLineId, { cars: 0, colours: new Map(), planned: [], debt: new Map() }]));
+        const modelDebt = new Map();
         for (const model of aggregates) {
-          const count = modelCounts.find((row) => row.key === model.modelLineId).count;
           // Observed colours with no configuration for this line are dropped; the covered shares are renormalised.
-          const offered = Object.entries(model.observed.colourShares).sort(([a], [b]) => a.localeCompare(b));
-          const covered = offered.filter(([colour]) => [...configurations.values()].some((row) => row.modelLineId === model.modelLineId && row.colour === colour));
-          const coveredShare = covered.reduce((sum, [, share]) => sum + share, 0);
-          if (count && !covered.length) return invalid('unsupported-configuration-coverage');
-          const colours = apportion(count, covered, [...entropy, model.modelLineId]);
-          const modelCars = [];
-          for (const colour of colours) {
-            const candidates = [...configurations.values()].filter((row) => row.modelLineId === model.modelLineId && row.colour === colour.key);
-            if (colour.count && !candidates.length) return invalid('unsupported-configuration-coverage');
-            for (let i = 0; i < colour.count; i += 1) {
-              const binding = candidates[ordinal([...entropy, model.modelLineId, colour.key, i, 'configuration'], candidates.length)];
-              const vehicleId = `stock-${inputDigest([requestDigest, ...entropy, model.modelLineId, colour.key, i])}`;
-              const lead = model.observed.leadTimeWeeks;
-              const leadTimeWeeks = lead.min + ordinal([...entropy, vehicleId, 'lead'], lead.max - lead.min + 1);
-              const car = { vehicleId, binding, leadTimeWeeks }; modelCars.push(car); vehicles.push(car);
+          const covered = Object.entries(model.observed.colourShares).sort(([a], [b]) => a.localeCompare(b))
+            .filter(([colour]) => [...configurations.values()].some((row) => row.modelLineId === model.modelLineId && row.colour === colour));
+          tally.get(model.modelLineId).planned = covered;
+        }
+        for (let tranche = 0; tranche * trancheSize < total; tranche += 1) {
+          const windowAt = releaseAt[tranche % windowCount];
+          const trancheEntropy = [windowAt, tranche];
+          const trancheCars = Math.min(total, (tranche + 1) * trancheSize) - tranche * trancheSize;
+          // Each draw carries its rounding debt forward, so small tranches cannot bias the run-level shares.
+          const modelCounts = apportion(trancheCars, aggregates.map((row) => [row.modelLineId, Math.max(0,
+            trancheCars * row.observed.carCount / observedTotal + (modelDebt.get(row.modelLineId) ?? 0))]), [...entropy, 'models', ...trancheEntropy]);
+          for (const row of modelCounts) modelDebt.set(row.key, (modelDebt.get(row.key) ?? 0)
+            + trancheCars * aggregates.find((model) => model.modelLineId === row.key).observed.carCount / observedTotal - row.count);
+          for (const model of aggregates) {
+            const count = modelCounts.find((row) => row.key === model.modelLineId).count;
+            const covered = tally.get(model.modelLineId).planned;
+            if (count && !covered.length) return invalid('unsupported-configuration-coverage');
+            const line = tally.get(model.modelLineId); line.cars += count;
+            const coveredTotal = covered.reduce((sum, [, share]) => sum + share, 0);
+            const colours = count && covered.length ? apportion(count, covered.map(([colour, share]) => [colour, Math.max(0,
+              count * share / coveredTotal + (line.debt.get(colour) ?? 0))]), [...entropy, model.modelLineId, ...trancheEntropy]) : [];
+            if (count) for (const [colour, share] of covered) line.debt.set(colour, (line.debt.get(colour) ?? 0) + count * share / coveredTotal - colours.find((row) => row.key === colour).count);
+            for (const colour of colours) {
+              const candidates = [...configurations.values()].filter((row) => row.modelLineId === model.modelLineId && row.colour === colour.key);
+              if (colour.count && !candidates.length) return invalid('unsupported-configuration-coverage');
+              line.colours.set(colour.key, (line.colours.get(colour.key) ?? 0) + colour.count);
+              for (let i = 0; i < colour.count; i += 1) {
+                const binding = candidates[ordinal([...entropy, model.modelLineId, colour.key, ...trancheEntropy, i, 'configuration'], candidates.length)];
+                const vehicleId = `stock-${inputDigest([requestDigest, ...entropy, model.modelLineId, colour.key, ...trancheEntropy, i])}`;
+                const lead = model.observed.leadTimeWeeks;
+                const leadTimeWeeks = lead.min + ordinal([...entropy, vehicleId, 'lead'], lead.max - lead.min + 1);
+                vehicles.push({ vehicleId, binding, leadTimeWeeks, tranche, model: model.modelLineId });
+              }
             }
           }
-          models.push({ modelLineId: model.modelLineId, sourceKind: model.observed.sourceKind, cars: count,
-            observedShare: model.observed.carCount / aggregates.reduce((sum, row) => sum + row.observed.carCount, 0), actualShare: count / total,
-            colourShares: Object.fromEntries(colours.map((row) => [row.key, count ? row.count / count : 0])),
+        }
+        const models = aggregates.map((model) => {
+          const { cars: count, colours, planned: covered } = tally.get(model.modelLineId);
+          const modelCars = vehicles.filter((car) => car.model === model.modelLineId);
+          const offered = Object.keys(model.observed.colourShares);
+          const coveredShare = covered.reduce((sum, [, share]) => sum + share, 0);
+          return { modelLineId: model.modelLineId, sourceKind: model.observed.sourceKind, cars: count,
+            observedShare: model.observed.carCount / observedTotal, actualShare: count / total,
+            colourShares: Object.fromEntries(covered.map(([colour]) => [colour, count ? (colours.get(colour) ?? 0) / count : 0])),
             plannedColourShares: Object.fromEntries(covered.map(([colour, share]) => [colour, share / coveredShare])),
             coveredColourShare: Math.round(coveredShare * 10000) / 10000, uncoveredColourCount: offered.length - covered.length,
             leadTimeWeeks: count ? { min: Math.min(...modelCars.map((row) => row.leadTimeWeeks)), max: Math.max(...modelCars.map((row) => row.leadTimeWeeks)) } : null,
-            observed: structuredClone(model.observed), aggregateKey: model.key });
-        }
+            observed: structuredClone(model.observed), aggregateKey: model.key };
+        });
         const timeZone = values.get('supply.release.cadence').timeZone;
         // Lead time counts from the close of the planned release horizon: a window's backlog can release on any later
         // window, so a delivery week anchored on its own window could end before the car is released (FUCQ-229).
@@ -250,10 +275,10 @@ export function createStockGenerator({ repository, registry, policyService, cont
         const identities = new Map(allocated.inventory.records.map((row) => [row.vehicleId, row]));
         let rows;
         try {
-          rows = vehicles.map((car, index) => {
+          rows = vehicles.map((car) => {
             const identity = identities.get(car.vehicleId);
-            const tranche = Math.floor(index / trancheSize);
-            const windowIndex = tranche % (releaseAt.length - 1);
+            const { tranche } = car;
+            const windowIndex = tranche % windowCount;
             const at = releaseAt[windowIndex];
             const { modelLineId, colour } = car.binding;
             const aggregateRef = `policy:${plan.aggregateKeys[modelLineId]}`;
