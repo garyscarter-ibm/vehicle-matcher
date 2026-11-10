@@ -324,12 +324,12 @@ test('current contracts retain their explicit scheme allowance including zero an
 
 test('representative image provenance survives a broken image fallback without claiming exact equipment', async () => {
   const input = accountFixture(); input.value.contracts[0].media = { src: '/fictional-missing.jpg',
-    caption: 'Representative model image', provenance: { source: 'dated illustration' } };
+    caption: 'Front three-quarter view', provenance: { source: 'dated illustration' } };
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
     const media = root.querySelector('.gcsp-media');
-    assert.equal(media.querySelector('img').alt, 'BMW 3 Series Touring 320i: representative image');
-    assert.match(media.textContent, /Representative model image/);
+    assert.equal(media.querySelector('img').alt, 'BMW 3 Series Touring 320i');
+    assert.match(media.textContent, /Front three-quarter view/);
     media.querySelector('img').dispatchEvent(new window.Event('error'));
     assert.equal(media.querySelector('img'), null); assert.equal(media.classList.contains('has-photo'), false);
     assert.match(media.textContent, /No image for this car yet/);

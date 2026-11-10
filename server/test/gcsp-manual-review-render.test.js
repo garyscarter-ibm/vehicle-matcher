@@ -75,7 +75,7 @@ test('selected review gives the image caption its own space and keeps a full fal
     .map((path) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8')).join('\n');
   document.head.append(style); t.after(() => style.remove());
   const f = setup(t); const display = f.model.quote.facts.display;
-  display.photo = '/assets/brand-hero/bmw.jpg'; display.images = [{ src: display.photo, caption: 'Representative image, not your exact car' }];
+  display.photo = '/assets/brand-hero/bmw.jpg'; display.images = [{ src: display.photo, caption: 'BMW 320i M Sport Touring, front three-quarter view' }];
   await settle(() => f.root.querySelector('.vm-card-photo'));
   const media = f.root.querySelector('.vm-card-media'); const tag = media.querySelector('.vm-card-line');
   assert.equal(window.getComputedStyle(media.querySelector('.vm-media-caption')).position, 'static');

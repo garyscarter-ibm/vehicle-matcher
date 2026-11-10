@@ -1,6 +1,6 @@
 import { el, button } from '../../vehicle-matcher/ui.js';
 import { mediaWell } from '../../vehicle-matcher/modes/result-card.js';
-import { NO_IMAGE_TEXT, IMAGE_DISCLAIMER } from '../kit/plain-copy.js';
+import { NO_IMAGE_TEXT } from '../kit/plain-copy.js';
 import { isDisplayImage } from '../kit/vehicle-image-assets.js';
 // Reviewed local sources; the corpus entries mirror APPROVED_CORPUS_IMAGES (drift-tested). No other src is accepted.
 const REPRESENTATIVE = 'representative-configuration';
@@ -23,8 +23,7 @@ export function activityOffer({ offer, display, level = 2 } = {}) {
   const controls = [];
   function select(index) {
     const image = images[index];
-    media.showPhoto(image.src, { alt: image.alt, caption: approvedImages.get(image.src) === 'representative' ? 'Representative BMW brand image'
-        : typeof image.caption === 'string' && image.caption.trim() ? image.caption : IMAGE_DISCLAIMER });
+    media.showPhoto(image.src, { alt: image.alt, caption: typeof image.caption === 'string' && image.caption.trim() ? image.caption : undefined });
     controls.forEach((control, at) => control.setAttribute('aria-pressed', String(at === index)));
   }
   if (images.length > 1) {

@@ -19,7 +19,7 @@ test('no offer and absent imagery stay meaningful; untrusted network sources nev
 test('multiple representative images use native controls; failed image removes false alt/caption without losing offer facts', () => {
   const display = { title: 'Synthetic BMW offer', images: [picture, { ...picture }] };
   const original = structuredClone(display); const node = activityOffer({ offer: { state: 'active' }, display }); document.body.append(node);
-  assert.match(node.textContent, /Representative BMW brand image/); assert.equal(node.querySelectorAll('[data-image]').length, 2);
+  assert.doesNotMatch(node.textContent, /Representative/); assert.equal(node.querySelectorAll('[data-image]').length, 2);
   const second = node.querySelector('[data-image="1"]'); second.focus(); second.click();
   assert.equal(document.activeElement, second); assert.equal(second.getAttribute('aria-pressed'), 'true');
   assert.equal(node.querySelector('img').alt, picture.alt);
@@ -28,11 +28,11 @@ test('multiple representative images use native controls; failed image removes f
   assert.match(node.textContent, /Synthetic BMW offer/); assert.match(node.textContent, /No image for this car yet/); assert.deepEqual(display, original);
 });
 const I5 = '/assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp';
-const corpus = { src: I5, alt: 'i5 Touring: representative image', fidelity: 'representative-configuration' };
-test('approved corpus images render with the offer view caption; unapproved src or wrong fidelity stay placeholders', () => {
+const corpus = { src: I5, alt: 'i5 Touring', fidelity: 'representative-configuration' };
+test('approved corpus images render with only a supplied caption; unapproved src or wrong fidelity stay placeholders', () => {
   const ok = activityOffer({ offer: { state: 'active' }, display: { images: [corpus] } });
   assert.equal(ok.querySelector('img').getAttribute('src'), I5);
-  assert.match(ok.textContent, /Representative image, not your exact car/);
+  assert.equal(ok.querySelector('.vm-media-caption'), null);
   const own = activityOffer({ offer: { state: 'active' }, display: { images: [{ ...corpus, caption: 'Reviewed caption' }] } });
   assert.match(own.textContent, /Reviewed caption/);
   for (const image of [{ ...corpus, src: '/assets/gcsp-vehicle-evidence/other.webp' }, { ...corpus, fidelity: undefined },

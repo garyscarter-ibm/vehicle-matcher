@@ -44,8 +44,7 @@ export async function withVehicleDisplayImages(outcome) {
     if (seededCurrentContract(value) && !text(value.media?.src)) {
       pending.push((async () => {
         const image = await modelDisplayImage('G21 Touring|320i');
-        if (image) value.media = { src: `/${image.asset}`, alt: 'BMW 3 Series Touring: representative image',
-          caption: 'Representative image, not your exact car' };
+        if (image) value.media = { src: `/${image.asset}`, alt: 'BMW 3 Series Touring' };
       })());
     }
     for (const [key, child] of Object.entries(value)) if (containers.has(key)) visit(child, ownBinding, key);

@@ -141,7 +141,7 @@ test('FUCQ-219: Review your preferences hands the brief destination to the host;
 test('a live-style adapter display reaches the offer image in the DOM',async () => {
   const src='/assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp';const node=root();
   mount(node,{adapter:{loadAccount:async () => account,readActivity:async () => snapshot('offer'),
-    readOfferDisplay:async () => ({offerRef:{offerId:'layout-offer'},title:'i5 Touring',images:[{src,alt:'i5 Touring: representative image',fidelity:'representative-configuration'}]})}});
+    readOfferDisplay:async () => ({offerRef:{offerId:'layout-offer'},title:'i5 Touring',images:[{src,alt:'i5 Touring',fidelity:'representative-configuration'}]})}});
   await settle(node,(r) => r.querySelector('.gcsp-activity img'));assert.equal(node.querySelector('.gcsp-activity img').getAttribute('src'),src);
   assert.match(node.textContent,/i5 Touring/);
 });

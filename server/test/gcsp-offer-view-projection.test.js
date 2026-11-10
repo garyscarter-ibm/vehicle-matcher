@@ -73,13 +73,13 @@ test('unknown facts and missing allowance never fall back to display guesses or 
   assert.equal(member.facts.find((f) => f.label === 'Options').value, 'None listed');
 });
 
-test('media preserves representative caption and supplies truthful fallback qualification', () => {
+test('media preserves a supplied caption and adds no disclaimer when none is supplied', () => {
   const dto = sample(); const display = dto.quote.facts.display;
   display.photo = '/assets/brand-hero/bmw.jpg'; display.images = [{ src: display.photo, alt: 'Representative BMW', caption: 'Brand image, not this car' }];
   assert.deepEqual(toOfferPresentation(envelope(dto)).value.card.members[0].media,
     { src: display.photo, alt: 'Representative BMW', caption: 'Brand image, not this car' });
   display.images = [];
-  assert.match(toOfferPresentation(envelope(dto)).value.card.members[0].media.caption, /Representative image/);
+  assert.equal(toOfferPresentation(envelope(dto)).value.card.members[0].media.caption, null);
 });
 
 test('unsupported private fields never enter the display projection or its retained evidence', () => {

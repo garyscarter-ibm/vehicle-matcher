@@ -177,7 +177,7 @@ test('design display data applies only to the offer it references; the link and 
   const { activityFixtures } = await import('../../blocks/gcsp/activity/activity-fixtures.js');
   const node = view('offer', { offerDisplay: activityFixtures.offerExample });
   assert.match(node.textContent, /Your BMW offer/); assert.equal(node.querySelector('img').getAttribute('src'), '/assets/brand-hero/bmw.jpg');
-  assert.match(node.textContent, /Representative BMW brand image/); assert.equal(node.querySelector('a[href]').textContent, 'View offer');
+  assert.doesNotMatch(node.textContent, /Representative/); assert.equal(node.querySelector('a[href]').textContent, 'View offer');
   const foreign = view('offer', { offerDisplay: { offerRef: { offerId: 'foreign' }, title: 'Other car', images: activityFixtures.offerExample.images } });
   assert.equal(foreign.querySelector('img'), null); assert.doesNotMatch(foreign.textContent, /Other car/);
   assert.match(foreign.textContent, /Respond by/); assert.equal(foreign.querySelector('a[href]').textContent, 'View offer');
