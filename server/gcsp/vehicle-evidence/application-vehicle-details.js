@@ -199,7 +199,7 @@ function validSuccess(w) {
     && ['selectedOptions', 'measurements', 'optionDefinitions', 'availableOptions'].every((k) => states.includes(w.completeness[k]))
     && w.completeness.images === w.images.state
     && keys(w.presentation, ['syntheticLabel', 'associationLabel', 'sourceLabel', 'verifiedFittedLabel', 'unknownLabel', 'imageLabel'])
-    && w.presentation.syntheticLabel === 'Synthetic identity' && text(w.presentation.associationLabel)
+    && w.presentation.syntheticLabel === 'Vehicle identity' && text(w.presentation.associationLabel)
     && w.presentation.verifiedFittedLabel === 'VIN-fitted equipment unknown' && w.presentation.unknownLabel === 'Unknown'
     && w.presentation.sourceLabel === (w.source.kind === 'dated-snapshot' ? 'Dated catalogue snapshot' : 'North American structural reference')
     && w.presentation.imageLabel === w.images.label && w.routing?.mode === 'offline' && w.routing.liveEligible === false;

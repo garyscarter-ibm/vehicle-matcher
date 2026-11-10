@@ -74,7 +74,7 @@
   },
   "stale": {
     "status": "stale-run",
-    "reason": "This request belongs to an earlier demonstration run.",
+    "reason": "This page is out of date. Reload to see the latest.",
     "contractVersion": "1.0.0"
   }
 }

@@ -2,7 +2,7 @@ import { result } from '../repository/core.js';
 export const CASE_KEYS = Object.freeze(['renewalCase.deadline.enabled', 'renewalCase.deadline.withinDays',
   'renewalCase.lifecycle.enabled', 'renewalCase.lifecycle.eventTypes', 'renewalCase.selection.eventTypes',
   'renewalCase.owner.role', 'renewalCase.response.dueHours', 'renewalCase.extension.permitted', 'renewalCase.lifecycle.exceptionCopy']);
-export const unavailable = () => result('unavailable', { reason: 'Renewal case policy or context is unavailable. Ask the scheme team to check the demonstration setup.', retryable: true });
+export const unavailable = () => result('unavailable', { reason: 'Renewal case policy or context is unavailable. Ask the scheme team to check the scheme setup.', retryable: true });
 export async function loadCasePolicy(policy, read) {
   const rows = await Promise.all(CASE_KEYS.map((key) => policy.getAssumption(key, read)));
   if (rows.some((r) => r.status !== 'ok' || r.policyVersion !== read.policyVersion || !r.value?.basis || !r.value?.unit

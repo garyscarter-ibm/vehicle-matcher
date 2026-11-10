@@ -49,10 +49,7 @@ test('fixtures are the producer shapes: key lists equal the producer fixtures an
   assert.deepEqual(approvalExamples.pending(), approvalShapes.pending);
   assert.deepEqual(approvalExamples.declined(), approvalShapes.declined);
   assert.deepEqual(approvalExamples['sent-to-ordering'](), approvalShapes['sent-to-ordering']);
-  // The painted reason differs from the producer's; every other field must match.
-  const unsupportedShape = structuredClone(approvalShapes.unsupported); const shownUnsupported = approvalExamples.unsupported();
-  unsupportedShape.value.blocked.reason = shownUnsupported.value.blocked.reason;
-  assert.deepEqual(shownUnsupported, unsupportedShape);
+  assert.deepEqual(approvalExamples.unsupported(), approvalShapes.unsupported);
   const optionalItem = new Set([...Object.keys(documentShapes.optionalItemKeys), 'acknowledgement']);
   for (const name of names) {
     const p = fixtures.states[name]; if (p.phase !== 'ready') continue;

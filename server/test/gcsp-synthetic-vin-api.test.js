@@ -136,7 +136,7 @@ test('HTTP complete/partial presentation preserves units, unknowns, source dates
   assert.equal(response.body.source.observedDate, '2026-11-01');
   assert.equal(response.body.source.catalogueValidity.effectDate, '2027-01-05');
   assert.equal(response.body.images.label, 'Images unavailable');
-  assert.equal(response.body.presentation.syntheticLabel, 'Synthetic identity');
+  assert.equal(response.body.presentation.syntheticLabel, 'Vehicle identity');
   for (const status of ['unsupported', 'identity-mismatch']) {
     const isolated = await fixture(t, { gcspVehicleEvidence: { lookup: createVehicleEvidenceLookup({ registry: {
       getVin: () => ({ status, failure: { message: 'untrusted source details' } }),

@@ -640,7 +640,7 @@ test('FUCQ-168: a ready handover completed through the real appointment service 
   assert.equal((await rows(f, CURRENT_CAR_EVENTS)).length, 1, 'a repeated completion records nothing more');
 
   const refuse = (p) => ({ ...p, async complete(op) { return { status: 'unsupported', operationId: op.operationId, orderUuid: op.payload.orderUuid, step: 'complete',
-    code: 'live-appointments-unsupported', reason: 'Live appointment booking is not connected in this demonstration.' }; } });
+    code: 'live-appointments-unsupported', reason: 'Live appointment booking is not connected yet.' }; } });
   const g = await setup(t, { documents: true, wrapProvider: refuse }); await g.approve(); await g.scheduleHandover();
   await g.advance(2 * DAY / 1000); await g.tick();
   assert.equal((await g.docs.completeTask(g.paula, ACK(g.orderUuid))).status, 'ok');

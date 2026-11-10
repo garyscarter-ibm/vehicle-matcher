@@ -12,7 +12,7 @@ const refused = (status) => result(status, { reason: ({
   'unknown-session': 'This session is not recognised.',
   'expired-session': 'This session has expired. Start a new presenter session.',
   'unknown-principal': 'This fictional person is not configured.',
-  'stale-run': 'This request belongs to an earlier demonstration run.',
+  'stale-run': 'This page is out of date. Reload to see the latest.',
   forbidden: 'This person cannot perform that action.',
 })[status] || 'The request is refused.' });
 const hash = (token) => createHash('sha256').update(token).digest('hex');

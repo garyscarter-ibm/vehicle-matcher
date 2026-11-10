@@ -11,7 +11,7 @@ const text = (v, max = 200) => typeof v === 'string' && v.trim().length > 0 && v
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const int = (v, min, max) => Number.isSafeInteger(v) && v >= min && v <= max;
 export const policyUnavailable = () => result('unavailable', { code: 'return-policy-unavailable', retryable: true,
-  reason: 'Return rules are unavailable. Ask the scheme team to check the demonstration setup.' });
+  reason: 'Return rules are unavailable. Ask the scheme team to check the scheme setup.' });
 
 function validRule(id, rule) {
   if (!object(rule) || !Array.isArray(rule.requiresHandoverStates) || rule.requiresHandoverStates.length === 0

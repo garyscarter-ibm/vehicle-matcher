@@ -449,7 +449,7 @@
    "outcome": "in-progress",
    "blocked": {
     "code": "live-ordering-unsupported",
-    "reason": "Live approval updates are not connected in this demonstration. The order stays at its current step."
+    "reason": "Live approval updates are not connected yet. The order stays at its current step."
    },
    "provider": {
     "mode": "live",

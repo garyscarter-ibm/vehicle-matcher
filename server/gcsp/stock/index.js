@@ -49,7 +49,7 @@ export function createStockReleaseService({ repository, policy, clock, identity,
     if (time.status !== 'ok') return time;
     const run = await repository.currentRun(context.environmentId);
     if (run.status !== 'ok') return run.status === 'not-found' ? unavailable() : run;
-    return run.value.runId === context.runId ? time : result('stale-run', { reason: 'The current demonstration run changed.' });
+    return run.value.runId === context.runId ? time : result('stale-run', { reason: 'This page is out of date. Reload to see the latest.' });
   }
   async function handle(tick) {
     const { context } = tick;
@@ -75,7 +75,7 @@ export function createStockReleaseService({ repository, policy, clock, identity,
     return tick.transaction(async (tx) => {
       const run = await tx.get({ table: 'runs', key: { runId: context.runId } });
       if (run.status !== 'ok') return run;
-      if (!run.value.current || run.value.status !== 'active') return result('stale-run', { reason: 'The current demonstration run changed.' });
+      if (!run.value.current || run.value.status !== 'active') return result('stale-run', { reason: 'This page is out of date. Reload to see the latest.' });
       if (run.value.clockInstant !== tick.now || run.value.clockVersion !== tick.clockVersion) return conflict('release-clock-changed');
       const rows = await tx.list('stock');
       if (rows.status !== 'ok') return rows;

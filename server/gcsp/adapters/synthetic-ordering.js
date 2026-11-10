@@ -27,7 +27,7 @@ export function createSyntheticOrderingAdapter({ repository, faults } = {}) {
           return receipt.status === 'ok' ? ok(receipt.value.outcome) : receipt;
         });
       if (fault && stored.status === 'ok') {
-        if (fault.response === 'timeout') throw new Error('Synthetic ordering timed out.');
+        if (fault.response === 'timeout') throw new Error('Ordering timed out.');
         return { status: 'unknown', ...scope(operation) };
       }
       return stored.status === 'ok' ? stored.value : stored;

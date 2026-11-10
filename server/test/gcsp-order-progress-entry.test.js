@@ -162,7 +162,7 @@ test('the custom element survives an early adapter, remounts on change, reads at
   early.remove(); order.remove(); assert.equal(early.childElementCount, 0); assert.equal(order.childElementCount, 0);
 });
 
-const stale = { status: 'stale-run', reason: 'This request belongs to an earlier demonstration run.' };
+const stale = { status: 'stale-run', reason: 'This page is out of date. Reload to see the latest.' };
 function assertRestarted(node, reloads) {
   assert.match(text(node), /Restarted/); assert.match(text(node), /Reload to continue/);
   assert.doesNotMatch(text(node), /stale-run|\u2014|Your order changed|Order progress unavailable/);

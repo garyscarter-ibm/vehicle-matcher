@@ -107,7 +107,7 @@ const assertRestarted=(node,reloads) => {
 
 test('a stale-run read shows the restarted screen with a working Reload, not the generic failure',async () => {
   const node=root(),reloads=[];let reads=0;
-  mount(node,{reload:() => reloads.push(1),adapter:{loadAccount:async () => account,readActivity:async () => {reads++;return {status:'stale-run',reason:'This request belongs to an earlier demonstration run.'};}}});
+  mount(node,{reload:() => reloads.push(1),adapter:{loadAccount:async () => account,readActivity:async () => {reads++;return {status:'stale-run',reason:'This page is out of date. Reload to see the latest.'};}}});
   await settle(node,(r) => r.textContent.includes('Restarted'));assertRestarted(node,reloads);assert.equal(reads,1);
 });
 

@@ -505,7 +505,7 @@ function assertRestarted(f, reloads) {
   reload.click(); assert.equal(reloads(), 1); return reload;
 }
 test('a stale-run action reply shows the restarted notice, disables controls, never resends and reloads on request', async () => {
-  let reloads = 0; const f = setup({ tick: async (payload) => { f.calls.push(payload); return { status: 'stale-run', reason: 'This request belongs to an earlier demonstration run.' }; } },
+  let reloads = 0; const f = setup({ tick: async (payload) => { f.calls.push(payload); return { status: 'stale-run', reason: 'This page is out of date. Reload to see the latest.' }; } },
     { reload: () => reloads++ });
   await settle(); f.click('Tick'); await settle();
   assert.equal(f.calls.length, 1); const reload = assertRestarted(f, () => reloads);
@@ -525,7 +525,7 @@ test('restarted notice takes focus from the control that was used', async () => 
 });
 test('a stale-run readback after an authorized read gives the same restarted notice', async () => {
   let reads = 0; let reloads = 0;
-  const f = setup({ readControls: async () => ++reads === 1 ? ok(state()) : { status: 'stale-run', reason: 'This request belongs to an earlier demonstration run.' } },
+  const f = setup({ readControls: async () => ++reads === 1 ? ok(state()) : { status: 'stale-run', reason: 'This page is out of date. Reload to see the latest.' } },
     { reload: () => reloads++ });
   await settle(); await f.control.refresh(); await settle();
   assertRestarted(f, () => reloads); assert.equal(f.calls.length, 0); f.control.destroy();

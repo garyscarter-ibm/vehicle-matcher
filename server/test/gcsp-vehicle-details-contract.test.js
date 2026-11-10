@@ -217,10 +217,10 @@ test('backend presentation keeps source/synthetic labels, unknowns, physical/cat
     assert.equal(full.description.upholstery.selections[0].label.provenance.kind, 'observed');
     assert.equal(full.equipment.selected.state, 'known'); assert.equal(full.equipment.verifiedFitted.state, 'unknown');
     assert.equal(full.source.configurationIdentity.provenance.kind, 'observed');
-    assert.equal(full.identity.identityKind, 'synthetic'); assert.match(full.presentation.associationLabel, /Fictional/);
+    assert.equal(full.identity.identityKind, 'synthetic'); assert.match(full.presentation.associationLabel, /Identity association/);
     assert.equal(full.source.catalogueValidity.productionDate, '2027-01-05'); assert.equal(full.source.productionDate, null);
     assert.equal(full.source.observedDate, '2026-11-01'); assert.equal(full.images.state, 'unknown');
-    assert.equal(full.images.label, 'Images unavailable'); assert.equal(full.presentation.syntheticLabel, 'Synthetic identity');
+    assert.equal(full.images.label, 'Images unavailable'); assert.equal(full.presentation.syntheticLabel, 'Vehicle identity');
     full.technical.luggageNormal.value = 0;
     assert.equal((await consumer.resolve(complete)).vehicle.technical.luggageNormal.value, 570);
   }

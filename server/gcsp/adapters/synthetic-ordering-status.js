@@ -39,7 +39,7 @@ export function createSyntheticOrderingStatus({ repository } = {}) {
 // Live-shaped boundary: no BMW approval system is reachable, so every write is refused and state stays put.
 export function createLiveOrderingStatusStub() {
   const refuse = (operation) => ({ status: 'unsupported', ...(valid(operation) ? scope(operation) : {}), code: 'live-ordering-unsupported',
-    reason: 'Live approval updates are not connected in this demonstration. The order stays at its current step.' });
+    reason: 'Live approval updates are not connected yet. The order stays at its current step.' });
   return { mode: 'live', contractVersion: '1.0.0', provider: 'live-ordering-status:stub',
     async requestDecision(operation) { return refuse(operation); },
     async reconcile(operation) { return refuse(operation); } };

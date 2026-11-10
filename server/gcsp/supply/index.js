@@ -20,8 +20,8 @@ export function createSupplyService({ repository, policy, clock, identity, produ
     const allowed = await identity.requireRole(context, role); if (allowed.status !== 'ok') return allowed;
     const time = await clock.now(context); if (time.status !== 'ok') return time;
     const run = await repository.currentRun(context.environmentId); if (run.status !== 'ok') return run;
-    if (run.value.runId !== context.runId) return result('stale-run', { reason: 'The demonstration run changed.' });
-    if (!validInstant(time.value.now) || time.value.runId !== context.runId) return unavailable('The demo clock is unavailable.');
+    if (run.value.runId !== context.runId) return result('stale-run', { reason: 'This page is out of date. Reload to see the latest.' });
+    if (!validInstant(time.value.now) || time.value.runId !== context.runId) return unavailable('The clock is unavailable.');
     if (run.value.policyVersion !== context.policyVersion) return stale({ table: 'policy' }, context.policyVersion, run.value.policyVersion);
     return ok({ now: time.value.now, clockVersion: time.value.clockVersion, policyVersion: run.value.policyVersion });
   }
@@ -40,7 +40,7 @@ export function createSupplyService({ repository, policy, clock, identity, produ
   }
   async function fence(tx, context, time) {
     const run = await tx.get(ref(context, 'runs', {})); if (run.status !== 'ok') return run;
-    if (!run.value.current || run.value.status !== 'active') return result('stale-run', { reason: 'The demonstration run changed.' });
+    if (!run.value.current || run.value.status !== 'active') return result('stale-run', { reason: 'This page is out of date. Reload to see the latest.' });
     if (run.value.policyVersion !== time.policyVersion || run.value.clockVersion !== time.clockVersion) return conflict('Supply inputs changed. Refresh before submitting.');
     return ok(run.value);
   }

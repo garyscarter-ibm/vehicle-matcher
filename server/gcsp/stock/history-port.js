@@ -32,7 +32,7 @@ export function createStockReleaseHistoryPort({ repository, identity, clock } = 
     const run = await repository.currentRun(context.environmentId);
     if (run.status !== 'ok') return run.status === 'not-found' ? unavailable() : run;
     if (run.value.runId !== context.runId || run.value.environmentId !== context.environmentId
-      || run.value.current !== true || run.value.status !== 'active') return result('stale-run', { reason: 'The current demonstration run changed.' });
+      || run.value.current !== true || run.value.status !== 'active') return result('stale-run', { reason: 'This page is out of date. Reload to see the latest.' });
     return run.value.clockInstant === time.value.now && run.value.clockVersion === time.value.clockVersion ? time : changed();
   }
   function project(context, stock, receipts, time) {
