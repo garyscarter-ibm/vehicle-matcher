@@ -28,11 +28,11 @@
 .gcsp .gcsp-mail-detail { display: flex; flex-direction: column; gap: var(--gcsp-space-4); min-width: 0; padding: var(--gcsp-space-4); background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
 .gcsp .gcsp-mail-heading { margin: 0; font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); font-weight: var(--gcsp-font-strong-weight); overflow-wrap: anywhere; }
 .gcsp .gcsp-mail-heading:focus-visible, .gcsp .gcsp-mail-frame:focus, .gcsp .gcsp-mail-frame:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 4px; }
-.gcsp .gcsp-mail-sub { margin: var(--gcsp-space-1) 0 0; font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); font-weight: var(--gcsp-font-strong-weight); }
-.gcsp .gcsp-mail-facts { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+.gcsp .gcsp-mail-line { margin: 0; color: var(--gcsp-text-muted); } .gcsp .gcsp-mail-fold > summary { cursor: pointer; font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-mail-facts { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); margin-top: var(--gcsp-space-2); }
 .gcsp .gcsp-mail-frame { display: block; width: 100%; height: 520px; border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); }
-.gcsp .gcsp-mail-text { margin: 0; padding: var(--gcsp-space-3) 0 0; font: var(--gcsp-font-weight) var(--gcsp-font-size-regular)/var(--gcsp-font-line-regular) var(--gcsp-font-code); white-space: pre-wrap; overflow-wrap: anywhere; border-top: 1px solid var(--gcsp-divider); }
-.gcsp .gcsp-mail-explain { margin: 0; padding: var(--gcsp-space-3) 0 0; font-weight: var(--gcsp-font-strong-weight); border-top: 1px solid var(--gcsp-divider); overflow-wrap: anywhere; }
+.gcsp .gcsp-mail-text { margin: var(--gcsp-space-2) 0 0; font: var(--gcsp-font-weight) var(--gcsp-font-size-regular)/var(--gcsp-font-line-regular) var(--gcsp-font-code); white-space: pre-wrap; overflow-wrap: anywhere; }
+.gcsp .gcsp-mail-detail[hidden] { display: none; } .gcsp .gcsp-mail-explain { margin: 0; padding: var(--gcsp-space-3) 0 0; font-weight: var(--gcsp-font-strong-weight); border-top: 1px solid var(--gcsp-divider); overflow-wrap: anywhere; }
 .gcsp .gcsp-mail-explain.is-warn { color: var(--gcsp-warning); }
 .gcsp .gcsp-mail-explain.is-bad { color: var(--gcsp-danger); }
 .gcsp .gcsp-mail-offer .vm-btn { max-width: 100%; }

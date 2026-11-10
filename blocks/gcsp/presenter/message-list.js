@@ -35,7 +35,7 @@ function offerLink(message) {
     wrap.append(el('p', 'gcsp-note', 'Offer link not available'));
     return wrap;
   }
-  const link = button({ label: 'Open the offer', variant: 'primary', href: message.offerLink });
+  const link = button({ label: 'Open the offer', variant: 'ghost', href: message.offerLink });
   link.target = '_blank';
   link.rel = 'noopener';
   link.append(el('span', 'gcsp-vh', ' (opens in a new tab)'));
@@ -52,24 +52,28 @@ function bodyFrame(message) {
   return frame;
 }
 
+function fold(label, ...nodes) {
+  const node = el('details', 'gcsp-mail-fold'); node.append(el('summary', undefined, label), ...nodes);
+  return node;
+}
+
 function renderDetail(message) {
   const heading = el('h2', 'gcsp-mail-heading', message.subject || NO_SUBJECT);
   heading.tabIndex = -1;
-  const facts = [
-    { label: 'To', value: recipientName(message) },
-    { label: 'Status', value: statusOf(message.state, message.transport).label },
-    { label: 'Time', value: formatDemoTime(message.time) || 'No attempt yet' },
-    { label: 'Attempts', value: String(message.attempts ?? 0) },
-  ];
-  if (message.state === 'retrying') facts.push({ label: 'Next attempt', value: formatDemoTime(message.nextAttemptAt) || 'Not scheduled' });
-  if (message.state === 'retrying' || message.state === 'failed') facts.push({ label: 'Problem', value: errorSentence(message.error) });
-  const nodes = [heading, factList(facts, { className: 'gcsp-mail-facts' })];
-  if (typeof message.htmlBody === 'string' && typeof message.subject === 'string') {
-    nodes.push(offerLink(message), el('h3', 'gcsp-mail-sub', 'Email as received'), bodyFrame(message));
-    if (typeof message.textBody === 'string') nodes.push(el('h3', 'gcsp-mail-sub', 'Plain-text version'), el('pre', 'gcsp-mail-text', message.textBody));
+  // To, sent and subject sit on one line; attempts and problems wait in a disclosure.
+  const status = statusOf(message.state, message.transport).label;
+  const line = el('p', 'gcsp-mail-line', `To ${recipientName(message)}. ${status}, ${formatDemoTime(message.time) || 'no attempt yet'}.`);
+  const attempts = [{ label: 'Attempts', value: String(message.attempts ?? 0) }];
+  if (message.state === 'retrying') attempts.push({ label: 'Next attempt', value: formatDemoTime(message.nextAttemptAt) || 'Not scheduled' });
+  if (message.state === 'retrying' || message.state === 'failed') attempts.push({ label: 'Problem', value: errorSentence(message.error) });
+  const rendered = typeof message.htmlBody === 'string' && typeof message.subject === 'string';
+  const nodes = [heading, line];
+  if (rendered) {
+    nodes.push(offerLink(message), bodyFrame(message));
+    if (typeof message.textBody === 'string') nodes.push(fold('Plain-text version', el('pre', 'gcsp-mail-text', message.textBody)));
+    nodes.push(fold('Delivery attempts', factList(attempts, { className: 'gcsp-mail-facts' })));
   } else {
-    const note = el('p', `gcsp-mail-explain is-${statusOf(message.state).tone}`, explain(message));
-    nodes.push(note);
+    nodes.push(factList(attempts, { className: 'gcsp-mail-facts' }), el('p', `gcsp-mail-explain is-${statusOf(message.state).tone}`, explain(message)));
   }
   return { heading, nodes };
 }
@@ -90,10 +94,8 @@ export function messageList({ messages = [], selectedId = null, onSelect, label 
 
   function drawDetail(focus) {
     const message = items.find((m) => m.jobId === selected);
-    if (!message) {
-      detail.replaceChildren(el('p', 'gcsp-note gcsp-mail-prompt', 'Select an email to read it.'));
-      return;
-    }
+    detail.hidden = !message;
+    if (!message) { detail.replaceChildren(); return; }
     const view = renderDetail(message);
     detail.replaceChildren(...view.nodes);
     if (focus) view.heading.focus();
@@ -118,7 +120,8 @@ export function messageList({ messages = [], selectedId = null, onSelect, label 
   };
   list.addEventListener('click', onClick);
 
-  if (!items.some((m) => m.jobId === selected)) selected = null;
+  // The newest email (first row) opens by default.
+  if (!items.some((m) => m.jobId === selected)) selected = items[0]?.jobId ?? null;
   drawRows();
   drawDetail(false);
 
@@ -127,7 +130,7 @@ export function messageList({ messages = [], selectedId = null, onSelect, label 
     select,
     update(next = []) {
       items = [...next];
-      if (!items.some((m) => m.jobId === selected)) selected = null;
+      if (!items.some((m) => m.jobId === selected)) selected = items[0]?.jobId ?? null;
       drawRows();
       drawDetail(false);
     },

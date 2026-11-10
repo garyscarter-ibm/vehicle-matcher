@@ -86,7 +86,7 @@ test('separate CONTROL authorization hides employee/Greg controls and errors ent
 });
 test('authorized while acting employee: stable labelled controls, server step, collapse and Escape', async () => {
   const f = setup(); await settle(); assert.equal(f.control.root.hidden, false); assert.match(f.host.textContent, /37 seconds/);
-  assert.match(f.host.textContent, /Employee test \(employee\)/); assert.match(f.host.textContent, /run-a/);
+  assert.match(f.host.textContent, /Employee, employee|Employee test/); assert.doesNotMatch(f.host.textContent, /\(employee\)|run-a/); assert.equal(f.control.root.dataset.runId, 'run-a');
   assert.equal(f.control.root.open, false); f.control.root.open = true;
   const input = f.host.querySelector('input'); assert.ok(document.querySelector(`label[for="${input.id}"]`));
   input.focus(); input.value = 'release'; input.dispatchEvent(new window.Event('input')); assert.equal(document.activeElement, input);
@@ -188,12 +188,12 @@ for (const [name, mutate] of Object.entries(invalidReleaseResults)) test(`releas
 test('reset current/chosen availability is explained and explicit confirmation captures canonical versions', async () => {
   const f = setup(); await settle(); const unavailable = choice(f, 'Scenario', 'business'); assert.equal(unavailable.disabled, false); unavailable.click(); assert.match(f.host.textContent, /Selected: Business journey\. Not available yet: actual-release-service/);
   assert.equal(f.click('Reset scenario').disabled, true); assert.equal(f.calls.length, 0);
-  choice(f, 'Scenario', 'mechanics').click(); assert.match(f.host.textContent, /Selected: Clock mechanics\. Ready to reset\./);
+  choice(f, 'Scenario', 'mechanics').click(); assert.doesNotMatch(f.host.textContent, /Selected: |Ready to reset/); assert.equal(f.click('Reset scenario').disabled, false); f.click('Cancel reset');
   f.click('Reset scenario'); assert.equal(f.calls.length, 0);
   f.click('Cancel reset'); assert.equal(f.calls.length, 0); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
   assert.deepEqual(f.calls[0], { commandId: 'command-1', expectedRunId: 'run-a', expectedRunVersion: 1,
     scenarioId: 'mechanics', scenarioVersion: 'v1', fixtureVersion: 'f1', policyVersion: 'policy-test' });
-  assert.match(f.host.textContent, /Reset done. New run: run-new/); f.control.destroy();
+  assert.match(f.host.textContent, /Reset done/); f.control.destroy();
 });
 test('delayed catalogue selects the actual current scenario after unavailable first option, then preserves deliberate choice', async () => {
   let completeCatalogue;
@@ -228,7 +228,7 @@ test('acknowledged reset navigates to fresh actual-context workspace without ano
   await settle(); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
   assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
   assert.doesNotMatch(f.navigation[0], /\?/); assert.equal(reads, 1); assert.equal(contexts, 2); // One read for the strip, one confirming the switch to the lead.
-  assert.match(f.host.textContent, /Reset done. New run: fresh-run/); f.control.destroy();
+  assert.match(f.host.textContent, /Reset done/); f.control.destroy();
 });
 test('unknown reset delivery preserves original retry and navigates only after acknowledged replay', async () => {
   const calls = [];
@@ -240,7 +240,7 @@ test('unknown reset delivery preserves original retry and navigates only after a
   f.click('Retry original action'); await settle();
   assert.equal(calls.length, 2); assert.strictEqual(calls[0], calls[1]);
   assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
-  assert.match(f.host.textContent, /Reset done. New run: replayed-run/); f.control.destroy();
+  assert.match(f.host.textContent, /Reset done/); f.control.destroy();
 });
 test('definitive stale-run reset retry navigates only to a freshly agreed different current run without claiming reset success', async () => {
   let currentRun = 'run-a'; const calls = [];
@@ -387,7 +387,7 @@ test('acknowledged reset with session-renewal failure still navigates and preser
     readContext: async () => { contexts++; return contexts === 1 ? ok({ principalId: 'employee-test', roles: ['employee'] }) : { status: 'stale-run' }; },
     reset: async () => ok({ runId: 'run-new', now: '2026-11-05T09:00:00.000Z', presenterSession: { status: 'unavailable', action: 'Use trusted bootstrap.' } }) });
   await settle(); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
-  assert.match(f.host.textContent, /Reset done. New run: run-new/); assert.match(f.host.textContent, /Use trusted bootstrap/);
+  assert.match(f.host.textContent, /Reset done/); assert.match(f.host.textContent, /Use trusted bootstrap/);
   assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
   assert.equal(reads, 1); assert.equal(contexts, 1); f.control.destroy();
 });
@@ -421,6 +421,29 @@ test('workspace context failure other than stale-run explains bootstrap without 
   done();
 });
 
+test('slice 8: beat actions lead in run-sheet order, the readback is one short block and nothing says Available', async () => {
+  const f = setup({ readControls: async () => ok({ ...state(), principals: [{ principalId: 'p', name: 'Paula Mason', roles: ['employee'] },
+    { principalId: 'g', name: 'Greg Lawson', roles: ['greg'] }] }) }); await settle();
+  const labels = [...f.host.querySelectorAll('.gcsp-presenter-actions button')].slice(0, 4).map((b) => b.textContent.replace(/ \(.*/, ''));
+  assert.deepEqual(labels, ['Reset scenario', 'Switch principal', 'Next release', 'Tick']);
+  const primaries = [...f.host.querySelectorAll('button.vm-btn-primary')].filter((b) => !b.closest('[hidden]'));
+  assert.deepEqual(primaries.map((b) => b.textContent.replace(/ \(.*/, '')), ['Tick']);
+  assert.doesNotMatch(f.host.textContent, /Available|Run\b/); assert.match(f.host.textContent, /Nov, 09:00:00 UTC/);
+  assert.equal(choice(f, 'Acting principal', 'p').textContent, 'Paula, employee'); assert.equal(choice(f, 'Acting principal', 'g').textContent, 'Greg, scheme team');
+  assert.equal(f.control.root.dataset.runId, 'run-a');
+  const folds = [...f.host.querySelectorAll('details.gcsp-presenter-fold')].filter((n) => !n.hidden);
+  assert.deepEqual(folds.map((n) => n.open), [false]); assert.match(folds[0].firstChild.textContent, /^Last tick/); f.control.destroy();
+});
+test('slice 8: a landing page opens the flyout once, and a presenter who closed it keeps it closed', async () => {
+  const { portalShell } = await import('../../blocks/gcsp/shell/portal-shell.js');
+  const adapter = { readControls: async () => ok(state()), readContext: async () => ok({ principalId: 'presenter', roles: ['presenter'] }), readScenarios: async () => ok(catalogue) };
+  window.sessionStorage.clear();
+  const shell = portalShell({ presenterControls: { adapter, openOnLoad: true } }); document.body.append(shell.root); await settle();
+  assert.equal(shell.root.querySelector('.gcsp-presenter-flyout').hidden, false); shell.destroy();
+  window.sessionStorage.setItem('gcsp:presenter-flyout-open', 'false');
+  const closed = portalShell({ presenterControls: { adapter, openOnLoad: true } }); document.body.append(closed.root); await settle();
+  assert.equal(closed.root.querySelector('.gcsp-presenter-flyout').hidden, true); closed.destroy(); window.sessionStorage.clear();
+});
 test('custom element registers once, mounts injected adapter, and aborts on disconnect', async () => {
   const { defineGcspPresenterControls } = await import('../../blocks/gcsp/presenter-controls/controls.js');
   assert.equal(defineGcspPresenterControls(), defineGcspPresenterControls()); let signal;
@@ -488,7 +511,7 @@ test('known pending receipt keeps pending details visible while allowing deliber
   assert.match(f.host.textContent, /Tick still running\. 1 step: 1 waiting for a result\./);
   assert.equal(f.click('Reset scenario').disabled, false); f.click('Confirm reset'); await settle();
   assert.equal(resets.length, 1); assert.notEqual(resets[0].commandId, ticks[1].commandId);
-  assert.match(f.host.textContent, /Reset done. New run: run-after-pending/); f.control.destroy();
+  assert.match(f.host.textContent, /Reset done/); f.control.destroy();
 });
 
 const restartedPanel = (f) => f.host.querySelector('.gcsp-run-restarted');
@@ -651,7 +674,8 @@ test('fault group shows only supplied adapters, preselects the current mode and 
   const f = setup({ readFaults: async () => ok({ runId: 'run-a', faults: faultRows('stale').slice(0, 1) }),
     setFault: (payload) => { calls.push(payload); return new Promise((resolve) => { finish = resolve; }); } }); await settle();
   assert.ok(group(f, 'Stock feed fault')); assert.equal(group(f, 'Ordering fault'), null);
-  assert.equal(selected(f, 'Stock feed fault'), 'stale'); assert.match(f.host.textContent, /Faults/);
+  assert.equal(selected(f, 'Stock feed fault'), 'stale');
+  const fold = f.host.querySelector('details.gcsp-presenter-fold'); assert.equal(fold.open, false); assert.match(fold.firstChild.textContent, /^Faults \(1 set\)$/);
   assert.match(choice(f, 'Stock feed fault', 'unavailable').textContent, /Stock feed unavailable/);
   assert.match(choice(f, 'Stock feed fault', 'none').textContent, /No fault/);
   choice(f, 'Stock feed fault', 'unavailable').click(); f.click('Set stock feed fault'); f.click('Set stock feed fault');
@@ -704,7 +728,8 @@ test('after a retryable refused tick the fault control stays enabled and clearin
 test('fault group is hidden when the read fails or reports no faults, and unknown modes fall back to the id', async () => {
   for (const readFaults of [async () => ({ status: 'unavailable' }), async () => ok({ runId: 'run-a', faults: [] }), undefined]) {
     const f = setup(readFaults ? { readFaults } : {}); await settle();
-    assert.doesNotMatch(f.host.textContent, /Faults/); assert.equal(group(f, 'Stock feed fault'), null);
+    const folds = [...f.host.querySelectorAll('details.gcsp-presenter-fold')].filter((n) => /^Faults/.test(n.firstChild.textContent));
+    assert.ok(folds.every((n) => n.hidden)); assert.equal(group(f, 'Stock feed fault'), null);
     assert.equal([...f.host.querySelectorAll('button')].some((b) => /^Set .* fault$/.test(b.textContent) && !b.closest('[hidden]')), false);
     f.control.destroy();
   }
@@ -723,7 +748,7 @@ test('reset with a failed journey start state stays on the strip, names the step
   const f = setup({ reset: async () => ok({ runId: 'run-new', startState: { status: 'unavailable', step: 'offer-seed', reason: 'Offer service not composed' } }) }); await settle();
   f.click('Reset scenario'); f.click('Confirm reset'); await settle();
   assert.equal(f.navigation.length, 0);
-  assert.match(f.host.textContent, /Reset done\. New run: run-new\. The scenario start stopped at offer-seed: Offer service not composed/);
+  assert.match(f.host.textContent, /Reset done\. The scenario start stopped at offer-seed: Offer service not composed/);
   f.click('Continue to workspace'); assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter\.html$/);
   f.control.destroy();
   const bare = setup({ reset: async () => ok({ runId: 'run-x', startState: { status: 'failed' } }) }); await settle();
@@ -743,7 +768,7 @@ test('wider catalogue rows: available decline-then-change-waiting resets, unavai
     { scenarioId: 'decline-then-change-waiting', name: 'Decline then change waiting', scenarioVersion: 'v1', fixtureVersion: 'f1', availability: { available: true } },
     { scenarioId: 'offer-expires', name: 'Offer expires', scenarioVersion: 'v1', fixtureVersion: 'f1', availability: { available: false, missingCapabilities: ['offer-expiry-handler'] } }] };
   const f = setup({ readScenarios: async () => ok(wide) }); await settle();
-  assert.match(choice(f, 'Scenario', 'decline-then-change-waiting').textContent, /Decline then change waiting.*Available/);
+  assert.match(choice(f, 'Scenario', 'decline-then-change-waiting').textContent, /^Decline then change waiting$/);
   assert.match(choice(f, 'Scenario', 'offer-expires').textContent, /Not available yet: offer-expiry-handler/);
   choice(f, 'Scenario', 'offer-expires').click(); assert.equal(f.click('Reset scenario').disabled, true); assert.equal(f.calls.length, 0);
   choice(f, 'Scenario', 'decline-then-change-waiting').click(); assert.equal(f.click('Reset scenario').disabled, false);
@@ -794,7 +819,7 @@ test('the remounted strip opens, says Reset done and focuses that status once, t
   window.sessionStorage.setItem('gcsp:presenter-reset-done', JSON.stringify({ runId: 'run-new', name: 'Paula (fictional)' }));
   const f = resetFixture(); await settle();
   const status = f.host.querySelector('[role="status"]');
-  assert.equal(status.textContent, 'Reset done. New run: run-new. Acting as Paula (fictional).');
+  assert.equal(status.textContent, 'Reset done. Acting as Paula (fictional).');
   assert.equal(document.activeElement, status); assert.equal(f.control.root.open, true); assert.equal(status.tabIndex, -1);
   assert.equal(resetNote(), null); f.control.destroy();
   const g = resetFixture(); await settle(); assert.notEqual(document.activeElement, g.host.querySelector('[role="status"]')); g.control.destroy();
@@ -810,7 +835,7 @@ test('a refused switch after a good reset stays on the strip, keeps focus on the
   f.click('Reset scenario'); f.click('Confirm reset'); await settle();
   const status = f.host.querySelector('[role="status"]');
   assert.equal(f.navigation.length, 0); assert.equal(resetNote(), null);
-  assert.equal(status.textContent, 'Reset done. New run: run-new. Switch to Paula (fictional) not confirmed: Not permitted.');
+  assert.equal(status.textContent, 'Reset done. Switch to Paula (fictional) not confirmed: Not permitted.');
   assert.equal(document.activeElement, status); assert.equal(selected(f, 'Acting principal'), 'demo-paula');
   const retry = [...f.host.querySelectorAll('button')].find((node) => node.textContent === 'Switch principal');
   assert.equal(retry.disabled, false); f.control.destroy();

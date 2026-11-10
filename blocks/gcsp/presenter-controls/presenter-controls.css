@@ -1,12 +1,12 @@
 @import url('../kit/presenter-bar.css');
 .gcsp-presenter-actions { display: flex; flex-direction: column; gap: var(--gcsp-space-4); }
 .gcsp-presenter-group { display: flex; flex-wrap: wrap; align-items: end; gap: var(--gcsp-space-2); }
-.gcsp-presenter-group + .gcsp-presenter-group:not([hidden]) { padding-top: var(--gcsp-space-4); border-top: 1px solid var(--gcsp-divider); }
-.gcsp-presenter-group[hidden] { display: none; }
+.gcsp-presenter-actions > :is(.gcsp-presenter-group, .gcsp-presenter-fold):not(:first-child, [hidden]) { padding-top: var(--gcsp-space-3); border-top: 1px solid var(--gcsp-divider); }
+.gcsp-presenter-group[hidden], .gcsp-presenter-fold[hidden] { display: none; }
 .gcsp-presenter-group > .gcsp-field { flex: 1 1 220px; min-width: 0; }
-.gcsp-presenter-group > h3 { flex-basis: 100%; margin: 0; font-size: var(--gcsp-font-size-regular); font-weight: var(--gcsp-font-strong-weight); }
 .gcsp .gcsp-presenter-bar .gcsp-presenter-input { width: 100%; box-sizing: border-box; min-height: var(--gcsp-input-height); padding: 0 var(--gcsp-space-2); color: var(--gcsp-text); background: var(--gcsp-surface); border: 1px solid var(--gcsp-input-border); border-radius: var(--gcsp-radius); font: inherit; font-size: var(--gcsp-font-size-regular); }
-.gcsp-presenter-confirmation, .gcsp-presenter-group > p, .gcsp-presenter-results { flex-basis: 100%; overflow-wrap: anywhere; }
+.gcsp-presenter-confirmation, .gcsp-presenter-group > p { flex-basis: 100%; overflow-wrap: anywhere; }
+.gcsp-presenter-fold { overflow-wrap: anywhere; }
 .gcsp-presenter-confirmation[hidden], .gcsp-presenter-controls .gcsp-note:empty { display: none; }
 .gcsp-presenter-handlers { padding-inline-start: var(--gcsp-space-6); overflow-wrap: anywhere; }
 /* The nav item sits at the bottom of the left nav, above the collapse toggle. */

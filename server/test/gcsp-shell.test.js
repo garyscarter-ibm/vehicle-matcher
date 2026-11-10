@@ -900,7 +900,7 @@ test('a reset announcement opens the flyout and focuses the status; the open sta
   window.sessionStorage.setItem('gcsp:presenter-reset-done', JSON.stringify({ runId: 'run-a', name: 'Paula (fictional)' }));
   const { shell, flyout } = await flyoutShell(flyoutAdapter());
   assert.equal(flyout.hidden, false);
-  assert.match(flyout.textContent, /Reset done\. New run: run-a\. Acting as Paula \(fictional\)\./);
+  assert.match(flyout.textContent, /Reset done\. Acting as Paula \(fictional\)\./);
   assert.equal(document.activeElement.getAttribute('role'), 'status'); assert.equal(flyout.contains(document.activeElement), true);
   assert.equal(window.sessionStorage.getItem('gcsp:presenter-flyout-open'), 'true'); shell.destroy();
   const again = await flyoutShell(flyoutAdapter()); assert.equal(again.flyout.hidden, false, 'remembered across navigation'); again.shell.destroy();
