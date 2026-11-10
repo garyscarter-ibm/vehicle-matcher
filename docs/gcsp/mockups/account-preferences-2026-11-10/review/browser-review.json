@@ -75,6 +75,30 @@
       "passed": true
     },
     {
+      "label": "Selecting a star dismisses its tooltip while retaining focus",
+      "passed": true
+    },
+    {
+      "label": "Clicking the selected star clears and saves the rating",
+      "passed": true
+    },
+    {
+      "label": "Cleared rating survives reload",
+      "passed": true
+    },
+    {
+      "label": "Space selects a focused star and dismisses help",
+      "passed": true
+    },
+    {
+      "label": "Space on the selected star clears it and keeps focus",
+      "passed": true
+    },
+    {
+      "label": "Native arrow navigation still selects the next star and dismisses help",
+      "passed": true
+    },
+    {
       "label": "Disengaged lamp is static red",
       "passed": true
     },
@@ -96,6 +120,10 @@
     },
     {
       "label": "1440 initial: rating sits at the right image edge",
+      "passed": true
+    },
+    {
+      "label": "1440 initial: Buddy status and lamp have prominent readable sizing",
       "passed": true
     },
     {
@@ -275,6 +303,10 @@
       "passed": true
     },
     {
+      "label": "1920 selected: Buddy status and lamp have prominent readable sizing",
+      "passed": true
+    },
+    {
       "label": "1100 selected: no horizontal page overflow",
       "passed": true
     },
@@ -292,6 +324,10 @@
     },
     {
       "label": "1100 selected: rating sits at the right image edge",
+      "passed": true
+    },
+    {
+      "label": "1100 selected: Buddy status and lamp have prominent readable sizing",
       "passed": true
     },
     {
@@ -315,6 +351,10 @@
       "passed": true
     },
     {
+      "label": "1024 selected: Buddy status and lamp have prominent readable sizing",
+      "passed": true
+    },
+    {
       "label": "900 selected: no horizontal page overflow",
       "passed": true
     },
@@ -332,6 +372,10 @@
     },
     {
       "label": "900 selected: rating sits at the right image edge",
+      "passed": true
+    },
+    {
+      "label": "900 selected: Buddy status and lamp have prominent readable sizing",
       "passed": true
     },
     {
@@ -355,6 +399,10 @@
       "passed": true
     },
     {
+      "label": "820 selected: Buddy status and lamp have prominent readable sizing",
+      "passed": true
+    },
+    {
       "label": "375 selected: no horizontal page overflow",
       "passed": true
     },
@@ -372,6 +420,10 @@
     },
     {
       "label": "375 selected: rating sits at the right image edge",
+      "passed": true
+    },
+    {
+      "label": "375 selected: Buddy status and lamp have prominent readable sizing",
       "passed": true
     },
     {
@@ -395,6 +447,10 @@
       "passed": true
     },
     {
+      "label": "320 long: Buddy status and lamp have prominent readable sizing",
+      "passed": true
+    },
+    {
       "label": "320 long options: no horizontal page overflow",
       "passed": true
     },
@@ -412,6 +468,10 @@
     },
     {
       "label": "320 long options: rating sits at the right image edge",
+      "passed": true
+    },
+    {
+      "label": "320 long options: Buddy status and lamp have prominent readable sizing",
       "passed": true
     },
     {
@@ -444,6 +504,10 @@
     },
     {
       "label": "320 remove confirmation: rating sits at the right image edge",
+      "passed": true
+    },
+    {
+      "label": "320 remove confirmation: Buddy status and lamp have prominent readable sizing",
       "passed": true
     },
     {
@@ -563,6 +627,10 @@
       "passed": true
     },
     {
+      "label": "320 importance unselected: Buddy status and lamp have prominent readable sizing",
+      "passed": true
+    },
+    {
       "label": "Fuel selection saves medium by default",
       "passed": true
     },
@@ -587,6 +655,10 @@
       "passed": true
     },
     {
+      "label": "320 importance high: Buddy status and lamp have prominent readable sizing",
+      "passed": true
+    },
+    {
       "label": "Clearing final Fuel option also clears high importance",
       "passed": true
     },
@@ -607,11 +679,19 @@
       "passed": true
     },
     {
-      "label": "Narrow touch reveals rating help without losing the rating",
+      "label": "Narrow focus reveals help before rating interaction",
       "passed": true
     },
     {
       "label": "Long rating tooltip remains in the 320px viewport",
+      "passed": true
+    },
+    {
+      "label": "Narrow repeated activation clears the rating and dismisses help",
+      "passed": true
+    },
+    {
+      "label": "Narrow activation selects and saves a star without sticky help",
       "passed": true
     },
     {
@@ -676,10 +756,1763 @@
   "failures": [],
   "codeIdentity": {
     "index.html": "424a1cffe33ef295db5faf0325c324ad86fddb1bb48926e7ef091d6e18455beb",
-    "mockup.js": "b1de76b150d7379b3bfac0d9725acd94fbbfd7590c3657c077d8d2ca726966e8",
-    "mockup.css": "848b0df72256e04b73a733dd287f04674b258ae9d008e7fad23b5a59d74dd077"
+    "mockup.js": "39bbec3285160f0980755487fcc100e71988276f209cc0a96b379bb9f35276e0",
+    "mockup.css": "59264755ee5c91ddd9dbd4323da9eab4dc937ea1d5958882a3b773ac5bd237d2"
   },
   "independentReview": "See visual-review.md for independent critique and corrective review.",
+  "environment": {
+    "browser": "157.0.8103.51",
+    "deviceScaleFactor": 1,
+    "reducedMotion": "reduce",
+    "capture": "fullPage",
+    "locale": "en-GB"
+  },
+  "captures": [
+    {
+      "file": "1440-same-tooltip.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "?state=empty",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 0,
+        "buddy": "Buddy disengaged",
+        "understanding": "1 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [
+          "same-again-help"
+        ],
+        "feedback": "0 of 3 categories considered · Preferences save automatically",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "1440-rating-tooltip.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "?state=empty",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 0,
+        "buddy": "Buddy disengaged",
+        "understanding": "1 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [
+          "rating-help"
+        ],
+        "feedback": "0 of 3 categories considered · Preferences save automatically",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "1440-initial.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "1 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "0 of 3 categories considered · Preferences save automatically",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "1440-validation.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "1 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "Choose 3 more categories to engage Buddy. Your preferences save automatically.",
+        "activeElement": "preference-status"
+      }
+    },
+    {
+      "file": "1440-slider-default.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: A bit of both",
+            "considered": true,
+            "important": false,
+            "expanded": "true"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "Preferences saved automatically.",
+        "activeElement": "Comfort, considered: A bit of both"
+      }
+    },
+    {
+      "file": "1440-selected.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 5,
+        "buddy": "Buddy engaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "1440-options.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 5,
+        "buddy": "Buddy engaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "true"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": "Body, considered: Touring / Estate"
+      }
+    },
+    {
+      "file": "1440-remove-confirmation.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 5,
+        "buddy": "Buddy engaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "1440-same-again.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 5,
+        "buddy": "Buddy disengaged",
+        "understanding": "11 / 11",
+        "sameAgain": true,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "Preferences saved automatically.",
+        "activeElement": "same-again"
+      }
+    },
+    {
+      "file": "1920-selected.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=selected",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "1100-selected.png",
+      "viewport": {
+        "width": 1100,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=selected",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "1024-selected.png",
+      "viewport": {
+        "width": 1024,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=selected",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "900-selected.png",
+      "viewport": {
+        "width": 900,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=selected",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "820-selected.png",
+      "viewport": {
+        "width": 820,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=selected",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "375-selected.png",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=selected",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "375-engaged.png",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=selected",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy engaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "Buddy engaged. Your preferences will guide the search.",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "320-long.png",
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=long",
+      "state": {
+        "model": "BMW 3 Series 330e xDrive M Sport Pro Touring\nM Sport Pro · Plug-in hybrid · BMW Individual specification",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "320-long-options.png",
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=long",
+      "state": {
+        "model": "BMW 3 Series 330e xDrive M Sport Pro Touring\nM Sport Pro · Plug-in hybrid · BMW Individual specification",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "true"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": "Comfort, considered: As comfortable as possible"
+      }
+    },
+    {
+      "file": "320-slider-midpoint.png",
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=long",
+      "state": {
+        "model": "BMW 3 Series 330e xDrive M Sport Pro Touring\nM Sport Pro · Plug-in hybrid · BMW Individual specification",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: A bit of both",
+            "considered": true,
+            "important": false,
+            "expanded": "true"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "Preferences saved automatically.",
+        "activeElement": "How much comfort would you like?"
+      }
+    },
+    {
+      "file": "320-remove-confirmation.png",
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=long",
+      "state": {
+        "model": "BMW 3 Series 330e xDrive M Sport Pro Touring\nM Sport Pro · Plug-in hybrid · BMW Individual specification",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "Preferences saved automatically.",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "320-same-again.png",
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=long",
+      "state": {
+        "model": "BMW 3 Series 330e xDrive M Sport Pro Touring\nM Sport Pro · Plug-in hybrid · BMW Individual specification",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "11 / 11",
+        "sameAgain": true,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "Preferences saved automatically.",
+        "activeElement": "same-again"
+      }
+    },
+    {
+      "file": "1440-importance-unselected.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "?state=empty",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 0,
+        "buddy": "Buddy disengaged",
+        "understanding": "1 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "true"
+          },
+          {
+            "label": "Fuel, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "0 of 3 categories considered · Preferences save automatically",
+        "activeElement": "Body, choose a preference"
+      }
+    },
+    {
+      "file": "1440-importance-medium.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "?state=empty",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 0,
+        "buddy": "Buddy disengaged",
+        "understanding": "3 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "true"
+          },
+          {
+            "label": "Fuel, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "Preferences saved automatically.",
+        "activeElement": ""
+      }
+    },
+    {
+      "file": "1440-importance-high.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "?state=empty",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 0,
+        "buddy": "Buddy disengaged",
+        "understanding": "3 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate, really important",
+            "considered": true,
+            "important": true,
+            "expanded": "true"
+          },
+          {
+            "label": "Fuel, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "Preferences saved automatically.",
+        "activeElement": "importance-body"
+      }
+    },
+    {
+      "file": "1440-same-again-retained-high.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 0,
+        "buddy": "Buddy disengaged",
+        "understanding": "11 / 11",
+        "sameAgain": true,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "Preferences saved automatically.",
+        "activeElement": "same-again"
+      }
+    },
+    {
+      "file": "320-importance-unselected.png",
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=empty",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 0,
+        "buddy": "Buddy disengaged",
+        "understanding": "1 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "true"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "0 of 3 categories considered · Preferences save automatically",
+        "activeElement": "Fuel, choose a preference"
+      }
+    },
+    {
+      "file": "320-importance-high.png",
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=empty",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 0,
+        "buddy": "Buddy disengaged",
+        "understanding": "3 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Plug-in hybrid, really important",
+            "considered": true,
+            "important": true,
+            "expanded": "true"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "Preferences saved automatically.",
+        "activeElement": "importance-fuel"
+      }
+    },
+    {
+      "file": "320-same-tooltip-long.png",
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=long",
+      "state": {
+        "model": "BMW 3 Series 330e xDrive M Sport Pro Touring\nM Sport Pro · Plug-in hybrid · BMW Individual specification",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [
+          "same-again-help"
+        ],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": "About Same again, please!"
+      }
+    },
+    {
+      "file": "320-same-again-neutral.png",
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=long",
+      "state": {
+        "model": "BMW 3 Series 330e xDrive M Sport Pro Touring\nM Sport Pro · Plug-in hybrid · BMW Individual specification",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "11 / 11",
+        "sameAgain": true,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "Preferences saved automatically.",
+        "activeElement": "same-again"
+      }
+    },
+    {
+      "file": "320-rating-tooltip-long.png",
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "fixtureQuery": "?state=long",
+      "state": {
+        "model": "BMW 3 Series 330e xDrive M Sport Pro Touring\nM Sport Pro · Plug-in hybrid · BMW Individual specification",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "11 / 11",
+        "sameAgain": true,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [
+          "rating-help"
+        ],
+        "feedback": "Preferences saved automatically.",
+        "activeElement": "4 stars: I really like it"
+      }
+    },
+    {
+      "file": "1440-missing-image.png",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "fixtureQuery": "?state=missing",
+      "state": {
+        "model": "BMW 3 Series Touring\n320i M Sport · Petrol",
+        "rating": 4,
+        "buddy": "Buddy disengaged",
+        "understanding": "6 / 11",
+        "sameAgain": false,
+        "categories": [
+          {
+            "label": "Body, considered: Touring / Estate",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Fuel, considered: Petrol",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Sportiness, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Comfort, considered: As comfortable as possible",
+            "considered": true,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Economy, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          },
+          {
+            "label": "Size, choose a preference",
+            "considered": false,
+            "important": false,
+            "expanded": "false"
+          }
+        ],
+        "visibleTooltips": [],
+        "feedback": "3 categories considered · Saved automatically",
+        "activeElement": ""
+      }
+    }
+  ],
   "viewports": [
     {
       "name": "1440 initial",
@@ -722,6 +2555,13 @@
         "y": 56,
         "width": 1392,
         "height": 1116
+      },
+      "buddyFont": 23,
+      "buddyLamp": {
+        "x": 1166.34375,
+        "y": 114,
+        "width": 18,
+        "height": 18
       }
     },
     {
@@ -765,6 +2605,13 @@
         "y": 56,
         "width": 1872,
         "height": 1325.875
+      },
+      "buddyFont": 23,
+      "buddyLamp": {
+        "x": 1598.34375,
+        "y": 114,
+        "width": 18,
+        "height": 18
       }
     },
     {
@@ -808,6 +2655,13 @@
         "y": 56,
         "width": 1052,
         "height": 1201.9375
+      },
+      "buddyFont": 23,
+      "buddyLamp": {
+        "x": 826.34375,
+        "y": 109.96875,
+        "width": 18,
+        "height": 18
       }
     },
     {
@@ -851,6 +2705,13 @@
         "y": 56,
         "width": 976,
         "height": 1199.3125
+      },
+      "buddyFont": 23,
+      "buddyLamp": {
+        "x": 750.34375,
+        "y": 108.65625,
+        "width": 18,
+        "height": 18
       }
     },
     {
@@ -860,25 +2721,25 @@
       "image": true,
       "imageBox": {
         "x": 97,
-        "y": 283.15625,
+        "y": 285.46875,
         "width": 377,
         "height": 212.0625
       },
       "drawnImage": {
         "x": 97,
-        "y": 283.15625,
+        "y": 285.46875,
         "width": 377,
         "height": 212.0625
       },
       "media": {
         "x": 97,
-        "y": 283.15625,
+        "y": 285.46875,
         "width": 377,
         "height": 212.0625
       },
       "rating": {
         "x": 246,
-        "y": 443.21875,
+        "y": 445.53125,
         "width": 220,
         "height": 44
       },
@@ -887,13 +2748,20 @@
         "x": 96,
         "y": 76,
         "width": 756,
-        "height": 1144.1875
+        "height": 1146.5
       },
       "content": {
         "x": 48,
         "y": 56,
         "width": 852,
-        "height": 1196.1875
+        "height": 1198.5
+      },
+      "buddyFont": 23,
+      "buddyLamp": {
+        "x": 626.34375,
+        "y": 108.25,
+        "width": 18,
+        "height": 18
       }
     },
     {
@@ -903,25 +2771,25 @@
       "image": true,
       "imageBox": {
         "x": 73,
-        "y": 279.65625,
+        "y": 281.96875,
         "width": 361,
         "height": 203.0625
       },
       "drawnImage": {
         "x": 73,
-        "y": 279.65625,
+        "y": 281.96875,
         "width": 361,
         "height": 203.0625
       },
       "media": {
         "x": 73,
-        "y": 279.65625,
+        "y": 281.96875,
         "width": 361,
         "height": 203.0625
       },
       "rating": {
         "x": 206,
-        "y": 430.71875,
+        "y": 433.03125,
         "width": 220,
         "height": 44
       },
@@ -930,13 +2798,20 @@
         "x": 72,
         "y": 76,
         "width": 724,
-        "height": 1181.1875
+        "height": 1183.5
       },
       "content": {
         "x": 48,
         "y": 56,
         "width": 772,
-        "height": 1233.1875
+        "height": 1235.5
+      },
+      "buddyFont": 23,
+      "buddyLamp": {
+        "x": 570.34375,
+        "y": 108.25,
+        "width": 18,
+        "height": 18
       }
     },
     {
@@ -946,25 +2821,25 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": 175.1875,
+        "y": 191.6875,
         "width": 341,
         "height": 191.8125
       },
       "drawnImage": {
         "x": 17,
-        "y": 175.1875,
+        "y": 191.6875,
         "width": 341,
         "height": 191.8125
       },
       "media": {
         "x": 17,
-        "y": 175.1875,
+        "y": 191.6875,
         "width": 341,
         "height": 191.8125
       },
       "rating": {
         "x": 130,
-        "y": 315,
+        "y": 331.5,
         "width": 220,
         "height": 44
       },
@@ -973,13 +2848,20 @@
         "x": 16,
         "y": 72,
         "width": 343,
-        "height": 1624
+        "height": 1640.5
       },
       "content": {
         "x": 0,
         "y": 56,
         "width": 375,
-        "height": 1664
+        "height": 1680.5
+      },
+      "buddyFont": 23,
+      "buddyLamp": {
+        "x": 16,
+        "y": 144.4375,
+        "width": 18,
+        "height": 18
       }
     },
     {
@@ -989,25 +2871,25 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": 175.1875,
+        "y": 191.6875,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": 175.1875,
+        "y": 191.6875,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": 175.1875,
+        "y": 191.6875,
         "width": 286,
         "height": 160.875
       },
       "rating": {
         "x": 75,
-        "y": 284.0625,
+        "y": 300.5625,
         "width": 220,
         "height": 44
       },
@@ -1016,13 +2898,20 @@
         "x": 16,
         "y": 72,
         "width": 288,
-        "height": 1719.0625
+        "height": 1735.5625
       },
       "content": {
         "x": 0,
         "y": 56,
         "width": 320,
-        "height": 1759.0625
+        "height": 1775.5625
+      },
+      "buddyFont": 23,
+      "buddyLamp": {
+        "x": 16,
+        "y": 144.4375,
+        "width": 18,
+        "height": 18
       }
     },
     {
@@ -1032,40 +2921,47 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": -602.8125,
+        "y": -602.3125,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": -602.8125,
+        "y": -602.3125,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": -602.8125,
+        "y": -602.3125,
         "width": 286,
         "height": 160.875
       },
       "rating": {
         "x": 75,
-        "y": -493.9375,
+        "y": -493.4375,
         "width": 220,
         "height": 44
       },
       "ratingBackground": "rgba(0, 0, 0, 0)",
       "canvas": {
         "x": 16,
-        "y": -706,
+        "y": -722,
         "width": 288,
-        "height": 1953.0625
+        "height": 1969.5625
       },
       "content": {
         "x": 0,
-        "y": -722,
+        "y": -738,
         "width": 320,
-        "height": 1993.0625
+        "height": 2009.5625
+      },
+      "buddyFont": 23,
+      "buddyLamp": {
+        "x": 16,
+        "y": -649.5625,
+        "width": 18,
+        "height": 18
       }
     },
     {
@@ -1075,40 +2971,47 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": -618.8125,
+        "y": -619.3125,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": -618.8125,
+        "y": -619.3125,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": -618.8125,
+        "y": -619.3125,
         "width": 286,
         "height": 160.875
       },
       "rating": {
         "x": 75,
-        "y": -509.9375,
+        "y": -510.4375,
         "width": 220,
         "height": 44
       },
       "ratingBackground": "rgba(0, 0, 0, 0)",
       "canvas": {
         "x": 16,
-        "y": -722,
+        "y": -739,
         "width": 288,
-        "height": 1827.0625
+        "height": 1843.5625
       },
       "content": {
         "x": 0,
-        "y": -738,
+        "y": -755,
         "width": 320,
-        "height": 1867.0625
+        "height": 1883.5625
+      },
+      "buddyFont": 23,
+      "buddyLamp": {
+        "x": 16,
+        "y": -666.5625,
+        "width": 18,
+        "height": 18
       }
     },
     {
@@ -1118,40 +3021,47 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": -437.8125,
+        "y": -437.3125,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": -437.8125,
+        "y": -437.3125,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": -437.8125,
+        "y": -437.3125,
         "width": 286,
         "height": 160.875
       },
       "rating": {
         "x": 75,
-        "y": -328.9375,
+        "y": -328.4375,
         "width": 220,
         "height": 44
       },
       "ratingBackground": "rgba(0, 0, 0, 0)",
       "canvas": {
         "x": 16,
-        "y": -541,
+        "y": -557,
         "width": 288,
-        "height": 2030.0625
+        "height": 2046.5625
       },
       "content": {
         "x": 0,
-        "y": -557,
+        "y": -573,
         "width": 320,
-        "height": 2070.0625
+        "height": 2086.5625
+      },
+      "buddyFont": 23,
+      "buddyLamp": {
+        "x": 16,
+        "y": -484.5625,
+        "width": 18,
+        "height": 18
       }
     },
     {
@@ -1161,40 +3071,47 @@
       "image": true,
       "imageBox": {
         "x": 17,
-        "y": -859.8125,
+        "y": -859.3125,
         "width": 286,
         "height": 160.875
       },
       "drawnImage": {
         "x": 17,
-        "y": -859.8125,
+        "y": -859.3125,
         "width": 286,
         "height": 160.875
       },
       "media": {
         "x": 17,
-        "y": -859.8125,
+        "y": -859.3125,
         "width": 286,
         "height": 160.875
       },
       "rating": {
         "x": 75,
-        "y": -750.9375,
+        "y": -750.4375,
         "width": 220,
         "height": 44
       },
       "ratingBackground": "rgba(0, 0, 0, 0)",
       "canvas": {
         "x": 16,
-        "y": -963,
+        "y": -979,
         "width": 288,
-        "height": 1990.0625
+        "height": 2006.5625
       },
       "content": {
         "x": 0,
-        "y": -979,
+        "y": -995,
         "width": 320,
-        "height": 2030.0625
+        "height": 2046.5625
+      },
+      "buddyFont": 23,
+      "buddyLamp": {
+        "x": 16,
+        "y": -906.5625,
+        "width": 18,
+        "height": 18
       }
     }
   ]

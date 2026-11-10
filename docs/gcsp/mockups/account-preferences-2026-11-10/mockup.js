@@ -75,7 +75,7 @@ const specification = mode === 'long' ? 'M Sport Pro · Plug-in hybrid · BMW In
 const currentCarDescription = `${modelName} ${specification}`;
 
 // Discussion-only composition around native controls; no tooltip primitive exists in the kit.
-function attachTooltip({ root, triggers, id, text, className = '' }) {
+function attachTooltip({ root, triggers, id, text, className = '', dismissOnActivate = false }) {
   const tip = el('p', `concept-tooltip ${className}`, text); tip.id = id;
   tip.setAttribute('role', 'tooltip'); tip.hidden = true; root.append(tip);
   const show = () => { tip.hidden = false; };
@@ -84,7 +84,8 @@ function attachTooltip({ root, triggers, id, text, className = '' }) {
     const descriptions = new Set((trigger.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean));
     descriptions.add(id); trigger.setAttribute('aria-describedby', [...descriptions].join(' '));
     trigger.addEventListener('pointerenter', show); trigger.addEventListener('focus', show);
-    trigger.addEventListener('click', show);
+    trigger.addEventListener('click', dismissOnActivate ? hide : show);
+    if (dismissOnActivate) trigger.addEventListener('change', hide);
   }
   tip.addEventListener('pointerenter', show);
   root.addEventListener('pointerleave', () => { if (!triggers.includes(document.activeElement)) hide(); });
@@ -152,12 +153,21 @@ for (let value = 1; value <= 5; value++) {
   input.type = 'radio'; input.name = 'current-car-rating'; input.value = String(value);
   input.setAttribute('aria-label', `${value} ${value === 1 ? 'star' : 'stars'}: ${ratingWords[value]}`);
   input.setAttribute('aria-describedby', ratingCaption.id);
-  input.addEventListener('change', () => { state.rating = value; updateRating(); store(); });
+  input.addEventListener('click', () => {
+    state.rating = state.rating === value ? 0 : value;
+    updateRating(); store();
+  });
+  input.addEventListener('keydown', (event) => {
+    if (event.key === ' ' && state.rating === value) { event.preventDefault(); input.click(); }
+  });
+  input.addEventListener('change', () => {
+    if (input.checked && state.rating !== value) { state.rating = value; updateRating(); store(); }
+  });
   label.append(input, svgIcon(ICONS.star)); labels.push(label); stars.append(label);
 }
 ratingGroup.append(stars, ratingCaption); rating.append(ratingGroup); media.append(rating); updateRating();
 attachTooltip({ root: rating, triggers: labels.map((label) => label.querySelector('input')), id: 'rating-help',
-  text: `How highly do you rate your ${currentCarDescription}?`, className: 'concept-rating-tooltip' });
+  text: `How highly do you rate your ${currentCarDescription}?`, className: 'concept-rating-tooltip', dismissOnActivate: true });
 const carCopy = el('div', 'concept-car-copy');
 const carTitle = el('h2', 'concept-car-title', modelName);
 carTitle.id = 'current-car-title'; carTitle.append(el('span', '', specification));

@@ -21,7 +21,8 @@ const check = (label, passed) => { receipt.checks.push({ label, passed }); asser
 try {
   await once(server.stdout, 'data');
   browser = await chromium.launch({ channel: 'chrome', headless: true, args: ['--disable-dev-shm-usage'] });
-  const context = await browser.newContext({ viewport: { width: 1440, height: 1100 }, reducedMotion: 'reduce' });
+  receipt.environment = { browser: browser.version(), deviceScaleFactor: 1, reducedMotion: 'reduce', capture: 'fullPage', locale: 'en-GB' };
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1100 }, reducedMotion: 'reduce', locale: 'en-GB' });
   const page = await context.newPage();
   page.on('pageerror', (error) => receipt.consoleErrors.push(error.message));
   const stored = () => page.evaluate(() => JSON.parse(localStorage.getItem('gcsp:account-preferences-discussion:2026-11-10:v1')));
@@ -29,7 +30,27 @@ try {
     const style = getComputedStyle(node.matches('.concept-category-open') ? node.parentElement : node);
     return { background: style.backgroundColor, border: style.borderColor, colour: style.color };
   });
-  const snap = async (name) => { await page.evaluate(() => scrollTo(0, 0)); await page.screenshot({ path: `${output}/${name}.png`, fullPage: true }); receipt.screenshots.push(`${name}.png`); };
+  const snap = async (name) => {
+    await page.evaluate(() => scrollTo(0, 0));
+    const state = await page.evaluate(() => ({
+      model: document.querySelector('#current-car-title').innerText,
+      rating: Number(document.querySelector('.concept-stars input:checked')?.value ?? 0),
+      buddy: document.querySelector('#buddy-status').innerText,
+      understanding: document.querySelector('.concept-score-value').innerText,
+      sameAgain: document.querySelector('#same-again').checked,
+      categories: [...document.querySelectorAll('.concept-category')].map((node) => ({
+        label: node.querySelector('.concept-category-open').getAttribute('aria-label'),
+        considered: node.classList.contains('is-considered'), important: node.classList.contains('is-important'),
+        expanded: node.querySelector('.concept-category-open').getAttribute('aria-expanded'),
+      })),
+      visibleTooltips: [...document.querySelectorAll('[role=tooltip]:not([hidden])')].map((node) => node.id),
+      feedback: document.querySelector('#preference-status').innerText,
+      activeElement: document.activeElement?.getAttribute('aria-label') ?? document.activeElement?.id,
+    }));
+    await page.screenshot({ path: `${output}/${name}.png`, fullPage: true });
+    receipt.screenshots.push(`${name}.png`);
+    (receipt.captures ??= []).push({ file: `${name}.png`, viewport: page.viewportSize(), fixtureQuery: new URL(page.url()).search, state });
+  };
   const fit = async (name) => {
     await page.locator('.vm-card-photo').evaluate((image) => image.complete ? undefined : new Promise((resolve) => image.addEventListener('load', resolve, { once: true })));
     const result = await page.evaluate(() => {
@@ -42,7 +63,9 @@ try {
       return { width: innerWidth, scroll: document.documentElement.scrollWidth, image: !!document.querySelector('.vm-card-photo')?.naturalWidth,
         imageBox, drawnImage,
         media: bounds('.vm-card-media'), rating: bounds('.concept-rating'), ratingBackground: getComputedStyle(document.querySelector('.concept-rating')).backgroundColor,
-        canvas: bounds('.concept-page'), content: bounds('.gcsp-content') };
+        canvas: bounds('.concept-page'), content: bounds('.gcsp-content'),
+        buddyFont: parseFloat(getComputedStyle(document.querySelector('#buddy-status')).fontSize),
+        buddyLamp: bounds('.concept-buddy-lamp') };
     });
     (receipt.viewports ??= []).push({ name, ...result });
     check(`${name}: no horizontal page overflow`, result.scroll <= result.width);
@@ -53,6 +76,7 @@ try {
     check(`${name}: media wraps the actual image without internal letterboxing`, Math.abs(result.media.height - result.drawnImage.height) < 1
       && Math.abs(result.media.y - result.drawnImage.y) < 1);
     check(`${name}: rating sits at the right image edge`, Math.abs(result.drawnImage.x + result.drawnImage.width - result.rating.x - result.rating.width - 8) < 1);
+    check(`${name}: Buddy status and lamp have prominent readable sizing`, result.buddyFont >= 20 && result.buddyLamp.width === 18 && result.buddyLamp.height === 18);
     return result;
   };
   await page.goto(`${base}?state=empty`); await page.locator('.concept-page').waitFor(); await page.evaluate(() => document.fonts.ready);
@@ -94,6 +118,23 @@ try {
   await page.keyboard.press('Escape');
   check('Rating tooltip closes on Escape and retains radio focus', !await ratingTip.isVisible()
     && await page.getByRole('radio', { name: '3 stars: It’s okay', exact: true }).evaluate((node) => node === document.activeElement));
+  const threeStars = page.getByRole('radio', { name: '3 stars: It’s okay', exact: true });
+  await threeStars.click();
+  check('Selecting a star dismisses its tooltip while retaining focus', !await ratingTip.isVisible()
+    && await threeStars.isChecked() && await threeStars.evaluate((node) => node === document.activeElement));
+  await threeStars.click();
+  check('Clicking the selected star clears and saves the rating', await page.locator('.concept-stars input:checked').count() === 0
+    && (await stored()).rating === 0 && !await ratingTip.isVisible());
+  await page.goto(base); await page.locator('.concept-page').waitFor();
+  check('Cleared rating survives reload', await page.locator('.concept-stars input:checked').count() === 0);
+  await threeStars.focus(); await page.keyboard.press('Space');
+  check('Space selects a focused star and dismisses help', await threeStars.isChecked() && !await ratingTip.isVisible());
+  await page.keyboard.press('Space');
+  check('Space on the selected star clears it and keeps focus', await page.locator('.concept-stars input:checked').count() === 0
+    && await threeStars.evaluate((node) => node === document.activeElement) && !await ratingTip.isVisible());
+  await page.keyboard.press('ArrowRight');
+  check('Native arrow navigation still selects the next star and dismisses help', await page.getByRole('radio', { name: '4 stars: I really like it', exact: true }).isChecked()
+    && (await stored()).rating === 4 && !await ratingTip.isVisible());
   await page.locator('h1').click();
   const lamp = async () => page.locator('.concept-buddy-lamp').evaluate((node) => { const style = getComputedStyle(node); return { colour: style.backgroundColor, animation: style.animationName }; });
   const red = await lamp();
@@ -281,12 +322,18 @@ try {
   await page.getByRole('switch', { name: 'Same again, please!', exact: true }).check();
   await snap('320-same-again-neutral');
   check('Narrow Same again keeps saved preferences neutral', (await colours('#category-body')).background === (await colours('#category-size')).background);
-  await page.getByRole('radio', { name: '4 stars: I really like it', exact: true }).click();
+  const fourStars = page.getByRole('radio', { name: '4 stars: I really like it', exact: true });
+  await fourStars.focus();
   const ratingHelpBounds = await ratingTip.boundingBox();
-  check('Narrow touch reveals rating help without losing the rating', await ratingTip.isVisible()
-    && await page.getByRole('radio', { name: '4 stars: I really like it', exact: true }).isChecked());
+  check('Narrow focus reveals help before rating interaction', await ratingTip.isVisible() && await fourStars.isChecked());
   check('Long rating tooltip remains in the 320px viewport', ratingHelpBounds.x >= 0 && ratingHelpBounds.x + ratingHelpBounds.width <= 320);
   await snap('320-rating-tooltip-long');
+  await fourStars.click();
+  check('Narrow repeated activation clears the rating and dismisses help', await page.locator('.concept-stars input:checked').count() === 0
+    && (await stored()).rating === 0 && !await ratingTip.isVisible());
+  await fourStars.click();
+  check('Narrow activation selects and saves a star without sticky help', await fourStars.isChecked()
+    && (await stored()).rating === 4 && !await ratingTip.isVisible());
   await page.setViewportSize({ width: 1440, height: 1100 });
   await page.evaluate(() => localStorage.setItem('gcsp:account-preferences-discussion:2026-11-10:v1', JSON.stringify({
     values: { body: ['estate'], fuel: [], comfort: '0', economy: 'invalid' },

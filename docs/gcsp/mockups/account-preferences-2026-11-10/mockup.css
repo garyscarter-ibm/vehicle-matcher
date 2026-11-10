@@ -3,8 +3,8 @@ body { margin: 0; }
 .account-concept .gcsp-main > .concept-page { margin-inline: auto; }
 .account-concept .concept-page-head { display: flex; justify-content: space-between; align-items: center; gap: var(--gcsp-space-4); }
 .account-concept .concept-page-head .vm-title { margin: 0; font-size: clamp(28px, 3vw, 40px); line-height: 1.15; }
-.account-concept .concept-buddy-status { display: flex; align-items: center; gap: var(--gcsp-space-2); margin: 0; font-size: var(--gcsp-font-size-label); font-weight: var(--gcsp-font-strong-weight); }
-.account-concept .concept-buddy-lamp { width: 10px; height: 10px; border-radius: 50%; background: var(--gcsp-danger); }
+.account-concept .concept-buddy-status { display: flex; align-items: center; gap: var(--gcsp-space-3); margin: 0; font-size: var(--gcsp-font-size-title); font-weight: var(--gcsp-font-strong-weight); }
+.account-concept .concept-buddy-lamp { width: 18px; height: 18px; flex: 0 0 18px; border-radius: 50%; background: var(--gcsp-danger); }
 .account-concept .concept-buddy-status.is-engaged .concept-buddy-lamp { background: var(--gcsp-success); }
 .account-concept .concept-car { display: grid; grid-template-columns: minmax(0, 1fr) minmax(390px, 480px); border: 1px solid var(--gcsp-divider); background: var(--gcsp-surface); }
 .account-concept .concept-photo { position: relative; min-width: 0; display: flex; flex-direction: column; justify-content: center; background: var(--gcsp-surface-muted); }
