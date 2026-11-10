@@ -23,7 +23,6 @@ export const GREG_NAVIGATION = Object.freeze([
   item('next-order', 'Next order', ['M5 4h14v16H5z', 'M9 9h6', 'M9 13h6']),
 ]);
 
-const ACCOUNT = Object.freeze({ status: 'ready', name: 'Greg Lawson', initials: 'GL', context: 'Scheme ordering lead' });
 const FAILED_LOAD = { status: 'unavailable', message: 'The demand figures could not be loaded. Try again in a moment.' };
 const REGIONS = Object.freeze([
   ['publish', 'publish', 'Publishing', 'Not available yet.'],
@@ -164,7 +163,8 @@ export function mountGregDashboard(root, ctx = {}) {
   let run = 0;
   let showing = false;
   const shell = portalShell({
-    title: 'Group Car Schemes Portal', account: ACCOUNT, navigation: GREG_NAVIGATION, active: 'dashboard', breadcrumbs: ['Demand and supply'],
+    title: 'Group Car Schemes Portal', account: { status: 'loading' }, signOut: ctx.signOut,
+    presenterControls: ctx.presenterControls, onRetryAccount: () => loadAccount(), navigation: GREG_NAVIGATION, active: 'dashboard', breadcrumbs: ['Demand and supply'],
   });
   const page = el('div', 'vm gcsp-greg');
   const intro = screenIntro({ kicker: 'Scheme ordering', title: 'Demand and supply', level: 1, className: 'gcsp-intro',
@@ -179,7 +179,13 @@ export function mountGregDashboard(root, ctx = {}) {
   const reserved = reservedRegions();
   page.append(intro, bar, status, body, reserved.host);
   shell.main.append(page);
-  shell.setAccount(ACCOUNT);
+  async function loadAccount() {
+    shell.setAccount({ status: 'loading' });
+    let account;
+    try { account = await ctx.loadAccount?.({ signal: abort.signal }); } catch { account = null; }
+    if (!done && !abort.signal.aborted) shell.setAccount(account?.status ? account : { status: 'unavailable' });
+  }
+  loadAccount();
   root.replaceChildren(shell.root);
 
   const retry = () => button({ label: 'Retry', variant: 'primary', onClick: () => load() });
@@ -312,6 +318,7 @@ export class GcspGregDashboardElement extends HTMLElement {
   constructor() {
     super();
     this._adapter = null;
+    if (Object.hasOwn(this, 'adapter')) { const adapter = this.adapter; delete this.adapter; this._adapter = adapter; }
     this._teardown = null;
   }
 
@@ -348,6 +355,8 @@ export class GcspGregDashboardElement extends HTMLElement {
       publishAdapter: this._adapter?.publish,
       orderPlanAdapter: this._adapter?.orderPlan,
       comparisonAdapter: this._adapter?.comparison,
+      loadAccount: adapter?.loadAccount,
+      signOut: fixtureName ? false : adapter?.signOut,
       loadDemand: adapter ? (options) => adapter.loadDemand(options) : undefined,
       onUnavailable: (reason) => {
         this._emit('gcsp:unavailable', { reason: reason === 'no-adapter' && fixtureName ? 'unknown-fixture' : reason });

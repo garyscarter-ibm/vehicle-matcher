@@ -49,7 +49,7 @@ const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].ever
 // Explicit composition only. A failed PostgreSQL open never changes providers.
 export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy,
   environmentId, policyAsOf, commandId, stockProvider, production, offerLandingUrl = process.env.GCSP_OFFER_LANDING_URL,
-  sessionNow = () => new Date().toISOString(), adoptOfferJourney = false, mail, comparisonResultFile } = {}) {
+  sessionNow = () => new Date().toISOString(), loginAdapter, adoptOfferJourney = false, mail, comparisonResultFile } = {}) {
   if (!['postgres', 'memory'].includes(mode)) return result('invalid', { code: 'unsupported-repository-mode' });
   try { offerLandingUrl = resolveOfferLandingUrl(offerLandingUrl); }
   catch { return result('invalid', { code: 'invalid-offer-landing-url' }); }
@@ -69,9 +69,11 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
   try {
     const opened = await repository.open();
     if (opened.status !== 'ok') { await close(); return opened; }
-    const initialized = await createDemoRuntime({ repository, policy: readPolicy, environmentId, environmentKind: 'synthetic', policyAsOf, commandId, sessionNow });
+    const initialized = await createDemoRuntime({ repository, policy: readPolicy, environmentId, environmentKind: 'synthetic', policyAsOf, commandId, sessionNow, loginAdapter });
     if (initialized.status !== 'ok') { await close(); return initialized; }
     const { clock, identity } = initialized.value;
+    const profiles = await identity.seedPrincipals();
+    if (profiles.status !== 'ok') { await close(); return profiles; }
     policy = readPolicy.withPublicationPorts({ identity, clock, repository });
     const ports = createRepositoryManualPorts({ repository, policy });
     const account = createManualContextService({ repository, policy, clock, identity, ports });
@@ -197,6 +199,9 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (seeded.status !== 'ok') return seeded;
       return ok({ context: acting.value.context, setCookie: [presenter.value.setCookie[1], acting.value.setCookie] });
     }
+    async function createPresenterControlSession() {
+      return identity.createPresenterControlSession(`presenter-entry:${randomUUID()}`);
+    }
     // Opt-in for the demo launcher; tests that adopt these sets themselves leave it off.
     if (adoptOfferJourney) {
       const adopted = await adoptOfferJourneyPolicy({ policy, identity, clock });
@@ -217,6 +222,6 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (loaded.status === 'ok') console.log(`GCSP comparison: loaded result ${loaded.value.resultId}.`);
       else console.warn(`GCSP comparison: the result file was not loaded (${loaded.reason ?? loaded.status}).`);
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, comparison, comparisonJobs, orderPlan, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, supply, releaseHistory, cases, orderingAdapter, lifecycle, documents, appointments, returnPlan, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, comparison, comparisonJobs, orderPlan, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, supply, releaseHistory, cases, orderingAdapter, lifecycle, documents, appointments, returnPlan, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, createPresenterControlSession, close });
   } catch { await close(); return unavailable(); }
 }

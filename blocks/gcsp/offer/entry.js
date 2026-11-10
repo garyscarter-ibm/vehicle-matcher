@@ -1,3 +1,4 @@
+import { installSessionLifecycle } from '../shell/session-lifecycle.js';
 import { createAccountHttpAdapter } from '../shell/account-runtime.js';
 import { mountOffer } from './gcsp-offer.js';
 import { createOfferHttpAdapter } from './http-adapter.js';
@@ -20,6 +21,10 @@ export function mountOfferEntry(root, { fetch: request = globalThis.fetch, locat
   const helpAdapter = createCaseHttpAdapter({ fetchImpl: request });
   root.textContent = 'Loading your offer.';
   root.setAttribute('aria-busy', 'true');
+  // Install before the account read so a late profile cannot survive a cross-tab session change.
+  const stopStartup = installSessionLifecycle({ win: root.ownerDocument.defaultView, active: () => !disposed,
+    clear() { disposed = true; abort.abort(); root.removeAttribute('aria-busy'); root.replaceChildren(); },
+    reload: () => location.reload() });
   void (async () => {
     const current = await account.loadAccount({ signal: abort.signal });
     if (disposed) return;
@@ -31,8 +36,11 @@ export function mountOfferEntry(root, { fetch: request = globalThis.fetch, locat
         mount: (host, { decisionId, signal, announce }) => mountFollowupBody(host, { decisionId, signal, announce, hostRefresh: true, headingLevel: 2, activityHref: PORTAL_ROUTES.activity,
           fetchImpl: request, projectOffer: toOfferPresentation,
           openOffer: ({ offerId, runId }) => location.assign(`/gcsp/offer?offerId=${encodeURIComponent(offerId)}&runId=${encodeURIComponent(runId)}`) }) } });
+    // The mounted shell now guards storage events and history restoration.
+    stopStartup();
   })();
   return () => {
+    stopStartup();
     if (disposed) return;
     disposed = true; abort.abort(); cleanup?.(); root.removeAttribute('aria-busy'); root.replaceChildren();
   };

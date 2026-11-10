@@ -1,3 +1,4 @@
+import { accountIdentity } from '../shell/account-runtime.js';
 // Account page composition. Account authority and durable journey state stay in the adapter.
 import { el, screenIntro, button, statusScreen, factList, formatTerm } from '../../vehicle-matcher/ui.js';
 import { mediaWell } from '../../vehicle-matcher/modes/result-card.js';
@@ -315,7 +316,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   return () => wrap.remove();
 }
 
-export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, print, orderAdapter, helpAdapter, reload } = {}) {
+export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, print, orderAdapter, helpAdapter, reload, signOut = adapter.readOnly !== true } = {}) {
   const abort = new AbortController();
   let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
   let generation = 0; let teardown; let loading; let finishPrint; let orderHost; let orderRow; let orderVehicle; let stopOrder; let restarted = false;
@@ -398,7 +399,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     envelope = accountResult; draft = draftResult; offers = offerResult?.status === 'ok' ? offerResult.value.offers : [];
     const model = toAccountView(envelope);
     if (isRunRestarted(envelope)) return { status: envelope.status };
-    return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', name: model.account?.name ?? 'Account unavailable',
+    return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', ...accountIdentity(model.account),
       context: [model.account?.company, model.account?.gradeId && `Grade ${model.account.gradeId}`].filter(Boolean).join(', ') };
   }
   async function refresh() {
@@ -477,7 +478,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       else failed(draft);
     } finally { pending = false; draw(true); }
   }
-  const shellAdapter = { loadAccount: () => { loading = loadAccount(); return loading; },
+  const shellAdapter = { signOut, loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
   teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
   const destroy = () => { disposed = true; generation += 1; abort.abort(); finishPrint?.(); stopOrder?.(); teardown(); live.root.remove(); };

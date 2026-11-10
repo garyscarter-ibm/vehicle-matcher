@@ -118,7 +118,7 @@ function never(signal) {
 }
 
 /** Adapter for the named fixture, or null when the name is unknown. Every load returns fresh objects. */
-export function fixtureAdapter(name) {
+function demandFixtureAdapter(name) {
   if (Object.hasOwn(PROJECTIONS, name)) return { loadDemand: async () => ({ status: 'ready', projection: PROJECTIONS[name]() }) };
   if (name === 'refresh') {
     let loads = 0;
@@ -128,4 +128,11 @@ export function fixtureAdapter(name) {
   if (name === 'unavailable' || name === 'refused' || name === 'conflict') return state(name);
   if (name === 'loading') return { loadDemand: ({ signal } = {}) => never(signal) };
   return null;
+}
+
+
+export function fixtureAdapter(name) {
+  const adapter = demandFixtureAdapter(name);
+  return adapter ? { ...adapter, signOut: false,
+    loadAccount: async () => ({ status: 'ready', name: 'Greg Lawson', context: 'Scheme ordering lead' }) } : null;
 }

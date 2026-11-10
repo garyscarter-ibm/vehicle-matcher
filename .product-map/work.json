@@ -4124,6 +4124,54 @@
       "observed_at": "2026-11-10T11:32:23Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-323",
       "unsliced": true
+    },
+    {
+      "id": "FUCQ-322",
+      "title": "Sign in as a demo user and retain their stored account throughout the live site",
+      "status": "In Review",
+      "original_status": "In Review",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-322",
+      "branch": "dev/DEV-2026-11-10-001",
+      "unsliced": false,
+      "observed_at": "2026-11-10T12:19:26Z",
+      "slices": [
+        {
+          "id": "authentication",
+          "status": "complete",
+          "title": "Credential adapter, profiles and session revocation",
+          "observed_at": "2026-11-10T12:19:25Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
+        },
+        {
+          "id": "experience",
+          "status": "complete",
+          "title": "Login and account menu",
+          "observed_at": "2026-11-10T12:19:25Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
+        },
+        {
+          "id": "context",
+          "status": "complete",
+          "title": "Live consumer identity and startup isolation",
+          "observed_at": "2026-11-10T12:19:26Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
+        },
+        {
+          "id": "persistence",
+          "status": "complete",
+          "title": "Native PostgreSQL restart and user isolation",
+          "observed_at": "2026-11-10T12:19:26Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Stable boundary checks, rendered critique and delivery",
+          "observed_at": "2026-11-10T12:19:26Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
+        }
+      ]
     }
   ]
 }

@@ -6,6 +6,8 @@ import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 
 const BANNED = /\b(?:demos?|demonstrations?|synthetic|fictional|made[- ]up|examples?|samples?|not real|invented|pretend(?:ed)?)\b|\.invalid\b|@example\.|example\.com/gi;
+// The collaborator-approved account domain is allowed only inside a complete email address.
+const EMAIL = /[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+(?![a-z0-9_@-])/gi;
 const ATTRIBUTES = ['title', 'aria-label', 'aria-description', 'placeholder', 'alt'];
 const covered = []; let assertions = 0;
 const seed = JSON.parse(readFileSync(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
@@ -24,7 +26,9 @@ const host = () => { const node = document.createElement('div'); document.body.a
 
 /** Painted words in a text blob, with a little context for the failure message. */
 function words(text) {
-  return [...String(text).matchAll(BANNED)].map((m) => `"${text.slice(Math.max(0, m.index - 25), m.index + m[0].length + 25).replace(/\s+/g, ' ')}"`);
+  const source = String(text);
+  const scanned = source.replace(EMAIL, (email) => email.slice(email.lastIndexOf('@') + 1).toLowerCase() === 'gcsp-demo.com' ? ' '.repeat(email.length) : email);
+  return [...scanned.matchAll(BANNED)].map((m) => `"${source.slice(Math.max(0, m.index - 25), m.index + m[0].length + 25).replace(/\s+/g, ' ')}"`);
 }
 /** Painted text: text nodes joined by spaces, skipping hidden, script and style subtrees. */
 function visibleText(node, parts = []) {
@@ -574,6 +578,16 @@ test('the matcher sees visible attributes, shown addresses and glued words, and 
   const hits = painted(root).flatMap(({ where, text }) => words(text).map((hit) => `${where} ${hit}`));
   assert.equal(hits.length, 5, hits.join(' | ')); assert.ok(!hits.some((hit) => /synthetic/.test(hit)));
   root.remove();
+});
+
+test('the matcher exempts only complete emails at the approved gcsp-demo.com domain', () => {
+  for (const text of ['paula.mason@gcsp-demo.com', 'Contact <Greg.Lawson@GCSP-DEMO.COM>.', 'Email paula.mason@gcsp-demo.com.']) {
+    assert.deepEqual(words(text), [], text);
+  }
+  assert.equal(words('demo paula.mason@gcsp-demo.com demo').length, 2, 'surrounding demo prose stays banned');
+  for (const text of ['gcsp-demo.com', 'paula.mason@gcsp-demo.com.invalid', 'paula.mason@gcsp-demo.com.evil', 'paula.mason@gcsp-demo.com_evil', 'paula.mason@other-demo.com', 'paula.mason@example.com', 'synthetic']) {
+    assert.ok(words(text).length > 0, text);
+  }
 });
 
 test('coverage summary', () => { console.log(`painted-copy views checked: ${covered.length}; assertions: ${assertions}`); assert.ok(covered.length > 0); });

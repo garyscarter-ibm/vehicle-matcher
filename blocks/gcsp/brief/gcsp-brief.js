@@ -9,7 +9,7 @@ export function mountBrief(root, ctx = {}) {
   const onAbort = () => abort.abort(); ctx.signal?.addEventListener('abort', onAbort, { once: true });
   if (ctx.signal?.aborted) { ctx.signal.removeEventListener('abort', onAbort); return () => {}; }
   const transport = ctx.transport || createBriefTransport({ fetch: ctx.fetch, baseURL: ctx.baseURL, signal: abort.signal });
-  const teardown = mountEmployee(root, { brand: ctx.brand, view: 'brief',
+  const teardown = mountEmployee(root, { brand: ctx.brand, view: 'brief', signOut: ctx.signOut,
     signal: abort.signal, loadAccount: ctx.loadAccount, onNavigate: ctx.onNavigate, onUnavailable: ctx.onUnavailable,
     renderBody(main, { account, view }) {
       if (account.status !== 'ready') { main.replaceChildren(statusScreen({ title: 'Your brief is unavailable', message: 'Load your account to review its car brief.' })); return undefined; }

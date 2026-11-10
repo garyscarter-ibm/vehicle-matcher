@@ -176,10 +176,10 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
   return destroy;
 }
 
-export function mountHelp(root, { adapter = createCaseHttpAdapter(), accountAdapter = createAccountHttpAdapter(), embedded = false, headingLevel = embedded ? 2 : 1, brand = 'bmw', announce } = {}) {
+export function mountHelp(root, { adapter = createCaseHttpAdapter(), accountAdapter = createAccountHttpAdapter(), embedded = false, headingLevel = embedded ? 2 : 1, brand = 'bmw', announce, signOut = accountAdapter.signOut !== false } = {}) {
   if (embedded) return mountHelpBody(root, { adapter, headingLevel, announce });
   let body;
-  const shell = mountEmployee(root, { brand, view: 'help', viewLabel: 'Renewal help',
+  const shell = mountEmployee(root, { brand, signOut, view: 'help', viewLabel: 'Renewal help',
     onNavigate: (to) => emit(root, 'gcsp:navigate', { to }), loadAccount: (options) => accountAdapter.loadAccount(options),
     renderBody: (main) => { body = mountHelpBody(main, { adapter, headingLevel }); return body; },
     onUnavailable: (reason) => emit(root, 'gcsp:unavailable', { reason }) });

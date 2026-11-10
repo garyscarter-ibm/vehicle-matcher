@@ -1,0 +1,196 @@
+{
+  "checks": [
+    "Protected account redirects to login without silently selecting Paula",
+    "Email/password login reaches Paula account with her stored identity",
+    "Sign-out clears an existing second live tab and both return to login",
+    "Browser Back cannot reopen signed-out account data",
+    "Alex login replaces Paula context",
+    "Greg lands on live demand dashboard with his own identity",
+    "Separate presenter page preserves signed-in Greg identity",
+    "Keyboard account disclosure and realistic long name/email fit desktop and narrow"
+  ],
+  "captures": [
+    {
+      "name": "login-desktop",
+      "path": "login-desktop.png",
+      "overflow": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "sha256": "8242fbc737d353913309d48d1900d32a40ea8469ad58db01140a20c7042cd9ef"
+    },
+    {
+      "name": "login-empty-validation-desktop",
+      "path": "login-empty-validation-desktop.png",
+      "overflow": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "sha256": "93e36c38116015706071d413c7cf75b59e6e9ac3a6a468406be843be3f171516"
+    },
+    {
+      "name": "login-empty-validation-narrow",
+      "path": "login-empty-validation-narrow.png",
+      "overflow": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "a4d872b95642021e17820999ac3c04a134bd3b83ec1ccc2266897e9920868751"
+    },
+    {
+      "name": "login-invalid-email-narrow",
+      "path": "login-invalid-email-narrow.png",
+      "overflow": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "377968f08b44c09b61210bd64ff8fb469f5c468bb8acaae044633fbe0a53c8dc"
+    },
+    {
+      "name": "login-bad-credentials-narrow",
+      "path": "login-bad-credentials-narrow.png",
+      "overflow": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "d3c919fb717687d7356dabe98575a835ac98649a6ac98733bb13a78befe5605c"
+    },
+    {
+      "name": "login-bad-credentials-desktop",
+      "path": "login-bad-credentials-desktop.png",
+      "overflow": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "sha256": "c55b6ebb7e0423d24de69dfd453830a76a14fe43e65355546be927e2fcb61eba"
+    },
+    {
+      "name": "login-pending-desktop",
+      "path": "login-pending-desktop.png",
+      "overflow": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "sha256": "b826e0f351d9a1f93e228f1d4d7146e87d1473842cb58a195ac0ecb6c189d4ba"
+    },
+    {
+      "name": "login-pending-narrow",
+      "path": "login-pending-narrow.png",
+      "overflow": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "182ba94be51f83a7bd842d23afbc3aacf8bdf4003423341c7d490e210d9305e5"
+    },
+    {
+      "name": "paula-account-narrow",
+      "path": "paula-account-narrow.png",
+      "overflow": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "0672eff395b3362e7fe1f4e2c8e20dcbb29290d2bcbaa912e2be49e97798d342"
+    },
+    {
+      "name": "paula-menu-narrow",
+      "path": "paula-menu-narrow.png",
+      "overflow": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "d8a6b01717ca7939b931044dc8cd40bea93d799c5d0bb6901357e5784c95597f"
+    },
+    {
+      "name": "paula-menu-desktop",
+      "path": "paula-menu-desktop.png",
+      "overflow": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "sha256": "4a3f93f8a35ac0a44650bcfd8d592c09cb41c7f8618f58ded6082506ffa6706f"
+    },
+    {
+      "name": "signout-service-failure-desktop",
+      "path": "signout-service-failure-desktop.png",
+      "overflow": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "sha256": "d44bcc2f2db6e4c98e232df8f1c5d68b9801da1d1567ef540ab15412b38f60f9"
+    },
+    {
+      "name": "jordan-no-current-car-desktop",
+      "path": "jordan-no-current-car-desktop.png",
+      "overflow": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "sha256": "3f58a6f4289c8632b404ce5d3511f9bf693306881bcb927476490dc46121b374"
+    },
+    {
+      "name": "jordan-no-current-car-narrow",
+      "path": "jordan-no-current-car-narrow.png",
+      "overflow": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "b9e31e8475201b61b19d2038afd56d8f27261fd9e52b13dad39fda8eb2ac355d"
+    },
+    {
+      "name": "greg-live-narrow",
+      "path": "greg-live-narrow.png",
+      "overflow": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "8386de23674c4601f28f5e36426ef78282449a425f4178e0d08ec1c0ad14aa00"
+    },
+    {
+      "name": "greg-live-desktop",
+      "path": "greg-live-desktop.png",
+      "overflow": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "sha256": "9ff84f61e6827fec48cce833c687bc19a341de7aa1b9c1930046ce758420e466"
+    },
+    {
+      "name": "long-identity-menu-desktop",
+      "path": "long-identity-menu-desktop.png",
+      "overflow": false,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "sha256": "e99a3fe8e0c21e7786c670f9b3177a80ebec4a7ecdaaf2fcc56bc1abde4a6df8"
+    },
+    {
+      "name": "long-identity-menu-narrow",
+      "path": "long-identity-menu-narrow.png",
+      "overflow": false,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sha256": "b447161e8f0ab04c752e355b43f2a6f1eebc575aee4ce3488f4925e2d85c867f"
+    }
+  ],
+  "errors": [],
+  "status": "passed"
+}

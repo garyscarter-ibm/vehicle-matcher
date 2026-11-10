@@ -40,7 +40,7 @@ export async function seedManualDemoContext({ repository, identity, clock, conte
       account: { employeeId: context.employeeId, name: found.value.name, companyId: context.companyId,
         gradeId: context.gradeId, schemeId: context.schemeId, employeeNumber: numberFor(context.employeeId),
         address: { line1: '27 Ashdown Road', town: 'Bracknell', postcode: 'RG12 9ZZ' },
-        contact: { phone: '01632 960000', email: emailFor(found.value.name) },
+        contact: { phone: '01632 960000', email: found.value.email || emailFor(found.value.name) },
         allowanceOverride: null },
       drivers: [{ driverId, employeeId: context.employeeId, name: found.value.name, kind: 'employee',
         eligible: fact(true), licence: { displayNumber: licenceFor(found.value.name), categories: ['car'],

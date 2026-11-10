@@ -10,6 +10,7 @@ const requested = new URLSearchParams(globalThis.location?.search ?? '').get('fi
 const host = document.querySelector('gcsp-account');
 if (host && FIXTURE_NAMES.includes(requested)) {
   host.adapter = {
+    readOnly: true,
     readAccount: async () => accountFixture(requested),
     readDraft: async () => ({ status: 'not-found' }),
     startJourney: async () => ({ status: 'unavailable', code: 'read-only-visual-fixture' }),

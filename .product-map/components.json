@@ -1,7 +1,7 @@
 {
   "version": 1,
   "project": {
-    "name": "Vehicle matcher · GCSP"
+    "name": "Vehicle matcher \u00b7 GCSP"
   },
   "components": [
     {
@@ -46,7 +46,8 @@
         "FUCQ-64",
         "FUCQ-326",
         "FUCQ-327",
-        "FUCQ-321"
+        "FUCQ-321",
+        "FUCQ-322"
       ],
       "references": [
         "FUCQ-7",
@@ -254,7 +255,8 @@
       ],
       "stories": [
         "FUCQ-80",
-        "FUCQ-81"
+        "FUCQ-81",
+        "FUCQ-322"
       ],
       "references": [
         "FUCQ-79"
@@ -312,7 +314,10 @@
       "paths": [
         "server/gcsp/clock",
         "server/gcsp/fixtures",
-        "blocks/gcsp/presenter"
+        "blocks/gcsp/presenter",
+        "server/gcsp/identity",
+        "blocks/gcsp/login",
+        "gcsp-login.html"
       ],
       "stories": [
         "FUCQ-84",
@@ -330,7 +335,8 @@
         "FUCQ-334",
         "FUCQ-335",
         "FUCQ-336",
-        "FUCQ-340"
+        "FUCQ-340",
+        "FUCQ-322"
       ],
       "references": [
         "FUCQ-75",
@@ -373,7 +379,8 @@
         "FUCQ-149",
         "FUCQ-325",
         "FUCQ-327",
-        "FUCQ-338"
+        "FUCQ-338",
+        "FUCQ-322"
       ],
       "references": [
         "FUCQ-7"
@@ -411,7 +418,8 @@
         "FUCQ-329",
         "FUCQ-330",
         "FUCQ-331",
-        "FUCQ-339"
+        "FUCQ-339",
+        "FUCQ-322"
       ],
       "references": [
         "FUCQ-86"
@@ -504,7 +512,8 @@
         "FUCQ-325",
         "FUCQ-332",
         "FUCQ-333",
-        "FUCQ-337"
+        "FUCQ-337",
+        "FUCQ-322"
       ],
       "references": [
         "FUCQ-89"
@@ -536,7 +545,8 @@
         "FUCQ-99",
         "FUCQ-101",
         "FUCQ-103",
-        "FUCQ-104"
+        "FUCQ-104",
+        "FUCQ-322"
       ],
       "references": [
         "FUCQ-90"
@@ -610,7 +620,8 @@
         "FUCQ-167",
         "FUCQ-168",
         "FUCQ-169",
-        "FUCQ-171"
+        "FUCQ-171",
+        "FUCQ-322"
       ],
       "references": [
         "FUCQ-110"
@@ -642,7 +653,8 @@
         "FUCQ-112",
         "FUCQ-122",
         "FUCQ-170",
-        "FUCQ-171"
+        "FUCQ-171",
+        "FUCQ-322"
       ],
       "references": [
         "FUCQ-110"
