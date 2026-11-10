@@ -2,29 +2,27 @@
 @import "../kit/activity-timeline.css";
 @import "../kit/stage-tracker.css"; @import "../kit/slot-picker.css";
 @import "../kit/task-list.css";
-.gcsp .gcsp-order-progress { max-width: 1120px; display: flex; flex-direction: column; gap: 32px; }
-.gcsp .gcsp-order-intro .vm-title { margin: 0; font-size: 34px; line-height: 1.15; }
-.gcsp .gcsp-order-note, .gcsp .gcsp-order-number, .gcsp .gcsp-order-choice-reason { margin: 0; font-size: 14px; color: var(--gcsp-text-muted); }
-.gcsp .gcsp-order-message { margin: 0; padding: 12px 16px; background: var(--gcsp-accent-soft); border-radius: var(--gcsp-radius); font-size: 16px; font-weight: 600; }
-.gcsp .gcsp-order-message.is-error { background: var(--gcsp-surface-raised); border: 2px dashed var(--gcsp-danger); }
-.gcsp .gcsp-order-section { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding-top: 24px; border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-order-progress { max-width: 1120px; display: flex; flex-direction: column; gap: var(--gcsp-space-6); }
+.gcsp .gcsp-order-intro .vm-title { margin: 0; }
+.gcsp .gcsp-order-note, .gcsp .gcsp-order-number, .gcsp .gcsp-order-choice-reason { margin: 0; font-size: var(--gcsp-font-size-regular); color: var(--gcsp-text-muted); }
+.gcsp .gcsp-order-message { margin: 0; padding: var(--gcsp-space-3) var(--gcsp-space-4); background: var(--gcsp-info-surface); border: 1px solid var(--gcsp-info-border); border-radius: var(--gcsp-radius); font-size: var(--gcsp-font-size-regular); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-order-message.is-error { background: var(--gcsp-danger-surface); border: 1px solid var(--gcsp-danger-border); }
+.gcsp .gcsp-order-section { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gcsp-space-4); padding-top: var(--gcsp-space-4); border-top: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-order-section > * { max-width: 100%; }
-.gcsp .gcsp-order-section-title { margin: 0; font-size: 24px; font-weight: 600; line-height: 1.25; }
-.gcsp .gcsp-order-car { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 1fr); gap: 24px; width: 100%; max-width: 720px; align-items: center; }
+.gcsp .gcsp-order-section-title { margin: 0; font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-order-car { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 1fr); gap: var(--gcsp-space-4); width: 100%; max-width: 720px; align-items: center; }
 .gcsp .gcsp-order-media { border-radius: var(--gcsp-radius); }
-.gcsp .gcsp-order-car-name { margin: 0 0 6px; font-size: 24px; line-height: 1.25; font-weight: 600; overflow-wrap: anywhere; }
-.gcsp .gcsp-order-statement { margin: 0; font-size: 18px; font-weight: 600; overflow-wrap: anywhere; }
-.gcsp .gcsp-order-failure { margin: 0; font-size: 16px; color: var(--gcsp-text-muted); }
-.gcsp .gcsp-order-actions { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px 12px; list-style: none; margin: 0; padding: 0; }
-.gcsp .gcsp-order-todo-list { margin: 0; padding-left: 20px; overflow-wrap: anywhere; }
-.gcsp .gcsp-order-choice { display: grid; gap: 8px; width: 100%; }
-.gcsp .gcsp-order-choice-label { margin: 0; font-size: 16px; font-weight: 600; }
+.gcsp .gcsp-order-car-name { margin: 0 0 var(--gcsp-space-1); font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); font-weight: var(--gcsp-font-strong-weight); overflow-wrap: anywhere; }
+.gcsp .gcsp-order-statement { margin: 0; font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); font-weight: var(--gcsp-font-strong-weight); overflow-wrap: anywhere; }
+.gcsp .gcsp-order-failure { margin: 0; font-size: var(--gcsp-font-size-regular); color: var(--gcsp-text-muted); }
+.gcsp .gcsp-order-actions { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--gcsp-space-2) var(--gcsp-space-2); list-style: none; margin: 0; padding: 0; }
+.gcsp .gcsp-order-todo-list { margin: 0; padding-left: var(--gcsp-space-4); overflow-wrap: anywhere; }
+.gcsp .gcsp-order-choice { display: grid; gap: var(--gcsp-space-2); width: 100%; }
+.gcsp .gcsp-order-choice-label { margin: 0; font-size: var(--gcsp-font-size-regular); font-weight: var(--gcsp-font-strong-weight); }
 .gcsp .gcsp-order-progress .vm-screen { animation: none; }
-.gcsp .gcsp-order-preview-status { margin: 12px 0 0; font-size: 13px; color: var(--gcsp-text-muted); }
+.gcsp .gcsp-order-preview-status { margin: var(--gcsp-space-3) 0 0; font-size: var(--gcsp-font-size-label); color: var(--gcsp-text-muted); }
 .gcsp .gcsp-order-progress .gcsp-stage-tracker, .gcsp .gcsp-order-progress .gcsp-task-list, .gcsp .gcsp-order-progress .gcsp-activity-timeline { width: 100%; }
 @media (max-width: 700px) {
-  .gcsp .gcsp-order-progress { gap: 24px; }
-  .gcsp .gcsp-order-intro .vm-title { font-size: 30px; }
   .gcsp .gcsp-order-car { grid-template-columns: minmax(0, 1fr); }
   .gcsp .gcsp-order-actions .vm-btn { width: 100%; }
 }

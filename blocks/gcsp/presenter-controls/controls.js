@@ -51,7 +51,8 @@ function releasedCarCount(state) {
 
 // All controls retain their DOM identity while readback and results update.
 export function mountPresenterControls(host, { adapter = createPresenterHttpAdapter(),
-  commandId = () => globalThis.crypto.randomUUID(), navigate = (url) => { const link = el('a'); link.href = url; link.click(); }, reload, clearAfter = 5000 } = {}) {
+  commandId = () => globalThis.crypto.randomUUID(), navigate = (url) => { const link = el('a'); link.href = url; link.click(); }, reload, clearAfter = 5000,
+  onAvailability, onReveal, onEscape } = {}) {
   const abort = new AbortController();
   const options = { signal: abort.signal };
   let disposed = false; let busy = false; let authorized = false; let state; let context; let catalogue; let faults = null; let startStopped = false;
@@ -60,6 +61,11 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   let receiptsOpen = false; // Step results stay collapsed (FUCQ-203) unless the presenter opens them.
   const bar = presenterBar();
   const { root, summary, panel } = bar; root.classList.add('gcsp-presenter-controls'); root.hidden = true;
+  // A host that supplies onReveal shows the controls in its own tile: the disclosure stays open and its summary is not a stop.
+  const embedded = typeof onReveal === 'function';
+  if (embedded) { root.open = true; root.classList.add('gcsp-presenter-embedded'); summary.tabIndex = -1; }
+  const setVisible = (visible) => { if (root.hidden === !visible) return; root.hidden = !visible; onAvailability?.(visible); };
+  const reveal = () => { root.open = true; onReveal?.(); };
   const results = el('div', 'gcsp-presenter-results');
   const message = el('p', 'gcsp-note', 'Loading presenter controls'); message.setAttribute('role', 'status');
   const readMessage = el('p', 'gcsp-note'); readMessage.setAttribute('role', 'status');
@@ -74,7 +80,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   const notice = runRestartedNotice({ reload }); notice.root.hidden = true;
   const actions = el('div', 'gcsp-presenter-actions');
   const controls = [];
-  const action = (label, run) => { const node = button({ label, variant: 'ghost', onClick: run }); controls.push(node); return node; };
+  const action = (label, run, variant = 'ghost') => { const node = button({ label, variant, onClick: run }); controls.push(node); return node; };
   function field(label, type = 'input') {
     const input = el(type, 'gcsp-presenter-input'); controls.push(input);
     const wrapped = labelledField({ id: `presenter-${++sequence}`, label, control: input });
@@ -113,7 +119,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   const scenario = picker('Scenario'); const principal = picker('Acting principal');
   const availability = el('p', 'gcsp-note'); availability.id = `presenter-availability-${++sequence}`;
   scenario.describedBy = availability.id;
-  const tick = action('Tick', () => start('tick', { expectedClockVersion: state.clockVersion, mode: 'step' }));
+  const tick = action('Tick', () => start('tick', { expectedClockVersion: state.clockVersion, mode: 'step' }), 'primary');
   const to = action('Tick to target', () => start('tick', { expectedClockVersion: state.clockVersion, mode: 'to', to: target.input.value }));
   const next = action('Next release', () => start('tick', { expectedClockVersion: state.clockVersion, mode: 'next-release' }));
   const nextReason = el('p', 'gcsp-note'); nextReason.id = `presenter-release-${++sequence}`; next.setAttribute('aria-describedby', nextReason.id);
@@ -126,12 +132,12 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     resetLead = leadFor(selected); confirming = false; confirmation.hidden = true;
     start('reset', { expectedRunId: state.runId, expectedRunVersion: state.runVersion, scenarioId: selected.scenarioId,
       scenarioVersion: selected.scenarioVersion, fixtureVersion: selected.fixtureVersion, policyVersion: catalogue.policyVersion });
-  });
+  }, 'primary');
   const cancel = action('Cancel reset', () => { confirming = false; confirmation.hidden = true; update(); reset.focus(); });
   confirmation.append(confirmText, confirm, cancel);
   const proceed = action('Continue to workspace', () => navigate(workspace())); proceed.hidden = true;
   // One picker and one button per adapter the server reports; nothing is invented client-side.
-  const faultGroup = el('div'); faultGroup.hidden = true;
+  const faultGroup = el('div', 'gcsp-presenter-group'); faultGroup.hidden = true;
   const faultRows = new Map(); let faultSignature;
   function faultRow(row) {
     if (!faultRows.has(row.adapter)) {
@@ -165,14 +171,16 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     const picked = principal.value && principal.value !== context?.principalId ? usable.find((row) => row.principalId === principal.value) : null;
     return picked || usable.find((row) => row.roles?.includes('employee')) || null;
   }
-  const switchButton = action('Switch principal', () => start('switchPrincipal', { principalId: principal.value }));
+  const switchButton = action('Switch principal', () => start('switchPrincipal', { principalId: principal.value }), 'primary');
   const retry = action('Retry original action', () => execute()); retry.hidden = true;
   const fresh = action('Issue selected principal again', () => {
     original = null; uncertain = false; start('switchPrincipal', { principalId: principal.value });
   }); fresh.hidden = true;
   const refresh = action('Refresh readback', () => refreshState());
-  actions.append(tick, target.root, named, to, next, nextReason, scenario.root, availability, reset, confirmation, proceed, faultGroup,
-    principal.root, switchButton, retry, fresh, refresh);
+  // Sections are separated by a hairline, one primary action each (Tick, Confirm reset, Switch principal).
+  const section = (...nodes) => { const node = el('div', 'gcsp-presenter-group'); node.append(...nodes); return node; };
+  actions.append(section(tick, target.root, named, to, next, nextReason), section(scenario.root, availability, reset, confirmation, proceed),
+    faultGroup, section(principal.root, switchButton, retry, fresh), section(refresh));
   panel.append(actions, message, notice.root, readMessage, results); host.append(root);
   // The old session is refused for good, so the only way on is a reload; nothing is resent.
   function enterRestarted() {
@@ -180,11 +188,11 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     focusRestart = !active || active === root.ownerDocument.body || panel.contains(active);
     restarted = true; original = null; uncertain = false; startStopped = false; confirming = false; confirmation.hidden = true;
     message.textContent = ''; message.hidden = true; readMessage.textContent = ''; readMessage.hidden = true;
-    notice.root.hidden = false; root.open = true;
+    notice.root.hidden = false; reveal();
   }
   function update() {
     if (disposed || !authorized) return;
-    root.hidden = false; root.setAttribute('aria-busy', String(busy));
+    setVisible(true); root.setAttribute('aria-busy', String(busy));
     if (busy && !focusAfterBusy && root.contains(root.ownerDocument.activeElement)) focusAfterBusy = root.ownerDocument.activeElement;
     // Fault changes are side commands: they stay usable while a refused action awaits its retry.
     const sideSet = (node) => [...faultRows.values()].some((row) => row.set === node);
@@ -256,7 +264,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       if (read.status !== 'ok') {
         if (!authorized) return;
         if (isRunRestarted(read)) { enterRestarted(); return; }
-        if (['forbidden', 'missing-session', 'unknown-session', 'expired-session'].includes(read.status)) { authorized = false; root.hidden = true; return; }
+        if (['forbidden', 'missing-session', 'unknown-session', 'expired-session'].includes(read.status)) { authorized = false; setVisible(false); return; }
         readMessage.textContent = read.code === 'presenter-transport-unavailable' ? 'Backend unavailable. Refresh readback.' : `Readback unavailable: ${why(read)}`; return;
       }
       authorized = true; state = read.value; update();
@@ -280,7 +288,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     try { const raw = win?.sessionStorage?.getItem(RESET_KEY); if (raw) { note = JSON.parse(raw); win.sessionStorage.removeItem(RESET_KEY); } } catch { /* storage blocked */ }
     if (!note || note.runId !== state?.runId || !text(note.name)) return;
     message.textContent = `Reset done. New run: ${runLabel(note.runId)}. Acting as ${note.name}.`;
-    root.open = true; focusStatus = true; // Focused after the final paint, so the scroll lands on it.
+    reveal(); focusStatus = true; // Focused after the final paint, so the scroll lands on it.
   }
   // The new run acts as the presenter, so the strip itself switches to the lead before the workspace loads.
   async function switchToLead(lead) {
@@ -393,6 +401,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   const escape = (event) => {
     if (event.key !== 'Escape') return;
     if (confirming) { confirming = false; confirmation.hidden = true; reset.focus(); }
+    else if (onEscape) onEscape();
     else { root.open = false; summary.focus(); }
   };
   root.addEventListener('keydown', escape);

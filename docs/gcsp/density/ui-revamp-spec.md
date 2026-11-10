@@ -33,6 +33,17 @@ Gary's direction: match the current GCSP portal screens (`docs/gcsp/screens/*`) 
 | Elevation | Not used on cards. Only floating overlays use `--gcsp-elevation-overlay` (menus, popovers, the presenter flyout) |
 | Radius | `--gcsp-radius` (2px). `50%` only for avatars and dots; `999px` only for the range-bar track |
 
+## Minimal and meaningful (Gary, 10 November)
+
+The legacy screens are busy. Take their shell, palette and density, but present less, with a clear and consistent hierarchy.
+
+- **One level of boxing.** A bordered or tinted box inside another one loses its border, background and padding. Separate with a `--gcsp-divider` hairline or with spacing.
+- **Colour means something.** Accent is for actions and selection. State colours are for real states. A tinted surface is either a real state or the screen's single key callout. Labels, icons and kickers are `--gcsp-text-muted`, never accent.
+- **Four type steps only:** page title (h1), section title (h2, 16px strong), item name (14px strong), label (12px muted) / value (14px). Kickers are 12px muted sentence case, and are dropped where the breadcrumb or heading already says the same thing.
+- **One rhythm:** `--gcsp-space-6` between sections, `--gcsp-space-4` inside panels, `--gcsp-space-2` within a group.
+- **Rows, not cards.** A list uses hairline dividers. Only a selectable item becomes a card.
+- **One primary action per region.** Other actions use the outline style.
+
 ## Rules
 
 - Use tokens only: no hex, rgb or rgba values, no raw px font sizes, and no raw spacing apart from 1px borders. Small fixed geometry, such as icon width/height and an 8px dot, may stay in px.
