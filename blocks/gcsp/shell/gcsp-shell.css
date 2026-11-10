@@ -2,6 +2,7 @@
 @import "../presenter-controls/presenter-controls.css";
 @import "../kit/form-controls.css";
 @import "../kit/arrival-focus.css";
+@import "../kit/loading-skeleton.css";
 @import "./shell-inset.css";
 @import "./account-menu.css";
 .gcsp {
@@ -77,12 +78,7 @@
 .gcsp-menu-toggle[aria-expanded="true"] { background: var(--gcsp-accent-soft); color: var(--gcsp-accent-strong); }
 
 /* ---------- account loading ---------- */
-.gcsp-skel {
-  display: block;
-  height: 12px;
-  border-radius: var(--gcsp-radius);
-  background: var(--gcsp-surface-muted);
-}
+.gcsp-skel { display: block; height: 12px; border-radius: var(--gcsp-radius); background: var(--gcsp-surface-muted); }
 .gcsp-skel-avatar { width: 20px; height: 20px; border-radius: 50%; }
 .gcsp-skel-name { width: 96px; }
 .gcsp-account-unavailable { color: var(--gcsp-warning); font-size: 12px; line-height: 1.25; }

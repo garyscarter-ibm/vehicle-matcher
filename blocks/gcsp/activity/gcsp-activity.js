@@ -8,6 +8,7 @@ import { createActivityController } from './activity-controller.js';
 import { runRestartedScreen } from '../kit/run-restarted.js';
 import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 import { viewStatus } from '../kit/view-status.js';
+import { loadingSkeleton } from '../kit/loading-skeleton.js';
 
 export const ACTIVITY_DESTINATION = PORTAL_NAVIGATION.find((item) => item.key === 'activity');
 
@@ -22,7 +23,7 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, s
   teardown.refresh = () => controller?.refresh() || Promise.resolve();
   if (signal?.aborted) { teardown(); return teardown; }
   signal?.addEventListener('abort', teardown, { once: true });
-  stopShell = mountEmployee(root, { brand, view: 'activity', signal: abort.signal,
+  stopShell = mountEmployee(root, { brand, view: 'activity', loadingLayout: 'timeline', signal: abort.signal,
     onNavigate,
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
     renderBody(main, { account }) {
@@ -44,7 +45,7 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, s
         body?.destroy?.();
         if (state.phase === 'loading') {
           body = el('div', 'vm gcsp-activity');
-          body.append(screenIntro({ title: 'Buddy activity' }), statusScreen({ title: 'Loading activity', role: null }));
+          body.append(loadingSkeleton({ label: 'Loading activity', layout: 'timeline', role: null }));
         } else if (state.phase === 'restarted') {
           body = el('div', 'vm gcsp-activity');
           body.append(screenIntro({ title: 'Buddy activity' }), runRestartedScreen({ reload }));
