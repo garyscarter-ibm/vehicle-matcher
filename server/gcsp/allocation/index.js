@@ -93,6 +93,8 @@ export function createAllocationService({ repository, policy, clock, identity, c
   const command = (id, payload) => ({ commandId: id, inputDigest: inputDigest(payload) });
   const sliceRef = (context, eventId, employeeId) => ref(context, allocationEvaluationEventId(eventId, employeeId), ALLOCATION_EVALUATION_CONSUMER);
   const attemptRef = (context, eventId, n) => ref(context, `${eventId}:${n}`, ALLOCATION_ATTEMPT_CONSUMER);
+  const readAllocationReceipt = (context, reference, projection) => typeof repository.readAllocationReceipt === 'function'
+    ? repository.readAllocationReceipt(context, reference, projection) : repository.read(context, reference);
   // Decisions are per car, so a quote rebuilt from the frozen inputs and one pool entry equals the prepare-time quote.
   const evaluate = (context, employeeContext, instant, inputs, stock) => createEmployeeRecommendationService({ policy,
     time: { async now() { return ok(instant); } },
@@ -215,6 +217,26 @@ export function createAllocationService({ repository, policy, clock, identity, c
     return ok({ plan, slices });
   }
 
+  // Keep preparation's detached graph here; claim processing receives only the transaction marker.
+  async function prepareAndRecord(context, event, instant, assumptions, digest) {
+    const planned = await prepare(context, event, instant, assumptions); if (planned.status !== 'ok') return planned;
+    const { plan: prepared, slices } = planned.value;
+    return repository.transaction(context, command(`allocation:prepare:${event.eventId}`, event), async (tx) => {
+      const cursor = await tx.recordReceipt({ consumerId: ALLOCATION_CURSOR_CONSUMER, eventId: event.eventId, eventType: event.eventType,
+        inputDigest: digest, inputVersions: prepared.inputVersions, state: 'pending', outcome: ok({ next: 0, count: 0 }) });
+      if (cursor.status !== 'ok') return cursor;
+      for (const slice of slices) {
+        const saved = await tx.recordReceipt({ consumerId: ALLOCATION_EVALUATION_CONSUMER, eventId: allocationEvaluationEventId(event.eventId, slice.employeeId),
+          eventType: event.eventType, inputDigest: digest, inputVersions: { allocationEventId: event.eventId }, state: 'completed',
+          outcome: ok({ runId: context.runId, eventId: event.eventId, employeeId: slice.employeeId, evaluation: slice.evaluation, quoteInputs: slice.quoteInputs }) });
+        if (saved.status !== 'ok') return saved;
+      }
+      const saved = await tx.recordReceipt({ consumerId: ALLOCATION_CONSUMER, eventId: event.eventId, eventType: event.eventType, inputDigest: digest,
+        inputVersions: prepared.inputVersions, state: 'pending', outcome: ok({ plan: prepared, next: 0, assignments: [], attempts: [] }) });
+      return saved.status === 'ok' ? ok({ prepared: event.eventId }) : saved;
+    });
+  }
+
   const service = {
     register() {
       if (typeof clock?.registerHandler !== 'function') return Promise.resolve(unavailable('not-configured'));
@@ -275,7 +297,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
           && (!Array.isArray(event.holdIds) || !event.holdIds.length || !event.holdIds.every(text))) return result('invalid', { code: 'invalid-allocation-event' });
       const digest = inputDigest(event);
       try {
-        let receipt = await repository.read(context, ref(context, event.eventId));
+        let receipt = await readAllocationReceipt(context, ref(context, event.eventId), 'plan');
         if (receipt.status === 'ok' && receipt.value.inputDigest !== digest) return result('conflict', { reason: 'idempotency-input-changed' });
         if (receipt.status === 'ok' && receipt.value.state === 'completed') return hydrate(context, event.eventId, receipt.value.outcome);
         if (receipt.status !== 'ok' && receipt.status !== 'not-found') return receipt;
@@ -290,24 +312,9 @@ export function createAllocationService({ repository, policy, clock, identity, c
           if (!compare(assumptions[0].value) || !text(assumptions[1].value)
             || assumptions[2].value !== 'untilRelevantConfirmedBriefChange'
             || returned && assumptions[3]?.value !== returned[1]) return unavailable('policy-invalid');
-          const planned = await prepare(context, event, time.value, assumptions); if (planned.status !== 'ok') return planned;
-          const { plan: prepared, slices } = planned.value;
-          const recorded = await repository.transaction(context, command(`allocation:prepare:${event.eventId}`, event), async (tx) => {
-            const cursor = await tx.recordReceipt({ consumerId: ALLOCATION_CURSOR_CONSUMER, eventId: event.eventId, eventType: event.eventType,
-              inputDigest: digest, inputVersions: prepared.inputVersions, state: 'pending', outcome: ok({ next: 0, count: 0 }) });
-            if (cursor.status !== 'ok') return cursor;
-            for (const slice of slices) {
-              const saved = await tx.recordReceipt({ consumerId: ALLOCATION_EVALUATION_CONSUMER, eventId: allocationEvaluationEventId(event.eventId, slice.employeeId),
-                eventType: event.eventType, inputDigest: digest, inputVersions: { allocationEventId: event.eventId }, state: 'completed',
-                outcome: ok({ runId: context.runId, eventId: event.eventId, employeeId: slice.employeeId, evaluation: slice.evaluation, quoteInputs: slice.quoteInputs }) });
-              if (saved.status !== 'ok') return saved;
-            }
-            const saved = await tx.recordReceipt({ consumerId: ALLOCATION_CONSUMER, eventId: event.eventId, eventType: event.eventType, inputDigest: digest,
-              inputVersions: prepared.inputVersions, state: 'pending', outcome: ok({ plan: prepared, next: 0, assignments: [], attempts: [] }) });
-            return saved.status === 'ok' ? ok({ prepared: event.eventId }) : saved;
-          });
+          const recorded = await prepareAndRecord(context, event, time.value, assumptions, digest);
           if (recorded.status !== 'ok') return recorded;
-          receipt = await repository.read(context, ref(context, event.eventId));
+          receipt = await readAllocationReceipt(context, ref(context, event.eventId), 'plan');
           if (receipt.status !== 'ok') return receipt;
         }
         const row = receipt.value; const { plan } = row.outcome.value;
@@ -329,8 +336,9 @@ export function createAllocationService({ repository, policy, clock, identity, c
         const quoteFor = async (contender, employeeContext) => {
           if (contender.quote) return ok(contender.quote);
           if (!sliceRows.has(contender.employeeId)) {
-            const slice = await repository.read(context, sliceRef(context, event.eventId, contender.employeeId)); if (slice.status !== 'ok') return slice;
-            sliceRows.set(contender.employeeId, slice.value.outcome.value);
+            const slice = await readAllocationReceipt(context, sliceRef(context, event.eventId, contender.employeeId), 'quote-inputs'); if (slice.status !== 'ok') return slice;
+            const { quotes, quoteInputs } = slice.value.outcome.value;
+            sliceRows.set(contender.employeeId, { quotes, quoteInputs });
           }
           const { quotes, quoteInputs } = sliceRows.get(contender.employeeId);
           if (quotes) return quotes[contender.orderUuid] ? ok(quotes[contender.orderUuid]) : unavailable('allocation-quote-unavailable');

@@ -1,7 +1,9 @@
 import { setImmediate } from 'node:timers/promises';
 import { createHash } from 'node:crypto';
 import { createMemoryStore } from '../repository/memory.js';
-import { createReceiptIndex, createRepository, ok, result } from '../repository/core.js';
+import { createReceiptIndex, createRepository, findReceipt, ok, result } from '../repository/core.js';
+
+const comparisonStores = new WeakSet();
 
 function shareImmutableRows() {
   const normalized = new WeakMap(); const ids = new WeakMap(); const pool = new Map();
@@ -69,6 +71,7 @@ export function createComparisonStore() {
       committed = Object.freeze({ ...state, tables: Object.freeze(tables) });
     } });
   store.state = committed;
+  comparisonStores.add(store);
   return store;
 }
 
@@ -100,14 +103,15 @@ function terminalRepository(target) {
 
 export function createComparisonRepository({ now, store = createComparisonStore() } = {}) {
   const receiptIndex = createReceiptIndex();
+  let opened = false;
   const serialized = async (work) => {
     const predecessor = store.queue; let release;
     store.queue = new Promise((resolve) => { release = resolve; });
     await predecessor;
     try { return await work(); } finally { release(); }
   };
-  return terminalRepository(createRepository({ now, receiptIndex,
-    async open() { return ok({ provider: 'memory', migrationStatus: { current: true, appliedVersions: [], pendingVersions: [] } }); },
+  const repository = createRepository({ now, receiptIndex,
+    async open() { opened = true; return ok({ provider: 'memory', migrationStatus: { current: true, appliedVersions: [], pendingVersions: [] } }); },
     async migrationStatus() { return ok({ current: true, appliedVersions: [], pendingVersions: [] }); },
     read(context, work) { return serialized(() => work(store.state)); },
     transaction(context, work) {
@@ -124,6 +128,40 @@ export function createComparisonRepository({ now, store = createComparisonStore(
         return outcome;
       });
     },
-    async close() { return ok({ closed: true }); },
-  }));
+    async close() { opened = false; return ok({ closed: true }); },
+  });
+  return terminalRepository({ ...repository,
+    async readAllocationReceipt(context, ref, projection) {
+      if (!opened) return result('unavailable', { reason: 'Repository is unavailable', retryable: true });
+      if (ref?.table !== 'event_receipts' || !['plan', 'quote-inputs'].includes(projection)) return repository.read(context, ref);
+      // The unchanged core validates context/environment/ref/run scope against the same serialized state.
+      // A modern plan needs only a tiny validation row before its explicitly immutable view can escape.
+      const reader = createRepository({ now,
+        async open() { return ok({}); }, async close() { return ok({ closed: true }); },
+        read(readContext, work) { return serialized(async () => {
+          const state = store.state; const key = ref.key ?? {};
+          const position = findReceipt(receiptIndex, state.tables.event_receipts, key.runId, key.consumerId, key.eventId);
+          const row = position < 0 ? undefined : state.tables.event_receipts[position];
+          const plan = row?.outcome?.value?.plan;
+          const immutablePlan = projection === 'plan' && comparisonStores.has(store) && row?.consumerId === 'buddy-allocation'
+            && row.state === 'pending' && Array.isArray(plan?.contenders) && Array.isArray(plan.pool)
+            && Array.isArray(plan.evaluatedEmployees) && !Array.isArray(plan.evaluations)
+            && plan.contenders.every((contender) => contender && typeof contender === 'object' && !Object.hasOwn(contender, 'quote'));
+          let projected;
+          if (immutablePlan) projected = { runId: row.runId, consumerId: row.consumerId, eventId: row.eventId };
+          else if (projection === 'quote-inputs' && row?.consumerId === 'buddy-allocation-evaluation' && row.outcome?.status === 'ok') {
+            const { quotes, quoteInputs } = row.outcome.value;
+            projected = { ...row, outcome: { ...row.outcome, value: {
+              ...(quotes !== undefined && { quotes }), ...(quoteInputs !== undefined && { quoteInputs }),
+            } } };
+          }
+          const tables = projected ? { ...state.tables, event_receipts: [projected] } : state.tables;
+          const checked = await work({ ...state, tables });
+          return immutablePlan && checked.status === 'ok' ? ok(row) : checked;
+        }); },
+      });
+      await reader.open();
+      try { return await reader.read(context, ref); } finally { await reader.close(); }
+    },
+  });
 }

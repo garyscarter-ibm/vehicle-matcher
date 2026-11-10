@@ -9,13 +9,13 @@ import { evaluateComparisonSeed } from '../gcsp/comparison/evaluation.js';
 import { openComparisonRun } from '../gcsp/comparison/harness.js';
 import { replayBuddyRoute } from '../gcsp/comparison/routes/buddy.js';
 import { replayCurrentRoute } from '../gcsp/comparison/routes/current.js';
+import { createMemoryStore } from '../gcsp/repository/memory.js';
 
 const context = { environmentId: 'private-comparison', runId: 'private-run', principalId: 'presenter', roles: ['presenter'] };
 const command = (commandId) => ({ commandId, inputDigest: inputDigest(commandId) });
 const quoteRef = (quoteId) => ({ table: 'quotes', key: { runId: context.runId, quoteId } });
 const payload = () => ({ facts: [{ value: 'estate', provenance: { source: 'same-source', version: 'v1' } }], score: 87 });
-async function repository(t) {
-  const store = createComparisonStore();
+async function repository(t, { store = createComparisonStore() } = {}) {
   const repo = createComparisonRepository({ store, now: () => '2026-11-05T09:00:00.000Z' });
   assert.equal((await repo.open()).status, 'ok'); t.after(() => repo.close());
   assert.equal((await repo.transaction(context, command('seed'), (tx) => tx.insert('runs', {
@@ -23,6 +23,91 @@ async function repository(t) {
   }))).status, 'ok');
   return { store, repo };
 }
+
+const allocationRef = (eventId, consumerId = 'buddy-allocation') => ({ table: 'event_receipts',
+  key: { runId: context.runId, consumerId, eventId } });
+const pendingPlan = () => ({ contenders: [{ employeeId: 'employee-a', orderUuid: 'car-a', reasons: [{ code: 'eligible-fit', score: 87 }] }],
+  evaluatedEmployees: ['employee-a'], pool: [{ orderUuid: 'car-a', snapshot: payload() }] });
+async function recordAllocation(repo, eventId, value) {
+  return repo.transaction(context, command(`allocation-${eventId}`), (tx) => tx.recordReceipt({
+    runId: context.runId, consumerId: 'buddy-allocation', eventId, inputDigest: inputDigest(eventId), state: 'pending', outcome: ok(value),
+  }));
+}
+
+test('allocation receipt: modern plans keep immutable shared storage while ordinary reads stay mutable and isolated', async (t) => {
+  const { store, repo } = await repository(t);
+  assert.equal((await recordAllocation(repo, 'modern', { plan: pendingPlan(), next: 0, assignments: [], attempts: [] })).status, 'ok');
+  assert.equal(typeof repo.readAllocationReceipt, 'function', 'private allocation capability is required');
+  const stored = store.state.tables.event_receipts.find((row) => row.consumerId === 'buddy-allocation');
+  const view = await repo.readAllocationReceipt(context, allocationRef('modern'), 'plan');
+  assert.equal(view.status, 'ok');
+  assert.equal(view.value, stored, 'modern allocation view must not expand the committed graph');
+  assert.ok(Object.isFrozen(view.value.outcome.value.plan.contenders[0].reasons[0]));
+  assert.throws(() => { view.value.outcome.value.plan.contenders[0].reasons[0].score = 0; }, TypeError);
+  const mutable = await repo.read(context, allocationRef('modern'));
+  mutable.value.outcome.value.plan.contenders[0].reasons[0].score = 12;
+  assert.equal((await repo.read(context, allocationRef('modern'))).value.outcome.value.plan.contenders[0].reasons[0].score, 87);
+  assert.equal(stored.outcome.value.plan.contenders[0].reasons[0].score, 87);
+});
+
+test('allocation receipt: quote projection never traverses an unused full evaluation body', async (t) => {
+  const { store, repo } = await repository(t);
+  let evaluationsRead = 0; const evaluation = { cars: [{ orderUuid: 'car-a' }], variants: [payload()] };
+  const value = { quoteInputs: { request: { preferences: { body: 'estate' } } } };
+  Object.defineProperty(value, 'evaluation', { enumerable: true, get() { evaluationsRead++; return evaluation; } });
+  const slice = { runId: context.runId, consumerId: 'buddy-allocation-evaluation', eventId: 'modern:employee-a',
+    inputDigest: 'slice-digest', state: 'completed', version: 1, outcome: ok(value) };
+  store.state = { ...store.state, tables: { ...store.state.tables, event_receipts: [...store.state.tables.event_receipts, slice] } };
+  evaluationsRead = 0;
+  assert.equal(typeof repo.readAllocationReceipt, 'function', 'private allocation capability is required');
+  const projected = await repo.readAllocationReceipt(context, allocationRef('modern:employee-a', 'buddy-allocation-evaluation'), 'quote-inputs');
+  assert.equal(projected.status, 'ok');
+  assert.deepEqual(projected.value.outcome.value, { quoteInputs: { request: { preferences: { body: 'estate' } } } });
+  assert.equal(evaluationsRead, 0, 'projection must happen before any recursive copy of evaluation');
+  projected.value.outcome.value.quoteInputs.request.preferences.body = 'caller-change';
+  const again = await repo.readAllocationReceipt(context, allocationRef('modern:employee-a', 'buddy-allocation-evaluation'), 'quote-inputs');
+  assert.equal(again.value.outcome.value.quoteInputs.request.preferences.body, 'estate');
+  assert.deepEqual((await repo.read(context, allocationRef('modern:employee-a', 'buddy-allocation-evaluation'))).value.outcome.value.evaluation, evaluation);
+  assert.ok(evaluationsRead > 0, 'ordinary diagnostic reads retain the complete evaluation');
+});
+
+test('allocation receipt: scope validation, rollback, replay and terminal close remain enforced', async (t) => {
+  const { repo } = await repository(t);
+  assert.equal(typeof repo.readAllocationReceipt, 'function', 'private allocation capability is required');
+  const value = { plan: pendingPlan(), next: 0, assignments: [], attempts: [] };
+  assert.equal((await recordAllocation(repo, 'scope', value)).status, 'ok');
+  for (const [ctx, reference, expected] of [
+    [{ ...context, roles: null }, allocationRef('scope'), 'invalid'],
+    [{ ...context, environmentId: 'foreign-environment' }, allocationRef('scope'), 'forbidden'],
+    [context, { ...allocationRef('scope'), key: { ...allocationRef('scope').key, runId: 'other-run' } }, 'stale-run'],
+    [context, { ...allocationRef('scope'), extra: true }, 'invalid'],
+    [context, allocationRef('missing'), 'not-found'],
+  ]) assert.equal((await repo.readAllocationReceipt(ctx, reference, 'plan')).status, expected);
+  const rolled = await repo.transaction(context, command('allocation-rollback'), async (tx) => {
+    await tx.recordReceipt({ consumerId: 'buddy-allocation', eventId: 'rolled', inputDigest: 'rolled', state: 'pending', outcome: ok(value) });
+    return { status: 'conflict', reason: 'deliberate-rollback' };
+  });
+  assert.equal(rolled.status, 'conflict');
+  assert.equal((await repo.readAllocationReceipt(context, allocationRef('rolled'), 'plan')).status, 'not-found');
+  const original = await repo.readAllocationReceipt(context, allocationRef('scope'), 'plan');
+  assert.equal((await recordAllocation(repo, 'scope', value)).status, 'ok');
+  assert.deepEqual(await repo.readAllocationReceipt(context, allocationRef('scope'), 'plan'), original);
+  const read = repo.readAllocationReceipt; await repo.close();
+  assert.equal((await read(context, allocationRef('scope'), 'plan')).status, 'unavailable');
+});
+
+test('allocation receipt: legacy inline plans and unbranded stores retain detached mutable reads', async (t) => {
+  for (const unbranded of [false, true]) {
+    const { repo } = await repository(t, unbranded ? { store: createMemoryStore() } : {});
+    assert.equal(typeof repo.readAllocationReceipt, 'function', 'private allocation capability is required');
+    const plan = unbranded ? pendingPlan() : { contenders: [{ quote: { orderUuid: 'car-a' } }], evaluations: [{ employeeId: 'employee-a' }] };
+    assert.equal((await recordAllocation(repo, 'fallback', { plan, next: 0, assignments: [], attempts: [] })).status, 'ok');
+    const out = await repo.readAllocationReceipt(context, allocationRef('fallback'), 'plan');
+    assert.equal(out.status, 'ok'); assert.equal(Object.isFrozen(out.value), false);
+    out.value.outcome.value.plan.contenders.length = 0;
+    assert.equal((await repo.read(context, allocationRef('fallback'))).value.outcome.value.plan.contenders.length, 1);
+  }
+});
 
 test('repeated retained quote and command data share immutable subtrees without changing their values', async (t) => {
   const { store, repo } = await repository(t);
