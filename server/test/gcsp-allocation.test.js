@@ -290,7 +290,8 @@ test('FUCQ-217: a pending run resumes from attempt rows, or from a cursor writte
 test('FUCQ-225: with no charging answer in the brief, a plug-in car needs confirmation and is never proposed to the hold service', async () => {
   const f = await allocationFixture({ cars: 2 });
   const plugIn = f.store.state.tables.stock.find((row) => row.orderNumber === '0000001');
-  plugIn.facts = { ...plugIn.facts, facts: { ...plugIn.facts.facts, fuel: { ...plugIn.facts.facts.fuel, value: 'phev' } } };
+  const phev = (row) => row !== plugIn ? row : { ...row, facts: { ...row.facts, facts: { ...row.facts.facts, fuel: { ...row.facts.facts.fuel, value: 'phev' } } } };
+  f.store.state = { ...f.store.state, tables: { ...f.store.state.tables, stock: f.store.state.tables.stock.map(phev) } };
   const out = await f.service.allocate(f.context, f.event); assert.equal(out.status, 'ok', JSON.stringify(out));
   for (const evaluation of out.value.evaluations) {
     const decision = evaluation.decisions.find((d) => d.orderUuid === plugIn.orderUuid);
