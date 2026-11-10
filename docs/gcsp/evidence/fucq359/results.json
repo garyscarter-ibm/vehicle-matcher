@@ -1,6 +1,6 @@
 {
   "run": "fucq359-strict-capture",
-  "implementationCommit": "77976fbb",
+  "implementationCommit": "124b257f",
   "reference": {
     "commit": "193cbf07",
     "dir": "docs/gcsp/mockups/account-preferences-2026-11-10/review",
@@ -30,47 +30,47 @@
           "x": 144,
           "y": 76,
           "width": 1680,
-          "height": 1433.875
+          "height": 1449.875
         },
         "feature": {
           "x": 144,
-          "y": 154,
+          "y": 170,
           "width": 1680,
           "height": 675.875
         },
         "featureMedia": {
           "x": 145,
-          "y": 155,
+          "y": 171,
           "width": 1198,
           "height": 673.875
         },
         "cardMedia": {
           "x": 145,
-          "y": 155,
+          "y": 171,
           "width": 1198,
           "height": 673.875
         },
         "drawnImage": {
           "x": 145,
-          "y": 155,
+          "y": 171,
           "width": 1198,
           "height": 673.875
         },
         "preferences": {
           "x": 144,
-          "y": 853.875,
+          "y": 869.875,
           "width": 1680,
           "height": 151
         },
         "history": {
           "x": 144,
-          "y": 1028.875,
+          "y": 1044.875,
           "width": 1680,
           "height": 197
         },
         "details": {
           "x": 144,
-          "y": 1249.875,
+          "y": 1265.875,
           "width": 1680,
           "height": 220
         }
@@ -82,10 +82,10 @@
         "historyBeforeDetails": true
       },
       "visualTops": {
-        "car": 154,
-        "preferences": 853.875,
-        "history": 1028.875,
-        "details": 1249.875
+        "car": 170,
+        "preferences": 869.875,
+        "history": 1044.875,
+        "details": 1265.875
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -104,11 +104,9 @@
       ],
       "currentModel": "BMW 3 Series Touring 320i",
       "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
         "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
       ],
+      "featureMediaMinusDrawnHeight": 0.0,
       "sideBySide": {
         "file": "1920-selected-side-by-side.jpg",
         "cropTo4000": false,
@@ -118,11 +116,10 @@
         ],
         "implementationSize": [
           1920,
-          1559
+          1575
         ]
       },
-      "implementationImage": "1920-selected-implementation.png",
-      "featureMediaMinusDrawnHeight": 0.0
+      "implementationImage": "1920-selected-implementation.png"
     },
     "1440-selected": {
       "viewport": {
@@ -140,47 +137,47 @@
           "x": 96,
           "y": 76,
           "width": 1296,
-          "height": 1259
+          "height": 1288
         },
         "feature": {
           "x": 96,
-          "y": 154,
+          "y": 170,
           "width": 1296,
-          "height": 501
+          "height": 514
         },
         "featureMedia": {
           "x": 97,
-          "y": 155,
+          "y": 171,
           "width": 814,
-          "height": 499
+          "height": 512
         },
         "cardMedia": {
           "x": 97,
-          "y": 175.5625,
+          "y": 198.0625,
           "width": 814,
           "height": 457.875
         },
         "drawnImage": {
           "x": 97,
-          "y": 175.5625,
+          "y": 198.0625,
           "width": 814,
           "height": 457.875
         },
         "preferences": {
           "x": 96,
-          "y": 679,
+          "y": 708,
           "width": 1296,
           "height": 151
         },
         "history": {
           "x": 96,
-          "y": 854,
+          "y": 883,
           "width": 1296,
           "height": 197
         },
         "details": {
           "x": 96,
-          "y": 1075,
+          "y": 1104,
           "width": 1296,
           "height": 220
         }
@@ -192,10 +189,10 @@
         "historyBeforeDetails": true
       },
       "visualTops": {
-        "car": 154,
-        "preferences": 679,
-        "history": 854,
-        "details": 1075
+        "car": 170,
+        "preferences": 708,
+        "history": 883,
+        "details": 1104
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -263,11 +260,8 @@
           "details"
         ]
       },
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-      ],
+      "errors": [],
+      "featureMediaMinusDrawnHeight": 54.125,
       "sideBySide": {
         "file": "1440-selected-side-by-side.jpg",
         "cropTo4000": false,
@@ -277,11 +271,10 @@
         ],
         "implementationSize": [
           1440,
-          1384
+          1413
         ]
       },
-      "implementationImage": "1440-selected-implementation.png",
-      "featureMediaMinusDrawnHeight": 41.125
+      "implementationImage": "1440-selected-implementation.png"
     },
     "1100-selected": {
       "viewport": {
@@ -299,47 +292,47 @@
           "x": 96,
           "y": 76,
           "width": 956,
-          "height": 1271.9375
+          "height": 1300.9375
         },
         "feature": {
           "x": 96,
-          "y": 145.9375,
+          "y": 161.9375,
           "width": 956,
-          "height": 501
+          "height": 514
         },
         "featureMedia": {
           "x": 97,
-          "y": 146.9375,
+          "y": 162.9375,
           "width": 477,
-          "height": 499
+          "height": 512
         },
         "cardMedia": {
           "x": 97,
-          "y": 262.28125,
+          "y": 284.78125,
           "width": 477,
           "height": 268.3125
         },
         "drawnImage": {
           "x": 97,
-          "y": 262.28125,
+          "y": 284.78125,
           "width": 477,
           "height": 268.3125
         },
         "preferences": {
           "x": 96,
-          "y": 670.9375,
+          "y": 699.9375,
           "width": 956,
           "height": 151
         },
         "history": {
           "x": 96,
-          "y": 845.9375,
+          "y": 874.9375,
           "width": 956,
           "height": 197
         },
         "details": {
           "x": 96,
-          "y": 1066.9375,
+          "y": 1095.9375,
           "width": 956,
           "height": 241
         }
@@ -351,10 +344,10 @@
         "historyBeforeDetails": true
       },
       "visualTops": {
-        "car": 145.9375,
-        "preferences": 670.9375,
-        "history": 845.9375,
-        "details": 1066.9375
+        "car": 161.9375,
+        "preferences": 699.9375,
+        "history": 874.9375,
+        "details": 1095.9375
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -372,11 +365,8 @@
         "Your details"
       ],
       "currentModel": "BMW 3 Series Touring 320i",
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-      ],
+      "errors": [],
+      "featureMediaMinusDrawnHeight": 243.6875,
       "sideBySide": {
         "file": "1100-selected-side-by-side.jpg",
         "cropTo4000": false,
@@ -386,11 +376,10 @@
         ],
         "implementationSize": [
           1100,
-          1397
+          1426
         ]
       },
-      "implementationImage": "1100-selected-implementation.png",
-      "featureMediaMinusDrawnHeight": 230.6875
+      "implementationImage": "1100-selected-implementation.png"
     },
     "1024-selected": {
       "viewport": {
@@ -408,47 +397,47 @@
           "x": 96,
           "y": 76,
           "width": 880,
-          "height": 1290.3125
+          "height": 1319.3125
         },
         "feature": {
           "x": 96,
-          "y": 143.3125,
+          "y": 159.3125,
           "width": 880,
-          "height": 501
+          "height": 514
         },
         "featureMedia": {
           "x": 97,
-          "y": 144.3125,
+          "y": 160.3125,
           "width": 439,
-          "height": 499
+          "height": 512
         },
         "cardMedia": {
           "x": 97,
-          "y": 270.34375,
+          "y": 292.84375,
           "width": 439,
           "height": 246.9375
         },
         "drawnImage": {
           "x": 97,
-          "y": 270.34375,
+          "y": 292.84375,
           "width": 439,
           "height": 246.9375
         },
         "preferences": {
           "x": 96,
-          "y": 668.3125,
+          "y": 697.3125,
           "width": 880,
           "height": 151
         },
         "history": {
           "x": 96,
-          "y": 843.3125,
+          "y": 872.3125,
           "width": 880,
           "height": 197
         },
         "details": {
           "x": 96,
-          "y": 1064.3125,
+          "y": 1093.3125,
           "width": 880,
           "height": 262
         }
@@ -460,10 +449,10 @@
         "historyBeforeDetails": true
       },
       "visualTops": {
-        "car": 143.3125,
-        "preferences": 668.3125,
-        "history": 843.3125,
-        "details": 1064.3125
+        "car": 159.3125,
+        "preferences": 697.3125,
+        "history": 872.3125,
+        "details": 1093.3125
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -481,11 +470,8 @@
         "Your details"
       ],
       "currentModel": "BMW 3 Series Touring 320i",
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-      ],
+      "errors": [],
+      "featureMediaMinusDrawnHeight": 265.0625,
       "sideBySide": {
         "file": "1024-selected-side-by-side.jpg",
         "cropTo4000": false,
@@ -495,11 +481,10 @@
         ],
         "implementationSize": [
           1024,
-          1415
+          1444
         ]
       },
-      "implementationImage": "1024-selected-implementation.png",
-      "featureMediaMinusDrawnHeight": 252.0625
+      "implementationImage": "1024-selected-implementation.png"
     },
     "900-selected": {
       "viewport": {
@@ -517,47 +502,47 @@
           "x": 96,
           "y": 76,
           "width": 756,
-          "height": 1303.1875
+          "height": 1332.1875
         },
         "feature": {
           "x": 96,
-          "y": 140.1875,
+          "y": 156.1875,
           "width": 756,
-          "height": 501
+          "height": 514
         },
         "featureMedia": {
           "x": 97,
-          "y": 141.1875,
+          "y": 157.1875,
           "width": 377,
-          "height": 499
+          "height": 512
         },
         "cardMedia": {
           "x": 97,
-          "y": 284.65625,
+          "y": 307.15625,
           "width": 377,
           "height": 212.0625
         },
         "drawnImage": {
           "x": 97,
-          "y": 284.65625,
+          "y": 307.15625,
           "width": 377,
           "height": 212.0625
         },
         "preferences": {
           "x": 96,
-          "y": 665.1875,
+          "y": 694.1875,
           "width": 756,
           "height": 151
         },
         "history": {
           "x": 96,
-          "y": 840.1875,
+          "y": 869.1875,
           "width": 756,
           "height": 213
         },
         "details": {
           "x": 96,
-          "y": 1077.1875,
+          "y": 1106.1875,
           "width": 756,
           "height": 262
         }
@@ -569,10 +554,10 @@
         "historyBeforeDetails": true
       },
       "visualTops": {
-        "car": 140.1875,
-        "preferences": 665.1875,
-        "history": 840.1875,
-        "details": 1077.1875
+        "car": 156.1875,
+        "preferences": 694.1875,
+        "history": 869.1875,
+        "details": 1106.1875
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -590,11 +575,8 @@
         "Your details"
       ],
       "currentModel": "BMW 3 Series Touring 320i",
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-      ],
+      "errors": [],
+      "featureMediaMinusDrawnHeight": 299.9375,
       "sideBySide": {
         "file": "900-selected-side-by-side.jpg",
         "cropTo4000": false,
@@ -604,11 +586,10 @@
         ],
         "implementationSize": [
           900,
-          1428
+          1457
         ]
       },
-      "implementationImage": "900-selected-implementation.png",
-      "featureMediaMinusDrawnHeight": 286.9375
+      "implementationImage": "900-selected-implementation.png"
     },
     "820-selected": {
       "viewport": {
@@ -626,47 +607,47 @@
           "x": 72,
           "y": 76,
           "width": 724,
-          "height": 1308.1875
+          "height": 1337.1875
         },
         "feature": {
           "x": 72,
-          "y": 140.1875,
+          "y": 156.1875,
           "width": 724,
-          "height": 485
+          "height": 498
         },
         "featureMedia": {
           "x": 73,
-          "y": 141.1875,
+          "y": 157.1875,
           "width": 361,
-          "height": 483
+          "height": 496
         },
         "cardMedia": {
           "x": 73,
-          "y": 281.15625,
+          "y": 303.65625,
           "width": 361,
           "height": 203.0625
         },
         "drawnImage": {
           "x": 73,
-          "y": 281.15625,
+          "y": 303.65625,
           "width": 361,
           "height": 203.0625
         },
         "preferences": {
           "x": 72,
-          "y": 649.1875,
+          "y": 678.1875,
           "width": 724,
           "height": 151
         },
         "history": {
           "x": 72,
-          "y": 824.1875,
+          "y": 853.1875,
           "width": 724,
           "height": 213
         },
         "details": {
           "x": 72,
-          "y": 1061.1875,
+          "y": 1090.1875,
           "width": 724,
           "height": 283
         }
@@ -678,10 +659,10 @@
         "historyBeforeDetails": true
       },
       "visualTops": {
-        "car": 140.1875,
-        "preferences": 649.1875,
-        "history": 824.1875,
-        "details": 1061.1875
+        "car": 156.1875,
+        "preferences": 678.1875,
+        "history": 853.1875,
+        "details": 1090.1875
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -699,10 +680,8 @@
         "Your details"
       ],
       "currentModel": "BMW 3 Series Touring 320i",
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-      ],
+      "errors": [],
+      "featureMediaMinusDrawnHeight": 292.9375,
       "sideBySide": {
         "file": "820-selected-side-by-side.jpg",
         "cropTo4000": false,
@@ -712,11 +691,10 @@
         ],
         "implementationSize": [
           820,
-          1433
+          1462
         ]
       },
-      "implementationImage": "820-selected-implementation.png",
-      "featureMediaMinusDrawnHeight": 279.9375
+      "implementationImage": "820-selected-implementation.png"
     },
     "375-selected": {
       "viewport": {
@@ -734,47 +712,47 @@
           "x": 16,
           "y": 72,
           "width": 343,
-          "height": 1915
+          "height": 1944
         },
         "feature": {
           "x": 16,
-          "y": 136.1875,
+          "y": 152.1875,
           "width": 343,
-          "height": 688.8125
+          "height": 701.8125
         },
         "featureMedia": {
           "x": 17,
-          "y": 137.1875,
+          "y": 153.1875,
           "width": 341,
           "height": 191.8125
         },
         "cardMedia": {
           "x": 17,
-          "y": 137.1875,
+          "y": 153.1875,
           "width": 341,
           "height": 191.8125
         },
         "drawnImage": {
           "x": 17,
-          "y": 137.1875,
+          "y": 153.1875,
           "width": 341,
           "height": 191.8125
         },
         "preferences": {
           "x": 16,
-          "y": 849,
+          "y": 878,
           "width": 343,
           "height": 147
         },
         "history": {
           "x": 16,
-          "y": 1020,
+          "y": 1049,
           "width": 343,
           "height": 447
         },
         "details": {
           "x": 16,
-          "y": 1491,
+          "y": 1520,
           "width": 343,
           "height": 456
         }
@@ -786,10 +764,10 @@
         "historyBeforeDetails": true
       },
       "visualTops": {
-        "car": 136.1875,
-        "preferences": 849,
-        "history": 1020,
-        "details": 1491
+        "car": 152.1875,
+        "preferences": 878,
+        "history": 1049,
+        "details": 1520
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -857,10 +835,8 @@
           "details"
         ]
       },
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-      ],
+      "errors": [],
+      "featureMediaMinusDrawnHeight": 0.0,
       "sideBySide": {
         "file": "375-selected-side-by-side.jpg",
         "cropTo4000": false,
@@ -870,11 +846,10 @@
         ],
         "implementationSize": [
           375,
-          2028
+          2057
         ]
       },
-      "implementationImage": "375-selected-implementation.png",
-      "featureMediaMinusDrawnHeight": 0.0
+      "implementationImage": "375-selected-implementation.png"
     },
     "375-engaged": {
       "viewport": {
@@ -892,47 +867,47 @@
           "x": 16,
           "y": 72,
           "width": 343,
-          "height": 1915
+          "height": 1944
         },
         "feature": {
           "x": 16,
-          "y": 136.1875,
+          "y": 152.1875,
           "width": 343,
-          "height": 688.8125
+          "height": 701.8125
         },
         "featureMedia": {
           "x": 17,
-          "y": 137.1875,
+          "y": 153.1875,
           "width": 341,
           "height": 191.8125
         },
         "cardMedia": {
           "x": 17,
-          "y": 137.1875,
+          "y": 153.1875,
           "width": 341,
           "height": 191.8125
         },
         "drawnImage": {
           "x": 17,
-          "y": 137.1875,
+          "y": 153.1875,
           "width": 341,
           "height": 191.8125
         },
         "preferences": {
           "x": 16,
-          "y": 849,
+          "y": 878,
           "width": 343,
           "height": 147
         },
         "history": {
           "x": 16,
-          "y": 1020,
+          "y": 1049,
           "width": 343,
           "height": 447
         },
         "details": {
           "x": 16,
-          "y": 1491,
+          "y": 1520,
           "width": 343,
           "height": 456
         }
@@ -944,10 +919,10 @@
         "historyBeforeDetails": true
       },
       "visualTops": {
-        "car": 136.1875,
-        "preferences": 849,
-        "history": 1020,
-        "details": 1491
+        "car": 152.1875,
+        "preferences": 878,
+        "history": 1049,
+        "details": 1520
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -1015,11 +990,8 @@
           "details"
         ]
       },
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-      ],
+      "errors": [],
+      "featureMediaMinusDrawnHeight": 0.0,
       "sideBySide": {
         "file": "375-engaged-side-by-side.jpg",
         "cropTo4000": false,
@@ -1029,11 +1001,10 @@
         ],
         "implementationSize": [
           375,
-          2028
+          2057
         ]
       },
-      "implementationImage": "375-engaged-implementation.png",
-      "featureMediaMinusDrawnHeight": 0.0
+      "implementationImage": "375-engaged-implementation.png"
     },
     "320-long": {
       "viewport": {
@@ -1051,47 +1022,47 @@
           "x": 16,
           "y": 72,
           "width": 288,
-          "height": 2054.0625
+          "height": 2086.0625
         },
         "feature": {
           "x": 16,
-          "y": 136.1875,
+          "y": 152.1875,
           "width": 288,
-          "height": 723.875
+          "height": 739.875
         },
         "featureMedia": {
           "x": 17,
-          "y": 137.1875,
+          "y": 153.1875,
           "width": 286,
           "height": 160.875
         },
         "cardMedia": {
           "x": 17,
-          "y": 137.1875,
+          "y": 153.1875,
           "width": 286,
           "height": 160.875
         },
         "drawnImage": {
           "x": 17,
-          "y": 137.1875,
+          "y": 153.1875,
           "width": 286,
           "height": 160.875
         },
         "preferences": {
           "x": 16,
-          "y": 884.0625,
+          "y": 916.0625,
           "width": 288,
           "height": 168
         },
         "history": {
           "x": 16,
-          "y": 1076.0625,
+          "y": 1108.0625,
           "width": 288,
           "height": 467
         },
         "details": {
           "x": 16,
-          "y": 1567.0625,
+          "y": 1599.0625,
           "width": 288,
           "height": 519
         }
@@ -1103,10 +1074,10 @@
         "historyBeforeDetails": true
       },
       "visualTops": {
-        "car": 136.1875,
-        "preferences": 884.0625,
-        "history": 1076.0625,
-        "details": 1567.0625
+        "car": 152.1875,
+        "preferences": 916.0625,
+        "history": 1108.0625,
+        "details": 1599.0625
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -1124,10 +1095,8 @@
         "Your details"
       ],
       "currentModel": "BMW 3 Series 330e xDrive M Sport Pro Touring",
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-      ],
+      "errors": [],
+      "featureMediaMinusDrawnHeight": 0.0,
       "sideBySide": {
         "file": "320-long-side-by-side.jpg",
         "cropTo4000": false,
@@ -1137,11 +1106,10 @@
         ],
         "implementationSize": [
           320,
-          2167
+          2199
         ]
       },
-      "implementationImage": "320-long-implementation.png",
-      "featureMediaMinusDrawnHeight": 0.0
+      "implementationImage": "320-long-implementation.png"
     },
     "1440-missing-image": {
       "viewport": {
@@ -1159,42 +1127,42 @@
           "x": 96,
           "y": 76,
           "width": 1296,
-          "height": 1259
+          "height": 1288
         },
         "feature": {
           "x": 96,
-          "y": 154,
+          "y": 170,
           "width": 1296,
-          "height": 501
+          "height": 514
         },
         "featureMedia": {
           "x": 97,
-          "y": 155,
+          "y": 171,
           "width": 814,
-          "height": 499
+          "height": 512
         },
         "cardMedia": {
           "x": 97,
-          "y": 175.5625,
+          "y": 198.0625,
           "width": 814,
           "height": 457.875
         },
         "drawnImage": null,
         "preferences": {
           "x": 96,
-          "y": 679,
+          "y": 708,
           "width": 1296,
           "height": 151
         },
         "history": {
           "x": 96,
-          "y": 854,
+          "y": 883,
           "width": 1296,
           "height": 197
         },
         "details": {
           "x": 96,
-          "y": 1075,
+          "y": 1104,
           "width": 1296,
           "height": 220
         }
@@ -1206,10 +1174,10 @@
         "historyBeforeDetails": true
       },
       "visualTops": {
-        "car": 154,
-        "preferences": 679,
-        "history": 854,
-        "details": 1075
+        "car": 170,
+        "preferences": 708,
+        "history": 883,
+        "details": 1104
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -1277,11 +1245,8 @@
           "details"
         ]
       },
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-      ],
+      "errors": [],
+      "featureMediaMinusDrawnHeight": null,
       "sideBySide": {
         "file": "1440-missing-image-side-by-side.jpg",
         "cropTo4000": false,
@@ -1291,11 +1256,10 @@
         ],
         "implementationSize": [
           1440,
-          1384
+          1413
         ]
       },
-      "implementationImage": "1440-missing-image-implementation.png",
-      "featureMediaMinusDrawnHeight": null
+      "implementationImage": "1440-missing-image-implementation.png"
     },
     "1440-record-drawer": {
       "viewport": {
@@ -1313,47 +1277,47 @@
           "x": 96,
           "y": 76,
           "width": 1296,
-          "height": 1259
+          "height": 1288
         },
         "feature": {
           "x": 96,
-          "y": 154,
+          "y": 170,
           "width": 1296,
-          "height": 501
+          "height": 514
         },
         "featureMedia": {
           "x": 97,
-          "y": 155,
+          "y": 171,
           "width": 814,
-          "height": 499
+          "height": 512
         },
         "cardMedia": {
           "x": 97,
-          "y": 175.5625,
+          "y": 198.0625,
           "width": 814,
           "height": 457.875
         },
         "drawnImage": {
           "x": 97,
-          "y": 175.5625,
+          "y": 198.0625,
           "width": 814,
           "height": 457.875
         },
         "preferences": {
           "x": 96,
-          "y": 679,
+          "y": 708,
           "width": 1296,
           "height": 151
         },
         "history": {
           "x": 96,
-          "y": 854,
+          "y": 883,
           "width": 1296,
           "height": 197
         },
         "details": {
           "x": 96,
-          "y": 1075,
+          "y": 1104,
           "width": 1296,
           "height": 220
         }
@@ -1365,10 +1329,10 @@
         "historyBeforeDetails": true
       },
       "visualTops": {
-        "car": 154,
-        "preferences": 679,
-        "history": 854,
-        "details": 1075
+        "car": 170,
+        "preferences": 708,
+        "history": 883,
+        "details": 1104
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -1411,11 +1375,8 @@
           "focusReturnedToOpener": true
         }
       },
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-      ],
+      "errors": [],
+      "featureMediaMinusDrawnHeight": 54.125,
       "sideBySide": {
         "file": "1440-record-drawer-side-by-side.jpg",
         "cropTo4000": false,
@@ -1425,11 +1386,10 @@
         ],
         "implementationSize": [
           1440,
-          1384
+          1413
         ]
       },
-      "implementationImage": "1440-record-drawer-implementation.png",
-      "featureMediaMinusDrawnHeight": 41.125
+      "implementationImage": "1440-record-drawer-implementation.png"
     },
     "375-record-drawer": {
       "viewport": {
@@ -1447,47 +1407,47 @@
           "x": 16,
           "y": 72,
           "width": 343,
-          "height": 1915
+          "height": 1944
         },
         "feature": {
           "x": 16,
-          "y": 136.1875,
+          "y": 152.1875,
           "width": 343,
-          "height": 688.8125
+          "height": 701.8125
         },
         "featureMedia": {
           "x": 17,
-          "y": 137.1875,
+          "y": 153.1875,
           "width": 341,
           "height": 191.8125
         },
         "cardMedia": {
           "x": 17,
-          "y": 137.1875,
+          "y": 153.1875,
           "width": 341,
           "height": 191.8125
         },
         "drawnImage": {
           "x": 17,
-          "y": 137.1875,
+          "y": 153.1875,
           "width": 341,
           "height": 191.8125
         },
         "preferences": {
           "x": 16,
-          "y": 849,
+          "y": 878,
           "width": 343,
           "height": 147
         },
         "history": {
           "x": 16,
-          "y": 1020,
+          "y": 1049,
           "width": 343,
           "height": 447
         },
         "details": {
           "x": 16,
-          "y": 1491,
+          "y": 1520,
           "width": 343,
           "height": 456
         }
@@ -1499,10 +1459,10 @@
         "historyBeforeDetails": true
       },
       "visualTops": {
-        "car": 136.1875,
-        "preferences": 849,
-        "history": 1020,
-        "details": 1491
+        "car": 152.1875,
+        "preferences": 878,
+        "history": 1049,
+        "details": 1520
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -1545,11 +1505,8 @@
           "focusReturnedToOpener": true
         }
       },
-      "errors": [
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-      ],
+      "errors": [],
+      "featureMediaMinusDrawnHeight": 0.0,
       "sideBySide": {
         "file": "375-record-drawer-side-by-side.jpg",
         "cropTo4000": false,
@@ -1559,20 +1516,16 @@
         ],
         "implementationSize": [
           375,
-          2028
+          2057
         ]
       },
-      "implementationImage": "375-record-drawer-implementation.png",
-      "featureMediaMinusDrawnHeight": 0.0
+      "implementationImage": "375-record-drawer-implementation.png"
     }
   },
   "neighbours": {
     "gcsp-employee.html": {
       "errors": {
-        "branch": [
-          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-          "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-        ],
+        "branch": [],
         "base": [
           "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
         ]
@@ -1592,8 +1545,6 @@
     "gcsp-offer.html": {
       "errors": {
         "branch": [
-          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
           "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
         ],
         "base": [
@@ -1614,10 +1565,7 @@
     },
     "gcsp-brief.html": {
       "errors": {
-        "branch": [
-          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-          "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
-        ],
+        "branch": [],
         "base": []
       },
       "baseSize": [
@@ -1644,8 +1592,6 @@
     "gcsp-greg.html": {
       "errors": {
         "branch": [
-          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
-          "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
           "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
           "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
           "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
@@ -1689,27 +1635,26 @@
       ],
       "branchSize": [
         1440,
-        133511
+        134558
       ],
-      "differingPixels": 26553384,
+      "differingPixels": 26580519,
       "bbox": [
         0,
-        10779,
+        669,
         1440,
-        134111
+        134558
       ],
       "identical": false,
       "saved": [
         "neighbour-components-base.jpg",
         "neighbour-components-branch.jpg"
       ],
-      "windowFromY": 10579,
+      "windowFromY": 469,
       "windowNote": "JPEG limit: saved window is 8000px tall from windowFromY of the full page"
     }
   },
   "notes": [
     "320-long is a capture-time data variant: fixtures.js served via page.route with a longer model and specification in ACCOUNT_SNAPSHOT only (all occurrences of the current-car model/configuration strings).",
     "375-engaged and 375-selected use the same ready fixture; the real page cannot start Buddy in a read-only fixture, so the reference Buddy-engaged state is not reproduced."
-  ],
-  "failure": "Error: compose.py exited 1\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-036/docs/gcsp/evidence/fucq359/capture.mjs:190:29"
+  ]
 }
