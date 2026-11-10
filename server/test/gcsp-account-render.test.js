@@ -343,7 +343,7 @@ test('the car shows no image caption or source line; a broken image keeps the pl
     assert.doesNotMatch(root.querySelector('.gcsp-feature').textContent, /Front three-quarter view|Image source|dated illustration/);
     media.querySelector('img').dispatchEvent(new window.Event('error'));
     assert.equal(media.querySelector('img'), null); assert.equal(media.classList.contains('has-photo'), false);
-    assert.match(media.textContent, /No image for this car yet/);
+    assert.match(media.textContent, /No image available for your car/);
     assert.equal(root.querySelector('.gcsp-feature h2').textContent, 'BMW 3 Series Touring 320i');
     assert.doesNotMatch(root.textContent, /does not confirm the fitted equipment/);
     const record = openFrom(root);
@@ -1212,7 +1212,7 @@ test('a missing image keeps a readable placeholder in the whole-car well and the
     const car = view.root.querySelector('.gcsp-feature');
     const media = car.querySelector('.vm-card-media');
     assert.ok(media.classList.contains('gcsp-media-whole')); assert.equal(media.classList.contains('has-photo'), false);
-    assert.equal(media.querySelector('.vm-card-soon').textContent, 'No image for this car yet');
+    assert.equal(media.querySelector('.vm-card-soon').textContent, 'No image available for your car');
     assert.equal(car.querySelector('h2').textContent, 'BMW 3 Series Touring 320i');
     assert.equal(car.querySelector('.gcsp-account-spec').textContent, '320i M Sport Touring \u00b7 Petrol');
   } finally { view.destroy(); view.root.remove(); }

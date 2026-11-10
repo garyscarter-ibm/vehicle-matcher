@@ -15,7 +15,7 @@ import { orderIdentityRows, orderReferenceOf } from '../kit/order-identity.js';
 import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 import { dataTable } from '../kit/data-table.js';
 import { sideDrawer } from '../kit/side-drawer.js';
-import { NO_IMAGE_TEXT } from '../kit/plain-copy.js';
+import { NO_IMAGE_TEXT, NO_IMAGE_YOUR_CAR } from '../kit/plain-copy.js';
 import { routePortal, PORTAL_ROUTES } from '../employee/portal-navigation.js';
 
 let serial = 0;
@@ -217,7 +217,7 @@ function currentCar(contract, model, controls) {
   feature.setAttribute('aria-labelledby', heading.id);
   const source = contract.media;
   const { media } = mediaWell({ name: contract.model ?? 'Current car', photo: source?.src ?? source?.photo ?? '',
-    line: '', alt: source?.alt ?? contract.model ?? 'Car' }, 'gcsp-media gcsp-media-whole', { placeholder: NO_IMAGE_TEXT });
+    line: '', alt: source?.alt ?? contract.model ?? 'Car' }, 'gcsp-media gcsp-media-whole', { placeholder: NO_IMAGE_YOUR_CAR });
   const scheme = schemeName(model, contract.schemeId);
   const title = el('div', 'gcsp-account-title');
   title.append(heading);
@@ -260,7 +260,7 @@ function orderCurrentCar(car, order, orderVehicle) {
   heading.id = `gcsp-account-car-${++serial}`;
   feature.setAttribute('aria-labelledby', heading.id);
   const { media } = mediaWell({ name: name ?? 'Current car', photo: same ? orderVehicle?.photo ?? '' : '', line: '',
-    alt: name ?? 'Car' }, 'gcsp-media gcsp-media-whole', { placeholder: NO_IMAGE_TEXT });
+    alt: name ?? 'Car' }, 'gcsp-media gcsp-media-whole', { placeholder: NO_IMAGE_YOUR_CAR });
   const copy = el('div', 'gcsp-feature-copy');
   const title = el('div', 'gcsp-account-title');
   title.append(heading);
