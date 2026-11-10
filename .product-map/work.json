@@ -4195,6 +4195,57 @@
       ],
       "unsliced": false,
       "original_status": "In Review"
+    },
+    {
+      "id": "FUCQ-342",
+      "title": "Disable live Sign out in named visual fixtures",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "type": "Bug",
+      "assignee": "Russell Gowers",
+      "workers": [
+        {
+          "id": "daffy-duck-fucq342",
+          "name": "Daffy Duck",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-10T13:44:26Z",
+          "expires_at": "2026-11-10T13:49:00Z",
+          "status": "waiting-independent-review",
+          "source": "Lead checkpoint pushed; yielding slot for independent review, thread 01a1c5aa-99a3-7f50-91c6-677707d33fd4"
+        }
+      ],
+      "observed_at": "2026-11-10T13:49:33Z",
+      "slices": [
+        {
+          "id": "fixture-boundaries",
+          "status": "complete",
+          "title": "Forward-existing-fixture-signout-optout",
+          "observed_at": "2026-11-10T13:37:39Z",
+          "evidence": "Lead-reviewed narrow wrapper diff; four behavioral regressions pass after reproduced three named fixture failures."
+        },
+        {
+          "id": "regression",
+          "status": "complete",
+          "title": "Scoped-fixture-and-live-session-regression",
+          "observed_at": "2026-11-10T13:44:26Z",
+          "evidence": "242/242 scoped checks passed; baseline browser reproduces all three logout leaks, 16 corrected fixture cases keep sessions valid and four live logout cases revoke authority. Strict targeted evidence retained."
+        },
+        {
+          "id": "visual",
+          "status": "in-progress",
+          "title": "Independent-desktop-and-narrow-rendered-critique",
+          "observed_at": "2026-11-10T13:44:26Z"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Reviewed-story-delivery-evidence"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-10-GC-023",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-342"
     }
   ]
 }

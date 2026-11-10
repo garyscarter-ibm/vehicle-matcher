@@ -1,0 +1,468 @@
+{
+  "story": "FUCQ-342",
+  "checkpoint_state": "WAITING: independent visual critique and detector assessment required",
+  "recorded_at": "2026-11-10T13:49:00Z",
+  "branch": "dev/DEV-2026-11-10-GC-023",
+  "base_commit": "0dc6497223dbe03f70ac46efbc1864031300f430",
+  "tested_identity": {
+    "scope": "targeted",
+    "variant": "default",
+    "code_key": "2ea2e846ba33b48ca7f8965c345e3eeba2789613455b3b4893114f240b5035e8",
+    "tree": "36e83cfd2c5278fef99fa3eabea844116d2c85de",
+    "strict_stamp": ".claude/test-runs/targeted-2ea2e846ba33b48ca7f8965c345e3eeba2789613455b3b4893114f240b5035e8-default-1794318187463543000.json",
+    "source_test_sha256": {
+      "blocks/gcsp/offer/gcsp-offer.js": "a96bd3e45399e69e9689a596e1dfef29cb523ab263a606f9e3de0b48e8a453d6",
+      "blocks/gcsp/offer/harness.js": "019132c3c3018f98c907176da4ab5e9df98e8266d08c27d6601cad47efb78659",
+      "blocks/gcsp/presenter/gcsp-outbox.js": "b5976f57a5b386df0f2e518ccdfc627b5c1ad50721213a382ccebf75ee0fc2e3",
+      "blocks/gcsp/presenter/fixtures.js": "770589487e57207ca91718a0871c721dadb8945e828d3c2514ed1030a482a8ac",
+      "blocks/vehicle-matcher/component-gallery.js": "3985cbd28c21458ea800a225460e6dcbf5f0ec98cec7cde49356406c66a05d29",
+      "server/test/gcsp-fixture-session-isolation.test.js": "8b9893cdfeba3dd2224c2d2646b8265aa5436d330ff61afae8cd27c1ec298624",
+      "server/test/gcsp-login-render.test.js": "19f317cee5d95c8ef24575f83c7b4de4a1a0df42001144f9b08f8ada4eb8d3a3",
+      "server/test/gcsp-login-consumers.test.js": "ef83ee2a6917d187c5427341679c901f436dde367b1e4865ac31c4cafc1f6d0d",
+      "server/test/gcsp-login.test.js": "874957f389a5c5e703a865430a75ae67158c60313a4c1eac04c8fec426cea549",
+      "server/test/gcsp-shell.test.js": "76e2f643333c81fe5868b36947c95057a1922b8226fe7d2a27b91db202e6d22f",
+      "server/test/gcsp-offer-view-render.test.js": "d536acbd7b482acfb8039b7bc961beac8af31310c3bd9a78566724e3f175f531",
+      "server/test/gcsp-outbox-viewer.test.js": "87fc1cd410cd44503f0da1d1a8553b05ca52a0d90e0a2b6b404741f9fcddc39c",
+      "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+    },
+    "unchanged_since_scoped_run": true,
+    "unchanged_since_rendered_run": true
+  },
+  "regression": {
+    "command": "node --test --test-concurrency=1 server/test/gcsp-fixture-session-isolation.test.js server/test/gcsp-login-render.test.js server/test/gcsp-login-consumers.test.js server/test/gcsp-login.test.js server/test/gcsp-shell.test.js server/test/gcsp-offer-view-render.test.js server/test/gcsp-outbox-viewer.test.js server/test/ui-ratchet.test.js",
+    "passed": 242,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 41.3,
+    "initial_evidence": "Before the fix: three fixture regressions failed and live default regression passed. First aggregate run: 235 passed, one module failed importing absent pg; rerun used an owned read-only link to existing pg 8.23.1 and all 242 passed. The dependency link was removed at handoff.",
+    "boundaries": [
+      "offer named harness \u2192 mountOffer \u2192 portalShell",
+      "outbox named fixture \u2192 custom element \u2192 mountOutbox \u2192 portalShell",
+      "all four component-gallery account examples \u2192 portalShell",
+      "live shell \u2192 existing logout adapter \u2192 local actual identity service"
+    ],
+    "excluded": "No full-suite run: no shared shell, service business logic, CSS or comparison/allocator change. No deployed/PostgreSQL integration smoke; isolated in-memory authority used for local browser proof."
+  },
+  "browser": {
+    "method": "Headless isolated Chrome, local HTTPS, actual front-end and logout API with in-memory repository/identity; no human browser session, no BMW or real-mail calls. Initial HTTP setup failed session validation (401), then corrected to HTTPS before behavioral proof.",
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 1000
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "baseline_overlay": [
+      {
+        "fixture": "offer-pending",
+        "signOutIssued": true,
+        "sessionAfter": 401
+      },
+      {
+        "fixture": "outbox-messages",
+        "signOutIssued": true,
+        "sessionAfter": 401
+      },
+      {
+        "fixture": "gallery",
+        "signOutIssued": true,
+        "sessionAfter": 401
+      }
+    ],
+    "corrected_fixture_cases": [
+      {
+        "fixture": "offer-pending",
+        "viewport": 1440,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 1440,
+          "width": 1424,
+          "scrollWidth": 1424,
+          "clientWidth": 1424
+        }
+      },
+      {
+        "fixture": "outbox-messages",
+        "viewport": 1440,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 1440,
+          "width": 1440,
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        }
+      },
+      {
+        "fixture": "offer-loading",
+        "viewport": 1440,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 1440,
+          "width": 1424,
+          "scrollWidth": 1424,
+          "clientWidth": 1424
+        }
+      },
+      {
+        "fixture": "offer-error",
+        "viewport": 1440,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 1440,
+          "width": 1424,
+          "scrollWidth": 1424,
+          "clientWidth": 1424
+        }
+      },
+      {
+        "fixture": "outbox-empty",
+        "viewport": 1440,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 1440,
+          "width": 1440,
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        }
+      },
+      {
+        "fixture": "outbox-loading",
+        "viewport": 1440,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 1440,
+          "width": 1440,
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        }
+      },
+      {
+        "fixture": "outbox-error",
+        "viewport": 1440,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 1440,
+          "width": 1440,
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        }
+      },
+      {
+        "fixture": "gallery",
+        "viewport": 1440,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 1440,
+          "width": 1120,
+          "scrollWidth": 1120,
+          "clientWidth": 1120
+        }
+      },
+      {
+        "fixture": "offer-pending",
+        "viewport": 390,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 390,
+          "width": 374,
+          "scrollWidth": 374,
+          "clientWidth": 374
+        }
+      },
+      {
+        "fixture": "outbox-messages",
+        "viewport": 390,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 390,
+          "width": 390,
+          "scrollWidth": 390,
+          "clientWidth": 390
+        }
+      },
+      {
+        "fixture": "offer-loading",
+        "viewport": 390,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 390,
+          "width": 374,
+          "scrollWidth": 374,
+          "clientWidth": 374
+        }
+      },
+      {
+        "fixture": "offer-error",
+        "viewport": 390,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 390,
+          "width": 374,
+          "scrollWidth": 374,
+          "clientWidth": 374
+        }
+      },
+      {
+        "fixture": "outbox-empty",
+        "viewport": 390,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 390,
+          "width": 390,
+          "scrollWidth": 390,
+          "clientWidth": 390
+        }
+      },
+      {
+        "fixture": "outbox-loading",
+        "viewport": 390,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 390,
+          "width": 390,
+          "scrollWidth": 390,
+          "clientWidth": 390
+        }
+      },
+      {
+        "fixture": "outbox-error",
+        "viewport": 390,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 390,
+          "width": 390,
+          "scrollWidth": 390,
+          "clientWidth": 390
+        }
+      },
+      {
+        "fixture": "gallery",
+        "viewport": 390,
+        "signOutRequests": 0,
+        "sessionAfter": 200,
+        "keyboard": "Enter opens; Escape closes and returns focus",
+        "geometry": {
+          "viewport": 390,
+          "width": 310,
+          "scrollWidth": 310,
+          "clientWidth": 310
+        }
+      }
+    ],
+    "live_logout_cases": [
+      {
+        "kind": "offer",
+        "viewport": 1440,
+        "signOutRequests": 1,
+        "sessionAfter": 401,
+        "redirect": "/gcsp/login"
+      },
+      {
+        "kind": "outbox",
+        "viewport": 1440,
+        "signOutRequests": 1,
+        "sessionAfter": 401,
+        "redirect": "/gcsp/login"
+      },
+      {
+        "kind": "offer",
+        "viewport": 390,
+        "signOutRequests": 1,
+        "sessionAfter": 401,
+        "redirect": "/gcsp/login"
+      },
+      {
+        "kind": "outbox",
+        "viewport": 390,
+        "signOutRequests": 1,
+        "sessionAfter": 401,
+        "redirect": "/gcsp/login"
+      }
+    ],
+    "page_errors": [],
+    "external_requests": [],
+    "capture_note": "Final fixture captures disable animations; live pending/error captures retain the earlier successful API proof run. Gallery captures show the relevant framed example, not the whole gallery."
+  },
+  "independent_review": {
+    "assessment_a": "pending; independent desktop/narrow substantive design critique",
+    "assessment_b": "pending; isolated detector and supporting browser evidence; detector intentionally unrun before A"
+  },
+  "known_separate_bug": {
+    "key": "FUCQ-346",
+    "severity": "Low",
+    "symptom": "At 390px the gallery frame clips long account identity text and the unavailable-account Retry control.",
+    "scope": "Existing gallery/frame and account CSS unchanged by this sign-out option fix. Dispatcher recorded origin FUCQ-322 and found-during relationship FUCQ-342; not repaired or a merge dependency here.",
+    "evidence": [
+      "gallery-390.png",
+      "gallery-unavailable-390.png"
+    ]
+  },
+  "cleanup": {
+    "checked_at": "2026-11-10T13:49:00Z",
+    "owned_shards": 10,
+    "scratch_roots_absent": true,
+    "owned_process_groups_absent": true,
+    "removed_dependency_link": true,
+    "dependency_target_preserved": true,
+    "sum_recorded_scratch_peaks_bytes": 15996696,
+    "max_single_chunk_scratch_bytes": 7181756,
+    "max_recorded_rss_bytes": 353288192,
+    "local_exception": "bounded browser profile, local HTTPS material and tool working set; all removed",
+    "leftovers": []
+  },
+  "captures": [
+    {
+      "file": "gallery-1440.png",
+      "bytes": 32389,
+      "sha256": "fca3d86fffb4861fb31462f2105ce48c936177cf5e1c750f9afd6272184837c8"
+    },
+    {
+      "file": "gallery-390.png",
+      "bytes": 14466,
+      "sha256": "8d06171c270bec1e3f64ce370da347c5db4ae7ecda0ccbdb602fbcaf90b8c719"
+    },
+    {
+      "file": "gallery-loading-1440.png",
+      "bytes": 16877,
+      "sha256": "88b5787614dcf9965d2de9c5ffcd64a13b81ab363e6ac00571b7a7d79f9a1748"
+    },
+    {
+      "file": "gallery-loading-390.png",
+      "bytes": 10693,
+      "sha256": "99d9136145dec167b729b21d482ba322f6f4c8554f47eda3dab69cfff8201768"
+    },
+    {
+      "file": "gallery-unavailable-1440.png",
+      "bytes": 19543,
+      "sha256": "f3a9ad14b1f2ad7015248b342dfe15e13f958c4b36ee443a5dd664a4720d2fe5"
+    },
+    {
+      "file": "gallery-unavailable-390.png",
+      "bytes": 12970,
+      "sha256": "c94f4bca75a9e95a78f68180aeeb691b8f3dcc8f4ebddf612dc1896eff0be8fa"
+    },
+    {
+      "file": "live-error-1440.png",
+      "bytes": 38103,
+      "sha256": "6c20095f3aec96b7458a482fcdc2397cbd58c5f356aecf5bd79d17b08eb945a2"
+    },
+    {
+      "file": "live-error-390.png",
+      "bytes": 22073,
+      "sha256": "b43c45accf1c8c63a65e559f3e4cc2a6a8c95884476f8d864e1a7b1539284f4c"
+    },
+    {
+      "file": "live-pending-1440.png",
+      "bytes": 35518,
+      "sha256": "875be1674356cae73d092c4fa3c11df7ebdcdb5570dbbb1bf466d4e5fa555771"
+    },
+    {
+      "file": "live-pending-390.png",
+      "bytes": 19371,
+      "sha256": "6ac9f3370ccd645a562be2d365b24f6d932836894c082cbaea89c6adbf5cc528"
+    },
+    {
+      "file": "offer-error-1440.png",
+      "bytes": 30810,
+      "sha256": "18a3c583a3a4fc9510876299c7fa7aa56fa447714d27cbe93a4dbfc6632ac1a7"
+    },
+    {
+      "file": "offer-error-390.png",
+      "bytes": 19649,
+      "sha256": "db75a39bf6f4447b30de5e518fa13300b2800723dbf0394ad3ef18a5307976b1"
+    },
+    {
+      "file": "offer-loading-1440.png",
+      "bytes": 24784,
+      "sha256": "c5a6ee1eaa5b1414c5803bfb94dbb7f9d91b2a89afd3cc681cdcbb103365f6d3"
+    },
+    {
+      "file": "offer-loading-390.png",
+      "bytes": 14004,
+      "sha256": "4809cd4726b731f42b4c075dba58c068c74af6dec90f4b7117095b5d5370a0a0"
+    },
+    {
+      "file": "offer-pending-1440.png",
+      "bytes": 297742,
+      "sha256": "89f8c70632f7a47cc1b7d621f0c813f515c0a129eb3068ed77ec1b2026ba7eb8"
+    },
+    {
+      "file": "offer-pending-390.png",
+      "bytes": 116766,
+      "sha256": "41feff92da16304965d75f8c976458e8e394b437bdc8fd95e9f30874b773502e"
+    },
+    {
+      "file": "outbox-empty-1440.png",
+      "bytes": 49101,
+      "sha256": "a93deba410938035cc09485e54fa36ac2bb4398f1ed34f5db63a003be7739bab"
+    },
+    {
+      "file": "outbox-empty-390.png",
+      "bytes": 33420,
+      "sha256": "f763e69502cb15e4c1811836fc60c61b8d19929dcba1339be35b52861fce1ea5"
+    },
+    {
+      "file": "outbox-error-1440.png",
+      "bytes": 46923,
+      "sha256": "7ad2cf6a62aeb0116e5a982925d602d8ce6da61efc1fb02614dda294c7c19e60"
+    },
+    {
+      "file": "outbox-error-390.png",
+      "bytes": 32105,
+      "sha256": "f8f6e115a4e506ef5ba59d46a24ae24b74b11d4d36057b2d107002063831c436"
+    },
+    {
+      "file": "outbox-loading-1440.png",
+      "bytes": 36190,
+      "sha256": "8898e84a3b5ea61dff0d3b36cfb6630a7ff1356ba11f7833c3227bd0bf27b696"
+    },
+    {
+      "file": "outbox-loading-390.png",
+      "bytes": 22749,
+      "sha256": "a783833ba7bc9b31c8a9e95832bb30f326ae50850f98e052be25a0d490dafced"
+    },
+    {
+      "file": "outbox-messages-1440.png",
+      "bytes": 157420,
+      "sha256": "91d6fcbcd1bad8f90ac82c8ed428fe44e4aa8c45ddc7fef3dceb0acfe7fb3cb5"
+    },
+    {
+      "file": "outbox-messages-390.png",
+      "bytes": 71176,
+      "sha256": "8702ec9e0548b5dac453a135ca3a884d6d066046018d2da574fc7def9eb32100"
+    }
+  ]
+}
