@@ -9,9 +9,18 @@ import { tickSummary, stepLine, missingStagesLine, findOutcome } from './tick-co
 
 let sequence = 0;
 const ACTION_KEY = 'gcsp:presenter-action';
-// A run id is shown without its internal 'demo-' prefix.
-const runLabel = (id) => String(id ?? '').replace(/^demo-/, '');
+// Principals read by job ("Paula, employee"), clocks as a short UTC time; run ids stay off screen.
+const JOB = { employee: 'employee', greg: 'scheme team', presenter: 'presenter' };
+const principalLabel = (name, roles = []) => {
+  const job = JOB[roles.find((role) => JOB[role])] || roles.join(', '); const first = String(name ?? '').split(' ')[0];
+  return !first ? job : !job || first.toLowerCase() === job ? String(name) : `${first}, ${job}`;
+};
+const clockLabel = (iso) => {
+  const at = new Date(Date.parse(iso)); if (Number.isNaN(at.getTime())) return iso;
+  return `${new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(at)}, ${at.toISOString().slice(11, 19)} UTC`;
+};
 const QUIET = new Set(['Presenter controls ready', 'Action recorded', 'Principal confirmed']);
+const FLYOUT_KEY = 'gcsp:presenter-flyout-open'; // Same key the shell flyout stores its open state under.
 const RESET_KEY = 'gcsp:presenter-reset-done'; // One-shot note so the remounted strip can announce a reset.
 // Only sentences are shown: objects and internal codes (kebab-case ids) never reach the screen.
 const explain = (value) => { const text = typeof value === 'string' ? value.trim() : ''; return /^[a-z0-9]+(-[a-z0-9]+)+$/.test(text) ? '' : text.length > 240 ? `${text.slice(0, 240)} ... (truncated)` : text; };
@@ -52,13 +61,13 @@ function releasedCarCount(state) {
 // All controls retain their DOM identity while readback and results update.
 export function mountPresenterControls(host, { adapter = createPresenterHttpAdapter(),
   commandId = () => globalThis.crypto.randomUUID(), navigate = (url) => { const link = el('a'); link.href = url; link.click(); }, reload, clearAfter = 5000,
-  onAvailability, onReveal, onEscape } = {}) {
+  onAvailability, onReveal, onEscape, openOnLoad = false } = {}) {
   const abort = new AbortController();
   const options = { signal: abort.signal };
   let disposed = false; let busy = false; let authorized = false; let state; let context; let catalogue; let faults = null; let startStopped = false;
   let focusAfterBusy = null; let resetLead = null; let focusStatus = false;
   let original = null; let uncertain = false; let confirming = false; let restarted = false; let focusRestart = false;
-  let receiptsOpen = false; // Step results stay collapsed (FUCQ-203) unless the presenter opens them.
+  let landed = false; let receiptsOpen = false; // Step results stay collapsed (FUCQ-203) unless the presenter opens them.
   const bar = presenterBar();
   const { root, summary, panel } = bar; root.classList.add('gcsp-presenter-controls'); root.hidden = true;
   // A host that supplies onReveal shows the controls in its own tile: the disclosure stays open and its summary is not a stop.
@@ -66,7 +75,9 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   if (embedded) { root.open = true; root.classList.add('gcsp-presenter-embedded'); summary.tabIndex = -1; }
   const setVisible = (visible) => { if (root.hidden === !visible) return; root.hidden = !visible; onAvailability?.(visible); };
   const reveal = () => { root.open = true; onReveal?.(); };
-  const results = el('div', 'gcsp-presenter-results');
+  // Closed disclosures: Faults and Last tick are not part of any beat.
+  const fold = (label) => { const node = el('details', 'gcsp-presenter-fold'); const head = el('summary', '', label); const body = el('div'); node.append(head, body); return { node, head, body }; };
+  const lastTick = fold('Last tick'); const results = lastTick.node; results.classList.add('gcsp-presenter-results'); results.hidden = true;
   const message = el('p', 'gcsp-note', 'Loading presenter controls'); message.setAttribute('role', 'status');
   const readMessage = el('p', 'gcsp-note'); readMessage.setAttribute('role', 'status');
   // Success text clears itself so it never lingers on later pages; failures and uncertainty stay until replaced.
@@ -137,7 +148,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   confirmation.append(confirmText, confirm, cancel);
   const proceed = action('Continue to workspace', () => navigate(workspace())); proceed.hidden = true;
   // One picker and one button per adapter the server reports; nothing is invented client-side.
-  const faultGroup = el('div', 'gcsp-presenter-group'); faultGroup.hidden = true;
+  const faults_ = fold('Faults'); const faultGroup = faults_.node; faultGroup.hidden = true; faults_.body.className = 'gcsp-presenter-group';
   const faultRows = new Map(); let faultSignature;
   function faultRow(row) {
     if (!faultRows.has(row.adapter)) {
@@ -156,8 +167,10 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     const signature = faults.map((row) => row.adapter).join('|');
     if (signature !== faultSignature) {
       faultSignature = signature;
-      faultGroup.replaceChildren(el('h3', '', 'Faults'), ...entries.flatMap((entry) => [entry.pick.root, entry.set]));
+      faults_.body.replaceChildren(...entries.flatMap((entry) => [entry.pick.root, entry.set]));
     }
+    const active = faults.filter((row) => row.mode !== 'none').length;
+    faults_.head.textContent = active ? `Faults (${active} set)` : 'Faults';
     for (const entry of entries) {
       const slot = faultRows.get(entry.row.adapter);
       if (slot.mode !== entry.row.mode) { slot.mode = entry.row.mode; entry.pick.value = entry.row.mode; entry.pick.initial = true; }
@@ -171,17 +184,17 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     const picked = principal.value && principal.value !== context?.principalId ? usable.find((row) => row.principalId === principal.value) : null;
     return picked || usable.find((row) => row.roles?.includes('employee')) || null;
   }
-  const switchButton = action('Switch principal', () => start('switchPrincipal', { principalId: principal.value }), 'primary');
+  const switchButton = action('Switch principal', () => start('switchPrincipal', { principalId: principal.value }));
   const retry = action('Retry original action', () => execute()); retry.hidden = true;
   const fresh = action('Issue selected principal again', () => {
     original = null; uncertain = false; start('switchPrincipal', { principalId: principal.value });
   }); fresh.hidden = true;
   const refresh = action('Refresh readback', () => refreshState());
-  // Sections are separated by a hairline, one primary action each (Tick, Confirm reset, Switch principal).
+  // Beat actions come first in run-sheet order (Reset, Switch, Next release, Tick); Tick is the one primary.
   const section = (...nodes) => { const node = el('div', 'gcsp-presenter-group'); node.append(...nodes); return node; };
-  actions.append(section(tick, target.root, named, to, next, nextReason), section(scenario.root, availability, reset, confirmation, proceed),
-    faultGroup, section(principal.root, switchButton, retry, fresh), section(refresh));
-  panel.append(actions, message, notice.root, readMessage, results); host.append(root);
+  actions.append(section(reset, switchButton, next, tick, confirmation, retry, fresh, proceed, nextReason, target.root, named, to),
+    message, readMessage, notice.root, bar.readback, section(scenario.root, availability, principal.root), faultGroup, results, section(refresh));
+  panel.append(actions); host.append(root);
   // The old session is refused for good, so the only way on is a reload; nothing is resent.
   function enterRestarted() {
     const active = root.ownerDocument.activeElement;
@@ -198,15 +211,16 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     const sideSet = (node) => [...faultRows.values()].some((row) => row.set === node);
     controls.forEach((node) => { node.disabled = busy || restarted || uncertain && ![retry, fresh, refresh].includes(node) && !sideSet(node); });
     if (!state) return;
+    root.dataset.runId = state.runId ?? ''; // The run id is data, not copy.
     bar.setReadback([
-      { label: 'Scenario', value: state.currentScenario?.name, missingLabel: 'Scenario not supplied' },
-      { label: 'Run', value: runLabel(state.runId) }, { label: 'Clock (UTC)', value: state.now },
-      { label: 'Acting principal', value: context?.principalId ? `${context.name || context.principalId} (${context.roles?.join(', ') || 'role not supplied'})` : null, missingLabel: 'Context unavailable' },
+      { label: 'Scenario', value: state.currentScenario?.name, missingLabel: 'Scenario not supplied' }, { label: 'Clock', value: clockLabel(state.now) },
+      { label: 'Acting as', value: context?.principalId ? principalLabel(context.name || context.principalId, context.roles) : null, missingLabel: 'Context unavailable' },
     ]);
     principal.project((state.principals || []).map((row) => ({ value: row.principalId,
-      label: `${row.name} (${row.roles.join(', ')})` })), context?.principalId, busy || restarted || uncertain);
+      label: principalLabel(row.name, row.roles) })), context?.principalId, busy || restarted || uncertain);
+    // Only what is not available is said on an item.
     scenario.project((catalogue?.scenarios || []).map((row) => ({ value: row.scenarioId, label: row.name,
-      sub: row.availability?.available ? 'Available' : `Not available yet: ${row.availability?.missingCapabilities?.join(', ') || 'Capabilities not supplied'}`,
+      sub: row.availability?.available ? undefined : `Not available yet: ${row.availability?.missingCapabilities?.join(', ') || 'Capabilities not supplied'}`,
     })), state.currentScenario?.scenarioId, busy || restarted || uncertain);
     projectFaults(busy || restarted);
     named.replaceChildren(...Object.keys(state.controls?.namedTimes || {}).map((name) => { const option = el('option'); option.value = name; return option; }));
@@ -214,22 +228,24 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     tick.disabled ||= !state.controls?.step; to.disabled ||= !target.input.value.trim();
     next.disabled ||= state.controls?.nextRelease?.status !== 'available';
     nextReason.textContent = state.controls?.nextRelease?.status === 'available'
-      ? `Release cue: ${state.controls.nextRelease.at}` : `Next release unavailable: ${state.controls?.nextRelease?.reason || 'No future cue'}`;
+      ? '' : `Next release unavailable: ${state.controls?.nextRelease?.reason || 'No future cue'}`;
     const chosen = catalogue?.scenarios?.find((row) => row.scenarioId === scenario.value);
-    // Names the choice rather than repeating its option sub-line.
-    availability.textContent = chosen?.availability?.available ? `Selected: ${chosen.name}. Ready to reset.`
+    availability.textContent = chosen?.availability?.available ? ''
       : `${chosen ? `Selected: ${chosen.name}. ` : ''}Not available yet: ${chosen?.availability?.missingCapabilities?.join(', ') || reason(catalogue) || 'Scenario catalogue unavailable'}`;
     reset.disabled ||= !chosen?.availability?.available; confirm.disabled ||= !chosen?.availability?.available;
     switchButton.disabled ||= !principal.value;
     const lead = leadFor(chosen);
     confirmText.textContent = `Reset into ${chosen?.name || 'selected scenario'}${lead ? ` as ${lead.name || lead.principalId}` : ''}? This starts a new run.`;
     const last = state.lastTick;
-    receiptsOpen = results.querySelector('.gcsp-presenter-receipts')?.open ?? receiptsOpen;
-    const receiptsFocused = results.contains(root.ownerDocument.activeElement) && root.ownerDocument.activeElement.matches('.gcsp-presenter-receipts > summary');
-    results.replaceChildren(el('h3', '', 'Last tick'));
-    if (!last) results.append(el('p', 'gcsp-note', 'No tick reported'));
+    const count = releasedCarCount(state);
+    lastTick.head.textContent = count === null ? 'Last tick' : `Last tick: ${count} ${count === 1 ? 'car' : 'cars'} released`;
+    results.hidden = false;
+    receiptsOpen = lastTick.body.querySelector('.gcsp-presenter-receipts')?.open ?? receiptsOpen;
+    const receiptsFocused = lastTick.body.contains(root.ownerDocument.activeElement) && root.ownerDocument.activeElement.matches('.gcsp-presenter-receipts > summary');
+    lastTick.body.replaceChildren();
+    if (!last) lastTick.body.append(el('p', 'gcsp-note', 'No tick reported'));
     else {
-      results.append(el('p', 'gcsp-note', tickSummary(last)));
+      lastTick.body.append(el('p', 'gcsp-note', tickSummary(last)));
       const order = el('ol', 'gcsp-presenter-handlers');
       for (const descriptor of Array.isArray(last.handlerOrder) ? last.handlerOrder : []) {
         if (!descriptor || typeof descriptor !== 'object') continue;
@@ -237,12 +253,11 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       }
       const receipts = el('details', 'gcsp-presenter-receipts'); receipts.open = receiptsOpen;
       const receiptsSummary = el('summary', '', `Step results (${order.children.length})`);
-      receipts.append(receiptsSummary, order); results.append(receipts);
+      receipts.append(receiptsSummary, order); lastTick.body.append(receipts);
       if (receiptsFocused) receiptsSummary.focus();
       const missing = missingStagesLine(last.missingStages);
-      if (missing) results.append(el('p', 'gcsp-note', missing));
-      const count = releasedCarCount(state);
-      results.append(el('p', 'gcsp-note', count === null ? 'Release unavailable: no verified release result reported' : `${count} cars released`));
+      if (missing) lastTick.body.append(el('p', 'gcsp-note', missing));
+      if (count === null) lastTick.body.append(el('p', 'gcsp-note', 'Release unavailable: no verified release result reported'));
     }
     proceed.hidden = restarted || !startStopped;
     retry.hidden = restarted || !original || !uncertain; fresh.hidden = restarted || !(uncertain && original?.kind === 'switchPrincipal');
@@ -268,6 +283,8 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
         readMessage.textContent = read.code === 'presenter-transport-unavailable' ? 'Backend unavailable. Refresh readback.' : `Readback unavailable: ${why(read)}`; return;
       }
       authorized = true; state = read.value; update();
+      // On a landing page the flyout opens once, unless the presenter already chose to close it.
+      if (openOnLoad && !landed) { landed = true; try { if (host.ownerDocument.defaultView.sessionStorage.getItem(FLYOUT_KEY) === null) reveal(); } catch { /* storage blocked */ } }
       const [acting, scenarios, faultRead] = await Promise.all([gate ?? adapter.readContext(options), adapter.readScenarios(options),
         Promise.resolve(adapter.readFaults?.(options)).catch(() => null)]);
       if (disposed) return;
@@ -287,7 +304,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     let note = null; const win = host.ownerDocument?.defaultView;
     try { const raw = win?.sessionStorage?.getItem(RESET_KEY); if (raw) { note = JSON.parse(raw); win.sessionStorage.removeItem(RESET_KEY); } } catch { /* storage blocked */ }
     if (!note || note.runId !== state?.runId || !text(note.name)) return;
-    message.textContent = `Reset done. New run: ${runLabel(note.runId)}. Acting as ${note.name}.`;
+    message.textContent = `Reset done. Acting as ${note.name}.`;
     reveal(); focusStatus = true; // Focused after the final paint, so the scroll lands on it.
   }
   // The new run acts as the presenter, so the strip itself switches to the lead before the workspace loads.
@@ -344,7 +361,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       const stopped = command.kind === 'reset' && reply.status === 'ok' && Boolean(value.startState) && value.startState.status !== 'ok';
       startStopped = stopped;
       const stoppedAt = stopped ? `. The scenario start stopped at ${value.startState.step || 'an unreported step'}: ${value.startState.reason || 'reason not supplied'}` : '';
-      message.textContent = reply.status === 'ok' ? command.kind === 'reset' ? `Reset done. New run: ${runLabel(value.runId)}${stoppedAt}` : 'Action recorded' : `Action not completed: ${why(reply)}`;
+      message.textContent = reply.status === 'ok' ? command.kind === 'reset' ? `Reset done${stoppedAt || '.'}` : 'Action recorded' : `Action not completed: ${why(reply)}`;
       if (reply.lostResponse) message.textContent = 'Backend unavailable or response lost. Retry the original action.';
       if (command.kind === 'reset' && value.presenterSession?.status === 'unavailable') {
         message.textContent += ` Presenter session unavailable. ${value.presenterSession.action || 'Use trusted backend bootstrap.'}`;
@@ -363,7 +380,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
         }
         principal.value = lead.principalId; principal.initial = true;
         busy = false; await refreshState(); if (disposed || restarted) return;
-        message.textContent = `Reset done. New run: ${runLabel(value.runId)}. Switch to ${name} not confirmed: ${switched.reason}.`;
+        message.textContent = `Reset done. Switch to ${name} not confirmed: ${switched.reason}.`;
         message.tabIndex = -1; message.focus();
         return;
       }

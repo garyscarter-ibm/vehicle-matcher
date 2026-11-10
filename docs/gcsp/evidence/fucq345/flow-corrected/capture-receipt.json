@@ -1,0 +1,827 @@
+{
+  "task": "FUCQ-345",
+  "base": "23ce581b",
+  "sourceCommit": "e81db95ae0198679f7d4daf08a2132ca3a3c942d",
+  "runtime": "actual-memory",
+  "imageSource": "verified retained assets; live source evidence disabled",
+  "screenshots": [
+    {
+      "file": "02-selected-1280.jpg",
+      "sha256": "e3ec11ce3802c86a8c0f25243cca1ed6682ff88d05cd73a594db3da462f7bb65",
+      "bytes": 113639
+    },
+    {
+      "file": "02-selected-375.jpg",
+      "sha256": "4e913e3327c0df80a9714824b8f23aff1a2c63329799d9042a31578eb37a65d2",
+      "bytes": 46333
+    },
+    {
+      "file": "03-validation-1280.jpg",
+      "sha256": "85808227ae6f41e99bf9d7db4603ac88cb214948046bf5ff4da2d8a7d78d972b",
+      "bytes": 119308
+    },
+    {
+      "file": "04-controls-1280.jpg",
+      "sha256": "27363db1cb85df233d65bacdca0ed0857be323e1fa6e9b86af12c443203fac19",
+      "bytes": 114805
+    },
+    {
+      "file": "05-broken-photo-1280.jpg",
+      "sha256": "1eeb9e60d73b2c1d29a40847581b07176e7f5522f574c38490f1b04c39a5365d",
+      "bytes": 75338
+    },
+    {
+      "file": "06-empty-tag-1280.jpg",
+      "sha256": "8f295bcc816097680d6e2563cd0ff5df18d49a53e2914396c058ddcc49628d85",
+      "bytes": 73916
+    },
+    {
+      "file": "07-long-content-photo-1280.jpg",
+      "sha256": "9e66122efca1e56c8beb7faefe77113993ad54a4156854181072bdab8fd89795",
+      "bytes": 96722
+    },
+    {
+      "file": "08-missing-photo-1280.jpg",
+      "sha256": "ac2ea55ffed4e9c647d267400ff51568106e92be6c286b69ec800b664e9fb3f6",
+      "bytes": 46351
+    },
+    {
+      "file": "03-validation-375.jpg",
+      "sha256": "b890dbb337e56a82f27edcd2940819a2af1dd801cbbeb11e2045d31110f55894",
+      "bytes": 39886
+    },
+    {
+      "file": "04-controls-375.jpg",
+      "sha256": "679c9cb1d3658255d40de0539d98b61718ab6bfaea2b2812d527e7e76a594880",
+      "bytes": 38109
+    },
+    {
+      "file": "05-broken-photo-375.jpg",
+      "sha256": "f4b19dc5542542ec88743ef73b6d02bab4da60f36b402442363524ef37e49142",
+      "bytes": 32473
+    },
+    {
+      "file": "06-empty-tag-375.jpg",
+      "sha256": "34220f7b4e52ac246034a69acf8d530691fe6056ac7f22aab8125e6509e6876b",
+      "bytes": 31625
+    },
+    {
+      "file": "07-long-content-photo-375.jpg",
+      "sha256": "f1f901c7b926a4ba7a582508cb9e8d6b7e3172454f5264965c146eb8816d6838",
+      "bytes": 46615
+    },
+    {
+      "file": "08-missing-photo-375.jpg",
+      "sha256": "092e8610f37b35c19a298e216db507fbb24100bb7f0a45e979df5901bf31ec57",
+      "bytes": 43580
+    },
+    {
+      "file": "09-order-review-1280.jpg",
+      "sha256": "5778e79d3bbdb1ff6e5faec8dec1b5de18ecd0640864104ce914ac81d9b2cd34",
+      "bytes": 115994
+    },
+    {
+      "file": "09-order-review-375.jpg",
+      "sha256": "5e604eb4ec925cf1c5fdad817cc491e93bb7d4b40b53f8d742a5ce097838d2cf",
+      "bytes": 47315
+    },
+    {
+      "file": "10-confirmation-1280.jpg",
+      "sha256": "ce26211f2272c7d049381fbf7f5a756eae7aa850784b4fdab6d03eac7bf18ba1",
+      "bytes": 107954
+    },
+    {
+      "file": "10-confirmation-375.jpg",
+      "sha256": "61b5982ee33ee3043d676a4e62a1533a1f3a9d16275f48de183e2eb09f927985",
+      "bytes": 45087
+    }
+  ],
+  "geometry": [
+    {
+      "name": "selected",
+      "phase": "fixed",
+      "media": {
+        "x": 97,
+        "y": 183.5,
+        "width": 620.21875,
+        "height": 432.859375,
+        "right": 717.21875,
+        "bottom": 616.359375
+      },
+      "tag": {
+        "x": 109,
+        "y": 544.359375,
+        "width": 152.328125,
+        "height": 26,
+        "right": 261.328125,
+        "bottom": 570.359375
+      },
+      "caption": {
+        "x": 97,
+        "y": 582.359375,
+        "width": 620.21875,
+        "height": 34,
+        "right": 717.21875,
+        "bottom": 616.359375
+      },
+      "photo": {
+        "x": 97,
+        "y": 183.5,
+        "width": 620.21875,
+        "height": 348.859375,
+        "right": 717.21875,
+        "bottom": 532.359375
+      },
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "Car order 8709792",
+      "tagDisplay": "block",
+      "captionPosition": "static",
+      "objectFit": "contain",
+      "photoReady": true,
+      "placeholder": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "placeholderDisplay": "none",
+      "scrollWidth": 1280,
+      "viewport": 1280
+    },
+    {
+      "name": "selected",
+      "phase": "fixed",
+      "media": {
+        "x": 17,
+        "y": 235,
+        "width": 341,
+        "height": 275.8125,
+        "right": 358,
+        "bottom": 510.8125
+      },
+      "tag": {
+        "x": 29,
+        "y": 438.8125,
+        "width": 152.328125,
+        "height": 26,
+        "right": 181.328125,
+        "bottom": 464.8125
+      },
+      "caption": {
+        "x": 17,
+        "y": 476.8125,
+        "width": 341,
+        "height": 34,
+        "right": 358,
+        "bottom": 510.8125
+      },
+      "photo": {
+        "x": 17,
+        "y": 235,
+        "width": 341,
+        "height": 191.8125,
+        "right": 358,
+        "bottom": 426.8125
+      },
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "Car order 8709792",
+      "tagDisplay": "block",
+      "captionPosition": "static",
+      "objectFit": "contain",
+      "photoReady": true,
+      "placeholder": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "placeholderDisplay": "none",
+      "scrollWidth": 375,
+      "viewport": 375
+    },
+    {
+      "name": "broken-photo",
+      "phase": "fixed",
+      "media": {
+        "x": 97,
+        "y": 183.5,
+        "width": 620.21875,
+        "height": 348.859375,
+        "right": 717.21875,
+        "bottom": 532.359375
+      },
+      "tag": {
+        "x": 109,
+        "y": 502.359375,
+        "width": 136.328125,
+        "height": 18,
+        "right": 245.328125,
+        "bottom": 520.359375
+      },
+      "caption": null,
+      "photo": null,
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "Car order 8709792",
+      "tagDisplay": "block",
+      "captionPosition": null,
+      "objectFit": null,
+      "photoReady": null,
+      "placeholder": {
+        "x": 97,
+        "y": 183.5,
+        "width": 620.21875,
+        "height": 306.859375,
+        "right": 717.21875,
+        "bottom": 490.359375
+      },
+      "placeholderDisplay": "flex",
+      "scrollWidth": 1280,
+      "viewport": 1280
+    },
+    {
+      "name": "empty-tag",
+      "phase": "fixed",
+      "media": {
+        "x": 97,
+        "y": 183.5,
+        "width": 620.21875,
+        "height": 348.859375,
+        "right": 717.21875,
+        "bottom": 532.359375
+      },
+      "tag": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "caption": null,
+      "photo": null,
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "",
+      "tagDisplay": "none",
+      "captionPosition": null,
+      "objectFit": null,
+      "photoReady": null,
+      "placeholder": {
+        "x": 97,
+        "y": 183.5,
+        "width": 620.21875,
+        "height": 348.859375,
+        "right": 717.21875,
+        "bottom": 532.359375
+      },
+      "placeholderDisplay": "flex",
+      "scrollWidth": 1280,
+      "viewport": 1280
+    },
+    {
+      "name": "long-content",
+      "phase": "fixed",
+      "media": {
+        "x": 93.1875,
+        "y": -1164.546875,
+        "width": 1093.625,
+        "height": 699.15625,
+        "right": 1186.8125,
+        "bottom": -465.390625
+      },
+      "tag": {
+        "x": 105.1875,
+        "y": -537.390625,
+        "width": 487.078125,
+        "height": 26,
+        "right": 592.265625,
+        "bottom": -511.390625
+      },
+      "caption": {
+        "x": 93.1875,
+        "y": -499.390625,
+        "width": 1093.625,
+        "height": 34,
+        "right": 1186.8125,
+        "bottom": -465.390625
+      },
+      "photo": {
+        "x": 93.1875,
+        "y": -1164.546875,
+        "width": 1093.625,
+        "height": 615.15625,
+        "right": 1186.8125,
+        "bottom": -549.390625
+      },
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "Car order 1175641 for your selected BMW 320i M Sport Touring",
+      "tagDisplay": "block",
+      "captionPosition": "static",
+      "objectFit": "contain",
+      "photoReady": true,
+      "placeholder": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "placeholderDisplay": "none",
+      "scrollWidth": 1280,
+      "viewport": 1280
+    },
+    {
+      "name": "long-missing-photo",
+      "phase": "fixed",
+      "media": {
+        "x": 93.1875,
+        "y": -59.390625,
+        "width": 1093.625,
+        "height": 615.15625,
+        "right": 1186.8125,
+        "bottom": 555.765625
+      },
+      "tag": {
+        "x": 105.1875,
+        "y": 525.765625,
+        "width": 471.078125,
+        "height": 18,
+        "right": 576.265625,
+        "bottom": 543.765625
+      },
+      "caption": null,
+      "photo": null,
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "Car order 1175641 for your selected BMW 320i M Sport Touring",
+      "tagDisplay": "block",
+      "captionPosition": null,
+      "objectFit": null,
+      "photoReady": null,
+      "placeholder": {
+        "x": 93.1875,
+        "y": -59.390625,
+        "width": 1093.625,
+        "height": 573.15625,
+        "right": 1186.8125,
+        "bottom": 513.765625
+      },
+      "placeholderDisplay": "flex",
+      "scrollWidth": 1280,
+      "viewport": 1280
+    },
+    {
+      "name": "broken-photo",
+      "phase": "fixed",
+      "media": {
+        "x": 17,
+        "y": -888,
+        "width": 341,
+        "height": 191.8125,
+        "right": 358,
+        "bottom": -696.1875
+      },
+      "tag": {
+        "x": 29,
+        "y": -726.1875,
+        "width": 136.328125,
+        "height": 18,
+        "right": 165.328125,
+        "bottom": -708.1875
+      },
+      "caption": null,
+      "photo": null,
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "Car order 8709792",
+      "tagDisplay": "block",
+      "captionPosition": null,
+      "objectFit": null,
+      "photoReady": null,
+      "placeholder": {
+        "x": 17,
+        "y": -888,
+        "width": 341,
+        "height": 149.8125,
+        "right": 358,
+        "bottom": -738.1875
+      },
+      "placeholderDisplay": "flex",
+      "scrollWidth": 375,
+      "viewport": 375
+    },
+    {
+      "name": "empty-tag",
+      "phase": "fixed",
+      "media": {
+        "x": 17,
+        "y": 160,
+        "width": 341,
+        "height": 191.8125,
+        "right": 358,
+        "bottom": 351.8125
+      },
+      "tag": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "caption": null,
+      "photo": null,
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "",
+      "tagDisplay": "none",
+      "captionPosition": null,
+      "objectFit": null,
+      "photoReady": null,
+      "placeholder": {
+        "x": 17,
+        "y": 160,
+        "width": 341,
+        "height": 191.8125,
+        "right": 358,
+        "bottom": 351.8125
+      },
+      "placeholderDisplay": "flex",
+      "scrollWidth": 375,
+      "viewport": 375
+    },
+    {
+      "name": "long-content",
+      "phase": "fixed",
+      "media": {
+        "x": 58,
+        "y": -876.296875,
+        "width": 259,
+        "height": 301.6875,
+        "right": 317,
+        "bottom": -574.609375
+      },
+      "tag": {
+        "x": 70,
+        "y": -718.609375,
+        "width": 235,
+        "height": 62,
+        "right": 305,
+        "bottom": -656.609375
+      },
+      "caption": {
+        "x": 58,
+        "y": -644.609375,
+        "width": 259,
+        "height": 70,
+        "right": 317,
+        "bottom": -574.609375
+      },
+      "photo": {
+        "x": 58,
+        "y": -876.296875,
+        "width": 259,
+        "height": 145.6875,
+        "right": 317,
+        "bottom": -730.609375
+      },
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "Car order 1175641 for your selected BMW 320i M Sport Touring",
+      "tagDisplay": "block",
+      "captionPosition": "static",
+      "objectFit": "contain",
+      "photoReady": true,
+      "placeholder": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "placeholderDisplay": "none",
+      "scrollWidth": 375,
+      "viewport": 375
+    },
+    {
+      "name": "long-missing-photo",
+      "phase": "fixed",
+      "media": {
+        "x": 58,
+        "y": 60.390625,
+        "width": 259,
+        "height": 145.6875,
+        "right": 317,
+        "bottom": 206.078125
+      },
+      "tag": {
+        "x": 70,
+        "y": 140.078125,
+        "width": 235,
+        "height": 54,
+        "right": 305,
+        "bottom": 194.078125
+      },
+      "caption": null,
+      "photo": null,
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "Car order 1175641 for your selected BMW 320i M Sport Touring",
+      "tagDisplay": "block",
+      "captionPosition": null,
+      "objectFit": null,
+      "photoReady": null,
+      "placeholder": {
+        "x": 58,
+        "y": 60.390625,
+        "width": 259,
+        "height": 67.6875,
+        "right": 317,
+        "bottom": 128.078125
+      },
+      "placeholderDisplay": "flex",
+      "scrollWidth": 375,
+      "viewport": 375
+    },
+    {
+      "name": "order-review",
+      "phase": "fixed",
+      "media": {
+        "x": 97,
+        "y": 233.5,
+        "width": 620.21875,
+        "height": 432.859375,
+        "right": 717.21875,
+        "bottom": 666.359375
+      },
+      "tag": {
+        "x": 109,
+        "y": 594.359375,
+        "width": 152.328125,
+        "height": 26,
+        "right": 261.328125,
+        "bottom": 620.359375
+      },
+      "caption": {
+        "x": 97,
+        "y": 632.359375,
+        "width": 620.21875,
+        "height": 34,
+        "right": 717.21875,
+        "bottom": 666.359375
+      },
+      "photo": {
+        "x": 97,
+        "y": 233.5,
+        "width": 620.21875,
+        "height": 348.859375,
+        "right": 717.21875,
+        "bottom": 582.359375
+      },
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "Car order 8709792",
+      "tagDisplay": "block",
+      "captionPosition": "static",
+      "objectFit": "contain",
+      "photoReady": true,
+      "placeholder": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "placeholderDisplay": "none",
+      "scrollWidth": 1280,
+      "viewport": 1280
+    },
+    {
+      "name": "order-review",
+      "phase": "fixed",
+      "media": {
+        "x": 17,
+        "y": 285,
+        "width": 341,
+        "height": 275.8125,
+        "right": 358,
+        "bottom": 560.8125
+      },
+      "tag": {
+        "x": 29,
+        "y": 488.8125,
+        "width": 152.328125,
+        "height": 26,
+        "right": 181.328125,
+        "bottom": 514.8125
+      },
+      "caption": {
+        "x": 17,
+        "y": 526.8125,
+        "width": 341,
+        "height": 34,
+        "right": 358,
+        "bottom": 560.8125
+      },
+      "photo": {
+        "x": 17,
+        "y": 285,
+        "width": 341,
+        "height": 191.8125,
+        "right": 358,
+        "bottom": 476.8125
+      },
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "Car order 8709792",
+      "tagDisplay": "block",
+      "captionPosition": "static",
+      "objectFit": "contain",
+      "photoReady": true,
+      "placeholder": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "placeholderDisplay": "none",
+      "scrollWidth": 375,
+      "viewport": 375
+    },
+    {
+      "name": "confirmation",
+      "phase": "fixed",
+      "media": {
+        "x": 97,
+        "y": 234,
+        "width": 620.21875,
+        "height": 432.859375,
+        "right": 717.21875,
+        "bottom": 666.859375
+      },
+      "tag": {
+        "x": 109,
+        "y": 594.859375,
+        "width": 152.328125,
+        "height": 26,
+        "right": 261.328125,
+        "bottom": 620.859375
+      },
+      "caption": {
+        "x": 97,
+        "y": 632.859375,
+        "width": 620.21875,
+        "height": 34,
+        "right": 717.21875,
+        "bottom": 666.859375
+      },
+      "photo": {
+        "x": 97,
+        "y": 234,
+        "width": 620.21875,
+        "height": 348.859375,
+        "right": 717.21875,
+        "bottom": 582.859375
+      },
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "Car order 8709792",
+      "tagDisplay": "block",
+      "captionPosition": "static",
+      "objectFit": "contain",
+      "photoReady": true,
+      "placeholder": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "placeholderDisplay": "none",
+      "scrollWidth": 1280,
+      "viewport": 1280
+    },
+    {
+      "name": "confirmation",
+      "phase": "fixed",
+      "media": {
+        "x": 17,
+        "y": 286,
+        "width": 341,
+        "height": 275.8125,
+        "right": 358,
+        "bottom": 561.8125
+      },
+      "tag": {
+        "x": 29,
+        "y": 489.8125,
+        "width": 152.328125,
+        "height": 26,
+        "right": 181.328125,
+        "bottom": 515.8125
+      },
+      "caption": {
+        "x": 17,
+        "y": 527.8125,
+        "width": 341,
+        "height": 34,
+        "right": 358,
+        "bottom": 561.8125
+      },
+      "photo": {
+        "x": 17,
+        "y": 286,
+        "width": 341,
+        "height": 191.8125,
+        "right": 358,
+        "bottom": 477.8125
+      },
+      "overlap": 0,
+      "tagPhotoOverlap": 0,
+      "tagPlaceholderOverlap": 0,
+      "line": "Car order 8709792",
+      "tagDisplay": "block",
+      "captionPosition": "static",
+      "objectFit": "contain",
+      "photoReady": true,
+      "placeholder": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "placeholderDisplay": "none",
+      "scrollWidth": 375,
+      "viewport": 375
+    }
+  ],
+  "identities": [
+    {
+      "phase": "fixed",
+      "width": 1280,
+      "preserved": true
+    },
+    {
+      "phase": "fixed",
+      "width": 375,
+      "preserved": true
+    }
+  ],
+  "errors": [],
+  "sourcePins": {
+    "blocks/gcsp/kit/vehicle-media.css": "50ea18446b8b5fca69223ce74c39b32224b6dbdc04a0e992b6de79aaa14cb976",
+    "blocks/gcsp/kit/gcsp-kit.css": "c67bb903ce93ed17efcded2911a045a984d936046fbeb7c4ac1d3f32a9c29226",
+    "blocks/gcsp/shell/gcsp-shell.css": "8d141507877854e425eb95e1050ecd57361085b62fded36fbae93306e355f217",
+    "blocks/gcsp/shell/gcsp-tokens.css": "d04bfd54a32efcbeb2452b54f766b4c567f85442fcf1b0d07b2866e5ac9e7c11",
+    "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+    "blocks/vehicle-matcher/decision-card.css": "340bded6c89fb3f7635835167cfb8192e6e2fb1ec75c89a37cc48b053a669def",
+    "blocks/vehicle-matcher/component-gallery.css": "21b053f47d968c4a619340ee305816b70dba4905ad39783d8cdfb3db6db8b2c9",
+    "blocks/gcsp/manual-summary/manual-summary.css": "230b300fdbac44d1485e3bebafb4e632e38d364d25d8bf1208aae3632ccbdb81",
+    "blocks/gcsp/manual-review/manual-review.css": "6c36cf4c4ce353fd56b72be9c5d39cfe5e83c2a4d99189f096d9bf80721b82ec",
+    "blocks/vehicle-matcher/modes/result-card.js": "73d45a2604882064812a4aa02be0113fea7724ff8bc37fbd269d5c918a130ea0",
+    "blocks/vehicle-matcher/component-gallery.js": "aede0b8d75c22d979e52d280c25c0402fea85f7119ca2c7b2323d88dbeb43e72",
+    "server/test/gcsp-manual-review-render.test.js": "9cd2ca49c9de7db3832a3a996f21a9bf18cbb67537539a4eb344f8ad30de4a17",
+    "server/gcsp/runtime.js": "c9294c69c9f23cd4b55096a755e7c403f0599437f46dbbaf5b72972f9a3c2b34",
+    "baselineCss": "3eac5852ee134d212215fd546a51ee9b86b56ffb69f858fbbb09668a266e6633"
+  },
+  "captureScriptSha256": "39ec1bc285ef4b2a5d943a5ffd5b4365f447d41b8397a8be01da0c8eab35c9e4",
+  "expectedIdentity": {
+    "holdId": "manual-hold:c474b5e2368a7a7dc35aef0c60968a85116a796e08998d358fe237637359679d",
+    "quoteId": "manual-quote:c474b5e2368a7a7dc35aef0c60968a85116a796e08998d358fe237637359679d",
+    "orderUuid": "7a08eb61-e21e-4798-adc7-9b7d84187501",
+    "holdVersion": 1
+  },
+  "reusedAdjacent": "Initial capture-receipt.json: offer/activity source rules and captured states unchanged by flow refinement; initial pageerror explained by gallery probe.",
+  "externalCalls": [],
+  "status": "captured",
+  "profileRemoved": true
+}

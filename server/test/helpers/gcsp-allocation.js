@@ -6,7 +6,8 @@ import { DemoIdentityAdapter } from '../../gcsp/identity/index.js';
 import { createAllocationService } from '../../gcsp/allocation/index.js';
 import { brief, stock, providerValue, fact, preference, instant } from './employee-recommendation.js';
 
-export async function allocationFixture({ rule, cars = 2, claimResult, reverse = false, canonicalPeople = false } = {}) {
+export async function allocationFixture({ rule, cars = 2, claimResult, reverse = false, canonicalPeople = false,
+  createRepository = createMemoryRepository, createStore = createMemoryStore } = {}) {
   const source = JSON.parse(await readFile(new URL('../../gcsp/policy/seed-v1.json', import.meta.url)));
   if (rule) source.assumptions.find((a) => a.key === 'allocation.tieBreak.rule').value = rule;
   // Explicit alternative test population: three same-scheme fictional people compete fairly; FUCQ-224's new-order Jordan is left out.
@@ -16,8 +17,8 @@ export async function allocationFixture({ rule, cars = 2, claimResult, reverse =
   const first = originals[0];
   if (!canonicalPeople) for (const p of originals) for (const k of ['companyId', 'schemeId', 'gradeId']) p[k] = first[k];
   const policy = new PolicyService({ provider: { async loadVersions() { return [source]; } } });
-  const store = createMemoryStore(); let now = instant; let current = { runId: 'allocation-run', environmentId: 'allocation-test' };
-  const repository = createMemoryRepository({ store, now: () => now }); await repository.open();
+  const store = createStore(); let now = instant; let current = { runId: 'allocation-run', environmentId: 'allocation-test' };
+  const repository = createRepository({ store, now: () => now }); await repository.open();
   const scope = { ...current, principalId: 'backend', roles: [] };
   let serial = 0;
   const write = async (work) => { const id = `fixture:${++serial}`;

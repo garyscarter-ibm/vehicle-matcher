@@ -1,0 +1,77 @@
+{
+  "lead": {
+    "name": "Michigan J. Frog",
+    "thread_id": "01a1c5da-6a83-7781-a381-91a8cb9eb2d7",
+    "title_confirmed": true,
+    "default": "gpt-6.1-sol/high",
+    "requested": "gpt-6.1-sol/xhigh",
+    "selected": "gpt-6.1-sol/xhigh",
+    "effective": "not independently inspected",
+    "fallback": null,
+    "state": "fresh-base-handover-ready"
+  },
+  "implementer": {
+    "name": "Grub",
+    "task": "/root/michigan_j_frog/grub",
+    "tiers_default": "gpt-6.1-sol/medium",
+    "requested": "gpt-6.1-sol/xhigh",
+    "selected": "gpt-6.1-sol/xhigh",
+    "reason": "latest explicit human override",
+    "fallback": null,
+    "thread_id": "01a1c5dd-1b98-7940-88e5-859c2b6d2140",
+    "title_confirmed": true,
+    "effective": "not independently exposed"
+  },
+  "capacity": {
+    "observed": "2026-11-10T14:28:05Z",
+    "can_start": 0,
+    "override": "explicit machine-capacity advisory override;4actual slots/one child/small worker only"
+  },
+  "assessment_a": {
+    "name": "Imhotep",
+    "task": "existing root-managed reviewer",
+    "thread_id": "01a1c5ba-fbe9-7402-a343-dcb7518b90a1",
+    "title_confirmed": true,
+    "requested": "gpt-6.1-sol/high",
+    "selected": "gpt-6.1-sol/high",
+    "effective": "backend not independently verified",
+    "fallback": null,
+    "brief": "fucq345-blind-a-inputs.json only; no descendants/tests/new browser allocation",
+    "output": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-assessment-a.md",
+    "state": "finalized-scoped-pass",
+    "sha256": "1aa23ab29cfcad02ca44082a7faa43c64c9d740af6e6878187cfc43e48173200"
+  },
+  "assessment_b": {
+    "name": "Wile E. Coyote",
+    "task_name": "wile_e_coyote",
+    "tier": "Haiku/runner",
+    "requested": "gpt-6-luna/high",
+    "selected": "gpt-6-luna/high",
+    "effective": "not independently exposed",
+    "fallback": null,
+    "capacity": "can_start=1,5.3GBfree/3GBreserve; own1GiB worker",
+    "naming_session": "01a1c587-3505-71e3-9a2c-e73c33141b63",
+    "state": "finalized-scoped-evidence",
+    "thread_id": "01a1c601-ea30-7513-96d9-44f7ebf0d698",
+    "title_confirmed": true,
+    "release": "Lead latest integrated scoped159/159 completed; scratch removed",
+    "final_report_sha256": "ec03c9c4a00af5cb59f1e2f717a6c1b4aa3469be70ff4319333afa279e363cc7",
+    "cleanup": "Nine B scratch roots absent; lead final audit confirms all23 owned roots absent and dependency link unlinked/target preserved."
+  },
+  "known_bugs": [
+    {
+      "id": "FUCQ-347",
+      "finding": "A-1 gallery caption overstates image provenance",
+      "severity": "Low",
+      "state": "To Do/unassigned; root native links to FUCQ-70 and FUCQ-345 read back",
+      "fixed": false
+    },
+    {
+      "id": "FUCQ-349",
+      "finding": "B-1 selected-review/confirmation heading hierarchy",
+      "severity": "Low",
+      "state": "To Do/unassigned/unfixed; local pickup held for importer exactly1origin reconciliation. Both verified native F70/F72 links retained;4cacheimagesready0missing.",
+      "fixed": false
+    }
+  ]
+}

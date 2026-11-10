@@ -1,0 +1,31 @@
+{
+  "run_id": "20261110-01a1c587-fucq345",
+  "worktree": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-004",
+  "source_checkpoint": "5a5ae694923c26c59acb81a121a56683e424159c",
+  "integrated_base": "95f391414685638618f71665ab23630508f7aa45",
+  "source_sha256": {
+    "blocks/gcsp/kit/vehicle-media.css": "50ea18446b8b5fca69223ce74c39b32224b6dbdc04a0e992b6de79aaa14cb976",
+    "blocks/vehicle-matcher/component-gallery.js": "aede0b8d75c22d979e52d280c25c0402fea85f7119ca2c7b2323d88dbeb43e72",
+    "server/test/gcsp-manual-review-render.test.js": "9cd2ca49c9de7db3832a3a996f21a9bf18cbb67537539a4eb344f8ad30de4a17",
+    "blocks/gcsp/manual-review/gcsp-manual-review.js": "5aae587f77187083f8af937872122685d36d3b49c21f2fe8bb3c82299256e82d",
+    "blocks/gcsp/manual-summary/gcsp-manual-summary.js": "c1b14b61ab0455761b15f23e0474c415def0a6cf464fc5325c72c7c98bb08d7f",
+    "blocks/gcsp/shell/gcsp-shell.css": "786711b25e747ae88dd5f4bf5b6c0fc704179c263d00d061283bd62b1a62b874",
+    "blocks/gcsp/kit/loading-skeleton.css": "52842786c0442bd9d7ccaafa8dc54d0ae167f532696c413766181bc836b70d72",
+    "blocks/gcsp/kit/loading-skeleton.js": "fb4cdbccadaac29b531ba515210a30c42535ebaad38b889520f003d42b5017ea",
+    "server/test/ui-ratchet.json": "cd26bcb292d06c9043f06da7a1bd600dcc059e8b8194d84283a5411b1a17118b",
+    "COMPONENTS.md": "9484f8d05a0afd803ee4fc408dd26321b88abfb75d94231c83a4eb00781b0774",
+    "blocks/gcsp/shell/account-runtime.js": "7e3312a03ab84e6465d76c59006f70ab91f4fec257ba422bda2a4d181e4dadf0",
+    "server/index.js": "9403b9266b7e1f12cd870bde87ecf93b114674ada23f19e5f80d7722ad75c316",
+    "server/gcsp/host.js": "ad559298831d446beef0ba4993ca5918be4b6bb71523912891ccb9785c750aae",
+    "server/gcsp/offers/access-http.js": "a17f8af461cc9ccf6f9b3b94eec18cd7e98b7c394d8dd6f189848576f7cdd97d",
+    "server/gcsp/offers/decision-http.js": "49087b694b327e7d41f682a7997968f6e6e989ff868eb0ae8b0a8d7359c4da85",
+    "server/test/helpers/gcsp-decline-change-route.js": "9d2079250e40b87e17a6cdce465dfab66a52e23ce88c0358d297822ede4de7b7",
+    "server/test/gcsp-hosted-entry.test.js": "5dabd10c0ca8fb281b08c11486512417af8f39c8b7ef30a290dff6d73e57dfae",
+    "server/test/gcsp-shell.test.js": "3a2f8d1e693bf0ea3de6119ddacd9e17c645445a0e18d42e40b7a2e0f50c8037",
+    "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+  },
+  "policy": "Runtime/test source frozen for final corrected captures and independent review; report and evidence may be committed separately.",
+  "prior_media_review_source": "e81db95ae0198679f7d4daf08a2132ca3a3c942d",
+  "prior_evidence_checkpoint": "2708d11eec0e57af0acc3aa867a55482d2f68869",
+  "refresh_reason": "Latest fixed-header/rail and removed entry access gate; media/review production bytes unchanged. New integrated runtime/shell/adjacent evidence required."
+}

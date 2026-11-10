@@ -193,6 +193,7 @@ for (const name of ['window', 'document', 'HTMLElement', 'Node', 'CustomEvent', 
 const { mountAccount, defineGcspAccount } = await import('../../blocks/gcsp/account/gcsp-account.js');
 const tick = () => new Promise((done) => setTimeout(done, 0));
 // Matches the accessible name: slot buttons show the time and carry the full name in aria-label (FUCQ-299).
+const findLink = (root, text) => [...root.querySelectorAll('a')].find((node) => node.textContent === text);
 const findButton = (root, text) => [...root.querySelectorAll('button')].find((node) => (node.getAttribute('aria-label') ?? node.textContent) === text);
 const rowsOf = (root) => [...root.querySelectorAll('.gcsp-account-history tbody tr')];
 const cellsOf = (tr) => [...tr.children].map((cell) => cell.textContent);
@@ -345,7 +346,7 @@ test('distinct entitlement, HR, empty and failure states provide truthful action
     const { root, destroy } = await domMount(readOnlyAdapter(name));
     try {
       assert.ok(root.textContent.includes(title), name);
-      assert.ok(findButton(root, 'Refresh account'));
+      assert.equal(Boolean(findButton(root, 'Refresh account')), name === 'source-failure');
       assert.equal(Boolean(findButton(root, 'Start a new order')), name === 'no-current-car');
       if (!['no-current-car', 'no-history'].includes(name)) assert.equal(findButton(root, 'Choose a replacement'), undefined);
       if (name === 'unsupported-scheme') {
@@ -583,102 +584,35 @@ const factPairs = (node) => [...node.querySelectorAll('dl > div')].map((d) => [d
 const settleOrder = async (root, ready) => { for (let n = 0; n < 40 && !ready(root); n += 1) await new Promise((done) => setTimeout(done, 15)); };
 const selection = (orderUuid, display) => async () => ({ status: 'ok', value: { selection: { stock: { orderUuid, orderNumber: '1000001', facts: { display } } } } });
 
-test('account with an order embeds its progress with the order number, stage names and the selected car', async () => {
-  const orders = orderAdapter(); const names = orderProgressFixtures().states['appointment-requested'].stages.value.stages.map((row) => row.label ?? row.name);
+test('account with an order shows one Your new car row with a Track your order link, not the embedded tracker', async () => {
+  const orders = orderAdapter('appointment-requested', [structuredClone(orderProgressFixtures().states['appointment-requested'].stages.value)]);
+  const keys = [];
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readOrder: selection(orders.uuid, { name: 'Synthetic i5 eDrive40 Touring', photo: '/img/i5.jpg' }) },
-    { orderAdapter: orders });
+    { orderAdapter: orders, onNavigate: (key) => keys.push(key) });
   try {
-    await settleOrder(root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
-    const area = root.querySelector('.gcsp-account-order'); assert.ok(area, 'order area');
-    assert.equal(area.getAttribute('aria-label'), 'Your order'); assert.equal(root.querySelectorAll('main h1').length, 1);
-    assert.equal(area.querySelector('h2').textContent, 'Order progress');
-    assert.match(area.textContent, /Order referenceGCSP-000123Car order number1000001/); assert.match(area.textContent, /Synthetic i5 eDrive40 Touring/);
-    assert.equal(area.querySelector('img.vm-card-photo').getAttribute('src'), '/img/i5.jpg');
-    assert.ok(area.querySelectorAll('.gcsp-stage-tracker li').length >= 3, names.join());
-    const first = area.querySelector('.gcsp-order-progress'); (findButton(root, 'Refresh account') ?? {}).disabled; // a redraw keeps the same mounted body
-    assert.equal(root.querySelector('.gcsp-account-order .gcsp-order-progress'), first);
+    await settleOrder(root, (node) => node.querySelector('.gcsp-account-order-status'));
+    const row = root.querySelector('.gcsp-account-order-status'); assert.ok(row, 'new car row');
+    assert.equal(row.getAttribute('aria-label'), 'Your new car'); assert.equal(root.querySelectorAll('main h1').length, 1);
+    assert.equal(row.querySelector('.gcsp-card-name, .gcsp-summary-name').textContent, 'Synthetic i5 eDrive40 Touring');
+    assert.equal(row.querySelector('img.vm-card-photo').getAttribute('src'), '/img/i5.jpg');
+    assert.match(row.textContent, /Current step: /); assert.match(row.textContent, /Order referenceGCSP-000123Car order number1000001/);
+    const link = [...row.querySelectorAll('a')].find((node) => node.textContent === 'Track your order'); assert.ok(link, 'track link');
+    assert.equal(link.getAttribute('href'), '/gcsp-order-progress-live.html'); assert.ok(link.classList.contains('vm-btn-primary'));
+    link.click(); assert.deepEqual(keys, ['order-progress']);
+    assert.equal(root.querySelector('.gcsp-account-order, .gcsp-order-progress, .gcsp-stage-tracker'), null, 'the tracker is not embedded');
+    const history = root.querySelector('.gcsp-account-history'); assert.equal(history.querySelector('details'), null, 'order history is one table, not disclosures');
+    assert.ok([...history.querySelectorAll('tbody th')].some((cell) => cell.textContent === 'Synthetic i5 eDrive40 Touring'), 'the placed order is a history row');
+    assert.equal(row.closest('details'), null);
   } finally { destroy(); }
-  assert.equal(root.querySelector('.gcsp-account-order'), null);
 });
 
-test('account shows handover outcomes from the server read: completed, then no-show rebooked through the real controller and re-read', async () => {
-  const fixtures = orderProgressFixtures().states;
-  const completed = orderAdapter('appointment-completed');
-  const done = await domMount({ ...readOnlyAdapter(), readOrder: selection(completed.uuid, { name: 'Synthetic i5 eDrive40 Touring' }) }, { orderAdapter: completed });
-  try {
-    await settleOrder(done.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-handover'));
-    const handover = done.root.querySelector('.gcsp-account-order .gcsp-order-handover');
-    assert.match(handover.textContent, /Handover complete: 8 Nov 2026, 10:00/); assert.doesNotMatch(handover.textContent, /Not booked yet/); assert.equal(handover.querySelector('button'), null);
-  } finally { done.destroy(); }
-  const missed = orderAdapter('appointment-no-show'); const requests = []; let current = fixtures['appointment-no-show'].appointment;
-  missed.readAppointment = async () => structuredClone(current);
-  missed.requestAppointment = async (input) => { requests.push(input.slotId); current = fixtures['appointment-rebooked'].appointment; return { status: 'ok', value: {} }; };
-  const mounted = await domMount({ ...readOnlyAdapter(), readOrder: selection(missed.uuid, { name: 'Synthetic i5 eDrive40 Touring' }) }, { orderAdapter: missed });
-  try {
-    const area = () => mounted.root.querySelector('.gcsp-account-order .gcsp-order-handover');
-    await settleOrder(mounted.root, () => area());
-    assert.match(area().textContent, /Handover missed: 8 Nov 2026, 09:00/);
-    const rebook = findButton(area(), 'Request 9 Nov 2026, 13:00'); assert.ok(rebook); rebook.click();
-    await settleOrder(mounted.root, () => /Not booked yet/.test(area()?.textContent ?? ''));
-    assert.deepEqual(requests, [fixtures['appointment-no-show'].appointment.value.offeredSlots[1].slotId]);
-    assert.match(area().textContent, /Requested 9 Nov 2026, 09:00\. Not booked yet\./); assert.match(area().textContent, /Earlier handover missed: 8 Nov 2026, 09:00/);
-  } finally { mounted.destroy(); }
-  const reopened = await domMount({ ...readOnlyAdapter(), readOrder: selection(missed.uuid, { name: 'Synthetic i5 eDrive40 Touring' }) }, { orderAdapter: missed });
-  try {
-    await settleOrder(reopened.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-handover'));
-    assert.match(reopened.root.querySelector('.gcsp-account-order .gcsp-order-handover').textContent, /Not booked yet/);
-  } finally { reopened.destroy(); }
-});
-
-test('account shows return outcomes from the server read: booked, then returned on reopen, missed, and a failing return read', async () => {
-  const all = orderProgressFixtures().states; const car = { name: 'Synthetic i5 eDrive40 Touring' };
-  const returnArea = (root) => root.querySelector('.gcsp-account-order .gcsp-order-return');
-  const before = orderAdapter('return-scheduled'); let current = all['return-scheduled'];
-  before.readAppointment = async () => structuredClone(current.appointment); before.readReturnPlan = async () => structuredClone(current.returnPlan);
-  const first = await domMount({ ...readOnlyAdapter(), readOrder: selection(before.uuid, car) }, { orderAdapter: before });
-  try {
-    await settleOrder(first.root, (node) => returnArea(node));
-    assert.match(returnArea(first.root).textContent, /Return booked: 12 Nov 2026, 09:00/); assert.doesNotMatch(returnArea(first.root).textContent, /Returned:|Return missed/);
-  } finally { first.destroy(); }
-  current = all['return-returned'];
-  const reopened = await domMount({ ...readOnlyAdapter(), readOrder: selection(before.uuid, car) }, { orderAdapter: before });
-  try {
-    await settleOrder(reopened.root, (node) => /Returned:/.test(returnArea(node)?.textContent ?? ''));
-    const pairs = factPairs(returnArea(reopened.root));
-    assert.match(returnArea(reopened.root).textContent, /Returned: 12 Nov 2026, 10:30/); assert.deepEqual(pairs.slice(0, 2), [['Current car', car.name], ['Returned car', 'BMW 320i Touring']]);
-    assert.ok(pairs.some(([label, value]) => label === 'Return reference' && /^SYN-RET-/.test(value)));
-    assert.match(reopened.root.querySelector('.gcsp-account-order .gcsp-order-handover').textContent, /Handover complete/);
-  } finally { reopened.destroy(); }
-  const missed = orderAdapter('return-missed');
-  const gone = await domMount({ ...readOnlyAdapter(), readOrder: selection(missed.uuid, car) }, { orderAdapter: missed });
-  try {
-    await settleOrder(gone.root, (node) => returnArea(node));
-    assert.match(returnArea(gone.root).textContent, /Return missed: 12 Nov 2026, 09:00/); assert.match(returnArea(gone.root).textContent, /Scheme team/);
-    assert.equal(returnArea(gone.root).querySelector('button'), null); assert.doesNotMatch(returnArea(gone.root).textContent, /Returned:/);
-  } finally { gone.destroy(); }
-  const failing = orderAdapter('return-returned'); failing.readReturnPlan = async () => ({ status: 'unavailable', retryable: true });
-  const broken = await domMount({ ...readOnlyAdapter(), readOrder: selection(failing.uuid, car) }, { orderAdapter: failing });
-  try {
-    await settleOrder(broken.root, (node) => returnArea(node));
-    assert.match(returnArea(broken.root).textContent, /Return plan unavailable/); assert.doesNotMatch(returnArea(broken.root).textContent, /Returned|Return missed/);
-    assert.match(broken.root.querySelector('.gcsp-account-order .gcsp-order-handover').textContent, /Handover complete/);
-  } finally { broken.destroy(); }
-});
-
-test('account shows no order area without an order, on a failed list, or for another order car', async () => {
+test('account shows no new car row without an order, on a failed list, or for another order car', async () => {
   const none = await domMount(readOnlyAdapter(), { orderAdapter: orderAdapter('appointment-requested', []) });
-  await tick(); assert.equal(none.root.querySelector('.gcsp-account-order'), null); assert.doesNotMatch(none.root.textContent, /No order yet/); none.destroy();
+  await tick(); assert.equal(none.root.querySelector('.gcsp-account-order-status'), null); none.destroy();
   const failed = orderAdapter(); failed.listOrders = async () => ({ status: 'unavailable' });
   const down = await domMount(readOnlyAdapter(), { orderAdapter: failed }); await tick();
-  assert.equal(down.root.querySelector('.gcsp-account-order'), null); down.destroy();
-  const plain = await domMount(readOnlyAdapter()); assert.equal(plain.root.querySelector('.gcsp-account-order'), null); plain.destroy();
-  const orders = orderAdapter();
-  const other = await domMount({ ...readOnlyAdapter(), readOrder: selection('another-order', { name: 'Not this car' }) }, { orderAdapter: orders });
-  try {
-    await settleOrder(other.root, (node) => node.querySelector('.gcsp-order-number'));
-    assert.match(other.root.querySelector('.gcsp-account-order').textContent, /Car details not supplied/);
-    assert.doesNotMatch(other.root.textContent, /Not this car/);
-  } finally { other.destroy(); }
+  assert.equal(down.root.querySelector('.gcsp-account-order-status'), null); down.destroy();
+  const plain = await domMount(readOnlyAdapter()); assert.equal(plain.root.querySelector('.gcsp-account-order-status'), null); plain.destroy();
 });
 
 test('FUCQ-193: an accepted offer with its order in progress no longer offers "View your offer"', async () => {
@@ -686,8 +620,8 @@ test('FUCQ-193: an accepted offer with its order in progress no longer offers "V
   const orders = orderAdapter();
   const accepted = await domMount({ ...readOnlyAdapter('no-entitlement'), readOffers: offers('accepted'), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   try {
-    await settleOrder(accepted.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
-    assert.ok(accepted.root.querySelector('.gcsp-account-order'), 'order progress is shown');
+    await settleOrder(accepted.root, (node) => node.querySelector('.gcsp-account-order-status'));
+    assert.ok(accepted.root.querySelector('.gcsp-account-order-status'), 'the new car row is shown');
     assert.equal(findButton(accepted.root, 'View your offer'), undefined);
     assert.equal(accepted.root.querySelector('[aria-label="Your car offer"]'), null);
   } finally { accepted.destroy(); }
@@ -735,20 +669,20 @@ test('FUCQ-192: an in-progress order on the slot replaces "No ordering entitleme
   const mount = (orders) => domMount({ ...readOnlyAdapter(), readAccount: async () => allocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   const ordered = orderAdapter('appointment-requested', listed('slot-paula')); const { root, destroy } = await mount(ordered);
   try {
-    await settleOrder(root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    await settleOrder(root, (node) => node.querySelector('.gcsp-account-order-status'));
     assert.doesNotMatch(root.textContent, /No ordering entitlement/);
-    const status = root.querySelector('.gcsp-account-order-status'); assert.ok(status, 'order status');
-    assert.equal(status.querySelector('h2').textContent, 'Your order is in progress');
+    const status = root.querySelector('.gcsp-account-order-status'); assert.ok(status, 'new car row');
+    assert.equal(status.querySelector('h2').textContent, 'Your new car');
     assert.match(status.textContent, /Current step: Sent to ordering\./);
     assert.deepEqual(factPairs(status), [['Order reference', 'GCSP-000123'], ['Car order number', '1000001']]);
-    const link = [...status.querySelectorAll('a')].find((node) => node.textContent === 'View order progress'); assert.ok(link, 'progress link');
-    const area = root.querySelector('.gcsp-account-order'); assert.ok(area.id); assert.equal(link.getAttribute('href'), `#${area.id}`);
+    const link = [...status.querySelectorAll('a')].find((node) => node.textContent === 'Track your order'); assert.ok(link, 'progress link');
+    assert.equal(link.getAttribute('href'), '/gcsp-order-progress-live.html');
     assert.equal(findButton(status, 'Contact support'), undefined);
   } finally { destroy(); }
   const other = await mount(orderAdapter('appointment-requested', listed('slot-other')));
   try {
-    await settleOrder(other.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
-    assert.match(other.root.textContent, /No ordering entitlement/); assert.equal(other.root.querySelector('.gcsp-account-order-status'), null);
+    await settleOrder(other.root, (node) => node.querySelector('.gcsp-account-order-status'));
+    assert.match(other.root.textContent, /No ordering entitlement/);
   } finally { other.destroy(); }
   const none = await domMount(readOnlyAdapter('no-entitlement'), { orderAdapter: orderAdapter('appointment-requested', []) }); await tick();
   assert.match(none.root.textContent, /No ordering entitlement/); none.destroy();
@@ -765,7 +699,7 @@ test('FUCQ-257: a handed-over order titles its account card as handed over, not 
     await settleOrder(root, (node) => node.querySelector('.gcsp-account-order-status'));
     const status = root.querySelector('.gcsp-account-order-status'); assert.ok(status, 'order status');
     assert.equal(status.querySelector('h2').textContent, 'Your car has been handed over');
-    assert.match(status.textContent, /Current step: Handover\./);
+    assert.match(status.textContent, /Current step: Handover\./); assert.ok([...status.querySelectorAll('a')].some((node) => node.textContent === 'Track your order'));
     assert.doesNotMatch(root.textContent, /Your order is in progress/);
   } finally { destroy(); }
 });
@@ -779,14 +713,14 @@ test('FUCQ-224: an order on the slot replaces the saved journey card; an order o
     readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   const ordered = await mount(orderAdapter('appointment-requested', listed('slot-paula')));
   try {
-    await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order-status'));
     assert.ok(ordered.root.querySelector('.gcsp-account-order-status'), 'order status');
     assert.doesNotMatch(ordered.root.textContent, /journey saved|not an order confirmation|Saved journey could not be read/);
     assert.equal(findButton(ordered.root, 'Resume saved journey'), undefined);
   } finally { ordered.destroy(); }
   const other = await mount(orderAdapter('appointment-requested', listed('slot-other')));
   try {
-    await settleOrder(other.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    await settleOrder(other.root, (node) => node.querySelector('.gcsp-account-order-status'));
     assert.match(other.root.textContent, /Replacement journey saved/);
   } finally { other.destroy(); }
 });
@@ -807,6 +741,7 @@ test('FUCQ-237: an order in progress replaces "No current car" for an employee w
   try {
     await settleOrder(declined.root, (node) => node.querySelector('.gcsp-account-order-status'));
     assert.equal(declined.root.querySelector('.gcsp-account-order-status h2').textContent, 'Your order was declined');
+    assert.equal(findLink(declined.root, 'View order progress').classList.contains('vm-btn-ghost'), true);
     assert.match(declined.root.textContent, /No current car/);
   } finally { declined.destroy(); }
 });
@@ -1069,7 +1004,7 @@ const ghost = (root, text) => findButton(root, text).classList.contains('vm-btn-
 test('buddy card without saved preferences sends Paula to set them', async () => {
   const { root, destroy, keys, card } = await buddyMount(buddyValue(null));
   try {
-    assert.equal(card.querySelector('h2').textContent, 'Your buddy');
+    assert.equal(card.querySelector('h3').textContent, 'Your buddy');
     assert.match(card.textContent, /Tell your buddy what matters and it will keep looking for a suitable car for you\./);
     assert.equal(ghost(root, 'Choose a replacement') || findButton(root, 'Choose a replacement') === undefined, true);
     findButton(root, 'Set your preferences').click(); assert.deepEqual(keys, ['brief']);
@@ -1138,13 +1073,13 @@ test('a presenter sync repaints the buddy card when the activity read changes', 
 });
 
 // Your cars layout (10 November): head row, key strip, record drawer, history table and details rows.
-test('the page head carries the title, freshness and Refresh; the current car shows a key strip with a dot inside 90 days', async () => {
+test('the page head carries the title and freshness (Refresh only when stale); the current car shows a key strip with a dot inside 90 days', async () => {
   const input = unnamed('ready');
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
     const head = root.querySelector('.gcsp-account-head');
     assert.ok(head.querySelector('h1')); assert.equal(head.querySelector('.gcsp-intro .vm-kicker').textContent, 'Choices');
-    assert.equal(head.querySelector('.gcsp-account-fresh').textContent, 'Account as of 5 November 2026 at 09:00.Refresh account');
+    assert.equal(head.querySelector('.gcsp-account-fresh').textContent, 'Account as of 5 November 2026 at 09:00.');
     assert.equal(root.querySelectorAll('.gcsp-account-body > .gcsp-actions').length, 0);
     assert.equal(root.querySelectorAll('.gcsp-account-body > .gcsp-synthetic').length, 0);
     const card = root.querySelector('.gcsp-feature');

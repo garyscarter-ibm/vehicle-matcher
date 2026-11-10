@@ -32,6 +32,16 @@ async function setup(value = view(), extra = {}, options = {}) {
 }
 const byLabel = (root, label) => [...root.querySelectorAll('button')].find((b) => b.textContent === label);
 
+test('G2: manual Request cars and Production controls sit in one closed presenter disclosure with one primary', async () => {
+  const { root, teardown } = await setup(view('requested'), {}, { productionControls: true });
+  const details = root.querySelector('details.gcsp-orders-production');
+  assert.equal(root.querySelectorAll('details').length, 1); assert.equal(details.open, false);
+  assert.equal(details.querySelector('summary').textContent, 'Presenter: manual request and production');
+  assert.ok(details.contains(byLabel(root, 'Submit request')) && details.contains(byLabel(root, 'Save production response')));
+  assert.deepEqual([...root.querySelectorAll('.vm-btn-primary')].map((b) => b.textContent), ['Save production response']);
+  teardown();
+});
+
 test('empty, requested, partly confirmed, delayed, released and unavailable adapter keep distinct visible facts', async () => {
   for (const stage of [null, 'requested', 'partly-confirmed', 'delayed', 'released']) {
     const { root, teardown } = await setup(view(stage));
@@ -70,7 +80,7 @@ test('presenter confirmation precedes acting Greg queue; queue failure remains r
     queueConfirmed: async (input) => { calls.push(['queue', input]); return { status: 'unavailable' }; },
   }, { productionControls: true });
   const details = root.querySelector('details'); details.open = true;
-  const form = details.querySelector('form'); form.dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true })); await tick(); await tick();
+  const form = details.querySelector('.gcsp-orders-production-form form'); form.dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true })); await tick(); await tick();
   assert.deepEqual(calls.map(([kind]) => kind), ['production', 'queue']);
   assert.equal(calls[0][1].expectedVersion, 2); assert.equal(calls[0][1].quantity, 1);
   assert.match(root.textContent, /Confirmation saved. Release queue unavailable/);
@@ -136,7 +146,7 @@ test('onChanged names the action: a request, and a saved Production response', a
     loadTracking: async () => ok(value) }, { productionControls: true, onChanged: (action) => seen.push(action) });
   const fire = (form) => { form.dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true })); };
   const quantity = root.querySelector('input[type="number"]'); quantity.value = '1'; fire(quantity.closest('form')); await tick(); await tick();
-  const details = root.querySelector('details'); details.open = true; fire(details.querySelector('form')); await tick(); await tick(); await tick();
+  const details = root.querySelector('details'); details.open = true; fire(details.querySelector('.gcsp-orders-production-form form')); await tick(); await tick(); await tick();
   assert.deepEqual(seen, ['submit', 'stepProduction']); teardown();
   const element = document.createElement('gcsp-greg-orders'); const details2 = []; defineGcspGregOrders();
   element.adapter = { loadTracking: async () => ok(view()), submit: async () => ok({}) }; document.body.append(element); await tick();

@@ -265,7 +265,7 @@
     },
     {
       "path": "blocks/gcsp/offer/gcsp-offer.css",
-      "max_lines": 12
+      "max_lines": 11
     },
     {
       "path": "blocks/gcsp/kit/stage-tracker.css",

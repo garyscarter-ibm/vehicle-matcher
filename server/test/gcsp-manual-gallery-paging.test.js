@@ -106,7 +106,8 @@ test('narrow layout rules: one-column fact grids, break-word values, kit paging 
   assert.match(css('blocks/gcsp/kit/show-more.css'), /\.gcsp \.gcsp-show-more-count/);
   assert.match(css('blocks/gcsp/manual-gallery/gcsp-manual-gallery.css'), /@import "\.\.\/kit\/show-more\.css"/);
   assert.match(css('blocks/gcsp/kit/form-controls.css'), /\.gcsp-field select[^{]*\{[^}]*text-overflow: ellipsis[^}]*width: 100%[^}]*max-width: 100%/);
-  assert.match(css('blocks/gcsp/shell/gcsp-shell.css'), /@media \(max-width: 400px\) \{[^\n]*\.gcsp-avatar \{ display: none; \}/); assert.match(css('blocks/gcsp/shell/gcsp-shell.css'), /\.gcsp-account-name \{[^}]*text-overflow: ellipsis/);
+  assert.match(css('blocks/gcsp/shell/gcsp-shell.css'), /@media \(max-width: 400px\) \{[^\n]*\.gcsp-avatar \{ display: none; \}/); assert.match(css('blocks/gcsp/shell/gcsp-shell.css'), /@import "\.\/account-menu\.css"/);
+  assert.match(css('blocks/gcsp/shell/account-menu.css'), /\.gcsp-account-name \{[^}]*text-overflow: ellipsis/);
   assert.match(css('blocks/gcsp/shell/gcsp-shell.css'), /\.gcsp-content \.vm \{ padding-inline: var\(--gcsp-space-1\); \}/);
 });
 

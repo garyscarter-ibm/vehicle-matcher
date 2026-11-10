@@ -21,9 +21,10 @@ const emit = (root, type, detail) => root.dispatchEvent(new root.ownerDocument.d
   { detail, bubbles: true, composed: true }));
 
 // announce: when a host passes it, the host owns the one live region and this body makes none.
-export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal, headingLevel = 1, announce, commandId = () => `case-${globalThis.crypto.randomUUID()}` } = {}) {
+export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal, headingLevel = 1, announce, quiet = false, commandId = () => `case-${globalThis.crypto.randomUUID()}` } = {}) {
   headingLevel = Number.isInteger(headingLevel) && headingLevel >= 1 && headingLevel <= 4 ? headingLevel : 1;
-  const childLevel = headingLevel + 1;
+  // Quiet (Buddy activity) has no page title of its own, so its children sit at the host's level.
+  const childLevel = quiet ? headingLevel : headingLevel + 1;
   const abort = new AbortController();
   const externalAbort = () => destroy();
   signal?.addEventListener('abort', externalAbort, { once: true });
@@ -33,12 +34,12 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
   const commands = new Map();
   const id = `gcsp-help-${++serial}`;
   const wrap = el('div', 'gcsp');
-  const page = el('div', 'vm gcsp-cases-body');
+  const page = el('div', `vm gcsp-cases-body${quiet ? ' is-quiet' : ''}`);
   const status = el('p', 'gcsp-case-status');
   if (typeof announce !== 'function') { status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite'); }
   status.tabIndex = -1;
   const content = el('div', 'gcsp-case-content');
-  page.append(screenIntro({ title: 'Renewal help', level: headingLevel }), status, content); wrap.append(page); root.replaceChildren(wrap);
+  page.append(...(quiet ? [] : [screenIntro({ title: 'Renewal help', level: headingLevel })]), status, content); wrap.append(page); root.replaceChildren(wrap);
   const current = (version) => !done && !abort.signal.aborted && version === generation;
   const commandFor = (input) => {
     const key = JSON.stringify(input);
@@ -66,13 +67,14 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
       if (cases.length) content.append(el('p', 'gcsp-note', 'Previously loaded case information is shown below. Refresh to check its current state.'));
     }
     const entry = el('section', 'gcsp-case-entry'); const hintId = `${id}-ask-hint`;
-    entry.append(screenIntro({ title: 'Get help with your renewal', level: childLevel }),
-      el('p', 'gcsp-note', 'The scheme team can review a delayed or uncertain renewal and explain the next action. Opening help changes nothing.'));
+    // One sentence and one button; the scheme-team caveat shows once a case exists or help is being asked for.
+    const caveat = cases.length > 0 || editing || !!review;
+    if (!quiet) entry.append(el('p', 'gcsp-note', 'The scheme team can review a delayed or uncertain renewal.'));
     if (!editing && !review) {
-      const ask = button({ label: 'Ask for help', disabled: saving || blocked(), describedBy: hintId, onClick: () => { editing = true; draw('textarea'); } });
+      const ask = button({ label: quiet ? 'Get help with your renewal' : 'Ask for help', variant: quiet ? 'ghost' : 'primary', disabled: saving || blocked(), describedBy: caveat ? hintId : undefined, onClick: () => { editing = true; draw('textarea'); } });
       ask.classList.add('gcsp-case-ask'); const ctl = el('div', 'gcsp-case-actions'); ctl.append(ask); entry.append(ctl);
     }
-    const hint = el('p', 'gcsp-field-hint', caseNotice); hint.id = hintId; entry.append(hint);
+    if (caveat) { const hint = el('p', 'gcsp-field-hint', caseNotice); hint.id = hintId; entry.append(hint); }
     if (editing && !review) {
       const textarea = el('textarea', ''); textarea.value = reason; textarea.maxLength = 2000; textarea.disabled = saving || blocked();
       textarea.addEventListener('input', () => { reason = textarea.value; });
@@ -97,8 +99,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
       confirmation.append(actions); entry.append(confirmation);
     }
     content.append(entry);
-    if (!cases.length) content.append(statusScreen({ title: 'No renewal case', message: 'Help is available if you need the scheme team to review your renewal.', role: null }));
-    else {
+    if (cases.length) {
       for (const c of cases) content.append(renderCaseContent(c, { headingLevel: childLevel, pending: saving || !!failure, onReviewRelaxation: (value) => {
         relaxation = value; draw('[data-confirm-relaxation]');
       } }));
@@ -177,8 +178,8 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
   return destroy;
 }
 
-export function mountHelp(root, { adapter = createCaseHttpAdapter(), accountAdapter = createAccountHttpAdapter(), embedded = false, headingLevel = embedded ? 2 : 1, brand = 'bmw', announce, signOut = accountAdapter.signOut !== false } = {}) {
-  if (embedded) return mountHelpBody(root, { adapter, headingLevel, announce });
+export function mountHelp(root, { adapter = createCaseHttpAdapter(), accountAdapter = createAccountHttpAdapter(), embedded = false, headingLevel = embedded ? 2 : 1, brand = 'bmw', announce, quiet = false, signOut = accountAdapter.signOut !== false } = {}) {
+  if (embedded) return mountHelpBody(root, { adapter, headingLevel, announce, quiet });
   let body;
   const shell = mountEmployee(root, { brand, signOut, view: 'help', viewLabel: 'Renewal help', loadingLayout: 'card',
     onNavigate: (to) => emit(root, 'gcsp:navigate', { to }), loadAccount: (options) => accountAdapter.loadAccount(options),

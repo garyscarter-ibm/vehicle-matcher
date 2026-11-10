@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "task": "FUCQ-345 Assessment B evidence provenance",
+  "source": {
+    "worktree": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-004",
+    "checkpoint": "5a5ae694923c26c59acb81a121a56683e424159c",
+    "integratedBase": "95f391414685638618f71665ab23630508f7aa45",
+    "frozenSourceFileCount": 19,
+    "frozenSourceHashesMatch": true,
+    "integratedSourceManifest": {
+      "path": "../integrated-source-manifest.json",
+      "sha256": "610b9a9dcefd2e1dac74fe932192d85b8b8253f32288264365c5e91eaee6c447"
+    }
+  },
+  "capture": {
+    "method": "Fresh Playwright Core context with headless Chrome against the frozen local HTTP fixture and in-memory runtime.",
+    "browserEvidence": {
+      "path": "browser-evidence.json",
+      "sha256": "7c29b091dba37b4e9d09bee30885f6bc1d7bfc46733ecac49453fb8f5df4787c",
+      "screenshotCount": 18,
+      "screenshots": [
+        {
+          "path": "smallcaptures/01-selected-review-1280.jpg",
+          "sha256": "cd14e2cbde29d2f78fdc25565be0e6a1e44913755006ce9ac03436c75c3335cd"
+        },
+        {
+          "path": "smallcaptures/01-selected-review-375.jpg",
+          "sha256": "0d2e5471834e9105d29b8b19363d1a8c32ea1c0da3fb28dac7ef50dee0fdc7fe"
+        },
+        {
+          "path": "smallcaptures/02-order-review-summary-1280.jpg",
+          "sha256": "4b96def4fac85a96ca6fb6a00fe830af02d3f4a3d2a5a57cbe2db8b16faa7a39"
+        },
+        {
+          "path": "smallcaptures/02-order-review-summary-375.jpg",
+          "sha256": "fc92731a61fd469b6879e9ff4142fb7d6dfbd063e2f23dd9483d5b0e49f89263"
+        },
+        {
+          "path": "smallcaptures/03-confirmation-1280.jpg",
+          "sha256": "74f5335d881d51e880c9335ab5cce69a2093c7155adcf10dbe51125a510a57e9"
+        },
+        {
+          "path": "smallcaptures/03-confirmation-375.jpg",
+          "sha256": "846e81b3b0f99c781dd72ff06476746d4a0c04cb760394cefe7883c74cdbf47f"
+        },
+        {
+          "path": "smallcaptures/04-offer-1280.jpg",
+          "sha256": "526b57523d7d30ddfa6856a6203ccc93d355175a9aa90d12c870125affb664ed"
+        },
+        {
+          "path": "smallcaptures/04-offer-375.jpg",
+          "sha256": "940041997a663ccb3dcf4fe5aae3d40c87091bb84bb0e469ea9011909a597366"
+        },
+        {
+          "path": "smallcaptures/05-offer-missing-photo-fallback-1280.jpg",
+          "sha256": "a5e407e15fb2260e53c286d5bfe3c4526f6458b3dca32d431da5373b58b0ae61"
+        },
+        {
+          "path": "smallcaptures/05-offer-missing-photo-fallback-375.jpg",
+          "sha256": "b6dc224fb4cecedd99b32d1d8f77723f6d27db4c83e4f56af2e6a8e953198098"
+        },
+        {
+          "path": "smallcaptures/06-activity-1280.jpg",
+          "sha256": "1ccf5a6ba83627d6b23fc392552361142b4ca3f90360c22a6115b29efe0ac663"
+        },
+        {
+          "path": "smallcaptures/06-activity-375.jpg",
+          "sha256": "89cb5f6f6b2669ce7c3b4e9ada489909545237cb35bf2ce326175348298ffbff"
+        },
+        {
+          "path": "smallcaptures/07-activity-missing-photo-fallback-1280.jpg",
+          "sha256": "fac52060f9db93c95efeaf91ff749650235f321a18535eee4047322e409daddb"
+        },
+        {
+          "path": "smallcaptures/07-activity-missing-photo-fallback-375.jpg",
+          "sha256": "c647ba3f6584c9376c3b45172a707b843edf601f582080c1033f4731bdca8047"
+        },
+        {
+          "path": "smallcaptures/08-gallery-long-content-media-1280.jpg",
+          "sha256": "8caad3992993c292a4117cdce516570d4a3a900c27c9d30019dfce3484ecc5e2"
+        },
+        {
+          "path": "smallcaptures/09-gallery-missing-photo-media-1280.jpg",
+          "sha256": "b8d40ccd7ed87bba6d0ebab727ae3b0386a8febf9893832040ab7795a311bc28"
+        },
+        {
+          "path": "smallcaptures/08-gallery-long-content-media-375.jpg",
+          "sha256": "12182190fab901914e6beb0b4705d6e5cb5728642e270dc2238cef1a58576fa8"
+        },
+        {
+          "path": "smallcaptures/09-gallery-missing-photo-media-375.jpg",
+          "sha256": "6d404ab20cd2069b84818993ecfb6d720509d874e27ecb7b1b88356152fa4b8a"
+        }
+      ]
+    },
+    "successfulRunner": {
+      "path": "browser-runner-completed18.js",
+      "sha256": "2939f92916d9640c45d4efa731751da8bb23e7c66ea06f2408f8ed8d3ac66282",
+      "bytes": 17018,
+      "status": "Exact runner copy retained from the completed 18-image run.",
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-b-browser-runner.js",
+      "originalRemovedAfterCopy": true
+    },
+    "captureHelper": {
+      "contemporaneousHashRecorded": false,
+      "status": "The original capture helper hash was not recorded at runtime.",
+      "retrospectiveReconstruction": {
+        "path": "browser-helper-completed18-reconstructed.mjs",
+        "sha256": "a89340b4763f66c0d3121162edfc3fede0a45bfe04cc4d99b6edaf15d60459de",
+        "bytes": 8804,
+        "status": "Retrospective reconstruction only; this hash does not identify the exact helper bytes used for the completed capture."
+      }
+    },
+    "earlierRunner": {
+      "path": "browser-runner.js",
+      "sha256": "d3b6e829b6d3def63023a51288aea21b0a4726d5773b2963241535d3b0f3f3d2",
+      "status": "Earlier native-tool attempt; not used for the completed direct headless capture."
+    },
+    "nativeContextLimitation": "During failed native browser attempts, clearCookies(), a context-wide route and close() were mistakenly applied to a supplied tool-managed context after a self-signed HTTPS failure; a separate probe navigated the supplied page to chrome-error://chromewebdata/. Context ownership and prior contents were not established. No preservation claim is made. No app page or capture came from these attempts."
+  },
+  "diagnostics": {
+    "cliDetector": {
+      "path": "detector.json",
+      "sha256": "64096ec1dea0408f1358687049e88b7e60772c7788551731cb00a4634a1898e4",
+      "exitCode": 0,
+      "findingCount": 0,
+      "target": "blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "targetSha256": "5aae587f77187083f8af937872122685d36d3b49c21f2fe8bb3c82299256e82d"
+    },
+    "runtime": {
+      "path": "runtime-diagnostics.json",
+      "sha256": "b4164a6482fef019dfd14cd7767f46c6cddfbbd6fea7801c8d5b102c2b4dbeca",
+      "findingCount": 41,
+      "findingGroupCount": 36
+    },
+    "helper": {
+      "path": "runtime-diagnostics-helper.mjs",
+      "sha256": "87810955701047d2b5add748761fbe4d4e70b9ec7317daf1c01fd3d5277fefa8",
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-b-serve.mjs",
+      "sha256RecordedAtRun": true,
+      "status": "Diagnostic-only exact copy; not used for the completed screenshot capture.",
+      "originalRemovedAfterCopy": true
+    },
+    "runner": {
+      "path": "runtime-diagnostics-runner.js",
+      "sha256": "7d8f99d2ecbfb180d6372a633d084687c46bb2aaf7117e38c24fb7e02f873cd0",
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-b-runtime-diagnostics.js",
+      "sha256RecordedAtRun": true,
+      "status": "Diagnostic-only exact copy; no rerun.",
+      "originalRemovedAfterCopy": true
+    },
+    "detectorSource": {
+      "path": "/Users/usget/.codex/skills/impeccable/scripts/detector/detect-antipatterns-browser.js",
+      "sha256": "940ae66d818c2047e817bb8a49afe986a67066d3a3f0aef9a52043987f7379fc",
+      "sha256RecordedAtRun": true
+    },
+    "classification": {
+      "path": "../diagnostic-classification.json",
+      "sha256": "a81182a3b6c1685484e475cd1c842432552e21640b93fae5dc1993b74162b278"
+    }
+  },
+  "resources": {
+    "receipt": {
+      "path": "resource-receipt.json",
+      "sha256": "448289b4e9d3eff4057c8d1e1ef6c965e727f6806aff7eec2967e6ecc1e32c5a",
+      "runCount": 9,
+      "allScratchRemoved": true,
+      "maxScratchBytes": 7161369,
+      "maxRssBytes": 282886144
+    },
+    "scratchRootsCurrentlyAbsent": true,
+    "detectorServerPid": "81671 (absent at final check)",
+    "detectorOwnedDirectory": ".impeccable/live (absent at final check)",
+    "existingServerNodeModules": "Preserved; not part of this evidence cleanup."
+  },
+  "limitations": [
+    "The original successful capture helper hash was not recorded contemporaneously; the retained reconstruction has only retrospective provenance.",
+    "The original injected runtime detector source hash was not recorded. The supplemental diagnostic records the later detector source hash and findings.",
+    "The native browser context ownership and its prior contents were not established after the failed tool attempts; no preservation claim is made.",
+    "No screenshots were recaptured during the diagnostic-only run."
+  ],
+  "cleanup": {
+    "temporaryOriginalsRemoved": [
+      {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-b-serve.mjs",
+        "sha256": "87810955701047d2b5add748761fbe4d4e70b9ec7317daf1c01fd3d5277fefa8",
+        "retainedCopy": "runtime-diagnostics-helper.mjs"
+      },
+      {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-b-runtime-diagnostics.js",
+        "sha256": "7d8f99d2ecbfb180d6372a633d084687c46bb2aaf7117e38c24fb7e02f873cd0",
+        "retainedCopy": "runtime-diagnostics-runner.js"
+      },
+      {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-b-browser-runner.js",
+        "sha256": "2939f92916d9640c45d4efa731751da8bb23e7c66ea06f2408f8ed8d3ac66282",
+        "retainedCopy": "browser-runner-completed18.js"
+      }
+    ]
+  }
+}

@@ -89,7 +89,7 @@ test('authenticated HTTP help, scheme-team remedy, employee reload and single-ch
   await readyAfter(root, () => { destroy = mountHelpBody(root, { adapter: f.adapter, commandId: () => 'ui-help' }); });
   t.after(() => destroy());
   assert.deepEqual(f.store.state, beforeRead, 'Opening help is read-only across HTTP');
-  assert.match(root.textContent, /No renewal case/);
+  assert.doesNotMatch(root.textContent, /No renewal case/); assert.equal(root.querySelector('.gcsp-case-detail'), null);
   button(root, 'Ask for help').click();
   const reason = 'Please review my replacement before the contract ends.';
   root.querySelector('textarea').value = reason;

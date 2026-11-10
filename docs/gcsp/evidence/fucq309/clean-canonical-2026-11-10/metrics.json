@@ -1,0 +1,88 @@
+{
+  "proofId": "clean-canonical-v4",
+  "observedAt": "2026-11-10T16:10:55.451780+00:00",
+  "outcome": "FAILED clean actual HTTP canonical attempt",
+  "head": "320e612c8c499e7bd167c2f8dcf36716696aa739",
+  "tree": "62ca764b3287e19acef276f153f0da951e806c38",
+  "workerError": {
+    "elapsedMs": 192787.119958,
+    "code": "ERR_WORKER_OUT_OF_MEMORY",
+    "message": "Worker terminated due to reaching memory limit: JS heap out of memory"
+  },
+  "lastRouteCompleted": {
+    "elapsedMs": 135235.09779099998,
+    "message": {
+      "type": "progress",
+      "completed": 1,
+      "total": 6,
+      "armId": "process",
+      "seed": "comparison-a",
+      "route": "current"
+    }
+  },
+  "progress": {
+    "seedsDone": 0,
+    "seedsTotal": 3,
+    "stepsDone": 1,
+    "stepsTotal": 6
+  },
+  "queriedStoredResultRows": 0,
+  "resultStored": false,
+  "applicationMonotonicSeconds": 193.05851887499998,
+  "applicationWallSeconds": 193.059,
+  "supervisorCommandSeconds": 193.23862104100002,
+  "supervisorOverallSeconds": 193.294,
+  "sampledWorkerUsedHeapBytes": 130114656,
+  "sampledProcessRssBytes": 454246400,
+  "sampledProcessGroupRssBytes": 451149824,
+  "hostTiming": {
+    "health": {
+      "samples": 123,
+      "minMs": 0.2506660000071861,
+      "maxMs": 3.5410839999995005,
+      "p95Ms": 0.9707089999865275
+    },
+    "process": {
+      "samples": 123,
+      "minMs": 0.30170799999905284,
+      "maxMs": 2.9502919999999904,
+      "p95Ms": 1.3705840000038734
+    },
+    "latest": {
+      "samples": 123,
+      "minMs": 0.2977499999979045,
+      "maxMs": 3.376042000000041,
+      "p95Ms": 1.6514170000009472
+    }
+  },
+  "hostSampleGaps": {
+    "samples": 123,
+    "maxMs": 3781.6940830000003
+  },
+  "hostResponseCounts": {
+    "health": {
+      "200": 123
+    },
+    "process": {
+      "404": 123
+    },
+    "latest": {
+      "200": 123
+    }
+  },
+  "completeSuccessAssertions": "UNRUN: no six-step result was produced. All generated input metadata was preflighted; no result inputHash/recordDigest/totals/measures equality or immutable-file check is claimed for this failed run.",
+  "limitations": [
+    "Exact terminal operation and cause unknown; first-buddy substages were deliberately uninstrumented",
+    "Current completion135.235s is a route progress observation only; not a cross-run speed benchmark",
+    "No clean canonical baseline exists; earlier exact100/300 semantics evidence stays scoped",
+    "No continuous host-responsiveness claim from123 samples; largest gap3.782s",
+    "Historical failures and canonical-v3 clock/gap caveats remain; clean outcome does not explain v2 observer outcome",
+    "Full suite/native PostgreSQL/F71 process readback unrun; Low FUCQ-348 separate/unfixed and post-CAS assertion unrun"
+  ],
+  "nextDiagnosisRecommendation": {
+    "basis": "Existing clean failure and retained v2/static trace only; no new localization performed",
+    "question": "Locate the first buddy failing substage: first large preparation commit/helper return versus later immutable plan read, cursor/quote/cache/claim path. Clean progress alone cannot distinguish these.",
+    "proposedNextStep": "Independent architecture/diagnosis review should choose one separately authorised bounded scalar-phase observer at the existing documented boundaries. Avoid WeakRef/deref, graph roots/walks, forced GC, injected stops or worker yields. Do not infer a production edit from the unlocalized OOM.",
+    "authorization": "Recommendation only; no further diagnostic, canonical attempt or production edit authorised in this lead turn."
+  }
+}

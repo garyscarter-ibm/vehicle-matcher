@@ -1,0 +1,423 @@
+{
+  "story": "FUCQ-347",
+  "base": "e7d301a21919015a536c7f42b6041b76f8d6fb00",
+  "observed_at": "2026-11-10T17:13:43.579748+00:00",
+  "scope": "Gallery fixture caption provenance only; original3AC; parent integration/native Jira/collaborator acceptance pending",
+  "changed_executable_paths": [
+    "blocks/vehicle-matcher/component-gallery.js"
+  ],
+  "identities": {
+    "components.html": "361aa89d4f771915d6833afbd7ca0efd8091ac04a7839f5489eaa7cfd4cfc4a1",
+    "blocks/vehicle-matcher/component-gallery.js": "ab56d5cbbefbd8643394d5f6cb2c6bf1bc21720d0fc6ee1c1df7e2d421a10e7d",
+    "blocks/vehicle-matcher/employee-card-fixture.js": "4c9d612b6592d32f2257965acb98ae814079ec27c2a31a438a8cb735e2982df8",
+    "blocks/vehicle-matcher/modes/result-card.js": "73d45a2604882064812a4aa02be0113fea7724ff8bc37fbd269d5c918a130ea0",
+    "blocks/vehicle-matcher/component-gallery.css": "4bf16c2db1dfafc0c83c988c7fcbab65da1e14e37c419dcb9db13fc29e7e3ad3",
+    "blocks/gcsp/kit/vehicle-media.css": "50ea18446b8b5fca69223ce74c39b32224b6dbdc04a0e992b6de79aaa14cb976",
+    "blocks/gcsp/manual-review/gcsp-manual-review.js": "5aae587f77187083f8af937872122685d36d3b49c21f2fe8bb3c82299256e82d",
+    "assets/brand-hero/bmw.jpg": "674a6adc350ce39dde798acda7279f8c1e1c0a5a91daa7a1d1c843616a2b442d",
+    "server/test/gcsp-shell.test.js": "3a2f8d1e693bf0ea3de6119ddacd9e17c645445a0e18d42e40b7a2e0f50c8037",
+    "server/test/gcsp-manual-review-render.test.js": "9cd2ca49c9de7db3832a3a996f21a9bf18cbb67537539a4eb344f8ad30de4a17",
+    "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+  },
+  "unchanged_from_base": {
+    "blocks/vehicle-matcher/employee-card-fixture.js": true,
+    "blocks/vehicle-matcher/modes/result-card.js": true,
+    "blocks/vehicle-matcher/component-gallery.css": true,
+    "blocks/gcsp/kit/vehicle-media.css": true,
+    "blocks/gcsp/manual-review/gcsp-manual-review.js": true
+  },
+  "scoped_tests": {
+    "gallery_media": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "ui_ratchet": {
+      "passed": 102,
+      "failed": 0,
+      "skipped": 0
+    },
+    "full_suite": "not run: no changed production/shared renderer, API, source or transaction behavior",
+    "coverage_contexts": "Not collected; reviewed fixture/assertion/boundary mapping, no measured line-coverage claim"
+  },
+  "render": {
+    "story": "FUCQ-347",
+    "base": "e7d301a2",
+    "viewports": [
+      {
+        "width": 1280,
+        "media": [
+          {
+            "state": "photo",
+            "media": {
+              "x": 93.1875,
+              "y": 100.453125,
+              "width": 1093.625,
+              "height": 699.15625,
+              "right": 1186.8125,
+              "bottom": 799.609375
+            },
+            "image": {
+              "x": 93.1875,
+              "y": 100.453125,
+              "width": 1093.625,
+              "height": 615.15625,
+              "right": 1186.8125,
+              "bottom": 715.609375
+            },
+            "caption": {
+              "x": 93.1875,
+              "y": 765.609375,
+              "width": 1093.625,
+              "height": 34,
+              "right": 1186.8125,
+              "bottom": 799.609375
+            },
+            "tag": {
+              "x": 105.1875,
+              "y": 727.609375,
+              "width": 487.078125,
+              "height": 26,
+              "right": 592.265625,
+              "bottom": 753.609375
+            },
+            "captionText": "Representative BMW brand image, not this exact car",
+            "alt": "Representative BMW brand image",
+            "tagText": "Car order 1175641 for your selected BMW 320i M Sport Touring",
+            "objectFit": "contain",
+            "imageReady": true,
+            "placeholder": "No image for this car yet",
+            "viewport": 1280,
+            "pageWidth": 1280
+          },
+          {
+            "state": "missing",
+            "media": {
+              "x": 93.1875,
+              "y": 142.609375,
+              "width": 1093.625,
+              "height": 615.15625,
+              "right": 1186.8125,
+              "bottom": 757.765625
+            },
+            "image": null,
+            "caption": null,
+            "tag": {
+              "x": 105.1875,
+              "y": 727.765625,
+              "width": 471.078125,
+              "height": 18,
+              "right": 576.265625,
+              "bottom": 745.765625
+            },
+            "tagText": "Car order 1175641 for your selected BMW 320i M Sport Touring",
+            "objectFit": null,
+            "imageReady": null,
+            "placeholder": "No image for this car yet",
+            "viewport": 1280,
+            "pageWidth": 1280
+          }
+        ]
+      },
+      {
+        "width": 375,
+        "media": [
+          {
+            "state": "photo",
+            "media": {
+              "x": 58,
+              "y": 307.703125,
+              "width": 259,
+              "height": 283.6875,
+              "right": 317,
+              "bottom": 591.390625
+            },
+            "image": {
+              "x": 58,
+              "y": 307.703125,
+              "width": 259,
+              "height": 145.6875,
+              "right": 317,
+              "bottom": 453.390625
+            },
+            "caption": {
+              "x": 58,
+              "y": 539.390625,
+              "width": 259,
+              "height": 52,
+              "right": 317,
+              "bottom": 591.390625
+            },
+            "tag": {
+              "x": 70,
+              "y": 465.390625,
+              "width": 235,
+              "height": 62,
+              "right": 305,
+              "bottom": 527.390625
+            },
+            "captionText": "Representative BMW brand image, not this exact car",
+            "alt": "Representative BMW brand image",
+            "tagText": "Car order 1175641 for your selected BMW 320i M Sport Touring",
+            "objectFit": "contain",
+            "imageReady": true,
+            "placeholder": "No image for this car yet",
+            "viewport": 375,
+            "pageWidth": 375
+          },
+          {
+            "state": "missing",
+            "media": {
+              "x": 58,
+              "y": 377.390625,
+              "width": 259,
+              "height": 145.6875,
+              "right": 317,
+              "bottom": 523.078125
+            },
+            "image": null,
+            "caption": null,
+            "tag": {
+              "x": 70,
+              "y": 457.078125,
+              "width": 235,
+              "height": 54,
+              "right": 305,
+              "bottom": 511.078125
+            },
+            "tagText": "Car order 1175641 for your selected BMW 320i M Sport Touring",
+            "objectFit": null,
+            "imageReady": null,
+            "placeholder": "No image for this car yet",
+            "viewport": 375,
+            "pageWidth": 375
+          }
+        ]
+      }
+    ],
+    "captures": [
+      {
+        "filename": "photo-1280.jpg",
+        "width": 1280,
+        "state": "photo",
+        "sha256": "1dd2ff31441f013e275bd3d28f71332a0f831137cbded60daf7bfdf24b170d80",
+        "bytes": 78256
+      },
+      {
+        "filename": "missing-1280.jpg",
+        "width": 1280,
+        "state": "missing",
+        "sha256": "8b08be3f1e861aed2ac08afcc62fb4dd3b0d685efdb487ddaa382255dfaeb580",
+        "bytes": 13142
+      },
+      {
+        "filename": "photo-375.jpg",
+        "width": 375,
+        "state": "photo",
+        "sha256": "e7c7b8aae5d320f74e4789ecb20ad7d6e56cc5c3850491d2c3ba9ac1c6d5aa11",
+        "bytes": 14802
+      },
+      {
+        "filename": "missing-375.jpg",
+        "width": 375,
+        "state": "missing",
+        "sha256": "3f53331f9130d3150fc538a28f2f1495bec281d0229dc6cb29d9dd5e8c5f3196",
+        "bytes": 7131
+      }
+    ],
+    "sources": {
+      "components.html": "361aa89d4f771915d6833afbd7ca0efd8091ac04a7839f5489eaa7cfd4cfc4a1",
+      "blocks/vehicle-matcher/component-gallery.js": "ab56d5cbbefbd8643394d5f6cb2c6bf1bc21720d0fc6ee1c1df7e2d421a10e7d",
+      "blocks/vehicle-matcher/employee-card-fixture.js": "4c9d612b6592d32f2257965acb98ae814079ec27c2a31a438a8cb735e2982df8",
+      "blocks/vehicle-matcher/modes/result-card.js": "73d45a2604882064812a4aa02be0113fea7724ff8bc37fbd269d5c918a130ea0",
+      "blocks/vehicle-matcher/component-gallery.css": "4bf16c2db1dfafc0c83c988c7fcbab65da1e14e37c419dcb9db13fc29e7e3ad3",
+      "blocks/gcsp/kit/vehicle-media.css": "50ea18446b8b5fca69223ce74c39b32224b6dbdc04a0e992b6de79aaa14cb976",
+      "blocks/gcsp/manual-review/gcsp-manual-review.js": "5aae587f77187083f8af937872122685d36d3b49c21f2fe8bb3c82299256e82d",
+      "assets/brand-hero/bmw.jpg": "674a6adc350ce39dde798acda7279f8c1e1c0a5a91daa7a1d1c843616a2b442d"
+    },
+    "errors": [],
+    "externalRequests": [],
+    "serverClosed": true,
+    "browserClosed": true,
+    "port": 62806
+  },
+  "visual_review": {
+    "reviewer": "Hugo",
+    "thread": "01a1c66a-4fa2-7f71-b66d-96a08bae6596",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "verdict": "PASS all3AC; no actionable in-scope findings",
+    "timing": "Personally inspected all4 corrected captures before detector; final harness-corrected bytes identical",
+    "lead_inspection": "All4 personally inspected; full contained photo, separate readable long order tag/caption, readable missing fallback, no overlap/cutoff at1280/375",
+    "unchanged_states": "No controls/selection/validation/confirmation behavior changes; applicable gallery photo+missing states inspected"
+  },
+  "detector": {
+    "findings": [],
+    "scans": 1,
+    "timing": "After independent substantive visual assessment"
+  },
+  "initial_browser_failure": {
+    "exit": 1,
+    "errors": [
+      "Failed to read the 'serviceWorker' property from 'Navigator': Service worker is disabled because the context is sandboxed and lacks the 'allow-same-origin' flag.",
+      "Failed to read the 'serviceWorker' property from 'Navigator': Service worker is disabled because the context is sandboxed and lacks the 'allow-same-origin' flag."
+    ],
+    "all_four_captures_preserved": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq347-browser-initial",
+    "driver_sha256_before": "6e679d74c47ac5e44eb97eb997cc51b3be426a2aa3b9020f85d89e3757708fca",
+    "driver_sha256_after": "404455d3f0cd0efb67d840a87b53df4e51d62330a18da3afdbffc19b1e8fd078",
+    "cause": "Playwright block-service-workers init script reads navigator.serviceWorker in deliberate sandbox=empty opaque message iframe",
+    "approved_correction": "Parent verified source and approved removal only of serviceWorkers:block context option; zero-pageerror/zero-external assertions and fresh isolated profile retained",
+    "product_correction": false,
+    "rerun": "browser only; all4capture bytes identical and final errors/external requests empty"
+  },
+  "resources": {
+    "workers": 1,
+    "ceiling_scratch_bytes": 134217728,
+    "ceiling_ram_bytes": 1073741824,
+    "ceiling_seconds_per_chunk": 600,
+    "runs": [
+      {
+        "label": "gallery",
+        "command": "node --test --test-concurrency=1 --test-name-pattern='the single gallery shows|mediaWell placeholder|selected review gives' server/test/gcsp-shell.test.js server/test/gcsp-manual-review-render.test.js",
+        "exit": 0,
+        "wall_seconds": 6.691,
+        "peak_scratch_bytes": 0,
+        "sampled_peak_rss_bytes": 345833472,
+        "root": "/private/tmp/test-stamp-shard-50dc826977a04119b66dbccb960c6f16",
+        "root_absent": true,
+        "groups": [
+          {
+            "id": 88101,
+            "absent": true
+          }
+        ],
+        "reservation_absent": true,
+        "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq347-supervisor/gallery/checkpoints/edfeee6208bec942c547534da9569abfe3825b53e468016ef5a802bc387d3f84.json"
+      },
+      {
+        "label": "ratchet",
+        "command": "node --test --test-concurrency=1 server/test/ui-ratchet.test.js",
+        "exit": 0,
+        "wall_seconds": 0.349,
+        "peak_scratch_bytes": 0,
+        "sampled_peak_rss_bytes": 32768,
+        "root": "/private/tmp/test-stamp-shard-0f81bdc3a32548e287875b40551df65e",
+        "root_absent": true,
+        "groups": [
+          {
+            "id": 88481,
+            "absent": true
+          }
+        ],
+        "reservation_absent": true,
+        "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq347-supervisor/ratchet/checkpoints/689bfc76aaa4be6a44226d45097e6bd56ff4372610a6fa7190d09de925562e08.json"
+      },
+      {
+        "label": "browser",
+        "command": "node /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq347-render.mjs",
+        "exit": 1,
+        "wall_seconds": 4.876,
+        "peak_scratch_bytes": 9380923,
+        "sampled_peak_rss_bytes": 168837120,
+        "root": "/private/tmp/test-stamp-shard-8f8d4dd014e94c4394a5d3f8b91b598c",
+        "root_absent": true,
+        "groups": [
+          {
+            "id": 88618,
+            "absent": true
+          }
+        ],
+        "reservation_absent": true,
+        "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq347-supervisor/browser/checkpoints/793e728d5d34e797e39e2ed34411445bb661e42d2b526eaddf9e40fca14921fa.json"
+      },
+      {
+        "label": "browser-corrected",
+        "command": "node /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq347-render.mjs",
+        "exit": 0,
+        "wall_seconds": 4.214,
+        "peak_scratch_bytes": 9244636,
+        "sampled_peak_rss_bytes": 159662080,
+        "root": "/private/tmp/test-stamp-shard-22af83253b634facb52d86f473dfbf9f",
+        "root_absent": true,
+        "groups": [
+          {
+            "id": 90273,
+            "absent": true
+          }
+        ],
+        "reservation_absent": true,
+        "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq347-supervisor/browser-corrected/checkpoints/793e728d5d34e797e39e2ed34411445bb661e42d2b526eaddf9e40fca14921fa.json"
+      },
+      {
+        "label": "detector",
+        "command": "node /Users/usget/.codex/skills/impeccable/scripts/detect.mjs --json blocks/vehicle-matcher/component-gallery.js",
+        "exit": 0,
+        "wall_seconds": 0.315,
+        "peak_scratch_bytes": 0,
+        "sampled_peak_rss_bytes": 32768,
+        "root": "/private/tmp/test-stamp-shard-b393196e2b294595ab84b66f0d7ff1cf",
+        "root_absent": true,
+        "groups": [
+          {
+            "id": 90595,
+            "absent": true
+          }
+        ],
+        "reservation_absent": true,
+        "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq347-supervisor/detector/checkpoints/e693a9b144e6d6f5994df57b7e36a94b8995b7e37996bf518e3d4fc12ba8c93f.json"
+      }
+    ],
+    "ports": [
+      {
+        "port": 62587,
+        "closed": true
+      },
+      {
+        "port": 62806,
+        "closed": true
+      }
+    ],
+    "compatibility_exception": "Two active isolated Chrome profiles kept only under owned local TMPDIR; removed by finalizers. Sampled profile/scratch peak9380923bytes; retained artifacts are small local images/JSON, no archive/large output.",
+    "sampled_peak_scratch_bytes": 9380923,
+    "sampled_peak_rss_bytes": 345833472,
+    "sum_sampled_removed_scratch_bytes": 18625559,
+    "leftovers": [],
+    "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-006/docs/gcsp/evidence/fucq347/validation.json"
+  },
+  "agents": [
+    {
+      "name": "B-Bot",
+      "thread": "01a1c640-7711-78c0-9a7f-24dc36b7bd44",
+      "title_readback": "B-Bot",
+      "title_verified": "read_thread metadata 2026-11-10",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "xhigh",
+      "selected_model": "gpt-6.1-sol",
+      "selected_effort": "xhigh",
+      "tiers_default_effort": "high",
+      "override": "Explicit collaborator lead/implementer xhigh",
+      "fallback": null,
+      "observed_turn_context": {
+        "model": "gpt-6.1-sol",
+        "effort": "xhigh"
+      }
+    },
+    {
+      "name": "Hugo",
+      "thread": "01a1c66a-4fa2-7f71-b66d-96a08bae6596",
+      "title_readback": "Hugo",
+      "title_verified": "read_thread metadata 2026-11-10",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "selected_model": "gpt-6.1-sol",
+      "selected_effort": "high",
+      "tiers_default_effort": "high",
+      "override": null,
+      "fallback": null,
+      "observed_turn_context": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      }
+    }
+  ]
+}

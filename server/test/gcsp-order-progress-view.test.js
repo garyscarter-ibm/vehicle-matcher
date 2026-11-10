@@ -258,7 +258,7 @@ test('documents: employee tasks come first with their action; others show owner 
 test('documents: completed acknowledgement keeps the server label and offers no action', () => {
   const docs = section(view('documents-in-progress', callbacks(log())), 'documents');
   assert.equal(docs.querySelector('button'), null); assert.match(docs.textContent, /Acknowledged\. Not a signature\./);
-  assert.deepEqual(todoLists(docs), { 'Still to do': ['Vehicle preparation', 'Delivery to the retailer'] });
+  assert.deepEqual(todoLists(docs), {}, 'the checklist is the one list of the items');
 });
 
 test('documents: overdue and failed are distinct in text and class', () => {
@@ -268,7 +268,7 @@ test('documents: overdue and failed are distinct in text and class', () => {
   const failed = section(view('documents-failed'), 'documents');
   const broken = failed.querySelector('.gcsp-task.is-failed'); assert.match(broken.textContent, /Failed: The provider reported this step as failed\./);
   assert.doesNotMatch(broken.textContent, /Overdue/); assert.equal(failed.querySelector('.gcsp-task.is-overdue'), null);
-  assert.deepEqual(todoLists(failed)['Needs attention'], ['Driving licence check']);
+  assert.equal(todoLists(failed)['Needs attention'], undefined);
 });
 
 test('documents: ready reads Ready for handover; closed says documents open once sent to ordering', () => {
@@ -323,7 +323,7 @@ test('return plan: choices call back with the exact choice and slot; unavailable
     ['Return it when the new car is handed over', 'Return it on a separate day']);
   document.body.replaceChildren();
   const blocked = section(view('return-unavailable', callbacks(log())), 'return');
-  assert.equal(blocked.querySelector('button'), null); assert.equal(blocked.querySelectorAll('.gcsp-order-choice-reason').length, 2);
+  assert.equal(blocked.querySelector('button'), null); assert.equal(blocked.querySelectorAll('.gcsp-order-choice-reason').length, 1, 'one reason line, not one per choice');
   assert.match(blocked.textContent, /Confirm your new car's handover first/);
 });
 
@@ -560,7 +560,9 @@ test('FUCQ-299: slots are grouped by day, one labelled group per day with compac
 test('FUCQ-299: not ready is a short statement followed by lists of the items, not a run-on line', () => {
   const docs = section(view('documents-failed'), 'documents');
   assert.equal(docs.querySelector('.gcsp-order-statement').textContent, 'Not ready for handover.');
-  assert.deepEqual(todoLists(docs), { 'Needs attention': ['Driving licence check'], 'Still to do': ['Vehicle preparation', 'Delivery to the retailer'] });
+  assert.deepEqual(todoLists(docs), {}, 'no list repeats the checklist');
+  assert.match(docs.querySelector('.gcsp-task.is-failed').textContent, /Driving licence check/);
+  assert.equal(docs.querySelectorAll('.gcsp-task-list.is-rows').length, 1, 'the checklist is rows, not cards');
   assert.ok([...docs.querySelectorAll('.gcsp-order-todo')].every((g) => g.querySelector('ul')?.getAttribute('aria-labelledby') === g.querySelector('p').id));
   document.body.replaceChildren();
   assert.deepEqual(todoLists(section(view('ready-for-handover'), 'documents')), {});

@@ -95,7 +95,7 @@ test('declined unavailable view retains outcome, explicit refresh and zero decli
   const view = createOfferView(element, { refresh: () => { reads++; }, decide: () => { posts++; },
     mountFollowup: () => { mounts++; return () => {}; } }); t.after(view.destroy);
   view.update(presentation(null).value);
-  assert.match(element.textContent, /Offer declined.*Your decline is recorded.*Follow-up unavailable/s);
+  assert.match(element.textContent, /Offer declined.*Follow-up unavailable/s); assert.doesNotMatch(element.textContent, /Your decline is recorded/);
   assert.equal(element.querySelectorAll('[data-offer-action="decline"], [data-offer-action="accept"]').length, 0);
   element.querySelector('[data-offer-action="refresh"]').click();
   assert.equal(reads, 1); assert.equal(posts, 0); assert.equal(mounts, 0);
@@ -186,8 +186,8 @@ test('GC-042: declined page is one h1, a one-line summary and then the change qu
   assert.equal(element.querySelector('.vm-card'), null); assert.equal(element.querySelector('.gcsp-offer-current'), null);
   assert.doesNotMatch(element.textContent, /Your current car|Your next offer/);
   const summary = element.querySelector('[data-offer-declined-summary]');
-  assert.match(summary.textContent, /^You declined the .+, [\d,]+ points a month\.$/); assert.doesNotMatch(summary.textContent, /\u2014/);
-  assert.equal(summary.previousElementSibling.textContent, 'Your decline is recorded.');
+  assert.match(summary.textContent, /^You declined the .+\. Change one thing and your buddy looks again\.$/); assert.doesNotMatch(summary.textContent, /\u2014/);
+  assert.equal(summary.previousElementSibling.textContent, ''); assert.equal(summary.previousElementSibling.hidden, true);
   const next = summary.nextElementSibling; assert.equal(next.getAttribute('aria-label'), 'Your next offer');
   assert.equal(next.querySelector('h1, h2, h3').tagName, 'H2'); assert.equal(next.querySelector('h2').textContent, 'One change to your preferences');
   assert.deepEqual([...next.querySelectorAll('[role=radio]')].map((node) => node.textContent).slice(-3), ['Coupé', 'Convertible', 'Family carrier']);

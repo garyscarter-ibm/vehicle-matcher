@@ -150,6 +150,12 @@ function gcspExamples() {
   ], { className: 'vm-facts-pair' }));
   const well = group('mediaWell placeholder');
   well.append(mediaWell({ name: 'Synthetic car', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: NO_IMAGE_TEXT }).media);
+  const reviewMedia = el('div', 'gcsp-review-layout');
+  const reviewImage = employeeCardFixture.members[0].media;
+  for (const src of [reviewImage.src, '']) reviewMedia.append(matchCard(null, { showScore: false,
+    view: { schemaVersion: 1, members: [{ ...employeeCardFixture.members[0], actions: [],
+      display: { ...employeeCardFixture.members[0].display, line: 'Car order 1175641 for your selected BMW 320i M Sport Touring' }, media: { ...reviewImage, src } }] } }));
+  group('mediaWell: selected review image and missing-photo frame').append(reviewMedia);
   const accounts = [
     ['portalShell: account loading', { status: 'loading' }],
     ['portalShell: compact account, long name', { status: 'ready', name: 'Bartholomew Featherstonehaugh-Cholmondeley-Wolverstone III (synthetic)', context: 'Choices, grade G7' }],

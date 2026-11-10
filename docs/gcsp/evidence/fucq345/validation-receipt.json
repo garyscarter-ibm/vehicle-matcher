@@ -1,0 +1,443 @@
+{
+  "schemaVersion": "fucq345-validation.v1",
+  "sourceCheckpoint": "e81db95ae0198679f7d4daf08a2132ca3a3c942d",
+  "integratedBase": "aff66b6bc94ad29349f3ef765c72adaf599e978b",
+  "scope": "scoped; no full suite or deployed smoke",
+  "checks": [
+    {
+      "label": "red",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-name-pattern=selected review gives",
+        "server/test/gcsp-manual-review-render.test.js"
+      ],
+      "identitySha256": "3a364018283b4aa59d22649279cd8a3a9580d5b9dadef858283707afb774ab1c",
+      "codeHashScope": "JS only in initial red/green; recursive JS/CSS/JSON/MJS in subsequent runs",
+      "result": {
+        "exit": 1,
+        "counts": {
+          "tests": 1,
+          "pass": 0,
+          "fail": 1,
+          "skipped": 0
+        },
+        "seconds": 0.7371858329861425,
+        "peakScratchBytes": 0,
+        "peakRssBytes": 217464832
+      },
+      "cleanup": {
+        "root": "/private/tmp/test-stamp-shard-e2e39532b1ec4e65828390639b6bde15",
+        "removed": true,
+        "peak": 0,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/e2e39532b1ec4e65828390639b6bde15.json",
+        "local_scratch_reason": "Bounded Node test/browser profile working set; no large output intended",
+        "absenceVerifiedAtHandover": true
+      },
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-red-logs/chunk-0001.log",
+      "logSha256": "0d33cf7894367c5f0ea426b16013e531edf6a18ff17f611f6bc17a98dd063a73",
+      "note": "Expected caption regression: actual absolute, expected static."
+    },
+    {
+      "label": "green",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-name-pattern=selected review gives",
+        "server/test/gcsp-manual-review-render.test.js"
+      ],
+      "identitySha256": "b16371e141fa92f4db29a90611d8d16b69612c3726eb5df1c0d3734fb0a05900",
+      "codeHashScope": "JS only in initial red/green; recursive JS/CSS/JSON/MJS in subsequent runs",
+      "result": {
+        "exit": 0,
+        "counts": {
+          "tests": 1,
+          "pass": 1,
+          "fail": 0,
+          "skipped": 0
+        },
+        "seconds": 0.7417286669951864,
+        "peakScratchBytes": 0,
+        "peakRssBytes": 236142592
+      },
+      "cleanup": {
+        "root": "/private/tmp/test-stamp-shard-85fbfde9a9b547939c49434e9586178c",
+        "removed": true,
+        "peak": 0,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/85fbfde9a9b547939c49434e9586178c.json",
+        "local_scratch_reason": "Bounded Node test/browser profile working set; no large output intended",
+        "absenceVerifiedAtHandover": true
+      },
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-green-logs/chunk-0001.log",
+      "logSha256": "411849e632325ab39d5e7cceea2575f6cf4db680e4d11a0a5e1f247d2816131f",
+      "note": "Initial caption-space repair passes; later superseded by the normal-flow tag refinement."
+    },
+    {
+      "label": "scoped",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/exact-listing-decision.test.js",
+        "server/test/shared-kit-contracts.test.js",
+        "server/test/gcsp-shell.test.js",
+        "server/test/gcsp-manual-review-render.test.js",
+        "server/test/gcsp-manual-review-controller.test.js",
+        "server/test/gcsp-manual-gallery-render.test.js",
+        "server/test/gcsp-offer-view-render.test.js",
+        "server/test/ui-ratchet.test.js"
+      ],
+      "identitySha256": "e0bcfedeb2c6e5a9a2587152703d87876496d6cd9b0e42e4775f76af675a720b",
+      "codeHashScope": "JS only in initial red/green; recursive JS/CSS/JSON/MJS in subsequent runs",
+      "result": {
+        "exit": 1,
+        "counts": {
+          "tests": 245,
+          "pass": 243,
+          "fail": 2,
+          "skipped": 0
+        },
+        "seconds": 12.379531208018307,
+        "peakScratchBytes": 0,
+        "peakRssBytes": 355385344
+      },
+      "cleanup": {
+        "root": "/private/tmp/test-stamp-shard-5c4772637dad4bde8c49ddb0e0047804",
+        "removed": true,
+        "peak": 0,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/5c4772637dad4bde8c49ddb0e0047804.json",
+        "local_scratch_reason": "Bounded Node test/browser profile working set; no large output intended",
+        "absenceVerifiedAtHandover": true
+      },
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-scoped-logs/chunk-0001.log",
+      "logSha256": "c54a8a060e5ee6e4adf93e8b115f91831f5a4f7ae40f7c561b7add27a9bb45f5",
+      "note": "243 passing tests; two module imports failed because pg was unavailable. No assertion failure in those modules was observed."
+    },
+    {
+      "label": "scoped-import-resolved",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/exact-listing-decision.test.js",
+        "server/test/shared-kit-contracts.test.js"
+      ],
+      "identitySha256": "3ee10048447928ee0c5ff9e1f434b1144697303877bb478e4ce3aa4b0594c7e2",
+      "codeHashScope": "JS only in initial red/green; recursive JS/CSS/JSON/MJS in subsequent runs",
+      "result": {
+        "exit": 0,
+        "counts": {
+          "tests": 35,
+          "pass": 35,
+          "fail": 0,
+          "skipped": 0
+        },
+        "seconds": 34.77780912502203,
+        "peakScratchBytes": 0,
+        "peakRssBytes": 385466368
+      },
+      "cleanup": {
+        "root": "/private/tmp/test-stamp-shard-572287f46d6740729e5206952db7bae9",
+        "removed": true,
+        "peak": 0,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/572287f46d6740729e5206952db7bae9.json",
+        "local_scratch_reason": "Bounded Node test/browser profile working set; no large output intended",
+        "absenceVerifiedAtHandover": true
+      },
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-scoped-import-resolved-logs/chunk-0001.log",
+      "logSha256": "183f40398dc810afb2017af1a1f58f03865ab85e1213cb9155ab626b2cc4aa2b",
+      "note": "Only the two import-failed modules rerun after approved pg8.23.1 dependency-link resolution;35/35 pass. No PostgreSQL connection."
+    },
+    {
+      "label": "flow-red",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-name-pattern=selected review gives",
+        "server/test/gcsp-manual-review-render.test.js"
+      ],
+      "identitySha256": "d6ba73d6da8d29085cb9f3653d4872fcdd8a608c621d4c257a7f86c4704eca23",
+      "codeHashScope": "JS only in initial red/green; recursive JS/CSS/JSON/MJS in subsequent runs",
+      "result": {
+        "exit": 1,
+        "counts": {
+          "tests": 1,
+          "pass": 0,
+          "fail": 1,
+          "skipped": 0
+        },
+        "seconds": 0.7554996249964461,
+        "peakScratchBytes": 0,
+        "peakRssBytes": 246956032
+      },
+      "cleanup": {
+        "root": "/private/tmp/test-stamp-shard-87e8547368c04067b0d5d65558e89de5",
+        "removed": true,
+        "peak": 0,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/87e8547368c04067b0d5d65558e89de5.json",
+        "local_scratch_reason": "Bounded Node test/browser profile working set; no large output intended",
+        "absenceVerifiedAtHandover": true
+      },
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-flow-red-logs/chunk-0001.log",
+      "logSha256": "7cc9ab97abb6825477d7407edacf8dcf99dd514cf7c4160967cc4fcf60ea8d1e",
+      "note": "Expected new normal-flow tag regression: actual absolute, expected static."
+    },
+    {
+      "label": "flow-green",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-manual-review-render.test.js",
+        "server/test/gcsp-manual-gallery-render.test.js",
+        "server/test/ui-ratchet.test.js"
+      ],
+      "identitySha256": "86437fc56c00d31f21ae6f5641c6caba776260d6a46dba983171154e11d3ffa9",
+      "codeHashScope": "JS only in initial red/green; recursive JS/CSS/JSON/MJS in subsequent runs",
+      "result": {
+        "exit": 1,
+        "counts": {
+          "tests": 138,
+          "pass": 137,
+          "fail": 1,
+          "skipped": 0
+        },
+        "seconds": 1.8085082090110518,
+        "peakScratchBytes": 0,
+        "peakRssBytes": 283852800
+      },
+      "cleanup": {
+        "root": "/private/tmp/test-stamp-shard-9473e1a4ade94fd7a8e77a74dca2d91d",
+        "removed": true,
+        "peak": 0,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/9473e1a4ade94fd7a8e77a74dca2d91d.json",
+        "local_scratch_reason": "Bounded Node test/browser profile working set; no large output intended",
+        "absenceVerifiedAtHandover": true
+      },
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-flow-green-logs/chunk-0001.log",
+      "logSha256": "d32e39ec9db5aa93e29751a0cc9df0e379206a6d51eba7ee81a3fb3cb954d822",
+      "note": "137 passing tests; sole failure was8 counted CSS lines vs existing7 cap. Rules consolidated; cap unchanged."
+    },
+    {
+      "label": "flow-green-final",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-manual-review-render.test.js",
+        "server/test/gcsp-manual-gallery-render.test.js",
+        "server/test/ui-ratchet.test.js"
+      ],
+      "identitySha256": "1a5a451f287545504c914e4beb67c97a1f170e3763a8e876f80ba18aff97ee93",
+      "codeHashScope": "JS only in initial red/green; recursive JS/CSS/JSON/MJS in subsequent runs",
+      "result": {
+        "exit": 0,
+        "counts": {
+          "tests": 138,
+          "pass": 138,
+          "fail": 0,
+          "skipped": 0
+        },
+        "seconds": 1.7318493330385536,
+        "peakScratchBytes": 0,
+        "peakRssBytes": 292569088
+      },
+      "cleanup": {
+        "root": "/private/tmp/test-stamp-shard-7ce3ac8021fc47f8a4e88070c5b7f48e",
+        "removed": true,
+        "peak": 0,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/7ce3ac8021fc47f8a4e88070c5b7f48e.json",
+        "local_scratch_reason": "Bounded Node test/browser profile working set; no large output intended",
+        "absenceVerifiedAtHandover": true
+      },
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-flow-green-final-logs/chunk-0001.log",
+      "logSha256": "ed53764730d68aff806441a5b924074a924b23a4d0fabfa0d571e16557cf3bd1",
+      "note": "Final review-render,manual-gallery-render and UIratchet boundary run;138/138 pass. Same repair source hashes retained after shell integration."
+    },
+    {
+      "label": "browser",
+      "command": [
+        "python3",
+        "-B",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-browser-driver.py"
+      ],
+      "identitySha256": "47b38b436736118629ef6f5ab7f2ab75048f475d44ff9fab11869cd31f990acd",
+      "codeHashScope": "JS only in initial red/green; recursive JS/CSS/JSON/MJS in subsequent runs",
+      "result": {
+        "exit": 1,
+        "counts": {},
+        "seconds": 13.851251083018724,
+        "peakScratchBytes": 9795387,
+        "peakRssBytes": 300630016
+      },
+      "cleanup": {
+        "root": "/private/tmp/test-stamp-shard-754eabce811c461b9a1e614a5172ce34",
+        "removed": true,
+        "peak": 9795387,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/754eabce811c461b9a1e614a5172ce34.json",
+        "local_scratch_reason": "Bounded Node test/browser profile working set; no large output intended",
+        "absenceVerifiedAtHandover": true
+      },
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-browser-logs/chunk-0001.log",
+      "logSha256": "06618586b2e31cd9242c365a1e1d2a7dfb4a12412ac19f210ff1819d84494846",
+      "note": "Initial28-capture run failed final pageerror assertion: Playwright serviceWorkers:block errors in existing sandboxed gallery iframe. All22 geometry and4 identity checks passed before the final failure. Raw failed receipt retained."
+    },
+    {
+      "label": "gallery-probe",
+      "command": [
+        "node",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-gallery-probe.mjs"
+      ],
+      "identitySha256": "78df0077ffdbab19dd4eb7592ddb7ffa8643b45b06465dd85acb48e0bfb112e3",
+      "codeHashScope": "JS only in initial red/green; recursive JS/CSS/JSON/MJS in subsequent runs",
+      "result": {
+        "exit": 0,
+        "counts": {},
+        "seconds": 2.2569032500032336,
+        "peakScratchBytes": 6988251,
+        "peakRssBytes": 173981696
+      },
+      "cleanup": {
+        "root": "/private/tmp/test-stamp-shard-6c7482ed4c324285b4ac5fed218ad57b",
+        "removed": true,
+        "peak": 6988251,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/6c7482ed4c324285b4ac5fed218ad57b.json",
+        "local_scratch_reason": "Bounded Node test/browser profile working set; no large output intended",
+        "absenceVerifiedAtHandover": true
+      },
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-gallery-probe-logs/chunk-0001.log",
+      "logSha256": "289621b226a334807f0ee30c9f1c02cf004559bff7688b88d23b8287c7584257",
+      "note": "Same isolated gallery iframe produces serviceWorker SecurityError only with block; allow returns zero page errors. No product change."
+    },
+    {
+      "label": "flow-browser",
+      "command": [
+        "python3",
+        "-B",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-flow-browser-driver.py"
+      ],
+      "identitySha256": "8298753d25f0701ab5cbb80eab7bfc9f80aefdd9f432d11678523a486ea94863",
+      "codeHashScope": "JS only in initial red/green; recursive JS/CSS/JSON/MJS in subsequent runs",
+      "result": {
+        "exit": 0,
+        "counts": {},
+        "seconds": 12.370999999984633,
+        "peakScratchBytes": 9931131,
+        "peakRssBytes": 276807680
+      },
+      "cleanup": {
+        "root": "/private/tmp/test-stamp-shard-388ce9dc9e30471fac4080c2e9dc74a0",
+        "removed": true,
+        "peak": 9931131,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/388ce9dc9e30471fac4080c2e9dc74a0.json",
+        "local_scratch_reason": "Bounded Node test/browser profile working set; no large output intended",
+        "absenceVerifiedAtHandover": true
+      },
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-flow-browser-logs/chunk-0001.log",
+      "logSha256": "833e34ca7862b23a7857a26ae6c2881a73afc35e65854b00992b9f37249ce486",
+      "note": "Final integrated source e81:18 screenshots,14 geometry checks,2 claim/quote identity checks,zero page errors or external egress."
+    },
+    {
+      "label": "gallery-media",
+      "command": [
+        "node",
+        "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-gallery-media.mjs"
+      ],
+      "identitySha256": "e09c1b5f072adc5d2ba80b426cf051e9df1305f50030c28fe80c8fe3eafb272b",
+      "codeHashScope": "JS only in initial red/green; recursive JS/CSS/JSON/MJS in subsequent runs",
+      "result": {
+        "exit": 0,
+        "counts": {},
+        "seconds": 3.074721499986481,
+        "peakScratchBytes": 7008572,
+        "peakRssBytes": 171671552
+      },
+      "cleanup": {
+        "root": "/private/tmp/test-stamp-shard-aef7601b9f174f0597b7980889afb44e",
+        "removed": true,
+        "peak": 7008572,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/ownership/aef7601b9f174f0597b7980889afb44e.json",
+        "local_scratch_reason": "Bounded Node test/browser profile working set; no large output intended",
+        "absenceVerifiedAtHandover": true
+      },
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq345-gallery-media-logs/chunk-0001.log",
+      "logSha256": "0373e0ed143413b2ad611798a17b8a59d9d30856706810446bd9842dca276c46",
+      "note": "Four supplemental complete media-band screenshots and4 geometry checks at1280/375,zero page errors."
+    }
+  ],
+  "leadStrictTargeted": {
+    "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq345-20261110/targeted-b596131ab94bcdf1ff3d5813c0c2c4a2ab66ff814088d3b552805ea81bb2edcb-default-1794322307860385000.json",
+    "sha256": "0729078c8694b372c05bc9590cb5c10d0d4c193d40bca66d8adfaed738321af7",
+    "command": [
+      "node --test --test-concurrency=1 server/test/gcsp-manual-review-render.test.js server/test/gcsp-shell.test.js server/test/gcsp-loading-skeleton.test.js server/test/ui-ratchet.test.js"
+    ],
+    "head": "e81db95ae0198679f7d4daf08a2132ca3a3c942d",
+    "codeKey": "b596131ab94bcdf1ff3d5813c0c2c4a2ab66ff814088d3b552805ea81bb2edcb",
+    "result": "passed",
+    "pass": 170,
+    "fail": 0,
+    "skipped": 0,
+    "seconds": 11.2
+  },
+  "selectionReason": "Presentation-only CSS change; explicit review/gallery/ratchet regression plus exact identity, shared contracts, controller, offer and shell boundary evidence. Automatic JS fallback would select broad tests; reviewed and replaced by explicit bounded checks. Final upstream shell/loading changes covered by lead targeted170 check.",
+  "excluded": [
+    "Full suite: no algorithm,API,identity or adapter behavior changed",
+    "PostgreSQL and real mail",
+    "external source/corpus calls",
+    "deployed smoke and production writes"
+  ],
+  "resourceSummary": {
+    "oneWorker": true,
+    "chunkBudget": {
+      "scratchBytes": 134217728,
+      "ramBytes": 1073741824,
+      "seconds": 600
+    },
+    "sumMeasuredScratchPeaksBytes": 33723341,
+    "maximumScratchPeakBytes": 9931131,
+    "maximumRssBytes": 385466368,
+    "allElevenOwnedScratchRootsAbsent": true,
+    "compatibilityException": "Only bounded local browser profiles,TLS fixtures and Node test working set in supervised scratch; no generated output at256MiB. No retained local profile or archive.",
+    "leftovers": [
+      {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-004/server/node_modules",
+        "target": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules",
+        "kind": "owned temporary symlink",
+        "state": "Intentionally retained for parent AssessmentB actual runtime imports; parent must unlink only link after B, preserving target."
+      }
+    ],
+    "retainedOutputBytesAtReceiptCreation": 3228099
+  },
+  "independentVisualReview": "Pending parent blind AssessmentA followed by separate AssessmentB/detector. Implementer did not run detector.",
+  "implementerRenderedInspection": {
+    "role": "Grub; self-review, not independent acceptance",
+    "paths": [
+      "flow-corrected/02-selected-1280.jpg",
+      "flow-corrected/02-selected-375.jpg",
+      "flow-corrected/03-validation-1280.jpg",
+      "flow-corrected/03-validation-375.jpg",
+      "flow-corrected/04-controls-1280.jpg",
+      "flow-corrected/04-controls-375.jpg",
+      "flow-corrected/05-broken-photo-1280.jpg",
+      "flow-corrected/05-broken-photo-375.jpg",
+      "flow-corrected/06-empty-tag-1280.jpg",
+      "flow-corrected/06-empty-tag-375.jpg",
+      "flow-corrected/07-long-content-photo-1280.jpg",
+      "flow-corrected/07-long-content-photo-375.jpg",
+      "flow-corrected/08-missing-photo-1280.jpg",
+      "flow-corrected/08-missing-photo-375.jpg",
+      "flow-corrected/09-order-review-1280.jpg",
+      "flow-corrected/09-order-review-375.jpg",
+      "flow-corrected/10-confirmation-1280.jpg",
+      "flow-corrected/10-confirmation-375.jpg",
+      "flow-corrected/13-long-content-media-1280.jpg",
+      "flow-corrected/13-long-content-media-375.jpg",
+      "flow-corrected/14-missing-photo-media-1280.jpg",
+      "flow-corrected/14-missing-photo-media-375.jpg"
+    ],
+    "observations": "Checked complete car silhouette, tag/caption separation, long wrapping text, fallback/empty identity readability, facts, input/error focus and action placement at1280/375. Four supplemental media-band captures resolve framing limits of full-card gallery screenshots."
+  }
+}

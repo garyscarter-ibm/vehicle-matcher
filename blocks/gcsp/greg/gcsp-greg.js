@@ -2,6 +2,7 @@
 // adapter or a named fixture; location is never read. See docs/gcsp/greg-dashboard-contract.md.
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { portalShell } from '../shell/portal-shell.js';
+import { focusHeading } from '../kit/arrival-focus.js';
 import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { metricTile } from '../kit/metric-tile.js';
 import { dataTable } from '../kit/data-table.js';
@@ -11,25 +12,26 @@ import { mountGregPublish } from './publish/panel.js';
 import { mountGregOrderPlan } from './plan/panel.js';
 import { mountGregComparison } from './comparison/panel.js';
 
-const NOT_BUILT = 'Not available yet';
-const item = (key, label, icon, available = false) => Object.freeze({
-  key, label, icon: Object.freeze(icon), available, ...(available ? {} : { unavailableReason: NOT_BUILT }),
-});
+// One rail item per view, in run-sheet order; label is the view's h1. region is the reserved section it shows, or null for the figures.
+const VIEWS = Object.freeze([
+  ['next-order', 'Next order', ['M5 4h14v16H5z', 'M9 9h6', 'M9 13h6'], 'prediction'],
+  ['dashboard', 'Demand and supply', ['M4 20V10', 'M10 20V4', 'M16 20v-7', 'M21 20H3'], null],
+  ['policy', 'Policy', ['M12 3l8 4v5c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V7z'], 'publish'],
+  ['orders', 'Order requests', ['M3 7h11v9H3z', 'M14 10h4l3 3v3h-7', 'M7 19a1.5 1.5 0 1 0 0-.01', 'M17 19a1.5 1.5 0 1 0 0-.01'], 'orderTracking'],
+  ['comparison', 'Route comparison', ['M7 4v16', 'M17 4v16', 'M3 8l4-4 4 4', 'M13 16l4 4 4-4'], 'routeComparison'],
+  ['cases', 'Renewal cases', ['M9 11a3 3 0 1 0 0-.01', 'M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6', 'M17 11a2.5 2.5 0 1 0 0-.01', 'M17 14c2.5 0 4 1.8 4 4.5'], 'caseQueue'],
+].map(([key, label, icon, region]) => Object.freeze({ key, label, icon: Object.freeze(icon), region })));
 
-export const GREG_NAVIGATION = Object.freeze([
-  item('dashboard', 'Demand and supply', ['M4 20V10', 'M10 20V4', 'M16 20v-7', 'M21 20H3'], true),
-  item('publish', 'Publish stock', ['M12 16V4', 'M7 9l5-5 5 5', 'M5 20h14']),
-  item('tracking', 'Order tracking', ['M3 7h11v9H3z', 'M14 10h4l3 3v3h-7', 'M7 19a1.5 1.5 0 1 0 0-.01', 'M17 19a1.5 1.5 0 1 0 0-.01']),
-  item('next-order', 'Next order', ['M5 4h14v16H5z', 'M9 9h6', 'M9 13h6']),
-]);
+export const GREG_NAVIGATION = Object.freeze(VIEWS.map(({ key, label, icon }) => Object.freeze({ key, label, icon, available: true })));
+const DEMAND_LEDE = 'What employees have saved and confirmed they need, set against released stock and the outcomes of offers.';
 
 const FAILED_LOAD = { status: 'unavailable', message: 'The demand figures could not be loaded. Try again in a moment.' };
 const REGIONS = Object.freeze([
-  ['publish', 'publish', 'Publishing', 'Not available yet.'],
-  ['prediction', 'prediction', 'Prediction', 'Not available yet.'],
-  ['orderTracking', 'order-tracking', 'Order tracking', 'Not available yet.'],
+  ['publish', 'publish', 'Policy', 'Not available yet.'],
+  ['prediction', 'prediction', 'Next order', 'Not available yet.'],
+  ['orderTracking', 'order-tracking', 'Order requests', 'Not available yet.'],
   ['routeComparison', 'route-comparison', 'Route comparison', 'Not available yet.'],
-  ['caseQueue', 'case-queue', 'Case queue', 'Not available yet.'],
+  ['caseQueue', 'case-queue', 'Renewal cases', 'Not available yet.'],
 ]);
 let uid = 0;
 
@@ -66,7 +68,7 @@ function headlineSection(view) {
 function demandSection(view) {
   const { demand } = view;
   const node = section('demand', 'Demand');
-  node.append(note('What employees have saved and confirmed they need, one latest brief each. Each table groups the same briefs a different way.'));
+  node.append(note('One latest brief each. Each table groups the same briefs a different way.'));
   const tables = el('div', 'gcsp-greg-tables');
   tables.append(
     countTable('By model line', 'Model line', 'Briefs', demand.byModelLine, 'No briefs in this group yet'),
@@ -162,23 +164,45 @@ export function mountGregDashboard(root, ctx = {}) {
   let done = false;
   let run = 0;
   let showing = false;
+  let blocked = false;
+  const planAdapter = ctx.orderPlanAdapter || ctx.orderPlan;
+  let current = planAdapter ? 'next-order' : 'dashboard';
   const shell = portalShell({
     title: 'Group Car Schemes Portal', account: { status: 'loading' }, signOut: ctx.signOut,
-    presenterControls: ctx.presenterControls, onRetryAccount: () => loadAccount(), navigation: GREG_NAVIGATION, active: 'dashboard', breadcrumbs: ['Demand and supply'],
+    presenterControls: ctx.presenterControls, onRetryAccount: () => loadAccount(), navigation: GREG_NAVIGATION, active: current,
+    onNavigate: (key) => showView(key, true),
   });
   const page = el('div', 'vm gcsp-greg');
-  const intro = screenIntro({ kicker: 'Scheme ordering', title: 'Demand and supply', level: 1, className: 'gcsp-intro',
-    lede: 'What employees have saved and confirmed they need, set against released stock and the outcomes of offers.' });
+  const intro = screenIntro({ kicker: 'Scheme ordering', title: '', level: 1, className: 'gcsp-intro', lede: DEMAND_LEDE });
+  const heading = intro.querySelector('.vm-title');
+  const lede = intro.querySelector('.vm-lede');
+  heading.tabIndex = -1;
+  const figures = el('div', 'gcsp-greg-figures');
   const bar = el('div', 'gcsp-greg-bar');
   const meta = el('div', 'gcsp-greg-meta');
   const refresh = button({ label: 'Refresh', variant: 'ghost', onClick: () => load() });
-  bar.append(meta, refresh);
   const status = note('', 'status');
   status.classList.add('gcsp-greg-status');
+  bar.append(meta, refresh);
   const body = el('div', 'gcsp-greg-body');
   const reserved = reservedRegions();
-  page.append(intro, bar, status, body, reserved.host);
+  figures.append(bar, status, body);
+  page.append(intro, figures, reserved.host);
   shell.main.append(page);
+
+  // One view shows at a time; every region stays mounted so refresh and presenter hooks keep working.
+  function showView(key, focus = false) {
+    const view = VIEWS.find((v) => v.key === key);
+    if (!view || done) return;
+    if (!blocked) current = key;
+    const shown = blocked ? VIEWS[1] : view;
+    heading.textContent = shown.label;
+    lede.hidden = shown.region !== null;
+    figures.hidden = shown.region !== null;
+    for (const v of VIEWS) if (v.region) reserved.regions[v.region].hidden = v.region !== shown.region;
+    shell.setActive(shown.key);
+    if (focus) focusHeading(heading);
+  }
   async function loadAccount() {
     shell.setAccount({ status: 'loading' });
     let account;
@@ -187,6 +211,7 @@ export function mountGregDashboard(root, ctx = {}) {
   }
   loadAccount();
   root.replaceChildren(shell.root);
+  showView(current);
 
   const retry = () => button({ label: 'Retry', variant: 'primary', onClick: () => load() });
 
@@ -195,10 +220,7 @@ export function mountGregDashboard(root, ctx = {}) {
     meta.replaceChildren(
       factList([
         { label: 'Figures for', value: m.asOfLabel },
-        { label: m.policyVersions.length === 1 ? 'Policy version' : 'Policy versions', value: m.policyVersionsLabel },
-        { label: m.briefVersions.length === 1 ? 'Brief version' : 'Brief versions', value: m.briefVersionsLabel },
         { label: 'Basis', value: m.basisLabel },
-        { label: 'Figures version', value: m.projectionVersionShort },
       ], { className: 'gcsp-greg-facts' }),
       note(m.basisNote), note(m.privacyNote),
     );
@@ -206,7 +228,10 @@ export function mountGregDashboard(root, ctx = {}) {
 
   function draw(state, view) {
     showing = state.status === 'ready';
-    reserved.host.hidden = state.status === 'refused' || isRunRestarted(state);
+    blocked = state.status === 'refused' || isRunRestarted(state);
+    reserved.host.hidden = blocked;
+    showView(current);
+    status.classList.toggle('gcsp-vh', Boolean(view));
     body.removeAttribute('aria-busy');
     drawMeta(view?.meta);
     if (view) {
@@ -277,7 +302,6 @@ export function mountGregDashboard(root, ctx = {}) {
     reserved.regions.publish.removeAttribute('aria-labelledby');
     reserved.regions.publish.setAttribute('aria-label', 'Preview and publish policy');
   }
-  const planAdapter = ctx.orderPlanAdapter || ctx.orderPlan;
   const planTeardown = planAdapter ? mountGregOrderPlan(reserved.regions.prediction, { adapter: planAdapter, signal: abort.signal, onSubmitted: ctx.onOrderPlanSubmitted }) : null;
   if (planTeardown) {
     reserved.regions.prediction.removeAttribute('aria-labelledby');
@@ -291,6 +315,14 @@ export function mountGregDashboard(root, ctx = {}) {
   }
   const published = () => { load(); planTeardown?.refresh(); };
   root.addEventListener('gcsp:policy-published', published);
+  // The plan's "See this request" link targets a region that is hidden until its view opens.
+  const onLink = (event) => {
+    if (!event.target.closest?.('a[href="#gcsp-order-requests"]')) return;
+    showView('orders');
+    reserved.regions.orderTracking.tabIndex = -1;
+    reserved.regions.orderTracking.focus();
+  };
+  root.addEventListener('click', onLink);
   load();
 
   function teardown() {
@@ -302,6 +334,7 @@ export function mountGregDashboard(root, ctx = {}) {
     planTeardown?.();
     comparisonTeardown?.();
     root.removeEventListener('gcsp:policy-published', published);
+    root.removeEventListener('click', onLink);
     shell.destroy();
     root.replaceChildren();
   }

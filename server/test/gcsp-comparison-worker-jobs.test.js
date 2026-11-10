@@ -355,7 +355,7 @@ test('the job limits are read from the policy; missing or malformed limits are u
     assert.equal((await service.read(f.contexts.greg)).status, 'not-found');
   }
   const seeded = (await policy.getAssumption(JOBS_KEY, { runId: 'jobs-test', asOf: '2026-11-08T00:00:00.000Z' }));
-  assert.deepEqual(seeded.value.value, { schemaVersion: 1, timeoutSeconds: 1800, workerHeapMb: 128, workerYoungGenerationMb: 16 });
+  assert.deepEqual(seeded.value.value, { schemaVersion: 1, timeoutSeconds: 1800, workerHeapMb: 512, workerYoungGenerationMb: 16 });
   assert.equal(seeded.value.status, 'assumed');
 });
 

@@ -412,7 +412,7 @@ export function portalShell({
 
   function setBreadcrumbs(list = []) {
     const labels = list.map((c) => (typeof c === 'string' ? c : c?.label)).filter(Boolean);
-    if (!labels.length) {
+    if (labels.length < 2) {
       crumbsHost.replaceChildren();
       return;
     }

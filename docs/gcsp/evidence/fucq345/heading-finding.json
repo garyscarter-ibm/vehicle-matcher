@@ -1,0 +1,82 @@
+{
+  "id": "B-1",
+  "title": "Keep vehicle headings in sequence on selected review and order confirmation",
+  "severity": "Low",
+  "design_priority": "P2",
+  "suggested_product_priority": "P3; minor structural accessibility issue, no blocked car-ordering action",
+  "state": "To Do; unassigned; unfixed; local pickup held for tooling reconciliation",
+  "source_checkpoint": "5a5ae694923c26c59acb81a121a56683e424159c",
+  "integrated_base": "95f391414685638618f71665ab23630508f7aa45",
+  "originating_story_basis": "Parent verified FUCQ-70 as selected-review composition and FUCQ-72 as declarations/actual handoff outcome. Native Relates links to both Stories, discovery FUCQ-345 and residual context FUCQ-286 read back. This final metadata supersedes the original packet origin caveat; its reproduction/source/image bytes are unchanged.",
+  "minimal_reproduction": [
+    "Start isolated normal offline memory GCSP runtime at frozen source; claim an eligible released car.",
+    "Open Your cars and Resume saved journey at1280/375; inspect rendered DOM h1 then .gcsp-review-vehicle h3.vm-card-name.",
+    "Continue to order review, tick declarations and Submit order in the local fixture; inspect confirmation h1 and vehicle h3.vm-card-name."
+  ],
+  "expected": "Vehicle card participates in a sequential page heading hierarchy, using h2 after page h1 or an appropriate real parent h2 group.",
+  "actual": "matchCard defaults headingLevel=3; selected review and confirmation call it without headingLevel, so the visible page h1 is followed by the vehicle h3 with no intervening heading parent.",
+  "actual_impact": "Minor heading-navigation/outline clarity for assistive-technology users. Visible vehicle identity, tag/caption, facts and controls remain intact. Full screen-reader journey was not run.",
+  "source_refs": [
+    {
+      "path": "blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "sha256": "5aae587f77187083f8af937872122685d36d3b49c21f2fe8bb3c82299256e82d",
+      "lines": [
+        132
+      ]
+    },
+    {
+      "path": "blocks/gcsp/manual-summary/gcsp-manual-summary.js",
+      "sha256": "c1b14b61ab0455761b15f23e0474c415def0a6cf464fc5325c72c7c98bb08d7f",
+      "lines": [
+        150,
+        217
+      ]
+    },
+    {
+      "path": "blocks/vehicle-matcher/modes/result-card.js",
+      "sha256": "73d45a2604882064812a4aa02be0113fea7724ff8bc37fbd269d5c918a130ea0",
+      "lines": [
+        182,
+        632
+      ]
+    }
+  ],
+  "diagnostic": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-004/docs/gcsp/evidence/fucq345/assessment-b/runtime-diagnostics.json",
+    "sha256": "b4164a6482fef019dfd14cd7767f46c6cddfbbd6fea7801c8d5b102c2b4dbeca",
+    "rule": "skipped-heading",
+    "points": [
+      "01-selected-review375",
+      "03-confirmation375"
+    ],
+    "actual_details": [
+      "<h1> Review your car followed by <h3> BMW3SeriesSaloon320i (missingh2)",
+      "<h1> Order received followed by <h3> BMW3SeriesSaloon320i (missingh2)"
+    ]
+  },
+  "screenshots": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-004/docs/gcsp/evidence/fucq345/assessment-b/smallcaptures/01-selected-review-1280.jpg",
+      "bytes": 136872,
+      "sha256": "cd14e2cbde29d2f78fdc25565be0e6a1e44913755006ce9ac03436c75c3335cd"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-004/docs/gcsp/evidence/fucq345/assessment-b/smallcaptures/01-selected-review-375.jpg",
+      "bytes": 96025,
+      "sha256": "0d2e5471834e9105d29b8b19363d1a8c32ea1c0da3fb28dac7ef50dee0fdc7fe"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-004/docs/gcsp/evidence/fucq345/assessment-b/smallcaptures/03-confirmation-1280.jpg",
+      "bytes": 172590,
+      "sha256": "74f5335d881d51e880c9335ab5cce69a2093c7155adcf10dbe51125a510a57e9"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-004/docs/gcsp/evidence/fucq345/assessment-b/smallcaptures/03-confirmation-375.jpg",
+      "bytes": 129693,
+      "sha256": "846e81b3b0f99c781dd72ff06476746d4a0c04cb760394cefe7883c74cdbf47f"
+    }
+  ],
+  "disposition": "Separate linked Low backlog Bug FUCQ-349; unfixed, no FUCQ-345 repair, added AC or merge dependency.",
+  "jira": "FUCQ-349",
+  "pickup_hold": "Current importer expects exactly one native originating Story while both verified FUCQ-70/FUCQ-72 links remain. Parent verified4cacheimagesready0missing. No native links/other-contributor claims changed; no FUCQ-345 merge dependency."
+}

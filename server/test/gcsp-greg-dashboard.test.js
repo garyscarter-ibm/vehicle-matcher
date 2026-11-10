@@ -12,6 +12,7 @@ let dash;
 let fixtures;
 let tile;
 let table;
+let planFixtures;
 
 function installDom() {
   const { window } = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://example.test/', pretendToBeVisual: true });
@@ -25,6 +26,7 @@ before(async () => {
   fixtures = await import('../../blocks/gcsp/greg/fixtures.js');
   tile = await import('../../blocks/gcsp/kit/metric-tile.js');
   table = await import('../../blocks/gcsp/kit/data-table.js');
+  planFixtures = await import('../../blocks/gcsp/greg/plan/fixtures.js');
 });
 beforeEach(() => document.body.replaceChildren());
 
@@ -50,26 +52,33 @@ const strip = (node, sel) => { const c = node.cloneNode(true); c.querySelectorAl
 const shown = (node) => strip(node, '.gcsp-vh');
 const spoken = (node) => strip(node, '[aria-hidden="true"]');
 
-test('the shell shows Greg, Demand and supply current, the rest honestly unavailable, and one h1', async () => {
-  const { root } = await mountFixture('populated');
+test('the shell shows Greg, six working rail views named as their h1, landing on Next order, and one h1', async () => {
+  const { root } = await mountFixture('populated', { orderPlanAdapter: planFixtures.planFixtureAdapter('ready') });
   assert.equal(root.querySelector('.gcsp-account-name').textContent, 'Greg Lawson');
   assert.match(root.querySelector('.gcsp-account-context').textContent, /Scheme ordering lead/);
-  assert.equal(root.querySelector('.gcsp-nav-btn[aria-current="page"]').dataset.key, 'dashboard');
-  const disabled = [...root.querySelectorAll('.gcsp-nav-btn[aria-disabled="true"]')];
-  assert.deepEqual(disabled.map((b) => b.dataset.key), ['publish', 'tracking', 'next-order']);
-  assert.ok(disabled.every((b) => /Not available yet/.test(b.textContent) || /Not available yet/.test(b.getAttribute('aria-label') || '') || b.closest('li')?.textContent.includes('Not available yet')));
+  assert.equal(root.querySelector('.gcsp-nav-btn[aria-disabled="true"]'), null);
+  assert.deepEqual(dash.GREG_NAVIGATION.map((i) => i.label), ['Next order', 'Demand and supply', 'Policy', 'Order requests', 'Route comparison', 'Renewal cases']);
+  const current = () => root.querySelector('.gcsp-nav-btn[aria-current="page"]');
+  assert.equal(current().dataset.key, 'next-order');
   assert.equal(root.querySelectorAll('main h1').length, 1);
-  assert.equal(root.querySelector('main h1').textContent, 'Demand and supply');
-  assert.equal(root.querySelector('.gcsp-crumb').textContent, 'Demand and supply');
-  assert.equal(dash.GREG_NAVIGATION.length, 4);
+  const regionOf = { 'next-order': 'prediction', policy: 'publish', orders: 'order-tracking', comparison: 'route-comparison', cases: 'case-queue' };
+  for (const item of dash.GREG_NAVIGATION) {
+    root.querySelector(`.gcsp-nav-btn[data-key="${item.key}"]`).click();
+    assert.equal(current().dataset.key, item.key);
+    assert.equal(root.querySelector('main h1').textContent, item.label, 'the rail item is named as its h1');
+    assert.equal(document.activeElement, root.querySelector('main h1'));
+    const visible = [...root.querySelectorAll('section[data-region]')].filter((n) => !n.hidden).map((n) => n.dataset.region);
+    assert.deepEqual(visible, regionOf[item.key] ? [regionOf[item.key]] : [], item.key);
+    assert.equal(root.querySelector('.gcsp-greg-figures').hidden, item.key !== 'dashboard');
+  }
+  assert.equal(root.querySelectorAll('section[data-region]').length, 5, 'every region stays mounted');
 });
 
 test('populated shows the meta strip, headline tiles, every table and the fixture labels', async () => {
   const { root } = await mountFixture('populated');
   const m = meta(root);
   assert.match(m, /5 Nov 2026, 09:40 GMT/);
-  assert.match(m, /gcsp-policy-v1/);
-  assert.match(m, /1, 2, 3/);
+  assert.doesNotMatch(m, /gcsp-policy|Figures version|Brief version/, 'no internal ids on screen');
   assert.match(m, /Expressed saved demand/);
   assert.match(m, /not satisfaction and not a prediction/);
   assert.match(m, /show as <5/);
@@ -93,7 +102,9 @@ test('populated shows the meta strip, headline tiles, every table and the fixtur
   for (const l of ['Offers made', 'Accepted', 'Declined', 'Expired', 'Selected']) assert.ok([...offers.querySelectorAll('.gcsp-tile-label')].some((n) => n.textContent === l), l);
   assert.ok(cellsOf(root, 'Declined offers, by reason').length >= 4);
   assert.deepEqual(cellsOf(root, 'Stock by model line')[1], ['G21 Touring', '8', '<5', '<5']);
-  assert.match(root.querySelector('.gcsp-greg-status').textContent, /Figures updated for 5 Nov 2026, 09:40 GMT/);
+  const status = root.querySelector('.gcsp-greg-status');
+  assert.match(status.textContent, /Figures updated for 5 Nov 2026, 09:40 GMT/);
+  assert.ok(status.classList.contains('gcsp-vh'), 'the as-of date is shown once, in the meta; the status line is for screen readers');
   for (const h of root.querySelectorAll('.gcsp-greg-body section, .gcsp-greg-regions section')) {
     assert.equal(h.tagName, 'SECTION');
     assert.equal(document.getElementById(h.getAttribute('aria-labelledby')).tagName, 'H2');
@@ -120,7 +131,7 @@ test('empty (no briefs) explains itself, keeps the meta strip and stock, and sho
   const status = root.querySelector('.gcsp-greg-body .vm-status');
   assert.match(status.textContent, /No briefs yet/);
   assert.match(status.textContent, /No employee has confirmed a brief yet/);
-  assert.match(meta(root), /None yet/);
+  assert.match(meta(root), /Figures for/);
   assert.equal(root.querySelector('[data-section="demand"]'), null);
   assert.deepEqual(cellsOf(root, 'Stock by model line').map((r) => r[0]), ['G21 Touring', 'G60 Saloon']);
   assert.ok(refreshButton(root));
@@ -169,7 +180,7 @@ test('refresh fixture: Refresh changes figures, as-of and versions, keeps focus 
   assert.notEqual(tileByLabel(root, 'Declined').querySelector('.gcsp-tile-figure').textContent, declined);
   assert.notEqual(tileByLabel(root, 'Briefs with no suitable car').querySelector('.gcsp-tile-figure').textContent, unmet);
   assert.equal(root.querySelector('.gcsp-greg-status').getAttribute('role'), 'status');
-  assert.match(root.querySelector('.gcsp-greg-status').textContent, /Figures updated for 5 Nov 2026, 10:25 GMT/);
+  assert.match(meta(root), /5 Nov 2026, 10:25 GMT/);
   assert.equal(root.querySelector('.gcsp-greg-body').hasAttribute('aria-busy'), false);
 });
 

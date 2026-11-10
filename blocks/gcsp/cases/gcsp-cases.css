@@ -8,8 +8,8 @@ gcsp-help { display: block; }
 
 .gcsp .gcsp-cases-body { max-width: 1080px; margin-inline: auto; padding: var(--gcsp-space-4); color: var(--gcsp-text); font-family: var(--gcsp-font); }
 .gcsp .gcsp-case-content { display: grid; gap: var(--gcsp-space-4); min-width: 0; }
-.gcsp .gcsp-case-status { min-height: var(--gcsp-space-6); color: var(--gcsp-text-muted); }
-.gcsp .gcsp-case-entry, .gcsp .gcsp-case-detail, .gcsp .gcsp-case-confirmation { min-width: 0; padding: var(--gcsp-space-4); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); overflow-wrap: anywhere; }
+.gcsp .gcsp-case-status { min-height: var(--gcsp-space-6); color: var(--gcsp-text-muted); } .gcsp .gcsp-cases-body.is-quiet { padding: 0; } .gcsp .is-quiet > .gcsp-case-status:empty { display: none; }
+.gcsp .gcsp-case-detail, .gcsp .gcsp-case-confirmation { min-width: 0; padding: var(--gcsp-space-4); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); overflow-wrap: anywhere; }
 .gcsp .gcsp-case-history > summary { cursor: pointer; padding-block: var(--gcsp-space-3); min-height: 48px; box-sizing: border-box; font-weight: var(--gcsp-font-strong-weight); }
 .gcsp .gcsp-case-history > summary:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }
 .gcsp .gcsp-case-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gcsp-space-2); margin-block-start: var(--gcsp-space-4); }

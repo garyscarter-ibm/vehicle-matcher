@@ -238,7 +238,7 @@ test('current105 reload opens actual102 persisted decline in employee-only107 an
   const afterSave = digest(); mount();
   await until(() => root.querySelector('[data-followup-saved]'));
   assert.equal(signals[0].aborted, true); assert.equal(teardownCount, 1); assert.equal(confirmations.length, 1);
-  assert.match(root.querySelector('[data-followup-saved]').textContent, /brief version 3/); assert.equal(refreshes(), 1);
+  assert.match(root.querySelector('[data-followup-saved]').textContent, /Saved\./); assert.doesNotMatch(root.textContent, /version/); assert.equal(refreshes(), 1);
   assert.deepEqual(mounted.snapshot().followup, declined.followup); assert.equal(digest(), afterSave);
   assert.equal(calls.filter((call) => call.path.endsWith('/decision') && call.method === 'POST').length, 1);
   await checkpoint('confirmed-change-public-receipt-and-original-coordinate-saved-reload');

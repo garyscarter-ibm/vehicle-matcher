@@ -65,9 +65,27 @@ test('the messages fixture lists rows newest first with recipient, subject, demo
   assert.equal(items[2].querySelector('.gcsp-mail-status').textContent, 'Failed');
   assert.ok(items.every((b) => b.querySelector('.gcsp-mail-status svg')), 'status has an icon as well as text');
   assert.match(items[3].textContent, /Bartholomew Featherstonehaugh/);
-  assert.equal(root.querySelectorAll('.gcsp-mail-row[aria-current]').length, 0);
+  assert.equal(root.querySelectorAll('.gcsp-mail-row[aria-current]').length, 1, 'the newest email opens by default');
+  assert.equal(root.querySelector('.gcsp-mail-row[aria-current]').dataset.id, 'job-004');
+  assert.equal(root.querySelector('.gcsp-mail-prompt'), null);
 });
 
+test('the open email puts its facts on one line and folds the plain text and delivery attempts away', async () => {
+  const { root } = await mountFixture('messages');
+  const detail = root.querySelector('.gcsp-mail-detail');
+  assert.equal(detail.querySelectorAll('.gcsp-mail-line').length, 1);
+  assert.match(detail.querySelector('.gcsp-mail-line').textContent, /^To Paula.*Captured, not sent, 5 Nov 2026, 09:20 GMT\.$/);
+  const folds = [...detail.querySelectorAll('details.gcsp-mail-fold')];
+  assert.deepEqual(folds.map((n) => n.querySelector('summary').textContent), ['Plain-text version', 'Delivery attempts']);
+  assert.ok(folds.every((n) => n.open === false));
+  assert.match(folds[1].textContent, /Attempts/); assert.equal(detail.querySelector('.gcsp-mail-offer .vm-btn-primary'), null);
+});
+test('with no email to show the detail box is hidden, not an empty box', async () => {
+  const handle = list.messageList({ messages: [] });
+  assert.equal(handle.root.querySelector('.gcsp-mail-detail').hidden, true);
+  handle.update(fixtures.fixtureMessages()); assert.equal(handle.root.querySelector('.gcsp-mail-detail').hidden, false);
+  handle.destroy();
+});
 test('Enter on a row button opens the message and moves focus to its heading', async () => {
   const { root } = await mountFixture('messages');
   const row = rows(root)[0];
@@ -361,15 +379,15 @@ test('a captured message reads "Captured, not sent" in the row and the detail St
   const status = (message) => {
     const handle = list.messageList({ messages: [message], selectedId: message.jobId });
     const chip = handle.root.querySelector('.gcsp-mail-status').textContent;
-    const fact = [...handle.root.querySelectorAll('.gcsp-mail-facts > *')].find((node) => /^Status/.test(node.textContent)).textContent;
+    const fact = handle.root.querySelector('.gcsp-mail-line').textContent;
     return { chip, fact };
   };
   const captured = status(base);
   assert.equal(captured.chip, 'Captured, not sent');
-  assert.match(captured.fact, /Captured, not sent/);
+  assert.match(captured.fact, /^To .*\. Captured, not sent, 5 Nov 2026/);
   const configured = status({ ...base, transport: 'configured' });
   assert.equal(configured.chip, 'Sent');
-  assert.match(configured.fact, /^StatusSent$/);
+  assert.match(configured.fact, /^To .*\. Sent, /);
 });
 
 test('the email preview frame has a visible focus outline in the presenter stylesheet', () => {

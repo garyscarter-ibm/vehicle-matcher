@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "fucq309.first-buddy-v2-evidence.v1",
+  "observedAt": "2026-11-10T15:53:37.104278+00:00",
+  "runId": "first-buddy-claim-v2",
+  "outcome": "INSTRUMENTED OOM; first-claim checkpoint unreached",
+  "sourceReviewedCommit": "9bcd3e865be5b4e9df43b031e8742f866f1f9fb2",
+  "evidenceHead": "54aa281fcb96df28ad5743c18c010f68c8b5e224",
+  "artifactSha256": {
+    "cleanup.json": "095cc12e41a5dafb05c75734b419204747d5d05366e81ffb2fd9858105568a75",
+    "failure.log": "aa60f3d687622a8e2dddfaa6b393db9ff2bc5f5e797feeece03381fcee0eca5c",
+    "http.mjs": "5c4070a3227e9a11252b340ca06e0534fae436ae2ca1f42d7fa4e7d7725b4dc3",
+    "local-deps.mjs": "0e01fe0617792787b04b8dc499273b27b044de0850602f0bd5045ca6cf807e26",
+    "observer.mjs": "758f7b255444a3b950a70dc2293725fefaae895d2dabbb6b2002adc0115136cd",
+    "ownership.json": "044cc13f0ff8481cc036b1ed64d3adc279ad2061181ec2330e385dd59bc8bf5c",
+    "plan.json": "4e3692b15abfe6d286aa587df89e1771a2154529218b0c0f3de34940105fbe21",
+    "post-marker-trace.md": "40be9bc93eedfe6d8474096ce3490118766c32aea14a4e06b7d6082cdddfda81",
+    "report.md": "ce612655208d711bfcd9eb71503c9f55a2ed3712c5a5fb7c44d2c9e1e348ad15",
+    "summary.json": "6f5f7041c990e389339bd4b7bfad22724328cf9d9b74998dbdf4791ba92970e9",
+    "supervise.py": "d7836c6d53dea90b1b89ddbe91499059cd0a08feac4128abd20fd97c515a39e9",
+    "supervisor-plan.json": "298447ca102e66db4a61eaaf363bf4fda5e25713ca7155893a5515cc5cec44bd",
+    "supervisor-receipt.json": "9543b8518e7aa8c7bca270ba8c65d78714991de2011f4406484ec8fcb788e11e",
+    "cleanup-audit.json": "d2f9170866f29b8fab1639cb6b3b621e9c84486722c9a9464d4f1980787d7213"
+  },
+  "retainedBytes": 326566,
+  "nextGate": "Parent independent review of observer liveness before any further production change/proof; no run authorised here"
+}

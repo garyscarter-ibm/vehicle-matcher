@@ -4206,6 +4206,301 @@
       "observed_at": "2026-11-10T14:18:29Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-342",
       "branch": "dev/DEV-2026-11-10-GC-023"
+    },
+    {
+      "id": "FUCQ-345",
+      "title": "Keep the selected-car order tag clear of its image caption",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "type": "Bug",
+      "assignee": "usget",
+      "branch": "dev/DEV-2026-11-10-004",
+      "observed_at": "2026-11-10T16:11:41Z",
+      "workers": [
+        {
+          "name": "Michigan J. Frog",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-10T16:11:41.105952+00:00",
+          "expires_at": "2026-11-10T16:11:41.105952+00:00",
+          "source": "Final fresh-base scoped handover:115/115;24owned roots absent, no further owned workers; parent owns base merge/archive/Jira lifecycle.",
+          "status": "stopped"
+        },
+        {
+          "name": "Grub",
+          "role": "implementer",
+          "harness": "codex",
+          "observed_at": "2026-11-10T16:02:09.270405+00:00",
+          "expires_at": "2026-11-10T16:02:09.270405+00:00",
+          "source": "Final handover2708d11e; implementer ended; retained evidence reused without more allocations.",
+          "status": "stopped"
+        },
+        {
+          "name": "Imhotep",
+          "role": "independent-reviewer-A",
+          "harness": "codex",
+          "observed_at": "2026-11-10T16:02:09.270405+00:00",
+          "expires_at": "2026-11-10T16:02:09.270405+00:00",
+          "source": "Independent A finalized blind scoped PASS29/40; exact reportSHA1aa23ab2; no descendants/scratch.",
+          "status": "stopped"
+        },
+        {
+          "name": "Wile E. Coyote",
+          "role": "independent-runner-B",
+          "harness": "codex",
+          "observed_at": "2026-11-10T16:02:09.270405+00:00",
+          "expires_at": "2026-11-10T16:02:09.270405+00:00",
+          "source": "Final B received;18currentcapture+19source hashes verified;9B scratch roots absent; no further allocations/descendants.",
+          "status": "stopped"
+        }
+      ],
+      "slices": [
+        {
+          "id": "repair",
+          "status": "complete",
+          "title": "Readable-selected-car-media",
+          "observed_at": "2026-11-10T15:00:02Z",
+          "evidence": "Repair5d1cfc33 on integratede81db95a; exact source/capture manifest2708d11e; lead scoped170/170 and corrected1280/375 inspection passed. Independent review remains a separate open slice."
+        },
+        {
+          "id": "review",
+          "status": "complete",
+          "title": "Independent-rendered-review",
+          "observed_at": "2026-11-10T16:02:09Z",
+          "evidence": "Independent blind A PASS29/40; B18 current1280/375 captures and41runtime findings classified. Lead original-resolution critique: all3 mediaACs pass. A-1 FUCQ-347 and B-1 FUCQ-349 separate Low/unfixed. See integrated-review.md and assessment-b/browser-provenance.json."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Scoped-delivery-validation",
+          "observed_at": "2026-11-10T16:11:41Z",
+          "evidence": "Fresh metadata-only base43e4c1be merged6880c502; selected-review+UIratchet targeted/default115/115,0skips,1.0s. All19rendered+42import/input hashes match; independent A/B reused.24owned roots absent,no pg/link/install,clean. fresh-base-validation-receipt.json. Original3ACs fixed; parent integration/Jira acceptance pending."
+        }
+      ],
+      "unsliced": false,
+      "delivery_status": "Built; final fresh-base scoped check complete; pending parent base merge and collaborator acceptance",
+      "jira_status_basis": "Last verified native status In Progress. Parent subsequent refresh failed OAuth unauthorized_client invalid refresh_token; lifecycle remains pending sign-in, no transition inferred.",
+      "integration_base": "43e4c1be2ca66951a0ddc4a1ff11332df48974be"
+    },
+    {
+      "assignee": "usget",
+      "branch": "dev/DEV-2026-11-10-007",
+      "delivery_status": "Built; scoped fixture validation complete; parent integration and collaborator acceptance pending",
+      "id": "FUCQ-348",
+      "jira_status_basis": "Local claimed record; Jira OAuth refresh unavailable, no native transition performed.",
+      "status": "In Progress",
+      "title": "Repair the stale version assumption in the allocation identity test fixture",
+      "type": "Bug",
+      "workers": [
+        {
+          "expires_at": "2026-11-10T16:22:09.450631+00:00",
+          "harness": "codex",
+          "name": "B-Bot",
+          "observed_at": "2026-11-10T16:22:09.450631+00:00",
+          "role": "story-lead",
+          "source": "Fixture repair and scoped validation finished; no descendants or active test processes.",
+          "status": "stopped"
+        }
+      ],
+      "observed_at": "2026-11-10T16:22:09Z",
+      "slices": [
+        {
+          "id": "repair",
+          "status": "complete",
+          "title": "Use current fixture employee version",
+          "observed_at": "2026-11-10T16:22:09Z",
+          "evidence": "Lead reviewed same-transaction get and CAS version; no shared helper or product changes. Original focused red stale-version2/current3; evidence docs/gcsp/evidence/fucq348-fixture-version-2026-11-10.md."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Exercise original identity authority assertions",
+          "observed_at": "2026-11-10T16:22:09Z",
+          "evidence": "Lead accepted full identity-allocation module3/3pass0skip with original forged/nonpresenter/unknown/cross-run/cross-scheme/expired/reset assertions retained. Scoped memory proof only; parent merge remains pending."
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-346",
+      "title": "Keep account menus and Retry readable in narrow component-gallery frames",
+      "status": "To Do",
+      "original_status": "To Do",
+      "type": "Bug",
+      "assignee": "",
+      "branch": "dev/DEV-2026-11-10-005",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-346",
+      "jira_observation_basis": "Imported claimed Bug; native OAuth unavailable; local slice evidence does not infer lifecycle acceptance",
+      "workers": [
+        {
+          "name": "Michigan J. Frog",
+          "role": "story lead and small gallery CSS repair",
+          "harness": "codex",
+          "status": "stopped",
+          "observed_at": "2026-11-10T16:52:03.561622+00:00",
+          "expires_at": "2026-11-10T16:52:03.561622+00:00",
+          "requested_model": "gpt-6.1-sol",
+          "requested_effort": "xhigh",
+          "selected_model": "gpt-6.1-sol",
+          "selected_effort": "xhigh",
+          "source": "Final scoped delivery checks and independent A/B complete; ten owned roots absent; parent owns integration/Jira acceptance."
+        },
+        {
+          "name": "Lord Business",
+          "role": "independent AssessmentA reviewer",
+          "harness": "codex",
+          "status": "stopped",
+          "observed_at": "2026-11-10T16:52:03.561622+00:00",
+          "expires_at": "2026-11-10T16:52:03.561622+00:00",
+          "requested_model": "gpt-6.1-sol",
+          "requested_effort": "high",
+          "selected_model": "gpt-6.1-sol",
+          "selected_effort": "high",
+          "source": "Final scoped delivery checks and independent A/B complete; ten owned roots absent; parent owns integration/Jira acceptance."
+        },
+        {
+          "name": "Mr Troop",
+          "role": "independent AssessmentB detector/browser runner",
+          "harness": "codex",
+          "status": "stopped",
+          "observed_at": "2026-11-10T16:52:03.561622+00:00",
+          "expires_at": "2026-11-10T16:52:03.561622+00:00",
+          "requested_model": "gpt-6-luna",
+          "requested_effort": "high",
+          "selected_model": "gpt-6-luna",
+          "selected_effort": "high",
+          "source": "Final scoped delivery checks and independent A/B complete; ten owned roots absent; parent owns integration/Jira acceptance."
+        }
+      ],
+      "observed_at": "2026-11-10T16:52:03Z",
+      "slices": [
+        {
+          "id": "containment",
+          "status": "complete",
+          "title": "Gallery-account-containment",
+          "observed_at": "2026-11-10T16:52:03Z",
+          "evidence": "Gallery-only repair9cc11eb6; both390px clips reproduced with original CSS and corrected fulltext/popup/Retry/loading and keyboard proved. docs/gcsp/evidence/fucq346/validation.json"
+        },
+        {
+          "id": "critique",
+          "status": "complete",
+          "title": "Independent-rendered-review",
+          "observed_at": "2026-11-10T16:52:03Z",
+          "evidence": "Independent A unanchored31/36 PASS; all24fresh desktop/narrow captures viewed; B actual4view overlays196/114/4/2 classified; no actionable original-scope finding. Lead inspected corrected capture set. review.md"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Shared-menu-boundary-integration",
+          "observed_at": "2026-11-10T16:52:03Z",
+          "evidence": "Base829cf1a9 merged348fc769; final162/162 scoped shell/ratchet/direct narrowaccount import-layout checks,0skips. Exact rendered source/input hashes match9cc11eb6; no fullsuite/browser repeat. Ten owned roots absent; native Jira held."
+        }
+      ],
+      "unsliced": false,
+      "delivery_status": "Built; original4AC scoped proof complete; parent integration/native Jira/collaborator acceptance pending",
+      "integration_base": "829cf1a9fe10ad518cd0519c3f5e1ae9447421c1",
+      "integration_merge": "348fc7691feca61b2d3bc6136b6e8683296c6c47"
+    },
+    {
+      "id": "FUCQ-347",
+      "title": "Make the selected-review gallery caption match its displayed vehicle image",
+      "status": "In Progress",
+      "type": "Bug",
+      "assignee": "usget",
+      "branch": "dev/DEV-2026-11-10-006",
+      "jira_status_basis": "Local claimed record; native Jira unavailable, no transition inferred.",
+      "workers": [
+        {
+          "name": "B-Bot",
+          "role": "story-lead",
+          "harness": "codex",
+          "status": "handoff-ready",
+          "observed_at": "2026-11-10T17:14:25.584035+00:00",
+          "expires_at": "2026-11-10T17:14:25.584035+00:00",
+          "source": "B-Bot fixed3AC Built evidence; all validation complete and resources cleaned; parent integration pending. Claim expired at handoff, not inferred from commit."
+        }
+      ],
+      "observed_at": "2026-11-10T17:14:25Z",
+      "slices": [
+        {
+          "id": "repair",
+          "status": "complete",
+          "title": "Retain truthful fixture image provenance",
+          "observed_at": "2026-11-10T17:14:25Z",
+          "evidence": "Gallery removes false same-model/colour override; reuses truthful fixture caption+alt. Actual1280/375 photo+missing captures sourceSHAab56d5cb; independentHugo PASS; production/shared/F346 boundaries unchanged."
+        },
+        {
+          "id": "review",
+          "status": "complete",
+          "title": "Independent rendered visual critique",
+          "observed_at": "2026-11-10T17:14:25Z",
+          "evidence": "Hugo independent AssessmentA PASS all3AC; personally inspected4captures1280/375 before detector, no actionable finding. Long tag/caption readable; source/capture hashes in docs/gcsp/evidence/fucq347/validation.json; detector[] separately."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Scoped gallery and media validation",
+          "observed_at": "2026-11-10T17:14:25Z",
+          "evidence": "Scoped3gallery/media+102UIratchet cases pass,0fail/0skip. Corrected browser4states passes0errors/0external; initial harness failure preserved. Five owned roots/groups absent and reservations released; no fullsuite/native acceptance inferred."
+        }
+      ],
+      "unsliced": false,
+      "delivery_status": "Built; original3AC scoped source/rendered/independent proof complete; parent integration/native Jira/collaborator acceptance pending"
+    },
+    {
+      "id": "FUCQ-309",
+      "title": "Default 1,000-employee comparison runs out of worker heap in 3 of 3 runs after about 3 minutes",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-309",
+      "branch": "dev/DEV-2026-11-10-GC-027",
+      "jira_source_updated_at": "2026-11-10T19:06:20.527000Z",
+      "jira_observed_at": "2026-11-10T19:07:13.636Z",
+      "workers": [
+        {
+          "name": "Ralph Wolf",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-10T18:57:44.010794+00:00",
+          "expires_at": "2026-11-10T18:57:44.010794+00:00",
+          "source": "Existing lead requested/selected gpt-6.1-sol/xhigh; no fallback or new agents for final delivery",
+          "status": "Built; worker ended; parent final review/integration pending"
+        }
+      ],
+      "observed_at": "2026-11-10T19:07:23Z",
+      "slices": [
+        {
+          "id": "current-cause",
+          "status": "complete",
+          "title": "Current-code retained-data evidence",
+          "observed_at": "2026-11-10T18:57:43Z",
+          "evidence": "Lead and independent review passed retained-data evidence: original outcome values are preserved; scoped 100/300 census distinguishes expanded JSON, modeled containers and heap. Canonical clean512 succeeded at e567b9b6. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        },
+        {
+          "id": "retention-repair",
+          "status": "complete",
+          "title": "Evidenced replay memory and lifetime repair",
+          "observed_at": "2026-11-10T18:57:43Z",
+          "evidence": "Exact immutable sharing, narrow completion projections, compact pool and terminal disposal plus allocator ownership repair independently reviewed. Scoped wrappers/store/pool collect with run retained; clean canonical crosses all6 close boundaries. Larger heap alone is not repair. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        },
+        {
+          "id": "semantic-regression",
+          "status": "complete",
+          "title": "Semantic regression and affected-reader checks",
+          "observed_at": "2026-11-10T18:57:43Z",
+          "evidence": "100/300 full record/decision/totals/measures equality; replay/rollback/isolation/legacy checks passed. Matching14 integration passes include repaired identity boundary. Final policy/input identity and2 gate/limits tests pass. No unchanged1000 baseline or full/nativePG claim. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        },
+        {
+          "id": "canonical-integration",
+          "status": "complete",
+          "title": "Canonical six-step stored-result integration gate",
+          "observed_at": "2026-11-10T18:57:43Z",
+          "evidence": "Independent PASS original4AC at e567b9b6: actual default1000/3/6 completed1721.492s; one complete result f643cb89; sampled heap422.10/process874.11/group900.11MiB,1064health probes. Cleanup verified. Final basis/date-only equivalence and latest sharedbase6ae669e8 preserved. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }

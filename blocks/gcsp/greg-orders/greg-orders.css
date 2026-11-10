@@ -6,12 +6,12 @@
 .gcsp.gcsp-orders .gcsp-h2 { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); }
 .gcsp.gcsp-orders .gcsp-h3 { font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); font-weight: var(--gcsp-font-strong-weight); }
 .gcsp .gcsp-orders-status { min-height: var(--gcsp-space-6); }
-.gcsp .gcsp-orders-form { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gcsp-space-4); }
+.gcsp .gcsp-orders-form, .gcsp .gcsp-orders-production-form { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gcsp-space-4); }
 .gcsp .gcsp-orders-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: var(--gcsp-space-4); width: 100%; }
 .gcsp .gcsp-orders-production { padding-top: var(--gcsp-space-4); border-top: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-orders-production > summary { width: fit-content; padding: var(--gcsp-space-2) 0; font-weight: var(--gcsp-font-strong-weight); cursor: pointer; }
 .gcsp .gcsp-orders-production > summary:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }
-.gcsp .gcsp-orders-production[open] > .gcsp-orders-form { margin-top: var(--gcsp-space-3); }
+.gcsp .gcsp-orders-production[open] > :not(summary) { margin-top: var(--gcsp-space-4); }
 .gcsp .gcsp-orders-queues { display: grid; gap: var(--gcsp-space-2); }
 .gcsp .gcsp-orders-queue { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--gcsp-space-2); }
 .gcsp .gcsp-orders-tracking .gcsp-table { min-width: 700px; }

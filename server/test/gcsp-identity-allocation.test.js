@@ -29,7 +29,12 @@ test('cohort resolution rejects forged, nonpresenter, unknown and cross-run auth
   assert.equal((await f.identity.resolveEmployeeContext(employee, employee.employeeId)).status, 'forbidden');
   assert.equal((await f.identity.resolveEmployeeContext(f.context, 'unknown')).status, 'unknown-principal');
   assert.equal((await f.identity.resolveEmployeeContext({ ...f.context, runId: 'other' }, employee.employeeId)).status, 'forbidden');
-  await f.write((tx) => tx.compareAndSwap({ table: 'employees', key: { runId: f.context.runId, employeeId: employee.employeeId } }, 2, { schemeId: 'other-scheme' }));
+  await f.write(async (tx) => {
+    const resource = { table: 'employees', key: { runId: f.context.runId, employeeId: employee.employeeId } };
+    const row = await tx.get(resource);
+    assert.equal(row.status, 'ok');
+    return tx.compareAndSwap(resource, row.value.version, { schemeId: 'other-scheme' });
+  });
   assert.equal((await f.identity.resolveEmployeeContext(f.context, employee.employeeId)).status, 'forbidden');
 });
 
