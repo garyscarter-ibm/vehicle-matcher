@@ -226,3 +226,18 @@ test('FUCQ-326: the editor, its rail item and its states say Your preferences, n
   const failed = document.createElement('main'); const cleanup = mountBriefBody(failed, {}); await Promise.resolve();
   assert.equal(failed.querySelector('h1, h2, h3').textContent, 'Your preferences could not be loaded'); assert.doesNotMatch(failed.textContent, /\bbrief\b/i); cleanup();
 });
+test('a saved brief with search on offers one onward step to buddy activity', async (t) => {
+  const main = document.createElement('main'); document.body.append(main); const went = [];
+  const base = fixture.edited.value.initial.briefVersion ?? 0; const draft = fixture.edited.value.initial.draftVersion ?? 0;
+  const teardown = mountBriefBody(main, { editor: fixture.edited.value, onNavigate: (to) => went.push(to), createCommandId: (kind) => kind,
+    transport: { preview: async () => fixture.preview, saveDraft: async () => ({ status: 'ok', value: { draftVersion: draft + 1, baseBriefVersion: base } }),
+      confirm: async () => ({ status: 'ok', value: { brief: { briefVersion: base + 1 } } }) } });
+  t.after(() => { teardown(); main.remove(); });
+  await settle();
+  const onward = [...main.querySelectorAll('button')].find((node) => node.textContent === 'See your buddy at work');
+  assert.equal(onward.hidden, true);
+  main.querySelector('[aria-label="Buddy permissions"] button').click();
+  main.querySelector('[data-save-brief]').click(); await settle();
+  assert.match(main.textContent, /saved\. Your selected buddy permissions apply\./);
+  assert.equal(onward.hidden, false); onward.click(); assert.deepEqual(went, ['activity']);
+});

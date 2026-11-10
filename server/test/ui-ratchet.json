@@ -151,7 +151,7 @@
     },
     {
       "path": "blocks/gcsp/shell/gcsp-shell.css",
-      "max_lines": 270
+      "max_lines": 266
     },
     {
       "path": "blocks/gcsp/shell/gcsp-tokens.css",
@@ -303,7 +303,7 @@
     },
     {
       "path": "blocks/gcsp/shell/account-menu.css",
-      "max_lines": 26
+      "max_lines": 19
     },
     {
       "path": "blocks/gcsp/login/gcsp-login.css",
