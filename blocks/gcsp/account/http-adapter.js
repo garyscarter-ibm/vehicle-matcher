@@ -1,3 +1,4 @@
+import { accountIdentity } from '../shell/account-runtime.js';
 import { journeyIntent, toAccountView } from './account-view.js';
 import { isAccessLapsed } from '../kit/run-restarted.js';
 import { expandStockPayload } from './stock-payload.js';
@@ -62,7 +63,7 @@ export function createAccountHttpAdapter({ base = '', fetchImpl = globalThis.fet
   return { readAccount, readDraft, saveDraft, browseStock, readOffers, readOrder,
     async loadAccount(options) {
       const envelope = await readAccount(options); const model = toAccountView(envelope);
-      return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', name: model.account?.name ?? 'Account unavailable',
+      return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', ...accountIdentity(model.account),
         context: [model.account?.company, model.account?.gradeId && `Grade ${model.account.gradeId}`].filter(Boolean).join(', '),
         model, envelope };
     },

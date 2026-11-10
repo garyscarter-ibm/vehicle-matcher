@@ -183,7 +183,9 @@ test('ready account disclosure preserves full context, closes with Escape and re
   assert.equal(summary.querySelector('.gcsp-account-context'), null, 'scheme context lives in the disclosure');
   summary.click();
   assert.equal(details.open, true);
-  assert.equal(details.querySelector('.gcsp-account-panel').textContent, `${name}Choices, grade G7`);
+  assert.equal(details.querySelector('.gcsp-account-detail-name').textContent, name);
+  assert.equal(details.querySelector('.gcsp-account-context').textContent, 'Choices, grade G7');
+  assert.equal(details.querySelector('.gcsp-account-signout').textContent, 'Sign out');
   summary.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
   assert.equal(details.open, false);
   assert.equal(document.activeElement, summary);
@@ -781,11 +783,12 @@ test('the order progress pages load the custom element through external modules 
   assert.match(harness, /id="gcsp-order-progress-preview"/);
   const host = read('blocks/gcsp/order-progress/live.js');
   assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
-    '../shell/account-runtime.js', './order-progress-http.js', '../cases/http-adapter.js', '../account/http-adapter.js', './order-car.js',
+    '../shell/session-lifecycle.js', '../shell/account-runtime.js', './order-progress-http.js', '../cases/http-adapter.js', '../account/http-adapter.js', './order-car.js',
     '../presenter-controls/controls.js', '../employee/portal-navigation.js', './gcsp-order-progress.js',
   ]);
   assert.match(host, /routePortalEvents\(host\)/);
-  assert.doesNotMatch(host, /URLSearchParams|\blocation\b|\bhistory\./);
+  assert.match(host, /reload: \(\) => win\.location\.reload\(\)/);
+  assert.doesNotMatch(host.replace('win.location.reload()', ''), /URLSearchParams|\blocation\b|\bhistory\./);
   assert.equal(read('blocks/gcsp/order-progress/register.js').includes('defineGcspOrderProgress()'), true);
   assert.match(read('server/gcsp/host.js'), /'\/gcsp-order-progress-live\.html'/);
 });

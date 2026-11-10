@@ -26,7 +26,7 @@ test('gcsp-api runs the GCSP runtime and declares its settings without committin
   const api = yaml.slice(yaml.indexOf('name: gcsp-api'), yaml.indexOf('name: gcsp-site'));
   const value = (key) => api.match(new RegExp(`- key: ${key}\\b[^\\n]*\\n\\s+value: "?([^"\\n]+)"?`))?.[1];
   assert.equal(value('GCSP_RUNTIME'), '1');
-  assert.equal(value('GCSP_REPOSITORY_MODE'), 'memory');
+  assert.equal(value('GCSP_REPOSITORY_MODE'), 'postgres');
   assert.equal(value('GCSP_PUBLIC_ORIGIN'), value('GCSP_PUBLIC_BASE_URL'));
   for (const key of ['DEMO_ACCESS_KEY', 'GCSP_MAIL_TRANSPORT', 'GCSP_MAIL_FROM', 'GCSP_MAIL_FROM_NAME', 'GCSP_MAIL_RECIPIENTS', 'GCSP_BREVO_API_KEY']) {
     assert.match(api, new RegExp(`- key: ${key}\\b[^\\n]*\\n\\s+sync: false`), key);
@@ -37,7 +37,7 @@ test('gcsp-api runs the GCSP runtime and declares its settings without committin
 test('gcsp-site redirects exactly the live pages gcsp-api serves, to GCSP_API_URL', async () => {
   const host = await readFile(new URL('../gcsp/host.js', import.meta.url), 'utf8');
   const session = [...host.match(/SESSION_PAGES = \[([^\]]+)\]/)[1].matchAll(/'([^']+)'/g)].map((m) => m[1]);
-  const served = [...session, '/gcsp/offer', '/gcsp-offer.html'];
+  const served = [...session, '/gcsp/login', '/gcsp-login.html', '/gcsp/offer', '/gcsp-offer.html'];
   const routes = [...site.matchAll(/- type: redirect\n\s+source: (\S+)\n\s+destination: (\S+)/g)];
   const apiUrl = site.match(/- key: GCSP_API_URL[^\n]*\n\s+value: (\S+)/)[1];
   assert.deepEqual(routes.map((m) => m[1]).sort(), [...served].sort());

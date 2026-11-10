@@ -1,0 +1,19 @@
+body { margin: 0; }
+.gcsp-login-shell .gcsp-nav,
+.gcsp-login-shell .gcsp-menu-toggle { display: none; }
+.gcsp-login-shell .gcsp-content { display: flex; flex-direction: column; padding-block: clamp(40px, 10vh, 104px); }
+.gcsp-login-shell .gcsp-main { display: grid; justify-items: center; }
+.gcsp-login-shell .gcsp-main > .gcsp-login-panel { width: 100%; max-width: 440px; padding: 36px; border: 1px solid var(--gcsp-divider); border-top: 4px solid var(--gcsp-accent); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); }
+.gcsp-login-panel .vm-title { margin: 0 0 12px; font-size: 44px; line-height: 1.1; }
+.gcsp-login-panel .vm-lede { margin: 0; color: var(--gcsp-text-muted); font-size: 16px; line-height: 1.5; }
+.gcsp-login-form { display: grid; gap: 24px; margin-top: 32px; }
+.gcsp-login-form .gcsp-field { margin: 0; }
+.gcsp-login-form .vm-btn { width: 100%; justify-content: center; }
+.gcsp-login-error { margin: 0; padding: 12px; border: 1px solid var(--gcsp-danger); background: var(--gcsp-surface-muted); color: var(--gcsp-danger); font-size: 14px; line-height: 1.5; }
+.gcsp-login-error:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 4px; }
+.gcsp-login-status { margin: 0; color: var(--gcsp-text-muted); font-size: 14px; }
+@media (max-width: 600px) {
+  .gcsp-login-shell .gcsp-content { padding-block: 32px; }
+  .gcsp-login-shell .gcsp-main > .gcsp-login-panel { padding: 28px 20px; }
+  .gcsp-login-panel .vm-title { font-size: 36px; }
+}

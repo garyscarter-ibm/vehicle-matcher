@@ -2,6 +2,8 @@ import './publish/register.js';
 // Harness only: ?fixture= picks a dashboard fixture, ?plan= an order plan state and ?comparison= a route comparison state. The elements never read location.
 import { el } from '../../vehicle-matcher/ui.js';
 import { defineGcspGregDashboard } from './gcsp-greg.js';
+import { createGregHttpAdapter } from './http-adapter.js';
+import { attachGregOrders } from '../greg-orders/runtime.js';
 import { FIXTURE_NAMES } from './fixtures.js';
 import { FIXTURE_NAMES as PLAN_FIXTURES } from './plan/fixtures.js';
 import { driveToState } from './plan/gallery.js';
@@ -17,11 +19,11 @@ const comparison = params.get('comparison');
 const host = document.querySelector('gcsp-greg-dashboard');
 function addFixtureNotice() {
   const page = host?.querySelector('.gcsp-greg');
-  if (!page || page.querySelector('.gcsp-fixture-notice')) return;
+  if (!FIXTURE_NAMES.includes(requested) || !page || page.querySelector('.gcsp-fixture-notice')) return;
   const notice = el('div', 'gcsp-greg-bar gcsp-fixture-notice');
   notice.setAttribute('role', 'note');
-  const link = el('a', '', 'Open Greg\u2019s live view in the presenter workspace');
-  link.href = './gcsp-presenter.html';
+  const link = el('a', '', 'Open the live demand and supply view');
+  link.href = '/gcsp-greg.html';
   notice.append(el('p', 'gcsp-note', 'This is a fixture gallery. Every figure is made up, and panels marked as not built are not wired to the live demo.'), link);
   page.prepend(notice);
 }
@@ -56,4 +58,9 @@ host?.addEventListener('gcsp:ready', (event) => {
   }
 });
 if (host && FIXTURE_NAMES.includes(requested)) host.setAttribute('fixture', requested);
+else if (host) {
+  host.removeAttribute('fixture');
+  host.adapter = createGregHttpAdapter();
+  attachGregOrders(host);
+}
 defineGcspGregDashboard();

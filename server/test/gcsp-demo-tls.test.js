@@ -46,10 +46,20 @@ test('verified same-origin HTTPS serves real account and offer entry through the
     req.setTimeout(5000, () => req.destroy(new Error('TLS verification wait exceeded its bound.')));
     req.on('error', reject); req.end();
   }));
-  const account = await https.fetch(app.origin + '/gcsp-account.html'); assert.equal(account.status, 200);
-  const cookies = account.headers.getSetCookie();
-  assert.ok(cookies.length > 0); assert.ok(cookies.every((value) => value.includes('; Secure') && value.includes('; HttpOnly')));
+  const anonymous = await https.fetch(app.origin + '/gcsp-account.html');
+  assert.equal(anonymous.status, 303); assert.equal(anonymous.headers.get('location'), '/gcsp/login');
+  assert.equal(anonymous.headers.getSetCookie().length, 0);
+  const signedIn = await https.fetch(app.origin + '/api/gcsp/session/login', { method: 'POST',
+    headers: { Origin: app.origin, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: 'paula.mason@gcsp-demo.com', password: 'fucq' }) });
+  assert.equal(signedIn.status, 200); assert.equal((await signedIn.json()).value.context.principalId, 'demo-paula');
+  const cookies = signedIn.headers.getSetCookie().filter((value) => !/Max-Age=0(?:;|$)/i.test(value));
+  assert.equal(cookies.length, 1);
+  assert.ok(cookies.every((value) => value.startsWith('gcsp_session=') && value.includes('; Path=/;')
+    && value.includes('; Secure') && value.includes('; HttpOnly')));
   const session = cookies.map((value) => value.split(';')[0]).join('; ');
+  const account = await https.fetch(app.origin + '/gcsp-account.html', { headers: { Cookie: session } });
+  assert.equal(account.status, 200); assert.equal(account.headers.getSetCookie().length, 0);
   const context = await https.fetch(app.origin + '/api/gcsp/context', { headers: { Cookie: session, Origin: app.origin } });
   assert.equal(context.status, 200); assert.equal((await context.json()).status, 'ok');
   const page = await https.fetch(app.origin + '/gcsp/offer?offerId=missing');
@@ -74,7 +84,7 @@ test('verified same-origin HTTPS serves real account and offer entry through the
   } finally { process.env.DEMO_ACCESS_KEY = 'local-https-shared-test'; }
 });
 
-test('browser cookie paths preserve a deliberate Greg switch across real local page navigation', async (t) => {
+test('root session cookies preserve explicit Greg login across HTML and API without presenter bootstrap', async (t) => {
   const https = await createLocalHttpsFixture(t);
   const opened = await startGcspDemo({ tls: https.configuration, accessKey: '', runtime: { mode: 'memory',
     environmentId: 'local-navigation-test', policyAsOf: '2026-11-05T12:00:00.000Z', commandId: 'navigation-bootstrap' } });
@@ -89,39 +99,47 @@ test('browser cookie paths preserve a deliberate Greg switch across real local p
     return response;
   }
   const first = await browse('/gcsp-help.html?principalId=demo-greg&runId=forged');
-  assert.equal(first.status, 200);
-  assert.ok(first.headers.getSetCookie().every((value) => value.includes('; Secure') && value.includes('; HttpOnly')));
-  // A real browser sends only the non-authority marker on HTML requests. The
-  // two unchanged identity cookies are confined to their existing API path.
-  const htmlCookies = jar.getCookiesSync(`${app.origin}/gcsp-presenter.html`);
-  assert.deepEqual(htmlCookies.map((value) => value.key), ['GCSP_LOCAL_BOOTSTRAP']);
-  assert.equal(htmlCookies[0].path, '/'); assert.equal(htmlCookies[0].sameSite, 'strict');
+  assert.equal(first.status, 303); assert.equal(first.headers.get('location'), '/gcsp/login');
+  assert.equal(first.headers.getSetCookie().length, 0);
+  const signedIn = await browse('/api/gcsp/session/login', { method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: 'greg.lawson@gcsp-demo.com', password: 'fucq' }) });
+  assert.equal(signedIn.status, 200);
+  assert.equal((await signedIn.json()).value.context.principalId, 'demo-greg');
+  const htmlCookies = jar.getCookiesSync(`${app.origin}/gcsp-greg.html`);
+  assert.deepEqual(htmlCookies.map((value) => value.key), ['gcsp_session']);
+  assert.equal(htmlCookies[0].path, '/'); assert.equal(htmlCookies[0].httpOnly, true); assert.equal(htmlCookies[0].secure, true);
+  assert.ok(htmlCookies[0].expires.getTime() > Date.now());
   const apiCookies = jar.getCookiesSync(`${app.origin}/api/gcsp/context`);
-  assert.equal(apiCookies.filter((value) => value.path === '/api/gcsp').length, 2);
-  const employee = await (await browse('/api/gcsp/context')).json();
-  assert.equal(employee.value.principalId, 'demo-paula');
-  const switched = await browse('/api/gcsp/session/switch', { method: 'POST',
-    headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ principalId: 'demo-greg', commandId: 'deliberate-greg' }) });
-  assert.equal(switched.status, 200);
-  assert.equal((await switched.json()).value.principalId, 'demo-greg');
-  for (const path of ['/gcsp-presenter.html', '/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-help.html', '/gcsp-account.html']) {
-    assert.match(jar.getCookieStringSync(new URL(path, app.origin).href), /^GCSP_LOCAL_BOOTSTRAP=[0-9a-f]{24}$/);
-    const page = await browse(path); assert.equal(page.status, 200);
-    assert.equal(page.headers.getSetCookie().length, 0, 'HTML navigation must not replace the deliberately selected acting session');
+  assert.deepEqual(apiCookies.map((value) => [value.key, value.value, value.path]), htmlCookies.map((value) => [value.key, value.value, value.path]));
+  const actingCookie = htmlCookies[0].value;
+  for (const path of ['/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-help.html', '/gcsp-account.html']) {
+    assert.ok(jar.getCookiesSync(new URL(path, app.origin).href).some((value) => value.key === 'gcsp_session' && value.value === actingCookie));
+    const page = await browse(path);
+    const employeeOnly = ['/gcsp-help.html', '/gcsp-account.html'].includes(path);
+    assert.equal(page.status, employeeOnly ? 303 : 200);
+    if (employeeOnly) assert.equal(page.headers.get('location'), '/gcsp-greg.html');
+    assert.equal(page.headers.getSetCookie().length, 0, 'HTML navigation must preserve the explicitly signed-in actor');
     assert.equal((await (await browse('/api/gcsp/context')).json()).value.principalId, 'demo-greg');
   }
+  const presenter = await browse('/gcsp-presenter.html'); assert.equal(presenter.status, 200);
+  const activePresenterCookies = presenter.headers.getSetCookie().filter((value) => !/Max-Age=0(?:;|$)/i.test(value));
+  assert.equal(activePresenterCookies.length, 1); assert.ok(activePresenterCookies[0].startsWith('gcsp_presenter='));
+  assert.ok(activePresenterCookies[0].includes('; Path=/;') && activePresenterCookies[0].includes('; Secure') && activePresenterCookies[0].includes('; HttpOnly'));
+  assert.equal(jar.getCookiesSync(app.origin).find((value) => value.key === 'gcsp_session').value, actingCookie);
+  assert.equal((await (await browse('/api/gcsp/context')).json()).value.principalId, 'demo-greg');
   const queue = await browse('/api/gcsp/scheme-team/cases'); assert.equal(queue.status, 200);
   assert.equal((await queue.json()).status, 'ok');
-  const markerOnly = new CookieJar();
-  const marker = jar.getCookieStringSync(`${app.origin}/gcsp-presenter.html`);
-  markerOnly.setCookieSync(`${marker}; Path=/; Secure; HttpOnly; SameSite=Strict`, app.origin);
-  assert.equal((await browse('/gcsp-presenter.html', {}, markerOnly)).status, 200);
-  const denied = await browse('/api/gcsp/context', {}, markerOnly);
-  assert.equal(denied.status, 401, 'The marker cannot authenticate an actor or presenter');
-  // A marker from an earlier process (a restart) bootstraps a fresh session instead of reusing stale cookies.
-  const restarted = new CookieJar();
-  restarted.setCookieSync('GCSP_LOCAL_BOOTSTRAP=1; Path=/; Secure; HttpOnly; SameSite=Strict', app.origin);
-  const fresh = await browse('/gcsp-presenter.html', {}, restarted);
-  assert.equal(fresh.status, 200); assert.ok(fresh.headers.getSetCookie().length >= 2);
-  assert.equal((await (await browse('/api/gcsp/context', {}, restarted)).json()).value.principalId, 'demo-paula');
+  for (const marker of ['1', 'earlier-process-marker']) {
+    const markerOnly = new CookieJar();
+    markerOnly.setCookieSync(`GCSP_LOCAL_BOOTSTRAP=${marker}; Path=/; Secure; HttpOnly; SameSite=Strict`, app.origin);
+    const deniedPage = await browse('/gcsp-account.html', {}, markerOnly);
+    assert.equal(deniedPage.status, 303); assert.equal(deniedPage.headers.get('location'), '/gcsp/login');
+    assert.equal(deniedPage.headers.getSetCookie().length, 0);
+    assert.equal((await browse('/api/gcsp/context', {}, markerOnly)).status, 401, 'A stale marker never authenticates a person');
+    const control = await browse('/gcsp-presenter.html', {}, markerOnly); assert.equal(control.status, 200);
+    assert.ok(markerOnly.getCookiesSync(app.origin).some((value) => value.key === 'gcsp_presenter'));
+    assert.equal(markerOnly.getCookiesSync(app.origin).some((value) => value.key === 'gcsp_session'), false);
+    assert.equal((await browse('/api/gcsp/manual/account', {}, markerOnly)).status, 401, 'Presenter entry never creates an acting employee session');
+  }
 });

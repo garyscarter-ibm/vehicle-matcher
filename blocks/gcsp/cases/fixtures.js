@@ -26,6 +26,6 @@ export function fixtureAdapter(name) {
     requestHelp: async () => refusal, changeAfterDecline: async () => refusal,
   };
 }
-export const fixtureAccountAdapter = { async loadAccount() {
+export const fixtureAccountAdapter = { signOut: false, async loadAccount() {
   return { status: 'ready', name: 'Paula Mason', context: 'Read-only preview' };
 } };
