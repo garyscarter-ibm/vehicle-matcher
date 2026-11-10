@@ -84,6 +84,8 @@ async function advance(f, to = f.expiresAt) {
 }
 const durableDomain = (f) => inputDigest(Object.fromEntries(Object.entries(f.store.state.tables).filter(([key]) => !['event_receipts', 'tick_runs'].includes(key))));
 
+// Committed memory state is frozen (FUCQ-302): tamper by replacing a table, never by editing rows.
+const replaceTable = (f, table, change) => { f.store.state = { ...f.store.state, tables: { ...f.store.state.tables, [table]: change(f.store.state.tables[table]) } }; };
 test('exact pinned draft, current contract/collection and policy projection; GET has no writes', async () => {
   const f = await setup(); const before = inputDigest(f.store.state);
   const r = await read(f); assert.equal(r.status, 'ok', JSON.stringify(r));
@@ -156,7 +158,7 @@ test('trusted role, run, owner, quote, hold and pinned draft revisions are requi
   assert.equal((await f.service.saveReviewDetails(imposter, input(f))).status, 'forbidden');
   assert.equal((await freeze(f, 'wrong-owner', 0, { ...binding(f), employeeId: 'someone-else' })).status, 'not-found');
   const noClaim = await setup();
-  noClaim.store.state.tables.event_receipts = noClaim.store.state.tables.event_receipts.filter((r) => !r.consumerId.startsWith('manual:claim-current:'));
+  replaceTable(noClaim, 'event_receipts', (rows) => rows.filter((r) => !r.consumerId.startsWith('manual:claim-current:')));
   assert.equal((await read(noClaim)).status, 'not-found'); assert.equal((await save(noClaim)).status, 'not-found');
 });
 test('canonical changed policy constraints used, pinned version retained, invalid source rejected', async () => {
@@ -247,18 +249,18 @@ test('clock advance during policy preparation fences a save without partial rece
 });
 test('missing pinned receipt, cross-owner quote and malformed metadata fail closed', async () => {
   const missing = await setup();
-  missing.store.state.tables.event_receipts = missing.store.state.tables.event_receipts.filter((row) => !(row.consumerId.startsWith('manual:draft:') && row.eventId === '1'));
+  replaceTable(missing, 'event_receipts', (rows) => rows.filter((row) => !(row.consumerId.startsWith('manual:draft:') && row.eventId === '1')));
   assert.equal((await read(missing)).source, 'pinned-draft'); assert.equal((await save(missing)).status, 'unavailable');
-  const owner = await setup(); owner.store.state.tables.quotes.find((q) => q.quoteId === 'review-quote').employeeId = 'another-employee';
+  const owner = await setup(); replaceTable(owner, 'quotes', (rows) => rows.map((q) => q.quoteId === 'review-quote' ? { ...q, employeeId: 'another-employee' } : q));
   assert.equal((await read(owner)).code, 'quote-binding-changed'); assert.equal((await save(owner)).code, 'quote-binding-changed');
   const corrupt = await setup(); await save(corrupt);
-  corrupt.store.state.tables.event_receipts.find((r) => r.consumerId.startsWith('manual:review-details:')).outcome = ok({});
+  replaceTable(corrupt, 'event_receipts', (rows) => rows.map((r) => r.consumerId.startsWith('manual:review-details:') ? { ...r, outcome: ok({}) } : r));
   assert.equal((await read(corrupt)).source, 'metadata'); assert.equal((await freeze(corrupt)).source, 'metadata');
 });
 
 test('reload stock label is bound to exact quoted configuration', async () => {
   const f = await setup();
-  f.store.state.tables.stock.find((row) => row.orderUuid === 'review-stock').configurationId = 'another-configuration';
+  replaceTable(f, 'stock', (rows) => rows.map((row) => row.orderUuid === 'review-stock' ? { ...row, configurationId: 'another-configuration' } : row));
   assert.equal((await read(f)).code, 'stock-binding-changed');
   assert.equal((await save(f)).code, 'stock-binding-changed');
 });
