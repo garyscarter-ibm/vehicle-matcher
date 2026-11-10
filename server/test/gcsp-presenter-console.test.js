@@ -208,7 +208,7 @@ test('painted copy has no em dash and none of the banned words, and the adapter 
   const shown = paint(g.root);
   assert.doesNotMatch(shown, /—/); assert.doesNotMatch(shown, /demo|demonstration|synthetic|fictional|example/i);
   assert.doesNotMatch(readFileSync(new URL('../../gcsp-presenter.html', import.meta.url), 'utf8').match(/<title>.*<\/title>/)[0], /demo|synthetic|fictional|example|—/i);
-  const bad = names.filter((n) => !['readControls', 'readContext', 'readScenarios', 'readFaults'].includes(n));
+  const bad = names.filter((n) => !['readControls', 'readContext', 'readScenarios', 'readFaults', 'readOutbox'].includes(n));
   assert.deepEqual(bad, []); assert.ok(names.includes('readControls'));
   assert.doesNotMatch(readFileSync(new URL('../../blocks/gcsp/presenter-controls/console.js', import.meta.url), 'utf8'), /createAccountHttpAdapter|createGregHttpAdapter|accountAdapter|gregAdapter|\/account\/|\/greg\//);
   g.api.destroy();

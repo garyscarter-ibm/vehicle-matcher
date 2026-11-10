@@ -57,7 +57,7 @@ function fold(label, ...nodes) {
   return node;
 }
 
-function renderDetail(message) {
+export function messageDetail(message) {
   const heading = el('h2', 'gcsp-mail-heading', message.subject || NO_SUBJECT);
   heading.tabIndex = -1;
   // To, sent and subject sit on one line; attempts and problems wait in a disclosure.
@@ -96,7 +96,7 @@ export function messageList({ messages = [], selectedId = null, onSelect, label 
     const message = items.find((m) => m.jobId === selected);
     detail.hidden = !message;
     if (!message) { detail.replaceChildren(); return; }
-    const view = renderDetail(message);
+    const view = messageDetail(message);
     detail.replaceChildren(...view.nodes);
     if (focus) view.heading.focus();
   }
