@@ -12,3 +12,5 @@
 .gcsp-followup-sources > summary { cursor: pointer; color: var(--gcsp-link); }
 .gcsp-followup-live { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 @media (max-width: 800px) { .gcsp-followup-cars { grid-template-columns: minmax(0, 1fr); } }
+.gcsp .gcsp-offer-body .gcsp-followup { padding: 0; }
+.gcsp .gcsp-offer-body .gcsp-followup .vm-status { padding: 0; background: none; border: 0; }

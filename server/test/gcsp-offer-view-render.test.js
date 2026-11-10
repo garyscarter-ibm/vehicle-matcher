@@ -41,11 +41,16 @@ test('exact shared card, points and current car comparison preserve supplied unk
 // FUCQ-275: a phone-length offer put the deadline last, repeated facts and listed them one per row.
 test('FUCQ-275: a pending offer leads with the deadline and has one comparison table with shared rows', async () => {
   const { root, data } = render('pending');
-  const [intro, clock, asOf] = [...root.querySelector('.gcsp-offer-content').children];
+  const [intro, clock, next] = [...root.querySelector('.gcsp-offer-content').children];
   assert.ok(intro.querySelector('h1')); assert.ok(clock.classList.contains('gcsp-countdown'));
-  assert.equal(clock.textContent, '2 hours remaining'); assert.ok(asOf.classList.contains('gcsp-note')); assert.match(asOf.textContent, /Time at last check/);
+  assert.equal(clock.textContent, '2 hours remaining'); assert.doesNotMatch(root.textContent, /Time at last check/); assert.ok(next);
   assert.equal(root.querySelectorAll('.gcsp-countdown').length, 1);
-  const tables = root.querySelectorAll('[data-offer-comparison] table'); assert.equal(tables.length, 1);
+  // The visible table holds only the rows that differ; the full comparison sits behind a disclosure.
+  const shownTable = root.querySelector('[data-offer-comparison] > .gcsp-table-scroll table, [data-offer-comparison] > div table');
+  assert.deepEqual([...shownTable.querySelectorAll('tbody th[scope="row"]')].map((node) => node.textContent), ['Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Points a month']);
+  const disclosure = root.querySelector('[data-offer-comparison] details'); assert.equal(disclosure.open, false);
+  assert.equal(disclosure.querySelector('summary').textContent, 'Full comparison');
+  const tables = disclosure.querySelectorAll('table'); assert.equal(tables.length, 1);
   const labels = [...tables[0].querySelectorAll('tbody th[scope="row"]')].map((node) => node.textContent);
   assert.deepEqual(labels, ['Body style', 'Fuel', 'Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Points a month']);
   const rows = [...tables[0].querySelectorAll('tbody tr')];
@@ -54,7 +59,7 @@ test('FUCQ-275: a pending offer leads with the deadline and has one comparison t
   assert.deepEqual([...rows[6].querySelectorAll('td')].map((node) => node.textContent), ['1,100 points', 'Unknown']);
   const heads = [...tables[0].querySelectorAll('thead th')].map((node) => node.textContent);
   assert.match(heads[1], /^This offer .*BMW 320i/); assert.match(heads[2], /^Your current car 320i M Sport Touring$/);
-  assert.equal(root.querySelector('.gcsp-offer-current h2'), null); assert.doesNotMatch([...root.querySelectorAll('h2, h3')].map((h) => h.textContent).join('|'), /Your current car/);
+  assert.equal(root.querySelector('.gcsp-offer-current h2'), null); assert.equal(root.querySelector('.vm-card-gate'), null); assert.doesNotMatch([...root.querySelectorAll('h2, h3')].map((h) => h.textContent).join('|'), /Your current car/);
   const facts = root.querySelector('.vm-card .vm-facts'); assert.ok(facts.classList.contains('vm-facts-pair'));
   const shown = [...facts.querySelectorAll('dt')].map((node) => node.textContent);
   assert.deepEqual(shown, ['Derivative']); assert.ok(data);
@@ -100,13 +105,15 @@ test('missing image has a useful fallback and terminal states have no decision c
 
 // FUCQ-228: an expired offer shows that it expired and the next step, not the offer's fit.
 test('expired offer shows only its expiry and next step', () => {
-  const { root, view, data } = render('pending');
+  const { root, view, data } = render('pending', { links: { activity: '/gcsp-activity-live.html', cars: '/gcsp-account.html' } });
   view.update({ ...data, state: 'expired' });
   assert.equal(root.querySelector('h1').textContent, 'Offer expired');
   assert.match(root.textContent, /no longer available to accept\. Open your account to check for a new offer\./);
   assert.doesNotMatch(root.textContent, /Eligible|Why it suits you|Your current car/);
   assert.equal(root.querySelector('.vm-card'), null);
-  assert.ok(root.querySelector('[data-offer-action="refresh"]'));
+  assert.equal(root.querySelector('[data-offer-action="refresh"]'), null);
+  const exits = [...root.querySelectorAll('a.vm-btn')]; assert.deepEqual(exits.map((a) => a.textContent), ['See buddy activity', 'Back to Your cars']);
+  assert.deepEqual(exits.map((a) => a.className.includes('primary')), [true, false]);
 });
 
 test('live announcements are bounded and refresh retains visible keyboard focus', () => {
@@ -187,9 +194,9 @@ test('recorded current-car facts render formatted beside Unknown ones with the s
     await ctl.refresh(); const section = root.querySelector('[data-offer-comparison]'); const text = section.textContent;
     assert.match(text, /Partial comparison\. Some current-car facts are unknown\./);
     for (const known of [/500 litres/, /42\.8 mpg/, /7\.6 s/]) assert.match(text, known);
-    assert.equal(section.querySelectorAll('td.is-missing').length, 4);
-    assert.equal(section.querySelectorAll('tbody tr').length, 7);
-    const unknown = [...section.querySelectorAll('tbody tr')].map((row) => row.children[2].textContent);
+    assert.equal(section.querySelectorAll('details td.is-missing').length, 4);
+    const full = section.querySelector('details'); assert.equal(full.querySelectorAll('tbody tr').length, 7);
+    const unknown = [...full.querySelectorAll('tbody tr')].map((row) => row.children[2].textContent);
     assert.deepEqual(unknown, ['Unknown', 'Unknown', 'Unknown', '500 litres', '7.6 s', '42.8 mpg', 'Unknown']);
   } finally { unsub(); ctl.destroy(); view.destroy(); }
 });
@@ -205,7 +212,7 @@ test('approved partial DTO renders dated provenance and eight unknowns through H
     assert.match(comparison.querySelector('thead th:nth-child(3)').textContent, /Your current car\s*Fictional BMW 320i Touring/);
     assert.match(comparison.textContent, /Partial comparison\. Current-car specifications and points are unknown\./);
     assert.doesNotMatch(comparison.textContent, /Synthetic source|manual-records-v1|2026-11-05T11|Observed|Source not supplied/);
-    const currentCells = [...comparison.querySelectorAll('tbody tr')].map((row) => row.children[2]);
+    const currentCells = [...comparison.querySelectorAll('details tbody tr')].map((row) => row.children[2]);
     assert.equal(currentCells.length, 7); assert.ok(currentCells.every((node) => node.textContent === 'Unknown'));
     assert.equal(comparison.querySelector('img'), null);
     assert.equal(model.comparisonAvailable, false); assert.equal(model.seconds, 7200);
@@ -254,7 +261,7 @@ test('published decline-only DTO updates mounted actions and accessible explanat
     const reason = root.querySelector(`#${accept.getAttribute('aria-describedby')}`);
     assert.equal(reason.textContent, 'Acceptance is unavailable. You can still decline this offer.');
     assert.match(root.textContent, /1 hour remaining/); assert.match(root.textContent, /Order no\. 0123456/);
-    assert.match(root.textContent, /Partial comparison/); assert.equal(root.querySelectorAll('[data-offer-comparison] td.is-missing').length, 7);
+    assert.match(root.textContent, /Partial comparison/); assert.equal(root.querySelectorAll('[data-offer-comparison] details td.is-missing').length, 7);
     accept.click(); assert.deepEqual(calls, []);
     delete dto.comparison; await c.refresh();
     assert.match(root.textContent, /Current-car details not supplied/); assert.equal(root.querySelector('[data-offer-action="decline"]').disabled, false);
@@ -576,7 +583,7 @@ test('GC-041: an accepted offer leads on to order progress and Your cars beside 
   const before = (a, b) => Boolean(a.compareDocumentPosition(b) & dom.window.Node.DOCUMENT_POSITION_FOLLOWING);
   assert.ok(before(root.querySelector('h1'), progress)); assert.ok(before(cars, root.querySelector('.vm-card')));
   assert.ok(before(cars, root.querySelector('.gcsp-offer-order'))); assert.ok(before(progress, root.querySelector('[data-offer-action=refresh]')));
-  for (const state of ['pending', 'declined', 'expired', 'uncertain']) { view.update(acceptedModel(state)); assert.equal(root.querySelectorAll('a.vm-btn').length, 0, state); }
+  for (const state of ['pending', 'declined', 'uncertain']) { view.update(acceptedModel(state)); assert.equal(root.querySelectorAll('a.vm-btn').length, 0, state); }
   view.destroy(); root.remove();
   const bare = document.createElement('div'); document.body.append(bare); const plain = createOfferView(bare, {});
   plain.update(acceptedModel()); assert.equal(bare.querySelectorAll('a.vm-btn').length, 0); plain.destroy(); bare.remove();

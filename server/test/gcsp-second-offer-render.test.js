@@ -70,7 +70,7 @@ test('invalid, busy and saved states disable confirmation and move completed foc
   view.update({ ...model, value: 'estate', busy: true }); assert.equal(button.disabled, true); assert.equal(root.getAttribute('aria-busy'), null);
   assert.equal(root.firstElementChild.getAttribute('aria-busy'), 'true');
   view.update({ state: 'change-saved', savedChange: saved, busy: false });
-  assert.match(root.textContent, /saved as version 2 of your preferences/); assert.equal(document.activeElement.tagName, 'H2');
+  assert.match(root.textContent, /Saved\. Your buddy will look again/); assert.doesNotMatch(root.textContent, /version/); assert.equal(document.activeElement.tagName, 'H2');
   assert.equal(root.querySelector('[data-followup-action=confirm]'), null);
 });
 
@@ -254,7 +254,7 @@ test('GC-041: a saved change leads on to buddy activity when the host supplies t
     { state: 'no-match', savedChange: saved, evaluation: { carsChecked: 2 } }]) {
     view.update({ busy: false, ...model });
     const node = link(root);
-    assert.ok(node, model.state); assert.equal(node.tagName, 'A'); assert.equal(node.textContent, 'See your buddy activity');
+    assert.ok(node, model.state); assert.equal(node.tagName, 'A'); assert.equal(node.textContent, 'See buddy activity');
     assert.equal(node.getAttribute('href'), '/gcsp-activity-live.html'); assert.ok(node.classList.contains('vm-btn-primary'));
   }
   for (const model of [question(), { state: 'unavailable' }, { state: 'refresh-required' }, { state: 'confirmation-uncertain' }, { state: 'forbidden' }]) {

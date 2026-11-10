@@ -14,7 +14,7 @@ const factText = (v) => v?.status !== 'known' ? 'Not supplied'
   : `${valueText(v.value)}${v.unit ? ` (${v.unit})` : ''}`;
 const messages = {
   idle: ['Your next offer', ''], loading: ['Checking your next offer', 'Please wait.'],
-  'change-saved': ['Change saved', 'Check whether your next offer is ready.'],
+  'change-saved': ['Change saved', 'Saved. Your buddy will look again at the next check.'],
   waiting: ['Waiting for the next release', 'Your change is saved. Your next offer is checked when more cars are released.'],
   'no-match': ['Nothing suitable yet', 'We will check again at the next release.'],
   unavailable: ['Next-offer status unavailable', 'Try checking again.'],
@@ -152,7 +152,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
       const actions = [];
       if (key === 'confirmation-uncertain') actions.push(action('retry', 'Retry the same change', () => confirm?.(), 'primary'));
       if (activityHref && model.savedChange && ['change-saved', 'waiting', 'no-match'].includes(key)) {
-        const link = button({ label: 'See your buddy activity', variant: 'primary', href: activityHref }); link.dataset.followupLink = 'activity'; actions.push(link);
+        const link = button({ label: 'See buddy activity', variant: 'primary', href: activityHref }); link.dataset.followupLink = 'activity'; actions.push(link);
       }
       if (!['idle', 'loading', 'forbidden', 'stale-run'].includes(key)) actions.push(...refreshAction());
       const checked = model.evaluation?.carsChecked;
@@ -160,11 +160,9 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
         : `None of the ${checked} cars checked fit your updated preferences.`;
       const shown = key === 'no-match' && checked > 0 ? `${head} ${message}`
         : model.savedChange && key === 'unavailable' ? 'Your change is saved. The next-offer status could not be checked.' : message;
-      content.append(statusScreen({ title, message: shown, actions, role: null }));
-    }
-    if (model.savedChange) {
-      const note = el('p', 'gcsp-note', `Your change is saved as version ${model.savedChange.briefVersion} of your preferences.`);
-      note.dataset.followupSaved = ''; content.prepend(note);
+      const screen = statusScreen({ title, message: shown, actions, role: null });
+      if (model.savedChange) screen.dataset.followupSaved = '';
+      content.append(screen);
     }
     if (hadFocus) focusHeading();
   }
