@@ -3,6 +3,7 @@ import { labelledField, errorSummary, checkboxField } from './form-controls.js';
 import { stageList } from './stage-list.js';
 import { rangeBar } from './range-bar.js';
 import { showMore } from './show-more.js';
+import { tabs } from './tabs.js';
 import { installArrivalFocus, focusHeading } from './arrival-focus.js';
 import { runRestartedScreen, runRestartedNotice, accessLapsedScreen } from './run-restarted.js';
 
@@ -83,4 +84,13 @@ export function arrivalFocusExample() {
   main.append(note, move); scope.append(main); section.append(scope);
   installArrivalFocus({ root: scope, main });
   return section;
+}
+
+export function tabsExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-tabs';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP tabs'));
+  const scope = el('div', 'gcsp'); const panel = (text) => { const node = el('div'); node.append(el('p', 'gcsp-note', text)); return node; };
+  const set = tabs({ label: 'Settings groups', items: [{ id: 'one', label: 'First', panel: panel('First panel. Arrow keys, Home and End move between tabs.') },
+    { id: 'two', label: 'Second', panel: panel('Second panel.') }, { id: 'three', label: 'Third', panel: panel('Third panel.') }] });
+  scope.append(set.root); section.append(scope); return section;
 }
