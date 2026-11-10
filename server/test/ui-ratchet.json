@@ -25,7 +25,9 @@
     "blocks/gcsp/kit/slot-picker.js",
     "blocks/gcsp/kit/loading-skeleton.js",
     "blocks/gcsp/kit/tabs.js",
-    "blocks/gcsp/kit/release-grid.js"
+    "blocks/gcsp/kit/release-grid.js",
+    "blocks/gcsp/kit/help-tip.js",
+    "blocks/gcsp/kit/star-rating.js"
   ],
   "extensions": [
     ".js",
@@ -136,6 +138,16 @@
       "re": "setAttribute\\('role', 'grid'\\)",
       "flags": "g",
       "use": "releaseGrid({ label, columns }) (blocks/gcsp/kit/release-grid.js)"
+    },
+    "help-tip": {
+      "re": "setAttribute\\('role', 'tooltip'\\)",
+      "flags": "g",
+      "use": "helpTip({ host, triggers, text, id }) (blocks/gcsp/kit/help-tip.js)"
+    },
+    "star-rating": {
+      "re": "el\\('fieldset', 'gcsp-star-rating",
+      "flags": "g",
+      "use": "starRating({ label, value, help, onChange }) (blocks/gcsp/kit/star-rating.js)"
     }
   },
   "stylesheets": [
@@ -354,6 +366,14 @@
     {
       "path": "blocks/gcsp/presenter-controls/release-section.css",
       "max_lines": 17
+    },
+    {
+      "path": "blocks/gcsp/kit/help-tip.css",
+      "max_lines": 9
+    },
+    {
+      "path": "blocks/gcsp/kit/star-rating.css",
+      "max_lines": 12
     },
     {
       "path": "blocks/gcsp/presenter-controls/happened-feed.css",
