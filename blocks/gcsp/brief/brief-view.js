@@ -6,6 +6,7 @@ import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { decisionView, previewSummary } from './brief-view-model.js';
 import { BEST_MATCH } from '../kit/plain-copy.js';
 import { focusHeading } from '../kit/arrival-focus.js';
+import { loadingSkeleton } from '../kit/loading-skeleton.js';
 
 let sequence = 0;
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -20,7 +21,7 @@ export function mountBriefBody(main, adapters = {}) {
   let alive = true; let controller; let unsubscribe; let generation = 0; let landFocus = false;
   const prefix = `gcsp-brief-${++sequence}`;
   const cleanup = () => { alive = false; abort.abort(); unsubscribe?.(); controller?.destroy(); main.replaceChildren(); };
-  const loading = el('p', 'gcsp-note', 'Loading your preferences.'); loading.setAttribute('role', 'status'); main.replaceChildren(loading);
+  const loading = loadingSkeleton({ label: 'Loading your preferences.', layout: 'form' }); main.replaceChildren(loading);
   const externalAbort = () => cleanup();
   adapters.signal?.addEventListener('abort', externalAbort, { once: true });
   const finish = () => { adapters.signal?.removeEventListener('abort', externalAbort); cleanup(); };
