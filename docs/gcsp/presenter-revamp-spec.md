@@ -118,7 +118,7 @@ so the week reads naturally on 12 November.
 1. **Main successful journey uses generated stock**, not the fixed demo windows. Its catalogue input
    becomes `stockTranches: [{ source: 'generated-stock', cue: 'release' }]`; the run-stock chooser
    already sends any run without `published-demo-stock` to the generator.
-2. **Daily cadence:** `supply.release.cadence` gets all seven weekdays (or Mon to Fri; see questions)
+2. **Weekday cadence:** `supply.release.cadence` gets Monday to Friday
    at 11:30. Its basis says it is a demo assumption with the real Mon/Wed/Fri kept in its history.
 3. **100 per release:** `supply.release.size` = 100 and the weekly volume range rises to match. One
    canonical change each; no client constants (build rules, assumptions in one place).
@@ -219,14 +219,11 @@ engine. Slice 4 is the riskiest: it moves the main journey off fixed stock days 
 ## Questions for Gary (each with my recommendation)
 
 1. ~~Two buttons, or one Next?~~ **Decided: two buttons (A), Gary, 10 November 2026.**
-2. **Daily every day, or weekdays only?** Recommend weekdays only at 11:30, so "tomorrow" skips the
-   weekend and the week stays close to the real volume.
-3. **Keep 100, or match the real 300 to 400 a week?** Recommend 100: it's the number the audience will
-   remember, and the assumption is documented in one place.
-4. **Is generated stock on the main journey in scope for 12 November,** or after? Recommend slices 1 to
-   3 and 6 (with stock from today's fixed windows padded to 100 for the visual) before the demo, and
-   slice 4 straight after, unless you're comfortable with an unscripted winner on the day.
-5. **Should the console be password-protected?** Recommend not for the demo; raise it as a Story.
+2. ~~Daily every day, or weekdays only?~~ **Decided: weekdays only, 11:30am (Gary, 10 November 2026).**
+3. ~~Keep 100, or match the real volume?~~ **Decided: 100 per release (Gary, 10 November 2026).**
+4. ~~Generated stock before or after 12 November?~~ **Decided: before 12 November (Gary, 10 November
+   2026).** Slice 4 is in demo scope; the winning car is not known in advance.
+5. ~~Protect the console?~~ **Decided: not for the demo; raise a passphrase Story (Gary, 10 November 2026).**
 6. **Greg in Basic?** I've kept Basic to Paula's journey. Greg's order planning could be a third button
    later.
 
