@@ -1193,7 +1193,7 @@
           "status": "in-progress",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
           "observed_at": "2026-11-06T00:30:56Z",
-          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100\u2192102 streamedHTTP\u2192105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
+          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100→102 streamedHTTP→105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
         },
         {
           "id": "decision-host",
@@ -2062,7 +2062,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
@@ -3917,7 +3917,7 @@
     },
     {
       "id": "FUCQ-326",
-      "title": "Use \u201cYour preferences\u201d consistently in the employee journey",
+      "title": "Use “Your preferences” consistently in the employee journey",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
@@ -4128,43 +4128,48 @@
     {
       "id": "FUCQ-322",
       "title": "Sign in as a demo user and retain their stored account throughout the live site",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "In Review",
+      "original_status": "In Review",
       "type": "Story",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-322",
       "branch": "dev/DEV-2026-11-10-001",
       "unsliced": false,
-      "observed_at": "2026-11-10T11:58:47Z",
+      "observed_at": "2026-11-10T12:19:26Z",
       "slices": [
         {
           "id": "authentication",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Credential adapter, profiles and session revocation",
-          "observed_at": "2026-11-10T11:58:46Z"
+          "observed_at": "2026-11-10T12:19:25Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
         },
         {
           "id": "experience",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Login and account menu",
-          "observed_at": "2026-11-10T11:58:46Z"
+          "observed_at": "2026-11-10T12:19:25Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
         },
         {
           "id": "context",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Live consumer identity and startup isolation",
-          "observed_at": "2026-11-10T11:58:47Z"
+          "observed_at": "2026-11-10T12:19:26Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
         },
         {
           "id": "persistence",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Native PostgreSQL restart and user isolation",
-          "observed_at": "2026-11-10T11:58:47Z"
+          "observed_at": "2026-11-10T12:19:26Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Stable boundary checks, rendered critique and delivery",
-          "observed_at": "2026-11-10T11:58:47Z"
+          "observed_at": "2026-11-10T12:19:26Z",
+          "evidence": "docs/gcsp/evidence/fucq-322/README.md"
         }
       ]
     }

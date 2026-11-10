@@ -37,5 +37,5 @@ Read AGENTS.md, build-rules.md, experience-quality.md and COMPONENTS.md. No new 
 - [x] Run scoped regression plus UI ratchet; refresh compact file/function-to-test impact evidence keyed by code identity.
 - [x] Inspect rendered desktop and narrow login/account states, long content, validation and sign-out; reviewer independently critiques proportions/hierarchy/identification/controls/actions/feedback.
 - [x] Correct actionable findings and inspect again; preserve real failures/skips/unrun deployment checks.
-- [ ] Commit/push each coherent validated checkpoint with Codex trailer, update product-map/Jira In Review when acceptance evidence supports it, integrate through project helpers.
-- [ ] Stop owned processes, remove scratch and verify absence; retain bounded evidence/cleanup receipt.
+- [x] Commit/push each coherent validated checkpoint with Codex trailer, update product-map/Jira In Review when acceptance evidence supports it, integrate through project helpers.
+- [x] Stop owned processes, remove scratch and verify absence; retain bounded evidence/cleanup receipt.
