@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-11-10T16:18:38.150218+00:00",
+  "status": "PLAN ONLY read-only identities verified",
+  "head": "6a7acab973c88a95371ad355223a30bdc3e2ef4c",
+  "tree": "e5080304097c90e7b465742dd98cfa290b673725",
+  "worktreeClean": true,
+  "productionChecked": 303,
+  "productionChanged": [],
+  "dependenciesChecked": 65,
+  "dependenciesChanged": [],
+  "executableBytesChanged": [],
+  "runtimeBinaryMatches": true,
+  "scratchCreated": false,
+  "workerOrHttpReplayLaunched": false,
+  "admission": "Not attempted; parent review/explicit launch authorisation required"
+}

@@ -1,0 +1,72 @@
+{
+  "observedAt": "2026-11-10T16:25:41.380496+00:00",
+  "proofId": "scalar-preparation-v1",
+  "logBytes": 8243,
+  "logCapBytes": 2097152,
+  "logBelowCap": true,
+  "allLogLinesValidJson": true,
+  "malformedLines": [],
+  "sourceTransformLines": [
+    {
+      "type": "fucq309-source-transform",
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/comparison/experiments.js",
+      "originalSha256": "a8ca8c03a46f8daf21583099959658afa79f4d8fa221a8aa4394da994a27b13f",
+      "diagnosticSha256": "f935fd7731fba5ac616526e3a403098ca4d5a1989f5e126f88b020ca18e81991"
+    },
+    {
+      "type": "fucq309-source-transform",
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/comparison/private-repository.js",
+      "originalSha256": "268d80e381153f9110116f856a848a4f5da312c5e41d9d529ad6d051d8c625b9",
+      "diagnosticSha256": "f118064763465c377849b2f14366b7d609fbcf882983bb7a4fdbb524bca201ad"
+    },
+    {
+      "type": "fucq309-source-transform",
+      "url": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-027/server/gcsp/allocation/index.js",
+      "originalSha256": "383e74788a26a1e00974b78d6d284edec4b58d66ca8c017a223dcea8ad91fde6",
+      "diagnosticSha256": "54ce0e79dcca538dd60248b4afdb720e18265236bdf40b4b98c3bc53919cd589"
+    }
+  ],
+  "sourceTransformHashesExact": true,
+  "identity": {
+    "type": "fucq309-preparation-identity",
+    "seed": "comparison-a",
+    "route": "buddy",
+    "inputHash": "53bcb43e78caefd6fef8c5c08e25454b1871c89af65369d624bb39af5b123509",
+    "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+    "employees": 1000,
+    "cars": 850
+  },
+  "identityMatchesPinned": true,
+  "phaseCount": 20,
+  "phaseLimit": 60,
+  "phaseSequenceComplete": true,
+  "phaseLimitReached": false,
+  "observationFinishedByDesignAtHelperReturn": true,
+  "lastPhase": {
+    "type": "fucq309-preparation-scalars",
+    "sequence": 20,
+    "label": "prepare-helper-returned",
+    "elapsedMs": 140344.573584,
+    "wallAt": "2026-11-10T16:24:00.845Z",
+    "seed": "comparison-a",
+    "route": "buddy",
+    "sliceCount": 752,
+    "totalSlices": 752,
+    "contenderCount": 29016,
+    "status": "ok",
+    "commit": false
+  },
+  "inference": {
+    "question": "Does failure occur before/during first buddy preparation receipt recording or normalization, or after helper return? No additional fix inferred.",
+    "answer": "The first comparison-a/buddy preparation completed receipt recording, backend commit and normalization, and returned ok. The observed OOM occurred later.",
+    "observedBoundary": "prepare-helper-returned ok",
+    "remainingUnknown": "Later plan read, cursor, quote, cache and claim operations remain unlocalized; no later path is excluded and no exact terminal operation or retaining cause is established.",
+    "absenceRule": "Observation intentionally finishes at helper return; later missing phases are not failure localization evidence.",
+    "limitations": [
+      "Transformed diagnostic only; never canonical acceptance or uninstrumented natural-GC evidence",
+      "Scalar calls, loader and synchronous logging can change timing and GC",
+      "No clean comparative duration/heap/RSS conclusion across runs",
+      "No retry, new markers or production edit automatically authorised"
+    ]
+  }
+}

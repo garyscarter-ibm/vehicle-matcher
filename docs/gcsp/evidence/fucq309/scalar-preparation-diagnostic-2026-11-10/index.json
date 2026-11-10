@@ -1,0 +1,111 @@
+{
+  "createdAt": "2026-11-10T16:26:11.723236+00:00",
+  "proofId": "scalar-preparation-v1",
+  "status": "One authorised diagnostic failed after successful preparation helper return; cleanup verified",
+  "artifacts": {
+    "admission.json": {
+      "bytes": 27843,
+      "sha256": "4154509910aa7815bc2187681af2b7a8dc56002f24757ba070ef59b4941c233b"
+    },
+    "authorization-frozen.json": {
+      "bytes": 4994,
+      "sha256": "cd035f915ea3ef0faa3f6e7682bc855992c016044d2dcbf42b7440d7a9def5f5"
+    },
+    "cleanup-audit.json": {
+      "bytes": 18912,
+      "sha256": "ce741d6eb9246e74fd16cad8a027f05e3c1c5f61889691028fcee1ef99fa8fa0"
+    },
+    "cleanup.json": {
+      "bytes": 687,
+      "sha256": "05133695aadac53625a157581ddec21f5636f7d0e541f589afd73c8e49a2c666"
+    },
+    "collect.py": {
+      "bytes": 4514,
+      "sha256": "e3c9698e27917b9c962fa7075ecb5001ad6c9999ad66efadbba7200c37c878b4"
+    },
+    "dependency-resolve.mjs": {
+      "bytes": 392,
+      "sha256": "0e01fe0617792787b04b8dc499273b27b044de0850602f0bd5045ca6cf807e26"
+    },
+    "failure.log": {
+      "bytes": 8243,
+      "sha256": "8ece88520b3d5c8718fbab795da08eb459319ca53c43fd2d7773b7e4fffcf7b2"
+    },
+    "http.mjs": {
+      "bytes": 21410,
+      "sha256": "b75c8227c90807b345402e4ddbac0db8aa534fa93e00b2bd1ecb9ba62a51ef4a"
+    },
+    "identity-audit.json": {
+      "bytes": 338,
+      "sha256": "4db08fa5b5253555e060fc50c930f4fea7cbed7db20e3f619419742e8becf6f5"
+    },
+    "identity-preflight.json": {
+      "bytes": 571,
+      "sha256": "65f9055ae5e177988c5d433a3c119570b5e5597ce0824d7bb0cdf1c289749114"
+    },
+    "metrics.json": {
+      "bytes": 6013,
+      "sha256": "ae923204c70bc1fa40ab4704f4a85e5445c21a04c5cb4d4ecae1cda1b80aff7d"
+    },
+    "observer.mjs": {
+      "bytes": 4063,
+      "sha256": "6e7381d3ee2eec70703cf648de0078247337580719064d8c0247bd6453779d6d"
+    },
+    "ownership-manifest.json": {
+      "bytes": 547,
+      "sha256": "4192429eb99f91395c32d9c9fcd05fad73029392d26999e2fa0347976224200d"
+    },
+    "parent-decision.json": {
+      "bytes": 918,
+      "sha256": "078ed975de5ae872235d9e23773cf15295307d1da18776a1b202d2ae1b13cd38"
+    },
+    "phase-audit.json": {
+      "bytes": 3398,
+      "sha256": "6be4798c1ab8b1f16da951ae5387e61826b34808700dc5e22e0507371a398af6"
+    },
+    "plan.json": {
+      "bytes": 66266,
+      "sha256": "23b08004448e5d4725c3ae829815e6359806814afbb6a18ea3907fee55b136b1"
+    },
+    "plan.md": {
+      "bytes": 8066,
+      "sha256": "d8992b4ec95cb37845985c76ff5821b09c901027e25bdf3bac1034f0ca325fe2"
+    },
+    "planned-source-diff.patch": {
+      "bytes": 6153,
+      "sha256": "92b7d40f6dc0bf42a99751e06d5ea160c2eba52b7bdc6e9af79f42d2537f60a4"
+    },
+    "report.md": {
+      "bytes": 6883,
+      "sha256": "1bb45c7234c29c0a79301d3c675563fdf77c2531c68bfdaae2ce2cabd5463a40"
+    },
+    "reviewed-plan-index.json": {
+      "bytes": 1465,
+      "sha256": "fde7e9998d98ad466e376725043e71b70304416983f28acf343d72d1cfa61676"
+    },
+    "scalar-phases.json": {
+      "bytes": 6959,
+      "sha256": "98d0df0bf9694a865fc9721186c2185d1801f6fed52b17166f70d9de3d4f6748"
+    },
+    "static-preflight.json": {
+      "bytes": 1423,
+      "sha256": "3e16d67f93a6e813cd61273661a7d4d98c8835ee6c354c6e711ecd5721ac4763"
+    },
+    "summary.json": {
+      "bytes": 210995,
+      "sha256": "a60a9cfe6acb362582a3e8f41aa719330286993e90e6f4dc209e20f3aa7d7c00"
+    },
+    "supervisor-receipt.json": {
+      "bytes": 2928,
+      "sha256": "effa10d22685aa1bdc0dfd553e96762f2c781c165da5b410f1ec20c04e8c2b37"
+    },
+    "supervisor.py": {
+      "bytes": 4905,
+      "sha256": "de670240953d50c966abc395c3cda9353c81ff05f48f6823901d11577920266b"
+    },
+    "transforms.json": {
+      "bytes": 6064,
+      "sha256": "59430a226cdd18761bee273d04047d8222a73ae3ed1bb21ee49111cd942ec93c"
+    }
+  }
+}
