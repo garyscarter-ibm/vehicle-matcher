@@ -64,10 +64,10 @@ test('default captured MailTransport persists fictional message and startup regi
   assert.equal(stored.state, 'sent');
   assert.equal(stored.transport, 'captured');
   assert.equal(stored.attempts, 1);
-  assert.deepEqual(stored.outcome.message.recipient, { employeeId: 'employee-paula', name: 'Paula (fictional)', fictional: true });
+  assert.deepEqual(stored.outcome.message.recipient, { employeeId: 'employee-paula', name: 'Paula Mason', fictional: true });
   assert.equal(stored.outcome.message.offerLink, link);
   assert.equal(stored.outcome.message.capturedAt, (await f.clock.now(f.context)).value.now);
-  assert.match(stored.outcome.message.textBody, /No email has been sent/);
+  assert.doesNotMatch(stored.outcome.message.textBody, /No email has been sent|demonstration/i);
   const tick = await f.clock.tick(f.context, { eventId: 'tick-with-notify', expectedClockVersion: '1', inputDigest: inputDigest('tick') });
   assert.equal(tick.status, 'ok');
   assert.ok(tick.value.handlerOrder.some((row) => row.handlerId === 'captured-outbox' && row.stage === 'outbox-dispatch'));
@@ -331,7 +331,7 @@ test('registered tick retries a due committed job after restart without disconne
 const buddyQuote = { facts: { display: { name: 'BMW 320i Touring', model: '3 Series', derivative: '320i Touring' } },
   terms: { points: { value: 1250, unit: 'points' } } };
 const offer = { state: 'active', expiresAt: '2026-11-05T11:30:00.000Z' };
-const render = (patch = {}) => renderOfferMessage({ offer, quote: buddyQuote, employee: { employeeId: 'employee-paula', name: 'Paula (fictional)' },
+const render = (patch = {}) => renderOfferMessage({ offer, quote: buddyQuote, employee: { employeeId: 'employee-paula', name: 'Paula Mason' },
   offerLink: link, now: '2026-11-05T09:00:00.000Z', ...patch });
 
 test('the offer email names the car and monthly points, gives the deadline in words and greets without the fixture marker', () => {
@@ -342,14 +342,14 @@ test('the offer email names the car and monthly points, gives the deadline in wo
   assert.match(message.textBody, /BMW 320i Touring\n\n1,250 points a month\n\nRespond by 11:30 on Thursday 5 November\./);
   assert.match(document.body.textContent, /Respond by 11:30 on Thursday 5 November\./);
   assert.doesNotMatch(message.textBody + message.htmlBody, /2026-11-05T11|Your scheme vehicle|available until/);
-  assert.match(message.textBody, /^Hello Paula,\n/);
-  assert.match(message.htmlBody, /<p>Hello Paula,<\/p>/);
+  assert.match(message.textBody, /^Hello Paula Mason,\n/);
+  assert.match(message.htmlBody, /<p>Hello Paula Mason,<\/p>/);
   assert.doesNotMatch(message.textBody + message.htmlBody, /Hello Paula \(fictional\)/);
-  assert.deepEqual(message.recipient, { employeeId: 'employee-paula', name: 'Paula (fictional)', fictional: true });
-  assert.match(message.textBody, /for a fictional employee/);
+  assert.deepEqual(message.recipient, { employeeId: 'employee-paula', name: 'Paula Mason', fictional: true });
+  assert.doesNotMatch(message.textBody + message.htmlBody, /fictional employee|demonstration/);
   assert.doesNotMatch(message.textBody + message.htmlBody + message.subject, /\u2014/);
   assert.match(render({ employee: {} }).textBody, /^Hello,\n/);
-  assert.equal(render({ employee: {} }).recipient.name, 'Scheme employee (fictional)');
+  assert.equal(render({ employee: {} }).recipient.name, 'Scheme employee');
 });
 
 test('vehicle name falls back through display parts, the old fact keys and the generic label; bad points are omitted', () => {
@@ -389,7 +389,7 @@ test('captured email shows an absolute link with the token in the fragment, and 
   const message = await capturedWith(t, 'https://demo.example.test');
   const absolute = `https://demo.example.test${minted}`;
   assert.equal(message.offerLink, minted);
-  assert.match(message.textBody, new RegExp(`Review your offer: ${absolute.replace(/[.?]/g, '\\$&')}\\n`));
+  assert.match(message.textBody, new RegExp(`Review your offer: ${absolute.replace(/[.?]/g, '\\$&')}$`));
   const document = new JSDOM(message.htmlBody).window.document;
   assert.equal(document.querySelector('a').getAttribute('href'), absolute);
   assert.ok(document.body.textContent.includes(absolute));
@@ -397,14 +397,14 @@ test('captured email shows an absolute link with the token in the fragment, and 
   const url = new URL(absolute);
   assert.match(url.hash, /^#token=[A-Za-z0-9_-]{43}$/);
   assert.ok(!url.search.includes('token'), 'the token is never in the query');
-  assert.match(message.textBody, /No email has been sent\.$/);
+  assert.doesNotMatch(message.textBody, /No email has been sent|demonstration/i); assert.doesNotMatch(message.htmlBody, /No email has been sent|demonstration/i);
 });
 
 test('captured email keeps the relative link when no valid public origin is set', async (t) => {
   for (const origin of [undefined, 'not an origin', 'http://demo.example.test']) {
     const message = await capturedWith(t, origin);
     assert.equal(message.offerLink, minted);
-    assert.ok(message.textBody.includes(`Review your offer: ${minted}\n`));
+    assert.ok(message.textBody.includes(`Review your offer: ${minted}`));
     assert.ok(message.htmlBody.includes(`href="${minted}"`));
   }
 });
@@ -417,5 +417,5 @@ test('the default mail transport takes the captured public origin from the suppl
     return (await job(f)).outcome.message;
   };
   assert.ok((await withEnv({ GCSP_PUBLIC_ORIGIN: 'https://demo.example.test' })).textBody.includes(`https://demo.example.test${minted}`));
-  assert.ok((await withEnv({})).textBody.includes(`Review your offer: ${minted}\n`));
+  assert.ok((await withEnv({})).textBody.includes(`Review your offer: ${minted}`));
 });

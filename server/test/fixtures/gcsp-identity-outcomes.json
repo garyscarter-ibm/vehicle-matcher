@@ -7,7 +7,7 @@
       "runId": "identity-run-1",
       "principalId": "demo-paula",
       "employeeId": "employee-paula",
-      "name": "Paula (fictional)",
+      "name": "Paula Mason",
       "roles": [
         "employee"
       ],
@@ -18,7 +18,7 @@
       "policyVersion": "gcsp-policy-v1",
       "principal": {
         "principalId": "demo-paula",
-        "name": "Paula (fictional)"
+        "name": "Paula Mason"
       },
       "schemeContext": {
         "companyId": "demo-bmw-fs-uk",
@@ -47,7 +47,7 @@
     },
     "principal": {
       "status": "unknown-principal",
-      "reason": "This fictional person is not configured.",
+      "reason": "This person is not configured.",
       "contractVersion": "1.0.0"
     },
     "forbidden": {

@@ -55,7 +55,7 @@ test('pure account model retains supplied account, drivers, contract facts, hist
   assert.equal(view.state, 'ready-replacement'); assert.equal(view.currentContracts.length, 2);
   assert.equal(view.primaryContract.daysRemaining, 26); assert.equal(view.asOf, instant);
   assert.deepEqual(view.account, input.value.account); assert.deepEqual(view.drivers, input.value.drivers);
-  assert.equal(view.additionalDrivers[0].licence.displayNumber, 'FICTIONAL-NOMINEE');
+  assert.equal(view.additionalDrivers[0].licence.displayNumber, 'WARD9900000CW9XX');
   assert.equal(view.currentContracts[0].vin, 'ZZSYNTHETIC000001'); assert.equal(view.currentContracts[0].orderNumber, '7654321');
   assert.equal(view.currentContracts[0].terms.value, 1100); assert.equal(view.currentContracts[0].technical.assurance, 'model-level');
   assert.equal(view.currentContracts[0].facts.find((row) => row.label === 'Current mileage').value, 5200);

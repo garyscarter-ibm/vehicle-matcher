@@ -23,7 +23,7 @@ export const GREG_NAVIGATION = Object.freeze([
   item('next-order', 'Next order', ['M5 4h14v16H5z', 'M9 9h6', 'M9 13h6']),
 ]);
 
-const ACCOUNT = Object.freeze({ status: 'ready', name: 'Greg', initials: 'GR', context: 'Scheme ordering lead' });
+const ACCOUNT = Object.freeze({ status: 'ready', name: 'Greg Lawson', initials: 'GL', context: 'Scheme ordering lead' });
 const FAILED_LOAD = { status: 'unavailable', message: 'The demand figures could not be loaded. Try again in a moment.' };
 const REGIONS = Object.freeze([
   ['publish', 'publish', 'Publishing', 'Not available yet.'],

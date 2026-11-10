@@ -11,7 +11,7 @@ const refused = (status) => result(status, { reason: ({
   'missing-session': 'Choose an acting person using a presenter session.',
   'unknown-session': 'This session is not recognised.',
   'expired-session': 'This session has expired. Start a new presenter session.',
-  'unknown-principal': 'This fictional person is not configured.',
+  'unknown-principal': 'This person is not configured.',
   'stale-run': 'This page is out of date. Reload to see the latest.',
   forbidden: 'This person cannot perform that action.',
 })[status] || 'The request is refused.' });

@@ -52,7 +52,7 @@ const spoken = (node) => strip(node, '[aria-hidden="true"]');
 
 test('the shell shows Greg, Demand and supply current, the rest honestly unavailable, and one h1', async () => {
   const { root } = await mountFixture('populated');
-  assert.equal(root.querySelector('.gcsp-account-name').textContent, 'Greg');
+  assert.equal(root.querySelector('.gcsp-account-name').textContent, 'Greg Lawson');
   assert.match(root.querySelector('.gcsp-account-context').textContent, /Scheme ordering lead/);
   assert.equal(root.querySelector('.gcsp-nav-btn[aria-current="page"]').dataset.key, 'dashboard');
   const disabled = [...root.querySelectorAll('.gcsp-nav-btn[aria-disabled="true"]')];

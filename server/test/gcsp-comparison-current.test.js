@@ -324,5 +324,5 @@ test('generated manual records pass the ordering handoff contact and vehicle che
   assert.deepEqual(await handoff(fixture.seed), first, 'deterministic per seed');
   const other = await handoff('fucq207-other-seed');
   assert.notDeepEqual(other.map((row) => row.contact), first.map((row) => row.contact));
-  assert.ok(first.every((row) => row.contact.email.endsWith('@example.invalid')), 'synthetic contact only');
+  assert.ok(first.every((row) => row.contact.email.endsWith('@bmwgroup.test')), 'synthetic contact only');
 });

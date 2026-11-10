@@ -5,8 +5,6 @@ import { safeOfferLink } from './templates.js';
 
 const ENDPOINT = 'https://api.brevo.com/v3/smtp/email';
 const WINDOW_MS = 30 * 60 * 1000; // Brevo's provider wall-time idempotency window, independent of DemoClock.
-const CAPTURE_FOOTER = 'This is a captured demonstration message for a fictional employee. No email has been sent.';
-const REAL_FOOTER = 'This is a demonstration message for a fictional employee. Provider acceptance does not confirm inbox delivery.';
 const safeMessageId = (id) => typeof id === 'string' && id.length <= 256
   && /^(?:<[a-zA-Z0-9][a-zA-Z0-9._@+\-]*>|[a-zA-Z0-9][a-zA-Z0-9._@+\-]*)$/.test(id);
 export const confirmedBrevoAcknowledgement = (provider) => provider?.name === 'brevo' && provider.state === 'confirmed' && safeMessageId(provider.messageId);
@@ -75,7 +73,7 @@ export class BrevoMailTransport extends MailTransport {
     const error = !this.#valid || !validWall ? 'mail-configuration-invalid'
       : !email(address) || !this.#allowed.has(address) ? 'recipient-not-allowed'
         : message.offerLink !== undefined && !offerLink ? 'offer-link-invalid' : null;
-    const rendered = { ...message, textBody: message.textBody.replaceAll(CAPTURE_FOOTER, REAL_FOOTER), htmlBody: message.htmlBody.replaceAll(CAPTURE_FOOTER, REAL_FOOTER) };
+    const rendered = { ...message };
     if (offerLink) {
       rendered.textBody = rendered.textBody.replaceAll(message.offerLink, offerLink);
       rendered.htmlBody = rendered.htmlBody.replaceAll(escape(message.offerLink), escape(offerLink));

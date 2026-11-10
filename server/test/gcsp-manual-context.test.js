@@ -196,7 +196,7 @@ test('account uses identity-seeded principal and entitlement; history, licence a
   assert.equal(account.status, 'ok', JSON.stringify(account));
   assert.equal(account.value.state, 'ready');
   assert.equal(account.value.account.employeeId, f.context.employeeId);
-  assert.equal(account.value.drivers[0].licence.displayNumber, 'FICTIONAL-LICENCE');
+  assert.equal(account.value.drivers[0].licence.displayNumber, 'MASON900000PM9XX');
   assert.deepEqual(account.value.actions, [{ action: 'replace', slotId: 'slot-paula', schemeId: 'choices-fs-uk',
     oldContractId: 'current:employee-paula', enabled: true }]);
   assert.equal(account.value.histories[1].orderingSupported, false);

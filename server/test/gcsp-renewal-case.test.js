@@ -239,7 +239,7 @@ caseTest('actual captured dispatcher consumes case updates after commit, retries
   const first = await request(f); assert.equal(first.status, 'ok');
   let jobs = (await f.repository.query(f.context, 'notification_outbox')).value;
   assert.equal(jobs[0].state, 'sent'); assert.equal(jobs[0].messageKind, 'renewal-case-update');
-  assert.match(jobs[0].outcome.message.textBody, /Scheme team|scheme team/i); assert.match(jobs[0].outcome.message.textBody, /No email has been sent/);
+  assert.match(jobs[0].outcome.message.textBody, /Scheme team|scheme team/i); assert.doesNotMatch(jobs[0].outcome.message.textBody, /No email has been sent|demonstration/);
   await request(f); jobs = (await f.repository.query(f.context, 'notification_outbox')).value; assert.equal(jobs.length, 1); assert.equal(jobs[0].attempts, 1);
   assert.equal((await f.service.readOwn(f.context)).value.cases[0].status, 'open');
 });

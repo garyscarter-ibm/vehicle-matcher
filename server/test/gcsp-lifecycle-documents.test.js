@@ -351,7 +351,7 @@ test('provider items advance on ticks after keyed delays, and the scenario key m
   failing.order(); await failing.tick(); await failing.advance(DAY); await failing.tick();
   [order] = await items(failing);
   assert.equal(item(order, 'vehicle-preparation').status, 'failed');
-  assert.equal(item(order, 'vehicle-preparation').reason, 'The synthetic provider reported this step as failed.');
+  assert.equal(item(order, 'vehicle-preparation').reason, 'The provider reported this step as failed.');
   assert.equal(order.readiness.state, 'failed'); assert.deepEqual(order.readiness.failed, ['vehicle-preparation']);
   const [failure] = (await receipts(failing, 'lifecycle-documents:exceptions:v1'));
   assert.equal(failure.eventType, 'document-failed');
