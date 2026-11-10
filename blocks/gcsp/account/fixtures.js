@@ -18,7 +18,7 @@ export const ACCOUNT_SNAPSHOT = {
       },
       "contact": {
         "phone": "01632 960000",
-        "email": "paula.mason@bmwgroup.test"
+        "email": "paula.mason@gcsp-demo.com"
       },
       "allowanceOverride": null
     },
@@ -450,7 +450,7 @@ export const ACCOUNT_SNAPSHOT = {
         "observedAt": "2026-11-05T09:00:00.000Z"
       },
       "recordSetId": "manual:employee-paula:v1",
-      "employee": 2,
+      "employee": 3,
       "slot": 2,
       "clock": "1"
     },
@@ -574,7 +574,7 @@ export const UNSUPPORTED_SNAPSHOT = {
       },
       "contact": {
         "phone": "01632 960000",
-        "email": "sam.patel@bmwgroup.test"
+        "email": "sam.patel@gcsp-demo.com"
       },
       "allowanceOverride": null
     },
@@ -998,7 +998,7 @@ export const UNSUPPORTED_SNAPSHOT = {
         "observedAt": "2026-11-05T09:00:00.000Z"
       },
       "recordSetId": "manual:employee-sam:v1",
-      "employee": 2,
+      "employee": 3,
       "slot": 2,
       "clock": "1"
     },

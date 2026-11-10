@@ -567,7 +567,7 @@ test('FUCQ-297: unavailable remedies are hint text under the select, not option 
 });
 test('FUCQ-297: the case headings use the kit scale rather than the page-title size, and the queue is not a form stack', () => {
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-cases.css', import.meta.url), 'utf8');
-  assert.match(css, /h2\.vm-title[^}]*font-size: 20px/); assert.match(css, /h3\.vm-title[^}]*font-size: 18px/);
+  assert.match(css, /h2\.vm-title[^}]*font-size: var\(--gcsp-font-size-heading\)/); assert.match(css, /h3[^}]*\.vm-title[^}]*font-size: var\(--gcsp-font-size-regular\)/);
 });
 test('FUCQ-297: Paula sees an Ask for help button in view, tied to the caveat, that reveals and focuses the form and returns on Cancel', async () => {
   const f = await mount('none');

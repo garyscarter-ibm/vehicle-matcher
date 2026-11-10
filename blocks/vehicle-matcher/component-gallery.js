@@ -158,7 +158,7 @@ function gcspExamples() {
   ];
   for (const [title, account, detailsOpen] of accounts) {
     const frame = el('div', 'vm-gallery-gcsp-frame');
-    const shell = portalShell({ navigation: GALLERY_NAVIGATION, active: 'cars', breadcrumbs: ['Your cars'], account, presenterControls: false });
+    const shell = portalShell({ navigation: GALLERY_NAVIGATION, active: 'cars', breadcrumbs: ['Your cars'], account, presenterControls: false, signOut: false });
     if (detailsOpen) shell.root.querySelector('.gcsp-account-details').open = true;
     shell.main.append(el('p', 'gcsp-note', 'Page content goes here.'));
     frame.append(shell.root);

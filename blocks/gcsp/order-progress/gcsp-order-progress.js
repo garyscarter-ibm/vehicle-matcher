@@ -90,7 +90,7 @@ export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand =
     stopBody = mountBody(wrap, { adapter, orderUuid, car, helpAdapter, level: headingLevel ?? 2, reload, announce });
     return teardown;
   }
-  stopShell = mountEmployee(root, { brand, view: ORDER_PROGRESS_DESTINATION.key, signal: abort.signal,
+  stopShell = mountEmployee(root, { brand, view: ORDER_PROGRESS_DESTINATION.key, loadingLayout: 'timeline', signal: abort.signal,
     onNavigate,
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
     renderBody(main, { account }) {

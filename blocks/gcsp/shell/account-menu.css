@@ -1,25 +1,19 @@
-.gcsp-account {
-  position: relative;
-  display: flex;
-  flex: 0 1 auto;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-  max-width: 50%;
-  margin-left: auto;
-  font-size: 13px;
-}
+.gcsp-account { position: relative; display: flex; flex: 0 1 auto; align-items: center; gap: var(--gcsp-space-2); min-width: 0; max-width: 50%; margin-left: auto; font-size: var(--gcsp-font-size-regular); }
 .gcsp-account-details { min-width: 0; max-width: 100%; }
-.gcsp-account-summary { display: flex; align-items: center; gap: 6px; min-height: 44px; border-radius: var(--gcsp-radius); color: var(--gcsp-accent); list-style: none; cursor: pointer; }
+.gcsp-account-summary { display: flex; align-items: center; gap: var(--gcsp-space-2); min-height: var(--gcsp-control-height); border-radius: var(--gcsp-radius); color: var(--gcsp-link); list-style: none; cursor: pointer; }
 .gcsp-account-summary::-webkit-details-marker { display: none; }
-.gcsp-account-summary:hover { color: var(--gcsp-accent-strong); }
-.gcsp-avatar { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: var(--gcsp-text-muted); color: var(--gcsp-on-accent); font-size: 9px; font-weight: var(--gcsp-font-weight); }
+.gcsp-account-summary:hover { color: var(--gcsp-link-hover); }
+.gcsp-avatar { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: var(--gcsp-text-muted); color: var(--gcsp-on-accent); font-size: var(--gcsp-font-size-smallprint); font-weight: var(--gcsp-font-weight); }
 .gcsp-account-name { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: var(--gcsp-font-weight); }
 .gcsp .gcsp-account-chevron { width: 14px; height: 14px; transform: rotate(90deg); }
 .gcsp-account-details[open] .gcsp-account-chevron { transform: rotate(-90deg); }
-.gcsp-account-panel { position: absolute; top: calc(100% + 8px); right: 0; z-index: 35; width: min(320px, calc(100vw - 16px)); padding: 16px; border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); color: var(--gcsp-text); overflow-wrap: anywhere; }
-.gcsp-account-detail-name { display: block; margin-bottom: 4px; font-weight: var(--gcsp-font-strong-weight); }
-.gcsp-account-email { display: block; margin-bottom: 8px; color: var(--gcsp-text-muted); overflow-wrap: anywhere; }
-.gcsp-account .gcsp-account-signout { width: 100%; margin-top: 16px; font-size: 14px; }
-.gcsp-account-signout-error { margin: 12px 0 0; color: var(--gcsp-danger); font-size: 13px; }
-.gcsp-account-context { display: block; color: var(--gcsp-text-muted); font-size: 12px; }
+.gcsp-account-panel { position: absolute; top: calc(100% + var(--gcsp-space-2)); right: 0; z-index: 35; width: min(320px, calc(100vw - var(--gcsp-space-4))); padding: var(--gcsp-space-4); box-shadow: var(--gcsp-elevation-overlay); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); color: var(--gcsp-text); overflow-wrap: anywhere; }
+.gcsp-account-detail-name { display: block; margin-bottom: var(--gcsp-space-1); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp-account-email { display: block; margin-bottom: var(--gcsp-space-2); color: var(--gcsp-text-muted); overflow-wrap: anywhere; }
+.gcsp-account .gcsp-account-signout { width: 100%; margin-top: var(--gcsp-space-4); }
+.gcsp-account-signout-error { margin: var(--gcsp-space-3) 0 0; color: var(--gcsp-danger); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
+.gcsp-account-context { display: block; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
+.gcsp-account-links { margin: var(--gcsp-space-3) 0 0; padding: var(--gcsp-space-2) 0 0; border-top: 1px solid var(--gcsp-divider); list-style: none; }
+.gcsp-account-link { display: block; width: 100%; min-height: var(--gcsp-control-height-lg); padding: 0 var(--gcsp-space-2); border: 0; border-radius: var(--gcsp-radius); background: none; color: var(--gcsp-text); font: inherit; font-size: var(--gcsp-font-size-regular); text-align: left; cursor: pointer; }
+.gcsp-account-link:hover, .gcsp-account-link:focus-visible { background: var(--gcsp-hover); color: var(--gcsp-link); }
+@media (max-width: 600px) { .gcsp-account-summary, .gcsp-account-link { min-height: 44px; } }

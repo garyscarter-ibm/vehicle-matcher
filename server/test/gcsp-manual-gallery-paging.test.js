@@ -107,7 +107,7 @@ test('narrow layout rules: one-column fact grids, break-word values, kit paging 
   assert.match(css('blocks/gcsp/manual-gallery/gcsp-manual-gallery.css'), /@import "\.\.\/kit\/show-more\.css"/);
   assert.match(css('blocks/gcsp/kit/form-controls.css'), /\.gcsp-field select[^{]*\{[^}]*text-overflow: ellipsis[^}]*width: 100%[^}]*max-width: 100%/);
   assert.match(css('blocks/gcsp/shell/gcsp-shell.css'), /@media \(max-width: 400px\) \{[^\n]*\.gcsp-avatar \{ display: none; \}/); assert.match(css('blocks/gcsp/shell/gcsp-shell.css'), /\.gcsp-account-name \{[^}]*text-overflow: ellipsis/);
-  assert.match(css('blocks/gcsp/shell/gcsp-shell.css'), /\.gcsp-content \.vm \{ padding-inline: 4px; \}/);
+  assert.match(css('blocks/gcsp/shell/gcsp-shell.css'), /\.gcsp-content \.vm \{ padding-inline: var\(--gcsp-space-1\); \}/);
 });
 
 test('the component gallery example pages its list and wraps long values at word breaks', async () => {

@@ -117,7 +117,7 @@ test('launcher consumes the shared GCSP primitive layer while retained retail st
     assert.match(css, /@import "\.\.\/vehicle-matcher\/gcsp-kit\.css"/);
     assert.match(employee, /@import "\.\.\/\.\.\/vehicle-matcher\/gcsp-kit\.css"/);
     assert.match(kit, /@import "\.\.\/gcsp\/shell\/gcsp-tokens\.css"/);
-    assert.match(kit, /\.gcsp \.vm-title \{ font-weight: 600; text-transform: none;/);
+    assert.match(kit, /\.gcsp \.vm-title \{ font-weight: var\(--gcsp-font-heading-weight\); text-transform: var\(--gcsp-font-transform-heading\);/);
     assert.doesNotMatch(employee, /\.gcsp \.vm-title \{/);
     const cfg = JSON.parse(readFileSync(new URL('./ui-ratchet.json', import.meta.url), 'utf8'));
     assert.ok(cfg.stylesheets.some((sheet) => sheet.path === 'blocks/vehicle-matcher/gcsp-kit.css'));

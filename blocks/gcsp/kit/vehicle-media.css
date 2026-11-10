@@ -3,4 +3,4 @@
 .gcsp :is(.gcsp-offer-exact, .gcsp-activity-offer-visual) .vm-card-media { display: block; padding: 0; aspect-ratio: auto; background: var(--gcsp-surface-raised); }
 .gcsp :is(.gcsp-offer-exact, .gcsp-activity-offer-visual) .vm-card-photo { position: static; display: block; height: auto; aspect-ratio: 16 / 9; object-fit: contain; }
 .gcsp :is(.gcsp-offer-exact, .gcsp-activity-offer-visual) .vm-media-caption { position: static; display: block; }
-.gcsp :is(.gcsp-offer-exact, .gcsp-activity-offer-visual) .vm-card-line { position: absolute; top: 12px; left: 12px; height: fit-content; }
+.gcsp :is(.gcsp-offer-exact, .gcsp-activity-offer-visual) .vm-card-line { position: absolute; top: var(--gcsp-space-3); left: var(--gcsp-space-3); height: fit-content; }

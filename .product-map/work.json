@@ -4195,6 +4195,17 @@
       ],
       "unsliced": false,
       "original_status": "In Review"
+    },
+    {
+      "id": "FUCQ-342",
+      "title": "Disable live Sign out in named visual fixtures",
+      "status": "In Review",
+      "original_status": "In Review",
+      "type": "Bug",
+      "assignee": "Russell Gowers",
+      "observed_at": "2026-11-10T14:18:29Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-342",
+      "branch": "dev/DEV-2026-11-10-GC-023"
     }
   ]
 }

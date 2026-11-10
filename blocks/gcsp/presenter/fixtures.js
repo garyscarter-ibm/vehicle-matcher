@@ -49,7 +49,7 @@ function never(signal) {
 
 /** Adapter for the named fixture, or null when the name is unknown. */
 export function fixtureAdapter(name) {
-  const serve = (state) => ({ loadMessages: async () => state });
+  const serve = (state) => ({ signOut: false, loadMessages: async () => state });
   const all = fixtureMessages();
   if (name === 'messages') return serve({ status: 'ready', messages: all });
   if (name === 'empty') return serve({ status: 'empty' });
@@ -57,6 +57,6 @@ export function fixtureAdapter(name) {
   if (name === 'failed') return serve({ status: 'ready', messages: all.filter((m) => m.state === 'failed') });
   if (name === 'unavailable') return serve({ status: 'unavailable', message: 'The captured emails could not be loaded. Try again in a moment.' });
   if (name === 'refused') return serve({ status: 'refused', message: 'Only the presenter can open the outbox. Switch back to the presenter session and try again.' });
-  if (name === 'loading') return { loadMessages: ({ signal } = {}) => never(signal) };
+  if (name === 'loading') return { signOut: false, loadMessages: ({ signal } = {}) => never(signal) };
   return null;
 }

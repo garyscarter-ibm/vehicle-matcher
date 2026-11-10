@@ -137,10 +137,10 @@ test('direct and refreshed BMW entry mounts the real custom element once and ret
     assert.equal(root.querySelectorAll('.gcsp-header').length, 1);
     assert.match(root.textContent, /Contract Test Employee/);
     assert.equal(win.document.activeElement.tagName, 'H1');
-    // One mount reads account, draft and (since 68ea49fe, FUCQ-105) the current offer link.
-    assert.equal(calls.length, 3, 'adapter is assigned before attach, with no default duplicate mount');
+    // One mount reads account, draft, the current offer link (FUCQ-105) and activity for the buddy card.
+    assert.equal(calls.length, 4, 'adapter is assigned before attach, with no default duplicate mount');
     for (const { url, options } of calls) {
-      assert.match(url, /^https:\/\/api\.test\/base\/api\/gcsp\/(manual\/(account|draft)|offers\/current)$/);
+      assert.match(url, /^https:\/\/api\.test\/base\/api\/gcsp\/(manual\/(account|draft)|offers\/current|activity)$/);
       assert.equal(options.credentials, 'include');
       assert.equal(options.headers['X-Access-Key'], undefined);
       assert.equal(options.method ?? 'GET', 'GET'); assert.equal(options.body, undefined);
@@ -155,7 +155,7 @@ test('direct and refreshed BMW entry mounts the real custom element once and ret
     const old = root.querySelector('gcsp-employee-entry');
     win.eval('bootDemo({ employeeCapability });'); await flush();
     assert.equal(old.isConnected, false); assert.equal(root.querySelectorAll('gcsp-employee-entry').length, 1);
-    assert.equal(calls.length, 6);
+    assert.equal(calls.length, 8);
     for (const failure of ['refused', 'expired']) {
       mode = failure; await root.querySelector('gcsp-employee-entry').refresh(); await flush();
       assert.equal(win.document.querySelector('.vm-gate'), null, 'employee rejection does not become demo identity');
@@ -165,11 +165,11 @@ test('direct and refreshed BMW entry mounts the real custom element once and ret
     }
     mode = 'ready'; await root.querySelector('gcsp-employee-entry').refresh(); await flush();
     assert.match(root.textContent, /Contract Test Employee/);
-    const latest = calls.slice(-3);
+    const latest = calls.slice(-4);
     const signals = latest.map(({ options }) => options.signal);
     win.history.replaceState({}, '', employee); await flush();
     assert.equal(root.querySelectorAll('gcsp-employee-entry').length, 1);
-    calls.slice(-3).forEach(({ url }) => assert.match(url, /^https:\/\/bmw-matcher-api\.onrender\.com\/api\/gcsp\/(manual\/(account|draft)|offers\/current)$/));
+    calls.slice(-4).forEach(({ url }) => assert.match(url, /^https:\/\/bmw-matcher-api\.onrender\.com\/api\/gcsp\/(manual\/(account|draft)|offers\/current|activity)$/));
     win.history.pushState({}, '', '?experience=launcher&brand=bmw'); await flush();
     assert.equal(root.querySelector('gcsp-employee-entry'), null);
     signals.forEach((signal) => assert.equal(signal.aborted, true));
