@@ -3,7 +3,7 @@
 import { el } from '../../vehicle-matcher/ui.js';
 import { portalShell, svgIcon } from '../shell/portal-shell.js';
 import { fixtureAdapter } from './fixtures.js';
-import { PORTAL_NAVIGATION, routePortal } from './portal-navigation.js';
+import { ACCOUNT_MENU, MENU_KEYS, PORTAL_NAVIGATION, routeAccountMenu } from './portal-navigation.js';
 
 export const EMPLOYEE_NAVIGATION = PORTAL_NAVIGATION;
 const DEFAULT_VIEW = 'cars';
@@ -95,12 +95,13 @@ export function mountEmployee(root, ctx = {}) {
       signOut: ctx.signOut,
       arrivalFocus: true,
       navigation: PORTAL_NAVIGATION,
+      accountMenu: ctx.accountMenu === false ? [] : ACCOUNT_MENU,
       active: activeOf(view),
       breadcrumbs: [labelOf(view)],
       onNavigate: (key) => {
-        if (key === view || !rail.has(key)) return;
+        if (key === view || !MENU_KEYS.has(key)) return;
         if (ctx.onNavigate) ctx.onNavigate(key);
-        else routePortal(key, ctx.location || root.ownerDocument.defaultView.location);
+        else routeAccountMenu(key, ctx.location || root.ownerDocument.defaultView.location);
       },
       onRetryAccount: load,
     });

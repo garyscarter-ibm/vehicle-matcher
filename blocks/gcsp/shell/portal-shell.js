@@ -123,7 +123,19 @@ function initialsOf(name) {
   return (first + last).toUpperCase();
 }
 
-function accountContent(state, retryButton, signOutButton) {
+// Account menu shortcuts: rail keys the host routes through onNavigate, shown above Sign out.
+function accountLinks(items) {
+  if (!items.length) return null;
+  const list = el('ul', 'gcsp-account-links');
+  for (const item of items) {
+    const link = el('button', 'gcsp-account-link', item.label);
+    link.type = 'button'; link.dataset.key = item.key;
+    const li = el('li'); li.append(link); list.append(li);
+  }
+  return list;
+}
+
+function accountContent(state, retryButton, signOutButton, menuItems = []) {
   const status = state?.status;
   if (status === 'signed-out') return { label: null, busy: false, signedOut: true, nodes: [] };
   if (status === 'ready' && state.name) {
@@ -137,6 +149,8 @@ function accountContent(state, retryButton, signOutButton) {
     panel.append(el('span', 'gcsp-account-detail-name', state.name));
     if (state.email) panel.append(el('span', 'gcsp-account-email', state.email));
     if (state.context) panel.append(el('span', 'gcsp-account-context', state.context));
+    const links = accountLinks(menuItems);
+    if (links) panel.append(links);
     if (signOutButton) panel.append(signOutButton);
     details.append(summary, panel);
     return {
@@ -172,7 +186,7 @@ function accountContent(state, retryButton, signOutButton) {
  */
 export function portalShell({
   title = 'Group Car Schemes Portal', account = { status: 'loading' }, navigation = [], active = null,
-  breadcrumbs = [], onNavigate, onRetryAccount, presenterControls = {}, arrivalFocus = false,
+  breadcrumbs = [], onNavigate, onRetryAccount, presenterControls = {}, arrivalFocus = false, accountMenu = [],
   signOut = true, sessionAdapter = createSessionHttpAdapter(), navigate, reload,
 } = {}) {
   const id = `gcsp-shell-${++uid}`;
@@ -255,6 +269,11 @@ export function portalShell({
   }
   const onAccountClick = async (event) => {
     if (event.target.closest?.('.gcsp-account-retry')) onRetryAccount?.();
+    const shortcut = event.target.closest?.('.gcsp-account-link');
+    if (shortcut) {
+      const details = shortcut.closest('details'); if (details) details.open = false;
+      closeMenu(); onNavigate?.(shortcut.dataset.key); return;
+    }
     const action = event.target.closest?.('.gcsp-account-signout');
     if (!action || signingOut) return;
     signingOut = true; action.disabled = true; action.textContent = 'Signing out…';
@@ -285,7 +304,7 @@ export function portalShell({
     retry.type = 'button';
     const logout = signOut ? button({ label: 'Sign out', variant: 'ghost', disabled: signingOut }) : null;
     if (logout) logout.classList.add('gcsp-account-signout');
-    const view = accountContent(state, retry, logout);
+    const view = accountContent(state, retry, logout, accountMenu);
     if (view.label) accountBox.setAttribute('aria-label', view.label); else accountBox.removeAttribute('aria-label');
     accountBox.setAttribute('aria-busy', String(view.busy));
     accountBox.dataset.status = view.signedOut ? 'signed-out' : view.restarted ? 'restarted'

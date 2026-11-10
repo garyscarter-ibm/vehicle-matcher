@@ -305,7 +305,7 @@ test('element mounts on connect, emits ready, and tears down on disconnect', asy
   await tick();
   assert.deepEqual(events, [[{ view: 'cars', brand: 'bmw' }, true, true, false]]);
   assert.equal(el.querySelector('main').textContent, 'body:cars');
-  el.querySelector('[data-key="brief"]').click();
+  el.querySelector('.gcsp-nav [data-key="brief"]').click();
   assert.equal(el.getAttribute('view'), 'brief');
   assert.equal(el.querySelector('main').textContent, 'body:brief');
   el.remove();
@@ -324,7 +324,7 @@ test('gcsp:navigate carries {from,to}, is cancelable, and switches the view only
     seen.push([e.detail, e.cancelable]);
     if (prevent) e.preventDefault();
   });
-  const go = () => el.querySelector('[data-key="brief"]').click();
+  const go = () => el.querySelector('.gcsp-nav [data-key="brief"]').click();
   go();
   assert.deepEqual(seen, [[{ from: 'cars', to: 'brief' }, true]]);
   assert.equal(el.getAttribute('view'), null);
@@ -332,7 +332,7 @@ test('gcsp:navigate carries {from,to}, is cancelable, and switches the view only
   prevent = false;
   go();
   assert.equal(el.getAttribute('view'), 'brief');
-  assert.equal(el.querySelector('[data-key="brief"]').getAttribute('aria-current'), 'page');
+  assert.equal(el.querySelector('.gcsp-nav [data-key="brief"]').getAttribute('aria-current'), 'page');
   assert.equal(el.querySelector('nav[aria-label="Breadcrumb"] [aria-current="page"]').textContent, 'Your preferences');
   assert.equal(el.querySelector('main h1').textContent, 'Your preferences');
   el.remove();
@@ -828,4 +828,33 @@ test('shell presenter region mounts an injected CONTROL adapter and tears it dow
   assert.ok(shell.presenterRegion); assert.equal(shell.presenterRegion.querySelector('details').hidden, true);
   shell.destroy(); assert.equal(signal.aborted, true);
   const offline = shellMod.portalShell({ presenterControls: false }); assert.equal(offline.presenterRegion.children.length, 0); offline.destroy();
+});
+
+test('account menu shortcuts sit above Sign out, close the disclosure and route through onNavigate', () => {
+  const heard = [];
+  const shell = shellMod.portalShell({ account: { status: 'ready', name: 'Paula Mason' }, onNavigate: (key) => heard.push(key),
+    accountMenu: [{ key: 'brief', label: 'Your preferences' }, { key: 'help', label: 'Renewal help' }] });
+  document.body.append(shell.root);
+  const details = shell.root.querySelector('.gcsp-account-details');
+  const links = [...details.querySelectorAll('.gcsp-account-link')];
+  assert.deepEqual(links.map((node) => node.textContent), ['Your preferences', 'Renewal help']);
+  assert.ok(links[1].compareDocumentPosition(details.querySelector('.gcsp-account-signout')) & window.Node.DOCUMENT_POSITION_FOLLOWING);
+  details.open = true; links[0].click();
+  assert.equal(details.open, false); assert.deepEqual(heard, ['brief']);
+  const bare = shellMod.portalShell({ account: { status: 'ready', name: 'Greg Lawson' } });
+  assert.equal(bare.root.querySelector('.gcsp-account-links'), null);
+  shell.destroy(); bare.destroy();
+});
+
+test('the employee shell menu routes preferences and help, and accountMenu false leaves it out', async () => {
+  const assigned = []; const location = { assign: (to) => assigned.push(to) };
+  const root = host();
+  const stop = emp.mountEmployee(root, { location, loadAccount: async () => ({ status: 'ready', name: 'Paula Mason' }) }); await tick();
+  const links = [...root.querySelectorAll('.gcsp-account-link')];
+  links.forEach((node) => node.click());
+  assert.deepEqual(assigned, ['/gcsp-brief-live.html', '/gcsp-help.html']);
+  stop();
+  const plain = host();
+  const stopPlain = emp.mountEmployee(plain, { location, accountMenu: false, loadAccount: async () => ({ status: 'ready', name: 'Paula Mason' }) }); await tick();
+  assert.equal(plain.querySelector('.gcsp-account-links'), null); stopPlain();
 });

@@ -41,15 +41,11 @@
 .gcsp-skip:focus { transform: translateY(0); clip-path: none; }
 
 /* ---------- header ---------- */
-.gcsp-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: var(--gcsp-header-height);
-  padding: 5px 16px;
-  background: var(--gcsp-surface);
-  border-bottom: 1px solid var(--gcsp-divider);
-}
+.gcsp-header { display: flex; align-items: center; gap: 12px; min-height: var(--gcsp-header-height); padding: 5px 16px; background: var(--gcsp-surface); border-bottom: 1px solid var(--gcsp-divider); view-transition-name: gcsp-header; }
+/* Same-origin page changes cross-fade the body; the header and rail stay put. */
+@view-transition { navigation: auto; }
+.gcsp-nav { view-transition-name: gcsp-rail; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
 .gcsp-marks { display: flex; flex: none; align-items: center; gap: 8px; }
 .gcsp-mark { display: block; width: auto; height: 22px; }
 .gcsp-title {

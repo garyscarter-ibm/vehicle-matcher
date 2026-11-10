@@ -12,6 +12,11 @@ export const PORTAL_NAVIGATION = Object.freeze([
 export const PORTAL_ROUTES = Object.freeze({ cars: '/gcsp-account.html', brief: '/gcsp-brief-live.html', activity: '/gcsp-activity-live.html',
   'order-progress': '/gcsp-order-progress-live.html', help: '/gcsp-help.html' });
 
+// The account menu's shortcuts: one rail page and the help page, which has no rail item.
+export const ACCOUNT_MENU = Object.freeze([Object.freeze({ key: 'brief', label: 'Your preferences' }),
+  Object.freeze({ key: 'help', label: 'Renewal help' })]);
+export const MENU_KEYS = new Set([...PORTAL_NAVIGATION.map((entry) => entry.key), 'help']);
+
 /** Go to the live page of a rail key; false (and no navigation) for anything else. */
 export function routePortal(key, location) {
   if (!location || !PORTAL_NAVIGATION.some((entry) => entry.key === key)) return false;
@@ -19,13 +24,21 @@ export function routePortal(key, location) {
   return true;
 }
 
-/** Let a host element's cancelable gcsp:navigate event route every rail key. */
+/** As routePortal, and also the account menu's help page. */
+export function routeAccountMenu(key, location) {
+  if (key !== 'help') return routePortal(key, location);
+  if (!location) return false;
+  location.assign(PORTAL_ROUTES.help);
+  return true;
+}
+
+/** Let a host element's cancelable gcsp:navigate event route every rail and account-menu key. */
 export function routePortalEvents(host, location = host.ownerDocument?.defaultView?.location) {
-  host.addEventListener('gcsp:navigate', (event) => { if (routePortal(event.detail?.to, location)) event.preventDefault(); });
+  host.addEventListener('gcsp:navigate', (event) => { if (routeAccountMenu(event.detail?.to, location)) event.preventDefault(); });
 }
 
 /** Release a held reservation first, then route; a release that is not confirmed leaves the page where it is. */
 export async function routeAfterRelease(key, { held, release, location }) {
   try { if (held() && (await release())?.status !== 'ok') return false; } catch { return false; }
-  return routePortal(key, location);
+  return routeAccountMenu(key, location);
 }
