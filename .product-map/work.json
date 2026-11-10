@@ -4218,7 +4218,7 @@
           "status": "compact pool scoped checks; canonical128/16 failure remains open"
         }
       ],
-      "observed_at": "2026-11-10T14:05:36Z",
+      "observed_at": "2026-11-10T14:16:51Z",
       "slices": [
         {
           "id": "current-cause",
@@ -4245,8 +4245,8 @@
           "id": "canonical-integration",
           "status": "in-progress",
           "title": "Canonical six-step stored-result integration gate",
-          "observed_at": "2026-11-10T14:05:23Z",
-          "evidence": "Actual canonical128/16 HTTP proof at831a76cb failed after1/6 routes: OOM168.828s, zero saved rows; host responsive and cleanup verified. Compact collision-checked pool follow-up has exact100/300 semantic equality and measured heap reduction; fresh canonical proof remains outstanding. docs/gcsp/evidence/fucq309/canonical-failure-2026-11-10.json"
+          "observed_at": "2026-11-10T14:16:51Z",
+          "evidence": "Both actual128/16 canonical HTTP proofs failed after1/6:831a76cb OOM168.828s;5177e3b2 OOM209.451s,zero saved rows and responsive host. Scoped repair independently reviewed; acceptance open. Measuring actual1000-person first-buddy retained/model/transaction boundary before another production edit. docs/gcsp/evidence/fucq309/canonical-second-failure-2026-11-10.json"
         }
       ],
       "unsliced": false
