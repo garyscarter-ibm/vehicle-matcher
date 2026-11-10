@@ -221,7 +221,7 @@ test('host account setup Back and resume retain real saved choices and unchanged
   click('Back to account'); await waitFor(() => root.querySelector('h1')?.textContent === 'Your cars');
   assert.equal(root.querySelectorAll('main').length, 1);
   assert.deepEqual(good(await f.manualRead.readAccount(f.employee)).currentContract, before);
-  click('Resume saved journey'); await waitFor(() => root.querySelector('h1')?.textContent === 'Your order choices');
+  click('Carry on'); await waitFor(() => root.querySelector('h1')?.textContent === 'Your order choices');
   assert.equal(root.querySelector('[name="requestedCollectionDate"]').value, '2026-11-20');
   assert.equal(good(await f.manualRead.readDraft(f.employee)).choices.driverId, `driver:${f.employee.employeeId}`);
 });

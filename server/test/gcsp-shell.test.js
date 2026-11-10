@@ -684,7 +684,7 @@ test('missing image shows the placeholder and a missing fact says Not supplied',
   assert.equal(cards[1].querySelector('.vm-card-soon').textContent, 'No image for this car yet');
   assert.ok(cards[0].querySelector('img.vm-card-photo'));
   assert.equal(cards[1].querySelector('.vm-card-line'), null, 'no image caption without an image');
-  assert.equal(cards[0].querySelector('.vm-card-line').textContent, 'BMW brand image, not this model');
+  assert.equal(cards[0].querySelector('.vm-card-line'), null, 'no image disclaimer line');
   assert.match(cards[1].querySelector('.vm-fact-value.is-missing').textContent, /^Not supplied$/);
   assert.match(node.querySelector('.gcsp-details').textContent, /Licence numberNot supplied/);
   assert.match(cards[1].querySelector('.gcsp-card-name').textContent, /Technology Plus and Comfort Pack/);
@@ -758,8 +758,7 @@ test('harness page loads the harness module and the body stylesheet; the element
   const harness = read('blocks/gcsp/employee/harness.js');
   assert.match(harness, /FIXTURE_NAMES\.includes/);
   // Page hosts only: the offer entry captures and scrubs the email-link fragment (bc8a941a); the presenter page opens Help (112fdfe2).
-  const liveHosts = ['activity/live.js', 'order-progress/live.js', 'offer/entry.js', 'offer/http-adapter.js',
-    'presenter-controls/workspace.js'].map((file) => join(GCSP_DIR, file));
+  const liveHosts = ['activity/live.js', 'order-progress/live.js', 'offer/entry.js', 'offer/http-adapter.js'].map((file) => join(GCSP_DIR, file));
   for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.js') && !p.endsWith('harness.js') && !liveHosts.includes(p))) {
     assert.doesNotMatch(readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:\\])\/\/.*$/gm, '$1'), /\b(?:window|globalThis)\s*\.\s*(?:location|history)\b|\b(?:location|history)\.(?:href|search|pathname|hash|pushState|replaceState|back|forward|go)\b/, rel(f));
   }

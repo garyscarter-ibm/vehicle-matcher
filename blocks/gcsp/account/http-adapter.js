@@ -37,6 +37,7 @@ export function createAccountHttpAdapter({ base = '', fetchImpl = globalThis.fet
   const readAccount = (options) => request('account', options);
   const readDraft = (options) => request('draft', options);
   const saveDraft = (input, options = {}) => request('draft', { ...options, body: input });
+  const discardDraft = (input, options = {}) => request('draft/discard', { ...options, body: input });
   const browseStock = (options) => request('stock', options);
   const readOrder = (options) => request('order', options);
   // Offers the employee can open; failure only hides the link.
@@ -68,7 +69,7 @@ export function createAccountHttpAdapter({ base = '', fetchImpl = globalThis.fet
       return response.ok && envelope?.status === 'ok' && envelope.value && typeof envelope.value === 'object' ? { status: 'ok', value: envelope.value } : { status: 'unavailable' };
     } catch (error) { if (signal?.aborted) throw error; return { status: 'unavailable' }; }
   }
-  return { readAccount, readDraft, saveDraft, browseStock, readOffers, readActivity, readOrder,
+  return { readAccount, readDraft, saveDraft, discardDraft, browseStock, readOffers, readActivity, readOrder,
     async loadAccount(options) {
       const envelope = await readAccount(options); const model = toAccountView(envelope);
       return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', ...accountIdentity(model.account),

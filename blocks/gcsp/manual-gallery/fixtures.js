@@ -12,7 +12,7 @@ export function createManualGalleryFixture(name = 'available') {
     const eligible = name !== 'no-suitable-stock' && index !== 2;
     const photo = index === 1 ? null : '/assets/brand-hero/bmw.jpg';
     const display = { name: index === 1 ? 'BMW 330e M Sport Pro Edition Touring with Technology Plus and Comfort Pack' : index === 2 ? 'BMW 530e M Sport Touring' : 'BMW 320i M Sport Touring',
-      photo, images: photo ? [{ src: photo, alt: 'BMW brand image', caption: 'BMW brand image, not this car', provenance }] : [] };
+      photo, images: photo ? [{ src: photo, alt: 'BMW brand image', provenance }] : [] };
     const facts = { model: fact(index === 2 ? '530e' : index === 1 ? '330e' : '320i'), series: fact(index === 2 ? '5 Series' : '3 Series'), body: fact('Touring'), engine: fact(index ? 'Plug-in hybrid' : 'Petrol'),
       exterior: fact(index ? 'Brooklyn Grey metallic' : 'Portimao Blue metallic'), interior: fact('Black Vernasca leather'), transmission: fact('Automatic'), insuranceGroup: fact(index === 2 ? 42 : 25),
       earliestCollection: fact(index ? '2026-12-21' : '2026-12-14'), nedcCo2: fact(index ? null : { value: 0, unit: 'g/km', basis: 'NEDC-correlated' }),

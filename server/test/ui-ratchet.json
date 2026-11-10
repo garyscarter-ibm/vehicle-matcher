@@ -23,7 +23,8 @@
     "blocks/gcsp/kit/range-bar.js",
     "blocks/gcsp/kit/show-more.js",
     "blocks/gcsp/kit/slot-picker.js",
-    "blocks/gcsp/kit/loading-skeleton.js"
+    "blocks/gcsp/kit/loading-skeleton.js",
+    "blocks/gcsp/kit/tabs.js"
   ],
   "extensions": [
     ".js",
@@ -124,6 +125,11 @@
       "re": "el\\('ul', 'gcsp-slot-picker'",
       "flags": "g",
       "use": "slotPicker({ slots, actionLabel, onPick }) (blocks/gcsp/kit/slot-picker.js)"
+    },
+    "tabs": {
+      "re": "setAttribute\\('role', 'tablist'\\)",
+      "flags": "g",
+      "use": "tabs({ label, items }) (blocks/gcsp/kit/tabs.js)"
     }
   },
   "stylesheets": [
@@ -326,6 +332,14 @@
     {
       "path": "blocks/gcsp/kit/loading-skeleton.css",
       "max_lines": 14
+    },
+    {
+      "path": "blocks/gcsp/kit/tabs.css",
+      "max_lines": 10
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/presenter-console.css",
+      "max_lines": 39
     }
   ],
   "baseline": {

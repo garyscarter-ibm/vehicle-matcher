@@ -10,6 +10,13 @@ const structural = new Map([
   ['Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=', 'F70 Sports Hatch|120'],
 ]);
 const text = (value) => typeof value === 'string' && value.trim().length > 0;
+// FUCQ-373: rows stored before the rule still carry image disclaimers; strip them from the public copy only.
+const DISCLAIMER = /\brepresentative\b|\bnot (?:this|your) (?:exact )?(?:car|model)\b/i;
+function plainImage(image) {
+  if (!image || typeof image !== 'object' || Array.isArray(image)) return;
+  if (typeof image.caption === 'string' && DISCLAIMER.test(image.caption)) delete image.caption;
+  if (typeof image.alt === 'string') image.alt = image.alt.replace(/:\s*representative image$/i, '').trim();
+}
 const publicSnapshot = (value, binding, slot) => ['facts', 'snapshot'].includes(slot) && value.identityKind === 'exact-stock'
   && text(binding.orderUuid) && value.sourceKeys?.stockId === binding.orderUuid && text(value.display?.name);
 const seededCurrentContract = (value) => value.model === 'BMW 3 Series Touring 320i' && value.status === 'current'
@@ -44,8 +51,7 @@ export async function withVehicleDisplayImages(outcome) {
     if (seededCurrentContract(value) && !text(value.media?.src)) {
       pending.push((async () => {
         const image = await modelDisplayImage('G21 Touring|320i');
-        if (image) value.media = { src: `/${image.asset}`, alt: 'BMW 3 Series Touring: representative image',
-          caption: 'Representative image, not your exact car' };
+        if (image) value.media = { src: `/${image.asset}`, alt: 'BMW 3 Series Touring' };
       })());
     }
     for (const [key, child] of Object.entries(value)) if (containers.has(key)) visit(child, ownBinding, key);
@@ -74,5 +80,16 @@ export async function withVehicleDisplayImages(outcome) {
     }
     for (const [key, child] of Object.entries(value)) if (containers.has(key)) promote(child, ownBinding, key);
   }
-  promote(copy); await Promise.all(promotions); return copy;
+  promote(copy); await Promise.all(promotions);
+  (function strip(value) {
+    if (Array.isArray(value)) { value.forEach(strip); return; }
+    if (!value || typeof value !== 'object') return;
+    if (value.media && typeof value.media === 'object') { value.media = { ...value.media }; plainImage(value.media); }
+    if (value.display && Array.isArray(value.display.images)) {
+      value.display = { ...value.display, images: value.display.images.map((image) => image && typeof image === 'object' ? { ...image } : image) };
+      value.display.images.forEach(plainImage);
+    }
+    for (const [key, child] of Object.entries(value)) if (containers.has(key)) strip(child);
+  })(copy);
+  return copy;
 }

@@ -24,15 +24,14 @@ export function countdown(now, end) {
   return days > 0 ? `ends in ${plural(days)}` : `ended ${plural(-days)} ago`;
 }
 
-function photoWell(item, caption, label) {
+function photoWell(item) {
   const { media } = mediaWell(
-    { name: `${item.name}, ${label}`, line: caption, photo: item.photo?.src || '' },
+    { name: item.name, line: '', photo: item.photo?.src || '' },
     'gcsp-media',
     { placeholder: NO_IMAGE },
   );
   if (item.photo?.crop) media.dataset.crop = item.photo.crop;
-  // The caption describes a photo, so it goes when there is none.
-  if (!item.photo?.src) media.querySelector('.vm-card-line')?.remove();
+  media.querySelector('.vm-card-line')?.remove();
   return media;
 }
 
@@ -97,7 +96,7 @@ export function renderRepresentativeBody(main, { account, data } = {}) {
     details,
   );
   copy.querySelector('.gcsp-actions').append(choose);
-  feature.append(photoWell(current, 'BMW brand image, not your car', 'BMW brand image, not your car'), copy);
+  feature.append(photoWell(current), copy);
 
   // Allowance
   const allow = el('section', 'gcsp-allowance');
@@ -155,7 +154,7 @@ export function renderRepresentativeBody(main, { account, data } = {}) {
     const foot = el('div', 'gcsp-card-foot');
     if (over) foot.append(reason);
     foot.append(pick);
-    card.append(photoWell(car, 'BMW brand image, not this model', 'BMW brand image, not this model'), body, foot);
+    card.append(photoWell(car), body, foot);
     item.append(card);
     grid.append(item);
     cards.push({ car, over, gap, card, pick });

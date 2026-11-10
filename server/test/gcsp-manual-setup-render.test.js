@@ -126,7 +126,7 @@ test('account journey event enters trusted setup and Back returns to the account
   await waitFor(() => f.root.querySelector('h1')?.textContent === 'Your order choices'); fill(f); click(f, 'Back to account');
   await waitFor(() => f.root.querySelector('h1')?.textContent === 'Your cars');
   assert.equal(f.root.querySelectorAll('main').length, 1); assert.match(f.root.textContent, /BMW 3 Series Touring 320i/);
-  click(f, 'Resume saved journey'); await waitFor(() => f.root.querySelector('h1')?.textContent === 'Your order choices');
+  click(f, 'Carry on'); await waitFor(() => f.root.querySelector('h1')?.textContent === 'Your order choices');
   assert.equal(control(f, 'requestedCollectionDate').value, '2026-11-20');
 });
 test('custom element registration is repeatable and disconnect tears down its shell', async (t) => {

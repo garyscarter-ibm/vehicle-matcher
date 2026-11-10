@@ -54,7 +54,7 @@
             <mxGeometry height="100" width="260" x="1350" y="210" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Presenter controls + DemoClock / ticks · reset · scenarios · no runner" type="external" status="proposed" feature="gcsp-foundation" id="o-events">
+        <UserObject label="Presenter controls + DemoClock / ticks · reset · scenarios · no runner · own console page" type="external" status="proposed" feature="gcsp-foundation" id="o-events">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="110" width="240" x="650" y="410" as="geometry" />
           </mxCell>
@@ -1739,9 +1739,24 @@
             <mxGeometry height="70" width="260" x="1602.1" y="479" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Presenter controls · FUCQ-126 / tick · release · reset · principal" type="client" status="proposed" feature="gcsp-foundation" id="e-presenter">
+        <UserObject label="Presenter controls · FUCQ-126 / mounted by the console only" type="client" status="proposed" feature="gcsp-foundation" id="e-presenter">
           <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="2408.93" y="230" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Presenter console page · FUCQ-360 / gcsp-presenter.html · Basic · Advanced tabs" type="client" status="built" feature="presenter-revamp" id="e-presenter-console">
+          <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1">
+            <mxGeometry height="70" width="260" x="2728.93" y="230" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Advanced mounts" status="built" feature="presenter-revamp" id="e-presenter-console-edge">
+          <mxCell edge="1" parent="1" source="e-presenter-console" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;edgeStyle=orthogonalEdgeStyle;" target="e-presenter">
+            <mxGeometry relative="1" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Portal shell stops hosting presenter controls (FUCQ-361). Release visual and feed: FUCQ-364 to 366." type="note" status="proposed" feature="presenter-revamp" id="e-presenter-shell-note">
+          <mxCell parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;spacingLeft=6;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="2728.93" y="130" as="geometry" />
           </mxCell>
         </UserObject>
         <UserObject label="Outbox viewer · FUCQ-97 / captured offer emails" type="client" status="proposed" feature="gcsp-foundation" id="e-outbox-viewer">

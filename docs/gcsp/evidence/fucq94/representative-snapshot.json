@@ -1786,8 +1786,7 @@
               "photo": "/assets/brand-hero/bmw.jpg",
               "images": [
                 {
-                  "src": "/assets/brand-hero/bmw.jpg",
-                  "caption": "BMW brand image, not this exact car"
+                  "src": "/assets/brand-hero/bmw.jpg"
                 }
               ]
             },
@@ -3647,8 +3646,7 @@
               "photo": "/assets/brand-hero/bmw.jpg",
               "images": [
                 {
-                  "src": "/assets/brand-hero/bmw.jpg",
-                  "caption": "BMW brand image, not this exact car"
+                  "src": "/assets/brand-hero/bmw.jpg"
                 }
               ]
             },

@@ -1,13 +1,12 @@
 import { test, before, beforeEach, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
-let mount; let presenterBar; let workspace; let http; let dom;
+let mount; let presenterBar; let http; let dom;
 before(async () => {
   dom = new JSDOM('<!doctype html><body></body>', { url: 'https://example.test/', pretendToBeVisual: true });
   for (const name of ['window', 'document', 'HTMLElement', 'customElements']) globalThis[name] = name === 'window' ? dom.window : dom.window[name];
   ({ presenterBar } = await import('../../blocks/gcsp/kit/presenter-bar.js'));
   ({ mountPresenterControls: mount } = await import('../../blocks/gcsp/presenter-controls/controls.js'));
-  ({ mountPresenterWorkspace: workspace } = await import('../../blocks/gcsp/presenter-controls/workspace.js'));
   ({ createPresenterHttpAdapter: http } = await import('../../blocks/gcsp/presenter-controls/http-adapter.js'));
 });
 beforeEach(() => document.body.replaceChildren());
@@ -286,85 +285,6 @@ test('destroy aborts and ignores late readback', async () => {
   let finish; const f = setup({ readControls: () => new Promise((resolve) => { finish = resolve; }) });
   await settle(); f.control.destroy(); finish(ok(state())); await settle(); assert.equal(f.host.children.length, 0); // readback starts after the context gate
 });
-test('workspace chooses only actual context role and real adapter, never a query principal or fixture', async () => {
-  for (const role of ['employee', 'greg']) {
-    const host = document.createElement('div'); document.body.append(host); const calls = [];
-    const acting = { readContext: async () => ok({ roles: [role], principalId: 'server-choice' }) };
-    const account = {}; const greg = {};
-    const done = workspace(host, { adapter: acting, accountAdapter: account, gregAdapter: greg,
-      mountEmployee: (_root, options) => { calls.push(['employee', options.adapter]); return () => {}; },
-      mountGreg: () => { calls.push(['greg']); return () => {}; } });
-    await done.ready; assert.equal(calls[0][0], role); if (role === 'employee') assert.equal(calls[0][1], account); done();
-  }
-});
-test('employee workspace passes the order-progress and help adapters to the manual journey', async () => {
-  const host = document.createElement('div'); document.body.append(host); let options;
-  const orderAdapter = { listOrders: async () => ok([]) }; const helpAdapter = { createCase: async () => ok({}) };
-  const done = workspace(host, { adapter: { readContext: async () => ok({ roles: ['employee'], principalId: 'e' }) }, orderAdapter, helpAdapter,
-    mountEmployee: (_root, opts) => { options = opts; return () => {}; } });
-  await done.ready; assert.equal(options.orderAdapter, orderAdapter); assert.equal(options.helpAdapter, helpAdapter); done();
-  const host2 = document.createElement('div'); document.body.append(host2); let defaults;
-  const done2 = workspace(host2, { adapter: { readContext: async () => ok({ roles: ['employee'], principalId: 'e' }) },
-    mountEmployee: (_root, opts) => { defaults = opts; return () => {}; } });
-  await done2.ready; assert.equal(typeof defaults.orderAdapter?.listOrders, 'function'); assert.equal(typeof defaults.helpAdapter, 'object'); done2();
-});
-test('employee workspace subscribes the journey clock to presenter actions once and releases it on unsubscribe and destroy', async () => {
-  const host = document.createElement('div'); document.body.append(host); const child = document.createElement('button');
-  let options; let fired = 0; let live;
-  const done = workspace(host, { adapter: { readContext: async () => ok({ roles: ['employee'], principalId: 'e' }) },
-    mountEmployee: (_root, opts) => { options = opts; live = opts.subscribeClock(() => { fired++; }); return () => live(); } });
-  await done.ready; host.append(child); assert.equal(typeof options.subscribeClock, 'function');
-  const tick = () => child.dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick', principalId: 'x' } }));
-  tick(); assert.equal(fired, 1);
-  live(); live(); tick(); assert.equal(fired, 1);
-  const args = []; const extra = options.subscribeClock((...rest) => args.push(rest)); tick(); assert.deepEqual(args, [[]]);
-  extra(); extra(); tick(); assert.equal(args.length, 1);
-  live = options.subscribeClock(() => { fired++; }); tick(); assert.equal(fired, 2);
-  done(); tick(); assert.equal(fired, 2);
-});
-function gregFixture(extra = {}) {
-  const host = document.createElement('div'); document.body.append(host);
-  const counts = { dashboard: 0, tracking: 0, destroyed: 0 }; let region; let controlsHost;
-  const mountGreg = () => {
-    region = document.createElement('section'); region.setAttribute('aria-labelledby', 'old'); region.append(document.createElement('h2'));
-    controlsHost = document.createElement('div'); host.append(region, controlsHost);
-    const teardown = () => { counts.destroyed++; }; teardown.refresh = () => { counts.dashboard++; };
-    teardown.regions = { orderTracking: region }; return teardown;
-  };
-  const ordersAdapter = { loadTracking: async () => { counts.tracking++; return { status: 'unavailable', reason: 'none' }; } };
-  const done = workspace(host, { adapter: { readContext: async () => ok({ roles: ['greg'], principalId: 'g' }) }, gregAdapter: {},
-    mountGreg, ordersAdapter, ...extra });
-  return { host, counts, done, region: () => region, controlsHost: () => controlsHost };
-}
-test('Greg workspace mounts one order panel with production controls in the order tracking region and removes it on destroy', async () => {
-  const f = gregFixture(); await f.done.ready; await settle();
-  const region = f.region(); assert.equal(region.querySelectorAll('.gcsp-orders-tracking').length, 1);
-  assert.equal(f.host.querySelectorAll('.gcsp-orders').length, 1); assert.equal(region.querySelector('h2').textContent, 'Order requests');
-  assert.equal(region.getAttribute('aria-labelledby'), region.querySelector('h2').id); assert.equal(region.querySelector('details.gcsp-orders-production .gcsp-orders-production-form').hidden, false);
-  assert.equal(f.counts.tracking, 1); f.done(); assert.equal(f.counts.destroyed, 1); assert.equal(f.host.querySelectorAll('.gcsp-orders').length, 0);
-});
-test('presenter-action event from inside the workspace refreshes dashboard and orders, and stops after destroy', async () => {
-  const f = gregFixture(); await f.done.ready; await settle();
-  f.controlsHost().dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } })); await settle();
-  assert.equal(f.counts.dashboard, 1); assert.equal(f.counts.tracking, 2);
-  f.done(); f.host.dispatchEvent(new window.CustomEvent('gcsp:presenter-action')); await settle();
-  assert.equal(f.counts.dashboard, 1); assert.equal(f.counts.tracking, 2);
-});
-test('order changes refresh the dashboard demand figures', async () => {
-  let changed; const f = gregFixture({ mountOrders: (_root, options) => { changed = options.onChanged; assert.equal(options.productionControls, true); return () => {}; } });
-  await f.done.ready; changed(); assert.equal(f.counts.dashboard, 1); f.done();
-});
-test('the order plan and order tracking refresh each other, and the plan arrives through the Greg adapter', async () => {
-  let ctx; let changed; const counts = { plan: 0, orders: 0 };
-  const f = gregFixture({ gregAdapter: { orderPlan: { marker: 1 } },
-    mountGreg: (_host, options) => { ctx = options; const t = () => {}; t.refresh = () => {}; t.orderPlan = { refresh: () => { counts.plan++; } }; t.regions = { orderTracking: document.createElement('section') }; return t; },
-    mountOrders: (_root, options) => { changed = options.onChanged; const t = () => {}; t.refresh = () => { counts.orders++; }; return t; } });
-  await f.done.ready; assert.deepEqual(ctx.orderPlan, { marker: 1 });
-  ctx.onOrderPlanSubmitted(); assert.deepEqual(counts, { plan: 0, orders: 1 });
-  changed(); assert.equal(counts.plan, 1);
-  f.host.dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } })); assert.deepEqual(counts, { plan: 2, orders: 2 });
-  f.done();
-});
 test('a successful clock action announces gcsp:presenter-action; reset and failures do not', async () => {
   const seen = []; let fail = false;
   const f = setup({ tick: async () => (fail ? { status: 'forbidden' } : ok({})) }); await settle();
@@ -391,36 +311,6 @@ test('acknowledged reset with session-renewal failure still navigates and preser
   assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
   assert.equal(reads, 1); assert.equal(contexts, 1); f.control.destroy();
 });
-test('fresh workspace with unrecovered reset session explains trusted backend bootstrap', async () => {
-  const host = document.createElement('div'); document.body.append(host);
-  host.textContent = 'Previous employee account';
-  const done = workspace(host, { adapter: { readContext: async () => ({ status: 'stale-run' }),
-    readControls: async () => ({ status: 'stale-run' }) } });
-  await done.ready; await settle();
-  assert.doesNotMatch(host.textContent, /Previous employee account/);
-  assert.match(host.textContent, /Restarted/); assert.doesNotMatch(host.textContent, /stale-run/);
-  done();
-});
-test('workspace stale-run context shows the restarted screen with a Reload that calls the injected reload', async () => {
-  const host = document.createElement('div'); document.body.append(host); let reloads = 0;
-  const done = workspace(host, { reload: () => reloads++, adapter: { readContext: async () => ({ status: 'stale-run' }),
-    readControls: async () => ({ status: 'unavailable' }) } });
-  await done.ready; await settle();
-  const screen = host.querySelector('.vm-status[role="alert"]'); assert.ok(screen);
-  assert.match(screen.textContent, /Restarted/); assert.match(screen.textContent, /This page was restarted\. Reload to continue\./);
-  assert.doesNotMatch(host.textContent, /stale-run|\u2014/);
-  const reload = screen.querySelector('button[type="button"]'); assert.equal(reload.textContent, 'Reload'); reload.click(); assert.equal(reloads, 1);
-  done();
-});
-test('workspace context failure other than stale-run explains bootstrap without a raw status', async () => {
-  const host = document.createElement('div'); document.body.append(host);
-  const done = workspace(host, { adapter: { readContext: async () => ({ status: 'unavailable' }), readControls: async () => ({ status: 'unavailable' }) } });
-  await done.ready; await settle();
-  assert.match(host.textContent, /Workspace unavailable/); assert.match(host.textContent, /Presenter context could not be read/);
-  assert.match(host.textContent, /trusted backend presenter-session bootstrap/); assert.doesNotMatch(host.textContent, /Context unavailable/);
-  done();
-});
-
 test('slice 8: beat actions lead in run-sheet order, the readback is one short block and nothing says Available', async () => {
   const f = setup({ readControls: async () => ok({ ...state(), principals: [{ principalId: 'p', name: 'Paula Mason', roles: ['employee'] },
     { principalId: 'g', name: 'Greg Lawson', roles: ['greg'] }] }) }); await settle();
@@ -764,15 +654,6 @@ test('wider catalogue rows: available decline-then-change-waiting resets, unavai
   choice(f, 'Scenario', 'decline-then-change-waiting').click(); assert.equal(f.click('Reset scenario').disabled, false);
   f.click('Confirm reset'); await settle(); assert.equal(f.calls[0].scenarioId, 'decline-then-change-waiting'); f.control.destroy();
 });
-test('only a saved Production response asks the order plan to take focus; other refreshes leave focus alone (FUCQ-290)', async () => {
-  let changed; const calls = [];
-  const f = gregFixture({ mountGreg: () => { const t = () => {}; t.refresh = () => {}; t.orderPlan = { refresh: (options) => { calls.push(options?.focus); } }; t.regions = { orderTracking: document.createElement('section') }; return t; },
-    mountOrders: (_root, options) => { changed = options.onChanged; const t = () => {}; t.refresh = () => {}; return t; } });
-  await f.done.ready; changed('stepProduction'); changed('submit'); changed();
-  f.host.dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } }));
-  assert.deepEqual(calls, [true, false, false, undefined]); f.done();
-});
-
 // FUCQ-272: a reset must not strand the presenter on a blank page with focus on BODY.
 const lead = { principalId: 'demo-paula', name: 'Paula (fictional)', roles: ['employee'] };
 const people = [lead, { principalId: 'demo-greg', name: 'Greg (fictional)', roles: ['greg'] }, { principalId: 'demo-presenter', name: 'Presenter', roles: ['presenter'] }];

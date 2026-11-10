@@ -95,7 +95,7 @@ export async function createActivityFixtures() {
   return { source: 'Real BriefService and createActivityService over stored rows of the real shapes; synthetic demo run',
     snapshots,
     offerExample: { offerRef: { offerId: 'layout-offer' }, title: 'Your BMW offer',
-      images: [{ src: '/assets/brand-hero/bmw.jpg', alt: 'BMW brand photograph, representative of the brand rather than this offer', kind: 'representative' }] } };
+      images: [{ src: '/assets/brand-hero/bmw.jpg', alt: 'BMW brand photograph', kind: 'representative' }] } };
 }
 
 if (process.argv.includes('--write-activity-fixtures')) {
