@@ -1,0 +1,238 @@
+{
+  "epic": {
+    "key": "FUCQ-358",
+    "id": "1502561",
+    "summary": "Improve Account and simplify Preferences",
+    "issue_type": "Epic",
+    "status": "To Do"
+  },
+  "epic_url": "https://ibm-consulting.atlassian.net/browse/FUCQ-358",
+  "reference_commit": "193cbf078fe83572d3e0ab150c02a0e8b0d3dbc5",
+  "reference_id": "account-preferences-2026-11-10-gc-integration-r2",
+  "authoring_status": "Six native Story descriptions verified; no pickup/build authority",
+  "stories": [
+    {
+      "authoring_id": "AP-01",
+      "key": "FUCQ-359",
+      "id": "1502564",
+      "summary": "Give Account a wider current-car presentation",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-359",
+      "observed_at_utc": "2026-11-10 20:00:41 UTC",
+      "status": "To Do",
+      "issue_type": "Story",
+      "parent": "FUCQ-358",
+      "priority": "Medium",
+      "assignee": null,
+      "description_chars": 15267,
+      "description_equivalent_to_payload": true,
+      "hold_verified": true,
+      "reference_sha_verified": true,
+      "content_normalizations": [
+        "line endings",
+        "trailing line whitespace",
+        "Markdown bullet markers",
+        "escaped checkbox markers",
+        "blank-line spacing"
+      ]
+    },
+    {
+      "authoring_id": "AP-02",
+      "key": "FUCQ-367",
+      "id": "1502572",
+      "summary": "Save a current-car star rating from Account",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-367",
+      "observed_at_utc": "2026-11-10 20:00:41 UTC",
+      "status": "To Do",
+      "issue_type": "Story",
+      "parent": "FUCQ-358",
+      "priority": "Medium",
+      "assignee": null,
+      "description_chars": 13077,
+      "description_equivalent_to_payload": true,
+      "hold_verified": true,
+      "reference_sha_verified": true
+    },
+    {
+      "authoring_id": "AP-03",
+      "key": "FUCQ-368",
+      "id": "1502573",
+      "summary": "Edit and autosave compact category preferences",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-368",
+      "observed_at_utc": "2026-11-10 20:00:41 UTC",
+      "status": "To Do",
+      "issue_type": "Story",
+      "parent": "FUCQ-358",
+      "priority": "Medium",
+      "assignee": null,
+      "description_chars": 14569,
+      "description_equivalent_to_payload": true,
+      "hold_verified": true,
+      "reference_sha_verified": true
+    },
+    {
+      "authoring_id": "AP-04",
+      "key": "FUCQ-369",
+      "id": "1502574",
+      "summary": "Choose Same again and show Buddy understanding",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-369",
+      "observed_at_utc": "2026-11-10 20:00:41 UTC",
+      "status": "To Do",
+      "issue_type": "Story",
+      "parent": "FUCQ-358",
+      "priority": "Medium",
+      "assignee": null,
+      "description_chars": 12995,
+      "description_equivalent_to_payload": true,
+      "hold_verified": true,
+      "reference_sha_verified": true
+    },
+    {
+      "authoring_id": "AP-05",
+      "key": "FUCQ-370",
+      "id": "1502575",
+      "summary": "Engage Buddy explicitly from Account",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-370",
+      "observed_at_utc": "2026-11-10 20:00:41 UTC",
+      "status": "To Do",
+      "issue_type": "Story",
+      "parent": "FUCQ-358",
+      "priority": "Medium",
+      "assignee": null,
+      "description_chars": 13412,
+      "description_equivalent_to_payload": true,
+      "hold_verified": true,
+      "reference_sha_verified": true
+    },
+    {
+      "authoring_id": "AP-06",
+      "key": "FUCQ-371",
+      "id": "1502576",
+      "summary": "Use current-car feedback in suitable recommendations",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-371",
+      "observed_at_utc": "2026-11-10 20:00:41 UTC",
+      "status": "To Do",
+      "issue_type": "Story",
+      "parent": "FUCQ-358",
+      "priority": "Medium",
+      "assignee": null,
+      "description_chars": 17701,
+      "description_equivalent_to_payload": true,
+      "hold_verified": true,
+      "reference_sha_verified": true
+    }
+  ],
+  "native_description_check": "Full native description compared to approved payload, normalising Markdown/transport formatting only; every required section and AC retained.",
+  "story_points_check": {
+    "jql": "key in (FUCQ-359, FUCQ-367, FUCQ-368, FUCQ-369, FUCQ-370, FUCQ-371) AND \"Story point estimate\" IS EMPTY",
+    "matched_keys": [
+      "FUCQ-371",
+      "FUCQ-370",
+      "FUCQ-369",
+      "FUCQ-368",
+      "FUCQ-367",
+      "FUCQ-359"
+    ],
+    "matched_all": true,
+    "raw_null_limitation": true
+  },
+  "discussion_hold": "discuss only; do not pick up or build until a collaborator explicitly authorises implementation",
+  "visual_reference": {
+    "scoped_browser_checks": 192,
+    "screenshots": 33,
+    "source_hashes_verified": 5,
+    "screenshot_hashes_verified": 33,
+    "independent_review": "Road Runner, Sol/high; corrected-result review passed",
+    "evidence": "review/visual-review.md",
+    "current_production_ratchet": "Not run or claimed; prior102-check result is historical after GC production changes."
+  },
+  "model_findings": [
+    "Numeric current-car star rating is absent from the strict production feedback contract.",
+    "No suitable calibrated model-confidence source exists; the proposed score is honest preference completeness.",
+    "Multi-choice/sparse preference contract and recommendation/minimum-loss assumptions are explicit future discussion scope."
+  ],
+  "epic_receipt": {
+    "id": "3628603",
+    "observed_at_utc": "2026-11-10T20:08:52.133Z",
+    "native_readback_verified": true,
+    "equivalent_to_expected_body": true,
+    "checks": {
+      "buddy_status_text_23px_and_lamp_18px": true,
+      "stars_24px_targets_44px_inset_8px": true,
+      "selecting_star_dismisses_tooltip": true,
+      "clicking_or_space_on_selected_star_clears_and_autosaves": true,
+      "pinned_reference_sha": true,
+      "all_six_story_keys": true,
+      "placement_restriction": true,
+      "discussion_hold": true
+    },
+    "actual_text": "Authoring receipt: FUCQ-358/account-preferences-r2/2026-11-10\n\nPinned reference commit: `193cbf078fe83572d3e0ab150c02a0e8b0d3dbc5`.\n\n* [FROZEN-REFERENCE.md](https://github.com/garyscarter-ibm/vehicle-matcher/blob/193cbf078fe83572d3e0ab150c02a0e8b0d3dbc5/docs/gcsp/mockups/account-preferences-2026-11-10/FROZEN-REFERENCE.md)\n* Desktop: [1440 selected](https://github.com/garyscarter-ibm/vehicle-matcher/blob/193cbf078fe83572d3e0ab150c02a0e8b0d3dbc5/docs/gcsp/mockups/account-preferences-2026-11-10/review/1440-selected.png)\n* Narrow: [375 engaged](https://github.com/garyscarter-ibm/vehicle-matcher/blob/193cbf078fe83572d3e0ab150c02a0e8b0d3dbc5/docs/gcsp/mockups/account-preferences-2026-11-10/review/375-engaged.png)\n\nNative Jira Stories authored under FUCQ-358:\n\n* [FUCQ-359 — Give Account a wider current-car presentation](https://ibm-consulting.atlassian.net/browse/FUCQ-359) — To Do, unassigned, unestimated.\n* [FUCQ-367 — Save a current-car star rating from Account](https://ibm-consulting.atlassian.net/browse/FUCQ-367) — To Do, unassigned, unestimated.\n* [FUCQ-368 — Edit and autosave compact category preferences](https://ibm-consulting.atlassian.net/browse/FUCQ-368) — To Do, unassigned, unestimated.\n* [FUCQ-369 — Choose Same again and show Buddy understanding](https://ibm-consulting.atlassian.net/browse/FUCQ-369) — To Do, unassigned, unestimated.\n* [FUCQ-370 — Engage Buddy explicitly from Account](https://ibm-consulting.atlassian.net/browse/FUCQ-370) — To Do, unassigned, unestimated.\n* [FUCQ-371 — Use current-car feedback in suitable recommendations](https://ibm-consulting.atlassian.net/browse/FUCQ-371) — To Do, unassigned, unestimated.\n\nLatest GC steering captured for discussion:\n\n* Import only the replacement control into Your cars. Keep the shared history table, full-record drawer and Your details below Preferences.\n* Buddy status text is 23px with an 18px lamp. Stars are 24px with 44px targets, transparently overlaid at the bottom-right of the actual vehicle bitmap with an 8px inset. Selecting a star dismisses its tooltip immediately; clicking or pressing Space on the currently selected star clears and autosaves the rating.\n* Use blue/amber importance and keep Same again neutral.\n* Keep the exact model/spec help, autosave and Engage Buddy controls, and the cost/budget row. Do not show recommendations on Account.\n\nReview notes: the numeric rating field is absent. There is no suitable real confidence field; a completeness mapping is an assumption. The proposed policy and minimum-loss assumptions remain for review.\n\nAll six Stories remain To Do, unassigned and unestimated. They are DISCUSSION ONLY and do not authorise implementation or pickup; the descriptions state: “discuss only; do not pick up or build until a collaborator explicitly authorises implementation”. This remains true even if Jira omits paused metadata. FUCQ-358 remains To Do.",
+    "correction": "Parent corrected initial receipt wording that confused star size with inset; no Story or frozen-source defect."
+  },
+  "product_map": {
+    "native_observed_at": "2026-11-10T20:00:41Z",
+    "slices_per_story": 3,
+    "all_slices": "not-started",
+    "worker_claims": 0,
+    "publication": "existing Actions mode on pushed gcsp-poc records; remote served refresh not claimed"
+  },
+  "implementation": "No production application/model/policy implementation; no authoring-triggered pickup, claim or dispatcher. GC separate import of359 explicitly paused.",
+  "resource_cleanup": {
+    "owned_scratch_roots": 29,
+    "all_roots_absent": true,
+    "all_owned_process_groups_absent": true,
+    "aggregate_manifest_peak_bytes_removed": 144741098,
+    "compatibility_exception": "Bounded isolated headless browser profiles and native CLI working caches in owned local scratch; all removed.",
+    "retained_service": {
+      "pid": 46514,
+      "port": 4877,
+      "purpose": "Read-only frozen mockup discussion preview; intentionally retained",
+      "all_five_source_hashes_live_verified": true
+    },
+    "retained_summary": "docs/gcsp/mockups/account-preferences-2026-11-10/JIRA-AUTHORING-RECEIPT.json",
+    "retained_bounded_diagnostics": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/account-preferences-20261110-01a1c6a0",
+    "leftovers": []
+  },
+  "agents": [
+    {
+      "name": "Baymax",
+      "role": "story author/reviewer",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "fallback": null,
+      "review": "PASS; six descriptions and frozen obligations complete"
+    },
+    {
+      "name": "Road Runner",
+      "role": "independent rendered reviewer",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "fallback": null,
+      "review": "PASS;14 final GC-integration renders and corrected source reviewed"
+    },
+    {
+      "name": "Cuthbert",
+      "role": "native authoring runner",
+      "model": "gpt-6-luna",
+      "effort": "high",
+      "fallback": null,
+      "result": "All six complete descriptions verified;600s chunk timed out after checkpointed Epic receipt write. Readback completed separately."
+    },
+    {
+      "name": "Hiccup",
+      "role": "native receipt readback runner",
+      "model": "gpt-6-luna",
+      "effort": "high",
+      "fallback": null,
+      "result": "Native readback passed selected checks; parent subsequently caught imprecise measurement wording."
+    },
+    {
+      "name": "Foxy",
+      "role": "native exact receipt correction runner",
+      "model": "gpt-6-luna",
+      "effort": "high",
+      "fallback": null,
+      "result": "PASS; exact full body readback matches corrected payload."
+    }
+  ],
+  "agent_selection_note": "Recorded requested/selected pairs; effective gateway execution settings not independently verified. Native CLI runners had no own desktop-title tool."
+}

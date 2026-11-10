@@ -48,11 +48,17 @@
         "FUCQ-327",
         "FUCQ-321",
         "FUCQ-322",
-        "FUCQ-346"
+        "FUCQ-346",
+        "FUCQ-359",
+        "FUCQ-367",
+        "FUCQ-368",
+        "FUCQ-369",
+        "FUCQ-370"
       ],
       "references": [
         "FUCQ-7",
-        "FUCQ-8"
+        "FUCQ-8",
+        "FUCQ-358"
       ],
       "connections": [
         {
@@ -87,10 +93,12 @@
         "FUCQ-29",
         "FUCQ-30",
         "FUCQ-329",
-        "FUCQ-339"
+        "FUCQ-339",
+        "FUCQ-371"
       ],
       "references": [
-        "FUCQ-8"
+        "FUCQ-8",
+        "FUCQ-358"
       ],
       "connections": [
         {
@@ -424,10 +432,16 @@
         "FUCQ-330",
         "FUCQ-331",
         "FUCQ-339",
-        "FUCQ-322"
+        "FUCQ-322",
+        "FUCQ-367",
+        "FUCQ-368",
+        "FUCQ-369",
+        "FUCQ-370",
+        "FUCQ-371"
       ],
       "references": [
-        "FUCQ-86"
+        "FUCQ-86",
+        "FUCQ-358"
       ],
       "connections": [
         {

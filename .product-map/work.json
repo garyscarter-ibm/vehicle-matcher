@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-10T12:04:56Z",
+  "observed_at": "2026-11-10T20:00:41Z",
   "version": 1,
   "stories": [
     {
@@ -4498,6 +4498,174 @@
           "title": "Canonical six-step stored-result integration gate",
           "observed_at": "2026-11-10T18:57:43Z",
           "evidence": "Independent PASS original4AC at e567b9b6: actual default1000/3/6 completed1721.492s; one complete result f643cb89; sampled heap422.10/process874.11/group900.11MiB,1064health probes. Cleanup verified. Final basis/date-only equivalence and latest sharedbase6ae669e8 preserved. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-359",
+      "title": "Give Account a wider current-car presentation",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T20:00:41Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-359",
+      "slices": [
+        {
+          "id": "composition",
+          "status": "not-started",
+          "title": "Account and current-car composition"
+        },
+        {
+          "id": "shared-kit",
+          "status": "not-started",
+          "title": "Shared components and responsive states"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Connected Account and GC secondary actions"
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-367",
+      "title": "Save a current-car star rating from Account",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T20:00:41Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-367",
+      "slices": [
+        {
+          "id": "rating-contract",
+          "status": "not-started",
+          "title": "Persisted rating contract and compatibility"
+        },
+        {
+          "id": "rating-control",
+          "status": "not-started",
+          "title": "Shared rating and tooltip interactions"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Account persistence and current-car identity"
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-368",
+      "title": "Edit and autosave compact category preferences",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T20:00:41Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-368",
+      "slices": [
+        {
+          "id": "preference-contract",
+          "status": "not-started",
+          "title": "Sparse multi-choice and importance contract"
+        },
+        {
+          "id": "category-editor",
+          "status": "not-started",
+          "title": "Compact autosaving category editor"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Persistence and failure recovery"
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-369",
+      "title": "Choose Same again and show Buddy understanding",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T20:00:41Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-369",
+      "slices": [
+        {
+          "id": "continuity-mode",
+          "status": "not-started",
+          "title": "Saved Same-again override"
+        },
+        {
+          "id": "understanding",
+          "status": "not-started",
+          "title": "Honest completeness score and mode presentation"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Restoration and connected consumer boundaries"
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-370",
+      "title": "Engage Buddy explicitly from Account",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T20:00:41Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-370",
+      "slices": [
+        {
+          "id": "engagement",
+          "status": "not-started",
+          "title": "Explicit server-backed Buddy engagement"
+        },
+        {
+          "id": "page-status",
+          "status": "not-started",
+          "title": "Prominent engagement status and controls"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Reload and minimum-loss state behavior"
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-371",
+      "title": "Use current-car feedback in suitable recommendations",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-10T20:00:41Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-371",
+      "slices": [
+        {
+          "id": "feedback-policy",
+          "status": "not-started",
+          "title": "Canonical feedback similarity and improvement policy"
+        },
+        {
+          "id": "recommendation",
+          "status": "not-started",
+          "title": "Real recommendation consumers and grounded reasons"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Connected Account through Offer walkthrough"
         }
       ],
       "unsliced": false
