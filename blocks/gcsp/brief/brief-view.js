@@ -88,7 +88,7 @@ export function mountBriefBody(main, adapters = {}) {
       { label: 'Annual mileage', value: mileage?.value, unit: mileage?.unit },
     ], { hideMissing: contract === null ? 'No current car on your scheme account.' : 'More details not supplied' }));
     const factSource = sourceText(facts.currentContract?.source ?? facts.drivers?.source);
-    current.append(el('p', 'gcsp-note', `${factSource ? `${factSource}. ` : ''}These facts are read-only. Starting answers are confirmed when saved; unanswered needs stay unknown.`));
+    current.append(el('p', 'gcsp-note', `${factSource ? `${factSource}. ` : ''}These facts are read-only. Starting answers are confirmed when saved.`));
     const provenance = el('ul', 'gcsp-note'); const provenanceRows = new Map();
     // A null text hides the row: unanswered needs are counted once in `pending`, not listed as Unknown.
     const recordProvenance = (key, label, text) => {
