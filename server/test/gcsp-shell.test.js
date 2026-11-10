@@ -684,7 +684,7 @@ test('missing image shows the placeholder and a missing fact says Not supplied',
   assert.equal(cards[1].querySelector('.vm-card-soon').textContent, 'No image for this car yet');
   assert.ok(cards[0].querySelector('img.vm-card-photo'));
   assert.equal(cards[1].querySelector('.vm-card-line'), null, 'no image caption without an image');
-  assert.equal(cards[0].querySelector('.vm-card-line').textContent, 'BMW brand image, not this model');
+  assert.equal(cards[0].querySelector('.vm-card-line'), null, 'no image disclaimer line');
   assert.match(cards[1].querySelector('.vm-fact-value.is-missing').textContent, /^Not supplied$/);
   assert.match(node.querySelector('.gcsp-details').textContent, /Licence numberNot supplied/);
   assert.match(cards[1].querySelector('.gcsp-card-name').textContent, /Technology Plus and Comfort Pack/);

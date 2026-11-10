@@ -29,7 +29,7 @@ test('released cars carry verified model imagery without inventing a caption or 
   for (const car of cars) {
     const { display } = car.facts; const image = await modelDisplayImage(car.facts.facts.eligibilityModelKey.value);
     assert.ok(image); assert.equal(display.photo, `/${image.asset}`);
-    assert.deepEqual(display.images, [{ src: display.photo, alt: `${display.name}: representative image`, fidelity: 'representative-model',
+    assert.deepEqual(display.images, [{ src: display.photo, alt: display.name, fidelity: 'representative-model',
       sourceRef: `display-image:${image.imageId}, observed ${image.observedDate}` }]);
     assert.equal(display.caption, undefined); assert.equal(display.colour, undefined);
   }

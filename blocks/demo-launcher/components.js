@@ -15,7 +15,7 @@ export function experienceChoice({ title, description, image, imageLabel, action
   const { media } = mediaWell(null, '', {
     placeholder: `${title} images coming soon`,
     view: { display: { name: imageLabel || title }, media: { src: image,
-      alt: imageLabel || title, caption: 'Representative brand image' } },
+      alt: imageLabel || title } },
   });
   card.append(media);
   const body = el('div', 'demo-choice-body');

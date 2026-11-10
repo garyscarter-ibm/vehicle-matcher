@@ -81,7 +81,7 @@ test('details preserve exact identity, separated reference facts, equipment and 
   assert.equal(document.activeElement.tagName, 'H2'); assert.match(detail.textContent, /Order no. 4815161/);
   assert.match(detail.textContent, /Exact vehicle facts/); assert.match(detail.textContent, /Model reference facts/);
   assert.match(detail.textContent, /Configured equipment and options/); assert.match(detail.textContent, /Parking Assistant Plus/);
-  assert.match(detail.textContent, /BMW brand image, not this car/); assert.match(detail.textContent, /fixture:manual-gallery:2026-11-05/);
+  assert.doesNotMatch(detail.textContent, /Image disclaimer|not this car/); assert.match(detail.textContent, /fixture:manual-gallery:2026-11-05/);
   assert.match(detail.textContent, /NEDC \/ correlated CO2/); assert.match(detail.textContent, /WLTP CO2/);
   assert.match(detail.textContent, /Monthly scheme cost/); assert.equal(posts, 0);
   click(detail, 'Back to released cars'); assert.equal(document.activeElement, origin); assert.equal(detail.hidden, true);

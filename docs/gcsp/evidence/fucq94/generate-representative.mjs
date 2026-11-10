@@ -24,7 +24,7 @@ try {
   const first = structuredClone(stock(1, { equipment: fact({ towbar: true }) }));
   first.snapshot.display.name = 'BMW 320i M Sport Touring';
   first.snapshot.display.photo = '/assets/brand-hero/bmw.jpg';
-  first.snapshot.display.images = [{ src: first.snapshot.display.photo, caption: 'BMW brand image, not this exact car' }];
+  first.snapshot.display.images = [{ src: first.snapshot.display.photo }];
   const second = structuredClone(stock(2, { fuel: fact('phev'), equipment: fact({ towbar: false }) }));
   second.snapshot.display.name = 'BMW 330e M Sport Pro Edition Touring with Technology Plus and Comfort Pack';
   const now = (await clock.now(context)).value.now;

@@ -15,7 +15,7 @@ import { orderIdentityRows, orderReferenceOf } from '../kit/order-identity.js';
 import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 import { dataTable } from '../kit/data-table.js';
 import { sideDrawer } from '../kit/side-drawer.js';
-import { NO_IMAGE_TEXT, IMAGE_DISCLAIMER } from '../kit/plain-copy.js';
+import { NO_IMAGE_TEXT } from '../kit/plain-copy.js';
 import { demoTime } from '../kit/activity-timeline.js';
 import { routePortal, PORTAL_ROUTES } from '../employee/portal-navigation.js';
 
@@ -220,8 +220,8 @@ function currentCar(contract, model, controls, buddy = false, hero = null) {
   feature.setAttribute('aria-labelledby', heading.id);
   const source = contract.media;
   const { media } = mediaWell({ name: contract.model ?? 'Current car', photo: source?.src ?? source?.photo ?? '',
-    line: '', alt: source?.alt ?? `${contract.model ?? 'Car'}: representative image`,
-    caption: source?.caption ?? IMAGE_DISCLAIMER }, 'gcsp-media', { placeholder: NO_IMAGE_TEXT });
+    line: '', alt: source?.alt ?? contract.model ?? 'Car',
+    caption: source?.caption }, 'gcsp-media', { placeholder: NO_IMAGE_TEXT });
   const scheme = schemeName(model, contract.schemeId);
   const state = el('p', 'gcsp-account-state');
   if (contract.daysRemaining == null) state.append('Contract end: Not supplied');
@@ -268,7 +268,7 @@ function orderCurrentCar(car, order, orderVehicle) {
   heading.id = `gcsp-account-car-${++serial}`;
   feature.setAttribute('aria-labelledby', heading.id);
   const { media } = mediaWell({ name: name ?? 'Current car', photo: same ? orderVehicle?.photo ?? '' : '', line: '',
-    alt: `${name ?? 'Car'}: representative image`, caption: IMAGE_DISCLAIMER }, 'gcsp-media', { placeholder: NO_IMAGE_TEXT });
+    alt: name ?? 'Car' }, 'gcsp-media', { placeholder: NO_IMAGE_TEXT });
   const copy = el('div', 'gcsp-feature-copy');
   const title = el('div', 'gcsp-account-title');
   title.append(el('p', 'gcsp-account-context', 'Current car'), heading);
@@ -288,7 +288,7 @@ function newCarRow(order, vehicle, controls) {
   const declined = order.outcome === 'declined';
   const node = el('section', 'gcsp-summary gcsp-account-order-status'); node.setAttribute('aria-label', 'Your new car');
   const { media } = mediaWell({ name: vehicle?.name ?? 'New car', photo: vehicle?.photo ?? '', line: '',
-    alt: `${vehicle?.name ?? 'Car'}: representative image`, caption: IMAGE_DISCLAIMER }, 'gcsp-order-media', { placeholder: NO_IMAGE_TEXT });
+    alt: vehicle?.name ?? 'Car' }, 'gcsp-order-media', { placeholder: NO_IMAGE_TEXT });
   const copy = el('div', 'gcsp-order-car-details gcsp-summary-live');
   copy.append(el('h2', 'gcsp-h2', orderTitles[order.outcome] ?? 'Your new car'), el('p', 'gcsp-summary-name', vehicle?.name ?? orderCopy.noCar));
   if (order.currentStage) copy.append(el('p', 'gcsp-note', `Current step: ${sentence(order.currentStage)}.`));

@@ -64,7 +64,7 @@ test('exact selection updates every field, decision, term, media and callback to
   document.body.append(card);
   assert.equal(listingsOf(null, { view }), view.members);
   assert.match(card.textContent, /1,100 points a month/);
-  assert.ok(card.querySelector('.vm-media-caption'));
+  assert.equal(card.querySelector('.vm-media-caption'), null);
   const choice = card.querySelectorAll('.vm-pick-opt')[1]; choice.focus(); choice.click();
   assert.equal(document.activeElement, choice);
   assert.equal(choice.getAttribute('aria-pressed'), 'true');
@@ -116,7 +116,7 @@ test('explicit facts preserve zero and unknown units; preview shares the same ex
 test('representative media caption and alt disappear on broken images and never transfer to absent imagery', () => {
   const view = fixture();
   const { media, showPhoto } = mediaWell(null, '', { view: view.members[0] });
-  assert.equal(media.querySelector('img').alt, 'Representative BMW brand image');
+  assert.equal(media.querySelector('img').alt, 'BMW brand image');
   media.querySelector('img').dispatchEvent(new dom.window.Event('error'));
   assert.equal(media.querySelector('.vm-media-caption'), null);
   assert.equal(media.classList.contains('has-photo'), false);

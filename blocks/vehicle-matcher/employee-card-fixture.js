@@ -25,8 +25,7 @@ export const employeeCardFixture = {
       },
       "media": {
         "src": "/assets/brand-hero/bmw.jpg",
-        "alt": "Representative BMW brand image",
-        "caption": "Representative BMW brand image, not this exact car"
+        "alt": "BMW brand image"
       },
       "facts": [
         {
