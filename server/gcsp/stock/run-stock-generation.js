@@ -11,6 +11,7 @@ import { buildRetainedCorpusPlan } from '../vehicle-evidence/stock-configuration
 import { createStockGenerator } from '../vehicle-evidence/stock-generator.js';
 import { canonicalAllocationContent, emptyAllocationInventory } from '../vehicle-evidence/vin-allocation.js';
 import { VISIBILITY, modelBrowseFacts } from './demo-provider.js';
+import { createReleaseGuarantee } from './release-guarantee.js';
 
 export const STOCK_ACCOUNT = 'gcsp-demo-scheme-stock';
 export const STOCK_SEED = 'gcsp-demo-stock-v1';
@@ -18,7 +19,7 @@ export const ELIGIBILITY_KEYS = 'stock.eligibilityModelKeys.v1';
 const unavailable = (code) => result('unavailable', { code, reason: 'Generated stock is unavailable.', retryable: true });
 
 /** Composes the FUCQ-78 generator for the demo: retained corpus registry and plan, loaded once and cached.
- * generate(run) is idempotent per run; any build failure is an unavailable outcome, never a throw. */
+ * generate(run, { scenario, tranche }) is idempotent per run; any build failure is an unavailable outcome, never a throw. */
 export function createDemoStockGeneration({ policy, repository, contextForRun, environmentId, env = process.env,
   corpusRoot = DEFAULT_VEHICLE_CORPUS_ROOT } = {}) {
   const inventoryPath = env.GCSP_STOCK_INVENTORY_PATH || join(tmpdir(), 'gcsp-stock-inventory', `${environmentId}.json`);
@@ -53,7 +54,7 @@ export function createDemoStockGeneration({ policy, repository, contextForRun, e
     return plans.get(read.policyVersion);
   }
   return Object.freeze({
-    async generate(run) {
+    async generate(run, input = {}) {
       try {
         if (!(await ensureInventory())) return unavailable('inventory-path-invalid');
         const read = { runId: run.runId, asOf: run.clockInstant, policyVersion: run.policyVersion };
@@ -65,8 +66,12 @@ export function createDemoStockGeneration({ policy, repository, contextForRun, e
           const key = mapping[record?.configuration?.agModelCode];
           return typeof key === 'string' ? { eligibilityModelKey: { value: key, unit: null }, ...modelBrowseFacts(key) } : {};
         };
+        const wanted = input.tranche?.guarantee;
+        const checked = wanted ? await createReleaseGuarantee({ policy, read, scenario: input.scenario, guarantee: wanted }) : null;
+        if (wanted && !checked) return unavailable('release-guarantee-unavailable');
         const generator = createStockGenerator({ repository, registry: loaded, policyService: policy, contextForRun, configurationPlan: plan,
-          stockAccount: STOCK_ACCOUNT, allocationInventoryPath: inventoryPath, visibility: VISIBILITY, factsForConfiguration });
+          stockAccount: STOCK_ACCOUNT, allocationInventoryPath: inventoryPath, visibility: VISIBILITY, factsForConfiguration,
+          ...(checked ? { guarantee: { ...wanted, qualifies: checked.qualifies } } : {}) });
         return await generator.generateStock(run.runId, STOCK_SEED, run.policyVersion);
       } catch { return unavailable('stock-generation-unavailable'); }
     },

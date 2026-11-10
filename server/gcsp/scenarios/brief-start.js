@@ -13,7 +13,7 @@ async function essentialFor(policy, read, key, value, source) {
   return definition ? { value, operator: definition.operator, unit: definition.unit, state: 'confirmed', source } : null;
 }
 
-async function briefContent(policy, read, input, source) {
+export async function briefContent(policy, read, input, source) {
   const preferences = Object.fromEntries(Object.entries(input.preferences).map(([key, p]) => [key,
     { value: p.value, importance: p.importance, valueState: 'confirmed', importanceState: 'confirmed', source }]));
   const essentials = {};

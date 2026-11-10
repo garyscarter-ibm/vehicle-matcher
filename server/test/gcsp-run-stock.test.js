@@ -10,6 +10,7 @@ import { PolicyService, createPolicyService } from '../gcsp/policy/index.js';
 import { createPresenterControlsService } from '../gcsp/presenter-controls/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createRunStockProvider, createRunStockProviderFactory } from '../gcsp/stock/index.js';
+import { createReleaseGuarantee } from '../gcsp/stock/release-guarantee.js';
 import { STOCK_GENERATOR_NAMESPACE } from '../gcsp/vehicle-evidence/stock-generator.js';
 
 const good = (outcome) => { assert.equal(outcome?.status, 'ok', JSON.stringify(outcome)); return outcome.value; };
@@ -236,7 +237,7 @@ test('a run that already released demo stock never switches to generated', async
 test('a scenario that declares published demo stock keeps the demo provider and its release cue', async () => {
   let asked = 0;
   const run = { runId: 'scenario-run', clockInstant: '2026-11-05T09:00:00.000Z', policyVersion: 'gcsp-policy-v1',
-    versions: { scenarioSelection: { scenarioId: 'main-successful-journey' } } };
+    versions: { scenarioSelection: { scenarioId: 'offer-expires' } } };
   const repository = { read: async () => ok(run), query: async () => ok([]) };
   const provider = createRunStockProvider({ policy: createPolicyService(), repository,
     contextForRun: (runId) => ({ runId, environmentId: 'e', principalId: 'p', roles: ['presenter'] }),
@@ -246,6 +247,36 @@ test('a scenario that declares published demo stock keeps the demo provider and 
   const cue = good(await createPolicyService().getAssumption('clock.scenario.v1', { runId: 'scenario-run', asOf: run.clockInstant })).value.namedTimes.release;
   const pulled = good(await provider.pull({ runId: 'scenario-run', asOf: cue, policyVersion: 'gcsp-policy-v1', releaseSize: 20, released: [], queuedSupply: [] }));
   assert.equal(pulled.tranche.windowId, 'demo-release-1'); assert.equal(pulled.tranche.availableAt, cue);
+});
+
+test('the main successful journey is generated and every release holds 3 cars Paula qualifies for in 3 colours', async (t) => {
+  const f = await compose(t, { environmentId: 'run-stock-main' });
+  const entry = good(await f.scenarios.readCatalogue(f.context)).scenarios.find((row) => row.scenarioId === 'main-successful-journey');
+  const state = good(await f.scenarios.readState(f.context));
+  const reset = good(await f.scenarios.reset(f.context, { commandId: 'to-main', expectedRunId: state.runId, expectedRunVersion: state.runVersion,
+    scenarioId: entry.scenarioId, scenarioVersion: entry.scenarioVersion, fixtureVersion: entry.fixtureVersion, policyVersion: entry.policyVersion }));
+  assert.equal(f.factory.provider.describe(reset.runId)?.source, 'generated');
+  const next = good(await f.identity.createPresenterSession('run-stock-main-presenter-2'));
+  const rows = generatedRows(good(await f.repository.query(next.context, 'stock')));
+  const run = good(await f.repository.read(next.context, { table: 'runs', key: { runId: reset.runId } }));
+  const read = { runId: reset.runId, asOf: run.clockInstant, policyVersion: run.policyVersion };
+  const tranche = entry.inputs.stockTranches[0];
+  const check = await createReleaseGuarantee({ policy: f.policy, read, scenario: entry, guarantee: tranche.guarantee });
+  const report = run.versions.stockGeneration.report.release;
+  const size = good(await f.policy.getAssumption('supply.release.size', read)).value;
+  assert.equal(report.guarantee.minimumCars, 3);
+  const releases = Map.groupBy(rows, (row) => factOf(row, 'plannedRelease').releaseId);
+  assert.ok(releases.size >= 2);
+  for (const [releaseId, cars] of releases) {
+    const mine = [];
+    for (const row of cars) {
+      const extra = Object.fromEntries(Object.entries(row.facts.facts).filter(([name]) => name !== 'plannedRelease'));
+      if (await check.qualifies({ configurationId: row.configurationId }, null, extra)) mine.push(row);
+    }
+    assert.ok(mine.length >= 3, `${releaseId}: ${mine.length} qualifying cars`);
+    assert.ok(new Set(mine.map((row) => factOf(row, 'colour'))).size >= 3, `${releaseId}: colours`);
+    assert.ok(cars.length <= size);
+  }
 });
 
 test('resetting to the mechanics scenario generates stock for the new run through afterReset', async (t) => {

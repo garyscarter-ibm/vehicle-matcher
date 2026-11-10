@@ -54,7 +54,7 @@ async function policyFixture(lead = [2, 4], version = 'fixture-policy-v1') {
   return seed;
 }
 
-async function setup({ seeds, plan = configurationPlan, registryPort = registry, repositoryPort, store = createMemoryStore(), allocationLimits } = {}) {
+async function setup({ seeds, plan = configurationPlan, registryPort = registry, repositoryPort, store = createMemoryStore(), allocationLimits, generatorOptions = {} } = {}) {
   assert.equal(typeof generatorModule.createStockGenerator, 'function', 'the run-scoped generator factory must exist');
   const { PolicyService } = await import('../gcsp/policy/index.js');
   seeds ||= [await policyFixture()];
@@ -75,7 +75,7 @@ async function setup({ seeds, plan = configurationPlan, registryPort = registry,
     }));
   }
   const generator = generatorModule.createStockGenerator({ repository, registry: registryPort, policyService,
-    contextForRun: context, configurationPlan: plan, stockAccount: 'fictional-scheme-stock', allocationInventoryPath });
+    contextForRun: context, configurationPlan: plan, stockAccount: 'fictional-scheme-stock', allocationInventoryPath, ...generatorOptions });
   return { generator, repository, store, reads, policy, allocationInventoryPath };
 }
 // Generated rows carry a VehicleSnapshot: raw fact values sit at facts.facts.<name>.value.
@@ -152,6 +152,57 @@ test('every release tranche mixes the model lines and colours, and no two tranch
       assert.ok(Math.abs(model.colourShares[colour] - share) <= 0.05);
     }
   }
+});
+
+// Only the fixture-b configurations qualify; each carries its own model key through the extra-facts seam.
+const guaranteeOptions = (minimumCars = 2, qualifying = [ids[2], ids[3]]) => ({
+  factsForConfiguration: (binding) => ({ eligibilityModelKey: { value: `key-${binding.colour}`, unit: null } }),
+  guarantee: { principalId: 'fixture-person', minimumCars, distinct: ['eligibilityModelKey', 'colour'],
+    qualifies: async (binding, _record, extra) => { assert.ok(extra.eligibilityModelKey.value); return qualifying.includes(binding.configurationId); } } });
+
+test('a release guarantee keeps enough qualifying cars of different colours and models in every tranche', async () => {
+  const seed = await policyFixture();
+  seed.assumptions.find((row) => row.key === 'stock.aggregate.fixture-b').value.carCount = 1;
+  const a = await setup({ seeds: [seed], generatorOptions: guaranteeOptions() });
+  const result = await a.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(result.status, 'ok', JSON.stringify(result));
+  assert.deepEqual(result.value.report.release.guarantee, { principalId: 'fixture-person', minimumCars: 2,
+    distinct: ['eligibilityModelKey', 'colour'], substituted: result.value.report.release.guarantee.substituted });
+  assert.ok(result.value.report.release.guarantee.substituted > 0, 'the plain draw needed help');
+  const rows = await stock(a.repository, 'run-a');
+  const tranches = Map.groupBy(rows, (row) => fact(row, 'plannedRelease').releaseId);
+  for (const [releaseId, cars] of tranches) {
+    const mine = cars.filter((row) => [ids[2], ids[3]].includes(row.configurationId));
+    assert.equal(new Set(mine.map((row) => fact(row, 'colour'))).size >= 2, true, releaseId);
+    assert.equal(new Set(mine.map((row) => fact(row, 'eligibilityModelKey'))).size >= 2, true, releaseId);
+    if (releaseId !== [...tranches.keys()].at(-1)) assert.equal(cars.length, 20, releaseId);
+  }
+  for (const model of result.value.report.models) {
+    const cars = rows.filter((row) => fact(row, 'modelLine') === model.modelLineId);
+    assert.equal(model.cars, cars.length);
+    assert.equal(Object.values(model.colourShares).reduce((sum, share) => sum + share * cars.length, 0), cars.length ? cars.length : 0);
+  }
+  assert.equal(rows.length, result.value.report.totalCars);
+  const again = await a.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.deepEqual(again.value.report, result.value.report);
+});
+
+test('a release guarantee the qualifying configurations cannot meet is refused and writes nothing', async () => {
+  const a = await setup({ generatorOptions: guaranteeOptions(2, [ids[2]]) });
+  const result = await a.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(result.status, 'invalid'); assert.equal(result.code, 'unsupported-release-guarantee');
+  assert.equal((await stock(a.repository, 'run-a')).length, 0);
+  const tooMany = await setup({ generatorOptions: guaranteeOptions(21) });
+  assert.equal((await tooMany.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1')).code, 'unsupported-release-guarantee');
+  const malformed = await setup({ generatorOptions: { guarantee: { principalId: 'p', minimumCars: 0, distinct: ['colour'], qualifies: () => true } } });
+  assert.equal((await malformed.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1')).code, 'invalid-generator-input');
+});
+
+test('without a guarantee the report carries none', async () => {
+  const a = await setup();
+  const result = await a.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(result.status, 'ok');
+  assert.equal(Object.hasOwn(result.value.report.release, 'guarantee'), false);
 });
 
 // FUCQ-229: a window's backlog releases on later windows, so even a one-week lead must outlast every window.
