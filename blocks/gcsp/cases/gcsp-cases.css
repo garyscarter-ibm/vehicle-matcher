@@ -2,6 +2,9 @@
 @import "../kit/form-controls.css";
 
 gcsp-help { display: block; }
+/* Inside the portal the help body's own .gcsp wrapper is a plain block: one page shell, one inset. */
+.gcsp .gcsp:has(> .gcsp-cases-body) { display: block; min-height: 0; background: transparent; }
+.gcsp .gcsp-main .gcsp-cases-body { max-width: none; margin-inline: 0; padding: 0; }
 
 .gcsp .gcsp-cases-body { max-width: 1080px; margin-inline: auto; padding: var(--gcsp-space-4); color: var(--gcsp-text); font-family: var(--gcsp-font); }
 .gcsp .gcsp-case-content { display: grid; gap: var(--gcsp-space-4); min-width: 0; }

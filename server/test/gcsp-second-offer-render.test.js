@@ -179,10 +179,10 @@ test('owned block sources have no inline handlers, unsafe execution or styleshee
   assert.match(css, /\.gcsp-followup-field > legend \{[^}]*float: left; width: 100%/);
 });
 
-test('a lapsed access key links to the access form with no refresh', (t) => {
+test('an ended session links to the account with no refresh', (t) => {
   const { root, view } = host(t); view.update({ state: 'access-lapsed', busy: false });
-  assert.match(root.textContent, /Access needed/); assert.equal(root.querySelectorAll('button').length, 0);
-  assert.equal(root.querySelector('a.vm-btn').getAttribute('href'), '/gcsp/access?next=%2Fgcsp-account.html');
+  assert.match(root.textContent, /Session ended/); assert.equal(root.querySelectorAll('button').length, 0);
+  assert.equal(root.querySelector('a.vm-btn').getAttribute('href'), '/gcsp-account.html');
   assert.equal(root.querySelector('[data-followup-action=refresh]'), null); assert.doesNotMatch(root.textContent, /unavailable/i);
 });
 

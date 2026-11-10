@@ -182,8 +182,8 @@ test('unavailable offers Retry, refused offers nothing, a lapsed key sends to th
   assert.equal(state(refused), 'refused'); assert.match(text(refused), /Only the scheme ordering lead or the presenter can see the route comparison\./);
   assert.equal(refused.querySelectorAll('button').length, 0); assert.equal(refused.querySelector('table'), null);
   const lapsed = (await mount('refused', {}, { load: async () => ({ status: 'access-required' }) })).root;
-  assert.equal(state(lapsed), 'access-required'); assert.match(lapsed.querySelector('[role="alert"]').textContent, /Access needed/);
-  assert.ok(lapsed.querySelector('a[href^="/gcsp/access"]'));
+  assert.equal(state(lapsed), 'access-required'); assert.match(lapsed.querySelector('[role="alert"]').textContent, /Session ended/);
+  assert.ok(lapsed.querySelector('a[href="/gcsp-account.html"]'));
   const bad = (await mount('refused', {}, { load: async () => ({ status: 'ready', stored: { result: { kind: 'process-comparison' } } }) })).root;
   assert.equal(state(bad), 'unavailable'); assert.equal(bad.querySelector('.gcsp-comparison-measure'), null);
   const none = (await mount('refused', {}, { load: async () => { throw new Error('boom'); } })).root; assert.equal(state(none), 'unavailable');

@@ -41,32 +41,7 @@ test('built-in route resolves identity before service, enforces employee role an
   });
 });
 
-test('built-in route retains the shared access-key gate', async () => {
-  let providerCalls = 0;
-  const provider = providerFor((context) => {
-    providerCalls += 1;
-    return { status: 'ok', value: sourceFor(context) };
-  });
-  const oldKey = process.env.DEMO_ACCESS_KEY;
-  await withFixture({ gcspRecommendations: configured(provider) }, async (f) => {
-    process.env.DEMO_ACCESS_KEY = 'recommendation-route-test-key';
-    try {
-      const missing = await f.request('/api/gcsp/recommendations', { body: brief() });
-      const wrong = await f.request('/api/gcsp/recommendations', { body: brief(), headers: { 'X-Access-Key': 'wrong-test-key' } });
-      assert.equal(missing.status, 401);
-      assert.equal(wrong.status, 401);
-      assert.equal(providerCalls, 0);
-      const valid = await f.request('/api/gcsp/recommendations', { body: brief(), headers: { 'X-Access-Key': 'recommendation-route-test-key' } });
-      assert.equal(valid.status, 200);
-      assert.equal(providerCalls, 1);
-    } finally {
-      if (oldKey === undefined) delete process.env.DEMO_ACCESS_KEY;
-      else process.env.DEMO_ACCESS_KEY = oldKey;
-    }
-  });
-});
-
-test('missing identity or recommendation dependencies fail closed after the shared boundary', async () => {
+test('missing identity or recommendation dependencies fail closed', async () => {
   const noIdentity = await startHttpServer();
   try {
     const response = await noIdentity.request('/api/gcsp/recommendations', { body: brief() });

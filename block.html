@@ -33,36 +33,6 @@
       width: 100%; max-width: 1280px; margin: 0 auto; box-sizing: border-box;
       background: #fff;
     }
-    /* Shared-password gate: a full-screen overlay over the harness's dark
-       surface. Purely for capturing the demo password (see the module script);
-       the server is the real gate. */
-    .vm-gate {
-      position: fixed; inset: 0; z-index: 1000;
-      display: flex; align-items: center; justify-content: center;
-      padding: 24px; background: #0d0f12;
-    }
-    .vm-gate-card {
-      width: 100%; max-width: 360px; box-sizing: border-box;
-      display: flex; flex-direction: column; gap: 12px;
-      padding: 32px 28px; border-radius: 12px;
-      background: #16191e; color: #f2f4f7;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    }
-    .vm-gate-title { margin: 0; font-size: 22px; font-weight: 600; }
-    .vm-gate-lede { margin: 0; font-size: 14px; line-height: 1.4; color: #aeb4bd; }
-    .vm-gate-error { margin: 0; font-size: 14px; color: #ff8a80; }
-    .vm-gate-input {
-      box-sizing: border-box; width: 100%; margin-top: 4px;
-      padding: 12px 14px; font-size: 16px;
-      border: 1px solid #3a3f47; border-radius: 8px;
-      background: #0d0f12; color: #f2f4f7;
-    }
-    .vm-gate-input:focus { outline: 2px solid #4c8bf5; outline-offset: 1px; }
-    .vm-gate-btn {
-      padding: 12px 14px; font-size: 15px; font-weight: 600; cursor: pointer;
-      border: 0; border-radius: 8px; background: #4c8bf5; color: #fff;
-    }
-    .vm-gate-btn:hover { background: #3f79db; }
   </style>
 </head>
 <body>
@@ -119,7 +89,6 @@
   </main>
   <script type="module">
     import decorate from './blocks/vehicle-matcher/vehicle-matcher.js';
-    import { ACCESS_KEY_STORAGE } from './blocks/vehicle-matcher/engine.js';
 
     const block = document.querySelector('.vehicle-matcher');
     const params = new URLSearchParams(window.location.search);
@@ -229,94 +198,13 @@
       : DEALER_NAMES[getRow('retailer id')] || 'this retailer';
     setRow('retailer name', params.get('retailerName') || poolName);
 
-    // ---- Shared-password gate ---------------------------------------------
-    // This overlay is UX only, not a security boundary: it captures the shared
-    // demo password so engine.js can send it as X-Access-Key on every API call.
-    // The real gate is the server, which 401s any /api/* call without a matching
-    // key (see server/index.js isAuthorized). So bypassing this overlay just
-    // yields an empty shell that can't load questions or matches. When the
-    // deployed backend has no DEMO_ACCESS_KEY set, any password (or none) works
-    // and the app runs open, exactly as before.
-    //
-    // ?key=<password> lets a single shareable link carry the password: we store
-    // it and strip it from the visible URL so it isn't shoulder-surfed or left in
-    // history/bookmarks. Rotating the server key invalidates old links, which is
-    // the point.
-    const keyFromUrl = params.get('key');
-    if (keyFromUrl) {
-      sessionStorage.setItem(ACCESS_KEY_STORAGE, keyFromUrl);
+    // Old shared links carry ?key=; drop it from the visible URL (nothing reads it now).
+    if (params.has('key')) {
       params.delete('key');
       const clean = params.toString();
-      window.history.replaceState(
-        {},
-        '',
-        window.location.pathname + (clean ? `?${clean}` : '') + window.location.hash,
-      );
+      window.history.replaceState({}, '', window.location.pathname + (clean ? `?${clean}` : '') + window.location.hash);
     }
-
-    // Build (or re-build) the password overlay. `message` shows the wrong-password
-    // note on a retry. Resolves once the user submits a non-empty password, which
-    // is stored before the promise resolves.
-    function askForPassword(message) {
-      return new Promise((resolve) => {
-        const overlay = document.createElement('div');
-        overlay.className = 'vm-gate';
-        overlay.innerHTML = `
-          <form class="vm-gate-card" autocomplete="off">
-            <h1 class="vm-gate-title">Private demo</h1>
-            <p class="vm-gate-lede">Enter the password you were given to continue.</p>
-            ${message ? `<p class="vm-gate-error">${message}</p>` : ''}
-            <input class="vm-gate-input" type="password" name="vm-access"
-                   placeholder="Password" aria-label="Password" autofocus>
-            <button class="vm-gate-btn" type="submit">Enter</button>
-          </form>`;
-        const form = overlay.querySelector('.vm-gate-card');
-        const input = overlay.querySelector('.vm-gate-input');
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const value = input.value.trim();
-          if (!value) return;
-          sessionStorage.setItem(ACCESS_KEY_STORAGE, value);
-          overlay.remove();
-          resolve();
-        });
-        document.body.append(overlay);
-        input.focus();
-      });
-    }
-
-    // A 401 from a load-bearing call means the stored password was wrong or has
-    // been rotated: engine.js clears it and fires vm-auth-failed. Re-prompt with
-    // the error, then remount the block against the fresh key.
-    window.addEventListener('vm-auth-failed', () => {
-      // Guard against re-entrancy if two calls 401 at once.
-      if (document.querySelector('.vm-gate')) return;
-      askForPassword('That password was not right. Please try again.')
-        .then(() => decorate(block));
-    });
-
-    // Skip the up-front prompt when running locally. A local dev backend runs
-    // keyless (DEMO_ACCESS_KEY unset -> auth off, see server/index.js), so a
-    // pre-emptive password prompt on localhost is pure friction — the server
-    // returns 200 without a key. We treat both a locally-served page and a
-    // localhost API as "local" so the bypass holds however the harness is run;
-    // the vm-auth-failed handler above stays the real gate and catches the
-    // (unexpected) case where a local server *is* keyed. Mirrors index.html.
-    const pageIsLocal = window.location.protocol === 'file:'
-      || ['localhost', '127.0.0.1', '::1', '[::1]', ''].includes(window.location.hostname);
-    const apiHost = (() => {
-      try { return new URL(block.dataset.api, window.location.href).hostname; }
-      catch { return ''; }
-    })();
-    const apiIsLocal = apiHost === 'localhost' || apiHost === '127.0.0.1' || apiHost === '::1';
-
-    // Have a key already (this session, or just set from ?key=), or running
-    // locally? Mount straight away. Otherwise prompt first, then mount.
-    if (sessionStorage.getItem(ACCESS_KEY_STORAGE) || pageIsLocal || apiIsLocal) {
-      decorate(block);
-    } else {
-      askForPassword().then(() => decorate(block));
-    }
+    decorate(block);
   </script>
 </body>
 </html>

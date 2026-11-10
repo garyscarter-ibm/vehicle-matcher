@@ -28,7 +28,6 @@
 
 import { createServer } from 'node:http';
 import { fileURLToPath } from 'node:url';
-import { timingSafeEqual } from 'node:crypto';
 
 import { USED_RETAIL_V1 } from './scenarios/retail/index.js';
 import {
@@ -77,19 +76,6 @@ const RETAIL_PROFILE = USED_RETAIL_V1;
 const PORT = process.env.PORT === '0' ? 0 : Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
 
-// A shared secret that gates the /api/* surface, set only in the host's env
-// (e.g. Render dashboard) so it's never committed. When it's unset or empty,
-// auth is OFF — local dev and the whole test suite run open, unchanged. When
-// it's set, every /api/* call must carry a matching X-Access-Key header (see
-// isAuthorized). /health stays open either way for the platform health check.
-// Rotate by changing this one env var; the frontend needs no redeploy because
-// the password is entered at runtime, not baked in. Read per-request (not
-// cached at load) so a rotation takes effect on the next call, and so tests can
-// toggle it around a single server instance.
-function accessKey() {
-  return process.env.DEMO_ACCESS_KEY || '';
-}
-
 // How many matches the quiz's live "best guess" drawer shows. Wider than the
 // results page's TOP_MATCHES (3) — it's a browse-the-shortlist glance, not the
 // final recommendation. The retailer may hold fewer that survive the filters;
@@ -127,14 +113,11 @@ function interleave(lists) {
 }
 
 const CORS_HEADERS = {
-  // Read-only tool. Origin stays '*' on purpose: the block is driven by a
-  // runtime ?api=<url> from arbitrary origins (and file:// locally), and the
-  // real gate is the X-Access-Key header check (origin-independent), not the
-  // origin. X-Access-Key must be advertised here or the browser preflight
-  // blocks the custom header before the request reaches the handler.
+  // Read-only tool. Origin stays '*': the block is driven by a runtime
+  // ?api=<url> from arbitrary origins (and file:// locally).
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, X-Access-Key',
+  'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Max-Age': '86400',
 };
 
@@ -147,26 +130,6 @@ function sendJson(res, status, payload, headers = {}) {
     ...headers,
   });
   res.end(body);
-}
-
-/**
- * Is this request allowed to reach the /api/* surface?
- *
- * When ACCESS_KEY is unset, auth is OFF and every request passes — this is what
- * keeps local dev and the test suite running open with no env var set. When it's
- * set, the request must carry an X-Access-Key header that matches. The compare is
- * constant-time (timingSafeEqual), which needs equal-length buffers and throws
- * otherwise, so we bail early on a missing header or a length mismatch (the
- * length of a shared demo password isn't a secret worth protecting).
- */
-function isAuthorized(req) {
-  const expected = accessKey();
-  if (!expected) return true;
-  const provided = req.headers['x-access-key'];
-  if (typeof provided !== 'string' || provided.length !== expected.length) {
-    return false;
-  }
-  return timingSafeEqual(Buffer.from(provided), Buffer.from(expected));
 }
 
 /**
@@ -989,15 +952,6 @@ export function buildServer(deps = {}) {
         manifestDigest: null, recovered: false, code: 'readiness-unavailable' };
       const ok = vehicleEvidence.status === 'ready';
       return sendJson(res, ok ? 200 : 503, { ok, vehicleEvidence });
-    }
-
-    // Health and preflight stay open; every API consumer below passes the shared gate.
-    if (!isAuthorized(req)) {
-      if (isOfferDecision) return handleOfferDecision({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
-      if (isOfferAccess) return handleOfferAccess({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
-      if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson, gateAuthorized: false });
-      if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
-      return sendJson(res, 401, { error: 'Unauthorized' });
     }
 
     if (isVehicleImage) return handleVehicleImages({ req, res, pathname });

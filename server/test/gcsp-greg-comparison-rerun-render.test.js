@@ -314,7 +314,7 @@ test('a refused, unavailable or lapsed list shows its screen, and Retry reads ag
   assert.equal(down.root.querySelector('.gcsp-comparison').dataset.state, 'unavailable'); assert.match(text(down.root), /could not be loaded/);
   const retry = [...down.root.querySelectorAll('button')].find((b) => b.textContent === 'Retry'); retry.click(); await settle(); assert.equal(down.calls.loadAll, 2);
   const lapsed = await mount('experiments-ready', { overrides: { loadAll: async () => ({ status: 'access-required' }) } });
-  assert.equal(lapsed.root.querySelector('.gcsp-comparison').dataset.state, 'access-required'); assert.match(text(lapsed.root), /Access needed/);
+  assert.equal(lapsed.root.querySelector('.gcsp-comparison').dataset.state, 'access-required'); assert.match(text(lapsed.root), /Session ended/);
   const none = await mount('experiments-ready', { overrides: { loadAll: async () => ({ status: 'ready', activePolicyVersion: null, experiments: [] }) } });
   assert.equal(none.root.querySelector('.gcsp-comparison').dataset.state, 'unavailable');
 });

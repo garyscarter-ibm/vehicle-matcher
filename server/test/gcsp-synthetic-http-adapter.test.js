@@ -96,12 +96,10 @@ test('actual HTTP failures preserve the port outcome and usable action without s
   assert.equal(f.external(), 0);
 });
 
-test('the real shared HTTP gate, raw canonical routing and trusted stock context remain in force', async (t) => {
-  const previous = process.env.DEMO_ACCESS_KEY; process.env.DEMO_ACCESS_KEY = 'fictional-consumer-parity-gate';
-  t.after(() => { if (previous === undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY = previous; });
-  const f = await setup(t); const headers = { 'X-Access-Key': process.env.DEMO_ACCESS_KEY };
+test('the real HTTP routing, raw canonical routing and trusted stock context remain in force', async (t) => {
+  const f = await setup(t); const headers = {};
   const request = { kind: 'vin', id: vin.vin17 };
-  assert.equal((await get(f.base, route(request))).status, 401);
+  assert.equal((await get(f.base, route(request))).status, 200);
   const normalised = { kind: 'vin', id: ` ${vin.vin17.toLowerCase()} ` };
   assert.deepEqual((await get(f.base, route(normalised), headers)).body, await f.lookup.resolve(normalised));
   const stock = { kind: 'stock', id: orderUuid };
