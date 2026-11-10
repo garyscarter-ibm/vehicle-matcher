@@ -40,3 +40,30 @@ In run-sheet order. One implementer per slice, each 8 points or less, and only t
 - **FEATURE:** UK local time on Paula's screens, with no UTC labels (P17).
 - **LAYOUT, later:** the manual route as rows, with contact details asked once (P11, P12); the case queue in the portal
   shell (G13); and one shared car-summary component across all six car treatments (P18, L).
+
+## Agreed and building
+
+Gary agreed all eight slices on 10 November ("Build all eight"). Two changes from the table above:
+- G8 (internal labels on Greg's screens) moves to slice 7, because slice 1 does not touch Greg's files.
+- "Your cars shows one Your new car row" moves from slice 4 to slice 5, so one slice owns `blocks/gcsp/account/`.
+
+## Implementer brief, shared by every slice
+
+- **Binding:** read `docs/gcsp/experience-quality.md`, `docs/gcsp/build-rules.md` ("Demo delivery and scope control"),
+  `docs/gcsp/density/ui-revamp-spec.md` (the "Minimal and meaningful" rules and the token rules) and `COMPONENTS.md`.
+  Then read your findings in the two review reports. They give the recommended change and the screenshots.
+- **LAYOUT only.** Keep current behaviour: the same data, actions, adapters, states and routes. You may remove repeated text,
+  merge or demote regions, reorder, collapse content into a disclosure (`<details>`) and change a button's variant. You may not
+  add new behaviour or change what an action does. If a recommendation needs new behaviour, skip it and list it in your report.
+- **Kit first.** Reuse kit components, or extend one with an option and document it in `COMPONENTS.md` in the same change.
+  The UI ratchet (`server/test/ui-ratchet.json`) may only fall. Lower a baseline when a count falls.
+- **House rules:** tokens only, `.gcsp`-scoped selectors, no em dashes in on-screen copy, code comments of two lines or fewer,
+  no coloured side-stripe boxes, no on-screen "demo" or "synthetic" wording.
+- **Desktop only (1280).** Don't break the existing under-600px rules, but don't add or check phone work.
+- **Tests:** update tests that assert the old layout or copy so they assert the new intent. Run only the test files for
+  the files you touched, plus `server/test/ui-ratchet.test.js`, `server/test/gcsp-painted-copy-words.test.js` and
+  `server/test/render.test.js`. Never run `npm test`.
+- **Files:** touch only the files your slice owns. Other implementers are working in the same worktree at the same time.
+  Don't commit, stash, switch branch or run git commands that write. The main session reviews and commits.
+- **Report** in under 300 words: the files changed, what you removed, merged or demoted for each finding, the tests you ran
+  and their results, and anything you skipped and why.
