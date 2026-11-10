@@ -424,3 +424,5 @@ For Russell or Gary:
 - FUCQ-362 merged b7c7c546 (friendly time, journey-driven Release, Start again confirmation). Open point for Gary: the console opens on Thu 5 Nov with no saved preferences, so press Start again first.
 - FUCQ-364 merged a0b60efb (presenter release route, read only, user agnostic; adds release.trancheId; 3 Series Saloon has no colour on fixed demo stock).
 - FUCQ-366 merged b33344a5 (What happened feed with email side drawer). Raised for Gary: offer link in captured emails shows runId=demo-...; lists only releases this console saw.
+- FUCQ-365 merged d5e56491 (release grid, kit releaseGrid). Full 100-car grid waits for FUCQ-363.
+- Decision: fixed the FUCQ-362 second Start again stale-run bug directly (c814b3f8, one-file fix plus regression test) rather than raising a Bug, so the dry run isn't hit by it.
