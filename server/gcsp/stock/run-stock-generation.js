@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, isAbsolute, join } from 'node:path';
 import { result } from '../repository/index.js';
@@ -9,7 +9,7 @@ import { withDisplayImages } from '../vehicle-evidence/display-images.js';
 import { createSyntheticRegistry } from '../vehicle-evidence/synthetic-registry.js';
 import { buildRetainedCorpusPlan } from '../vehicle-evidence/stock-configuration-plan.js';
 import { createStockGenerator } from '../vehicle-evidence/stock-generator.js';
-import { canonicalAllocationContent, emptyAllocationInventory } from '../vehicle-evidence/vin-allocation.js';
+import { canonicalAllocationContent, emptyAllocationInventory, readAllocationInventory } from '../vehicle-evidence/vin-allocation.js';
 import { VISIBILITY, modelBrowseFacts } from './demo-provider.js';
 import { createReleaseGuarantee } from './release-guarantee.js';
 
@@ -28,6 +28,12 @@ export function createDemoStockGeneration({ policy, repository, contextForRun, e
     if (!isAbsolute(inventoryPath)) return false;
     try { await readFile(inventoryPath); } catch {
       await mkdir(dirname(inventoryPath), { recursive: true });
+      await writeFile(inventoryPath, canonicalAllocationContent(emptyAllocationInventory()), { flag: 'wx' }).catch((error) => { if (error.code !== 'EEXIST') throw error; });
+      return true;
+    }
+    // A truncated or corrupt file is renamed aside, never deleted, so startup does not fall back to demo stock.
+    if ((await readAllocationInventory(inventoryPath)).status === 'invalid-inventory') {
+      await rename(inventoryPath, `${inventoryPath}.invalid-${Date.now()}`);
       await writeFile(inventoryPath, canonicalAllocationContent(emptyAllocationInventory()), { flag: 'wx' }).catch((error) => { if (error.code !== 'EEXIST') throw error; });
     }
     return true;

@@ -283,8 +283,6 @@ test('a failed repository mutation rolls back every generated stock row and repo
   const reserved = await inventoryDigest(env.allocationInventoryPath);
   assert.equal((await readAllocationInventory(env.allocationInventoryPath)).inventory.records.length, 350,
     'F53 retains valid reservations separately from failed stock publication');
-  assert.equal((await env.generator.generateStock('run-a', 'changed-seed', 'fixture-policy-v1')).status, 'conflict');
-  assert.equal(await inventoryDigest(env.allocationInventoryPath), reserved, 'changed request cannot reserve additional identifiers');
   assert.equal((await env.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'ok');
   assert.equal((await stock(env.repository, 'run-a')).length, 350);
   assert.equal(await inventoryDigest(env.allocationInventoryPath), reserved, 'retry reuses the existing identifiers');
@@ -735,4 +733,43 @@ test('native postgresql: generateStock persists one run-scoped set of synthetic 
     catch { throw new Error('PostgreSQL stock-generation fixture cleanup incomplete'); }
     finally { await pool.end(); }
   }
+});
+
+// FUCQ-363: a restarted process meets its predecessor's inventory for the same deterministic run id.
+async function restartAgainst(path, options) {
+  const next = await setup(options);
+  await writeFile(next.allocationInventoryPath, await readFile(path));
+  return next;
+}
+const stockRecords = async (path, runId) => (await readAllocationInventory(path)).inventory.records.filter((row) => row.runId === runId && row.usage === 'stock');
+
+test('a stale inventory for the run (different weekly volume) is replaced, other runs are untouched', async () => {
+  const first = await setup();
+  assert.equal((await first.generator.generateStock('run-b', 'fictional-seed', 'fixture-policy-v1')).status, 'ok');
+  assert.equal((await first.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1')).status, 'ok');
+  const runB = await stockRecords(first.allocationInventoryPath, 'run-b');
+  const changed = await policyFixture();
+  changed.assumptions.find((row) => row.key === 'supply.weeklyReleaseVolume').value = { min: 300, max: 300 };
+  const second = await restartAgainst(first.allocationInventoryPath, { seeds: [changed] });
+  const outcome = await second.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(outcome.status, 'ok', JSON.stringify(outcome));
+  const rows = await stock(second.repository, 'run-a');
+  assert.equal(rows.length, 300);
+  const retained = await stockRecords(second.allocationInventoryPath, 'run-a');
+  assert.deepEqual(retained.map((row) => row.orderUuid).sort(), rows.map((row) => row.orderUuid).sort());
+  assert.deepEqual(await stockRecords(second.allocationInventoryPath, 'run-b'), runB);
+});
+
+test('a stale inventory for the run (different corpus version) is replaced', async () => {
+  const first = await setup();
+  assert.equal((await first.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1')).status, 'ok');
+  const plan = structuredClone(configurationPlan); plan.corpusVersion = 'fixture.v2';
+  const registryV2 = { async getConfiguration(id) { const found = await registry.getConfiguration(id);
+    return found.active ? { ...found, active: { ...found.active, version: 'fixture.v2' } } : found; } };
+  const second = await restartAgainst(first.allocationInventoryPath, { plan, registryPort: registryV2 });
+  const outcome = await second.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(outcome.status, 'ok', JSON.stringify(outcome));
+  const retained = await stockRecords(second.allocationInventoryPath, 'run-a');
+  assert.equal(retained.length, 350);
+  assert.ok(retained.every((row) => row.corpusVersion === 'fixture.v2'));
 });

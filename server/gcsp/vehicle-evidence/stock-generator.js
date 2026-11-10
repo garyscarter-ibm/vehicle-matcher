@@ -334,13 +334,9 @@ export function createStockGenerator({ repository, registry, policyService, cont
         }
         const retained = await readAllocationInventory(allocationInventoryPath);
         if (retained.status !== 'ok') return unavailable('retained-allocation-inventory-unavailable');
-        const retainedStock = retained.inventory.records.filter((row) => row.runId === runId && row.vehicleId.startsWith('stock-'));
-        const plannedVehicles = new Set(vehicles.map((car) => car.vehicleId));
-        if (retainedStock.length && (retainedStock.length !== vehicles.length || retainedStock.some((row) =>
-          row.seed !== inputDigest(entropy) || row.corpusVersion !== plan.corpusVersion || row.originatingDatasetId !== plan.datasetId
-          || !plannedVehicles.has(row.vehicleId)))) return result('conflict', { reason: 'retained-stock-request-mismatch', current: {} });
+        // No generation is recorded for this run, so leftover inventory records were never used: replace them.
         const allocated = await allocateInventoryFile({ path: allocationInventoryPath, expectedRevision: retained.inventory.revision,
-          plan: { runId, seed: inputDigest(entropy),
+          plan: { runId, seed: inputDigest(entropy), replaceRunStock: true,
           corpusVersion: plan.corpusVersion, datasetId: plan.datasetId, vehicles: vehicles.map((car) => ({ vehicleId: car.vehicleId,
             configurationId: car.binding.configurationId, snapshotVersion: car.binding.record.snapshotVersion,
             configuration: car.binding.record.configuration, usage: 'stock' })) } });
