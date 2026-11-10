@@ -4215,7 +4215,7 @@
           "source": "Original branch acceptance complete after isolated A/B review; final Result/evidence recorded; no shared-base merge or Jira acceptance asserted"
         }
       ],
-      "observed_at": "2026-11-10T14:08:13Z",
+      "observed_at": "2026-11-10T14:14:17Z",
       "slices": [
         {
           "id": "fixture-boundaries",
@@ -4242,8 +4242,8 @@
           "id": "integration",
           "status": "complete",
           "title": "Reviewed-story-delivery-evidence",
-          "observed_at": "2026-11-10T14:08:12Z",
-          "evidence": "Branch delivery acceptance/evidence/Result prepared against reviewed 34d59bd7; source/test identity unchanged and 242/242 scoped evidence reused. Dispatcher still owns live-claim/current-base integration, merge and native acceptance; no deployed/PostgreSQL assertion."
+          "observed_at": "2026-11-10T14:14:17Z",
+          "evidence": "Merged and pushed on gcsp-poc at40f0ee6108f97a998f2eeb549cea64779db79f98; current-base metadata only, all13 source/test hashes unchanged;242/242 scoped and independent A/B reused; docs/gcsp/evidence/fucq342/integration.json. Native acceptance remains separate."
         }
       ],
       "unsliced": false,

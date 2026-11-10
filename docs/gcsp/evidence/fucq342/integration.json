@@ -1,0 +1,39 @@
+{
+  "story": "FUCQ-342",
+  "merge_commit": "40f0ee6108f97a998f2eeb549cea64779db79f98",
+  "topic_integration_commit": "163543dea10853dca2b6ff435959261563080c76",
+  "reviewed_source_commit": "34d59bd71bacd055d9af54579cfb99e455e26ac4",
+  "integration_base": "ef1073164ea184d14be477c1ef4e87a90690102f",
+  "base_changes_since_validation": [
+    "_dev/code-inbox/DEV-2026-11-10-004.md",
+    "_dev/code-inbox/DEV-2026-11-10-005.md"
+  ],
+  "validation_scope": "targeted",
+  "variant": "default",
+  "scoped_tests": {
+    "passed": 242,
+    "failed": 0,
+    "skipped": 0
+  },
+  "reuse_basis": "Only imported unclaimed Bug metadata changed on base. All13 declared source/test hashes unchanged, and independent reviews verified311 receipt code/test records. Identical tested code/inputs/environment/default variant evidence reused under AGENTS resource contract; no redundant tests or full-suite claim.",
+  "source_test_sha256": {
+    "blocks/gcsp/offer/gcsp-offer.js": "a96bd3e45399e69e9689a596e1dfef29cb523ab263a606f9e3de0b48e8a453d6",
+    "blocks/gcsp/offer/harness.js": "019132c3c3018f98c907176da4ab5e9df98e8266d08c27d6601cad47efb78659",
+    "blocks/gcsp/presenter/gcsp-outbox.js": "b5976f57a5b386df0f2e518ccdfc627b5c1ad50721213a382ccebf75ee0fc2e3",
+    "blocks/gcsp/presenter/fixtures.js": "770589487e57207ca91718a0871c721dadb8945e828d3c2514ed1030a482a8ac",
+    "blocks/vehicle-matcher/component-gallery.js": "3985cbd28c21458ea800a225460e6dcbf5f0ec98cec7cde49356406c66a05d29",
+    "server/test/gcsp-fixture-session-isolation.test.js": "8b9893cdfeba3dd2224c2d2646b8265aa5436d330ff61afae8cd27c1ec298624",
+    "server/test/gcsp-login-render.test.js": "19f317cee5d95c8ef24575f83c7b4de4a1a0df42001144f9b08f8ada4eb8d3a3",
+    "server/test/gcsp-login-consumers.test.js": "ef83ee2a6917d187c5427341679c901f436dde367b1e4865ac31c4cafc1f6d0d",
+    "server/test/gcsp-login.test.js": "874957f389a5c5e703a865430a75ae67158c60313a4c1eac04c8fec426cea549",
+    "server/test/gcsp-shell.test.js": "76e2f643333c81fe5868b36947c95057a1922b8226fe7d2a27b91db202e6d22f",
+    "server/test/gcsp-offer-view-render.test.js": "d536acbd7b482acfb8039b7bc961beac8af31310c3bd9a78566724e3f175f531",
+    "server/test/gcsp-outbox-viewer.test.js": "87fc1cd410cd44503f0da1d1a8553b05ca52a0d90e0a2b6b404741f9fcddc39c",
+    "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+  },
+  "independent_review": "review.md; isolated A and B completed; corrected desktop/narrow captures critically inspected",
+  "known_separate_bug": "FUCQ-346 Low, unchanged gallery CSS; not repaired or a merge dependency",
+  "unrun": "Full suite, PostgreSQL and deployed smoke; no deployment performed",
+  "accepted": false,
+  "recorded_at": "2026-11-10T14:14:17.118058+00:00"
+}
