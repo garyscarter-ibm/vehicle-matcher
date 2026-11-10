@@ -102,10 +102,10 @@ test('stale preference proposals cannot be confirmed and stale write results req
   const c = caseFixture('waiting'); c.relaxation = { currentBriefVersion: 4, before: 'saloon', applicable: false };
   const { root, destroy } = await mount('waiting', { ...fixtureAdapter('waiting'), async readCases() { return { status: 'ok', value: { cases: [c] } }; } });
   assert.equal(findButton(root, 'Review body change').disabled, true); assert.equal(findButton(root, 'Confirm preference change'), undefined);
-  assert.match(root.textContent, /no longer matches your current brief/); destroy();
+  assert.match(root.textContent, /no longer matches your current preferences/); destroy();
   const other = await mount('none', { ...fixtureAdapter('none'), requestHelp: async () => ({ status: 'stale-version', reason: 'Refresh the current case.' }) });
   await prepare(other.root); findButton(other.root, 'Confirm help request').click(); await tick();
-  assert.match(other.root.textContent, /The case or brief has changed/); assert.match(other.root.textContent, /Refresh the current case/); other.destroy();
+  assert.match(other.root.textContent, /The case or your preferences have changed/); assert.match(other.root.textContent, /Refresh the current case/); other.destroy();
 });
 test('unmount cancels owned work, late reads and replies cannot render or trigger a hidden write/readback', async () => {
   const late = deferred(); const root = host(); let signal;
@@ -269,7 +269,7 @@ test('FUCQ-263: a closed case with an unconfirmed change asks Paula for nothing 
     relaxation: { applicable, confirmed: false, before: 'saloon', currentBriefVersion: applicable ? 1 : 2 } }, { onReviewRelaxation: () => {} })); return root; };
   for (const status of ['resolved', 'closed']) for (const applicable of [true, false]) {
     const root = render(status, applicable);
-    assert.doesNotMatch(root.textContent, /Waiting for your confirmation|no longer matches your current brief/);
+    assert.doesNotMatch(root.textContent, /Waiting for your confirmation|no longer matches your current preferences/);
     assert.equal(findButton(root, 'Review body change'), undefined);
     assert.match(root.textContent, /Recorded remedy.*Proposed valuehatchback/s);
     assert.match(root.textContent, /This change was not confirmed before the case (closed|was resolved)\./);
@@ -331,7 +331,7 @@ test('queue opens read-only options, uses exactly server statuses and availabili
   assert.equal(writes, 0); f.destroy();
   const waiting = await mountQueue(); await openQueue(waiting.root, 'synthetic-case-2');
   assert.match(waiting.root.textContent, /The employee confirms this preference through their brief/);
-  assert.doesNotMatch(waiting.root.textContent, /no longer matches your current brief/); waiting.destroy();
+  assert.doesNotMatch(waiting.root.textContent, /no longer matches your current preferences/); waiting.destroy();
 });
 test('queue handles empty/loading/source/access/stale-run distinctly and terminal cases have no editor', async () => {
   for (const [name, title] of [['empty', 'No renewal cases'], ['loading', 'Loading renewal cases'], ['unavailable', 'Renewal cases are unavailable'],

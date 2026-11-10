@@ -23,6 +23,6 @@ try {
     saveUnavailableReason: 'Saving is unavailable in this preview.',
   };
 } catch {
-  element.adapter = { signOut: false, loadAccount: async () => ({ status: 'unavailable', message: 'The generated brief snapshot could not be loaded.' }) };
+  element.adapter = { signOut: false, loadAccount: async () => ({ status: 'unavailable', message: 'Your saved preferences could not be loaded.' }) };
 }
 defineGcspBrief();

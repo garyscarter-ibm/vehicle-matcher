@@ -52,7 +52,7 @@ test('an accepted selection shows the saved brief read-only with labelled values
   assert.match(text, /Comfort/); assert.match(text, /Do you need a towbar\?/); assert.match(text, /Not confirmed|Needs confirmation|Yes|No/);
   assert.doesNotMatch(text, /\bseats\b|\bboot\b|could not be loaded|\u2014/);
   assert.equal(main.querySelector('a').getAttribute('href'), '/gcsp-order-progress-live.html');
-  assert.match(main.textContent, /This is your saved brief\. It is read only\./); assert.equal(main.querySelector('[role=status]'), null);
+  assert.match(main.textContent, /These are your saved preferences\. They are read only\./); assert.equal(main.querySelector('[role=status]'), null);
 });
 test('teardown cancels late load and missing adapter gives unavailable body', async () => {
   const main = document.createElement('main'); let resolve;
@@ -212,4 +212,17 @@ test('a stale-run confirmation shows the restarted screen after one draft and on
   t.after(() => { teardown(); main.remove(); }); await settle();
   main.querySelector('[data-save-brief]').click(); await settle();
   assertRestarted(main, reloads); await settle(); assert.deepEqual([drafts, confirms], [1, 1]);
+});
+test('FUCQ-326: the editor, its rail item and its states say Your preferences, never brief', async (t) => {
+  const { PORTAL_NAVIGATION } = await import('../../blocks/gcsp/employee/portal-navigation.js');
+  assert.deepEqual(PORTAL_NAVIGATION.find((item) => item.key === 'brief').label, 'Your preferences');
+  const main = document.createElement('main'); document.body.append(main);
+  const teardown = mountBriefBody(main, { editor: fixture.edited.value, transport: { preview: async () => fixture.preview,
+    saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }) } }); t.after(() => { teardown(); main.remove(); });
+  await settle();
+  assert.equal(main.querySelector('h1').textContent, 'Your preferences');
+  const visible = [main.textContent, ...[...main.querySelectorAll('[aria-label]')].map((n) => n.getAttribute('aria-label'))].join(' ');
+  assert.doesNotMatch(visible, /\bbriefs?\b(?![.:-])/i); // dotted policy ids such as brief.editor.v1 are identifiers, not copy
+  const failed = document.createElement('main'); const cleanup = mountBriefBody(failed, {}); await Promise.resolve();
+  assert.equal(failed.querySelector('h1, h2, h3').textContent, 'Your preferences could not be loaded'); assert.doesNotMatch(failed.textContent, /\bbrief\b/i); cleanup();
 });

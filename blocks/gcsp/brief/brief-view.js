@@ -20,14 +20,14 @@ export function mountBriefBody(main, adapters = {}) {
   let alive = true; let controller; let unsubscribe; let generation = 0; let landFocus = false;
   const prefix = `gcsp-brief-${++sequence}`;
   const cleanup = () => { alive = false; abort.abort(); unsubscribe?.(); controller?.destroy(); main.replaceChildren(); };
-  const loading = el('p', 'gcsp-note', 'Loading your brief.'); loading.setAttribute('role', 'status'); main.replaceChildren(loading);
+  const loading = el('p', 'gcsp-note', 'Loading your preferences.'); loading.setAttribute('role', 'status'); main.replaceChildren(loading);
   const externalAbort = () => cleanup();
   adapters.signal?.addEventListener('abort', externalAbort, { once: true });
   const finish = () => { adapters.signal?.removeEventListener('abort', externalAbort); cleanup(); };
   // A reload started from a control that is about to vanish lands on the new h1.
   const land = () => { if (landFocus) { landFocus = false; focusHeading(main.querySelector('h1')); } };
   function unavailable() {
-    main.replaceChildren(statusScreen({ title: 'Your brief could not be loaded', message: 'Your account and brief are unavailable. Try loading them again.',
+    main.replaceChildren(statusScreen({ title: 'Your preferences could not be loaded', message: 'Your account and preferences are unavailable. Try loading them again.',
       actions: [button({ label: 'Try again', onClick: () => load() })] }));
   }
   function restarted() {
@@ -39,8 +39,8 @@ export function mountBriefBody(main, adapters = {}) {
   function acceptedPage(editor) {
     const { context, initial } = editor; const brief = initial.brief;
     const page = el('div', 'vm gcsp-brief');
-    page.append(screenIntro({ title: 'Your buddy found your car', level: 1, lede: 'You accepted a car, so your brief can no longer be changed.' }));
-    const note = el('p', 'gcsp-note', 'This is your saved brief. It is read only.');
+    page.append(screenIntro({ title: 'Your buddy found your car', level: 1, lede: 'You accepted a car, so your preferences can no longer be changed.' }));
+    const note = el('p', 'gcsp-note', 'These are your saved preferences. They are read only.');
     const level = (v) => Number.isFinite(v) ? `${v} out of ${context.slider.maximum}` : 'Not set';
     const prefs = Object.entries(context.preferences).filter(([key]) => brief.preferences[key]).map(([key, d]) => {
       const p = brief.preferences[key];
@@ -69,7 +69,7 @@ export function mountBriefBody(main, adapters = {}) {
         createCommandId: adapters.createCommandId || ((kind) => `${kind}:${globalThis.crypto.randomUUID()}`) });
     } catch { unavailable(); return; }
     const page = el('div', 'vm gcsp-brief');
-    page.append(screenIntro({ title: 'Your car brief', level: 1, lede: 'Choose what you enjoy and what your next car needs to do.' }));
+    page.append(screenIntro({ title: 'Your preferences', level: 1, lede: 'Choose what you enjoy and what your next car needs to do.' }));
     const draftNotice = el('p', 'gcsp-note gcsp-brief-draft'); draftNotice.id = `${prefix}-draft`; page.append(draftNotice);
     const jump = button({ label: 'Go to your preview', href: `#${prefix}-preview`, variant: 'ghost' });
     page.append(jump);
@@ -167,16 +167,16 @@ export function mountBriefBody(main, adapters = {}) {
       { value: [], ariaLabel: 'Buddy permissions', onValueChange: (v) => controller.setConsent({ search: v.includes('search'), hold: v.includes('hold') }) });
     permission.append(consent.list, el('p', 'gcsp-note', 'Holding also needs search permission. With search off, your buddy stays off.')); form.append(permission);
     const savePanel = el('section', 'gcsp-brief-section');
-    savePanel.setAttribute('aria-label', 'Save brief');
-    const saveButton = button({ label: 'Save this brief', onClick: () => controller.save() }); saveButton.dataset.saveBrief = '';
+    savePanel.setAttribute('aria-label', 'Save preferences');
+    const saveButton = button({ label: 'Save your preferences', onClick: () => controller.save() }); saveButton.dataset.saveBrief = '';
     const saveNote = el('p', 'gcsp-note');
     if (adapters.saveUnavailableReason) savePanel.append(el('p', 'gcsp-note', adapters.saveUnavailableReason));
     const refresh = button({ label: 'Refresh and review', variant: 'ghost', onClick: () => { replacement.hidden = false; } }); refresh.hidden = true;
     const replacement = el('div', 'gcsp-brief-refresh'); replacement.hidden = true;
-    replacement.append(el('p', 'gcsp-note', 'Replace your edits and permissions with the saved brief?'), button({ label: 'Replace draft with saved brief', onClick: () => load() }));
+    replacement.append(el('p', 'gcsp-note', 'Replace your edits and permissions with your saved preferences?'), button({ label: 'Replace draft with saved preferences', onClick: () => load() }));
     savePanel.append(saveButton, saveNote, refresh, replacement); form.append(savePanel);
     const preview = el('section', 'gcsp-brief-preview'); preview.id = `${prefix}-preview`; preview.tabIndex = -1;
-    preview.append(el('h2', null, 'Cars for your brief'));
+    preview.append(el('h2', null, 'Cars that suit your preferences'));
     const status = el('p', 'gcsp-brief-preview-status');
     const cards = el('div', 'gcsp-brief-cards');
     const retry = button({ label: 'Retry preview', variant: 'ghost', onClick: () => controller.requestPreview() }); retry.hidden = true;
@@ -194,10 +194,10 @@ export function mountBriefBody(main, adapters = {}) {
       }
       for (const [key, q] of questions) q.update(state.brief.essentials[key]);
       consent.update({ value: ['search', 'hold'].filter((k) => state.consent[k]) });
-      draftNotice.textContent = `${adapters.notice ? `${adapters.notice} · ` : ''}${state.dirty || (adapters.initialEdited && state.save.state !== 'saved') || state.briefVersion === 0 ? 'Unsaved draft' : `Brief version ${state.briefVersion}`}`;
+      draftNotice.textContent = `${adapters.notice ? `${adapters.notice} · ` : ''}${state.dirty || (adapters.initialEdited && state.save.state !== 'saved') || state.briefVersion === 0 ? 'Unsaved draft' : `Version ${state.briefVersion}`}`;
       saveButton.disabled = state.save.state === 'saving' || Boolean(adapters.saveUnavailableReason);
-      saveButton.textContent = state.save.state === 'saving' ? 'Saving your brief...' : 'Save this brief';
-      saveNote.textContent = state.save.state === 'saved' ? `Brief version ${state.briefVersion} saved. ${state.dirty ? 'Newer edits are still unsaved.' : state.consent.search ? 'Your selected buddy permissions apply.' : 'Your buddy is off.'}`
+      saveButton.textContent = state.save.state === 'saving' ? 'Saving your preferences...' : 'Save your preferences';
+      saveNote.textContent = state.save.state === 'saved' ? `Version ${state.briefVersion} saved. ${state.dirty ? 'Newer edits are still unsaved.' : state.consent.search ? 'Your selected buddy permissions apply.' : 'Your buddy is off.'}`
         : state.save.state === 'refresh-required' ? 'A newer saved version needs review. Your edits and permissions are still here.'
           : state.save.state === 'failed' ? 'Save failed. Your edits and permissions are kept. Try again.' : '';
       saveNote.hidden = !saveNote.textContent;

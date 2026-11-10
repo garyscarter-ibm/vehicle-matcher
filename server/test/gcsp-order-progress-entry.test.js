@@ -142,7 +142,7 @@ test('navigation reports the destination and the order progress destination is e
   const to = []; const node = root();
   mount(node, { adapter: adapter({ name: 'appointment-requested' }), onNavigate: (key) => to.push(key) });
   await settle(node, (r) => r.querySelector('.gcsp-order-handover'));
-  const link = [...node.querySelectorAll('a, button')].find((n) => n.textContent.includes('Your car brief')); link.click(); assert.deepEqual(to, ['brief']);
+  const link = [...node.querySelectorAll('a, button')].find((n) => n.textContent.includes('Your preferences')); link.click(); assert.deepEqual(to, ['brief']);
 });
 
 test('the custom element survives an early adapter, remounts on change, reads attributes and tears down', async () => {

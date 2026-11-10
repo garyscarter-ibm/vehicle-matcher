@@ -333,8 +333,8 @@ test('gcsp:navigate carries {from,to}, is cancelable, and switches the view only
   go();
   assert.equal(el.getAttribute('view'), 'brief');
   assert.equal(el.querySelector('[data-key="brief"]').getAttribute('aria-current'), 'page');
-  assert.equal(el.querySelector('nav[aria-label="Breadcrumb"] [aria-current="page"]').textContent, 'Your car brief');
-  assert.equal(el.querySelector('main h1').textContent, 'Your car brief');
+  assert.equal(el.querySelector('nav[aria-label="Breadcrumb"] [aria-current="page"]').textContent, 'Your preferences');
+  assert.equal(el.querySelector('main h1').textContent, 'Your preferences');
   el.remove();
 });
 

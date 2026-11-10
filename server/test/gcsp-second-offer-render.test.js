@@ -51,14 +51,14 @@ test('FUCQ-183: a question with no current value says the answer adds it and kee
     const { root, view } = host(t); const model = question(kind);
     model.question.currentValue = null; model.value = kind === 'slider' ? 50 : kind === 'equipment' ? [] : null;
     view.update(model);
-    assert.match(root.querySelector('fieldset').textContent, /Not in your brief yet\. Your answer adds it\./);
+    assert.match(root.querySelector('fieldset').textContent, /Not in your preferences yet\. Your answer adds it\./);
     assert.equal(root.querySelector('[data-followup-action=confirm]').disabled, true);
     assert.doesNotMatch(root.textContent, /\u2014/);
     if (kind === 'equipment') assert.doesNotMatch(root.textContent, /Leave empty/);
     if (kind === 'options') assert.equal(root.querySelectorAll('[role=radio][aria-checked=true]').length, 0);
   }
   const { root, view } = host(t); view.update(question());
-  assert.doesNotMatch(root.textContent, /Not in your brief yet/);
+  assert.doesNotMatch(root.textContent, /Not in your preferences yet/);
 });
 
 test('invalid, busy and saved states disable confirmation and move completed focus to the heading', (t) => {
@@ -70,7 +70,7 @@ test('invalid, busy and saved states disable confirmation and move completed foc
   view.update({ ...model, value: 'estate', busy: true }); assert.equal(button.disabled, true); assert.equal(root.getAttribute('aria-busy'), null);
   assert.equal(root.firstElementChild.getAttribute('aria-busy'), 'true');
   view.update({ state: 'change-saved', savedChange: saved, busy: false });
-  assert.match(root.textContent, /brief version 2/); assert.equal(document.activeElement.tagName, 'H2');
+  assert.match(root.textContent, /saved as version 2 of your preferences/); assert.equal(document.activeElement.tagName, 'H2');
   assert.equal(root.querySelector('[data-followup-action=confirm]'), null);
 });
 
@@ -89,9 +89,9 @@ test('waiting and no-match are calculated states with a focusable refresh and th
   const cases = [
     [{ state: 'waiting' }, 'Waiting for the next release', /Your change is saved\. Your next offer is checked when more cars are released\./],
     [{ state: 'no-match', evaluation: { evaluatedAt: '2026-11-06T09:00:00.000Z', carsChecked: 3, suitable: 0 } },
-      'Nothing suitable yet', /None of the 3 cars checked fit your updated brief\. We will check again at the next release\./],
+      'Nothing suitable yet', /None of the 3 cars checked fit your updated preferences\. We will check again at the next release\./],
     [{ state: 'no-match', evaluation: { evaluatedAt: '2026-11-06T09:00:00.000Z', carsChecked: 1, suitable: 0 } },
-      'Nothing suitable yet', /The 1 car checked does not fit your updated brief\./],
+      'Nothing suitable yet', /The 1 car checked does not fit your updated preferences\./],
   ];
   for (const [model, title, message] of cases) {
     view.update({ ...model, savedChange: saved, busy: false });
@@ -218,13 +218,13 @@ test('GC-042: an embedding page owns the h1, so the follow-up uses h2 in every s
     standalone.view.update({ busy: false, ...model });
     if (['question', 'ready'].includes(model.state)) assert.equal(standalone.root.querySelectorAll('h1').length, 1, `standalone ${model.state}`);
   }
-  embedded.view.update({ busy: false, ...models[2] }); assert.equal(embedded.root.querySelector('h2').textContent, 'One change to your brief');
+  embedded.view.update({ busy: false, ...models[2] }); assert.equal(embedded.root.querySelector('h2').textContent, 'One change to your preferences');
 });
 
 test('GC-042: focus on the follow-up root moves to its first heading on each draw', (t) => {
   const { root, view } = host(t, { hostRefresh: true, headingLevel: 2 }); root.tabIndex = -1; root.focus();
   view.update({ state: 'loading', busy: true }); assert.equal(document.activeElement.textContent, 'Checking your next offer');
-  view.update(question()); assert.equal(document.activeElement.tagName, 'H2'); assert.equal(document.activeElement.textContent, 'One change to your brief');
+  view.update(question()); assert.equal(document.activeElement.tagName, 'H2'); assert.equal(document.activeElement.textContent, 'One change to your preferences');
 });
 
 test('GC-042: quote sources show Checked on and Quoted at as long dates, with no raw source or observed-at rows', (t) => {
@@ -295,7 +295,7 @@ test('GC-041: a rejected save returns focus to the heading, and a background pol
   const model = { ...question(), value: 'estate', canConfirm: true }; view.update(model);
   root.querySelector('[data-followup-action=confirm]').focus(); view.update({ ...model, busy: true, canConfirm: false });
   dropFocus(); view.update({ ...model, busy: false, error: 'Review your answer and choose a different value.' });
-  assert.equal(document.activeElement.textContent, 'One change to your brief');
+  assert.equal(document.activeElement.textContent, 'One change to your preferences');
   // A poll while the person works elsewhere leaves focus alone.
   const other = document.createElement('input'); document.body.append(other); other.focus(); t.after(() => other.remove());
   view.update({ state: 'loading', busy: true }); view.update({ busy: false, state: 'waiting', savedChange: saved });

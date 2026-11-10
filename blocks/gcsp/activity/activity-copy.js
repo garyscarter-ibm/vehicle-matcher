@@ -11,8 +11,8 @@ export const activityCopy = Object.freeze({
   pausedDetail: 'New searches and holds have stopped.',
   pausedOffer: 'Your offer is still open. View it to accept or decline.',
   keepSearching: 'Keep searching',
-  reviewBrief: 'Review your brief',
-  keepNote: 'Buddy will keep searching with your brief as it is.',
+  reviewBrief: 'Review your preferences',
+  keepNote: 'Buddy will keep searching with your preferences as they are.',
   previewOnly: 'Preview only',
   noRenewalDate: 'Buddy cannot hold a car for you yet. There is no renewal date on your record to set your place in the queue, so you are left out of allocation until one is recorded.',
 });

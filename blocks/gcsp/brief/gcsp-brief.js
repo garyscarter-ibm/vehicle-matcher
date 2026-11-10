@@ -12,7 +12,7 @@ export function mountBrief(root, ctx = {}) {
   const teardown = mountEmployee(root, { brand: ctx.brand, view: 'brief', signOut: ctx.signOut,
     signal: abort.signal, loadAccount: ctx.loadAccount, onNavigate: ctx.onNavigate, onUnavailable: ctx.onUnavailable,
     renderBody(main, { account, view }) {
-      if (account.status !== 'ready') { main.replaceChildren(statusScreen({ title: 'Your brief is unavailable', message: 'Load your account to review its car brief.' })); return undefined; }
+      if (account.status !== 'ready') { main.replaceChildren(statusScreen({ title: 'Your preferences are unavailable', message: 'Load your account to review your preferences.' })); return undefined; }
       if (view !== 'brief' && ctx.renderBody) return ctx.renderBody(main, { account, view });
       return mountBriefBody(main, { ...ctx, transport, loadEditor: ctx.loadEditor || transport.loadEditor, signal: abort.signal });
     },
