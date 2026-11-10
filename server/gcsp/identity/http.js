@@ -1,4 +1,5 @@
 import { PRESENTER_COOKIE } from './index.js';
+import { withVehicleDisplayImages } from '../vehicle-evidence/display-projection.js';
 import { randomUUID } from 'node:crypto';
 const protectedFields = new Set(['principalId', 'employeeId', 'roles', 'role', 'grade', 'gradeId', 'scheme', 'schemeId', 'companyId', 'runId', 'context', 'entitlementSlotId', 'token', 'session', 'sessionId']);
 const hasCookie = (header, name) => typeof header === 'string' && header.split(';').some((part) => part.trim().startsWith(`${name}=`));
@@ -34,9 +35,9 @@ export function createGcspHandler({ identity, routes = [], allowedOrigins = [], 
       'Access-Control-Allow-Origin': originAllowed && origin ? origin : 'null',
       'Access-Control-Allow-Credentials': 'true', Vary: 'Origin',
     };
-    const send = (outcome, code = statusCode(outcome.status)) => {
+    const send = async (outcome, code = statusCode(outcome.status)) => {
       res.setHeader('Cache-Control', 'no-store');
-      return sendJson(res, code, outcome, credentialHeaders);
+      return sendJson(res, code, await withVehicleDisplayImages(outcome), credentialHeaders);
     };
     if (!originAllowed) return send({ status: 'forbidden', reason: 'This origin is not allowed to use GCSP.', contractVersion: '1.0.0' });
     if (req.method === 'OPTIONS') {

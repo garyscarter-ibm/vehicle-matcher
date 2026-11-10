@@ -308,6 +308,10 @@
     {
       "path": "blocks/gcsp/login/gcsp-login.css",
       "max_lines": 20
+    },
+    {
+      "path": "blocks/gcsp/kit/vehicle-media.css",
+      "max_lines": 7
     }
   ],
   "baseline": {

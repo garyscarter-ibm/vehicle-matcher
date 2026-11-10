@@ -57,7 +57,10 @@ async function resolve(fixture, session) {
 }
 
 async function withHttp(fixture, routes, work, options = {}) {
-  const server = buildServer({ gcspIdentity: fixture.identity, gcspRoutes: routes, gcspAllowedOrigins: options.allowedOrigins || ['https://identity.test'] });
+  // Identity routes do not use vehicle evidence. Avoid one unrelated full-corpus loader per HTTP case.
+  const server = buildServer({ gcspIdentity: fixture.identity, gcspRoutes: routes,
+    gcspVehicleEvidence: { lookup: { resolve: async () => ({ status: 'unavailable' }) } },
+    gcspAllowedOrigins: options.allowedOrigins || ['https://identity.test'] });
   server.listen(0, '127.0.0.1');
   await once(server, 'listening');
   const request = async (path, { session = fixture.presenter, body, headers = {}, method = body ? 'POST' : 'GET', noOrigin = false } = {}) => {

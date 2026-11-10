@@ -1,4 +1,5 @@
 import { result } from '../repository/index.js';
+import { withVehicleDisplayImages } from '../vehicle-evidence/display-projection.js';
 
 const code = (status) => ({ ok: 200, pending: 202, invalid: 400,
   'missing-session': 401, 'unknown-session': 401, 'expired-session': 401,
@@ -36,9 +37,9 @@ export function createOfferDecisionHandler({ service, resolveAccess, allowedOrig
     const allowed = origin ? origins.has(origin) : req.method === 'GET';
     const headers = { 'Access-Control-Allow-Origin': allowed && origin ? origin : 'null',
       'Access-Control-Allow-Credentials': 'true', Vary: 'Origin' };
-    const send = (value) => {
+    const send = async (value) => {
       res.setHeader('Cache-Control', 'no-store'); res.setHeader('Referrer-Policy', 'no-referrer');
-      return sendJson(res, code(value.status), value, headers);
+      return sendJson(res, code(value.status), await withVehicleDisplayImages(value), headers);
     };
     if (!allowed) return send(result('forbidden', { reason: 'This origin is not allowed to use GCSP.' }));
     if (req.method === 'OPTIONS') {

@@ -27,7 +27,9 @@ async function setup() {
 }
 async function withHttp(f, work, { service = f.activity, accessKey = '' } = {}) {
   const previousKey = process.env.DEMO_ACCESS_KEY; process.env.DEMO_ACCESS_KEY = accessKey;
-  const server = buildServer({ gcspIdentity: f.identity, gcspActivity: service, gcspBrief: f.brief, gcspAllowedOrigins: [origin] });
+  // This activity boundary has no vehicle lookup; avoid starting the full retained corpus in each fixture.
+  const server = buildServer({ gcspIdentity: f.identity, gcspActivity: service, gcspBrief: f.brief, gcspAllowedOrigins: [origin],
+    gcspVehicleEvidence: { lookup: { resolve: async () => ({ status: 'unavailable' }) } } });
   try {
     server.listen(0, '127.0.0.1'); await once(server, 'listening');
     const request = async (path = '/activity', { method = 'GET', body, session = f.acting, origin: requestedOrigin = origin, key } = {}) => {

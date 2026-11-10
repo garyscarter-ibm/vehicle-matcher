@@ -1,8 +1,8 @@
 @import "../employee/gcsp-employee.css";
-@import "../order-progress/gcsp-order-progress.css";
-/* Account composition uses the approved employee feature and shared kit styles. */
+@import "../order-progress/gcsp-order-progress.css"; /* Account composition uses the employee feature and shared kit; contain images beside tall current-car facts. */
 gcsp-account { display: block; }
 .gcsp .gcsp-account-body { width: 100%; min-width: 0; overflow-wrap: anywhere; }
+.gcsp .gcsp-account-body .gcsp-feature .vm-card-media { background: var(--gcsp-surface-raised); } .gcsp .gcsp-account-body .gcsp-feature .vm-card-photo { object-fit: contain; }
 .gcsp .gcsp-account-terms { margin: 0; color: var(--gcsp-accent-strong); font-size: 20px; font-weight: 600; }
 .gcsp .gcsp-account-histories { display: flex; flex-direction: column; gap: 16px; }
 .gcsp .gcsp-account-history { display: flex; flex-direction: column; align-items: start; gap: 16px; padding: 24px 0; border-bottom: 1px solid var(--gcsp-divider); }

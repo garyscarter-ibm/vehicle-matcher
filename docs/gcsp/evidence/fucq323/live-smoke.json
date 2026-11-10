@@ -1,0 +1,43 @@
+{
+  "first": {
+    "status": 200,
+    "type": "image/webp",
+    "cacheControl": "private, max-age=604800",
+    "bytes": 93236,
+    "sha256": "3b2a02a24d099e145a262b029a3b6be89ebdb2fc8fbf6d6268554df66e97a039",
+    "retained": false,
+    "wallMs": 1536
+  },
+  "second": {
+    "status": 200,
+    "type": "image/webp",
+    "cacheControl": "private, max-age=604799",
+    "bytes": 93236,
+    "sha256": "3b2a02a24d099e145a262b029a3b6be89ebdb2fc8fbf6d6268554df66e97a039",
+    "retained": false,
+    "wallMs": 1
+  },
+  "calls": [
+    {
+      "host": "configure.bmw.co.uk",
+      "kind": "page",
+      "status": 200
+    },
+    {
+      "host": "configure.bmw.co.uk",
+      "kind": "settings",
+      "status": 200
+    },
+    {
+      "host": "prod.cosy.bmw.cloud",
+      "kind": "manifest",
+      "status": 200
+    },
+    {
+      "host": "prod.cosy.bmw.cloud",
+      "kind": "asset",
+      "status": 200
+    }
+  ],
+  "secondAdditionalRequests": 0
+}

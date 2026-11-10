@@ -13,6 +13,8 @@ const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', im
 const seededTerms = seed.assumptions.find((row) => row.key === 'ordering.terms.v1').value;
 const good = (value) => { assert.equal(value?.status, 'ok'); return value.value; };
 const cookies = (value) => [value].flat().map((entry) => entry.split(';')[0]).join('; ');
+// The composition profile supplies order evidence; these HTTP fixtures do not query the retained fleet.
+const vehicleEvidence = { lookup: { resolve: async () => ({ status: 'unavailable' }) } };
 async function request(f, path, { body, method = body === undefined ? 'GET' : 'POST', session = f.cookie } = {}) {
   const req = Readable.from(body === undefined ? [] : [Buffer.from(JSON.stringify(body))]);
   Object.assign(req, { url: path, method, headers: { host: 'order-http.test', origin, ...(session ? { cookie: session } : {}),
@@ -32,7 +34,7 @@ async function setup(t) {
   const presenter = good(await runtime.identity.resolveSession({ authorized: true, cookie: cookies(local.setCookie), purpose: 'presenter-control' }));
   const f = { ...runtime, runtime, profile, employee: local.context, cookie: cookies(local.setCookie), presenter };
   t.after(() => runtime.close());
-  f.server = buildServer({ ...runtime.dependencies, gcspAllowedOrigins: [origin] }); good(await f.server.gcspStartup);
+  f.server = buildServer({ ...runtime.dependencies, gcspAllowedOrigins: [origin], gcspVehicleEvidence: vehicleEvidence }); good(await f.server.gcspStartup);
   return f;
 }
 // Draft, release the TEST car, claim it and begin order review; returns a valid submit body.
@@ -97,7 +99,7 @@ test('submit, repeat with a new commandId and reopen return one order and operat
   const second = good(await createGcspRuntime({ mode: 'memory', repository: f.repository, environmentId: 'order-http-test',
     policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'order-http-bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z' }));
   t.after(() => second.close());
-  const reopened = buildServer({ ...second.dependencies, gcspAllowedOrigins: [origin] }); good(await reopened.gcspStartup);
+  const reopened = buildServer({ ...second.dependencies, gcspAllowedOrigins: [origin], gcspVehicleEvidence: vehicleEvidence }); good(await reopened.gcspStartup);
   const afterReopen = await request({ ...f, server: reopened }, '/api/gcsp/manual/order');
   assert.equal(afterReopen.status, 200); assert.equal(afterReopen.json.value.operationId, value.operationId);
 });
