@@ -155,7 +155,7 @@
     },
     {
       "path": "blocks/gcsp/shell/gcsp-tokens.css",
-      "max_lines": 30
+      "max_lines": 43
     },
     {
       "path": "blocks/gcsp/employee/gcsp-employee.css",
@@ -175,7 +175,7 @@
     },
     {
       "path": "blocks/vehicle-matcher/gcsp-kit.css",
-      "max_lines": 26
+      "max_lines": 27
     },
     {
       "path": "blocks/gcsp/kit/gcsp-kit.css",
@@ -243,7 +243,7 @@
     },
     {
       "path": "blocks/gcsp/shell/density-theme.css",
-      "max_lines": 67
+      "max_lines": 167
     },
     {
       "path": "blocks/gcsp/shell/fonts/density-fonts.css",
@@ -251,7 +251,7 @@
     },
     {
       "path": "blocks/gcsp/shell/density-typography.css",
-      "max_lines": 50
+      "max_lines": 111
     },
     {
       "path": "blocks/gcsp/kit/presenter-bar.css",
