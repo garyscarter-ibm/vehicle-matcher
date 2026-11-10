@@ -3,7 +3,7 @@ import { result } from '../repository/index.js';
 import { createVehicleSnapshot } from '../../vehicles/index.js';
 import { createSyntheticStockProvider } from './synthetic-provider.js';
 import { createSyntheticProductionAdapter } from '../supply/synthetic-production.js';
-import { publishedCorpusImage } from '../vehicle-evidence/registered-corpus-images.js';
+import { modelDisplayImage, imageDisplay } from '../vehicle-evidence/display-images.js';
 import { readCarNamer } from '../policy/car-name.js';
 
 // Demo stock on the existing pull port. Cars use the four reviewed structural configurations
@@ -26,12 +26,11 @@ const MODELS = {
     body: 'saloon', fuel: 'petrol', boot: 480, zeroTo62: 7.4, sizeClass: 2, insuranceGroup: 30, mpg: 45, tags: ['cruiser'] },
   touring: { model: '3 Series Touring', derivative: '320i', configurationId: 'Q01QRzIxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G21 Touring|320i',
     body: 'estate', fuel: 'petrol', boot: 500, zeroTo62: 7.4, sizeClass: 2, insuranceGroup: 30, mpg: 44, tags: ['family'] },
-  // imageId: representative image of the line's approved corpus configuration; the car stays structural, so colour stays unknown.
   // nameKey: the display name's engine wording where the eligibility key abbreviates it.
-  i5: { imageId: 'bmw-i5-white-20261101-v1', model: 'i5 Touring', derivative: 'eDrive40', configurationId: 'Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G61 i5|i5 40', nameKey: 'G61 i5|i5 eDrive40',
+  i5: { model: 'i5 Touring', derivative: 'eDrive40', configurationId: 'Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G61 i5|i5 40', nameKey: 'G61 i5|i5 eDrive40',
     body: 'estate', fuel: 'ev', boot: 490, zeroTo62: 6.1, sizeClass: 3, insuranceGroup: 35, tags: ['electric'] },
   // FUCQ-199: the G1-6-eligible line, so a G1-6 employee (Alex) has a car.
-  hatch: { ...f70, imageId: 'bmw-1f7e-20261107-v2', model: '1 Series Sports Hatch', derivative: '120', configurationId: 'Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=', key: 'F70 Sports Hatch|120',
+  hatch: { ...f70, model: '1 Series Sports Hatch', derivative: '120', configurationId: 'Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=', key: 'F70 Sports Hatch|120',
     insuranceGroup: 22, tags: ['city'] },
 };
 // Generated-stock lines with no demo car (FUCQ-77 mappings): line specs from MODEL_SPECS, insurance group and tags synthetic.
@@ -80,9 +79,8 @@ async function windowsFor(policy, request) {
 
 const fact = (value, unit = null) => ({ status: 'known', value, unit,
   provenance: { sourceRef: `fixture:${VERSION}`, observedAt: OBSERVED_AT, version: VERSION, assurance: 'synthetic-scenario' } });
-// Verified approved images by car kind; a kind without a verified image keeps the honest placeholder.
 async function loadImages() {
-  const found = await Promise.all(Object.entries(MODELS).map(async ([kind, model]) => [kind, model.imageId ? await publishedCorpusImage(model.imageId) : null]));
+  const found = await Promise.all(Object.entries(MODELS).map(async ([kind, model]) => [kind, await modelDisplayImage(model.key)]));
   return Object.fromEntries(found.filter(([, image]) => image));
 }
 // FUCQ-279: the display name follows the one policy rule; the plain model and derivative are only its fallback.
@@ -91,10 +89,7 @@ async function carNames(policy, request) {
   return Object.fromEntries(Object.entries(MODELS).map(([kind, model]) => [kind, name(model.nameKey ?? model.key, `${model.model} ${model.derivative}`)]));
 }
 function displayFor(model, image, name) {
-  if (!image) return { name, model: model.model, derivative: model.derivative };
-  return { name, model: model.model, derivative: model.derivative, photo: image.src,
-    images: [{ src: image.src, alt: `${name}: representative image`, fidelity: image.fidelity,
-      sourceRef: `registered-corpus-image:${image.imageId}, observed ${image.observedDate}` }] };
+  return { ...imageDisplay(name, image), model: model.model, derivative: model.derivative };
 }
 function exactCar(kind, uuid, orderNumber, until, namespace, images, names) {
   const model = MODELS[kind];
@@ -125,6 +120,7 @@ export function createDemoStockProvider({ policy } = {}) {
         try { windowPlan = await windowsFor(policy, request); } catch { windowPlan = null; }
         if (!windowPlan) return unavailable();
         images ??= await loadImages();
+        if (Object.keys(images).length !== Object.keys(MODELS).length) return unavailable();
         plans.set(request.runId, planFor(request.runId, windowPlan, images, await carNames(policy, request)));
       }
       return plans.get(request.runId).pull(request);
@@ -168,6 +164,8 @@ export function withConfirmedSupply(provider, upstream, { policy } = {}) {
       const queued = typeof request?.runId === 'string' && Array.isArray(request.queuedSupply) ? request.queuedSupply : [];
       const held = queued.filter((row) => upstream.lookup(request.runId, row.supplyId));
       if (held.length) images ??= await loadImages();
+      if (held.length && Object.keys(images).length !== Object.keys(MODELS).length) return result('unavailable', {
+        reason: 'Stock source is unavailable.', retryable: true });
       const names = held.length ? await carNames(policy, request) : null;
       const windows = held.map((row) => supplyWindow(request.runId, row, upstream.lookup(request.runId, row.supplyId), images, names));
       if (windows.length) {

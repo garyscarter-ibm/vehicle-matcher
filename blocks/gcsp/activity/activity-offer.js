@@ -1,6 +1,7 @@
 import { el, button } from '../../vehicle-matcher/ui.js';
 import { mediaWell } from '../../vehicle-matcher/modes/result-card.js';
 import { NO_IMAGE_TEXT } from '../kit/plain-copy.js';
+import { isDisplayImage } from '../kit/vehicle-image-assets.js';
 // Reviewed local sources; the corpus entries mirror APPROVED_CORPUS_IMAGES (drift-tested). No other src is accepted.
 const REPRESENTATIVE = 'representative-configuration';
 export const approvedImages = new Map([['/assets/brand-hero/bmw.jpg', 'representative'],
@@ -12,7 +13,8 @@ export function activityOffer({ offer, display, level = 2, emptyText = 'No curre
   const root = el('section', 'gcsp-activity-offer');
   root.append(el(`h${level}`, 'gcsp-activity-section-title', 'Your offer'));
   const layout = el('div', 'gcsp-activity-offer-grid');
-  const images = (offer && Array.isArray(display?.images) ? display.images : []).filter((image) => approvedImages.get(image.src) === (image.kind ?? image.fidelity)
+  const images = (offer && Array.isArray(display?.images) ? display.images : []).filter((image) => (approvedImages.get(image.src) === (image.kind ?? image.fidelity)
+    || isDisplayImage(image.src, image.kind ?? image.fidelity))
     && typeof image.alt === 'string' && image.alt.trim());
   const media = mediaWell({ line: '' }, 'gcsp-activity-offer-media', { placeholder: offer ? NO_IMAGE_TEXT : emptyText });
   const visual = el('div', 'gcsp-activity-offer-visual'); visual.append(media.media);

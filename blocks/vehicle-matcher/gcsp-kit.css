@@ -1,4 +1,4 @@
-@import "../gcsp/shell/gcsp-tokens.css";
+@import "../gcsp/shell/gcsp-tokens.css"; @import "../gcsp/kit/vehicle-media.css";
 /* kit primitives under the GCSP theme */
 .gcsp .vm-title { font-weight: 600; text-transform: none; letter-spacing: -0.01em; }
 .gcsp .vm-lede { font-weight: 400; line-height: 1.5; }

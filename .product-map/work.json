@@ -3892,6 +3892,35 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-323",
+      "title": "Complete correct vehicle image coverage across the GCSP demo",
+      "status": "In Progress",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-323",
+      "observed_at": "2026-11-10T12:02:48Z",
+      "branch": "dev/DEV-2026-11-10-002",
+      "slices": [
+        {
+          "id": "source",
+          "status": "complete",
+          "title": "Validated-configuration-images",
+          "observed_at": "2026-11-10T12:02:48Z",
+          "evidence": "246 successful live renders; SHA-pinned catalogue247 associations/240 retained derivatives; 2424 GB image coverage; live G21 server delivery1536ms then1ms cached, safe receipt docs/gcsp/evidence/fucq323/live-smoke.json"
+        },
+        {
+          "id": "projection",
+          "status": "not-started",
+          "title": "Complete-display-projection"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Rendered-integration-and-review"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }

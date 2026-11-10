@@ -4,6 +4,7 @@ import { inputDigest, ok, result } from '../repository/core.js';
 import { createVehicleSnapshot } from '../../vehicles/index.js';
 import { allocateInventoryFile, readAllocationInventory } from './vin-allocation.js';
 import { readCarNamer } from '../policy/car-name.js';
+import { imageDisplay } from './display-images.js';
 
 export const STOCK_GENERATOR_VERSION = 'stock-generator.v1';
 export const STOCK_GENERATOR_NAMESPACE = `synthetic:${STOCK_GENERATOR_VERSION}`;
@@ -176,7 +177,10 @@ export function createStockGenerator({ repository, registry, policyService, cont
             || response.active?.datasetId !== plan.datasetId || response.active?.version !== plan.corpusVersion
             || !text(response.active.manifestDigest) || activeDigest && activeDigest !== response.active.manifestDigest) return invalid('configuration-source-mismatch');
           activeDigest = response.active.manifestDigest;
-          configurations.set(binding.configurationId, { ...binding, record: response.record });
+          const images = (Array.isArray(response.images) ? response.images : []).filter((image) => image.configurationId === binding.configurationId
+            && /^assets\/gcsp-vehicle-evidence\/[a-f0-9]{64}\.webp$/.test(image.asset)
+            && ['representative-model', 'representative-configuration'].includes(image.fidelity) && image.role === image.fidelity);
+          configurations.set(binding.configurationId, { ...binding, record: response.record, images });
         }
         const modelCounts = apportion(total, aggregates.map((row) => [row.modelLineId, row.observed.carCount]), [...entropy, 'models']);
         const vehicles = []; const models = [];
@@ -256,7 +260,7 @@ export function createStockGenerator({ repository, registry, policyService, cont
             const title = plan.titles?.[modelLineId] ?? modelLineId; const displayName = plan.displayNames?.[modelLineId] ?? title;
             const name = carName(extras.get(identity.configurationId)?.eligibilityModelKey?.value ?? title, displayName);
             const facts = createVehicleSnapshot({ sourceNamespace: STOCK_GENERATOR_NAMESPACE, identityKind: 'exact-stock',
-              sourceKeys: { stockId: identity.orderUuid }, snapshotVersion, observedAt, display: { name: `${name} in ${colour}` },
+              sourceKeys: { stockId: identity.orderUuid }, snapshotVersion, observedAt, display: imageDisplay(`${name} in ${colour}`, car.binding.images[0]),
               facts: { ...extras.get(identity.configurationId), stockIdentityKind: own('synthetic'), modelLine: known(title, aggregateRef), colour: known(colour, aggregateRef),
                 leadTimeWeeks: known(car.leadTimeWeeks, aggregateRef, 'weeks'),
                 confirmedDeliveryWeek: known(confirmedWeek(horizonEnd, car.leadTimeWeeks, timeZone), aggregateRef),

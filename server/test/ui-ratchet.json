@@ -300,6 +300,10 @@
     {
       "path": "blocks/gcsp/shell/shell-inset.css",
       "max_lines": 10
+    },
+    {
+      "path": "blocks/gcsp/kit/vehicle-media.css",
+      "max_lines": 7
     }
   ],
   "baseline": {

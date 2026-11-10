@@ -89,12 +89,24 @@ test('default run: generated stock, Next release at the first cadence window, re
   assert.equal(gallery.releaseHistory.history.releasedCarCount, released.length);
   assert.ok(gallery.decisions.length > 0 && gallery.decisions.length <= released.length);
   assert.ok(gallery.decisions.every((entry) => released.some((row) => row.orderUuid === entry.orderUuid)), 'only generated released cars');
+  assert.ok(gallery.decisions.every((entry) => entry.snapshot.display.photo
+    && entry.snapshot.display.images[0].src === entry.snapshot.display.photo), 'released gallery retains every picture');
   // The same command replays; a later Next release moves to the next window.
   const again = await f.clock.advanceAndTick(f.context, { commandId: 'run-stock-release-1', expectedClockVersion: before.clockVersion, mode: 'next-release' });
   assert.equal(again.status, 'ok', JSON.stringify(again));
   assert.deepEqual(again, first);
   assert.equal((await f.stock()).filter((row) => row.state === 'released').length, released.length);
   assert.equal(good(await f.controls.readState(f.context)).controls.nextRelease.at, windows[1]);
+});
+
+test('every generated car retains its configuration picture in its stock snapshot', async (t) => {
+  const f = await compose(t, { environmentId: 'run-stock-pictures' });
+  const rows = generatedRows(await f.stock()); assert.ok(rows.length > 0);
+  for (const row of rows) {
+    assert.match(row.facts.display.photo ?? '', /^\/assets\/gcsp-vehicle-evidence\/[0-9a-f]{64}\.webp$/);
+    assert.equal(row.facts.display.images[0].src, row.facts.display.photo);
+    assert.ok(['representative-configuration', 'representative-model'].includes(row.facts.display.images[0].fidelity));
+  }
 });
 
 test('eligibility keys come from policy: evidenced AG codes map, others stay unmapped, one entry changes it', async (t) => {
