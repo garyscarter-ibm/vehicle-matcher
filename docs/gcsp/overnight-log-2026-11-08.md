@@ -412,3 +412,12 @@ For Russell or Gary:
 - ~13:15 FUCQ-326 (GC-007) merged 76073e98, closed 34e835ab, In Review. Employee copy says "Your preferences" for the brief (heading, rail, crumb, titles, follow-up and help). Targeted: 440 run, 439 pass, 1 skip. For Gary: follow-up wording ("saved as version 2 of your preferences"). Seen in passing: the preview harness header reads "Paula (fictional)" (fixture name, not the live site).
 - ~13:45 FUCQ-332 (GC-022) merged 3babbb12, closed d6c676e2, In Review. Check current state on the offer now shows "Checking...", then "Check complete. Nothing has changed." / "Current state: <state>." / "Check not completed. Try again in a moment." Cause: an unchanged read redrew nothing and announced nothing. Targeted: 361 run, 357 pass, 4 skip; dispatcher re-ran the new test, follow-up and ratchet, 119/119. For Gary: the "Current state: accepted." wording.
 - ~13:50 Poller conversation at 300k: hand-over written, next is FUCQ-342 (GC-023, fixtures sign-out).
+
+## 10 Nov, evening (Wanjiru, dev poller): presenter revamp, all seven slices tonight
+
+- Gary, 21:30: build all of FUCQ-360 to 366 tonight, as parallel as possible.
+- Wrote acceptance criteria into FUCQ-363 to 366 from the approved spec and its user-agnostic revision; points 8, 5, 5, 3. Imported as GC-040 to GC-043.
+- Decision (FUCQ-364): the route is user agnostic: cars, model lines, colours and on-scheme counts; no per-employee funnel or offer. FUCQ-365 codes against that shape with a fake adapter so both build in parallel.
+- Decision (FUCQ-366): existing reads only (presenter outbox and controls readback); no new route.
+- FUCQ-360 merged f5fa4a14 (console, Basic and Advanced, kit tabs). FUCQ-361 merged 261b0161 (portal shell has no presenter item; workspace.js removed).
+- In flight: FUCQ-362 phase 2 (Mushu), 363 (Sally Carrera), 364 (Miss Prissy), 365 (Cecil Turtle), 366 (Wile E. Coyote).
