@@ -94,10 +94,9 @@ producers exist.
 ## UI consumer · FUCQ-126
 
 `blocks/gcsp/presenter-controls/controls.js` mounts the shared collapsible presenter strip;
-`register.js` registers `<gcsp-presenter-controls>`. The shell mounts it by default and reveals
-it only after a successful server CONTROL read, independently of the acting role. Embedders
-and isolated fixtures use `presenterControls: false`, or inject `{ adapter, commandId, navigate }`.
-The employee mount forwards `ctx.presenterControls` to the shell. The reusable `presenterBar`
+`register.js` registers `<gcsp-presenter-controls>`. The portal shell no longer mounts the strip (FUCQ-361);
+portal pages subscribe to console actions through `blocks/gcsp/kit/presenter-actions.js`.
+The reusable `presenterBar`
 kit helper owns the native disclosure, panel and supplied run/clock/principal facts; the controller
 owns authorization and commands. Scenario and Acting principal both use controlled `renderOptionList`
 with explicit radiogroup labels, `value`, `onValueChange` and in-place `update({ value, disabled })`.

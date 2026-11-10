@@ -12,7 +12,7 @@ gcsp-manual-summary { display: block; }
   .gcsp .gcsp-summary-edit > .vm-btn, .gcsp .gcsp-summary-body .gcsp-review-actions > .vm-btn { width: 100%; white-space: normal; }
 }
 @media print {
-  .gcsp .gcsp-header, .gcsp .gcsp-nav, .gcsp .gcsp-presenter-region, .gcsp .gcsp-crumbs-host, .gcsp .gcsp-skip, .gcsp .gcsp-print-hidden { display: none !important; }
+  .gcsp .gcsp-header, .gcsp .gcsp-nav, .gcsp .gcsp-crumbs-host, .gcsp .gcsp-skip, .gcsp .gcsp-print-hidden { display: none !important; }
   .gcsp .gcsp-body, .gcsp .gcsp-content, .gcsp .gcsp-review-layout { display: block; }
   .gcsp .gcsp-summary-section, .gcsp .gcsp-review-column > * { break-inside: avoid; margin-bottom: var(--gcsp-space-4); }
 }

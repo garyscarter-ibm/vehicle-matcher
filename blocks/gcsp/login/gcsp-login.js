@@ -6,7 +6,7 @@ import { announceSessionChange } from '../shell/session-lifecycle.js';
 
 export function mountLogin(root, { fetchImpl, adapter = createSessionHttpAdapter({ fetchImpl }),
   navigate } = {}) {
-  const shell = portalShell({ account: { status: 'signed-out' }, presenterControls: false });
+  const shell = portalShell({ account: { status: 'signed-out' } });
   shell.root.classList.add('gcsp-login-shell');
   const view = loginView({ onSubmit: (credentials) => controller.submit(credentials) });
   const controller = createLoginController({ adapter, navigate, onChange: (state) => {

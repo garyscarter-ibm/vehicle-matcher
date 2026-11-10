@@ -434,16 +434,6 @@ test('slice 8: beat actions lead in run-sheet order, the readback is one short b
   const folds = [...f.host.querySelectorAll('details.gcsp-presenter-fold')].filter((n) => !n.hidden);
   assert.deepEqual(folds.map((n) => n.open), [false]); assert.match(folds[0].firstChild.textContent, /^Last tick/); f.control.destroy();
 });
-test('slice 8: a landing page opens the flyout once, and a presenter who closed it keeps it closed', async () => {
-  const { portalShell } = await import('../../blocks/gcsp/shell/portal-shell.js');
-  const adapter = { readControls: async () => ok(state()), readContext: async () => ok({ principalId: 'presenter', roles: ['presenter'] }), readScenarios: async () => ok(catalogue) };
-  window.sessionStorage.clear();
-  const shell = portalShell({ presenterControls: { adapter, openOnLoad: true } }); document.body.append(shell.root); await settle();
-  assert.equal(shell.root.querySelector('.gcsp-presenter-flyout').hidden, false); shell.destroy();
-  window.sessionStorage.setItem('gcsp:presenter-flyout-open', 'false');
-  const closed = portalShell({ presenterControls: { adapter, openOnLoad: true } }); document.body.append(closed.root); await settle();
-  assert.equal(closed.root.querySelector('.gcsp-presenter-flyout').hidden, true); closed.destroy(); window.sessionStorage.clear();
-});
 test('custom element registers once, mounts injected adapter, and aborts on disconnect', async () => {
   const { defineGcspPresenterControls } = await import('../../blocks/gcsp/presenter-controls/controls.js');
   assert.equal(defineGcspPresenterControls(), defineGcspPresenterControls()); let signal;

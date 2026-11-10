@@ -7,7 +7,7 @@ import { orderCopy } from '../../blocks/gcsp/order-progress/order-progress-copy.
 import { accountFixture } from '../../blocks/gcsp/account/fixtures.js';
 import { fixtureMessages } from '../../blocks/gcsp/presenter/fixtures.js';
 
-let dom; let activity; let orders; let controls; let journey; let outbox; const cleanups = [];
+let dom; let actions; let activity; let orders; let controls; let journey; let outbox; const cleanups = [];
 const account = { status: 'ready', name: 'Paula (synthetic)', context: 'Synthetic presenter refresh' };
 const root = () => { const node = document.createElement('div'); document.body.append(node); return node; };
 const act = (host) => host.dispatchEvent(new dom.window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } }));
@@ -25,6 +25,7 @@ before(async () => {
   activity = await import('../../blocks/gcsp/activity/gcsp-activity.js');
   orders = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
   controls = await import('../../blocks/gcsp/presenter-controls/controls.js');
+  actions = await import('../../blocks/gcsp/kit/presenter-actions.js');
   journey = await import('../../blocks/gcsp/manual-setup/journey.js');
   outbox = await import('../../blocks/gcsp/presenter/gcsp-outbox.js');
 });
@@ -35,7 +36,7 @@ test('activity: one presenter action re-reads once, quietly, keeps focus and ann
   const snap = (name) => structuredClone(activityFixtures.snapshots[name]);
   let current = snap('never-checked'); let reads = 0; const node = root();
   const stop = activity.mountActivity(node, { adapter: { loadAccount: async () => account, readActivity: async () => { reads += 1; return structuredClone(current); },
-    subscribeClock: controls.subscribePresenterActions(node) } });
+    subscribeClock: actions.subscribePresenterActions(node) } });
   cleanups.push(stop);
   await settle(node, (r) => r.querySelector('.gcsp-activity-status')?.textContent === 'Active');
   const trigger = node.querySelector('.gcsp-action-trigger'); trigger.focus(); assert.equal(reads, 1);
@@ -55,7 +56,7 @@ test('order progress: one presenter action re-reads once, keeps the focused butt
   const states = orderProgressFixtures().states; let name = 'appointment-requested'; let reads = 0;
   const read = (field) => async () => { if (field === 'stages') reads += 1; return structuredClone(states[name][field]); };
   const node = root();
-  const adapter = { loadAccount: async () => account, subscribeClock: controls.subscribePresenterActions(node),
+  const adapter = { loadAccount: async () => account, subscribeClock: actions.subscribePresenterActions(node),
     listOrders: async () => ({ status: 'ok', value: { orders: [{ orderUuid: states[name].stages.value.orderUuid, source: { receivedAt: '2026-11-05T09:00:00.000Z' } }] } }),
     readStages: read('stages'), readDocuments: read('documents'), readAppointment: read('appointment'), readReturnPlan: read('returnPlan'),
     completeTask: async () => ({ status: 'ok', value: {} }) };
@@ -74,6 +75,17 @@ test('order progress: one presenter action re-reads once, keeps the focused butt
   watch.stop(); await stop.sync(); assert.equal(reads, 4); stop(); act(node); await pause(); assert.equal(reads, 4);
 });
 
+test('activity: a cross-tab storage event for the action key re-reads once, another key does not', async () => {
+  let reads = 0; const node = root();
+  const stop = activity.mountActivity(node, { adapter: { loadAccount: async () => account, readActivity: async () => { reads += 1; return structuredClone(activityFixtures.snapshots['never-checked']); },
+    subscribeClock: actions.subscribePresenterActions(node) } });
+  cleanups.push(stop);
+  await settle(node, (r) => r.querySelector('.gcsp-activity-status')?.textContent === 'Active'); assert.equal(reads, 1);
+  const storage = (key) => dom.window.dispatchEvent(new dom.window.StorageEvent('storage', { key }));
+  storage('something-else'); await pause(); assert.equal(reads, 1);
+  storage(actions.PRESENTER_ACTION_KEY); await settle(node, () => reads === 2); await pause(); assert.equal(reads, 2);
+});
+
 test('account: one presenter action re-reads once, keeps the shell and focus, shows the new car row and announces only a change', async () => {
   const states = orderProgressFixtures().states['appointment-requested']; let uuid = states.stages.value.orderUuid;
   const n = { account: 0, draft: 0, list: 0, stages: 0 }; let asOf = '2026-11-05T09:00:00.000Z'; let accountOk = true;
@@ -84,7 +96,7 @@ test('account: one presenter action re-reads once, keeps the shell and focus, sh
   const adapter = { readAccount: async () => { n.account += 1; if (!accountOk) return { status: 'unavailable' }; const out = structuredClone(accountFixture('ready')); out.value.asOf = asOf; return out; },
     readDraft: async () => { n.draft += 1; return { status: 'not-found' }; }, startJourney: async () => ({ status: 'unavailable' }) };
   const node = root();
-  const stop = journey.mountManualJourney(node, { adapter, orderAdapter, subscribeClock: controls.subscribePresenterActions(node) }); cleanups.push(stop);
+  const stop = journey.mountManualJourney(node, { adapter, orderAdapter, subscribeClock: actions.subscribePresenterActions(node) }); cleanups.push(stop);
   const refreshButton = () => [...node.querySelectorAll('button')].find((b) => b.textContent === 'Choose a replacement');
   await settle(node, () => refreshButton() && node.querySelector('.gcsp-account-order-status')); await pause();
   assert.deepEqual(n, { account: 1, draft: 1, list: 1, stages: 0 });
@@ -109,7 +121,7 @@ test('account: one presenter action re-reads once, keeps the shell and focus, sh
 test('outbox: one presenter action re-reads once, no loading note, keeps selection and focus, repaints only on change', async () => {
   let messages = fixtureMessages(); let loads = 0; let fail = false; const node = root();
   const stop = outbox.mountOutbox(node, { loadMessages: async () => { loads += 1; return fail ? { status: 'unavailable' } : { status: 'ready', messages: structuredClone(messages) }; },
-    subscribeClock: controls.subscribePresenterActions(node) }); cleanups.push(stop);
+    subscribeClock: actions.subscribePresenterActions(node) }); cleanups.push(stop);
   const rows = () => [...node.querySelectorAll('.gcsp-mail-row')]; const status = node.querySelector('.gcsp-presenter-count');
   await settle(node, () => rows().length === 4); assert.equal(loads, 1);
   rows()[1].click(); const pickedId = rows()[1].dataset.id; rows()[1].focus();
@@ -127,7 +139,7 @@ test('outbox: one presenter action re-reads once, no loading note, keeps selecti
 });
 
 test('a subscription hears same-page events and the cross-tab storage key, ignores other keys and unsubscribes both', () => {
-  const host = root(); const heard = []; const off = controls.subscribePresenterActions(host)(() => heard.push('x'));
+  const host = root(); const heard = []; const off = actions.subscribePresenterActions(host)(() => heard.push('x'));
   const storage = (key) => dom.window.dispatchEvent(new dom.window.StorageEvent('storage', { key }));
   act(host); assert.equal(heard.length, 1);
   storage('gcsp:presenter-action'); assert.equal(heard.length, 2);
@@ -151,6 +163,7 @@ test('a successful strip action writes the cross-tab key and survives blocked st
   fail = false; tick().click(); await pause();
   const written = JSON.parse(dom.window.localStorage.getItem('gcsp:presenter-action'));
   assert.equal(written.kind, 'tick'); assert.ok(Number.isFinite(written.at));
+  assert.equal(actions.PRESENTER_ACTION_KEY, 'gcsp:presenter-action'); assert.notEqual(dom.window.localStorage.getItem(actions.PRESENTER_ACTION_KEY), null);
   const proto = Object.getPrototypeOf(dom.window.localStorage); const original = proto.setItem;
   proto.setItem = () => { throw new Error('blocked'); };
   try { const seen = []; host.addEventListener('gcsp:presenter-action', () => seen.push(1)); tick().click(); await pause(); assert.equal(seen.length, 1); }

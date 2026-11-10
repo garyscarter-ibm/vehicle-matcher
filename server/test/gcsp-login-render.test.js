@@ -28,7 +28,7 @@ function submit(view, email = 'paula.robinson@gcsp-demo.com', password = 'fucq')
 }
 
 test('signed-out shell has no loading identity or account actions', () => {
-  const shell = portalShell({ account: { status: 'signed-out' }, presenterControls: false });
+  const shell = portalShell({ account: { status: 'signed-out' } });
   document.body.append(shell.root);
   const account = shell.root.querySelector('.gcsp-account');
   assert.equal(account.dataset.status, 'signed-out');
@@ -123,7 +123,7 @@ test('account menu preserves long email and waits for sign-out before clearing a
   const name = 'Bartholomew Featherstonehaugh-Cholmondeley-Wolverstone III';
   const email = 'bartholomew.featherstonehaugh-cholmondeley-wolverstone@gcsp-demo.com';
   const destinations = [];
-  const shell = portalShell({ presenterControls: false, account: { status: 'ready', name, email },
+  const shell = portalShell({ account: { status: 'ready', name, email },
     sessionAdapter: { signOut: () => { sent.push('logout'); return new Promise((resolve) => { finish = resolve; }); } },
     navigate: (to) => { destinations.push(to); assert.equal(shell.root.textContent.includes(name), false); assert.equal(shell.main.textContent, ''); } });
   document.body.append(shell.root); shell.main.textContent = `Private details for ${name}`;
@@ -138,7 +138,7 @@ test('account menu preserves long email and waits for sign-out before clearing a
 });
 
 test('sign-out failure preserves the current account and exposes retry feedback', async () => {
-  const shell = portalShell({ presenterControls: false, account: { status: 'ready', name: 'Paula Robinson', email: 'paula.robinson@gcsp-demo.com' },
+  const shell = portalShell({ account: { status: 'ready', name: 'Paula Robinson', email: 'paula.robinson@gcsp-demo.com' },
     sessionAdapter: { signOut: async () => ({ status: 'unavailable' }) }, navigate: () => assert.fail('must stay on page') });
   document.body.append(shell.root);
   shell.root.querySelector('.gcsp-account-signout').click(); await tick();
@@ -157,7 +157,7 @@ test('session adapter uses same-origin logout POST and does not put credentials 
 });
 
 test('explicit fixture sign-out opt-out keeps preview accounts from changing a live session', () => {
-  const shell = portalShell({ presenterControls: false, signOut: false, account: { status: 'ready', name: 'Fixture account' } });
+  const shell = portalShell({ signOut: false, account: { status: 'ready', name: 'Fixture account' } });
   assert.equal(shell.root.querySelector('.gcsp-account-signout'), null); shell.destroy();
 });
 
@@ -171,7 +171,7 @@ test('successful login announces a credential-free session change for other live
 
 test('a session change in another tab clears the live page before reloading and blocks late identity repaint', () => {
   let reloads = 0;
-  const shell = portalShell({ presenterControls: false, account: { status: 'ready', name: 'Paula Robinson' },
+  const shell = portalShell({ account: { status: 'ready', name: 'Paula Robinson' },
     reload: () => { reloads += 1; assert.equal(shell.main.textContent, ''); assert.equal(shell.root.textContent.includes('Paula Robinson'), false); } });
   document.body.append(shell.root); shell.main.textContent = 'Private account content';
   window.dispatchEvent(new window.StorageEvent('storage', { key: 'unrelated-key', newValue: 'change' }));
@@ -187,7 +187,7 @@ test('a session change in another tab clears the live page before reloading and 
 
 test('history restoration reloads live content that was cleared on pagehide', () => {
   let reloads = 0;
-  const shell = portalShell({ presenterControls: false, account: { status: 'ready', name: 'Paula Robinson' }, reload: () => { reloads += 1; } });
+  const shell = portalShell({ account: { status: 'ready', name: 'Paula Robinson' }, reload: () => { reloads += 1; } });
   document.body.append(shell.root); shell.main.textContent = 'Private account content';
   window.dispatchEvent(new window.PageTransitionEvent('pagehide', { persisted: true }));
   assert.equal(shell.main.textContent, ''); assert.equal(shell.root.querySelector('.gcsp-account').dataset.status, 'signed-out');
@@ -198,7 +198,7 @@ test('history restoration reloads live content that was cleared on pagehide', ()
 
 test('fixture accounts and the signed-out login ignore cross-tab changes and history restoration', () => {
   for (const options of [{ signOut: false, account: { status: 'ready', name: 'Preview account' } }, { account: { status: 'signed-out' } }]) {
-    const shell = portalShell({ ...options, presenterControls: false, reload: () => assert.fail('not a live account') });
+    const shell = portalShell({ ...options, reload: () => assert.fail('not a live account') });
     shell.main.textContent = 'Retained preview or login';
     window.dispatchEvent(new window.StorageEvent('storage', { key: 'gcsp-session-change', newValue: 'change' }));
     window.dispatchEvent(new window.PageTransitionEvent('pagehide', { persisted: true }));

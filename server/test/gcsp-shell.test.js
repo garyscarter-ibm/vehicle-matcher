@@ -43,7 +43,7 @@ const items = [
 ];
 
 test('shell exposes banner, Portal nav, main and a skip link to main', () => {
-  const shell = shellMod.portalShell({ navigation: items, active: 'a', breadcrumbs: ['Home', 'Alpha'], presenterControls: false });
+  const shell = shellMod.portalShell({ navigation: items, active: 'a', breadcrumbs: ['Home', 'Alpha'] });
   document.body.append(shell.root);
   assert.ok(shell.root.querySelector('header.gcsp-header'));
   assert.equal(shell.root.querySelector('nav[aria-label="Portal"]')?.tagName, 'NAV');
@@ -768,7 +768,7 @@ test('harness page loads the harness module and the body stylesheet; the element
 test('the activity live host routes the rail through the shared helper without URL-selected state', () => {
   const host = read('blocks/gcsp/activity/live.js');
   assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
-    '../shell/account-runtime.js', './activity-http.js', '../cases/http-adapter.js', '../presenter-controls/controls.js',
+    '../shell/account-runtime.js', './activity-http.js', '../cases/http-adapter.js', '../kit/presenter-actions.js',
     '../employee/portal-navigation.js', './gcsp-activity.js',
   ]);
   assert.match(host, /routePortalEvents\(host\)/);
@@ -786,7 +786,7 @@ test('the order progress pages load the custom element through external modules 
   const host = read('blocks/gcsp/order-progress/live.js');
   assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
     '../shell/session-lifecycle.js', '../shell/account-runtime.js', './order-progress-http.js', '../cases/http-adapter.js', '../account/http-adapter.js', './order-car.js',
-    '../presenter-controls/controls.js', '../employee/portal-navigation.js', './gcsp-order-progress.js',
+    '../kit/presenter-actions.js', '../employee/portal-navigation.js', './gcsp-order-progress.js',
   ]);
   assert.match(host, /routePortalEvents\(host\)/);
   assert.match(host, /reload: \(\) => win\.location\.reload\(\)/);
@@ -823,99 +823,64 @@ test('the single gallery shows the GCSP section with primitives and shell states
 });
 
 
-test('shell presenter region mounts an injected CONTROL adapter and tears it down', async () => {
-  let signal;
-  const adapter = { readControls: async (options) => { signal = options.signal; return { status: 'forbidden' }; } };
-  const shell = shellMod.portalShell({ presenterControls: { adapter } }); document.body.append(shell.root); await tick();
-  assert.ok(shell.presenterRegion); assert.equal(shell.presenterRegion.querySelector('details').hidden, true);
-  shell.destroy(); assert.equal(signal.aborted, true);
-  const offline = shellMod.portalShell({ presenterControls: false }); assert.equal(offline.presenterRegion.children.length, 0); offline.destroy();
-});
-
-// Presenter controls flyout, opened from the left nav.
-const okRead = (value) => ({ status: 'ok', value });
-const flyoutAdapter = (overrides = {}) => ({
-  readControls: async () => okRead({ runId: 'run-a', runVersion: 1, now: '2026-11-05T09:00:00.000Z', clockVersion: '1', currentScenario: { scenarioId: 'm', name: 'M' },
-    lastTick: null, principals: [{ principalId: 'p1', name: 'P one', roles: ['employee'] }], controls: { step: { value: 37, unit: 'seconds' }, namedTimes: {}, nextRelease: { status: 'unavailable' } } }),
-  readContext: async () => okRead({ principalId: 'p1', name: 'P one', roles: ['employee'] }),
-  readScenarios: async () => okRead({ policyVersion: 'p', scenarios: [{ scenarioId: 'm', name: 'M', scenarioVersion: 'v', fixtureVersion: 'f', availability: { available: true } }] }),
-  ...overrides,
-});
-const flyoutShell = async (adapter, extra = {}) => {
-  const shell = shellMod.portalShell({ navigation: [{ key: 'a', label: 'A', icon: [] }], presenterControls: { adapter, ...extra } });
+test('the portal shell builds no presenter controls, even with a presenter cookie and an adapter', async () => {
+  let reads = 0;
+  const adapter = { readControls: async () => { reads += 1; return { status: 'forbidden' }; } };
+  document.cookie = 'gcsp_presenter=1; path=/';
+  const shell = shellMod.portalShell({ navigation: [{ key: 'a', label: 'A', icon: [] }], presenterControls: { adapter } });
   document.body.append(shell.root); await tick(20);
-  return { shell, item: shell.root.querySelector('.gcsp-nav-presenter-btn'), flyout: shell.root.querySelector('.gcsp-presenter-flyout') };
-};
-
-test('the Presenter controls nav item stays hidden until authorised and hides again when authorisation is lost', async () => {
-  window.sessionStorage.clear();
-  let allowed = false;
-  const adapter = flyoutAdapter({ readControls: async () => (allowed ? flyoutAdapter().readControls() : { status: 'forbidden' }) });
-  const { shell, item, flyout } = await flyoutShell(adapter);
-  assert.ok(item); assert.equal(item.closest('ul').hidden, true); assert.equal(flyout.hidden, true);
-  allowed = true; await shell.presenterRegion.querySelector('details').isConnected; // region is mounted in the flyout
-  const { mountPresenterControls } = await import('../../blocks/gcsp/presenter-controls/controls.js');
-  const seen = []; const host = document.createElement('div'); document.body.append(host);
-  const m = mountPresenterControls(host, { adapter, onAvailability: (v) => seen.push(v) }); await tick(20);
-  assert.deepEqual(seen, [true]); allowed = false; await m.refresh(); await tick(20);
-  assert.deepEqual(seen, [true, false]); m.destroy(); shell.destroy();
+  for (const selector of ['.gcsp-nav-presenter-btn', '.gcsp-nav-presenter', '.gcsp-presenter-flyout', '.gcsp-presenter-region', '.gcsp-presenter-controls']) {
+    assert.equal(shell.root.querySelector(selector), null, selector);
+  }
+  assert.equal('presenterRegion' in shell, false); assert.equal(reads, 0); shell.destroy();
+  document.cookie = 'gcsp_presenter=; path=/; max-age=0';
 });
 
-test('the nav item toggles the flyout with aria-expanded, a labelled non-modal dialog', async () => {
-  window.sessionStorage.clear();
-  const { shell, item, flyout } = await flyoutShell(flyoutAdapter());
-  assert.equal(item.closest('ul').hidden, false); assert.equal(item.getAttribute('aria-expanded'), 'false');
-  assert.equal(item.getAttribute('aria-controls'), flyout.id); assert.equal(item.querySelector('svg').getAttribute('aria-hidden'), 'true');
-  assert.ok(item.closest('li').querySelector('.gcsp-nav-tip'), 'same hover tooltip as other items');
-  assert.equal(item.closest('nav').lastElementChild.classList.contains('gcsp-nav-toggle'), true);
-  assert.equal(item.closest('nav').lastElementChild.previousElementSibling, item.closest('ul'), 'sits just above the collapse toggle');
-  assert.equal(flyout.hidden, true);
-  item.click();
-  assert.equal(flyout.hidden, false); assert.equal(item.getAttribute('aria-expanded'), 'true');
-  assert.equal(flyout.getAttribute('role'), 'dialog'); assert.equal(flyout.getAttribute('aria-modal'), 'false');
-  assert.equal(flyout.querySelector(`#${flyout.getAttribute('aria-labelledby')}`).textContent, 'Presenter controls');
-  assert.equal(flyout.contains(document.activeElement) && document.activeElement !== flyout.querySelector('.gcsp-presenter-flyout-close'), true, 'focus moves to the first control');
-  assert.equal(shell.presenterRegion.closest('.gcsp-presenter-flyout'), flyout);
-  assert.equal(window.sessionStorage.getItem('gcsp:presenter-flyout-open'), 'true');
-  item.click(); assert.equal(flyout.hidden, true); assert.equal(item.getAttribute('aria-expanded'), 'false');
-  assert.equal(window.sessionStorage.getItem('gcsp:presenter-flyout-open'), 'false'); shell.destroy();
+const PAGES = ['account', 'brief-live', 'brief', 'activity-live', 'activity', 'order-progress-live', 'order-progress', 'help', 'offer', 'greg', 'case-queue', 'login', 'employee', 'manual-setup', 'manual-gallery'];
+const importsOf = (code) => [...code.matchAll(/\bimport\s*(?:[\w*{}\s,$]*?\s*from\s*)?['"]([^'"]+)['"]|\bimport\(\s*['"]([^'"]+)['"]\s*\)/g)]
+  .map((m) => m[1] || m[2]).filter((spec) => spec.startsWith('.'));
+function reachable(entry) {
+  const seen = new Set(); const queue = [entry];
+  while (queue.length) {
+    const file = queue.pop();
+    if (seen.has(file)) continue;
+    seen.add(file);
+    const code = readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:\\])\/\/.*$/gm, '$1');
+    for (const spec of importsOf(code)) queue.push(join(file, '..', spec));
+  }
+  return [...seen];
+}
+
+test('no Paula or Greg page reaches presenter-controls code through its imports', () => {
+  for (const name of PAGES) {
+    const page = `gcsp-${name}.html`;
+    const src = read(page).match(/<script[^>]*type="module"[^>]*src="([^"]+)"/)?.[1];
+    assert.ok(src, page);
+    const files = reachable(join(ROOT, src.replace(/^\.?\//, '')));
+    assert.ok(files.length > 1, page);
+    assert.deepEqual(files.filter((file) => file.startsWith(join(GCSP_DIR, 'presenter-controls'))).map(rel), [], page);
+  }
 });
 
-test('Escape and Close return focus to the nav item; the flyout stays open for outside clicks', async () => {
-  window.sessionStorage.clear();
-  const { shell, item, flyout } = await flyoutShell(flyoutAdapter());
-  item.click(); document.body.click(); shell.main.click(); assert.equal(flyout.hidden, false);
-  flyout.querySelector('input, button:not(.gcsp-presenter-flyout-close)').dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-  assert.equal(flyout.hidden, true); assert.equal(document.activeElement, item);
-  item.click(); flyout.querySelector('.gcsp-presenter-flyout-close').click();
-  assert.equal(flyout.querySelector('.gcsp-presenter-flyout-close').getAttribute('aria-label'), 'Close presenter controls');
-  assert.equal(flyout.hidden, true); assert.equal(document.activeElement, item);
-  item.click(); flyout.querySelector('.gcsp-presenter-flyout-close').focus();
-  flyout.querySelector('.gcsp-presenter-flyout-close').dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-  assert.equal(flyout.hidden, true); assert.equal(document.activeElement, item); shell.destroy();
-});
-
-test('a reset announcement opens the flyout and focuses the status; the open state is remembered', async () => {
-  window.sessionStorage.clear();
-  window.sessionStorage.setItem('gcsp:presenter-reset-done', JSON.stringify({ runId: 'run-a', name: 'Paula (fictional)' }));
-  const { shell, flyout } = await flyoutShell(flyoutAdapter());
-  assert.equal(flyout.hidden, false);
-  assert.match(flyout.textContent, /Reset done\. Acting as Paula \(fictional\)\./);
-  assert.equal(document.activeElement.getAttribute('role'), 'status'); assert.equal(flyout.contains(document.activeElement), true);
-  assert.equal(window.sessionStorage.getItem('gcsp:presenter-flyout-open'), 'true'); shell.destroy();
-  const again = await flyoutShell(flyoutAdapter()); assert.equal(again.flyout.hidden, false, 'remembered across navigation'); again.shell.destroy();
-});
-
-test('presenterControls false adds no nav item or flyout, and the content holds no presenter strip', async () => {
-  const off = shellMod.portalShell({ presenterControls: false }); document.body.append(off.root);
-  assert.equal(off.root.querySelector('.gcsp-nav-presenter-btn'), null); assert.equal(off.root.querySelector('.gcsp-presenter-flyout'), null); off.destroy();
-  window.sessionStorage.clear();
-  const { shell, flyout } = await flyoutShell(flyoutAdapter());
-  assert.equal(shell.root.querySelector('.gcsp-content').querySelector('.gcsp-presenter-bar, .gcsp-presenter-region'), null);
-  assert.ok(flyout.querySelector('.gcsp-presenter-bar')); shell.destroy();
+test('the shell stylesheet never reaches presenter-controls.css', () => {
+  const css = (file, seen = new Set()) => {
+    if (seen.has(file)) return seen;
+    seen.add(file);
+    for (const m of read(file).matchAll(/@import\s+(?:url\()?['"]([^'"]+)['"]/g)) css(rel(join(ROOT, file, '..', m[1])), seen);
+    return seen;
+  };
+  const files = [...css('blocks/gcsp/shell/gcsp-shell.css')];
+  assert.ok(files.includes('blocks/gcsp/kit/presenter-bar.css'));
+  assert.deepEqual(files.filter((file) => file.includes('presenter-controls')), []);
 });
 
 test('standalone controls keep the details strip with a visible summary', async () => {
+  const flyoutAdapter = () => ({
+    readControls: async () => ({ status: 'ok', value: { runId: 'run-a', runVersion: 1, now: '2026-11-05T09:00:00.000Z', clockVersion: '1', currentScenario: { scenarioId: 'm', name: 'M' },
+      lastTick: null, principals: [{ principalId: 'p1', name: 'P one', roles: ['employee'] }], controls: { step: { value: 37, unit: 'seconds' }, namedTimes: {}, nextRelease: { status: 'unavailable' } } } }),
+    readContext: async () => ({ status: 'ok', value: { principalId: 'p1', name: 'P one', roles: ['employee'] } }),
+    readScenarios: async () => ({ status: 'ok', value: { policyVersion: 'p', scenarios: [{ scenarioId: 'm', name: 'M', scenarioVersion: 'v', fixtureVersion: 'f', availability: { available: true } }] } }),
+  });
   const { mountPresenterControls } = await import('../../blocks/gcsp/presenter-controls/controls.js');
   const host = document.createElement('div'); document.body.append(host);
   const m = mountPresenterControls(host, { adapter: flyoutAdapter() }); await tick(20);
