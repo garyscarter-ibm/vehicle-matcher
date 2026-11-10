@@ -18,5 +18,17 @@
   "retainedRunPurpose": "Concise receipts, ownership manifests, bounded failure logs and reproduction/supervision scripts. Binary input/screenshot duplicates and successful verbose logs removed.",
   "retainedScreenshotBytes": 916693,
   "cloudOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/vehicle-images-20261110",
-  "cloudOutputExists": false
+  "cloudOutputExists": false,
+  "featureCleanup": {
+    "helperExit": 0,
+    "branch": "dev/DEV-2026-11-10-002",
+    "worktreeAbsent": true,
+    "leaseCleanup": "scaffold helper completed",
+    "checkedAt": "2026-11-10T12:34:56.252229+00:00"
+  },
+  "impactMap": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/vehicle-images-20261110.json",
+    "bytes": 33176,
+    "coverageContexts": "not collected"
+  }
 }
