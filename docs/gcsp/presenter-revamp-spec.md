@@ -1,6 +1,6 @@
 # Presenter console revamp: spec and mockups
 
-Draft for Gary, 10 November 2026. Branch `claude/presenter-controls-revamp-627251`. Nothing here is built
+**Approved by Gary, 10 November 2026** (user-agnostic mockup at commit 00ddf9fe). Originally drafted the same day. Branch `claude/presenter-controls-revamp-627251`. Nothing here is built
 or claimed; it is a proposal to agree before any Story is raised. Mockups: open
 [`docs/gcsp/mockups/presenter-console.html`](mockups/presenter-console.html) through `npm run serve`.
 
