@@ -483,7 +483,7 @@ test('Paula\'s live pages paint no demo or synthetic wording over the real serve
         helpAdapter: help }), /Buddy activity/],
       'Order progress': [(root) => mountOrderProgress(root, { adapter: createOrderProgressHttpAdapter({ fetch: live.fetchImpl, loadAccount: createShellAccountAdapter({ fetch: live.fetchImpl }).loadAccount }),
         helpAdapter: help }), /Order progress/],
-      Brief: [(root) => mountBrief(root, { ...createShellAccountAdapter({ fetch: live.fetchImpl }), transport: createBriefTransport({ fetch: live.fetchImpl }) }), /brief/i],
+      Brief: [(root) => mountBrief(root, { ...createShellAccountAdapter({ fetch: live.fetchImpl }), transport: createBriefTransport({ fetch: live.fetchImpl }) }), /What matters to you/],
       Offer: [(root) => mountOffer(root, { ...createOfferHttpAdapter({ fetch: live.fetchImpl }), account: { status: 'ready', name: 'Paula Mason', scheme: 'Choices' } }), /offer/i],
     };
     for (const [name, [mountPage, expected]] of Object.entries(pages)) {
