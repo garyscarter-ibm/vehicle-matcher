@@ -4224,22 +4224,24 @@
           "observed_at": "2026-11-10T13:28:21.822401Z",
           "expires_at": "2026-11-10T14:13:21.822401Z",
           "source": "FUCQ-309 lead observed live collaboration agent",
-          "status": "bounded census"
+          "status": "comparison-private repair and scoped regression"
         }
       ],
-      "observed_at": "2026-11-10T13:28:22Z",
+      "observed_at": "2026-11-10T13:37:45Z",
       "slices": [
         {
           "id": "current-cause",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Current-code retained-data evidence",
-          "observed_at": "2026-11-10T13:27:09Z",
-          "evidence": "Bounded current-code census planned under .claude/dev-poller-20261110/fucq309-validation-plan.json; no runtime evidence yet."
+          "observed_at": "2026-11-10T13:37:44Z",
+          "evidence": "Lead reviewed raw-store graph/WeakRef and actual heap evidence from bounded 100/300 real-service buddy runs; same production source. docs/gcsp/evidence/fucq309/memory-repair-2026-11-10.md. This completes scoped cause selection only; canonical worker acceptance remains unrun."
         },
         {
           "id": "retention-repair",
-          "status": "not-started",
-          "title": "Evidenced replay memory and lifetime repair"
+          "status": "in-progress",
+          "title": "Evidenced replay memory and lifetime repair",
+          "observed_at": "2026-11-10T13:37:45Z",
+          "evidence": "Comparison-private sharing, projection and disposal repair authorised from the reviewed census; regression first, no shared core/memory/offer writer edits."
         },
         {
           "id": "semantic-regression",
