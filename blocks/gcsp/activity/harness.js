@@ -39,7 +39,7 @@ if (root) mountEmployee(root, {
       status.textContent = retry ? 'Still unavailable.' : '';
     }
     const help = el('section', 'gcsp-activity-help'); help.setAttribute('aria-label', 'Renewal help');
-    const stopHelp = mountHelp(help, { embedded: true, adapter: fixtureAdapter('request'), headingLevel: 2 });
+    const stopHelp = mountHelp(help, { embedded: true, adapter: fixtureAdapter('request'), headingLevel: 2, quiet: true });
     main.replaceChildren(body, help, controls, status); show(initial);
     return () => { stopHelp(); body.firstElementChild?.destroy?.(); body.remove(); help.remove(); controls.remove(); status.remove(); };
   },

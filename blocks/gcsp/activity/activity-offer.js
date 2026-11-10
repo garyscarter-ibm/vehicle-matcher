@@ -8,14 +8,17 @@ export const approvedImages = new Map([['/assets/brand-hero/bmw.jpg', 'represent
   ['/assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp', REPRESENTATIVE],
   ['/assets/gcsp-vehicle-evidence/9704a8616835a1c1ce3b6d65f80e91cabb9edbfc0f83eca06b467bb3b1d236e3.webp', REPRESENTATIVE]]);
 import { offerStateLabel, respondBy } from './activity-copy.js';
-export function activityOffer({ offer, display, level = 2, emptyText = 'No current offer' } = {}) {
+// With no offer there is nothing to draw: the page's status line carries the state.
+export function activityOffer({ offer, display, level = 2 } = {}) {
+  if (!offer) return null;
+  const found = offer.state === 'active';
   const root = el('section', 'gcsp-activity-offer');
-  root.append(el(`h${level}`, 'gcsp-activity-section-title', 'Your offer'));
+  root.append(el(`h${level}`, 'gcsp-activity-section-title', found ? 'Your buddy found a car' : 'Your offer'));
   const layout = el('div', 'gcsp-activity-offer-grid');
-  const images = (offer && Array.isArray(display?.images) ? display.images : []).filter((image) => (approvedImages.get(image.src) === (image.kind ?? image.fidelity)
+  const images = (Array.isArray(display?.images) ? display.images : []).filter((image) => (approvedImages.get(image.src) === (image.kind ?? image.fidelity)
     || isDisplayImage(image.src, image.kind ?? image.fidelity))
     && typeof image.alt === 'string' && image.alt.trim());
-  const media = mediaWell({ line: '' }, 'gcsp-activity-offer-media', { placeholder: offer ? NO_IMAGE_TEXT : emptyText });
+  const media = mediaWell({ line: '' }, 'gcsp-activity-offer-media', { placeholder: NO_IMAGE_TEXT });
   const visual = el('div', 'gcsp-activity-offer-visual'); visual.append(media.media);
   const controls = [];
   function select(index) {
@@ -34,14 +37,12 @@ export function activityOffer({ offer, display, level = 2, emptyText = 'No curre
   }
   if (images.length) select(0);
   layout.append(visual);
-  if (offer) {
-    const details = el('div', 'gcsp-activity-offer-details');
-    const due = respondBy(offer);
-    details.append(el('p', 'gcsp-activity-offer-state', offerStateLabel(offer.state)));
-    if (due) details.append(el('p', 'gcsp-activity-offer-state', due));
-    if (display?.title) details.append(el(`h${Math.min(level + 1, 6)}`, 'gcsp-activity-offer-name', display.title));
-    if (offer.href) details.append(button({ label: 'View offer', variant: 'ghost', href: offer.href }));
-    layout.append(details);
-  }
+  const details = el('div', 'gcsp-activity-offer-details');
+  const due = respondBy(offer);
+  if (display?.title) details.append(el(`h${Math.min(level + 1, 6)}`, 'gcsp-activity-offer-name', display.title));
+  // An open offer leads with the found-car heading, so only its deadline is stated.
+  if (found ? due : true) details.append(el('p', 'gcsp-activity-offer-state', found ? due : offerStateLabel(offer.state)));
+  if (offer.href) details.append(button({ label: 'View offer', variant: found ? 'primary' : 'ghost', href: offer.href }));
+  layout.append(details);
   root.append(layout); return root;
 }

@@ -34,7 +34,7 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, s
       const helpRegion = helpAdapter && account.status === 'ready' ? el('section', 'gcsp-activity-help') : null;
       if (helpRegion) helpRegion.setAttribute('aria-label', 'Renewal help');
       main.replaceChildren(...[content, helpRegion, announcement.root].filter(Boolean));
-      const ownedHelp = helpRegion ? mountHelp(helpRegion, { embedded: true, adapter: helpAdapter, headingLevel: 2, announce: announcement.announce }) : null;
+      const ownedHelp = helpRegion ? mountHelp(helpRegion, { embedded: true, adapter: helpAdapter, headingLevel: 2, quiet: true, announce: announcement.announce }) : null;
       stopHelp = ownedHelp;
       const FOCUSABLE = 'button, a[href]';
       const paint = (state) => {

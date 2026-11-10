@@ -42,10 +42,10 @@ export function activityBody({ result, onRetry, onPause, onResume, onReviewBrief
   // An accepted car ends the search, so it reads finished and offers no pause or resume.
   const finished = value.currentOffer?.state === 'accepted';
   const inactive = finished || paused || value.permission.canSearch !== true;
-  const status = el('p', `gcsp-activity-status${inactive ? ' is-inactive' : ''}`);
-  status.append(svgIcon(inactive && !finished ? ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M9 8v8', 'M15 8v8']
+  const badge = el('p', `gcsp-activity-status${inactive ? ' is-inactive' : ''}`);
+  badge.append(svgIcon(inactive && !finished ? ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M9 8v8', 'M15 8v8']
     : ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M8 12l3 3 5-6']), document.createTextNode(finished ? copy.finished : inactive ? 'Inactive' : 'Active'));
-  const state = el('div', 'gcsp-activity-state'); state.append(status); header.append(state);
+  const state = el('div', 'gcsp-activity-state'); state.append(badge); header.append(state);
   if (!finished) {
     const command = paused ? onResume : onPause;
     const allowed = paused || value.permission.canSearch === true;
@@ -58,15 +58,16 @@ export function activityBody({ result, onRetry, onPause, onResume, onReviewBrief
   const offer = value.currentOffer || null;
   if (paused) root.append(el('p', 'gcsp-activity-consequence', offer?.state === 'active' ? `${copy.pausedDetail} ${copy.pausedOffer}` : copy.pausedDetail));
   const display = offer && offerDisplay?.offerRef?.offerId === offer.offerRef?.offerId ? offerDisplay : undefined;
-  root.append(activityOffer({ offer, display, level: Math.min(level + 1, 6) }));
-  const feed = activityTimeline({ events: activityEvents(value.stateChanges), heading: 'Activity', level: Math.min(level + 1, 6) });
-  const lines = searchLines(value, paused);
-  if (lines.length) { const checks = el('div', 'gcsp-activity-check-status'); checks.append(...lines.map((line) => el('p', '', line)));
-    feed.querySelector('.gcsp-timeline-note').after(checks); }
+  const found = offer?.state === 'active';
+  const news = activityOffer({ offer, display, level: Math.min(level + 1, 6) });
+  const feed = activityTimeline({ events: activityEvents(value.stateChanges), heading: 'Activity', collapseRepeats: true, level: Math.min(level + 1, 6) });
+  // One status block leads the page (the news first when a car is waiting); the timeline follows.
+  const status = el('div', 'gcsp-activity-check-status');
+  status.append(...searchLines(value, paused).map((line) => el('p', '', line)));
   const why = exclusionLines(value, paused);
-  if (why.length) { const checks = feed.querySelector('.gcsp-activity-check-status');
-    if (checks) checks.after(nextSteps(why, onReviewBrief, hosted ? announce : undefined)); else feed.append(nextSteps(why, onReviewBrief, hosted ? announce : undefined)); }
-  root.append(feed);
+  const steps = why.length ? nextSteps(why, onReviewBrief, hosted ? announce : undefined) : null;
+  const lead = [status.childElementCount ? status : null, steps].filter(Boolean);
+  root.append(...(found ? [news, ...lead] : [...lead, news]).filter(Boolean), feed);
   if (value.stateChangesEvidence?.status === 'incomplete') feed.append(el('p', 'gcsp-activity-secondary', 'Some activity could not be verified.'));
   return root;
 }

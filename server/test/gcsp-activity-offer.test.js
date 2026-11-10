@@ -8,9 +8,9 @@ before(async () => { dom = new JSDOM('<!doctype html><body></body>', { url: 'htt
 after(() => dom?.window.close()); beforeEach(() => document.body.replaceChildren());
 const picture = { src: '/assets/brand-hero/bmw.jpg', alt: 'BMW brand scene', kind: 'representative' };
 test('no offer and absent imagery stay meaningful; untrusted network sources never become images', () => {
-  const none = activityOffer(); assert.match(none.textContent, /No current offer/); assert.equal(none.querySelector('img'), null);
+  assert.equal(activityOffer(), null, 'no offer draws nothing');
   const bad = activityOffer({ offer: { state: 'active' }, display: { title: 'BMW offer', images: [{ ...picture, src: 'https://remote.example/car.jpg' }] } });
-  assert.equal(bad.querySelector('img'), null); assert.match(bad.textContent, /No image for this car yet/); assert.match(bad.textContent, /Waiting for you/);
+  assert.equal(bad.querySelector('img'), null); assert.match(bad.textContent, /No image for this car yet/); assert.match(bad.textContent, /found a car/);
   const falseExact = activityOffer({ offer: { state: 'active' }, display: { images: [{ ...picture, kind: 'exact' }] } });
   assert.equal(falseExact.querySelector('img'), null); assert.match(falseExact.textContent, /No image for this car yet/);
   assert.equal(NO_IMAGE_TEXT, 'No image for this car yet'); assert.equal(falseExact.querySelector('.vm-card-soon').textContent, NO_IMAGE_TEXT);
