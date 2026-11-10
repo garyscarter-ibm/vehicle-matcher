@@ -4,6 +4,7 @@ import { stageList } from './stage-list.js';
 import { rangeBar } from './range-bar.js';
 import { showMore } from './show-more.js';
 import { tabs } from './tabs.js';
+import { releaseGrid } from './release-grid.js';
 import { installArrivalFocus, focusHeading } from './arrival-focus.js';
 import { runRestartedScreen, runRestartedNotice, accessLapsedScreen } from './run-restarted.js';
 
@@ -93,4 +94,28 @@ export function tabsExample() {
   const set = tabs({ label: 'Settings groups', items: [{ id: 'one', label: 'First', panel: panel('First panel. Arrow keys, Home and End move between tabs.') },
     { id: 'two', label: 'Second', panel: panel('Second panel.') }, { id: 'three', label: 'Third', panel: panel('Third panel.') }] });
   scope.append(set.root); section.append(scope); return section;
+}
+
+const RELEASE_CARS = [
+  ['07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp', '3 Series Touring', 'Alpine White'],
+  ['ed60cefd049e7293423575b5f0fcee802dbab14083dea2480211ab272896281a.webp', '1 Series Sports Hatch', 'BMW Individual Frozen Pure Grey'],
+  ['00419fa06ad620a42de6311039c7df679f692b7f2af52d5a7daba46cd034dc93.webp', 'i5 Touring', 'Sophisto Grey'],
+  ['719a549c1b6019c31850059f4331754756168ac4cc88c4513679fcae8bf6fc72.webp', '1 Series Sports Hatch', 'Cape York Green'],
+  ['89f72e0b5dd9b487f22164a9321d5c03f7762ffd8e15adc18e11a77ab755adfc.webp', '1 Series Sports Hatch', 'Alpine White'],
+  ['4489e430feeb042f1786c5b4ddc86ef1540a4d0eb960c4cf0faaa83b968a6f22.webp', '1 Series Sports Hatch', 'Jet Black'],
+  ['1b01d4a62fa0d1ffa153371d38fdeac84adbbc674227dd1b853c3af8306ef027.webp', '1 Series Sports Hatch', 'Thundernight'],
+  ['d3245036c6bbd7f1fa324be738862422605095735dd3ec6a4fa175ffafaa6976.webp', '1 Series Sports Hatch', 'BMW Individual Frozen Portimao Blue'],
+  ['ae3c7e57cb59a0d97040263751763f2323876109501abfb8f3d64a9f518e7306.webp', '1 Series Sports Hatch', 'Black Sapphire'],
+  ['44056f6b4aca840e77ed3ba3a1eda63d2056af2ec9ce3832bbdd76d59085db47.webp', '1 Series Sports Hatch', 'Brooklyn Grey'],
+  ['8a391dd4cc66221e1cd4259784215122f5b862c30e7a315c27a3991870dfc2b3.webp', '1 Series Sports Hatch', 'Skyscraper Grey'],
+  ['5ce2febb1d0c3b7409caed6a1001ae9cce69cc9466760d47b23f284dcdaee3d3.webp', '1 Series Sports Hatch', 'Storm Bay'],
+];
+
+export function releaseGridExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-release-grid';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP release grid'));
+  const scope = el('div', 'gcsp'); const grid = releaseGrid({ label: 'Released cars', columns: 6 });
+  const tiles = RELEASE_CARS.map(([hash, model, paint], at) => ({ id: at, imageSrc: `./assets/gcsp-vehicle-evidence/${hash}.webp`, label: `${model}, ${paint}` }));
+  const replay = button({ label: 'Replay', variant: 'ghost', onClick: () => grid.show(tiles) });
+  scope.append(replay, grid.root); section.append(scope); grid.show(tiles, { animate: false }); return section;
 }

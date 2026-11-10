@@ -1,0 +1,16 @@
+/* Today's release on the presenter console (FUCQ-365). Density tokens only; scoped to .gcsp. */
+.gcsp .gcsp-console-release { display: flex; flex-direction: column; gap: var(--gcsp-space-4); padding-top: var(--gcsp-space-6); border-top: 1px solid var(--gcsp-divider); min-width: 0; }
+.gcsp .gcsp-console-release-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--gcsp-space-4); }
+.gcsp .gcsp-console-release-head h2 { margin: 0; font-size: var(--gcsp-font-size-subheading); font-family: var(--gcsp-font-heading); font-weight: var(--gcsp-font-heading-weight); }
+.gcsp .gcsp-console-release-line { margin: 0; color: var(--gcsp-text-muted); font-variant-numeric: tabular-nums; }
+.gcsp .gcsp-console-release-body .vm-status { min-height: 200px; display: grid; place-content: center; text-align: center; padding: var(--gcsp-space-6); border: 1px dashed var(--gcsp-divider); }
+.gcsp .gcsp-console-release-body .vm-status .vm-title { margin: 0; font-size: var(--gcsp-font-size-heading); }
+.gcsp .gcsp-console-release-foot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: var(--gcsp-space-6); align-items: start; }
+.gcsp .gcsp-release-totals.vm-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gcsp-space-4) var(--gcsp-space-6); }
+.gcsp .gcsp-release-totals .vm-fact-value { font-size: var(--gcsp-font-size-figure); font-weight: var(--gcsp-font-strong-weight); font-variant-numeric: tabular-nums; line-height: 1.15; }
+.gcsp .gcsp-release-lines-title { margin: 0 0 var(--gcsp-space-2); color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); }
+.gcsp .gcsp-release-lines.vm-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gcsp-space-2) var(--gcsp-space-6); }
+.gcsp .gcsp-release-lines .vm-fact { display: flex; justify-content: space-between; gap: var(--gcsp-space-3); }
+.gcsp .gcsp-release-lines .vm-fact-label { color: var(--gcsp-text); }
+.gcsp .gcsp-release-lines .vm-fact-value { margin: 0; font-variant-numeric: tabular-nums; }
+@media (max-width: 1100px) { .gcsp .gcsp-console-release-foot { grid-template-columns: minmax(0, 1fr); } }

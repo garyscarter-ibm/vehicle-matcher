@@ -196,7 +196,7 @@ test('restarted and unavailable reads show a screen in the Basic body', async ()
   assert.match(b.root.querySelector('.vm-status').textContent, /Presenter controls unavailable.*Reload this page to start a presenter session\./); b.api.destroy();
   let reads = 0; const c = setup({ readControls: async () => (++reads === 1 ? { status: 'unavailable' } : ok(readState())) }); await c.api.ready;
   assert.match(c.root.querySelector('.vm-status').textContent, /Presenter controls unavailable/);
-  c.root.querySelector('.vm-status button').click(); await settle(); assert.equal(c.root.querySelector('.vm-status'), null); assert.equal(c.root.querySelector('h1').textContent, 'Clock mechanics'); c.api.destroy();
+  c.root.querySelector('.vm-status button').click(); await settle(); assert.equal(c.root.querySelector('.gcsp-console-screen .vm-status'), null); assert.equal(c.root.querySelector('h1').textContent, 'Clock mechanics'); c.api.destroy();
 });
 
 test('painted copy has no em dash and none of the banned words, and the adapter is the only data source', async () => {

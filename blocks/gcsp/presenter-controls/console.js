@@ -3,6 +3,7 @@ import { tabs } from '../kit/tabs.js';
 import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
 import { mountPresenterControls } from './controls.js';
+import { mountReleaseSection } from './release-section.js';
 
 export const PRESENTER_CONSOLE_MODE_KEY = 'gcsp:presenter-console-mode';
 const ACTION_KEY = 'gcsp:presenter-action'; // Same signal the controller writes, so open portal tabs refresh.
@@ -79,6 +80,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   const status = el('p', 'gcsp-console-status'); status.setAttribute('role', 'status');
   const stage = el('section', 'gcsp-console-stage'); stage.setAttribute('aria-labelledby', headline.id);
   stage.append(text, screen, actions, reasonText, status);
+  const releaseSection = mountReleaseSection(stage, { adapter }); // Last in the stage, after the confirmation basic-console inserts.
 
   const advancedHost = el('div', 'gcsp-console-controls');
   const advancedNote = el('p', 'gcsp-note', 'Loading presenter controls');
@@ -120,7 +122,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
     const due = state.controls?.nextRelease;
     defaultDisabled = due?.status !== 'available';
     defaultReason = defaultDisabled ? `Release unavailable: ${sentence(due?.reason) || 'no release is due'}` : '';
-    paintPrimary(); onState?.(state, basic);
+    paintPrimary(); onState?.(state, basic); releaseSection.refresh();
   }
   async function read() {
     let reply;
@@ -191,7 +193,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   let saved = 'basic'; try { saved = store()?.getItem(PRESENTER_CONSOLE_MODE_KEY) === 'advanced' ? 'advanced' : 'basic'; } catch { /* storage blocked */ }
   if (saved === 'advanced') setMode('advanced');
   const ready = read();
-  const destroy = () => { disposed = true; abort.abort(); stopWatching(); controller?.destroy(); advancedHost.removeEventListener('gcsp:presenter-action', onAction); root.remove(); };
+  const destroy = () => { disposed = true; abort.abort(); stopWatching(); releaseSection.destroy(); controller?.destroy(); advancedHost.removeEventListener('gcsp:presenter-action', onAction); root.remove(); };
   return { root, basic, setMode, destroy, ready };
 }
 
