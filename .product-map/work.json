@@ -4212,22 +4212,13 @@
           "name": "Ralph Wolf",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-10T13:28:21.822401Z",
-          "expires_at": "2026-11-10T14:13:21.822401Z",
-          "source": "FUCQ-309 lead observed live collaboration agent",
-          "status": "current-code cause review"
-        },
-        {
-          "name": "Speedy Gonzales",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-10T13:28:21.822401Z",
-          "expires_at": "2026-11-10T14:13:21.822401Z",
-          "source": "FUCQ-309 lead observed live collaboration agent",
-          "status": "comparison-private repair and scoped regression"
+          "observed_at": "2026-11-10T13:51:20.018714+00:00",
+          "expires_at": "2026-11-10T14:36:20.018714+00:00",
+          "source": "Lead observing own live session; Speedy completed and released",
+          "status": "reviewed repair; canonical HTTP integration proof"
         }
       ],
-      "observed_at": "2026-11-10T13:37:45Z",
+      "observed_at": "2026-11-10T13:51:20Z",
       "slices": [
         {
           "id": "current-cause",
@@ -4238,20 +4229,24 @@
         },
         {
           "id": "retention-repair",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Evidenced replay memory and lifetime repair",
-          "observed_at": "2026-11-10T13:37:45Z",
-          "evidence": "Comparison-private sharing, projection and disposal repair authorised from the reviewed census; regression first, no shared core/memory/offer writer edits."
+          "observed_at": "2026-11-10T13:51:20Z",
+          "evidence": "Comparison-private sharing/projections/terminal disposal validated; generic core/memory/shared writers unchanged. Actual 100/300 store reduction and collection with run retained. docs/gcsp/evidence/fucq309/after-census-2026-11-10.json. Canonical worker envelope remains separate."
         },
         {
           "id": "semantic-regression",
-          "status": "not-started",
-          "title": "Semantic regression and affected-reader checks"
+          "status": "complete",
+          "title": "Semantic regression and affected-reader checks",
+          "observed_at": "2026-11-10T13:51:20Z",
+          "evidence": "Exact100/300 input/record/decisions/totals/measures equality; focused6, routes/measures62, generic/private contracts25pass1skip each, corrected job/HTTP25pass. Initial harness failure retained; nativePG and full suite unrun. docs/gcsp/evidence/fucq309/memory-repair-2026-11-10.md"
         },
         {
           "id": "canonical-integration",
-          "status": "not-started",
-          "title": "Canonical six-step stored-result integration gate"
+          "status": "in-progress",
+          "title": "Canonical six-step stored-result integration gate",
+          "observed_at": "2026-11-10T13:51:20Z",
+          "evidence": "Prepared isolated actual HTTP worker proof: canonical1000, three seeds/six steps, original128/16MiB limits first; no launch result yet. Documented1900s indivisible supervised plan,1.5GiB RAM,64MiB scratch, one worker and bounded checkpoints."
         }
       ],
       "unsliced": false

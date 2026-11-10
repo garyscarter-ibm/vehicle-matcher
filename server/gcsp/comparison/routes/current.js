@@ -188,7 +188,7 @@ export function createManualReplay(run, assumptions, actors, { afterRelease } = 
 export async function buildOutcomeRecord(run, assumptions, replay, route = run.metadata.route, extend = (record) => record) {
   const { manifest } = run.inputs;
   const common = { seed: manifest.seed, policyVersion: manifest.policyVersion, route };
-  const persisted = await run.snapshot();
+  const persisted = await run.readTables(['stock', 'holds']);
   const employees = [...replay.people.values()].sort((a, b) => byId(a.employee.employeeId, b.employee.employeeId)).map((person) => ({
     ...common, employeeId: person.employee.employeeId, accessGroup: person.employee.accessGroup,
     outcome: person.taken ? 'taken' : 'none-by-renewal', orderUuid: person.taken?.orderUuid ?? null,

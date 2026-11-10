@@ -180,7 +180,7 @@ export async function replayBuddyRoute(run) {
   await replay.drain();
   if (entries.some((entry) => entry.status === 'active')) refuse('offer-unsettled', 'drain');
 
-  const outbox = (await run.snapshot()).notification_outbox;
+  const outbox = (await run.readTables(['notification_outbox'])).notification_outbox;
   if (outbox.length !== entries.length || outbox.some((job) => job.state !== 'sent' || job.transport !== 'captured')) refuse('notification-not-captured', 'outbox');
   const people = new Map([...replay.people, ...participants]);
   const sum = (rows, key) => rows.reduce((total, row) => total + row[key], 0);

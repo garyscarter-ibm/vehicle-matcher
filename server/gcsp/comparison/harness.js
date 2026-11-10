@@ -1,4 +1,4 @@
-import { createMemoryRepository, createMemoryStore } from '../repository/memory.js';
+import { createComparisonRepository } from './private-repository.js';
 import { inputDigest, ok, FOUNDATION_TABLES } from '../repository/core.js';
 import { DemoIdentityAdapter } from '../identity/index.js';
 import { DemoClock } from '../clock/index.js';
@@ -185,7 +185,7 @@ export async function openComparisonRun(options = {}) {
       && allowance.unit === employee.pointsUnit, 'coherent-allowance-variant');
   }
   const runPolicy = isolatedIdentityPolicy(policy, principals, employees, route === 'buddy' ? buddyOverrides(manifest, adapterRow) : {});
-  const repository = createMemoryRepository({ store: createMemoryStore(), now: () => manifest.startsAt, snapshot: 'shallow' });
+  const repository = createComparisonRepository({ now: () => manifest.startsAt });
   value(await repository.open(), 'repository.open');
   let closed = false;
   try {
@@ -259,16 +259,18 @@ export async function openComparisonRun(options = {}) {
         decisions: createOfferDecisionService({ repository, policy: runPolicy, clock, access,
           createStoredSubjectEvaluator: createStoredSubjectRecommendationEvaluator, mode: stockAdapter.mode }) });
     }
-    return Object.freeze({ repository, clock, identity, claims, buddy, presenter, evaluation,
+    const readTables = async (tables) => {
+      check(Array.isArray(tables) && tables.every((table) => FOUNDATION_TABLES.includes(table)), 'tables');
+      return Object.fromEntries(await Promise.all(tables.map(async (table) => [table,
+        value(await repository.query(scope, table), `snapshot:${table}`)])));
+    };
+    return Object.freeze({ repository, clock, identity, claims, buddy, presenter, evaluation, readTables,
       transport, policy: runPolicy, inputs,
       metadata: freezeVehicleData({ seed: manifest.seed, policyVersion: manifest.policyVersion, route,
         runId: scope.runId, environmentId, identityDigest, inputHash: manifest.inputHash, codeRevision,
         adapter: adapterRow, limitations: adapter.limitations }),
       employeeContext(employeeId) { check(contexts.has(employeeId), 'employeeId'); return contexts.get(employeeId); },
-      async snapshot() {
-        return Object.fromEntries(await Promise.all(FOUNDATION_TABLES.map(async (table) => [table,
-          value(await repository.query(scope, table), `snapshot:${table}`)])));
-      },
+      snapshot() { return readTables(FOUNDATION_TABLES); },
       async release(releaseId) {
         const release = inputs.releaseSchedule.find((entry) => entry.releaseId === releaseId);
         check(release, 'releaseId');
