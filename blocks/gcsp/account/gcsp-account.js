@@ -14,6 +14,8 @@ import { orderCar } from '../order-progress/order-car.js';
 import { sentence } from '../order-progress/order-progress-copy.js';
 import { orderIdentityRows, orderReferenceOf } from '../kit/order-identity.js';
 import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
+import { dataTable } from '../kit/data-table.js';
+import { sideDrawer } from '../kit/side-drawer.js';
 import { NO_IMAGE_TEXT } from '../kit/plain-copy.js';
 import { demoTime } from '../kit/activity-timeline.js';
 import { routePortal } from '../employee/portal-navigation.js';
@@ -51,7 +53,6 @@ function shown(value) {
 }
 const label = (key) => key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (letter) => letter.toUpperCase());
 const row = (name, value, unit) => ({ label: name, value: shown(value), ...(value != null && unit ? { unit } : {}) });
-const MORE_MISSING = 'More details not supplied';
 const facts = (rows, hideMissing) => factList(rows, { className: 'gcsp-facts', hideMissing });
 const supplied = (value) => value != null && value !== '';
 // Raw ids are not copy (FUCQ-195/197): statuses read as words; slots, schemes and sources show only a supplied label.
@@ -71,22 +72,22 @@ const technicalLabels = { insuranceGroup: 'Insurance group', nedcCo2: 'NEDC CO2'
 const technicalLabel = (key) => technicalLabels[key] ?? label(key);
 const asOf = (value) => Number.isNaN(Date.parse(value ?? '')) ? MISSING
   : new Date(value).toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short', timeZone: 'UTC' });
-// Raw ids are not copy: a scheme row shows only the policy-supplied name; groups fall back to "Scheme N".
+// Raw ids are not copy: a scheme shows only the policy-supplied name; tables and records fall back to "Scheme N".
 const schemeTitle = (history, index) => history.label ?? `Scheme ${index + 1}`;
-const schemeRows = (model, schemeId) => {
-  const name = model.histories.find((history) => history.schemeId === schemeId)?.label;
-  return name ? [row('Scheme', name)] : [];
+const schemeTitleFor = (model, schemeId) => {
+  const index = model.histories.findIndex((history) => history.schemeId === schemeId);
+  return index < 0 ? null : schemeTitle(model.histories[index], index);
 };
+const schemeName = (model, schemeId) => model.histories.find((history) => history.schemeId === schemeId)?.label ?? null;
 const contractModel = (model, id) => [...model.currentContracts, ...model.histories.flatMap((history) => history.entries)]
   .find((contract) => contract.contractId === id)?.model;
-const date = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value ?? '')
+const isoDate = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value ?? '');
+const date = (value) => isoDate(value)
   ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : shown(value);
-
-function details(title, ...content) {
-  const node = el('details', 'gcsp-details');
-  node.append(el('summary', 'gcsp-details-summary', title), ...content);
-  return node;
-}
+const shortDate = (value, year = false) => isoDate(value) ? new Date(`${value}T00:00:00Z`)
+  .toLocaleDateString('en-GB', { day: 'numeric', month: 'short', ...(year && { year: 'numeric' }), timeZone: 'UTC' }) : null;
+const windowText = (contract) => shortDate(contract.earliestCollectionDate) && shortDate(contract.latestCollectionDate)
+  ? `${shortDate(contract.earliestCollectionDate)} to ${shortDate(contract.latestCollectionDate)}` : null;
 
 // Earlier contracts name the car's own number; a reference shows only when the record supplies one.
 const orderRows = (contract) => orderIdentityRows(contract.orderReference, contract.orderNumber).map(({ label, value }) => row(label, value));
@@ -96,45 +97,114 @@ const printLabel = (contract) => {
   return id ? `Print record ${id}` : 'Print record';
 };
 
-function contractDetails(contract, model) {
+// The page and the record show only supplied facts (Gary, 10 November).
+const suppliedFacts = (rows, className) => {
+  const kept = rows.filter((item) => supplied(item.value));
+  return kept.length ? factList(kept, { className }) : null;
+};
+
+function recordSection(title, ...parts) {
+  const section = el('section', 'gcsp-record-section');
+  section.append(el('h3', undefined, title), ...parts);
+  return section;
+}
+
+// The car record: headed sections of supplied facts, built for the drawer and again for print.
+function recordSections({ contract, model }) {
   const technical = contract.technical ?? {};
   const standard = ['insuranceGroup', 'transmission', 'nedcCo2', 'wltpCo2', 'fuelConsumptionLow', 'fuelConsumptionMedium',
     'fuelConsumptionHigh', 'fuelConsumptionExtraHigh', 'fuelConsumptionCombinedWeighted', 'electricityConsumption',
     'electricRange', 'electricCityRange', 'exterior', 'interior', 'price', 'options'];
-  return details('Order, collection and vehicle details', facts([
-    ...slotRows(model, contract.slotId), ...orderRows(contract), row('Order date', date(contract.orderDate)),
-    row('Order status', status(contract.orderStatus)), row('Registration', contract.registration),
-    row('Delivered VIN', contract.vin), row('Chassis number', contract.chassisNumber), row('Registration date', date(contract.registrationDate)),
-    row('Requested collection', date(contract.requestedCollectionDate)), row('Collection location', contract.collectionLocation),
-    row('Actual collection', date(contract.actualCollectionDate)), row('Contract end', date(contract.contractEndDate)),
-    row('Earliest collection', date(contract.earliestCollectionDate)), row('Latest collection', date(contract.latestCollectionDate)),
-    row('Returned', date(contract.returnedDate)), row('Expected return mileage', contract.expectedReturnMileage, contract.returnMileageUnit ?? 'mi'),
-    row('Returned mileage', contract.returnedMileage, contract.returnMileageUnit ?? 'mi'),
-    row('Current mileage', contract.currentOdometer), row('Phone', contract.contact?.phone), row('Email', contract.contact?.email),
-    row('Special requirements', contract.specialRequirements),
-  ], MORE_MISSING), details('Technical specification and options',
-    el('p', 'gcsp-note', 'Model or handbook evidence does not confirm the fitted equipment on your car.'),
-    facts([...standard.map((key) => row(technicalLabel(key), technical[key] ?? contract[key])),
-      ...Object.entries(technical).filter(([key]) => !['provenance', 'source', ...standard].includes(key))
-        .map(([key, value]) => row(technicalLabel(key), value)),
-      row('Specification provenance', sourceLabel(technical.provenance ?? technical.source ?? contract.source))], MORE_MISSING)));
+  const window = windowText(contract);
+  const blocks = [
+    ['Contract', [row('Status', status(contract.status)), row('Driver', contract.driver?.name), row('Term', contract.months, 'months'),
+      row('Annual mileage', contract.annualMileage, contract.mileageUnit), row('Contract end', date(contract.contractEndDate)),
+      row('Returned', date(contract.returnedDate))]],
+    ['Collection', [row('Collected', date(contract.actualCollectionDate)),
+      ...(window ? [row('Replacement window', `${date(contract.earliestCollectionDate)} to ${date(contract.latestCollectionDate)}`)]
+        : [row('Earliest collection', date(contract.earliestCollectionDate)), row('Latest collection', date(contract.latestCollectionDate))]),
+      row('Requested collection', date(contract.requestedCollectionDate)), row('Collection location', contract.collectionLocation),
+      row('Current mileage', contract.currentOdometer), row('Expected return mileage', contract.expectedReturnMileage, contract.returnMileageUnit ?? 'mi'),
+      row('Returned mileage', contract.returnedMileage, contract.returnMileageUnit ?? 'mi')]],
+    ['Order and vehicle', [...orderRows(contract), row('Order date', date(contract.orderDate)), row('Order status', status(contract.orderStatus)),
+      row('Registration', contract.registration), row('Delivered VIN', contract.vin), row('Chassis number', contract.chassisNumber),
+      row('Registration date', date(contract.registrationDate)), ...slotRows(model, contract.slotId), row('Phone', contract.contact?.phone),
+      row('Email', contract.contact?.email), row('Special requirements', contract.specialRequirements)]],
+  ];
+  const sections = blocks.map(([title, rows]) => recordSection(title, suppliedFacts(rows, 'gcsp-record-facts')
+    ?? el('p', 'gcsp-note', 'Not supplied for this car.')));
+  const specRows = [...standard.map((key) => row(technicalLabel(key), technical[key] ?? contract[key])),
+    ...Object.entries(technical).filter(([key]) => !['provenance', 'source', ...standard].includes(key)).map(([key, value]) => row(technicalLabel(key), value)),
+    row('Specification provenance', sourceLabel(technical.provenance ?? technical.source ?? contract.source))];
+  sections.push(recordSection('Technical specification and options', el('p', 'gcsp-note', 'Model or handbook evidence does not confirm the fitted equipment on your car.'),
+    suppliedFacts(specRows, 'gcsp-record-facts') ?? el('p', 'gcsp-note', 'Not supplied for this car.')));
+  return sections;
 }
 
-function driverDetails(driver) {
-  const licence = driver.licence ?? {};
-  const category = (name) => licence[name] ?? licence.categories?.find?.((item) => typeof item === 'object' && item.category === name);
-  const categoryRows = (name, title) => {
-    const supplied = category(name);
-    const present = supplied || licence.categories?.includes(name);
-    return [row(`${title} licence type`, supplied?.type),
-      row(`${title} valid from`, date(supplied?.validFrom ?? (present ? licence.validFrom : null))),
-      row(`${title} valid until`, date(supplied?.validUntil ?? (present ? licence.validUntil : null)))];
+// What print clones: the context label, the model and the sections, with no controls.
+function recordPrintNode(record) {
+  const node = el('div', 'gcsp-account-record');
+  node.append(el('p', 'gcsp-note', record.context), el('h2', 'gcsp-h2', record.title), ...recordSections(record));
+  return node;
+}
+
+const lineOf = (...parts) => parts.filter((part) => part != null && part !== '').join(' \u00b7 ');
+const addressLine = (value) => value && typeof value === 'object' && !Array.isArray(value)
+  ? Object.values(value).map(shown).filter(supplied).join(', ') : shown(value);
+
+function yourDetails(model, controls) {
+  const section = el('section', 'gcsp-account-section');
+  section.setAttribute('aria-labelledby', 'gcsp-account-details-title');
+  const title = el('h2', 'gcsp-h2', 'Your details'); title.id = 'gcsp-account-details-title';
+  const rows = el('ul', 'gcsp-account-rows');
+  const item = (heading, content, help) => {
+    const node = el('li', 'gcsp-account-row'); const copy = el('div', 'gcsp-account-lines');
+    copy.append(...content); node.append(el('h3', 'gcsp-account-row-label', heading), copy, help); return node;
   };
-  return details(`${driver.name ?? 'Driver'} · ${driver.kind ?? 'driver'}`, facts([
-    row('Status', driver.status), row('Eligible', driver.eligible), row('Relationship', driver.relationship),
-    row('Date of birth', date(driver.dateOfBirth)), row('Address', driver.address),
-    row('Licence number', licence.displayNumber), row('Licence categories', licence.categories), ...categoryRows('car', 'Car'), ...categoryRows('bike', 'Bike'),
-  ]));
+  const line = (...parts) => { const node = el('p', 'gcsp-account-line'); node.append(...parts); return node; };
+  const muted = (text) => el('span', 'gcsp-note', text);
+  const idf = (name) => model.identityFacts.find((fact) => fact.label === name)?.value;
+  const text = (value) => supplied(value) ? shown(value) : null;
+  const first = lineOf(text(idf('Employee number')) && `Employee number ${text(idf('Employee number'))}`,
+    text(idf('Band or grade')) && `Band ${text(idf('Band or grade'))}`, text(idf('Company')));
+  const override = text(idf('Allowance override'));
+  const overrideEnd = date(idf('Override end'));
+  const employee = [line(el('strong', undefined, idf('Name') ?? 'Employee'), ...(first ? [muted(` \u00b7 ${first}`)] : [])),
+    ...[lineOf(text(idf('Email')), text(idf('Phone'))), addressLine(idf('Address')), text(date(idf('Date of birth'))) && `Date of birth ${date(idf('Date of birth'))}`,
+      override && `Allowance override: ${override}${overrideEnd ? ` (ends ${overrideEnd})` : ''}`]
+      .filter(supplied).map((value) => line(muted(value)))];
+  rows.append(item('Employee', employee, controls.supportButton('hr-support', 'Get help with your details')));
+  const drivers = model.drivers.map((driver) => {
+    const licence = driver.licence ?? {};
+    const valid = (name, label) => {
+      const found = licence[name] ?? licence.categories?.find?.((entry) => typeof entry === 'object' && entry.category === name);
+      const until = date(found?.validUntil ?? ((found || licence.categories?.includes(name)) ? licence.validUntil : null));
+      return until ? `${label} licence valid until ${until}` : null;
+    };
+    const role = driver.kind === 'employee' ? 'You' : `Nominated driver${supplied(driver.relationship) ? `, ${shown(driver.relationship)}` : ''}`;
+    const rest = lineOf(role, valid('car', 'Car'), valid('bike', 'Bike'), text(licence.displayNumber));
+    // Supplied licence and profile values beyond the headline stay visible on a second line.
+    const type = (name, label) => { const found = licence[name] ?? licence.categories?.find?.((entry) => typeof entry === 'object' && entry.category === name); return text(found?.type) && `${label} licence type ${found.type}`; };
+    const extra = lineOf(text(driver.status) && `Status ${driver.status}`, text(date(driver.dateOfBirth)) && `Date of birth ${date(driver.dateOfBirth)}`,
+      addressLine(driver.address) && `Address ${addressLine(driver.address)}`, type('car', 'Car'), type('bike', 'Bike'));
+    return [line(el('strong', undefined, driver.name ?? 'Driver'), ...(rest ? [muted(` \u00b7 ${rest}`)] : [])), ...(extra ? [line(muted(extra))] : [])];
+  }).flat();
+  rows.append(item(`Drivers (${model.drivers.length})`, drivers.length ? drivers : [el('p', 'gcsp-note', 'No driver or licence details supplied.')],
+    controls.supportButton('driver-support', 'Get help with drivers')));
+  section.append(title, rows);
+  return section;
+}
+
+function keyFigure(label, value, unit) {
+  const cell = el('div'); const figure = el('dd', value == null ? 'is-missing' : undefined, value ?? 'Not supplied');
+  if (value != null && unit) figure.append(' ', el('span', 'gcsp-account-unit', unit));
+  cell.append(el('dt', undefined, label), figure); return cell;
+}
+const points = (value) => Number.isFinite(value) ? value.toLocaleString('en-GB') : null;
+
+function mediaColumn(media, ...extra) {
+  const column = el('div', 'gcsp-feature-media');
+  column.append(media, ...extra); return column;
 }
 
 function currentCar(contract, model, controls, buddy = false) {
@@ -153,22 +223,40 @@ function currentCar(contract, model, controls, buddy = false) {
   const { media } = mediaWell({ name: contract.model ?? 'Current car', photo: source?.src ?? source?.photo ?? '',
     line: '', alt: source?.alt ?? `${contract.model ?? 'Car'}: representative image`,
     caption: source?.caption ?? 'Representative image, not your exact car' }, 'gcsp-media', { placeholder: NO_IMAGE_TEXT });
+  const scheme = schemeName(model, contract.schemeId);
+  const state = el('p', 'gcsp-account-state');
+  if (contract.daysRemaining == null) state.append('Contract end: Not supplied');
+  else {
+    if (contract.daysRemaining <= 90) { const dot = el('span', 'gcsp-account-dot'); dot.setAttribute('aria-hidden', 'true'); state.append(dot); }
+    state.append(el('strong', undefined, `Contract ${countdown(model.asOf.slice(0, 10), contract.contractEndDate)}`), el('span', 'gcsp-note', ` on ${date(contract.contractEndDate)}`));
+  }
+  const key = el('dl', 'gcsp-account-key');
+  const window = windowText(contract);
+  key.append(keyFigure('This car', points(terms.value), 'points a month'), keyFigure('Your allowance', points(terms.allowance), 'points a month'),
+    window ? keyFigure('Collect a replacement', window) : keyFigure('Contract end', date(contract.contractEndDate)));
   const copy = el('div', 'gcsp-feature-copy');
-  copy.append(el('p', 'gcsp-eyebrow', 'Your current car'), heading,
-    el('p', 'gcsp-countdown', contract.daysRemaining == null ? 'Contract end: Not supplied'
-      : `Contract ${countdown(model.asOf.slice(0, 10), contract.contractEndDate)}, on ${date(contract.contractEndDate)}`),
-    facts([row('Status', status(contract.status)), row('Driver', contract.driver?.name),
-      row('Contract end', date(contract.contractEndDate)), row('Term', contract.months, 'months'),
-      row('Annual mileage', contract.annualMileage, contract.mileageUnit), ...schemeRows(model, contract.schemeId), ...slotRows(model, contract.slotId),
-      row('Registration', contract.registration)], MORE_MISSING),
-    el('p', 'gcsp-account-terms', formatTerm(terms)));
-  if (source?.provenance) copy.append(el('p', 'gcsp-synthetic', `Image source: ${shown(source.provenance)}`));
-  if (contract.action) copy.append(controls.startButton(contract.action, buddy));
-  else copy.append(el('p', 'gcsp-note', 'Replacement is unavailable for this contract and slot.'));
-  copy.append(contractDetails(contract, model));
-  feature.append(media, copy);
+  const title = el('div', 'gcsp-account-title');
+  title.append(el('p', 'gcsp-account-context', scheme ? `Current car \u00b7 ${scheme}` : 'Current car'), heading, state);
+  copy.append(title, key);
+  const override = Number.isFinite(terms.allowance) ? overrideText(model) : null;
+  if (override) copy.append(el('p', 'gcsp-synthetic', override));
+  const quiet = suppliedFacts([row('Driver', contract.driver?.name), row('Term', contract.months, 'months'),
+    row('Annual mileage', contract.annualMileage, contract.mileageUnit), row('Collected', date(contract.actualCollectionDate)),
+    row('Current mileage', contract.currentOdometer), row('Registration', contract.registration), ...slotRows(model, contract.slotId)], 'gcsp-account-facts');
+  if (quiet) copy.append(quiet);
+  if (!contract.action) copy.append(el('p', 'gcsp-note', 'Replacement is unavailable for this contract and slot.'));
+  const actions = el('div', 'gcsp-actions');
+  if (contract.action) actions.append(controls.startButton(contract.action, buddy));
+  const view = button({ label: 'View car record', variant: 'ghost', onClick: () => controls.openRecord(recordFor(contract, model, scheme), view) });
+  view.dataset.focusKey = `View car record ${contract.contractId}`;
+  actions.append(view);
+  copy.append(actions);
+  feature.append(mediaColumn(media, ...(source?.provenance ? [el('p', 'gcsp-synthetic', `Image source: ${shown(source.provenance)}`)] : [])), copy);
   return feature;
 }
+
+const recordFor = (contract, model, scheme) => ({ contract, model, title: contract.model ?? 'Model not supplied',
+  context: ['Car record', scheme].filter(Boolean).join(' \u00b7 ') });
 
 // FUCQ-252: a collected order the server reports as the current car; its name and image come from the order read.
 function orderCurrentCar(car, order, orderVehicle) {
@@ -182,10 +270,11 @@ function orderCurrentCar(car, order, orderVehicle) {
   const { media } = mediaWell({ name: name ?? 'Current car', photo: same ? orderVehicle?.photo ?? '' : '', line: '',
     alt: `${name ?? 'Car'}: representative image`, caption: 'Representative image, not your exact car' }, 'gcsp-media', { placeholder: NO_IMAGE_TEXT });
   const copy = el('div', 'gcsp-feature-copy');
-  copy.append(el('p', 'gcsp-eyebrow', 'Your current car'), heading,
-    facts([row('Status', status('current')), row('Collected', date(car.collectedAt?.slice(0, 10))), ...(car.vin ? [row('Delivered VIN', car.vin)] : []),
-      ...(same ? orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value)) : [])], MORE_MISSING));
-  feature.append(media, copy);
+  const title = el('div', 'gcsp-account-title');
+  title.append(el('p', 'gcsp-account-context', 'Current car'), heading);
+  copy.append(title, ...[suppliedFacts([row('Collected', date(car.collectedAt?.slice(0, 10))), row('Delivered VIN', car.vin),
+    ...(same ? orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value)) : [])], 'gcsp-account-facts')].filter(Boolean));
+  feature.append(mediaColumn(media), copy);
   return feature;
 }
 
@@ -227,18 +316,69 @@ function buddyCard(value, { pending, controls }) {
   return { card, primary: !permission || looking };
 }
 
+const overrideText = (model) => {
+  const value = shown(model.account?.allowanceOverride);
+  if (!supplied(value)) return null;
+  const end = date(model.account.allowanceOverrideEndDate);
+  return `Allowance override: ${value}${supplied(end) ? `, ends ${end}` : ''}`;
+};
+
+// One table across schemes (FUCQ-218 names them); a placed order (FUCQ-239) is a row, and its numbers show in its record.
+function orderHistory(model, { order, orderVehicle, controls }) {
+  const section = el('section', 'gcsp-account-history');
+  section.setAttribute('aria-labelledby', 'gcsp-account-history-title');
+  const title = el('h2', 'gcsp-h2', 'Order history'); title.id = 'gcsp-account-history-title';
+  section.append(title);
+  const rows = [];
+  const add = (contract, scheme, ended, tag) => {
+    const car = contract.model ?? 'Model not supplied';
+    rows.push({ car: contract.model ? car : { label: car, missing: true }, scheme, collected: date(contract.actualCollectionDate), ended,
+      status: tag, record: recordFor(contract, model, scheme), name: `View record for ${[car, scheme, ended].filter(Boolean).join(', ')}` });
+  };
+  const placed = order && model.slots.some((slot) => slot.entitlementSlotId === order.entitlementSlotId);
+  if (placed) {
+    const car = orderVehicle?.name ?? null;
+    add({ model: car, status: order.outcome, slotId: order.entitlementSlotId, orderReference: order.source?.orderReference, orderNumber: order.source?.orderNumber },
+      schemeTitleFor(model, model.account?.schemeId), null, status(order.outcome));
+  }
+  model.histories.forEach((history, index) => {
+    for (const contract of history.entries) {
+      const when = (prefix, value) => shortDate(value, true) && `${prefix}${shortDate(value, true)}`;
+      const ended = contract.status === 'current' ? when('Ends ', contract.contractEndDate)
+        : contract.status === 'returned' ? when('Returned ', contract.returnedDate) : when('', contract.contractEndDate);
+      add(contract, schemeTitle(history, index), ended, contract.status === 'current' ? { label: 'Current car', emphasis: true, tone: 'success' } : status(contract.status));
+    }
+  });
+  if (!rows.length) { section.append(el('p', 'gcsp-note', 'No order history.')); return section; }
+  const columns = [{ key: 'car', label: 'Car' }, { key: 'scheme', label: 'Scheme' }, { key: 'collected', label: 'Collected' },
+    { key: 'ended', label: 'Ended' }, { key: 'status', label: 'Status' }];
+  section.append(dataTable({ caption: 'Order history', columns, rows, stack: true, rowAction: { header: 'Record', label: 'View record',
+    name: (data) => data.name, onSelect: (data, index) => controls.openRecord(data.record, section.querySelectorAll('tbody .gcsp-table-action')[index]) } }));
+  const join = (list, word) => list.length < 2 ? list.join('') : `${list.slice(0, -1).join(', ')} ${word} ${list.at(-1)}`;
+  const empty = model.histories.flatMap((history, index) => history.count ? [] : [schemeTitle(history, index)]);
+  const only = model.histories.flatMap((history, index) => !history.orderingSupported && history.count ? [schemeTitle(history, index)] : []);
+  const note = [empty.length && `No ${join(empty, 'or')} orders.`,
+    only.length && `${join(only, 'and')} ${only.length === 1 ? 'shows' : 'show'} history only; you can't order through ${only.length === 1 ? 'it' : 'them'} here.`].filter(Boolean).join(' ');
+  if (note) section.append(el('p', 'gcsp-synthetic', note));
+  return section;
+}
+
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
 export function renderAccountBody(main, { model, draft, offers = [], activity, pending = false, message, journey = false, controls, orderHost, order, orderVehicle, restarted = false, reload } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
-  wrap.append(screenIntro({ kicker: 'Choices', title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
+  const head = el('div', 'gcsp-account-head');
+  head.append(screenIntro({ kicker: 'Choices', title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
+  wrap.append(head);
   // A restarted run needs a reload, so nothing else on the page can work.
   if (restarted || model.state === 'restarted' || isRunRestarted(draft)) {
     wrap.append(runRestartedScreen({ reload })); main.replaceChildren(wrap); return () => wrap.remove();
   }
-  const toolbar = el('div', 'gcsp-actions');
-  toolbar.append(button({ label: 'Refresh account', variant: 'ghost', disabled: pending, onClick: controls.refresh }));
-  wrap.append(toolbar);
+  const fresh = el('div', 'gcsp-account-fresh');
+  const provenance = model.account ? model.versions?.employeeContract : null;
+  if (provenance) fresh.append(el('p', 'gcsp-synthetic', `${provenance.label ? `Source: ${provenance.label}. ` : ''}Account as of ${asOf(model.asOf)}.`));
+  fresh.append(button({ label: 'Refresh account', variant: 'ghost', disabled: pending, onClick: controls.refresh }));
+  head.append(fresh);
   if (message) { const note = statusScreen({ title: message.title, message: message.text, role: null }); note.classList.add('gcsp-account-message'); wrap.append(note); }
   const ordered = !journey && orderHost && model.state === 'no-entitlement' && order
     && model.slots.some((slot) => slot.entitlementSlotId === order.entitlementSlotId);
@@ -281,61 +421,20 @@ export function renderAccountBody(main, { model, draft, offers = [], activity, p
     wrap.append(statusScreen({ title: 'Saved journey could not be read', message: 'Refresh before starting or resuming a journey.', role: null }));
   }
   if (model.account) {
-    for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls, buddy));
-    for (const car of model.currentOrders) wrap.append(orderCurrentCar(car, order, orderVehicle));
     // FUCQ-237: an order in progress replaces "No current car"; a declined order keeps it. A confirmed return (FUCQ-252) shows it.
     const none = !model.currentContracts.length && !model.currentOrders.length;
+    // Without a current car there is no key strip, so the allowance (and any override, FUCQ-277) gets one line here.
+    if (none) {
+      const base = model.allowance?.monthlyPoints ?? model.allowance?.value;
+      const line = [Number.isFinite(base) && `Your allowance: ${points(base)} points a month`, overrideText(model)].filter(Boolean).join('. ');
+      if (line) wrap.append(el('p', 'gcsp-note', `${line}.`));
+    }
+    for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls, buddy));
+    for (const car of model.currentOrders) wrap.append(orderCurrentCar(car, order, orderVehicle));
     if (none && model.carReturned) wrap.append(statusScreen({ title: 'No current car', message: 'Your previous car has been returned. Your new car becomes current at handover.', role: null }));
     else if (none && !(ordered && order.outcome !== 'declined')) wrap.append(statusScreen({ title: 'No current car', message: 'No current vehicle is supplied for your account.', role: null }));
     for (const action of model.actions.filter((item) => item.action === 'order')) wrap.append(controls.startButton(action, buddy));
-    const allowance = el('section', 'gcsp-allowance');
-    allowance.append(el('h2', 'gcsp-h2', 'Your allowance'), facts([
-      row('Monthly allowance', model.allowance?.monthlyPoints ?? model.allowance?.value, 'points a month'),
-      // Override facts show only when supplied; a plain account has no override to explain.
-      ...(supplied(model.account.allowanceOverride) ? [row('Allowance override', model.account.allowanceOverride)] : []),
-      ...(supplied(model.account.allowanceOverrideEndDate) ? [row('Override end', date(model.account.allowanceOverrideEndDate))] : []),
-    ]));
-    wrap.append(allowance, details('Employee and contact details',
-      facts(model.identityFacts.map((item) => row(item.label, item.value, item.unit))),
-      controls.supportButton('hr-support', 'Get help with employee details')));
-    const drivers = details(`Drivers and licences (${model.drivers.length})`, ...model.drivers.map(driverDetails),
-      controls.supportButton('driver-support', 'Get help with drivers and licences'));
-    if (!model.drivers.length) drivers.append(el('p', 'gcsp-note', 'No driver or licence details supplied.'));
-    wrap.append(drivers);
-    const histories = el('section', 'gcsp-account-histories');
-    histories.append(el('h2', 'gcsp-h2', 'Order history'));
-    // FUCQ-239: a placed order is listed in Order history; the scheme groups list contract records only.
-    const placed = order && model.slots.some((slot) => slot.entitlementSlotId === order.entitlementSlotId);
-    if (placed) {
-      const entry = el('article', 'gcsp-account-history');
-      entry.append(el('h3', 'gcsp-h2', orderVehicle?.name ?? 'Model not supplied'),
-        facts([row('Status', status(order.outcome)), ...slotRows(model, order.entitlementSlotId),
-          ...orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value))], MORE_MISSING));
-      histories.append(entry);
-    }
-    if (model.historyState === 'no-history' && !placed) histories.append(el('p', 'gcsp-note', 'No order history.'));
-    for (const [index, history] of model.histories.entries()) {
-      const group = details(`${schemeTitle(history, index)} (${history.count} record${history.count === 1 ? '' : 's'})`);
-      if (!history.orderingSupported) group.append(el('p', 'gcsp-note', 'History is available. Ordering is not supported for this scheme.'));
-      if (!history.count) group.append(el('p', 'gcsp-note', 'No orders in this scheme.'));
-      for (const contract of history.entries) {
-        const entry = el('article', 'gcsp-account-history');
-        entry.append(el('h3', 'gcsp-h2', contract.model ?? 'Model not supplied'),
-          facts([row('Status', status(contract.status)), row('Driver', contract.driver?.name), ...schemeRows(model, history.schemeId), ...slotRows(model, contract.slotId),
-            row('Registration', contract.registration), row('Actual collection', date(contract.actualCollectionDate)),
-            row('Contract end', date(contract.contractEndDate)), row('Returned', date(contract.returnedDate))], MORE_MISSING), contractDetails(contract, model),
-          button({ label: printLabel(contract), variant: 'ghost',
-            onClick: () => controls.print(entry) }));
-        const action = model.actions.find((item) => item.oldContractId === contract.contractId && item.slotId === contract.slotId
-          && item.schemeId === history.schemeId);
-        if (history.orderingSupported && action) entry.append(controls.startButton(action, buddy));
-        group.append(entry);
-      }
-      histories.append(group);
-    }
-    wrap.append(histories);
-    const provenance = model.versions?.employeeContract;
-    if (provenance) wrap.append(el('p', 'gcsp-synthetic', `${provenance.label ? `Source: ${provenance.label}. ` : ''}Account as of ${asOf(model.asOf)}.`));
+    wrap.append(orderHistory(model, { order, orderVehicle, controls }), yourDetails(model, controls));
   }
   main.replaceChildren(wrap);
   return () => wrap.remove();
@@ -344,7 +443,7 @@ export function renderAccountBody(main, { model, draft, offers = [], activity, p
 export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, onNavigate, print, orderAdapter, helpAdapter, reload, signOut = adapter.readOnly !== true } = {}) {
   const abort = new AbortController();
   let envelope; let draft; let offers; let activity; let main; let pending = false; let message = null; let journey = false; let disposed = false;
-  let generation = 0; let teardown; let loading; let finishPrint; let orderHost; let orderRow; let orderVehicle; let stopOrder; let restarted = false;
+  let generation = 0; let teardown; let loading; let finishPrint; let drawer; let orderHost; let orderRow; let orderVehicle; let stopOrder; let restarted = false;
   let syncVersion = 0; const live = viewStatus();
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
@@ -365,25 +464,28 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     startButton: (action, buddy = false) => button({ label: action.action === 'replace' ? 'Choose a replacement' : 'Start a new order',
       variant: !journey && (offerHeld(offers) || buddy) ? 'ghost' : 'primary',
       disabled: pending || draft?.status !== 'ok' && draft?.status !== 'not-found', onClick: () => start(action) }),
-    print: (entry) => {
-      const opened = [...entry.querySelectorAll('details')].filter((item) => !item.open);
-      opened.forEach((item) => { item.open = true; });
-      const done = () => opened.forEach((item) => { item.open = false; });
-      if (print) { try { print(entry); } finally { done(); } }
-      else {
-        finishPrint?.();
-        const preview = el('div', 'gcsp gcsp-account-print-record');
-        const record = entry.cloneNode(true);
-        record.querySelectorAll('button').forEach((node) => node.remove());
-        preview.append(screenIntro({ title: 'Account contract record', level: 1 }), record);
-        root.append(preview); root.classList.add('gcsp-account-printing');
-        finishPrint = () => {
-          done(); preview.remove(); root.classList.remove('gcsp-account-printing');
-          root.ownerDocument.defaultView.removeEventListener('afterprint', finishPrint); finishPrint = null;
-        };
-        root.ownerDocument.defaultView.addEventListener('afterprint', finishPrint, { once: true });
-        try { root.ownerDocument.defaultView.print(); } catch { finishPrint(); }
-      }
+    openRecord: (record, opener) => {
+      drawer?.close(false);
+      const key = opener?.dataset.focusKey;
+      const host = main?.closest('.gcsp') ?? root;
+      const contract = record.contract;
+      const printButton = button({ label: printLabel(contract), variant: 'ghost', onClick: () => controls.print(recordPrintNode(record)) });
+      drawer = sideDrawer({ host, context: record.context, title: record.title, body: recordSections(record), footer: [printButton],
+        closeLabel: 'Close', opener: () => (key && main ? [...main.querySelectorAll('button')].find((node) => node.dataset.focusKey === key) : opener),
+        onClose: () => { drawer = null; } });
+    },
+    print: (record) => {
+      if (print) { print(record); return; }
+      finishPrint?.();
+      const preview = el('div', 'gcsp gcsp-account-print-record');
+      preview.append(screenIntro({ title: 'Account contract record', level: 1 }), record);
+      root.append(preview); root.classList.add('gcsp-account-printing');
+      finishPrint = () => {
+        preview.remove(); root.classList.remove('gcsp-account-printing');
+        root.ownerDocument.defaultView.removeEventListener('afterprint', finishPrint); finishPrint = null;
+      };
+      root.ownerDocument.defaultView.addEventListener('afterprint', finishPrint, { once: true });
+      try { root.ownerDocument.defaultView.print(); } catch { finishPrint(); }
     },
   };
   function draw(focus = false) {
@@ -433,7 +535,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   async function refresh() {
     if (pending || disposed) return;
     pending = true; message = null; restarted = false; live.clear(); draw();
-    teardown(); main = null;
+    drawer?.close(false); teardown(); main = null;
     teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
     try { await loading; } finally { pending = false; draw(true); }
   }
@@ -511,7 +613,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   const shellAdapter = { signOut, loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
   teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
-  const destroy = () => { disposed = true; generation += 1; abort.abort(); finishPrint?.(); stopOrder?.(); teardown(); live.root.remove(); };
+  const destroy = () => { disposed = true; generation += 1; abort.abort(); drawer?.close(false); finishPrint?.(); stopOrder?.(); teardown(); live.root.remove(); };
   destroy.refresh = refresh;
   destroy.sync = sync;
   return destroy;

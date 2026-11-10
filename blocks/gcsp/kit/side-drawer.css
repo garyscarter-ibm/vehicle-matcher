@@ -1,0 +1,11 @@
+/* GCSP kit: sideDrawer, a modal record panel on the right. Scoped to .gcsp; colours and sizes come from tokens. */
+.gcsp .gcsp-side-drawer-backdrop { position: fixed; inset: 0; z-index: 40; background: var(--gcsp-backdrop); }
+.gcsp .gcsp-side-drawer-panel { position: fixed; z-index: 41; top: 0; right: 0; bottom: 0; display: flex; flex-direction: column; width: min(480px, 100%); background: var(--gcsp-surface); box-shadow: var(--gcsp-elevation-overlay); }
+.gcsp .gcsp-side-drawer-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--gcsp-space-4); padding: var(--gcsp-space-4) var(--gcsp-space-6); border-bottom: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-side-drawer-titles { min-width: 0; }
+.gcsp .gcsp-side-drawer-context { margin: 0 0 var(--gcsp-space-1); color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
+.gcsp .gcsp-side-drawer-title { margin: 0; overflow-wrap: anywhere; }
+.gcsp .gcsp-side-drawer-title:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
+.gcsp .gcsp-side-drawer-body { display: flex; flex: 1 1 auto; flex-direction: column; gap: var(--gcsp-space-6); min-height: 0; padding: var(--gcsp-space-6); overflow-y: auto; overflow-wrap: anywhere; }
+.gcsp .gcsp-side-drawer-foot { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-3); padding: var(--gcsp-space-4) var(--gcsp-space-6); border-top: 1px solid var(--gcsp-divider); }
+@media (max-width: 600px) { .gcsp .gcsp-side-drawer-panel { width: 100%; } .gcsp .gcsp-side-drawer-head, .gcsp .gcsp-side-drawer-foot { padding: var(--gcsp-space-4); } .gcsp .gcsp-side-drawer-body { padding: var(--gcsp-space-4); gap: var(--gcsp-space-4); } .gcsp .gcsp-side-drawer-foot .vm-btn { width: 100%; } }
