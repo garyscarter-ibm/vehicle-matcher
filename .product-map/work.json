@@ -4281,6 +4281,47 @@
       "delivery_status": "Built; final fresh-base scoped check complete; pending parent base merge and collaborator acceptance",
       "jira_status_basis": "Last verified native status In Progress. Parent subsequent refresh failed OAuth unauthorized_client invalid refresh_token; lifecycle remains pending sign-in, no transition inferred.",
       "integration_base": "43e4c1be2ca66951a0ddc4a1ff11332df48974be"
+    },
+    {
+      "id": "FUCQ-346",
+      "title": "Keep account menus and Retry readable in narrow component-gallery frames",
+      "status": "To Do",
+      "original_status": "To Do",
+      "type": "Bug",
+      "assignee": "",
+      "branch": "dev/DEV-2026-11-10-005",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-346",
+      "jira_observation_basis": "Imported claimed Bug; native OAuth unavailable; local slice evidence does not infer lifecycle acceptance",
+      "workers": [
+        {
+          "name": "Michigan J. Frog",
+          "role": "story lead; scoped gallery repair",
+          "status": "in-progress",
+          "observed_at": "2026-11-10T16:22:40.627257+00:00",
+          "expires_at": "2026-11-10T18:22:40.628274+00:00"
+        }
+      ],
+      "observed_at": "2026-11-10T16:22:41Z",
+      "slices": [
+        {
+          "id": "containment",
+          "status": "in-progress",
+          "title": "Gallery-account-containment",
+          "observed_at": "2026-11-10T16:22:41Z",
+          "evidence": "Lead verified all3 supplied attachment bytes and source containment cause; bounded gallery-only repair plan in shared test-runs/fucq346-20261110/plan.json. Tests and browser held pending dispatcher reservation release."
+        },
+        {
+          "id": "critique",
+          "status": "not-started",
+          "title": "Independent-rendered-review"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Shared-menu-boundary-integration"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
