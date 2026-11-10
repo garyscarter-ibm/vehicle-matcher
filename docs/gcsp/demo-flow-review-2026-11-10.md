@@ -32,5 +32,5 @@ The hosted entry ran in memory mode (`GCSP_RUNTIME=1 GCSP_REPOSITORY_MODE=memory
 
 ## Suggested next, not built
 
-- **On-screen email domain** (7): this needs a decision, not a fix. Gary's FUCQ-321 rule (9 November) asks for `.test` addresses. Russell's login story (10 November, DEV-2026-11-10-001) chose `firstname.lastname@gcsp-demo.com` as the sign-in address, and the painted-copy test explicitly exempts it. Until the two collaborators agree a domain, it stays unchanged. The failing `gcsp-account-render` snapshot comes from the same clash.
+- **On-screen email domain** (7): decided, 10 November 2026. Gary kept `gcsp-demo.com`, Russell's sign-in domain. The experience contract now says so, and the stale `.test` browser fixtures were brought into line, which clears the failing account snapshot test.
 - **One-page Paula portal.** Every view already mounts inside `mountEmployee` with an `onNavigate` hook, so one HTML host with `history.pushState` routing could swap views in place, with no reloads at all. It is too broad to land safely before 12 November. It is a good first item after the demo.
