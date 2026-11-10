@@ -27,10 +27,10 @@ The hosted entry ran in memory mode (`GCSP_RUNTIME=1 GCSP_REPOSITORY_MODE=memory
 - **A next step after saving preferences** (fixes 2). With search on, a saved brief offers "See your buddy at work".
 - **"Local preview" removed** from the live preferences page (fixes 3).
 - **Account menu shortcuts** (fixes 4): Your preferences and Renewal help, above Sign out, on every Paula page including the offer.
+- **Preferences preview refreshes on presenter actions** (fixes 6). Next release re-runs the preview on Paula's current edits, with no reload.
 - **Cross-fading page changes** (eases 5). A CSS `@view-transition` keeps the header and rail steady between same-origin pages. It is off for reduced motion.
 
 ## Suggested next, not built
 
-- **Refresh the preferences preview on presenter actions** (6). Small: wire `subscribePresenterActions` into `brief/runtime.js` and re-run the preview.
-- **Fix the on-screen email domain** (7). Raise it as a backlog Bug and align the demo login profile with the `.test` contract.
+- **On-screen email domain** (7): this needs a decision, not a fix. Gary's FUCQ-321 rule (9 November) asks for `.test` addresses. Russell's login story (10 November, DEV-2026-11-10-001) chose `firstname.lastname@gcsp-demo.com` as the sign-in address, and the painted-copy test explicitly exempts it. Until the two collaborators agree a domain, it stays unchanged. The failing `gcsp-account-render` snapshot comes from the same clash.
 - **One-page Paula portal.** Every view already mounts inside `mountEmployee` with an `onNavigate` hook, so one HTML host with `history.pushState` routing could swap views in place, with no reloads at all. It is too broad to land safely before 12 November. It is a good first item after the demo.

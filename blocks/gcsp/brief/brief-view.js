@@ -234,7 +234,10 @@ export function mountBriefBody(main, adapters = {}) {
       }
       if (state.save.state !== 'idle' && state.save.state !== 'saving') live.textContent = saveNote.textContent;
     };
-    unsubscribe = controller.subscribe(patch); patch(controller.snapshot()); controller.requestPreview();
+    const stopPatch = controller.subscribe(patch); patch(controller.snapshot()); controller.requestPreview();
+    // A presenter release changes stock, so re-run the preview on the edits as they stand.
+    const stopClock = typeof adapters.subscribeClock === 'function' ? adapters.subscribeClock(() => controller?.requestPreview()) : null;
+    unsubscribe = () => { stopPatch?.(); stopClock?.(); };
   }
   function load(useInitial = false) {
     const current = ++generation;
