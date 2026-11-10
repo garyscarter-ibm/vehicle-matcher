@@ -1,6 +1,6 @@
 // Pure view models for a stored what-if comparison and a worker job. Formatting only: every figure comes from the stored result. Throws on a malformed shape.
 import { BASELINE, BUDDY, BETTER_WHEN, FALLBACK_CAVEAT, JOB_STATUS, TODAY, measureLabel, measureKind, carTimeKind, formatMeasure, formatDemoTime, oldPolicyText,
-  experimentLabel, experimentVerdict, experimentDifferenceText, formatExperimentValue, jobProgressText } from './comparison-copy.js';
+  plainText, experimentLabel, experimentVerdict, experimentDifferenceText, formatExperimentValue, jobProgressText } from './comparison-copy.js';
 import { parameterLabel } from './experiment-copy.js';
 import { toComparisonView, readStats, scaleFor, statValues, toAssumption, object, text, finite, fail } from './comparison-view.js';
 
@@ -22,8 +22,8 @@ function readChange(result) {
   if (!object(change) || !text(change.key) || !('baselineValue' in change)) fail('change');
   const raw = Array.isArray(change.values) ? change.values : 'value' in change ? [change.value] : null;
   if (!raw?.length) fail('tried values');
-  return { key: change.key, label: parameterLabel(change.key), unit: change.unit ?? '', status: change.status ?? 'what-if', basis: change.basis ?? '',
-    baseline: { value: change.baselineValue, text: formatExperimentValue(id, change.baselineValue), basis: change.baselineBasis ?? '', status: change.baselineStatus ?? '' },
+  return { key: change.key, label: parameterLabel(change.key), unit: change.unit ?? '', status: change.status ?? 'what-if', basis: plainText(change.basis) ?? '',
+    baseline: { value: change.baselineValue, text: formatExperimentValue(id, change.baselineValue), basis: plainText(change.baselineBasis) ?? '', status: change.baselineStatus ?? '' },
     values: raw, texts: raw.map((v) => formatExperimentValue(id, v)) };
 }
 
@@ -64,7 +64,7 @@ export function toExperimentView(stored) {
   const routes = ROUTES.map((route) => routeView(result, result.effects, route, change));
   const assumptions = result.assumptions.map(toAssumption);
   const caveat = text(result.caveat) ? result.caveat : FALLBACK_CAVEAT;
-  const limitations = (Array.isArray(result.limitations) ? result.limitations : []).filter((l) => text(l) && l !== caveat);
+  const limitations = (Array.isArray(result.limitations) ? result.limitations : []).filter((l) => text(l) && l !== caveat).map(plainText);
   const size = manifest.overlays?.['comparison.cohortSize'] ?? result.assumptions.find((a) => a.key === 'comparison.cohortSize')?.value;
   const made = formatDemoTime(result.completedAt); const stamped = formatDemoTime(stored.storedAt);
   const codeRevision = text(manifest.codeRevision) ? manifest.codeRevision : null;

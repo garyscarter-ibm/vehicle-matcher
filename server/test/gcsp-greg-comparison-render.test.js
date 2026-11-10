@@ -165,11 +165,11 @@ test('an older policy version is labelled with both versions and what to do', as
   assert.equal((await mount('no-clear-difference')).root.querySelector('.gcsp-comparison-notice'), null);
 });
 
-test('no stored comparison says it is prepared offline, shows no command, and Reload reads again', async () => {
+test('no stored comparison says it has not been run, shows no command, and Reload reads again', async () => {
   const { root, calls } = await mount('empty');
   assert.equal(state(root), 'empty'); assert.equal(root.querySelector('h2').textContent, 'No stored comparison yet');
   assert.equal(root.querySelector('code'), null); assert.doesNotMatch(text(root), /node scripts|gcsp-comparison\.mjs/);
-  assert.match(text(root), /prepared offline and has not been run here\. Reload to check again\./);
+  assert.match(text(root), /No comparison has been run yet\. Reload to check again\./);
   assert.equal(root.querySelector('table'), null); assert.equal(calls.load, 1);
   button(root, 'Reload').click(); await settle(); assert.equal(calls.load, 2);
 });
@@ -182,7 +182,7 @@ test('unavailable offers Retry, refused offers nothing, a lapsed key sends to th
   assert.equal(state(refused), 'refused'); assert.match(text(refused), /Only the scheme ordering lead or the presenter can see the route comparison\./);
   assert.equal(refused.querySelectorAll('button').length, 0); assert.equal(refused.querySelector('table'), null);
   const lapsed = (await mount('refused', {}, { load: async () => ({ status: 'access-required' }) })).root;
-  assert.equal(state(lapsed), 'access-required'); assert.match(lapsed.querySelector('[role="alert"]').textContent, /Demo access needed/);
+  assert.equal(state(lapsed), 'access-required'); assert.match(lapsed.querySelector('[role="alert"]').textContent, /Access needed/);
   assert.ok(lapsed.querySelector('a[href^="/gcsp/access"]'));
   const bad = (await mount('refused', {}, { load: async () => ({ status: 'ready', stored: { result: { kind: 'process-comparison' } } }) })).root;
   assert.equal(state(bad), 'unavailable'); assert.equal(bad.querySelector('.gcsp-comparison-measure'), null);
@@ -229,10 +229,10 @@ test('the dashboard mounts the comparison into its route-comparison region, and 
   assert.equal(region.getAttribute('aria-label'), 'Route comparison'); assert.equal(region.hasAttribute('aria-labelledby'), false);
   assert.ok(region.querySelector('.gcsp-comparison')); assert.equal(region.textContent.includes('not built'), false);
   assert.equal(typeof teardown.comparison.refresh, 'function'); assert.equal(calls.load, 1);
-  assert.match(teardown.regions.prediction.textContent, /not built in this demo yet/);
+  assert.match(teardown.regions.prediction.textContent, /Not available yet/);
   teardown(); assert.equal(root.children.length, 0);
   const bare = host(); const plain = dash.mountGregDashboard(bare, { loadDemand: demand.loadDemand }); await settle();
-  assert.equal(plain.comparison, null); assert.match(plain.regions.routeComparison.textContent, /not built in this demo yet/); plain();
+  assert.equal(plain.comparison, null); assert.match(plain.regions.routeComparison.textContent, /Not available yet/); plain();
   dash.defineGcspGregDashboard(window.customElements); const node = document.createElement('gcsp-greg-dashboard');
   node.adapter = { comparison: fixtures.comparisonFixtureAdapter('today-better'), loadDemand: demand.loadDemand };
   document.body.append(node); await settle();

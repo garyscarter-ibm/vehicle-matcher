@@ -10,7 +10,7 @@ const TABLE = 'comparison_jobs';
 const WORKER_URL = new URL('./worker.js', import.meta.url);
 const FAILED = 'The comparison could not be completed.';
 const EXITED = 'The comparison worker stopped before it finished.';
-const RERUNS_OFF = 'Reruns are prepared offline and are not started from this screen.';
+const RERUNS_OFF = 'Reruns are not started from this screen.';
 const BACKEND_STOPPED = 'The backend stopped before the comparison finished.';
 
 const plain = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);

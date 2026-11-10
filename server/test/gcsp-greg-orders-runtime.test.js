@@ -60,7 +60,7 @@ test('replacement and abort detach old tracking and restore the reserved region'
   firstStop(); assert.equal(host.querySelectorAll('gcsp-greg-orders').length, 1);
   abort.abort(); assert.equal(host.querySelector('gcsp-greg-orders'), null);
   assert.ok(host.regions.orderTracking.classList.contains('gcsp-greg-region'));
-  assert.match(host.regions.orderTracking.textContent, /Order tracking is not built/);
+  assert.match(host.regions.orderTracking.textContent, /Not available yet/);
   host.setAttribute('fixture', 'empty'); await settle(); assert.equal(host.querySelector('gcsp-greg-orders'), null);
   stop();
 });

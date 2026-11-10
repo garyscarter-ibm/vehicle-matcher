@@ -17,7 +17,6 @@ const bullets = (items) => { const ul = el('ul', 'gcsp-plan-list'); for (const t
 const wideTable = (region) => { region.classList.add('gcsp-plan-wide'); return region; };
 const readView = (value) => { try { return toPlanView(value); } catch { return null; } };
 
-const sentence = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 const LEARNED_NOTE = 'For comparison only. Only the recommended plan can be requested from Production.';
 // Learned plan beside the baseline. A fallback or unavailable result shows its limitation and nothing else; no figures are made up.
 function learnedSection(l, base) {
@@ -40,7 +39,7 @@ function learnedSection(l, base) {
       columns: [{ key: 'name', label: 'Vehicle or measure' }, { key: 'baseline', label: 'Recommended plan', numeric: true },
         { key: 'learned', label: l.label, numeric: true }, { key: 'difference', label: 'Difference', numeric: true }],
       rows: l.rows.map((r) => ({ name: cell(r.name, r.changed), baseline: r.baseline, learned: cell(r.learned, r.changed), difference: cell(r.difference, r.changed) })) }));
-    if (!l.changedCount) section.append(note('The synthetic-trained model gives the same plan.'));
+    if (!l.changedCount) section.append(note('The learned model gives the same plan.'));
   }
   const ev = l.evaluation;
   section.append(el('h4', 'gcsp-plan-h4', 'Evaluation'));
@@ -58,7 +57,7 @@ function learnedSection(l, base) {
     }
   }
   section.append(factList([{ label: 'Evaluation', value: ev?.label }, { label: 'Model', value: l.model.artifact },
-    { label: 'Activation policy', value: l.model.policy }, { label: 'Training data', value: sentence(l.model.data) }], { className: 'gcsp-plan-facts' }));
+    { label: 'Activation policy', value: l.model.policy }], { className: 'gcsp-plan-facts' }));
   if (l.limitations.length) section.append(bullets(l.limitations));
   return section;
 }
@@ -291,7 +290,7 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
     const retry = refused || restarted ? [] : [locked(button({ label: 'Retry', variant: 'primary', onClick: () => load() }))];
     top.replaceChildren(restarted ? runRestartedNotice().root : statusScreen({ kicker: 'Next order', title: refused ? 'You cannot open this plan' : 'The order plan is unavailable',
       message: reply?.message || UNAVAILABLE, actions: retry, role: 'alert' }));
-    if (restarted) setState('restarted', 'Demo restarted.'); else setState(refused ? 'refused' : 'unavailable', refused ? 'Access refused.' : 'Order plan unavailable.');
+    if (restarted) setState('restarted', 'Restarted'); else setState(refused ? 'refused' : 'unavailable', refused ? 'Access refused.' : 'Order plan unavailable.');
   }
   async function load(announce, focus = Boolean(announce)) {
     const mine = begin('Loading the order plan.');

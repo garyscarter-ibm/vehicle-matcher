@@ -6,7 +6,7 @@ export class PresenterControlsService {
   async readState(context) {
     const allowed = await this.#identity.requireRole(context, 'presenter');
     if (allowed.status !== 'ok') return allowed;
-    if (!this.#clock) return result('unavailable', { reason: 'Demo clock has not been configured.', retryable: true });
+    if (!this.#clock) return result('unavailable', { reason: 'Clock has not been configured.', retryable: true });
     const state = await (this.#scenarios ? this.#scenarios.readState(context) : this.#clock.readState(context));
     if (state.status !== 'ok') return state;
     const configuration = await this.#clock.readControlsConfiguration(context);
@@ -17,7 +17,7 @@ export class PresenterControlsService {
       controls: configuration.value, principals: principals.value });
   }
   async tick(context, input) {
-    if (!this.#clock) return result('unavailable', { reason: 'Demo clock has not been configured.', retryable: true });
+    if (!this.#clock) return result('unavailable', { reason: 'Clock has not been configured.', retryable: true });
     return this.#clock.advanceAndTick(context, input);
   }
 }

@@ -157,7 +157,7 @@ test('probabilities sum to one per employee including wait; acceptance is not wa
   const wide = widened(input);
   const out = await providerFor(policy).forecast(f.context, wide, { runId: read.runId, asOf: read.asOf });
   assert.equal(out.status, 'ok', JSON.stringify(out));
-  assert.deepEqual([out.basis, out.label], ['synthetic-trained-model', 'Synthetic-trained model']);
+  assert.deepEqual([out.basis, out.label], ['synthetic-trained-model', 'Learned model']);
   assert.equal(out.employees.length, 3);
   for (const e of out.employees) {
     const total = e.choices.reduce((sum, c) => sum + c.probability, 0) + e.waitProbability;
@@ -365,7 +365,7 @@ test('FUCQ-312 coverage regression: a brief that permits the orderable hatch fal
 });
 
 // FUCQ-123 slice 2: Greg's plan operations carry the learned plan beside the baseline one.
-const LABEL = 'Synthetic-trained model';
+const LABEL = 'Learned model';
 const SHORT = 'The learned forecast is unavailable right now, so only the baseline plan is shown.';
 const good = (out) => { assert.equal(out.status, 'ok', JSON.stringify(out).slice(0, 400)); return out.value; };
 const setPolicy = (...edits) => (source) => { for (const edit of edits) edit(source); return { async loadVersions() { return [source]; } }; };

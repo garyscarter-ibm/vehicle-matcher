@@ -398,7 +398,7 @@ test('fresh workspace with unrecovered reset session explains trusted backend bo
     readControls: async () => ({ status: 'stale-run' }) } });
   await done.ready; await settle();
   assert.doesNotMatch(host.textContent, /Previous employee account/);
-  assert.match(host.textContent, /Demo restarted/); assert.doesNotMatch(host.textContent, /stale-run/);
+  assert.match(host.textContent, /Restarted/); assert.doesNotMatch(host.textContent, /stale-run/);
   done();
 });
 test('workspace stale-run context shows the restarted screen with a Reload that calls the injected reload', async () => {
@@ -407,7 +407,7 @@ test('workspace stale-run context shows the restarted screen with a Reload that 
     readControls: async () => ({ status: 'unavailable' }) } });
   await done.ready; await settle();
   const screen = host.querySelector('.vm-status[role="alert"]'); assert.ok(screen);
-  assert.match(screen.textContent, /Demo restarted/); assert.match(screen.textContent, /The demo was restarted\. Reload the page to continue\./);
+  assert.match(screen.textContent, /Restarted/); assert.match(screen.textContent, /This page was restarted\. Reload to continue\./);
   assert.doesNotMatch(host.textContent, /stale-run|\u2014/);
   const reload = screen.querySelector('button[type="button"]'); assert.equal(reload.textContent, 'Reload'); reload.click(); assert.equal(reloads, 1);
   done();
@@ -494,7 +494,7 @@ test('known pending receipt keeps pending details visible while allowing deliber
 const restartedPanel = (f) => f.host.querySelector('.gcsp-run-restarted');
 function assertRestarted(f, reloads) {
   const notice = restartedPanel(f); assert.ok(notice); assert.equal(notice.hidden, false); assert.equal(notice.getAttribute('role'), 'alert');
-  assert.match(notice.textContent, /The demo was restarted\. Reload the page to continue\./);
+  assert.match(notice.textContent, /This page was restarted\. Reload to continue\./);
   assert.doesNotMatch(f.host.textContent, /stale-run|\u2014|Action not completed|Readback/);
   const reload = notice.querySelector('button'); assert.equal(reload.tagName, 'BUTTON'); assert.equal(reload.type, 'button');
   assert.equal(reload.disabled, false); assert.equal(reload.textContent, 'Reload');
@@ -651,7 +651,7 @@ test('fault group shows only supplied adapters, preselects the current mode and 
   const f = setup({ readFaults: async () => ok({ runId: 'run-a', faults: faultRows('stale').slice(0, 1) }),
     setFault: (payload) => { calls.push(payload); return new Promise((resolve) => { finish = resolve; }); } }); await settle();
   assert.ok(group(f, 'Stock feed fault')); assert.equal(group(f, 'Ordering fault'), null);
-  assert.equal(selected(f, 'Stock feed fault'), 'stale'); assert.match(f.host.textContent, /Synthetic faults/);
+  assert.equal(selected(f, 'Stock feed fault'), 'stale'); assert.match(f.host.textContent, /Faults/);
   assert.match(choice(f, 'Stock feed fault', 'unavailable').textContent, /Stock feed unavailable/);
   assert.match(choice(f, 'Stock feed fault', 'none').textContent, /No fault/);
   choice(f, 'Stock feed fault', 'unavailable').click(); f.click('Set stock feed fault'); f.click('Set stock feed fault');
@@ -704,7 +704,7 @@ test('after a retryable refused tick the fault control stays enabled and clearin
 test('fault group is hidden when the read fails or reports no faults, and unknown modes fall back to the id', async () => {
   for (const readFaults of [async () => ({ status: 'unavailable' }), async () => ok({ runId: 'run-a', faults: [] }), undefined]) {
     const f = setup(readFaults ? { readFaults } : {}); await settle();
-    assert.doesNotMatch(f.host.textContent, /Synthetic faults/); assert.equal(group(f, 'Stock feed fault'), null);
+    assert.doesNotMatch(f.host.textContent, /Faults/); assert.equal(group(f, 'Stock feed fault'), null);
     assert.equal([...f.host.querySelectorAll('button')].some((b) => /^Set .* fault$/.test(b.textContent) && !b.closest('[hidden]')), false);
     f.control.destroy();
   }

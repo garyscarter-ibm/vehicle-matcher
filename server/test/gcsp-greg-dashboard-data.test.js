@@ -209,7 +209,7 @@ test('outcomeToState maps every HTTP outcome to one view state', async () => {
     assert.equal(out.status, 'refused'); assert.match(out.message, /Only the scheme ordering lead can open this dashboard/);
   }
   const stale = outcomeToState(409, { status: 'stale-run' });
-  assert.equal(stale.status, 'refused'); assert.match(stale.message, /reset/);
+  assert.equal(stale.status, 'refused'); assert.match(stale.message, /restarted/);
   const conflict = outcomeToState(409, { status: 'conflict' });
   assert.equal(conflict.status, 'conflict'); assert.match(conflict.message, /Refresh/);
   for (const [code, body] of [[503, { status: 'unavailable' }], [500, null], [200, null], [200, { status: 'ok', value: {} }], [200, 'garbage'], [404, {}], [409, {}]]) {

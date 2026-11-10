@@ -148,7 +148,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     const signature = faults.map((row) => row.adapter).join('|');
     if (signature !== faultSignature) {
       faultSignature = signature;
-      faultGroup.replaceChildren(el('h3', '', 'Synthetic faults'), ...entries.flatMap((entry) => [entry.pick.root, entry.set]));
+      faultGroup.replaceChildren(el('h3', '', 'Faults'), ...entries.flatMap((entry) => [entry.pick.root, entry.set]));
     }
     for (const entry of entries) {
       const slot = faultRows.get(entry.row.adapter);
@@ -190,7 +190,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     if (!state) return;
     bar.setReadback([
       { label: 'Scenario', value: state.currentScenario?.name, missingLabel: 'Scenario not supplied' },
-      { label: 'Run', value: state.runId }, { label: 'DemoClock (UTC)', value: state.now },
+      { label: 'Run', value: state.runId }, { label: 'Clock (UTC)', value: state.now },
       { label: 'Acting principal', value: context?.principalId ? `${context.name || context.principalId} (${context.roles?.join(', ') || 'role not supplied'})` : null, missingLabel: 'Context unavailable' },
     ]);
     principal.project((state.principals || []).map((row) => ({ value: row.principalId,

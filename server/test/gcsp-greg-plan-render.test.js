@@ -317,7 +317,7 @@ test('the dashboard mounts the plan into its prediction region, refreshes it on 
   requestButton(region).click(); await settle(); assert.equal(submitted, 1);
   teardown(); assert.equal(root.children.length, 0);
   const bare = host(); const plain = dash.mountGregDashboard(bare, { loadDemand: demand.loadDemand }); await settle();
-  assert.equal(plain.orderPlan, null); assert.match(plain.regions.prediction.textContent, /not built in this demo yet/); plain();
+  assert.equal(plain.orderPlan, null); assert.match(plain.regions.prediction.textContent, /Not available yet/); plain();
 });
 
 test('the Greg HTTP adapter exposes the order plan adapter the dashboard element passes through', async () => {
@@ -333,7 +333,7 @@ test('the Greg HTTP adapter exposes the order plan adapter the dashboard element
 test('a lapsed access key shows the compact restart notice with Reload and no Retry, on first load and over a loaded plan', async () => {
   const first = await mount('ready', {}, { readPlan: async () => ({ status: 'access-required' }) });
   assert.equal(state(first.root), 'restarted'); const alert = first.root.querySelector('[role="alert"]');
-  assert.match(alert.textContent, /Reload the page to continue/); assert.deepEqual([...first.root.querySelectorAll('button')].map((b) => b.textContent), ['Reload']);
+  assert.match(alert.textContent, /Reload to continue/); assert.deepEqual([...first.root.querySelectorAll('button')].map((b) => b.textContent), ['Reload']);
   assert.doesNotMatch(first.root.textContent, /unavailable|Retry/); first.teardown();
   let reads = 0; const later = await mount('ready', {}, { readPlan: async () => (++reads === 1 ? adapterMod.planOutcome(200, { status: 'ok', value: valueOf('ready') }) : { status: 'access-required' }) });
   assert.equal(state(later.root), 'ready'); await later.teardown.refresh(); await settle();
@@ -342,7 +342,7 @@ test('a lapsed access key shows the compact restart notice with Reload and no Re
 });
 
 // ---------- FUCQ-123: the synthetic-trained model beside the recommended plan ----------
-const learnedSection = (root) => [...root.querySelectorAll('section')].find((sec) => sec.querySelector('h3')?.textContent === 'Synthetic-trained model');
+const learnedSection = (root) => [...root.querySelectorAll('section')].find((sec) => sec.querySelector('h3')?.textContent === 'Learned model');
 const learnedWith = (name, change) => { const v = valueOf(name); change(v); return v; };
 const tableOf = (node, caption) => [...node.querySelectorAll('table')].find((t) => t.caption.textContent === caption);
 const cells = (row) => [...row.cells].map((c) => c.textContent);
@@ -350,12 +350,12 @@ const cells = (row) => [...row.cells].map((c) => c.textContent);
 test('an available learned plan shows beside the recommended plan with differences in text and emphasis', async () => {
   const { root } = await mount('learned');
   const sec = learnedSection(root); assert.ok(sec, 'learned section');
-  const h = sec.querySelector('h3'); assert.equal(h.textContent, 'Synthetic-trained model'); assert.equal(h.tabIndex, -1);
+  const h = sec.querySelector('h3'); assert.equal(h.textContent, 'Learned model'); assert.equal(h.tabIndex, -1);
   assert.equal(sec.getAttribute('aria-labelledby'), h.id);
   assert.ok(root.querySelector('.gcsp-plan-content').lastElementChild === sec, 'after the baseline sections, before the limits editor');
   assert.match(text(sec), /For comparison only\. Only the recommended plan can be requested from Production\./);
   const table = tableOf(sec, 'Plan comparison'); assert.ok(table);
-  assert.deepEqual([...table.tHead.rows[0].cells].map((c) => c.textContent), ['Vehicle or measure', 'Recommended plan', 'Synthetic-trained model', 'Difference']);
+  assert.deepEqual([...table.tHead.rows[0].cells].map((c) => c.textContent), ['Vehicle or measure', 'Recommended plan', 'Learned model', 'Difference']);
   assert.equal(table.closest('[role="region"]').tabIndex, 0);
   assert.ok(table.closest('.gcsp-table-wrap').classList.contains('is-stack'));
   assert.equal(table.tBodies[0].rows[0].cells[3].dataset.label, 'Difference');
@@ -376,16 +376,16 @@ test('an available learned plan shows beside the recommended plan with differenc
 test('the learned section gives the evaluation, model facts and limitations, and offers no button', async () => {
   const { root } = await mount('learned');
   const sec = learnedSection(root); const t = text(sec);
-  assert.match(t, /Evaluation\s*Synthetic-trained; offline evaluation/);
+  assert.match(t, /Evaluation\s*Offline evaluation/);
   const tiles = [...sec.querySelectorAll('.gcsp-tile')].map((x) => x.textContent);
   assert.equal(tiles.length, 3);
   assert.match(tiles[0], /Held-out log loss0\.912Expressed demand 1\.204, Deterministic fit 1\.086\. Lower is better/);
   assert.match(tiles[1], /Held-out Brier score0\.478Expressed demand 0\.601, Deterministic fit 0\.553/);
   assert.match(tiles[2], /Held-out choices640/);
   assert.match(t, /Thin support in: estate\. Treat these scores with care\./);
-  assert.match(t, /Model\s*[0-9a-f]{12}(?![0-9a-f])/); assert.match(t, /Activation policy\s*gcsp-policy-v1/); assert.match(t, /Training data\s*Synthetic/);
+  assert.match(t, /Model\s*[0-9a-f]{12}(?![0-9a-f])/); assert.match(t, /Activation policy\s*gcsp-policy-v1/); assert.doesNotMatch(t, /Training data/);
   assert.ok(!t.includes('sha256'), 'only the short artifact id shows');
-  assert.equal(sec.querySelectorAll('.gcsp-plan-list li').length, 2); assert.match(t, /Trained on synthetic data; this does not describe validated BMW employee behaviour\./);
+  assert.equal(sec.querySelectorAll('.gcsp-plan-list li').length, 2); assert.match(t, /Not validated on BMW employee choices\./);
   assert.equal(sec.querySelector('button'), null); assert.equal(sec.querySelector('a[href], input'), null);
 });
 
@@ -416,7 +416,7 @@ test('a cohort or class outside coverage shows the limitation and both coverage 
 });
 
 test('an unavailable learned result shows its limitation and an older response shows no section', async () => {
-  const unavailable = learnedWith('ready', (v) => { v.learned = { status: 'unavailable', label: 'Synthetic-trained model', recommended: false, submittable: false, reason: 'learned-plan-unavailable', limitation: 'The learned forecast is unavailable right now, so only the baseline plan is shown.' }; });
+  const unavailable = learnedWith('ready', (v) => { v.learned = { status: 'unavailable', label: 'Learned model', recommended: false, submittable: false, reason: 'learned-plan-unavailable', limitation: 'The learned forecast is unavailable right now, so only the baseline plan is shown.' }; });
   const a = host(); panel.mountGregOrderPlan(a, { adapter: staticAdapter(() => unavailable) }); await settle();
   assert.equal(learnedSection(a).querySelector('p').textContent, unavailable.learned.limitation); assert.equal(learnedSection(a).querySelector('table'), null);
   const older = learnedWith('ready', (v) => { delete v.learned; });
@@ -436,7 +436,7 @@ test('a learned plan that matches the baseline says so, with no emphasised row',
   const value = learnedWith('learned', (v) => { const d = v.learned.differences; for (const r of d.derivatives) { r.learned = r.baseline; r.delta = 0; r.changed = false; }
     for (const k of ['coverage', 'orderQuantity', 'spendMinor', 'unmetNeeds']) { d[k].learned = d[k].baseline; d[k].delta = 0; } });
   const root = host(); panel.mountGregOrderPlan(root, { adapter: staticAdapter(() => value) }); await settle();
-  const sec = learnedSection(root); assert.equal(sec.querySelector('table strong'), null); assert.match(text(sec), /The synthetic-trained model gives the same plan\./);
+  const sec = learnedSection(root); assert.equal(sec.querySelector('table strong'), null); assert.match(text(sec), /The learned model gives the same plan\./);
 });
 
 test('a preview shows the learned section from the preview response, and its Request still sends the previewed baseline', async () => {

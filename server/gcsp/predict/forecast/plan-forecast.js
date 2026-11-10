@@ -51,7 +51,7 @@ export function createLearnedOrderForecastProvider({ repository, identity, clock
       return { status: 'ok', contractVersion: FORECAST_CONTRACT_VERSION, value: { runId: value.runId, asOf: value.asOf, policyVersion: value.policyVersion,
         version: inputDigest({ expressed: value.version, demandForecast: forecast.version }), cohortVersion: value.cohortVersion,
         forecast: { basis: LEARNED_BASIS, horizonEnd: value.forecast.horizonEnd, entitlements,
-          limitations: [...new Set([`Synthetic-trained model: each employee keeps the likeliest permitted vehicles covering ${share} of the modelled choice probability.`,
+          limitations: [...new Set([`Learned model: each employee keeps the likeliest permitted vehicles covering ${share} of the modelled choice probability.`,
             'Employees the model expects to wait are left out of the learned plan.', ...forecast.limitations, ...value.forecast.limitations])] },
         provenance: { ...value.provenance, source: 'learned-demand-forecast-over-F99-saved-briefs', expressedVersion: value.version,
           model: forecast.model, data: forecast.data, settings: forecast.settings, modelExpectsWait: waiting.length,

@@ -5,7 +5,7 @@ import { isAccessLapsed } from '../../kit/run-restarted.js';
 export const PLAN_MESSAGES = Object.freeze({
   unavailable: 'The order plan could not be loaded. Try again in a moment.',
   refused: 'Only the scheme ordering lead can open this dashboard. Switch to that session and try again.',
-  reset: 'The demo was reset. Reopen the scheme ordering lead session to see the new run.',
+  reset: 'This page was restarted. Reopen the scheme ordering lead session.',
   invalid: 'Those limits cannot be used. Check them and try again.',
   replan: 'Inputs changed since this plan was made. Replan before submitting.',
 });

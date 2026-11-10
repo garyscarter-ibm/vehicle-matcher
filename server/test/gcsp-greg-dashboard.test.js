@@ -53,11 +53,11 @@ const spoken = (node) => strip(node, '[aria-hidden="true"]');
 test('the shell shows Greg, Demand and supply current, the rest honestly unavailable, and one h1', async () => {
   const { root } = await mountFixture('populated');
   assert.equal(root.querySelector('.gcsp-account-name').textContent, 'Greg');
-  assert.match(root.querySelector('.gcsp-account-context').textContent, /Scheme ordering lead, synthetic demo run/);
+  assert.match(root.querySelector('.gcsp-account-context').textContent, /Scheme ordering lead/);
   assert.equal(root.querySelector('.gcsp-nav-btn[aria-current="page"]').dataset.key, 'dashboard');
   const disabled = [...root.querySelectorAll('.gcsp-nav-btn[aria-disabled="true"]')];
   assert.deepEqual(disabled.map((b) => b.dataset.key), ['publish', 'tracking', 'next-order']);
-  assert.ok(disabled.every((b) => /Not available in this demo/.test(b.textContent) || /Not available in this demo/.test(b.getAttribute('aria-label') || '') || b.closest('li')?.textContent.includes('Not available in this demo')));
+  assert.ok(disabled.every((b) => /Not available yet/.test(b.textContent) || /Not available yet/.test(b.getAttribute('aria-label') || '') || b.closest('li')?.textContent.includes('Not available yet')));
   assert.equal(root.querySelectorAll('main h1').length, 1);
   assert.equal(root.querySelector('main h1').textContent, 'Demand and supply');
   assert.equal(root.querySelector('.gcsp-crumb').textContent, 'Demand and supply');
@@ -67,7 +67,7 @@ test('the shell shows Greg, Demand and supply current, the rest honestly unavail
 test('populated shows the meta strip, headline tiles, every table and the fixture labels', async () => {
   const { root } = await mountFixture('populated');
   const m = meta(root);
-  assert.match(m, /5 Nov 2026, 09:40 GMT \(demo clock\)/);
+  assert.match(m, /5 Nov 2026, 09:40 GMT/);
   assert.match(m, /gcsp-policy-v1/);
   assert.match(m, /1, 2, 3/);
   assert.match(m, /Expressed saved demand/);
@@ -187,7 +187,7 @@ test('reserved regions are labelled, empty of figures and tables, and returned b
     assert.doesNotMatch(node.textContent, /\d/);
     assert.equal(node.querySelectorAll('h2').length, 1);
     assert.equal(document.getElementById(node.getAttribute('aria-labelledby')), node.querySelector('h2'));
-    assert.match(node.querySelector('.gcsp-note').textContent, /not built in this demo yet/);
+    assert.match(node.querySelector('.gcsp-note').textContent, /Not available yet/);
   }
   assert.ok(!root.querySelector('.gcsp-greg-body').contains(nodes[0]), 'regions sit outside the live figures');
 });
@@ -544,7 +544,7 @@ test('the gallery shows both kit components; the catalogue and ratchet record th
 test('a lapsed access key shows the restart screen with Reload and hides the reserved regions', async () => {
   const root = host(); const teardown = dash.mountGregDashboard(root, { loadDemand: async () => ({ status: 'access-required' }) }); await tick();
   const status = root.querySelector('.gcsp-greg-body .vm-status');
-  assert.equal(status.getAttribute('role'), 'alert'); assert.match(status.textContent, /Demo restarted/);
+  assert.equal(status.getAttribute('role'), 'alert'); assert.match(status.textContent, /Restarted/);
   assert.deepEqual([...status.querySelectorAll('.vm-btn')].map((b) => b.textContent), ['Reload']);
   assert.equal(root.querySelector('.gcsp-greg-regions').hidden, true); assert.doesNotMatch(root.textContent, /demand figures are unavailable/); teardown();
 });

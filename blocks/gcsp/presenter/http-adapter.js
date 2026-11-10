@@ -4,7 +4,7 @@ import { isAccessLapsed } from '../kit/run-restarted.js';
 
 const UNAVAILABLE = 'The captured emails could not be loaded. Try again in a moment.';
 const REFUSED = 'Only the presenter can open the outbox. Switch back to the presenter session and try again.';
-const RESET = 'The demo was reset. Reopen the presenter session to see the new run.';
+const RESET = 'This page was restarted. Reopen the presenter session.';
 
 /** Pure: HTTP status and parsed JSON body -> { status: 'ready' | 'empty' | 'refused' | 'unavailable', ... }. */
 export function outcomeToState(httpStatus, body) {

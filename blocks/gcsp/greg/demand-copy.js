@@ -1,6 +1,21 @@
 // Plain-English copy, labels and formatting for the Greg dashboard. No DOM here.
 // Display only: the server owns every threshold, gate and count (build-rules.md, central assumptions).
 
+// Stored provenance text is digest-bearing, so its wording is mapped here, at display.
+const PLAIN = Object.freeze([
+  [/^People, cars and behaviour are fictional and assumed; .*$/, 'People, cars and behaviour are modelled, not BMW records.'],
+  [/^Fictional cohort and assumed behaviour; /, 'Modelled cohort and assumed behaviour; '],
+  [/^Fictional facts for mechanics; /, 'Vehicle and driver facts are assumed; '],
+  [/^Underlying needs are synthetic latent inputs, not a real employee confirmation\.$/, 'Underlying needs are modelled inputs, not an employee confirmation.'],
+  [/ Not a verified BMW amount\.$/, ''], [/\bin demo brief\/Q15\b/, 'in the brief (Q15)'],
+  [/\b(?:synthetic|fictional|demonstration|demo)(?:[- ]clock)?[- ]?(?=\w)/gi, ''],
+]);
+export function plainText(value) {
+  if (typeof value !== 'string') return value;
+  const out = PLAIN.reduce((s, [from, to]) => s.replace(from, to), value);
+  return /^(?:synthetic|fictional|demo)/i.test(value) && out !== value ? out.charAt(0).toUpperCase() + out.slice(1) : out;
+}
+
 export const BASIS_LABEL = 'Expressed saved demand';
 export const BASIS_NOTE = 'What employees have saved and confirmed they need. It is not satisfaction and not a prediction.';
 export const NO_PREFERENCE = 'No preference stated';

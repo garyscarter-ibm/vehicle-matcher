@@ -7,7 +7,7 @@ export function createSyntheticProductionAdapter({ sourceVersion, choices } = {}
       || typeof c.derivative !== 'string' || !c.derivative.trim())) throw new TypeError('Supply a versioned synthetic production choice set.');
   const options = structuredClone(choices).map(({ model, derivative }) => ({ model, derivative }));
   const provenance = { providerId: 'synthetic-production', mode: 'synthetic', sourceVersion,
-    label: 'Synthetic production' };
+    label: 'Production' };
   const reference = (kind, input) => `${kind}-${inputDigest(input).slice(0, 32)}`;
   return Object.freeze({
     async describe() { return ok({ choices: structuredClone(options), provenance: { ...provenance } }); },

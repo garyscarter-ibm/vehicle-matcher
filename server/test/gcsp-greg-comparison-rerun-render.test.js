@@ -135,15 +135,15 @@ test('the rerun form is prefilled from the stored result and its hint carries on
   assert.equal(submit(root).textContent, 'Run the hold comparison'); assert.equal(submit(root).disabled, false);
 });
 
-test('no stored result says it is prepared offline, with no command, and, for the hold sweep, the form with a hint that has no bounds', async () => {
+test('no stored result says it has not been run, with no command, and, for the hold sweep, the form with a hint that has no bounds', async () => {
   const { root } = await mount('experiments-empty');
   assert.equal(optionOf(root, 'process-only').getAttribute('aria-checked'), 'true');
   assert.match(text(root.querySelector('.gcsp-comparison-stage')), /No stored result yet/);
-  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /prepared offline and has not been run here\./);
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /This comparison has not been run yet\./);
   assert.equal(root.querySelector('code'), null);
   assert.equal(root.querySelector('.gcsp-comparison-form'), null);
   await choose(root, 'hold-sweep');
-  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /prepared offline and has not been run here\./); assert.equal(root.querySelector('code'), null);
+  assert.match(text(root.querySelector('.gcsp-comparison-stage')), /This comparison has not been run yet\./); assert.equal(root.querySelector('code'), null);
   assert.equal(field(root, 'hours').value, ''); assert.equal(field(root, 'basis').value, '');
   const hint = root.querySelector(`#${field(root, 'hours').id}-hint`).textContent;
   assert.doesNotMatch(hint, /From \d|Up to|Not the value/); assert.match(hint, /service checks the range/);
@@ -314,7 +314,7 @@ test('a refused, unavailable or lapsed list shows its screen, and Retry reads ag
   assert.equal(down.root.querySelector('.gcsp-comparison').dataset.state, 'unavailable'); assert.match(text(down.root), /could not be loaded/);
   const retry = [...down.root.querySelectorAll('button')].find((b) => b.textContent === 'Retry'); retry.click(); await settle(); assert.equal(down.calls.loadAll, 2);
   const lapsed = await mount('experiments-ready', { overrides: { loadAll: async () => ({ status: 'access-required' }) } });
-  assert.equal(lapsed.root.querySelector('.gcsp-comparison').dataset.state, 'access-required'); assert.match(text(lapsed.root), /Demo access needed/);
+  assert.equal(lapsed.root.querySelector('.gcsp-comparison').dataset.state, 'access-required'); assert.match(text(lapsed.root), /Access needed/);
   const none = await mount('experiments-ready', { overrides: { loadAll: async () => ({ status: 'ready', activePolicyVersion: null, experiments: [] }) } });
   assert.equal(none.root.querySelector('.gcsp-comparison').dataset.state, 'unavailable');
 });
@@ -415,7 +415,7 @@ test('an adapter with only load keeps the process-only panel', async () => {
 });
 
 // FUCQ-313: the form is offered only when jobs/latest says reruns are on (fail closed).
-test('the hold rerun form is hidden unless the server says reruns are on, and unrun experiments say they are prepared offline', async () => {
+test('the hold rerun form is hidden unless the server says reruns are on, and unrun experiments say they have not been run', async () => {
   const cases = [['reruns false', () => noJob(false)], ['reruns absent', () => adapterMod.jobOutcomeToState(404, { status: 'not-found' })],
     ['refused', () => adapterMod.jobOutcomeToState(403, {})], ['unavailable', () => adapterMod.jobOutcomeToState(503, {})],
     ['job present, reruns false', () => okJob(jobBody('succeeded', { finishedAt: '2026-11-09T12:05:00.000Z', resultId: 'r1' }), false)]];
@@ -427,7 +427,7 @@ test('the hold rerun form is hidden unless the server says reruns are on, and un
     assert.equal(submit(root), null, label);
     assert.match(stamp(root).textContent, /^Stored result/, `${label}: the stored result still shows`);
     await choose(root, 'order-mix');
-    assert.match(text(root), /No stored result yet/, label); assert.match(text(root), /prepared offline and has not been run here/, label);
+    assert.match(text(root), /No stored result yet/, label); assert.match(text(root), /This comparison has not been run yet/, label);
     assert.doesNotMatch(text(root), /presenter prepares|for this demo/, label);
   }
   const on = await mount('experiments-ready', { overrides: { readJob: async () => noJob(true) } });

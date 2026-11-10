@@ -11,7 +11,7 @@ import { mountGregPublish } from './publish/panel.js';
 import { mountGregOrderPlan } from './plan/panel.js';
 import { mountGregComparison } from './comparison/panel.js';
 
-const NOT_BUILT = 'Not available in this demo';
+const NOT_BUILT = 'Not available yet';
 const item = (key, label, icon, available = false) => Object.freeze({
   key, label, icon: Object.freeze(icon), available, ...(available ? {} : { unavailableReason: NOT_BUILT }),
 });
@@ -23,14 +23,14 @@ export const GREG_NAVIGATION = Object.freeze([
   item('next-order', 'Next order', ['M5 4h14v16H5z', 'M9 9h6', 'M9 13h6']),
 ]);
 
-const ACCOUNT = Object.freeze({ status: 'ready', name: 'Greg', initials: 'GR', context: 'Scheme ordering lead, synthetic demo run' });
+const ACCOUNT = Object.freeze({ status: 'ready', name: 'Greg', initials: 'GR', context: 'Scheme ordering lead' });
 const FAILED_LOAD = { status: 'unavailable', message: 'The demand figures could not be loaded. Try again in a moment.' };
 const REGIONS = Object.freeze([
-  ['publish', 'publish', 'Publishing', 'Publishing controls are not built in this demo yet.'],
-  ['prediction', 'prediction', 'Prediction', 'The prediction panel is not built in this demo yet.'],
-  ['orderTracking', 'order-tracking', 'Order tracking', 'Order tracking is not built in this demo yet.'],
-  ['routeComparison', 'route-comparison', 'Route comparison', 'Route comparison is not built in this demo yet.'],
-  ['caseQueue', 'case-queue', 'Case queue', 'The scheme team case queue is not built in this demo yet.'],
+  ['publish', 'publish', 'Publishing', 'Not available yet.'],
+  ['prediction', 'prediction', 'Prediction', 'Not available yet.'],
+  ['orderTracking', 'order-tracking', 'Order tracking', 'Not available yet.'],
+  ['routeComparison', 'route-comparison', 'Route comparison', 'Not available yet.'],
+  ['caseQueue', 'case-queue', 'Case queue', 'Not available yet.'],
 ]);
 let uid = 0;
 
@@ -207,7 +207,7 @@ export function mountGregDashboard(root, ctx = {}) {
       status.textContent = `Figures updated for ${view.meta.asOfText}.`;
       body.replaceChildren(...(view.flags.noBriefs ? noBriefsBody(view) : figuresBody(view)));
     } else if (isRunRestarted(state)) {
-      status.textContent = 'Demo restarted.';
+      status.textContent = 'Restarted';
       body.replaceChildren(runRestartedScreen());
     } else if (state.status === 'refused') {
       status.textContent = 'Access refused.';

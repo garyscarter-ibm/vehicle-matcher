@@ -4,7 +4,7 @@ import { labelledField, errorSummary } from '../../kit/form-controls.js';
 import { dataTable } from '../../kit/data-table.js';
 import { metricTile } from '../../kit/metric-tile.js';
 import { isRunRestarted, runRestartedNotice } from '../../kit/run-restarted.js';
-import { formatDemoTime } from '../demand-copy.js';
+import { formatDemoTime, plainText } from '../demand-copy.js';
 import { validPolicy, validPreview, validPublished } from './http-adapter.js';
 
 let sequence = 0;
@@ -121,7 +121,7 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
   function build() {
     names = policy.versionNames; values = new Map(policy.fields.map((f) => [f.id, String(f.value)])); controls = new Map();
     facts.replaceChildren(factList([{ label: 'Active version', value: policy.activeVersionLabel }, { label: 'Effective from', value: when(policy.effectiveFrom) },
-      { label: 'Demo time', value: when(policy.asOf) }]), note(policy.heldOffers.message));
+      { label: 'As of', value: when(policy.asOf) }]), note(policy.heldOffers.message));
     const prices = policy.fields.filter((f) => f.kind === 'price'); const rows = [];
     if (prices.length) {
       selector = el('select', '');
@@ -154,7 +154,7 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
     const list = el('div', 'gcsp-publish-facts');
     list.append(...[...groups.values()].map(({ p, covers }) => factList([
       { label: 'Covers', value: [...covers].join(', ') }, { label: 'Status', value: status(p.status) }, { label: 'Source', value: p.source },
-      { label: 'Date', value: p.sourceDate }, { label: 'Basis', value: p.basis }])), factList([{ label: 'Version reference', value: policy.activeVersion }]));
+      { label: 'Date', value: p.sourceDate }, { label: 'Basis', value: plainText(p.basis) }])), factList([{ label: 'Version reference', value: policy.activeVersion }]));
     sources.replaceChildren(el('summary', '', 'Sources and assumptions'), list);
     sources.hidden = false;
   }
@@ -181,7 +181,7 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
     const restarted = isRunRestarted(reply);
     const name = restarted ? 'restarted' : ['refused', 'rejected'].includes(reply?.status) ? reply.status : 'unavailable';
     if (name === 'refused' || restarted) { policy = null; form.hidden = true; sources.hidden = true; }
-    if (restarted) { state(name, 'Demo restarted.'); results.replaceChildren(runRestartedNotice().root); return; }
+    if (restarted) { state(name, 'Restarted'); results.replaceChildren(runRestartedNotice().root); return; }
     state(name, reply?.message || 'Policy controls are unavailable. Retry in a moment.');
     if (!policy) results.replaceChildren(statusScreen({ kicker: 'Policy', title: name === 'refused' ? 'Access refused' : 'Policy unavailable',
       message: message.textContent, role: 'alert' }));
