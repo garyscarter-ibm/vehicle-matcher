@@ -3,7 +3,7 @@ const item = (key, label, paths) => Object.freeze({ key, label, available: true,
 
 export const PORTAL_NAVIGATION = Object.freeze([
   item('cars', 'Your cars', ['M3 14l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5', 'M3 14h18v4H3z', 'M7 18v2', 'M17 18v2']),
-  item('brief', 'Your car brief', ['M6 3h12v18H6z', 'M9 8h6', 'M9 12h6', 'M9 16h4']),
+  item('brief', 'Your preferences', ['M6 3h12v18H6z', 'M9 8h6', 'M9 12h6', 'M9 16h4']),
   item('activity', 'Buddy activity', ['M4 5h16', 'M4 12h16', 'M4 19h16', 'M8 3v4', 'M8 10v4', 'M8 17v4']),
   item('order-progress', 'Order progress', ['M4 6l2 2 3-3', 'M4 14l2 2 3-3', 'M12 7h8', 'M12 15h8']),
 ]);

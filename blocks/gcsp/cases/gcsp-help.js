@@ -11,7 +11,7 @@ export function caseFailure(envelope) {
   const status = envelope?.status;
   if (status === 'access-required') return { title: 'Access needed', text: 'Your access has lapsed. Enter the access key again.' };
   const titles = { forbidden: 'You cannot open these cases', 'stale-run': 'This page is out of date',
-    'stale-version': 'The case or brief has changed', conflict: 'The case or brief has changed', invalid: 'Review your request' };
+    'stale-version': 'The case or your preferences have changed', conflict: 'The case or your preferences have changed', invalid: 'Review your request' };
   const detail = envelope?.reason ?? envelope?.reasons?.map((r) => r.reason).join(' ');
   return { title: titles[status] ?? 'Renewal help is unavailable', text: detail || (['stale-run', 'forbidden'].includes(status)
     ? 'Reopen the current employee session.' : 'Refresh to review the current server state before trying again.') };
@@ -107,7 +107,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
       const confirmation = el('section', 'gcsp-case-confirmation');
       confirmation.append(screenIntro({ title: 'Confirm one preference change', level: childLevel }),
         el('p', 'gcsp-note', `${preferenceLabel(remedy.path)}: ${shown(relaxation.relaxation.before)} → ${shown(remedy.value)}.`),
-        el('p', 'gcsp-note', 'This confirms only this preference value in a new brief version. All other preferences, essentials and importance weights stay the same. It does not resolve your case or guarantee a car.'));
+        el('p', 'gcsp-note', 'This confirms only this preference value in a new version of your preferences. All other preferences, essentials and importance weights stay the same. It does not resolve your case or guarantee a car.'));
       const confirm = button({ label: 'Confirm preference change', disabled: saving, onClick: submitRelaxation });
       confirm.dataset.confirmRelaxation = '';
       const actions = el('div', 'gcsp-case-actions'); actions.append(confirm,

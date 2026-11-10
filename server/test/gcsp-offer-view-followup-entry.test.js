@@ -189,15 +189,15 @@ test('GC-042: declined page is one h1, a one-line summary and then the change qu
   assert.match(summary.textContent, /^You declined the .+, [\d,]+ points a month\.$/); assert.doesNotMatch(summary.textContent, /\u2014/);
   assert.equal(summary.previousElementSibling.textContent, 'Your decline is recorded.');
   const next = summary.nextElementSibling; assert.equal(next.getAttribute('aria-label'), 'Your next offer');
-  assert.equal(next.querySelector('h1, h2, h3').tagName, 'H2'); assert.equal(next.querySelector('h2').textContent, 'One change to your brief');
+  assert.equal(next.querySelector('h1, h2, h3').tagName, 'H2'); assert.equal(next.querySelector('h2').textContent, 'One change to your preferences');
   assert.deepEqual([...next.querySelectorAll('[role=radio]')].map((node) => node.textContent).slice(-3), ['Coupé', 'Convertible', 'Family carrier']);
 });
 
 test('GC-042: after Decline focus moves to the change question; later polls and unfocused opens do not steal it', async (t) => {
   const { element, view, latest } = await declinedPage(t, { before: (page) => page.querySelector('[data-offer-action="refresh"]').focus() });
-  assert.equal(document.activeElement.tagName, 'H2'); assert.equal(document.activeElement.textContent, 'One change to your brief');
+  assert.equal(document.activeElement.tagName, 'H2'); assert.equal(document.activeElement.textContent, 'One change to your preferences');
   view.update({ ...latest, now: '2026-11-06T01:01:00Z' }); await settle();
-  assert.equal(document.activeElement.textContent, 'One change to your brief');
+  assert.equal(document.activeElement.textContent, 'One change to your preferences');
   element.querySelector('[data-offer-action="refresh"]').focus(); view.update({ ...latest, now: '2026-11-06T01:02:00Z' }); await settle();
   assert.equal(document.activeElement.dataset.offerAction, 'refresh');
   document.body.replaceChildren(); const fresh = await declinedPage(t);

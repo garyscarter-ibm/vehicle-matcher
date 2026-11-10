@@ -19,7 +19,7 @@ const messages = {
   'no-match': ['Nothing suitable yet', 'We will check again at the next release.'],
   unavailable: ['Next-offer status unavailable', 'Try checking again.'],
   'confirmation-uncertain': ['Check your change', 'The save could not be confirmed.'],
-  'refresh-required': ['Your brief has changed', 'Check the current state before choosing again.'],
+  'refresh-required': ['Your preferences have changed', 'Check the current state before choosing again.'],
   'stale-run': ['This page is out of date', 'Open your current account to continue.'],
   forbidden: ['Follow-up unavailable', 'Open the offer from your account to continue.'],
   'access-lapsed': [ACCESS_LAPSED_TITLE, ACCESS_LAPSED_MESSAGE],
@@ -78,12 +78,12 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
   };
   const refreshAction = () => (hostRefresh ? [] : [action('refresh', 'Check current state', () => refresh?.())]);
   function drawQuestion(model) {
-    content.append(screenIntro({ title: 'One change to your brief', level: headingLevel }));
+    content.append(screenIntro({ title: 'One change to your preferences', level: headingLevel }));
     const form = el('form', 'gcsp-followup-question'); form.addEventListener('submit', (event) => { event.preventDefault(); confirm?.(); });
     const question = model.question;
     const adding = question.currentValue === null;
     field = el('fieldset', 'gcsp-followup-field'); field.append(el('legend', null, question.prompt));
-    if (adding) field.append(el('p', 'gcsp-note', 'Not in your brief yet. Your answer adds it.'));
+    if (adding) field.append(el('p', 'gcsp-note', 'Not in your preferences yet. Your answer adds it.'));
     const host = el('div', 'gcsp-followup-control'); field.append(host);
     if (question.control.kind === 'options') {
       // The reviewed policy labels "Coupe" and "MPV"; the shared body-style copy reads Coupé and Family carrier.
@@ -127,8 +127,8 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
       section.append(matchCard(null, { view: card, big: true, showScore: false, hideMissing: 'More details not supplied' }));
       columns.append(section);
     }
-    content.append(columns, el('p', 'gcsp-note', 'Each quote keeps its original brief and policy. No new match score is calculated.'));
-    content.append(dataTable({ caption: `Your confirmed brief, version ${comparison.currentBriefVersion}`,
+    content.append(columns, el('p', 'gcsp-note', 'Each quote keeps its original preferences and policy. No new match score is calculated.'));
+    content.append(dataTable({ caption: `Your confirmed preferences, version ${comparison.currentBriefVersion}`,
       columns: [{ key: 'requirement', label: 'Your answer' }, { key: 'fact', label: 'Quoted fact' },
         { key: 'previous', label: 'Declined offer' }, { key: 'next', label: 'Next offer' }],
       rows: requirementRows(comparison), emptyText: 'No confirmed requirements were supplied for comparison.' }), sources(comparison));
@@ -156,14 +156,14 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
       }
       if (!['idle', 'loading', 'forbidden', 'stale-run'].includes(key)) actions.push(...refreshAction());
       const checked = model.evaluation?.carsChecked;
-      const head = checked === 1 ? 'The 1 car checked does not fit your updated brief.'
-        : `None of the ${checked} cars checked fit your updated brief.`;
+      const head = checked === 1 ? 'The 1 car checked does not fit your updated preferences.'
+        : `None of the ${checked} cars checked fit your updated preferences.`;
       const shown = key === 'no-match' && checked > 0 ? `${head} ${message}`
         : model.savedChange && key === 'unavailable' ? 'Your change is saved. The next-offer status could not be checked.' : message;
       content.append(statusScreen({ title, message: shown, actions, role: null }));
     }
     if (model.savedChange) {
-      const note = el('p', 'gcsp-note', `Your change is saved in brief version ${model.savedChange.briefVersion}.`);
+      const note = el('p', 'gcsp-note', `Your change is saved as version ${model.savedChange.briefVersion} of your preferences.`);
       note.dataset.followupSaved = ''; content.prepend(note);
     }
     if (hadFocus) focusHeading();

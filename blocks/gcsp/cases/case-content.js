@@ -65,7 +65,7 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
       section.append(facts(audience === 'scheme-team'
         ? [['Preference', preferenceLabel(remedy.path)], ['Proposed value', remedy.value], ['Expected brief version', remedy.expectedBriefVersion]]
         : [['Preference', preferenceLabel(remedy.path)], ['Current value', c.relaxation?.before],
-          ['Proposed value', remedy.value], ['Current brief version', c.relaxation?.currentBriefVersion]]));
+          ['Proposed value', remedy.value], ['Current preferences version', c.relaxation?.currentBriefVersion]]));
       // FUCQ-261/263/264: a resolved or closed case promises no further review or confirmation
       const closed = ['resolved', 'closed'].includes(c.status); const ended = c.status === 'resolved' ? 'was resolved' : 'closed';
       if (audience === 'scheme-team') section.append(el('p', 'gcsp-note', remedy.confirmationState === 'employee-confirmed'
@@ -76,7 +76,7 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
       else if (closed) section.append(el('p', 'gcsp-note', `This change was not confirmed before the case ${ended}.`));
       else {
         section.append(el('p', 'gcsp-note', applicable ? 'Waiting for your confirmation. Only this preference value will change.'
-          : 'This proposal no longer matches your current brief. Ask the scheme team to review it.'));
+          : 'This proposal no longer matches your current preferences. Ask the scheme team to review it.'));
         if (onReviewRelaxation) section.append(button({ label: `Review ${preferenceLabel(remedy.path).toLowerCase()} change`,
           disabled: pending || !applicable, variant: 'ghost', onClick: () => onReviewRelaxation(c) }));
       }
