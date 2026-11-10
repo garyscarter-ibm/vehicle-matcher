@@ -4400,6 +4400,52 @@
       "delivery_status": "Built; original4AC scoped proof complete; parent integration/native Jira/collaborator acceptance pending",
       "integration_base": "829cf1a9fe10ad518cd0519c3f5e1ae9447421c1",
       "integration_merge": "348fc7691feca61b2d3bc6136b6e8683296c6c47"
+    },
+    {
+      "id": "FUCQ-347",
+      "title": "Make the selected-review gallery caption match its displayed vehicle image",
+      "status": "In Progress",
+      "type": "Bug",
+      "assignee": "usget",
+      "branch": "dev/DEV-2026-11-10-006",
+      "jira_status_basis": "Local claimed record; native Jira unavailable, no transition inferred.",
+      "workers": [
+        {
+          "name": "B-Bot",
+          "role": "story-lead",
+          "harness": "codex",
+          "status": "handoff-ready",
+          "observed_at": "2026-11-10T17:14:25.584035+00:00",
+          "expires_at": "2026-11-10T17:14:25.584035+00:00",
+          "source": "B-Bot fixed3AC Built evidence; all validation complete and resources cleaned; parent integration pending. Claim expired at handoff, not inferred from commit."
+        }
+      ],
+      "observed_at": "2026-11-10T17:14:25Z",
+      "slices": [
+        {
+          "id": "repair",
+          "status": "complete",
+          "title": "Retain truthful fixture image provenance",
+          "observed_at": "2026-11-10T17:14:25Z",
+          "evidence": "Gallery removes false same-model/colour override; reuses truthful fixture caption+alt. Actual1280/375 photo+missing captures sourceSHAab56d5cb; independentHugo PASS; production/shared/F346 boundaries unchanged."
+        },
+        {
+          "id": "review",
+          "status": "complete",
+          "title": "Independent rendered visual critique",
+          "observed_at": "2026-11-10T17:14:25Z",
+          "evidence": "Hugo independent AssessmentA PASS all3AC; personally inspected4captures1280/375 before detector, no actionable finding. Long tag/caption readable; source/capture hashes in docs/gcsp/evidence/fucq347/validation.json; detector[] separately."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Scoped gallery and media validation",
+          "observed_at": "2026-11-10T17:14:25Z",
+          "evidence": "Scoped3gallery/media+102UIratchet cases pass,0fail/0skip. Corrected browser4states passes0errors/0external; initial harness failure preserved. Five owned roots/groups absent and reservations released; no fullsuite/native acceptance inferred."
+        }
+      ],
+      "unsliced": false,
+      "delivery_status": "Built; original3AC scoped source/rendered/independent proof complete; parent integration/native Jira/collaborator acceptance pending"
     }
   ]
 }
