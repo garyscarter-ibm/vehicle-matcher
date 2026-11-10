@@ -157,3 +157,15 @@ button { font: inherit; cursor: pointer; }
   .pc-tile.is-offered { transform: none; }
 }
 @media (max-width: 1100px) { .pc-main { grid-template-columns: 1fr; } .pc-release-foot { grid-template-columns: 1fr; } }
+
+/* Release breakdown: what arrived, not who it suits */
+.pc-release-foot { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); }
+.pc-totals { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 24px; margin: 0; }
+.pc-totals dt { color: var(--gcsp-text-muted); font-size: 12px; }
+.pc-totals dd { margin: 0; font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.pc-lines { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.pc-lines li { display: grid; grid-template-columns: 150px 1fr 28px; gap: 10px; align-items: center; font-size: 13px; }
+.pc-bar { height: 8px; background: var(--gcsp-surface-page); }
+.pc-bar span { display: block; height: 100%; width: 0; background: var(--gcsp-accent); transition: width .6s ease; }
+.pc-bar-n { text-align: right; font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { .pc-bar span { transition: none; } }

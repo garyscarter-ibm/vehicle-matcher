@@ -227,6 +227,13 @@ engine. Slice 4 is the riskiest: it moves the main journey off fixed stock days 
 6. **Greg in Basic?** I've kept Basic to Paula's journey. Greg's order planning could be a third button
    later.
 
+## Revision, Gary, 10 November 2026: user agnostic
+
+The console is an admin panel for releasing cars, not a view of any one employee. It shows what arrived
+(the grid, totals, model-line breakdown, cars on the scheme) and a plain feed. Each employee's matches and
+offers appear only in their own journey in the portal. The per-employee funnel and offer card above are
+dropped; FUCQ-364 and FUCQ-365 follow this revision.
+
 ## Rules followed
 
 `docs/gcsp/experience-quality.md` (desktop 1280 checked, no on-screen demo or synthetic wording, no

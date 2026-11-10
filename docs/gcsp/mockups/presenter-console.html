@@ -13,7 +13,7 @@
     <div class="mk-review-group" role="group" aria-label="Screen">
       <button type="button" data-view="basic" aria-pressed="true">Basic console</button>
       <button type="button" data-view="advanced" aria-pressed="false">Advanced</button>
-      <button type="button" data-view="portal" aria-pressed="false">Paula's portal, no overlay</button>
+      <button type="button" data-view="portal" aria-pressed="false">Employee portal, no overlay</button>
     </div>
     <div class="mk-review-group" role="group" aria-label="Release grid alternative" data-only="basic">
       <button type="button" data-grid="tiles" aria-pressed="true">Car tiles</button>
@@ -35,14 +35,14 @@
     <main class="pc-main">
       <section class="pc-stage" aria-labelledby="pc-scenario">
         <div class="pc-stage-text">
-          <p class="pc-eyebrow">Main successful journey</p>
-          <h1 id="pc-scenario" data-headline>Paula is ready for her buddy</h1>
-          <p class="pc-sub" data-sub>Preferences saved. Next release tomorrow, 11:30am.</p>
+          <p class="pc-eyebrow">Scheme stock</p>
+          <h1 id="pc-scenario" data-headline>Ready for the next release</h1>
+          <p class="pc-sub" data-sub>Next release tomorrow, 11:30am.</p>
         </div>
         <div class="pc-actions">
           <button type="button" class="pc-btn pc-btn-primary" data-release>Release tomorrow's cars</button>
           <button type="button" class="pc-btn pc-btn-ghost" data-restart>Start again</button>
-          <a class="pc-link" href="#" data-goto="portal">Open Paula's portal</a>
+          <a class="pc-link" href="#" data-goto="portal">Open the portal</a>
         </div>
         <ol class="pc-week" aria-label="Scheme week" data-week></ol>
       </section>
@@ -54,33 +54,26 @@
         </div>
         <div class="pc-grid" data-grid-host role="grid" aria-label="Released cars" tabindex="0"></div>
         <div class="pc-release-foot">
-          <ol class="pc-funnel" data-funnel aria-label="How the buddy narrowed the cars">
-          <li data-step="released"><span class="pc-funnel-n">0</span><span>released</span></li>
-          <li data-step="eligible"><span class="pc-funnel-n">0</span><span>Paula can have</span></li>
-          <li data-step="suitable"><span class="pc-funnel-n">0</span><span>fit her brief</span></li>
-          <li data-step="offered"><span class="pc-funnel-n">0</span><span>offered</span></li>
-          </ol>
-          <section class="pc-winner" data-winner hidden aria-labelledby="pc-winner-title">
-          <p class="pc-eyebrow">Offered to Paula</p>
-          <img data-winner-img alt="">
-          <h2 id="pc-winner-title" data-winner-name></h2>
-          <p class="pc-winner-paint" data-winner-paint></p>
-          <ul class="pc-reasons" data-winner-reasons></ul>
-          <p class="pc-hold"><span>Held until</span> <strong data-winner-hold></strong></p>
-        </section>
+          <dl class="pc-totals">
+            <div><dt>Released</dt><dd data-total="cars">0</dd></div>
+            <div><dt>Model lines</dt><dd data-total="lines">0</dd></div>
+            <div><dt>Colours</dt><dd data-total="paints">0</dd></div>
+            <div><dt>On the scheme</dt><dd data-total="stock">0</dd></div>
+          </dl>
+          <ul class="pc-lines" data-lines aria-label="Cars released by model line"></ul>
         </div>
       </section>
 
       <section class="pc-feed" aria-labelledby="pc-feed-title">
           <div class="pc-feed-head"><h2 id="pc-feed-title">What happened</h2></div>
-          <ol data-feed><li><time>Mon 9 Nov, 9:00am</time><span>Paula's preferences confirmed</span></li></ol>
+          <ol data-feed><li><time>Mon 9 Nov, 9:00am</time><span>Scheme started, no cars on the scheme yet</span></li></ol>
       </section>
     </main>
 
     <div class="pc-dialog" data-confirm hidden role="dialog" aria-modal="true" aria-labelledby="pc-confirm-title">
       <div class="pc-dialog-box">
-        <h2 id="pc-confirm-title">Start the journey again?</h2>
-        <p>Paula goes back to day 1 with her preferences saved. The next release brings a new set of cars.</p>
+        <h2 id="pc-confirm-title">Start again?</h2>
+        <p>The scheme goes back to day 1 and released cars are cleared. Employees keep their saved preferences. The next release brings a new set of cars.</p>
         <div class="pc-actions"><button type="button" class="pc-btn pc-btn-primary" data-confirm-yes>Start again</button><button type="button" class="pc-btn pc-btn-ghost" data-confirm-no>Cancel</button></div>
       </div>
     </div>
@@ -172,7 +165,7 @@
             <div class="pc-actions"><button type="button" class="pc-btn pc-btn-primary">Review offer</button><button type="button" class="pc-btn pc-btn-ghost">Not for me</button></div>
           </div>
         </article>
-        <p class="pt-note">No rail item, no flyout, no presenter strip: the presenter console is on its own page.</p>
+        <p class="pt-note">Matches show in each employee's journey, here. The portal has no presenter rail item, flyout or strip.</p>
       </main>
     </div>
   </div>

@@ -7,29 +7,16 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const wait = (ms) => new Promise((done) => setTimeout(done, reduced ? 0 : ms));
 
-// Paula's grade and scheme allow these lines; her brief (an estate) is met by the two Tourings.
-const ELIGIBLE = new Set(['G61', 'G21', 'U11', 'G26']);
-const SUITS = new Set(['G61', 'G21']);
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const LONG = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const REASONS = {
-  G61: ['Estate body, as Paula asked', 'Fits her grade and scheme', 'Electric, on her company charging plan'],
-  G21: ['Estate body, as Paula asked', 'Largest boot she can have', 'Fits her grade and scheme'],
-  U11: ['Five seats and a high driving position', 'Fits her grade and scheme', 'Closest boot size to an estate'],
-};
 
-let run = 1; let day = 0; let releases = 0; let busy = false; let winner = null; let gridMode = 'tiles';
+let run = 1; let day = 0; let releases = 0; let stock = 0; let busy = false; let gridMode = 'tiles';
 
 function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 2 ** 32; }; }
 function draw(seed) {
   const next = rng(seed); const pool = [...CARS];
   for (let i = pool.length - 1; i > 0; i -= 1) { const j = Math.floor(next() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
   const cars = pool.slice(0, 100);
-  // The scenario guarantees at least three cars that suit Paula, from different lines where possible.
-  const suiting = cars.filter((car) => SUITS.has(car.line));
-  for (const line of SUITS) if (suiting.length < 3 && !suiting.some((car) => car.line === line)) {
-    const extra = pool.slice(100).find((car) => car.line === line); if (extra) { cars[cars.length - 1 - suiting.length] = extra; suiting.push(extra); }
-  }
   return { cars, next };
 }
 
@@ -67,7 +54,6 @@ function countUp(node, to, ms = 600) {
   const step = (now) => { const p = Math.min(1, (now - start) / ms); node.textContent = String(Math.round(from + (to - from) * p)); if (p < 1) requestAnimationFrame(step); };
   requestAnimationFrame(step);
 }
-function funnel(step, n) { const li = $(`[data-step="${step}"]`); li.classList.add('is-on'); countUp($('.pc-funnel-n', li), n); }
 
 const PAINT = [[/white/i, '#f2f2f0'], [/black|sapphire|carbon/i, '#1b1c20'], [/grey|gray|dravit|oxide/i, '#7b7e82'], [/silver/i, '#c4c6c8'],
   [/blue|portimao|tanzanite|storm/i, '#2a4f86'], [/red|barbera/i, '#a3242a'], [/green|york|isle/i, '#3e5a48'], [/orange/i, '#d06a2a']];
@@ -84,61 +70,47 @@ function tile(car, i) {
 async function release() {
   if (busy) return; busy = true; const btn = $('[data-release]'); btn.disabled = true;
   const target = nextReleaseDay(day);
-  if (winner) feed(`${label(day, '1:30pm').split(', ')[0]}, 1:30pm`, `Paula's hold on the ${winner.model} lapsed`);
-  // Clock moves to the release time.
   $('[data-clock]').classList.add('is-moving'); await wait(350);
   day = target; releases += 1; setDay(); renderWeek(); setClock(label(day, '11:30am')); $('[data-clock]').classList.remove('is-moving');
-  $('[data-headline]').textContent = 'Cars are arriving'; $('[data-sub]').textContent = 'The buddy is looking through them for Paula.';
+  $('[data-headline]').textContent = 'Releasing cars'; $('[data-sub]').textContent = 'New stock is arriving on the scheme.';
 
   const { cars } = draw(run * 7919 + releases * 104729);
-  const grid = $('[data-grid-host]'); grid.replaceChildren(); grid.classList.remove('is-narrowing'); grid.dataset.mode = gridMode;
-  $$('.pc-funnel li').forEach((li) => { li.classList.remove('is-on'); $('.pc-funnel-n', li).textContent = '0'; });
-  $('[data-winner]').hidden = true;
+  const grid = $('[data-grid-host]'); grid.replaceChildren(); grid.dataset.mode = gridMode;
   const nodes = cars.map(tile); grid.append(...nodes);
   $('[data-release-title]').textContent = `${label(day, '11:30am').replace(', 11:30am', '')} release`;
-  const lines = new Set(cars.map((c) => c.model)).size; const paints = new Set(cars.map((c) => c.paint)).size;
   nodes.forEach((node, i) => setTimeout(() => node.classList.add('is-in'), reduced ? 0 : i * 9 + (i % 20) * 12));
   await wait(1300);
-  $('[data-stats]').textContent = `100 cars · ${lines} model lines · ${paints} colours`;
+
+  const byLine = new Map(); cars.forEach((c) => byLine.set(c.model, (byLine.get(c.model) ?? 0) + 1));
+  const paints = new Set(cars.map((c) => c.paint)).size; stock += cars.length;
+  countUp($('[data-total="cars"]'), 100); countUp($('[data-total="lines"]'), byLine.size);
+  countUp($('[data-total="paints"]'), paints); countUp($('[data-total="stock"]'), stock);
+  const rows = [...byLine].sort((x, y) => y[1] - x[1]).map(([model, n]) => {
+    const li = document.createElement('li'); const name = document.createElement('span'); name.textContent = model;
+    const bar = document.createElement('span'); bar.className = 'pc-bar'; const fill = document.createElement('span'); bar.append(fill);
+    const num = document.createElement('span'); num.className = 'pc-bar-n'; num.textContent = String(n);
+    li.append(name, bar, num); requestAnimationFrame(() => { fill.style.width = `${n * 2}%`; }); return li;
+  });
+  $('[data-lines]').replaceChildren(...rows);
+  $('[data-stats]').textContent = '100 cars, ready for the buddy to match';
   const stamp = (t) => `${label(day, t).split(', ')[0]}, ${t}`;
-  funnel('released', 100); feed(stamp('11:30am'), '100 cars released');
-  await wait(900);
-
-  grid.classList.add('is-narrowing');
-  const eligible = cars.map((c, i) => ELIGIBLE.has(c.line) ? i : -1).filter((i) => i >= 0);
-  nodes.forEach((n, i) => { if (!ELIGIBLE.has(cars[i].line)) n.classList.add('is-out'); });
-  funnel('eligible', eligible.length); await wait(900);
-  const suitable = eligible.filter((i) => SUITS.has(cars[i].line));
-  eligible.forEach((i) => { if (!SUITS.has(cars[i].line)) nodes[i].classList.add('is-out'); });
-  funnel('suitable', suitable.length); await wait(900);
-
-  const pick = suitable[Math.floor(rng(run * 31 + releases)() * suitable.length)];
-  suitable.forEach((i) => { if (i !== pick) nodes[i].classList.add('is-out'); });
-  grid.classList.remove('is-narrowing'); nodes[pick].classList.add('is-offered'); funnel('offered', 1); await wait(500);
-
-  winner = cars[pick];
-  $('[data-winner-img]').src = winner.img; $('[data-winner-name]').textContent = `${winner.model} ${winner.derivative}`;
-  $('[data-winner-paint]').textContent = winner.paint; $('[data-winner-hold]').textContent = '1:30pm';
-  $('[data-winner-reasons]').replaceChildren(...(REASONS[winner.line] ?? []).map((t) => { const li = document.createElement('li'); li.textContent = t; return li; }));
-  $('[data-winner]').hidden = false;
-  feed(stamp('11:30am'), `Buddy matched Paula with the ${winner.model}, held for 2 hours`);
-  feed(stamp('11:31am'), 'Offer email sent to paula.mason@gcsp-demo.com', 'View email');
-  $('[data-headline]').textContent = 'Paula has an offer';
-  $('[data-sub]').textContent = `${winner.model} ${winner.derivative}, held until 1:30pm. Over to Paula's portal.`;
-  $('[data-portal-img]').src = winner.img; $('[data-portal-name]').textContent = `${winner.model} ${winner.derivative}`;
-  $('[data-portal-paint]').textContent = winner.paint;
+  feed(stamp('11:30am'), `100 cars released across ${byLine.size} model lines`);
+  await wait(700);
+  feed(stamp('11:31am'), 'Buddy run complete, offers sent to matched employees', 'View emails');
+  $('[data-headline]').textContent = `${stock} cars on the scheme`;
+  $('[data-sub]').textContent = `Latest release ${label(day, '11:30am')}. Matches show in each employee's portal.`;
   releaseButton(); btn.disabled = false; busy = false;
 }
 
 function restart() {
-  run += 1; day = 0; releases = 0; winner = null;
+  run += 1; day = 0; releases = 0; stock = 0;
   setDay(); renderWeek(); setClock(label(0, '9:00am')); releaseButton();
-  $('[data-grid-host]').replaceChildren(); $('[data-winner]').hidden = true;
-  $$('.pc-funnel li').forEach((li) => { li.classList.remove('is-on'); $('.pc-funnel-n', li).textContent = '0'; });
+  $('[data-grid-host]').replaceChildren(); $('[data-lines]').replaceChildren();
+  $$('[data-total]').forEach((n) => { n.textContent = '0'; });
   $('[data-stats]').textContent = 'Waiting for 11:30am'; $('[data-release-title]').textContent = "Today's release";
-  $('[data-feed]').replaceChildren(); feed('Mon 9 Nov, 9:00am', "Paula's preferences confirmed");
-  $('[data-headline]').textContent = 'Paula is ready for her buddy';
-  $('[data-sub]').textContent = 'Preferences saved. Next release tomorrow, 11:30am.';
+  $('[data-feed]').replaceChildren(); feed('Mon 9 Nov, 9:00am', 'Scheme started, no cars on the scheme yet');
+  $('[data-headline]').textContent = 'Ready for the next release';
+  $('[data-sub]').textContent = 'Next release tomorrow, 11:30am.';
 }
 
 // Confirm dialog for Start again.
@@ -171,7 +143,7 @@ function show(view) {
   $$('[data-pane]').forEach((p) => { p.hidden = p.dataset.pane !== view; });
   $$('[data-view]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === view)));
   $$('[data-only]').forEach((n) => { n.hidden = n.dataset.only !== view; });
-  if (view === 'portal' && !winner) { const c = CARS.find((x) => x.line === 'G61'); $('[data-portal-img]').src = c.img; }
+  if (view === 'portal') { const c = CARS.find((x) => x.line === 'G61'); $('[data-portal-img]').src = c.img; }
 }
 $$('[data-view]').forEach((b) => b.addEventListener('click', () => show(b.dataset.view)));
 document.addEventListener('click', (e) => { const go = e.target.closest('[data-goto]'); if (go) { e.preventDefault(); show(go.dataset.goto); } });
