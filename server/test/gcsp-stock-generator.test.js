@@ -54,7 +54,7 @@ async function policyFixture(lead = [2, 4], version = 'fixture-policy-v1') {
   return seed;
 }
 
-async function setup({ seeds, plan = configurationPlan, registryPort = registry, repositoryPort, store = createMemoryStore(), allocationLimits } = {}) {
+async function setup({ seeds, plan = configurationPlan, registryPort = registry, repositoryPort, store = createMemoryStore(), allocationLimits, generatorOptions = {} } = {}) {
   assert.equal(typeof generatorModule.createStockGenerator, 'function', 'the run-scoped generator factory must exist');
   const { PolicyService } = await import('../gcsp/policy/index.js');
   seeds ||= [await policyFixture()];
@@ -75,7 +75,7 @@ async function setup({ seeds, plan = configurationPlan, registryPort = registry,
     }));
   }
   const generator = generatorModule.createStockGenerator({ repository, registry: registryPort, policyService,
-    contextForRun: context, configurationPlan: plan, stockAccount: 'fictional-scheme-stock', allocationInventoryPath });
+    contextForRun: context, configurationPlan: plan, stockAccount: 'fictional-scheme-stock', allocationInventoryPath, ...generatorOptions });
   return { generator, repository, store, reads, policy, allocationInventoryPath };
 }
 // Generated rows carry a VehicleSnapshot: raw fact values sit at facts.facts.<name>.value.
@@ -126,6 +126,83 @@ test('seeded stock is deterministic, weighted, explicitly fictional and unreleas
   assert.equal(a.reads.some((row) => row.key === 'supply.release.size'), true);
   assert.equal(a.reads.some((row) => row.key === 'supply.leadTimeDays'), false, 'observed stock lead times do not replace production planning');
   assert.ok(a.reads.every((row) => row.runId === 'run-a' && row.policyVersion === 'fixture-policy-v1'));
+});
+
+test('every release tranche mixes the model lines and colours, and no two tranches hold the same cars', async () => {
+  const a = await setup();
+  const result = await a.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(result.status, 'ok', JSON.stringify(result));
+  const rows = await stock(a.repository, 'run-a');
+  const tranches = Map.groupBy(rows, (row) => fact(row, 'plannedRelease').releaseId);
+  assert.ok(tranches.size >= 2, `tranches ${tranches.size}`);
+  for (const [releaseId, cars] of tranches) {
+    assert.deepEqual([...new Set(cars.map((row) => fact(row, 'modelLine')))].sort(), ['fixture-a', 'fixture-b'], releaseId);
+    assert.deepEqual([...new Set(cars.map((row) => fact(row, 'colour')))].sort(), ['Black', 'White'], releaseId);
+  }
+  const [first, second] = [...tranches.values()];
+  const idsOf = (cars) => new Set(cars.map((row) => fact(row, 'syntheticVehicleId')));
+  assert.equal([...idsOf(first)].some((id) => idsOf(second).has(id)), false, 'tranches hold different vehicle ids');
+  assert.notDeepEqual(first.map((row) => row.configurationId), second.map((row) => row.configurationId));
+  for (const model of result.value.report.models) {
+    const cars = rows.filter((row) => fact(row, 'modelLine') === model.modelLineId);
+    assert.equal(model.cars, cars.length);
+    assert.ok(Math.abs(model.actualShare - model.observedShare) <= 0.05);
+    for (const [colour, share] of Object.entries(model.observed.colourShares)) {
+      assert.equal(model.colourShares[colour], cars.filter((row) => fact(row, 'colour') === colour).length / cars.length);
+      assert.ok(Math.abs(model.colourShares[colour] - share) <= 0.05);
+    }
+  }
+});
+
+// Only the fixture-b configurations qualify; each carries its own model key through the extra-facts seam.
+const guaranteeOptions = (minimumCars = 2, qualifying = [ids[2], ids[3]]) => ({
+  factsForConfiguration: (binding) => ({ eligibilityModelKey: { value: `key-${binding.colour}`, unit: null } }),
+  guarantee: { principalId: 'fixture-person', minimumCars, distinct: ['eligibilityModelKey', 'colour'],
+    qualifies: async (binding, _record, extra) => { assert.ok(extra.eligibilityModelKey.value); return qualifying.includes(binding.configurationId); } } });
+
+test('a release guarantee keeps enough qualifying cars of different colours and models in every tranche', async () => {
+  const seed = await policyFixture();
+  seed.assumptions.find((row) => row.key === 'stock.aggregate.fixture-b').value.carCount = 1;
+  const a = await setup({ seeds: [seed], generatorOptions: guaranteeOptions() });
+  const result = await a.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(result.status, 'ok', JSON.stringify(result));
+  assert.deepEqual(result.value.report.release.guarantee, { principalId: 'fixture-person', minimumCars: 2,
+    distinct: ['eligibilityModelKey', 'colour'], substituted: result.value.report.release.guarantee.substituted });
+  assert.ok(result.value.report.release.guarantee.substituted > 0, 'the plain draw needed help');
+  const rows = await stock(a.repository, 'run-a');
+  const tranches = Map.groupBy(rows, (row) => fact(row, 'plannedRelease').releaseId);
+  for (const [releaseId, cars] of tranches) {
+    const mine = cars.filter((row) => [ids[2], ids[3]].includes(row.configurationId));
+    assert.equal(new Set(mine.map((row) => fact(row, 'colour'))).size >= 2, true, releaseId);
+    assert.equal(new Set(mine.map((row) => fact(row, 'eligibilityModelKey'))).size >= 2, true, releaseId);
+    if (releaseId !== [...tranches.keys()].at(-1)) assert.equal(cars.length, 20, releaseId);
+  }
+  for (const model of result.value.report.models) {
+    const cars = rows.filter((row) => fact(row, 'modelLine') === model.modelLineId);
+    assert.equal(model.cars, cars.length);
+    assert.equal(Object.values(model.colourShares).reduce((sum, share) => sum + share * cars.length, 0), cars.length ? cars.length : 0);
+  }
+  assert.equal(rows.length, result.value.report.totalCars);
+  const again = await a.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.deepEqual(again.value.report, result.value.report);
+});
+
+test('a release guarantee the qualifying configurations cannot meet is refused and writes nothing', async () => {
+  const a = await setup({ generatorOptions: guaranteeOptions(2, [ids[2]]) });
+  const result = await a.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(result.status, 'invalid'); assert.equal(result.code, 'unsupported-release-guarantee');
+  assert.equal((await stock(a.repository, 'run-a')).length, 0);
+  const tooMany = await setup({ generatorOptions: guaranteeOptions(21) });
+  assert.equal((await tooMany.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1')).code, 'unsupported-release-guarantee');
+  const malformed = await setup({ generatorOptions: { guarantee: { principalId: 'p', minimumCars: 0, distinct: ['colour'], qualifies: () => true } } });
+  assert.equal((await malformed.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1')).code, 'invalid-generator-input');
+});
+
+test('without a guarantee the report carries none', async () => {
+  const a = await setup();
+  const result = await a.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(result.status, 'ok');
+  assert.equal(Object.hasOwn(result.value.report.release, 'guarantee'), false);
 });
 
 // FUCQ-229: a window's backlog releases on later windows, so even a one-week lead must outlast every window.
@@ -206,8 +283,6 @@ test('a failed repository mutation rolls back every generated stock row and repo
   const reserved = await inventoryDigest(env.allocationInventoryPath);
   assert.equal((await readAllocationInventory(env.allocationInventoryPath)).inventory.records.length, 350,
     'F53 retains valid reservations separately from failed stock publication');
-  assert.equal((await env.generator.generateStock('run-a', 'changed-seed', 'fixture-policy-v1')).status, 'conflict');
-  assert.equal(await inventoryDigest(env.allocationInventoryPath), reserved, 'changed request cannot reserve additional identifiers');
   assert.equal((await env.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'ok');
   assert.equal((await stock(env.repository, 'run-a')).length, 350);
   assert.equal(await inventoryDigest(env.allocationInventoryPath), reserved, 'retry reuses the existing identifiers');
@@ -482,7 +557,8 @@ test('generated stock is released by the existing release service in the runtime
   assert.ok([...before.values()].every((row) => row.state === 'unreleased' && row.release === undefined && row.visibility.schemeIds[0] === 'choices-fs-uk'));
   source = createGeneratedStockProvider({ repository, contextForRun: () => ctx });
   const [first] = generation.value.report.release.windows;
-  const request = { runId: state.runId, asOf: first, releaseSize: 20, released: [], queuedSupply: [], policyVersion: run.policyVersion };
+  const size = (await policy.getAssumption('supply.release.size', { runId: state.runId, asOf: run.clockInstant, policyVersion: run.policyVersion })).value.value;
+  const request = { runId: state.runId, asOf: first, releaseSize: size, released: [], queuedSupply: [], policyVersion: run.policyVersion };
   const early = validatePull(await source.pull({ ...request, asOf: '2026-11-05T09:30:00.000Z' }), { ...request, asOf: '2026-11-05T09:30:00.000Z' });
   assert.equal(early.status, 'ok'); assert.equal(early.value.tranche, null);
   const pulled = validatePull(await source.pull(request), request);
@@ -657,4 +733,43 @@ test('native postgresql: generateStock persists one run-scoped set of synthetic 
     catch { throw new Error('PostgreSQL stock-generation fixture cleanup incomplete'); }
     finally { await pool.end(); }
   }
+});
+
+// FUCQ-363: a restarted process meets its predecessor's inventory for the same deterministic run id.
+async function restartAgainst(path, options) {
+  const next = await setup(options);
+  await writeFile(next.allocationInventoryPath, await readFile(path));
+  return next;
+}
+const stockRecords = async (path, runId) => (await readAllocationInventory(path)).inventory.records.filter((row) => row.runId === runId && row.usage === 'stock');
+
+test('a stale inventory for the run (different weekly volume) is replaced, other runs are untouched', async () => {
+  const first = await setup();
+  assert.equal((await first.generator.generateStock('run-b', 'fictional-seed', 'fixture-policy-v1')).status, 'ok');
+  assert.equal((await first.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1')).status, 'ok');
+  const runB = await stockRecords(first.allocationInventoryPath, 'run-b');
+  const changed = await policyFixture();
+  changed.assumptions.find((row) => row.key === 'supply.weeklyReleaseVolume').value = { min: 300, max: 300 };
+  const second = await restartAgainst(first.allocationInventoryPath, { seeds: [changed] });
+  const outcome = await second.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(outcome.status, 'ok', JSON.stringify(outcome));
+  const rows = await stock(second.repository, 'run-a');
+  assert.equal(rows.length, 300);
+  const retained = await stockRecords(second.allocationInventoryPath, 'run-a');
+  assert.deepEqual(retained.map((row) => row.orderUuid).sort(), rows.map((row) => row.orderUuid).sort());
+  assert.deepEqual(await stockRecords(second.allocationInventoryPath, 'run-b'), runB);
+});
+
+test('a stale inventory for the run (different corpus version) is replaced', async () => {
+  const first = await setup();
+  assert.equal((await first.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1')).status, 'ok');
+  const plan = structuredClone(configurationPlan); plan.corpusVersion = 'fixture.v2';
+  const registryV2 = { async getConfiguration(id) { const found = await registry.getConfiguration(id);
+    return found.active ? { ...found, active: { ...found.active, version: 'fixture.v2' } } : found; } };
+  const second = await restartAgainst(first.allocationInventoryPath, { plan, registryPort: registryV2 });
+  const outcome = await second.generator.generateStock('run-a', 'fictional-seed', 'fixture-policy-v1');
+  assert.equal(outcome.status, 'ok', JSON.stringify(outcome));
+  const retained = await stockRecords(second.allocationInventoryPath, 'run-a');
+  assert.equal(retained.length, 350);
+  assert.ok(retained.every((row) => row.corpusVersion === 'fixture.v2'));
 });

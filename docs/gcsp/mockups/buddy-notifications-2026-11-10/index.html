@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buddy match notifications, storyboard (mockup)</title>
+<link rel="stylesheet" href="../../../../blocks/vehicle-matcher/gcsp-kit.css">
+<link rel="stylesheet" href="../../../../blocks/gcsp/shell/gcsp-shell.css">
+<link rel="stylesheet" href="./storyboard.css">
+</head>
+<body>
+<div class="gcsp sb-page">
+  <header class="sb-intro">
+    <h1 class="vm-title">Buddy match notifications</h1>
+    <p class="vm-lede">Storyboard for a notification bell in the portal header. Paula is on another page when her buddy reserves a car. Static screens only, at 1280.</p>
+  </header>
+
+  <!-- Frame 1 -->
+  <section class="sb-frame">
+    <div class="sb-caption"><span class="sb-step">1</span><div><h2>Paula is on another page. Buddy is searching.</h2><p>The bell sits next to her account. With nothing for her to do, it has no badge.</p></div></div>
+    <div class="sb-screen">
+      <header class="gcsp-header">
+        <div class="gcsp-marks"><img class="gcsp-mark" src="../../../../assets/brand-logos/bmwgroup-bmw-mini.svg" alt="BMW GROUP, BMW and MINI" width="139" height="22"></div>
+        <div class="gcsp-title">Group Car Schemes Portal</div>
+        <div class="sb-header-end">
+          <button class="sb-bell" type="button" aria-label="Notifications, none waiting"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 8 2.5 8h-17S6 15 6 9"/><path d="M10.3 20.5a2 2 0 0 0 3.4 0"/></svg></button>
+          <div class="gcsp-account sb-account"><span class="gcsp-account-summary"><span class="gcsp-avatar">PM</span><span class="gcsp-account-name">Paula Mason</span></span></div>
+        </div>
+      </header>
+      <div class="gcsp-body">
+        <nav class="gcsp-nav" data-expanded="true" aria-label="Portal"><ul class="gcsp-nav-list">
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 14l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5"/><path d="M3 14h18v4H3z"/><path d="M7 18v2"/><path d="M17 18v2"/></svg><span class="gcsp-nav-label">Your cars</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button" aria-current="page"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12v18H6z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg><span class="gcsp-nav-label">Your preferences</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/><path d="M8 3v4"/><path d="M8 10v4"/><path d="M8 17v4"/></svg><span class="gcsp-nav-label">Buddy activity</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6l2 2 3-3"/><path d="M4 14l2 2 3-3"/><path d="M12 7h8"/><path d="M12 15h8"/></svg><span class="gcsp-nav-label">Order progress</span></button></li>
+        </ul></nav>
+        <main class="sb-main">
+          <h1 class="gcsp-page-title">Your preferences</h1>
+          <p class="gcsp-note">Your buddy is searching with these preferences.</p>
+          <dl class="sb-facts"><div><dt>Body style</dt><dd>Touring</dd></div><div><dt>Fuel</dt><dd>Electric or plug-in hybrid</dd></div><div><dt>Monthly points</dt><dd>Up to your allowance</dd></div><div><dt>Must have</dt><dd>Tow bar</dd></div></dl>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <div class="sb-beat"><span>Presenter ticks the clock. Buddy reserves a BMW i5 Touring for Paula.</span></div>
+
+  <!-- Frame 2 -->
+  <section class="sb-frame">
+    <div class="sb-caption"><span class="sb-step">2</span><div><h2>The bell lights up where she is.</h2><p>A badge shows one thing waiting. A short note appears under the bell for a few seconds, and screen readers hear it once.</p></div></div>
+    <div class="sb-screen">
+      <header class="gcsp-header">
+        <div class="gcsp-marks"><img class="gcsp-mark" src="../../../../assets/brand-logos/bmwgroup-bmw-mini.svg" alt="BMW GROUP, BMW and MINI" width="139" height="22"></div>
+        <div class="gcsp-title">Group Car Schemes Portal</div>
+        <div class="sb-header-end">
+          <div class="sb-bell-wrap">
+            <button class="sb-bell has-badge" type="button" aria-label="Notifications, 1 car offer waiting"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 8 2.5 8h-17S6 15 6 9"/><path d="M10.3 20.5a2 2 0 0 0 3.4 0"/></svg><span class="sb-badge" aria-hidden="true">1</span></button>
+            <div class="sb-toast" role="status"><strong>Your buddy found a car</strong><span>BMW i5 Touring. Respond by 16:40.</span></div>
+          </div>
+          <div class="gcsp-account sb-account"><span class="gcsp-account-summary"><span class="gcsp-avatar">PM</span><span class="gcsp-account-name">Paula Mason</span></span></div>
+        </div>
+      </header>
+      <div class="gcsp-body">
+        <nav class="gcsp-nav" data-expanded="true" aria-label="Portal"><ul class="gcsp-nav-list">
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 14l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5"/><path d="M3 14h18v4H3z"/><path d="M7 18v2"/><path d="M17 18v2"/></svg><span class="gcsp-nav-label">Your cars</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button" aria-current="page"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12v18H6z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg><span class="gcsp-nav-label">Your preferences</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/><path d="M8 3v4"/><path d="M8 10v4"/><path d="M8 17v4"/></svg><span class="gcsp-nav-label">Buddy activity</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6l2 2 3-3"/><path d="M4 14l2 2 3-3"/><path d="M12 7h8"/><path d="M12 15h8"/></svg><span class="gcsp-nav-label">Order progress</span></button></li>
+        </ul></nav>
+        <main class="sb-main">
+          <h1 class="gcsp-page-title">Your preferences</h1>
+          <p class="gcsp-note">Your buddy is searching with these preferences.</p>
+          <dl class="sb-facts"><div><dt>Body style</dt><dd>Touring</dd></div><div><dt>Fuel</dt><dd>Electric or plug-in hybrid</dd></div><div><dt>Monthly points</dt><dd>Up to your allowance</dd></div><div><dt>Must have</dt><dd>Tow bar</dd></div></dl>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <!-- Frame 3 -->
+  <section class="sb-frame">
+    <div class="sb-caption"><span class="sb-step">3</span><div><h2>She opens the bell.</h2><p>One row per thing that needs her, newest first. The offer row has one action, which goes to the offer page. Accept and decline stay on that page, so there is still only one place to decide.</p></div></div>
+    <div class="sb-screen sb-screen-tall">
+      <header class="gcsp-header">
+        <div class="gcsp-marks"><img class="gcsp-mark" src="../../../../assets/brand-logos/bmwgroup-bmw-mini.svg" alt="BMW GROUP, BMW and MINI" width="139" height="22"></div>
+        <div class="gcsp-title">Group Car Schemes Portal</div>
+        <div class="sb-header-end">
+          <div class="sb-bell-wrap">
+            <button class="sb-bell has-badge is-open" type="button" aria-expanded="true" aria-label="Notifications, 1 car offer waiting"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 8 2.5 8h-17S6 15 6 9"/><path d="M10.3 20.5a2 2 0 0 0 3.4 0"/></svg><span class="sb-badge" aria-hidden="true">1</span></button>
+            <div class="sb-panel">
+              <h2 class="sb-panel-title">Notifications</h2>
+              <ul class="sb-rows">
+                <li class="sb-row is-waiting">
+                  <img class="sb-thumb" src="../../../../assets/gcsp-vehicle-evidence/00419fa06ad620a42de6311039c7df679f692b7f2af52d5a7daba46cd034dc93.webp" alt="">
+                  <div class="sb-row-copy">
+                    <p class="sb-row-head"><span class="sb-dot" aria-hidden="true"></span><strong>Your buddy found a car</strong></p>
+                    <p>BMW i5 Touring eDrive40, Sophisto Grey</p>
+                    <p class="sb-muted">Reserved for you. Respond by 16:40.</p>
+                    <button class="vm-btn vm-btn-primary sb-row-btn" type="button">View your offer</button>
+                  </div>
+                </li>
+                <li class="sb-row">
+                  <div class="sb-row-copy sb-row-plain">
+                    <p><strong>Your buddy started searching</strong></p>
+                    <p class="sb-muted">Using the preferences you saved at 09:12.</p>
+                  </div>
+                </li>
+              </ul>
+              <a class="sb-panel-foot" href="#">See all buddy activity</a>
+            </div>
+          </div>
+          <div class="gcsp-account sb-account"><span class="gcsp-account-summary"><span class="gcsp-avatar">PM</span><span class="gcsp-account-name">Paula Mason</span></span></div>
+        </div>
+      </header>
+      <div class="gcsp-body">
+        <nav class="gcsp-nav" data-expanded="true" aria-label="Portal"><ul class="gcsp-nav-list">
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 14l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5"/><path d="M3 14h18v4H3z"/><path d="M7 18v2"/><path d="M17 18v2"/></svg><span class="gcsp-nav-label">Your cars</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button" aria-current="page"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12v18H6z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg><span class="gcsp-nav-label">Your preferences</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/><path d="M8 3v4"/><path d="M8 10v4"/><path d="M8 17v4"/></svg><span class="gcsp-nav-label">Buddy activity</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6l2 2 3-3"/><path d="M4 14l2 2 3-3"/><path d="M12 7h8"/><path d="M12 15h8"/></svg><span class="gcsp-nav-label">Order progress</span></button></li>
+        </ul></nav>
+        <main class="sb-main">
+          <h1 class="gcsp-page-title">Your preferences</h1>
+          <p class="gcsp-note">Your buddy is searching with these preferences.</p>
+          <dl class="sb-facts"><div><dt>Body style</dt><dd>Touring</dd></div><div><dt>Fuel</dt><dd>Electric or plug-in hybrid</dd></div><div><dt>Monthly points</dt><dd>Up to your allowance</dd></div><div><dt>Must have</dt><dd>Tow bar</dd></div></dl>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <!-- Frame 4 -->
+  <section class="sb-frame">
+    <div class="sb-caption"><span class="sb-step">4</span><div><h2>The offer page, as it is today.</h2><p>Opening the offer does not clear the badge. It stays until she accepts or declines, or the hold runs out, so it always means "something needs you".</p></div></div>
+    <div class="sb-screen">
+      <header class="gcsp-header">
+        <div class="gcsp-marks"><img class="gcsp-mark" src="../../../../assets/brand-logos/bmwgroup-bmw-mini.svg" alt="BMW GROUP, BMW and MINI" width="139" height="22"></div>
+        <div class="gcsp-title">Group Car Schemes Portal</div>
+        <div class="sb-header-end">
+          <button class="sb-bell has-badge" type="button" aria-label="Notifications, 1 car offer waiting"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 8 2.5 8h-17S6 15 6 9"/><path d="M10.3 20.5a2 2 0 0 0 3.4 0"/></svg><span class="sb-badge" aria-hidden="true">1</span></button>
+          <div class="gcsp-account sb-account"><span class="gcsp-account-summary"><span class="gcsp-avatar">PM</span><span class="gcsp-account-name">Paula Mason</span></span></div>
+        </div>
+      </header>
+      <div class="gcsp-body">
+        <nav class="gcsp-nav" data-expanded="true" aria-label="Portal"><ul class="gcsp-nav-list">
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button" aria-current="page"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 14l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5"/><path d="M3 14h18v4H3z"/><path d="M7 18v2"/><path d="M17 18v2"/></svg><span class="gcsp-nav-label">Your cars</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12v18H6z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg><span class="gcsp-nav-label">Your preferences</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/><path d="M8 3v4"/><path d="M8 10v4"/><path d="M8 17v4"/></svg><span class="gcsp-nav-label">Buddy activity</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6l2 2 3-3"/><path d="M4 14l2 2 3-3"/><path d="M12 7h8"/><path d="M12 15h8"/></svg><span class="gcsp-nav-label">Order progress</span></button></li>
+        </ul></nav>
+        <main class="sb-main sb-offer">
+          <img class="sb-offer-img" src="../../../../assets/gcsp-vehicle-evidence/00419fa06ad620a42de6311039c7df679f692b7f2af52d5a7daba46cd034dc93.webp" alt="BMW i5 Touring in Sophisto Grey">
+          <div>
+            <h1 class="gcsp-page-title">Your car offer</h1>
+            <p class="sb-offer-car">BMW i5 Touring eDrive40, Sophisto Grey</p>
+            <p class="sb-muted">Reserved for you. Respond by 16:40.</p>
+            <div class="sb-actions"><button class="vm-btn vm-btn-primary" type="button">Accept this car</button><button class="vm-btn vm-btn-ghost" type="button">Decline</button></div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <div class="sb-beat"><span>Paula accepts. Or, on another run, the presenter ticks past 16:40 and the hold expires.</span></div>
+
+  <!-- Frame 5 -->
+  <section class="sb-frame">
+    <div class="sb-caption"><span class="sb-step">5</span><div><h2>The badge clears. The row becomes history.</h2><p>Nothing waits for her now, so there is no badge. The row says what happened and links to what comes next. If the hold expired instead, it reads "Your offer expired. Your buddy is searching again."</p></div></div>
+    <div class="sb-screen sb-screen-tall">
+      <header class="gcsp-header">
+        <div class="gcsp-marks"><img class="gcsp-mark" src="../../../../assets/brand-logos/bmwgroup-bmw-mini.svg" alt="BMW GROUP, BMW and MINI" width="139" height="22"></div>
+        <div class="gcsp-title">Group Car Schemes Portal</div>
+        <div class="sb-header-end">
+          <div class="sb-bell-wrap">
+            <button class="sb-bell is-open" type="button" aria-expanded="true" aria-label="Notifications, none waiting"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 8 2.5 8h-17S6 15 6 9"/><path d="M10.3 20.5a2 2 0 0 0 3.4 0"/></svg></button>
+            <div class="sb-panel">
+              <h2 class="sb-panel-title">Notifications</h2>
+              <ul class="sb-rows">
+                <li class="sb-row">
+                  <img class="sb-thumb" src="../../../../assets/gcsp-vehicle-evidence/00419fa06ad620a42de6311039c7df679f692b7f2af52d5a7daba46cd034dc93.webp" alt="">
+                  <div class="sb-row-copy">
+                    <p><strong>You accepted your BMW i5 Touring</strong></p>
+                    <p class="sb-muted">Your order is with HR for approval.</p>
+                    <a class="sb-link" href="#">Track order progress</a>
+                  </div>
+                </li>
+                <li class="sb-row">
+                  <div class="sb-row-copy sb-row-plain">
+                    <p><strong>Your buddy started searching</strong></p>
+                    <p class="sb-muted">Using the preferences you saved at 09:12.</p>
+                  </div>
+                </li>
+              </ul>
+              <a class="sb-panel-foot" href="#">See all buddy activity</a>
+            </div>
+          </div>
+          <div class="gcsp-account sb-account"><span class="gcsp-account-summary"><span class="gcsp-avatar">PM</span><span class="gcsp-account-name">Paula Mason</span></span></div>
+        </div>
+      </header>
+      <div class="gcsp-body">
+        <nav class="gcsp-nav" data-expanded="true" aria-label="Portal"><ul class="gcsp-nav-list">
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 14l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5"/><path d="M3 14h18v4H3z"/><path d="M7 18v2"/><path d="M17 18v2"/></svg><span class="gcsp-nav-label">Your cars</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12v18H6z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg><span class="gcsp-nav-label">Your preferences</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/><path d="M8 3v4"/><path d="M8 10v4"/><path d="M8 17v4"/></svg><span class="gcsp-nav-label">Buddy activity</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button" aria-current="page"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6l2 2 3-3"/><path d="M4 14l2 2 3-3"/><path d="M12 7h8"/><path d="M12 15h8"/></svg><span class="gcsp-nav-label">Order progress</span></button></li>
+        </ul></nav>
+        <main class="sb-main">
+          <h1 class="gcsp-page-title">Order progress</h1>
+          <p class="gcsp-note">BMW i5 Touring eDrive40. Waiting for HR approval.</p>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <!-- Alternative -->
+  <section class="sb-frame sb-alt">
+    <div class="sb-caption"><span class="sb-step sb-step-alt">B</span><div><h2>Alternative: a header chip instead of a bell.</h2><p>Simpler. The chip appears only while an offer is waiting and goes straight to the offer page. No dropdown and no history, so nothing to build beyond the chip. Frames 3 and 5 drop out.</p></div></div>
+    <div class="sb-screen">
+      <header class="gcsp-header">
+        <div class="gcsp-marks"><img class="gcsp-mark" src="../../../../assets/brand-logos/bmwgroup-bmw-mini.svg" alt="BMW GROUP, BMW and MINI" width="139" height="22"></div>
+        <div class="gcsp-title">Group Car Schemes Portal</div>
+        <div class="sb-header-end">
+          <button class="sb-chip" type="button"><span class="sb-dot" aria-hidden="true"></span>Car offer waiting, respond by 16:40</button>
+          <div class="gcsp-account sb-account"><span class="gcsp-account-summary"><span class="gcsp-avatar">PM</span><span class="gcsp-account-name">Paula Mason</span></span></div>
+        </div>
+      </header>
+      <div class="gcsp-body">
+        <nav class="gcsp-nav" data-expanded="true" aria-label="Portal"><ul class="gcsp-nav-list">
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 14l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5"/><path d="M3 14h18v4H3z"/><path d="M7 18v2"/><path d="M17 18v2"/></svg><span class="gcsp-nav-label">Your cars</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button" aria-current="page"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12v18H6z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg><span class="gcsp-nav-label">Your preferences</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/><path d="M8 3v4"/><path d="M8 10v4"/><path d="M8 17v4"/></svg><span class="gcsp-nav-label">Buddy activity</span></button></li>
+          <li class="gcsp-nav-item"><button class="gcsp-nav-btn" type="button"><svg class="gcsp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6l2 2 3-3"/><path d="M4 14l2 2 3-3"/><path d="M12 7h8"/><path d="M12 15h8"/></svg><span class="gcsp-nav-label">Order progress</span></button></li>
+        </ul></nav>
+        <main class="sb-main">
+          <h1 class="gcsp-page-title">Your preferences</h1>
+          <p class="gcsp-note">Your buddy is searching with these preferences.</p>
+          <dl class="sb-facts"><div><dt>Body style</dt><dd>Touring</dd></div><div><dt>Fuel</dt><dd>Electric or plug-in hybrid</dd></div><div><dt>Monthly points</dt><dd>Up to your allowance</dd></div><div><dt>Must have</dt><dd>Tow bar</dd></div></dl>
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <section class="sb-notes">
+    <h2>Assumptions and open questions</h2>
+    <ul>
+      <li>The badge reads offer state, not email delivery, so it matches the offer page and survives a slow email.</li>
+      <li>"Needs you" model: the badge counts open decisions, not unread rows. No read/unread tracking.</li>
+      <li>Badge colour: shown in the Density critical red. The BMW blue accent is the calmer option.</li>
+      <li>Is the short note under the bell (frame 2) worth it for the live moment, or is the badge enough?</li>
+      <li>Should Greg get the same bell later, for releases and new cases?</li>
+    </ul>
+  </section>
+</div>
+</body>
+</html>

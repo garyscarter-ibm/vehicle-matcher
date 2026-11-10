@@ -1,8 +1,10 @@
 # Employee account and journey entry · FUCQ-67
 
-`blocks/gcsp/account/gcsp-account.js` exports `mountAccount(root, { adapter, brand, onSupport, print })`, its EDS default decorator and the idempotent `defineGcspAccount(registry)` registration for `<gcsp-account>`. The element accepts an `adapter` property and a `brand` attribute. It never reads browser identity or navigation state. Teardown cancels pending presentation and removes the shell; `refresh()` reads the current account and draft again.
+`blocks/gcsp/account/gcsp-account.js` exports `mountAccount(root, { adapter, brand, onSupport, print, preferences })`, its EDS default decorator and the idempotent `defineGcspAccount(registry)` registration for `<gcsp-account>`. The element accepts an `adapter` property and a `brand` attribute. It never reads browser identity or navigation state. Teardown cancels pending presentation and removes the shell; `refresh()` reads the current account and draft again.
 
 The account composes `mountEmployee` through its existing render-body hook. It reuses the approved FUCQ-64 body reference (`docs/gcsp/evidence/fucq-6/README.md`, revision `a7fc178`), shared media/facts/headings/buttons/status/typed terms, countdown and native labelled details. There is no additional kit card: delivered contracts have no stock eligibility decision.
+
+The Your preferences region sits between Your cars and the history and details components. `preferences(region, { signal })` may mount the compact preferences capability into that one persistent node and return its teardown; without it the region shows a link to the preferences page. Account no longer reads buddy activity.
 
 ## Adapter and authority
 

@@ -422,3 +422,9 @@ For Russell or Gary:
 - FUCQ-360 merged f5fa4a14 (console, Basic and Advanced, kit tabs). FUCQ-361 merged 261b0161 (portal shell has no presenter item; workspace.js removed).
 - In flight: FUCQ-362 phase 2 (Mushu), 363 (Sally Carrera), 364 (Miss Prissy), 365 (Cecil Turtle), 366 (Wile E. Coyote).
 - FUCQ-362 merged b7c7c546 (friendly time, journey-driven Release, Start again confirmation). Open point for Gary: the console opens on Thu 5 Nov with no saved preferences, so press Start again first.
+- FUCQ-364 merged a0b60efb (presenter release route, read only, user agnostic; adds release.trancheId; 3 Series Saloon has no colour on fixed demo stock).
+- FUCQ-366 merged b33344a5 (What happened feed with email side drawer). Raised for Gary: offer link in captured emails shows runId=demo-...; lists only releases this console saw.
+- FUCQ-365 merged d5e56491 (release grid, kit releaseGrid). Full 100-car grid waits for FUCQ-363.
+- Decision: fixed the FUCQ-362 second Start again stale-run bug directly (c814b3f8, one-file fix plus regression test) rather than raising a Bug, so the dry run isn't hit by it.
+- FUCQ-363 merged 04f28455 (main journey on generated stock, 100 per weekday release, Paula guarantee, stale-inventory restart fix). Merged-tree check 202/203, 1 skipped. Note for Gary: only 1 Series hatches pass Paula's gates in today's corpus, so her offer is a hatch in a varying colour.
+- All seven presenter stories (FUCQ-360 to 366) merged into gcsp-poc by 23:30, 10 Nov.

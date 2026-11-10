@@ -1,7 +1,7 @@
 // FUCQ-92: the run-level stock source. Memory repository, no network, no PostgreSQL URL.
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, mkdtemp, rm } from 'node:fs/promises';
+import { readFile, writeFile, readdir, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createGcspRuntime } from '../gcsp/runtime.js';
@@ -10,6 +10,7 @@ import { PolicyService, createPolicyService } from '../gcsp/policy/index.js';
 import { createPresenterControlsService } from '../gcsp/presenter-controls/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createRunStockProvider, createRunStockProviderFactory } from '../gcsp/stock/index.js';
+import { createReleaseGuarantee } from '../gcsp/stock/release-guarantee.js';
 import { STOCK_GENERATOR_NAMESPACE } from '../gcsp/vehicle-evidence/stock-generator.js';
 
 const good = (outcome) => { assert.equal(outcome?.status, 'ok', JSON.stringify(outcome)); return outcome.value; };
@@ -24,9 +25,9 @@ async function alternativePolicy(edit) {
 }
 
 // Composes the real runtime with a per-test inventory file; `source` builds the stock provider from the runtime deps.
-async function compose(t, { source, policy, environmentId = 'run-stock' } = {}) {
-  const directory = await mkdtemp(join(tmpdir(), 'gcsp-run-stock-')); roots.push(directory);
-  const factory = createRunStockProviderFactory({ env: { GCSP_STOCK_INVENTORY_PATH: join(directory, 'inventory.json') }, logger: quiet });
+async function compose(t, { source, policy, environmentId = 'run-stock', directory: shared, logger = quiet } = {}) {
+  const directory = shared ?? await mkdtemp(join(tmpdir(), 'gcsp-run-stock-')); if (!shared) roots.push(directory);
+  const factory = createRunStockProviderFactory({ env: { GCSP_STOCK_INVENTORY_PATH: join(directory, 'inventory.json') }, logger });
   const repository = createMemoryRepository({ store: createMemoryStore() });
   const opened = good(await createGcspRuntime({ mode: 'memory', repository, ...(policy ? { policy } : {}), environmentId,
     stockProvider: source ? (deps) => source(deps, directory) : factory, policyAsOf: '2026-11-05T09:00:00.000Z', commandId: `${environmentId}-bootstrap`,
@@ -236,7 +237,7 @@ test('a run that already released demo stock never switches to generated', async
 test('a scenario that declares published demo stock keeps the demo provider and its release cue', async () => {
   let asked = 0;
   const run = { runId: 'scenario-run', clockInstant: '2026-11-05T09:00:00.000Z', policyVersion: 'gcsp-policy-v1',
-    versions: { scenarioSelection: { scenarioId: 'main-successful-journey' } } };
+    versions: { scenarioSelection: { scenarioId: 'offer-expires' } } };
   const repository = { read: async () => ok(run), query: async () => ok([]) };
   const provider = createRunStockProvider({ policy: createPolicyService(), repository,
     contextForRun: (runId) => ({ runId, environmentId: 'e', principalId: 'p', roles: ['presenter'] }),
@@ -246,6 +247,36 @@ test('a scenario that declares published demo stock keeps the demo provider and 
   const cue = good(await createPolicyService().getAssumption('clock.scenario.v1', { runId: 'scenario-run', asOf: run.clockInstant })).value.namedTimes.release;
   const pulled = good(await provider.pull({ runId: 'scenario-run', asOf: cue, policyVersion: 'gcsp-policy-v1', releaseSize: 20, released: [], queuedSupply: [] }));
   assert.equal(pulled.tranche.windowId, 'demo-release-1'); assert.equal(pulled.tranche.availableAt, cue);
+});
+
+test('the main successful journey is generated and every release holds 3 cars Paula qualifies for in 3 colours', async (t) => {
+  const f = await compose(t, { environmentId: 'run-stock-main' });
+  const entry = good(await f.scenarios.readCatalogue(f.context)).scenarios.find((row) => row.scenarioId === 'main-successful-journey');
+  const state = good(await f.scenarios.readState(f.context));
+  const reset = good(await f.scenarios.reset(f.context, { commandId: 'to-main', expectedRunId: state.runId, expectedRunVersion: state.runVersion,
+    scenarioId: entry.scenarioId, scenarioVersion: entry.scenarioVersion, fixtureVersion: entry.fixtureVersion, policyVersion: entry.policyVersion }));
+  assert.equal(f.factory.provider.describe(reset.runId)?.source, 'generated');
+  const next = good(await f.identity.createPresenterSession('run-stock-main-presenter-2'));
+  const rows = generatedRows(good(await f.repository.query(next.context, 'stock')));
+  const run = good(await f.repository.read(next.context, { table: 'runs', key: { runId: reset.runId } }));
+  const read = { runId: reset.runId, asOf: run.clockInstant, policyVersion: run.policyVersion };
+  const tranche = entry.inputs.stockTranches[0];
+  const check = await createReleaseGuarantee({ policy: f.policy, read, scenario: entry, guarantee: tranche.guarantee });
+  const report = run.versions.stockGeneration.report.release;
+  const size = good(await f.policy.getAssumption('supply.release.size', read)).value;
+  assert.equal(report.guarantee.minimumCars, 3);
+  const releases = Map.groupBy(rows, (row) => factOf(row, 'plannedRelease').releaseId);
+  assert.ok(releases.size >= 2);
+  for (const [releaseId, cars] of releases) {
+    const mine = [];
+    for (const row of cars) {
+      const extra = Object.fromEntries(Object.entries(row.facts.facts).filter(([name]) => name !== 'plannedRelease'));
+      if (await check.qualifies({ configurationId: row.configurationId }, null, extra)) mine.push(row);
+    }
+    assert.ok(mine.length >= 3, `${releaseId}: ${mine.length} qualifying cars`);
+    assert.ok(new Set(mine.map((row) => factOf(row, 'colour'))).size >= 3, `${releaseId}: colours`);
+    assert.ok(cars.length <= size);
+  }
 });
 
 test('resetting to the mechanics scenario generates stock for the new run through afterReset', async (t) => {
@@ -266,4 +297,50 @@ test('presenter controls without generated stock keep the named release cue', as
   const f = await compose(t, { environmentId: 'run-stock-plain', source: (deps) => createRunStockProvider({ ...deps, logger: quiet }) });
   const controls = good(await f.controls.readState(f.context)).controls;
   assert.equal(controls.nextRelease.to, 'release'); assert.equal(controls.nextRelease.at, controls.namedTimes.release);
+});
+
+// FUCQ-363: run ids are deterministic, so a restarted process meets its predecessor's inventory file.
+test('restart: a stale inventory from a different policy still gives generated stock, no demo fallback', async (t) => {
+  const environmentId = 'run-stock-restart';
+  const policy = await alternativePolicy((entry) => { entry('supply.weeklyReleaseVolume').value = { min: 400, max: 400 }; });
+  const first = await compose(t, { environmentId, policy });
+  assert.equal(first.factory.provider.describe(first.runId).source, 'generated');
+  const staleCount = generatedRows(await first.stock()).length;
+  await first.close();
+  const logs = [];
+  const second = await compose(t, { environmentId, directory: first.directory, logger: (line) => logs.push(String(line)) });
+  assert.equal(second.runId, first.runId);
+  assert.deepEqual(second.factory.provider.describe(second.runId), { source: 'generated', reason: 'Stock generated for the run.' });
+  assert.ok(!logs.some((line) => /demo/i.test(line)), logs.join('\n'));
+  const rows = generatedRows(await second.stock());
+  assert.ok(rows.length > 0 && rows.length !== staleCount, `${rows.length} vs ${staleCount}`);
+  const outcome = releaseOutcome(await tick(second, 'restart-release-1'));
+  assert.equal(outcome.status, 'ok', JSON.stringify(outcome)); assert.equal(outcome.value.kind, 'stock-released');
+  assert.ok(outcome.value.orderUuids.length > 0);
+  const released = (await second.stock()).filter((row) => row.state === 'released');
+  assert.ok(released.length > 0 && generatedRows(released).length === released.length, 'released cars are generated');
+});
+
+test('restart: identical inputs reuse the inventory and keep the same order identities', async (t) => {
+  const environmentId = 'run-stock-restart-same';
+  const first = await compose(t, { environmentId });
+  const orders = generatedRows(await first.stock()).map((row) => row.orderUuid).sort();
+  const releasedFirst = releaseOutcome(await tick(first, 'same-release-1')).value.orderUuids.slice().sort();
+  await first.close();
+  const second = await compose(t, { environmentId, directory: first.directory });
+  assert.equal(second.factory.provider.describe(second.runId).source, 'generated');
+  assert.deepEqual(generatedRows(await second.stock()).map((row) => row.orderUuid).sort(), orders);
+  assert.deepEqual(releaseOutcome(await tick(second, 'same-release-1')).value.orderUuids.slice().sort(), releasedFirst);
+});
+
+test('an invalid inventory file at startup is renamed aside and generation still succeeds', async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), 'gcsp-run-stock-')); roots.push(directory);
+  await writeFile(join(directory, 'inventory.json'), '{');
+  const f = await compose(t, { environmentId: 'run-stock-invalid-inventory', directory });
+  assert.deepEqual(f.factory.provider.describe(f.runId), { source: 'generated', reason: 'Stock generated for the run.' });
+  const names = await readdir(directory);
+  const aside = names.filter((name) => name.startsWith('inventory.json.invalid-'));
+  assert.equal(aside.length, 1, names.join());
+  assert.equal(await readFile(join(directory, aside[0]), 'utf8'), '{');
+  assert.ok(generatedRows(await f.stock()).length > 0);
 });

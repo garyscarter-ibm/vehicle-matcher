@@ -4,6 +4,7 @@ import { el, button } from '../../vehicle-matcher/ui.js';
 import { createSessionHttpAdapter } from '../login/http-adapter.js';
 import { isRunRestarted } from '../kit/run-restarted.js';
 import { installArrivalFocus } from '../kit/arrival-focus.js';
+import { notificationBell } from '../kit/notification-bell.js';
 import { announceSessionChange, installSessionLifecycle } from './session-lifecycle.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -179,14 +180,15 @@ function accountContent(state, retryButton, signOutButton, menuItems = []) {
 }
 
 /**
- * The shell. Returns { root, main, setAccount, setActive, setBreadcrumbs, destroy }.
+ * The shell. Returns { root, main, setAccount, setActive, setBreadcrumbs, setNotifications, bell, destroy }.
+ * notifications (optional) adds the header bell: { connect(update) -> disconnect } or a static model; omitted, there is no bell.
  * navigation is an item list for accountNavigation; onNavigate(key) is called for available items only.
  * arrivalFocus focuses the main h1 on arrival, until the first user input.
  */
 export function portalShell({
   title = 'Group Car Schemes Portal', account = { status: 'loading' }, navigation = [], active = null,
   breadcrumbs = [], onNavigate, onRetryAccount, arrivalFocus = false, accountMenu = [],
-  signOut = true, sessionAdapter = createSessionHttpAdapter(), navigate, reload,
+  signOut = true, notifications, sessionAdapter = createSessionHttpAdapter(), navigate, reload,
 } = {}) {
   const id = `gcsp-shell-${++uid}`;
   const mainId = `${id}-main`;
@@ -211,7 +213,9 @@ export function portalShell({
   const accountBox = el('div', 'gcsp-account');
   accountBox.setAttribute('role', 'group');
   accountBox.setAttribute('aria-live', 'polite');
-  header.append(menuToggle, marks, el('div', 'gcsp-title', title), accountBox);
+  const bell = notifications ? notificationBell({ id: `${id}-bell`, onOpen: closeAccountMenu }) : null;
+  header.append(menuToggle, marks, el('div', 'gcsp-title', title), ...(bell ? [bell.root] : []), accountBox);
+  const disconnectBell = typeof notifications?.connect === 'function' ? notifications.connect(bell.update) : (notifications && bell.update(notifications), null);
 
   const nav = accountNavigation({
     items: navigation,
@@ -232,6 +236,9 @@ export function portalShell({
   root.append(skip, header, el('div', 'gcsp-body'));
   root.lastChild.append(nav.root, content);
 
+  function closeAccountMenu() {
+    const details = accountBox.querySelector('details[open]'); if (details) details.open = false;
+  }
   function closeMenu() {
     root.classList.remove('gcsp-menu-open');
     menuToggle.setAttribute('aria-expanded', 'false');
@@ -244,6 +251,7 @@ export function portalShell({
   const onKeydown = (event) => {
     if (event.key !== 'Escape') return;
     const accountDetails = accountBox.querySelector('details[open]');
+    if (bell && bell.root.contains(event.target)) return;
     if (accountDetails) {
       accountDetails.open = false;
       accountDetails.querySelector('summary').focus();
@@ -261,7 +269,7 @@ export function portalShell({
   let invalidated = false;
   function clearSession() {
     invalidated = true; setAccount({ status: 'signed-out' });
-    main.replaceChildren(); closeMenu();
+    main.replaceChildren(); closeMenu(); disconnectBell?.(); bell?.destroy();
     content.hidden = true; root.inert = true;
   }
   const onAccountClick = async (event) => {
@@ -294,6 +302,9 @@ export function portalShell({
   root.addEventListener('keydown', onKeydown);
   skip.addEventListener('click', onSkip);
   accountBox.addEventListener('click', onAccountClick);
+  // Opening the account menu closes the bell; the bell closes the account menu through onOpen.
+  const onAccountToggle = (event) => { if (event.target.open) bell?.close(false); };
+  if (bell) accountBox.addEventListener('toggle', onAccountToggle, true);
 
   function setAccount(state) {
     if (invalidated && state?.status !== 'signed-out') return;
@@ -341,8 +352,12 @@ export function portalShell({
     setAccount,
     setActive: (key) => nav.setActive(key),
     setBreadcrumbs,
+    bell: bell?.root ?? null,
+    setNotifications: (model) => bell?.update(model),
     destroy() {
       destroyed = true;
+      disconnectBell?.(); bell?.destroy();
+      accountBox.removeEventListener('toggle', onAccountToggle, true);
       menuToggle.removeEventListener('click', onMenuClick);
       root.removeEventListener('keydown', onKeydown);
       skip.removeEventListener('click', onSkip);

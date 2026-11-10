@@ -7,13 +7,16 @@ const format = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short'
 /** UTC text for a valid ISO instant, shared by the timeline and its callers. */
 export const demoTime = (instant) => format.format(new Date(instant));
 
-/** Supplied order is kept; collapseRepeats draws adjacent identical rows once. Nothing is inferred. */
-export function activityTimeline({ events = [], heading = 'Activity history', emptyText = 'No activity is recorded.', level = 2, collapseRepeats = false } = {}) {
+/** Supplied order is kept; collapseRepeats draws adjacent identical rows once. Nothing is inferred.
+ * formatTime(iso) words the time, note is the paragraph under the heading (falsy for none), event.action is an optional node. */
+export function activityTimeline({ events = [], heading = 'Activity history', emptyText = 'No activity is recorded.', level = 2, collapseRepeats = false,
+  formatTime = demoTime, note = 'All dates are UTC.' } = {}) {
   const root = el('section', 'gcsp-activity-timeline');
   const title = el(`h${level}`, 'gcsp-timeline-heading', heading);
   title.id = `gcsp-timeline-${++sequence}`;
   root.setAttribute('aria-labelledby', title.id);
-  root.append(title, el('p', 'gcsp-timeline-note', 'All dates are UTC.'));
+  root.append(title);
+  if (note) root.append(el('p', 'gcsp-timeline-note', note));
   if (!events.length) { root.append(el('p', 'gcsp-timeline-empty', emptyText)); return root; }
   const list = el('ol', 'gcsp-timeline-list');
   let last = null;
@@ -23,11 +26,12 @@ export function activityTimeline({ events = [], heading = 'Activity history', em
     last = key;
     const row = el('li', 'gcsp-timeline-event');
     const valid = typeof event.occurredAt === 'string' && Number.isFinite(Date.parse(event.occurredAt));
-    const date = el(valid ? 'time' : 'span', 'gcsp-timeline-time', valid ? demoTime(event.occurredAt) : 'Time not available');
+    const date = el(valid ? 'time' : 'span', 'gcsp-timeline-time', valid ? formatTime(event.occurredAt) : 'Time not available');
     if (valid) date.dateTime = event.occurredAt;
     const body = el('div', 'gcsp-timeline-detail');
     body.append(el('p', 'gcsp-timeline-label', event.label));
     if (event.detail) body.append(el('p', 'gcsp-timeline-description', event.detail));
+    if (event.action) body.append(event.action);
     row.append(date, body); list.append(row);
   }
   root.append(list); return root;

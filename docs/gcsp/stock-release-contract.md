@@ -146,6 +146,8 @@ Remaining final gates are real FUCQ-77/FUCQ-78 provider/data integration, FUCQ-1
 3. Otherwise (the startup run, or a reset to the mechanics scenario) it uses generated stock: the FUCQ-78 generator runs once for the run (`prepareRun`, also called after composition and after every scenario reset), then `createGeneratedStockProvider` serves the rows. Next release then follows the run's cadence windows (`supply.release.cadence`) from `versions.stockGeneration`.
 4. If generation is not configured or returns a non-ok status, that run falls back to the demo provider, one line naming the run and the reason is logged, and `describe(runId)` returns `{ source, reason }`. A repository read failure is `unavailable` and cached nothing, so it never triggers the fallback.
 
+A stale or invalid inventory file no longer triggers it. Run ids are deterministic, so a restarted process reuses the earlier run id; with no `versions.stockGeneration` recorded, inventory stock records for that run were never used, so generation replaces them (`replaceRunStock`) and an unreadable file is renamed aside to `<path>.invalid-<time>` and recreated.
+
 Generated cars carry `eligibilityModelKey` and the model-line browse facts only where `stock.eligibilityModelKeys.v1` maps their AG code (today `72HH` only); other cars release but are not eligible. `GCSP_STOCK_SOURCE=demo` forces the demo provider; it is meant for a fresh run, because forcing it mid-run mixes sources. `GCSP_STOCK_INVENTORY_PATH` sets the allocation inventory file, default `<tmpdir>/gcsp-stock-inventory/<environment>.json`.
 
 ## Failed and stale pulls
