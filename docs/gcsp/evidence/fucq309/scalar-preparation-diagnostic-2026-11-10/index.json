@@ -1,5 +1,5 @@
 {
-  "createdAt": "2026-11-10T16:26:11.723236+00:00",
+  "createdAt": "2026-11-10T16:29:20.390859+00:00",
   "proofId": "scalar-preparation-v1",
   "status": "One authorised diagnostic failed after successful preparation helper return; cleanup verified",
   "artifacts": {
@@ -106,6 +106,14 @@
     "transforms.json": {
       "bytes": 6064,
       "sha256": "59430a226cdd18761bee273d04047d8222a73ae3ed1bb21ee49111cd942ec93c"
+    },
+    "post-helper-trace.md": {
+      "bytes": 10453,
+      "sha256": "9ca0af1ddeba032a1a38557c54ef54a90aa13254547a1d55a5c04b2e4a367b56"
+    },
+    "post-helper-trace-identity.json": {
+      "bytes": 1522,
+      "sha256": "446798264b52253d312f68fffa0ac78e3dd87da71b6968d8c775430d0a4f27e4"
     }
   }
 }

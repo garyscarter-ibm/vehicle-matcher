@@ -4212,20 +4212,20 @@
           "name": "Ralph Wolf",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-10T16:26:11.723236+00:00",
-          "expires_at": "2026-11-10T16:26:11.723236+00:00",
+          "observed_at": "2026-11-10T16:29:20.390859+00:00",
+          "expires_at": "2026-11-10T16:29:20.390859+00:00",
           "source": "Existing lead requested/selected Sol/xhigh; no fallback or descendants",
-          "status": "Scalar diagnostic finished/teardown verified; evidence push then parent-authorised read-only trace; no active tests"
+          "status": "Evidence pushed; read-only post-helper trace finished; yielding to parent causal decision; no active worker/test"
         }
       ],
-      "observed_at": "2026-11-10T16:26:12Z",
+      "observed_at": "2026-11-10T16:29:20Z",
       "slices": [
         {
           "id": "current-cause",
           "status": "in-progress",
           "title": "Current-code retained-data evidence",
-          "observed_at": "2026-11-10T16:26:11.723236+00:00",
-          "evidence": "Scalar diagnostic on6a7acab9: first buddy preparation/752receipts/largeplan/backendcommit/normalization/helper returnedok140.345 workerseconds; laterOOM168.279hostseconds unlocalized.20/60 phases,exactsource/input,zeroresults. Diagnosticonly;all58rootsabsent/group45977gone/reservationreleased. docs/gcsp/evidence/fucq309/scalar-preparation-diagnostic-2026-11-10/report.md"
+          "observed_at": "2026-11-10T16:29:20.390859+00:00",
+          "evidence": "Scalar diagnostic on6a7acab9: first buddy preparation/752receipts/largeplan/backendcommit/normalization/helper returnedok140.345 workerseconds; laterOOM168.279hostseconds unlocalized.20/60 phases,exactsource/input,zeroresults. Diagnosticonly;all58rootsabsent/group45977gone/reservationreleased. docs/gcsp/evidence/fucq309/scalar-preparation-diagnostic-2026-11-10/report.md Read-only post-helper sequence/ownership trace retains laterstage/claimordinalunknown;whole-stock claimread and normalization lifetime are candidatesonly. No further proof/edit authorised. docs/gcsp/evidence/fucq309/scalar-preparation-diagnostic-2026-11-10/post-helper-trace.md"
         },
         {
           "id": "retention-repair",
