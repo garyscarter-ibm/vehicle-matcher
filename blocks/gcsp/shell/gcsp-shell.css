@@ -1,5 +1,5 @@
 @import "./gcsp-tokens.css";
-@import "../presenter-controls/presenter-controls.css";
+@import "../kit/presenter-bar.css";
 @import "../kit/form-controls.css";
 @import "../kit/arrival-focus.css";
 @import "../kit/loading-skeleton.css";

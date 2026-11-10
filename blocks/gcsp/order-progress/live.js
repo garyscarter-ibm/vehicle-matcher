@@ -4,7 +4,7 @@ import { createOrderProgressHttpAdapter } from './order-progress-http.js';
 import { createCaseHttpAdapter } from '../cases/http-adapter.js';
 import { createAccountHttpAdapter as createOrderReadAdapter } from '../account/http-adapter.js';
 import { loadLatestOrderCar } from './order-car.js';
-import { subscribePresenterActions } from '../presenter-controls/controls.js';
+import { subscribePresenterActions } from '../kit/presenter-actions.js';
 import { routePortalEvents } from '../employee/portal-navigation.js';
 import { defineGcspOrderProgress } from './gcsp-order-progress.js';
 

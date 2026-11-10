@@ -169,7 +169,7 @@ export function mountGregDashboard(root, ctx = {}) {
   let current = planAdapter ? 'next-order' : 'dashboard';
   const shell = portalShell({
     title: 'Group Car Schemes Portal', account: { status: 'loading' }, signOut: ctx.signOut,
-    presenterControls: ctx.presenterControls, onRetryAccount: () => loadAccount(), navigation: GREG_NAVIGATION, active: current,
+    onRetryAccount: () => loadAccount(), navigation: GREG_NAVIGATION, active: current,
     onNavigate: (key) => showView(key, true),
   });
   const page = el('div', 'vm gcsp-greg');
