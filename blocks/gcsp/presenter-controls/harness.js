@@ -1,4 +1,4 @@
 import './register.js';
-import { startPresenterWorkspace } from './workspace.js';
-const destroy = startPresenterWorkspace();
+import { startPresenterConsole } from './console.js';
+const destroy = startPresenterConsole()?.destroy;
 globalThis.addEventListener('pagehide', () => destroy?.(), { once: true });

@@ -984,10 +984,9 @@ test('FUCQ-223: the account keeps the Choices kicker, and its stylesheet carries
     assert.equal(intro.querySelector('.vm-kicker').textContent, 'Choices');
     assert.ok(intro.querySelector('.vm-kicker').compareDocumentPosition(intro.querySelector('h1')) & 4, 'kicker sits above the title');
   } finally { destroy(); root.remove(); }
-  // gcsp-presenter.html loads only gcsp-account.css, so the order-progress sheet must come in through it.
+  // Pages load only gcsp-account.css, so the order-progress sheet must come in through it.
   const css = (path) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
   assert.match(css('blocks/gcsp/account/gcsp-account.css'), /@import "\.\.\/order-progress\/gcsp-order-progress\.css";/);
-  assert.match(css('gcsp-presenter.html'), /blocks\/gcsp\/account\/gcsp-account\.css/);
   assert.match(css('blocks/gcsp/order-progress/gcsp-order-progress.css'), /\.gcsp-order-car \{ display: grid;/);
 });
 

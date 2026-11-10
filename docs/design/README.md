@@ -77,3 +77,5 @@ Each final diagram page was exported with draw.io and visually inspected for leg
 The [FUCQ-6 evidence record](../gcsp/evidence/fucq-5/README.md) records research coverage, independent review and diagram/document verification for the whole-demo proposal. User agreement remains the closing gate for FUCQ-6.
 
 The [FUCQ-74 authoring record](../gcsp/evidence/fucq-73/README.md) records Russell's 2 November approval, Jira readback and verification of the added predictive planning view and linked contracts.
+
+**Presenter console update, 10 November 2026 (FUCQ-360):** the Employee transactions and 00 GCSP architecture pages show the standalone presenter console page; the PNG exports were not re-rendered.
