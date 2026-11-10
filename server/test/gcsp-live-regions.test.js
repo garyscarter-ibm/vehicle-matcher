@@ -224,13 +224,13 @@ test('standalone order progress keeps exactly one region and an announce option 
   await waitFor(() => hosted.querySelector('.gcsp-stage-tracker')); assert.equal(regions(hosted).length, 0, 'hosted order progress'); stopHosted();
 });
 
-test('offer after accepting hosts order progress with one live region', async (t) => {
-  const host = root(); const orders = orderAdapter(); let stop;
-  const view = createOfferView(host, { mountOrder: (target, input) => { stop = mountOrderProgress(target, { adapter: orders, orderUuid: input.orderUuid, car: input.car,
-    embedded: true, headingLevel: 2, announce: input.announce }); return stop; } });
+test('offer after accepting is a short confirmation with one live region and no embedded tracker', async (t) => {
+  const host = root(); const orders = orderAdapter(); let mounted = 0;
+  const view = createOfferView(host, { mountOrder: () => { mounted += 1; return () => {}; } });
   t.after(() => view.destroy());
   view.update({ ...offerFixture('accepted').value, canAccept: false, canDecline: false, orderUuid: orders.uuid });
-  await waitFor(() => host.querySelector('.gcsp-offer-order .gcsp-stage-tracker')); assertQuiet(host, 'offer with order progress');
+  assert.equal(mounted, 0); assert.equal(host.querySelector('.gcsp-stage-tracker'), null); assert.equal(host.querySelector('.gcsp-offer-order'), null);
+  assertQuiet(host, 'offer after accepting');
 });
 
 test('presenter success text clears after a short delay and failures stay', async (t) => {

@@ -7,7 +7,6 @@ import { offerFixture, FIXTURE_NAMES } from '../../blocks/gcsp/offer/fixtures.js
 import { createOfferController } from '../../blocks/gcsp/offer/offer-controller.js';
 import { createOfferHttpAdapter } from '../../blocks/gcsp/offer/http-adapter.js';
 import { toOfferPresentation } from '../../blocks/gcsp/offer/offer-projection.js';
-import { orderProgressFixtures } from '../../blocks/gcsp/order-progress/fixtures.js';
 
 let dom;
 before(() => { dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://example.test/' });
@@ -360,10 +359,17 @@ for (const [name, headline, stages] of [
     const refused = name === 'selection-failed';
     assert.equal(root.querySelector('h1').textContent, refused ? 'Your selection was not sent to ordering' : 'Offer accepted');
     assert.equal(root.querySelector(refused ? '.vm-status .vm-lede' : 'p.gcsp-note').textContent, headline);
-    assert.deepEqual(stageText(root), stages);
-    assert.equal(root.querySelector('.gcsp-stage-heading').textContent, 'Your selection');
-    const ids = [...root.querySelector('.gcsp-stage-heading').closest('.gcsp-offer-current').querySelectorAll('dl > div')].map((d) => [d.querySelector('dt').textContent, d.querySelector('dd').textContent]);
-    assert.deepEqual(ids, name === 'selection-no-hr' ? [['Car order number', '0123456']] : [['Order reference', 'GCSP-000123'], ['Car order number', '0123456']]);
+    if (refused) {
+      assert.deepEqual(stageText(root), stages); assert.equal(root.querySelector('.gcsp-stage-heading').textContent, 'Your selection');
+      const ids = [...root.querySelector('.gcsp-stage-heading').closest('.gcsp-offer-current').querySelectorAll('dl > div')].map((d) => [d.querySelector('dt').textContent, d.querySelector('dd').textContent]);
+      assert.deepEqual(ids, [['Order reference', 'GCSP-000123'], ['Car order number', '0123456']]);
+    } else {
+      // The short confirmation: no stage list, no comparison, the car and its order number once each.
+      assert.equal(root.querySelector('.gcsp-stage-list'), null); assert.equal(root.querySelector('[data-offer-comparison]'), null);
+      assert.equal(root.querySelectorAll('.vm-card').length, 0);
+      const rows = [...root.querySelectorAll('dl > div')].map((d) => [d.querySelector('dt').textContent, d.querySelector('dd').textContent]);
+      assert.deepEqual(rows.map((r) => r[0]), ['Your new car', 'Car order number']); assert.equal(rows[1][1], '0123456');
+    }
     assert.doesNotMatch(root.textContent, /Order number/); assert.equal(root.querySelector('[aria-label="Before you accept"]'), null);
     assert.doesNotMatch(root.textContent, /\bapproved\b/i); assert.equal(root.querySelector('[data-offer-action="accept"]'), null);
   } finally { stop(); }
@@ -382,7 +388,7 @@ test('FUCQ-300: a refused handoff states the outcome, links Renewal help and mou
   assert.equal(help.getAttribute('href'), '/gcsp-help.html');
   assert.equal(status.querySelector('a[href="/gcsp-account.html"]').textContent, 'Back to Your cars');
   assert.equal(mounts.length, 0); assert.equal(root.querySelector('.gcsp-offer-order'), null);
-  assert.doesNotMatch(root.textContent, /View order progress|Offer accepted|not accepted for ordering/);
+  assert.doesNotMatch(root.textContent, /Track your order|Offer accepted|not accepted for ordering/);
   assert.equal(root.querySelector('a[href="/gcsp-order-progress-live.html"]'), null);
   assert.equal(root.querySelector('.gcsp-stage-heading').textContent, 'Your selection'); assert.equal(root.querySelectorAll('.vm-card').length, 1);
   assert.equal(root.querySelector('[data-offer-announcement]').textContent, '', 'the heading carries the outcome when the offer lands');
@@ -391,11 +397,11 @@ test('FUCQ-300: a refused handoff states the outcome, links Renewal help and mou
   createOfferView(bare, {}).update(refusedModel());
   assert.equal(bare.querySelector('a[href="/gcsp-help.html"]'), null); assert.equal(bare.querySelectorAll('a.vm-btn').length, 0);
   assert.match(bare.querySelector('.vm-status .vm-lede').textContent, /Nothing has been ordered\. Contact scheme support and quote order reference GCSP-000123\./);
-  // A normal acknowledged selection keeps its heading and the tracker.
+  // A normal acknowledged selection keeps its heading and never embeds a tracker.
   const ok = document.createElement('div'); document.body.append(ok); let hosted = 0;
   const okView = createOfferView(ok, { links, mountOrder: (host) => { hosted += 1; return () => {}; } });
   okView.update({ ...offerFixture('selection-hr').value, canAccept: false, canDecline: false, orderUuid: ORDER });
-  assert.equal(ok.querySelector('h1').textContent, 'Offer accepted'); assert.equal(hosted, 1); assert.equal(ok.querySelector('.vm-status'), null);
+  assert.equal(ok.querySelector('h1').textContent, 'Offer accepted'); assert.equal(hosted, 0); assert.equal(ok.querySelector('.vm-status'), null);
 });
 
 test('an accepted offer without a selection record keeps the recorded message and no stage list', async () => {
@@ -408,136 +414,30 @@ test('an accepted offer without a selection record keeps the recorded message an
 const ORDER = '00000000-0000-4000-8000-000000000001';
 const acceptedModel = (state = 'accepted') => ({ ...offerFixture('accepted').value, state, orderUuid: ORDER, canAccept: false, canDecline: false });
 
-test('accepted offer mounts order progress with its own car and uuid; other states and a missing uuid mount none', () => {
-  const mounts = []; let stops = 0;
+test('an accepted offer is a short confirmation: the car and order number once, onward links, and no tracker or comparison', () => {
+  const mounts = []; const links = { orderProgress: '/gcsp-order-progress-live.html', cars: '/gcsp-account.html' };
   const root = document.createElement('div'); document.body.append(root);
-  const view = createOfferView(root, { mountOrder: (host, input) => { mounts.push(input); host.textContent = 'progress'; return () => { stops += 1; }; } });
-  view.update(acceptedModel('pending')); view.update(acceptedModel('declined'));
-  assert.equal(mounts.length, 0); assert.equal(root.querySelector('.gcsp-offer-order'), null);
+  const view = createOfferView(root, { links, mountOrder: (host, input) => { mounts.push(input); return () => {}; } });
   view.update(acceptedModel());
-  assert.equal(mounts.length, 1); assert.equal(mounts[0].orderUuid, ORDER);
-  const member = acceptedModel().card.members[0];
-  assert.equal(mounts[0].car.name, member.display.name); assert.equal(mounts[0].car.photo, member.media.src || undefined);
-  assert.equal(root.querySelector('.gcsp-offer-order').getAttribute('aria-label'), 'Your order progress');
-  view.update(acceptedModel()); assert.equal(mounts.length, 1); // an unchanged read keeps the mounted progress
-  view.update(acceptedModel('declined')); assert.equal(stops, 1); assert.equal(root.querySelector('.gcsp-offer-order'), null);
-  view.update(acceptedModel()); view.destroy(); assert.equal(stops, 2);
-  const bare = document.createElement('div'); document.body.append(bare); const count = mounts.length;
-  createOfferView(bare, { mountOrder: (host, input) => { mounts.push(input); return () => {}; } }).update(offerFixture('accepted').value);
-  assert.equal(mounts.length, count); // no order uuid on the read, so nothing is mounted
+  const name = acceptedModel().card.members[0].display.name;
+  assert.equal(mounts.length, 0); assert.equal(root.querySelector('.gcsp-offer-order'), null); assert.equal(root.querySelector('.gcsp-stage-tracker'), null);
+  assert.equal(root.querySelector('.vm-card'), null); assert.equal(root.querySelector('[data-offer-comparison]'), null); assert.equal(root.querySelectorAll('img').length, 0);
+  assert.equal(root.querySelectorAll('h1').length, 1); assert.equal(root.querySelector('h1').textContent, 'Offer accepted');
+  assert.equal(root.textContent.split(name).length - 1, 1, 'the car name appears once');
+  assert.equal(root.textContent.split('0123456').length - 1, 1, 'the car order number appears once');
+  view.update(acceptedModel('declined')); assert.equal(root.querySelector('.gcsp-offer-order'), null);
+  view.update(acceptedModel()); view.destroy();
 });
 
-test('FUCQ-271: a hosted order tracker is the only progress list; without one the selection stages stay', () => {
-  const selected = { ...offerFixture('selection-hr').value, canAccept: false, canDecline: false };
-  const root = document.createElement('div'); document.body.append(root);
-  const view = createOfferView(root, { mountOrder: (host) => { host.append(document.createElement('ol')); return () => {}; } });
-  view.update({ ...selected, orderUuid: ORDER });
-  assert.equal(root.querySelector('.gcsp-stage-list'), null); assert.doesNotMatch(root.textContent, /Your selection/);
-  assert.equal(root.querySelectorAll('.gcsp-offer-order').length, 1);
-  const bare = document.createElement('div'); document.body.append(bare);
-  createOfferView(bare, {}).update({ ...selected, orderUuid: ORDER });
-  assert.equal(bare.querySelector('.gcsp-stage-heading').textContent, 'Your selection'); assert.equal(bare.querySelector('.gcsp-offer-order'), null);
-});
-
-test('FUCQ-311: with the tracker hosted the accepted note makes no stage claim; without one it keeps the selection line', async () => {
+test('FUCQ-271: the accepted note names the selection stage and keeps the stage claim on the short confirmation', () => {
   const selected = { ...offerFixture('selection-hr').value, canAccept: false, canDecline: false, orderUuid: ORDER };
   const root = document.createElement('div'); document.body.append(root);
-  const view = createOfferView(root, { mountOrder: (host) => { host.append(document.createElement('ol')); return () => {}; } });
-  view.update(selected);
-  assert.equal(root.querySelector('p.gcsp-note').textContent, 'Selection received. Your order is with ordering.');
-  assert.doesNotMatch(root.textContent, /Waiting for/);
-  const bare = document.createElement('div'); document.body.append(bare);
-  createOfferView(bare, {}).update(selected);
-  assert.equal(bare.querySelector('p.gcsp-note').textContent, 'Selection received. Waiting for HR approval.');
-  const { mountOrderProgress } = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
-  const states = orderProgressFixtures().states['new-order'];
-  const adapter = { readStages: async () => structuredClone(states.stages), readDocuments: async () => structuredClone(states.documents),
-    readAppointment: async () => structuredClone(states.appointment), readReturnPlan: async () => structuredClone(states.returnPlan) };
-  const live = document.createElement('div'); document.body.append(live);
-  const liveView = createOfferView(live, { mountOrder: (node, { car }) => mountOrderProgress(node, { adapter, orderUuid: ORDER, car, embedded: true, headingLevel: 2 }) });
-  liveView.update(selected);
-  for (let n = 0; n < 60 && !live.querySelector('.gcsp-offer-order .gcsp-stage-tracker li'); n += 1) await new Promise((done) => setTimeout(done, 15));
-  const note = live.querySelector('p.gcsp-note').textContent; const tracker = live.querySelector('.gcsp-offer-order').textContent;
-  assert.match(tracker, /HR approval/); assert.match(tracker, /Not started/); assert.doesNotMatch(note, /HR approval|Waiting/);
-  liveView.destroy(); view.destroy();
+  createOfferView(root, {}).update(selected);
+  assert.equal(root.querySelector('p.gcsp-note').textContent, 'Selection received. Waiting for HR approval.');
+  assert.equal(root.querySelector('.gcsp-stage-list'), null); assert.equal(root.querySelector('.gcsp-offer-order'), null);
 });
 
-test('the offer-hosted progress shows completed and missed handovers, rebooks the exact slot and re-reads the new attempt', async () => {
-  const { mountOrderProgress } = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
-  const all = orderProgressFixtures().states;
-  const host = async (name, extra) => {
-    let current = all[name]; const adapter = { readStages: async () => structuredClone(current.stages), readDocuments: async () => structuredClone(current.documents),
-      readAppointment: async () => structuredClone(current.appointment), readReturnPlan: async () => structuredClone(current.returnPlan), ...extra(() => { current = all['appointment-rebooked']; }) };
-    const root = document.createElement('div'); document.body.append(root);
-    const view = createOfferView(root, { mountOrder: (node, { car }) => mountOrderProgress(node, { adapter, orderUuid: ORDER, car, embedded: true, headingLevel: 2 }) });
-    view.update(acceptedModel());
-    const area = () => root.querySelector('.gcsp-offer-order .gcsp-order-handover');
-    for (let n = 0; n < 60 && !area(); n += 1) await new Promise((done) => setTimeout(done, 15));
-    return { area, view, root };
-  };
-  const completed = await host('appointment-completed', () => ({}));
-  assert.match(completed.area().textContent, /Handover complete: 8 Nov 2026, 10:00/); assert.doesNotMatch(completed.area().textContent, /Not booked yet/);
-  assert.equal(completed.area().querySelector('button'), null); completed.view.destroy();
-  const requests = [];
-  const missed = await host('appointment-no-show', (rebooked) => ({ requestAppointment: async (input) => { requests.push(input.slotId); rebooked(); return { status: 'ok', value: {} }; } }));
-  assert.match(missed.area().textContent, /Handover missed: 8 Nov 2026, 09:00/);
-  const offered = all['appointment-no-show'].appointment.value.offeredSlots;
-  const buttons = [...missed.area().querySelectorAll('button')]; assert.equal(buttons.length, offered.length); assert.equal(buttons[0].getAttribute('aria-label'), 'Request 9 Nov 2026, 09:00');
-  buttons[0].click();
-  for (let n = 0; n < 60 && !/Not booked yet/.test(missed.area()?.textContent ?? ''); n += 1) await new Promise((done) => setTimeout(done, 15));
-  assert.deepEqual(requests, [offered[0].slotId]);
-  assert.match(missed.area().textContent, /Requested 9 Nov 2026, 09:00\. Not booked yet\./); assert.match(missed.area().textContent, /Earlier handover missed: 8 Nov 2026, 09:00/);
-  missed.view.destroy();
-});
-
-test('the offer-hosted progress shows return outcomes: booked then returned on refresh, missed, and a failing return read', async () => {
-  const { mountOrderProgress } = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
-  const all = orderProgressFixtures().states; const carName = acceptedModel().card.members[0].display.name;
-  const host = async (name, override = {}) => {
-    let current = all[name]; let stop;
-    const adapter = { readStages: async () => structuredClone(current.stages), readDocuments: async () => structuredClone(current.documents),
-      readAppointment: async () => structuredClone(current.appointment), readReturnPlan: async () => structuredClone(current.returnPlan), ...override };
-    const root = document.createElement('div'); document.body.append(root);
-    const view = createOfferView(root, { mountOrder: (node, { car }) => { stop = mountOrderProgress(node, { adapter, orderUuid: ORDER, car, embedded: true, headingLevel: 2 }); return stop; } });
-    view.update(acceptedModel());
-    const area = () => root.querySelector('.gcsp-offer-order .gcsp-order-return');
-    for (let n = 0; n < 60 && !area(); n += 1) await new Promise((done) => setTimeout(done, 15));
-    return { area, view, root, switchTo: async (next, ready) => { current = all[next]; await stop.refresh(); for (let n = 0; n < 60 && !ready(); n += 1) await new Promise((done) => setTimeout(done, 15)); } };
-  };
-  const booked = await host('return-scheduled');
-  assert.match(booked.area().textContent, /Return booked: 12 Nov 2026, 09:00/); assert.doesNotMatch(booked.area().textContent, /Returned:/);
-  await booked.switchTo('return-returned', () => /Returned:/.test(booked.area().textContent));
-  const rows = [...booked.area().querySelectorAll('.vm-fact')].map((row) => [row.querySelector('dt').textContent, row.querySelector('dd').textContent]);
-  assert.match(booked.area().textContent, /Returned: 12 Nov 2026, 10:30/); assert.deepEqual(rows.slice(0, 2), [['Current car', carName], ['Returned car', 'BMW 320i Touring']]);
-  assert.doesNotMatch(booked.area().textContent, /stays yours until it is returned/); booked.view.destroy();
-  const missed = await host('return-missed');
-  assert.match(missed.area().textContent, /Return missed: 12 Nov 2026, 09:00/); assert.match(missed.area().textContent, /Scheme team/);
-  assert.equal(missed.area().querySelector('button'), null); assert.match(missed.area().textContent, /stays yours until it is returned/); missed.view.destroy();
-  const failing = await host('return-returned', { readReturnPlan: async () => ({ status: 'unavailable', retryable: true }) });
-  assert.match(failing.area().textContent, /Return plan unavailable/); assert.doesNotMatch(failing.area().textContent, /Returned|Return missed/);
-  assert.match(failing.root.querySelector('.gcsp-order-handover').textContent, /Handover complete/); failing.view.destroy();
-});
-
-test('the DTO projection carries the quote order uuid and the real embedded progress shows the offer car and order number', async () => {
-  const sample = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url)));
-  const projected = toOfferPresentation({ status: 'ok', value: { ...structuredClone(sample), state: 'accepted', reason: 'accepted', offerState: 'accepted',
-    holdState: 'converted', availableActions: [], followup: null } });
-  assert.equal(projected.status, 'ok'); assert.equal(projected.value.orderUuid, sample.quote.orderUuid);
-  const { mountOrderProgress } = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
-  const states = orderProgressFixtures().states['appointment-requested'];
-  const adapter = { readStages: async () => structuredClone(states.stages), readDocuments: async () => structuredClone(states.documents),
-    readAppointment: async () => structuredClone(states.appointment), readReturnPlan: async () => structuredClone(states.returnPlan) };
-  const root = document.createElement('div'); document.body.append(root);
-  const view = createOfferView(root, { mountOrder: (host, { orderUuid, car }) => mountOrderProgress(host, { adapter, orderUuid: ORDER, car, embedded: true, headingLevel: 2 }) });
-  view.update({ ...projected.value, orderUuid: ORDER, canAccept: false, canDecline: false });
-  for (let n = 0; n < 60 && !root.querySelector('.gcsp-offer-order .gcsp-order-number'); n += 1) await new Promise((done) => setTimeout(done, 15));
-  const area = root.querySelector('.gcsp-offer-order');
-  assert.match(area.textContent, /Order referenceGCSP-000123Car order number1000001/); assert.match(area.textContent, new RegExp(projected.value.card.members[0].display.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  assert.equal(area.querySelector('h2').textContent, 'Order progress'); assert.ok(area.querySelectorAll('.gcsp-stage-tracker li').length >= 3);
-  view.destroy(); assert.equal(root.querySelector('.gcsp-offer-order'), null);
-});
-
-test('mountOffer forwards the host order port to an accepted offer only', async () => {
+test('mountOffer no longer mounts the order tracker in an accepted offer', async () => {
   const sample = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url)));
   const { mountOffer } = await import('../../blocks/gcsp/offer/gcsp-offer.js');
   const read = (state) => async () => toOfferPresentation({ status: 'ok', value: { ...structuredClone(sample), state, reason: state, offerState: state,
@@ -548,7 +448,7 @@ test('mountOffer forwards the host order port to an accepted offer only', async 
     const stop = mountOffer(root, { read: read(state), order: { mount: (host, input) => { seen.push([state, input.orderUuid]); return () => {}; } } });
     await new Promise((done) => setTimeout(done, 30)); stop();
   }
-  assert.deepEqual(seen, [['accepted', sample.quote.orderUuid]]);
+  assert.deepEqual(seen, []);
 });
 
 test('the restarted state shows the restart screen with a single Reload button and no Try again', () => {
@@ -577,12 +477,12 @@ test('GC-041: an accepted offer leads on to order progress and Your cars beside 
   const view = createOfferView(root, { links, mountOrder: (host) => { host.append(document.createElement('p')); return () => {}; } });
   view.update(acceptedModel());
   const [progress, cars] = [...root.querySelectorAll('a.vm-btn')];
-  assert.equal(progress.textContent, 'View order progress'); assert.equal(progress.getAttribute('href'), links.orderProgress);
+  assert.equal(progress.textContent, 'Track your order'); assert.equal(progress.getAttribute('href'), links.orderProgress);
   assert.ok(progress.classList.contains('vm-btn-primary'));
   assert.equal(cars.textContent, 'Back to Your cars'); assert.equal(cars.getAttribute('href'), links.cars); assert.ok(cars.classList.contains('vm-btn-ghost'));
   const before = (a, b) => Boolean(a.compareDocumentPosition(b) & dom.window.Node.DOCUMENT_POSITION_FOLLOWING);
-  assert.ok(before(root.querySelector('h1'), progress)); assert.ok(before(cars, root.querySelector('.vm-card')));
-  assert.ok(before(cars, root.querySelector('.gcsp-offer-order'))); assert.ok(before(progress, root.querySelector('[data-offer-action=refresh]')));
+  assert.ok(before(root.querySelector('h1'), progress)); assert.equal(root.querySelector('.vm-card'), null);
+  assert.ok(before(progress, root.querySelector('[data-offer-action=refresh]')));
   for (const state of ['pending', 'declined', 'uncertain']) { view.update(acceptedModel(state)); assert.equal(root.querySelectorAll('a.vm-btn').length, 0, state); }
   view.destroy(); root.remove();
   const bare = document.createElement('div'); document.body.append(bare); const plain = createOfferView(bare, {});

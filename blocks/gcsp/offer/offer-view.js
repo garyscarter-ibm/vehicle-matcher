@@ -32,9 +32,8 @@ const refusedMessage = (selection, help) => {
   if (help) return ref ? `${base} Quote order reference ${ref} when you contact scheme support.` : base;
   return `${base} Contact scheme support${ref ? ` and quote order reference ${ref}` : ''}.`;
 };
-const selectionHeadline = (selection, hostsOrder, help) => selection.selectionState === 'acknowledged'
-  ? (hostsOrder ? 'Selection received. Your order is with ordering.'
-    : `Selection received. Waiting for ${selection.stages.find((stage) => stage.state === 'waiting')?.name ?? selection.current}.`)
+const selectionHeadline = (selection, help) => selection.selectionState === 'acknowledged'
+  ? `Selection received. Waiting for ${selection.stages.find((stage) => stage.state === 'waiting')?.name ?? selection.current}.`
   : selection.selectionState === 'handoff-pending' ? 'Sending your selection to ordering. Ordering owns the next step. You do not need to do anything.'
     : refusedMessage(selection, help);
 // The one declined line: the car's name once, plus the next step when a change question follows.
@@ -42,7 +41,7 @@ function declinedLine(card, withChange) {
   const name = card?.members?.length === 1 ? card.members[0]?.display?.name : '';
   return `${name ? `You declined the ${name}.` : 'You declined this offer.'}${withChange ? ' Change one thing and your buddy looks again.' : ''}`;
 }
-const messageFor = (model, hostsOrder, help) => model.message || (model.state === 'accepted' && model.selection ? selectionHeadline(model.selection, hostsOrder, help) : messages[model.state]);
+const messageFor = (model, help) => model.message || (model.state === 'accepted' && model.selection ? selectionHeadline(model.selection, help) : messages[model.state]);
 const longDate = (value) => /^\d{4}-\d\d-\d\d$/.test(value ?? '') && Number.isFinite(Date.parse(value))
   ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : value;
 let sequence = 0;
@@ -122,12 +121,18 @@ function selectionGroup(selection) {
   return section;
 }
 
+// The short accepted confirmation: the car once and its order number once, no tracker and no comparison.
+function acceptedFacts(model) {
+  const name = model.card?.members?.length === 1 ? model.card.members[0]?.display?.name : '';
+  const number = model.selection?.orderNumber ?? model.card?.members?.[0]?.display?.line?.match(/\d{7}/)?.[0];
+  const rows = [...(name ? [{ label: 'Your new car', value: name }] : []), ...(number ? orderIdentityRows(null, number) : [])];
+  return rows.length ? factList(rows) : null;
+}
+
 /** Compose shared primitives only; server projection owns vehicle facts, terms and decisions. */
-export function createOfferView(root, { refresh, decide, tickDeclaration, selectReason, cancelDecline, refreshReasons, mountFollowup, mountOrder, links } = {}) {
+export function createOfferView(root, { refresh, decide, tickDeclaration, selectReason, cancelDecline, refreshReasons, mountFollowup, links } = {}) {
   const page = el('div', 'vm gcsp-offer-body');
   page.id = `gcsp-offer-${++sequence}`;
-  // Once ordering holds the order its tracker is the one source of progress, so selection stages give way.
-  const hostsOrderFor = (model) => model.state === 'accepted' && !isRefused(model) && typeof model.orderUuid === 'string' && typeof mountOrder === 'function' && model.card?.members?.length === 1;
   const content = el('div', 'gcsp-offer-content');
   // FUCQ-234: screen-reader only, and silent when the offer first lands because the heading already shows the state.
   const status = viewStatus(); status.root.dataset.offerAnnouncement = '';
@@ -136,13 +141,9 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
   let messageNode; let clockNode; let reasonNode; let decisionGroup;
   let reasonForm; let reasonSelect; let reasonStatus; let reasonField; let reasonSummary;
   let confirmButton; let cancelButton; let reasonsRefresh; let optionsKey; let wasOpen = false; let lastError = '';
-  let followupRoot; let followupKey; let cleanupFollowup; let cleanupOrder; let accepting = false;
+  let followupRoot; let followupKey; let cleanupFollowup; let accepting = false;
   const clearFollowup = () => {
     const cleanup = cleanupFollowup; cleanupFollowup = undefined; followupKey = undefined;
-    try { cleanup?.(); } catch { /* Teardown cannot prevent the offer from updating. */ }
-  };
-  const clearOrder = () => {
-    const cleanup = cleanupOrder; cleanupOrder = undefined;
     try { cleanup?.(); } catch { /* Teardown cannot prevent the offer from updating. */ }
   };
   const announce = (text) => status.announce(text);
@@ -176,7 +177,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     const focused = root.ownerDocument.activeElement?.dataset?.offerAction;
     const followupFocused = followupRoot?.contains(root.ownerDocument.activeElement);
     const inPage = content.contains(root.ownerDocument.activeElement);
-    clearFollowup(); clearOrder(); followupRoot = undefined;
+    clearFollowup(); followupRoot = undefined;
     content.replaceChildren(); if (!checking) showCheck('');
     optionsKey = undefined; wasOpen = false; lastError = '';
     const state = model.state;
@@ -186,23 +187,24 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       messageNode = el('p'); messageNode.hidden = true; content.append(screen);
       if (focused || followupFocused) screen.querySelector('.vm-btn')?.focus(); return;
     }
-    const hostsOrder = hostsOrderFor(model); const refused = isRefused(model);
+    const refused = isRefused(model);
     if (refused) {
       const actions = [links?.help && button({ label: 'Contact scheme support', variant: 'primary', href: links.help }),
         links?.cars && button({ label: 'Back to Your cars', variant: 'ghost', href: links.cars })].filter(Boolean);
-      const screen = statusScreen({ title: REFUSED_TITLE, level: 1, message: messageFor(model, hostsOrder, links?.help), actions, role: null });
+      const screen = statusScreen({ title: REFUSED_TITLE, level: 1, message: messageFor(model, links?.help), actions, role: null });
       messageNode = screen.querySelector('.vm-lede'); content.append(screen);
     } else {
       content.append(screenIntro({ title: titleFor(model), level: 1 }));
       // The deadline leads, directly under the heading, so it is not found below the declarations.
       if (state === 'pending') { clockNode = el('p', 'gcsp-countdown'); content.append(clockNode); }
-      messageNode = el('p', 'gcsp-note', messageFor(model, hostsOrder));
-      messageNode.hidden = !messageFor(model, hostsOrder); content.append(messageNode);
+      const facts = state === 'accepted' ? acceptedFacts(model) : null; if (facts) content.append(facts);
+      messageNode = el('p', 'gcsp-note', messageFor(model));
+      messageNode.hidden = !messageFor(model); content.append(messageNode);
     }
     if (model.fixtureNotice) content.append(el('p', 'gcsp-note', model.fixtureNotice));
     if (state === 'accepted' && !refused && (links?.orderProgress || links?.cars)) {
       const leadOn = el('div', 'gcsp-offer-actions');
-      if (links.orderProgress) leadOn.append(button({ label: 'View order progress', variant: 'primary', href: links.orderProgress }));
+      if (links.orderProgress) leadOn.append(button({ label: 'Track your order', variant: 'primary', href: links.orderProgress }));
       if (links.cars) leadOn.append(button({ label: 'Back to Your cars', variant: 'ghost', href: links.cars }));
       content.append(leadOn);
     }
@@ -213,8 +215,8 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       if (links.cars) exitRow.append(button({ label: 'Back to Your cars', variant: 'ghost', href: links.cars }));
       content.append(exitRow);
     }
-    if (state === 'accepted' && model.selection && !hostsOrder) content.append(selectionGroup(model.selection));
-    if (['pending', 'accepted', 'superseded', 'uncertain'].includes(state) && model.card?.members?.length === 1) {
+    if (refused && model.selection) content.append(selectionGroup(model.selection));
+    if ((['pending', 'superseded', 'uncertain'].includes(state) || refused) && model.card?.members?.length === 1) {
       const columns = el('div', 'gcsp-offer-comparison');
       const offer = el('section', 'gcsp-offer-exact');
       offer.setAttribute('aria-label', 'The offered car');
@@ -228,13 +230,6 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     }
     const summary = state === 'declined' ? declinedLine(model.card, Boolean(followupHandle(model.followup, state))) : '';
     if (summary) { const line = el('p', 'gcsp-note', summary); line.dataset.offerDeclinedSummary = ''; content.append(line); }
-    if (hostsOrder) {
-      const section = el('section', 'gcsp-offer-order'); section.setAttribute('aria-label', 'Your order progress');
-      const { display, media } = model.card.members[0];
-      const cleanup = mountOrder(section, { orderUuid: model.orderUuid, car: { name: display?.name, photo: media?.src || undefined }, announce });
-      if (typeof cleanup === 'function') cleanupOrder = cleanup;
-      content.append(section);
-    }
     if (state === 'pending') {
       decisionGroup = el('div', 'gcsp-offer-content');
       if (model.handoff) decisionGroup.append(handoffGroup(model, page.id, tickDeclaration));
@@ -347,7 +342,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     const nextStructure = JSON.stringify([model.state, model.card, model.currentCar, model.fixtureNotice, model.handoff, model.selection, model.orderUuid]);
     // Keep the kit's own decision live region and keyboard controls mounted across clock reads.
     if (structure !== nextStructure) { draw(model); structure = nextStructure; }
-    messageNode.textContent = messageFor(model, hostsOrderFor(model), links?.help) || '';
+    messageNode.textContent = messageFor(model, links?.help) || '';
     messageNode.hidden = !messageNode.textContent;
     if (model.state === 'pending') accepting = false;
     updateFollowup(model);
@@ -370,5 +365,5 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     else if (!checking && previousState !== undefined && previousState !== 'loading' && (model.state !== previousState || key !== previousIdentity)) announce(titleFor(model));
     previousState = model.state; previousIdentity = key;
   }
-  return { update, destroy() { clearFollowup(); clearOrder(); page.remove(); } };
+  return { update, destroy() { clearFollowup(); page.remove(); } };
 }
