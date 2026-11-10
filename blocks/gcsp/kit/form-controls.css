@@ -1,17 +1,17 @@
-.gcsp .gcsp-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.gcsp .gcsp-field-label { color: var(--gcsp-text); font-weight: var(--gcsp-font-weight); }
-.gcsp .gcsp-field input, .gcsp .gcsp-field select, .gcsp .gcsp-field textarea { box-sizing: border-box; text-overflow: ellipsis; width: 100%; min-width: 0; max-width: 100%; min-height: 44px; padding: 10px 12px; font: inherit; color: var(--gcsp-text); background: var(--gcsp-surface); border: 1px solid var(--gcsp-text-muted); border-radius: var(--gcsp-radius); }
-.gcsp .gcsp-field textarea { min-height: 100px; resize: vertical; }
+.gcsp .gcsp-field { display: flex; flex-direction: column; gap: var(--gcsp-space-1); min-width: 0; }
+.gcsp .gcsp-field-label { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); font-weight: var(--gcsp-font-weight); }
+.gcsp .gcsp-field input, .gcsp .gcsp-field select, .gcsp .gcsp-field textarea { box-sizing: border-box; text-overflow: ellipsis; width: 100%; min-width: 0; max-width: 100%; min-height: var(--gcsp-input-height); padding: 0 var(--gcsp-space-2); font: inherit; font-size: var(--gcsp-font-size-regular); font-weight: var(--gcsp-font-input-weight); color: var(--gcsp-text); background: var(--gcsp-surface); border: 1px solid var(--gcsp-input-border); border-radius: var(--gcsp-radius); } .gcsp .gcsp-field input:hover, .gcsp .gcsp-field select:hover, .gcsp .gcsp-field textarea:hover { border-color: var(--gcsp-input-border-hover); }
+.gcsp .gcsp-field textarea { min-height: calc(var(--gcsp-space-12) * 2); padding: var(--gcsp-space-2); resize: vertical; } @media (max-width: 600px) { .gcsp .gcsp-field input, .gcsp .gcsp-field select { min-height: 44px; } }
 .gcsp .gcsp-field [aria-invalid="true"] { border-color: var(--gcsp-danger); border-width: 2px; }
-.gcsp .gcsp-field input:focus-visible, .gcsp .gcsp-field select:focus-visible, .gcsp .gcsp-field textarea:focus-visible, .gcsp .gcsp-error-summary :focus { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }
+.gcsp .gcsp-field input:focus-visible, .gcsp .gcsp-field select:focus-visible, .gcsp .gcsp-field textarea:focus-visible, .gcsp .gcsp-error-summary :focus { outline: 2px solid var(--gcsp-focus); outline-offset: var(--gcsp-space-half); }
 .gcsp .gcsp-field :disabled { background: var(--gcsp-surface-muted); color: var(--gcsp-text-muted); }
-.gcsp .gcsp-field-hint, .gcsp .gcsp-field-error { margin: 0; overflow-wrap: anywhere; font-size: 14px; }
+.gcsp .gcsp-field-hint, .gcsp .gcsp-field-error { margin: 0; overflow-wrap: anywhere; font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
 .gcsp .gcsp-field-hint { color: var(--gcsp-text-muted); }
 .gcsp .gcsp-field-error { color: var(--gcsp-danger); font-weight: var(--gcsp-font-strong-weight); }
-.gcsp .gcsp-error-summary { padding: 20px; border: 2px solid var(--gcsp-danger); background: var(--gcsp-surface); overflow-wrap: anywhere; }
-.gcsp .gcsp-error-summary .gcsp-h2 { margin: 0 0 12px; }
-.gcsp .gcsp-error-links { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.gcsp .gcsp-error-summary { padding: var(--gcsp-space-4); border: 1px solid var(--gcsp-danger-border); border-radius: var(--gcsp-radius); background: var(--gcsp-danger-surface); overflow-wrap: anywhere; }
+.gcsp .gcsp-error-summary .gcsp-h2 { margin: 0 0 var(--gcsp-space-3); }
+.gcsp .gcsp-error-links { margin: 0; padding-left: var(--gcsp-space-5); display: grid; gap: var(--gcsp-space-2); }
 .gcsp .gcsp-error-links a { color: var(--gcsp-accent-strong); text-decoration: underline; }
 .gcsp [hidden] { display: none !important; }
-.gcsp .gcsp-check { display: flex; align-items: flex-start; gap: 12px; } .gcsp .gcsp-check label { padding: 10px 0; overflow-wrap: anywhere; }
-.gcsp .gcsp-check input { flex: none; width: 24px; height: 24px; margin: 10px 0 0; accent-color: var(--gcsp-accent-strong); } .gcsp .gcsp-check input:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }
+.gcsp .gcsp-check { display: flex; align-items: flex-start; gap: var(--gcsp-space-3); } .gcsp .gcsp-check label { padding: var(--gcsp-space-2) 0; overflow-wrap: anywhere; }
+.gcsp .gcsp-check input { flex: none; width: 24px; height: 24px; margin: var(--gcsp-space-2) 0 0; accent-color: var(--gcsp-accent-strong); } .gcsp .gcsp-check input:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: var(--gcsp-space-half); }

@@ -3,17 +3,16 @@
 gcsp-account { display: block; }
 .gcsp .gcsp-account-body { width: 100%; min-width: 0; overflow-wrap: anywhere; }
 .gcsp .gcsp-account-body .gcsp-feature .vm-card-media { background: var(--gcsp-surface-raised); } .gcsp .gcsp-account-body .gcsp-feature .vm-card-photo { object-fit: contain; }
-.gcsp .gcsp-account-terms { margin: 0; color: var(--gcsp-accent-strong); font-size: 20px; font-weight: 600; }
-.gcsp .gcsp-account-histories { display: flex; flex-direction: column; gap: 16px; }
-.gcsp .gcsp-account-history { display: flex; flex-direction: column; align-items: start; gap: 16px; padding: 24px 0; border-bottom: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-account-terms { margin: 0; color: var(--gcsp-text); font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-account-histories { display: flex; flex-direction: column; gap: var(--gcsp-space-4); }
+.gcsp .gcsp-account-history { display: flex; flex-direction: column; align-items: start; gap: var(--gcsp-space-4); padding: var(--gcsp-space-6) 0; border-bottom: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-account-history:last-child { border-bottom: 0; }
 .gcsp .gcsp-account-body .gcsp-details { min-width: 0; width: 100%; box-sizing: border-box; }
-.gcsp .gcsp-account-body .gcsp-details > .gcsp-details { margin-top: 16px; }
-.gcsp .gcsp-account-body .gcsp-summary { scroll-margin-top: 16px; }
-.gcsp .gcsp-account-body .gcsp-account-history > .gcsp-h2 { font-size: 20px; }
+.gcsp .gcsp-account-body .gcsp-details > .gcsp-details { margin-top: var(--gcsp-space-4); }
+.gcsp .gcsp-account-body .gcsp-summary { scroll-margin-top: var(--gcsp-space-4); }
 .gcsp.gcsp-account-print-record { display: none; }
 @media (max-width: 640px) {
-  .gcsp .gcsp-account-history { padding: 16px 0; }
+  .gcsp .gcsp-account-history { padding: var(--gcsp-space-4) 0; }
 }
 @media print {
   .gcsp-account-printing > .gcsp:not(.gcsp-account-print-record) { display: none; }

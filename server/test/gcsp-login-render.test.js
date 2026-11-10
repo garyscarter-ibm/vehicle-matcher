@@ -47,7 +47,7 @@ test('login fields have native labels, password autocomplete and a quiet signed-
   assert.equal(view.email.type, 'email'); assert.equal(view.email.autocomplete, 'username');
   assert.equal(view.password.type, 'password'); assert.equal(view.password.autocomplete, 'current-password');
   assert.equal(view.root.querySelector('.gcsp-account').dataset.status, 'signed-out');
-  assert.equal(view.root.querySelector('.gcsp-presenter-region').textContent, '');
+  assert.equal(view.root.querySelector('.gcsp-presenter-controls, .gcsp-nav-presenter-btn'), null);
   assert.equal(view.root.querySelectorAll('h1').length, 1);
   view.destroy();
 });

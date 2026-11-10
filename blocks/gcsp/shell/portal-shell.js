@@ -12,6 +12,8 @@ const DEFAULT_REASON = 'Not available yet';
 const LOGO = (name) => new URL(`../../../assets/brand-logos/${name}.svg`, import.meta.url).href;
 const CHEVRON = ['M9 6l6 6-6 6'];
 const MENU = ['M4 7h16', 'M4 12h16', 'M4 17h16'];
+const SLIDERS = ['M4 8h10', 'M18 8h2', 'M14 6h4v4h-4z', 'M4 16h2', 'M10 16h10', 'M6 14h4v4H6z'];
+const FLYOUT_KEY = 'gcsp:presenter-flyout-open';
 let uid = 0;
 
 /** A 24px stroke icon from path data strings. Decorative: the label is the name. */
@@ -180,7 +182,88 @@ function accountContent(state, retryButton, signOutButton, menuItems = []) {
 }
 
 /**
- * The shell. Returns { root, main, setAccount, setActive, setBreadcrumbs, destroy }.
+ * The left-nav "Presenter controls" item and its flyout. The item stays hidden until the controls report
+ * they are authorised; open state persists in sessionStorage. Returns the handles portalShell wires up.
+ */
+function buildPresenterItem(root, flyout, body, id) {
+  const group = el('ul', 'gcsp-nav-list gcsp-nav-presenter');
+  group.hidden = true;
+  const li = el('li', 'gcsp-nav-item');
+  const item = el('button', 'gcsp-nav-btn gcsp-nav-presenter-btn');
+  item.type = 'button';
+  item.setAttribute('aria-expanded', 'false');
+  item.setAttribute('aria-controls', flyout.id);
+  item.append(svgIcon(SLIDERS), el('span', 'gcsp-nav-label', 'Presenter controls'));
+  const tip = el('span', 'gcsp-nav-tip gcsp-nav-tip-available');
+  tip.setAttribute('aria-hidden', 'true');
+  tip.append(el('span', 'gcsp-nav-tip-label', 'Presenter controls'));
+  li.append(item, tip);
+  group.append(li);
+
+  flyout.setAttribute('role', 'dialog');
+  flyout.setAttribute('aria-modal', 'false');
+  flyout.setAttribute('aria-labelledby', `${id}-presenter-title`);
+  const head = el('div', 'gcsp-presenter-flyout-head');
+  const title = el('h2', 'gcsp-presenter-flyout-title', 'Presenter controls');
+  title.id = `${id}-presenter-title`;
+  const closeBtn = el('button', 'gcsp-presenter-flyout-close');
+  closeBtn.type = 'button';
+  closeBtn.setAttribute('aria-label', 'Close presenter controls');
+  closeBtn.append(svgIcon(['M6 6l12 12', 'M18 6L6 18']));
+  head.append(title, closeBtn);
+  body.classList.add('gcsp-presenter-flyout-body');
+  flyout.append(head, body);
+
+  const win = () => root.ownerDocument.defaultView;
+  const store = (value) => { try { win()?.sessionStorage?.setItem(FLYOUT_KEY, value ? 'true' : 'false'); } catch { /* storage blocked */ } };
+  let wanted = false;
+  try { wanted = win()?.sessionStorage?.getItem(FLYOUT_KEY) === 'true'; } catch { /* storage blocked */ }
+  let available = false;
+  let controlsRoot = null;
+
+  function render() {
+    const show = wanted && available;
+    flyout.hidden = !show;
+    group.hidden = !available;
+    item.setAttribute('aria-expanded', String(show));
+  }
+  function focusFirst() {
+    const first = [...flyout.querySelectorAll('button, input, select, textarea, [tabindex]')]
+      .find((node) => !node.disabled && node.tabIndex >= 0 && node !== closeBtn && !node.closest('[hidden]'));
+    (first || closeBtn).focus();
+  }
+  function open(focus) {
+    wanted = true; store(true); render();
+    if (focus && !flyout.hidden) focusFirst();
+  }
+  // On a narrow screen the nav is hidden while the flyout is open, so focus goes to the menu button.
+  function close(focus) {
+    wanted = false; store(false); render();
+    if (!focus) return;
+    const narrow = win()?.matchMedia?.('(max-width: 600px)')?.matches;
+    (narrow ? root.querySelector('.gcsp-menu-toggle') : item).focus();
+  }
+  item.addEventListener('click', () => {
+    root.classList.remove('gcsp-menu-open');
+    root.querySelector('.gcsp-menu-toggle')?.setAttribute('aria-expanded', 'false');
+    if (!flyout.hidden) { wanted = false; store(false); render(); } else open(true);
+  });
+  closeBtn.addEventListener('click', () => close(true));
+  // Escape inside the controls is handled by the controls (it cancels a reset confirmation first).
+  flyout.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !(controlsRoot && controlsRoot.contains(event.target))) close(true);
+  });
+  render();
+  return {
+    group, open, close,
+    setAvailable(next) { available = Boolean(next); render(); },
+    attach(node) { controlsRoot = node; },
+  };
+}
+
+/**
+ * The shell. Returns { root, main, presenterRegion, setAccount, setActive, setBreadcrumbs, destroy }.
+ * presenterRegion is the body of the nav's Presenter controls flyout.
  * navigation is an item list for accountNavigation; onNavigate(key) is called for available items only.
  * arrivalFocus focuses the main h1 on arrival, until the first user input.
  */
@@ -214,6 +297,10 @@ export function portalShell({
   accountBox.setAttribute('aria-live', 'polite');
   header.append(menuToggle, marks, el('div', 'gcsp-title', title), accountBox);
 
+  const flyout = el('div', 'gcsp-presenter-flyout');
+  flyout.id = `${id}-presenter`;
+  flyout.hidden = true;
+  flyout.dataset.nav = 'collapsed';
   const nav = accountNavigation({
     items: navigation,
     active,
@@ -221,6 +308,7 @@ export function portalShell({
       closeMenu();
       onNavigate?.(key);
     },
+    onToggle: (on) => { flyout.dataset.nav = on ? 'expanded' : 'collapsed'; },
   });
   menuToggle.setAttribute('aria-controls', nav.root.id);
 
@@ -230,10 +318,20 @@ export function portalShell({
   main.id = mainId;
   main.tabIndex = -1;
   const presenterRegion = el('div', 'gcsp-presenter-region');
-  const presenter = presenterControls === false ? null : mountPresenterControls(presenterRegion, presenterControls);
-  content.append(presenterRegion, crumbsHost, main);
+  const presenterItem = presenterControls === false ? null : buildPresenterItem(root, flyout, presenterRegion, id);
+  const presenter = presenterItem && mountPresenterControls(presenterRegion, {
+    ...presenterControls,
+    onAvailability: presenterItem.setAvailable,
+    onReveal: () => presenterItem.open(false),
+    onEscape: () => presenterItem.close(true),
+  });
+  if (presenter) {
+    presenterItem.attach(presenter.root);
+    nav.root.insertBefore(presenterItem.group, nav.root.querySelector('.gcsp-nav-toggle'));
+  }
+  content.append(crumbsHost, main);
   root.append(skip, header, el('div', 'gcsp-body'));
-  root.lastChild.append(nav.root, content);
+  root.lastChild.append(nav.root, ...(presenter ? [flyout] : []), content);
 
   function closeMenu() {
     root.classList.remove('gcsp-menu-open');

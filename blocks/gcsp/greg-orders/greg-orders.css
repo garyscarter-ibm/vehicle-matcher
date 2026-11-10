@@ -1,20 +1,19 @@
 /* Additive Greg panel; shared controls, table, type and colour tokens own its visual language. */
-.gcsp.gcsp-orders { display: flex; flex-direction: column; gap: 16px; min-width: 0; min-height: 0; color: var(--gcsp-text); }
+.gcsp.gcsp-orders { display: flex; flex-direction: column; gap: var(--gcsp-space-4); min-width: 0; min-height: 0; color: var(--gcsp-text); }
 .gcsp .gcsp-orders-host { grid-column: 1 / -1; min-width: 0; }
-.gcsp .gcsp-orders-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.gcsp .gcsp-orders-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gcsp-space-2); }
 .gcsp.gcsp-orders .gcsp-h2, .gcsp.gcsp-orders .gcsp-h3, .gcsp.gcsp-orders .gcsp-note { margin: 0; }
-.gcsp.gcsp-orders .gcsp-h2 { font-size: 24px; }
-.gcsp.gcsp-orders .gcsp-h3 { font-size: 18px; }
-.gcsp .gcsp-orders-status { min-height: 1.5em; }
-.gcsp .gcsp-orders-form { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
-.gcsp .gcsp-orders-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 16px; width: 100%; }
-.gcsp .gcsp-orders-form > .vm-btn { min-height: 44px; }
-.gcsp .gcsp-orders-production { padding-top: 20px; border-top: 1px solid var(--gcsp-divider); }
-.gcsp .gcsp-orders-production > summary { width: fit-content; padding: 10px 0; font-weight: var(--gcsp-font-strong-weight); cursor: pointer; }
+.gcsp.gcsp-orders .gcsp-h2 { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); }
+.gcsp.gcsp-orders .gcsp-h3 { font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-orders-status { min-height: var(--gcsp-space-6); }
+.gcsp .gcsp-orders-form { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gcsp-space-4); }
+.gcsp .gcsp-orders-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: var(--gcsp-space-4); width: 100%; }
+.gcsp .gcsp-orders-production { padding-top: var(--gcsp-space-4); border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-orders-production > summary { width: fit-content; padding: var(--gcsp-space-2) 0; font-weight: var(--gcsp-font-strong-weight); cursor: pointer; }
 .gcsp .gcsp-orders-production > summary:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }
-.gcsp .gcsp-orders-production[open] > .gcsp-orders-form { margin-top: 12px; }
-.gcsp .gcsp-orders-queues { display: grid; gap: 12px; }
-.gcsp .gcsp-orders-queue { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.gcsp .gcsp-orders-production[open] > .gcsp-orders-form { margin-top: var(--gcsp-space-3); }
+.gcsp .gcsp-orders-queues { display: grid; gap: var(--gcsp-space-2); }
+.gcsp .gcsp-orders-queue { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--gcsp-space-2); }
 .gcsp .gcsp-orders-tracking .gcsp-table { min-width: 700px; }
 @media (max-width: 640px) {
   .gcsp .gcsp-orders-fields { grid-template-columns: 1fr; }
