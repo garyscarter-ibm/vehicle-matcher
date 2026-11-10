@@ -318,7 +318,7 @@ export function createRepository(backend) {
       if (!identifier(environmentId)) return invalid('invalid-environment', 'environmentId', 'Supply an environment');
       return safe('currentRun', () => backend.read({ environmentId, runId: 'repository:current-run' }, async (state) => {
         const current = state.tables.runs.filter((row) => row.environmentId === environmentId && row.current === true && row.status === 'active');
-        return current.length === 1 ? ok(current[0]) : current.length ? conflict('multiple-current-runs') : notFound('runs');
+        return current.length === 1 ? ok(cloneJson(current[0])) : current.length ? conflict('multiple-current-runs') : notFound('runs');
       }));
     },
     // One backend transaction retires the old run, seeds the replacement and records the reset receipt.

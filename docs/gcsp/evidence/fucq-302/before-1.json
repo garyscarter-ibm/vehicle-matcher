@@ -1,0 +1,1043 @@
+{
+ "story": "FUCQ-302",
+ "label": "before-1",
+ "node": "v26.5.0",
+ "measuredAt": "2026-11-10T07:58:37.699Z",
+ "rounds": 15,
+ "serverDir": "fucq-302-base/server",
+ "phases": {
+  "floor": {
+   "routes": {
+    "/context": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 607,
+     "serverMedianMs": 21.2,
+     "serverP90Ms": 21.6,
+     "wallMedianMs": 23.1,
+     "wallP90Ms": 23.8,
+     "n": 30
+    },
+    "/presenter/controls": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 17932,
+     "serverMedianMs": 83.1,
+     "serverP90Ms": 84.8,
+     "wallMedianMs": 85.3,
+     "wallP90Ms": 87,
+     "n": 30
+    },
+    "/manual/account": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 10058,
+     "serverMedianMs": 73.8,
+     "serverP90Ms": 75.7,
+     "wallMedianMs": 75.7,
+     "wallP90Ms": 77.8,
+     "n": 30
+    },
+    "/manual/draft": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 78,
+     "serverMedianMs": 72.9,
+     "serverP90Ms": 76.5,
+     "wallMedianMs": 75,
+     "wallP90Ms": 78.6,
+     "n": 30
+    },
+    "/offers/current": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 63,
+     "serverMedianMs": 30.4,
+     "serverP90Ms": 31.4,
+     "wallMedianMs": 32.3,
+     "wallP90Ms": 33.3,
+     "n": 30
+    },
+    "/orders/progress/all": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 165,
+     "serverMedianMs": 33.6,
+     "serverP90Ms": 34.5,
+     "wallMedianMs": 35.6,
+     "wallP90Ms": 36.5,
+     "n": 30
+    },
+    "/presenter/scenarios": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 18066,
+     "serverMedianMs": 37.4,
+     "serverP90Ms": 38.1,
+     "wallMedianMs": 39.5,
+     "wallP90Ms": 40.4,
+     "n": 30
+    },
+    "/presenter/scenarios/faults": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 435,
+     "serverMedianMs": 33.7,
+     "serverP90Ms": 34.3,
+     "wallMedianMs": 35.6,
+     "wallP90Ms": 36.5,
+     "n": 30
+    }
+   },
+   "sumOfServerMediansMs": 386.1
+  },
+  "burst9": {
+   "routes": {
+    "/context": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 607,
+     "serverMedianMs": 20.7,
+     "serverP90Ms": 21.5,
+     "wallMedianMs": 212.5,
+     "wallP90Ms": 418.6,
+     "n": 30
+    },
+    "/presenter/controls": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 17932,
+     "serverMedianMs": 81.8,
+     "serverP90Ms": 85.5,
+     "wallMedianMs": 104.6,
+     "wallP90Ms": 108.8,
+     "n": 15
+    },
+    "/manual/account": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 10058,
+     "serverMedianMs": 72.7,
+     "serverP90Ms": 74.5,
+     "wallMedianMs": 176.8,
+     "wallP90Ms": 183.2,
+     "n": 15
+    },
+    "/manual/draft": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 78,
+     "serverMedianMs": 72.4,
+     "serverP90Ms": 75,
+     "wallMedianMs": 252,
+     "wallP90Ms": 257.6,
+     "n": 15
+    },
+    "/offers/current": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 63,
+     "serverMedianMs": 31,
+     "serverP90Ms": 32.2,
+     "wallMedianMs": 283.6,
+     "wallP90Ms": 293.9,
+     "n": 15
+    },
+    "/orders/progress/all": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 165,
+     "serverMedianMs": 34.6,
+     "serverP90Ms": 35.6,
+     "wallMedianMs": 317.8,
+     "wallP90Ms": 329.7,
+     "n": 15
+    },
+    "/presenter/scenarios": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 18066,
+     "serverMedianMs": 38.5,
+     "serverP90Ms": 39.7,
+     "wallMedianMs": 356.5,
+     "wallP90Ms": 368.8,
+     "n": 15
+    },
+    "/presenter/scenarios/faults": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 435,
+     "serverMedianMs": 34.4,
+     "serverP90Ms": 35.9,
+     "wallMedianMs": 391.3,
+     "wallP90Ms": 404.9,
+     "n": 15
+    }
+   },
+   "calls": 9,
+   "rounds": 15,
+   "wallMedianMs": 412.6,
+   "wallP90Ms": 429,
+   "serverSumMedianMs": 409.3,
+   "serverSumP90Ms": 424.7
+  },
+  "presenterPage": {
+   "routes": {
+    "/context": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 607,
+     "serverMedianMs": 21.2,
+     "serverP90Ms": 22.4,
+     "wallMedianMs": 216.4,
+     "wallP90Ms": 435.3,
+     "n": 30
+    },
+    "/presenter/controls": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 17932,
+     "serverMedianMs": 83.9,
+     "serverP90Ms": 103.7,
+     "wallMedianMs": 107.5,
+     "wallP90Ms": 131.4,
+     "n": 15
+    },
+    "/manual/account": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 10058,
+     "serverMedianMs": 73.3,
+     "serverP90Ms": 80.6,
+     "wallMedianMs": 180.6,
+     "wallP90Ms": 212,
+     "n": 15
+    },
+    "/manual/draft": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 78,
+     "serverMedianMs": 74.4,
+     "serverP90Ms": 80.9,
+     "wallMedianMs": 255.3,
+     "wallP90Ms": 310.3,
+     "n": 15
+    },
+    "/offers/current": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 63,
+     "serverMedianMs": 31.5,
+     "serverP90Ms": 34.3,
+     "wallMedianMs": 287,
+     "wallP90Ms": 344.6,
+     "n": 15
+    },
+    "/orders/progress/all": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 165,
+     "serverMedianMs": 35.3,
+     "serverP90Ms": 37,
+     "wallMedianMs": 322.5,
+     "wallP90Ms": 382,
+     "n": 15
+    },
+    "/presenter/scenarios": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 18066,
+     "serverMedianMs": 39.4,
+     "serverP90Ms": 42.1,
+     "wallMedianMs": 362.3,
+     "wallP90Ms": 423.4,
+     "n": 15
+    },
+    "/presenter/scenarios/faults": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 435,
+     "serverMedianMs": 35.1,
+     "serverP90Ms": 40.9,
+     "wallMedianMs": 397.5,
+     "wallP90Ms": 472.4,
+     "n": 15
+    },
+    "/manual/order": {
+     "statuses": {
+      "404": 15
+     },
+     "bytes": 84,
+     "serverMedianMs": 41.7,
+     "serverP90Ms": 43.9,
+     "wallMedianMs": 461.8,
+     "wallP90Ms": 539.9,
+     "n": 15
+    },
+    "/orders/progress": {
+     "statuses": {
+      "400": 15
+     },
+     "bytes": 139,
+     "serverMedianMs": 28.2,
+     "serverP90Ms": 29.6,
+     "wallMedianMs": 490.4,
+     "wallP90Ms": 569.1,
+     "n": 15
+    },
+    "/documents": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 139,
+     "serverMedianMs": 38,
+     "serverP90Ms": 41.2,
+     "wallMedianMs": 528,
+     "wallP90Ms": 607.8,
+     "n": 15
+    },
+    "/appointments": {
+     "statuses": {
+      "400": 15
+     },
+     "bytes": 181,
+     "serverMedianMs": 28.2,
+     "serverP90Ms": 31,
+     "wallMedianMs": 556.5,
+     "wallP90Ms": 636.3,
+     "n": 15
+    },
+    "/return-plan": {
+     "statuses": {
+      "400": 15
+     },
+     "bytes": 176,
+     "serverMedianMs": 28.2,
+     "serverP90Ms": 32.6,
+     "wallMedianMs": 585,
+     "wallP90Ms": 664.2,
+     "n": 15
+    }
+   },
+   "calls": 14,
+   "rounds": 15,
+   "wallMedianMs": 585.5,
+   "wallP90Ms": 664.6,
+   "serverSumMedianMs": 579.5,
+   "serverSumP90Ms": 658.7
+  },
+  "gregDashboard": {
+   "routes": {
+    "/context": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 502,
+     "serverMedianMs": 22.4,
+     "serverP90Ms": 37.7,
+     "wallMedianMs": 42.6,
+     "wallP90Ms": 66.2,
+     "n": 30
+    },
+    "/greg/policy": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 83580,
+     "serverMedianMs": 139.7,
+     "serverP90Ms": 144,
+     "wallMedianMs": 204.6,
+     "wallP90Ms": 212.8,
+     "n": 15
+    },
+    "/greg/order-plan": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 11412,
+     "serverMedianMs": 896.7,
+     "serverP90Ms": 933.9,
+     "wallMedianMs": 1100.3,
+     "wallP90Ms": 1130.2,
+     "n": 15
+    },
+    "/comparison/results/latest": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 279,
+     "serverMedianMs": 35.4,
+     "serverP90Ms": 37.4,
+     "wallMedianMs": 1135.8,
+     "wallP90Ms": 1179.8,
+     "n": 15
+    },
+    "/comparison/jobs/latest": {
+     "statuses": {
+      "404": 15
+     },
+     "bytes": 96,
+     "serverMedianMs": 35.9,
+     "serverP90Ms": 36.6,
+     "wallMedianMs": 1171.4,
+     "wallP90Ms": 1217.4,
+     "n": 15
+    },
+    "/greg/demand": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 1975,
+     "serverMedianMs": 157.9,
+     "serverP90Ms": 162.2,
+     "wallMedianMs": 1327,
+     "wallP90Ms": 1376.8,
+     "n": 15
+    },
+    "/scheme-team/cases": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 146,
+     "serverMedianMs": 42.7,
+     "serverP90Ms": 44.3,
+     "wallMedianMs": 1370.5,
+     "wallP90Ms": 1419.6,
+     "n": 15
+    },
+    "/greg/orders": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 676,
+     "serverMedianMs": 167.1,
+     "serverP90Ms": 171.4,
+     "wallMedianMs": 1540.6,
+     "wallP90Ms": 1588.5,
+     "n": 15
+    },
+    "/presenter/controls": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 17932,
+     "serverMedianMs": 85.3,
+     "serverP90Ms": 90.2,
+     "wallMedianMs": 1625.9,
+     "wallP90Ms": 1679,
+     "n": 15
+    },
+    "/presenter/scenarios": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 18066,
+     "serverMedianMs": 39,
+     "serverP90Ms": 41.3,
+     "wallMedianMs": 1665,
+     "wallP90Ms": 1718.7,
+     "n": 15
+    },
+    "/presenter/scenarios/faults": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 435,
+     "serverMedianMs": 34.8,
+     "serverP90Ms": 36.7,
+     "wallMedianMs": 1701.9,
+     "wallP90Ms": 1754.9,
+     "n": 15
+    }
+   },
+   "calls": 12,
+   "rounds": 15,
+   "wallMedianMs": 1702.2,
+   "wallP90Ms": 1755.4,
+   "serverSumMedianMs": 1696.9,
+   "serverSumP90Ms": 1746.2
+  },
+  "floorGrown": {
+   "routes": {
+    "/context": {
+     "statuses": {
+      "200": 10
+     },
+     "bytes": 607,
+     "serverMedianMs": 21.7,
+     "serverP90Ms": 22.2,
+     "wallMedianMs": 23.6,
+     "wallP90Ms": 24.2,
+     "n": 10
+    },
+    "/presenter/controls": {
+     "statuses": {
+      "200": 10
+     },
+     "bytes": 18821,
+     "serverMedianMs": 87.9,
+     "serverP90Ms": 89.1,
+     "wallMedianMs": 89.9,
+     "wallP90Ms": 91,
+     "n": 10
+    },
+    "/manual/account": {
+     "statuses": {
+      "200": 10
+     },
+     "bytes": 10058,
+     "serverMedianMs": 79.5,
+     "serverP90Ms": 80.7,
+     "wallMedianMs": 80.9,
+     "wallP90Ms": 82.8,
+     "n": 10
+    },
+    "/manual/draft": {
+     "statuses": {
+      "200": 10
+     },
+     "bytes": 78,
+     "serverMedianMs": 79.6,
+     "serverP90Ms": 85.1,
+     "wallMedianMs": 81.6,
+     "wallP90Ms": 87.2,
+     "n": 10
+    },
+    "/offers/current": {
+     "statuses": {
+      "200": 10
+     },
+     "bytes": 63,
+     "serverMedianMs": 35.1,
+     "serverP90Ms": 36,
+     "wallMedianMs": 37.4,
+     "wallP90Ms": 38.1,
+     "n": 10
+    },
+    "/orders/progress/all": {
+     "statuses": {
+      "200": 10
+     },
+     "bytes": 165,
+     "serverMedianMs": 36.7,
+     "serverP90Ms": 37.4,
+     "wallMedianMs": 38.6,
+     "wallP90Ms": 39.4,
+     "n": 10
+    },
+    "/presenter/scenarios": {
+     "statuses": {
+      "200": 10
+     },
+     "bytes": 18066,
+     "serverMedianMs": 40.1,
+     "serverP90Ms": 41.3,
+     "wallMedianMs": 42.1,
+     "wallP90Ms": 43.3,
+     "n": 10
+    },
+    "/presenter/scenarios/faults": {
+     "statuses": {
+      "200": 10
+     },
+     "bytes": 435,
+     "serverMedianMs": 36.7,
+     "serverP90Ms": 37.5,
+     "wallMedianMs": 38.5,
+     "wallP90Ms": 39.5,
+     "n": 10
+    }
+   },
+   "sumOfServerMediansMs": 417.3
+  },
+  "burst9Grown": {
+   "routes": {
+    "/context": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 607,
+     "serverMedianMs": 22.5,
+     "serverP90Ms": 23.3,
+     "wallMedianMs": 229.8,
+     "wallP90Ms": 445.5,
+     "n": 30
+    },
+    "/presenter/controls": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 18821,
+     "serverMedianMs": 88.7,
+     "serverP90Ms": 90.1,
+     "wallMedianMs": 113.3,
+     "wallP90Ms": 114.9,
+     "n": 15
+    },
+    "/manual/account": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 10058,
+     "serverMedianMs": 77.6,
+     "serverP90Ms": 79.7,
+     "wallMedianMs": 190.6,
+     "wallP90Ms": 194.3,
+     "n": 15
+    },
+    "/manual/draft": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 78,
+     "serverMedianMs": 77.5,
+     "serverP90Ms": 79.7,
+     "wallMedianMs": 268,
+     "wallP90Ms": 273.1,
+     "n": 15
+    },
+    "/offers/current": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 63,
+     "serverMedianMs": 33.2,
+     "serverP90Ms": 36.5,
+     "wallMedianMs": 301.2,
+     "wallP90Ms": 308.5,
+     "n": 15
+    },
+    "/orders/progress/all": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 165,
+     "serverMedianMs": 36.7,
+     "serverP90Ms": 38.5,
+     "wallMedianMs": 338.2,
+     "wallP90Ms": 346.3,
+     "n": 15
+    },
+    "/presenter/scenarios": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 18066,
+     "serverMedianMs": 41,
+     "serverP90Ms": 42.6,
+     "wallMedianMs": 379.3,
+     "wallP90Ms": 388,
+     "n": 15
+    },
+    "/presenter/scenarios/faults": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 435,
+     "serverMedianMs": 37.4,
+     "serverP90Ms": 42.4,
+     "wallMedianMs": 416.6,
+     "wallP90Ms": 425.5,
+     "n": 15
+    }
+   },
+   "calls": 9,
+   "rounds": 15,
+   "wallMedianMs": 439.4,
+   "wallP90Ms": 449,
+   "serverSumMedianMs": 435,
+   "serverSumP90Ms": 464.9
+  },
+  "presenterPageGrown": {
+   "routes": {
+    "/context": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 607,
+     "serverMedianMs": 22.9,
+     "serverP90Ms": 25.2,
+     "wallMedianMs": 233.5,
+     "wallP90Ms": 476,
+     "n": 30
+    },
+    "/presenter/controls": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 18821,
+     "serverMedianMs": 91.7,
+     "serverP90Ms": 97.1,
+     "wallMedianMs": 117.1,
+     "wallP90Ms": 123.9,
+     "n": 15
+    },
+    "/manual/account": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 10058,
+     "serverMedianMs": 80.9,
+     "serverP90Ms": 99.8,
+     "wallMedianMs": 198.2,
+     "wallP90Ms": 223.4,
+     "n": 15
+    },
+    "/manual/draft": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 78,
+     "serverMedianMs": 79.5,
+     "serverP90Ms": 86.2,
+     "wallMedianMs": 277.8,
+     "wallP90Ms": 309.8,
+     "n": 15
+    },
+    "/offers/current": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 63,
+     "serverMedianMs": 34,
+     "serverP90Ms": 37,
+     "wallMedianMs": 311.7,
+     "wallP90Ms": 344.8,
+     "n": 15
+    },
+    "/orders/progress/all": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 165,
+     "serverMedianMs": 38.4,
+     "serverP90Ms": 42.7,
+     "wallMedianMs": 350.3,
+     "wallP90Ms": 385.1,
+     "n": 15
+    },
+    "/presenter/scenarios": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 18066,
+     "serverMedianMs": 42.2,
+     "serverP90Ms": 47.8,
+     "wallMedianMs": 392,
+     "wallP90Ms": 432.1,
+     "n": 15
+    },
+    "/presenter/scenarios/faults": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 435,
+     "serverMedianMs": 38,
+     "serverP90Ms": 57.5,
+     "wallMedianMs": 430.3,
+     "wallP90Ms": 474.6,
+     "n": 15
+    },
+    "/manual/order": {
+     "statuses": {
+      "404": 15
+     },
+     "bytes": 84,
+     "serverMedianMs": 45.4,
+     "serverP90Ms": 51.9,
+     "wallMedianMs": 500.7,
+     "wallP90Ms": 556.5,
+     "n": 15
+    },
+    "/orders/progress": {
+     "statuses": {
+      "400": 15
+     },
+     "bytes": 139,
+     "serverMedianMs": 30.6,
+     "serverP90Ms": 33.1,
+     "wallMedianMs": 531.6,
+     "wallP90Ms": 589.9,
+     "n": 15
+    },
+    "/documents": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 139,
+     "serverMedianMs": 42.4,
+     "serverP90Ms": 47.2,
+     "wallMedianMs": 574.7,
+     "wallP90Ms": 636.4,
+     "n": 15
+    },
+    "/appointments": {
+     "statuses": {
+      "400": 15
+     },
+     "bytes": 181,
+     "serverMedianMs": 30.9,
+     "serverP90Ms": 35.3,
+     "wallMedianMs": 605.9,
+     "wallP90Ms": 675.8,
+     "n": 15
+    },
+    "/return-plan": {
+     "statuses": {
+      "400": 15
+     },
+     "bytes": 176,
+     "serverMedianMs": 31.1,
+     "serverP90Ms": 31.9,
+     "wallMedianMs": 637.3,
+     "wallP90Ms": 707.7,
+     "n": 15
+    }
+   },
+   "calls": 14,
+   "rounds": 15,
+   "wallMedianMs": 637.6,
+   "wallP90Ms": 708,
+   "serverSumMedianMs": 633.2,
+   "serverSumP90Ms": 710.5
+  },
+  "gregDashboardGrown": {
+   "routes": {
+    "/context": {
+     "statuses": {
+      "200": 30
+     },
+     "bytes": 502,
+     "serverMedianMs": 23.9,
+     "serverP90Ms": 39.5,
+     "wallMedianMs": 44.5,
+     "wallP90Ms": 69.3,
+     "n": 30
+    },
+    "/greg/policy": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 83580,
+     "serverMedianMs": 148.3,
+     "serverP90Ms": 153.5,
+     "wallMedianMs": 216.4,
+     "wallP90Ms": 223.2,
+     "n": 15
+    },
+    "/greg/order-plan": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 11412,
+     "serverMedianMs": 952.3,
+     "serverP90Ms": 1009.4,
+     "wallMedianMs": 1169.5,
+     "wallP90Ms": 1211,
+     "n": 15
+    },
+    "/comparison/results/latest": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 279,
+     "serverMedianMs": 38.5,
+     "serverP90Ms": 41.1,
+     "wallMedianMs": 1208.5,
+     "wallP90Ms": 1249.8,
+     "n": 15
+    },
+    "/comparison/jobs/latest": {
+     "statuses": {
+      "404": 15
+     },
+     "bytes": 96,
+     "serverMedianMs": 37.7,
+     "serverP90Ms": 41.2,
+     "wallMedianMs": 1245.7,
+     "wallP90Ms": 1289.4,
+     "n": 15
+    },
+    "/greg/demand": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 1966,
+     "serverMedianMs": 165,
+     "serverP90Ms": 175.3,
+     "wallMedianMs": 1413.3,
+     "wallP90Ms": 1466.5,
+     "n": 15
+    },
+    "/scheme-team/cases": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 146,
+     "serverMedianMs": 45.3,
+     "serverP90Ms": 47.7,
+     "wallMedianMs": 1459.3,
+     "wallP90Ms": 1515.4,
+     "n": 15
+    },
+    "/greg/orders": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 676,
+     "serverMedianMs": 179.8,
+     "serverP90Ms": 186.4,
+     "wallMedianMs": 1636.6,
+     "wallP90Ms": 1698.5,
+     "n": 15
+    },
+    "/presenter/controls": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 18821,
+     "serverMedianMs": 91.5,
+     "serverP90Ms": 93.7,
+     "wallMedianMs": 1730.1,
+     "wallP90Ms": 1790.2,
+     "n": 15
+    },
+    "/presenter/scenarios": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 18066,
+     "serverMedianMs": 41.8,
+     "serverP90Ms": 44.1,
+     "wallMedianMs": 1772.6,
+     "wallP90Ms": 1832.4,
+     "n": 15
+    },
+    "/presenter/scenarios/faults": {
+     "statuses": {
+      "200": 15
+     },
+     "bytes": 435,
+     "serverMedianMs": 38.4,
+     "serverP90Ms": 43.2,
+     "wallMedianMs": 1811,
+     "wallP90Ms": 1870.4,
+     "n": 15
+    }
+   },
+   "calls": 12,
+   "rounds": 15,
+   "wallMedianMs": 1811.3,
+   "wallP90Ms": 1870.7,
+   "serverSumMedianMs": 1806,
+   "serverSumP90Ms": 1866.1
+  }
+ },
+ "ticks": [
+  {
+   "i": 1,
+   "st": 200,
+   "status": "ok",
+   "wallMs": 641.3,
+   "serverMs": 639.1,
+   "eldMaxMs": 641.7,
+   "readbackBytes": 18820
+  },
+  {
+   "i": 2,
+   "st": 200,
+   "status": "ok",
+   "wallMs": 617.9,
+   "serverMs": 615.7,
+   "eldMaxMs": 618.7,
+   "readbackBytes": 18820
+  },
+  {
+   "i": 3,
+   "st": 200,
+   "status": "ok",
+   "wallMs": 609.1,
+   "serverMs": 606.8,
+   "eldMaxMs": 609.7,
+   "readbackBytes": 18821
+  },
+  {
+   "i": 4,
+   "st": 200,
+   "status": "ok",
+   "wallMs": 613.7,
+   "serverMs": 611.5,
+   "eldMaxMs": 614.5,
+   "readbackBytes": 18821
+  },
+  {
+   "i": 5,
+   "st": 200,
+   "status": "ok",
+   "wallMs": 625.5,
+   "serverMs": 623.4,
+   "eldMaxMs": 626,
+   "readbackBytes": 18821
+  },
+  {
+   "i": 6,
+   "st": 200,
+   "status": "ok",
+   "wallMs": 635.5,
+   "serverMs": 633.1,
+   "eldMaxMs": 635.4,
+   "readbackBytes": 18821
+  },
+  {
+   "i": 7,
+   "st": 200,
+   "status": "ok",
+   "wallMs": 662,
+   "serverMs": 659.4,
+   "eldMaxMs": 662.2,
+   "readbackBytes": 18821
+  },
+  {
+   "i": 8,
+   "st": 200,
+   "status": "ok",
+   "wallMs": 641.7,
+   "serverMs": 639.4,
+   "eldMaxMs": 642.3,
+   "readbackBytes": 18821
+  }
+ ],
+ "tickMedian": {
+  "wallMs": 630.5,
+  "serverMs": 628.3,
+  "eldMaxMs": 630.7,
+  "readbackBytes": 18821
+ },
+ "rssPeakMiB": 384,
+ "runSeconds": 133.9,
+ "notes": []
+}
