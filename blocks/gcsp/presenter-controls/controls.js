@@ -9,6 +9,8 @@ import { tickSummary, stepLine, missingStagesLine, findOutcome } from './tick-co
 
 let sequence = 0;
 const ACTION_KEY = 'gcsp:presenter-action';
+// A run id is shown without its internal 'demo-' prefix.
+const runLabel = (id) => String(id ?? '').replace(/^demo-/, '');
 const QUIET = new Set(['Presenter controls ready', 'Action recorded', 'Principal confirmed']);
 const RESET_KEY = 'gcsp:presenter-reset-done'; // One-shot note so the remounted strip can announce a reset.
 // Only sentences are shown: objects and internal codes (kebab-case ids) never reach the screen.
@@ -190,7 +192,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     if (!state) return;
     bar.setReadback([
       { label: 'Scenario', value: state.currentScenario?.name, missingLabel: 'Scenario not supplied' },
-      { label: 'Run', value: state.runId }, { label: 'Clock (UTC)', value: state.now },
+      { label: 'Run', value: runLabel(state.runId) }, { label: 'Clock (UTC)', value: state.now },
       { label: 'Acting principal', value: context?.principalId ? `${context.name || context.principalId} (${context.roles?.join(', ') || 'role not supplied'})` : null, missingLabel: 'Context unavailable' },
     ]);
     principal.project((state.principals || []).map((row) => ({ value: row.principalId,
@@ -277,7 +279,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     let note = null; const win = host.ownerDocument?.defaultView;
     try { const raw = win?.sessionStorage?.getItem(RESET_KEY); if (raw) { note = JSON.parse(raw); win.sessionStorage.removeItem(RESET_KEY); } } catch { /* storage blocked */ }
     if (!note || note.runId !== state?.runId || !text(note.name)) return;
-    message.textContent = `Reset done. New run: ${note.runId}. Acting as ${note.name}.`;
+    message.textContent = `Reset done. New run: ${runLabel(note.runId)}. Acting as ${note.name}.`;
     root.open = true; focusStatus = true; // Focused after the final paint, so the scroll lands on it.
   }
   // The new run acts as the presenter, so the strip itself switches to the lead before the workspace loads.
@@ -334,7 +336,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       const stopped = command.kind === 'reset' && reply.status === 'ok' && Boolean(value.startState) && value.startState.status !== 'ok';
       startStopped = stopped;
       const stoppedAt = stopped ? `. The scenario start stopped at ${value.startState.step || 'an unreported step'}: ${value.startState.reason || 'reason not supplied'}` : '';
-      message.textContent = reply.status === 'ok' ? command.kind === 'reset' ? `Reset done. New run: ${value.runId}${stoppedAt}` : 'Action recorded' : `Action not completed: ${why(reply)}`;
+      message.textContent = reply.status === 'ok' ? command.kind === 'reset' ? `Reset done. New run: ${runLabel(value.runId)}${stoppedAt}` : 'Action recorded' : `Action not completed: ${why(reply)}`;
       if (reply.lostResponse) message.textContent = 'Backend unavailable or response lost. Retry the original action.';
       if (command.kind === 'reset' && value.presenterSession?.status === 'unavailable') {
         message.textContent += ` Presenter session unavailable. ${value.presenterSession.action || 'Use trusted backend bootstrap.'}`;
@@ -353,7 +355,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
         }
         principal.value = lead.principalId; principal.initial = true;
         busy = false; await refreshState(); if (disposed || restarted) return;
-        message.textContent = `Reset done. New run: ${value.runId}. Switch to ${name} not confirmed: ${switched.reason}.`;
+        message.textContent = `Reset done. New run: ${runLabel(value.runId)}. Switch to ${name} not confirmed: ${switched.reason}.`;
         message.tabIndex = -1; message.focus();
         return;
       }
