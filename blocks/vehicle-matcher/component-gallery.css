@@ -23,7 +23,6 @@ main {
 }
 
 .vm-gallery-header .vm-title { margin-top: 0; }
-
 .vm-gallery-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
@@ -32,7 +31,6 @@ main {
 }
 
 .vm-gallery-section { min-width: 0; }
-
 .vm-gallery-title {
   margin: 0 0 var(--vm-space-2);
   color: var(--vm-ink);
@@ -81,8 +79,10 @@ main {
 .vm-gallery-gcsp-body { max-width: none; margin: 0; padding: var(--vm-space-4); background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); }
 .vm-gallery-gcsp-body .vm-btn { margin-right: var(--vm-space-3); }
 .vm-gallery-gcsp-media { max-width: 420px; }
-.vm-gallery-gcsp-frame { height: 280px; overflow: auto; border: 1px solid var(--gcsp-divider); }
+.vm-gallery-gcsp-frame { container: gcsp-gallery-frame / inline-size; height: 280px; overflow: auto; border: 1px solid var(--gcsp-divider); }
 .vm-gallery-gcsp-frame .gcsp { min-height: 100%; }
+.vm-gallery-gcsp-frame .gcsp-account-panel { width: min(320px, calc(100cqw - var(--gcsp-space-4))); }
+@container gcsp-gallery-frame (max-width: 360px) { .gcsp-header:has(.gcsp-account[data-status="unavailable"]) { flex-wrap: wrap; } .gcsp-account[data-status="unavailable"] { flex: 1 0 100%; max-width: 100%; justify-content: space-between; } }
 .vm-gallery-gcsp-nav { height: 320px; max-width: 260px; }
 
 .vm-gallery-employee-decision { margin-top: var(--vm-space-8); padding: var(--vm-space-6); }
