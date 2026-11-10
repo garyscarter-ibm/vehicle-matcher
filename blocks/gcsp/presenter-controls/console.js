@@ -51,7 +51,7 @@ function regroup(controller) {
 }
 
 /** Standalone presenter console. Returns { root, basic, setMode(mode), destroy, ready }; `basic` is { update({ headline, sub, clock, primary: { label, disabled, reason } }), setStatus(text), release, startAgain }.
- * onRelease(ctx) / onStartAgain(ctx) replace the default handlers (ctx = { adapter, state, basic, setMode, commandId }); onState(state, basic) runs after each controls read. */
+ * onRelease(ctx) / onStartAgain(ctx) replace the default handlers (ctx = { adapter, state, basic, setMode, commandId, tick, refresh }); onState(state, basic) runs after each controls read. */
 export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapter(), commandId = () => globalThis.crypto.randomUUID(), reload, navigate,
   storage, onRelease, onStartAgain, onState } = {}) {
   const win = host.ownerDocument.defaultView; const abort = new AbortController();
@@ -109,7 +109,9 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
     setStatus(value) { status.textContent = value ?? ''; },
     release, startAgain,
   };
-  const context = () => ({ adapter, state, basic, setMode, commandId });
+  // tick(body, copy) runs the default release path with another tick body; refresh() re-reads the controls.
+  const context = () => ({ adapter, state, basic, setMode, commandId, refresh: () => read(),
+    tick: (body, copy) => defaultRelease({ adapter, state, basic, commandId }, body, copy) });
   const showScreen = (node) => { screen.replaceChildren(node); actions.hidden = true; reasonText.hidden = true; };
 
   function applyState(next) {
@@ -132,19 +134,20 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
     advancedNote.textContent = 'Presenter controls are not available.';
   }
 
-  async function defaultRelease({ adapter: api, state: current, basic: view, commandId: next }) {
-    view.setStatus('Releasing cars');
+  async function defaultRelease({ adapter: api, state: current, basic: view, commandId: next }, body = { mode: 'next-release' },
+    copy = { pending: 'Releasing cars', done: 'Cars released', failed: 'Release not completed' }) {
+    view.setStatus(copy.pending);
     let reply;
-    try { reply = await api.tick({ commandId: next(), expectedClockVersion: current.clockVersion, mode: 'next-release' }, { signal: abort.signal }); } catch { reply = { status: 'unavailable' }; }
+    try { reply = await api.tick({ commandId: next(), expectedClockVersion: current.clockVersion, ...body }, { signal: abort.signal }); } catch { reply = { status: 'unavailable' }; }
     if (disposed) return;
     if (isRunRestarted(reply)) { await read(); return; }
     if (reply?.status === 'ok') {
-      view.setStatus('Cars released');
+      view.setStatus(copy.done);
       const Event = win.CustomEvent;
       if (Event) host.dispatchEvent(new Event('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } }));
       try { win.localStorage.setItem(ACTION_KEY, JSON.stringify({ kind: 'tick', at: Date.now() })); } catch { /* storage blocked */ }
       controller?.refresh();
-    } else view.setStatus(`Release not completed: ${sentence(reply?.reason) || 'Try again'}`);
+    } else view.setStatus(`${copy.failed}: ${sentence(reply?.reason) || 'Try again'}`);
     await read();
   }
   async function runRelease() {
