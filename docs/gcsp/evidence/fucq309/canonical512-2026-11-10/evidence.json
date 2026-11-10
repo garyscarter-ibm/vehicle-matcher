@@ -1,0 +1,204 @@
+{
+  "story": "FUCQ-309",
+  "status": "original4ACmet; built pending parentintegration/lifecycle",
+  "proofId": "clean512-canonical-v1",
+  "proofHead": "e567b9b6a4e6b233ef988aaad88f6ba0a58848ed",
+  "proofFrozenIndexSha256": "de1b2449db6b55b795d7d9f02024953bdd8b196be6f28c6528baaece20c25fba",
+  "result": {
+    "digest": "f643cb89872b07458abd2422f739576d35a1f9067d608e06dbd7cb9ae0e10028",
+    "bytes": 28275,
+    "fileSha256": "67b48f5068e9ee689717bc0527b6c6ecc33e05cd558ee76fc4fd2d8ad52c765e",
+    "id": "process-comparison-6c169996adf5f52cdc8ac449ed37aacb"
+  },
+  "environment": {
+    "node": "v26.7.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "mode": "isolatedmemory/FilePolicyProvider/actualHTTP/default1000people3seeds6steps/nooverlay",
+  "configured": {
+    "oldGenerationMiB": 512,
+    "youngGenerationMiB": 16,
+    "applicationTimeoutSeconds": 1800,
+    "outerSeconds": 1900,
+    "supervisorGroupRamMiB": 1536,
+    "scratchMiB": 32,
+    "workers": 1
+  },
+  "heap": {
+    "positiveFiniteSamples": 1711,
+    "sampledPeakUsedBytes": 442601960,
+    "heapSizeLimitAtPeakBytes": 562036736,
+    "totalAvailableAtPeakBytes": 136503080,
+    "sampledPeakElapsedMs": 587728.4737079999,
+    "sampledPeakWallAt": "2026-11-10T18:26:31.359Z",
+    "sampleGaps": {
+      "samples": 1711,
+      "maxMs": 6800.677084000002
+    },
+    "configuredOldGenerationMiB": 512,
+    "configuredYoungGenerationMiB": 16,
+    "caveat": "Used heap includes V8 spaces; configured old generation is not a measured total-heap cap. Peaks are sampled, not continuous maxima.",
+    "heapLimitMinusUsedAtSampledPeakBytes": 119434776
+  },
+  "processSampledPeakRssBytes": 916570112,
+  "groupSampledPeakRssBytes": 943833088,
+  "groupBudgetMinusSampledPeakBytes": 666779648,
+  "duration": {
+    "httpElapsedMs": 1721491.691916,
+    "wallElapsedMs": 1721494,
+    "supervisedChildSeconds": 1721.828192291,
+    "supervisorReceiptSeconds": 1721.928
+  },
+  "timeoutMarginSeconds": 78.50830808399996,
+  "wallStartedAt": "2026-11-10T18:16:43.629Z",
+  "wallFinishedAt": "2026-11-10T18:45:25.123Z",
+  "httpTiming": {
+    "health": {
+      "samples": 1064,
+      "minMs": 0.1873749999795109,
+      "maxMs": 24.50658300006762,
+      "p95Ms": 1.374874999979511
+    },
+    "process": {
+      "samples": 1064,
+      "minMs": 0.2755410000681877,
+      "maxMs": 9.70658400002867,
+      "p95Ms": 2.1833330000081332
+    },
+    "latest": {
+      "samples": 1064,
+      "minMs": 0.2416250000242144,
+      "maxMs": 34.63258400000632,
+      "p95Ms": 2.097374999895692
+    }
+  },
+  "hostSampleGaps": {
+    "samples": 1064,
+    "maxMs": 6806.321458
+  },
+  "completeResultAssertions": {
+    "allSeeds": 3,
+    "allRoutes": 6,
+    "canonicalInputHashes": true,
+    "recordDigests": [
+      {
+        "seed": "comparison-a",
+        "route": "current",
+        "recordDigest": "da2a1773be9673f051ba904d235fbc4abf9640d3fb5bc848a872a69be33baf25"
+      },
+      {
+        "seed": "comparison-a",
+        "route": "buddy",
+        "recordDigest": "fa20779073c5a396d8d660c1928dff74979c8de2c31bcd3000747eeffce019ef"
+      },
+      {
+        "seed": "comparison-b",
+        "route": "current",
+        "recordDigest": "6e61ddcf815eef201368f14cc0809429050a995b6ef080f9065a77129142a00c"
+      },
+      {
+        "seed": "comparison-b",
+        "route": "buddy",
+        "recordDigest": "6c4704dca4fd9e6e17a48bc44cebc8ed586c79c297b9739ff263ab25bf15ab5b"
+      },
+      {
+        "seed": "comparison-c",
+        "route": "current",
+        "recordDigest": "fab35406c754476822f9569f7bd1b59fa674cc4ae54e05f70b999761f88f7802"
+      },
+      {
+        "seed": "comparison-c",
+        "route": "buddy",
+        "recordDigest": "aa71df048b89882f6fb944e7ba8798d6e6526e6e0cf615785e4f38f24fcb4f6d"
+      }
+    ],
+    "totalsConservation": true,
+    "perRouteMeasureConsistency": true,
+    "aggregateMeasures": true,
+    "differences": true,
+    "baselineEquality": "Unavailable canonical baseline; exact 100/300-person checks retained separately."
+  },
+  "executionConditions": {
+    "supervisorComplete": true,
+    "exitZero": true,
+    "noResourceIssue": true,
+    "httpScriptSucceeded": true,
+    "allThreeSeedsAndSixSteps": true,
+    "positiveFiniteMeasuredWorkerHeap": true,
+    "oneStoredCompleteResult": true,
+    "completeResultAssertions": true,
+    "workerAndFileDigestsMatch": true,
+    "fullRawLogRetained": true,
+    "sourcesUnchanged": true,
+    "dependenciesUnchanged": true,
+    "executablesUnchanged": true,
+    "historicalEvidencePreserved": true,
+    "sameCleanPushedHead": true,
+    "cleanup": true
+  },
+  "rawLog": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-supervisor/logs/clean512-canonical-v1/chunk-0001.log",
+    "bytes": 8478,
+    "sha256": "a21efe276132be4a10516d3117b72789bf965103bef55564c68da0b4e9f997c5",
+    "full": true
+  },
+  "canonicalCleanup": {
+    "ownerPid": 82913,
+    "ownerAbsent": true,
+    "groupMembers": {
+      "82951": []
+    },
+    "root": "/private/tmp/test-stamp-shard-4b37387b75ac4281942963cdabffeecc",
+    "rootAbsent": true,
+    "token": "4b37387b75ac4281942963cdabffeecc",
+    "reservationAbsent": true,
+    "manifestRemoved": true,
+    "peakScratchBytes": 0,
+    "compatibilityException": null,
+    "leftovers": [],
+    "pass": true
+  },
+  "sourceIdentity": {
+    "productionFiles": 303,
+    "dependencyFiles": 65,
+    "historicalFiles": 590
+  },
+  "finalMetadataEquivalence": "metadata-equivalence.json",
+  "finalValidation": "final-validation.json",
+  "scopeLimits": [
+    "Sampled peaks and finite probes only; no continuous bound, natural-GC cause or future headroom guarantee.",
+    "No successful unchanged 1,000-person baseline; exact baseline/repaired equality only at100/300.",
+    "Local Node26.7/memory qualification; hosted Node20, native PostgreSQL/F71, full suite and browser validation unrun.",
+    "No deployment, live invocation gate change, new scope or algorithm."
+  ],
+  "defaultLiveRerunGate": "off",
+  "independentReview": {
+    "qualifiedSource": "qualified-source-review.md",
+    "verdict": "PASS original4AC at e567b9b6; parentindependentexactbyte/result audit alsoPASS"
+  },
+  "agents": [
+    {
+      "name": "Ralph Wolf",
+      "requestedSelectedModel": "gpt-6.1-sol",
+      "requestedSelectedEffort": "xhigh",
+      "fallback": false,
+      "role": "existingstorylead; finaldelivery no newagents"
+    },
+    {
+      "name": "Foxy",
+      "requestedSelectedModel": "gpt-6.1-sol",
+      "requestedSelectedEffort": "high",
+      "fallback": false,
+      "role": "independentqualifiedsourcereviewer"
+    }
+  ],
+  "poller": "STOPPED",
+  "heartbeat": "PAUSED",
+  "finalIntegratedBase": "6ae669e8df38ffd3bb17c0450a043d6228d3abdb",
+  "parentSupervisorCleanup": {
+    "manifests": 68,
+    "status": "Parent independently PASS: owner/group/root/token absent, removed manifests, scratch0, no exceptions/leftovers",
+    "evidence": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-parent-final-supervisor-cleanup.json"
+  }
+}

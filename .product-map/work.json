@@ -1193,7 +1193,7 @@
           "status": "in-progress",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
           "observed_at": "2026-11-06T00:30:56Z",
-          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100\u2192102 streamedHTTP\u2192105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
+          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100→102 streamedHTTP→105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
         },
         {
           "id": "decision-host",
@@ -2062,7 +2062,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
@@ -3917,7 +3917,7 @@
     },
     {
       "id": "FUCQ-326",
-      "title": "Use \u201cYour preferences\u201d consistently in the employee journey",
+      "title": "Use “Your preferences” consistently in the employee journey",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
@@ -4197,61 +4197,6 @@
       "original_status": "In Review"
     },
     {
-      "id": "FUCQ-309",
-      "title": "Default 1,000-employee comparison runs out of worker heap in 3 of 3 runs",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Russell Gowers",
-      "type": "Bug",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-309",
-      "branch": "dev/DEV-2026-11-10-GC-027",
-      "jira_source_updated_at": "2026-11-10T13:22:52.200Z",
-      "jira_observed_at": "2026-11-10T13:26:47.809069Z",
-      "workers": [
-        {
-          "name": "Ralph Wolf",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-10T16:29:20.390859+00:00",
-          "expires_at": "2026-11-10T16:29:20.390859+00:00",
-          "source": "Existing lead requested/selected Sol/xhigh; no fallback or descendants",
-          "status": "Evidence pushed; read-only post-helper trace finished; yielding to parent causal decision; no active worker/test"
-        }
-      ],
-      "observed_at": "2026-11-10T16:29:20Z",
-      "slices": [
-        {
-          "id": "current-cause",
-          "status": "in-progress",
-          "title": "Current-code retained-data evidence",
-          "observed_at": "2026-11-10T16:29:20.390859+00:00",
-          "evidence": "Scalar diagnostic on6a7acab9: first buddy preparation/752receipts/largeplan/backendcommit/normalization/helper returnedok140.345 workerseconds; laterOOM168.279hostseconds unlocalized.20/60 phases,exactsource/input,zeroresults. Diagnosticonly;all58rootsabsent/group45977gone/reservationreleased. docs/gcsp/evidence/fucq309/scalar-preparation-diagnostic-2026-11-10/report.md Read-only post-helper sequence/ownership trace retains laterstage/claimordinalunknown;whole-stock claimread and normalization lifetime are candidatesonly. No further proof/edit authorised. docs/gcsp/evidence/fucq309/scalar-preparation-diagnostic-2026-11-10/post-helper-trace.md"
-        },
-        {
-          "id": "retention-repair",
-          "status": "in-progress",
-          "title": "Evidenced replay memory and lifetime repair",
-          "observed_at": "2026-11-10T15:46:12.503620+00:00",
-          "evidence": "Optional private read+narrow allocator repair at9bcd3e8 passed independent scoped review,no blocking/major finding. Ordinary/legacy behavior preserved. Canonical acceptance remains open. docs/gcsp/evidence/fucq309/allocator-read-repair-2026-11-10.md"
-        },
-        {
-          "id": "semantic-regression",
-          "status": "in-progress",
-          "title": "Semantic regression and affected-reader checks",
-          "observed_at": "2026-11-10T15:46:12.503620+00:00",
-          "evidence": "Scoped ownership/private/collision/contracts/routes/worker evidence independently reviewed;F348existing Low fixture failure separate and post-CAS unrun. Full/nativePG/F71 unrun. No rerun for evidence-only changes. docs/gcsp/evidence/fucq309/allocator-read-repair-2026-11-10.md"
-        },
-        {
-          "id": "canonical-integration",
-          "status": "in-progress",
-          "title": "Canonical six-step stored-result integration gate",
-          "observed_at": "2026-11-10T16:26:11.723236+00:00",
-          "evidence": "Canonical remains unmet: prior clean-v4OOM192.787s at1/6; new scalar diagnostic alsoOOM168.279s but is not canonical acceptance. Complete-result checksUNRUN;no baseline. docs/gcsp/evidence/fucq309/scalar-preparation-diagnostic-2026-11-10/report.md"
-        }
-      ],
-      "unsliced": false
-    },
-    {
       "id": "FUCQ-342",
       "title": "Disable live Sign out in named visual fixtures",
       "status": "In Review",
@@ -4501,6 +4446,61 @@
       ],
       "unsliced": false,
       "delivery_status": "Built; original3AC scoped source/rendered/independent proof complete; parent integration/native Jira/collaborator acceptance pending"
+    },
+    {
+      "id": "FUCQ-309",
+      "title": "Default 1,000-employee comparison runs out of worker heap in 3 of 3 runs",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-309",
+      "branch": "dev/DEV-2026-11-10-GC-027",
+      "jira_source_updated_at": "2026-11-10T13:22:52.200Z",
+      "jira_observed_at": "2026-11-10T13:26:47.809069Z",
+      "workers": [
+        {
+          "name": "Ralph Wolf",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-10T18:57:44.010794+00:00",
+          "expires_at": "2026-11-10T18:57:44.010794+00:00",
+          "source": "Existing lead requested/selected gpt-6.1-sol/xhigh; no fallback or new agents for final delivery",
+          "status": "Built; worker ended; parent final review/integration pending"
+        }
+      ],
+      "observed_at": "2026-11-10T18:57:44Z",
+      "slices": [
+        {
+          "id": "current-cause",
+          "status": "complete",
+          "title": "Current-code retained-data evidence",
+          "observed_at": "2026-11-10T18:57:43Z",
+          "evidence": "Lead and independent review passed retained-data evidence: original outcome values are preserved; scoped 100/300 census distinguishes expanded JSON, modeled containers and heap. Canonical clean512 succeeded at e567b9b6. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        },
+        {
+          "id": "retention-repair",
+          "status": "complete",
+          "title": "Evidenced replay memory and lifetime repair",
+          "observed_at": "2026-11-10T18:57:43Z",
+          "evidence": "Exact immutable sharing, narrow completion projections, compact pool and terminal disposal plus allocator ownership repair independently reviewed. Scoped wrappers/store/pool collect with run retained; clean canonical crosses all6 close boundaries. Larger heap alone is not repair. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        },
+        {
+          "id": "semantic-regression",
+          "status": "complete",
+          "title": "Semantic regression and affected-reader checks",
+          "observed_at": "2026-11-10T18:57:43Z",
+          "evidence": "100/300 full record/decision/totals/measures equality; replay/rollback/isolation/legacy checks passed. Matching14 integration passes include repaired identity boundary. Final policy/input identity and2 gate/limits tests pass. No unchanged1000 baseline or full/nativePG claim. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        },
+        {
+          "id": "canonical-integration",
+          "status": "complete",
+          "title": "Canonical six-step stored-result integration gate",
+          "observed_at": "2026-11-10T18:57:43Z",
+          "evidence": "Independent PASS original4AC at e567b9b6: actual default1000/3/6 completed1721.492s; one complete result f643cb89; sampled heap422.10/process874.11/group900.11MiB,1064health probes. Cleanup verified. Final basis/date-only equivalence and latest sharedbase6ae669e8 preserved. docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }

@@ -12832,10 +12832,10 @@
         "workerYoungGenerationMb": 16
       },
       "unit": "versioned comparison worker job limits",
-      "basis": "A 512 MiB old-generation allowance is a FUCQ-309 candidate pending full 1,000-employee, three-seed, six-step qualification and measured host headroom. It accompanies measured sharing, projection and disposal repairs; a larger heap alone is insufficient. Thirty minutes bounds one presenter-started run; a longer run is stopped and reported as failed. The young-generation cap remains 16 MiB.",
+      "basis": "FUCQ-309 locally qualified the default 1,000-employee, three-seed, six-step request on Node 26.7.0 with 512 MiB old / 16 MiB young generation and the unchanged 1,800-second timeout. One clean run completed in 1,721.492 seconds; sampled worker used heap peaked at 422.10 MiB, process RSS at 874.11 MiB and supervisor-group RSS at 900.11 MiB. Exact sharing, narrow projections and private repository disposal have separate retained-data and semantic evidence; a larger heap alone is not the repair. This remains an assumed operating allowance, with local sampled measurements rather than a hosted Node 20 or future-run guarantee. See docs/gcsp/evidence/fucq309/canonical512-2026-11-10/report.md.",
       "status": "assumed",
       "source": "docs/gcsp/shared-contracts.md#comparison-worker-jobs--fucq-175",
-      "sourceDate": "2026-11-09",
+      "sourceDate": "2026-11-10",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
