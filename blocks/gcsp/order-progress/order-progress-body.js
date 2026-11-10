@@ -7,6 +7,7 @@ import { slotPicker } from '../kit/slot-picker.js';
 import { activityTimeline } from '../kit/activity-timeline.js';
 import { orderIdentityRows } from '../kit/order-identity.js';
 import { orderCopy as copy, sentence, slotText, withOwner, failureLine, itemStatus, itemOwner, itemTone, historyEvents, notDone } from './order-progress-copy.js';
+import { loadingSkeleton } from '../kit/loading-skeleton.js';
 
 let sequence = 0;
 export const SECTIONS = Object.freeze(['stages', 'handover', 'documents', 'return']);
@@ -225,7 +226,7 @@ export function orderProgressBody({ progress = {}, car, pending = false, message
   const text = message?.text || (pending ? copy.updating : '');
   const live = text ? el('p', `gcsp-order-message${message?.error ? ' is-error' : ''}`, text) : null;
   if (live) { if (hosted) announce(text); else live.setAttribute('role', message?.error ? 'alert' : 'status'); root.append(live); }
-  if (progress.phase === 'loading') { root.append(statusScreen({ title: copy.loading, role: hosted ? null : 'status' })); return root; }
+  if (progress.phase === 'loading') { root.append(loadingSkeleton({ label: copy.loading, layout: 'timeline', role: hosted ? null : 'status' })); return root; }
   if (progress.phase !== 'ready') {
     if (hosted) announce(`${copy.unavailableTitle}. ${copy.unavailable}`);
     root.append(statusScreen({ title: copy.unavailableTitle, message: copy.unavailable, role: hosted ? null : 'alert',

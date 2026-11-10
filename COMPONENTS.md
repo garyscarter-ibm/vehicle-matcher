@@ -238,7 +238,7 @@ Hand-built in several modes (file counts at the time of writing):
 
 - **Screen heading block** (`vm-kicker` / `vm-title` / `vm-lede`): 5 files, 43 occurrences. `screenIntro` now exists in `ui.js`; retail modes have not migrated yet.
 - **Primary and ghost buttons** (`vm-btn vm-btn-primary|ghost`): 5 files, 27 occurrences. `button` now exists in `ui.js`; retail modes have not migrated yet.
-- **Skeleton blocks** (`vm-skel ...`): 5 files, 28 occurrences. Should become `skeleton(kind)` and per-screen `loadingScreen()`.
+- **Skeleton blocks** (`vm-skel ...`): 5 files, 28 occurrences. Should become `skeleton(kind)` and per-screen `loadingScreen()`. GCSP portal views already use `loadingSkeleton` (below); the matcher modes still hand-build theirs.
 - **Status screen shell** (`vm-screen vm-status`, used for error, empty-pool and no-match): 5 files, 7 occurrences. `statusScreen` now exists in `ui.js`; retail modes have not migrated yet.
 - **Spec pills** (`vm-mingle-pill`, fuel, body, shade): 2 files, 10 occurrences. Should become `specPills(car)`.
 - **Mingle card media and body** (`vm-mingle-card-*`, duplicated between swipe and head-to-head): 2 files, 12 occurrences. Should become `miniCarCard(car)`.
@@ -352,6 +352,14 @@ Component plan: reuse `button`, `factList`, `statusScreen`, `labelledField` and 
 | `installArrivalFocus({ root, main, arrive })` / `focusHeading(heading)` (`blocks/gcsp/kit/arrival-focus.js`, `arrival-focus.css`) | Shell focus helper, installed by `portalShell` (`arrivalFocus: true` for `mountEmployee` pages and the offer). Tracks input modality: script focus on a `tabindex=-1` h1-h3 gets `data-gcsp-quiet-focus` (no ring) unless the last input was the keyboard, which keeps the ring. With `arrive`, focuses the main h1 until the first key or pointer input, never taking focus from a control. `focusHeading` is the in-page outcome move. The shared `.gcsp` focus ring moved into `arrival-focus.css`. Gallery: GCSP arrival focus. |
 
 Shared disclosure/readback/compact option styling lives in `kit/presenter-bar.css`, imported by the capped `presenter-controls/presenter-controls.css` through the shell. The kit stylesheet is separately capped, and the presenter-bar pattern rejects new hand-built copies outside its factory. Picker rows rebuild only when the supplied options change; ordinary readbacks use the existing `update({ value, disabled })` handle. Unavailable scenarios stay selectable with missing-capability copy while Reset stays disabled. Groups have explicit accessible labels and retain the shared arrow/Home/End semantics. The GCSP gallery includes a standalone presenterBar and an explicitly isolated pending/missing-release example with both option lists; it makes no release or scenario capability claim. Functional tests: `server/test/gcsp-presenter-controls-render.test.js`, shell/CSP checks and UI ratchet. Browser evidence remains a separate gate.
+
+### GCSP loading skeleton (`blocks/gcsp/kit/loading-skeleton.js`)
+
+Looked at `vm-skel` (matcher-only shimmer bars with no layouts or label) and `statusScreen` (a message, not a page shape). Neither draws the shape of a portal page while it loads, so the kit adds one helper and `loading-skeleton.css`, imported by the shell.
+
+| Call | Use for |
+|---|---|
+| `loadingSkeleton({ label, layout, role })` | Grey blocks shaped like the coming view, with a slow sweep that stops under reduced motion. `layout` is `page` (title, lines, car card, rows; the default), `form` (preferences panels), `timeline` (card and rows, for activity and order progress) or `card` (help). The shapes are `aria-hidden`; `label` is the one line assistive tech hears, with `role="status"` unless `role: null` (when the page already has a live region). `mountEmployee` draws it while the account loads, picking `ctx.loadingLayout`. |
 
 ### GCSP demo restarted (`blocks/gcsp/kit/run-restarted.js`)
 

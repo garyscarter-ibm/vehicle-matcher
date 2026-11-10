@@ -22,7 +22,8 @@
     "blocks/gcsp/kit/task-list.js",
     "blocks/gcsp/kit/range-bar.js",
     "blocks/gcsp/kit/show-more.js",
-    "blocks/gcsp/kit/slot-picker.js"
+    "blocks/gcsp/kit/slot-picker.js",
+    "blocks/gcsp/kit/loading-skeleton.js"
   ],
   "extensions": [
     ".js",
@@ -114,6 +115,11 @@
       "flags": "g",
       "use": "showMore({ nouns, label, onShowMore }) (blocks/gcsp/kit/show-more.js)"
     },
+    "loading-skeleton": {
+      "re": "el\\('div', 'gcsp-skeleton[ ']",
+      "flags": "g",
+      "use": "loadingSkeleton({ label, layout }) (blocks/gcsp/kit/loading-skeleton.js)"
+    },
     "slot-picker": {
       "re": "el\\('ul', 'gcsp-slot-picker'",
       "flags": "g",
@@ -151,7 +157,7 @@
     },
     {
       "path": "blocks/gcsp/shell/gcsp-shell.css",
-      "max_lines": 266
+      "max_lines": 262
     },
     {
       "path": "blocks/gcsp/shell/gcsp-tokens.css",
@@ -312,6 +318,10 @@
     {
       "path": "blocks/gcsp/kit/vehicle-media.css",
       "max_lines": 7
+    },
+    {
+      "path": "blocks/gcsp/kit/loading-skeleton.css",
+      "max_lines": 14
     }
   ],
   "baseline": {
