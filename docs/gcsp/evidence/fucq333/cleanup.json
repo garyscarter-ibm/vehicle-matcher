@@ -111,7 +111,7 @@
   "children": "Shaggy completed; no owned test/browser process remains after supervisor completion",
   "leftovers": [],
   "preserved": [
-    "installed environments",
+    "pre-existing shared installed environments",
     "shared checkout and unrelated files"
   ],
   "processGroupChecks": [
@@ -174,5 +174,6 @@
   "ownedBytecode": {
     "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-003/_tools/__pycache__/test_resources.cpython-314.pyc",
     "removed": true
-  }
+  },
+  "worktreeDependencies": "The task-local locked server dependency installation was removed with its merged disposable worktree by the configured drop-branch helper; pre-existing shared dependencies were preserved."
 }
