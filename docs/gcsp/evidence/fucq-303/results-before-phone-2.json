@@ -1,0 +1,1470 @@
+{
+ "story": "FUCQ-303",
+ "variant": "before",
+ "serverDir": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-GC-002/server",
+ "profile": "phone",
+ "runNo": 2,
+ "where": "local, macOS, offline memory host (GCSP_OFFLINE=1, GCSP_REPOSITORY_MODE=memory)",
+ "node": "v26.5.0",
+ "viewport": {
+  "width": 375,
+  "height": 812
+ },
+ "throttling": {
+  "cpuSlowdown": 4,
+  "network": {
+   "rttMs": 150,
+   "downKbps": 1600,
+   "upKbps": 750
+  }
+ },
+ "startedAt": "2026-11-10T07:21:57.640Z",
+ "state": "passed",
+ "server": {
+  "spawnAt": 1794295317641,
+  "listeningMs": 12380,
+  "healthReadyMs": 23490,
+  "readyAt": 1794295341131,
+  "idleUntil": 1794295356133,
+  "peakRssToReadyMiB": 283,
+  "rssAtReadyMiB": 283,
+  "heapUsedAtReadyMiB": 98,
+  "idleRssEndMiB": 283,
+  "idleHeapUsedEndMiB": 80,
+  "cpuMsToReady": 24249,
+  "peakRssWholeRunMiB": 297,
+  "peakHeapUsedWholeRunMiB": 153,
+  "maxRssProcessMiB": 297,
+  "maxEventLoopDelayToReadyMs": 1456.5
+ },
+ "steps": [
+  {
+   "id": "signin-access-page",
+   "name": "Open the presenter link: access key page usable",
+   "demo": "sign-in",
+   "warm": false,
+   "pass": true,
+   "wallMs": 414,
+   "end": 1794295357807,
+   "start": 1794295357390,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 316,
+    "dcl": 354,
+    "load": 0
+   },
+   "fcp": null,
+   "lcp": null,
+   "lcpElement": null,
+   "usableSinceNavMs": 412,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 283,
+    "peakHeapUsedMiB": 80,
+    "cpuMs": 5,
+    "maxEventLoopDelayMs": 12.1
+   },
+   "requests": {
+    "browserCount": 4,
+    "browserEncodedBytes": 11312,
+    "staticCount": 4,
+    "staticBytes": 11276,
+    "apiCount": 0,
+    "apiBytes": 0,
+    "apiServerMsTotal": 0,
+    "api": []
+   }
+  },
+  {
+   "id": "signin-workspace",
+   "name": "Type the key, Enter: workspace shows Your cars",
+   "demo": "sign-in",
+   "warm": false,
+   "pass": true,
+   "wallMs": 7299,
+   "end": 1794295365109,
+   "start": 1794295357808,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 336,
+    "dcl": 6661,
+    "load": 6670
+   },
+   "fcp": 6896,
+   "lcp": 7216,
+   "lcpElement": "P.gcsp-countdown",
+   "usableSinceNavMs": 7247,
+   "longTasks": {
+    "count": 2,
+    "totalMs": 120,
+    "maxMs": 70
+   },
+   "serverDuring": {
+    "peakRssMiB": 283,
+    "peakHeapUsedMiB": 109,
+    "cpuMs": 741,
+    "maxEventLoopDelayMs": 262.4
+   },
+   "requests": {
+    "browserCount": 157,
+    "browserEncodedBytes": 1136414,
+    "staticCount": 153,
+    "staticBytes": 1109715,
+    "apiCount": 7,
+    "apiBytes": 29510,
+    "apiServerMsTotal": 420,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 30.9,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 26.1,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 89.2,
+      "b": 10058
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 90.1,
+      "b": 78
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/current",
+      "st": 200,
+      "ms": 38.6,
+      "b": 63
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 43.1,
+      "b": 165
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 102.1,
+      "b": 17932
+     }
+    ]
+   }
+  },
+  {
+   "id": "presenter-open",
+   "name": "Open Presenter controls: clock and controls ready",
+   "demo": "presenter",
+   "warm": false,
+   "pass": true,
+   "wallMs": 512,
+   "end": 1794295365626,
+   "start": 1794295365110,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 278,
+    "peakHeapUsedMiB": 84,
+    "cpuMs": 199,
+    "maxEventLoopDelayMs": 52
+   },
+   "requests": {
+    "browserCount": 2,
+    "browserEncodedBytes": 18501,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 2,
+    "apiBytes": 18501,
+    "apiServerMsTotal": 90,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 47.7,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 42.2,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "presenter-reset-decline",
+   "name": "Reset to Decline then change (confirm to settled strip)",
+   "demo": "presenter",
+   "warm": false,
+   "pass": true,
+   "wallMs": 10656,
+   "end": 1794295376286,
+   "start": 1794295365628,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 154,
+    "dcl": 6373,
+    "load": 6374
+   },
+   "fcp": 6544,
+   "lcp": 7148,
+   "lcpElement": "P.gcsp-note",
+   "usableSinceNavMs": 8368,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "scenario": "Decline then change",
+    "confirmToReadyMs": 10485,
+    "run": "new",
+    "clock": "2026-11-05T09:30:00.000Z"
+   },
+   "serverDuring": {
+    "peakRssMiB": 297,
+    "peakHeapUsedMiB": 153,
+    "cpuMs": 3068,
+    "maxEventLoopDelayMs": 597.7
+   },
+   "requests": {
+    "browserCount": 157,
+    "browserEncodedBytes": 1224470,
+    "staticCount": 144,
+    "staticBytes": 1099620,
+    "apiCount": 13,
+    "apiBytes": 123062,
+    "apiServerMsTotal": 2714,
+    "api": [
+     {
+      "m": "POST",
+      "p": "/api/gcsp/presenter/scenarios/reset",
+      "st": 200,
+      "ms": 1703.8,
+      "b": 949
+     },
+     {
+      "m": "POST",
+      "p": "/api/gcsp/session/switch",
+      "st": 200,
+      "ms": 132.9,
+      "b": 583
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 32.6,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 71.4,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 31.2,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 108.3,
+      "b": 10058
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 105.5,
+      "b": 78
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/current",
+      "st": 200,
+      "ms": 60.3,
+      "b": 240
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 49.9,
+      "b": 165
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/buddy-offer%3A8a8b22d86c6a5eb1a72810f14baf098e96048e35a278b990e9a7f0856b12be31",
+      "st": 200,
+      "ms": 189,
+      "b": 7045
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 121.9,
+      "b": 83622
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 56.3,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 51,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "presenter-switch-paula",
+   "name": "Switch principal to Paula",
+   "demo": "presenter",
+   "warm": false,
+   "pass": true,
+   "wallMs": 27,
+   "end": 1794295376316,
+   "start": 1794295376288,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "already": true
+   },
+   "serverDuring": {
+    "peakRssMiB": 276,
+    "peakHeapUsedMiB": 52,
+    "cpuMs": 2,
+    "maxEventLoopDelayMs": 12.1
+   },
+   "requests": {
+    "browserCount": 0,
+    "browserEncodedBytes": 0,
+    "staticCount": 0,
+    "staticBytes": 0,
+    "apiCount": 0,
+    "apiBytes": 0,
+    "apiServerMsTotal": 0,
+    "api": []
+   }
+  },
+  {
+   "id": "activity-load",
+   "name": "Buddy activity load until the offer shows",
+   "demo": "offer",
+   "warm": false,
+   "pass": true,
+   "wallMs": 4264,
+   "end": 1794295380584,
+   "start": 1794295376317,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 152,
+    "dcl": 3357,
+    "load": 3914
+   },
+   "fcp": 3368,
+   "lcp": 3816,
+   "lcpElement": "P.gcsp-note",
+   "usableSinceNavMs": 4263,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 276,
+    "peakHeapUsedMiB": 82,
+    "cpuMs": 953,
+    "maxEventLoopDelayMs": 207.2
+   },
+   "requests": {
+    "browserCount": 72,
+    "browserEncodedBytes": 682509,
+    "staticCount": 65,
+    "staticBytes": 573644,
+    "apiCount": 10,
+    "apiBytes": 109880,
+    "apiServerMsTotal": 810,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 32,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 107.3,
+      "b": 10058
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 31.1,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 31.2,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 31.8,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/help",
+      "st": 200,
+      "ms": 52.8,
+      "b": 4573
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/cases",
+      "st": 200,
+      "ms": 56,
+      "b": 146
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/activity",
+      "st": 200,
+      "ms": 150.3,
+      "b": 2008
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 124.3,
+      "b": 83622
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/buddy-offer%3A8a8b22d86c6a5eb1a72810f14baf098e96048e35a278b990e9a7f0856b12be31",
+      "st": 200,
+      "ms": 193.6,
+      "b": 7045
+     }
+    ]
+   }
+  },
+  {
+   "id": "outbox-load",
+   "name": "Outbox load and open Paula's offer email",
+   "demo": "offer",
+   "warm": false,
+   "pass": true,
+   "wallMs": 2629,
+   "end": 1794295383216,
+   "start": 1794295380586,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 151,
+    "dcl": 2268,
+    "load": 0
+   },
+   "fcp": 2292,
+   "lcp": 2292,
+   "lcpElement": "H1.vm-title",
+   "usableSinceNavMs": 2627,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "rows": 1
+   },
+   "serverDuring": {
+    "peakRssMiB": 276,
+    "peakHeapUsedMiB": 82,
+    "cpuMs": 402,
+    "maxEventLoopDelayMs": 132.8
+   },
+   "requests": {
+    "browserCount": 41,
+    "browserEncodedBytes": 345977,
+    "staticCount": 40,
+    "staticBytes": 402259,
+    "apiCount": 6,
+    "apiBytes": 105929,
+    "apiServerMsTotal": 351,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 58.1,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 51.2,
+      "b": 435
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 32.4,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/outbox",
+      "st": 200,
+      "ms": 52.9,
+      "b": 2592
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 30.7,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 126.1,
+      "b": 83622
+     }
+    ]
+   }
+  },
+  {
+   "id": "offer-open-1",
+   "name": "Offer link: offer page usable (Accept visible)",
+   "demo": "offer",
+   "warm": false,
+   "pass": true,
+   "wallMs": 4580,
+   "end": 1794295387799,
+   "start": 1794295383217,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 151,
+    "dcl": 4001,
+    "load": 4002
+   },
+   "fcp": 4024,
+   "lcp": 4504,
+   "lcpElement": "P.gcsp-note",
+   "usableSinceNavMs": 4580,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 277,
+    "peakHeapUsedMiB": 72,
+    "cpuMs": 524,
+    "maxEventLoopDelayMs": 125.8
+   },
+   "requests": {
+    "browserCount": 88,
+    "browserEncodedBytes": 658277,
+    "staticCount": 86,
+    "staticBytes": 699480,
+    "apiCount": 4,
+    "apiBytes": 101332,
+    "apiServerMsTotal": 416,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 111.7,
+      "b": 10058
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 31.1,
+      "b": 607
+     },
+     {
+      "m": "POST",
+      "p": "/api/gcsp/offers/access",
+      "st": 200,
+      "ms": 147.5,
+      "b": 7045
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 125.5,
+      "b": 83622
+     }
+    ]
+   }
+  },
+  {
+   "id": "prime-presenter",
+   "name": "prime load of presenter",
+   "demo": "prime",
+   "warm": false,
+   "pass": true,
+   "wallMs": 8219,
+   "end": 1794295396019,
+   "start": 1794295387800,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 151,
+    "dcl": 6360,
+    "load": 6362
+   },
+   "fcp": 6556,
+   "lcp": 7064,
+   "lcpElement": "P.gcsp-note",
+   "usableSinceNavMs": 8217,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 253,
+    "peakHeapUsedMiB": 75,
+    "cpuMs": 884,
+    "maxEventLoopDelayMs": 332.9
+   },
+   "requests": {
+    "browserCount": 154,
+    "browserEncodedBytes": 1222331,
+    "staticCount": 144,
+    "staticBytes": 1099620,
+    "apiCount": 10,
+    "apiBytes": 120923,
+    "apiServerMsTotal": 736,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 33.8,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 31.8,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 109.5,
+      "b": 10058
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 109.4,
+      "b": 78
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/current",
+      "st": 200,
+      "ms": 61.2,
+      "b": 240
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 51.4,
+      "b": 165
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/buddy-offer%3A8a8b22d86c6a5eb1a72810f14baf098e96048e35a278b990e9a7f0856b12be31",
+      "st": 200,
+      "ms": 104,
+      "b": 7045
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 125.1,
+      "b": 83622
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 57.9,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 51.9,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "prime-account",
+   "name": "prime load of account",
+   "demo": "prime",
+   "warm": false,
+   "pass": true,
+   "wallMs": 5547,
+   "end": 1794295401569,
+   "start": 1794295396020,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 152,
+    "dcl": 4954,
+    "load": 5162
+   },
+   "fcp": 4960,
+   "lcp": 5488,
+   "lcpElement": "P.gcsp-note",
+   "usableSinceNavMs": 5546,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 253,
+    "peakHeapUsedMiB": 78,
+    "cpuMs": 705,
+    "maxEventLoopDelayMs": 335.3
+   },
+   "requests": {
+    "browserCount": 111,
+    "browserEncodedBytes": 825688,
+    "staticCount": 105,
+    "staticBytes": 806193,
+    "apiCount": 7,
+    "apiBytes": 101815,
+    "apiServerMsTotal": 600,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 35.9,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 109.7,
+      "b": 10058
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 110,
+      "b": 78
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/current",
+      "st": 200,
+      "ms": 63.4,
+      "b": 240
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 50.9,
+      "b": 165
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/buddy-offer%3A8a8b22d86c6a5eb1a72810f14baf098e96048e35a278b990e9a7f0856b12be31",
+      "st": 200,
+      "ms": 104,
+      "b": 7045
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 125.8,
+      "b": 83622
+     }
+    ]
+   }
+  },
+  {
+   "id": "prime-activity",
+   "name": "prime load of activity",
+   "demo": "prime",
+   "warm": false,
+   "pass": true,
+   "wallMs": 4345,
+   "end": 1794295405917,
+   "start": 1794295401571,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 152,
+    "dcl": 3353,
+    "load": 0
+   },
+   "fcp": 3360,
+   "lcp": 3856,
+   "lcpElement": "P.gcsp-note",
+   "usableSinceNavMs": 4344,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 251,
+    "peakHeapUsedMiB": 71,
+    "cpuMs": 1060,
+    "maxEventLoopDelayMs": 189.1
+   },
+   "requests": {
+    "browserCount": 71,
+    "browserEncodedBytes": 622532,
+    "staticCount": 66,
+    "staticBytes": 633608,
+    "apiCount": 10,
+    "apiBytes": 109880,
+    "apiServerMsTotal": 745,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 35.1,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 110.9,
+      "b": 10058
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 32.6,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 32.7,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 33.4,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/help",
+      "st": 200,
+      "ms": 52.9,
+      "b": 4573
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 130.1,
+      "b": 83622
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/cases",
+      "st": 200,
+      "ms": 58.1,
+      "b": 146
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/activity",
+      "st": 200,
+      "ms": 151.9,
+      "b": 2008
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/buddy-offer%3A8a8b22d86c6a5eb1a72810f14baf098e96048e35a278b990e9a7f0856b12be31",
+      "st": 200,
+      "ms": 107.2,
+      "b": 7045
+     }
+    ]
+   }
+  },
+  {
+   "id": "prime-offer",
+   "name": "prime load of offer",
+   "demo": "prime",
+   "warm": false,
+   "pass": true,
+   "wallMs": 4549,
+   "end": 1794295410469,
+   "start": 1794295405919,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 151,
+    "dcl": 3997,
+    "load": 3998
+   },
+   "fcp": 4004,
+   "lcp": 4492,
+   "lcpElement": "P.gcsp-note",
+   "usableSinceNavMs": 4548,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 240,
+    "peakHeapUsedMiB": 82,
+    "cpuMs": 588,
+    "maxEventLoopDelayMs": 133.2
+   },
+   "requests": {
+    "browserCount": 88,
+    "browserEncodedBytes": 658277,
+    "staticCount": 86,
+    "staticBytes": 699480,
+    "apiCount": 6,
+    "apiBytes": 119833,
+    "apiServerMsTotal": 515,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 58.2,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 52.7,
+      "b": 435
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 126.9,
+      "b": 10058
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 32.8,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/buddy-offer%3A8a8b22d86c6a5eb1a72810f14baf098e96048e35a278b990e9a7f0856b12be31",
+      "st": 200,
+      "ms": 116.7,
+      "b": 7045
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 127.4,
+      "b": 83622
+     }
+    ]
+   }
+  },
+  {
+   "id": "warm-presenter",
+   "name": "warm load of presenter",
+   "demo": "warm",
+   "warm": true,
+   "pass": true,
+   "wallMs": 8233,
+   "end": 1794295418704,
+   "start": 1794295410470,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 152,
+    "dcl": 6407,
+    "load": 6408
+   },
+   "fcp": 6600,
+   "lcp": 7116,
+   "lcpElement": "P.gcsp-note",
+   "usableSinceNavMs": 8231,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 240,
+    "peakHeapUsedMiB": 77,
+    "cpuMs": 921,
+    "maxEventLoopDelayMs": 332.4
+   },
+   "requests": {
+    "browserCount": 154,
+    "browserEncodedBytes": 1222331,
+    "staticCount": 144,
+    "staticBytes": 1099620,
+    "apiCount": 10,
+    "apiBytes": 120923,
+    "apiServerMsTotal": 732,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 35.7,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 32.1,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 109.4,
+      "b": 10058
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 109.1,
+      "b": 78
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/current",
+      "st": 200,
+      "ms": 60.9,
+      "b": 240
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 51.9,
+      "b": 165
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/buddy-offer%3A8a8b22d86c6a5eb1a72810f14baf098e96048e35a278b990e9a7f0856b12be31",
+      "st": 200,
+      "ms": 103.8,
+      "b": 7045
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 122,
+      "b": 83622
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios",
+      "st": 200,
+      "ms": 57.1,
+      "b": 18066
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/scenarios/faults",
+      "st": 200,
+      "ms": 50,
+      "b": 435
+     }
+    ]
+   }
+  },
+  {
+   "id": "warm-account",
+   "name": "warm load of account",
+   "demo": "warm",
+   "warm": true,
+   "pass": true,
+   "wallMs": 5542,
+   "end": 1794295424253,
+   "start": 1794295418708,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 152,
+    "dcl": 4901,
+    "load": 5118
+   },
+   "fcp": 4912,
+   "lcp": 5420,
+   "lcpElement": "P.gcsp-note",
+   "usableSinceNavMs": 5542,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 212,
+    "peakHeapUsedMiB": 62,
+    "cpuMs": 684,
+    "maxEventLoopDelayMs": 326.4
+   },
+   "requests": {
+    "browserCount": 111,
+    "browserEncodedBytes": 825688,
+    "staticCount": 106,
+    "staticBytes": 866157,
+    "apiCount": 7,
+    "apiBytes": 101815,
+    "apiServerMsTotal": 580,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 32,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 104.9,
+      "b": 10058
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/draft",
+      "st": 200,
+      "ms": 108.4,
+      "b": 78
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/current",
+      "st": 200,
+      "ms": 60.5,
+      "b": 240
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/orders/progress/all",
+      "st": 200,
+      "ms": 51.3,
+      "b": 165
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/buddy-offer%3A8a8b22d86c6a5eb1a72810f14baf098e96048e35a278b990e9a7f0856b12be31",
+      "st": 200,
+      "ms": 101.3,
+      "b": 7045
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 122,
+      "b": 83622
+     }
+    ]
+   }
+  },
+  {
+   "id": "warm-activity",
+   "name": "warm load of activity",
+   "demo": "warm",
+   "warm": true,
+   "pass": true,
+   "wallMs": 4107,
+   "end": 1794295428364,
+   "start": 1794295424255,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 152,
+    "dcl": 3295,
+    "load": 3866
+   },
+   "fcp": 3316,
+   "lcp": 3752,
+   "lcpElement": "P.gcsp-note",
+   "usableSinceNavMs": 4106,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 212,
+    "peakHeapUsedMiB": 64,
+    "cpuMs": 774,
+    "maxEventLoopDelayMs": 199.6
+   },
+   "requests": {
+    "browserCount": 71,
+    "browserEncodedBytes": 598887,
+    "staticCount": 65,
+    "staticBytes": 573644,
+    "apiCount": 10,
+    "apiBytes": 109880,
+    "apiServerMsTotal": 704,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 31.9,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 105.2,
+      "b": 10058
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 30.2,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 30.6,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 31.1,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/help",
+      "st": 200,
+      "ms": 51.1,
+      "b": 4573
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/cases",
+      "st": 200,
+      "ms": 54.8,
+      "b": 146
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/activity",
+      "st": 200,
+      "ms": 144.2,
+      "b": 2008
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 122.6,
+      "b": 83622
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/buddy-offer%3A8a8b22d86c6a5eb1a72810f14baf098e96048e35a278b990e9a7f0856b12be31",
+      "st": 200,
+      "ms": 102.7,
+      "b": 7045
+     }
+    ]
+   }
+  },
+  {
+   "id": "warm-offer",
+   "name": "warm load of offer",
+   "demo": "warm",
+   "warm": true,
+   "pass": true,
+   "wallMs": 4548,
+   "end": 1794295432914,
+   "start": 1794295428365,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 151,
+    "dcl": 3995,
+    "load": 3996
+   },
+   "fcp": 4004,
+   "lcp": 4504,
+   "lcpElement": "P.gcsp-note",
+   "usableSinceNavMs": 4547,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "serverDuring": {
+    "peakRssMiB": 212,
+    "peakHeapUsedMiB": 60,
+    "cpuMs": 490,
+    "maxEventLoopDelayMs": 150.6
+   },
+   "requests": {
+    "browserCount": 88,
+    "browserEncodedBytes": 658277,
+    "staticCount": 86,
+    "staticBytes": 699480,
+    "apiCount": 4,
+    "apiBytes": 101332,
+    "apiServerMsTotal": 415,
+    "api": [
+     {
+      "m": "GET",
+      "p": "/api/gcsp/manual/account",
+      "st": 200,
+      "ms": 115.5,
+      "b": 10058
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/context",
+      "st": 200,
+      "ms": 33.7,
+      "b": 607
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/offers/buddy-offer%3A8a8b22d86c6a5eb1a72810f14baf098e96048e35a278b990e9a7f0856b12be31",
+      "st": 200,
+      "ms": 118.6,
+      "b": 7045
+     },
+     {
+      "m": "GET",
+      "p": "/api/gcsp/presenter/controls",
+      "st": 200,
+      "ms": 146.9,
+      "b": 83622
+     }
+    ]
+   }
+  }
+ ],
+ "errors": [],
+ "badResponses": [],
+ "serverRequests": {
+  "count": 1421,
+  "uncompressed": 1421,
+  "staticNoStoreBytes": 10376121
+ },
+ "finishedAt": "2026-11-10T07:23:53.101Z"
+}

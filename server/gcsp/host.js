@@ -43,6 +43,10 @@ const keyMatches = (given, expected) => timingSafeEqual(digest(given), digest(ex
 const accessToken = (accessKey) => createHmac('sha256', accessKey).update('gcsp-host-access-v1').digest('hex');
 const cookieValue = (header, name) => header?.split(';').map((part) => part.trim())
   .find((part) => part.startsWith(`${name}=`))?.slice(name.length + 1);
+const contentTag = (body) => `"${createHash('sha256').update(body).digest('base64url').slice(0, 27)}"`;
+// If-None-Match uses weak comparison (RFC 9110), so a W/ prefix still matches.
+const tagMatches = (header, tag) => typeof header === 'string'
+  && header.split(',').some((value) => { const given = value.trim(); return given === '*' || given.replace(/^W\//, '') === tag; });
 
 function accessPage(next, message) {
   return `<!doctype html>
@@ -153,9 +157,16 @@ export function createGcspFront({ root, services, api, origin, accessKey, access
             `${navigationCookie}=${boot}; Path=/; HttpOnly; Secure; SameSite=Strict; Expires=${expires}`]);
         }
       }
-      res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-store',
-        'Referrer-Policy': 'no-referrer' });
-      res.end(await readFile(file));
+      const body = await readFile(file);
+      const type = TYPES[extname(file)] || 'application/octet-stream';
+      // Static files revalidate by content hash (no max-age, so a redeploy is never stale); pages stay no-store.
+      if (extname(file) !== '.html') {
+        const headers = { ETag: contentTag(body), 'Cache-Control': 'private, no-cache', 'Referrer-Policy': 'no-referrer' };
+        if (tagMatches(req.headers['if-none-match'], headers.ETag)) { res.writeHead(304, headers).end(); return; }
+        res.writeHead(200, { 'Content-Type': type, ...headers }).end(body); return;
+      }
+      res.writeHead(200, { 'Content-Type': type, 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' });
+      res.end(body);
     } catch { if (!res.headersSent) res.writeHead(404).end('Not found'); else res.end(); }
   };
 }

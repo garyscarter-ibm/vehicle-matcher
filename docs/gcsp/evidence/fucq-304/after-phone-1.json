@@ -1,0 +1,381 @@
+{
+ "story": "FUCQ-304",
+ "label": "after",
+ "profile": "phone",
+ "runNo": 1,
+ "where": "local, macOS, offline memory host (GCSP_OFFLINE=1, GCSP_REPOSITORY_MODE=memory)",
+ "node": "v26.5.0",
+ "viewport": {
+  "width": 375,
+  "height": 812
+ },
+ "throttling": {
+  "cpuSlowdown": 4,
+  "network": {
+   "rttMs": 150,
+   "downKbps": 1600,
+   "upKbps": 750
+  }
+ },
+ "startedAt": "2026-11-10T08:29:39.981Z",
+ "state": "passed",
+ "server": {
+  "spawnAt": 1794299379983,
+  "listeningMs": 11061,
+  "healthReadyMs": 20927,
+  "readyAt": 1794299400910,
+  "idleUntil": 1794299415911
+ },
+ "steps": [
+  {
+   "id": "signin-access-page",
+   "name": "Open the presenter link: access key page usable",
+   "demo": "sign-in",
+   "warm": false,
+   "pass": true,
+   "wallMs": 412,
+   "end": 1794299417243,
+   "start": 1794299416828,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 312,
+    "dcl": 372,
+    "load": 0
+   },
+   "fcp": null,
+   "lcp": null,
+   "lcpElement": null,
+   "usableSinceNavMs": 412,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "requests": {
+    "totalRequests": 4,
+    "totalTransferredBytes": 11312,
+    "serverRequests": 4,
+    "serverBodyBytes": 11276,
+    "stockRequests": 0,
+    "stockServed": [],
+    "stockTransferredBytes": []
+   }
+  },
+  {
+   "id": "signin-workspace",
+   "name": "Type the key, Enter: workspace shows Your cars",
+   "demo": "sign-in",
+   "warm": false,
+   "pass": true,
+   "wallMs": 7281,
+   "end": 1794299424529,
+   "start": 1794299417246,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 320,
+    "dcl": 6373,
+    "load": 6385
+   },
+   "fcp": 6584,
+   "lcp": 6864,
+   "lcpElement": "P.gcsp-countdown",
+   "usableSinceNavMs": 7234,
+   "longTasks": {
+    "count": 1,
+    "totalMs": 55,
+    "maxMs": 55
+   },
+   "requests": {
+    "totalRequests": 147,
+    "totalTransferredBytes": 1110105,
+    "serverRequests": 150,
+    "serverBodyBytes": 1113145,
+    "stockRequests": 0,
+    "stockServed": [],
+    "stockTransferredBytes": []
+   }
+  },
+  {
+   "id": "presenter-open",
+   "name": "Open Presenter controls: clock and controls ready",
+   "demo": "presenter",
+   "warm": false,
+   "pass": true,
+   "wallMs": 213,
+   "end": 1794299424744,
+   "start": 1794299424530,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "requests": {
+    "totalRequests": 0,
+    "totalTransferredBytes": 0,
+    "serverRequests": 0,
+    "serverBodyBytes": 0,
+    "stockRequests": 0,
+    "stockServed": [],
+    "stockTransferredBytes": []
+   }
+  },
+  {
+   "id": "presenter-tick-1",
+   "name": "Tick on a fresh run",
+   "demo": "presenter",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1504,
+   "end": 1794299426252,
+   "start": 1794299424747,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "clockBefore": "2026-11-05T09:00:00.000Z",
+    "clockAfter": "2026-11-05T09:01:00.000Z",
+    "released": null
+   },
+   "requests": {
+    "totalRequests": 9,
+    "totalTransferredBytes": 52128,
+    "serverRequests": 9,
+    "serverBodyBytes": 52128,
+    "stockRequests": 0,
+    "stockServed": [],
+    "stockTransferredBytes": []
+   }
+  },
+  {
+   "id": "account-load",
+   "name": "Account page (gcsp-account.html) load to Choose a replacement",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 3542,
+   "end": 1794299429798,
+   "start": 1794299426254,
+   "navigated": true,
+   "nav": {
+    "type": "navigate",
+    "ttfb": 151,
+    "dcl": 2803,
+    "load": 2962
+   },
+   "fcp": 2808,
+   "lcp": 3076,
+   "lcpElement": "P.gcsp-countdown",
+   "usableSinceNavMs": 3542,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "requests": {
+    "totalRequests": 103,
+    "totalTransferredBytes": 85311,
+    "serverRequests": 103,
+    "serverBodyBytes": 85274,
+    "stockRequests": 0,
+    "stockServed": [],
+    "stockTransferredBytes": []
+   }
+  },
+  {
+   "id": "setup-open",
+   "name": "Choose a replacement: setup form usable",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1351,
+   "end": 1794299431151,
+   "start": 1794299429799,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "requests": {
+    "totalRequests": 12,
+    "totalTransferredBytes": 63390,
+    "serverRequests": 13,
+    "serverBodyBytes": 82210,
+    "stockRequests": 0,
+    "stockServed": [],
+    "stockTransferredBytes": []
+   }
+  },
+  {
+   "id": "setup-save",
+   "name": "Save choices: saved confirmation",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 262,
+   "end": 1794299431549,
+   "start": 1794299431285,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "requests": {
+    "totalRequests": 2,
+    "totalTransferredBytes": 17594,
+    "serverRequests": 2,
+    "serverBodyBytes": 17594,
+    "stockRequests": 1,
+    "stockServed": [
+     {
+      "st": 200,
+      "ms": 180.5,
+      "bodyBytes": 14829,
+      "contentEncoding": null
+     }
+    ],
+    "stockTransferredBytes": [
+     14829
+    ]
+   }
+  },
+  {
+   "id": "presenter-next-release",
+   "name": "Next release from the setup page",
+   "demo": "presenter",
+   "warm": false,
+   "pass": true,
+   "wallMs": 1901,
+   "end": 1794299433452,
+   "start": 1794299431550,
+   "navigated": false,
+   "longTasks": {
+    "count": 0,
+    "totalMs": 0,
+    "maxMs": 0
+   },
+   "detail": {
+    "clockBefore": "2026-11-05T09:01:00.000Z",
+    "clockAfter": "2026-11-06T11:30:00.000Z",
+    "released": 20
+   },
+   "requests": {
+    "totalRequests": 8,
+    "totalTransferredBytes": 117262,
+    "serverRequests": 8,
+    "serverBodyBytes": 117262,
+    "stockRequests": 1,
+    "stockServed": [
+     {
+      "st": 400,
+      "ms": 120.9,
+      "bodyBytes": 289,
+      "contentEncoding": null
+     }
+    ],
+    "stockTransferredBytes": [
+     289
+    ]
+   }
+  },
+  {
+   "id": "gallery-open",
+   "name": "Continue: Released cars gallery with enabled Review buttons",
+   "demo": "employee",
+   "warm": false,
+   "pass": true,
+   "wallMs": 4782,
+   "end": 1794299438529,
+   "start": 1794299433746,
+   "navigated": false,
+   "longTasks": {
+    "count": 1,
+    "totalMs": 118,
+    "maxMs": 118
+   },
+   "detail": {
+    "cards": 3
+   },
+   "requests": {
+    "totalRequests": 8,
+    "totalTransferredBytes": 439976,
+    "serverRequests": 8,
+    "serverBodyBytes": 439976,
+    "stockRequests": 1,
+    "stockServed": [
+     {
+      "st": 200,
+      "ms": 207.8,
+      "bodyBytes": 357994,
+      "contentEncoding": null
+     }
+    ],
+    "stockTransferredBytes": [
+     357994
+    ]
+   }
+  }
+ ],
+ "errors": [],
+ "badResponses": [
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/manual/order"
+  },
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/manual/claim"
+  },
+  {
+   "st": 400,
+   "m": "GET",
+   "p": "/api/gcsp/manual/stock"
+  },
+  {
+   "st": 404,
+   "m": "GET",
+   "p": "/api/gcsp/manual/claim"
+  }
+ ],
+ "wholeRun": {
+  "stockRequests": 4,
+  "stockServed": [
+   {
+    "st": 200,
+    "ms": 180.5,
+    "bodyBytes": 14829,
+    "contentEncoding": null
+   },
+   {
+    "st": 400,
+    "ms": 120.9,
+    "bodyBytes": 289,
+    "contentEncoding": null
+   },
+   {
+    "st": 200,
+    "ms": 208,
+    "bodyBytes": 357994,
+    "contentEncoding": null
+   },
+   {
+    "st": 200,
+    "ms": 207.8,
+    "bodyBytes": 357994,
+    "contentEncoding": null
+   }
+  ],
+  "totalRequests": 295,
+  "totalTransferredBytes": 2257776
+ },
+ "finishedAt": "2026-11-10T08:30:41.702Z"
+}

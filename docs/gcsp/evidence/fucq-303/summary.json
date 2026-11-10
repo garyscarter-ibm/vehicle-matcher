@@ -1,0 +1,1340 @@
+{
+ "story": "FUCQ-303",
+ "generatedAt": "2026-11-10T07:31:17.539Z",
+ "files": [
+  "results-after-desktop-1.json",
+  "results-after-desktop-2.json",
+  "results-after-desktop-3.json",
+  "results-after-phone-1.json",
+  "results-after-phone-2.json",
+  "results-after-phone-3.json",
+  "results-before-desktop-1.json",
+  "results-before-desktop-2.json",
+  "results-before-desktop-3.json",
+  "results-before-phone-1.json",
+  "results-before-phone-2.json",
+  "results-before-phone-3.json"
+ ],
+ "groups": {
+  "before-desktop": {
+   "runs": 3,
+   "states": [
+    "passed",
+    "passed",
+    "passed"
+   ],
+   "steps": {
+    "prime-presenter": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 376,
+      "min": 368,
+      "max": 456,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 1476,
+      "min": 1464,
+      "max": 1484,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 154,
+      "min": 154,
+      "max": 154,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1194,
+      "min": 1194,
+      "max": 1194,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 144,
+      "min": 144,
+      "max": 144,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1074,
+      "min": 1074,
+      "max": 1074,
+      "n": 3
+     },
+     "errors": []
+    },
+    "prime-account": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 108,
+      "min": 92,
+      "max": 108,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 838,
+      "min": 835,
+      "max": 870,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 115,
+      "min": 115,
+      "max": 115,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 965,
+      "min": 965,
+      "max": 965,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 106,
+      "min": 106,
+      "max": 106,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 846,
+      "min": 846,
+      "max": 846,
+      "n": 3
+     },
+     "errors": []
+    },
+    "prime-activity": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 88,
+      "min": 84,
+      "max": 120,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 922,
+      "min": 915,
+      "max": 1051,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 74,
+      "min": 74,
+      "max": 78,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 685,
+      "min": 685,
+      "max": 692,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 65,
+      "min": 65,
+      "max": 69,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 560,
+      "min": 560,
+      "max": 568,
+      "n": 3
+     },
+     "errors": []
+    },
+    "prime-offer": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 96,
+      "min": 88,
+      "max": 104,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 382,
+      "min": 381,
+      "max": 406,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 93,
+      "min": 90,
+      "max": 94,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 652,
+      "min": 643,
+      "max": 790,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 90,
+      "min": 89,
+      "max": 91,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 690,
+      "min": 690,
+      "max": 693,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-presenter": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 340,
+      "min": 180,
+      "max": 472,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 1203,
+      "min": 1135,
+      "max": 1357,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 153,
+      "min": 151,
+      "max": 154,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1194,
+      "min": 1190,
+      "max": 1204,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 143,
+      "min": 140,
+      "max": 144,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1070,
+      "min": 1066,
+      "max": 1074,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-account": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 100,
+      "min": 92,
+      "max": 148,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 828,
+      "min": 822,
+      "max": 846,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 115,
+      "min": 115,
+      "max": 115,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 965,
+      "min": 965,
+      "max": 965,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 106,
+      "min": 106,
+      "max": 106,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 846,
+      "min": 846,
+      "max": 846,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-activity": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 76,
+      "min": 68,
+      "max": 200,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 1013,
+      "min": 906,
+      "max": 1135,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 78,
+      "min": 78,
+      "max": 78,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 692,
+      "min": 692,
+      "max": 692,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 69,
+      "min": 69,
+      "max": 69,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 568,
+      "min": 568,
+      "max": 568,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-offer": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 96,
+      "min": 92,
+      "max": 104,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 437,
+      "min": 396,
+      "max": 464,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 91,
+      "min": 91,
+      "max": 91,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 644,
+      "min": 644,
+      "max": 650,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 89,
+      "min": 88,
+      "max": 90,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 632,
+      "min": 631,
+      "max": 690,
+      "n": 3
+     },
+     "errors": []
+    }
+   }
+  },
+  "before-phone": {
+   "runs": 3,
+   "states": [
+    "passed",
+    "passed",
+    "passed"
+   ],
+   "steps": {
+    "prime-presenter": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 6528,
+      "min": 6504,
+      "max": 6556,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 8135,
+      "min": 7966,
+      "max": 8219,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 154,
+      "min": 154,
+      "max": 154,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1194,
+      "min": 1194,
+      "max": 1194,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 144,
+      "min": 144,
+      "max": 144,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1074,
+      "min": 1074,
+      "max": 1074,
+      "n": 3
+     },
+     "errors": []
+    },
+    "prime-account": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 4900,
+      "min": 4884,
+      "max": 4960,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 5547,
+      "min": 5539,
+      "max": 5557,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 111,
+      "min": 111,
+      "max": 111,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 806,
+      "min": 806,
+      "max": 806,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 106,
+      "min": 105,
+      "max": 106,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 846,
+      "min": 787,
+      "max": 846,
+      "n": 3
+     },
+     "errors": []
+    },
+    "prime-activity": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 3348,
+      "min": 3348,
+      "max": 3360,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 4269,
+      "min": 4235,
+      "max": 4345,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 71,
+      "min": 70,
+      "max": 72,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 608,
+      "min": 526,
+      "max": 667,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 65,
+      "min": 65,
+      "max": 66,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 560,
+      "min": 560,
+      "max": 619,
+      "n": 3
+     },
+     "errors": []
+    },
+    "prime-offer": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 4012,
+      "min": 4004,
+      "max": 4020,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 4549,
+      "min": 4526,
+      "max": 4571,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 88,
+      "min": 88,
+      "max": 88,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 643,
+      "min": 643,
+      "max": 643,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 86,
+      "min": 86,
+      "max": 86,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 683,
+      "min": 683,
+      "max": 683,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-presenter": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 6600,
+      "min": 6544,
+      "max": 6656,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 8233,
+      "min": 7998,
+      "max": 8241,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 154,
+      "min": 154,
+      "max": 154,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 1194,
+      "min": 1194,
+      "max": 1194,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 144,
+      "min": 144,
+      "max": 144,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1074,
+      "min": 1074,
+      "max": 1074,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-account": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 4912,
+      "min": 4880,
+      "max": 4916,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 5542,
+      "min": 5533,
+      "max": 5545,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 111,
+      "min": 111,
+      "max": 111,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 806,
+      "min": 806,
+      "max": 806,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 106,
+      "min": 106,
+      "max": 106,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 846,
+      "min": 846,
+      "max": 846,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-activity": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 3316,
+      "min": 3316,
+      "max": 3352,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 4145,
+      "min": 4107,
+      "max": 4222,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 71,
+      "min": 71,
+      "max": 71,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 585,
+      "min": 585,
+      "max": 585,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 65,
+      "min": 65,
+      "max": 65,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 560,
+      "min": 560,
+      "max": 560,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-offer": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 4004,
+      "min": 3996,
+      "max": 4004,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 4548,
+      "min": 4498,
+      "max": 4556,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 88,
+      "min": 88,
+      "max": 88,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 643,
+      "min": 643,
+      "max": 643,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 86,
+      "min": 86,
+      "max": 86,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 683,
+      "min": 683,
+      "max": 683,
+      "n": 3
+     },
+     "errors": []
+    }
+   }
+  },
+  "after-desktop": {
+   "runs": 3,
+   "states": [
+    "passed",
+    "passed",
+    "passed"
+   ],
+   "steps": {
+    "prime-presenter": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 316,
+      "min": 296,
+      "max": 364,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 1277,
+      "min": 1225,
+      "max": 1360,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 141,
+      "min": 141,
+      "max": 142,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 119,
+      "min": 119,
+      "max": 137,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 131,
+      "min": 131,
+      "max": 131,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "prime-account": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 72,
+      "min": 64,
+      "max": 92,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 821,
+      "min": 815,
+      "max": 830,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 103,
+      "min": 103,
+      "max": 103,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 154,
+      "min": 154,
+      "max": 154,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 94,
+      "min": 94,
+      "max": 94,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 36,
+      "min": 36,
+      "max": 36,
+      "n": 3
+     },
+     "errors": []
+    },
+    "prime-activity": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 68,
+      "min": 48,
+      "max": 144,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 906,
+      "min": 891,
+      "max": 1208,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 74,
+      "min": 74,
+      "max": 74,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 124,
+      "min": 124,
+      "max": 124,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 65,
+      "min": 65,
+      "max": 65,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "prime-offer": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 56,
+      "min": 48,
+      "max": 76,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 376,
+      "min": 364,
+      "max": 390,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 89,
+      "min": 87,
+      "max": 90,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 100,
+      "min": 18,
+      "max": 100,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 86,
+      "min": 86,
+      "max": 86,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-presenter": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 248,
+      "min": 244,
+      "max": 436,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 1038,
+      "min": 1012,
+      "max": 1322,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 141,
+      "min": 141,
+      "max": 141,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 119,
+      "min": 119,
+      "max": 119,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 131,
+      "min": 131,
+      "max": 131,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-account": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 60,
+      "min": 52,
+      "max": 80,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 820,
+      "min": 816,
+      "max": 839,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 103,
+      "min": 103,
+      "max": 103,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 119,
+      "min": 119,
+      "max": 119,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 94,
+      "min": 94,
+      "max": 94,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-activity": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 52,
+      "min": 44,
+      "max": 168,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 899,
+      "min": 885,
+      "max": 1225,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 74,
+      "min": 74,
+      "max": 74,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 124,
+      "min": 124,
+      "max": 124,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 65,
+      "min": 65,
+      "max": 65,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-offer": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 72,
+      "min": 56,
+      "max": 92,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 385,
+      "min": 378,
+      "max": 398,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 87,
+      "min": 87,
+      "max": 87,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 18,
+      "min": 18,
+      "max": 18,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 84,
+      "min": 84,
+      "max": 84,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    }
+   }
+  },
+  "after-phone": {
+   "runs": 3,
+   "states": [
+    "passed",
+    "passed",
+    "passed"
+   ],
+   "steps": {
+    "prime-presenter": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 4148,
+      "min": 4068,
+      "max": 4176,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 5526,
+      "min": 5416,
+      "max": 7328,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 141,
+      "min": 141,
+      "max": 141,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 119,
+      "min": 119,
+      "max": 119,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 131,
+      "min": 131,
+      "max": 131,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "prime-account": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 2816,
+      "min": 2792,
+      "max": 2844,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 3530,
+      "min": 3529,
+      "max": 4189,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 100,
+      "min": 100,
+      "max": 100,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 54,
+      "min": 54,
+      "max": 54,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 94,
+      "min": 94,
+      "max": 94,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 36,
+      "min": 36,
+      "max": 36,
+      "n": 3
+     },
+     "errors": []
+    },
+    "prime-activity": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 2016,
+      "min": 2016,
+      "max": 2084,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 2947,
+      "min": 2815,
+      "max": 5189,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 73,
+      "min": 72,
+      "max": 74,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 107,
+      "min": 106,
+      "max": 124,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 65,
+      "min": 65,
+      "max": 65,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "prime-offer": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 2628,
+      "min": 2616,
+      "max": 2668,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 3116,
+      "min": 3071,
+      "max": 3251,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 89,
+      "min": 89,
+      "max": 89,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 18,
+      "min": 18,
+      "max": 18,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 86,
+      "min": 86,
+      "max": 86,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-presenter": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 4116,
+      "min": 4068,
+      "max": 4140,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 5651,
+      "min": 5315,
+      "max": 5688,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 141,
+      "min": 141,
+      "max": 141,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 119,
+      "min": 119,
+      "max": 119,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 131,
+      "min": 131,
+      "max": 131,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-account": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 2812,
+      "min": 2776,
+      "max": 2828,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 3532,
+      "min": 3516,
+      "max": 3564,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 100,
+      "min": 100,
+      "max": 100,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 19,
+      "min": 19,
+      "max": 19,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 94,
+      "min": 93,
+      "max": 94,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-activity": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 1988,
+      "min": 1984,
+      "max": 1996,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 2885,
+      "min": 2824,
+      "max": 3108,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 72,
+      "min": 72,
+      "max": 73,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 106,
+      "min": 106,
+      "max": 107,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 65,
+      "min": 65,
+      "max": 66,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    },
+    "warm-offer": {
+     "passed": "3/3",
+     "fcp": {
+      "median": 2636,
+      "min": 2616,
+      "max": 2644,
+      "n": 3
+     },
+     "usableMs": {
+      "median": 3091,
+      "min": 3078,
+      "max": 3155,
+      "n": 3
+     },
+     "browserRequests": {
+      "median": 89,
+      "min": 88,
+      "max": 89,
+      "n": 3
+     },
+     "browserKB": {
+      "median": 18,
+      "min": 18,
+      "max": 18,
+      "n": 3
+     },
+     "staticServed": {
+      "median": 86,
+      "min": 85,
+      "max": 86,
+      "n": 3
+     },
+     "staticKB": {
+      "median": 1,
+      "min": 1,
+      "max": 1,
+      "n": 3
+     },
+     "errors": []
+    }
+   }
+  }
+ }
+}
