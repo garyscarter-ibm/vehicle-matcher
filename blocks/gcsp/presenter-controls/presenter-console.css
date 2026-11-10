@@ -23,7 +23,7 @@ body.gcsp { margin: 0; background: var(--gcsp-surface-page); color: var(--gcsp-t
 .gcsp .gcsp-console-link { margin-left: var(--gcsp-space-2); color: var(--gcsp-link); }
 .gcsp .gcsp-console-link:hover { color: var(--gcsp-link-hover); }
 .gcsp .gcsp-console-reason, .gcsp .gcsp-console-status { margin: 0; }
-.gcsp .gcsp-console-status:empty { display: none; }
+.gcsp .gcsp-console-status:empty { display: none; } .gcsp .gcsp-console-confirm { display: flex; flex-direction: column; gap: var(--gcsp-space-3); padding-top: var(--gcsp-space-4); border-top: 1px solid var(--gcsp-divider); } .gcsp .gcsp-console-confirm[hidden] { display: none; } .gcsp .gcsp-console-confirm p { max-width: 60ch; } .gcsp .gcsp-console-confirm h2 { margin: 0; font-size: var(--gcsp-font-size-heading); font-family: var(--gcsp-font-heading); }
 .gcsp .gcsp-console-vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .gcsp .gcsp-console-advanced { padding: var(--gcsp-space-6); background: var(--gcsp-surface); }
 .gcsp .gcsp-console .gcsp-note { margin: 0; color: var(--gcsp-text-muted); }

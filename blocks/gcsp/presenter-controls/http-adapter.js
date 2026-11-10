@@ -25,5 +25,6 @@ export function createPresenterHttpAdapter({ base = '', fetchImpl = globalThis.f
     tick: (body, options) => request('presenter/controls/tick', body, options),
     reset: (body, options) => request('presenter/scenarios/reset', body, options),
     switchPrincipal: (body, options) => request('session/switch', body, options),
+    listOrders: (options) => request('orders/progress/all', null, options),
   };
 }
