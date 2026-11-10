@@ -180,7 +180,7 @@ export class ManualContextService {
     const rows = await this.#repository.query(context, 'event_receipts', { consumerId: consumer(context) });
     if (rows.status !== 'ok') return rows;
     const draft = latest(rows.value);
-    if (!draft) return result('not-found', { resourceType: 'manual-draft' });
+    if (!draft || draft.discarded) return result('not-found', { resourceType: 'manual-draft' });
     const changed = draft.contextVersion !== p.contextVersion;
     return ok({ ...draft, requiresRefresh: changed,
       invalidations: changed ? [...new Set([...draft.invalidations, 'context', 'selection', 'quote', 'eligible-stock'])] : draft.invalidations,
@@ -267,7 +267,9 @@ export class ManualContextService {
       if (slot.status !== 'ok') return slot;
       if (slot.value.version !== p.slot.version) return stale('entitlement-slot', p.slot.version, slot.value.version);
       const rows = await tx.list('event_receipts', { consumerId: consumer(context) }); if (rows.status !== 'ok') return rows;
-      const previous = latest(rows.value); const version = previous?.draftVersion ?? 0;
+      const last = latest(rows.value); const version = last?.draftVersion ?? 0;
+      // A discard keeps the version counter but leaves nothing to carry forward.
+      const previous = last?.discarded ? null : last;
       if (input.expectedDraftVersion !== version) return stale('manual-draft', input.expectedDraftVersion, version);
       const changes = previous ? dependencyFields.filter((key) => inputDigest(previous.choices[key] ?? null) !== inputDigest(input.choices[key] ?? null)) : [];
       if (previous && previous.contextVersion !== p.contextVersion) changes.push('context');
@@ -282,6 +284,40 @@ export class ManualContextService {
           action: validated.intent ? 'choose-order-options' : 'browse-stock' } };
       const stored = await tx.recordReceipt({ consumerId: consumer(context), eventId: String(value.draftVersion), inputDigest: digest,
         eventType: 'manual-draft-saved', state: 'completed', outcome: ok(value) });
+      return stored.status === 'ok' ? ok(value) : stored;
+    });
+  }
+
+  // FUCQ-372: a discard is one more receipt in the draft series, so versions stay monotonic. Holds, offers and orders are untouched.
+  async discardDraft(context, input) {
+    if (!this.#repository || !this.#identity || !this.#clock) return unavailable('configuration');
+    const guard = await this.#identity.requireRole(context, 'employee'); if (guard.status !== 'ok') return guard;
+    if (!only(input, ['commandId', 'expectedDraftVersion']) || !text(input.commandId)
+      || input.commandId.length > 128 || !revision(input.expectedDraftVersion)) return invalid('command', 'Supply a command ID and the expected draft version.');
+    let digest;
+    try { digest = inputDigest(input); } catch { return invalid('command', 'Supply JSON data for the registered manual fields.'); }
+    const commandId = `manual:${context.employeeId}:${input.commandId}`;
+    const replay = await this.#repository.read(context, { table: 'event_receipts', key: {
+      runId: context.runId, consumerId: 'command:transaction', eventId: commandId } });
+    if (replay.status === 'ok') return replay.value.inputDigest === digest ? structuredClone(replay.value.outcome)
+      : result('conflict', { reason: 'idempotency-input-changed', current: {} });
+    if (replay.status !== 'not-found') return replay;
+    const clock = await this.#clock.now(context); if (clock.status !== 'ok') return clock;
+    if (clock.value.runId !== context.runId || !validInstant(clock.value.now)) return unavailable('clock');
+    return this.#repository.transaction(context, { commandId, inputDigest: digest }, async (tx) => {
+      const holds = await tx.list('holds', { employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId, type: 'cart' });
+      if (holds.status !== 'ok') return holds;
+      if (holds.value.some((h) => OCCUPYING_STATES.includes(h.state) || h.state === 'allocated')) return result('conflict', {
+        reason: 'release-required', view: { state: 'conflict', editable: false, supportOwner: 'employee', action: 'release-before-change' } });
+      const rows = await tx.list('event_receipts', { consumerId: consumer(context) }); if (rows.status !== 'ok') return rows;
+      const last = latest(rows.value);
+      if (!last || last.discarded) return result('not-found', { resourceType: 'manual-draft' });
+      if (input.expectedDraftVersion !== last.draftVersion) return stale('manual-draft', input.expectedDraftVersion, last.draftVersion);
+      const value = { schemaVersion: 1, runId: context.runId, employeeId: context.employeeId, draftVersion: last.draftVersion + 1,
+        previousDraftVersion: last.draftVersion, entitlementSlotId: context.entitlementSlotId, discarded: true,
+        discardedAt: clock.value.now, discardedBy: context.principalId };
+      const stored = await tx.recordReceipt({ consumerId: consumer(context), eventId: String(value.draftVersion), inputDigest: digest,
+        eventType: 'manual-draft-discarded', state: 'completed', outcome: ok(value) });
       return stored.status === 'ok' ? ok(value) : stored;
     });
   }

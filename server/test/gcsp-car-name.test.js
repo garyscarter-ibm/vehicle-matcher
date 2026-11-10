@@ -54,7 +54,7 @@ test('demo stock names follow the rule with no Synthetic wording or chassis code
     const { display, facts } = car.facts; const key = facts.eligibilityModelKey.value;
     assert.equal(display.name, name(key === 'G61 i5|i5 40' ? 'G61 i5|i5 eDrive40' : key), key); // the i5 names its engine in full
     assert.doesNotMatch(display.name, /Synthetic|Fictional|\b[FGUI]\d{2}\b/);
-    if (display.images) assert.equal(display.images[0].alt, `${display.name}: representative image`);
+    if (display.images) assert.equal(display.images[0].alt, display.name);
   }
   assert.deepEqual(cars.map((car) => car.facts.display.name).filter((n, i, all) => all.indexOf(n) === i).sort(),
     ['BMW 1 Series Sports Hatch 120', 'BMW 3 Series Saloon 320i', 'BMW 3 Series Touring 320i', 'BMW i5 eDrive40 Touring']);

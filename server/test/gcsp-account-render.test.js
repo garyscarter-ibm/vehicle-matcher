@@ -214,7 +214,8 @@ function serviceAdapter(f, calls = []) {
   return createAccountHttpAdapter({ fetchImpl: async (url, options) => {
     calls.push({ url, method: options.method, body: options.body && JSON.parse(options.body) });
     if (url.endsWith('/activity')) return response({ status: 'unavailable' }, 503);
-    const result = options.method === 'POST' ? await f.service.saveDraft(f.context, JSON.parse(options.body))
+    const result = url.endsWith('/draft/discard') ? await f.service.discardDraft(f.context, JSON.parse(options.body))
+      : options.method === 'POST' ? await f.service.saveDraft(f.context, JSON.parse(options.body))
       : url.endsWith('/account') ? await f.service.readAccount(f.context) : await f.service.readDraft(f.context);
     return response(result, result.status === 'ok' ? 200 : result.status === 'not-found' ? 404 : 409);
   } });
@@ -323,12 +324,12 @@ test('current contracts retain their explicit scheme allowance including zero an
 
 test('representative image provenance survives a broken image fallback without claiming exact equipment', async () => {
   const input = accountFixture(); input.value.contracts[0].media = { src: '/fictional-missing.jpg',
-    caption: 'Representative model image', provenance: { source: 'dated illustration' } };
+    caption: 'Front three-quarter view', provenance: { source: 'dated illustration' } };
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
     const media = root.querySelector('.gcsp-media');
-    assert.equal(media.querySelector('img').alt, 'BMW 3 Series Touring 320i: representative image');
-    assert.match(media.textContent, /Representative model image/);
+    assert.equal(media.querySelector('img').alt, 'BMW 3 Series Touring 320i');
+    assert.match(media.textContent, /Front three-quarter view/);
     media.querySelector('img').dispatchEvent(new window.Event('error'));
     assert.equal(media.querySelector('img'), null); assert.equal(media.classList.contains('has-photo'), false);
     assert.match(media.textContent, /No image for this car yet/);
@@ -406,11 +407,11 @@ test('guarded replacement reconciles draft, suppresses duplicate writes, emits e
     assert.equal(events[0].bubbles, true); assert.equal(events[0].composed, true);
     assert.equal(root.querySelector('main h1').textContent, 'Your saved journey');
     assert.equal(document.activeElement, root.querySelector('main h1'));
-    assert.match(root.textContent, /No car has been selected or ordered/);
+    assert.match(root.textContent, /Nothing is held or ordered yet/);
     assert.match(root.querySelector('.gcsp-feature').textContent, /BMW 3 Series Touring 320i/);
     findButton(root, 'Back to account').click(); assert.equal(root.querySelector('main h1').textContent, 'Your cars');
-    await destroy.refresh(); assert.ok(findButton(root, 'Resume saved journey'));
-    findButton(root, 'Resume saved journey').click(); await tick(); await tick();
+    await destroy.refresh(); assert.ok(findButton(root, 'Carry on'));
+    findButton(root, 'Carry on').click(); await tick(); await tick();
     assert.equal(events.length, 2); assert.equal(calls.filter((call) => call.method === 'POST').length, 1);
     findButton(root, 'Back to account').click();
     findButton(root, 'Choose a replacement').click(); await tick(); await tick();
@@ -418,7 +419,7 @@ test('guarded replacement reconciles draft, suppresses duplicate writes, emits e
     assert.equal((await f.service.readAccount(f.context)).value.currentContract.contractEndDate, '2026-12-01');
   } finally { destroy(); root.remove(); document.body.removeEventListener('gcsp:journey-start', listen); }
   const reloaded = await domMount(serviceAdapter(f));
-  try { assert.ok(findButton(reloaded.root, 'Resume saved journey')); assert.match(reloaded.root.querySelector('.gcsp-summary').textContent, /Current carBMW 3 Series Touring 320i/); }
+  try { assert.ok(findButton(reloaded.root, 'Carry on')); assert.match(reloaded.root.querySelector('.gcsp-summary').textContent, /Current carBMW 3 Series Touring 320i/); }
   finally { reloaded.destroy(); reloaded.root.remove(); }
 });
 
@@ -494,7 +495,7 @@ test('fresh account review can replace a stale intent using current source and d
     assert.equal(events, 1); assert.match(root.querySelector('.gcsp-account-message').textContent, /context has changed/);
     assert.equal(calls.filter((call) => call.method === 'POST').length, 1);
     await destroy.refresh();
-    assert.equal(findButton(root, 'Resume saved journey'), undefined);
+    assert.equal(findButton(root, 'Carry on'), undefined);
     findButton(root, 'Choose a replacement').click(); await tick(); await tick();
     const renewed = await f.service.readDraft(f.context);
     assert.equal(events, 2); assert.equal(renewed.value.requiresRefresh, false);
@@ -638,14 +639,14 @@ test('FUCQ-278: a held newest offer is the one primary action; saved journey and
   try {
     const variant = (text) => findButton(held.root, text).classList.contains('vm-btn-ghost');
     assert.equal(findButton(held.root, 'View your offer').classList.contains('vm-btn-primary'), true);
-    assert.deepEqual(['Resume saved journey', 'Choose a replacement'].map(variant), [true, true]);
-    assert.ok(['Resume saved journey', 'Choose a replacement'].every((text) => !findButton(held.root, text).disabled));
+    assert.deepEqual(['Carry on', 'Choose a replacement'].map(variant), [true, true]);
+    assert.ok(['Carry on', 'Choose a replacement'].every((text) => !findButton(held.root, text).disabled));
     assert.equal((held.root.textContent.match(/Decide on your car offer before choosing another car\./g) ?? []).length, 1);
   } finally { held.destroy(); }
   for (const state of ['declined', 'expired', undefined]) {
     const other = await domMount(adapter(state));
     try {
-      assert.deepEqual(['Resume saved journey', 'Choose a replacement'].map((text) => findButton(other.root, text).classList.contains('vm-btn-primary')), [true, true], String(state));
+      assert.deepEqual(['Carry on', 'Choose a replacement'].map((text) => findButton(other.root, text).classList.contains('vm-btn-primary')), [true, true], String(state));
       assert.doesNotMatch(other.root.textContent, /Decide on your car offer before/);
     } finally { other.destroy(); }
   }
@@ -715,13 +716,13 @@ test('FUCQ-224: an order on the slot replaces the saved journey card; an order o
   try {
     await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order-status'));
     assert.ok(ordered.root.querySelector('.gcsp-account-order-status'), 'order status');
-    assert.doesNotMatch(ordered.root.textContent, /journey saved|not an order confirmation|Saved journey could not be read/);
-    assert.equal(findButton(ordered.root, 'Resume saved journey'), undefined);
+    assert.doesNotMatch(ordered.root.textContent, /You started choosing|Nothing is ordered yet|Saved journey could not be read/);
+    assert.equal(findButton(ordered.root, 'Carry on'), undefined);
   } finally { ordered.destroy(); }
   const other = await mount(orderAdapter('appointment-requested', listed('slot-other')));
   try {
     await settleOrder(other.root, (node) => node.querySelector('.gcsp-account-order-status'));
-    assert.match(other.root.textContent, /Replacement journey saved/);
+    assert.match(other.root.textContent, /You started choosing a replacement/);
   } finally { other.destroy(); }
 });
 
@@ -984,10 +985,9 @@ test('FUCQ-223: the account keeps the Choices kicker, and its stylesheet carries
     assert.equal(intro.querySelector('.vm-kicker').textContent, 'Choices');
     assert.ok(intro.querySelector('.vm-kicker').compareDocumentPosition(intro.querySelector('h1')) & 4, 'kicker sits above the title');
   } finally { destroy(); root.remove(); }
-  // gcsp-presenter.html loads only gcsp-account.css, so the order-progress sheet must come in through it.
+  // Pages load only gcsp-account.css, so the order-progress sheet must come in through it.
   const css = (path) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
   assert.match(css('blocks/gcsp/account/gcsp-account.css'), /@import "\.\.\/order-progress\/gcsp-order-progress\.css";/);
-  assert.match(css('gcsp-presenter.html'), /blocks\/gcsp\/account\/gcsp-account\.css/);
   assert.match(css('blocks/gcsp/order-progress/gcsp-order-progress.css'), /\.gcsp-order-car \{ display: grid;/);
 });
 
@@ -1199,4 +1199,104 @@ test('Your details is two rows, each with its help button, showing supplied valu
     const row = detailsRow(empty.root, 'Drivers (0)');
     assert.match(row.textContent, /No driver or licence details supplied\./); assert.ok(row.querySelector('button'));
   } finally { empty.destroy(); empty.root.remove(); }
+});
+
+// FUCQ-372: the saved journey card offers Carry on and a confirmed Discard.
+const draftCard = (mode = 'replacement', stage = 'intent') => ({ status: 'ok', value: { draftStage: stage, draftVersion: 3, contextVersion: 'context',
+  requiresRefresh: false, choices: { mode, oldContractId: mode === 'replacement' ? 'current:employee-paula' : null, slotId: 'slot-paula', schemeId: 'choices-fs-uk' } } });
+const press = (node, key) => node.dispatchEvent(new window.KeyboardEvent('keydown', { key, bubbles: true }));
+
+test('FUCQ-372: the saved journey card names the state, shows Carry on and Discard side by side, and Carry on resumes', async () => {
+  const draft = draftCard(); let starts = 0; draft.value.contextVersion = unnamed('ready').value.contextVersion;
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readDraft: async () => draft, discardDraft: async () => ({ status: 'ok' }) });
+  const events = []; root.addEventListener('gcsp:journey-start', (event) => events.push(event.detail));
+  try {
+    const card = root.querySelector('.gcsp-summary');
+    assert.equal(card.querySelector('h2').textContent, 'You started choosing a replacement');
+    assert.match(card.textContent, /Nothing is held or ordered yet\./);
+    assert.doesNotMatch(root.textContent, /Resume saved journey|Your starting context is saved|journey saved/);
+    assert.match(card.textContent, /Current carBMW 3 Series Touring 320i/);
+    const buttons = [...card.querySelectorAll('.gcsp-actions button')];
+    assert.deepEqual(buttons.map((node) => node.textContent), ['Carry on', 'Discard']);
+    assert.deepEqual(buttons.map((node) => node.classList.contains('vm-btn-primary')), [true, false]);
+    assert.equal(buttons[0].parentElement, buttons[1].parentElement);
+    findButton(root, 'Carry on').click(); await tick(); await tick();
+    assert.equal(events.length, 1); assert.equal(events[0].draftVersion, 3); starts += 1;
+  } finally { destroy(); root.remove(); }
+  const complete = await domMount({ ...readOnlyAdapter(), readDraft: async () => draftCard('new', 'complete') });
+  try {
+    assert.equal(complete.root.querySelector('.gcsp-summary h2').textContent, 'You started a new car order');
+    assert.match(complete.root.querySelector('.gcsp-summary').textContent, /Your order choices are saved\. Nothing is ordered yet\./);
+    assert.equal(findButton(complete.root, 'Discard'), undefined, 'no Discard without an adapter discardDraft');
+    assert.ok(findButton(complete.root, 'Carry on'));
+  } finally { complete.destroy(); complete.root.remove(); }
+  assert.equal(starts, 1);
+});
+
+test('FUCQ-372: Discard opens a confirmation that takes focus; Keep it and Escape return focus to Discard', async () => {
+  let discards = 0;
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readDraft: async () => draftCard(), discardDraft: async () => { discards += 1; return { status: 'ok' }; } });
+  try {
+    findButton(root, 'Discard').click();
+    const box = root.querySelector('.gcsp-discard-confirm');
+    assert.ok(box); assert.match(box.textContent, /Discard this journey\? Your current car and any offers are not affected\./);
+    assert.equal(document.activeElement, box);
+    assert.deepEqual([...box.querySelectorAll('button')].map((node) => [node.textContent, node.classList.contains('vm-btn-primary')]),
+      [['Discard journey', true], ['Keep it', false]]);
+    assert.equal(findButton(root, 'Carry on'), undefined);
+    findButton(root, 'Keep it').click();
+    assert.equal(root.querySelector('.gcsp-discard-confirm'), null);
+    assert.equal(document.activeElement, findButton(root, 'Discard'));
+    findButton(root, 'Discard').click(); press(root.querySelector('.gcsp-discard-confirm'), 'Escape');
+    assert.equal(root.querySelector('.gcsp-discard-confirm'), null);
+    assert.equal(document.activeElement, findButton(root, 'Discard')); assert.equal(discards, 0);
+  } finally { destroy(); root.remove(); }
+});
+
+test('FUCQ-372: a confirmed discard writes once against the draft version, removes the card and focuses the page heading', async () => {
+  const f = await setup(); const calls = [];
+  const { root, destroy } = await domMount(serviceAdapter(f, calls));
+  try {
+    findButton(root, 'Choose a replacement').click(); await tick(); await tick();
+    findButton(root, 'Back to account').click(); await destroy.refresh();
+    assert.ok(root.querySelector('.gcsp-summary'));
+    findButton(root, 'Discard').click(); findButton(root, 'Discard journey').click(); await tick(); await tick(); await tick();
+    const posts = calls.filter((call) => call.url.endsWith('/draft/discard'));
+    assert.equal(posts.length, 1); assert.deepEqual(Object.keys(posts[0].body).sort(), ['commandId', 'expectedDraftVersion']);
+    assert.equal(posts[0].body.expectedDraftVersion, 1);
+    assert.equal(root.querySelector('.gcsp-summary'), null); assert.equal(findButton(root, 'Carry on'), undefined);
+    assert.equal((await f.service.readDraft(f.context)).status, 'not-found');
+    assert.equal(document.activeElement, root.querySelector('main h1'));
+    assert.ok(findButton(root, 'Choose a replacement'));
+  } finally { destroy(); root.remove(); }
+});
+
+test('FUCQ-372: a failed or stale discard keeps the card with a plain message and no raw codes', async () => {
+  let reads = 0; let outcome = { status: 'unavailable', code: 'account-transport-unavailable' };
+  const adapter = { ...readOnlyAdapter(), readDraft: async () => { reads += 1; return draftCard(); }, discardDraft: async () => outcome };
+  const { root, destroy } = await domMount(adapter);
+  try {
+    findButton(root, 'Discard').click(); findButton(root, 'Discard journey').click(); await tick(); await tick();
+    assert.ok(root.querySelector('.gcsp-summary'), 'card kept');
+    assert.match(root.querySelector('.gcsp-account-message').textContent, /Journey could not be discarded/);
+    assert.doesNotMatch(root.textContent, /unavailable|account-transport|stale-version|release-required/);
+    assert.equal(root.querySelector('.gcsp-discard-confirm'), null);
+    const before = reads; outcome = { status: 'stale-version', resource: 'manual-draft' };
+    findButton(root, 'Discard').click(); findButton(root, 'Discard journey').click(); await tick(); await tick();
+    assert.ok(reads > before, 'stale re-reads the draft');
+    assert.match(root.querySelector('.gcsp-account-message').textContent, /Your journey has changed[\s\S]*try again/i);
+    outcome = { status: 'conflict', reason: 'release-required' };
+    findButton(root, 'Discard').click(); findButton(root, 'Discard journey').click(); await tick(); await tick();
+    assert.match(root.querySelector('.gcsp-account-message').textContent, /Release it before discarding/);
+    assert.ok(root.querySelector('.gcsp-summary'));
+  } finally { destroy(); root.remove(); }
+});
+
+test('FUCQ-372: a refresh-required card offers neither Carry on nor Discard', async () => {
+  const draft = draftCard(); draft.value.requiresRefresh = true;
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readDraft: async () => draft, discardDraft: async () => ({ status: 'ok' }) });
+  try {
+    assert.match(root.querySelector('.gcsp-summary').textContent, /Your saved context has changed/);
+    assert.equal(findButton(root, 'Carry on'), undefined); assert.equal(findButton(root, 'Discard'), undefined);
+  } finally { destroy(); root.remove(); }
 });

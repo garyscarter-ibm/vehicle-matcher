@@ -150,3 +150,16 @@ test('authenticated normal and offer HTTP responses enrich persisted snapshots a
   assert.equal(decisionCapture.get().code, 200); image(decisionCapture.get().value.value.quote.facts);
   assert.equal(JSON.stringify(stored), before);
 });
+
+test('FUCQ-373: image disclaimers stored before the rule are stripped from the public copy only', async () => {
+  const media = () => ({ src: '/assets/brand-hero/bmw.jpg', alt: 'BMW 3 Series Touring: representative image', caption: 'Representative image, not your exact car' });
+  const stored = { status: 'ok', value: { currentContract: { media: media() }, contracts: [{ media: media() }], histories: [{ entries: [{ media: media() }] }],
+    stock: [{ display: { images: [{ src: '/assets/brand-hero/bmw.jpg', alt: 'BMW', caption: 'BMW brand image, not this exact car' },
+      { src: '/assets/brand-hero/bmw.jpg', alt: 'BMW', caption: 'Front three-quarter view' }] } }] } };
+  const before = structuredClone(stored); const shown = await withVehicleDisplayImages(stored);
+  const json = JSON.stringify(shown.value);
+  assert.doesNotMatch(json, /representative|not (this|your) exact car/i);
+  assert.equal(shown.value.currentContract.media.alt, 'BMW 3 Series Touring');
+  assert.equal(shown.value.stock[0].display.images[1].caption, 'Front three-quarter view');
+  assert.deepEqual(stored, before);
+});

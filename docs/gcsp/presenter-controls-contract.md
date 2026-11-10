@@ -130,10 +130,7 @@ successful controls/context reads agree on the same different run. This reconcil
 surface without labelling the original reset successful. Failed, partial, unchanged or mismatched
 fresh reads do not justify navigation. Unknown/lost outcomes retain the original retry.
 
-`gcsp-presenter.html` is the real context-selected workspace. Its runtime reads `/context` then
-mounts the existing employee account or Greg dashboard using HTTP adapters, or a presenter shell.
-It has no default fixture and no principal URL selector. Confirmed switches navigate to this
-workspace within the same packaged base path. `gcsp-greg.html` remains its separate fixture host.
+`gcsp-presenter.html` is now the standalone presenter console (FUCQ-360), with no portal shell. Basic is the default and offers release and start again; Advanced mounts this controller unchanged, grouped in tabs. Confirmed switches and resets navigate back to the console, and the acting principal's portal opens from "Open the portal". It has no default fixture and no principal URL selector.
 
 Last-tick readback renders the server's `handlerOrder` and matching `outcomes`, missing stages and
 pending/refused results. A release count requires exactly one registered `stock-release` /

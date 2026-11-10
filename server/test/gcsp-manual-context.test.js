@@ -569,3 +569,72 @@ test('equivalent synthetic and real-shaped read adapters use the same applicatio
     assert.deepEqual(validation.view, expected.validationView);
   }
 });
+
+test('FUCQ-372: discardDraft records a monotonic receipt, replays, refuses stale, absent and held, and allows a fresh save', async () => {
+  const f = await setup(); const discard = (changes = {}) => f.service.discardDraft(f.context, { commandId: 'discard', expectedDraftVersion: 1, ...changes });
+  assert.equal((await discard()).status, 'not-found');
+  assert.equal((await f.service.saveDraft(f.context, { commandId: 'intent', expectedDraftVersion: 0,
+    expectedContextVersion: (await f.service.readAccount(f.context)).value.contextVersion, choices: intent(f) })).status, 'ok');
+  for (const bad of [{ extra: 1 }, { commandId: '' }, { expectedDraftVersion: -1 }, { expectedDraftVersion: undefined }]) {
+    assert.equal((await discard(bad)).status, 'invalid', JSON.stringify(bad));
+  }
+  assert.equal((await f.service.discardDraft({ ...f.context, employeeId: 'other' }, { commandId: 'discard', expectedDraftVersion: 1 })).status, 'forbidden');
+  const stale = await discard({ commandId: 'stale', expectedDraftVersion: 0 });
+  assert.equal(stale.status, 'stale-version'); assert.equal(stale.currentVersion, 1);
+  const done = await discard(); assert.equal(done.status, 'ok', JSON.stringify(done));
+  assert.equal(done.value.draftVersion, 2); assert.equal(done.value.discarded, true); assert.equal(done.value.previousDraftVersion, 1);
+  const receipts = (await f.repository.query(f.context, 'event_receipts', { consumerId: `manual:draft:${f.context.employeeId}` })).value;
+  assert.deepEqual(receipts.map((r) => [r.eventId, r.eventType]).sort(), [['1', 'manual-draft-saved'], ['2', 'manual-draft-discarded']]);
+  assert.deepEqual(await discard(), done);
+  assert.equal((await discard({ expectedDraftVersion: 2 })).status, 'conflict');
+  assert.equal((await discard({ commandId: 'again', expectedDraftVersion: 2 })).status, 'not-found');
+  assert.equal((await f.service.readDraft(f.context)).status, 'not-found');
+  const account = await f.service.readAccount(f.context);
+  const fresh = await f.service.saveDraft(f.context, { commandId: 'after', expectedDraftVersion: 2,
+    expectedContextVersion: account.value.contextVersion, choices: intent(f) });
+  assert.equal(fresh.status, 'ok', JSON.stringify(fresh)); assert.equal(fresh.value.draftVersion, 3);
+  assert.equal((await f.service.readDraft(f.context)).value.draftVersion, 3);
+  assert.equal((await f.service.saveDraft(f.context, { commandId: 'before', expectedDraftVersion: 1,
+    expectedContextVersion: account.value.contextVersion, choices: intent(f) })).status, 'stale-version');
+});
+
+test('FUCQ-372: discardDraft refuses while the employee holds a cart car and leaves holds, offers and orders alone', async () => {
+  const f = await setup(); await insertCars(f); assert.equal((await save(f)).status, 'ok');
+  const holdsBefore = (await f.repository.query(f.context, 'holds')).value;
+  const slot = (await f.repository.read(f.context, { table: 'entitlement_slots', key: { runId: f.context.runId, entitlementSlotId: f.context.entitlementSlotId } })).value;
+  const claimed = await f.repository.transaction(f.context, command('hold-claim'), async (tx) => {
+    const car = { table: 'stock', key: { runId: f.context.runId, orderUuid: stock(11).orderUuid } };
+    const quoted = await tx.insert('quotes', { runId: f.context.runId, quoteId: 'discard-quote', orderUuid: car.key.orderUuid,
+      employeeId: f.context.employeeId, entitlementSlotId: f.context.entitlementSlotId, configurationId: 'c', facts: {}, terms: {},
+      draftVersion: 1, policyVersion: f.context.policyVersion, quotedAt: instant, validUntil: '2026-11-05T10:00:00.000Z' });
+    if (quoted.status !== 'ok') return quoted;
+    const found = await tx.get(car); const available = await tx.compareAndSwap(car, found.value.version, { state: 'available' });
+    if (available.status !== 'ok') return available;
+    return tx.conditionalClaim({ orderUuid: car.key.orderUuid, holdId: 'discard-hold', claimId: 'discard-claim', employeeId: f.context.employeeId,
+      entitlementSlotId: f.context.entitlementSlotId, type: 'cart', state: 'active', phase: 'preview', quoteId: 'discard-quote',
+      policyVersion: f.context.policyVersion, expiresAt: '2026-11-05T10:00:00.000Z', expectedStockVersion: available.value.version,
+      expectedSlotVersion: slot.version });
+  });
+  assert.equal(claimed.status, 'ok', JSON.stringify(claimed));
+  const refused = await f.service.discardDraft(f.context, { commandId: 'held', expectedDraftVersion: 1 });
+  assert.equal(refused.status, 'conflict'); assert.equal(refused.reason, 'release-required');
+  assert.equal(refused.view.action, 'release-before-change');
+  assert.equal((await f.service.readDraft(f.context)).value.draftVersion, 1);
+  const holds = (await f.repository.query(f.context, 'holds')).value;
+  assert.equal(holds.length, holdsBefore.length + 1); assert.equal(holds[0].state, 'active');
+});
+
+test('FUCQ-372: the discard route is employee-only, strict, and ends the draft', async () => {
+  const f = await setup();
+  await withHttp(f, async (request) => {
+    const account = await request('/account');
+    const input = { commandId: 'http-d1', expectedDraftVersion: 0, expectedContextVersion: account.json.value.contextVersion, choices: choices(f) };
+    assert.equal((await request('/draft', { body: input })).status, 200);
+    assert.equal((await request('/draft/discard', { session: f.presenter, body: { commandId: 'x', expectedDraftVersion: 1 } })).status, 403);
+    assert.equal((await request('/draft/discard', { body: { commandId: 'x', expectedDraftVersion: 1, employeeId: 'other' } })).status, 400);
+    assert.equal((await request('/draft/discard', { body: { commandId: 'x', expectedDraftVersion: 0 } })).status, 409);
+    const gone = await request('/draft/discard', { body: { commandId: 'x', expectedDraftVersion: 1 } });
+    assert.equal(gone.status, 200); assert.equal(gone.json.value.discarded, true);
+    assert.equal((await request('/draft')).json.status, 'not-found');
+  });
+});

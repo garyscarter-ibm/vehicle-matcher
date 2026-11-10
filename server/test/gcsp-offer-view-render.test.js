@@ -30,7 +30,7 @@ test('exact shared card, points and current car comparison preserve supplied unk
   assert.match(root.textContent, /1,100 points a month.*1,300 points a month allowance/);
   assert.match(root.textContent, /320i M Sport Touring/);
   assert.doesNotMatch(root.textContent, /Fitted equipment unknown/);
-  assert.match(root.textContent, /Representative BMW brand image, not this exact car/);
+  assert.doesNotMatch(root.textContent, /Representative|not this exact car/);
   assert.equal(root.querySelector('.gcsp-synthetic'), null);
   assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
   const reason = root.querySelector('[data-offer-action="accept"]').getAttribute('aria-describedby');

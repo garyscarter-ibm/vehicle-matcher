@@ -6,6 +6,8 @@ import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 
 const BANNED = /\b(?:demos?|demonstrations?|synthetic|fictional|made[- ]up|examples?|samples?|not real|invented|pretend(?:ed)?)\b|\.invalid\b|@example\.|example\.com/gi;
+// FUCQ-373: car images carry no representative-image disclaimer either.
+const DISCLAIMER = /\brepresentative\b|\bimage disclaimer\b|\bimage,? not (?:this|your)\b|\bnot (?:this|your) exact car\b/gi;
 // The collaborator-approved account domain is allowed only inside a complete email address.
 const EMAIL = /[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+(?![a-z0-9_@-])/gi;
 const ATTRIBUTES = ['title', 'aria-label', 'aria-description', 'placeholder', 'alt'];
@@ -28,7 +30,7 @@ const host = () => { const node = document.createElement('div'); document.body.a
 function words(text) {
   const source = String(text);
   const scanned = source.replace(EMAIL, (email) => email.slice(email.lastIndexOf('@') + 1).toLowerCase() === 'gcsp-demo.com' ? ' '.repeat(email.length) : email);
-  return [...scanned.matchAll(BANNED)].map((m) => `"${source.slice(Math.max(0, m.index - 25), m.index + m[0].length + 25).replace(/\s+/g, ' ')}"`);
+  return [...scanned.matchAll(BANNED), ...scanned.matchAll(DISCLAIMER)].map((m) => `"${source.slice(Math.max(0, m.index - 25), m.index + m[0].length + 25).replace(/\s+/g, ' ')}"`);
 }
 /** Painted text: text nodes joined by spaces, skipping hidden, script and style subtrees. */
 function visibleText(node, parts = []) {

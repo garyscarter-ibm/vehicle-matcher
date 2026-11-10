@@ -110,7 +110,7 @@ export async function configurationIdDisplayImage(id, eligibilityModelKey, { loa
 }
 export function imageDisplay(name, image) {
   return image ? { name, photo: `/${image.asset}`, images: [{ src: `/${image.asset}`,
-    alt: `${name}: representative image`, fidelity: image.fidelity,
+    alt: name, fidelity: image.fidelity,
     sourceRef: `display-image:${image.imageId}, observed ${image.observedDate}` }] } : { name };
 }
 export function withDisplayImages(registry) {

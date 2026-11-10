@@ -643,7 +643,7 @@ export const activityFixtures = {
     "images": [
       {
         "src": "/assets/brand-hero/bmw.jpg",
-        "alt": "BMW brand photograph, representative of the brand rather than this offer",
+        "alt": "BMW brand photograph",
         "kind": "representative"
       }
     ]

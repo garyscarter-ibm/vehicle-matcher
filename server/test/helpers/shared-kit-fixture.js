@@ -28,7 +28,7 @@ export async function createSharedKitEmployeeFixture() {
     members: result.value.decisions.map((decision, i) => ({
       id: decision.orderUuid, identity: { candidateKey: decision.candidateKey, orderUuid: decision.orderUuid, configurationId: decision.configurationId },
       display: { name: decision.snapshot.display.name, line: 'Synthetic scheme stock', pickerLabel: ['Eligible exact car', 'Ineligible exact car', 'Needs confirmation'][i] },
-      media: i === 0 ? { src: '/assets/brand-hero/bmw.jpg', alt: 'Representative BMW brand image', caption: 'Representative BMW brand image, not this exact car' } : {},
+      media: i === 0 ? { src: '/assets/brand-hero/bmw.jpg', alt: 'BMW brand image' } : {},
       facts: [['Seats', 'seats'], ['Boot, seats up', 'boot'], ['Fuel', 'fuel']].map(([label, key]) => {
         const fact = decision.snapshot.facts[key];
         const unit = key === 'seats' ? 'seats' : fact?.unit;

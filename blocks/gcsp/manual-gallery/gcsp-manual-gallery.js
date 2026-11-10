@@ -127,8 +127,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
       sections.push(detailSection(title, [{ label: title, value: source?.status === 'known' ? source.value : null },
         { label: 'Source and assurance', value: source?.provenance }]));
     }
-    sections.push(detailSection('Images and source information', [{ label: 'Image disclaimer', value: detail.media.caption ?? 'No image supplied' },
-      { label: 'Image source', value: detail.media.provenance }, { label: 'Snapshot source', value: detail.snapshot.sourceNamespace },
+    sections.push(detailSection('Images and source information', [{ label: 'Image source', value: detail.media.provenance }, { label: 'Snapshot source', value: detail.snapshot.sourceNamespace },
       { label: 'Snapshot observed', value: detail.snapshot.observedAt }, { label: 'Snapshot version', value: detail.snapshot.snapshotVersion }]));
     nodes.detail.replaceChildren(back, heading, el('p', 'gcsp-note', `Order no. ${car.identity.orderNumber}`), media, ...costSummary(car.cost),
       factList(factRows([...Object.values(car.fields), ...car.emissions,
