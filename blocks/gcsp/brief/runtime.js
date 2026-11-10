@@ -11,7 +11,7 @@ export function createBriefRuntimeAdapter({ fetch: request = globalThis.fetch, b
 
 const host = globalThis.document?.querySelector('gcsp-brief[data-live]');
 if (host) {
-  host.adapter = { ...createBriefRuntimeAdapter(), notice: 'Synthetic local demo' };
+  host.adapter = { ...createBriefRuntimeAdapter(), notice: 'Local preview' };
   routePortalEvents(host);
   defineGcspBrief();
 }

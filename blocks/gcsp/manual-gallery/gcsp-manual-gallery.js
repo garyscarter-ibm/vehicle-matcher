@@ -5,7 +5,6 @@ import { mountEmployee } from '../employee/gcsp-employee.js';
 import { labelledField } from '../kit/form-controls.js';
 import { showMore } from '../kit/show-more.js';
 import { viewStatus } from '../kit/view-status.js';
-import { syntheticNote } from '../kit/synthetic-note.js';
 import { bodyStyleLabel, NO_IMAGE_TEXT } from '../kit/plain-copy.js';
 import { createManualGalleryController } from './gallery-controller.js';
 import { createManualClaimController } from './claim-controller.js';
@@ -148,7 +147,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     nodes.historyTime.hidden = h.latestReleasedAt === null;
     nodes.historyTime.textContent = h.latestReleasedAt === null ? '' : `Latest visible release: ${new Intl.DateTimeFormat('en-GB', {
       timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
-    }).format(new Date(h.latestReleasedAt))} UTC (demo time).`;
+    }).format(new Date(h.latestReleasedAt))} UTC.`;
   }
   // FUCQ-278: a held offer or one taken car shows above a list that stays in place.
   function drawNotice() {
@@ -212,7 +211,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
       const signature = JSON.stringify(car.view); let cached = cards.get(car.id);
       if (!cached || cached.signature !== signature) {
         const view = structuredClone(car.view); const rows = view.members[0].facts.filter((fact) => CARD_FACTS.includes(fact.key)); view.members[0].facts = [];
-        if (adapter.readOnly) view.members[0].actions[0] = { ...view.members[0].actions[0], disabled: true, disabledReason: 'Read-only gallery example.' };
+        if (adapter.readOnly) view.members[0].actions[0] = { ...view.members[0].actions[0], disabled: true, disabledReason: 'Read-only preview.' };
         const card = matchCard(null, { view, showScore: false, onAction: () => choose(car.id) }); card.classList.add('gcsp-card'); card.tabIndex = -1; card.setAttribute('aria-label', car.view.members[0].display.name);
         const facts = detailSection('Car facts', rows, { hideMissing: 'More details not supplied' });
         card.querySelector('.vm-card-facts').replaceChildren(facts);
@@ -258,8 +257,8 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     const claimNotice = el('section', 'gcsp-gallery-claim'); claimNotice.setAttribute('aria-label', 'Reservation status'); claimNotice.append(nodes.claimMessage, nodes.check, nodes.retry);
     nodes.results.append(nodes.status, nodes.grid);
     panel.append(screenIntro({ kicker: 'Choose your car', title: 'Released cars', lede: 'Browse the available cars. Review one to reserve it while you check the details.', level: 1 }),
-      nodes.allowance, nodes.history, navField('series', 'Series'), navField('body', 'Body style'), filters, nodes.counts, live.root, nodes.notice, claimNotice, nodes.results, nodes.detail, nodes.back, nodes.backReason, syntheticNote());
-    if (adapter.readOnly) panel.prepend(el('p', 'gcsp-note', 'Read-only synthetic gallery · 5 November 2026'));
+      nodes.allowance, nodes.history, navField('series', 'Series'), navField('body', 'Body style'), filters, nodes.counts, live.root, nodes.notice, claimNotice, nodes.results, nodes.detail, nodes.back, nodes.backReason);
+    if (adapter.readOnly) panel.prepend(el('p', 'gcsp-note', 'Read-only preview · 5 November 2026'));
     main.replaceChildren(panel); draw();
     if (!started) { started = true; gallery.load(); claim.load(); }
     return () => { nodes = null; panel.remove(); };

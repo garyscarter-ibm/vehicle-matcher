@@ -336,14 +336,14 @@ test('gcsp:navigate carries {from,to}, is cancelable, and switches the view only
   el.remove();
 });
 
-test('element with fixture representative loads the synthetic account; unknown fixture is unavailable', async () => {
+test('element with fixture representative loads the account; unknown fixture is unavailable', async () => {
   emp.defineGcspEmployee(window.customElements);
   const good = document.createElement('gcsp-employee');
   good.setAttribute('fixture', 'representative');
   document.body.append(good);
   assert.equal(good.querySelector('.gcsp-account').getAttribute('aria-busy'), 'true');
   await tick(450);
-  assert.match(good.querySelector('.gcsp-account').getAttribute('aria-label'), /^Account: .*synthetic/);
+  assert.match(good.querySelector('.gcsp-account').getAttribute('aria-label'), /^Account: Alex Brennan/);
   good.remove();
   assert.equal(good.childNodes.length, 0);
 
@@ -600,7 +600,7 @@ test('representative body: landmarks, one h1, VIN only on the current car, order
   assert.equal(node.querySelectorAll('h1').length, 1);
   assert.equal(node.querySelectorAll('main').length, 1);
   assert.ok(node.querySelector('main section.gcsp-feature h2'));
-  assert.match(node.querySelector('.gcsp-feature').textContent, /VIN \(synthetic\)/);
+  assert.match(node.querySelector('.gcsp-feature').textContent, /VIN/);
   assert.match(node.querySelector('.gcsp-feature').textContent, /ZZSYNTHETIC/);
   assert.match(node.querySelector('.gcsp-feature').textContent, /ends in 27 days/);
   assert.match(node.querySelector('.gcsp-feature').textContent, /6 months, 8,500 miles/);
@@ -613,7 +613,7 @@ test('representative body: landmarks, one h1, VIN only on the current car, order
   const heads = [...node.querySelectorAll('main h1, main h2, main h3')].map((h) => h.tagName);
   assert.equal(heads[0], 'H1');
   assert.ok(heads.every((t, i) => i === 0 || Number(t[1]) <= Number(heads[i - 1][1]) + 1), heads.join());
-  assert.match(node.querySelector('.gcsp-synthetic').textContent, /Synthetic example data/);
+  assert.equal(node.querySelector('.gcsp-synthetic'), null);
   node.remove();
 });
 

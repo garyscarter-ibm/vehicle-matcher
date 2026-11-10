@@ -20,8 +20,8 @@ test('isAccessLapsed is true only for a 401 whose body has no string status', ()
 });
 test('screen is a page-level alert with the copy and one Reload button that calls reload', () => {
   let calls = 0; const screen = kit.runRestartedScreen({ reload: () => calls++ });
-  assert.equal(screen.getAttribute('role'), 'alert'); assert.equal(screen.querySelector('h2').textContent, 'Demo restarted');
-  assert.equal(screen.querySelector('p').textContent, 'The demo was restarted. Reload the page to continue.');
+  assert.equal(screen.getAttribute('role'), 'alert'); assert.equal(screen.querySelector('h2').textContent, 'Restarted');
+  assert.equal(screen.querySelector('p').textContent, 'This page was restarted. Reload to continue.');
   const buttons = screen.querySelectorAll('button'); assert.equal(buttons.length, 1); assert.equal(buttons[0].type, 'button');
   buttons[0].click(); assert.equal(calls, 1); assert.doesNotMatch(screen.textContent, /stale-run|\u2014/);
 });

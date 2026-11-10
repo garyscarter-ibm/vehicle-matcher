@@ -121,12 +121,12 @@ test('a 401 with no status (lapsed access key) reads access-required; a status k
 test('a lapsed access key shows the restart screen on load and after a failed command', async () => {
   const lapsed = async () => ({ status: 'access-required' });
   const { root, teardown } = await setup(view(), { loadTracking: lapsed });
-  const alert = root.querySelector('[role="alert"]'); assert.match(alert.textContent, /Demo restarted/);
+  const alert = root.querySelector('[role="alert"]'); assert.match(alert.textContent, /Restarted/);
   assert.deepEqual([...alert.querySelectorAll('button')].map((b) => b.textContent), ['Reload']); assert.doesNotMatch(root.textContent, /could not be loaded/); teardown();
   let reads = 0; const next = await setup(view(), { loadTracking: async () => (++reads === 1 ? ok(view()) : { status: 'access-required' }), submit: lapsed });
   const form = next.root.querySelector('input[type="number"]').closest('form');
   form.dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true })); await tick(); await tick();
-  assert.match(next.root.textContent, /Demo restarted/); assert.doesNotMatch(next.root.textContent, /are unavailable/); next.teardown();
+  assert.match(next.root.textContent, /Restarted/); assert.doesNotMatch(next.root.textContent, /are unavailable/); next.teardown();
 });
 
 // FUCQ-290: the plan panel takes focus only after a Production response, so onChanged says which action changed the orders.

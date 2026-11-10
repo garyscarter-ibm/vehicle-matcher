@@ -53,10 +53,9 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
   root.append(screenIntro({ kicker: 'Renewal case', title: caseStatus(c.status), level: headingLevel }), facts([
     ['Case reference', caseReference(c.caseId)], ['Owner', owner], ...(ownerRole.toLowerCase() === String(owner ?? '').toLowerCase() ? [] : [['Owner role', ownerRole]]),
     ['Reason', c.reason], ['Latest update', c.history?.at(-1)?.reason ?? c.reason],
-    ['Opened from', triggerLabel(c.trigger)], ['Next action', c.nextAction], ['Due, demo clock (UTC)', clockTime(c.dueAt)],
+    ['Opened from', triggerLabel(c.trigger)], ['Next action', c.nextAction], ['Due (UTC)', clockTime(c.dueAt)],
     ['Renewal deadline (calendar date)', c.renewalDeadline ?? 'Needs confirmation'],
   ]));
-  if (c.fictional) root.append(el('p', 'gcsp-note', 'Synthetic demonstration case.'));
   const remedy = c.remedy;
   if (remedy) {
     const section = el('section', 'gcsp-case-remedy');
@@ -82,7 +81,7 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
           disabled: pending || !applicable, variant: 'ghost', onClick: () => onReviewRelaxation(c) }));
       }
     } else if (remedy.type === 'manual-decision') section.append(facts([['Scheme-team decision', remedy.decision]]));
-    else if (remedy.type === 'later-release') section.append(facts([['Reviewed release, demo clock (UTC)', clockTime(remedy.releaseAt)], ['Source', remedy.source]]));
+    else if (remedy.type === 'later-release') section.append(facts([['Reviewed release (UTC)', clockTime(remedy.releaseAt)], ['Source', remedy.source]]));
     else if (remedy.type === 'contract-extension') section.append(facts([['Proposed contract end (calendar date)', remedy.until]]));
     else if (remedy.type === 'alternative-car') section.append(facts([[['resolved', 'closed'].includes(c.status) ? 'Recorded car' : 'Proposed car', carNameText(remedy.carName)],
       ...(audience === 'scheme-team' ? [['Exact car reference', remedy.orderUuid]] : [])]));
@@ -93,8 +92,8 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
   const list = el('ol', 'gcsp-case-events');
   for (const h of c.history ?? []) {
     const row = el('li', 'gcsp-case-event');
-    row.append(facts([['Demo clock (UTC)', clockTime(h.at)], ['Actor', actorLabel(h, c, audience)], ['Role', roleLabel(h.actorRole)],
-      ['Status', caseStatus(h.status)], ['Reason', h.reason], ['Next action', h.nextAction], ['Due, demo clock (UTC)', clockTime(h.dueAt)]]));
+    row.append(facts([['Time (UTC)', clockTime(h.at)], ['Actor', actorLabel(h, c, audience)], ['Role', roleLabel(h.actorRole)],
+      ['Status', caseStatus(h.status)], ['Reason', h.reason], ['Next action', h.nextAction], ['Due (UTC)', clockTime(h.dueAt)]]));
     list.append(row);
   }
   history.append(list); root.append(history);

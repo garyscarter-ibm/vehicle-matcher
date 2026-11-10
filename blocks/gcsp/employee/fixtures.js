@@ -6,7 +6,7 @@ export const FIXTURE_NAMES = Object.freeze(['representative', 'representative-lo
 
 export const REPRESENTATIVE_ACCOUNT = Object.freeze({
   status: 'ready',
-  name: 'Alex Morgan-Whitfield (synthetic)',
+  name: 'Alex Brennan',
   context: 'Choices, grade G7',
 });
 
@@ -34,10 +34,10 @@ export function representativeData({ photos = true } = {}) {
       points: points(1100, 'price.choices-fs-uk.015'),
       details: [
         { label: 'Contract start', date: '2026-06-02' },
-        { label: 'Collection site', value: 'Synthetic BMW demo site' },
+        { label: 'Collection site', value: 'Bracknell collection centre' },
         { label: 'Licence type', value: 'Full car licence' },
         { label: 'Licence number', value: null },
-        { label: 'Additional drivers', value: '1 approved (synthetic)' },
+        { label: 'Additional drivers', value: '1 approved' },
       ],
     },
     stock: [

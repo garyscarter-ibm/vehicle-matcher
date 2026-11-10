@@ -24,7 +24,7 @@ const initial = orderProgressFixtureNames.includes(requested) ? requested : 'app
 const root = document.getElementById('gcsp-order-progress-preview');
 if (root) mountEmployee(root, {
   view: ORDER_PROGRESS_DESTINATION.key,
-  loadAccount: async () => ({ status: 'ready', name: 'Paula (synthetic)', context: 'Choices, synthetic demonstration' }),
+  loadAccount: async () => ({ status: 'ready', name: 'Paula Mason', context: 'Choices' }),
   renderBody(main) {
     const fixtures = orderProgressFixtures(); const help = fixtureAdapter('request');
     const body = el('div', 'gcsp-order-preview-body');

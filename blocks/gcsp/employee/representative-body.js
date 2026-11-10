@@ -87,7 +87,7 @@ export function renderRepresentativeBody(main, { account, data } = {}) {
     ends,
     factList([
       { label: 'Registration', value: current.registration },
-      { label: 'VIN (synthetic)', value: current.vin },
+      { label: 'VIN', value: current.vin },
       { label: 'Term and mileage', value: `${current.term}, ${num(current.miles)} miles` },
       { label: 'Scheme', value: current.scheme },
       { label: 'Driver', value: account.name },
@@ -118,7 +118,7 @@ export function renderRepresentativeBody(main, { account, data } = {}) {
   selHead.id = `${id}-selection`;
   selHead.tabIndex = -1;
   selection.setAttribute('aria-labelledby', selHead.id);
-  selection.append(selHead, el('p', 'gcsp-note', `${data.stock.length} cars you could choose from (synthetic examples). Cars over your allowance cannot be selected.`));
+  selection.append(selHead, el('p', 'gcsp-note', `${data.stock.length} cars you could choose from. Cars over your allowance cannot be selected.`));
   const grid = el('ul', 'gcsp-cards');
   const cards = [];
   data.stock.forEach((car, index) => {
@@ -213,7 +213,7 @@ export function renderRepresentativeBody(main, { account, data } = {}) {
     if (typeof selHead.scrollIntoView === 'function') selHead.scrollIntoView({ block: 'start' });
   });
 
-  wrap.append(feature, allow, selection, summary, el('p', 'gcsp-synthetic', 'Synthetic example data. These cars, contracts and points values are made up for this preview.'));
+  wrap.append(feature, allow, selection, summary);
   main.replaceChildren(wrap);
   return done;
 }

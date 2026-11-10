@@ -43,7 +43,7 @@ function remedyReview(remedy, options) {
   }
   if (remedy.type === 'preference-relaxation') return [['Remedy', 'One preference change'], ['Preference', preferenceLabel(remedy.path)],
     ['Proposed value', remedy.value], ['Employee confirmation', 'Required through the employee brief']];
-  if (remedy.type === 'later-release') return [['Remedy', 'Reviewed later release'], ['Reviewed release, demo clock (UTC)', clockTime(remedy.releaseAt)], ['Source', remedy.source]];
+  if (remedy.type === 'later-release') return [['Remedy', 'Reviewed later release'], ['Reviewed release (UTC)', clockTime(remedy.releaseAt)], ['Source', remedy.source]];
   if (remedy.type === 'manual-decision') return [['Remedy', 'Manual decision'], ['Scheme-team decision', remedy.decision]];
   return [['Remedy', 'Contract extension'], ['Proposed contract end (calendar date)', remedy.until]];
 }
@@ -110,8 +110,8 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
     const next = nativeSelect(projection.nextStatuses.map((value) => [value, caseStatus(value)]), draft.status, 'Choose the next status');
     next.addEventListener('change', () => changeDraft('status', next.value));
     form.append(field('status', 'Next case status', next), textField('reason', 'Reason for this update'),
-      textField('nextAction', 'Next action'), inputField('dueAt', 'Next action due, demo clock (UTC)', 'datetime-local',
-        `Current demo time: ${clockTime(projection.asOf)}.`));
+      textField('nextAction', 'Next action'), inputField('dueAt', 'Next action due (UTC)', 'datetime-local',
+        `Current time: ${clockTime(projection.asOf)}.`));
     const remedy = nativeSelect(choices.map((choice) => [choice.key, choice.label]), draft.remedyKey, 'Keep the current remedy, if any');
     remedy.addEventListener('change', () => { changeDraft('remedyKey', remedy.value); draft.preferenceValue = ''; draft.decision = ''; draft.until = ''; draw();
       content.querySelector(`#${id}-remedyKey`)?.focus(); });
@@ -133,7 +133,7 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
     } else if (choice?.type === 'manual-decision') form.append(textField('decision', 'Authorised scheme-team decision'));
     else if (choice?.type === 'contract-extension') form.append(inputField('until', 'Proposed contract end (calendar date)', 'date',
       `Actual contract end: ${shown(projection.options.contractExtension.contractEndDate)}. The server checks the permitted extension date.`));
-    else if (choice?.type === 'later-release') form.append(facts([['Reviewed release, demo clock (UTC)', clockTime(choice.releaseAt)], ['Source', choice.source]]));
+    else if (choice?.type === 'later-release') form.append(facts([['Reviewed release (UTC)', clockTime(choice.releaseAt)], ['Source', choice.source]]));
     else if (choice?.type === 'alternative-car') form.append(facts([['Proposed car', carName(projection.options, choice.orderUuid)],
       ['Exact car reference', choice.orderUuid], ['Configuration', choice.configurationId]]));
     const pending = projection.options.alternativeCars?.needsConfirmation;
@@ -146,7 +146,7 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
     if (done) return;
     // A lapsed access key or restarted run needs a reload, as on the rest of Greg's dashboard.
     if ([queueError, detailError].some(isRunRestarted)) {
-      status.textContent = 'Demo restarted.'; content.removeAttribute('aria-busy');
+      status.textContent = 'Restarted.'; content.removeAttribute('aria-busy');
       content.replaceChildren(embedded ? runRestartedNotice().root : runRestartedScreen()); return;
     }
     status.textContent = saving ? 'Recording the confirmed case update.' : queueLoading ? 'Loading renewal cases.'
@@ -154,16 +154,16 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
     content.setAttribute('aria-busy', String(queueLoading || detailLoading || saving)); content.replaceChildren();
     const actions = el('div', 'gcsp-case-actions'); actions.append(button({ label: 'Refresh queue', variant: 'ghost', disabled: saving || queueLoading,
       onClick: () => refresh() })); content.append(actions);
-    if (queueLoading) { content.append(statusScreen({ title: 'Loading renewal cases', message: 'Reading the current demonstration run.' })); return; }
+    if (queueLoading) { content.append(statusScreen({ title: 'Loading renewal cases', message: 'Reading the current cases.' })); return; }
     if (queueError) { content.append(failureNode(queueError, 'Renewal cases are unavailable', { label: 'Retry queue', action: () => refresh() })); return; }
-    if (!rows.length) { content.append(statusScreen({ title: 'No renewal cases', message: 'There are no renewal-risk cases in this demonstration run.' })); return; }
+    if (!rows.length) { content.append(statusScreen({ title: 'No renewal cases', message: 'There are no renewal-risk cases right now.' })); return; }
     const sort = nativeSelect([['deadline', 'Deadline, active cases first'], ['status', 'Status, then deadline']], order);
     sort.disabled = saving; sort.addEventListener('change', () => { order = sort.value; draw(); content.querySelector(`#${id}-sort`)?.focus(); });
     content.append(labelledField({ id: `${id}-sort`, label: 'Sort cases', control: sort }).root);
     const sorted = sortCases(rows, order);
     content.append(dataTable({ caption: 'Renewal-risk cases', stack: true, columns: [
       { key: 'employee', label: 'Employee' }, { key: 'deadline', label: 'Renewal deadline (calendar date)' }, { key: 'trigger', label: 'Trigger or request' },
-      { key: 'reason', label: 'Reason' }, { key: 'status', label: 'Status' }, { key: 'owner', label: 'Owner' }, { key: 'due', label: 'Next action due, demo clock (UTC)' },
+      { key: 'reason', label: 'Reason' }, { key: 'status', label: 'Status' }, { key: 'owner', label: 'Owner' }, { key: 'due', label: 'Next action due (UTC)' },
     ], rows: sorted.map((c) => ({ employee: c.employeeName ?? c.employeeId, deadline: c.renewalDeadline ?? 'Needs confirmation', trigger: triggerLabel(c),
       reason: c.reason, status: caseStatus(c.status), owner: [...new Set([c.owner?.name, c.owner?.role && roleLabel(c.owner.role)].filter(Boolean))].join(' · '), due: clockTime(c.dueAt) })),
     rowAction: { label: 'Open', name: (row) => `Open case for ${row.employee}`, disabled: saving, onSelect: (row, i) => openCase(sorted[i].caseId) } }));
@@ -181,13 +181,13 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
       const caseHeading = name.querySelector('.vm-title'); caseHeading.tabIndex = -1; caseHeading.dataset.caseHeading = '';
       detail.append(name,
         renderCaseContent(projection.case, { headingLevel: headingLevel + 2, audience: 'scheme-team' }),
-        facts([['Options as of, demo clock (UTC)', clockTime(projection.asOf)], ['Policy version', projection.policyVersion]]));
+        facts([['Options as of (UTC)', clockTime(projection.asOf)], ['Policy version', projection.policyVersion]]));
       if (!mustRefresh && !blocked()) {
         if (review) {
           const confirmation = el('section', 'gcsp-case-confirmation');
           confirmation.append(screenIntro({ title: 'Confirm case update', level: headingLevel + 2 }),
             el('p', 'gcsp-note', 'This records the update and any remedy for the employee to see on reload.'),
-            facts([['Next status', caseStatus(review.status)], ['Reason', review.reason], ['Next action', review.nextAction], ['Due, demo clock (UTC)', clockTime(review.dueAt)],
+            facts([['Next status', caseStatus(review.status)], ['Reason', review.reason], ['Next action', review.nextAction], ['Due (UTC)', clockTime(review.dueAt)],
               ...remedyReview(review.remedy, projection.options)]));
           const confirmActions = el('div', 'gcsp-case-actions'); confirmActions.append(
             button({ label: 'Confirm case update', disabled: saving, onClick: save }),
@@ -239,7 +239,7 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
     if (!draft.reason.trim()) errors.reason = 'Describe why this case is changing.';
     if (!draft.nextAction.trim()) errors.nextAction = 'Record the next action.';
     const date = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?$/.test(draft.dueAt) ? new Date(`${draft.dueAt}Z`) : null;
-    if (!date || !Number.isFinite(date.getTime())) errors.dueAt = 'Supply a UTC demonstration due date and time.';
+    if (!date || !Number.isFinite(date.getTime())) errors.dueAt = 'Supply a UTC due date and time.';
     const choice = remedyChoices(projection.options).find((value) => value.key === draft.remedyKey)?.item;
     let remedy;
     if (choice?.type === 'manual-decision') {

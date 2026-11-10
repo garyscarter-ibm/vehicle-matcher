@@ -6,7 +6,7 @@ import { isRunRestarted } from '../kit/run-restarted.js';
 import { installArrivalFocus } from '../kit/arrival-focus.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
-const DEFAULT_REASON = 'Not available in this demo';
+const DEFAULT_REASON = 'Not available yet';
 const LOGO = (name) => new URL(`../../../assets/brand-logos/${name}.svg`, import.meta.url).href;
 const CHEVRON = ['M9 6l6 6-6 6'];
 const MENU = ['M4 7h16', 'M4 12h16', 'M4 17h16'];

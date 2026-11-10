@@ -8,7 +8,7 @@ try {
   const accepted = new URLSearchParams(globalThis.location?.search || '').get('state') === 'accepted';
   const expected = JSON.stringify(snapshot.edited.value.initial.brief);
   element.adapter = {
-    loadAccount: async () => ({ status: 'ready', name: snapshot.edited.value.context.knownFacts.account.value.name, context: 'Choices, grade G7 · synthetic' }),
+    loadAccount: async () => ({ status: 'ready', name: snapshot.edited.value.context.knownFacts.account.value.name, context: 'Choices, grade G7' }),
     // ?state=accepted previews the read-only page shown after a buddy accept.
     loadEditor: async () => { const editor = structuredClone(snapshot.edited);
       if (accepted) editor.value.selection = { state: 'accepted', briefVersion: editor.value.initial.briefVersion }; return editor; },
@@ -17,8 +17,8 @@ try {
       saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }),
     },
     initialEdited: true,
-    notice: 'Synthetic preview',
-    previewUnavailableReason: 'Reload to restore the example.',
+    notice: 'Preview',
+    previewUnavailableReason: 'Reload to restore this view.',
     saveUnavailableReason: 'Saving is unavailable in this preview.',
   };
 } catch {

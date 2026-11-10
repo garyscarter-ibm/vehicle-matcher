@@ -3,7 +3,7 @@ import { NO_IMAGE_TEXT } from '../kit/plain-copy.js';
 
 export const orderCopy = Object.freeze({
   title: 'Order progress',
-  timeNote: 'All times are demo time (UTC).',
+  timeNote: 'All times are UTC.',
   loading: 'Loading your order',
   unavailableTitle: 'Order progress unavailable',
   unavailable: 'Your order could not be loaded. Try again.',
@@ -18,7 +18,7 @@ export const orderCopy = Object.freeze({
   mine: 'Your tasks',
   others: 'Being handled by others',
   noTasks: 'No documents or checks are listed yet.',
-  synthetic: 'Synthetic acknowledgement, not a signature',
+  synthetic: 'Acknowledgement, not a signature',
   ready: 'Ready for handover',
   handoverBooked: 'Handover booked',
   notReady: 'Not ready for handover.',
@@ -44,7 +44,7 @@ export const orderCopy = Object.freeze({
   chooseReturn: 'Choose when to return your current car.',
   returned: 'Returned',
   returnMissed: 'Return missed',
-  returnRef: 'Return reference (synthetic)',
+  returnRef: 'Return reference',
   returnedCar: 'Returned car',
   carToReturn: 'Car to return',
   newCar: 'Your new car',

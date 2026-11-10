@@ -14,7 +14,7 @@ const initial = Object.hasOwn(names, requested) ? requested : 'offer';
 const root = document.getElementById('gcsp-activity-preview');
 if (root) mountEmployee(root, {
   view: 'activity',
-  loadAccount: async () => ({ status: 'ready', name: 'Paula (synthetic)', context: 'Choices, synthetic demonstration' }),
+  loadAccount: async () => ({ status: 'ready', name: 'Paula Mason', context: 'Choices' }),
   renderBody(main) {
     const body = el('div', 'gcsp-activity-preview-body');
     const controls = el('div', 'vm gcsp-activity-preview-controls'); controls.setAttribute('aria-label', 'Design preview states');

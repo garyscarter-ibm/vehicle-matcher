@@ -251,7 +251,7 @@ test('account composition preserves complete supplied facts, labelled details an
     assert.equal([...root.querySelectorAll('input, select, textarea')].filter((n) => !n.closest('.gcsp-presenter-region')).length, 0);
     assert.equal(root.querySelector('.gcsp-presenter-controls').hidden, true);
     assert.equal(root.querySelectorAll('.vm-decision, .vm-card-score').length, 0);
-    assert.match(root.textContent, /Synthetic example data/);
+    assert.doesNotMatch(root.textContent, /Synthetic example data/);
   } finally { destroy(); root.remove(); }
 });
 
@@ -263,7 +263,7 @@ test('FUCQ-277: the allowance panel hides unsupplied overrides and internal pros
     const panel = first.root.querySelector('.gcsp-allowance');
     assert.deepEqual([...panel.querySelectorAll('dt')].map((node) => node.textContent), ['Monthly allowance']);
     assert.doesNotMatch(first.root.textContent, /Allowance basis|Synthetic monthly demo|Not a verified|Exact specification is not supplied/);
-    assert.match(first.root.querySelector('.gcsp-synthetic:last-child').textContent, /^Synthetic example data/);
+    assert.match(first.root.querySelector('.gcsp-synthetic:last-child').textContent, /^Account as of/);
   } finally { first.destroy(); first.root.remove(); }
   const set = unnamed('multi-slot');
   Object.assign(set.value.account, { allowanceOverride: { value: 1500, unit: 'points/month' }, allowanceOverrideEndDate: '2026-12-01' });
@@ -330,7 +330,7 @@ test('distinct entitlement, HR, empty and failure states provide truthful action
         let event; root.addEventListener('gcsp:support', (value) => { event = value; });
         findButton(root, 'Contact support').click();
         assert.equal(event.detail.route, 'hr-support'); assert.equal(event.bubbles, true); assert.equal(event.composed, true);
-        assert.match(root.textContent, /does not send a support request/);
+        assert.match(root.textContent, /Support route: hr-support\./);
       }
     } finally { destroy(); root.remove(); }
   }
@@ -613,8 +613,8 @@ test('account shows return outcomes from the server read: booked, then returned 
   try {
     await settleOrder(reopened.root, (node) => /Returned:/.test(returnArea(node)?.textContent ?? ''));
     const pairs = factPairs(returnArea(reopened.root));
-    assert.match(returnArea(reopened.root).textContent, /Returned: 12 Nov 2026, 10:30/); assert.deepEqual(pairs.slice(0, 2), [['Current car', car.name], ['Returned car', 'Fictional BMW 320i Touring']]);
-    assert.ok(pairs.some(([label, value]) => label === 'Return reference (synthetic)' && /^SYN-RET-/.test(value)));
+    assert.match(returnArea(reopened.root).textContent, /Returned: 12 Nov 2026, 10:30/); assert.deepEqual(pairs.slice(0, 2), [['Current car', car.name], ['Returned car', 'BMW 320i Touring']]);
+    assert.ok(pairs.some(([label, value]) => label === 'Return reference' && /^SYN-RET-/.test(value)));
     assert.match(reopened.root.querySelector('.gcsp-account-order .gcsp-order-handover').textContent, /Handover complete/);
   } finally { reopened.destroy(); }
   const missed = orderAdapter('return-missed');
@@ -870,7 +870,7 @@ test('FUCQ-195: the current-car card shows readable labels and no raw identifier
     assert.ok(![...card.querySelectorAll('dd')].some((node) => node.textContent === value.currentContract.status));
     assert.match(card.textContent, /StatusCurrent car/);
     assert.match(card.querySelector('.gcsp-account-terms').textContent, /^1,100 points a month · 1,300 points a month allowance$/);
-    assert.match(card.textContent, /Specification provenanceSynthetic example data/);
+    assert.doesNotMatch(card.textContent, /Synthetic example data/);
     assert.doesNotMatch(card.textContent, /Vehicle slot|Scheme|Current contract|points cost not supplied|Wltp/);
   } finally { first.destroy(); first.root.remove(); }
   value.slots[0].label = 'Company car 1';
@@ -881,8 +881,8 @@ test('FUCQ-195: the current-car card shows readable labels and no raw identifier
 
 function assertRestartedPage(root, reloads) {
   const body = root.querySelector('.gcsp-account-body'); const press = (label) => [...body.querySelectorAll('button')].find((node) => node.textContent === label);
-  assert.equal(body.querySelector('h1').textContent, 'Your cars'); assert.match(body.textContent, /Demo restarted/);
-  assert.match(body.textContent, /Reload the page to continue/);
+  assert.equal(body.querySelector('h1').textContent, 'Your cars'); assert.match(body.textContent, /Restarted/);
+  assert.match(body.textContent, /Reload to continue/);
   assert.doesNotMatch(body.textContent, /This account cannot be opened|Your account is unavailable|Journey could not be saved|stale-run|unknown-session|\u2014/);
   assert.equal(press('Refresh account'), undefined); assert.equal(press('Choose a replacement'), undefined);
   const reload = press('Reload'); assert.ok(reload); reload.click(); assert.equal(reloads(), 1);
@@ -901,7 +901,7 @@ test('FUCQ-201: after a restart the shell account header stays quiet and leaves 
       const header = root.querySelector('.gcsp-account');
       assert.equal(header.dataset.status, 'restarted'); assert.equal(header.textContent, '');
       assert.equal(header.querySelector('.gcsp-account-retry'), null); assert.equal(header.hasAttribute('aria-label'), false);
-      assert.doesNotMatch(root.textContent, /Account unavailable/); assert.match(root.textContent, /Demo restarted/);
+      assert.doesNotMatch(root.textContent, /Account unavailable/); assert.match(root.textContent, /Restarted/);
     } finally { destroy(); root.remove(); }
   }
 });
@@ -937,7 +937,7 @@ test('FUCQ-197: order history, saved journey and footer show words, not raw iden
     assert.match(saved, /Current car/); assert.match(saved, new RegExp(value.currentContract.model));
     assert.doesNotMatch(saved, /Mode|Scheme|Draft version|replacement\b/);
     assert.ok(findDetail(body, 'Scheme 1 (1 record)')); assert.ok(findDetail(body, 'Scheme 2 (2 records)'));
-    assert.equal(parts[2].textContent, 'Synthetic example data. Account as of 5 November 2026 at 09:00.');
+    assert.equal(parts[2].textContent, 'Account as of 5 November 2026 at 09:00.');
   } finally { mounted.destroy(); mounted.root.remove(); }
   value.histories[0].label = 'Fictional car scheme'; value.slots[0].label = 'Company car 1';
   const labelled = await domMount({ ...readOnlyAdapter(), readAccount: async () => input, readDraft: async () => draft });

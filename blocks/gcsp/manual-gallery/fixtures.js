@@ -29,7 +29,7 @@ export function createManualGalleryFixture(name = 'available') {
     decisions: ['empty-stock', 'nothing-released-yet'].includes(name) ? [] : decisions, versions: { context: 'fixture-context', draft: 2 }, ranked: false, browsingReservesStock: false } };
 }
 export function createManualGalleryFixtureAdapter(name = 'available') {
-  return { readOnly: true, loadAccount: async () => ({ status: 'ready', name: 'Synthetic gallery example', context: 'Read-only fixture · 5 November 2026' }),
+  return { readOnly: true, loadAccount: async () => ({ status: 'ready', name: 'Paula Mason', context: 'Read-only fixture · 5 November 2026' }),
     browseStock: async () => createManualGalleryFixture(name), readClaim: async () => ({ status: 'not-found' }),
     claim: async () => ({ status: 'forbidden', code: 'read-only-gallery' }) };
 }

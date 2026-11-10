@@ -33,7 +33,7 @@ test('the shell waits for the account, then reads the latest order and shows onl
   const node = root(); const stop = mount(node, { adapter: a, car: orderProgressFixtures().car });
   assert.equal(a.calls.length, 0); loading.resolve(account);
   await settle(node, (r) => r.querySelector('.gcsp-order-progress .gcsp-order-handover'));
-  assert.equal(node.querySelector('h1').textContent, 'Order progress'); assert.match(text(node), /Fictional BMW i4/);
+  assert.equal(node.querySelector('h1').textContent, 'Order progress'); assert.match(text(node), /BMW i4/);
   assert.match(text(node), /Not booked yet/); assert.doesNotMatch(text(node), /Booked:/);
   assert.deepEqual(a.calls.filter((c) => c !== 'listOrders').sort(), ['readAppointment', 'readDocuments', 'readReturnPlan', 'readStages']);
   assert.equal(node.querySelector('[aria-current="page"]')?.textContent.includes('Order progress'), true);
@@ -65,7 +65,7 @@ test('no order is a plain statement; a failed list or order is unavailable with 
 test('a command keeps keyboard focus on a surviving control, otherwise on the message, and reports a refusal', async () => {
   const server = { name: 'sent-to-ordering-no-slot' }; const a = adapter(server);
   const node = root(); mount(node, { adapter: a }); await settle(node, (r) => r.querySelector('.gcsp-order-slots button'));
-  server.outcome = () => ({ status: 'unsupported', code: 'live-appointments-unsupported', reason: 'Live handover times are not connected in this demonstration.' });
+  server.outcome = () => ({ status: 'unsupported', code: 'live-appointments-unsupported', reason: 'Live handover times are not connected yet.' });
   const slot = node.querySelector('.gcsp-order-slots button'); const label = slot.textContent; slot.focus(); slot.click();
   await settle(node, (r) => r.querySelector('.gcsp-order-message.is-error'));
   assert.equal(node.querySelector('.gcsp-order-message').hasAttribute('role'), false);
@@ -150,7 +150,7 @@ test('the custom element survives an early adapter, remounts on change, reads at
   const a = adapter(server); early.adapter = { ...a, readStages: async (input) => { reads += 1; return a.readStages(input); } };
   early.car = orderProgressFixtures().car; document.body.append(early); assert.equal(reads, 0);
   const Type = mod.defineGcspOrderProgress(dom.window.customElements); assert.equal(mod.defineGcspOrderProgress(dom.window.customElements), Type);
-  await settle(early, (r) => r.querySelector('.gcsp-order-handover')); assert.equal(reads, 1); assert.match(early.textContent, /Fictional BMW i4/); assert.match(early.textContent, /Booked:/);
+  await settle(early, (r) => r.querySelector('.gcsp-order-handover')); assert.equal(reads, 1); assert.match(early.textContent, /BMW i4/); assert.match(early.textContent, /Booked:/);
   const first = deferred(); let signal; const next = adapter(server); next.readStages = (input) => { signal = input.signal; return first.promise; };
   early.adapter = next; await settle(early, () => signal); const old = signal;
   early.adapter = adapter(server); assert.equal(old.aborted, true); first.resolve(progress('appointment-scheduled').stages);
@@ -164,7 +164,7 @@ test('the custom element survives an early adapter, remounts on change, reads at
 
 const stale = { status: 'stale-run', reason: 'This request belongs to an earlier demonstration run.' };
 function assertRestarted(node, reloads) {
-  assert.match(text(node), /Demo restarted/); assert.match(text(node), /Reload the page to continue/);
+  assert.match(text(node), /Restarted/); assert.match(text(node), /Reload to continue/);
   assert.doesNotMatch(text(node), /stale-run|\u2014|Your order changed|Order progress unavailable/);
   const buttons = node.querySelectorAll('.gcsp-order-progress button'); assert.equal(buttons.length, 1);
   const [reload] = buttons; assert.equal(reload.type, 'button'); assert.equal(reload.disabled, false); assert.equal(document.activeElement === reload || reload.tabIndex >= 0, true);
@@ -174,7 +174,7 @@ function assertRestarted(node, reloads) {
 test('a stale-run progress read shows the restarted screen with a working Reload', async () => {
   const reloads = []; const a = adapter({ name: 'appointment-requested' }); a.readStages = async () => stale;
   const node = root(); mount(node, { adapter: a, reload: () => reloads.push(1) });
-  await settle(node, (r) => r.textContent.includes('Demo restarted')); assertRestarted(node, reloads);
+  await settle(node, (r) => r.textContent.includes('Restarted')); assertRestarted(node, reloads);
   assert.equal(node.querySelector('h1').textContent, 'Order progress');
 });
 
@@ -183,7 +183,7 @@ test('a stale-run order command shows the restarted screen and is neither resent
   const node = root(); mount(node, { adapter: a, reload: () => reloads.push(1) });
   await settle(node, (r) => r.querySelector('.gcsp-order-slots button'));
   const request = node.querySelector('.gcsp-order-slots button'); request.focus(); const reads = a.calls.filter((c) => c === 'readStages').length; request.click();
-  await settle(node, (r) => r.textContent.includes('Demo restarted')); assert.equal(document.activeElement, node.querySelector('.gcsp-order-progress button')); assertRestarted(node, reloads);
+  await settle(node, (r) => r.textContent.includes('Restarted')); assert.equal(document.activeElement, node.querySelector('.gcsp-order-progress button')); assertRestarted(node, reloads);
   await new Promise((r) => setTimeout(r, 20));
   assert.equal(a.calls.filter((c) => /^(request|accept|complete)/.test(c)).length, 1); assert.equal(a.calls.filter((c) => c === 'readStages').length, reads);
 });

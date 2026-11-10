@@ -118,7 +118,7 @@ test('FUCQ-277: a confirmed claim shows no internal prose or re-check control, a
   assert.equal(names().includes('Check current claim'), false);
   assert.doesNotMatch(f.root.textContent, /Time follows the presenter clock|pinned to your claim|current claim has been checked/i);
   assert.match(f.root.textContent, /This car is reserved until the deadline\. Continuing does not place an order\./);
-  assert.equal(f.root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
+  assert.equal(f.root.querySelector('.gcsp-synthetic'), null);
   f.setClaim({ status: 'unavailable', code: 'manual-claim-unavailable', retryable: true }); await f.destroy.refresh();
   assert.equal(names().includes('Check current claim'), true); assert.match(f.root.textContent, /could not be confirmed/);
   f.setClaim({ status: 'pending', operationId: 'uncertain' }); await f.destroy.refresh();

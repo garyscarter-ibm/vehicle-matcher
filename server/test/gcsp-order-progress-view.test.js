@@ -49,7 +49,10 @@ test('fixtures are the producer shapes: key lists equal the producer fixtures an
   assert.deepEqual(approvalExamples.pending(), approvalShapes.pending);
   assert.deepEqual(approvalExamples.declined(), approvalShapes.declined);
   assert.deepEqual(approvalExamples['sent-to-ordering'](), approvalShapes['sent-to-ordering']);
-  assert.deepEqual(approvalExamples.unsupported(), approvalShapes.unsupported);
+  // The painted reason differs from the producer's; every other field must match.
+  const unsupportedShape = structuredClone(approvalShapes.unsupported); const shownUnsupported = approvalExamples.unsupported();
+  unsupportedShape.value.blocked.reason = shownUnsupported.value.blocked.reason;
+  assert.deepEqual(shownUnsupported, unsupportedShape);
   const optionalItem = new Set([...Object.keys(documentShapes.optionalItemKeys), 'acknowledgement']);
   for (const name of names) {
     const p = fixtures.states[name]; if (p.phase !== 'ready') continue;
@@ -101,7 +104,7 @@ test('current stage carries aria-current, its owner and its next step; the order
   const node = view('waiting-sales-manager');
   const current = node.querySelectorAll('[aria-current="step"]'); assert.equal(current.length, 1);
   assert.match(current[0].textContent, /Sales-manager approval/); assert.match(current[0].textContent, /With the sales manager/); assert.match(current[0].textContent, /Next: Sales-manager decision/);
-  assert.match(node.textContent, /Fictional BMW i4 eDrive40 M Sport/); assert.deepEqual(ids(node), [['Order reference', 'GCSP-000123'], ['Car order number', '1000001']]);
+  assert.match(node.textContent, /BMW i4 eDrive40 M Sport/); assert.deepEqual(ids(node), [['Order reference', 'GCSP-000123'], ['Car order number', '1000001']]);
   assert.match(node.textContent, /No image for this car yet/);
   assert.match(view('waiting-hr').querySelector('[aria-current="step"]').textContent, /With HR/);
 });
@@ -134,7 +137,7 @@ test('declined shows the declined stage, the next step and a help entry', () => 
 test('an unsupported live provider reads as not updated, with the reason, and not as done', () => {
   const node = view('provider-unsupported');
   const row = node.querySelector('[aria-current="step"]');
-  assert.match(row.textContent, /HR approval/); assert.match(row.textContent, /Not updated/); assert.match(row.textContent, /not connected in this demonstration/);
+  assert.match(row.textContent, /HR approval/); assert.match(row.textContent, /Not updated/); assert.match(row.textContent, /not connected yet/);
   assert.doesNotMatch(row.textContent, /Done/);
 });
 
@@ -247,7 +250,7 @@ test('documents: employee tasks come first with their action; others show owner 
   const groups = [...docs.querySelectorAll('.gcsp-task-group-heading')].map((h) => h.textContent);
   assert.deepEqual(groups, ['Your tasks', 'Being handled by others']);
   const [mine, ...others] = docs.querySelectorAll('.gcsp-task');
-  assert.match(mine.textContent, /Vehicle agreement/); assert.match(mine.textContent, /Synthetic acknowledgement, not a signature/);
+  assert.match(mine.textContent, /Vehicle agreement/); assert.match(mine.textContent, /Acknowledgement, not a signature/);
   const go = mine.querySelector('button'); assert.equal(go.textContent, 'Acknowledge the agreement'); go.click();
   assert.deepEqual(spy.calls, [['task', 'agreement-acknowledgement']]);
   assert.match(others[0].textContent, /Scheme team/); assert.match(others[0].textContent, /Due 6 Nov 2026, 15:00/);
@@ -257,7 +260,7 @@ test('documents: employee tasks come first with their action; others show owner 
 
 test('documents: completed acknowledgement keeps the server label and offers no action', () => {
   const docs = section(view('documents-in-progress', callbacks(log())), 'documents');
-  assert.equal(docs.querySelector('button'), null); assert.match(docs.textContent, /Synthetic acknowledgement\. Not a signature\./);
+  assert.equal(docs.querySelector('button'), null); assert.match(docs.textContent, /Acknowledged\. Not a signature\./);
   assert.deepEqual(todoLists(docs), { 'Still to do': ['Vehicle preparation', 'Delivery to the retailer'] });
 });
 
@@ -266,7 +269,7 @@ test('documents: overdue and failed are distinct in text and class', () => {
   const late = overdue.querySelector('.gcsp-task.is-overdue'); assert.match(late.textContent, /Overdue/); assert.equal(overdue.querySelector('.gcsp-task.is-failed'), null);
   document.body.replaceChildren();
   const failed = section(view('documents-failed'), 'documents');
-  const broken = failed.querySelector('.gcsp-task.is-failed'); assert.match(broken.textContent, /Failed: The synthetic provider reported this step as failed\./);
+  const broken = failed.querySelector('.gcsp-task.is-failed'); assert.match(broken.textContent, /Failed: The provider reported this step as failed\./);
   assert.doesNotMatch(broken.textContent, /Overdue/); assert.equal(failed.querySelector('.gcsp-task.is-overdue'), null);
   assert.deepEqual(todoLists(failed)['Needs attention'], ['Driving licence check']);
 });
@@ -292,9 +295,9 @@ test('return plan is its own section, shows the current car unchanged in every s
     const plan = section(node, 'return'); assert.ok(plan, name);
     assert.equal(plan.closest('.gcsp-order-handover'), null, name);
     assert.match(plan.querySelector('h2').textContent, /Returning your current car/);
-    assert.match(plan.textContent, /Fictional BMW 320i Touring/, name); assert.match(plan.textContent, /320i M Sport Touring/, name);
+    assert.match(plan.textContent, /BMW 320i Touring/, name); assert.match(plan.textContent, /320i M Sport Touring/, name);
     assert.match(plan.textContent, /stays yours until it is returned/, name);
-    assert.doesNotMatch(section(node, 'handover').textContent, /return|Fictional BMW 320i/i, name);
+    assert.doesNotMatch(section(node, 'handover').textContent, /return|BMW 320i/i, name);
     document.body.replaceChildren();
   }
   assert.equal(section(view('new-order'), 'return'), null);
@@ -304,10 +307,10 @@ test('return plan is its own section, shows the current car unchanged in every s
 test('FUCQ-194: the return place is her home address on the buddy route, "Not supplied" without one, and the chosen place on the manual route', () => {
   const fact = (name, label) => [...section(view(name), 'return').querySelectorAll('.vm-fact')].find((row) => row.querySelector('dt').textContent === label);
   const home = fact('return-buddy-home', 'Collection from your home address');
-  assert.ok(home); assert.equal(home.querySelector('dd').textContent, '1 Fictional Way, Example Town, ZZ1 1ZZ'); document.body.replaceChildren();
+  assert.ok(home); assert.equal(home.querySelector('dd').textContent, '27 Ashdown Road, Bracknell, RG12 9ZZ'); document.body.replaceChildren();
   const none = fact('return-buddy-no-address', 'Collection from your home address');
   assert.equal(none.querySelector('dd').textContent, 'Not supplied'); assert.ok(none.querySelector('dd').classList.contains('is-missing')); document.body.replaceChildren();
-  assert.equal(fact('return-not-planned', 'Return place').querySelector('dd').textContent, 'Fictional BMW retailer'); document.body.replaceChildren();
+  assert.equal(fact('return-not-planned', 'Return place').querySelector('dd').textContent, 'Ashdown BMW'); document.body.replaceChildren();
   assert.equal(fact('return-not-planned', 'Collection from your home address'), undefined, 'the manual route never claims a home collection');
   document.body.replaceChildren();
 });
@@ -347,9 +350,9 @@ const factOf = (node, label) => facts(node).find(([l]) => l === label)?.[1];
 test('return outcome: returned reads Returned with the new car as current, the old car returned and a synthetic reference', () => {
   const plan = section(view('return-returned', callbacks(log())), 'return');
   assert.match(said(plan), /^Returned: 12 Nov 2026, 10:30$/); assert.doesNotMatch(above(plan), /Return booked|Return requested|Return missed|Not booked yet/);
-  assert.equal(factOf(plan, 'Current car'), 'Fictional BMW i4 eDrive40 M Sport'); assert.equal(factOf(plan, 'Returned car'), 'Fictional BMW 320i Touring');
+  assert.equal(factOf(plan, 'Current car'), 'BMW i4 eDrive40 M Sport'); assert.equal(factOf(plan, 'Returned car'), 'BMW 320i Touring');
   assert.equal(factOf(plan, 'VIN'), undefined); assert.equal(factOf(plan, 'Car to return'), undefined); assert.equal(factOf(plan, 'Configuration'), undefined);
-  assert.equal(factOf(plan, 'Return reference (synthetic)'), 'SYN-RET-0001'); assert.equal(factOf(plan, 'Return place'), 'Fictional BMW retailer');
+  assert.equal(factOf(plan, 'Return reference'), 'SYN-RET-0001'); assert.equal(factOf(plan, 'Return place'), 'Ashdown BMW');
   assert.equal(factOf(plan, 'Owner'), 'Retailer'); assert.match(factOf(plan, 'Next step'), /returned\. Nothing more is needed/);
   assert.doesNotMatch(plan.textContent, /stays yours until it is returned/); assert.equal(plan.querySelector('button'), null);
   const history = [...plan.querySelectorAll('li')].map((n) => n.textContent).join(' ');
@@ -364,7 +367,7 @@ test('return outcome: the new car falls back to "Your new car" without a host na
 
 test('return outcome: returned before the handover has no current car and keeps the handover separate', () => {
   const node = view('return-returned-first', callbacks(log())); const plan = section(node, 'return');
-  assert.equal(factOf(plan, 'Current car'), 'None'); assert.equal(factOf(plan, 'Returned car'), 'Fictional BMW 320i Touring');
+  assert.equal(factOf(plan, 'Current car'), 'None'); assert.equal(factOf(plan, 'Returned car'), 'BMW 320i Touring');
   assert.match(said(plan), /^Returned: 12 Nov 2026, 10:30$/); assert.doesNotMatch(plan.textContent, /stays yours until it is returned/);
   assert.match(section(node, 'handover').textContent, /Booked: 8 Nov 2026, 09:00/); assert.doesNotMatch(section(node, 'handover').textContent, /Returned|Return/);
 });
@@ -372,7 +375,7 @@ test('return outcome: returned before the handover has no current car and keeps 
 test('return outcome: missed reads Return missed with the scheme team, keeps the held car as current and offers no action', () => {
   const plan = section(view('return-missed', callbacks(log())), 'return');
   assert.match(said(plan), /^Return missed: 12 Nov 2026, 09:00$/); assert.doesNotMatch(above(plan), /Returned|Return booked|Return reference/);
-  assert.equal(factOf(plan, 'Current car'), 'Fictional BMW 320i Touring'); assert.equal(factOf(plan, 'Configuration'), '320i M Sport Touring');
+  assert.equal(factOf(plan, 'Current car'), 'BMW 320i Touring'); assert.equal(factOf(plan, 'Configuration'), '320i M Sport Touring');
   assert.match(plan.textContent, /stays yours until it is returned/); assert.equal(factOf(plan, 'Owner'), 'Scheme team');
   assert.match(factOf(plan, 'Next step'), /scheme team will contact you to rearrange the return/); assert.equal(plan.querySelector('button'), null);
   assert.match([...plan.querySelectorAll('li')].map((n) => n.textContent).join(' '), /Return missed/);
@@ -382,8 +385,8 @@ test('return outcome: missed reads Return missed with the scheme team, keeps the
 
 test('return outcome: a confirmed handover with the return still booked shows the new car, its VIN and the car to return, not Returned', () => {
   const plan = section(view('return-handover-complete', callbacks(log())), 'return');
-  assert.equal(factOf(plan, 'Current car'), 'Fictional BMW i4 eDrive40 M Sport'); assert.equal(factOf(plan, 'VIN'), 'ZZSYNTHETICVIN0001');
-  assert.equal(factOf(plan, 'Car to return'), 'Fictional BMW 320i Touring'); assert.equal(factOf(plan, 'Returned car'), undefined);
+  assert.equal(factOf(plan, 'Current car'), 'BMW i4 eDrive40 M Sport'); assert.equal(factOf(plan, 'VIN'), 'ZZSYNTHETICVIN0001');
+  assert.equal(factOf(plan, 'Car to return'), 'BMW 320i Touring'); assert.equal(factOf(plan, 'Returned car'), undefined);
   assert.match(said(plan), /^Return booked: 12 Nov 2026, 09:00$/); assert.doesNotMatch(above(plan), /Returned|Return missed|stays yours until it is returned/);
 });
 
@@ -401,7 +404,7 @@ test('return outcome: requested, proposed and booked returns never read Returned
   for (const name of ['return-unavailable', 'return-not-planned', 'return-requested', 'return-change-proposed', 'return-scheduled', 'return-buddy-home']) {
     const plan = section(view(name), 'return'); document.body.replaceChildren();
     assert.doesNotMatch(above(plan), /Returned|Return missed|VIN|Car to return|Return reference|None/, name);
-    assert.deepEqual(facts(plan).slice(0, 2), [['Current car', 'Fictional BMW 320i Touring'], ['Configuration', '320i M Sport Touring']], name);
+    assert.deepEqual(facts(plan).slice(0, 2), [['Current car', 'BMW 320i Touring'], ['Configuration', '320i M Sport Touring']], name);
     assert.match(plan.textContent, /stays yours until it is returned/, name);
   }
 });
@@ -440,7 +443,7 @@ test('a section that fails keeps its own line and the other sections still rende
   p.stages = { status: 'forbidden', reason: 'x' }; p.appointment = { status: 'not-found' }; p.returnPlan = { status: 'unavailable' };
   const failed = orderProgressBody({ progress: p, car: fixtures.car });
   assert.match(section(failed, 'stages').textContent, /Order progress is not available to you\./);
-  assert.match(section(failed, 'stages').textContent, /Fictional BMW i4/);
+  assert.match(section(failed, 'stages').textContent, /BMW i4/);
   assert.match(section(failed, 'handover').textContent, /No handover details found for this order\./);
   assert.match(section(failed, 'return').textContent, /Return plan unavailable/);
   assert.match(section(failed, 'documents').textContent, /Vehicle agreement/);
@@ -476,7 +479,7 @@ test('messages render in a live region, and an error is an alert with the not-do
   const ok = view('appointment-scheduled', { message: { text: 'Request saved.' } });
   assert.equal(ok.querySelector('.gcsp-order-message').getAttribute('role'), 'status'); assert.equal(ok.querySelector('.gcsp-order-message').textContent, 'Request saved.');
   document.body.replaceChildren();
-  const bad = view('appointment-scheduled', { message: { text: 'Not done. Live updates are not connected in this demonstration.', error: true } });
+  const bad = view('appointment-scheduled', { message: { text: 'Not done. Live updates are not connected yet.', error: true } });
   assert.equal(bad.querySelector('.gcsp-order-message').getAttribute('role'), 'alert'); assert.match(bad.querySelector('[role="alert"]').textContent, /^Not done\. /);
   assert.equal(view('appointment-scheduled').querySelector('.gcsp-order-message'), null);
 });
