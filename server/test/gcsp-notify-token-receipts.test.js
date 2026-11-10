@@ -31,6 +31,9 @@ async function setup(t) {
 const reference = (f, table, key) => ({ table, key: { runId: f.context.runId, ...key } });
 const readJob = async (f) => (await f.repository.query(f.context, 'notification_outbox')).value[0];
 const rawJob = (f) => f.store.state.tables.notification_outbox[0];
+// Committed memory state is frozen (FUCQ-302): tamper by replacing a table, never by editing rows.
+const replaceTable = (f, table, change) => { f.store.state = { ...f.store.state, tables: { ...f.store.state.tables, [table]: change(f.store.state.tables[table]) } }; };
+const editJob = (f, change) => replaceTable(f, 'notification_outbox', (rows) => rows.map((row, i) => { if (i) return row; const copy = structuredClone(row); change(copy); return copy; }));
 function tokenFree(f, token, link) {
   const outside = Object.fromEntries(Object.entries(f.store.state.tables).filter(([name]) => name !== 'notification_outbox'));
   for (const value of [outside, f.responses, f.logs]) {
@@ -154,11 +157,13 @@ for (const phase of ['claim', 'offers', 'employees', 'quotes']) {
     test(`obsolete ${change} after ${phase} skips transport and bookkeeping`, async (t) => {
       const f = await setup(t); const { token, link } = await fixture(f); let changed = false; let calls = 0;
       const mutate = () => {
-        changed = true; const row = rawJob(f);
-        if (change === 'state') row.state = 'stale';
-        if (change === 'version') row.version += 1;
-        if (change === 'attempts') row.attempts += 1;
-        if (change === 'payload') { row.payload = { offerLink: '/gcsp/offer#token=replacement' }; if (phase === 'claim') row.version += 1; }
+        changed = true;
+        editJob(f, (row) => {
+          if (change === 'state') row.state = 'stale';
+          if (change === 'version') row.version += 1;
+          if (change === 'attempts') row.attempts += 1;
+          if (change === 'payload') { row.payload = { offerLink: '/gcsp/offer#token=replacement' }; if (phase === 'claim') row.version += 1; }
+        });
       };
       const repository = { ...f.repository,
         transaction: async (context, cmd, work) => {
@@ -186,11 +191,12 @@ for (const delivery of ['success', 'failure']) {
       const f = await setup(t); const { token, link } = await fixture(f); let calls = 0;
       const dispatcher = f.dispatcher({ transport: { async send() {
         calls += 1;
-        const row = rawJob(f);
-        if (change === 'state') row.state = 'stale';
-        if (change === 'version') row.version += 1;
-        if (change === 'attempts') row.attempts += 1;
-        if (change === 'payload') row.payload = { offerLink: '/gcsp/offer#token=replacement' };
+        editJob(f, (row) => {
+          if (change === 'state') row.state = 'stale';
+          if (change === 'version') row.version += 1;
+          if (change === 'attempts') row.attempts += 1;
+          if (change === 'payload') row.payload = { offerLink: '/gcsp/offer#token=replacement' };
+        });
         if (delivery === 'failure') throw Error(link);
         return ok(null);
       } } });
@@ -216,7 +222,7 @@ test('replayed attempt descriptor rejects newer current job rather than substitu
       { state: 'sending', attempts: 1 });
     return ok({ jobId: changed.value.jobId, version: changed.value.version, attempts: 1, state: 'sending' });
   });
-  rawJob(f).version += 1; rawJob(f).payload = { offerLink: '/gcsp/offer#token=replacement' };
+  editJob(f, (row) => { row.version += 1; row.payload = { offerLink: '/gcsp/offer#token=replacement' }; });
   const repository = { ...f.repository, query: async (context, table) => table === 'notification_outbox'
     ? ok([original]) : f.repository.query(context, table) };
   await dispatch(f, f.dispatcher({ repository, transport: { async send() { calls += 1; return ok(null); } } }));
