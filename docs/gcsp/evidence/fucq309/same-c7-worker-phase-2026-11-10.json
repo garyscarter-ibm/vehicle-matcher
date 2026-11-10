@@ -137,7 +137,7 @@
   },
   "kind": "fucq309-same-c7-actual-worker-phase-diagnostic-v1",
   "diagnosticOnly": true,
-  "interpretation": "First private normalization and plan readback completed. OOM followed before any second backend transaction started. Exact operation between plan readback and the next transaction is not instrumented and remains unknown. These scalar phase samples do not establish retained-heap attribution or canonical acceptance.",
+  "interpretation": "First private normalization and plan readback completed. OOM followed before a second backend-work-start marker. That marker is after queue acquisition and shallow draft/table-array creation, so absence does not rule out entering the next transaction or failure during pre-marker draft setup. Cursor reads,identity resolution,slice/quote evaluation,claim setup and possible draft creation remain uninstrumented. These scalar phases do not establish exact terminal operation,retained-owner attribution or canonical acceptance.",
   "excluded": "No production edit,policy bump,graph census,forcedGC,retained input roots or injected stop. Import instrumentation changes timing and may change memory behaviour.",
   "phaseObservations": [
     {
@@ -1162,9 +1162,15 @@
       "The first allocation prepares29016contenders and752evaluation slices.",
       "Large insert validation,digest,stored-row clone,returned-row clone and first private normalization all complete.",
       "The unchanged generic core then clones the large stored buddy plan for its caller; read completes at125.29MiB sampled used heap.",
-      "OOM occurs before second private backend transaction starts; cursor/read/quote/claim setup interval remains narrower unknown."
+      "OOM occurs before a second backend-work-start marker,which follows queue acquisition and shallow draft setup; entering a next transaction or pre-marker draft creation remains possible."
     ],
     "hypothesis": "Large detached plan readback overlaps retained private state and preparation data near heap limit. This observer bounds the interval but does not distinguish each retained owner or exact failing operation.",
-    "decision": "Three production repair attempts failed canonical proof. No fourth production edit/proof sequence; parent will arrange independent architecture assessment within existing authorised scope."
+    "decision": "Independent assessment identifies detached-plan expansion and full quote-slice caching as supported seams. Parent authorises narrowly bounded private read/ownership adapter plus allocator consumer; plan recorded before production edits. Original AC remains open."
+  },
+  "instrumentationCorrection": {
+    "sourceHead": "c7a2958dfc82701305099a983b010bc68d1bb9b2",
+    "path": "server/gcsp/comparison/private-repository.js",
+    "lines": "115-117",
+    "correction": "backend-work-start is after queue acquisition and shallow draft/table-array creation. Earlier no-second-transaction wording was too strong; original raw phase observations are preserved."
   }
 }

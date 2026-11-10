@@ -4207,22 +4207,32 @@
       "branch": "dev/DEV-2026-11-10-GC-027",
       "jira_source_updated_at": "2026-11-10T13:22:52.200Z",
       "jira_observed_at": "2026-11-10T13:26:47.809069Z",
-      "workers": [],
-      "observed_at": "2026-11-10T14:56:44Z",
+      "workers": [
+        {
+          "name": "Ralph Wolf",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-10T15:15:26.183269+00:00",
+          "expires_at": "2026-11-10T16:00:26.183269+00:00",
+          "source": "Parent explicitly resumed existing lead at requested/selectedSol/xhigh,no fallback;no child active",
+          "status": "Authorised narrow allocator read ownership seam;plan before implementation"
+        }
+      ],
+      "observed_at": "2026-11-10T15:15:26Z",
       "slices": [
         {
           "id": "current-cause",
           "status": "in-progress",
           "title": "Current-code retained-data evidence",
-          "observed_at": "2026-11-10T14:56:44.103524+00:00",
-          "evidence": "Scoped retained-data causes measured. Third canonical c7 still fails after1/6. Same-source phase observer crosses first normalization and detached plan readback before OOM; exact later allocation operation unknown. Independent architectural assessment pending. docs/gcsp/evidence/fucq309/same-c7-worker-phase-2026-11-10.json"
+          "observed_at": "2026-11-10T15:15:26.183269+00:00",
+          "evidence": "Independent assessment identifies detached plan expansion/full quote-slice cache;exact terminal operation unknown. Corrected marker follows queue/draft setup. Parent authorises narrow private read/allocator consumer after shared-ownership reassessment. docs/gcsp/evidence/fucq309/allocator-read-plan-2026-11-10.md"
         },
         {
           "id": "retention-repair",
           "status": "in-progress",
           "title": "Evidenced replay memory and lifetime repair",
-          "observed_at": "2026-11-10T14:56:44.103693+00:00",
-          "evidence": "Private sharing/projections/disposal and early mutable-child replacement pass scoped checks with deterministic output equality. All3 actual canonical128/16 proofs fail first buddy,zero results. No fourth production edit before independent architectural assessment. docs/gcsp/evidence/fucq309/memory-repair-2026-11-10.md"
+          "observed_at": "2026-11-10T15:15:26.183269+00:00",
+          "evidence": "Bounded plan recorded before optional private immutable modern-plan/preclone quote-input reads plus allocator fallback/cache/ownership change. Ordinary mutable reads,legacy formats,semantics128/16/1800 and fixedAC preserved. All3 canonical failures remain. docs/gcsp/evidence/fucq309/allocator-read-plan-2026-11-10.md"
         },
         {
           "id": "semantic-regression",
