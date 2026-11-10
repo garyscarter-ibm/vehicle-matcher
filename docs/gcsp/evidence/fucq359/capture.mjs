@@ -39,7 +39,8 @@ const ready = async (url) => {
 const longVariant = (text) => {
   const cut = text.indexOf('export const UNSUPPORTED_SNAPSHOT');
   const head = text.slice(0, cut).replaceAll('"model": "BMW 3 Series Touring 320i"', '"model": "BMW 3 Series 330e xDrive M Sport Pro Touring"')
-    .replaceAll('"configuration": "320i M Sport Touring"', '"configuration": "M Sport Pro BMW Individual specification"');
+    .replaceAll('"configuration": "320i M Sport Touring"', '"configuration": "M Sport Pro BMW Individual specification"')
+    .replaceAll('"fuel": "petrol"', '"fuel": "phev"');
   return head + text.slice(cut);
 };
 

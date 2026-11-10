@@ -17,7 +17,7 @@ gcsp-account { display: block; }
 .gcsp .gcsp-account-car-facts > .vm-fact:last-child { grid-column: 1 / -1; }
 .gcsp .gcsp-account-preferences { display: flex; flex-direction: column; gap: var(--gcsp-space-3); padding: var(--gcsp-space-6); background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-account-preferences > * { margin: 0; }
-.gcsp .gcsp-account-preferences .vm-btn { align-self: flex-start; }
+.gcsp .gcsp-account-preferences .vm-btn { align-self: flex-start; } .gcsp .gcsp-account-preferences > h2 + .gcsp-note { margin-top: calc(var(--gcsp-space-1) - var(--gcsp-space-3)); }
 .gcsp .gcsp-account-secondary { display: flex; flex-direction: column; gap: var(--gcsp-space-6); }
 .gcsp .gcsp-account-section, .gcsp .gcsp-account-history { display: flex; flex-direction: column; gap: var(--gcsp-space-3); }
 .gcsp .gcsp-account-history .gcsp-table-caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); padding: 0; } /* the h2 already titles the table */

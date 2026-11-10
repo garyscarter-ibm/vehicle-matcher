@@ -1,6 +1,6 @@
 {
   "run": "fucq359-strict-capture",
-  "implementationCommit": "124b257f",
+  "implementationCommit": "7d120421",
   "reference": {
     "commit": "193cbf07",
     "dir": "docs/gcsp/mockups/account-preferences-2026-11-10/review",
@@ -30,7 +30,7 @@
           "x": 144,
           "y": 76,
           "width": 1680,
-          "height": 1449.875
+          "height": 1441.875
         },
         "feature": {
           "x": 144,
@@ -60,17 +60,17 @@
           "x": 144,
           "y": 869.875,
           "width": 1680,
-          "height": 151
+          "height": 143
         },
         "history": {
           "x": 144,
-          "y": 1044.875,
+          "y": 1036.875,
           "width": 1680,
           "height": 197
         },
         "details": {
           "x": 144,
-          "y": 1265.875,
+          "y": 1257.875,
           "width": 1680,
           "height": 220
         }
@@ -84,8 +84,8 @@
       "visualTops": {
         "car": 170,
         "preferences": 869.875,
-        "history": 1044.875,
-        "details": 1265.875
+        "history": 1036.875,
+        "details": 1257.875
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -116,7 +116,7 @@
         ],
         "implementationSize": [
           1920,
-          1575
+          1567
         ]
       },
       "implementationImage": "1920-selected-implementation.png"
@@ -137,7 +137,7 @@
           "x": 96,
           "y": 76,
           "width": 1296,
-          "height": 1288
+          "height": 1280
         },
         "feature": {
           "x": 96,
@@ -167,17 +167,17 @@
           "x": 96,
           "y": 708,
           "width": 1296,
-          "height": 151
+          "height": 143
         },
         "history": {
           "x": 96,
-          "y": 883,
+          "y": 875,
           "width": 1296,
           "height": 197
         },
         "details": {
           "x": 96,
-          "y": 1104,
+          "y": 1096,
           "width": 1296,
           "height": 220
         }
@@ -191,8 +191,8 @@
       "visualTops": {
         "car": 170,
         "preferences": 708,
-        "history": 883,
-        "details": 1104
+        "history": 875,
+        "details": 1096
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -271,7 +271,7 @@
         ],
         "implementationSize": [
           1440,
-          1413
+          1405
         ]
       },
       "implementationImage": "1440-selected-implementation.png"
@@ -292,7 +292,7 @@
           "x": 96,
           "y": 76,
           "width": 956,
-          "height": 1300.9375
+          "height": 1292.9375
         },
         "feature": {
           "x": 96,
@@ -322,17 +322,17 @@
           "x": 96,
           "y": 699.9375,
           "width": 956,
-          "height": 151
+          "height": 143
         },
         "history": {
           "x": 96,
-          "y": 874.9375,
+          "y": 866.9375,
           "width": 956,
           "height": 197
         },
         "details": {
           "x": 96,
-          "y": 1095.9375,
+          "y": 1087.9375,
           "width": 956,
           "height": 241
         }
@@ -346,8 +346,8 @@
       "visualTops": {
         "car": 161.9375,
         "preferences": 699.9375,
-        "history": 874.9375,
-        "details": 1095.9375
+        "history": 866.9375,
+        "details": 1087.9375
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -376,7 +376,7 @@
         ],
         "implementationSize": [
           1100,
-          1426
+          1418
         ]
       },
       "implementationImage": "1100-selected-implementation.png"
@@ -397,7 +397,7 @@
           "x": 96,
           "y": 76,
           "width": 880,
-          "height": 1319.3125
+          "height": 1311.3125
         },
         "feature": {
           "x": 96,
@@ -427,17 +427,17 @@
           "x": 96,
           "y": 697.3125,
           "width": 880,
-          "height": 151
+          "height": 143
         },
         "history": {
           "x": 96,
-          "y": 872.3125,
+          "y": 864.3125,
           "width": 880,
           "height": 197
         },
         "details": {
           "x": 96,
-          "y": 1093.3125,
+          "y": 1085.3125,
           "width": 880,
           "height": 262
         }
@@ -451,8 +451,8 @@
       "visualTops": {
         "car": 159.3125,
         "preferences": 697.3125,
-        "history": 872.3125,
-        "details": 1093.3125
+        "history": 864.3125,
+        "details": 1085.3125
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -481,7 +481,7 @@
         ],
         "implementationSize": [
           1024,
-          1444
+          1436
         ]
       },
       "implementationImage": "1024-selected-implementation.png"
@@ -502,7 +502,7 @@
           "x": 96,
           "y": 76,
           "width": 756,
-          "height": 1332.1875
+          "height": 1324.1875
         },
         "feature": {
           "x": 96,
@@ -532,17 +532,17 @@
           "x": 96,
           "y": 694.1875,
           "width": 756,
-          "height": 151
+          "height": 143
         },
         "history": {
           "x": 96,
-          "y": 869.1875,
+          "y": 861.1875,
           "width": 756,
           "height": 213
         },
         "details": {
           "x": 96,
-          "y": 1106.1875,
+          "y": 1098.1875,
           "width": 756,
           "height": 262
         }
@@ -556,8 +556,8 @@
       "visualTops": {
         "car": 156.1875,
         "preferences": 694.1875,
-        "history": 869.1875,
-        "details": 1106.1875
+        "history": 861.1875,
+        "details": 1098.1875
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -586,7 +586,7 @@
         ],
         "implementationSize": [
           900,
-          1457
+          1449
         ]
       },
       "implementationImage": "900-selected-implementation.png"
@@ -607,7 +607,7 @@
           "x": 72,
           "y": 76,
           "width": 724,
-          "height": 1337.1875
+          "height": 1329.1875
         },
         "feature": {
           "x": 72,
@@ -637,17 +637,17 @@
           "x": 72,
           "y": 678.1875,
           "width": 724,
-          "height": 151
+          "height": 143
         },
         "history": {
           "x": 72,
-          "y": 853.1875,
+          "y": 845.1875,
           "width": 724,
           "height": 213
         },
         "details": {
           "x": 72,
-          "y": 1090.1875,
+          "y": 1082.1875,
           "width": 724,
           "height": 283
         }
@@ -661,8 +661,8 @@
       "visualTops": {
         "car": 156.1875,
         "preferences": 678.1875,
-        "history": 853.1875,
-        "details": 1090.1875
+        "history": 845.1875,
+        "details": 1082.1875
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -691,7 +691,7 @@
         ],
         "implementationSize": [
           820,
-          1462
+          1454
         ]
       },
       "implementationImage": "820-selected-implementation.png"
@@ -712,7 +712,7 @@
           "x": 16,
           "y": 72,
           "width": 343,
-          "height": 1944
+          "height": 1936
         },
         "feature": {
           "x": 16,
@@ -742,17 +742,17 @@
           "x": 16,
           "y": 878,
           "width": 343,
-          "height": 147
+          "height": 139
         },
         "history": {
           "x": 16,
-          "y": 1049,
+          "y": 1041,
           "width": 343,
           "height": 447
         },
         "details": {
           "x": 16,
-          "y": 1520,
+          "y": 1512,
           "width": 343,
           "height": 456
         }
@@ -766,8 +766,8 @@
       "visualTops": {
         "car": 152.1875,
         "preferences": 878,
-        "history": 1049,
-        "details": 1520
+        "history": 1041,
+        "details": 1512
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -846,7 +846,7 @@
         ],
         "implementationSize": [
           375,
-          2057
+          2049
         ]
       },
       "implementationImage": "375-selected-implementation.png"
@@ -867,7 +867,7 @@
           "x": 16,
           "y": 72,
           "width": 343,
-          "height": 1944
+          "height": 1936
         },
         "feature": {
           "x": 16,
@@ -897,17 +897,17 @@
           "x": 16,
           "y": 878,
           "width": 343,
-          "height": 147
+          "height": 139
         },
         "history": {
           "x": 16,
-          "y": 1049,
+          "y": 1041,
           "width": 343,
           "height": 447
         },
         "details": {
           "x": 16,
-          "y": 1520,
+          "y": 1512,
           "width": 343,
           "height": 456
         }
@@ -921,8 +921,8 @@
       "visualTops": {
         "car": 152.1875,
         "preferences": 878,
-        "history": 1049,
-        "details": 1520
+        "history": 1041,
+        "details": 1512
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -1001,7 +1001,7 @@
         ],
         "implementationSize": [
           375,
-          2057
+          2049
         ]
       },
       "implementationImage": "375-engaged-implementation.png"
@@ -1022,7 +1022,7 @@
           "x": 16,
           "y": 72,
           "width": 288,
-          "height": 2086.0625
+          "height": 2078.0625
         },
         "feature": {
           "x": 16,
@@ -1052,17 +1052,17 @@
           "x": 16,
           "y": 916.0625,
           "width": 288,
-          "height": 168
+          "height": 160
         },
         "history": {
           "x": 16,
-          "y": 1108.0625,
+          "y": 1100.0625,
           "width": 288,
           "height": 467
         },
         "details": {
           "x": 16,
-          "y": 1599.0625,
+          "y": 1591.0625,
           "width": 288,
           "height": 519
         }
@@ -1076,8 +1076,8 @@
       "visualTops": {
         "car": 152.1875,
         "preferences": 916.0625,
-        "history": 1108.0625,
-        "details": 1599.0625
+        "history": 1100.0625,
+        "details": 1591.0625
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -1106,7 +1106,7 @@
         ],
         "implementationSize": [
           320,
-          2199
+          2191
         ]
       },
       "implementationImage": "320-long-implementation.png"
@@ -1127,7 +1127,7 @@
           "x": 96,
           "y": 76,
           "width": 1296,
-          "height": 1288
+          "height": 1280
         },
         "feature": {
           "x": 96,
@@ -1152,17 +1152,17 @@
           "x": 96,
           "y": 708,
           "width": 1296,
-          "height": 151
+          "height": 143
         },
         "history": {
           "x": 96,
-          "y": 883,
+          "y": 875,
           "width": 1296,
           "height": 197
         },
         "details": {
           "x": 96,
-          "y": 1104,
+          "y": 1096,
           "width": 1296,
           "height": 220
         }
@@ -1176,8 +1176,8 @@
       "visualTops": {
         "car": 170,
         "preferences": 708,
-        "history": 883,
-        "details": 1104
+        "history": 875,
+        "details": 1096
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -1256,7 +1256,7 @@
         ],
         "implementationSize": [
           1440,
-          1413
+          1405
         ]
       },
       "implementationImage": "1440-missing-image-implementation.png"
@@ -1277,7 +1277,7 @@
           "x": 96,
           "y": 76,
           "width": 1296,
-          "height": 1288
+          "height": 1280
         },
         "feature": {
           "x": 96,
@@ -1307,17 +1307,17 @@
           "x": 96,
           "y": 708,
           "width": 1296,
-          "height": 151
+          "height": 143
         },
         "history": {
           "x": 96,
-          "y": 883,
+          "y": 875,
           "width": 1296,
           "height": 197
         },
         "details": {
           "x": 96,
-          "y": 1104,
+          "y": 1096,
           "width": 1296,
           "height": 220
         }
@@ -1331,8 +1331,8 @@
       "visualTops": {
         "car": 170,
         "preferences": 708,
-        "history": 883,
-        "details": 1104
+        "history": 875,
+        "details": 1096
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -1386,7 +1386,7 @@
         ],
         "implementationSize": [
           1440,
-          1413
+          1405
         ]
       },
       "implementationImage": "1440-record-drawer-implementation.png"
@@ -1407,7 +1407,7 @@
           "x": 16,
           "y": 72,
           "width": 343,
-          "height": 1944
+          "height": 1936
         },
         "feature": {
           "x": 16,
@@ -1437,17 +1437,17 @@
           "x": 16,
           "y": 878,
           "width": 343,
-          "height": 147
+          "height": 139
         },
         "history": {
           "x": 16,
-          "y": 1049,
+          "y": 1041,
           "width": 343,
           "height": 447
         },
         "details": {
           "x": 16,
-          "y": 1520,
+          "y": 1512,
           "width": 343,
           "height": 456
         }
@@ -1461,8 +1461,8 @@
       "visualTops": {
         "car": 152.1875,
         "preferences": 878,
-        "history": 1049,
-        "details": 1520
+        "history": 1041,
+        "details": 1512
       },
       "visualOrderIncreasing": true,
       "absent": {
@@ -1516,7 +1516,7 @@
         ],
         "implementationSize": [
           375,
-          2057
+          2049
         ]
       },
       "implementationImage": "375-record-drawer-implementation.png"
@@ -1637,10 +1637,10 @@
         1440,
         134558
       ],
-      "differingPixels": 26580519,
+      "differingPixels": 26560856,
       "bbox": [
         0,
-        669,
+        10779,
         1440,
         134558
       ],
@@ -1649,7 +1649,7 @@
         "neighbour-components-base.jpg",
         "neighbour-components-branch.jpg"
       ],
-      "windowFromY": 469,
+      "windowFromY": 10579,
       "windowNote": "JPEG limit: saved window is 8000px tall from windowFromY of the full page"
     }
   },
