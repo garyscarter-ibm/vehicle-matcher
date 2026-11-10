@@ -24,7 +24,8 @@
     "blocks/gcsp/kit/show-more.js",
     "blocks/gcsp/kit/slot-picker.js",
     "blocks/gcsp/kit/loading-skeleton.js",
-    "blocks/gcsp/kit/tabs.js"
+    "blocks/gcsp/kit/tabs.js",
+    "blocks/gcsp/kit/release-grid.js"
   ],
   "extensions": [
     ".js",
@@ -130,6 +131,11 @@
       "re": "setAttribute\\('role', 'tablist'\\)",
       "flags": "g",
       "use": "tabs({ label, items }) (blocks/gcsp/kit/tabs.js)"
+    },
+    "release-grid": {
+      "re": "setAttribute\\('role', 'grid'\\)",
+      "flags": "g",
+      "use": "releaseGrid({ label, columns }) (blocks/gcsp/kit/release-grid.js)"
     }
   },
   "stylesheets": [
@@ -340,6 +346,18 @@
     {
       "path": "blocks/gcsp/presenter-controls/presenter-console.css",
       "max_lines": 39
+    },
+    {
+      "path": "blocks/gcsp/kit/release-grid.css",
+      "max_lines": 13
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/release-section.css",
+      "max_lines": 17
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/happened-feed.css",
+      "max_lines": 17
     }
   ],
   "baseline": {
