@@ -4212,20 +4212,20 @@
           "name": "Ralph Wolf",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-10T15:54:21.438166+00:00",
-          "expires_at": "2026-11-10T15:54:21.438166+00:00",
+          "observed_at": "2026-11-10T16:10:55.460357+00:00",
+          "expires_at": "2026-11-10T16:10:55.460357+00:00",
           "source": "Existing lead requested/selected Sol/xhigh; no fallback or descendants",
-          "status": "V2 instrumented OOM and cleanup recorded; yielded to parent review; no active test"
+          "status": "One clean canonical attempt failed; teardown verified; evidence yielded to parent review; no active test"
         }
       ],
-      "observed_at": "2026-11-10T15:54:48Z",
+      "observed_at": "2026-11-10T16:10:55Z",
       "slices": [
         {
           "id": "current-cause",
           "status": "in-progress",
           "title": "Current-code retained-data evidence",
-          "observed_at": "2026-11-10T15:54:21.438166+00:00",
-          "evidence": "V2 INSTRUMENTED OOM at 184.263 s after preparation marker. WeakRef deref can extend same-job liveness; not clean reproduction or cause. Current store/pool death excludes only those objects. Terminal operation unknown; static trace retained. docs/gcsp/evidence/fucq309/first-buddy-diagnostic-v2-2026-11-10/report.md"
+          "observed_at": "2026-11-10T16:10:55.460357+00:00",
+          "evidence": "Clean canonical-v4 on320e612c OOM192.787s aftercurrent135.235s;1/6,zeroresults,complete-resultchecksUNRUN,exactoperationunknown. Original128/16/1800 plus1900outer. All57rootsabsent,group28070gone,reservationreleased. Priorinstrumented/historicalcaveatsretained. No retry/edit. docs/gcsp/evidence/fucq309/clean-canonical-2026-11-10/report.md"
         },
         {
           "id": "retention-repair",
@@ -4245,8 +4245,8 @@
           "id": "canonical-integration",
           "status": "in-progress",
           "title": "Canonical six-step stored-result integration gate",
-          "observed_at": "2026-11-10T15:54:21.438166+00:00",
-          "evidence": "Prior three clean failures remain 1/6 with zero results and v3 clock caveats. V1 failed admission; v2 instrumented OOM reached no claim. 127 host samples, max gap 3.804 s. Group 12353 gone, owned scratch absent, reservation released. No further run/edit authorised. docs/gcsp/evidence/fucq309/first-buddy-diagnostic-v2-2026-11-10/report.md"
+          "observed_at": "2026-11-10T16:10:55.460357+00:00",
+          "evidence": "Clean canonical-v4 on320e612c OOM192.787s aftercurrent135.235s;1/6,zeroresults,complete-resultchecksUNRUN,exactoperationunknown. Original128/16/1800 plus1900outer. All57rootsabsent,group28070gone,reservationreleased. Priorinstrumented/historicalcaveatsretained. No retry/edit. docs/gcsp/evidence/fucq309/clean-canonical-2026-11-10/report.md"
         }
       ],
       "unsliced": false
