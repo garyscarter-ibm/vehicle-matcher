@@ -4509,26 +4509,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-10T23:04:29Z",
+      "observed_at": "2026-11-10T23:32:36Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-359",
       "slices": [
         {
           "id": "composition",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Account and current-car composition",
-          "observed_at": "2026-11-10T22:00:50Z"
+          "observed_at": "2026-11-10T23:32:35Z",
+          "evidence": "Lead review dee54ca2: composition, order, Points cost, mount point; 448 scoped tests 447 pass (1 pre-existing base live-regions failure); strict side-by-sides docs/gcsp/evidence/fucq359"
         },
         {
           "id": "shared-kit",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Shared components and responsive states",
-          "observed_at": "2026-11-10T22:00:50Z"
+          "observed_at": "2026-11-10T23:32:35Z",
+          "evidence": "gcsp-media-whole, formatPointsCost, NO_IMAGE_YOUR_CAR in kit, COMPONENTS.md, gallery; ratchet passes, account cap 56->54; neighbours pixel-identical"
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Connected Account and GC secondary actions",
-          "observed_at": "2026-11-10T23:04:29Z"
+          "observed_at": "2026-11-10T23:32:36Z",
+          "evidence": "Slot and DOM/visual/keyboard order delivered; final integrated evidence needs FUCQ-368 compact Preferences mounted via mountAccount preferences option"
         }
       ],
       "unsliced": false
