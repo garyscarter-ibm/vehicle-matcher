@@ -1,0 +1,327 @@
+{
+  "run": "account-preferences-20261110-01a1c6a0",
+  "kind": "scoped mockup review",
+  "checks": [
+    {
+      "label": "Initially show categories without options",
+      "passed": true
+    },
+    {
+      "label": "Initial understanding is 1 of 11",
+      "passed": true
+    },
+    {
+      "label": "Six supported categories",
+      "passed": true
+    },
+    {
+      "label": "1440 initial: no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "label": "1440 initial: car image has useful height",
+      "passed": true
+    },
+    {
+      "label": "Real local car image loads",
+      "passed": true
+    },
+    {
+      "label": "No inline script/event handlers",
+      "passed": true
+    },
+    {
+      "label": "Fewer than three categories gets a clear validation",
+      "passed": true
+    },
+    {
+      "label": "Three configured categories are distinct",
+      "passed": true
+    },
+    {
+      "label": "Three configured categories illustrate score 6",
+      "passed": true
+    },
+    {
+      "label": "Save gives confirmation",
+      "passed": true
+    },
+    {
+      "label": "Reload preserves three categories",
+      "passed": true
+    },
+    {
+      "label": "Reload preserves five-star rating",
+      "passed": true
+    },
+    {
+      "label": "Remove asks for confirmation",
+      "passed": true
+    },
+    {
+      "label": "Cancel retains category",
+      "passed": true
+    },
+    {
+      "label": "Confirmed removal clears category",
+      "passed": true
+    },
+    {
+      "label": "Same again is 11",
+      "passed": true
+    },
+    {
+      "label": "Same again disables six category selectors",
+      "passed": true
+    },
+    {
+      "label": "Same again keeps stored categories",
+      "passed": true
+    },
+    {
+      "label": "Untoggle restores categories and normal score",
+      "passed": true
+    },
+    {
+      "label": "All preference categories cap the score at 10",
+      "passed": true
+    },
+    {
+      "label": "1920 selected: no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "label": "1920 selected: car image has useful height",
+      "passed": true
+    },
+    {
+      "label": "820 selected: no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "label": "820 selected: car image has useful height",
+      "passed": true
+    },
+    {
+      "label": "375 selected: no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "label": "375 selected: car image has useful height",
+      "passed": true
+    },
+    {
+      "label": "320 long: no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "label": "320 long: car image has useful height",
+      "passed": true
+    },
+    {
+      "label": "320 long options: no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "label": "320 long options: car image has useful height",
+      "passed": true
+    },
+    {
+      "label": "Option group keyboard Home picks first choice",
+      "passed": true
+    },
+    {
+      "label": "Option group keyboard End picks last choice",
+      "passed": true
+    },
+    {
+      "label": "320 remove confirmation: no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "label": "320 remove confirmation: car image has useful height",
+      "passed": true
+    },
+    {
+      "label": "Missing car image has a useful fallback",
+      "passed": true
+    },
+    {
+      "label": "No uncaught page errors",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    "1440-initial.png",
+    "1440-validation.png",
+    "1440-selected.png",
+    "1440-options.png",
+    "1440-remove-confirmation.png",
+    "1440-same-again.png",
+    "1920-selected.png",
+    "820-selected.png",
+    "375-selected.png",
+    "320-long.png",
+    "320-long-options.png",
+    "320-remove-confirmation.png",
+    "320-same-again.png",
+    "1440-missing-image.png"
+  ],
+  "consoleErrors": [],
+  "failures": [],
+  "codeIdentity": {
+    "index.html": "424a1cffe33ef295db5faf0325c324ad86fddb1bb48926e7ef091d6e18455beb",
+    "mockup.js": "e78e1f8651c7d6dbdbaf0a315d24d48fdc5bcc7ca91d0b8df68e89a7d87a2562",
+    "mockup.css": "1041b91ef23a3792933cce4cb6766d73b6269fd90d63980d326eed731dc19c0a"
+  },
+  "independentReview": "capacity unavailable; pending",
+  "viewports": [
+    {
+      "name": "1440 initial",
+      "width": 1440,
+      "scroll": 1440,
+      "image": true,
+      "media": {
+        "x": 97,
+        "width": 814,
+        "height": 457.875
+      },
+      "canvas": {
+        "x": 96,
+        "width": 1296,
+        "height": 1057.875
+      },
+      "content": {
+        "x": 48,
+        "width": 1392,
+        "height": 1137.875
+      }
+    },
+    {
+      "name": "1920 selected",
+      "width": 1920,
+      "scroll": 1920,
+      "image": true,
+      "media": {
+        "x": 145,
+        "width": 1198,
+        "height": 673.875
+      },
+      "canvas": {
+        "x": 144,
+        "width": 1680,
+        "height": 1273.875
+      },
+      "content": {
+        "x": 48,
+        "width": 1872,
+        "height": 1353.875
+      }
+    },
+    {
+      "name": "820 selected",
+      "width": 820,
+      "scroll": 820,
+      "image": true,
+      "media": {
+        "x": 73,
+        "width": 361,
+        "height": 270.75
+      },
+      "canvas": {
+        "x": 72,
+        "width": 724,
+        "height": 1181
+      },
+      "content": {
+        "x": 48,
+        "width": 772,
+        "height": 1261
+      }
+    },
+    {
+      "name": "375 selected",
+      "width": 375,
+      "scroll": 375,
+      "image": true,
+      "media": {
+        "x": 17,
+        "width": 341,
+        "height": 191.8125
+      },
+      "canvas": {
+        "x": 16,
+        "width": 343,
+        "height": 1796
+      },
+      "content": {
+        "x": 0,
+        "width": 375,
+        "height": 1864
+      }
+    },
+    {
+      "name": "320 long",
+      "width": 320,
+      "scroll": 320,
+      "image": true,
+      "media": {
+        "x": 17,
+        "width": 286,
+        "height": 160.875
+      },
+      "canvas": {
+        "x": 16,
+        "width": 288,
+        "height": 1891.0625
+      },
+      "content": {
+        "x": 0,
+        "width": 320,
+        "height": 1959.0625
+      }
+    },
+    {
+      "name": "320 long options",
+      "width": 320,
+      "scroll": 320,
+      "image": true,
+      "media": {
+        "x": 17,
+        "width": 286,
+        "height": 160.875
+      },
+      "canvas": {
+        "x": 16,
+        "width": 288,
+        "height": 2196.0625
+      },
+      "content": {
+        "x": 0,
+        "width": 320,
+        "height": 2264.0625
+      }
+    },
+    {
+      "name": "320 remove confirmation",
+      "width": 320,
+      "scroll": 320,
+      "image": true,
+      "media": {
+        "x": 17,
+        "width": 286,
+        "height": 160.875
+      },
+      "canvas": {
+        "x": 16,
+        "width": 288,
+        "height": 2020.0625
+      },
+      "content": {
+        "x": 0,
+        "width": 320,
+        "height": 2088.0625
+      }
+    }
+  ]
+}
