@@ -1,0 +1,77 @@
+[
+ {
+  "name": "cold-presenter",
+  "wall": 929,
+  "fcp": 784,
+  "staticN": 32,
+  "fromNetwork": 32,
+  "h1": "Clock and reset mechanics",
+  "staticRequestsSent": 32
+ },
+ {
+  "name": "cold-offer",
+  "wall": 2257,
+  "fcp": 1832,
+  "staticN": 92,
+  "fromNetwork": 91,
+  "h1": "OFFER NOT FOUND",
+  "staticRequestsSent": 92
+ },
+ {
+  "name": "cold-outbox",
+  "wall": 1193,
+  "fcp": 872,
+  "staticN": 45,
+  "fromNetwork": 44,
+  "h1": "CAPTURED EMAILS",
+  "staticRequestsSent": 45
+ },
+ {
+  "name": "cold-login",
+  "wall": 1071,
+  "fcp": 976,
+  "staticN": 38,
+  "fromNetwork": 37,
+  "h1": "SIGN IN",
+  "staticRequestsSent": 38
+ },
+ {
+  "name": "warm-presenter",
+  "wall": 968,
+  "fcp": 856,
+  "staticN": 32,
+  "fromNetwork": 31,
+  "h1": "Clock and reset mechanics",
+  "staticRequestsSent": 32
+ },
+ {
+  "name": "warm-offer",
+  "wall": 2223,
+  "fcp": 1788,
+  "staticN": 92,
+  "fromNetwork": 91,
+  "h1": "OFFER NOT FOUND",
+  "staticRequestsSent": 92
+ },
+ {
+  "name": "warm-outbox",
+  "wall": 1189,
+  "fcp": 860,
+  "staticN": 45,
+  "fromNetwork": 44,
+  "h1": "CAPTURED EMAILS",
+  "staticRequestsSent": 45
+ },
+ {
+  "name": "warm-login",
+  "wall": 1067,
+  "fcp": 968,
+  "staticN": 38,
+  "fromNetwork": 37,
+  "h1": "SIGN IN",
+  "staticRequestsSent": 38
+ },
+ {
+  "errors": []
+ }
+]
