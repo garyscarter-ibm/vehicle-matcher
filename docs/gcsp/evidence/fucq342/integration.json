@@ -35,5 +35,11 @@
   "known_separate_bug": "FUCQ-346 Low, unchanged gallery CSS; not repaired or a merge dependency",
   "unrun": "Full suite, PostgreSQL and deployed smoke; no deployment performed",
   "accepted": false,
-  "recorded_at": "2026-11-10T14:14:17.118058+00:00"
+  "recorded_at": "2026-11-10T14:14:17.118058+00:00",
+  "cleanup": {
+    "helper_exit": 0,
+    "worktree_absent": true,
+    "branch_and_lease_removed_by_supported_helper": true,
+    "finished_at": "2026-11-10T14:16:26.806614+00:00"
+  }
 }
