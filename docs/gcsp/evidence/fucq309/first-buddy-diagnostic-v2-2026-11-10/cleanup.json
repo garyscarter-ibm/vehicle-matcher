@@ -1,0 +1,17 @@
+{
+  "observedAt": "2026-11-10T15:51:16.831494+00:00",
+  "runId": "first-buddy-claim-v2",
+  "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-supervisor/ownership/f290e2393b4945149f5358de20a68751.json",
+  "root": "/private/tmp/test-stamp-shard-f290e2393b4945149f5358de20a68751",
+  "manifestState": "removed",
+  "rootAbsent": true,
+  "peakScratchBytes": 0,
+  "ownedProcessGroups": [
+    12353
+  ],
+  "liveOwnedGroupRows": [],
+  "reservationReleased": true,
+  "remainingReservationCount": 0,
+  "compatibilityException": "None",
+  "leftovers": "No owned scratch;prior unconfirmed102133-byte jira_sync bytecode preserved"
+}

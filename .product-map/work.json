@@ -4212,20 +4212,20 @@
           "name": "Ralph Wolf",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-10T15:46:12.503620+00:00",
-          "expires_at": "2026-11-10T15:46:12.503620+00:00",
-          "source": "Existing lead requested/selectedSol/xhigh,no fallback;no descendants",
-          "status": "Diagnostic admission failure recorded;yielded to parent;no worker/test active"
+          "observed_at": "2026-11-10T15:54:21.438166+00:00",
+          "expires_at": "2026-11-10T15:54:21.438166+00:00",
+          "source": "Existing lead requested/selected Sol/xhigh; no fallback or descendants",
+          "status": "V2 instrumented OOM and cleanup recorded; yielded to parent review; no active test"
         }
       ],
-      "observed_at": "2026-11-10T15:46:12Z",
+      "observed_at": "2026-11-10T15:54:48Z",
       "slices": [
         {
           "id": "current-cause",
           "status": "in-progress",
           "title": "Current-code retained-data evidence",
-          "observed_at": "2026-11-10T15:46:12.503620+00:00",
-          "evidence": "Actual100/300 ownership/equality evidence retained. First-buddy-v1 failed before admission from observer pre-plan messages;no new input/claim/heap result. Exact canonical terminal OOM operation remains unknown;marker/clock caveats preserved. docs/gcsp/evidence/fucq309/first-buddy-diagnostic-2026-11-10/report.md"
+          "observed_at": "2026-11-10T15:54:21.438166+00:00",
+          "evidence": "V2 INSTRUMENTED OOM at 184.263 s after preparation marker. WeakRef deref can extend same-job liveness; not clean reproduction or cause. Current store/pool death excludes only those objects. Terminal operation unknown; static trace retained. docs/gcsp/evidence/fucq309/first-buddy-diagnostic-v2-2026-11-10/report.md"
         },
         {
           "id": "retention-repair",
@@ -4245,8 +4245,8 @@
           "id": "canonical-integration",
           "status": "in-progress",
           "title": "Canonical six-step stored-result integration gate",
-          "observed_at": "2026-11-10T15:46:12.503620+00:00",
-          "evidence": "Prior3 production canonical failures remain1/6,zero results;v3gap245.865s unresolved. Single first-buddy-v1 diagnostic failed pre-admission due observer protocol;stored rows assertion unrun,no host/claim samples. Group8303 gone,owned root absent,reservationreleased. No retry. docs/gcsp/evidence/fucq309/first-buddy-diagnostic-2026-11-10/report.md"
+          "observed_at": "2026-11-10T15:54:21.438166+00:00",
+          "evidence": "Prior three clean failures remain 1/6 with zero results and v3 clock caveats. V1 failed admission; v2 instrumented OOM reached no claim. 127 host samples, max gap 3.804 s. Group 12353 gone, owned scratch absent, reservation released. No further run/edit authorised. docs/gcsp/evidence/fucq309/first-buddy-diagnostic-v2-2026-11-10/report.md"
         }
       ],
       "unsliced": false
