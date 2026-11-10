@@ -8,7 +8,7 @@ export const OFFER_ACCESS_COOKIE = 'gcsp_offer_access';
 export const OFFER_ACCESS_CONSUMER = 'offer-access-session-v1';
 const missing = () => result('not-found', { reason: 'Offer not found.' });
 const unavailable = () => result('unavailable', { reason: 'Offer access is unavailable.', retryable: true });
-const stale = () => result('stale-run', { reason: 'This offer belongs to an earlier demo run.' });
+const stale = () => result('stale-run', { reason: 'This offer is out of date. Open your latest offer from your account.' });
 const invalid = () => result('invalid', { code: 'invalid-offer-selector', reason: 'Supply only the exact offer coordinates.' });
 const text = (value) => typeof value === 'string' && value.trim().length > 0 && value.length <= 128;
 const revision = (value) => Number.isSafeInteger(value) && value > 0;

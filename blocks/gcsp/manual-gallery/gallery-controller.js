@@ -3,7 +3,8 @@ import { createAccountHttpAdapter } from '../account/http-adapter.js';
 
 /** Reads the shared manual endpoint. Only the host callback can proceed beyond browsing. */
 export function createManualGalleryController({ adapter = createAccountHttpAdapter(), onChange = () => {}, onReview,
-  commandId = () => globalThis.crypto.randomUUID() } = {}) {
+  commandId = () => globalThis.crypto.randomUUID(), initialStock = null } = {}) {
+  let seed = initialStock?.status === 'ok' ? initialStock : null; // Setup's just-fetched answer, used for the first load only.
   let destroyed = false; let generation = 0; let request; let envelope; let controls = {};
   let selectedId = null; const attempts = new Map(); let extras = {};
   let state = { ...toManualGallery(null), state: 'idle', selectedId: null, detail: null };
@@ -20,9 +21,11 @@ export function createManualGalleryController({ adapter = createAccountHttpAdapt
     if (destroyed) return snapshot();
     const ticket = ++generation; request?.abort(); request = new AbortController();
     publish({ ...toManualGallery(null, controls), state: 'loading' }, null);
-    let response;
-    try { response = await adapter.browseStock({ signal: request.signal }); }
-    catch { response = { status: 'unavailable', retryable: true }; }
+    let response = seed; seed = null;
+    if (!response) {
+      try { response = await adapter.browseStock({ signal: request.signal }); }
+      catch { response = { status: 'unavailable', retryable: true }; }
+    } else await null; // Stay asynchronous, as a fetch would be.
     if (destroyed || ticket !== generation) return snapshot();
     envelope = response; extras = {};
     return publish(toManualGallery(envelope, controls, extras));

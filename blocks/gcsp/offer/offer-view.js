@@ -4,18 +4,17 @@ import { labelledField, errorSummary, checkboxField } from '../kit/form-controls
 import { stageList } from '../kit/stage-list.js';
 import { dataTable } from '../kit/data-table.js';
 import { orderIdentityRows } from '../kit/order-identity.js';
-import { syntheticNote } from '../kit/synthetic-note.js';
 import { viewStatus } from '../kit/view-status.js';
 import { ACCESS_LAPSED_TITLE, RUN_RESTARTED_TITLE, accessLapsedScreen, runRestartedScreen } from '../kit/run-restarted.js';
 import { followupHandle } from './followup-entry.js';
 
 const titles = { pending: 'Your car offer', accepted: 'Offer accepted', declined: 'Offer declined', expired: 'Offer expired',
-  superseded: 'Offer superseded', 'earlier-run': 'Offer from an earlier demo run', 'not-found': 'Offer not found', refused: 'Offer unavailable',
+  superseded: 'Offer superseded', 'earlier-run': 'Offer out of date', 'not-found': 'Offer not found', refused: 'Offer unavailable',
   restarted: RUN_RESTARTED_TITLE, 'access-lapsed': ACCESS_LAPSED_TITLE, loading: 'Loading your offer', error: 'Your offer could not be loaded', uncertain: 'Checking your decision' };
 const messages = { accepted: 'Your selection is recorded. Ordering and approval are separate steps.',
   declined: 'Your decline is recorded.', expired: 'This offer is no longer available to accept. Open your account to check for a new offer.',
   superseded: 'This offer has been replaced and cannot be changed.',
-  'earlier-run': 'This link is from an earlier demo run. Use your latest offer email or open the offer from your account.',
+  'earlier-run': 'This link is out of date. Use your latest offer email or open the offer from your account.',
   'not-found': 'Check the offer link or open the offer from your account.', refused: 'Open the offer from your account or use its original email link.',
   loading: 'Please wait.', uncertain: 'The current outcome is being checked. Actions are unavailable.' };
 const blockerText = { 'contact-required': 'A valid contact phone and email are needed before you can accept.',
@@ -46,7 +45,7 @@ function declinedSummary(card) {
 const messageFor = (model, hostsOrder, help) => model.message || (model.state === 'accepted' && model.selection ? selectionHeadline(model.selection, hostsOrder, help) : messages[model.state]);
 const longDate = (value) => /^\d{4}-\d\d-\d\d$/.test(value ?? '') && Number.isFinite(Date.parse(value))
   ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : value;
-// Readable demo time such as "6 Nov 2026, 11:30 UTC"; anything unparsable shows as given.
+// Readable UTC time such as "6 Nov 2026, 11:30 UTC"; anything unparsable shows as given.
 const demoTime = (value) => Number.isFinite(Date.parse(value ?? '')) ? `${new Date(value).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })} UTC` : value;
 let sequence = 0;
 
@@ -126,7 +125,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
   const content = el('div', 'gcsp-offer-content');
   // FUCQ-234: screen-reader only, and silent when the offer first lands because the heading already shows the state.
   const status = viewStatus(); status.root.dataset.offerAnnouncement = '';
-  page.append(content, syntheticNote(), status.root); root.replaceChildren(page);
+  page.append(content, status.root); root.replaceChildren(page);
   let previousState; let previousIdentity; let structure;
   let messageNode; let clockNode; let asOfNode; let reasonNode;
   let reasonForm; let reasonSelect; let reasonStatus; let reasonField; let reasonSummary;
@@ -311,7 +310,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     updateFollowup(model);
     if (model.state === 'pending') {
       clockNode.textContent = model.countdown || 'Time remaining unavailable';
-      asOfNode.textContent = model.now ? `Demo time at last check: ${demoTime(model.now)}` : 'Demo time unavailable';
+      asOfNode.textContent = model.now ? `Time at last check: ${demoTime(model.now)}` : 'Time unavailable';
       reasonNode.textContent = decisionReason(model);
       content.querySelector('[data-offer-action="accept"]').disabled = !model.canAccept;
       for (const box of content.querySelectorAll('[data-offer-declaration]')) box.checked = model.ticked?.[box.dataset.offerDeclaration] === true;

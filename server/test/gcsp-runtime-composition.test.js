@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Readable } from 'node:stream';
 import { JSDOM } from 'jsdom';
+import { expandStockPayload } from '../../blocks/gcsp/account/stock-payload.js';
 import { createGcspRuntime } from '../gcsp/runtime.js';
 import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
@@ -128,7 +129,7 @@ test('C1 actual pull commits exact TEST facts and authenticated decorated stock 
   for (const original of before) assert.deepEqual(f.store.state.tables.stock.find((row) => row.orderUuid === original.orderUuid), original);
   const raw = good(await f.manualClaims.browseStock(f.employee));
   const response = await request(f, '/api/gcsp/manual/stock'); assert.equal(response.status, 200);
-  const decorated = good(response.json); const { releaseHistory, ...preserved } = decorated;
+  const decorated = expandStockPayload(good(response.json)); const { releaseHistory, ...preserved } = decorated;
   assert.deepEqual(preserved, raw);
   const decision = decorated.decisions.find((row) => row.orderUuid === car.orderUuid); assert.ok(decision);
   assert.equal(decision.gateStatus, 'eligible'); assert.ok(decision.claimInput);

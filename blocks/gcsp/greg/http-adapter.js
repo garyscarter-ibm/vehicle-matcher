@@ -7,7 +7,7 @@ import { createComparisonHttpAdapter } from './comparison/http-adapter.js';
 export const MESSAGES = Object.freeze({
   unavailable: 'The demand figures could not be loaded. Try again in a moment.',
   refused: 'Only the scheme ordering lead can open this dashboard. Switch to that session and try again.',
-  reset: 'The demo was reset. Reopen the scheme ordering lead session to see the new run.',
+  reset: 'This page was restarted. Reopen the scheme ordering lead session.',
   conflict: 'The figures changed while they were loading. Refresh to see the latest.',
 });
 

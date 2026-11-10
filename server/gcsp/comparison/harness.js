@@ -73,7 +73,7 @@ function isolatedIdentityPolicy(policy, template, employees, overrides = {}) {
   check(presenter.length === 1, 'identity.demo.principals');
   const principals = [...structuredClone(presenter), ...employees.map((employee) => ({
     principalId: principalId(employee.employeeId), employeeId: employee.employeeId,
-    entitlementSlotId: slotId(employee.employeeId), name: `${employee.employeeId} (fictional)`, roles: ['employee'],
+    entitlementSlotId: slotId(employee.employeeId), name: employee.employeeId, roles: ['employee'],
     companyId: employee.companyId, schemeId: employee.schemeId, gradeId: employee.gradeId,
   }))];
   // Principal rows are run inputs; every business-policy read still reaches the supplied PolicyService.
@@ -117,10 +117,10 @@ function manualRecords(employee, adapterRow, now, modelLines) {
     model: modelLines[Math.floor(share(id, 'model') * modelLines.length)].replace('|', ' '),
     currentOdometer: { value: Math.floor(share(id, 'odometer') * mileage.value), unit: 'mi' } };
   return { recordSetId: `comparison:${id}:${adapter.fixtureVersion}`, source,
-    account: { employeeId: id, name: `${id} (fictional)`, companyId: employee.companyId,
+    account: { employeeId: id, name: id, companyId: employee.companyId,
       gradeId: employee.gradeId, schemeId: employee.schemeId, allowanceOverride: null,
       contact: { phone: adapter.contact.phone, email: adapter.contact.emailTemplate.replace('{employeeId}', id) } },
-    drivers: [{ driverId: driverId(id), employeeId: id, name: `${id} (fictional)`, kind: adapter.driver.kind,
+    drivers: [{ driverId: driverId(id), employeeId: id, name: id, kind: adapter.driver.kind,
       eligible: typedFact(adapter.driver.eligible, adapterRow, now), licence }],
     employeeFacts: comparisonEmployeeFacts(employee, adapterRow, now),
     contracts: [contract], histories: [{ schemeId: employee.schemeId, entries: [contract] }] };
@@ -140,7 +140,7 @@ export function comparisonStockRows(inputs, adapterRow) {
     facts.modelLine = typedFact({ status: 'known', value: car.modelLine, unit: null }, adapterRow, manifest.startsAt);
     const snapshot = createVehicleSnapshot({ sourceNamespace: 'comparison-synthetic', identityKind: 'exact-stock',
       sourceKeys: { stockId: car.orderUuid }, snapshotVersion: `${car.snapshotVersion}:${adapter.fixtureVersion}`,
-      observedAt: manifest.startsAt, display: { name: `${car.configuration.model} (synthetic)` }, facts });
+      observedAt: manifest.startsAt, display: { name: car.configuration.model }, facts });
     return { orderUuid: car.orderUuid, orderNumber: String(index + 1).padStart(7, '0'), configurationId: car.configurationId,
       state: 'unreleased', available: false, held: false, allocated: false, facts: snapshot,
       visibility: { companyIds: [...new Set(employees.map((e) => e.companyId))],

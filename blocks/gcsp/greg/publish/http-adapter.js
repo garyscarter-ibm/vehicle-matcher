@@ -40,7 +40,7 @@ export function policyOutcome(httpStatus, body, action) {
   if (httpStatus === 200 && body?.status === 'ok' && validate?.(body.value)) return { status: 'ready', value: body.value };
   if (isAccessLapsed(httpStatus, body)) return { status: 'access-required' };
   if ([401, 403].includes(httpStatus)) return { status: 'refused', message: 'Only Greg can preview or publish policy. Reopen the scheme ordering lead session.' };
-  if (body?.status === 'stale-run') return { status: 'refused', message: 'The demo was reset. Reopen the scheme ordering lead session.' };
+  if (body?.status === 'stale-run') return { status: 'refused', message: 'This page was restarted. Reopen the scheme ordering lead session.' };
   if (['invalid', 'conflict', 'stale-version'].includes(body?.status)) {
     const reasons = (Array.isArray(body.reasons) ? body.reasons : []).filter((r) => text(r?.reason)).map((r) => r.reason);
     return { status: 'rejected', message: [body.reason, ...reasons, 'Refresh policy and preview again before publishing.'].filter(text).join(' ') };

@@ -17,7 +17,7 @@ const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const int = (v, min, max) => Number.isSafeInteger(v) && v >= min && v <= max;
 const step = (v) => object(v) && OWNERS.includes(v.owner) && text(v.nextStep);
 export const policyUnavailable = () => result('unavailable', { code: 'appointment-policy-unavailable', retryable: true,
-  reason: 'Appointment rules are unavailable. Ask the scheme team to check the demonstration setup.' });
+  reason: 'Appointment rules are unavailable. Ask the scheme team to check the scheme setup.' });
 
 // Every slot, delay, scenario and owner comes from PolicyService; there are no consumer defaults.
 // The outcomes key is read only when the caller supplies one, so the return purpose is unchanged.

@@ -1,5 +1,6 @@
 import { journeyIntent, toAccountView } from './account-view.js';
 import { isAccessLapsed } from '../kit/run-restarted.js';
+import { expandStockPayload } from './stock-payload.js';
 
 const unavailable = (code, httpStatus = null) => ({ status: 'unavailable', code, httpStatus, retryable: true,
   view: { state: 'unavailable', editable: false, supportOwner: 'scheme-support', action: 'retry' } });
@@ -25,6 +26,10 @@ export function createAccountHttpAdapter({ base = '', fetchImpl = globalThis.fet
         || path === 'draft' && (!Number.isSafeInteger(value.draftVersion) || value.draftVersion < 1
           || !value.choices || typeof value.choices !== 'object'))) {
       return unavailable('account-response-invalid', response.status);
+    }
+    if (path === 'stock' && envelope.status === 'ok') {
+      const expanded = expandStockPayload(value);
+      return expanded ? { ...envelope, value: expanded } : unavailable('account-response-invalid', response.status);
     }
     return envelope;
   }

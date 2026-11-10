@@ -13,7 +13,7 @@ export const policyWide = (outcome) => ({ ...outcome, scope: 'policy-wide' });
 const text = (v, max = 200) => typeof v === 'string' && v.trim().length > 0 && v.length <= max && !v.includes('—');
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 export const policyUnavailable = (code = 'lifecycle-policy-unavailable') => result('unavailable', { code, retryable: true,
-  reason: 'Order approval rules are unavailable. Ask the scheme team to check the demonstration setup.' });
+  reason: 'Order approval rules are unavailable. Ask the scheme team to check the scheme setup.' });
 
 // Reads every rule at one pinned version. An order's own stage snapshot governs it, so a later list never relabels it.
 export async function loadLifecyclePolicy(policy, read, snapshot) {

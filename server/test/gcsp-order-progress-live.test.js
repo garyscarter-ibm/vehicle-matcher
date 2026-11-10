@@ -295,7 +295,7 @@ test('a presenter-confirmed returned outcome reads Returned with a synthetic ref
     assert.match(returning.outcome.providerReference, /^SYN-RET-/); assert.equal(returning.relationship.oldCar.status, 'returned');
     assert.equal(returning.relationship.currentCar, null, 'the handover is not confirmed, so there is no current car yet');
     const text = words(controller.getState().progress); assert.match(text, /Returned: /); assert.match(text, /Current carNone/); assert.match(text, /Returned carFictional|Returned car/);
-    assert.match(text, /Return reference \(synthetic\)SYN-RET-/); assert.doesNotMatch(text, /stays yours until it is returned/);
+    assert.match(text, /Return referenceSYN-RET-/); assert.doesNotMatch(text, /stays yours until it is returned/);
     const reopened = await open(f, { orderUuid }); assert.deepEqual(reopened.getState().progress.returnPlan, controller.getState().progress.returnPlan); reopened.destroy();
   } finally { controller.destroy(); }
 });

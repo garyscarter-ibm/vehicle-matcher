@@ -142,7 +142,7 @@ function matchesRetained(result, record, images, manifestDigest, supplement) {
     && isDeepStrictEqual((result.images?.items || []).map(({ imageId, asset, role, fidelity, sourceKind, observedDate }) =>
       ({ imageId, asset, role, fidelity, sourceKind, observedDate })), images.map(({ imageId, asset, role, fidelity, sourceKind, observedDate }) =>
       ({ imageId, asset, role, fidelity, sourceKind, observedDate })))
-    && result.presentation?.syntheticLabel === 'Synthetic identity' && result.presentation?.unknownLabel === 'Unknown'
+    && result.presentation?.syntheticLabel === 'Vehicle identity' && result.presentation?.unknownLabel === 'Unknown'
     && result.presentation?.sourceLabel === (source.sourceKind === 'dated-snapshot' ? 'Dated catalogue snapshot' : 'North American structural reference')
     && result.routing?.mode === 'offline' && result.routing.liveEligible === false;
 }

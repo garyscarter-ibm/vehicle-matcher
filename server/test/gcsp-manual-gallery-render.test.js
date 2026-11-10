@@ -293,8 +293,7 @@ test('card facts sit in one Car facts disclosure, closed at every width, supplie
     assert.equal(section.querySelector('.is-missing'), null); assert.doesNotMatch(card.textContent, /Not supplied/);
     assert.deepEqual([...section.querySelectorAll('.vm-facts-more')].map((node) => node.textContent), ['More details not supplied']);
   }
-  assert.equal(wide.root.querySelectorAll('.gcsp-synthetic').length, 1);
-  assert.equal(wide.root.querySelector('.gcsp-synthetic').textContent, 'Synthetic example data.');
+  assert.equal(wide.root.querySelectorAll('.gcsp-synthetic').length, 0);
   assert.doesNotMatch(wide.root.textContent, /Representative image\. See image provenance/);
   const listeners = new Set(); let matches = true;
   const stub = (query) => ({ get matches() { return query === '(max-width: 600px)' && matches; },

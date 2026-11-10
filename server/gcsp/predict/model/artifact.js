@@ -107,7 +107,7 @@ export function evaluationSummary(input) {
     'summary.baselines', 'baseline-unavailable');
   // Deliberate allowlist: record IDs, employee references and training rows stay outside panels.
   return { schemaVersion: 1, status: 'evaluated', artifactId, policyVersion: payload.policyVersion,
-    featureVersion: payload.featureVersion, label: 'Synthetic-trained; offline evaluation',
+    featureVersion: payload.featureVersion, label: 'Offline evaluation',
     partitionCounts: structuredClone(payload.partition.counts),
     metrics: Object.fromEntries(['learned', 'expressedDemand', 'deterministicFit'].map((key) => [key, project(payload.evaluation.models[key])])),
     deltas: structuredClone(payload.evaluation.deltas), limitations: [...payload.limitations],

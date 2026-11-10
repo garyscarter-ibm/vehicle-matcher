@@ -5,7 +5,6 @@ import { routeAfterRelease } from '../employee/portal-navigation.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 import { checkboxField, errorSummary } from '../kit/form-controls.js';
 import { stageList } from '../kit/stage-list.js';
-import { syntheticNote } from '../kit/synthetic-note.js';
 import { viewStatus } from '../kit/view-status.js';
 import { orderIdentityRows } from '../kit/order-identity.js';
 import { reviewVehicleView } from '../manual-review/gcsp-manual-review.js';
@@ -119,7 +118,7 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
     const layout = el('div', 'gcsp-review-layout'); layout.append(nodes.left, nodes.right);
     nodes.declarationsCard = section('Before you submit', nodes.declarations);
     nodes.declarationsCard.querySelector('.gcsp-card-body').append(nodes.hint, actions);
-    panel.append(screenIntro({ title: 'Review your order', level: 1 }), nodes.notice, time, nodes.recovery, nodes.summary.root, layout, nodes.declarationsCard, syntheticNote());
+    panel.append(screenIntro({ title: 'Review your order', level: 1 }), nodes.notice, time, nodes.recovery, nodes.summary.root, layout, nodes.declarationsCard);
     root.replaceChildren(panel);
   }
   function after() {
@@ -139,7 +138,7 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
       const stages = terms?.approvalStages?.length ? `After you submit: ${terms.approvalStages.map(stageLabel).join(', ')}.` : '';
       nodes.declarations.replaceChildren(...(terms ? [el('p', 'gcsp-note', terms.wordingByMode?.[state.claim.model.mode] ?? terms.wording),
         // The terms version is sent with the submission, never shown: it is a code, not copy (FUCQ-197).
-        ...(terms.fictional ? [el('p', 'gcsp-field-hint', 'Synthetic demonstration wording, not BMW terms.')] : []), group, ...(stages ? [el('p', 'gcsp-field-hint', stages)] : [])] : [el('p', 'gcsp-note', 'The terms could not be loaded.')]));
+        group, ...(stages ? [el('p', 'gcsp-field-hint', stages)] : [])] : [el('p', 'gcsp-note', 'The terms could not be loaded.')]));
     }
     for (const box of boxes) { box.checked = state.ticks[box.dataset.declaration] === true; box.disabled = state.busy || state.unresolved; }
   }

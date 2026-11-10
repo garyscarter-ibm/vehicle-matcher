@@ -17,7 +17,7 @@ test('actual live entry bootstraps the shared canonical account and current acti
     assert.match(page.headers.get('cache-control'),/no-store/);
     const cookie=page.headers.getSetCookie().map((value)=>value.split(';')[0]).join('; ');assert.ok(cookie);
     const request=(path,options={})=>fetch(new URL(path,app.origin),{...options,headers:{...options.headers,Origin:app.origin,Cookie:cookie}});
-    const account=createAccountHttpAdapter({fetch:request});const current=await account.loadAccount();assert.equal(current.status,'ready');assert.match(current.name,/fictional/i);
+    const account=createAccountHttpAdapter({fetch:request});const current=await account.loadAccount();assert.equal(current.status,'ready');assert.equal(current.name,'Paula Mason');
     const adapter=createActivityHttpAdapter({fetch:request,loadAccount:account.loadAccount});controller=createActivityController({adapter});
     await controller.refresh();assert.equal(controller.getState().result.value.permission,null);assert.equal(controller.getState().result.value.state,'no-brief');
     const post=async(path,body)=>(await request(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})).json();

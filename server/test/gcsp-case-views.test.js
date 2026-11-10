@@ -46,7 +46,7 @@ test('each employee state renders owner, reasons, dates, next action, remedy and
     const c = caseFixture(name);
     assert.match(root.textContent, /Scheme team/); assert.match(root.textContent, new RegExp(c.reason));
     assert.match(root.textContent, /Review the renewal options with Paula/);
-    assert.match(root.textContent, /Due, demo clock \(UTC\)/); assert.match(root.textContent, /2026-11-06 12:00:00 UTC/);
+    assert.match(root.textContent, /Due \(UTC\)/); assert.match(root.textContent, /2026-11-06 12:00:00 UTC/);
     assert.match(root.textContent, /Renewal deadline \(calendar date\)/); assert.match(root.textContent, /2026-11-20/);
     assert.match(root.textContent, /Dated case history/); assert.match(root.textContent, /Actor(You|Automatic check)/);
     assert.match(root.textContent, name === 'trigger' ? /Opened fromRenewal deadline approaching/ : /Opened fromHelp request/);
@@ -59,7 +59,7 @@ test('each employee state renders owner, reasons, dates, next action, remedy and
 });
 test('loading, unavailable, forbidden and stale-run remain distinct and request failures never imply success', async () => {
   for (const [name, title] of [['loading', 'Loading your cases'], ['unavailable', 'Renewal help is unavailable'],
-    ['forbidden', 'You cannot open these cases'], ['stale-run', 'Your demo run has changed']]) {
+    ['forbidden', 'You cannot open these cases'], ['stale-run', 'This page is out of date']]) {
     const { root, destroy } = await mount(name); assert.match(root.textContent, new RegExp(title)); destroy();
   }
   const { root, destroy } = await mount('none', { ...fixtureAdapter('none'), requestHelp: async () => { throw Error('network'); } });
@@ -176,7 +176,7 @@ async function mountQueue(adapter = queueFixtureAdapter(), options = {}) {
   await tick(); return { root, destroy };
 }
 const openRow = (root, caseId) => {
-  const button = root.querySelector(`button[aria-label="Open case for Synthetic employee ${Number(caseId.split('-').pop()) + 1}"]`);
+  const button = root.querySelector(`button[aria-label="Open case for Employee ${Number(caseId.split('-').pop()) + 1}"]`);
   assert.ok(button, `row action for ${caseId}`); button.click();
 };
 function queueField(root, name, value, event = 'input') {
@@ -195,11 +195,11 @@ function reviewQueue(root, remedyKey = '') {
 test('queue renders all statuses and canonical facts with deadline/status sorting and an unchanged shared table', async () => {
   const { root, destroy } = await mountQueue();
   const table = root.querySelector('table'); assert.ok(table); assert.equal(table.querySelectorAll('tbody tr').length, 5);
-  assert.match(root.textContent, /Renewal deadline \(calendar date\)/); assert.match(root.textContent, /Next action due, demo clock \(UTC\)/);
-  assert.match(root.textContent, /Synthetic employee 1/); assert.match(root.textContent, /Help request/);
+  assert.match(root.textContent, /Renewal deadline \(calendar date\)/); assert.match(root.textContent, /Next action due \(UTC\)/);
+  assert.match(root.textContent, /Employee 1/); assert.match(root.textContent, /Help request/);
   assert.match(root.textContent, /My replacement may miss my contract end/); assert.match(root.textContent, /Scheme team/);
   assert.match(root.textContent, /2026-11-06 12:00:00 UTC/);
-  assert.equal(table.querySelector('tbody th').textContent, 'Synthetic employee 3');
+  assert.equal(table.querySelector('tbody th').textContent, 'Employee 3');
   queueField(root, 'sort', 'status', 'change');
   assert.deepEqual([...root.querySelectorAll('tbody tr')].map((r) => r.children[4].textContent), ['Open', 'In progress', 'Remedy proposed', 'Resolved', 'Closed']);
   const tie = queueCaseFixtures().slice(0, 2).map((c) => ({ ...c, renewalDeadline: null }));
@@ -244,7 +244,7 @@ test('FUCQ-261: the queue stacks at narrow widths with every column labelled, an
   assert.ok(cells.includes('Status') && cells.includes('Owner'), cells.join());
   assert.equal(root.querySelector('[id$="-selection"]'), null, 'the Case to work select is gone');
   const actions = [...root.querySelectorAll('tbody .gcsp-table-action')]; assert.equal(actions.length, 5);
-  assert.ok(actions.every((a) => a.textContent === 'Open' && /^Open case for Synthetic employee \d$/.test(a.getAttribute('aria-label'))));
+  assert.ok(actions.every((a) => a.textContent === 'Open' && /^Open case for Employee \d$/.test(a.getAttribute('aria-label'))));
   assert.equal(actions[0].closest('td').dataset.label, undefined); destroy();
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
   assert.match(css, /@media \(min-width: 641px\) \{ \.gcsp \.gcsp-case-queue \.gcsp-table \{ min-width: 1050px; \} \}/);
@@ -297,26 +297,26 @@ test('embedded queue drops the page shell height and grey ground, so the region 
   assert.match(css, /\.gcsp:has\(> \.gcsp-case-queue\.is-embedded\) \{ min-height: 0; background: transparent; \}/);
 });
 test('alternative-car remedies show the car name, never a raw id, to the employee and a secondary reference to the scheme team', async () => {
-  const named = { ...caseFixture('waiting'), remedy: { type: 'alternative-car', orderUuid: 'raw-order-uuid-123', carName: 'Synthetic BMW iX1' } };
+  const named = { ...caseFixture('waiting'), remedy: { type: 'alternative-car', orderUuid: 'raw-order-uuid-123', carName: 'BMW iX1' } };
   const unnamed = { ...named, remedy: { type: 'alternative-car', orderUuid: 'raw-order-uuid-123' } };
-  for (const [c, name] of [[named, 'Synthetic BMW iX1'], [unnamed, 'Car details not supplied']]) {
+  for (const [c, name] of [[named, 'BMW iX1'], [unnamed, 'Car details not supplied']]) {
     const f = await mount('waiting', { ...fixtureAdapter('waiting'), async readCases() { return { status: 'ok', value: { cases: [c] } }; } });
     assert.match(f.root.textContent, new RegExp(`Proposed car${name}`)); assert.doesNotMatch(f.root.textContent, /raw-order-uuid-123/);
     assert.match(f.root.textContent, /No specific next car or greater priority is guaranteed/); f.destroy();
   }
   const done = { ...named, status: 'resolved' };
   const g = await mount('waiting', { ...fixtureAdapter('waiting'), async readCases() { return { status: 'ok', value: { cases: [done] } }; } });
-  assert.match(g.root.textContent, /Recorded carSynthetic BMW iX1/); g.destroy();
+  assert.match(g.root.textContent, /Recorded carBMW iX1/); g.destroy();
   const q = await mountQueue({ ...queueFixtureAdapter(), async readOptions({ caseId }) {
     const value = queueOptionsFixture({ ...queueCaseFixtures()[0], caseId }); value.case.remedy = named.remedy; return { status: 'ok', value }; } });
   await openQueue(q.root);
-  assert.match(q.root.textContent, /Proposed carSynthetic BMW iX1/); assert.match(q.root.textContent, /Exact car referenceraw-order-uuid-123/); q.destroy();
+  assert.match(q.root.textContent, /Proposed carBMW iX1/); assert.match(q.root.textContent, /Exact car referenceraw-order-uuid-123/); q.destroy();
 });
 test('queue editor and review show the selected car name before the reference', async () => {
   const f = await mountQueue(); await openQueue(f.root); reviewQueue(f.root, 'alternativeCars:0');
-  assert.match(f.root.textContent, /Proposed carSynthetic BMW iX1/); assert.match(f.root.textContent, /Exact car referencesynthetic-exact-car/);
+  assert.match(f.root.textContent, /Proposed carBMW iX1/); assert.match(f.root.textContent, /Exact car referencesynthetic-exact-car/);
   findButton(f.root, 'Review case update').click();
-  assert.match(f.root.querySelector('.gcsp-case-confirmation').textContent, /Proposed carSynthetic BMW iX1/); f.destroy();
+  assert.match(f.root.querySelector('.gcsp-case-confirmation').textContent, /Proposed carBMW iX1/); f.destroy();
 });
 test('queue opens read-only options, uses exactly server statuses and availability, and never promises priority', async () => {
   let writes = 0; const value = queueOptionsFixture(); value.nextStatuses = ['resolved'];
@@ -327,7 +327,7 @@ test('queue opens read-only options, uses exactly server statuses and availabili
   assert.equal(f.root.querySelector('[id$="-remedyKey"] option[value="contractExtension"]'), null);
   assert.match(f.root.textContent, /The current contract is not eligible/); assert.match(f.root.textContent, /No specific next car or greater priority is guaranteed/);
   queueField(f.root, 'remedyKey', 'laterRelease:0', 'change');
-  assert.match(f.root.textContent, /2026-11-10 09:15:00 UTC/); assert.match(f.root.textContent, /Synthetic reviewed release/);
+  assert.match(f.root.textContent, /2026-11-10 09:15:00 UTC/); assert.match(f.root.textContent, /Reviewed release/);
   assert.equal(writes, 0); f.destroy();
   const waiting = await mountQueue(); await openQueue(waiting.root, 'synthetic-case-2');
   assert.match(waiting.root.textContent, /The employee confirms this preference through their brief/);
@@ -335,7 +335,7 @@ test('queue opens read-only options, uses exactly server statuses and availabili
 });
 test('queue handles empty/loading/source/access/stale-run distinctly and terminal cases have no editor', async () => {
   for (const [name, title] of [['empty', 'No renewal cases'], ['loading', 'Loading renewal cases'], ['unavailable', 'Renewal cases are unavailable'],
-    ['forbidden', 'You cannot open these cases'], ['stale-run', 'The demo was restarted']]) {
+    ['forbidden', 'You cannot open these cases'], ['stale-run', 'This page was restarted']]) {
     const f = await mountQueue(queueFixtureAdapter(name)); assert.match(f.root.textContent, new RegExp(title)); f.destroy();
   }
   const f = await mountQueue(); await openQueue(f.root, 'synthetic-case-4');
@@ -352,9 +352,9 @@ test('case adapter reads a bare 401 (lapsed access key) as access-required throu
 test('queue shows the shared restart notice, not renewal-help copy, when access lapses or the run restarts', async () => {
   for (const status of ['access-required', 'stale-run', 'unknown-session']) for (const embedded of [true, false]) {
     const f = await mountQueue({ ...queueFixtureAdapter(), async listCases() { return { status }; } }, { embedded });
-    assert.match(f.root.textContent, /The demo was restarted\. Reload the page to continue\./, `${status} ${embedded}`);
-    assert.equal(f.root.querySelector('.gcsp-case-status').textContent, 'Demo restarted.');
-    assert.doesNotMatch(f.root.textContent, /Renewal help is unavailable|Your demo run has changed|Reopen the current employee session/);
+    assert.match(f.root.textContent, /This page was restarted\. Reload to continue\./, `${status} ${embedded}`);
+    assert.equal(f.root.querySelector('.gcsp-case-status').textContent, 'Restarted.');
+    assert.doesNotMatch(f.root.textContent, /Renewal help is unavailable|This page is out of date|Reopen the current employee session/);
     assert.ok(findButton(f.root, 'Reload')); assert.equal(findButton(f.root, 'Retry queue'), undefined); assert.equal(findButton(f.root, 'Refresh queue'), undefined);
     f.destroy();
   }
@@ -387,7 +387,7 @@ test('queue records only exact projected remedy commands, with editable single p
   const variants = [
     ['preferenceRelaxations:0', 'preferenceValue', '1', 'change', { type: 'preference-relaxation', decisionId: 'synthetic-decline', expectedBriefVersion: 3, path: 'preferences.body.value', value: 'suv' }],
     ['preferenceRelaxations:1', 'preferenceValue', '200', 'input', { type: 'preference-relaxation', decisionId: 'synthetic-decline', expectedBriefVersion: 3, path: 'preferences.range.value', value: 200 }],
-    ['laterRelease:0', null, null, null, { type: 'later-release', releaseAt: '2026-11-10T09:15:00.000Z', source: 'Synthetic reviewed release' }],
+    ['laterRelease:0', null, null, null, { type: 'later-release', releaseAt: '2026-11-10T09:15:00.000Z', source: 'Reviewed release' }],
     ['manualDecision', 'decision', 'Discussed with the ordering team.', 'input', { type: 'manual-decision', decision: 'Discussed with the ordering team.' }],
     ['contractExtension', 'until', '2026-12-01', 'input', { type: 'contract-extension', until: '2026-12-01' }],
   ];
@@ -494,7 +494,7 @@ test('FUCQ-213: a lapsed access key reads as access needed, not unavailable', as
   const lapsed = await adapter.readHelp();
   assert.equal(lapsed.status, 'access-required');
   const shown = caseFailure(lapsed);
-  assert.equal(shown.title, 'Demo access needed'); assert.doesNotMatch(`${shown.title} ${shown.text}`, /unavailable/i);
+  assert.equal(shown.title, 'Access needed'); assert.doesNotMatch(`${shown.title} ${shown.text}`, /unavailable/i);
 });
 test('FUCQ-208: owner role is shown only when it adds to the owner name', async () => {
   const { renderCaseContent } = await import('../../blocks/gcsp/cases/case-content.js');
@@ -542,11 +542,11 @@ test('FUCQ-297: each queue row opens its case, focus lands on the case heading, 
   assert.equal(f.root.querySelector('[id$="-selection"]'), null); assert.equal(findButton(f.root, 'Open selected case'), undefined);
   openRow(f.root, 'synthetic-case-2'); await tick();
   const heading = f.root.querySelector('[data-case-heading]');
-  assert.equal(heading.textContent, 'Synthetic employee 3'); assert.equal(heading.tabIndex, -1);
+  assert.equal(heading.textContent, 'Employee 3'); assert.equal(heading.tabIndex, -1);
   assert.equal(document.activeElement, heading); assert.notEqual(document.activeElement, f.root.querySelector('.gcsp-case-status'));
   assert.equal(f.root.querySelector('[data-case-id]').dataset.caseId, 'synthetic-case-2');
   findButton(f.root, 'Close case details').click();
-  assert.equal(document.activeElement.getAttribute('aria-label'), 'Open case for Synthetic employee 3'); f.destroy();
+  assert.equal(document.activeElement.getAttribute('aria-label'), 'Open case for Employee 3'); f.destroy();
 });
 test('FUCQ-297: unavailable remedies are hint text under the select, not option text', async () => {
   const f = await mountQueue({ ...queueFixtureAdapter(), async readOptions({ caseId }) {

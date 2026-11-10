@@ -20,7 +20,7 @@ export async function loadDemoPrincipals(policy, read) {
         && (p.roles[0] === 'greg' || m.gradeIds.includes(p.gradeId) && text(p.entitlementSlotId)))))
     && principals.filter((p) => p.roles.includes('presenter')).length === 1;
   return valid ? { status: 'ok', value: structuredClone(principals), policyVersion: configured.policyVersion }
-    : { status: 'unavailable', reason: 'Fictional principal configuration is invalid.', retryable: false };
+    : { status: 'unavailable', reason: 'Principal configuration is invalid.', retryable: false };
 }
 
 // Shared by initial identity setup and the atomic scenario reset fixture builder.

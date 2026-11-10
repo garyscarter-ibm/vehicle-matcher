@@ -19,9 +19,9 @@ const TOURING = 'g21-touring-320i';
 const I5 = 'g61-i5-40';
 
 const FALLBACK_BASE = 'only the baseline plan from expressed demand is shown';
-const learnedFallback = () => ({ status: 'fallback', label: 'Synthetic-trained model', recommended: false, submittable: false, reason: 'no-active-model',
+const learnedFallback = () => ({ status: 'fallback', label: 'Learned model', recommended: false, submittable: false, reason: 'no-active-model',
   limitation: `No learned model is active, so ${FALLBACK_BASE}.` });
-const learnedCoverage = () => ({ status: 'fallback', label: 'Synthetic-trained model', recommended: false, submittable: false, reason: 'outside-coverage',
+const learnedCoverage = () => ({ status: 'fallback', label: 'Learned model', recommended: false, submittable: false, reason: 'outside-coverage',
   limitation: `Some employees or vehicle classes are outside what the model was trained on, so ${FALLBACK_BASE}.`,
   coverage: { cohorts: ['G8-10'], vehicleClasses: ['unknown'] }, model: { artifactId: 'sha256:90100e040d79c3a31201dc9e7785d2c544557be8722511a6c3143aef1b36fb17', featureVersion: 'choice-features.v1' } });
 const score = (logLoss, brier, count, thin = false) => ({ count, logLoss, brier, zeroProbabilityOutcomes: 0, thin });
@@ -36,16 +36,16 @@ function differencesFor(base, plan) {
 // A realistic learned result: one derivative up, one down, the long i5 name unchanged.
 const learnedAvailable = (base) => {
   const plan = feasible({ id: 'learned001', q: { 'g20-saloon-320i': 1, [TOURING]: 1, [I5]: 1 }, covered: 4, total: 4, risk: [0, 4] });
-  return { status: 'available', label: 'Synthetic-trained model', recommended: false, submittable: false, plan,
+  return { status: 'available', label: 'Learned model', recommended: false, submittable: false, plan,
     forecast: { version: 'forecast.learned.v1', model: { artifactId: 'sha256:90100e040d79c3a31201dc9e7785d2c544557be8722511a6c3143aef1b36fb17', featureVersion: 'choice-features.v1', modelVersion: 'choice-model.v1',
       activationPolicyVersion: 'gcsp-policy-v1', activationEffectiveFrom: '2026-11-04T00:00:00.000Z' },
     data: { dataHash: 'sha256:27281203f346f5155eacd89c55cf4c87a21a1027c5790d7ea8a4ed012319efe0', datasetKind: 'synthetic', generatorVersion: 'learning-generator.v1', trainingPolicyVersion: 'gcsp-policy-v1' },
     settings: { choiceMassThreshold: 0.8, waitExclusionThreshold: 0.5, intervalZ: 1.96 }, modelExpectsWait: 0.18,
     aggregate: [{ vehicleClass: 'estate', period: '2027-02', employees: 4, expected: 2.1, low: 0.8, high: 3.4 }],
-    evaluation: { label: 'Synthetic-trained; offline evaluation', partitionCounts: { train: 2400, validation: 480, later: 640 },
+    evaluation: { label: 'Offline evaluation', partitionCounts: { train: 2400, validation: 480, later: 640 },
       overall: { learned: score(0.912, 0.478, 640), expressedDemand: score(1.204, 0.601, 640), deterministicFit: score(1.086, 0.553, 640) },
       deltas: {}, thin: { cohorts: [], vehicleClasses: ['estate'] } },
-    limitations: ['Trained on synthetic data; this does not describe validated BMW employee behaviour.',
+    limitations: ['Not validated on BMW employee choices.',
       'Probabilities are the model\'s estimate over each employee\'s permitted vehicles or waiting, not a fit score.'] },
     differences: differencesFor(base, plan) };
 };
@@ -54,7 +54,7 @@ const presentation = () => ({ forecastBasis: 'expressed-saved-demand', editableK
   models: Object.keys(MODEL_MAX).map((modelId) => ({ modelId, model: CATALOGUE.find((d) => d.modelId === modelId).model })) });
 
 const provenance = (policyVersion, { budget = 20000000, derivativeMax = {}, modelMin = {} } = {}) => {
-  const row = (key, value, unit) => ({ key, value, unit, status: 'assumed', basis: 'Synthetic fixture value.', source: 'fixture', sourceDate: '2026-11-05', policyVersion, effectiveFrom: '2026-11-04T00:00:00.000Z' });
+  const row = (key, value, unit) => ({ key, value, unit, status: 'assumed', basis: 'Assumed value.', source: 'fixture', sourceDate: '2026-11-05', policyVersion, effectiveFrom: '2026-11-04T00:00:00.000Z' });
   return [row('orderPlan.horizonDays', 120, 'days'), row('orderPlan.budgetMinor', budget, 'GBP minor units'), row('orderPlan.currency', 'GBP', 'ISO currency'),
     row('orderPlan.modelBounds', Object.entries(MODEL_MAX).map(([modelId, max]) => ({ modelId, min: modelMin[modelId] ?? 0, max })), 'vehicles'),
     row('orderPlan.derivativeBounds', CATALOGUE.map((d) => ({ derivativeId: d.id, min: 0, max: derivativeMax[d.id] ?? d.max })), 'vehicles'),

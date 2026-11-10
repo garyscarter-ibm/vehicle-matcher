@@ -80,7 +80,7 @@ test('uncertain state offers the same-command retry; unavailable keeps saved rec
   root.querySelector('[data-followup-action=refresh]').click(); assert.equal(retries, 1); assert.equal(reads, 1);
   view.update({ state: 'unavailable', savedChange: saved, busy: false });
   assert.match(root.textContent, /Your change is saved/); assert.doesNotMatch(root.textContent, /Nothing suitable|Waiting for|No match/);
-  view.update({ state: 'stale-run', busy: false }); assert.match(root.textContent, /earlier demo run/);
+  view.update({ state: 'stale-run', busy: false }); assert.match(root.textContent, /page is out of date/);
   assert.equal(root.querySelector('button'), null);
 });
 
@@ -181,7 +181,7 @@ test('owned block sources have no inline handlers, unsafe execution or styleshee
 
 test('a lapsed access key links to the access form with no refresh', (t) => {
   const { root, view } = host(t); view.update({ state: 'access-lapsed', busy: false });
-  assert.match(root.textContent, /Demo access needed/); assert.equal(root.querySelectorAll('button').length, 0);
+  assert.match(root.textContent, /Access needed/); assert.equal(root.querySelectorAll('button').length, 0);
   assert.equal(root.querySelector('a.vm-btn').getAttribute('href'), '/gcsp/access?next=%2Fgcsp-account.html');
   assert.equal(root.querySelector('[data-followup-action=refresh]'), null); assert.doesNotMatch(root.textContent, /unavailable/i);
 });

@@ -158,7 +158,7 @@ test('staleView labels the changed inputs in plain words', () => {
   assert.deepEqual([s.title, s.summary], ['Replan needed', 'Changed since this plan: stock, the plan itself.']);
   assert.equal(s.current.planId, 'order-plan-fresh0001');
   const all = staleView({ changedInputs: ['plan', 'supply', 'policy', 'clock', 'forecast', 'cohort', 'catalog', 'odd-key'] });
-  assert.deepEqual(all.changed.map((c) => c.label), ['Production requests and supply', 'Limits and rules', 'Demo clock', 'Demand forecast', 'Employee group', 'Vehicle catalogue', 'Odd key', 'The plan itself']);
+  assert.deepEqual(all.changed.map((c) => c.label), ['Production requests and supply', 'Limits and rules', 'Clock', 'Demand forecast', 'Employee group', 'Vehicle catalogue', 'Odd key', 'The plan itself']);
   assert.match(staleView(undefined).summary, /Something changed/);
 });
 
@@ -268,7 +268,7 @@ test('a 401 with no status (lapsed access key) reads access-required; a status k
 // ---------- FUCQ-123: learned alternative ----------
 test('toPlanView maps an available learned result into rows, evaluation and model facts, in the presentation names', () => {
   const l = view('learned').learned;
-  assert.deepEqual([l.status, l.label, l.comparable, l.changedCount], ['available', 'Synthetic-trained model', true, 5]);
+  assert.deepEqual([l.status, l.label, l.comparable, l.changedCount], ['available', 'Learned model', true, 5]);
   const byName = Object.fromEntries(l.rows.map((r) => [r.name, r]));
   assert.deepEqual([byName['3 Series Saloon 320i'].baseline, byName['3 Series Saloon 320i'].learned, byName['3 Series Saloon 320i'].difference, byName['3 Series Saloon 320i'].changed], ['0', '1', '+1', true]);
   assert.deepEqual([byName['3 Series Touring 320i'].difference, byName['3 Series Touring 320i'].changed], ['-1', true]);
@@ -287,7 +287,7 @@ test('toPlanView maps fallback and unavailable results with their limitation ver
   assert.deepEqual([none.status, none.reason, none.limitation, none.coverage], ['fallback', 'no-active-model', raw.limitation, null]);
   const out = view('learned-coverage').learned; assert.deepEqual([out.reason, out.coverage], ['outside-coverage', { cohorts: ['G8-10'], vehicleClasses: ['unknown'] }]);
   assert.equal(out.limitation, value('learned-coverage').learned.limitation);
-  const v = value('ready'); v.learned = { status: 'unavailable', label: 'Synthetic-trained model', reason: 'x', limitation: 'Gone.' };
+  const v = value('ready'); v.learned = { status: 'unavailable', label: 'Learned model', reason: 'x', limitation: 'Gone.' };
   assert.deepEqual([toPlanView(v).learned.status, toPlanView(v).learned.limitation], ['unavailable', 'Gone.']);
   v.learned = { status: 'mystery' }; assert.equal(toPlanView(v).learned.status, 'unavailable'); assert.match(toPlanView(v).learned.limitation, /only the baseline plan is shown/);
   v.learned = { status: 'fallback', reason: 'r', limitation: '' }; assert.match(toPlanView(v).learned.limitation, /only the baseline plan is shown/);

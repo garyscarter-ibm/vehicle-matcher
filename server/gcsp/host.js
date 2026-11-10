@@ -54,7 +54,7 @@ function accessPage(next, message) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Open the demo</title>
+  <title>Access needed</title>
   <link rel="stylesheet" href="/blocks/gcsp/shell/gcsp-shell.css">
   <link rel="stylesheet" href="/gcsp-employee.css">
   <style>
@@ -68,13 +68,13 @@ function accessPage(next, message) {
 </head>
 <body>
   <main>
-    <h1>Open the demo</h1>
+    <h1>Access needed</h1>
     ${message ? `<p role="alert">${message}</p>` : ''}
     <form method="post" action="${ACCESS_PATH}">
-      <label for="key">Demo key</label>
+      <label for="key">Access key</label>
       <input id="key" name="key" type="password" autocomplete="off" required>
       <input type="hidden" name="next" value="${next}">
-      <button type="submit">Open the demo</button>
+      <button type="submit">Continue</button>
     </form>
   </main>
 </body>
@@ -150,9 +150,9 @@ export function createGcspFront({ root, services, api, origin, accessKey, access
         const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
         if (session.status !== 'ok') {
           const issued = await services.createLocalSession();
-          if (issued.status !== 'ok') { res.writeHead(503).end('The local demo could not start.'); return; }
+          if (issued.status !== 'ok') { res.writeHead(503).end('The service could not start.'); return; }
           const expires = issued.value.setCookie.at(-1).match(/; Expires=([^;]+)/)?.[1];
-          if (!expires) { res.writeHead(503).end('The local demo could not start.'); return; }
+          if (!expires) { res.writeHead(503).end('The service could not start.'); return; }
           res.setHeader('Set-Cookie', [...issued.value.setCookie,
             `${navigationCookie}=${boot}; Path=/; HttpOnly; Secure; SameSite=Strict; Expires=${expires}`]);
         }

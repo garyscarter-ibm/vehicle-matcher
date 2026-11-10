@@ -132,7 +132,7 @@ async function setup(t, { policy, order = 'replacement', outcomes = (repository)
 }
 const keys = (v) => Object.keys(v).sort();
 // Paula's home address as seedManualDemoContext holds it on her account.
-const HOME = { locationId: null, kind: 'home-address', label: '1 Fictional Way, Example Town, ZZ1 1ZZ', rule: 'home-address' };
+const HOME = { locationId: null, kind: 'home-address', label: '27 Ashdown Road, Bracknell, RG12 9ZZ', rule: 'home-address' };
 const sorted = (list) => [...list].sort();
 
 test('a replacement order has a return plan linked to the old contract and slot; a new order has none', async (t) => {
@@ -141,7 +141,7 @@ test('a replacement order has a return plan linked to the old contract and slot;
   assert.deepEqual([plan.applicable, plan.state, plan.scheduled, plan.choice, plan.appointment.state, plan.appointment.purpose], [true, 'not-planned', false, null, 'not-requested', 'return']);
   assert.deepEqual([plan.oldContractId, plan.vehicleSlotId, plan.employeeId, plan.runId], [f.contract.contractId, f.paula.entitlementSlotId, 'employee-paula', f.paula.runId]);
   assert.deepEqual([plan.currentCar.contractId, plan.currentCar.slotId, plan.currentCar.status, plan.currentCar.source], [f.contract.contractId, f.contract.slotId, 'current', 'account']);
-  assert.deepEqual([plan.location.locationId, plan.location.kind, plan.location.label], ['demo-collection-centre', 'collection-location', 'Fictional collection centre']);
+  assert.deepEqual([plan.location.locationId, plan.location.kind, plan.location.label], ['demo-collection-centre', 'collection-location', 'Bracknell collection centre']);
   assert.deepEqual([plan.fictional, plan.handover.state, plan.handover.booked], [true, 'not-requested', false]);
   assert.deepEqual([plan.owner, plan.nextStep], [OWNERSHIP.ineligible.owner, OWNERSHIP.ineligible.nextStep]);
   assert.ok(plan.choices.every((c) => c.available === false && typeof c.reason === 'string'), 'no choice is open before the handover is scheduled');
@@ -221,7 +221,7 @@ test('return states: requested is never scheduled, then a separate appointment i
   assert.deepEqual([requested.owner, requested.nextStep], [OWNERSHIP.states.requested.owner, OWNERSHIP.states.requested.nextStep]);
   assert.deepEqual(requested.history.map((h) => [h.state, h.at]), [['return-requested', askedAt]]);
   assert.match(requested.history[0].providerReference, /^SYN-APT-/);
-  assert.deepEqual(requested.location, { locationId: 'demo-collection-centre', kind: 'collection-location', label: 'Fictional collection centre', rule: 'handover-retailer' });
+  assert.deepEqual(requested.location, { locationId: 'demo-collection-centre', kind: 'collection-location', label: 'Bracknell collection centre', rule: 'handover-retailer' });
   await f.sameCar('return requested');
 
   await f.advance(60); await f.tick();
@@ -640,7 +640,7 @@ test('FUCQ-168: a ready handover completed through the real appointment service 
   assert.equal((await rows(f, CURRENT_CAR_EVENTS)).length, 1, 'a repeated completion records nothing more');
 
   const refuse = (p) => ({ ...p, async complete(op) { return { status: 'unsupported', operationId: op.operationId, orderUuid: op.payload.orderUuid, step: 'complete',
-    code: 'live-appointments-unsupported', reason: 'Live appointment booking is not connected in this demonstration.' }; } });
+    code: 'live-appointments-unsupported', reason: 'Live appointment booking is not connected yet.' }; } });
   const g = await setup(t, { documents: true, wrapProvider: refuse }); await g.approve(); await g.scheduleHandover();
   await g.advance(2 * DAY / 1000); await g.tick();
   assert.equal((await g.docs.completeTask(g.paula, ACK(g.orderUuid))).status, 'ok');

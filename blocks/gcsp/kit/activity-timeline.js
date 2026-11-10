@@ -4,7 +4,7 @@ let sequence = 0;
 const format = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric',
   hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
 
-/** Demo-time (UTC) text for a valid ISO instant, shared by the timeline and its callers. */
+/** UTC text for a valid ISO instant, shared by the timeline and its callers. */
 export const demoTime = (instant) => format.format(new Date(instant));
 
 /** Supplied event order is retained. No event, time or outcome is inferred by the kit. */
@@ -13,7 +13,7 @@ export function activityTimeline({ events = [], heading = 'Activity history', em
   const title = el(`h${level}`, 'gcsp-timeline-heading', heading);
   title.id = `gcsp-timeline-${++sequence}`;
   root.setAttribute('aria-labelledby', title.id);
-  root.append(title, el('p', 'gcsp-timeline-note', 'All dates are demo time (UTC).'));
+  root.append(title, el('p', 'gcsp-timeline-note', 'All dates are UTC.'));
   if (!events.length) { root.append(el('p', 'gcsp-timeline-empty', emptyText)); return root; }
   const list = el('ol', 'gcsp-timeline-list');
   for (const event of events) {

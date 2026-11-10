@@ -65,8 +65,8 @@ test('projection labels every seed row from the policy source, with no raw keys 
   assert.equal(view.fields.find((p) => p.id === 'weight:body').label, 'Body style weight');
   assert.equal(view.fields.find((p) => p.id === 'weight:economy').label, 'Running costs weight');
   assert.equal(view.fields.find((p) => p.id === 'weight:size').unitLabel, 'weight');
-  assert.equal(view.activeVersionLabel, 'Demo policy 1');
-  assert.equal(versionLabel('gcsp-policy-v1+offer-journey-v1', view.versionNames), 'Demo policy 1 with offer journey');
+  assert.equal(view.activeVersionLabel, 'Policy 1');
+  assert.equal(versionLabel('gcsp-policy-v1+offer-journey-v1', view.versionNames), 'Policy 1 with offer journey');
   assert.equal(versionLabel('greg-abc', view.versionNames), "Greg's change"); assert.equal(versionLabel('preview-abc', view.versionNames), 'Unnamed update');
 });
 

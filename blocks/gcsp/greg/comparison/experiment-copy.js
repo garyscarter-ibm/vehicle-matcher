@@ -7,7 +7,7 @@ export const NO_STORED = 'not run yet';
 export const UNREADABLE = 'stored result could not be read';
 export const stateText = (made) => `stored ${made}`;
 export const NO_RESULT_TITLE = 'No stored result yet';
-export const NO_RESULT_NOTE = 'This comparison is prepared offline and has not been run here.';
+export const NO_RESULT_NOTE = 'This comparison has not been run yet.';
 export const NO_PREVIOUS = 'No previous result';
 export const NO_PREVIOUS_NOTE = 'The new result appears here when the run finishes.';
 export const UNREADABLE_NOTE = 'The stored result for this experiment could not be read. Reload to try again.';

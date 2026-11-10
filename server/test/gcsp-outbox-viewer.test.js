@@ -100,8 +100,7 @@ test('an opened sent message shows a script-less sandboxed frame via srcdoc, the
   assert.equal(root.querySelectorAll('main iframe').length, 1);
   assert.equal(root.querySelector('main h1').textContent, 'Captured emails', 'email markup is not injected into the page');
   const text = root.querySelector('pre.gcsp-mail-text');
-  assert.match(text.textContent, /Review your offer: https:\/\/demo\.example\.test\/gcsp\/offer/);
-  assert.match(text.textContent, /No email has been sent/);
+  assert.match(text.textContent, /Review your offer: https:\/\/offers\.bmwgroup\.test\/gcsp\/offer/);
   const link = root.querySelector('.gcsp-mail-offer a');
   assert.equal(link.getAttribute('href'), '/gcsp/offer');
   assert.equal(link.target, '_blank');
@@ -211,7 +210,7 @@ test('outcomeToState maps replies to view states', () => {
   assert.equal(outcomeToState(401, { status: 'missing-session' }).status, 'refused');
   const stale = outcomeToState(409, { status: 'stale-run' });
   assert.equal(stale.status, 'refused');
-  assert.match(stale.message, /reset/);
+  assert.match(stale.message, /restarted/);
   for (const [code, body] of [[503, { status: 'unavailable' }], [500, {}], [200, { status: 'ok', value: {} }], [400, { status: 'invalid' }], [502, null]]) {
     assert.equal(outcomeToState(code, body).status, 'unavailable', String(code));
   }
@@ -233,7 +232,7 @@ test('every documented safe error code has a plain sentence and unknown codes ar
   for (const code of ['transport-unavailable', 'message-invalid', 'message-facts-unavailable', 'fictional-recipient-required', 'recipient-mismatch', 'message-version-unsupported', 'offer-inactive', 'offer-expired']) {
     assert.ok(copy.ERROR_COPY[code].endsWith('.'), code);
   }
-  assert.match(copy.errorSentence('something-new'), /reason the demo does not list/);
+  assert.match(copy.errorSentence('something-new'), /reason that is not listed/);
   assert.equal(copy.errorSentence(null), null);
   assert.equal(copy.statusOf('pending').label, 'Sending');
   assert.equal(copy.statusOf('sent', 'captured').label, 'Captured, not sent');
@@ -351,7 +350,7 @@ test('a 401 with no status (lapsed access key) reads access-required; a status k
 test('a lapsed access key shows the restart screen with Reload and no Retry', async () => {
   const root = host(); const teardown = out.mountOutbox(root, { loadMessages: async () => ({ status: 'access-required' }) }); await tick();
   const screen = root.querySelector('.gcsp-presenter-body .vm-status, .vm-status');
-  assert.equal(screen.getAttribute('role'), 'alert'); assert.match(screen.textContent, /Demo restarted/);
+  assert.equal(screen.getAttribute('role'), 'alert'); assert.match(screen.textContent, /Restarted/);
   assert.deepEqual([...screen.querySelectorAll('.vm-btn')].map((b) => b.textContent), ['Reload']);
   assert.doesNotMatch(root.textContent, /Captured emails are unavailable/); teardown();
 });

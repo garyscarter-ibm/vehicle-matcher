@@ -45,7 +45,7 @@ export function createSyntheticReturnOutcomes({ repository } = {}) {
 // Live-shaped boundary: no retailer return confirmation is reachable, so every call is refused and nothing is written.
 export function createLiveReturnOutcomesStub() {
   const refuse = (operation) => ({ status: 'unsupported', ...(valid(operation) ? scope(operation) : {}), code: 'live-return-outcomes-unsupported',
-    reason: 'Live return confirmation is not connected in this demonstration. The return stays as it is.' });
+    reason: 'Live return confirmation is not connected yet. The return stays as it is.' });
   return { mode: 'live', contractVersion: '1.0.0', capability: 'ordering.appointments.v1',
     async confirmOutcome(operation) { return refuse(operation); },
     async reconcile(operation) { return refuse(operation); } };

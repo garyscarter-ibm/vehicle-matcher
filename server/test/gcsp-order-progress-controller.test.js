@@ -107,8 +107,8 @@ test('the screen shows the server state after a command, never a local guess', a
 
 test('refusals map to concise messages: unsupported reason, changed order, and a generic retry', async () => {
   const f = fake(); const { controller } = make(f); await controller.refresh();
-  f.server.outcome = () => ({ status: 'unsupported', code: 'live-appointments-unsupported', reason: 'Live handover times are not connected in this demonstration.' });
-  assert.deepEqual((await controller.requestAppointment('s')).message, { text: 'Not done. Live handover times are not connected in this demonstration.', error: true });
+  f.server.outcome = () => ({ status: 'unsupported', code: 'live-appointments-unsupported', reason: 'Live handover times are not connected yet.' });
+  assert.deepEqual((await controller.requestAppointment('s')).message, { text: 'Not done. Live handover times are not connected yet.', error: true });
   for (const status of ['conflict', 'stale-version']) {
     f.server.outcome = () => ({ status });
     assert.deepEqual((await controller.requestAppointment('s')).message, { text: 'Your order changed. Showing the latest.', error: true }, status);
@@ -124,7 +124,7 @@ test('refusals map to concise messages: unsupported reason, changed order, and a
 
 test('a refused rebook after a no-show keeps the re-read no-show state, and a repeat while pending sends nothing', async () => {
   const f = fake('appointment-no-show'); const { controller } = make(f); await controller.refresh();
-  const slotId = f.server.progress.appointment.value.offeredSlots[0].slotId; const reason = 'Live handover times are not connected in this demonstration.';
+  const slotId = f.server.progress.appointment.value.offeredSlots[0].slotId; const reason = 'Live handover times are not connected yet.';
   const gate = deferred(); f.server.outcome = () => gate.promise;
   const first = controller.requestAppointment(slotId); await new Promise((r) => setTimeout(r, 5));
   assert.equal(controller.getState().pending, true); await controller.requestAppointment(slotId);

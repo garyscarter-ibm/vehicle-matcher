@@ -11,6 +11,6 @@ export async function startUncertainHandoff(services) {
   }
   const released = await releaseToFirstOffer(services, paula);
   if (!released.ok) return released;
-  if (!services.faults?.ordering?.set(services.runId, services.scenario.inputs.syntheticOrderingFault)) return fail('ordering-fault', 'The synthetic ordering fault is not configured.');
+  if (!services.faults?.ordering?.set(services.runId, services.scenario.inputs.syntheticOrderingFault)) return fail('ordering-fault', 'The ordering fault is not configured.');
   return { status: 'ok', briefs, offerId: released.offer.offerId, now: released.now, faults: [services.faults.ordering.read(services.runId)] };
 }

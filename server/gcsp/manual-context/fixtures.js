@@ -3,6 +3,13 @@ import { inputDigest, ok } from '../repository/index.js';
 // FUCQ-224: Jordan (identity.demo.principals) starts with no current car, so presenters can walk the new-order route.
 const NEW_ORDER_EMPLOYEES = new Set(['employee-jordan']);
 
+// Shown address and licence are derived from the name: unroutable .test mail, and a licence number that cannot validate.
+const person = (name) => name.toLowerCase().replace(/[^a-z ]/g, '').trim().split(/\s+/);
+const emailFor = (name) => { const [first, ...rest] = person(name); return `${[first, rest.at(-1)].filter(Boolean).join('.')}@bmwgroup.test`; };
+const licenceFor = (name) => { const [first, ...rest] = person(name).map((part) => part.toUpperCase());
+  return `${(rest.at(-1) ?? first).slice(0, 5).padEnd(5, '9')}900000${first[0]}${(rest.at(-1) ?? first)[0]}9XX`; };
+const numberFor = (id) => `E${String([...id].reduce((hash, ch) => (hash * 31 + ch.charCodeAt(0)) % 900000, 7) + 100000)}`;
+
 // Explicit backend-only preparation for repeatable trials. Identity's seeded employee
 // and entitlement are read first; no URL or client command can choose this profile.
 export async function seedManualDemoContext({ repository, identity, clock, context }) {
@@ -31,16 +38,16 @@ export async function seedManualDemoContext({ repository, identity, clock, conte
     const fresh = NEW_ORDER_EMPLOYEES.has(context.employeeId);
     const manualContext = { recordSetId: `manual:${context.employeeId}:v1`, source,
       account: { employeeId: context.employeeId, name: found.value.name, companyId: context.companyId,
-        gradeId: context.gradeId, schemeId: context.schemeId, employeeNumber: `DEMO-${context.employeeId}`,
-        address: { line1: '1 Fictional Way', town: 'Example Town', postcode: 'ZZ1 1ZZ' },
-        contact: { phone: '01632 960000', email: `${context.employeeId}@example.invalid` },
+        gradeId: context.gradeId, schemeId: context.schemeId, employeeNumber: numberFor(context.employeeId),
+        address: { line1: '27 Ashdown Road', town: 'Bracknell', postcode: 'RG12 9ZZ' },
+        contact: { phone: '01632 960000', email: emailFor(found.value.name) },
         allowanceOverride: null },
       drivers: [{ driverId, employeeId: context.employeeId, name: found.value.name, kind: 'employee',
-        eligible: fact(true), licence: { displayNumber: 'FICTIONAL-LICENCE', categories: ['car'],
+        eligible: fact(true), licence: { displayNumber: licenceFor(found.value.name), categories: ['car'],
           validFrom: '2010-01-01', validUntil: '2030-01-01', source } },
-      { driverId: `nominated:${context.employeeId}`, employeeId: context.employeeId, name: 'Casey (fictional)',
+      { driverId: `nominated:${context.employeeId}`, employeeId: context.employeeId, name: 'Casey Ward',
         kind: 'nominated', relationship: 'spouse', eligible: fact(true),
-        licence: { displayNumber: 'FICTIONAL-NOMINEE', categories: ['car'], validFrom: '2012-01-01', validUntil: '2030-01-01', source } }],
+        licence: { displayNumber: licenceFor('Casey Ward'), categories: ['car'], validFrom: '2012-01-01', validUntil: '2030-01-01', source } }],
       employeeFacts: { essentials: {}, charging: fact('home'), requiredBy: fact('2026-12-01T23:59:59.999Z') },
       contracts: fresh ? [] : [contract], histories: [{ schemeId: context.schemeId, entries: fresh ? [] : [contract] },
         { schemeId: 'pcs-ukfs-bmw', entries: fresh ? [] : [{ contractId: `historic:${context.employeeId}`, employeeId: context.employeeId,

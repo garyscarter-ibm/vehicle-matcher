@@ -1,7 +1,7 @@
 // Pure view model for the stored process comparison. Formatting only: every figure comes from the stored result. Throws on a malformed shape.
 import { parameterLabel } from './experiment-copy.js';
 import { BASELINE, BUDDY, VERDICTS, BETTER_WHEN, FALLBACK_CAVEAT, measureLabel, measureKind, carTimeKind, formatMeasure, differenceText, statusLabel,
-  formatDemoTime, oldPolicyText, coverageHeadline, countHeadline } from './comparison-copy.js';
+  formatDemoTime, plainText, oldPolicyText, coverageHeadline, countHeadline } from './comparison-copy.js';
 
 export const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 export const text = (v) => typeof v === 'string' && v.trim().length > 0;
@@ -46,7 +46,7 @@ function headlineFor(measures, seeds) {
 
 export function toAssumption(row) {
   if (!object(row) || !text(row.key) || !('value' in row)) fail('assumption');
-  return { key: row.key, setting: parameterLabel(row.key), value: compactValue(row.value), unit: row.unit ?? '', status: statusLabel(row.status), basis: row.basis ?? '' };
+  return { key: row.key, setting: parameterLabel(row.key), value: compactValue(row.value), unit: plainText(row.unit) ?? '', status: statusLabel(row.status), basis: plainText(row.basis) ?? '' };
 }
 
 /** stored = the read route's value -> { meta, oldPolicy, caveat, measures, limitations, assumptions, provenance }. */
@@ -58,7 +58,7 @@ export function toComparisonView(stored) {
   const measures = result.differences.map(toMeasure);
   const assumptions = result.assumptions.map(toAssumption);
   const caveat = text(result.caveat) ? result.caveat : FALLBACK_CAVEAT;
-  const limitations = (Array.isArray(result.limitations) ? result.limitations : []).filter((l) => text(l) && l !== caveat);
+  const limitations = (Array.isArray(result.limitations) ? result.limitations : []).filter((l) => text(l) && l !== caveat).map(plainText);
   const size = manifest.overlays?.['comparison.cohortSize'] ?? result.assumptions.find((a) => a.key === 'comparison.cohortSize')?.value;
   const made = formatDemoTime(result.completedAt); const stamped = formatDemoTime(stored.storedAt);
   const policyCurrent = stored.policyCurrent !== false;

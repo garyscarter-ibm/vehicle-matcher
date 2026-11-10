@@ -105,7 +105,7 @@ export function createSyntheticAppointments({ repository } = {}) {
 // Live-shaped boundary: no retailer calendar is reachable, so every call is refused and nothing is written.
 export function createLiveAppointmentsStub() {
   const refuse = (operation) => ({ status: 'unsupported', ...(valid(operation) ? scope(operation) : {}), code: 'live-appointments-unsupported',
-    reason: 'Live appointment booking is not connected in this demonstration. The appointment stays as it is.' });
+    reason: 'Live appointment booking is not connected yet. The appointment stays as it is.' });
   return { mode: 'live', contractVersion: '1.0.0', capability: APPOINTMENT_CAPABILITY,
     async offerSlots() { return refuse(); },
     async requestSlot(operation) { return refuse(operation); },

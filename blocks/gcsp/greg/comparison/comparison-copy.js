@@ -1,7 +1,7 @@
 // On-screen copy and number formatting for Greg's route comparison. No DOM. Display only: the stored result owns every figure.
-import { humanise, formatDemoTime } from '../demand-copy.js';
+import { humanise, formatDemoTime, plainText } from '../demand-copy.js';
 
-export { formatDemoTime };
+export { formatDemoTime, plainText };
 export const TITLE = 'Route comparison';
 export const LEDE = 'Stored result of the process comparison. Both routes get the same employees, cars and releases.';
 export const BASELINE = "Today's release route";
@@ -14,7 +14,7 @@ export const DETAILS = 'Assumptions, seeds and provenance';
 export const UNAVAILABLE = 'The stored comparison could not be loaded. Try again in a moment.';
 export const REFUSED = 'Only the scheme ordering lead or the presenter can see the route comparison.';
 export const EMPTY_TITLE = 'No stored comparison yet';
-export const EMPTY_NOTE = 'The comparison is prepared offline and has not been run here. Reload to check again.';
+export const EMPTY_NOTE = 'No comparison has been run yet. Reload to check again.';
 export const OLD_POLICY_TITLE = 'Older policy version';
 export const oldPolicyText = (made, active) => `Made under policy ${made}. The active policy is ${active}. Prepare a new comparison to use it.`;
 

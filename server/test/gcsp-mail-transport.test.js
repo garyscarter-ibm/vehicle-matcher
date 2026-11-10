@@ -58,7 +58,7 @@ async function retry(f) {
 async function directInput(f) {
   const job = await row(f);
   return { context: f.context, job, now: '2026-11-05T09:00:00.000Z', message: notify.renderOfferMessage({
-    offer: { expiresAt: '2026-11-05T11:00:00.000Z', state: 'active' }, employee: { employeeId: 'employee-paula', name: 'Paula (fictional)' }, offerLink: LINK, now: '2026-11-05T09:00:00.000Z' }) };
+    offer: { expiresAt: '2026-11-05T11:00:00.000Z', state: 'active' }, employee: { employeeId: 'employee-paula', name: 'Paula Mason' }, offerLink: LINK, now: '2026-11-05T09:00:00.000Z' }) };
 }
 
 test('Brevo adapter is available behind the existing MailTransport port', () => {
@@ -85,7 +85,7 @@ test('backend selection defaults to capture and explicit configured dispatcher s
   assert.ok(payload.textContent.includes(`${BASE}gcsp/offer?offerId=offer-one&runId=synthetic#token=${TOKEN}`));
   assert.ok(payload.htmlContent.includes(`href="${BASE}gcsp/offer?offerId=offer-one&amp;runId=synthetic#token=${TOKEN}"`));
   assert.match(payload.htmlContent, /BMW &lt;Touring&gt;/); assert.doesNotMatch(payload.textContent, /No email has been sent/);
-  assert.match(payload.textContent, /Provider acceptance does not confirm inbox delivery/);
+  assert.doesNotMatch(payload.textContent, /demonstration|inbox delivery/);
   const projected = await createOutboxRoutes({ repository: f.repository })[0].handle({ context: f.context, body: {}, searchParams: new URLSearchParams() });
   assert.equal(projected.value.messages[0].state, 'sent'); assert.equal(projected.value.messages[0].textBody, payload.textContent);
   for (const privateValue of [SECRET, ADDRESS, '<accepted@smtp.test>', job.outcome.provider.idempotencyKey]) assert.ok(!JSON.stringify(projected).includes(privateValue));
@@ -291,7 +291,7 @@ test('trusted runtime startup actually dispatches captured, configured and inval
     assert.equal(stored.state, mode === 'invalid' ? 'failed' : 'sent'); assert.ok(stored.outcome.message);
     assert.equal(calls, mode === 'brevo' ? 1 : 0);
     assert.equal(stored.outcome.provider?.state, mode === 'brevo' ? 'confirmed' : undefined);
-    if (mode === 'captured') assert.match(stored.outcome.message.textBody, /No email has been sent/);
+    if (mode === 'captured') assert.doesNotMatch(stored.outcome.message.textBody, /No email has been sent|demonstration|fictional/i);
     if (mode === 'invalid') assert.equal(stored.outcome.error, 'mail-configuration-invalid');
     await runtime.value.close(); assert.deepEqual(events, ['subscribed', 'unsubscribed', 'closed']);
   });

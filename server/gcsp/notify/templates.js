@@ -32,9 +32,9 @@ export function renderOfferMessage({ offer, quote, employee, offerLink, now }) {
   if (!offer || !employee || !safeOfferLink(offerLink) || !validInstant(now) || !validInstant(offer.expiresAt)) {
     throw new TypeError('Offer message inputs are unavailable.');
   }
-  const name = copy(employee.name) || 'Scheme employee (fictional)';
-  const greetingName = copy(employee.name).replace(/\s*\(fictional\)\s*$/i, '');
-  const greeting = greetingName ? `Hello ${greetingName},` : 'Hello,';
+  const given = copy(employee.name);
+  const name = given || 'Scheme employee';
+  const greeting = given ? `Hello ${given},` : 'Hello,';
   const vehicle = vehicleName(quote);
   const points = monthlyPoints(quote);
   const expired = Date.parse(offer.expiresAt) <= Date.parse(now) || offer.state === 'expired';
@@ -42,8 +42,7 @@ export function renderOfferMessage({ offer, quote, employee, offerLink, now }) {
   const status = expired ? 'This offer has expired. Open your employee account to check its current status.'
     : `Respond by ${deadlineWords(offer.expiresAt)}.`;
   const missing = quote?.facts ? '' : 'Full vehicle details are not available in this notification. Check the offer in your account.';
-  const textBody = [greeting, '', subject, vehicle, points, status, missing, '', `Review your offer: ${offerLink}`, '',
-    'This is a captured demonstration message for a fictional employee. No email has been sent.'].filter((line) => line !== '').join('\n\n');
-  const htmlBody = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${subject}</title></head><body style="margin:0;background:#f4f5f5;color:#202526;font-family:Arial,sans-serif;line-height:1.6"><main style="max-width:600px;margin:0 auto;padding:24px;background:#fff;overflow-wrap:anywhere"><p>GCSP employee vehicle scheme</p><h1 style="font-size:26px;line-height:1.25">${subject}</h1><p>${escape(greeting)}</p><h2 style="font-size:20px">${escape(vehicle)}</h2>${points ? `<p>${escape(points)}</p>` : ''}<p>${escape(status)}</p>${missing ? `<p>${escape(missing)}</p>` : ''}<p><a style="color:#00636b;text-decoration:underline" href="${escape(offerLink)}">Review your vehicle offer and its current status</a></p><p>If you cannot use the link, copy this address:</p><p>${escape(offerLink)}</p><hr><p>This is a captured demonstration message for a fictional employee. No email has been sent.</p></main></body></html>`;
+  const textBody = [greeting, '', subject, vehicle, points, status, missing, '', `Review your offer: ${offerLink}`].filter((line) => line !== '').join('\n\n');
+  const htmlBody = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${subject}</title></head><body style="margin:0;background:#f4f5f5;color:#202526;font-family:Arial,sans-serif;line-height:1.6"><main style="max-width:600px;margin:0 auto;padding:24px;background:#fff;overflow-wrap:anywhere"><p>GCSP employee vehicle scheme</p><h1 style="font-size:26px;line-height:1.25">${subject}</h1><p>${escape(greeting)}</p><h2 style="font-size:20px">${escape(vehicle)}</h2>${points ? `<p>${escape(points)}</p>` : ''}<p>${escape(status)}</p>${missing ? `<p>${escape(missing)}</p>` : ''}<p><a style="color:#00636b;text-decoration:underline" href="${escape(offerLink)}">Review your vehicle offer and its current status</a></p><p>If you cannot use the link, copy this address:</p><p>${escape(offerLink)}</p></main></body></html>`;
   return { recipient: { employeeId: employee.employeeId, name, fictional: true }, subject, textBody, htmlBody, offerLink };
 }

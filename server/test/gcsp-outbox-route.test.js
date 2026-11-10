@@ -80,11 +80,11 @@ test('presenter reads the run captured messages as a safe projection, newest fir
   const retrying = messages.find((m) => m.jobId === 'job-two');
   assert.equal(sent.state, 'sent');
   assert.equal(sent.transport, 'captured');
-  assert.deepEqual(sent.recipient, { employeeId: 'employee-paula', name: 'Paula (fictional)' });
+  assert.deepEqual(sent.recipient, { employeeId: 'employee-paula', name: 'Paula Mason' });
   assert.equal(sent.offerLink, link);
   assert.match(sent.subject, /vehicle offer/);
   assert.match(sent.htmlBody, /<h1/);
-  assert.match(sent.textBody, /No email has been sent/);
+  assert.doesNotMatch(sent.textBody, /No email has been sent|demonstration/i);
   assert.equal(sent.time, '2026-11-05T09:00:00.000Z');
   assert.equal(retrying.state, 'retrying');
   assert.equal(retrying.transport, null);

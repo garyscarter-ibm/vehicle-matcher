@@ -3,7 +3,7 @@ import { createEmployeeRecommendationService } from '../../gcsp/recommendation/i
 import { context, fact, brief, stock, providerValue, provider, time, policy } from './employee-recommendation.js';
 
 const labels = {
-  'driver-eligible': 'Driver eligibility confirmed for this synthetic example.',
+  'driver-eligible': 'Driver eligibility confirmed.',
   'policy-include': 'This exact model is included in the scheme policy.',
   'allowance-sufficient': 'The monthly points cost is within your allowance.',
   'allowance-exceeded': 'The monthly points cost exceeds your allowance.',

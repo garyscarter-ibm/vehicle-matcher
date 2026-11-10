@@ -74,7 +74,7 @@ test('failed email exchange offers reopening the original email without pretendi
 test('an earlier-run link explains the earlier run instead of sending the reader back to the same link', async () => {
   const c = createOfferController({ read: async () => ({ status: 'stale-run', accessExchange: 'failed' }) });
   const state = await c.refresh(); assert.equal(state.state, 'earlier-run');
-  assert.match(state.message, /earlier demo run/); assert.doesNotMatch(state.message, /original email link/);
+  assert.match(state.message, /link is out of date/); assert.doesNotMatch(state.message, /original email link/);
   assert.equal(state.canAccept, false); c.destroy();
 });
 

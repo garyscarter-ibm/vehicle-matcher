@@ -10,7 +10,7 @@ const text = (v, max = 256) => typeof v === 'string' && v.trim().length > 0 && v
 const seconds = (v) => Number.isSafeInteger(v) && v >= 0;
 const unique = (list) => new Set(list).size === list.length;
 export const policyUnavailable = () => result('unavailable', { code: 'document-policy-unavailable',
-  reason: 'Document and readiness policy is unavailable. Ask the scheme team to check the demonstration setup.', retryable: true });
+  reason: 'Document and readiness policy is unavailable. Ask the scheme team to check the scheme setup.', retryable: true });
 
 function validItem(item) {
   return item && typeof item === 'object' && text(item.itemId, 64) && /^[a-z0-9][a-z0-9-]*$/.test(item.itemId)

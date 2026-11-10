@@ -3,7 +3,7 @@ import { validInstant } from './file-provider.js';
 
 const unavailable = () => result('unavailable', { code: 'policy-activation-unavailable',
   reason: 'The published policy is awaiting run activation.', retryable: true });
-const stale = () => result('stale-run', { reason: 'This request belongs to an earlier demonstration run.' });
+const stale = () => result('stale-run', { reason: 'This page is out of date. Reload to see the latest.' });
 const current = (run, context) => run.current === true && run.status !== 'historical'
   && run.runId === context.runId && run.environmentId === context.environmentId;
 

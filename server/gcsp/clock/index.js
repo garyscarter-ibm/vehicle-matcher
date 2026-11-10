@@ -20,8 +20,8 @@ const initializedRun = (run) => {
     && inventory.snapshot.contentDigest === inventory.contentDigest && Array.isArray(inventory.snapshot.records);
 };
 const invalid = (field, reason) => result('invalid', { code: 'invalid-clock-command', reasons: [{ field, reason }] });
-const unavailable = () => result('unavailable', { reason: 'Demo clock is unavailable.', retryable: true });
-const stale = () => result('stale-run', { reason: 'This request belongs to an earlier demonstration run.' });
+const unavailable = () => result('unavailable', { reason: 'The clock is unavailable.', retryable: true });
+const stale = () => result('stale-run', { reason: 'This page is out of date. Reload to see the latest.' });
 const ref = (table, context, key = {}) => ({ table, key: { runId: context.runId, ...key } });
 const command = (commandId, payload) => ({ commandId, inputDigest: inputDigest(payload) });
 const publicVersions = (versions) => ({ ...versions, syntheticIdentityInventory: versions.syntheticIdentityInventory
@@ -49,7 +49,7 @@ export class DemoClock {
   #read(run) { return { runId: run.runId, asOf: run.clockInstant, policyVersion: run.policyVersion }; }
 
   async initialize({ policyAsOf, commandId }) {
-    if (this.#environmentKind !== 'synthetic') return result('forbidden', { reason: 'Reset and seeding require an isolated synthetic environment.' });
+    if (this.#environmentKind !== 'synthetic') return result('forbidden', { reason: 'Reset and seeding require an isolated environment.' });
     if (!validInstant(policyAsOf) || !text(commandId)) return invalid('bootstrap', 'Supply policyAsOf and commandId.');
     const existing = await this.#repository.currentRun(this.#environmentId);
     if (existing.status === 'ok') return initializedRun(existing.value)

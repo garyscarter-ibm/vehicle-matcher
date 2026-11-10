@@ -21,7 +21,7 @@ export function createClockRoutes(clock, { afterReset } = {}) {
       if ([...searchParams.keys()].length || method === 'GET' && Object.keys(body).length) return result('invalid', {
         code: 'unsupported-query', reasons: [{ field: 'query', reason: 'Clock controls accept no query selectors.' }],
       });
-      if (!clock) return result('unavailable', { reason: 'Demo clock has not been configured.', retryable: true });
+      if (!clock) return result('unavailable', { reason: 'The clock has not been configured.', retryable: true });
       const outcome = await clock[operation](context, body);
       if (operation !== 'reset' || outcome.status !== 'ok') return outcome;
       if (typeof afterReset === 'function') { try { await afterReset(outcome.value.runId); } catch { /* as a mechanics scenario reset */ } }

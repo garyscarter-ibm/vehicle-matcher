@@ -106,7 +106,7 @@ test('known catalogue facts keep source dates, meaning, units, unknown fields an
   assert.equal(result.description.upholstery.selections[0].label.value, 'Perforated and Quilted Veganza in Smoke White');
   assert.equal(result.images.state, 'unknown');
   assert.equal(result.images.label, 'Images unavailable');
-  assert.equal(result.presentation.syntheticLabel, 'Synthetic identity');
+  assert.equal(result.presentation.syntheticLabel, 'Vehicle identity');
   assert.equal(result.presentation.verifiedFittedLabel, 'VIN-fitted equipment unknown');
   result.technical.luggageNormal.value = 0;
   assert.equal((await lookup.resolve({ kind: 'configuration', id: row.configurationId })).technical.luggageNormal.value, 570);

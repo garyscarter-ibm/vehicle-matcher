@@ -291,7 +291,7 @@ export class LifecycleDocumentService {
       const item = projection.items.find((entry) => entry.itemId === input.itemId);
       if (!item || item.owner !== 'employee') return result('forbidden', { reason: 'This item is not yours to complete.' });
       if (item.status !== 'waiting-for-employee') return result('conflict', { reason: 'task-not-waiting', current: { status: item.status } });
-      const acknowledgement = { kind: 'synthetic-acknowledgement', label: 'Synthetic acknowledgement. Not a signature.', at: prepared.now, actorId: context.principalId };
+      const acknowledgement = { kind: 'synthetic-acknowledgement', label: 'Acknowledged. Not a signature.', at: prepared.now, actorId: context.principalId };
       const items = projection.items.map((entry) => entry === item ? { ...entry, status: 'complete', completedAt: prepared.now, acknowledgement } : entry);
       const updated = await tx.compareAndSwap(stateRef(context, input.orderUuid), found.value.version, { outcome: ok({ ...projection, items }) });
       return updated.status === 'ok' ? ok({ order: present(updated.value.outcome.value, updated.value.version, prepared.now) }) : updated;
