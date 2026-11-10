@@ -1,4 +1,6 @@
 import './register.js';
-import { startPresenterConsole } from './console.js';
-const destroy = startPresenterConsole()?.destroy;
+import { mountPresenterConsole } from './console.js';
+import { basicConsoleOptions } from './basic-console.js';
+const host = document.querySelector('[data-presenter-console]');
+const destroy = host ? mountPresenterConsole(host, basicConsoleOptions()).destroy : null;
 globalThis.addEventListener('pagehide', () => destroy?.(), { once: true });
