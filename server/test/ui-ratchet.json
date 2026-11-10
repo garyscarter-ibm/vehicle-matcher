@@ -316,6 +316,10 @@
       "max_lines": 12
     },
     {
+      "path": "blocks/gcsp/kit/notification-bell.css",
+      "max_lines": 31
+    },
+    {
       "path": "blocks/gcsp/kit/data-table-compare.css",
       "max_lines": 9
     },

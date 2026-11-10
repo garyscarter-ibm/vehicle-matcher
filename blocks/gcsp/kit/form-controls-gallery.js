@@ -4,6 +4,8 @@ import { stageList } from './stage-list.js';
 import { rangeBar } from './range-bar.js';
 import { showMore } from './show-more.js';
 import { tabs } from './tabs.js';
+import { notificationBell } from './notification-bell.js';
+import { notificationModel } from '../activity/notification-source.js';
 import { releaseGrid } from './release-grid.js';
 import { installArrivalFocus, focusHeading } from './arrival-focus.js';
 import { runRestartedScreen, runRestartedNotice, accessLapsedScreen } from './run-restarted.js';
@@ -94,6 +96,30 @@ export function tabsExample() {
   const set = tabs({ label: 'Settings groups', items: [{ id: 'one', label: 'First', panel: panel('First panel. Arrow keys, Home and End move between tabs.') },
     { id: 'two', label: 'Second', panel: panel('Second panel.') }, { id: 'three', label: 'Third', panel: panel('Third panel.') }] });
   scope.append(set.root); section.append(scope); return section;
+}
+
+const BELL_CAR = { offerRef: { offerId: 'gallery-1' }, title: 'BMW i5 Touring eDrive40, Sophisto Grey',
+  images: [{ src: '/assets/gcsp-vehicle-evidence/00419fa06ad620a42de6311039c7df679f692b7f2af52d5a7daba46cd034dc93.webp', alt: 'Front three quarters', fidelity: 'representative-configuration' }] };
+const BELL_CHANGE = { eventId: 'gallery-e1', operation: 'confirmed', occurredAt: '2026-11-10T09:12:00.000Z' };
+const bellOffer = (state) => ({ offerRef: { offerId: 'gallery-1' }, state, version: 1, createdAt: '2026-11-10T09:30:00.000Z',
+  expiresAt: '2026-11-10T16:40:00.000Z', href: '/gcsp-offer.html' });
+
+export function notificationBellExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-notification-bell';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP notification bell'));
+  const activity = (state) => ({ currentOffer: bellOffer(state), offers: [bellOffer(state)], stateChanges: [BELL_CHANGE] });
+  const states = [['None waiting', { ...notificationModel(activity('accepted'), BELL_CAR), waiting: 0, rows: [] }, false],
+    ['One car offer waiting', notificationModel(activity('active'), BELL_CAR), false],
+    ['New offer note', { ...notificationModel(activity('active'), BELL_CAR), note: { id: 'gallery-note', title: 'Your buddy found a car', text: 'BMW i5 Touring. Respond by 16:40.' } }, false],
+    ['Open, offer waiting', notificationModel(activity('active'), BELL_CAR), true],
+    ['Open, nothing waiting', notificationModel(activity('accepted'), BELL_CAR), true],
+    ['Open, unavailable', { status: 'unavailable', waiting: 0, rows: [] }, true]];
+  for (const [label, model, open] of states) {
+    const scope = el('div', 'gcsp'); scope.style.minHeight = '0'; const frame = el('div', ''); frame.style.cssText = `display: flex; align-items: flex-start; justify-content: flex-end; padding: 8px 24px; min-height: ${open ? 400 : 120}px`;
+    const bell = notificationBell({ pinned: open, schedule: () => 0, cancel() {} }); frame.append(bell.root); scope.append(el('p', 'gcsp-note', label), frame);
+    bell.update(model); if (open) bell.open(); section.append(scope);
+  }
+  return section;
 }
 
 const RELEASE_CARS = [

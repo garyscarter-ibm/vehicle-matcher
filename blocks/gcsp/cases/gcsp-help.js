@@ -178,10 +178,10 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
   return destroy;
 }
 
-export function mountHelp(root, { adapter = createCaseHttpAdapter(), accountAdapter = createAccountHttpAdapter(), embedded = false, headingLevel = embedded ? 2 : 1, brand = 'bmw', announce, quiet = false, signOut = accountAdapter.signOut !== false } = {}) {
+export function mountHelp(root, { adapter = createCaseHttpAdapter(), accountAdapter = createAccountHttpAdapter(), embedded = false, headingLevel = embedded ? 2 : 1, brand = 'bmw', announce, quiet = false, signOut = accountAdapter.signOut !== false, notifications } = {}) {
   if (embedded) return mountHelpBody(root, { adapter, headingLevel, announce, quiet });
   let body;
-  const shell = mountEmployee(root, { brand, signOut, view: 'help', viewLabel: 'Renewal help', loadingLayout: 'card',
+  const shell = mountEmployee(root, { brand, signOut, notifications, view: 'help', viewLabel: 'Renewal help', loadingLayout: 'card',
     onNavigate: (to) => emit(root, 'gcsp:navigate', { to }), loadAccount: (options) => accountAdapter.loadAccount(options),
     renderBody: (main) => { body = mountHelpBody(main, { adapter, headingLevel }); return body; },
     onUnavailable: (reason) => emit(root, 'gcsp:unavailable', { reason }) });
@@ -192,18 +192,20 @@ export class GcspHelpElement extends HTMLElement {
   static get observedAttributes() { return ['embedded', 'brand', 'heading-level']; }
   constructor() {
     super();
-    for (const key of ['adapter', 'accountAdapter']) if (Object.hasOwn(this, key)) { const value = this[key]; delete this[key]; this[`_${key}`] = value; }
+    for (const key of ['adapter', 'accountAdapter', 'notifications']) if (Object.hasOwn(this, key)) { const value = this[key]; delete this[key]; this[`_${key}`] = value; }
   }
   get adapter() { return this._adapter; }
   set adapter(value) { this._adapter = value; if (this.isConnected) this._mount(); }
   get accountAdapter() { return this._accountAdapter; }
   set accountAdapter(value) { this._accountAdapter = value; if (this.isConnected) this._mount(); }
+  get notifications() { return this._notifications; }
+  set notifications(value) { this._notifications = value; if (this.isConnected) this._mount(); }
   connectedCallback() { this._mount(); }
   disconnectedCallback() { this._teardown?.(); this._teardown = null; }
   attributeChangedCallback(name, before, after) { if (before !== after && this.isConnected) this._mount(); }
   _mount() {
     this._teardown?.(); this._teardown = mountHelp(this, { adapter: this._adapter, accountAdapter: this._accountAdapter,
-      embedded: this.hasAttribute('embedded'),
+      embedded: this.hasAttribute('embedded'), notifications: this._notifications,
       ...(this.hasAttribute('heading-level') ? { headingLevel: Number(this.getAttribute('heading-level')) } : {}), brand: this.getAttribute('brand') ?? 'bmw' });
   }
   refresh() { return this._teardown?.refresh(); }

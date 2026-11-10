@@ -24,7 +24,7 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, s
   if (signal?.aborted) { teardown(); return teardown; }
   signal?.addEventListener('abort', teardown, { once: true });
   stopShell = mountEmployee(root, { brand, view: 'activity', loadingLayout: 'timeline', signal: abort.signal,
-    onNavigate,
+    onNavigate, notifications: adapter.notifications,
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
     renderBody(main, { account }) {
       let body; let stopped = false; let restoringFocus = false; let unsubscribeClock;
