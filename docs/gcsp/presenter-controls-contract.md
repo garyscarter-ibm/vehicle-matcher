@@ -33,6 +33,35 @@ Read-back failures preserve the shared typed refusal/unavailable envelope. The c
 reset remain at `/api/gcsp/presenter/scenarios` and `/api/gcsp/presenter/scenarios/reset`;
 missing business scenario capabilities remain unavailable through the existing service.
 
+## Latest release read · FUCQ-364
+
+`GET /api/gcsp/presenter/releases/latest` (`server/gcsp/presenter-releases/http.js`) is a
+read-only, user-agnostic view of the current run's latest release for the console's release grid
+(FUCQ-365). Same gate as above: presenter cookie, role presenter, no query selectors or body
+(`400 invalid`, `unsupported-query`), `no-store`. Employee and Greg sessions get `403 forbidden`.
+
+It reads the run's completed `stock-release` receipts and its `stock` rows and writes nothing.
+The latest release is the receipt with the latest `releasedAt` (ties by tranche id). The `ok`
+value is:
+
+- `runId`; `release: { windowId, releasedAt, trancheId }`, or `null` before any release.
+  `trancheId` is added because generated stock can release two tranches of one window.
+- `cars: [{ id, imageSrc, imageAlt, modelName, modelLine, colourName }]` in receipt order. `id` is
+  the order UUID. `imageSrc` is the row's recorded `display-images.v1.json` asset, else the
+  catalogue picture for its configuration, else the model picture (`display-images.js` helpers,
+  no live call); it stays the local `/assets/` path, never the live image route. `colourName` is the row's
+  `colour` fact (generated stock), else the paint of that catalogue picture (fixed demo stock),
+  else `null`. `modelName` is the recorded display name without its colour; `modelLine` is the
+  `policy.displayLabels.v1` line name.
+- `counts: { released, modelLines, colours, onScheme }`. `released` is the release's car count;
+  `modelLines` and `colours` count distinct non-null values among those cars. `onScheme` counts
+  every stock row in the run that is released, available and neither held nor allocated (the
+  predicate Greg's demand and manual browse already use), across all releases.
+- `modelLines: [{ modelLine, count }]`, largest first, then by name.
+
+No employee, eligibility, match, hold or offer field is returned (spec revision, 10 November 2026).
+A runtime without a stock release service answers `503 unavailable`, `retryable: true`.
+
 ## Composed command and replay
 
 `POST /api/gcsp/presenter/controls/tick` accepts only:
