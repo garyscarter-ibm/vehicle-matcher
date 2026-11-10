@@ -3,6 +3,8 @@ import { createBriefTransport } from './brief-transport.js';
 import { createAccountHttpAdapter } from '../shell/account-runtime.js';
 import { routePortalEvents } from '../employee/portal-navigation.js';
 import { subscribePresenterActions } from '../kit/presenter-actions.js';
+import { createActivityHttpAdapter } from '../activity/activity-http.js';
+import { createNotificationSource } from '../activity/notification-source.js';
 
 // Adapt the existing trusted account response to the shell's public presentation shape.
 export function createBriefRuntimeAdapter({ fetch: request = globalThis.fetch, baseURL = '', signal } = {}) {
@@ -12,7 +14,9 @@ export function createBriefRuntimeAdapter({ fetch: request = globalThis.fetch, b
 
 const host = globalThis.document?.querySelector('gcsp-brief[data-live]');
 if (host) {
-  host.adapter = { ...createBriefRuntimeAdapter(), subscribeClock: subscribePresenterActions(host) };
+  const subscribeClock = subscribePresenterActions(host);
+  host.adapter = { ...createBriefRuntimeAdapter(), subscribeClock,
+    notifications: createNotificationSource({ adapter: createActivityHttpAdapter(), subscribe: subscribeClock }) };
   routePortalEvents(host);
   defineGcspBrief();
 }

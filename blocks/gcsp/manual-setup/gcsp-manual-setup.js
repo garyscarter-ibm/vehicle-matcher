@@ -11,7 +11,7 @@ const text = (value) => value == null || value === '' ? 'Not supplied' : String(
 const facts = (rows) => factList(rows.map(([label, value, unit]) => ({ label, value, unit })));
 
 export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', hint,
-  onBack, onSupport, commandId, signOut = adapter.readOnly !== true } = {}) {
+  onBack, onSupport, commandId, notifications, signOut = adapter.readOnly !== true } = {}) {
   const prefix = `gcsp-setup-${++sequence}`; const controls = {}; const fields = {};
   let main; let panel; let summary; let state; let nodes; let status; const spoken = {}; let disposed = false; let actionPending = false; let emitted = null;
   const notify = (name, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(name,
@@ -173,7 +173,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
       }
     } finally { actionPending = false; draw(); }
   }
-  const teardown = mountEmployee(root, { brand, signOut, loadAccount: async () => {
+  const teardown = mountEmployee(root, { brand, signOut, notifications, loadAccount: async () => {
     state = await controller.load({ hint }); const account = state.account?.account;
     return { status: account ? 'ready' : 'unavailable', ...accountIdentity(account),
       context: [account?.company, account?.gradeId && `Grade ${account.gradeId}`].filter(Boolean).join(', ') };

@@ -175,11 +175,11 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
   destroy.leave = (reason = 'back') => controller.release(reason); return destroy;
 }
 
-export function mountManualReview(root, { loadAccount = createAccountHttpAdapter().loadAccount, brand = 'bmw', location, signOut, ...options } = {}) {
+export function mountManualReview(root, { loadAccount = createAccountHttpAdapter().loadAccount, brand = 'bmw', location, signOut, notifications, ...options } = {}) {
   let body; let disposed = false;
   const held = () => { const state = body?.controller.getState(); return !state?.model || state.canRelease; };
   const where = location || root.ownerDocument.defaultView?.location;
-  const shell = mountEmployee(root, { brand, loadAccount, signOut,
+  const shell = mountEmployee(root, { brand, loadAccount, signOut, notifications,
     onNavigate: (key) => routeAfterRelease(key, { held, release: () => body?.leave('back'), location: where }),
     renderBody(main) { if (disposed) return; body?.(); body = mountManualReviewBody(main, options); } });
   const destroy = () => { disposed = true; body?.(); shell(); };

@@ -4,7 +4,7 @@
 @import "../kit/arrival-focus.css";
 @import "../kit/loading-skeleton.css";
 @import "./shell-inset.css";
-@import "./account-menu.css";
+@import "./account-menu.css"; @import "../kit/notification-bell.css";
 .gcsp {
   position: relative;
   display: flex;

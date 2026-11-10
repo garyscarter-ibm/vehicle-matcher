@@ -6,6 +6,8 @@ import { createAccountHttpAdapter as createOrderReadAdapter } from '../account/h
 import { loadLatestOrderCar } from './order-car.js';
 import { subscribePresenterActions } from '../kit/presenter-actions.js';
 import { routePortalEvents } from '../employee/portal-navigation.js';
+import { createActivityHttpAdapter } from '../activity/activity-http.js';
+import { createNotificationSource } from '../activity/notification-source.js';
 import { defineGcspOrderProgress } from './gcsp-order-progress.js';
 
 const host = globalThis.document?.querySelector('gcsp-order-progress[data-live]');
@@ -24,7 +26,8 @@ if (host) {
   if (!invalidated) {
     host.helpAdapter = createCaseHttpAdapter();
     host.car = car;
-    host.adapter = { ...orders, subscribeClock: subscribePresenterActions(host) };
+    host.adapter = { ...orders, subscribeClock: subscribePresenterActions(host),
+      notifications: createNotificationSource({ adapter: createActivityHttpAdapter({ fetch: globalThis.fetch }), subscribe: subscribePresenterActions(host) }) };
     defineGcspOrderProgress();
     routePortalEvents(host);
     globalThis.addEventListener('pageshow', (event) => { if (event.persisted) host.refresh(); });

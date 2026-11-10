@@ -472,7 +472,7 @@ export function renderAccountBody(main, { model, draft, offers = [], activity, p
   return () => wrap.remove();
 }
 
-export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, onNavigate, print, orderAdapter, helpAdapter, reload, signOut = adapter.readOnly !== true } = {}) {
+export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, onNavigate, print, orderAdapter, helpAdapter, reload, notifications, signOut = adapter.readOnly !== true } = {}) {
   const abort = new AbortController();
   let envelope; let draft; let offers; let activity; let main; let pending = false; let message = null; let journey = false; let disposed = false;
   let generation = 0; let teardown; let loading; let finishPrint; let drawer; let orderRow; let orderVehicle; let restarted = false;
@@ -681,7 +681,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     } catch { if (!disposed) { confirming = false; discardFailed(failure); } }
     finally { pending = false; if (!disposed) { draw(done); if (!done) discardButton()?.focus(); } }
   }
-  const shellAdapter = { signOut, loadAccount: () => { loading = loadAccount(); return loading; },
+  const shellAdapter = { signOut, notifications, loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
   teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
   const destroy = () => { disposed = true; generation += 1; abort.abort(); drawer?.close(false); finishPrint?.(); teardown(); live.root.remove(); };

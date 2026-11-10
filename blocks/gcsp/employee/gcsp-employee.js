@@ -30,7 +30,7 @@ function standalone(root, title, message) {
 
 /**
  * Mount the employee shell: the rail is PORTAL_NAVIGATION; a click goes to ctx.onNavigate(key) or PORTAL_ROUTES via ctx.location.
- * viewLabel is the crumb for a view outside the rail; returns a teardown with setView(key).
+ * ctx.notifications (optional) shows the header bell: a bell source { connect(update) } or a static model. viewLabel is the crumb for a view outside the rail; returns a teardown with setView(key).
  */
 export function mountEmployee(root, ctx = {}) {
   const brand = String(ctx.brand || 'bmw').toLowerCase();
@@ -91,6 +91,7 @@ export function mountEmployee(root, ctx = {}) {
     shell = portalShell({
       title: 'Group Car Schemes Portal',
       signOut: ctx.signOut,
+      notifications: ctx.notifications,
       arrivalFocus: true,
       navigation: PORTAL_NAVIGATION,
       accountMenu: ctx.accountMenu === false ? [] : ACCOUNT_MENU,

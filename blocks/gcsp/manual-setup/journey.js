@@ -13,6 +13,7 @@ import { statusScreen } from '../../vehicle-matcher/ui.js';
 
 export function mountManualJourney(root, options = {}) {
   const { galleryAdapter, reviewAdapter, summaryAdapter, subscribeClock, onReviewContinue, ...shared } = options;
+  const { notifications } = shared;
   const claimAdapter = galleryAdapter ?? createManualGalleryHttpAdapter();
   const summaryPort = summaryAdapter ?? createManualSummaryHttpAdapter();
   let teardown; let disconnectFocus; let disposed = false; let generation = 0; let view; let hint;
@@ -52,7 +53,7 @@ export function mountManualJourney(root, options = {}) {
     hint = nextHint;
     mount('checking', (ticket) => {
       const reader = createManualClaimController({ adapter: claimAdapter });
-      const shell = mountEmployee(root, { brand: shared.brand, signOut: shared.signOut,
+      const shell = mountEmployee(root, { brand: shared.brand, signOut: shared.signOut, notifications,
         async loadAccount({ signal }) {
           const result = await (shared.adapter ?? claimAdapter).readAccount({ signal });
           return result?.status === 'ok' ? { status: 'ready', ...accountIdentity(result.value.account),
@@ -85,7 +86,7 @@ export function mountManualJourney(root, options = {}) {
     mount('setup', (ticket) => mountManualSetup(root, { ...shared, hint, onBack: () => later(ticket, account) }));
   }
   function gallery(initialStock) {
-    mount('gallery', (ticket) => mountManualGallery(root, { brand: shared.brand, adapter: claimAdapter, signOut: shared.signOut,
+    mount('gallery', (ticket) => mountManualGallery(root, { brand: shared.brand, adapter: claimAdapter, signOut: shared.signOut, notifications,
       commandId: shared.commandId, initialStock,
       onBack() {
         // Keep the unresolved attempt and its retry command in its existing controller.
@@ -102,7 +103,7 @@ export function mountManualJourney(root, options = {}) {
     }));
   }
   function review(handoff) {
-    mount('review', (ticket) => mountManualReview(root, { brand: shared.brand, adapter: reviewAdapter, signOut: shared.signOut,
+    mount('review', (ticket) => mountManualReview(root, { brand: shared.brand, adapter: reviewAdapter, signOut: shared.signOut, notifications,
       commandId: shared.commandId, handoff,
       onContinue(detail) {
         if (disposed || ticket !== generation) return;
@@ -113,7 +114,7 @@ export function mountManualJourney(root, options = {}) {
     }));
   }
   function summary() {
-    mount('summary', (ticket) => mountManualSummary(root, { brand: shared.brand, adapter: summaryPort, signOut: shared.signOut,
+    mount('summary', (ticket) => mountManualSummary(root, { brand: shared.brand, adapter: summaryPort, signOut: shared.signOut, notifications,
       commandId: shared.commandId,
       onEditDetails() { later(ticket, () => review()); },
       onChangeCar() { later(ticket, gallery); },
