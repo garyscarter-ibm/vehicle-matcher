@@ -4281,6 +4281,45 @@
       "delivery_status": "Built; final fresh-base scoped check complete; pending parent base merge and collaborator acceptance",
       "jira_status_basis": "Last verified native status In Progress. Parent subsequent refresh failed OAuth unauthorized_client invalid refresh_token; lifecycle remains pending sign-in, no transition inferred.",
       "integration_base": "43e4c1be2ca66951a0ddc4a1ff11332df48974be"
+    },
+    {
+      "assignee": "usget",
+      "branch": "dev/DEV-2026-11-10-007",
+      "delivery_status": "Built; scoped fixture validation complete; parent integration and collaborator acceptance pending",
+      "id": "FUCQ-348",
+      "jira_status_basis": "Local claimed record; Jira OAuth refresh unavailable, no native transition performed.",
+      "status": "In Progress",
+      "title": "Repair the stale version assumption in the allocation identity test fixture",
+      "type": "Bug",
+      "workers": [
+        {
+          "expires_at": "2026-11-10T16:22:09.450631+00:00",
+          "harness": "codex",
+          "name": "B-Bot",
+          "observed_at": "2026-11-10T16:22:09.450631+00:00",
+          "role": "story-lead",
+          "source": "Fixture repair and scoped validation finished; no descendants or active test processes.",
+          "status": "stopped"
+        }
+      ],
+      "observed_at": "2026-11-10T16:22:09Z",
+      "slices": [
+        {
+          "id": "repair",
+          "status": "complete",
+          "title": "Use current fixture employee version",
+          "observed_at": "2026-11-10T16:22:09Z",
+          "evidence": "Lead reviewed same-transaction get and CAS version; no shared helper or product changes. Original focused red stale-version2/current3; evidence docs/gcsp/evidence/fucq348-fixture-version-2026-11-10.md."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Exercise original identity authority assertions",
+          "observed_at": "2026-11-10T16:22:09Z",
+          "evidence": "Lead accepted full identity-allocation module3/3pass0skip with original forged/nonpresenter/unknown/cross-run/cross-scheme/expired/reset assertions retained. Scoped memory proof only; parent merge remains pending."
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
