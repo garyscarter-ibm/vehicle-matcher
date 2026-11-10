@@ -282,3 +282,32 @@ test('after Save focus moves to the saved message, which is said once', async (t
   assert.ok(note); assert.equal(document.activeElement, note);
   assert.equal((main.textContent.match(/Version 1 saved\./g) ?? []).length, 1, 'the saved message shows once');
 });
+test('FUCQ-328: Paula\'s scheme facts show what her records hold and count unanswered needs once', async (t) => {
+  const { createGcspRuntime } = await import('../gcsp/runtime.js');
+  const at = '2026-11-05T09:00:00.000Z';
+  const runtime = (await createGcspRuntime({ mode: 'memory', environmentId: 'fucq-328', policyAsOf: at, commandId: 'bootstrap-fucq-328', sessionNow: () => at })).value;
+  const session = await runtime.createLocalSession(); const read = await runtime.editor.readEditor(session.value.context); await runtime.close();
+  assert.equal(read.status, 'ok'); assert.equal(read.value.context.knownFacts.annualMileage, undefined);
+  const transport = { preview: async () => ({ status: 'unavailable' }), saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }) };
+  const known = async (editor) => {
+    const main = document.createElement('main'); document.body.append(main);
+    const teardown = mountBriefBody(main, { editor, transport }); t.after(() => { teardown(); main.remove(); }); await settle();
+    const node = main.querySelector('.gcsp-brief-known');
+    return { node, text: [...node.querySelectorAll('dt, dd, p, li:not([hidden])')].map((n) => n.textContent).join('|'), main };
+  };
+  const paula = await known(read.value);
+  assert.deepEqual([...paula.node.querySelectorAll('.vm-fact')].map((n) => n.textContent), ['Current carBMW 3 Series Touring 320i',
+    'Contract endsTuesday 1 December 2026', 'DriversPaula Mason, Casey Ward', 'Annual mileage12,000 mi/year']);
+  assert.doesNotMatch(paula.text, /Not supplied|Unknown|Source not supplied|policy:/);
+  assert.equal(paula.node.querySelector('.gcsp-brief-pending').textContent, 'Not answered yet: 4 questions about what your car needs to do.');
+  const towbar = paula.main.querySelector('[aria-label="Do you need a towbar?"] button'); towbar.click(); await settle();
+  assert.match(paula.node.textContent, /Do you need a towbar\?: Draft · Your answers/);
+  assert.match(paula.node.querySelector('.gcsp-brief-pending').textContent, /3 questions/);
+  // Jordan's new-order route: no current contract at source, so one line instead of Not supplied rows.
+  const fresh = structuredClone(read.value); fresh.context.knownFacts.currentContract.value = null;
+  const jordan = await known(fresh);
+  assert.deepEqual([...jordan.node.querySelectorAll('.vm-fact')].map((n) => n.textContent), ['DriversPaula Mason, Casey Ward']);
+  assert.equal(jordan.node.querySelectorAll('.vm-facts-more').length, 1);
+  assert.equal(jordan.node.querySelector('.vm-facts-more').textContent, 'No current car on your scheme account.');
+  assert.doesNotMatch(jordan.text, /Not supplied/);
+});

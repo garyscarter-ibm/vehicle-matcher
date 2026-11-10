@@ -4,7 +4,7 @@ import { matchCard, previewTile, SPEC_LABELS, FUEL_SPEC } from '../../vehicle-ma
 import { createBriefController } from './brief-controller.js';
 import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { decisionView, previewSummary } from './brief-view-model.js';
-import { BEST_MATCH } from '../kit/plain-copy.js';
+import { BEST_MATCH, longDate } from '../kit/plain-copy.js';
 import { focusHeading } from '../kit/arrival-focus.js';
 import { loadingSkeleton } from '../kit/loading-skeleton.js';
 
@@ -12,7 +12,9 @@ let sequence = 0;
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const titleCase = (v) => v[0].toUpperCase() + v.slice(1);
 const stateText = (state) => state === 'confirmed' ? 'Saved' : state === 'inferred' ? 'Suggested' : 'Draft';
-const sourceText = (source) => ({ employee: 'Your answers', 'manual-account': 'Scheme account', 'employee-provider': 'Scheme account' })[source] || source || 'Source not supplied';
+// Internal source ids (policy:brief.editor.v1) never reach the screen; an unrecognised one is not named.
+const sourceText = (source) => ({ employee: 'Your answers', 'manual-account': 'Scheme account', 'employee-provider': 'Scheme account' })[source] ?? null;
+const withSource = (text, source) => [text, sourceText(source)].filter(Boolean).join(' · ');
 const scaleEnds = { sportiness: ['Less sporty', 'More sporty'], comfort: ['Less comfort', 'More comfort'], economy: ['Less economical', 'More economical'], size: ['Smaller', 'Larger'] };
 
 /** Mount one controller-owned draft. Async updates patch controls and never replace the editing form. */
@@ -76,19 +78,25 @@ export function mountBriefBody(main, adapters = {}) {
     current.append(el('summary', null, 'Your scheme and starting answers'));
     const facts = context.knownFacts || {};
     const contract = facts.currentContract?.value;
+    // The live provider sends no mileage fact; the current contract holds the contracted figure (FUCQ-328).
+    const provided = facts.annualMileage?.value;
+    const mileage = Number.isFinite(provided?.value) ? provided : Number.isFinite(contract?.annualMileage) ? { value: contract.annualMileage, unit: contract.mileageUnit } : null;
     current.append(factList([
       { label: 'Current car', value: contract?.model },
-      { label: 'Contract ends', value: contract?.contractEndDate },
+      { label: 'Contract ends', value: longDate(contract?.contractEndDate) },
       { label: 'Drivers', value: facts.drivers?.value?.map((d) => d.name).join(', ') },
-      { label: 'Annual mileage', value: facts.annualMileage?.value?.value, unit: facts.annualMileage?.value?.unit },
-    ]));
-    current.append(el('p', 'gcsp-note', `${sourceText(facts.currentContract?.source)}. These facts are read-only. Starting answers are confirmed when saved; unanswered needs stay unknown.`));
+      { label: 'Annual mileage', value: mileage?.value, unit: mileage?.unit },
+    ], { hideMissing: contract === null ? 'No current car on your scheme account.' : 'More details not supplied' }));
+    const factSource = sourceText(facts.currentContract?.source ?? facts.drivers?.source);
+    current.append(el('p', 'gcsp-note', `${factSource ? `${factSource}. ` : ''}These facts are read-only. Starting answers are confirmed when saved; unanswered needs stay unknown.`));
     const provenance = el('ul', 'gcsp-note'); const provenanceRows = new Map();
+    // A null text hides the row: unanswered needs are counted once in `pending`, not listed as Unknown.
     const recordProvenance = (key, label, text) => {
       if (!provenanceRows.has(key)) { const row = el('li'); provenanceRows.set(key, row); provenance.append(row); }
-      provenanceRows.get(key).textContent = `${label}: ${text}`;
+      const row = provenanceRows.get(key); row.hidden = text === null; row.textContent = text === null ? '' : `${label}: ${text}`;
     };
-    const checks = el('div', 'gcsp-brief-checks'); current.append(provenance, checks);
+    const pending = el('p', 'gcsp-note gcsp-brief-pending');
+    const checks = el('div', 'gcsp-brief-checks'); current.append(provenance, pending, checks);
     page.append(current);
     const layout = el('div', 'gcsp-brief-layout');
     const form = el('form', 'gcsp-brief-form'); form.addEventListener('submit', (event) => event.preventDefault());
@@ -159,7 +167,7 @@ export function mountBriefBody(main, adapters = {}) {
         const unknown = value === null || value === undefined;
         note.hidden = representable && !unknown;
         note.textContent = !representable ? `Current answer ${JSON.stringify(value)} needs review.` : unknown ? 'Needs confirmation.' : '';
-        recordProvenance(key, question.label, `${unknown ? 'Unknown' : stateText(essential?.state)} · ${sourceText(essential?.source)}`);
+        recordProvenance(key, question.label, unknown ? null : withSource(stateText(essential?.state), essential?.source));
       } });
       practical.append(field);
     }
@@ -199,9 +207,11 @@ export function mountBriefBody(main, adapters = {}) {
         h.value.update({ value: p.value, valueState: Number.isFinite(p.value) || typeof p.value === 'string' ? 'confirmed' : 'unknown' });
         h.importance.update({ value: p.importance, valueState: Number.isFinite(p.importance) ? 'confirmed' : 'unknown' });
         h.indifferent.setAttribute('aria-pressed', String(p.importance === context.slider.minimum));
-        recordProvenance(key, h.label, `${stateText(p.valueState)} preference ${p.value}; ${stateText(p.importanceState).toLowerCase()} importance ${p.importance} · ${sourceText(p.source)}`);
+        recordProvenance(key, h.label, withSource(`${stateText(p.valueState)} preference ${p.value}; ${stateText(p.importanceState).toLowerCase()} importance ${p.importance}`, p.source));
       }
       for (const [key, q] of questions) q.update(state.brief.essentials[key]);
+      const open = [...questions.keys()].filter((key) => state.brief.essentials[key]?.value == null).length;
+      pending.hidden = !open; pending.textContent = open ? `Not answered yet: ${open} ${open === 1 ? 'question' : 'questions'} about what your car needs to do.` : '';
       consent.update({ value: ['search', 'hold'].filter((k) => state.consent[k]) });
       const unsaved = state.dirty || (adapters.initialEdited && state.save.state !== 'saved') || state.briefVersion === 0;
       draftNotice.textContent = [adapters.notice, unsaved ? 'Unsaved draft' : null].filter(Boolean).join(' · '); draftNotice.hidden = !draftNotice.textContent;
