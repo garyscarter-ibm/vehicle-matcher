@@ -29,6 +29,24 @@
         ],
         "createdAt": "2026-11-10T13:39:12.808Z",
         "reason": "Agent triage: intentional captured-email fixture at presenter/fixtures.js:7 matches existing server/gcsp/notify/templates.js:46; preserving email typography during FUCQ-342 sign-out isolation fix."
+      },
+      {
+        "rule": "monotonous-spacing",
+        "value": "*",
+        "files": [
+          "docs/gcsp/mockups/account-preferences-2026-11-10/index.html"
+        ],
+        "createdAt": "2026-11-10T18:23:07.643Z",
+        "reason": "Agent review: detector traverses imported legacy stylesheets; the mockup uses gcsp-space-1 through gcsp-space-6 with distinct control, card and section spacing, verified in the 1440px and 375px renders. Its rendered layout does not have uniform 4px spacing."
+      },
+      {
+        "rule": "pulsing-dot",
+        "value": "*",
+        "files": [
+          "docs/gcsp/mockups/account-preferences-2026-11-10/index.html"
+        ],
+        "createdAt": "2026-11-10T18:23:07.889Z",
+        "reason": "Agent review: .vm-pending-dot and vm-pulse exist only in imported blocks/vehicle-matcher/vehicle-matcher.css; this Account mockup never mounts that element. Source and rendered screenshots show no pulsing status dot. Shared production CSS is outside this discussion mockup change."
       }
     ]
   }
