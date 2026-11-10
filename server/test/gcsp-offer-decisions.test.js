@@ -10,7 +10,7 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createEmployeeRecommendationService } from '../gcsp/recommendation/index.js';
 import { OfferDecisionService, DECLINE_REASONS_KEY, DECISION_EVENTS } from '../gcsp/offers/decision.js';
 import { createOfferDecisionHandler } from '../gcsp/offers/decision-http.js';
-import { preference, essential, stock } from './helpers/employee-recommendation.js';
+import { preference, essential, stock, fact } from './helpers/employee-recommendation.js';
 
 const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
 // Explicit alternative policy input exercises the proposed registry. It does not
@@ -23,7 +23,7 @@ const ref = (f, table, key = {}) => ({ table, key: { runId: f.context.runId, ...
 const command = (commandId, input = {}) => ({ commandId, inputDigest: inputDigest(input) });
 const yes = (outcome) => { assert.equal(outcome.status, 'ok', JSON.stringify(outcome)); return outcome.value; };
 
-async function setup({ reasons = reasonInput, evaluator = true, quoteSeconds } = {}) {
+async function setup({ reasons = reasonInput, evaluator = true, quoteSeconds, equipment } = {}) {
   const alternative = structuredClone(seed);
   // Explicit alternative input: a quote that lapses before the hold, which the active seed no longer does.
   if (quoteSeconds !== undefined) alternative.assumptions.find((row) => row.key === 'employee.recommendation.v1').value.termValiditySeconds = quoteSeconds;
@@ -46,11 +46,13 @@ async function setup({ reasons = reasonInput, evaluator = true, quoteSeconds } =
   const briefService = new BriefService({ repository, policy, clock, identity }); f.briefService = briefService;
   yes(await briefService.saveDraft(context, { commandId: 'draft', expectedBriefVersion: 0, expectedDraftVersion: 0,
     brief: { schemaVersion: 1, preferences: { body: preference('estate') },
-      essentials: { seats: essential(5), charging: { value: 'home', operator: 'equals', unit: null, state: 'confirmed', source: 'employee' } } } }));
+      essentials: { seats: essential(5), charging: { value: 'home', operator: 'equals', unit: null, state: 'confirmed', source: 'employee' },
+        ...equipment ? { equipment: essential(equipment, 'includes', 'equipment-key') } : {} } } }));
   const brief = yes(await briefService.confirm(context, { commandId: 'confirm', expectedBriefVersion: 0,
     expectedDraftVersion: 1, consent: { search: true, hold: true } })).brief;
   const time = yes(await clock.now(context));
-  const car = stock(987); car.availability.availableFrom = time.now;
+  const car = stock(987, equipment ? { equipment: fact(Object.fromEntries(equipment.map((key) => [key, true]))) } : {});
+  car.availability.availableFrom = time.now;
   const employee = yes(await repository.read(context, ref(f, 'employees', { employeeId: context.employeeId })));
   const employeeFacts = structuredClone(employee.contract.manualContext.employeeFacts);
   employeeFacts.driverEligible = employee.contract.manualContext.drivers.find((d) => d.kind === 'employee').eligible;
@@ -317,6 +319,55 @@ test('decline can release the still-current hold after its quote validity ends',
   const out = yes(await f.service.decide(f.capability, f.input('decline')));
   assert.equal(out.state, 'declined'); assert.equal((await read(f, 'stock', { orderUuid: f.car.orderUuid })).available, true);
   assert.equal(yes(await f.repository.query(f.context, 'decisions'))[0].decision, 'decline');
+});
+
+test('FUCQ-333: preference-only confirmation preserves a valid issued offer and its pinned quote', async () => {
+  const f = await setup({ equipment: ['towbar', 'heatedSeats'] }); const quote = await read(f, 'quotes', { quoteId: 'quote-fixture' });
+  const original = await read(f, 'briefs', { employeeId: f.context.employeeId, briefVersion: 1 });
+  const essentials = structuredClone(original.essentials);
+  essentials.seats.source = 'employee:reconfirmed';
+  essentials.equipment.value.reverse(); // The same required equipment, presented in a different order.
+  const time = yes(await f.clock.now(f.context));
+  yes(await f.clock.advance(f.presenter.context, { commandId: 'preference-time', expectedClockVersion: time.clockVersion, bySeconds: 120 }));
+  yes(await f.briefService.saveDraft(f.context, { commandId: 'preference-draft', expectedBriefVersion: 1,
+    expectedDraftVersion: 1, brief: { schemaVersion: 1, preferences: { body: preference('suv', 37) },
+      essentials } }));
+  const changed = yes(await f.briefService.confirm(f.context, { commandId: 'preference-confirm', expectedBriefVersion: 1,
+    expectedDraftVersion: 2, consent: { search: true, hold: true } })).brief;
+  assert.notEqual(changed.essentials.seats.confirmedAt, original.essentials.seats.confirmedAt);
+  assert.notEqual(changed.essentials.seats.source, original.essentials.seats.source);
+  assert.deepEqual(changed.essentials.equipment.value, ['heatedSeats', 'towbar']);
+  const input = f.input('accept'); const out = yes(await f.service.decide(f.capability, input));
+  assert.equal(out.state, 'accepted');
+  const decision = await read(f, 'decisions', { decisionId: out.decisionId });
+  assert.equal(decision.offerId, 'offer-fixture'); assert.equal(decision.versions.brief, 2);
+  assert.equal(decision.versions.pinnedBrief, 1);
+  assert.deepEqual(await read(f, 'quotes', { quoteId: 'quote-fixture' }), quote);
+  assert.deepEqual(await f.service.decide(f.capability, input), ok(out));
+  assert.equal(yes(await f.repository.query(f.context, 'decisions')).length, 1);
+  assert.equal(yes(await f.repository.query(f.context, 'event_receipts', { consumerId: DECISION_EVENTS })).length, 1);
+});
+
+test('FUCQ-333: changed essential meaning still requires review even when the held car would satisfy it', async () => {
+  for (const [name, change] of [
+    ['value', (e) => { e.seats.value = 4; }],
+    ['added', (e) => { e.boot = essential(100, 'gte', 'L'); }],
+    ['removed', (e) => { delete e.seats; }],
+    ['confirmation', (e) => { e.seats.state = 'needs-confirmation'; }],
+    ['charging', (e) => { e.charging.value = 'none'; }],
+    ['operator', (e) => { e.seats.operator = 'equals'; }],
+    ['unit', (e) => { e.seats.unit = null; }],
+  ]) {
+    const f = await setup(); const current = await read(f, 'briefs', { employeeId: f.context.employeeId, briefVersion: 1 });
+    const essentials = structuredClone(current.essentials); change(essentials);
+    // Keep the issued version immutable and introduce a later confirmed version.
+    const { version, ...next } = current;
+    yes(await f.repository.transaction(f.context, command(`changed-essential:${name}`), async (tx) => {
+      return tx.insert('briefs', { ...next, briefVersion: 2, essentials });
+    }));
+    const before = state(f); const refused = await f.service.decide(f.capability, f.input('accept'));
+    assert.equal(refused.reason, 'brief-changed-review-required', name); assert.deepEqual(state(f), before, name);
+  }
 });
 
 test('pause does not revoke existing selection; a confirmed practical change requests review', async () => {
