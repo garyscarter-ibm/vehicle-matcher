@@ -4,6 +4,7 @@ import { el } from '../../vehicle-matcher/ui.js';
 import { portalShell, svgIcon } from '../shell/portal-shell.js';
 import { fixtureAdapter } from './fixtures.js';
 import { ACCOUNT_MENU, MENU_KEYS, PORTAL_NAVIGATION, routeAccountMenu } from './portal-navigation.js';
+import { loadingSkeleton } from '../kit/loading-skeleton.js';
 
 export const EMPLOYEE_NAVIGATION = PORTAL_NAVIGATION;
 const DEFAULT_VIEW = 'cars';
@@ -64,9 +65,7 @@ export function mountEmployee(root, ctx = {}) {
       if (typeof out === 'function') cleanupBody = out;
     };
     const showLoading = () => {
-      const note = el('p', 'gcsp-note', 'Loading your account and cars.');
-      note.setAttribute('role', 'status');
-      shell.main.replaceChildren(note);
+      shell.main.replaceChildren(loadingSkeleton({ label: 'Loading your account and cars.', layout: ctx.loadingLayout || 'page' }));
     };
     const load = async () => {
       shell.setAccount({ status: 'loading' });
