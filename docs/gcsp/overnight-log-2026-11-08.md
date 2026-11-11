@@ -435,3 +435,8 @@ For Russell or Gary:
 - Locally a Start again plus Release peaks at 347 MB and takes 11s, inside the 2 GB plan.
 - What happened shows Offer email not delivered because hosted mail fails with mail-configuration-invalid. The email is still captured (View email works). For Gary: mail settings on Render, or accept the wording.
 - One 401 from /api/gcsp/orders/progress/all on first console load (listOrders before the presenter session); harmless, not fixed.
+
+## 11 Nov 08:10, Gary's console tweaks (Wanjiru)
+- Asked: skeleton loading, day starts on the current day, no heading cycling on load, why emails aren't sent.
+- Emails: hosted mail is set to Brevo but the transport refuses every send with mail-configuration-invalid before any network call. That code means at least one of GCSP_BREVO_API_KEY, GCSP_MAIL_FROM, GCSP_MAIL_FROM_NAME, GCSP_MAIL_RECIPIENTS (valid JSON map employeeId to address) or GCSP_PUBLIC_BASE_URL is missing or invalid on Render, or GCSP_MAIL_TRANSPORT is not exactly brevo. Recipient keys must be employee ids (employee-paula), not principal ids. The email-transport doc also records sender identity and a deployed real send as never verified. Needs Gary or Russell in the Render dashboard; not changeable from here.
+- Cool Cat (implementer) on skeleton plus settled heading; Mickey Mouse (implementer) on Day 1 = today's London date at 9:00am, offsets kept.
