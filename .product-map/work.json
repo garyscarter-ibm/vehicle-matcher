@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-11T14:50:56Z",
+  "observed_at": "2026-11-11T15:28:13Z",
   "version": 1,
   "stories": [
     {
@@ -1193,7 +1193,7 @@
           "status": "in-progress",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
           "observed_at": "2026-11-06T00:30:56Z",
-          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100\u2192102 streamedHTTP\u2192105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
+          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100→102 streamedHTTP→105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
         },
         {
           "id": "decision-host",
@@ -2062,7 +2062,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
@@ -3917,7 +3917,7 @@
     },
     {
       "id": "FUCQ-326",
-      "title": "Use \u201cYour preferences\u201d consistently in the employee journey",
+      "title": "Use “Your preferences” consistently in the employee journey",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
@@ -4708,11 +4708,11 @@
     {
       "id": "FUCQ-383",
       "title": "Show a full-width offer with benefits, tradeoffs and time to decide",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-11T13:24:43Z",
+      "observed_at": "2026-11-11T15:28:13Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-383",
       "slices": [
         {
@@ -4745,11 +4745,11 @@
     {
       "id": "FUCQ-384",
       "title": "Resolve selected configuration codes from a seeded local definition index",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-11T13:37:22Z",
+      "observed_at": "2026-11-11T15:28:13Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-384",
       "slices": [
         {
@@ -4782,11 +4782,11 @@
     {
       "id": "FUCQ-385",
       "title": "Show a seeded three-view vehicle gallery with an enlarged image viewer",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-11T14:13:24Z",
+      "observed_at": "2026-11-11T15:28:13Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-385",
       "slices": [
         {
@@ -4819,14 +4819,14 @@
     {
       "id": "FUCQ-382",
       "title": "Preserve vehicle configuration details in stock and offer quotes",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
       "type": "Bug",
-      "observed_at": "2026-11-11T13:53:15Z",
+      "observed_at": "2026-11-11T15:28:13Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-382",
       "unsliced": false,
-      "note": "Repair authorised on 11 November 2026; original AC1\u20133 Built with local actual generated-stock, recommendation, pinned-offer and independently reviewed rendered evidence. Genuine definition, transmission and fitment gaps remain explicit; no external deployment, full-suite or collaborator/Jira acceptance claim. docs/gcsp/evidence/fucq382/README.md",
+      "note": "Repair authorised on 11 November 2026; original AC1–3 Built with local actual generated-stock, recommendation, pinned-offer and independently reviewed rendered evidence. Genuine definition, transmission and fitment gaps remain explicit; no external deployment, full-suite or collaborator/Jira acceptance claim. docs/gcsp/evidence/fucq382/README.md",
       "slices": [
         {
           "id": "source",
@@ -4847,7 +4847,7 @@
           "status": "complete",
           "title": "Real-producer-to-pinned-offer-and-rendered-review",
           "observed_at": "2026-11-11T14:42:07Z",
-          "evidence": "Original AC1\u20133 complete through actual generated release, recommendation, pin, access and rendered comparison. Historical quote immutable; genuine definition gaps explicit. Independent corrected 1440/375/320 PASS at 22176eb2; final shared 9089a815. docs/gcsp/evidence/fucq382/README.md"
+          "evidence": "Original AC1–3 complete through actual generated release, recommendation, pin, access and rendered comparison. Historical quote immutable; genuine definition gaps explicit. Independent corrected 1440/375/320 PASS at 22176eb2; final shared 9089a815. docs/gcsp/evidence/fucq382/README.md"
         }
       ],
       "workers": [],
@@ -4856,11 +4856,11 @@
     {
       "id": "FUCQ-386",
       "title": "Confirm offer acceptance or fixed-reason decline in a side drawer",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-11T15:25:09Z",
+      "observed_at": "2026-11-11T15:28:13Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-386",
       "slices": [
         {

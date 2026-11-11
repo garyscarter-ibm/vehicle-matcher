@@ -2,7 +2,9 @@
 
 The collaborator approved the [local concept](mockups/vehicle-offer-2026-11-11/index.html) after the final caption, alignment, overflow and decline edits. [Five benefits](mockups/vehicle-offer-2026-11-11/benefits-expanded.html) demonstrate the wrapping rule. Independent critique and corrected desktop/narrow reinspection passed within the concept scope; [the review](mockups/vehicle-offer-2026-11-11/review/final-review.md) records evidence and limits.
 
-## Authored scope
+Delivery update, 11 November 2026: FUCQ-383–386 and the explicitly authorised FUCQ-382 prerequisite are built, merged and In Review. The bounded poller stopped after these five items. Russell lifted the Bug's diagnosis-only hold and authorised the compact expected-return-mileage field through the existing handoff contract. See the [delivery report](dev-poller-fucq380-2026-11-11.md) for current evidence and limits. The sections below preserve the earlier design/backlog-authoring record; their To Do/unassigned, no-pickup and implementation-not-started statements describe that earlier point, not current state.
+
+## Original authored scope
 
 All four new Stories belong to [FUCQ-380](https://ibm-consulting.atlassian.net/browse/FUCQ-380). Native Jira is authoritative for their complete acceptance, decisions and validation. They are unassigned, To Do, with the default Medium priority and no Story-point estimate. This session authors the backlog; it does not start production implementation or a dispatcher.
 
