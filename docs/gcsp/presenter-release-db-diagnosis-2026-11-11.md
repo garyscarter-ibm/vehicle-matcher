@@ -26,6 +26,16 @@ Push to `gcsp-poc` triggers the `gcsp-api` Render deployment. Verify the deploym
 
 ## What was demonstrated locally
 
+### Follow-up: repeated releases during the demo
+
+Russell asked whether the combined fixes make it safe to advance many releases while waiting for Paula's preferred car. They remove verified amplification; **they do not establish a safe hosted release count or resolve the unconfirmed database-outage cause**.
+
+The six-release regression uses **six batches of 12 synthetic cars**, with one impossible 99-seat brief, in the memory runtime. It verifies small clock/command results, idempotence and preserved canonical detail while the candidate pool grows to at least 72 cars. The equivalent native PostgreSQL case was skipped. This is not six 100-car generated releases or a live capacity/latency result. Retained delivery evidence records successful deployment/health at 21:40–21:41 UTC on 11 November, with `production_release_triggered: false`; it is a historical observation, not current deployment verification.
+
+Each actual release still adds stock and receipts. An active unmatched employee can be evaluated against the cumulative available pool, producing further canonical decision evidence. The PostgreSQL adapter still fingerprints run tables for writes, may hydrate a full run on cache misses, and holds the run lock through write processing. Old large durable receipts were not deleted. Routine clock outcomes are now compact; the whole workload is not constant-cost or bounded independently of history.
+
+For the demo, prefer a rehearsed known matching release or agreed supply adjustment over an open-ended search by repeated releases. A bounded sequence can be assessed through actual completion times and database/application metrics; no safe count is inferred from the local regression. Also, an occupying offer can prevent another allocation for Paula, and advancing releases advances domain time. No live release, reset, benchmark, new test or scratch allocation was performed for this read-only follow-up. Independent source/evidence review: Taz, requested/selected `gpt-6.1-sol` / `high`, no fallback or descendants. Jira writes remain paused.
+
 The probes used real application modules with small synthetic memory/file fixtures and captured-only mail. Counts below are **application calls**, not measured PostgreSQL statement counts. Sizes are **logical JSON bytes**, not PostgreSQL disk, TOAST or WAL usage.
 
 | Probe | Observation |
