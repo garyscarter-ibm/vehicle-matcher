@@ -19,12 +19,11 @@ test('never-checked state separates active permission from unavailable check evi
   assert.match(node.textContent, /Not searched yet/); assert.doesNotMatch(node.textContent, /Last check/);
   assert.doesNotMatch(node.textContent, /Still searching|Source delayed|No match|overnight|last checked today/i);
   assert.equal(node.querySelectorAll('h1').length, 1);
-  const trigger = node.querySelector('[aria-haspopup="menu"]'); trigger.click();
-  const pause = node.querySelector('[role="menuitem"]'); assert.equal(pause.textContent, 'Pause Search');
-  assert.equal(pause.getAttribute('aria-disabled'), 'true');
+  const pause = node.querySelector('.gcsp-activity-search-action'); assert.equal(pause.textContent, 'Pause search');
+  assert.equal(pause.disabled, true);
   assert.match(document.getElementById(pause.getAttribute('aria-describedby')).textContent, /Preview only/);
   assert.equal(node.querySelectorAll('h2').length, 1); assert.equal(node.querySelector('.gcsp-activity-offer'), null);
-  assert.equal(node.querySelector('.gcsp-activity-status svg').getAttribute('aria-hidden'), 'true');
+  assert.equal(node.querySelector('.gcsp-activity-status .gcsp-buddy-dot').getAttribute('aria-hidden'), 'true');
   assert.equal(node.querySelector('a[href]'), null); assert.doesNotMatch(node.textContent, /No current offer|Your offer/);
   assert.equal(node.querySelector('.gcsp-synthetic'), null);
   node.destroy();
@@ -32,11 +31,12 @@ test('never-checked state separates active permission from unavailable check evi
 
 test('paused state says new searches and holds stopped, without an offer line when no offer exists', () => {
   const node = activityBody({ result: fixtures.paused });
-  assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Inactive');
+  assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Paused');
   assert.match(node.textContent, /New searches and holds have stopped\./); assert.doesNotMatch(node.textContent, /offer is still open/);
-  assert.equal(node.querySelector('[role="menuitem"]').textContent, 'Resume Search');
+  assert.equal(node.querySelector('.gcsp-activity-search-action').textContent, 'Resume search');
   const active = activityBody({ result: fixtures['never-checked'] });
-  assert.notEqual(node.querySelector('.gcsp-activity-status svg').innerHTML, active.querySelector('.gcsp-activity-status svg').innerHTML);
+  assert.equal(node.querySelector('.gcsp-activity-status').classList.contains('is-paused'), true);
+  assert.equal(active.querySelector('.gcsp-activity-status').classList.contains('is-active'), true);
   assert.equal(node.querySelectorAll('.gcsp-activity-timeline li').length, 2);
   assert.match(node.textContent, /Search paused/);
   active.destroy(); node.destroy();
@@ -59,14 +59,26 @@ test('missing search permission never claims an active search or a saved pause',
   assert.equal(node.querySelector('.gcsp-activity-consequence'), null); node.destroy();
 });
 
-test('real command callbacks enable the shared menu; pending state blocks repeat effects with a concise reason', () => {
+test('unconfigured Buddy exposes setup, which only navigates to preferences', () => {
+  let reviews = 0; let writes = 0;
+  const result = structuredClone(fixtures['never-checked']); result.value.permission = null;
+  const node = activityBody({ result, onReviewBrief: () => { reviews += 1; }, onPause: () => { writes += 1; }, onResume: () => { writes += 1; } });
+  assert.equal(node.querySelector('.gcsp-activity-status').textContent, 'Not set up');
+  const setup = [...node.querySelectorAll('button')].find((item) => item.textContent === 'Set up your buddy');
+  assert.equal(setup.disabled, false); setup.click(); assert.equal(reviews, 1); assert.equal(writes, 0);
+  assert.equal(node.querySelector('.gcsp-activity-search-action'), null);
+  const malformed = activityBody({ result: { status: 'ok', value: {} } });
+  assert.match(malformed.textContent, /Activity unavailable/); assert.doesNotMatch(malformed.textContent, /Set up your buddy/);
+});
+
+test('real command callbacks enable the visible control; pending state blocks repeat effects with a concise reason', () => {
   let calls = 0;
   const node = activityBody({ result: fixtures['never-checked'], onPause: () => { calls += 1; } }); document.body.append(node);
-  node.querySelector('.gcsp-action-trigger').click(); const action = node.querySelector('[role="menuitem"]');
-  assert.equal(action.getAttribute('aria-disabled'), null); action.click(); assert.equal(calls, 1);
+  const action = node.querySelector('.gcsp-activity-search-action');
+  assert.equal(action.disabled, false); action.click(); assert.equal(calls, 1);
   const pending = activityBody({ result: fixtures['never-checked'], pending: true, onPause: () => { calls += 1; } }); document.body.append(pending);
-  pending.querySelector('.gcsp-action-trigger').click(); const waiting = pending.querySelector('[role="menuitem"]');
-  assert.equal(waiting.getAttribute('aria-disabled'), 'true'); assert.match(document.getElementById(waiting.getAttribute('aria-describedby')).textContent, /Updating search/);
+  const waiting = pending.querySelector('.gcsp-activity-search-action');
+  assert.equal(waiting.disabled, true); assert.match(document.getElementById(waiting.getAttribute('aria-describedby')).textContent, /Updating search/);
   waiting.click(); assert.equal(calls, 1); node.destroy(); pending.destroy();
 });
 
@@ -108,8 +120,8 @@ test('FUCQ-215: after an accept the search reads finished and offers no pause or
   const accepted = structuredClone(fixtures['offer-declined']); accepted.value.currentOffer.state = 'accepted';
   const node = activityBody({ result: accepted, onPause: () => {}, onResume: () => {} }); document.body.append(node);
   const status = node.querySelector('.gcsp-activity-status');
-  assert.equal(status.textContent.trim(), 'Finished. You accepted a car.'); assert.equal(status.hasAttribute('role'), false);
-  assert.equal(node.querySelector('[aria-haspopup="menu"]'), null); assert.doesNotMatch(node.textContent, /Pause Search|Resume Search|\bActive\b|\u2014/);
+  assert.equal(status.textContent.trim(), 'Search finished'); assert.equal(status.hasAttribute('role'), false);
+  assert.equal(node.querySelector('[aria-haspopup="menu"]'), null); assert.doesNotMatch(node.textContent, /Pause search|Resume search|\bActive\b|\u2014/);
   node.destroy?.(); node.remove();
 });
 
@@ -147,13 +159,13 @@ test('declined and expired offers show the closed state, no respond-by, and the 
   }
 });
 
-test('paused with an open offer says so once, keeps View offer and the Resume Search menu', () => {
+test('paused with an open offer says so once, keeps View offer and the Resume search control', () => {
   const node = view('paused-offer');
-  assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Inactive');
+  assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Paused');
   assert.equal(node.querySelector('.gcsp-activity-consequence').textContent,
     'New searches and holds have stopped. Your offer is still open. View it to accept or decline.');
   assert.equal(node.querySelector('a[href]').textContent, 'View offer'); assert.match(node.textContent, /found a car/);
-  node.querySelector('.gcsp-action-trigger').click(); assert.equal(node.querySelector('[role="menuitem"]').textContent, 'Resume Search');
+  assert.equal(node.querySelector('.gcsp-activity-search-action').textContent, 'Resume search');
   assert.doesNotMatch(node.textContent, /Still searching|Source delayed/); clean(node); node.destroy();
 });
 

@@ -27,7 +27,7 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, s
     onNavigate, notifications: adapter.notifications, accountFailure: 'page',
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
     renderBody(main, { account, refresh }) {
-      let body; let stopped = false; let restoringFocus = false; let unsubscribeClock;
+      let body; let stopped = false; let restoringFocus = false; let pendingFocus; let unsubscribeClock;
       const announcement = viewStatus({ className: 'gcsp-vh gcsp-activity-announcement' });
       const content = el('div');
       // Help sits outside the repainted body so a repaint never resets an open help form.
@@ -42,6 +42,9 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, s
         const active = root.ownerDocument.activeElement; announcement.clear();
         const ownedFocus = body?.contains(active) || restoringFocus && active === main;
         const held = body?.contains(active) && active.closest(FOCUSABLE) ? focusKeyOf(active.closest(FOCUSABLE)) : null;
+        // The command button is disabled during readback. Keep its key while focus
+        // rests on a fallback, but respect focus moved by the user in the meantime.
+        const focusKey = pendingFocus?.element === active ? pendingFocus.key : held;
         body?.destroy?.();
         if (state.phase === 'loading') {
           body = el('div', 'vm gcsp-activity');
@@ -60,11 +63,12 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, s
         if (ownedFocus) {
           if (state.phase === 'loading') { main.tabIndex = -1; main.focus(); restoringFocus = active?.tagName === 'H1' || restoringFocus === 'heading' ? 'heading' : true; }
           else {
-            const target = (held && findByFocusKey(body, held, FOCUSABLE)) || ((active?.tagName === 'H1' || restoringFocus === 'heading') && body.querySelector('h1')) || body.querySelector('.gcsp-action-trigger') || body.querySelector('button:not(:disabled)') || body.querySelector('h1');
+            const target = (focusKey && findByFocusKey(body, focusKey, FOCUSABLE)) || ((active?.tagName === 'H1' || restoringFocus === 'heading') && body.querySelector('h1')) || body.querySelector('.gcsp-activity-search-action:not(:disabled)') || body.querySelector('button:not(:disabled)') || body.querySelector('h1');
             if (target) { if (target.tagName === 'H1') target.tabIndex = -1; target.focus(); }
+            pendingFocus = state.pending && focusKey ? { key: focusKey, element: target } : null;
             restoringFocus = false;
           }
-        } else restoringFocus = false;
+        } else { restoringFocus = false; pendingFocus = null; }
       };
       if (account.status !== 'ready') paint({ phase: 'unavailable', result: null, message: '' });
       else {
