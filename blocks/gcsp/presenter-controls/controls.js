@@ -3,6 +3,7 @@ import { renderOptionList } from '../../vehicle-matcher/modes/question-ui.js';
 import { presenterBar } from '../kit/presenter-bar.js';
 import { labelledField } from '../kit/form-controls.js';
 import { isRunRestarted, runRestartedNotice } from '../kit/run-restarted.js';
+import { announceSessionChange } from '../shell/session-lifecycle.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
 import { adapterLabel, modeLabel, faultChange } from './fault-copy.js';
 import { tickSummary, stepLine, missingStagesLine, findOutcome } from './tick-copy.js';
@@ -66,6 +67,8 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   const options = { signal: abort.signal };
   let disposed = false; let busy = false; let authorized = false; let state; let context; let catalogue; let faults = null; let startStopped = false;
   let focusAfterBusy = null; let resetLead = null; let focusStatus = false;
+  // FUCQ-351: the Greg shortcut confirms through the same panel; opener gets focus back on Cancel or Escape.
+  let resetFor = null; let opener = null; let announceSwitch = false;
   let original = null; let uncertain = false; let confirming = false; let restarted = false; let focusRestart = false;
   let landed = false; let receiptsOpen = false; // Step results stay collapsed (FUCQ-203) unless the presenter opens them.
   const bar = presenterBar();
@@ -134,17 +137,19 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   const to = action('Tick to target', () => start('tick', { expectedClockVersion: state.clockVersion, mode: 'to', to: target.input.value }));
   const next = action('Next release', () => start('tick', { expectedClockVersion: state.clockVersion, mode: 'next-release' }));
   const nextReason = el('p', 'gcsp-note'); nextReason.id = `presenter-release-${++sequence}`; next.setAttribute('aria-describedby', nextReason.id);
-  const reset = action('Reset scenario', () => { confirming = true; confirmation.hidden = false; update(); confirm.focus(); });
+  const ask = (node, lead) => { resetFor = lead; opener = node; confirming = true; confirmation.hidden = false; update(); confirm.focus(); };
+  const reset = action('Reset scenario', () => ask(reset, null));
+  const toGreg = action('Reset and switch to Greg', () => ask(toGreg, gregFor(chosenScenario())));
   const confirmation = el('div', 'gcsp-presenter-confirmation'); confirmation.hidden = true;
   const confirmText = el('p', 'gcsp-note');
   const confirm = action('Confirm reset', () => {
     const selected = catalogue?.scenarios?.find((row) => row.scenarioId === scenario.value);
     if (!selected?.availability?.available) return;
-    resetLead = leadFor(selected); confirming = false; confirmation.hidden = true;
+    resetLead = resetFor ?? leadFor(selected); announceSwitch = Boolean(resetFor); confirming = false; confirmation.hidden = true;
     start('reset', { expectedRunId: state.runId, expectedRunVersion: state.runVersion, scenarioId: selected.scenarioId,
       scenarioVersion: selected.scenarioVersion, fixtureVersion: selected.fixtureVersion, policyVersion: catalogue.policyVersion });
   }, 'primary');
-  const cancel = action('Cancel reset', () => { confirming = false; confirmation.hidden = true; update(); reset.focus(); });
+  const cancel = action('Cancel reset', () => { confirming = false; confirmation.hidden = true; update(); (opener ?? reset).focus(); });
   confirmation.append(confirmText, confirm, cancel);
   const proceed = action('Continue to workspace', () => navigate(workspace())); proceed.hidden = true;
   // One picker and one button per adapter the server reports; nothing is invented client-side.
@@ -184,6 +189,9 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     const picked = principal.value && principal.value !== context?.principalId ? usable.find((row) => row.principalId === principal.value) : null;
     return picked || usable.find((row) => row.roles?.includes('employee')) || null;
   }
+  const chosenScenario = () => catalogue?.scenarios?.find((row) => row.scenarioId === scenario.value);
+  const gregFor = (chosen) => (Array.isArray(chosen?.principals) ? chosen.principals : state?.principals || [])
+    .find((row) => text(row?.principalId) && row.roles?.includes('greg') && !row.roles.includes('presenter')) || null;
   const switchButton = action('Switch principal', () => start('switchPrincipal', { principalId: principal.value }));
   const retry = action('Retry original action', () => execute()); retry.hidden = true;
   const fresh = action('Issue selected principal again', () => {
@@ -192,7 +200,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   const refresh = action('Refresh readback', () => refreshState());
   // Beat actions come first in run-sheet order (Reset, Switch, Next release, Tick); Tick is the one primary.
   const section = (...nodes) => { const node = el('div', 'gcsp-presenter-group'); node.append(...nodes); return node; };
-  actions.append(section(reset, switchButton, next, tick, confirmation, retry, fresh, proceed, nextReason, target.root, named, to),
+  actions.append(section(reset, switchButton, next, tick, toGreg, confirmation, retry, fresh, proceed, nextReason, target.root, named, to),
     message, readMessage, notice.root, bar.readback, section(scenario.root, availability, principal.root), faultGroup, results, section(refresh));
   panel.append(actions); host.append(root);
   // The old session is refused for good, so the only way on is a reload; nothing is resent.
@@ -233,8 +241,9 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     availability.textContent = chosen?.availability?.available ? ''
       : `${chosen ? `Selected: ${chosen.name}. ` : ''}Not available yet: ${chosen?.availability?.missingCapabilities?.join(', ') || reason(catalogue) || 'Scenario catalogue unavailable'}`;
     reset.disabled ||= !chosen?.availability?.available; confirm.disabled ||= !chosen?.availability?.available;
+    toGreg.disabled ||= !chosen?.availability?.available || !gregFor(chosen);
     switchButton.disabled ||= !principal.value;
-    const lead = leadFor(chosen);
+    const lead = confirming && resetFor ? resetFor : leadFor(chosen);
     confirmText.textContent = `Reset into ${chosen?.name || 'selected scenario'}${lead ? ` as ${lead.name || lead.principalId}` : ''}? This starts a new run.`;
     const last = state.lastTick;
     const count = releasedCarCount(state);
@@ -375,6 +384,8 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
         if (switched.stop) return;
         if (!switched.reason) {
           if (lead) try { host.ownerDocument.defaultView.sessionStorage.setItem(RESET_KEY, JSON.stringify({ runId: value.runId, name })); } catch { /* storage blocked */ }
+          // Open portal tabs reload through the server guard and land on the new principal's page, not a Reload prompt.
+          if (lead && announceSwitch) announceSessionChange(host.ownerDocument.defaultView);
           navigate(workspace());
           return;
         }
@@ -417,7 +428,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   target.input.addEventListener('input', onChange);
   const escape = (event) => {
     if (event.key !== 'Escape') return;
-    if (confirming) { confirming = false; confirmation.hidden = true; reset.focus(); }
+    if (confirming) { confirming = false; confirmation.hidden = true; (opener ?? reset).focus(); }
     else if (onEscape) onEscape();
     else { root.open = false; summary.focus(); }
   };

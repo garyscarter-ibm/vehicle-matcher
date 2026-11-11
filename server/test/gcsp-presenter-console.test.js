@@ -106,7 +106,7 @@ test('five tabs in order hold every controller control and none is orphaned', as
   const tabs = [...f.root.querySelectorAll('[role="tab"]')]; assert.deepEqual(tabs.map((n) => n.textContent), ['Scenario', 'Clock', 'People', 'Faults', 'Last tick']);
   const panels = [...f.root.querySelectorAll('[role="tabpanel"]')]; assert.equal(panels.length, 5);
   const inPanel = (index, label) => assert.ok(panels[index].contains(labelled(f.root, label)), `${label} in ${tabs[index].textContent}`);
-  inPanel(0, 'Reset scenario'); inPanel(0, 'Confirm reset'); inPanel(0, 'Continue to workspace');
+  inPanel(0, 'Reset scenario'); inPanel(0, 'Reset and switch to Greg'); inPanel(0, 'Confirm reset'); inPanel(0, 'Continue to workspace');
   assert.ok(panels[0].contains(f.root.querySelector('[role="radiogroup"][aria-label="Scenario"]')));
   inPanel(1, 'Tick'); inPanel(1, 'Next release'); inPanel(1, 'Tick to target');
   assert.ok(panels[1].contains(f.root.querySelector('input.gcsp-presenter-input'))); assert.ok(panels[1].contains(f.root.querySelector('datalist')));

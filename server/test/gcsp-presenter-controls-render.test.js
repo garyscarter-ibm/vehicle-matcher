@@ -727,3 +727,46 @@ test('the employee journey does not pull focus out of the presenter strip when i
     orderAdapter: { listOrders: async () => ({ status: 'ok', value: { orders: [] } }) } });
   await settle(); assert.ok(host.querySelector('main h1, main h2')); assert.equal(document.activeElement, status); stop();
 });
+// FUCQ-351: one action resets into the chosen scenario as Greg; plain Reset and Switch principal keep their behaviour.
+const sessionMarker = () => window.localStorage.getItem('gcsp-session-change');
+test('Reset and switch to Greg confirms once, resets the chosen scenario, switches to Greg and tells open portal tabs', async () => {
+  window.sessionStorage.clear(); window.localStorage.clear(); const f = resetFixture(); await settle();
+  const shortcut = f.click('Reset and switch to Greg');
+  assert.match(f.host.textContent, /Reset into Main successful journey as Greg \(fictional\)\? This starts a new run\./);
+  assert.equal(document.activeElement.textContent, 'Confirm reset'); assert.equal(f.switches.length, 0);
+  f.click('Confirm reset'); await settle();
+  assert.deepEqual(f.switches.map((row) => row.principalId), ['demo-greg']); assert.equal(f.navigation.length, 1);
+  assert.equal(JSON.parse(resetNote()).name, 'Greg (fictional)'); assert.ok(sessionMarker()); assert.ok(shortcut.isConnected); f.control.destroy();
+});
+test('plain Reset scenario still leads with the employee and announces no session change', async () => {
+  window.sessionStorage.clear(); window.localStorage.clear(); const f = resetFixture(); await settle();
+  f.click('Reset and switch to Greg'); f.click('Cancel reset'); f.click('Reset scenario');
+  assert.match(f.host.textContent, /as Paula \(fictional\)\?/); f.click('Confirm reset'); await settle();
+  assert.deepEqual(f.switches.map((row) => row.principalId), ['demo-paula']); assert.equal(sessionMarker(), null); f.control.destroy();
+});
+test('Cancel and Escape return focus to Reset and switch to Greg, which sits after the four beat actions', async () => {
+  window.sessionStorage.clear(); const f = resetFixture(); await settle(); f.control.root.open = true;
+  const labels = [...f.host.querySelectorAll('.gcsp-presenter-actions button')].slice(0, 5).map((b) => b.textContent.replace(/ \(.*/, ''));
+  assert.deepEqual(labels, ['Reset scenario', 'Switch principal', 'Next release', 'Tick', 'Reset and switch to Greg']);
+  const shortcut = f.click('Reset and switch to Greg'); f.click('Cancel reset'); assert.equal(document.activeElement, shortcut);
+  f.click('Reset and switch to Greg');
+  document.activeElement.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  assert.equal(document.activeElement, shortcut); assert.equal(f.host.querySelector('.gcsp-presenter-confirmation').hidden, true);
+  assert.equal(f.switches.length, 0); f.control.destroy();
+});
+test('Reset and switch to Greg is disabled when the scenario is unavailable or names no Greg', async () => {
+  const noGreg = { ...leadCatalogue, scenarios: [{ ...leadCatalogue.scenarios[0], principals: [lead] }] };
+  const f = resetFixture({ readScenarios: async () => ok(noGreg) }); await settle();
+  assert.equal(f.click('Reset and switch to Greg').disabled, true); assert.equal(f.switches.length, 0); f.control.destroy();
+  const closed = { ...leadCatalogue, scenarios: [{ ...leadCatalogue.scenarios[0], availability: { available: false, missingCapabilities: ['x'] } }] };
+  const g = resetFixture({ readScenarios: async () => ok(closed) }); await settle();
+  assert.equal(g.click('Reset and switch to Greg').disabled, true); g.control.destroy();
+});
+test('a refused Greg switch after a good reset stays on the strip and announces nothing', async () => {
+  window.sessionStorage.clear(); window.localStorage.clear();
+  const f = resetFixture({ switchPrincipal: async () => ({ status: 'forbidden', reason: 'Not permitted.' }) }); await settle();
+  f.click('Reset and switch to Greg'); f.click('Confirm reset'); await settle();
+  assert.equal(f.navigation.length, 0); assert.equal(sessionMarker(), null);
+  assert.equal(f.host.querySelector('[role="status"]').textContent, 'Reset done. Switch to Greg (fictional) not confirmed: Not permitted.');
+  assert.equal(selected(f, 'Acting principal'), 'demo-greg'); f.control.destroy();
+});
