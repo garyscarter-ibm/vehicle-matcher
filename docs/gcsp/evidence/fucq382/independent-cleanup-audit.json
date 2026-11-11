@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "reviewer": "Mike Wazowski",
+  "time": "2026-11-11T14:11:32.416522+00:00",
+  "stableCommit": "593b3c737316297d27e6b1c410c6e17700451e56",
+  "scope": "Read-only independent filesystem/process audit of every F382 owned manifest; no deletion performed by reviewer",
+  "sourceReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/source-cleanup-receipt.json",
+  "manifestCount": 10,
+  "receiptManifestSetMatches": true,
+  "ownedRoots": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/1ed08febbbe648199f8751e300573b10.json",
+      "root": "/private/tmp/test-stamp-shard-1ed08febbbe648199f8751e300573b10",
+      "state": "removed",
+      "manifestOutsideRoot": true,
+      "existsOrSymlink": false,
+      "recordedGroups": [
+        8249
+      ],
+      "groupsStillPresent": [],
+      "recordedPeakBytes": 598112
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/2d802137bcb64a2eb9247c55dc37082e.json",
+      "root": "/private/tmp/test-stamp-shard-2d802137bcb64a2eb9247c55dc37082e",
+      "state": "removed",
+      "manifestOutsideRoot": true,
+      "existsOrSymlink": false,
+      "recordedGroups": [
+        86211
+      ],
+      "groupsStillPresent": [],
+      "recordedPeakBytes": 598112
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/3d3722fd290240a18094605ff9a741e5.json",
+      "root": "/private/tmp/test-stamp-shard-3d3722fd290240a18094605ff9a741e5",
+      "state": "removed",
+      "manifestOutsideRoot": true,
+      "existsOrSymlink": false,
+      "recordedGroups": [
+        24776
+      ],
+      "groupsStillPresent": [],
+      "recordedPeakBytes": 602208
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/561172f65f1c4e77a966e9780e7fded5.json",
+      "root": "/private/tmp/test-stamp-shard-561172f65f1c4e77a966e9780e7fded5",
+      "state": "removed",
+      "manifestOutsideRoot": true,
+      "existsOrSymlink": false,
+      "recordedGroups": [
+        2412
+      ],
+      "groupsStillPresent": [],
+      "recordedPeakBytes": 598112
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/5691b6cb4f86468f9ad3603fe6c93240.json",
+      "root": "/private/tmp/test-stamp-shard-5691b6cb4f86468f9ad3603fe6c93240",
+      "state": "removed",
+      "manifestOutsideRoot": true,
+      "existsOrSymlink": false,
+      "recordedGroups": [
+        84178
+      ],
+      "groupsStillPresent": [],
+      "recordedPeakBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/c5a876b9717f414a91acc9d3fa5ab1e2.json",
+      "root": "/private/tmp/test-stamp-shard-c5a876b9717f414a91acc9d3fa5ab1e2",
+      "state": "removed",
+      "manifestOutsideRoot": true,
+      "existsOrSymlink": false,
+      "recordedGroups": [
+        90354
+      ],
+      "groupsStillPresent": [],
+      "recordedPeakBytes": 4224
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/c8168eae408044538f82b0c79ba3dd9d.json",
+      "root": "/private/tmp/test-stamp-shard-c8168eae408044538f82b0c79ba3dd9d",
+      "state": "removed",
+      "manifestOutsideRoot": true,
+      "existsOrSymlink": false,
+      "recordedGroups": [
+        94914
+      ],
+      "groupsStillPresent": [],
+      "recordedPeakBytes": 4192
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/de45cea695f0499785ee1e19a79b41b7.json",
+      "root": "/private/tmp/test-stamp-shard-de45cea695f0499785ee1e19a79b41b7",
+      "state": "removed",
+      "manifestOutsideRoot": true,
+      "existsOrSymlink": false,
+      "recordedGroups": [
+        13008
+      ],
+      "groupsStillPresent": [],
+      "recordedPeakBytes": 598112
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/e705521307d84cb0ae0cfd02f4f50a8b.json",
+      "root": "/private/tmp/test-stamp-shard-e705521307d84cb0ae0cfd02f4f50a8b",
+      "state": "removed",
+      "manifestOutsideRoot": true,
+      "existsOrSymlink": false,
+      "recordedGroups": [
+        92289
+      ],
+      "groupsStillPresent": [],
+      "recordedPeakBytes": 598112
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/fd1e3b89eae0444593cc6eedb2a0ed07.json",
+      "root": "/private/tmp/test-stamp-shard-fd1e3b89eae0444593cc6eedb2a0ed07",
+      "state": "removed",
+      "manifestOutsideRoot": true,
+      "existsOrSymlink": false,
+      "recordedGroups": [
+        18083
+      ],
+      "groupsStillPresent": [],
+      "recordedPeakBytes": 13034560
+    }
+  ],
+  "dependencyLinks": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-015/node_modules",
+      "existsOrSymlink": false,
+      "target": "/Users/usget/Claude/vehicle-matcher/node_modules",
+      "targetIsDirectory": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-10-015/server/node_modules",
+      "existsOrSymlink": false,
+      "target": "/Users/usget/Claude/vehicle-matcher/server/node_modules",
+      "targetIsDirectory": true
+    }
+  ],
+  "retainedSamples": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/producer-sample.json",
+      "bytes": 231629,
+      "sha256": "dd9da8dcff2f83f17f2e7904b056b88c28b2e8cc57da5a330e31dc062d6555f3",
+      "matchesReceipt": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/producer-sample-final-base.json",
+      "bytes": 235168,
+      "sha256": "8b5e5b0f4ea5815bcb3a72231927b5bc977c987001caa628cdbb3a201c0a7c1f",
+      "matchesReceipt": true
+    }
+  ],
+  "aggregateRecordedPeakBytes": 16635744,
+  "maximumRecordedRssBytes": 698269696,
+  "compatibilityException": "none; small per-run inventories in supervised owned TMPDIR",
+  "reviewerAllocations": [],
+  "limitations": [
+    "Recorded measured peaks are corroborated against manifests/checkpoints; they are not new measurements.",
+    "Native PostgreSQL and final combined browser/visual acceptance remain unrun/pending.",
+    "Resource-admission-refused checkpoint c2d214 had no completed unit and no owned allocation."
+  ],
+  "passed": true
+}
