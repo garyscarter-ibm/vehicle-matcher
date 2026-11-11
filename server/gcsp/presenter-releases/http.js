@@ -1,4 +1,4 @@
-import { ok, result } from '../repository/core.js';
+import { OCCUPYING_STATES, ok, result } from '../repository/core.js';
 import { readCarNamer } from '../policy/car-name.js';
 import { configurationIdDisplayImage, modelDisplayImage, readDisplayImageCatalogue } from '../vehicle-evidence/display-images.js';
 import { VISIBILITY } from '../stock/demo-provider.js';
@@ -13,17 +13,37 @@ const broken = () => result('unavailable', { reason: 'The latest release could n
 // The shared "on the scheme" predicate (greg/index.js, manual-context/ports.js): released, available, not held or allocated.
 const onScheme = (row) => row.state === 'released' && row.available === true && row.held !== true && row.allocated !== true;
 
-function latestRelease(receipts) {
-  let latest = null;
+function releasesFrom(receipts) {
+  const releases = [];
   for (const receipt of receipts) {
     const value = receipt?.outcome?.status === 'ok' ? receipt.outcome.value : null;
     if (receipt?.eventType !== 'stock-released' || value?.kind !== 'stock-released' || !text(value.windowId)
       || !Number.isFinite(Date.parse(value.releasedAt)) || !Array.isArray(value.orderUuids)) continue;
-    const later = !latest || Date.parse(value.releasedAt) > Date.parse(latest.releasedAt)
-      || value.releasedAt === latest.releasedAt && receipt.eventId > latest.eventId;
-    if (later) latest = { ...value, eventId: receipt.eventId };
+    releases.push({ ...value, eventId: receipt.eventId });
   }
-  return latest;
+  return releases.sort((a, b) => Date.parse(b.releasedAt) - Date.parse(a.releasedAt)
+    || (a.eventId < b.eventId ? 1 : a.eventId > b.eventId ? -1 : 0));
+}
+
+// Allocated includes a current reservation or a confirmed selection, never an expired/released hold.
+// Use each car once across all releases; the hold type retains its Buddy/manual origin after acceptance.
+function allocationCounts(releases, rows, holds) {
+  const ids = new Set(releases.flatMap((release) => release.orderUuids));
+  if ([...ids].some((id) => !rows.has(id))) return null;
+  const current = new Map();
+  for (const hold of holds) {
+    if (!ids.has(hold.orderUuid) || !(OCCUPYING_STATES.includes(hold.state) || hold.state === 'allocated')) continue;
+    if (!['buddy-offer', 'cart'].includes(hold.type) || current.has(hold.orderUuid)) return null;
+    current.set(hold.orderUuid, hold.type);
+  }
+  const counts = { totalReleased: ids.size, onScheme: 0, buddyAllocated: 0, manuallyAllocated: 0 };
+  for (const id of ids) {
+    if (onScheme(rows.get(id))) counts.onScheme += 1;
+    else if (current.get(id) === 'buddy-offer') counts.buddyAllocated += 1;
+    else if (current.get(id) === 'cart') counts.manuallyAllocated += 1;
+    else return null;
+  }
+  return counts;
 }
 
 // Engine-led templates ("{engine} Touring") need an engine, so a bare line falls back to its last word.
@@ -87,7 +107,7 @@ async function pointsFor(policy, read, rows) {
 
 const distinct = (cars, field) => new Set(cars.map((car) => car[field]).filter((value) => value !== null)).size;
 
-/** Read only: release receipts and stock rows. Nothing is written, held, allocated or evaluated. */
+/** Read only: release receipts, stock rows and current holds. Nothing is written, held, allocated or evaluated. */
 export function createPresenterReleaseRoutes(deps) {
   return [{ method: 'GET', path: '/api/gcsp/presenter/releases/latest', role: 'presenter', purpose: 'presenter-control',
     async handle({ context, body, searchParams }) {
@@ -101,12 +121,16 @@ export function createPresenterReleaseRoutes(deps) {
       if (receipts.status !== 'ok') return receipts;
       const stock = await repository.query(context, 'stock');
       if (stock.status !== 'ok') return stock;
-      const release = latestRelease(receipts.value);
-      const empty = { runId: context.runId, release: null, cars: [], modelLines: [], charts: { colours: [], fuel: [], points: [] },
-        counts: { released: 0, modelLines: 0, colours: 0, onScheme: stock.value.filter(onScheme).length } };
-      if (!release) return ok(empty);
+      const holds = await repository.query(context, 'holds');
+      if (holds.status !== 'ok') return holds;
+      const releases = releasesFrom(receipts.value);
+      const release = releases[0];
       const rows = new Map(stock.value.map((row) => [row.orderUuid, row]));
-      if (release.orderUuids.some((id) => !rows.has(id))) return broken();
+      const totals = allocationCounts(releases, rows, holds.value);
+      if (!totals) return broken();
+      const empty = { runId: context.runId, release: null, cars: [], modelLines: [], charts: { colours: [], fuel: [], points: [] },
+        counts: { released: 0, modelLines: 0, colours: 0, ...totals } };
+      if (!release) return ok(empty);
       const read = { runId: context.runId, asOf: release.releasedAt, policyVersion: release.policyVersion };
       const [name, colours] = await Promise.all([readCarNamer(deps.policy, read), pictureColours(deps.policy, read)]);
       const released = release.orderUuids.map((id) => rows.get(id));
@@ -120,6 +144,6 @@ export function createPresenterReleaseRoutes(deps) {
       const modelLines = [...lines].map(([modelLine, count]) => ({ modelLine, count }))
         .sort((a, b) => b.count - a.count || (a.modelLine < b.modelLine ? -1 : 1));
       return ok({ ...empty, release: { windowId: release.windowId, releasedAt: release.releasedAt, trancheId: release.trancheId }, cars, modelLines, charts,
-        counts: { released: cars.length, modelLines: modelLines.length, colours: distinct(cars, 'colourName'), onScheme: empty.counts.onScheme } });
+        counts: { ...empty.counts, released: cars.length, modelLines: modelLines.length, colours: distinct(cars, 'colourName') } });
     } }];
 }

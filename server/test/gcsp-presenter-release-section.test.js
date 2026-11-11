@@ -18,9 +18,9 @@ const ok = (value) => ({ status: 'ok', value });
 const settle = async () => { for (let i = 0; i < 12; i++) await new Promise((resolve) => setImmediate(resolve)); };
 const car = (at, extra = {}) => ({ id: `car-${at}`, imageSrc: `/assets/${at}.webp`, imageAlt: `Car ${at}`, modelName: `Model ${at}`, modelLine: 'G20', colourName: `Colour ${at}`, ...extra });
 const latest = (runId = 'run-a', trancheId = 't1', n = 4, extra = {}) => ok({ runId, release: { windowId: 'w1', releasedAt: '2026-11-10T11:30:00.000Z', trancheId },
-  cars: Array.from({ length: n }, (_, at) => car(at)), counts: { released: n, modelLines: 2, colours: 3, onScheme: 1200 }, modelLines: [{ modelLine: 'G20', count: 3 }, { modelLine: 'F70', count: 1 }], ...extra });
+  cars: Array.from({ length: n }, (_, at) => car(at)), counts: { released: n, modelLines: 2, colours: 3, totalReleased: 1204, onScheme: 1200, buddyAllocated: 3, manuallyAllocated: 1 }, modelLines: [{ modelLine: 'G20', count: 3 }, { modelLine: 'F70', count: 1 }], ...extra });
 const gate = () => { let open; const wait = new Promise((resolve) => { open = resolve; }); return { wait, open }; };
-const empty = ok({ runId: 'run-a', release: null, cars: [], counts: { released: 0, modelLines: 0, colours: 0, onScheme: 0 }, modelLines: [] });
+const empty = ok({ runId: 'run-a', release: null, cars: [], counts: { released: 0, modelLines: 0, colours: 0, totalReleased: 0, onScheme: 0, buddyAllocated: 0, manuallyAllocated: 0 }, modelLines: [] });
 const mount = (reply, extra = {}) => {
   const host = document.createElement('div'); document.body.append(host); const adapter = { readLatestRelease: async () => (typeof reply === 'function' ? reply() : reply), ...extra };
   return { host, adapter, api: sectionMod.mountReleaseSection(host, { adapter, matchMedia: () => ({ matches: true }) }) };
@@ -35,7 +35,7 @@ test('before a release it waits for 11:30am with zero counters and a status scre
   assert.equal(f.api.root.getAttribute('aria-labelledby'), f.api.root.querySelector('h2').id);
   assert.match(f.api.root.textContent, /Waiting for 11:30am/); assert.match(f.api.root.textContent, /No cars released yet/);
   assert.equal(f.api.root.querySelector('[role="grid"]'), null);
-  assert.deepEqual(facts(f.api.root, '.gcsp-release-totals'), { Released: '0', 'Model lines': '0', Colours: '0', 'On the scheme': '0' });
+  assert.deepEqual(facts(f.api.root, '.gcsp-release-totals'), { 'Latest release': '0', 'Total released': '0', Unallocated: '0', 'Buddy Allocated': '0', 'Manually Allocated': '0' });
   f.api.destroy();
 });
 
@@ -44,7 +44,7 @@ test('after a release it shows labelled tiles, counters and the model-line break
   assert.match(f.api.root.textContent, /Released Tue 10 Nov, 11:30am/); assert.equal(f.api.root.querySelector('.vm-status'), null);
   const grid = f.api.root.querySelector('[role="grid"]'); assert.equal(grid.getAttribute('aria-label'), 'Released cars');
   assert.deepEqual(cells(f.api.root).map((cell) => cell.getAttribute('aria-label')), ['Model 0, Colour 0', 'Model 1', 'Model 2, Colour 2', 'Model 3, Colour 3']);
-  assert.deepEqual(facts(f.api.root, '.gcsp-release-totals'), { Released: '4', 'Model lines': '2', Colours: '3', 'On the scheme': '1,200' });
+  assert.deepEqual(facts(f.api.root, '.gcsp-release-totals'), { 'Latest release': '4', 'Total released': '1,204', Unallocated: '1,200', 'Buddy Allocated': '3', 'Manually Allocated': '1' });
   f.api.destroy();
 });
 
@@ -54,7 +54,7 @@ test('the release charts sit in a closed disclosure: model line, colour, points 
     fuel: [{ label: 'Petrol', count: 3 }, { label: 'Electric', count: 1 }], points: [{ label: '800', count: 3 }, { label: '1400', count: 1 }] };
   const f = mount(latest('run-a', 't1', 4, { charts })); await f.api.refresh(); await settle();
   const fold = f.api.root.querySelector('details.gcsp-release-charts');
-  assert.equal(fold.open, false); assert.equal(fold.hidden, false); assert.equal(fold.querySelector('summary').textContent, 'Release charts');
+  assert.equal(fold.open, false); assert.equal(fold.hidden, false); assert.equal(fold.querySelector('summary').textContent, 'Latest release stats');
   const figures = [...fold.querySelectorAll('figure.gcsp-count-bars')];
   assert.deepEqual(figures.map((n) => n.querySelector('h3').textContent), ['Model line', 'Colour', 'Points a month', 'Fuel']);
   for (const n of figures) assert.equal(n.getAttribute('aria-labelledby'), n.querySelector('h3').id);
@@ -103,9 +103,9 @@ test('the first read fills at once; a new key cascades; the same key and null do
 
 test('under reduced motion a later release shows final numbers and tiles at once', async () => {
   let reply = latest('run-a', 't1', 3); const f = mount(() => reply); await f.api.refresh(); await settle();
-  reply = latest('run-a', 't2', 6, { counts: { released: 6, modelLines: 4, colours: 5, onScheme: 900 } }); await f.api.refresh(); await settle();
+  reply = latest('run-a', 't2', 6, { counts: { released: 6, totalReleased: 1000, onScheme: 900, buddyAllocated: 60, manuallyAllocated: 40 } }); await f.api.refresh(); await settle();
   assert.equal(cells(f.api.root).length, 6); assert.ok(cells(f.api.root).every((cell) => cell.style.getPropertyValue('--gcsp-release-delay') === ''));
-  assert.deepEqual(facts(f.api.root, '.gcsp-release-totals'), { Released: '6', 'Model lines': '4', Colours: '5', 'On the scheme': '900' });
+  assert.deepEqual(facts(f.api.root, '.gcsp-release-totals'), { 'Latest release': '6', 'Total released': '1,000', Unallocated: '900', 'Buddy Allocated': '60', 'Manually Allocated': '40' });
   f.api.destroy();
 });
 
@@ -129,6 +129,40 @@ test('the console mounts the section just before the feed and refreshes it after
   f.api.basic.release.click(); await settle();
   assert.equal(cells(stage).length, 5); assert.match(stage.textContent, /Released Tue 10 Nov, 11:30am/); assert.equal(stage.querySelector('.gcsp-console-release').nextElementSibling?.className, 'gcsp-happened');
   f.api.destroy(); assert.equal(document.querySelector('.gcsp-console-release'), null);
+});
+
+test('a release replaces the charts and totals with skeletons until its refreshed read settles, preserving the open disclosure', async () => {
+  const tick = gate(); const read = gate(); let released = false;
+  const f = mountConsole({ adapter: {
+    tick: async () => { await tick.wait; released = true; return ok({}); },
+    readLatestRelease: async () => { if (released) await read.wait; return latest('run-a', released ? 't2' : 't1'); },
+  } });
+  await f.api.ready; await settle();
+  const section = f.api.root.querySelector('.gcsp-console-release'); const charts = section.querySelector('details'); charts.open = true;
+  f.api.basic.release.click();
+  assert.equal(charts.open, true); assert.equal(charts.getAttribute('aria-busy'), 'true');
+  assert.equal(charts.querySelectorAll('.gcsp-skeleton').length, 4); assert.equal(charts.querySelector('.gcsp-count-bars'), null);
+  assert.ok(section.querySelector('.gcsp-console-release-foot .gcsp-skeleton')); assert.equal(f.api.basic.release.disabled, true);
+  tick.open(); await settle();
+  assert.equal(charts.getAttribute('aria-busy'), 'true', 'the skeleton lasts through the new release read');
+  read.open(); await settle();
+  assert.equal(charts.open, true); assert.equal(charts.hasAttribute('aria-busy'), false); assert.equal(section.querySelector('.gcsp-skeleton'), null);
+  assert.equal(charts.querySelectorAll('.gcsp-count-bars').length, 4); assert.equal(f.api.basic.release.disabled, false);
+  assert.equal(facts(section, '.gcsp-release-totals')['Total released'], '1,204');
+  f.api.destroy();
+});
+
+test('a failed release clears chart skeletons by reading the current figures again', async () => {
+  const tick = gate();
+  const f = mountConsole({ adapter: { readLatestRelease: async () => latest(), tick: async () => { await tick.wait; throw new Error('offline'); } } });
+  await f.api.ready; await settle();
+  const charts = f.api.root.querySelector('.gcsp-release-charts'); charts.open = true;
+  f.api.basic.release.click(); assert.equal(charts.getAttribute('aria-busy'), 'true');
+  tick.open(); await settle();
+  assert.equal(charts.hasAttribute('aria-busy'), false); assert.equal(charts.querySelector('.gcsp-skeleton'), null);
+  assert.equal(charts.open, true); assert.equal(f.api.basic.release.disabled, false);
+  assert.match(f.api.root.querySelector('.gcsp-console-status').textContent, /Release not completed/);
+  f.api.destroy();
 });
 
 test('through the Basic options the section follows Release, Start again and keeps its place between the confirmation and the feed', async () => {
