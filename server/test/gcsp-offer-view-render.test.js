@@ -221,8 +221,8 @@ test('approved DTO flows through the default HTTP adapter/controller into the sh
   unsubscribe(); c.destroy(); view.destroy();
 });
 
-// FUCQ-371: a feedback reason reads as its own full sentence under "Why it suits you", even on a long car name.
-test('a feedback-improvement reason renders whole under Why it suits you beside a long vehicle name', async () => {
+// FUCQ-371 on the FUCQ-383 layout: a feedback reason is one whole Benefits highlight, even on a long car name.
+test('a feedback-improvement reason renders whole as a Benefits highlight beside a long vehicle name', async () => {
   const dto = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url), 'utf8'));
   dto.quote.facts.display.name = 'BMW 3 Series 320d xDrive M Sport Pro Touring Individual Edition with Technology Pack Plus';
   dto.quote.revisions.feedback = 'employee.currentCarFeedback.v1@gcsp-policy-v1+manual-records-v1';
@@ -230,11 +230,11 @@ test('a feedback-improvement reason renders whole under Why it suits you beside 
   const outcome = toOfferPresentation({ status: 'ok', value: dto }); assert.equal(outcome.status, 'ok');
   const root = document.createElement('div'); document.body.append(root);
   const view = createOfferView(root); view.update({ ...outcome.value, canAccept: false, canDecline: false, decisionUnavailable: true, countdown: '2 hours remaining' });
-  const items = [...root.querySelectorAll('.vm-reasons li')].map((li) => li.textContent);
+  const items = [...root.querySelectorAll('.gcsp-highlight-benefits .gcsp-highlight-heading')].map((node) => node.textContent);
   assert.ok(items.includes('Better than your current car for sportiness and economy.'), items.join(' | '));
-  assert.match(root.textContent, /Why it suits you/); assert.match(root.textContent, /Technology Pack Plus/);
-  for (const li of root.querySelectorAll('.vm-reasons li')) assert.equal(li.getAttribute('style'), null);
-  assert.equal(root.querySelector('.vm-reasons [class*="truncate"], .vm-reasons [class*="clamp"], .vm-reasons [class*="ellipsis"]'), null);
+  assert.match(root.textContent, /Technology Pack Plus/); assert.equal(items.length, 1);
+  for (const node of root.querySelectorAll('.gcsp-highlight')) assert.equal(node.getAttribute('style'), null);
+  assert.equal(root.querySelector('.gcsp-decision-highlights [class*="truncate"], .gcsp-decision-highlights [class*="clamp"], .gcsp-decision-highlights [class*="ellipsis"]'), null);
   view.destroy();
 });
 

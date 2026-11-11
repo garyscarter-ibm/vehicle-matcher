@@ -35,7 +35,7 @@ test('browser snapshot agrees with the real manual service and canonical policy'
   const stable = (envelope) => {
     const value = structuredClone(envelope); delete value.value.contextVersion;
     // Server-only matching keys (FUCQ-371) are not part of the block's display snapshot.
-    const strip = (node) => { if (node && typeof node === 'object') { if (node.vehicle) { delete node.vehicle.modelLine; delete node.vehicle.eligibilityModelKey; } Object.values(node).forEach(strip); } };
+    const strip = (node) => { if (node && typeof node === 'object') { if (node.vehicle) { delete node.vehicle.modelLine; delete node.vehicle.eligibilityModelKey; delete node.vehicle.sizeClass; delete node.vehicle.tags; } Object.values(node).forEach(strip); } };
     strip(value);
     for (const slot of value.value.slots) delete slot.runId;
     return value;

@@ -7,7 +7,7 @@ const PRECEDENCE = ['gates', 'sameAgain', 'rating', 'preferences'];
 const plain = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const text = (v) => typeof v === 'string' && v.trim().length > 0 && v.length <= 256;
 const strings = ['configuration', 'body', 'fuel', 'modelLine', 'eligibilityModelKey'];
-const numbers = { seats: 'count', boot: 'L', mpg: 'mpg-imperial', zeroTo62: 's', points: 'points-per-month' };
+const numbers = { seats: 'count', boot: 'L', mpg: 'mpg-imperial', zeroTo62: 's', points: 'points-per-month', sizeClass: 'ordinal-1-5' };
 const assurance = { synthetic: 'synthetic-scenario' };
 const validSource = (s, now) => s && ['synthetic', 'dated-snapshot', 'authorised-live'].includes(s.mode)
   && ['sourceRef', 'sourceVersion', 'schemaVersion'].every((k) => text(s[k]))
@@ -29,6 +29,7 @@ export function projectCurrentCarBaseline({ manualContext, contractId, context, 
   if (plain(vehicle)) {
     for (const key of strings) if (text(vehicle[key])) put(key, vehicle[key], null);
     for (const [key, unit] of Object.entries(numbers)) if (Number.isFinite(vehicle[key]) && vehicle[key] > 0) put(key, vehicle[key], unit);
+    if (Array.isArray(vehicle.tags) && vehicle.tags.length && vehicle.tags.every(text)) put('tags', [...vehicle.tags], null);
   }
   return { contractId, source: { mode: source.mode, sourceVersion: source.sourceVersion, observedAt: source.observedAt }, facts };
 }
