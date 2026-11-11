@@ -260,3 +260,16 @@ test('the baseline projection is a pure, strict view of the current contract', (
     assert.equal(projectCurrentCarBaseline(input(patch)), null);
   }
 });
+
+test('generated-stock facts: without zeroTo62 an expressed Sportiness leaves improvement unknown; Body alone can prove it', async () => {
+  // Generated stock carries body, fuel and sizeClass but no zeroTo62 or mpg; the baseline has no sizeClass or tags.
+  const generated = stock(6, { modelLine: fact('F70 Sports Hatch'), eligibilityModelKey: fact('F70 Sports Hatch|120'), body: fact('hatchback'),
+    zeroTo62: fact(null, 's'), mpg: fact(null, 'mpg-imperial') });
+  const sporty = { ...brief(), preferences: { body: preference(['hatchback', 'estate', 'suv']), fuel: preference('petrol', 50), sportiness: preference(100, 50) } };
+  const unknown = byCar(await run(setup({ cars: [generated] }), { currentCarRating: rating(5) }, sporty))[6];
+  assert.equal(unknown.feedback.improvement, 'unknown'); assert.equal(unknown.feedback.effect, 'omitted');
+  const hatch = { ...brief(), preferences: { body: preference('hatchback'), fuel: preference('petrol', 50) } };
+  const proven = byCar(await run(setup({ cars: [generated] }), { currentCarRating: rating(5) }, hatch))[6];
+  assert.equal(proven.gateStatus, 'eligible'); assert.equal(proven.feedback.improvement, 'proven');
+  assert.deepEqual(proven.reasons.find((r) => r.code === 'feedback-improvement').keys, ['body']);
+});
