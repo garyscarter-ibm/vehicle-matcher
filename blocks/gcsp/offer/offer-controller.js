@@ -12,11 +12,8 @@ export function remainingTime(expiresAt, serverNow) {
 
 export function countdownText(seconds) {
   if (seconds === null) return 'Time remaining unavailable';
-  if (seconds === 0) return 'Checking the current offer state';
   const minutes = Math.ceil(seconds / 60);
-  if (minutes < 60) return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} remaining`;
-  const hours = Math.floor(minutes / 60); const rest = minutes % 60;
-  return `${hours} ${hours === 1 ? 'hour' : 'hours'}${rest ? ` ${rest} min` : ''} remaining`;
+  return `${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}`;
 }
 
 function project(value, hasDecisionPort, hasReasonPort, declineReason, ticks = {}) {
@@ -33,6 +30,7 @@ function project(value, hasDecisionPort, hasReasonPort, declineReason, ticks = {
   const ticked = Object.fromEntries((handoff?.declarations ?? []).map(({ id }) => [id, ticks[id] === true]));
   const confirmed = handoff !== null && !handoff.blocker && handoff.declarations.length > 0 && Object.values(ticked).every(Boolean);
   return { ...model, seconds, countdown: countdownText(seconds), ticked,
+    canReviewAccept: actionable && hasDecisionPort && model.actions?.accept === true && handoff !== null && !handoff.blocker,
     canAccept: actionable && hasDecisionPort && model.actions?.accept === true && confirmed && !declineReason.open,
     canDecline: actionable && hasDecisionPort && hasReasonPort && model.actions?.decline === true,
     declineUnavailable: model.state === 'pending' && hasDecisionPort && !hasReasonPort && model.actions?.decline === true,
@@ -44,14 +42,14 @@ function project(value, hasDecisionPort, hasReasonPort, declineReason, ticks = {
 /** read() returns a server-backed presentation projection. No local time advances business state. */
 export function createOfferController({ read, decide, readReasons, createCommandId = () => globalThis.crypto.randomUUID(), onChange } = {}) {
   if (typeof read !== 'function') throw new TypeError('Supply an offer read port.');
-  let state = { state: 'loading', canAccept: false, canDecline: false };
+  let state = { state: 'loading', canReviewAccept: false, canAccept: false, canDecline: false };
   let sequence = 0; let alive = true; let deciding = false; let abort;
   const emptyReason = () => ({ open: false, status: 'idle', choices: [], selectedCode: '', error: '' });
   let declineReason = emptyReason(); let reasonTurn = 0; let reasonAbort;
   const listeners = new Set(onChange ? [onChange] : []);
   const snapshot = () => copy(state);
   const emit = () => { if (alive) for (const listener of listeners) listener(snapshot()); };
-  const blocked = (next) => ({ ...next, canAccept: false, canDecline: false });
+  const blocked = (next) => ({ ...next, canReviewAccept: false, canAccept: false, canDecline: false });
   let ticks = {}; let tickKey = '';
   const decorate = (value) => {
     const key = JSON.stringify([value?.reference?.offerId, value?.handoff?.termsDigest ?? null, value?.handoff?.mode ?? null]);

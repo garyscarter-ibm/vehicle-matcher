@@ -1,0 +1,764 @@
+{
+  "captures": [
+    {
+      "file": "two-1440.png",
+      "kind": "two",
+      "viewport": 1440,
+      "overflow": false,
+      "actions": [
+        {
+          "label": "Accept offer",
+          "x": 895.796875,
+          "y": 388.9375,
+          "width": 227.59375,
+          "height": 46,
+          "bottom": 434.9375
+        },
+        {
+          "label": "Decline offer",
+          "x": 1131.390625,
+          "y": 388.9375,
+          "width": 227.609375,
+          "height": 46,
+          "bottom": 434.9375
+        }
+      ],
+      "media": {
+        "x": 105,
+        "y": 191.84375,
+        "width": 766.796875,
+        "height": 558.09375,
+        "bottom": 749.9375
+      },
+      "benefits": [
+        {
+          "x": 104,
+          "y": 834.9375,
+          "width": 426.65625,
+          "height": 97.796875,
+          "bottom": 932.734375
+        },
+        {
+          "x": 530.65625,
+          "y": 834.9375,
+          "width": 426.671875,
+          "height": 97.796875,
+          "bottom": 932.734375
+        }
+      ],
+      "tradeoff": [
+        {
+          "x": 957.328125,
+          "y": 834.9375,
+          "width": 426.65625,
+          "height": 97.796875,
+          "bottom": 932.734375
+        }
+      ],
+      "columns": [
+        {
+          "x": 105,
+          "y": 950.234375,
+          "width": 426,
+          "height": 51,
+          "bottom": 1001.234375
+        },
+        {
+          "x": 531,
+          "y": 950.234375,
+          "width": 426,
+          "height": 51,
+          "bottom": 1001.234375
+        },
+        {
+          "x": 957,
+          "y": 950.234375,
+          "width": 426,
+          "height": 51,
+          "bottom": 1001.234375
+        }
+      ],
+      "clock": "2:00"
+    },
+    {
+      "file": "two-375.png",
+      "kind": "two",
+      "viewport": 375,
+      "overflow": false,
+      "actions": [
+        {
+          "label": "Accept offer",
+          "x": 41,
+          "y": 354.03125,
+          "width": 142.5,
+          "height": 46,
+          "bottom": 400.03125
+        },
+        {
+          "label": "Decline offer",
+          "x": 191.5,
+          "y": 354.03125,
+          "width": 142.5,
+          "height": 46,
+          "bottom": 400.03125
+        }
+      ],
+      "media": {
+        "x": 25,
+        "y": 470.03125,
+        "width": 325,
+        "height": 182.8125,
+        "bottom": 652.84375
+      },
+      "benefits": [
+        {
+          "x": 24,
+          "y": 1093.84375,
+          "width": 163.5,
+          "height": 161.390625,
+          "bottom": 1255.234375
+        },
+        {
+          "x": 187.5,
+          "y": 1093.84375,
+          "width": 163.5,
+          "height": 161.390625,
+          "bottom": 1255.234375
+        }
+      ],
+      "tradeoff": [
+        {
+          "x": 24,
+          "y": 1299.234375,
+          "width": 327,
+          "height": 97.796875,
+          "bottom": 1397.03125
+        }
+      ],
+      "columns": [
+        {
+          "x": 25,
+          "y": 1414.53125,
+          "width": 108.328125,
+          "height": 83,
+          "bottom": 1497.53125
+        },
+        {
+          "x": 133.328125,
+          "y": 1414.53125,
+          "width": 108.328125,
+          "height": 83,
+          "bottom": 1497.53125
+        },
+        {
+          "x": 241.65625,
+          "y": 1414.53125,
+          "width": 108.34375,
+          "height": 83,
+          "bottom": 1497.53125
+        }
+      ],
+      "clock": "2:00"
+    },
+    {
+      "file": "two-320.png",
+      "kind": "two",
+      "viewport": 320,
+      "overflow": false,
+      "actions": [
+        {
+          "label": "Accept offer",
+          "x": 41,
+          "y": 404.46875,
+          "width": 115,
+          "height": 46,
+          "bottom": 450.46875
+        },
+        {
+          "label": "Decline offer",
+          "x": 164,
+          "y": 404.46875,
+          "width": 115,
+          "height": 46,
+          "bottom": 450.46875
+        }
+      ],
+      "media": {
+        "x": 25,
+        "y": 520.46875,
+        "width": 270,
+        "height": 151.875,
+        "bottom": 672.34375
+      },
+      "benefits": [
+        {
+          "x": 24,
+          "y": 1134.34375,
+          "width": 136,
+          "height": 182.390625,
+          "bottom": 1316.734375
+        },
+        {
+          "x": 160,
+          "y": 1134.34375,
+          "width": 136,
+          "height": 182.390625,
+          "bottom": 1316.734375
+        }
+      ],
+      "tradeoff": [
+        {
+          "x": 24,
+          "y": 1360.734375,
+          "width": 272,
+          "height": 118.796875,
+          "bottom": 1479.53125
+        }
+      ],
+      "columns": [
+        {
+          "x": 25,
+          "y": 1497.03125,
+          "width": 90,
+          "height": 83,
+          "bottom": 1580.03125
+        },
+        {
+          "x": 115,
+          "y": 1497.03125,
+          "width": 90,
+          "height": 83,
+          "bottom": 1580.03125
+        },
+        {
+          "x": 205,
+          "y": 1497.03125,
+          "width": 90,
+          "height": 83,
+          "bottom": 1580.03125
+        }
+      ],
+      "clock": "2:00"
+    },
+    {
+      "file": "five-1440.png",
+      "kind": "five",
+      "viewport": 1440,
+      "overflow": false,
+      "actions": [
+        {
+          "label": "Accept offer",
+          "x": 895.796875,
+          "y": 388.9375,
+          "width": 227.59375,
+          "height": 46,
+          "bottom": 434.9375
+        },
+        {
+          "label": "Decline offer",
+          "x": 1131.390625,
+          "y": 388.9375,
+          "width": 227.609375,
+          "height": 46,
+          "bottom": 434.9375
+        }
+      ],
+      "media": {
+        "x": 105,
+        "y": 191.84375,
+        "width": 766.796875,
+        "height": 558.09375,
+        "bottom": 749.9375
+      },
+      "benefits": [
+        {
+          "x": 104,
+          "y": 834.9375,
+          "width": 426.65625,
+          "height": 97.796875,
+          "bottom": 932.734375
+        },
+        {
+          "x": 530.65625,
+          "y": 834.9375,
+          "width": 426.671875,
+          "height": 97.796875,
+          "bottom": 932.734375
+        },
+        {
+          "x": 104,
+          "y": 932.734375,
+          "width": 426.65625,
+          "height": 60.390625,
+          "bottom": 993.125
+        },
+        {
+          "x": 530.65625,
+          "y": 932.734375,
+          "width": 426.671875,
+          "height": 60.390625,
+          "bottom": 993.125
+        },
+        {
+          "x": 104,
+          "y": 993.125,
+          "width": 426.65625,
+          "height": 60.390625,
+          "bottom": 1053.515625
+        }
+      ],
+      "tradeoff": [
+        {
+          "x": 957.328125,
+          "y": 834.9375,
+          "width": 426.65625,
+          "height": 97.796875,
+          "bottom": 932.734375
+        }
+      ],
+      "columns": [
+        {
+          "x": 105,
+          "y": 1071.015625,
+          "width": 426,
+          "height": 51,
+          "bottom": 1122.015625
+        },
+        {
+          "x": 531,
+          "y": 1071.015625,
+          "width": 426,
+          "height": 51,
+          "bottom": 1122.015625
+        },
+        {
+          "x": 957,
+          "y": 1071.015625,
+          "width": 426,
+          "height": 51,
+          "bottom": 1122.015625
+        }
+      ],
+      "clock": "2:00"
+    },
+    {
+      "file": "five-375.png",
+      "kind": "five",
+      "viewport": 375,
+      "overflow": false,
+      "actions": [
+        {
+          "label": "Accept offer",
+          "x": 41,
+          "y": 354.03125,
+          "width": 142.5,
+          "height": 46,
+          "bottom": 400.03125
+        },
+        {
+          "label": "Decline offer",
+          "x": 191.5,
+          "y": 354.03125,
+          "width": 142.5,
+          "height": 46,
+          "bottom": 400.03125
+        }
+      ],
+      "media": {
+        "x": 25,
+        "y": 470.03125,
+        "width": 325,
+        "height": 182.8125,
+        "bottom": 652.84375
+      },
+      "benefits": [
+        {
+          "x": 24,
+          "y": 1093.84375,
+          "width": 163.5,
+          "height": 161.390625,
+          "bottom": 1255.234375
+        },
+        {
+          "x": 187.5,
+          "y": 1093.84375,
+          "width": 163.5,
+          "height": 161.390625,
+          "bottom": 1255.234375
+        },
+        {
+          "x": 24,
+          "y": 1255.234375,
+          "width": 163.5,
+          "height": 98.78125,
+          "bottom": 1354.015625
+        },
+        {
+          "x": 187.5,
+          "y": 1255.234375,
+          "width": 163.5,
+          "height": 98.78125,
+          "bottom": 1354.015625
+        },
+        {
+          "x": 24,
+          "y": 1354.015625,
+          "width": 163.5,
+          "height": 98.78125,
+          "bottom": 1452.796875
+        }
+      ],
+      "tradeoff": [
+        {
+          "x": 24,
+          "y": 1496.796875,
+          "width": 327,
+          "height": 97.796875,
+          "bottom": 1594.59375
+        }
+      ],
+      "columns": [
+        {
+          "x": 25,
+          "y": 1612.09375,
+          "width": 108.328125,
+          "height": 83,
+          "bottom": 1695.09375
+        },
+        {
+          "x": 133.328125,
+          "y": 1612.09375,
+          "width": 108.328125,
+          "height": 83,
+          "bottom": 1695.09375
+        },
+        {
+          "x": 241.65625,
+          "y": 1612.09375,
+          "width": 108.34375,
+          "height": 83,
+          "bottom": 1695.09375
+        }
+      ],
+      "clock": "2:00"
+    },
+    {
+      "file": "five-320.png",
+      "kind": "five",
+      "viewport": 320,
+      "overflow": false,
+      "actions": [
+        {
+          "label": "Accept offer",
+          "x": 41,
+          "y": 404.46875,
+          "width": 115,
+          "height": 46,
+          "bottom": 450.46875
+        },
+        {
+          "label": "Decline offer",
+          "x": 164,
+          "y": 404.46875,
+          "width": 115,
+          "height": 46,
+          "bottom": 450.46875
+        }
+      ],
+      "media": {
+        "x": 25,
+        "y": 520.46875,
+        "width": 270,
+        "height": 151.875,
+        "bottom": 672.34375
+      },
+      "benefits": [
+        {
+          "x": 24,
+          "y": 1134.34375,
+          "width": 136,
+          "height": 182.390625,
+          "bottom": 1316.734375
+        },
+        {
+          "x": 160,
+          "y": 1134.34375,
+          "width": 136,
+          "height": 182.390625,
+          "bottom": 1316.734375
+        },
+        {
+          "x": 24,
+          "y": 1316.734375,
+          "width": 136,
+          "height": 120.375,
+          "bottom": 1437.109375
+        },
+        {
+          "x": 160,
+          "y": 1316.734375,
+          "width": 136,
+          "height": 120.375,
+          "bottom": 1437.109375
+        },
+        {
+          "x": 24,
+          "y": 1437.109375,
+          "width": 136,
+          "height": 120.375,
+          "bottom": 1557.484375
+        }
+      ],
+      "tradeoff": [
+        {
+          "x": 24,
+          "y": 1601.484375,
+          "width": 272,
+          "height": 118.796875,
+          "bottom": 1720.28125
+        }
+      ],
+      "columns": [
+        {
+          "x": 25,
+          "y": 1737.78125,
+          "width": 90,
+          "height": 83,
+          "bottom": 1820.78125
+        },
+        {
+          "x": 115,
+          "y": 1737.78125,
+          "width": 90,
+          "height": 83,
+          "bottom": 1820.78125
+        },
+        {
+          "x": 205,
+          "y": 1737.78125,
+          "width": 90,
+          "height": 83,
+          "bottom": 1820.78125
+        }
+      ],
+      "clock": "2:00"
+    },
+    {
+      "file": "empty-375.png",
+      "kind": "empty",
+      "viewport": 375,
+      "overflow": false,
+      "actions": [
+        {
+          "label": "Accept offer",
+          "x": 41,
+          "y": 321.03125,
+          "width": 142.5,
+          "height": 46,
+          "bottom": 367.03125
+        },
+        {
+          "label": "Decline offer",
+          "x": 191.5,
+          "y": 321.03125,
+          "width": 142.5,
+          "height": 46,
+          "bottom": 367.03125
+        }
+      ],
+      "media": {
+        "x": 25,
+        "y": 437.03125,
+        "width": 325,
+        "height": 182.8125,
+        "bottom": 619.84375
+      },
+      "benefits": [],
+      "tradeoff": [],
+      "columns": [
+        {
+          "x": 25,
+          "y": 1228.34375,
+          "width": 108.328125,
+          "height": 83,
+          "bottom": 1311.34375
+        },
+        {
+          "x": 133.328125,
+          "y": 1228.34375,
+          "width": 108.328125,
+          "height": 83,
+          "bottom": 1311.34375
+        },
+        {
+          "x": 241.65625,
+          "y": 1228.34375,
+          "width": 108.34375,
+          "height": 83,
+          "bottom": 1311.34375
+        }
+      ],
+      "clock": "2:00"
+    },
+    {
+      "file": "unknown-375.png",
+      "kind": "unknown",
+      "viewport": 375,
+      "overflow": false,
+      "actions": [
+        {
+          "label": "Accept offer",
+          "x": 41,
+          "y": 321.03125,
+          "width": 142.5,
+          "height": 46,
+          "bottom": 367.03125
+        },
+        {
+          "label": "Decline offer",
+          "x": 191.5,
+          "y": 321.03125,
+          "width": 142.5,
+          "height": 46,
+          "bottom": 367.03125
+        }
+      ],
+      "media": {
+        "x": 25,
+        "y": 437.03125,
+        "width": 325,
+        "height": 182.8125,
+        "bottom": 619.84375
+      },
+      "benefits": [],
+      "tradeoff": [],
+      "columns": [
+        {
+          "x": 25,
+          "y": 1007.34375,
+          "width": 108.328125,
+          "height": 83,
+          "bottom": 1090.34375
+        },
+        {
+          "x": 133.328125,
+          "y": 1007.34375,
+          "width": 108.328125,
+          "height": 83,
+          "bottom": 1090.34375
+        },
+        {
+          "x": 241.65625,
+          "y": 1007.34375,
+          "width": 108.34375,
+          "height": 83,
+          "bottom": 1090.34375
+        }
+      ],
+      "clock": "2:00"
+    },
+    {
+      "file": "long-320.png",
+      "kind": "long",
+      "viewport": 320,
+      "overflow": false,
+      "actions": [
+        {
+          "label": "Accept offer",
+          "x": 41,
+          "y": 578.75,
+          "width": 115,
+          "height": 46,
+          "bottom": 624.75
+        },
+        {
+          "label": "Decline offer",
+          "x": 164,
+          "y": 578.75,
+          "width": 115,
+          "height": 46,
+          "bottom": 624.75
+        }
+      ],
+      "media": {
+        "x": 25,
+        "y": 694.75,
+        "width": 270,
+        "height": 151.875,
+        "bottom": 846.625
+      },
+      "benefits": [
+        {
+          "x": 24,
+          "y": 1308.625,
+          "width": 136,
+          "height": 182.390625,
+          "bottom": 1491.015625
+        },
+        {
+          "x": 160,
+          "y": 1308.625,
+          "width": 136,
+          "height": 182.390625,
+          "bottom": 1491.015625
+        },
+        {
+          "x": 24,
+          "y": 1491.015625,
+          "width": 136,
+          "height": 120.375,
+          "bottom": 1611.390625
+        },
+        {
+          "x": 160,
+          "y": 1491.015625,
+          "width": 136,
+          "height": 120.375,
+          "bottom": 1611.390625
+        },
+        {
+          "x": 24,
+          "y": 1611.390625,
+          "width": 136,
+          "height": 120.375,
+          "bottom": 1731.765625
+        }
+      ],
+      "tradeoff": [
+        {
+          "x": 24,
+          "y": 1775.765625,
+          "width": 272,
+          "height": 118.796875,
+          "bottom": 1894.5625
+        }
+      ],
+      "columns": [
+        {
+          "x": 25,
+          "y": 1912.0625,
+          "width": 90,
+          "height": 227,
+          "bottom": 2139.0625
+        },
+        {
+          "x": 115,
+          "y": 1912.0625,
+          "width": 90,
+          "height": 227,
+          "bottom": 2139.0625
+        },
+        {
+          "x": 205,
+          "y": 1912.0625,
+          "width": 90,
+          "height": 227,
+          "bottom": 2139.0625
+        }
+      ],
+      "clock": "2:00"
+    }
+  ],
+  "errors": [],
+  "scope": "Synthetic composition and responsive browser evidence; live producer authority is validated separately."
+}

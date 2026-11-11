@@ -295,7 +295,7 @@
     },
     {
       "path": "blocks/gcsp/offer/gcsp-offer.css",
-      "max_lines": 11
+      "max_lines": 10
     },
     {
       "path": "blocks/gcsp/kit/stage-tracker.css",
@@ -404,6 +404,10 @@
     {
       "path": "blocks/gcsp/kit/same-again.css",
       "max_lines": 8
+    },
+    {
+      "path": "blocks/gcsp/kit/vehicle-decision.css",
+      "max_lines": 57
     }
   ],
   "baseline": {
