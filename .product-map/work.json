@@ -4712,23 +4712,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T12:19:11Z",
+      "observed_at": "2026-11-11T13:24:43Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-383",
       "slices": [
         {
           "id": "presentation",
-          "status": "not-started",
-          "title": "Offer layout and grounded comparison emphasis"
+          "status": "in-progress",
+          "title": "Offer layout and grounded comparison emphasis",
+          "observed_at": "2026-11-11T13:24:42Z",
+          "evidence": "docs/gcsp/evidence/fucq383/checkpoint.md"
         },
         {
           "id": "countdown",
-          "status": "not-started",
-          "title": "Server-derived hours and minutes countdown"
+          "status": "in-progress",
+          "title": "Server-derived hours and minutes countdown",
+          "observed_at": "2026-11-11T13:24:43Z",
+          "evidence": "docs/gcsp/evidence/fucq383/checkpoint.md"
         },
         {
           "id": "integration",
           "status": "not-started",
-          "title": "Actual offer read, all states and rendered review"
+          "title": "Actual offer read, all states and rendered review",
+          "observed_at": "2026-11-11T13:24:43Z",
+          "evidence": "docs/gcsp/evidence/fucq383/checkpoint.md"
         }
       ],
       "unsliced": false

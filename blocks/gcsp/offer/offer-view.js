@@ -1,5 +1,6 @@
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard } from '../../vehicle-matcher/modes/result-card.js';
+import { vehicleDecisionCard, decisionHighlights } from '../kit/vehicle-decision.js';
 import { labelledField, errorSummary, checkboxField } from '../kit/form-controls.js';
 import { stageList } from '../kit/stage-list.js';
 import { dataTable } from '../kit/data-table.js';
@@ -8,7 +9,7 @@ import { viewStatus } from '../kit/view-status.js';
 import { ACCESS_LAPSED_TITLE, RUN_RESTARTED_TITLE, accessLapsedScreen, runRestartedScreen } from '../kit/run-restarted.js';
 import { followupHandle } from './followup-entry.js';
 
-const titles = { pending: 'Your car offer', accepted: 'Offer accepted', declined: 'Offer declined', expired: 'Offer expired',
+const titles = { pending: 'Your vehicle offer', accepted: 'Offer accepted', declined: 'Offer declined', expired: 'Offer expired',
   superseded: 'Offer superseded', 'earlier-run': 'Offer out of date', 'not-found': 'Offer not found', refused: 'Offer unavailable',
   restarted: RUN_RESTARTED_TITLE, 'access-lapsed': ACCESS_LAPSED_TITLE, loading: 'Loading your offer', error: 'Your offer could not be loaded', uncertain: 'Checking your decision' };
 const messages = { accepted: 'Your selection is recorded. Ordering and approval are separate steps.',
@@ -70,22 +71,55 @@ function disclosure(title, ...content) {
 }
 const cell = (value, missingLabel) => value === null ? { label: missingLabel, missing: true } : value;
 
+const comparableNumber = (value) => {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+  const match = typeof value === 'string' && value.match(/^([\d,]+(?:\.\d+)?) (?:points|litres)$/);
+  return match ? Number(match[1].replaceAll(',', '')) : null;
+};
+function comparedRows(member, currentCar) {
+  return (currentCar?.facts || []).map((row) => {
+    const offered = offeredValue(member, row); const current = row.value;
+    const [one, two] = [offered, current].map(comparableNumber);
+    // Only the agreed points cost and boot capacity have a general winning direction.
+    const direction = row.key === 'points' ? -1 : row.key === 'boot' ? 1 : 0;
+    const winner = direction && one !== null && two !== null && one !== two ? (one - two) * direction > 0 ? 'offer' : 'current' : null;
+    return { ...row, offered, current, winner, delta: winner ? Math.abs(one - two) : null };
+  });
+}
+function differences(member, currentCar) {
+  const benefits = []; const tradeoffs = [];
+  const measured = comparedRows(member, currentCar).filter((row) => row.winner);
+  for (const row of measured) {
+    const good = row.winner === 'offer';
+    const title = row.key === 'points' ? `${good ? 'fewer' : 'more'} points` : `litres ${good ? 'more' : 'less'}`;
+    (good ? benefits : tradeoffs).push({ number: row.delta.toLocaleString('en-GB'), title,
+      detail: row.key === 'points' ? 'Every month, compared with your current car' : 'Boot space compared with your current car' });
+  }
+  const checks = new Set(['driver-eligible', 'policy-include', 'allowance-sufficient', 'essential-met']);
+  for (const [entries, target] of [[member.decision?.reasons, benefits], [member.decision?.tradeOffs, tradeoffs]]) {
+    for (const entry of entries || []) {
+      if (checks.has(entry?.code) || measured.some((row) => row.key === entry?.field)) continue;
+      const title = typeof entry === 'string' ? entry : entry?.text;
+      if (title) target.push({ title });
+    }
+  }
+  return { benefits, tradeoffs };
+}
 function comparison(member, currentCar) {
   const section = el('section', 'gcsp-offer-current'); section.dataset.offerComparison = '';
   if (!currentCar) {
-    section.append(el('p', 'gcsp-note', 'Current-car details not supplied. Equipment is unknown.'));
+    section.append(el('h2', 'gcsp-h2', 'About this offer'), decisionHighlights(differences(member, null)), el('p', 'gcsp-note', 'Current-car details not supplied. Equipment is unknown.'));
     return section;
   }
+  section.append(el('h2', 'gcsp-h2', 'Compared with your current car'), decisionHighlights(differences(member, currentCar)));
   const name = currentCar.display?.name || 'Current car not supplied';
-  const columns = [{ key: 'label', label: 'Detail' }, { key: 'offer', label: 'This offer', detail: member.display?.name },
-    { key: 'current', label: 'Your current car', detail: currentCar.configuration ? `${name}, ${currentCar.configuration}` : name }];
-  const all = currentCar.facts.map((row) => ({ differs: offeredValue(member, row) !== row.value, label: row.label,
-    offer: cell(offeredValue(member, row), 'Not supplied'), current: cell(row.value, row.missingLabel || 'Unknown') }));
-  const differing = all.filter((row) => row.differs);
-  // Only the rows that differ stay in view; the full table sits behind a disclosure.
-  if (differing.length) section.append(dataTable({ caption: 'What differs from your current car', compare: true, columns, rows: differing }));
-  else section.append(el('p', 'gcsp-note', 'Nothing differs from your current car on the details compared.'));
-  section.append(disclosure('Full comparison', dataTable({ caption: 'Compared with your current car', compare: true, columns, rows: all })));
+  const columns = [{ key: 'label', label: '' },
+    { key: 'current', label: 'Your current car', detail: currentCar.configuration ? `${name}, ${currentCar.configuration}` : name },
+    { key: 'offer', label: 'This offer', detail: member.display?.name }];
+  const rows = comparedRows(member, currentCar).map((row) => ({ label: row.label,
+    current: row.winner === 'current' ? { label: row.current, winner: true } : cell(row.current, row.missingLabel || 'Unknown'),
+    offer: row.winner === 'offer' ? { label: row.offered, winner: true } : cell(row.offered, 'Not supplied') }));
+  section.append(dataTable({ caption: 'Compared with your current car', captionHidden: true, equalColumns: true, compare: true, columns, rows }));
   if (currentCar.status === 'partial') section.append(el('p', 'gcsp-note', currentCar.facts.some((row) => row.value !== null)
     ? 'Partial comparison. Some current-car facts are unknown.' : 'Partial comparison. Current-car specifications and points are unknown.'));
   return section;
@@ -130,7 +164,7 @@ function acceptedFacts(model) {
 }
 
 /** Compose shared primitives only; server projection owns vehicle facts, terms and decisions. */
-export function createOfferView(root, { refresh, decide, tickDeclaration, selectReason, cancelDecline, refreshReasons, mountFollowup, links } = {}) {
+export function createOfferView(root, { refresh, decide, tickDeclaration, selectReason, cancelDecline, refreshReasons, mountFollowup, links, openDecision } = {}) {
   const page = el('div', 'vm gcsp-offer-body');
   page.id = `gcsp-offer-${++sequence}`;
   const content = el('div', 'gcsp-offer-content');
@@ -194,9 +228,16 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       const screen = statusScreen({ title: REFUSED_TITLE, level: 1, message: messageFor(model, links?.help), actions, role: null });
       messageNode = screen.querySelector('.vm-lede'); content.append(screen);
     } else {
-      content.append(screenIntro({ title: titleFor(model), level: 1 }));
-      // The deadline leads, directly under the heading, so it is not found below the declarations.
-      if (state === 'pending') { clockNode = el('p', 'gcsp-countdown'); content.append(clockNode); }
+      const deadline = state === 'pending' && Number.isFinite(Date.parse(model.expiresAt)) ? new Date(model.expiresAt) : null;
+      const heldUntil = deadline ? `Held for you until ${deadline.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })} ${model.now?.slice(0, 10) === model.expiresAt.slice(0, 10) ? 'today' : deadline.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'UTC' })}` : null;
+      const intro = screenIntro({ title: titleFor(model), level: 1, lede: heldUntil });
+      if (state === 'pending') {
+        const header = el('div', 'gcsp-offer-header');
+        const clock = el('div', 'gcsp-offer-clock'); clockNode = el('p', 'gcsp-countdown');
+        clockNode.setAttribute('aria-label', 'Time to decide, hours and minutes');
+        const label = el('span', 'gcsp-offer-clock-label'); label.append(el('span', null, 'Time to decide'), el('span', null, 'hours : minutes'));
+        clock.append(clockNode, label); header.append(intro, clock); content.append(header);
+      } else content.append(intro);
       const facts = state === 'accepted' ? acceptedFacts(model) : null; if (facts) content.append(facts);
       messageNode = el('p', 'gcsp-note', messageFor(model));
       messageNode.hidden = !messageFor(model); content.append(messageNode);
@@ -216,16 +257,41 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       content.append(exitRow);
     }
     if (refused && model.selection) content.append(selectionGroup(model.selection));
+    let pendingActions; let handoffNote;
+    if (state === 'pending') {
+      const actions = el('div', 'gcsp-offer-actions');
+      const reason = el('p', 'gcsp-note', decisionReason(model));
+      reason.id = `${page.id}-decision-reason`;
+      reasonNode = reason;
+      for (const [kind, label, enabled] of [['accept', 'Accept offer', typeof openDecision === 'function' ? model.canReviewAccept : model.canAccept], ['decline', 'Decline offer', model.canDecline]]) {
+        const control = button({ label, variant: kind === 'accept' ? 'primary' : 'ghost', disabled: !enabled,
+          describedBy: reason.id, onClick: () => { accepting = kind === 'accept'; if (typeof openDecision === 'function') openDecision(kind, model); else decide?.(kind); } });
+        control.dataset.offerAction = kind; control.hidden = kind === 'accept' && Boolean(model.handoff?.blocker); actions.append(control);
+      }
+      actions.dataset.offerDecisionActions = '';
+      pendingActions = actions;
+      handoffNote = reason;
+    }
     if ((['pending', 'superseded', 'uncertain'].includes(state) || refused) && model.card?.members?.length === 1) {
       const columns = el('div', 'gcsp-offer-comparison');
       const offer = el('section', 'gcsp-offer-exact');
       offer.setAttribute('aria-label', 'The offered car');
       const card = structuredClone(model.card); const member = card.members[0]; member.actions = [];
-      // Compared specs live in the table, so the card keeps identity facts only (when there is a current car).
-      if (model.currentCar) { const shared = new Set(model.currentCar.facts.map((row) => row.label)); member.facts = member.facts.filter((row) => !shared.has(row.label)); }
-      offer.append(matchCard(null, { view: card, big: true, showScore: false, factsClass: 'vm-facts-pair', hideMissing: 'More details not supplied', headingLevel: 2 }));
-      // A bare "Eligible" label adds nothing; other gate states still show.
-      offer.querySelector('.vm-card[data-gate="eligible"] .vm-card-gate')?.remove();
+      if (state === 'pending') {
+        // The exact shared card keeps every supplied fact; only scheme and pending order identifiers are omitted.
+        member.display.line = '';
+        const finish = (labels, label) => {
+          const fact = member.facts.find((row) => labels.includes(row.label));
+          return { label, value: fact?.value == null ? null : String(fact.value), shade: fact?.shade };
+        };
+        const finishes = [finish(['Colour', 'Paint'], 'Paint'), finish(['Interior', 'Upholstery'], 'Upholstery')];
+        member.facts = member.facts.filter((row) => !['Scheme', 'Colour', 'Paint', 'Interior', 'Upholstery', 'Order number'].includes(row.label));
+        const decision = member.decision || {}; member.decision = { ...decision, reasons: [], tradeOffs: [] };
+        const points = comparedRows(model.card.members[0], model.currentCar).find((row) => row.key === 'points' && row.winner === 'offer');
+        offer.append(vehicleDecisionCard({ view: card, actions: pendingActions,
+          note: el('p', 'gcsp-note', 'Review your details and declarations before accepting.'), finishes,
+          pointsDifference: points ? `${points.delta.toLocaleString('en-GB')} fewer than your current car` : null }));
+      } else offer.append(matchCard(null, { view: card, showScore: false, factsClass: 'vm-facts-pair', hideMissing: 'More details not supplied', headingLevel: 2 }));
       columns.append(offer, comparison(model.card.members[0], model.currentCar)); content.append(columns);
     }
     const summary = state === 'declined' ? declinedLine(model.card, Boolean(followupHandle(model.followup, state))) : '';
@@ -233,16 +299,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     if (state === 'pending') {
       decisionGroup = el('div', 'gcsp-offer-content');
       if (model.handoff) decisionGroup.append(handoffGroup(model, page.id, tickDeclaration));
-      const actions = el('div', 'gcsp-offer-actions');
-      const reason = el('p', 'gcsp-note', decisionReason(model));
-      reason.id = `${page.id}-decision-reason`;
-      reasonNode = reason;
-      for (const [kind, label, enabled] of [['accept', 'Accept this offer', model.canAccept], ['decline', 'Decline this offer', model.canDecline]]) {
-        const control = button({ label, variant: kind === 'accept' ? 'primary' : 'ghost', disabled: !enabled,
-          describedBy: reason.id, onClick: () => { accepting = kind === 'accept'; decide?.(kind); } });
-        control.dataset.offerAction = kind; control.hidden = kind === 'accept' && Boolean(model.handoff?.blocker); actions.append(control);
-      }
-      decisionGroup.append(reason, actions); content.append(decisionGroup);
+      decisionGroup.append(handoffNote); content.append(decisionGroup);
       reasonForm = el('section', 'gcsp-offer-content'); reasonForm.setAttribute('aria-label', 'Decline this offer');
       reasonStatus = el('p', 'gcsp-note'); reasonStatus.tabIndex = -1;
       reasonSelect = el('select'); reasonSelect.required = true; reasonSelect.dataset.offerReason = '';
@@ -308,6 +365,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     const reason = model.declineReason || { open: false, status: 'idle', choices: [], selectedCode: '', error: '' };
     // Decline takes the place of the declarations and Accept, so only one primary shows.
     reasonForm.hidden = !reason.open; decisionGroup.hidden = reason.open;
+    const actions = content.querySelector('[data-offer-decision-actions]'); if (actions) actions.hidden = reason.open;
     const key = JSON.stringify(reason.choices);
     if (optionsKey !== key) {
       const placeholder = el('option', null, 'Choose a reason'); placeholder.value = '';
@@ -349,7 +407,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     if (model.state === 'pending') {
       clockNode.textContent = model.countdown || 'Time remaining unavailable';
       reasonNode.textContent = decisionReason(model);
-      content.querySelector('[data-offer-action="accept"]').disabled = !model.canAccept;
+      content.querySelector('[data-offer-action="accept"]').disabled = !(typeof openDecision === 'function' ? model.canReviewAccept : model.canAccept);
       for (const box of content.querySelectorAll('[data-offer-declaration]')) box.checked = model.ticked?.[box.dataset.offerDeclaration] === true;
       content.querySelector('[data-offer-action="decline"]').disabled = !model.canDecline;
       updateReasons(model);

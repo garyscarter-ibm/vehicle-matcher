@@ -231,7 +231,7 @@ test('mounted custom element wires reason validation, cancellation, confirmation
   assert.match(host.textContent, /Choose a reason\./); assert.equal(select.getAttribute('aria-invalid'), 'true');
   select.value = 'test-body'; select.dispatchEvent(new dom.window.Event('change')); assert.equal(select.getAttribute('aria-invalid'), 'false');
   // Decline replaces the decision region: no Accept is visible, and focus stays on the reason control.
-  assert.equal(document.activeElement, select); assert.equal(host.querySelector('[data-offer-action="accept"]').closest('.gcsp-offer-content').hidden, true);
+  assert.equal(document.activeElement, select); assert.equal(host.querySelector('[data-offer-action="accept"]').closest('[data-offer-decision-actions]').hidden, true);
   assert.equal(host.querySelector('[data-offer-action="decline-cancel"]').textContent, 'Keep this offer');
   host.querySelector('[data-offer-action="decline-cancel"]').click(); assert.equal(document.activeElement.dataset.offerAction, 'decline');
   host.querySelector('[data-offer-action="decline"]').click(); await turn();

@@ -11,7 +11,7 @@ let uid = 0;
  * `rowAction: { header = 'Action', label = 'Open', name(row, i), onSelect(row, i), disabled }` adds a button per row named by `name`.
  * `compare` keeps row header | value | value as columns at any width, wrapping long values; `detail` names a column's subject.
  */
-export function dataTable({ caption, columns = [], rows = [], emptyText = 'Nothing to show', id, stack = false, compare = false, rowAction } = {}) {
+export function dataTable({ caption, columns = [], rows = [], emptyText = 'Nothing to show', id, stack = false, compare = false, captionHidden = false, equalColumns = false, rowAction } = {}) {
   const base = id || `gcsp-table-${++uid}`;
   const captionId = `${base}-caption`;
   const region = el('div', 'gcsp-table-wrap');
@@ -22,7 +22,8 @@ export function dataTable({ caption, columns = [], rows = [], emptyText = 'Nothi
   if (stack) region.classList.add('is-stack');
   const table = el('table', 'gcsp-table');
   table.id = base;
-  const cap = el('caption', 'gcsp-table-caption', caption);
+  const cap = el('caption', captionHidden ? 'gcsp-vh' : 'gcsp-table-caption', caption);
+  if (equalColumns) region.classList.add('has-equal-columns');
   cap.id = captionId;
   const headRow = el('tr');
   const span = columns.length + (rowAction ? 1 : 0);
@@ -53,6 +54,7 @@ export function dataTable({ caption, columns = [], rows = [], emptyText = 'Nothi
       if (first) cell.scope = 'row';
       if (stack) { cell.setAttribute('role', first ? 'rowheader' : 'cell'); if (!first) cell.dataset.label = column.label; }
       const value = data[column.key];
+      if (!first && value?.winner === true) cell.classList.add('is-winner');
       if (value?.emphasis) { const strong = el('strong', value.tone === 'success' ? 'is-success' : undefined); fillValue(strong, value); cell.append(strong); } else fillValue(cell, value);
       row.append(cell);
     });

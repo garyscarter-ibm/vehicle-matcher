@@ -221,7 +221,7 @@ test('the offer paints no demo or synthetic wording in any state, including decl
   for (const name of offerFixtures.FIXTURE_NAMES) {
     const root = host();
     const read = name === 'loading' ? () => new Promise(() => {}) : async () => (name === 'error' ? { status: 'unavailable' } : offerFixtures.offerFixture(name));
-    const destroy = mountOffer(root, { read, account }); await settle(); check(`offer:${name}`, root, name === 'pending' ? /Accept this offer/ : /\S/); destroy(); root.remove();
+    const destroy = mountOffer(root, { read, account }); await settle(); check(`offer:${name}`, root, name === 'pending' ? /Accept offer/ : /\S/); destroy(); root.remove();
   }
   for (const status of ['stale-run', 'unknown-session', 'access-required']) {
     const root = host(); const destroy = mountOffer(root, { read: async () => ({ status }), account }); await settle();

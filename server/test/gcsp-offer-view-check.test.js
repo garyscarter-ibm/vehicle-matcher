@@ -94,7 +94,7 @@ test('a failed readback shows an error with Try again, and the retry reports the
   m.set(() => { throw new Error('offline'); }); await m.press();
   assert.equal(m.line().textContent, 'Check not completed. Try again in a moment.');
   m.set(fixture('pending')); await m.press();
-  assert.equal(m.root.querySelector('h1').textContent, 'Your car offer');
+  assert.equal(m.root.querySelector('h1').textContent, 'Your vehicle offer');
   assert.equal(m.line().textContent, 'Check complete. Current state: open for your decision.');
   m.done();
 });
