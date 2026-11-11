@@ -28,6 +28,16 @@ Final UI/caller run: **137/137 passed**, 5.6s, checkpoint `45aa2f6556054e59825b2
 
 The same final UI files plus `server/test/ui-ratchet.test.js` gave **276/277 passed** (6.1s); its only failure is the unchanged FUCQ-387 console cap. Allocation CSS growth/shrink checks both passed. Bounded failure log: shared `.claude/test-runs/logs/20261111-175601-2kccbyrf/chunk-0001.log`. `git diff --check` passed. These are scoped checks, not a full-suite stamp or rendered acceptance.
 
+## Integrated-base checkpoint
+
+Merged the agreed `gcsp-poc` base **d3a768d3** without conflicts. Final tested HEAD: **e89982c5**; base includes the retained synthetic-stock repair and current allocation/runtime changes. The original six-file functional scope reran through `_tools/test_stamp.py --targeted d3a768d3 --reason ...`: **150/150 passed**, one worker, 105.6s. No failed, skipped or cancelled tests in that scope. Command:
+
+```sh
+node --test --test-concurrency=1 server/test/gcsp-presenter-allocation.test.js server/test/gcsp-presenter-releases.test.js server/test/gcsp-presenter-controls-render.test.js server/test/gcsp-presenter-release-section.test.js server/test/gcsp-presenter-console.test.js server/test/gcsp-presenter-basic-console.test.js
+```
+
+Checkpoint: `d1af2d0409151083f5b257c3837da45f2f8028953f65ea1da09daadfa731773b`. Targeted receipt: `targeted-e11acf9d0ada9467f5ab91cbb1381cbd4c1284a8400d13e0640cd9898bb6b0cb-default-1794424887606380000.json`. Shared runner log: `.claude/test-runs/logs/20261111-184846-pkgccpkf/chunk-0001.log`. The code/tree identity is recorded in that receipt. Peak owned scratch **2,400,544 bytes** (2.29 MiB), peak process RSS **992,395,264 bytes**; no large generated output. Runner shard removal and filesystem absence were verified. The 0-byte worker scratch root was also removed and verified absent. Existing FUCQ-387 ratchet drift remains recorded above; parent owns rendered review and final acceptance.
+
 ## Repeatable review
 
 Use the normal trusted local demo startup documented in `docs/gcsp/README.md`, then `/gcsp-presenter.html`. Start again into Main successful journey, confirm, then release cars. The first real Buddy offer gives Pending 1, Declined 0, Accepted 0. Open the portal and complete an offer decision, then use Advanced / Last tick / Refresh readback on Presenter; an explicit decline increases Declined, an accepted offer increases Accepted. Start again confirms a new run and returns all three to 0. Repeat at desktop and 320px; keyboard access to existing controls and release stats remains unchanged.
@@ -38,4 +48,4 @@ For deterministic visual states only, intercept `/api/gcsp/presenter/releases/la
 
 Agent Yosemite Sam (they/them): requested and selected `gpt-6.1-sol` / `medium`, no fallback, no descendants. Desktop title set and tool-confirmed as Yosemite Sam. IBM gateway check PASS.
 
-Owned scratch: `/Users/garycarter/Documents/Codex/2026-11-11/oka/work/buddy-allocation-build/yosemite_sam`; ownership manifest is the sibling `yosemite-sam-manifest.json`. Test runner separately registers subprocess/scratch manifests and removes each shard. Budget: below 256 MiB scratch, one worker, chunks below ten minutes. Runner checkpoint receipts verify every owned shard removed; sampled scratch peaks were 0–8 MiB. The worker root remained 0 bytes and was removed with absence verified. No owned child process remains. The ignored server dependency symlink is retained for repeatable local checks; no installation or source dependency was changed. No browser process was launched by this worker.
+Owned scratch: `/Users/garycarter/Documents/Codex/2026-11-11/oka/work/buddy-allocation-build/yosemite_sam`; ownership manifest is the sibling `yosemite-sam-manifest.json`. Test runner separately registers subprocess/scratch manifests and removes each shard. Budget: below 256 MiB scratch, one worker, chunks below ten minutes. Runner checkpoint receipts verify every owned shard removed; sampled scratch peaks were 0–2.29 MiB. The worker root remained 0 bytes and was removed with absence verified. No owned child process remains. The ignored server dependency symlink is retained for repeatable local checks; no installation or source dependency was changed. No browser process was launched by this worker.
