@@ -4,6 +4,7 @@ import { createRepositoryManualPorts } from '../manual-context/ports.js';
 import { mintOfferToken, resolveOfferLandingUrl } from './offer-token.js';
 import { BuddyRemoteLifecycle } from './buddy-remote.js';
 import { createCurrentCarComparison } from './current-car-comparison.js';
+import { projectCurrentCarBaseline, storedFeedback } from '../recommendation/current-car.js';
 
 const fields = ['commandId', 'orderUuid', 'expectedBriefVersion', 'expectedStockVersion', 'expectedSlotVersion', 'expectedEmployeeVersion'];
 const claimFields = ['runId', 'eventId', 'operationId', 'employeeId', 'entitlementSlotId', 'renewalId', 'orderUuid',
@@ -168,7 +169,7 @@ export class BuddyHoldService {
         || !['stock', 'slot', 'brief', 'permission', 'employee'].every((key) => positive(candidate.expectedVersions[key]))
         || !['policy', 'clock'].every((key) => text(candidate.expectedVersions[key]))
         || !only(candidate.quote, ['orderUuid', 'configurationId', 'snapshot', 'terms', 'employeeFacts', 'versions', 'reasons', 'tradeOffs'])
-        || !only(candidate.quote.versions, ['brief', 'facts', 'policy', 'stock', 'snapshot', 'terms', 'clock', 'availability'])
+        || !only(candidate.quote.versions, ['brief', 'facts', 'policy', 'stock', 'snapshot', 'terms', 'clock', 'availability', 'feedback'])
         || !Array.isArray(candidate.quote.reasons) || !Array.isArray(candidate.quote.tradeOffs)) return invalid();
       if (candidate.runId !== context?.runId) return result('stale-run', { reason: 'Allocation belongs to another run.' });
       if (candidate.employeeId !== context.employeeId || candidate.entitlementSlotId !== context.entitlementSlotId) return conflict('allocation-owner-mismatch');
@@ -251,7 +252,9 @@ export class BuddyHoldService {
       if (charging) employeeFacts.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
         value: charging.value, unit: null, provenance: { sourceRef: charging.source, version: String(savedBrief.briefVersion),
           observedAt: savedBrief.confirmedAt, assurance: 'synthetic-scenario' } };
-      const evaluated = await brief.evaluateCandidate(context, { candidate, employeeFacts });
+      const feedbackOn = Object.keys(storedFeedback(savedBrief)).length > 0;
+      const currentCar = feedbackOn ? projectCurrentCarBaseline({ manualContext: stored, contractId: slot.value.contractId, context, now: time.value.now }) : null;
+      const evaluated = await brief.evaluateCandidate(context, { candidate, employeeFacts, ...(currentCar ? { currentCar } : {}) });
       if (evaluated.status !== 'ok') return evaluated;
       const decision = evaluated.value;
       if (decision?.gateStatus !== 'eligible' || !decision.terms) return conflict('candidate-not-eligible');
@@ -259,7 +262,7 @@ export class BuddyHoldService {
         const quote = proposal.quote;
         const expected = { brief: savedBrief.briefVersion, facts: `employee:${employee.value.version}`, policy: context.policyVersion,
           snapshot: decision.snapshot.snapshotVersion, terms: decision.terms.termsVersion, clock: time.value.clockVersion,
-          availability: String(stock.value.version) };
+          availability: String(stock.value.version), feedback: decision.versions.feedback };
         if (Object.entries(expected).some(([key, value]) => quote.versions[key] !== value) || !text(quote.versions.stock)) return conflict('allocation-quote-versions-mismatch');
         if (quote.orderUuid !== input.orderUuid || quote.configurationId !== stock.value.configurationId
           || !same(quote.snapshot, decision.snapshot) || !same(quote.terms, decision.terms)

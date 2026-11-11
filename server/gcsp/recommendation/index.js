@@ -3,6 +3,7 @@ import { validInstant } from '../policy/file-provider.js';
 import { currentCarRatingValid } from '../brief/rating.js';
 import { sameAgainValid } from '../brief/same-again.js';
 import { validateBrief, validateBriefContent, evaluateEssentials, scorePreferences, rankEmployeeRecommendations, confirmedFact, chargingGates } from '../../scenarios/employee/index.js';
+import { FEEDBACK_KEY, baselineOf, feedbackPolicyValid, ratingClass, matchDimensions, compareImprovement } from './current-car.js';
 
 const result = (status, fields) => ({ status, ...fields, contractVersion: '1.0.0' });
 const unavailable = (code) => result('unavailable', { code, reason: 'The employee recommendation source is unavailable.', retryable: true });
@@ -57,6 +58,42 @@ function timingGates(candidate, employeeFacts, brief, now, config) {
   return { blockers, unknowns, reasons };
 }
 
+const EMPTY_SCORES = { score: null, components: [], reasons: [], tradeOffs: [], unknowns: [] };
+const typedFields = ['currentCarRating', 'sameAgain'];
+const typedValid = { currentCarRating: currentCarRatingValid, sameAgain: sameAgainValid };
+const plainRequest = (v) => v !== null && typeof v === 'object' && !Array.isArray(v) && [Object.prototype, null].includes(Object.getPrototypeOf(v));
+
+// Typed feedback only gates which cars stay in the shortlist; gates have already passed for any car reaching here.
+function judgeFeedback({ fb, gated, candidate, scored, brief, employeeFacts, config, slider }) {
+  const { policy: rules, rating, sameOn, usable, baseline } = fb;
+  const facts = candidate.snapshot.facts;
+  const base = { policyKey: FEEDBACK_KEY, policyVersion: fb.policyVersion, applied: true, rating: { value: rating.value, class: usable.rating ? ratingClass(rating.value, rules.rating) : 'neutral' },
+    sameAgain: sameOn, baseline: baseline ? { contractId: baseline.contractId, sourceVersion: baseline.source.sourceVersion } : null,
+    similarity: null, improvement: null, continuity: null, effect: 'none', reasonCode: fb.inertCode };
+  if (gated) return { record: { ...base, reasonCode: 'gate-not-passed' }, reasons: [] };
+  if (!baseline || !(sameOn || usable.rating)) return { record: base, reasons: [] };
+  const dims = rules.similarity.dimensions;
+  if (sameOn) {
+    const continuity = matchDimensions(baseline.facts, facts, rules.sameAgain.dimensions, config, 'same');
+    const record = { ...base, continuity, similarity: matchDimensions(baseline.facts, facts, dims, config, 'similar') };
+    return continuity === 'same'
+      ? { record: { ...record, effect: 'kept', reasonCode: 'same-again-match' }, reasons: [{ code: 'same-again-match', keys: rules.sameAgain.dimensions }] }
+      : { record: { ...record, effect: 'omitted', reasonCode: 'same-again-different' }, omit: { code: 'same-again-different', keys: rules.sameAgain.dimensions } };
+  }
+  const similarity = matchDimensions(baseline.facts, facts, dims, config, 'similar');
+  const record = { ...base, similarity };
+  if (base.rating.class === 'negative') {
+    return similarity === 'similar'
+      ? { record: { ...record, effect: 'omitted', reasonCode: 'feedback-similar-omitted' }, omit: { code: 'feedback-similar-omitted', keys: dims } }
+      : { record: { ...record, effect: 'kept', reasonCode: similarity === 'unknown' ? 'feedback-similarity-unknown' : 'feedback-different' }, reasons: [] };
+  }
+  if (base.rating.class !== 'positive') return { record, reasons: [] };
+  if (similarity === 'similar') return { record: { ...record, effect: 'kept', reasonCode: 'feedback-similar' }, reasons: [{ code: 'feedback-similar', keys: dims }] };
+  const better = compareImprovement({ snapshot: candidate.snapshot, scored, baseline, brief, employeeFacts, config, slider, rule: rules.improvement });
+  if (better.result === 'proven') return { record: { ...record, improvement: 'proven', effect: 'kept', reasonCode: 'feedback-improvement' }, reasons: [{ code: 'feedback-improvement', keys: better.keys }] };
+  return { record: { ...record, improvement: better.result, effect: 'omitted', reasonCode: 'feedback-not-similar-or-better' }, omit: { code: 'feedback-not-similar-or-better', keys: dims } };
+}
+
 async function evaluateRecommendation({ provider, policy, time }, context, request, preview = null) {
       if (!provider || typeof provider.resolve !== 'function' || !policy || typeof time?.now !== 'function') return unavailable('provider-not-configured');
       if (!['runId', 'environmentId', 'employeeId', 'companyId', 'schemeId', 'gradeId', 'policyVersion'].every((key) => text(context[key]))) return invalid('invalid-context', [{ field: 'context', reason: 'The server must resolve a complete employee context.' }]);
@@ -76,7 +113,15 @@ async function evaluateRecommendation({ provider, policy, time }, context, reque
         const [calibration, minimum, maximum, charging] = assumptionResults.map((row) => row.value);
         const config = calibration.value; const slider = { minimum: minimum.value, maximum: maximum.value };
         if (!configurationValid(config, slider) || typeof charging.value !== 'boolean') return unavailable('policy-configuration-invalid');
-        let errors = preview ? validateBriefContent(request, config, slider) : validateBrief(request, config, slider);
+        // Typed current-car feedback rides beside the brief; the strict brief validator never sees it.
+        const typed = {}; let content = request;
+        if (!preview && plainRequest(request)) {
+          content = Object.fromEntries(Object.entries(request).filter(([key]) => !typedFields.includes(key)));
+          for (const key of typedFields) if (Object.hasOwn(request, key)) typed[key] = request[key];
+        } else if (preview) for (const key of typedFields) if (preview.original[key] !== undefined) typed[key] = preview.original[key];
+        const typedErrors = Object.keys(typed).filter((key) => !typedValid[key](typed[key]))
+          .map((field) => ({ field, reason: 'Unsupported or invalid current-car feedback.' }));
+        let errors = preview ? validateBriefContent(request, config, slider) : validateBrief(content, config, slider);
         if (preview) {
           const lifecycle = await policy.getAssumption('brief.lifecycle.v1', read);
           if (lifecycle.status !== 'ok' || lifecycle.policyVersion !== allowance.policyVersion
@@ -85,8 +130,8 @@ async function evaluateRecommendation({ provider, policy, time }, context, reque
           const { currentCarFeedback, currentCarRating, sameAgain, ...content } = preview.original;
           errors = validateBriefContent(content, { ...config, essentials: { ...config.essentials, charging: lifecycle.value.value.charging } }, slider);
         }
-        if (errors.length) return invalid('invalid-brief', errors);
-        const brief = structuredClone(request);
+        if (errors.length || typedErrors.length) return invalid('invalid-brief', [...errors, ...typedErrors]);
+        const brief = structuredClone(content);
         if (preview) {
           for (const p of Object.values(brief.preferences)) {
             if (p.source === 'employee' && p.valueState === 'draft') p.valueState = 'confirmed';
@@ -107,6 +152,24 @@ async function evaluateRecommendation({ provider, policy, time }, context, reque
           source.employeeFacts.charging = { status: known ? 'known' : 'unknown', value: known ? answer.value : null,
             provenance: { sourceRef: 'employee-preview:charging', version: `draft:${preview.baseDraftVersion}`,
               observedAt: now, assurance: 'synthetic-scenario' }, preview: { kind: 'unsaved-draft', approved: false } };
+        }
+        // Feedback is read at the same policy read, only when the request carries it; otherwise nothing changes.
+        let fb = null; let feedbackRecord = null;
+        if (Object.keys(typed).length) {
+          const row = await policy.getAssumption(FEEDBACK_KEY, read);
+          if (row.status !== 'ok' || row.policyVersion !== allowance.policyVersion || !feedbackPolicyValid(row.value?.value)) {
+            feedbackRecord = { applied: false, reason: 'feedback-policy-unavailable' };
+          } else {
+            assumptionResults.push(row);
+            const baseline = baselineOf(source.currentCar);
+            const matches = (entry) => entry !== undefined && baseline !== null && entry.contractId === baseline.contractId;
+            const rating = typed.currentCarRating ?? { value: null };
+            const usable = { rating: matches(typed.currentCarRating), sameAgain: matches(typed.sameAgain) };
+            const inertCode = !baseline ? 'feedback-baseline-unavailable' : Object.keys(typed).some((key) => !matches(typed[key])) ? 'feedback-contract-mismatch' : 'feedback-neutral';
+            fb = { policy: row.value.value, policyVersion: row.policyVersion, baseline, rating, usable, inertCode,
+              sameOn: usable.sameAgain && typed.sameAgain.on === true,
+              identity: `${FEEDBACK_KEY}@${row.policyVersion}${baseline ? `+${baseline.source.sourceVersion}` : ''}` };
+          }
         }
         const providerEssentials = source.employeeFacts.essentials;
         if (providerEssentials !== undefined && validateBriefContent({ schemaVersion: 1, preferences: {}, essentials: providerEssentials }, config, slider).length) return unavailable('employee-facts-invalid');
@@ -146,23 +209,36 @@ async function evaluateRecommendation({ provider, policy, time }, context, reque
             chargingGates(candidate.snapshot, source.employeeFacts, config, charging.value)]) {
             blockers.push(...gate.blockers); unknowns.push(...gate.unknowns); reasons.push(...gate.reasons);
           }
-          const gateStatus = blockers.length ? 'ineligible' : unknowns.length ? 'needs-confirmation' : 'eligible';
-          const scores = gateStatus === 'eligible' ? scorePreferences(candidate.snapshot, brief, source.employeeFacts, config, slider)
-            : { score: null, components: [], reasons: [], tradeOffs: [], unknowns: [] };
+          let gateStatus = blockers.length ? 'ineligible' : unknowns.length ? 'needs-confirmation' : 'eligible';
+          let scores = gateStatus === 'eligible' ? scorePreferences(candidate.snapshot, brief, source.employeeFacts, config, slider) : EMPTY_SCORES;
+          let feedback = feedbackRecord;
+          if (fb) {
+            const judged = judgeFeedback({ fb, gated: gateStatus !== 'eligible', candidate, scored: scores, brief, employeeFacts: source.employeeFacts, config, slider });
+            feedback = judged.record;
+            if (judged.omit) { blockers.push(judged.omit); gateStatus = 'ineligible'; scores = EMPTY_SCORES; }
+            else {
+              reasons.push(...(judged.reasons ?? []));
+              if (fb.sameOn && fb.baseline) scores = EMPTY_SCORES;
+            }
+          }
           decisions.push({ candidateKey: candidate.snapshot.candidateKey, orderUuid: candidate.orderUuid, configurationId: candidate.configurationId,
             gateStatus, suitable: gateStatus === 'eligible', evaluatedAt: now, score: scores.score, components: scores.components,
             reasons: [...reasons, ...scores.reasons], tradeOffs: scores.tradeOffs, blockers, unknowns: [...unknowns, ...scores.unknowns],
             snapshot: candidate.snapshot, terms, brief: preview ? preview.original : brief, ...(preview ? { preview: preview.metadata } : {}), employeeFacts: source.employeeFacts,
+            ...(feedback ? { feedback } : {}),
             versions: { brief: briefVersion, facts: source.factsVersion, policy: allowance.policyVersion, stock: source.stockVersion,
-              snapshot: candidate.snapshot.snapshotVersion, terms: terms?.termsVersion ?? null, clock: clock.value.clockVersion, availability: candidate.availability.version },
+              snapshot: candidate.snapshot.snapshotVersion, terms: terms?.termsVersion ?? null, clock: clock.value.clockVersion, availability: candidate.availability.version,
+              ...(fb ? { feedback: fb.identity } : {}) },
             evidence: { eligibility: eligibility.value, allowance: allowance.value, points: points.status === 'ok' ? points.value : null,
               assumptions: assumptionResults.map((row) => row.value), availability: candidate.availability } });
         }
+        // Same again nulls every kept score, so the shared ranker ignores category fit for continuity matches.
         const ranked = rankEmployeeRecommendations(decisions, config);
         return freezeVehicleData(result('ok', { value: { scenarioId: 'employee-scheme-demo-v1', runId: context.runId,
           ...(preview ? { preview: preview.metadata, brief: preview.original } : {}),
           state: !decisions.length ? 'no-stock' : ranked.length ? 'recommendations' : 'no-viable-stock', evaluatedAt: now,
-          versions: { brief: briefVersion, facts: source.factsVersion, policy: allowance.policyVersion, stock: source.stockVersion, clock: clock.value.clockVersion },
+          versions: { brief: briefVersion, facts: source.factsVersion, policy: allowance.policyVersion, stock: source.stockVersion, clock: clock.value.clockVersion,
+            ...(fb ? { feedback: fb.identity } : {}) },
           // The brief gallery shows best fit first; stored evaluations keep provider order for allocation records.
           decisions: preview ? [...ranked, ...decisions.filter((entry) => entry.gateStatus !== 'eligible')] : decisions,
           recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length,
