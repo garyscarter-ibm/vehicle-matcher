@@ -15,6 +15,8 @@ import { messageList } from '../gcsp/presenter/message-list.js';
 import { fixtureMessages } from '../gcsp/presenter/fixtures.js';
 import { metricTile } from '../gcsp/kit/metric-tile.js';
 import { dataTable } from '../gcsp/kit/data-table.js';
+import { vehicleDecisionCard, decisionHighlights, finishLabel } from '../gcsp/kit/vehicle-decision.js';
+import { mediaGalleryExamples } from '../gcsp/kit/media-gallery-examples.js';
 import { mountPresenterControls } from '../gcsp/presenter-controls/controls.js';
 import { presenterBar } from '../gcsp/kit/presenter-bar.js';
 import { activityTimeline } from '../gcsp/kit/activity-timeline.js';
@@ -22,7 +24,7 @@ import { activityBody } from '../gcsp/activity/activity-body.js';
 import { activityOffer } from '../gcsp/activity/activity-offer.js';
 import { activityFixtures } from '../gcsp/activity/activity-fixtures.js';
 import { activityEvents } from '../gcsp/activity/activity-copy.js';
-import { arrivalFocusExample, categoryPreferencesExample, sameAgainExample, formControlsExample, stageListExample, rangeBarExample, runRestartedExample, showMoreExample, tabsExample, notificationBellExample, releaseGridExample } from '../gcsp/kit/form-controls-gallery.js';
+import { buddyStatusExample, arrivalFocusExample, categoryPreferencesExample, sameAgainExample, formControlsExample, stageListExample, rangeBarExample, runRestartedExample, showMoreExample, tabsExample, notificationBellExample, releaseGridExample, releaseSkeletonExample } from '../gcsp/kit/form-controls-gallery.js';
 import { starRatingExample } from '../gcsp/kit/rating-gallery.js';
 import { stageTracker } from '../gcsp/kit/stage-tracker.js';
 import { slotPicker } from '../gcsp/kit/slot-picker.js';
@@ -239,6 +241,20 @@ function gregKitExamples() {
   ];
   const columns = [{ key: 'name', label: 'Model line' }, { key: 'released', label: 'Released', numeric: true },
     { key: 'held', label: 'Held', numeric: true }, { key: 'allocated', label: 'Allocated', numeric: true }];
+  group('Vehicle decision: finishes and five benefits').append(
+    finishLabel({ label: 'Paint', value: 'Alpine White' }), finishLabel({ label: 'Upholstery', value: 'Black upholstery', shade: 'black' }),
+    decisionHighlights({ benefits: [{ number: '25', title: 'fewer points', detail: 'Every month, compared with your current car' },
+      ...['Head-up display', 'Panoramic glass roof', 'Harman Kardon audio', 'Parking assistance'].map((title) => ({ title, detail: 'Supplied comparison example' }))],
+    tradeoffs: [{ number: '90', title: 'litres less', detail: 'Boot space compared with your current car' }] }),
+    dataTable({ caption: 'Winning comparison cells', captionHidden: true, compare: true, equalColumns: true,
+      columns: [{ key: 'label', label: '' }, { key: 'current', label: 'Your current car' }, { key: 'offer', label: 'This offer' }],
+      rows: [{ label: 'Points a month', current: '320 points', offer: { label: '295 points', winner: true } },
+        { label: 'Boot', current: { label: '500 litres', winner: true }, offer: '410 litres' }] }),
+  );
+  const equipmentView = structuredClone(employeeCardFixture); equipmentView.members = equipmentView.members.slice(0, 1);
+  const equipmentItems = Array.from({ length: 41 }, (_, index) => `Supplied equipment example ${index + 1}`);
+  equipmentView.members[0].facts.push({ label: 'Options', value: equipmentItems.join(', '), items: equipmentItems });
+  group('Vehicle decision: 41 supplied equipment labels').append(vehicleDecisionCard({ view: equipmentView }));
   group('dataTable: long model name and a band cell').append(dataTable({ caption: 'Stock by model line', columns, rows, id: 'gallery-greg-table' }));
   const bold = (label, on) => (on ? { label, emphasis: true } : label);
   group('dataTable: emphasised cells for changed rows').append(dataTable({ caption: 'Plan comparison (changed rows in bold)', id: 'gallery-greg-emphasis',
@@ -474,6 +490,7 @@ function launcherExamples() {
 
 export function mountComponentGallery(root) {
   root.querySelectorAll('.gcsp-action-menu').forEach((menu) => menu.destroy?.());
+  root.querySelectorAll('[data-media-gallery-examples]').forEach((examples) => examples.destroy?.());
   const browseScope = { kind: 'browse', id: browseSession };
   let browseFeedback = createFeedbackState(browseScope);
   const employeeScope = { kind: 'employee-draft', id: 'gallery-employee-fixture' };
@@ -541,8 +558,8 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), arrivalFocusExample(), gregKitExamples(), gregPublishExample(), gregOrderPlanExample(), gregComparisonExample(), launcherExamples(), activityExamples(), orderProgressExamples(), formControlsExample(), categoryPreferencesExample(), sameAgainExample(), stageListExample(), rangeBarExample(), showMoreExample(), tabsExample(), notificationBellExample(), releaseGridExample(), runRestartedExample());
-  root.append(starRatingExample());
+  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), buddyStatusExample(), arrivalFocusExample(), gregKitExamples(), gregPublishExample(), gregOrderPlanExample(), gregComparisonExample(), launcherExamples(), activityExamples(), orderProgressExamples(), formControlsExample(), categoryPreferencesExample(), sameAgainExample(), stageListExample(), rangeBarExample(), showMoreExample(), tabsExample(), notificationBellExample(), releaseGridExample(), releaseSkeletonExample(), runRestartedExample());
+  root.append(starRatingExample(), mediaGalleryExamples());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

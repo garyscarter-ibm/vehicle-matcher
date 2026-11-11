@@ -1,4 +1,5 @@
 import pg from 'pg';
+import { withPostgresClient } from '../repository/postgres-client.js';
 import { FilePolicyProvider, snapshotVersions, PolicySourceError } from './file-provider.js';
 import { migrate, migrationStatus, validSchema, sqlName } from '../migrations/index.js';
 import { inputDigest } from '../repository/core.js';
@@ -66,39 +67,44 @@ export class PostgresPolicyProvider {
 
   async #transaction(read, build) {
     if ((await this.open()).status !== 'ok') throw new PolicySourceError('source-unavailable');
-    let client; let begun = false;
     try {
-      client = await this.#pool.connect();
-      await client.query('BEGIN'); begun = true;
-      await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', [`gcsp:policy:${this.#schema}:${read.runId}`]);
-      let records = await this.#records(client, read.runId);
-      if (records.length === 0) {
-        const [seed] = snapshotVersions(await this.#seedProvider.loadVersions(read));
-        const record = { seed, seedDigest: inputDigest(seed), sourceVersion: seed.policyVersion,
-          publisher: 'reviewed-repository-seed', publishedAt: seed.effectiveFrom };
-        await this.#insert(client, read.runId, record); records = [record];
-      }
-      const prepared = await build(records);
-      if (prepared.record) await this.#insert(client, read.runId, prepared.record);
-      // Invalid publish outcomes roll back the whole transaction, including any first-use seed.
-      await client.query(prepared.outcome && prepared.outcome.status !== 'ok' ? 'ROLLBACK' : 'COMMIT'); begun = false;
-      return prepared.outcome ?? prepared.value;
+      return await withPostgresClient(this.#pool, async (client) => {
+        let begun = false;
+        try {
+          await client.query('BEGIN'); begun = true;
+          await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', [`gcsp:policy:${this.#schema}:${read.runId}`]);
+          let records = await this.#records(client, read.runId);
+          if (records.length === 0) {
+            const [seed] = snapshotVersions(await this.#seedProvider.loadVersions(read));
+            const record = { seed, seedDigest: inputDigest(seed), sourceVersion: seed.policyVersion,
+              publisher: 'reviewed-repository-seed', publishedAt: seed.effectiveFrom };
+            await this.#insert(client, read.runId, record); records = [record];
+          }
+          const prepared = await build(records);
+          if (prepared.record) await this.#insert(client, read.runId, prepared.record);
+          // Invalid publish outcomes roll back the whole transaction, including any first-use seed.
+          await client.query(prepared.outcome && prepared.outcome.status !== 'ok' ? 'ROLLBACK' : 'COMMIT'); begun = false;
+          return prepared.outcome ?? prepared.value;
+        } catch (error) {
+          if (begun) await client.query('ROLLBACK').catch(() => {});
+          throw error;
+        }
+      });
     } catch (error) {
-      if (begun) await client?.query('ROLLBACK').catch(() => {});
       if (error instanceof PolicySourceError) throw error;
       throw new PolicySourceError('source-unavailable');
-    } finally { client?.release(); }
+    }
   }
 
   // Policy rows are immutable and publish only appends, so matching version and digest headers prove the cache.
   async #headerKey(runId) {
-    let client;
     try {
-      client = await this.#pool.connect();
-      const { rows } = await client.query(`SELECT data->'seed'->>'policyVersion' AS "policyVersion", data->>'seedDigest' AS "seedDigest"
-        FROM ${this.#table('policy_versions')} WHERE run_id = $1 ORDER BY effective_from`, [runId]);
-      return rows.length ? rows.map((row) => `${row.policyVersion}:${row.seedDigest}`).join('|') : undefined;
-    } catch { return undefined; } finally { client?.release(); }
+      return await withPostgresClient(this.#pool, async (client) => {
+        const { rows } = await client.query(`SELECT data->'seed'->>'policyVersion' AS "policyVersion", data->>'seedDigest' AS "seedDigest"
+          FROM ${this.#table('policy_versions')} WHERE run_id = $1 ORDER BY effective_from`, [runId]);
+        return rows.length ? rows.map((row) => `${row.policyVersion}:${row.seedDigest}`).join('|') : undefined;
+      });
+    } catch { return undefined; }
   }
 
   async loadVersions(read) {

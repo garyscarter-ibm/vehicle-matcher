@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { ok, result } from '../repository/core.js';
+import { withPostgresClient } from '../repository/postgres-client.js';
 
 export const DEFAULT_MIGRATIONS_DIRECTORY = fileURLToPath(new URL('./', import.meta.url));
 export const validSchema = (schema) => typeof schema === 'string' && /^[a-z_][a-z0-9_]{0,62}$/.test(schema);
@@ -39,61 +40,62 @@ function verify(migrations, applied) {
 
 export async function migrationStatus(pool, { schema = 'public', directory } = {}) {
   if (!validSchema(schema)) return result('invalid', { code: 'invalid-schema', reasons: [{ field: 'schema', reason: 'Use a simple SQL schema identifier' }] });
-  let client;
   try {
     const migrations = await loadMigrations(directory);
-    client = await pool.connect();
-    const applied = await ledger(client, schema);
-    const failure = verify(migrations, applied);
-    if (failure) return failure;
-    const appliedVersions = applied.map((row) => row.version);
-    const pendingVersions = migrations.filter((row) => !appliedVersions.includes(row.version)).map((row) => row.version);
-    return ok({ current: pendingVersions.length === 0, appliedVersions, pendingVersions });
+    return await withPostgresClient(pool, async (client) => {
+      const applied = await ledger(client, schema);
+      const failure = verify(migrations, applied);
+      if (failure) return failure;
+      const appliedVersions = applied.map((row) => row.version);
+      const pendingVersions = migrations.filter((row) => !appliedVersions.includes(row.version)).map((row) => row.version);
+      return ok({ current: pendingVersions.length === 0, appliedVersions, pendingVersions });
+    });
   } catch {
     return unavailable();
-  } finally {
-    client?.release();
   }
 }
 
 export async function migrate(pool, { schema = 'public', directory } = {}) {
   if (!validSchema(schema)) return result('invalid', { code: 'invalid-schema', reasons: [{ field: 'schema', reason: 'Use a simple SQL schema identifier' }] });
-  let client;
-  let locked = false;
-  let inTransaction = false;
   try {
     const migrations = await loadMigrations(directory);
-    client = await pool.connect();
-    await client.query('SELECT pg_advisory_lock(hashtextextended($1, 0))', [`gcsp:migrations:${schema}`]);
-    locked = true;
-    await client.query('BEGIN');
-    inTransaction = true;
-    await client.query(`CREATE TABLE IF NOT EXISTS ${sqlName(schema)}.schema_migrations (
-      version text PRIMARY KEY, filename text NOT NULL, checksum text NOT NULL,
-      applied_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
-    )`);
-    await client.query('COMMIT');
-    inTransaction = false;
-    const applied = await ledger(client, schema);
-    const failure = verify(migrations, applied);
-    if (failure) return failure;
-    for (const migration of migrations.filter((row) => !applied.some((done) => done.version === row.version))) {
-      await client.query('BEGIN');
-      inTransaction = true;
-      await client.query(`SET LOCAL search_path TO ${sqlName(schema)}`);
-      await client.query(migration.sql);
-      await client.query(`INSERT INTO ${sqlName(schema)}.schema_migrations (version, filename, checksum) VALUES ($1, $2, $3)`,
-        [migration.version, migration.filename, migration.checksum]);
-      await client.query('COMMIT');
-      inTransaction = false;
-      applied.push(migration);
-    }
-    return ok({ current: true, appliedVersions: applied.map((row) => row.version), pendingVersions: [] });
+    return await withPostgresClient(pool, async (client) => {
+      let locked = false;
+      let inTransaction = false;
+      try {
+        await client.query('SELECT pg_advisory_lock(hashtextextended($1, 0))', [`gcsp:migrations:${schema}`]);
+        locked = true;
+        await client.query('BEGIN');
+        inTransaction = true;
+        await client.query(`CREATE TABLE IF NOT EXISTS ${sqlName(schema)}.schema_migrations (
+          version text PRIMARY KEY, filename text NOT NULL, checksum text NOT NULL,
+          applied_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )`);
+        await client.query('COMMIT');
+        inTransaction = false;
+        const applied = await ledger(client, schema);
+        const failure = verify(migrations, applied);
+        if (failure) return failure;
+        for (const migration of migrations.filter((row) => !applied.some((done) => done.version === row.version))) {
+          await client.query('BEGIN');
+          inTransaction = true;
+          await client.query(`SET LOCAL search_path TO ${sqlName(schema)}`);
+          await client.query(migration.sql);
+          await client.query(`INSERT INTO ${sqlName(schema)}.schema_migrations (version, filename, checksum) VALUES ($1, $2, $3)`,
+            [migration.version, migration.filename, migration.checksum]);
+          await client.query('COMMIT');
+          inTransaction = false;
+          applied.push(migration);
+        }
+        return ok({ current: true, appliedVersions: applied.map((row) => row.version), pendingVersions: [] });
+      } catch (error) {
+        if (inTransaction) await client.query('ROLLBACK').catch(() => {});
+        throw error;
+      } finally {
+        if (locked) await client.query('SELECT pg_advisory_unlock(hashtextextended($1, 0))', [`gcsp:migrations:${schema}`]).catch(() => {});
+      }
+    });
   } catch {
-    if (inTransaction) await client?.query('ROLLBACK').catch(() => {});
     return unavailable();
-  } finally {
-    if (locked) await client?.query('SELECT pg_advisory_unlock(hashtextextended($1, 0))', [`gcsp:migrations:${schema}`]).catch(() => {});
-    client?.release();
   }
 }

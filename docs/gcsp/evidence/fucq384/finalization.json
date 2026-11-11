@@ -1,0 +1,641 @@
+{
+  "version": 1,
+  "issue": "FUCQ-384",
+  "development_id": "DEV-2026-11-11-002",
+  "recorded_at": "2026-11-11T15:04:00Z",
+  "status": "Built; development complete against original six criteria; parent integration and collaborator acceptance separate",
+  "branch": "dev/DEV-2026-11-11-002",
+  "jira_transition_performed": false,
+  "done_authorized": false,
+  "scope": "Metadata-only finalization at the parent-authorised third serial slot; no source, test, browser, server, scratch or descendant work.",
+  "source_checkpoints": {
+    "initial_f384": "7100b73dad2d85e3547f1ab3667b18736e2afd40",
+    "f384_provenance": "529ce2dfacc2038f9eaffaf493dd8cf6f9308458",
+    "actual_f382_producer": "593b3c737316297d27e6b1c410c6e17700451e56",
+    "corrected_combined_render": "22176eb2393c644151c097bc1022998b67c1fe29",
+    "shared_evidence": "9089a8158765459f198be05f178fd6e2b5d494e8",
+    "finalization_base": "35965ffd8b29c32fd8a5601a93243085a02e1f1b",
+    "later_navigation": "10fec0636a6fd358f0923d63fedb29265b0c1ef2"
+  },
+  "criteria": [
+    {
+      "criterion": "AC1",
+      "disposition": "complete for development",
+      "evidence": [
+        "server/data/gcsp/vehicle-evidence/configuration-definitions.v1.json",
+        "server/test/gcsp-configuration-definitions.test.js"
+      ],
+      "finding": "Versioned retained-source seed covers 239/240 configurations and 11900/11947 selected codes across 54 retained source paths and 40 exact variants. Exact source/model/market/generation applicability, source dates, hashes and unresolved codes are explicit; incompatible variants cannot borrow definitions."
+    },
+    {
+      "criterion": "AC2",
+      "disposition": "complete for development",
+      "evidence": [
+        "server/gcsp/vehicle-evidence/configuration-definitions.js",
+        "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+        "server/test/gcsp-configuration-definitions.test.js"
+      ],
+      "finding": "Existing registry getConfiguration and indexed-jsonl configuration-ID lookup are reused. Prebuilt exact-source and selected-code maps join selected codes locally; repeated keyed lookups assert one index build, and a forbidden catalogue iterator rejects rescanning. Load/identity/unknown failures stay explicit."
+    },
+    {
+      "criterion": "AC3",
+      "disposition": "complete for development",
+      "evidence": [
+        "server/gcsp/vehicle-evidence/application-vehicle-details.js",
+        "server/gcsp/vehicle-evidence/vehicle-details-contract.js",
+        "server/test/gcsp-configuration-definitions.test.js",
+        "server/test/gcsp-vehicle-details-contract.test.js"
+      ],
+      "finding": "The existing DTO returns selected-only readable paint/upholstery/options with exact association and per-code source/date/version. Retained G61/i5 labels keep bmw-gb-i5-2026-11-01.v1; controlled mixed provenance retains each origin. No evidenced swatch is available; swatches, available equipment and verified physical fitment remain unknown."
+    },
+    {
+      "criterion": "AC4",
+      "disposition": "complete for development",
+      "evidence": [
+        "docs/gcsp/evidence/fucq382/README.md",
+        "docs/gcsp/evidence/fucq382/independent-source-review.md",
+        "server/test/gcsp-generated-configuration-offer.test.js",
+        "docs/gcsp/evidence/fucq386/README.md"
+      ],
+      "finding": "Separately authorised F382 joins before actual generated stock is released, recommended and pinned by BuddyHold. Order b6fb9510-7f2d-44b7-bf5b-f651b68f9698 follows retained configuration through public OfferAccess and comparison projection. A controlled successor dictionary and current-stock enrichment leave the old quote, terms and card unchanged. Public fact/provenance parity is proved; private/public whole-snapshot equality is not claimed."
+    },
+    {
+      "criterion": "AC5",
+      "disposition": "complete for development",
+      "evidence": [
+        "server/test/gcsp-configuration-definitions.test.js",
+        "server/test/gcsp-generated-configuration-offer.test.js",
+        "docs/gcsp/evidence/fucq386/checks/visual-corrections.json",
+        "docs/gcsp/evidence/fucq386/independent-visual-review.md"
+      ],
+      "finding": "Actual same-model generated configurations retain different selected labels; paint/upholstery resolve by their own selected codes. Controlled ambiguous/missing definitions and the real G61/i5 gap remain concise and truthful in the downstream facts/projection contracts. The primary actual offer renders all 41 supplied labels in source order in a counted disclosure, independently reinspected at 1440/375/320. Unsupported shades stay neutral. Same-model/gap rows are producer/contract evidence, not separate actual browser journeys."
+    },
+    {
+      "criterion": "AC6",
+      "disposition": "complete for development",
+      "evidence": [
+        "server/test/gcsp-configuration-definitions.test.js",
+        "docs/gcsp/evidence/fucq384/README.md",
+        "docs/gcsp/evidence/fucq384/finalization.json"
+      ],
+      "finding": "Corpus, definition and selected-population identities, exact coverage and unresolved codes are retained. Loader identity is reused, population resolution asserts indexBuilds=1, and six repeated keyed reads reuse one index without a per-offer upstream request or catalogue scan. No new performance benchmark or latency SLA is claimed."
+    }
+  ],
+  "definition_identity": {
+    "version": "configuration-definitions-2026-11-11.v1",
+    "sha256": "7327f922585d0a5eabe5dca00363bc2f2e7ed29816c9c91bb17a304beddab939",
+    "corpus_manifest": "7c9cc707ab44b36f9cb5eb64b54170b25d914d5ee7e31722384c737612c45a9c",
+    "configuration_jsonl_sha256": "8e855b0d9f94c7deae99243a94145eb3f0628ae6d1243c8b10e023c62a8e05f3",
+    "retained_source_paths": 54,
+    "exact_variants": 40,
+    "fully_labelled_configurations": 239,
+    "population_configurations": 240,
+    "resolved_selected_codes": 11900,
+    "selected_codes": 11947,
+    "gap": "Retained G61/i5 has no matching options-language report; all 47 selected codes remain seed-unresolved. Existing six snapshot definitions remain separate; readable retained facts preserve their original snapshot identity. No evidenced swatches."
+  },
+  "reuse_identity": {
+    "f384_owned_files": {
+      "checked": 9,
+      "unchanged": 8,
+      "files": [
+        {
+          "path": "_tools/seed_configuration_definitions.py",
+          "f384_checkpoint_sha256": "97262f4aa83f9d80a0dbdd39923ca822416f6e780fc4310edcb3bef6b541dc54",
+          "current_sha256": "97262f4aa83f9d80a0dbdd39923ca822416f6e780fc4310edcb3bef6b541dc54"
+        },
+        {
+          "path": "server/data/gcsp/vehicle-evidence/configuration-definitions.v1.json",
+          "f384_checkpoint_sha256": "7327f922585d0a5eabe5dca00363bc2f2e7ed29816c9c91bb17a304beddab939",
+          "current_sha256": "7327f922585d0a5eabe5dca00363bc2f2e7ed29816c9c91bb17a304beddab939"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/application-vehicle-details.js",
+          "f384_checkpoint_sha256": "b59da4310ef5445a98919e48815c7336ddafffa9529b2db5a89071084d1c8dfe",
+          "current_sha256": "b59da4310ef5445a98919e48815c7336ddafffa9529b2db5a89071084d1c8dfe"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/configuration-definitions.js",
+          "f384_checkpoint_sha256": "e2155a827eb6d8a3bea8e2c81da55d9ef3e5670a158eabd8d71b5e6e3ebbba8b",
+          "current_sha256": "e2155a827eb6d8a3bea8e2c81da55d9ef3e5670a158eabd8d71b5e6e3ebbba8b"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+          "f384_checkpoint_sha256": "ed1677a073822ad8e1244c5ec2463713167bf9a9c5dbdf3883987b5a36666e7c",
+          "current_sha256": "ed1677a073822ad8e1244c5ec2463713167bf9a9c5dbdf3883987b5a36666e7c"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/vehicle-details-contract.js",
+          "f384_checkpoint_sha256": "b6be3b4f5808b2b26777e4074f666cdffa13a06215d6ed1ec34368cca0202bf3",
+          "current_sha256": "3390ab29f56782918b5ab1e0a5afab5686b91787e024d2010b58931a6f9fc96b"
+        },
+        {
+          "path": "server/test/gcsp-configuration-definitions.test.js",
+          "f384_checkpoint_sha256": "b11594e167418b739f633db3e6855b389cb18d4e3cd2c67535858dcb7928d7e5",
+          "current_sha256": "b11594e167418b739f633db3e6855b389cb18d4e3cd2c67535858dcb7928d7e5"
+        },
+        {
+          "path": "server/test/gcsp-vehicle-details-contract.test.js",
+          "f384_checkpoint_sha256": "f9a54f7603fe5920581816b444c415b3fd03de14de1d4b4f524e6e2db94079f1",
+          "current_sha256": "f9a54f7603fe5920581816b444c415b3fd03de14de1d4b4f524e6e2db94079f1"
+        },
+        {
+          "path": "server/test/gcsp-buddy-hold.test.js",
+          "f384_checkpoint_sha256": "ea2518e3cb17b2e7712d8b600ca962b1fd389a9b57285e5719cf6f0d2e256384",
+          "current_sha256": "ea2518e3cb17b2e7712d8b600ca962b1fd389a9b57285e5719cf6f0d2e256384"
+        }
+      ]
+    },
+    "f384_revision_impact": {
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq384-provenance-9ed75cec24554d628d6951b2f8810224a83a07f32cd21e3af17eb6ad7539add4.json",
+      "checked": 8,
+      "unchanged": 7,
+      "files": [
+        {
+          "path": "server/gcsp/vehicle-evidence/configuration-definitions.js",
+          "reviewed_sha256": "e2155a827eb6d8a3bea8e2c81da55d9ef3e5670a158eabd8d71b5e6e3ebbba8b",
+          "current_sha256": "e2155a827eb6d8a3bea8e2c81da55d9ef3e5670a158eabd8d71b5e6e3ebbba8b"
+        },
+        {
+          "path": "server/test/gcsp-configuration-definitions.test.js",
+          "reviewed_sha256": "b11594e167418b739f633db3e6855b389cb18d4e3cd2c67535858dcb7928d7e5",
+          "current_sha256": "b11594e167418b739f633db3e6855b389cb18d4e3cd2c67535858dcb7928d7e5"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/vehicle-details-contract.js",
+          "reviewed_sha256": "b6be3b4f5808b2b26777e4074f666cdffa13a06215d6ed1ec34368cca0202bf3",
+          "current_sha256": "3390ab29f56782918b5ab1e0a5afab5686b91787e024d2010b58931a6f9fc96b"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/application-vehicle-details.js",
+          "reviewed_sha256": "b59da4310ef5445a98919e48815c7336ddafffa9529b2db5a89071084d1c8dfe",
+          "current_sha256": "b59da4310ef5445a98919e48815c7336ddafffa9529b2db5a89071084d1c8dfe"
+        },
+        {
+          "path": "server/vehicles/index.js",
+          "reviewed_sha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc",
+          "current_sha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc"
+        },
+        {
+          "path": "server/test/gcsp-buddy-hold.test.js",
+          "reviewed_sha256": "ea2518e3cb17b2e7712d8b600ca962b1fd389a9b57285e5719cf6f0d2e256384",
+          "current_sha256": "ea2518e3cb17b2e7712d8b600ca962b1fd389a9b57285e5719cf6f0d2e256384"
+        },
+        {
+          "path": "server/test/gcsp-vehicle-details-contract.test.js",
+          "reviewed_sha256": "f9a54f7603fe5920581816b444c415b3fd03de14de1d4b4f524e6e2db94079f1",
+          "current_sha256": "f9a54f7603fe5920581816b444c415b3fd03de14de1d4b4f524e6e2db94079f1"
+        },
+        {
+          "path": "server/test/vehicle-snapshot.test.js",
+          "reviewed_sha256": "41a66841e73c4487764332f072c72caa38aa9ddeb51f946f26b88c8b1113faae",
+          "current_sha256": "41a66841e73c4487764332f072c72caa38aa9ddeb51f946f26b88c8b1113faae"
+        }
+      ],
+      "boundary": "F382 deliberately added canonical exact-stock/legacy identity association to vehicle-details-contract.js. F382 producer/lookup tests and independent review cover that changed boundary. The old 95 checks are not a blanket unchanged-current-tree result."
+    },
+    "actual_producer": {
+      "source": "docs/gcsp/evidence/fucq382/validation-reuse.json",
+      "checked": 11,
+      "unchanged": 11,
+      "files": [
+        {
+          "path": "server/gcsp/stock/run-stock-generation.js",
+          "reviewed_sha256": "031a37c9b1a6156a4ad77b8e8850f578a2d3c1fe44864bde0d141eade712a19f",
+          "current_sha256": "031a37c9b1a6156a4ad77b8e8850f578a2d3c1fe44864bde0d141eade712a19f"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/stock-generator.js",
+          "reviewed_sha256": "b6783208b516e8406c017a7b8d6b1a3e718667dacefcbc6d86a0aa7f575963de",
+          "current_sha256": "b6783208b516e8406c017a7b8d6b1a3e718667dacefcbc6d86a0aa7f575963de"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/vehicle-details-contract.js",
+          "reviewed_sha256": "3390ab29f56782918b5ab1e0a5afab5686b91787e024d2010b58931a6f9fc96b",
+          "current_sha256": "3390ab29f56782918b5ab1e0a5afab5686b91787e024d2010b58931a6f9fc96b"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/vehicle-lookup.js",
+          "reviewed_sha256": "cbc483051876d3a5c3c969e752659879b5c939d05175a9f2a6156c421ff03b41",
+          "current_sha256": "cbc483051876d3a5c3c969e752659879b5c939d05175a9f2a6156c421ff03b41"
+        },
+        {
+          "path": "server/scenarios/employee/index.js",
+          "reviewed_sha256": "1f9fd45e36221c7eeb32d6a762078190629cefdfb94aade090810f774e26ac14",
+          "current_sha256": "1f9fd45e36221c7eeb32d6a762078190629cefdfb94aade090810f774e26ac14"
+        },
+        {
+          "path": "server/scenarios/employee/option-evidence.js",
+          "reviewed_sha256": "dcec911a9a9ff5069cec4369b91f90ac4e0b596a55257e88a9e770c3dda841e7",
+          "current_sha256": "dcec911a9a9ff5069cec4369b91f90ac4e0b596a55257e88a9e770c3dda841e7"
+        },
+        {
+          "path": "server/test/gcsp-generated-configuration-offer.test.js",
+          "reviewed_sha256": "911e4b964e87731c1e1ef7f5be5ba06dc1bf925124bec55a111a70f6f9b3fc71",
+          "current_sha256": "911e4b964e87731c1e1ef7f5be5ba06dc1bf925124bec55a111a70f6f9b3fc71"
+        },
+        {
+          "path": "server/test/gcsp-stock-generator.test.js",
+          "reviewed_sha256": "e59450a83d481a333f691b95045ade19e8faac579f099e9750aa70c107df4e86",
+          "current_sha256": "e59450a83d481a333f691b95045ade19e8faac579f099e9750aa70c107df4e86"
+        },
+        {
+          "path": "server/test/gcsp-vehicle-evidence-lookup.test.js",
+          "reviewed_sha256": "541bfbdfb7ee28043611ed08cf4dd7be0302ed46e4202e70d82322e0e97a1f17",
+          "current_sha256": "541bfbdfb7ee28043611ed08cf4dd7be0302ed46e4202e70d82322e0e97a1f17"
+        },
+        {
+          "path": "server/test/employee-option-preferences.test.js",
+          "reviewed_sha256": "1eb3601e989d3dd83b51fa64a8d8e24ce8577154b678add9ca0d8d6c23f48071",
+          "current_sha256": "1eb3601e989d3dd83b51fa64a8d8e24ce8577154b678add9ca0d8d6c23f48071"
+        },
+        {
+          "path": "server/test/gcsp-run-stock.test.js",
+          "reviewed_sha256": "cf6a2315eed048f29c767357ef3b811f6a283a98b4180c42dd2fdb53f145dab4",
+          "current_sha256": "cf6a2315eed048f29c767357ef3b811f6a283a98b4180c42dd2fdb53f145dab4"
+        }
+      ]
+    },
+    "combined_scoped_map": {
+      "source": "docs/gcsp/evidence/fucq386/identities.json",
+      "checked": 20,
+      "unchanged": 19,
+      "files": [
+        {
+          "path": "blocks/gcsp/kit/media-gallery.css",
+          "reviewed_sha256": "2bab9856c20b351a52a462bbaf1c79ddadf3b18d585b8ce99bcbcfe316833f7c",
+          "current_sha256": "2bab9856c20b351a52a462bbaf1c79ddadf3b18d585b8ce99bcbcfe316833f7c"
+        },
+        {
+          "path": "blocks/gcsp/kit/media-gallery.js",
+          "reviewed_sha256": "0735b8ed4a0493f76abee2578d82f1c8e033e0a99597efd4d3756b0167b88a70",
+          "current_sha256": "0735b8ed4a0493f76abee2578d82f1c8e033e0a99597efd4d3756b0167b88a70"
+        },
+        {
+          "path": "blocks/gcsp/kit/option-rows.css",
+          "reviewed_sha256": "97da56426517834df9c0f57f4362d5f247cd14e0f029a1baeda2c7a837382439",
+          "current_sha256": "97da56426517834df9c0f57f4362d5f247cd14e0f029a1baeda2c7a837382439"
+        },
+        {
+          "path": "blocks/gcsp/kit/side-drawer.js",
+          "reviewed_sha256": "57910fe1e8a6d434951e172cdb1afb31783aee08996c465de48ded2091229f3c",
+          "current_sha256": "57910fe1e8a6d434951e172cdb1afb31783aee08996c465de48ded2091229f3c"
+        },
+        {
+          "path": "blocks/gcsp/kit/vehicle-decision.css",
+          "reviewed_sha256": "9057204220f923449ed37ef5d1b6d08b301b461d26cd25418a8fad24bcf4651e",
+          "current_sha256": "9057204220f923449ed37ef5d1b6d08b301b461d26cd25418a8fad24bcf4651e"
+        },
+        {
+          "path": "blocks/gcsp/kit/vehicle-decision.js",
+          "reviewed_sha256": "5444f61e909a8bc7697ffd6210a6918b25141c3cef286389b1704edb6230f8f5",
+          "current_sha256": "5444f61e909a8bc7697ffd6210a6918b25141c3cef286389b1704edb6230f8f5"
+        },
+        {
+          "path": "blocks/gcsp/offer/decision-drawer.css",
+          "reviewed_sha256": "2fc3d00c73f5042d1e1cfc468481d088bebd3c02ea07ee28f15f5a697eef98c4",
+          "current_sha256": "2fc3d00c73f5042d1e1cfc468481d088bebd3c02ea07ee28f15f5a697eef98c4"
+        },
+        {
+          "path": "blocks/gcsp/offer/decision-drawer.js",
+          "reviewed_sha256": "86ce98aab6d22d696fcdbc0926f4751b12e762f8e5b702db3ebc766281b95131",
+          "current_sha256": "86ce98aab6d22d696fcdbc0926f4751b12e762f8e5b702db3ebc766281b95131"
+        },
+        {
+          "path": "blocks/gcsp/offer/offer-controller.js",
+          "reviewed_sha256": "cdf1622f0b039290c3800d3ae03cf5195bcd5bb60933ff24d5aa06de69eb60d2",
+          "current_sha256": "cdf1622f0b039290c3800d3ae03cf5195bcd5bb60933ff24d5aa06de69eb60d2"
+        },
+        {
+          "path": "blocks/gcsp/offer/offer-projection.js",
+          "reviewed_sha256": "eae39dd4fb3898bd6db9be49b3820f96fe0464e01e4c592df3d68e127f75b4f5",
+          "current_sha256": "eae39dd4fb3898bd6db9be49b3820f96fe0464e01e4c592df3d68e127f75b4f5"
+        },
+        {
+          "path": "blocks/gcsp/offer/offer-view.js",
+          "reviewed_sha256": "6bc44184df1f31857847a74b56445df1854b8087330d7bff96f46a81e25e1229",
+          "current_sha256": "6bc44184df1f31857847a74b56445df1854b8087330d7bff96f46a81e25e1229"
+        },
+        {
+          "path": "server/gcsp/offers/access-http.js",
+          "reviewed_sha256": "a17f8af461cc9ccf6f9b3b94eec18cd7e98b7c394d8dd6f189848576f7cdd97d",
+          "current_sha256": "a17f8af461cc9ccf6f9b3b94eec18cd7e98b7c394d8dd6f189848576f7cdd97d"
+        },
+        {
+          "path": "server/gcsp/offers/access.js",
+          "reviewed_sha256": "f3d2c5130412665f796b5a09040b114296b0152de1983a46e9740507306da0a5",
+          "current_sha256": "f3d2c5130412665f796b5a09040b114296b0152de1983a46e9740507306da0a5"
+        },
+        {
+          "path": "server/gcsp/offers/buddy-conversion.js",
+          "reviewed_sha256": "9821ec9bdaccf1e0d9816a30b0143b6864df1a737ec6d035f15e0dc6f1e06e85",
+          "current_sha256": "9821ec9bdaccf1e0d9816a30b0143b6864df1a737ec6d035f15e0dc6f1e06e85"
+        },
+        {
+          "path": "server/gcsp/offers/decision.js",
+          "reviewed_sha256": "b95f6bd9c06d9a5f631d49efca6bb50cbe1aee15943bd4c9686cb9a4fb935dfe",
+          "current_sha256": "b95f6bd9c06d9a5f631d49efca6bb50cbe1aee15943bd4c9686cb9a4fb935dfe"
+        },
+        {
+          "path": "server/test/gcsp-offer-view-decision.test.js",
+          "reviewed_sha256": "276d06b94fc13e04beb6b40c72e6614002e5b001b445f7a3cc41a2970518bc3a",
+          "current_sha256": "276d06b94fc13e04beb6b40c72e6614002e5b001b445f7a3cc41a2970518bc3a"
+        },
+        {
+          "path": "server/test/gcsp-offer-view-projection.test.js",
+          "reviewed_sha256": "5c223c0cd0aaf7abaca7c583bfa82362a4a8400c669ad8ac405a1cddaab5d506",
+          "current_sha256": "5c223c0cd0aaf7abaca7c583bfa82362a4a8400c669ad8ac405a1cddaab5d506"
+        },
+        {
+          "path": "server/test/gcsp-offer-view-render.test.js",
+          "reviewed_sha256": "06b20e05f0dbad72840c4f858eeacbd02f043280d4b71f4f95257dc0723f4e7d",
+          "current_sha256": "b00ac810cc8ef32ff78b5bfa5406e5af269450e1188ae7f152b24823fb0b4a4c"
+        },
+        {
+          "path": "server/test/shared-kit-contracts.test.js",
+          "reviewed_sha256": "c66f08836b324b90bed6587e9808cbd45ec862e2167f8c76bac757f26bc9dfa3",
+          "current_sha256": "c66f08836b324b90bed6587e9808cbd45ec862e2167f8c76bac757f26bc9dfa3"
+        },
+        {
+          "path": "server/test/ui-ratchet.json",
+          "reviewed_sha256": "8bf76027ec1f4936ed5c22e05632be6f79949d4a3ae3679a7ffa751ce0b2033e",
+          "current_sha256": "8bf76027ec1f4936ed5c22e05632be6f79949d4a3ae3679a7ffa751ce0b2033e"
+        }
+      ],
+      "boundary": "F390 subsequently extended gcsp-offer-view-render.test.js; its own later scoped evidence covers that revision."
+    },
+    "combined_browser_manifest": {
+      "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-visual-corrections-plan.json",
+      "sha256": "58a351eafa9c6227670ab43dad360b32721c00707ef700cc8a6736df18ccff07",
+      "checked": 560,
+      "unchanged": 559,
+      "changes": [
+        {
+          "path": "blocks/gcsp/offer/portal-links.js",
+          "reviewed_sha256": "cc6e2bc913fe5672d418376b3ea9924ccf533e4aa30279cb902abe09593add09",
+          "current_sha256": "7dbb0566dd591be7db0bbb9dcfc031d921a5e802d6c09361e498d53f6e355ff8"
+        }
+      ],
+      "boundary": "Only portal-links.js differs among the 560 reviewed application paths. F390 has a separate independent desktop/narrow navigation review and 231-pass/2-inherited-failure scoped result; the earlier full browser identity is not claimed unchanged."
+    }
+  },
+  "validation": {
+    "new_runtime_checks": [],
+    "selection_reason": "Only Result, evidence and F384 map metadata change. Reuse exact-source evidence for unchanged paths; separately retain F382 contract and F390 navigation/test evidence. No need for runtime reruns was diagnosed.",
+    "new_metadata_checks": [
+      "git diff --check",
+      "parse final evidence and work JSON",
+      "verify original six AC texts differ only in checkbox state",
+      "verify only F384 map record changed",
+      "verify source hashes against retained receipts",
+      "verify each intended evidence file tracked",
+      "verify clean branch and local/remote pushed SHA"
+    ],
+    "runs_not_additive": [
+      {
+        "scope": "Initial F384 checkpoint",
+        "source": "7100b73dad2d85e3547f1ab3667b18736e2afd40",
+        "passed": 90,
+        "failed": 0,
+        "skipped": 0,
+        "basis": "89 checks plus one later actual retained-registry/local-lookup check at unchanged implementation; historic identity only",
+        "record": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f384/validation-summary.json"
+      },
+      {
+        "scope": "F384 provenance RED",
+        "passed": 0,
+        "failed": 2,
+        "skipped": 0,
+        "seconds": 0.5,
+        "commands": [
+          "python3 -c 'import os,signal,sys; signal.alarm(600); os.execvp(sys.argv[1], sys.argv[1:])' node --test --test-concurrency=1 --test-name-pattern='retained definition facts|mixed selected option facts' server/test/gcsp-configuration-definitions.test.js"
+        ]
+      },
+      {
+        "scope": "F384 provenance GREEN",
+        "source": "529ce2dfacc2038f9eaffaf493dd8cf6f9308458",
+        "passed": 95,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 5.6,
+        "code_test_identity": "9ed75cec24554d628d6951b2f8810224a83a07f32cd21e3af17eb6ad7539add4",
+        "code_key": "b1d3840b5c35b9b2776ba943f61cb37f87a07d1e03d439cd0c032bdc01be5531",
+        "environment": "e7b3cb26f844e3b3642ae2d66aeaa928b32010249b5a646286b24d080bd3a30e",
+        "variant": "default",
+        "commands": [
+          "python3 -c 'import os,signal,sys; signal.alarm(600); os.execvp(sys.argv[1], sys.argv[1:])' node --test --test-concurrency=1 server/test/gcsp-configuration-definitions.test.js server/test/gcsp-vehicle-details-contract.test.js server/test/gcsp-buddy-hold.test.js server/test/vehicle-snapshot.test.js"
+        ],
+        "record": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-b1d3840b5c35b9b2776ba943f61cb37f87a07d1e03d439cd0c032bdc01be5531-default-1794404137558868000.json"
+      },
+      {
+        "scope": "F382 actual producer / identity boundary",
+        "record": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/targeted-1bb70ce6c630ab9fb015e64716dc3f3f625a0e234a3362619d79b8bfec530277-default-1794405746274695000.json",
+        "code_key": "1bb70ce6c630ab9fb015e64716dc3f3f625a0e234a3362619d79b8bfec530277",
+        "base_commit": "1cc718ffa3625e5da661a5b20b0e5e209877b10c",
+        "commands": [
+          "/usr/bin/python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/with_deps.py perl -e 'alarm shift; exec @ARGV' 600 node --test --test-concurrency=1 server/test/gcsp-generated-configuration-offer.test.js server/test/gcsp-stock-generator.test.js server/test/gcsp-vehicle-evidence-lookup.test.js"
+        ],
+        "variant": "default",
+        "wall_seconds": 48.5,
+        "counts": {
+          "selected": 38,
+          "passed": 37,
+          "failed": 0,
+          "skipped": 1
+        },
+        "execution_identity": {
+          "code": "1bb70ce6c630ab9fb015e64716dc3f3f625a0e234a3362619d79b8bfec530277",
+          "environment": "3521d3fd4bb03e059d6f78fd4ee435498d71d8baf9894e021b7b31c60cec9bce",
+          "inputs": {},
+          "interpreter": [
+            "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+            "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]"
+          ],
+          "platform": "macOS-27.2.1-arm64-arm-64bit",
+          "scope": "targeted",
+          "selected": [
+            "/usr/bin/python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/with_deps.py perl -e 'alarm shift; exec @ARGV' 600 node --test --test-concurrency=1 server/test/gcsp-generated-configuration-offer.test.js server/test/gcsp-stock-generator.test.js server/test/gcsp-vehicle-evidence-lookup.test.js"
+          ],
+          "settings": "590924b1b4da16f6c350bbc2244bf44b643515061e6eee5c9ea5c97c9298c5d4",
+          "variant": "default",
+          "version": 1
+        }
+      },
+      {
+        "scope": "F382 actual producer / identity boundary",
+        "record": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/targeted-f5724632425b991656558f36d252e1b87dd7af4033f20e37beb929a23fcf0b04-default-1794405883989552000.json",
+        "code_key": "f5724632425b991656558f36d252e1b87dd7af4033f20e37beb929a23fcf0b04",
+        "base_commit": "ac6bccdcd65c267c7b00cdfe441493ffde351774",
+        "commands": [
+          "/usr/bin/python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/with_deps.py perl -e 'alarm shift; exec @ARGV' 600 node --test --test-concurrency=1 --test-name-pattern 'retained configuration facts|default run:|more desirable|reviewed|missing 0-62|packages,|availability,|fuel evidence|policy weights|real recommendation gates' server/test/gcsp-generated-configuration-offer.test.js server/test/employee-option-preferences.test.js server/test/gcsp-run-stock.test.js"
+        ],
+        "variant": "default",
+        "wall_seconds": 32.4,
+        "counts": {
+          "selected": 11,
+          "passed": 11,
+          "failed": 0,
+          "skipped": 0
+        },
+        "execution_identity": {
+          "code": "f5724632425b991656558f36d252e1b87dd7af4033f20e37beb929a23fcf0b04",
+          "environment": "edf08c24b06b447d907ee3e4041ce24d39f3b89f50992a7c06af7ef4b17f29f6",
+          "inputs": {},
+          "interpreter": [
+            "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+            "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]"
+          ],
+          "platform": "macOS-27.2.1-arm64-arm-64bit",
+          "scope": "targeted",
+          "selected": [
+            "/usr/bin/python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/with_deps.py perl -e 'alarm shift; exec @ARGV' 600 node --test --test-concurrency=1 --test-name-pattern 'retained configuration facts|default run:|more desirable|reviewed|missing 0-62|packages,|availability,|fuel evidence|policy weights|real recommendation gates' server/test/gcsp-generated-configuration-offer.test.js server/test/employee-option-preferences.test.js server/test/gcsp-run-stock.test.js"
+          ],
+          "settings": "a36f7368686e786b1c377bb3f8e4a268ea46fa91ff984e6a9e99d8c79258d40d",
+          "variant": "default",
+          "version": 1
+        }
+      },
+      {
+        "scope": "Corrected combined projection/render/kit/decision",
+        "source": "22176eb2393c644151c097bc1022998b67c1fe29",
+        "passed": 160,
+        "failed": 0,
+        "skipped": 0,
+        "seconds": 2.3,
+        "code_key": "559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4",
+        "commands": [
+          "node --test --test-concurrency=1 server/test/gcsp-offer-view-projection.test.js server/test/gcsp-offer-view-render.test.js server/test/shared-kit-contracts.test.js server/test/gcsp-offer-view-decision.test.js"
+        ],
+        "record": "docs/gcsp/evidence/fucq386/scoped-test-records.json"
+      },
+      {
+        "scope": "Changed stylesheet scoped ratchet",
+        "passed": 4,
+        "record": "docs/gcsp/evidence/fucq386/scoped-test-records.json"
+      },
+      {
+        "scope": "Earlier F386 source checkpoint",
+        "passed": 175,
+        "skipped": 2,
+        "skip_reason": "Explicit mixed-supervisor skips retained; later actual HTTP evidence does not rewrite this tally",
+        "record": "docs/gcsp/evidence/fucq386/checkpoint.md"
+      },
+      {
+        "scope": "Later F390 navigation",
+        "passed": 231,
+        "failed": 2,
+        "failure_reason": "Inherited presenter CSS caps tracked as F387",
+        "selected": 233,
+        "seconds": 37.9,
+        "record": "docs/gcsp/evidence/fucq390/README.md",
+        "browser_limit": "Resumed assertions/captures completed; final zero-pageerror assertion observed Transition was skipped during fixture navigation. No pristine whole-script browser pass."
+      }
+    ],
+    "earlier_failures": "Initial missing-pg module load; 34 pass/2 additive-metadata equality failures before narrow correction; intentional provenance RED; F382 producer/setup/release failures; ambiguous gallery harness locator; actual-width correction; literal Session ended harness timeout; resource/retained-handle failures. Retained source/combined records distinguish harness/setup failures from product defects. None is counted as passing.",
+    "limits": [
+      "Native PostgreSQL unrun: GCSP_DATABASE_URL unset; memory proof is not PostgreSQL proof.",
+      "Full suite/global stylesheet ratchet green unrun; no external/deployed BMW integration.",
+      "Actual browser BFCache is unrun; existing evidence uses simulated PageTransitionEvent.",
+      "Catalogue selection does not establish physical fitment, availability, quantities or a complete manufacturer build sheet.",
+      "G61/i5 seed gap and unsupported swatches stay explicit; no F60/F337 completion claim.",
+      "Same-model contrast and genuine gap are producer/contract evidence; the primary actual vehicle is traced through the rendered comparison.",
+      "F387/F344 diagnostics and separate Low F391 Retry defect remain separately tracked.",
+      "Per-test coverage contexts unavailable in current Node harness; reviewed ownership/boundary maps are retained, missing observations never establish irrelevance."
+    ],
+    "precommit_metadata_results": {
+      "json_parse": "passed",
+      "original_six_ac_text": "unchanged except checkboxes",
+      "other_map_records": "byte-preserved outside FUCQ-384 record",
+      "current_source_hashes": "matched all recorded current identities",
+      "owned_paths": "six F384 roots and two temporary links absent",
+      "new_runtime_or_scratch": "none"
+    }
+  },
+  "independent_reviews": {
+    "f384_source": {
+      "reviewer": "Mike Wazowski",
+      "requested_selected": "gpt-6.1-sol/xhigh",
+      "fallback": null,
+      "verdict": "PASS; no blocking/major issue at unchanged provenance helper checkpoint",
+      "original_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f384/revision1/independent-review.md",
+      "sha256": "2f1cc3e786001187d1cb953879f615d6cc0b195ca358e5893b9c944a968ca7df",
+      "retained_report": "Mike Wazowski, requested/selected gpt-6.1-sol/xhigh, effective runtime verified;11November2026.\n\nPASS — no blocking or major issues found. Full helper/tests, strict canonical snapshot constructor, DTO enrichment/validation, callers and BuddyHold fixture-producer immutability reviewed. Retained zero-resolution G61/i5 labels retain bmw-gb-i5-2026-11-01.v1; controlled one-code mixed regression preserves per-code/source/date/version as scalar JSON provenance and passes createVehicleSnapshot. Reused95passed/0failed/0skipped evidence with all8mapped hashes matching529ce2df. Red log shows2intended attribution failures before repair. Bothowned scratchroots,2dependencylinks and2PGIDs independently absent;dependencytargets present. Reviewer allocated no tests/resources and made no mutations.\n\nActual generated-stock/recommendation/newlypinnedquote and combined offer/current-car UI acceptance remain pending; noF382repair inferred.\n",
+      "integration_note": "The report's historical pending AC4/UI disposition is superseded by the separately reviewed actual F382 producer and corrected combined render evidence; the original review verdict is retained unchanged."
+    },
+    "actual_producer": "docs/gcsp/evidence/fucq382/independent-source-review.md",
+    "combined_visual": "docs/gcsp/evidence/fucq386/independent-visual-review.md",
+    "combined_visual_sha256": "9e3c92c8b8053827fa0e073b4bc8cea7eaaa6e7ac774b135d7216fe304eb0f41",
+    "combined_visual_verdict": "passed after equipment disclosure and decline-row corrections and reinspection at 1440/375/320",
+    "later_navigation": "docs/gcsp/evidence/fucq390/README.md"
+  },
+  "resources": {
+    "original_receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f384/resource-receipt.json",
+    "revision_receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f384/revision1/resource-receipt.json",
+    "original_independent_audit": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f384/parent-cleanup-audit.json",
+    "f384_owned_roots": [
+      {
+        "path": "/private/tmp/test-stamp-shard-b64ccf9ee32740f39fa7c5ca60d3ba02",
+        "absent": true
+      },
+      {
+        "path": "/private/tmp/test-stamp-shard-3107082e1a814bf18a450cbd70e00eb0",
+        "absent": true
+      },
+      {
+        "path": "/private/tmp/test-stamp-shard-1a6fb38a29c44e0c90cbc357aab758d6",
+        "absent": true
+      },
+      {
+        "path": "/private/tmp/test-stamp-shard-ea293dd0e08c49d99610ceb778f827a1",
+        "absent": true
+      },
+      {
+        "path": "/private/tmp/test-stamp-shard-4b926cf52900426c80afc8df0a685c20",
+        "absent": true
+      },
+      {
+        "path": "/private/tmp/test-stamp-shard-2e580a27f5b8423fb1ee73c7a540ec4e",
+        "absent": true
+      }
+    ],
+    "temporary_links": [
+      {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-11-002/node_modules",
+        "absent": true
+      },
+      {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-11-002/server/node_modules",
+        "absent": true
+      }
+    ],
+    "recorded_measured_peak_bytes_sum": 74752,
+    "longest_recorded_chunk_seconds": 13.2,
+    "compatibility_exceptions": [],
+    "leftovers": [],
+    "parent_prefinal_audit": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/parent-resource-audit-prefinal.json",
+    "parent_prefinal_audit_at": "2026-11-11T14:36:47.676972+00:00",
+    "parent_manifest_count": 66,
+    "parent_recorded_roots_present": [],
+    "parent_recorded_groups_present": [],
+    "combined_receipt": "docs/gcsp/evidence/fucq386/resource-receipt.json",
+    "combined_compatibility_note": "Existing receipt covers removed bounded local browser profiles/TLS/inventory. No new finalization allocation.",
+    "new_tests_browser_servers_descendants": false,
+    "new_scratch_allocations": [],
+    "large_outputs_or_archives": [],
+    "retained_summary": "docs/gcsp/evidence/fucq384/finalization.json",
+    "closure_owner": "Parent retains merge, archive, branch/worktree/claim cleanup and Jira In Review; no Done transition."
+  },
+  "agents": [
+    {
+      "name": "Scooby Doo",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "xhigh",
+      "selected_model": "gpt-6.1-sol",
+      "selected_effort": "xhigh",
+      "selection": "Human Extra override",
+      "runtime_independently_verified": false,
+      "fallback": null,
+      "descendants": []
+    }
+  ]
+}

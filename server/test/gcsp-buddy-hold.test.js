@@ -11,11 +11,13 @@ import { BuddyHoldService } from '../gcsp/offers/buddy-hold.js';
 import { hashOfferToken, verifyOfferToken, mintOfferToken } from '../gcsp/offers/offer-token.js';
 import { projectCurrentCarBaseline, storedFeedback } from '../gcsp/recommendation/current-car.js';
 import { stock, essential, preference, fact, rating, sameAgain } from './helpers/employee-recommendation.js';
+import { withConfigurationDefinitions, selectedConfigurationDefinitionFacts, createConfigurationDefinitionIndex } from '../gcsp/vehicle-evidence/configuration-definitions.js';
+import { vehicleEvidenceDetails } from '../gcsp/vehicle-evidence/vehicle-details-contract.js';
 
 const command = (commandId) => ({ commandId, inputDigest: inputDigest(commandId) });
 const briefData = (seats = 5, typed = {}) => ({ schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(seats) }, ...typed });
 const rowRef = (f, table, key) => ({ table, key: { runId: f.context.runId, ...key } });
-async function setup(t, { policy = createPolicyService(), consent = { search: true, hold: true }, seats = 5, facts = {}, typed } = {}) {
+async function setup(t, { policy = createPolicyService(), consent = { search: true, hold: true }, seats = 5, facts = {}, typed, configurationId } = {}) {
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });
   assert.equal((await repository.open()).status, 'ok');
   t.after(() => repository.close());
@@ -32,7 +34,7 @@ async function setup(t, { policy = createPolicyService(), consent = { search: tr
   assert.equal((await brief.saveDraft(context, { commandId: 'draft', expectedBriefVersion: 0,
     expectedDraftVersion: 0, brief: briefData(seats, typed) })).status, 'ok');
   assert.equal((await brief.confirm(context, { commandId: 'confirm', expectedBriefVersion: 0, expectedDraftVersion: 1, consent })).status, 'ok');
-  const car = stock(1, facts);
+  const car = stock(1, facts, configurationId);
   assert.equal((await repository.transaction(context, command('released-fixture'), (tx) => tx.insert('stock', {
     runId: context.runId, orderUuid: car.orderUuid, orderNumber: '9123456', configurationId: car.configurationId,
     state: 'released', available: true, held: false, allocated: false, facts: car.snapshot,
@@ -92,6 +94,32 @@ test('atomic local allocation pins truthful quote, hold, offer and one notificat
   assert.equal((await f.repository.query(f.context, 'holds')).value.length, 1);
   assert.equal((await f.repository.query(f.context, 'notification_outbox')).value.length, 1);
   assert.equal((await f.service.allocate(f.context, { ...f.input, expectedBriefVersion: 2 })).reason, 'idempotency-input-changed');
+});
+
+test('selected retained definition facts reach a newly pinned quote and later dictionary edits leave it unchanged (fixture producer)', async (t) => {
+  const record = JSON.parse(await readFile(new URL('./fixtures/gcsp/vehicle-evidence/catalogue-v2-source-record.json', import.meta.url)));
+  const source = { status: 'partial', record, images: [], active: { datasetId: 'definition-quote-fixture', version: '1', manifestDigest: 'a'.repeat(64) } };
+  const request = { kind: 'configuration', id: record.configurationId };
+  const registry = { getConfiguration: () => structuredClone(source) };
+  const enriched = await withConfigurationDefinitions(registry).getConfiguration(request.id);
+  const details = vehicleEvidenceDetails(request, enriched);
+  const selected = selectedConfigurationDefinitionFacts(details);
+  assert.ok(selected.colour?.value); assert.ok(selected.interior?.value); assert.ok(selected.options?.value.length);
+  const f = await setup(t, { facts: selected, configurationId: request.id });
+  const allocated = await f.service.allocate(f.context, f.input); assert.equal(allocated.status, 'ok');
+  const before = allocated.value.quote;
+  assert.equal(before.configurationId, request.id);
+  for (const key of ['colour', 'interior', 'options']) assert.deepEqual(before.facts.facts[key], selected[key]);
+  const nextSeed = JSON.parse(await readFile(new URL('../data/gcsp/vehicle-evidence/configuration-definitions.v1.json', import.meta.url)));
+  nextSeed.version = 'definition-quote-fixture.v2';
+  for (const variant of nextSeed.variants) for (const definition of Object.values(variant.definitions)) {
+    for (const candidate of definition.candidates) if (candidate.category === 'paint') candidate.label = 'New dictionary paint label';
+  }
+  const index = createConfigurationDefinitionIndex(nextSeed, { digest: 'b'.repeat(64) });
+  const changed = await withConfigurationDefinitions(registry, { index }).getConfiguration(request.id);
+  assert.equal(selectedConfigurationDefinitionFacts(vehicleEvidenceDetails(request, changed)).colour.value, 'New dictionary paint label');
+  const retained = (await f.repository.read(f.context, rowRef(f, 'quotes', { quoteId: before.quoteId }))).value;
+  assert.deepEqual(retained, before); assert.notEqual(retained.facts.facts.colour.value, 'New dictionary paint label');
 });
 
 test('token is cryptographic, offer/run/environment bound and absent from responses and metadata', async (t) => {

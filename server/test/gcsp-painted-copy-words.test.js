@@ -221,7 +221,7 @@ test('the offer paints no demo or synthetic wording in any state, including decl
   for (const name of offerFixtures.FIXTURE_NAMES) {
     const root = host();
     const read = name === 'loading' ? () => new Promise(() => {}) : async () => (name === 'error' ? { status: 'unavailable' } : offerFixtures.offerFixture(name));
-    const destroy = mountOffer(root, { read, account }); await settle(); check(`offer:${name}`, root, name === 'pending' ? /Accept this offer/ : /\S/); destroy(); root.remove();
+    const destroy = mountOffer(root, { read, account }); await settle(); check(`offer:${name}`, root, name === 'pending' ? /Accept offer/ : /\S/); destroy(); root.remove();
   }
   for (const status of ['stale-run', 'unknown-session', 'access-required']) {
     const root = host(); const destroy = mountOffer(root, { read: async () => ({ status }), account }); await settle();
@@ -234,8 +234,9 @@ test('the offer paints no demo or synthetic wording in any state, including decl
     decide: async ({ kind }) => { if (kind === 'decline') shown = 'declined'; return { status: 'ok' }; },
     readReasons: async () => ({ status: 'ok', value: declineRegistry }) });
   await settle(); root.querySelector('[data-offer-action="decline"]').click(); await settle(); check('offer:decline reasons', root, /Confirm decline/);
-  const select = root.querySelector('select'); if (select) { select.value = declineRegistry.reasons[0].code; select.dispatchEvent(new window.Event('change', { bubbles: true })); }
-  root.querySelector('[data-offer-action="decline-confirm"]')?.click(); await settle(); check('offer:declined after decline', root, /Offer declined/); destroy(); root.remove();
+  const reason = root.querySelector('[data-offer-reason]'); assert.ok(reason); reason.click();
+  assert.equal(reason.getAttribute('aria-checked'), 'true');
+  root.querySelector('[data-offer-action="decline-confirm"]').click(); await settle(); check('offer:declined after decline', root, /Offer declined/); destroy(); root.remove();
 });
 
 test('the second offer question and its outcomes paint no demo or synthetic wording', () => {

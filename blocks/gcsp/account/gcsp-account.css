@@ -1,4 +1,4 @@
-@import "../employee/gcsp-employee.css";
+@import "../employee/gcsp-employee.css"; @import "../kit/buddy-status.css";
 @import "../order-progress/gcsp-order-progress.css"; /* Account composition uses the employee feature and shared kit; the page layout below is scoped to the account body. */
 @import "../kit/gcsp-kit.css"; @import "../kit/side-drawer.css"; @import "../kit/category-preferences.css"; @import "../kit/understanding-meter.css"; @import "../kit/same-again.css"; @import "../kit/star-rating.css"; @import "../kit/help-tip.css";
 gcsp-account { display: block; }
@@ -6,7 +6,7 @@ gcsp-account { display: block; }
 .gcsp .gcsp-account-body .gcsp-summary { scroll-margin-top: var(--gcsp-space-4); }
 .gcsp .gcsp-account-body :is(dl, dd:not(.vm-fact-value)) { margin: 0; }
 .gcsp .gcsp-account-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gcsp-space-3) var(--gcsp-space-4); }
-.gcsp .gcsp-account-head .gcsp-intro .vm-title { margin: 0; font-size: var(--gcsp-font-size-title); line-height: var(--gcsp-font-line-title); }
+.gcsp .gcsp-account-head .gcsp-intro .vm-title { margin: 0; font-size: var(--gcsp-font-size-title); line-height: var(--gcsp-font-line-title); } @media (max-width: 600px) { .gcsp .gcsp-account-head { align-items: flex-start; flex-direction: column; gap: var(--gcsp-space-2); } }
 .gcsp .gcsp-account-body .gcsp-feature { grid-template-columns: minmax(0, 1fr) minmax(390px, 480px); background: var(--gcsp-surface); border-radius: var(--gcsp-radius); }
 .gcsp .gcsp-feature-media { display: flex; flex-direction: column; justify-content: center; min-width: 0; background: var(--gcsp-surface-muted); }
 .gcsp .gcsp-account-body .gcsp-feature-copy { align-content: start; gap: var(--gcsp-space-4); }

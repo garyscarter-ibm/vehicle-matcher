@@ -15,7 +15,7 @@ const tag = (e, artifactCode, retryable, extra = {}) => Object.assign(e !== null
 const rejected = (message, artifactCode) => tag(new TypeError(message), artifactCode, false);
 const coded = (message, artifactCode, extra = {}) => Object.assign(new TypeError(message), { artifactCode }, extra);
 /** Build the restore validation error with its bounded first-failure diagnostic. Grants no release approval. */
-export const validationFailed = (message, stage, result, release) => coded(message, 'validation-failed', { validation: boundDiagnostic({
+export const validationFailed = (message, stage, result, release, artifactCode = 'validation-failed') => coded(message, artifactCode, { validation: boundDiagnostic({
   stage, status: result.status, failure: result.failure, diagnostic: result.diagnostic, previousDiagnostic: result.previousDiagnostic,
   manifestDigestMatches: result.active?.manifestDigest === release.manifestDigest }) });
 // A URL-free hint for the build log: a system error code, else a timeout marker.
@@ -122,7 +122,7 @@ export async function restoreFleetRelease({ releaseId, store, cacheRoot = DEFAUL
     }
     step = 'publish-existing'; const registry = createSyntheticRegistry({ root: store, ...options });
     const result = await registry.publish(join(candidateStore, 'versions', release.manifestDigest));
-    if (result.status !== 'ok') throw coded('Existing store rejected release; previous selection retained', 'store-rejected');
+    if (result.status !== 'ok') throw validationFailed('Existing store rejected release; previous selection retained', 'existing', result, release, 'store-rejected');
     return { ...result, mode: 'publish-existing', externalCalls };
   } catch (e) { if (e !== null && typeof e === 'object' && !e.step) e.step = step; throw e; }
   finally { if (ownedStage) await rm(ownedStage, { recursive: true, force: true }); }

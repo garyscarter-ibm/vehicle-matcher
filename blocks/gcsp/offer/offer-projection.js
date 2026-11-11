@@ -75,7 +75,7 @@ function snapshot(v, orderUuid) {
     && object(v.display) && text(v.display.name) && Array.isArray(v.display.images));
   const display = { name: v.display.name, photo: imageURL(v.display.photo), images: v.display.images.map((image) => {
     need(object(image) && text(image.src)); const out = { src: imageURL(image.src) };
-    for (const key of ['alt', 'caption', 'fidelity', 'sourceRef']) if (image[key] !== undefined) { need(typeof image[key] === 'string'); out[key] = image[key]; }
+    for (const key of ['alt', 'caption', 'fidelity', 'sourceRef', 'viewpoint', 'label']) if (image[key] !== undefined) { need(typeof image[key] === 'string'); out[key] = image[key]; }
     return out;
   }) };
   for (const key of ['manufacturer', 'model', 'derivative', 'colour']) if (v.display[key] !== undefined) {
@@ -101,7 +101,8 @@ function terms(v) {
 }
 const valueText = (v) => Array.isArray(v) ? v.length ? v.map((entry) => entry === null ? 'Not supplied' : String(entry)).join(', ') : 'None listed' : v;
 const detailFact = (label, source, missingLabel = 'Not supplied') => ({ label, value: source?.status === 'known' ? valueText(source.value) : null,
-  unit: source?.unit, missingLabel, ...(source?.provenance ? { provenance: copy(source.provenance) } : {}) });
+  unit: source?.unit, missingLabel, ...(source?.status === 'known' && Array.isArray(source.value) ? { items: source.value.map((entry) => entry === null ? 'Not supplied' : String(entry)) } : {}),
+  ...(source?.provenance ? { provenance: copy(source.provenance) } : {}) });
 
 const blockers = new Set(['contact-required', 'driver-review-required', 'return-data-required', 'ordering-terms-unavailable']);
 const stageStates = new Set(['complete', 'waiting', 'not-started', 'pending', 'failed']);
@@ -118,10 +119,19 @@ function handoffView(v) {
   need(car === null || object(car) && nullableText(car.model) && nullableText(car.contractEndDate) && (car.currentOdometer === null
     || object(car.currentOdometer) && Number.isFinite(car.currentOdometer.value) && car.currentOdometer.value >= 0 && filled(car.currentOdometer.unit)));
   if (v.blocker === null) need(['termsVersion', 'termsDigest', 'wording'].every((key) => filled(v[key])) && v.declarations.length > 0 && v.contact !== null);
+  const driver = object(v.driver) ? { name: filled(v.driver.name) ? v.driver.name : null, kind: filled(v.driver.kind) ? v.driver.kind : null,
+    licence: object(v.driver.licence) ? { displayNumber: filled(v.driver.licence.displayNumber) ? v.driver.licence.displayNumber : null,
+      categories: Array.isArray(v.driver.licence.categories) ? v.driver.licence.categories.filter(filled) : [],
+      validFrom: filled(v.driver.licence.validFrom) ? v.driver.licence.validFrom : null, validUntil: filled(v.driver.licence.validUntil) ? v.driver.licence.validUntil : null } : null } : null;
+  const mileage = v.returnMileage;
+  const returnMileage = object(mileage) && Number.isSafeInteger(mileage.maximum) && mileage.maximum > 0 && mileage.unit === 'mi' ? { maximum: mileage.maximum, unit: mileage.unit } : null;
+  const source = object(v.documentSource) ? { terms: v.documentSource.terms === 'ordering.terms.v1' ? v.documentSource.terms : null,
+    termsVersion: filled(v.documentSource.termsVersion) ? v.documentSource.termsVersion : null, recordSource: filled(v.documentSource.recordSource) ? v.documentSource.recordSource : null } : null;
   return { termsVersion: v.termsVersion, termsDigest: v.termsDigest, wording: v.wording, fictional: true, mode: v.mode, blocker: v.blocker,
+    driver, returnMileage, documentSource: source,
     declarations: v.declarations.map(({ id, label }) => ({ id, label })), contact: v.contact && { phone: v.contact.phone, email: v.contact.email },
     returnCar: car && { model: car.model, contractEndDate: car.contractEndDate,
-      currentOdometer: car.currentOdometer && { value: car.currentOdometer.value, unit: car.currentOdometer.unit } } };
+      currentOdometer: car.currentOdometer && { value: car.currentOdometer.value, unit: car.currentOdometer.unit }, expectedReturnMileage: null } };
 }
 
 /** Server-owned stage names and states; approval is never claimed here. */
@@ -186,7 +196,7 @@ function cardFor(quote) {
   member.display.line = quote.orderNumber === null ? 'Order number not supplied' : `Order no. ${quote.orderNumber}`;
   const photo = display.images.find((image) => image.src === display.photo);
   member.media = { src: display.photo, alt: photo?.alt || display.name,
-    caption: display.photo ? photo?.caption || null : null };
+    caption: display.photo ? photo?.caption || null : null, images: copy(display.images) };
   member.facts.unshift({ label: 'Model', value: display.model ?? null }, { label: 'Derivative', value: display.derivative ?? null },
     details.colour ? detailFact('Colour', details.colour) : { label: 'Colour', value: display.colour ?? null },
     detailFact('Options', details.options ?? details.equipment, 'Fitted equipment unknown'));

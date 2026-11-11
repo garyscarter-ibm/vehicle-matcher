@@ -37,8 +37,9 @@ function chosenLabels(category, entry) {
 }
 
 /** Compact category tiles with one open panel. A pure presenter: the caller owns state and handles every intent.
- * Optional `understanding: { label?, maximum }` and `sameAgain: { description, onToggle(on) }` fill the head and mode slots. */
-export function categoryPreferences({ id, categories = [], state: initial = {}, minimum = 3, understanding: meterOptions, sameAgain: sameOptions, onOpen, onChange, onRemove, onConfirmRemove, onKeep, onClose, onStatusAction } = {}) {
+ * Optional `understanding: { label?, maximum }` and `sameAgain: { description, onToggle(on) }` fill the head and mode slots;
+ * `action: { onClick, describedBy }` mounts the footer's primary button, labelled and disabled by state `action: { label, disabled }`. */
+export function categoryPreferences({ id, categories = [], state: initial = {}, minimum = 3, understanding: meterOptions, sameAgain: sameOptions, action: actionOptions, onOpen, onChange, onRemove, onConfirmRemove, onKeep, onClose, onStatusAction } = {}) {
   if (!id || !categories.length) throw new TypeError('A unique id and the category list are required.');
   const doc = document;
   const root = el('section', 'gcsp-prefs'); root.setAttribute('aria-labelledby', `${id}-title`);
@@ -83,6 +84,8 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
   const foot = el('div', 'gcsp-prefs-foot'); const line = el('div', 'gcsp-prefs-statusline');
   const status = el('p', 'gcsp-prefs-status'); status.id = `${id}-status`; status.setAttribute('role', 'status');
   const action = el('div', 'gcsp-prefs-action'); action.dataset.slot = 'action';
+  let actionButton = null;
+  if (actionOptions) { actionButton = button({ label: '', variant: 'primary', onClick: () => actionOptions.onClick?.(), describedBy: actionOptions.describedBy }); action.append(actionButton); }
   line.append(status); foot.append(line, action);
   root.append(head, mode, tiles, removal, panel, foot);
 
@@ -197,6 +200,7 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
       if (!removal.hidden) { const keep = buildRemoval(shownRemoval); if (mounted && refocusAllowed()) keep.focus(); } else removal.replaceChildren();
     }
     for (const control of removal.querySelectorAll('button')) control.disabled = disabled;
+    if (actionButton) { actionButton.textContent = state.action?.label ?? ''; actionButton.disabled = disabled || Boolean(state.action?.disabled); }
     patchStatus();
   }
 
@@ -204,6 +208,8 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
   return {
     root, update,
     focusCategory: (key) => nodes.get(key)?.open.focus(),
+    focusStatus() { status.tabIndex = -1; status.focus(); },
+    get actionButton() { return actionButton; },
     setSameAgainDescription(description) { same?.tip.setText(sameTipText(description)); },
     destroy() { same?.tip.destroy(); root.remove(); parts = null; nodes.clear(); },
   };

@@ -57,8 +57,19 @@ test('tiles stay out of the DOM, with aria-busy, until the preload resolves', as
   let release; const gate = new Promise((resolve) => { release = resolve; });
   const grid = mount({ preload: () => gate }); const shown = grid.show(tiles(5), { animate: false });
   await Promise.resolve(); assert.equal(grid.root.getAttribute('aria-busy'), 'true'); assert.equal(cellsOf(grid).length, 0);
+  assert.equal(grid.root.querySelectorAll('.gcsp-skeleton-release-grid .gcsp-release-tile').length, 5);
   release(new Set(tiles(5).map((tile) => tile.imageSrc))); await shown;
-  assert.equal(cellsOf(grid).length, 5); assert.equal(grid.root.hasAttribute('aria-busy'), false); grid.destroy();
+  assert.equal(cellsOf(grid).length, 5); assert.equal(grid.root.hasAttribute('aria-busy'), false); assert.equal(grid.root.querySelector('.gcsp-skeleton'), null); grid.destroy();
+});
+
+test('setLoading replaces the previous cars and cancels any pending preload before a later show', async () => {
+  const gates = []; const grid = mount({ columns: 4, preload: () => new Promise((resolve) => gates.push(resolve)) });
+  const initial = grid.show(tiles(6)); gates.shift()(new Set()); await initial;
+  grid.setLoading(); assert.equal(cellsOf(grid).length, 0); assert.equal(grid.root.querySelectorAll('.gcsp-release-tile').length, 6);
+  const stale = grid.show(tiles(2)); grid.setLoading(); gates.shift()(new Set()); await stale;
+  assert.ok(grid.root.querySelector('.gcsp-skeleton')); assert.equal(cellsOf(grid).length, 0);
+  const fresh = grid.show(tiles(3)); gates.shift()(new Set()); await fresh;
+  assert.equal(cellsOf(grid).length, 3); assert.equal(grid.root.querySelector('.gcsp-skeleton'), null); grid.destroy();
 });
 
 test('a tile whose image did not load shows its label as text', async () => {

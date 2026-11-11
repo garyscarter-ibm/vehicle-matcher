@@ -1023,13 +1023,14 @@ test('FUCQ-223: the account page head has the title and no kicker, and its style
 const allowed = { searchConsent: true, holdConsent: true, paused: false, canSearch: true, canHold: true };
 const ghost = (root, text) => findButton(root, text).classList.contains('vm-btn-ghost');
 
-test('Account no longer shows the Your buddy card or reads buddy activity', async () => {
+test('FUCQ-370: Account shows no Buddy navigation link and never reads account-level activity', async () => {
   let reads = 0;
   const activity = async () => { reads += 1; return { status: 'ok', value: { state: 'searching', permission: allowed } }; };
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readActivity: activity });
   try {
     await destroy.sync(); await tick();
     assert.equal(reads, 0);
+    assert.equal(root.querySelector('.gcsp-buddy-link'), null);
     assert.equal(root.querySelector('[aria-label="Your buddy"]'), null);
     for (const text of ['Set your preferences', 'Change your preferences', 'See buddy activity']) assert.equal(findButton(root, text), undefined, text);
     assert.equal(ghost(root, 'Choose a replacement'), false, 'the replacement control stays primary');
@@ -1048,15 +1049,25 @@ test('the HTTP adapter reads buddy activity, and any failure or abort is handled
   await assert.rejects(createAccountHttpAdapter({ fetchImpl: async () => { throw new Error('aborted'); } }).readActivity({ signal: abort.signal }));
 });
 
+test('FUCQ-370: refresh and sync leave a failed or changing activity read out of the page, and the cars stay available', async () => {
+  let reads = 0;
+  const { root, destroy } = await domMount({ ...readOnlyAdapter('multi-slot'), readActivity: async () => { reads += 1; return { status: 'unavailable' }; } });
+  try {
+    await destroy.sync(); await tick(); await destroy.refresh(); await tick();
+    assert.equal(reads, 0); assert.equal(root.querySelector('.gcsp-buddy-link'), null);
+    assert.ok(root.querySelector('.gcsp-feature'), 'the cars stay available');
+  } finally { destroy(); root.remove(); }
+});
+
 // Your cars layout (10 November): head row, car, Your preferences, then the secondary components.
-test('the page head carries the title only; Your details closes the page and Refresh shows only when stale', async () => {
+test('the page head carries the title only without the preferences capability; Your details closes the page and Refresh shows only when stale', async () => {
   const input = unnamed('ready');
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
     const body = root.querySelector('.gcsp-account-body');
     const head = body.querySelector('.gcsp-account-head');
     assert.ok(head.querySelector('h1')); assert.equal(head.querySelector('.vm-kicker'), null);
-    assert.equal(head.children.length, 1, 'nothing on the right of the head yet');
+    assert.equal(head.children.length, 1); assert.equal(head.querySelector('.gcsp-buddy-status'), null);
     assert.equal(body.querySelector('.gcsp-account-fresh'), null);
     assert.doesNotMatch(body.textContent, /Account as of/);
     assert.equal(head.querySelector('button'), null, 'Refresh only when stale');
@@ -1435,7 +1446,7 @@ test('FUCQ-372: a failed or stale discard keeps the card with a plain message an
     findButton(root, 'Discard').click(); findButton(root, 'Discard journey').click(); await tick(); await tick();
     assert.ok(root.querySelector('.gcsp-summary'), 'card kept');
     assert.match(root.querySelector('.gcsp-account-message').textContent, /Journey could not be discarded/);
-    assert.doesNotMatch(root.textContent, /unavailable|account-transport|stale-version|release-required/);
+    assert.doesNotMatch(root.querySelector('.gcsp-account-message').textContent, /unavailable|account-transport|stale-version|release-required/);
     assert.equal(root.querySelector('.gcsp-discard-confirm'), null);
     const before = reads; outcome = { status: 'stale-version', resource: 'manual-draft' };
     findButton(root, 'Discard').click(); findButton(root, 'Discard journey').click(); await tick(); await tick();
@@ -1455,4 +1466,26 @@ test('FUCQ-372: a refresh-required card offers neither Carry on nor Discard', as
     assert.match(root.querySelector('.gcsp-summary').textContent, /Your saved context has changed/);
     assert.equal(findButton(root, 'Carry on'), undefined); assert.equal(findButton(root, 'Discard'), undefined);
   } finally { destroy(); root.remove(); }
+});
+
+test('FUCQ-370: the Buddy lamp sits at the right of the head, survives quiet redraws, and the region order is unchanged', async () => {
+  const { mountAccountPreferences } = await import('../../blocks/gcsp/brief/account-preferences.js');
+  const { previewPreferenceTransport } = await import('../../blocks/gcsp/brief/account-preferences-fixtures.js');
+  let mounted;
+  const view = await domMount(readOnlyAdapter(), {
+    preferences: (region, { signal }) => { mounted = mountAccountPreferences(region, { signal, transport: previewPreferenceTransport('selected', { buddy: 'engaged' }) }); return mounted; } });
+  try {
+    await mounted.ready; await tick();
+    const head = view.root.querySelector('.gcsp-account-head'); const lamp = head.querySelector('.gcsp-buddy-status.is-prominent');
+    assert.ok(lamp); assert.equal(lamp.textContent, 'Buddy engaged'); assert.equal(head.lastElementChild, lamp, 'the lamp is the last item of the head');
+    assert.equal(head.querySelector('h1').textContent, 'Your cars');
+    const before = (a, b) => Boolean(a.compareDocumentPosition(b) & window.Node.DOCUMENT_POSITION_FOLLOWING);
+    assert.ok(before(view.root.querySelector('.gcsp-feature'), view.root.querySelector('.gcsp-account-preferences')));
+    assert.ok(before(view.root.querySelector('.gcsp-account-preferences'), view.root.querySelector('.gcsp-account-history')));
+    await view.destroy.sync(); await tick();
+    assert.equal(view.root.querySelectorAll('.gcsp-buddy-status').length, 1, 'exactly one Buddy indicator on the page'); assert.equal(view.root.querySelector('.gcsp-buddy-link'), null);
+    assert.equal(head.children.length, 2, 'the title and the one prominent status');
+  } finally { view.destroy(); view.root.remove(); }
+  const plain = await domMount(readOnlyAdapter());
+  try { assert.equal(plain.root.querySelector('.gcsp-buddy-status.is-prominent'), null, 'no preferences capability, no lamp'); } finally { plain.destroy(); plain.root.remove(); }
 });

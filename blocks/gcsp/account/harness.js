@@ -16,7 +16,7 @@ const requested = query.get('fixture'); const prefs = query.get('prefs'); const 
 // The saved record is always the live transport; ?prefs= swaps in an in-memory one for a named visual state.
 const unavailableReason = { 'no-current-car': 'no-current-car', 'current-car-unidentified': 'current-car-unidentified' }[requested];
 const previewPreferences = (state) => (region, { signal, describeCar }) => {
-  const mounted = mountAccountPreferences(region, { transport: previewPreferenceTransport(state, { rating, sameAgainReason: unavailableReason }), signal, describeCar });
+  const mounted = mountAccountPreferences(region, { transport: previewPreferenceTransport(state, { rating, sameAgainReason: unavailableReason, buddy: query.get('buddy') }), signal, describeCar });
   mounted.ready.then(() => drivePreferenceState(mounted.controller, state));
   return mounted;
 };

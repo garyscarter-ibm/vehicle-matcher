@@ -83,6 +83,24 @@ const fact = (row, name) => row.facts.facts[name].value;
 const stock = async (repository, runId) => (await repository.query(context(runId), 'stock')).value;
 const inventoryDigest = async (path) => inputDigest(JSON.parse(await readFile(path, 'utf8')));
 
+test('attributed configuration facts retain their values, units and original evidence in generated stock', async () => {
+  const attributed = { status: 'known', value: ['Selected heated seats'], unit: null,
+    provenance: { sourceRef: 'retained:selected-catalogue', observedAt: '2026-11-01T00:00:00.000Z',
+      version: 'retained-configuration-v1', assurance: 'model-reference' } };
+  const unknown = { status: 'unknown', value: null, unit: null,
+    provenance: { sourceRef: 'retained:unknown', observedAt: '2026-11-01T00:00:00.000Z',
+      version: 'retained-configuration-v1', assurance: 'unknown' } };
+  const colour = { ...attributed, value: 'Source paint label' };
+  const gearbox = { ...attributed, value: 'Source transmission label' };
+  const f = await setup({ generatorOptions: { factsForConfiguration: () => ({ options: attributed, interior: unknown, colour, gearbox }) } });
+  assert.equal((await f.generator.generateStock('run-a', 'attributed-seed', 'fixture-policy-v1')).status, 'ok');
+  const [row] = await stock(f.repository, 'run-a');
+  assert.deepEqual(row.facts.facts.options, attributed);
+  assert.deepEqual(row.facts.facts.interior, unknown);
+  assert.deepEqual(row.facts.facts.colour, colour);
+  assert.deepEqual(row.facts.facts.gearbox, gearbox);
+});
+
 test('seeded stock is deterministic, weighted, explicitly fictional and unreleased, with a persisted report', async () => {
   const a = await setup(); const b = await setup();
   const before = structuredClone(records);

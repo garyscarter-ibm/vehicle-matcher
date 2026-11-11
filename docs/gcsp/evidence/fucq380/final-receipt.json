@@ -1,0 +1,252 @@
+{
+  "at": "2026-11-11T15:28:20.828497+00:00",
+  "head": "6997e24d4c06974dd880987fcd63002ebd34e900",
+  "branch": "gcsp-poc",
+  "scope": "FUCQ-382 through FUCQ-386; bounded FUCQ-380 poller closure",
+  "manifest_count": 66,
+  "unique_recorded_process_groups": 57,
+  "sum_recorded_scratch_peaks_bytes": 104956857,
+  "closures": [
+    {
+      "id": "DEV-2026-11-10-015",
+      "merge": "4c190c7cc9b35742554b4de14ee1a22fce9d8533",
+      "archive": "_dev/done/2026-11/DEV-2026-11-10-015.md",
+      "built": true,
+      "cleanup_complete": true,
+      "closed_merge_recorded": true,
+      "worktree_absent": true,
+      "local_branch_absent": true,
+      "closure_steps_successful": true,
+      "merged_ancestor": true
+    },
+    {
+      "id": "DEV-2026-11-11-001",
+      "merge": "d9719710c10e9c68125fdbb4f74b8eed048de38c",
+      "archive": "_dev/done/2026-11/DEV-2026-11-11-001.md",
+      "built": true,
+      "cleanup_complete": true,
+      "closed_merge_recorded": true,
+      "worktree_absent": true,
+      "local_branch_absent": true,
+      "closure_steps_successful": true,
+      "merged_ancestor": true
+    },
+    {
+      "id": "DEV-2026-11-11-002",
+      "merge": "3c3740802f6b8f3b560c0775cffc0908efcda71e",
+      "archive": "_dev/done/2026-11/DEV-2026-11-11-002.md",
+      "built": true,
+      "cleanup_complete": true,
+      "closed_merge_recorded": true,
+      "worktree_absent": true,
+      "local_branch_absent": true,
+      "closure_steps_successful": true,
+      "merged_ancestor": true
+    },
+    {
+      "id": "DEV-2026-11-11-003",
+      "merge": "405836546e8139d9db76e7a9be6a8b358a709a4d",
+      "archive": "_dev/done/2026-11/DEV-2026-11-11-003.md",
+      "built": true,
+      "cleanup_complete": true,
+      "closed_merge_recorded": true,
+      "worktree_absent": true,
+      "local_branch_absent": true,
+      "closure_steps_successful": true,
+      "merged_ancestor": true
+    },
+    {
+      "id": "DEV-2026-11-11-004",
+      "merge": "91a0b15ad6b5d4ccbb1d85b851c91f905e3f5d2e",
+      "archive": "_dev/done/2026-11/DEV-2026-11-11-004.md",
+      "built": true,
+      "cleanup_complete": true,
+      "closed_merge_recorded": true,
+      "worktree_absent": true,
+      "local_branch_absent": true,
+      "closure_steps_successful": true,
+      "merged_ancestor": true
+    }
+  ],
+  "remote_branch_and_lease_refs": [],
+  "reviewed_application_source": "22176eb2393c644151c097bc1022998b67c1fe29",
+  "later_baseline": "10fec0636a6fd358f0923d63fedb29265b0c1ef2",
+  "application_and_test_delta_from_reviewed_source": [
+    "blocks/gcsp/offer/portal-links.js",
+    "server/test/gcsp-offer-view-render.test.js",
+    "server/test/gcsp-shell-navigation.test.js"
+  ],
+  "later_baseline_identity_paths": 11,
+  "later_baseline_identity_mismatches": [],
+  "corrected_browser_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-visual-corrections-plan.json",
+  "corrected_browser_manifest_sha256": "58a351eafa9c6227670ab43dad360b32721c00707ef700cc8a6736df18ccff07",
+  "corrected_browser_source_paths": 560,
+  "later_baseline_browser_source_mismatches": [
+    "blocks/gcsp/offer/portal-links.js"
+  ],
+  "corrected_shared_identity_paths": 20,
+  "later_baseline_shared_identity_mismatches": [
+    "server/test/gcsp-offer-view-render.test.js"
+  ],
+  "later_baseline_evidence": "docs/gcsp/evidence/fucq390/README.md; 231 pass / 2 known FUCQ-387 failures, independent navigation critique; browser-script limitation retained",
+  "shared_installed_dependency_targets_preserved": {
+    "/Users/usget/Claude/vehicle-matcher/node_modules": true,
+    "/Users/usget/Claude/vehicle-matcher/server/node_modules": true
+  },
+  "stop_checks": {
+    "run_stopped": true,
+    "no_next_lanes": true,
+    "directive_stopped": true,
+    "owned_agents_completed": true
+  },
+  "product_map_checks": [
+    {
+      "key": "FUCQ-382",
+      "in_review": true,
+      "slices_complete": true,
+      "no_workers": true
+    },
+    {
+      "key": "FUCQ-383",
+      "in_review": true,
+      "slices_complete": true,
+      "no_workers": true
+    },
+    {
+      "key": "FUCQ-384",
+      "in_review": true,
+      "slices_complete": true,
+      "no_workers": true
+    },
+    {
+      "key": "FUCQ-385",
+      "in_review": true,
+      "slices_complete": true,
+      "no_workers": true
+    },
+    {
+      "key": "FUCQ-386",
+      "in_review": true,
+      "slices_complete": true,
+      "no_workers": true
+    }
+  ],
+  "retained_capture_checks": {
+    "count": 29,
+    "bytes": 5464679,
+    "identity_mismatches": [],
+    "all_tracked": true
+  },
+  "root_finalization_allocations": "No test, browser, server, scratch, archive or large output; bounded retained metadata only.",
+  "passed": true,
+  "manifest_list_sha256": "c1a69d8f37c30067734331af9025d391488dfb59ac125d8e26958f1625f2ce60",
+  "resource_manifest_reference": ".claude/dev-poller-fucq380-20261111/parent-resource-audit-prefinal.json",
+  "unique_owned_roots": 66,
+  "all_owned_roots_absent": true,
+  "all_owned_process_groups_absent": true,
+  "jira_observations": {
+    "observed_at": "2026-11-11T15:27:23.099Z",
+    "scope": "Bounded FUCQ-380 closure; no Jira import watermark is advanced",
+    "issues": [
+      {
+        "key": "FUCQ-380",
+        "fields": {
+          "summary": "Improve the vehicle offer and decision experience",
+          "status": {
+            "name": "In Review"
+          },
+          "assignee": {
+            "displayName": ""
+          },
+          "issuetype": {
+            "name": "Epic"
+          }
+        }
+      },
+      {
+        "key": "FUCQ-382",
+        "fields": {
+          "summary": "Preserve vehicle configuration details in stock and offer quotes",
+          "status": {
+            "name": "In Review"
+          },
+          "assignee": {
+            "displayName": "Russell Gowers"
+          },
+          "issuetype": {
+            "name": "Bug"
+          }
+        }
+      },
+      {
+        "key": "FUCQ-383",
+        "fields": {
+          "summary": "Show a full-width offer with benefits, tradeoffs and time to decide",
+          "status": {
+            "name": "In Review"
+          },
+          "assignee": {
+            "displayName": "Russell Gowers"
+          },
+          "issuetype": {
+            "name": "Story"
+          }
+        }
+      },
+      {
+        "key": "FUCQ-384",
+        "fields": {
+          "summary": "Resolve selected configuration codes from a seeded local definition index",
+          "status": {
+            "name": "In Review"
+          },
+          "assignee": {
+            "displayName": "Russell Gowers"
+          },
+          "issuetype": {
+            "name": "Story"
+          }
+        }
+      },
+      {
+        "key": "FUCQ-385",
+        "fields": {
+          "summary": "Show a seeded three-view vehicle gallery with an enlarged image viewer",
+          "status": {
+            "name": "In Review"
+          },
+          "assignee": {
+            "displayName": "Russell Gowers"
+          },
+          "issuetype": {
+            "name": "Story"
+          }
+        }
+      },
+      {
+        "key": "FUCQ-386",
+        "fields": {
+          "summary": "Confirm offer acceptance or fixed-reason decline in a side drawer",
+          "status": {
+            "name": "In Review"
+          },
+          "assignee": {
+            "displayName": "Russell Gowers"
+          },
+          "issuetype": {
+            "name": "Story"
+          }
+        }
+      }
+    ]
+  },
+  "preserved_unrelated_changes": [
+    " M outputs/01a1ca56-c9f3-7511-acc7-3e21583d0859/option-preference-review.xlsx",
+    "?? _tools/__pycache__/scaffold_git.cpython-314.pyc",
+    "?? \"docs/design/Accelerator Pitch Strawman v02.pptx\"",
+    "?? outputs/01a1ca56-c9f3-7511-acc7-3e21583d0859/~$option-preference-review.xlsx"
+  ],
+  "poller_state": "stopped",
+  "next_lanes": [],
+  "cleanup_issues": []
+}

@@ -80,7 +80,7 @@ async function acceptInput(f, commandId = 'accept-1', extra = {}) {
     expectedOfferVersion: (await read('offers', { offerId: offer.offerId })).version,
     expectedHoldVersion: (await read('holds', { holdId: hold.holdId })).version,
     expectedQuoteVersion: (await read('quotes', { quoteId: quote.quoteId })).version,
-    termsDigest: f.terms.termsDigest, declarations: f.declarations, ...extra };
+    termsDigest: f.terms.termsDigest, declarations: f.declarations, expectedReturnMileage: 6100, ...extra };
 }
 const accept = async (f, commandId, extra) => f.offerDecisions.decide(f.offerContext, await acceptInput(f, commandId, extra));
 const table = (f, name) => f.store.state.tables[name];
@@ -128,6 +128,28 @@ test('a single handoff through FUCQ-71 adapter', async (t) => {
     assert.equal(authority(g).offer, 'active'); assert.equal(authority(g).hold, 'active');
     assert.equal(receipts(g, 'synthetic-ordering:v1').length, 0);
   }
+});
+
+test('F386 requires policy-valid expected return mileage and sends it separately from the recorded odometer', async (t) => {
+  const f = await offered(t); const before = authority(f);
+  const access = good(await f.offerAccess.read(f.offerContext, { runId: f.allocated.offer.runId, offerId: f.allocated.offer.offerId }));
+  assert.equal(access.handoff.returnCar.currentOdometer.value, 5200); assert.equal(access.handoff.returnCar.expectedReturnMileage, null);
+  assert.ok(access.handoff.driver.name); assert.ok(access.handoff.driver.licence.displayNumber);
+  assert.equal(access.handoff.documentSource.terms, 'ordering.terms.v1');
+  const maximum = access.handoff.returnMileage.maximum;
+  for (const [index, value] of [undefined, -1, 1.5, maximum + 1].entries()) {
+    const input = await acceptInput(f, `invalid-mileage-${index}`, { expectedReturnMileage: value });
+    if (value === undefined) delete input.expectedReturnMileage;
+    assert.notEqual((await f.offerDecisions.decide(f.offerContext, input)).status, 'ok');
+    assert.deepEqual(authority(f), before); assert.equal(operations(f).length, 0);
+  }
+  const input = await acceptInput(f, 'entered-mileage', { expectedReturnMileage: 6400 });
+  const value = good(await f.offerDecisions.decide(f.offerContext, input)); assert.equal(value.state, 'accepted');
+  const selection = operations(f)[0].payload.selection;
+  assert.equal(selection.draft.choices.returnOdometer.value, 6400);
+  assert.deepEqual(good(await f.offerDecisions.decide(f.offerContext, input)), value);
+  assert.notEqual((await f.offerDecisions.decide(f.offerContext, { ...input, expectedReturnMileage: 6500 })).status, 'ok');
+  assert.equal(operations(f).length, 1);
 });
 
 test('FUCQ-333: preferences changed after issue still accept through real access, declarations and ordering', async (t) => {

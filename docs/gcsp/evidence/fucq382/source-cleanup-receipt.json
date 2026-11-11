@@ -1,0 +1,208 @@
+{
+  "version": 1,
+  "time": "2026-11-11T14:05:41Z",
+  "scope": "FUCQ-382 source checkpoint; combined rendered review pending",
+  "ownedScratch": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/1ed08febbbe648199f8751e300573b10.json",
+      "root": "/private/tmp/test-stamp-shard-1ed08febbbe648199f8751e300573b10",
+      "state": "removed",
+      "peakScratchBytes": 598112,
+      "absent": true,
+      "groups": [
+        8249
+      ]
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/2d802137bcb64a2eb9247c55dc37082e.json",
+      "root": "/private/tmp/test-stamp-shard-2d802137bcb64a2eb9247c55dc37082e",
+      "state": "removed",
+      "peakScratchBytes": 598112,
+      "absent": true,
+      "groups": [
+        86211
+      ]
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/3d3722fd290240a18094605ff9a741e5.json",
+      "root": "/private/tmp/test-stamp-shard-3d3722fd290240a18094605ff9a741e5",
+      "state": "removed",
+      "peakScratchBytes": 602208,
+      "absent": true,
+      "groups": [
+        24776
+      ]
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/561172f65f1c4e77a966e9780e7fded5.json",
+      "root": "/private/tmp/test-stamp-shard-561172f65f1c4e77a966e9780e7fded5",
+      "state": "removed",
+      "peakScratchBytes": 598112,
+      "absent": true,
+      "groups": [
+        2412
+      ]
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/5691b6cb4f86468f9ad3603fe6c93240.json",
+      "root": "/private/tmp/test-stamp-shard-5691b6cb4f86468f9ad3603fe6c93240",
+      "state": "removed",
+      "peakScratchBytes": 0,
+      "absent": true,
+      "groups": [
+        84178
+      ]
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/c5a876b9717f414a91acc9d3fa5ab1e2.json",
+      "root": "/private/tmp/test-stamp-shard-c5a876b9717f414a91acc9d3fa5ab1e2",
+      "state": "removed",
+      "peakScratchBytes": 4224,
+      "absent": true,
+      "groups": [
+        90354
+      ]
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/c8168eae408044538f82b0c79ba3dd9d.json",
+      "root": "/private/tmp/test-stamp-shard-c8168eae408044538f82b0c79ba3dd9d",
+      "state": "removed",
+      "peakScratchBytes": 4192,
+      "absent": true,
+      "groups": [
+        94914
+      ]
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/de45cea695f0499785ee1e19a79b41b7.json",
+      "root": "/private/tmp/test-stamp-shard-de45cea695f0499785ee1e19a79b41b7",
+      "state": "removed",
+      "peakScratchBytes": 598112,
+      "absent": true,
+      "groups": [
+        13008
+      ]
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/e705521307d84cb0ae0cfd02f4f50a8b.json",
+      "root": "/private/tmp/test-stamp-shard-e705521307d84cb0ae0cfd02f4f50a8b",
+      "state": "removed",
+      "peakScratchBytes": 598112,
+      "absent": true,
+      "groups": [
+        92289
+      ]
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/ownership/fd1e3b89eae0444593cc6eedb2a0ed07.json",
+      "root": "/private/tmp/test-stamp-shard-fd1e3b89eae0444593cc6eedb2a0ed07",
+      "state": "removed",
+      "peakScratchBytes": 13034560,
+      "absent": true,
+      "groups": [
+        18083
+      ]
+    }
+  ],
+  "allOwnedRootsAbsent": true,
+  "measuredScratchPeakBytesAcrossRemovedRoots": 16635744,
+  "ownedGroupsStillPresent": [],
+  "dependencyLinksAbsent": true,
+  "checks": [
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/checkpoints/0d56962f167a3cb4aa64f58ff22cffc22c5b902a9d36890fa30253fef3855e86.json",
+      "exit": 0,
+      "wallSeconds": 48.410738,
+      "peakRssBytes": 698269696,
+      "peakScratchBytes": 13034560,
+      "removed": true
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/checkpoints/2aca1fada7da0f2d707f318bc22b03df4bfd014a9adde6377535a775ff6e8ac8.json",
+      "exit": 0,
+      "wallSeconds": 0.8278446250000002,
+      "peakRssBytes": 150519808,
+      "peakScratchBytes": 4192,
+      "removed": true
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/checkpoints/3873e97bbcc5af2857cda4f0ad208d6a6e80fe1bed43893592edba0f7adc567e.json",
+      "exit": 1,
+      "wallSeconds": 11.46052,
+      "peakRssBytes": 464388096,
+      "peakScratchBytes": 598112,
+      "removed": true
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/checkpoints/469690784be4d2f1bfdd2af52f60cb394ab4326a60332e91692cdf32b51e1824.json",
+      "exit": 1,
+      "wallSeconds": 0.6865458749999998,
+      "peakRssBytes": 59768832,
+      "peakScratchBytes": 0,
+      "removed": true
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/checkpoints/8bd5d99cfd713ba6245106460ec51a4643dd76afaf527ceae8f3b499dcd4c2d7.json",
+      "exit": 1,
+      "wallSeconds": 1.1994218339999998,
+      "peakRssBytes": 152535040,
+      "peakScratchBytes": 4224,
+      "removed": true
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/checkpoints/a171cb9e422ef81294cbfa8ec7938d70a69d05ef8e09c018d9e218c9f6cdece1.json",
+      "exit": 1,
+      "wallSeconds": 10.739517207999999,
+      "peakRssBytes": 272826368,
+      "peakScratchBytes": 598112,
+      "removed": true
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/checkpoints/aeca255656b30d6d18db1c43ba9771efe1bc1c7fb0bf4272fce92c0f148248e8.json",
+      "exit": 1,
+      "wallSeconds": 10.658764667,
+      "peakRssBytes": 442646528,
+      "peakScratchBytes": 598112,
+      "removed": true
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/checkpoints/c1cc93e0e80c6fb52e6f04bc3f7ea794986f54217ca8f1cc29961870d810b9ca.json",
+      "exit": 0,
+      "wallSeconds": 32.320323083,
+      "peakRssBytes": 577683456,
+      "peakScratchBytes": 602208,
+      "removed": true
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/checkpoints/cfc17756dc841e4f9d0596d294a03aae16151d6eb4ba972f5ac36202f7b36990.json",
+      "exit": 1,
+      "wallSeconds": 15.172022541999999,
+      "peakRssBytes": 534478848,
+      "peakScratchBytes": 598112,
+      "removed": true
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/checkpoints/eaf4094cf50f20cdcf3098acbea0c4d4df65ff9e4c160274b8181e96b76e31da.json",
+      "exit": 1,
+      "wallSeconds": 11.415159583,
+      "peakRssBytes": 291995648,
+      "peakScratchBytes": 598112,
+      "removed": true
+    }
+  ],
+  "retainedSamples": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/producer-sample.json",
+      "bytes": 231629,
+      "sha256": "dd9da8dcff2f83f17f2e7904b056b88c28b2e8cc57da5a330e31dc062d6555f3"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/producer-sample-final-base.json",
+      "bytes": 235168,
+      "sha256": "8b5e5b0f4ea5815bcb3a72231927b5bc977c987001caa628cdbb3a201c0a7c1f"
+    }
+  ],
+  "largeOutputOrArchive": false,
+  "compatibilityException": "none; small per-run inventories in supervised owned TMPDIR",
+  "leftovers": []
+}

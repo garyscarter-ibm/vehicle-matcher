@@ -11748,11 +11748,1519 @@
           }
         },
         "termValiditySeconds": 7200,
-        "driverEligibilityRequired": true
+        "driverEligibilityRequired": true,
+        "optionEvidence": {
+          "rule": "reviewedEquipment.v1",
+          "version": "bmw-gb-options-2026-11-11.v1",
+          "reviewSha256": "aa860e13b808599888771ea2777ef53516d83692cfbac34293d231beb672fd38",
+          "importance": 100,
+          "halfSaturationWeight": 8,
+          "sliderStep": 5,
+          "unknownModelAnchor": 50,
+          "maximumAdjustment": 20,
+          "disabledBy": {
+            "S0704": [
+              "S0225"
+            ]
+          },
+          "bundleFamilies": {
+            "sport": {
+              "groups": [
+                "sport-package",
+                "m-technology-package",
+                "styling-line",
+                "sport-body-styling"
+              ],
+              "members": [
+                "sport-brakes",
+                "sport-differential",
+                "power-boost",
+                "suspension",
+                "steering",
+                "steering-wheel",
+                "seat-design",
+                "sport-belts",
+                "sport-body-styling",
+                "wheel-tyre-set",
+                "headlining",
+                "shadowline-finish"
+              ]
+            },
+            "technology": {
+              "groups": [
+                "technology-package",
+                "cockpit"
+              ],
+              "members": [
+                "head-up-display",
+                "cockpit-display",
+                "audio-system",
+                "driving-assistance",
+                "parking-assistance",
+                "wireless-charging",
+                "phone-integration"
+              ]
+            },
+            "comfort": {
+              "groups": [
+                "comfort-package"
+              ],
+              "members": [
+                "heated-steering-wheel",
+                "heated-seats",
+                "seat-ventilation",
+                "electric-memory-seats",
+                "active-seat-function",
+                "keyless-access",
+                "powered-tailgate",
+                "lumbar-support",
+                "seat-width-adjustment",
+                "climate-control",
+                "sunblinds",
+                "sunroof",
+                "acoustic-glazing"
+              ]
+            },
+            "connected": {
+              "groups": [
+                "connected-services"
+              ],
+              "members": [
+                "connected-services"
+              ]
+            }
+          },
+          "options": {
+            "FBLAT": {
+              "group": "upholstery",
+              "weight": 0,
+              "evidence": {
+                "comfort": -1
+              }
+            },
+            "FECI2": {
+              "group": "upholstery",
+              "weight": 0,
+              "evidence": {
+                "comfort": -1
+              }
+            },
+            "FEPMI": {
+              "group": "upholstery",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "FKSFU": {
+              "group": "upholstery",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "FKSJX": {
+              "group": "upholstery",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "FKSSW": {
+              "group": "upholstery",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "FKTNL": {
+              "group": "upholstery",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "FKTSW": {
+              "group": "upholstery",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "FLKSW": {
+              "group": "upholstery",
+              "weight": 2,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "FMAH7": {
+              "group": "upholstery",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "FMAL3": {
+              "group": "upholstery",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "FMAMU": {
+              "group": "upholstery",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "FMANL": {
+              "group": "upholstery",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "FMAOI": {
+              "group": "upholstery",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "FMASW": {
+              "group": "upholstery",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "FVAEW": {
+              "group": "upholstery",
+              "weight": 3,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "FVATQ": {
+              "group": "upholstery",
+              "weight": 3,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "FVCJL": {
+              "group": "upholstery",
+              "weight": 2,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "FVCJM": {
+              "group": "upholstery",
+              "weight": 2,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "FVCJN": {
+              "group": "upholstery",
+              "weight": 2,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "FZASW": {
+              "group": "upholstery",
+              "weight": 2,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "P0490": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "P0C5A": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "P0C64": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "P0C6R": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PI299": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PI327": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIA30": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIA32": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIC1K": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIC31": {
+              "group": "paint",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIC49": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIC4W": {
+              "group": "paint",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIC5L": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIP28": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIP5T": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIP6K": {
+              "group": "paint",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIP79": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIP7E": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIP80": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIP85": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIP8T": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIP8X": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIP92": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIP9A": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIP9B": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIP9C": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIP9D": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIP9F": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIP9G": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIP9Y": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIU21": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIU91": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "PIX16": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIX1E": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "PIX1G": {
+              "group": "paint",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01CE": {
+              "group": "mild-hybrid",
+              "weight": 0,
+              "evidence": {
+                "economy": 1
+              }
+            },
+            "S01CX": {
+              "group": "power-boost",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01EK": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01EN": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01EU": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {}
+            },
+            "S01G2": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01GL": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01GN": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01GP": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {}
+            },
+            "S01H5": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01H8": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01HA": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01HC": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {}
+            },
+            "S01HD": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {}
+            },
+            "S01HF": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01HK": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01HL": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01HP": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01HX": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01HZ": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01LX": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01R3": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S01W0": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2
+              }
+            },
+            "S01W2": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2
+              }
+            },
+            "S0225": {
+              "group": "suspension",
+              "weight": 0,
+              "evidence": {
+                "sportiness": -1
+              }
+            },
+            "S0235": {
+              "group": "towbar",
+              "weight": 0,
+              "evidence": {
+                "size": 1
+              }
+            },
+            "S0248": {
+              "group": "heated-steering-wheel",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S02NH": {
+              "group": "sport-brakes",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2
+              }
+            },
+            "S02T4": {
+              "group": "sport-differential",
+              "weight": 2,
+              "evidence": {
+                "sportiness": 2
+              }
+            },
+            "S02TB": {
+              "group": "transmission",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S02VF": {
+              "group": "suspension",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2,
+                "comfort": -1
+              }
+            },
+            "S02VL": {
+              "group": "steering",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S02VV": {
+              "group": "suspension",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S02XH": {
+              "group": "steering-wheel",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S0316": {
+              "group": "powered-tailgate",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S0337": {
+              "group": "sport-package",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              },
+              "bundle": true
+            },
+            "S033B": {
+              "group": "sport-package",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2
+              },
+              "bundle": true
+            },
+            "S033F": {
+              "group": "sport-package",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2
+              },
+              "bundle": true
+            },
+            "S033T": {
+              "group": "m-technology-package",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1,
+                "comfort": 1
+              },
+              "bundle": true
+            },
+            "S03AC": {
+              "group": "towbar",
+              "weight": 0,
+              "evidence": {
+                "size": 1
+              }
+            },
+            "S03AG": {
+              "group": "parking-assistance",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S03AT": {
+              "group": "roof-rails",
+              "weight": 0,
+              "evidence": {
+                "size": 1
+              }
+            },
+            "S03B5": {
+              "group": "roof-colour",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S03DN": {
+              "group": "illuminated-grille",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S03F9": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2
+              }
+            },
+            "S03FA": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S03FK": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S03FT": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S03FX": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {}
+            },
+            "S03G9": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S03GD": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S03GN": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S03GQ": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S03GV": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {}
+            },
+            "S03GX": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S03M1": {
+              "group": "sport-brakes",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2
+              }
+            },
+            "S03M2": {
+              "group": "sport-brakes",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2
+              }
+            },
+            "S03M8": {
+              "group": "sport-brakes",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2
+              }
+            },
+            "S03MC": {
+              "group": "roof-rails",
+              "weight": 0,
+              "evidence": {
+                "size": 1
+              }
+            },
+            "S03MF": {
+              "group": "shadowline-finish",
+              "weight": 1,
+              "evidence": {}
+            },
+            "S03NA": {
+              "group": "wheel-tyre-set",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S03NB": {
+              "group": "wheel-tyre-set",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S0402": {
+              "group": "sunroof",
+              "weight": 2,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S0403": {
+              "group": "sunroof",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S0417": {
+              "group": "sunblinds",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S0430": {
+              "group": "folding-mirrors",
+              "weight": 1,
+              "evidence": {}
+            },
+            "S043H": {
+              "group": "interior-trim",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S043K": {
+              "group": "interior-trim",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S043L": {
+              "group": "interior-trim",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S043N": {
+              "group": "interior-trim",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S043U": {
+              "group": "interior-trim",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S043Z": {
+              "group": "interior-trim",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S0451": {
+              "group": "active-seat-function",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S0453": {
+              "group": "seat-ventilation",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S0455": {
+              "group": "active-seat-function",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S0456": {
+              "group": "seat-design",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S0459": {
+              "group": "electric-memory-seats",
+              "weight": 2,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S0465": {
+              "group": "folding-rear-seats",
+              "weight": 0,
+              "evidence": {
+                "size": 1
+              }
+            },
+            "S0481": {
+              "group": "seat-design",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1,
+                "comfort": 1
+              }
+            },
+            "S0491": {
+              "group": "seat-width-adjustment",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S0493": {
+              "group": "extended-storage",
+              "weight": 0,
+              "evidence": {
+                "size": 1
+              }
+            },
+            "S0494": {
+              "group": "heated-seats",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S04A2": {
+              "group": "premium-controls",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S04EW": {
+              "group": "interior-trim",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S04FD": {
+              "group": "sliding-rear-seats",
+              "weight": 1,
+              "evidence": {
+                "size": 1
+              }
+            },
+            "S04FL": {
+              "group": "travel-comfort-system",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1,
+                "size": 1
+              }
+            },
+            "S04GQ": {
+              "group": "sport-belts",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S04H0": {
+              "group": "interior-trim",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S04H1": {
+              "group": "interior-trim",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S04H2": {
+              "group": "interior-trim",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S04HA": {
+              "group": "heated-seats",
+              "weight": 2,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S04MA": {
+              "group": "seat-design",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2,
+                "comfort": 1
+              }
+            },
+            "S04MC": {
+              "group": "interior-trim",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S04NB": {
+              "group": "climate-control",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S04NR": {
+              "group": "interior-camera",
+              "weight": 1,
+              "evidence": {}
+            },
+            "S04NW": {
+              "group": "instrument-panel-finish",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S04U0": {
+              "group": "premium-controls",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S04U6": {
+              "group": "ac-charging",
+              "weight": 1,
+              "evidence": {
+                "economy": 1
+              }
+            },
+            "S04U8": {
+              "group": "unconfirmed-activation",
+              "weight": 0,
+              "evidence": {
+                "economy": 1
+              },
+              "requiresActivation": true
+            },
+            "S04V1": {
+              "group": "iconic-sounds",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1,
+                "comfort": -1
+              }
+            },
+            "S0508": {
+              "group": "parking-assistance",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S0544": {
+              "group": "cruise-control",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S0552": {
+              "group": "headlamp-system",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S05AS": {
+              "group": "driving-assistance",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S05AT": {
+              "group": "driving-assistance",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S05AU": {
+              "group": "driving-assistance",
+              "weight": 2,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S05DF": {
+              "group": "cruise-control",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S05DM": {
+              "group": "parking-assistance",
+              "weight": 0,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S05DN": {
+              "group": "parking-assistance",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S05DW": {
+              "group": "parking-assistance",
+              "weight": 2,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S05ML": {
+              "group": "sport-package",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2
+              },
+              "bundle": true
+            },
+            "S0610": {
+              "group": "head-up-display",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S0674": {
+              "group": "audio-system",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S0676": {
+              "group": "audio-system",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S0688": {
+              "group": "audio-system",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S06AK": {
+              "group": "connected-services",
+              "weight": 1,
+              "evidence": {},
+              "requiresActivation": true
+            },
+            "S06C4": {
+              "group": "connected-services",
+              "weight": 1,
+              "evidence": {},
+              "bundle": true,
+              "requiresActivation": true
+            },
+            "S06F4": {
+              "group": "audio-system",
+              "weight": 2,
+              "evidence": {
+                "comfort": 2
+              }
+            },
+            "S06U2": {
+              "group": "cockpit",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              },
+              "bundle": true
+            },
+            "S06U3": {
+              "group": "cockpit",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1,
+                "comfort": 1
+              },
+              "bundle": true
+            },
+            "S06WC": {
+              "group": "cockpit-display",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              }
+            },
+            "S0704": {
+              "group": "suspension",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1,
+                "comfort": -1
+              }
+            },
+            "S0710": {
+              "group": "steering-wheel",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S0711": {
+              "group": "seat-design",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S0715": {
+              "group": "sport-body-styling",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S071C": {
+              "group": "sport-body-styling",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              },
+              "bundle": true
+            },
+            "S0754": {
+              "group": "sport-body-styling",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S0760": {
+              "group": "shadowline-finish",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S0775": {
+              "group": "headlining",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S07A2": {
+              "group": "technology-package",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              },
+              "bundle": true
+            },
+            "S07EV": {
+              "group": "technology-package",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              },
+              "bundle": true
+            },
+            "S07EW": {
+              "group": "technology-package",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              },
+              "bundle": true
+            },
+            "S07HW": {
+              "group": "styling-line",
+              "weight": 1,
+              "evidence": {},
+              "bundle": true
+            },
+            "S07LG": {
+              "group": "comfort-package",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              },
+              "bundle": true
+            },
+            "S07M9": {
+              "group": "shadowline-finish",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              }
+            },
+            "S07MU": {
+              "group": "styling-line",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 1
+              },
+              "bundle": true
+            },
+            "S07VK": {
+              "group": "comfort-package",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              },
+              "bundle": true
+            },
+            "S09T1": {
+              "group": "sport-package",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              },
+              "bundle": true
+            },
+            "S09T2": {
+              "group": "sport-package",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              },
+              "bundle": true
+            },
+            "S09TA": {
+              "group": "sport-package",
+              "weight": 0,
+              "evidence": {
+                "sportiness": 1
+              },
+              "bundle": true
+            },
+            "S09TB": {
+              "group": "sport-package",
+              "weight": 1,
+              "evidence": {
+                "sportiness": 2
+              },
+              "bundle": true
+            },
+            "S0Z0T": {
+              "group": "technology-package",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              },
+              "bundle": true
+            },
+            "S0ZGM": {
+              "group": "comfort-package",
+              "weight": 1,
+              "evidence": {
+                "comfort": 1
+              },
+              "bundle": true
+            },
+            "S0ZGX": {
+              "group": "comfort-package",
+              "weight": 1,
+              "evidence": {
+                "comfort": 2
+              },
+              "bundle": true
+            },
+            "SE000001": {
+              "group": "unknown",
+              "weight": 0,
+              "evidence": {
+                "fuel": "ev"
+              }
+            },
+            "SE000034": {
+              "group": "unknown",
+              "weight": 0,
+              "evidence": {
+                "fuel": "ev"
+              }
+            }
+          }
+        }
       },
       "unit": "employee recommendation calibration and registry",
       "status": "assumed",
-      "basis": "Existing rankCars preference curves with separate importance/indifference and confirmed exact evidence. Collaborator direction, 11 November 2026: use more of the allowance among similarly matched eligible cars; five preference-score points defines a revisable similarity band. No retail cash budget. Quote terms remain pinned for the full 7,200-second buddy hold. Demo calibration is revisable, not BMW policy.",
+      "basis": "Existing rankCars preference curves with separate importance/indifference and confirmed exact evidence. Collaborator direction, 11 November 2026: use more of the allowance among similarly matched eligible cars; five preference-score points defines a revisable similarity band. No retail cash budget. Quote terms remain pinned for the full 7,200-second buddy hold. Demo calibration is revisable, not BMW policy. Collaborator-reviewed option mappings, 11 November: invisible equipment preference at importance 100; desirability weights 0..3. Shared fixed saturation scale (eight desirability points gives 50/100); supporting slider evidence moves five points per reviewed unit, capped at twenty. Unresolved packages use conservative overlapping-capability fallbacks, not inferred contents. Only selected active catalogue configuration/fitted evidence counts. These calibration values are revisable assumptions.",
       "source": "docs/gcsp/employee-recommendation.md",
       "sourceDate": "2026-11-11",
       "policyVersion": "gcsp-policy-v1",
@@ -14776,6 +16284,21 @@
       "status": "assumed",
       "basis": "Plausible revisable demo rule for how a current-car rating and Same again shape suitable recommendations: 4-5 positive, 1-2 negative, 3 or unset neutral; similarity and continuity compare confirmed structured facts. Not measured BMW satisfaction.",
       "source": "_dev/in-progress/DEV-2026-11-10-013.md (FUCQ-371)",
+      "sourceDate": "2026-11-11",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "brief.engagement.v1",
+      "value": {
+        "schemaVersion": 1,
+        "grants": { "search": true, "hold": true },
+        "onMinimumLoss": "disengage"
+      },
+      "unit": "Buddy search and hold grants on engage, and the action when the Account minimum is lost",
+      "status": "assumed",
+      "basis": "Revisable mockup design rule: engaging Buddy grants search and hold together, and an edit that drops below the Account minimum disengages. Not verified BMW policy.",
+      "source": "docs/gcsp/mockups/account-preferences-2026-11-10/FROZEN-REFERENCE.md (frozen reference 193cbf07)",
       "sourceDate": "2026-11-11",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Buddy status · Consistency across pages</title>
+  <link rel="stylesheet" href="../../../../blocks/gcsp/shell/gcsp-tokens.css">
+  <link rel="stylesheet" href="./mockup.css">
+  <link rel="stylesheet" href="./consistency.css">
+</head>
+<body class="gcsp consistency">
+  <main class="review">
+    <header class="review-head">
+      <div><p class="eyebrow">Your cars + Your buddy · static design options</p><h1>One status language. A visible search control.</h1></div>
+      <p class="review-note">Chevron restored. No “View buddy” label.<br>Replace the “…” menu with a named action.</p>
+    </header>
+
+    <div class="directions">
+      <section class="direction" aria-labelledby="direction-a">
+        <header class="direction-head"><div class="option-title"><h2 id="direction-a">A · Keep the dots</h2><span class="recommendation">Recommended</span></div><p>Keep your chosen Your cars design. Match Your buddy to it.</p></header>
+
+        <section class="state-pair" aria-labelledby="a-active">
+          <h3 id="a-active">Active</h3>
+          <div class="page-fragment active">
+            <span class="page-name">Your cars</span>
+            <span class="indicator outlined explicit active"><span class="buddy-name">Buddy</span><span class="state-word"><span class="status-dot" aria-hidden="true"></span>Active</span><span class="arrow" aria-hidden="true">›</span></span>
+          </div>
+          <div class="page-fragment active">
+            <span class="page-name">Your buddy</span>
+            <span class="buddy-controls"><span class="shared-state"><span class="status-dot" aria-hidden="true"></span>Active</span><span class="search-action"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10M13 5v10"/></svg>Pause search</span></span>
+          </div>
+        </section>
+
+        <section class="state-pair" aria-labelledby="a-paused">
+          <h3 id="a-paused">Paused</h3>
+          <div class="page-fragment paused">
+            <span class="page-name">Your cars</span>
+            <span class="indicator outlined explicit paused"><span class="buddy-name">Buddy</span><span class="state-word"><span class="status-dot" aria-hidden="true"></span>Paused</span><span class="arrow" aria-hidden="true">›</span></span>
+          </div>
+          <div class="page-fragment paused">
+            <span class="page-name">Your buddy</span>
+            <span class="buddy-controls"><span class="shared-state"><span class="status-dot" aria-hidden="true"></span>Paused</span><span class="search-action"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 9 6-9 6Z"/></svg>Resume search</span></span>
+          </div>
+        </section>
+
+        <section class="state-pair" aria-labelledby="a-setup">
+          <h3 id="a-setup">Not configured</h3>
+          <div class="page-fragment unset">
+            <span class="page-name">Your cars</span>
+            <span class="indicator outlined explicit unset"><span class="buddy-name">Buddy</span><span class="route">Set up your buddy <span aria-hidden="true">›</span></span></span>
+          </div>
+          <div class="page-fragment unset">
+            <span class="page-name">Your buddy</span>
+            <span class="buddy-controls"><span class="shared-state"><span class="status-dot" aria-hidden="true"></span>Not set up</span><span class="search-action">Set up your buddy</span></span>
+          </div>
+        </section>
+      </section>
+
+      <section class="direction icons-direction" aria-labelledby="direction-b">
+        <header class="direction-head"><div class="option-title"><h2 id="direction-b">B · Keep the circled icons</h2></div><p>Bring Your buddy’s icon into Your cars. Join status and control.</p></header>
+
+        <section class="state-pair" aria-labelledby="b-active">
+          <h3 id="b-active">Active</h3>
+          <div class="page-fragment active">
+            <span class="page-name">Your cars</span>
+            <span class="indicator outlined explicit active"><span class="buddy-name">Buddy</span><span class="shared-state"><svg class="status-symbol" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="m6 10 3 3 5-6"/></svg>Active</span><span class="arrow" aria-hidden="true">›</span></span>
+          </div>
+          <div class="page-fragment active">
+            <span class="page-name">Your buddy</span>
+            <span class="buddy-controls joined"><span class="shared-state"><svg class="status-symbol" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="m6 10 3 3 5-6"/></svg>Active</span><span class="search-action"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10M13 5v10"/></svg>Pause search</span></span>
+          </div>
+        </section>
+
+        <section class="state-pair" aria-labelledby="b-paused">
+          <h3 id="b-paused">Paused</h3>
+          <div class="page-fragment paused">
+            <span class="page-name">Your cars</span>
+            <span class="indicator outlined explicit paused"><span class="buddy-name">Buddy</span><span class="shared-state"><svg class="status-symbol" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M7.5 6.5v7M12.5 6.5v7"/></svg>Paused</span><span class="arrow" aria-hidden="true">›</span></span>
+          </div>
+          <div class="page-fragment paused">
+            <span class="page-name">Your buddy</span>
+            <span class="buddy-controls joined"><span class="shared-state"><svg class="status-symbol" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M7.5 6.5v7M12.5 6.5v7"/></svg>Paused</span><span class="search-action"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 9 6-9 6Z"/></svg>Resume search</span></span>
+          </div>
+        </section>
+
+        <section class="state-pair" aria-labelledby="b-setup">
+          <h3 id="b-setup">Not configured</h3>
+          <div class="page-fragment unset">
+            <span class="page-name">Your cars</span>
+            <span class="indicator outlined explicit unset"><span class="buddy-name">Buddy</span><span class="route">Set up your buddy <span aria-hidden="true">›</span></span></span>
+          </div>
+          <div class="page-fragment unset">
+            <span class="page-name">Your buddy</span>
+            <span class="buddy-controls joined"><span class="shared-state"><svg class="status-symbol" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v8M6 10h8"/></svg>Not set up</span><span class="search-action">Set up your buddy</span></span>
+          </div>
+        </section>
+      </section>
+    </div>
+    <footer class="review-foot"><p>Both options use the same type, colours and status wording on both pages. The whole Your cars box opens Your buddy.</p><p>On Your buddy, the named control pauses or resumes the saved search. Setup replaces the control when no search is configured.</p></footer>
+  </main>
+</body>
+</html>

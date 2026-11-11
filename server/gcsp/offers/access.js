@@ -96,7 +96,7 @@ function presentation(offer, hold, quote, stock, clock, followup, extra = {}) {
     || inputDigest(decision.terms) !== inputDigest(quote.terms)) throw Error('Inconsistent pinned decision');
   const facts = select(snapshot, ['contractVersion', 'candidateKey', 'sourceNamespace', 'identityKind', 'snapshotVersion', 'observedAt']);
   const image = (entry) => typeof entry === 'string' ? { src: entry }
-    : textFields(entry, ['src', 'alt', 'caption', 'fidelity', 'sourceRef']);
+    : textFields(entry, ['src', 'alt', 'caption', 'fidelity', 'sourceRef', 'viewpoint', 'label']);
   facts.sourceKeys = { stockId: snapshot.sourceKeys.stockId };
   facts.display = { ...textFields(snapshot.display, ['name', 'manufacturer', 'model', 'derivative', 'colour']),
     photo: typeof snapshot.display.photo === 'string' ? snapshot.display.photo : null,
@@ -383,12 +383,18 @@ export class OfferAccessService {
       const terms = await new SchemeOrderTerms({ policy: this.#policy }).read({ runId: binding.runId, policyVersion: run.policyVersion }, { asOf: clock.now });
       const blocker = !derived.contact ? 'contact-required' : !derived.driver ? 'driver-review-required' : !derived.returnOk ? 'return-data-required'
         : terms.status !== 'ok' ? 'ordering-terms-unavailable' : null;
+      const mileageRules = derived.mode === 'replacement' ? await this.#policy.getAssumption('manual.context.v1', { runId: binding.runId, policyVersion: run.policyVersion, asOf: clock.now }) : null;
+      const maximum = mileageRules?.status === 'ok' && mileageRules.policyVersion === run.policyVersion ? mileageRules.value?.value?.maximumReturnMileage : null;
+      const driver = derived.driverRecord;
       const t = terms.status === 'ok' ? terms.value : null;
       extra.handoff = { termsVersion: t?.termsVersion ?? null, termsDigest: t?.termsDigest ?? null, wording: t ? (t.wordingByMode?.[derived.mode] ?? t.wording) : null, fictional: true,
         mode: derived.mode, declarations: (t?.declarations ?? []).filter((d) => d.appliesTo === 'all' || d.appliesTo === derived.mode).map(({ id, label }) => ({ id, label })),
         contact: derived.contact ? select(derived.contact, ['phone', 'email']) : null,
+        driver: driver ? { name: driver.name ?? null, kind: driver.kind ?? null, licence: driver.licence ? { displayNumber: driver.licence.displayNumber ?? null, categories: driver.licence.categories ?? [], validFrom: driver.licence.validFrom ?? null, validUntil: driver.licence.validUntil ?? null } : null } : null,
+        documentSource: { terms: 'ordering.terms.v1', termsVersion: t?.termsVersion ?? null, recordSource: derived.account ? found.value.contract.manualContext.source?.sourceRef ?? null : null },
+        returnMileage: derived.mode === 'replacement' && Number.isSafeInteger(maximum) && maximum > 0 ? { maximum, unit: 'mi' } : null,
         returnCar: derived.returnCar ? { model: derived.returnCar.model, contractEndDate: derived.returnCar.contractEndDate,
-          currentOdometer: derived.returnCar.currentOdometer ? select(derived.returnCar.currentOdometer, ['value', 'unit']) : null } : null, blocker };
+          currentOdometer: derived.returnCar.currentOdometer ? select(derived.returnCar.currentOdometer, ['value', 'unit']) : null, expectedReturnMileage: null } : null, blocker };
     }
     extra.rows = rows;
     return extra;

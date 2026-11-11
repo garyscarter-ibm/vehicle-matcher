@@ -10,6 +10,7 @@ import { vehicleEvidenceHttpStatus } from '../gcsp/vehicle-evidence/vehicle-deta
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/memory.js';
 import { inputDigest, ok } from '../gcsp/repository/core.js';
 import { options } from './helpers/vin-corpus-fixture.js';
+import { createVehicleSnapshot } from '../vehicles/index.js';
 
 const candidate = fileURLToPath(new URL('../data/gcsp/vehicle-evidence/publication-reference.v1', import.meta.url));
 const context = { runId: 'lookup-run', environmentId: 'lookup-test', principalId: 'fictional-reader', roles: ['employee'] };
@@ -110,6 +111,32 @@ test('known catalogue facts keep source dates, meaning, units, unknown fields an
   assert.equal(result.presentation.verifiedFittedLabel, 'VIN-fitted equipment unknown');
   result.technical.luggageNormal.value = 0;
   assert.equal((await lookup.resolve({ kind: 'configuration', id: row.configurationId })).technical.luggageNormal.value, 570);
+});
+
+test('canonical generated stock identity resolves exactly and missing or substituted associations fail closed', async (t) => {
+  const { registry, stock } = await fixture(t);
+  const snapshot = createVehicleSnapshot({ sourceNamespace: 'synthetic:stock-generator.v1', identityKind: 'exact-stock',
+    sourceKeys: { stockId: orderUuid }, snapshotVersion: 'stock-generator.v1:fixture-policy', observedAt: '2026-11-11T00:00:00.000Z',
+    display: { name: 'Exact generated stock' }, facts: { syntheticIdentity: { status: 'known', value: stock.facts.syntheticIdentity,
+      unit: null, provenance: { sourceRef: 'generator:stock-generator.v1', observedAt: '2026-11-11T00:00:00.000Z',
+        version: 'stock-generator.v1:fixture-policy', assurance: 'synthetic-scenario' } } } });
+  const resolve = (facts) => createVehicleEvidenceLookup({ registry, repository: {
+    currentRun: async () => ok({ runId: context.runId }), read: async () => ok({ ...stock, facts }),
+  } }).resolve({ kind: 'stock', id: orderUuid }, { context });
+  const exact = await resolve(snapshot);
+  assert.equal(exact.status, 'partial');
+  assert.equal(exact.identity.vehicleId, stock.facts.syntheticIdentity.vehicleId);
+  for (const facts of [
+    { ...snapshot, facts: {} },
+    { ...snapshot, sourceKeys: { stockId: '6ff0feca-90cd-4e6f-903c-41fad1ef9b91' } },
+    { ...snapshot, identityKind: 'legacy-record' },
+    { ...snapshot, facts: { syntheticIdentity: { ...snapshot.facts.syntheticIdentity, status: 'unknown', value: null } } },
+    { ...snapshot, facts: { syntheticIdentity: { ...snapshot.facts.syntheticIdentity,
+      value: { ...stock.facts.syntheticIdentity, configurationHash: 'substituted' } } } },
+  ]) {
+    const outcome = await resolve(facts);
+    assert.equal(outcome.status, 'identity-mismatch'); assert.equal(outcome.identity, null);
+  }
 });
 
 test('invalid, unknown and unavailable outcomes remain distinct across all three identities and redact arbitrary input', async (t) => {

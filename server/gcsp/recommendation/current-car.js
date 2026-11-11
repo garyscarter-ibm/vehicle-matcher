@@ -71,7 +71,8 @@ export function compareImprovement({ snapshot, scored, baseline, brief, employee
   if (!expressed.length) return { result: 'not-proven', keys: [] };
   const facts = Object.fromEntries(Object.entries(baseline.facts).filter(([, fact]) => confirmedFact(fact, config)));
   const base = scorePreferences({ display: { name: 'current car' }, facts }, brief, employeeFacts, config, slider).components;
-  const at = (rows, key) => rows.find((row) => row.field === key)?.score;
+  // An anchored score for a missing model fact (ac6bccdc) is not evidence, so it stays unknown.
+  const at = (rows, key) => { const row = rows.find((r) => r.field === key); return row?.modelFactsIncomplete ? undefined : row?.score; };
   const scores = expressed.map((key) => [key, at(scored.components, key), at(base, key)]);
   if (scores.some(([, c, b]) => !Number.isFinite(c) || !Number.isFinite(b))) return { result: 'unknown', keys: [] };
   const better = scores.filter(([, c, b]) => c > b).map(([key]) => key);

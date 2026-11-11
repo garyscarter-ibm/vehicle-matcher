@@ -23,10 +23,44 @@ function render(name, ports = {}) {
   return { root, view, data };
 }
 
+test('offer gallery uses ordered views, keeps selection across clock reads and closes on redraw or teardown', async () => {
+  const catalogue = JSON.parse(await readFile(new URL('../data/gcsp/vehicle-evidence/display-images.v1.json', import.meta.url)));
+  const images = Object.values(catalogue.configurationGalleries)[0].map((image) => ({
+    src: `/${image.asset}`, alt: `BMW, ${image.label.toLowerCase()}`, fidelity: image.fidelity,
+    sourceRef: image.sourceRef, viewpoint: image.viewpoint, label: image.label,
+  }));
+  const { root, view, data } = render('pending');
+  data.card.members[0].media.images = images;
+  view.update(data);
+  const gallery = root.querySelector('.gcsp-media-gallery');
+  assert.ok(gallery); assert.equal(gallery.parentElement.classList.contains('gcsp-vehicle-decision'), true);
+  assert.deepEqual([...gallery.querySelectorAll('.gcsp-media-gallery-thumbs button')].map((node) => node.textContent), images.map((image) => image.label));
+  gallery.querySelectorAll('.gcsp-media-gallery-thumbs button')[1].click();
+  assert.equal(gallery.querySelector('.vm-card-photo').getAttribute('src'), images[1].src);
+  view.update({ ...data, countdown: '1:59' });
+  assert.equal(root.querySelector('.gcsp-media-gallery'), gallery);
+  assert.equal(gallery.querySelector('.vm-card-photo').alt, images[1].alt);
+  gallery.querySelector('.gcsp-media-gallery-enlarge').click();
+  const oldDialog = gallery.querySelector('dialog'); assert.equal(oldDialog.open, true);
+  view.update({ ...data, state: 'expired' }); assert.equal(oldDialog.open, false);
+  view.update(data); const dialog = root.querySelector('.gcsp-media-gallery-dialog');
+  root.querySelector('.gcsp-media-gallery-enlarge').click();
+  view.destroy(); assert.equal(dialog.open, false); assert.equal(root.childElementCount, 0);
+});
+
+test('offer gallery keeps a historical photo without fabricating extra views', () => {
+  const { root, view, data } = render('pending');
+  data.card.members[0].media = { src: '/assets/brand-hero/bmw.jpg', alt: 'BMW car' };
+  view.update(data);
+  assert.equal(root.querySelector('.gcsp-media-gallery-feature img').getAttribute('src'), '/assets/brand-hero/bmw.jpg');
+  assert.equal(root.querySelector('.gcsp-media-gallery-thumbs'), null);
+  view.destroy();
+});
+
 test('exact shared card, points and current car comparison preserve supplied unknowns and provenance', () => {
   const { root } = render('pending');
   assert.equal(root.querySelectorAll('.vm-card').length, 1);
-  assert.match(root.textContent, /Order no\. 0123456/);
+  assert.doesNotMatch(root.textContent, /Order no\. 0123456|Order number/);
   assert.match(root.textContent, /1,100 points a month.*1,300 points a month allowance/);
   assert.match(root.textContent, /320i M Sport Touring/);
   assert.doesNotMatch(root.textContent, /Fitted equipment unknown/);
@@ -37,32 +71,39 @@ test('exact shared card, points and current car comparison preserve supplied unk
   assert.match(root.querySelector(`#${reason}`).textContent, /Decisions are unavailable/);
 });
 
-// FUCQ-275: a phone-length offer put the deadline last, repeated facts and listed them one per row.
-test('FUCQ-275: a pending offer leads with the deadline and has one comparison table with shared rows', async () => {
-  const { root, data } = render('pending');
-  const [intro, clock, next] = [...root.querySelector('.gcsp-offer-content').children];
-  assert.ok(intro.querySelector('h1')); assert.ok(clock.classList.contains('gcsp-countdown'));
-  assert.equal(clock.textContent, '2 hours remaining'); assert.doesNotMatch(root.textContent, /Time at last check/); assert.ok(next);
+test('41 supplied equipment labels use a closed native disclosure outside the compact facts grid', () => {
+  const { root, view, data } = render('pending');
+  const labels = Array.from({ length: 41 }, (_, index) => `Supported equipment ${index + 1}`);
+  const card = structuredClone(data.card); const member = card.members[0];
+  member.facts = member.facts.filter((row) => row.label !== 'Options');
+  member.facts.push({ label: 'Options', value: labels.join(', '), items: labels, provenance: { sourceRef: 'retained-options' } });
+  view.update({ ...data, card });
+  const disclosure = root.querySelector('details.gcsp-vehicle-equipment');
+  assert.ok(disclosure); assert.equal(disclosure.open, false);
+  assert.equal(disclosure.querySelector('summary').textContent, 'Selected equipment (41)');
+  assert.deepEqual([...disclosure.querySelectorAll('li')].map((node) => node.textContent), labels);
+  assert.equal(disclosure.closest('.vm-card-facts'), null);
+  assert.doesNotMatch(root.querySelector('.vm-card-facts').textContent, /Supported equipment|Options/);
+  assert.deepEqual(member.facts.at(-1).provenance, { sourceRef: 'retained-options' });
+  assert.equal(member.facts.at(-1).items.length, 41);
+});
+
+test('FUCQ-383: pending offer leads with h:mm, one uncaptained equal-column comparison and current-first identities', () => {
+  const { root } = render('pending');
+  const header = root.querySelector('.gcsp-offer-content').firstElementChild;
+  assert.ok(header.querySelector('h1')); assert.ok(header.querySelector('.gcsp-countdown'));
   assert.equal(root.querySelectorAll('.gcsp-countdown').length, 1);
-  // The visible table holds only the rows that differ; the full comparison sits behind a disclosure.
-  const shownTable = root.querySelector('[data-offer-comparison] > .gcsp-table-scroll table, [data-offer-comparison] > div table');
-  assert.deepEqual([...shownTable.querySelectorAll('tbody th[scope="row"]')].map((node) => node.textContent), ['Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Points a month']);
-  const disclosure = root.querySelector('[data-offer-comparison] details'); assert.equal(disclosure.open, false);
-  assert.equal(disclosure.querySelector('summary').textContent, 'Full comparison');
-  const tables = disclosure.querySelectorAll('table'); assert.equal(tables.length, 1);
-  const labels = [...tables[0].querySelectorAll('tbody th[scope="row"]')].map((node) => node.textContent);
-  assert.deepEqual(labels, ['Body style', 'Fuel', 'Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Points a month']);
-  const rows = [...tables[0].querySelectorAll('tbody tr')];
-  assert.ok(rows.every((row) => row.querySelectorAll('td').length === 2));
-  assert.deepEqual([...rows[3].querySelectorAll('td')].map((node) => node.textContent), ['500 litres', '480 litres']);
-  assert.deepEqual([...rows[6].querySelectorAll('td')].map((node) => node.textContent), ['1,100 points', 'Unknown']);
-  const heads = [...tables[0].querySelectorAll('thead th')].map((node) => node.textContent);
-  assert.match(heads[1], /^This offer .*BMW 320i/); assert.match(heads[2], /^Your current car 320i M Sport Touring$/);
-  assert.equal(root.querySelector('.gcsp-offer-current h2'), null); assert.equal(root.querySelector('.vm-card-gate'), null); assert.doesNotMatch([...root.querySelectorAll('h2, h3')].map((h) => h.textContent).join('|'), /Your current car/);
-  const facts = root.querySelector('.vm-card .vm-facts'); assert.ok(facts.classList.contains('vm-facts-pair'));
-  const shown = [...facts.querySelectorAll('dt')].map((node) => node.textContent);
-  assert.deepEqual(shown, ['Derivative']); assert.ok(data);
-  assert.doesNotMatch(root.textContent, /0–62 mph|MPG|\bBody\b(?! style)/);
+  assert.equal(root.querySelectorAll('[data-offer-comparison] table').length, 1);
+  const table = root.querySelector('[data-offer-comparison] table');
+  assert.equal(table.querySelector('caption').className, 'gcsp-vh');
+  assert.ok(table.parentElement.classList.contains('has-equal-columns'));
+  assert.deepEqual([...table.querySelectorAll('tbody th')].map((node) => node.textContent), ['Body style', 'Fuel', 'Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Points a month']);
+  const heads = [...table.querySelectorAll('thead th')].map((node) => node.textContent);
+  assert.match(heads[1], /^Your current car /); assert.match(heads[2], /^This offer /);
+  assert.deepEqual([...table.querySelectorAll('tbody tr')][3].querySelectorAll('.is-winner').length, 1);
+  assert.equal(root.querySelector('.vm-card-gate'), null);
+  assert.equal(root.querySelector('.vm-card .vm-facts').classList.contains('vm-facts-pair'), true);
+  assert.deepEqual([...root.querySelectorAll('.gcsp-vehicle-summary [data-offer-action]')].map((node) => node.textContent), ['Accept offer', 'Decline offer']);
 });
 
 // FUCQ-316: missing card facts collapse into one line, as on the gallery cards (FUCQ-277).
@@ -77,7 +118,7 @@ test('FUCQ-316: a card with unknown Colour, Options, Interior and Gearbox lists 
   const body = root.querySelector('.vm-card');
   assert.doesNotMatch(body.textContent, /Not supplied|Fitted equipment unknown/);
   assert.equal(body.querySelectorAll('.is-missing').length, 0);
-  assert.deepEqual([...body.querySelectorAll('.vm-facts dt')].map((node) => node.textContent), ['Derivative']);
+  assert.deepEqual([...body.querySelectorAll('.vm-facts dt')].map((node) => node.textContent), ['Body style', 'Fuel', 'Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Derivative']);
   assert.equal(body.querySelectorAll('.vm-facts-more').length, 1);
   assert.equal(body.querySelector('.vm-facts-more').textContent, 'More details not supplied');
 });
@@ -161,7 +202,7 @@ test('custom element mounts, reads presenter events, and unsubscribes on disconn
   host.adapter = { read: async () => { reads++; return offerFixture('pending'); },
     subscribeClock: (listener) => { event = listener; return () => { unsubscribed = true; }; } };
   document.body.append(host); await new Promise((resolve) => setImmediate(resolve));
-  assert.match(host.textContent, /Your car offer/); assert.equal(reads, 1);
+  assert.match(host.textContent, /Your vehicle offer/); assert.equal(reads, 1);
   event(); await new Promise((resolve) => setImmediate(resolve)); assert.equal(reads, 2);
   host.remove(); assert.equal(unsubscribed, true); event(); assert.equal(reads, 2);
 });
@@ -173,9 +214,9 @@ test('approved DTO flows through the default HTTP adapter/controller into the sh
   const root = document.createElement('div'); document.body.append(root);
   const c = createOfferController(adapter); const view = createOfferView(root); const unsubscribe = c.subscribe(view.update);
   const model = await c.refresh();
-  assert.match(root.textContent, /Order no\. 0999987/); assert.match(root.textContent, /1,100 points a month.*1,300 points a month allowance/);
+  assert.doesNotMatch(root.textContent, /Order no\. 0999987|Order number/); assert.match(root.textContent, /1,100 points a month.*1,300 points a month allowance/);
   assert.match(root.textContent, /Current-car details not supplied/); assert.doesNotMatch(root.textContent, /Fitted equipment unknown/);
-  assert.match(root.textContent, /2 hours remaining/); assert.equal(model.seconds, 7200);
+  assert.match(root.querySelector('.gcsp-countdown').textContent, /2:00/); assert.equal(model.seconds, 7200);
   assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
   unsubscribe(); c.destroy(); view.destroy();
 });
@@ -210,9 +251,9 @@ test('recorded current-car facts render formatted beside Unknown ones with the s
     await ctl.refresh(); const section = root.querySelector('[data-offer-comparison]'); const text = section.textContent;
     assert.match(text, /Partial comparison\. Some current-car facts are unknown\./);
     for (const known of [/500 litres/, /42\.8 mpg/, /7\.6 s/]) assert.match(text, known);
-    assert.equal(section.querySelectorAll('details td.is-missing').length, 4);
-    const full = section.querySelector('details'); assert.equal(full.querySelectorAll('tbody tr').length, 7);
-    const unknown = [...full.querySelectorAll('tbody tr')].map((row) => row.children[2].textContent);
+    assert.equal(section.querySelectorAll('td.is-missing').length, 4);
+    const full = section.querySelector('table'); assert.equal(full.querySelectorAll('tbody tr').length, 7);
+    const unknown = [...full.querySelectorAll('tbody tr')].map((row) => row.children[1].textContent);
     assert.deepEqual(unknown, ['Unknown', 'Unknown', 'Unknown', '500 litres', '7.6 s', '42.8 mpg', 'Unknown']);
   } finally { unsub(); ctl.destroy(); view.destroy(); }
 });
@@ -225,10 +266,10 @@ test('approved partial DTO renders dated provenance and eight unknowns through H
   const c = createOfferController(adapter); const view = createOfferView(root); const unsubscribe = c.subscribe(view.update);
   try {
     const model = await c.refresh(); const comparison = root.querySelector('[data-offer-comparison]');
-    assert.match(comparison.querySelector('thead th:nth-child(3)').textContent, /Your current car\s*Fictional BMW 320i Touring/);
+    assert.match(comparison.querySelector('thead th:nth-child(2)').textContent, /Your current car\s*Fictional BMW 320i Touring/);
     assert.match(comparison.textContent, /Partial comparison\. Current-car specifications and points are unknown\./);
     assert.doesNotMatch(comparison.textContent, /Synthetic source|manual-records-v1|2026-11-05T11|Observed|Source not supplied/);
-    const currentCells = [...comparison.querySelectorAll('details tbody tr')].map((row) => row.children[2]);
+    const currentCells = [...comparison.querySelectorAll('tbody tr')].map((row) => row.children[1]);
     assert.equal(currentCells.length, 7); assert.ok(currentCells.every((node) => node.textContent === 'Unknown'));
     assert.equal(comparison.querySelector('img'), null);
     assert.equal(model.comparisonAvailable, false); assert.equal(model.seconds, 7200);
@@ -237,7 +278,7 @@ test('approved partial DTO renders dated provenance and eight unknowns through H
     dto.serverNow = '2026-11-05T12:00:05.000Z'; await c.refresh();
     assert.equal(root.querySelector('[data-offer-comparison]'), comparison); assert.equal(document.activeElement, refresh);
     dto.comparison.currentCar.source.observedAt = '2026-11-05T12:00:00.001Z'; await c.refresh();
-    assert.match(root.textContent, /Current-car details not supplied/); assert.match(root.textContent, /Order no\. 0999987/);
+    assert.match(root.textContent, /Current-car details not supplied/); assert.doesNotMatch(root.textContent, /Order no\. 0999987|Order number/);
     assert.doesNotMatch(root.textContent, /Fictional BMW 320i Touring/);
   } finally { unsubscribe(); c.destroy(); view.destroy(); }
 });
@@ -273,11 +314,11 @@ test('published decline-only DTO updates mounted actions and accessible explanat
     assert.equal(accept.disabled, false); assert.equal(declineButton.disabled, false);
     dto = { ...decline, handoff: dto.handoff }; await c.refresh(); // Same handoff, so only the clock read changes.
     assert.equal(root.querySelector('[data-offer-action="accept"]'), accept); assert.equal(root.querySelector('.vm-card'), card);
-    assert.equal(accept.disabled, true); assert.equal(declineButton.disabled, false); assert.equal(document.activeElement, declineButton);
+    assert.equal(accept.disabled, false); assert.equal(declineButton.disabled, false); assert.equal(document.activeElement, accept);
     const reason = root.querySelector(`#${accept.getAttribute('aria-describedby')}`);
-    assert.equal(reason.textContent, 'Acceptance is unavailable. You can still decline this offer.');
-    assert.match(root.textContent, /1 hour remaining/); assert.match(root.textContent, /Order no\. 0123456/);
-    assert.match(root.textContent, /Partial comparison/); assert.equal(root.querySelectorAll('[data-offer-comparison] details td.is-missing').length, 7);
+    assert.match(reason.textContent, /Review your details/);
+    assert.equal(root.querySelector('.gcsp-countdown').textContent, '1:00'); assert.doesNotMatch(root.textContent, /Order no\. 0123456|Order number/);
+    assert.match(root.textContent, /Partial comparison/); assert.equal(root.querySelectorAll('[data-offer-comparison] td.is-missing').length, 7);
     accept.click(); assert.deepEqual(calls, []);
     delete dto.comparison; await c.refresh();
     assert.match(root.textContent, /Current-car details not supplied/); assert.equal(root.querySelector('[data-offer-action="decline"]').disabled, false);
@@ -296,68 +337,47 @@ test('scoped offer sources and harness obey embed CSP and composition styling bo
 });
 
 // FUCQ-275: the comparison table is a kit dataTable, so its kit stylesheet must be in the offer page's chain.
-test('the offer stylesheet chain loads the kit table styles and keeps card and table side by side from 800 px', async () => {
-  const seen = new Set();
-  const walk = async (file) => {
-    if (seen.has(file.href)) return; seen.add(file.href);
-    const text = await readFile(file, 'utf8');
-    for (const [, rel] of text.matchAll(/@import\s+"([^"]+)"/g)) await walk(new URL(rel, file));
-  };
-  const entry = new URL('../../blocks/gcsp/offer/gcsp-offer.css', import.meta.url); await walk(entry);
-  const root = new URL('../../', import.meta.url).href;
-  const chain = [...seen].map((href) => href.slice(root.length));
-  for (const sheet of ['blocks/gcsp/kit/gcsp-kit.css', 'blocks/gcsp/kit/data-table-compare.css']) assert.ok(chain.includes(sheet), chain.join(', '));
-  const kit = await readFile(new URL('../../blocks/gcsp/kit/data-table-compare.css', import.meta.url), 'utf8');
-  assert.match(kit, /\.gcsp \.is-compare \.gcsp-table \{ table-layout: fixed;/);
-  const css = await readFile(entry, 'utf8');
-  assert.match(css, /@media \(min-width: 800px\) \{\s*\.gcsp \.gcsp-offer-comparison \{ grid-template-columns: minmax\(0, 1fr\) minmax\(0, 1fr\); \}/);
-});
-
-test('FUCQ-318: on a phone the comparison headers read This offer and Your current car, not the full car names', async () => {
-  const kit = await readFile(new URL('../../blocks/gcsp/kit/data-table-compare.css', import.meta.url), 'utf8');
-  assert.match(kit, /@media \(max-width: 640px\) \{ \.gcsp \.is-compare \.gcsp-table-th-sub \{ display: none; \} \}/);
-  assert.match(kit, /^\.gcsp \.gcsp-table-th-sub \{ display: block;/m);
+test('offer stylesheet loads shared feature, comparison and equal-column styling', async () => {
+  const css = await readFile(new URL('../../blocks/gcsp/offer/gcsp-offer.css', import.meta.url), 'utf8');
+  const feature = await readFile(new URL('../../blocks/gcsp/kit/vehicle-decision.css', import.meta.url), 'utf8');
+  const compare = await readFile(new URL('../../blocks/gcsp/kit/data-table-compare.css', import.meta.url), 'utf8');
+  assert.match(css, /vehicle-decision\.css/); assert.match(css, /max-width: 1680px/);
+  assert.match(feature, /@import "\.\/data-table-compare\.css"/);
+  assert.match(compare, /table-layout: fixed/); assert.match(compare, /:not\(\.has-equal-columns\)/);
+  assert.match(compare, /has-equal-columns \.gcsp-table-th-sub \{ display: block/);
 });
 
 const stageText = (root) => [...root.querySelectorAll('.gcsp-stage-item')].map((row) => [...row.children].map((node) => node.textContent));
 async function mountFixture(name, decide) {
   const root = document.createElement('div'); document.body.append(root);
   const c = createOfferController({ read: async () => offerFixture(name), decide, readReasons: async () => ({ status: 'unavailable' }) });
-  const view = createOfferView(root, { decide: c.decision, tickDeclaration: c.tickDeclaration });
+  const view = createOfferView(root, { decide: c.decision, tickDeclaration: c.tickDeclaration, setExpectedReturnMileage: c.setExpectedReturnMileage });
   const unsubscribe = c.subscribe(view.update); await c.refresh();
   return { root, c, stop: () => { unsubscribe(); c.destroy(); view.destroy(); } };
 }
 
-test('before accepting, the handoff shows contact, return car, wording and one checkbox per declaration gating Accept', async () => {
-  const calls = []; const { root, c, stop } = await mountFixture('handoff-replacement', async (input) => { calls.push(input); return { status: 'ok' }; });
+test('acceptance review opens in a drawer, keeps all actual context and gates only its final Accept', async () => {
+  const calls = []; const { root, stop } = await mountFixture('handoff-replacement', async (input) => { calls.push(input); return { status: 'ok' }; });
   try {
-    const group = root.querySelector('[aria-label="Before you accept"]');
-    assert.equal(group.querySelector('h2').textContent, 'Before you accept');
-    for (const text of ['07700 900123', 'paula.mason@gcsp-demo.com', 'BMW 3 Series Touring 320i', '31 December 2026', '41,250 miles', 'Scheme terms']) assert.match(group.textContent, new RegExp(text));
-    const boxes = [...group.querySelectorAll('input[type="checkbox"]')];
-    assert.equal(boxes.length, 3); assert.ok(boxes.every((box) => box.labels[0].textContent.length > 10 && !box.checked));
-    const accept = root.querySelector('[data-offer-action="accept"]'); assert.equal(accept.disabled, true);
-    assert.match(root.textContent, /Tick each declaration to accept this offer\./);
-    for (const box of boxes.slice(0, 2)) { box.checked = true; box.dispatchEvent(new window.Event('change', { bubbles: true })); }
-    assert.equal(accept.disabled, true); assert.equal(root.querySelector('[aria-label="Before you accept"] input'), boxes[0]);
-    boxes[2].checked = true; boxes[2].dispatchEvent(new window.Event('change', { bubbles: true }));
-    assert.equal(accept.disabled, false);
-    boxes[1].checked = false; boxes[1].dispatchEvent(new window.Event('change', { bubbles: true })); assert.equal(accept.disabled, true);
-    boxes[1].checked = true; boxes[1].dispatchEvent(new window.Event('change', { bubbles: true }));
-    accept.click(); await new Promise((resolve) => setTimeout(resolve, 0));
-    assert.equal(calls.length, 1); assert.equal(calls[0].termsDigest, 'synthetic-terms-digest');
+    const opener = root.querySelector('[data-offer-action="accept"]'); assert.equal(opener.disabled, false); opener.click();
+    const group = root.querySelector('[role="dialog"]'); assert.equal(group.querySelector('h2').textContent, 'Accept your offer');
+    for (const text of ['07700 900123', 'paula.mason@gcsp-demo.com', 'BMW 3 Series Touring 320i', '31 December 2026', '41,250 miles', 'Scheme terms', 'MASON900000PM9XX']) assert.match(group.textContent, new RegExp(text));
+    const boxes = [...group.querySelectorAll('input[type="checkbox"]')]; assert.equal(boxes.length, 3); assert.ok(boxes.every((box) => !box.checked));
+    const final = group.querySelector('[data-offer-action="accept-confirm"]'); assert.equal(final.disabled, true); assert.equal(calls.length, 0);
+    const input = group.querySelector('[data-offer-expected-mileage]'); input.value = '42000'; input.dispatchEvent(new window.Event('input'));
+    for (const box of boxes) box.click(); assert.equal(final.disabled, false);
+    boxes[1].click(); assert.equal(final.disabled, true); boxes[1].click(); final.click(); await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.equal(calls.length, 1); assert.equal(calls[0].termsDigest, 'synthetic-terms-digest'); assert.equal(calls[0].expectedReturnMileage, 42000);
     assert.deepEqual(calls[0].declarations, { terms: true, driver: true, return: true });
   } finally { stop(); }
 });
 
-test('a handoff blocker names the reason, points to scheme support and offers no Accept', async () => {
+test('a blocked handoff remains reviewable with explicit missing context and disabled final Accept', async () => {
   const { root, stop } = await mountFixture('handoff-blocked', async () => ({ status: 'ok' }));
   try {
-    const group = root.querySelector('[aria-label="Before you accept"]');
-    assert.match(group.textContent, /valid contact phone and email are needed/); assert.match(group.textContent, /Contact scheme support\./);
-    assert.equal(group.querySelectorAll('input').length, 0);
-    assert.equal(root.querySelector('[data-offer-action="accept"]').hidden, true);
-    assert.equal(root.querySelector('[data-offer-action="decline"]').hidden, false);
+    const opener = root.querySelector('[data-offer-action="accept"]'); assert.equal(opener.disabled, false); opener.click();
+    const group = root.querySelector('[role="dialog"]'); assert.match(group.textContent, /Confirm your contact details with scheme support/);
+    assert.match(group.textContent, /To confirm/); assert.equal(group.querySelector('[data-offer-action="accept-confirm"]').disabled, true);
   } finally { stop(); }
 });
 
@@ -508,10 +528,10 @@ test('GC-041: an accepted offer leads on to order progress and Your cars beside 
 
 test('GC-041: after Accept focus moves to the Offer accepted heading, and a background change to accepted leaves focus alone', () => {
   const root = document.createElement('div'); document.body.append(root);
-  const pending = { ...offerFixture('pending').value, canAccept: true, canDecline: true, countdown: '2 hours remaining' };
+  const pending = { ...offerFixture('handoff-replacement').value, canReviewAccept: true, canAccept: true, canDecline: true, ticked: { terms: true, driver: true, return: true }, expectedReturnMileage: '42000', countdown: '2 hours remaining' };
   let view; const decide = () => { view.update({ ...acceptedModel('uncertain'), message: 'Checking your decision. Please wait.' }); view.update(acceptedModel()); };
   view = createOfferView(root, { decide });
-  view.update(pending); root.querySelector('[data-offer-action=accept]').focus(); root.querySelector('[data-offer-action=accept]').click();
+  view.update(pending); root.querySelector('[data-offer-action=accept]').focus(); root.querySelector('[data-offer-action=accept]').click(); root.querySelector('[data-offer-action=accept-confirm]').click();
   const heading = root.querySelector('h1'); assert.equal(heading.textContent, 'Offer accepted');
   assert.equal(document.activeElement, heading); assert.equal(heading.getAttribute('tabindex'), '-1');
   view.update({ ...acceptedModel(), now: '2026-11-06T12:00:00Z' }); assert.equal(document.activeElement, heading);
@@ -520,7 +540,7 @@ test('GC-041: after Accept focus moves to the Offer accepted heading, and a back
   view.destroy(); root.remove();
 });
 
-test('GC-041: mountOffer shows the host navigation in the rail, and an empty rail without one', async () => {
+test('FUCQ-390: mountOffer retains the portal rail without account details, with signed-in onward actions only', async () => {
   const { mountOffer } = await import('../../blocks/gcsp/offer/gcsp-offer.js');
   const { signedInPortal, PORTAL_ROUTES } = await import('../../blocks/gcsp/offer/portal-links.js');
   const assigned = []; const location = { assign: (to) => assigned.push(to) };
@@ -538,11 +558,14 @@ test('GC-041: mountOffer shows the host navigation in the rail, and an empty rai
   assert.equal(PORTAL_ROUTES.brief, '/gcsp-brief-live.html');
   assert.deepEqual([...signedIn.querySelectorAll('a.vm-btn')].map((a) => a.getAttribute('href')), [PORTAL_ROUTES['order-progress'], PORTAL_ROUTES.cars]);
   stop();
-  assert.deepEqual(signedInPortal({ status: 'unavailable' }, location), {}); assert.deepEqual(signedInPortal(undefined, location), {});
   const anonymous = document.createElement('div'); document.body.append(anonymous);
   const stopAnonymous = mountOffer(anonymous, { read, account: { status: 'unavailable' }, ...signedInPortal({ status: 'unavailable' }, location) });
   await new Promise((done) => setTimeout(done, 20));
-  assert.equal(anonymous.querySelectorAll('nav button[data-key]').length, 0); assert.equal(anonymous.querySelectorAll('a.vm-btn').length, 0); stopAnonymous();
+  assert.deepEqual([...anonymous.querySelectorAll('nav button[data-key]')].map((node) => node.dataset.key), ['cars', 'brief', 'activity', 'order-progress']);
+  assert.equal(anonymous.querySelectorAll('a.vm-btn').length, 0);
+  assert.equal(anonymous.querySelector('.gcsp-account-details'), null);
+  anonymous.querySelector('nav button[data-key="cars"]').click();
+  assert.equal(assigned.at(-1), PORTAL_ROUTES.cars); stopAnonymous();
 });
 
 test('FUCQ-286: every offer state has one h1 and its heading levels never skip', () => {
@@ -553,4 +576,50 @@ test('FUCQ-286: every offer state has one h1 and its heading levels never skip',
     levels.forEach((level, i) => assert.ok(level <= (levels[i - 1] ?? 0) + 1, `${name} skips a level: ${levels}`));
   }
   assert.equal(render('pending').root.querySelector('.vm-card-name').tagName, 'H2');
+});
+
+test('FUCQ-383: five supplied benefits retain every card and both grounded winning columns', () => {
+  const { root, view, data } = render('pending'); const member = data.card.members[0];
+  member.terms[0].value = 295;
+  data.currentCar.facts.find((row) => row.key === 'points').value = '320 points';
+  data.currentCar.facts.find((row) => row.key === 'boot').value = '590 litres';
+  member.decision.reasons = ['One', 'Two', 'Three', 'Four'].map((text) => ({ text })); member.decision.tradeOffs = [];
+  view.update(data);
+  assert.equal(root.querySelectorAll('.gcsp-highlight-benefits .gcsp-highlight').length, 5);
+  assert.equal(root.querySelectorAll('.gcsp-highlight-tradeoffs .gcsp-highlight').length, 1);
+  const winners = [...root.querySelectorAll('td.is-winner')];
+  assert.deepEqual(winners.map((node) => node.textContent), ['590 litres', '295 points']);
+  assert.equal(winners[0].cellIndex, 1); assert.equal(winners[1].cellIndex, 2);
+  assert.equal(root.querySelectorAll('thead .is-winner').length, 0);
+  assert.equal(root.querySelectorAll('.vm-card-decision .vm-reasons').length, 0);
+});
+
+test('FUCQ-383: ties, unknowns and preference-dependent rows stay neutral with honest empty groups', () => {
+  const { root, view, data } = render('pending'); const member = data.card.members[0];
+  member.decision.reasons = []; member.decision.tradeOffs = [];
+  data.currentCar.facts.find((row) => row.key === 'boot').value = '500 litres';
+  data.currentCar.facts.find((row) => row.key === 'points').value = '1,100 points';
+  data.currentCar.facts.find((row) => row.key === 'fuel').value = 'Electric';
+  view.update(data);
+  assert.equal(root.querySelectorAll('.is-winner').length, 0);
+  assert.match(root.textContent, /No benefits confirmed/); assert.match(root.textContent, /No tradeoffs confirmed/);
+});
+
+test('FUCQ-383: supplied finish prose remains readable and unsupported colours remain neutral', () => {
+  const { root, view, data } = render('pending');
+  data.card.members[0].facts = [{ label: 'Colour', value: 'Alpine White' }, { label: 'Interior', value: 'Black upholstery' }, { label: 'Scheme', value: 'Choices' }];
+  view.update(data);
+  assert.match(root.querySelector('.gcsp-vehicle-details').textContent, /Alpine White.*Black upholstery/);
+  assert.equal(root.querySelectorAll('.gcsp-finish-swatch:not(.is-unknown)').length, 0);
+  assert.doesNotMatch(root.querySelector('.vm-card').textContent, /Scheme|Choices|Order no\./);
+});
+
+test('FUCQ-383: drawer action hook cannot bypass controller declaration acceptance', async () => {
+  const calls = []; const root = document.createElement('div'); document.body.append(root);
+  const ctl = createOfferController({ read: async () => offerFixture('handoff-replacement'), decide: async () => { calls.push('submit'); }, readReasons: async () => ({ status: 'unavailable' }) });
+  const view = createOfferView(root, { openDecision: (kind) => calls.push(kind) }); const unsubscribe = ctl.subscribe(view.update);
+  await ctl.refresh(); assert.equal(ctl.snapshot().canAccept, false); assert.equal(ctl.snapshot().canReviewAccept, true);
+  root.querySelector('[data-offer-action="accept"]').click(); assert.deepEqual(calls, ['accept']);
+  await ctl.decision('accept'); assert.deepEqual(calls, ['accept']);
+  unsubscribe(); ctl.destroy(); view.destroy();
 });

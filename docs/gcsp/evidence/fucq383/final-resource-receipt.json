@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "issue": "FUCQ-383",
+  "recorded_at": "2026-11-11T14:55:52Z",
+  "scope": "Finalization filesystem/process audit; no new tests, browser, server, descendants or scratch allocated",
+  "checkpoint_allocations": [
+    {
+      "root": "/private/tmp/test-stamp-shard-e378d999bb3e45688a32b42ffe719c07",
+      "absent": true,
+      "owned_process_groups": [
+        8689
+      ],
+      "active_processes": []
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-1b7d52354d6e49b082ad1c733daee4f8",
+      "absent": true,
+      "owned_process_groups": [
+        11843
+      ],
+      "active_processes": []
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-216533a9e08c433dab589d756ef2dae6",
+      "absent": true,
+      "owned_process_groups": [
+        14774
+      ],
+      "active_processes": []
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-383b054d844f44b4bdc44bbd73b58d21",
+      "absent": true,
+      "owned_process_groups": [
+        23478
+      ],
+      "active_processes": []
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-37dde4b067c047ada96a5d4642b02cfe",
+      "absent": true,
+      "owned_process_groups": [
+        24451
+      ],
+      "active_processes": []
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-756460b843c24bfeae4d5dd4df273fe8",
+      "absent": true,
+      "owned_process_groups": [
+        30272
+      ],
+      "active_processes": []
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-8ad39e48008e46499b431cc0e919926a",
+      "absent": true,
+      "owned_process_groups": [
+        34801
+      ],
+      "active_processes": []
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-c67740735c3545a6a5ded4b7cec39e02",
+      "absent": true,
+      "owned_process_groups": [
+        37773
+      ],
+      "active_processes": []
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-6681997cc23b4f64a34cd6e0f3dfe830",
+      "absent": true,
+      "owned_process_groups": [
+        38473
+      ],
+      "active_processes": []
+    },
+    {
+      "root": "/private/tmp/test-stamp-shard-73ea16b13cb44aaeafd48da698fa0636",
+      "absent": true,
+      "owned_process_groups": [
+        41412
+      ],
+      "active_processes": []
+    }
+  ],
+  "all_ten_roots_absent": true,
+  "all_owned_process_groups_absent": true,
+  "port3883_listener": false,
+  "removed_items": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-11-001/server/node_modules",
+      "kind": "owned dependency symlink",
+      "bytes": 55,
+      "target_preserved": "/Users/usget/Claude/vehicle-matcher/server/node_modules",
+      "absence_verified": true
+    }
+  ],
+  "owned_scaffold_git_pyc_present": false,
+  "historical_peak_rss_bytes": 466092032,
+  "historical_peak_sampled_scratch_bytes": 150272,
+  "historical_cumulative_recorded_scratch_peak_bytes": 300544,
+  "compatibility_exception": "Historical bounded active headless browser profile; browser/server and supervised scratch removed. No active exception at finalization.",
+  "retained_summary": "docs/gcsp/evidence/fucq383/final-validation.md",
+  "shared_combined_resource_receipt": "docs/gcsp/evidence/fucq386/resource-receipt.json",
+  "large_output_or_archive": false,
+  "onedrive_output": null,
+  "leftovers": [],
+  "finalization_merge_commit": "b977000104e7a0bd188393db0a3cd960a3acd592"
+}

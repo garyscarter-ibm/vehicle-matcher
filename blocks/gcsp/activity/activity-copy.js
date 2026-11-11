@@ -71,7 +71,8 @@ export function exclusionLines(value, paused) {
   });
 }
 const labels = Object.freeze({ confirmed: 'Search confirmed', paused: 'Search paused', resumed: 'Search resumed',
-  'changed-after-decline': 'Search updated after a decline' });
+  'changed-after-decline': 'Search updated after a decline', engaged: 'Buddy engaged', disengaged: 'Buddy disengaged',
+  'preferences-updated': 'Preferences updated' });
 export const activityEvents = (changes = []) => {
   const seen = new Set();
   return changes.filter((event) => { if (!event.eventId || seen.has(event.eventId)) return false; seen.add(event.eventId); return true; })

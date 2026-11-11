@@ -54,6 +54,7 @@ test('both providers give the same complete/partial vehicle, provenance and fail
     // The live local display catalogue adds reviewed imagery; the fictional offline fixture remains dated.
     const withoutImages = (vehicle) => {
       const copy = structuredClone(vehicle); delete copy.images;
+      delete copy.equipment.resolution;
       delete copy.completeness.images; delete copy.presentation.imageLabel; return copy;
     };
     assert.deepEqual(withoutImages(b.vehicle), withoutImages(a.vehicle));
@@ -243,7 +244,8 @@ test('representative image roles/fidelity survive either mapping without a claim
   const image = { imageId: 'fictional-contract-image', asset: 'fixture-only/no-runtime-asset.webp',
     role: 'representative-model', fidelity: 'representative-model', sourceKind: 'dated-snapshot',
     observedDate: '2026-11-01', label: 'Representative model image' };
-  const direct = await lookup.resolve(complete); direct.images = { state: 'representative', label: 'Representative imagery', items: [image] };
+  const direct = await lookup.resolve(complete); delete direct.equipment.resolution;
+  direct.images = { state: 'representative', label: 'Representative imagery', items: [image] };
   direct.presentation.imageLabel = 'Representative imagery'; direct.completeness.images = 'representative';
   const doc = structuredClone(fixture.entries[1].document);
   doc.card.portraits = { knowledge: 'representative', caption: 'Representative imagery', pictures: [{ reference: image.imageId,

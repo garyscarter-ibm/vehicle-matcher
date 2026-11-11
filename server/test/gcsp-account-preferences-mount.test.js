@@ -94,7 +94,7 @@ test('a failed load shows a short status with Try again, and teardown empties th
 test('every named visual state mounts with its expected tiles, panel and status', async () => {
   const expected = { empty: [0, null], selected: [3, null], 'body-open-unset': [0, 'body'], 'body-open-medium': [3, 'body'], 'body-high': [3, 'body'],
     'comfort-midpoint': [3, 'comfort'], 'remove-comfort': [3, null], 'save-failed': [3, null], stale: [3, null], pending: [3, null], 'rating-failed': [3, null],
-    'same-again': [3, null], 'same-again-high': [1, null], 'same-again-failed': [3, null], ...Object.fromEntries([0, 1, 2, 3, 4, 5, 6].map((n) => [`count-${n}`, [n, null]])) };
+    'same-again': [3, null], 'same-again-high': [1, null], 'same-again-failed': [3, null], 'engage-pending': [3, null], 'engage-failed': [3, null], 'minimum-loss': [2, null], validation: [0, null], ...Object.fromEntries([0, 1, 2, 3, 4, 5, 6].map((n) => [`count-${n}`, [n, null]])) };
   for (const name of PREFERENCE_FIXTURE_STATES) {
     const host = document.createElement('div'); document.body.append(host); let mounted;
     const destroy = mountAccount(host, { adapter: adapter(), preferences: (region, { signal }) => {
@@ -282,4 +282,84 @@ test('the description is set once the current car renders after the preferences'
   await tick(); await mounted.ready; await tick();
   assert.ok(host.querySelector('.gcsp-prefs-mode [role=tooltip]').textContent.endsWith(CAR_TEXT));
   destroy(); host.remove();
+});
+
+// Buddy engagement (FUCQ-370): the lamp in Account's head and the one action in the Preferences footer.
+async function mountBuddy(state = 'selected', options = {}) {
+  const host = document.createElement('div'); document.body.append(host); const transport = previewPreferenceTransport(state, options); const calls = []; let mounted;
+  const spy = { loadEditor: () => transport.loadEditor(), savePreferences: (i) => transport.savePreferences(i),
+    engage: (i) => { calls.push(['engage', i]); return transport.engage(i); }, disengage: (i) => { calls.push(['disengage', i]); return transport.disengage(i); } };
+  const destroy = mountAccount(host, { adapter: adapter(), preferences: (region, { signal, describeCar }) => { mounted = mountAccountPreferences(region, { transport: spy, signal, describeCar }); return mounted; } });
+  await tick(); await mounted.ready; drivePreferenceState(mounted.controller, state); await tick();
+  return { host, destroy, calls, controller: mounted.controller };
+}
+const lampText = (host) => host.querySelector('.gcsp-account-head .gcsp-buddy-status.is-prominent')?.textContent;
+const action = (host) => host.querySelector('.gcsp-prefs-action button');
+
+test('the lamp sits in the head, the action in the footer slot, and there is no Save button anywhere', async () => {
+  const { host, destroy } = await mountBuddy('selected', { buddy: 'engaged' });
+  assert.equal(lampText(host), 'Buddy engaged'); assert.equal(action(host).textContent, 'Disengage Buddy');
+  assert.ok(action(host).classList.contains('vm-btn-primary')); assert.equal(action(host).closest('[data-slot="action"]') !== null, true);
+  const describedBy = action(host).getAttribute('aria-describedby').split(' ');
+  assert.ok(describedBy.includes(host.querySelector('.gcsp-prefs-status').id)); assert.ok(describedBy.includes(host.querySelector('.gcsp-buddy-status.is-prominent').id));
+  assert.equal([...host.querySelectorAll('button')].some((node) => /save/i.test(node.textContent)), false);
+  destroy(); host.remove();
+  const off = await mountBuddy('selected'); assert.equal(lampText(off.host), 'Buddy disengaged'); assert.equal(action(off.host).textContent, 'Engage Buddy'); off.destroy(); off.host.remove();
+  const unknown = await mountBuddy('selected', { buddy: 'unknown' });
+  assert.equal(lampText(unknown.host), 'Buddy status unavailable'); assert.equal(action(unknown.host).disabled, true);
+  assert.equal(statusText(unknown.host), 'Buddy status unavailable. Reload to try again.');
+  assert.ok([...unknown.host.querySelectorAll('.gcsp-prefs-statusline button')].some((node) => node.textContent === 'Reload preferences')); unknown.destroy(); unknown.host.remove();
+});
+
+test('engage and disengage keep focus on the button and say it once in the status line', async () => {
+  const { host, destroy, calls } = await mountBuddy('selected');
+  action(host).focus(); click(action(host)); await tick(); await tick();
+  assert.equal(calls.length, 1); assert.equal(lampText(host), 'Buddy engaged'); assert.equal(action(host).textContent, 'Disengage Buddy');
+  assert.equal(statusText(host), 'Buddy engaged. Your preferences will guide the search.'); assert.equal(document.activeElement, action(host));
+  assert.equal(host.querySelectorAll('[aria-live], [role=status]').length >= 1, true);
+  assert.equal(host.querySelector('.gcsp-buddy-status.is-prominent').hasAttribute('role'), false);
+  click(action(host)); await tick(); await tick();
+  assert.equal(lampText(host), 'Buddy disengaged'); assert.equal(statusText(host), 'Buddy disengaged. Your preferences are kept.'); assert.equal(document.activeElement, action(host));
+  destroy(); host.remove();
+});
+
+test('under the minimum the status line takes focus and shows the danger copy, with no request', async () => {
+  const { host, destroy, calls } = await mountBuddy('validation');
+  await tick(); await tick();
+  assert.equal(calls.length, 0);
+  const status = host.querySelector('.gcsp-prefs-status');
+  assert.equal(status.textContent, 'Choose 3 more categories to engage Buddy. Your preferences save automatically.');
+  assert.ok(status.classList.contains('is-failed')); assert.equal(document.activeElement, status);
+  assert.equal(lampText(host), 'Buddy disengaged');
+  destroy(); host.remove();
+});
+
+test('a pending engage disables the button and never reads engaged; a failure offers Engage again', async () => {
+  const pending = await mountBuddy('engage-pending'); await tick(); await tick();
+  assert.equal(action(pending.host).disabled, true); assert.equal(statusText(pending.host), 'Engaging Buddy.'); assert.equal(lampText(pending.host), 'Buddy disengaged');
+  pending.destroy(); pending.host.remove();
+  const failed = await mountBuddy('engage-failed'); await tick(); await tick();
+  assert.equal(statusText(failed.host), 'Buddy was not engaged. Try again.'); assert.equal(action(failed.host).disabled, false); assert.equal(action(failed.host).textContent, 'Engage Buddy');
+  failed.destroy(); failed.host.remove();
+});
+
+test('minimum loss on a successful removal disengages the lamp and shows the danger notice', async () => {
+  const { host, destroy } = await mountBuddy('minimum-loss'); await tick(); await tick(); await tick();
+  const status = host.querySelector('.gcsp-prefs-status');
+  assert.equal(lampText(host), 'Buddy disengaged'); assert.equal(action(host).textContent, 'Engage Buddy');
+  assert.equal(status.textContent, 'Preferences saved. Buddy disengaged: choose at least 3 categories to engage again.'); assert.ok(status.classList.contains('is-notice'));
+  destroy(); host.remove();
+});
+
+test('Account refresh re-reads the lamp quietly, and without a preferences capability there is no lamp', async () => {
+  const host = document.createElement('div'); document.body.append(host); const inner = previewPreferenceTransport('selected', { buddy: 'engaged' }); let view = 'engaged'; let mounted;
+  const transport = { ...inner, loadEditor: async () => { const r = await inner.loadEditor(); r.value.initial.buddy = { ...r.value.initial.buddy, state: view, remaining: 0 }; return r; } };
+  const destroy = mountAccount(host, { adapter: adapter(), preferences: (region, { signal, describeCar }) => { mounted = mountAccountPreferences(region, { transport, signal, describeCar }); return mounted; } });
+  await tick(); await mounted.ready; await tick();
+  assert.equal(lampText(host), 'Buddy engaged'); view = 'disengaged';
+  await destroy.sync(); await tick(); await tick(); await tick();
+  assert.equal(lampText(host), 'Buddy disengaged'); destroy(); host.remove();
+  const bare = document.createElement('div'); document.body.append(bare);
+  const stop = mountAccount(bare, { adapter: adapter() }); await tick(); await tick();
+  assert.equal(bare.querySelector('.gcsp-buddy-status.is-prominent'), null); stop(); bare.remove();
 });

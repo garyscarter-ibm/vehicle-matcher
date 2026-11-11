@@ -259,6 +259,39 @@ status `assumed`, illustrative). `value` is `sameAgain` while Same again is on f
 Importance, ratings and policy-default or unopened categories never change it. `GET /editor` carries the mapping in
 `context.accountPreferences.understanding` with `policyKey`, and every readback carries `policyKey` and `policyVersion` as provenance.
 
+### Buddy engagement · FUCQ-370
+
+Engaged means, on the latest confirmed brief, `buddy.searchConsent === true && buddy.holdConsent === true && buddy.paused === false`;
+everything else (including no confirmed brief) is disengaged. Neither action places an order, creates a hold or offer, or touches an
+existing offer (activity keeps `existingOffersUnaffected`). Grants and the minimum-loss rule come from the assumed policy entry
+`brief.engagement.v1` (`{ schemaVersion: 1, grants: { search: true, hold: true }, onMinimumLoss: 'disengage' }`); a missing or malformed
+entry makes engage and engaged autosave `unavailable`. The minimum and the counting stay in `brief.accountPreferences.v1`
+(`accountState().considered`, `sameAgainView().on`), so there is one counter.
+
+`initial.buddy` on `GET /editor`, and `buddy` on every engagement response: `{ state: 'engaged' | 'disengaged', reason: null | 'paused' | 'minimum-lost',
+permissionVersion: integer | null, minimumCategories, considered, remaining, sameAgain, canEngage }`. `remaining` is 0 while Same again is on,
+else `max(0, minimum - considered)`; `canEngage` is `state === 'disengaged' && remaining === 0`. `reason` is `minimum-lost` only while the
+latest version records `buddy.disengagedReason: 'minimum-lost'`.
+
+`POST /api/gcsp/brief/engage` and `/disengage` (employee, strict editor routes) take exactly `{ commandId, expectedBriefVersion, expectedDraftVersion }`
+and return `ok({ briefVersion, draftVersion, buddy })` built from a re-read after the write. Under the minimum with Same again off, engage is
+`invalid` `code: 'engagement-minimum'` with `remaining`, `considered`, `minimumCategories` and one `categories` reason; nothing is written.
+`conflict` reasons: `already-engaged`, `already-disengaged` (both with `buddy`), `brief-read-only` (an accepted offer), and
+`idempotency-input-changed` for a reused commandId with another body; the same commandId and body replays the first outcome. `stale-version`,
+`stale-run`, `forbidden`, `access-required` and `unavailable` pass through. `BriefService.engage/disengage/saveDraft` take an internal
+options argument carrying the editor's gate; it never comes from HTTP, and `engage` without it is `invalid`.
+
+One repository transaction per transition, each recording a `brief:changes` event: engage (operation `engaged`) confirms a pending draft's
+content (else copies the current brief) and sets `buddy { enabled, searchConsent, holdConsent, paused: false, permissionVersion: version + 1,
+engagedBy, engagedAt, confirmedBy, confirmedAt }`; disengage (`disengaged`) keeps the content and sets both consents false with
+`permissionVersion: version + 1`. While consent is held (paused or not), `POST /preferences` also inserts a confirmed version in the same
+transaction as the draft receipt: operation `preferences-updated` with `buddy` and `permissionVersion` unchanged, or, when the edit drops
+below the minimum, `disengaged` with `disengagedReason: 'minimum-lost'` and `buddyTransition: 'minimum-lost'` in the response (`null`
+otherwise; `briefVersion` is then the new confirmed version). Autosave without held consent stays draft-only and never grants consent or resumes
+a pause. Pause on a brief without search consent is `conflict` `not-engaged`. Activity projects `engaged`, `disengaged` and `preferences-updated`
+as state changes; buddy-hold, remote and allocation keep reading `searchConsent`, `holdConsent`, `paused` and `permissionVersion`.
+The legacy `POST /confirm` with consent is unchanged.
+
 ## LearningRecord schema v1 · FUCQ-113 bounded observed slice
 
 `server/gcsp/predict/records/index.js` exports `validateLearningRecord(record)` and

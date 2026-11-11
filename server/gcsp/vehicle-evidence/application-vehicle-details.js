@@ -87,8 +87,18 @@ function fact(f, numeric = false) {
 function appearance(a) {
   return only(a, ['state', 'selections', 'reason']) && ['known', 'unknown'].includes(a.state) && Array.isArray(a.selections)
     && (a.state === 'unknown' ? a.selections.length === 0 && text(a.reason) : a.selections.length > 0)
-    && a.selections.every((s) => keys(s, ['code', 'label', 'claim']) && text(s.code)
-      && fact(s.label) && s.claim === 'selected-catalogue-equipment');
+    && a.selections.every((s) => only(s, ['code', 'label', 'claim', 'swatch']) && text(s.code)
+      && fact(s.label) && s.claim === 'selected-catalogue-equipment'
+      && (s.swatch === undefined || fact(s.swatch) && (s.swatch.state === 'unknown' || /^#[a-fA-F0-9]{6}$/.test(s.swatch.value))));
+}
+function definitionResolution(r) {
+  return keys(r, ['version', 'digest', 'configurationId', 'state', 'reason', 'claim', 'verifiedFitted', 'swatches',
+    'selectedCount', 'resolvedCount', 'unresolved']) && nullableText(r.version) && nullableText(r.digest)
+    && (r.digest === null || /^[a-f0-9]{64}$/.test(r.digest)) && text(r.configurationId) && states.includes(r.state)
+    && nullableText(r.reason) && r.claim === 'selected-catalogue-equipment' && r.verifiedFitted === 'unknown' && r.swatches === 'unknown'
+    && Number.isSafeInteger(r.selectedCount) && r.selectedCount >= 0 && Number.isSafeInteger(r.resolvedCount)
+    && r.resolvedCount >= 0 && r.resolvedCount <= r.selectedCount && Array.isArray(r.unresolved)
+    && r.unresolved.every((entry) => keys(entry, ['code', 'reason']) && text(entry.code) && text(entry.reason));
 }
 function quantity(q) {
   if (!keys(q, ['state', 'value', 'reason', 'evidenceRefs']) || !Array.isArray(q.evidenceRefs) || q.evidenceRefs.length > 32) return false;
@@ -102,7 +112,8 @@ function boundCatalogueIdentity(i) {
     && !!canonicalVehicleIdentifier('configuration', i.configurationId);
 }
 function equipment(e, v2 = false) {
-  if (!keys(e, ['definitions', 'available', 'selected', 'verifiedFitted']) || !Array.isArray(e.definitions)
+  if (!only(e, ['definitions', 'available', 'selected', 'verifiedFitted', 'resolution'])
+    || (e.resolution !== undefined && !definitionResolution(e.resolution)) || !Array.isArray(e.definitions)
     || !e.definitions.every((d) => keys(d, ['code', 'category', 'label']) && text(d.code) && text(d.category) && fact(d.label))
     || !only(e.available, ['state', 'codes', 'complete', 'completeness', 'provenance'])
     || !only(e.selected, v2 ? ['state', 'options', 'accessories', 'factoryComplete', 'accessoryCodesComplete', 'accessoryQuantitiesComplete', 'provenance'] : ['state', 'options', 'accessories', 'complete', 'completeness', 'provenance'])
@@ -209,6 +220,7 @@ function matches(request, w) {
   if (w.requested.kind !== request.kind || w.requested.id !== request.id || w.resolved.kind !== request.kind
     || w.resolved.id !== request.id || i.kind !== request.kind || i.identityKind !== 'synthetic'
     || w.resolved.configurationId !== i.configurationId) return false;
+  if (w.equipment.resolution && w.equipment.resolution.configurationId !== i.configurationId) return false;
   if (request.kind === 'configuration' && (i.configurationId !== request.id || i.vehicleId !== null || i.vin !== null
     || i.orderUuid !== null || i.orderNumber !== null || i.usage !== 'configuration')) return false;
   if (request.kind === 'stock' && (i.orderUuid !== request.id || !/^\d{7}$/.test(i.orderNumber)

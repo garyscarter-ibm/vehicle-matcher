@@ -1,4 +1,5 @@
 import { el } from '../../vehicle-matcher/ui.js';
+import { loadingSkeleton } from './loading-skeleton.js';
 
 const CASCADE_MS = 1200; // The last tile's delay plus FADE_MS lands the whole grid in about this long.
 const FADE_MS = 350;
@@ -20,7 +21,7 @@ function defaultPreload(srcs, timeoutMs) {
   });
 }
 
-/** Image tile grid for a release. tiles: { id, imageSrc, label }. Returns { root, show(tiles, { animate }) -> Promise, clear(), destroy() }.
+/** Image tile grid for a release. tiles: { id, imageSrc, label }. Returns { root, show(tiles, { animate }) -> Promise, setLoading(), clear(), destroy() }.
  * show() preloads first, then cascades the tiles in (about 1.2s); `preload(srcs) -> Promise<Set>` and `matchMedia` are injectable. */
 export function releaseGrid({ label = 'Released cars', columns = 20, preload, timeoutMs = 4000, matchMedia } = {}) {
   const root = el('div', 'gcsp-release-grid'); root.setAttribute('role', 'grid'); root.setAttribute('aria-label', label);
@@ -66,14 +67,20 @@ export function releaseGrid({ label = 'Released cars', columns = 20, preload, ti
     root.replaceChildren(...rows, tip); setActive(0);
   }
 
+  function paintLoading(size) {
+    root.setAttribute('aria-busy', 'true'); tip.hidden = true; cells = []; active = 0;
+    root.replaceChildren(loadingSkeleton({ label: 'Loading released cars', layout: 'release-grid', role: null, items: size }));
+  }
+  function setLoading() { const size = cells.length || columns * 5; begin(); paintLoading(size); }
+
   async function show(tiles = [], { animate = true } = {}) {
-    const run = begin(); root.setAttribute('aria-busy', 'true');
+    const hadFocus = root.contains(root.ownerDocument.activeElement); const run = begin(); paintLoading(tiles.length);
     const srcs = [...new Set(tiles.map((tile) => tile.imageSrc).filter(Boolean))];
     let loaded; try { loaded = new Set(await (preload ? preload(srcs) : defaultPreload(srcs, timeoutMs))); } catch { loaded = new Set(); }
     if (run !== token) return;
-    const hadFocus = root.contains(root.ownerDocument.activeElement); const motion = animate && !reduced();
+    const motion = animate && !reduced();
     tip.hidden = true; paint(tiles, loaded, motion); root.removeAttribute('aria-busy');
-    if (hadFocus) cells[0]?.focus();
+    if (hadFocus && root.ownerDocument.activeElement === root.ownerDocument.body) cells[0]?.focus();
     if (!motion) return;
     await new Promise((resolve) => {
       let timer = null; cancelRun = () => { clearTimeout(timer); resolve(); };
@@ -100,5 +107,5 @@ export function releaseGrid({ label = 'Released cars', columns = 20, preload, ti
   root.addEventListener('focusout', () => { tip.hidden = true; });
   root.addEventListener('mouseover', (event) => { const cell = event.target.closest?.('[role="gridcell"]'); if (cell) showTip(cell); });
   root.addEventListener('mouseleave', () => { tip.hidden = true; });
-  return { root, show, clear, destroy };
+  return { root, show, setLoading, clear, destroy };
 }

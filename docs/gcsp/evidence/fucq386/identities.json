@@ -1,0 +1,32 @@
+{
+  "corrected_source_commit": "22176eb2393c644151c097bc1022998b67c1fe29",
+  "docs_integration_commit": "8c748abd762fd005f1c39ffa25885b8112d7e07b",
+  "independent_review_sha256": "9e3c92c8b8053827fa0e073b4bc8cea7eaaa6e7ac774b135d7216fe304eb0f41",
+  "latest_docs_integration_commit": "c0437fa2d72728efd0826436e459b369dc5d6d68",
+  "latest_shared_docs_commit": "c4262f40",
+  "original_scoped_code_key": "643e6e233e35345e30659e76247a042dd1f80f53dc2f9e20be3f9b1221ae206b",
+  "reuse_note": "Earlier actual accept/decline outcomes use the identical controller, drawer, access and decision service blobs; the later correction intentionally changes equipment projection/card layout and shared radio direction. Corrected visual checks and160 scoped regressions cover those changes.",
+  "scoped_correction_code_key": "559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4",
+  "sha256": {
+    "blocks/gcsp/kit/media-gallery.css": "2bab9856c20b351a52a462bbaf1c79ddadf3b18d585b8ce99bcbcfe316833f7c",
+    "blocks/gcsp/kit/media-gallery.js": "0735b8ed4a0493f76abee2578d82f1c8e033e0a99597efd4d3756b0167b88a70",
+    "blocks/gcsp/kit/option-rows.css": "97da56426517834df9c0f57f4362d5f247cd14e0f029a1baeda2c7a837382439",
+    "blocks/gcsp/kit/side-drawer.js": "57910fe1e8a6d434951e172cdb1afb31783aee08996c465de48ded2091229f3c",
+    "blocks/gcsp/kit/vehicle-decision.css": "9057204220f923449ed37ef5d1b6d08b301b461d26cd25418a8fad24bcf4651e",
+    "blocks/gcsp/kit/vehicle-decision.js": "5444f61e909a8bc7697ffd6210a6918b25141c3cef286389b1704edb6230f8f5",
+    "blocks/gcsp/offer/decision-drawer.css": "2fc3d00c73f5042d1e1cfc468481d088bebd3c02ea07ee28f15f5a697eef98c4",
+    "blocks/gcsp/offer/decision-drawer.js": "86ce98aab6d22d696fcdbc0926f4751b12e762f8e5b702db3ebc766281b95131",
+    "blocks/gcsp/offer/offer-controller.js": "cdf1622f0b039290c3800d3ae03cf5195bcd5bb60933ff24d5aa06de69eb60d2",
+    "blocks/gcsp/offer/offer-projection.js": "eae39dd4fb3898bd6db9be49b3820f96fe0464e01e4c592df3d68e127f75b4f5",
+    "blocks/gcsp/offer/offer-view.js": "6bc44184df1f31857847a74b56445df1854b8087330d7bff96f46a81e25e1229",
+    "server/gcsp/offers/access-http.js": "a17f8af461cc9ccf6f9b3b94eec18cd7e98b7c394d8dd6f189848576f7cdd97d",
+    "server/gcsp/offers/access.js": "f3d2c5130412665f796b5a09040b114296b0152de1983a46e9740507306da0a5",
+    "server/gcsp/offers/buddy-conversion.js": "9821ec9bdaccf1e0d9816a30b0143b6864df1a737ec6d035f15e0dc6f1e06e85",
+    "server/gcsp/offers/decision.js": "b95f6bd9c06d9a5f631d49efca6bb50cbe1aee15943bd4c9686cb9a4fb935dfe",
+    "server/test/gcsp-offer-view-decision.test.js": "276d06b94fc13e04beb6b40c72e6614002e5b001b445f7a3cc41a2970518bc3a",
+    "server/test/gcsp-offer-view-projection.test.js": "5c223c0cd0aaf7abaca7c583bfa82362a4a8400c669ad8ac405a1cddaab5d506",
+    "server/test/gcsp-offer-view-render.test.js": "06b20e05f0dbad72840c4f858eeacbd02f043280d4b71f4f95257dc0723f4e7d",
+    "server/test/shared-kit-contracts.test.js": "c66f08836b324b90bed6587e9808cbd45ec862e2167f8c76bac757f26bc9dfa3",
+    "server/test/ui-ratchet.json": "8bf76027ec1f4936ed5c22e05632be6f79949d4a3ae3679a7ffa751ce0b2033e"
+  }
+}

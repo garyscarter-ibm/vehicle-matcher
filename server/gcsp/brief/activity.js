@@ -7,7 +7,7 @@ const positive = (value) => Number.isSafeInteger(value) && value > 0;
 const unavailable = (code) => result('unavailable', { code, reason: 'The activity projection is unavailable.', retryable: true });
 const owned = (row, context) => row?.runId === context.runId && row.employeeId === context.employeeId;
 const occurred = (instant, now) => validInstant(instant) && Date.parse(instant) <= Date.parse(now);
-const operations = ['confirmed', 'paused', 'resumed', 'changed-after-decline'];
+const operations = ['confirmed', 'paused', 'resumed', 'changed-after-decline', 'engaged', 'disengaged', 'preferences-updated'];
 
 function projectOffer(row) {
   if (!text(row.offerId) || !text(row.state) || !positive(row.version)
@@ -31,7 +31,9 @@ function projectChange(receipt, history, context, now) {
     || !occurred(event.occurredAt, now) || event.occurredAt !== brief.confirmedAt
     || event.previousBriefVersion !== brief.previousBriefVersion
     || event.operation === 'paused' && brief.buddy?.paused !== true
-    || event.operation === 'resumed' && brief.buddy?.paused !== false) return null;
+    || event.operation === 'resumed' && brief.buddy?.paused !== false
+    || event.operation === 'engaged' && !(brief.buddy?.searchConsent === true && brief.buddy.holdConsent === true && brief.buddy.paused === false)
+    || event.operation === 'disengaged' && brief.buddy?.searchConsent !== false) return null;
   return { eventId: event.eventId, eventType: event.eventType, operation: event.operation,
     briefVersion: event.briefVersion, previousBriefVersion: event.previousBriefVersion, occurredAt: event.occurredAt };
 }
