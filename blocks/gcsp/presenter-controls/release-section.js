@@ -2,6 +2,7 @@
 import { el, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { friendlyTime } from '../kit/friendly-time.js';
 import { releaseGrid } from '../kit/release-grid.js';
+import { loadingSkeleton } from '../kit/loading-skeleton.js';
 
 const COUNT_MS = 600;
 const REDUCE = '(prefers-reduced-motion: reduce)';
@@ -18,7 +19,7 @@ const count = (value) => (Number.isFinite(value) && value > 0 ? Math.floor(value
 const shown = (value) => value.toLocaleString('en-GB');
 
 /** Mounts Today's release at the end of `parent`. Returns { root, refresh() -> Promise, destroy() }.
- * Reads adapter.readLatestRelease; anything but an ok reply shows the before-release state, with no error copy. */
+ * Shows a skeleton until the first read lands. Reads adapter.readLatestRelease; anything but an ok reply shows the before-release state, with no error copy. */
 export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
   const win = parent.ownerDocument.defaultView; const id = `gcsp-console-release-${++sequence}`;
   const root = el('section', 'gcsp-console-release'); root.setAttribute('aria-labelledby', `${id}-title`);
@@ -80,6 +81,6 @@ export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
   }
 
   function destroy() { disposed = true; counting += 1; abort.abort(); grid.destroy(); root.remove(); }
-  paintBefore();
+  body.replaceChildren(loadingSkeleton({ label: "Loading today's release", layout: 'section', role: null }));
   return { root, refresh, destroy };
 }
