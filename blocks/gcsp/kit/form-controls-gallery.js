@@ -1,3 +1,4 @@
+import { buddyStatus } from './buddy-status.js';
 import { el, button, factList } from '../../vehicle-matcher/ui.js';
 import { renderOptionList } from '../../vehicle-matcher/modes/question-ui.js';
 import { labelledField, errorSummary, checkboxField } from './form-controls.js';
@@ -225,4 +226,16 @@ export function sameAgainExample() {
     if (helpOpen) view.root.querySelector('.gcsp-help-tip').hidden = false;
   });
   return section;
+}
+
+export function buddyStatusExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-buddy-status';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP Buddy status'));
+  const scope = el('div', 'gcsp'); const body = el('div', 'vm');
+  for (const state of ['active', 'paused', 'unset', 'finished', 'inactive', 'unavailable']) {
+    const row = el('p');
+    row.append(buddyStatus({ state, href: '/gcsp-activity-live.html' }), document.createTextNode(' '), buddyStatus({ state }));
+    body.append(row);
+  }
+  scope.append(body); section.append(scope); return section;
 }

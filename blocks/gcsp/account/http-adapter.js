@@ -61,7 +61,7 @@ export function createAccountHttpAdapter({ base = '', fetchImpl = globalThis.fet
       return { status: 'ok', value: { offers: listed } };
     } catch (error) { if (signal?.aborted) throw error; return { status: 'unavailable' }; }
   }
-  // What the buddy is doing; a failed read only hides the home card.
+  // What the buddy is doing; a failed read leaves the account usable with status unavailable.
   async function readActivity({ signal } = {}) {
     try {
       const response = await fetchImpl(`${base}/api/gcsp/activity`, { credentials: 'include', signal, headers: { Accept: 'application/json' } });
