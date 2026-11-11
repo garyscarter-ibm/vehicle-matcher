@@ -1,6 +1,6 @@
 {
   "run": "fucq369-strict-capture",
-  "implementationCommit": "8faebc18",
+  "implementationCommit": "4707f8c5",
   "reference": {
     "commit": "193cbf07",
     "dir": "docs/gcsp/mockups/account-preferences-2026-11-10/review"
@@ -101,6 +101,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -251,6 +269,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -441,6 +477,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -603,6 +657,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -805,6 +877,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -955,6 +1045,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -1149,6 +1257,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -1299,6 +1425,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -1487,6 +1631,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -1637,6 +1799,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -1825,6 +2005,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 307.92,
+            "y": 980.88,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 169,
+            "y": 994.38,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -1975,6 +2173,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 307.92,
+            "y": 980.88,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 169,
+            "y": 994.38,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -2163,6 +2379,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 810.94,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 824.44,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -2313,6 +2547,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 810.94,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 824.44,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -2501,6 +2753,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 808.31,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 821.81,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -2651,6 +2921,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 808.31,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 821.81,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -2839,6 +3127,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 805.19,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 818.69,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -2989,6 +3295,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 807.5,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 821,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -3177,6 +3501,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 235.92,
+            "y": 842.19,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 97,
+            "y": 855.69,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -3327,6 +3669,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 235.92,
+            "y": 844.5,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 97,
+            "y": 858,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -3515,6 +3875,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1051,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1064.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -3665,6 +4043,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1085.5,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1099,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -3853,6 +4249,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1089.06,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1102.56,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -4003,6 +4417,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1123.56,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1137.06,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -4193,6 +4625,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1089.06,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1102.56,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -4343,6 +4793,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1123.56,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1137.06,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -4533,6 +5001,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1089.06,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1102.56,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -4683,6 +5169,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1123.56,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1137.06,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -4873,6 +5377,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1089.06,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1102.56,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": true,
+          "outlineStyle": "solid",
+          "outlineWidth": "2px",
+          "outlineOffset": "3px"
+        },
         "note": null,
         "tiles": [
           {
@@ -5035,6 +5557,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1123.56,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1137.06,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": true,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -5238,6 +5778,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -5388,6 +5946,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -5580,6 +6156,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -5730,6 +6324,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -5918,6 +6530,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -6068,6 +6698,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -6257,6 +6905,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1051,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1064.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -6407,6 +7073,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1085.5,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1099,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -6598,6 +7282,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -6764,6 +7466,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -6970,6 +7690,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1051,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1064.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -7136,6 +7874,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1085.5,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1099,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -7343,6 +8099,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -7474,6 +8248,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -7624,6 +8416,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -7799,6 +8609,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1089.06,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1102.56,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -7930,6 +8758,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1089.06,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1102.56,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -8080,6 +8926,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1123.56,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1137.06,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -8259,6 +9123,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -8390,6 +9272,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -8540,6 +9440,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -8712,6 +9630,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 532,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 545.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": "Add your current car to use this.",
         "tiles": [
           {
@@ -8884,6 +9820,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 608.19,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 621.69,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": "Add your current car to use this.",
         "tiles": [
           {
@@ -9056,6 +10010,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -9230,6 +10202,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1089.06,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1102.56,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -9406,6 +10396,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 259.92,
+            "y": 819,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 121,
+            "y": 832.5,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -9529,7 +10537,25 @@
           "tag": "BUTTON",
           "role": null,
           "label": "About Same again, please!",
-          "isSwitch": false
+          "isSwitch": false,
+          "ring": {
+            "box": {
+              "x": 171.92,
+              "y": 1089.06,
+              "width": 44,
+              "height": 44
+            },
+            "labelText": {
+              "x": 33,
+              "y": 1102.56,
+              "width": 134.92,
+              "height": 17
+            },
+            "focused": true,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "3px"
+          }
         },
         {
           "tag": "INPUT",
@@ -9613,6 +10639,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1089.06,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1102.56,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -9756,6 +10800,24 @@
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
+        "ring": {
+          "box": {
+            "x": 171.92,
+            "y": 1089.06,
+            "width": 44,
+            "height": 44
+          },
+          "labelText": {
+            "x": 33,
+            "y": 1102.56,
+            "width": 134.92,
+            "height": 17
+          },
+          "focused": false,
+          "outlineStyle": "none",
+          "outlineWidth": "3px",
+          "outlineOffset": "0px"
+        },
         "note": null,
         "tiles": [
           {
@@ -13951,6 +15013,32 @@
       }
     },
     {
+      "state": "320-same-tooltip-long",
+      "label": "focused info button drawn focus ring (rect grown by computed outline offset and width) does not intersect the label text",
+      "pass": false,
+      "detail": {
+        "pass": false,
+        "outerRing": {
+          "l": 166.92,
+          "t": 1084.06,
+          "r": 220.92,
+          "b": 1138.06
+        },
+        "labelText": {
+          "l": 33,
+          "t": 1102.56,
+          "r": 167.92,
+          "b": 1119.56
+        },
+        "gapToLabel": -1,
+        "computed": {
+          "style": "solid",
+          "width": "2px",
+          "offset": "3px"
+        }
+      }
+    },
+    {
       "state": "1440-importance-medium",
       "label": "no horizontal overflow",
       "pass": true
@@ -16264,6 +17352,32 @@
     },
     {
       "state": "320-same-keyboard",
+      "label": "focused info button drawn focus ring (rect grown by computed outline offset and width) does not intersect the label text (at the info stop of the Tab sequence)",
+      "pass": false,
+      "detail": {
+        "pass": false,
+        "outerRing": {
+          "l": 166.92,
+          "t": 1084.06,
+          "r": 220.92,
+          "b": 1138.06
+        },
+        "labelText": {
+          "l": 33,
+          "t": 1102.56,
+          "r": 167.92,
+          "b": 1119.56
+        },
+        "gapToLabel": -1,
+        "computed": {
+          "style": "solid",
+          "width": "2px",
+          "offset": "3px"
+        }
+      }
+    },
+    {
+      "state": "320-same-keyboard",
       "label": "Tab from the heading reaches the Same again switch",
       "pass": true,
       "detail": [
@@ -16289,7 +17403,25 @@
           "tag": "BUTTON",
           "role": null,
           "label": "About Same again, please!",
-          "isSwitch": false
+          "isSwitch": false,
+          "ring": {
+            "box": {
+              "x": 171.92,
+              "y": 1089.06,
+              "width": 44,
+              "height": 44
+            },
+            "labelText": {
+              "x": 33,
+              "y": 1102.56,
+              "width": 134.92,
+              "height": 17
+            },
+            "focused": true,
+            "outlineStyle": "solid",
+            "outlineWidth": "2px",
+            "outlineOffset": "3px"
+          }
         },
         {
           "tag": "INPUT",
@@ -16423,9 +17555,12 @@
     "?prefs=same-again-failed already drives the failing toggle on load through the public controller intent; no second click is made."
   ],
   "summary": {
-    "checks": 470,
+    "checks": 472,
     "passed": 470,
-    "failed": []
+    "failed": [
+      "320-same-tooltip-long: focused info button drawn focus ring (rect grown by computed outline offset and width) does not intersect the label text",
+      "320-same-keyboard: focused info button drawn focus ring (rect grown by computed outline offset and width) does not intersect the label text (at the info stop of the Tab sequence)"
+    ]
   },
   "countStrip": "1440-count-strip-implementation.jpg"
 }

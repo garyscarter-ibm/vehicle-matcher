@@ -83,11 +83,11 @@ const settle = async (page) => {
 const IMPL = { section: '.gcsp-prefs', car: '.gcsp-feature', heading: '.gcsp-prefs h2', score: '.gcsp-understanding', scoreLabel: '.gcsp-understanding-label', value: '.gcsp-understanding-value',
   meter: '.gcsp-understanding-meter', segments: '.gcsp-understanding-meter i', filled: '.gcsp-understanding-meter i.is-filled', mode: '.gcsp-prefs-mode', tiles: '.gcsp-prefs-tiles', tile: '.gcsp-prefs-tile',
   tileOpen: '.gcsp-prefs-open', switch: '.gcsp-same-switch input', info: '.gcsp-prefs-info', panel: '.gcsp-prefs-panel:not([hidden])', removal: '.gcsp-prefs-removal:not([hidden])',
-  status: '.gcsp-prefs-status', stars: '.gcsp-star input:checked', note: '.gcsp-prefs-same-note', tileClasses: 'is-considered is-important is-open' };
+  label: '.gcsp-same-switch label', status: '.gcsp-prefs-status', stars: '.gcsp-star input:checked', note: '.gcsp-prefs-same-note', tileClasses: 'is-considered is-important is-open' };
 const REF = { section: '.concept-preferences', car: '.concept-car', heading: '#preferences-heading', score: '.concept-score', scoreLabel: '.concept-score-label', value: '.concept-score-value',
   meter: '.concept-score-meter', segments: '.concept-score-meter i', filled: '.concept-score-meter i.is-filled', mode: '.concept-mode', tiles: '.concept-categories', tile: '.concept-category',
   tileOpen: '.concept-category-open', switch: '#same-again', info: '.concept-info-button', panel: '#category-options:not([hidden])', removal: '.concept-removal:not([hidden])',
-  status: '#preference-status', stars: '.concept-star input:checked', note: '.none', tileClasses: 'is-considered is-important' };
+  label: '.concept-same-switch label', status: '#preference-status', stars: '.concept-star input:checked', note: '.none', tileClasses: 'is-considered is-important' };
 
 // One probe for both pages: boxes in page coordinates plus the text, state and style facts the checks use.
 const PROBE = `(S) => {
@@ -99,13 +99,17 @@ const PROBE = `(S) => {
   const follows = (a, b) => !!(regions[a] && regions[b] && (regions[a].compareDocumentPosition(regions[b]) & Node.DOCUMENT_POSITION_FOLLOWING));
   const ms = mode ? getComputedStyle(mode) : null;
   const tips = qa('[role=tooltip]:not([hidden])').map((n) => { const b = box(n); return { id: n.id, text: n.textContent, box: b, insideViewport: b.x >= 0 && b.x + b.width <= innerWidth }; });
+  const labelNode = q(S.label); let labelText = null;
+  if (labelNode) { const r = document.createRange(); r.selectNodeContents(labelNode); const b = r.getBoundingClientRect(); labelText = { x: +(b.x + scrollX).toFixed(2), y: +(b.y + scrollY).toFixed(2), width: +b.width.toFixed(2), height: +b.height.toFixed(2) }; }
+  const infoNode = q(S.info); const infoStyle = infoNode ? getComputedStyle(infoNode) : null;
+  const ring = infoNode ? { box: box(infoNode), labelText, focused: document.activeElement === infoNode, outlineStyle: infoStyle.outlineStyle, outlineWidth: infoStyle.outlineWidth, outlineOffset: infoStyle.outlineOffset } : null;
   const dialog = q('[role=dialog]'); const db = dialog ? box(dialog) : null;
   const active = document.activeElement;
   return { sectionBox: box(section), headingBox: box(q(S.heading)), scoreBox: box(q(S.score)), scoreWidthVsSection: (() => { const a = box(q(S.score)); const b = box(section); return a && b ? +(a.width / b.width).toFixed(3) : null; })(), meterBox: box(q(S.meter)), valueBox: box(value), modeBox: box(mode), tilesBox: box(q(S.tiles)), firstTileBox: box(q(S.tile)),
     modeBorders: ms ? { top: ms.borderTopWidth, bottom: ms.borderBottomWidth, left: ms.borderLeftWidth, right: ms.borderRightWidth, topColour: ms.borderTopColor, bottomColour: ms.borderBottomColor, style: ms.borderTopStyle } : null,
     understanding: { text: value?.textContent ?? null, aria: value?.getAttribute('aria-label') ?? null, label: q(S.scoreLabel)?.textContent ?? null, segments: qa(S.segments).length, filled: qa(S.filled).length, pending: !!q(S.score)?.classList.contains('is-pending') },
     switchState: sw ? { checked: sw.checked, disabled: sw.disabled, role: sw.getAttribute('role'), describedBy: sw.getAttribute('aria-describedby'), name: (sw.labels?.[0]?.textContent ?? '').trim() } : null,
-    infoLabel: q(S.info)?.getAttribute('aria-label') ?? null, note: q(S.note) && !q(S.note).hidden ? q(S.note).textContent : null,
+    infoLabel: q(S.info)?.getAttribute('aria-label') ?? null, ring, note: q(S.note) && !q(S.note).hidden ? q(S.note).textContent : null,
     tiles: qa(S.tile).map((n) => { const open = n.querySelector(S.tileOpen); return { label: open.getAttribute('aria-label'), expanded: open.getAttribute('aria-expanded'), disabled: open.disabled, classes: n.className.split(/\\s+/).filter((c) => S.tileClasses.split(' ').includes(c)).join(' ') }; }),
     panelOpen: !!q(S.panel), removalOpen: !!q(S.removal), tooltips: tips, stars: q(S.stars)?.value ?? null, status: (q(S.status)?.textContent ?? '').trim(),
     tryAgain: qa('.gcsp-prefs .vm-btn').map((n) => n.textContent.trim()).filter((t) => /try again/i.test(t)),
@@ -144,6 +148,7 @@ async function tabToSwitch(page) {
   for (let i = 0; i < 60; i++) {
     await page.keyboard.press('Tab');
     const info = await page.evaluate(() => { const a = document.activeElement; return { tag: a?.tagName, role: a?.getAttribute('role'), label: (a?.getAttribute('aria-label') || a?.textContent || a?.id || '').trim().slice(0, 50), isSwitch: a?.matches('.gcsp-same-switch input') }; });
+    if (info.label === 'About Same again, please!') info.ring = (await probe(page, IMPL)).ring;
     seen.push(info); if (info.isSwitch) break;
   }
   return seen;
@@ -236,6 +241,15 @@ function checksFor(name, entry, man, opts) {
   e.manifestFeedback = s.feedback; e.manifestActive = s.activeElement; e.observedStatus = c.status; e.observedActive = c.active;
   e.sameAgainOnFocusSwitch = c.activeIsSwitch;
 }
+// The drawn focus ring is the info button's rect grown by its computed outline-offset plus width (negative offset insets it); it must not touch the label's text.
+function ringClears(ring) {
+  if (!ring?.focused || !ring.labelText) return { pass: false, why: 'info button not focused or label missing' };
+  const off = Number.parseFloat(ring.outlineOffset); const w = ring.outlineStyle === 'none' ? 0 : Number.parseFloat(ring.outlineWidth); const grow = off + w;
+  const o = { l: ring.box.x - grow, t: ring.box.y - grow, r: ring.box.x + ring.box.width + grow, b: ring.box.y + ring.box.height + grow };
+  const t = { l: ring.labelText.x, t: ring.labelText.y, r: ring.labelText.x + ring.labelText.width, b: ring.labelText.y + ring.labelText.height };
+  const intersects = o.l < t.r && o.r > t.l && o.t < t.b && o.b > t.t;
+  return { pass: !intersects, outerRing: o, labelText: t, gapToLabel: +(o.l - t.r).toFixed(2), computed: { style: ring.outlineStyle, width: ring.outlineWidth, offset: ring.outlineOffset } };
+}
 const width = (e) => e.viewport.width;
 
 let browser;
@@ -264,7 +278,9 @@ try {
       check(name, 'Same again failure: switch on, score says not saved, status and Try again visible', c.switchState?.checked && /not saved/.test(c.understanding.aria) && c.tryAgain.length > 0 && /./.test(c.status), { aria: c.understanding.aria, status: c.status, tryAgain: c.tryAgain });
     }
     if (opts.pending) check(name, 'Same again pending: pending score (saving) and no failure', c.understanding.pending && /saving/.test(c.understanding.aria) && c.tryAgain.length === 0, { aria: c.understanding.aria, status: c.status });
+    if (name === '320-same-tooltip-long') { const r = ringClears(c.ring); check(name, 'focused info button drawn focus ring (rect grown by computed outline offset and width) does not intersect the label text', r.pass, r); }
     if (opts.keyboard) {
+      const r = ringClears(entry.tabSequence.find((t) => t.label === 'About Same again, please!')?.ring); check(name, 'focused info button drawn focus ring (rect grown by computed outline offset and width) does not intersect the label text (at the info stop of the Tab sequence)', r.pass, r);
       const last = entry.tabSequence.at(-1);
       check(name, 'Tab from the heading reaches the Same again switch', !!last?.isSwitch, entry.tabSequence);
       check(name, 'Space toggles the switch on and the score goes to 11 / 11', !entry.beforeSpace.switchState.checked && c.switchState.checked && c.understanding.text === '11 / 11' && c.activeIsSwitch, { before: entry.beforeSpace.understanding.text, after: c.understanding.text });
