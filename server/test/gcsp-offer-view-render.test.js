@@ -71,6 +71,23 @@ test('exact shared card, points and current car comparison preserve supplied unk
   assert.match(root.querySelector(`#${reason}`).textContent, /Decisions are unavailable/);
 });
 
+test('41 supplied equipment labels use a closed native disclosure outside the compact facts grid', () => {
+  const { root, view, data } = render('pending');
+  const labels = Array.from({ length: 41 }, (_, index) => `Supported equipment ${index + 1}`);
+  const card = structuredClone(data.card); const member = card.members[0];
+  member.facts = member.facts.filter((row) => row.label !== 'Options');
+  member.facts.push({ label: 'Options', value: labels.join(', '), items: labels, provenance: { sourceRef: 'retained-options' } });
+  view.update({ ...data, card });
+  const disclosure = root.querySelector('details.gcsp-vehicle-equipment');
+  assert.ok(disclosure); assert.equal(disclosure.open, false);
+  assert.equal(disclosure.querySelector('summary').textContent, 'Selected equipment (41)');
+  assert.deepEqual([...disclosure.querySelectorAll('li')].map((node) => node.textContent), labels);
+  assert.equal(disclosure.closest('.vm-card-facts'), null);
+  assert.doesNotMatch(root.querySelector('.vm-card-facts').textContent, /Supported equipment|Options/);
+  assert.deepEqual(member.facts.at(-1).provenance, { sourceRef: 'retained-options' });
+  assert.equal(member.facts.at(-1).items.length, 41);
+});
+
 test('FUCQ-383: pending offer leads with h:mm, one uncaptained equal-column comparison and current-first identities', () => {
   const { root } = render('pending');
   const header = root.querySelector('.gcsp-offer-content').firstElementChild;

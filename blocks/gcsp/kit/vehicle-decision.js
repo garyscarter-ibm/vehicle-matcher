@@ -15,7 +15,10 @@ export function finishLabel({ label, value, shade } = {}) {
 
 /** Shared exact-card feature layout; actions precede media in the reading order. */
 export function vehicleDecisionCard({ view, media, actions, note, finishes = [], pointsDifference } = {}) {
-  const card = matchCard(null, { view, showScore: false, factsClass: 'vm-facts-pair', hideMissing: 'More details not supplied', headingLevel: 2 });
+  const member = view.members[0];
+  const equipment = member.facts?.find((fact) => fact.label === 'Options' && Array.isArray(fact.items) && fact.items.length);
+  const compact = equipment ? { ...view, members: [{ ...member, facts: member.facts.filter((fact) => fact !== equipment) }, ...view.members.slice(1)] } : view;
+  const card = matchCard(null, { view: compact, showScore: false, factsClass: 'vm-facts-pair', hideMissing: 'More details not supplied', headingLevel: 2 });
   card.classList.add('gcsp-vehicle-decision');
   const body = card.querySelector('.vm-card-body'); const mediaNode = media || card.querySelector('.vm-card-media');
   const summary = el('div', 'gcsp-vehicle-summary');
@@ -36,6 +39,12 @@ export function vehicleDecisionCard({ view, media, actions, note, finishes = [],
   const details = el('div', 'gcsp-vehicle-details');
   const finishList = el('div', 'gcsp-finishes'); finishList.append(...finishes.map(finishLabel));
   details.append(el('h3', 'gcsp-h3 gcsp-vehicle-details-title', 'Vehicle details'), finishList, body.querySelector('.vm-card-facts'), body.querySelector('.vm-card-decision'));
+  if (equipment) {
+    const disclosure = el('details', 'gcsp-details gcsp-vehicle-equipment');
+    const list = el('ul'); list.append(...equipment.items.map((label) => el('li', null, label)));
+    disclosure.append(el('summary', 'gcsp-details-summary', `Selected equipment (${equipment.items.length})`), list);
+    details.append(disclosure);
+  }
   card.replaceChildren(summary, mediaNode, details);
   card.querySelector('.vm-card[data-gate="eligible"] .vm-card-gate')?.remove();
   if (card.dataset.gate === 'eligible') card.querySelector('.vm-card-gate')?.remove();

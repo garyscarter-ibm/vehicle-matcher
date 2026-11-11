@@ -73,6 +73,18 @@ test('unknown facts and missing allowance never fall back to display guesses or 
   assert.equal(member.facts.find((f) => f.label === 'Options').value, 'None listed');
 });
 
+test('equipment arrays retain every supplied label and provenance for a counted disclosure', () => {
+  const dto = sample(); const labels = Array.from({ length: 41 }, (_, index) => `Supported equipment ${index + 1}`);
+  dto.quote.facts.facts.options = known(labels);
+  const row = toOfferPresentation(envelope(dto)).value.card.members[0].facts.find((fact) => fact.label === 'Options');
+  assert.deepEqual(row.items, labels);
+  assert.deepEqual(row.provenance, dto.quote.facts.facts.options.provenance);
+  assert.notEqual(row.items, dto.quote.facts.facts.options.value);
+  dto.quote.facts.facts.options = known([null, false, 0]);
+  assert.deepEqual(toOfferPresentation(envelope(dto)).value.card.members[0].facts.find((fact) => fact.label === 'Options').items,
+    ['Not supplied', 'false', '0']);
+});
+
 test('media preserves a supplied caption and adds no disclaimer when none is supplied', () => {
   const dto = sample(); const display = dto.quote.facts.display;
   display.photo = '/assets/brand-hero/bmw.jpg'; display.images = [{ src: display.photo, alt: 'Representative BMW', caption: 'Brand image, not this car' }];

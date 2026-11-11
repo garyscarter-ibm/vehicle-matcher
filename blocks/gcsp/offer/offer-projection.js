@@ -101,7 +101,8 @@ function terms(v) {
 }
 const valueText = (v) => Array.isArray(v) ? v.length ? v.map((entry) => entry === null ? 'Not supplied' : String(entry)).join(', ') : 'None listed' : v;
 const detailFact = (label, source, missingLabel = 'Not supplied') => ({ label, value: source?.status === 'known' ? valueText(source.value) : null,
-  unit: source?.unit, missingLabel, ...(source?.provenance ? { provenance: copy(source.provenance) } : {}) });
+  unit: source?.unit, missingLabel, ...(source?.status === 'known' && Array.isArray(source.value) ? { items: source.value.map((entry) => entry === null ? 'Not supplied' : String(entry)) } : {}),
+  ...(source?.provenance ? { provenance: copy(source.provenance) } : {}) });
 
 const blockers = new Set(['contact-required', 'driver-review-required', 'return-data-required', 'ordering-terms-unavailable']);
 const stageStates = new Set(['complete', 'waiting', 'not-started', 'pending', 'failed']);

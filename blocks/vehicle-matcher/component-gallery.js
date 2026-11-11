@@ -15,7 +15,7 @@ import { messageList } from '../gcsp/presenter/message-list.js';
 import { fixtureMessages } from '../gcsp/presenter/fixtures.js';
 import { metricTile } from '../gcsp/kit/metric-tile.js';
 import { dataTable } from '../gcsp/kit/data-table.js';
-import { decisionHighlights, finishLabel } from '../gcsp/kit/vehicle-decision.js';
+import { vehicleDecisionCard, decisionHighlights, finishLabel } from '../gcsp/kit/vehicle-decision.js';
 import { mediaGalleryExamples } from '../gcsp/kit/media-gallery-examples.js';
 import { mountPresenterControls } from '../gcsp/presenter-controls/controls.js';
 import { presenterBar } from '../gcsp/kit/presenter-bar.js';
@@ -251,6 +251,10 @@ function gregKitExamples() {
       rows: [{ label: 'Points a month', current: '320 points', offer: { label: '295 points', winner: true } },
         { label: 'Boot', current: { label: '500 litres', winner: true }, offer: '410 litres' }] }),
   );
+  const equipmentView = structuredClone(employeeCardFixture); equipmentView.members = equipmentView.members.slice(0, 1);
+  const equipmentItems = Array.from({ length: 41 }, (_, index) => `Supplied equipment example ${index + 1}`);
+  equipmentView.members[0].facts.push({ label: 'Options', value: equipmentItems.join(', '), items: equipmentItems });
+  group('Vehicle decision: 41 supplied equipment labels').append(vehicleDecisionCard({ view: equipmentView }));
   group('dataTable: long model name and a band cell').append(dataTable({ caption: 'Stock by model line', columns, rows, id: 'gallery-greg-table' }));
   const bold = (label, on) => (on ? { label, emphasis: true } : label);
   group('dataTable: emphasised cells for changed rows').append(dataTable({ caption: 'Plan comparison (changed rows in bold)', id: 'gallery-greg-emphasis',
