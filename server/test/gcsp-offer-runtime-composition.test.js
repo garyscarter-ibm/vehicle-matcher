@@ -140,7 +140,7 @@ test('composed offer entry reloads the real declined offer and saves the employe
   await waitFor(() => root.querySelector('[data-followup-saved]')); assert.equal(refreshes(), 1);
   // GC-041: the signed-in rail, the onward link and the heading focus come with the real composition.
   assert.deepEqual([...root.querySelectorAll('nav button[data-key]')].map((node) => node.dataset.key),
-    ['cars', 'brief', 'activity', 'order-progress']);
+    ['cars', 'order-progress']);
   const onward = root.querySelector('[data-followup-link="activity"]');
   assert.equal(onward.textContent, 'See buddy activity'); assert.equal(onward.getAttribute('href'), '/gcsp-activity-live.html');
   assert.equal(dom.window.document.activeElement, root.querySelector('.gcsp-followup h2'));

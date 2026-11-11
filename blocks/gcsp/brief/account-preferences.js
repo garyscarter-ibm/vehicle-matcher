@@ -7,7 +7,7 @@ let sequence = 0;
 const commandId = (kind) => `${kind}:${globalThis.crypto.randomUUID()}`;
 
 /** Mounts the compact Preferences into Account's one persistent region. Owns its content, so Account redraws never touch it. */
-export function mountAccountPreferences(region, { transport, signal, createCommandId = commandId, describeCar, buddyStatusId = 'gcsp-account-buddy-status' } = {}) {
+export function mountAccountPreferences(region, { transport, signal, createCommandId = commandId, describeCar, buddyStatusId } = {}) {
   const doc = region.ownerDocument; const id = `gcsp-account-prefs-${++sequence}`;
   const controller = createAccountPreferencesController({ transport, createCommandId });
   let view = null; let described = ''; let failure = null; let skeleton = null; let finished = false; let wasInside = false; let holdAction = false; let shownAttempt = 0;

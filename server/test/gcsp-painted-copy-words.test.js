@@ -174,7 +174,7 @@ test('buddy activity paints no demo or synthetic wording in any search, offer or
     ['access-required', adapterFor(async () => ({ status: 'access-required' }))], ['failed read', adapterFor(async () => { throw new Error('x'); })],
     ['account unavailable', { loadAccount: async () => ({ status: 'unavailable' }), readActivity: async () => ({ status: 'unavailable' }) }]);
   for (const [name, adapter] of cases) {
-    const root = host(); const destroy = mountActivity(root, { adapter }); await settle(); await tick(20); check(`activity:${name}`, root, /Buddy activity|Session ended|Restarted|unavailable/i); destroy(); root.remove();
+    const root = host(); const destroy = mountActivity(root, { adapter }); await settle(); await tick(20); check(`activity:${name}`, root, /Your buddy|Session ended|Restarted|unavailable/i); destroy(); root.remove();
   }
 });
 
@@ -481,7 +481,7 @@ test('Paula\'s live pages paint no demo or synthetic wording over the real serve
     const pages = {
       'Your cars (journey home)': [(root) => mountManualJourney(root, { orderAdapter: createOrderProgressHttpAdapter({ fetch: live.fetchImpl }), helpAdapter: help }), /Your cars|Choices/],
       'Buddy activity': [(root) => mountActivity(root, { adapter: createActivityHttpAdapter({ fetch: live.fetchImpl, loadAccount: createShellAccountAdapter({ fetch: live.fetchImpl }).loadAccount }),
-        helpAdapter: help }), /Buddy activity/],
+        helpAdapter: help }), /Your buddy/],
       'Order progress': [(root) => mountOrderProgress(root, { adapter: createOrderProgressHttpAdapter({ fetch: live.fetchImpl, loadAccount: createShellAccountAdapter({ fetch: live.fetchImpl }).loadAccount }),
         helpAdapter: help }), /Order progress/],
       Brief: [(root) => mountBrief(root, { ...createShellAccountAdapter({ fetch: live.fetchImpl }), transport: createBriefTransport({ fetch: live.fetchImpl }) }), /What matters to you/],

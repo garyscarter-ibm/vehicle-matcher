@@ -43,8 +43,11 @@ export function createActivityController({ adapter = {}, onChange, createCommand
   const sync = () => state.pending || state.phase === 'restarted' ? Promise.resolve(getState()) : load({ pending: true, quiet: true });
   async function command(operation) {
     const value = state.result?.value;
+    const port = operation === 'engage' ? adapter.engage ?? adapter.resume : operation === 'disengage' ? adapter.disengage ?? adapter.pause : adapter[operation];
     if (disposed || state.pending || state.phase !== 'ready' || !positive(value?.briefVersion)
-      || !value.permission || typeof (adapter[operation] ?? adapter[operation === 'engage' ? 'resume' : 'pause']) !== 'function'
+      || !value.permission || typeof port !== 'function'
+      || operation === 'pauseSearch' && !buddyEngaged(value.permission)
+      || operation === 'resumeSearch' && value.permission.paused !== true
       || operation === 'disengage' && !buddyEngaged(value.permission)
       || operation === 'engage' && buddyEngaged(value.permission)) return getState();
     let commandId;
@@ -56,16 +59,17 @@ export function createActivityController({ adapter = {}, onChange, createCommand
     const expectedBriefVersion = value.briefVersion;
     publish({ ...state, pending: true, message: 'Updating Buddy.' });
     let out;
-    try { out = await (adapter[operation] ?? adapter[operation === 'engage' ? 'resume' : 'pause'])({ commandId, expectedBriefVersion, signal: abort.signal }); } catch { out = unavailable(); }
+    try { out = await port({ commandId, expectedBriefVersion, signal: abort.signal }); } catch { out = unavailable(); }
     if (disposed || abort.signal.aborted || current !== generation) return getState();
     if (isRunRestarted(out)) { publish({ phase: 'restarted', result: null, pending: false, message: '' }); commandAbort = null; return getState(); }
-    const message = out?.status === 'ok' ? operation === 'disengage' ? 'Buddy disengaged.' : 'Buddy engaged.'
+    const message = out?.status === 'ok' ? operation === 'pauseSearch' ? 'Search paused.' : operation === 'resumeSearch' ? 'Search resumed.' : operation === 'disengage' ? 'Buddy disengaged.' : 'Buddy engaged.'
       : out?.status === 'invalid' && out.code === 'engagement-minimum' ? 'Choose more preferences or turn on Same again in Account to engage Buddy.'
       : ['stale-version', 'conflict'].includes(out?.status) ? 'Buddy changed. Showing current status.' : 'Buddy could not be updated. Try again.';
-    await load({ pending: true, message, ...(out?.status === 'ok' ? { expectedEngaged: operation === 'engage' } : {}) }); commandAbort = null;
+    await load({ pending: true, message, ...(out?.status === 'ok' ? { expectedEngaged: ['engage', 'resumeSearch'].includes(operation) } : {}) }); commandAbort = null;
     return getState();
   }
   return { getState, refresh, sync, disengage: () => command('disengage'), engage: () => command('engage'),
+    pauseSearch: () => command('pauseSearch'), resumeSearch: () => command('resumeSearch'),
     pause: () => command('disengage'), resume: () => command('engage'),
     destroy() { if (disposed) return; disposed = true; generation += 1; readAbort?.abort(); commandAbort?.abort(); } };
 }

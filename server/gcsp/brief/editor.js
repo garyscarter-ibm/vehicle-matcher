@@ -424,6 +424,8 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
     saveDraft: (context, input) => legacyWrite(context, input, 'saveDraft'),
     confirm: (context, input) => legacyWrite(context, input, 'confirm'),
     engage: (context, input) => engagement(context, input, 'engage'),
+    pause: (context, input) => engagement(context, input, 'pause'),
+    resume: (context, input) => engagement(context, input, 'resume'),
     disengage: (context, input) => engagement(context, input, 'disengage'),
     async previewDraft(context, input) {
       try { input = jsonCopy(input); } catch { return invalid('input'); }

@@ -33,5 +33,6 @@ export function createActivityHttpAdapter({ fetch: request = globalThis.fetch, l
   }
   return { loadAccount, readActivity: ({ signal } = {}) => send('/api/gcsp/activity', 'GET', undefined, signal),
     readOfferDisplay, disengage: (input) => command('disengage', input), engage: (input) => command('engage', input),
+    pauseSearch: (input) => command('pause-search', input), resumeSearch: (input) => command('resume-search', input),
     pause: (input) => command('disengage', input), resume: (input) => command('engage', input) };
 }

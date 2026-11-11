@@ -12,6 +12,8 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { fact, stock, providerValue } from './helpers/employee-recommendation.js';
 import { startHttpServer } from './helpers/employee-recommendation-http.js';
 import { createBriefTransport } from '../../blocks/gcsp/brief/brief-transport.js';
+import { createActivityHttpAdapter } from '../../blocks/gcsp/activity/activity-http.js';
+import { createActivityController } from '../../blocks/gcsp/activity/activity-controller.js';
 import { activityEvents } from '../../blocks/gcsp/activity/activity-copy.js';
 
 const KEY = 'brief.engagement.v1';
@@ -366,7 +368,7 @@ test('an accepted offer makes engage and disengage read-only', async (t) => {
   });
   assert.equal(planted.status, 'ok', JSON.stringify(planted));
   const before = structuredClone(f.store.state.tables.briefs);
-  for (const route of ['engage', 'disengage']) {
+  for (const route of ['engage', 'disengage', 'pause-search', 'resume-search']) {
     const out = await call(f, `brief/${route}`, await engageBody(f));
     assert.equal(out.status, 409, route); assert.equal(out.json.reason, 'brief-read-only');
   }
@@ -378,7 +380,7 @@ test('an accepted offer makes engage and disengage read-only', async (t) => {
   const at = await versions(f);
   const source = (await view(f)).initial.brief;
   const gate = { ok: true, briefVersion: at.expectedBriefVersion, draftVersion: at.expectedDraftVersion };
-  for (const [operation, payload] of [['saveDraft', { brief: source }], ['confirm', { consent: { search: true, hold: true } }]]) {
+  for (const [operation, payload] of [['saveDraft', { brief: source }], ['confirm', { consent: { search: true, hold: true } }], ['pause', {}], ['resume', {}]]) {
     const out = await f.brief[operation](f.context, { commandId: `accepted-race-${operation}`, ...at, ...payload }, { gate, source });
     assert.equal(out.status, 'conflict', operation); assert.equal(out.reason, 'brief-read-only');
   }
@@ -459,4 +461,48 @@ test('partial legacy grants are off in real service and Activity permissions, th
   assert.equal((await engage(f)).status, 200);
   const active = (await permission(f)).permission;
   assert.deepEqual([active.searchConsent, active.holdConsent, active.paused, active.canSearch, active.canHold], [true, true, false, true, true]);
+});
+
+
+test('the tile HTTP commands pause and resume search while retaining grants and a held offer', async (t) => {
+  const f = await engagedFixture(t); const order = f.store.state.tables.stock[0];
+  const planted = await f.repository.transaction(f.context, { commandId: 'tile-held', inputDigest: inputDigest('tile-held') }, async (tx) => {
+    await tx.insert('quotes', { runId: f.context.runId, quoteId: 'tile-q', employeeId: f.context.employeeId, orderUuid: order.orderUuid });
+    await tx.insert('holds', { runId: f.context.runId, holdId: 'tile-h', orderUuid: order.orderUuid, employeeId: f.context.employeeId,
+      entitlementSlotId: f.context.entitlementSlotId, type: 'buddy-offer', state: 'active', quoteId: 'tile-q' });
+    return tx.insert('offers', { runId: f.context.runId, offerId: 'tile-o', holdId: 'tile-h', quoteId: 'tile-q', employeeId: f.context.employeeId,
+      orderUuid: order.orderUuid, state: 'active', briefVersion: 1, policyVersion: f.context.policyVersion, expiresAt: '2026-11-06T08:00:00.000Z',
+      tokenHash: 'h', tokenMetadata: {}, operationId: 'tile-op' });
+  });
+  assert.equal(planted.status, 'ok');
+  const kept = ['offers', 'holds', 'quotes', 'orders'].map((table) => [table, structuredClone(f.store.state.tables[table] ?? [])]);
+  const base = `http://127.0.0.1:${f.http.server.address().port}`; const writes = [];
+  const adapter = createActivityHttpAdapter({ fetch: async (path, options) => {
+    if (options.method === 'POST') writes.push({ path, body: JSON.parse(options.body) });
+    return globalThis.fetch(base + path, { ...options, headers: { ...options.headers, Origin: 'https://employee.test', cookie: f.acting.value.setCookie.split(';')[0] } });
+  } });
+  const controller = createActivityController({ adapter, createCommandId: () => `tile-command-${writes.length}` }); t.after(() => controller.destroy());
+  await controller.refresh(); await controller.pauseSearch();
+  let value = controller.getState().result.value;
+  assert.deepEqual([value.permission.searchConsent, value.permission.holdConsent, value.permission.paused, value.permission.canSearch], [true, true, true, false]);
+  assert.equal(value.currentOffer.state, 'active'); assert.equal(controller.getState().message, 'Search paused.');
+  await controller.resumeSearch(); value = controller.getState().result.value;
+  assert.deepEqual([value.permission.searchConsent, value.permission.holdConsent, value.permission.paused, value.permission.canSearch], [true, true, false, true]);
+  assert.equal(controller.getState().message, 'Search resumed.');
+  assert.deepEqual(writes.map((row) => row.path), ['/api/gcsp/brief/pause-search', '/api/gcsp/brief/resume-search']);
+  assert.deepEqual(writes.map((row) => [row.body.expectedBriefVersion, row.body.expectedDraftVersion]), [[1, 1], [2, 1]]);
+  for (const [table, rows] of kept) assert.deepEqual(f.store.state.tables[table] ?? [], rows, table);
+  assert.deepEqual(operations(f).slice(-2), ['paused', 'resumed']);
+});
+
+test('search commands reject stale editor versions and resume cannot bypass the Account minimum', async (t) => {
+  const f = await engagedFixture(t); const at = await versions(f);
+  const stale = await call(f, 'brief/pause-search', { commandId: 'tile-stale-draft', ...at, expectedDraftVersion: 0 });
+  assert.equal(stale.json.status, 'stale-version'); assert.equal(briefs(f).length, 1);
+  const paused = await call(f, 'brief/pause-search', { commandId: 'tile-pause', ...at }); assert.equal(paused.status, 200, JSON.stringify(paused.json));
+  await saveOk(f, { sportiness: null, economy: null });
+  const before = structuredClone(f.store.state.tables.briefs);
+  const refused = await call(f, 'brief/resume-search', { commandId: 'tile-minimum', ...(await versions(f)) });
+  assert.equal(refused.json.code, 'engagement-minimum'); assert.deepEqual(f.store.state.tables.briefs, before);
+  const old = await call(f, 'brief/resume-search', { commandId: 'tile-stale-brief', ...at }); assert.equal(old.json.status, 'stale-version');
 });

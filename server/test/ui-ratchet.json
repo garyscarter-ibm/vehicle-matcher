@@ -434,6 +434,10 @@
     {
       "path": "blocks/gcsp/kit/media-gallery.css",
       "max_lines": 46
+    },
+    {
+      "path": "blocks/gcsp/kit/buddy-tile.css",
+      "max_lines": 15
     }
   ],
   "baseline": {
