@@ -3,7 +3,7 @@ import { createMemoryRepository, createMemoryStore, createPostgresRepository, in
 import { PolicyService, MemoryPolicyProvider, PostgresPolicyProvider } from './policy/index.js';
 import { createDemoRuntime } from './clock/index.js';
 import { createManualContextService, createRepositoryManualPorts } from './manual-context/index.js';
-import { seedManualDemoContext } from './manual-context/fixtures.js';
+import { seedManualDemoContext, adoptRetainedDemoProfiles } from './manual-context/fixtures.js';
 import { createBriefService } from './brief/index.js';
 import { createBriefEditorService } from './brief/editor.js';
 import { createActivityService } from './brief/activity.js';
@@ -127,7 +127,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       return adoptOfferJourney ? adoptEmployeeExperiencePolicy({ policy, identity, clock }) : ok({});
     };
     const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity, brief, afterReset, faults: { stock: stockFaults, ordering: orderingFaults },
-      prepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, context }) });
+      prepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, policy, context }) });
     const stockRelease = pullProvider === undefined ? undefined
       : createStockReleaseService({ repository, policy, clock, identity, provider: pullProvider });
     // Greg's order requests need both the production port and the F92 queue; neither is invented here.
@@ -187,7 +187,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       gcspOfferDecisions: offerDecisions, gcspResolveOfferAccess: resolveOfferAccess, gcspOfferFollowup: offerFollowup,
       gcspNotify: notify, gcspOutbox: { repository }, gcspAfterReset: afterReset,
       // Backend-only; the switch route calls it with the server-issued employee context, replay-safe per run.
-      gcspPrepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, context }),
+      gcspPrepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, policy, context }),
       gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
       gcspBriefEditor: editor, gcspActivity: activity, gcspRecommendations: { provider, policy, time: clock } };
     // Backend-only local bootstrap. The browser cannot choose identities or receive raw credentials in JSON.
@@ -202,7 +202,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (!principal) return unavailable();
       const acting = await identity.switchPrincipal(presenter.value.context, principal.principalId, `local-employee:${randomUUID()}`);
       if (acting.status !== 'ok') return acting;
-      const seeded = await seedManualDemoContext({ repository, identity, clock, context: acting.value.context });
+      const seeded = await seedManualDemoContext({ repository, identity, clock, policy, context: acting.value.context });
       if (seeded.status !== 'ok') return seeded;
       return ok({ context: acting.value.context, setCookie: [presenter.value.setCookie[1], acting.value.setCookie] });
     }
@@ -214,6 +214,8 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       const adopted = await adoptEmployeeExperiencePolicy({ policy, identity, clock });
       if (adopted.status !== 'ok') { await close(); return adopted; }
     }
+    const upgradedProfiles = await adoptRetainedDemoProfiles({ repository, identity, clock, policy });
+    if (upgradedProfiles.status !== 'ok') { await close(); return upgradedProfiles; }
     const upgradedStock = await adoptRetainedModelFacts({ repository, identity });
     if (upgradedStock.status !== 'ok') { await close(); return upgradedStock; }
     // Best effort: a source that cannot prepare the first run is chosen again on its first pull.

@@ -16305,6 +16305,64 @@
       "sourceDate": "2026-11-11",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "employee.demoProfiles.v1",
+      "value": {
+        "schemaVersion": 1,
+        "profiles": {
+          "operator-greg": {
+            "profileVersion": "greg-profile-v1",
+            "address": {
+              "line1": "14 Cedar Close",
+              "town": "Wokingham",
+              "postcode": "RG40 2QT"
+            },
+            "phone": "01632 960041",
+            "nominatedDriver": {
+              "name": "Morgan Lawson",
+              "relationship": "partner"
+            },
+            "current": {
+              "model": "BMW iX1 eDrive20",
+              "vehicle": {
+                "configuration": "eDrive20 M Sport · Portimao Blue",
+                "configurationId": "SVgxSTpGS1VLRixQMEMzMSxTMDFFVSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDNNQyxTMDQyOCxTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDRIMixTMDROVyxTMDRUMixTMDRVOSxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4SyxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXSCxTMDhXUSxTMDlUMSxTMDlUMixTMFpTOQ==",
+                "modelLine": "U11 iX1",
+                "eligibilityModelKey": "U11 iX1|iX1 20"
+              },
+              "actualCollectionDate": "2026-06-15",
+              "contractEndDate": "2026-12-15",
+              "annualMileage": 8000,
+              "months": 6,
+              "currentOdometer": {
+                "value": 3100,
+                "unit": "mi"
+              },
+              "earliestCollectionDate": "2026-11-18",
+              "latestCollectionDate": "2026-12-15"
+            },
+            "previous": {
+              "model": "BMW 3 Series Saloon 320i",
+              "imageKey": "G20 Saloon|320i",
+              "vehicle": {
+                "configuration": "320i Sport Saloon",
+                "body": "saloon",
+                "fuel": "petrol"
+              },
+              "actualCollectionDate": "2024-07-01",
+              "returnedDate": "2025-07-01"
+            }
+          }
+        }
+      },
+      "unit": "synthetic employee profile records",
+      "status": "assumed",
+      "basis": "Greg profile differentiation authorised 11 November 2026. Revisable household, mileage and dates; vehicle facts and price use existing catalogue and policy.",
+      "source": "docs/gcsp/greg-profile-2026-11-11.md",
+      "sourceDate": "2026-11-11",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { feedbackPolicyValid } from '../recommendation/current-car.js';
 
-export const EMPLOYEE_EXPERIENCE_KEYS = ['brief.engagement.v1', 'employee.currentCarFeedback.v1', 'identity.demo.principals'];
+export const EMPLOYEE_EXPERIENCE_KEYS = ['brief.engagement.v1', 'employee.currentCarFeedback.v1', 'identity.demo.principals', 'employee.demoProfiles.v1'];
 const plain = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const only = (v, keys) => plain(v) && Object.keys(v).length === keys.length && keys.every((key) => Object.hasOwn(v, key));
 const engagementValid = (v) => only(v, ['schemaVersion', 'grants', 'onMinimumLoss']) && v.schemaVersion === 1
@@ -16,6 +16,10 @@ export function planEmployeeExperienceUpgrade(assumptions, bundle) {
     const previous = assumptions.find((row) => row.key === key);
     if (!previous) { additions.push(structuredClone(definition)); continue; }
     if (!['assumed', 'verified'].includes(previous.status)) return { invalidKey: key };
+    if (key === 'employee.demoProfiles.v1') {
+      if (previous.value?.schemaVersion !== 1 || !plain(previous.value.profiles)) return { invalidKey: key };
+      continue;
+    }
     if (key === 'brief.engagement.v1') {
       if (!engagementValid(previous.value)) return { invalidKey: key };
       continue;

@@ -50,7 +50,7 @@ const offerJourney = { ...offerJourneyDefinition, digest: inputDigest(offerJourn
 if (!validateReviewedDefinitionSet(offerJourney)) throw new TypeError('The combined offer journey definition is invalid.');
 // These deployed employee rules are reviewed in the canonical seed; do not duplicate defaults.
 const employeeSeed = JSON.parse(await readFile(new URL('./seed-v1.json', import.meta.url), 'utf8'));
-const employeeKeys = ['brief.engagement.v1', 'employee.currentCarFeedback.v1', 'identity.demo.principals'];
+const employeeKeys = ['brief.engagement.v1', 'employee.currentCarFeedback.v1', 'identity.demo.principals', 'employee.demoProfiles.v1'];
 const employeeDefinition = { schemaVersion: 1, definitionSetId: 'employee-experience-v1', revision: '1',
   definitions: [...employeeKeys.map((key) => {
     const row = employeeSeed.assumptions.find((entry) => entry.key === key);
