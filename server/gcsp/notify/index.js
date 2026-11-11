@@ -38,10 +38,13 @@ export class NotificationDispatcher {
       const registered = await this.#clock.registerHandler({ handlerId: 'captured-outbox', stage: 'outbox-dispatch',
         handle: ({ context }) => this.dispatchPending(context) });
       if (registered.status !== 'ok') return registered;
-      this.#unsubscribe = this.#repository.afterCommit(({ context, commandId }) => {
+      this.#unsubscribe = this.#repository.afterCommit(({ context, commandId, changedTables }) => {
         // Notification bookkeeping is itself committed work. Ignore its own
         // namespace, so a drain never waits recursively for its own observer.
-        if (context.environmentId === this.#environmentId && !commandId.startsWith('notify:')) return this.dispatchPending(context);
+        // Startup and the clock handler recover due retries. Other commits only
+        // need a drain when they changed the durable outbox; older adapters may omit the hint.
+        if (context.environmentId === this.#environmentId && !commandId.startsWith('notify:')
+          && (!Array.isArray(changedTables) || changedTables.includes('notification_outbox'))) return this.dispatchPending(context);
       });
       return this.dispatchPending();
     })();

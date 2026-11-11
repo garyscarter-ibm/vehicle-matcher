@@ -13,7 +13,7 @@ import { essential, preference } from './helpers/employee-recommendation.js';
 const good = (out) => { assert.equal(out?.status, 'ok', JSON.stringify(out)); return out.value; };
 const ids = ['f9600000-0000-4000-8000-000000000001', 'f9600000-0000-4000-8000-000000000002'];
 
-function car(orderUuid, index, contexts, observedAt) {
+function car(orderUuid, index, contexts, observedAt, plugIn = false) {
   const version = 'TEST-fucq96-runtime-v1';
   const fact = (value, unit = null) => ({ status: 'known', value, unit,
     provenance: { sourceRef: 'TEST:fucq96-runtime', observedAt, version, assurance: 'synthetic-scenario' } });
@@ -23,12 +23,12 @@ function car(orderUuid, index, contexts, observedAt) {
     facts: createVehicleSnapshot({ sourceNamespace: 'TEST:fucq96-runtime', identityKind: 'exact-stock',
       sourceKeys: { stockId: orderUuid }, snapshotVersion: version, observedAt,
       display: { name: `Synthetic TEST allocation car ${index}` }, facts: {
-        eligibilityModelKey: fact('F70 Sports Hatch|120'), body: fact('hatch'), fuel: fact('petrol'),
+        eligibilityModelKey: fact(plugIn ? 'G21 Touring|330e' : 'F70 Sports Hatch|120'), body: fact(plugIn ? 'estate' : 'hatch'), fuel: fact(plugIn ? 'phev' : 'petrol'),
         seats: fact(5, 'count'), boot: fact(380 + index, 'L'), sizeClass: fact(2, 'ordinal-1-5'),
         insuranceGroup: fact(25, 'insurance-group'), zeroTo62: fact(7, 's'), mpg: fact(45, 'mpg-imperial'), tags: fact(['cruiser']) } }) };
 }
 
-async function setup(t, { beforeRelease = false, repository, releases = 1, carsPerRelease = 2, unmatchable = false } = {}) {
+async function setup(t, { beforeRelease = false, repository, releases = 1, carsPerRelease = 2, unmatchable = false, accountSubset = false, retainedDraft = false, plugIn = false } = {}) {
   let plan;
   const stockProvider = { pull: (request) => plan ? plan.pull(request) : { status: 'unavailable', retryable: true } };
   const runtime = good(await createGcspRuntime({ mode: 'memory', repository, stockProvider, environmentId: 'fucq96-runtime-test',
@@ -45,12 +45,23 @@ async function setup(t, { beforeRelease = false, repository, releases = 1, carsP
     good(await seedManualDemoContext({ repository: runtime.repository, identity: runtime.identity, clock: runtime.clock, context: contexts[name] }));
   }
   // Paula alone has a consenting buddy brief, so both cars are her candidates in turn.
-  good(await runtime.brief.saveDraft(contexts.paula, { commandId: 'brief-draft', expectedBriefVersion: 0, expectedDraftVersion: 0,
-    brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(unmatchable ? 99 : 5) } } }));
-  good(await runtime.brief.confirm(contexts.paula, { commandId: 'brief-confirm', expectedBriefVersion: 0, expectedDraftVersion: 1,
-    consent: { search: true, hold: true } }));
+  if (accountSubset) {
+    if (retainedDraft) {
+      const editor = good(await runtime.editor.readEditor(contexts.paula));
+      good(await runtime.brief.saveDraft(contexts.paula, { commandId: 'retained-draft', expectedBriefVersion: 0, expectedDraftVersion: 0,
+        brief: editor.initial.brief }));
+    }
+    const saved = good(await runtime.editor.savePreferences(contexts.paula, { commandId: 'account-subset', expectedBriefVersion: 0,
+      expectedDraftVersion: retainedDraft ? 1 : 0, changes: { body: { value: ['estate'] }, comfort: { value: 50 }, sportiness: { value: 50 } } }));
+    good(await runtime.editor.engage(contexts.paula, { commandId: 'account-engage', expectedBriefVersion: 0, expectedDraftVersion: saved.draftVersion }));
+  } else {
+    good(await runtime.brief.saveDraft(contexts.paula, { commandId: 'brief-draft', expectedBriefVersion: 0, expectedDraftVersion: 0,
+      brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(unmatchable ? 99 : 5) } } }));
+    good(await runtime.brief.confirm(contexts.paula, { commandId: 'brief-confirm', expectedBriefVersion: 0, expectedDraftVersion: 1,
+      consent: { search: true, hold: true } }));
+  }
   const time = good(await runtime.clock.now(presenter));
-  const cars = ids.map((id, i) => car(id, i + 1, [contexts.paula, contexts.alex], time.now));
+  const cars = ids.map((id, i) => car(id, i + 1, [contexts.paula, contexts.alex], time.now, plugIn));
   plan = createSyntheticStockProvider({ runId: presenter.runId, version: 'TEST-fucq96-runtime-v1',
     label: 'Synthetic TEST allocation input; not F77/F78', windows: Array.from({ length: releases }, (_, day) => ({ windowId: `TEST-noon-${day}`,
       availableAt: new Date(Date.parse('2026-11-05T12:00:00.000Z') + day * 86400000).toISOString(), supplyId: null,
@@ -131,6 +142,40 @@ test('shared runtime allocates on brief-changed then stock-released triggers thr
   assert.equal(released[0].attempts.length, 1); assert.equal(released[0].attempts[0].outcome.status, 'ok');
   for (const table of ['offers', 'notification_outbox']) assert.equal((await f.rows(table)).length, 1);
   assert.equal((await f.rows('holds')).filter((row) => row.type === 'buddy-offer').length, 1);
+});
+
+test('Account subset preferences reach a real release, hold and offer for fresh and retained drafts', async (t) => {
+  for (const retainedDraft of [false, true]) {
+    const f = await setup(t, { accountSubset: true, retainedDraft, beforeRelease: true });
+    const released = (await allocationsOf(f, good(await tick(f)))).find((row) => row.event.eventType === 'stock-released');
+    assert.equal(released.state, 'allocated', JSON.stringify(released.evaluations));
+    assert.equal(released.assignments.length, 1);
+    assert.equal((await f.rows('offers')).length, 1);
+    assert.equal((await f.rows('notification_outbox')).length, 1);
+    assert.equal((await f.rows('holds')).filter((row) => row.type === 'buddy-offer').length, 1);
+    const current = good(await f.runtime.editor.readEditor(f.contexts.paula));
+    assert.equal(current.initial.accountPreferences.considered, 3);
+    assert.equal(current.initial.accountPreferences.categories.size.state, 'unset');
+  }
+});
+
+test('untouched charging retains source readiness through a real plug-in hold and acceptance', async (t) => {
+  const f = await setup(t, { accountSubset: true, plugIn: true, beforeRelease: true });
+  const released = (await allocationsOf(f, good(await tick(f)))).find((row) => row.event.eventType === 'stock-released');
+  assert.equal(released.state, 'allocated', JSON.stringify(released.evaluations));
+  const offer = (await f.rows('offers'))[0];
+  const hold = (await f.rows('holds')).find((h) => h.holdId === offer.holdId);
+  const quote = (await f.rows('quotes')).find((q) => q.quoteId === offer.quoteId);
+  const selector = { runId: f.presenter.runId, offerId: offer.offerId };
+  const capability = good(await f.runtime.offerAccess.fromAccount(f.contexts.paula, selector)).context;
+  const shown = good(await f.runtime.offerAccess.read(capability));
+  const handoff = shown.handoff;
+  const outcome = good(await f.runtime.offerDecisions.decide(capability, { ...selector, commandId: 'subset-accept', decision: 'accept',
+    expectedOfferVersion: offer.version, expectedHoldVersion: hold.version, expectedQuoteVersion: quote.version,
+    termsDigest: handoff.termsDigest, declarations: Object.fromEntries(handoff.declarations.map((d) => [d.id, true])),
+    expectedReturnMileage: 6000 }));
+  assert.equal(outcome.state, 'accepted');
+  assert.equal(outcome.holdState, 'allocated');
 });
 
 test('a stale first claim makes the composed allocator try the next car; one hold, offer and outbox job', async (t) => {

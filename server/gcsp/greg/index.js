@@ -1,6 +1,6 @@
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
-import { intentValue } from '../../scenarios/employee/index.js';
+import { intentValue, unselectedPracticalAnswer } from '../../scenarios/employee/index.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { projectRecommendationFacts } from '../manual-context/recommendation-facts.js';
 import { readStockSourceStatus } from '../stock/source-status.js';
@@ -93,7 +93,7 @@ export function createGregDemandService({ repository, policy, clock, identity } 
           const available = released.filter((row) => visible(row, employee));
           if (!available.length) { unmet.push({ brief, gates: [released.length ? 'stock-not-visible' : 'no-released-stock'] }); continue; }
           const charging = brief.essentials?.charging;
-          if (charging) supplied.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
+          if (charging && !unselectedPracticalAnswer(charging)) supplied.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
             value: charging.value, unit: null, provenance: { sourceRef: 'saved-brief', version: String(brief.briefVersion),
               observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
           const evaluator = createEmployeeRecommendationService({ policy, time: { async now() { return time; } },

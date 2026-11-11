@@ -1,7 +1,7 @@
 import { isBuddyEngaged } from './permission.js';
 import { inputDigest, ok, result } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
-import { validateBrief } from '../../scenarios/employee/index.js';
+import { validateBrief, unselectedPracticalAnswer, unselectedPreference } from '../../scenarios/employee/index.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { storedFeedback } from '../recommendation/current-car.js';
 import { applyConfirmedFeedbackChange } from '../../../blocks/vehicle-matcher/feedback-actions.js';
@@ -128,7 +128,8 @@ export class BriefService {
   async #confirmedContent(tx, context, prepared, source) {
     const error = this.#validate(source, prepared, true); if (error) return { error };
     const brief = structuredClone(source);
-    brief.preferences = Object.fromEntries(Object.entries(brief.preferences).map(([key, p]) => [key, { ...p, valueState: 'confirmed', importanceState: 'confirmed', confirmedAt: prepared.now }]));
+    brief.preferences = Object.fromEntries(Object.entries(brief.preferences).map(([key, p]) => [key, unselectedPreference(p)
+      ? p : { ...p, valueState: 'confirmed', importanceState: 'confirmed', confirmedAt: prepared.now }]));
     brief.essentials = Object.fromEntries(Object.entries(brief.essentials).map(([key, e]) => [key, e.state === 'needs-confirmation' ? e : { ...e, state: 'confirmed', confirmedAt: prepared.now }]));
     if (brief.currentCarFeedback) brief.currentCarFeedback.state = 'confirmed';
     const facts = await this.#knownFacts(tx, context, prepared.now); if (facts.status !== 'ok') return { error: facts };
@@ -163,7 +164,8 @@ export class BriefService {
 
   #validation(brief, prepared) {
     return { policyVersion: prepared.read.policyVersion,
-      unknownEssentials: Object.entries(brief.essentials).filter(([, e]) => e.state !== 'confirmed' || e.value === null).map(([key]) => key),
+      unknownEssentials: Object.entries(brief.essentials).filter(([, e]) => !unselectedPracticalAnswer(e)
+        && (e.state !== 'confirmed' || e.value === null)).map(([key]) => key),
       assumptions: prepared.assumptions.filter((a) => a.key !== 'employee.recommendation.v1') };
   }
 
@@ -335,7 +337,7 @@ export class BriefService {
     if (!current.value.activity.canSearch) return result('conflict', { reason: 'buddy-not-searching', current: { briefVersion: brief.briefVersion } });
     const facts = structuredClone(employeeFacts ?? {});
     const charging = brief.essentials.charging;
-    facts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging?.value ?? null,
+    if (!unselectedPracticalAnswer(charging)) facts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging?.value ?? null,
       unit: null, provenance: { sourceRef: charging?.source ?? 'brief:unresolved', version: String(brief.briefVersion), observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
     const provider = { async resolve() { return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: context.employeeId,
       factsVersion: String(brief.briefVersion), stockVersion: candidate?.availability?.version, employeeFacts: facts, stock: [candidate], ...(currentCar ? { currentCar } : {}) }); } };

@@ -13,9 +13,9 @@ import { buildServer } from '../index.js';
 const token = 'fictional-outbox-access-value';
 const link = `/gcsp/offer?token=${token}&run=synthetic`;
 const cmd = (commandId, input = commandId) => ({ commandId, inputDigest: inputDigest(input) });
-async function setup(t, { policy = createPolicyService(), transport, logger } = {}) {
+async function setup(t, { policy = createPolicyService(), transport, logger, createRepository = createMemoryRepository } = {}) {
   const store = createMemoryStore();
-  const repository = createMemoryRepository({ store });
+  const repository = createRepository({ store });
   assert.equal((await repository.open()).status, 'ok');
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'outbox-test', environmentKind: 'synthetic',
     policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T08:00:00.000Z' });
@@ -86,6 +86,33 @@ test('actual commit observer captures after commit, never on rollback or command
   assert.deepEqual((await seed(f)).value, { committed: 'one' });
   assert.equal(f.store.state.tables.event_receipts.length, receiptCount);
   assert.deepEqual((await f.repository.query(f.context, 'stock')).value, before);
+});
+
+test('unrelated commits do not scan the outbox; a committed enqueue still dispatches immediately', async (t) => {
+  let scans = 0;
+  const f = await setup(t, { createRepository(options) {
+    const repository = createMemoryRepository(options);
+    return { ...repository, async query(...args) {
+      if (args[1] === 'notification_outbox') scans += 1;
+      return repository.query(...args);
+    } };
+  } });
+  assert.equal((await f.dispatcher.start()).status, 'ok');
+  assert.equal(scans, 1, 'startup recovers durable pending jobs');
+  const changes = [];
+  const unsubscribe = f.repository.afterCommit((event) => { if (!event.commandId.startsWith('notify:')) changes.push(event.changedTables); });
+  t.after(unsubscribe);
+  assert.equal((await f.repository.transaction(f.context, cmd('unrelated'), () => ok({ checked: true }))).status, 'ok');
+  assert.deepEqual(changes, [['event_receipts']]);
+  assert.equal(scans, 1);
+  assert.equal((await seed(f, { id: 'rollback', rollback: true })).status, 'conflict');
+  assert.equal(scans, 1, 'rolled-back outbox changes do not trigger delivery');
+  assert.equal((await seed(f)).status, 'ok');
+  assert.equal((await job(f)).state, 'sent');
+  assert.ok(changes.at(-1).includes('notification_outbox'));
+  assert.equal(scans, 2, 'only the committed enqueue adds a drain');
+  assert.equal((await seed(f)).status, 'ok');
+  assert.equal(scans, 2, 'command replay does not redeliver');
 });
 
 test('coalesced and independent concurrent drains capture each stable job once', async (t) => {

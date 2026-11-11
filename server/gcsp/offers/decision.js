@@ -1,3 +1,4 @@
+import { unselectedPracticalAnswer } from '../../scenarios/employee/index.js';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { createRepositoryManualPorts } from '../manual-context/ports.js';
 import { prepareBuddySelection } from './buddy-conversion.js';
@@ -224,7 +225,7 @@ export class OfferDecisionService {
       || employeeFacts.driverEligible.value !== driver.eligible?.value)) return conflict('driver-authority-inconsistent');
     employeeFacts.driverEligible = driver.eligible;
     const charging = brief.essentials.charging;
-    employeeFacts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
+    if (!unselectedPracticalAnswer(charging)) employeeFacts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
       value: charging?.value ?? null, unit: null, provenance: { sourceRef: charging?.source ?? 'brief:unresolved',
         version: String(brief.briefVersion), observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
     const evaluator = this.#evaluate({ policy: this.#policy,

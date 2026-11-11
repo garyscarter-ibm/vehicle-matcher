@@ -112,6 +112,7 @@ const RECEIPT_KEY = Object.freeze(['consumerId', 'eventId', 'runId']);
 export function createTransaction(context, state, now = () => new Date().toISOString(), supportedTables = FOUNDATION_TABLES, receiptIndex = undefined) {
   let failure;
   let active = true;
+  const changedTables = new Set();
   const remember = (outcome, lookup = false) => {
     if (outcome.status !== 'ok' && outcome.status !== 'pending' && !(lookup && outcome.status === 'not-found')) failure ||= outcome;
     return cloneJson(outcome);
@@ -202,6 +203,7 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     const violation = constraint(table, row);
     if (violation) return violation;
     state.tables[table].push(row);
+    changedTables.add(table);
     if (table !== 'event_receipts') {
       const omitLink = table === 'notification_outbox' && plain(row.payload) && Object.hasOwn(row.payload, 'offerLink');
       // Shallow snapshots (those with a receipt index) never mutate a stored row, so the receipt can share it.
@@ -210,6 +212,7 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
       state.tables.event_receipts.push({ runId: context.runId, consumerId: `repository:insert:${table}`, eventId: replayId,
         inputDigest: digest, state: 'completed', outcome, ...(omitLink ? { inputVersions: { offerLinkFromInsertInput: 1 } } : {}),
         version: 1, createdAt: timestamp, updatedAt: timestamp });
+      changedTables.add('event_receipts');
     }
     return ok(row);
   };
@@ -231,6 +234,7 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     if (violation) return violation;
     const position = state.tables[ref.table].indexOf(previous);
     state.tables[ref.table][position] = row;
+    changedTables.add(ref.table);
     if (receiptIndex && ref.table === 'event_receipts' && position === receiptIndex.count - 1) receiptIndex.last = row;
     return ok(row);
   };
@@ -290,6 +294,7 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
       getReceipt: guarded((consumerId, eventId) => !identifier(consumerId) || !identifier(eventId) ? invalid('invalid-receipt', 'receipt', 'Receipt IDs are required') : get({ table: 'event_receipts', key: { runId: context.runId, consumerId, eventId } }), true),
       recordReceipt: guarded(recordReceipt), enqueueNotification: guarded(enqueue) }),
     finish: () => { active = false; return failure; },
+    changedTables: () => [...changedTables],
   };
 }
 
@@ -379,6 +384,7 @@ export function createRepository(backend) {
       if (!opened) return unavailable();
       if (!plain(command) || !identifier(command.commandId) || !identifier(command.inputDigest) || typeof work !== 'function') return invalid('invalid-command', 'command', 'Command ID, digest and callback are required');
       let committed = false;
+      let changedTables = [];
       const outcome = await safe('transaction', () => backend.transaction(context, async (state) => {
         const refused = contextError(context, state);
         if (refused) return { commit: false, outcome: refused };
@@ -401,11 +407,12 @@ export function createRepository(backend) {
         const recorded = await recorder.tx.recordReceipt({ consumerId, eventId: command.commandId, inputDigest: command.inputDigest, state: 'completed', outcome: storedOutcome });
         recorder.finish();
         committed = recorded.status === 'ok';
+        changedTables = [...new Set([...session.changedTables(), ...recorder.changedTables()])];
         return committed ? { commit: true, outcome: storedOutcome } : { commit: false, outcome: recorded };
       }));
       if (committed && ['ok', 'pending'].includes(outcome.status)) {
         await Promise.allSettled([...commitObservers].map((observer) => Promise.resolve().then(() => observer({
-          context: structuredClone(context), commandId: command.commandId,
+          context: structuredClone(context), commandId: command.commandId, changedTables: [...changedTables],
         }))));
       }
       return outcome;

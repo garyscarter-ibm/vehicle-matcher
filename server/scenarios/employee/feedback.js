@@ -1,5 +1,5 @@
 import { createFeedbackState, reduceFeedback, applyConfirmedFeedbackChange, candidateSurvivesFeedback } from '../../../blocks/vehicle-matcher/feedback-actions.js';
-import { validateBrief, evaluateEssentials, scorePreferences, rankEmployeeRecommendations, chargingGates, confirmedFact } from './index.js';
+import { validateBrief, evaluateEssentials, scorePreferences, rankEmployeeRecommendations, chargingGates, confirmedFact, unselectedPracticalAnswer } from './index.js';
 
 const clone = (value) => structuredClone(value);
 const unavailable = (code) => ({ status: 'unavailable', code, retryable: true });
@@ -47,10 +47,10 @@ export function reduceEmployeeDraft(state, action, { source, config, slider, cha
       seen.add(original.candidateKey);
       const candidate = clone(original);
       const employeeFacts = clone(candidate.employeeFacts);
-      if (charging) employeeFacts.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging.value,
+      if (charging && !unselectedPracticalAnswer(charging)) employeeFacts.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging.value,
         unit: charging.unit, provenance: { sourceRef: charging.source, version: String(brief.briefVersion), observedAt: charging.confirmedAt ?? candidate.evaluatedAt,
           assurance: charging.state === 'confirmed' ? 'synthetic-scenario' : 'unknown' } };
-      const gates = [evaluateEssentials(candidate.snapshot, projected, config), chargingGates(candidate.snapshot, employeeFacts, config, chargingRequired)];
+      const gates = [evaluateEssentials(candidate.snapshot, projected, config, { optionalDefaults: true }), chargingGates(candidate.snapshot, employeeFacts, config, chargingRequired)];
       const blockers = candidate.blockers.filter((e) => !localGate(e));
       const unknowns = candidate.unknowns.filter((e) => !localGate(e));
       const reasons = candidate.reasons.filter((e) => !localGate(e));
