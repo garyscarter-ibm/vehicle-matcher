@@ -5038,10 +5038,10 @@
     {
       "id": "FUCQ-397",
       "title": "Bring Buddy controls and recent history into Your cars",
-      "status": "To Do",
+      "status": "In Progress",
       "type": "Story",
       "assignee": "Gary Carter",
-      "observed_at": "2026-11-11T17:33:38Z",
+      "observed_at": "2026-11-11T17:53:31Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-397",
       "slices": [
         {
@@ -5062,15 +5062,28 @@
           "title": "Integration-and-rendered-review"
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "original_status": "In Progress",
+      "branch": "dev/DEV-2026-11-11-GC-004",
+      "workers": [
+        {
+          "name": "Pussyfoot",
+          "harness": "codex",
+          "role": "implementer",
+          "status": "building",
+          "observed_at": "2026-11-11T17:53:31.865883+00:00",
+          "expires_at": "2026-11-11T18:53:31.865883+00:00",
+          "source": "parent observed active child; gpt-6.1-sol medium, no fallback"
+        }
+      ]
     },
     {
       "id": "FUCQ-398",
       "title": "Show run-scoped Buddy allocation outcomes on Presenter",
-      "status": "To Do",
+      "status": "In Progress",
       "type": "Story",
       "assignee": "Gary Carter",
-      "observed_at": "2026-11-11T17:33:39Z",
+      "observed_at": "2026-11-11T17:53:32Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-398",
       "slices": [
         {
@@ -5091,7 +5104,20 @@
           "title": "Integration-and-rendered-review"
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "original_status": "In Progress",
+      "branch": "dev/DEV-2026-11-11-GC-005",
+      "workers": [
+        {
+          "name": "Yosemite Sam",
+          "harness": "codex",
+          "role": "implementer",
+          "status": "building",
+          "observed_at": "2026-11-11T17:53:31.865883+00:00",
+          "expires_at": "2026-11-11T18:53:31.865883+00:00",
+          "source": "parent observed active child; gpt-6.1-sol medium, no fallback"
+        }
+      ]
     }
   ]
 }
