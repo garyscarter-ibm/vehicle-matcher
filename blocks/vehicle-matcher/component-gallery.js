@@ -158,7 +158,7 @@ function gcspExamples() {
   for (const photo of ['/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp', '']) {
     whole.append(mediaWell({ name: 'BMW 3 Series Touring', line: '', photo, alt: 'BMW 3 Series Touring' }, 'gcsp-media gcsp-media-whole', { placeholder: NO_IMAGE_TEXT }).media);
   }
-  group('mediaWell: whole car at intrinsic ratio').append(whole);
+  group('mediaWell: car fills its frame').append(whole);
   group('factList: Points cost from formatPointsCost').append(factList([
     { label: 'Contract end', value: '1 December 2026' },
     { label: 'Points cost', value: formatPointsCost({ kind: 'points-monthly', value: 1100, allowance: 1300 }) },

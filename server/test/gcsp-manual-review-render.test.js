@@ -79,7 +79,7 @@ test('selected review gives the image caption its own space and keeps a full fal
   await settle(() => f.root.querySelector('.vm-card-photo'));
   const media = f.root.querySelector('.vm-card-media'); const tag = media.querySelector('.vm-card-line');
   assert.equal(window.getComputedStyle(media.querySelector('.vm-media-caption')).position, 'static');
-  assert.equal(window.getComputedStyle(media.querySelector('.vm-card-photo')).objectFit, 'contain');
+  assert.equal(window.getComputedStyle(media.querySelector('.vm-card-photo')).objectFit, 'cover');
   assert.equal(window.getComputedStyle(tag).position, 'static');
   assert.equal(window.getComputedStyle(tag).overflowWrap, 'anywhere');
   assert.equal(tag.textContent, 'Car order 9000001');
