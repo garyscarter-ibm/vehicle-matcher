@@ -350,7 +350,7 @@ test('provider uncertainty has truthful fixed copy alongside captured real messa
 
 test('safe provider error copy does not assert a new retry or deny an earlier ambiguous send', () => {
   assert.doesNotMatch(copy.errorSentence('provider-rate-limited'), /scheduled|another attempt/i);
-  for (const code of ['mail-configuration-invalid', 'recipient-not-allowed', 'offer-link-invalid']) {
+  for (const code of ['mail-configuration-invalid', 'recipient-not-allowed', 'recipient-email-invalid', 'offer-link-invalid']) {
     assert.doesNotMatch(copy.errorSentence(code), /nothing was sent|no email was sent/i);
   }
 });

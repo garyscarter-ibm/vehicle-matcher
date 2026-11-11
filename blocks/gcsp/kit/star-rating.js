@@ -11,9 +11,9 @@ const clean = (value) => (Number.isInteger(value) && value >= 1 && value <= 5 ? 
 
 /** Five-star rating, 1-5 or null; choosing the selected star clears it. The caller owns saving and reports it with update({ value, status }).
  * A failed status shows a Try again button when onRetry is supplied. Returns { root, update({ value, status, disabled }), value(), focus(), destroy() }. */
-export function starRating({ label, value = null, help, labels = RATING_WORDS, onChange, onRetry, announce, overlay = false, name, disabled = false } = {}) {
+export function starRating({ label, value = null, help, labels = RATING_WORDS, onChange, onRetry, announce, overlay = false, pill = false, name, disabled = false } = {}) {
   const id = ++sequence; const group = name ?? `gcsp-star-rating-${id}`;
-  const root = el('fieldset', `gcsp-star-rating${overlay ? ' gcsp-star-rating-overlay' : ''}`); root.dataset.status = 'idle';
+  const root = el('fieldset', `gcsp-star-rating${overlay ? ' gcsp-star-rating-overlay' : ''}${pill ? ' gcsp-star-rating-pill' : ''}`); root.dataset.status = 'idle';
   root.append(el('legend', '', label));
   const retry = onRetry ? button({ label: 'Try again', variant: 'ghost', onClick: () => onRetry() }) : null;
   const failed = retry ? el('div', 'gcsp-star-failed') : null;

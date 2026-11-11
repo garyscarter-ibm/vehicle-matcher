@@ -87,12 +87,25 @@ These settings are implemented by `server/gcsp/notify/config.js` and documented 
 | `GCSP_MAIL_TRANSPORT` | Explicit `brevo` opt-in; absent or empty transport retains capture only. Any other nonempty selection or partial/invalid Brevo configuration produces a captured safe refusal and makes no provider request. |
 | `GCSP_BREVO_API_KEY` | Brevo API key supplied privately as a Render backend secret. |
 | `GCSP_MAIL_FROM`, `GCSP_MAIL_FROM_NAME` | Required sender address accepted by the existing Brevo account and required display name. Verify the actual address/account before use; the domain notes alone are insufficient. |
-| `GCSP_MAIL_RECIPIENTS` | JSON object mapping fictional demo employee IDs to approved test addresses; its values form the server-owned allow-list. An unmapped recipient is refused before network access. |
 | `GCSP_PUBLIC_BASE_URL` | Required public HTTPS frontend base, preserving the deployed project path. Existing `/gcsp/offer` links are resolved under it; external origins, credentials, localhost and incompatible routes are refused. |
+
+**Gary's revision, 11 November 2026:** recipients come from the employee record's separate
+`deliveryEmail`, edited in **Your Cars → Your details → Notification email → Save email**.
+The generated sign-in address remains unchanged. Unset or invalid addresses refuse before
+network access with `recipient-email-invalid`; clearing the field stops new live deliveries.
+`GCSP_MAIL_RECIPIENTS` is obsolete and ignored. Earlier references to an environment recipient
+map or allow-list in this historical handoff are superseded by this decision.
+
+The session fixes whose record can be edited; browser recipient selectors are refused. The
+setting uses a dedicated version and idempotent command, survives restarts and atomic presenter
+resets only for the same employee/principal, and is omitted from general identity/outbox
+projections. The first provider preparation durably pins the address beside the UUID; changing
+the employee setting cannot redirect an in-flight retry. Legacy unconfirmed attempts without
+a pinned address refuse safely; confirmed acknowledgements still recover without another send.
 
 No new PAT is needed to document or implement this HTTP method. The send credential is a **Brevo API key**, not a GitHub PAT, IBM inference key or Microsoft token. The existing local keychain helper establishes a retrieval pattern, not the presence or validity of a key for the GCSP Render process. Do not extract Deckhead's settings database or copy credentials into source, stories, chat, ordinary config files or shell arguments. A collaborator can privately configure an existing suitable key in Render; generate a new Brevo key only if the existing one is unavailable, revoked or unsuitable.
 
-Before enabling real sends, verify the configured key with backend-only `GET https://api.brevo.com/v3/account` using the same `api-key` header. This request sends no mail, but its response can contain account details: retain only a safe result. An authentication refusal and a network timeout are different outcomes. Then verify the chosen sender in that account, the explicit demo recipient mapping and the public offer URL. No current Brevo account, sender status, credit balance, keychain item or Render secret was checked for this handoff.
+Before enabling real sends, verify the configured key with backend-only `GET https://api.brevo.com/v3/account` using the same `api-key` header. This request sends no mail, but its response can contain account details: retain only a safe result. An authentication refusal and a network timeout are different outcomes. Then verify the chosen sender in that account, the employee's saved notification email and the public offer URL. No current Brevo account, sender status, credit balance, keychain item or Render secret was checked for this handoff.
 
 FUCQ-98's existing sender-setup boundary remains: provisioning a sender/domain/tenant is outside the implementation story. Once configured, its existing acceptance requires one deliberate real send to an approved demo inbox, the provider ID in the result and actual inbox/link verification. Ask for the specific missing setup at that point; do not request a PAT speculatively or claim that the sender precondition has cleared from these notes alone.
 

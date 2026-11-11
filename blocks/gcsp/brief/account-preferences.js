@@ -7,7 +7,7 @@ let sequence = 0;
 const commandId = (kind) => `${kind}:${globalThis.crypto.randomUUID()}`;
 
 /** Mounts the compact Preferences into Account's one persistent region. Owns its content, so Account redraws never touch it. */
-export function mountAccountPreferences(region, { transport, signal, createCommandId = commandId, describeCar, buddyStatusId } = {}) {
+export function mountAccountPreferences(region, { transport, signal, createCommandId = commandId, describeCar, buddyStatusId, buddyControls = false } = {}) {
   const doc = region.ownerDocument; const id = `gcsp-account-prefs-${++sequence}`;
   const controller = createAccountPreferencesController({ transport, createCommandId });
   let view = null; let described = ''; let failure = null; let skeleton = null; let finished = false; let wasInside = false; let holdAction = false; let shownAttempt = 0;
@@ -31,7 +31,7 @@ export function mountAccountPreferences(region, { transport, signal, createComma
     if (state.phase === 'failed' && !view) { skeleton = null; unavailable(state); return; }
     skeleton = null; failure = null;
     const lane = state.sameAgain; const score = state.understanding; const lamp = state.buddy;
-    const action = { label: lamp.state === 'engaged' ? 'Disengage Buddy' : 'Engage Buddy', disabled: lamp.state === 'unknown' || Boolean(lamp.pending) || lamp.waiting };
+    const action = { label: lamp.state === 'engaged' ? 'Disengage Buddy' : 'Engage Buddy', hidden: buddyControls && (lamp.state === 'engaged' || lamp.reason === 'paused' || state.disabled), disabled: lamp.state === 'unknown' || Boolean(lamp.pending) || lamp.waiting };
     const next = { categories: state.categories, open: state.open, pendingRemoval: state.pendingRemoval, disabled: state.disabled,
       ...(lane ? { sameAgain: { on: lane.on, available: lane.available, reason: lane.reason } } : {}), ...(score ? { understanding: score } : {}), action,
       status: null };
@@ -45,7 +45,7 @@ export function mountAccountPreferences(region, { transport, signal, createComma
         minimum: state.projection.minimumCategories,
         action: { describedBy: [`${id}-status`, buddyStatusId].filter(Boolean).join(' '), onClick: () => { holdAction = true; (controller.snapshot().buddy.state === 'engaged' ? controller.disengage() : controller.engage()); } },
         ...(state.projection.understanding ? { understanding: { maximum: state.projection.understanding.maximum } } : {}),
-        ...(lane ? { sameAgain: { description: describeCar?.() ?? '', onToggle: (on) => controller.toggleSameAgain(on) } } : {}),
+        ...(lane ? { sameAgain: { mode: 'choice', description: describeCar?.() ?? '', onToggle: (on) => controller.toggleSameAgain(on) } } : {}),
         onOpen: (key) => controller.open(key), onClose: () => controller.close(),
         onChange: (key, change) => controller.change(key, change),
         onRemove: (key) => controller.requestRemove(key), onKeep: (key) => controller.keep(key),
@@ -62,6 +62,7 @@ export function mountAccountPreferences(region, { transport, signal, createComma
     if (attempt && attempt !== shownAttempt) { holdAction = false; view.focusStatus(); }
     shownAttempt = attempt || shownAttempt;
     const button = view.actionButton;
+    if (holdAction && action.hidden) { view.focusStatus(); holdAction = false; }
     if (holdAction && button && !button.disabled) { if (!doc.activeElement || doc.activeElement === doc.body) button.focus(); holdAction = false; }
     // A status button that vanished with the focus on it hands focus to the heading, never to the page.
     if ((inside || wasInside) && (!doc.activeElement || doc.activeElement === doc.body)) view.root.querySelector('h2')?.focus();

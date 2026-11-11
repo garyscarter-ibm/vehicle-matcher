@@ -20,6 +20,7 @@ export const statusOf = (state, transport) => (state === 'sent' && transport ===
 export const ERROR_COPY = Object.freeze({
   'mail-configuration-invalid': 'The sender configuration needs attention.',
   'recipient-not-allowed': 'The recipient is not an approved address.',
+  'recipient-email-invalid': 'Set a valid notification email in Your Cars, under Your details.',
   'offer-link-invalid': 'The offer link is not a public address.',
   'provider-authentication': 'The email provider refused the configured sender credentials.',
   'provider-rejected': 'The email provider refused this message.',

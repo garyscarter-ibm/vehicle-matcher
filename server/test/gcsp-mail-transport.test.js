@@ -17,12 +17,12 @@ const WALL = '2026-11-05T10:00:00.000Z';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const env = (patch = {}) => ({ GCSP_MAIL_TRANSPORT: 'brevo', GCSP_BREVO_API_KEY: SECRET,
   GCSP_MAIL_FROM: 'sender@example.test', GCSP_MAIL_FROM_NAME: 'GCSP demo',
-  GCSP_MAIL_RECIPIENTS: JSON.stringify({ 'employee-paula': ADDRESS }), GCSP_PUBLIC_BASE_URL: BASE, ...patch });
+  GCSP_PUBLIC_BASE_URL: BASE, ...patch });
 const response = (status = 201, body = { messageId: '<accepted@smtp.test>' }) => ({ status, async json() { return body; } });
 const cmd = (commandId) => ({ commandId, inputDigest: inputDigest(commandId) });
 const ref = (f) => ({ table: 'notification_outbox', key: { runId: f.context.runId, jobId: 'job-one' } });
 const row = async (f) => (await f.repository.read(f.context, ref(f))).value;
-async function setup(t, { mail = {}, link = LINK, state = 'pending', outcome, attempts = 0 } = {}) {
+async function setup(t, { mail = {}, link = LINK, state = 'pending', outcome, attempts = 0, deliveryEmail = ADDRESS } = {}) {
   assert.equal(typeof notify.createMailTransport, 'function');
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });
   assert.equal((await repository.open()).status, 'ok');
@@ -39,6 +39,10 @@ async function setup(t, { mail = {}, link = LINK, state = 'pending', outcome, at
   t.after(async () => { dispatcher.close(); await repository.close(); });
   const stock = (await repository.query(context, 'stock')).value[0];
   assert.equal((await repository.transaction(context, cmd('seed'), async (tx) => {
+    const employeeRef = { table: 'employees', key: { runId: context.runId, employeeId: 'employee-paula' } };
+    const employee = await tx.get(employeeRef);
+    const changed = await tx.compareAndSwap(employeeRef, employee.value.version, { deliveryEmail });
+    if (changed.status !== 'ok') return changed;
     for (const [table, facts] of [
       ['quotes', { quoteId: 'quote-one', orderUuid: stock.orderUuid, employeeId: 'employee-paula', policyVersion: 'gcsp-policy-v1', facts: { model: 'BMW <Touring>' } }],
       ['holds', { holdId: 'hold-one', orderUuid: stock.orderUuid, employeeId: 'employee-paula', entitlementSlotId: 'slot-paula', type: 'buddy-offer', state: 'active', quoteId: 'quote-one', expiresAt: '2026-11-05T11:00:00.000Z' }],
@@ -110,14 +114,19 @@ test('real producer fragment survives renderer and configured outbound bodies', 
   assert.equal(job.outcome.provider.messageId, '<accepted@smtp.test>');
 });
 
-test('configured transport captures and sends a renewal-case update without an offer link', async (t) => {
+test('configured transport sends Greg case updates and Paula offers to their separate employee addresses', async (t) => {
   const sent = [];
   const f = await setup(t, { mail: { fetchImpl: async (_url, options) => { sent.push(JSON.parse(options.body)); return response(); } } });
-  const caseUpdate = { runId: f.context.runId, employeeId: 'employee-paula', caseId: 'case-one', caseVersion: 1, status: 'open',
+  const gregEmail = 'greg@example.test';
+  await f.repository.transaction(f.context, cmd('greg-email'), async (tx) => {
+    const ref = { table: 'employees', key: { runId: f.context.runId, employeeId: 'operator-greg' } };
+    const employee = await tx.get(ref); return tx.compareAndSwap(ref, employee.value.version, { deliveryEmail: gregEmail });
+  });
+  const caseUpdate = { runId: f.context.runId, employeeId: 'operator-greg', caseId: 'case-one', caseVersion: 1, status: 'open',
     owner: { role: 'fleet-manager', name: 'Fleet team (fictional)' }, reason: 'Renewal needs review.', nextAction: 'Check your account.',
     dueAt: '2026-11-06T09:00:00.000Z', occurredAt: '2026-11-05T09:00:00.000Z' };
   assert.equal((await f.repository.transaction(f.context, cmd('seed-case'), (tx) => tx.enqueueNotification({ runId: f.context.runId,
-    jobId: 'job-case', idempotencyKey: 'case:case-one:update:1', inputDigest: inputDigest(caseUpdate), recipientId: 'employee-paula',
+    jobId: 'job-case', idempotencyKey: 'case:case-one:update:1', inputDigest: inputDigest(caseUpdate), recipientId: 'operator-greg',
     messageKind: 'renewal-case-update', messageVersion: '1', payload: { caseUpdate }, state: 'pending', attempts: 0 }))).status, 'ok');
   await f.dispatcher.dispatchPending();
   const job = (await f.repository.read(f.context, { table: 'notification_outbox', key: { runId: f.context.runId, jobId: 'job-case' } })).value;
@@ -125,7 +134,8 @@ test('configured transport captures and sends a renewal-case update without an o
   assert.equal(job.outcome.message.subject, 'Your renewal case has been updated');
   assert.equal(job.outcome.provider.state, 'confirmed'); assert.equal(job.outcome.provider.messageId, '<accepted@smtp.test>');
   const outbound = sent.find((body) => body.subject === 'Your renewal case has been updated');
-  assert.ok(outbound); assert.deepEqual(outbound.to, [{ email: ADDRESS }]);
+  assert.ok(outbound); assert.deepEqual(outbound.to, [{ email: gregEmail }]);
+  assert.deepEqual(sent.find((body) => body.subject !== 'Your renewal case has been updated').to, [{ email: ADDRESS }]);
   assert.ok(!outbound.textContent.includes('No email has been sent.'));
 });
 
@@ -158,8 +168,8 @@ test('provider rejection, authentication and malformed acknowledgements map to f
   });
 });
 
-test('allowlist and invalid partial configuration refuse before network and retain capture', async (t) => {
-  for (const patch of [{ GCSP_MAIL_RECIPIENTS: '{}' }, { GCSP_MAIL_RECIPIENTS: '{invalid' }, { GCSP_BREVO_API_KEY: '' },
+test('invalid partial configuration refuses before network and retains capture', async (t) => {
+  for (const patch of [{ GCSP_BREVO_API_KEY: '' },
     { GCSP_MAIL_FROM: 'bad\nvalue' }, { GCSP_PUBLIC_BASE_URL: 'http://localhost:3000/' }, { GCSP_MAIL_TRANSPORT: 'unknown' }]) {
     await t.test(Object.keys(patch)[0], async (st) => {
       let calls = 0; const f = await setup(st, { mail: { env: env(patch), fetchImpl: async () => { calls++; return response(); } } });
@@ -167,13 +177,19 @@ test('allowlist and invalid partial configuration refuse before network and reta
       assert.equal(calls, 0); assert.equal(job.state, 'failed'); assert.ok(job.outcome.message);
     });
   }
-  await t.test('mapped address outside separately injected allowed set', async (st) => {
-    let calls = 0; const f = await setup(st, { state: 'sending', attempts: 1 });
-    const transport = new notify.BrevoMailTransport({ repository: f.repository, apiKey: SECRET, sender: { email: 'sender@example.test', name: 'GCSP demo' },
-      recipients: { 'employee-paula': ADDRESS }, allowedRecipients: ['other@example.test'], publicBaseUrl: BASE, wallNow: () => WALL, fetchImpl: async () => { calls++; return response(); } });
-    const result = await transport.send(await directInput(f));
-    assert.equal(result.code, 'recipient-not-allowed'); assert.equal(result.retryable, false); assert.equal(calls, 0); assert.ok((await row(f)).outcome.message);
+});
+
+test('employee address is required and obsolete recipient environment settings have no effect', async (t) => {
+  for (const deliveryEmail of [null, '', 'bad\naddress@example.test', 'not-an-email']) await t.test(String(deliveryEmail), async (st) => {
+    let calls = 0; const f = await setup(st, { deliveryEmail, mail: { fetchImpl: async () => { calls++; return response(); } } });
+    await f.dispatcher.dispatchPending(); const job = await row(f);
+    assert.equal(job.outcome.error, 'recipient-email-invalid'); assert.equal(job.state, 'failed'); assert.equal(calls, 0);
+    assert.ok(job.outcome.message); assert.equal(job.outcome.provider, undefined);
   });
+  let payload; const f = await setup(t, { deliveryEmail: 'record@example.test', mail: {
+    env: env({ GCSP_MAIL_RECIPIENTS: '{invalid' }), fetchImpl: async (_url, options) => { payload = JSON.parse(options.body); return response(); },
+  } });
+  await f.dispatcher.dispatchPending(); assert.deepEqual(payload.to, [{ email: 'record@example.test' }]);
 });
 
 test('timeout and thrown provider diagnostics remain retryable and never reach logs', async (t) => {
@@ -188,15 +204,20 @@ test('timeout and thrown provider diagnostics remain retryable and never reach l
   });
 });
 
-test('stable UUID survives policy retry, repository reopen and a fresh dispatcher', async (t) => {
-  const keys = []; let calls = 0;
-  const mail = { fetchImpl: async (_url, options) => { keys.push(JSON.parse(options.body).headers.idempotencyKey); calls++; return calls === 1 ? response(503, {}) : response(); } };
+test('stable UUID and recipient survive email edits, policy retry, repository reopen and a fresh dispatcher', async (t) => {
+  const keys = []; const addresses = []; let calls = 0;
+  const mail = { fetchImpl: async (_url, options) => { const payload = JSON.parse(options.body); keys.push(payload.headers.idempotencyKey); addresses.push(payload.to[0].email); calls++; return calls === 1 ? response(503, {}) : response(); } };
   const f = await setup(t, { mail }); await f.dispatcher.dispatchPending();
   const first = await row(f); const rules = (await f.policy.getAssumption('notify.delivery.v1', { runId: f.context.runId, asOf: first.outcome.attemptedAt })).value.value;
   assert.equal(Date.parse(first.outcome.nextAttemptAt) - Date.parse(first.outcome.attemptedAt), rules.retryBaseSeconds * 1000);
+  await f.repository.transaction(f.context, cmd('change-address'), async (tx) => {
+    const ref = { table: 'employees', key: { runId: f.context.runId, employeeId: 'employee-paula' } };
+    const employee = await tx.get(ref); return tx.compareAndSwap(ref, employee.value.version, { deliveryEmail: 'changed@example.test' });
+  });
   await f.repository.close(); assert.equal((await f.repository.open()).status, 'ok');
   f.dispatcher = new notify.NotificationDispatcher(f.ports); await retry(f);
   assert.equal((await row(f)).state, 'sent'); assert.equal(keys.length, 2); assert.equal(keys[0], keys[1]);
+  assert.deepEqual(addresses, [ADDRESS, ADDRESS]);
   await new notify.NotificationDispatcher(f.ports).dispatchPending(); assert.equal(calls, 2);
 });
 
@@ -213,6 +234,31 @@ test('concurrent transports reuse the CAS winner UUID and the persisted confirme
   await f.repository.close(); await f.repository.open();
   assert.equal((await notify.createMailTransport({ ...options, fetchImpl: async () => { assert.fail('confirmed ack must not resend'); } }).send(input)).status, 'ok');
   assert.equal((await row(f)).outcome.provider.messageId, stored.outcome.provider.messageId);
+});
+
+test('legacy unconfirmed provider attempts without a pinned recipient cannot send to a newly edited address', async (t) => {
+  let calls = 0;
+  const f = await setup(t, { state: 'sending', attempts: 1, outcome: {
+    provider: { name: 'brevo', state: 'unconfirmed', idempotencyKey: 'abcdefab-1234-4123-8123-abcdefabcdef', firstAttemptAt: WALL },
+  }, mail: { fetchImpl: async () => { calls++; return response(); } } });
+  const outcome = await notify.createMailTransport({ repository: f.repository, ...f.ports.mail }).send(await directInput(f));
+  assert.equal(outcome.code, 'provider-unconfirmed'); assert.equal(outcome.retryable, false); assert.equal(calls, 0);
+});
+
+test('a concurrent stale attempt uses the durable recipient after the employee clears their address', async (t) => {
+  let release; let began; const gate = new Promise((resolve) => { release = resolve; });
+  const started = new Promise((resolve) => { began = resolve; }); const addresses = [];
+  const f = await setup(t, { state: 'sending', attempts: 1 }); const input = await directInput(f);
+  const transport = notify.createMailTransport({ repository: f.repository, env: env(), wallNow: () => WALL,
+    fetchImpl: async (_url, request) => { addresses.push(JSON.parse(request.body).to[0].email); began(); await gate; return response(); } });
+  const first = transport.send(input); await started;
+  await f.repository.transaction(f.context, cmd('clear-during-send'), async (tx) => {
+    const ref = { table: 'employees', key: { runId: f.context.runId, employeeId: 'employee-paula' } };
+    const employee = await tx.get(ref); return tx.compareAndSwap(ref, employee.value.version, { deliveryEmail: null });
+  });
+  const second = transport.send(input); await new Promise((resolve) => setImmediate(resolve)); release();
+  assert.ok((await Promise.all([first, second])).every((outcome) => outcome.status === 'ok'));
+  assert.ok(addresses.length >= 1); assert.ok(addresses.every((address) => address === ADDRESS));
 });
 
 test('duplicate response is ambiguous and expired wall-time window refuses another network send', async (t) => {

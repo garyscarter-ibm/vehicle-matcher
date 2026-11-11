@@ -48,6 +48,7 @@ import { createOfferFollowupRoutes } from './gcsp/offers/followup-http.js';
 import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.js';
 import { createClockRoutes } from './gcsp/clock/http.js';
 import { createOutboxRoutes } from './gcsp/notify/http.js';
+import { createDeliveryEmailRoutes } from './gcsp/notify/delivery-email.js';
 import { createScenarioRoutes } from './gcsp/scenarios/http.js';
 import { createPresenterControlsRoutes } from './gcsp/presenter-controls/http.js';
 import { createPresenterReleaseRoutes } from './gcsp/presenter-releases/http.js';
@@ -851,6 +852,7 @@ export function buildServer(deps = {}) {
     ...createPresenterControlsRoutes({ clock: deps.gcspClock, identity: deps.gcspIdentity, scenarios: deps.gcspScenarios }),
     // Without a stock release service the run has no released stock to read, so the route answers unavailable.
     ...createPresenterReleaseRoutes({ repository: deps.gcspStockRelease ? deps.gcspRepository : undefined, policy: deps.gcspPolicy, clock: deps.gcspClock }),
+    ...createDeliveryEmailRoutes({ repository: deps.gcspRepository }),
     ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualRead || deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims), ...createManualOrderRoutes(deps.gcspManualOrder),
     ...createManualReviewDetailsRoutes(deps.gcspManualReview),
     ...createOfferFollowupRoutes(deps.gcspOfferFollowup),

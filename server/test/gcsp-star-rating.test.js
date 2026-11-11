@@ -69,8 +69,9 @@ test('Enter selects and clears, one change each', () => {
   assert.deepEqual(changes, [5, null]);
 });
 
-test('arrows, Home and End move focus and select, clamped without wrapping', () => {
-  const { rating, radios, changes } = mount();
+test('pill: arrows, Home and End move focus and select, clamped without wrapping', () => {
+  const { rating, radios, changes } = mount({ pill: true, overlay: true });
+  assert.ok(rating.root.classList.contains('gcsp-star-rating-pill'));
   radios[0].focus(); key(radios[0], 'ArrowLeft'); assert.deepEqual(changes, [1]); assert.equal(document.activeElement, radios[0]);
   key(radios[0], 'ArrowRight'); assert.equal(document.activeElement, radios[1]); assert.equal(rating.value(), 2);
   key(radios[1], 'ArrowUp'); assert.equal(rating.value(), 3); key(radios[2], 'ArrowDown'); assert.equal(rating.value(), 2);

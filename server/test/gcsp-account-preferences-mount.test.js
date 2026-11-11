@@ -205,7 +205,7 @@ test('teardown removes the rating and its listeners', async () => {
 });
 
 // FUCQ-369: the Same again row and Buddy understanding on the bitmap.
-const sameInput = (host) => host.querySelector('.gcsp-same-switch input');
+const sameInput = (host) => host.querySelector('.gcsp-prefs-mode input[value=same]');
 const figure = (host) => host.querySelector('.gcsp-understanding-value');
 const CAR_TEXT = 'BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol'; // the Account fixture's heading and specification
 
@@ -221,7 +221,7 @@ test('the Same again row sits between the head and the tiles and its help names 
   assert.ok(tip.endsWith(parts)); destroy(); host.remove();
 });
 
-test('Space on the switch turns Same again on and autosaves; focus stays on it and the score and status follow', async () => {
+test('Selecting the Same again mode turns Same again on and autosaves; focus stays on it and the score and status follow', async () => {
   const { host, destroy, calls } = await mountRated('selected');
   const input = sameInput(host); input.focus(); input.checked = true; input.dispatchEvent(new window.Event('change', { bubbles: true }));
   const region = host.querySelector('.gcsp-account-preferences');
@@ -229,19 +229,23 @@ test('Space on the switch turns Same again on and autosaves; focus stays on it a
   assert.equal(figure(host).getAttribute('aria-label'), 'Buddy understanding 11 out of 11 (saving)');
   await tick(); await tick();
   assert.deepEqual(calls[0].sameAgain, { contractId: 'current:employee-paula', on: true }); assert.deepEqual(calls[0].changes, {});
-  assert.equal(document.activeElement, sameInput(host), 'focus stays on the switch'); assert.equal(sameInput(host), input, 'the same control node');
+  assert.equal(document.activeElement, sameInput(host), 'focus stays on the selected mode'); assert.equal(sameInput(host), input, 'the same control node');
   assert.equal(input.checked, true); assert.equal(statusText(region), 'Preferences saved automatically.');
   assert.equal(figure(host).textContent, '11 / 11'); assert.equal(figure(host).getAttribute('aria-label'), 'Buddy understanding 11 out of 11');
   assert.equal(region.querySelectorAll('.gcsp-prefs-open:not(:disabled)').length, 0, 'tiles are neutral and disabled');
-  assert.equal(host.querySelector('.gcsp-prefs-tile.is-considered .gcsp-prefs-value').textContent, 'Touring / Estate', 'saved choices stay visible');
-  input.checked = false; input.dispatchEvent(new window.Event('change', { bubbles: true })); await tick(); await tick();
+  assert.equal(host.querySelector('.gcsp-prefs-tile.is-considered .gcsp-prefs-value').textContent, 'Touring / Estate', 'saved choices are retained');
+  assert.equal(region.querySelector('.gcsp-prefs-tiles').hidden, true);
+  assert.match(region.querySelector('.gcsp-prefs-same-summary').textContent, /Your current car guides the search/);
+  const custom = region.querySelector('input[value=custom]'); custom.focus(); custom.checked = true; custom.dispatchEvent(new window.Event('change', { bubbles: true })); await tick(); await tick();
   assert.deepEqual(calls[1].sameAgain, { contractId: 'current:employee-paula', on: false });
-  assert.equal(figure(host).textContent, '6 / 11'); assert.equal(document.activeElement, input);
+  assert.equal(figure(host).textContent, '6 / 11'); assert.equal(document.activeElement, custom);
+  assert.equal(region.querySelector('.gcsp-prefs-tiles').hidden, false);
+  assert.equal(tile(host, 'body').textContent.includes('Touring / Estate'), true);
   assert.equal(statusText(region), 'Preferences saved automatically.');
   destroy(); host.remove();
 });
 
-test('a quiet Account redraw keeps the Same again switch node, its state and its focus', async () => {
+test('a quiet Account redraw keeps the Same again mode node, its state and its focus', async () => {
   const { host, destroy, controller } = await mountRated('same-again');
   assert.equal(controller.snapshot().sameAgain.on, true);
   const input = sameInput(host); assert.equal(input.checked, true); input.focus();
@@ -263,7 +267,7 @@ test('a failed Same again save says so with Try again, keeps the attempt and the
   assert.notEqual(document.activeElement, document.body); destroy(); host.remove();
 });
 
-test('no current car: the switch is disabled with the reason and the categories stay editable', async () => {
+test('no current car: the mode is disabled with the reason and the categories stay editable', async () => {
   const host = document.createElement('div'); document.body.append(host); let mounted;
   const inner = previewPreferenceTransport('selected', { sameAgainReason: 'no-current-car' });
   const destroy = mountAccount(host, { adapter: { ...adapter(), readAccount: async () => accountFixture('no-current-car') },
@@ -362,4 +366,18 @@ test('Account refresh re-reads engagement quietly and shows no header lamp', asy
   const bare = document.createElement('div'); document.body.append(bare);
   const stop = mountAccount(bare, { adapter: adapter() }); await tick(); await tick();
   assert.equal(bare.querySelector('.gcsp-buddy-status.is-prominent'), null); stop(); bare.remove();
+});
+
+
+test('an engaged or paused Buddy with tile commands has no duplicate footer action', async () => {
+  for (const paused of [false, true]) {
+    const region = document.createElement('div'); document.body.append(region);
+    const inner = previewPreferenceTransport('selected', { buddy: 'engaged' });
+    const transport = { ...inner, loadEditor: async () => { const out = await inner.loadEditor();
+      if (paused) Object.assign(out.value.initial.buddy, { state: 'disengaged', reason: 'paused' }); return out; } };
+    const stop = mountAccountPreferences(region, { transport, buddyControls: true }); await stop.ready;
+    assert.equal(region.querySelector('.gcsp-prefs-action').hidden, true);
+    assert.ok(region.querySelector('.gcsp-understanding-value'));
+    stop(); region.remove();
+  }
 });

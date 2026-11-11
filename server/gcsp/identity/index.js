@@ -133,9 +133,12 @@ export class DemoIdentityAdapter {
   }
 
   #context(state, session, principal) {
+    const publicEmployee = structuredClone(principal);
+    delete publicEmployee.deliveryEmail;
+    delete publicEmployee.deliveryEmailVersion;
     const context = freeze({
       environmentId: state.scope.environmentId, runId: state.scope.runId,
-      ...structuredClone(principal), policyVersion: state.run.policyVersion,
+      ...publicEmployee, policyVersion: state.run.policyVersion,
       principal: { principalId: principal.principalId, name: principal.name, email: principal.email },
       schemeContext: principal.schemeId ? Object.fromEntries(['companyId', 'schemeId', 'gradeId', 'entitlementSlotId']
         .filter((key) => principal[key] !== undefined).map((key) => [key, principal[key]])) : null,

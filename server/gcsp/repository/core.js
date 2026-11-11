@@ -350,6 +350,8 @@ export function createRepository(backend) {
           return { commit: false, outcome: result('stale-run', { reason: 'The current run has changed' }) };
         }
         if (state.tables.runs.some((row) => row.runId === nextRun.runId)) return { commit: false, outcome: conflict('run-id-exists') };
+        const deliveryEmails = new Map(current ? state.tables.employees
+          .filter((employee) => employee.runId === current.runId).map((employee) => [employee.employeeId, employee]) : []);
         if (current) {
           const previous = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
           const retired = await previous.tx.compareAndSwap({ table: 'runs', key: { runId: current.runId } }, expectedRunVersion, { current: false, status: 'historical' });
@@ -369,7 +371,10 @@ export function createRepository(backend) {
         for (const [table, row] of rows) {
           if (outcome.status !== 'ok') break;
           if (row.runId !== undefined && row.runId !== nextRun.runId) { outcome = result('stale-run', { reason: 'Fixture belongs to another run' }); break; }
-          outcome = await seed.tx.insert(table, { ...row, runId: nextRun.runId });
+          const previous = table === 'employees' ? deliveryEmails.get(row.employeeId) : null;
+          const delivery = typeof previous?.principalId === 'string' && previous.principalId === row.principalId && Object.hasOwn(previous, 'deliveryEmail')
+            ? { deliveryEmail: previous.deliveryEmail, deliveryEmailVersion: previous.deliveryEmailVersion ?? 0 } : {};
+          outcome = await seed.tx.insert(table, { ...row, ...delivery, runId: nextRun.runId });
         }
         const failure = seed.finish();
         if (failure || outcome.status !== 'ok') return { commit: false, outcome: failure || outcome };
