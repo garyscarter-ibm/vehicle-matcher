@@ -21,7 +21,8 @@ function iconButton(label, kind, action, className) {
 export function mediaGallery({ name = 'Vehicle', images = [], placeholder = NO_IMAGE_TEXT } = {}) {
   const source = Array.isArray(images) ? images : [];
   const views = source.filter((image, index) => image && typeof image.src === 'string'
-    && (isDisplayImage(image.src, image.fidelity) || image.src === '/assets/brand-hero/bmw.jpg' && (!image.fidelity || image.fidelity === 'representative'))
+    && (isDisplayImage(image.src, image.fidelity) || !image.fidelity && ['representative-configuration', 'representative-model'].some((fidelity) => isDisplayImage(image.src, fidelity))
+      || image.src === '/assets/brand-hero/bmw.jpg' && (!image.fidelity || image.fidelity === 'representative'))
     && source.findIndex((other) => other?.src === image.src) === index)
     .map((image, index) => ({ ...image, label: image.label || (source.length === 1 ? 'Vehicle image' : `View ${index + 1}`), alt: image.alt || `${name}, ${(image.label || `view ${index + 1}`).toLowerCase()}` }));
   const root = el('div', 'gcsp-media-gallery');

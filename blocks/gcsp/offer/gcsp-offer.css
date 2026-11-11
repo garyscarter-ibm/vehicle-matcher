@@ -1,10 +1,9 @@
-@import "../employee/gcsp-employee.css"; @import "../kit/form-controls.css"; @import "../kit/stage-list.css"; @import "../kit/data-table-compare.css";
+@import "../employee/gcsp-employee.css"; @import "../kit/form-controls.css"; @import "../kit/stage-list.css"; @import "../kit/vehicle-decision.css"; @import "../kit/media-gallery.css"; @import "./decision-drawer.css";
 gcsp-offer { display: block; }
-.gcsp .gcsp-offer-body { min-width: 0; overflow-wrap: anywhere; }
+.gcsp .gcsp-offer-body { min-width: 0; width: 100%; max-width: 1680px; margin-inline: auto; overflow-wrap: anywhere; }
 .gcsp .gcsp-offer-content { display: flex; flex-direction: column; align-items: stretch; gap: var(--gcsp-space-4); }
 .gcsp .gcsp-offer-comparison { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gcsp-space-4); align-items: start; }
 .gcsp .gcsp-offer-exact, .gcsp .gcsp-offer-current { min-width: 0; }
 .gcsp .gcsp-offer-current { display: flex; flex-direction: column; gap: var(--gcsp-space-4); }
 .gcsp .gcsp-offer-actions { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-2); }
-@media (min-width: 800px) { .gcsp .gcsp-offer-comparison { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 .gcsp button.gcsp-offer-quiet, .gcsp button.gcsp-offer-quiet:not(:disabled):not([aria-pressed="true"]):hover { align-self: flex-start; min-width: 0; padding: 0; background: none; border-color: transparent; text-decoration: underline; }

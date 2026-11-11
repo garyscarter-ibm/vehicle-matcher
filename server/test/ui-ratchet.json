@@ -28,7 +28,8 @@
     "blocks/gcsp/kit/release-grid.js",
     "blocks/gcsp/kit/help-tip.js",
     "blocks/gcsp/kit/star-rating.js",
-    "blocks/gcsp/kit/understanding-meter.js"
+    "blocks/gcsp/kit/understanding-meter.js",
+    "blocks/gcsp/kit/buddy-status.js"
   ],
   "extensions": [
     ".js",
@@ -154,6 +155,11 @@
       "re": "el\\('div', 'gcsp-understanding'",
       "flags": "g",
       "use": "understandingMeter({ id, label, value, maximum, pending }) (blocks/gcsp/kit/understanding-meter.js)"
+    },
+    "buddy-status": {
+      "re": "el\\('span', `gcsp-buddy-status",
+      "flags": "g",
+      "use": "buddyStatus({ state, href }) (blocks/gcsp/kit/buddy-status.js)"
     }
   },
   "stylesheets": [
@@ -255,7 +261,7 @@
     },
     {
       "path": "blocks/gcsp/activity/gcsp-activity.css",
-      "max_lines": 26
+      "max_lines": 25
     },
     {
       "path": "blocks/gcsp/kit/stage-list.css",
@@ -295,7 +301,7 @@
     },
     {
       "path": "blocks/gcsp/offer/gcsp-offer.css",
-      "max_lines": 11
+      "max_lines": 10
     },
     {
       "path": "blocks/gcsp/kit/stage-tracker.css",
@@ -408,6 +414,26 @@
     {
       "path": "blocks/gcsp/kit/same-again.css",
       "max_lines": 8
+    },
+    {
+      "path": "blocks/gcsp/kit/vehicle-decision.css",
+      "max_lines": 59
+    },
+    {
+      "path": "blocks/gcsp/offer/decision-drawer.css",
+      "max_lines": 11
+    },
+    {
+      "path": "blocks/gcsp/kit/option-rows.css",
+      "max_lines": 7
+    },
+    {
+      "path": "blocks/gcsp/kit/buddy-status.css",
+      "max_lines": 12
+    },
+    {
+      "path": "blocks/gcsp/kit/media-gallery.css",
+      "max_lines": 46
     }
   ],
   "baseline": {

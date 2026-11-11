@@ -1,4 +1,6 @@
+import { buddyStatus } from './buddy-status.js';
 import { el, button, factList } from '../../vehicle-matcher/ui.js';
+import { renderOptionList } from '../../vehicle-matcher/modes/question-ui.js';
 import { labelledField, errorSummary, checkboxField } from './form-controls.js';
 import { categoryPreferences, preferenceCategories } from './category-preferences.js';
 import { understandingMeter } from './understanding-meter.js';
@@ -7,6 +9,7 @@ import { rangeBar } from './range-bar.js';
 import { showMore } from './show-more.js';
 import { tabs } from './tabs.js';
 import { notificationBell } from './notification-bell.js';
+import { sideDrawer } from './side-drawer.js';
 import { notificationModel } from '../activity/notification-source.js';
 import { releaseGrid } from './release-grid.js';
 import { loadingSkeleton } from './loading-skeleton.js';
@@ -29,7 +32,13 @@ export function formControlsExample() {
   const declaration = checkboxField({ id: 'gallery-declaration', label: 'The nominated driver and licence details are correct.' });
   const sw = checkboxField({ id: 'gallery-switch', label: 'This is really important', switch: true });
   const off = checkboxField({ id: 'gallery-switch-off', label: 'Unavailable until a choice is made', switch: true, disabled: true });
-  body.append(summary.root, field.root, declaration.root, sw.root, off.root, validate, reset); scope.append(body); section.append(scope); return section;
+  const reasons = renderOptionList({ id: 'gallery-fixed-reason', label: 'Fixed reason radio rows', options: [{ value: 'one', label: 'First supplied reason' }, { value: 'two', label: 'Second supplied reason with a longer label' }] }, null, { value: null, variant: 'rows', onValueChange() {} });
+  const openDrawer = button({ label: 'Open shared drawer example', variant: 'ghost', onClick: () => {
+    let drawer; const keep = button({ label: 'Keep reviewing', variant: 'ghost', onClick: () => drawer.close() });
+    drawer = sideDrawer({ host: scope, context: 'Shared record review', title: 'Review your details', opener: openDrawer,
+      body: [el('p', 'gcsp-note', 'The background is contained while you review. Tab stays in this panel; Escape returns to its opener.')], footer: [keep] });
+  } });
+  body.append(summary.root, field.root, declaration.root, sw.root, off.root, reasons.list, validate, reset, openDrawer); scope.append(body); section.append(scope); return section;
 }
 
 export function stageListExample() {
@@ -217,4 +226,16 @@ export function sameAgainExample() {
     if (helpOpen) view.root.querySelector('.gcsp-help-tip').hidden = false;
   });
   return section;
+}
+
+export function buddyStatusExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-buddy-status';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP Buddy status'));
+  const scope = el('div', 'gcsp'); const body = el('div', 'vm');
+  for (const state of ['active', 'paused', 'unset', 'finished', 'inactive', 'unavailable']) {
+    const row = el('p');
+    row.append(buddyStatus({ state, href: '/gcsp-activity-live.html' }), document.createTextNode(' '), buddyStatus({ state }));
+    body.append(row);
+  }
+  scope.append(body); section.append(scope); return section;
 }

@@ -1,0 +1,331 @@
+{
+  "all_owned_groups_absent": true,
+  "all_roots_absent": true,
+  "browser_manifest_count": 11,
+  "checked_at": "2026-11-11T14:36:02Z",
+  "independent_review_sha256": "9e3c92c8b8053827fa0e073b4bc8cea7eaaa6e7ac774b135d7216fe304eb0f41",
+  "leftovers": [],
+  "manifest_count": 23,
+  "manifests": [
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-gallery-timing-receipt.json",
+      "compatibility_exception": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "groups": [
+        45070
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/4a49c504bcad4904add9f717b0feb663.json",
+      "measured_peak_bytes": 7722580,
+      "root": "/private/tmp/test-stamp-shard-4a49c504bcad4904add9f717b0feb663",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-accept-receipt.json",
+      "compatibility_exception": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "groups": [
+        43588
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/53b0ed7ecd66483e89f1a62b7692a05f.json",
+      "measured_peak_bytes": 2310419,
+      "root": "/private/tmp/test-stamp-shard-53b0ed7ecd66483e89f1a62b7692a05f",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-visual-corrections-receipt.json",
+      "compatibility_exception": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "groups": [
+        52964
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/58d5e952076f46cb8a57d1ac485a5d86.json",
+      "measured_peak_bytes": 7722387,
+      "root": "/private/tmp/test-stamp-shard-58d5e952076f46cb8a57d1ac485a5d86",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-access-loss-receipt.json",
+      "compatibility_exception": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "groups": [
+        47802
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/69016a005cb744afbf442135e14a0cab.json",
+      "measured_peak_bytes": 7726513,
+      "root": "/private/tmp/test-stamp-shard-69016a005cb744afbf442135e14a0cab",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-gallery-boundaries-receipt.json",
+      "compatibility_exception": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "groups": [
+        45712
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/80c974bc9a47409a849e23ef0c1c783c.json",
+      "measured_peak_bytes": 7722579,
+      "root": "/private/tmp/test-stamp-shard-80c974bc9a47409a849e23ef0c1c783c",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-stale-expiry-receipt.json",
+      "compatibility_exception": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "groups": [
+        46414
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/89deeb8375ad4ad7b24e8d2ff2fead64.json",
+      "measured_peak_bytes": 7590164,
+      "root": "/private/tmp/test-stamp-shard-89deeb8375ad4ad7b24e8d2ff2fead64",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-accept-receipt.json",
+      "compatibility_exception": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "groups": [
+        43139
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/963c1a0e3a3f4bc5ae60df4c9cba5d98.json",
+      "measured_peak_bytes": 2310420,
+      "root": "/private/tmp/test-stamp-shard-963c1a0e3a3f4bc5ae60df4c9cba5d98",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-accept-receipt.json",
+      "compatibility_exception": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "groups": [
+        43958
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/9761e4181b234449a1febd805ef12e2e.json",
+      "measured_peak_bytes": 7722388,
+      "root": "/private/tmp/test-stamp-shard-9761e4181b234449a1febd805ef12e2e",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-decline-receipt.json",
+      "compatibility_exception": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "groups": [
+        44714
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/a0579cbfdacc4aeeab81b2db59ab3eb4.json",
+      "measured_peak_bytes": 7722387,
+      "root": "/private/tmp/test-stamp-shard-a0579cbfdacc4aeeab81b2db59ab3eb4",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-stale-expiry-receipt.json",
+      "compatibility_exception": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "groups": [
+        47254
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/bec8fa093e7e427cabe6dcdd1bcc7196.json",
+      "measured_peak_bytes": 7722387,
+      "root": "/private/tmp/test-stamp-shard-bec8fa093e7e427cabe6dcdd1bcc7196",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-access-loss-receipt.json",
+      "compatibility_exception": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "groups": [
+        53481
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/bfd0f2e6b3714669a36277b571202fe0.json",
+      "measured_peak_bytes": 7722387,
+      "root": "/private/tmp/test-stamp-shard-bfd0f2e6b3714669a36277b571202fe0",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/787e24dbce7f6011cd02bce11bbb121288bdc6a3e5f2eaeda03e3dda8eca190e.json",
+      "compatibility_exception": "",
+      "groups": [
+        76497
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/0aff68b8564d4764866b32bad4f706f2.json",
+      "measured_peak_bytes": 0,
+      "root": "/private/tmp/test-stamp-shard-0aff68b8564d4764866b32bad4f706f2",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/1df5e0d213dd6da5144329c3621cd19c8740e6d161b7883c081043792cec22d1.json",
+      "compatibility_exception": "",
+      "groups": [
+        74952
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/1732abd21cda4b9ebe9097dd79dd25b6.json",
+      "measured_peak_bytes": 0,
+      "root": "/private/tmp/test-stamp-shard-1732abd21cda4b9ebe9097dd79dd25b6",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/0be693b8e2a09b728dac5dae7cce49fe82062272ad60c838d709de731b1963c5.json",
+      "compatibility_exception": "",
+      "groups": [
+        67806
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/230196a56e414da296bfa1a314e09e1c.json",
+      "measured_peak_bytes": 0,
+      "root": "/private/tmp/test-stamp-shard-230196a56e414da296bfa1a314e09e1c",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/1296ad4bf261294c3a9e77d586a159dfdec9e25bfd6faa4ce4fa8657d5e4a9b2.json",
+      "compatibility_exception": "",
+      "groups": [
+        52720
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/45262a547e17458fbba8d2aebb6827fa.json",
+      "measured_peak_bytes": 0,
+      "root": "/private/tmp/test-stamp-shard-45262a547e17458fbba8d2aebb6827fa",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/0861793ab0e7e93bf2e147ab114731ecbf8451d1c8c70ad63ed0155907d06780.json",
+      "compatibility_exception": "",
+      "groups": [
+        70890
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/75a78286ba1f4d34a8dd660cccb7ba9d.json",
+      "measured_peak_bytes": 0,
+      "root": "/private/tmp/test-stamp-shard-75a78286ba1f4d34a8dd660cccb7ba9d",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/b0725b09a92f87f7c800eb8ecc03a051d152292089df994c3146ca9ceacf8efe.json",
+      "compatibility_exception": "",
+      "groups": [
+        88277
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/7eda4fb3c9304365a960f70f056a0059.json",
+      "measured_peak_bytes": 0,
+      "root": "/private/tmp/test-stamp-shard-7eda4fb3c9304365a960f70f056a0059",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/9a085da43e22dbfe3fa6543d2fce21e33e349d4f84ee741300953a5f107c27c8.json",
+      "compatibility_exception": "",
+      "groups": [
+        52038
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/8101a2e2a0ea41dd9f458c73c0b402ca.json",
+      "measured_peak_bytes": 0,
+      "root": "/private/tmp/test-stamp-shard-8101a2e2a0ea41dd9f458c73c0b402ca",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/deb5d1bcb13a1fba254421eaa7699cc87c537261a14e83e0303c6b5615ca4165.json",
+      "compatibility_exception": "",
+      "groups": [
+        87175
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/92d8b33193e649529c60e721a9452336.json",
+      "measured_peak_bytes": 0,
+      "root": "/private/tmp/test-stamp-shard-92d8b33193e649529c60e721a9452336",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/d12ce68a2f604a09d61eaf65fdff01cf30fd9d9c40bba4558b8e9e2c78bf1aba.json",
+      "compatibility_exception": "",
+      "groups": [
+        81787
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/c697d791ad81416293dc35a71133fdbd.json",
+      "measured_peak_bytes": 0,
+      "root": "/private/tmp/test-stamp-shard-c697d791ad81416293dc35a71133fdbd",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/06abb60c7f12ea89b1696c6846185e33dcf4c4623dd7851f65b9bde8d0db69b5.json",
+      "compatibility_exception": "",
+      "groups": [
+        51264
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/d17e1fbd72aa49a4945cc6eca4a49c38.json",
+      "measured_peak_bytes": 0,
+      "root": "/private/tmp/test-stamp-shard-d17e1fbd72aa49a4945cc6eca4a49c38",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/a9572c10a77ac578874a8c47bf346f0a83ba47f37e2dc76a6a6538928402b595.json",
+      "compatibility_exception": "",
+      "groups": [
+        84383
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/eda76a6b48974944b94586807c38d0d6.json",
+      "measured_peak_bytes": 0,
+      "root": "/private/tmp/test-stamp-shard-eda76a6b48974944b94586807c38d0d6",
+      "root_absent": true,
+      "state": "removed"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/da94d5d185ad43f7379301f33408954262411ed628a1322f3d586c10097ef916.json",
+      "compatibility_exception": "",
+      "groups": [
+        54254
+      ],
+      "live_groups": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/f980133f68cf43ec9d6e13a296455d4c.json",
+      "measured_peak_bytes": 0,
+      "root": "/private/tmp/test-stamp-shard-f980133f68cf43ec9d6e13a296455d4c",
+      "root_absent": true,
+      "state": "removed"
+    }
+  ],
+  "measured_cumulative_scratch_removed_bytes": 73994611,
+  "note": "Measured peaks are cumulative across serial allocations, not simultaneous disk use. Twelve test manifests reported0 scratch bytes; browser profiles/TLS/inventory were active local compatibility exceptions. No archives or expected256MiB outputs were created. Installed dependencies, sources, worktree and user documents preserved.",
+  "removed_worktree_items": [
+    {
+      "bytes": 55,
+      "kind": "symlink",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-11-004/server/node_modules",
+      "target_preserved": "/Users/usget/Claude/vehicle-matcher/server/node_modules"
+    },
+    {
+      "bytes": 178633,
+      "kind": "owned generated bytecode",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-11-004/_tools/__pycache__/scaffold_git.cpython-314.pyc"
+    }
+  ],
+  "retained_capture_bytes": 5464679,
+  "retained_capture_count": 29,
+  "retained_evidence_bytes_before_final_review": 5564926,
+  "retained_evidence_bytes_before_receipt_update": 5600768,
+  "retained_metadata_bytes": 16781114,
+  "test_manifest_count": 12
+}
