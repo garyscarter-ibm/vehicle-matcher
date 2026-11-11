@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { inputDigest, ok, result } from '../repository/index.js';
 import { MailTransport } from './port.js';
 import { safeOfferLink } from './templates.js';
+import { validDeliveryEmail } from './delivery-email.js';
 
 const ENDPOINT = 'https://api.brevo.com/v3/smtp/email';
 const WINDOW_MS = 30 * 60 * 1000; // Brevo's provider wall-time idempotency window, independent of DemoClock.
@@ -13,9 +14,7 @@ const failure = (code, retryable = false) => result('unavailable', { code, retry
 const text = (value) => typeof value === 'string' && value === value.trim() && value.length > 0 && !/[\u0000-\u001f\u007f]/.test(value);
 const email = (value) => text(value) && value.length <= 254 && /^[^\s<>@,;]+@[^\s<>@,;]+\.[^\s<>@,;]+$/.test(value);
 const escape = (value) => value.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const plain = (value) => value && typeof value === 'object' && !Array.isArray(value)
-  && [Object.prototype, null].includes(Object.getPrototypeOf(value));
-export const MAIL_FAILURE_CODES = new Set(['mail-configuration-invalid', 'recipient-not-allowed', 'offer-link-invalid',
+export const MAIL_FAILURE_CODES = new Set(['mail-configuration-invalid', 'recipient-not-allowed', 'recipient-email-invalid', 'offer-link-invalid',
   'provider-authentication', 'provider-rejected', 'provider-rate-limited', 'provider-unavailable', 'provider-timeout',
   'provider-unconfirmed', 'provider-window-expired']);
 
@@ -45,15 +44,12 @@ function absoluteLink(value, base) {
 }
 
 export class BrevoMailTransport extends MailTransport {
-  #repository; #apiKey; #sender; #recipients; #allowed; #base; #fetch; #wallNow; #timeout; #valid;
-  constructor({ repository, apiKey, sender, recipients, allowedRecipients, publicBaseUrl, fetchImpl = globalThis.fetch,
+  #repository; #apiKey; #sender; #base; #fetch; #wallNow; #timeout; #valid;
+  constructor({ repository, apiKey, sender, publicBaseUrl, fetchImpl = globalThis.fetch,
     wallNow = () => new Date().toISOString(), timeoutMs = 10000, configurationValid = true } = {}) {
     super(); this.#repository = repository; this.#apiKey = apiKey; this.#sender = { email: sender?.email, name: sender?.name };
-    this.#recipients = plain(recipients) ? { ...recipients } : {};
-    this.#allowed = new Set(Array.isArray(allowedRecipients) ? allowedRecipients : Object.values(this.#recipients));
     this.#base = publicMailBase(publicBaseUrl); this.#fetch = fetchImpl; this.#wallNow = wallNow; this.#timeout = timeoutMs;
-    this.#valid = configurationValid && text(apiKey) && email(sender?.email) && text(sender?.name) && plain(recipients)
-      && Object.entries(recipients).every(([id, address]) => text(id) && email(address)) && this.#base
+    this.#valid = configurationValid && text(apiKey) && email(sender?.email) && text(sender?.name) && this.#base
       && typeof fetchImpl === 'function' && typeof wallNow === 'function' && Number.isSafeInteger(timeoutMs) && timeoutMs > 0 && timeoutMs <= 60000;
   }
 
@@ -68,10 +64,16 @@ export class BrevoMailTransport extends MailTransport {
     let wall;
     try { wall = this.#wallNow(); } catch { /* Ignore arbitrary clock diagnostic text. */ }
     const validWall = typeof wall === 'string' && Number.isFinite(Date.parse(wall));
-    const address = Object.hasOwn(this.#recipients, job.recipientId) ? this.#recipients[job.recipientId] : null;
+    let address = job.outcome?.provider?.recipientEmail;
+    if (!job.outcome?.provider) {
+      const employee = await this.#repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: job.recipientId } });
+      if (employee.status !== 'ok') return employee;
+      address = employee.value.deliveryEmail;
+    }
     const offerLink = message.offerLink === undefined ? undefined : absoluteLink(message.offerLink, this.#base);
     const error = !this.#valid || !validWall ? 'mail-configuration-invalid'
-      : !email(address) || !this.#allowed.has(address) ? 'recipient-not-allowed'
+      : job.outcome?.provider && !validDeliveryEmail(address) ? 'provider-unconfirmed'
+        : !validDeliveryEmail(address) ? 'recipient-email-invalid'
         : message.offerLink !== undefined && !offerLink ? 'offer-link-invalid' : null;
     const rendered = { ...message };
     if (offerLink) {
@@ -90,7 +92,8 @@ export class BrevoMailTransport extends MailTransport {
         transport: 'configured', outcome: { ...found.value.outcome,
           capturedAt: found.value.outcome?.capturedAt ?? now,
           message: found.value.outcome?.message ?? { ...rendered, runId: context.runId, jobId: job.jobId, capturedAt: now },
-          ...(!error && !found.value.outcome?.provider ? { provider: { name: 'brevo', idempotencyKey: randomUUID(), firstAttemptAt: wall, state: 'pending' } } : {}),
+          ...(!error && !found.value.outcome?.provider ? { provider: { name: 'brevo', idempotencyKey: randomUUID(), firstAttemptAt: wall,
+            recipientEmail: address, state: 'pending' } } : {}),
         },
       });
     });
@@ -100,7 +103,9 @@ export class BrevoMailTransport extends MailTransport {
     // Reports the row version this adapter last wrote, so the dispatcher can tell its custody from other writers.
     const custody = (outcome, version = stored.value.version) => ({ ...outcome, custodyVersion: version });
     if (confirmedBrevoAcknowledgement(provider)) return custody(ok({ accepted: true }));
-    if (error) return custody(failure(error));
+    if (error && !['recipient-email-invalid', 'provider-unconfirmed'].includes(error)) return custody(failure(error));
+    if (!provider) return custody(failure(error ?? 'mail-configuration-invalid'));
+    if (!validDeliveryEmail(provider.recipientEmail)) return custody(failure('provider-unconfirmed'));
     if (!provider || provider.name !== 'brevo' || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(provider.idempotencyKey)
       || !Number.isFinite(Date.parse(provider.firstAttemptAt))) return custody(failure('mail-configuration-invalid'));
     const elapsed = Date.parse(wall) - Date.parse(provider.firstAttemptAt);
@@ -108,7 +113,7 @@ export class BrevoMailTransport extends MailTransport {
     const stillCurrent = await this.#current(context); if (stillCurrent.status !== 'ok') return stillCurrent;
     if (stored.value.state !== 'sending' || stored.value.attempts !== job.attempts) return result('conflict', { reason: 'notification-attempt-changed' });
     const captured = stored.value.outcome.message;
-    const payload = { sender: this.#sender, to: [{ email: address }], subject: captured.subject,
+    const payload = { sender: this.#sender, to: [{ email: provider.recipientEmail }], subject: captured.subject,
       textContent: captured.textBody, htmlContent: captured.htmlBody, headers: { idempotencyKey: provider.idempotencyKey } };
     let outcome;
     const controller = new AbortController(); let timer; let timedOut = false;
@@ -120,7 +125,7 @@ export class BrevoMailTransport extends MailTransport {
         try { body = await response.json(); } catch { /* Provider response content never leaves the adapter. */ }
         const id = body?.messageId;
         if (response.status === 201 && safeMessageId(id)
-          && !id.includes(this.#apiKey) && id !== address && id !== this.#sender.email) return { messageId: id };
+          && !id.includes(this.#apiKey) && id !== provider.recipientEmail && id !== this.#sender.email) return { messageId: id };
         if (body?.code === 'duplicate_parameter' || response.status >= 200 && response.status < 300) return failure('provider-unconfirmed', true);
         if ([401, 403].includes(response.status)) return failure('provider-authentication');
         if (response.status === 429) return failure('provider-rate-limited', true);

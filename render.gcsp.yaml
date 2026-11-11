@@ -69,8 +69,6 @@ services:
         sync: false
       - key: GCSP_MAIL_FROM_NAME
         sync: false
-      - key: GCSP_MAIL_RECIPIENTS  # JSON map of demo principal to address
-        sync: false
       - key: GCSP_BREVO_API_KEY
         sync: false
 

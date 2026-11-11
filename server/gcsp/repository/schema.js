@@ -7,7 +7,7 @@ const definition = (key, fields, unique = [], refs = [], immutable = false) => O
 });
 export const TABLES = Object.freeze({
   runs: definition('runId', 'environmentId status current scenarioVersion fixtureVersion corpusVersion policyVersion clockInstant clockVersion versions', [['environmentId', '$current']]),
-  employees: definition('runId employeeId', 'principalId companyId gradeId schemeId entitlementSlotId roles contract renewalId name firstName lastName email'),
+  employees: definition('runId employeeId', 'principalId companyId gradeId schemeId entitlementSlotId roles contract renewalId name firstName lastName email deliveryEmail deliveryEmailVersion'),
   entitlement_slots: definition('runId entitlementSlotId', 'employeeId renewalId contractId capacity employeeCapacity state', [], [['employees', 'employeeId']]),
   briefs: definition('runId employeeId briefVersion', 'entitlementSlotId renewalId schemaVersion previousBriefVersion status preferences essentials currentCarFeedback currentCarRating sameAgain knownFacts buddy policyVersion confirmedBy confirmedAt postDeclineChange', [], [['employees', 'employeeId']], true),
   stock: definition('runId orderUuid', 'orderNumber configurationId wholesalerOrderId revision release account visibility state status available held allocated agModelCode vgModelCode facts corpusVersion', [['orderNumber']]),

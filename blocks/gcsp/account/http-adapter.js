@@ -35,6 +35,8 @@ export function createAccountHttpAdapter({ base = '', fetchImpl = globalThis.fet
     return envelope;
   }
   const readAccount = (options) => request('account', options);
+  const readNotificationEmail = (options) => request('notification-email', options);
+  const saveNotificationEmail = (input, options = {}) => request('notification-email', { ...options, body: input });
   const readDraft = (options) => request('draft', options);
   const saveDraft = (input, options = {}) => request('draft', { ...options, body: input });
   const discardDraft = (input, options = {}) => request('draft/discard', { ...options, body: input });
@@ -70,6 +72,7 @@ export function createAccountHttpAdapter({ base = '', fetchImpl = globalThis.fet
     } catch (error) { if (signal?.aborted) throw error; return { status: 'unavailable' }; }
   }
   return { readAccount, readDraft, saveDraft, discardDraft, browseStock, readOffers, readActivity, readOrder,
+    readNotificationEmail, saveNotificationEmail,
     async loadAccount(options) {
       const envelope = await readAccount(options); const model = toAccountView(envelope);
       return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', ...accountIdentity(model.account),

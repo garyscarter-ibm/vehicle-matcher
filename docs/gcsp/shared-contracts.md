@@ -991,9 +991,20 @@ does not replace current authority, consent, pause, visibility, brief or source 
 
 `createMailTransport({ repository, env, fetchImpl?, wallNow?, timeoutMs? })` is a trusted backend factory. Absent/empty `GCSP_MAIL_TRANSPORT` retains `CapturedTransport`; explicit `brevo` selects the sole HTTP provider. Invalid configured settings fail safely with capture and no network. `NotificationDispatcher` accepts trusted `mail` options, and `createGcspRuntime` composes it plus the existing presenter outbox. Shutdown awaits the active bounded drain before repository closure. No repository interface, SQL schema or policy key changes.
 
-The additive private `notification_outbox.outcome.provider` shape is `{ name: 'brevo', idempotencyKey, firstAttemptAt, state: 'pending'|'unconfirmed'|'confirmed', messageId?, acknowledgedAt? }`. A UUID and the captured message are committed before the first network request. Confirmed IDs are committed through CAS and recovered without another send, including after offer expiry, while retaining the current-run guard. Provider timestamps use wall time; attempt scheduling retains DemoClock and `notify.delivery.v1`. Without a confirmed ID, replay stops at the 30-minute provider window with `provider-window-expired`. `duplicate_parameter` alone is not confirmation.
+The additive private `notification_outbox.outcome.provider` shape is `{ name: 'brevo', idempotencyKey, firstAttemptAt, recipientEmail, state: 'pending'|'unconfirmed'|'confirmed', messageId?, acknowledgedAt? }`. A UUID, pinned recipient and the captured message are committed before the first network request. Confirmed IDs are committed through CAS and recovered without another send, including after offer expiry, while retaining the current-run guard. Provider timestamps use wall time; attempt scheduling retains DemoClock and `notify.delivery.v1`. Without a confirmed ID, replay stops at the 30-minute provider window with `provider-window-expired`. `duplicate_parameter` alone is not confirmation.
 
-Provider state, idempotency UUID, API key, configured sender and deliverable recipient mapping stay backend-only. Existing presenter projection retains fictional recipient identity and captured message fields without returning `outcome.provider`; diagnostics use fixed safe codes. Existing offer-link access/run binding remains owned by the offer producer and FUCQ-102. See [email-transport.md](email-transport.md) for configuration, failures and the separate deliberate live-send gate. The captured demonstration does not depend on Brevo.
+Provider state, idempotency UUID, API key and configured sender stay backend-only. Existing presenter projection retains fictional recipient identity and captured message fields without returning `outcome.provider`; diagnostics use fixed safe codes. Existing offer-link access/run binding remains owned by the offer producer and FUCQ-102. See [email-transport.md](email-transport.md) for configuration, failures and the separate deliberate live-send gate. The captured demonstration does not depend on Brevo.
+
+**Employee delivery setting, Gary, 11 November 2026:** the employee JSON record adds optional
+`deliveryEmail` and `deliveryEmailVersion`, separately from generated sign-in `email`. Authenticated
+employee GET/POST `/api/gcsp/manual/notification-email` projects only `{deliveryEmail, version}` for
+the session's employee. POST accepts exactly `{commandId, expectedVersion, deliveryEmail}`; null
+clears, a valid address sets, command replay is idempotent, and stale versions refuse. No browser
+employee/recipient selectors are allowed. UI: Your Cars → Your details → Notification email.
+General identity projections omit both fields. Atomic reset copies them only to a matching
+employeeId/principalId in the same environment's next run. Missing/invalid email refuses configured
+delivery before network. `GCSP_MAIL_RECIPIENTS` is ignored. Retries retain their pinned address;
+legacy unconfirmed provider attempts lacking one refuse `provider-unconfirmed`.
 
 ## Owned renewal-risk cases · FUCQ-112
 

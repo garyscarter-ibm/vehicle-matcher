@@ -134,8 +134,13 @@ these settings privately on the GCSP backend, never in frontend assets or source
 | `GCSP_BREVO_API_KEY` | Existing suitable Brevo API key, supplied as a backend secret. |
 | `GCSP_MAIL_FROM` | Sender address already verified in that account. |
 | `GCSP_MAIL_FROM_NAME` | Configured sender display name. |
-| `GCSP_MAIL_RECIPIENTS` | JSON object mapping fictional employee IDs to explicitly approved demo inboxes. Its values form the allow-list. |
 | `GCSP_PUBLIC_BASE_URL` | Absolute HTTPS frontend base, including the deployed project path. Existing offer links retain their token, query and run binding. |
+
+Set recipients individually in **Your Cars → Your details → Notification email** and select
+**Save email**. This persists as `deliveryEmail` on that employee record, separately from
+their sign-in address. Clearing it disables live email for that employee. Settings survive
+restarts and presenter resets for the same employee/principal. `GCSP_MAIL_RECIPIENTS` is
+obsolete and ignored. A started provider attempt retains its original recipient on retries.
 
 Partial or invalid real-send configuration records a safe failure; it does not
 fall back to a claim of real delivery. Every rendered message is captured,

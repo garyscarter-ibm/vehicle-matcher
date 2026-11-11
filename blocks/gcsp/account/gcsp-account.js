@@ -19,6 +19,7 @@ import { sideDrawer } from '../kit/side-drawer.js';
 import { NO_IMAGE_TEXT, NO_IMAGE_YOUR_CAR } from '../kit/plain-copy.js';
 import { routePortal, PORTAL_ROUTES } from '../employee/portal-navigation.js';
 import { mountAccountBuddy } from './account-buddy.js';
+import { mountNotificationEmail } from './notification-email.js';
 
 let serial = 0;
 const MISSING = 'Not supplied';
@@ -158,7 +159,8 @@ function yourDetails(model, controls) {
   const rows = el('ul', 'gcsp-account-rows');
   const item = (heading, content, help) => {
     const node = el('li', 'gcsp-account-row'); const copy = el('div', 'gcsp-account-lines');
-    copy.append(...content); node.append(el('h3', 'gcsp-account-row-label', heading), copy, help); return node;
+    copy.append(...content); node.append(el('h3', 'gcsp-account-row-label', heading), copy);
+    if (help) node.append(help); return node;
   };
   const line = (...parts) => { const node = el('p', 'gcsp-account-line'); node.append(...parts); return node; };
   const muted = (text) => el('span', 'gcsp-note', text);
@@ -173,6 +175,7 @@ function yourDetails(model, controls) {
       override && `Allowance override: ${override}${overrideEnd ? ` (ends ${overrideEnd})` : ''}`]
       .filter(supplied).map((value) => line(muted(value)))];
   rows.append(item('Employee', employee, controls.supportButton('hr-support', 'Get help with your details')));
+  if (controls.notificationEmail) rows.append(item('Notifications', [controls.notificationEmail()]));
   const drivers = model.drivers.map((driver) => {
     const licence = driver.licence ?? {};
     const valid = (name, label) => {
@@ -455,12 +458,22 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   let generation = 0; let teardown; let loading; let finishPrint; let drawer; let orderRow; let orderVehicle; let restarted = false;
   let confirming = false; let syncVersion = 0; let region; let regionTeardown; const live = viewStatus();
   const ratings = new Map(); let rater; let stopRater; let buddyRegion; let stopBuddy; let stopBuddyPreferences;
+  let emailRegion;
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
   const read = async (name) => {
     try { return await adapter[name]({ signal: abort.signal }); } catch { return failure; }
   };
   const controls = {
+    ...(!adapter.readOnly && typeof adapter.readNotificationEmail === 'function' && typeof adapter.saveNotificationEmail === 'function' ? {
+      notificationEmail: () => {
+        if (!emailRegion) {
+          emailRegion = el('div');
+          mountNotificationEmail(emailRegion, { adapter, signal: abort.signal });
+        }
+        return emailRegion;
+      },
+    } : {}),
     refresh: () => refresh(),
     back: () => { journey = false; draw(true); },
     openOffer: ({ offerId, runId }) => root.ownerDocument.defaultView.location.assign(

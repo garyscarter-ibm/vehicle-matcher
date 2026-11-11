@@ -221,6 +221,7 @@ async function domMount(adapter = readOnlyAdapter(), options = {}) {
 function serviceAdapter(f, calls = []) {
   return createAccountHttpAdapter({ fetchImpl: async (url, options) => {
     calls.push({ url, method: options.method, body: options.body && JSON.parse(options.body) });
+    if (url.endsWith('/notification-email')) return response({ status: 'ok', value: { deliveryEmail: null, version: 0 } });
     if (url.endsWith('/activity')) return response({ status: 'unavailable' }, 503);
     const result = url.endsWith('/draft/discard') ? await f.service.discardDraft(f.context, JSON.parse(options.body))
       : options.method === 'POST' ? await f.service.saveDraft(f.context, JSON.parse(options.body))
@@ -417,7 +418,7 @@ test('guarded replacement reconciles draft, suppresses duplicate writes, emits e
   const listen = (event) => events.push(event);
   document.body.addEventListener('gcsp:journey-start', listen);
   try {
-    assert.deepEqual(calls.map((call) => call.url), ['/api/gcsp/manual/account', '/api/gcsp/manual/draft', '/api/gcsp/offers/current']);
+    assert.deepEqual(calls.map((call) => call.url), ['/api/gcsp/manual/account', '/api/gcsp/manual/draft', '/api/gcsp/offers/current', '/api/gcsp/manual/notification-email']);
     blocked = true;
     const choose = findButton(root, 'Choose a replacement'); choose.click(); choose.click();
     assert.equal(root.querySelector('[aria-busy="true"]') != null, true);

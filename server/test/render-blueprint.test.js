@@ -28,10 +28,11 @@ test('gcsp-api runs the GCSP runtime and declares its settings without committin
   assert.equal(value('GCSP_RUNTIME'), '1');
   assert.equal(value('GCSP_REPOSITORY_MODE'), 'postgres');
   assert.equal(value('GCSP_PUBLIC_ORIGIN'), value('GCSP_PUBLIC_BASE_URL'));
-  for (const key of ['GCSP_MAIL_TRANSPORT', 'GCSP_MAIL_FROM', 'GCSP_MAIL_FROM_NAME', 'GCSP_MAIL_RECIPIENTS', 'GCSP_BREVO_API_KEY']) {
+  for (const key of ['GCSP_MAIL_TRANSPORT', 'GCSP_MAIL_FROM', 'GCSP_MAIL_FROM_NAME', 'GCSP_BREVO_API_KEY']) {
     assert.match(api, new RegExp(`- key: ${key}\\b[^\\n]*\\n\\s+sync: false`), key);
   }
   assert.ok(!api.includes('DEMO_ACCESS_KEY'));
+  assert.ok(!api.includes('GCSP_MAIL_RECIPIENTS'));
   for (const path of ['gcsp-*.html', 'blocks/**', 'assets/**']) assert.ok(api.includes(`- ${path}\n`), path);
 });
 
