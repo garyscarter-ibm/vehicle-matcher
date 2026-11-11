@@ -4673,23 +4673,31 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-10T20:00:41Z",
+      "observed_at": "2026-11-11T12:12:15Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-371",
       "slices": [
         {
           "id": "feedback-policy",
-          "status": "not-started",
-          "title": "Canonical feedback similarity and improvement policy"
+          "status": "complete",
+          "title": "Canonical feedback policy, typed contract and evaluation",
+          "observed_at": "2026-11-11T12:12:14Z",
+          "evidence": "Lead review of slice A diff; scoped 9-file run 291 tests 288 pass 3 skipped 0 fail; feedback tests 15/15"
         },
         {
           "id": "recommendation",
+          "status": "in-progress",
+          "title": "Real recommendation consumers receive feedback and baseline",
+          "observed_at": "2026-11-11T12:12:15Z"
+        },
+        {
+          "id": "offer-explanation",
           "status": "not-started",
-          "title": "Real recommendation consumers and grounded reasons"
+          "title": "Offer explanation consumption and strict capture"
         },
         {
           "id": "integration",
           "status": "not-started",
-          "title": "Connected Account through Offer walkthrough"
+          "title": "Connected Account through Offer walkthrough and six-story critique"
         }
       ],
       "unsliced": false
