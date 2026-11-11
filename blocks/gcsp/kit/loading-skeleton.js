@@ -13,9 +13,23 @@ const LAYOUTS = Object.freeze({
   'release-grid': ['tiles'],
   stats: ['stats'],
   bars: ['bars'],
+  offer: ['offer-header', 'offer-card', 'panel', 'rows'],
+  media: ['media'],
 });
 
 function block(kind, { items, labels }) {
+  if (kind === 'offer-header') {
+    const header = el('div', 'gcsp-skeleton-offer-header');
+    const intro = el('div', 'gcsp-skeleton-text');
+    intro.append(block('title', {}), block('line-short', {}));
+    header.append(intro, el('span', 'gcsp-skeleton-shape gcsp-skeleton-clock')); return header;
+  }
+  if (kind === 'offer-card') {
+    const card = el('div', 'gcsp-skeleton-offer-card');
+    const summary = el('div', 'gcsp-skeleton-text');
+    summary.append(...['heading', 'line', 'line-short', 'actions', 'panel'].map((shape) => block(shape, {})));
+    card.append(el('span', 'gcsp-skeleton-shape gcsp-skeleton-media'), summary); return card;
+  }
   if (kind === 'tiles') {
     const grid = el('div', 'gcsp-skeleton-release-grid');
     grid.append(...Array.from({ length: items ?? 100 }, () => el('span', 'gcsp-skeleton-shape gcsp-release-tile'))); return grid;

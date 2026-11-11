@@ -1,5 +1,6 @@
 import { el } from '../../vehicle-matcher/ui.js';
 import { mediaGallery } from './media-gallery.js';
+import { loadingSkeleton } from './loading-skeleton.js';
 
 // Retained G21 example; source/configuration associations stay in the reviewed image catalogue.
 const images = [
@@ -13,6 +14,9 @@ export function mediaGalleryExamples() {
   const section = el('section', 'vm-gallery-section gcsp'); section.dataset.mediaGalleryExamples = '';
   section.setAttribute('aria-label', 'Vehicle media gallery'); section.append(el('h2', 'vm-gallery-title', 'Vehicle media gallery'));
   const instances = [];
+  for (const [title, layout] of [['Offer loading', 'offer'], ['Image loading', 'media']]) {
+    const group = el('div', 'vm vm-gallery-gcsp-group'); group.append(el('h3', 'vm-gallery-gcsp-title', title), loadingSkeleton({ layout, label: title })); section.append(group);
+  }
   for (const [title, views] of [['Three views and enlarged viewer', images], ['Single retained image', images.slice(0, 1)],
     ['No images', []], ['Unavailable selected image and long labels', images.map((image) => ({ ...image, label: `${image.label} with extended Individual specification` }))]]) {
     const group = el('div', 'vm vm-gallery-gcsp-group');

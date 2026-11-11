@@ -11,6 +11,9 @@ import { PORTAL_ROUTES, signedInPortal } from './portal-links.js';
 import { createActivityHttpAdapter } from '../activity/activity-http.js';
 import { createNotificationSource } from '../activity/notification-source.js';
 import { subscribePresenterActions } from '../kit/presenter-actions.js';
+import { portalShell } from '../shell/portal-shell.js';
+import { loadingSkeleton } from '../kit/loading-skeleton.js';
+import { el } from '../../vehicle-matcher/ui.js';
 
 // Both account reads use the ordinary employee session; offer access remains independently scoped.
 export function mountOfferEntry(root, { fetch: request = globalThis.fetch, location = globalThis.location,
@@ -22,15 +25,20 @@ export function mountOfferEntry(root, { fetch: request = globalThis.fetch, locat
   const account = createAccountHttpAdapter({ fetch: request });
   const progress = createOrderProgressHttpAdapter({ fetch: request });
   const helpAdapter = createCaseHttpAdapter({ fetchImpl: request });
-  root.textContent = 'Loading your offer.';
+  const startup = portalShell({ account: { status: 'loading' }, signOut: false, navigation: signedInPortal(null, location).navigation,
+    onNavigate: signedInPortal(null, location).onNavigate, breadcrumbs: [{ label: 'Your offer' }] });
+  const placeholder = el('div', 'vm gcsp-offer-body');
+  placeholder.append(loadingSkeleton({ label: 'Loading your offer.', layout: 'offer' }));
+  startup.main.append(placeholder); root.replaceChildren(startup.root);
   root.setAttribute('aria-busy', 'true');
   // Install before the account read so a late profile cannot survive a cross-tab session change.
   const stopStartup = installSessionLifecycle({ win: root.ownerDocument.defaultView, active: () => !disposed,
-    clear() { disposed = true; abort.abort(); root.removeAttribute('aria-busy'); root.replaceChildren(); },
+    clear() { disposed = true; abort.abort(); startup.destroy(); root.removeAttribute('aria-busy'); root.replaceChildren(); },
     reload: () => location.reload() });
   void (async () => {
     const current = await account.loadAccount({ signal: abort.signal });
     if (disposed) return;
+    startup.destroy();
     root.removeAttribute('aria-busy');
     // Without an employee session the bell shows, with no badge and no read.
     const notifications = current?.status === 'ready' ? createNotificationSource({ adapter: createActivityHttpAdapter({ fetch: request }),
@@ -48,6 +56,6 @@ export function mountOfferEntry(root, { fetch: request = globalThis.fetch, locat
   return () => {
     stopStartup();
     if (disposed) return;
-    disposed = true; abort.abort(); cleanup?.(); root.removeAttribute('aria-busy'); root.replaceChildren();
+    disposed = true; abort.abort(); startup.destroy(); cleanup?.(); root.removeAttribute('aria-busy'); root.replaceChildren();
   };
 }

@@ -2,6 +2,7 @@ import { portalShell } from '../shell/portal-shell.js';
 import { createOfferController } from './offer-controller.js';
 import { createOfferView } from './offer-view.js';
 import { el } from '../../vehicle-matcher/ui.js';
+import { loadingSkeleton } from '../kit/loading-skeleton.js';
 
 // The trusted host binds this port to 107's body mount and its ordinary employee account loader.
 function followupMount(port) {
@@ -10,7 +11,7 @@ function followupMount(port) {
     const abort = new AbortController(); let done = false; let cleanup;
     const show = (message) => root.replaceChildren(el('p', 'gcsp-note', message));
     const unavailable = () => { const message = 'Follow-up unavailable. Open this offer from your account or check again.'; show(message); announce?.(message); };
-    show('Loading your account for the follow-up.');
+    root.replaceChildren(loadingSkeleton({ label: 'Loading your account for the follow-up.', layout: 'form' }));
     void (async () => {
       try {
         const account = await port.loadAccount({ signal: abort.signal });

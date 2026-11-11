@@ -53,3 +53,18 @@ test('an ordinary unload still disposes the entry, so nothing reloads later', as
   pageEvent('pageshow', true);
   assert.equal(reloads, 0);
 });
+
+test('account startup keeps the shared shell and offer skeleton, and teardown ignores a late account', async () => {
+  const { mountOfferEntry } = await import('../../blocks/gcsp/offer/entry.js');
+  const root = document.createElement('div'); document.body.replaceChildren(root);
+  let resolveAccount; let signal;
+  const dispose = mountOfferEntry(root, { location: globalThis.location, history: globalThis.history,
+    fetch: (_url, options) => { signal = options.signal; return new Promise((resolve) => { resolveAccount = resolve; }); } });
+  assert.ok(root.querySelector('.gcsp-header'));
+  assert.ok(root.querySelector('.gcsp-skeleton[data-layout="offer"]'));
+  assert.equal(root.getAttribute('aria-busy'), 'true');
+  assert.doesNotMatch(root.textContent, /Please wait|Paula/);
+  dispose(); assert.equal(signal.aborted, true); assert.equal(root.childElementCount, 0);
+  resolveAccount(reply(account)); await tick(); await tick();
+  assert.equal(root.childElementCount, 0);
+});

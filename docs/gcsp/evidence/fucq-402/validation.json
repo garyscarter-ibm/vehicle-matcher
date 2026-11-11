@@ -1,0 +1,58 @@
+{
+  "issue": "FUCQ-402",
+  "result": "passed",
+  "scope": "targeted stable working tree",
+  "validated_at": "2026-11-11T20:19:13+0000",
+  "base_commit": "19a8fa9e456d4a840acf6631a088af720f092a07",
+  "source_identity": "source-identity.json",
+  "source_hashes_verified": 22,
+  "supervisor_receipt": ".claude/test-runs/targeted-9cdeb77e22d5731d5394be1321be02bb52b45655d6e158902adf69c0d122eacb-default-1794428353512693000.json",
+  "supervisor_code_key": "9cdeb77e22d5731d5394be1321be02bb52b45655d6e158902adf69c0d122eacb",
+  "log_directory": ".claude/test-runs/logs/20261111-201822-1uf9z538",
+  "command": "node --test --test-concurrency=1 --test-skip-pattern='^blocks/gcsp/presenter-controls/presenter-console.css doesn.t grow' server/test/gcsp-loading-skeleton.test.js server/test/gcsp-media-gallery.test.js server/test/gcsp-offer-view-render.test.js server/test/gcsp-offer-view-check.test.js server/test/gcsp-offer-view-decision.test.js server/test/gcsp-offer-view-decision-mixed.test.js server/test/gcsp-offer-view-followup-entry.test.js server/test/gcsp-offer-bfcache.test.js server/test/gcsp-offer-runtime-composition.test.js server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js",
+  "tests": {
+    "total": 299,
+    "passed": 297,
+    "failed": 0,
+    "skipped": 2
+  },
+  "existing_skips": [
+    "actual106 acceptance reaches105: requires reviewed finite105 decision supervisor",
+    "canonical adoption and changed reason label: requires reviewed finite105 decision supervisor"
+  ],
+  "excluded_assertion": {
+    "issue": "FUCQ-387",
+    "severity": "Low",
+    "name": "blocks/gcsp/presenter-controls/presenter-console.css doesn't grow",
+    "full_ratchet_result": "failed: 44 logical lines against cap 39",
+    "source_sha256_unchanged_from_base": "47193b56f2303b08ed1d3ef1937042a5489e26750defd833cdbc19ad1d37f9b7"
+  },
+  "rendered_review": {
+    "viewports": [
+      "1280x720",
+      "375x812",
+      "320x812"
+    ],
+    "result": "passed: ready/loading layouts, no narrow overflow, 44px narrow actions, gallery keyboard navigation, Escape focus return, acceptance drawer",
+    "captures": [
+      "accept-drawer-375.png",
+      "gallery-viewer.png",
+      "offer-320.png",
+      "offer-375.png",
+      "offer-desktop-full.png",
+      "offer-desktop.png",
+      "offer-loading-320.png",
+      "offer-loading-375.png",
+      "offer-loading-desktop.png"
+    ]
+  },
+  "unrun": [
+    "full backend suite",
+    "deployed smoke",
+    "real external acceptance",
+    "mail delivery",
+    "BMW integration"
+  ],
+  "resource_teardown": "Supervisor confirms test scratch removed",
+  "acceptance": "collaborator review pending; Jira In Review"
+}
