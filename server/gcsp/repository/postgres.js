@@ -1,6 +1,22 @@
 import pg from 'pg';
-import { createRepository, createState, TABLES, FOUNDATION_TABLES, inputDigest, ok, result, sealState, shallowState } from './core.js';
+import { createRepository, createState, TABLES, FOUNDATION_TABLES, inputDigest, ok, result } from './core.js';
 import { migrate, migrationStatus, validSchema, sqlName } from '../migrations/index.js';
+
+// Same sealing as memory.js (FUCQ-302): committed rows are deep-frozen and shared, so a stray in-place write throws.
+const deepFreeze = (value) => {
+  if (value === null || typeof value !== 'object' || Object.isFrozen(value)) return value;
+  for (const key of Object.keys(value)) deepFreeze(value[key]);
+  return Object.freeze(value);
+};
+const sealed = new WeakSet();
+const sealState = (state) => {
+  if (sealed.has(state)) return state;
+  for (const rows of Object.values(state.tables)) { if (!Object.isFrozen(rows)) { for (const row of rows) deepFreeze(row); Object.freeze(rows); } }
+  Object.freeze(state.tables); Object.freeze(state); sealed.add(state);
+  return state;
+};
+// A transaction gets fresh table arrays over the same frozen rows and replaces rows rather than editing them.
+const shallowState = (state) => ({ ...state, tables: Object.fromEntries(Object.entries(state.tables).map(([name, rows]) => [name, rows.slice()])) });
 
 const column = (name) => name.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 const unavailable = () => result('unavailable', { reason: 'database-unavailable', retryable: true });
