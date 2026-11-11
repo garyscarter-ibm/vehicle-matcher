@@ -224,14 +224,16 @@ function currentCar(contract, model, controls, explained = false, offer = null, 
   const scheme = schemeName(model, contract.schemeId);
   const title = el('div', 'gcsp-account-title');
   title.append(el('p', 'gcsp-note', 'Current car'), heading);
-  const spec = [contract.vehicle?.configuration, FUEL_SPEC[contract.vehicle?.fuel]].filter(Boolean).join(' \u00b7 ');
+  const configuration = contract.vehicle?.configuration?.trim(); const modelEnd = contract.model?.trim().split(/\s+/).at(-1);
+  const trim = configuration?.startsWith(`${modelEnd} `) ? configuration.slice(modelEnd.length + 1) : configuration;
+  const spec = [trim, FUEL_SPEC[contract.vehicle?.fuel]].filter(Boolean).join(' \u00b7 ');
   if (spec) title.append(el('p', 'gcsp-account-spec', spec));
   const state = contract.daysRemaining == null ? el('p', 'gcsp-note', 'Contract end: Not supplied')
     : el('p', 'gcsp-countdown', `Contract ${countdown(model.asOf.slice(0, 10), contract.contractEndDate)} \u00b7 ${date(contract.contractEndDate)}`);
   const copy = el('div', 'gcsp-feature-copy');
   copy.append(title, state);
   // Key facts stay beside the large image; full contract, collection and vehicle details live in the record.
-  const list = suppliedFacts([row('Points cost', formatPointsCost(terms)), row('Registration', contract.registration),
+  const list = suppliedFacts([row('Points per month', formatPointsCost(terms, { compact: true })), row('Registration', contract.registration),
     row('Current mileage', contract.currentOdometer), row('Scheme', scheme)], 'gcsp-account-facts gcsp-account-car-facts');
   copy.append(list);
   const override = Number.isFinite(terms.allowance) ? overrideText(model) : null;
