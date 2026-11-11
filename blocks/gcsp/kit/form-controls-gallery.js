@@ -1,6 +1,7 @@
 import { el, button, factList } from '../../vehicle-matcher/ui.js';
 import { labelledField, errorSummary, checkboxField } from './form-controls.js';
 import { categoryPreferences, preferenceCategories } from './category-preferences.js';
+import { understandingMeter } from './understanding-meter.js';
 import { stageList } from './stage-list.js';
 import { rangeBar } from './range-bar.js';
 import { showMore } from './show-more.js';
@@ -179,6 +180,30 @@ export function categoryPreferencesExample() {
       onConfirmRemove: (key) => { const next = { ...current.categories }; delete next[key]; patch({ categories: next, pendingRemoval: null }); view.focusCategory(key); },
       onStatusAction: () => patch({ status: { kind: 'saved', text: 'Preferences saved automatically.' } }) });
     body.append(el('p', 'gcsp-note', label), view.root); scope.append(body); section.append(scope);
+  });
+  return section;
+}
+
+export function sameAgainExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-same-again';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP understanding meter and Same again'));
+  const row = el('div', 'gcsp'); const strip = el('div', 'vm'); strip.style.display = 'grid'; strip.style.gap = '16px';
+  [[1, false], [6, false], [6, true], [11, false]].forEach(([value, pending], at) => strip.append(understandingMeter({ id: `gallery-meter-${at}`, value, maximum: 11, pending }).root));
+  row.append(strip); section.append(row);
+  const description = 'BMW 3 Series 330e xDrive M Sport Pro Touring';
+  const high = { ...PREFERENCE_SAMPLE, body: considered(['estate'], 'high') };
+  const states = [['Same again off, 1 of 11', { categories: {}, understanding: { value: 1, maximum: 11 }, sameAgain: { on: false } }],
+    ['Same again off, 6 of 11', { categories: high, understanding: { value: 6, maximum: 11 }, sameAgain: { on: false } }],
+    ['Same again on, choices kept', { categories: high, understanding: { value: 11, maximum: 11 }, sameAgain: { on: true } }],
+    ['Same again unavailable', { categories: PREFERENCE_SAMPLE, understanding: { value: 3, maximum: 11 }, sameAgain: { on: false, available: false, reason: 'no-current-car' } }],
+    ['Same again help open', { categories: PREFERENCE_SAMPLE, understanding: { value: 3, maximum: 11 }, sameAgain: { on: false } }, true]];
+  states.forEach(([label, extra, helpOpen], at) => {
+    const scope = el('div', 'gcsp'); const body = el('div', 'vm');
+    let current = { categories: {}, open: null, pendingRemoval: null, disabled: false, status: { kind: 'idle', text: '' }, ...extra };
+    const view = categoryPreferences({ id: `gallery-same-${at}`, categories: PREFERENCE_CATEGORIES, state: current, understanding: { maximum: 11 },
+      sameAgain: { description, onToggle: (on) => { current = { ...current, sameAgain: { ...current.sameAgain, on }, understanding: { ...current.understanding, value: on ? 11 : 6 } }; view.update(current); } } });
+    body.append(el('p', 'gcsp-note', label), view.root); scope.append(body); section.append(scope);
+    if (helpOpen) view.root.querySelector('.gcsp-help-tip').hidden = false;
   });
   return section;
 }

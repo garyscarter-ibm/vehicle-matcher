@@ -182,3 +182,122 @@ test('gallery example mounts every state without errors', () => {
   assert.ok(section.querySelector('.gcsp-prefs-removal:not([hidden])'));
   assert.ok(!/—/.test(section.textContent));
 });
+
+const SAME_TEXT = 'Select this option if you just love everything about your current car, and your next best car would be another BMW 3 Series Touring 320i';
+function mountSame(state = {}, extra = {}) {
+  const toggles = [];
+  const view = categoryPreferences({ id: 'p', categories: CATEGORIES, understanding: { maximum: 11 }, sameAgain: { description: 'BMW 3 Series Touring 320i', onToggle: (on) => toggles.push(on) },
+    state: base({ understanding: { value: 1, maximum: 11, pending: false }, sameAgain: { on: false, available: true }, ...state }), ...extra });
+  document.body.append(view.root); return { view, toggles };
+}
+const key = (node, name) => node.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: name, bubbles: true }));
+const considered = (value, importance = 'medium') => ({ state: 'considered', value, importance });
+const chosen = { body: considered(['estate'], 'high'), fuel: considered(['petrol']), comfort: considered(100) };
+
+test('without the new options the slots stay empty and no meter or mode row is built', () => {
+  const { view } = mount();
+  assert.equal(view.root.querySelector('.gcsp-understanding'), null); assert.equal(view.root.querySelector('.gcsp-help-tip'), null);
+  assert.equal(view.root.querySelector('[data-slot="mode"]').children.length, 0);
+  view.update(base({ understanding: { value: 5, maximum: 11 }, sameAgain: { on: true } }));
+  assert.equal(view.root.querySelector('.gcsp-understanding'), null); assert.ok(!view.root.classList.contains('is-same-again'));
+});
+
+test('meter in the head slot follows state.understanding, including pending', () => {
+  const { view } = mountSame({ understanding: { value: 6, maximum: 11, pending: false } });
+  const slot = view.root.querySelector('[data-slot="understanding"]');
+  const value = slot.querySelector('.gcsp-understanding-value');
+  assert.equal(value.textContent, '6 / 11'); assert.equal(value.getAttribute('aria-label'), 'Buddy understanding 6 out of 11');
+  view.update(base({ understanding: { value: 11, maximum: 11, pending: true }, sameAgain: { on: true, available: true } }));
+  assert.equal(value.textContent, '11 / 11'); assert.match(value.getAttribute('aria-label'), /\(saving\)$/);
+});
+
+test('mode row sits between head and tiles: label, info button, switch', () => {
+  const { view } = mountSame();
+  const kids = [...view.root.children].map((n) => n.className);
+  assert.deepEqual(kids.slice(0, 3), ['gcsp-prefs-head', 'gcsp-prefs-mode', 'gcsp-prefs-tiles']);
+  const row = view.root.querySelector('[data-slot="mode"]');
+  const parts = [...row.querySelector('.gcsp-switch').children];
+  assert.equal(parts[0].tagName, 'LABEL'); assert.equal(parts[0].textContent, 'Same again, please!');
+  assert.equal(parts[1].getAttribute('aria-label'), 'About Same again, please!'); assert.equal(parts[1].tagName, 'BUTTON');
+  assert.equal(parts[1].querySelector('svg').getAttribute('aria-hidden'), 'true');
+  assert.equal(parts[2].getAttribute('role'), 'switch'); assert.equal(parts[2].id, 'p-same-again');
+});
+
+test('the switch is controlled: Space-style change calls onToggle and nothing else changes', () => {
+  const { view, toggles } = mountSame({ categories: chosen });
+  const input = document.getElementById('p-same-again');
+  input.checked = true; input.dispatchEvent(new dom.window.Event('change', { bubbles: true }));
+  assert.deepEqual(toggles, [true]);
+  assert.ok(!view.root.classList.contains('is-same-again')); assert.ok(tile('body').closest('.gcsp-prefs-tile').classList.contains('is-important'));
+  view.update(base({ categories: chosen, sameAgain: { on: true, available: true } })); assert.equal(input.checked, true);
+  input.checked = false; input.dispatchEvent(new dom.window.Event('change', { bubbles: true })); assert.deepEqual(toggles, [true, false]);
+  click(input); assert.equal(toggles.length, 3);
+});
+
+test('help tip: exact text, described-by, hover, focus, tap, Escape and outside press', () => {
+  const { view } = mountSame();
+  const tip = view.root.querySelector('.gcsp-help-tip'); const info = view.root.querySelector('.gcsp-prefs-info'); const input = document.getElementById('p-same-again');
+  assert.equal(tip.textContent, SAME_TEXT); assert.equal(tip.getAttribute('role'), 'tooltip'); assert.equal(tip.hidden, true);
+  assert.equal(tip.parentElement, input.parentElement); assert.ok(tip.classList.contains('gcsp-help-tip-below-start'));
+  assert.ok(input.getAttribute('aria-describedby').split(' ').includes(tip.id)); assert.ok(info.getAttribute('aria-describedby').split(' ').includes(tip.id));
+  info.dispatchEvent(new dom.window.Event('pointerenter')); assert.equal(tip.hidden, false);
+  key(info, 'Escape'); assert.equal(tip.hidden, true);
+  info.dispatchEvent(new dom.window.Event('pointerleave', { bubbles: false })); tip.parentElement.dispatchEvent(new dom.window.Event('pointerleave'));
+  click(info); assert.equal(tip.hidden, false);
+  document.body.dispatchEvent(new dom.window.Event('pointerdown', { bubbles: true })); assert.equal(tip.hidden, true);
+  view.destroy();
+  const again = mountSame().view; const next = again.root.querySelector('.gcsp-prefs-info');
+  next.focus(); assert.equal(again.root.querySelector('.gcsp-help-tip').hidden, false);
+});
+
+test('Same again on: tiles neutral, controls disabled, panel and removal hidden, choices and names kept', () => {
+  const { view } = mountSame({ categories: chosen, open: 'body', pendingRemoval: 'fuel', understanding: { value: 11, maximum: 11 }, sameAgain: { on: true, available: true } });
+  assert.ok(view.root.classList.contains('is-same-again'));
+  assert.equal(document.getElementById('p-panel').hidden, true); assert.equal(view.root.querySelector('.gcsp-prefs-removal').hidden, true);
+  for (const node of view.root.querySelectorAll('.gcsp-prefs-tile')) {
+    assert.ok(!node.classList.contains('is-important') && !node.classList.contains('is-open'));
+    assert.equal(node.querySelector('.gcsp-prefs-open').disabled, true); assert.equal(node.querySelector('.gcsp-prefs-remove').disabled, true);
+  }
+  assert.equal(tile('body').querySelector('.gcsp-prefs-value').textContent, 'Touring / Estate');
+  assert.equal(tile('body').getAttribute('aria-label'), 'Body, considered: Touring / Estate, kept while Same again is on');
+  assert.equal(tile('body').getAttribute('aria-expanded'), 'false');
+  assert.equal(tile('comfort').getAttribute('aria-label'), 'Comfort, considered: As comfortable as possible, kept while Same again is on');
+  assert.equal(document.getElementById('p-same-again').checked, true); assert.equal(document.getElementById('p-same-again').disabled, false);
+});
+
+test('turning Same again off restores colours, names and the open panel', () => {
+  const { view } = mountSame({ categories: chosen, open: 'body', sameAgain: { on: true, available: true } });
+  view.update(base({ categories: chosen, open: 'body', sameAgain: { on: false, available: true } }));
+  assert.ok(!view.root.classList.contains('is-same-again'));
+  assert.ok(tile('body').closest('.gcsp-prefs-tile').classList.contains('is-important')); assert.ok(tile('fuel').closest('.gcsp-prefs-tile').classList.contains('is-considered'));
+  assert.equal(tile('body').getAttribute('aria-label'), 'Body, considered: Touring / Estate, really important');
+  assert.equal(document.getElementById('p-panel').hidden, false); assert.equal(tile('body').disabled, false);
+});
+
+test('unavailable: switch disabled and unchecked with a reason, tiles still usable', () => {
+  const { view, calls } = (() => { const m = mountSame({ categories: chosen, sameAgain: { on: true, available: false, reason: 'no-current-car' } }); return { view: m.view, calls: [] }; })();
+  const input = document.getElementById('p-same-again'); const note = view.root.querySelector('.gcsp-prefs-same-note');
+  assert.equal(input.disabled, true); assert.equal(input.checked, false); assert.equal(note.hidden, false);
+  assert.equal(note.textContent, 'Add your current car to use this.'); assert.ok(input.getAttribute('aria-describedby').split(' ').includes(note.id));
+  assert.ok(!view.root.classList.contains('is-same-again')); assert.equal(tile('body').disabled, false);
+  view.update(base({ categories: chosen, open: 'body', sameAgain: { on: false, available: false, reason: 'current-car-unidentified' } }));
+  assert.equal(note.textContent, 'Your current car details are incomplete.'); assert.equal(document.getElementById('p-panel').hidden, false);
+  view.update(base({ categories: chosen, sameAgain: { on: false, available: true } })); assert.equal(note.hidden, true); assert.equal(input.disabled, false);
+  assert.ok(!/—/.test(view.root.textContent)); assert.equal(calls.length, 0);
+});
+
+test('state.disabled also disables the Same again switch', () => {
+  const { view } = mountSame({ disabled: true });
+  assert.equal(document.getElementById('p-same-again').disabled, true); assert.ok(view.root.classList.contains('is-disabled'));
+});
+
+test('gallery Same again example mounts meter at 1, 6, 11 and every row state', async () => {
+  const { sameAgainExample } = await import('../../blocks/gcsp/kit/form-controls-gallery.js');
+  const section = sameAgainExample(); document.body.append(section);
+  const values = [...section.querySelectorAll('.gcsp-understanding-value')].map((n) => n.textContent);
+  for (const wanted of ['1 / 11', '6 / 11', '11 / 11']) assert.ok(values.includes(wanted), wanted);
+  assert.equal(section.querySelectorAll('.gcsp-prefs.is-same-again').length, 1);
+  assert.equal(section.querySelectorAll('.gcsp-prefs-same-note:not([hidden])').length, 1);
+  assert.equal(section.querySelectorAll('.gcsp-help-tip:not([hidden])').length, 1);
+  assert.ok(!/—/.test(section.textContent));
+});
