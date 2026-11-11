@@ -2,7 +2,7 @@ import { createVehicleSnapshot, createEmployeeTerms, freezeVehicleData } from '.
 import { validInstant } from '../policy/file-provider.js';
 import { currentCarRatingValid } from '../brief/rating.js';
 import { sameAgainValid } from '../brief/same-again.js';
-import { validateBrief, validateBriefContent, evaluateEssentials, scorePreferences, confirmedFact, chargingGates } from '../../scenarios/employee/index.js';
+import { validateBrief, validateBriefContent, evaluateEssentials, scorePreferences, rankEmployeeRecommendations, confirmedFact, chargingGates } from '../../scenarios/employee/index.js';
 import { FEEDBACK_KEY, baselineOf, feedbackPolicyValid, ratingClass, matchDimensions, compareImprovement } from './current-car.js';
 
 const result = (status, fields) => ({ status, ...fields, contractVersion: '1.0.0' });
@@ -232,9 +232,8 @@ async function evaluateRecommendation({ provider, policy, time }, context, reque
             evidence: { eligibility: eligibility.value, allowance: allowance.value, points: points.status === 'ok' ? points.value : null,
               assumptions: assumptionResults.map((row) => row.value), availability: candidate.availability } });
         }
-        // Same again overrides category ranking: kept matches order by stock identity only.
-        const continuity = Boolean(fb?.sameOn && fb.baseline);
-        const ranked = decisions.filter((entry) => entry.gateStatus === 'eligible').sort((a, b) => (continuity ? 0 : (b.score ?? -1) - (a.score ?? -1)) || a.orderUuid.localeCompare(b.orderUuid));
+        // Same again nulls every kept score, so the shared ranker ignores category fit for continuity matches.
+        const ranked = rankEmployeeRecommendations(decisions, config);
         return freezeVehicleData(result('ok', { value: { scenarioId: 'employee-scheme-demo-v1', runId: context.runId,
           ...(preview ? { preview: preview.metadata, brief: preview.original } : {}),
           state: !decisions.length ? 'no-stock' : ranked.length ? 'recommendations' : 'no-viable-stock', evaluatedAt: now,
@@ -242,7 +241,8 @@ async function evaluateRecommendation({ provider, policy, time }, context, reque
             ...(fb ? { feedback: fb.identity } : {}) },
           // The brief gallery shows best fit first; stored evaluations keep provider order for allocation records.
           decisions: preview ? [...ranked, ...decisions.filter((entry) => entry.gateStatus !== 'eligible')] : decisions,
-          recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length } }));
+          recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length,
+          ...(config.ranking ? { ranking: config.ranking } : {}) } }));
       } catch { return unavailable('employee-source-invalid'); }
 }
 

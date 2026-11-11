@@ -1,0 +1,34 @@
+{
+  "run": "vehicle-offer-refinement-20261111-01a1ca56",
+  "selected_scope": [
+    "local HTML/CSS/JS syntax and links",
+    "gallery thumbnail/magnifier/arrow/Escape/focus checks",
+    "desktop 1440, narrow 375 and long content 320 visual critique",
+    "changed accept/decline/validation/outcome states"
+  ],
+  "excluded": "No production code, data wiring, full suite or backend checks; this is a local concept",
+  "scratch_cleanup": {
+    "owned_root": "/tmp/vehicle-offer-refinement-20261111-01a1ca56",
+    "removed_bytes": 437,
+    "absence_verified": true
+  },
+  "native_tool_outputs": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.playwright-mcp",
+    "removed_bytes": 6990,
+    "removed_files": [
+      "console-2026-11-11T11-51-08-773Z.log",
+      "page-2026-11-11T11-51-08-895Z.yml"
+    ],
+    "absence_verified": true
+  },
+  "server_pid": 60985,
+  "server_stop": "Owned server exec session joined with expected SIGTERM exit 143; loopback port 4881 listener absent.",
+  "browser": "Native headless isolated tool tab closed; no foreground app/tab interaction. Tool-managed browser profile allocation is opaque and its transient peak was not sampled.",
+  "allocation": "16 retained PNGs and compact receipts; no archive or output approaching 256MiB. Planned disk 100MB/RAM700MB; no full-suite/build workers. Scratch byte count is final observed allocation, not peak.",
+  "agents": "All assigned agents returned final results; no owned children remain active",
+  "impact_map": ".claude/test-runs/impact/vehicle-offer-concept-refinement-20261111.json",
+  "retained_summary": "README.md, diagnosis.md, review/refinement-review.md, review/refinement-capture-receipt.json",
+  "cloud_scratch": null,
+  "leftovers": [],
+  "retained_refinement_png_bytes": 2937621
+}

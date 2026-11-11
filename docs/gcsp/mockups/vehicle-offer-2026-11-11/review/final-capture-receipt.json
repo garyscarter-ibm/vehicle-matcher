@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-11",
+  "checks": "Scoped static concept and rendered critique only",
+  "sourceHashes": {
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/accept-validation.html": "aa713e4fd102f3e28f773e1e09e4ca766f464b9e9d3d88879fbe05c600b1b6cc",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/accept.html": "335d3b0e33a155dfb45100ea9e01857fca8786b500003344ea0e0cddf5633a62",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/accepted.html": "34aa60103dad8f604c1a474135a0272736d71d78fb5c22192705da6b15e17e02",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/benefits-expanded.html": "908ef41e917705d6898f8fff1f409bb0b118a43c0dcc728319dcc48ac1ebd30b",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/decline-validation.html": "3fff1b020a204766d3441f794182a1578544557c65e4b25bbdea308e72787d13",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/decline.html": "fb277c6ea000a8803de52b1ae9f03cff284b15cc7627c1296bbe1a01bc22ab13",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/declined.html": "43aab00ccf6fb25b89ea044da5391bf33a8428db0f40b76e889999b8a97a7470",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/documents.html": "bb0c0d53e481488db05a74acee1bc0ff583410993cfbd97267892b13a5b03501",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/expired.html": "995265d720e6ff9caff8a3836078f7d8940490ff39647c94b15941b3d8871e7a",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/gallery-front.html": "6e8f81b3b73e49e7efecef052f301f4ef366570323371997bd87d109249706b5",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/gallery-interior.html": "3ae7cbc253711ec23cb3d94554103a02c37aba2c8c0ab9be01567cf5b97809d2",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/gallery-rear.html": "fcefb99235d47ea1046fb9e2772be7608ed81ff5dfbe54492cc2bba6155497e9",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/index.html": "c79ea141063a4194ec744abee9bd4c98b84c479aac3e31c041cc8434e776192b",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/mockup.css": "3bd49a0a901db1128346455d569d9aa35fbdfb8d12052478b59bbac952d91ed4",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/gallery.js": "c90638ccdf367a8434c7cc7908ee2b12aefe4ad70ce6388845386cf328db2dd4",
+    "blocks/gcsp/shell/gcsp-tokens.css": "d04bfd54a32efcbeb2452b54f766b4c567f85442fcf1b0d07b2866e5ac9e7c11",
+    "blocks/gcsp/kit/side-drawer.css": "2392127f886867c36c97eaab43955c88f0b1b4827357bcbd9d225016f2777d13"
+  },
+  "renderedWidths": [
+    1440,
+    375,
+    320
+  ],
+  "captures": [
+    "final-expanded-1440.png",
+    "final-expanded-375.png",
+    "final-decline-320.png",
+    "final-long-320.png"
+  ],
+  "columnsDesktop": [
+    85,
+    525.65625,
+    966.328125,
+    1406.984375
+  ],
+  "desktopCardTableBoundariesMatch": true,
+  "horizontalOverflow": false,
+  "captionAbsent": true,
+  "declineFreeTextAbsent": true,
+  "galleryUnchanged": "Reuse prior refinement-gallery smoke evidence; final changes affect highlight layout and decline painted choices only.",
+  "captureCorrection": "Initial serving root omitted shared assets; those invalid unstyled captures were replaced before review. Long stress title and comparison identity matched on final recapture.",
+  "notRun": [
+    "production tests",
+    "live integration",
+    "full app suite",
+    "new mockup behaviour"
+  ]
+}

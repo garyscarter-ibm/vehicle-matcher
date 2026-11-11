@@ -68,3 +68,14 @@ Not changed, and why:
 Tests run (scoped, one worker): gcsp-account-render, gcsp-loading-skeleton, gcsp-presenter-refresh, gcsp-account-runtime,
 gcsp-live-regions, ui-ratchet, gcsp-painted-copy-words, shared-kit-contracts, gcsp-plain-copy and gcsp-manual-journey-resume
 (285 pass), plus render.test.js (41 pass). Full `npm test` was not run.
+
+## The "Your car offer" card, 11 November
+
+Gary: "remove this, or redesign it, I'm not sure it's needed now we have the notifications bell".
+- **Before** (`before/21` to `26`): a boxed card above the car with two lines and a full-width primary "View your offer".
+  It also showed for declined and expired offers, which put two primaries on the page (`23`, `24`).
+- **After:** the card is gone, because the bell announces offers. While an offer is pending, the replacement slot gives the
+  one reason, "You have a car offer to decide on before choosing another car.", and a normal-width primary "View your offer"
+  beside the outline replacement control (`21`, `25` with a long name, `26` with no current car).
+  Declined, expired and no-offer states show no offer link (`22` to `24`).
+- `harness.js` gained `?offer=pending|declined|expired` so these states can be captured.

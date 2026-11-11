@@ -1,0 +1,44 @@
+{
+  "run": "vehicle-offer-final-20261111-01a1ca56",
+  "date": "2026-11-11",
+  "ownedRoot": {
+    "owned_root": "/tmp/vehicle-offer-final-20261111-01a1ca56",
+    "removed_bytes": 5308649,
+    "absence_verified": true
+  },
+  "auxiliaryRemoval": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.playwright-mcp/console-2026-11-11T12-07-26-831Z.log",
+      "removed_bytes": 5903,
+      "absence_verified": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/_tools/__pycache__/test_resources.cpython-314.pyc",
+      "removed_bytes": 62358,
+      "absence_verified": true
+    },
+    {
+      "path": "/tmp/vehicle-offer-final-20261111-01a1ca56-manifest.json",
+      "removed_bytes": 964,
+      "absence_verified": true
+    },
+    {
+      "path": "/tmp/vehicle-offer-final-20261111-01a1ca56-finalize.py",
+      "removed_bytes": 313,
+      "absence_verified": true
+    }
+  ],
+  "totalRemovedBytes": 5378187,
+  "retainedSummary": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/mockups/vehicle-offer-2026-11-11/review/final-review.md",
+  "retainedEvidence": "Four corrected PNG screens, source/authoring/resource receipts; tracked mockup/Stories/product-map records. No raw Jira snapshots retained.",
+  "processTeardown": {
+    "agents": "Lego Batman and Ralph Wolf completed; no descendants or owned active children",
+    "importers": "Both Jira sync subprocesses exited0",
+    "servers": "4882 sessions ended with exit0",
+    "browser": "MCP close returned no open tabs"
+  },
+  "compatibilityException": "Native MCP managed its isolated browser/profile; no profile path or peak allocation was exposed. Page teardown is verified; tool-service profile lifetime is outside the run-owned filesystem roots.",
+  "validation": "Scoped static concept, rendered critique, Jira/local Story and map checks only; no production/full suite/live acceptance.",
+  "leftoverOwnedPaths": [],
+  "preserved": "Unrelated source, proposal work, presentation and pre-existing scaffold_git bytecode preserved."
+}

@@ -207,11 +207,11 @@ function pointsTerms(contract, model) {
   return terms;
 }
 
-function currentCar(contract, model, controls, explained = false) {
+function currentCar(contract, model, controls, explained = false, offer = null) {
   const terms = pointsTerms(contract, model);
   const feature = el('section', 'gcsp-feature');
   feature.dataset.contractId = contract.contractId;
-  const heading = el('h2', 'gcsp-h2', contract.model ?? 'Current car: model not supplied');
+  const heading = el('h2', 'gcsp-h2', contract.model ?? 'Your current car');
   heading.id = `gcsp-account-car-${++serial}`;
   feature.setAttribute('aria-labelledby', heading.id);
   const source = contract.media;
@@ -240,14 +240,20 @@ function currentCar(contract, model, controls, explained = false) {
     details.append(el('summary', 'gcsp-details-summary', 'Order, collection and vehicle details'), more);
     copy.append(details);
   }
-  if (contract.action) { const actions = el('div', 'gcsp-actions'); actions.append(controls.startButton(contract.action)); copy.append(actions); }
+  if (contract.action) {
+    const held = offer?.take(); const actions = el('div', 'gcsp-actions');
+    if (held) { copy.append(held.note); actions.append(held.view); }
+    actions.append(controls.startButton(contract.action)); copy.append(actions);
+  }
   else if (!explained) copy.append(el('p', 'gcsp-note', 'Replacement isn\u2019t available for this car.'));
   feature.append(mediaColumn(media), copy);
   controls.rateCar?.(feature);
   return feature;
 }
 
-const recordFor = (contract, model, scheme) => ({ contract, model, title: contract.model ?? 'Model not supplied',
+// FUCQ-316: an unknown model is named by what is known about the car, never a "not supplied" placeholder.
+const carName = (contract, fallback) => contract.model ?? fallback ?? (contract.status === 'current' ? 'Your current car' : 'Your previous car');
+const recordFor = (contract, model, scheme, fallback) => ({ contract, model, title: carName(contract, fallback),
   context: ['Car record', scheme].filter(Boolean).join(' \u00b7 ') });
 
 // FUCQ-252: a collected order the server reports as the current car; its name and image come from the order read.
@@ -256,7 +262,7 @@ function orderCurrentCar(car, order, orderVehicle) {
   const name = same ? orderVehicle?.name : null;
   const feature = el('section', 'gcsp-feature');
   feature.dataset.orderUuid = car.orderUuid;
-  const heading = el('h2', 'gcsp-h2', name ?? 'Current car: model not supplied');
+  const heading = el('h2', 'gcsp-h2', name ?? 'Your current car');
   heading.id = `gcsp-account-car-${++serial}`;
   feature.setAttribute('aria-labelledby', heading.id);
   const { media } = mediaWell({ name: name ?? 'Current car', photo: same ? orderVehicle?.photo ?? '' : '', line: '',
@@ -295,11 +301,11 @@ function newCarRow(order, vehicle, controls) {
 // FUCQ-278: a pending newest offer is the one decision; manual car choices step back until it is made.
 const offerHeld = (offers) => offers?.[0]?.state === 'pending';
 
-// One labelled summary: a heading, plain lines and the state's actions.
-function heroBlock(title, lines, actions) {
-  const card = el('section', 'gcsp-summary'); card.setAttribute('aria-label', title);
-  card.append(el('h2', 'gcsp-h2', title), ...lines.map((line) => el('p', 'gcsp-note', line)), ...actions);
-  return card;
+// The bell announces an offer (FUCQ-375); a pending one also explains, once, why replacement waits.
+function offerSlot(offer, { pending, controls }) {
+  let nodes = offer ? { note: el('p', 'gcsp-note', 'You have a car offer to decide on before choosing another car.'),
+    view: button({ label: 'View your offer', disabled: pending, onClick: () => controls.openOffer(offer) }) } : null;
+  return { take: () => { const taken = nodes; nodes = null; return taken; } };
 }
 
 const overrideText = (model) => {
@@ -316,16 +322,16 @@ function orderHistory(model, { order, orderVehicle, controls }) {
   const title = el('h2', 'gcsp-h2', 'Order history'); title.id = 'gcsp-account-history-title';
   section.append(title);
   const rows = [];
-  const add = (contract, scheme, ended, tag) => {
-    const car = contract.model ?? 'Model not supplied';
-    rows.push({ car: contract.model ? car : { label: car, missing: true }, scheme, collected: date(contract.actualCollectionDate), ended,
-      status: tag, record: recordFor(contract, model, scheme), name: `View record for ${[car, scheme, ended].filter(Boolean).join(', ')}` });
+  const add = (contract, scheme, ended, tag, fallback) => {
+    const car = carName(contract, fallback);
+    rows.push({ car, scheme, collected: date(contract.actualCollectionDate), ended,
+      status: tag, record: recordFor(contract, model, scheme, fallback), name: `View record for ${[car, scheme, ended].filter(Boolean).join(', ')}` });
   };
   const placed = order && model.slots.some((slot) => slot.entitlementSlotId === order.entitlementSlotId);
   if (placed) {
     const car = orderVehicle?.name ?? null;
     add({ model: car, status: order.outcome, slotId: order.entitlementSlotId, orderReference: order.source?.orderReference, orderNumber: order.source?.orderNumber },
-      schemeTitleFor(model, model.account?.schemeId), null, status(order.outcome));
+      schemeTitleFor(model, model.account?.schemeId), null, status(order.outcome), 'Your new car');
   }
   model.histories.forEach((history, index) => {
     for (const contract of history.entries) {
@@ -390,13 +396,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     wrap.append(statusScreen({ title, message: text, role: null, actions: [actions] }));
   }
   const held = !journey && offerHeld(offers) && Boolean(controls.openOffer);
-  // An accepted newest offer has become an order, so its progress replaces the offer link.
-  const offerShown = !journey && offers.length && offers[0].state !== 'accepted' && controls.openOffer;
-  if (offerShown && model.account) {
-    wrap.append(heroBlock('Your car offer', ['Your buddy found a car for you. Check its details and deadline.',
-      ...(held ? ['Decide on your car offer before choosing another car.'] : [])],
-    [button({ label: 'View your offer', disabled: pending, onClick: () => controls.openOffer(offers[0]) })]));
-  }
+  const offer = offerSlot(held ? offers[0] : null, { pending, controls });
   // FUCQ-224: once the slot has an order, its progress replaces the saved journey card.
   const superseded = ordered && draft?.status === 'ok' && draft.value.choices?.slotId === order.entitlementSlotId;
   if (draft?.status === 'ok' && !superseded) {
@@ -426,10 +426,11 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     const base = model.allowance?.monthlyPoints ?? model.allowance?.value;
     const line = none ? [Number.isFinite(base) && `Your allowance is ${points(base)} points a month`, overrideText(model)].filter(Boolean).join('. ') : '';
     const starts = model.actions.filter((item) => item.action === 'order').map((action) => controls.startButton(action));
-    const startRow = () => { const row = el('div', 'gcsp-actions'); row.append(...starts); return row; };
-    const noCar = (message) => statusScreen({ title: 'No current car', message: [message, line && `${line}.`].filter(Boolean).join(' ') || null,
-      role: null, actions: starts.length ? [startRow()] : [] });
-    for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls, Boolean(states[model.state])));
+    const startRow = (held) => { const row = el('div', 'gcsp-actions'); row.append(...(held ? [held.view] : []), ...starts); return row; };
+    const noCar = (message) => { const held = starts.length ? offer.take() : null;
+      return statusScreen({ title: 'No current car', message: [message, line && `${line}.`, held?.note.textContent].filter(Boolean).join(' ') || null,
+        role: null, actions: starts.length ? [startRow(held)] : [] }); };
+    for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls, Boolean(states[model.state]), offer));
     for (const car of model.currentOrders) wrap.append(orderCurrentCar(car, order, orderVehicle));
     const shownNoCar = none && (model.carReturned || !(ordered && order.outcome !== 'declined'));
     if (shownNoCar) wrap.append(noCar(model.carReturned ? 'Your previous car has been returned. Your new car becomes current at handover.'

@@ -18,6 +18,7 @@ export async function seedManualDemoContext({ repository, identity, clock, conte
   const time = await clock.now(context); if (time.status !== 'ok') return time;
   const now = time.value.now;
   const image = await modelDisplayImage('G21 Touring|320i');
+  const previousImage = await modelDisplayImage('F70 Sports Hatch|120');
   return repository.transaction(context, { commandId: `manual:fixture:v1:${context.employeeId}`,
     inputDigest: inputDigest({ fixtureVersion: 'manual-records-v1', employeeId: context.employeeId }) }, async (tx) => {
     const found = await tx.get({ table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } });
@@ -54,7 +55,10 @@ export async function seedManualDemoContext({ repository, identity, clock, conte
       employeeFacts: { essentials: {}, charging: fact('home'), requiredBy: fact('2026-12-01T23:59:59.999Z') },
       contracts: fresh ? [] : [contract], histories: [{ schemeId: context.schemeId, entries: fresh ? [] : [contract] },
         { schemeId: 'pcs-ukfs-bmw', entries: fresh ? [] : [{ contractId: `historic:${context.employeeId}`, employeeId: context.employeeId,
-          schemeId: 'pcs-ukfs-bmw', status: 'returned', actualCollectionDate: '2025-01-01', returnedDate: '2025-12-01', source }] },
+          schemeId: 'pcs-ukfs-bmw', status: 'returned', model: 'BMW 1 Series Sports Hatch 120',
+          ...(previousImage ? { media: { src: `/${previousImage.asset}`, alt: 'BMW 1 Series Sports Hatch' } } : {}),
+          vehicle: { configuration: '120 M Sport', body: 'hatchback', fuel: 'petrol' },
+          actualCollectionDate: '2025-01-01', returnedDate: '2025-12-01', source }] },
         { schemeId: 'motorcycle-choices', entries: [] }] };
     const updated = await tx.compareAndSwap({ table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } }, found.value.version,
       { contract: { ...found.value.contract, manualContext } });

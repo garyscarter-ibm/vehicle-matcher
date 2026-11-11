@@ -24,6 +24,16 @@ The response uses the shared `{ status, value?, contractVersion }` envelope. Suc
 
 Every supplied exact car receives a decision before recommendation display limits. Eligibility, confirmed essentials, allowance versus monthly points and timing run first. Only suitable exact candidates enter preference ranking. The separate preference value and importance preserve indifference; comfort and sportiness can coexist. Inference and strategic steering do not replace confirmed facts or essentials.
 
+### Points utilisation, 11 November 2026 — FUCQ-381
+
+Collaborator direction: unused points provide no employee benefit. Prefer fuller allowance use among similarly well-matched cars. The canonical `employee.recommendation.v1` calibration now includes `ranking: { rule: "similarFitThenPoints", fitTolerance: 5 }`.
+
+After all suitability gates, sort by preference fit and form bands anchored to the best remaining fit. Within each band (at most five preference-score points below its anchor), rank monthly points descending, then preference fit descending, then stable order UUID. Continue with the next band before applying the display limit. Anchoring prevents a chain of near ties from promoting a substantially poorer fit. With no scored preferences, eligible cars rank by monthly points; an unscored candidate never outranks a scored one merely by costing more. The existing preference percentages and per-dimension explanations remain unchanged.
+
+Saved recommendations, unsaved previews and feedback recomputation share this ordering function. The preview marks the first result **Recommended**, with a points-allowance explanation, rather than claiming it has the highest preference percentage. Identical choices need no badge. Older policy pins without `ranking` retain score/UUID ordering. The seed change takes effect for newly seeded/reset runs after deployment; an already persisted run needs an explicitly published policy successor or a collaborator-authorised reset. Existing offers retain their quoted terms. This change does not alter the separate employee allocation fairness policy (renewal/fit/lottery) or retail ranking.
+
+Reproduction and scoped evidence: [FUCQ-381](evidence/fucq381/README.md).
+
 Decisions retain brief, employee-facts, vehicle-facts, policy, terms and stock versions, their exact order/configuration identity, gate evidence, unknowns, reasons and trade-offs. No stock and no suitable stock are successful computed outcomes; a failed source is unavailable. Vehicle snapshots and typed employee terms are immutable. Stock carries no VIN and employee points never masquerade as pounds.
 
 Inspection found the current ranker unconditionally reads a retail budget even with budget weight zero. A small trusted tuning switch disables that cash filter for this consumer. Retail defaults and scoring curves remain unchanged; request fields cannot set the switch. This bridge is temporary compatibility work, without extracting or copying the engine.
