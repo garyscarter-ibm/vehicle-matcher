@@ -59,7 +59,7 @@ async function compose(t, { generated = false, main = false, environmentId = 'pr
 
 const EMPLOYEE_WORDS = /employee|paula|alex|eligib|gateStatus|suitab|offer|match|hold|quote|brief|score|grade|principal/i;
 function assertUserAgnostic(value) {
-  assert.deepEqual(Object.keys(value).sort(), ['cars', 'charts', 'counts', 'modelLines', 'release', 'runId']);
+  assert.deepEqual(Object.keys(value).sort(), ['allocation', 'cars', 'charts', 'counts', 'modelLines', 'release', 'runId']);
   assert.deepEqual(Object.keys(value.counts).sort(), ['buddyAllocated', 'colours', 'manuallyAllocated', 'modelLines', 'onScheme', 'released', 'totalReleased']);
   for (const car of value.cars) assert.deepEqual(Object.keys(car).sort(), ['colourName', 'id', 'imageAlt', 'imageSrc', 'modelLine', 'modelName']);
   assert.doesNotMatch(JSON.stringify(value), EMPLOYEE_WORDS);
@@ -75,7 +75,7 @@ test('demo stock: release null with zero counts before a release, then the first
   const f = await compose(t);
   const before = await f.call(PATH);
   assert.equal(before.status, 200);
-  assert.deepEqual(before.body.value, { runId: f.context.runId, release: null, cars: [], modelLines: [], charts: { colours: [], fuel: [], points: [] },
+  assert.deepEqual(before.body.value, { runId: f.context.runId, allocation: { pending: 0, declined: 0, accepted: 0 }, release: null, cars: [], modelLines: [], charts: { colours: [], fuel: [], points: [] },
     counts: { released: 0, modelLines: 0, colours: 0, totalReleased: 0, onScheme: 0, buddyAllocated: 0, manuallyAllocated: 0 } });
   const released = await f.release('first-release');
   const reply = await f.call(PATH);
@@ -126,6 +126,7 @@ test('the main journey first release reports 100 latest and total, 99 unallocate
   const value = good((await f.call(PATH)).body);
   assertUserAgnostic(value);
   assert.equal(value.counts.released, 100); assert.equal(value.counts.totalReleased, 100);
+  assert.deepEqual(value.allocation, { pending: 1, declined: 0, accepted: 0 });
   assert.equal(value.counts.onScheme, 99); assert.equal(value.counts.buddyAllocated, 1); assert.equal(value.counts.manuallyAllocated, 0);
 });
 

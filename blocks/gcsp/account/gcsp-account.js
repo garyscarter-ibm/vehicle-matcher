@@ -18,7 +18,7 @@ import { dataTable } from '../kit/data-table.js';
 import { sideDrawer } from '../kit/side-drawer.js';
 import { NO_IMAGE_TEXT, NO_IMAGE_YOUR_CAR } from '../kit/plain-copy.js';
 import { routePortal, PORTAL_ROUTES } from '../employee/portal-navigation.js';
-import { buddyStatus } from '../kit/buddy-status.js';
+import { mountAccountBuddy } from './account-buddy.js';
 
 let serial = 0;
 const MISSING = 'Not supplied';
@@ -384,7 +384,6 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   const refreshButton = (variant) => button({ label: 'Refresh', variant, disabled: pending, onClick: controls.refresh });
   const stale = message?.error || draft?.value?.requiresRefresh || (draft && !['ok', 'not-found'].includes(draft.status));
   if (stale && !failedRead) head.append(refreshButton('ghost'));
-  if (buddy && !journey) head.append(buddy);
   if (message) { const note = statusScreen({ title: message.title, message: message.text, role: null }); note.classList.add('gcsp-account-message'); wrap.append(note); }
   const ordered = !journey && model.state === 'no-entitlement' && order
     && model.slots.some((slot) => slot.entitlementSlotId === order.entitlementSlotId);
@@ -438,7 +437,10 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     if (shownNoCar) wrap.append(noCar(model.carReturned ? 'Your previous car has been returned. Your new car becomes current at handover.'
       : null));
     else { if (line) wrap.append(el('p', 'gcsp-note', `${line}.`)); wrap.append(...starts); }
-    if (preferences) wrap.append(preferences);
+    if (preferences || buddy) {
+      const choices = el('div', 'gcsp-account-buddy-preferences');
+      choices.append(...[preferences, !journey && buddy].filter(Boolean)); wrap.append(choices);
+    }
     const secondary = el('div', 'gcsp-account-secondary');
     secondary.append(orderHistory(model, { order, orderVehicle, controls }), yourDetails(model, controls));
     wrap.append(secondary);
@@ -447,12 +449,12 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   return () => wrap.remove();
 }
 
-export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, onNavigate, print, orderAdapter, helpAdapter, reload, preferences, notifications, signOut = adapter.readOnly !== true } = {}) {
+export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, onNavigate, print, orderAdapter, helpAdapter, reload, preferences, activityAdapter, notifications, signOut = adapter.readOnly !== true } = {}) {
   const abort = new AbortController();
   let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
   let generation = 0; let teardown; let loading; let finishPrint; let drawer; let orderRow; let orderVehicle; let restarted = false;
   let confirming = false; let syncVersion = 0; let region; let regionTeardown; const live = viewStatus();
-  const ratings = new Map(); let rater; let stopRater; let lamp; let stopLamp;
+  const ratings = new Map(); let rater; let stopRater; let buddyRegion; let stopBuddy; let stopBuddyPreferences;
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
   const read = async (name) => {
@@ -509,7 +511,14 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       const found = regionTeardown?.controller;
       if (['rate', 'subscribe', 'snapshot'].every((name) => typeof found?.[name] === 'function')) {
         rater = found; stopRater = rater.subscribe(showRatings);
-        if (typeof found.refreshBuddy === 'function') { lamp = buddyStatus({ prominent: true, id: 'gcsp-account-buddy-status' }); stopLamp = rater.subscribe(showLamp); showLamp(rater.snapshot()); }
+        if (activityAdapter) {
+          let previous; stopBuddyPreferences = rater.subscribe((snap) => {
+            if (snap.buddy?.pending) return;
+            const next = JSON.stringify([snap.briefVersion, snap.buddy?.state]);
+            if (previous && previous !== next && !snap.buddy?.pending) stopBuddy?.sync();
+            previous = next;
+          });
+        }
       }
       return region;
     }
@@ -539,8 +548,18 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     }
     feature.querySelector('.vm-card-media')?.append(ratings.get(id).root);
   }
-  // The lamp follows the preferences controller's buddy lane; without that capability there is no lamp.
-  function showLamp(snap) { lamp?.update(snap.buddy?.state); }
+  function activityRegion() {
+    if (!activityAdapter) return undefined;
+    if (!buddyRegion) {
+      buddyRegion = el('div', 'gcsp-account-buddy');
+      stopBuddy = mountAccountBuddy(buddyRegion, { adapter: activityAdapter, signal: abort.signal,
+        onChanged: () => rater?.refreshBuddy?.(), onPreferences: () => {
+          const target = region?.querySelector('h2');
+          if (target) { target.tabIndex = -1; target.focus(); target.scrollIntoView?.({ block: 'nearest' }); }
+        } });
+    }
+    return buddyRegion;
+  }
   function showRatings(snap) {
     const lane = snap.rating;
     if (lane && !ratings.has(lane.contractId)) { for (const feature of main?.querySelectorAll('.gcsp-feature[data-contract-id]') ?? []) rateCar(feature); }
@@ -554,7 +573,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     if (draft?.status !== 'ok') confirming = false;
     const model = toAccountView(envelope);
     renderAccountBody(main, { model, draft, offers, pending, message, journey, confirmDiscard: confirming, controls, order: orderRow, orderVehicle, restarted, reload,
-      preferences: model.account ? preferencesRegion() : undefined, buddy: model.account ? lamp : undefined });
+      preferences: model.account ? preferencesRegion() : undefined, buddy: model.account ? activityRegion() : undefined });
     if (message) live.announce(`${message.title}. ${message.text}`);
     if (focused && focused.isConnected && root.ownerDocument.activeElement !== focused) focused.focus();
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
@@ -594,9 +613,9 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   }
   async function refresh() {
     if (pending || disposed) return;
-    rater?.refreshBuddy?.();
+    rater?.refreshBuddy?.(); stopBuddy?.sync();
     pending = true; message = null; restarted = false; live.clear(); draw();
-    drawer?.close(false); teardown(); main = null;
+    drawer?.close(false); stopBuddy?.closeDrawer(); teardown(); main = null;
     teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
     try { await loading; } finally { pending = false; draw(true); }
   }
@@ -609,7 +628,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     const [accountResult, draftResult, offerResult, latest] = await Promise.all([read('readAccount'), read('readDraft'),
       typeof adapter.readOffers === 'function' ? read('readOffers') : null, listLatest()]);
     if (disposed || pending || !main || version !== syncVersion || base !== generation) return;
-    rater?.refreshBuddy?.();
+    rater?.refreshBuddy?.(); stopBuddy?.sync();
     if (accountResult?.status !== 'ok' || !['ok', 'not-found'].includes(draftResult?.status) || !latest) return;
     const before = JSON.stringify([envelope, draft, offers, orderRow?.orderUuid]);
     const same = Boolean(latest.orderUuid) && latest.orderUuid === orderRow?.orderUuid;
@@ -712,7 +731,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   const shellAdapter = { signOut, notifications, loadingLayout: 'feature', accountFailure: 'page', loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
   teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
-  const destroy = () => { disposed = true; generation += 1; abort.abort(); drawer?.close(false); finishPrint?.(); stopRater?.(); stopLamp?.(); regionTeardown?.(); for (const item of ratings.values()) item.destroy(); teardown(); live.root.remove(); };
+  const destroy = () => { disposed = true; generation += 1; abort.abort(); drawer?.close(false); finishPrint?.(); stopRater?.(); stopBuddyPreferences?.(); stopBuddy?.(); regionTeardown?.(); for (const item of ratings.values()) item.destroy(); teardown(); live.root.remove(); };
   destroy.refresh = refresh;
   destroy.sync = sync;
   return destroy;

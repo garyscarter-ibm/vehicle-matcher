@@ -186,14 +186,15 @@ export class BriefService {
   async engage(context, input, options) { return this.#write(context, input, 'engaged', options); }
   async disengage(context, input, options) { return this.#write(context, input, 'disengaged', options); }
   async confirm(context, input, options) { return this.#write(context, input, 'confirmed', options); }
-  async pause(context, input) { return this.#write(context, input, 'paused'); }
-  async resume(context, input) { return this.#write(context, input, 'resumed'); }
+  async pause(context, input, options) { return this.#write(context, input, 'paused', options); }
+  async resume(context, input, options) { return this.#write(context, input, 'resumed', options); }
   async changeAfterDecline(context, input) { return this.#write(context, input, 'changed-after-decline'); }
 
   async #write(context, input, operation, options) {
     const prepared = await this.#prepare(context); if (prepared.error) return prepared.error;
     const drafting = operation === 'draft'; const confirming = operation === 'confirmed'; const decline = operation === 'changed-after-decline';
-    const engaging = operation === 'engaged' || operation === 'disengaged'; const withDraft = drafting || confirming || engaging;
+    const engaging = operation === 'engaged' || operation === 'disengaged';
+    const pausing = operation === 'paused' || operation === 'resumed'; const withDraft = drafting || confirming || engaging || pausing && Boolean(options?.gate);
     // Internal gate from the editor: the minimum evaluated on the content at these exact versions.
     const gate = object(options?.gate) && typeof options.gate.ok === 'boolean' && revision(options.gate.briefVersion) && revision(options.gate.draftVersion)
       ? options.gate : null;
@@ -220,7 +221,7 @@ export class BriefService {
       if (withDraft && input.expectedDraftVersion !== (state.draft?.draftVersion ?? 0)) return stale('draft', input.expectedDraftVersion, state.draft?.draftVersion ?? 0);
       if (gate && gate.briefVersion !== version) return stale('brief', gate.briefVersion, version);
       if (gate && gate.draftVersion !== (state.draft?.draftVersion ?? 0)) return stale('draft', gate.draftVersion, state.draft?.draftVersion ?? 0);
-      if (gate && (drafting || confirming)) {
+      if (gate && (drafting || confirming || pausing)) {
         const offers = await tx.list('offers', { employeeId: context.employeeId }); if (offers.status !== 'ok') return offers;
         if (offers.value.some((offer) => offer.state === 'accepted')) return result('conflict', { reason: 'brief-read-only', current: { briefVersion: version } });
       }
@@ -277,7 +278,8 @@ export class BriefService {
         brief.buddy = { enabled: consent?.search === true, searchConsent: consent?.search === true,
           holdConsent: consent?.hold === true, paused: false, permissionVersion: version + 1,
           confirmedBy: context.principalId, confirmedAt: prepared.now };
-      } else if (operation === 'paused' || operation === 'resumed') {
+      } else if (pausing) {
+        if (operation === 'resumed' && gate && !gate.ok) return minimumRefusal();
         brief = structuredClone(state.current);
         if (operation === 'paused' && brief.buddy?.searchConsent !== true) return result('conflict', { reason: 'not-engaged', current: { briefVersion: version } });
         if (brief.buddy.paused === (operation === 'paused')) return result('conflict', { reason: operation === 'paused' ? 'already-paused' : 'already-resumed', current: { briefVersion: version } });

@@ -5041,25 +5041,29 @@
       "status": "In Progress",
       "type": "Story",
       "assignee": "Gary Carter",
-      "observed_at": "2026-11-11T17:53:31Z",
+      "observed_at": "2026-11-11T18:48:52Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-397",
       "slices": [
         {
           "id": "tile",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Buddy-tile-and-controls",
-          "observed_at": "2026-11-11T17:33:38Z",
-          "evidence": "Pussyfoot implementing dev/DEV-2026-11-11-GC-004; Gary approved option A on 11 November 2026."
+          "observed_at": "2026-11-11T18:48:52Z",
+          "evidence": "Buddy tile implemented by Pussyfoot; final integrated checks and browser acceptance underway."
         },
         {
           "id": "history",
-          "status": "not-started",
-          "title": "History-and-offer-drawers"
+          "status": "complete",
+          "title": "History-and-offer-drawers",
+          "observed_at": "2026-11-11T18:48:52Z",
+          "evidence": "History/search/offer drawers implemented; parent verified held-offer/history at 1440 and375 with Escape focus restore."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Integration-and-rendered-review"
+          "status": "in-progress",
+          "title": "Integration-and-rendered-review",
+          "observed_at": "2026-11-11T18:48:52Z",
+          "evidence": "Parent integration with current role navigation and real activity commands underway."
         }
       ],
       "unsliced": false,
@@ -5083,25 +5087,29 @@
       "status": "In Progress",
       "type": "Story",
       "assignee": "Gary Carter",
-      "observed_at": "2026-11-11T17:53:32Z",
+      "observed_at": "2026-11-11T18:48:53Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-398",
       "slices": [
         {
           "id": "projection",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Authoritative-allocation-projection",
-          "observed_at": "2026-11-11T17:33:39Z",
-          "evidence": "Yosemite Sam implementing dev/DEV-2026-11-11-GC-005; Gary approved option A on 11 November 2026."
+          "observed_at": "2026-11-11T18:48:53Z",
+          "evidence": "94eae706 implements authoritative run-scoped offer/hold outcomes with deadline and unavailability checks."
         },
         {
           "id": "presenter",
-          "status": "not-started",
-          "title": "Presenter-allocation-section"
+          "status": "complete",
+          "title": "Presenter-allocation-section",
+          "observed_at": "2026-11-11T18:48:53Z",
+          "evidence": "Separate Allocation region and actual Refresh readback wired; scoped functional tests passed."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Integration-and-rendered-review"
+          "status": "in-progress",
+          "title": "Integration-and-rendered-review",
+          "observed_at": "2026-11-11T18:48:53Z",
+          "evidence": "Integrated-base tests and parent live release/readback review underway."
         }
       ],
       "unsliced": false,

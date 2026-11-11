@@ -13,8 +13,8 @@ const account = { status: 'ready', name: 'Paula (synthetic)', context: 'Syntheti
 const loadAccount = async () => account;
 const tick = (ms = 30) => new Promise((done) => setTimeout(done, ms));
 const place = () => { const node = document.createElement('div'); document.body.append(node); return node; };
-const LABELS = ['Your cars', 'Buddy activity', 'Order progress'];
-const KEYS = ['cars', 'activity', 'order-progress'];
+const LABELS = ['Your cars', 'Order progress'];
+const KEYS = ['cars', 'order-progress'];
 
 before(async () => {
   portal = await import('../../blocks/gcsp/employee/portal-navigation.js');
@@ -52,7 +52,7 @@ const PAGES = {
     stops.push(emp.mountEmployee(root, { loadAccount, location })); return { root, location };
   } },
   brief: { active: null, crumb: 'Your preferences', mount: () => element('gcsp-brief', pages.brief.defineGcspBrief, unavailable) },
-  activity: { active: 'activity', crumb: 'Buddy activity', mount: () => element('gcsp-activity', pages.activity.defineGcspActivity, unavailable) },
+  activity: { active: null, crumb: 'Buddy activity', mount: () => element('gcsp-activity', pages.activity.defineGcspActivity, unavailable) },
   'order progress': { active: 'order-progress', crumb: 'Order progress', mount: () => element('gcsp-order-progress', pages.order.defineGcspOrderProgress, unavailable) },
   help: { active: null, crumb: 'Renewal help', mount: () => element('gcsp-help', pages.help.defineGcspHelp, pages.cases.fixtureAdapter('request'),
     { accountAdapter: pages.cases.fixtureAccountAdapter }) },
@@ -115,7 +115,7 @@ test('the rail is one frozen list and the old placeholders are gone', () => {
   assert.ok(Object.isFrozen(portal.PORTAL_NAVIGATION));
   assert.deepEqual(portal.PORTAL_NAVIGATION.map((item) => item.label), LABELS);
   assert.ok(portal.PORTAL_NAVIGATION.every((item) => item.available === true));
-  assert.equal(pages.activity.ACTIVITY_DESTINATION, portal.PORTAL_NAVIGATION.find((item) => item.key === 'activity'));
+  assert.equal(pages.activity.ACTIVITY_DESTINATION, portal.BUDDY_ACTIVITY_DESTINATION);
   assert.equal(pages.order.ORDER_PROGRESS_DESTINATION, portal.PORTAL_NAVIGATION.find((item) => item.key === 'order-progress'));
   assert.equal(pages.links.PORTAL_ROUTES, portal.PORTAL_ROUTES);
 });
@@ -124,7 +124,7 @@ test('a host that passes onNavigate hears the key instead of the default routing
   const root = place(); const location = fakeLocation(); const heard = [];
   stops.push(emp.mountEmployee(root, { loadAccount, location, onNavigate: (key) => heard.push(key) })); await tick();
   buttons(root).forEach((node) => node.click());
-  assert.deepEqual(heard, ['activity', 'order-progress']); assert.deepEqual(location.assigned, []);
+  assert.deepEqual(heard, ['order-progress']); assert.deepEqual(location.assigned, []);
 });
 
 test('routePortal ignores keys outside the rail and routeAfterRelease routes only once nothing is held', async () => {

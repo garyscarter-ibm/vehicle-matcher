@@ -1,7 +1,7 @@
 // Embeddable activity consumer. The injected adapter owns account, permission and command authority.
 import { el, screenIntro, statusScreen } from '../../vehicle-matcher/ui.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
-import { PORTAL_NAVIGATION } from '../employee/portal-navigation.js';
+import { BUDDY_ACTIVITY_DESTINATION } from '../employee/portal-navigation.js';
 import { mountHelp } from '../cases/gcsp-help.js';
 import { activityBody } from './activity-body.js';
 import { createActivityController } from './activity-controller.js';
@@ -10,7 +10,7 @@ import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 import { viewStatus } from '../kit/view-status.js';
 import { loadingSkeleton } from '../kit/loading-skeleton.js';
 
-export const ACTIVITY_DESTINATION = PORTAL_NAVIGATION.find((item) => item.key === 'activity');
+export const ACTIVITY_DESTINATION = BUDDY_ACTIVITY_DESTINATION;
 
 export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, signal, offerDisplay, helpAdapter, reload } = {}) {
   let done = false; let controller; let stopShell; let stopHelp;
@@ -23,7 +23,7 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, s
   teardown.refresh = () => controller?.refresh() || Promise.resolve();
   if (signal?.aborted) { teardown(); return teardown; }
   signal?.addEventListener('abort', teardown, { once: true });
-  stopShell = mountEmployee(root, { brand, view: 'activity', loadingLayout: 'timeline', signal: abort.signal,
+  stopShell = mountEmployee(root, { brand, view: 'activity', viewLabel: 'Buddy activity', loadingLayout: 'timeline', signal: abort.signal,
     onNavigate, notifications: adapter.notifications, accountFailure: 'page',
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
     renderBody(main, { account, refresh }) {

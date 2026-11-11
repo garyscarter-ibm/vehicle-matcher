@@ -46,6 +46,34 @@ function allocationCounts(releases, rows, holds) {
   return counts;
 }
 
+// Outcomes follow the offer decision writer, not stock occupancy or a requested decision.
+export function buddyOfferCounts(offers, holds, now, runId) {
+  if (!Array.isArray(offers) || !Array.isArray(holds) || !Number.isFinite(Date.parse(now))) return null;
+  const current = new Map(holds.filter((row) => row.runId === runId).map((row) => [row.holdId, row]));
+  const counts = { pending: 0, declined: 0, accepted: 0 };
+  for (const offer of offers.filter((row) => row.runId === runId)) {
+    const hold = current.get(offer.holdId);
+    if (!hold || hold.orderUuid !== offer.orderUuid) return null;
+    if (hold.type !== 'buddy-offer') continue;
+    if (offer.state === 'accepted' && hold.state === 'allocated') counts.accepted += 1;
+    else if (['rejected', 'declined'].includes(offer.state) && hold.state === 'released' && hold.releaseReason === 'offer-declined') counts.declined += 1;
+    else if (offer.state === 'active' && hold.state === 'active') {
+      if (!Number.isFinite(Date.parse(hold.expiresAt))) return null;
+      if (Date.parse(now) < Date.parse(hold.expiresAt)) counts.pending += 1;
+    }
+  }
+  return counts;
+}
+
+async function readBuddyAllocation(deps, context, holds) {
+  try {
+    const offers = await deps.repository.query(context, 'offers');
+    const time = await deps.clock?.now(context);
+    return offers.status === 'ok' && time?.status === 'ok'
+      ? buddyOfferCounts(offers.value, holds, time.value.now, context.runId) : null;
+  } catch { return null; }
+}
+
 // Engine-led templates ("{engine} Touring") need an engine, so a bare line falls back to its last word.
 const lineName = (name, line) => name(line, null) ?? name(`${line}|${line.split(' ').at(-1)}`, line);
 
@@ -107,7 +135,7 @@ async function pointsFor(policy, read, rows) {
 
 const distinct = (cars, field) => new Set(cars.map((car) => car[field]).filter((value) => value !== null)).size;
 
-/** Read only: release receipts, stock rows and current holds. Nothing is written, held, allocated or evaluated. */
+/** Read only: release receipts, stock, holds and Buddy offer outcomes. Nothing is written, held, allocated or evaluated. */
 export function createPresenterReleaseRoutes(deps) {
   return [{ method: 'GET', path: '/api/gcsp/presenter/releases/latest', role: 'presenter', purpose: 'presenter-control',
     async handle({ context, body, searchParams }) {
@@ -123,12 +151,13 @@ export function createPresenterReleaseRoutes(deps) {
       if (stock.status !== 'ok') return stock;
       const holds = await repository.query(context, 'holds');
       if (holds.status !== 'ok') return holds;
+      const allocation = await readBuddyAllocation(deps, context, holds.value);
       const releases = releasesFrom(receipts.value);
       const release = releases[0];
       const rows = new Map(stock.value.map((row) => [row.orderUuid, row]));
       const totals = allocationCounts(releases, rows, holds.value);
       if (!totals) return broken();
-      const empty = { runId: context.runId, release: null, cars: [], modelLines: [], charts: { colours: [], fuel: [], points: [] },
+      const empty = { runId: context.runId, allocation, release: null, cars: [], modelLines: [], charts: { colours: [], fuel: [], points: [] },
         counts: { released: 0, modelLines: 0, colours: 0, ...totals } };
       if (!release) return ok(empty);
       const read = { runId: context.runId, asOf: release.releasedAt, policyVersion: release.policyVersion };

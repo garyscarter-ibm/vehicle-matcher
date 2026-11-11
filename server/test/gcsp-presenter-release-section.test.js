@@ -17,10 +17,10 @@ after(() => dom.window.close());
 const ok = (value) => ({ status: 'ok', value });
 const settle = async () => { for (let i = 0; i < 12; i++) await new Promise((resolve) => setImmediate(resolve)); };
 const car = (at, extra = {}) => ({ id: `car-${at}`, imageSrc: `/assets/${at}.webp`, imageAlt: `Car ${at}`, modelName: `Model ${at}`, modelLine: 'G20', colourName: `Colour ${at}`, ...extra });
-const latest = (runId = 'run-a', trancheId = 't1', n = 4, extra = {}) => ok({ runId, release: { windowId: 'w1', releasedAt: '2026-11-10T11:30:00.000Z', trancheId },
+const latest = (runId = 'run-a', trancheId = 't1', n = 4, extra = {}) => ok({ runId, allocation: { pending: 14, declined: 9, accepted: 37 }, release: { windowId: 'w1', releasedAt: '2026-11-10T11:30:00.000Z', trancheId },
   cars: Array.from({ length: n }, (_, at) => car(at)), counts: { released: n, modelLines: 2, colours: 3, totalReleased: 1204, onScheme: 1200, buddyAllocated: 3, manuallyAllocated: 1 }, modelLines: [{ modelLine: 'G20', count: 3 }, { modelLine: 'F70', count: 1 }], ...extra });
 const gate = () => { let open; const wait = new Promise((resolve) => { open = resolve; }); return { wait, open }; };
-const empty = ok({ runId: 'run-a', release: null, cars: [], counts: { released: 0, modelLines: 0, colours: 0, totalReleased: 0, onScheme: 0, buddyAllocated: 0, manuallyAllocated: 0 }, modelLines: [] });
+const empty = ok({ runId: 'run-a', allocation: { pending: 0, declined: 0, accepted: 0 }, release: null, cars: [], counts: { released: 0, modelLines: 0, colours: 0, totalReleased: 0, onScheme: 0, buddyAllocated: 0, manuallyAllocated: 0 }, modelLines: [] });
 const mount = (reply, extra = {}) => {
   const host = document.createElement('div'); document.body.append(host); const adapter = { readLatestRelease: async () => (typeof reply === 'function' ? reply() : reply), ...extra };
   return { host, adapter, api: sectionMod.mountReleaseSection(host, { adapter, matchMedia: () => ({ matches: true }) }) };
@@ -69,10 +69,11 @@ test('the release charts sit in a closed disclosure: model line, colour, points 
   const g = mount(empty); await g.api.refresh(); assert.equal(g.api.root.querySelector('details.gcsp-release-charts').hidden, true); g.api.destroy();
 });
 
-test('a missing method, an unavailable reply or a throw all show the before state with no error copy', async () => {
+test('a missing method, unavailable reply or throw keeps stock waiting and allocation unavailable', async () => {
   for (const f of [mount(null, { readLatestRelease: undefined }), mount({ status: 'unavailable', reason: 'route-absent', retryable: true }),
     mount(() => { throw new Error('boom'); }), mount({ status: 'access-required' })]) {
-    await f.api.refresh(); assert.match(f.api.root.textContent, /Waiting for 11:30am/); assert.doesNotMatch(paint(f.api.root), /unavailable|error|failed|boom|retry/i);
+    await f.api.refresh(); assert.match(f.api.root.textContent, /Waiting for 11:30am/); assert.match(paint(f.api.root), /Allocation unavailable/);
+    assert.equal(f.api.root.querySelector('.gcsp-allocation-totals'), null);
     assert.equal(f.api.root.querySelector('[role="grid"]'), null); f.api.destroy();
   }
 });
@@ -215,4 +216,46 @@ test('inside the console, a slow release read keeps its own skeleton, never the 
   hold.open(); await settle();
   assert.equal(cells(stage).length, 3); assert.equal(section.querySelector('.gcsp-skeleton'), null);
   f.api.destroy();
+});
+
+const allocationFacts = (root) => facts(root, '.gcsp-allocation-totals');
+test('Allocation is a separate labelled section of run offer outcomes, including truthful zero and unavailable states', async () => {
+  let reply = latest(); const f = mount(() => reply); await f.api.refresh();
+  const region = f.api.root.querySelector('.gcsp-console-allocation');
+  assert.equal(region.getAttribute('aria-labelledby'), region.querySelector('h2').id);
+  assert.equal(region.querySelector('h2').textContent, 'Allocation'); assert.match(region.textContent, /Buddy offers · this run/);
+  assert.deepEqual(allocationFacts(region), { 'Allocation Pending': '14', 'Allocation Declined': '9', 'Allocation Accepted': '37' });
+  reply = empty; await f.api.refresh();
+  assert.deepEqual(allocationFacts(region), { 'Allocation Pending': '0', 'Allocation Declined': '0', 'Allocation Accepted': '0' });
+  for (const allocation of [undefined, null, {}, { pending: 0, declined: -1, accepted: 0 }, { pending: 0, declined: 0, accepted: '0' }]) {
+    reply = latest('run-a', 't1', 4, { allocation }); await f.api.refresh();
+    assert.match(region.textContent, /Allocation unavailable/); assert.equal(region.querySelector('dl'), null);
+    assert.equal(cells(f.api.root).length, 4, 'stock availability remains separate');
+  }
+  f.api.destroy();
+});
+
+test('Allocation loading waits for authoritative counts and clears stale values after a read fails', async () => {
+  const hold = gate(); const f = mount(null, { readLatestRelease: async () => { await hold.wait; return latest(); } });
+  const region = f.api.root.querySelector('.gcsp-console-allocation');
+  assert.equal(region.querySelector('.gcsp-allocation-body').getAttribute('aria-busy'), 'true');
+  assert.equal(region.querySelectorAll('.gcsp-skeleton-stat-value').length, 3); assert.equal(region.querySelector('dl'), null);
+  const read = f.api.refresh(); hold.open(); await read;
+  assert.equal(region.querySelector('.gcsp-allocation-body').hasAttribute('aria-busy'), false);
+  f.adapter.readLatestRelease = async () => { throw Error('offline'); }; await f.api.refresh();
+  assert.match(region.textContent, /Allocation unavailable/); assert.equal(region.querySelector('dl'), null); f.api.destroy();
+});
+
+test('existing presenter Release, refresh and Start again lifecycle rereads Allocation on run changes', async () => {
+  const f = mountConsole({ basic: true }); await f.api.ready; await settle();
+  assert.equal(allocationFacts(f.api.root)['Allocation Pending'], '0');
+  f.api.basic.release.click(); await settle(); assert.equal(allocationFacts(f.api.root)['Allocation Pending'], '14');
+  f.api.setMode('advanced'); await settle();
+  f.setRelease(latest('run-b', 't9', 5, { allocation: { pending: 2, declined: 1, accepted: 8 } }));
+  [...f.api.root.querySelectorAll('[role=tab]')].find((node) => node.textContent === 'Last tick').click();
+  [...f.api.root.querySelectorAll('button')].find((node) => node.textContent === 'Refresh readback').click(); await settle();
+  assert.deepEqual(allocationFacts(f.api.root), { 'Allocation Pending': '2', 'Allocation Declined': '1', 'Allocation Accepted': '8' });
+  f.api.setMode('basic'); f.api.basic.startAgain.click(); await settle();
+  f.api.root.querySelector('.gcsp-console-confirm button').click(); await settle();
+  assert.deepEqual(allocationFacts(f.api.root), { 'Allocation Pending': '0', 'Allocation Declined': '0', 'Allocation Accepted': '0' }); f.api.destroy();
 });

@@ -42,7 +42,7 @@ test('employee and ordering roles compose while presenter remains exclusive and 
 test('both shared shell entry points show personal destinations plus ordering for a dual-role employee', () => {
   for (const navigation of [PORTAL_NAVIGATION, ORDERING_NAVIGATION]) {
     assert.deepEqual(navigationForAccount(navigation, { status: 'ready', roles: ['greg', 'employee'] }).map((row) => row.key),
-      ['cars', 'activity', 'order-progress', 'ordering']);
+      ['cars', 'order-progress', 'ordering']);
   }
   assert.deepEqual(navigationForAccount(PORTAL_NAVIGATION, { status: 'ready', roles: ['employee'] }), PORTAL_NAVIGATION);
   assert.deepEqual(navigationForAccount(PORTAL_NAVIGATION, { status: 'ready', roles: ['greg'] }), ORDERING_NAVIGATION);

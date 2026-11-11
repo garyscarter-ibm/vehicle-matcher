@@ -31,7 +31,7 @@ export function createBriefRoutes(service, editorService) {
       if (body.expectedBriefVersion !== initial?.briefVersion) return result('stale-version', { action: 'refresh' });
       return editorService[operation](context, { ...body, expectedDraftVersion: initial.draftVersion });
     } });
-  return [editor('/editor', 'GET', 'readEditor'), editor('/preview', 'POST', 'previewDraft'), editor('/preferences', 'POST', 'savePreferences'), editor('/engage', 'POST', 'engage'), editor('/disengage', 'POST', 'disengage'), route('', 'GET', 'readCurrent'), route('/history', 'GET', 'readHistory'), route('/draft', 'GET', 'readDraft'),
+  return [editor('/editor', 'GET', 'readEditor'), editor('/preview', 'POST', 'previewDraft'), editor('/preferences', 'POST', 'savePreferences'), editor('/engage', 'POST', 'engage'), editor('/pause-search', 'POST', 'pause'), editor('/resume-search', 'POST', 'resume'), editor('/disengage', 'POST', 'disengage'), route('', 'GET', 'readCurrent'), route('/history', 'GET', 'readHistory'), route('/draft', 'GET', 'readDraft'),
     editor('/draft', 'POST', 'saveDraft'), editor('/confirm', 'POST', 'confirm'), legacy('/pause', 'disengage'),
     legacy('/resume', 'engage'), route('/change-after-decline', 'POST', 'changeAfterDecline')];
 }

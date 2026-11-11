@@ -1,4 +1,4 @@
-@import "../employee/gcsp-employee.css"; @import "../kit/buddy-status.css";
+@import "../employee/gcsp-employee.css"; @import "../kit/buddy-status.css"; @import "../kit/buddy-tile.css"; @import "../kit/activity-timeline.css"; @import "../activity/activity-offer.css";
 @import "../order-progress/gcsp-order-progress.css"; /* Account composition uses the employee feature and shared kit; the page layout below is scoped to the account body. */
 @import "../kit/gcsp-kit.css"; @import "../kit/side-drawer.css"; @import "../kit/category-preferences.css"; @import "../kit/understanding-meter.css"; @import "../kit/same-again.css"; @import "../kit/star-rating.css"; @import "../kit/help-tip.css";
 gcsp-account { display: block; }
@@ -34,9 +34,7 @@ gcsp-account { display: block; }
 .gcsp .gcsp-record-facts .vm-fact-label { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); }
 .gcsp .gcsp-record-facts .vm-fact-value { margin: 0; font-weight: var(--gcsp-font-weight); }
 .gcsp.gcsp-account-print-record { display: none; }
-@media (max-width: 1100px) {
-  .gcsp .gcsp-account-body .gcsp-feature { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-}
+@media (max-width: 1100px) { .gcsp .gcsp-account-body .gcsp-feature { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 @media (max-width: 850px) {
   .gcsp .gcsp-account-body .gcsp-feature-copy { padding: var(--gcsp-space-4); }
   .gcsp .vm-facts.gcsp-account-facts { gap: var(--gcsp-space-3); }
@@ -47,7 +45,9 @@ gcsp-account { display: block; }
   .gcsp .gcsp-account-row, .gcsp .gcsp-record-facts .vm-fact { grid-template-columns: minmax(0, 1fr); gap: var(--gcsp-space-2); }
   .gcsp .gcsp-account-row .vm-btn { justify-self: start; }
 }
-@media print {
-  .gcsp-account-printing > .gcsp:not(.gcsp-account-print-record) { display: none; }
-  .gcsp.gcsp-account-print-record { display: block; background: var(--gcsp-surface); }
-}
+@media print { .gcsp-account-printing > .gcsp:not(.gcsp-account-print-record) { display: none; } .gcsp.gcsp-account-print-record { display: block; background: var(--gcsp-surface); } }
+.gcsp .gcsp-account-buddy-preferences { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr); gap: var(--gcsp-space-6); align-items: start; }
+.gcsp .gcsp-account-buddy-preferences > :only-child { grid-column: 1 / -1; }
+.gcsp .gcsp-account-buddy { min-width: 0; }
+.gcsp .gcsp-buddy-drawer-content { display: flex; flex-direction: column; gap: var(--gcsp-space-4); }
+@media (max-width: 1100px) { .gcsp .gcsp-account-buddy-preferences { grid-template-columns: minmax(0, 1fr); } }
