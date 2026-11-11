@@ -18,8 +18,11 @@ test('countdown uses supplied server instants, preserves deadline and labels mis
   assert.equal(remainingTime('2026-11-05T14:00:00Z', '2026-11-05T12:00:00Z'), 7200);
   assert.equal(remainingTime('2026-11-05T14:00:00Z', '2026-11-05T14:00:00Z'), 0);
   assert.equal(remainingTime('2026-11-05T14:00:00Z', null), null);
-  assert.equal(countdownText(7200), '2 hours remaining');
-  assert.equal(countdownText(1), '1 minute remaining');
+  assert.equal(countdownText(7200), '2:00');
+  assert.equal(countdownText(1), '0:01');
+  assert.equal(countdownText(7140), '1:59');
+  assert.equal(countdownText(60), '0:01');
+  assert.equal(countdownText(0), '0:00');
   assert.equal(countdownText(null), 'Time remaining unavailable');
 });
 
@@ -94,7 +97,8 @@ test('decisions never infer success and block concurrent commands until authorit
   const c = createOfferController({ read: async () => ++reads === 1 ? pending() : pending({ state: 'accepted' }),
     createCommandId: () => 'stable-command', decide: async (input) => { calls.push(input); return operation.promise; } });
   await c.refresh(); tickAll(c); const deciding = c.decision('accept');
-  assert.equal(c.snapshot().state, 'uncertain'); await c.decision('decline'); await c.refresh();
+  assert.equal(c.snapshot().state, 'uncertain'); assert.equal(c.snapshot().canReviewAccept, false);
+  await c.decision('decline'); await c.refresh();
   assert.equal(reads, 1); assert.equal(calls.length, 1);
   assert.deepEqual(calls[0], { kind: 'accept', commandId: 'stable-command', offer: pending().value.reference,
     termsDigest: 'digest-1', declarations: { terms: true, return: true } });

@@ -13,8 +13,8 @@ const sample = () => JSON.parse(bytes);
 const partial = () => JSON.parse(comparisonBytes);
 // The published samples predate the handoff record, so an acceptable offer gains one unless a test sets its own.
 export const handoffDto = (over = {}) => ({ termsVersion: 'fictional-order-terms-v1', termsDigest: 'terms-digest-1', wording: 'Fictional terms.', fictional: true,
-  mode: 'replacement', blocker: null, contact: { phone: '07700 900123', email: 'paula@example.invalid' },
-  returnCar: { model: 'G20 320d', contractEndDate: '2026-12-31', currentOdometer: { value: 41250, unit: 'miles' } },
+  mode: 'replacement', blocker: null, driver: null, returnMileage: { maximum: 500000, unit: 'mi' }, documentSource: null, contact: { phone: '07700 900123', email: 'paula@example.invalid' },
+  returnCar: { model: 'G20 320d', contractEndDate: '2026-12-31', currentOdometer: { value: 41250, unit: 'miles' }, expectedReturnMileage: null },
   declarations: [{ id: 'terms', label: 'I accept the terms.' }, { id: 'return', label: 'The return details are correct.' }], ...over });
 const withHandoff = (v) => v.handoff === undefined && v.availableActions?.includes('accept') ? { ...v, handoff: handoffDto() } : v;
 const envelope = (v = sample()) => ({ status: 'ok', value: withHandoff(v), contractVersion: '1.0.0' });
@@ -73,13 +73,37 @@ test('unknown facts and missing allowance never fall back to display guesses or 
   assert.equal(member.facts.find((f) => f.label === 'Options').value, 'None listed');
 });
 
+test('equipment arrays retain every supplied label and provenance for a counted disclosure', () => {
+  const dto = sample(); const labels = Array.from({ length: 41 }, (_, index) => `Supported equipment ${index + 1}`);
+  dto.quote.facts.facts.options = known(labels);
+  const row = toOfferPresentation(envelope(dto)).value.card.members[0].facts.find((fact) => fact.label === 'Options');
+  assert.deepEqual(row.items, labels);
+  assert.deepEqual(row.provenance, dto.quote.facts.facts.options.provenance);
+  assert.notEqual(row.items, dto.quote.facts.facts.options.value);
+  dto.quote.facts.facts.options = known([null, false, 0]);
+  assert.deepEqual(toOfferPresentation(envelope(dto)).value.card.members[0].facts.find((fact) => fact.label === 'Options').items,
+    ['Not supplied', 'false', '0']);
+});
+
 test('media preserves a supplied caption and adds no disclaimer when none is supplied', () => {
   const dto = sample(); const display = dto.quote.facts.display;
   display.photo = '/assets/brand-hero/bmw.jpg'; display.images = [{ src: display.photo, alt: 'Representative BMW', caption: 'Brand image, not this car' }];
   assert.deepEqual(toOfferPresentation(envelope(dto)).value.card.members[0].media,
-    { src: display.photo, alt: 'Representative BMW', caption: 'Brand image, not this car' });
+    { src: display.photo, alt: 'Representative BMW', caption: 'Brand image, not this car', images: [{ src: display.photo, alt: 'Representative BMW', caption: 'Brand image, not this car' }] });
   display.images = [];
   assert.equal(toOfferPresentation(envelope(dto)).value.card.members[0].media.caption, null);
+});
+
+test('ordered gallery metadata remains attached to the pinned offer media', () => {
+  const dto = sample(); const display = dto.quote.facts.display;
+  display.photo = '/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp';
+  display.images = [
+    { src: display.photo, alt: display.name, fidelity: 'representative-configuration', sourceRef: 'retained-front', viewpoint: 'FRONTLEFT', label: 'Front exterior' },
+    { src: '/assets/gcsp-vehicle-evidence/285aba84d74d7b3c792e4cb47d97f650a5c81e711eeb5b58c8c959d355380464.webp', alt: 'BMW interior', fidelity: 'representative-model', sourceRef: 'retained-interior', viewpoint: 'DASH', label: 'Interior' },
+  ];
+  const result = toOfferPresentation(envelope(dto)); assert.equal(result.status, 'ok');
+  assert.deepEqual(result.value.card.members[0].media.images, display.images);
+  assert.equal(result.value.card.members[0].media.src, display.photo);
 });
 
 test('unsupported private fields never enter the display projection or its retained evidence', () => {

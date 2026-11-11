@@ -1,4 +1,4 @@
-import { configurationIdDisplayImage, imageDisplay, modelDisplayImage, primaryDisplayImageSource } from './display-images.js';
+import { configurationIdDisplayGallery, imageDisplay, modelDisplayGallery, modelDisplayImage, primaryDisplayImageSource } from './display-images.js';
 
 // These are public presentation containers; signed inputs, evidence and command payloads stay untouched.
 const containers = new Set(['value', 'account', 'currentContract', 'contracts', 'histories', 'entries', 'oldContract',
@@ -39,13 +39,20 @@ export async function withVehicleDisplayImages(outcome) {
     if (!value || typeof value !== 'object') return;
     const ownBinding = { configurationId: value.configurationId ?? binding.configurationId,
       orderUuid: value.orderUuid ?? binding.orderUuid };
-    if (publicSnapshot(value, ownBinding, slot) && !text(value.display.photo)) {
+    if (publicSnapshot(value, ownBinding, slot)) {
       pending.push((async () => {
         const key = value.facts?.eligibilityModelKey?.value;
         const structuralKey = structural.get(ownBinding.configurationId);
-        const image = structuralKey && key === structuralKey ? await modelDisplayImage(structuralKey)
-          : await configurationIdDisplayImage(ownBinding.configurationId, key);
-        if (image) value.display = { ...value.display, ...imageDisplay(value.display.name, image) };
+        const gallery = structuralKey && key === structuralKey ? await modelDisplayGallery(structuralKey)
+          : await configurationIdDisplayGallery(ownBinding.configurationId, key);
+        if (!gallery.length) return;
+        const display = imageDisplay(value.display.name, gallery);
+        if (!text(value.display.photo)) value.display = { ...value.display, ...display };
+        else if (gallery.length > 1 && (value.display.images?.length ?? 0) <= 1
+          && [display.photo, await primaryDisplayImageSource(display.photo)].includes(value.display.photo)) {
+          const first = value.display.images?.[0];
+          value.display = { ...value.display, images: [{ ...display.images[0], ...first }, ...display.images.slice(1)] };
+        }
       })());
     }
     if (seededCurrentContract(value) && !text(value.media?.src)) {
