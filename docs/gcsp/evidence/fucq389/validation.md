@@ -16,7 +16,7 @@ Inspected at 1440×1000, 375×900 and 320×850. The indicator occupies the appro
 
 ## Captures
 
-Local retained raster evidence is ignored by repository policy, in this directory: cars-active-1440.jpg, cars-paused-1440.jpg, cars-paused-375.jpg, cars-setup-1440.jpg, buddy-active-1440.jpg, buddy-paused-1440.jpg, buddy-paused-375.jpg, buddy-active-320.jpg. Setup capture uses the named read-only `?fixture=ready&prefs=empty` Account fixture; initial setup was also exercised through the real no-brief state before saving. All active/paused captures use the real saved service state.
+Local retained raster evidence is ignored by repository policy, in this directory: cars-active-1440.jpg, cars-paused-1440.jpg, cars-paused-375.jpg, cars-setup-1440.jpg, buddy-active-1440.jpg, buddy-paused-1440.jpg, buddy-paused-375.jpg, buddy-active-320.jpg, cars-setup-320.jpg. Setup capture uses the named read-only `?fixture=ready&prefs=empty` Account fixture; initial setup was also exercised through the real no-brief state before saving. All active/paused captures use the real saved service state.
 
 ## Automated checks and limits
 
@@ -25,3 +25,9 @@ Local retained raster evidence is ignored by repository policy, in this director
 UI ratchet 130/132: the two unchanged presenter stylesheet failures are already tracked as Low severity FUCQ-387. Buddy's shared CSS/pattern coverage passes; the Activity cap was lowered to its shorter length. This authorised scope continues under the standing sub-High backlog rule in docs/gcsp/build-rules.md; the Bug is not repaired here. Existing passing negative presenter fixtures log clockVersion TypeErrors and jsdom's print stub logs its unsupported call. Browser navigation logged view-transition abort diagnostics without a failed action.
 
 FUCQ-370 remains separately claimed and its broader engagement/minimum-category contract is not completed by this work. FUCQ-389 awaits collaborator acceptance; integration does not establish Done.
+
+## Integration and resource receipt
+
+Merged concurrent shared-branch work without conflicts in Buddy code. The integration selection passes all 25 functional checks; UI ratchet remains 130/132 with only FUCQ-387's unchanged failures. No full-suite stamp is claimed.
+
+The browser supervisor stopped and joined its owned server, verified port 4177 closed and removed `/private/tmp/test-stamp-shard-786cb7fe278c447089b7fdcaa5aef711`. Its external ownership manifest records `removed`; all supervised test allocations likewise report removed scratch. Nine small screenshots are retained locally alongside this summary in the main checkout. No large-output exception or leftover owned process/scratch.
