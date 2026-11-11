@@ -15,3 +15,5 @@ Gary chose Focused decision for refinement on 11 November. First refinement: rem
 Second refinement: centre the image-only thumbnail strip beneath the main image in Focused decision and its review overlays. Quick desktop visual check; no behaviour added.
 
 Exploratory third refinement: `gallery-options.html` compares the current separate strip with `focused-overlay.html`, a small opaque white thumbnail tray over the lower image area. The overlay sits in the clear space below the whole car; it does not crop or obscure it. The centred-below direction remains available. Static desktop concept and quick visual check only.
+
+Gary retained the current direction after viewing the overlay: use the centred image-only thumbnails in the separate white bar. Image composition cannot reliably guarantee clear space for an overlay. `focused.html` remains the selected direction; the overlay is an unselected exploration.
