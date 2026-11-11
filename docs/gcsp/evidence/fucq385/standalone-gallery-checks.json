@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "width": 1440,
+      "feature": true,
+      "currentView": true,
+      "wrap": true,
+      "sync": true,
+      "focusTrap": true,
+      "escapeReturn": true,
+      "activeThumbVisible": true
+    },
+    {
+      "width": 375,
+      "feature": true,
+      "currentView": true,
+      "wrap": true,
+      "sync": true,
+      "focusTrap": true,
+      "escapeReturn": true,
+      "activeThumbVisible": true
+    },
+    {
+      "width": 320,
+      "feature": true,
+      "currentView": true,
+      "wrap": true,
+      "sync": true,
+      "focusTrap": true,
+      "escapeReturn": true,
+      "activeThumbVisible": true
+    },
+    {
+      "state": "empty",
+      "fit": true
+    },
+    {
+      "state": "single",
+      "fit": true
+    },
+    {
+      "state": "long",
+      "fit": true
+    },
+    {
+      "brokenFallback": true,
+      "recovery": true
+    },
+    {
+      "loadingFeedback": true
+    }
+  ],
+  "errors": [],
+  "route": "http://127.0.0.1:58793/__proof",
+  "fixture": true,
+  "actualProducer": false
+}

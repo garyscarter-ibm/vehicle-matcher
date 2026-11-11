@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "issue": "FUCQ-382",
+  "recorded_at": "2026-11-11T14:42:07Z",
+  "scope": "scoped evidence reuse; Built development only, no collaborator acceptance or Jira transition",
+  "source_checkpoint": "593b3c737316297d27e6b1c410c6e17700451e56",
+  "corrected_ui_commit": "22176eb2393c644151c097bc1022998b67c1fe29",
+  "shared_evidence_commit": "9089a8158765459f198be05f178fd6e2b5d494e8",
+  "finalization_merge_commit": "b99caca605e675e0d65f378c46f7848c95f3718f",
+  "latest_gcsp_poc_at_merge": "c4262f40d41dcb4e80072ae877fcbc0a5e4ff606",
+  "producer_identity": {
+    "impact_map": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq382-7422e42a26a86d88ac856d20e36088f23dd7adb91175230ff83a310457020069.json",
+    "identity_sha256": "7422e42a26a86d88ac856d20e36088f23dd7adb91175230ff83a310457020069",
+    "files": {
+      "server/gcsp/stock/run-stock-generation.js": "031a37c9b1a6156a4ad77b8e8850f578a2d3c1fe44864bde0d141eade712a19f",
+      "server/gcsp/vehicle-evidence/stock-generator.js": "b6783208b516e8406c017a7b8d6b1a3e718667dacefcbc6d86a0aa7f575963de",
+      "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "3390ab29f56782918b5ab1e0a5afab5686b91787e024d2010b58931a6f9fc96b",
+      "server/gcsp/vehicle-evidence/vehicle-lookup.js": "cbc483051876d3a5c3c969e752659879b5c939d05175a9f2a6156c421ff03b41",
+      "server/scenarios/employee/index.js": "1f9fd45e36221c7eeb32d6a762078190629cefdfb94aade090810f774e26ac14",
+      "server/scenarios/employee/option-evidence.js": "dcec911a9a9ff5069cec4369b91f90ac4e0b596a55257e88a9e770c3dda841e7",
+      "server/test/gcsp-generated-configuration-offer.test.js": "911e4b964e87731c1e1ef7f5be5ba06dc1bf925124bec55a111a70f6f9b3fc71",
+      "server/test/gcsp-stock-generator.test.js": "e59450a83d481a333f691b95045ade19e8faac579f099e9750aa70c107df4e86",
+      "server/test/gcsp-vehicle-evidence-lookup.test.js": "541bfbdfb7ee28043611ed08cf4dd7be0302ed46e4202e70d82322e0e97a1f17",
+      "server/test/employee-option-preferences.test.js": "1eb3601e989d3dd83b51fa64a8d8e24ce8577154b678add9ca0d8d6c23f48071",
+      "server/test/gcsp-run-stock.test.js": "cf6a2315eed048f29c767357ef3b811f6a283a98b4180c42dd2fdb53f145dab4"
+    },
+    "checked_files": 11,
+    "mismatches": []
+  },
+  "final_shared_identity": {
+    "source": "../fucq386/identities.json",
+    "checked_files": 20,
+    "mismatches": []
+  },
+  "reuse_basis": "The final merge tree equals shared evidence commit 9089a815. Every producer, scoring and test file in the 11-file impact identity remains byte-identical to 593b3c737. Retained inputs, supported memory adapter and selected variant/environment are unchanged. The later projection/disclosure change is covered by its separately recorded 160 scoped checks and actual corrected browser renders; it is not treated as an unchanged old projection.",
+  "runs": [
+    {
+      "record": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/targeted-1bb70ce6c630ab9fb015e64716dc3f3f625a0e234a3362619d79b8bfec530277-default-1794405746274695000.json",
+      "code_key": "1bb70ce6c630ab9fb015e64716dc3f3f625a0e234a3362619d79b8bfec530277",
+      "base_commit": "1cc718ffa3625e5da661a5b20b0e5e209877b10c",
+      "commands": [
+        "/usr/bin/python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/with_deps.py perl -e 'alarm shift; exec @ARGV' 600 node --test --test-concurrency=1 server/test/gcsp-generated-configuration-offer.test.js server/test/gcsp-stock-generator.test.js server/test/gcsp-vehicle-evidence-lookup.test.js"
+      ],
+      "variant": "default",
+      "wall_seconds": 48.5,
+      "counts": {
+        "selected": 38,
+        "passed": 37,
+        "failed": 0,
+        "skipped": 1
+      },
+      "execution_identity": {
+        "code": "1bb70ce6c630ab9fb015e64716dc3f3f625a0e234a3362619d79b8bfec530277",
+        "environment": "3521d3fd4bb03e059d6f78fd4ee435498d71d8baf9894e021b7b31c60cec9bce",
+        "inputs": {},
+        "interpreter": [
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+          "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]"
+        ],
+        "platform": "macOS-27.2.1-arm64-arm-64bit",
+        "scope": "targeted",
+        "selected": [
+          "/usr/bin/python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/with_deps.py perl -e 'alarm shift; exec @ARGV' 600 node --test --test-concurrency=1 server/test/gcsp-generated-configuration-offer.test.js server/test/gcsp-stock-generator.test.js server/test/gcsp-vehicle-evidence-lookup.test.js"
+        ],
+        "settings": "590924b1b4da16f6c350bbc2244bf44b643515061e6eee5c9ea5c97c9298c5d4",
+        "variant": "default",
+        "version": 1
+      }
+    },
+    {
+      "record": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/test-runs/targeted-f5724632425b991656558f36d252e1b87dd7af4033f20e37beb929a23fcf0b04-default-1794405883989552000.json",
+      "code_key": "f5724632425b991656558f36d252e1b87dd7af4033f20e37beb929a23fcf0b04",
+      "base_commit": "ac6bccdcd65c267c7b00cdfe441493ffde351774",
+      "commands": [
+        "/usr/bin/python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/with_deps.py perl -e 'alarm shift; exec @ARGV' 600 node --test --test-concurrency=1 --test-name-pattern 'retained configuration facts|default run:|more desirable|reviewed|missing 0-62|packages,|availability,|fuel evidence|policy weights|real recommendation gates' server/test/gcsp-generated-configuration-offer.test.js server/test/employee-option-preferences.test.js server/test/gcsp-run-stock.test.js"
+      ],
+      "variant": "default",
+      "wall_seconds": 32.4,
+      "counts": {
+        "selected": 11,
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0
+      },
+      "execution_identity": {
+        "code": "f5724632425b991656558f36d252e1b87dd7af4033f20e37beb929a23fcf0b04",
+        "environment": "edf08c24b06b447d907ee3e4041ce24d39f3b89f50992a7c06af7ef4b17f29f6",
+        "inputs": {},
+        "interpreter": [
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+          "3.9.6 (default, Oct 19 2026, 19:18:13) \n[Clang 21.0.0 (clang-2100.4.1.1)]"
+        ],
+        "platform": "macOS-27.2.1-arm64-arm-64bit",
+        "scope": "targeted",
+        "selected": [
+          "/usr/bin/python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/with_deps.py perl -e 'alarm shift; exec @ARGV' 600 node --test --test-concurrency=1 --test-name-pattern 'retained configuration facts|default run:|more desirable|reviewed|missing 0-62|packages,|availability,|fuel evidence|policy weights|real recommendation gates' server/test/gcsp-generated-configuration-offer.test.js server/test/employee-option-preferences.test.js server/test/gcsp-run-stock.test.js"
+        ],
+        "settings": "a36f7368686e786b1c377bb3f8e4a268ea46fa91ff984e6a9e99d8c79258d40d",
+        "variant": "default",
+        "version": 1
+      }
+    }
+  ],
+  "raw_runner_authority": "The first generic targeted stamp says skipped 0; the raw Node log explicitly reports 1 native PostgreSQL skip and is authoritative. Counts overlap and are not added into a full-suite tally.",
+  "sample": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f382/producer-sample-final-base.json",
+    "sha256": "8b5e5b0f4ea5815bcb3a72231927b5bc977c987001caa628cdbb3a201c0a7c1f",
+    "bytes": 235168,
+    "order_uuid": "b6fb9510-7f2d-44b7-bf5b-f651b68f9698",
+    "configuration_id_sha256": "01ff7f98797cafd18ee3e85e849d55400744c7ca194f242dbb54b01bafe46327",
+    "manifest": "7c9cc707ab44b36f9cb5eb64b54170b25d914d5ee7e31722384c737612c45a9c",
+    "snapshot": "bmw-gb-optional-axis-suffix-193-2026-11-07.v2"
+  },
+  "independent_reviews": {
+    "source": "independent-source-review.md",
+    "source_verdict": "passed",
+    "combined_visual": "../fucq386/independent-visual-review.md",
+    "combined_visual_verdict": "passed",
+    "combined_visual_sha256": "9e3c92c8b8053827fa0e073b4bc8cea7eaaa6e7ac774b135d7216fe304eb0f41"
+  },
+  "resources": {
+    "source_receipt": "source-cleanup-receipt.json",
+    "independent_source_audit": "independent-cleanup-audit.json",
+    "source_roots_absent": 10,
+    "source_measured_peak_bytes_sum": 16635744,
+    "source_maximum_rss_bytes": 698269696,
+    "source_retained_samples_bytes": 466797,
+    "source_compatibility_exception": null,
+    "source_leftovers": [],
+    "parent_prefinal_audit": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/parent-resource-audit-prefinal.json",
+    "parent_prefinal_audit_at": "2026-11-11T14:36:47.676972+00:00",
+    "parent_manifest_count": 66,
+    "parent_present_roots": [],
+    "parent_present_groups": [],
+    "parent_sum_recorded_peak_bytes": 104956857,
+    "finalization_new_scratch": false,
+    "finalization_new_tests_or_browser": false
+  },
+  "known_limits": [
+    "Native PostgreSQL not run: GCSP_DATABASE_URL unset.",
+    "No full-suite pass or external/deployed integration proof.",
+    "All 240 admitted transmission values are null; canonical gearbox is unknown. A selected catalogue label mentioning transmission is not promoted to verified technical or physical fitment.",
+    "Definition coverage remains 239/240 configurations and 11,900/11,947 selected codes; actual G61/i5 exact-source gap remains explicit.",
+    "OfferAccess public allow-list omits internal identity/configuration-evidence facts; public fact/provenance parity is asserted, not full private/public snapshot equality.",
+    "Actual same-model contrast is established in retained generated-stock facts; the primary actual vehicle is followed through recommendation, pin, access and rendered comparison.",
+    "Shared failed harness attempts, mixed-supervisor skips and unrelated FUCQ-387/FUCQ-344 diagnostics remain recorded in the combined evidence; they are not passing trials."
+  ]
+}
