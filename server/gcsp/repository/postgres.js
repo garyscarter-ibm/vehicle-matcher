@@ -1,11 +1,11 @@
 import pg from 'pg';
-import { createRepository, createState, TABLES, FOUNDATION_TABLES, inputDigest, ok, result } from './core.js';
+import { createRepository, createState, TABLES, FOUNDATION_TABLES, inputDigest, ok, result, sealState, shallowState } from './core.js';
 import { migrate, migrationStatus, validSchema, sqlName } from '../migrations/index.js';
 
 const column = (name) => name.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 const unavailable = () => result('unavailable', { reason: 'database-unavailable', retryable: true });
 const invalid = (code, field) => result('invalid', { code, reasons: [{ field, reason: 'Invalid backend configuration' }] });
-const keyOf = (table, row) => inputDigest(TABLES[table].key.map((key) => row[key]));
+const keyOf = (table, row) => JSON.stringify(TABLES[table].key.map((key) => row[key]));
 
 // The URL stays inside the backend closure; diagnostics never contain driver errors or configuration.
 export function createPostgresRepository(options = {}) {
@@ -38,13 +38,13 @@ export function createPostgresRepository(options = {}) {
     for (const { t, data } of rows) if (data != null) state.tables[t].push(data);
     return state;
   };
-  // Cache entry: a private copy of the snapshot scope (runs plus this run's rows).
+  // Cache entry: the sealed snapshot scope (runs plus this run's rows), sharing frozen rows like memory.js (FUCQ-302).
   const scopedCopy = (state, context) => {
     const copy = createState();
     for (const table of FOUNDATION_TABLES) {
-      copy.tables[table] = table === 'runs' ? state.tables.runs : context?.runId == null ? [] : state.tables[table].filter((row) => row.runId === context.runId);
+      copy.tables[table] = table === 'runs' ? state.tables.runs.slice() : context?.runId == null ? [] : state.tables[table].filter((row) => row.runId === context.runId);
     }
-    return structuredClone(copy);
+    return sealState(copy);
   };
   const cache = new Map();
   const remember = (key, entry) => {
@@ -62,9 +62,12 @@ export function createPostgresRepository(options = {}) {
     const updates = [];
     const inserts = [];
     for (const table of FOUNDATION_TABLES) {
-      const previous = new Map(before.tables[table].map((row) => [keyOf(table, row), row]));
+      // Rows are shared frozen objects, so an untouched row is the same object and needs no digest.
+      const prior = before.tables[table]; const same = new Set(prior); let previous;
       // Snapshot contains scoped rows plus runs. resetRun may add one replacement run's rows.
       for (const row of after.tables[table]) {
+        if (same.has(row)) continue;
+        previous ??= new Map(prior.map((entry) => [keyOf(table, entry), entry]));
         const old = previous.get(keyOf(table, row));
         if (!old) { inserts.push([table, row]); continue; }
         if (inputDigest(old) === inputDigest(row)) continue;
@@ -113,16 +116,17 @@ export function createPostgresRepository(options = {}) {
       const fingerprint = fingerprintOf(probe[2].rows);
       const hit = cache.get(key)?.fingerprint === fingerprint ? cache.get(key) : undefined;
       if (hit) remember(key, hit);
+      // Reads see the sealed snapshot directly; a transaction gets fresh table arrays over the same frozen rows.
       if (!write) {
         begun = false;
-        if (hit) return await work(structuredClone(hit.state));
+        if (hit) return await work(hit.state);
         const fresh = (await client.query(`${fingerprintSql(context, true)} UNION ALL ${snapshotSql(context, true)}`)).rows;
-        const state = toState(fresh);
-        remember(key, { fingerprint: fingerprintOf(fresh), state: structuredClone(state) });
+        const state = sealState(toState(fresh));
+        remember(key, { fingerprint: fingerprintOf(fresh), state });
         return await work(state);
       }
-      const state = hit ? structuredClone(hit.state) : toState((await client.query(snapshotSql(context))).rows);
-      const before = hit ? hit.state : structuredClone(state);
+      const before = hit ? hit.state : sealState(toState((await client.query(snapshotSql(context))).rows));
+      const state = shallowState(before);
       const { commit, outcome } = await work(state);
       if (!commit) { await client.query('ROLLBACK'); begun = false; return outcome; }
       await flush(client, before, state);
