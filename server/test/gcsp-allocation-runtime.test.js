@@ -17,7 +17,7 @@ function car(orderUuid, index, contexts, observedAt) {
   const version = 'TEST-fucq96-runtime-v1';
   const fact = (value, unit = null) => ({ status: 'known', value, unit,
     provenance: { sourceRef: 'TEST:fucq96-runtime', observedAt, version, assurance: 'synthetic-scenario' } });
-  return { orderUuid, orderNumber: `960000${index}`, configurationId: 'RjcwOlMx', corpusVersion: 'TEST-only-v1', revision: 1,
+  return { orderUuid, orderNumber: String(9600000 + index), configurationId: 'RjcwOlMx', corpusVersion: 'TEST-only-v1', revision: 1,
     visibility: { companyIds: [...new Set(contexts.map((c) => c.companyId))], schemeIds: [...new Set(contexts.map((c) => c.schemeId))], employeeIds: null },
     availability: { availableUntil: '2027-01-01T00:00:00.000Z' },
     facts: createVehicleSnapshot({ sourceNamespace: 'TEST:fucq96-runtime', identityKind: 'exact-stock',
@@ -28,10 +28,10 @@ function car(orderUuid, index, contexts, observedAt) {
         insuranceGroup: fact(25, 'insurance-group'), zeroTo62: fact(7, 's'), mpg: fact(45, 'mpg-imperial'), tags: fact(['cruiser']) } }) };
 }
 
-async function setup(t, { beforeRelease = false } = {}) {
+async function setup(t, { beforeRelease = false, repository, releases = 1, carsPerRelease = 2, unmatchable = false } = {}) {
   let plan;
   const stockProvider = { pull: (request) => plan ? plan.pull(request) : { status: 'unavailable', retryable: true } };
-  const runtime = good(await createGcspRuntime({ mode: 'memory', stockProvider, environmentId: 'fucq96-runtime-test',
+  const runtime = good(await createGcspRuntime({ mode: 'memory', repository, stockProvider, environmentId: 'fucq96-runtime-test',
     policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'fucq96-bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z' }));
   t.after(() => runtime.close());
   const registered = []; const register = runtime.clock.registerHandler.bind(runtime.clock);
@@ -46,14 +46,17 @@ async function setup(t, { beforeRelease = false } = {}) {
   }
   // Paula alone has a consenting buddy brief, so both cars are her candidates in turn.
   good(await runtime.brief.saveDraft(contexts.paula, { commandId: 'brief-draft', expectedBriefVersion: 0, expectedDraftVersion: 0,
-    brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(5) } } }));
+    brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(unmatchable ? 99 : 5) } } }));
   good(await runtime.brief.confirm(contexts.paula, { commandId: 'brief-confirm', expectedBriefVersion: 0, expectedDraftVersion: 1,
     consent: { search: true, hold: true } }));
   const time = good(await runtime.clock.now(presenter));
   const cars = ids.map((id, i) => car(id, i + 1, [contexts.paula, contexts.alex], time.now));
   plan = createSyntheticStockProvider({ runId: presenter.runId, version: 'TEST-fucq96-runtime-v1',
-    label: 'Synthetic TEST allocation input; not F77/F78', windows: [{ windowId: 'TEST-noon',
-      availableAt: '2026-11-05T12:00:00.000Z', supplyId: null, stock: cars }] });
+    label: 'Synthetic TEST allocation input; not F77/F78', windows: Array.from({ length: releases }, (_, day) => ({ windowId: `TEST-noon-${day}`,
+      availableAt: new Date(Date.parse('2026-11-05T12:00:00.000Z') + day * 86400000).toISOString(), supplyId: null,
+      stock: day === 0 && carsPerRelease === 2 ? cars : Array.from({ length: carsPerRelease }, (_, i) =>
+        car(`f9700000-0000-4000-8000-${String(day * carsPerRelease + i + 1).padStart(12, '0')}`, day * carsPerRelease + i + 1,
+          [contexts.paula, contexts.alex], time.now)) })) });
   // An earlier tick consumes the brief-changed event before any car is released.
   let early;
   if (beforeRelease) early = good(await presenterTick(runtime, presenter, 'fucq96-before-release'));
@@ -76,12 +79,21 @@ async function presenterTick(runtime, presenter, eventId) {
   return runtime.clock.tick(presenter, { eventId, inputDigest: inputDigest(eventId), expectedClockVersion: time.clockVersion });
 }
 const tick = (f, eventId = 'fucq96-release-tick') => presenterTick(f.runtime, f.presenter, eventId);
-const allocationsOf = (ticked) => ticked.outcomes.find((row) => row.handlerId === 'buddy-allocation').outcome.value.allocations;
+const allocationsOf = async (f, ticked) => {
+  const value = ticked.outcomes.find((row) => row.handlerId === 'buddy-allocation').outcome.value;
+  assert.ok(Buffer.byteLength(JSON.stringify(value)) < 1024);
+  assert.equal(value.allocations, undefined);
+  const { allocations } = good(await f.runtime.allocation.consumeTriggers(f.presenter));
+  assert.deepEqual(value.summary, { events: allocations.length,
+    offers: allocations.reduce((n, row) => n + row.assignments.length, 0),
+    evaluated: allocations.reduce((n, row) => n + row.evaluations.length, 0) });
+  return allocations;
+};
 async function assertFellThrough(f, out, raced, expectedStatus) {
   const ticked = good(out);
   assert.ok(ticked.handlerOrder.findIndex((row) => row.handlerId === 'stock-release')
     < ticked.handlerOrder.findIndex((row) => row.handlerId === 'buddy-allocation'));
-  const allocations = allocationsOf(ticked);
+  const allocations = await allocationsOf(f, ticked);
   const allocated = allocations.filter((row) => row.state === 'allocated');
   assert.equal(allocated.length, 1, JSON.stringify(allocations.map((row) => row.attempts)));
   const [failedAttempt, wonAttempt] = allocated[0].attempts;
@@ -108,10 +120,10 @@ test('shared runtime allocates on brief-changed then stock-released triggers thr
   const f = await setup(t, { beforeRelease: true });
   assert.equal(f.runtime.dependencies.gcspAllocation, f.runtime.allocation);
   assert.ok(f.registered.indexOf('stock-release') < f.registered.indexOf('buddy-allocation'));
-  const [briefChanged] = allocationsOf(f.early);
+  const [briefChanged] = await allocationsOf(f, f.early);
   assert.equal(briefChanged.event.eventType, 'brief-changed'); assert.equal(briefChanged.state, 'no-assignment');
   assert.deepEqual(briefChanged.attempts, []); assert.equal((await f.rows('offers')).length, 0);
-  const released = allocationsOf(good(await tick(f))).filter((row) => row.event.eventType === 'stock-released');
+  const released = (await allocationsOf(f, good(await tick(f)))).filter((row) => row.event.eventType === 'stock-released');
   assert.equal(released.length, 1); assert.equal(released[0].state, 'allocated');
   assert.equal(released[0].policyVersion, f.presenter.policyVersion);
   assert.equal(released[0].assumptions[0].key, 'allocation.tieBreak.rule');
@@ -145,4 +157,51 @@ test('a conflicting first claim (car taken by another route) falls through witho
   const stock = await f.rows('stock');
   assert.equal(stock.find((row) => row.orderUuid === raced[0]).state, 'held');
   assert.ok((await f.rows('holds')).filter((row) => OCCUPYING_STATES.includes(row.state)).every((row) => row.orderUuid !== raced[0]));
+});
+
+async function repeatedReleases(t, repository) {
+  const f = await setup(t, { repository, releases: 6, carsPerRelease: 12, unmatchable: true });
+  let last;
+  for (let day = 0; day < 6; day += 1) {
+    if (day) {
+      const time = good(await f.runtime.clock.now(f.presenter));
+      good(await f.runtime.clock.advance(f.presenter, { commandId: `release-day-${day}`, expectedClockVersion: time.clockVersion, bySeconds: 86400 }));
+    }
+    last = good(await tick(f, `release-${day}`));
+    const buddy = last.outcomes.find((row) => row.handlerId === 'buddy-allocation').outcome;
+    assert.deepEqual(buddy.value.summary, { events: day + 2, offers: 0, evaluated: day + 2 });
+    assert.ok(Buffer.byteLength(JSON.stringify(buddy)) < 1024);
+    assert.deepEqual(good(await tick(f, `release-${day}`)), last, 'same event remains idempotent');
+  }
+  const allocations = await allocationsOf(f, last);
+  assert.ok(allocations.at(-1).evaluations[0].decisions.length >= 72, 'later releases evaluate the growing available stock');
+  assert.ok(Buffer.byteLength(JSON.stringify(allocations)) > 20000, 'regression fixture retains substantial canonical evidence');
+  const receipts = (await f.rows('event_receipts')).filter((row) => row.consumerId === 'clock:handler:buddy-allocation'
+    || row.consumerId === 'command:transaction' && row.eventId.startsWith('clock:tick:'));
+  for (const row of receipts) assert.ok(Buffer.byteLength(JSON.stringify(row)) < 8192, `${row.consumerId}:${row.eventId}`);
+  for (const row of await f.rows('tick_runs')) assert.ok(Buffer.byteLength(JSON.stringify(row)) < 8192);
+  t.diagnostic(`Retained allocation details: ${Buffer.byteLength(JSON.stringify(allocations))} bytes; final Buddy clock outcome: ${Buffer.byteLength(JSON.stringify(last.outcomes.find((row) => row.handlerId === 'buddy-allocation').outcome))} bytes.`);
+  return f;
+}
+
+test('six successive releases keep clock receipts bounded as canonical evaluations grow', async (t) => repeatedReleases(t));
+
+test('native PostgreSQL persists bounded tick and command JSON across six releases', {
+  skip: process.env.GCSP_DATABASE_URL === undefined ? 'native PostgreSQL URL unset' : false,
+}, async (t) => {
+  const { default: pg } = await import('pg');
+  const { createPostgresRepository } = await import('../gcsp/repository/postgres.js');
+  const schema = `release_memory_${process.pid}`;
+  const pool = new pg.Pool({ connectionString: process.env.GCSP_DATABASE_URL, max: 2, statement_timeout: 15000 });
+  pool.on('error', () => {});
+  const repository = createPostgresRepository({ schema, pool });
+  t.after(async () => { await repository.close(); await pool.query(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`); await pool.end(); });
+  await pool.query(`CREATE SCHEMA "${schema}"`);
+  const f = await repeatedReleases(t, repository);
+  const ticks = await pool.query(`SELECT max(octet_length(data::text)) AS bytes FROM "${schema}".tick_runs`);
+  const commands = await pool.query(`SELECT max(octet_length(data::text)) AS bytes FROM "${schema}".event_receipts
+    WHERE consumer_id = 'clock:handler:buddy-allocation' OR consumer_id = 'command:transaction' AND event_id LIKE 'clock:tick:%'`);
+  assert.ok(ticks.rows[0].bytes < 8192); assert.ok(commands.rows[0].bytes < 8192);
+  t.diagnostic(`Native SQL maximum tick JSON: ${ticks.rows[0].bytes} bytes; maximum clock receipt/command JSON: ${commands.rows[0].bytes} bytes.`);
+  await f.runtime.close();
 });
