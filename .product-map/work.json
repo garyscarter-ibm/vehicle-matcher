@@ -4793,25 +4793,28 @@
           "id": "seeds",
           "status": "complete",
           "title": "Three-view retained assets and valid associations",
-          "observed_at": "2026-11-11T13:33:53Z",
-          "evidence": "docs/gcsp/fucq-385-gallery-evidence-2026-11-11.md; 240 admitted configs have three ordered distinct digests; scoped source/projection/producer tests 150 pass, 1 native PG skip; provenance mapping regression passed"
+          "observed_at": "2026-11-11T15:15:13Z",
+          "evidence": "Original AC1/2 complete: 240 admitted configuration galleries with front/rear/interior distinct retained digests; catalogue/source hashes unchanged. Interior model/generation/body limit explicit. Scoped registry/provider and actual producer evidence. docs/gcsp/evidence/fucq385/finalization.json"
         },
         {
           "id": "viewer",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Shared featured gallery and enlarged viewer",
-          "observed_at": "2026-11-11T14:13:24Z",
-          "evidence": "Standalone behavior and independent critique finding corrected; offer/shared-kit consumption now covered by 198 passing scoped checks. Combined hasTouch/rendered reinspection remains open."
+          "observed_at": "2026-11-11T15:15:13Z",
+          "evidence": "Original AC3/4/5 complete: selected feature/current enlargement, wrap/strip/counter/focus/Escape; unchanged fallback contracts. Actual touch and true 320 selected-broken marker independently reinspected. Historical incomplete locator attempt retained. docs/gcsp/evidence/fucq385/finalization.json"
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Seeded producer to offer and rendered keyboard review",
-          "observed_at": "2026-11-11T14:13:24Z",
-          "evidence": "Ordered gallery connected through offer access/projection/view, shared card and catalogue. Scoped 198 pass; original-AC status-focus correction passes. Actual generated offer/browser/touch/independent combined critique remains open; no acceptance claim."
+          "observed_at": "2026-11-11T15:15:13Z",
+          "evidence": "Original AC2/6 complete: actual generated stock/release/BuddyHold/access gallery; corrected 1440/375/320 substantive independent PASS. 198 historical scoped pass, later160+4 and separate F390 boundary qualified; no acceptance claim. docs/gcsp/fucq-385-gallery-evidence-2026-11-11.md"
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "development_observed_at": "2026-11-11T15:15:12Z",
+      "workers": [],
+      "note": "Original six criteria Built with 240 three-view associations, scoped provider/viewer contracts, actual producer/touch and independently reviewed corrected offer. Original Jira observation/status retained; parent owns merge/Jira/acceptance. Identity/F390 qualifications and historical failures/skips remain explicit. docs/gcsp/evidence/fucq385/finalization.json"
     },
     {
       "id": "FUCQ-382",
