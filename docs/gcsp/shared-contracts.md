@@ -198,6 +198,18 @@ A category is considered when the brief has an entry, its importance is above th
 or its `valueState` is `confirmed`. Policy-sourced unconfirmed defaults are never considered, and an absent entry is unset and
 unimportant (no invisible midpoint).
 
+**Subset correction, 11 November 2026:** an untouched practical placeholder is exactly
+`{ value: null, state: 'needs-confirmation', source: 'policy:brief.editor.v1', ... }`.
+Brief-owned placeholders are optional and add no suitability gate; this applies to retained briefs as well as new saves.
+An untouched charging placeholder retains the adapter's charging fact, including unavailable/unknown outcomes; it never
+asserts readiness. Explicit employee answers, explicit employee unknowns, genuinely absent charging answers and independent
+provider requirements retain their existing gates. Preview, allocation, hold, acceptance and demand/planning consumers use
+the same distinction. Stored history and existing quote snapshots are not rewritten.
+
+Untouched policy preference defaults remain draft during engagement and contribute no score or unknown-preference evidence.
+A selected slider at 50 remains a real preference with the canonical medium importance (50); an unset category contributes
+no preference weight. No additional control or explanatory product copy is introduced.
+
 `GET /api/gcsp/brief/editor` adds `context.preferences[key].multiple`, `context.accountPreferences` (`policyVersion`, `order`,
 `minimumCategories`, `importance: { medium, high }`, `categories`) and `initial.accountPreferences = { considered, categories }`. Each
 category is `{ state: 'unset' }` or `{ state: 'considered', value, importance: 'medium' | 'high', exact }`. A multi value is always a

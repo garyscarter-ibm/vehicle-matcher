@@ -4,7 +4,7 @@ import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.j
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { projectCurrentCarBaseline, storedFeedback } from '../recommendation/current-car.js';
 import { validInstant } from '../policy/file-provider.js';
-import { intentValue } from '../../scenarios/employee/index.js';
+import { intentValue, unselectedPracticalAnswer } from '../../scenarios/employee/index.js';
 import { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId, expandEvaluation, packEvaluation } from './evaluation-rows.js';
 import { DECISION_EVENTS } from '../offers/decision.js';
 import { upgradeRetainedModelFacts } from '../stock/model-facts-upgrade.js';
@@ -168,14 +168,14 @@ export function createAllocationService({ repository, policy, clock, identity, c
       const driver = employee.contract?.manualContext?.drivers?.find((d) => d.employeeId === employee.employeeId && d.kind === 'employee');
       if (facts.driverEligible === undefined && driver?.eligible) facts.driverEligible = structuredClone(driver.eligible);
       const charging = brief.essentials.charging;
-      if (charging) facts.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
+      if (charging && !unselectedPracticalAnswer(charging)) facts.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
         value: charging.value, unit: null, provenance: { sourceRef: charging.source, version: String(brief.briefVersion),
           observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
       // Employees seeing the same cars share one stock digest.
       const visibleKey = available.map((r) => r.orderUuid).join(',');
       if (!stockVersions.has(visibleKey)) stockVersions.set(visibleKey, inputDigest(available));
-      // FUCQ-225: gates take charging from the brief only, as the hold service does; the quote keeps the stored facts it compares.
-      const gateFacts = { ...facts, charging: { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging?.value ?? null,
+      // FUCQ-225: explicit/missing answers govern charging. Untouched optional controls retain source facts, as holds do.
+      const gateFacts = unselectedPracticalAnswer(charging) ? facts : { ...facts, charging: { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging?.value ?? null,
         unit: null, provenance: { sourceRef: charging?.source ?? 'brief:unresolved', version: String(brief.briefVersion), observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } } };
       const inputs = { factsVersion: `employee:${employee.version}`, stockVersion: stockVersions.get(visibleKey), employeeFacts: gateFacts, quoteFacts: facts,
         request: { schemaVersion: brief.schemaVersion, briefVersion: brief.briefVersion,

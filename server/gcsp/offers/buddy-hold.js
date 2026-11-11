@@ -1,4 +1,5 @@
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
+import { unselectedPracticalAnswer } from '../../scenarios/employee/index.js';
 import { BriefService } from '../brief/index.js';
 import { createRepositoryManualPorts } from '../manual-context/ports.js';
 import { mintOfferToken, resolveOfferLandingUrl } from './offer-token.js';
@@ -249,7 +250,7 @@ export class BuddyHoldService {
       const employeeFacts = structuredClone(stored.employeeFacts);
       if (employeeFacts.driverEligible === undefined) employeeFacts.driverEligible = driver.eligible;
       const charging = savedBrief.essentials.charging;
-      if (charging) employeeFacts.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
+      if (charging && !unselectedPracticalAnswer(charging)) employeeFacts.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
         value: charging.value, unit: null, provenance: { sourceRef: charging.source, version: String(savedBrief.briefVersion),
           observedAt: savedBrief.confirmedAt, assurance: 'synthetic-scenario' } };
       const feedbackOn = Object.keys(storedFeedback(savedBrief)).length > 0;

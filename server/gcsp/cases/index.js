@@ -1,3 +1,4 @@
+import { unselectedPracticalAnswer } from '../../scenarios/employee/index.js';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
@@ -273,7 +274,7 @@ export class RenewalCaseService {
       if (bound.length !== 1) return unavailable();
       const employeeFacts = { ...structuredClone(drivers.value.employeeFacts ?? {}), driverEligible: structuredClone(bound[0].eligible) };
       const charging = brief.essentials.charging;
-      employeeFacts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging?.value ?? null,
+      if (!unselectedPracticalAnswer(charging)) employeeFacts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging?.value ?? null,
         unit: null, provenance: { sourceRef: charging?.source ?? 'brief:unresolved', version: String(brief.briefVersion), observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
       const service = createEmployeeRecommendationService({ policy: this.#policy, time: { async now() {
         return ok({ now: p.now, runId: context.runId, clockVersion: p.clockVersion });

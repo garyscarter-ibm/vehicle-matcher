@@ -10,6 +10,35 @@ const service = (options = {}) => createEmployeeRecommendationService({ policy: 
 const recommend = (options = {}, request = brief(), ctx = context) => service(options).recommend(ctx, request);
 const decision = (result, i = 0) => result.value.decisions[i];
 
+test('untouched practical defaults are neutral, but stated and provider requirements still gate suitability', async () => {
+  const untouched = { value: null, operator: 'gte', unit: 'L', state: 'needs-confirmation', source: 'policy:brief.editor.v1' };
+  const request = { ...brief(), essentials: { boot: untouched } };
+  const neutral = await recommend({}, request);
+  assert.equal(decision(neutral).gateStatus, 'eligible');
+  assert.equal(decision(neutral).unknowns.length, 0);
+  const explicitUnknown = await recommend({}, { ...request, essentials: { boot: { ...untouched, source: 'employee' } } });
+  assert.equal(decision(explicitUnknown).gateStatus, 'needs-confirmation');
+  const explicitNeed = await recommend({}, { ...request, essentials: { boot: essential(900, 'gte', 'L') } });
+  assert.equal(decision(explicitNeed).gateStatus, 'ineligible');
+  const source = providerValue(); source.employeeFacts.essentials = { boot: untouched };
+  const authoritative = await recommend({ provider: provider(source) }, request);
+  assert.equal(decision(authoritative).gateStatus, 'needs-confirmation');
+  assert.ok(decision(authoritative).unknowns.some((u) => u.authority === 'employee-provider'));
+});
+
+test('a selected midpoint slider ranks fit above an unset neutral category without creating a requirement', async () => {
+  const cars = [stock(1, { sizeClass: fact(1, 'ordinal-1-5') }), stock(2, { sizeClass: fact(3, 'ordinal-1-5') })];
+  const source = { provider: provider(providerValue(cars)) };
+  const sparse = { schemaVersion: 1, briefVersion: 1, preferences: {}, essentials: {} };
+  const neutral = await recommend(source, sparse);
+  assert.ok(neutral.value.decisions.every((d) => d.gateStatus === 'eligible' && d.score === null));
+  const selected = await recommend(source, { ...sparse, preferences: { size: preference(50, 50) } });
+  assert.equal(selected.value.recommendations[0].orderUuid, cars[1].orderUuid);
+  assert.ok(decision(selected, 1).score > decision(selected).score);
+  assert.ok(selected.value.decisions.every((d) => d.gateStatus === 'eligible'));
+  assert.equal(decision(selected, 1).components.find((c) => c.field === 'size').importance, 50);
+});
+
 test('trusted budget opt-out ranks price-free exact cars and leaves retail budget filtering intact', () => {
   const car = { name: 'Exact car', body: 'estate', fuel: 'petrol', tags: [], seats: 5, boot: 500, zeroTo62: 7, mpg: 45, sizeClass: 3 };
   const tuning = { ...brandTuning('bmw'), weights: { body: 1, economy: 0, performance: 0 }, retailBudgetEnabled: false };

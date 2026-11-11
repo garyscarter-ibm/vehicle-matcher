@@ -4,6 +4,8 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
+**Buddy subset preferences, 11 November:** the [correction and validation record](subset-preferences-fix-2026-11-11.md) explains why untouched practical defaults prevented matching, the shared consumer fix, midpoint preference weighting and scoped check limits.
+
 **Presenter Next release fix, 11 November:** the [database investigation and delivery record](presenter-release-db-diagnosis-2026-11-11.md) records the authorised policy reuse, compact clock allocation summaries and filtered outbox checks. Scoped regressions passed; Russell authorised push and live testing without a native PostgreSQL performance gate. The cause of the reported Render database outages remains unconfirmed; Jira scope and acceptance are unchanged.
 
 ## Vehicle offer delivered for review — 11 November 2026

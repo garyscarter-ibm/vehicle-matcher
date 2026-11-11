@@ -11,6 +11,13 @@ export const confirmedFact = (fact, config) => fact?.status === 'known' && fact.
   && text(fact.provenance?.sourceRef) && text(fact.provenance?.version) && validInstant(fact.provenance?.observedAt)
   && config.confirmedAssurances.includes(fact.provenance?.assurance);
 
+// Editor placeholders describe an unanswered optional control, not an employee requirement.
+// Keep this exact: an employee's explicit unknown and authoritative source unknowns still gate.
+export const unselectedPracticalAnswer = (answer) => answer?.source === 'policy:brief.editor.v1'
+  && answer.state === 'needs-confirmation' && answer.value === null;
+export const unselectedPreference = (preference) => preference?.source === 'policy:brief.editor.v1'
+  && preference.valueState === 'draft' && preference.importanceState === 'draft';
+
 export function chargingGates(snapshot, employeeFacts, config, required) {
   if (!required) return { blockers: [], unknowns: [], reasons: [] };
   const fuel = snapshot.facts.fuel;
@@ -70,9 +77,10 @@ export function validateBriefContent(request, config, slider) {
   return errors;
 }
 
-export function evaluateEssentials(snapshot, brief, config) {
+export function evaluateEssentials(snapshot, brief, config, { optionalDefaults = false } = {}) {
   const blockers = []; const unknowns = []; const reasons = [];
   for (const [field, requirement] of Object.entries(brief.essentials)) {
+    if (optionalDefaults && unselectedPracticalAnswer(requirement)) continue;
     const fact = snapshot.facts[field];
     if (requirement.state === 'confirmed' && (requirement.operator === 'includes' && requirement.value.length === 0
       || requirement.operator === 'gte' && requirement.value === 0)) {
@@ -107,6 +115,7 @@ export function scorePreferences(snapshot, brief, employeeFacts, config, slider)
   const options = scoreOptionEvidence(confirmedFact(snapshot.facts.optionSelection, config)
     ? snapshot.facts.optionSelection.value : null, config.optionEvidence, config.preferences);
   for (const [key, preference] of Object.entries(brief.preferences)) {
+    if (unselectedPreference(preference)) continue;
     if (preference.importance === slider.minimum) continue;
     if (preference.valueState !== 'confirmed' || preference.importanceState !== 'confirmed') {
       unknowns.push({ code: 'preference-unconfirmed', field: key, preference }); continue;

@@ -1,3 +1,4 @@
+import { unselectedPracticalAnswer } from '../../scenarios/employee/index.js';
 import { randomUUID } from 'node:crypto';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { createRepositoryManualPorts } from '../manual-context/ports.js';
@@ -139,7 +140,7 @@ export class BuddyRemoteLifecycle {
     const facts = structuredClone(stored.employeeFacts);
     if (facts.driverEligible === undefined) facts.driverEligible = driver.eligible;
     const charging = brief.essentials.charging;
-    facts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
+    if (!unselectedPracticalAnswer(charging)) facts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
       value: charging?.value ?? null, unit: null, provenance: { sourceRef: charging?.source ?? 'brief:unresolved',
         version: String(brief.briefVersion), observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
     const evaluator = createStoredSubjectRecommendationEvaluator({ policy: this.#policy,

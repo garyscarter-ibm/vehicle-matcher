@@ -1,7 +1,7 @@
 import { createEmployeeRecommendationService } from '../../recommendation/index.js';
 import { inputDigest, ok, result } from '../../repository/index.js';
 import { projectRecommendationFacts } from '../../manual-context/recommendation-facts.js';
-import { intentValue } from '../../../scenarios/employee/index.js';
+import { intentValue, unselectedPracticalAnswer } from '../../../scenarios/employee/index.js';
 
 const visible = (stock, employee) => stock.visibility?.companyIds?.includes(employee.companyId)
   && stock.visibility?.schemeIds?.includes(employee.schemeId)
@@ -31,7 +31,7 @@ export async function evaluateFit({ rows, context, policy, time, threshold }) {
     if (projected.status !== 'ok') return projected;
     const facts = projected.value.employeeFacts;
     const charging = brief.essentials?.charging;
-    if (charging) facts.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
+    if (charging && !unselectedPracticalAnswer(charging)) facts.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
       value: charging.value, unit: null, provenance: { sourceRef: 'saved-brief', version: String(brief.briefVersion),
         observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
     const evaluator = createEmployeeRecommendationService({ policy, time: { async now() { return time; } },

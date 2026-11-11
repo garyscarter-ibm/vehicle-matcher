@@ -50,6 +50,55 @@ const read = async (f) => { const r = await f.editor.readEditor(f.context); asse
 const draftOf = async (f) => (await f.brief.readDraft(f.context)).value;
 const entry = (b, key) => b.preferences[key];
 
+test('fresh and retained editor defaults allow a subset preview and do not become employee choices on engage', async (t) => {
+  for (const retained of [false, true]) {
+    const f = await setup(t);
+    if (retained) {
+      const initial = await read(f);
+      assert.equal((await f.brief.saveDraft(f.context, { commandId: 'old-editor-draft', expectedBriefVersion: 0,
+        expectedDraftVersion: 0, brief: initial.initial.brief })).status, 'ok');
+    }
+    const selected = { body: { value: ['estate'] }, sportiness: { value: 50 }, comfort: { value: 50 } };
+    const saved = await save(f, selected, retained ? 1 : 0);
+    assert.equal(saved.status, 'ok', JSON.stringify(saved));
+    const shown = await read(f);
+    const preview = await f.editor.previewDraft(f.context, { kind: 'unsaved-draft', baseBriefVersion: 0,
+      draftVersion: saved.value.draftVersion, brief: shown.initial.brief });
+    assert.equal(preview.status, 'ok', JSON.stringify(preview));
+    assert.equal(preview.value.decisions[0].gateStatus, 'eligible');
+    assert.ok(preview.value.decisions[0].components.some((c) => c.field === 'comfort' && c.importance === 50));
+    assert.ok(!preview.value.decisions[0].unknowns.some((u) => u.code === 'essential-unconfirmed' || u.code === 'preference-unconfirmed'));
+    const engaged = await f.editor.engage(f.context, { commandId: 'engage-subset', expectedBriefVersion: 0,
+      expectedDraftVersion: saved.value.draftVersion });
+    assert.equal(engaged.status, 'ok', JSON.stringify(engaged));
+    const after = await read(f);
+    assert.equal(after.initial.accountPreferences.considered, 3);
+    assert.equal(after.initial.accountPreferences.categories.size.state, 'unset');
+  }
+});
+
+test('untouched charging uses source readiness while explicit unanswered charging still needs confirmation', async (t) => {
+  const f = await setup(t);
+  const saved = await save(f, { fuel: { value: ['phev'] }, comfort: { value: 50 }, size: { value: 50 } });
+  const shown = await read(f);
+  const preview = () => f.editor.previewDraft(f.context, { kind: 'unsaved-draft', baseBriefVersion: 0,
+    draftVersion: saved.value.draftVersion, brief: shown.initial.brief });
+  for (const [source, expected, code] of [
+    [fact('home'), 'eligible', 'charging-ready'], [fact('not-ready'), 'ineligible', 'charging-unavailable'],
+    [fact(null), 'needs-confirmation', 'charging-unconfirmed'], [undefined, 'needs-confirmation', 'charging-unconfirmed'],
+  ]) {
+    f.source.employeeFacts.charging = source;
+    const result = await preview(); assert.equal(result.status, 'ok', JSON.stringify(result));
+    const plugIn = result.value.decisions.find((d) => d.orderUuid === f.source.stock[1].orderUuid);
+    assert.equal(plugIn.gateStatus, expected);
+    assert.ok([...plugIn.reasons, ...plugIn.blockers, ...plugIn.unknowns].some((r) => r.code === code));
+  }
+  f.source.employeeFacts.charging = fact('home');
+  shown.initial.brief.essentials.charging.source = 'employee';
+  const explicit = await preview();
+  assert.equal(explicit.value.decisions.find((d) => d.orderUuid === f.source.stock[1].orderUuid).gateStatus, 'needs-confirmation');
+});
+
 // Sequential saver that tracks the draft version, so each step reads like a user edit.
 function session(f) {
   let draftVersion = 0;

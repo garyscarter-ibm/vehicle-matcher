@@ -2,7 +2,7 @@ import { createVehicleSnapshot, createEmployeeTerms, freezeVehicleData } from '.
 import { validInstant } from '../policy/file-provider.js';
 import { currentCarRatingValid } from '../brief/rating.js';
 import { sameAgainValid } from '../brief/same-again.js';
-import { validateBrief, validateBriefContent, evaluateEssentials, scorePreferences, rankEmployeeRecommendations, confirmedFact, chargingGates } from '../../scenarios/employee/index.js';
+import { validateBrief, validateBriefContent, evaluateEssentials, scorePreferences, rankEmployeeRecommendations, confirmedFact, chargingGates, unselectedPracticalAnswer } from '../../scenarios/employee/index.js';
 import { FEEDBACK_KEY, baselineOf, feedbackPolicyValid, ratingClass, matchDimensions, compareImprovement } from './current-car.js';
 
 const result = (status, fields) => ({ status, ...fields, contractVersion: '1.0.0' });
@@ -152,7 +152,7 @@ async function evaluateScopedRecommendation({ provider, policy, time }, context,
         const source = structuredClone(provided.value);
         if (['runId', 'environmentId', 'employeeId'].some((key) => source?.[key] !== context[key])) return refused();
         const candidates = validateSource(source);
-        if (preview) {
+        if (preview && !unselectedPracticalAnswer(preview.charging)) {
           const answer = preview.charging;
           const known = answer && answer.value !== null && (answer.state === 'confirmed' || answer.state === 'draft' && answer.source === 'employee');
           source.employeeFacts.charging = { status: known ? 'known' : 'unknown', value: known ? answer.value : null,
@@ -214,7 +214,7 @@ async function evaluateScopedRecommendation({ provider, policy, time }, context,
           }
           const providerGates = evaluateEssentials(candidate.snapshot, { essentials: providerEssentials ?? {} }, config);
           for (const entries of Object.values(providerGates)) entries.forEach((entry) => { entry.authority = 'employee-provider'; });
-          for (const gate of [providerGates, evaluateEssentials(candidate.snapshot, brief, config), timingGates(candidate, source.employeeFacts, brief, now, config),
+          for (const gate of [providerGates, evaluateEssentials(candidate.snapshot, brief, config, { optionalDefaults: true }), timingGates(candidate, source.employeeFacts, brief, now, config),
             chargingGates(candidate.snapshot, source.employeeFacts, config, charging.value)]) {
             blockers.push(...gate.blockers); unknowns.push(...gate.unknowns); reasons.push(...gate.reasons);
           }

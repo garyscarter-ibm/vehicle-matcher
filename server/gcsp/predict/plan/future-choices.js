@@ -1,6 +1,6 @@
 import { inputDigest } from '../../repository/core.js';
 import { createEmployeeTerms } from '../../../vehicles/index.js';
-import { validateBriefContent, evaluateEssentials, chargingGates, scorePreferences, confirmedFact, intentValue } from '../../../scenarios/employee/index.js';
+import { validateBriefContent, evaluateEssentials, chargingGates, scorePreferences, confirmedFact, intentValue, unselectedPracticalAnswer } from '../../../scenarios/employee/index.js';
 import { CONTRACT_VERSION, text, instant, compare, integer } from './input.js';
 import { renewalInstant } from './renewal.js';
 
@@ -101,7 +101,7 @@ export function createFutureChoiceEvaluator({ policy, identity, terms } = {}) {
         if (!object(employeeFacts)) return unavailable('planning-future-employee-facts-unavailable');
         if (employeeFacts.essentials !== undefined && validateBriefContent({ schemaVersion: 1, preferences: {}, essentials: employeeFacts.essentials }, config, slider).length) return unavailable('planning-future-employee-facts-invalid');
         const suppliedCharging = brief.essentials.charging;
-        if (suppliedCharging) employeeFacts.charging = { status: suppliedCharging.state === 'confirmed' && suppliedCharging.value !== null ? 'known' : 'unknown',
+        if (suppliedCharging && !unselectedPracticalAnswer(suppliedCharging)) employeeFacts.charging = { status: suppliedCharging.state === 'confirmed' && suppliedCharging.value !== null ? 'known' : 'unknown',
           value: suppliedCharging.value, unit: null, provenance: { sourceRef: 'saved-brief', version: String(brief.briefVersion),
             observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
         const statedDeadline = employeeFacts.requiredBy;
@@ -154,7 +154,7 @@ export function createFutureChoiceEvaluator({ policy, identity, terms } = {}) {
           }
           const essentials = Object.fromEntries(Object.entries(brief.essentials).filter(([key]) => key !== 'charging'));
           for (const gate of [evaluateEssentials(snapshot, { essentials: employeeFacts.essentials ?? {} }, config),
-            evaluateEssentials(snapshot, { essentials }, config), chargingGates(snapshot, employeeFacts, config, charging)]) {
+            evaluateEssentials(snapshot, { essentials }, config, { optionalDefaults: true }), chargingGates(snapshot, employeeFacts, config, charging)]) {
             blockers.push(...gate.blockers); unknowns.push(...gate.unknowns); reasons.push(...gate.reasons);
           }
           if (Date.parse(requiredBy) < Date.parse(read.asOf)) blockers.push({ code: requiredBy === renewalAt ? 'renewal-already-passed' : 'required-by-already-passed' });

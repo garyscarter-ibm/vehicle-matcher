@@ -27,7 +27,7 @@ export async function createReleaseGuarantee({ policy, read, scenario, guarantee
     const [eligibility, points] = await Promise.all([policy.getEligibility(context, car, read), policy.getPointsCost(context, car, read)]);
     if (eligibility.status !== 'ok' || eligibility.value.state !== 'eligible' || points.status !== 'ok'
       || points.value.monthlyPoints > allowance.value.monthlyPoints) return false;
-    return [evaluateEssentials(snapshot, { essentials }, config), chargingGates(snapshot, employeeFacts, config, requiredForPlugIn)]
+    return [evaluateEssentials(snapshot, { essentials }, config, { optionalDefaults: true }), chargingGates(snapshot, employeeFacts, config, requiredForPlugIn)]
       .every((gate) => !gate.blockers.length && !gate.unknowns.length);
   }
   return { qualifies: async (binding, _record, extraFacts) => {

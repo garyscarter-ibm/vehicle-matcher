@@ -172,12 +172,12 @@ test('canonical practical mappings preserve carrying/equipment/charging yes, no 
   assert.equal(unanswered.value.decisions[0].gateStatus, 'eligible');
 });
 
-test('unconfirmed default positions and inferred input remain explicit unknowns in computed output', async (t) => {
+test('untouched preference defaults are neutral while inferred employee input remains an explicit unknown', async (t) => {
   const f = await setup(t); const read = await f.editor.readEditor(f.context);
   const b = structuredClone(read.value.initial.brief); b.essentials = { charging: charging('home') };
   const initial = await preview(f, b);
   assert.equal(initial.value.decisions[0].score, null);
-  assert.ok(initial.value.decisions[0].unknowns.some((r) => r.code === 'preference-unconfirmed'));
+  assert.ok(!initial.value.decisions[0].unknowns.some((r) => r.code === 'preference-unconfirmed'));
   const inferred = draft(); inferred.preferences.comfort.valueState = 'inferred';
   const result = await preview(f, inferred);
   assert.ok(result.value.decisions[0].unknowns.some((r) => r.field === 'comfort'));
