@@ -114,22 +114,7 @@ test('restore accepts no caller-supplied release list; unapproved ids fail close
     releases: [{ releaseId: 'c'.repeat(64) }] }), { artifactCode: 'release-not-approved' });
 });
 
-test('the real offline restore CLI retains an existing-store rejection and leaves the old selection intact', async (t) => {
-  const root = await mkdtemp(join(tmpdir(), 'restore-existing-rejection-'));
-  t.after(() => rm(root, { recursive: true, force: true }));
-  const first = await corpusInput(); const store = join(root, 'existing');
-  const firstCandidate = join(root, 'first');
-  assert.equal((await writeCorpusCandidate(firstCandidate, first, options)).status, 'ok');
-  assert.equal((await createSyntheticRegistry({ root: store, ...options }).publish(firstCandidate)).status, 'ok');
-  const before = await Promise.all(['active.json', 'identity-inventory.json'].map((file) => readFile(join(store, file))));
-
-  // Both corpora are valid independently; changing the same dataset/version is forbidden.
-  const candidate = join(root, 'candidate');
-  assert.equal((await writeCorpusCandidate(candidate, await corpusInput({ count: 2, inventory: first.allocationInventory }), options)).status, 'ok');
-  const digest = hash(await readFile(join(candidate, 'manifest.json')));
-  const cache = join(root, 'cache'); const cachedStore = join(cache, digest, 'store');
-  assert.equal((await createSyntheticRegistry({ root: cachedStore, ...options }).publish(candidate)).status, 'ok');
-
+async function restoreFixtureCLI(root, cachedStore, digest, metadata) {
   // Isolate the code-owned descriptor alongside a copy of the real CLI/restore code.
   // Production approval still comes only from fleet-releases.json, never caller input.
   const moduleRoot = join(root, 'server/gcsp/vehicle-evidence');
@@ -149,11 +134,57 @@ test('the real offline restore CLI retains an existing-store rejection and leave
       url: `https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/test-fixture/${name.replaceAll('/', '--')}` });
   }
   await writeFile(join(moduleRoot, 'fleet-releases.json'), JSON.stringify([{ schemaVersion: 'fleet-release.v1',
-    releaseId: digest, manifestDigest: digest, previousManifestDigest: null, datasetId: first.metadata.datasetId,
-    version: first.metadata.version, jsonlMaxBytes: 67108864, assets, sources: [] }]));
+    releaseId: digest, manifestDigest: digest, previousManifestDigest: null, datasetId: metadata.datasetId,
+    version: metadata.version, jsonlMaxBytes: 67108864, assets, sources: [] }]));
+  return cli;
+}
+
+const unavailableDatabase = 'postgresql://build-fixture@127.0.0.1:1/unavailable';
+test('the real offline restore CLI validates retained policy without the runtime database', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'restore-offline-policy-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const input = await corpusInput({ count: 2 }); const candidate = join(root, 'candidate');
+  assert.equal((await writeCorpusCandidate(candidate, input, options)).status, 'ok');
+  const digest = hash(await readFile(join(candidate, 'manifest.json')));
+  const cache = join(root, 'cache'); const cachedStore = join(cache, digest, 'store'); const store = join(root, 'restored');
+  assert.equal((await createSyntheticRegistry({ root: cachedStore, ...options }).publish(candidate)).status, 'ok');
+  const cli = await restoreFixtureCLI(root, cachedStore, digest, input.metadata);
+  const cachedInventory = await readFile(join(cachedStore, 'identity-inventory.json'));
+  // Cold restore then existing-store replay must both ignore runtime database configuration.
+  for (const [index, connectionString] of [unavailableDatabase, ''].entries()) {
+    const child = spawnSync(process.execPath, [cli, 'restore', '--release', digest, '--store', store, '--cache', cache, '--network', 'offline'],
+      { cwd: root, env: { ...process.env, GCSP_DATABASE_URL: connectionString }, encoding: 'utf8', timeout: 10000 });
+    assert.equal(child.error, undefined); assert.equal(child.status, 0, child.stdout + child.stderr); assert.equal(child.stderr, '');
+    const report = JSON.parse(child.stdout);
+    assert.equal(report.status, 'ok'); assert.equal(report.active.manifestDigest, digest); assert.equal(report.externalCalls, 0);
+    assert.equal(report.mode, index === 0 ? 'cold-restore' : 'publish-existing');
+    if (index === 1) assert.equal(report.idempotent, true);
+    assert.deepEqual(await readFile(join(store, 'identity-inventory.json')), cachedInventory);
+    for (const file of ['manifest.json', 'configurations.jsonl', 'vins.jsonl', 'images.jsonl']) {
+      assert.deepEqual(await readFile(join(store, 'versions', digest, file)), await readFile(join(candidate, file)));
+    }
+  }
+});
+
+test('the real offline restore CLI retains an existing-store rejection and leaves the old selection intact', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'restore-existing-rejection-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const first = await corpusInput(); const store = join(root, 'existing');
+  const firstCandidate = join(root, 'first');
+  assert.equal((await writeCorpusCandidate(firstCandidate, first, options)).status, 'ok');
+  assert.equal((await createSyntheticRegistry({ root: store, ...options }).publish(firstCandidate)).status, 'ok');
+  const before = await Promise.all(['active.json', 'identity-inventory.json'].map((file) => readFile(join(store, file))));
+
+  // Both corpora are valid independently; changing the same dataset/version is forbidden.
+  const candidate = join(root, 'candidate');
+  assert.equal((await writeCorpusCandidate(candidate, await corpusInput({ count: 2, inventory: first.allocationInventory }), options)).status, 'ok');
+  const digest = hash(await readFile(join(candidate, 'manifest.json')));
+  const cache = join(root, 'cache'); const cachedStore = join(cache, digest, 'store');
+  assert.equal((await createSyntheticRegistry({ root: cachedStore, ...options }).publish(candidate)).status, 'ok');
+  const cli = await restoreFixtureCLI(root, cachedStore, digest, first.metadata);
 
   const child = spawnSync(process.execPath, [cli, 'restore', '--release', digest, '--store', store, '--cache', cache, '--network', 'offline'],
-    { cwd: root, encoding: 'utf8', timeout: 10000 });
+    { cwd: root, env: { ...process.env, GCSP_DATABASE_URL: unavailableDatabase }, encoding: 'utf8', timeout: 10000 });
   assert.equal(child.error, undefined); assert.equal(child.status, 1, child.stderr); assert.equal(child.stderr, '');
   const report = JSON.parse(child.stdout);
   assert.equal(report.step, 'publish-existing'); assert.equal(report.code, 'store-rejected');

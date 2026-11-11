@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { fleetReleases, approvedAssetUrl, DEFAULT_ARTIFACT_ROOT, releaseLimits, EMPTY_SHA256 } from './fleet-release.js';
 import { boundDiagnostic, durableCopy } from './corpus-publisher.js';
 import { createSyntheticRegistry } from './synthetic-registry.js';
-import { createPolicyService } from '../policy/index.js';
+import { createPolicyService, FilePolicyProvider } from '../policy/index.js';
 import { APPROVED_CORPUS_IMAGES } from './registered-corpus-images.js';
 const sha = async (p) => { const h = createHash('sha256'); for await (const b of createReadStream(p)) h.update(b); return h.digest('hex'); };
 const absent = async (p) => { try { await lstat(p); return false; } catch (e) { if (e.code === 'ENOENT') return true; throw e; } };
@@ -108,7 +108,9 @@ export async function restoreFleetRelease({ releaseId, store, cacheRoot = DEFAUL
       step = 'verify-cache'; await complete(ownedStage, release); await rename(ownedStage, cached); ownedStage = null;
     }
     await complete(cached, release); step = 'validate-cache';
-    const options = { policyService: createPolicyService(), policyRead: { runId: 'fleet-artifact-restore', asOf },
+    // Validate retained signatures from repository policy, even when Render supplies
+    // a runtime database URL. Artifact restore must not connect, migrate or seed it.
+    const options = { policyService: createPolicyService({ provider: new FilePolicyProvider() }), policyRead: { runId: 'fleet-artifact-restore', asOf },
       jsonlLimitsForManifest: releaseLimits, sourceArtifactDirectory: cached, approvedImages: APPROVED_CORPUS_IMAGES };
     const candidateStore = join(cached, 'store'); const input = createSyntheticRegistry({ root: candidateStore, ...options }); const validated = await input.load();
     if (validated.status !== 'ok' || validated.active.manifestDigest !== release.manifestDigest) throw validationFailed('Cached store failed full validation', 'cached', validated, release);
