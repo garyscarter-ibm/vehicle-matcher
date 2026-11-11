@@ -1,6 +1,6 @@
 {
   "run": "fucq369-strict-capture",
-  "implementationCommit": "c2463090",
+  "implementationCommit": "33f6f4ec",
   "reference": {
     "commit": "193cbf07",
     "dir": "docs/gcsp/mockups/account-preferences-2026-11-10/review"
@@ -9626,16 +9626,16 @@
           "checked": false,
           "disabled": true,
           "role": "switch",
-          "describedBy": "gcsp-account-prefs-1-same-again-help gcsp-account-prefs-1-same-again-note",
+          "describedBy": "gcsp-account-prefs-1-same-again-note",
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
         "ring": {
           "box": {
-            "x": 259.92,
-            "y": 445,
-            "width": 44,
-            "height": 44
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
           },
           "labelText": {
             "x": 121,
@@ -9816,16 +9816,16 @@
           "checked": false,
           "disabled": true,
           "role": "switch",
-          "describedBy": "gcsp-account-prefs-1-same-again-help gcsp-account-prefs-1-same-again-note",
+          "describedBy": "gcsp-account-prefs-1-same-again-note",
           "name": "Same again, please!"
         },
         "infoLabel": "About Same again, please!",
         "ring": {
           "box": {
-            "x": 171.92,
-            "y": 535,
-            "width": 44,
-            "height": 44
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
           },
           "labelText": {
             "x": 33,
@@ -10859,19 +10859,7 @@
         ],
         "panelOpen": false,
         "removalOpen": false,
-        "tooltips": [
-          {
-            "id": "gcsp-account-prefs-1-same-again-help",
-            "text": "Select this option if you just love everything about your current car, and your next best car would be another BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid",
-            "box": {
-              "x": 33,
-              "y": 1082.88,
-              "width": 224,
-              "height": 152
-            },
-            "insideViewport": true
-          }
-        ],
+        "tooltips": [],
         "stars": "4",
         "status": "Preferences saved automatically.",
         "tryAgain": [],
@@ -17098,7 +17086,7 @@
           "checked": false,
           "disabled": true,
           "role": "switch",
-          "describedBy": "gcsp-account-prefs-1-same-again-help gcsp-account-prefs-1-same-again-note",
+          "describedBy": "gcsp-account-prefs-1-same-again-note",
           "name": "Same again, please!"
         },
         "note": "Add your current car to use this."
@@ -17154,7 +17142,7 @@
           "checked": false,
           "disabled": true,
           "role": "switch",
-          "describedBy": "gcsp-account-prefs-1-same-again-help gcsp-account-prefs-1-same-again-note",
+          "describedBy": "gcsp-account-prefs-1-same-again-note",
           "name": "Same again, please!"
         },
         "note": "Add your current car to use this."
@@ -17337,17 +17325,6 @@
         "topColour": "rgb(220, 222, 225)",
         "bottomColour": "rgb(220, 222, 225)",
         "style": "solid"
-      }
-    },
-    {
-      "state": "320-same-keyboard",
-      "label": "tooltip gcsp-account-prefs-1-same-again-help inside the 320px viewport",
-      "pass": true,
-      "detail": {
-        "x": 33,
-        "y": 1082.88,
-        "width": 224,
-        "height": 152
       }
     },
     {
@@ -17555,8 +17532,8 @@
     "?prefs=same-again-failed already drives the failing toggle on load through the public controller intent; no second click is made."
   ],
   "summary": {
-    "checks": 472,
-    "passed": 472,
+    "checks": 471,
+    "passed": 471,
     "failed": []
   },
   "countStrip": "1440-count-strip-implementation.jpg"
