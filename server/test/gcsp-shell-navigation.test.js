@@ -27,6 +27,7 @@ before(async () => {
     cases: await import('../../blocks/gcsp/cases/fixtures.js'),
     followup: await import('../../blocks/gcsp/offer-followup/gcsp-offer-followup.js'),
     offer: await import('../../blocks/gcsp/offer/gcsp-offer.js'),
+    offerEntry: await import('../../blocks/gcsp/offer/entry.js'),
     links: await import('../../blocks/gcsp/offer/portal-links.js'),
     review: await import('../../blocks/gcsp/manual-review/gcsp-manual-review.js'),
   };
@@ -68,6 +69,30 @@ const PAGES = {
   } },
 };
 const buttons = (root) => [...root.querySelectorAll('nav[aria-label="Portal"] button[data-key]')];
+
+for (const accountStatus of ['stale-run', 'access-required', 'unavailable']) {
+  test(`FUCQ-390: an out-of-date offer keeps all four working destinations when the account is ${accountStatus}`, async () => {
+    const root = place(); const location = { ...fakeLocation(), href: 'https://example.test/gcsp/offer?offerId=old-offer&runId=old-run' };
+    const calls = [];
+    stops.push(pages.offerEntry.mountOfferEntry(root, { location, history: { replaceState() {} }, fetch: async (input, init) => {
+      const path = new URL(input, location.href).pathname; calls.push({ path, method: init.method });
+      return { ok: false, status: accountStatus === 'access-required' ? 401 : 503,
+        headers: { get: () => 'application/json' }, json: async () => ({ status: path === '/api/gcsp/manual/account' ? accountStatus : 'stale-run' }) };
+    } }));
+    await tick();
+    assert.equal(root.querySelector('h1').textContent, 'Offer out of date');
+    const items = buttons(root);
+    assert.deepEqual(items.map((node) => node.querySelector('.gcsp-nav-label').textContent), LABELS);
+    assert.deepEqual(items.map((node) => node.dataset.key), KEYS);
+    assert.ok(items.every((node) => !node.disabled && !node.hasAttribute('aria-disabled')));
+    assert.equal(root.querySelector('.gcsp-account-details'), null);
+    assert.equal(root.querySelector('[data-offer-action="accept"], [data-offer-action="decline"]'), null);
+    for (const item of items) item.click();
+    assert.deepEqual(location.assigned, KEYS.map((key) => portal.PORTAL_ROUTES[key]));
+    assert.ok(calls.every((call) => call.method === 'GET'));
+    assert.deepEqual(calls.map((call) => call.path), ['/api/gcsp/manual/account', '/api/gcsp/offers/old-offer']);
+  });
+}
 
 for (const [name, page] of Object.entries(PAGES)) {
   test(`${name}: the same four working rail items, the right one current, every other one routes`, async () => {
