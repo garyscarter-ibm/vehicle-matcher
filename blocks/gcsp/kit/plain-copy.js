@@ -85,6 +85,12 @@ function preferenceFit(e) {
   return `${fieldLabel(e.field)} differs from your preference.`;
 }
 
+/** Keys as a spoken list: "sportiness and economy"; empty when none are usable. */
+const keyList = (keys) => {
+  const words = (Array.isArray(keys) ? keys : []).filter((k) => typeof k === 'string' && k).map(fieldWords);
+  return words.length < 2 ? words.join('') : `${words.slice(0, -1).join(', ')} and ${words.at(-1)}`;
+};
+
 const SENTENCES = {
   'driver-eligible': () => 'Driver eligible.',
   'driver-ineligible': () => 'You are not eligible to drive this car.',
@@ -124,6 +130,12 @@ const SENTENCES = {
   'licence-unconfirmed': () => 'Your licence details still need confirming.',
   'licence-not-valid-at-collection': () => 'Your licence is not valid on the collection date.',
   'locally-excluded': () => 'You have ruled this car out.',
+  'feedback-similar': () => 'Like the current car you rated highly.',
+  'feedback-improvement': (e) => keyList(e.keys) ? `Better than your current car for ${keyList(e.keys)}.` : 'Better than your current car on your preferences.',
+  'same-again-match': () => 'The same model as your current car, as you asked.',
+  'feedback-similar-omitted': () => 'Too like the current car you rated low.',
+  'feedback-not-similar-or-better': () => 'Not like your current car, and not better on your preferences.',
+  'same-again-different': () => 'Not the same model as your current car.',
 };
 
 /** One server reason, trade-off, blocker or unknown as a plain sentence; never a code or field name. */

@@ -214,7 +214,7 @@ export function toOfferPresentation(envelope, { reference } = {}) {
       && positive(q.briefVersion) && (q.orderNumber === null || typeof q.orderNumber === 'string' && /^\d{7}$/.test(q.orderNumber))
       && instant(q.quotedAt) && instant(q.validUntil) && object(q.revisions) && positive(q.revisions.quote));
     const revisions = { quote: q.revisions.quote };
-    for (const key of ['brief', 'facts', 'policy', 'stock', 'snapshot', 'terms', 'clock', 'availability']) if (q.revisions[key] !== undefined) {
+    for (const key of ['brief', 'facts', 'policy', 'stock', 'snapshot', 'terms', 'clock', 'availability', 'feedback']) if (q.revisions[key] !== undefined) {
       need(scalar(q.revisions[key]) && typeof q.revisions[key] !== 'boolean'); revisions[key] = q.revisions[key];
     }
     const quote = { quoteId: q.quoteId, configurationId: q.configurationId, orderUuid: q.orderUuid, orderNumber: q.orderNumber,

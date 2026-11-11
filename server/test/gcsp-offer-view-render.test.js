@@ -180,6 +180,23 @@ test('approved DTO flows through the default HTTP adapter/controller into the sh
   unsubscribe(); c.destroy(); view.destroy();
 });
 
+// FUCQ-371: a feedback reason reads as its own full sentence under "Why it suits you", even on a long car name.
+test('a feedback-improvement reason renders whole under Why it suits you beside a long vehicle name', async () => {
+  const dto = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url), 'utf8'));
+  dto.quote.facts.display.name = 'BMW 3 Series 320d xDrive M Sport Pro Touring Individual Edition with Technology Pack Plus';
+  dto.quote.revisions.feedback = 'employee.currentCarFeedback.v1@gcsp-policy-v1+manual-records-v1';
+  dto.quote.decision.reasons = [{ code: 'feedback-improvement', keys: ['sportiness', 'economy'] }, { code: 'driver-eligible' }];
+  const outcome = toOfferPresentation({ status: 'ok', value: dto }); assert.equal(outcome.status, 'ok');
+  const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root); view.update({ ...outcome.value, canAccept: false, canDecline: false, decisionUnavailable: true, countdown: '2 hours remaining' });
+  const items = [...root.querySelectorAll('.vm-reasons li')].map((li) => li.textContent);
+  assert.ok(items.includes('Better than your current car for sportiness and economy.'), items.join(' | '));
+  assert.match(root.textContent, /Why it suits you/); assert.match(root.textContent, /Technology Pack Plus/);
+  for (const li of root.querySelectorAll('.vm-reasons li')) assert.equal(li.getAttribute('style'), null);
+  assert.equal(root.querySelector('.vm-reasons [class*="truncate"], .vm-reasons [class*="clamp"], .vm-reasons [class*="ellipsis"]'), null);
+  view.destroy();
+});
+
 test('recorded current-car facts render formatted beside Unknown ones with the subset note', async () => {
   const dto = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/comparison-access.json', import.meta.url), 'utf8'));
   const c = dto.comparison;
