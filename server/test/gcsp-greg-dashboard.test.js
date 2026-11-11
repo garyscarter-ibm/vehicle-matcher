@@ -464,7 +464,12 @@ const selectorsOf = (rel) => {
   return [...css.matchAll(/(?:^|[}\s])([^{}@]+)\{/g)].flatMap((m) => m[1].split(',')).map((s) => s.trim()).filter(Boolean);
 };
 
+// Matches the shell check and the contract: only a string first argument is banned.
+const STRING_TIMER = /\bset(Timeout|Interval)\s*\(\s*(['"`])/;
+
 test('CSP: no inline scripts, handler attributes, eval, new Function, string timers or HTML injection', () => {
+  assert.ok(STRING_TIMER.test("setTimeout('tick()', 5)") && STRING_TIMER.test('setInterval(`x`, 5)'));
+  assert.ok(!STRING_TIMER.test('setTimeout(finish, 5)') && !STRING_TIMER.test('setTimeout(() => run(), 16)'));
   const offenders = [];
   for (const f of sources()) {
     const src = readFileSync(f, 'utf8');
@@ -479,7 +484,7 @@ test('CSP: no inline scripts, handler attributes, eval, new Function, string tim
       const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:\\])\/\/.*$/gm, '$1');
       if (/\beval\s*\(/.test(code)) offenders.push(`${f}: eval`);
       if (/new\s+Function\b/.test(code)) offenders.push(`${f}: new Function`);
-      if (/\bset(Timeout|Interval)\s*\(/.test(code)) offenders.push(`${f}: timer`);
+      if (STRING_TIMER.test(code)) offenders.push(`${f}: string timer`);
       if (/\.(innerHTML|outerHTML)\s*=|insertAdjacentHTML|document\.write/.test(code)) offenders.push(`${f}: HTML string injection`);
       if (/\.setAttribute\(\s*['"]on[a-z]+['"]/.test(code)) offenders.push(`${f}: handler attribute`);
       if (/\blocation\b|\bhistory\./.test(code) && !f.endsWith('harness.js')) offenders.push(`${f}: reads location`);
