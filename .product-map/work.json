@@ -4611,7 +4611,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T03:09:39Z",
+      "observed_at": "2026-11-11T03:52:38Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-369",
       "slices": [
         {
@@ -4623,13 +4623,17 @@
         },
         {
           "id": "understanding",
-          "status": "not-started",
-          "title": "Honest completeness score and mode presentation"
+          "status": "in-progress",
+          "title": "Honest completeness score and mode presentation",
+          "observed_at": "2026-11-11T03:25:47Z",
+          "evidence": "kit slice B1 briefed 2026-11-11T03:35Z"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Restoration and connected consumer boundaries"
+          "status": "in-progress",
+          "title": "Restoration and connected consumer boundaries",
+          "observed_at": "2026-11-11T03:52:38Z",
+          "evidence": "slices A,B1,B2 reviewed; scoped 671 tests 662 pass 1 known base fail; strict capture started 2026-11-11T04:00Z"
         }
       ],
       "unsliced": false
