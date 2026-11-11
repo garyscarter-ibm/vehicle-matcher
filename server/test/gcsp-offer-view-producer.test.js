@@ -174,14 +174,14 @@ test('actual producer to access HTTP to offer view preserves authority, custody,
     passed(await producer.start()); const beforeQuoteExpiry = business();
     await advanceTo(allocated.quote.validUntil, 'view-quote-expiry'); await tick('view-quote-expiry-tick');
     assert.equal(business() === beforeQuoteExpiry, true);
-    const cardNode = root.querySelector('.vm-card'); const refreshNode = root.querySelector('[data-offer-action="refresh"]'); refreshNode.focus();
+    const cardNode = root.querySelector('.vm-card'); const refreshNode = root.querySelector('.gcsp-vehicle-specification summary'); refreshNode.focus();
     const [id, callback] = scheduled.entries().next().value; scheduled.delete(id); callback(); await reading;
     const decline = controller.snapshot();
     assert.equal(decline.state, 'pending'); assert.deepEqual(decline.actions, { accept: false, decline: true });
     assert.equal(decline.seconds, 3600); assert.equal(decline.expiresAt, initial.expiresAt);
     assert.equal(decline.canAccept, false); assert.equal(decline.canDecline, false); // No FUCQ-106 port was injected.
     assert.equal(root.querySelector('.vm-card'), cardNode); assert.equal(dom.window.document.activeElement, refreshNode);
-    assert.match(root.textContent, /1 hour remaining/); assert.equal(latestDTO.holdState, 'active');
+    assert.match(root.textContent, /1h 00m/); assert.equal(latestDTO.holdState, 'active');
     assert.equal(latestDTO.offerState, 'active'); assert.equal(business() === beforeQuoteExpiry, true);
     custody(decline); await checkpoint(phase);
 

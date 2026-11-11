@@ -19,7 +19,7 @@ function iconButton(label, kind, action, className) {
 }
 
 /** One selected view shared by the feature, thumbnails and enlarged viewer; no source requests. */
-export function mediaGallery({ name = 'Vehicle', images = [], placeholder = NO_IMAGE_TEXT } = {}) {
+export function mediaGallery({ name = 'Vehicle', images = [], placeholder = NO_IMAGE_TEXT, presentation, fit } = {}) {
   const source = Array.isArray(images) ? images : [];
   const views = source.filter((image, index) => image && typeof image.src === 'string'
     && (isDisplayImage(image.src, image.fidelity) || !image.fidelity && ['representative-configuration', 'representative-model'].some((fidelity) => isDisplayImage(image.src, fidelity))
@@ -27,6 +27,8 @@ export function mediaGallery({ name = 'Vehicle', images = [], placeholder = NO_I
     && source.findIndex((other) => other?.src === image.src) === index)
     .map((image, index) => ({ ...image, label: image.label || (source.length === 1 ? 'Vehicle image' : `View ${index + 1}`), alt: image.alt || `${name}, ${(image.label || `view ${index + 1}`).toLowerCase()}` }));
   const root = el('div', 'gcsp-media-gallery');
+  if (presentation === 'picker') root.classList.add('gcsp-media-gallery-picker');
+  if (fit === 'contain') root.classList.add('gcsp-media-gallery-whole');
   const feature = el('div', 'gcsp-media-gallery-feature');
   const well = mediaWell({ name }, 'gcsp-media-whole', { placeholder });
   feature.append(well.media); root.append(feature);
@@ -48,7 +50,9 @@ export function mediaGallery({ name = 'Vehicle', images = [], placeholder = NO_I
       control.className = 'gcsp-media-gallery-thumb'; control.setAttribute('aria-label', `${view.label} of ${name}`);
       const image = el('img'); image.src = view.src; image.alt = ''; image.loading = 'lazy';
       image.addEventListener('error', () => markFailed(index));
-      control.append(image, el('span', '', view.label)); strip.append(control); return control;
+      control.append(image);
+      if (presentation !== 'picker') control.append(el('span', '', view.label));
+      strip.append(control); return control;
     });
     thumbSets.push(controls); return strip;
   }

@@ -11,7 +11,7 @@ import { loadingSkeleton } from '../kit/loading-skeleton.js';
 import { ACCESS_LAPSED_TITLE, RUN_RESTARTED_TITLE, accessLapsedScreen, runRestartedScreen } from '../kit/run-restarted.js';
 import { followupHandle } from './followup-entry.js';
 
-const titles = { pending: 'Your vehicle offer', accepted: 'Offer accepted', declined: 'Offer declined', expired: 'Offer expired',
+const titles = { pending: 'Your offer', accepted: 'Offer accepted', declined: 'Offer declined', expired: 'Offer expired',
   superseded: 'Offer superseded', 'earlier-run': 'Offer out of date', 'not-found': 'Offer not found', refused: 'Offer unavailable',
   restarted: RUN_RESTARTED_TITLE, 'access-lapsed': ACCESS_LAPSED_TITLE, loading: 'Loading your offer', error: 'Your offer could not be loaded', uncertain: 'Checking your decision' };
 const messages = { accepted: 'Your selection is recorded. Ordering and approval are separate steps.',
@@ -110,10 +110,10 @@ function differences(member, currentCar) {
 function comparison(member, currentCar) {
   const section = el('section', 'gcsp-offer-current'); section.dataset.offerComparison = '';
   if (!currentCar) {
-    section.append(el('h2', 'gcsp-h2', 'About this offer'), decisionHighlights(differences(member, null)), el('p', 'gcsp-note', 'Current-car details not supplied. Equipment is unknown.'));
+    section.append(el('h2', 'gcsp-h2', 'What matters for your decision'), decisionHighlights({ ...differences(member, null), layout: 'list' }), el('p', 'gcsp-note', 'Current-car details not supplied. Equipment is unknown.'));
     return section;
   }
-  section.append(el('h2', 'gcsp-h2', 'Compared with your current car'), decisionHighlights(differences(member, currentCar)));
+  section.append(el('h2', 'gcsp-h2', 'What matters for your decision'), decisionHighlights({ ...differences(member, currentCar), layout: 'list' }));
   const name = currentCar.display?.name || 'Current car not supplied';
   const columns = [{ key: 'label', label: '' },
     { key: 'current', label: 'Your current car', detail: currentCar.configuration ? `${name}, ${currentCar.configuration}` : name },
@@ -197,7 +197,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
     content.replaceChildren(); if (!checking) showCheck('');
     const state = model.state;
     if (state === 'loading') {
-      const heading = screenIntro({ title: 'Your vehicle offer', level: 1 }); heading.classList.add('gcsp-vh');
+      const heading = screenIntro({ title: 'Your offer', level: 1 }); heading.classList.add('gcsp-vh');
       content.append(heading, loadingSkeleton({ label: 'Loading your offer.', layout: 'offer' }));
       messageNode = el('p'); return;
     }
@@ -214,15 +214,12 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
       const screen = statusScreen({ title: REFUSED_TITLE, level: 1, message: messageFor(model, links?.help), actions, role: null });
       messageNode = screen.querySelector('.vm-lede'); content.append(screen);
     } else {
-      const deadline = state === 'pending' && Number.isFinite(Date.parse(model.expiresAt)) ? new Date(model.expiresAt) : null;
-      const heldUntil = deadline ? `Held for you until ${deadline.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })} ${model.now?.slice(0, 10) === model.expiresAt.slice(0, 10) ? 'today' : deadline.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'UTC' })}` : null;
-      const intro = screenIntro({ title: titleFor(model), level: 1, lede: heldUntil });
+      const intro = screenIntro({ title: titleFor(model), level: 1 });
       if (state === 'pending') {
         const header = el('div', 'gcsp-offer-header');
-        const clock = el('div', 'gcsp-offer-clock'); clockNode = el('p', 'gcsp-countdown');
-        clockNode.setAttribute('aria-label', 'Time to decide, hours and minutes');
-        const label = el('span', 'gcsp-offer-clock-label'); label.append(el('span', null, 'Time to decide'), el('span', null, 'hours : minutes'));
-        clock.append(clockNode, label); header.append(intro, clock); content.append(header);
+        header.append(intro);
+        if (links?.cars) header.append(button({ label: '‹ Back to Your cars', variant: 'ghost', href: links.cars }));
+        content.append(header);
       } else content.append(intro);
       const facts = state === 'accepted' ? acceptedFacts(model) : null; if (facts) content.append(facts);
       messageNode = el('p', 'gcsp-note', messageFor(model));
@@ -249,7 +246,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
       const reason = el('p', 'gcsp-note', decisionReason(model));
       reason.id = `${page.id}-decision-reason`;
       reasonNode = reason;
-      for (const [kind, label, enabled] of [['accept', 'Accept offer', model.canReviewAccept], ['decline', 'Decline offer', model.canDecline]]) {
+      for (const [kind, label, enabled] of [['accept', 'Review & accept', model.canReviewAccept], ['decline', 'Decline offer', model.canDecline]]) {
         const control = button({ label, variant: kind === 'accept' ? 'primary' : 'ghost', disabled: !enabled,
           describedBy: reason.id, onClick: () => reviewDecision(kind) });
         control.dataset.offerAction = kind; actions.append(control);
@@ -275,9 +272,17 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
         const decision = member.decision || {}; member.decision = { ...decision, reasons: [], tradeOffs: [] };
         const points = comparedRows(model.card.members[0], model.currentCar).find((row) => row.key === 'points' && row.winner === 'offer');
         const media = member.media || {};
-        gallery = mediaGallery({ name: member.display.name, images: media.images?.length ? media.images : media.src ? [media] : [] });
+        gallery = mediaGallery({ name: member.display.name, images: media.images?.length ? media.images : media.src ? [media] : [], presentation: 'picker', fit: 'contain' });
+        const deadline = el('div', 'gcsp-decision-deadline');
+        const held = el('div');
+        const expires = Number.isFinite(Date.parse(model.expiresAt)) ? new Date(model.expiresAt) : null;
+        held.append(el('strong', null, expires ? `Held until ${expires.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London' })}` : 'Deadline unavailable'));
+        if (expires) held.append(el('p', 'gcsp-decision-date', expires.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/London' })));
+        const clock = el('div', 'gcsp-decision-clock'); clockNode = el('p', 'gcsp-countdown');
+        clockNode.setAttribute('aria-label', 'Time left to decide');
+        clock.append(clockNode, el('p', 'gcsp-decision-date', 'left to decide')); deadline.append(held, clock);
         offer.append(vehicleDecisionCard({ view: card, media: gallery.root, actions: pendingActions,
-          note: handoffNote, finishes,
+          note: handoffNote, finishes, layout: 'focused', deadline, kicker: 'Your buddy found a car for you',
           pointsDifference: points ? `${points.delta.toLocaleString('en-GB')} fewer than your current car` : null }));
       } else offer.append(matchCard(null, { view: card, showScore: false, factsClass: 'vm-facts-pair', hideMissing: 'More details not supplied', headingLevel: 2 }));
       columns.append(offer, comparison(model.card.members[0], model.currentCar)); content.append(columns);
@@ -291,7 +296,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
       // After Decline the change question is the next step, so focus goes to it rather than the last control.
       if ((inPage || decisionWasOpen) && previousState !== 'declined') { followupRoot.tabIndex = -1; followupRoot.focus(); }
     }
-    if (state !== 'loading' && !exit) {
+    if (!['loading', 'pending', 'accepted'].includes(state) && !exit) {
       const control = button({ label: state === 'error' ? 'Try again' : 'Check current state', variant: 'ghost', onClick: refreshCurrent });
       if (state !== 'error') control.classList.add('gcsp-offer-quiet');
       control.dataset.offerAction = 'refresh'; content.append(control, checkNode);
@@ -304,9 +309,11 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
       const heading = content.querySelector('h1');
       if (heading) { heading.tabIndex = -1; heading.focus(); return; }
     }
-    if ((focused || followupFocused) && !(state === 'declined' && followupRoot === root.ownerDocument.activeElement)) {
+    if ((focused || followupFocused || inPage) && !(state === 'declined' && followupRoot === root.ownerDocument.activeElement)) {
       const target = content.querySelector(`[data-offer-action="${['accept', 'decline', 'refresh'].includes(focused) ? focused : 'refresh'}"]`);
-      (target && !target.disabled ? target : content.querySelector('[data-offer-action="refresh"]'))?.focus();
+      const fallback = content.querySelector('[data-offer-action="refresh"]') || content.querySelector('h1');
+      if (fallback?.tagName === 'H1') fallback.tabIndex = -1;
+      (target && !target.disabled ? target : fallback)?.focus();
     }
   }
   function updateFollowup(model) {
@@ -341,14 +348,14 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
     if (model.state === 'pending') accepting = false;
     updateFollowup(model);
     if (model.state === 'pending') {
-      clockNode.textContent = model.countdown || 'Time remaining unavailable';
+      clockNode.textContent = model.countdown?.replace(/^(\d+):(\d\d)$/, '$1h $2m') || 'Time remaining unavailable';
       reasonNode.textContent = decisionReason(model);
       content.querySelector('[data-offer-action="accept"]').disabled = !(model.canReviewAccept);
       for (const box of content.querySelectorAll('[data-offer-declaration]')) box.checked = model.ticked?.[box.dataset.offerDeclaration] === true;
       content.querySelector('[data-offer-action="decline"]').disabled = !model.canDecline;
       const focused = root.ownerDocument.activeElement;
       if (focused?.disabled && content.contains(focused)) {
-        content.querySelector('[data-offer-action="decline"]:enabled, [data-offer-action="accept"]:enabled, [data-offer-action="refresh"]')?.focus();
+        content.querySelector('[data-offer-action="decline"]:enabled, [data-offer-action="accept"]:enabled, [data-offer-action="refresh"], .gcsp-vehicle-specification summary')?.focus();
       }
     }
     const key = `${titleFor(model)}:${model.reference?.offerId || ''}`;

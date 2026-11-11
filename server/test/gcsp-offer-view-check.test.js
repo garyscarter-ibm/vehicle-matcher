@@ -48,61 +48,47 @@ test('an unchanged offer shows pending, then confirms the check finished without
   m.done();
 });
 
-test('a check that finds the offer accepted names the new state and keeps the onward links', async () => {
+test('pending and accepted offers have no footer state check; background reads still show authoritative outcomes', async () => {
   const m = mount(fixture('pending'), { orderProgress: '/gcsp-order.html', cars: '/gcsp-account.html' }); await m.c.refresh();
-  m.set(fixture('selection-hr')); await m.press();
+  assert.equal(m.root.querySelector('[data-offer-action="refresh"]'), null);
+  assert.doesNotMatch(m.root.textContent, /Buddy history|Check current state/);
+  m.set(fixture('selection-hr')); await m.c.refresh();
   assert.equal(m.root.querySelector('h1').textContent, 'Offer accepted');
-  assert.equal(m.line().textContent, 'Check complete. Current state: accepted.');
-  assert.equal(m.live().textContent, 'Check complete. Current state: accepted.');
+  assert.equal(m.root.querySelector('[data-offer-action="refresh"]'), null);
+  assert.equal(m.live().textContent, 'Offer accepted');
   assert.deepEqual([...m.root.querySelectorAll('.gcsp-offer-actions .vm-btn')].map((b) => b.textContent), ['Track your order', 'Back to Your cars']);
-  assert.equal(document.activeElement.dataset.offerAction, 'refresh');
   m.done();
 });
 
-test('a check that finds the offer expired names it and keeps the next step', async () => {
-  const m = mount(fixture('pending')); await m.c.refresh();
-  m.set(fixture('expired')); await m.press();
+test('background expiry removes decisions and retains the next step without a pending footer control', async () => {
+  const m = mount(fixture('pending'), { cars: '/gcsp-account.html' }); await m.c.refresh();
+  const details = m.root.querySelector('.gcsp-vehicle-specification summary'); details.focus();
+  m.set(fixture('expired')); await m.c.refresh();
   assert.equal(m.root.querySelector('h1').textContent, 'Offer expired');
-  assert.equal(m.line().textContent, 'Check complete. Current state: expired.');
-  assert.match(m.root.textContent, /Open your account to check for a new offer\./);
+  assert.equal(m.root.querySelector('[data-offer-action="accept"], [data-offer-action="decline"], [data-offer-action="refresh"]'), null);
+  assert.equal(document.activeElement.tagName, 'H1');
+  assert.match(m.root.textContent, /Open your account to check for a new offer/);
   m.done();
 });
 
-test('a check that finds the offer declined names it, with no second decision control', async () => {
-  const m = mount(fixture('pending')); await m.c.refresh();
+test('uncertain decisions retain an explicit recovery check and transition to the authoritative outcome', async () => {
+  const m = mount(fixture('uncertain')); await m.c.refresh();
+  assert.ok(m.root.querySelector('[data-offer-action="refresh"]'));
   m.set(fixture('declined')); await m.press();
   assert.equal(m.line().textContent, 'Check complete. Current state: declined.');
   assert.equal(m.root.querySelector('[data-offer-action="accept"], [data-offer-action="decline"]'), null);
   m.done();
 });
 
-test('a changed detail on the same offer says the details were updated', async () => {
-  const m = mount(fixture('pending')); await m.c.refresh();
-  m.set(fixture('pending', (v) => { v.card.members[0].display.line = 'Order no. 0123457'; })); await m.press();
-  assert.equal(m.line().textContent, 'Check complete. The offer details have been updated.');
-  m.done();
-});
-
-test('a failed readback shows an error with Try again, and the retry reports the state it finds', async () => {
-  const m = mount(fixture('pending')); await m.c.refresh();
-  m.set({ status: 'unavailable' }); await m.press();
-  assert.equal(m.root.querySelector('h1').textContent, 'Your offer could not be loaded');
-  assert.equal(m.line().textContent, 'Check not completed. Try again in a moment.');
-  assert.equal(m.live().textContent, 'Check not completed. Try again in a moment.');
+test('failed readback retains Try again; a successful retry returns to the focused offer without a footer check', async () => {
+  const m = mount({ status: 'unavailable' }); await m.c.refresh();
   assert.equal(m.root.querySelector('[data-offer-action="refresh"]').textContent, 'Try again');
-  assert.equal(document.activeElement.textContent, 'Try again');
   m.set(() => { throw new Error('offline'); }); await m.press();
   assert.equal(m.line().textContent, 'Check not completed. Try again in a moment.');
+  assert.equal(m.live().textContent, 'Check not completed. Try again in a moment.');
   m.set(fixture('pending')); await m.press();
-  assert.equal(m.root.querySelector('h1').textContent, 'Your vehicle offer');
-  assert.equal(m.line().textContent, 'Check complete. Current state: open for your decision.');
-  m.done();
-});
-
-test('a background read clears an old check result and never shows the check line', async () => {
-  const m = mount(fixture('pending')); await m.c.refresh();
-  await m.press(); assert.equal(m.line().hidden, false);
-  m.set(fixture('expired')); await m.c.refresh();
-  assert.equal(m.line().hidden, true); assert.equal(m.live().textContent, 'Offer expired');
+  assert.equal(m.root.querySelector('h1').textContent, 'Your offer');
+  assert.equal(m.root.querySelector('[data-offer-action="refresh"]'), null);
+  assert.equal(m.live().textContent, 'Your offer');
   m.done();
 });

@@ -1,0 +1,43 @@
+/* Approved focused offer composition; other card and gallery layouts retain their defaults. */
+.gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused { grid-template-columns: minmax(0, 1.62fr) minmax(340px, 1fr); grid-template-rows: auto 1fr; gap: var(--gcsp-space-6); align-items: start; background: none; border: 0; overflow: visible; }
+.gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .gcsp-vehicle-summary { grid-row: 1 / 3; padding: var(--gcsp-space-6); gap: var(--gcsp-space-4); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface-raised); }
+.gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused > .gcsp-media-gallery { grid-row: 1; height: auto; min-height: 0; border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); overflow: hidden; }
+.gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .gcsp-vehicle-details { grid-column: 1; grid-row: 2; padding: 0; }
+.gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .gcsp-vehicle-details .gcsp-vehicle-overview { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gcsp-space-4); border: 0; margin: 0 0 var(--gcsp-space-4); padding: 0; }
+.gcsp .gcsp-vehicle-disclosures { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gcsp-space-4); border-top: 1px solid var(--gcsp-divider); padding-top: var(--gcsp-space-2); }
+.gcsp .gcsp-vehicle-disclosures > .gcsp-details { border: 0; margin: 0; padding: 0; }
+.gcsp .gcsp-vehicle-disclosures > .gcsp-details[open] { grid-column: 1 / -1; }
+.gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .vm-card-name { font-size: 22px; line-height: 1.25; }
+.gcsp .gcsp-vehicle-kicker { margin: 0; color: var(--gcsp-accent); font-size: var(--gcsp-font-size-small); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .gcsp-vehicle-saving { font-size: var(--gcsp-font-size-small); font-weight: normal; }
+.gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .gcsp-vehicle-summary .gcsp-note { font-size: var(--gcsp-font-size-small); }
+.gcsp .gcsp-decision-deadline { display: flex; align-items: center; justify-content: space-between; gap: var(--gcsp-space-3); border-top: 1px solid var(--gcsp-divider); padding-top: var(--gcsp-space-4); }
+.gcsp .gcsp-decision-deadline strong { font-size: var(--gcsp-font-size-heading); }
+.gcsp .gcsp-decision-date { margin: var(--gcsp-space-1) 0 0; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-small); }
+.gcsp .gcsp-decision-clock { min-width: 0; text-align: right; }
+.gcsp .gcsp-decision-clock .gcsp-countdown { margin: 0; color: var(--gcsp-text); white-space: nowrap; font-size: 24px; font-weight: var(--gcsp-font-strong-weight); font-variant-numeric: tabular-nums; line-height: 1.2; }
+.gcsp .gcsp-decision-highlights.gcsp-decision-lists { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gcsp-space-6); }
+.gcsp .gcsp-decision-highlights.gcsp-decision-lists .gcsp-highlight-group { grid-column: auto; border-top: 2px solid var(--gcsp-accent); padding: var(--gcsp-space-4) var(--gcsp-space-5) var(--gcsp-space-1); background: var(--gcsp-accent-soft); }
+.gcsp .gcsp-decision-highlights.gcsp-decision-lists .gcsp-highlight-tradeoffs { background: var(--gcsp-surface-page); border-color: var(--gcsp-text-muted); }
+.gcsp .gcsp-decision-highlights.gcsp-decision-lists .gcsp-highlight-group h3 { font-size: var(--gcsp-font-size-small); }
+.gcsp .gcsp-decision-highlights.gcsp-decision-lists .gcsp-highlight-cards { display: block; }
+.gcsp .gcsp-decision-highlights.gcsp-decision-lists .gcsp-highlight { border: 0; border-top: 1px solid var(--gcsp-divider); padding: var(--gcsp-space-3) 0; background: none; }
+.gcsp .gcsp-decision-highlights.gcsp-decision-lists .gcsp-highlight:first-child { border-top: 0; padding-top: 0; }
+.gcsp .gcsp-decision-highlights.gcsp-decision-lists .gcsp-highlight-heading { font-size: 15px; line-height: 1.4; }
+.gcsp .gcsp-decision-highlights.gcsp-decision-lists .gcsp-highlight-number { font-size: 30px; line-height: 1.2; }
+.gcsp .gcsp-decision-highlights.gcsp-decision-lists .gcsp-highlight-empty { padding-inline: 0; }
+.gcsp .gcsp-media-gallery-whole .gcsp-media-whole .vm-card-photo, .gcsp .gcsp-media-gallery-whole .gcsp-media-gallery-large { object-fit: contain; }
+.gcsp .gcsp-media-gallery-picker .gcsp-media-gallery-feature { flex: 0 0 330px; height: 330px; min-height: 0; }
+.gcsp .gcsp-media-gallery-picker .gcsp-media-gallery-feature .vm-card-media, .gcsp .gcsp-media-gallery-picker .gcsp-media-gallery-feature .vm-card-photo { height: 330px; aspect-ratio: auto; }
+.gcsp .gcsp-media-gallery-picker .gcsp-media-gallery-thumbs { display: flex; justify-content: safe center; gap: var(--gcsp-space-3); padding: var(--gcsp-space-3) var(--gcsp-space-4); overflow-x: auto; background: var(--gcsp-surface-raised); border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-media-gallery-picker .gcsp-media-gallery-thumbs .gcsp-media-gallery-thumb { flex: 0 0 100px; width: 100px; padding: 3px; border: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-media-gallery-picker .gcsp-media-gallery-thumbs .gcsp-media-gallery-thumb[aria-pressed="true"] { border-color: var(--gcsp-accent); }
+.gcsp .gcsp-media-gallery-picker .gcsp-media-gallery-thumbs .gcsp-media-gallery-thumb img { height: 44px; aspect-ratio: auto; object-fit: contain; border: 0; }
+@media (max-width: 800px) {
+  .gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused { grid-template-columns: minmax(0, 1fr); gap: var(--gcsp-space-4); }
+  .gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .gcsp-vehicle-summary { grid-column: 1; grid-row: 1; padding: var(--gcsp-space-4); }
+  .gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused > .gcsp-media-gallery { grid-row: 2; }
+  .gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .gcsp-vehicle-details { grid-row: 3; }
+  .gcsp .gcsp-vehicle-decision.gcsp-vehicle-focused .gcsp-vehicle-details .gcsp-vehicle-overview { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gcsp .gcsp-decision-highlights.gcsp-decision-lists { grid-template-columns: minmax(0, 1fr); gap: var(--gcsp-space-4); }
+}

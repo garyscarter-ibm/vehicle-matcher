@@ -450,6 +450,10 @@
     {
       "path": "blocks/gcsp/kit/preference-modes.css",
       "max_lines": 16
+    },
+    {
+      "path": "blocks/gcsp/kit/focused-decision.css",
+      "max_lines": 44
     }
   ],
   "baseline": {
