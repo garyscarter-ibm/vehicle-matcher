@@ -9,11 +9,10 @@ gcsp-account { display: block; } .gcsp .gcsp-notification-email { display: grid;
 .gcsp .gcsp-account-head .gcsp-intro .vm-title { margin: 0; font-size: var(--gcsp-font-size-title); line-height: var(--gcsp-font-line-title); } @media (max-width: 600px) { .gcsp .gcsp-account-head { align-items: flex-start; flex-direction: column; gap: var(--gcsp-space-2); } }
 .gcsp .gcsp-account-body .gcsp-feature { grid-template-columns: minmax(0, 1.6fr) minmax(320px, 1fr); background: var(--gcsp-surface); border-radius: var(--gcsp-radius); }
 .gcsp .gcsp-feature-media { display: flex; flex-direction: column; justify-content: center; min-width: 0; background: var(--gcsp-surface-muted); }
-.gcsp .gcsp-account-body .gcsp-feature-copy { align-content: start; gap: var(--gcsp-space-4); }
-.gcsp .gcsp-account-title { display: flex; flex-direction: column; gap: var(--gcsp-space-1); }
+.gcsp .gcsp-account-body .gcsp-feature-copy { align-self: center; gap: var(--gcsp-space-5); } .gcsp .gcsp-account-body .gcsp-countdown { color: var(--gcsp-text-muted); font-weight: var(--gcsp-font-weight); }
+.gcsp .gcsp-account-title { display: flex; flex-direction: column; gap: var(--gcsp-space-1); } .gcsp .gcsp-account-title > .gcsp-note { font-size: var(--gcsp-font-size-label); }
 .gcsp .gcsp-account-title .gcsp-h2, .gcsp .gcsp-account-spec { margin: 0; } .gcsp .gcsp-account-spec { line-height: var(--gcsp-font-line-heading); }
-.gcsp .vm-facts.gcsp-account-facts { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gcsp-space-3) var(--gcsp-space-6); margin: 0; }
-.gcsp .gcsp-account-facts .vm-fact { min-width: 0; }
+.gcsp .vm-facts.gcsp-account-facts { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gcsp-space-4) var(--gcsp-space-6); margin: 0; }
 .gcsp .gcsp-account-preferences:not(:has(> .gcsp-prefs)) { display: flex; flex-direction: column; gap: var(--gcsp-space-3); padding: var(--gcsp-space-6); background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-account-preferences > * { margin: 0; }
 .gcsp .gcsp-account-preferences .vm-btn { align-self: flex-start; } .gcsp .gcsp-account-preferences > h2 + .gcsp-note { margin-top: calc(var(--gcsp-space-1) - var(--gcsp-space-3)); }

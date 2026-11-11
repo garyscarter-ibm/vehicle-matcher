@@ -34,7 +34,7 @@ test('offer gallery uses ordered views, keeps selection across clock reads and c
   view.update(data);
   const gallery = root.querySelector('.gcsp-media-gallery');
   assert.ok(gallery); assert.equal(gallery.parentElement.classList.contains('gcsp-vehicle-decision'), true);
-  assert.deepEqual([...gallery.querySelectorAll('.gcsp-media-gallery-thumbs button')].map((node) => node.textContent), images.map((image) => image.label));
+  assert.deepEqual([...gallery.querySelectorAll('.gcsp-media-gallery-thumbs button')].map((node) => node.getAttribute('aria-label')), images.map((image) => `${image.label} of ${data.card.members[0].display.name}`));
   gallery.querySelectorAll('.gcsp-media-gallery-thumbs button')[1].click();
   assert.equal(gallery.querySelector('.vm-card-photo').getAttribute('src'), images[1].src);
   view.update({ ...data, countdown: '1:59' });
@@ -91,7 +91,9 @@ test('41 supplied equipment labels use a closed native disclosure outside the co
 test('FUCQ-383: pending offer leads with h:mm, one uncaptained equal-column comparison and current-first identities', () => {
   const { root } = render('pending');
   const header = root.querySelector('.gcsp-offer-content').firstElementChild;
-  assert.ok(header.querySelector('h1')); assert.ok(header.querySelector('.gcsp-countdown'));
+  assert.ok(header.querySelector('h1')); assert.equal(header.querySelector('.gcsp-countdown'), null);
+  assert.ok(root.querySelector('.gcsp-vehicle-summary .gcsp-countdown'));
+  assert.equal(root.querySelector('[data-offer-action="refresh"]'), null);
   assert.equal(root.querySelectorAll('.gcsp-countdown').length, 1);
   assert.equal(root.querySelectorAll('[data-offer-comparison] table').length, 1);
   const table = root.querySelector('[data-offer-comparison] table');
@@ -103,7 +105,7 @@ test('FUCQ-383: pending offer leads with h:mm, one uncaptained equal-column comp
   assert.deepEqual([...table.querySelectorAll('tbody tr')][3].querySelectorAll('.is-winner').length, 1);
   assert.equal(root.querySelector('.vm-card-gate'), null);
   assert.equal(root.querySelector('.vm-card .vm-facts').classList.contains('vm-facts-pair'), true);
-  assert.deepEqual([...root.querySelectorAll('.gcsp-vehicle-summary [data-offer-action]')].map((node) => node.textContent), ['Accept offer', 'Decline offer']);
+  assert.deepEqual([...root.querySelectorAll('.gcsp-vehicle-summary [data-offer-action]')].map((node) => node.textContent), ['Review & accept', 'Decline offer']);
 });
 
 // FUCQ-316: missing card facts collapse into one line, as on the gallery cards (FUCQ-277).
@@ -118,7 +120,7 @@ test('FUCQ-316: a card with unknown Colour, Options, Interior and Gearbox lists 
   const body = root.querySelector('.vm-card');
   assert.doesNotMatch(body.textContent, /Not supplied|Fitted equipment unknown/);
   assert.equal(body.querySelectorAll('.is-missing').length, 0);
-  assert.deepEqual([...body.querySelectorAll('.vm-facts dt')].map((node) => node.textContent), ['Body style', 'Fuel', 'Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Derivative']);
+  assert.deepEqual([...body.querySelectorAll('.vm-card-facts .vm-facts dt')].map((node) => node.textContent), ['Body style', 'Fuel', 'Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Derivative']);
   assert.equal(body.querySelectorAll('.vm-facts-more').length, 1);
   assert.equal(body.querySelector('.vm-facts-more').textContent, 'More details not supplied');
 });
@@ -127,7 +129,7 @@ test('FUCQ-275: without a current car the card keeps its specs and the note stan
   const { root, view, data } = render('pending');
   view.update({ ...data, currentCar: null, comparisonAvailable: false, canAccept: false, canDecline: false, decisionUnavailable: true, countdown: '2 hours remaining' });
   assert.equal(root.querySelectorAll('table').length, 0); assert.match(root.textContent, /Current-car details not supplied/);
-  const shown = [...root.querySelectorAll('.vm-card .vm-facts dt')].map((node) => node.textContent);
+  const shown = [...root.querySelectorAll('.vm-card .vm-card-facts .vm-facts dt')].map((node) => node.textContent);
   assert.deepEqual(shown.slice(0, 7), ['Body style', 'Fuel', 'Seats', 'Boot', '0 to 62 mph', 'Fuel economy', 'Derivative']);
 });
 
@@ -154,7 +156,7 @@ test('loading uses the shared offer skeleton until the authoritative offer arriv
   view.update(data);
   assert.equal(root.querySelector('.gcsp-skeleton[data-layout="offer"]'), null);
   assert.equal(root.querySelector('.gcsp-offer-body').getAttribute('aria-busy'), 'false');
-  assert.equal(root.querySelector('h1').textContent, 'Your vehicle offer');
+  assert.equal(root.querySelector('h1').textContent, 'Your offer');
   view.destroy();
 });
 
@@ -173,10 +175,9 @@ test('expired offer shows only its expiry and next step', () => {
 
 test('live announcements are bounded and refresh retains visible keyboard focus', () => {
   const { root, view, data } = render('pending');
-  const control = root.querySelector('[data-offer-action="refresh"]'); control.focus();
+  const control = root.querySelector('.gcsp-vehicle-specification summary'); control.focus();
   const card = root.querySelector('.vm-card');
   view.update({ ...data, state: 'pending', countdown: '4 minutes remaining', seconds: 240 });
-  assert.equal(document.activeElement.dataset.offerAction, 'refresh');
   assert.equal(document.activeElement, control); assert.equal(root.querySelector('.vm-card'), card);
   const live = root.querySelector('[data-offer-announcement]');
   assert.equal(live.textContent, 'Less than five minutes remain on this offer.');
@@ -217,7 +218,7 @@ test('custom element mounts, reads presenter events, and unsubscribes on disconn
   host.adapter = { read: async () => { reads++; return offerFixture('pending'); },
     subscribeClock: (listener) => { event = listener; return () => { unsubscribed = true; }; } };
   document.body.append(host); await new Promise((resolve) => setImmediate(resolve));
-  assert.match(host.textContent, /Your vehicle offer/); assert.equal(reads, 1);
+  assert.match(host.textContent, /Your offer/); assert.equal(reads, 1);
   event(); await new Promise((resolve) => setImmediate(resolve)); assert.equal(reads, 2);
   host.remove(); assert.equal(unsubscribed, true); event(); assert.equal(reads, 2);
 });
@@ -231,7 +232,7 @@ test('approved DTO flows through the default HTTP adapter/controller into the sh
   const model = await c.refresh();
   assert.doesNotMatch(root.textContent, /Order no\. 0999987|Order number/); assert.match(root.textContent, /1,100 points a month.*1,300 points a month allowance/);
   assert.match(root.textContent, /Current-car details not supplied/); assert.doesNotMatch(root.textContent, /Fitted equipment unknown/);
-  assert.match(root.querySelector('.gcsp-countdown').textContent, /2:00/); assert.equal(model.seconds, 7200);
+  assert.match(root.querySelector('.gcsp-countdown').textContent, /2h 00m/); assert.equal(model.seconds, 7200);
   assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
   unsubscribe(); c.destroy(); view.destroy();
 });
@@ -293,7 +294,7 @@ test('approved partial DTO renders dated provenance and eight unknowns through H
     assert.equal(comparison.querySelector('img'), null);
     assert.equal(model.comparisonAvailable, false); assert.equal(model.seconds, 7200);
     assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
-    const refresh = root.querySelector('[data-offer-action="refresh"]'); refresh.focus();
+    const refresh = root.querySelector('.gcsp-vehicle-specification summary'); refresh.focus();
     dto.serverNow = '2026-11-05T12:00:05.000Z'; await c.refresh();
     assert.equal(root.querySelector('[data-offer-comparison]'), comparison); assert.equal(document.activeElement, refresh);
     dto.comparison.currentCar.source.observedAt = '2026-11-05T12:00:00.001Z'; await c.refresh();
@@ -336,7 +337,7 @@ test('published decline-only DTO updates mounted actions and accessible explanat
     assert.equal(accept.disabled, false); assert.equal(declineButton.disabled, false); assert.equal(document.activeElement, accept);
     const reason = root.querySelector(`#${accept.getAttribute('aria-describedby')}`);
     assert.match(reason.textContent, /Review your details/);
-    assert.equal(root.querySelector('.gcsp-countdown').textContent, '1:00'); assert.doesNotMatch(root.textContent, /Order no\. 0123456|Order number/);
+    assert.equal(root.querySelector('.gcsp-countdown').textContent, '1h 00m'); assert.doesNotMatch(root.textContent, /Order no\. 0123456|Order number/);
     assert.match(root.textContent, /Partial comparison/); assert.equal(root.querySelectorAll('[data-offer-comparison] td.is-missing').length, 7);
     accept.click(); assert.deepEqual(calls, []);
     delete dto.comparison; await c.refresh();
@@ -538,14 +539,14 @@ test('GC-041: an accepted offer leads on to order progress and Your cars beside 
   assert.equal(cars.textContent, 'Back to Your cars'); assert.equal(cars.getAttribute('href'), links.cars); assert.ok(cars.classList.contains('vm-btn-ghost'));
   const before = (a, b) => Boolean(a.compareDocumentPosition(b) & dom.window.Node.DOCUMENT_POSITION_FOLLOWING);
   assert.ok(before(root.querySelector('h1'), progress)); assert.equal(root.querySelector('.vm-card'), null);
-  assert.ok(before(progress, root.querySelector('[data-offer-action=refresh]')));
-  for (const state of ['pending', 'declined', 'uncertain']) { view.update(acceptedModel(state)); assert.equal(root.querySelectorAll('a.vm-btn').length, 0, state); }
+  assert.equal(root.querySelector('[data-offer-action=refresh]'), null);
+  for (const state of ['pending', 'declined', 'uncertain']) { view.update(acceptedModel(state)); assert.equal(root.querySelectorAll('a.vm-btn').length, state === 'pending' ? 1 : 0, state); }
   view.destroy(); root.remove();
   const bare = document.createElement('div'); document.body.append(bare); const plain = createOfferView(bare, {});
   plain.update(acceptedModel()); assert.equal(bare.querySelectorAll('a.vm-btn').length, 0); plain.destroy(); bare.remove();
 });
 
-test('GC-041: after Accept focus moves to the Offer accepted heading, and a background change to accepted leaves focus alone', () => {
+test('GC-041: after Accept focus moves to the Offer accepted heading, and removing a focused decision during readback leaves focus on its outcome', () => {
   const root = document.createElement('div'); document.body.append(root);
   const pending = { ...offerFixture('handoff-replacement').value, canReviewAccept: true, canAccept: true, canDecline: true, ticked: { terms: true, driver: true, return: true }, expectedReturnMileage: '42000', countdown: '2 hours remaining' };
   let view; const decide = () => { view.update({ ...acceptedModel('uncertain'), message: 'Checking your decision. Please wait.' }); view.update(acceptedModel()); };
@@ -555,7 +556,7 @@ test('GC-041: after Accept focus moves to the Offer accepted heading, and a back
   assert.equal(document.activeElement, heading); assert.equal(heading.getAttribute('tabindex'), '-1');
   view.update({ ...acceptedModel(), now: '2026-11-06T12:00:00Z' }); assert.equal(document.activeElement, heading);
   view.update(pending); root.querySelector('[data-offer-action=accept]').focus(); view.update(acceptedModel());
-  assert.notEqual(document.activeElement, root.querySelector('h1'));
+  assert.equal(document.activeElement, root.querySelector('h1'));
   view.destroy(); root.remove();
 });
 

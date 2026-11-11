@@ -207,7 +207,7 @@ test('teardown removes the rating and its listeners', async () => {
 // FUCQ-369: the Same again row and Buddy understanding on the bitmap.
 const sameInput = (host) => host.querySelector('.gcsp-prefs-mode input[value=same]');
 const figure = (host) => host.querySelector('.gcsp-understanding-value');
-const CAR_TEXT = 'BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol'; // the Account fixture's heading and specification
+const CAR_TEXT = 'BMW 3 Series Touring 320i M Sport Touring \u00b7 Petrol'; // the Account fixture's heading and specification
 
 test('the Same again row sits between the head and the tiles and its help names the Account car', async () => {
   const { host, destroy } = await mountRated('selected');

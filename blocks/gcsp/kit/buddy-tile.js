@@ -3,7 +3,7 @@ import { buddyState, buddyStatus } from './buddy-status.js';
 import { activityTimeline } from './activity-timeline.js';
 
 let sequence = 0;
-const descriptions = { active: 'Watching for cars that match your preferences.', paused: 'New searches and holds have stopped.',
+const descriptions = { paused: 'New searches and holds have stopped.',
   unset: 'Choose your preferences, then engage Buddy.', finished: 'You accepted a car. Your search is finished.',
   inactive: 'Search permission is off. Engage Buddy in your preferences to search again.', unavailable: 'Search status is unavailable. Try again.' };
 
@@ -31,7 +31,7 @@ export function buddyTile({ id = `gcsp-buddy-tile-${++sequence}`, onPause, onRes
     const value = result?.value; const held = value?.currentOffer?.state === 'active';
     const detail = state === 'active' && value?.sourceStatus === 'unavailable' ? 'Cars could not be checked. See Buddy history for the latest check.'
       : state === 'active' && value?.sourceStatus === 'delayed' ? 'Waiting for stock data. See Buddy history for the latest check.' : descriptions[state];
-    root.append(el('p', 'gcsp-note', detail));
+    if (detail) root.append(el('p', 'gcsp-note', detail));
     const commands = el('div', 'gcsp-buddy-tile-actions');
     if (['active', 'paused'].includes(state)) commands.append(action(state === 'paused' ? 'Resume search' : 'Pause search', 'buddy-search-action', state === 'paused' ? onResume : onPause, pending));
     else if (state === 'unavailable') commands.append(action('Try again', 'buddy-retry', onRetry, pending));

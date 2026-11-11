@@ -2,8 +2,8 @@
 .gcsp .gcsp-skeleton[data-layout="offer"] .gcsp-skeleton-shapes { max-width: 1680px; gap: var(--gcsp-space-6); }
 .gcsp .gcsp-skeleton-offer-header { display: flex; justify-content: space-between; gap: var(--gcsp-space-4); }
 .gcsp .gcsp-skeleton-offer-header .gcsp-skeleton-title { width: min(250px, 80%); height: var(--gcsp-font-line-title); margin: 0; }
-.gcsp .gcsp-skeleton[data-layout="offer"] .gcsp-skeleton-clock { width: 140px; height: 48px; }
-.gcsp .gcsp-skeleton-offer-card { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); border: 1px solid var(--gcsp-divider); background: var(--gcsp-surface); }
+.gcsp .gcsp-skeleton[data-layout="offer"] .gcsp-skeleton-clock { width: 100%; height: 48px; }
+.gcsp .gcsp-skeleton-offer-card { display: grid; grid-template-columns: minmax(0, 1.62fr) minmax(340px, 1fr); gap: var(--gcsp-space-6); background: var(--gcsp-surface); }
 .gcsp .gcsp-skeleton-offer-card > .gcsp-skeleton-media { min-height: 400px; height: 100%; aspect-ratio: auto; }
 .gcsp .gcsp-skeleton-offer-card > .gcsp-skeleton-text { padding: var(--gcsp-space-6); gap: var(--gcsp-space-4); min-width: 0; }
 .gcsp .gcsp-skeleton-offer-card .gcsp-skeleton-heading { width: 80%; height: var(--gcsp-font-line-heading); }

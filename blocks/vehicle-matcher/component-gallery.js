@@ -1,3 +1,4 @@
+import { offerFixture } from '../gcsp/offer/fixtures.js';
 import { gregPublishExample } from '../gcsp/greg/publish/gallery.js';
 import { gregOrderPlanExample } from '../gcsp/greg/plan/gallery.js';
 import { gregComparisonExample } from '../gcsp/greg/comparison/gallery.js';
@@ -163,6 +164,7 @@ function gcspExamples() {
     { label: 'Contract end', value: '1 December 2026' },
     { label: 'Points cost', value: formatPointsCost({ kind: 'points-monthly', value: 1100, allowance: 1300 }) },
     { label: 'Points cost', value: formatPointsCost({ kind: 'points-monthly', value: 1100 }) },
+    { label: 'Points per month', value: formatPointsCost({ kind: 'points-monthly', value: 1100, allowance: 1300 }, { compact: true }) },
   ]));
   const reviewMedia = el('div', 'gcsp-review-layout');
   const reviewImage = employeeCardFixture.members[0].media;
@@ -256,6 +258,12 @@ function gregKitExamples() {
   const equipmentItems = Array.from({ length: 41 }, (_, index) => `Supplied equipment example ${index + 1}`);
   equipmentView.members[0].facts.push({ label: 'Options', value: equipmentItems.join(', '), items: equipmentItems });
   group('Vehicle decision: 41 supplied equipment labels').append(vehicleDecisionCard({ view: equipmentView }));
+  const focused = offerFixture('fuller-offer').value.card;
+  group('Focused offer: decision panel').append(vehicleDecisionCard({ view: focused, layout: 'focused', kicker: 'Your buddy found a car for you' }));
+  group('Focused offer: four benefits and five tradeoffs').append(decisionHighlights({ layout: 'list',
+    benefits: [{ number: '300', title: 'fewer points', detail: 'Every month, compared with your current car' }, ...focused.members[0].decision.reasons.map((title) => ({ title }))],
+    tradeoffs: [{ number: '30', title: 'litres less', detail: 'Boot space compared with your current car' }, ...focused.members[0].decision.tradeOffs.map((title) => ({ title }))] }));
+
   group('dataTable: long model name and a band cell').append(dataTable({ caption: 'Stock by model line', columns, rows, id: 'gallery-greg-table' }));
   const bold = (label, on) => (on ? { label, emphasis: true } : label);
   group('dataTable: emphasised cells for changed rows').append(dataTable({ caption: 'Plan comparison (changed rows in bold)', id: 'gallery-greg-emphasis',

@@ -42,13 +42,14 @@ export function formatTerm(term = {}) {
 }
 
 /** Current cost / budget for a points-monthly term, e.g. "1,100 / 1,300 points per month". Missing amounts say so. */
-export function formatPointsCost(term = {}) {
+export function formatPointsCost(term = {}, { compact = false } = {}) {
   if (term.kind !== 'points-monthly') return 'Not supplied';
   const cost = Number.isFinite(term.value) ? term.value.toLocaleString('en-GB') : null;
   const budget = Number.isFinite(term.allowance) ? term.allowance.toLocaleString('en-GB') : null;
-  if (cost && budget) return `${cost} / ${budget} points per month`;
-  if (cost) return `${cost} points per month \u00b7 budget not supplied`;
-  if (budget) return `Cost not supplied \u00b7 ${budget} points per month budget`;
+  const unit = compact ? '' : ' points per month';
+  if (cost && budget) return `${cost} / ${budget}${unit}`;
+  if (cost) return `${cost}${unit} \u00b7 budget not supplied`;
+  if (budget) return `Cost not supplied \u00b7 ${budget}${unit} budget`;
   return 'Not supplied';
 }
 
