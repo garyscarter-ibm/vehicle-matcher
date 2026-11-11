@@ -414,7 +414,7 @@ test('guarded replacement reconciles draft, suppresses duplicate writes, emits e
   const listen = (event) => events.push(event);
   document.body.addEventListener('gcsp:journey-start', listen);
   try {
-    assert.deepEqual(calls.map((call) => call.url), ['/api/gcsp/manual/account', '/api/gcsp/manual/draft', '/api/gcsp/offers/current', '/api/gcsp/activity']);
+    assert.deepEqual(calls.map((call) => call.url), ['/api/gcsp/manual/account', '/api/gcsp/manual/draft', '/api/gcsp/offers/current']);
     blocked = true;
     const choose = findButton(root, 'Choose a replacement'); choose.click(); choose.click();
     assert.equal(root.querySelector('[aria-busy="true"]') != null, true);
@@ -1020,17 +1020,14 @@ test('FUCQ-223: the account page head has the title and no kicker, and its style
 const allowed = { searchConsent: true, holdConsent: true, paused: false, canSearch: true, canHold: true };
 const ghost = (root, text) => findButton(root, text).classList.contains('vm-btn-ghost');
 
-test('Account shows one compact Buddy indicator and re-reads its account-level activity', async () => {
+test('FUCQ-370: Account shows no Buddy navigation link and never reads account-level activity', async () => {
   let reads = 0;
   const activity = async () => { reads += 1; return { status: 'ok', value: { state: 'searching', permission: allowed } }; };
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readActivity: activity });
   try {
     await destroy.sync(); await tick();
-    assert.equal(reads, 2);
-    const links = root.querySelectorAll('.gcsp-account-head .gcsp-buddy-link');
-    assert.equal(links.length, 1);
-    assert.equal(links[0].getAttribute('href'), '/gcsp-activity-live.html');
-    assert.match(links[0].textContent, /BuddyActive›/);
+    assert.equal(reads, 0);
+    assert.equal(root.querySelector('.gcsp-buddy-link'), null);
     assert.equal(root.querySelector('[aria-label="Your buddy"]'), null);
     for (const text of ['Set your preferences', 'Change your preferences', 'See buddy activity']) assert.equal(findButton(root, text), undefined, text);
     assert.equal(ghost(root, 'Choose a replacement'), false, 'the replacement control stays primary');
@@ -1049,38 +1046,25 @@ test('the HTTP adapter reads buddy activity, and any failure or abort is handled
   await assert.rejects(createAccountHttpAdapter({ fetchImpl: async () => { throw new Error('aborted'); } }).readActivity({ signal: abort.signal }));
 });
 
-test('Buddy header updates from authoritative activity on refresh and preserves its focus across state changes', async () => {
-  let current = { status: 'ok', value: { permission: null } }; const navigated = [];
-  const { root, destroy } = await domMount({ ...readOnlyAdapter('multi-slot'), readActivity: async () => structuredClone(current) },
-    { onNavigate: (key) => navigated.push(key) });
-  const indicator = () => root.querySelector('.gcsp-account-head .gcsp-buddy-link');
+test('FUCQ-370: refresh and sync leave a failed or changing activity read out of the page, and the cars stay available', async () => {
+  let reads = 0;
+  const { root, destroy } = await domMount({ ...readOnlyAdapter('multi-slot'), readActivity: async () => { reads += 1; return { status: 'unavailable' }; } });
   try {
-    assert.equal(root.querySelectorAll('.gcsp-buddy-link').length, 1, 'one status even with multiple cars');
-    assert.match(indicator().textContent, /Set up your buddy/);
-    indicator().click(); assert.deepEqual(navigated, ['activity']);
-    for (const [permission, label] of [[{ paused: false, canSearch: true }, 'Active'], [{ paused: true, canSearch: false }, 'Paused'], [null, 'Set up your buddy']]) {
-      const previous = indicator(); previous.focus(); current = { status: 'ok', value: { permission } };
-      await destroy.sync();
-      assert.match(indicator().textContent, new RegExp(label));
-      assert.equal(document.activeElement, indicator());
-    }
-    const same = indicator(); current.value.clockVersion = 'next-clock'; await destroy.sync();
-    assert.equal(indicator(), same, 'irrelevant activity metadata does not repaint the account');
-    current = { status: 'unavailable' }; await destroy.sync();
-    assert.match(indicator().textContent, /Status unavailable/); assert.doesNotMatch(indicator().textContent, /Set up|Active|Paused/);
-    assert.ok(root.querySelector('.gcsp-feature'), 'a failed status read leaves the cars available');
+    await destroy.sync(); await tick(); await destroy.refresh(); await tick();
+    assert.equal(reads, 0); assert.equal(root.querySelector('.gcsp-buddy-link'), null);
+    assert.ok(root.querySelector('.gcsp-feature'), 'the cars stay available');
   } finally { destroy(); root.remove(); }
 });
 
 // Your cars layout (10 November): head row, car, Your preferences, then the secondary components.
-test('the page head carries the title and Buddy indicator; Your details closes the page and Refresh shows only when stale', async () => {
+test('the page head carries the title only without the preferences capability; Your details closes the page and Refresh shows only when stale', async () => {
   const input = unnamed('ready');
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
     const body = root.querySelector('.gcsp-account-body');
     const head = body.querySelector('.gcsp-account-head');
     assert.ok(head.querySelector('h1')); assert.equal(head.querySelector('.vm-kicker'), null);
-    assert.equal(head.children.length, 2); assert.ok(head.querySelector('.gcsp-buddy-link'));
+    assert.equal(head.children.length, 1); assert.equal(head.querySelector('.gcsp-buddy-status'), null);
     assert.equal(body.querySelector('.gcsp-account-fresh'), null);
     assert.doesNotMatch(body.textContent, /Account as of/);
     assert.equal(head.querySelector('button'), null, 'Refresh only when stale');
@@ -1489,15 +1473,16 @@ test('FUCQ-370: the Buddy lamp sits at the right of the head, survives quiet red
     preferences: (region, { signal }) => { mounted = mountAccountPreferences(region, { signal, transport: previewPreferenceTransport('selected', { buddy: 'engaged' }) }); return mounted; } });
   try {
     await mounted.ready; await tick();
-    const head = view.root.querySelector('.gcsp-account-head'); const lamp = head.querySelector('.gcsp-buddy-engagement');
+    const head = view.root.querySelector('.gcsp-account-head'); const lamp = head.querySelector('.gcsp-buddy-status.is-prominent');
     assert.ok(lamp); assert.equal(lamp.textContent, 'Buddy engaged'); assert.equal(head.lastElementChild, lamp, 'the lamp is the last item of the head');
     assert.equal(head.querySelector('h1').textContent, 'Your cars');
     const before = (a, b) => Boolean(a.compareDocumentPosition(b) & window.Node.DOCUMENT_POSITION_FOLLOWING);
     assert.ok(before(view.root.querySelector('.gcsp-feature'), view.root.querySelector('.gcsp-account-preferences')));
     assert.ok(before(view.root.querySelector('.gcsp-account-preferences'), view.root.querySelector('.gcsp-account-history')));
     await view.destroy.sync(); await tick();
-    assert.ok(head.isConnected || view.root.querySelector('.gcsp-buddy-engagement')); assert.equal(view.root.querySelectorAll('.gcsp-buddy-engagement').length, 1);
+    assert.equal(view.root.querySelectorAll('.gcsp-buddy-status').length, 1, 'exactly one Buddy indicator on the page'); assert.equal(view.root.querySelector('.gcsp-buddy-link'), null);
+    assert.equal(head.children.length, 2, 'the title and the one prominent status');
   } finally { view.destroy(); view.root.remove(); }
   const plain = await domMount(readOnlyAdapter());
-  try { assert.equal(plain.root.querySelector('.gcsp-buddy-engagement'), null, 'no preferences capability, no lamp'); } finally { plain.destroy(); plain.root.remove(); }
+  try { assert.equal(plain.root.querySelector('.gcsp-buddy-status.is-prominent'), null, 'no preferences capability, no lamp'); } finally { plain.destroy(); plain.root.remove(); }
 });

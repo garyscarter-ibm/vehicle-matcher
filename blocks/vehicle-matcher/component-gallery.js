@@ -22,7 +22,7 @@ import { activityBody } from '../gcsp/activity/activity-body.js';
 import { activityOffer } from '../gcsp/activity/activity-offer.js';
 import { activityFixtures } from '../gcsp/activity/activity-fixtures.js';
 import { activityEvents } from '../gcsp/activity/activity-copy.js';
-import { buddyStatusExample, buddyEngagementExample, arrivalFocusExample, categoryPreferencesExample, sameAgainExample, formControlsExample, stageListExample, rangeBarExample, runRestartedExample, showMoreExample, tabsExample, notificationBellExample, releaseGridExample, releaseSkeletonExample } from '../gcsp/kit/form-controls-gallery.js';
+import { buddyStatusExample, arrivalFocusExample, categoryPreferencesExample, sameAgainExample, formControlsExample, stageListExample, rangeBarExample, runRestartedExample, showMoreExample, tabsExample, notificationBellExample, releaseGridExample, releaseSkeletonExample } from '../gcsp/kit/form-controls-gallery.js';
 import { starRatingExample } from '../gcsp/kit/rating-gallery.js';
 import { stageTracker } from '../gcsp/kit/stage-tracker.js';
 import { slotPicker } from '../gcsp/kit/slot-picker.js';
@@ -542,7 +542,7 @@ export function mountComponentGallery(root) {
   exact.append(exactControls, exactCards);
   sections.append(exact);
   root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), buddyStatusExample(), arrivalFocusExample(), gregKitExamples(), gregPublishExample(), gregOrderPlanExample(), gregComparisonExample(), launcherExamples(), activityExamples(), orderProgressExamples(), formControlsExample(), categoryPreferencesExample(), sameAgainExample(), stageListExample(), rangeBarExample(), showMoreExample(), tabsExample(), notificationBellExample(), releaseGridExample(), releaseSkeletonExample(), runRestartedExample());
-  root.append(starRatingExample(), buddyEngagementExample());
+  root.append(starRatingExample());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

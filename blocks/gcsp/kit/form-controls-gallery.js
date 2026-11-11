@@ -1,5 +1,4 @@
 import { buddyStatus } from './buddy-status.js';
-import { buddyEngagement } from './buddy-engagement.js';
 import { el, button, factList } from '../../vehicle-matcher/ui.js';
 import { labelledField, errorSummary, checkboxField } from './form-controls.js';
 import { categoryPreferences, preferenceCategories } from './category-preferences.js';
@@ -230,14 +229,8 @@ export function buddyStatusExample() {
     row.append(buddyStatus({ state, href: '/gcsp-activity-live.html' }), document.createTextNode(' '), buddyStatus({ state }));
     body.append(row);
   }
+  const strip = el('div'); strip.style.display = 'grid'; strip.style.gap = '16px';
+  ['engaged', 'disengaged', 'unknown'].forEach((state) => strip.append(buddyStatus({ prominent: true, id: `gallery-buddy-${state}`, state })));
+  body.append(strip);
   scope.append(body); section.append(scope); return section;
-}
-
-export function buddyEngagementExample() {
-  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-buddy-engagement';
-  section.append(el('h2', 'vm-gallery-title', 'GCSP Buddy engagement'));
-  const row = el('div', 'gcsp'); const strip = el('div', 'vm'); strip.style.display = 'grid'; strip.style.gap = '16px';
-  ['engaged', 'disengaged', 'unknown'].forEach((state) => strip.append(buddyEngagement({ id: `gallery-buddy-${state}`, state }).root));
-  row.append(strip); section.append(row);
-  return section;
 }

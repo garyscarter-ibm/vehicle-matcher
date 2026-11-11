@@ -293,7 +293,7 @@ async function mountBuddy(state = 'selected', options = {}) {
   await tick(); await mounted.ready; drivePreferenceState(mounted.controller, state); await tick();
   return { host, destroy, calls, controller: mounted.controller };
 }
-const lampText = (host) => host.querySelector('.gcsp-account-head .gcsp-buddy-engagement')?.textContent;
+const lampText = (host) => host.querySelector('.gcsp-account-head .gcsp-buddy-status.is-prominent')?.textContent;
 const action = (host) => host.querySelector('.gcsp-prefs-action button');
 
 test('the lamp sits in the head, the action in the footer slot, and there is no Save button anywhere', async () => {
@@ -301,7 +301,7 @@ test('the lamp sits in the head, the action in the footer slot, and there is no 
   assert.equal(lampText(host), 'Buddy engaged'); assert.equal(action(host).textContent, 'Disengage Buddy');
   assert.ok(action(host).classList.contains('vm-btn-primary')); assert.equal(action(host).closest('[data-slot="action"]') !== null, true);
   const describedBy = action(host).getAttribute('aria-describedby').split(' ');
-  assert.ok(describedBy.includes(host.querySelector('.gcsp-prefs-status').id)); assert.ok(describedBy.includes(host.querySelector('.gcsp-buddy-engagement').id));
+  assert.ok(describedBy.includes(host.querySelector('.gcsp-prefs-status').id)); assert.ok(describedBy.includes(host.querySelector('.gcsp-buddy-status.is-prominent').id));
   assert.equal([...host.querySelectorAll('button')].some((node) => /save/i.test(node.textContent)), false);
   destroy(); host.remove();
   const off = await mountBuddy('selected'); assert.equal(lampText(off.host), 'Buddy disengaged'); assert.equal(action(off.host).textContent, 'Engage Buddy'); off.destroy(); off.host.remove();
@@ -317,7 +317,7 @@ test('engage and disengage keep focus on the button and say it once in the statu
   assert.equal(calls.length, 1); assert.equal(lampText(host), 'Buddy engaged'); assert.equal(action(host).textContent, 'Disengage Buddy');
   assert.equal(statusText(host), 'Buddy engaged. Your preferences will guide the search.'); assert.equal(document.activeElement, action(host));
   assert.equal(host.querySelectorAll('[aria-live], [role=status]').length >= 1, true);
-  assert.equal(host.querySelector('.gcsp-buddy-engagement').hasAttribute('role'), false);
+  assert.equal(host.querySelector('.gcsp-buddy-status.is-prominent').hasAttribute('role'), false);
   click(action(host)); await tick(); await tick();
   assert.equal(lampText(host), 'Buddy disengaged'); assert.equal(statusText(host), 'Buddy disengaged. Your preferences are kept.'); assert.equal(document.activeElement, action(host));
   destroy(); host.remove();
@@ -361,5 +361,5 @@ test('Account refresh re-reads the lamp quietly, and without a preferences capab
   assert.equal(lampText(host), 'Buddy disengaged'); destroy(); host.remove();
   const bare = document.createElement('div'); document.body.append(bare);
   const stop = mountAccount(bare, { adapter: adapter() }); await tick(); await tick();
-  assert.equal(bare.querySelector('.gcsp-buddy-engagement'), null); stop(); bare.remove();
+  assert.equal(bare.querySelector('.gcsp-buddy-status.is-prominent'), null); stop(); bare.remove();
 });

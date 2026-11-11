@@ -9,7 +9,6 @@ import { toAccountView, journeyIntent } from './account-view.js';
 import { createAccountHttpAdapter } from './http-adapter.js';
 import { viewStatus } from '../kit/view-status.js';
 import { starRating } from '../kit/star-rating.js';
-import { buddyEngagement } from '../kit/buddy-engagement.js';
 import { latestOrderId } from '../order-progress/order-progress-controller.js';
 import { orderCar } from '../order-progress/order-car.js';
 import { sentence, orderCopy } from '../order-progress/order-progress-copy.js';
@@ -19,7 +18,7 @@ import { dataTable } from '../kit/data-table.js';
 import { sideDrawer } from '../kit/side-drawer.js';
 import { NO_IMAGE_TEXT, NO_IMAGE_YOUR_CAR } from '../kit/plain-copy.js';
 import { routePortal, PORTAL_ROUTES } from '../employee/portal-navigation.js';
-import { buddyState, buddyStatus } from '../kit/buddy-status.js';
+import { buddyStatus } from '../kit/buddy-status.js';
 
 let serial = 0;
 const MISSING = 'Not supplied';
@@ -370,7 +369,7 @@ function discardConfirm(controls, pending) {
 }
 
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
-export function renderAccountBody(main, { model, draft, offers = [], activity, pending = false, message, journey = false, confirmDiscard = false, controls, order, orderVehicle, restarted = false, reload, preferences, buddy } = {}) {
+export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, confirmDiscard = false, controls, order, orderVehicle, restarted = false, reload, preferences, buddy } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
   const head = el('div', 'gcsp-account-head');
@@ -380,11 +379,6 @@ export function renderAccountBody(main, { model, draft, offers = [], activity, p
   if (restarted || model.state === 'restarted' || isRunRestarted(draft)) {
     wrap.append(runRestartedScreen({ reload })); main.replaceChildren(wrap); return () => wrap.remove();
   }
-  if (!journey && model.account) head.append(buddyStatus({ state: buddyState(activity), href: PORTAL_ROUTES.activity,
-    onClick: controls.go ? (event) => {
-      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      event.preventDefault(); controls.go('activity');
-    } : undefined }));
   // Presenter actions refresh the page; Refresh shows only after a failure, a conflict or a stale saved journey.
   const failedRead = ['source-failure', 'conflict', 'refused'].includes(model.state);
   const refreshButton = (variant) => button({ label: 'Refresh', variant, disabled: pending, onClick: controls.refresh });
@@ -455,7 +449,7 @@ export function renderAccountBody(main, { model, draft, offers = [], activity, p
 
 export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, onNavigate, print, orderAdapter, helpAdapter, reload, preferences, notifications, signOut = adapter.readOnly !== true } = {}) {
   const abort = new AbortController();
-  let envelope; let draft; let offers; let activity; let main; let pending = false; let message = null; let journey = false; let disposed = false;
+  let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
   let generation = 0; let teardown; let loading; let finishPrint; let drawer; let orderRow; let orderVehicle; let restarted = false;
   let confirming = false; let syncVersion = 0; let region; let regionTeardown; const live = viewStatus();
   const ratings = new Map(); let rater; let stopRater; let lamp; let stopLamp;
@@ -515,7 +509,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       const found = regionTeardown?.controller;
       if (['rate', 'subscribe', 'snapshot'].every((name) => typeof found?.[name] === 'function')) {
         rater = found; stopRater = rater.subscribe(showRatings);
-        if (typeof found.refreshBuddy === 'function') { lamp = buddyEngagement({ id: 'gcsp-account-buddy-status' }); stopLamp = rater.subscribe(showLamp); showLamp(rater.snapshot()); }
+        if (typeof found.refreshBuddy === 'function') { lamp = buddyStatus({ prominent: true, id: 'gcsp-account-buddy-status' }); stopLamp = rater.subscribe(showLamp); showLamp(rater.snapshot()); }
       }
       return region;
     }
@@ -546,13 +540,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     feature.querySelector('.vm-card-media')?.append(ratings.get(id).root);
   }
   // The lamp follows the preferences controller's buddy lane; without that capability there is no lamp.
-  // A settled engagement change re-reads activity, so the FUCQ-389 indicator agrees with the lamp.
-  let lampState = null;
-  function showLamp(snap) {
-    const next = snap.buddy?.state; lamp?.update(next);
-    if (lampState && next !== lampState && ['engaged', 'disengaged'].includes(next) && !snap.buddy?.pending) sync();
-    if (next !== 'unknown') lampState = next;
-  }
+  function showLamp(snap) { lamp?.update(snap.buddy?.state); }
   function showRatings(snap) {
     const lane = snap.rating;
     if (lane && !ratings.has(lane.contractId)) { for (const feature of main?.querySelectorAll('.gcsp-feature[data-contract-id]') ?? []) rateCar(feature); }
@@ -565,8 +553,8 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     const focused = inRating && root.ownerDocument.activeElement;
     if (draft?.status !== 'ok') confirming = false;
     const model = toAccountView(envelope);
-    renderAccountBody(main, { model, draft, offers, activity, pending, message, journey, confirmDiscard: confirming, controls, order: orderRow, orderVehicle, restarted, reload,
-      preferences: model.account ? preferencesRegion() : undefined, buddy: model.account ? lamp?.root : undefined });
+    renderAccountBody(main, { model, draft, offers, pending, message, journey, confirmDiscard: confirming, controls, order: orderRow, orderVehicle, restarted, reload,
+      preferences: model.account ? preferencesRegion() : undefined, buddy: model.account ? lamp : undefined });
     if (message) live.announce(`${message.title}. ${message.text}`);
     if (focused && focused.isConnected && root.ownerDocument.activeElement !== focused) focused.focus();
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
@@ -593,13 +581,12 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   function holdOrder({ row, car }) { orderRow = row; orderVehicle = car; }
   async function loadAccount() {
     const version = ++generation;
-    const [accountResult, draftResult, offerResult, found, activityResult] = await Promise.all([read('readAccount'), read('readDraft'),
-      typeof adapter.readOffers === 'function' ? read('readOffers') : null, findOrder(), read('readActivity')]);
+    const [accountResult, draftResult, offerResult, found] = await Promise.all([read('readAccount'), read('readDraft'),
+      typeof adapter.readOffers === 'function' ? read('readOffers') : null, findOrder()]);
     if (disposed || version !== generation) return { status: 'unavailable' };
     orderRow = null; orderVehicle = null;
     if (found) holdOrder(found);
     envelope = accountResult; draft = draftResult; offers = offerResult?.status === 'ok' ? offerResult.value.offers : [];
-    activity = activityResult;
     const model = toAccountView(envelope);
     if (isRunRestarted(envelope)) return { status: envelope.status };
     return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', ...accountIdentity(model.account),
@@ -619,20 +606,19 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   async function sync() {
     if (pending || disposed || !main) return;
     const version = ++syncVersion; const base = generation;
-    const [accountResult, draftResult, offerResult, latest, activityResult] = await Promise.all([read('readAccount'), read('readDraft'),
-      typeof adapter.readOffers === 'function' ? read('readOffers') : null, listLatest(), read('readActivity')]);
+    const [accountResult, draftResult, offerResult, latest] = await Promise.all([read('readAccount'), read('readDraft'),
+      typeof adapter.readOffers === 'function' ? read('readOffers') : null, listLatest()]);
     if (disposed || pending || !main || version !== syncVersion || base !== generation) return;
     rater?.refreshBuddy?.();
     if (accountResult?.status !== 'ok' || !['ok', 'not-found'].includes(draftResult?.status) || !latest) return;
-    const before = JSON.stringify([envelope, draft, offers, buddyState(activity), orderRow?.orderUuid]);
+    const before = JSON.stringify([envelope, draft, offers, orderRow?.orderUuid]);
     const same = Boolean(latest.orderUuid) && latest.orderUuid === orderRow?.orderUuid;
     const next = latest.orderUuid && !same ? await describeOrder(latest) : null;
     if (disposed || pending || !main || version !== syncVersion || base !== generation || latest.orderUuid && !same && !next) return;
     if (same) orderRow = latest.orders.find((item) => item?.orderUuid === latest.orderUuid) ?? orderRow;
     else { orderRow = null; orderVehicle = null; if (next) holdOrder(next); }
     envelope = accountResult; draft = draftResult; if (offerResult?.status === 'ok') offers = offerResult.value.offers;
-    activity = activityResult;
-    if (JSON.stringify([envelope, draft, offers, buddyState(activity), orderRow?.orderUuid]) === before) return;
+    if (JSON.stringify([envelope, draft, offers, orderRow?.orderUuid]) === before) return;
     const win = root.ownerDocument.defaultView; const held = main.contains(root.ownerDocument.activeElement) && root.ownerDocument.activeElement.closest(FOCUSABLE);
     const key = held ? focusKeyOf(held) : null;
     keepScroll(win, () => draw());
