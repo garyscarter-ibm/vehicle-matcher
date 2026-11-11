@@ -1,6 +1,6 @@
 {
   "run": "fucq369-strict-capture",
-  "implementationCommit": "9335cbd5",
+  "implementationCommit": "8faebc18",
   "reference": {
     "commit": "193cbf07",
     "dir": "docs/gcsp/mockups/account-preferences-2026-11-10/review"
@@ -848,7 +848,7 @@
         "removalOpen": false,
         "tooltips": [],
         "stars": "5",
-        "status": "More like your current car. Preferences save automatically.",
+        "status": "Preferences saved automatically.",
         "tryAgain": [],
         "domOrder": {
           "carBeforePreferences": true,
@@ -1032,7 +1032,7 @@
       },
       "manifestFeedback": "Preferences saved automatically.",
       "manifestActive": "same-again",
-      "observedStatus": "More like your current car. Preferences save automatically.",
+      "observedStatus": "Preferences saved automatically.",
       "observedActive": "gcsp-account-prefs-1-same-again",
       "sameAgainOnFocusSwitch": true,
       "implementationImage": "1440-same-again-implementation.jpg",
@@ -1192,7 +1192,7 @@
         "removalOpen": false,
         "tooltips": [],
         "stars": null,
-        "status": "More like your current car. Preferences save automatically.",
+        "status": "Preferences saved automatically.",
         "tryAgain": [],
         "domOrder": {
           "carBeforePreferences": true,
@@ -1376,7 +1376,7 @@
       },
       "manifestFeedback": "Preferences saved automatically.",
       "manifestActive": "same-again",
-      "observedStatus": "More like your current car. Preferences save automatically.",
+      "observedStatus": "Preferences saved automatically.",
       "observedActive": "gcsp-account-prefs-1-same-again",
       "sameAgainOnFocusSwitch": true,
       "implementationImage": "1440-same-again-retained-high-implementation.jpg",
@@ -3118,20 +3118,20 @@
         "scoreBox": {
           "x": 97,
           "y": 768.19,
-          "width": 227.06,
+          "width": 674,
           "height": 37
         },
-        "scoreWidthVsSection": 0.314,
+        "scoreWidthVsSection": 0.931,
         "meterBox": {
           "x": 97,
           "y": 800.19,
-          "width": 227.06,
+          "width": 674,
           "height": 5
         },
         "valueBox": {
-          "x": 258.16,
+          "x": 481.63,
           "y": 768.19,
-          "width": 65.91,
+          "width": 289.38,
           "height": 28
         },
         "modeBox": {
@@ -3246,9 +3246,9 @@
             "dy": 90
           },
           "sectionHeight": 514,
-          "scoreWidth": 227.06,
-          "valueRight": 471.93,
-          "meterWidth": 227.06
+          "scoreWidth": 674,
+          "valueRight": 24.99,
+          "meterWidth": 674
         }
       },
       "errors": [],
@@ -3456,20 +3456,20 @@
         "scoreBox": {
           "x": 33,
           "y": 981,
-          "width": 227.06,
+          "width": 309,
           "height": 37
         },
-        "scoreWidthVsSection": 0.662,
+        "scoreWidthVsSection": 0.901,
         "meterBox": {
           "x": 33,
           "y": 1013,
-          "width": 227.06,
+          "width": 309,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 235.13,
           "y": 981,
-          "width": 65.91,
+          "width": 106.88,
           "height": 28
         },
         "modeBox": {
@@ -3584,9 +3584,9 @@
             "dy": 103
           },
           "sectionHeight": 584,
-          "scoreWidth": 227.06,
-          "valueRight": 98.93,
-          "meterWidth": 227.06
+          "scoreWidth": 309,
+          "valueRight": 16.99,
+          "meterWidth": 309
         }
       },
       "errors": [],
@@ -3794,20 +3794,20 @@
         "scoreBox": {
           "x": 33,
           "y": 1019.06,
-          "width": 227.06,
+          "width": 254,
           "height": 37
         },
-        "scoreWidthVsSection": 0.788,
+        "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
           "y": 1051.06,
-          "width": 227.06,
+          "width": 254,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 207.63,
           "y": 1019.06,
-          "width": 65.91,
+          "width": 79.38,
           "height": 28
         },
         "modeBox": {
@@ -3922,9 +3922,9 @@
             "dy": 103
           },
           "sectionHeight": 620,
-          "scoreWidth": 227.06,
-          "valueRight": 43.93,
-          "meterWidth": 227.06
+          "scoreWidth": 254,
+          "valueRight": 16.99,
+          "meterWidth": 254
         }
       },
       "errors": [],
@@ -4134,20 +4134,20 @@
         "scoreBox": {
           "x": 33,
           "y": 1019.06,
-          "width": 235.7,
+          "width": 254,
           "height": 37
         },
-        "scoreWidthVsSection": 0.818,
+        "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
           "y": 1051.06,
-          "width": 235.7,
+          "width": 254,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 203.3,
           "y": 1019.06,
-          "width": 74.55,
+          "width": 83.7,
           "height": 28
         },
         "modeBox": {
@@ -4236,7 +4236,7 @@
         "removalOpen": false,
         "tooltips": [],
         "stars": "4",
-        "status": "More like your current car. Preferences save automatically.",
+        "status": "Preferences saved automatically.",
         "tryAgain": [],
         "domOrder": {
           "carBeforePreferences": true,
@@ -4262,9 +4262,9 @@
             "dy": 103
           },
           "sectionHeight": 620,
-          "scoreWidth": 235.7,
-          "valueRight": 35.29,
-          "meterWidth": 235.7
+          "scoreWidth": 254,
+          "valueRight": 17,
+          "meterWidth": 254
         }
       },
       "errors": [],
@@ -4420,7 +4420,7 @@
       },
       "manifestFeedback": "Preferences saved automatically.",
       "manifestActive": "same-again",
-      "observedStatus": "More like your current car. Preferences save automatically.",
+      "observedStatus": "Preferences saved automatically.",
       "observedActive": "gcsp-account-prefs-1-same-again",
       "sameAgainOnFocusSwitch": true,
       "implementationImage": "320-same-again-implementation.jpg",
@@ -4474,20 +4474,20 @@
         "scoreBox": {
           "x": 33,
           "y": 1019.06,
-          "width": 235.7,
+          "width": 254,
           "height": 37
         },
-        "scoreWidthVsSection": 0.818,
+        "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
           "y": 1051.06,
-          "width": 235.7,
+          "width": 254,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 203.3,
           "y": 1019.06,
-          "width": 74.55,
+          "width": 83.7,
           "height": 28
         },
         "modeBox": {
@@ -4576,7 +4576,7 @@
         "removalOpen": false,
         "tooltips": [],
         "stars": "4",
-        "status": "More like your current car. Preferences save automatically.",
+        "status": "Preferences saved automatically.",
         "tryAgain": [],
         "domOrder": {
           "carBeforePreferences": true,
@@ -4602,9 +4602,9 @@
             "dy": 103
           },
           "sectionHeight": 620,
-          "scoreWidth": 235.7,
-          "valueRight": 35.29,
-          "meterWidth": 235.7
+          "scoreWidth": 254,
+          "valueRight": 17,
+          "meterWidth": 254
         }
       },
       "errors": [],
@@ -4760,7 +4760,7 @@
       },
       "manifestFeedback": "Preferences saved automatically.",
       "manifestActive": "same-again",
-      "observedStatus": "More like your current car. Preferences save automatically.",
+      "observedStatus": "Preferences saved automatically.",
       "observedActive": "gcsp-account-prefs-1-same-again",
       "sameAgainOnFocusSwitch": true,
       "implementationImage": "320-same-again-neutral-implementation.jpg",
@@ -4814,20 +4814,20 @@
         "scoreBox": {
           "x": 33,
           "y": 1019.06,
-          "width": 227.06,
+          "width": 254,
           "height": 37
         },
-        "scoreWidthVsSection": 0.788,
+        "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
           "y": 1051.06,
-          "width": 227.06,
+          "width": 254,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 207.63,
           "y": 1019.06,
-          "width": 65.91,
+          "width": 79.38,
           "height": 28
         },
         "modeBox": {
@@ -4954,9 +4954,9 @@
             "dy": 103
           },
           "sectionHeight": 620,
-          "scoreWidth": 227.06,
-          "valueRight": 43.93,
-          "meterWidth": 227.06
+          "scoreWidth": 254,
+          "valueRight": 16.99,
+          "meterWidth": 254
         }
       },
       "errors": [],
@@ -6198,20 +6198,20 @@
         "scoreBox": {
           "x": 33,
           "y": 981,
-          "width": 227.06,
+          "width": 309,
           "height": 37
         },
-        "scoreWidthVsSection": 0.662,
+        "scoreWidthVsSection": 0.901,
         "meterBox": {
           "x": 33,
           "y": 1013,
-          "width": 227.06,
+          "width": 309,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 235.13,
           "y": 981,
-          "width": 65.91,
+          "width": 106.88,
           "height": 28
         },
         "modeBox": {
@@ -6326,9 +6326,9 @@
             "dy": 103
           },
           "sectionHeight": 584,
-          "scoreWidth": 227.06,
-          "valueRight": 98.93,
-          "meterWidth": 227.06
+          "scoreWidth": 309,
+          "valueRight": 16.99,
+          "meterWidth": 309
         }
       },
       "errors": [],
@@ -6911,20 +6911,20 @@
         "scoreBox": {
           "x": 33,
           "y": 981,
-          "width": 227.06,
+          "width": 309,
           "height": 37
         },
-        "scoreWidthVsSection": 0.662,
+        "scoreWidthVsSection": 0.901,
         "meterBox": {
           "x": 33,
           "y": 1013,
-          "width": 227.06,
+          "width": 309,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 235.13,
           "y": 981,
-          "width": 65.91,
+          "width": 106.88,
           "height": 28
         },
         "modeBox": {
@@ -7055,9 +7055,9 @@
             "dy": 103
           },
           "sectionHeight": 584,
-          "scoreWidth": 227.06,
-          "valueRight": 98.93,
-          "meterWidth": 227.06
+          "scoreWidth": 309,
+          "valueRight": 16.99,
+          "meterWidth": 309
         }
       },
       "errors": [],
@@ -7517,7 +7517,7 @@
         "removalOpen": false,
         "tooltips": [],
         "stars": "4",
-        "status": "3 categories considered \u00b7 Saved automatically",
+        "status": "Preferences saved automatically.",
         "tryAgain": [],
         "domOrder": {
           "carBeforePreferences": true,
@@ -7740,20 +7740,20 @@
         "scoreBox": {
           "x": 33,
           "y": 1019.06,
-          "width": 227.06,
+          "width": 254,
           "height": 37
         },
-        "scoreWidthVsSection": 0.788,
+        "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
           "y": 1051.06,
-          "width": 227.06,
+          "width": 254,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 207.63,
           "y": 1019.06,
-          "width": 65.91,
+          "width": 79.38,
           "height": 28
         },
         "modeBox": {
@@ -7871,20 +7871,20 @@
         "scoreBox": {
           "x": 33,
           "y": 1019.06,
-          "width": 227.06,
+          "width": 254,
           "height": 37
         },
-        "scoreWidthVsSection": 0.788,
+        "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
           "y": 1051.06,
-          "width": 227.06,
+          "width": 254,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 207.63,
           "y": 1019.06,
-          "width": 65.91,
+          "width": 79.38,
           "height": 28
         },
         "modeBox": {
@@ -7973,7 +7973,7 @@
         "removalOpen": false,
         "tooltips": [],
         "stars": "4",
-        "status": "3 categories considered \u00b7 Saved automatically",
+        "status": "Preferences saved automatically.",
         "tryAgain": [],
         "domOrder": {
           "carBeforePreferences": true,
@@ -7999,9 +7999,9 @@
             "dy": 103
           },
           "sectionHeight": 620,
-          "scoreWidth": 227.06,
-          "valueRight": 43.93,
-          "meterWidth": 227.06
+          "scoreWidth": 254,
+          "valueRight": 16.99,
+          "meterWidth": 254
         }
       },
       "errors": [],
@@ -8433,7 +8433,7 @@
         "removalOpen": false,
         "tooltips": [],
         "stars": null,
-        "status": "1 of 3 categories considered \u00b7 Preferences save automatically",
+        "status": "Preferences saved automatically.",
         "tryAgain": [],
         "domOrder": {
           "carBeforePreferences": true,
@@ -8825,20 +8825,20 @@
         "scoreBox": {
           "x": 33,
           "y": 538.19,
-          "width": 227.06,
+          "width": 254,
           "height": 37
         },
-        "scoreWidthVsSection": 0.788,
+        "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
           "y": 570.19,
-          "width": 227.06,
+          "width": 254,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 207.63,
           "y": 538.19,
-          "width": 65.91,
+          "width": 79.38,
           "height": 28
         },
         "modeBox": {
@@ -8953,9 +8953,9 @@
             "dy": 103
           },
           "sectionHeight": 645,
-          "scoreWidth": 227.06,
-          "valueRight": 43.93,
-          "meterWidth": 227.06
+          "scoreWidth": 254,
+          "valueRight": 16.99,
+          "meterWidth": 254
         }
       },
       "errors": [],
@@ -9171,20 +9171,20 @@
         "scoreBox": {
           "x": 33,
           "y": 1019.06,
-          "width": 235.7,
+          "width": 254,
           "height": 37
         },
-        "scoreWidthVsSection": 0.818,
+        "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
           "y": 1051.06,
-          "width": 235.7,
+          "width": 254,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 203.3,
           "y": 1019.06,
-          "width": 74.55,
+          "width": 83.7,
           "height": 28
         },
         "modeBox": {
@@ -9301,9 +9301,9 @@
             "dy": 103
           },
           "sectionHeight": 645,
-          "scoreWidth": 235.7,
-          "valueRight": 35.29,
-          "meterWidth": 235.7
+          "scoreWidth": 254,
+          "valueRight": 17,
+          "meterWidth": 254
         }
       },
       "errors": [],
@@ -9554,20 +9554,20 @@
         "scoreBox": {
           "x": 33,
           "y": 1019.06,
-          "width": 227.06,
+          "width": 254,
           "height": 37
         },
-        "scoreWidthVsSection": 0.788,
+        "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
           "y": 1051.06,
-          "width": 227.06,
+          "width": 254,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 207.63,
           "y": 1019.06,
-          "width": 65.91,
+          "width": 79.38,
           "height": 28
         },
         "modeBox": {
@@ -9697,20 +9697,20 @@
         "scoreBox": {
           "x": 33,
           "y": 1019.06,
-          "width": 235.7,
+          "width": 254,
           "height": 37
         },
-        "scoreWidthVsSection": 0.818,
+        "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
           "y": 1051.06,
-          "width": 235.7,
+          "width": 254,
           "height": 5
         },
         "valueBox": {
-          "x": 194.16,
+          "x": 203.3,
           "y": 1019.06,
-          "width": 74.55,
+          "width": 83.7,
           "height": 28
         },
         "modeBox": {
@@ -9811,7 +9811,7 @@
           }
         ],
         "stars": "4",
-        "status": "More like your current car. Preferences save automatically.",
+        "status": "Preferences saved automatically.",
         "tryAgain": [],
         "domOrder": {
           "carBeforePreferences": true,
@@ -9837,9 +9837,9 @@
             "dy": 103
           },
           "sectionHeight": 620,
-          "scoreWidth": 235.7,
-          "valueRight": 35.29,
-          "meterWidth": 235.7
+          "scoreWidth": 254,
+          "valueRight": 17,
+          "meterWidth": 254
         }
       },
       "errors": [],
@@ -12397,12 +12397,12 @@
     {
       "state": "820-selected",
       "label": "understanding block width and right inset match the reference (1px)",
-      "pass": false,
+      "pass": true,
       "detail": {
         "impl": [
-          227.06,
-          471.93,
-          227.06
+          674,
+          24.99,
+          674
         ],
         "ref": [
           674,
@@ -12659,12 +12659,12 @@
     {
       "state": "375-selected",
       "label": "understanding block width and right inset match the reference (1px)",
-      "pass": false,
+      "pass": true,
       "detail": {
         "impl": [
-          227.06,
-          98.93,
-          227.06
+          309,
+          16.99,
+          309
         ],
         "ref": [
           309,
@@ -12921,12 +12921,12 @@
     {
       "state": "320-long",
       "label": "understanding block width and right inset match the reference (1px)",
-      "pass": false,
+      "pass": true,
       "detail": {
         "impl": [
-          227.06,
-          43.93,
-          227.06
+          254,
+          16.99,
+          254
         ],
         "ref": [
           254,
@@ -13183,12 +13183,12 @@
     {
       "state": "320-same-again",
       "label": "understanding block width and right inset match the reference (1px)",
-      "pass": false,
+      "pass": true,
       "detail": {
         "impl": [
-          235.7,
-          35.29,
-          235.7
+          254,
+          17,
+          254
         ],
         "ref": [
           254,
@@ -13464,12 +13464,12 @@
     {
       "state": "320-same-again-neutral",
       "label": "understanding block width and right inset match the reference (1px)",
-      "pass": false,
+      "pass": true,
       "detail": {
         "impl": [
-          235.7,
-          35.29,
-          235.7
+          254,
+          17,
+          254
         ],
         "ref": [
           254,
@@ -13756,12 +13756,12 @@
     {
       "state": "320-same-tooltip-long",
       "label": "understanding block width and right inset match the reference (1px)",
-      "pass": false,
+      "pass": true,
       "detail": {
         "impl": [
-          227.06,
-          43.93,
-          227.06
+          254,
+          16.99,
+          254
         ],
         "ref": [
           254,
@@ -14816,12 +14816,12 @@
     {
       "state": "375-engaged",
       "label": "understanding block width and right inset match the reference (1px)",
-      "pass": false,
+      "pass": true,
       "detail": {
         "impl": [
-          227.06,
-          98.93,
-          227.06
+          309,
+          16.99,
+          309
         ],
         "ref": [
           309,
@@ -15361,12 +15361,12 @@
     {
       "state": "375-record-drawer",
       "label": "understanding block width and right inset match the reference (1px)",
-      "pass": false,
+      "pass": true,
       "detail": {
         "impl": [
-          227.06,
-          98.93,
-          227.06
+          309,
+          16.99,
+          309
         ],
         "ref": [
           309,
@@ -15778,12 +15778,12 @@
     {
       "state": "320-restored",
       "label": "understanding block width and right inset match the reference (1px)",
-      "pass": false,
+      "pass": true,
       "detail": {
         "impl": [
-          227.06,
-          43.93,
-          227.06
+          254,
+          16.99,
+          254
         ],
         "ref": [
           254,
@@ -16424,18 +16424,8 @@
   ],
   "summary": {
     "checks": 470,
-    "passed": 461,
-    "failed": [
-      "820-selected: understanding block width and right inset match the reference (1px)",
-      "375-selected: understanding block width and right inset match the reference (1px)",
-      "320-long: understanding block width and right inset match the reference (1px)",
-      "320-same-again: understanding block width and right inset match the reference (1px)",
-      "320-same-again-neutral: understanding block width and right inset match the reference (1px)",
-      "320-same-tooltip-long: understanding block width and right inset match the reference (1px)",
-      "375-engaged: understanding block width and right inset match the reference (1px)",
-      "375-record-drawer: understanding block width and right inset match the reference (1px)",
-      "320-restored: understanding block width and right inset match the reference (1px)"
-    ]
+    "passed": 470,
+    "failed": []
   },
   "countStrip": "1440-count-strip-implementation.jpg"
 }
