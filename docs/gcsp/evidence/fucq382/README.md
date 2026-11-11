@@ -1,0 +1,35 @@
+# FUCQ-382 — final development evidence, 11 November 2026
+
+FUCQ-382 is Built against its original three criteria. Source checkpoint `593b3c737316297d27e6b1c410c6e17700451e56` is integrated with shared source/evidence `9089a8158765459f198be05f178fd6e2b5d494e8` and current `gcsp-poc` `c4262f40` in `b99caca605e675e0d65f378c46f7848c95f3718f`. This records development completion for parent integration; it does not transition Jira or establish collaborator acceptance, external deployment or a full-suite pass.
+
+## Original acceptance criteria
+
+| Criterion | Evidence and disposition |
+| --- | --- |
+| AC1 — trace actual generated stock to admitted facts | `gcsp-generated-configuration-offer.test.js:35–71` uses the real retained registry, generated stock provider and next release. Order `b6fb9510-7f2d-44b7-bf5b-f651b68f9698` traces to manifest `7c9cc707…45a9c` and snapshot `bmw-gb-optional-axis-suffix-193-2026-11-07.v2`. Exact paint is Alpine White, upholstery Econeer Bicolour Blue, with 41 readable non-appearance selected labels and three ordered images. All 240 admitted transmission fields are null: gearbox remains explicitly unknown. |
+| AC2 — preserve exact facts/provenance and historical pins | The same actual producer regression verifies source attribution, real recommendation/BuddyHold pin, public OfferAccess facts and projection. After a controlled successor dictionary changes paint and current stock is enriched, the issued quote, terms and projected card stay unchanged (`:81–117`). Canonical missing/wrong/substituted identity associations fail closed in `gcsp-vehicle-evidence-lookup.test.js:116–139`. |
+| AC3 — readable supported selected codes or genuine gaps | Exact selected-code joins preserve their source/model/market/generation association. Actual same-model generated configurations retain different options, and an actual unresolved-definition row stays explicit (`:55–63`). The equipment remains selected catalogue evidence; available/verified physical fitment stay unknown. No generic equipment list is substituted. |
+
+[Independent source review](independent-source-review.md) passes the stable producer checkpoint. [Final independent combined review](../fucq386/independent-visual-review.md) passes the corrected rendered source `22176eb2393c644151c097bc1022998b67c1fe29`. The author also inspected the corrected desktop and 375px collapsed offer plus the actual 320px keyboard-expanded equipment list: core facts and comparison retain a compact hierarchy while all supplied labels remain legible and available. The original supplied feedback screenshot is diagnosis context, not claimed as a live reproduction.
+
+The complete local HTTPS journey reads retained corpus, generates/releases real stock, confirms Paula's hatchback/five-seat brief and allocates through BuddyHold before token exchange. [Combined checks and captures](../fucq386/README.md) cover actual access/decision/readback at 1440/375/320. The corrected equipment check compares every one of the 41 source-order labels, keyboard opening/closing and the final rendered comparison. Actual expiry/access refusal remains truthful. No fixture stock insertion or user-browser credential/profile reuse establishes this proof.
+
+## Validation reuse and actual failures
+
+[Validation identity and receipt](validation-reuse.json) records all 11 producer/scoring/test hashes, both exact scoped commands and their original input/environment identities. All 11 still match the final merge. All 20 shared relevant hashes also match. The final merge tree is identical to shared `9089a815`; finalization changes only this Bug's Result, evidence and map facts. No new tests or browser run were necessary.
+
+- Producer, complete generator and complete lookup files: **38 selected, 37 pass, 0 fail, 1 explicit native PostgreSQL skip**, 48.5 seconds. The generic stamp's skipped-zero field is wrong; the raw Node PostgreSQL skip is authoritative.
+- After the `ac6bccdc` option-scoring reconciliation: **11 selected, 11 pass, 0 fail, 0 skip**, 32.4 seconds. This reruns the actual producer, nine option-scoring tests and default generated-run selection. Counts overlap and are not a combined full-suite total.
+- The later changed disclosure/projection boundary has its own **160 pass, 0 fail, 0 skip**; the corrected stylesheet ratchet has **4 pass**. Earlier actual decision trials reuse unchanged authority/controller code. See the combined scoped records and independent review for exact identities.
+
+The initial producer upholstery-loss and attributed-fact/provenance regressions failed before repair. Other retained attempts include missing dependencies, a resource admission refusal with no allocation, legacy fixture shape, an incorrect known-transmission assertion, the real null-VIN serialization/release gap and an incorrect brief enum. Setup and harness mistakes are distinguished from product defects. The combined evidence preserves ambiguous gallery-locator, immutable-row and literal “Session ended” failures before their corrected proofs. Those attempts are not reported as passing.
+
+Native PostgreSQL remains unrun because `GCSP_DATABASE_URL` is unset; memory proof is not PostgreSQL proof. Other final-base run-stock variants, retail/mail and the full application suite were not selected for this bounded propagation repair. Unrelated FUCQ-387 ratchet and FUCQ-344 diagnostics remain separate. Definition coverage is 239/240 configurations and 11,900/11,947 selected codes; the G61/i5 exact-source gap remains explicit. Catalogue selection does not establish a manufacturer's complete build sheet or delivered-car fitment. OfferAccess deliberately omits private synthetic/configuration evidence: public fact/provenance parity does not mean whole private/public snapshot equality.
+
+## Resources and remaining disposition
+
+[Source cleanup receipt](source-cleanup-receipt.json) and [independent audit](independent-cleanup-audit.json) verify all ten F382 roots, owned process groups and temporary dependency links absent. Recorded scratch peaks total 16,635,744 bytes; maximum observed RSS is 698,269,696 bytes. Two retained source samples total 466,797 bytes. F382 needed no compatibility exception, archive or large output and has no leftover allocation.
+
+The parent's prefinal audit independently finds all 66 combined manifest-owned roots/groups absent, including all 23 F386 allocations. Its path and timestamp are retained in `validation-reuse.json`; the tracked combined receipt covers profiles/TLS/inventory as bounded active compatibility exceptions and confirms their removal. This finalization started no tests, browser, server, descendants, dependency links or scratch, so there is no new disposable allocation. Worktree/branch/lease cleanup remains the parent's closure duty.
+
+Agent: Sniffles, requested/selected `gpt-6.1-sol` with `xhigh` reasoning under the human override; no fallback or descendants. The original three criteria and out-of-scope boundaries remain unchanged. Parent owns distinct Story integration, Jira status, acceptance and worktree closure.

@@ -4817,28 +4817,32 @@
       "observed_at": "2026-11-11T13:53:15Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-382",
       "unsliced": false,
-      "note": "Diagnosis-only/no-pickup hold preserved. No repair or live reproduction claimed.",
+      "note": "Repair authorised on 11 November 2026; original AC1–3 Built with local actual generated-stock, recommendation, pinned-offer and independently reviewed rendered evidence. Genuine definition, transmission and fitment gaps remain explicit; no external deployment, full-suite or collaborator/Jira acceptance claim. docs/gcsp/evidence/fucq382/README.md",
       "slices": [
         {
           "id": "source",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Preserve-exact-source-facts-and-provenance",
-          "observed_at": "2026-11-11T13:53:15Z",
-          "evidence": "Causal RED regression verified; minimal producer/attributed-fact repair applied, integration GREEN pending"
+          "observed_at": "2026-11-11T14:42:07Z",
+          "evidence": "Original AC1/2: actual retained producer facts, provenance and pin propagation pass; 11 mapped hashes unchanged in shared 9089a815. Source 37 pass/1 PG skip and final 11 pass are scoped, not additive. docs/gcsp/evidence/fucq382/README.md"
         },
         {
           "id": "identity",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reconcile-generated-stock-identity-with-existing-lookup",
-          "observed_at": "2026-11-11T13:53:15Z",
-          "evidence": "Canonical association writer and legacy-compatible lookup reader applied, actual lookup proof pending"
+          "observed_at": "2026-11-11T14:42:07Z",
+          "evidence": "Canonical exact-stock association plus missing, wrong and substituted identity boundaries pass at unchanged source 593b3c737; the actual order UUID resolves to the admitted configuration. Independent source PASS. docs/gcsp/evidence/fucq382/independent-source-review.md"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Real-producer-to-pinned-offer-and-rendered-review"
+          "status": "complete",
+          "title": "Real-producer-to-pinned-offer-and-rendered-review",
+          "observed_at": "2026-11-11T14:42:07Z",
+          "evidence": "Original AC1–3 complete through actual generated release, recommendation, pin, access and rendered comparison. Historical quote immutable; genuine definition gaps explicit. Independent corrected 1440/375/320 PASS at 22176eb2; final shared 9089a815. docs/gcsp/evidence/fucq382/README.md"
         }
-      ]
+      ],
+      "workers": [],
+      "development_observed_at": "2026-11-11T14:42:07Z"
     },
     {
       "id": "FUCQ-386",
