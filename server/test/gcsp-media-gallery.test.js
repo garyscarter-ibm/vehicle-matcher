@@ -2,6 +2,7 @@ import { test, before, after, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { installDom, resetDom } from './dom-harness.js';
 import { mediaGallery } from '../../blocks/gcsp/kit/media-gallery.js';
+import { mediaGalleryExamples } from '../../blocks/gcsp/kit/media-gallery-examples.js';
 import { readFile } from 'node:fs/promises';
 
 const catalogue = JSON.parse(await readFile(new URL('../data/gcsp/vehicle-evidence/display-images.v1.json', import.meta.url)));
@@ -65,12 +66,23 @@ test('empty and single galleries have useful image fallbacks and no phantom navi
   single.destroy(); empty.destroy();
 });
 
+test('a historical retained photo without fidelity stays a single image', () => {
+  const gallery = mount([{ src: images()[0].src, alt: 'BMW car' }]);
+  assert.equal(gallery.root.querySelector('.vm-card-photo').getAttribute('src'), images()[0].src);
+  assert.equal(gallery.root.querySelector('.gcsp-media-gallery-thumbs'), null);
+  gallery.destroy();
+});
+
 test('broken image hides magnifier and broken icons while other views remain selectable', () => {
   const gallery = mount();
   gallery.root.querySelector('.gcsp-media-gallery-feature .vm-card-photo').dispatchEvent(new window.Event('error'));
   assert.equal(gallery.root.querySelector('.gcsp-media-gallery-enlarge').hidden, true);
   assert.equal(gallery.root.querySelector('.gcsp-media-gallery-feature .vm-card-photo'), null);
   assert.match(gallery.root.textContent, /Image unavailable/);
+  const unavailable = gallery.root.querySelector('.gcsp-media-gallery-thumbs button');
+  assert.equal(unavailable.getAttribute('aria-pressed'), 'true');
+  assert.equal(unavailable.classList.contains('is-unavailable'), true);
+  assert.equal(unavailable.querySelector('img'), null);
   gallery.root.querySelectorAll('.gcsp-media-gallery-thumbs button')[1].click();
   gallery.root.querySelector('.gcsp-media-gallery-feature .vm-card-photo').dispatchEvent(new window.Event('load'));
   assert.equal(gallery.root.querySelector('.gcsp-media-gallery-enlarge').hidden, false);
@@ -82,4 +94,16 @@ test('unknown remote and falsely exact sources cannot enter a gallery', () => {
   assert.equal(gallery.root.querySelector('img'), null);
   assert.equal(gallery.root.querySelector('button'), null);
   gallery.destroy();
+});
+
+test('shared component examples render retained, single, empty and unavailable galleries and tear down viewers', () => {
+  const examples = mediaGalleryExamples(); document.body.append(examples);
+  assert.equal(examples.querySelectorAll('.gcsp-media-gallery').length, 4);
+  const galleries = examples.querySelectorAll('.gcsp-media-gallery');
+  assert.equal(galleries[0].querySelectorAll('.gcsp-media-gallery-thumbs button').length, 3);
+  assert.equal(galleries[1].querySelector('.gcsp-media-gallery-thumbs'), null);
+  assert.equal(galleries[2].querySelector('button'), null);
+  assert.ok(galleries[3].querySelector('.is-unavailable[aria-pressed="true"]'));
+  galleries[0].querySelector('.gcsp-media-gallery-enlarge').click();
+  examples.destroy(); assert.equal(galleries[0].querySelector('dialog').open, false);
 });

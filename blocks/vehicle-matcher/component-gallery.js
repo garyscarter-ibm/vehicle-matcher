@@ -16,6 +16,7 @@ import { fixtureMessages } from '../gcsp/presenter/fixtures.js';
 import { metricTile } from '../gcsp/kit/metric-tile.js';
 import { dataTable } from '../gcsp/kit/data-table.js';
 import { decisionHighlights, finishLabel } from '../gcsp/kit/vehicle-decision.js';
+import { mediaGalleryExamples } from '../gcsp/kit/media-gallery-examples.js';
 import { mountPresenterControls } from '../gcsp/presenter-controls/controls.js';
 import { presenterBar } from '../gcsp/kit/presenter-bar.js';
 import { activityTimeline } from '../gcsp/kit/activity-timeline.js';
@@ -485,6 +486,7 @@ function launcherExamples() {
 
 export function mountComponentGallery(root) {
   root.querySelectorAll('.gcsp-action-menu').forEach((menu) => menu.destroy?.());
+  root.querySelectorAll('[data-media-gallery-examples]').forEach((examples) => examples.destroy?.());
   const browseScope = { kind: 'browse', id: browseSession };
   let browseFeedback = createFeedbackState(browseScope);
   const employeeScope = { kind: 'employee-draft', id: 'gallery-employee-fixture' };
@@ -553,7 +555,7 @@ export function mountComponentGallery(root) {
   exact.append(exactControls, exactCards);
   sections.append(exact);
   root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), buddyStatusExample(), arrivalFocusExample(), gregKitExamples(), gregPublishExample(), gregOrderPlanExample(), gregComparisonExample(), launcherExamples(), activityExamples(), orderProgressExamples(), formControlsExample(), categoryPreferencesExample(), sameAgainExample(), stageListExample(), rangeBarExample(), showMoreExample(), tabsExample(), notificationBellExample(), releaseGridExample(), releaseSkeletonExample(), runRestartedExample());
-  root.append(starRatingExample());
+  root.append(starRatingExample(), mediaGalleryExamples());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

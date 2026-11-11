@@ -198,13 +198,19 @@ test('raw link token and fresh cookie never enter repository rows or automatic c
 
 test('nested projection preserves public image/fact provenance while excluding unrecognised private payloads', async () => {
   const f = await fixture({ mutateDecision(decision) {
-    decision.snapshot.display.images = [{ src: '/car.webp', alt: 'The offered car', employeeId: 'hidden-image-owner' }];
+    decision.snapshot.display.images = [
+      { src: '/car.webp', alt: 'The offered car', viewpoint: 'FRONTLEFT', label: 'Front exterior', employeeId: 'hidden-image-owner' },
+      { src: '/rear.webp', alt: 'The offered car from behind', viewpoint: 'REARLEFT', label: 'Rear exterior', sourceRef: 'retained-rear' },
+    ];
     decision.snapshot.facts.privateEmployee = fact('hidden-fact');
     decision.reasons.push({ code: 'safe-reason', employeeId: 'hidden-reason-owner', actual: { employeeId: 'hidden-nested-owner' } });
     decision.terms.allowanceInputs.employeePrivate = { value: 123, unit: 'points' };
   } });
   const access = await f.exchange(); assert.equal(access.status, 'ok'); const dto = access.value.offer;
-  assert.deepEqual(dto.quote.facts.display.images, [{ src: '/car.webp', alt: 'The offered car' }]);
+  assert.deepEqual(dto.quote.facts.display.images, [
+    { src: '/car.webp', alt: 'The offered car', viewpoint: 'FRONTLEFT', label: 'Front exterior' },
+    { src: '/rear.webp', alt: 'The offered car from behind', viewpoint: 'REARLEFT', label: 'Rear exterior', sourceRef: 'retained-rear' },
+  ]);
   assert.equal(dto.quote.facts.facts.seats.provenance.assurance, 'synthetic-scenario');
   assert.ok(!JSON.stringify(dto).match(/hidden-|privateEmployee|employeePrivate/));
   assert.deepEqual(dto.quote.decision.reasons.at(-1), { code: 'safe-reason' });

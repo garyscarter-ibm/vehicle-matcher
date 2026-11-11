@@ -1,6 +1,7 @@
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard } from '../../vehicle-matcher/modes/result-card.js';
 import { vehicleDecisionCard, decisionHighlights } from '../kit/vehicle-decision.js';
+import { mediaGallery } from '../kit/media-gallery.js';
 import { createDecisionDrawer } from './decision-drawer.js';
 import { stageList } from '../kit/stage-list.js';
 import { dataTable } from '../kit/data-table.js';
@@ -151,6 +152,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
   let previousState; let previousIdentity; let structure;
   let messageNode; let clockNode; let reasonNode; let decisionWasOpen = false;
   let followupRoot; let followupKey; let cleanupFollowup; let accepting = false;
+  let gallery;
   const clearFollowup = () => {
     const cleanup = cleanupFollowup; cleanupFollowup = undefined; followupKey = undefined;
     try { cleanup?.(); } catch { /* Teardown cannot prevent the offer from updating. */ }
@@ -190,13 +192,14 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
     const followupFocused = followupRoot?.contains(root.ownerDocument.activeElement);
     const inPage = content.contains(root.ownerDocument.activeElement);
     clearFollowup(); followupRoot = undefined;
+    gallery?.destroy(); gallery = undefined;
     content.replaceChildren(); if (!checking) showCheck('');
     const state = model.state;
     if (state === 'restarted' || state === 'access-lapsed') {
       // The offer page sits outside the access gate, so a lapsed key needs the access form, not a reload.
       const screen = state === 'restarted' ? runRestartedScreen() : accessLapsedScreen();
       messageNode = el('p'); messageNode.hidden = true; content.append(screen);
-      if (focused || followupFocused) screen.querySelector('.vm-btn')?.focus(); return;
+      if (focused || followupFocused || decisionWasOpen) screen.querySelector('.vm-btn')?.focus(); return;
     }
     const refused = isRefused(model);
     if (refused) {
@@ -265,7 +268,9 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
         member.facts = member.facts.filter((row) => !['Scheme', 'Colour', 'Paint', 'Interior', 'Upholstery', 'Order number'].includes(row.label));
         const decision = member.decision || {}; member.decision = { ...decision, reasons: [], tradeOffs: [] };
         const points = comparedRows(model.card.members[0], model.currentCar).find((row) => row.key === 'points' && row.winner === 'offer');
-        offer.append(vehicleDecisionCard({ view: card, actions: pendingActions,
+        const media = member.media || {};
+        gallery = mediaGallery({ name: member.display.name, images: media.images?.length ? media.images : media.src ? [media] : [] });
+        offer.append(vehicleDecisionCard({ view: card, media: gallery.root, actions: pendingActions,
           note: handoffNote, finishes,
           pointsDifference: points ? `${points.delta.toLocaleString('en-GB')} fewer than your current car` : null }));
       } else offer.append(matchCard(null, { view: card, showScore: false, factsClass: 'vm-facts-pair', hideMissing: 'More details not supplied', headingLevel: 2 }));
@@ -288,6 +293,10 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
     if (state === 'accepted' && accepting) {
       // The accept button is gone, so the outcome heading takes focus once, never on a later poll.
       accepting = false; const heading = content.querySelector('h1'); if (heading) { heading.tabIndex = -1; heading.focus(); return; }
+    }
+    if (decisionWasOpen && !['pending', 'uncertain', 'declined'].includes(state)) {
+      const heading = content.querySelector('h1');
+      if (heading) { heading.tabIndex = -1; heading.focus(); return; }
     }
     if ((focused || followupFocused) && !(state === 'declined' && followupRoot === root.ownerDocument.activeElement)) {
       const target = content.querySelector(`[data-offer-action="${['accept', 'decline', 'refresh'].includes(focused) ? focused : 'refresh'}"]`);
@@ -341,5 +350,5 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
     else if (!checking && previousState !== undefined && previousState !== 'loading' && (model.state !== previousState || key !== previousIdentity)) announce(titleFor(model));
     previousState = model.state; previousIdentity = key;
   }
-  return { update, destroy() { drawer.destroy(); clearFollowup(); page.remove(); } };
+  return { update, destroy() { drawer.destroy(); gallery?.destroy(); clearFollowup(); page.remove(); } };
 }

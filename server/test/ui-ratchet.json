@@ -430,6 +430,10 @@
     {
       "path": "blocks/gcsp/kit/buddy-status.css",
       "max_lines": 12
+    },
+    {
+      "path": "blocks/gcsp/kit/media-gallery.css",
+      "max_lines": 46
     }
   ],
   "baseline": {
