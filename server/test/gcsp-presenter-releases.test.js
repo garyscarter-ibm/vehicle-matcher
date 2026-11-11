@@ -6,7 +6,7 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createGcspRuntime } from '../gcsp/runtime.js';
-import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/index.js';
+import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
 import { createDemoStockProvider, createRunStockProviderFactory } from '../gcsp/stock/index.js';
 import { readDisplayImageCatalogue } from '../gcsp/vehicle-evidence/display-images.js';
 import { buildServer } from '../index.js';
@@ -18,7 +18,7 @@ const jar = (setCookie) => [].concat(setCookie).map((value) => value.split(';')[
 const roots = [];
 after(async () => { for (const directory of roots) await rm(directory, { recursive: true, force: true }); });
 
-async function compose(t, { generated = false, environmentId = 'presenter-releases' } = {}) {
+async function compose(t, { generated = false, main = false, environmentId = 'presenter-releases' } = {}) {
   const store = createMemoryStore();
   const repository = createMemoryRepository({ store });
   let stockProvider = createDemoStockProvider;
@@ -27,9 +27,18 @@ async function compose(t, { generated = false, environmentId = 'presenter-releas
     stockProvider = createRunStockProviderFactory({ env: { GCSP_STOCK_INVENTORY_PATH: join(directory, 'inventory.json') }, logger: () => {} });
   }
   const services = good(await createGcspRuntime({ mode: 'memory', repository, environmentId, stockProvider,
-    policyAsOf: '2026-11-05T09:00:00.000Z', commandId: `${environmentId}-bootstrap`, sessionNow: () => '2026-11-06T00:00:00.000Z' }));
+    policyAsOf: '2026-11-05T09:00:00.000Z', commandId: `${environmentId}-bootstrap`, adoptOfferJourney: main, sessionNow: () => '2026-11-06T00:00:00.000Z' }));
   t.after(() => services.close());
-  const presenter = good(await services.identity.createPresenterSession(`${environmentId}-presenter`));
+  let presenter = good(await services.identity.createPresenterSession(`${environmentId}-presenter`));
+  if (main) {
+    const scenario = good(await services.scenarios.readCatalogue(presenter.context)).scenarios.find((row) => row.scenarioId === 'main-successful-journey');
+    const state = good(await services.clock.readState(presenter.context));
+    const reset = good(await services.scenarios.reset(presenter.context, { commandId: 'main-start', expectedRunId: state.runId,
+      expectedRunVersion: state.runVersion, scenarioId: scenario.scenarioId, scenarioVersion: scenario.scenarioVersion,
+      fixtureVersion: scenario.fixtureVersion, policyVersion: scenario.policyVersion }));
+    assert.equal(reset.startState.status, 'ok');
+    presenter = good(await services.identity.createPresenterSession(`${environmentId}-main-presenter`));
+  }
   const server = buildServer({ ...services.dependencies, gcspAllowedOrigins: [ORIGIN] });
   t.after(async () => { server.closeAllConnections(); if (server.listening) await new Promise((done) => server.close(done)); });
   assert.equal((await server.gcspStartup).status, 'ok');
@@ -51,7 +60,7 @@ async function compose(t, { generated = false, environmentId = 'presenter-releas
 const EMPLOYEE_WORDS = /employee|paula|alex|eligib|gateStatus|suitab|offer|match|hold|quote|brief|score|grade|principal/i;
 function assertUserAgnostic(value) {
   assert.deepEqual(Object.keys(value).sort(), ['cars', 'charts', 'counts', 'modelLines', 'release', 'runId']);
-  assert.deepEqual(Object.keys(value.counts).sort(), ['colours', 'modelLines', 'onScheme', 'released']);
+  assert.deepEqual(Object.keys(value.counts).sort(), ['buddyAllocated', 'colours', 'manuallyAllocated', 'modelLines', 'onScheme', 'released', 'totalReleased']);
   for (const car of value.cars) assert.deepEqual(Object.keys(car).sort(), ['colourName', 'id', 'imageAlt', 'imageSrc', 'modelLine', 'modelName']);
   assert.doesNotMatch(JSON.stringify(value), EMPLOYEE_WORDS);
 }
@@ -67,7 +76,7 @@ test('demo stock: release null with zero counts before a release, then the first
   const before = await f.call(PATH);
   assert.equal(before.status, 200);
   assert.deepEqual(before.body.value, { runId: f.context.runId, release: null, cars: [], modelLines: [], charts: { colours: [], fuel: [], points: [] },
-    counts: { released: 0, modelLines: 0, colours: 0, onScheme: 0 } });
+    counts: { released: 0, modelLines: 0, colours: 0, totalReleased: 0, onScheme: 0, buddyAllocated: 0, manuallyAllocated: 0 } });
   const released = await f.release('first-release');
   const reply = await f.call(PATH);
   assert.equal(reply.status, 200);
@@ -92,6 +101,8 @@ test('demo stock: release null with zero counts before a release, then the first
   const stock = good(await f.repository.query(f.context, 'stock'));
   const free = stock.filter((row) => row.state === 'released' && row.available === true && row.held !== true && row.allocated !== true);
   assert.equal(value.counts.onScheme, free.length);
+  assert.equal(value.counts.totalReleased, released.orderUuids.length);
+  assert.equal(value.counts.buddyAllocated, 0); assert.equal(value.counts.manuallyAllocated, 0);
 });
 
 test('a later release replaces the first as latest', async (t) => {
@@ -104,6 +115,60 @@ test('a later release replaces the first as latest', async (t) => {
   const { value } = (await f.call(PATH)).body;
   assert.deepEqual(value.release, { windowId: second.windowId, releasedAt: second.releasedAt, trancheId: second.trancheId });
   assert.deepEqual(value.cars.map((car) => car.id), second.orderUuids);
+  assert.equal(value.counts.released, second.orderUuids.length);
+  assert.equal(value.counts.totalReleased, new Set([...first.orderUuids, ...second.orderUuids]).size);
+  assert.equal(value.counts.totalReleased, value.counts.onScheme + value.counts.buddyAllocated + value.counts.manuallyAllocated);
+});
+
+test('the main journey first release reports 100 latest and total, 99 unallocated and 1 Buddy allocation', async (t) => {
+  const f = await compose(t, { generated: true, main: true, environmentId: 'presenter-first-allocation' });
+  await f.release('main-release');
+  const value = good((await f.call(PATH)).body);
+  assertUserAgnostic(value);
+  assert.equal(value.counts.released, 100); assert.equal(value.counts.totalReleased, 100);
+  assert.equal(value.counts.onScheme, 99); assert.equal(value.counts.buddyAllocated, 1); assert.equal(value.counts.manuallyAllocated, 0);
+});
+
+test('allocation totals use each current Buddy/manual car once and release or expiry returns it to unallocated', async (t) => {
+  const f = await compose(t, { environmentId: 'presenter-allocation-lifecycle' });
+  const released = await f.release('allocation-release');
+  const all = released.orderUuids.length;
+  const ref = (table, key) => ({ table, key: { runId: f.context.runId, ...key } });
+  const command = (commandId) => ({ commandId, inputDigest: inputDigest(commandId) });
+  for (const [i, type] of ['buddy-offer', 'cart'].entries()) {
+    const employee = good(await f.services.identity.switchPrincipal(f.context, i ? 'demo-alex' : 'demo-paula', `allocation-employee-${i}`)).context;
+    good(await f.repository.transaction(f.context, command(`allocation-${i}`), async (tx) => {
+      const stock = good(await tx.get(ref('stock', { orderUuid: released.orderUuids[i] })));
+      const slot = good(await tx.get(ref('entitlement_slots', { entitlementSlotId: employee.entitlementSlotId })));
+      const quoteId = `stats-quote-${i}`;
+      good(await tx.insert('quotes', { runId: f.context.runId, quoteId, orderUuid: stock.orderUuid, employeeId: employee.employeeId, policyVersion: f.context.policyVersion }));
+      const available = good(await tx.compareAndSwap(ref('stock', { orderUuid: stock.orderUuid }), stock.version, { state: 'available' }));
+      const held = good(await tx.conditionalClaim({ orderUuid: stock.orderUuid, holdId: `stats-hold-${i}`, claimId: `stats-claim-${i}`,
+        employeeId: employee.employeeId, entitlementSlotId: employee.entitlementSlotId, type, expiresAt: '2026-11-06T18:00:00.000Z',
+        policyVersion: f.context.policyVersion, quoteId, expectedStockVersion: available.version, expectedSlotVersion: slot.version }));
+      good(await tx.compareAndSwap(ref('stock', { orderUuid: stock.orderUuid }), held.stockVersion, { available: false, held: true, allocated: false }));
+      return ok({});
+    }));
+  }
+  const counts = async () => good((await f.call(PATH)).body).counts;
+  assert.deepEqual(await counts(), { released: all, modelLines: 4, colours: 2, totalReleased: all, onScheme: all - 2, buddyAllocated: 1, manuallyAllocated: 1 });
+  const change = async (i, state) => good(await f.repository.transaction(f.context, command(`allocation-${i}-${state}`), async (tx) => {
+    for (const [table, key] of [['holds', { holdId: `stats-hold-${i}` }], ['claims', { claimId: `stats-claim-${i}` }]]) {
+      const row = good(await tx.get(ref(table, key))); good(await tx.compareAndSwap(ref(table, key), row.version, { state }));
+    }
+    const key = { orderUuid: released.orderUuids[i] }; const stock = good(await tx.get(ref('stock', key)));
+    const free = ['expired', 'released', 'claim-failed'].includes(state); const allocated = state === 'allocated';
+    good(await tx.compareAndSwap(ref('stock', key), stock.version, { state: free ? 'released' : allocated ? 'allocated' : 'held', available: free, held: !free && !allocated, allocated }));
+    return ok({});
+  }));
+  for (const state of ['claim-pending', 'release-pending', 'selection-pending', 'allocated']) {
+    await change(1, state); const current = await counts();
+    assert.equal(current.manuallyAllocated, 1, state); assert.equal(current.buddyAllocated, 1, state); assert.equal(current.onScheme, all - 2, state);
+  }
+  await change(1, 'released');
+  assert.equal((await counts()).manuallyAllocated, 0); assert.equal((await counts()).onScheme, all - 1);
+  await change(0, 'expired');
+  assert.equal((await counts()).buddyAllocated, 0); assert.equal((await counts()).onScheme, all);
 });
 
 test('generated stock: the release reads its model lines and colours from the generated rows', async (t) => {

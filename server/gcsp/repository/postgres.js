@@ -25,7 +25,10 @@ const keyOf = (table, row) => JSON.stringify(TABLES[table].key.map((key) => row[
 
 // The URL stays inside the backend closure; diagnostics never contain driver errors or configuration.
 export function createPostgresRepository(options = {}) {
-  const { schema = 'public', migrationsDirectory, now, pool: suppliedPool } = options;
+  const { schema = 'public', migrationsDirectory, now, pool: suppliedPool, readTrustMs = 0 } = options;
+  // Opt-in (hosted only): for readTrustMs after a cache entry was last checked or committed, reads trust it without a probe.
+  const trustMs = Number.isSafeInteger(readTrustMs) && readTrustMs > 0 ? readTrustMs : 0;
+  const until = () => trustMs ? performance.now() + trustMs : 0;
   let pool = suppliedPool;
   let owned = false;
   const tableName = (table) => `${sqlName(schema)}.${sqlName(table)}`;
@@ -66,6 +69,15 @@ export function createPostgresRepository(options = {}) {
   const remember = (key, entry) => {
     cache.delete(key); cache.set(key, entry);
     if (cache.size > 4) cache.delete(cache.keys().next().value);
+  };
+  // After an own commit, a runs-only entry (the current-run read) takes the committed runs; other run scopes reload.
+  const refreshOthers = (key, runs) => {
+    for (const [other, entry] of [...cache]) {
+      if (other === key) continue;
+      if (!FOUNDATION_TABLES.every((table) => table === 'runs' || entry.state.tables[table].length === 0)) { cache.delete(other); continue; }
+      const state = sealState({ ...entry.state, tables: { ...entry.state.tables, runs } });
+      cache.set(other, { fingerprint: localFingerprint(state), state, trustedUntil: until() });
+    }
   };
 
   // Tables with partial unique indexes on mutable state keep ordered per-row updates.
@@ -126,19 +138,21 @@ export function createPostgresRepository(options = {}) {
     let client;
     let begun = false;
     try {
+      const cached = cache.get(key);
+      if (!write && trustMs && cached && performance.now() < cached.trustedUntil) return await work(cached.state);
       client = await pool.connect();
       begun = true;
       const probe = await client.query(`${lockSql(context)}; ${fingerprintSql(context)}${write ? '' : '; COMMIT'}`);
       const fingerprint = fingerprintOf(probe[2].rows);
       const hit = cache.get(key)?.fingerprint === fingerprint ? cache.get(key) : undefined;
-      if (hit) remember(key, hit);
+      if (hit) remember(key, write ? hit : { ...hit, trustedUntil: until() });
       // Reads see the sealed snapshot directly; a transaction gets fresh table arrays over the same frozen rows.
       if (!write) {
         begun = false;
         if (hit) return await work(hit.state);
         const fresh = (await client.query(`${fingerprintSql(context, true)} UNION ALL ${snapshotSql(context, true)}`)).rows;
         const state = sealState(toState(fresh));
-        remember(key, { fingerprint: fingerprintOf(fresh), state });
+        remember(key, { fingerprint: fingerprintOf(fresh), state, trustedUntil: until() });
         return await work(state);
       }
       const before = hit ? hit.state : sealState(toState((await client.query(snapshotSql(context))).rows));
@@ -148,10 +162,12 @@ export function createPostgresRepository(options = {}) {
       await flush(client, before, state);
       const after = scopedCopy(state, context);
       await client.query('COMMIT'); begun = false;
-      remember(key, { fingerprint: localFingerprint(after), state: after });
+      remember(key, { fingerprint: localFingerprint(after), state: after, trustedUntil: until() });
+      if (trustMs) refreshOthers(key, after.tables.runs);
       return outcome;
     } catch (error) {
       cache.delete(key);
+      for (const entry of cache.values()) entry.trustedUntil = 0;
       if (begun) await client?.query('ROLLBACK').catch(() => {});
       return databaseFailure(error);
     } finally {

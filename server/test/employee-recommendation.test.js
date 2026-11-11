@@ -61,6 +61,27 @@ test('exact decisions preserve source evidence and terms before final display ca
   assert.ok(first.evidence.eligibility.provenance.rules.length > 0);
 });
 
+test('equally suitable recommendations use more of the allowance before stable identity', async () => {
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
+  const modelKeys = ['points-test-low', 'points-test-high'];
+  const template = seed.pricePlans.find((row) => row.schemeId === context.schemeId);
+  seed.pricePlans = seed.pricePlans.filter((row) => row.schemeId !== context.schemeId);
+  seed.pricePlans.push(...modelKeys.map((matchValue, i) => ({ ...template, key: `points-test-${i}`,
+    priceEntryId: `points-test-${i}`, matchField: 'configurationId', matchValue, monthlyPoints: i ? 1200 : 800, value: i ? 1200 : 800 })));
+  const policies = new PolicyService({ provider: { loadVersions: async () => [seed] } });
+  const cars = modelKeys.map((key, i) => stock(i + 1, {}, key));
+  const output = await recommend({ policy: policies, provider: provider(providerValue(cars)) });
+  assert.equal(output.status, 'ok');
+  assert.deepEqual(output.value.recommendations.map((row) => row.terms.points.value), [1200, 800]);
+  assert.deepEqual(output.value.recommendations.map((row) => row.score), [100, 100]);
+  assert.deepEqual(output.value.ranking, { rule: 'similarFitThenPoints', fitTolerance: 5 });
+  const { briefVersion, ...draft } = brief();
+  const preview = await service({ policy: policies, provider: provider(providerValue(cars)) }).previewUnsaved(context,
+    { brief: draft, baseBriefVersion: briefVersion, baseDraftVersion: 0 });
+  assert.equal(preview.status, 'ok');
+  assert.deepEqual(preview.value.decisions.map((row) => row.terms.points.value), [1200, 800]);
+});
+
 test('matrix exclusions and monthly points gate before high preference scores', async () => {
   const result = await recommend({ provider: provider(providerValue([
     stock(1, { eligibilityModelKey: fact('G21 Touring|M340i') }), stock(2, { eligibilityModelKey: fact('G21 Touring|320i') }),

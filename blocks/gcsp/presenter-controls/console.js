@@ -138,7 +138,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
     const due = state.controls?.nextRelease;
     defaultDisabled = due?.status !== 'available';
     defaultReason = defaultDisabled ? `Release unavailable: ${sentence(due?.reason) || 'no release is due'}` : '';
-    paintPrimary(); feed.update(state); releaseSection.refresh();
+    paintPrimary(); feed.update(state); if (!busy) releaseSection.refresh();
     // Only the latest read may fall back to the scenario name, and only once onState has settled.
     const mine = ++applied;
     return Promise.resolve(onState?.(state, basic)).catch(() => {}).then(() => { if (mine === applied && !disposed) { fallbackHeading(); endLoading(); } });
@@ -173,8 +173,11 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   }
   async function runRelease() {
     if (busy || disposed || !state) return;
-    busy = true; paintPrimary();
-    try { await (onRelease ?? defaultRelease)(context()); } finally { busy = false; paintPrimary(); }
+    busy = true; paintPrimary(); releaseSection.setLoading();
+    try { await (onRelease ?? defaultRelease)(context()); } finally {
+      if (!disposed) releaseSection.refresh();
+      busy = false; paintPrimary();
+    }
   }
   function focusWhenReady(node) {
     const usable = () => node.isConnected && !node.disabled && !node.closest('[hidden]');

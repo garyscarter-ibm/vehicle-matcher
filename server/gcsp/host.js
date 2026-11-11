@@ -33,8 +33,11 @@ export function gcspRuntimeOptions({ env = process.env, defaultMode, defaultEnvi
   // One synthetic ordering upstream confirms supply and releases it on top of the run's chosen stock source.
   const upstream = createDemoUpstream();
   const environmentId = env.GCSP_ENVIRONMENT_ID || defaultEnvironmentId;
+  // FUCQ-379 follow-up: one process owns the hosted database, so reads trust a cache entry for 2 s after it was checked or committed.
+  // GCSP_PG_READ_TRUST_MS=0 restores a database check before every read.
+  const trust = Number(env.GCSP_PG_READ_TRUST_MS ?? 2000);
   const runtime = { mode, stockProvider: (deps) => withConfirmedSupply(stock(deps), upstream, { policy: deps.policy }), production: upstream.production,
-    repositoryOptions: { connectionString: env.GCSP_DATABASE_URL }, environmentId,
+    repositoryOptions: { connectionString: env.GCSP_DATABASE_URL, readTrustMs: Number.isSafeInteger(trust) && trust >= 0 ? trust : 2000 }, environmentId,
     policyAsOf: new Date().toISOString(), wallNow: () => new Date(), commandId, adoptOfferJourney: true,
     comparisonResultFile: env.GCSP_COMPARISON_RESULT_FILE, mail: { env } };
   return { runtime, stock, mode, environmentId };

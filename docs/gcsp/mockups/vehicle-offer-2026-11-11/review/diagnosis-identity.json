@@ -1,0 +1,15 @@
+{
+  "basis": "local working tree 11 November2026; source tracing, not application test evidence",
+  "files": {
+    "server/gcsp/stock/run-stock-generation.js": "2e2becfdf302008db2ae4716109e7081f33f811c248f628bc448083b338b2d16",
+    "server/gcsp/stock/demo-provider.js": "5e8ed89d1f4f2852cac977d7e1be1c8bfbde7c4d08e389109ff5e162e06e6d6b",
+    "server/gcsp/vehicle-evidence/stock-generator.js": "82f8eb853a6421fe91177be5e5d7ecc7a1705febe3ec45c6e65150525a4148af",
+    "server/gcsp/allocation/index.js": "2c0985f879cc592380e31b9f582c1dd3aa23606c12ce38c5be880d8899852e14",
+    "server/gcsp/recommendation/index.js": "0cfd9853353f404a6cb92cafda2a7666883acb283295e93afc19df6381d1d03c",
+    "server/gcsp/offers/buddy-hold.js": "0bac9da60039a4947485ef98bf2cc292a65d0786b3baf37e832c62d3b950a8e4",
+    "server/gcsp/offers/access.js": "2f0a0cddfa602395c5e43ed20d08de328aefdfe3bee55a9e8e257d3496d98a07",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9",
+    "blocks/gcsp/offer/offer-projection.js": "5b22d6ce6f60243f47a8f0f840507937374accd6ff2003fcf546691fab0db482",
+    "server/data/gcsp/vehicle-evidence/registered-sources/fucq77-demo-selection-2026-11-08.jsonl": "a8d0f770b699572ecd9e641796a428dfa57c58d404dd8138c4099ecf82c8a1cf"
+  }
+}

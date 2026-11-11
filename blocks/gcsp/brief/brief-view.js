@@ -4,7 +4,7 @@ import { matchCard, previewTile, SPEC_LABELS, FUEL_SPEC } from '../../vehicle-ma
 import { createBriefController } from './brief-controller.js';
 import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { decisionView, previewSummary } from './brief-view-model.js';
-import { BEST_MATCH, longDate } from '../kit/plain-copy.js';
+import { BEST_MATCH, POINTS_RECOMMENDATION, longDate } from '../kit/plain-copy.js';
 import { focusHeading } from '../kit/arrival-focus.js';
 import { loadingSkeleton } from '../kit/loading-skeleton.js';
 
@@ -246,6 +246,10 @@ export function mountBriefBody(main, adapters = {}) {
           const scores = decisions.filter((d) => d.gateStatus === 'eligible' && Number.isFinite(d.score)).map((d) => d.score);
           const top = Math.max(...scores);
           const informative = top > 0 && scores.some((score) => score < top);
+          const pointsAware = state.preview.outcome.value.ranking?.rule === 'similarFitThenPoints';
+          const recommended = state.preview.outcome.value.recommendations[0];
+          const distinct = recommended && decisions.some((d) => d.gateStatus === 'eligible'
+            && (d.score !== recommended.score || d.terms?.points?.value !== recommended.terms?.points?.value));
           for (const decision of decisions) {
             const view = decisionView(decision);
             const member = view.members[0];
@@ -253,7 +257,9 @@ export function mountBriefBody(main, adapters = {}) {
               const list = el('ul', 'gcsp-note'); member.checks.forEach((entry) => list.append(el('li', null, entry.text)));
               checks.append(el('h3', null, member.display.name), list);
             }
-            const card = decision.gateStatus === 'eligible' ? matchCard(null, { view, scoreLabel: informative && decision.score === top ? BEST_MATCH : null }) : previewTile(null, { view });
+            const scoreLabel = pointsAware ? distinct && decision.orderUuid === recommended.orderUuid ? POINTS_RECOMMENDATION : null
+              : informative && decision.score === top ? BEST_MATCH : null;
+            const card = decision.gateStatus === 'eligible' ? matchCard(null, { view, scoreLabel }) : previewTile(null, { view });
             cards.append(card);
           }
           live.textContent = summary;

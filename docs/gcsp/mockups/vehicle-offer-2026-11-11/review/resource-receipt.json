@@ -1,0 +1,15 @@
+{
+  "run": "vehicle-offer-concept-20261111-01a1ca56",
+  "scratch_root": "/tmp/vehicle-offer-concept-20261111-01a1ca56",
+  "scratch_removed_bytes": 653773,
+  "scratch_absence_verified": true,
+  "retained_bytes": 2602972,
+  "retained_summary": "README.md; diagnosis.md; review/visual-review.md; review/capture-receipt.json",
+  "owned_processes": "Both capture commands exited0; browser.close and server SIGTERM/join ran in finally; listener port4878 absent after captures",
+  "compatibility_exception": "Headless Chromium profile used owned local TMPDIR; removed by browser.close before final root cleanup",
+  "peak_measurement": "Largest observed post-capture root allocation653773 bytes; transient browser profile peak was not sampled. Planned ceiling150MiB disk, roughly800MiB RAM. No oversized output was produced.",
+  "cloud_scratch": null,
+  "archives": null,
+  "leftovers": [],
+  "validation_scope": "Static mockup visual inspection and source diagnosis only; no application tests/build/live checks"
+}

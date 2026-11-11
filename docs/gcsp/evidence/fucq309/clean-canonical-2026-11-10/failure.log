@@ -1,9 +1,0 @@
-{"checkpoint":"worker-message","elapsedMs":148.690708,"message":{"type":"plan","steps":6,"seeds":["comparison-a","comparison-b","comparison-c"],"arms":["process"]}}
-{"checkpoint":"host-responsive","elapsedMs":173.40879099999998,"progress":{"seedsDone":0,"seedsTotal":3,"stepsDone":0,"stepsTotal":6},"rss":193150976,"samples":1}
-{"checkpoint":"host-responsive","elapsedMs":50926.833541,"progress":{"seedsDone":0,"seedsTotal":3,"stepsDone":0,"stepsTotal":6},"rss":251510784,"samples":30}
-{"checkpoint":"host-responsive","elapsedMs":93963.79516600001,"progress":{"seedsDone":0,"seedsTotal":3,"stepsDone":0,"stepsTotal":6},"rss":251527168,"samples":60}
-{"checkpoint":"worker-message","elapsedMs":135235.112166,"message":{"type":"progress","completed":1,"total":6,"armId":"process","seed":"comparison-a","route":"current"}}
-{"checkpoint":"host-responsive","elapsedMs":136004.63370799998,"progress":{"seedsDone":0,"seedsTotal":3,"stepsDone":1,"stepsTotal":6},"rss":370475008,"samples":89}
-{"checkpoint":"host-responsive","elapsedMs":138003.581041,"progress":{"seedsDone":0,"seedsTotal":3,"stepsDone":1,"stepsTotal":6},"rss":372080640,"samples":90}
-{"checkpoint":"host-responsive","elapsedMs":187637.073791,"progress":{"seedsDone":0,"seedsTotal":3,"stepsDone":1,"stepsTotal":6},"rss":293076992,"samples":120}
-{"checkpoint":"canonical-failed","elapsedMs":193057.24012499998,"error":{"name":"Error","message":"Canonical job failed: The comparison used more than its 128 MB memory allowance and was stopped.","stack":"Error: Canonical job failed: The comparison used more than its 128 MB memory allowance and was stopped.\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110/fucq309-clean-canonical-2026-11-10/http.mjs:159:11"}}

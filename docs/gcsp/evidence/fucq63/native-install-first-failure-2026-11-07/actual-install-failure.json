@@ -1,8 +1,0 @@
-{
-  "status": "failed-no-retry-or-source-fallback",
-  "installed": [],
-  "requests": 3,
-  "installedKegsPreserved": true,
-  "nativeAttempted": false,
-  "acceptance": false
-}
