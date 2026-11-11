@@ -36,7 +36,7 @@ async function scenario({ check, tick, offer, pause } = {}) {
     checked(await brief.saveDraft(context, { commandId: 'draft', expectedBriefVersion: 0, expectedDraftVersion: 0,
       brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(5) } } }));
     checked(await brief.confirm(context, { commandId: 'confirm', expectedBriefVersion: 0, expectedDraftVersion: 1,
-      consent: { search: true, hold: false } }));
+      consent: { search: true, hold: true } }));
     if (check) {
       // A stored allocation receipt of the real shape: this employee's slice only.
       const decisions = Array.from({ length: 12 }, (_, i) => ({ orderUuid: `car-${i}`, gateStatus: i < check.suitable ? 'eligible' : 'ineligible',

@@ -15,9 +15,11 @@ export async function loadDemoPrincipals(policy, read) {
     && new Set(principals.filter((p) => p.roles?.includes('employee')).map((p) => p.entitlementSlotId)).size === principals.filter((p) => p.roles?.includes('employee')).length
     && principals.every((p) => Object.keys(p).every((key) => allowed.includes(key))
       && ['principalId', 'employeeId', 'name'].every((key) => text(p[key]))
-      && Array.isArray(p.roles) && p.roles.length === 1 && ['employee', 'greg', 'presenter'].includes(p.roles[0])
-      && (p.roles[0] === 'presenter' || mapping.value.value.some((m) => m.companyId === p.companyId && m.schemeId === p.schemeId
-        && (p.roles[0] === 'greg' || m.gradeIds.includes(p.gradeId) && text(p.entitlementSlotId)))))
+      && Array.isArray(p.roles) && p.roles.length >= 1 && p.roles.length <= 2
+      && new Set(p.roles).size === p.roles.length && p.roles.every((role) => ['employee', 'greg', 'presenter'].includes(role))
+      && (!p.roles.includes('presenter') || p.roles.length === 1)
+      && (p.roles.includes('presenter') || mapping.value.value.some((m) => m.companyId === p.companyId && m.schemeId === p.schemeId
+        && (!p.roles.includes('employee') || m.gradeIds.includes(p.gradeId) && text(p.entitlementSlotId)))))
     && principals.filter((p) => p.roles.includes('presenter')).length === 1;
   return valid ? { status: 'ok', value: structuredClone(principals), policyVersion: configured.policyVersion }
     : { status: 'unavailable', reason: 'Principal configuration is invalid.', retryable: false };

@@ -44,13 +44,14 @@ async function withHttp(f, work, { service = f.activity } = {}) {
     server.closeAllConnections(); await new Promise((done) => server.close(done)); await f.repository.close();
   }
 }
-async function confirm(request) {
-  const saved = await request('/brief/draft', { method: 'POST', body: { commandId: 'draft', expectedBriefVersion: 0,
-    expectedDraftVersion: 0, brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(5) } } } });
-  assert.equal(saved.status, 200, JSON.stringify(saved.json));
-  const confirmed = await request('/brief/confirm', { method: 'POST', body: { commandId: 'confirm', expectedBriefVersion: 0,
-    expectedDraftVersion: 1, consent: { search: true, hold: false } } });
-  assert.equal(confirmed.status, 200, JSON.stringify(confirmed.json));
+// Trusted legacy data deliberately includes partial grants; Activity must display them as off.
+async function confirm(f) {
+  const saved = await f.brief.saveDraft(f.context, { commandId: 'draft', expectedBriefVersion: 0, expectedDraftVersion: 0,
+    brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(5) } } });
+  assert.equal(saved.status, 'ok', JSON.stringify(saved));
+  const confirmed = await f.brief.confirm(f.context, { commandId: 'confirm', expectedBriefVersion: 0, expectedDraftVersion: 1,
+    consent: { search: true, hold: false } });
+  assert.equal(confirmed.status, 'ok', JSON.stringify(confirmed));
 }
 
 test('GET activity returns explicit no-brief evidence without writes and disables response caching', async () => {
@@ -71,11 +72,11 @@ test('GET activity returns explicit no-brief evidence without writes and disable
 test('fresh HTTP activity reads reflect BriefService confirmation, pause and resume immediately', async () => {
   const f = await setup();
   await withHttp(f, async (request) => {
-    await confirm(request);
+    await confirm(f);
     let response = await request(); assert.equal(response.status, 200); assert.equal(response.json.value.briefVersion, 1);
-    assert.equal(response.json.value.permission.canSearch, true); assert.equal(response.json.value.permission.canHold, false);
-    const paused = await request('/brief/pause', { method: 'POST', body: { commandId: 'pause', expectedBriefVersion: 1 } });
-    assert.equal(paused.status, 200, JSON.stringify(paused.json));
+    assert.equal(response.json.value.permission.canSearch, false); assert.equal(response.json.value.permission.canHold, false);
+    const paused = await f.brief.pause(f.context, { commandId: 'pause', expectedBriefVersion: 1 });
+    assert.equal(paused.status, 'ok', JSON.stringify(paused));
     const before = structuredClone(f.store.state);
     for (let reload = 0; reload < 2; reload++) {
       response = await request(); assert.equal(response.status, 200);
@@ -84,12 +85,12 @@ test('fresh HTTP activity reads reflect BriefService confirmation, pause and res
       assert.deepEqual(response.json.value.stateChanges.map((event) => event.operation), ['confirmed', 'paused']);
     }
     assert.deepEqual(f.store.state, before);
-    const stale = await request('/brief/resume', { method: 'POST', body: { commandId: 'stale-resume', expectedBriefVersion: 1 } });
-    assert.equal(stale.status, 409); assert.equal(stale.json.status, 'stale-version');
-    const resumed = await request('/brief/resume', { method: 'POST', body: { commandId: 'resume', expectedBriefVersion: 2 } });
-    assert.equal(resumed.status, 200, JSON.stringify(resumed.json));
+    const refused = await request('/brief/resume', { method: 'POST', body: { commandId: 'browser-resume', expectedBriefVersion: 2 } });
+    assert.equal(refused.status, 503, 'public aliases require the editor gate');
+    const resumed = await f.brief.resume(f.context, { commandId: 'resume', expectedBriefVersion: 2 });
+    assert.equal(resumed.status, 'ok', JSON.stringify(resumed));
     response = await request(); assert.equal(response.status, 200); assert.equal(response.json.value.briefVersion, 3);
-    assert.equal(response.json.value.permission.paused, false); assert.equal(response.json.value.permission.canSearch, true);
+    assert.equal(response.json.value.permission.paused, false); assert.equal(response.json.value.permission.canSearch, false);
     assert.equal(response.json.value.permission.canHold, false); assert.equal(response.json.value.lastSuccessfulCheck, null);
     assert.equal(response.json.value.searchEvidence.status, 'not-recorded');
     assert.deepEqual(response.json.value.stateChanges.map((event) => event.operation), ['confirmed', 'paused', 'resumed']);
@@ -103,7 +104,7 @@ test('another real employee session sees only its own current activity and no fo
   const other = principals.find((person) => person.roles.includes('employee') && person.employeeId !== f.context.employeeId);
   const session = await f.identity.switchPrincipal(f.presenter.value.context, other.principalId, 'other');
   await withHttp(f, async (request) => {
-    await confirm(request);
+    await confirm(f);
     const response = await request('/activity', { session }); assert.equal(response.status, 200, JSON.stringify(response.json));
     assert.equal(response.json.value.employeeId, other.employeeId); assert.equal(response.json.value.briefVersion, null);
     assert.deepEqual(response.json.value.stateChanges, []); assert.deepEqual(response.json.value.offers, []);
@@ -138,7 +139,7 @@ test('activity rejects every query selector and preserves strict browser-authori
 test('reset invalidates the old HTTP activity session instead of redirecting it into the new run', async () => {
   const f = await setup();
   await withHttp(f, async (request) => {
-    await confirm(request); const state = (await f.clock.readState(f.presenter.value.context)).value;
+    await confirm(f); const state = (await f.clock.readState(f.presenter.value.context)).value;
     const reset = await f.clock.reset(f.presenter.value.context, { commandId: 'reset', expectedRunId: state.runId,
       expectedRunVersion: state.runVersion, scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture });
     assert.equal(reset.status, 'ok', JSON.stringify(reset));

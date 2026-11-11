@@ -15,11 +15,11 @@ beforeEach(() => {cleanups.splice(0).forEach((c) => c());resetDom();});
 test('mount waits for account, reads real adapter state and enables callback-owned pause/resume with retained focus',async () => {
   const loading=deferred();let reads=0,pauses=0;let current=snapshot();const node=root();
   const stop=mount(node,{adapter:{loadAccount:() => loading.promise,readActivity:async () => {reads++;return current;},pause:async () => {pauses++;current=snapshot('paused');return {status:'ok'};},resume:async () => {current=snapshot();return {status:'ok'};}}});
-  assert.equal(reads,0);loading.resolve(account);await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Active');
+  assert.equal(reads,0);loading.resolve(account);await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Buddy engaged');
   const trigger=node.querySelector('.gcsp-activity-search-action');trigger.focus();trigger.click();
-  await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Paused');assert.equal(pauses,1);assert.equal(reads,2);
-  assert.equal(document.activeElement,node.querySelector('.gcsp-activity-search-action'));assert.match(node.querySelector('.gcsp-activity-announcement[role="status"]').textContent,/paused/i);
-  node.querySelector('.gcsp-activity-search-action').click();await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Active');
+  await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Buddy disengaged');assert.equal(pauses,1);assert.equal(reads,2);
+  assert.equal(document.activeElement,node.querySelector('.gcsp-activity-search-action'));assert.match(node.querySelector('.gcsp-activity-announcement[role="status"]').textContent,/disengaged/i);
+  node.querySelector('.gcsp-activity-search-action').click();await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Buddy engaged');
   await stop.refresh();assert.equal(reads,4);stop();assert.equal(node.childElementCount,0);
 });
 
@@ -53,14 +53,14 @@ test('an adapter assigned before custom element definition survives upgrade and 
   const node=document.createElement('gcsp-activity');let reads=0;
   node.adapter={loadAccount:async () => account,readActivity:async () => {reads++;return snapshot();}};
   document.body.append(node);assert.equal(reads,0);mod.defineGcspActivity(dom.window.customElements);
-  await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Active');assert.equal(reads,1);node.remove();
+  await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Buddy engaged');assert.equal(reads,1);node.remove();
 });
 
 test('custom element registration, adapter remount, refresh and disconnect are isolated and abort owned requests',async () => {
   assert.equal(typeof mod.defineGcspActivity,'function');const Type=mod.defineGcspActivity(dom.window.customElements);assert.equal(mod.defineGcspActivity(dom.window.customElements),Type);
   const node=document.createElement('gcsp-activity');let calls=0;const first=deferred();let signal;
   node.adapter={loadAccount:async () => account,readActivity:(input) => {signal=input.signal;return first.promise;}};document.body.append(node);await settle(node,() => !!signal);
-  node.adapter={loadAccount:async () => account,readActivity:async () => {calls++;return snapshot('paused');}};assert.equal(signal.aborted,true);first.resolve(snapshot());await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Paused');
+  node.adapter={loadAccount:async () => account,readActivity:async () => {calls++;return snapshot('paused');}};assert.equal(signal.aborted,true);first.resolve(snapshot());await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Buddy disengaged');
   await node.refresh();assert.equal(calls,2);node.remove();assert.equal(node.childElementCount,0);
 });
 
@@ -76,9 +76,9 @@ test('help mounts once beside the activity, survives repaints, sends no write an
   const region=node.querySelector('.gcsp-activity-help'),helpBody=region.querySelector('.gcsp-cases-body');
   assert.equal(node.querySelectorAll('.gcsp-activity-help').length,1);assert.equal(region.getAttribute('aria-label'),'Renewal help');
   assert.equal(region.querySelector('h1,h2,h3'),null);const ask=region.querySelector('button');assert.equal(ask.textContent,'Get help with your renewal');assert.equal(ask.classList.contains('vm-btn-ghost'),true);assert.equal(region.querySelector('.gcsp-case-detail'),null);assert.equal(help.calls.filter((c) => c==='readCases').length,1);
-  await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Active');
+  await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Buddy engaged');
   node.querySelector('.gcsp-activity-search-action').click();
-  await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Paused');await stop.refresh();
+  await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Buddy disengaged');await stop.refresh();
   assert.equal(writes.length,1);assert.equal(node.querySelector('.gcsp-activity-help .gcsp-cases-body'),helpBody);
   assert.equal(help.calls.filter((c) => c==='readCases').length,1);assert.deepEqual(help.calls.filter((c) => /request|change/i.test(c)),[]);
   stop();assert.equal(node.childElementCount,0);

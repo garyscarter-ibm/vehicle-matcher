@@ -271,3 +271,17 @@ test('settled local commits await observers and close unsubscribes before owned 
   const external = await setup(t, { policy: new PolicyService({ provider: externalProvider }) }); await external.close();
   assert.equal(externalCloses, 0); await externalProvider.close(); assert.equal(externalCloses, 1);
 });
+
+test('FUCQ-371: the runtime preview resolves the server-owned current-car baseline and applies the saved rating', async (t) => {
+  const f = await setup(t); await prepareBuddy(f); const context = f.contexts.paula;
+  const draft = { schemaVersion: 1, preferences: {}, essentials: { charging: { value: 'home', operator: 'equals', unit: null, state: 'draft', source: 'employee' } } };
+  const run = async (typed) => good(await f.editor.previewDraft(context, { kind: 'unsaved-draft', baseBriefVersion: 1, draftVersion: 1, brief: { ...draft, ...typed } }));
+  const plain = await run({}); assert.ok(plain.decisions.length);
+  assert.ok(plain.decisions.every((d) => !Object.hasOwn(d, 'feedback')), 'an old brief has no feedback record');
+  const rated = await run({ currentCarRating: { value: 1, contractId: 'current:employee-paula', source: 'employee', ratedAt: '2026-11-05T12:00:00.000Z' } });
+  for (const d of rated.decisions) {
+    assert.equal(d.feedback.applied, true); assert.equal(d.feedback.baseline.contractId, 'current:employee-paula');
+    assert.equal(d.feedback.rating.class, 'negative');
+  }
+  assert.equal(rated.brief.currentCarRating.value, 1, 'the saved rating reaches the evaluation through the preview brief');
+});

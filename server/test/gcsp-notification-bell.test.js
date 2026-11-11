@@ -65,8 +65,8 @@ test('rows: state changes are plain rows with their time, newest offer first, de
     { eventId: 'e3', operation: 'resumed', occurredAt: '2026-11-10T09:25:00.000Z' },
     { eventId: 'e4', operation: 'changed-after-decline', occurredAt: '2026-11-10T09:26:00.000Z' }];
   const rows = mods.source.notificationRows(value(offer(), { stateChanges: changes }), display, ROUTES);
-  assert.deepEqual(rows.map((r) => r.title), ['Your buddy found a car', 'Your preferences changed after a decline', 'Your buddy is searching again',
-    'Your buddy is paused', 'Your buddy started searching']);
+  assert.deepEqual(rows.map((r) => r.title), ['Your buddy found a car', 'Your preferences changed after a decline', 'Buddy settings updated',
+    'Buddy disengaged', 'Preferences confirmed']);
   assert.equal(rows.at(-1).detail, 'Using the preferences you saved at 09:12.');
   assert.equal(rows[1].kind, 'change');
   assert.deepEqual(mods.source.notificationRows(null), []);

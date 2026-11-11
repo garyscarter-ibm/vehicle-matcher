@@ -1,10 +1,13 @@
+import { isBuddyEngaged } from '../brief/permission.js';
 import { createHash, randomUUID } from 'node:crypto';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
+import { projectCurrentCarBaseline, storedFeedback } from '../recommendation/current-car.js';
 import { validInstant } from '../policy/file-provider.js';
 import { intentValue } from '../../scenarios/employee/index.js';
 import { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId, expandEvaluation, packEvaluation } from './evaluation-rows.js';
 import { DECISION_EVENTS } from '../offers/decision.js';
+import { upgradeRetainedModelFacts } from '../stock/model-facts-upgrade.js';
 
 export { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId };
 
@@ -100,7 +103,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
   const evaluate = (context, employeeContext, instant, inputs, stock) => createEmployeeRecommendationService({ policy,
     time: { async now() { return ok(instant); } },
     provider: { async resolve() { return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: employeeContext.employeeId,
-      factsVersion: inputs.factsVersion, stockVersion: inputs.stockVersion, employeeFacts: inputs.employeeFacts, stock }); } } })
+      factsVersion: inputs.factsVersion, stockVersion: inputs.stockVersion, employeeFacts: inputs.employeeFacts, stock, ...(inputs.currentCar ? { currentCar: inputs.currentCar } : {}) }); } } })
     .recommend(employeeContext, inputs.request);
   // Callers still receive every evaluation; only the stored receipt holds references.
   async function hydrate(context, eventId, outcome) {
@@ -123,7 +126,9 @@ export function createAllocationService({ repository, policy, clock, identity, c
         const found = await tx.list(table); if (found.status !== 'ok') return found;
         rows[table] = found.value;
       }
-      return ok({ tables: tables.length });
+      const upgraded = await upgradeRetainedModelFacts(tx, context, rows);
+      if (upgraded.status !== 'ok') return upgraded;
+      return ok({ tables: tables.length, repaired: upgraded.value.repaired });
     });
     if (loaded.status !== 'ok') return loaded;
     const occupying = [...rows.holds, ...rows.claims].filter((r) => OCCUPYING_STATES.includes(r.state));
@@ -135,7 +140,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
     const expiry = event.eventType === 'buddy-expired';
     const lapsed = new Set(RETURN_KEYS[event.eventType] ? rows.holds.filter((h) => event.holdIds.includes(h.holdId)).map((h) => h.employeeId) : []);
     const letLapse = new Set(expiry ? rows.holds.filter((h) => h.state === 'expired' && h.releaseReason === 'buddy-expired').map((h) => `${h.employeeId}|${h.orderUuid}`) : []);
-    const briefs = latest(rows.briefs).filter((b) => b.buddy?.searchConsent === true && b.buddy.paused === false)
+    const briefs = latest(rows.briefs).filter((b) => isBuddyEngaged(b.buddy))
       .sort((a, b) => ordinal(a.employeeId, b.employeeId));
     const entries = new Map(pool.map((r) => [r.orderUuid, entryOf(r)])); const stockVersions = new Map();
     const plan = { trigger: event, evaluatedAt: instant.now, clockVersion: instant.clockVersion,
@@ -173,7 +178,12 @@ export function createAllocationService({ repository, policy, clock, identity, c
         unit: null, provenance: { sourceRef: charging?.source ?? 'brief:unresolved', version: String(brief.briefVersion), observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } } };
       const inputs = { factsVersion: `employee:${employee.version}`, stockVersion: stockVersions.get(visibleKey), employeeFacts: gateFacts, quoteFacts: facts,
         request: { schemaVersion: brief.schemaVersion, briefVersion: brief.briefVersion,
-          preferences: brief.preferences, essentials: Object.fromEntries(Object.entries(brief.essentials).filter(([k]) => k !== 'charging')) } };
+          preferences: brief.preferences, essentials: Object.fromEntries(Object.entries(brief.essentials).filter(([k]) => k !== 'charging')),
+          ...storedFeedback(brief) } };
+      // The server-resolved baseline rides in the frozen inputs, so a replayed quote matches; old briefs add nothing.
+      const baseline = Object.keys(storedFeedback(brief)).length ? projectCurrentCarBaseline({ manualContext: employee.contract?.manualContext,
+        contractId: slot.contractId, context: employeeContext, now: instant.now }) : null;
+      if (baseline) inputs.currentCar = baseline;
       const evaluated = await evaluate(context, employeeContext, instant, inputs, available.map((r) => entries.get(r.orderUuid)));
       if (evaluated.status !== 'ok') return unavailable('employee-evaluation-unavailable');
       // Decisions arrive frozen; copy only what the decline check below changes.

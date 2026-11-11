@@ -174,6 +174,13 @@ test('live HTML requires the user cookie across navigation; Presenter never sile
   assert.equal((await get('/gcsp-greg.html', cookie)).headers.get('location'), '/gcsp-account.html');
   assert.equal((await get('/gcsp/login', cookie)).headers.get('location'), '/gcsp-account.html');
   assert.equal((await get('/', cookie)).headers.get('location'), '/gcsp-account.html');
+  const greg = await f.identity.signIn({ email: 'greg.lawson@gcsp-demo.com', password: 'fucq' }, 'greg-html-login');
+  assert.equal(greg.status, 'ok');
+  for (const path of ['/gcsp-account.html', '/gcsp-activity-live.html', '/gcsp-brief-live.html', '/gcsp-order-progress-live.html', '/gcsp-greg.html']) {
+    assert.equal((await get(path, cookieOf(greg))).status, 200, `Greg can open ${path}`);
+  }
+  assert.equal((await f.identity.requireRole(greg.value.context, 'presenter')).status, 'forbidden');
+  await f.identity.signOut({ cookie: cookieOf(greg) });
   await f.identity.signOut({ cookie });
   assert.equal((await get('/gcsp-account.html', cookie)).headers.get('location'), '/gcsp/login');
   assert.equal(gcspRuntimeOptions({ env: {} }).mode, 'postgres');

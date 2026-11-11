@@ -12,6 +12,8 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { fact, stock, providerValue } from './helpers/employee-recommendation.js';
 import { startHttpServer } from './helpers/employee-recommendation-http.js';
 import { createBriefTransport } from '../../blocks/gcsp/brief/brief-transport.js';
+import { createActivityHttpAdapter } from '../../blocks/gcsp/activity/activity-http.js';
+import { createActivityController } from '../../blocks/gcsp/activity/activity-controller.js';
 import { activityEvents } from '../../blocks/gcsp/activity/activity-copy.js';
 
 const KEY = 'brief.engagement.v1';
@@ -38,7 +40,8 @@ async function setup(t, { policy = createPolicyService() } = {}) {
   f.provider = { async resolve() { return { status: 'ok', value: structuredClone(f.source) }; } };
   f.editor = createBriefEditorService(f);
   f.activity = createActivityService(f);
-  f.http = await startHttpServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.brief, gcspBriefEditor: f.editor, gcspActivity: f.activity });
+  f.http = await startHttpServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.brief, gcspBriefEditor: f.editor, gcspActivity: f.activity,
+    gcspVehicleEvidence: { lookup: { resolve: async () => ({ status: 'unavailable' }) } } });
   t.after(() => f.http.close());
   f.contractId = (await f.account.readAccount(context)).value.currentContract.contractId;
   return f;
@@ -66,6 +69,42 @@ const engagedFixture = async (t, options) => {
   const out = await engage(f); assert.equal(out.status, 200, JSON.stringify(out.json));
   return f;
 };
+
+test('public legacy confirmation cannot engage a sparse brief, and raw draft minimum loss disengages', async (t) => {
+  const f = await setup(t);
+  const sparse = { schemaVersion: 1, preferences: {}, essentials: {} };
+  const draft = await call(f, 'brief/draft', { commandId: 'legacy-sparse', ...(await versions(f)), brief: sparse });
+  assert.equal(draft.status, 200, JSON.stringify(draft.json));
+  const confirm = await call(f, 'brief/confirm', { commandId: 'legacy-confirm', ...(await versions(f)), consent: { search: true, hold: true } });
+  assert.equal(confirm.status, 400, `Confirmation returned ${confirm.json.status}; sparse grants must be refused.`);
+  assert.equal(confirm.json.code, 'engagement-minimum');
+  assert.equal(confirm.json.remaining, 3);
+  assert.equal(briefs(f).length, 0);
+  const g = await engagedFixture(t);
+  const removed = await call(g, 'brief/draft', { commandId: 'legacy-remove', ...(await versions(g)), brief: sparse });
+  assert.equal(removed.status, 200, JSON.stringify(removed.json));
+  assert.equal(removed.json.value.confirmed.transition, 'minimum-lost');
+  assert.equal(briefs(g).at(-1).buddy.searchConsent, false);
+  assert.equal(briefs(g).at(-1).buddy.holdConsent, false);
+});
+
+test('legacy public confirmations accept binary grants, gate promoted drafts, and reject split grants', async (t) => {
+  const f = await setup(t); await saveOk(f, three);
+  const start = await versions(f);
+  const partial = await call(f, 'brief/confirm', { commandId: 'split', ...start, consent: { search: true, hold: false } });
+  assert.equal(partial.status, 400);
+  const first = await call(f, 'brief/confirm', { commandId: 'old-form-on', ...start, consent: { search: true, hold: true } });
+  assert.equal(first.status, 200, JSON.stringify(first.json));
+  const input = (await view(f)).initial.brief;
+  const saved = await call(f, 'brief/draft', { commandId: 'old-form-edit', ...(await versions(f)), brief: input });
+  assert.equal(saved.status, 200, JSON.stringify(saved.json));
+  assert.equal(saved.json.value.confirmed.briefVersion, 2);
+  const off = await call(f, 'brief/confirm', { commandId: 'old-form-off', ...(await versions(f)), consent: { search: false, hold: false } });
+  assert.equal(off.status, 200, JSON.stringify(off.json));
+  assert.equal(off.json.value.brief.briefVersion, 3);
+  assert.deepEqual([off.json.value.activity.canSearch, off.json.value.activity.canHold], [false, false]);
+  assert.deepEqual((await call(f, 'brief/confirm', { commandId: 'old-form-off', expectedBriefVersion: 2, expectedDraftVersion: saved.json.value.draftVersion, consent: { search: false, hold: false } })).json, off.json);
+});
 
 test('fewer than three considered categories are refused with the remaining count and nothing is written', async (t) => {
   const f = await setup(t);
@@ -329,9 +368,21 @@ test('an accepted offer makes engage and disengage read-only', async (t) => {
   });
   assert.equal(planted.status, 'ok', JSON.stringify(planted));
   const before = structuredClone(f.store.state.tables.briefs);
-  for (const route of ['engage', 'disengage']) {
+  for (const route of ['engage', 'disengage', 'pause-search', 'resume-search']) {
     const out = await call(f, `brief/${route}`, await engageBody(f));
     assert.equal(out.status, 409, route); assert.equal(out.json.reason, 'brief-read-only');
+  }
+  for (const [route, payload] of [['draft', { brief: (await view(f)).initial.brief }], ['confirm', { consent: { search: true, hold: true } }]]) {
+    const out = await call(f, `brief/${route}`, { commandId: `accepted-${route}`, ...(await versions(f)), ...payload });
+    assert.equal(out.status, 409, route); assert.equal(out.json.reason, 'brief-read-only');
+  }
+  // Simulate acceptance after the editor's snapshot: service writes recheck it transactionally.
+  const at = await versions(f);
+  const source = (await view(f)).initial.brief;
+  const gate = { ok: true, briefVersion: at.expectedBriefVersion, draftVersion: at.expectedDraftVersion };
+  for (const [operation, payload] of [['saveDraft', { brief: source }], ['confirm', { consent: { search: true, hold: true } }], ['pause', {}], ['resume', {}]]) {
+    const out = await f.brief[operation](f.context, { commandId: `accepted-race-${operation}`, ...at, ...payload }, { gate, source });
+    assert.equal(out.status, 'conflict', operation); assert.equal(out.reason, 'brief-read-only');
   }
   assert.deepEqual(f.store.state.tables.briefs, before);
 });
@@ -346,6 +397,8 @@ test('engagement fails closed when its policy entry is malformed', async (t) => 
   await saveOk(f, three);
   const out = await engage(f);
   assert.equal(out.status, 503, JSON.stringify(out.json)); assert.equal(out.json.status, 'unavailable');
+  const legacy = await call(f, 'brief/confirm', { commandId: 'policy-legacy', ...(await versions(f)), consent: { search: true, hold: true } });
+  assert.equal(legacy.status, 503, JSON.stringify(legacy.json));
   assert.equal(briefs(f).length, 0);
 });
 
@@ -359,4 +412,97 @@ test('the browser transport sends only the three engagement fields to the real r
   assert.equal(out.status, 'ok', JSON.stringify(out));
   const off = await transport.disengage({ commandId: 'transport-disengage', ...(await versions(f)) });
   assert.equal(off.status, 'ok', JSON.stringify(off)); assert.equal(off.value.buddy.state, 'disengaged');
+});
+
+
+test('legacy browser pause/resume aliases revoke grants and apply the Account minimum gate', async (t) => {
+  const f = await engagedFixture(t);
+  const off = await call(f, 'brief/pause', { commandId: 'legacy-off', expectedBriefVersion: 1 });
+  assert.equal(off.status, 200, JSON.stringify(off.json));
+  assert.equal(off.json.value.buddy.state, 'disengaged');
+  assert.deepEqual([briefs(f).at(-1).buddy.searchConsent, briefs(f).at(-1).buddy.holdConsent, briefs(f).at(-1).buddy.paused], [false, false, false]);
+  const on = await call(f, 'brief/resume', { commandId: 'legacy-on', expectedBriefVersion: 2 });
+  assert.equal(on.status, 200, JSON.stringify(on.json));
+  assert.equal(on.json.value.buddy.state, 'engaged');
+  await saveOk(f, { sportiness: null, economy: null });
+  const version = (await versions(f)).expectedBriefVersion;
+  const refused = await call(f, 'brief/resume', { commandId: 'legacy-under-minimum', expectedBriefVersion: version });
+  assert.equal(refused.json.code, 'engagement-minimum');
+  assert.equal((await view(f)).initial.buddy.state, 'disengaged');
+  const stale = await call(f, 'brief/resume', { commandId: 'legacy-stale', expectedBriefVersion: 1 });
+  assert.equal(stale.json.status, 'stale-version');
+});
+
+test('legacy paused grants can be explicitly revoked or normalised by the canonical commands', async (t) => {
+  const f = await engagedFixture(t);
+  assert.equal((await f.brief.pause(f.context, { commandId: 'old-pause', expectedBriefVersion: 1 })).status, 'ok');
+  assert.equal((await view(f)).initial.buddy.state, 'disengaged');
+  const off = await disengage(f);
+  assert.equal(off.status, 200, JSON.stringify(off.json));
+  assert.deepEqual([briefs(f).at(-1).buddy.searchConsent, briefs(f).at(-1).buddy.holdConsent, briefs(f).at(-1).buddy.paused], [false, false, false]);
+  assert.equal((await engage(f)).status, 200);
+  assert.equal((await f.brief.pause(f.context, { commandId: 'old-pause-again', expectedBriefVersion: 4 })).status, 'ok');
+  const on = await engage(f);
+  assert.equal(on.status, 200, JSON.stringify(on.json));
+  assert.deepEqual([briefs(f).at(-1).buddy.searchConsent, briefs(f).at(-1).buddy.holdConsent, briefs(f).at(-1).buddy.paused], [true, true, false]);
+});
+
+
+test('partial legacy grants are off in real service and Activity permissions, then Engage normalises both grants', async (t) => {
+  const f = await setup(t);
+  await saveOk(f, three);
+  const initial = await versions(f);
+  const confirmed = await f.brief.confirm(f.context, { commandId: 'partial-old-confirm', ...initial, consent: { search: true, hold: false } });
+  assert.equal(confirmed.status, 'ok', JSON.stringify(confirmed));
+  assert.equal(confirmed.value.activity.canSearch, false);
+  assert.equal(confirmed.value.activity.canHold, false);
+  assert.equal((await permission(f)).permission.canSearch, false);
+  assert.equal((await view(f)).initial.buddy.state, 'disengaged');
+  assert.equal((await engage(f)).status, 200);
+  const active = (await permission(f)).permission;
+  assert.deepEqual([active.searchConsent, active.holdConsent, active.paused, active.canSearch, active.canHold], [true, true, false, true, true]);
+});
+
+
+test('the tile HTTP commands pause and resume search while retaining grants and a held offer', async (t) => {
+  const f = await engagedFixture(t); const order = f.store.state.tables.stock[0];
+  const planted = await f.repository.transaction(f.context, { commandId: 'tile-held', inputDigest: inputDigest('tile-held') }, async (tx) => {
+    await tx.insert('quotes', { runId: f.context.runId, quoteId: 'tile-q', employeeId: f.context.employeeId, orderUuid: order.orderUuid });
+    await tx.insert('holds', { runId: f.context.runId, holdId: 'tile-h', orderUuid: order.orderUuid, employeeId: f.context.employeeId,
+      entitlementSlotId: f.context.entitlementSlotId, type: 'buddy-offer', state: 'active', quoteId: 'tile-q' });
+    return tx.insert('offers', { runId: f.context.runId, offerId: 'tile-o', holdId: 'tile-h', quoteId: 'tile-q', employeeId: f.context.employeeId,
+      orderUuid: order.orderUuid, state: 'active', briefVersion: 1, policyVersion: f.context.policyVersion, expiresAt: '2026-11-06T08:00:00.000Z',
+      tokenHash: 'h', tokenMetadata: {}, operationId: 'tile-op' });
+  });
+  assert.equal(planted.status, 'ok');
+  const kept = ['offers', 'holds', 'quotes', 'orders'].map((table) => [table, structuredClone(f.store.state.tables[table] ?? [])]);
+  const base = `http://127.0.0.1:${f.http.server.address().port}`; const writes = [];
+  const adapter = createActivityHttpAdapter({ fetch: async (path, options) => {
+    if (options.method === 'POST') writes.push({ path, body: JSON.parse(options.body) });
+    return globalThis.fetch(base + path, { ...options, headers: { ...options.headers, Origin: 'https://employee.test', cookie: f.acting.value.setCookie.split(';')[0] } });
+  } });
+  const controller = createActivityController({ adapter, createCommandId: () => `tile-command-${writes.length}` }); t.after(() => controller.destroy());
+  await controller.refresh(); await controller.pauseSearch();
+  let value = controller.getState().result.value;
+  assert.deepEqual([value.permission.searchConsent, value.permission.holdConsent, value.permission.paused, value.permission.canSearch], [true, true, true, false]);
+  assert.equal(value.currentOffer.state, 'active'); assert.equal(controller.getState().message, 'Search paused.');
+  await controller.resumeSearch(); value = controller.getState().result.value;
+  assert.deepEqual([value.permission.searchConsent, value.permission.holdConsent, value.permission.paused, value.permission.canSearch], [true, true, false, true]);
+  assert.equal(controller.getState().message, 'Search resumed.');
+  assert.deepEqual(writes.map((row) => row.path), ['/api/gcsp/brief/pause-search', '/api/gcsp/brief/resume-search']);
+  assert.deepEqual(writes.map((row) => [row.body.expectedBriefVersion, row.body.expectedDraftVersion]), [[1, 1], [2, 1]]);
+  for (const [table, rows] of kept) assert.deepEqual(f.store.state.tables[table] ?? [], rows, table);
+  assert.deepEqual(operations(f).slice(-2), ['paused', 'resumed']);
+});
+
+test('search commands reject stale editor versions and resume cannot bypass the Account minimum', async (t) => {
+  const f = await engagedFixture(t); const at = await versions(f);
+  const stale = await call(f, 'brief/pause-search', { commandId: 'tile-stale-draft', ...at, expectedDraftVersion: 0 });
+  assert.equal(stale.json.status, 'stale-version'); assert.equal(briefs(f).length, 1);
+  const paused = await call(f, 'brief/pause-search', { commandId: 'tile-pause', ...at }); assert.equal(paused.status, 200, JSON.stringify(paused.json));
+  await saveOk(f, { sportiness: null, economy: null });
+  const before = structuredClone(f.store.state.tables.briefs);
+  const refused = await call(f, 'brief/resume-search', { commandId: 'tile-minimum', ...(await versions(f)) });
+  assert.equal(refused.json.code, 'engagement-minimum'); assert.deepEqual(f.store.state.tables.briefs, before);
+  const old = await call(f, 'brief/resume-search', { commandId: 'tile-stale-brief', ...at }); assert.equal(old.json.status, 'stale-version');
 });

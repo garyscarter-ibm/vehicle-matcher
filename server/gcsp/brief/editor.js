@@ -1,3 +1,4 @@
+import { isBuddyEngaged } from './permission.js';
 import { inputDigest, ok, result } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
@@ -124,7 +125,7 @@ const COMMAND_FIELDS = ['commandId', 'expectedBriefVersion', 'expectedDraftVersi
 // The Account engagement view: state from the latest confirmed brief, the count from the content the editor shows.
 function buddyView(shown, current, account, rules, slider, policyVersion) {
   const b = current?.buddy; const held = b?.searchConsent === true;
-  const engaged = held && b.holdConsent === true && b.paused === false;
+  const engaged = isBuddyEngaged(b);
   const count = accountState(shown, rules, slider, sameAgainView(shown, account), policyVersion);
   const remaining = count.sameAgain ? 0 : Math.max(0, rules.minimumCategories - count.considered);
   const state = engaged ? 'engaged' : 'disengaged';
@@ -288,6 +289,31 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
     const resolved = await resolveInitial(context, p); if (resolved.error) return { error: resolved.error };
     return { p, buddy: buddyView(resolved.initial, p.state.current, p.account, p.rules, p.slider, context.policyVersion) };
   }
+  function engagementGate(context, shown, p) {
+    const count = accountState(shown, p.rules, p.slider, sameAgainView(shown, p.account), context.policyVersion);
+    const need = count.sameAgain ? 0 : Math.max(0, p.rules.minimumCategories - count.considered);
+    return { ok: need === 0, remaining: need, considered: count.considered, minimumCategories: p.rules.minimumCategories,
+      briefVersion: p.state.briefVersion, draftVersion: p.state.draftVersion };
+  }
+  // Legacy forms keep their response envelopes, but use the same content and permission gates.
+  async function legacyWrite(context, input, kind) {
+    try { input = jsonCopy(input); } catch { return refusal('input', 'Use plain JSON values.'); }
+    const fields = [...COMMAND_FIELDS, kind === 'saveDraft' ? 'brief' : 'consent'];
+    if (!only(input, fields) || COMMAND_FIELDS.some((key) => !Object.hasOwn(input, key)) || !text(input.commandId) || input.commandId.length > 128
+      || !revision(input.expectedBriefVersion) || !revision(input.expectedDraftVersion)) return refusal('command', 'Supply a command ID and the expected versions.');
+    if (kind === 'confirm' && input.consent !== undefined && (!only(input.consent, ['search', 'hold'])
+      || typeof input.consent.search !== 'boolean' || typeof input.consent.hold !== 'boolean' || input.consent.search !== input.consent.hold))
+      return refusal('consent', 'Engage or disengage Buddy as one function.');
+    try {
+      const p = await prepare(context); if (p.error) return p.error;
+      if (p.state.accepted && p.state.current) return result('conflict', { reason: 'brief-read-only', current: { briefVersion: p.state.briefVersion } });
+      const resolved = await resolveInitial(context, p); if (resolved.error) return resolved.error;
+      const source = kind === 'saveDraft' ? input.brief : resolved.initial;
+      if (!validateEditable(source, p.config, p.slider, p.lifecycle)) return refusal('brief', 'Use the registered editable brief.');
+      if (kind === 'confirm' && !p.state.input && !p.state.current) return result('not-found', { resourceType: 'brief-draft' });
+      return await brief[kind](context, input, { gate: engagementGate(context, source, p), ...(kind === 'confirm' ? { source } : {}) });
+    } catch { return unavailable(); }
+  }
   async function engagement(context, input, kind) {
     try { input = jsonCopy(input); } catch { return refusal('input', 'Use plain JSON values.'); }
     if (!only(input, COMMAND_FIELDS) || COMMAND_FIELDS.some((key) => !Object.hasOwn(input, key)) || !text(input.commandId) || input.commandId.length > 128
@@ -297,10 +323,7 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
       const p = await prepare(context); if (p.error) return p.error;
       if (p.state.accepted && p.state.current) return result('conflict', { reason: 'brief-read-only', current: { briefVersion: p.state.briefVersion } });
       const resolved = await resolveInitial(context, p); if (resolved.error) return resolved.error;
-      const count = accountState(resolved.initial, p.rules, p.slider, sameAgainView(resolved.initial, p.account), context.policyVersion);
-      const need = count.sameAgain ? 0 : Math.max(0, p.rules.minimumCategories - count.considered);
-      const gate = { ok: need === 0, remaining: need, considered: count.considered, minimumCategories: p.rules.minimumCategories,
-        briefVersion: p.state.briefVersion, draftVersion: p.state.draftVersion };
+      const gate = engagementGate(context, resolved.initial, p);
       const written = await brief[kind](context, input, { gate });
       const latest = await readback(context);
       if (written?.status === 'conflict' && !latest.error) return { ...written, buddy: latest.buddy };
@@ -386,8 +409,7 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
         if (again) merged.sameAgain = { on: input.sameAgain.on, contractId: car, source: 'employee', setAt: p.time.now };
         if (!validateEditable(merged, p.config, p.slider, p.lifecycle)) return refusal('changes', 'Use the registered editable brief.');
         // While consent is held the service also confirms this save, disengaging when the minimum is lost.
-        const count = accountState(merged, p.rules, p.slider, sameAgainView(merged, p.account), context.policyVersion);
-        const gate = { ok: count.sameAgain || count.considered >= p.rules.minimumCategories, briefVersion: p.state.briefVersion, draftVersion: p.state.draftVersion };
+        const gate = engagementGate(context, merged, p);
         const saved = await brief.saveDraft(context, { commandId: input.commandId, expectedBriefVersion: input.expectedBriefVersion,
           expectedDraftVersion: input.expectedDraftVersion, brief: merged }, { gate });
         if (saved?.status !== 'ok') return saved ?? unavailable();
@@ -399,7 +421,11 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
           currentCarRating: ratingView(saved.value.brief, p.account), sameAgain: sameAgainView(saved.value.brief, p.account) }));
       } catch { return unavailable(); }
     },
+    saveDraft: (context, input) => legacyWrite(context, input, 'saveDraft'),
+    confirm: (context, input) => legacyWrite(context, input, 'confirm'),
     engage: (context, input) => engagement(context, input, 'engage'),
+    pause: (context, input) => engagement(context, input, 'pause'),
+    resume: (context, input) => engagement(context, input, 'resume'),
     disengage: (context, input) => engagement(context, input, 'disengage'),
     async previewDraft(context, input) {
       try { input = jsonCopy(input); } catch { return invalid('input'); }

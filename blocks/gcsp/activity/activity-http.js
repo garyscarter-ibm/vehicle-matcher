@@ -14,10 +14,15 @@ export function createActivityHttpAdapter({ fetch: request = globalThis.fetch, l
       return typeof out?.status === 'string' && (out.status !== 'ok' || response.ok) ? out : unavailable();
     } catch { return unavailable(); }
   }
-  const command = (operation, { commandId, expectedBriefVersion, signal } = {}) => {
-    if (typeof commandId !== 'string' || !commandId.trim() || !Number.isSafeInteger(expectedBriefVersion) || expectedBriefVersion < 1) return Promise.resolve({ status: 'invalid' });
-    return send(`/api/gcsp/brief/${operation}`, 'POST', { commandId, expectedBriefVersion }, signal);
-  };
+  async function command(operation, { commandId, expectedBriefVersion, signal } = {}) {
+    if (typeof commandId !== 'string' || !commandId.trim() || !Number.isSafeInteger(expectedBriefVersion) || expectedBriefVersion < 1) return { status: 'invalid' };
+    const editor = await send('/api/gcsp/brief/editor', 'GET', undefined, signal);
+    if (editor.status !== 'ok') return editor;
+    const initial = editor.value?.initial;
+    if (!Number.isSafeInteger(initial?.briefVersion) || !Number.isSafeInteger(initial?.draftVersion) || initial.draftVersion < 0) return unavailable();
+    if (initial.briefVersion !== expectedBriefVersion) return { status: 'stale-version' };
+    return send(`/api/gcsp/brief/${operation}`, 'POST', { commandId, expectedBriefVersion, expectedDraftVersion: initial.draftVersion }, signal);
+  }
   // Display only: the offer view's own validation decides trust; anything else is no display.
   async function readOfferDisplay({ offerId, runId, signal } = {}) {
     if (typeof offerId !== 'string' || !offerId.trim() || typeof runId !== 'string' || !runId.trim()) return null;
@@ -27,5 +32,7 @@ export function createActivityHttpAdapter({ fetch: request = globalThis.fetch, l
     return { offerRef: { offerId }, title: display.name, images: display.images.map(({ src, alt, caption, fidelity }) => ({ src, alt, caption, fidelity })) };
   }
   return { loadAccount, readActivity: ({ signal } = {}) => send('/api/gcsp/activity', 'GET', undefined, signal),
-    readOfferDisplay, pause: (input) => command('pause', input), resume: (input) => command('resume', input) };
+    readOfferDisplay, disengage: (input) => command('disengage', input), engage: (input) => command('engage', input),
+    pauseSearch: (input) => command('pause-search', input), resumeSearch: (input) => command('resume-search', input),
+    pause: (input) => command('disengage', input), resume: (input) => command('engage', input) };
 }

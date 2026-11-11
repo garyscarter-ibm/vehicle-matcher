@@ -11506,10 +11506,13 @@
           "employeeId": "operator-greg",
           "name": "Greg Lawson",
           "roles": [
-            "greg"
+            "greg",
+            "employee"
           ],
           "companyId": "demo-bmw-fs-uk",
-          "schemeId": "choices-fs-uk"
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "entitlementSlotId": "slot-greg"
         },
         {
           "principalId": "demo-presenter",
@@ -11522,9 +11525,9 @@
       ],
       "unit": "fictional principal mapping",
       "status": "assumed",
-      "basis": "Explicit synthetic demonstration people and competing employees; first names are scenario labels, no real identity/contact/licence data. Grade and scheme IDs use the canonical eligibility mapping.",
+      "basis": "Synthetic principals; grade/scheme IDs follow eligibility mapping. Greg's employee and ordering roles authorised 11 November 2026. G7 is an assumed, revisable grade; slot-greg is his own entitlement.",
       "source": "docs/gcsp/shared-contracts.md#demoidentityadapter--fucq-84",
-      "sourceDate": "2026-11-05",
+      "sourceDate": "2026-11-11",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
@@ -16256,6 +16259,35 @@
       "basis": "Plain names for policy keys Greg sees, read from public BMW model naming. Not verified BMW copy.",
       "source": "docs/gcsp/shared-contracts.md",
       "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "employee.currentCarFeedback.v1",
+      "value": {
+        "schemaVersion": 1,
+        "rating": {
+          "positive": [4, 5],
+          "negative": [1, 2],
+          "neutral": [3]
+        },
+        "similarity": {
+          "dimensions": ["modelLine", "body", "fuel"]
+        },
+        "sameAgain": {
+          "dimensions": ["eligibilityModelKey", "body", "fuel", "configurationId"]
+        },
+        "improvement": {
+          "requireNoWorseOnAll": true,
+          "requireBetterOnAtLeast": 1
+        },
+        "precedence": ["gates", "sameAgain", "rating", "preferences"]
+      },
+      "unit": "star-rating classes and structured-fact dimensions",
+      "status": "assumed",
+      "basis": "Plausible revisable demo rule for how a current-car rating and Same again shape suitable recommendations: 4-5 positive, 1-2 negative, 3 or unset neutral; similarity and continuity compare confirmed structured facts. Not measured BMW satisfaction.",
+      "source": "_dev/in-progress/DEV-2026-11-10-013.md (FUCQ-371)",
+      "sourceDate": "2026-11-11",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },

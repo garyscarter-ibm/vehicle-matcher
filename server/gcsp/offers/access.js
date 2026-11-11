@@ -125,7 +125,7 @@ function presentation(offer, hold, quote, stock, clock, followup, extra = {}) {
     availableActions, followup, handoff: extra.handoff ?? null, selection: extra.selection ?? null,
     quote: { ...select(quote, ['quoteId', 'configurationId', 'orderUuid', 'briefVersion', 'policyVersion', 'quotedAt', 'validUntil']),
       orderNumber: /^\d{7}$/.test(stock.orderNumber ?? '') ? stock.orderNumber : null,
-      revisions: { quote: quote.version, ...safeFields(decision.versions, ['brief', 'facts', 'policy', 'stock', 'snapshot', 'terms', 'clock', 'availability']) },
+      revisions: { quote: quote.version, ...safeFields(decision.versions, ['brief', 'facts', 'policy', 'stock', 'snapshot', 'terms', 'clock', 'availability', 'feedback']) },
       facts, decision: { gateStatus: decision.gateStatus, score: Number.isFinite(decision.score) ? decision.score : null,
         ...Object.fromEntries(['reasons', 'tradeOffs', 'blockers', 'unknowns'].map((key) => [key, explanation(decision[key])])) },
       terms: pinnedTerms, allowance: structuredClone(pinnedTerms.allowanceInputs) },

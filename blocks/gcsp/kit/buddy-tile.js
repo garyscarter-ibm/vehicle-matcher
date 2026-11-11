@@ -19,12 +19,13 @@ export function buddyTile({ id = `gcsp-buddy-tile-${++sequence}`, onPause, onRes
   function update({ phase = 'loading', result, pending = false, events = [], offerTitle, deadline } = {}) {
     const active = root.ownerDocument.activeElement;
     if (root.contains(active)) focusKey = active.dataset.focusKey;
-    const state = phase === 'ready' ? buddyState(result) : phase === 'loading' ? 'loading' : 'unavailable';
+    let state = phase === 'ready' ? buddyState(result) : phase === 'loading' ? 'loading' : 'unavailable';
+    if (state === 'inactive' && result?.value?.permission?.paused === true && result.value.permission.searchConsent && result.value.permission.holdConsent) state = 'paused';
     root.dataset.state = state; root.setAttribute('aria-busy', String(pending || state === 'loading'));
     const header = el('div', 'gcsp-buddy-tile-head'); header.append(title);
     const status = el('p', 'gcsp-buddy-tile-status'); status.id = id;
     if (state === 'loading') status.textContent = 'Loading Buddy activity.';
-    else status.append(buddyStatus({ state }));
+    else { const marker = buddyStatus({ state }); if (state === 'paused') marker.lastChild.textContent = 'Paused'; status.append(marker); }
     header.append(status); root.replaceChildren(header);
     if (state === 'loading') return;
     const value = result?.value; const held = value?.currentOffer?.state === 'active';

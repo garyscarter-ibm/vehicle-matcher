@@ -134,5 +134,5 @@ function demandFixtureAdapter(name) {
 export function fixtureAdapter(name) {
   const adapter = demandFixtureAdapter(name);
   return adapter ? { ...adapter, signOut: false,
-    loadAccount: async () => ({ status: 'ready', name: 'Greg Lawson', context: 'Scheme ordering lead' }) } : null;
+    loadAccount: async () => ({ status: 'ready', name: 'Greg Lawson', roles: ['greg'], context: 'Scheme ordering lead' }) } : null;
 }

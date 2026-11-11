@@ -16,7 +16,7 @@ const query = new URLSearchParams(globalThis.location?.search ?? '');
 const requested = query.get('fixture'); const prefs = query.get('prefs'); const rating = Number.parseInt(query.get('rating') ?? '', 10);
 // The saved record is always the live transport; ?prefs= swaps in an in-memory one for a named visual state.
 const unavailableReason = { 'no-current-car': 'no-current-car', 'current-car-unidentified': 'current-car-unidentified' }[requested];
-const previewBuddy = query.get('buddy') ?? (['inactive', 'setup'].includes(query.get('activity')) ? 'disengaged'
+const previewBuddy = query.get('buddy') ?? (['inactive', 'setup', 'paused', 'paused-offer'].includes(query.get('activity')) ? 'disengaged'
   : ['unavailable', 'loading'].includes(query.get('activity')) ? 'unknown' : 'engaged');
 const previewPreferences = (state) => (region, { signal, describeCar }) => {
   const mounted = mountAccountPreferences(region, { transport: previewPreferenceTransport(state, { rating, sameAgainReason: unavailableReason, buddy: previewBuddy }), signal, describeCar });

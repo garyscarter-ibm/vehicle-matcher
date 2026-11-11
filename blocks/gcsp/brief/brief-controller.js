@@ -99,7 +99,8 @@ export function createBriefController({ context, initial = {}, transport, create
   const validConsent = (v) => only(v, ['search', 'hold']) && typeof v.search === 'boolean' && typeof v.hold === 'boolean';
   if (initial.consent !== undefined && !validConsent(initial.consent)) throw new TypeError('Invalid consent.');
   let state = { brief, briefVersion: initial.briefVersion ?? 0, draftVersion: initial.draftVersion ?? 0,
-    knownFacts: context.knownFacts ?? {}, permissions: context.permissions ?? {}, consent: initial.consent ?? { search: false, hold: false },
+    knownFacts: context.knownFacts ?? {}, permissions: context.permissions ?? {}, consent: { search: initial.buddy?.state !== 'disengaged' && initial.consent?.search === true && initial.consent?.hold === true,
+      hold: initial.buddy?.state !== 'disengaged' && initial.consent?.search === true && initial.consent?.hold === true },
     dirty: false, restarted: false, preview: { state: 'idle' }, save: { state: 'idle' } };
   let destroyed = false;
   let editVersion = 0;
@@ -167,7 +168,7 @@ export function createBriefController({ context, initial = {}, transport, create
   function setConsent(consent) {
     if (destroyed) return { status: 'destroyed' };
     try { consent = clone(consent); } catch { return invalid('consent'); }
-    if (!validConsent(consent)) return invalid('consent');
+    if (!validConsent(consent) || consent.search !== consent.hold) return invalid('consent');
     state.consent = consent;
     state.dirty = true;
     editVersion += 1;
@@ -196,9 +197,12 @@ export function createBriefController({ context, initial = {}, transport, create
       if (outcome.status === 'ok') {
         if (!revision(outcome.value?.draftVersion) || outcome.value.draftVersion <= captured.draftVersion
           || outcome.value.baseBriefVersion !== captured.briefVersion) throw new TypeError('Invalid draft response.');
+        const currentVersion = outcome.value.confirmed?.briefVersion ?? captured.briefVersion;
+        if (!revision(currentVersion) || currentVersion < captured.briefVersion) throw new TypeError('Invalid promoted brief version.');
+        if (currentVersion > captured.briefVersion) { state.briefVersion = currentVersion; state.draftVersion = outcome.value.draftVersion; }
         const draftVersion = outcome.value.draftVersion;
         savedDraftVersion = draftVersion;
-        outcome = clone(await transport.confirm(clone({ commandId: confirmId, expectedBriefVersion: captured.briefVersion,
+        outcome = clone(await transport.confirm(clone({ commandId: confirmId, expectedBriefVersion: currentVersion,
           expectedDraftVersion: draftVersion, consent: captured.consent })));
         if (destroyed) return { status: 'destroyed' };
         if (outcome.status === 'ok') {

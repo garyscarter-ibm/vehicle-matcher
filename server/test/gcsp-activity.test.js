@@ -76,7 +76,7 @@ activity('the latest confirmation supplies independent permission and only real 
   let value = await read(f);
   assert.equal(value.state, 'never-searched'); assert.equal(value.briefVersion, 1);
   assert.deepEqual(value.permission, { searchConsent: true, holdConsent: false, paused: false,
-    permissionVersion: 1, canSearch: true, canHold: false });
+    permissionVersion: 1, canSearch: false, canHold: false });
   const latest = await confirm(f, { search: false, hold: true }, 1); value = await read(f);
   assert.equal(value.briefVersion, 2); assert.equal(value.permission.searchConsent, false);
   assert.equal(value.permission.holdConsent, true); assert.equal(value.permission.canHold, false);

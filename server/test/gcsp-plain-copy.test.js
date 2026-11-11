@@ -23,6 +23,9 @@ const CODES = [
   ['blockers', { code: 'required-by', requiredBy: '2026-12-01T23:59:59.999Z' }], ['reasons', { code: 'required-by-met', requiredBy: '2026-12-01T23:59:59.999Z' }],
   ['unknowns', { code: 'required-by-unconfirmed' }], ['blockers', { code: 'required-by-already-passed' }], ['blockers', { code: 'renewal-already-passed' }],
   ['blockers', { code: 'insurance-grade-limit', maximum: 20, actual: 22 }], ['unknowns', { code: 'insurance-unconfirmed' }],
+  ['reasons', { code: 'feedback-similar', keys: ['modelLine', 'body', 'fuel'] }], ['reasons', { code: 'feedback-improvement', keys: ['sportiness', 'economy'] }],
+  ['reasons', { code: 'same-again-match', keys: ['eligibilityModelKey', 'body', 'fuel'] }], ['blockers', { code: 'feedback-similar-omitted', keys: ['modelLine'] }],
+  ['blockers', { code: 'feedback-not-similar-or-better', keys: ['modelLine'] }], ['blockers', { code: 'same-again-different', keys: ['eligibilityModelKey'] }],
   ['unknowns', { code: 'licence-unconfirmed' }], ['blockers', { code: 'licence-not-valid-at-collection' }], ['blockers', { code: 'locally-excluded', scope: {} }],
 ];
 
@@ -48,6 +51,21 @@ test('mapped sentences carry the right facts', () => {
   assert.equal(reasonText({ code: 'essential-met', field: 'body' }, 'reasons'), 'Meets your body style requirement.');
   assert.equal(reasonText({ code: 'essential-unmet', field: 'zeroTo62' }, 'blockers'), 'Does not meet your 0 to 62 mph requirement.');
   assert.equal(reasonText({ code: 'preference-fit', field: 'sportiness', score: 62, desired: 90, observed: 13 }, 'tradeOffs'), 'Less sporty than you prefer.');
+});
+
+test('current-car feedback codes read as their own sentences, never the generic fallback', () => {
+  const t = (code, kind, keys) => reasonText({ code, keys }, kind);
+  assert.equal(t('feedback-similar', 'reasons'), 'Similar to your current car, which you rated highly.');
+  assert.equal(t('feedback-improvement', 'reasons', ['sportiness']), 'Better than your current car for sportiness.');
+  assert.equal(t('feedback-improvement', 'reasons', ['sportiness', 'economy']), 'Better than your current car for sportiness and economy.');
+  assert.equal(t('feedback-improvement', 'reasons', ['sportiness', 'comfort', 'size']), 'Better than your current car for sportiness, comfort and size.');
+  assert.equal(t('feedback-improvement', 'reasons', []), 'Better than your current car for your preferences.');
+  assert.equal(t('feedback-improvement', 'reasons', [7, null]), 'Better than your current car for your preferences.');
+  assert.equal(t('same-again-match', 'reasons'), 'The same model and specification as your current car, as you asked.');
+  assert.equal(t('feedback-different', 'reasons'), 'Different from the current car you rated poorly.');
+  assert.equal(t('feedback-similar-omitted', 'blockers'), 'Too similar to your current car, which you rated poorly.');
+  assert.equal(t('feedback-not-similar-or-better', 'blockers'), 'Neither similar to your current car nor better on your preferences.');
+  assert.equal(t('same-again-different', 'blockers'), 'The same model and specification could not be confirmed.');
 });
 
 test('preference-fit reads in words for every preference key, with no percentage', () => {

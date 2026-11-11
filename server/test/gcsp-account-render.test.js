@@ -34,6 +34,9 @@ test('browser snapshot agrees with the real manual service and canonical policy'
   const f = await setup(); const account = await f.service.readAccount(f.context);
   const stable = (envelope) => {
     const value = structuredClone(envelope); delete value.value.contextVersion;
+    // Server-only matching keys (FUCQ-371) are not part of the block's display snapshot.
+    const strip = (node) => { if (node && typeof node === 'object') { if (node.vehicle) { delete node.vehicle.modelLine; delete node.vehicle.eligibilityModelKey; delete node.vehicle.sizeClass; delete node.vehicle.tags; } Object.values(node).forEach(strip); } };
+    strip(value);
     for (const slot of value.value.slots) delete slot.runId;
     return value;
   };
@@ -1478,7 +1481,7 @@ test('FUCQ-397: one Buddy tile sits beside preferences, survives quiet redraws, 
   try {
     await mounted.ready; await tick();
     const head = view.root.querySelector('.gcsp-account-head'); const tile = view.root.querySelector('.gcsp-buddy-tile');
-    assert.ok(tile); assert.equal(tile.querySelector('.gcsp-buddy-status').textContent, 'Active');
+    assert.ok(tile); assert.equal(tile.querySelector('.gcsp-buddy-status').textContent, 'Buddy engaged');
     assert.equal(head.querySelector('.gcsp-buddy-status'), null);
     assert.equal(tile.parentElement.parentElement.contains(view.root.querySelector('.gcsp-account-preferences')), true);
     assert.equal(head.querySelector('h1').textContent, 'Your cars');

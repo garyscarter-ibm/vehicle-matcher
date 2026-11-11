@@ -7,6 +7,7 @@ export const ACCOUNT_SNAPSHOT = {
     "account": {
       "employeeId": "employee-paula",
       "name": "Paula Mason",
+      "roles": ["employee"],
       "companyId": "demo-bmw-fs-uk",
       "gradeId": "G7",
       "schemeId": "choices-fs-uk",
@@ -566,6 +567,7 @@ export const UNSUPPORTED_SNAPSHOT = {
     "account": {
       "employeeId": "employee-sam",
       "name": "Sam Patel",
+      "roles": ["employee"],
       "companyId": "demo-bmw-rr-production",
       "gradeId": "PG1",
       "schemeId": "choices-rr-production",

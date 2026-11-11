@@ -19,12 +19,13 @@ test('the tile distinguishes loading, setup, inactive, paused, held, finished an
   const tile = buddyTile();
   assert.equal(tile.root.dataset.state, 'loading');
   for (const [permission, offer, expected] of [
-    [null, null, 'unset'], [{ paused: false, canSearch: false }, null, 'inactive'],
-    [{ paused: true, canSearch: false }, null, 'paused'], [{ paused: false, canSearch: true }, null, 'active'],
-    [{ paused: true, canSearch: false }, { state: 'accepted' }, 'finished'],
+    [null, null, 'unset'], [{ searchConsent: false, holdConsent: false, paused: false, canSearch: false }, null, 'inactive'],
+    [{ searchConsent: true, holdConsent: true, paused: true, canSearch: false }, null, 'paused'], [{ searchConsent: true, holdConsent: true, paused: false, canSearch: true }, null, 'active'],
+    [{ searchConsent: true, holdConsent: true, paused: true, canSearch: false }, { state: 'accepted' }, 'finished'],
   ]) {
     tile.update({ phase: 'ready', result: { status: 'ok', value: { permission, currentOffer: offer } } });
     assert.equal(tile.root.dataset.state, expected);
+    if (expected === 'paused') assert.equal(tile.root.querySelector('.gcsp-buddy-status').textContent, 'Paused');
     if (expected === 'finished') assert.equal(tile.root.querySelector('[data-focus-key="buddy-search-action"]'), null);
   }
   tile.update({ phase: 'ready', result: snapshot('offer'), deadline: 'Respond by 6 Nov 2026, 09:00' });
@@ -39,7 +40,7 @@ test('events use actual projected changes, offers and latest check, deduplicate 
   value.currentOffer = { offerRef: { offerId: 'one' }, state: 'accepted', createdAt: '2026-11-05T09:31:00Z' };
   value.offers = [value.currentOffer]; value.stateChanges.push(value.stateChanges[0]);
   const events = buddyEvents(value);
-  assert.deepEqual(events.map((event) => event.label), ['Car offered', 'Cars checked', 'Search paused', 'Search confirmed']);
+  assert.deepEqual(events.map((event) => event.label), ['Car offered', 'Cars checked', 'Buddy disengaged', 'Preferences confirmed']);
   assert.equal(events[0].detail, 'Current offer status: Accepted.');
   assert.equal(events[0].occurredAt, '2026-11-05T09:31:00Z', 'does not invent an acceptance time');
   const tile = buddyTile(); tile.update({ phase: 'ready', result, events });

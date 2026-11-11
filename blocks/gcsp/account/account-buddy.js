@@ -49,11 +49,12 @@ export function mountAccountBuddy(region, { adapter, signal, onChanged, onPrefer
       title: kind === 'history' ? 'Buddy history' : kind === 'offer' ? 'Your held offer' : 'Search details', body: [drawerBody],
       opener: () => region.querySelector(`[data-focus-key="${key}"]`), onClose: () => { drawer = null; drawerBody = null; } });
   }
-  const tile = buddyTile({ id: 'gcsp-account-buddy-status', onPause: typeof adapter?.pause === 'function' ? async () => { await controller.pause(); onChanged?.(); } : undefined,
-    onResume: typeof adapter?.resume === 'function' ? async () => { await controller.resume(); onChanged?.(); } : undefined, onRetry: () => controller.refresh(), onPreferences: review,
+  const pause = adapter?.pauseSearch ?? adapter?.pause; const resume = adapter?.resumeSearch ?? adapter?.resume;
+  const tile = buddyTile({ id: 'gcsp-account-buddy-status', onPause: typeof pause === 'function' ? async () => { await controller.pauseSearch(); onChanged?.(); } : undefined,
+    onResume: typeof resume === 'function' ? async () => { await controller.resumeSearch(); onChanged?.(); } : undefined, onRetry: () => controller.refresh(), onPreferences: review,
     onHistory: () => open('history', 'buddy-history'), onDetails: () => open('details', 'buddy-details'), onOffer: () => open('offer', 'buddy-offer'), orderHref: PORTAL_ROUTES['order-progress'] });
   region.append(tile.root, live.root);
-  const controller = createActivityController({ adapter, onChange: (next) => {
+  const controller = createActivityController({ adapter: { ...adapter, pauseSearch: pause, resumeSearch: resume }, onChange: (next) => {
     if (disposed) return;
     state = next;
     if (state.phase === 'restarted') { drawer?.close(false); tile.root.dataset.state = 'restarted'; tile.root.setAttribute('aria-busy', 'false'); tile.root.replaceChildren(runRestartedScreen()); return; }
