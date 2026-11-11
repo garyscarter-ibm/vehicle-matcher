@@ -106,3 +106,32 @@ Local targeted receipt:
 The baseline advanced from dd2ac6a8 to 81c14be9 after validation; the intervening changes only
 updated the unrelated presenter diagnosis document. No backend delivery behavior changed, and
 live Render deployment and inbox delivery remain unverified.
+
+## Live follow-up: Paula inbox not received
+
+Gary reported no email after another attempt and confirmed he meant Paula. Read-only hosted
+outbox inspection at **11 November 2026, 23:05 UTC** found nine current-run messages:
+
+- Paula's latest offer (`buddy-notification:e8d79611cbf54bf3cdbdf2d59670e742d3e35d4fba6b086842a659e6719c3f10`)
+  and renewal-case update (`case-b418616b578cbaaac2ce077680641f8b9d1273c2`) are `sent`,
+  `configured`, attempt 1, with no error or next attempt.
+- Greg's latest offer failed with `recipient-email-invalid`; this is separate from Paula's report.
+- Six older messages retain `mail-configuration-invalid`. They are historical failures, not the
+  outcome of Paula's latest send.
+
+Paula's own authenticated settings route returns a saved delivery address (version 1) at IBM,
+masked here as `ga***@ibm.com`. Investigation used a separate presenter session and the ordinary
+View as Paula flow; it changed no employee settings and initiated no notification or clock tick.
+The outbox's 18 November timestamp is simulated application time, not the real date of this check.
+
+The configured Brevo transport marks a message sent only after a confirmed provider acknowledgement
+(HTTP 201 and a valid message ID, or reuse of that persisted acknowledgement). This establishes
+provider acceptance, not inbox delivery. No delivery-event/webhook status is stored in the outbox.
+Current evidence therefore places the unresolved receipt failure after provider acceptance; it
+does not establish whether the message was delivered, filtered, deferred or bounced.
+
+Next required evidence is Brevo's transactional delivery log for Paula's latest offer and IBM
+destination, including event and reason. Chrome extension tab selection failed and native controls
+reported missing Computer Use permission; the named local GCSP Keychain item was unavailable.
+No provider credential was retrieved. Gary was asked for the delivery-log event. No code change,
+new live send, resend, Jira write or claim of inbox delivery was made during this investigation.
