@@ -1193,7 +1193,7 @@
           "status": "in-progress",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
           "observed_at": "2026-11-06T00:30:56Z",
-          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100→102 streamedHTTP→105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
+          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100\u2192102 streamedHTTP\u2192105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
         },
         {
           "id": "decision-host",
@@ -2062,7 +2062,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
@@ -3917,7 +3917,7 @@
     },
     {
       "id": "FUCQ-326",
-      "title": "Use “Your preferences” consistently in the employee journey",
+      "title": "Use \u201cYour preferences\u201d consistently in the employee journey",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
@@ -4746,23 +4746,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T12:19:11Z",
+      "observed_at": "2026-11-11T13:37:22Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-384",
       "slices": [
         {
           "id": "definitions",
-          "status": "not-started",
-          "title": "Supported code dictionary and versioned identity"
+          "status": "complete",
+          "title": "Supported code dictionary and versioned identity",
+          "observed_at": "2026-11-11T13:22:13Z",
+          "evidence": "Versioned retained-source seed: 239/240 configurations, 11900/11947 selected codes, exact context applicability; source gaps/swatches explicit. Scoped checkpoint only; docs/gcsp/evidence/fucq384/README.md."
         },
         {
           "id": "index",
-          "status": "not-started",
-          "title": "Keyed local joins and explicit unknowns"
+          "status": "complete",
+          "title": "Keyed local joins and explicit unknowns",
+          "observed_at": "2026-11-11T13:37:22Z",
+          "evidence": "Provenance correction after independent review: actual retained labels keep snapshot identity; mixed arrays retain per-code origins. Two regressions failed before fix; fresh95 scoped definitions/adapter/BuddyHold/snapshot checks pass. docs/gcsp/evidence/fucq384/README.md"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Generated vehicle to pinned quote and comparison"
+          "status": "blocked",
+          "title": "Generated vehicle to pinned quote and comparison",
+          "observed_at": "2026-11-11T13:37:22Z",
+          "evidence": "Original AC4 awaits actual generated-stock/recommendation/newly pinned quote proof through separately authorised FUCQ-382 repair. Fixture-producer quote proof only; integrated rendered comparison review/acceptance pending. Checkpoint is not Built/Done."
         }
       ],
       "unsliced": false
@@ -4774,18 +4780,22 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T12:19:12Z",
+      "observed_at": "2026-11-11T13:33:53Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-385",
       "slices": [
         {
           "id": "seeds",
-          "status": "not-started",
-          "title": "Three-view retained assets and valid associations"
+          "status": "complete",
+          "title": "Three-view retained assets and valid associations",
+          "observed_at": "2026-11-11T13:33:53Z",
+          "evidence": "docs/gcsp/fucq-385-gallery-evidence-2026-11-11.md; 240 admitted configs have three ordered distinct digests; scoped source/projection/producer tests 150 pass, 1 native PG skip; provenance mapping regression passed"
         },
         {
           "id": "viewer",
-          "status": "not-started",
-          "title": "Shared featured gallery and enlarged viewer"
+          "status": "in-progress",
+          "title": "Shared featured gallery and enlarged viewer",
+          "observed_at": "2026-11-11T13:33:53Z",
+          "evidence": "Standalone module functional browser proof passed; own rendered critique correction underway; parent independent review and integrated hook outstanding"
         },
         {
           "id": "integration",
@@ -4802,10 +4812,31 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Bug",
-      "observed_at": "2026-11-11T12:19:13Z",
+      "observed_at": "2026-11-11T13:53:15Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-382",
-      "unsliced": true,
-      "note": "Diagnosis-only/no-pickup hold preserved. No repair or live reproduction claimed."
+      "unsliced": false,
+      "note": "Diagnosis-only/no-pickup hold preserved. No repair or live reproduction claimed.",
+      "slices": [
+        {
+          "id": "source",
+          "status": "in-progress",
+          "title": "Preserve-exact-source-facts-and-provenance",
+          "observed_at": "2026-11-11T13:53:15Z",
+          "evidence": "Causal RED regression verified; minimal producer/attributed-fact repair applied, integration GREEN pending"
+        },
+        {
+          "id": "identity",
+          "status": "in-progress",
+          "title": "Reconcile-generated-stock-identity-with-existing-lookup",
+          "observed_at": "2026-11-11T13:53:15Z",
+          "evidence": "Canonical association writer and legacy-compatible lookup reader applied, actual lookup proof pending"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Real-producer-to-pinned-offer-and-rendered-review"
+        }
+      ]
     },
     {
       "id": "FUCQ-386",

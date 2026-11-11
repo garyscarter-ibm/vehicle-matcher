@@ -11,6 +11,7 @@ import { notificationBell } from './notification-bell.js';
 import { sideDrawer } from './side-drawer.js';
 import { notificationModel } from '../activity/notification-source.js';
 import { releaseGrid } from './release-grid.js';
+import { loadingSkeleton } from './loading-skeleton.js';
 import { installArrivalFocus, focusHeading } from './arrival-focus.js';
 import { runRestartedScreen, runRestartedNotice, accessLapsedScreen } from './run-restarted.js';
 
@@ -156,6 +157,16 @@ export function releaseGridExample() {
   const tiles = RELEASE_CARS.map(([hash, model, paint], at) => ({ id: at, imageSrc: `./assets/gcsp-vehicle-evidence/${hash}`, label: `${model}, ${paint}` }));
   const replay = button({ label: 'Replay', variant: 'ghost', onClick: () => grid.show(tiles) });
   const row = el('p'); row.append(replay); scope.append(row, grid.root); section.append(scope); grid.show(tiles, { animate: false }); return section;
+}
+
+export function releaseSkeletonExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-release-skeletons';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP release skeletons'));
+  const scope = el('div', 'gcsp');
+  scope.append(loadingSkeleton({ layout: 'release-grid', role: null }), el('h3', '', 'Release totals'),
+    loadingSkeleton({ layout: 'stats', labels: ['Latest release', 'Total released', 'Unallocated', 'Buddy Allocated', 'Manually Allocated'], role: null }),
+    el('h3', '', 'Latest release stats'), loadingSkeleton({ layout: 'bars', role: null }));
+  section.append(scope); return section;
 }
 
 const opts = (...pairs) => pairs.map(([value, label]) => ({ value, label }));

@@ -362,6 +362,10 @@
       "max_lines": 14
     },
     {
+      "path": "blocks/gcsp/kit/release-skeleton.css",
+      "max_lines": 12
+    },
+    {
       "path": "blocks/gcsp/kit/tabs.css",
       "max_lines": 10
     },

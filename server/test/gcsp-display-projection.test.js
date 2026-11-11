@@ -39,6 +39,27 @@ test('saved stock, selected quotes and orders gain display images without changi
   assert.equal(JSON.stringify(original), originalBytes); assert.equal(inputDigest(original), originalDigest);
 });
 
+test('retained gallery augments a supported singleton while preserving its first picture and quote terms', async () => {
+  const touring = await modelDisplayImage('G21 Touring|320i');
+  const selected = saved();
+  selected.facts.display.photo = `/${touring.asset}`;
+  const first = { src: selected.facts.display.photo, alt: 'BMW 3 Series Touring', fidelity: 'representative-model', sourceRef: 'pinned-first-image' };
+  selected.facts.display.images = [first];
+  const terms = { points: { value: 320 }, provenance: { version: 'pinned-policy' } };
+  const output = await withVehicleDisplayImages({ status: 'ok', value: { quote: { ...selected, terms } } });
+  const shown = output.value.quote.facts.display;
+  assert.equal(shown.images.length, 3);
+  assert.equal(shown.images[0].src, shown.photo);
+  assert.equal(shown.images[0].alt, first.alt);
+  assert.equal(shown.images[0].sourceRef, first.sourceRef);
+  assert.equal(shown.images[0].viewpoint, 'FRONTLEFT');
+  assert.equal(shown.images[0].label, 'Front exterior');
+  assert.deepEqual(shown.images.slice(1).map((image) => image.viewpoint), ['REARLEFT', 'DASH']);
+  assert.deepEqual(output.value.quote.terms, terms);
+  assert.equal(selected.facts.display.images.length, 1);
+  assert.equal(JSON.stringify(shown).includes('cosySec'), false);
+});
+
 test('only the known seeded current contract and correctly bound public snapshots receive a fallback', async () => {
   const current = { contractId: 'current:employee-paula', model: 'BMW 3 Series Touring 320i', status: 'current', source };
   const unknown = { ...current, source: { ...source, sourceRef: 'authorised-other-source' } };

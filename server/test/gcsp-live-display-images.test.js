@@ -148,3 +148,12 @@ test('corrupt retained fallback fails closed without returning unchecked bytes',
     loadCatalogue: async () => ({ configurations: [{ image }], variants: {}, models: {} }), loadSources: async () => Buffer.from('{}'), loadAsset: async () => bad });
   const out = await request(handler); assert.equal(out.status, 503); assert.equal(out.body, undefined); assert.equal(f.calls.length, 0);
 });
+
+test('retained gallery-only image routes serve verified bytes without any upstream request', async () => {
+  const image = { imageId: id, asset: `assets/gcsp-vehicle-evidence/${hash(retained)}.webp`, bytes: retained.length, sha256: hash(retained) };
+  const handler = createLiveDisplayImageHandler({ fetchImpl: async () => assert.fail('gallery is retained locally'),
+    loadCatalogue: async () => ({ configurations: [], variants: {}, models: {}, galleries: { front: [image] } }),
+    loadSources: async () => Buffer.from('{}'), loadAsset: async () => retained });
+  const out = await request(handler);
+  assert.equal(out.status, 200); assert.deepEqual(out.body, retained);
+});

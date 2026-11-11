@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Buddy status · Your cars options</title>
+  <link rel="stylesheet" href="../../../../blocks/gcsp/shell/gcsp-tokens.css">
+  <link rel="stylesheet" href="./mockup.css">
+</head>
+<body class="gcsp">
+  <main class="review">
+    <header class="review-head">
+      <div>
+        <p class="eyebrow">Your cars · design options</p>
+        <h1>Buddy, in the gap you suggested.</h1>
+      </div>
+      <p class="review-note">One account-level status. The whole indicator opens your buddy page.<br>Static visuals for choosing a direction.</p>
+    </header>
+
+    <div class="options">
+      <section class="option" aria-labelledby="option-a">
+        <header class="option-head">
+          <div class="option-title"><h2 id="option-a">A · Simple status link</h2><span class="recommendation">Recommended</span></div>
+          <p>Lightest touch. A status icon and arrow make the route clear.</p>
+        </header>
+        <figure class="screen">
+          <img src="./assets/your-cars-gap.png" width="596" height="503" alt="Right side of Your cars, showing the gap above the current-car panel.">
+          <div class="placement">
+            <span class="indicator simple active"><span class="state-icon" aria-hidden="true">✓</span><span class="buddy-name">Buddy</span><span class="separator" aria-hidden="true">·</span><span>Active</span><span class="arrow" aria-hidden="true">→</span></span>
+          </div>
+        </figure>
+        <div class="states" aria-label="Option A status variants">
+          <p class="state-label">All three states</p>
+          <div class="state-example"><span class="indicator simple active"><span class="state-icon" aria-hidden="true">✓</span><span class="buddy-name">Buddy</span><span class="separator" aria-hidden="true">·</span><span>Active</span><span class="arrow" aria-hidden="true">→</span></span></div>
+          <div class="state-example"><span class="indicator simple paused"><span class="state-icon" aria-hidden="true">Ⅱ</span><span class="buddy-name">Buddy</span><span class="separator" aria-hidden="true">·</span><span>Paused</span><span class="arrow" aria-hidden="true">→</span></span></div>
+          <div class="state-example"><span class="indicator simple unset"><span class="state-icon" aria-hidden="true">＋</span><span class="buddy-name">Buddy</span><span class="separator" aria-hidden="true">·</span><span>Set up your buddy</span><span class="arrow" aria-hidden="true">→</span></span></div>
+        </div>
+      </section>
+
+      <section class="option" aria-labelledby="option-b">
+        <header class="option-head">
+          <div class="option-title"><h2 id="option-b">B · Outlined indicator</h2></div>
+          <p>A clearer click target, with a little more visual weight.</p>
+        </header>
+        <figure class="screen">
+          <img src="./assets/your-cars-gap.png" width="596" height="503" alt="The same Your cars gap, with an outlined Buddy indicator.">
+          <div class="placement">
+            <span class="indicator outlined active"><span class="state-icon" aria-hidden="true">✓</span><span class="buddy-name">Buddy</span><span class="separator" aria-hidden="true">·</span><span>Active</span><span class="arrow" aria-hidden="true">›</span></span>
+          </div>
+        </figure>
+        <div class="states" aria-label="Option B status variants">
+          <p class="state-label">All three states</p>
+          <div class="state-example"><span class="indicator outlined active"><span class="state-icon" aria-hidden="true">✓</span><span class="buddy-name">Buddy</span><span class="separator" aria-hidden="true">·</span><span>Active</span><span class="arrow" aria-hidden="true">›</span></span></div>
+          <div class="state-example"><span class="indicator outlined paused"><span class="state-icon" aria-hidden="true">Ⅱ</span><span class="buddy-name">Buddy</span><span class="separator" aria-hidden="true">·</span><span>Paused</span><span class="arrow" aria-hidden="true">›</span></span></div>
+          <div class="state-example"><span class="indicator outlined unset"><span class="state-icon" aria-hidden="true">＋</span><span class="buddy-name">Buddy</span><span class="separator" aria-hidden="true">·</span><span>Set up your buddy</span><span class="arrow" aria-hidden="true">›</span></span></div>
+        </div>
+      </section>
+
+      <section class="option" aria-labelledby="option-c">
+        <header class="option-head">
+          <div class="option-title"><h2 id="option-c">C · Status with a named route</h2></div>
+          <p>“View buddy” spells out the action. Uses the most space.</p>
+        </header>
+        <figure class="screen">
+          <img src="./assets/your-cars-gap.png" width="596" height="503" alt="The same Your cars gap, with Buddy status and a View buddy action.">
+          <div class="placement">
+            <span class="indicator explicit active"><span class="buddy-name">Buddy</span><span class="state-word"><span class="status-dot" aria-hidden="true"></span>Active</span><span class="route">View buddy <span aria-hidden="true">→</span></span></span>
+          </div>
+        </figure>
+        <div class="states" aria-label="Option C status variants">
+          <p class="state-label">All three states</p>
+          <div class="state-example"><span class="indicator explicit active"><span class="buddy-name">Buddy</span><span class="state-word"><span class="status-dot" aria-hidden="true"></span>Active</span><span class="route">View buddy <span aria-hidden="true">→</span></span></span></div>
+          <div class="state-example"><span class="indicator explicit paused"><span class="buddy-name">Buddy</span><span class="state-word"><span class="status-dot" aria-hidden="true"></span>Paused</span><span class="route">View buddy <span aria-hidden="true">→</span></span></span></div>
+          <div class="state-example"><span class="indicator explicit unset"><span class="buddy-name">Buddy</span><span class="route">Set up your buddy <span aria-hidden="true">→</span></span></span></div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="review-foot">
+      <p><strong>Placement:</strong> right-align with the car panel, in the page-title row above it. At narrow widths it can wrap below “Your cars”.</p>
+      <p><strong>State cues:</strong> green + check for Active; amber + pause for Paused; neutral + plus for setup. Words carry the meaning too.</p>
+    </footer>
+  </main>
+</body>
+</html>

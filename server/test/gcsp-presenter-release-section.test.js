@@ -131,7 +131,7 @@ test('the console mounts the section just before the feed and refreshes it after
   f.api.destroy(); assert.equal(document.querySelector('.gcsp-console-release'), null);
 });
 
-test('a release replaces the charts and totals with skeletons until its refreshed read settles, preserving the open disclosure', async () => {
+test('a release gives cars, totals and charts separate skeletons while preserving the visible disclosure heading', async () => {
   const tick = gate(); const read = gate(); let released = false;
   const f = mountConsole({ adapter: {
     tick: async () => { await tick.wait; released = true; return ok({}); },
@@ -139,14 +139,20 @@ test('a release replaces the charts and totals with skeletons until its refreshe
   } });
   await f.api.ready; await settle();
   const section = f.api.root.querySelector('.gcsp-console-release'); const charts = section.querySelector('details'); charts.open = true;
+  const chartGrid = charts.querySelector('.gcsp-release-charts-grid'); const summary = charts.querySelector('summary'); summary.focus();
   f.api.basic.release.click();
-  assert.equal(charts.open, true); assert.equal(charts.getAttribute('aria-busy'), 'true');
-  assert.equal(charts.querySelectorAll('.gcsp-skeleton').length, 4); assert.equal(charts.querySelector('.gcsp-count-bars'), null);
-  assert.ok(section.querySelector('.gcsp-console-release-foot .gcsp-skeleton')); assert.equal(f.api.basic.release.disabled, true);
+  assert.equal(charts.open, true); assert.equal(charts.hidden, false); assert.equal(chartGrid.getAttribute('aria-busy'), 'true');
+  assert.equal(charts.hasAttribute('aria-busy'), false); assert.equal(summary.textContent, 'Latest release stats'); assert.equal(document.activeElement, summary);
+  assert.equal(charts.querySelectorAll('.gcsp-skeleton[data-layout="bars"]').length, 4); assert.equal(charts.querySelector('figure.gcsp-count-bars'), null);
+  assert.deepEqual([...charts.querySelectorAll('h3')].map((node) => node.className), Array(4).fill('gcsp-count-bars-heading'));
+  assert.equal(section.querySelectorAll('.gcsp-console-release-body .gcsp-skeleton-release-grid > span').length, 4); assert.equal(cells(section).length, 0);
+  const stats = section.querySelector('.gcsp-console-release-foot .gcsp-skeleton[data-layout="stats"]');
+  assert.equal(stats.querySelectorAll('.gcsp-skeleton-stat-value').length, 5); assert.match(stats.textContent, /Latest release.*Total released.*Unallocated.*Buddy Allocated.*Manually Allocated/);
+  assert.equal(f.api.basic.release.disabled, true);
   tick.open(); await settle();
-  assert.equal(charts.getAttribute('aria-busy'), 'true', 'the skeleton lasts through the new release read');
+  assert.equal(chartGrid.getAttribute('aria-busy'), 'true', 'the skeleton lasts through the new release read');
   read.open(); await settle();
-  assert.equal(charts.open, true); assert.equal(charts.hasAttribute('aria-busy'), false); assert.equal(section.querySelector('.gcsp-skeleton'), null);
+  assert.equal(charts.open, true); assert.equal(chartGrid.hasAttribute('aria-busy'), false); assert.equal(section.querySelector('.gcsp-skeleton'), null);
   assert.equal(charts.querySelectorAll('.gcsp-count-bars').length, 4); assert.equal(f.api.basic.release.disabled, false);
   assert.equal(facts(section, '.gcsp-release-totals')['Total released'], '1,204');
   f.api.destroy();
@@ -157,9 +163,11 @@ test('a failed release clears chart skeletons by reading the current figures aga
   const f = mountConsole({ adapter: { readLatestRelease: async () => latest(), tick: async () => { await tick.wait; throw new Error('offline'); } } });
   await f.api.ready; await settle();
   const charts = f.api.root.querySelector('.gcsp-release-charts'); charts.open = true;
-  f.api.basic.release.click(); assert.equal(charts.getAttribute('aria-busy'), 'true');
+  const chartGrid = charts.querySelector('.gcsp-release-charts-grid');
+  f.api.basic.release.click(); assert.equal(chartGrid.getAttribute('aria-busy'), 'true'); assert.equal(cells(f.api.root).length, 0);
   tick.open(); await settle();
-  assert.equal(charts.hasAttribute('aria-busy'), false); assert.equal(charts.querySelector('.gcsp-skeleton'), null);
+  assert.equal(chartGrid.hasAttribute('aria-busy'), false); assert.equal(f.api.root.querySelector('.gcsp-console-release .gcsp-skeleton'), null);
+  assert.equal(cells(f.api.root).length, 4, 'the same release restores its cars after a failed tick');
   assert.equal(charts.open, true); assert.equal(f.api.basic.release.disabled, false);
   assert.match(f.api.root.querySelector('.gcsp-console-status').textContent, /Release not completed/);
   f.api.destroy();
@@ -192,6 +200,9 @@ test('Today\'s release shows its own skeleton, not the empty state, until the fi
   const hold = gate(); const f = mount(null, { readLatestRelease: async () => { await hold.wait; return empty; } });
   assert.ok(f.api.root.querySelector('.gcsp-skeleton')); assert.doesNotMatch(f.api.root.textContent, /No cars released yet/);
   assert.equal(f.api.root.querySelector('.gcsp-release-totals'), null); assert.equal(f.api.root.querySelector('[role="status"]'), null);
+  const charts = f.api.root.querySelector('details');
+  assert.equal(charts.hidden, false); assert.equal(charts.open, false); assert.equal(charts.querySelector('summary').textContent, 'Latest release stats');
+  assert.ok(f.api.root.querySelector('.gcsp-console-release-foot [data-layout="stats"]'));
   const read = f.api.refresh(); hold.open(); await read;
   assert.equal(f.api.root.querySelector('.gcsp-skeleton'), null); assert.match(f.api.root.textContent, /No cars released yet/);
   f.api.destroy();
