@@ -9,7 +9,7 @@ const folder = fileURLToPath(new URL('.', import.meta.url));
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const scratch = process.env.SCRATCH; const OUT = process.env.OUT;
 if (!scratch || !OUT) throw new Error('SCRATCH and OUT are required');
-const PORT = 3028; const BASE = `http://127.0.0.1:${PORT}`;
+const PORT = Number(process.env.CAPTURE_PORT || 3028); const BASE = `http://127.0.0.1:${PORT}`;
 const REF_DIR = 'docs/gcsp/mockups/account-preferences-2026-11-10/review';
 const REF_PAGE = '/docs/gcsp/mockups/account-preferences-2026-11-10/index.html';
 const MANIFEST = JSON.parse(await readFile(`${root}docs/gcsp/mockups/account-preferences-2026-11-10/design-reference.json`, 'utf8')).screenshots;

@@ -106,7 +106,7 @@ lifecycle('search and hold consent are explicit independent choices; omitted con
     assert.equal(confirmed.status, 'ok', JSON.stringify(confirmed));
     assert.equal(confirmed.value.brief.buddy.searchConsent, consent?.search === true);
     assert.equal(confirmed.value.brief.buddy.holdConsent, consent?.hold === true);
-    assert.equal(confirmed.value.activity.canSearch, consent?.search === true);
+    assert.equal(confirmed.value.activity.canSearch, consent?.search === true && consent?.hold === true);
     assert.equal(confirmed.value.activity.canHold, consent?.search === true && consent?.hold === true);
     if (!consent) assert.equal(confirmed.value.brief.buddy.enabled, false);
   }
@@ -296,7 +296,7 @@ lifecycle('service refuses forged employee contexts and stale run sessions', asy
 
 const cookie = (session) => [session.value.setCookie].flat().map((v) => v.split(';')[0]).join('; ');
 async function withHttp(f, work) {
-  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.service, gcspAllowedOrigins: ['https://brief.test'] });
+  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.service, gcspVehicleEvidence: { lookup: { resolve: async () => ({ status: 'unavailable' }) } }, gcspAllowedOrigins: ['https://brief.test'] });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
   const request = async (path, { body, session = f.acting, origin = 'https://brief.test' } = {}) => {
     const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/brief${path}`, {
@@ -308,31 +308,19 @@ async function withHttp(f, work) {
   try { await work(request); } finally { server.closeAllConnections(); await new Promise((done) => server.close(done)); }
 }
 
-lifecycle('HTTP routes expose lifecycle and ignore top-level browser identity/run claims using trusted context', async () => {
-  const f = await setup();
+lifecycle('HTTP writes fail closed without an editor; reads use trusted employee context', async () => {
+  const f = await setup(); await save(f); await confirm(f);
   await withHttp(f, async (request) => {
-    assert.equal((await request('')).status, 404);
-    const drafted = await request('/draft', { body: { commandId: 'http-draft', expectedDraftVersion: 0, expectedBriefVersion: 0, brief: data(),
-      employeeId: 'other', runId: 'stale-browser-run', principalId: 'demo-greg', roles: ['greg'] } });
-    assert.equal(drafted.status, 200, JSON.stringify(drafted));
-    assert.equal(drafted.json.value.employeeId, f.context.employeeId);
-    assert.equal(drafted.json.value.runId, f.context.runId);
+    for (const [operation, body] of [['draft', { commandId: 'http-draft', expectedDraftVersion: 1, expectedBriefVersion: 1, brief: data() }],
+      ['confirm', { commandId: 'http-confirm', expectedDraftVersion: 1, expectedBriefVersion: 1, consent: { search: true, hold: true } }],
+      ['pause', { commandId: 'pause-http', expectedBriefVersion: 1 }], ['resume', { commandId: 'resume-http', expectedBriefVersion: 1 }]]) {
+      assert.equal((await request(`/${operation}`, { body })).status, 503, 'public writes require the editor gate');
+    }
+    const current = await request(''); assert.equal(current.status, 200); assert.equal(current.cache, 'no-store');
+    assert.equal(current.json.value.brief.employeeId, f.context.employeeId);
     assert.equal((await request('/draft')).json.value.draftVersion, 1);
-    // Pause needs held consent (FUCQ-370).
-    const input = { commandId: 'http-confirm', expectedDraftVersion: 1, expectedBriefVersion: 0, consent: { search: true, hold: true } };
-    const confirmed = await request('/confirm', { body: input });
-    assert.equal(confirmed.status, 200, JSON.stringify(confirmed));
-    assert.equal(confirmed.json.value.brief.buddy.enabled, true);
-    assert.equal(confirmed.cache, 'no-store');
     assert.equal((await request('?employeeId=other&runId=other')).json.value.brief.employeeId, f.context.employeeId);
-    const stale = await request('/pause', { body: { commandId: 'stale-http', expectedBriefVersion: 0 } });
-    assert.equal(stale.status, 409); assert.equal(stale.json.action, 'refresh');
-    const paused = await request('/pause', { body: { commandId: 'pause-http', expectedBriefVersion: 1 } });
-    assert.equal(paused.json.value.brief.buddy.paused, true); assert.equal(paused.json.value.activity.canSearch, false);
-    const resumed = await request('/resume', { body: { commandId: 'resume-http', expectedBriefVersion: 2 } });
-    assert.equal(resumed.json.value.activity.canSearch, true);
-    assert.equal((await request('/history')).json.value.versions.length, 3);
-    assert.equal((await request('/draft', { body: { commandId: 'bad', expectedBriefVersion: 3, expectedDraftVersion: 1, brief: { ...data(), employeeId: 'other' } } })).status, 400);
+    assert.equal((await request('/history')).json.value.versions.length, 1);
     assert.equal((await request('', { session: f.presenter })).status, 403);
     assert.equal((await request('', { origin: 'https://hostile.test' })).status, 403);
   });

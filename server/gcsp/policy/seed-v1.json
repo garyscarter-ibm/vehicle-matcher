@@ -16260,6 +16260,35 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "employee.currentCarFeedback.v1",
+      "value": {
+        "schemaVersion": 1,
+        "rating": {
+          "positive": [4, 5],
+          "negative": [1, 2],
+          "neutral": [3]
+        },
+        "similarity": {
+          "dimensions": ["modelLine", "body", "fuel"]
+        },
+        "sameAgain": {
+          "dimensions": ["eligibilityModelKey", "body", "fuel", "configurationId"]
+        },
+        "improvement": {
+          "requireNoWorseOnAll": true,
+          "requireBetterOnAtLeast": 1
+        },
+        "precedence": ["gates", "sameAgain", "rating", "preferences"]
+      },
+      "unit": "star-rating classes and structured-fact dimensions",
+      "status": "assumed",
+      "basis": "Plausible revisable demo rule for how a current-car rating and Same again shape suitable recommendations: 4-5 positive, 1-2 negative, 3 or unset neutral; similarity and continuity compare confirmed structured facts. Not measured BMW satisfaction.",
+      "source": "_dev/in-progress/DEV-2026-11-10-013.md (FUCQ-371)",
+      "sourceDate": "2026-11-11",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "brief.engagement.v1",
       "value": {
         "schemaVersion": 1,

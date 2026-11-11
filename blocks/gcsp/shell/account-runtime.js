@@ -6,7 +6,8 @@ const IDENTIFIED = ['ready', 'no-entitlement', 'ordering-closed', 'not-yet-eligi
 // Both manual accounts and session contexts carry the same durable profile identity.
 export function accountIdentity(account) {
   const email = account?.email || account?.contact?.email;
-  return { name: account?.name ?? 'Account unavailable', ...(typeof email === 'string' && email ? { email } : {}) };
+  return { name: account?.name ?? 'Account unavailable', ...(typeof email === 'string' && email ? { email } : {}),
+    ...(Array.isArray(account?.roles) ? { roles: account.roles.filter((role) => typeof role === 'string') } : {}) };
 }
 
 // DOM-free projection of the existing trusted account endpoint for any GCSP shell.

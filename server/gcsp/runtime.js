@@ -14,7 +14,7 @@ import { importComparisonResult } from './comparison/job.js';
 import { createComparisonJobService } from './comparison/jobs.js';
 import { createOrderPlanOperations } from './predict/plan/index.js';
 import { createScenarioService } from './scenarios/index.js';
-import { adoptOfferJourneyPolicy } from './policy/offer-journey-adoption.js';
+import { adoptEmployeeExperiencePolicy } from './policy/employee-experience-adoption.js';
 import { createSyntheticManualStockAdapter } from './adapters/manual-stock.js';
 import { createManualClaimsService } from './manual-claims/index.js';
 import { createBuddyHoldService } from './offers/buddy-hold.js';
@@ -23,6 +23,7 @@ import { createOfferAccessService, OFFER_ACCESS_COOKIE } from './offers/access.j
 import { createOfferDecisionService } from './offers/decision.js';
 import { createOfferFollowupService } from './offers/followup.js';
 import { createStoredSubjectRecommendationEvaluator } from './recommendation/index.js';
+import { projectCurrentCarBaseline } from './recommendation/current-car.js';
 import { verifyOfferToken, resolveOfferLandingUrl } from './offers/offer-token.js';
 import { createNotificationDispatcher } from './notify/index.js';
 import { createStockReleaseService, createSyntheticStockFaults } from './stock/index.js';
@@ -88,11 +89,15 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
         || drivers.value.recordSetId !== current.value.versions?.recordSetId
         || drivers.value.repositoryVersion !== current.value.versions?.employee
         || !Array.isArray(drivers.value.drivers) || !Array.isArray(stock.value.stock)) return unavailable();
+      const baseline = projectCurrentCarBaseline({ manualContext: { source: current.value.versions?.employeeContract, contracts: current.value.contracts },
+        contractId: current.value.currentContract?.contractId, context, now: time.value.now });
       const driver = drivers.value.drivers.find((entry) => entry.driverId === current.value.currentContract?.driverId)
         ?? drivers.value.drivers.find((entry) => entry.kind === 'employee');
       return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: context.employeeId,
         factsVersion: inputDigest({ driver: drivers.value.source, recordSetId: drivers.value.recordSetId, repositoryVersion: drivers.value.repositoryVersion }),
-        stockVersion: stock.value.sourceVersion, employeeFacts: { ...drivers.value.employeeFacts, driverEligible: driver?.eligible }, stock: stock.value.stock });
+        stockVersion: stock.value.sourceVersion, employeeFacts: { ...drivers.value.employeeFacts, driverEligible: driver?.eligible }, stock: stock.value.stock,
+        // Server-resolved current-car baseline from the stored contract; absent when unidentified.
+        ...(baseline ? { currentCar: baseline } : {}) });
     } };
     const editor = createBriefEditorService({ brief, account, provider, policy, clock, identity });
     const activity = createActivityService({ repository, identity, clock });
@@ -115,10 +120,10 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const pullProvider = sourceProvider === undefined ? undefined : stockFaults.wrap(sourceProvider);
     // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
     // After a reset: choose the new run's stock source (a failure defers it to the first pull), then
-    // re-adopt the reviewed offer-journey sets, because policy publications are per run.
+    // Re-adopt reviewed demo rules because policy publications are per run.
     const afterReset = async (runId) => {
       if (typeof pullProvider?.prepareRun === 'function') { try { await pullProvider.prepareRun(runId); } catch { /* deferred */ } }
-      return adoptOfferJourney ? adoptOfferJourneyPolicy({ policy, identity, clock }) : ok({});
+      return adoptOfferJourney ? adoptEmployeeExperiencePolicy({ policy, identity, clock }) : ok({});
     };
     const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity, brief, afterReset, faults: { stock: stockFaults, ordering: orderingFaults },
       prepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, context }) });
@@ -205,7 +210,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     }
     // Opt-in for the demo launcher; tests that adopt these sets themselves leave it off.
     if (adoptOfferJourney) {
-      const adopted = await adoptOfferJourneyPolicy({ policy, identity, clock });
+      const adopted = await adoptEmployeeExperiencePolicy({ policy, identity, clock });
       if (adopted.status !== 'ok') { await close(); return adopted; }
     }
     // Best effort: a source that cannot prepare the first run is chosen again on its first pull.

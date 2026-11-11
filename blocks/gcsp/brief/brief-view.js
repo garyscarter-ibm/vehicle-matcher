@@ -185,10 +185,13 @@ export function mountBriefBody(main, adapters = {}) {
     form.append(practical);
     // One closing region: what the buddy may do, then Save and its outcome.
     const savePanel = el('section', 'gcsp-brief-section'); savePanel.setAttribute('aria-label', 'Save preferences');
-    const permission = el('fieldset', 'gcsp-brief-permission'); permission.append(el('legend', null, 'What your buddy may do'));
-    const consent = renderOptionList({ id: 'brief-consent', multi: true, options: [{ value: 'search', label: 'Search for cars for me' }, { value: 'hold', label: 'Hold a suitable car for me' }] }, null,
-      { value: [], ariaLabel: 'Buddy permissions', onValueChange: (v) => controller.setConsent({ search: v.includes('search'), hold: v.includes('hold') }) });
-    permission.append(consent.list, el('p', 'gcsp-note', 'Holding also needs search permission. With search off, your buddy stays off.')); savePanel.append(permission);
+    const permission = el('fieldset', 'gcsp-brief-permission'); permission.append(el('legend', null, 'Buddy'));
+    const consent = button({ label: 'Engage Buddy', variant: 'ghost', onClick: () => {
+      const on = !controller.snapshot().consent.search; controller.setConsent({ search: on, hold: on });
+    } });
+    consent.dataset.buddyToggle = '';
+    const buddyNote = el('p', 'gcsp-note');
+    permission.append(consent, buddyNote, el('p', 'gcsp-note', 'Save your preferences to apply this choice. Engaging lets Buddy search and hold a suitable car.')); savePanel.append(permission);
     const saveButton = button({ label: 'Save your preferences', onClick: () => controller.save() }); saveButton.dataset.saveBrief = '';
     const saveNote = el('p', 'gcsp-note'); saveNote.tabIndex = -1;
     if (adapters.saveUnavailableReason) savePanel.append(el('p', 'gcsp-note', adapters.saveUnavailableReason));
@@ -223,14 +226,16 @@ export function mountBriefBody(main, adapters = {}) {
       for (const [key, q] of questions) q.update(state.brief.essentials[key]);
       const open = [...questions.keys()].filter((key) => state.brief.essentials[key]?.value == null).length;
       pending.hidden = !open; pending.textContent = open ? `Not answered yet: ${open} ${open === 1 ? 'question' : 'questions'} about what your car needs to do.` : '';
-      consent.update({ value: ['search', 'hold'].filter((k) => state.consent[k]) });
+      consent.textContent = state.consent.search ? 'Disengage Buddy' : 'Engage Buddy';
+      consent.disabled = state.save.state === 'saving';
+      buddyNote.textContent = `Buddy will be ${state.consent.search ? 'engaged' : 'disengaged'} when you save.`;
       const unsaved = state.dirty || (adapters.initialEdited && state.save.state !== 'saved') || state.briefVersion === 0;
       draftNotice.textContent = [adapters.notice, unsaved ? 'Unsaved draft' : null].filter(Boolean).join(' · '); draftNotice.hidden = !draftNotice.textContent;
       saveButton.disabled = state.save.state === 'saving' || Boolean(adapters.saveUnavailableReason);
       saveButton.textContent = state.save.state === 'saving' ? 'Saving your preferences...' : 'Save your preferences';
-      saveNote.textContent = state.save.state === 'saved' ? `Version ${state.briefVersion} saved. ${state.dirty ? 'Newer edits are still unsaved.' : state.consent.search ? 'Your selected buddy permissions apply.' : 'Your buddy is off.'}`
+      saveNote.textContent = state.save.state === 'saved' ? `Version ${state.briefVersion} saved. ${state.dirty ? 'Newer edits are still unsaved.' : state.consent.search ? 'Buddy engaged.' : 'Buddy disengaged.'}`
         : state.save.state === 'refresh-required' ? 'A newer saved version needs review. Your edits and permissions are still here.'
-          : state.save.state === 'failed' ? 'Save failed. Your edits and permissions are kept. Try again.' : '';
+          : state.save.state === 'failed' ? state.save.outcome?.code === 'engagement-minimum' ? state.save.outcome.reasons?.[0]?.reason : 'Save failed. Your edits and Buddy choice are kept. Try again.' : '';
       saveNote.hidden = !saveNote.textContent;
       if (onward) onward.hidden = !(state.save.state === 'saved' && !state.dirty && state.consent.search);
       refresh.hidden = state.save.state !== 'refresh-required';

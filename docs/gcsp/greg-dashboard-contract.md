@@ -39,3 +39,11 @@ Five empty, labelled `<section>`s below the live figures hold the places for lat
 ## Harness and CSP
 
 `npm run serve`, then `/gcsp-greg.html?fixture=<name>`; `harness.js` accepts only listed names. No inline script bodies, `on*=` attributes, `eval`, `new Function`, string timers or HTML string injection under `blocks/gcsp/greg/`, `blocks/gcsp/kit/` or in the page (checked by `server/test/gcsp-greg-dashboard.test.js`). The element never reads location.
+
+## Portal navigation, 11 November 2026
+
+The shared GCSP sidebar exposes **Employee car ordering** to a ready server-owned account with role `greg`. This is the existing ordering-administrator role; Greg Lawson already has it in the canonical principal configuration. Names and display context do not grant access. Employee accounts keep their employee destinations. The ordering dashboard shows no role-specific links until its account resolves, and its existing server page/API guards remain authoritative.
+
+The sidebar destination uses `/gcsp-greg.html` through the shared portal route helper. Its six sections are shared-kit tabs in the page, retaining the same header/sidebar and mounted adapters: Next order, Demand and supply, Policy, Order requests, Route comparison and Renewal cases. Next order remains the initial view when its adapter is supplied. Selection preserves the active sidebar icon, all existing region handles, and the stable `gcsp-order-requests` anchor. Tabs retain arrow/Home/End keyboard navigation and have 44px minimum targets below 600px.
+
+Verified delivery and resource evidence: [ordering-navigation-2026-11-11.md](ordering-navigation-2026-11-11.md).

@@ -70,7 +70,7 @@ export function exclusionLines(value, paused) {
     return all ? `No released car has ${phrase}.` : `${row.cars} of ${count(check.carsChecked, 'car')} do not have ${phrase}.`;
   });
 }
-const labels = Object.freeze({ confirmed: 'Search confirmed', paused: 'Search paused', resumed: 'Search resumed',
+const labels = Object.freeze({ confirmed: 'Preferences confirmed', paused: 'Buddy disengaged', resumed: 'Buddy settings updated',
   'changed-after-decline': 'Search updated after a decline', engaged: 'Buddy engaged', disengaged: 'Buddy disengaged',
   'preferences-updated': 'Preferences updated' });
 export const activityEvents = (changes = []) => {

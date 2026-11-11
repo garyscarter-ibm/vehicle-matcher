@@ -9,14 +9,15 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createEmployeeRecommendationService } from '../gcsp/recommendation/index.js';
 import { BuddyHoldService } from '../gcsp/offers/buddy-hold.js';
 import { hashOfferToken, verifyOfferToken, mintOfferToken } from '../gcsp/offers/offer-token.js';
-import { stock, essential, preference, fact } from './helpers/employee-recommendation.js';
+import { projectCurrentCarBaseline, storedFeedback } from '../gcsp/recommendation/current-car.js';
+import { stock, essential, preference, fact, rating, sameAgain } from './helpers/employee-recommendation.js';
 import { withConfigurationDefinitions, selectedConfigurationDefinitionFacts, createConfigurationDefinitionIndex } from '../gcsp/vehicle-evidence/configuration-definitions.js';
 import { vehicleEvidenceDetails } from '../gcsp/vehicle-evidence/vehicle-details-contract.js';
 
 const command = (commandId) => ({ commandId, inputDigest: inputDigest(commandId) });
-const briefData = (seats = 5) => ({ schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(seats) } });
+const briefData = (seats = 5, typed = {}) => ({ schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(seats) }, ...typed });
 const rowRef = (f, table, key) => ({ table, key: { runId: f.context.runId, ...key } });
-async function setup(t, { policy = createPolicyService(), consent = { search: true, hold: true }, seats = 5, facts = {}, configurationId } = {}) {
+async function setup(t, { policy = createPolicyService(), consent = { search: true, hold: true }, seats = 5, facts = {}, typed, configurationId } = {}) {
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });
   assert.equal((await repository.open()).status, 'ok');
   t.after(() => repository.close());
@@ -31,7 +32,7 @@ async function setup(t, { policy = createPolicyService(), consent = { search: tr
   assert.equal((await clock.advance(presenter.value.context, { commandId: 'noon', expectedClockVersion: '1', bySeconds: 10800 })).status, 'ok');
   const brief = new BriefService({ repository, policy, clock, identity });
   assert.equal((await brief.saveDraft(context, { commandId: 'draft', expectedBriefVersion: 0,
-    expectedDraftVersion: 0, brief: briefData(seats) })).status, 'ok');
+    expectedDraftVersion: 0, brief: briefData(seats, typed) })).status, 'ok');
   assert.equal((await brief.confirm(context, { commandId: 'confirm', expectedBriefVersion: 0, expectedDraftVersion: 1, consent })).status, 'ok');
   const car = stock(1, facts, configurationId);
   assert.equal((await repository.transaction(context, command('released-fixture'), (tx) => tx.insert('stock', {
@@ -264,7 +265,7 @@ test('repository contract only: cart and buddy claims share exclusive exact-car 
 
 // This constructs the published candidate shape with real evaluation; it does not
 // load or invoke the paused FUCQ-96 producer or its identity extension.
-async function allocationCandidate(f) {
+async function allocationCandidate(f, { feedback = false } = {}) {
   const read = async (table, key) => (await f.repository.read(f.context, rowRef(f, table, key))).value;
   const employee = await read('employees', { employeeId: f.context.employeeId });
   const slot = await read('entitlement_slots', { entitlementSlotId: f.context.entitlementSlotId });
@@ -282,10 +283,12 @@ async function allocationCandidate(f) {
   const evaluator = createEmployeeRecommendationService({ policy: f.policy, time: { async now() { return ok(instant); } },
     provider: { async resolve() { return ok({ runId: f.context.runId, environmentId: f.context.environmentId,
       employeeId: f.context.employeeId, factsVersion: `employee:${employee.version}`, stockVersion: inputDigest(pool), employeeFacts,
+      ...(feedback ? { currentCar: projectCurrentCarBaseline({ manualContext: employee.contract.manualContext, contractId: slot.contractId, context: f.context, now: instant.now }) } : {}),
       stock: pool.map((row) => ({ orderUuid: row.orderUuid, configurationId: row.configurationId, snapshot: row.facts,
         availability: { ...row.release.availability, state: 'available', version: String(row.version) } })) }); } } });
   const evaluated = await evaluator.recommend(f.context, { schemaVersion: brief.schemaVersion, briefVersion: brief.briefVersion,
-    preferences: brief.preferences, essentials: Object.fromEntries(Object.entries(brief.essentials).filter(([key]) => key !== 'charging')) });
+    preferences: brief.preferences, essentials: Object.fromEntries(Object.entries(brief.essentials).filter(([key]) => key !== 'charging')),
+    ...(feedback ? storedFeedback(brief) : {}) });
   assert.equal(evaluated.status, 'ok');
   const decision = evaluated.value.decisions.find((row) => row.orderUuid === f.car.orderUuid);
   assert.equal(decision.gateStatus, 'eligible');
@@ -375,4 +378,16 @@ test('an allocated hold or allocated/pending claim on another slot blocks the sa
       assert.equal((await f.repository.query(f.context, 'holds')).value.length, 1);
     });
   }
+});
+
+test('FUCQ-371: the hold quote re-evaluation applies the same saved feedback as the allocation proposal', async (t) => {
+  const typed = { currentCarRating: rating(5, 'current:employee-paula'), sameAgain: sameAgain(true, 'current:employee-paula') };
+  const same = { modelLine: fact('G21 Touring'), eligibilityModelKey: fact('G21 Touring|320i'), body: fact('estate') };
+  const f = await setup(t, { facts: same, typed }); const candidate = await allocationCandidate(f, { feedback: true });
+  assert.ok(candidate.quote.reasons.some((r) => r.code === 'same-again-match'));
+  const held = await f.service.tryClaim(f.context, candidate); assert.equal(held.status, 'ok', JSON.stringify(held));
+  const plain = await setup(t, { facts: same, typed }); const unaware = await allocationCandidate(plain);
+  assert.equal((await plain.service.tryClaim(plain.context, unaware)).reason, 'allocation-quote-versions-mismatch', 'a proposal without the feedback no longer agrees');
+  const other = await setup(t, { facts: { ...same, body: fact('suv') }, typed });
+  assert.equal((await other.service.tryClaim(other.context, { ...candidate, orderUuid: other.car.orderUuid })).status, 'conflict');
 });

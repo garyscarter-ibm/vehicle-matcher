@@ -9,7 +9,7 @@ import { chromium } from '/Users/usget/.cache/codex-runtimes/codex-primary-runti
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const scratch = process.env.SCRATCH; const OUT = process.env.OUT;
 if (!scratch || !OUT) throw new Error('SCRATCH and OUT are required');
-const PORT = 8808; const ORIGIN = `http://127.0.0.1:${PORT}`;
+const PORT = Number(process.env.WALK_PORT || 8808); const ORIGIN = `http://127.0.0.1:${PORT}`;
 const KEY = `walk-${randomBytes(9).toString('hex')}`; // the host still takes a demo key setting; the gate itself was removed upstream
 const EMAIL = process.env.WALK_EMAIL || 'paula.mason@gcsp-demo.com'; const PASSWORD = process.env.WALK_PASSWORD;
 if (!PASSWORD) throw new Error('WALK_PASSWORD is required (the demo login password)');

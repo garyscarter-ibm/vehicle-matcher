@@ -10,23 +10,25 @@ after(() => dom.window.close());
 const activity = (permission, currentOffer = null) => ({ status: 'ok', value: { permission, currentOffer } });
 
 test('Buddy status distinguishes saved pause, missing setup, finished, withdrawn permission and failed reads', () => {
-  const active = { paused: false, canSearch: true }; const paused = { paused: true, canSearch: false };
+  const active = { paused: false, canSearch: true, searchConsent: true, holdConsent: true }; const paused = { paused: true, canSearch: false, searchConsent: true, holdConsent: true };
   for (const [input, expected] of [
-    [activity(active), 'active'], [activity(paused), 'paused'], [activity(null), 'unset'],
+    [activity(active), 'active'], [activity(paused), 'inactive'], [activity(null), 'unset'],
     [activity(active, { state: 'accepted' }), 'finished'],
     [activity(paused, { state: 'accepted' }), 'finished'],
-    [activity({ paused: false, canSearch: false }), 'inactive'],
+    [activity({ paused: false, canSearch: false, searchConsent: false, holdConsent: false }), 'inactive'],
     [{ status: 'unavailable' }, 'unavailable'], [{ status: 'ok', value: {} }, 'unavailable'],
+    [activity({ paused: false, canSearch: true }), 'unavailable'],
+    [activity({ paused: false, canSearch: true, searchConsent: true, holdConsent: false }), 'inactive'],
     [activity({}), 'unavailable'], [activity(undefined), 'unavailable'],
   ]) assert.equal(buddyState(input), expected);
 });
 
 test('each outlined status is one native link with the original chevron and readable state', () => {
-  for (const [state, text] of [['active', 'Active'], ['paused', 'Paused'], ['unset', 'Set up your buddy'], ['unavailable', 'Status unavailable']]) {
+  for (const [state, text] of [['active', 'Buddy engaged'], ['paused', 'Buddy disengaged'], ['unset', 'Set up your buddy'], ['unavailable', 'Status unavailable']]) {
     const link = buddyStatus({ state, href: '/gcsp-activity-live.html' });
     assert.equal(link.tagName, 'A'); assert.equal(link.getAttribute('href'), '/gcsp-activity-live.html');
     assert.equal(link.querySelectorAll('a,button').length, 0);
-    assert.equal(link.textContent, `Buddy${text}›`);
+    assert.equal(link.textContent, `${text.startsWith('Buddy ') ? '' : 'Buddy'}${text}›`);
     assert.equal(link.querySelector('.gcsp-buddy-chevron').getAttribute('aria-hidden'), 'true');
     assert.equal(link.dataset.focusKey, 'buddy-status');
   }
@@ -58,7 +60,7 @@ test('FUCQ-370: update repaints the element in place and unknown never reads as 
   assert.equal(node.dataset.state, 'unknown'); assert.ok(!node.classList.contains('is-engaged'));
   node.update('engaged'); assert.equal(node.textContent, 'Buddy engaged'); assert.ok(node.classList.contains('is-engaged')); assert.ok(node.classList.contains('is-prominent'));
   node.update('disengaged'); assert.equal(node.textContent, 'Buddy disengaged'); assert.ok(!node.classList.contains('is-engaged'));
-  assert.equal(buddyStatus({ state: 'active' }).textContent, 'Active', 'the default output is unchanged');
+  assert.equal(buddyStatus({ state: 'active' }).textContent, 'Buddy engaged', 'the default output is unchanged');
 });
 
 test('FUCQ-370: the prominent lamp is static, 18px, green only when engaged and neutral when unknown', () => {

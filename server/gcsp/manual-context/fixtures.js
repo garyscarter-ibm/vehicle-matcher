@@ -34,8 +34,8 @@ export async function seedManualDemoContext({ repository, identity, clock, conte
       slotId: context.entitlementSlotId, driverId, status: 'current', model: 'BMW 3 Series Touring 320i',
       ...(image ? { media: { src: `/${image.asset}`, alt: 'BMW 3 Series Touring' } } : {}),
       // Synthetic contract record of the car Paula drives now; shown in offer comparisons.
-      vehicle: { configuration: '320i M Sport Touring', body: 'estate', fuel: 'petrol', seats: 5, boot: 500,
-        mpg: 42.8, zeroTo62: 7.6, points: 1100 },
+      vehicle: { configuration: '320i M Sport Touring', modelLine: 'G21 Touring', eligibilityModelKey: 'G21 Touring|320i', body: 'estate', fuel: 'petrol', seats: 5, boot: 500,
+        mpg: 42.8, zeroTo62: 7.6, points: 1100, sizeClass: 2, tags: ['family'] }, // sizeClass, tags: demo-provider.js G21 Touring|320i
       actualCollectionDate: '2026-06-01', contractEndDate: '2026-12-01', returnedDate: null,
       annualMileage: 12000, mileageUnit: 'mi/year', months: 6, currentOdometer: { value: 5200, unit: 'mi' },
       earliestCollectionDate: '2026-11-12', latestCollectionDate: '2026-12-01', source };

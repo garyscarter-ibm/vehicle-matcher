@@ -9,15 +9,16 @@ import { createGcspRuntime } from '../gcsp/runtime.js';
 import { BriefService } from '../gcsp/brief/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createOfferAccessService } from '../gcsp/offers/access.js';
-import { stock, essential, preference } from './helpers/employee-recommendation.js';
+import { stock, essential, preference, fact, rating } from './helpers/employee-recommendation.js';
 
 import { BuddyHoldService } from '../gcsp/offers/buddy-hold.js';
+import { toOfferPresentation } from '../../blocks/gcsp/offer/offer-projection.js';
 import { verifyOfferToken } from '../gcsp/offers/offer-token.js';
 const ref = (f, table, key = {}) => ({ table, key: { runId: f.context.runId, ...key } });
 const cookieOf = (value) => value.split(';')[0];
 const passed = (outcome) => { assert.equal(outcome.status, 'ok'); return outcome.value; };
 
-async function setup(t, { offerLandingUrl, composed = false, policy = createPolicyService() } = {}) {
+async function setup(t, { offerLandingUrl, composed = false, policy = createPolicyService(), briefExtra = {}, carFacts = {} } = {}) {
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });
   passed(await repository.open()); t.after(() => repository.close());
   const wall = '2026-11-05T12:00:00.000Z';
@@ -36,16 +37,16 @@ async function setup(t, { offerLandingUrl, composed = false, policy = createPoli
     bySeconds: (Date.parse(wall) - Date.parse(initial.now)) / 1000 }));
   const brief = new BriefService({ repository, policy, clock, identity });
   passed(await brief.saveDraft(context, { commandId: 'producer-draft', expectedBriefVersion: 0, expectedDraftVersion: 0,
-    brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(5) } } }));
+    brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(5) }, ...briefExtra } }));
   passed(await brief.confirm(context, { commandId: 'producer-confirm', expectedBriefVersion: 0,
     expectedDraftVersion: 1, consent: { search: true, hold: true } }));
-  const car = stock(1);
+  const car = stock(1, carFacts);
   passed(await repository.transaction(context, { commandId: 'producer-stock', inputDigest: inputDigest('producer-stock') },
     (tx) => tx.insert('stock', { runId: context.runId, orderUuid: car.orderUuid, orderNumber: '0123456',
       configurationId: car.configurationId, state: 'released', available: true, held: false, allocated: false,
       facts: car.snapshot, release: { eventId: 'explicit-synthetic-release', availability: car.availability },
       visibility: { companyIds: [context.companyId], schemeIds: [context.schemeId], employeeIds: null } })));
-  const f = { repository, store, policy, clock, identity, context, presenter, acting, car, runtime };
+  const f = { repository, store, policy, clock, identity, context, presenter, acting, car, runtime, brief };
   const employee = passed(await repository.read(context, ref(f, 'employees', { employeeId: context.employeeId })));
   const slot = passed(await repository.read(context, ref(f, 'entitlement_slots', { entitlementSlotId: context.entitlementSlotId })));
   f.input = { commandId: 'producer-allocate', orderUuid: car.orderUuid, expectedBriefVersion: 1,
@@ -218,4 +219,38 @@ test('actual pinned quote expiry preserves decline before the unchanged active h
   assert.equal(current.state,'pending'); assert.equal(current.holdState,'active');
   assert.equal(current.expiresAt,initial.expiresAt); assert.deepEqual(current.availableActions,['decline']);
   if (process.env.GCSP_OFFER_PRODUCER_DECLINE_SAMPLE) await writeFile(process.env.GCSP_OFFER_PRODUCER_DECLINE_SAMPLE, JSON.stringify(current,null,2)+'\n');
+});
+
+// FUCQ-371 AC4/AC6: a saved positive rating reaches the real Offer through the actual allocation and stays pinned after later changes.
+test('actual allocation under a poor rating explains the confirmed different car in the Offer', async (t) => {
+  const f = await setup(t, { briefExtra: { currentCarRating: rating(1, 'current:employee-paula') },
+    carFacts: { modelLine: fact('G20 Saloon'), body: fact('saloon') } });
+  const dto = passed(await f.exchange()).offer;
+  assert.ok(dto.quote.decision.reasons.some((r) => r.code === 'feedback-different'));
+  const card = toOfferPresentation({ status: 'ok', value: dto }).value.card.members[0];
+  assert.ok(card.decision.reasons.some((r) => r.text === 'Different from the current car you rated poorly.'));
+});
+
+test('actual allocation under a saved positive rating pins the feedback reason and revision, and a later brief change never rewrites the offer', async (t) => {
+  const f = await setup(t, { briefExtra: { currentCarRating: rating(5, 'current:employee-paula') }, carFacts: { modelLine: fact('G21 Touring') } });
+  const dto = passed(await f.exchange()).offer;
+  const similar = dto.quote.decision.reasons.find((r) => r.code === 'feedback-similar');
+  assert.deepEqual(similar.keys, ['modelLine', 'body', 'fuel']);
+  assert.match(dto.quote.revisions.feedback, /^employee\.currentCarFeedback\.v1@/);
+  const card = toOfferPresentation({ status: 'ok', value: dto }).value.card.members[0];
+  const texts = card.decision.reasons.map((r) => r.text);
+  assert.ok(texts.includes('Similar to your current car, which you rated highly.'), texts.join(' | '));
+  assert.ok(!texts.includes('This car meets one of your scheme\'s checks.'), texts.join(' | '));
+  assert.equal(card.provenance.revisions.feedback, dto.quote.revisions.feedback);
+  // A later negative rating changes the saved brief, not the offer already made.
+  const saved = passed(await f.brief.readCurrent(f.context)).brief;
+  passed(await f.brief.saveDraft(f.context, { commandId: 'producer-draft-2', expectedBriefVersion: saved.briefVersion, expectedDraftVersion: 1,
+    brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(5) }, currentCarRating: rating(1, 'current:employee-paula') } }));
+  passed(await f.brief.confirm(f.context, { commandId: 'producer-confirm-2', expectedBriefVersion: saved.briefVersion,
+    expectedDraftVersion: 2, consent: { search: true, hold: true } }));
+  assert.equal(passed(await f.brief.readCurrent(f.context)).brief.currentCarRating.value, 1);
+  const again = passed(await f.access.fromAccount(f.context, f.selector)).offer;
+  assert.deepEqual(again.quote.decision, dto.quote.decision); assert.deepEqual(again.quote.revisions, dto.quote.revisions);
+  assert.equal(again.state, 'pending'); assert.equal(again.quote.quoteId, dto.quote.quoteId);
+  assert.equal(passed(await f.repository.query(f.context, 'quotes')).length, 1);
 });

@@ -9,11 +9,11 @@ export const activityFixtures = {
         "briefVersion": 1,
         "permission": {
           "searchConsent": true,
-          "holdConsent": false,
+          "holdConsent": true,
           "paused": false,
           "permissionVersion": 1,
           "canSearch": true,
-          "canHold": false
+          "canHold": true
         },
         "state": "never-searched",
         "lastSuccessfulCheck": null,
@@ -47,7 +47,7 @@ export const activityFixtures = {
         "briefVersion": 2,
         "permission": {
           "searchConsent": true,
-          "holdConsent": false,
+          "holdConsent": true,
           "paused": true,
           "permissionVersion": 2,
           "canSearch": false,
@@ -93,11 +93,11 @@ export const activityFixtures = {
         "briefVersion": 1,
         "permission": {
           "searchConsent": true,
-          "holdConsent": false,
+          "holdConsent": true,
           "paused": false,
           "permissionVersion": 1,
           "canSearch": true,
-          "canHold": false
+          "canHold": true
         },
         "state": "searching",
         "lastSuccessfulCheck": {
@@ -138,11 +138,11 @@ export const activityFixtures = {
         "briefVersion": 1,
         "permission": {
           "searchConsent": true,
-          "holdConsent": false,
+          "holdConsent": true,
           "paused": false,
           "permissionVersion": 1,
           "canSearch": true,
-          "canHold": false
+          "canHold": true
         },
         "state": "searching",
         "lastSuccessfulCheck": {
@@ -193,11 +193,11 @@ export const activityFixtures = {
         "briefVersion": 1,
         "permission": {
           "searchConsent": true,
-          "holdConsent": false,
+          "holdConsent": true,
           "paused": false,
           "permissionVersion": 1,
           "canSearch": true,
-          "canHold": false
+          "canHold": true
         },
         "state": "searching",
         "lastSuccessfulCheck": {
@@ -257,11 +257,11 @@ export const activityFixtures = {
         "briefVersion": 1,
         "permission": {
           "searchConsent": true,
-          "holdConsent": false,
+          "holdConsent": true,
           "paused": false,
           "permissionVersion": 1,
           "canSearch": true,
-          "canHold": false
+          "canHold": true
         },
         "state": "offer",
         "lastSuccessfulCheck": {
@@ -327,11 +327,11 @@ export const activityFixtures = {
         "briefVersion": 1,
         "permission": {
           "searchConsent": true,
-          "holdConsent": false,
+          "holdConsent": true,
           "paused": false,
           "permissionVersion": 1,
           "canSearch": true,
-          "canHold": false
+          "canHold": true
         },
         "state": "offer-closed",
         "lastSuccessfulCheck": {
@@ -397,11 +397,11 @@ export const activityFixtures = {
         "briefVersion": 1,
         "permission": {
           "searchConsent": true,
-          "holdConsent": false,
+          "holdConsent": true,
           "paused": false,
           "permissionVersion": 1,
           "canSearch": true,
-          "canHold": false
+          "canHold": true
         },
         "state": "offer-closed",
         "lastSuccessfulCheck": {
@@ -467,7 +467,7 @@ export const activityFixtures = {
         "briefVersion": 2,
         "permission": {
           "searchConsent": true,
-          "holdConsent": false,
+          "holdConsent": true,
           "paused": true,
           "permissionVersion": 2,
           "canSearch": false,
@@ -545,11 +545,11 @@ export const activityFixtures = {
         "briefVersion": 1,
         "permission": {
           "searchConsent": true,
-          "holdConsent": false,
+          "holdConsent": true,
           "paused": false,
           "permissionVersion": 1,
           "canSearch": true,
-          "canHold": false
+          "canHold": true
         },
         "state": "searching",
         "lastSuccessfulCheck": {
@@ -590,11 +590,11 @@ export const activityFixtures = {
         "briefVersion": 1,
         "permission": {
           "searchConsent": true,
-          "holdConsent": false,
+          "holdConsent": true,
           "paused": false,
           "permissionVersion": 1,
           "canSearch": true,
-          "canHold": false
+          "canHold": true
         },
         "state": "searching",
         "lastSuccessfulCheck": {

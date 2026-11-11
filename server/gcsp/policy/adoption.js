@@ -1,6 +1,7 @@
 import { validInstant } from './file-provider.js';
 import { getReviewedDefinitionSet, validateReviewedDefinitionSet } from './reviewed-definitions.js';
 import { policyOutcome, publishInvalid, policyUnavailable, prepareSuccessor, completePublication } from './publish.js';
+import { planEmployeeExperienceUpgrade } from './employee-experience-upgrade.js';
 import { activateRunPolicy } from './activation.js';
 
 const text = (value) => typeof value === 'string' && value.trim().length > 0 && value.length <= 256;
@@ -21,8 +22,34 @@ export function prepareReviewedAdoption(records, context, input, now, bundle) {
   } });
 }
 
+// A bounded deployed-rule upgrade preserves configured values and immutable history.
+export function prepareEmployeeExperienceRefresh(records, context, input, now, bundle) {
+  if (bundle?.definitionSetId !== 'employee-experience-v1' || !validateReviewedDefinitionSet(bundle))
+    return { outcome: publishInvalid('definitionSetId', 'Select the reviewed employee experience set.') };
+  const prepared = prepareSuccessor(records, context, input, now, { operation: 'refresh-employee-experience', input, definitionDigest: bundle.digest });
+  if (prepared.outcome) return prepared;
+  const plan = planEmployeeExperienceUpgrade(prepared.predecessor.assumptions, bundle);
+  if (plan.invalidKey) return { outcome: publishInvalid(plan.invalidKey, 'The retained employee rule is malformed or is not a recognized legacy shape.') };
+  const addedKeys = []; const superseded = [];
+  const additions = [...plan.additions, ...bundle.definitions.filter((row) => !prepared.next.assumptions.some((existing) => existing.key === row.key)
+    && !plan.additions.some((added) => added.key === row.key))];
+  for (const definition of additions) {
+    addedKeys.push(definition.key);
+    prepared.next.assumptions.push({ ...structuredClone(definition), policyVersion: input.policyVersion, effectiveFrom: input.effectiveFrom });
+  }
+  for (const update of plan.updates) {
+    superseded.push(structuredClone(update.previous));
+    const at = prepared.next.assumptions.findIndex((row) => row.key === update.next.key);
+    prepared.next.assumptions[at] = { ...update.next, policyVersion: input.policyVersion, effectiveFrom: input.effectiveFrom };
+  }
+  if (!addedKeys.length && !superseded.length) return { outcome: publishInvalid('definitionSetId', 'The reviewed employee rules are already current.') };
+  return completePublication(records, context, input, now, prepared, { adoption: { definitionSetId: bundle.definitionSetId,
+    revision: bundle.revision, digest: bundle.digest, addedKeys, updatedKeys: superseded.map((row) => row.key), superseded,
+    transformations: plan.updates.map((row) => row.transformation) } });
+}
+
 // This intentional server operation has no HTTP route or browser-supplied definition rows.
-export async function adoptReviewedAssumptions({ provider, identity, clock, repository, policy }, context, supplied) {
+async function adoptReviewed({ provider, identity, clock, repository, policy }, context, supplied, refresh = false) {
   if (typeof provider?.publish !== 'function') return policyOutcome('invalid', null, { code: 'unsupported-operation', accepted: false,
     reasons: [{ field: 'adoptReviewedAssumptions', reason: 'The file policy provider is read-only.' }] });
   let accepted;
@@ -41,7 +68,7 @@ export async function adoptReviewedAssumptions({ provider, identity, clock, repo
     accepted = await provider.publish({ runId: context.runId, asOf: instant.value.now }, async (records) => {
       const authorized = await identity.requireRole(context, 'greg');
       if (authorized.status !== 'ok') return { outcome: policyOutcome(authorized.status, null, { ...authorized, accepted: false }) };
-      return prepareReviewedAdoption(records, context, input, instant.value.now, bundle);
+      return (refresh ? prepareEmployeeExperienceRefresh : prepareReviewedAdoption)(records, context, input, instant.value.now, bundle);
     });
   } catch { return policyUnavailable(); }
   if (accepted.status !== 'ok') return accepted;
@@ -53,3 +80,7 @@ export async function adoptReviewedAssumptions({ provider, identity, clock, repo
         reason: 'Publication was saved. Retry to activate the run.', outcome: activated.status },
   } });
 }
+
+export const adoptReviewedAssumptions = (ports, context, supplied) => adoptReviewed(ports, context, supplied);
+// No HTTP route: only trusted startup/reset composition selects this bounded refresh.
+export const refreshEmployeeExperience = (ports, context, supplied) => adoptReviewed(ports, context, supplied, true);

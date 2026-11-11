@@ -11,8 +11,10 @@ import { fixtureAdapter } from './fixtures.js';
 import { mountGregPublish } from './publish/panel.js';
 import { mountGregOrderPlan } from './plan/panel.js';
 import { mountGregComparison } from './comparison/panel.js';
+import { tabs } from '../kit/tabs.js';
+import { ORDERING_NAVIGATION } from '../employee/portal-navigation.js';
 
-// One rail item per view, in run-sheet order; label is the view's h1. region is the reserved section it shows, or null for the figures.
+// Dashboard sections stay inside the page; the common portal rail keeps its ordering destination selected.
 const VIEWS = Object.freeze([
   ['next-order', 'Next order', ['M5 4h14v16H5z', 'M9 9h6', 'M9 13h6'], 'prediction'],
   ['dashboard', 'Demand and supply', ['M4 20V10', 'M10 20V4', 'M16 20v-7', 'M21 20H3'], null],
@@ -137,17 +139,15 @@ function figuresBody(view) {
 }
 
 function reservedRegions() {
-  const host = el('div', 'gcsp-greg-regions');
   const regions = {};
   for (const [key, data, title, text] of REGIONS) {
     const node = section(data, title, 'gcsp-greg-region');
     node.dataset.region = data;
     if (data === 'order-tracking') node.id = 'gcsp-order-requests';
     node.append(note(text));
-    host.append(node);
     regions[key] = node;
   }
-  return { host, regions };
+  return { regions };
 }
 
 /**
@@ -169,8 +169,8 @@ export function mountGregDashboard(root, ctx = {}) {
   let current = planAdapter ? 'next-order' : 'dashboard';
   const shell = portalShell({
     title: 'Group Car Schemes Portal', account: { status: 'loading' }, signOut: ctx.signOut,
-    onRetryAccount: () => loadAccount(), navigation: GREG_NAVIGATION, active: current,
-    onNavigate: (key) => showView(key, true),
+    onRetryAccount: () => loadAccount(), navigation: ORDERING_NAVIGATION, active: 'ordering',
+    onNavigate: (key) => { if (key !== 'ordering') ctx.onNavigate?.(key); },
   });
   const page = el('div', 'vm gcsp-greg');
   const intro = screenIntro({ kicker: 'Scheme ordering', title: '', level: 1, className: 'gcsp-intro', lede: DEMAND_LEDE });
@@ -187,7 +187,15 @@ export function mountGregDashboard(root, ctx = {}) {
   const body = el('div', 'gcsp-greg-body');
   const reserved = reservedRegions();
   figures.append(bar, status, body);
-  page.append(intro, figures, reserved.host);
+  const sectionTabs = tabs({ label: 'Employee car ordering', selected: current,
+    items: VIEWS.map((view) => {
+      const panel = el('div');
+      panel.append(view.region ? reserved.regions[view.region] : figures);
+      return { id: view.key, label: view.label, panel };
+    }),
+    onSelect: (key) => showView(key),
+  });
+  page.append(intro, sectionTabs.root);
   shell.main.append(page);
 
   // One view shows at a time; every region stays mounted so refresh and presenter hooks keep working.
@@ -200,7 +208,8 @@ export function mountGregDashboard(root, ctx = {}) {
     lede.hidden = shown.region !== null;
     figures.hidden = shown.region !== null;
     for (const v of VIEWS) if (v.region) reserved.regions[v.region].hidden = v.region !== shown.region;
-    shell.setActive(shown.key);
+    sectionTabs.list.hidden = blocked;
+    sectionTabs.select(shown.key);
     if (focus) focusHeading(heading);
   }
   async function loadAccount() {
@@ -229,7 +238,6 @@ export function mountGregDashboard(root, ctx = {}) {
   function draw(state, view) {
     showing = state.status === 'ready';
     blocked = state.status === 'refused' || isRunRestarted(state);
-    reserved.host.hidden = blocked;
     showView(current);
     status.classList.toggle('gcsp-vh', Boolean(view));
     body.removeAttribute('aria-busy');
@@ -375,9 +383,9 @@ export class GcspGregDashboardElement extends HTMLElement {
     this._teardown = null;
   }
 
-  _emit(type, detail) {
+  _emit(type, detail, cancelable = false) {
     const Ev = this.ownerDocument.defaultView?.CustomEvent || CustomEvent;
-    this.dispatchEvent(new Ev(type, { detail, bubbles: true, composed: true }));
+    this.dispatchEvent(new Ev(type, { detail, bubbles: true, composed: true, cancelable }));
   }
 
   _mount() {
@@ -391,6 +399,7 @@ export class GcspGregDashboardElement extends HTMLElement {
       loadAccount: adapter?.loadAccount,
       signOut: fixtureName ? false : adapter?.signOut,
       loadDemand: adapter ? (options) => adapter.loadDemand(options) : undefined,
+      onNavigate: (to) => this._emit('gcsp:navigate', { to }, true),
       onUnavailable: (reason) => {
         this._emit('gcsp:unavailable', { reason: reason === 'no-adapter' && fixtureName ? 'unknown-fixture' : reason });
       },

@@ -15,11 +15,11 @@ beforeEach(() => document.body.replaceChildren());
 
 test('never-checked state separates active permission from unavailable check evidence', () => {
   const node = activityBody({ result: fixtures['never-checked'] }); document.body.append(node);
-  assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Active');
+  assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Buddy engaged');
   assert.match(node.textContent, /Not searched yet/); assert.doesNotMatch(node.textContent, /Last check/);
   assert.doesNotMatch(node.textContent, /Still searching|Source delayed|No match|overnight|last checked today/i);
   assert.equal(node.querySelectorAll('h1').length, 1);
-  const pause = node.querySelector('.gcsp-activity-search-action'); assert.equal(pause.textContent, 'Pause search');
+  const pause = node.querySelector('.gcsp-activity-search-action'); assert.equal(pause.textContent, 'Disengage Buddy');
   assert.equal(pause.disabled, true);
   assert.match(document.getElementById(pause.getAttribute('aria-describedby')).textContent, /Preview only/);
   assert.equal(node.querySelectorAll('h2').length, 1); assert.equal(node.querySelector('.gcsp-activity-offer'), null);
@@ -31,14 +31,14 @@ test('never-checked state separates active permission from unavailable check evi
 
 test('paused state says new searches and holds stopped, without an offer line when no offer exists', () => {
   const node = activityBody({ result: fixtures.paused });
-  assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Paused');
+  assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Buddy disengaged');
   assert.match(node.textContent, /New searches and holds have stopped\./); assert.doesNotMatch(node.textContent, /offer is still open/);
-  assert.equal(node.querySelector('.gcsp-activity-search-action').textContent, 'Resume search');
+  assert.equal(node.querySelector('.gcsp-activity-search-action').textContent, 'Engage Buddy');
   const active = activityBody({ result: fixtures['never-checked'] });
-  assert.equal(node.querySelector('.gcsp-activity-status').classList.contains('is-paused'), true);
+  assert.equal(node.querySelector('.gcsp-activity-status').classList.contains('is-inactive'), true);
   assert.equal(active.querySelector('.gcsp-activity-status').classList.contains('is-active'), true);
   assert.equal(node.querySelectorAll('.gcsp-activity-timeline li').length, 2);
-  assert.match(node.textContent, /Search paused/);
+  assert.match(node.textContent, /Buddy disengaged/);
   active.destroy(); node.destroy();
 });
 
@@ -53,10 +53,10 @@ test('unavailable projection hides stale permission and offers and gives a keybo
 });
 
 test('missing search permission never claims an active search or a saved pause', () => {
-  const result = structuredClone(fixtures['never-checked']); result.value.permission.canSearch = false;
+  const result = structuredClone(fixtures['never-checked']); result.value.permission.canSearch = false; result.value.permission.searchConsent = false;
   const node = activityBody({ result });
-  assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Inactive');
-  assert.equal(node.querySelector('.gcsp-activity-consequence'), null); node.destroy();
+  assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Buddy disengaged');
+  assert.match(node.querySelector('.gcsp-activity-consequence').textContent, /New searches and holds have stopped/); node.destroy();
 });
 
 test('unconfigured Buddy exposes setup, which only navigates to preferences', () => {
@@ -78,7 +78,7 @@ test('real command callbacks enable the visible control; pending state blocks re
   assert.equal(action.disabled, false); action.click(); assert.equal(calls, 1);
   const pending = activityBody({ result: fixtures['never-checked'], pending: true, onPause: () => { calls += 1; } }); document.body.append(pending);
   const waiting = pending.querySelector('.gcsp-activity-search-action');
-  assert.equal(waiting.disabled, true); assert.match(document.getElementById(waiting.getAttribute('aria-describedby')).textContent, /Updating search/);
+  assert.equal(waiting.disabled, true); assert.match(document.getElementById(waiting.getAttribute('aria-describedby')).textContent, /Updating Buddy/);
   waiting.click(); assert.equal(calls, 1); node.destroy(); pending.destroy();
 });
 
@@ -161,11 +161,11 @@ test('declined and expired offers show the closed state, no respond-by, and the 
 
 test('paused with an open offer says so once, keeps View offer and the Resume search control', () => {
   const node = view('paused-offer');
-  assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Paused');
+  assert.equal(node.querySelector('.gcsp-activity-status').textContent.trim(), 'Buddy disengaged');
   assert.equal(node.querySelector('.gcsp-activity-consequence').textContent,
     'New searches and holds have stopped. Your offer is still open. View it to accept or decline.');
   assert.equal(node.querySelector('a[href]').textContent, 'View offer'); assert.match(node.textContent, /found a car/);
-  assert.equal(node.querySelector('.gcsp-activity-search-action').textContent, 'Resume search');
+  assert.equal(node.querySelector('.gcsp-activity-search-action').textContent, 'Engage Buddy');
   assert.doesNotMatch(node.textContent, /Still searching|Source delayed/); clean(node); node.destroy();
 });
 

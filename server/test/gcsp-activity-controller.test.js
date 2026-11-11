@@ -29,7 +29,7 @@ test('pause sends exact current version once, stays pending without optimistic f
   const c=make({adapter:{readActivity:async () => ++reads===1?active():paused(),pause:(body) => { calls++;payload=body;return command.promise;}},createCommandId:() => 'pause-command'});
   await c.refresh();const p=c.pause();await c.pause();assert.equal(calls,1);assert.equal(payload.commandId,'pause-command');assert.equal(payload.expectedBriefVersion,1);
   assert.equal(c.getState().pending,true);assert.equal(c.getState().result.value.permission.paused,false);
-  command.resolve({status:'ok',value:{}});await p;assert.equal(reads,2);assert.equal(c.getState().pending,false);assert.equal(c.getState().result.value.permission.paused,true);assert.match(c.getState().message,/paused/i);c.destroy();
+  command.resolve({status:'ok',value:{}});await p;assert.equal(reads,2);assert.equal(c.getState().pending,false);assert.equal(c.getState().result.value.permission.paused,true);assert.match(c.getState().message,/disengaged/i);c.destroy();
 });
 
 test('stale version reloads server state; failed refresh clears old facts and retry recovers', async () => {
@@ -71,4 +71,19 @@ test('a stale generation discards a late offer display', async () => {
   const a = c.refresh(); await Promise.resolve(); await Promise.resolve(); const b = c.refresh(); await b;
   slow.resolve({ offerRef: { offerId: 'layout-offer' }, images: [] }); await a;
   assert.equal(c.getState().offerDisplay, null); assert.equal(changes.filter((s) => s.phase === 'ready').length, 1); c.destroy();
+});
+
+
+test('canonical engagement reports minimum refusals and confirms the readback before success wording', async () => {
+  const off = paused(); const on = active();
+  let response={status:'invalid',code:'engagement-minimum',remaining:2}; let current=off;
+  const c=make({adapter:{readActivity:async () => current,engage:async () => response},createCommandId:() => 'binary-engage'});
+  await c.refresh(); await c.engage();
+  assert.match(c.getState().message,/Choose more preferences/);
+  assert.equal(c.getState().result.value.permission.paused,true);
+  response={status:'ok'}; await c.engage();
+  assert.match(c.getState().message,/changed/,'a contradictory authoritative read never announces engagement');
+  current=on; await c.engage();
+  assert.equal(c.getState().message,'Buddy engaged.');
+  c.destroy();
 });

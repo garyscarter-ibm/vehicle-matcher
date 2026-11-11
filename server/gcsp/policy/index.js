@@ -1,7 +1,7 @@
 import { FilePolicyProvider, PolicySourceError, snapshotVersions, validInstant } from './file-provider.js';
 import { PostgresPolicyProvider } from './postgres-provider.js';
 import { publishPolicyVersion } from './publish.js';
-import { adoptReviewedAssumptions } from './adoption.js';
+import { adoptReviewedAssumptions, refreshEmployeeExperience } from './adoption.js';
 import { cloneJson } from '../repository/core.js';
 
 export { FilePolicyProvider } from './file-provider.js';
@@ -162,6 +162,11 @@ export class PolicyService {
 
   async adoptReviewedAssumptions(context, input) {
     return adoptReviewedAssumptions({ provider: this.#provider, identity: this.#identity, clock: this.#clock,
+      repository: this.#repository, policy: this }, context, input);
+  }
+
+  async refreshEmployeeExperience(context, input) {
+    return refreshEmployeeExperience({ provider: this.#provider, identity: this.#identity, clock: this.#clock,
       repository: this.#repository, policy: this }, context, input);
   }
 
