@@ -33,6 +33,88 @@ Prefer retained priority for verified losses through competition, ordered by wai
 
 This improves the promise to “your previous miss increases your priority until a suitable opportunity is available.” It still cannot guarantee a car or a fixed waiting time when suitable supply remains insufficient.
 
+## Programmatic candidate — 11 November follow-up
+
+The collaborator endorsed the narrative principle and requested a programmatic form, explicitly confirming that no runtime LLM will interpret it. The following defines a deterministic candidate for that principle. It is a discussion design, not a change to the running allocator.
+
+### Inputs and stored state
+
+- Identify the employee's choice by employee, entitlement slot and server-owned selection-cycle identity. Each choice can receive at most one active offer. A new selection cycle starts fresh; editing preferences or pausing/resuming does not create a new cycle.
+- Store `firstCompetitionMissRelease: integer | null` for that choice. `null` means no retained priority. The integer is the sequence number of its earliest unresolved loss through competition, not a count of refreshes or elapsed days.
+- Each real release has a stable ID, increasing sequence number, server-owned random seed and frozen cohort/stock/policy snapshot. Persist one outcome per release/choice. Retries, brief changes and decline/expiry reallocations are not new fairness releases.
+- For each participating choice, build its complete suitable-car list using the existing recommendation decisions and server exclusions. A car qualifies only when `gateStatus === 'eligible'` and `suitable === true`, it is available/visible, consent and entitlement permit a hold, and existing declined-car exclusions permit it. Current recommendation code sets `suitable` from the eligibility gates; this candidate adds no minimum preference-score threshold or language-based judgement.
+- Participation requires an active buddy, the existing confirmed brief/permission/eligibility facts, a known renewal date and no occupying hold/allocation. Unknown or failed evaluations remain explicit processing outcomes; an error is never converted into an empty suitable list.
+
+### Queue and suitable-car assignment
+
+Generate `ticket = SHA256([release.seed, release.id, choice.identity])`. Sort choices by this ascending tuple:
+
+```text
+(
+  firstCompetitionMissRelease ?? INFINITY,
+  renewalDueDate,
+  ticket,
+  choice.identity
+)
+```
+
+Thus protected choices precede unprotected choices; the oldest qualifying miss wins; equal waiting histories use earlier renewal, then the release lottery, then stable identity. This explicitly places waiting history ahead of renewal urgency, changing the current urgency-first policy. Fit ranks cars for an employee, not employees ahead of the queue.
+
+Build the full provisional assignment before claiming cars. For each choice in queue order, use the following deterministic placement rule. Each choice's suitable-car list is ordered by descending existing fit score (null after numeric scores), then exact car ID. `owner` maps exact car IDs to choices:
+
+```text
+place(choice, seenCars):
+  for car in suitableCars[choice]:
+    if car.id not in seenCars AND owner[car.id] is absent:
+      owner[car.id] = choice
+      return true
+  for car in suitableCars[choice]:
+    if car.id in seenCars: continue
+    add car.id to seenCars
+    previous = owner[car.id]
+    if previous is absent OR place(previous, seenCars):
+      owner[car.id] = choice
+      return true
+  return false
+
+for choice in queue:
+  place(choice, empty set)
+```
+
+Free suitable cars are tried first, preserving earlier choices where another free car can serve the later employee. If needed, this can move a higher-priority choice between its suitable cars while preserving its allocation. For A→{X,Y}, B→{X}, it produces A→Y/B→X. Moving a provisional assignment can reduce individual fit within the suitable set to serve another employee; that is an explicit trade-off. Secured offers are outside this provisional reassignment.
+
+For a concrete admission rule, this candidate gives the new tranche's Buddy pass priority over new manual claims on that tranche; remaining cars open to manual claims afterwards. Both routes still use the existing shared atomic claim authority. This admission choice is proposed explicitly and is not current-policy evidence. Another admission policy would need its own precise ordering before fairness could be claimed across both routes.
+
+Claim the saved plan through the existing authority, in queue order. Revalidate versions and suitability. Known conflicts trigger reconciliation of the uncommitted remainder, retaining the original cohort order and all secured offers. Uncertain writes stay pending. Do not finalise a competition miss while a claim or source change remains unresolved.
+
+### Exact outcomes and state changes
+
+Use the frozen suitable list and authoritative secured-claim results, in the following precedence:
+
+| Outcome | Computed condition | Update |
+|---|---|---|
+| `OFFERED` | A suitable hold/offer was successfully secured for this choice | Set `firstCompetitionMissRelease = null` |
+| `NOT_PARTICIPATING` | The choice did not meet the cohort conditions or withdrew before claim | Preserve state |
+| `RETRY_PENDING` | Required evaluation, input reconciliation or claim result is unresolved | Preserve state; do not finalise a miss |
+| `NO_SUITABLE_STOCK` | Evaluation completed successfully and the frozen suitable list is empty | Preserve state |
+| `MISSED_COMPETITION` | The suitable list is non-empty, no offer was secured, allocation is complete, and every car on the list was authoritatively secured for another choice | Set to this release's sequence only if currently null; otherwise preserve the older value |
+
+Any remaining inconsistent/unallocated case is `RETRY_PENDING`, not an inferred competition loss. A later successful offer, including one produced after a decline/expiry within the same release, clears priority immediately. A stale release finalisation must check whether an offer has since been secured for this choice and cannot recreate priority after that opportunity. Use idempotent receipts and version-checked state updates through the repository; a repeated release outcome cannot grant priority twice.
+
+Priority is consumed when the suitable offer is secured, before the employee responds. Rejection, expiry and notification delivery failure create no competition credit and do not restore spent priority. This makes the opportunity, rather than acceptance, the measurable fairness event. This simplified candidate has no extra rejection penalty or `x`/`y`/`z` adjustments.
+
+### Worked decisions
+
+- Three choices and two mutually suitable cars: two offers; the third records this release as its first competition miss. At the next release it precedes both unprotected choices if still participating and suitable stock exists.
+- Seven protected choices and three suitable cars: the first three that can be matched receive offers; the rest keep their original priority dates. No impossible next-release guarantee is made.
+- A protected choice with no suitable stock receives no offer and retains its date; later choices can still use the stock.
+- Declining an offered car does not create a miss. A paused buddy earns no new miss; resuming preserves its existing date.
+- Refreshing/retrying reuses the ticket and outcome receipt. Processing errors never create a scarcity credit.
+
+### Validation scope for the follow-up
+
+Documentation-only candidate: compare the queue, placement and outcome rules against the examples above, check the existing suitability definition and comparator, then validate Markdown whitespace and local links. No allocator, policy seed, UI, Jira or product-map status changes are part of this follow-up. Application/browser tests are not run, and the pseudocode is not claimed as an executed production implementation. No test scratch or owned processes are created.
+
 ## Current-source evidence and review scope
 
 - [Allocation contract](allocation-contract.md): existing eligibility/brief gates, renewal/fit/lottery policy, decline/expiry distinctions, frozen plans, claim handoff and replay.
