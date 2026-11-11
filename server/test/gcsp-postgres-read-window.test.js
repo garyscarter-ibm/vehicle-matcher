@@ -62,6 +62,18 @@ test('postgresql read window: after an own commit, reads skip the check and see 
   assert.equal(counter.connects - before, 0, 'reads inside the window reuse this process\'s committed state');
 });
 
+test('postgresql read window: a burst of reads shares one check, and another writer is seen once the window ends', options, async (t) => {
+  const open = await fixture(t);
+  const own = await open(80);
+  const other = await open(0);
+  const before = own.counter.connects;
+  for (let i = 0; i < 5; i += 1) assert.equal((await own.repository.read(context, carRef)).value.state, 'available');
+  assert.equal(own.counter.connects - before, 1, 'one database check covers the burst');
+  assert.equal((await other.repository.transaction(context, command(), (tx) => tx.compareAndSwap(carRef, 1, { state: 'held' }))).status, 'ok');
+  await wait(120);
+  assert.equal((await own.repository.read(context, carRef)).value.state, 'held');
+});
+
 test('postgresql read window: another writer is seen once the window ends, and by the next own write at once', options, async (t) => {
   const open = await fixture(t);
   const own = await open(80);
