@@ -2,16 +2,16 @@ import { test, before, after, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
 
-let dom; let activityTimeline;
+let dom; let activityTimeline; let demoTime;
 before(async () => {
   dom = new JSDOM('<!doctype html><body></body>');
   globalThis.document = dom.window.document;
-  ({ activityTimeline } = await import('../../blocks/gcsp/kit/activity-timeline.js'));
+  ({ activityTimeline, demoTime } = await import('../../blocks/gcsp/kit/activity-timeline.js'));
 });
 after(() => dom?.window.close());
 beforeEach(() => document.body.replaceChildren());
 
-test('timeline preserves supplied order and exposes dates as UTC without inventing events', () => {
+test('timeline preserves supplied order and shows UK times with no UTC note, without inventing events', () => {
   const node = activityTimeline({ events: [
     { id: 'b', occurredAt: '2026-11-05T11:30:00.000Z', label: 'Search paused', detail: 'Brief version 2' },
     { id: 'a', occurredAt: '2026-11-05T10:00:00.000Z', label: 'Search brief confirmed' },
@@ -22,7 +22,7 @@ test('timeline preserves supplied order and exposes dates as UTC without inventi
   assert.match(node.querySelector('li').textContent, /Search paused/);
   assert.equal(node.querySelector('time').dateTime, '2026-11-05T11:30:00.000Z');
   assert.match(node.querySelector('time').textContent, /5 Nov 2026.*11:30/);
-  assert.match(node.textContent, /All dates are UTC/);
+  assert.equal(node.querySelector('.gcsp-timeline-note'), null); assert.doesNotMatch(node.textContent, /UTC/);
   assert.doesNotMatch(node.textContent, /ago|successful check/i);
 });
 
@@ -57,5 +57,17 @@ test('timeline formatTime words the time, a falsy note drops the paragraph and a
   assert.deepEqual(kids.map((n) => n.className || n.tagName), ['gcsp-timeline-label', 'gcsp-timeline-description', 'BUTTON']);
   assert.equal(kids[2], action);
   const plain = activityTimeline({ events: [{ id: 'b', occurredAt: '2026-11-10T11:30:00.000Z', label: 'Plain' }] });
-  assert.match(plain.textContent, /All dates are UTC/); assert.equal(plain.querySelector('.gcsp-timeline-detail').children.length, 1);
+  assert.equal(plain.querySelector('.gcsp-timeline-note'), null); assert.equal(plain.querySelector('.gcsp-timeline-detail').children.length, 1);
+});
+
+// FUCQ-354: Paula's times are the UK wall clock, so BST shifts summer instants and GMT leaves winter ones alone.
+test('demoTime reads Europe/London: an hour ahead of UTC in July (BST), equal to UTC in January (GMT)', () => {
+  assert.equal(demoTime('2026-07-15T09:30:00.000Z'), '15 Jul 2026, 10:30');
+  assert.equal(demoTime('2026-01-15T09:30:00.000Z'), '15 Jan 2026, 09:30');
+  assert.equal(demoTime('2026-07-15T23:30:00.000Z'), '16 Jul 2026, 00:30');
+  assert.equal(demoTime('2026-03-29T00:59:00.000Z'), '29 Mar 2026, 00:59');
+  assert.equal(demoTime('2026-03-29T01:00:00.000Z'), '29 Mar 2026, 02:00');
+  const node = activityTimeline({ events: [{ id: 's', occurredAt: '2026-07-15T09:30:00.000Z', label: 'Summer' }] });
+  assert.equal(node.querySelector('time').textContent, '15 Jul 2026, 10:30');
+  assert.equal(node.querySelector('time').dateTime, '2026-07-15T09:30:00.000Z');
 });

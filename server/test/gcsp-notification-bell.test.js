@@ -38,6 +38,9 @@ test('rows: an active offer is the waiting row with car, deadline and one button
   assert.deepEqual([rows[0].waiting, rows[0].title, rows[0].car, rows[0].detail], [true, 'Your buddy found a car', 'BMW i5 Touring', 'Reserved for you. Respond by 16:40.']);
   assert.deepEqual(rows[0].action, { label: 'View your offer', href: '/gcsp/offer?offerId=o1&runId=r1', variant: 'button' });
   assert.equal(rows[0].image.src, IMAGE);
+  // FUCQ-354: "Respond by" is the UK clock, so a July deadline reads an hour on from UTC.
+  const summer = mods.source.notificationRows(value(offer({ expiresAt: '2026-07-10T16:40:00.000Z' })), display, ROUTES);
+  assert.equal(summer[0].detail, 'Reserved for you. Respond by 17:40.');
 });
 
 test('rows: each closed offer state has its own copy and onward link', () => {

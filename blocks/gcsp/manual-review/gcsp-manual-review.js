@@ -127,7 +127,7 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
     if (lastVehicle !== signature || !nodes.vehicle.childNodes.length) {
       lastVehicle = signature;
       const technical = el('details', 'gcsp-details'); technical.append(el('summary', '', 'Pinned vehicle details'),
-        rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), ['body', 'bodyType'].includes(key) ? bodyFact(value) : value]).concat([['Quote valid until', Number.isFinite(Date.parse(model.quote.validUntil)) ? `${demoTime(model.quote.validUntil)} (UTC)` : model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]]), MORE_MISSING));
+        rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), ['body', 'bodyType'].includes(key) ? bodyFact(value) : value]).concat([['Quote valid until', Number.isFinite(Date.parse(model.quote.validUntil)) ? demoTime(model.quote.validUntil) : model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]]), MORE_MISSING));
       nodes.vehicle.replaceChildren(
         matchCard(null, { view: reviewVehicleView(model), showScore: false, hideMissing: MORE_MISSING }), technical);
     }

@@ -4,6 +4,7 @@ import { renderOptionList } from '../../vehicle-matcher/modes/question-ui.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { labelledField } from '../kit/form-controls.js';
 import { showMore } from '../kit/show-more.js';
+import { demoTime } from '../kit/activity-timeline.js';
 import { viewStatus } from '../kit/view-status.js';
 import { bodyStyleLabel, NO_IMAGE_TEXT } from '../kit/plain-copy.js';
 import { createManualGalleryController } from './gallery-controller.js';
@@ -144,9 +145,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     nodes.historySummary.textContent = h.state === 'none-visible' ? 'No confirmed releases are visible to you yet.'
       : `Release history: ${h.releasedCarCount.toLocaleString('en-GB')} ${h.releasedCarCount === 1 ? 'car' : 'cars'} in ${h.releaseCount.toLocaleString('en-GB')} ${h.releaseCount === 1 ? 'release' : 'releases'} visible to you.`;
     nodes.historyTime.hidden = h.latestReleasedAt === null;
-    nodes.historyTime.textContent = h.latestReleasedAt === null ? '' : `Latest visible release: ${new Intl.DateTimeFormat('en-GB', {
-      timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
-    }).format(new Date(h.latestReleasedAt))} UTC.`;
+    nodes.historyTime.textContent = h.latestReleasedAt === null ? '' : `Latest visible release: ${demoTime(h.latestReleasedAt)}.`;
   }
   // FUCQ-278: a held offer or one taken car shows above a list that stays in place.
   function drawNotice() {

@@ -1,4 +1,5 @@
 import { el, screenIntro, button, factList } from '../../vehicle-matcher/ui.js';
+import { demoTime } from '../kit/activity-timeline.js';
 
 export const caseStatus = (value) => ({ open: 'Open', 'in-progress': 'In progress', 'remedy-proposed': 'Remedy proposed',
   resolved: 'Resolved', closed: 'Closed' }[value] ?? value ?? 'Not supplied');
@@ -48,12 +49,15 @@ export const caseNotice = 'Remedies need the scheme team’s decision. No specif
 
 export function renderCaseContent(c, { onReviewRelaxation, pending = false, headingLevel = 2, audience = 'employee' } = {}) {
   const root = el('article', 'gcsp-case-detail');
+  // FUCQ-354: Paula reads UK time with no label; the scheme team keeps its UTC labels until that is decided.
+  const uk = audience === 'employee'; const at = (label) => (uk ? label : `${label} (UTC)`);
+  const when = (value) => (uk && typeof value === 'string' && Number.isFinite(Date.parse(value)) ? demoTime(value) : clockTime(value));
   root.dataset.caseId = c.caseId;
   const owner = c.owner?.name ?? (c.owner?.role == null ? null : roleLabel(c.owner.role)); const ownerRole = roleLabel(c.owner?.role);
   root.append(screenIntro({ kicker: 'Renewal case', title: caseStatus(c.status), level: headingLevel }), facts([
     ['Case reference', caseReference(c.caseId)], ['Owner', owner], ...(ownerRole.toLowerCase() === String(owner ?? '').toLowerCase() ? [] : [['Owner role', ownerRole]]),
     ['Reason', c.reason], ['Latest update', c.history?.at(-1)?.reason ?? c.reason],
-    ['Opened from', triggerLabel(c.trigger)], ['Next action', c.nextAction], ['Due (UTC)', clockTime(c.dueAt)],
+    ['Opened from', triggerLabel(c.trigger)], ['Next action', c.nextAction], [at('Due'), when(c.dueAt)],
     ['Renewal deadline (calendar date)', c.renewalDeadline ?? 'Needs confirmation'],
   ]));
   const remedy = c.remedy;
@@ -81,7 +85,7 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
           disabled: pending || !applicable, variant: 'ghost', onClick: () => onReviewRelaxation(c) }));
       }
     } else if (remedy.type === 'manual-decision') section.append(facts([['Scheme-team decision', remedy.decision]]));
-    else if (remedy.type === 'later-release') section.append(facts([['Reviewed release (UTC)', clockTime(remedy.releaseAt)], ['Source', remedy.source]]));
+    else if (remedy.type === 'later-release') section.append(facts([[at('Reviewed release'), when(remedy.releaseAt)], ['Source', remedy.source]]));
     else if (remedy.type === 'contract-extension') section.append(facts([['Proposed contract end (calendar date)', remedy.until]]));
     else if (remedy.type === 'alternative-car') section.append(facts([[['resolved', 'closed'].includes(c.status) ? 'Recorded car' : 'Proposed car', carNameText(remedy.carName)],
       ...(audience === 'scheme-team' ? [['Exact car reference', remedy.orderUuid]] : [])]));
@@ -92,8 +96,8 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
   const list = el('ol', 'gcsp-case-events');
   for (const h of c.history ?? []) {
     const row = el('li', 'gcsp-case-event');
-    row.append(facts([['Time (UTC)', clockTime(h.at)], ['Actor', actorLabel(h, c, audience)], ['Role', roleLabel(h.actorRole)],
-      ['Status', caseStatus(h.status)], ['Reason', h.reason], ['Next action', h.nextAction], ['Due (UTC)', clockTime(h.dueAt)]]));
+    row.append(facts([[at('Time'), when(h.at)], ['Actor', actorLabel(h, c, audience)], ['Role', roleLabel(h.actorRole)],
+      ['Status', caseStatus(h.status)], ['Reason', h.reason], ['Next action', h.nextAction], [at('Due'), when(h.dueAt)]]));
     list.append(row);
   }
   history.append(list); root.append(history);

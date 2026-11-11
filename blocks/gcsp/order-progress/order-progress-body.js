@@ -252,11 +252,8 @@ export function orderProgressBody({ progress = {}, car, pending = false, message
     history(value, forReturn) {
       const events = historyEvents(value.history, forReturn);
       if (events.length <= 1) return null;
-      const timeline = activityTimeline({ events, heading: forReturn ? 'Return history' : 'Handover history', level: sub });
-      timeline.querySelector('.gcsp-timeline-note')?.remove(); // The page says "All times are UTC." once, under the heading.
-      return timeline;
+      return activityTimeline({ events, heading: forReturn ? 'Return history' : 'Handover history', level: sub });
     } };
-  root.append(el('p', 'gcsp-order-note', copy.timeNote));
   add(root, orderSection(c), handoverSection(c), documentsSection(c), returnSection(c));
   // A command's message sits under the heading of the section acted in, so narrow views and focus stay there.
   const heading = live && SECTIONS.includes(messageSection) ? root.querySelector(`:scope > .gcsp-order-${messageSection} > .gcsp-order-section-title`) : null;

@@ -20,7 +20,10 @@ const finite = (n) => typeof n === 'number' && Number.isFinite(n);
 
 const DATE_ONLY = /^(\d{4})-(\d\d)-(\d\d)$/;
 const INSTANT = /^\d{4}-\d\d-\d\dT\d\d:\d\d(:\d\d(\.\d+)?)?(Z|[+-]\d\d:\d\d)$/;
-const parts = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const LONG = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+// A calendar date is its own day; an instant is named by its UK day (FUCQ-354).
+const dayParts = new Intl.DateTimeFormat('en-GB', { ...LONG, timeZone: 'UTC' });
+const instantParts = new Intl.DateTimeFormat('en-GB', { ...LONG, timeZone: 'Europe/London' });
 
 /** "2026-11-13" or an ISO instant as "Friday 13 November 2026"; null when not a real date. */
 export function longDate(value) {
@@ -33,7 +36,7 @@ export function longDate(value) {
   } else if (!INSTANT.test(value)) return null;
   const ms = Date.parse(value);
   if (!Number.isFinite(ms)) return null;
-  const p = Object.fromEntries(parts.formatToParts(new Date(ms)).map((x) => [x.type, x.value]));
+  const p = Object.fromEntries((day ? dayParts : instantParts).formatToParts(new Date(ms)).map((x) => [x.type, x.value]));
   return `${p.weekday} ${p.day} ${p.month} ${p.year}`;
 }
 

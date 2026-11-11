@@ -2,15 +2,15 @@ import { el } from '../../vehicle-matcher/ui.js';
 
 let sequence = 0;
 const format = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric',
-  hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+  hour: '2-digit', minute: '2-digit', timeZone: 'Europe/London' });
 
-/** UTC text for a valid ISO instant, shared by the timeline and its callers. */
+/** UK wall-clock text for a valid ISO instant (FUCQ-354), shared by the timeline and Paula's screens. */
 export const demoTime = (instant) => format.format(new Date(instant));
 
 /** Supplied order is kept; collapseRepeats draws adjacent identical rows once. Nothing is inferred.
  * formatTime(iso) words the time, note is the paragraph under the heading (falsy for none), event.action is an optional node. */
 export function activityTimeline({ events = [], heading = 'Activity history', emptyText = 'No activity is recorded.', level = 2, collapseRepeats = false,
-  formatTime = demoTime, note = 'All dates are UTC.' } = {}) {
+  formatTime = demoTime, note = null } = {}) {
   const root = el('section', 'gcsp-activity-timeline');
   const title = el(`h${level}`, 'gcsp-timeline-heading', heading);
   title.id = `gcsp-timeline-${++sequence}`;

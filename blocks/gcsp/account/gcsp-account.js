@@ -70,7 +70,7 @@ const technicalLabels = { insuranceGroup: 'Insurance group', nedcCo2: 'NEDC CO2'
   electricRange: 'Electric range', electricCityRange: 'Electric city range' };
 const technicalLabel = (key) => technicalLabels[key] ?? label(key);
 const asOf = (value) => Number.isNaN(Date.parse(value ?? '')) ? MISSING
-  : new Date(value).toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short', timeZone: 'UTC' });
+  : new Date(value).toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short', timeZone: 'Europe/London' });
 // Raw ids are not copy: a scheme shows only the policy-supplied name; tables and records fall back to "Scheme N".
 const schemeTitle = (history, index) => history.label ?? `Scheme ${index + 1}`;
 const schemeTitleFor = (model, schemeId) => {
