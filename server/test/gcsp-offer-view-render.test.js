@@ -523,7 +523,7 @@ test('GC-041: after Accept focus moves to the Offer accepted heading, and a back
   view.destroy(); root.remove();
 });
 
-test('GC-041: mountOffer shows the host navigation in the rail, and an empty rail without one', async () => {
+test('FUCQ-390: mountOffer retains the portal rail without account details, with signed-in onward actions only', async () => {
   const { mountOffer } = await import('../../blocks/gcsp/offer/gcsp-offer.js');
   const { signedInPortal, PORTAL_ROUTES } = await import('../../blocks/gcsp/offer/portal-links.js');
   const assigned = []; const location = { assign: (to) => assigned.push(to) };
@@ -541,11 +541,14 @@ test('GC-041: mountOffer shows the host navigation in the rail, and an empty rai
   assert.equal(PORTAL_ROUTES.brief, '/gcsp-brief-live.html');
   assert.deepEqual([...signedIn.querySelectorAll('a.vm-btn')].map((a) => a.getAttribute('href')), [PORTAL_ROUTES['order-progress'], PORTAL_ROUTES.cars]);
   stop();
-  assert.deepEqual(signedInPortal({ status: 'unavailable' }, location), {}); assert.deepEqual(signedInPortal(undefined, location), {});
   const anonymous = document.createElement('div'); document.body.append(anonymous);
   const stopAnonymous = mountOffer(anonymous, { read, account: { status: 'unavailable' }, ...signedInPortal({ status: 'unavailable' }, location) });
   await new Promise((done) => setTimeout(done, 20));
-  assert.equal(anonymous.querySelectorAll('nav button[data-key]').length, 0); assert.equal(anonymous.querySelectorAll('a.vm-btn').length, 0); stopAnonymous();
+  assert.deepEqual([...anonymous.querySelectorAll('nav button[data-key]')].map((node) => node.dataset.key), ['cars', 'brief', 'activity', 'order-progress']);
+  assert.equal(anonymous.querySelectorAll('a.vm-btn').length, 0);
+  assert.equal(anonymous.querySelector('.gcsp-account-details'), null);
+  anonymous.querySelector('nav button[data-key="cars"]').click();
+  assert.equal(assigned.at(-1), PORTAL_ROUTES.cars); stopAnonymous();
 });
 
 test('FUCQ-286: every offer state has one h1 and its heading levels never skip', () => {

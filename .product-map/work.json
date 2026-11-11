@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-11T12:19:11Z",
+  "observed_at": "2026-11-11T14:50:56Z",
   "version": 1,
   "stories": [
     {
@@ -4817,7 +4817,7 @@
       "observed_at": "2026-11-11T13:53:15Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-382",
       "unsliced": false,
-      "note": "Repair authorised on 11 November 2026; original AC1–3 Built with local actual generated-stock, recommendation, pinned-offer and independently reviewed rendered evidence. Genuine definition, transmission and fitment gaps remain explicit; no external deployment, full-suite or collaborator/Jira acceptance claim. docs/gcsp/evidence/fucq382/README.md",
+      "note": "Repair authorised on 11 November 2026; original AC1\u20133 Built with local actual generated-stock, recommendation, pinned-offer and independently reviewed rendered evidence. Genuine definition, transmission and fitment gaps remain explicit; no external deployment, full-suite or collaborator/Jira acceptance claim. docs/gcsp/evidence/fucq382/README.md",
       "slices": [
         {
           "id": "source",
@@ -4838,7 +4838,7 @@
           "status": "complete",
           "title": "Real-producer-to-pinned-offer-and-rendered-review",
           "observed_at": "2026-11-11T14:42:07Z",
-          "evidence": "Original AC1–3 complete through actual generated release, recommendation, pin, access and rendered comparison. Historical quote immutable; genuine definition gaps explicit. Independent corrected 1440/375/320 PASS at 22176eb2; final shared 9089a815. docs/gcsp/evidence/fucq382/README.md"
+          "evidence": "Original AC1\u20133 complete through actual generated release, recommendation, pin, access and rendered comparison. Historical quote immutable; genuine definition gaps explicit. Independent corrected 1440/375/320 PASS at 22176eb2; final shared 9089a815. docs/gcsp/evidence/fucq382/README.md"
         }
       ],
       "workers": [],
@@ -4916,6 +4916,29 @@
         }
       ],
       "observed_at": "2026-11-11T13:54:39Z"
+    },
+    {
+      "id": "FUCQ-390",
+      "title": "Keep the four-link sidebar on out-of-date offer pages",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-11T14:50:56Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-390",
+      "unsliced": true,
+      "evidence": "docs/gcsp/evidence/fucq390/README.md"
+    },
+    {
+      "id": "FUCQ-391",
+      "title": "Make the offer header Retry reload unavailable account details",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-11T14:50:56Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-391",
+      "unsliced": true
     }
   ]
 }
