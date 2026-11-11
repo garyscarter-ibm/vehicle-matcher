@@ -4645,7 +4645,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T13:23:52Z",
+      "observed_at": "2026-11-11T14:05:31Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-370",
       "slices": [
         {
@@ -4657,9 +4657,10 @@
         },
         {
           "id": "page-status",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Prominent engagement status and controls",
-          "observed_at": "2026-11-11T13:23:52Z"
+          "observed_at": "2026-11-11T14:05:31Z",
+          "evidence": "lead review 2026-11-11 of 5293c268+5512a42c: diff review, re-ran 170/170 account/kit tests; strict capture 707/707; lead inspected 1440-selected, 1440-validation, 375-engaged, minimum-loss and unknown captures"
         },
         {
           "id": "integration",
@@ -4669,8 +4670,9 @@
         },
         {
           "id": "visual-review",
-          "status": "not-started",
-          "title": "Strict frozen comparison and independent critique"
+          "status": "in-progress",
+          "title": "Strict frozen comparison and independent critique",
+          "observed_at": "2026-11-11T14:05:31Z"
         }
       ],
       "unsliced": false
