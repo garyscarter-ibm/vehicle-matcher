@@ -220,3 +220,22 @@ test('store and history load failures keep the error name and errno beside the u
   const result = await registry(root).load();
   assert.equal(result.failure.code, 'identity-inventory-unavailable'); assert.deepEqual(result.diagnostic, { errorName: 'SyntaxError' });
 });
+
+test('a publication filesystem exception retains errno without paths and preserves the previous selection', async (t) => {
+  const root = await temporary(t); const first = await corpusInput(); const port = registry(root);
+  assert.equal((await port.publish(await candidate(root, 'first', first))).status, 'ok');
+  const selected = await readFile(join(root, 'store', 'active.json'));
+  const inventory = await readFile(join(root, 'store', 'identity-inventory.json'));
+  const next = await candidate(root, 'next', await corpusInput({ count: 2, version: '2', inventory: first.allocationInventory }));
+  const interrupted = registry(root, { onPhase: async (phase) => {
+    if (phase === 'staged') throw Object.assign(new Error(`ENOSPC: no space left on device, write '${root}/private'`), { code: 'ENOSPC', syscall: 'write' });
+  } });
+  const result = await interrupted.publish(next);
+  assert.equal(result.failure.code, 'publication-interrupted'); assert.equal(result.stillActive.version, '1');
+  assert.equal(result.diagnostic.errno, 'ENOSPC'); assert.equal(result.diagnostic.syscall, 'write');
+  assert.equal(result.diagnostic.phase, 'publication'); assert.equal(result.diagnostic.cause.code, 'artifact-unavailable');
+  assert.equal(JSON.stringify(result).includes(root), false);
+  assert.deepEqual(await readFile(join(root, 'store', 'active.json')), selected);
+  assert.deepEqual(await readFile(join(root, 'store', 'identity-inventory.json')), inventory);
+  assert.equal(Object.hasOwn(presentCorpusLoad(result), 'diagnostic'), false);
+});
