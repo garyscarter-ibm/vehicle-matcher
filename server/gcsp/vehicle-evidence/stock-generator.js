@@ -361,7 +361,7 @@ export function createStockGenerator({ repository, registry, policyService, cont
             const title = plan.titles?.[modelLineId] ?? modelLineId; const displayName = plan.displayNames?.[modelLineId] ?? title;
             const name = carName(extras.get(identity.configurationId)?.eligibilityModelKey?.value ?? title, displayName);
             const facts = createVehicleSnapshot({ sourceNamespace: STOCK_GENERATOR_NAMESPACE, identityKind: 'exact-stock',
-              sourceKeys: { stockId: identity.orderUuid }, snapshotVersion, observedAt, display: imageDisplay(`${name} in ${colour}`, car.binding.images[0]),
+              sourceKeys: { stockId: identity.orderUuid }, snapshotVersion, observedAt, display: imageDisplay(`${name} in ${colour}`, car.binding.images),
               facts: { ...extras.get(identity.configurationId), stockIdentityKind: own('synthetic'), modelLine: known(title, aggregateRef), colour: known(colour, aggregateRef),
                 leadTimeWeeks: known(car.leadTimeWeeks, aggregateRef, 'weeks'),
                 confirmedDeliveryWeek: known(confirmedWeek(horizonEnd, car.leadTimeWeeks, timeZone), aggregateRef),

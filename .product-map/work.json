@@ -4768,18 +4768,22 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T12:19:12Z",
+      "observed_at": "2026-11-11T13:33:53Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-385",
       "slices": [
         {
           "id": "seeds",
-          "status": "not-started",
-          "title": "Three-view retained assets and valid associations"
+          "status": "complete",
+          "title": "Three-view retained assets and valid associations",
+          "observed_at": "2026-11-11T13:33:53Z",
+          "evidence": "docs/gcsp/fucq-385-gallery-evidence-2026-11-11.md; 240 admitted configs have three ordered distinct digests; scoped source/projection/producer tests 150 pass, 1 native PG skip; provenance mapping regression passed"
         },
         {
           "id": "viewer",
-          "status": "not-started",
-          "title": "Shared featured gallery and enlarged viewer"
+          "status": "in-progress",
+          "title": "Shared featured gallery and enlarged viewer",
+          "observed_at": "2026-11-11T13:33:53Z",
+          "evidence": "Standalone module functional browser proof passed; own rendered critique correction underway; parent independent review and integrated hook outstanding"
         },
         {
           "id": "integration",

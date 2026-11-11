@@ -6,16 +6,52 @@ import { createInterface } from 'node:readline';
 import { createHash } from 'node:crypto';
 import { loadPublishedDemoRows } from '../../scripts/gcsp/demo-enrichment.mjs';
 import { configurationDisplayImage, configurationIdDisplayImage, modelDisplayImage, withDisplayImages } from '../gcsp/vehicle-evidence/display-images.js';
+import * as displayImages from '../gcsp/vehicle-evidence/display-images.js';
 import { VEHICLE_IMAGE_ASSETS, isDisplayImage } from '../../blocks/gcsp/kit/vehicle-image-assets.js';
 import { vehicleEvidenceDetails } from '../gcsp/vehicle-evidence/vehicle-details-contract.js';
 import { createConfiguredVehicleDetails } from '../gcsp/vehicle-evidence/application-vehicle-details.js';
 const { rows } = await loadPublishedDemoRows();
 const data = JSON.parse(await readFile(new URL('../data/gcsp/vehicle-evidence/display-images.v1.json', import.meta.url)));
+const sources = JSON.parse(await readFile(new URL('../data/gcsp/vehicle-evidence/display-images.sources.json', import.meta.url)));
 const capturedIds = new Set(data.configurations.map((row) => row.configurationId));
 const outsideCapturedConfiguration = (id) => {
   const [vg, list] = Buffer.from(id, 'base64').toString('utf8').split(':');
   return Buffer.from(`${vg}:${[...new Set([...list.split(','), 'SZZZZ'])].sort().join(',')}`).toString('base64');
 };
+
+test('three-view gallery covers every admitted association with distinct verified rear and interior bytes', async () => {
+  assert.equal(typeof displayImages.configurationDisplayGallery, 'function');
+  for (const row of rows) {
+    const gallery = await displayImages.configurationDisplayGallery(row);
+    assert.equal(gallery.length, 3, row.configurationId);
+    assert.deepEqual(gallery.map((image) => image.viewpoint), ['FRONTLEFT', 'REARLEFT', 'DASH']);
+    assert.equal(new Set(gallery.map((image) => image.sha256)).size, 3);
+    const retained = sources.galleryConfigurations.find((entry) => entry.configurationId === row.configurationId);
+    assert.ok(retained, row.configurationId);
+    assert.deepEqual(gallery.slice(1).map((image) => image.sha256), retained.views.map((view) => view.image.sha256));
+    assert.equal(gallery[2].fidelity, 'representative-model');
+    assert.equal(gallery[0].asset, (await configurationDisplayImage(row)).asset);
+    for (const image of gallery) {
+      assert.equal(image.configurationId, row.configurationId);
+      assert.ok(isDisplayImage(`/${image.asset}`, image.fidelity));
+      const bytes = await readFile(new URL(`../../${image.asset}`, import.meta.url));
+      assert.equal(createHash('sha256').update(bytes).digest('hex'), image.sha256);
+    }
+    const publicGallery = await displayImages.configurationIdDisplayGallery(row.configurationId);
+    assert.deepEqual(publicGallery, gallery);
+  }
+});
+
+test('three-view gallery keeps partial failures honest and unsupported associations empty', async () => {
+  assert.equal(typeof displayImages.configurationDisplayGallery, 'function');
+  const first = await configurationDisplayImage(rows[0]);
+  const loadAsset = async (image) => image.imageId === first.imageId ? readFile(new URL(`../../${image.asset}`, import.meta.url)) : Buffer.alloc(1);
+  const partial = await displayImages.configurationDisplayGallery(rows[0], { loadAsset });
+  assert.equal(partial.length, 1);
+  assert.equal(partial[0].asset, first.asset);
+  assert.deepEqual(await displayImages.configurationIdDisplayGallery('UNKNOWN'), []);
+  assert.deepEqual(await displayImages.configurationDisplayGallery({ ...rows[0], configuration: { market: 'US' } }), []);
+});
 
 test('all 240 retained demo configurations have verified pictures bound to their unchanged source record', async () => {
   assert.equal(rows.length, 240);
@@ -109,8 +145,12 @@ test('tampered source identity, missing or corrupt assets cannot acquire a catal
 });
 test('every published client allowlist entry agrees with the catalogue and rejects arbitrary or exact imagery', () => {
   const expected = new Map();
-  for (const image of [...data.configurations.map(r => r.image), ...Object.values(data.variants), ...Object.values(data.models)]) {
+  const images = [...data.configurations.map(r => r.image), ...Object.values(data.variants), ...Object.values(data.models), ...Object.values(data.configurationGalleries ?? data.galleries ?? {}).flat()];
+  for (const image of images) {
     const src = `/${image.asset}`; if (!expected.has(src)) expected.set(src, new Set()); expected.get(src).add(image.fidelity);
+  }
+  for (const image of [...Object.values(data.variants), ...Object.values(data.models)]) {
+    for (const view of data.galleries?.[image.imageId] ?? []) expected.get(`/${view.asset}`).add('representative-model');
   }
   assert.deepEqual(VEHICLE_IMAGE_ASSETS, [...expected].sort(([a],[b]) => a.localeCompare(b)).map(([src, types]) => [src, [...types].sort()]));
   assert.equal(isDisplayImage('/assets/gcsp-vehicle-evidence/unknown.webp', 'representative-model'), false);
@@ -121,11 +161,11 @@ test('enriched images survive the vehicle-details DTO and application validation
   const original = { status: 'partial', record: row, images: [], active: { datasetId: 'image-regression', version: '1', manifestDigest: 'a'.repeat(64) } };
   const registry = withDisplayImages({ getConfiguration: () => original });
   const source = await registry.getConfiguration(row.configurationId);
-  assert.equal(source.images.length, 1); assert.equal(original.images.length, 0);
+  assert.equal(source.images.length, 3); assert.equal(original.images.length, 0);
   const request = { kind: 'configuration', id: row.configurationId };
   const wire = vehicleEvidenceDetails(request, source);
   const out = await createConfiguredVehicleDetails({ lookup: { resolve: () => wire,
     classifyRequest: () => ({ status: 'ok', identityKind: 'synthetic', liveEligible: false, configurationId: row.configurationId }) } }).resolve(request);
-  assert.equal(out.status, 'partial'); assert.equal(out.vehicle.images.items.length, 1);
+  assert.equal(out.status, 'partial'); assert.equal(out.vehicle.images.items.length, 3);
   assert.equal(out.vehicle.equipment.verifiedFitted.state, 'unknown');
 });

@@ -3,7 +3,7 @@ import { open, readFile } from 'node:fs/promises';
 import { inputDigest } from '../repository/core.js';
 
 // This display catalogue is separate from immutable source-corpus admission.
-const CATALOGUE_SHA256 = 'eb0dc302822c9f27cb8c7b4cc2c5bcf91c3a5a2df052212727530508e3d9c59c';
+const CATALOGUE_SHA256 = 'f12e588c78ca900dc98800697960f7d2857283d982fadd5cde292ba6be27b694';
 const catalogueFile = new URL('../../data/gcsp/vehicle-evidence/display-images.v1.json', import.meta.url);
 let loaded;
 let primarySources;
@@ -108,16 +108,42 @@ export async function configurationIdDisplayImage(id, eligibilityModelKey, { loa
     return image ? await published({ ...image, configurationId: id, role: 'representative-model', fidelity: 'representative-model' }, loadAsset) : null;
   } catch { return null; }
 }
-export function imageDisplay(name, image) {
-  return image ? { name, photo: `/${image.asset}`, images: [{ src: `/${image.asset}`,
-    alt: name, fidelity: image.fidelity,
-    sourceRef: `display-image:${image.imageId}, observed ${image.observedDate}` }] } : { name };
+
+async function galleryFor(first, { loadAsset = readAsset } = {}) {
+  if (!first) return [];
+  const data = await catalogue();
+  const images = data.configurationGalleries?.[first.configurationId] ?? data.galleries?.[first.imageId] ?? [first];
+  const gallery = [];
+  for (const image of images) {
+    const fidelity = first.fidelity === 'representative-model' ? first.fidelity : image.fidelity;
+    const verifiedImage = await published({ ...image, configurationId: first.configurationId,
+      role: fidelity, fidelity }, loadAsset);
+    if (verifiedImage && !gallery.some((entry) => entry.sha256 === verifiedImage.sha256)) gallery.push(verifiedImage);
+  }
+  return gallery;
+}
+/** Ordered retained views, with every asset independently verified; missing views remain absent. */
+export async function configurationDisplayGallery(record, options = {}) {
+  try { return await galleryFor(await configurationDisplayImage(record, options), options); } catch { return []; }
+}
+export async function configurationIdDisplayGallery(id, eligibilityModelKey, options = {}) {
+  try { return await galleryFor(await configurationIdDisplayImage(id, eligibilityModelKey, options), options); } catch { return []; }
+}
+export async function modelDisplayGallery(key, options = {}) {
+  try { return await galleryFor(await modelDisplayImage(key, options), options); } catch { return []; }
+}
+export function imageDisplay(name, supplied) {
+  const images = (Array.isArray(supplied) ? supplied : [supplied]).filter(Boolean);
+  return images.length ? { name, photo: `/${images[0].asset}`, images: images.map((image) => ({ src: `/${image.asset}`,
+    alt: image.label ? `${name}, ${image.label.toLowerCase()}` : name, fidelity: image.fidelity,
+    sourceRef: `display-image:${image.imageId}, observed ${image.observedDate}`,
+    ...(image.viewpoint ? { viewpoint: image.viewpoint, label: image.label } : {}) })) } : { name };
 }
 export function withDisplayImages(registry) {
   const enrich = async (source) => {
     if (!['ok', 'complete', 'partial'].includes(source?.status)) return source;
-    const image = await configurationDisplayImage(source.record);
-    return image ? { ...source, images: [image], imageState: 'representative' } : source;
+    const images = await configurationDisplayGallery(source.record);
+    return images.length ? { ...source, images, imageState: 'representative' } : source;
   };
   return Object.freeze({ ...registry,
     async getConfiguration(id) { return enrich(await registry.getConfiguration(id)); },
