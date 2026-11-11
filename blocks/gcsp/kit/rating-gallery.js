@@ -8,13 +8,13 @@ const SHORT = 'BMW 3 Series Touring 320i M Sport · Petrol';
 const LONG = 'BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro · Plug-in hybrid · BMW Individual specification';
 
 // One rating over a car image well, as the Account will compose it; local state only.
-function example(caption, { value = null, description = SHORT, photo = IMAGE, status, echo = false, retry = false } = {}) {
+function example(caption, { value = null, description = SHORT, photo = IMAGE, status, echo = false, retry = false, pill = false } = {}) {
   const scope = el('div', 'gcsp vm-gallery-gcsp-media'); scope.style.minHeight = '0'; scope.append(el('p', 'vm-gallery-copy', caption)); // .gcsp is full height by default
   const { media } = mediaWell({ name: 'BMW 3 Series Touring', photo, alt: 'BMW 3 Series Touring', caption: '' }, 'gcsp-media', { placeholder: 'No image available for your car' });
   media.style.position = 'relative';
   let rating = null;
   rating = starRating({
-    label: `How highly do you rate your ${description}?`, help: `How highly do you rate your ${description}?`, value, overlay: true,
+    label: `How highly do you rate your ${description}?`, help: `How highly do you rate your ${description}?`, value, overlay: true, pill,
     onRetry: retry ? () => rating.update({ value, status: 'saved' }) : undefined,
     onChange: echo ? (next) => { rating.update({ value: next, status: 'pending' }); Promise.resolve().then(() => rating.update({ value: next, status: 'saved' })); } : undefined,
   });
@@ -26,6 +26,8 @@ export function starRatingExample() {
   const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-star-rating';
   section.append(el('h2', 'vm-gallery-title', 'GCSP star rating and help tip'));
   section.append(
+    example('Small corner pill, four stars, saves locally', { value: 4, echo: true, pill: true }),
+    example('Small corner pill, not saved', { value: 3, status: 'failed', retry: true, pill: true }),
     example('Unrated, help on hover or focus'),
     example('Four stars, saves locally (select the same star to clear)', { value: 4, echo: true }),
     example('Five stars', { value: 5 }),

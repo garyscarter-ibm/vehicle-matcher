@@ -177,7 +177,7 @@
     },
     {
       "path": "blocks/gcsp/account/gcsp-account.css",
-      "max_lines": 54
+      "max_lines": 52
     },
     {
       "path": "blocks/vehicle-matcher/question-controls.css",
@@ -341,7 +341,7 @@
     },
     {
       "path": "blocks/gcsp/kit/notification-bell.css",
-      "max_lines": 31
+      "max_lines": 28
     },
     {
       "path": "blocks/gcsp/kit/data-table-compare.css",
@@ -442,6 +442,14 @@
     {
       "path": "blocks/gcsp/kit/buddy-tile.css",
       "max_lines": 15
+    },
+    {
+      "path": "blocks/gcsp/kit/star-rating-pill.css",
+      "max_lines": 6
+    },
+    {
+      "path": "blocks/gcsp/kit/preference-modes.css",
+      "max_lines": 16
     }
   ],
   "baseline": {

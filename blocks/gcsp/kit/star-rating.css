@@ -1,4 +1,4 @@
-/* GCSP kit: star rating. Scoped to .gcsp; tokens only. Pair with help-tip.css. */
+@import "./star-rating-pill.css"; /* GCSP kit: star rating. Scoped to .gcsp; tokens only. Pair with help-tip.css. */
 .gcsp .gcsp-star-rating { position: relative; margin: 0; padding: 0; border: 0; min-width: 0; background: transparent; }
 .gcsp .gcsp-star-rating > legend { position: absolute; width: 1px; height: 1px; padding: 0; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .gcsp .gcsp-star-rating-overlay { position: absolute; right: var(--gcsp-space-2); bottom: var(--gcsp-space-2); }

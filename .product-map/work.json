@@ -5119,6 +5119,41 @@
       "unsliced": true,
       "note": "Gary-authorised bounded presentation repair: shared skeletons and Density patterns, scoped checks and parent desktop/375/320 review. Existing FUCQ-387 global ratchet failure remains independent; no acceptance/full-suite/deployed claim. docs/gcsp/evidence/fucq-402/README.md",
       "workers": []
+    },
+    {
+      "id": "FUCQ-405",
+      "title": "Refine Your cars layout and focus notifications on offers",
+      "status": "In Progress",
+      "type": "Story",
+      "assignee": "Gary Carter",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-405",
+      "branch": "dev/fucq-405-your-cars",
+      "workers": [],
+      "observed_at": "2026-11-11T22:35:43Z",
+      "slices": [
+        {
+          "id": "page",
+          "status": "complete",
+          "title": "Account-and-shared-components",
+          "observed_at": "2026-11-11T22:35:43Z",
+          "evidence": "docs/gcsp/your-cars-fucq405.md: desktop composition, rating pill, preserved records, preference modes and Buddy controls; scoped render70/70, shared contracts95/95."
+        },
+        {
+          "id": "notifications",
+          "status": "complete",
+          "title": "Offer-only-notifications",
+          "observed_at": "2026-11-11T22:35:43Z",
+          "evidence": "docs/gcsp/your-cars-fucq405.md: offer-only model, no footer or phantom gutter; real new and expired offer browser checks, supplied expiry link opens expired state."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Runtime-and-responsive-review",
+          "observed_at": "2026-11-11T22:35:43Z",
+          "evidence": "docs/gcsp/your-cars-fucq405.md: desktop and keyboard runtime review complete; phone/tablet excluded by Gary. Baseline fixture and Presenter ratchet failures disclosed. Jira frozen; no merge/deployment."
+        }
+      ],
+      "unsliced": false
     }
   ]
 }

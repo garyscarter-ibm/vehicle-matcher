@@ -19,7 +19,7 @@ function icon() {
 }
 
 function rowNode(row) {
-  const li = el('li', `gcsp-bell-row${row.waiting ? ' is-waiting' : ''}${row.kind === 'offer' ? '' : ' is-plain'}`);
+  const li = el('li', `gcsp-bell-row${row.waiting ? ' is-waiting' : ''}`);
   if (row.image?.src) { const img = el('img', 'gcsp-bell-thumb'); img.src = row.image.src; img.alt = ''; li.append(img); }
   const copy = el('div', 'gcsp-bell-copy'); const head = el('p', 'gcsp-bell-head');
   if (row.waiting) { const dot = el('span', 'gcsp-bell-dot'); dot.setAttribute('aria-hidden', 'true'); head.append(dot); }
@@ -36,7 +36,7 @@ function rowNode(row) {
 }
 
 /**
- * Bell button, badge, rows panel and a short note under the bell. Model: { status: 'ok' | 'unavailable' | 'loading', waiting, rows, allHref, note }.
+ * Bell button, badge, rows panel and a short note under the bell. Model: { status: 'ok' | 'unavailable' | 'loading', waiting, rows, note }.
  * A row is { key, kind, waiting, title, car, detail, image: { src }, action: { label, href, variant } }; a note is { id, title, text }.
  * pinned (gallery only) keeps it open against Escape and outside clicks.
  * Returns { root, button, update(model), open(), close(restoreFocus = true), destroy() }.
@@ -52,8 +52,8 @@ export function notificationBell({ id = `gcsp-bell-${++uid}`, onNavigate, onOpen
   const note = el('div', 'gcsp-bell-note'); note.setAttribute('aria-hidden', 'true'); note.hidden = true;
   const panel = el('div', 'gcsp-bell-panel'); panel.id = panelId; panel.hidden = true;
   const title = el('h2', 'gcsp-bell-title', 'Notifications'); title.id = titleId; panel.setAttribute('aria-labelledby', titleId);
-  const body = el('div', 'gcsp-bell-body'); const foot = el('a', 'gcsp-bell-foot', 'See all buddy activity');
-  panel.append(title, body, foot);
+  const body = el('div', 'gcsp-bell-body');
+  panel.append(title, body);
   const status = viewStatus();
   root.append(trigger, note, panel, status.root);
 
@@ -71,18 +71,16 @@ export function notificationBell({ id = `gcsp-bell-${++uid}`, onNavigate, onOpen
     if (model.status !== 'ok') body.replaceChildren(el('p', 'gcsp-bell-empty', UNAVAILABLE_TEXT));
     else if (!model.rows.length) body.replaceChildren(el('p', 'gcsp-bell-empty', EMPTY_TEXT));
     else { const list = el('ul', 'gcsp-bell-rows'); list.append(...model.rows.map(rowNode)); body.replaceChildren(list); }
-    foot.hidden = model.status !== 'ok' || !model.allHref;
-    if (model.allHref) foot.href = model.allHref;
     if (hadFocus && !panel.contains(root.ownerDocument.activeElement)) trigger.focus();
   }
   function update(input) {
     if (destroyed) return;
-    const model = { status: 'unavailable', waiting: 0, rows: [], allHref: null, note: null, ...input };
+    const model = { status: 'unavailable', waiting: 0, rows: [], note: null, ...input };
     model.rows = Array.isArray(model.rows) ? model.rows : []; model.waiting = model.status === 'ok' && model.waiting > 0 ? 1 : 0;
     trigger.setAttribute('aria-label', bellLabel(model.waiting));
     badge.hidden = !model.waiting; badge.textContent = model.waiting ? String(model.waiting) : '';
     root.dataset.status = model.status;
-    const sig = JSON.stringify([model.status, model.rows, model.allHref]);
+    const sig = JSON.stringify([model.status, model.rows]);
     if (sig !== lastSig) { lastSig = sig; render(model); }
     showNote(model.note);
   }

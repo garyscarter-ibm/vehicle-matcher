@@ -63,7 +63,7 @@ test('Pause sends the authoritative version, reads back, keeps the held offer an
   stop(); root.remove();
 });
 
-test('history and useful offer/details use the modal drawer, Escape returns focus and read failure can retry', async () => {
+test('history contains search readback and offers use the modal drawer, Escape returns focus and read failure can retry', async () => {
   const root = place(); let result = snapshot('paused');
   const stop = mountAccountBuddy(root, { adapter: { readActivity: async () => result } }); await stop.ready;
   const history = find(root, 'Buddy history'); history.focus(); history.click();
@@ -71,7 +71,8 @@ test('history and useful offer/details use the modal drawer, Escape returns focu
   assert.equal(root.querySelectorAll('[role=dialog] .gcsp-timeline-event').length, 2);
   document.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
   assert.equal(root.querySelector('[role=dialog]'), null); assert.equal(document.activeElement, history);
-  find(root, 'Search details').click(); assert.match(root.querySelector('[role=dialog]').textContent, /Any held offer stays open/);
+  assert.equal(find(root, 'Search details'), undefined);
+  find(root, 'Buddy history').click(); assert.match(root.querySelector('[role=dialog]').textContent, /Any held offer stays open/);
   find(root, 'Close').click(); result = snapshot('offer'); await stop.sync(); find(root, 'View held offer').click();
   assert.equal(root.querySelector('[role=dialog] a').getAttribute('href'), result.value.currentOffer.href);
   find(root, 'Close').click(); result = { status: 'unavailable' }; await stop.sync();
@@ -83,11 +84,15 @@ test('history and useful offer/details use the modal drawer, Escape returns focu
 
 test('Account composes one persistent Buddy tile beside preferences and keeps account refresh independent', async () => {
   const root = place(); let reads = 0; const preference = document.createElement('div'); preference.textContent = 'Preference controls';
-  const stop = mountAccount(root, { adapter: { readOnly: true, readAccount: async () => accountFixture('ready'), readDraft: async () => ({ status: 'not-found' }) },
+  const stop = mountAccount(root, { adapter: { readOnly: true, readAccount: async () => accountFixture('ready'), readDraft: async () => ({ status: 'not-found' }),
+    readOffers: async () => ({ status: 'ok', value: { offers: [{ offerId: 'held', state: 'pending' }] } }) },
     preferences: (region) => { region.append(preference); return () => {}; }, activityAdapter: { readActivity: async () => { reads += 1; return snapshot('searching'); } } });
   await tick(); await tick();
   const tile = root.querySelector('.gcsp-buddy-tile'); assert.ok(tile);
   const choices = root.querySelector('.gcsp-account-buddy-preferences'); assert.ok(choices.contains(preference)); assert.ok(choices.contains(tile));
+  assert.equal(find(root.querySelector('.gcsp-feature'), 'View your offer'), undefined);
+  assert.equal(find(root.querySelector('.gcsp-feature'), 'Choose a replacement'), undefined);
+  assert.ok(find(root.querySelector('.gcsp-feature'), 'View car record'));
   assert.equal(root.querySelector('.gcsp-account-head .gcsp-buddy-status'), null); assert.equal(root.querySelector('nav [data-key=activity]'), null);
   await stop.sync(); await tick(); assert.ok(reads >= 2); assert.equal(root.querySelector('.gcsp-buddy-tile'), tile); assert.ok(preference.isConnected);
   stop(); root.remove();
