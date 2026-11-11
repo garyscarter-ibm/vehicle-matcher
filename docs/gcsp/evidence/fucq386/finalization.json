@@ -1,0 +1,296 @@
+{
+  "version": 1,
+  "issue": "FUCQ-386",
+  "development_id": "DEV-2026-11-11-004",
+  "recorded_at": "2026-11-11T15:23:15Z",
+  "status": "built",
+  "branch": "dev/DEV-2026-11-11-004",
+  "baseline_commit": "d5f4002ea2ab089b9ea140ee2c3997bf6473136a",
+  "baseline_merge_commit": "477ea79b2dab4710181d16d64b2f44b734d1ec98",
+  "jira_transition_performed": false,
+  "done_authorized": false,
+  "scope": {
+    "original_acceptance_count": 6,
+    "original_acceptance_sha256": "433fe52acf26c30ad9a2ccce43fedb8a11d7cad51bcd4c7b4d732b106644f2d9",
+    "criteria_unchanged": true,
+    "criteria": [
+      "Prominent Accept offer and Decline offer actions open the corresponding single side drawer, visually consistent with Your cars View record. The drawer identifies the same offered configuration and pinned points terms. Close, Escape or Keep reviewing/Keep this offer leaves the pending offer undecided and restores focus; background interaction is contained while open.",
+      "The acceptance drawer supersedes the old inline declaration/terms decision area. It includes the authoritative contact/return context and all three incumbent declarations (scheme terms; nominated driver/licence; old contract/expected return mileage), with working relevant document links. Show supplied recorded versus expected mileage correctly; unknown or invalid required details are explicit. The final Accept is disabled until every required declaration and existing handoff prerequisite is valid. Preserve termsDigest and declaration IDs from the server; no pre-ticked or fabricated confirmations.",
+      "The decline drawer supersedes the old inline decline form and has required fixed choices from PolicyService offer.declineReasons.v1, with current codes/labels. It has no free-text input, no free-text payload and no locally invented choices. Show initial/unselected, selected, reason-required validation, loading and unavailable-retry states. Confirm decline submits only a valid current reason code; Keep this offer cancels it.",
+      "Reuse existing authoritative decision endpoints/controller and access/run/employee context. A first click opens review without submitting. Final decisions preserve server revalidation, pinned terms, command-id idempotency, pending feedback and duplicate-click suppression; stale/conflicting/expired/unavailable responses show the actual state without a false success.",
+      "Accepted outcome retains existing scheme-check/order-progress navigation; declined outcome enters the existing fixed follow-up journey. Decline remains distinct from changing the brief and after-use feedback; no free-text consuming workflow is added.",
+      "Drawer header/scrolling body/footer and final action remain usable at desktop, 375px and 320px with long context, all declarations and validation. Keyboard-only focus trap/return, error announcement/field focus, document navigation, readable controls, custom-element/CSP and kit ratchet requirements hold."
+    ],
+    "acceptance": [
+      {
+        "id": "AC1",
+        "development": "met",
+        "evidence": "Actual HTTPS generated-offer accept/decline trials and corrected 1440/375/320 captures prove one shared sideDrawer, same car/pinned points, first-click no decision, Close/Escape/cancel, contained focus and return."
+      },
+      {
+        "id": "AC2",
+        "development": "met",
+        "evidence": "Accept trials preserve authoritative contact/driver/licence/old-contract records, canonical SchemeOrderTerms/PolicyService ordering.terms.v1 documents, server termsDigest/declaration IDs and three initially unchecked declarations. Required expected mileage is policy-bounded; entered 6400 reaches ordering while recorded 5200 remains separate."
+      },
+      {
+        "id": "AC3",
+        "development": "met",
+        "evidence": "Current PolicyService offer.declineReasons.v1 codes/labels only: Body style, Size, Fuel type, Equipment. Initial/selected/required/loading/unavailable/retry states and real fixed-code decline are recorded; no free-text control or payload."
+      },
+      {
+        "id": "AC4",
+        "development": "met",
+        "evidence": "Incumbent controller/endpoints and access/run/employee context retain server revalidation, pins, command-id exact replay/conflict, real pending-request duplicate lock and truthful stale/expiry/unavailable readback. Actual Identity/OfferAccess expiry returns HTTP404 not-found, closes the drawer and focuses Offer not found with zero mutation."
+      },
+      {
+        "id": "AC5",
+        "development": "met",
+        "evidence": "Actual accepted ordering/readback retains Track your order and Your cars; actual declined readback mounts the existing fixed preference-change follow-up. Reload and independent browser context agree; no new after-use/free-text workflow."
+      },
+      {
+        "id": "AC6",
+        "development": "met",
+        "evidence": "Actual 1440/375/320 long-context initial/selected/validation/loading/unavailable/pending/outcome evidence covers scrolling body/fixed reachable footer, keyboard/document navigation, error focus/announcements and readable controls. Scoped custom-element/CSP/shared-kit checks and changed-style caps pass; Mike independently reinspected the corrected original-scope findings and returned PASS."
+      }
+    ]
+  },
+  "identity_reuse": {
+    "corrected_source_commit": "22176eb2393c644151c097bc1022998b67c1fe29",
+    "corrected_code_key": "559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4",
+    "historical_code_key": "643e6e233e35345e30659e76247a042dd1f80f53dc2f9e20be3f9b1221ae206b",
+    "variant": "default",
+    "shared_identity": {
+      "paths": 20,
+      "matches": 19,
+      "changes": [
+        {
+          "path": "server/test/gcsp-offer-view-render.test.js",
+          "expected_sha256": "06b20e05f0dbad72840c4f858eeacbd02f043280d4b71f4f95257dc0723f4e7d",
+          "current_sha256": "b00ac810cc8ef32ff78b5bfa5406e5af269450e1188ae7f152b24823fb0b4a4c"
+        }
+      ]
+    },
+    "corrected_browser_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-visual-corrections-plan.json",
+    "corrected_browser_manifest_sha256": "58a351eafa9c6227670ab43dad360b32721c00707ef700cc8a6736df18ccff07",
+    "corrected_browser_source_identity": "1a75fbd6583e13846c303a57cc1e77f6ffca7cf88a2ec5dcc9cb93acf9b38ea5",
+    "corrected_browser_source": {
+      "paths": 560,
+      "matches": 559,
+      "changes": [
+        {
+          "path": "blocks/gcsp/offer/portal-links.js",
+          "expected_sha256": "cc6e2bc913fe5672d418376b3ea9924ccf533e4aa30279cb902abe09593add09",
+          "current_sha256": "7dbb0566dd591be7db0bbb9dcfc031d921a5e802d6c09361e498d53f6e355ff8"
+        }
+      ]
+    },
+    "changed_blocks_server_paths_since_corrected_review": [
+      "blocks/gcsp/offer/portal-links.js",
+      "server/test/gcsp-offer-view-render.test.js",
+      "server/test/gcsp-shell-navigation.test.js"
+    ],
+    "qualification": "The 22176eb2 test and rendered evidence remains historical at its own identity. F390 alone changes portal-links and its render/navigation tests: always supply canonical rail/onNavigate, keep account menu/onward actions ready-only, retain destination guards. Later historical drawer captures show the earlier rail. No drawer, controller, handoff, access authority, decision, gallery or timing implementation changed. Shared 4c9bf0dd confirms VSS/live configurator imagery selection in six docs/design files only; it does not change application/access behavior."
+  },
+  "validation": {
+    "corrected_scope": {
+      "source_commit": "22176eb2393c644151c097bc1022998b67c1fe29",
+      "base_commit": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+      "code_key": "559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4",
+      "variant": "default",
+      "command": "node --test --test-concurrency=1 server/test/gcsp-offer-view-projection.test.js server/test/gcsp-offer-view-render.test.js server/test/shared-kit-contracts.test.js server/test/gcsp-offer-view-decision.test.js",
+      "passed": 160,
+      "failed": 0,
+      "skipped": 0,
+      "wall_seconds": 2.3,
+      "style_command": "node --test --test-name-pattern='blocks/gcsp/kit/(vehicle-decision|option-rows)\\.css' server/test/ui-ratchet.test.js",
+      "style_passed": 4,
+      "detector_command": "node /Users/usget/.codex/skills/impeccable/scripts/detect.mjs --json blocks/gcsp/kit/vehicle-decision.js blocks/gcsp/kit/vehicle-decision.css blocks/gcsp/kit/option-rows.css",
+      "detector_findings": [],
+      "record": "docs/gcsp/evidence/fucq386/scoped-test-records.json"
+    },
+    "historical_f386": {
+      "code_key": "643e6e233e35345e30659e76247a042dd1f80f53dc2f9e20be3f9b1221ae206b",
+      "passed": 175,
+      "failed": 0,
+      "mixed_supervisor_skips": 2,
+      "wall_seconds": 14.8,
+      "scoped_ratchet_passed": 12,
+      "record": "docs/gcsp/evidence/fucq386/checkpoint.md",
+      "qualification": "Later actual HTTP/browser mixed-outcome evidence does not erase the historical skips."
+    },
+    "earlier_f385_integration": {
+      "passed": 198,
+      "failed": 0,
+      "skipped": 0,
+      "qualification": "Separate earlier integration source identity; not relabelled current."
+    },
+    "f390_separate": {
+      "source_commit": "10fec0636a6fd358f0923d63fedb29265b0c1ef2",
+      "latest_evidence_commit": "cd7a965e",
+      "record": "docs/gcsp/evidence/fucq390/README.md",
+      "passed": 231,
+      "failed": 2,
+      "failures": "Known FUCQ-387 presenter CSS caps",
+      "independent_fixture_capture_count": 10,
+      "reviewer": "Pinky",
+      "fixture_harness_limit": "Final zero-pageerror assertion saw Transition was skipped after resumed assertions/captures; pristine fixture-script pass not claimed.",
+      "live_followup": "Separately successful unmocked 1280/375 live canonical navigation to existing anonymous /gcsp/login guard; no page errors; independent production capture PASS. Exact stale state remains local fixture evidence."
+    },
+    "selection": "Reviewed explicit offer/sideDrawer/handoff/shared-kit commands after affected-plan inspection; no automatic full-suite fallback. Reused only matching inputs/source/environment/variant, with F390 differences separately qualified.",
+    "retained_failures": [
+      "release-before-brief-activation setup conflicts",
+      "immutable quote CAS refusal before corrected mutable-offer stale proof",
+      "gallery mirror-locator ambiguity (prefix retained; whole part incomplete)",
+      "literal Session ended timeout before actual 404-not-found proof",
+      "early select-era DOM assertions",
+      "resource-limited test supervisor interruption",
+      "retained-idle-handle interruption",
+      "intentional two-test equipment RED before correction"
+    ],
+    "unrun": [
+      "full application suite and global ratchet green",
+      "native PostgreSQL",
+      "deployed F386 and external BMW integration",
+      "actual browser native BFCache (existing proof is simulated PageTransitionEvent)"
+    ],
+    "known_separate": [
+      "FUCQ-387 presenter ratchet caps",
+      "FUCQ-344 presenter clockVersion diagnostic",
+      "FUCQ-390 navigation repair and Low FUCQ-391 header Retry remain separate"
+    ],
+    "finalization": "Metadata only after explicit parent selection: no new tests, browser, server, descendant or scratch. Fresh verification compares source identities, all 29 capture hashes, six unchanged ACs, own map-only change, filesystem/process absence, diff whitespace and pushed remote HEAD."
+  },
+  "browser_and_review": {
+    "route": "Fresh local HTTPS memory runtime -> retained vehicle corpus -> generated stock -> actual next release -> Paula hatchback/five-seat brief -> BuddyHold -> issued offer token -> real access/controller/decision/ordering/follow-up readback.",
+    "reset": "Stop owned runtime to reset synthetic state; supervisor removes inventory, TLS and isolated browser working data. No existing user browser profile, copied credentials or BMW external connection.",
+    "successful_parts": {
+      "accept": 7,
+      "decline": 6,
+      "gallery-boundaries": 6,
+      "stale-expiry": 3,
+      "access-loss": 5,
+      "visual-corrections": 6
+    },
+    "successful_parts_page_csp_errors": 0,
+    "gallery_prefix": "Desktop/375/320 and real emulated-mobile touch passed before ambiguous locator; whole part remains incomplete. Boundary resume is separately passing.",
+    "actual_clock": "Presenter HTTP/read trace 7200 -> 7140 -> 60 -> 0 seconds, same expiry across reload and second context. Pending-zero and missing-timing faults separately labelled.",
+    "access_loss": "Actual expired Identity/OfferAccess wall sessions: HTTP404 not-found, Offer not found h1 focused, no drawer/decisions/operations. No successful Session ended/recovery-link browser journey or auth product change is claimed.",
+    "capture_index": "docs/gcsp/evidence/fucq386/capture-index.json",
+    "verified_retained_captures": 29,
+    "verified_retained_capture_bytes": 5464679,
+    "capture_naming_limit": "Original gallery-boundary 320 prefixes were actually 1440; retained copies renamed and actual viewport metadata preserved. Later corrected broken-selection capture is true 320.",
+    "independent_review": "docs/gcsp/evidence/fucq386/independent-visual-review.md",
+    "independent_review_sha256": "9e3c92c8b8053827fa0e073b4bc8cea7eaaa6e7ac774b135d7216fe304eb0f41",
+    "independent_verdict": "PASS at corrected 22176eb2; both combined findings and prior selected-marker/automatic-closure focus findings corrected and reinspected; no actionable finding remains in reviewed scope."
+  },
+  "resources": {
+    "receipt": "docs/gcsp/evidence/fucq386/resource-receipt.json",
+    "receipt_sha256": "34675c806857099b25f02dd054b79de66fc04ad9d502e875ac3d3296bda0fee6",
+    "owned_manifest_count": 23,
+    "test_manifests": 12,
+    "browser_manifests": 11,
+    "owned_roots_absent_at_finalization": true,
+    "owned_root_paths": [
+      "/private/tmp/test-stamp-shard-4a49c504bcad4904add9f717b0feb663",
+      "/private/tmp/test-stamp-shard-53b0ed7ecd66483e89f1a62b7692a05f",
+      "/private/tmp/test-stamp-shard-58d5e952076f46cb8a57d1ac485a5d86",
+      "/private/tmp/test-stamp-shard-69016a005cb744afbf442135e14a0cab",
+      "/private/tmp/test-stamp-shard-80c974bc9a47409a849e23ef0c1c783c",
+      "/private/tmp/test-stamp-shard-89deeb8375ad4ad7b24e8d2ff2fead64",
+      "/private/tmp/test-stamp-shard-963c1a0e3a3f4bc5ae60df4c9cba5d98",
+      "/private/tmp/test-stamp-shard-9761e4181b234449a1febd805ef12e2e",
+      "/private/tmp/test-stamp-shard-a0579cbfdacc4aeeab81b2db59ab3eb4",
+      "/private/tmp/test-stamp-shard-bec8fa093e7e427cabe6dcdd1bcc7196",
+      "/private/tmp/test-stamp-shard-bfd0f2e6b3714669a36277b571202fe0",
+      "/private/tmp/test-stamp-shard-0aff68b8564d4764866b32bad4f706f2",
+      "/private/tmp/test-stamp-shard-1732abd21cda4b9ebe9097dd79dd25b6",
+      "/private/tmp/test-stamp-shard-230196a56e414da296bfa1a314e09e1c",
+      "/private/tmp/test-stamp-shard-45262a547e17458fbba8d2aebb6827fa",
+      "/private/tmp/test-stamp-shard-75a78286ba1f4d34a8dd660cccb7ba9d",
+      "/private/tmp/test-stamp-shard-7eda4fb3c9304365a960f70f056a0059",
+      "/private/tmp/test-stamp-shard-8101a2e2a0ea41dd9f458c73c0b402ca",
+      "/private/tmp/test-stamp-shard-92d8b33193e649529c60e721a9452336",
+      "/private/tmp/test-stamp-shard-c697d791ad81416293dc35a71133fdbd",
+      "/private/tmp/test-stamp-shard-d17e1fbd72aa49a4945cc6eca4a49c38",
+      "/private/tmp/test-stamp-shard-eda76a6b48974944b94586807c38d0d6",
+      "/private/tmp/test-stamp-shard-f980133f68cf43ec9d6e13a296455d4c"
+    ],
+    "owned_process_groups": [
+      43139,
+      43588,
+      43958,
+      44714,
+      45070,
+      45712,
+      46414,
+      47254,
+      47802,
+      51264,
+      52038,
+      52720,
+      52964,
+      53481,
+      54254,
+      67806,
+      70890,
+      74952,
+      76497,
+      81787,
+      84383,
+      87175,
+      88277
+    ],
+    "live_owned_process_groups": [],
+    "temporary_dependency_link_and_pyc_absent": true,
+    "measured_cumulative_scratch_reclaimed_bytes": 73994611,
+    "largest_serial_scratch_peak_bytes": 7726513,
+    "compatibility_exception": "Bounded active local isolated headless browser profile, ephemeral localhost TLS and inventory only; removed. Installed environments/shared dependency target, source/worktree and user documents preserved.",
+    "removed_worktree_items": [
+      {
+        "bytes": 55,
+        "kind": "symlink",
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-11-004/server/node_modules",
+        "target_preserved": "/Users/usget/Claude/vehicle-matcher/server/node_modules"
+      },
+      {
+        "bytes": 178633,
+        "kind": "owned generated bytecode",
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-11-004/_tools/__pycache__/scaffold_git.cpython-314.pyc"
+      }
+    ],
+    "large_outputs": false,
+    "finalization_allocations": 0,
+    "leftovers": []
+  },
+  "agents": {
+    "name": "Tweety",
+    "requested_model": "gpt-6.1-sol",
+    "requested_effort": "xhigh",
+    "selected_model": "gpt-6.1-sol",
+    "selected_effort": "xhigh",
+    "basis": "Explicit human Extra override",
+    "runtime_independently_verified": false,
+    "fallback": null,
+    "descendants": []
+  },
+  "handoff": "Parent owns merge, archive, branch/worktree/claim cleanup, Jira In Review and collaborator acceptance. This record does not authorize Done.",
+  "metadata_verification": {
+    "verified_at": "2026-11-11T15:25:29Z",
+    "exact_result_status": "status: built",
+    "original_criteria_unchanged": true,
+    "map_story_status": "In Progress",
+    "map_slices": {
+      "drawers": "complete",
+      "decisions": "complete",
+      "integration": "complete"
+    },
+    "map_workers": [],
+    "other_map_records_text_and_order_preserved": true,
+    "own_paths": [
+      ".product-map/work.json",
+      "_dev/in-progress/DEV-2026-11-11-004.md",
+      "docs/gcsp/evidence/fucq386/README.md",
+      "docs/gcsp/evidence/fucq386/finalization.json"
+    ]
+  }
+}
