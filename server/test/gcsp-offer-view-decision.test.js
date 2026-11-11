@@ -107,7 +107,7 @@ test('nested offer preview composes existing base and shell styles before offer 
   const preview = new URL('../../blocks/gcsp/offer/preview.html', import.meta.url);
   const html = await readFile(preview, 'utf8');
   const links = [...html.matchAll(/<link rel="stylesheet" href="([^"]+)">/g)].map((match) => match[1]);
-  assert.deepEqual(links, ['../../vehicle-matcher/vehicle-matcher.css', '../shell/gcsp-shell.css', './gcsp-offer.css']);
+  assert.deepEqual(links, ['../../../gcsp-employee.css', '../../vehicle-matcher/vehicle-matcher.css', '../shell/gcsp-shell.css', './gcsp-offer.css']);
   for (const path of links) assert.ok((await readFile(new URL(path, preview), 'utf8')).length > 0);
   assert.match(await readFile(new URL('./gcsp-offer.css', preview), 'utf8'), /@import "\.\.\/kit\/form-controls\.css";/);
 });

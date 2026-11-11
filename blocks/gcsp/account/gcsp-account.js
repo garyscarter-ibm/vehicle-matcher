@@ -215,22 +215,22 @@ function currentCar(contract, model, controls, explained = false, offer = null, 
   const terms = pointsTerms(contract, model);
   const feature = el('section', 'gcsp-feature');
   feature.dataset.contractId = contract.contractId;
-  const heading = el('h2', 'gcsp-h2', contract.model ?? 'Your current car');
+  const heading = el('h2', 'gcsp-h2 gcsp-vehicle-title', contract.model ?? 'Your current car');
   heading.id = `gcsp-account-car-${++serial}`;
   feature.setAttribute('aria-labelledby', heading.id);
   const source = contract.media;
   const { media } = mediaWell({ name: contract.model ?? 'Current car', photo: source?.src ?? source?.photo ?? '',
     line: '', alt: source?.alt ?? contract.model ?? 'Car' }, 'gcsp-media gcsp-media-whole', { placeholder: NO_IMAGE_YOUR_CAR });
   const scheme = schemeName(model, contract.schemeId);
-  const title = el('div', 'gcsp-account-title');
-  title.append(el('p', 'gcsp-note', 'Current car'), heading);
+  const title = el('div', 'gcsp-account-title gcsp-vehicle-heading');
+  title.append(el('p', 'gcsp-note gcsp-vehicle-context', 'Current car'), heading);
   const configuration = contract.vehicle?.configuration?.trim(); const modelEnd = contract.model?.trim().split(/\s+/).at(-1);
   const trim = configuration?.startsWith(`${modelEnd} `) ? configuration.slice(modelEnd.length + 1) : configuration;
   const spec = [trim, FUEL_SPEC[contract.vehicle?.fuel]].filter(Boolean).join(' \u00b7 ');
-  if (spec) title.append(el('p', 'gcsp-account-spec', spec));
+  if (spec) title.append(el('p', 'gcsp-account-spec gcsp-vehicle-meta', spec));
   const state = contract.daysRemaining == null ? el('p', 'gcsp-note', 'Contract end: Not supplied')
     : el('p', 'gcsp-countdown', `Contract ${countdown(model.asOf.slice(0, 10), contract.contractEndDate)} \u00b7 ${date(contract.contractEndDate)}`);
-  const copy = el('div', 'gcsp-feature-copy');
+  const copy = el('div', 'gcsp-feature-copy gcsp-vehicle-copy');
   copy.append(title, state);
   // Key facts stay beside the large image; full contract, collection and vehicle details live in the record.
   const list = suppliedFacts([row('Points per month', formatPointsCost(terms, { compact: true })), row('Registration', contract.registration),
@@ -272,7 +272,7 @@ function orderCurrentCar(car, order, orderVehicle) {
   const { media } = mediaWell({ name: name ?? 'Current car', photo: same ? orderVehicle?.photo ?? '' : '', line: '',
     alt: name ?? 'Car' }, 'gcsp-media gcsp-media-whole', { placeholder: NO_IMAGE_YOUR_CAR });
   const copy = el('div', 'gcsp-feature-copy');
-  const title = el('div', 'gcsp-account-title');
+  const title = el('div', 'gcsp-account-title gcsp-vehicle-heading');
   title.append(heading);
   copy.append(title, ...[suppliedFacts([row('Collected', date(car.collectedAt?.slice(0, 10))), row('Delivered VIN', car.vin),
     ...(same ? orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value)) : [])], 'gcsp-account-facts')].filter(Boolean));
@@ -373,7 +373,7 @@ function discardConfirm(controls, pending) {
 
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
 export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, confirmDiscard = false, controls, order, orderVehicle, restarted = false, reload, preferences, buddy } = {}) {
-  const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
+  const wrap = el('div', 'vm gcsp-rep gcsp-account-body gcsp-vehicle-page');
   wrap.setAttribute('aria-busy', String(pending));
   const head = el('div', 'gcsp-account-head');
   head.append(screenIntro({ title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
