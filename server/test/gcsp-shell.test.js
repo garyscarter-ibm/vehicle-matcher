@@ -211,10 +211,10 @@ test('ready account disclosure preserves full context, closes with Escape and re
   shell.destroy();
 });
 
-test('EMPLOYEE_NAVIGATION is frozen: the three working Paula destinations, none disabled', () => {
+test('EMPLOYEE_NAVIGATION is frozen: the two working Paula destinations, none disabled', () => {
   assert.ok(Object.isFrozen(emp.EMPLOYEE_NAVIGATION));
-  assert.deepEqual(emp.EMPLOYEE_NAVIGATION.map((i) => i.key), ['cars', 'activity', 'order-progress']);
-  assert.deepEqual(emp.EMPLOYEE_NAVIGATION.filter((i) => i.available).map((i) => i.key), ['cars', 'activity', 'order-progress']);
+  assert.deepEqual(emp.EMPLOYEE_NAVIGATION.map((i) => i.key), ['cars', 'order-progress']);
+  assert.deepEqual(emp.EMPLOYEE_NAVIGATION.filter((i) => i.available).map((i) => i.key), ['cars', 'order-progress']);
 });
 
 test('mountEmployee shows loading then ready, and teardown empties root and aborts the load', async () => {
@@ -335,9 +335,9 @@ test('element mounts on connect, emits ready, and tears down on disconnect', asy
   await tick();
   assert.deepEqual(events, [[{ view: 'cars', brand: 'bmw' }, true, true, false]]);
   assert.equal(el.querySelector('main').textContent, 'body:cars');
-  el.querySelector('.gcsp-nav [data-key="activity"]').click();
-  assert.equal(el.getAttribute('view'), 'activity');
-  assert.equal(el.querySelector('main').textContent, 'body:activity');
+  el.querySelector('.gcsp-nav [data-key="order-progress"]').click();
+  assert.equal(el.getAttribute('view'), 'order-progress');
+  assert.equal(el.querySelector('main').textContent, 'body:order-progress');
   el.remove();
   assert.equal(el.childNodes.length, 0);
 });
@@ -354,17 +354,17 @@ test('gcsp:navigate carries {from,to}, is cancelable, and switches the view only
     seen.push([e.detail, e.cancelable]);
     if (prevent) e.preventDefault();
   });
-  const go = () => el.querySelector('.gcsp-nav [data-key="activity"]').click();
+  const go = () => el.querySelector('.gcsp-nav [data-key="order-progress"]').click();
   go();
-  assert.deepEqual(seen, [[{ from: 'cars', to: 'activity' }, true]]);
+  assert.deepEqual(seen, [[{ from: 'cars', to: 'order-progress' }, true]]);
   assert.equal(el.getAttribute('view'), null);
   assert.equal(el.querySelector('[data-key="cars"]').getAttribute('aria-current'), 'page');
   prevent = false;
   go();
-  assert.equal(el.getAttribute('view'), 'activity');
-  assert.equal(el.querySelector('.gcsp-nav [data-key="activity"]').getAttribute('aria-current'), 'page');
+  assert.equal(el.getAttribute('view'), 'order-progress');
+  assert.equal(el.querySelector('.gcsp-nav [data-key="order-progress"]').getAttribute('aria-current'), 'page');
   assert.equal(el.querySelector('nav[aria-label="Breadcrumb"]'), null, 'one-item trail is not rendered');
-  assert.equal(el.querySelector('main h1').textContent, 'Buddy activity');
+  assert.equal(el.querySelector('main h1').textContent, 'Order progress');
   el.remove();
 });
 
