@@ -4,6 +4,7 @@ import { createMailTransport } from './config.js';
 import { MAIL_FAILURE_CODES, confirmedBrevoAcknowledgement } from './brevo.js';
 import { renderOfferMessage } from './templates.js';
 import { renderCaseMessage } from '../cases/notification.js';
+import { withVehicleDisplayImages } from '../vehicle-evidence/display-projection.js';
 export { BrevoMailTransport } from './brevo.js';
 export { createMailTransport } from './config.js';
 export { MailTransport } from './port.js';
@@ -159,7 +160,10 @@ export class NotificationDispatcher {
             const quote = await this.#repository.read(context, { table: 'quotes', key: { runId: context.runId, quoteId: offer.value.quoteId } });
             if (quote.status === 'unavailable') throw new Error();
             let message;
-            try { message = renderOfferMessage({ offer: offer.value, quote: quote.value, employee: employee.value, offerLink: job.payload?.offerLink, now }); }
+            try {
+              const displayQuote = await withVehicleDisplayImages(quote);
+              message = renderOfferMessage({ offer: offer.value, quote: displayQuote.value, employee: employee.value, offerLink: job.payload?.offerLink, now });
+            }
             catch { error = 'message-invalid'; retryable = false; }
             if (message) {
               const current = await stillCurrent();

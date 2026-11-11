@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { inputDigest, ok, result } from '../repository/index.js';
 import { MailTransport } from './port.js';
-import { safeOfferLink } from './templates.js';
+import { safeOfferLink, withAbsoluteVehicleImage } from './templates.js';
 import { validDeliveryEmail } from './delivery-email.js';
 
 const ENDPOINT = 'https://api.brevo.com/v3/smtp/email';
@@ -75,7 +75,7 @@ export class BrevoMailTransport extends MailTransport {
       : job.outcome?.provider && !validDeliveryEmail(address) ? 'provider-unconfirmed'
         : !validDeliveryEmail(address) ? 'recipient-email-invalid'
         : message.offerLink !== undefined && !offerLink ? 'offer-link-invalid' : null;
-    const rendered = { ...message };
+    const rendered = { ...withAbsoluteVehicleImage(message, this.#base) };
     if (offerLink) {
       rendered.textBody = rendered.textBody.replaceAll(message.offerLink, offerLink);
       rendered.htmlBody = rendered.htmlBody.replaceAll(escape(message.offerLink), escape(offerLink));

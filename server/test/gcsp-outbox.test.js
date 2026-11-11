@@ -313,7 +313,7 @@ test('safe accessible HTML/plain template escapes hostile facts, explains missin
   assert.equal(document.querySelectorAll('script,iframe,object,img').length, 0);
   assert.equal(document.querySelectorAll('[onclick],[onerror],[onload]').length, 0);
   assert.equal(document.querySelector('a').getAttribute('href'), link);
-  assert.match(document.querySelector('a').textContent, /current status/);
+  assert.equal(document.querySelector('a').textContent, 'View offer');
   assert.match(message.textBody, /<script>/); // harmless plain text alternative
   const missing = renderOfferMessage({ offer, employee: {}, offerLink: link, now: '2026-11-05T11:00:00.000Z' });
   assert.match(missing.textBody, /expired/); assert.match(missing.htmlBody, /Full vehicle details are not available/);
@@ -357,6 +357,8 @@ test('registered tick retries a due committed job after restart without disconne
 
 const buddyQuote = { facts: { display: { name: 'BMW 320i Touring', model: '3 Series', derivative: '320i Touring' } },
   terms: { points: { value: 1250, unit: 'points' } } };
+const carImage = { src: '/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp', fidelity: 'representative-model' };
+const picturedQuote = { ...buddyQuote, facts: { display: { ...buddyQuote.facts.display, photo: carImage.src, images: [carImage] } } };
 const offer = { state: 'active', expiresAt: '2026-11-05T11:30:00.000Z' };
 const render = (patch = {}) => renderOfferMessage({ offer, quote: buddyQuote, employee: { employeeId: 'employee-paula', name: 'Paula Mason' },
   offerLink: link, now: '2026-11-05T09:00:00.000Z', ...patch });
@@ -365,7 +367,7 @@ test('the offer email names the car and monthly points, gives the deadline in wo
   const message = render();
   const document = new JSDOM(message.htmlBody).window.document;
   assert.equal(document.querySelector('h2').textContent, 'BMW 320i Touring');
-  assert.equal(document.querySelector('h2').nextElementSibling.textContent, '1,250 points a month');
+  assert.match(document.querySelector('h2').nextElementSibling.textContent, /^1,250 points a monthRespond by/);
   assert.match(message.textBody, /BMW 320i Touring\n\n1,250 points a month\n\nRespond by 11:30 on Thursday 5 November\./);
   assert.match(document.body.textContent, /Respond by 11:30 on Thursday 5 November\./);
   assert.doesNotMatch(message.textBody + message.htmlBody, /2026-11-05T11|Your scheme vehicle|available until/);
@@ -377,6 +379,32 @@ test('the offer email names the car and monthly points, gives the deadline in wo
   assert.doesNotMatch(message.textBody + message.htmlBody + message.subject, /\u2014/);
   assert.match(render({ employee: {} }).textBody, /^Hello,\n/);
   assert.equal(render({ employee: {} }).recipient.name, 'Scheme employee');
+});
+
+test('offer image uses the approved primary vehicle source and an escaped vehicle-name alternative', () => {
+  const name = 'BMW <Touring> & "Sport"';
+  const quote = { ...picturedQuote, facts: { display: { ...picturedQuote.facts.display, name,
+    images: [{ src: '/assets/brand-hero/bmw.jpg', fidelity: 'representative-model' }, carImage] } } };
+  const message = render({ quote });
+  const document = new JSDOM(message.htmlBody).window.document;
+  const image = document.querySelector('img');
+  assert.equal(image.getAttribute('src'), carImage.src); assert.equal(image.alt, name);
+  assert.equal(document.querySelectorAll('img').length, 1);
+  assert.equal(document.querySelectorAll('script,iframe,object,[onerror],[onload]').length, 0);
+  assert.equal(image.nextElementSibling.tagName, 'H2');
+  assert.match(message.textBody, /BMW <Touring> & "Sport"/); assert.ok(!message.textBody.includes(carImage.src));
+});
+
+test('missing, unsupported and external image sources leave the offer readable without an image', () => {
+  for (const src of [null, 'https://outside.example.test/photo.webp', '//outside.example.test/photo.webp',
+    'javascript:alert(1)', 'data:image/svg+xml,<svg onload=alert(1)>', '/assets/gcsp-vehicle-evidence/unknown.webp',
+    carImage.src + '?token=private', carImage.src + '#private']) {
+    const quote = { ...buddyQuote, facts: { display: { ...buddyQuote.facts.display, photo: src, images: [{ src, fidelity: 'representative-model' }] } } };
+    const message = render({ quote }); const document = new JSDOM(message.htmlBody).window.document;
+    assert.equal(document.querySelector('img'), null); assert.equal(message.vehicleImage, undefined);
+    assert.equal(document.querySelector('h2').textContent, buddyQuote.facts.display.name);
+    assert.equal(document.querySelector('a').getAttribute('href'), link);
+  }
 });
 
 test('vehicle name falls back through display parts, the old fact keys and the generic label; bad points are omitted', () => {
@@ -405,12 +433,38 @@ test('public origin validation accepts an exact https origin or local http and n
 });
 
 const minted = '/gcsp/offer?offerId=buddy-offer%3Aabc#token=' + 'A'.repeat(43);
-async function capturedWith(t, publicOriginValue, offerLink = minted) {
+async function capturedWith(t, publicOriginValue, offerLink = minted, quote = buddyQuote) {
   const f = await setup(t, { transport: (repository) => new CapturedTransport({ repository, publicOrigin: publicOriginValue }) });
-  await seed(f, { quotePatch: { facts: buddyQuote.facts, terms: buddyQuote.terms }, jobPatch: { payload: { offerLink } } });
+  await seed(f, { quotePatch: { facts: quote.facts, terms: quote.terms }, jobPatch: { payload: { offerLink } } });
   await f.dispatcher.dispatchPending();
   return (await job(f)).outcome.message;
 }
+
+test('captured email image has an absolute public URL without an employee, run or offer token', async (t) => {
+  const message = await capturedWith(t, 'https://demo.example.test', minted, picturedQuote);
+  const document = new JSDOM(message.htmlBody).window.document;
+  const src = document.querySelector('img').getAttribute('src');
+  assert.equal(src, `https://demo.example.test${carImage.src}`);
+  assert.equal(message.vehicleImage.src, src); assert.equal(new URL(src).search, ''); assert.equal(new URL(src).hash, '');
+  assert.equal(message.offerLink, minted); assert.equal(document.querySelector('a').getAttribute('href'), `https://demo.example.test${minted}`);
+});
+
+test('dispatch enriches an older pinned quote with the offer-page image without changing the saved quote', async (t) => {
+  const f = await setup(t, { transport: (repository) => new CapturedTransport({ repository, publicOrigin: 'https://demo.example.test' }) });
+  const stock = (await f.repository.query(f.context, 'stock')).value[0];
+  await seed(f, { quotePatch: { configurationId: 'Q01QRzIxOlJFRlBBSU5ULFJFRlRSSU0=',
+    facts: { identityKind: 'exact-stock', sourceKeys: { stockId: stock.orderUuid }, display: { name: 'BMW 320i Touring' },
+      facts: { eligibilityModelKey: { status: 'known', value: 'G21 Touring|320i' } } }, terms: buddyQuote.terms } });
+  const ref = { table: 'quotes', key: { runId: f.context.runId, quoteId: 'quote-one' } };
+  const before = await f.repository.read(f.context, ref);
+  assert.equal(before.value.facts.display.photo, undefined);
+  await f.dispatcher.dispatchPending();
+  const stored = await job(f);
+  assert.equal(stored.state, 'sent');
+  assert.match(stored.outcome.message.vehicleImage.src, /^https:\/\/demo\.example\.test\/api\/gcsp\/vehicle-images\/bmw-display-[a-f0-9]{20}\.webp$/);
+  assert.equal(new JSDOM(stored.outcome.message.htmlBody).window.document.querySelector('img').src, stored.outcome.message.vehicleImage.src);
+  assert.deepEqual(await f.repository.read(f.context, ref), before);
+});
 
 test('captured email shows an absolute link with the token in the fragment, and keeps the stored link relative', async (t) => {
   const message = await capturedWith(t, 'https://demo.example.test');
