@@ -1,0 +1,10 @@
+@import "../kit/side-drawer.css";
+.gcsp .gcsp-offer-drawer-content { display: flex; flex-direction: column; gap: var(--gcsp-space-6); min-width: 0; }
+.gcsp .gcsp-offer-drawer-section { display: flex; flex-direction: column; gap: var(--gcsp-space-3); min-width: 0; }
+.gcsp .gcsp-offer-drawer-section > .gcsp-h3, .gcsp .gcsp-offer-drawer-section > p { margin: 0; }
+.gcsp .gcsp-offer-drawer-vehicle { padding-bottom: var(--gcsp-space-5); border-bottom: 1px solid var(--gcsp-divider); gap: var(--gcsp-space-1); }
+.gcsp .gcsp-offer-document-links { display: grid; gap: var(--gcsp-space-2); }
+.gcsp .gcsp-offer-document-links a { color: var(--gcsp-accent-strong); text-decoration: underline; }
+.gcsp .gcsp-offer-decision-note { flex-basis: 100%; margin: 0 0 var(--gcsp-space-1); font-size: var(--gcsp-font-size-label); }
+.gcsp .gcsp-offer-decision-button { flex: 1 1 0; }
+.gcsp .gcsp-offer-drawer-section .gcsp-field { max-width: 240px; }

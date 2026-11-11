@@ -13,8 +13,8 @@ const sample = () => JSON.parse(bytes);
 const partial = () => JSON.parse(comparisonBytes);
 // The published samples predate the handoff record, so an acceptable offer gains one unless a test sets its own.
 export const handoffDto = (over = {}) => ({ termsVersion: 'fictional-order-terms-v1', termsDigest: 'terms-digest-1', wording: 'Fictional terms.', fictional: true,
-  mode: 'replacement', blocker: null, contact: { phone: '07700 900123', email: 'paula@example.invalid' },
-  returnCar: { model: 'G20 320d', contractEndDate: '2026-12-31', currentOdometer: { value: 41250, unit: 'miles' } },
+  mode: 'replacement', blocker: null, driver: null, returnMileage: { maximum: 500000, unit: 'mi' }, documentSource: null, contact: { phone: '07700 900123', email: 'paula@example.invalid' },
+  returnCar: { model: 'G20 320d', contractEndDate: '2026-12-31', currentOdometer: { value: 41250, unit: 'miles' }, expectedReturnMileage: null },
   declarations: [{ id: 'terms', label: 'I accept the terms.' }, { id: 'return', label: 'The return details are correct.' }], ...over });
 const withHandoff = (v) => v.handoff === undefined && v.availableActions?.includes('accept') ? { ...v, handoff: handoffDto() } : v;
 const envelope = (v = sample()) => ({ status: 'ok', value: withHandoff(v), contractVersion: '1.0.0' });
@@ -77,7 +77,7 @@ test('media preserves a supplied caption and adds no disclaimer when none is sup
   const dto = sample(); const display = dto.quote.facts.display;
   display.photo = '/assets/brand-hero/bmw.jpg'; display.images = [{ src: display.photo, alt: 'Representative BMW', caption: 'Brand image, not this car' }];
   assert.deepEqual(toOfferPresentation(envelope(dto)).value.card.members[0].media,
-    { src: display.photo, alt: 'Representative BMW', caption: 'Brand image, not this car' });
+    { src: display.photo, alt: 'Representative BMW', caption: 'Brand image, not this car', images: [{ src: display.photo, alt: 'Representative BMW', caption: 'Brand image, not this car' }] });
   display.images = [];
   assert.equal(toOfferPresentation(envelope(dto)).value.card.members[0].media.caption, null);
 });

@@ -12,14 +12,11 @@ export function remainingTime(expiresAt, serverNow) {
 
 export function countdownText(seconds) {
   if (seconds === null) return 'Time remaining unavailable';
-  if (seconds === 0) return 'Checking the current offer state';
   const minutes = Math.ceil(seconds / 60);
-  if (minutes < 60) return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} remaining`;
-  const hours = Math.floor(minutes / 60); const rest = minutes % 60;
-  return `${hours} ${hours === 1 ? 'hour' : 'hours'}${rest ? ` ${rest} min` : ''} remaining`;
+  return `${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}`;
 }
 
-function project(value, hasDecisionPort, hasReasonPort, declineReason, ticks = {}) {
+function project(value, hasDecisionPort, hasReasonPort, declineReason, ticks = {}, expectedMileage = '') {
   if (!value || !states.has(value.state)) throw new TypeError('Missing authoritative offer state.');
   const model = copy({ ...value, followup: followupHandle(value.followup, value.state) });
   const seconds = remainingTime(model.expiresAt, model.now);
@@ -31,9 +28,15 @@ function project(value, hasDecisionPort, hasReasonPort, declineReason, ticks = {
   // Accept needs the server's handoff terms and every required declaration ticked here.
   const handoff = model.handoff ?? null;
   const ticked = Object.fromEntries((handoff?.declarations ?? []).map(({ id }) => [id, ticks[id] === true]));
+  const maximum = handoff?.returnMileage?.maximum;
+  const expected = /^\d+$/.test(expectedMileage) ? Number(expectedMileage) : null;
+  const mileageValid = handoff?.mode !== 'replacement' || Number.isSafeInteger(expected) && expected >= 0 && Number.isSafeInteger(maximum) && expected <= maximum;
+  const mileageError = handoff?.mode !== 'replacement' || mileageValid ? '' : !expectedMileage ? 'Enter the mileage your current car will have when you return it.'
+    : Number.isSafeInteger(maximum) ? `Enter a whole mileage from 0 to ${maximum.toLocaleString('en-GB')} miles.` : 'Return mileage requirements are unavailable. Check the offer again.';
   const confirmed = handoff !== null && !handoff.blocker && handoff.declarations.length > 0 && Object.values(ticked).every(Boolean);
-  return { ...model, seconds, countdown: countdownText(seconds), ticked,
-    canAccept: actionable && hasDecisionPort && model.actions?.accept === true && confirmed && !declineReason.open,
+  return { ...model, seconds, countdown: countdownText(seconds), ticked, expectedReturnMileage: expectedMileage, returnMileageError: mileageError,
+    canReviewAccept: actionable && hasDecisionPort && handoff !== null,
+    canAccept: actionable && hasDecisionPort && model.actions?.accept === true && confirmed && mileageValid && !declineReason.open,
     canDecline: actionable && hasDecisionPort && hasReasonPort && model.actions?.decline === true,
     declineUnavailable: model.state === 'pending' && hasDecisionPort && !hasReasonPort && model.actions?.decline === true,
     declineReason: copy(declineReason),
@@ -44,19 +47,19 @@ function project(value, hasDecisionPort, hasReasonPort, declineReason, ticks = {
 /** read() returns a server-backed presentation projection. No local time advances business state. */
 export function createOfferController({ read, decide, readReasons, createCommandId = () => globalThis.crypto.randomUUID(), onChange } = {}) {
   if (typeof read !== 'function') throw new TypeError('Supply an offer read port.');
-  let state = { state: 'loading', canAccept: false, canDecline: false };
+  let state = { state: 'loading', canReviewAccept: false, canAccept: false, canDecline: false };
   let sequence = 0; let alive = true; let deciding = false; let abort;
   const emptyReason = () => ({ open: false, status: 'idle', choices: [], selectedCode: '', error: '' });
   let declineReason = emptyReason(); let reasonTurn = 0; let reasonAbort;
   const listeners = new Set(onChange ? [onChange] : []);
   const snapshot = () => copy(state);
   const emit = () => { if (alive) for (const listener of listeners) listener(snapshot()); };
-  const blocked = (next) => ({ ...next, canAccept: false, canDecline: false });
-  let ticks = {}; let tickKey = '';
+  const blocked = (next) => ({ ...next, canReviewAccept: false, canAccept: false, canDecline: false });
+  let ticks = {}; let tickKey = ''; let expectedMileage = '';
   const decorate = (value) => {
-    const key = JSON.stringify([value?.reference?.offerId, value?.handoff?.termsDigest ?? null, value?.handoff?.mode ?? null]);
-    if (key !== tickKey) { tickKey = key; ticks = {}; }
-    return project(value, typeof decide === 'function', typeof readReasons === 'function', declineReason, ticks);
+    const key = JSON.stringify([value?.reference, value?.handoff]);
+    if (key !== tickKey) { tickKey = key; ticks = {}; expectedMileage = ''; }
+    return project(value, typeof decide === 'function', typeof readReasons === 'function', declineReason, ticks, expectedMileage);
   };
   const invalidateReasons = () => { ++reasonTurn; reasonAbort?.abort(); };
   const closeReasons = () => { invalidateReasons(); declineReason = emptyReason(); };
@@ -96,6 +99,11 @@ export function createOfferController({ read, decide, readReasons, createCommand
   function tickDeclaration(id, checked) {
     if (!alive || deciding || state.state !== 'pending' || !state.handoff?.declarations.some((d) => d.id === id)) return snapshot();
     ticks = { ...ticks, [id]: checked === true }; return presentReason();
+  }
+
+  function setExpectedReturnMileage(value) {
+    if (!alive || deciding || state.state !== 'pending' || state.handoff?.mode !== 'replacement' || typeof value !== 'string' || value.length > 16) return snapshot();
+    expectedMileage = value; ticks = {}; return presentReason();
   }
 
   function cancelDecline() {
@@ -162,7 +170,7 @@ export function createOfferController({ read, decide, readReasons, createCommand
       // Identity, expected revisions and idempotency binding remain the decision adapter's responsibility.
       outcome = await decide({ kind, offer: current.reference, commandId: createCommandId(),
         ...(kind === 'decline' ? { reasonCode: options.reasonCode }
-          : { termsDigest: current.handoff.termsDigest, declarations: Object.fromEntries(current.handoff.declarations.map(({ id }) => [id, true])) }) },
+          : { ...(current.handoff.mode === 'replacement' ? { expectedReturnMileage: Number(current.expectedReturnMileage) } : {}), termsDigest: current.handoff.termsDigest, declarations: Object.fromEntries(current.handoff.declarations.map(({ id }) => [id, true])) }) },
       { signal: abort.signal });
     } catch { /* A transport error cannot establish whether the command committed. Read back. */ }
     if (alive) await refresh({ afterDecision: true });
@@ -179,7 +187,7 @@ export function createOfferController({ read, decide, readReasons, createCommand
     return snapshot();
   }
 
-  return { snapshot, refresh, decision, selectDeclineReason, tickDeclaration, cancelDecline, refreshDeclineReasons,
+  return { snapshot, refresh, decision, selectDeclineReason, tickDeclaration, setExpectedReturnMileage, cancelDecline, refreshDeclineReasons,
     subscribe(listener) { listeners.add(listener); return () => listeners.delete(listener); },
     destroy() { alive = false; ++sequence; abort?.abort(); closeReasons(); listeners.clear(); } };
 }

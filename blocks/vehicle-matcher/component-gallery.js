@@ -15,6 +15,7 @@ import { messageList } from '../gcsp/presenter/message-list.js';
 import { fixtureMessages } from '../gcsp/presenter/fixtures.js';
 import { metricTile } from '../gcsp/kit/metric-tile.js';
 import { dataTable } from '../gcsp/kit/data-table.js';
+import { decisionHighlights, finishLabel } from '../gcsp/kit/vehicle-decision.js';
 import { mountPresenterControls } from '../gcsp/presenter-controls/controls.js';
 import { presenterBar } from '../gcsp/kit/presenter-bar.js';
 import { activityTimeline } from '../gcsp/kit/activity-timeline.js';
@@ -239,6 +240,16 @@ function gregKitExamples() {
   ];
   const columns = [{ key: 'name', label: 'Model line' }, { key: 'released', label: 'Released', numeric: true },
     { key: 'held', label: 'Held', numeric: true }, { key: 'allocated', label: 'Allocated', numeric: true }];
+  group('Vehicle decision: finishes and five benefits').append(
+    finishLabel({ label: 'Paint', value: 'Alpine White' }), finishLabel({ label: 'Upholstery', value: 'Black upholstery', shade: 'black' }),
+    decisionHighlights({ benefits: [{ number: '25', title: 'fewer points', detail: 'Every month, compared with your current car' },
+      ...['Head-up display', 'Panoramic glass roof', 'Harman Kardon audio', 'Parking assistance'].map((title) => ({ title, detail: 'Supplied comparison example' }))],
+    tradeoffs: [{ number: '90', title: 'litres less', detail: 'Boot space compared with your current car' }] }),
+    dataTable({ caption: 'Winning comparison cells', captionHidden: true, compare: true, equalColumns: true,
+      columns: [{ key: 'label', label: '' }, { key: 'current', label: 'Your current car' }, { key: 'offer', label: 'This offer' }],
+      rows: [{ label: 'Points a month', current: '320 points', offer: { label: '295 points', winner: true } },
+        { label: 'Boot', current: { label: '500 litres', winner: true }, offer: '410 litres' }] }),
+  );
   group('dataTable: long model name and a band cell').append(dataTable({ caption: 'Stock by model line', columns, rows, id: 'gallery-greg-table' }));
   const bold = (label, on) => (on ? { label, emphasis: true } : label);
   group('dataTable: emphasised cells for changed rows').append(dataTable({ caption: 'Plan comparison (changed rows in bold)', id: 'gallery-greg-emphasis',

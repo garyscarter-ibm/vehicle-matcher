@@ -1,0 +1,46 @@
+{
+  "source_identity": [
+    {
+      "path": "blocks/gcsp/presenter-controls/presenter-console.css",
+      "baseline": "783b943942cdbe22c4b94764a5c60a376ce698d0",
+      "unchanged": true,
+      "sha256": "d51a545a2c280ee8d451e9e3c8cea84dde5daa306a594065216194ccdba3ddd7",
+      "ratchet_lines": 44
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/release-section.css",
+      "baseline": "783b943942cdbe22c4b94764a5c60a376ce698d0",
+      "unchanged": true,
+      "sha256": "92cbf9b7853c27412168c251562ae10e151d5409b686420cf2d538a678d145eb",
+      "ratchet_lines": 15
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/controls.js",
+      "baseline": "783b943942cdbe22c4b94764a5c60a376ce698d0",
+      "unchanged": true,
+      "sha256": "7b2e48927f58aabf4302f642a44a7b949a1da5a8b21f4a0fc11fd5c4dd5f0a64",
+      "ratchet_lines": 464
+    }
+  ],
+  "ratchet_failures": [
+    {
+      "path": "blocks/gcsp/presenter-controls/presenter-console.css",
+      "actual": 44,
+      "cap": 39
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/release-section.css",
+      "actual": 15,
+      "cap": 17
+    }
+  ],
+  "bug": "FUCQ-387",
+  "non_fatal_copy_error": {
+    "message": "TypeError: Cannot read properties of undefined (reading 'clockVersion')",
+    "source": "blocks/gcsp/presenter-controls/controls.js:136:81",
+    "trigger": "server/test/gcsp-painted-copy-words.test.js:518",
+    "occurrences": 2,
+    "test_result": "26 passed, 0 failed",
+    "bug": "FUCQ-344"
+  }
+}
