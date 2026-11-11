@@ -362,6 +362,14 @@
     {
       "path": "blocks/gcsp/presenter-controls/happened-feed.css",
       "max_lines": 17
+    },
+    {
+      "path": "blocks/gcsp/kit/category-preferences.css",
+      "max_lines": 32
+    },
+    {
+      "path": "blocks/gcsp/kit/switch.css",
+      "max_lines": 9
     }
   ],
   "baseline": {

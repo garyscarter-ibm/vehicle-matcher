@@ -86,7 +86,7 @@
     "policyVersion": "gcsp-policy-v1",
     "inputHash": "92cf99c87ceb6b49b1bdbdaa4a608ac64d8345f748e5a4573a1f07a5b0b526e1",
     "generatorVersion": "comparison-inputs.sha256.v1",
-    "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+    "policyHash": "97df1a052794bcb1b8dbd5673a82debbf90c159602b247758f0276e8f9c1dcd5",
     "codeRevision": "fucq135-test",
     "threshold": 70,
     "thresholdKey": "comparison.acceptableFitThreshold",

@@ -23,8 +23,9 @@ export function featureVector({ attributes = {}, isWait = false }, brief, featur
   const match = (key) => {
     const p = preferences[key];
     if (!confirmed(p)) return 0;
-    requireChoice(typeof p.value === 'string' && validNumber(p.importance) && p.importance <= 100, `preferences.${key}`);
-    return Number(a[key] === p.value);
+    const chosen = Array.isArray(p.value) ? p.value : [p.value];
+    requireChoice(chosen.length > 0 && chosen.every((v) => typeof v === 'string') && validNumber(p.importance) && p.importance <= 100, `preferences.${key}`);
+    return Number(chosen.includes(a[key]));
   };
   const importanceMatch = (key) => match(key) * (preferences[key]?.importance ?? 0) / 100;
   const capacity = (key, scale) => {

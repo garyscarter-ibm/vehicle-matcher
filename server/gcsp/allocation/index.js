@@ -2,6 +2,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { validInstant } from '../policy/file-provider.js';
+import { intentValue } from '../../scenarios/employee/index.js';
 import { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId, expandEvaluation, packEvaluation } from './evaluation-rows.js';
 import { DECISION_EVENTS } from '../offers/decision.js';
 
@@ -27,7 +28,7 @@ const latest = (rows) => [...rows.reduce((map, row) => {
 }, new Map()).values()];
 const intent = (brief) => ({
   preferences: Object.fromEntries(Object.entries(brief.preferences).map(([k, p]) => [k,
-    { value: p.value, importance: p.importance, valueState: p.valueState, importanceState: p.importanceState }])),
+    { value: intentValue(p.value), importance: p.importance, valueState: p.valueState, importanceState: p.importanceState }])),
   essentials: Object.fromEntries(Object.entries(brief.essentials).map(([k, e]) => [k,
     { value: e.operator === 'includes' && Array.isArray(e.value) ? [...new Set(e.value)].sort() : e.value,
       operator: e.operator, unit: e.unit, state: e.state }])),

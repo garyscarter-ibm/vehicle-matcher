@@ -148,7 +148,7 @@ export class RenewalCaseService {
         const definition = registry.preferences[key];
         if (!definition || !['enum', 'slider'].includes(definition.type)
           || definition.type === 'enum' && !Array.isArray(definition.values)) return unavailable();
-        const alternatives = definition.type === 'enum' ? definition.values.filter((v) => !same(v, preference.value)) : null;
+        const alternatives = definition.type === 'enum' ? definition.values.filter((v) => ![preference.value].flat().some((c) => same(v, c))) : null;
         if (alternatives?.length === 0) continue;
         relaxation.push({ type: 'preference-relaxation', decisionId: decline.decisionId, expectedBriefVersion: brief.briefVersion,
           path: `preferences.${key}.value`, before: preference.value, valueType: definition.type,

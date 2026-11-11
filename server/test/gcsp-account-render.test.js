@@ -1176,6 +1176,22 @@ test('Your preferences is a mount point: default content, a supplied capability 
   } finally { custom.destroy(); custom.root.remove(); }
 });
 
+test('FUCQ-368: the supplied preferences capability fills the region in order', async () => {
+  const { mountAccountPreferences } = await import('../../blocks/gcsp/brief/account-preferences.js');
+  const { previewPreferenceTransport } = await import('../../blocks/gcsp/brief/account-preferences-fixtures.js');
+  let mounted;
+  const view = await domMount(readOnlyAdapter(), {
+    preferences: (region, { signal }) => { mounted = mountAccountPreferences(region, { signal, transport: previewPreferenceTransport('selected') }); return mounted; } });
+  try {
+    await mounted.ready; await tick();
+    const before = (a, b) => Boolean(a.compareDocumentPosition(b) & window.Node.DOCUMENT_POSITION_FOLLOWING);
+    const car = view.root.querySelector('.gcsp-feature'); const prefs = view.root.querySelector('.gcsp-account-preferences');
+    const history = view.root.querySelector('.gcsp-account-history'); const details = view.root.querySelector('#gcsp-account-details-title');
+    assert.equal(prefs.querySelectorAll('.gcsp-prefs-tile').length, 6); assert.equal(prefs.querySelector('a'), null);
+    assert.ok(before(car, prefs) && before(prefs, history) && before(history, details));
+  } finally { view.destroy(); view.root.remove(); }
+});
+
 test('no Your preferences region appears when the account itself could not be read', async () => {
   const view = await domMount(readOnlyAdapter('source-failure'));
   try {

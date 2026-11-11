@@ -4571,23 +4571,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-10T20:00:41Z",
+      "observed_at": "2026-11-11T01:43:03Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-368",
       "slices": [
         {
           "id": "preference-contract",
-          "status": "not-started",
-          "title": "Sparse multi-choice and importance contract"
+          "status": "complete",
+          "title": "Sparse multi-choice and importance contract",
+          "observed_at": "2026-11-11T00:06:04Z",
+          "evidence": "99affe71 reviewed by lead; merged-tree scoped run 317 tests, 313 pass, 1 known pre-existing fail (gcsp-brief retained fixtures), 3 skipped"
         },
         {
           "id": "category-editor",
-          "status": "not-started",
-          "title": "Compact autosaving category editor"
+          "status": "complete",
+          "title": "Compact autosaving category editor",
+          "observed_at": "2026-11-11T01:43:03Z",
+          "evidence": "5e240bf5+8674fbd2+8377a0e7 reviewed by lead; 180/180 component tests; Opus critique findings resolved on re-inspection"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Persistence and failure recovery"
+          "status": "complete",
+          "title": "Persistence and failure recovery",
+          "observed_at": "2026-11-11T01:43:03Z",
+          "evidence": "Account mount on merged GC-036 base; strict capture docs/gcsp/evidence/fucq368; npm test 4753 pass, 9 fail all also failing on base 784df762"
         }
       ],
       "unsliced": false
