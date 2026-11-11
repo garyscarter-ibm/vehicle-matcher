@@ -7,17 +7,29 @@ export const PORTAL_NAVIGATION = Object.freeze([
   item('order-progress', 'Order progress', ['M4 6l2 2 3-3', 'M4 14l2 2 3-3', 'M12 7h8', 'M12 15h8']),
 ]);
 
+export const ORDERING_NAVIGATION = Object.freeze([
+  item('ordering', 'Employee car ordering', ['M4 20V10', 'M10 20V4', 'M16 20v-7', 'M21 20H3']),
+]);
+const NO_NAVIGATION = Object.freeze([]);
+
+// The existing server-owned greg role is the scheme ordering administrator. It has no employee entitlement.
+export function navigationForAccount(navigation, account) {
+  const ordering = account?.status === 'ready' && Array.isArray(account.roles) && account.roles.includes('greg');
+  if (navigation === ORDERING_NAVIGATION) return ordering ? ORDERING_NAVIGATION : NO_NAVIGATION;
+  return navigation === PORTAL_NAVIGATION && ordering ? ORDERING_NAVIGATION : navigation;
+}
+
 // The live employee pages the rail and the offer can lead to, keyed like the navigation items they belong to.
 export const PORTAL_ROUTES = Object.freeze({ cars: '/gcsp-account.html', brief: '/gcsp-account.html#gcsp-account-preferences', activity: '/gcsp-activity-live.html',
-  'order-progress': '/gcsp-order-progress-live.html', help: '/gcsp-help.html' });
+  'order-progress': '/gcsp-order-progress-live.html', help: '/gcsp-help.html', ordering: '/gcsp-greg.html' });
 
 // Preferences live on Your cars; retain the brief key for existing setup and review shortcuts.
 export const ACCOUNT_MENU = Object.freeze([Object.freeze({ key: 'help', label: 'Renewal help' })]);
-export const MENU_KEYS = new Set([...PORTAL_NAVIGATION.map((entry) => entry.key), 'brief', 'help']);
+export const MENU_KEYS = new Set([...PORTAL_NAVIGATION.map((entry) => entry.key), 'ordering', 'brief', 'help']);
 
 /** Route a rail item or the retained preference shortcut; reject other keys. */
 export function routePortal(key, location) {
-  if (!location || (key !== 'brief' && !PORTAL_NAVIGATION.some((entry) => entry.key === key))) return false;
+  if (!location || (key !== 'brief' && ![...PORTAL_NAVIGATION, ...ORDERING_NAVIGATION].some((entry) => entry.key === key))) return false;
   location.assign(PORTAL_ROUTES[key]);
   return true;
 }

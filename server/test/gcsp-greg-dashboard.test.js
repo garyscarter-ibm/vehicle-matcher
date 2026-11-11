@@ -52,21 +52,21 @@ const strip = (node, sel) => { const c = node.cloneNode(true); c.querySelectorAl
 const shown = (node) => strip(node, '.gcsp-vh');
 const spoken = (node) => strip(node, '[aria-hidden="true"]');
 
-test('the shell shows Greg, six working rail views named as their h1, landing on Next order, and one h1', async () => {
+test('the shell shows Greg, the ordering icon and six working section tabs, landing on Next order, and one h1', async () => {
   const { root } = await mountFixture('populated', { orderPlanAdapter: planFixtures.planFixtureAdapter('ready') });
   assert.equal(root.querySelector('.gcsp-account-name').textContent, 'Greg Lawson');
   assert.match(root.querySelector('.gcsp-account-context').textContent, /Scheme ordering lead/);
   assert.equal(root.querySelector('.gcsp-nav-btn[aria-disabled="true"]'), null);
   assert.deepEqual(dash.GREG_NAVIGATION.map((i) => i.label), ['Next order', 'Demand and supply', 'Policy', 'Order requests', 'Route comparison', 'Renewal cases']);
-  const current = () => root.querySelector('.gcsp-nav-btn[aria-current="page"]');
-  assert.equal(current().dataset.key, 'next-order');
+  const current = () => root.querySelector('[role="tab"][aria-selected="true"]');
+  assert.equal(root.querySelector('.gcsp-nav-btn[aria-current="page"]').dataset.key, 'ordering');
+  assert.equal(current().textContent, 'Next order');
   assert.equal(root.querySelectorAll('main h1').length, 1);
   const regionOf = { 'next-order': 'prediction', policy: 'publish', orders: 'order-tracking', comparison: 'route-comparison', cases: 'case-queue' };
   for (const item of dash.GREG_NAVIGATION) {
-    root.querySelector(`.gcsp-nav-btn[data-key="${item.key}"]`).click();
-    assert.equal(current().dataset.key, item.key);
-    assert.equal(root.querySelector('main h1').textContent, item.label, 'the rail item is named as its h1');
-    assert.equal(document.activeElement, root.querySelector('main h1'));
+    [...root.querySelectorAll('[role="tab"]')].find((tab) => tab.textContent === item.label).click();
+    assert.equal(current().textContent, item.label);
+    assert.equal(root.querySelector('main h1').textContent, item.label, 'the section tab is named as its h1');
     const visible = [...root.querySelectorAll('section[data-region]')].filter((n) => !n.hidden).map((n) => n.dataset.region);
     assert.deepEqual(visible, regionOf[item.key] ? [regionOf[item.key]] : [], item.key);
     assert.equal(root.querySelector('.gcsp-greg-figures').hidden, item.key !== 'dashboard');
@@ -190,7 +190,8 @@ test('reserved regions are labelled, empty of figures and tables, and returned b
   const nodes = names.map((n) => root.querySelector(`section[data-region="${n}"]`));
   assert.ok(nodes.every(Boolean));
   assert.deepEqual(Object.keys(teardown.regions), ['publish', 'prediction', 'orderTracking', 'routeComparison', 'caseQueue']);
-  assert.deepEqual([...root.querySelectorAll('section[data-region]')].map((n) => n.dataset.region), names, 'Next order comes before Order requests');
+  assert.deepEqual([...root.querySelectorAll('section[data-region]')].map((n) => n.dataset.region),
+    ['prediction', 'publish', 'order-tracking', 'route-comparison', 'case-queue'], 'regions follow the section tab order');
   assert.equal(nodes[2].id, 'gcsp-order-requests', 'the request link has a stable target');
   assert.deepEqual(Object.values(teardown.regions), nodes);
   for (const node of nodes) {
@@ -211,7 +212,8 @@ test('refused shows no figures, no Retry and hides the reserved regions', async 
   assert.equal(status.querySelector('.vm-btn'), null);
   assert.equal(root.querySelectorAll('table, .gcsp-tile, dl').length, 0);
   assert.equal(root.querySelector('.gcsp-presenter-controls, .gcsp-presenter-flyout, .gcsp-nav-presenter-btn'), null);
-  assert.equal(root.querySelector('.gcsp-greg-regions').hidden, true);
+  assert.equal(root.querySelector('[role="tablist"]').hidden, true);
+  assert.ok([...root.querySelectorAll('section[data-region]')].every((region) => region.hidden));
 });
 
 test('unavailable has Retry that reloads, and calls onUnavailable', async () => {
@@ -589,5 +591,5 @@ test('a lapsed access key shows the restart screen with Reload and hides the res
   const status = root.querySelector('.gcsp-greg-body .vm-status');
   assert.equal(status.getAttribute('role'), 'alert'); assert.match(status.textContent, /Restarted/);
   assert.deepEqual([...status.querySelectorAll('.vm-btn')].map((b) => b.textContent), ['Reload']);
-  assert.equal(root.querySelector('.gcsp-greg-regions').hidden, true); assert.doesNotMatch(root.textContent, /demand figures are unavailable/); teardown();
+  assert.equal(root.querySelector('[role="tablist"]').hidden, true); assert.doesNotMatch(root.textContent, /demand figures are unavailable/); teardown();
 });

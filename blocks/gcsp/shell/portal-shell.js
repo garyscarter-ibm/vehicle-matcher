@@ -6,6 +6,7 @@ import { isRunRestarted } from '../kit/run-restarted.js';
 import { installArrivalFocus } from '../kit/arrival-focus.js';
 import { notificationBell } from '../kit/notification-bell.js';
 import { announceSessionChange, installSessionLifecycle } from './session-lifecycle.js';
+import { navigationForAccount } from '../employee/portal-navigation.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const DEFAULT_REASON = 'Not available yet';
@@ -36,7 +37,7 @@ export function svgIcon(paths = [], className = 'gcsp-icon') {
 
 /**
  * Narrow icon navigation. Items: { key, label, icon, available, unavailableReason }.
- * Returns { root, setActive(key), setExpanded(bool), destroy() }.
+ * Returns { root, setItems(items), setActive(key), setExpanded(bool), destroy() }.
  */
 export function accountNavigation({ items = [], active = null, expanded = false, onNavigate, onToggle } = {}) {
   const id = `gcsp-nav-${++uid}`;
@@ -46,28 +47,36 @@ export function accountNavigation({ items = [], active = null, expanded = false,
   const list = el('ul', 'gcsp-nav-list');
   const buttons = new Map();
 
-  for (const item of items) {
-    const li = el('li', 'gcsp-nav-item');
-    const btn = el('button', 'gcsp-nav-btn');
-    btn.type = 'button';
-    btn.dataset.key = item.key;
-    btn.append(svgIcon(item.icon), el('span', 'gcsp-nav-label', item.label));
-    const tip = el('span', 'gcsp-nav-tip');
-    tip.setAttribute('aria-hidden', 'true');
-    if (item.available === false) {
-      tip.append(el('span', 'gcsp-nav-tip-label', `${item.label}: `));
-      const reason = el('span', 'gcsp-nav-tip-reason', item.unavailableReason || DEFAULT_REASON);
-      reason.id = `${id}-${item.key}-reason`;
-      tip.append(reason);
-      btn.setAttribute('aria-disabled', 'true');
-      btn.setAttribute('aria-describedby', reason.id);
-    } else {
-      tip.classList.add('gcsp-nav-tip-available');
-      tip.append(el('span', 'gcsp-nav-tip-label', item.label));
+  let renderedItems;
+  function setItems(next) {
+    if (next === renderedItems) return;
+    renderedItems = next;
+    buttons.clear();
+    list.replaceChildren();
+    for (const item of next) {
+      const li = el('li', 'gcsp-nav-item');
+      const btn = el('button', 'gcsp-nav-btn');
+      btn.type = 'button';
+      btn.dataset.key = item.key;
+      btn.append(svgIcon(item.icon), el('span', 'gcsp-nav-label', item.label));
+      const tip = el('span', 'gcsp-nav-tip');
+      tip.setAttribute('aria-hidden', 'true');
+      if (item.available === false) {
+        tip.append(el('span', 'gcsp-nav-tip-label', `${item.label}: `));
+        const reason = el('span', 'gcsp-nav-tip-reason', item.unavailableReason || DEFAULT_REASON);
+        reason.id = `${id}-${item.key}-reason`;
+        tip.append(reason);
+        btn.setAttribute('aria-disabled', 'true');
+        btn.setAttribute('aria-describedby', reason.id);
+      } else {
+        tip.classList.add('gcsp-nav-tip-available');
+        tip.append(el('span', 'gcsp-nav-tip-label', item.label));
+      }
+      li.append(btn, tip);
+      list.append(li);
+      buttons.set(item.key, btn);
     }
-    li.append(btn, tip);
-    list.append(li);
-    buttons.set(item.key, btn);
+    setActive(active);
   }
 
   const toggle = el('button', 'gcsp-nav-toggle');
@@ -77,6 +86,7 @@ export function accountNavigation({ items = [], active = null, expanded = false,
   root.append(list, toggle);
 
   function setActive(key) {
+    active = key;
     for (const [k, btn] of buttons) {
       if (k === key && btn.getAttribute('aria-disabled') !== 'true') btn.setAttribute('aria-current', 'page');
       else btn.removeAttribute('aria-current');
@@ -101,11 +111,13 @@ export function accountNavigation({ items = [], active = null, expanded = false,
     }
   };
   root.addEventListener('click', onClick);
+  setItems(items);
   setExpanded(expanded);
   setActive(active);
 
   return {
     root,
+    setItems,
     setActive,
     setExpanded,
     destroy() {
@@ -311,6 +323,7 @@ export function portalShell({
 
   function setAccount(state) {
     if (invalidated && state?.status !== 'signed-out') return;
+    nav.setItems(navigationForAccount(navigation, state));
     const retry = el('button', 'gcsp-account-retry', 'Retry');
     retry.type = 'button';
     const logout = signOut ? button({ label: 'Sign out', variant: 'ghost', disabled: signingOut }) : null;
