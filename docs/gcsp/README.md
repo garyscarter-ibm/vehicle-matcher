@@ -4,6 +4,8 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
+**Presenter Next release diagnosis, 11 November:** the [database investigation](presenter-release-db-diagnosis-2026-11-11.md) demonstrates repeated policy loads and historical allocation-result copying, and proposes bounded refactors. The cause of the reported Render database outages remains unconfirmed; application code and Jira scope are unchanged.
+
 ## Vehicle offer delivered for review — 11 November 2026
 
 The approved [FUCQ-380 offer direction](mockups/vehicle-offer-2026-11-11/README.md) is implemented in `gcsp-poc`. FUCQ-383–386 and the separately authorised FUCQ-382 prerequisite are built, merged and **In Review**; FUCQ-380 is also In Review. The bounded poller is stopped. Read the [delivery report](dev-poller-fucq380-2026-11-11.md) for merge/Result links, independent desktop/narrow visual review, actual local producer/decision/timing trials, baseline changes and validation/data limits. Collaborator acceptance remains separate.
