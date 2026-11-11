@@ -33,3 +33,11 @@ test('the console layout draws a heading, buttons, a panel and rows, with one st
   assert.ok(root.querySelector('.gcsp-skeleton-panel')); assert.ok(root.querySelector('.gcsp-skeleton-rows')); assert.equal(root.querySelectorAll('[role="status"]').length, 1);
   assert.equal(loadingSkeleton({ layout: 'section', role: null }).dataset.layout, 'section');
 });
+
+test('the feature layout is Your cars: a title, one full-bleed car panel, a panel and rows', () => {
+  const root = loadingSkeleton({ layout: 'feature' });
+  assert.equal(root.dataset.layout, 'feature');
+  const feature = root.querySelector('.gcsp-skeleton-feature');
+  assert.ok(feature?.classList.contains('gcsp-skeleton-card')); assert.ok(feature.querySelector('.gcsp-skeleton-media'));
+  assert.equal(root.querySelectorAll('.gcsp-skeleton-panel').length, 1); assert.equal(root.querySelectorAll('.gcsp-skeleton-rows').length, 1);
+});

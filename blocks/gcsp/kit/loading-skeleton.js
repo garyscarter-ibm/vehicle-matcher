@@ -1,11 +1,13 @@
 import { el } from '../../vehicle-matcher/ui.js';
 
 // Shapes per layout: each entry is a block class; 'card' is a media well beside text lines.
+// 'feature' is Your cars: a full-width panel, the image filling its wide left column.
 const LAYOUTS = Object.freeze({
   page: ['title', 'line', 'line-short', 'card', 'rows'],
   form: ['title', 'line', 'panel', 'panel'],
   timeline: ['title', 'card-text', 'rows'],
   card: ['title', 'card'],
+  feature: ['title', 'feature', 'panel', 'rows'],
   console: ['title', 'line-short', 'actions', 'panel', 'rows'],
   section: ['rows'],
 });
@@ -15,9 +17,9 @@ function block(kind) {
     const row = el('div', 'gcsp-skeleton-actions');
     row.append(...[0, 1].map(() => el('span', 'gcsp-skeleton-shape gcsp-skeleton-button'))); return row;
   }
-  if (kind === 'card' || kind === 'card-text') {
-    const card = el('div', 'gcsp-skeleton-card');
-    if (kind === 'card') card.append(el('span', 'gcsp-skeleton-shape gcsp-skeleton-media'));
+  if (kind === 'card' || kind === 'card-text' || kind === 'feature') {
+    const card = el('div', kind === 'feature' ? 'gcsp-skeleton-card gcsp-skeleton-feature' : 'gcsp-skeleton-card');
+    if (kind !== 'card-text') card.append(el('span', 'gcsp-skeleton-shape gcsp-skeleton-media'));
     const text = el('div', 'gcsp-skeleton-text');
     text.append(...['line-short', 'heading', 'line', 'line', 'button'].map((k) => el('span', `gcsp-skeleton-shape gcsp-skeleton-${k}`)));
     card.append(text); return card;
