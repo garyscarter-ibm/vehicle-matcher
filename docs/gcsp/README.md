@@ -4,6 +4,12 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
+## Vehicle offer design discussion — 11 November 2026
+
+[FUCQ-380](https://ibm-consulting.atlassian.net/browse/FUCQ-380) records the requested wider offer screen, countdown, gallery, vehicle comparison and decision fly-outs. The [static visual concept](mockups/vehicle-offer-2026-11-11/index.html) is ready for collaborator discussion; [assumptions and review](mockups/vehicle-offer-2026-11-11/README.md) accompany it. No new user stories or production changes are authorised until the direction is agreed. Reconcile existing FUCQ-337 when authoring later configuration-comparison stories.
+
+[The data diagnosis](mockups/vehicle-offer-2026-11-11/diagnosis.md) identifies configuration detail lost between the registry and generated stock, plus absent readable option definitions. Bug [FUCQ-382](https://ibm-consulting.atlassian.net/browse/FUCQ-382), related to original Story FUCQ-105, holds that finding separately for discussion; no repair or live reproduction is claimed.
+
 ## Latest build handover — 6 November 2026
 
 **Backlog review and authorised splits, 7 November:** the [MoSCoW review for the 12 November demo](backlog-moscow-review-2026-11-07.md)

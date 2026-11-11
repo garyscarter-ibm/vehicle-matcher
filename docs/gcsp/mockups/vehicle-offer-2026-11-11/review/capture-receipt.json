@@ -1,0 +1,132 @@
+{
+  "scope": "Static concept visual inspection only; no behaviour tests or app acceptance claimed",
+  "captures": [
+    {
+      "file": "1440-index.png",
+      "width": 1440,
+      "observed": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingImages": []
+      }
+    },
+    {
+      "file": "1440-accept.png",
+      "width": 1440,
+      "observed": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingImages": []
+      }
+    },
+    {
+      "file": "1440-decline.png",
+      "width": 1440,
+      "observed": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "missingImages": []
+      }
+    },
+    {
+      "file": "375-index.png",
+      "width": 375,
+      "observed": {
+        "width": 375,
+        "scrollWidth": 375,
+        "missingImages": []
+      }
+    },
+    {
+      "file": "375-accept.png",
+      "width": 375,
+      "observed": {
+        "width": 375,
+        "scrollWidth": 375,
+        "missingImages": []
+      }
+    },
+    {
+      "file": "375-decline.png",
+      "width": 375,
+      "observed": {
+        "width": 375,
+        "scrollWidth": 375,
+        "missingImages": []
+      }
+    },
+    {
+      "file": "375-accept-validation.png",
+      "width": 375,
+      "observed": {
+        "width": 375,
+        "scrollWidth": 375,
+        "missingImages": []
+      }
+    },
+    {
+      "file": "375-decline-validation.png",
+      "width": 375,
+      "observed": {
+        "width": 375,
+        "scrollWidth": 375,
+        "missingImages": []
+      }
+    },
+    {
+      "file": "375-expired.png",
+      "width": 375,
+      "observed": {
+        "width": 375,
+        "scrollWidth": 375,
+        "missingImages": []
+      }
+    },
+    {
+      "file": "375-accepted.png",
+      "width": 375,
+      "observed": {
+        "width": 375,
+        "scrollWidth": 375,
+        "missingImages": []
+      }
+    },
+    {
+      "file": "375-declined.png",
+      "width": 375,
+      "observed": {
+        "width": 375,
+        "scrollWidth": 375,
+        "missingImages": []
+      }
+    },
+    {
+      "file": "320-index-long.png",
+      "width": 320,
+      "observed": {
+        "width": 320,
+        "scrollWidth": 320,
+        "missingImages": []
+      }
+    }
+  ],
+  "pageErrors": [],
+  "finalSourceSha256": {
+    "blocks/gcsp/kit/side-drawer.css": "2392127f886867c36c97eaab43955c88f0b1b4827357bcbd9d225016f2777d13",
+    "blocks/gcsp/shell/gcsp-tokens.css": "d04bfd54a32efcbeb2452b54f766b4c567f85442fcf1b0d07b2866e5ac9e7c11",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/accept-validation.html": "42f0c6e3218b85c1d8dd40c1abe2a906da9c2f4efe1dbe532ebab701f339beb9",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/accept.html": "69d605205075bb821a5c172e7421a29437b51d6bb8ad7c0ae7e7b1adcb62d373",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/accepted.html": "53f99f2a4dfc735cc004a5bf0e7f7514f2af266bcfbbd0ae59a2e948e138c214",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/decline-validation.html": "14bb9c2851e6eae2d1df20d82bb22eb3c4b3d296d8e2f1b37ca60d99a664775c",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/decline.html": "b0c22abbd8215a19de4df5724938889ce15e222596381fbe3ceba7e7cae5c10e",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/declined.html": "b4455391685b8a949e230a55336249929bb9c75f4310022ff98ced1a345618f9",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/documents.html": "bb0c0d53e481488db05a74acee1bc0ff583410993cfbd97267892b13a5b03501",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/expired.html": "0e52ef04d16950ccd883fd0ebdf630a0165f3f5b90b5e2835715e5f4cc57ae40",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/gallery-front.html": "5915c227b6fbde3e6ef01eb42d56366178fa85e6e29035bc4b1b4448f155f02d",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/gallery-interior.html": "f8a115e34b9de988b47f8e91148b9e7e0c80559f27c24a927536baf64d015949",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/gallery-rear.html": "205e4eac1f43cf70c1f0caebba3101fcc835706cf34f83f338d6bb1ff7da4976",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/index.html": "d66262ba78f98992fcab62a400c1b55cc1a2c006ec2f8c45741b892dc8bac730",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/mockup.css": "399d9a0d5c379e1cdda37170e9c0b63549c8db04898e2a75eb9ff86e31f83371"
+  },
+  "independentReview": "PASS after fixes; see visual-review.md"
+}
