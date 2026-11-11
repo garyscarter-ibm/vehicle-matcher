@@ -1,6 +1,6 @@
 {
   "run": "fucq368-strict-capture",
-  "implementationCommit": "b60df41e",
+  "implementationCommit": "f1b13329",
   "reference": {
     "commit": "193cbf07",
     "dir": "docs/gcsp/mockups/account-preferences-2026-11-10/review"
@@ -1968,6 +1968,21 @@
       "url": "/gcsp-account.html?fixture=ready&prefs=selected",
       "steps": [
         [
+          "click",
+          "comfort"
+        ],
+        [
+          "key",
+          "Home"
+        ],
+        [
+          "key",
+          "End"
+        ],
+        [
+          "done"
+        ],
+        [
           "bin",
           "comfort"
         ]
@@ -2055,7 +2070,7 @@
       ],
       "importanceSwitch": null,
       "slider": null,
-      "status": "3 categories considered \u00b7 Saved automatically",
+      "status": "Preferences saved automatically.",
       "active": "Keep it",
       "errors": [],
       "implementationImage": "320-remove-confirmation-implementation.jpg",
@@ -2403,7 +2418,7 @@
       ],
       "importanceSwitch": null,
       "slider": null,
-      "status": "Your changes were not saved.",
+      "status": "Your comfort change was not saved.",
       "active": "Your cars",
       "errors": [],
       "implementationImage": "1440-save-failed-implementation.jpg",
@@ -2427,7 +2442,7 @@
           "x": 16,
           "y": 868,
           "width": 288,
-          "height": 437
+          "height": 462
         },
         "tiles": [
           {
@@ -2502,13 +2517,13 @@
       ],
       "importanceSwitch": null,
       "slider": null,
-      "status": "Your changes were not saved.",
+      "status": "Your comfort change was not saved.",
       "active": "Your cars",
       "errors": [],
       "implementationImage": "320-save-failed-implementation.jpg",
       "implementationSize": [
         320,
-        2400
+        2425
       ]
     },
     "1440-stale": {
@@ -2608,6 +2623,221 @@
       "implementationSize": [
         1440,
         1531
+      ]
+    },
+    "320-stale": {
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=stale",
+      "steps": [],
+      "longVariant": false,
+      "referencePng": null,
+      "overflow": false,
+      "boxes": {
+        "preferences": {
+          "x": 16,
+          "y": 868,
+          "width": 288,
+          "height": 483
+        },
+        "tiles": [
+          {
+            "x": 33,
+            "y": 971,
+            "width": 123,
+            "height": 91
+          },
+          {
+            "x": 164,
+            "y": 971,
+            "width": 123,
+            "height": 91
+          },
+          {
+            "x": 33,
+            "y": 1070,
+            "width": 123,
+            "height": 73
+          },
+          {
+            "x": 164,
+            "y": 1070,
+            "width": 123,
+            "height": 73
+          },
+          {
+            "x": 33,
+            "y": 1151,
+            "width": 123,
+            "height": 73
+          },
+          {
+            "x": 164,
+            "y": 1151,
+            "width": 123,
+            "height": 73
+          }
+        ],
+        "panel": null
+      },
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "tiles": [
+        {
+          "name": "Body, considered: Touring / Estate",
+          "expanded": "false"
+        },
+        {
+          "name": "Fuel, considered: Petrol",
+          "expanded": "false"
+        },
+        {
+          "name": "Sportiness, choose a preference",
+          "expanded": "false"
+        },
+        {
+          "name": "Comfort, considered: A bit of both",
+          "expanded": "false"
+        },
+        {
+          "name": "Economy, choose a preference",
+          "expanded": "false"
+        },
+        {
+          "name": "Size, choose a preference",
+          "expanded": "false"
+        }
+      ],
+      "importanceSwitch": null,
+      "slider": null,
+      "status": "Your preferences changed elsewhere. Reload to see the latest.",
+      "active": "Your cars",
+      "errors": [],
+      "implementationImage": "320-stale-implementation.jpg",
+      "implementationSize": [
+        320,
+        2446
+      ]
+    },
+    "1440-pending": {
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=pending",
+      "steps": [
+        [
+          "click",
+          "size"
+        ]
+      ],
+      "longVariant": false,
+      "referencePng": null,
+      "overflow": false,
+      "boxes": {
+        "preferences": {
+          "x": 96,
+          "y": 708,
+          "width": 1296,
+          "height": 489
+        },
+        "tiles": [
+          {
+            "x": 121,
+            "y": 802,
+            "width": 198,
+            "height": 100
+          },
+          {
+            "x": 331,
+            "y": 802,
+            "width": 198,
+            "height": 100
+          },
+          {
+            "x": 540,
+            "y": 802,
+            "width": 198,
+            "height": 100
+          },
+          {
+            "x": 750,
+            "y": 802,
+            "width": 198,
+            "height": 100
+          },
+          {
+            "x": 960,
+            "y": 802,
+            "width": 198,
+            "height": 100
+          },
+          {
+            "x": 1169,
+            "y": 802,
+            "width": 198,
+            "height": 100
+          }
+        ],
+        "panel": {
+          "x": 121,
+          "y": 922,
+          "width": 1246,
+          "height": 182
+        }
+      },
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "tiles": [
+        {
+          "name": "Body, considered: Touring / Estate",
+          "expanded": "false"
+        },
+        {
+          "name": "Fuel, considered: Petrol",
+          "expanded": "false"
+        },
+        {
+          "name": "Sportiness, choose a preference",
+          "expanded": "false"
+        },
+        {
+          "name": "Comfort, considered: As comfortable as possible",
+          "expanded": "false"
+        },
+        {
+          "name": "Economy, choose a preference",
+          "expanded": "false"
+        },
+        {
+          "name": "Size, considered: A bit of both",
+          "expanded": "true"
+        }
+      ],
+      "importanceSwitch": {
+        "checked": false,
+        "disabled": false,
+        "describedBy": null
+      },
+      "slider": {
+        "value": "50",
+        "valuetext": "A bit of both"
+      },
+      "status": "Saving your preferences.",
+      "active": "Size, considered: A bit of both",
+      "errors": [],
+      "implementationImage": "1440-pending-implementation.jpg",
+      "implementationSize": [
+        1440,
+        1751
       ]
     }
   },

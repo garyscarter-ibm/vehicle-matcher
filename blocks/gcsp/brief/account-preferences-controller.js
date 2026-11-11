@@ -50,7 +50,11 @@ export function createAccountPreferencesController({ transport, createCommandId,
     if (phase === 'failed') return { kind: 'failed', text: PREFERENCE_COPY.loadFailed, actionLabel: 'Try again', action: 'load' };
     if (failure?.kind === 'stale') return { kind: 'stale', text: PREFERENCE_COPY.stale, actionLabel: 'Reload preferences', action: 'reload' };
     if (failure?.kind === 'load') return { kind: 'failed', text: PREFERENCE_COPY.loadFailed, actionLabel: 'Try again', action: 'reload' };
-    if (failure?.kind === 'save') return { kind: 'failed', text: PREFERENCE_COPY.failed, actionLabel: 'Try again', action: 'retry' };
+    if (failure?.kind === 'save') {
+      const unsent = Object.keys(pending).filter((key) => category(key));
+      const named = unsent.length === 1 ? `Your ${category(unsent[0]).label.toLowerCase()} change was not saved.` : PREFERENCE_COPY.failed;
+      return { kind: 'failed', text: named, actionLabel: 'Try again', action: 'retry' };
+    }
     if (reloading) return { kind: 'pending', text: PREFERENCE_COPY.loading };
     if (inflight || has(pending)) return { kind: 'pending', text: PREFERENCE_COPY.pending };
     if (rejected) return { kind: 'failed', text: PREFERENCE_COPY.rejected };

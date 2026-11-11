@@ -32,13 +32,16 @@ const STATES = [
   ['320-long', 320, 1000, 'selected', [], { long: true }],
   ['320-long-options', 320, 1000, 'selected', [['click', 'comfort']], { long: true }],
   ['320-slider-midpoint', 320, 1000, 'selected', [['click', 'comfort'], ['key', 'Home'], ['key', 'ArrowRight']], { long: true }],
-  ['320-remove-confirmation', 320, 1000, 'selected', [['bin', 'comfort']], { long: true }],
+  // Reference replay reaches this after a saved slider edit, hence its saved status copy.
+  ['320-remove-confirmation', 320, 1000, 'selected', [['click', 'comfort'], ['key', 'Home'], ['key', 'End'], ['done'], ['bin', 'comfort']], { long: true }],
   ['320-importance-unselected', 320, 1000, 'empty', [['click', 'fuel']]],
   ['320-importance-high', 320, 1000, 'empty', [['click', 'fuel'], ['pick', 'fuel', 'Plug-in hybrid'], ['important']]],
   // Service states the frozen reference does not draw: explicit review only, no reference pair.
   ['1440-save-failed', 1440, 1100, 'save-failed', [], { extra: true }],
   ['320-save-failed', 320, 1000, 'save-failed', [], { extra: true }],
   ['1440-stale', 1440, 1100, 'stale', [], { extra: true }],
+  ['320-stale', 320, 1000, 'stale', [], { extra: true }],
+  ['1440-pending', 1440, 1100, 'pending', [['click', 'size']], { extra: true }],
 ];
 
 const servers = [];
@@ -65,7 +68,7 @@ async function step(page, [kind, a, b]) {
   else if (kind === 'bin') await page.getByRole('button', { name: `Remove ${a[0].toUpperCase()}${a.slice(1)} preference`, exact: true }).click();
   else if (kind === 'pick') await page.locator('.gcsp-prefs-panel .vm-option', { hasText: b }).first().click();
   else if (kind === 'done') await page.getByRole('button', { name: 'Done', exact: true }).click();
-  else if (kind === 'important') { const s = page.getByRole('switch', { name: 'This is really important' }); await s.focus(); await page.keyboard.press('Space'); }
+  else if (kind === 'important') await page.getByRole('switch', { name: 'This is really important' }).click();
   else if (kind === 'key') { await page.locator('.gcsp-prefs-panel input[type=range]').focus(); await page.keyboard.press(a); }
   await page.waitForTimeout(120);
 }

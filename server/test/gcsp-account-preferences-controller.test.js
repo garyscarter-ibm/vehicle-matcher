@@ -117,7 +117,7 @@ test('a failed save keeps the edits; retry resends the same command, a new edit 
   controller.change('comfort', { value: 100 });
   saves[0].answer({ status: 'unavailable', retryable: true }); await settle();
   let view = controller.snapshot();
-  assert.deepEqual(view.status, { kind: 'failed', text: 'Your changes were not saved.', actionLabel: 'Try again', action: 'retry' });
+  assert.deepEqual(view.status, { kind: 'failed', text: 'Your comfort change was not saved.', actionLabel: 'Try again', action: 'retry' });
   assert.deepEqual(view.categories.comfort, considered(100)); assert.equal(saves.length, 1);
   controller.change('body', { value: ['estate'] }); await settle();
   assert.equal(saves.length, 1, 'no automatic resend while failed'); assert.equal(controller.snapshot().status.kind, 'failed');

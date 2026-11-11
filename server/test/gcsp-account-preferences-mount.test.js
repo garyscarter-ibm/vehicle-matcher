@@ -67,12 +67,12 @@ test('each outcome is announced once: pending then saved, and a failure with its
   const region = host.querySelector('.gcsp-account-preferences'); const seen = [];
   new window.MutationObserver(() => seen.push(statusText(region))).observe(region.querySelector('.gcsp-prefs-status'), { childList: true, characterData: true, subtree: true });
   click(tile(host, 'size')); await tick(); await tick();
-  assert.equal(statusText(region), 'Your changes were not saved.');
+  assert.equal(statusText(region), 'Your size change was not saved.');
   const retry = [...region.querySelectorAll('button')].find((node) => node.textContent === 'Try again');
   fail = false; retry.focus(); click(retry); await tick(); await tick(); await tick();
   assert.equal(calls.length, 2); assert.equal(calls[1].commandId, calls[0].commandId, 'the retry reuses the command');
   assert.equal(statusText(region), 'Preferences saved automatically.');
-  assert.deepEqual(seen.filter((text, at) => text !== seen[at - 1]), ['Saving your preferences.', 'Your changes were not saved.', 'Saving your preferences.', 'Preferences saved automatically.']);
+  assert.deepEqual(seen.filter((text, at) => text !== seen[at - 1]), ['Saving your preferences.', 'Your size change was not saved.', 'Saving your preferences.', 'Preferences saved automatically.']);
   assert.notEqual(document.activeElement, document.body, 'focus does not fall to the page when the Try again button goes');
   destroy(); host.remove();
 });
@@ -93,7 +93,7 @@ test('a failed load shows a short status with Try again, and teardown empties th
 
 test('every named visual state mounts with its expected tiles, panel and status', async () => {
   const expected = { empty: [0, null], selected: [3, null], 'body-open-unset': [0, 'body'], 'body-open-medium': [3, 'body'], 'body-high': [3, 'body'],
-    'comfort-midpoint': [3, 'comfort'], 'remove-comfort': [3, null], 'save-failed': [3, null], stale: [3, null] };
+    'comfort-midpoint': [3, 'comfort'], 'remove-comfort': [3, null], 'save-failed': [3, null], stale: [3, null], pending: [3, null] };
   for (const name of PREFERENCE_FIXTURE_STATES) {
     const host = document.createElement('div'); document.body.append(host); let mounted;
     const destroy = mountAccount(host, { adapter: adapter(), preferences: (region, { signal }) => {
@@ -104,7 +104,7 @@ test('every named visual state mounts with its expected tiles, panel and status'
     const region = host.querySelector('.gcsp-account-preferences');
     assert.equal(region.querySelectorAll('.gcsp-prefs-tile.is-considered').length, expected[name][0], name);
     assert.equal(mounted.controller.snapshot().open, expected[name][1], name);
-    if (name === 'save-failed') assert.equal(statusText(region), 'Your changes were not saved.');
+    if (name === 'save-failed') assert.equal(statusText(region), 'Your comfort change was not saved.');
     if (name === 'stale') assert.match(statusText(region), /Reload to see the latest/);
     if (name === 'remove-comfort') assert.equal(region.querySelector('.gcsp-prefs-removal').hidden, false);
     if (name === 'body-high') assert.equal(region.querySelector('.gcsp-prefs-tile.is-important') !== null, true);

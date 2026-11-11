@@ -14,7 +14,7 @@ const considered = (value, importance = 'medium') => ({ state: 'considered', val
 const SELECTED = { body: considered(['estate']), fuel: considered(['petrol']), comfort: considered(100) };
 
 export const PREFERENCE_FIXTURE_STATES = Object.freeze(['empty', 'selected', 'body-open-unset', 'body-open-medium', 'body-high', 'comfort-midpoint',
-  'remove-comfort', 'save-failed', 'stale']);
+  'remove-comfort', 'save-failed', 'stale', 'pending']);
 
 /** In-memory stand-in for the brief transport: the same two calls and result shapes, no network. */
 export function previewPreferenceTransport(name) {
@@ -29,6 +29,7 @@ export function previewPreferenceTransport(name) {
         initial: { briefVersion: 1, draftVersion, accountPreferences: { considered: 0, categories: structuredClone(categories) } }, selection: null } };
     },
     async savePreferences({ changes }) {
+      if (name === 'pending') return new Promise(() => {}); // an in-flight save that never answers
       if (refusal) return structuredClone(refusal);
       for (const [key, change] of Object.entries(changes)) {
         const was = categories[key];
