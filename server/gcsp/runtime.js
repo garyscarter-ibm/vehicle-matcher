@@ -23,6 +23,7 @@ import { createOfferAccessService, OFFER_ACCESS_COOKIE } from './offers/access.j
 import { createOfferDecisionService } from './offers/decision.js';
 import { createOfferFollowupService } from './offers/followup.js';
 import { createStoredSubjectRecommendationEvaluator } from './recommendation/index.js';
+import { projectCurrentCarBaseline } from './recommendation/current-car.js';
 import { verifyOfferToken, resolveOfferLandingUrl } from './offers/offer-token.js';
 import { createNotificationDispatcher } from './notify/index.js';
 import { createStockReleaseService, createSyntheticStockFaults } from './stock/index.js';
@@ -88,11 +89,15 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
         || drivers.value.recordSetId !== current.value.versions?.recordSetId
         || drivers.value.repositoryVersion !== current.value.versions?.employee
         || !Array.isArray(drivers.value.drivers) || !Array.isArray(stock.value.stock)) return unavailable();
+      const baseline = projectCurrentCarBaseline({ manualContext: { source: current.value.versions?.employeeContract, contracts: current.value.contracts },
+        contractId: current.value.currentContract?.contractId, context, now: time.value.now });
       const driver = drivers.value.drivers.find((entry) => entry.driverId === current.value.currentContract?.driverId)
         ?? drivers.value.drivers.find((entry) => entry.kind === 'employee');
       return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: context.employeeId,
         factsVersion: inputDigest({ driver: drivers.value.source, recordSetId: drivers.value.recordSetId, repositoryVersion: drivers.value.repositoryVersion }),
-        stockVersion: stock.value.sourceVersion, employeeFacts: { ...drivers.value.employeeFacts, driverEligible: driver?.eligible }, stock: stock.value.stock });
+        stockVersion: stock.value.sourceVersion, employeeFacts: { ...drivers.value.employeeFacts, driverEligible: driver?.eligible }, stock: stock.value.stock,
+        // Server-resolved current-car baseline from the stored contract; absent when unidentified.
+        ...(baseline ? { currentCar: baseline } : {}) });
     } };
     const editor = createBriefEditorService({ brief, account, provider, policy, clock, identity });
     const activity = createActivityService({ repository, identity, clock });

@@ -33,6 +33,10 @@ export function projectCurrentCarBaseline({ manualContext, contractId, context, 
   return { contractId, source: { mode: source.mode, sourceVersion: source.sourceVersion, observedAt: source.observedAt }, facts };
 }
 
+// The saved typed feedback of a stored brief, in the stored shapes; empty for an old brief.
+export const storedFeedback = (brief) => Object.fromEntries(['currentCarRating', 'sameAgain']
+  .filter((key) => brief?.[key] !== undefined).map((key) => [key, structuredClone(brief[key])]));
+
 // The provider baseline is trusted only in this shape; anything else is no baseline.
 export const baselineOf = (value) => plain(value) && text(value.contractId) && plain(value.source) && text(value.source.sourceVersion)
   && plain(value.facts) ? value : null;

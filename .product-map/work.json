@@ -4673,7 +4673,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T12:12:15Z",
+      "observed_at": "2026-11-11T12:53:12Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-371",
       "slices": [
         {
@@ -4685,14 +4685,16 @@
         },
         {
           "id": "recommendation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Real recommendation consumers receive feedback and baseline",
-          "observed_at": "2026-11-11T12:12:15Z"
+          "observed_at": "2026-11-11T12:53:12Z",
+          "evidence": "Lead review of slice B diff; 13 scoped files 477 tests 476 pass, 1 known base failure gcsp-brief retained-fixtures; lead re-run allocation+buddy-hold+feedback 89/89"
         },
         {
           "id": "offer-explanation",
-          "status": "not-started",
-          "title": "Offer explanation consumption and strict capture"
+          "status": "in-progress",
+          "title": "Offer explanation consumption and strict capture",
+          "observed_at": "2026-11-11T12:53:12Z"
         },
         {
           "id": "integration",
