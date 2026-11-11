@@ -319,7 +319,7 @@ export function createRepository(backend) {
       return safe('currentRun', () => backend.read({ environmentId, runId: 'repository:current-run' }, async (state) => {
         const current = state.tables.runs.filter((row) => row.environmentId === environmentId && row.current === true && row.status === 'active');
         return current.length === 1 ? ok(cloneJson(current[0])) : current.length ? conflict('multiple-current-runs') : notFound('runs');
-      }));
+      }, { table: 'runs', filter: {} }));
     },
     // One backend transaction retires the old run, seeds the replacement and records the reset receipt.
     // Only this operation crosses run scopes; normal CRUD remains scoped to its trusted context.
@@ -417,7 +417,7 @@ export function createRepository(backend) {
         if (error) return error;
         const session = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
         const outcome = await session.tx.get(ref); session.finish(); return outcome;
-      }));
+      }, validateRef(ref) ? { table: 'runs', filter: {} } : { table: ref.table, filter: ref.key }));
     },
     async query(context, table, filter = {}) {
       if (!opened) return unavailable();
@@ -426,7 +426,7 @@ export function createRepository(backend) {
         if (error) return error;
         const session = createTransaction(context, state, backend.now, backend.supportedTables, backend.receiptIndex);
         const outcome = await session.tx.list(table, filter); session.finish(); return outcome;
-      }));
+      }, validateObject(table, filter, 'filter') ? { table: 'runs', filter: {} } : { table, filter }));
     },
     async close() { return safe('close', async () => { opened = false; commitObservers.clear(); return backend.close(); }); },
   });

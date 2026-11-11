@@ -4954,6 +4954,47 @@
       "observed_at": "2026-11-11T14:50:56Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-391",
       "unsliced": true
+    },
+    {
+      "id": "FUCQ-393",
+      "title": "Render startup crashes on an unhandled checked-out PostgreSQL client disconnect",
+      "type": "Bug",
+      "status": "To Do",
+      "original_status": "To Do",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-393",
+      "branch": "fix/fucq-393-evidence-memory",
+      "unsliced": false,
+      "observed_at": "2026-11-11T17:09:59Z",
+      "slices": [
+        {
+          "id": "evidence",
+          "status": "complete",
+          "title": "Immutable evidence and existing-data compaction",
+          "observed_at": "2026-11-11T17:09:59Z",
+          "evidence": "Native codec, immutable retention, cross-process quote, compaction resume/rollback and CLI checks pass; evidence-memory-repair-2026-11-11.md. Live OOM recovery remains unverified."
+        },
+        {
+          "id": "reads",
+          "status": "complete",
+          "title": "Scoped reads and cache coherence",
+          "observed_at": "2026-11-11T17:09:59Z",
+          "evidence": "Targeted native reads, cache invalidation and four read-window checks pass. Existing run-scoped transaction snapshots retained."
+        },
+        {
+          "id": "writes",
+          "status": "complete",
+          "title": "Byte-bounded atomic PostgreSQL writes",
+          "observed_at": "2026-11-11T17:09:59Z",
+          "evidence": "Original adapter fails large-batch regression; patched adapter passes byte limits and atomic flush rollback. Existing seven disconnect checks pass."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Stock-to-offer and PostgreSQL regression validation",
+          "observed_at": "2026-11-11T17:09:59Z",
+          "evidence": "Real generated 502-car PostgreSQL stock-to-quote-to-offer producer passes; 204 affected memory/offer tests pass; native contract retains pre-existing FUCQ-395 failure. No Render recovery or 256 MB cap proof; merge held by Gary."
+        }
+      ]
     }
   ]
 }
