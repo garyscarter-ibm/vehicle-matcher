@@ -1,0 +1,10 @@
+/* GCSP kit: understanding meter. Geometry follows the frozen Account reference; tokens only. */
+.gcsp .gcsp-understanding { display: grid; grid-template-columns: auto auto; align-items: center; gap: var(--gcsp-space-1) var(--gcsp-space-4); min-width: 245px; }
+.gcsp .gcsp-understanding-label { font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-understanding-value { font-size: 28px; line-height: 1; color: var(--gcsp-accent-strong); text-align: right; white-space: nowrap; }
+.gcsp .gcsp-understanding.is-pending .gcsp-understanding-value { color: var(--gcsp-text-muted); }
+.gcsp .gcsp-understanding-meter { grid-column: 1 / -1; height: 5px; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 3px; }
+.gcsp .gcsp-understanding-meter i { background: var(--gcsp-divider); } .gcsp .gcsp-understanding-meter i.is-filled { background: var(--gcsp-accent); }
+.gcsp .gcsp-understanding-meter i:last-child { background: var(--gcsp-surface-muted); border: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-understanding-meter i:last-child.is-filled { background: var(--gcsp-accent-strong); border-color: var(--gcsp-accent-strong); } .gcsp .gcsp-understanding.is-pending .gcsp-understanding-meter i.is-filled { background: var(--gcsp-text-muted); border-color: var(--gcsp-text-muted); }
+@media (max-width: 850px) { .gcsp .gcsp-understanding { width: 100%; min-width: 0; } }

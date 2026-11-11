@@ -3,6 +3,7 @@ import { validInstant } from '../policy/file-provider.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { validateBriefContent, choiceList } from '../../scenarios/employee/index.js';
 import { currentCarRatingValid } from './rating.js';
+import { sameAgainValid } from './same-again.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
   && [Object.prototype, null].includes(Object.getPrototypeOf(v));
@@ -14,22 +15,25 @@ const invalid = (field) => result('invalid', { code: 'invalid-preview', reasons:
 const stale = (resource, expectedVersion, currentVersion) => result('stale-version', { resource, expectedVersion, currentVersion, action: 'refresh' });
 const editable = (b) => ({ schemaVersion: 1, preferences: b.preferences, essentials: b.essentials,
   ...(b.currentCarFeedback === undefined ? {} : { currentCarFeedback: b.currentCarFeedback }),
-  ...(b.currentCarRating === undefined ? {} : { currentCarRating: b.currentCarRating }) });
+  ...(b.currentCarRating === undefined ? {} : { currentCarRating: b.currentCarRating }),
+  ...(b.sameAgain === undefined ? {} : { sameAgain: b.sameAgain }) });
 const semantic = (b) => ({ preferences: Object.fromEntries(Object.entries(b.preferences).map(([key, p]) => [key, { value: p.value, importance: p.importance }])),
   essentials: Object.fromEntries(Object.entries(b.essentials).map(([key, e]) => [key, { value: e.operator === 'includes' && Array.isArray(e.value) ? [...e.value].sort() : e.value, operator: e.operator, unit: e.unit }])),
   feedback: b.currentCarFeedback ? { preserve: [...b.currentCarFeedback.preserve].sort(), change: [...b.currentCarFeedback.change].sort() } : null,
   // Added only when present, so every legacy digest stays identical.
-  ...(b.currentCarRating ? { rating: { value: b.currentCarRating.value, contractId: b.currentCarRating.contractId } } : {}) });
+  ...(b.currentCarRating ? { rating: { value: b.currentCarRating.value, contractId: b.currentCarRating.contractId } } : {}),
+  ...(b.sameAgain ? { sameAgain: { on: b.sameAgain.on, contractId: b.sameAgain.contractId } } : {}) });
 
 export { semantic as briefSemantic };
 
 const LEVELS = ['medium', 'high'];
+const POLICY_KEY = 'brief.accountPreferences.v1';
 const integer = (v) => Number.isSafeInteger(v);
 
 // The one canonical Account category projection; null when the policy entry is missing or malformed.
 function accountPolicy(row, config, slider) {
   const v = row?.value;
-  if (!['assumed', 'verified'].includes(row?.status) || !only(v, ['schemaVersion', 'minimumCategories', 'importance', 'order', 'categories'])
+  if (!['assumed', 'verified'].includes(row?.status) || !only(v, ['schemaVersion', 'minimumCategories', 'importance', 'understanding', 'order', 'categories'])
     || v.schemaVersion !== 1 || !only(v.importance, ['medium', 'high', 'highFrom'])) return null;
   const { medium, high, highFrom } = v.importance;
   if (![medium, high, highFrom].every((n) => integer(n) && n >= slider.minimum && n <= slider.maximum)
@@ -37,6 +41,11 @@ function accountPolicy(row, config, slider) {
   if (!Array.isArray(v.order) || !v.order.length || new Set(v.order).size !== v.order.length || !object(v.categories)
     || Object.keys(v.categories).length !== v.order.length || !integer(v.minimumCategories) || v.minimumCategories < 1
     || v.minimumCategories > v.order.length) return null;
+  const u = v.understanding;
+  if (!only(u, ['kind', 'maximum', 'byConsidered', 'sameAgain']) || u.kind !== 'input-completeness' || !integer(u.maximum) || u.maximum < 1
+    || !Array.isArray(u.byConsidered) || u.byConsidered.length !== v.order.length + 1
+    || !u.byConsidered.every((n, i) => integer(n) && n >= 0 && n <= u.maximum && (i === 0 || n >= u.byConsidered[i - 1]))
+    || !integer(u.sameAgain) || u.sameAgain < u.byConsidered.at(-1) || u.sameAgain > u.maximum) return null;
   const categories = {};
   for (const key of v.order) {
     const c = Object.hasOwn(v.categories, key) ? v.categories[key] : null; const d = Object.hasOwn(config.preferences, key) ? config.preferences[key] : null;
@@ -61,10 +70,12 @@ function accountPolicy(row, config, slider) {
       categories[key] = { label: c.label, question: c.question, kind: 'stops', openDefault: c.openDefault, stops: c.stops.map(({ value, label }) => ({ value, label })) };
     } else return null;
   }
-  return { levels: { medium, high, highFrom }, minimumCategories: v.minimumCategories, order: [...v.order], categories };
+  return { levels: { medium, high, highFrom }, minimumCategories: v.minimumCategories, order: [...v.order], categories,
+    understanding: { kind: u.kind, maximum: u.maximum, byConsidered: [...u.byConsidered], sameAgain: u.sameAgain } };
 }
 const accountProjection = (a, version) => ({ schemaVersion: 1, policyVersion: version, order: a.order, minimumCategories: a.minimumCategories,
-  importance: { medium: a.levels.medium, high: a.levels.high }, categories: a.categories });
+  importance: { medium: a.levels.medium, high: a.levels.high }, categories: a.categories,
+  understanding: { ...a.understanding, byConsidered: [...a.understanding.byConsidered], policyKey: POLICY_KEY } });
 
 // Considered: an entry with importance above the minimum that the employee set or that is confirmed (never a policy default).
 const considered = (p, slider) => object(p) && p.importance > slider.minimum && (p.source === 'employee' || p.valueState === 'confirmed');
@@ -73,7 +84,7 @@ function nearestStop(stops, value) {
   const best = Math.min(...stops.map((o) => Math.abs(o.value - value)));
   return stops.filter((o) => Math.abs(o.value - value) === best).sort((a, b) => Math.abs(a.value - middle) - Math.abs(b.value - middle))[0].value;
 }
-function accountState(brief, a, slider) {
+function accountState(brief, a, slider, car, policyVersion) {
   const categories = {}; let count = 0;
   for (const key of a.order) {
     const p = brief.preferences?.[key]; const c = a.categories[key];
@@ -86,7 +97,9 @@ function accountState(brief, a, slider) {
       categories[key] = { state: 'considered', value: exact ? p.value : nearestStop(c.stops, p.value), importance, exact };
     }
   }
-  return { considered: count, categories };
+  const on = car.available && car.on; const u = a.understanding;
+  return { considered: count, categories, sameAgain: on, understanding: { kind: u.kind, value: on ? u.sameAgain : u.byConsidered[count],
+    maximum: u.maximum, basis: on ? 'same-again' : 'categories', considered: count, policyKey: POLICY_KEY, policyVersion } };
 }
 
 const PATCH_FIELDS = ['commandId', 'expectedBriefVersion', 'expectedDraftVersion', 'changes'];
@@ -98,6 +111,15 @@ const ratingView = (brief, account) => {
   const stored = brief.currentCarRating;
   return stored?.contractId === contractId ? { value: stored.value, contractId } : { value: null, contractId };
 };
+const sameAgainRefusal = () => refusal('sameAgain', 'Supply exactly the current contract and a true or false on.');
+// Same again for the current car: on only when the stored intent names this contract; no current car or model means unavailable.
+const sameAgainView = (brief, account) => {
+  const car = account?.currentContract;
+  if (!text(car?.contractId)) return { available: false, on: false, contractId: null, reason: 'no-current-car' };
+  if (!text(car.model)) return { available: false, on: false, contractId: null, reason: 'current-car-unidentified' };
+  const stored = brief.sameAgain;
+  return { available: true, on: stored?.contractId === car.contractId && stored.on === true, contractId: car.contractId };
+};
 const refusal = (field, reason) => result('invalid', { code: 'invalid-preferences', reasons: [{ field, reason }] });
 const validValue = (c, value) => c.kind === 'multi'
   ? Array.isArray(value) && value.length > 0 && value.every((v, i) => {
@@ -107,8 +129,8 @@ const validValue = (c, value) => c.kind === 'multi'
   : c.stops.some((o) => o.value === value);
 
 // Validates the sparse patch against the policy projection; returns a refusal, or null when acceptable.
-function checkChanges(changes, rules, ratingOnly = false) {
-  if (!object(changes) || !Object.keys(changes).length && !ratingOnly) return refusal('changes', 'Change at least one category.');
+function checkChanges(changes, rules, emptyOk = false) {
+  if (!object(changes) || !Object.keys(changes).length && !emptyOk) return refusal('changes', 'Change at least one category.');
   for (const [key, change] of Object.entries(changes)) {
     const c = Object.hasOwn(rules.categories, key) ? rules.categories[key] : null;
     if (!c) return refusal(`changes.${key}`, 'Use one of the registered categories.');
@@ -149,9 +171,10 @@ function jsonCopy(value) {
 }
 
 function validateEditable(b, config, slider, lifecycle) {
-  if (!only(b, ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback', 'currentCarRating'])) return false;
+  if (!only(b, ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback', 'currentCarRating', 'sameAgain'])) return false;
   if (b.currentCarRating !== undefined && !currentCarRatingValid(b.currentCarRating)) return false;
-  const { currentCarFeedback, currentCarRating, ...content } = b;
+  if (b.sameAgain !== undefined && !sameAgainValid(b.sameAgain)) return false;
+  const { currentCarFeedback, currentCarRating, sameAgain, ...content } = b;
   const errors = validateBriefContent(content, { ...config, essentials: { ...config.essentials, charging: lifecycle.charging } }, slider);
   if (errors.length) return false;
   const f = currentCarFeedback;
@@ -275,8 +298,8 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
           policyVersion: context.policyVersion, contextVersion, practicalQuestions: p.editor.practicalQuestions,
           unconfirmedLabel: p.editor.unconfirmedLabel, assumptions: p.assumptions,
           accountPreferences: accountProjection(p.rules, context.policyVersion) },
-        initial: { brief: initial, briefVersion, draftVersion, accountPreferences: accountState(initial, p.rules, p.slider),
-          currentCarRating: ratingView(initial, p.account), consent: {
+        initial: { brief: initial, briefVersion, draftVersion, accountPreferences: accountState(initial, p.rules, p.slider, sameAgainView(initial, p.account), context.policyVersion),
+          currentCarRating: ratingView(initial, p.account), sameAgain: sameAgainView(initial, p.account), consent: {
           search: current?.buddy?.searchConsent === true, hold: current?.buddy?.holdConsent === true,
         } }, versions: { policy: context.policyVersion, context: contextVersion, facts: p.source.factsVersion, clock: p.time.clockVersion },
         selection: p.state.accepted ? { state: 'accepted', briefVersion: p.state.accepted.briefVersion } : null,
@@ -285,7 +308,7 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
     },
     async savePreferences(context, input) {
       try { input = jsonCopy(input); } catch { return refusal('input', 'Use plain JSON values.'); }
-      if (!only(input, [...PATCH_FIELDS, 'currentCarRating']) || PATCH_FIELDS.some((key) => !Object.hasOwn(input, key))
+      if (!only(input, [...PATCH_FIELDS, 'currentCarRating', 'sameAgain']) || PATCH_FIELDS.some((key) => !Object.hasOwn(input, key))
         || !text(input.commandId) || input.commandId.length > 128 || !revision(input.expectedBriefVersion)
         || !revision(input.expectedDraftVersion)) return refusal('command', 'Supply exactly a command ID, the expected versions and the changes.');
       const rated = Object.hasOwn(input, 'currentCarRating');
@@ -294,25 +317,40 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
         if (!only(r, ['contractId', 'value']) || !Object.hasOwn(r, 'contractId') || !Object.hasOwn(r, 'value') || !text(r.contractId) || r.contractId.length > 128
           || !(r.value === null || Number.isSafeInteger(r.value) && r.value >= 1 && r.value <= 5)) return ratingRefusal();
       }
+      const again = Object.hasOwn(input, 'sameAgain');
+      if (again) {
+        const s = input.sameAgain;
+        if (!only(s, ['contractId', 'on']) || !Object.hasOwn(s, 'contractId') || !Object.hasOwn(s, 'on') || !text(s.contractId)
+          || s.contractId.length > 128 || typeof s.on !== 'boolean') return sameAgainRefusal();
+      }
       try {
         const p = await prepare(context); if (p.error) return p.error;
-        const refused = checkChanges(input.changes, p.rules, rated); if (refused) return refused;
+        const refused = checkChanges(input.changes, p.rules, rated || again); if (refused) return refused;
         if (p.state.accepted && p.state.current) return result('conflict', { reason: 'brief-read-only', current: { briefVersion: p.state.briefVersion } });
         const car = p.account.currentContract?.contractId;
         if (rated && !text(car)) return result('conflict', { reason: 'no-current-car' });
         if (rated && input.currentCarRating.contractId !== car) return result('conflict', { reason: 'current-car-changed', current: { contractId: car } });
+        if (again) {
+          if (!text(car)) return result('conflict', { reason: 'no-current-car' });
+          if (!text(p.account.currentContract.model)) return result('conflict', { reason: 'current-car-unidentified' });
+          if (input.sameAgain.contractId !== car) return result('conflict', { reason: 'current-car-changed', current: { contractId: car } });
+        }
         const resolved = await resolveInitial(context, p); if (resolved.error) return resolved.error;
+        const isOn = sameAgainView(resolved.base ?? {}, p.account).on;
+        if (isOn && Object.keys(input.changes).length && !(again && input.sameAgain.on === false)) return refusal('changes', 'Turn off Same again to change your categories.');
         // A new employee starts sparse: policy essentials stay unconfirmed and no default preference is invented.
         const base = resolved.base ?? { ...resolved.fallback, preferences: {} };
         const merged = applyChanges(base, input.changes, p.rules, p.slider);
         if (merged.status) return merged;
         if (rated) merged.currentCarRating = { value: input.currentCarRating.value, contractId: car, source: 'employee', ratedAt: p.time.now };
+        if (again) merged.sameAgain = { on: input.sameAgain.on, contractId: car, source: 'employee', setAt: p.time.now };
         if (!validateEditable(merged, p.config, p.slider, p.lifecycle)) return refusal('changes', 'Use the registered editable brief.');
         const saved = await brief.saveDraft(context, { commandId: input.commandId, expectedBriefVersion: input.expectedBriefVersion,
           expectedDraftVersion: input.expectedDraftVersion, brief: merged });
         if (saved?.status !== 'ok') return saved ?? unavailable();
         return ok(jsonCopy({ briefVersion: saved.value.baseBriefVersion, draftVersion: saved.value.draftVersion,
-          accountPreferences: accountState(saved.value.brief, p.rules, p.slider), currentCarRating: ratingView(saved.value.brief, p.account) }));
+          accountPreferences: accountState(saved.value.brief, p.rules, p.slider, sameAgainView(saved.value.brief, p.account), context.policyVersion),
+          currentCarRating: ratingView(saved.value.brief, p.account), sameAgain: sameAgainView(saved.value.brief, p.account) }));
       } catch { return unavailable(); }
     },
     async previewDraft(context, input) {

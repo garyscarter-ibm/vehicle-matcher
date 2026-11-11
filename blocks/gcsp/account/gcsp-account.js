@@ -502,7 +502,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     region = el('section', 'gcsp-account-preferences'); region.id = 'gcsp-account-preferences';
     if (preferences) {
       region.setAttribute('aria-label', 'Your preferences');
-      regionTeardown = preferences(region, { signal: abort.signal });
+      regionTeardown = preferences(region, { signal: abort.signal, describeCar });
       const found = regionTeardown?.controller;
       if (['rate', 'subscribe', 'snapshot'].every((name) => typeof found?.[name] === 'function')) { rater = found; stopRater = rater.subscribe(showRatings); }
       return region;
@@ -514,13 +514,19 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
         onClick: (event) => { event.preventDefault(); controls.go('brief'); } }));
     return region;
   }
+  // The heading and specification of a car, as the rating and Same again name it.
+  const carDescription = (feature) => [feature.querySelector('.gcsp-h2')?.textContent, feature.querySelector('.gcsp-account-spec')?.textContent].filter(Boolean).join(' ');
+  function describeCar() {
+    const id = rater?.snapshot().rating?.contractId;
+    const feature = [...(main?.querySelectorAll('.gcsp-feature[data-contract-id]') ?? [])].find((node) => !id || node.dataset.contractId === id);
+    return feature ? carDescription(feature) : '';
+  }
   // One persistent star rating per current car, from the preferences controller's rating lane; no lane, no stars.
   function rateCar(feature) {
     const lane = rater?.snapshot().rating; const id = feature.dataset.contractId;
     if (!lane || lane.contractId !== id) return;
     if (!ratings.has(id)) {
-      const heading = feature.querySelector('.gcsp-h2')?.textContent; const spec = feature.querySelector('.gcsp-account-spec')?.textContent;
-      const description = [heading, spec].filter(Boolean).join(' ');
+      const description = carDescription(feature);
       const question = `How highly do you rate your ${description}?`;
       ratings.set(id, starRating({ label: question, help: question, value: lane.value, overlay: true, onChange: (next) => rater.rate(next, id), onRetry: () => rater.retry(),
         announce: (text) => { live.clear(); live.announce(text); } }));

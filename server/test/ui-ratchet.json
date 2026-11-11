@@ -27,7 +27,8 @@
     "blocks/gcsp/kit/tabs.js",
     "blocks/gcsp/kit/release-grid.js",
     "blocks/gcsp/kit/help-tip.js",
-    "blocks/gcsp/kit/star-rating.js"
+    "blocks/gcsp/kit/star-rating.js",
+    "blocks/gcsp/kit/understanding-meter.js"
   ],
   "extensions": [
     ".js",
@@ -148,6 +149,11 @@
       "re": "el\\('fieldset', 'gcsp-star-rating",
       "flags": "g",
       "use": "starRating({ label, value, help, onChange }) (blocks/gcsp/kit/star-rating.js)"
+    },
+    "understanding-meter": {
+      "re": "el\\('div', 'gcsp-understanding'",
+      "flags": "g",
+      "use": "understandingMeter({ id, label, value, maximum, pending }) (blocks/gcsp/kit/understanding-meter.js)"
     }
   },
   "stylesheets": [
@@ -390,6 +396,14 @@
     {
       "path": "blocks/gcsp/kit/switch.css",
       "max_lines": 9
+    },
+    {
+      "path": "blocks/gcsp/kit/understanding-meter.css",
+      "max_lines": 11
+    },
+    {
+      "path": "blocks/gcsp/kit/same-again.css",
+      "max_lines": 8
     }
   ],
   "baseline": {
