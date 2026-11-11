@@ -1,0 +1,12 @@
+/* Static content-volume study using the supplied offer comparison. */
+.fuller-offer .why { align-items: start; }
+.fuller-offer .why-block { gap: 10px; padding: 16px 20px 6px; }
+.fuller-offer .why-block h3 { font-size: 13px; }
+.decision-list { list-style: none; margin: 0; padding: 0; }
+.decision-list li { padding: 12px 0; border-top: 1px solid #b8d2e3; }
+.decision-list li:first-child { border-top: 0; padding-top: 0; padding-bottom: 16px; }
+.decision-list strong { display: block; font-size: 15px; font-weight: 600; line-height: 1.4; }
+.decision-list .metric-reason strong { font-size: 17px; }
+.decision-list .reason-number { font-size: 30px; line-height: 1.2; letter-spacing: -.5px; }
+.decision-list p { margin-top: 4px; }
+.trade .decision-list li { border-color: var(--line); }
