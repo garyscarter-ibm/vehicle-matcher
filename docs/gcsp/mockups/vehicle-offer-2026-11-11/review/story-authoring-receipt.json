@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-11",
+  "stories": [
+    "FUCQ-383",
+    "FUCQ-384",
+    "FUCQ-385",
+    "FUCQ-386"
+  ],
+  "jiraReadback": "All Story parents FUCQ-380; To Do; unassigned; Medium; six required sections; all12 Relates links. Epic In Progress and Start date 2026-11-11 verified.",
+  "localStories": [
+    {
+      "key": "FUCQ-383",
+      "story": "DEV-2026-11-11-001"
+    },
+    {
+      "key": "FUCQ-384",
+      "story": "DEV-2026-11-11-002"
+    },
+    {
+      "key": "FUCQ-385",
+      "story": "DEV-2026-11-11-003"
+    },
+    {
+      "key": "FUCQ-386",
+      "story": "DEV-2026-11-11-004"
+    }
+  ],
+  "storyChecks": "All four dev_mail.py check-story ID checks pass. Initial invocations mistakenly passed a file path and exited1; corrected ID invocations pass.",
+  "scope": "Authoring and static concept; no production tests, full suite or live acceptance",
+  "map": "Scoped build and integration-slice/no-worker checks pass. Six pre-existing diagnostics match HEAD baseline. Only382\u2013386 work records changed.",
+  "existingMapDiagnostics": [
+    "stories FUCQ-58: conflicting active-branch facts; reconcile the records",
+    "stories FUCQ-59: conflicting active-branch facts; reconcile the records",
+    "stories FUCQ-60: conflicting active-branch facts; reconcile the records",
+    "stories FUCQ-61: conflicting active-branch facts; reconcile the records",
+    "stories FUCQ-62: conflicting active-branch facts; reconcile the records",
+    "stories FUCQ-63: conflicting active-branch facts; reconcile the records"
+  ],
+  "commitAttribution": "Jira sync API used unchanged with runtime commit-message trailer hook; all four import commits have Codex trailer.",
+  "pollingWatermark": "Preserved prior global watermark for targeted import; no poller launched.",
+  "unrelatedEvidenceRequests": "Sync tool emitted pre-existing FUCQ-349 attachment requests; outside this task, no downloads performed.",
+  "originalContractCheck": "FUCQ-60 readback confirmed existing fact/paint/upholstery/selected-equipment obligations. FUCQ-384 explicitly preserves them and adds local keyed definition resolution without transferring original acceptance gaps; Jira readback and resynced local Story check pass."
+}

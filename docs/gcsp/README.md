@@ -4,9 +4,9 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
-## Vehicle offer design discussion — 11 November 2026
+## Approved vehicle offer direction — 11 November 2026
 
-[FUCQ-380](https://ibm-consulting.atlassian.net/browse/FUCQ-380) records the requested wider offer screen, countdown, gallery, vehicle comparison and decision fly-outs. The [static visual concept](mockups/vehicle-offer-2026-11-11/index.html) is ready for collaborator discussion; [assumptions and review](mockups/vehicle-offer-2026-11-11/README.md) accompany it. No new user stories or production changes are authorised until the direction is agreed. Reconcile existing FUCQ-337 when authoring later configuration-comparison stories.
+[FUCQ-380](https://ibm-consulting.atlassian.net/browse/FUCQ-380) records the requested wider offer screen, countdown, gallery, vehicle comparison and decision fly-outs. The collaborator approved the [local visual concept](mockups/vehicle-offer-2026-11-11/index.html) after the final caption, alignment, five-benefit overflow and fixed-choice decline edits. [FUCQ-383–386 and the approved scope](vehicle-offer-stories-2026-11-11.md) cover presentation, readable code definitions, multi-angle gallery and decision drawers; [assumptions and review](mockups/vehicle-offer-2026-11-11/README.md) accompany it. Existing FUCQ-337 is reused for exact-option comparisons. This is design/backlog authoring; no production implementation or dispatcher starts here.
 
 [The data diagnosis](mockups/vehicle-offer-2026-11-11/diagnosis.md) identifies configuration detail lost between the registry and generated stock, plus absent readable option definitions. Bug [FUCQ-382](https://ibm-consulting.atlassian.net/browse/FUCQ-382), related to original Story FUCQ-105, holds that finding separately for discussion; no repair or live reproduction is claimed.
 
