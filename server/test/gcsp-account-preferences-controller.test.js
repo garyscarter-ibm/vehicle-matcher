@@ -339,9 +339,9 @@ test('Same again sends only its intent, shows the projected score as pending, th
   saves[0].answer(okAgain(1, true)); await settle();
   assert.deepEqual(lane(controller), { available: true, on: true, reason: null, status: 'saved' });
   assert.deepEqual(score(controller), { value: 11, maximum: 11, pending: false, failed: false });
-  assert.deepEqual(controller.snapshot().status, { kind: 'idle', text: 'More like your current car. Preferences save automatically.' });
+  assert.deepEqual(controller.snapshot().status, { kind: 'saved', text: 'Preferences saved automatically.' });
   controller.toggleSameAgain(false); saves[1].answer(okAgain(2, false)); await settle();
-  assert.equal(lane(controller).on, false); assert.equal(score(controller).value, 1); assert.equal(controller.snapshot().status.text, '0 of 3 categories considered · Preferences save automatically');
+  assert.equal(lane(controller).on, false); assert.equal(score(controller).value, 1); assert.equal(controller.snapshot().status.text, 'Preferences saved automatically.');
 });
 
 test('rapid on, off, on sends one in flight plus the latest, and a late answer cannot undo the newest choice', async () => {
@@ -415,7 +415,7 @@ test('a retry that succeeds clears the failure and confirms the score', async ()
   const { controller, saves } = harness(again()); await controller.load();
   controller.toggleSameAgain(true); saves[0].answer({ status: 'unavailable', retryable: true }); await settle();
   controller.retry(); saves[1].answer(okAgain(1, true)); await settle();
-  assert.deepEqual(lane(controller), { available: true, on: true, reason: null, status: 'saved' }); assert.equal(controller.snapshot().status.kind, 'idle');
+  assert.deepEqual(lane(controller), { available: true, on: true, reason: null, status: 'saved' }); assert.equal(controller.snapshot().status.kind, 'saved');
   assert.deepEqual(score(controller), { value: 11, maximum: 11, pending: false, failed: false });
 });
 

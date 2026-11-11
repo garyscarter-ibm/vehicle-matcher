@@ -398,7 +398,7 @@ test('the browser transport and controller save through the real route and the e
   assert.deepEqual(controller.snapshot().sameAgain, { available: true, on: false, reason: null, status: 'idle' });
   controller.toggleSameAgain(true); await settled(controller);
   assert.deepEqual(controller.snapshot().sameAgain, { available: true, on: true, reason: null, status: 'saved' });
-  assert.equal(controller.snapshot().status.text, 'More like your current car. Preferences save automatically.');
+  assert.equal(controller.snapshot().status.text, 'Preferences saved automatically.');
   assert.deepEqual(controller.snapshot().understanding, { value: 11, maximum: 11, pending: false, failed: false });
   let on = await read(f); const row = (await draftOf(f)).brief;
   assert.deepEqual([row.sameAgain.on, row.sameAgain.contractId], [true, contractId]);

@@ -129,7 +129,7 @@ export function createAccountPreferencesController({ transport, createCommandId,
       if (Number.isInteger(fields.accountPreferences.understanding?.value)) confirmedScore = fields.accountPreferences.understanding.value;
       adopt(fields.accountPreferences, true);
       failure = null; retryable = null; if (sent.same && rejected === 'same') rejected = false;
-      if (has(sent.changes)) {
+      if (has(sent.changes) || sent.same) {
         rejected = false;
         const removed = Object.keys(sent.changes).filter((key) => sent.changes[key] === null && !Object.hasOwn(pending, key)).pop();
         saved = removed && category(removed) ? `${category(removed).label} preference removed. Saved automatically.` : PREFERENCE_COPY.saved;

@@ -2,6 +2,6 @@
 .gcsp .gcsp-prefs-mode { display: flex; align-items: center; justify-content: space-between; gap: var(--gcsp-space-4); padding-block: var(--gcsp-space-4); border-block: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-prefs .gcsp-check.gcsp-same-switch { flex-direction: row; gap: var(--gcsp-space-1); }
 .gcsp .gcsp-prefs .gcsp-prefs-info.vm-btn { display: grid; place-items: center; flex: none; width: 44px; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--gcsp-accent-strong); }
-.gcsp .gcsp-prefs-info .gcsp-icon { width: 20px; height: 20px; }
+.gcsp .gcsp-prefs-info .gcsp-icon { width: 20px; height: 20px; } .gcsp .gcsp-prefs .gcsp-prefs-info:focus-visible { outline-offset: -2px; }
 .gcsp .gcsp-prefs-same-note { flex: 1; min-width: 0; margin: 0; color: var(--gcsp-text-muted); }
 @media (max-width: 600px) { .gcsp .gcsp-prefs-mode { flex-direction: column; align-items: flex-start; gap: var(--gcsp-space-1); } }

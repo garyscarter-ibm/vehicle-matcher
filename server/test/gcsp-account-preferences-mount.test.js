@@ -230,14 +230,14 @@ test('Space on the switch turns Same again on and autosaves; focus stays on it a
   await tick(); await tick();
   assert.deepEqual(calls[0].sameAgain, { contractId: 'current:employee-paula', on: true }); assert.deepEqual(calls[0].changes, {});
   assert.equal(document.activeElement, sameInput(host), 'focus stays on the switch'); assert.equal(sameInput(host), input, 'the same control node');
-  assert.equal(input.checked, true); assert.equal(statusText(region), 'More like your current car. Preferences save automatically.');
+  assert.equal(input.checked, true); assert.equal(statusText(region), 'Preferences saved automatically.');
   assert.equal(figure(host).textContent, '11 / 11'); assert.equal(figure(host).getAttribute('aria-label'), 'Buddy understanding 11 out of 11');
   assert.equal(region.querySelectorAll('.gcsp-prefs-open:not(:disabled)').length, 0, 'tiles are neutral and disabled');
   assert.equal(host.querySelector('.gcsp-prefs-tile.is-considered .gcsp-prefs-value').textContent, 'Touring / Estate', 'saved choices stay visible');
   input.checked = false; input.dispatchEvent(new window.Event('change', { bubbles: true })); await tick(); await tick();
   assert.deepEqual(calls[1].sameAgain, { contractId: 'current:employee-paula', on: false });
   assert.equal(figure(host).textContent, '6 / 11'); assert.equal(document.activeElement, input);
-  assert.equal(statusText(region), '3 categories considered · Saved automatically');
+  assert.equal(statusText(region), 'Preferences saved automatically.');
   destroy(); host.remove();
 });
 
@@ -259,7 +259,7 @@ test('a failed Same again save says so with Try again, keeps the attempt and the
   assert.equal(statusText(region), 'Same again was not saved.'); assert.equal(input.checked, true);
   assert.equal(figure(host).getAttribute('aria-label'), 'Buddy understanding 11 out of 11 (not saved)');
   const retry = [...region.querySelectorAll('button')].find((node) => node.textContent === 'Try again'); fail = false; retry.click(); await tick(); await tick(); await tick();
-  assert.equal(calls[1].commandId, calls[0].commandId); assert.equal(statusText(region), 'More like your current car. Preferences save automatically.');
+  assert.equal(calls[1].commandId, calls[0].commandId); assert.equal(statusText(region), 'Preferences saved automatically.');
   assert.notEqual(document.activeElement, document.body); destroy(); host.remove();
 });
 
