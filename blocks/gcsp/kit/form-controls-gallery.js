@@ -126,6 +126,7 @@ export function notificationBellExample() {
     ['One car offer waiting', notificationModel(activity('active'), BELL_CAR), false],
     ['New offer note', { ...notificationModel(activity('active'), BELL_CAR), note: { id: 'gallery-note', title: 'Your buddy found a car', text: 'BMW i5 Touring. Respond by 16:40.' } }, false],
     ['Open, offer waiting', notificationModel(activity('active'), BELL_CAR), true],
+    ['Open, expired offer', notificationModel(activity('expired'), BELL_CAR), true],
     ['Open, nothing waiting', notificationModel(activity('accepted'), BELL_CAR), true],
     ['Open, unavailable', { status: 'unavailable', waiting: 0, rows: [] }, true]];
   for (const [label, model, open] of states) {
@@ -221,7 +222,7 @@ export function sameAgainExample() {
     const scope = el('div', 'gcsp'); const body = el('div', 'vm');
     let current = { categories: {}, open: null, pendingRemoval: null, disabled: false, status: { kind: 'idle', text: '' }, ...extra };
     const view = categoryPreferences({ id: `gallery-same-${at}`, categories: PREFERENCE_CATEGORIES, state: current, understanding: { maximum: 11 },
-      sameAgain: { description, onToggle: (on) => { current = { ...current, sameAgain: { ...current.sameAgain, on }, understanding: { ...current.understanding, value: on ? 11 : 6 } }; view.update(current); } } });
+      sameAgain: { mode: at === 4 ? undefined : 'choice', description, onToggle: (on) => { current = { ...current, sameAgain: { ...current.sameAgain, on }, understanding: { ...current.understanding, value: on ? 11 : 6 } }; view.update(current); } } });
     body.append(el('p', 'gcsp-note', label), view.root); scope.append(body); section.append(scope);
     if (helpOpen) view.root.querySelector('.gcsp-help-tip').hidden = false;
   });

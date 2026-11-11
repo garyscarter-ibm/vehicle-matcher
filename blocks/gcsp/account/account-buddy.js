@@ -1,4 +1,4 @@
-import { el, button } from '../../vehicle-matcher/ui.js';
+import { el } from '../../vehicle-matcher/ui.js';
 import { buddyTile } from '../kit/buddy-tile.js';
 import { activityTimeline } from '../kit/activity-timeline.js';
 import { sideDrawer } from '../kit/side-drawer.js';
@@ -35,26 +35,27 @@ export function mountAccountBuddy(region, { adapter, signal, onChanged, onPrefer
   function drawerContent() {
     const value = state?.result?.value;
     if (!value) return [el('p', 'gcsp-note', 'Activity unavailable. Close and try again.')];
-    if (drawerKind === 'history') return [activityTimeline({ events: buddyEvents(value), level: 3, heading: 'Activity history' }),
-      ...(value.stateChangesEvidence?.status === 'incomplete' ? [el('p', 'gcsp-note', 'Some activity could not be verified.')] : [])];
     const paused = value.permission?.paused;
+    if (drawerKind === 'history') return [activityTimeline({ events: buddyEvents(value), level: 3, heading: 'Activity history' }),
+      ...(value.stateChangesEvidence?.status === 'incomplete' ? [el('p', 'gcsp-note', 'Some activity could not be verified.')] : []),
+      el('h3', 'gcsp-h3', 'Search status'),
+      ...searchLines(value, paused).map((line) => el('p', 'gcsp-note', line)),
+      ...exclusionLines(value, paused).map((line) => el('p', '', line)),
+      ...(paused ? [el('p', '', 'New searches and holds have stopped. Any held offer stays open until its deadline.')] : [])];
     if (drawerKind === 'offer') return [activityOffer({ offer: value.currentOffer, display: state.offerDisplay, level: 3 })
       ?? el('p', 'gcsp-note', 'There is no current offer.')];
-    return [...searchLines(value, paused).map((line) => el('p', 'gcsp-note', line)),
-      ...exclusionLines(value, paused).map((line) => el('p', '', line)),
-      ...(paused ? [el('p', '', 'New searches and holds have stopped. Any held offer stays open until its deadline.')] : []),
-      button({ label: 'Review your preferences', variant: 'ghost', onClick: review })];
+    return [];
   }
   function open(kind, key) {
     drawer?.close(false); drawerKind = kind; drawerBody = el('div', 'gcsp-buddy-drawer-content'); drawerBody.append(...drawerContent());
     drawer = openDrawer({ host: region.closest('.gcsp') ?? region, context: 'Your buddy',
-      title: kind === 'history' ? 'Buddy history' : kind === 'offer' ? 'Your held offer' : 'Search details', body: [drawerBody],
+      title: kind === 'history' ? 'Buddy history' : 'Your held offer', body: [drawerBody],
       opener: () => region.querySelector(`[data-focus-key="${key}"]`), onClose: () => { drawer = null; drawerBody = null; } });
   }
   const pause = adapter?.pauseSearch ?? adapter?.pause; const resume = adapter?.resumeSearch ?? adapter?.resume;
   const tile = buddyTile({ id: 'gcsp-account-buddy-status', onPause: typeof pause === 'function' ? async () => { await controller.pauseSearch(); onChanged?.(); } : undefined,
     onResume: typeof resume === 'function' ? async () => { await controller.resumeSearch(); onChanged?.(); } : undefined, onRetry: () => controller.refresh(), onPreferences: review,
-    onHistory: () => open('history', 'buddy-history'), onDetails: () => open('details', 'buddy-details'), onOffer: () => open('offer', 'buddy-offer'), orderHref: PORTAL_ROUTES['order-progress'] });
+    onHistory: () => open('history', 'buddy-history'), onOffer: () => open('offer', 'buddy-offer'), orderHref: PORTAL_ROUTES['order-progress'] });
   region.append(tile.root, live.root);
   const controller = createActivityController({ adapter: { ...adapter, pauseSearch: pause, resumeSearch: resume }, onChange: (next) => {
     if (disposed) return;

@@ -43,33 +43,29 @@ test('rows: an active offer is the waiting row with car, deadline and one button
   assert.equal(summer[0].detail, 'Reserved for you. Respond by 17:40.');
 });
 
-test('rows: each closed offer state has its own copy and onward link', () => {
-  const row = (state) => mods.source.notificationRows(value(offer({ state })), display, ROUTES)[0];
-  assert.equal(row('accepted').title, 'You accepted your BMW i5 Touring');
-  assert.deepEqual(row('accepted').action, { label: 'Track order progress', href: ROUTES['order-progress'], variant: 'link' });
-  assert.equal(row('decision-pending').title, 'Your decision is being processed.');
-  assert.equal(row('release-pending').title, 'Your decision is being processed.');
-  assert.equal(row('rejected').title, 'You declined this car.');
-  assert.equal(row('declined').title, 'You declined this car.');
-  assert.equal(row('expired').title, 'Your offer expired.');
-  assert.equal(row('expired').action.href, ROUTES.activity);
-  for (const state of ['accepted', 'expired', 'declined']) assert.equal(row(state).waiting, undefined);
-  assert.equal(mods.source.notificationModel(value(offer({ state: 'accepted' })), display, ROUTES).waiting, 0);
+test('rows: only active and expired offers notify; decisions stay in Buddy history', () => {
+  for (const state of ['accepted', 'decision-pending', 'release-pending', 'rejected', 'declined']) {
+    assert.deepEqual(mods.source.notificationRows(value(offer({ state })), display), []);
+    assert.equal(mods.source.notificationModel(value(offer({ state })), display).waiting, 0);
+  }
+  const [expired] = mods.source.notificationRows(value(offer({ state: 'expired' })), display);
+  assert.equal(expired.title, 'Your offer expired.'); assert.equal(expired.waiting, undefined);
+  assert.deepEqual(expired.action, { label: 'View expired offer', href: '/gcsp/offer?offerId=o1&runId=r1', variant: 'link' });
 });
 
-test('rows: state changes are plain rows with their time, newest offer first, deduplicated', () => {
-  const changes = [
-    { eventId: 'e1', operation: 'confirmed', occurredAt: '2026-11-10T09:12:00.000Z' },
-    { eventId: 'e2', operation: 'paused', occurredAt: '2026-11-10T09:20:00.000Z' },
-    { eventId: 'e2', operation: 'paused', occurredAt: '2026-11-10T09:20:00.000Z' },
-    { eventId: 'e3', operation: 'resumed', occurredAt: '2026-11-10T09:25:00.000Z' },
-    { eventId: 'e4', operation: 'changed-after-decline', occurredAt: '2026-11-10T09:26:00.000Z' }];
-  const rows = mods.source.notificationRows(value(offer(), { stateChanges: changes }), display, ROUTES);
-  assert.deepEqual(rows.map((r) => r.title), ['Your buddy found a car', 'Your preferences changed after a decline', 'Buddy settings updated',
-    'Buddy disengaged', 'Preferences confirmed']);
-  assert.equal(rows.at(-1).detail, 'Using the preferences you saved at 09:12.');
-  assert.equal(rows[1].kind, 'change');
+test('rows: preference and permission events never appear; expired offers are deduplicated and newest first', () => {
+  const stateChanges = ['confirmed', 'paused', 'resumed', 'engaged', 'disengaged', 'changed-after-decline'].map((operation, index) => ({
+    eventId: `e${index}`, operation, occurredAt: '2026-11-10T09:12:00.000Z' }));
+  assert.deepEqual(mods.source.notificationRows(value(null, { stateChanges })), []);
+  const expired = (id, day) => offer({ offerRef: { offerId: id }, state: 'expired', expiresAt: `2026-11-${day}T16:40:00.000Z` });
+  const older = expired('o2', '09'); const recent = expired('o3', '10');
+  const input = value(offer(), { stateChanges, offers: [older, recent, recent, offer(), offer({ offerRef: { offerId: 'old-active' } }), offer({ offerRef: { offerId: 'accepted' }, state: 'accepted' })] });
+  const rows = mods.source.notificationRows(input, display);
+  assert.deepEqual(rows.map((r) => r.key), ['offer:o1', 'offer:o3', 'offer:o2']);
+  assert.ok(rows.every((r) => r.kind === 'offer'));
+  assert.equal(rows[1].image, undefined, 'an older offer never borrows the current car image');
   assert.deepEqual(mods.source.notificationRows(null), []);
+  assert.equal(mods.source.notificationModel(input, display).allHref, undefined);
 });
 
 test('component: badge, accessible name and the closed state', () => {
@@ -96,7 +92,7 @@ test('component: opening does not clear the badge; Escape and click outside clos
   assert.equal(bell.root.querySelector('.gcsp-bell-badge').hidden, false);
   assert.equal(panel.querySelector('h2').textContent, 'Notifications');
   assert.equal(panel.querySelector('.vm-btn').textContent, 'View your offer');
-  assert.equal(panel.querySelector('.gcsp-bell-foot').textContent, 'See all buddy activity');
+  assert.equal(panel.querySelector('.gcsp-bell-foot'), null);
   panel.querySelector('.vm-btn').focus(); press(document.activeElement, 'Escape');
   assert.equal(panel.hidden, true); assert.equal(document.activeElement, bell.button);
   bell.button.click(); outside.focus(); outside.click();

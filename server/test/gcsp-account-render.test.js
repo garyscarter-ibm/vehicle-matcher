@@ -201,7 +201,7 @@ const findButton = (root, text) => [...root.querySelectorAll('button')].find((no
 const rowsOf = (root) => [...root.querySelectorAll('.gcsp-account-history tbody tr')];
 const cellsOf = (tr) => [...tr.children].map((cell) => cell.textContent);
 const openRecord = (root, index = 0) => { root.querySelectorAll('.gcsp-account-history tbody .gcsp-table-action')[index].click(); return root.querySelector('.gcsp-side-drawer-panel'); };
-// Records open only from the Order history table, below Your preferences.
+// History helpers exercise the record from its exact contract row.
 const openFrom = (root, index = 0) => openRecord(root, index);
 // The history table opens records from the history entry, a copy of the current contract.
 const mirrorHistory = (input, index = 0) => { const entries = input.value.histories.flatMap((h) => h.entries); const id = input.value.contracts[index].contractId; Object.assign(entries.find((e) => e.contractId === id), structuredClone(input.value.contracts[index])); };
@@ -253,14 +253,17 @@ test('account composition preserves complete supplied facts, labelled details an
     assert.equal(pointsCost(otherScheme), '1,100 points per month \u00b7 budget not supplied');
     assert.doesNotMatch(otherScheme.textContent, /1,300/);
     assert.doesNotMatch(current.textContent, /current:employee-paula|slot-paula|choices-fs-uk/);
-    assert.match(current.querySelector('.gcsp-details').textContent, /Replacement collection12 Nov to 1 Dec/);
+    assert.equal(current.querySelector('.gcsp-details'), null);
+    findButton(current, 'View car record').click();
+    assert.match(root.querySelector('.gcsp-side-drawer-panel').textContent, /12 November 2026 to 1 December 2026/);
+    root.querySelector('.gcsp-side-drawer .vm-btn').click();
     // The record drawer carries the rest of the supplied contract, collection, order and technical facts.
     const drawer = openFrom(root);
     for (const text of ['7654321', '1 May 2026', '30 May 2026', '1 June 2026', '6,500', '6,420',
       'ZZSYNTHETIC000001', '156 g/km (WLTP combined)', '£55,295 (List price)', 'SYN01', 'Fictional option']) assert.ok(drawer.textContent.includes(text), text);
     root.querySelector('.gcsp-side-drawer .vm-btn').click();
     assert.deepEqual([...root.querySelectorAll('.gcsp-feature .gcsp-actions button')].map((b) => b.textContent),
-      ['Choose a replacement']);
+      ['View car record', 'Choose a replacement', 'View car record']);
     assert.match(otherScheme.textContent, /Replacement isn\u2019t available for this car\./);
     assert.equal(root.querySelectorAll('.gcsp-feature .vm-btn-primary').length, 1);
     assert.ok(detailsRow(root, 'Employee').textContent.includes('Allowance override: 1,500 points/month (ends 1 December 2026)'));
@@ -887,7 +890,7 @@ test('FUCQ-195: the current-car card shows readable labels and no raw identifier
   } finally { first.destroy(); first.root.remove(); }
   value.slots[0].label = 'Company car 1';
   const second = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
-  try { assert.match(second.root.querySelector('.gcsp-feature').textContent, /Vehicle slotCompany car 1/); }
+  try { findButton(second.root.querySelector('.gcsp-feature'), 'View car record').click(); assert.match(second.root.querySelector('.gcsp-side-drawer-panel').textContent, /Vehicle slotCompany car 1/); }
   finally { second.destroy(); second.root.remove(); }
 });
 
@@ -1077,7 +1080,7 @@ test('the page head carries the title only without the preferences capability; Y
   } finally { destroy(); root.remove(); }
 });
 
-test('the current car: heading and specification, countdown, ordered facts, details and the one replacement action', async () => {
+test('the current car: large image, key facts and full record access', async () => {
   const input = unnamed('ready');
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
@@ -1088,16 +1091,14 @@ test('the current car: heading and specification, countdown, ordered facts, deta
     const countdown = car.querySelector('.gcsp-countdown');
     assert.equal(countdown.textContent, 'Contract ends in 26 days \u00b7 1 December 2026');
     assert.equal(countdown.previousElementSibling.className, 'gcsp-account-title');
-    // No Status or Contract end (the countdown says it); unsupplied Registration is hidden; Points cost is last.
-    assert.deepEqual(factPairs(car.querySelector('.gcsp-account-car-facts')), [['Driver', 'Paula Mason'],
-      ['Term', '6 months'], ['Annual mileage', '12,000 mi/year'], ['Current mileage', '5,200 mi'],
-      ['Points cost', '1,100 / 1,300 points per month']]);
-    const details = car.querySelector('details.gcsp-details');
-    assert.equal(details.querySelector('summary.gcsp-details-summary').textContent, 'Order, collection and vehicle details');
-    assert.deepEqual(factPairs(details), [['Collected', '1 June 2026'], ['Replacement collection', '12 Nov to 1 Dec']]);
-    assert.deepEqual([...car.querySelectorAll('button')].map((node) => node.textContent), ['Choose a replacement']);
+    assert.deepEqual(factPairs(car.querySelector('.gcsp-account-car-facts')), [['Points cost', '1,100 / 1,300 points per month'], ['Current mileage', '5,200 mi']]);
+    assert.equal(car.querySelector('details.gcsp-details'), null);
+    assert.deepEqual([...car.querySelectorAll('button')].map((node) => node.textContent), ['View car record', 'Choose a replacement']);
+    findButton(car, 'View car record').click();
+    assert.match(root.querySelector('.gcsp-side-drawer-panel').textContent, /Collected1 June 2026/);
+    root.querySelector('.gcsp-side-drawer .vm-btn').click();
     for (const gone of ['.gcsp-account-key', '.gcsp-account-context', '.gcsp-account-dot', '.vm-media-caption', '.gcsp-summary']) assert.equal(car.querySelector(gone), null, gone);
-    assert.doesNotMatch(car.textContent, /View car record|Image source|Your buddy|Your allowance/);
+    assert.doesNotMatch(car.textContent, /Image source|Your buddy|Your allowance/);
     assert.equal(car.querySelector('.gcsp-media').classList.contains('gcsp-media-whole'), true);
   } finally { destroy(); root.remove(); }
   const sparse = unnamed('ready'); const contract = sparse.value.contracts[0];
@@ -1108,7 +1109,8 @@ test('the current car: heading and specification, countdown, ordered facts, deta
     const car = second.root.querySelector('.gcsp-feature');
     assert.equal(car.querySelector('.gcsp-account-spec'), null, 'no specification line without supplied facts');
     assert.ok(factPairs(car.querySelector('.gcsp-account-car-facts')).some(([label, value]) => label === 'Registration' && value === 'AB12 CDE'));
-    assert.deepEqual(factPairs(car.querySelector('details')), [['Delivered VIN', 'ZZSYNTHETIC000009']]);
+    findButton(car, 'View car record').click();
+    assert.ok(factPairs(second.root.querySelector('.gcsp-side-drawer-panel')).some(([key, value]) => key === 'Delivered VIN' && value === 'ZZSYNTHETIC000009'));
   } finally { second.destroy(); second.root.remove(); }
   const bare = unnamed('ready'); const naked = bare.value.contracts[0];
   for (const key of ['actualCollectionDate', 'earliestCollectionDate', 'latestCollectionDate', 'vin', 'orderNumber', 'orderReference']) delete naked[key];
@@ -1117,11 +1119,11 @@ test('the current car: heading and specification, countdown, ordered facts, deta
   try {
     const car = third.root.querySelector('.gcsp-feature');
     assert.equal(car.querySelector('details'), null, 'no details element when nothing is supplied');
-    assert.equal(car.querySelector('.gcsp-note').textContent, 'Contract end: Not supplied');
+    assert.match(car.textContent, /Contract end: Not supplied/);
   } finally { third.destroy(); third.root.remove(); }
 });
 
-test('DOM order: Your cars, then Your preferences, then Order history and Your details; the car holds no record control or key strip', async () => {
+test('DOM order: Your cars, then Your preferences, then Order history and Your details; the car links to its full record without a key strip', async () => {
   const { root, destroy } = await domMount(readOnlyAdapter());
   try {
     const before = (a, b) => Boolean(a.compareDocumentPosition(b) & window.Node.DOCUMENT_POSITION_FOLLOWING);
@@ -1132,9 +1134,9 @@ test('DOM order: Your cars, then Your preferences, then Order history and Your d
     assert.ok(before(root.querySelector('.gcsp-account-head'), car));
     assert.equal(root.querySelectorAll('.gcsp-account-key').length, 0);
     assert.equal(root.querySelector('[aria-label="Your buddy"]'), null);
-    assert.equal(car.querySelector('.gcsp-actions').textContent, 'Choose a replacement');
+    assert.equal(car.querySelector('.gcsp-actions').textContent, 'View car recordChoose a replacement');
     for (const view of root.querySelectorAll('.gcsp-table-action')) assert.ok(history.contains(view));
-    assert.equal(findButton(root, 'View car record'), undefined);
+    assert.ok(findButton(car, 'View car record'));
   } finally { destroy(); root.remove(); }
 });
 
@@ -1182,7 +1184,7 @@ test('Your preferences is a mount point: default content, a supplied capability 
     edit.click(); assert.deepEqual(keys, ['brief']);
   } finally { plain.destroy(); plain.root.remove(); }
   let calls = 0; let torn = 0; let mountedRegion; let signal;
-  let rating = 1; const adapter = { ...readOnlyAdapter(), readAccount: async () => { const input = unnamed('ready'); input.value.contracts[0].annualMileage = 12000 + rating; return input; } };
+  let rating = 1; const adapter = { ...readOnlyAdapter(), readAccount: async () => { const input = unnamed('ready'); input.value.contracts[0].currentOdometer = 12000 + rating; return input; } };
   const custom = await domMount(adapter, { preferences: (region, options) => {
     calls += 1; mountedRegion = region; signal = options.signal;
     const node = document.createElement('p'); node.className = 'capability'; node.textContent = 'capability mounted'; region.append(node);
@@ -1235,7 +1237,7 @@ test('a pending offer puts its reason and View your offer in the replacement slo
   try {
     const car = held.root.querySelector('.gcsp-feature'); const row = car.querySelector('.gcsp-actions');
     assert.equal(held.root.querySelector('[aria-label="Your car offer"]'), null, 'no separate offer card');
-    assert.deepEqual([...row.querySelectorAll('button')].map((b) => b.textContent), ['View your offer', 'Choose a replacement']);
+    assert.deepEqual([...row.querySelectorAll('button')].map((b) => b.textContent), ['View car record', 'View your offer', 'Choose a replacement']);
     assert.equal(findButton(row, 'View your offer').classList.contains('vm-btn-primary'), true);
     assert.equal(row.previousElementSibling.textContent, 'You have a car offer to decide on before choosing another car.');
     assert.equal(ghost(held.root, 'Choose a replacement'), true);
@@ -1261,8 +1263,9 @@ test('a missing image keeps a readable placeholder in the whole-car well and the
   } finally { view.destroy(); view.root.remove(); }
 });
 
-test('the car record drawer opens from history rows only, and Escape, Close and the scrim return focus to the exact opener', async () => {
-  const { root, destroy } = await domMount(readOnlyAdapter());
+test('car records open from the current car and history, returning focus to the exact opener after quiet redraws', async () => {
+  const envelope = unnamed('ready');
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => structuredClone(envelope) });
   const press = (key) => document.dispatchEvent(new window.KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
   try {
     assert.equal(root.querySelector('.gcsp-side-drawer'), null);
@@ -1274,6 +1277,12 @@ test('the car record drawer opens from history rows only, and Escape, Close and 
     assert.equal(panel.querySelector('.gcsp-side-drawer-context').textContent, 'Car record \u00b7 Scheme 1');
     assert.deepEqual([...panel.querySelectorAll('h3')].map((n) => n.textContent), ['Contract', 'Collection', 'Order and vehicle', 'Technical specification and options']);
     press('Escape'); assert.equal(root.querySelector('.gcsp-side-drawer'), null); assert.equal(document.activeElement, opener);
+    const current = findButton(root.querySelector('.gcsp-feature'), 'View car record'); current.focus(); current.click();
+    envelope.value.contracts[0].currentOdometer = 5300;
+    await destroy.sync(); await tick();
+    assert.equal(current.isConnected, false, 'the current car was repainted while its record stayed open');
+    assert.ok(root.querySelector('.gcsp-side-drawer-panel'));
+    press('Escape'); assert.equal(document.activeElement, findButton(root.querySelector('.gcsp-feature'), 'View car record'));
     // From a history row, with the Close button.
     const rowButton = root.querySelectorAll('.gcsp-account-history tbody .gcsp-table-action')[1]; rowButton.focus(); rowButton.click();
     panel = root.querySelector('.gcsp-side-drawer-panel');
@@ -1282,11 +1291,12 @@ test('the car record drawer opens from history rows only, and Escape, Close and 
     findButton(panel, 'Close').click(); assert.equal(root.querySelector('.gcsp-side-drawer'), null);
     assert.equal(document.activeElement.getAttribute('aria-label'), rowButton.getAttribute('aria-label'));
     // The scrim closes it too, and Tab stays inside.
-    opener.click(); const inside = root.querySelector('.gcsp-side-drawer-panel');
+    const repaintedOpener = root.querySelectorAll('.gcsp-account-history tbody .gcsp-table-action')[0];
+    repaintedOpener.click(); const inside = root.querySelector('.gcsp-side-drawer-panel');
     const last = inside.querySelector('.gcsp-side-drawer-foot button'); last.focus();
     press('Tab'); assert.ok(inside.contains(document.activeElement));
     root.querySelector('.gcsp-side-drawer-backdrop').click(); assert.equal(root.querySelector('.gcsp-side-drawer'), null);
-    assert.equal(document.activeElement, opener);
+    assert.equal(document.activeElement, repaintedOpener);
   } finally { destroy(); root.remove(); }
 });
 
@@ -1307,7 +1317,7 @@ test('the car record shows supplied facts only, with one line for a section that
   const { root, destroy } = await domMount(readOnlyAdapter());
   try {
     const panel = openFrom(root);
-    assert.deepEqual(factPairs(sectionOf(panel, 'Contract')), [['Status', 'Current car'], ['Driver', 'Paula Mason'], ['Term', '6 months'],
+    assert.deepEqual(factPairs(sectionOf(panel, 'Contract')), [['Status', 'Current car'], ['Points cost', '1,100 / 1,300 points per month'], ['Driver', 'Paula Mason'], ['Term', '6 months'],
       ['Annual mileage', '12,000 mi/year'], ['Contract end', '1 December 2026']]);
     assert.deepEqual(factPairs(sectionOf(panel, 'Collection')), [['Collected', '1 June 2026'],
       ['Replacement window', '12 November 2026 to 1 December 2026'], ['Current mileage', '5,200 mi']]);

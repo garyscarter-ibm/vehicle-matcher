@@ -18,8 +18,8 @@ const requested = query.get('fixture'); const prefs = query.get('prefs'); const 
 const unavailableReason = { 'no-current-car': 'no-current-car', 'current-car-unidentified': 'current-car-unidentified' }[requested];
 const previewBuddy = query.get('buddy') ?? (['inactive', 'setup', 'paused', 'paused-offer'].includes(query.get('activity')) ? 'disengaged'
   : ['unavailable', 'loading'].includes(query.get('activity')) ? 'unknown' : 'engaged');
-const previewPreferences = (state) => (region, { signal, describeCar }) => {
-  const mounted = mountAccountPreferences(region, { transport: previewPreferenceTransport(state, { rating, sameAgainReason: unavailableReason, buddy: previewBuddy }), signal, describeCar });
+const previewPreferences = (state) => (region, { signal, describeCar, buddyControls }) => {
+  const mounted = mountAccountPreferences(region, { transport: previewPreferenceTransport(state, { rating, sameAgainReason: unavailableReason, buddy: previewBuddy }), signal, describeCar, buddyControls });
   mounted.ready.then(() => drivePreferenceState(mounted.controller, state));
   return mounted;
 };
@@ -50,7 +50,7 @@ if (host && FIXTURE_NAMES.includes(requested)) {
 } else if (host) {
   mountManualJourney(host, { activityAdapter: createActivityHttpAdapter(), orderAdapter: createOrderProgressHttpAdapter(), helpAdapter: createCaseHttpAdapter(),
     subscribeClock: subscribePresenterActions(host),
-    preferences: (region, { signal, describeCar }) => mountAccountPreferences(region, { transport: createBriefTransport({ signal }), signal, describeCar }),
+    preferences: (region, { signal, describeCar, buddyControls }) => mountAccountPreferences(region, { transport: createBriefTransport({ signal }), signal, describeCar, buddyControls }),
     notifications: createNotificationSource({ adapter: createActivityHttpAdapter(), subscribe: subscribePresenterActions(host) }),
     onSupport: () => globalThis.location.assign(new URL('../../../gcsp-help.html', import.meta.url).href) });
 }

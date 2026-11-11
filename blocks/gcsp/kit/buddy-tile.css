@@ -1,7 +1,7 @@
 .gcsp .gcsp-buddy-tile { min-width: 0; padding: var(--gcsp-space-6); background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); display: flex; flex-direction: column; gap: var(--gcsp-space-3); }
 .gcsp .gcsp-buddy-tile :is(h2, h3, p) { margin: 0; }
-.gcsp .gcsp-buddy-tile-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gcsp-space-2); }
-.gcsp .gcsp-buddy-tile-status { font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-buddy-tile-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: var(--gcsp-space-2); }
+.gcsp .gcsp-buddy-tile-identity { display: grid; gap: var(--gcsp-space-1); } .gcsp .gcsp-buddy-tile-status { font-weight: var(--gcsp-font-strong-weight); }
 .gcsp .gcsp-buddy-tile-actions, .gcsp .gcsp-buddy-tile-links { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-2); }
 .gcsp .gcsp-buddy-tile-actions .vm-btn { min-height: 44px; }
 .gcsp .gcsp-buddy-tile-links { margin-top: auto; border-top: 1px solid var(--gcsp-divider); padding-top: var(--gcsp-space-3); }

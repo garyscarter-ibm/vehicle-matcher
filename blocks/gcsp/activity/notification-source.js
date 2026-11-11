@@ -1,17 +1,12 @@
 // Bell data: rows from the existing activity read, and a live source that re-reads on triggers. No new routes or stores.
 import { demoTime } from '../kit/activity-timeline.js';
 import { isDisplayImage } from '../kit/vehicle-image-assets.js';
-import { PORTAL_ROUTES } from '../employee/portal-navigation.js';
 import { approvedImages } from './activity-offer.js';
 import { respondBy } from './activity-copy.js';
 
 const MAX_ROWS = 6;
 const hhmm = (instant) => demoTime(instant).split(', ').pop();
 const by = (offer) => (respondBy(offer) ? `Respond by ${hhmm(offer.expiresAt)}` : null);
-const changeCopy = Object.freeze({ confirmed: 'Preferences confirmed', paused: 'Buddy disengaged',
-  resumed: 'Buddy settings updated', engaged: 'Buddy engaged', disengaged: 'Buddy disengaged', 'changed-after-decline': 'Your preferences changed after a decline' });
-const processing = new Set(['decision-pending', 'release-pending']);
-const declined = new Set(['rejected', 'declined']);
 const ok = (value) => value && Array.isArray(value.offers) && Array.isArray(value.stateChanges);
 const timeOf = (instant) => (Number.isFinite(Date.parse(instant)) ? Date.parse(instant) : -Infinity);
 
@@ -21,7 +16,7 @@ function thumb(display) {
   return image ? { src: image.src } : null;
 }
 
-function offerRow(offer, { display, current, routes }) {
+function offerRow(offer, { display, current }) {
   const car = display?.title || null; const image = current ? thumb(display) : null; const key = `offer:${offer.offerRef.offerId}`;
   const base = { key, kind: 'offer', ...(image ? { image } : {}) };
   if (offer.state === 'active') {
@@ -30,38 +25,32 @@ function offerRow(offer, { display, current, routes }) {
       detail: until ? `Reserved for you. ${until}.` : 'Reserved for you.',
       action: typeof offer.href === 'string' && offer.href.startsWith('/') ? { label: 'View your offer', href: offer.href, variant: 'button' } : null };
   }
-  if (offer.state === 'accepted') return { ...base, title: `You accepted your ${car || 'car'}`, action: { label: 'Track order progress', href: routes['order-progress'], variant: 'link' } };
-  if (processing.has(offer.state)) return { ...base, title: 'Your decision is being processed.' };
-  if (declined.has(offer.state)) return { ...base, title: 'You declined this car.' };
-  if (offer.state === 'expired') return { ...base, title: 'Your offer expired.', action: { label: 'Open Buddy activity', href: routes.activity, variant: 'link' } };
+  if (offer.state === 'expired') return { ...base, ...(car ? { car } : {}), title: 'Your offer expired.',
+    action: typeof offer.href === 'string' && offer.href.startsWith('/') ? { label: 'View expired offer', href: offer.href, variant: 'link' } : null };
   return null;
 }
 
 /**
- * Presentational rows from an activity value, newest offer first, then older offers and state changes by time.
+ * Current/new and expired offers only. Other Buddy events remain in its history.
  * `display` is the car title and images of the newest offer only (readOfferDisplay), or null.
  */
-export function notificationRows(activity, display = null, routes = PORTAL_ROUTES) {
+export function notificationRows(activity, display = null) {
   if (!ok(activity)) return [];
   const currentId = activity.currentOffer?.offerRef?.offerId;
   const rows = [];
-  if (activity.currentOffer) { const row = offerRow(activity.currentOffer, { display, current: true, routes }); if (row) rows.push(row); }
-  const rest = activity.offers.filter((offer) => offer?.offerRef?.offerId && offer.offerRef.offerId !== currentId && offer.state !== 'active')
-    .map((offer) => ({ at: timeOf(offer.createdAt), row: offerRow(offer, { display: null, current: false, routes }) }));
-  const seen = new Set();
-  const changes = activity.stateChanges.filter((change) => change?.eventId && !seen.has(change.eventId) && seen.add(change.eventId))
-    .map((change) => ({ at: timeOf(change.occurredAt), row: { key: `change:${change.eventId}`, kind: 'change',
-      title: changeCopy[change.operation] || 'Your buddy search changed',
-      detail: Number.isFinite(Date.parse(change.occurredAt)) ? (change.operation === 'confirmed'
-        ? `Using the preferences you saved at ${hhmm(change.occurredAt)}.` : `At ${hhmm(change.occurredAt)}.`) : null } }));
-  rows.push(...[...rest, ...changes].filter((item) => item.row).sort((a, b) => b.at - a.at).map((item) => item.row));
+  if (activity.currentOffer?.offerRef?.offerId) { const row = offerRow(activity.currentOffer, { display, current: true }); if (row) rows.push(row); }
+  const seen = new Set([currentId]);
+  const rest = activity.offers.filter((offer) => offer?.offerRef?.offerId && offer.state === 'expired'
+    && !seen.has(offer.offerRef.offerId) && seen.add(offer.offerRef.offerId))
+    .sort((a, b) => timeOf(b.expiresAt ?? b.createdAt) - timeOf(a.expiresAt ?? a.createdAt));
+  rows.push(...rest.map((offer) => offerRow(offer, { display: null, current: false })));
   return rows.slice(0, MAX_ROWS);
 }
 
 /** The bell model for one successful read. `note` is set by the source, never here. */
-export function notificationModel(activity, display, routes = PORTAL_ROUTES) {
+export function notificationModel(activity, display) {
   const waiting = activity.currentOffer?.state === 'active' ? 1 : 0;
-  return { status: 'ok', waiting, rows: notificationRows(activity, display, routes), allHref: routes.activity, note: null };
+  return { status: 'ok', waiting, rows: notificationRows(activity, display), note: null };
 }
 
 /**
@@ -69,8 +58,8 @@ export function notificationModel(activity, display, routes = PORTAL_ROUTES) {
  * subscription. connect(update) starts reading and returns a disconnect; refresh() asks for a read; one read runs at a time.
  */
 export function createNotificationSource({ adapter = {}, subscribe, document: doc = globalThis.document, pollMs = 30000,
-  routes = PORTAL_ROUTES, setTimer = globalThis.setInterval, clearTimer = globalThis.clearInterval } = {}) {
-  let model = { status: 'loading', waiting: 0, rows: [], allHref: null, note: null };
+  setTimer = globalThis.setInterval, clearTimer = globalThis.clearInterval } = {}) {
+  let model = { status: 'loading', waiting: 0, rows: [], note: null };
   let update = null; let stops = []; let timer = null; let abort = null; let busy = false; let again = false;
   let hasRead = false; let activeId = null; let display = null; let connection = 0;
   const win = () => doc?.defaultView;
@@ -93,7 +82,7 @@ export function createNotificationSource({ adapter = {}, subscribe, document: do
       try { display = await adapter.readOfferDisplay({ offerId, runId: value.runId, signal }) ?? null; } catch { display = null; }
       if (signal.aborted) return;
     }
-    const next = notificationModel(value, offerId ? display : null, routes);
+    const next = notificationModel(value, offerId ? display : null);
     const nowActive = offer?.state === 'active' ? offerId : null;
     if (hasRead && nowActive && nowActive !== activeId) {
       const text = [display?.title, by(offer)].filter(Boolean).join('. ');

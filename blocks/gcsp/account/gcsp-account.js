@@ -115,7 +115,7 @@ function recordSections({ contract, model }) {
     'electricRange', 'electricCityRange', 'exterior', 'interior', 'price', 'options'];
   const window = windowText(contract);
   const blocks = [
-    ['Contract', [row('Status', status(contract.status)), row('Driver', contract.driver?.name), row('Term', contract.months, 'months'),
+    ['Contract', [row('Status', status(contract.status)), row('Scheme', schemeName(model, contract.schemeId)), row('Points cost', formatPointsCost(pointsTerms(contract, model))), row('Driver', contract.driver?.name), row('Term', contract.months, 'months'),
       row('Annual mileage', contract.annualMileage, contract.mileageUnit), row('Contract end', date(contract.contractEndDate)),
       row('Returned', date(contract.returnedDate))]],
     ['Collection', [row('Collected', date(contract.actualCollectionDate)),
@@ -208,7 +208,7 @@ function pointsTerms(contract, model) {
   return terms;
 }
 
-function currentCar(contract, model, controls, explained = false, offer = null) {
+function currentCar(contract, model, controls, explained = false, offer = null, hasBuddy = false) {
   const terms = pointsTerms(contract, model);
   const feature = el('section', 'gcsp-feature');
   feature.dataset.contractId = contract.contractId;
@@ -220,33 +220,31 @@ function currentCar(contract, model, controls, explained = false, offer = null) 
     line: '', alt: source?.alt ?? contract.model ?? 'Car' }, 'gcsp-media gcsp-media-whole', { placeholder: NO_IMAGE_YOUR_CAR });
   const scheme = schemeName(model, contract.schemeId);
   const title = el('div', 'gcsp-account-title');
-  title.append(heading);
+  title.append(el('p', 'gcsp-note', 'Current car'), heading);
   const spec = [contract.vehicle?.configuration, FUEL_SPEC[contract.vehicle?.fuel]].filter(Boolean).join(' \u00b7 ');
   if (spec) title.append(el('p', 'gcsp-account-spec', spec));
   const state = contract.daysRemaining == null ? el('p', 'gcsp-note', 'Contract end: Not supplied')
     : el('p', 'gcsp-countdown', `Contract ${countdown(model.asOf.slice(0, 10), contract.contractEndDate)} \u00b7 ${date(contract.contractEndDate)}`);
   const copy = el('div', 'gcsp-feature-copy');
   copy.append(title, state);
-  // The countdown already says the end date and the panel is the current car, so neither repeats as a fact (Gary, 11 Nov).
-  const list = suppliedFacts([row('Driver', contract.driver?.name), row('Term', contract.months, 'months'), row('Annual mileage', contract.annualMileage, contract.mileageUnit), row('Scheme', scheme),
-    row('Registration', contract.registration), row('Current mileage', contract.currentOdometer), ...slotRows(model, contract.slotId),
-    row('Points cost', formatPointsCost(terms))], 'gcsp-account-facts gcsp-account-car-facts');
+  // Key facts stay beside the large image; full contract, collection and vehicle details live in the record.
+  const list = suppliedFacts([row('Points cost', formatPointsCost(terms)), row('Registration', contract.registration),
+    row('Current mileage', contract.currentOdometer), row('Scheme', scheme)], 'gcsp-account-facts gcsp-account-car-facts');
   copy.append(list);
   const override = Number.isFinite(terms.allowance) ? overrideText(model) : null;
   if (override) copy.append(el('p', 'gcsp-synthetic', override));
-  const more = suppliedFacts([row('Collected', date(contract.actualCollectionDate)), row('Replacement collection', windowText(contract)),
-    ...orderRows(contract), row('Delivered VIN', contract.vin)], 'gcsp-account-facts');
-  if (more) {
-    const details = el('details', 'gcsp-details');
-    details.append(el('summary', 'gcsp-details-summary', 'Order, collection and vehicle details'), more);
-    copy.append(details);
+  const actions = el('div', 'gcsp-actions');
+  if (controls.openRecord) {
+    const record = button({ label: 'View car record', variant: 'ghost', onClick: () => controls.openRecord(recordFor(contract, model, scheme), record) });
+    record.dataset.focusKey = `current-car-record-${contract.contractId}`; actions.append(record);
   }
   if (contract.action) {
-    const held = offer?.take(); const actions = el('div', 'gcsp-actions');
-    if (held) { copy.append(held.note); actions.append(held.view); }
-    actions.append(controls.startButton(contract.action)); copy.append(actions);
+    const held = offer?.take();
+    if (held && !hasBuddy) { copy.append(held.note); actions.append(held.view); }
+    if (!held || !hasBuddy) actions.append(controls.startButton(contract.action));
   }
   else if (!explained) copy.append(el('p', 'gcsp-note', 'Replacement isn\u2019t available for this car.'));
+  if (actions.childElementCount) copy.append(actions);
   feature.append(mediaColumn(media), copy);
   controls.rateCar?.(feature);
   return feature;
@@ -431,7 +429,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     const noCar = (message) => { const held = starts.length ? offer.take() : null;
       return statusScreen({ title: 'No current car', message: [message, line && `${line}.`, held?.note.textContent].filter(Boolean).join(' ') || null,
         role: null, actions: starts.length ? [startRow(held)] : [] }); };
-    for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls, Boolean(states[model.state]), offer));
+    for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls, Boolean(states[model.state]), offer, Boolean(!journey && buddy)));
     for (const car of model.currentOrders) wrap.append(orderCurrentCar(car, order, orderVehicle));
     const shownNoCar = none && (model.carReturned || !(ordered && order.outcome !== 'declined'));
     if (shownNoCar) wrap.append(noCar(model.carReturned ? 'Your previous car has been returned. Your new car becomes current at handover.'
@@ -507,7 +505,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     region = el('section', 'gcsp-account-preferences'); region.id = 'gcsp-account-preferences';
     if (preferences) {
       region.setAttribute('aria-label', 'Your preferences');
-      regionTeardown = preferences(region, { signal: abort.signal, describeCar });
+      regionTeardown = preferences(region, { signal: abort.signal, describeCar, buddyControls: Boolean(activityAdapter) });
       const found = regionTeardown?.controller;
       if (['rate', 'subscribe', 'snapshot'].every((name) => typeof found?.[name] === 'function')) {
         rater = found; stopRater = rater.subscribe(showRatings);
@@ -543,7 +541,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     if (!ratings.has(id)) {
       const description = carDescription(feature);
       const question = `How highly do you rate your ${description}?`;
-      ratings.set(id, starRating({ label: question, help: question, value: lane.value, overlay: true, onChange: (next) => rater.rate(next, id), onRetry: () => rater.retry(),
+      ratings.set(id, starRating({ label: question, help: question, value: lane.value, overlay: true, pill: true, onChange: (next) => rater.rate(next, id), onRetry: () => rater.retry(),
         announce: (text) => { live.clear(); live.announce(text); } }));
     }
     feature.querySelector('.vm-card-media')?.append(ratings.get(id).root);

@@ -45,7 +45,8 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
   const root = el('section', 'gcsp-prefs'); root.setAttribute('aria-labelledby', `${id}-title`);
   const title = el('h2', 'gcsp-h2', 'Your preferences'); title.id = `${id}-title`; title.tabIndex = -1;
   const head = el('div', 'gcsp-prefs-head'); const intro = el('div');
-  intro.append(title, el('p', 'gcsp-note', `Choose at least ${minimum} categories. Tell your buddy what matters.`));
+  const guidance = el('p', 'gcsp-note', `Choose at least ${minimum} categories. Tell your buddy what matters.`);
+  intro.append(title, guidance);
   const understanding = el('div', 'gcsp-prefs-understanding'); understanding.dataset.slot = 'understanding';
   let meter = null;
   if (meterOptions) { meter = understandingMeter({ id: `${id}-understanding`, label: meterOptions.label, maximum: meterOptions.maximum }); understanding.append(meter.root); }
@@ -53,16 +54,30 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
   const mode = el('div', 'gcsp-prefs-mode'); mode.dataset.slot = 'mode';
   let same = null;
   if (sameOptions) {
+    const choice = sameOptions.mode === 'choice'; root.classList.toggle('gcsp-prefs-choice', choice);
     const field = checkboxField({ id: `${id}-same-again`, label: 'Same again, please!', switch: true, onChange: (on) => { same.tip.hide(); sameOptions.onToggle?.(on); } });
     field.root.classList.add('gcsp-same-switch');
     const info = button({ label: '', variant: 'ghost' }); info.classList.add('gcsp-prefs-info');
     info.setAttribute('aria-label', 'About Same again, please!'); info.append(svgIcon(ICONS.info));
     field.root.replaceChildren(field.root.querySelector('label'), info, field.input);
-    const tip = helpTip({ host: field.root, triggers: [info], id: `${id}-same-again-help`, placement: 'below-start', dismissOnActivate: false,
+    const tip = helpTip({ host: choice ? mode : field.root, triggers: [info], id: `${id}-same-again-help`, placement: 'below-start', dismissOnActivate: false,
       text: sameTipText(sameOptions.description) });
     const note = el('p', 'gcsp-note gcsp-prefs-same-note'); note.id = `${id}-same-again-note`; note.hidden = true;
     field.input.setAttribute('aria-describedby', tip.root.id);
-    mode.append(field.root, note); same = { field, note, tip, info };
+    let custom = null; let summary = null; let summaryTitle = null;
+    if (choice) {
+      const group = el('fieldset', 'gcsp-prefs-mode-choices'); group.append(el('legend', 'gcsp-prefs-mode-label', 'Next car preference mode'));
+      field.root.className = 'gcsp-prefs-mode-option'; field.input.type = 'radio'; field.input.name = `${id}-mode`; field.input.value = 'same'; field.input.removeAttribute('role');
+      const label = field.root.querySelector('label'); field.root.replaceChildren(field.input, label);
+      const customField = checkboxField({ id: `${id}-custom`, label: 'Set my preferences', onChange: () => { same.tip.hide(); sameOptions.onToggle?.(false); } });
+      customField.root.className = 'gcsp-prefs-mode-option'; custom = customField.input; custom.type = 'radio'; custom.name = `${id}-mode`; custom.value = 'custom';
+      group.append(customField.root, field.root); mode.append(group, info);
+      summary = el('div', 'gcsp-prefs-same-summary'); summary.hidden = true;
+      summaryTitle = el('h3', '', `More like your ${sameOptions.description || 'current car'}`);
+      summary.append(summaryTitle, el('p', 'gcsp-note', 'Your current car guides the search. Your custom preferences are kept for later.'));
+      mode.append(summary);
+    } else mode.append(field.root);
+    mode.append(note); same = { field, note, tip, info, choice, custom, summary, summaryTitle };
   }
   const tiles = el('div', 'gcsp-prefs-tiles'); const panelId = `${id}-panel`;
   const nodes = new Map();
@@ -167,6 +182,8 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
   function patchSame(sameOn, disabled) {
     const view = state.sameAgain ?? {}; const available = view.available !== false; const reason = available ? '' : (SAME_AGAIN_REASONS[view.reason] ?? SAME_AGAIN_REASONS['no-current-car']);
     same.field.input.checked = sameOn; same.field.input.disabled = disabled || !available;
+    if (same.custom) { same.custom.checked = !sameOn; same.custom.disabled = disabled; }
+    if (same.summary) same.summary.hidden = !sameOn;
     same.note.hidden = available; same.note.textContent = reason;
     // No identified car, no target to describe: hide the help and let the visible reason describe the switch.
     same.info.hidden = !available; if (!available) same.tip.hide(); same.field.input.setAttribute('aria-describedby', available ? same.tip.root.id : same.note.id);
@@ -179,6 +196,7 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
     root.classList.toggle('is-disabled', disabled); root.classList.toggle('is-same-again', sameOn);
     meter?.update({ value: state.understanding?.value ?? 0, maximum: state.understanding?.maximum ?? meterOptions.maximum, pending: Boolean(state.understanding?.pending), failed: Boolean(state.understanding?.failed) });
     if (same) patchSame(sameOn, disabled);
+    tiles.hidden = Boolean(same?.choice && sameOn); guidance.hidden = Boolean(same?.choice && sameOn);
     for (const category of categories) {
       const view = nodes.get(category.key); const entry = entryOf(category.key); const considered = entry.state === 'considered';
       const high = considered && entry.importance === 'high' && !sameOn; const text = chosenLabels(category, entry).join(', ');
@@ -200,7 +218,7 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
       if (!removal.hidden) { const keep = buildRemoval(shownRemoval); if (mounted && refocusAllowed()) keep.focus(); } else removal.replaceChildren();
     }
     for (const control of removal.querySelectorAll('button')) control.disabled = disabled;
-    if (actionButton) { actionButton.textContent = state.action?.label ?? ''; actionButton.disabled = disabled || Boolean(state.action?.disabled); }
+    if (actionButton) { action.hidden = state.action?.hidden === true; actionButton.textContent = state.action?.label ?? ''; actionButton.disabled = disabled || Boolean(state.action?.disabled); }
     patchStatus();
   }
 
@@ -210,7 +228,7 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
     focusCategory: (key) => nodes.get(key)?.open.focus(),
     focusStatus() { status.tabIndex = -1; status.focus(); },
     get actionButton() { return actionButton; },
-    setSameAgainDescription(description) { same?.tip.setText(sameTipText(description)); },
+    setSameAgainDescription(description) { same?.tip.setText(sameTipText(description)); if (same?.summaryTitle) same.summaryTitle.textContent = `More like your ${description || 'current car'}`; },
     destroy() { same?.tip.destroy(); root.remove(); parts = null; nodes.clear(); },
   };
 }

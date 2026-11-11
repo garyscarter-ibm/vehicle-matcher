@@ -1,0 +1,5 @@
+/* The compact pill keeps an opaque light surface over any photograph. */
+.gcsp .gcsp-star-rating-pill .gcsp-star-row { padding: var(--gcsp-space-1) var(--gcsp-space-2); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-space-6); background: var(--gcsp-surface); box-shadow: var(--gcsp-elevation-overlay); }
+.gcsp .gcsp-star-rating-pill .gcsp-star { width: 32px; height: 32px; border-radius: var(--gcsp-space-4); }
+.gcsp .gcsp-star-rating-pill .gcsp-star svg { width: 18px; height: 18px; color: var(--gcsp-warning); }
+@media (pointer: coarse) { .gcsp .gcsp-star-rating-pill .gcsp-star { width: 44px; height: 44px; } }
