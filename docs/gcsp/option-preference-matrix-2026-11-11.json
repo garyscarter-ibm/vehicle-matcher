@@ -59150,7 +59150,7 @@
       "visible": false,
       "importance": 100,
       "importanceLabel": "More important",
-      "desiredDirection": "More desirable distinct fitted capabilities"
+      "desiredDirection": "Higher total desirability weight of distinct fitted capabilities"
     },
     {
       "key": "body",
@@ -59204,17 +59204,26 @@
     },
     "wellSpecified": {
       "0": "Excluded",
-      "1": "Count once if actually present and usable, deduplicated by distinct capability",
+      "1": "Normal desirable capability: weight 1, counted once if actually present and usable",
       "Bundle": "Resolve contents and count unique usable capabilities; a confirmed usable unresolved bundle may contribute one fallback benefit, never plus its constituents",
-      "Unknown": "No credit pending readable description"
+      "Unknown": "No credit pending readable description",
+      "2": "Especially desirable capability: weight 2, counted once after capability deduplication",
+      "3": "Exceptional or unicorn capability: suggested weight 3, counted once after capability deduplication"
     },
     "hiddenPreference": "Always active at importance100 (More important), participates in the same weighted preference-fit calculation; does not add visible controls or count as a user-completed input.",
     "integration": "Apply option evidence inside each selected visible preference, using its existing importance; do not create a second independent sport/luxury bonus. Keep essentials, points caps and points-usage ranking unchanged.",
-    "normalisation": "Monotonic bounded count-to-score calibration still needs implementation; more desirable distinct capabilities must never lower the hidden score. Use one scale across the eligible candidate set, not per option code or package name.",
+    "normalisation": "Monotonic bounded weighted-total-to-score calibration still needs implementation. More desirable distinct capabilities or a higher reviewed weight must never lower the hidden score. Use one common scale across the eligible candidate set.",
     "deduplication": "Benefit groups flag minimum overlap, not a complete bill of materials. Resolve model-specific pack contents and tiers before counting. Use highest tier per capability. Separate functions such as seat heating and ventilation can each count once. Visible preference evidence also uses the strongest signal once per underlying capability: package plus roll-up markers never stack, and each dimension stays bounded.",
     "leadLabel": "The primary description is a lead source label, not a universal label. Resolve descriptionVariants by model/trim before matching or displaying equipment. Source-reported optionType and normalized review category are separate fields.",
     "evidenceBoundary": "Observed option dictionary availability does not prove a feature is fitted. Registered selection proves selected configuration, not VIN verification. Only selected/fitted and active usable features may affect a vehicle score. Unknowns get no invented evidence.",
     "tradeoffs": "Negative evidence is proposed only for explicit suspension tradeoffs. Wheel size alone never proves sport performance or poor comfort. Body/fuel remain model facts. Size only has weak proposed legroom evidence for sliding rear seats.",
-    "baseline": "Baseline compliance/safety/admin, colour-only choices and preparatory/deletion codes are excluded. Premium aesthetics/materials have explicit subjective mappings for review."
+    "baseline": "Baseline compliance/safety/admin, colour-only choices and preparatory/deletion codes are excluded. Premium aesthetics/materials have explicit subjective mappings for review.",
+    "wellSpecifiedWeights": {
+      "numericRule": "Any non-negative numeric weight is accepted for review; 0 excludes, 1 is normal, 2 highly desirable, 3 exceptional/unicorn. Higher values remain possible if the collaborator deliberately chooses them.",
+      "meaning": "Sum desirability weights after deduplicating underlying capabilities; this replaces a raw option count.",
+      "overlap": "For duplicate codes or tiers describing the same capability, take the highest applicable reviewed weight once. Never sum a package weight and the same included components.",
+      "importance": "Keep the hidden preference importance fixed at100 (More important). Option desirability weight and preference importance are different controls.",
+      "reviewWorkbook": "The open XLSX was preserved. Reviewers can type weights above1 directly into Well-specified; reconcile those saved values and update its guide after review."
+    }
   }
 }
