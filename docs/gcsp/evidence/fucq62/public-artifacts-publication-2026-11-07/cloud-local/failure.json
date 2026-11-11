@@ -1,7 +1,0 @@
-{
-  "phase": "cloud-local",
-  "name": "TypeError",
-  "message": "Staged store failed validation",
-  "code": null,
-  "stderr": null
-}

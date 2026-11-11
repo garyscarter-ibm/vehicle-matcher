@@ -19,3 +19,10 @@ node_modules/
 
 # Full Jira export stays private; retrieval is documented in the migration record.
 /docs/gcsp/jira-migration-2026-11-03/source-export.json
+
+# Historical GCSP captures live in the external archive. Keep concise Markdown
+# summaries here; existing tracked fixtures/proof inputs remain tracked.
+# Put new executable fixtures in server/test/fixtures and reusable tools in _tools.
+/docs/gcsp/evidence/**
+!/docs/gcsp/evidence/**/
+!/docs/gcsp/evidence/**/*.md
