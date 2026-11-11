@@ -383,11 +383,22 @@ test('an allocated hold or allocated/pending claim on another slot blocks the sa
 test('FUCQ-371: the hold quote re-evaluation applies the same saved feedback as the allocation proposal', async (t) => {
   const typed = { currentCarRating: rating(5, 'current:employee-paula'), sameAgain: sameAgain(true, 'current:employee-paula') };
   const same = { modelLine: fact('G21 Touring'), eligibilityModelKey: fact('G21 Touring|320i'), body: fact('estate') };
-  const f = await setup(t, { facts: same, typed }); const candidate = await allocationCandidate(f, { feedback: true });
+  // This fixture identifies the complete current specification explicitly; the
+  // demo employee's textual current-car description does not establish it.
+  const identified = async (facts) => {
+    const f = await setup(t, { facts, typed });
+    const employee = (await f.repository.read(f.context, rowRef(f, 'employees', { employeeId: f.context.employeeId }))).value;
+    const contract = structuredClone(employee.contract);
+    const current = contract.manualContext.contracts.find((row) => row.contractId === 'current:employee-paula');
+    current.vehicle.configurationId = f.car.configurationId;
+    assert.equal((await patch(f, 'employees', { employeeId: f.context.employeeId }, { contract })).status, 'ok');
+    return f;
+  };
+  const f = await identified(same); const candidate = await allocationCandidate(f, { feedback: true });
   assert.ok(candidate.quote.reasons.some((r) => r.code === 'same-again-match'));
   const held = await f.service.tryClaim(f.context, candidate); assert.equal(held.status, 'ok', JSON.stringify(held));
-  const plain = await setup(t, { facts: same, typed }); const unaware = await allocationCandidate(plain);
+  const plain = await identified(same); const unaware = await allocationCandidate(plain);
   assert.equal((await plain.service.tryClaim(plain.context, unaware)).reason, 'allocation-quote-versions-mismatch', 'a proposal without the feedback no longer agrees');
-  const other = await setup(t, { facts: { ...same, body: fact('suv') }, typed });
+  const other = await identified({ ...same, body: fact('suv') });
   assert.equal((await other.service.tryClaim(other.context, { ...candidate, orderUuid: other.car.orderUuid })).status, 'conflict');
 });

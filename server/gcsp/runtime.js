@@ -15,6 +15,7 @@ import { createComparisonJobService } from './comparison/jobs.js';
 import { createOrderPlanOperations } from './predict/plan/index.js';
 import { createScenarioService } from './scenarios/index.js';
 import { adoptEmployeeExperiencePolicy } from './policy/employee-experience-adoption.js';
+import { adoptRetainedModelFacts } from './stock/model-facts-upgrade.js';
 import { createSyntheticManualStockAdapter } from './adapters/manual-stock.js';
 import { createManualClaimsService } from './manual-claims/index.js';
 import { createBuddyHoldService } from './offers/buddy-hold.js';
@@ -213,6 +214,8 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       const adopted = await adoptEmployeeExperiencePolicy({ policy, identity, clock });
       if (adopted.status !== 'ok') { await close(); return adopted; }
     }
+    const upgradedStock = await adoptRetainedModelFacts({ repository, identity });
+    if (upgradedStock.status !== 'ok') { await close(); return upgradedStock; }
     // Best effort: a source that cannot prepare the first run is chosen again on its first pull.
     if (typeof pullProvider?.prepareRun === 'function') {
       try {
