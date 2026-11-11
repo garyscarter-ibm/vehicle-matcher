@@ -14746,6 +14746,21 @@
       "sourceDate": "2026-11-09",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "brief.engagement.v1",
+      "value": {
+        "schemaVersion": 1,
+        "grants": { "search": true, "hold": true },
+        "onMinimumLoss": "disengage"
+      },
+      "unit": "Buddy search and hold grants on engage, and the action when the Account minimum is lost",
+      "status": "assumed",
+      "basis": "Revisable mockup design rule: engaging Buddy grants search and hold together, and an edit that drops below the Account minimum disengages. Not verified BMW policy.",
+      "source": "docs/gcsp/mockups/account-preferences-2026-11-10/FROZEN-REFERENCE.md (frozen reference 193cbf07)",
+      "sourceDate": "2026-11-11",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }

@@ -264,17 +264,21 @@ test('stale versions write nothing, a retried command is idempotent and an accep
   // A stale unmatched draft is the same refresh the editor read returns.
   assert.equal((await f.brief.confirm(f.context, { commandId: 'confirm', expectedBriefVersion: 0, expectedDraftVersion: 2 })).status, 'ok');
   assert.equal((await save(f, { comfort: { value: 100 } }, 2, 1, 'after-confirm')).status, 'ok');
-  assert.equal((await f.brief.pause(f.context, { commandId: 'pause', expectedBriefVersion: 1 })).status, 'ok');
+  // Pause needs held consent (FUCQ-370): grant it, leave an unmatched draft, then pause.
+  assert.equal((await f.brief.confirm(f.context, { commandId: 'consent', expectedBriefVersion: 1, expectedDraftVersion: 3, consent: { search: true, hold: true } })).status, 'ok');
+  assert.equal((await f.brief.saveDraft(f.context, { commandId: 'unmatched', expectedBriefVersion: 2, expectedDraftVersion: 3,
+    brief: { ...(await draftOf(f)).brief, preferences: { comfort: preference(0, 50) } } })).status, 'ok');
+  assert.equal((await f.brief.pause(f.context, { commandId: 'pause', expectedBriefVersion: 2 })).status, 'ok');
   assert.equal((await f.editor.readEditor(f.context)).status, 'stale-version');
-  assert.equal((await save(f, { comfort: { value: 0 } }, 3, 2, 'stale-draft')).status, 'stale-version');
+  assert.equal((await save(f, { comfort: { value: 0 } }, 4, 3, 'stale-draft')).status, 'stale-version');
   // After an accept the brief is read-only.
   const accepted = createBriefEditorService({ ...f, brief: { readDraft: (c) => f.brief.readDraft(c), readHistory: (c) => f.brief.readHistory(c),
     saveDraft: (...a) => f.brief.saveDraft(...a), async readCurrent(c) {
       const r = await f.brief.readCurrent(c); r.value.activity.existingOffers = [{ offerId: 'o1', state: 'accepted', briefVersion: 1 }]; return r;
     } } });
-  const blocked = await accepted.savePreferences(f.context, { commandId: 'late', expectedBriefVersion: 2, expectedDraftVersion: 3, changes: { size: { value: 100 } } });
+  const blocked = await accepted.savePreferences(f.context, { commandId: 'late', expectedBriefVersion: 3, expectedDraftVersion: 4, changes: { size: { value: 100 } } });
   assert.equal(blocked.status, 'conflict'); assert.equal(blocked.reason, 'brief-read-only');
-  assert.equal((await f.brief.readDraft(f.context)).value.draftVersion, 3);
+  assert.equal((await f.brief.readDraft(f.context)).value.draftVersion, 4);
   // Wrong role and a different employee are refused by the existing guards.
   assert.equal((await f.editor.savePreferences(f.presenter.value.context, { commandId: 'p', expectedBriefVersion: 0, expectedDraftVersion: 0, changes: { size: null } })).status, 'forbidden');
   assert.equal((await createBriefEditorService().savePreferences(f.context, { commandId: 'u', expectedBriefVersion: 0, expectedDraftVersion: 0, changes: { size: null } })).status, 'unavailable');

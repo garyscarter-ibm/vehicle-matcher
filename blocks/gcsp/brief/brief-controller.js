@@ -92,7 +92,7 @@ export function createBriefController({ context, initial = {}, transport, create
     || context.slider.minimum > context.slider.maximum || !transport
     || !['preview', 'saveDraft', 'confirm'].every((key) => typeof transport[key] === 'function')
     || typeof createCommandId !== 'function') throw new TypeError('Supply editor context and transport ports.');
-  if (!only(initial, ['brief', 'briefVersion', 'draftVersion', 'consent', 'accountPreferences', 'currentCarRating', 'sameAgain'])
+  if (!only(initial, ['brief', 'briefVersion', 'draftVersion', 'consent', 'accountPreferences', 'currentCarRating', 'sameAgain', 'buddy'])
     || !revision(initial.briefVersion ?? 0) || !revision(initial.draftVersion ?? 0)) throw new TypeError('Invalid initial versions.');
   const brief = initial.brief ?? { schemaVersion: 1, preferences: {}, essentials: {} };
   if (!validateBrief(brief, context)) throw new TypeError('Invalid initial brief.');

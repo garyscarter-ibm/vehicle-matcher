@@ -17,6 +17,8 @@ const unavailable = () => result('unavailable', { reason: 'The brief service is 
 const stale = (field, expectedVersion, currentVersion) => result('stale-version', {
   expectedVersion, currentVersion, resource: { table: field === 'draft' ? 'brief-draft' : 'briefs' }, action: 'refresh',
 });
+const engagedNow = (b) => b?.buddy?.searchConsent === true && b.buddy.holdConsent === true && b.buddy.paused === false;
+const ENGAGEMENT_KEY = 'brief.engagement.v1';
 const draftConsumer = (context) => `brief:draft:${context.employeeId}`;
 const sorted = (rows) => rows.filter((b) => b.status === 'confirmed').sort((a, b) => a.briefVersion - b.briefVersion);
 const draftRows = (rows) => rows.map((r) => r.outcome.value).sort((a, b) => a.draftVersion - b.draftVersion);
@@ -110,6 +112,28 @@ export class BriefService {
     return { status: 'ok', brief: { ...next, briefVersion: version + 1 }, before: null, after };
   }
 
+  // Grants and the minimum-loss rule; null when the entry is missing or malformed (engagement then fails closed).
+  async #engagement(read) {
+    const found = await this.#policy.getAssumption(ENGAGEMENT_KEY, read);
+    const v = found?.value?.value; const g = v?.grants;
+    if (found?.status !== 'ok' || found.policyVersion !== read.policyVersion || !['assumed', 'verified'].includes(found.value?.status)
+      || !only(v, ['schemaVersion', 'grants', 'onMinimumLoss']) || v.schemaVersion !== 1 || v.onMinimumLoss !== 'disengage'
+      || !only(g, ['search', 'hold']) || typeof g.search !== 'boolean' || typeof g.hold !== 'boolean') return null;
+    return { grants: { search: g.search, hold: g.hold } };
+  }
+
+  // Confirmed content from a draft's brief: validated for confirmation, states confirmed, known facts refreshed.
+  async #confirmedContent(tx, context, prepared, source) {
+    const error = this.#validate(source, prepared, true); if (error) return { error };
+    const brief = structuredClone(source);
+    brief.preferences = Object.fromEntries(Object.entries(brief.preferences).map(([key, p]) => [key, { ...p, valueState: 'confirmed', importanceState: 'confirmed', confirmedAt: prepared.now }]));
+    brief.essentials = Object.fromEntries(Object.entries(brief.essentials).map(([key, e]) => [key, e.state === 'needs-confirmation' ? e : { ...e, state: 'confirmed', confirmedAt: prepared.now }]));
+    if (brief.currentCarFeedback) brief.currentCarFeedback.state = 'confirmed';
+    const facts = await this.#knownFacts(tx, context, prepared.now); if (facts.status !== 'ok') return { error: facts };
+    brief.knownFacts = facts.value;
+    return { brief };
+  }
+
   async #state(reader, context) {
     const versions = await reader('briefs', { employeeId: context.employeeId });
     if (versions.status !== 'ok') return { error: versions };
@@ -155,19 +179,27 @@ export class BriefService {
   readHistory(context) { return this.#read(context, 'history'); }
   readDraft(context) { return this.#read(context, 'draft'); }
 
-  async saveDraft(context, input) { return this.#write(context, input, 'draft'); }
+  // The options argument is internal (editor to service only); HTTP routes never pass it.
+  async saveDraft(context, input, options) { return this.#write(context, input, 'draft', options); }
+  async engage(context, input, options) { return this.#write(context, input, 'engaged', options); }
+  async disengage(context, input, options) { return this.#write(context, input, 'disengaged', options); }
   async confirm(context, input) { return this.#write(context, input, 'confirmed'); }
   async pause(context, input) { return this.#write(context, input, 'paused'); }
   async resume(context, input) { return this.#write(context, input, 'resumed'); }
   async changeAfterDecline(context, input) { return this.#write(context, input, 'changed-after-decline'); }
 
-  async #write(context, input, operation) {
+  async #write(context, input, operation, options) {
     const prepared = await this.#prepare(context); if (prepared.error) return prepared.error;
     const drafting = operation === 'draft'; const confirming = operation === 'confirmed'; const decline = operation === 'changed-after-decline';
-    const fields = ['commandId', 'expectedBriefVersion', ...(drafting || confirming ? ['expectedDraftVersion'] : []),
+    const engaging = operation === 'engaged' || operation === 'disengaged'; const withDraft = drafting || confirming || engaging;
+    // Internal gate from the editor: the minimum evaluated on the content at these exact versions.
+    const gate = object(options?.gate) && typeof options.gate.ok === 'boolean' && revision(options.gate.briefVersion) && revision(options.gate.draftVersion)
+      ? options.gate : null;
+    const fields = ['commandId', 'expectedBriefVersion', ...(withDraft ? ['expectedDraftVersion'] : []),
       ...(drafting ? ['brief'] : confirming ? ['consent'] : decline ? ['decisionId', 'change'] : [])];
     if (!only(input, fields) || !text(input.commandId) || !revision(input.expectedBriefVersion)
-      || (drafting || confirming) && !revision(input.expectedDraftVersion)) return invalid('command', 'Supply a command ID and expected versions.', 'invalid-command');
+      || withDraft && !revision(input.expectedDraftVersion)) return invalid('command', 'Supply a command ID and expected versions.', 'invalid-command');
+    if (operation === 'engaged' && !gate) return invalid('engagement', 'Engage Buddy through the Account editor.', 'engagement-gate-required');
     if (drafting) { const error = this.#validate(input.brief, prepared); if (error) return error; }
     if (confirming && input.consent !== undefined && (!only(input.consent, ['search', 'hold'])
       || typeof input.consent.search !== 'boolean' || typeof input.consent.hold !== 'boolean')) return invalid('consent', 'Explicitly choose search and hold permission independently.');
@@ -180,7 +212,14 @@ export class BriefService {
       const state = await this.#state(reader, context); if (state.error) return state.error;
       const version = state.current?.briefVersion ?? 0;
       if (input.expectedBriefVersion !== version) return stale('brief', input.expectedBriefVersion, version);
-      if ((drafting || confirming) && input.expectedDraftVersion !== (state.draft?.draftVersion ?? 0)) return stale('draft', input.expectedDraftVersion, state.draft?.draftVersion ?? 0);
+      if (withDraft && input.expectedDraftVersion !== (state.draft?.draftVersion ?? 0)) return stale('draft', input.expectedDraftVersion, state.draft?.draftVersion ?? 0);
+      if (gate && gate.briefVersion !== version) return stale('brief', gate.briefVersion, version);
+      if (gate && gate.draftVersion !== (state.draft?.draftVersion ?? 0)) return stale('draft', gate.draftVersion, state.draft?.draftVersion ?? 0);
+      let recorded = operation; let draftValue = null; let transition = null; let brief = null;
+      const pending = state.draft && state.draft.baseBriefVersion === version ? state.draft : null;
+      const heldNow = engagedNow(state.current);
+      const disengaged = (extra) => { const { disengagedReason: _gone, ...rest } = state.current?.buddy ?? {};
+        return { ...rest, enabled: false, searchConsent: false, holdConsent: false, paused: false, permissionVersion: version + 1, disengagedAt: prepared.now, ...extra }; };
       if (drafting) {
         const facts = await this.#knownFacts(tx, context, prepared.now); if (facts.status !== 'ok') return facts;
         const value = { runId: context.runId, employeeId: context.employeeId, draftVersion: (state.draft?.draftVersion ?? 0) + 1,
@@ -188,26 +227,52 @@ export class BriefService {
           savedBy: context.principalId, savedAt: prepared.now };
         const stored = await tx.recordReceipt({ consumerId: draftConsumer(context), eventId: String(value.draftVersion), inputDigest: digest,
           eventType: 'brief-draft-saved', state: 'completed', outcome: ok(value), createdAt: prepared.now, updatedAt: prepared.now });
-        return stored.status === 'ok' ? ok(value) : stored;
-      }
-      if (!confirming && !state.current || confirming && !state.draft) return result('not-found', { resourceType: confirming ? 'brief-draft' : 'brief' });
-      if (confirming && state.draft.baseBriefVersion !== version) return stale('brief', state.draft.baseBriefVersion, version);
-      let brief = structuredClone(confirming ? state.draft.brief : state.current);
-      if (confirming) {
-        const error = this.#validate(brief, prepared, true); if (error) return error;
-        brief.preferences = Object.fromEntries(Object.entries(brief.preferences).map(([key, p]) => [key, { ...p, valueState: 'confirmed', importanceState: 'confirmed', confirmedAt: prepared.now }]));
-        brief.essentials = Object.fromEntries(Object.entries(brief.essentials).map(([key, e]) => [key, e.state === 'needs-confirmation' ? e : { ...e, state: 'confirmed', confirmedAt: prepared.now }]));
-        if (brief.currentCarFeedback) brief.currentCarFeedback.state = 'confirmed';
+        if (stored.status !== 'ok') return stored;
+        // While consent is held an autosave is also a confirmed version, so the search never runs on older choices.
+        if (!gate || state.current?.buddy?.searchConsent !== true) return ok(value);
+        if (!await this.#engagement(prepared.read)) return unavailable();
+        const made = await this.#confirmedContent(tx, context, prepared, input.brief); if (made.error) return made.error;
+        draftValue = value; brief = made.brief;
+        if (gate.ok) { recorded = 'preferences-updated'; brief.buddy = structuredClone(state.current.buddy); }
+        else { recorded = 'disengaged'; transition = 'minimum-lost'; brief.buddy = disengaged({ disengagedReason: 'minimum-lost' }); }
+      } else if (engaging) {
+        const offers = await tx.list('offers', { employeeId: context.employeeId }); if (offers.status !== 'ok') return offers;
+        if (operation === 'engaged' && !state.current && !pending) return result('not-found', { resourceType: 'brief' });
+        if (offers.value.some((o) => o.state === 'accepted')) return result('conflict', { reason: 'brief-read-only', current: { briefVersion: version } });
+        if (operation === 'engaged' ? heldNow : !heldNow) return result('conflict', { reason: operation === 'engaged' ? 'already-engaged' : 'already-disengaged', current: { briefVersion: version } });
+        // A pending draft is the latest saved brief; otherwise the current confirmed brief is copied.
+        const base = pending ? await this.#confirmedContent(tx, context, prepared, pending.brief) : { brief: structuredClone(state.current) };
+        if (base.error) return base.error;
+        if (operation === 'engaged') {
+          const grants = await this.#engagement(prepared.read); if (!grants) return unavailable();
+          if (!gate.ok) {
+            const n = gate.remaining;
+            return result('invalid', { code: 'engagement-minimum', remaining: n, considered: gate.considered, minimumCategories: gate.minimumCategories,
+              reasons: [{ field: 'categories', reason: `Choose ${n} more ${n === 1 ? 'category' : 'categories'} or turn on Same again to engage Buddy.` }] });
+          }
+          brief = base.brief;
+          brief.buddy = { enabled: grants.grants.search, searchConsent: grants.grants.search, holdConsent: grants.grants.hold, paused: false, permissionVersion: version + 1,
+            engagedBy: context.principalId, engagedAt: prepared.now, confirmedBy: context.principalId, confirmedAt: prepared.now };
+        } else {
+          brief = base.brief;
+          brief.buddy = disengaged();
+        }
+      } else if (confirming && !state.draft || !confirming && !state.current) return result('not-found', { resourceType: confirming ? 'brief-draft' : 'brief' });
+      else if (confirming && state.draft.baseBriefVersion !== version) return stale('brief', state.draft.baseBriefVersion, version);
+      else if (confirming) {
+        const made = await this.#confirmedContent(tx, context, prepared, state.draft.brief); if (made.error) return made.error;
+        brief = made.brief;
         brief.buddy = { enabled: input.consent?.search === true, searchConsent: input.consent?.search === true,
           holdConsent: input.consent?.hold === true, paused: false, permissionVersion: version + 1,
           confirmedBy: context.principalId, confirmedAt: prepared.now };
-        const facts = await this.#knownFacts(tx, context, prepared.now); if (facts.status !== 'ok') return facts;
-        brief.knownFacts = facts.value;
       } else if (operation === 'paused' || operation === 'resumed') {
+        brief = structuredClone(state.current);
+        if (operation === 'paused' && brief.buddy?.searchConsent !== true) return result('conflict', { reason: 'not-engaged', current: { briefVersion: version } });
         if (brief.buddy.paused === (operation === 'paused')) return result('conflict', { reason: operation === 'paused' ? 'already-paused' : 'already-resumed', current: { briefVersion: version } });
         brief.buddy = { ...brief.buddy, paused: operation === 'paused', permissionVersion: version + 1,
           ...(operation === 'paused' ? { pausedAt: prepared.now } : { resumedAt: prepared.now }) };
       } else {
+        brief = structuredClone(state.current);
         const decision = await tx.get({ table: 'decisions', key: { runId: context.runId, decisionId: input.decisionId } });
         if (decision.status !== 'ok') return decision;
         if (decision.value.employeeId !== context.employeeId) return result('forbidden', { reason: 'The decline belongs to another employee.' });
@@ -236,12 +301,14 @@ export class BriefService {
         version: 1, createdAt: prepared.now, updatedAt: prepared.now };
       const stored = await tx.insert('briefs', brief); if (stored.status !== 'ok') return stored;
       const activity = await this.#activity(reader, context, stored.value); if (activity.status !== 'ok') return activity;
-      const event = { eventId: `brief:${context.employeeId}:${version + 1}`, eventType: 'brief-changed', operation,
+      const event = { eventId: `brief:${context.employeeId}:${version + 1}`, eventType: 'brief-changed', operation: recorded,
         runId: context.runId, employeeId: context.employeeId, briefVersion: version + 1, previousBriefVersion: version || null, occurredAt: prepared.now };
       const receipt = await tx.recordReceipt({ consumerId: 'brief:changes', eventId: event.eventId, inputDigest: digest,
         eventType: event.eventType, inputVersions: { brief: version + 1, policy: context.policyVersion }, state: 'completed', outcome: ok(event),
         createdAt: prepared.now, updatedAt: prepared.now });
-      return receipt.status === 'ok' ? ok({ brief: stored.value, activity: activity.value, validation: this.#validation(stored.value, prepared), event }) : receipt;
+      if (receipt.status !== 'ok') return receipt;
+      return ok(draftValue ? { ...draftValue, confirmed: { briefVersion: version + 1, transition } }
+        : { brief: stored.value, activity: activity.value, validation: this.#validation(stored.value, prepared), event });
     });
   }
 
