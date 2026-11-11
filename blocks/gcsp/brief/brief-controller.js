@@ -39,7 +39,7 @@ function typed(value, definition, slider) {
 }
 
 function validateBrief(brief, context) {
-  if (!only(brief, ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback', 'currentCarRating']) || brief.schemaVersion !== 1
+  if (!only(brief, ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback', 'currentCarRating', 'sameAgain']) || brief.schemaVersion !== 1
     || !object(brief.preferences) || !object(brief.essentials)) return false;
   for (const [key, p] of Object.entries(brief.preferences)) {
     const d = Object.hasOwn(context.preferences, key) && !forbidden.has(key) && context.preferences[key];
@@ -58,6 +58,9 @@ function validateBrief(brief, context) {
   const r = brief.currentCarRating;
   if (r !== undefined && !(only(r, ['value', 'contractId', 'source', 'ratedAt']) && (r.value === null || Number.isInteger(r.value) && r.value >= 1 && r.value <= 5)
     && text(r.contractId) && r.source === 'employee' && text(r.ratedAt) && Number.isFinite(Date.parse(r.ratedAt)))) return false;
+  const a = brief.sameAgain;
+  if (a !== undefined && !(only(a, ['on', 'contractId', 'source', 'setAt']) && typeof a.on === 'boolean' && text(a.contractId)
+    && a.source === 'employee' && text(a.setAt) && Number.isFinite(Date.parse(a.setAt)))) return false;
   const f = brief.currentCarFeedback;
   return f === undefined || only(f, ['preserve', 'change', 'state', 'source']) && states.includes(f.state) && text(f.source)
     && ['preserve', 'change'].every((k) => Array.isArray(f[k]) && f[k].every((v) => !forbidden.has(v) && Object.hasOwn(context.preferences, v)));
@@ -89,7 +92,7 @@ export function createBriefController({ context, initial = {}, transport, create
     || context.slider.minimum > context.slider.maximum || !transport
     || !['preview', 'saveDraft', 'confirm'].every((key) => typeof transport[key] === 'function')
     || typeof createCommandId !== 'function') throw new TypeError('Supply editor context and transport ports.');
-  if (!only(initial, ['brief', 'briefVersion', 'draftVersion', 'consent', 'accountPreferences', 'currentCarRating'])
+  if (!only(initial, ['brief', 'briefVersion', 'draftVersion', 'consent', 'accountPreferences', 'currentCarRating', 'sameAgain'])
     || !revision(initial.briefVersion ?? 0) || !revision(initial.draftVersion ?? 0)) throw new TypeError('Invalid initial versions.');
   const brief = initial.brief ?? { schemaVersion: 1, preferences: {}, essentials: {} };
   if (!validateBrief(brief, context)) throw new TypeError('Invalid initial brief.');

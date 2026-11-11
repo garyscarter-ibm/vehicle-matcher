@@ -4611,23 +4611,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-10T20:00:41Z",
+      "observed_at": "2026-11-11T11:13:41Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-369",
       "slices": [
         {
           "id": "continuity-mode",
-          "status": "not-started",
-          "title": "Saved Same-again override"
+          "status": "complete",
+          "title": "Saved Same-again override",
+          "observed_at": "2026-11-11T11:13:41Z",
+          "evidence": "lead review 2026-11-11T11:2xZ on dev/DEV-2026-11-10-011 after merge bdfe1617: scoped 652 tests, 644 pass, 3 base-only fails, 5 skipped; strict capture 471/471; independent critique findings fixed (33f6f4ec)"
         },
         {
           "id": "understanding",
-          "status": "not-started",
-          "title": "Honest completeness score and mode presentation"
+          "status": "complete",
+          "title": "Honest completeness score and mode presentation",
+          "observed_at": "2026-11-11T11:13:41Z",
+          "evidence": "lead review 2026-11-11T11:2xZ on dev/DEV-2026-11-10-011 after merge bdfe1617: scoped 652 tests, 644 pass, 3 base-only fails, 5 skipped; strict capture 471/471; independent critique findings fixed (33f6f4ec)"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Restoration and connected consumer boundaries"
+          "status": "complete",
+          "title": "Restoration and connected consumer boundaries",
+          "observed_at": "2026-11-11T11:13:41Z",
+          "evidence": "lead review 2026-11-11T11:2xZ on dev/DEV-2026-11-10-011 after merge bdfe1617: scoped 652 tests, 644 pass, 3 base-only fails, 5 skipped; strict capture 471/471; independent critique findings fixed (33f6f4ec)"
         }
       ],
       "unsliced": false

@@ -315,3 +315,185 @@ test('a read-only refusal locks the stars without touching the saved value', asy
   const view = controller.snapshot();
   assert.equal(view.disabled, true); assert.deepEqual(view.rating, { value: 4, contractId: CAR, saved: 4, status: 'idle' });
 });
+
+// FUCQ-369: Same again lane and Buddy understanding; same queue, same coalescing, newest intent wins.
+const POLICY = { maximum: 11, byConsidered: [1, 3, 4], sameAgain: 11 };
+const again = (extra = {}, { on = false, available = true, reason, categories, versions, score } = {}) => {
+  const e = rated(null, { categories, versions }); e.value.context.accountPreferences.understanding = { kind: 'input-completeness', ...POLICY, policyKey: 'k' };
+  const n = Object.values(categories ?? {}).filter((c) => c.state === 'considered').length;
+  e.value.initial.sameAgain = available ? { available: true, on, contractId: CAR } : { available: false, on: false, contractId: null, reason };
+  e.value.initial.accountPreferences.understanding = { kind: 'input-completeness', value: score ?? (on ? 11 : POLICY.byConsidered[n]), maximum: 11 };
+  return Object.assign(e, extra);
+};
+const okAgain = (draftVersion, on, categories = {}, value = on ? 11 : 1) => { const r = okRated(draftVersion, null, categories);
+  r.value.sameAgain = { available: true, on, contractId: CAR }; r.value.accountPreferences.understanding = { kind: 'input-completeness', value, maximum: 11 }; return r; };
+const lane = (c) => c.snapshot().sameAgain; const score = (c) => c.snapshot().understanding;
+
+test('Same again sends only its intent, shows the projected score as pending, then the confirmed one', async () => {
+  const { controller, saves } = harness(again()); await controller.load();
+  assert.deepEqual(lane(controller), { available: true, on: false, reason: null, status: 'idle' }); assert.deepEqual(score(controller), { value: 1, maximum: 11, pending: false, failed: false });
+  controller.toggleSameAgain(true);
+  assert.deepEqual(saves[0].input, { commandId: 'preferences:1', expectedBriefVersion: 1, expectedDraftVersion: 0, changes: {}, sameAgain: { contractId: CAR, on: true } });
+  assert.deepEqual(lane(controller), { available: true, on: true, reason: null, status: 'pending' });
+  assert.deepEqual(score(controller), { value: 11, maximum: 11, pending: true, failed: false }); assert.equal(controller.snapshot().status.text, 'Saving your preferences.');
+  saves[0].answer(okAgain(1, true)); await settle();
+  assert.deepEqual(lane(controller), { available: true, on: true, reason: null, status: 'saved' });
+  assert.deepEqual(score(controller), { value: 11, maximum: 11, pending: false, failed: false });
+  assert.deepEqual(controller.snapshot().status, { kind: 'saved', text: 'Preferences saved automatically.' });
+  controller.toggleSameAgain(false); saves[1].answer(okAgain(2, false)); await settle();
+  assert.equal(lane(controller).on, false); assert.equal(score(controller).value, 1); assert.equal(controller.snapshot().status.text, 'Preferences saved automatically.');
+});
+
+test('rapid on, off, on sends one in flight plus the latest, and a late answer cannot undo the newest choice', async () => {
+  const { controller, saves } = harness(again()); await controller.load();
+  controller.toggleSameAgain(true); controller.toggleSameAgain(false); controller.toggleSameAgain(true);
+  assert.equal(saves.length, 1); assert.equal(lane(controller).on, true);
+  saves[0].answer(okAgain(1, true)); await settle();
+  assert.equal(saves.length, 1, 'the newest choice already matches the saved state, so nothing more is sent');
+  controller.toggleSameAgain(false); controller.toggleSameAgain(true); controller.toggleSameAgain(false);
+  assert.equal(saves.length, 2); assert.equal(saves[1].input.sameAgain.on, false);
+  saves[1].answer(okAgain(2, false)); await settle();
+  assert.equal(saves.length, 2); assert.equal(lane(controller).on, false);
+  controller.toggleSameAgain(true); controller.toggleSameAgain(false);
+  saves[2].answer(okAgain(3, true)); await settle();
+  assert.equal(saves.length, 4, 'the answer for on is followed by the newest, off'); assert.equal(saves[3].input.sameAgain.on, false); assert.equal(lane(controller).on, false, 'the visible value stays the newest');
+});
+
+test('Same again shares the queue with categories and rating: one request carries them in order', async () => {
+  const { controller, saves } = harness(again()); await controller.load();
+  controller.change('comfort', { value: 100 }); controller.toggleSameAgain(true); controller.rate(4, CAR);
+  assert.equal(saves.length, 1); assert.equal('sameAgain' in saves[0].input, false);
+  saves[0].answer(okAgain(1, false, { comfort: considered(100) })); await settle();
+  assert.equal(saves.length, 2); assert.deepEqual(saves[1].input.sameAgain, { contractId: CAR, on: true }); assert.deepEqual(saves[1].input.currentCarRating, { contractId: CAR, value: 4 });
+  assert.deepEqual(saves[1].input.changes, {});
+});
+
+test('queued edits made before an on go out with an explicit off first, then the on follows', async () => {
+  const { controller, saves } = harness(again({}, { on: true, categories: { comfort: considered(0) } }));
+  await controller.load(); controller.toggleSameAgain(false); saves[0].answer(okAgain(1, false, { comfort: considered(0) }, 3)); await settle();
+  controller.change('body', { value: ['estate'] }); controller.toggleSameAgain(true);
+  assert.deepEqual(saves[1].input.changes, { body: { value: ['estate'] } });
+  saves[1].answer(okAgain(2, false, { comfort: considered(0), body: considered(['estate']) }, 4)); await settle();
+  assert.deepEqual(saves[2].input.sameAgain, { contractId: CAR, on: true }); assert.deepEqual(saves[2].input.changes, {});
+});
+
+test('while on, open, change, remove and confirm do nothing and rate still works; turning on closes the panel and removal', async () => {
+  const { controller, saves } = harness(again({}, { categories: { body: considered(['estate']), comfort: considered(100) } })); await controller.load();
+  controller.open('body'); assert.equal(controller.snapshot().open, 'body');
+  controller.toggleSameAgain(true); assert.equal(controller.snapshot().open, null);
+  saves[0].answer(okAgain(1, true, { body: considered(['estate']), comfort: considered(100) })); await settle();
+  controller.open('comfort'); controller.change('body', { value: ['saloon'] }); controller.change('comfort', { importance: 'high' });
+  controller.requestRemove('comfort'); controller.confirmRemove('comfort');
+  const view = controller.snapshot(); assert.equal(view.open, null); assert.equal(view.pendingRemoval, null); assert.equal(saves.length, 1);
+  assert.deepEqual(view.categories.body, considered(['estate'])); assert.deepEqual(view.categories.comfort, considered(100));
+  controller.rate(5, CAR); assert.equal(saves.length, 2); assert.deepEqual(saves[1].input.currentCarRating, { contractId: CAR, value: 5 });
+  controller.toggleSameAgain(false); controller.requestRemove('comfort'); assert.equal(controller.snapshot().pendingRemoval, 'comfort');
+  controller.toggleSameAgain(true); assert.equal(controller.snapshot().pendingRemoval, null, 'turning on drops a pending removal');
+});
+
+test('turning off restores the saved categories exactly and leaves the view unchanged', async () => {
+  const saved = { body: considered(['estate'], 'high'), comfort: considered(100) };
+  const { controller, saves } = harness(again({}, { on: true, categories: saved })); await controller.load();
+  const before = controller.snapshot().categories;
+  controller.toggleSameAgain(false); saves[0].answer(okAgain(1, false, saved, 4)); await settle();
+  assert.deepEqual(controller.snapshot().categories, before); assert.deepEqual(controller.snapshot().categories.body, saved.body);
+});
+
+test('a failed Same again save keeps the attempt, says so, retry reuses the command and a new choice gets a new one', async () => {
+  const { controller, saves } = harness(again()); await controller.load();
+  controller.toggleSameAgain(true); saves[0].answer({ status: 'unavailable', retryable: true }); await settle();
+  assert.deepEqual(controller.snapshot().status, { kind: 'failed', text: 'Same again was not saved.', actionLabel: 'Try again', action: 'retry' });
+  assert.deepEqual(lane(controller), { available: true, on: true, reason: null, status: 'failed' }); assert.deepEqual(score(controller), { value: 11, maximum: 11, pending: true, failed: true });
+  controller.retry(); assert.equal(saves.length, 2); assert.equal(saves[1].input.commandId, saves[0].input.commandId); assert.deepEqual(saves[1].input, saves[0].input);
+  saves[1].answer({ status: 'unavailable', retryable: true }); await settle();
+  controller.toggleSameAgain(false);
+  assert.equal(saves.length, 2, 'back to the saved state needs no request'); assert.equal(lane(controller).on, false); assert.equal(controller.snapshot().status.kind, 'idle', 'and the failure clears');
+  controller.toggleSameAgain(true); assert.equal(saves.length, 3); assert.notEqual(saves[2].input.commandId, saves[1].input.commandId);
+});
+
+test('a retry that succeeds clears the failure and confirms the score', async () => {
+  const { controller, saves } = harness(again()); await controller.load();
+  controller.toggleSameAgain(true); saves[0].answer({ status: 'unavailable', retryable: true }); await settle();
+  controller.retry(); saves[1].answer(okAgain(1, true)); await settle();
+  assert.deepEqual(lane(controller), { available: true, on: true, reason: null, status: 'saved' }); assert.equal(controller.snapshot().status.kind, 'saved');
+  assert.deepEqual(score(controller), { value: 11, maximum: 11, pending: false, failed: false });
+});
+
+test('stale and conflict refusals ask for a reload, which shows the server state', async () => {
+  for (const refusal of [{ status: 'stale-version', action: 'refresh' }, { status: 'conflict', reason: 'current-car-changed', current: { contractId: 'current:new' } }]) {
+    let fresh = again({}, { on: false }); fresh.value.initial.draftVersion = 6;
+    const { controller, saves } = harness(() => fresh); await controller.load();
+    controller.toggleSameAgain(true); saves[0].answer(refusal); await settle();
+    assert.equal(controller.snapshot().status.kind, 'stale'); assert.equal(controller.snapshot().disabled, true);
+    controller.toggleSameAgain(false); assert.equal(saves.length, 1);
+    await controller.reload();
+    assert.deepEqual(lane(controller), { available: true, on: false, reason: null, status: 'idle' }); assert.equal(controller.snapshot().draftVersion, 6);
+  }
+});
+
+test('an invalid Same again answer reverts to the last confirmed state and says it was not saved', async () => {
+  const { controller, saves } = harness(again({}, { categories: { comfort: considered(0) } })); await controller.load();
+  controller.toggleSameAgain(true); saves[0].answer({ status: 'invalid', code: 'invalid-preferences' }); await settle();
+  assert.deepEqual(lane(controller), { available: true, on: false, reason: null, status: 'failed' }); assert.equal(saves.length, 1);
+  assert.deepEqual(controller.snapshot().status, { kind: 'failed', text: 'Same again was not saved.' }); assert.deepEqual(score(controller), { value: 3, maximum: 11, pending: false, failed: false });
+  controller.toggleSameAgain(true); assert.equal(saves.length, 2, 'a fresh choice is sent again');
+});
+
+test('a run reset or access lapse locks the switch and shows the saved value', async () => {
+  for (const [status, kind] of [['access-required', 'access'], ['stale-run', 'restarted']]) {
+    const { controller, saves } = harness(again()); await controller.load();
+    controller.toggleSameAgain(true); saves[0].answer({ status }); await settle();
+    assert.equal(controller.snapshot().status.kind, kind); assert.equal(controller.snapshot().disabled, true); assert.equal(lane(controller).on, false);
+    controller.toggleSameAgain(true); assert.equal(saves.length, 1);
+  }
+});
+
+test('an ok answer without a matching Same again view is a failure, not a save', async () => {
+  for (const answer of [undefined, { available: true, on: true, contractId: 'other:car' }, { available: true, on: 'yes', contractId: CAR }, { available: false, on: false, contractId: null }]) {
+    const { controller, saves } = harness(again()); await controller.load();
+    controller.toggleSameAgain(true); const reply = okAgain(1, true); if (answer === undefined) delete reply.value.sameAgain; else reply.value.sameAgain = answer;
+    saves[0].answer(reply); await settle();
+    assert.equal(lane(controller).status, 'failed', JSON.stringify(answer)); assert.equal(controller.snapshot().draftVersion, 0);
+  }
+});
+
+test('unavailable: the switch is refused locally, the reason is exposed and categories stay editable', async () => {
+  for (const reason of ['no-current-car', 'current-car-unidentified']) {
+    const { controller, saves } = harness(again({}, { available: false, reason })); await controller.load();
+    assert.deepEqual(lane(controller), { available: false, on: false, reason, status: 'idle' });
+    controller.toggleSameAgain(true); assert.equal(saves.length, 0); assert.equal(lane(controller).on, false);
+    controller.change('comfort', { value: 100 }); assert.equal(saves.length, 1); assert.deepEqual(saves[0].input.changes, { comfort: { value: 100 } });
+  }
+  const none = harness(editor()); await none.controller.load(); assert.equal(lane(none.controller), null); assert.equal(score(none.controller), null); none.controller.toggleSameAgain(true); assert.equal(none.saves.length, 0);
+});
+
+test('understanding: confirmed at rest, projected from the policy while a change is pending, for 0 to 2 categories', async () => {
+  const { controller, saves } = harness(again()); await controller.load();
+  assert.equal(score(controller).value, 1);
+  controller.change('comfort', { value: 100 });
+  assert.deepEqual(score(controller), { value: 3, maximum: 11, pending: true, failed: false });
+  controller.change('body', { value: ['estate'] });
+  assert.equal(score(controller).value, 4, 'optimistic count of two');
+  saves[0].answer(okAgain(1, false, { comfort: considered(100) }, 3)); await settle();
+  assert.deepEqual(score(controller), { value: 4, maximum: 11, pending: true, failed: false }, 'still pending: the follow-up is unsent or in flight');
+  saves[1].answer(okAgain(2, false, { comfort: considered(100), body: considered(['estate']) }, 4)); await settle();
+  assert.deepEqual(score(controller), { value: 4, maximum: 11, pending: false, failed: false });
+  controller.requestRemove('comfort'); controller.confirmRemove('comfort');
+  assert.deepEqual(score(controller), { value: 3, maximum: 11, pending: true, failed: false }, 'a removal projects one fewer');
+  saves[2].answer({ status: 'unavailable', retryable: true }); await settle();
+  assert.deepEqual(score(controller), { value: 3, maximum: 11, pending: true, failed: true });
+});
+
+test('rating and importance never change the score', async () => {
+  const { controller, saves } = harness(again({}, { categories: { comfort: considered(100) } })); await controller.load();
+  controller.rate(5, CAR); assert.deepEqual(score(controller), { value: 3, maximum: 11, pending: false, failed: false });
+  saves[0].answer(okAgain(1, false, { comfort: considered(100) }, 3)); await settle();
+  controller.change('comfort', { importance: 'high' }); assert.equal(score(controller).value, 3);
+  saves[1].answer(okAgain(2, false, { comfort: considered(100, 'high') }, 3)); await settle();
+  assert.deepEqual(score(controller), { value: 3, maximum: 11, pending: false, failed: false });
+});
+
+test('without a policy projection the score is absent, and the editor still works', async () => {
+  const e = again(); delete e.value.context.accountPreferences.understanding;
+  const { controller } = harness(e); await controller.load(); assert.equal(score(controller), null); assert.equal(lane(controller).available, true);
+});
