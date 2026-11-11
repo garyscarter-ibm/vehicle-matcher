@@ -2,7 +2,7 @@
 .gcsp .gcsp-vehicle-decision { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); grid-template-rows: auto 1fr; border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface-raised); overflow: hidden; }
 .gcsp .gcsp-vehicle-summary { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; gap: var(--gcsp-space-3); min-width: 0; padding: var(--gcsp-space-6) var(--gcsp-space-6) var(--gcsp-space-4); }
 .gcsp .gcsp-vehicle-decision > :is(.vm-card-media, .gcsp-media-gallery) { grid-column: 1; grid-row: 1 / 3; min-width: 0; height: 100%; min-height: 400px; aspect-ratio: auto; }
-.gcsp .gcsp-vehicle-decision .vm-card-photo { object-fit: contain; }
+.gcsp .gcsp-vehicle-decision .vm-card-photo { object-fit: cover; }
 .gcsp .gcsp-vehicle-decision .vm-card-line { display: none; }
 .gcsp .gcsp-vehicle-decision .vm-card-name { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); }
 .gcsp .gcsp-vehicle-decision .vm-card-terms { display: flex; flex-direction: column; gap: var(--gcsp-space-1); }

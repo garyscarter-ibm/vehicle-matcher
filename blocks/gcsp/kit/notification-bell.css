@@ -16,7 +16,7 @@
 .gcsp .gcsp-bell-row + .gcsp-bell-row { border-top: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-bell-row.is-waiting { background: var(--gcsp-accent-soft); }
 .gcsp .gcsp-bell-row.is-plain { padding-left: calc(var(--gcsp-space-4) + 84px + var(--gcsp-space-3)); }
-.gcsp .gcsp-bell-thumb { flex: none; width: 84px; height: 56px; object-fit: contain; border-radius: var(--gcsp-radius); background: var(--gcsp-surface-muted); }
+.gcsp .gcsp-bell-thumb { flex: none; width: 84px; height: 56px; object-fit: cover; border-radius: var(--gcsp-radius); background: var(--gcsp-surface-muted); }
 .gcsp .gcsp-bell-copy { display: grid; gap: var(--gcsp-space-half); min-width: 0; font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); overflow-wrap: anywhere; }
 .gcsp .gcsp-bell-copy p { margin: 0; }
 .gcsp .gcsp-bell-head { display: flex; align-items: center; gap: var(--gcsp-space-2); font-size: var(--gcsp-font-size-regular); }
