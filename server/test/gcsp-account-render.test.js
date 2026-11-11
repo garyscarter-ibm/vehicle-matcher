@@ -258,7 +258,7 @@ test('account composition preserves complete supplied facts, labelled details an
     root.querySelector('.gcsp-side-drawer .vm-btn').click();
     assert.deepEqual([...root.querySelectorAll('.gcsp-feature .gcsp-actions button')].map((b) => b.textContent),
       ['Choose a replacement']);
-    assert.match(otherScheme.textContent, /Replacement is unavailable for this contract and slot\./);
+    assert.match(otherScheme.textContent, /Replacement isn\u2019t available for this car\./);
     assert.equal(root.querySelectorAll('.gcsp-feature .vm-btn-primary').length, 1);
     assert.ok(detailsRow(root, 'Employee').textContent.includes('Allowance override: 1,500 points/month (ends 1 December 2026)'));
     const drivers = detailsRow(root, 'Drivers (2)');
@@ -285,21 +285,24 @@ test('FUCQ-277: the allowance shows in the Points cost row and the no-car line, 
     assert.equal(pointsCost(first.root.querySelector('.gcsp-feature')), '1,100 / 1,300 points per month');
     assert.equal(first.root.querySelector('.gcsp-account-key'), null);
     assert.doesNotMatch(first.root.textContent, /Allowance override|Override end|Allowance basis|Synthetic monthly demo|Not a verified|Exact specification is not supplied/);
-    assert.match(first.root.querySelector('.gcsp-account-body').lastElementChild.textContent, /Account as of/);
+    assert.doesNotMatch(first.root.textContent, /Account as of/, 'no freshness line (Paula P10)');
   } finally { first.destroy(); first.root.remove(); }
   const noCar = await domMount(readOnlyAdapter('no-current-car'));
   try {
     assert.equal(noCar.root.querySelector('.gcsp-feature'), null);
-    const line = [...noCar.root.querySelectorAll('.gcsp-account-body > p')].find((node) => /Your allowance/.test(node.textContent));
-    assert.equal(line.textContent, 'Your allowance: 1,300 points a month.');
+    // One region: the no-car message carries the allowance, and Start a new order is its primary.
+    const region = [...noCar.root.querySelectorAll('.vm-status')].find((node) => /No current car/.test(node.textContent));
+    assert.equal(region.querySelector('.vm-lede').textContent, 'No current vehicle is supplied for your account. Your allowance: 1,300 points a month.');
+    assert.ok(region.querySelector('.gcsp-actions .vm-btn-primary')?.textContent === 'Start a new order');
+    assert.equal(noCar.root.querySelector('.gcsp-account-body > .vm-btn'), null, 'no detached full-width button');
     assert.doesNotMatch(noCar.root.textContent, /Allowance override/);
   } finally { noCar.destroy(); noCar.root.remove(); }
   const overridden = accountFixture('no-current-car');
   Object.assign(overridden.value.account, { allowanceOverride: { value: 1500, unit: 'points/month' }, allowanceOverrideEndDate: '2026-12-01' });
   const withOverride = await domMount({ ...readOnlyAdapter(), readAccount: async () => overridden });
   try {
-    const line = [...withOverride.root.querySelectorAll('.gcsp-account-body > p')].find((node) => /Your allowance/.test(node.textContent));
-    assert.equal(line.textContent, 'Your allowance: 1,300 points a month. Allowance override: 1,500 points/month, ends 1 December 2026.');
+    const line = [...withOverride.root.querySelectorAll('.vm-status .vm-lede')].find((node) => /Your allowance/.test(node.textContent));
+    assert.equal(line.textContent, 'No current vehicle is supplied for your account. Your allowance: 1,300 points a month. Allowance override: 1,500 points/month, ends 1 December 2026.');
   } finally { withOverride.destroy(); withOverride.root.remove(); }
   const set = unnamed('multi-slot');
   Object.assign(set.value.account, { allowanceOverride: { value: 1500, unit: 'points/month' }, allowanceOverrideEndDate: '2026-12-01' });
@@ -359,7 +362,12 @@ test('distinct entitlement, HR, empty and failure states provide truthful action
     const { root, destroy } = await domMount(readOnlyAdapter(name));
     try {
       assert.ok(root.textContent.includes(title), name);
-      assert.equal(Boolean(findButton(root, 'Refresh account')), name === 'source-failure');
+      assert.equal(Boolean(findButton(root, 'Refresh')), name === 'source-failure');
+      if (name === 'source-failure') {
+        assert.equal(findButton(root, 'Refresh').closest('.vm-status')?.querySelector('.vm-btn-primary'), findButton(root, 'Refresh'), 'Refresh is the failure region primary');
+        assert.equal(root.querySelectorAll('.vm-status').length, 1, 'one failure region');
+      }
+      if (['not-yet-eligible', 'unsupported-scheme'].includes(name)) assert.doesNotMatch(root.querySelector('.gcsp-feature').textContent, /Replacement isn/, 'the page state says it once');
       assert.equal(Boolean(findButton(root, 'Start a new order')), name === 'no-current-car');
       if (!['no-current-car', 'no-history'].includes(name)) assert.equal(findButton(root, 'Choose a replacement'), undefined);
       if (name === 'unsupported-scheme') {
@@ -877,7 +885,7 @@ function assertRestartedPage(root, reloads) {
   assert.equal(body.querySelector('h1').textContent, 'Your cars'); assert.match(body.textContent, /Restarted/);
   assert.match(body.textContent, /Reload to continue/);
   assert.doesNotMatch(body.textContent, /This account cannot be opened|Your account is unavailable|Journey could not be saved|stale-run|unknown-session|\u2014/);
-  assert.equal(press('Refresh account'), undefined); assert.equal(press('Choose a replacement'), undefined);
+  assert.equal(press('Refresh'), undefined); assert.equal(press('Choose a replacement'), undefined);
   const reload = press('Reload'); assert.ok(reload); reload.click(); assert.equal(reloads(), 1);
 }
 test('FUCQ-198: a stale-run or unknown-session account read shows the restart screen with a working Reload', async () => {
@@ -913,7 +921,7 @@ test('FUCQ-198: a start journey reply of stale-run shows the restart screen, not
   } finally { destroy(); root.remove(); }
 });
 
-test('FUCQ-197: order history, saved journey and footer show words, not raw identifiers', async () => {
+test('FUCQ-197: order history and saved journey show words, not raw identifiers', async () => {
   const input = unnamed('multi-slot'); const value = input.value;
   const entries = value.histories.flatMap((history) => history.entries);
   const raw = [...new Set([...value.histories.map((history) => history.schemeId), ...entries.flatMap((entry) => [entry.contractId, entry.slotId]),
@@ -923,16 +931,14 @@ test('FUCQ-197: order history, saved journey and footer show words, not raw iden
   const mounted = await domMount({ ...readOnlyAdapter(), readAccount: async () => input, readDraft: async () => draft });
   try {
     const body = mounted.root.querySelector('.gcsp-account-body');
-    const fresh = body.lastElementChild;
-    const parts = [body.querySelector('.gcsp-summary'), body.querySelector('.gcsp-account-history'), fresh];
+    const parts = [body.querySelector('.gcsp-summary'), body.querySelector('.gcsp-account-history'), body.lastElementChild];
     const shownText = parts.flatMap((part) => [...part.querySelectorAll('dd, p, h2, h3, summary, button, td, th'), part]).map((node) => node.textContent);
     for (const id of raw) assert.ok(!shownText.some((text) => text.includes(id)), id);
     const saved = parts[0].textContent;
     assert.match(saved, /Current car/); assert.match(saved, new RegExp(value.currentContract.model));
     assert.doesNotMatch(saved, /Mode|Scheme|Draft version|replacement\b/);
     assert.deepEqual(rowsOf(mounted.root).map((tr) => cellsOf(tr)[1]), ['Scheme 1', 'Scheme 2', 'Scheme 2']);
-    assert.equal(fresh.textContent, 'Account as of 5 November 2026 at 09:00.');
-    assert.ok(fresh.classList.contains('gcsp-synthetic'), 'the freshness line closes the page, after Your details');
+    assert.doesNotMatch(body.textContent, /Account as of/, 'no freshness line (Paula P10)');
   } finally { mounted.destroy(); mounted.root.remove(); }
   value.histories[0].label = 'Fictional car scheme'; value.slots[0].label = 'Company car 1';
   const labelled = await domMount({ ...readOnlyAdapter(), readAccount: async () => input, readDraft: async () => draft });
@@ -1032,7 +1038,7 @@ test('the HTTP adapter reads buddy activity, and any failure or abort is handled
 });
 
 // Your cars layout (10 November): head row, car, Your preferences, then the secondary components.
-test('the page head carries the title only; the freshness line closes the page and Refresh shows only when stale', async () => {
+test('the page head carries the title only; Your details closes the page and Refresh shows only when stale', async () => {
   const input = unnamed('ready');
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
@@ -1041,12 +1047,11 @@ test('the page head carries the title only; the freshness line closes the page a
     assert.ok(head.querySelector('h1')); assert.equal(head.querySelector('.vm-kicker'), null);
     assert.equal(head.children.length, 1, 'nothing on the right of the head yet');
     assert.equal(body.querySelector('.gcsp-account-fresh'), null);
-    assert.equal(body.lastElementChild.textContent, 'Account as of 5 November 2026 at 09:00.');
-    assert.ok(body.lastElementChild.classList.contains('gcsp-synthetic'));
-    assert.equal(head.querySelector('button'), null, 'Refresh account only when stale');
+    assert.doesNotMatch(body.textContent, /Account as of/);
+    assert.equal(head.querySelector('button'), null, 'Refresh only when stale');
     const secondary = body.querySelector('.gcsp-account-secondary');
     assert.ok(secondary.contains(body.querySelector('.gcsp-account-history')) && secondary.querySelector('#gcsp-account-details-title'));
-    assert.equal(secondary.nextElementSibling, body.lastElementChild);
+    assert.equal(body.lastElementChild, secondary);
   } finally { destroy(); root.remove(); }
 });
 
@@ -1288,7 +1293,7 @@ test('order history is one table across schemes with a status word per row, and 
       ['Model not supplied', 'Scheme 2', '1 January 2025', 'Returned 1 Dec 2025', 'Returned', 'View record']]);
     assert.equal(rowsOf(root)[0].querySelector('.is-success').textContent, 'Current car');
     assert.equal(rowsOf(root)[1].querySelector('.is-success'), null);
-    assert.equal(section.querySelector('.gcsp-synthetic').textContent, "No Scheme 3 orders. Scheme 2 shows history only; you can't order through it here.");
+    assert.equal(section.querySelector('.gcsp-synthetic').textContent, "Scheme 2 shows history only; you can't order through it here.");
     assert.equal(root.querySelectorAll('.gcsp-account-history .gcsp-table-action').length, 2);
     assert.equal(findButton(root, 'Choose a replacement').closest('.gcsp-feature') !== null, true);
     assert.equal(root.querySelectorAll('.gcsp-account-history .vm-btn-primary').length, 0);
@@ -1296,7 +1301,7 @@ test('order history is one table across schemes with a status word per row, and 
   const named = await domMount({ ...readOnlyAdapter(), readAccount: async () => accountFixture('ready') });
   try {
     assert.equal(named.root.querySelector('.gcsp-account-history .gcsp-synthetic').textContent,
-      "No Motorcycle Choices orders. PCS UK FS BMW shows history only; you can't order through it here.");
+      "PCS UK FS BMW shows history only; you can't order through it here.");
   } finally { named.destroy(); named.root.remove(); }
   const none = await domMount(readOnlyAdapter('no-history'));
   try { assert.equal(none.root.querySelector('.gcsp-account-history p').textContent, 'No order history.'); } finally { none.destroy(); none.root.remove(); }

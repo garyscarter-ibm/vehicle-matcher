@@ -69,8 +69,6 @@ const technicalLabels = { insuranceGroup: 'Insurance group', nedcCo2: 'NEDC CO2'
   fuelConsumptionCombinedWeighted: 'Fuel consumption, combined weighted', electricityConsumption: 'Electricity consumption',
   electricRange: 'Electric range', electricCityRange: 'Electric city range' };
 const technicalLabel = (key) => technicalLabels[key] ?? label(key);
-const asOf = (value) => Number.isNaN(Date.parse(value ?? '')) ? MISSING
-  : new Date(value).toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short', timeZone: 'Europe/London' });
 // Raw ids are not copy: a scheme shows only the policy-supplied name; tables and records fall back to "Scheme N".
 const schemeTitle = (history, index) => history.label ?? `Scheme ${index + 1}`;
 const schemeTitleFor = (model, schemeId) => {
@@ -209,7 +207,7 @@ function pointsTerms(contract, model) {
   return terms;
 }
 
-function currentCar(contract, model, controls) {
+function currentCar(contract, model, controls, explained = false) {
   const terms = pointsTerms(contract, model);
   const feature = el('section', 'gcsp-feature');
   feature.dataset.contractId = contract.contractId;
@@ -243,7 +241,7 @@ function currentCar(contract, model, controls) {
     copy.append(details);
   }
   if (contract.action) { const actions = el('div', 'gcsp-actions'); actions.append(controls.startButton(contract.action)); copy.append(actions); }
-  else copy.append(el('p', 'gcsp-note', 'Replacement is unavailable for this contract and slot.'));
+  else if (!explained) copy.append(el('p', 'gcsp-note', 'Replacement isn\u2019t available for this car.'));
   feature.append(mediaColumn(media), copy);
   controls.rateCar?.(feature);
   return feature;
@@ -343,11 +341,9 @@ function orderHistory(model, { order, orderVehicle, controls }) {
   section.append(dataTable({ caption: 'Order history', columns, rows, stack: true, rowAction: { header: 'Record', label: 'View record',
     name: (data) => data.name, onSelect: (data, index) => controls.openRecord(data.record, section.querySelectorAll('tbody .gcsp-table-action')[index]) } }));
   const join = (list, word) => list.length < 2 ? list.join('') : `${list.slice(0, -1).join(', ')} ${word} ${list.at(-1)}`;
-  const empty = model.histories.flatMap((history, index) => history.count ? [] : [schemeTitle(history, index)]);
   const only = model.histories.flatMap((history, index) => !history.orderingSupported && history.count ? [schemeTitle(history, index)] : []);
-  const note = [empty.length && `No ${join(empty, 'or')} orders.`,
-    only.length && `${join(only, 'and')} ${only.length === 1 ? 'shows' : 'show'} history only; you can't order through ${only.length === 1 ? 'it' : 'them'} here.`].filter(Boolean).join(' ');
-  if (note) section.append(el('p', 'gcsp-synthetic', note));
+  // Empty schemes say nothing (Paula P10); a history-only scheme says so once.
+  if (only.length) section.append(el('p', 'gcsp-synthetic', `${join(only, 'and')} ${only.length === 1 ? 'shows' : 'show'} history only; you can't order through ${only.length === 1 ? 'it' : 'them'} here.`));
   return section;
 }
 
@@ -376,19 +372,22 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   if (restarted || model.state === 'restarted' || isRunRestarted(draft)) {
     wrap.append(runRestartedScreen({ reload })); main.replaceChildren(wrap); return () => wrap.remove();
   }
-  const provenance = model.account ? model.versions?.employeeContract : null;
-  // Presenter actions refresh the page; a manual refresh shows only after a failure, a conflict or a stale saved journey.
-  const stale = ['source-failure', 'conflict', 'refused'].includes(model.state) || message?.error || draft?.value?.requiresRefresh
-    || (draft && !['ok', 'not-found'].includes(draft.status));
-  if (stale) head.append(button({ label: 'Refresh account', variant: 'ghost', disabled: pending, onClick: controls.refresh }));
+  // Presenter actions refresh the page; Refresh shows only after a failure, a conflict or a stale saved journey.
+  const failedRead = ['source-failure', 'conflict', 'refused'].includes(model.state);
+  const refreshButton = (variant) => button({ label: 'Refresh', variant, disabled: pending, onClick: controls.refresh });
+  const stale = message?.error || draft?.value?.requiresRefresh || (draft && !['ok', 'not-found'].includes(draft.status));
+  if (stale && !failedRead) head.append(refreshButton('ghost'));
   if (message) { const note = statusScreen({ title: message.title, message: message.text, role: null }); note.classList.add('gcsp-account-message'); wrap.append(note); }
   const ordered = !journey && model.state === 'no-entitlement' && order
     && model.slots.some((slot) => slot.entitlementSlotId === order.entitlementSlotId);
   if (!journey && order) wrap.append(newCarRow(order, orderVehicle, controls));
   if (!ordered && states[model.state]) {
     const [title, text] = states[model.state];
-    wrap.append(statusScreen({ title, message: text, role: null, actions: [controls.supportButton(model.state === 'absent-hr-account'
-      ? 'hr-support' : model.supportOwner, 'Contact support')] }));
+    // A failed read gets one region: Refresh is its primary and support the outline.
+    const actions = el('div', 'gcsp-actions');
+    actions.append(...(failedRead ? [refreshButton('primary')] : []),
+      controls.supportButton(model.state === 'absent-hr-account' ? 'hr-support' : model.supportOwner, 'Contact support'));
+    wrap.append(statusScreen({ title, message: text, role: null, actions: [actions] }));
   }
   const held = !journey && offerHeld(offers) && Boolean(controls.openOffer);
   // An accepted newest offer has become an order, so its progress replaces the offer link.
@@ -417,28 +416,29 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     }
     if (journey) saved.append(button({ label: 'Back to account', variant: 'ghost', disabled: pending, onClick: controls.back }));
     wrap.append(saved);
-  } else if (draft && !['ok', 'not-found'].includes(draft.status)) {
+  } else if (draft && !['ok', 'not-found'].includes(draft.status) && !failedRead) {
     wrap.append(statusScreen({ title: 'Saved journey could not be read', message: 'Refresh before starting or resuming a journey.', role: null }));
   }
   if (model.account) {
     // FUCQ-237: an order in progress replaces "No current car" for an employee with no current car; a declined order keeps it.
     const none = !model.currentContracts.length && !model.currentOrders.length;
-    // Without a current car there is no Points cost row, so the allowance (and any override, FUCQ-277) gets one line here.
-    if (none) {
-      const base = model.allowance?.monthlyPoints ?? model.allowance?.value;
-      const line = [Number.isFinite(base) && `Your allowance: ${points(base)} points a month`, overrideText(model)].filter(Boolean).join('. ');
-      if (line) wrap.append(el('p', 'gcsp-note', `${line}.`));
-    }
-    for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls));
+    // Without a current car there is no Points cost row, so the allowance (and any override, FUCQ-277) joins the one region.
+    const base = model.allowance?.monthlyPoints ?? model.allowance?.value;
+    const line = none ? [Number.isFinite(base) && `Your allowance: ${points(base)} points a month`, overrideText(model)].filter(Boolean).join('. ') : '';
+    const starts = model.actions.filter((item) => item.action === 'order').map((action) => controls.startButton(action));
+    const startRow = () => { const row = el('div', 'gcsp-actions'); row.append(...starts); return row; };
+    const noCar = (message) => statusScreen({ title: 'No current car', message: [message, line && `${line}.`].filter(Boolean).join(' '),
+      role: null, actions: starts.length ? [startRow()] : [] });
+    for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls, Boolean(states[model.state])));
     for (const car of model.currentOrders) wrap.append(orderCurrentCar(car, order, orderVehicle));
-    if (none && model.carReturned) wrap.append(statusScreen({ title: 'No current car', message: 'Your previous car has been returned. Your new car becomes current at handover.', role: null }));
-    else if (none && !(ordered && order.outcome !== 'declined')) wrap.append(statusScreen({ title: 'No current car', message: 'No current vehicle is supplied for your account.', role: null }));
-    for (const action of model.actions.filter((item) => item.action === 'order')) wrap.append(controls.startButton(action));
+    const shownNoCar = none && (model.carReturned || !(ordered && order.outcome !== 'declined'));
+    if (shownNoCar) wrap.append(noCar(model.carReturned ? 'Your previous car has been returned. Your new car becomes current at handover.'
+      : 'No current vehicle is supplied for your account.'));
+    else { if (line) wrap.append(el('p', 'gcsp-note', `${line}.`)); wrap.append(...starts); }
     if (preferences) wrap.append(preferences);
     const secondary = el('div', 'gcsp-account-secondary');
     secondary.append(orderHistory(model, { order, orderVehicle, controls }), yourDetails(model, controls));
     wrap.append(secondary);
-    if (provenance) wrap.append(el('p', 'gcsp-synthetic', `${provenance.label ? `Source: ${provenance.label}. ` : ''}Account as of ${asOf(model.asOf)}.`));
   }
   main.replaceChildren(wrap);
   return () => wrap.remove();
@@ -693,7 +693,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     } catch { if (!disposed) { confirming = false; discardFailed(failure); } }
     finally { pending = false; if (!disposed) { draw(done); if (!done) discardButton()?.focus(); } }
   }
-  const shellAdapter = { signOut, notifications, loadAccount: () => { loading = loadAccount(); return loading; },
+  const shellAdapter = { signOut, notifications, loadingLayout: 'feature', loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
   teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
   const destroy = () => { disposed = true; generation += 1; abort.abort(); drawer?.close(false); finishPrint?.(); stopRater?.(); regionTeardown?.(); for (const item of ratings.values()) item.destroy(); teardown(); live.root.remove(); };
