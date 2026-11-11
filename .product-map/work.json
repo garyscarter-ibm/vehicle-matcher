@@ -5038,94 +5038,74 @@
     {
       "id": "FUCQ-397",
       "title": "Bring Buddy controls and recent history into Your cars",
-      "status": "In Progress",
+      "status": "In Review",
       "type": "Story",
       "assignee": "Gary Carter",
-      "observed_at": "2026-11-11T18:48:52Z",
+      "observed_at": "2026-11-11T19:42:23Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-397",
       "slices": [
         {
           "id": "tile",
           "status": "complete",
           "title": "Buddy-tile-and-controls",
-          "observed_at": "2026-11-11T18:48:52Z",
-          "evidence": "Buddy tile implemented by Pussyfoot; final integrated checks and browser acceptance underway."
+          "observed_at": "2026-11-11T19:42:23.316628+00:00",
+          "evidence": "Approved Option A merged56117eee with parent integration857d2135; scoped checks and real desktop/narrow command review recorded in docs/gcsp/evidence/fucq-397/README.md. Known Low defects remain separate; collaborator acceptance pending."
         },
         {
           "id": "history",
           "status": "complete",
           "title": "History-and-offer-drawers",
-          "observed_at": "2026-11-11T18:48:52Z",
-          "evidence": "History/search/offer drawers implemented; parent verified held-offer/history at 1440 and375 with Escape focus restore."
+          "observed_at": "2026-11-11T19:42:23.316628+00:00",
+          "evidence": "Approved Option A merged56117eee with parent integration857d2135; scoped checks and real desktop/narrow command review recorded in docs/gcsp/evidence/fucq-397/README.md. Known Low defects remain separate; collaborator acceptance pending."
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Integration-and-rendered-review",
-          "observed_at": "2026-11-11T18:48:52Z",
-          "evidence": "Parent integration with current role navigation and real activity commands underway."
+          "observed_at": "2026-11-11T19:42:23.316628+00:00",
+          "evidence": "Approved Option A merged56117eee with parent integration857d2135; scoped checks and real desktop/narrow command review recorded in docs/gcsp/evidence/fucq-397/README.md. Known Low defects remain separate; collaborator acceptance pending."
         }
       ],
       "unsliced": false,
-      "original_status": "In Progress",
+      "original_status": "In Review",
       "branch": "dev/DEV-2026-11-11-GC-004",
-      "workers": [
-        {
-          "name": "Pussyfoot",
-          "harness": "codex",
-          "role": "implementer",
-          "status": "building",
-          "observed_at": "2026-11-11T17:53:31.865883+00:00",
-          "expires_at": "2026-11-11T18:53:31.865883+00:00",
-          "source": "parent observed active child; gpt-6.1-sol medium, no fallback"
-        }
-      ]
+      "workers": []
     },
     {
       "id": "FUCQ-398",
       "title": "Show run-scoped Buddy allocation outcomes on Presenter",
-      "status": "In Progress",
+      "status": "In Review",
       "type": "Story",
       "assignee": "Gary Carter",
-      "observed_at": "2026-11-11T18:48:53Z",
+      "observed_at": "2026-11-11T19:42:23Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-398",
       "slices": [
         {
           "id": "projection",
           "status": "complete",
           "title": "Authoritative-allocation-projection",
-          "observed_at": "2026-11-11T18:48:53Z",
-          "evidence": "94eae706 implements authoritative run-scoped offer/hold outcomes with deadline and unavailability checks."
+          "observed_at": "2026-11-11T19:42:23.316628+00:00",
+          "evidence": "Approved Option A merged56117eee with parent integration857d2135; scoped checks and real desktop/narrow command review recorded in docs/gcsp/evidence/fucq-398/README.md. Known Low defects remain separate; collaborator acceptance pending."
         },
         {
           "id": "presenter",
           "status": "complete",
           "title": "Presenter-allocation-section",
-          "observed_at": "2026-11-11T18:48:53Z",
-          "evidence": "Separate Allocation region and actual Refresh readback wired; scoped functional tests passed."
+          "observed_at": "2026-11-11T19:42:23.316628+00:00",
+          "evidence": "Approved Option A merged56117eee with parent integration857d2135; scoped checks and real desktop/narrow command review recorded in docs/gcsp/evidence/fucq-398/README.md. Known Low defects remain separate; collaborator acceptance pending."
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Integration-and-rendered-review",
-          "observed_at": "2026-11-11T18:48:53Z",
-          "evidence": "Integrated-base tests and parent live release/readback review underway."
+          "observed_at": "2026-11-11T19:42:23.316628+00:00",
+          "evidence": "Approved Option A merged56117eee with parent integration857d2135; scoped checks and real desktop/narrow command review recorded in docs/gcsp/evidence/fucq-398/README.md. Known Low defects remain separate; collaborator acceptance pending."
         }
       ],
       "unsliced": false,
-      "original_status": "In Progress",
+      "original_status": "In Review",
       "branch": "dev/DEV-2026-11-11-GC-005",
-      "workers": [
-        {
-          "name": "Yosemite Sam",
-          "harness": "codex",
-          "role": "implementer",
-          "status": "building",
-          "observed_at": "2026-11-11T17:53:31.865883+00:00",
-          "expires_at": "2026-11-11T18:53:31.865883+00:00",
-          "source": "parent observed active child; gpt-6.1-sol medium, no fallback"
-        }
-      ]
+      "workers": []
     }
   ]
 }
