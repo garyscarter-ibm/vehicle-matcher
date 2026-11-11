@@ -1,6 +1,33 @@
-# FUCQ-384 definition checkpoint — 11 November 2026
+# FUCQ-384 — final development evidence, 11 November 2026
 
-Status: **blocked/checkpoint**, pending independent review and original AC4 integration. This checkpoint implements the supported definition seed, keyed resolver and additive vehicle-evidence adapter contract. It does not establish Story acceptance or completion.
+Status: **Built; development complete against the original six criteria.** The separately authorised FUCQ-382 producer repair and corrected combined offer review close the earlier integration gap. Finalization starts from shared `35965ffd8b29c32fd8a5601a93243085a02e1f1b`; no application source changes are made here. Parent integration, Jira In Review and collaborator acceptance remain separate. No Done transition is authorised.
+
+[Finalization identity and evidence](finalization.json) retains the original six-criterion mapping, exact reuse boundaries, commands/counts, failed attempts, independent reviews and cleanup receipts.
+
+| Original criterion | Development evidence |
+| --- | --- |
+| AC1 — supported versioned definitions | The seed retains exact source/model/market/generation applicability, dates, versions and gaps: 54 source paths, 40 variants, 239/240 configurations and 11,900/11,947 selected codes. Incompatible and ambiguous definitions fail closed. |
+| AC2 — reuse local keyed lookups | Existing registry `getConfiguration` and indexed JSONL IDs feed precompiled source/code maps. Load failures and unknown identities stay explicit. Population and six repeated keyed reads assert one index build without catalogue iteration or per-offer upstream calls. |
+| AC3 — exact selected facts and provenance | The existing DTO carries supported paint, upholstery and options with exact configuration association. The correction preserves original snapshot identity for retained G61/i5 labels and every contributing origin in controlled mixed arrays. Unsupported swatches, available equipment and physical fitment remain unknown. |
+| AC4 — join before pin and preserve history | [Actual F382 producer evidence](../fucq382/README.md) traces retained configuration → generated/released stock → recommendation/BuddyHold pin → OfferAccess → comparison. Controlled successor definitions and current-stock enrichment leave the issued quote, terms and projected card unchanged. The public allow-list preserves supported facts/provenance while deliberately omitting private evidence. |
+| AC5 — different selections and truthful gaps | Retained same-model configurations and actual generated stock retain different options; paint/upholstery resolve by their own codes. Missing/ambiguous and genuine G61/i5 gaps stay concise in the facts/projection contracts. The primary actual offer renders every one of its 41 labels in a counted disclosure; [independent corrected review](../fucq386/independent-visual-review.md) passes desktop/375/320 and neutral unsupported swatches. The contrasting/gap rows are producer/contract evidence, not additional actual browser journeys. |
+| AC6 — identity, coverage and reuse | Seed/corpus hashes and unresolved coverage remain explicit. The recorded index/loader and repeated-key checks establish reuse. No new benchmark or latency SLA is claimed. |
+
+The actual producer checkpoint is `593b3c737316297d27e6b1c410c6e17700451e56`; corrected combined application/render source is `22176eb2393c644151c097bc1022998b67c1fe29`. The earlier [combined trials and captures](../fucq386/README.md) and final independent critique include realistic long content, unknown/empty contract boundaries, selection, validation, confirmation and access/expiry states. The long equipment paragraph was corrected to a counted native disclosure and reinspected with all 41 source-order labels.
+
+Evidence reuse is precise. Eight of F384's nine touched source/test files remain identical to `529ce2df`; F382 deliberately changed `vehicle-details-contract.js` for canonical exact-stock/legacy identity. Seven of the earlier eight-entry provenance impact map remain identical; the changed contract has F382's own scoped producer/lookup evidence. All 11 F382 mapped production/test hashes still match. Nineteen of 20 combined scoped hashes still match; F390 later extended the render test. Of the 560 corrected browser-manifest application paths, only `portal-links.js` changed. [F390](../fucq390/README.md) supplies separate navigation/source/render review and retains its own limits. Earlier browser and test identities are not presented as an unchanged whole current tree.
+
+Retained results stay separate: initial F384 90 scoped passes; provenance RED 0 pass/2 intended failures, then 95 pass/0 fail/0 skip at its checkpoint; F382 37 pass/1 native PostgreSQL skip and later 11 pass/0 skip; corrected combined projection/render 160 passes and changed stylesheet ratchet four passes. Earlier F386 175 passes/two explicit mixed-supervisor skips remain recorded. F390 later recorded 231 passes/two inherited F387 CSS failures and a final `Transition was skipped` pageerror after resumed assertions/captures. No aggregate full-suite total or pristine F390 whole-browser-script pass is claimed.
+
+Native PostgreSQL, externally deployed BMW integration, real browser BFCache and full-suite/global-ratchet green remain unrun or limited. Definition coverage, unsupported swatches and selected-versus-verified fitment remain explicit. F60/F337 are not declared complete; unrelated F387/F344 and separate Low F391 remain separate. Earlier module/setup, intentional red, harness-locator, resource and access-outcome failures remain in the linked records.
+
+All six F384 manifest-owned scratch roots and both temporary dependency links are absent. Recorded per-chunk peaks sum to 74,752 bytes; longest chunk was 13.2 seconds. F384 has no compatibility exception or leftover. The parent's retained audit covers 66 removed combined roots/groups; combined browser profiles/TLS/inventory were bounded active exceptions and were removed. This metadata-only finalization starts no tests, browser, server, descendant, dependency link or scratch; no large output or archive is created. Parent owns final branch/worktree/lease cleanup.
+
+The following sections preserve the earlier checkpoint and correction history. Their pending integration statements describe those earlier identities and are superseded by the development disposition above.
+
+## Historical checkpoint
+
+Historical status: **blocked/checkpoint**, pending independent review and original AC4 integration. This checkpoint implements the supported definition seed, keyed resolver and additive vehicle-evidence adapter contract. It does not establish Story acceptance or completion.
 
 ## Source identity and coverage
 
