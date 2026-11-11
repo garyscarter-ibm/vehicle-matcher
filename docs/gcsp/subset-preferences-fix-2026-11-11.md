@@ -37,7 +37,11 @@ Independent review: Lord Business, requested/selected `gpt-6.1-sol` with `high` 
 
 ## Delivery and resources
 
-Deployment and hosted unsaved-preview smoke evidence will be appended after push. The smoke must not save Greg's preferences, advance the demo clock, reset the run or create an offer.
+Code commit `3d84a36b12af76b921f50742238dfc23d741e33c` was pushed to `gcsp-poc`. GitHub Render deployment `7722244049` for `gcsp-poc - gcsp-api` reported **success at 22:09:58 UTC on 11 November 2026**. The committed server diff exactly matches the tested SHA-256 above. No frontend deployment was required for this backend correction.
+
+Hosted checks used an isolated Greg HTTP session and an unsaved three-category midpoint preview. Login, editor and preview returned `ok`; four untouched optional practical controls were present. The saved brief and brief/draft versions were identical after the first preview, and logout succeeded. No preference save, clock advance, reset or offer operation was performed.
+
+**Live matching limit:** the hosted response contained zero candidates and reported `state: 'no-stock'`. The candidate-availability assertion therefore could not pass, so the hosted check does not prove matching or allocation with actual released stock. Those paths are proven by the local composed runtime regression above. A separate diagnostic probe of `/api/gcsp/manual/stock` returned 404 and supplies no stock evidence. Both actual attempt receipts are retained in `subset-preferences-hosted-first-summary.json` and `subset-preferences-hosted-summary.json`; no shared demo state was changed to manufacture a passing result.
 
 Local evidence is retained under ignored `.claude/test-runs/`: `subset-preferences-plan.json`, `subset-preferences-20261111-summary.json`, per-test-file V8 observations in `impact/subset-preferences-*.json`, and ownership manifests in `subset-preferences-resources/ownership/`. Unobserved paths are not presumed covered.
 
