@@ -96,12 +96,13 @@ export class DemoIdentityAdapter {
             });
             if (slot.status !== 'ok') return slot;
           } else if (existingSlot.status !== 'ok') return existingSlot;
+          else if (existingSlot.value.employeeId !== principal.employeeId) return unavailable();
         }
       }
       return ok({ seeded: config.principals.length, runId: state.scope.runId });
     });
     if (seeded.status !== 'ok') return seeded;
-    return this.#repository.transaction(state.scope, command(`identity:profiles:v1:${inputDigest(config.principals)}`, config.principals), async (tx) => {
+    return this.#repository.transaction(state.scope, command(`identity:profiles:v2:${inputDigest(config.principals)}`, config.principals), async (tx) => {
       const emails = new Set();
       for (const principal of config.principals) {
         const ref = { table: 'employees', key: { runId: state.scope.runId, employeeId: principal.employeeId } };
@@ -111,6 +112,12 @@ export class DemoIdentityAdapter {
         if (emails.has(profile.email)) return unavailable();
         emails.add(profile.email);
         const patch = { ...profile };
+        // A configured ordering lead can also be an employee. Adopt only identity
+        // fields; their durable ID, contract, renewal and saved Buddy data survive.
+        if (principal.roles.includes('greg') && principal.roles.includes('employee')) {
+          if (found.value.principalId !== principal.principalId) return unavailable();
+          for (const key of ['roles', 'companyId', 'schemeId', 'gradeId', 'entitlementSlotId']) patch[key] = principal[key];
+        }
         const manual = found.value.contract?.manualContext;
         if (manual?.account) patch.contract = { ...found.value.contract, manualContext: { ...manual,
           account: { ...manual.account, name: profile.name, contact: { ...manual.account.contact, email: profile.email } },

@@ -33,7 +33,8 @@ test('catalogue lists the six authored journeys first with canonical principals,
     assert.ok(s.name && s.fixtureVersion && s.scenarioVersion && s.policyVersion && s.clockStart);
     assert.ok(s.stories.length && s.epics.length && s.requiredCapabilities.length && s.steps.length);
     assert.deepEqual(s.principals.map((p) => p.principalId), s.principalIds);
-    assert.ok(s.principals.every((p) => p.roles.length === 1));
+    for (const principal of s.principals) assert.deepEqual(principal.roles,
+      principal.principalId === 'demo-greg' ? ['greg', 'employee'] : principal.principalId === 'demo-presenter' ? ['presenter'] : ['employee']);
     assert.ok(Array.isArray(s.inputs.briefs) && Array.isArray(s.inputs.stockTranches) && Array.isArray(s.inputs.pendingOperations));
   }
   assert.equal(support(read.value).inputProvenance, 'fictional-clock-mechanics-only');

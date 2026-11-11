@@ -11506,10 +11506,13 @@
           "employeeId": "operator-greg",
           "name": "Greg Lawson",
           "roles": [
-            "greg"
+            "greg",
+            "employee"
           ],
           "companyId": "demo-bmw-fs-uk",
-          "schemeId": "choices-fs-uk"
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "entitlementSlotId": "slot-greg"
         },
         {
           "principalId": "demo-presenter",
@@ -11522,9 +11525,9 @@
       ],
       "unit": "fictional principal mapping",
       "status": "assumed",
-      "basis": "Explicit synthetic demonstration people and competing employees; first names are scenario labels, no real identity/contact/licence data. Grade and scheme IDs use the canonical eligibility mapping.",
+      "basis": "Synthetic principals; grade/scheme IDs follow eligibility mapping. Greg's employee and ordering roles authorised 11 November 2026. G7 is an assumed, revisable grade; slot-greg is his own entitlement.",
       "source": "docs/gcsp/shared-contracts.md#demoidentityadapter--fucq-84",
-      "sourceDate": "2026-11-05",
+      "sourceDate": "2026-11-11",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },

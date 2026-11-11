@@ -7,6 +7,7 @@ import { validInstant } from '../policy/file-provider.js';
 import { intentValue } from '../../scenarios/employee/index.js';
 import { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId, expandEvaluation, packEvaluation } from './evaluation-rows.js';
 import { DECISION_EVENTS } from '../offers/decision.js';
+import { upgradeRetainedModelFacts } from '../stock/model-facts-upgrade.js';
 
 export { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId };
 
@@ -125,7 +126,9 @@ export function createAllocationService({ repository, policy, clock, identity, c
         const found = await tx.list(table); if (found.status !== 'ok') return found;
         rows[table] = found.value;
       }
-      return ok({ tables: tables.length });
+      const upgraded = await upgradeRetainedModelFacts(tx, context, rows);
+      if (upgraded.status !== 'ok') return upgraded;
+      return ok({ tables: tables.length, repaired: upgraded.value.repaired });
     });
     if (loaded.status !== 'ok') return loaded;
     const occupying = [...rows.holds, ...rows.claims].filter((r) => OCCUPYING_STATES.includes(r.state));
