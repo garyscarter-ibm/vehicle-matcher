@@ -1,6 +1,6 @@
 # Hand-over: epic FUCQ-358, from the 04:17 GMT cutoff, 11 November 2026
 
-Written at 10:20 GMT on 11 November by the follow-on dispatcher session (epic358-poller). It replaces the 02:50 GMT
+Written at 10:30 GMT on 11 November by the follow-on dispatcher session (epic358-poller). It replaces the 02:50 GMT
 checkpoint in `docs/HANDOVER-2026-11-11-EPIC358-DISPATCHER.md`. For the goal, Russell's instructions and the
 decisions, read `docs/HANDOVER-2026-11-10-EPIC358-POLLER.md`.
 
@@ -93,10 +93,19 @@ kept at `.claude/dev-poller-20261110-claude/DEV-2026-11-10-011/lead-scoped-0352.
 3. **Merge `gcsp-poc` into the branch.**
    - Since the claim, Gary's work has touched:
      - `COMPONENTS.md` (90170e7c, 606d12c2, 4fe084a2);
-     - `blocks/gcsp/account/gcsp-account.js` (606d12c2, FUCQ-354);
+     - `blocks/gcsp/account/gcsp-account.js` (606d12c2 for FUCQ-354, and c4c58bf3 and 0231cec8);
+     - `blocks/gcsp/account/gcsp-account.css` (c4c58bf3);
      - `blocks/vehicle-matcher/component-gallery.js` and `server/gcsp/policy/seed-v1.json` (82a6c77c, FUCQ-315).
-   - A trial `git merge-tree` at 10:10 GMT was clean.
-   - Rerun the scoped tests on the merged tree.
+   - Gary's 10:09 and 10:17 GMT commits, c4c58bf3 and 0231cec8, rework Your cars under his UI revamp rules:
+     - the title uses the shared 23px token;
+     - the "Account as of" line is gone;
+     - the no-car and failed-read states are single regions;
+     - there is a feature-shaped loading skeleton.
+   - Those commits also change `server/test/gcsp-account-render.test.js`. Their record is
+     `docs/gcsp/your-cars-ui-rules-review-2026-11-11.md`.
+   - A trial `git merge-tree` at 10:30 GMT was still clean.
+   - Retake the strict capture after the merge, because the Account page around Preferences has changed. Then rerun
+     the scoped tests on the merged tree.
    - Gary's c9bd67f5 repaired `gcsp-live-regions` and `gcsp-activity-live`, and stubbed vehicle evidence in
      `dom-harness.js`. So those two are no longer known base failures, and the `render.test.js` em-dash timeout should
      be gone. The `gcsp-brief` retained-fixtures failure still is a known base failure.
@@ -178,15 +187,17 @@ kept at `.claude/dev-poller-20261110-claude/DEV-2026-11-10-011/lead-scoped-0352.
   - FUCQ-376, a P3 bug: the local corpus load blocks the event loop.
   - FUCQ-377, a P4 bug.
   - FUCQ-378, a P4 bug. It is the CSP timer-scan failure on `release-grid.js` that this run noted and didn't file.
-    Gary claimed it at 10:00 GMT as DEV-2026-11-11-GC-003.
+    Gary claimed it at 10:00 GMT as DEV-2026-11-11-GC-003, and by 10:30 GMT had merged and closed it (640892f3).
+- **Your cars rework, 10:09 and 10:17 GMT:** c4c58bf3 and 0231cec8, merged in 9f043db9. See FUCQ-369 step 3.
 - None of them is High, so the poller still takes no defects after the epic.
-- Don't touch Gary's claims: GC-037 to GC-045, now plus DEV-2026-11-11-GC-003.
+- Don't touch Gary's claims: GC-037 to GC-045.
 
 ## For Russell
 
 - **Resume?** Should FUCQ-369 be resumed now, in a fresh session from this file?
 - **FUCQ-359** (also on its ticket):
-  - (a) Should the "Account as of …" line stay at the page foot?
+  - (a) Should the "Account as of …" line stay at the page foot? Gary's c4c58bf3 removed it at 10:09 GMT, which
+    settles it unless you want it back.
   - (b) Proposed Low Bug: the employee rail shows four icons where the reference has two.
   - (c) The reference shows "Registration: Not supplied", but FUCQ-316's rule hides an unknown registration.
   - (d) The card reads "320i" twice. That comes from the data.
