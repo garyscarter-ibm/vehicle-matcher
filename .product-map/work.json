@@ -4611,29 +4611,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T03:52:38Z",
+      "observed_at": "2026-11-11T11:13:41Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-369",
       "slices": [
         {
           "id": "continuity-mode",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Saved Same-again override",
-          "observed_at": "2026-11-11T03:09:39Z",
-          "evidence": "lead contract plan; implementer briefed 2026-11-11T03:10Z"
+          "observed_at": "2026-11-11T11:13:41Z",
+          "evidence": "lead review 2026-11-11T11:2xZ on dev/DEV-2026-11-10-011 after merge bdfe1617: scoped 652 tests, 644 pass, 3 base-only fails, 5 skipped; strict capture 471/471; independent critique findings fixed (33f6f4ec)"
         },
         {
           "id": "understanding",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Honest completeness score and mode presentation",
-          "observed_at": "2026-11-11T03:25:47Z",
-          "evidence": "kit slice B1 briefed 2026-11-11T03:35Z"
+          "observed_at": "2026-11-11T11:13:41Z",
+          "evidence": "lead review 2026-11-11T11:2xZ on dev/DEV-2026-11-10-011 after merge bdfe1617: scoped 652 tests, 644 pass, 3 base-only fails, 5 skipped; strict capture 471/471; independent critique findings fixed (33f6f4ec)"
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Restoration and connected consumer boundaries",
-          "observed_at": "2026-11-11T03:52:38Z",
-          "evidence": "slices A,B1,B2 reviewed; scoped 671 tests 662 pass 1 known base fail; strict capture started 2026-11-11T04:00Z"
+          "observed_at": "2026-11-11T11:13:41Z",
+          "evidence": "lead review 2026-11-11T11:2xZ on dev/DEV-2026-11-10-011 after merge bdfe1617: scoped 652 tests, 644 pass, 3 base-only fails, 5 skipped; strict capture 471/471; independent critique findings fixed (33f6f4ec)"
         }
       ],
       "unsliced": false
