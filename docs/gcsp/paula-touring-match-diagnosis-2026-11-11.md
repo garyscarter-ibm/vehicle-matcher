@@ -57,6 +57,26 @@ The [controller tests](../../server/test/gcsp-second-offer-controller.test.js) e
 
 **Classification: missing review scenario.** Existing records establish the product instruction, implementation, test and review chain. They do not establish a complete historical skill invocation chain, so no generic skill is blamed or edited on assumption. The corrective review rule belongs in the shared project experience contract.
 
+## Follow-up: can the release produce a matching Touring?
+
+Russell asked whether releases prevent a matching car appearing or merely depend on the draw. Read-only source and local-corpus inspection confirms **a 320i Touring can be generated**. Canonical policy permits it for Paula's G7 grade at **1,100 points**, within her 1,300 allowance; its petrol body/seat facts meet the observed essentials.
+
+The generator is a weighted, deterministic selection, not a demand-led search. The canonical mix gives 3 Series Touring a relative weight of 6 out of 101, approximately six cars in a 100-car release, across its derivatives. Run and tranche identities seed configuration selection, so a later tranche can differ while a retry is repeatable. See [configuration selection](../../server/gcsp/vehicle-evidence/stock-generator.js).
+
+The [main-successful-journey scenario](../../server/gcsp/fixtures/scenarios/catalogue-v1.js) deliberately guarantees at least three cars Paula qualifies for, with model/colour diversity. Its [qualification check](../../server/gcsp/stock/release-guarantee.js) uses the scenario's initial eligibility, points, essentials and charging facts. It does not check body preference or fit score. SUVs can satisfy it; it does not promise an Estate or an actual allocation.
+
+There is also structural skew in the available configuration/colour pool. Independent investigator Taz projected the active local corpus `7c9cc707ab44b36f9cb5eb64b54170b25d914d5ee7e31722384c737612c45a9c` through the current [plan rules](../../server/gcsp/vehicle-evidence/stock-configuration-plan.js):
+
+| G21 derivative | Raw configurations | Retained plan |
+| --- | ---: | ---: |
+| M340i | 10 | 6 |
+| 320i | 10 | 4 |
+| 330e | 10 | 4 |
+
+Label filtering and the first-eight-per-colour cap reduce coverage. Ordinary draws then intersect that plan with aggregate colour weights: Alpine White offers five M340i, one 320i and two 330e configurations; Black Sapphire offers one M340i. Three further retained 320i configurations use `BMW Individual Paintwork`, which has no exact aggregate colour weight. Consequently ordinary draws can select only the **one white 320i configuration**. The guarantee's replacement pool can use the other qualifying configurations too, but need not choose an Estate when other cars already fulfil its conditions.
+
+Thus another release can produce a matching 320i, but the mix and configuration/colour coverage make it uncommon, and the guarantee does not protect Paula's body preference. There is no blanket prohibition and no guaranteed eventual match. These are current checkout/local-corpus findings, not verification of the deployed corpus or a replay of the original draw. No generation, tests, scratch allocations, product changes or Jira writes were performed for this follow-up. Taz retained the previously recorded model/effort and no descendants. The proposals below remain pending; this question does not adopt them.
+
 ## Proposed edits — approval required
 
 These are exact proposed passages for editable, tracked project documents, not changes to an installed skill. Approved implementation would also reconcile dependent contracts and canonical policy through separately agreed scope. Existing claimed Story ACs, Jira statuses and ownership remain as recorded.
