@@ -48,6 +48,14 @@ test('an empty run shows one Scheme started row with a London friendly time', as
   assert.equal(f.feed.root.hidden, false); f.feed.destroy();
 });
 
+test('What happened is a disclosure that starts closed and opens from its summary', async () => {
+  const f = mount(); await f.feed.update(controls());
+  const fold = f.feed.root.querySelector('details.gcsp-happened-fold');
+  assert.ok(fold); assert.equal(fold.open, false);
+  assert.equal(fold.querySelector('summary').textContent, 'What happened');
+  assert.ok(fold.contains(f.feed.root.querySelector('.gcsp-timeline-list'))); f.feed.destroy();
+});
+
 test('release, hold lapse and offer email rows come newest first with plain labels and no recipient name', async () => {
   const f = mount({ readOutbox: async () => ok({ runId: 'run-a', messages: [message(), message({ jobId: 'job-2', state: 'failed', time: '2026-11-10T09:00:00.000Z' }),
     message({ jobId: 'job-3', messageKind: 'other' })] }) });
