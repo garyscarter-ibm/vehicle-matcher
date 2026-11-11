@@ -1,12 +1,13 @@
 import { el, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard, SWATCH_HEX } from '../../vehicle-matcher/modes/result-card.js';
+import { finishShade } from './finish-shades.js';
 import { NEUTRAL_SWATCH } from '../../vehicle-matcher/modes/match-signal.js';
 
-/** A finish stays readable; only a supported supplied shade paints its decorative swatch. */
+/** Readable finish with a supplied shade or shared decorative name mapping. */
 export function finishLabel({ label, value, shade } = {}) {
   const root = el('p', 'gcsp-finish');
   const swatch = el('span', 'gcsp-finish-swatch'); swatch.setAttribute('aria-hidden', 'true');
-  const colour = SWATCH_HEX[typeof shade === 'string' ? shade.toLowerCase() : ''];
+  const colour = SWATCH_HEX[finishShade({ label, value, shade })];
   swatch.style.backgroundColor = colour || NEUTRAL_SWATCH;
   swatch.classList.toggle('is-unknown', !colour);
   root.append(swatch, el('span', null, value || `${label} not supplied`));
