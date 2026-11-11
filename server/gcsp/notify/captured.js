@@ -1,7 +1,7 @@
 import { MailTransport } from './port.js';
 import { inputDigest, ok, result } from '../repository/index.js';
 import { publicOrigin as validOrigin } from '../public-origin.js';
-import { safeOfferLink } from './templates.js';
+import { safeOfferLink, withAbsoluteVehicleImage } from './templates.js';
 
 const escape = (value) => value.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -11,6 +11,7 @@ export class CapturedTransport extends MailTransport {
 
   // Only the bodies show the absolute link; message.offerLink stays relative so the viewer button is same-origin.
   #withAbsoluteLink(message) {
+    message = withAbsoluteVehicleImage(message, this.#origin);
     const { offerLink } = message;
     if (!this.#origin || typeof offerLink !== 'string' || !/^\/(?!\/)/.test(offerLink) || !safeOfferLink(offerLink)) return message;
     let absolute;

@@ -11,6 +11,7 @@ import { createOutboxRoutes } from '../gcsp/notify/http.js';
 const SECRET = 'synthetic-provider-secret';
 const ADDRESS = 'approved@example.test';
 const BASE = 'https://demo.example.test/vehicle-matcher/';
+const IMAGE = { src: '/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp', fidelity: 'representative-model' };
 const TOKEN = 'A'.repeat(43); // Synthetic token with FUCQ-100's 32-byte base64url shape.
 const LINK = `/gcsp/offer?offerId=offer-one&runId=synthetic#token=${TOKEN}`;
 const WALL = '2026-11-05T10:00:00.000Z';
@@ -22,7 +23,7 @@ const response = (status = 201, body = { messageId: '<accepted@smtp.test>' }) =>
 const cmd = (commandId) => ({ commandId, inputDigest: inputDigest(commandId) });
 const ref = (f) => ({ table: 'notification_outbox', key: { runId: f.context.runId, jobId: 'job-one' } });
 const row = async (f) => (await f.repository.read(f.context, ref(f))).value;
-async function setup(t, { mail = {}, link = LINK, state = 'pending', outcome, attempts = 0, deliveryEmail = ADDRESS } = {}) {
+async function setup(t, { mail = {}, link = LINK, state = 'pending', outcome, attempts = 0, deliveryEmail = ADDRESS, quoteFacts = { model: 'BMW <Touring>' } } = {}) {
   assert.equal(typeof notify.createMailTransport, 'function');
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });
   assert.equal((await repository.open()).status, 'ok');
@@ -44,7 +45,7 @@ async function setup(t, { mail = {}, link = LINK, state = 'pending', outcome, at
     const changed = await tx.compareAndSwap(employeeRef, employee.value.version, { deliveryEmail });
     if (changed.status !== 'ok') return changed;
     for (const [table, facts] of [
-      ['quotes', { quoteId: 'quote-one', orderUuid: stock.orderUuid, employeeId: 'employee-paula', policyVersion: 'gcsp-policy-v1', facts: { model: 'BMW <Touring>' } }],
+      ['quotes', { quoteId: 'quote-one', orderUuid: stock.orderUuid, employeeId: 'employee-paula', policyVersion: 'gcsp-policy-v1', facts: quoteFacts }],
       ['holds', { holdId: 'hold-one', orderUuid: stock.orderUuid, employeeId: 'employee-paula', entitlementSlotId: 'slot-paula', type: 'buddy-offer', state: 'active', quoteId: 'quote-one', expiresAt: '2026-11-05T11:00:00.000Z' }],
       ['offers', { offerId: 'offer-one', holdId: 'hold-one', employeeId: 'employee-paula', orderUuid: stock.orderUuid, quoteId: 'quote-one', policyVersion: 'gcsp-policy-v1', environmentId: 'mail-test', state: 'active', expiresAt: '2026-11-05T11:00:00.000Z' }],
     ]) { const inserted = await tx.insert(table, { runId: context.runId, ...facts }); if (inserted.status !== 'ok') return inserted; }
@@ -72,7 +73,8 @@ test('Brevo adapter is available behind the existing MailTransport port', () => 
 
 test('backend selection defaults to capture and explicit configured dispatcher sends rendered payload', async (t) => {
   let sent;
-  const f = await setup(t, { mail: { fetchImpl: async (url, options) => { sent = { url, options }; return response(); } } });
+  const f = await setup(t, { quoteFacts: { display: { name: 'BMW <Touring>', photo: IMAGE.src, images: [IMAGE] } },
+    mail: { fetchImpl: async (url, options) => { sent = { url, options }; return response(); } } });
   assert.ok(notify.createMailTransport({ repository: f.repository, env: {} }) instanceof notify.CapturedTransport);
   assert.equal((await f.dispatcher.dispatchPending()).status, 'ok');
   const job = await row(f); const payload = JSON.parse(sent.options.body);
@@ -89,6 +91,8 @@ test('backend selection defaults to capture and explicit configured dispatcher s
   assert.ok(payload.textContent.includes(`${BASE}gcsp/offer?offerId=offer-one&runId=synthetic#token=${TOKEN}`));
   assert.ok(payload.htmlContent.includes(`href="${BASE}gcsp/offer?offerId=offer-one&amp;runId=synthetic#token=${TOKEN}"`));
   assert.match(payload.htmlContent, /BMW &lt;Touring&gt;/); assert.doesNotMatch(payload.textContent, /No email has been sent/);
+  assert.ok(payload.htmlContent.includes(`src="${BASE}${IMAGE.src.slice(1)}"`));
+  assert.equal(job.outcome.message.vehicleImage.src, `${BASE}${IMAGE.src.slice(1)}`);
   assert.doesNotMatch(payload.textContent, /demonstration|inbox delivery/);
   const projected = await createOutboxRoutes({ repository: f.repository })[0].handle({ context: f.context, body: {}, searchParams: new URLSearchParams() });
   assert.equal(projected.value.messages[0].state, 'sent'); assert.equal(projected.value.messages[0].textBody, payload.textContent);

@@ -135,3 +135,10 @@ destination, including event and reason. Chrome extension tab selection failed a
 reported missing Computer Use permission; the named local GCSP Keychain item was unavailable.
 No provider credential was retrieved. Gary was asked for the delivery-log event. No code change,
 new live send, resend, Jira write or claim of inbox delivery was made during this investigation.
+
+## Receipt confirmed and image follow-up
+
+Gary subsequently confirmed Paula's email had arrived, resolving his reported delivery failure.
+No additional provider delivery-event lookup or test send was needed. He then requested a car
+image and restrained styling from the new offer page; the [implementation and validation record](offer-email-image-2026-11-11.md)
+describes that change separately from the resolved delivery investigation.
