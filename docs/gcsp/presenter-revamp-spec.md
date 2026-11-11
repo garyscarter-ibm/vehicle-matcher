@@ -8,6 +8,8 @@ or claimed; it is a proposal to agree before any Story is raised. Mockups: open
 
 **Loading refinement, Gary, 11 November 2026:** show car-image skeletons from the start of a release through image preloading. Give the five-counter bar and Latest release stats their own matching placeholders. Keep the Latest release stats summary visible and preserve its open/closed state; chart skeletons appear below it in the same label/bar/count style as the data. This bounded presentation change leaves release data and business behaviour unchanged.
 
+**Start again refinement, Gary, 11 November 2026:** retain the explicit confirmation but replace the separate alert-dialog panel with a compact inline prompt in the Start again action slot. Show the day-1/car-clear/preferences consequence briefly, then Confirm and Cancel. Cancel or Escape restores the original button and its focus; confirmation keeps the same reset and retry behaviour.
+
 ## What Gary asked for
 
 1. Keep everything the presenter controls do today, as a hidden **Advanced** mode.

@@ -76,15 +76,18 @@ test('an order in progress turns Release into Move on a day; no preferences disa
   g.api.basic.release.click(); await settle(); assert.equal(g.calls.length, 0); g.api.destroy();
 });
 
-test('Start again asks first; Cancel and Escape send nothing and return focus', async () => {
+test('Start again confirms inline in its action slot; Cancel and Escape send nothing and return focus', async () => {
   const f = setup(); await f.api.ready; await settle();
   f.api.basic.startAgain.click();
   const dialog = f.root.querySelector('.gcsp-console-confirm');
-  assert.equal(dialog.hidden, false); assert.equal(dialog.getAttribute('role'), 'alertdialog'); assert.equal(text(dialog, 'h2'), 'Start again?');
-  assert.match(dialog.textContent, /The scheme goes back to day 1 and released cars are cleared\. Employees keep their saved preferences\. The next release brings a new set of cars\./);
-  assert.equal(document.activeElement.textContent, 'Start again'); assert.ok(dialog.contains(document.activeElement));
+  assert.equal(dialog.hidden, false); assert.equal(dialog.getAttribute('role'), 'group'); assert.equal(text(dialog, 'strong'), 'Start again?');
+  assert.match(dialog.textContent, /Day 1, cars cleared\. Preferences kept\./);
+  assert.equal(dialog.parentElement, f.api.basic.startAgain.parentElement); assert.ok(dialog.closest('.gcsp-console-actions'));
+  assert.equal(f.api.basic.startAgain.hidden, true); assert.equal(f.api.basic.startAgain.getAttribute('aria-controls'), dialog.id); assert.equal(f.api.basic.startAgain.getAttribute('aria-expanded'), 'true');
+  assert.equal(f.root.querySelector('[role="alertdialog"],[role="dialog"]'), null); assert.equal(dialog.querySelector('h2'), null);
+  assert.equal(document.activeElement.textContent, 'Confirm'); assert.ok(dialog.contains(document.activeElement)); assert.equal(f.calls.length, 0);
   [...dialog.querySelectorAll('button')].find((b) => b.textContent === 'Cancel').click();
-  assert.equal(dialog.hidden, true); assert.equal(document.activeElement, f.api.basic.startAgain);
+  assert.equal(dialog.hidden, true); assert.equal(document.activeElement, f.api.basic.startAgain); assert.equal(f.api.basic.startAgain.hidden, false); assert.equal(f.api.basic.startAgain.getAttribute('aria-expanded'), 'false');
   f.api.basic.startAgain.click(); dialog.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
   assert.equal(dialog.hidden, true); assert.equal(f.calls.length, 0);
   assert.equal(f.root.querySelector('.gcsp-console-advanced').hidden, true, 'stays in Basic'); f.api.destroy();
@@ -94,7 +97,7 @@ test('confirmed Start again resets into a fresh Main successful journey run and 
   const f = setup(); await f.api.ready; await settle();
   f.set(state({ now: '2026-11-10T11:30:00.000Z', clockVersion: '8' })); f.api.basic.release.click(); await settle();
   f.api.basic.startAgain.click();
-  [...f.root.querySelectorAll('.gcsp-console-confirm button')].find((b) => b.textContent === 'Start again').click(); await settle();
+  [...f.root.querySelectorAll('.gcsp-console-confirm button')].find((b) => b.textContent === 'Confirm').click(); await settle();
   const reset = f.calls.find(([kind]) => kind === 'reset')[1];
   assert.deepEqual(reset, { commandId: 'command-2', expectedRunId: 'run-a', expectedRunVersion: 3, scenarioId: 'main-successful-journey',
     scenarioVersion: main.scenarioVersion, fixtureVersion: main.fixtureVersion, policyVersion: 'p1' });
@@ -108,7 +111,7 @@ test('a lost Start again reply retries the exact original command', async () => 
   let first = true;
   const f = setup({ reset: async (payload) => { f.calls.push(['reset', payload]); if (first) { first = false; return { status: 'unavailable', lostResponse: true, retryable: true }; } return ok({ runId: 'run-b' }); } });
   await f.api.ready; await settle();
-  const confirm = () => { f.api.basic.startAgain.click(); [...f.root.querySelectorAll('.gcsp-console-confirm button')].find((b) => b.textContent === 'Start again').click(); };
+  const confirm = () => { f.api.basic.startAgain.click(); [...f.root.querySelectorAll('.gcsp-console-confirm button')].find((b) => b.textContent === 'Confirm').click(); };
   confirm(); await settle();
   assert.equal(text(f.root, '[role="status"]'), 'Start again not confirmed. Press Start again to retry.');
   confirm(); await settle();
@@ -119,7 +122,7 @@ test('a lost Start again reply retries the exact original command', async () => 
 test('a second Start again after more releases sends the current run, not the first one', async () => {
   const f = setup({ tick: async (payload) => { f.calls.push(['tick', payload]); f.set(state({ runId: 'run-b', runVersion: 4, now: payload.to, clockVersion: '9' })); return ok({}); } });
   await f.api.ready; await settle();
-  const confirm = () => { f.api.basic.startAgain.click(); [...f.root.querySelectorAll('.gcsp-console-confirm button')].find((b) => b.textContent === 'Start again').click(); };
+  const confirm = () => { f.api.basic.startAgain.click(); [...f.root.querySelectorAll('.gcsp-console-confirm button')].find((b) => b.textContent === 'Confirm').click(); };
   confirm(); await settle();
   f.api.basic.release.click(); await settle();
   confirm(); await settle();
