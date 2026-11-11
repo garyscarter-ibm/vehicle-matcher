@@ -29,7 +29,8 @@
     "blocks/gcsp/kit/help-tip.js",
     "blocks/gcsp/kit/star-rating.js",
     "blocks/gcsp/kit/understanding-meter.js",
-    "blocks/gcsp/kit/buddy-status.js"
+    "blocks/gcsp/kit/buddy-status.js",
+    "blocks/gcsp/kit/buddy-engagement.js"
   ],
   "extensions": [
     ".js",
@@ -157,9 +158,14 @@
       "use": "understandingMeter({ id, label, value, maximum, pending }) (blocks/gcsp/kit/understanding-meter.js)"
     },
     "buddy-status": {
-      "re": "el\\('p', 'gcsp-buddy-status'",
+      "re": "el\\('span', `gcsp-buddy-status",
       "flags": "g",
-      "use": "buddyStatus({ id, state }) (blocks/gcsp/kit/buddy-status.js)"
+      "use": "buddyStatus({ state, href }) (blocks/gcsp/kit/buddy-status.js)"
+    },
+    "buddy-engagement": {
+      "re": "el\\('p', 'gcsp-buddy-engagement'",
+      "flags": "g",
+      "use": "buddyEngagement({ id, state }) (blocks/gcsp/kit/buddy-engagement.js)"
     }
   },
   "stylesheets": [
@@ -261,7 +267,7 @@
     },
     {
       "path": "blocks/gcsp/activity/gcsp-activity.css",
-      "max_lines": 26
+      "max_lines": 25
     },
     {
       "path": "blocks/gcsp/kit/stage-list.css",
@@ -368,6 +374,10 @@
       "max_lines": 14
     },
     {
+      "path": "blocks/gcsp/kit/release-skeleton.css",
+      "max_lines": 12
+    },
+    {
       "path": "blocks/gcsp/kit/tabs.css",
       "max_lines": 10
     },
@@ -413,6 +423,10 @@
     },
     {
       "path": "blocks/gcsp/kit/buddy-status.css",
+      "max_lines": 12
+    },
+    {
+      "path": "blocks/gcsp/kit/buddy-engagement.css",
       "max_lines": 5
     }
   ],

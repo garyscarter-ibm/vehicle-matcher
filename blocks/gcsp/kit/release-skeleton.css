@@ -1,0 +1,11 @@
+/* Release placeholders reuse the tile, fact-label and count-bar layouts. */
+.gcsp .gcsp-skeleton[data-layout="release-grid"] { grid-column: 1 / -1; }
+.gcsp .gcsp-skeleton[data-layout="release-grid"] > .gcsp-skeleton-shapes, .gcsp .gcsp-skeleton[data-layout="stats"] > .gcsp-skeleton-shapes { max-width: none; }
+.gcsp .gcsp-skeleton-release-grid { display: grid; grid-template-columns: repeat(var(--gcsp-release-columns, 20), minmax(0, 1fr)); gap: var(--gcsp-space-half); }
+.gcsp .gcsp-skeleton-release-grid .gcsp-skeleton-shape { height: auto; border-radius: 0; }
+.gcsp .gcsp-skeleton-stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--gcsp-space-4) var(--gcsp-space-6); }
+.gcsp .gcsp-skeleton-stats .vm-fact-label { display: block; }
+.gcsp .gcsp-skeleton .gcsp-skeleton-stat-value { width: 3ch; max-width: 100%; height: 1.15em; margin-top: var(--gcsp-space-half); font-size: var(--gcsp-font-size-figure); }
+.gcsp .gcsp-skeleton[data-layout="bars"] .gcsp-count-bars-row { min-height: 1lh; }
+.gcsp .gcsp-skeleton .gcsp-skeleton-bar { height: 8px; }
+@media (max-width: 1100px) { .gcsp .gcsp-skeleton-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

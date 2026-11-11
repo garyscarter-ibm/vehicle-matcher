@@ -4839,6 +4839,36 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-382",
       "unsliced": true,
       "note": "Diagnosis-only/no-pickup hold preserved. No repair or live reproduction claimed."
+    },
+    {
+      "id": "FUCQ-389",
+      "title": "Show consistent Buddy status on Your cars and visible search controls",
+      "status": "In Review",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-389",
+      "branch": "codex/buddy-status-controls",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "shared-status",
+          "title": "Shared status and account navigation",
+          "status": "complete",
+          "evidence": "docs/gcsp/evidence/fucq389/validation.md"
+        },
+        {
+          "id": "search-controls",
+          "title": "Visible activity commands",
+          "status": "complete",
+          "evidence": "docs/gcsp/evidence/fucq389/validation.md"
+        },
+        {
+          "id": "integration",
+          "title": "Real readback and visual integration",
+          "status": "complete",
+          "evidence": "docs/gcsp/evidence/fucq389/validation.md"
+        }
+      ],
+      "observed_at": "2026-11-11T13:54:39Z"
     }
   ]
 }

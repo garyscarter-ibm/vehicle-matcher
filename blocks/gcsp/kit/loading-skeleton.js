@@ -10,9 +10,31 @@ const LAYOUTS = Object.freeze({
   feature: ['title', 'feature', 'panel', 'rows'],
   console: ['title', 'line-short', 'actions', 'panel', 'rows'],
   section: ['rows'],
+  'release-grid': ['tiles'],
+  stats: ['stats'],
+  bars: ['bars'],
 });
 
-function block(kind) {
+function block(kind, { items, labels }) {
+  if (kind === 'tiles') {
+    const grid = el('div', 'gcsp-skeleton-release-grid');
+    grid.append(...Array.from({ length: items ?? 100 }, () => el('span', 'gcsp-skeleton-shape gcsp-release-tile'))); return grid;
+  }
+  if (kind === 'stats') {
+    const stats = el('div', 'gcsp-skeleton-stats');
+    stats.append(...(labels ?? Array.from({ length: items ?? 5 }, () => '')).map((label) => {
+      const stat = el('div', '');
+      stat.append(label ? el('span', 'vm-fact-label', label) : el('span', 'gcsp-skeleton-shape gcsp-skeleton-line'), el('span', 'gcsp-skeleton-shape gcsp-skeleton-stat-value')); return stat;
+    })); return stats;
+  }
+  if (kind === 'bars') {
+    const bars = el('div', 'gcsp-count-bars-rows');
+    bars.append(...Array.from({ length: items ?? 3 }, (_, at) => {
+      const row = el('div', 'gcsp-count-bars-row');
+      const bar = el('span', 'gcsp-skeleton-shape gcsp-skeleton-bar'); bar.style.width = `${100 - (at % 4) * 20}%`;
+      row.append(el('span', 'gcsp-skeleton-shape gcsp-skeleton-line'), bar, el('span', 'gcsp-skeleton-shape')); return row;
+    })); return bars;
+  }
   if (kind === 'actions') {
     const row = el('div', 'gcsp-skeleton-actions');
     row.append(...[0, 1].map(() => el('span', 'gcsp-skeleton-shape gcsp-skeleton-button'))); return row;
@@ -33,11 +55,11 @@ function block(kind) {
 }
 
 /** Page-shaped placeholder while a view loads. The visible blocks are hidden from assistive tech; `label` is the one status line. */
-export function loadingSkeleton({ label = 'Loading', layout = 'page', role = 'status' } = {}) {
+export function loadingSkeleton({ label = 'Loading', layout = 'page', role = 'status', items, labels } = {}) {
   const root = el('div', 'gcsp-skeleton'); root.dataset.layout = LAYOUTS[layout] ? layout : 'page';
   root.setAttribute('aria-busy', 'true');
   const shapes = el('div', 'gcsp-skeleton-shapes'); shapes.setAttribute('aria-hidden', 'true');
-  shapes.append(...(LAYOUTS[layout] || LAYOUTS.page).map(block));
+  shapes.append(...(LAYOUTS[layout] || LAYOUTS.page).map((kind) => block(kind, { items, labels })));
   const text = el('p', 'gcsp-vh', label); if (role) text.setAttribute('role', role);
   root.append(text, shapes);
   return root;

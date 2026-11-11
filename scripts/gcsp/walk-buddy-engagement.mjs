@@ -46,10 +46,10 @@ async function walk([width, height]) {
     const shot = async (name) => { await page.evaluate(() => scrollTo(0, 0)); await page.waitForTimeout(200); await page.screenshot({ path: `${scratch}/walk/${tag}-${name}.png`, fullPage: true }); };
     const api = (path) => page.evaluate(async (p) => { const r = await fetch(p, { credentials: 'same-origin' }); return { status: r.status, body: await r.json().catch(() => null) }; }, path);
     const permission = async () => { const a = await api('/api/gcsp/activity'); const v = a.body?.value ?? a.body; return { status: a.status, permission: v?.permission ?? null, state: v?.state ?? null, changes: (v?.stateChanges ?? []).map((c) => c.operation), briefVersion: v?.briefVersion ?? null }; };
-    const lamp = () => page.locator('.gcsp-buddy-status').evaluate((n) => ({ text: n.textContent.trim(), state: n.dataset.state })).catch(() => null);
+    const lamp = () => page.locator('.gcsp-buddy-engagement').evaluate((n) => ({ text: n.textContent.trim(), state: n.dataset.state })).catch(() => null);
     const action = () => page.locator('.gcsp-prefs-action button');
     const statusText = () => page.locator('.gcsp-prefs-status').innerText().catch(() => '');
-    const settle = async () => { await page.locator('.gcsp-prefs-tile').first().waitFor({ timeout: 30000 }); await page.waitForFunction(() => document.querySelector('.gcsp-buddy-status')?.dataset.state && document.querySelector('.gcsp-buddy-status').dataset.state !== 'unknown', null, { timeout: 15000 }).catch(() => {}); await page.waitForTimeout(400); };
+    const settle = async () => { await page.locator('.gcsp-prefs-tile').first().waitFor({ timeout: 30000 }); await page.waitForFunction(() => document.querySelector('.gcsp-buddy-engagement')?.dataset.state && document.querySelector('.gcsp-buddy-engagement').dataset.state !== 'unknown', null, { timeout: 15000 }).catch(() => {}); await page.waitForTimeout(400); };
     const considered = () => page.locator('.gcsp-prefs-tile.is-considered').count();
     const state = async () => ({ lamp: await lamp(), action: (await action().innerText().catch(() => '')).trim(), considered: await considered(), status: (await statusText()).trim() });
     const reload = async () => { await page.reload(); await settle(); };
@@ -93,7 +93,7 @@ async function walk([width, height]) {
       await page.getByRole('button', { name: 'Done', exact: true }).click(); await page.waitForTimeout(600);
     }
     s = await state(); step('three categories are considered', s.considered >= 3, s);
-    await action().click(); await page.waitForFunction(() => document.querySelector('.gcsp-buddy-status')?.dataset.state === 'engaged', null, { timeout: 15000 }).catch(() => {});
+    await action().click(); await page.waitForFunction(() => document.querySelector('.gcsp-buddy-engagement')?.dataset.state === 'engaged', null, { timeout: 15000 }).catch(() => {});
     s = await state(); await shot('05-engaged');
     step('Engage Buddy: green lamp "Buddy engaged", action "Disengage Buddy", ok copy', s.lamp?.state === 'engaged' && s.action === 'Disengage Buddy' && s.status === 'Buddy engaged. Your preferences will guide the search.', s);
     await reload(); s = await state(); const p3 = await permission(); await shot('06-engaged-reload');
@@ -103,20 +103,20 @@ async function walk([width, height]) {
     // Disengage from the live engaged state, persist across reload, then engage again.
     const kept = await considered();
     await action().click();
-    await page.waitForFunction(() => document.querySelector('.gcsp-buddy-status')?.dataset.state === 'disengaged', null, { timeout: 15000 }).catch(() => {});
+    await page.waitForFunction(() => document.querySelector('.gcsp-buddy-engagement')?.dataset.state === 'disengaged', null, { timeout: 15000 }).catch(() => {});
     s = await state(); await shot('06b-disengaged');
     step('Disengage Buddy: red lamp "Buddy disengaged", action "Engage Buddy", ok copy, focus stays on the button', s.lamp?.state === 'disengaged' && s.action === 'Engage Buddy' && s.status === 'Buddy disengaged. Your preferences are kept.' && await action().evaluate((n) => n === document.activeElement), s);
     await reload(); s = await state(); const pd = await permission(); await shot('06c-disengaged-reload');
     step('after reload Buddy stays disengaged, preferences are kept, and activity canSearch is false', s.lamp?.state === 'disengaged' && s.action === 'Engage Buddy' && s.considered === kept && pd.permission?.canSearch === false && pd.permission?.canHold === false, { ui: s, activity: pd });
     step('activity records a "disengaged" state change', pd.changes.at(-1) === 'disengaged', pd.changes);
-    await action().click(); await page.waitForFunction(() => document.querySelector('.gcsp-buddy-status')?.dataset.state === 'engaged', null, { timeout: 15000 }).catch(() => {});
+    await action().click(); await page.waitForFunction(() => document.querySelector('.gcsp-buddy-engagement')?.dataset.state === 'engaged', null, { timeout: 15000 }).catch(() => {});
     s = await state(); step('Engage Buddy again after a disengage works with the kept preferences', s.lamp?.state === 'engaged' && s.action === 'Disengage Buddy', s);
 
     // Remove one category with the bin and its confirmation: minimum loss.
     const before = await considered();
     await page.locator('.gcsp-prefs-tile.is-considered .gcsp-prefs-remove').first().click(); await shot('07-remove-confirmation');
     await page.getByRole('button', { name: 'Remove preference', exact: true }).click();
-    await page.waitForFunction(() => document.querySelector('.gcsp-buddy-status')?.dataset.state === 'disengaged', null, { timeout: 15000 }).catch(() => {});
+    await page.waitForFunction(() => document.querySelector('.gcsp-buddy-engagement')?.dataset.state === 'disengaged', null, { timeout: 15000 }).catch(() => {});
     await page.waitForTimeout(500); s = await state(); await shot('08-minimum-loss');
     step('removing a category under the minimum turns the lamp to "Buddy disengaged" with the minimum-loss copy', before === 3 && s.considered === 2 && s.lamp?.state === 'disengaged' && s.action === 'Engage Buddy' && s.status === 'Preferences saved. Buddy disengaged: choose at least 3 categories to engage again.', { before, ...s });
     await reload(); s = await state(); const p4 = await permission(); await shot('09-minimum-loss-reload');

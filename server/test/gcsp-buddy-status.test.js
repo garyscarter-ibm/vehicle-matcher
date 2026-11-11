@@ -1,40 +1,40 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
+import { buddyState, buddyStatus } from '../../blocks/gcsp/kit/buddy-status.js';
+import { buddyStatusExample } from '../../blocks/gcsp/kit/form-controls-gallery.js';
 
-let dom; let buddyStatus;
-before(async () => {
-  dom = new JSDOM('<!doctype html><body></body>', { pretendToBeVisual: true });
-  for (const name of ['window', 'document', 'HTMLElement', 'Node', 'Event']) {
-    Object.defineProperty(globalThis, name, { value: name === 'window' ? dom.window : dom.window[name], configurable: true, writable: true });
-  }
-  ({ buddyStatus } = await import('../../blocks/gcsp/kit/buddy-status.js'));
-});
+let dom;
+before(() => { dom = new JSDOM('<!doctype html>'); globalThis.document = dom.window.document; });
 after(() => dom.window.close());
+const activity = (permission, currentOffer = null) => ({ status: 'ok', value: { permission, currentOffer } });
 
-test('states carry their meaning in words, with an aria-hidden lamp and no live region', () => {
-  const cases = [['engaged', 'Buddy engaged'], ['disengaged', 'Buddy disengaged'], ['unknown', 'Buddy status unavailable'], ['nonsense', 'Buddy status unavailable']];
-  for (const [state, text] of cases) {
-    const view = buddyStatus({ id: `b-${state}`, state });
-    assert.equal(view.root.tagName, 'P'); assert.equal(view.root.id, `b-${state}`);
-    assert.equal(view.root.textContent, text);
-    assert.equal(view.root.querySelector('.gcsp-buddy-lamp').getAttribute('aria-hidden'), 'true');
-    assert.equal(view.root.hasAttribute('role'), false); assert.equal(view.root.hasAttribute('aria-live'), false);
+test('Buddy status distinguishes saved pause, missing setup, finished, withdrawn permission and failed reads', () => {
+  const active = { paused: false, canSearch: true }; const paused = { paused: true, canSearch: false };
+  for (const [input, expected] of [
+    [activity(active), 'active'], [activity(paused), 'paused'], [activity(null), 'unset'],
+    [activity(active, { state: 'accepted' }), 'finished'],
+    [activity(paused, { state: 'accepted' }), 'finished'],
+    [activity({ paused: false, canSearch: false }), 'inactive'],
+    [{ status: 'unavailable' }, 'unavailable'], [{ status: 'ok', value: {} }, 'unavailable'],
+    [activity({}), 'unavailable'], [activity(undefined), 'unavailable'],
+  ]) assert.equal(buddyState(input), expected);
+});
+
+test('each outlined status is one native link with the original chevron and readable state', () => {
+  for (const [state, text] of [['active', 'Active'], ['paused', 'Paused'], ['unset', 'Set up your buddy'], ['unavailable', 'Status unavailable']]) {
+    const link = buddyStatus({ state, href: '/gcsp-activity-live.html' });
+    assert.equal(link.tagName, 'A'); assert.equal(link.getAttribute('href'), '/gcsp-activity-live.html');
+    assert.equal(link.querySelectorAll('a,button').length, 0);
+    assert.equal(link.textContent, `Buddy${text}›`);
+    assert.equal(link.querySelector('.gcsp-buddy-chevron').getAttribute('aria-hidden'), 'true');
+    assert.equal(link.dataset.focusKey, 'buddy-status');
   }
+  assert.equal(buddyStatus({ state: 'paused' }).querySelector('.gcsp-buddy-dot').getAttribute('aria-hidden'), 'true');
 });
 
-test('update repaints in place and unknown never reads as engaged', () => {
-  const view = buddyStatus({ id: 'b' }); const root = view.root;
-  assert.equal(root.dataset.state, 'unknown'); assert.ok(!root.classList.contains('is-engaged'));
-  view.update('engaged'); assert.equal(view.root, root); assert.equal(root.textContent, 'Buddy engaged'); assert.ok(root.classList.contains('is-engaged'));
-  view.update('disengaged'); assert.equal(root.textContent, 'Buddy disengaged'); assert.ok(!root.classList.contains('is-engaged'));
-  assert.throws(() => buddyStatus({}), TypeError);
-});
-
-test('the stylesheet is static: 18px lamp, no animation or transition, neutral unknown', () => {
-  const css = readFileSync(new URL('../../blocks/gcsp/kit/buddy-status.css', import.meta.url), 'utf8');
-  assert.match(css, /width: 18px; height: 18px/); assert.doesNotMatch(css, /animation|transition|@keyframes/);
-  assert.match(css, /is-unknown \.gcsp-buddy-lamp \{ background: var\(--gcsp-text-muted\)/);
-  assert.match(css, /is-engaged \.gcsp-buddy-lamp \{ background: var\(--gcsp-success\)/);
+test('shared gallery includes navigation and plain status for every supported state', () => {
+  const example = buddyStatusExample();
+  assert.equal(example.querySelectorAll('.gcsp-buddy-link').length, 6);
+  assert.equal(example.querySelectorAll('p > .gcsp-buddy-status').length, 6);
 });

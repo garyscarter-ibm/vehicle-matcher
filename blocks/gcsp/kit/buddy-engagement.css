@@ -1,0 +1,4 @@
+/* GCSP kit: Buddy engagement lamp (FUCQ-370). Static by design; tokens only. */
+.gcsp .gcsp-buddy-engagement { display: flex; align-items: center; gap: var(--gcsp-space-3); margin: 0; font-size: var(--gcsp-font-size-title); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-buddy-lamp { width: 18px; height: 18px; flex: 0 0 18px; align-self: flex-start; margin-top: calc((1lh - 18px) / 2); border-radius: 50%; background: var(--gcsp-danger); }
+.gcsp .gcsp-buddy-engagement.is-engaged .gcsp-buddy-lamp { background: var(--gcsp-success); } .gcsp .gcsp-buddy-engagement.is-unknown .gcsp-buddy-lamp { background: var(--gcsp-text-muted); }

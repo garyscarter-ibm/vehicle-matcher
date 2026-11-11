@@ -1,6 +1,6 @@
-@import "../employee/gcsp-employee.css";
+@import "../employee/gcsp-employee.css"; @import "../kit/buddy-status.css";
 @import "../order-progress/gcsp-order-progress.css"; /* Account composition uses the employee feature and shared kit; the page layout below is scoped to the account body. */
-@import "../kit/gcsp-kit.css"; @import "../kit/side-drawer.css"; @import "../kit/category-preferences.css"; @import "../kit/understanding-meter.css"; @import "../kit/buddy-status.css"; @import "../kit/same-again.css"; @import "../kit/star-rating.css"; @import "../kit/help-tip.css";
+@import "../kit/gcsp-kit.css"; @import "../kit/side-drawer.css"; @import "../kit/category-preferences.css"; @import "../kit/understanding-meter.css"; @import "../kit/buddy-engagement.css"; @import "../kit/same-again.css"; @import "../kit/star-rating.css"; @import "../kit/help-tip.css";
 gcsp-account { display: block; }
 .gcsp .gcsp-rep.gcsp-account-body { width: 100%; max-width: 1680px; margin-inline: auto; padding-top: var(--gcsp-space-6); min-width: 0; overflow-wrap: anywhere; }
 .gcsp .gcsp-account-body .gcsp-summary { scroll-margin-top: var(--gcsp-space-4); }

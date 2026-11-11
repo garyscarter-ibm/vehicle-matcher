@@ -1,8 +1,9 @@
+import { buddyStatus } from './buddy-status.js';
+import { buddyEngagement } from './buddy-engagement.js';
 import { el, button, factList } from '../../vehicle-matcher/ui.js';
 import { labelledField, errorSummary, checkboxField } from './form-controls.js';
 import { categoryPreferences, preferenceCategories } from './category-preferences.js';
 import { understandingMeter } from './understanding-meter.js';
-import { buddyStatus } from './buddy-status.js';
 import { stageList } from './stage-list.js';
 import { rangeBar } from './range-bar.js';
 import { showMore } from './show-more.js';
@@ -10,6 +11,7 @@ import { tabs } from './tabs.js';
 import { notificationBell } from './notification-bell.js';
 import { notificationModel } from '../activity/notification-source.js';
 import { releaseGrid } from './release-grid.js';
+import { loadingSkeleton } from './loading-skeleton.js';
 import { installArrivalFocus, focusHeading } from './arrival-focus.js';
 import { runRestartedScreen, runRestartedNotice, accessLapsedScreen } from './run-restarted.js';
 
@@ -151,6 +153,16 @@ export function releaseGridExample() {
   const row = el('p'); row.append(replay); scope.append(row, grid.root); section.append(scope); grid.show(tiles, { animate: false }); return section;
 }
 
+export function releaseSkeletonExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-release-skeletons';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP release skeletons'));
+  const scope = el('div', 'gcsp');
+  scope.append(loadingSkeleton({ layout: 'release-grid', role: null }), el('h3', '', 'Release totals'),
+    loadingSkeleton({ layout: 'stats', labels: ['Latest release', 'Total released', 'Unallocated', 'Buddy Allocated', 'Manually Allocated'], role: null }),
+    el('h3', '', 'Latest release stats'), loadingSkeleton({ layout: 'bars', role: null }));
+  section.append(scope); return section;
+}
+
 const opts = (...pairs) => pairs.map(([value, label]) => ({ value, label }));
 const stops = (...labels) => labels.map((label, at) => ({ value: at * 50, label }));
 const PREFERENCE_CATEGORIES = preferenceCategories({ order: ['body', 'fuel', 'sportiness', 'comfort', 'economy', 'size'], categories: {
@@ -212,8 +224,20 @@ export function sameAgainExample() {
 export function buddyStatusExample() {
   const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-buddy-status';
   section.append(el('h2', 'vm-gallery-title', 'GCSP Buddy status'));
+  const scope = el('div', 'gcsp'); const body = el('div', 'vm');
+  for (const state of ['active', 'paused', 'unset', 'finished', 'inactive', 'unavailable']) {
+    const row = el('p');
+    row.append(buddyStatus({ state, href: '/gcsp-activity-live.html' }), document.createTextNode(' '), buddyStatus({ state }));
+    body.append(row);
+  }
+  scope.append(body); section.append(scope); return section;
+}
+
+export function buddyEngagementExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-buddy-engagement';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP Buddy engagement'));
   const row = el('div', 'gcsp'); const strip = el('div', 'vm'); strip.style.display = 'grid'; strip.style.gap = '16px';
-  ['engaged', 'disengaged', 'unknown'].forEach((state) => strip.append(buddyStatus({ id: `gallery-buddy-${state}`, state }).root));
+  ['engaged', 'disengaged', 'unknown'].forEach((state) => strip.append(buddyEngagement({ id: `gallery-buddy-${state}`, state }).root));
   row.append(strip); section.append(row);
   return section;
 }

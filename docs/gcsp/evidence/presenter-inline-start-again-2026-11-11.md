@@ -1,0 +1,14 @@
+# Inline Start again confirmation, 11 November 2026
+
+Gary requested keeping the Start again confirmation while making it inline and less disruptive. The previous alert-dialog composition inserted a separate heading, paragraph and action block beneath the main action row. The reset adapter and command handling were already correct; this change is presentation-only.
+
+Component plan/result: reuse the shared `button` helper and existing console action layout. Replace the Start again trigger in its own slot with a compact named group: **Start again? Day 1, cars cleared. Preferences kept.** plus ghost **Confirm** and **Cancel** buttons. No new kit primitive or dialog is introduced. Cancel/Escape restores the trigger and focus. The trigger exposes `aria-controls`/`aria-expanded`; Confirm describes the consequence. Confirm restores the disabled trigger while the same reset request settles. Existing exact-command retry, latest-run context and final focus handling remain in place. The authorised refinement and composition are recorded in the presenter spec and `COMPONENTS.md`.
+
+## Scoped validation
+
+Base `629cf5db`; final source validation key `a631d5ce7c819285c5047c11702484b0bf18899fb21af2bb32f04b9954258123`. Checks ran through `_tools/test_stamp.py --targeted 629cf5db`, one owned worker/browser with supervised temporary scratch and finalizers.
+
+- `node --test --test-concurrency=1 server/test/gcsp-presenter-basic-console.test.js server/test/gcsp-presenter-console.test.js server/test/gcsp-presenter-release-section.test.js server/test/ui-ratchet.test.js`: **168 passed, 2 failed**, zero skipped/cancelled. All **40** presenter checks passed, including no write before confirmation, Cancel/Escape, confirmed reset, lost-response retry and a later reset using the newest run context. The UI ratchet retains the same two independent failures recorded under **FUCQ-387**: `presenter-console.css` 44 lines versus cap 39, and `release-section.css` 15 versus cap 17. Neither stylesheet length increased.
+- Headless Chrome, actual presenter console and its exact linked styles, controlled adapter, **1280 and 375 pixels**: inspected closed and open confirmation, keyboard activation, Cancel/Escape focus restoration, pending reset and successful day-1 readback. One reset request occurs only after Confirm; both paths remain in Basic. No overflow or page errors. Desktop action-row height remains **40 px**; narrow layout wraps within the action row (**88 to 156 px**) instead of inserting the old separate confirmation panel.
+- Captures and receipt: `/Users/garycarter/Documents/Codex/2026-11-11/sma/work/start-again-inline/{closed,confirm}-{1280,375}.png` and `visual-summary.json`. Browser, local HTTP server and supervised temporary scratch were torn down.
+- `git diff --check`: passed. Full suite, real backend reset/PostgreSQL and deployed smoke were not run. This is scoped presentation evidence, not a full-suite stamp or acceptance transition.

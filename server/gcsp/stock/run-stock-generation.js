@@ -69,10 +69,20 @@ export function createDemoStockGeneration({ policy, repository, contextForRun, e
         const [loaded, plan, keys] = await Promise.all([loadRegistry(), planFor(read), policy.getAssumption(ELIGIBILITY_KEYS, read)]);
         const mapping = keys.status === 'ok' && keys.value?.key === ELIGIBILITY_KEYS ? keys.value.value : null;
         if (!mapping || typeof mapping !== 'object') return unavailable('eligibility-keys-unavailable');
-        // Unmapped cars get no extra facts: they release but are not eligible.
+        // Unmapped cars retain selection evidence but lack model eligibility facts.
         const factsForConfiguration = (_binding, record) => {
           const key = mapping[record?.configuration?.agModelCode];
-          return typeof key === 'string' ? { eligibilityModelKey: { value: key, unit: null }, ...modelBrowseFacts(key) } : {};
+          const selected = record?.catalogue?.equipment?.selected;
+          const selection = selected?.state === 'known' && Array.isArray(selected.options) ? {
+            optionSelection: { value: { kind: 'selected-catalogue', codes: [...new Set([...selected.options,
+              ...(selected.accessories ?? []).map((entry) => typeof entry === 'string' ? entry : entry.code)])],
+            complete: record.catalogue.schemaVersion === '2'
+              ? selected.factoryComplete === true && selected.accessoryCodesComplete === true
+              : record.catalogue.schemaVersion === '1' && selected.complete === true && selected.completeness === 'complete',
+            modelCode: record.configuration.vgModelCode, sourceRef: record.configurationId }, unit: null },
+          } : {};
+          return { ...selection, ...(typeof key === 'string'
+            ? { eligibilityModelKey: { value: key, unit: null }, ...modelBrowseFacts(key) } : {}) };
         };
         const wanted = input.tranche?.guarantee;
         const checked = wanted ? await createReleaseGuarantee({ policy, read, scenario: input.scenario, guarantee: wanted }) : null;
