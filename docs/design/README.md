@@ -34,7 +34,7 @@ The employee overview was split into area pages to keep connectors readable. Ref
 
 ## Status and boundaries
 
-Pages **10–12** use their own integration key: green identifies a known/referenced system role and amber a candidate mapping. Blue identifies our experience and logical adapters on those pages; it does not claim that a BMW connection is built or verified. The build-progress colours below describe the earlier implementation/target views.
+Pages **10–12** use their own integration key: green identifies a known/referenced system role or confirmed source selection, and amber a candidate mapping. The vehicle box is green following the 11 November collaborator confirmation of VSS for vehicle data/information and selection of the live configurator API for imagery. Blue identifies our experience and logical adapters on those pages; it does not claim that a BMW connection is built or verified. The build-progress colours below describe the earlier implementation/target views.
 
 Blue means current implementation; purple/dashed means proposed. Current application code was reviewed at `27cf841e1af6ea1c0598bcd63700145138fdb947`; this FUCQ-6 review uses checkout `eefc85c` and its existing working-copy context. The retail API and exports exist; their internal shared-core extraction does not. Russell agreed the shared recommendation direction on 1 November 2026 and requested implementation stories for FUCQ-8. Its shared recommendation work is being refined separately from the wider employee lifecycle. Proposed components remain purple until built and verified; design agreement does not establish implementation or operational acceptance. No application code or hosting was changed by this design update.
 
