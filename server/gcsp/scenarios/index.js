@@ -42,7 +42,7 @@ export class ScenarioService {
   async readCatalogue(context) {
     const allowed = await this.#authorize(context); if (allowed.status !== 'ok') return allowed;
     const run = await this.#run(context); if (run.status !== 'ok') return run;
-    return loadScenarioCatalogue({ policy: this.#policy, read: this.#read(run.value) });
+    return loadScenarioCatalogue({ policy: this.#policy, read: this.#read(run.value), run: run.value });
   }
   async readState(context) {
     const allowed = await this.#authorize(context); if (allowed.status !== 'ok') return allowed;
@@ -81,7 +81,7 @@ export class ScenarioService {
       || !Number.isSafeInteger(input.expectedRunVersion) || input.expectedRunVersion < 1) return invalid();
     if (input.expectedRunId !== context.runId) return result('stale-run', { reason: 'This page is out of date. Reload to see the latest.' });
     const run = await this.#run(context); if (run.status !== 'ok') return run;
-    const catalogue = await loadScenarioCatalogue({ policy: this.#policy, read: this.#read(run.value) });
+    const catalogue = await loadScenarioCatalogue({ policy: this.#policy, read: this.#read(run.value), run: run.value });
     if (catalogue.status !== 'ok') return catalogue;
     const scenario = catalogue.value.scenarios.find((s) => s.scenarioId === input.scenarioId);
     if (!scenario) return result('not-found', { resourceType: 'scenario' });

@@ -8,7 +8,7 @@ const invalid = () => result('invalid', { code: 'invalid-presenter-tick', reason
 export async function readPresenterClockConfiguration(policy, run) {
   const read = { runId: run.runId, asOf: run.clockInstant, policyVersion: run.policyVersion };
   const [configured, assumption] = await Promise.all([
-    loadClockConfiguration(policy, read), policy.getAssumption('clock.presenter.stepSeconds', read),
+    loadClockConfiguration(policy, read, run), policy.getAssumption('clock.presenter.stepSeconds', read),
   ]);
   if (configured.status !== 'ok') return configured;
   if (assumption.status !== 'ok' || assumption.policyVersion !== read.policyVersion

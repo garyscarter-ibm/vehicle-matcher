@@ -2,9 +2,11 @@ import { loadDemoPrincipalSeed } from './principals.js';
 import { emptyAllocationInventory, allocateSyntheticIdentities } from '../vehicle-evidence/vin-allocation.js';
 import { ok, result } from '../repository/core.js';
 import { validInstant } from '../policy/file-provider.js';
+import { withRunClock } from '../clock/start-day.js';
 
 const unavailable = () => result('unavailable', { reason: 'The versioned scenario fixture is unavailable.', retryable: false });
-export async function loadClockConfiguration(policy, read) {
+// A run passed here overrides the policy start and cues with the run's own derived ones.
+export async function loadClockConfiguration(policy, read, run) {
   const entries = await Promise.all(['clock.scenario.v1', 'clock.commands.v1', 'clock.handler.order.v1'].map((key) => policy.getAssumption(key, read)));
   if (entries.some((row) => row.status !== 'ok' || row.policyVersion !== read.policyVersion)) return unavailable();
   const [scenario, commands, stages] = entries.map((row) => row.value.value);
@@ -17,7 +19,7 @@ export async function loadClockConfiguration(policy, read) {
       .every((key) => Number.isSafeInteger(scenario.allocationLimits[key]) && scenario.allocationLimits[key] > 0)
     || !Array.isArray(stages) || new Set(stages).size !== stages.length || !stages.length || stages.some((stage) => typeof stage !== 'string' || !stage)
     || commands.startupStages.some((stage) => !stages.includes(stage))) return unavailable();
-  return ok({ scenario, commands, stages });
+  return ok({ scenario: withRunClock(scenario, run), commands, stages });
 }
 
 export async function buildScenarioSeed({ policy, read, configuration, runId, inventory }) {
