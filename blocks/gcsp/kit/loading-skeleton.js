@@ -22,12 +22,12 @@ function block(kind, { items, labels }) {
     const header = el('div', 'gcsp-skeleton-offer-header');
     const intro = el('div', 'gcsp-skeleton-text');
     intro.append(block('title', {}), block('line-short', {}));
-    header.append(intro, el('span', 'gcsp-skeleton-shape gcsp-skeleton-clock')); return header;
+    header.append(intro); return header;
   }
   if (kind === 'offer-card') {
     const card = el('div', 'gcsp-skeleton-offer-card');
     const summary = el('div', 'gcsp-skeleton-text');
-    summary.append(...['heading', 'line', 'line-short', 'actions', 'panel'].map((shape) => block(shape, {})));
+    summary.append(...['heading', 'line', 'line-short', 'clock', 'actions'].map((shape) => block(shape, {})));
     card.append(el('span', 'gcsp-skeleton-shape gcsp-skeleton-media'), summary); return card;
   }
   if (kind === 'tiles') {
