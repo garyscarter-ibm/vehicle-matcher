@@ -211,10 +211,10 @@ test('ready account disclosure preserves full context, closes with Escape and re
   shell.destroy();
 });
 
-test('EMPLOYEE_NAVIGATION is frozen: the four working Paula destinations, none disabled', () => {
+test('EMPLOYEE_NAVIGATION is frozen: the three working Paula destinations, none disabled', () => {
   assert.ok(Object.isFrozen(emp.EMPLOYEE_NAVIGATION));
-  assert.deepEqual(emp.EMPLOYEE_NAVIGATION.map((i) => i.key), ['cars', 'brief', 'activity', 'order-progress']);
-  assert.deepEqual(emp.EMPLOYEE_NAVIGATION.filter((i) => i.available).map((i) => i.key), ['cars', 'brief', 'activity', 'order-progress']);
+  assert.deepEqual(emp.EMPLOYEE_NAVIGATION.map((i) => i.key), ['cars', 'activity', 'order-progress']);
+  assert.deepEqual(emp.EMPLOYEE_NAVIGATION.filter((i) => i.available).map((i) => i.key), ['cars', 'activity', 'order-progress']);
 });
 
 test('mountEmployee shows loading then ready, and teardown empties root and aborts the load', async () => {
@@ -335,9 +335,9 @@ test('element mounts on connect, emits ready, and tears down on disconnect', asy
   await tick();
   assert.deepEqual(events, [[{ view: 'cars', brand: 'bmw' }, true, true, false]]);
   assert.equal(el.querySelector('main').textContent, 'body:cars');
-  el.querySelector('.gcsp-nav [data-key="brief"]').click();
-  assert.equal(el.getAttribute('view'), 'brief');
-  assert.equal(el.querySelector('main').textContent, 'body:brief');
+  el.querySelector('.gcsp-nav [data-key="activity"]').click();
+  assert.equal(el.getAttribute('view'), 'activity');
+  assert.equal(el.querySelector('main').textContent, 'body:activity');
   el.remove();
   assert.equal(el.childNodes.length, 0);
 });
@@ -354,17 +354,17 @@ test('gcsp:navigate carries {from,to}, is cancelable, and switches the view only
     seen.push([e.detail, e.cancelable]);
     if (prevent) e.preventDefault();
   });
-  const go = () => el.querySelector('.gcsp-nav [data-key="brief"]').click();
+  const go = () => el.querySelector('.gcsp-nav [data-key="activity"]').click();
   go();
-  assert.deepEqual(seen, [[{ from: 'cars', to: 'brief' }, true]]);
+  assert.deepEqual(seen, [[{ from: 'cars', to: 'activity' }, true]]);
   assert.equal(el.getAttribute('view'), null);
   assert.equal(el.querySelector('[data-key="cars"]').getAttribute('aria-current'), 'page');
   prevent = false;
   go();
-  assert.equal(el.getAttribute('view'), 'brief');
-  assert.equal(el.querySelector('.gcsp-nav [data-key="brief"]').getAttribute('aria-current'), 'page');
+  assert.equal(el.getAttribute('view'), 'activity');
+  assert.equal(el.querySelector('.gcsp-nav [data-key="activity"]').getAttribute('aria-current'), 'page');
   assert.equal(el.querySelector('nav[aria-label="Breadcrumb"]'), null, 'one-item trail is not rendered');
-  assert.equal(el.querySelector('main h1').textContent, 'Your preferences');
+  assert.equal(el.querySelector('main h1').textContent, 'Buddy activity');
   el.remove();
 });
 
@@ -936,13 +936,14 @@ test('account menu shortcuts sit above Sign out, close the disclosure and route 
   shell.destroy(); bare.destroy();
 });
 
-test('the employee shell menu routes preferences and help, and accountMenu false leaves it out', async () => {
+test('the employee shell menu omits preferences and routes help, and accountMenu false leaves it out', async () => {
   const assigned = []; const location = { assign: (to) => assigned.push(to) };
   const root = host();
   const stop = emp.mountEmployee(root, { location, loadAccount: async () => ({ status: 'ready', name: 'Paula Mason' }) }); await tick();
   const links = [...root.querySelectorAll('.gcsp-account-link')];
   links.forEach((node) => node.click());
-  assert.deepEqual(assigned, ['/gcsp-brief-live.html', '/gcsp-help.html']);
+  assert.deepEqual(links.map((node) => node.textContent), ['Renewal help']);
+  assert.deepEqual(assigned, ['/gcsp-help.html']);
   stop();
   const plain = host();
   const stopPlain = emp.mountEmployee(plain, { location, accountMenu: false, loadAccount: async () => ({ status: 'ready', name: 'Paula Mason' }) }); await tick();

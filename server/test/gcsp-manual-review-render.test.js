@@ -160,9 +160,9 @@ test('a rail click releases the reservation as Back does, then routes to the cho
   const assigned = []; const f = setup(t, { shell: true, location: { assign: (to) => assigned.push(to) } }); await settle(() => control(f, 'contact.phone'));
   f.root.querySelector('nav button[data-key="activity"]').click(); await settle(() => assigned.length);
   assert.deepEqual(assigned, ['/gcsp-activity-live.html']); assert.equal(f.calls.filter((entry) => entry === 'release:back').length, 1);
-  assert.equal(f.released, 1); f.root.querySelector('nav button[data-key="brief"]').click(); await settle(() => assigned.length === 2);
+  assert.equal(f.released, 1); f.root.querySelector('nav button[data-key="order-progress"]').click(); await settle(() => assigned.length === 2);
   assert.equal(f.calls.filter((entry) => entry.startsWith('release')).length, 1, 'a released hold is not released twice');
-  assert.deepEqual(assigned, ['/gcsp-activity-live.html', '/gcsp-brief-live.html']);
+  assert.deepEqual(assigned, ['/gcsp-activity-live.html', '/gcsp-order-progress-live.html']);
 });
 
 test('a pending claim past its original deadline cannot offer browse navigation or announce expiry', async (t) => {

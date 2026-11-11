@@ -9,7 +9,7 @@ export function mountBrief(root, ctx = {}) {
   const onAbort = () => abort.abort(); ctx.signal?.addEventListener('abort', onAbort, { once: true });
   if (ctx.signal?.aborted) { ctx.signal.removeEventListener('abort', onAbort); return () => {}; }
   const transport = ctx.transport || createBriefTransport({ fetch: ctx.fetch, baseURL: ctx.baseURL, signal: abort.signal });
-  const teardown = mountEmployee(root, { brand: ctx.brand, view: 'brief', loadingLayout: 'form', signOut: ctx.signOut, notifications: ctx.notifications,
+  const teardown = mountEmployee(root, { brand: ctx.brand, view: 'brief', viewLabel: 'Your preferences', loadingLayout: 'form', signOut: ctx.signOut, notifications: ctx.notifications,
     signal: abort.signal, loadAccount: ctx.loadAccount, onNavigate: ctx.onNavigate, onUnavailable: ctx.onUnavailable, accountFailure: 'page',
     renderBody(main, { account, view, refresh }) {
       if (account.status !== 'ready') {

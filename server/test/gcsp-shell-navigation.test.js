@@ -1,4 +1,4 @@
-// FUCQ-284 slice B: every Paula page shows the same four-item rail, all working, routed from one place.
+// FUCQ-284 slice B: every Paula page shows the same three-item rail, all working, routed from one place.
 import { test, before, after, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
@@ -13,8 +13,8 @@ const account = { status: 'ready', name: 'Paula (synthetic)', context: 'Syntheti
 const loadAccount = async () => account;
 const tick = (ms = 30) => new Promise((done) => setTimeout(done, ms));
 const place = () => { const node = document.createElement('div'); document.body.append(node); return node; };
-const LABELS = ['Your cars', 'Your preferences', 'Buddy activity', 'Order progress'];
-const KEYS = ['cars', 'brief', 'activity', 'order-progress'];
+const LABELS = ['Your cars', 'Buddy activity', 'Order progress'];
+const KEYS = ['cars', 'activity', 'order-progress'];
 
 before(async () => {
   portal = await import('../../blocks/gcsp/employee/portal-navigation.js');
@@ -51,7 +51,7 @@ const PAGES = {
     const root = place(); const location = fakeLocation();
     stops.push(emp.mountEmployee(root, { loadAccount, location })); return { root, location };
   } },
-  brief: { active: 'brief', crumb: 'Your preferences', mount: () => element('gcsp-brief', pages.brief.defineGcspBrief, unavailable) },
+  brief: { active: null, crumb: 'Your preferences', mount: () => element('gcsp-brief', pages.brief.defineGcspBrief, unavailable) },
   activity: { active: 'activity', crumb: 'Buddy activity', mount: () => element('gcsp-activity', pages.activity.defineGcspActivity, unavailable) },
   'order progress': { active: 'order-progress', crumb: 'Order progress', mount: () => element('gcsp-order-progress', pages.order.defineGcspOrderProgress, unavailable) },
   help: { active: null, crumb: 'Renewal help', mount: () => element('gcsp-help', pages.help.defineGcspHelp, pages.cases.fixtureAdapter('request'),
@@ -71,7 +71,7 @@ const PAGES = {
 const buttons = (root) => [...root.querySelectorAll('nav[aria-label="Portal"] button[data-key]')];
 
 for (const accountStatus of ['stale-run', 'access-required', 'unavailable']) {
-  test(`FUCQ-390: an out-of-date offer keeps all four working destinations when the account is ${accountStatus}`, async () => {
+  test(`FUCQ-390: an out-of-date offer keeps all three working destinations when the account is ${accountStatus}`, async () => {
     const root = place(); const location = { ...fakeLocation(), href: 'https://example.test/gcsp/offer?offerId=old-offer&runId=old-run' };
     const calls = [];
     stops.push(pages.offerEntry.mountOfferEntry(root, { location, history: { replaceState() {} }, fetch: async (input, init) => {
@@ -95,7 +95,7 @@ for (const accountStatus of ['stale-run', 'access-required', 'unavailable']) {
 }
 
 for (const [name, page] of Object.entries(PAGES)) {
-  test(`${name}: the same four working rail items, the right one current, every other one routes`, async () => {
+  test(`${name}: the same three working rail items, the right one current, every other one routes`, async () => {
     const { root, location } = page.mount(); await tick();
     const items = buttons(root);
     assert.deepEqual(items.map((node) => node.querySelector('.gcsp-nav-label').textContent), LABELS);
@@ -115,8 +115,8 @@ test('the rail is one frozen list and the old placeholders are gone', () => {
   assert.ok(Object.isFrozen(portal.PORTAL_NAVIGATION));
   assert.deepEqual(portal.PORTAL_NAVIGATION.map((item) => item.label), LABELS);
   assert.ok(portal.PORTAL_NAVIGATION.every((item) => item.available === true));
-  assert.equal(pages.activity.ACTIVITY_DESTINATION, portal.PORTAL_NAVIGATION[2]);
-  assert.equal(pages.order.ORDER_PROGRESS_DESTINATION, portal.PORTAL_NAVIGATION[3]);
+  assert.equal(pages.activity.ACTIVITY_DESTINATION, portal.PORTAL_NAVIGATION.find((item) => item.key === 'activity'));
+  assert.equal(pages.order.ORDER_PROGRESS_DESTINATION, portal.PORTAL_NAVIGATION.find((item) => item.key === 'order-progress'));
   assert.equal(pages.links.PORTAL_ROUTES, portal.PORTAL_ROUTES);
 });
 
@@ -124,7 +124,7 @@ test('a host that passes onNavigate hears the key instead of the default routing
   const root = place(); const location = fakeLocation(); const heard = [];
   stops.push(emp.mountEmployee(root, { loadAccount, location, onNavigate: (key) => heard.push(key) })); await tick();
   buttons(root).forEach((node) => node.click());
-  assert.deepEqual(heard, ['brief', 'activity', 'order-progress']); assert.deepEqual(location.assigned, []);
+  assert.deepEqual(heard, ['activity', 'order-progress']); assert.deepEqual(location.assigned, []);
 });
 
 test('routePortal ignores keys outside the rail and routeAfterRelease routes only once nothing is held', async () => {
@@ -136,5 +136,5 @@ test('routePortal ignores keys outside the rail and routeAfterRelease routes onl
   assert.equal(await portal.routeAfterRelease('activity', { held: () => false, release: async () => calls.push('never'), location }), true);
   assert.equal(await portal.routeAfterRelease('cars', { held: () => true, release: async () => ({ status: 'pending' }), location }), false);
   assert.equal(await portal.routeAfterRelease('cars', { held: () => true, release: async () => { throw new Error('boom'); }, location }), false);
-  assert.deepEqual(calls, ['release']); assert.deepEqual(location.assigned, ['/gcsp-brief-live.html', '/gcsp-activity-live.html']);
+  assert.deepEqual(calls, ['release']); assert.deepEqual(location.assigned, ['/gcsp-account.html#gcsp-account-preferences', '/gcsp-activity-live.html']);
 });
