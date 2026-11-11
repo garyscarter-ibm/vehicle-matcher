@@ -6,6 +6,7 @@ import { randomUUID } from 'node:crypto';
 import { isPreparedScenarioFixture } from '../fixtures/scenarios/index.js';
 import { deriveScenarioClock } from './start-day.js';
 import { composePresenterTick, readPresenterClockConfiguration } from '../presenter-controls/commands.js';
+import { compactAllocationOutcome, compactAllocationOutcomes } from '../allocation/summary.js';
 
 const text = (value) => typeof value === 'string' && value.length > 0 && value.length <= 128;
 const persistedClock = (run) => validInstant(run.clockInstant) && text(run.clockVersion)
@@ -218,7 +219,7 @@ export class DemoClock {
   #tickValue(row) {
     return { runId: row.runId, tickId: row.tickId, eventId: row.eventId, now: row.targetClock.now,
       clockVersion: row.targetClock.clockVersion, kind: row.targetClock.kind, handlerOrder: row.handlerOrder,
-      missingStages: row.targetClock.missingStages, outcomes: row.outcomes, state: row.state };
+      missingStages: row.targetClock.missingStages, outcomes: compactAllocationOutcomes(row.outcomes), state: row.state };
   }
 
   async tick(context, input = {}) {
@@ -308,6 +309,7 @@ export class DemoClock {
       if (!outcome || !['ok', 'pending'].includes(outcome.status)) return this.#interrupted(context, tickRef, entry, outcome?.status ? outcome : unavailable());
       if (outcome.status === 'ok' && !Object.hasOwn(outcome, 'value') || outcome.status === 'pending'
         && !['operationId', 'operationType', 'lastKnownState'].every((key) => text(outcome[key]))) return this.#interrupted(context, tickRef, entry, unavailable());
+      outcome = compactAllocationOutcome(entry.handlerId, outcome);
       const handled = await this.#repository.transaction(context,
         { ...handlerCommand, commandId: `clock:tick:receipt:${inputDigest([tickId, entry.handlerId])}` }, async (tx) => {
         const state = await tx.get(tickRef);
@@ -317,7 +319,7 @@ export class DemoClock {
           inputVersions: { clock: state.value.targetClock.clockVersion, policy: current.value.policyVersion },
           state: outcome.status === 'pending' ? 'pending' : 'completed', outcome });
         if (receipt.status !== 'ok') return receipt;
-        const outcomes = state.value.outcomes.filter((row) => row.handlerId !== entry.handlerId);
+        const outcomes = compactAllocationOutcomes(state.value.outcomes.filter((row) => row.handlerId !== entry.handlerId));
         outcomes.push({ ...entry, outcome });
         const changed = await tx.compareAndSwap(tickRef, state.value.version, { outcomes, state: 'running' });
         return changed.status === 'ok' ? ok({ outcome }) : changed;
@@ -329,6 +331,7 @@ export class DemoClock {
       if (state.status !== 'ok') return state;
       const changed = await tx.compareAndSwap(tickRef, state.value.version, {
         state: state.value.outcomes.some((row) => row.outcome.status === 'pending') ? 'pending' : 'completed',
+        outcomes: compactAllocationOutcomes(state.value.outcomes),
       });
       return changed.status === 'ok' ? ok(this.#tickValue(changed.value)) : changed;
     });
@@ -341,7 +344,7 @@ export class DemoClock {
       command(`clock:tick:interrupt:${inputDigest([tickRef.key.tickId, entry.handlerId])}`, entry), async (tx) => {
         const tick = await tx.get(tickRef);
         if (tick.status !== 'ok') return tick;
-        const outcomes = tick.value.outcomes.filter((row) => row.handlerId !== entry.handlerId);
+        const outcomes = compactAllocationOutcomes(tick.value.outcomes.filter((row) => row.handlerId !== entry.handlerId));
         outcomes.push({ ...entry, outcome });
         return tx.compareAndSwap(tickRef, tick.value.version, { state: 'interrupted', outcomes });
       });

@@ -8,6 +8,7 @@ import { intentValue } from '../../scenarios/employee/index.js';
 import { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId, expandEvaluation, packEvaluation } from './evaluation-rows.js';
 import { DECISION_EVENTS } from '../offers/decision.js';
 import { upgradeRetainedModelFacts } from '../stock/model-facts-upgrade.js';
+import { allocationLimitations, summarizeAllocation } from './summary.js';
 
 export { ALLOCATION_EVALUATION_CONSUMER, allocationEvaluationEventId };
 
@@ -105,7 +106,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
     provider: { async resolve() { return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: employeeContext.employeeId,
       factsVersion: inputs.factsVersion, stockVersion: inputs.stockVersion, employeeFacts: inputs.employeeFacts, stock, ...(inputs.currentCar ? { currentCar: inputs.currentCar } : {}) }); } } })
     .recommend(employeeContext, inputs.request);
-  // Callers still receive every evaluation; only the stored receipt holds references.
+  // Explicit detail reads receive every evaluation; routine clock ticks use counts instead.
   async function hydrate(context, eventId, outcome) {
     const refs = outcome?.value?.evaluationRefs; if (outcome?.status !== 'ok' || !refs) return outcome;
     const evaluations = [];
@@ -115,21 +116,6 @@ export function createAllocationService({ repository, policy, clock, identity, c
     }
     const { evaluationRefs, ...value } = outcome.value;
     return ok({ ...value, evaluations });
-  }
-  // Clock receipts need identity and counts, not another copy of every quote and
-  // recommendation graph. Explicit allocation callers retain the full replay.
-  function summarize(eventId, outcome) {
-    if (outcome?.status !== 'ok') return outcome;
-    const value = outcome.value;
-    return ok({ projection: 'summary', runId: value.runId, state: value.state,
-      receipt: { consumerId: ALLOCATION_CONSUMER, eventId },
-      event: { eventId, eventType: value.event.eventType, sourceEventId: value.event.sourceEventId },
-      evaluatedAt: value.evaluatedAt, policyVersion: value.policyVersion, assumptions: value.assumptions,
-      assignments: value.assignments.map(({ employeeId, orderUuid, operationId }) => ({ employeeId, orderUuid, operationId })),
-      attempts: value.attempts.map(({ employeeId, orderUuid, operationId, outcome: attemptOutcome }) => ({ employeeId, orderUuid, operationId,
-        outcome: { status: attemptOutcome.status } })),
-      evaluations: (value.evaluationRefs?.employeeIds ?? value.evaluations.map((row) => row.employeeId)).map((employeeId) => ({ employeeId })),
-      ...(value.excluded ? { excluded: value.excluded.map(({ employeeId }) => ({ employeeId })) } : {}) });
   }
   async function prepare(context, event, instant, assumptions) {
     // A rejected pre-plan attempt reads repaired rows on retry; the accepted prepare receipt freezes replay.
@@ -267,10 +253,10 @@ export function createAllocationService({ repository, policy, clock, identity, c
     register() {
       if (typeof clock?.registerHandler !== 'function') return Promise.resolve(unavailable('not-configured'));
       registration ??= clock.registerHandler({ handlerId: ALLOCATION_CONSUMER, stage: 'buddy-allocation',
-        handle: ({ context }) => service.consumeTriggers(context, { projection: 'summary' }) });
+        handle: ({ context }) => service.consumeTriggers(context, { summary: true }) });
       return registration;
     },
-    async consumeTriggers(context, { projection = 'full' } = {}) {
+    async consumeTriggers(context, { summary = false } = {}) {
       if (!repository || typeof identity?.requireRole !== 'function') return unavailable('not-configured');
       const allowed = await identity.requireRole(context, 'presenter'); if (allowed.status !== 'ok') return allowed;
       try {
@@ -305,17 +291,21 @@ export function createAllocationService({ repository, policy, clock, identity, c
         events.push(...lapses, ...declines);
         events.sort((a, b) => ordinal(a.occurredAt, b.occurredAt)
           || ordinal(a.sourceReceipt.consumerId, b.sourceReceipt.consumerId) || ordinal(a.sourceEventId, b.sourceEventId));
-        const allocations = [];
+        const allocations = []; const counts = { events: 0, offers: 0, evaluated: 0 }; let limitations;
         for (const event of events) {
-          const outcome = await service.allocate(context, event, { projection }); if (outcome.status !== 'ok') return outcome;
-          allocations.push(outcome.value);
+          const outcome = await service.allocate(context, event, { summary }); if (outcome.status !== 'ok') return outcome;
+          if (summary) {
+            for (const key of Object.keys(counts)) counts[key] += outcome.value.summary[key];
+            limitations = outcome.value.limitations;
+          } else {
+            allocations.push(outcome.value);
+            limitations = allocationLimitations(outcome.value);
+          }
         }
-        const left = allocations.at(-1)?.excluded;
-        return ok({ runId: context.runId, allocations,
-          ...(left?.length ? { limitations: [{ code: 'renewal-deadline-unknown', employees: new Set(left.map((row) => row.employeeId)).size }] } : {}) });
+        return ok({ runId: context.runId, ...(summary ? { summary: counts } : { allocations }), ...(limitations ? { limitations } : {}) });
       } catch { return unavailable('allocation-source-invalid'); }
     },
-    async allocate(context, event, { projection = 'full' } = {}) {
+    async allocate(context, event, { summary = false } = {}) {
       if (!repository || !policy || !clock || typeof identity?.resolveEmployeeContext !== 'function' || typeof claim?.tryClaim !== 'function') return unavailable('not-configured');
       const allowed = await identity.requireRole(context, 'presenter'); if (allowed.status !== 'ok') return allowed;
       if (!event || !text(event.eventId) || !['stock-released', 'brief-changed', 'buddy-expired', 'buddy-declined'].includes(event.eventType)
@@ -325,8 +315,8 @@ export function createAllocationService({ repository, policy, clock, identity, c
       try {
         let receipt = await readAllocationReceipt(context, ref(context, event.eventId), 'plan');
         if (receipt.status === 'ok' && receipt.value.inputDigest !== digest) return result('conflict', { reason: 'idempotency-input-changed' });
-        if (receipt.status === 'ok' && receipt.value.state === 'completed') return projection === 'summary'
-          ? summarize(event.eventId, receipt.value.outcome) : hydrate(context, event.eventId, receipt.value.outcome);
+        if (receipt.status === 'ok' && receipt.value.state === 'completed') return summary
+          ? summarizeAllocation(receipt.value.outcome) : hydrate(context, event.eventId, receipt.value.outcome);
         if (receipt.status !== 'ok' && receipt.status !== 'not-found') return receipt;
         if (receipt.status === 'not-found') {
           const time = await clock.now(context); if (time.status !== 'ok') return time;
@@ -424,8 +414,8 @@ export function createAllocationService({ repository, policy, clock, identity, c
         });
         if (finished.status !== 'ok') return finished;
         const completed = await repository.read(context, ref(context, event.eventId));
-        return completed.status === 'ok' ? projection === 'summary'
-          ? summarize(event.eventId, completed.value.outcome) : hydrate(context, event.eventId, completed.value.outcome) : completed;
+        return completed.status === 'ok' ? (summary ? summarizeAllocation(completed.value.outcome)
+          : hydrate(context, event.eventId, completed.value.outcome)) : completed;
       } catch { return unavailable('allocation-source-invalid'); }
     },
   };

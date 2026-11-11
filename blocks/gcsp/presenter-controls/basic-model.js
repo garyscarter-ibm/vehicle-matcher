@@ -29,7 +29,11 @@ export function releasedThisTick(controls) {
 
 // Offers the last buddy allocation made, and whether it evaluated anyone (so someone had confirmed preferences).
 function allocationThisTick(controls) {
-  const value = okValue(own(controls?.lastTick, 'buddy-allocation'));
+  const tick = controls?.lastTick; const value = okValue(own(tick, 'buddy-allocation'));
+  if (tick?.runId !== controls?.runId || value?.runId !== controls?.runId) return { offers: 0, evaluated: false };
+  if (value?.summary && ['events', 'offers', 'evaluated'].every((key) => Number.isSafeInteger(value.summary[key]) && value.summary[key] >= 0)) {
+    return { offers: value.summary.offers, evaluated: value.summary.evaluated > 0 };
+  }
   const rows = Array.isArray(value?.allocations) ? value.allocations : [];
   return { offers: rows.reduce((n, row) => n + (Array.isArray(row?.assignments) ? row.assignments.length : 0), 0),
     evaluated: rows.some((row) => (row?.evaluations?.length ?? row?.evaluationRefs?.employeeIds?.length ?? 0) > 0) };
