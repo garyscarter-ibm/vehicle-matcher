@@ -87,6 +87,23 @@ test('unreadable controls disable Release instead of guessing', () => {
   assert.equal(basicModel({ controls: foreign, scenario: paula }).headline, 'Ready for the next release');
 });
 
+test('compact allocation counts preserve the legacy presenter states and reject invalid or foreign counts', () => {
+  for (const [offers, evaluated] of [[1, 2], [0, 2], [0, 0]]) {
+    const legacy = buddy(offers, evaluated);
+    const compact = { ...legacy, outcome: { status: 'ok', value: { runId: RUN, summary: { events: 1, offers, evaluated } } } };
+    const model = (row) => basicModel({ controls: controls(START, [release(100), row]), scenario: empty });
+    assert.deepEqual(model(compact), model(legacy));
+    for (const bad of [-1, NaN, 1.5, '1', Number.MAX_SAFE_INTEGER + 1]) {
+      const invalid = structuredClone(compact); invalid.outcome.value.summary.offers = bad;
+      assert.equal(model(invalid).phase, 'waiting');
+    }
+    const foreign = structuredClone(compact); foreign.outcome.value.runId = 'other';
+    assert.equal(model(foreign).phase, 'waiting');
+    const foreignTick = controls(START, [compact]); foreignTick.lastTick.runId = 'other';
+    assert.equal(basicModel({ controls: foreignTick, scenario: empty }).phase, 'waiting');
+  }
+});
+
 test('copy is user agnostic and never shows UTC, ISO instants, tick or em dashes', () => {
   const states = [basicModel({ controls: controls(START), scenario: paula }), basicModel({ controls: controls(START), scenario: empty }),
     basicModel({ controls: controls('2026-11-10T11:30:00.000Z', [release(100), buddy(2)]), scenario: paula }),

@@ -78,7 +78,11 @@ test('reset restores versioned employees/time and new allocator identifiers whil
   const oldScope = { ...scope(before.runId), ...f.presenter };
   const stock = (await f.repository.query(oldScope, 'stock')).value;
   assert.equal(stock.length, 2);
-  await f.repository.transaction(oldScope, command('employee-change'), (tx) => tx.compareAndSwap({ table: 'employees', key: { runId: before.runId, employeeId: f.employee.employeeId } }, 1, { name: 'Changed during trial' }));
+  assert.equal((await f.repository.transaction(oldScope, command('employee-change'), async (tx) => {
+    const reference = { table: 'employees', key: { runId: before.runId, employeeId: f.employee.employeeId } };
+    const employee = await tx.get(reference);
+    return tx.compareAndSwap(reference, employee.value.version, { name: 'Changed during trial' });
+  })).status, 'ok');
   const corpus = stock.map((row) => row.configurationId);
   const input = resetCommand(before);
   assert.equal((await f.clock.reset(f.employee, input)).status, 'forbidden');
@@ -142,6 +146,58 @@ const register = async (f, handlers) => {
   for (const [handlerId, stage, handle] of handlers) assert.equal((await f.clock.registerHandler({ handlerId, stage, handle })).status, 'ok');
 };
 const tickCommand = (eventId = 'tick-one', expectedClockVersion = '1') => ({ eventId, expectedClockVersion, inputDigest: inputDigest({ cue: eventId }) });
+
+const legacyAllocation = (runId) => ok({ runId, allocations: [{ assignments: [{ quote: { expanded: 'x'.repeat(100000) } }],
+  evaluations: [{ decisions: [{ expanded: 'y'.repeat(100000) }] }] }],
+  limitations: [{ code: 'renewal-deadline-unknown', employees: 1 }] });
+
+test('clock persists compact counts for legacy allocation handlers and projects older completed ticks', async () => {
+  const f = await setup(); const legacy = legacyAllocation(f.presenter.runId); let calls = 0;
+  await register(f, [['buddy-allocation', 'buddy-allocation', async () => { calls++; return legacy; }],
+    ['other', 'outbox-dispatch', async () => ok({ unchanged: true })]]);
+  const out = await f.clock.tick(f.presenter, tickCommand()); assert.equal(out.status, 'ok');
+  const compact = ok({ runId: f.presenter.runId, summary: { events: 1, offers: 1, evaluated: 1 }, limitations: legacy.value.limitations });
+  assert.deepEqual(out.value.outcomes[0].outcome, compact);
+  assert.deepEqual(out.value.outcomes[1].outcome, ok({ unchanged: true }));
+  const receipts = (await f.repository.query(f.presenter, 'event_receipts')).value.filter((row) =>
+    row.consumerId === 'clock:handler:buddy-allocation' || row.consumerId === 'command:transaction' && row.eventId.startsWith('clock:tick:'));
+  assert.ok(receipts.length >= 4);
+  for (const receipt of receipts) assert.ok(Buffer.byteLength(JSON.stringify(receipt)) < 4096);
+  const tickRef = { table: 'tick_runs', key: { runId: f.presenter.runId, tickId: 'tick-one' } };
+  const tick = (await f.repository.read(f.presenter, tickRef)).value;
+  assert.ok(Buffer.byteLength(JSON.stringify(tick)) < 4096);
+  // A completed row from before the repair is returned as counts, with its retained evidence untouched.
+  const outcomes = [{ ...tick.outcomes[0], outcome: legacy }, tick.outcomes[1]];
+  assert.equal((await f.repository.transaction(f.presenter, command('old-tick'), (tx) =>
+    tx.compareAndSwap(tickRef, tick.version, { outcomes }))).status, 'ok');
+  assert.deepEqual((await f.clock.readState(f.presenter)).value.lastTick.outcomes, out.value.outcomes);
+  assert.deepEqual(await f.clock.tick(f.presenter, tickCommand()), out);
+  assert.equal(calls, 1);
+  assert.deepEqual((await f.repository.read(f.presenter, tickRef)).value.outcomes, outcomes);
+});
+
+test('an interrupted tick compacts a retained legacy handler receipt before later handlers write it again', async () => {
+  const f = await setup(); let fail = true; let calls = 0;
+  await register(f, [['buddy-allocation', 'buddy-allocation', async () => { calls++; return ok({ runId: f.presenter.runId, summary: { events: 0, offers: 0, evaluated: 0 } }); }],
+    ['later', 'outbox-dispatch', async () => fail ? { status: 'unavailable' } : ok({ resumed: true })]]);
+  assert.equal((await f.clock.tick(f.presenter, tickCommand())).status, 'unavailable');
+  const legacy = legacyAllocation(f.presenter.runId);
+  assert.equal((await f.repository.transaction(f.presenter, command('legacy-handler'), async (tx) => {
+    const reference = { table: 'event_receipts', key: { runId: f.presenter.runId, consumerId: 'clock:handler:buddy-allocation', eventId: 'tick-one' } };
+    const receipt = await tx.get(reference);
+    const saved = await tx.compareAndSwap(reference, receipt.value.version, { outcome: legacy });
+    if (saved.status !== 'ok') return saved;
+    const tickRef = { table: 'tick_runs', key: { runId: f.presenter.runId, tickId: 'tick-one' } };
+    const tick = await tx.get(tickRef);
+    const outcomes = tick.value.outcomes.map((row) => row.handlerId === 'buddy-allocation' ? { ...row, outcome: legacy } : row);
+    return tx.compareAndSwap(tickRef, tick.value.version, { outcomes });
+  })).status, 'ok');
+  fail = false;
+  const out = await f.clock.tick(f.presenter, tickCommand()); assert.equal(out.status, 'ok');
+  assert.equal(calls, 1);
+  assert.deepEqual(out.value.outcomes[0].outcome.value.summary, { events: 1, offers: 1, evaluated: 1 });
+  assert.equal(out.value.outcomes[1].outcome.value.resumed, true);
+});
 
 test('ticks record policy stage/id order and durable event outcomes, including replay after reopening', async () => {
   const f = await setup();

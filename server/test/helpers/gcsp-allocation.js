@@ -13,7 +13,8 @@ export async function allocationFixture({ rule, cars = 2, claimResult, reverse =
   // Explicit alternative test population: three same-scheme fictional people compete fairly; FUCQ-224's new-order Jordan is left out.
   const listed = source.assumptions.find((a) => a.key === 'identity.demo.principals');
   const people = listed.value = listed.value.filter((p) => p.principalId !== 'demo-jordan');
-  const originals = people.filter((p) => p.roles.includes('employee'));
+  // The competition fixture has three employees; Greg's later employee role must not add a fourth brief.
+  const originals = people.filter((p) => p.roles.length === 1 && p.roles.includes('employee'));
   const first = originals[0];
   if (!canonicalPeople) for (const p of originals) for (const k of ['companyId', 'schemeId', 'gradeId']) p[k] = first[k];
   const policy = new PolicyService({ provider: { async loadVersions() { return [source]; } } });

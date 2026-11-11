@@ -56,6 +56,36 @@ test('persisted release triggers preserve producer evidence and replay without a
   assert.deepEqual(await f.create().consumeTriggers(f.context), out); assert.equal(f.calls.length, calls);
 });
 
+test('clock handler keeps counts only and never expands completed evaluations on later ticks', async () => {
+  const f = await allocationFixture({ cars: 12 }); await put(f, release(f)); let descriptor;
+  let evaluationReads = 0;
+  const repository = { ...f.repository, async read(context, ref) {
+    if (ref.table === 'event_receipts' && ref.key.consumerId === 'buddy-allocation-evaluation') evaluationReads += 1;
+    return f.repository.read(context, ref);
+  } };
+  const service = f.create({ repository, clock: { ...f.clock,
+    async registerHandler(value) { descriptor = value; return ok({ registered: true }); } } });
+  assert.equal((await service.register()).status, 'ok');
+  const first = await descriptor.handle({ context: f.context });
+  assert.equal(first.status, 'ok', JSON.stringify(first));
+  assert.equal(first.value.summary.events, 1);
+  assert.ok(first.value.summary.offers > 0);
+  assert.equal(first.value.summary.evaluated, f.employees.length);
+  assert.ok(Buffer.byteLength(JSON.stringify(first)) < 1024, 'tick outcome cannot contain employee/car evaluations or pinned quotes');
+  assert.equal(evaluationReads, new Set(f.calls.map((row) => row.employee.employeeId)).size,
+    'first completion reads frozen claim inputs once per employee, without a second read to expand evaluations');
+  const calls = f.calls.length;
+  evaluationReads = 0;
+  assert.deepEqual(await descriptor.handle({ context: f.context }), first);
+  assert.equal(evaluationReads, 0, 'routine tick replays read the compact allocation receipt only');
+  assert.equal(f.calls.length, calls, 'already processed events do not claim again');
+  const detailed = await service.consumeTriggers(f.context);
+  assert.equal(detailed.status, 'ok');
+  assert.equal(detailed.value.allocations[0].evaluations.length, f.employees.length, 'canonical details remain available');
+  assert.ok(evaluationReads > 0);
+  assert.equal(detailed.value.allocations[0].assignments.length, first.value.summary.offers);
+});
+
 test('actual BriefService pause receipt triggers current cohort evaluation', async () => {
   const f = await allocationFixture({ cars: 1 });
   const briefs = new BriefService({ repository: f.repository, policy: f.policy, clock: f.clock, identity: f.identity });
@@ -86,7 +116,7 @@ test('uncertain claim retries the persisted producer event and quote before late
   const f = await allocationFixture({ cars: 1, claimResult: (_, input) => unavailable
     ? { status: 'unavailable' } : ok({ claimId: input.operationId }) });
   await put(f, release(f));
-  assert.equal((await f.service.consumeTriggers(f.context)).code, 'claim-pending'); unavailable = false;
+  assert.equal((await f.service.consumeTriggers(f.context, { summary: true })).code, 'claim-pending'); unavailable = false;
   const out = await f.create().consumeTriggers(f.context); assert.equal(out.status, 'ok', JSON.stringify(out));
   assert.equal(out.value.allocations[0].assignments.length, 1);
   assert.equal(f.calls[0].input.operationId, f.calls[1].input.operationId);
@@ -100,7 +130,8 @@ test('registered allocation consumer enforces actual identity at its handler bou
   assert.equal((await descriptor.handle({ context: { ...f.context } })).status, 'forbidden');
   assert.equal(f.calls.length, 0);
   const out = await descriptor.handle({ context: f.context }); assert.equal(out.status, 'ok', JSON.stringify(out));
-  assert.equal(out.value.allocations[0].assignments.length, 1);
+  assert.equal(out.value.summary.offers, 1);
+  assert.equal((await service.consumeTriggers(f.context)).value.allocations[0].assignments.length, 1);
 });
 
 test('equal producer event IDs remain distinct and order is independent of receipt insertion', async () => {
@@ -130,6 +161,7 @@ test('changing a completed producer payload conflicts without another claim', as
   await f.write((tx) => tx.compareAndSwap(ref, row.version, { outcome: ok({ ...row.outcome.value, source: {
     ...row.outcome.value.source, version: 'changed-source' } }) }));
   assert.equal((await f.service.consumeTriggers(f.context)).status, 'conflict'); assert.equal(f.calls.length, calls);
+  assert.equal((await f.service.consumeTriggers(f.context, { summary: true })).status, 'conflict'); assert.equal(f.calls.length, calls);
 });
 
 test('buddy expiry receipts group by lapse instant, sort holds and ignore other producers', () => {
