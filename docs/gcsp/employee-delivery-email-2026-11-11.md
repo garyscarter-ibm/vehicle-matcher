@@ -87,3 +87,22 @@ it is not represented as fixed or used to broaden this change.
 The selected scope excludes retail ranking, ML/training, the whole unrelated server suite and live
 provider/inbox verification. The baseline was fast-forwarded to c5a20b12 (documentation changes only)
 before final direct validation. No Jira changes or production employee-address writes were made.
+
+## Quieter notification settings
+
+Gary requested a less prominent setting at the bottom of the table, collapsed by default.
+**Your Cars → Your details** now ends with the Notifications row. Its **Notification email**
+disclosure starts closed and opens the existing email field and Save button. It uses the shared
+native disclosure styling; account redraws preserve an open disclosure and any unsaved address.
+
+Final scoped validation: **10 passed, 0 failed, 0 skipped**, covering the settings regressions,
+last-row placement, default closed state and redraw preservation. Actual account browser checks
+at 1440 and 390 px passed keyboard open/close, invalid-email focus, save and clear, with no
+horizontal overflow or page errors. Both collapsed captures were visually inspected; the linked
+desktop, narrow and checks evidence above now records this presentation.
+
+Local targeted receipt:
+`.claude/test-runs/targeted-20704309f85db9bddfd9d63eed73426d0251fc4e04612a46328a8ad7035f829c-default-1794438106340535000.json`.
+The baseline advanced from dd2ac6a8 to 81c14be9 after validation; the intervening changes only
+updated the unrelated presenter diagnosis document. No backend delivery behavior changed, and
+live Render deployment and inbox delivery remain unverified.

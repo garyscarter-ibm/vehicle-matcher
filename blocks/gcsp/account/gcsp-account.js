@@ -175,7 +175,6 @@ function yourDetails(model, controls) {
       override && `Allowance override: ${override}${overrideEnd ? ` (ends ${overrideEnd})` : ''}`]
       .filter(supplied).map((value) => line(muted(value)))];
   rows.append(item('Employee', employee, controls.supportButton('hr-support', 'Get help with your details')));
-  if (controls.notificationEmail) rows.append(item('Notifications', [controls.notificationEmail()]));
   const drivers = model.drivers.map((driver) => {
     const licence = driver.licence ?? {};
     const valid = (name, label) => {
@@ -193,6 +192,7 @@ function yourDetails(model, controls) {
   }).flat();
   rows.append(item(`Drivers (${model.drivers.length})`, drivers.length ? drivers : [el('p', 'gcsp-note', 'No driver or licence details supplied.')],
     controls.supportButton('driver-support', 'Get help with drivers')));
+  if (controls.notificationEmail) rows.append(item('Notifications', [controls.notificationEmail()]));
   section.append(title, rows);
   return section;
 }
@@ -466,8 +466,10 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     ...(!adapter.readOnly && typeof adapter.readNotificationEmail === 'function' && typeof adapter.saveNotificationEmail === 'function' ? {
       notificationEmail: () => {
         if (!emailRegion) {
-          emailRegion = el('div');
-          mountNotificationEmail(emailRegion, { adapter, signal: abort.signal });
+          emailRegion = el('details', 'gcsp-details gcsp-account-email-settings');
+          const body = el('div');
+          emailRegion.append(el('summary', 'gcsp-details-summary', 'Notification email'), body);
+          mountNotificationEmail(body, { adapter, signal: abort.signal });
         }
         return emailRegion;
       },
