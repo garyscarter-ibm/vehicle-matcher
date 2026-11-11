@@ -16,7 +16,7 @@ Scoped tests: gcsp-account-render/runtime/buddy, gcsp-category-preferences, gcsp
 
 ## Delivery evidence
 
-Built on `dev/fucq-405-your-cars`, based on `802167470956`. No merge or deployment is authorised. Gary stopped Jira updates during delivery: no further Jira writes are made and its last observed In Progress status is preserved locally. The separate Your offer design chat is desktop-only; Gary also removed phone/tablet review from the remaining current scope.
+Built on `dev/fucq-405-your-cars`, based on `802167470956`. At the build checkpoint, merge and deployment were not authorised; Gary subsequently approved the merge on 11 November 2026, as recorded below. Gary stopped Jira updates during delivery: no further Jira writes are made and its last observed In Progress status is preserved locally. The separate Your offer design chat is desktop-only; Gary also removed phone/tablet review from the remaining current scope.
 
 The account uses the approved 1.6:1 desktop composition and the existing whole-car image. Full contract, collection, order and specification facts remain in the car record drawer. The current car and Buddy no longer duplicate a held-offer action. Shared rating and preference-mode extensions are opt-in, catalogued and shown in the gallery. Buddy owns Pause/Resume; setup still retains validated Engage, save/retry and server-owned understanding. Search status and exclusions live in Buddy history. The bell projects only current and expired offers and has no activity footer or phantom thumbnail padding.
 
@@ -38,4 +38,10 @@ In the Main successful journey scenario, released Day2 stock to create a real BM
 
 Screenshots are local review artifacts under `/Users/garycarter/Documents/Codex/2026-11-11/wit/outputs/`: `your-cars-desktop.jpg`, `your-cars-offer-notification.jpg`, `your-cars-expired-notification.jpg`. Detailed bounded test logs are in that chat's `work/` directory. To repeat, start a local memory runtime from this branch, sign in as Paula, inspect Your cars, and use the local Presenter Main successful journey scenario for release/expiry.
 
-Development is ready for review with the baseline failures above disclosed; acceptance and merge remain Gary's decision. No Jira transition is implied.
+Development was presented for review with the baseline failures above disclosed. No Jira transition is implied.
+
+### Approved integration
+
+Gary said “Okay merge it” on 11 November 2026, superseding the earlier merge hold for this Your cars change. Feature commit `ca8cb248` merged cleanly into the current `gcsp-poc` at `ecc638ca`, preserving the separately added notification email settings. The target before integration was `ad6e559c`.
+
+The merged account render, Buddy, preference mount, notification bell and notification email suites passed **127/127**. The UI ratchet passed **147/148**, with only the same unchanged Presenter CSS cap failure described above. Total selected merge checks: **274/275 pass**, one worker, 15.4 seconds. `git diff --check` passed. Unchanged shared-kit contract evidence was reused; the full backend suite and final phone/tablet review remain excluded. The merged check log is `work/fucq-405-merge-validation.log` in the original chat workspace, with an identity-keyed receipt under the shared `.claude/test-runs/impact/` directory. Jira was left untouched.
