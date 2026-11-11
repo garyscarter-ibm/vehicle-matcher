@@ -125,7 +125,7 @@ const apptOutcomePending = () => env(appointmentValue({ state: 'scheduled', key:
   pending: { step: 'complete', reason: 'Waiting for the provider to confirm the last update.' }, history: [row('requested', t(16)), row('scheduled', t(17))] }));
 
 // Return plan (FUCQ-118). A replacement order only; the handover must be scheduled before a choice opens.
-const CURRENT_CAR = { contractId: 'current:employee-paula', slotId: 'slot-paula', status: 'current', model: 'BMW 320i Touring',
+const CURRENT_CAR = { contractId: 'current:employee-paula', slotId: 'slot-paula', status: 'current', model: 'BMW 3 Series Touring 320i',
   vehicle: { configuration: '320i M Sport Touring', body: 'estate', fuel: 'petrol', seats: 5 }, source: 'account' };
 const CHOICES = [{ id: 'same-visit', label: 'Return it when the new car is handed over' }, { id: 'separate', label: 'Return it on a separate day' }];
 const RETURN_OWNERS = { 'not-planned': ['employee', "Confirm your new car's handover first, then plan the return."], requested: ['retailer', 'Waiting for the retailer to confirm your return slot.'],
@@ -210,7 +210,7 @@ const afterSent = (docs, appointment, returnPlan) => ready(sent(), docs, appoint
 export function orderProgressFixtures() {
   return {
     source: 'Synthetic, fictional examples in the shapes of the FUCQ-111, 114, 116 and 118 producers. Not integration evidence.',
-    car: { name: 'BMW i4 eDrive40 M Sport', photo: undefined, line: '' },
+    car: { name: 'BMW 3 Series Saloon 320i', photo: undefined, line: '' },
     states: {
       'waiting-hr': early(pendingHr()), 'waiting-sales-manager': early(pendingSm()), 'no-hr': early(noHr()), 'earlier-order': early(earlierOrder()), declined: early(declined()), 'provider-unsupported': early(unsupported()),
       'sent-to-ordering-no-slot': afterSent(docsWaiting(), apptOpen()),

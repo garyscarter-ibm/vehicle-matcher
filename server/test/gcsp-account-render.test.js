@@ -600,13 +600,13 @@ const selection = (orderUuid, display) => async () => ({ status: 'ok', value: { 
 test('account with an order shows one Your new car row with a Track your order link, not the embedded tracker', async () => {
   const orders = orderAdapter('appointment-requested', [structuredClone(orderProgressFixtures().states['appointment-requested'].stages.value)]);
   const keys = [];
-  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readOrder: selection(orders.uuid, { name: 'Synthetic i5 eDrive40 Touring', photo: '/img/i5.jpg' }) },
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readOrder: selection(orders.uuid, { name: 'BMW i5 eDrive40 Touring', photo: '/img/i5.jpg' }) },
     { orderAdapter: orders, onNavigate: (key) => keys.push(key) });
   try {
     await settleOrder(root, (node) => node.querySelector('.gcsp-account-order-status'));
     const row = root.querySelector('.gcsp-account-order-status'); assert.ok(row, 'new car row');
     assert.equal(row.getAttribute('aria-label'), 'Your new car'); assert.equal(root.querySelectorAll('main h1').length, 1);
-    assert.equal(row.querySelector('.gcsp-card-name, .gcsp-summary-name').textContent, 'Synthetic i5 eDrive40 Touring');
+    assert.equal(row.querySelector('.gcsp-card-name, .gcsp-summary-name').textContent, 'BMW i5 eDrive40 Touring');
     assert.equal(row.querySelector('img.vm-card-photo').getAttribute('src'), '/img/i5.jpg');
     assert.match(row.textContent, /Current step: /); assert.match(row.textContent, /Order referenceGCSP-000123Car order number1000001/);
     const link = [...row.querySelectorAll('a')].find((node) => node.textContent === 'Track your order'); assert.ok(link, 'track link');
@@ -614,7 +614,7 @@ test('account with an order shows one Your new car row with a Track your order l
     link.click(); assert.deepEqual(keys, ['order-progress']);
     assert.equal(root.querySelector('.gcsp-account-order, .gcsp-order-progress, .gcsp-stage-tracker'), null, 'the tracker is not embedded');
     const history = root.querySelector('.gcsp-account-history'); assert.equal(history.querySelector('details'), null, 'order history is one table, not disclosures');
-    assert.ok([...history.querySelectorAll('tbody th')].some((cell) => cell.textContent === 'Synthetic i5 eDrive40 Touring'), 'the placed order is a history row');
+    assert.ok([...history.querySelectorAll('tbody th')].some((cell) => cell.textContent === 'BMW i5 eDrive40 Touring'), 'the placed order is a history row');
     assert.equal(row.closest('details'), null);
   } finally { destroy(); }
 });
@@ -631,7 +631,7 @@ test('account shows no new car row without an order, on a failed list, or for an
 test('FUCQ-193: an accepted offer with its order in progress no longer offers "View your offer"', async () => {
   const offers = (state) => async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-2', runId: 'run-1', state }, { offerId: 'offer-1', runId: 'run-1', state: 'declined' }] } });
   const orders = orderAdapter();
-  const accepted = await domMount({ ...readOnlyAdapter('no-entitlement'), readOffers: offers('accepted'), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  const accepted = await domMount({ ...readOnlyAdapter('no-entitlement'), readOffers: offers('accepted'), readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   try {
     await settleOrder(accepted.root, (node) => node.querySelector('.gcsp-account-order-status'));
     assert.ok(accepted.root.querySelector('.gcsp-account-order-status'), 'the new car row is shown');
@@ -679,7 +679,7 @@ test('FUCQ-193: the HTTP adapter reads the newest listed offer state, and a fail
 test('FUCQ-192: an in-progress order on the slot replaces "No ordering entitlement" with its state and a progress link', async () => {
   const listed = (slot) => { const row = structuredClone(orderProgressFixtures().states['appointment-requested'].stages.value); row.entitlementSlotId = slot; return [row]; };
   const allocated = () => { const envelope = accountFixture('no-entitlement'); for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
-  const mount = (orders) => domMount({ ...readOnlyAdapter(), readAccount: async () => allocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  const mount = (orders) => domMount({ ...readOnlyAdapter(), readAccount: async () => allocated(), readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   const ordered = orderAdapter('appointment-requested', listed('slot-paula')); const { root, destroy } = await mount(ordered);
   try {
     await settleOrder(root, (node) => node.querySelector('.gcsp-account-order-status'));
@@ -707,7 +707,7 @@ test('FUCQ-257: a handed-over order titles its account card as handed over, not 
     stageList: [...stages.value.stageList, 'handover'], stages: [...stages.value.stages, { stage: 'handover', state: 'approved', at: instant, providerReference: 'SYN-APPT-0001', operationId: null }] });
   const orders = { ...orderAdapter('appointment-completed', [stages.value]), readStages: async () => structuredClone(stages) };
   const allocated = accountFixture('no-entitlement'); for (const slot of allocated.value.slots) slot.state = 'allocated';
-  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => structuredClone(allocated), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => structuredClone(allocated), readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   try {
     await settleOrder(root, (node) => node.querySelector('.gcsp-account-order-status'));
     const status = root.querySelector('.gcsp-account-order-status'); assert.ok(status, 'order status');
@@ -723,7 +723,7 @@ test('FUCQ-224: an order on the slot replaces the saved journey card; an order o
   const draft = { status: 'ok', value: { draftStage: 'complete', draftVersion: 3, requiresRefresh: false,
     choices: { mode: 'replacement', oldContractId: 'current:employee-paula', slotId: 'slot-paula', schemeId: 'choices-fs-uk' } } };
   const mount = (orders) => domMount({ ...readOnlyAdapter(), readAccount: async () => allocated(), readDraft: async () => draft,
-    readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+    readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   const ordered = await mount(orderAdapter('appointment-requested', listed('slot-paula')));
   try {
     await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order-status'));
@@ -743,7 +743,7 @@ test('FUCQ-237: an order in progress replaces "No current car" for an employee w
   const noCarAllocated = () => { const envelope = accountFixture('no-current-car'); Object.assign(envelope.value, { state: 'no-entitlement', actions: [] });
     for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
   const mount = (name) => { const orders = orderAdapter(name, listed(name));
-    return domMount({ ...readOnlyAdapter(), readAccount: async () => noCarAllocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders }); };
+    return domMount({ ...readOnlyAdapter(), readAccount: async () => noCarAllocated(), readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders }); };
   const ordered = await mount('appointment-requested');
   try {
     await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order-status'));
@@ -768,7 +768,7 @@ test('FUCQ-252: after a confirmed handover or return the current-car card follow
     newCar: { orderUuid: orders.uuid, status: collected ? 'collected' : 'on-order', collectedAt: collected ? '2026-11-07T13:00:00.000Z' : null, vin: collected ? VIN : null } });
   const account = (rel) => { const envelope = accountFixture('no-entitlement'); for (const slot of envelope.value.slots) slot.state = 'allocated';
     if (rel) envelope.value.currentCarRelationships = [rel]; return envelope; };
-  const mount = (rel) => domMount({ ...readOnlyAdapter(), readAccount: async () => account(rel), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  const mount = (rel) => domMount({ ...readOnlyAdapter(), readAccount: async () => account(rel), readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   const cards = (root) => [...root.querySelectorAll('.gcsp-account-body > .gcsp-feature')];
   for (const [label, rel] of [['nothing confirmed', null], ['relationship still on the old contract', relationship('held', false)]]) {
     const view = await mount(rel);
@@ -783,7 +783,7 @@ test('FUCQ-252: after a confirmed handover or return the current-car card follow
       await settleOrder(view.root, (node) => node.querySelector('.gcsp-account-order-status'));
       const [card, ...rest] = cards(view.root);
       assert.equal(rest.length, 0, `${oldStatus}: one current-car card`); assert.equal(card.dataset.contractId, undefined);
-      assert.equal(card.dataset.orderUuid, orders.uuid); assert.equal(card.querySelector('h2').textContent, 'Synthetic 3 Series Saloon 320i');
+      assert.equal(card.dataset.orderUuid, orders.uuid); assert.equal(card.querySelector('h2').textContent, 'BMW 3 Series Saloon 320i');
       assert.equal(card.querySelector('.gcsp-account-context'), null);
       assert.deepEqual(factPairs(card).slice(0, 3), [['Status', 'Current car'], ['Collected', '7 November 2026'], ['Delivered VIN', VIN]]);
       assert.doesNotMatch(view.root.textContent, /No current car|Choose a replacement/);
@@ -802,13 +802,13 @@ test('FUCQ-239: Order history lists a placed order and no longer says "No order 
   const noCarAllocated = () => { const envelope = accountFixture('no-current-car'); Object.assign(envelope.value, { state: 'no-entitlement', actions: [] });
     for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
   const mount = (name) => { const orders = orderAdapter(name, listed(name));
-    return domMount({ ...readOnlyAdapter(), readAccount: async () => noCarAllocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders }); };
+    return domMount({ ...readOnlyAdapter(), readAccount: async () => noCarAllocated(), readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders }); };
   const ordered = await mount('appointment-requested');
   try {
     await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order-status'));
     const histories = ordered.root.querySelector('.gcsp-account-history'); const [entry] = rowsOf(ordered.root);
     assert.doesNotMatch(histories.textContent, /No order history\./); assert.ok(entry, 'placed order row');
-    assert.equal(entry.querySelector('th').textContent, 'Synthetic 3 Series Saloon 320i');
+    assert.equal(entry.querySelector('th').textContent, 'BMW 3 Series Saloon 320i');
     assert.equal(cellsOf(entry)[4], 'Sent to ordering');
     const drawer = openRecord(ordered.root);
     assert.deepEqual(factPairs(drawer).filter(([name]) => ['Status', 'Order reference', 'Car order number'].includes(name)),
@@ -962,7 +962,7 @@ test('FUCQ-220: the order card of an earlier order shows only the car order numb
   const row = structuredClone(orderProgressFixtures().states['earlier-order'].stages.value); row.entitlementSlotId = 'slot-paula';
   const envelope = accountFixture('no-entitlement'); for (const slot of envelope.value.slots) slot.state = 'allocated';
   const orders = orderAdapter('earlier-order', [row]);
-  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => envelope, readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) },
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => envelope, readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) },
     { orderAdapter: orders });
   try {
     await settleOrder(root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
