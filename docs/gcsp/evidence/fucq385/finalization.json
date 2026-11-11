@@ -1,0 +1,359 @@
+{
+  "version": 1,
+  "issue": "FUCQ-385",
+  "development_id": "DEV-2026-11-11-003",
+  "recorded_at": "2026-11-11T15:15:12Z",
+  "status": "built",
+  "branch": "dev/DEV-2026-11-11-003",
+  "baseline_commit": "ec35757821ab9deccf17e5b6e205a3c3ff613647",
+  "jira_transition_performed": false,
+  "done_authorized": false,
+  "scope": {
+    "original_acceptance_count": 6,
+    "original_acceptance_sha256": "54f13e4f9aab9ae14280c23af19784a1eba6eba3f7af181cfa77f35315fd5c0f",
+    "original_reference": "a1122171",
+    "criteria_unchanged": true,
+    "criteria": [
+      {
+        "ac": 1,
+        "disposition": "met",
+        "evidence": "240 admitted configuration galleries, each front/rear/interior with three distinct retained digests; registry/source manifests and association regressions. Interior is representative-model at model/generation/body only."
+      },
+      {
+        "ac": 2,
+        "disposition": "met",
+        "evidence": "Configuration-keyed ordered gallery preferred; reviewed model fallback and pinned singular compatibility; public provenance mapper and no private/signed upstream fields. Actual generated-stock/release/BuddyHold/access route supplies three views."
+      },
+      {
+        "ac": 3,
+        "disposition": "met",
+        "evidence": "Standalone and actual generated-offer trials at 1440/375/320 replace feature and alt/pressed selection; magnifier opens current source. Actual touch rear/magnifier/interior/close synchronises source and counter."
+      },
+      {
+        "ac": 4,
+        "disposition": "met",
+        "evidence": "Shared viewer tests and actual browser prefix cover strip/counter synchronization, wrapping buttons/arrows, active thumbnail visibility, focus containment and Escape return. Gallery component blobs remain unchanged at final baseline."
+      },
+      {
+        "ac": 5,
+        "disposition": "met",
+        "evidence": "Unchanged scoped empty/single/loading/missing/broken fixture evidence is supplemental; corrected actual broken selection/recovery and true 320px separate focus/selected marker were independently reinspected. Minimum seeded coverage is still 240 complete associations."
+      },
+      {
+        "ac": 6,
+        "disposition": "met",
+        "evidence": "Actual generated offer at 1440/375/320 and real emulated touch; whole-image framing, long content, keyboard, shared-kit/CSP, reduced-motion source/contracts and no extra disclaimer/link. Mike independent corrected substantive visual/source review passed."
+      }
+    ],
+    "acceptance": "Development evidence complete; parent integration/Jira and collaborator acceptance remain separate."
+  },
+  "coverage": {
+    "admitted_configuration_galleries": 240,
+    "families": {
+      "G42": 30,
+      "F70": 20,
+      "G26": 20,
+      "U11": 90,
+      "U10": 40,
+      "G21": 30,
+      "G61": 10
+    },
+    "three_distinct_digests_per_association": true,
+    "catalogue_sha256": "f12e588c78ca900dc98800697960f7d2857283d982fadd5cde292ba6be27b694",
+    "source_manifest_sha256": "2a4a11efa7643aaa5a0748fbf5129180bb1f73283de668a53d88757eba0084cb",
+    "interior_association": "representative-model; model/generation/body; observed cockpit LHD; no observed RHD distinction; no exact UK steering/upholstery/options/physical-car appearance inference",
+    "acquisition": {
+      "requests": 732,
+      "downloaded_bytes": 97185174,
+      "workers": 1,
+      "retries": 0,
+      "http_failures": 0
+    }
+  },
+  "identity_reuse": {
+    "original_backend": {
+      "tested_code_key": "70934c433de0f185e947ba90d106ad11d0a02f3c3308a724b163eff757285f04",
+      "unchanged": [
+        "server/gcsp/vehicle-evidence/display-images.js",
+        "server/gcsp/vehicle-evidence/live-display-images.js",
+        "server/gcsp/vehicle-evidence/display-projection.js",
+        "server/test/gcsp-display-images.test.js",
+        "server/test/gcsp-display-projection.test.js",
+        "server/test/gcsp-live-display-images.test.js"
+      ],
+      "changed": [
+        {
+          "path": "blocks/gcsp/kit/media-gallery.js",
+          "tested_sha256": "2286492eddb9d842db1a471a3a56abccfb7128c9854f5b86eb728515e670dc05",
+          "current_sha256": "0735b8ed4a0493f76abee2578d82f1c8e033e0a99597efd4d3756b0167b88a70"
+        },
+        {
+          "path": "blocks/gcsp/kit/media-gallery.css",
+          "tested_sha256": "08ef7f080f7f959c5bad6c94c343eca6fbe70e38545e6ea9bd046dc9e4ade78e",
+          "current_sha256": "2bab9856c20b351a52a462bbaf1c79ddadf3b18d585b8ce99bcbcfe316833f7c"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/stock-generator.js",
+          "tested_sha256": "35a4309cf2d2dbb84da20323526c66721120f6e7c401eb1a8fce45160e73f269",
+          "current_sha256": "b6783208b516e8406c017a7b8d6b1a3e718667dacefcbc6d86a0aa7f575963de"
+        },
+        {
+          "path": "server/test/gcsp-media-gallery.test.js",
+          "tested_sha256": "abd833baa9eff7dfe3a6fb8f974f791acb50f5ad555d2d6cfffd91a22f480dc9",
+          "current_sha256": "a8be9804b6bede5ba02aacae9fac7f338a4f52156f0cd4a6035d6419c3ff57b1"
+        }
+      ]
+    },
+    "serial_offer_seam": {
+      "tested_code_key": "ff3e8ee231b2d81ac0608316457fea5b99759b8973491164edaed9537fe9e188",
+      "unchanged": [
+        "blocks/gcsp/offer/offer-view.js",
+        "blocks/gcsp/kit/media-gallery.js",
+        "blocks/gcsp/kit/media-gallery.css",
+        "server/gcsp/offers/access.js",
+        "server/test/gcsp-offer-access.test.js",
+        "server/test/gcsp-media-gallery.test.js",
+        "blocks/gcsp/kit/media-gallery-examples.js",
+        "blocks/gcsp/offer/gcsp-offer.css",
+        "server/test/gcsp-offer-view-decision.test.js",
+        "server/test/shared-kit-contracts.test.js",
+        "server/test/gcsp-painted-copy-words.test.js"
+      ],
+      "changed": [
+        {
+          "path": "blocks/gcsp/offer/offer-projection.js",
+          "tested_sha256": "e86bcee15780d97ffb75d21348457f8797afa070b8a4b6ba2d932ab29bdd9592",
+          "current_sha256": "eae39dd4fb3898bd6db9be49b3820f96fe0464e01e4c592df3d68e127f75b4f5"
+        },
+        {
+          "path": "blocks/gcsp/kit/vehicle-decision.js",
+          "tested_sha256": "56659f0bb4d929fb967e975bd4a52af28d27684b9a90f04bf2890089c2ef09bd",
+          "current_sha256": "5444f61e909a8bc7697ffd6210a6918b25141c3cef286389b1704edb6230f8f5"
+        },
+        {
+          "path": "blocks/gcsp/kit/vehicle-decision.css",
+          "tested_sha256": "d3c673ee467d73d35b823bcda4919a617701d73562e101aecac794d7e4098e7a",
+          "current_sha256": "9057204220f923449ed37ef5d1b6d08b301b461d26cd25418a8fad24bcf4651e"
+        },
+        {
+          "path": "server/test/gcsp-offer-view-projection.test.js",
+          "tested_sha256": "cdaca87a4a88448561f073bb07a2d9e293edbf83a36fc8a5e4987b59c0fa4968",
+          "current_sha256": "5c223c0cd0aaf7abaca7c583bfa82362a4a8400c669ad8ac405a1cddaab5d506"
+        },
+        {
+          "path": "server/test/gcsp-offer-view-render.test.js",
+          "tested_sha256": "e21a76466f106204de353530f0eba47187aca6da0c434abe81e0b28fadde5bda",
+          "current_sha256": "b00ac810cc8ef32ff78b5bfa5406e5af269450e1188ae7f152b24823fb0b4a4c"
+        },
+        {
+          "path": "blocks/vehicle-matcher/component-gallery.js",
+          "tested_sha256": "f11facffb746fc08349b25edc56188282e50297098b34635d76545518afed9cb",
+          "current_sha256": "6f5dd06e59304c773eafa6586f9390761225217146b738c86d722fdcb0f6f338"
+        },
+        {
+          "path": "components.html",
+          "tested_sha256": "7f72c68f0ffaf77db8706dfbc05eba8ce1fe02f37adec7459fc0d1d5f145e6a8",
+          "current_sha256": "e2fcf9ce4d532972127552dfc64e3f9add9b381569268c6f612c59e969cf0a1c"
+        },
+        {
+          "path": "server/test/ui-ratchet.json",
+          "tested_sha256": "0a3aad47b33421086b5fca186fb16d9c5b111e7754735a4de257f926c2dd1d41",
+          "current_sha256": "8bf76027ec1f4936ed5c22e05632be6f79949d4a3ae3679a7ffa751ce0b2033e"
+        },
+        {
+          "path": "COMPONENTS.md",
+          "tested_sha256": "2f3850f248dea8f6e20b9520a81a1391e37551880980e3b1edf0e39b3843669d",
+          "current_sha256": "5f2671e4765cd9f4de1dcc115170bab0dac4ccd0545aec3e969c8e02f6e24de9"
+        }
+      ]
+    },
+    "combined_corrected_source": "22176eb2393c644151c097bc1022998b67c1fe29",
+    "combined_corrected_code_key": "559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4",
+    "combined_identity_matches": 19,
+    "combined_identity_paths": 20,
+    "combined_identity_changes": [
+      {
+        "path": "server/test/gcsp-offer-view-render.test.js",
+        "tested_sha256": "06b20e05f0dbad72840c4f858eeacbd02f043280d4b71f4f95257dc0723f4e7d",
+        "current_sha256": "b00ac810cc8ef32ff78b5bfa5406e5af269450e1188ae7f152b24823fb0b4a4c"
+      }
+    ],
+    "changed_blocks_server_paths_since_corrected_review": [
+      "blocks/gcsp/offer/portal-links.js",
+      "server/test/gcsp-offer-view-render.test.js",
+      "server/test/gcsp-shell-navigation.test.js"
+    ],
+    "qualification": "All gallery component/access/view blobs and retained catalogue/source digests remain unchanged. F382 changed stock-generator after the first image run and supplies separate actual producer evidence. Later equipment/card/projection changes have corrected 160-pass scope plus 4 stylesheet checks; F390 changes portal-links and the render rail assertion with separate scoped and visual evidence. No whole earlier test/browser identity is claimed unchanged."
+  },
+  "validation": {
+    "initial_images": {
+      "pass": 150,
+      "fail": 0,
+      "native_postgresql_skip": 1
+    },
+    "initial_boundaries": {
+      "pass": 213,
+      "fail": 2,
+      "known_failures": "FUCQ-387 inherited stylesheet caps"
+    },
+    "initial_final_projection_gallery": {
+      "pass": 14,
+      "fail": 0
+    },
+    "serial_seam": {
+      "pass": 198,
+      "fail": 0,
+      "skip": 0,
+      "wall_seconds": 18.295413958,
+      "code_key": "ff3e8ee231b2d81ac0608316457fea5b99759b8973491164edaed9537fe9e188",
+      "selection": "OfferAccess, offer projection/render/decisions, media gallery and shared-kit contracts; one Node test worker.",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-offer-access.test.js",
+        "server/test/gcsp-offer-view-projection.test.js",
+        "server/test/gcsp-offer-view-render.test.js",
+        "server/test/gcsp-media-gallery.test.js",
+        "server/test/shared-kit-contracts.test.js",
+        "server/test/gcsp-offer-view-decision.test.js"
+      ]
+    },
+    "serial_boundaries_historical": {
+      "pass": 210,
+      "fail": 3,
+      "skip": 0,
+      "wall_seconds": 60.742137042,
+      "failures": [
+        "FUCQ-387 presenter-console.css 44/cap39",
+        "FUCQ-387 release-section.css 15/cap17",
+        "stale select-based painted-copy decline trial"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-shell.test.js",
+        "server/test/gcsp-painted-copy-words.test.js",
+        "server/test/ui-ratchet.test.js"
+      ]
+    },
+    "painted_copy_correction": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "wall_seconds": 0.98266775,
+      "basis": "Existing trial updated to activate/assert canonical radio then confirm decline; unchanged passing boundary evidence reused.",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-name-pattern=the offer paints no demo",
+        "server/test/gcsp-painted-copy-words.test.js"
+      ]
+    },
+    "later_corrected_combined": {
+      "pass": 160,
+      "fail": 0,
+      "skip": 0,
+      "stylesheet_ratchet_pass": 4,
+      "records": "docs/gcsp/evidence/fucq386/scoped-test-records.json"
+    },
+    "f390_separate": {
+      "pass": 231,
+      "fail": 2,
+      "known_failures": "FUCQ-387",
+      "evidence": "docs/gcsp/evidence/fucq390/README.md",
+      "qualification": "Ten local fixture captures independently reviewed; resumed fixture script ended with Transition was skipped at final pageerror assertion. Later cd7a965e documents separate successful deployed 1280/375 keyboard navigation check and independent production-capture PASS; it does not prove a deployed F385 gallery journey."
+    },
+    "selector": "Affected dry-run had unsupported/unspecified Node language and proposed full npm test; reviewed explicit seam/boundary commands selected. No full suite run.",
+    "retained_failures": "Expected metadata RED, focus RED and initial fixture/setup/path attempts retained in bounded local logs; two unchanged F387 caps and nonfatal F344 clockVersion diagnostics are not repaired here. Earlier combined mixed-supervisor skips remain recorded.",
+    "unrun": [
+      "full suite",
+      "native PostgreSQL: GCSP_DATABASE_URL unset",
+      "external BMW integration",
+      "deployed F385 gallery journey"
+    ],
+    "finalization": "Metadata-only: no new runtime/test/browser/server/scratch allocation; fresh JSON, whitespace, exact AC, map isolation, evidence tracking and source/capture identity checks.",
+    "earlier_combined_f386": {
+      "pass": 175,
+      "mixed_supervisor_skip": 2,
+      "qualification": "Historical separate scope; source and skip limits retained in F386 evidence, not an added F385 pass count."
+    }
+  },
+  "browser_and_review": {
+    "actual_route": "Isolated HTTPS memory application: retained corpus -> actual generated stock -> next release -> Paula brief -> BuddyHold -> issued-token exchange -> offer. No external BMW call or user browser profile.",
+    "gallery_timing": "Successful three-view/keyboard/current-source prefix at 1440/375/320 plus actual emulated touch (4 touchstarts); overall part remains incomplete after later locator matched both page and dialog thumbs.",
+    "resume": "gallery-boundaries corrected locator passes actual selected broken recovery; visual-corrections passes true 320 selected border and separate keyboard focus, plus settled 1440/375/320. No page/CSP errors or decision mutation in these nondecision groups.",
+    "standalone_checks": "docs/gcsp/evidence/fucq385/standalone-gallery-checks.json",
+    "standalone_source_sha256": "ebb949ac7e517de8b64f1f8aded2439ab939755d74cfa40060c703ea09975eaa",
+    "standalone_limit": "Fixture, no actual producer and mouse trials; useful empty/single/missing/loading/long/broken supplement only.",
+    "independent_review": "docs/gcsp/evidence/fucq386/independent-visual-review.md",
+    "independent_review_sha256": "9e3c92c8b8053827fa0e073b4bc8cea7eaaa6e7ac774b135d7216fe304eb0f41",
+    "independent_verdict": "Mike Wazowski PASS after selected failed-thumb marker, long equipment and radio corrections/reinspection; all original F382-386 scope only.",
+    "capture_index": "docs/gcsp/evidence/fucq386/capture-index.json",
+    "verified_retained_captures": 29,
+    "access_loss_limit": "Actual wall-session expiry was HTTP404/not-found with Offer not found H1 focus. Bare401/access-lapsed session-recovery proof remains a separate unit/controller regression; no actual Session ended browser journey claim."
+  },
+  "resources": {
+    "owned_manifest_count": 17,
+    "owned_roots_absent_at_finalization": true,
+    "owned_root_paths": [
+      "/private/tmp/test-stamp-shard-17c6cbf5072246d4bf43e19464c4d8f9",
+      "/private/tmp/test-stamp-shard-359167cb5f254fbc92696775c76e4ff4",
+      "/private/tmp/test-stamp-shard-3fb55b53151645609e102877ab87da44",
+      "/private/tmp/test-stamp-shard-557cdbde559242d78c86dac9b870c085",
+      "/private/tmp/test-stamp-shard-5c4920c301bf4a5994cbef8cb92801cb",
+      "/private/tmp/test-stamp-shard-631df1dc13814d9abf9e538736aae58d",
+      "/private/tmp/test-stamp-shard-67b8bd37fa764f01bf8675bd122a062b",
+      "/private/tmp/test-stamp-shard-6903feb940f94dfda20e9245b70ebc11",
+      "/private/tmp/test-stamp-shard-88394afbcca74afd8c0b39c2bf0291b2",
+      "/private/tmp/test-stamp-shard-9467322c8d42427081492988f1faa522",
+      "/private/tmp/test-stamp-shard-97d00abaf1084341a07f502f319d7468",
+      "/private/tmp/test-stamp-shard-aeb0697ff4434151b22b99533fe5f284",
+      "/private/tmp/test-stamp-shard-b37cb2aaf0d7418fa10d5b795c4b5a75",
+      "/private/tmp/test-stamp-shard-c0e07237ad484e6fbe111515d388205f",
+      "/private/tmp/test-stamp-shard-d7babe15636346dd8f872019390b0c01",
+      "/private/tmp/test-stamp-shard-f12172d1d74048b195c821f844ca97bd",
+      "/private/tmp/test-stamp-shard-f1bfcba0dc3f40a4a0028e8be75edb42"
+    ],
+    "temporary_dependency_links_absent": true,
+    "parent_audit_sha256": "3dafb9879b09d5426e8b2bd0c3b609cf2adc5c0455bf048a7f951332cdb53100",
+    "parent_audit": "local .claude/dev-poller-fucq380-20261111/f385/parent-seam-audit.json; passed independent groups/roots/links audit",
+    "serial_peak_group_rss_bytes": 397836288,
+    "serial_measured_scratch_bytes": 0,
+    "standalone_profile_peak_bytes": 6975603,
+    "compatibility_exception": "Bounded isolated headless browser profile in earlier standalone proof, removed; none in serial test seam or finalization.",
+    "combined_receipt": "docs/gcsp/evidence/fucq386/resource-receipt.json; 23 roots absent, 73994611 cumulative scratch bytes reclaimed; browser/TLS/inventory exceptions removed. Parent audit covers 66 shared roots/groups.",
+    "large_outputs": "No archive or expected 256 MiB output created. Immutable retained inputs and installed shared dependencies preserved.",
+    "finalization_allocations": "Two small durable JSON evidence files plus story/evidence/map edits; no disposable scratch.",
+    "leftovers": [],
+    "cumulative_manifest_peak_bytes": 13951206
+  },
+  "agents": {
+    "name": "Miss Prissy",
+    "requested_model": "gpt-6.1-sol",
+    "requested_effort": "xhigh",
+    "selected_model": "gpt-6.1-sol",
+    "selected_effort": "xhigh",
+    "basis": "Explicit human Extra override",
+    "runtime_independently_verified": false,
+    "fallback": null,
+    "descendants": []
+  },
+  "retained_evidence_paths": [
+    "docs/gcsp/fucq-385-gallery-evidence-2026-11-11.md",
+    "docs/gcsp/evidence/fucq385/finalization.json",
+    "docs/gcsp/evidence/fucq385/standalone-gallery-checks.json",
+    "docs/gcsp/evidence/fucq386/README.md",
+    "docs/gcsp/evidence/fucq386/identities.json",
+    "docs/gcsp/evidence/fucq386/capture-index.json",
+    "docs/gcsp/evidence/fucq386/checks/gallery-timing.json",
+    "docs/gcsp/evidence/fucq386/checks/gallery-boundaries.json",
+    "docs/gcsp/evidence/fucq386/checks/visual-corrections.json",
+    "docs/gcsp/evidence/fucq386/independent-visual-review.md",
+    "docs/gcsp/evidence/fucq386/resource-receipt.json",
+    "docs/gcsp/evidence/fucq386/scoped-test-records.json",
+    "docs/gcsp/evidence/fucq390/README.md"
+  ]
+}
