@@ -117,19 +117,30 @@ export function selectedConfigurationDefinitionFacts(details) {
   if (selected?.state !== 'known' || details?.identity?.configurationId !== details?.resolved?.configurationId) return {};
   const definitions = details.equipment.definitions.filter((entry) => selected.options.includes(entry.code) && entry.label?.state === 'known');
   const resolution = details.equipment.resolution;
-  const fact = (value, label) => ({ status: 'known', value, unit: null,
-    provenance: { sourceRef: label.provenance.source, observedAt: `${label.provenance.observedDate}T00:00:00.000Z`,
-      version: resolution?.version ? `${resolution.version}:${resolution.digest}` : details.versions.snapshot,
-      assurance: 'model-reference' } });
+  const unresolved = new Set(resolution?.unresolved?.map((entry) => entry.code) ?? []);
+  const origin = ({ code, label }) => ({ code, sourceRef: label.provenance.source,
+    observedAt: `${label.provenance.observedDate}T00:00:00.000Z`,
+    version: resolution?.version && resolution.resolvedCount > 0 && !unresolved.has(code)
+      ? `${resolution.version}:${resolution.digest}` : details.versions.snapshot });
+  const fact = (value, entries) => {
+    const origins = entries.map(origin); const { code: _code, ...first } = origins[0];
+    const mixed = origins.some((entry) => entry.sourceRef !== first.sourceRef
+      || entry.observedAt !== first.observedAt || entry.version !== first.version);
+    const versions = [...new Set(origins.map((entry) => entry.version))];
+    // The canonical fact has scalar provenance fields; retain every contributing code's origin in a mixed reference.
+    const provenance = mixed ? { sourceRef: JSON.stringify(origins), observedAt: origins.map((entry) => entry.observedAt).sort().at(-1),
+      version: versions.length === 1 ? versions[0] : JSON.stringify(versions) } : first;
+    return { status: 'known', value, unit: null, provenance: { ...provenance, assurance: 'model-reference' } };
+  };
   const result = {};
   for (const [name, category] of [['colour', 'paint'], ['interior', 'fabric']]) {
     const matches = definitions.filter((entry) => entry.category === category);
-    if (matches.length === 1) result[name] = fact(matches[0].label.value, matches[0].label);
+    if (matches.length === 1) result[name] = fact(matches[0].label.value, matches);
   }
   const options = definitions.filter((entry) => !['paint', 'fabric'].includes(entry.category));
   const missing = selected.options.length - definitions.length;
   if (options.length) result.options = fact([...options.map((entry) => entry.label.value),
-    ...(missing ? [`${missing} selected ${missing === 1 ? 'code' : 'codes'} without a readable definition`] : [])], options[0].label);
+    ...(missing ? [`${missing} selected ${missing === 1 ? 'code' : 'codes'} without a readable definition`] : [])], options);
   return result;
 }
 

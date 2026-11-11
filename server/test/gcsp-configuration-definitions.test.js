@@ -11,6 +11,7 @@ import { vehicleEvidenceDetails } from '../gcsp/vehicle-evidence/vehicle-details
 import { createVehicleEvidenceLookup } from '../gcsp/vehicle-evidence/vehicle-lookup.js';
 import { createConfiguredVehicleDetails } from '../gcsp/vehicle-evidence/application-vehicle-details.js';
 import { createLocalVehicleEvidenceLookup } from '../gcsp/vehicle-evidence/local-vehicle-lookup.js';
+import { createVehicleSnapshot } from '../vehicles/index.js';
 
 const root = fileURLToPath(new URL('../data/gcsp/vehicle-evidence/demo-fleet.v1/', import.meta.url));
 const seedBytes = await readFile(new URL('../data/gcsp/vehicle-evidence/configuration-definitions.v1.json', import.meta.url));
@@ -102,6 +103,52 @@ test('failed seed loads and unknown selections remain explicit without hiding ex
   assert.equal((await withConfigurationDefinitions(registry).getConfiguration('missing')).status, 'not-found');
   const row = structuredClone(first); row.catalogue.equipment.selected.state = 'unknown';
   const result = freshIndex().resolve(row); assert.equal(result.state, 'unknown'); assert.equal(result.reason, 'selection-unavailable');
+});
+
+test('retained definition facts keep their snapshot provenance when the active seed resolves no codes', async () => {
+  const retained = ids.map((id) => corpus.get(id)).find((row) => row.snapshotVersion === 'bmw-gb-i5-2026-11-01.v1');
+  assert.equal(retained.catalogue.equipment.definitions.length, 6);
+  const details = await wire(retained);
+  assert.equal(details.equipment.resolution.resolvedCount, 0);
+  assert.equal(details.equipment.resolution.unresolved.length, 47);
+  const facts = selectedConfigurationDefinitionFacts(details);
+  assert.equal(facts.colour.value, 'Alpine White');
+  assert.equal(facts.interior.value, 'Perforated and Quilted Veganza in Smoke White');
+  assert.deepEqual(facts.options.value, ['Lumbar Support', '44 selected codes without a readable definition']);
+  for (const name of ['colour', 'interior', 'options']) assert.deepEqual(facts[name].provenance, {
+    sourceRef: 'BMW UK catalogue', observedAt: '2026-11-01T00:00:00.000Z',
+    version: 'bmw-gb-i5-2026-11-01.v1', assurance: 'model-reference',
+  });
+  const changed = structuredClone(seed); changed.version = 'unrelated-active-dictionary.v2';
+  assert.deepEqual(selectedConfigurationDefinitionFacts(await wire(retained, freshIndex(changed, 'c'.repeat(64)))), facts);
+});
+
+test('mixed selected option facts retain each source and version through the canonical snapshot', async () => {
+  const retained = structuredClone(ids.map((id) => corpus.get(id)).find((row) => row.snapshotVersion === 'bmw-gb-i5-2026-11-01.v1'));
+  // Controlled one-code join on the existing retained record, not a new source claim for the corpus.
+  const joinedSource = 'https://example.test/options/languages/en/mixed-retained-record';
+  retained.sourceContext.sourceRefs.push(joinedSource);
+  const mixed = { schemaVersion: '1', version: 'mixed-fixture.v1', population: {}, variants: [{
+    source: joinedSource, market: 'GB', vgModelCode: 'T5MJ', generations: ['G61'], agModelCodes: ['72HH'],
+    sources: [{ path: 'test-only:mixed-option-label', observedDate: '2026-11-09' }],
+    definitions: { S0494: { state: 'known', candidates: [{ label: 'Heated front seats', category: 'other', sources: [0] }] } },
+  }] };
+  const details = await wire(retained, freshIndex(mixed, 'c'.repeat(64)));
+  assert.equal(details.equipment.resolution.resolvedCount, 1);
+  const facts = selectedConfigurationDefinitionFacts(details);
+  assert.equal(facts.colour.provenance.version, 'bmw-gb-i5-2026-11-01.v1');
+  assert.equal(facts.interior.provenance.version, 'bmw-gb-i5-2026-11-01.v1');
+  assert.deepEqual(facts.options.value, ['Lumbar Support', 'Heated front seats', '43 selected codes without a readable definition']);
+  assert.deepEqual(JSON.parse(facts.options.provenance.sourceRef), [
+    { code: 'S0488', sourceRef: 'BMW UK catalogue', observedAt: '2026-11-01T00:00:00.000Z', version: 'bmw-gb-i5-2026-11-01.v1' },
+    { code: 'S0494', sourceRef: joinedSource, observedAt: '2026-11-09T00:00:00.000Z', version: `mixed-fixture.v1:${'c'.repeat(64)}` },
+  ]);
+  assert.deepEqual(JSON.parse(facts.options.provenance.version), ['bmw-gb-i5-2026-11-01.v1', `mixed-fixture.v1:${'c'.repeat(64)}`]);
+  assert.equal(facts.options.provenance.observedAt, '2026-11-09T00:00:00.000Z');
+  const snapshot = createVehicleSnapshot({ sourceNamespace: 'test-retained-configuration', identityKind: 'legacy-record',
+    sourceKeys: { recordId: retained.configurationId }, snapshotVersion: 'test-mixed-snapshot.v1',
+    observedAt: '2026-11-11T00:00:00.000Z', display: { name: 'BMW i5 retained configuration' }, facts });
+  assert.deepEqual(snapshot.facts.options.provenance, facts.options.provenance);
 });
 
 test('public adapter accepts exact definition association and rejects substituted provenance metadata', async () => {

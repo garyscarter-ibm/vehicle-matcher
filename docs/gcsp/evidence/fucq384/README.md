@@ -16,7 +16,7 @@ Status: **blocked/checkpoint**, pending independent review and original AC4 inte
 | Fully labelled active configurations | 239 / 240 |
 | Resolved selected codes | 11,900 / 11,947 |
 
-The unsupported structural reference configuration accounts for all 47 unresolved selected codes; their complete list is retained in the seed's `population.unresolvedCodes`. Retained sources provide no evidenced swatch colours, so swatches remain explicitly unknown. Labels describe selected catalogue equipment, with verified physical-car fitment unknown. Availability, unselected equipment and quantities are not inferred.
+The retained G61/i5 configuration has no matching options-language report and accounts for all 47 codes unresolved by this seed; their complete list is retained in the seed's `population.unresolvedCodes`. Its existing snapshot definitions remain available separately. Retained sources provide no evidenced swatch colours, so swatches remain explicitly unknown. Labels describe selected catalogue equipment, with verified physical-car fitment unknown. Availability, unselected equipment and quantities are not inferred.
 
 ## Integration APIs
 
@@ -24,7 +24,9 @@ The unsupported structural reference configuration accounts for all 47 unresolve
 
 `withConfigurationDefinitions(registry, { index = loadConfigurationDefinitionIndex() } = {})` decorates async `getConfiguration(id)` and `getVin(id)` using detached results, preserves the registry's other APIs and adds async `definitionStatus()`. It retains original selected/available/fitted evidence, joins only selected definitions and attaches `definitionResolution` metadata. The local lookup composes `withConfigurationDefinitions(withDisplayImages(registry))`. Seed-load failure remains explicit as `definition-seed-unavailable`.
 
-`selectedConfigurationDefinitionFacts(details)` accepts the existing vehicle-evidence DTO and returns supported canonical `colour`, `interior` and `options` facts. Each fact retains the exact source reference, observed date, definition version/digest and `model-reference` assurance. Missing labels have a concise count when there are readable options. No parallel snapshot namespace is introduced.
+`selectedConfigurationDefinitionFacts(details)` accepts the existing vehicle-evidence DTO and returns supported canonical `colour`, `interior` and `options` facts. Seed-resolved labels carry the definition version/digest; retained definitions that the seed did not resolve keep their original snapshot version. Each fact retains its source reference, observed date and `model-reference` assurance. Missing labels have a concise count when there are readable options. No parallel snapshot namespace is introduced.
+
+Mixed option arrays keep the canonical scalar provenance fields: `sourceRef` is JSON containing each readable option's `{code, sourceRef, observedAt, version}` in value order; `version` is the common version or a JSON list of contributing versions; `observedAt` is the latest contributing observation, with every individual date retained in the reference. Homogeneous arrays retain the ordinary single-source provenance. Values and the canonical snapshot schema are unchanged.
 
 For future authorised producer integration, decorate the registry before `factsForConfiguration`. The current `stock-generator.ensureExtra` wraps extras in generator provenance; it must deliberately preserve these canonical attributed facts. FUCQ-382 must also reconcile `facts.syntheticIdentity` and the full exact snapshot before quote pinning. Those producer repairs are not included here.
 
@@ -40,3 +42,13 @@ Original AC4's actual generated-stock → recommendation → newly pinned quote 
 The affected selector had no plugin and proposed a full-suite fallback. That broad fallback was not run: these explicit regression and caller-boundary modules cover this bounded seed/adapter checkpoint. Per-test coverage contexts are unavailable in the current Node harness; the impact map records reviewed ownership and unknown boundaries instead of treating unobserved coverage as irrelevant.
 
 Run metadata and resource receipt: `/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f384/`. Supervised test evidence and ownership manifests are under shared `.claude/test-runs/`; exact filenames are recorded in `validation-summary.json` and `resource-receipt.json`. All four run-owned test scratch roots and both temporary dependency symlinks were removed and their absence verified. Installed dependencies and retained corpus inputs were preserved; no large output, browser profile or database working-set exception was used.
+
+## Independent-review provenance correction
+
+Barnyard Dawg's P2 finding exposed an unmet original provenance/version criterion in this unmerged checkpoint. The helper used the active seed version whenever resolution metadata existed, including labels preserved from the source snapshot. The active retained G61/i5 record has six original definitions, no options-language source and zero seed resolutions across 47 selected codes. Its readable Alpine White, Veganza and Lumbar Support facts were therefore incorrectly stamped with the seed identity.
+
+The correction uses the code-level resolution outcome to distinguish joined labels from retained labels. Retained facts preserve `bmw-gb-i5-2026-11-01.v1`; mixed arrays explicitly retain all contributing origins as described above. No corpus, seed, producer, identity, policy or UI value change is included.
+
+Two new regressions failed against the unchanged helper for the reported attribution error (zero passes, two failures, zero skipped; 0.5 seconds). After correction, **95 scoped checks passed, zero failed/skipped**, across configuration definitions, strict vehicle-details adapter, BuddyHold and canonical vehicle snapshots (5.6 seconds). The tests include the actual retained G61/i5 record, a clearly controlled one-code mixed join and canonical snapshot retention. The earlier 90 checks remain evidence for the preceding checkpoint; they are not combined into a new full-suite claim.
+
+Revision metadata, exact commands/code identity, red/green checkpoints, impact map and cleanup receipt are under `/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f384/revision1/`. Both revision-owned scratch roots and temporary dependency links were removed and verified absent. During this revision the collaborator separately authorised FUCQ-382; the parent owns that dispatch. Original AC4 still awaits actual FUCQ-382 producer proof, integrated comparison review and acceptance; status stays **blocked/checkpoint**.
