@@ -1,0 +1,5060 @@
+{
+  "run": "fucq367-strict-capture",
+  "implementationCommit": "d22d87ff",
+  "reference": {
+    "commit": "193cbf07",
+    "dir": "docs/gcsp/mockups/account-preferences-2026-11-10/review"
+  },
+  "environment": {
+    "browser": "157.0.8103.51",
+    "deviceScaleFactor": 1,
+    "reducedMotion": "reduce",
+    "locale": "en-GB",
+    "capture": "fullPage",
+    "scroll": [
+      0,
+      0
+    ]
+  },
+  "states": {
+    "1440-selected": {
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=5",
+      "steps": [],
+      "longVariant": false,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1440-selected.png",
+      "impl": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 603.94,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "5",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1549
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "H1",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 603.94,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1622,
+        "helpText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?"
+      },
+      "implementationImage": "1440-selected-implementation.jpg",
+      "implementationSize": [
+        1440,
+        1549
+      ],
+      "zoomCropImpl": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "referenceSize": [
+        1440,
+        1622
+      ],
+      "zoomCropRef": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "ratingZoom": "1440-selected-rating-zoom.jpg",
+      "sideBySide": "1440-selected-side-by-side.jpg"
+    },
+    "1440-initial": {
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=empty&rating=4",
+      "steps": [],
+      "longVariant": false,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1440-initial.png",
+      "impl": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 603.94,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1531
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "0 of 3 categories considered \u00b7 Preferences save automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "0 of 3 categories considered \u00b7 Preferences save automatically",
+      "active": "H1",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 603.94,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": null,
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1604,
+        "helpText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?"
+      },
+      "implementationImage": "1440-initial-implementation.jpg",
+      "implementationSize": [
+        1440,
+        1531
+      ],
+      "zoomCropImpl": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "referenceSize": [
+        1440,
+        1604
+      ],
+      "zoomCropRef": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "ratingZoom": "1440-initial-rating-zoom.jpg",
+      "sideBySide": "1440-initial-side-by-side.jpg"
+    },
+    "1440-rating-tooltip": {
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=empty",
+      "steps": [
+        "async (p) => { await radio(p, STAR3).hover(); }"
+      ],
+      "longVariant": false,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1440-rating-tooltip.png",
+      "impl": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 603.94,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": null,
+        "tipVisible": true,
+        "tipBox": {
+          "x": 543,
+          "y": 537.94,
+          "width": 360,
+          "height": 62
+        },
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": true,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1531
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "0 of 3 categories considered \u00b7 Preferences save automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "0 of 3 categories considered \u00b7 Preferences save automatically",
+      "active": "H1",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 603.94,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": null,
+        "tipVisible": true,
+        "tipBox": {
+          "x": 543,
+          "y": 537.94,
+          "width": 360,
+          "height": 62
+        },
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "tipInsideViewport": true,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1604,
+        "helpText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?"
+      },
+      "implementationImage": "1440-rating-tooltip-implementation.jpg",
+      "implementationSize": [
+        1440,
+        1531
+      ],
+      "zoomCropImpl": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "referenceSize": [
+        1440,
+        1604
+      ],
+      "zoomCropRef": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "ratingZoom": "1440-rating-tooltip-rating-zoom.jpg",
+      "sideBySide": "1440-rating-tooltip-side-by-side.jpg"
+    },
+    "1920-selected": {
+      "viewport": {
+        "width": 1920,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+      "steps": [],
+      "longVariant": false,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1920-selected.png",
+      "impl": {
+        "media": {
+          "x": 145,
+          "y": 171,
+          "width": 1198,
+          "height": 673.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 145,
+          "y": 171,
+          "width": 1198,
+          "height": 673.88
+        },
+        "rating": {
+          "x": 1115,
+          "y": 792.88,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 1125,
+          "y": 802.88,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 1115,
+          "y": 792.88,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1693
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "H1",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 145,
+          "y": 171,
+          "width": 1198,
+          "height": 673.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 145,
+          "y": 171,
+          "width": 1198,
+          "height": 673.88
+        },
+        "rating": {
+          "x": 1115,
+          "y": 792.88,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 1125,
+          "y": 802.88,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 1115,
+          "y": 792.88,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1766,
+        "helpText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?"
+      },
+      "implementationImage": "1920-selected-implementation.jpg",
+      "implementationSize": [
+        1920,
+        1693
+      ],
+      "zoomCropImpl": [
+        923,
+        685,
+        1343,
+        845
+      ],
+      "referenceSize": [
+        1920,
+        1766
+      ],
+      "zoomCropRef": [
+        923,
+        685,
+        1343,
+        845
+      ],
+      "ratingZoom": "1920-selected-rating-zoom.jpg",
+      "sideBySide": "1920-selected-side-by-side.jpg"
+    },
+    "1100-selected": {
+      "viewport": {
+        "width": 1100,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+      "steps": [],
+      "longVariant": false,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1100-selected.png",
+      "impl": {
+        "media": {
+          "x": 97,
+          "y": 284.78,
+          "width": 477,
+          "height": 268.31
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 284.78,
+          "width": 477,
+          "height": 268.31
+        },
+        "rating": {
+          "x": 346,
+          "y": 501.09,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 356,
+          "y": 511.09,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 346,
+          "y": 501.09,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1638
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "H1",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 97,
+          "y": 284.78,
+          "width": 477,
+          "height": 268.31
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 284.78,
+          "width": 477,
+          "height": 268.31
+        },
+        "rating": {
+          "x": 346,
+          "y": 501.09,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 356,
+          "y": 511.09,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 346,
+          "y": 501.09,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1711,
+        "helpText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?"
+      },
+      "implementationImage": "1100-selected-implementation.jpg",
+      "implementationSize": [
+        1100,
+        1638
+      ],
+      "zoomCropImpl": [
+        154,
+        393,
+        574,
+        553
+      ],
+      "referenceSize": [
+        1100,
+        1711
+      ],
+      "zoomCropRef": [
+        154,
+        393,
+        574,
+        553
+      ],
+      "ratingZoom": "1100-selected-rating-zoom.jpg",
+      "sideBySide": "1100-selected-side-by-side.jpg"
+    },
+    "1024-selected": {
+      "viewport": {
+        "width": 1024,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+      "steps": [],
+      "longVariant": false,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1024-selected.png",
+      "impl": {
+        "media": {
+          "x": 97,
+          "y": 292.84,
+          "width": 439,
+          "height": 246.94
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 292.84,
+          "width": 439,
+          "height": 246.94
+        },
+        "rating": {
+          "x": 308,
+          "y": 487.78,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 318,
+          "y": 497.78,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 308,
+          "y": 487.78,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1656
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "H1",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 97,
+          "y": 292.84,
+          "width": 439,
+          "height": 246.94
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 292.84,
+          "width": 439,
+          "height": 246.94
+        },
+        "rating": {
+          "x": 308,
+          "y": 487.78,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 318,
+          "y": 497.78,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 308,
+          "y": 487.78,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1729,
+        "helpText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?"
+      },
+      "implementationImage": "1024-selected-implementation.jpg",
+      "implementationSize": [
+        1024,
+        1656
+      ],
+      "zoomCropImpl": [
+        116,
+        380,
+        536,
+        540
+      ],
+      "referenceSize": [
+        1024,
+        1729
+      ],
+      "zoomCropRef": [
+        116,
+        380,
+        536,
+        540
+      ],
+      "ratingZoom": "1024-selected-rating-zoom.jpg",
+      "sideBySide": "1024-selected-side-by-side.jpg"
+    },
+    "900-selected": {
+      "viewport": {
+        "width": 900,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+      "steps": [],
+      "longVariant": false,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/900-selected.png",
+      "impl": {
+        "media": {
+          "x": 97,
+          "y": 307.16,
+          "width": 377,
+          "height": 212.06
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 307.16,
+          "width": 377,
+          "height": 212.06
+        },
+        "rating": {
+          "x": 246,
+          "y": 467.22,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 256,
+          "y": 477.22,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 246,
+          "y": 467.22,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1669
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "H1",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 97,
+          "y": 309.47,
+          "width": 377,
+          "height": 212.06
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 309.47,
+          "width": 377,
+          "height": 212.06
+        },
+        "rating": {
+          "x": 246,
+          "y": 469.53,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 256,
+          "y": 479.53,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 246,
+          "y": 469.53,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1745,
+        "helpText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?"
+      },
+      "implementationImage": "900-selected-implementation.jpg",
+      "implementationSize": [
+        900,
+        1669
+      ],
+      "zoomCropImpl": [
+        97,
+        359,
+        474,
+        519
+      ],
+      "referenceSize": [
+        900,
+        1745
+      ],
+      "zoomCropRef": [
+        97,
+        362,
+        474,
+        522
+      ],
+      "ratingZoom": "900-selected-rating-zoom.jpg",
+      "sideBySide": "900-selected-side-by-side.jpg"
+    },
+    "820-selected": {
+      "viewport": {
+        "width": 820,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+      "steps": [],
+      "longVariant": false,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/820-selected.png",
+      "impl": {
+        "media": {
+          "x": 73,
+          "y": 303.66,
+          "width": 361,
+          "height": 203.06
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 73,
+          "y": 303.66,
+          "width": 361,
+          "height": 203.06
+        },
+        "rating": {
+          "x": 206,
+          "y": 454.72,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 216,
+          "y": 464.72,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 206,
+          "y": 454.72,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1674
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "H1",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 73,
+          "y": 305.97,
+          "width": 361,
+          "height": 203.06
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 73,
+          "y": 305.97,
+          "width": 361,
+          "height": 203.06
+        },
+        "rating": {
+          "x": 206,
+          "y": 457.03,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 216,
+          "y": 467.03,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 206,
+          "y": 457.03,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1803,
+        "helpText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?"
+      },
+      "implementationImage": "820-selected-implementation.jpg",
+      "implementationSize": [
+        820,
+        1674
+      ],
+      "zoomCropImpl": [
+        73,
+        347,
+        434,
+        507
+      ],
+      "referenceSize": [
+        820,
+        1803
+      ],
+      "zoomCropRef": [
+        73,
+        349,
+        434,
+        509
+      ],
+      "ratingZoom": "820-selected-rating-zoom.jpg",
+      "sideBySide": "820-selected-side-by-side.jpg"
+    },
+    "375-selected": {
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+      "steps": [],
+      "longVariant": false,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/375-selected.png",
+      "impl": {
+        "media": {
+          "x": 17,
+          "y": 153.19,
+          "width": 341,
+          "height": 191.81
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 17,
+          "y": 153.19,
+          "width": 341,
+          "height": 191.81
+        },
+        "rating": {
+          "x": 130,
+          "y": 293,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 140,
+          "y": 303,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 130,
+          "y": 293,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 2347
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "H1",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 17,
+          "y": 191.69,
+          "width": 341,
+          "height": 191.81
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 17,
+          "y": 191.69,
+          "width": 341,
+          "height": 191.81
+        },
+        "rating": {
+          "x": 130,
+          "y": 331.5,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 140,
+          "y": 341.5,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 130,
+          "y": 331.5,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 2521,
+        "helpText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?"
+      },
+      "implementationImage": "375-selected-implementation.jpg",
+      "implementationSize": [
+        375,
+        2347
+      ],
+      "zoomCropImpl": [
+        17,
+        153,
+        358,
+        345
+      ],
+      "referenceSize": [
+        375,
+        2521
+      ],
+      "zoomCropRef": [
+        17,
+        192,
+        358,
+        384
+      ],
+      "ratingZoom": "375-selected-rating-zoom.jpg",
+      "sideBySide": "375-selected-side-by-side.jpg"
+    },
+    "375-engaged": {
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+      "steps": [],
+      "longVariant": false,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/375-engaged.png",
+      "impl": {
+        "media": {
+          "x": 17,
+          "y": 153.19,
+          "width": 341,
+          "height": 191.81
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 17,
+          "y": 153.19,
+          "width": 341,
+          "height": 191.81
+        },
+        "rating": {
+          "x": 130,
+          "y": 293,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 140,
+          "y": 303,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 130,
+          "y": 293,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 2347
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "H1",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 17,
+          "y": 191.69,
+          "width": 341,
+          "height": 191.81
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 17,
+          "y": 191.69,
+          "width": 341,
+          "height": 191.81
+        },
+        "rating": {
+          "x": 130,
+          "y": 331.5,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 140,
+          "y": 341.5,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 130,
+          "y": 331.5,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 2521,
+        "helpText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?"
+      },
+      "implementationImage": "375-engaged-implementation.jpg",
+      "implementationSize": [
+        375,
+        2347
+      ],
+      "zoomCropImpl": [
+        17,
+        153,
+        358,
+        345
+      ],
+      "referenceSize": [
+        375,
+        2542
+      ],
+      "zoomCropRef": [
+        17,
+        192,
+        358,
+        384
+      ],
+      "ratingZoom": "375-engaged-rating-zoom.jpg",
+      "sideBySide": "375-engaged-side-by-side.jpg"
+    },
+    "320-long": {
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+      "steps": [],
+      "longVariant": true,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/320-long.png",
+      "impl": {
+        "media": {
+          "x": 17,
+          "y": 153.19,
+          "width": 286,
+          "height": 160.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 17,
+          "y": 153.19,
+          "width": 286,
+          "height": 160.88
+        },
+        "rating": {
+          "x": 75,
+          "y": 262.06,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8.01,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8.01,
+        "glyph": {
+          "x": 85,
+          "y": 272.06,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 75,
+          "y": 262.06,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid?",
+        "legend": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 2504
+      },
+      "helpText": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series 330e xDrive M Sport Pro Touring",
+      "spec": "M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "H1",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 17,
+          "y": 191.69,
+          "width": 286,
+          "height": 160.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 17,
+          "y": 191.69,
+          "width": 286,
+          "height": 160.88
+        },
+        "rating": {
+          "x": 75,
+          "y": 300.56,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8.01,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8.01,
+        "glyph": {
+          "x": 85,
+          "y": 310.56,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 75,
+          "y": 300.56,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro \u00b7 Plug-in hybrid \u00b7 BMW Individual specification?",
+        "legend": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro \u00b7 Plug-in hybrid \u00b7 BMW Individual specification?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 2679,
+        "helpText": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro \u00b7 Plug-in hybrid \u00b7 BMW Individual specification?"
+      },
+      "implementationImage": "320-long-implementation.jpg",
+      "implementationSize": [
+        320,
+        2504
+      ],
+      "zoomCropImpl": [
+        17,
+        153,
+        303,
+        314
+      ],
+      "referenceSize": [
+        320,
+        2679
+      ],
+      "zoomCropRef": [
+        17,
+        192,
+        303,
+        353
+      ],
+      "ratingZoom": "320-long-rating-zoom.jpg",
+      "sideBySide": "320-long-side-by-side.jpg"
+    },
+    "320-rating-tooltip-long": {
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+      "steps": [
+        "async (p) => { await p.locator('h1').click(); await radio(p, STAR4).focus(); }"
+      ],
+      "longVariant": true,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/320-rating-tooltip-long.png",
+      "impl": {
+        "media": {
+          "x": 17,
+          "y": 153.19,
+          "width": 286,
+          "height": 160.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 17,
+          "y": 153.19,
+          "width": 286,
+          "height": 160.88
+        },
+        "rating": {
+          "x": 75,
+          "y": 262.06,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8.01,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8.01,
+        "glyph": {
+          "x": 85,
+          "y": 272.06,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 75,
+          "y": 262.06,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": true,
+        "tipBox": {
+          "x": 39,
+          "y": 160.06,
+          "width": 256,
+          "height": 98
+        },
+        "tipText": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid?",
+        "legend": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid?",
+        "tipInsideViewport": true,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 2504
+      },
+      "helpText": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series 330e xDrive M Sport Pro Touring",
+      "spec": "M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "4 stars: I really like it",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 17,
+          "y": 191.69,
+          "width": 286,
+          "height": 160.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 17,
+          "y": 191.69,
+          "width": 286,
+          "height": 160.88
+        },
+        "rating": {
+          "x": 75,
+          "y": 300.56,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8.01,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8.01,
+        "glyph": {
+          "x": 85,
+          "y": 310.56,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 75,
+          "y": 300.56,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": true,
+        "tipBox": {
+          "x": 39,
+          "y": 198.56,
+          "width": 256,
+          "height": 98
+        },
+        "tipText": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro \u00b7 Plug-in hybrid \u00b7 BMW Individual specification?",
+        "legend": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro \u00b7 Plug-in hybrid \u00b7 BMW Individual specification?",
+        "tipInsideViewport": true,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 2679,
+        "helpText": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro \u00b7 Plug-in hybrid \u00b7 BMW Individual specification?"
+      },
+      "implementationImage": "320-rating-tooltip-long-implementation.jpg",
+      "implementationSize": [
+        320,
+        2504
+      ],
+      "zoomCropImpl": [
+        17,
+        153,
+        303,
+        314
+      ],
+      "referenceSize": [
+        320,
+        2658
+      ],
+      "zoomCropRef": [
+        17,
+        192,
+        303,
+        353
+      ],
+      "ratingZoom": "320-rating-tooltip-long-rating-zoom.jpg",
+      "sideBySide": "320-rating-tooltip-long-side-by-side.jpg"
+    },
+    "320-keyboard-focus": {
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+      "steps": [
+        "async (p, entry) => { await p.locator('h1').click(); entry.tabSequence = await tabToStar(p); entry.focusTarget = entry.tabSequence.at(-1); }"
+      ],
+      "longVariant": true,
+      "tabSequence": [
+        {
+          "tag": "INPUT",
+          "label": "4 stars: I really like it",
+          "inRating": true,
+          "checked": true
+        }
+      ],
+      "focusTarget": {
+        "tag": "INPUT",
+        "label": "4 stars: I really like it",
+        "inRating": true,
+        "checked": true
+      },
+      "referencePng": null,
+      "impl": {
+        "media": {
+          "x": 17,
+          "y": 153.19,
+          "width": 286,
+          "height": 160.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 17,
+          "y": 153.19,
+          "width": 286,
+          "height": 160.88
+        },
+        "rating": {
+          "x": 75,
+          "y": 262.06,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8.01,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8.01,
+        "glyph": {
+          "x": 85,
+          "y": 272.06,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 75,
+          "y": 262.06,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": true,
+        "tipBox": {
+          "x": 39,
+          "y": 160.06,
+          "width": 256,
+          "height": 98
+        },
+        "tipText": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid?",
+        "legend": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid?",
+        "tipInsideViewport": true,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 2504
+      },
+      "helpText": "How highly do you rate your BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series 330e xDrive M Sport Pro Touring",
+      "spec": "M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "4 stars: I really like it",
+      "errors": [],
+      "implementationImage": "320-keyboard-focus-implementation.jpg",
+      "implementationSize": [
+        320,
+        2504
+      ],
+      "zoomCropImpl": [
+        17,
+        153,
+        303,
+        314
+      ],
+      "ratingZoom": "320-keyboard-focus-rating-zoom.jpg"
+    },
+    "1440-missing-image": {
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "url": "/gcsp-account.html?fixture=missing-image&prefs=selected&rating=4",
+      "steps": [],
+      "longVariant": false,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1440-missing-image.png",
+      "impl": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": false,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 603.94,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1549
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "H1",
+      "errors": [],
+      "ref": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": false,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 603.94,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1622,
+        "helpText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?"
+      },
+      "implementationImage": "1440-missing-image-implementation.jpg",
+      "implementationSize": [
+        1440,
+        1549
+      ],
+      "zoomCropImpl": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "referenceSize": [
+        1440,
+        1622
+      ],
+      "zoomCropRef": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "ratingZoom": "1440-missing-image-rating-zoom.jpg",
+      "sideBySide": "1440-missing-image-side-by-side.jpg"
+    },
+    "1440-cleared": {
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+      "steps": [
+        "async (p) => { await radio(p, STAR4).click(); }"
+      ],
+      "longVariant": false,
+      "referencePng": "docs/gcsp/mockups/account-preferences-2026-11-10/review/1440-rating-tooltip.png",
+      "impl": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 603.94,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": null,
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1549
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "Rating cleared",
+      "ratingStatus": "saved",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "4 stars: I really like it",
+      "errors": [],
+      "pairing": "Paired with 1440-rating-tooltip.png star row as a proxy for unrated stars (that PNG also shows its tip, which the cleared state must not); the pointer stays over the cleared star.",
+      "ref": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 603.94,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": null,
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1604,
+        "helpText": "How highly do you rate your BMW 3 Series Touring 320i M Sport \u00b7 Petrol?"
+      },
+      "implementationImage": "1440-cleared-implementation.jpg",
+      "implementationSize": [
+        1440,
+        1549
+      ],
+      "zoomCropImpl": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "referenceSize": [
+        1440,
+        1604
+      ],
+      "zoomCropRef": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "ratingZoom": "1440-cleared-rating-zoom.jpg",
+      "sideBySide": "1440-cleared-side-by-side.jpg"
+    },
+    "1440-rating-failed": {
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=rating-failed&rating=4",
+      "steps": [
+        "async (p) => { await radio(p, '2 stars: Ready for a change').click(); await p.waitForTimeout(400); }"
+      ],
+      "longVariant": false,
+      "referencePng": null,
+      "impl": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 555.94,
+          "width": 220,
+          "height": 92
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "2",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1549
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "Rating not saved. Try again.",
+      "ratingStatus": "failed",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "failedLine": {
+        "x": 704.03,
+        "y": 555.94,
+        "width": 198.97,
+        "height": 44,
+        "insideImage": true,
+        "insideViewport": true,
+        "insetRight": 8,
+        "insetBottom": 56
+      },
+      "failedText": "Rating not savedTry again",
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": true,
+      "retryBox": {
+        "x": 822.6,
+        "y": 555.9,
+        "width": 80.4,
+        "height": 44
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "2 stars: Ready for a change",
+      "errors": [],
+      "implementationImage": "1440-rating-failed-implementation.jpg",
+      "implementationSize": [
+        1440,
+        1549
+      ],
+      "zoomCropImpl": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "ratingZoom": "1440-rating-failed-rating-zoom.jpg"
+    },
+    "320-rating-failed": {
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=rating-failed&rating=4",
+      "steps": [
+        "async (p) => { await radio(p, '2 stars: Ready for a change').click(); await p.waitForTimeout(400); }"
+      ],
+      "longVariant": false,
+      "referencePng": null,
+      "impl": {
+        "media": {
+          "x": 17,
+          "y": 153.19,
+          "width": 286,
+          "height": 160.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 17,
+          "y": 153.19,
+          "width": 286,
+          "height": 160.88
+        },
+        "rating": {
+          "x": 75,
+          "y": 214.06,
+          "width": 220,
+          "height": 92
+        },
+        "gapRight": 8,
+        "gapBottom": 8.01,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8.01,
+        "glyph": {
+          "x": 85,
+          "y": 272.06,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 75,
+          "y": 262.06,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "2",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 2436
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "Rating not saved. Try again.",
+      "ratingStatus": "failed",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "failedLine": {
+        "x": 96.03,
+        "y": 214.06,
+        "width": 198.97,
+        "height": 44,
+        "insideImage": true,
+        "insideViewport": true,
+        "insetRight": 8,
+        "insetBottom": 56
+      },
+      "failedText": "Rating not savedTry again",
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": true,
+      "retryBox": {
+        "x": 214.6,
+        "y": 214.1,
+        "width": 80.4,
+        "height": 44
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "2 stars: Ready for a change",
+      "errors": [],
+      "implementationImage": "320-rating-failed-implementation.jpg",
+      "implementationSize": [
+        320,
+        2436
+      ],
+      "zoomCropImpl": [
+        17,
+        153,
+        303,
+        314
+      ],
+      "ratingZoom": "320-rating-failed-rating-zoom.jpg"
+    },
+    "1440-rating-pending": {
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=pending&rating=4",
+      "steps": [
+        "async (p) => { await radio(p, '2 stars: Ready for a change').click(); await p.waitForTimeout(400); }"
+      ],
+      "longVariant": false,
+      "referencePng": null,
+      "impl": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 603.94,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "2",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1549
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "pending",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": "true",
+      "visibleStars": [
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "2 stars: Ready for a change",
+      "errors": [],
+      "implementationImage": "1440-rating-pending-implementation.jpg",
+      "implementationSize": [
+        1440,
+        1549
+      ],
+      "zoomCropImpl": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "ratingZoom": "1440-rating-pending-rating-zoom.jpg"
+    },
+    "320-rating-pending": {
+      "viewport": {
+        "width": 320,
+        "height": 1000
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=pending&rating=4",
+      "steps": [
+        "async (p) => { await radio(p, '2 stars: Ready for a change').click(); await p.waitForTimeout(400); }"
+      ],
+      "longVariant": false,
+      "referencePng": null,
+      "impl": {
+        "media": {
+          "x": 17,
+          "y": 153.19,
+          "width": 286,
+          "height": 160.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 17,
+          "y": 153.19,
+          "width": 286,
+          "height": 160.88
+        },
+        "rating": {
+          "x": 75,
+          "y": 262.06,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8.01,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8.01,
+        "glyph": {
+          "x": 85,
+          "y": 272.06,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 75,
+          "y": 262.06,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "2",
+        "tipVisible": false,
+        "tipBox": null,
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": null,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 2436
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "pending",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": "true",
+      "visibleStars": [
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "2 stars: Ready for a change",
+      "errors": [],
+      "implementationImage": "320-rating-pending-implementation.jpg",
+      "implementationSize": [
+        320,
+        2436
+      ],
+      "zoomCropImpl": [
+        17,
+        153,
+        303,
+        314
+      ],
+      "ratingZoom": "320-rating-pending-rating-zoom.jpg"
+    },
+    "1440-keyboard": {
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      },
+      "url": "/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+      "steps": [
+        "async (p, entry) => { entry.tabSequence = await tabToStar(p); entry.focusTarget = entry.tabSequence.at(-1); }"
+      ],
+      "longVariant": false,
+      "tabSequence": [
+        {
+          "tag": "INPUT",
+          "label": "4 stars: I really like it",
+          "inRating": true,
+          "checked": true
+        }
+      ],
+      "focusTarget": {
+        "tag": "INPUT",
+        "label": "4 stars: I really like it",
+        "inRating": true,
+        "checked": true
+      },
+      "referencePng": null,
+      "impl": {
+        "media": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "hasPhoto": true,
+        "drawnImage": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "rating": {
+          "x": 683,
+          "y": 603.94,
+          "width": 220,
+          "height": 44
+        },
+        "gapRight": 8,
+        "gapBottom": 8,
+        "mediaGapRight": 8,
+        "mediaGapBottom": 8,
+        "glyph": {
+          "x": 693,
+          "y": 613.94,
+          "width": 24,
+          "height": 24
+        },
+        "target": {
+          "x": 683,
+          "y": 603.94,
+          "width": 44,
+          "height": 44
+        },
+        "checked": "4",
+        "tipVisible": true,
+        "tipBox": {
+          "x": 543,
+          "y": 537.94,
+          "width": 360,
+          "height": 62
+        },
+        "tipText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "legend": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+        "tipInsideViewport": true,
+        "ratingInsideViewport": true,
+        "overflow": false,
+        "docHeight": 1549
+      },
+      "helpText": "How highly do you rate your BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol?",
+      "liveText": "",
+      "ratingStatus": "idle",
+      "liveCountOnPage": 1,
+      "heading": "BMW 3 Series Touring 320i",
+      "spec": "320i M Sport Touring \u00b7 Petrol",
+      "domOrder": {
+        "carBeforePreferences": true,
+        "preferencesBeforeHistory": true,
+        "historyBeforeDetails": true
+      },
+      "ariaBusy": null,
+      "visibleStars": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "failedLine": null,
+      "failedText": null,
+      "retryName": "Try saving your rating again",
+      "footerFailure": false,
+      "footerText": "3 categories considered \u00b7 Saved automatically",
+      "retryVisible": false,
+      "retryBox": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "prefsStatus": "3 categories considered \u00b7 Saved automatically",
+      "active": "4 stars: I really like it",
+      "errors": [],
+      "implementationImage": "1440-keyboard-implementation.jpg",
+      "implementationSize": [
+        1440,
+        1549
+      ],
+      "zoomCropImpl": [
+        491,
+        496,
+        911,
+        656
+      ],
+      "ratingZoom": "1440-keyboard-rating-zoom.jpg"
+    }
+  },
+  "interactions": {
+    "url": "http://127.0.0.1:3017/gcsp-account.html?fixture=ready&prefs=selected&rating=4",
+    "steps": [
+      {
+        "step": "click star 5",
+        "checked": "5",
+        "status": "saved",
+        "tipVisible": false,
+        "newAnnouncements": [
+          "Rating saved: 5 of 5"
+        ],
+        "focus": "5 stars: I love it",
+        "expect": {
+          "checked": "5",
+          "status": "saved",
+          "tipVisible": false,
+          "announce": [
+            "Rating saved: 5 of 5"
+          ]
+        },
+        "pass": true
+      },
+      {
+        "step": "click star 5 again clears",
+        "checked": null,
+        "status": "saved",
+        "tipVisible": false,
+        "newAnnouncements": [
+          "Rating cleared"
+        ],
+        "focus": "5 stars: I love it",
+        "expect": {
+          "checked": null,
+          "status": "saved",
+          "tipVisible": false,
+          "announce": [
+            "Rating cleared"
+          ]
+        },
+        "pass": true
+      },
+      {
+        "step": "focus star 3 shows the tip",
+        "tipVisible": true,
+        "checked": null,
+        "pass": true
+      },
+      {
+        "step": "Space on star 3 selects",
+        "checked": "3",
+        "status": "saved",
+        "tipVisible": false,
+        "newAnnouncements": [
+          "Rating saved: 3 of 5"
+        ],
+        "focus": "3 stars: It\u2019s okay",
+        "expect": {
+          "checked": "3",
+          "status": "saved",
+          "tipVisible": false,
+          "announce": [
+            "Rating saved: 3 of 5"
+          ]
+        },
+        "pass": true
+      },
+      {
+        "step": "Space again clears",
+        "checked": null,
+        "status": "saved",
+        "tipVisible": false,
+        "newAnnouncements": [
+          "Rating cleared"
+        ],
+        "focus": "3 stars: It\u2019s okay",
+        "expect": {
+          "checked": null,
+          "status": "saved",
+          "tipVisible": false,
+          "announce": [
+            "Rating cleared"
+          ]
+        },
+        "pass": true
+      },
+      {
+        "step": "Enter selects",
+        "checked": "3",
+        "status": "saved",
+        "tipVisible": false,
+        "newAnnouncements": [
+          "Rating saved: 3 of 5"
+        ],
+        "focus": "3 stars: It\u2019s okay",
+        "expect": {
+          "checked": "3",
+          "status": "saved",
+          "tipVisible": false,
+          "announce": [
+            "Rating saved: 3 of 5"
+          ]
+        },
+        "pass": true
+      },
+      {
+        "step": "ArrowRight moves to 4 and selects",
+        "checked": "4",
+        "status": "saved",
+        "tipVisible": false,
+        "newAnnouncements": [
+          "Rating saved: 4 of 5"
+        ],
+        "focus": "4 stars: I really like it",
+        "expect": {
+          "checked": "4",
+          "status": "saved",
+          "tipVisible": false,
+          "announce": [
+            "Rating saved: 4 of 5"
+          ]
+        },
+        "pass": true
+      },
+      {
+        "step": "ArrowLeft moves to 3 and selects",
+        "checked": "3",
+        "status": "saved",
+        "tipVisible": false,
+        "newAnnouncements": [
+          "Rating saved: 3 of 5"
+        ],
+        "focus": "3 stars: It\u2019s okay",
+        "expect": {
+          "checked": "3",
+          "status": "saved",
+          "tipVisible": false,
+          "announce": [
+            "Rating saved: 3 of 5"
+          ]
+        },
+        "pass": true
+      },
+      {
+        "step": "focus star 2 (away from host) shows the tip",
+        "tipVisible": true,
+        "checked": "3",
+        "pass": true
+      },
+      {
+        "step": "Escape hides the open tip and keeps focus",
+        "checked": "3",
+        "status": "saved",
+        "tipVisible": false,
+        "newAnnouncements": [],
+        "focus": "2 stars: Ready for a change",
+        "expect": {
+          "tipVisible": false,
+          "checked": "3",
+          "announce": []
+        },
+        "pass": true,
+        "focusStillOnStar2": true
+      },
+      {
+        "step": "reload with rating=4: in-memory fixture value is not kept (expected)",
+        "checked": "4",
+        "pass": true,
+        "note": "Last saved value before reload was 3; the fixture transport lives in page memory, real persistence is covered by the HTTP test."
+      }
+    ],
+    "errors": [],
+    "pass": true
+  },
+  "checks": [
+    {
+      "state": "1440-selected",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "1440-selected",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "1440-selected",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "1440-selected",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 693,
+        "y": 613.94,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "1440-selected",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 683,
+        "y": 603.94,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "1440-selected",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-selected",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-selected",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "1440-selected",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          586,
+          405.88000000000005
+        ],
+        "ref": [
+          586,
+          405.88000000000005
+        ]
+      }
+    },
+    {
+      "state": "1440-selected",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "ref": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        }
+      }
+    },
+    {
+      "state": "1440-initial",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "1440-initial",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "1440-initial",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "1440-initial",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 693,
+        "y": 613.94,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "1440-initial",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 683,
+        "y": 603.94,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "1440-initial",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-initial",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-initial",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "1440-initial",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          586,
+          405.88000000000005
+        ],
+        "ref": [
+          586,
+          405.88000000000005
+        ]
+      }
+    },
+    {
+      "state": "1440-initial",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "ref": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        }
+      }
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 693,
+        "y": 613.94,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 683,
+        "y": 603.94,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "open tip inside viewport",
+      "pass": true,
+      "detail": {
+        "x": 543,
+        "y": 537.94,
+        "width": 360,
+        "height": 62
+      }
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          586,
+          405.88000000000005
+        ],
+        "ref": [
+          586,
+          405.88000000000005
+        ]
+      }
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "ref": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        }
+      }
+    },
+    {
+      "state": "1920-selected",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "1920-selected",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "1920-selected",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "1920-selected",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 1125,
+        "y": 802.88,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "1920-selected",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 1115,
+        "y": 792.88,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "1920-selected",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1920-selected",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1920-selected",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "1920-selected",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          970,
+          621.88
+        ],
+        "ref": [
+          970,
+          621.88
+        ]
+      }
+    },
+    {
+      "state": "1920-selected",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 145,
+          "y": 171,
+          "width": 1198,
+          "height": 673.88
+        },
+        "ref": {
+          "x": 145,
+          "y": 171,
+          "width": 1198,
+          "height": 673.88
+        }
+      }
+    },
+    {
+      "state": "1100-selected",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "1100-selected",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "1100-selected",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "1100-selected",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 356,
+        "y": 511.09,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "1100-selected",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 346,
+        "y": 501.09,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "1100-selected",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1100-selected",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1100-selected",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "1100-selected",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          249,
+          216.31
+        ],
+        "ref": [
+          249,
+          216.31
+        ]
+      }
+    },
+    {
+      "state": "1100-selected",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 97,
+          "y": 284.78,
+          "width": 477,
+          "height": 268.31
+        },
+        "ref": {
+          "x": 97,
+          "y": 284.78,
+          "width": 477,
+          "height": 268.31
+        }
+      }
+    },
+    {
+      "state": "1024-selected",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "1024-selected",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "1024-selected",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "1024-selected",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 318,
+        "y": 497.78,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "1024-selected",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 308,
+        "y": 487.78,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "1024-selected",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1024-selected",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1024-selected",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "1024-selected",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          211,
+          194.94
+        ],
+        "ref": [
+          211,
+          194.94
+        ]
+      }
+    },
+    {
+      "state": "1024-selected",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 97,
+          "y": 292.84,
+          "width": 439,
+          "height": 246.94
+        },
+        "ref": {
+          "x": 97,
+          "y": 292.84,
+          "width": 439,
+          "height": 246.94
+        }
+      }
+    },
+    {
+      "state": "900-selected",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "900-selected",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "900-selected",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "900-selected",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 256,
+        "y": 477.22,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "900-selected",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 246,
+        "y": 467.22,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "900-selected",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "900-selected",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "900-selected",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "900-selected",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          149,
+          160.06
+        ],
+        "ref": [
+          149,
+          160.05999999999995
+        ]
+      }
+    },
+    {
+      "state": "900-selected",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 97,
+          "y": 307.16,
+          "width": 377,
+          "height": 212.06
+        },
+        "ref": {
+          "x": 97,
+          "y": 309.47,
+          "width": 377,
+          "height": 212.06
+        }
+      }
+    },
+    {
+      "state": "820-selected",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "820-selected",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "820-selected",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "820-selected",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 216,
+        "y": 464.72,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "820-selected",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 206,
+        "y": 454.72,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "820-selected",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "820-selected",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "820-selected",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "820-selected",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          133,
+          151.06
+        ],
+        "ref": [
+          133,
+          151.05999999999995
+        ]
+      }
+    },
+    {
+      "state": "820-selected",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 73,
+          "y": 303.66,
+          "width": 361,
+          "height": 203.06
+        },
+        "ref": {
+          "x": 73,
+          "y": 305.97,
+          "width": 361,
+          "height": 203.06
+        }
+      }
+    },
+    {
+      "state": "375-selected",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "375-selected",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "375-selected",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "375-selected",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 140,
+        "y": 303,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "375-selected",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 130,
+        "y": 293,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "375-selected",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "375-selected",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "375-selected",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "375-selected",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          113,
+          139.81
+        ],
+        "ref": [
+          113,
+          139.81
+        ]
+      }
+    },
+    {
+      "state": "375-selected",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 17,
+          "y": 153.19,
+          "width": 341,
+          "height": 191.81
+        },
+        "ref": {
+          "x": 17,
+          "y": 191.69,
+          "width": 341,
+          "height": 191.81
+        }
+      }
+    },
+    {
+      "state": "375-engaged",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "375-engaged",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "375-engaged",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "375-engaged",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 140,
+        "y": 303,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "375-engaged",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 130,
+        "y": 293,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "375-engaged",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "375-engaged",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "375-engaged",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "375-engaged",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          113,
+          139.81
+        ],
+        "ref": [
+          113,
+          139.81
+        ]
+      }
+    },
+    {
+      "state": "375-engaged",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 17,
+          "y": 153.19,
+          "width": 341,
+          "height": 191.81
+        },
+        "ref": {
+          "x": 17,
+          "y": 191.69,
+          "width": 341,
+          "height": 191.81
+        }
+      }
+    },
+    {
+      "state": "320-long",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "320-long",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "320-long",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "320-long",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 85,
+        "y": 272.06,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "320-long",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 75,
+        "y": 262.06,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "320-long",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "320-long",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8.01
+    },
+    {
+      "state": "320-long",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "320-long",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          58,
+          108.87
+        ],
+        "ref": [
+          58,
+          108.87
+        ]
+      }
+    },
+    {
+      "state": "320-long",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 17,
+          "y": 153.19,
+          "width": 286,
+          "height": 160.88
+        },
+        "ref": {
+          "x": 17,
+          "y": 191.69,
+          "width": 286,
+          "height": 160.88
+        }
+      }
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 85,
+        "y": 272.06,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 75,
+        "y": 262.06,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8.01
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "open tip inside viewport",
+      "pass": true,
+      "detail": {
+        "x": 39,
+        "y": 160.06,
+        "width": 256,
+        "height": 98
+      }
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          58,
+          108.87
+        ],
+        "ref": [
+          58,
+          108.87
+        ]
+      }
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 17,
+          "y": 153.19,
+          "width": 286,
+          "height": 160.88
+        },
+        "ref": {
+          "x": 17,
+          "y": 191.69,
+          "width": 286,
+          "height": 160.88
+        }
+      }
+    },
+    {
+      "state": "320-keyboard-focus",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "320-keyboard-focus",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "320-keyboard-focus",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "320-keyboard-focus",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 85,
+        "y": 272.06,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "320-keyboard-focus",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 75,
+        "y": 262.06,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "320-keyboard-focus",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "320-keyboard-focus",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8.01
+    },
+    {
+      "state": "320-keyboard-focus",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "320-keyboard-focus",
+      "label": "open tip inside viewport",
+      "pass": true,
+      "detail": {
+        "x": 39,
+        "y": 160.06,
+        "width": 256,
+        "height": 98
+      }
+    },
+    {
+      "state": "1440-missing-image",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "1440-missing-image",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "1440-missing-image",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "1440-missing-image",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 693,
+        "y": 613.94,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "1440-missing-image",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 683,
+        "y": 603.94,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "1440-missing-image",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-missing-image",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-missing-image",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "1440-missing-image",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          586,
+          405.88000000000005
+        ],
+        "ref": [
+          586,
+          405.88000000000005
+        ]
+      }
+    },
+    {
+      "state": "1440-missing-image",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "ref": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        }
+      }
+    },
+    {
+      "state": "1440-cleared",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "1440-cleared",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "1440-cleared",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "1440-cleared",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 693,
+        "y": 613.94,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "1440-cleared",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 683,
+        "y": 603.94,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "1440-cleared",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-cleared",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-cleared",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "1440-cleared",
+      "label": "rating box offset from media matches reference",
+      "pass": true,
+      "detail": {
+        "impl": [
+          586,
+          405.88000000000005
+        ],
+        "ref": [
+          586,
+          405.88000000000005
+        ]
+      }
+    },
+    {
+      "state": "1440-cleared",
+      "label": "media box size matches reference",
+      "pass": true,
+      "detail": {
+        "impl": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        },
+        "ref": {
+          "x": 97,
+          "y": 198.06,
+          "width": 814,
+          "height": 457.88
+        }
+      }
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 693,
+        "y": 613.94,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 683,
+        "y": 603.94,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 85,
+        "y": 272.06,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 75,
+        "y": 262.06,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8.01
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "1440-rating-pending",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "1440-rating-pending",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "1440-rating-pending",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "1440-rating-pending",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 693,
+        "y": 613.94,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "1440-rating-pending",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 683,
+        "y": 603.94,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "1440-rating-pending",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-rating-pending",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-rating-pending",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "320-rating-pending",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "320-rating-pending",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "320-rating-pending",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "320-rating-pending",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 85,
+        "y": 272.06,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "320-rating-pending",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 75,
+        "y": 262.06,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "320-rating-pending",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "320-rating-pending",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8.01
+    },
+    {
+      "state": "320-rating-pending",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "1440-keyboard",
+      "label": "no horizontal overflow",
+      "pass": true
+    },
+    {
+      "state": "1440-keyboard",
+      "label": "no page or console errors",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "state": "1440-keyboard",
+      "label": "region order car, preferences, history, details",
+      "pass": true
+    },
+    {
+      "state": "1440-keyboard",
+      "label": "star glyph 24x24",
+      "pass": true,
+      "detail": {
+        "x": 693,
+        "y": 613.94,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "state": "1440-keyboard",
+      "label": "star target 44x44",
+      "pass": true,
+      "detail": {
+        "x": 683,
+        "y": 603.94,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "state": "1440-keyboard",
+      "label": "rating gap to drawn image right is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-keyboard",
+      "label": "rating gap to drawn image bottom is 8",
+      "pass": true,
+      "detail": 8
+    },
+    {
+      "state": "1440-keyboard",
+      "label": "rating inside viewport",
+      "pass": true
+    },
+    {
+      "state": "1440-keyboard",
+      "label": "open tip inside viewport",
+      "pass": true,
+      "detail": {
+        "x": 543,
+        "y": 537.94,
+        "width": 360,
+        "height": 62
+      }
+    },
+    {
+      "state": "1440-selected",
+      "label": "checked value is 5",
+      "pass": true,
+      "detail": "5"
+    },
+    {
+      "state": "1440-initial",
+      "label": "checked value is 4",
+      "pass": true,
+      "detail": "4"
+    },
+    {
+      "state": "1920-selected",
+      "label": "checked value is 4",
+      "pass": true,
+      "detail": "4"
+    },
+    {
+      "state": "320-long",
+      "label": "checked value is 4",
+      "pass": true,
+      "detail": "4"
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "checked value is 4",
+      "pass": true,
+      "detail": "4"
+    },
+    {
+      "state": "1440-missing-image",
+      "label": "checked value is 4",
+      "pass": true,
+      "detail": "4"
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "checked value is none",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "state": "1440-cleared",
+      "label": "checked value is none",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "state": "1440-rating-tooltip",
+      "label": "tip visible on hover",
+      "pass": true
+    },
+    {
+      "state": "320-rating-tooltip-long",
+      "label": "tip visible on keyboard focus with 4 still checked",
+      "pass": true
+    },
+    {
+      "state": "1440-cleared",
+      "label": "tip hidden after clearing with the pointer still over the star",
+      "pass": true
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "rating status is failed",
+      "pass": true,
+      "detail": "failed"
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "failed line shows visible text \"Rating not saved\"",
+      "pass": true,
+      "detail": "Rating not savedTry again"
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "Try again visible, accessible name, >=44px high",
+      "pass": true,
+      "detail": {
+        "name": "Try saving your rating again",
+        "box": {
+          "x": 822.6,
+          "y": 555.9,
+          "width": 80.4,
+          "height": 44
+        }
+      }
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "failed line inside image and viewport with 8px right and bottom inset on the rating block",
+      "pass": true,
+      "detail": {
+        "ft": {
+          "x": 704.03,
+          "y": 555.94,
+          "width": 198.97,
+          "height": 44,
+          "insideImage": true,
+          "insideViewport": true,
+          "insetRight": 8,
+          "insetBottom": 56
+        },
+        "gapRight": 8,
+        "gapBottom": 8
+      }
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "failed line sits above the stars",
+      "pass": true,
+      "detail": {
+        "failedBottom": 599.94,
+        "starTop": 603.94
+      }
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "Preferences footer shows no failure",
+      "pass": true,
+      "detail": "3 categories considered \u00b7 Saved automatically"
+    },
+    {
+      "state": "1440-rating-failed",
+      "label": "two stars filled, rating 2 checked",
+      "pass": true,
+      "detail": [
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "rating status is failed",
+      "pass": true,
+      "detail": "failed"
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "failed line shows visible text \"Rating not saved\"",
+      "pass": true,
+      "detail": "Rating not savedTry again"
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "Try again visible, accessible name, >=44px high",
+      "pass": true,
+      "detail": {
+        "name": "Try saving your rating again",
+        "box": {
+          "x": 214.6,
+          "y": 214.1,
+          "width": 80.4,
+          "height": 44
+        }
+      }
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "failed line inside image and viewport with 8px right and bottom inset on the rating block",
+      "pass": true,
+      "detail": {
+        "ft": {
+          "x": 96.03,
+          "y": 214.06,
+          "width": 198.97,
+          "height": 44,
+          "insideImage": true,
+          "insideViewport": true,
+          "insetRight": 8,
+          "insetBottom": 56
+        },
+        "gapRight": 8,
+        "gapBottom": 8.01
+      }
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "failed line sits above the stars",
+      "pass": true,
+      "detail": {
+        "failedBottom": 258.06,
+        "starTop": 262.06
+      }
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "Preferences footer shows no failure",
+      "pass": true,
+      "detail": "3 categories considered \u00b7 Saved automatically"
+    },
+    {
+      "state": "320-rating-failed",
+      "label": "two stars filled, rating 2 checked",
+      "pass": true,
+      "detail": [
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "state": "1440-rating-pending",
+      "label": "pending: data-status pending and aria-busy true",
+      "pass": true,
+      "detail": {
+        "status": "pending",
+        "busy": "true"
+      }
+    },
+    {
+      "state": "1440-rating-pending",
+      "label": "pending: two stars visible and no failed line",
+      "pass": true,
+      "detail": [
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "state": "1440-rating-pending",
+      "label": "pending: rating inside image with 8px inset",
+      "pass": true
+    },
+    {
+      "state": "320-rating-pending",
+      "label": "pending: data-status pending and aria-busy true",
+      "pass": true,
+      "detail": {
+        "status": "pending",
+        "busy": "true"
+      }
+    },
+    {
+      "state": "320-rating-pending",
+      "label": "pending: two stars visible and no failed line",
+      "pass": true,
+      "detail": [
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "state": "320-rating-pending",
+      "label": "pending: rating inside image with 8px inset",
+      "pass": true
+    },
+    {
+      "state": "1440-keyboard",
+      "label": "Tab reaches a star radio",
+      "pass": true,
+      "detail": {
+        "tag": "INPUT",
+        "label": "4 stars: I really like it",
+        "inRating": true,
+        "checked": true
+      }
+    },
+    {
+      "state": "320-keyboard-focus",
+      "label": "Tab reaches a star radio",
+      "pass": true,
+      "detail": {
+        "tag": "INPUT",
+        "label": "4 stars: I really like it",
+        "inRating": true,
+        "checked": true
+      }
+    },
+    {
+      "state": "interactions",
+      "label": "all real-control interaction steps pass",
+      "pass": true
+    }
+  ],
+  "notes": [
+    "Integrated Account harness gcsp-account.html?fixture=<name>&prefs=<state>&rating=<n>; the in-memory transport has no persistence across reloads.",
+    "Reference geometry is measured live from the frozen mockup page (same browser settings) to locate the media box for the zoom crops.",
+    "Out of scope and absent by design: Buddy lamp and understanding (FUCQ-369), Same again (FUCQ-369), Engage (FUCQ-370).",
+    "320-* long states serve a longer current-car model through page.route on fixtures.js only."
+  ],
+  "summary": {
+    "checks": 226,
+    "passed": 226,
+    "failed": []
+  }
+}

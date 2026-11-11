@@ -12,10 +12,10 @@ import { mountAccountPreferences } from '../brief/account-preferences.js';
 import { PREFERENCE_FIXTURE_STATES, previewPreferenceTransport, drivePreferenceState } from '../brief/account-preferences-fixtures.js';
 
 const query = new URLSearchParams(globalThis.location?.search ?? '');
-const requested = query.get('fixture'); const prefs = query.get('prefs');
+const requested = query.get('fixture'); const prefs = query.get('prefs'); const rating = Number.parseInt(query.get('rating') ?? '', 10);
 // The saved record is always the live transport; ?prefs= swaps in an in-memory one for a named visual state.
 const previewPreferences = (state) => (region, { signal }) => {
-  const mounted = mountAccountPreferences(region, { transport: previewPreferenceTransport(state), signal });
+  const mounted = mountAccountPreferences(region, { transport: previewPreferenceTransport(state, { rating }), signal });
   mounted.ready.then(() => drivePreferenceState(mounted.controller, state));
   return mounted;
 };

@@ -417,6 +417,24 @@ Looked at `tabs` (panels, not tiles), `renderOptionList` (a radiogroup of choice
 
 `mountReleaseSection(parent, { adapter, matchMedia })` (`presenter-controls/release-section.js`, FUCQ-365) appends "Today's release" to the end of the console stage and is mounted by `mountPresenterConsole`, which calls its `refresh()` after every controls read (so after Release, Start again and Advanced actions). It reads `adapter.readLatestRelease` and paints the line ("Waiting for 11:30am" or "Released Tue 10 Nov, 11:30am"), a `releaseGrid` of the released cars (labels "model, colour", or the model alone), `statusScreen` "No cars released yet" before a release, `factList` counters (Released, Model lines, Colours, On the scheme) and a model-line breakdown. A missing method or any non-ok reply shows the before-release state with no error copy. The grid cascades only when the release key (runId plus trancheId or windowId) changes, never on the first read of a page; counters count up over about 600ms after the cascade, or show final numbers under reduced motion.
 
+### GCSP help tip (`blocks/gcsp/kit/help-tip.js`, FUCQ-367)
+
+Looked at `releaseGrid`'s aria-hidden label tip and the shell's account-status tooltip (neither is a focusable, hoverable description with dismissal), `renderOptionList` (no tooltip) and the Account mockup's private `attachTooltip`. None is shared behaviour, so `helpTip` is new, with `help-tip.css`. FUCQ-369 (Same again help) reuses it.
+
+| Call | Use for |
+|---|---|
+| `helpTip({ host, triggers, text, id, placement = 'below-start', dismissOnActivate = true })` | Returns `{ root, show(), hide(), dismiss(), setText(text), destroy() }`. `root` is a hidden `p.gcsp-help-tip[role=tooltip]` appended to `host` (which must be a positioning context); `id` is added to each trigger's `aria-describedby`. Shows on mouse or pen `pointerenter` (not touch) and on keyboard focus; stays while the pointer is over the tip; hides when the pointer leaves `host` (unless a trigger has keyboard focus) or focus leaves it. `dismiss()` hides and holds it shut until pointer and focus have both left `host`. Escape, a `pointerdown` outside `host` and, with `dismissOnActivate`, a trigger click dismiss it; with `dismissOnActivate: false` a click shows it. Placements `below-start` and `above-end`. Text is `textContent` only. Gallery: **GCSP star rating and help tip**. |
+
+### GCSP star rating (`blocks/gcsp/kit/star-rating.js`, FUCQ-367)
+
+Looked at `renderOptionList` (a radiogroup of labelled answer buttons: no compact star glyph targets, no clear by re-selecting), `checkboxField` (one boolean) and the mockup's private rating markup. None is a 1-5 rating, so `starRating` is new, with `star-rating.css` (the tip comes from `helpTip`).
+
+| Call | Use for |
+|---|---|
+| `starRating({ label, value = null, help, labels = RATING_WORDS, onChange, onRetry, announce, overlay = false, name, disabled = false })` | Returns `{ root, update({ value, status, disabled }), value(), focus(), destroy() }`. `root` is a `fieldset` named by a hidden `legend` (`label`) with five native radios, each in a 44px target with a 24px star and an `aria-label` such as "4 stars: I really like it" (`RATING_WORDS` is exported). Value is 1-5 or `null`; choosing the selected star clears it. Click, tap, Enter and Space each change the value once and call `onChange(value)`; arrows move and select (clamped), Home and End go to 1 and 5. `help` adds a `helpTip` (above-end) that every activation dismisses. `overlay` pins the rating 8px from the bottom right of a positioned image well. `onRetry` adds, above the stars and only while the status is `failed`, a compact `.gcsp-star-failed` line: visible "Rating not saved" and a 44px ghost `Try again` button named "Try saving your rating again" (one line, wraps above the stars at 320px). The frozen reference has no such service state. |
+
+State shape: the caller owns saving. It passes `update({ value, status })` with `status` `'idle' | 'pending' | 'saved' | 'failed'`; `pending` sets `aria-busy` but leaves the stars usable, `saved` announces "Rating saved: n of 5" or "Rating cleared", `failed` announces "Rating not saved. Try again.", each once per outcome, through `announce(text)` when supplied or one `viewStatus()` inside the fieldset. `update` repaints without calling `onChange` or moving focus, and `data-status` mirrors the status for styling. The kit sends no requests and stores nothing. Gallery: **GCSP star rating and help tip** (unrated, 4, 5, long help, not saved with Try again, no image).
+
 ### GCSP loading skeleton (`blocks/gcsp/kit/loading-skeleton.js`)
 
 Looked at `vm-skel` (matcher-only shimmer bars with no layouts or label) and `statusScreen` (a message, not a page shape). Neither draws the shape of a portal page while it loads, so the kit adds one helper and `loading-skeleton.css`, imported by the shell.

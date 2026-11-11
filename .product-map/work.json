@@ -4543,23 +4543,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-10T20:00:41Z",
+      "observed_at": "2026-11-11T02:41:01Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-367",
       "slices": [
         {
           "id": "rating-contract",
-          "status": "not-started",
-          "title": "Persisted rating contract and compatibility"
+          "status": "complete",
+          "title": "Persisted rating contract and compatibility",
+          "observed_at": "2026-11-11T02:41:01Z",
+          "evidence": "b0c8bd17 dev/DEV-2026-11-10-009, lead-reviewed: scoped 651 tests (2 known base failures) + 316/316 final; real HTTP+repository rating round trip; strict 20-state capture 226/226 vs 193cbf07; independent Opus critique fixed and re-inspected"
         },
         {
           "id": "rating-control",
-          "status": "not-started",
-          "title": "Shared rating and tooltip interactions"
+          "status": "complete",
+          "title": "Shared rating and tooltip interactions",
+          "observed_at": "2026-11-10T23:58:35Z",
+          "evidence": "d3336a6e on dev/DEV-2026-11-10-009: lead-reviewed starRating/helpTip kit, catalogue, gallery, ratchet; 26 jsdom tests and 19/19 real-Chrome keyboard/pointer checks; interim side-by-sides vs 193cbf07"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Account persistence and current-car identity"
+          "status": "complete",
+          "title": "Account persistence and current-car identity",
+          "observed_at": "2026-11-11T02:41:01Z",
+          "evidence": "b0c8bd17 dev/DEV-2026-11-10-009, lead-reviewed: scoped 651 tests (2 known base failures) + 316/316 final; real HTTP+repository rating round trip; strict 20-state capture 226/226 vs 193cbf07; independent Opus critique fixed and re-inspected"
         }
       ],
       "unsliced": false

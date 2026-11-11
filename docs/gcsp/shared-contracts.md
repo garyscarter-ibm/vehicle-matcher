@@ -217,6 +217,26 @@ confirm and consent operation (FUCQ-370).
 
 Client semantics (`blocks/gcsp/brief/account-preferences-controller.js`, DOM-free): each intent updates the view at once and queues a sparse patch. One request is in flight; later intents merge into one pending patch (last write per category wins, `null` overrides, a value after a removal restarts at medium) and go out with the versions the previous success returned. A success adopts the server's categories only for categories with no newer pending edit. `saved` is shown only when everything sent is confirmed. A network or `unavailable` failure keeps the edits and `retry()` resends the same `commandId` while the merged changes are unchanged, else a new one. `stale-version` and `conflict` keep the edits until the explicit `reload()`; `access-required`, a restarted run and `brief-read-only` disable editing; `invalid` restores the last confirmed state. The controller never calls draft-confirm, consent or Buddy routes.
 
+### Current-car rating · FUCQ-367
+
+The rating rides the FUCQ-368 autosave (`POST /api/gcsp/brief/preferences`), so one versioned draft stream owns both writes. The
+request adds an optional `currentCarRating: { contractId, value }`, exactly those two keys, `value` an integer 1-5 or `null` to clear.
+`changes` may then be `{}`; without a rating it still needs one category. Extra keys (`source`, `ratedAt`, identity or authority
+fields), wrong types and out-of-range values are `invalid` (`invalid-preferences`, field `currentCarRating`).
+
+The binding is the server's own `account.currentContract.contractId`. No current car gives `conflict` `no-current-car`; a different
+`contractId` gives `conflict` `current-car-changed` with `current: { contractId }`. Nothing is written in either case. A write stores
+the optional brief field `currentCarRating: { value, contractId, source: 'employee', ratedAt }` (a sibling of `currentCarFeedback`,
+never preserve/change), with `ratedAt` from the run clock. A request without a rating keeps the base's rating exactly, and a rating
+write changes no preference, essential, feedback, consent, `buddy`, pause or offer. A legacy brief with no field stays valid, and
+the editor's semantic digest gains `rating: { value, contractId }` only when the field exists, so legacy digests are unchanged.
+
+Success adds `currentCarRating` to `{ briefVersion, draftVersion, accountPreferences }`, and `GET /editor` adds
+`initial.currentCarRating`: `{ value, contractId }` when the saved draft (else approved brief) names the current car,
+`{ value: null, contractId: <current> }` when the stored rating names another contract or none exists, and `null` with no current
+car. A replacement car therefore never inherits a rating; the earlier value stays in history only. Confirming keeps the field in
+the approved brief. Scoring, previews and the learning-record export ignore it (AP-06 owns any recommendation effect).
+
 ## LearningRecord schema v1 · FUCQ-113 bounded observed slice
 
 `server/gcsp/predict/records/index.js` exports `validateLearningRecord(record)` and

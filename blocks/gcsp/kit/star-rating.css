@@ -1,0 +1,14 @@
+/* GCSP kit: star rating. Scoped to .gcsp; tokens only. Pair with help-tip.css. */
+.gcsp .gcsp-star-rating { position: relative; margin: 0; padding: 0; border: 0; min-width: 0; background: transparent; }
+.gcsp .gcsp-star-rating > legend { position: absolute; width: 1px; height: 1px; padding: 0; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.gcsp .gcsp-star-rating-overlay { position: absolute; right: var(--gcsp-space-2); bottom: var(--gcsp-space-2); }
+.gcsp .gcsp-star-row { display: flex; gap: 0; }
+.gcsp .gcsp-star { position: relative; width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer; }
+.gcsp .gcsp-star input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.gcsp .gcsp-star input:disabled { cursor: default; }
+.gcsp .gcsp-star svg { width: 24px; height: 24px; color: var(--gcsp-text-muted); pointer-events: none; }
+.gcsp .gcsp-star.is-filled svg { color: var(--gcsp-warning); fill: var(--gcsp-warning); }
+.gcsp .gcsp-star:has(input:focus-visible) { outline: 2px solid var(--gcsp-focus); outline-offset: 1px; }
+.gcsp .gcsp-star-rating:has(> .gcsp-star-failed:not([hidden])) { display: flex; flex-direction: column; align-items: flex-end; gap: var(--gcsp-space-1); }
+.gcsp .gcsp-star-failed { display: flex; align-items: center; gap: var(--gcsp-space-2); padding-inline-start: var(--gcsp-space-3); background: var(--gcsp-surface); border-radius: var(--gcsp-radius); color: var(--gcsp-text); font-size: var(--gcsp-font-size-label); font-weight: var(--gcsp-font-strong-weight); white-space: nowrap; }
+.gcsp .gcsp-star-failed[hidden] { display: none; } .gcsp .gcsp-star-failed .vm-btn { min-height: 44px; white-space: nowrap; }

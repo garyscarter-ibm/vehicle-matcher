@@ -48,3 +48,12 @@ test('savePreferences posts exactly the four fields to the preferences route and
   assert.deepEqual(await conflict.savePreferences(input), { status: 'conflict', reason: 'brief-read-only' });
   assert.equal((await createBriefTransport({ fetch: async () => { throw Error('offline'); } }).savePreferences(input)).status, 'unavailable');
 });
+
+test('savePreferences allows the currentCarRating key and still refuses every other extra', async () => {
+  const calls = []; const transport = createBriefTransport({ fetch: async (url, init) => { calls.push([url, init]); return { ok: true, status: 200, json: async () => ({ status: 'ok', value: { draftVersion: 1 } }) }; } });
+  const input = { commandId: 'r1', expectedBriefVersion: 1, expectedDraftVersion: 0, changes: {}, currentCarRating: { contractId: 'c1', value: null } };
+  assert.equal((await transport.savePreferences(input)).status, 'ok');
+  assert.deepEqual(JSON.parse(calls[0][1].body), input);
+  for (const extra of ['rating', 'source', 'ratedAt', 'employeeId', 'consent']) assert.deepEqual(await transport.savePreferences({ ...input, [extra]: 1 }), { status: 'invalid', field: 'request' });
+  assert.equal(calls.length, 1);
+});

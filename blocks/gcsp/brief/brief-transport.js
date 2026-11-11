@@ -5,7 +5,7 @@ const commands = {
   preview: ['kind', 'baseBriefVersion', 'draftVersion', 'brief'],
   draft: ['commandId', 'expectedBriefVersion', 'expectedDraftVersion', 'brief'],
   confirm: ['commandId', 'expectedBriefVersion', 'expectedDraftVersion', 'consent'],
-  preferences: ['commandId', 'expectedBriefVersion', 'expectedDraftVersion', 'changes'],
+  preferences: ['commandId', 'expectedBriefVersion', 'expectedDraftVersion', 'changes', 'currentCarRating'],
 };
 
 /** Same-origin HTTP ports; trusted identity and policy never become browser payload fields. */

@@ -8,6 +8,7 @@ import { countdown } from '../employee/representative-body.js';
 import { toAccountView, journeyIntent } from './account-view.js';
 import { createAccountHttpAdapter } from './http-adapter.js';
 import { viewStatus } from '../kit/view-status.js';
+import { starRating } from '../kit/star-rating.js';
 import { latestOrderId } from '../order-progress/order-progress-controller.js';
 import { orderCar } from '../order-progress/order-car.js';
 import { sentence, orderCopy } from '../order-progress/order-progress-copy.js';
@@ -244,6 +245,7 @@ function currentCar(contract, model, controls) {
   if (contract.action) { const actions = el('div', 'gcsp-actions'); actions.append(controls.startButton(contract.action)); copy.append(actions); }
   else copy.append(el('p', 'gcsp-note', 'Replacement is unavailable for this contract and slot.'));
   feature.append(mediaColumn(media), copy);
+  controls.rateCar?.(feature);
   return feature;
 }
 
@@ -447,6 +449,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
   let generation = 0; let teardown; let loading; let finishPrint; let drawer; let orderRow; let orderVehicle; let restarted = false;
   let confirming = false; let syncVersion = 0; let region; let regionTeardown; const live = viewStatus();
+  const ratings = new Map(); let rater; let stopRater;
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
   const read = async (name) => {
@@ -458,6 +461,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     openOffer: ({ offerId, runId }) => root.ownerDocument.defaultView.location.assign(
       `/gcsp/offer?offerId=${encodeURIComponent(offerId)}&runId=${encodeURIComponent(runId)}`),
     resume: () => resume(),
+    rateCar: (feature) => rateCar(feature),
     ...(typeof adapter.discardDraft === 'function' ? {
       discard: true, askDiscard: () => askDiscard(), keep: () => keepDraft(), confirmDiscard: () => discardJourney() } : {}),
     supportButton: (route, text) => button({ label: text, variant: 'ghost', onClick: () => {
@@ -499,6 +503,8 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     if (preferences) {
       region.setAttribute('aria-label', 'Your preferences');
       regionTeardown = preferences(region, { signal: abort.signal });
+      const found = regionTeardown?.controller;
+      if (['rate', 'subscribe', 'snapshot'].every((name) => typeof found?.[name] === 'function')) { rater = found; stopRater = rater.subscribe(showRatings); }
       return region;
     }
     const title = el('h2', 'gcsp-h2', 'Your preferences'); title.id = 'gcsp-account-preferences-title';
@@ -508,13 +514,35 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
         onClick: (event) => { event.preventDefault(); controls.go('brief'); } }));
     return region;
   }
+  // One persistent star rating per current car, from the preferences controller's rating lane; no lane, no stars.
+  function rateCar(feature) {
+    const lane = rater?.snapshot().rating; const id = feature.dataset.contractId;
+    if (!lane || lane.contractId !== id) return;
+    if (!ratings.has(id)) {
+      const heading = feature.querySelector('.gcsp-h2')?.textContent; const spec = feature.querySelector('.gcsp-account-spec')?.textContent;
+      const description = [heading, spec].filter(Boolean).join(' ');
+      const question = `How highly do you rate your ${description}?`;
+      ratings.set(id, starRating({ label: question, help: question, value: lane.value, overlay: true, onChange: (next) => rater.rate(next, id), onRetry: () => rater.retry(),
+        announce: (text) => { live.clear(); live.announce(text); } }));
+    }
+    feature.querySelector('.vm-card-media')?.append(ratings.get(id).root);
+  }
+  function showRatings(snap) {
+    const lane = snap.rating;
+    if (lane && !ratings.has(lane.contractId)) { for (const feature of main?.querySelectorAll('.gcsp-feature[data-contract-id]') ?? []) rateCar(feature); }
+    const shown = lane && ratings.get(lane.contractId);
+    if (shown) shown.update({ value: lane.value, status: lane.status, disabled: snap.disabled });
+  }
   function draw(focus = false) {
     if (!main || disposed) return;
+    const inRating = [...ratings.values()].find((item) => item.root.contains(root.ownerDocument.activeElement));
+    const focused = inRating && root.ownerDocument.activeElement;
     if (draft?.status !== 'ok') confirming = false;
     const model = toAccountView(envelope);
     renderAccountBody(main, { model, draft, offers, pending, message, journey, confirmDiscard: confirming, controls, order: orderRow, orderVehicle, restarted, reload,
       preferences: model.account ? preferencesRegion() : undefined });
     if (message) live.announce(`${message.title}. ${message.text}`);
+    if (focused && focused.isConnected && root.ownerDocument.activeElement !== focused) focused.focus();
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
   }
   // Only a listed order shows the area; a failed list leaves the account as it was (null = failed, orderUuid null = none).
@@ -668,7 +696,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   const shellAdapter = { signOut, notifications, loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
   teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
-  const destroy = () => { disposed = true; generation += 1; abort.abort(); drawer?.close(false); finishPrint?.(); regionTeardown?.(); teardown(); live.root.remove(); };
+  const destroy = () => { disposed = true; generation += 1; abort.abort(); drawer?.close(false); finishPrint?.(); stopRater?.(); regionTeardown?.(); for (const item of ratings.values()) item.destroy(); teardown(); live.root.remove(); };
   destroy.refresh = refresh;
   destroy.sync = sync;
   return destroy;

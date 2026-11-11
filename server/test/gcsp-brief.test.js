@@ -210,6 +210,32 @@ lifecycle('FUCQ-183: a direct post-decline add refuses values outside the regist
   assert.equal(unadopted.status, 'invalid'); assert.equal(unadopted.reasons[0].field, 'change.path');
 });
 
+const rating = (o = {}) => ({ value: 4, contractId: 'current:demo-paula', source: 'employee', ratedAt: '2026-11-05T09:00:00.000Z', ...o });
+lifecycle('FUCQ-367: currentCarRating validates strictly, confirms unchanged and survives a post-decline change', async () => {
+  const f = await setup();
+  for (const value of [0, 6, 4.5, '4', true, undefined, {}]) assert.equal((await save(f, 'bad', { ...data(), currentCarRating: rating({ value }) })).status, 'invalid', String(value));
+  const bads = [{ source: 'policy' }, { source: undefined }, { ratedAt: 'yesterday' }, { ratedAt: undefined }, { contractId: '' }, { contractId: 'x'.repeat(129) }, { contractId: 5 }, { extra: 1 }, { state: 'draft' }];
+  for (const bad of bads) assert.equal((await save(f, 'bad', { ...data(), currentCarRating: rating(bad) })).status, 'invalid', JSON.stringify(bad));
+  const partial = rating(); delete partial.ratedAt;
+  const refused = await save(f, 'bad', { ...data(), currentCarRating: partial });
+  assert.equal(refused.reasons[0].field, 'currentCarRating');
+  assert.equal((await save(f, 'bad', { ...data(), currentCarRating: null })).status, 'invalid');
+  assert.equal((await f.service.readDraft(f.context)).status, 'not-found');
+  assert.equal((await save(f, 'cleared', { ...data(), currentCarRating: rating({ value: null }) })).status, 'ok');
+  const g = await setup(); const rated = { ...data(), currentCarRating: rating() };
+  assert.equal((await save(g, 'rated', rated)).status, 'ok');
+  const brief = (await confirm(g)).value.brief;
+  assert.deepEqual(brief.currentCarRating, rating());
+  await g.repository.transaction(g.context, cmd('decline'), (tx) => tx.insert('decisions', { runId: g.context.runId, decisionId: 'decline',
+    offerId: 'offer-old', employeeId: g.context.employeeId, decision: 'decline', versions: { brief: 1 } }));
+  const changed = await g.service.changeAfterDecline(g.context, { commandId: 'one-change', decisionId: 'decline', expectedBriefVersion: 1, change: { path: 'preferences.body.value', value: 'suv' } });
+  assert.equal(changed.status, 'ok', JSON.stringify(changed));
+  assert.deepEqual(changed.value.brief.currentCarRating, rating());
+  // A legacy brief without the field stays valid and gains none.
+  const h = await setup(); assert.equal((await save(h)).status, 'ok');
+  assert.equal(Object.hasOwn((await confirm(h)).value.brief, 'currentCarRating'), false);
+});
+
 lifecycle('invalid fields, contribution, forged known facts and inferred inputs cannot become approved defaults', async () => {
   const f = await setup();
   for (const brief of [{ ...data(), contribution: 500 }, { ...data(), knownFacts: { gradeId: 'G15' } },

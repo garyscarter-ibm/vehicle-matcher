@@ -44,7 +44,8 @@ async function setup({ declineReasons = REVIEWED_REASONS.value } = {}) {
 async function confirm(f, version = 0, body = 'estate') {
   const brief = { schemaVersion: 1, preferences: { body: preference(body, 70), comfort: preference(65, 30) },
     essentials: { seats: essential(5), charging: { ...essential(null, 'equals', null), state: 'needs-confirmation' } },
-    currentCarFeedback: { preserve: ['comfort'], change: ['size'], state: 'confirmed', source: 'employee' } };
+    currentCarFeedback: { preserve: ['comfort'], change: ['size'], state: 'confirmed', source: 'employee' },
+    currentCarRating: { value: 4, contractId: 'PRIVATE-CAR-CONTRACT', source: 'employee', ratedAt: '2026-11-05T09:00:00.000Z' } };
   const draft = await f.brief.saveDraft(f.employee, { commandId: `draft-${version}`, expectedBriefVersion: version,
     expectedDraftVersion: version, brief });
   assert.equal(draft.status, 'ok', JSON.stringify(draft));
@@ -155,7 +156,7 @@ test('dated saved quote terms and context are allowlisted; current stock never s
   for (const field of ['schemeId', 'gradeId']) assert.deepEqual(row.entitlement[field], { status: 'unknown', reason: 'missing-context' });
   assert.deepEqual(row.choiceSet, { status: 'unknown', reason: 'not-captured' });
   assert.equal(row.outcomes.expiry.state, 'unknown');
-  for (const forbidden of ['PRIVATE-', 'currentCarFeedback', 'tripHistory', 'usageHistory', 'tokenHash', 'score', 'name', 'source', 'contact']) {
+  for (const forbidden of ['PRIVATE-', 'currentCarFeedback', 'currentCarRating', 'ratedAt', 'tripHistory', 'usageHistory', 'tokenHash', 'score', 'name', 'source', 'contact']) {
     assert.equal(JSON.stringify(row).includes(forbidden), false, forbidden);
   }
 });
