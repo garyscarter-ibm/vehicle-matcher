@@ -1,5 +1,6 @@
 import { createVehicleSnapshot, createEmployeeTerms, freezeVehicleData } from '../../vehicles/index.js';
 import { validInstant } from '../policy/file-provider.js';
+import { currentCarRatingValid } from '../brief/rating.js';
 import { validateBrief, validateBriefContent, evaluateEssentials, scorePreferences, confirmedFact, chargingGates } from '../../scenarios/employee/index.js';
 
 const result = (status, fields) => ({ status, ...fields, contractVersion: '1.0.0' });
@@ -80,7 +81,7 @@ async function evaluateRecommendation({ provider, policy, time }, context, reque
           if (lifecycle.status !== 'ok' || lifecycle.policyVersion !== allowance.policyVersion
             || !Array.isArray(lifecycle.value?.value?.charging?.values)) return unavailable('policy-configuration-unavailable');
           assumptionResults.push(lifecycle);
-          const { currentCarFeedback, ...content } = preview.original;
+          const { currentCarFeedback, currentCarRating, ...content } = preview.original;
           errors = validateBriefContent(content, { ...config, essentials: { ...config.essentials, charging: lifecycle.value.value.charging } }, slider);
         }
         if (errors.length) return invalid('invalid-brief', errors);
@@ -180,10 +181,10 @@ export function createEmployeeRecommendationService({ provider, policy, time } =
       if (!only(input, ['brief', 'baseBriefVersion', 'baseDraftVersion'])) return invalid('invalid-preview', [{ field: 'preview', reason: 'Supply only the editable brief and current saved base versions.' }]);
       const { brief, baseBriefVersion, baseDraftVersion } = input;
       if (!Number.isSafeInteger(baseBriefVersion) || baseBriefVersion < 0 || !Number.isSafeInteger(baseDraftVersion)
-        || baseDraftVersion < 0 || !only(brief, ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback'])
-        || brief.schemaVersion !== 1) return invalid('invalid-preview', [{ field: 'preview', reason: 'Supply current saved base versions.' }]);
+        || baseDraftVersion < 0 || !only(brief, ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback', 'currentCarRating'])
+        || brief.schemaVersion !== 1 || brief.currentCarRating !== undefined && !currentCarRatingValid(brief.currentCarRating)) return invalid('invalid-preview', [{ field: 'preview', reason: 'Supply current saved base versions.' }]);
       const { charging, ...essentials } = brief.essentials ?? {};
-      const { currentCarFeedback, ...content } = brief;
+      const { currentCarFeedback, currentCarRating, ...content } = brief;
       const metadata = { kind: 'unsaved-draft', approved: false, baseBriefVersion, baseDraftVersion };
       return evaluate(context, { ...content, essentials }, { charging, baseBriefVersion, baseDraftVersion, metadata, original: structuredClone(brief) });
     },

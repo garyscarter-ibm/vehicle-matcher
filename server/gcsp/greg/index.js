@@ -1,5 +1,6 @@
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
+import { intentValue } from '../../scenarios/employee/index.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { projectRecommendationFacts } from '../manual-context/recommendation-facts.js';
 import { readStockSourceStatus } from '../stock/source-status.js';
@@ -14,7 +15,7 @@ const modelLine = (row) => factValue(row.facts?.facts?.modelLine)
 const requirementValue = (e) => e.operator === 'includes' && Array.isArray(e.value) ? [...new Set(e.value)].sort() : e.value;
 const intent = (brief) => ({
   preferences: Object.fromEntries(Object.entries(brief.preferences ?? {}).map(([key, p]) => [key,
-    { value: p.value, importance: p.importance, valueState: p.valueState, importanceState: p.importanceState }])),
+    { value: intentValue(p.value), importance: p.importance, valueState: p.valueState, importanceState: p.importanceState }])),
   essentials: Object.fromEntries(Object.entries(brief.essentials ?? {}).map(([key, e]) => [key,
     { value: requirementValue(e), operator: e.operator, unit: e.unit, state: e.state }])),
 });
@@ -74,7 +75,8 @@ export function createGregDemandService({ repository, policy, clock, identity } 
         const aggregate = (items, versions = items) => ({ count: count(items.length), versions: provenance(versions) });
         const group = (items, key, versions = (item) => [item]) => {
           const groups = new Map();
-          for (const item of items) { const k = key(item); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(item); }
+          // A multiple choice counts the brief once under each chosen value.
+          for (const item of items) for (const k of [key(item)].flat()) { if (!groups.has(k)) groups.set(k, []); groups.get(k).push(item); }
           return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([k, matches]) => ({ key: k,
             ...aggregate(matches, matches.flatMap(versions)) }));
         };
@@ -154,7 +156,7 @@ export function createGregDemandService({ repository, policy, clock, identity } 
           basis: 'expressed-saved-demand', versions: { ...provenance(briefs), clock: time.value.clockVersion },
           privacy: { thresholdKey: THRESHOLD_KEY, threshold: minimum, policyVersion: threshold.policyVersion, status: threshold.value.status },
           demand: { activeBriefs: aggregate(briefs), byModelLine: group(briefs, (b) => String(desired(b, 'modelLine'))),
-            byBody: group(briefs, (b) => String(desired(b, 'body'))), byFuel: group(briefs, (b) => String(desired(b, 'fuel'))), essentials,
+            byBody: group(briefs, (b) => [desired(b, 'body')].flat().map(String)), byFuel: group(briefs, (b) => [desired(b, 'fuel')].flat().map(String)), essentials,
             unmet: { total: aggregate(unmet, unmet.map((r) => r.brief)), byGate: group(unmet.flatMap((r) => r.gates.map((gate) => ({ gate, brief: r.brief }))), (r) => r.gate, (r) => [r.brief]) } },
           holds: { total: aggregate(rows.holds, rows.holds.flatMap(holdVersions)),
             active: aggregate(rows.holds.filter((h) => OCCUPYING_STATES.includes(h.state)), rows.holds.filter((h) => OCCUPYING_STATES.includes(h.state)).flatMap(holdVersions)),

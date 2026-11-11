@@ -1,0 +1,8 @@
+/* GCSP kit: help tip. Scoped to .gcsp; tokens only. The host must be a positioning context. */
+.gcsp .gcsp-help-tip { position: absolute; z-index: 5; margin: 0; padding: var(--gcsp-space-3); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); color: var(--gcsp-text); box-shadow: var(--gcsp-elevation-overlay); font-size: var(--gcsp-font-size-label); font-weight: 400; line-height: 1.5; text-align: left; overflow-wrap: anywhere; }
+.gcsp .gcsp-help-tip::before { content: ''; position: absolute; inset-inline: 0; height: var(--gcsp-space-2); }
+.gcsp .gcsp-help-tip-below-start { top: calc(100% + var(--gcsp-space-1)); left: 0; width: min(420px, calc(100vw - 96px)); }
+.gcsp .gcsp-help-tip-below-start::before { bottom: 100%; }
+.gcsp .gcsp-help-tip-above-end { bottom: calc(100% + var(--gcsp-space-1)); right: 0; width: min(360px, calc(100vw - 64px)); }
+.gcsp .gcsp-help-tip-above-end::before { top: 100%; }
+.gcsp .gcsp-help-tip[hidden] { display: none; }

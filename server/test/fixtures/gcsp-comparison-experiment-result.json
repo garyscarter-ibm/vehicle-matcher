@@ -13,7 +13,7 @@
           "comparison-c"
         ],
         "policyVersion": "gcsp-policy-v1",
-        "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+        "policyHash": "97df1a052794bcb1b8dbd5673a82debbf90c159602b247758f0276e8f9c1dcd5",
         "generatorVersion": "comparison-inputs.sha256.v1",
         "overlays": {
           "comparison.cohortSize": 4,
@@ -403,7 +403,7 @@
                     "carsHeldNotTaken": 3,
                     "carsUnused": 1
                   },
-                  "recordDigest": "ea3e3cee23a2d527f158f456ad5ecb9fd7ad637138232d1f26a8037cdc3932c6"
+                  "recordDigest": "6c4da99effac70337683622895d8896b06f98ffd0fc3bc5ce9238bebfbf13f67"
                 },
                 "buddy": {
                   "measures": {
@@ -427,8 +427,8 @@
                     "retries": 0,
                     "expiries": 2,
                     "carsAllocated": 0,
-                    "carsHeldNotTaken": 3,
-                    "carsUnused": 1,
+                    "carsHeldNotTaken": 4,
+                    "carsUnused": 0,
                     "participants": 3,
                     "offersMade": 2,
                     "offersAccepted": 0,
@@ -445,7 +445,7 @@
                     "buddyHeldNotTakenHours": 0.333333,
                     "heldNotTakenHours": 0.4
                   },
-                  "recordDigest": "03041bb63e7c4b35156693b55a32393323bfd4e9bf105e17cd1e4ec4846623bd"
+                  "recordDigest": "51c883ab084453141f6af70bb0885a33ef0b4af4998649fc94351fac3a0ace51"
                 }
               }
             },
@@ -478,7 +478,7 @@
                     "carsHeldNotTaken": 2,
                     "carsUnused": 2
                   },
-                  "recordDigest": "76b9c0be5495cdc2024acb066a4c6308d758595f0808246683d297f3474be5bf"
+                  "recordDigest": "fc85899b3ab8b06cc1d4f1f0d2d46e5ecf886c6d92afcf54311cccf91b7a466b"
                 },
                 "buddy": {
                   "measures": {
@@ -520,7 +520,7 @@
                     "buddyHeldNotTakenHours": 0,
                     "heldNotTakenHours": 0.066667
                   },
-                  "recordDigest": "f68946afde4fed1a2f5c893cf1e8532dfddfacef5a9df15e450bd537ba0b234b"
+                  "recordDigest": "a86bccd1dd065932840e1c5d739ddb6ff754a391fd5414dda9f92187339ecf84"
                 }
               }
             },
@@ -553,7 +553,7 @@
                     "carsHeldNotTaken": 2,
                     "carsUnused": 2
                   },
-                  "recordDigest": "496dacbb17446fd8d7d8a9b171deb5f42a3ee8ff133d858d45e7f39319ba4019"
+                  "recordDigest": "f74f2c8f4cec4ce239a73b347fa9dbf17892a4c20f6f8a26039a2ba66a0c5f42"
                 },
                 "buddy": {
                   "measures": {
@@ -595,7 +595,7 @@
                     "buddyHeldNotTakenHours": 0.333333,
                     "heldNotTakenHours": 0.333333
                   },
-                  "recordDigest": "66e2387bb33717b3144f936b8a2b4b1f6a59c87d8cb024bb64769fd35a65eed8"
+                  "recordDigest": "f756b14b298df9c2c3c765b66fd0ae7427b9b5152609d1fa37996ba5c48c4d41"
                 }
               }
             }
@@ -952,7 +952,7 @@
                     "carsHeldNotTaken": 3,
                     "carsUnused": 1
                   },
-                  "recordDigest": "ea3e3cee23a2d527f158f456ad5ecb9fd7ad637138232d1f26a8037cdc3932c6"
+                  "recordDigest": "6c4da99effac70337683622895d8896b06f98ffd0fc3bc5ce9238bebfbf13f67"
                 },
                 "buddy": {
                   "measures": {
@@ -976,8 +976,8 @@
                     "retries": 0,
                     "expiries": 2,
                     "carsAllocated": 0,
-                    "carsHeldNotTaken": 3,
-                    "carsUnused": 1,
+                    "carsHeldNotTaken": 4,
+                    "carsUnused": 0,
                     "participants": 3,
                     "offersMade": 2,
                     "offersAccepted": 0,
@@ -994,7 +994,7 @@
                     "buddyHeldNotTakenHours": 0.333333,
                     "heldNotTakenHours": 0.4
                   },
-                  "recordDigest": "4ce4f1dfbeca2ca862e775c26f23789d9d3eab6cefd857f47906d67a3708f21d"
+                  "recordDigest": "15a61aea6ff339376df4dffd30455e8db13ae9fdd2559919eddf2aaec0ce4f24"
                 }
               }
             },
@@ -1027,7 +1027,7 @@
                     "carsHeldNotTaken": 2,
                     "carsUnused": 2
                   },
-                  "recordDigest": "76b9c0be5495cdc2024acb066a4c6308d758595f0808246683d297f3474be5bf"
+                  "recordDigest": "fc85899b3ab8b06cc1d4f1f0d2d46e5ecf886c6d92afcf54311cccf91b7a466b"
                 },
                 "buddy": {
                   "measures": {
@@ -1069,7 +1069,7 @@
                     "buddyHeldNotTakenHours": 0,
                     "heldNotTakenHours": 0.066667
                   },
-                  "recordDigest": "a72563cfb85116b9d14c4e5ed5a9e038947af2a6c708b4a39ee041e013abe63a"
+                  "recordDigest": "227586848f28a0959210f19994e3de02f18085a3490a1dfbe08cac2bbfc9eed2"
                 }
               }
             },
@@ -1102,7 +1102,7 @@
                     "carsHeldNotTaken": 2,
                     "carsUnused": 2
                   },
-                  "recordDigest": "496dacbb17446fd8d7d8a9b171deb5f42a3ee8ff133d858d45e7f39319ba4019"
+                  "recordDigest": "f74f2c8f4cec4ce239a73b347fa9dbf17892a4c20f6f8a26039a2ba66a0c5f42"
                 },
                 "buddy": {
                   "measures": {
@@ -1144,7 +1144,7 @@
                     "buddyHeldNotTakenHours": 0.333333,
                     "heldNotTakenHours": 0.333333
                   },
-                  "recordDigest": "4d41bf73f819be62754e93b2f17b8feaa24e2dded18337fa3f8e1ce08c7f200f"
+                  "recordDigest": "7ebec9028388d6442600854209dda286dfd88186b784425ef6fcc2b2a6f0a9b1"
                 }
               }
             }
@@ -1501,7 +1501,7 @@
                     "carsHeldNotTaken": 3,
                     "carsUnused": 1
                   },
-                  "recordDigest": "ea3e3cee23a2d527f158f456ad5ecb9fd7ad637138232d1f26a8037cdc3932c6"
+                  "recordDigest": "6c4da99effac70337683622895d8896b06f98ffd0fc3bc5ce9238bebfbf13f67"
                 },
                 "buddy": {
                   "measures": {
@@ -1525,8 +1525,8 @@
                     "retries": 0,
                     "expiries": 2,
                     "carsAllocated": 0,
-                    "carsHeldNotTaken": 3,
-                    "carsUnused": 1,
+                    "carsHeldNotTaken": 4,
+                    "carsUnused": 0,
                     "participants": 3,
                     "offersMade": 2,
                     "offersAccepted": 0,
@@ -1543,7 +1543,7 @@
                     "buddyHeldNotTakenHours": 0.333333,
                     "heldNotTakenHours": 0.4
                   },
-                  "recordDigest": "d84c2f61a0160865e217c58933a0da72f7ec0dee8a60670bf03b5c66070bcd7f"
+                  "recordDigest": "4cc74955d3f718f036ddced6770790624b5b0a438ae033e87ff537d2f46f02e1"
                 }
               }
             },
@@ -1576,7 +1576,7 @@
                     "carsHeldNotTaken": 2,
                     "carsUnused": 2
                   },
-                  "recordDigest": "76b9c0be5495cdc2024acb066a4c6308d758595f0808246683d297f3474be5bf"
+                  "recordDigest": "fc85899b3ab8b06cc1d4f1f0d2d46e5ecf886c6d92afcf54311cccf91b7a466b"
                 },
                 "buddy": {
                   "measures": {
@@ -1618,7 +1618,7 @@
                     "buddyHeldNotTakenHours": 0,
                     "heldNotTakenHours": 0.066667
                   },
-                  "recordDigest": "6438469878b275b17672381f5be7c1255f99be343b77e58b13ef51e2a6a99ea4"
+                  "recordDigest": "de0b39cd25384f9a1c23d8711d1f11a828e9bcb9ba3c3c87d21c328b55746d76"
                 }
               }
             },
@@ -1651,7 +1651,7 @@
                     "carsHeldNotTaken": 2,
                     "carsUnused": 2
                   },
-                  "recordDigest": "496dacbb17446fd8d7d8a9b171deb5f42a3ee8ff133d858d45e7f39319ba4019"
+                  "recordDigest": "f74f2c8f4cec4ce239a73b347fa9dbf17892a4c20f6f8a26039a2ba66a0c5f42"
                 },
                 "buddy": {
                   "measures": {
@@ -1693,7 +1693,7 @@
                     "buddyHeldNotTakenHours": 0.333333,
                     "heldNotTakenHours": 0.333333
                   },
-                  "recordDigest": "09102e3cd6876a0737cf1c1ec225b9306018ebdbc2afdce9378ba14048005317"
+                  "recordDigest": "e33cdfeffffb017c0dcc7b68b6678775b8e551530fcc8c2f5e081adcc00c5795"
                 }
               }
             }
@@ -3077,7 +3077,7 @@
         "What-if experiment: the changed values were never published as live policy."
       ]
     },
-    "resultId": "hold-sweep-comparison-4c0db22e4251824d70564d37aa43d5e7",
+    "resultId": "hold-sweep-comparison-4502a5f0a475c449ee4234a1dd72edbe",
     "storedAt": "2026-11-08T12:00:00.000Z",
     "policyVersion": "gcsp-policy-v1",
     "activePolicyVersion": "gcsp-policy-v1",

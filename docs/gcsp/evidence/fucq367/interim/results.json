@@ -1,0 +1,101 @@
+{
+  "capturedAt": "2026-11-10T23:50:08.967Z",
+  "viewport": "chrome headless, dsf 1, en-GB, reduced motion",
+  "results": [
+    {
+      "name": "hover shows the tip on example (a)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Tab reaches the checked star of example (b)",
+      "pass": true,
+      "detail": "{\"value\":4,\"tipHidden\":false,\"active\":4}"
+    },
+    {
+      "name": "tip opens on keyboard focus",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "ArrowRight selects 5",
+      "pass": true,
+      "detail": "{\"value\":5,\"tipHidden\":true,\"active\":5}"
+    },
+    {
+      "name": "tip hidden right after ArrowRight",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Space on the selected star clears it",
+      "pass": true,
+      "detail": "{\"value\":null,\"tipHidden\":true,\"active\":5}"
+    },
+    {
+      "name": "tip hidden right after Space",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Space selects again",
+      "pass": true,
+      "detail": "{\"value\":5,\"tipHidden\":true,\"active\":5}"
+    },
+    {
+      "name": "Enter on the selected star clears it",
+      "pass": true,
+      "detail": "{\"value\":null,\"tipHidden\":true,\"active\":5}"
+    },
+    {
+      "name": "tip hidden right after Enter",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "status line announced once after saves",
+      "pass": true,
+      "detail": "Rating cleared"
+    },
+    {
+      "name": "mouse click selects 2 stars",
+      "pass": true,
+      "detail": "{\"value\":2,\"tipHidden\":true,\"active\":2}"
+    },
+    {
+      "name": "tip hidden right after click",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "second click clears",
+      "pass": true,
+      "detail": "{\"value\":null,\"tipHidden\":true,\"active\":2}"
+    },
+    {
+      "name": "tip hidden after second click",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "keyboard focus opens the tip on (a)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Escape hides the tip",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "long tip stays inside 0..320 at 320px",
+      "pass": true,
+      "detail": "{\"x\":40,\"y\":596.140625,\"width\":256,\"height\":98}"
+    },
+    {
+      "name": "no horizontal overflow at 320px",
+      "pass": true,
+      "detail": "320"
+    }
+  ]
+}

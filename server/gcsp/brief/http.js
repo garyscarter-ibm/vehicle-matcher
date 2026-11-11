@@ -16,7 +16,7 @@ export function createBriefRoutes(service, editorService) {
       if (!editorService || typeof editorService[operation] !== 'function') return result('unavailable', { reason: 'The brief editor has not been configured.', retryable: true });
       return editorService[operation](context, body);
     } });
-  return [editor('/editor', 'GET', 'readEditor'), editor('/preview', 'POST', 'previewDraft'), route('', 'GET', 'readCurrent'), route('/history', 'GET', 'readHistory'), route('/draft', 'GET', 'readDraft'),
+  return [editor('/editor', 'GET', 'readEditor'), editor('/preview', 'POST', 'previewDraft'), editor('/preferences', 'POST', 'savePreferences'), route('', 'GET', 'readCurrent'), route('/history', 'GET', 'readHistory'), route('/draft', 'GET', 'readDraft'),
     route('/draft', 'POST', 'saveDraft'), route('/confirm', 'POST', 'confirm'), route('/pause', 'POST', 'pause'),
     route('/resume', 'POST', 'resume'), route('/change-after-decline', 'POST', 'changeAfterDecline')];
 }

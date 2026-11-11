@@ -18,7 +18,7 @@ function validQuestion(v, decisionId) {
   if (q.control.kind === 'options') return Array.isArray(q.control.options) && q.control.options.length > 0
     && q.control.options.every((o) => text(o.value) && typeof o.label === 'string' && o.label.trim() && o.label.length <= 120)
     && new Set(q.control.options.map((o) => o.value)).size === q.control.options.length
-    && (q.currentValue === null || q.control.options.some((o) => o.value === q.currentValue));
+    && (q.currentValue === null || [q.currentValue].flat().every((m) => q.control.options.some((o) => o.value === m)));
   if (q.control.kind === 'slider') return q.control.minimum === 0 && q.control.maximum === 100
     && q.control.unit === 'percent' && (q.currentValue === null || Number.isSafeInteger(q.currentValue)
     && q.currentValue >= q.control.minimum && q.currentValue <= q.control.maximum);
@@ -72,12 +72,14 @@ function valueError(question, value) {
   if (control.kind === 'equipment' && (!Array.isArray(value) || value.length > control.maximumItems
     || value.some((v) => typeof v !== 'string' || !v.trim() || v !== v.trim() || v.length > control.maximumItemLength)
     || new Set(value).size !== value.length)) return 'Use unique equipment names within the displayed limits.';
-  return question.currentValue !== null && equal(value, question.currentValue) ? 'Choose a different value before confirming.' : '';
+  const same = control.kind === 'options' ? JSON.stringify([value].flat()) === JSON.stringify([question.currentValue].flat()) : equal(value, question.currentValue);
+  return question.currentValue !== null && same ? 'Choose a different value before confirming.' : '';
 }
 
 // A question with no current value starts empty, or at the slider midpoint of the server range.
 function startValue(question) {
-  if (question.currentValue !== null) return copy(question.currentValue);
+  // A multiple-choice current value (an array) cannot seed this single-choice answer.
+  if (question.currentValue !== null) return Array.isArray(question.currentValue) && question.control.kind === 'options' ? null : copy(question.currentValue);
   const { kind, minimum, maximum } = question.control;
   return kind === 'slider' ? Math.round((minimum + maximum) / 2) : kind === 'equipment' ? [] : null;
 }

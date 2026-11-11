@@ -18,6 +18,10 @@ const unavailable = (code = 'followup-policy-unavailable') => result('unavailabl
 });
 const invalid = (code, field, reason) => result('invalid', { code, reasons: [{ field, reason }] });
 
+// A scalar x and the list [x] are one choice; other lists compare member by member.
+const sameChoice = (a, b) => Array.isArray(a) || Array.isArray(b)
+  ? JSON.stringify([a].flat()) === JSON.stringify([b].flat()) : a === b;
+
 function keyPath(path) {
   const preference = /^preferences\.([A-Za-z0-9_-]+)\.value$/.exec(path ?? '');
   if (preference) return { kind: 'preference', key: preference[1] };
@@ -116,7 +120,9 @@ function targetValue(question, brief, config, minimum, maximum) {
       || target.importanceState !== 'confirmed' || !text(target.source)
       || !Number.isSafeInteger(target.importance) || target.importance < minimum || target.importance > maximum) return undefined;
     if (question.control.kind === 'options') {
-      if (!question.control.options.some(({ value }) => value === target.value)) return undefined;
+      // A multiple-choice array is valid when every member is an option.
+      const members = Array.isArray(target.value) ? target.value : [target.value];
+      if (!members.length || !members.every((member) => question.control.options.some(({ value }) => value === member))) return undefined;
     } else if (!Number.isSafeInteger(target.value) || target.value < minimum || target.value > maximum) return undefined;
     return target.value;
   }
@@ -249,7 +255,7 @@ export function followupChange(question, value, brief) {
     ? current.state !== 'confirmed' || current.operator !== 'includes' || current.unit !== 'equipment-key'
       || !sameEquipment(currentValue, question.currentValue)
     : path.kind === 'preference' ? current.valueState !== 'confirmed' || current.importanceState !== 'confirmed'
-      || !Object.hasOwn(current, 'value') || current.value !== question.currentValue
+      || !Object.hasOwn(current, 'value') || !sameChoice(current.value, question.currentValue)
       : current.state !== 'confirmed' || !Object.hasOwn(current, 'value') || current.value !== question.currentValue) {
     return invalid('invalid-followup-change', 'brief', 'The question target changed or is no longer confirmed.');
   }
@@ -260,7 +266,7 @@ export function followupChange(question, value, brief) {
       || typeof value !== 'string' || !question.control.options.some((option) => option.value === value)) {
       return invalid('invalid-followup-change', 'value', 'Choose one of the registered options.');
     }
-    if (value === question.currentValue) return invalid('invalid-followup-change', 'value', 'Choose a different value.');
+    if (sameChoice(value, question.currentValue)) return invalid('invalid-followup-change', 'value', 'Choose a different value.');
     return ok({ path: question.path, value });
   }
   if (question.control?.kind === 'slider') {

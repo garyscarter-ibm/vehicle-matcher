@@ -20,12 +20,15 @@ export function labelledField({ id, label, control, hint = '', error = '' }) {
   return { root, setError, setHint };
 }
 
-/** Native checkbox with its label beside it. The caller owns the checked state. */
-export function checkboxField({ id, label, checked = false, onChange }) {
+/** Native checkbox with its label beside it; `switch` makes it a labelled on/off switch. The caller owns the checked state. */
+export function checkboxField({ id, label, checked = false, onChange, switch: asSwitch = false, disabled = false, describedBy } = {}) {
   if (!id) throw new TypeError('A unique field id is required.');
-  const root = el('div', 'gcsp-check'); const input = el('input'); input.type = 'checkbox'; input.id = id; input.checked = checked;
+  const root = el('div', asSwitch ? 'gcsp-check gcsp-switch' : 'gcsp-check'); const input = el('input'); input.type = 'checkbox'; input.id = id; input.checked = checked;
   input.addEventListener('change', () => onChange?.(input.checked));
-  const name = el('label', null, label); name.htmlFor = id; root.append(input, name);
+  const name = el('label', null, label); name.htmlFor = id;
+  if (asSwitch) { input.setAttribute('role', 'switch'); root.append(name, input); } else root.append(input, name);
+  if (disabled) input.disabled = true;
+  if (describedBy) input.setAttribute('aria-describedby', describedBy);
   return { root, input };
 }
 

@@ -19,6 +19,8 @@ const states = ['draft', 'inferred', 'confirmed'];
 const bodies = ['hatchback', 'saloon', 'estate', 'suv', 'coupe', 'convertible', 'mpv'];
 const fuels = ['petrol', 'diesel', 'phev', 'ev'];
 const slider = (v) => Number.isInteger(v) && v >= 0 && v <= 100;
+// A legacy scalar or a non-empty list of unique registered values.
+const choice = (v, values) => Array.isArray(v) ? v.length > 0 && new Set(v).size === v.length && v.every((x) => values.includes(x)) : values.includes(v);
 export const unknown = (reason = 'not-captured') => ({ status: 'unknown', reason });
 const known = (v, check) => exact(v, ['status', 'value']) && v.status === 'known' && check(v.value);
 const unknownValue = (v) => exact(v, ['status', 'reason']) && v.status === 'unknown'
@@ -27,7 +29,7 @@ const evidence = (v, check) => unknownValue(v) || known(v, check);
 const preferences = (v) => object(v) && Object.entries(v).every(([key, p]) => preferenceKeys.includes(key)
   && exact(p, ['value', 'importance', 'valueState', 'importanceState']) && slider(p.importance)
   && states.includes(p.valueState) && states.includes(p.importanceState)
-  && (key === 'body' ? bodies.includes(p.value) : key === 'fuel' ? fuels.includes(p.value) : slider(p.value)));
+  && (key === 'body' ? choice(p.value, bodies) : key === 'fuel' ? choice(p.value, fuels) : slider(p.value)));
 const essentials = (v) => object(v) && Object.entries(v).every(([key, e]) => {
   if (!essentialKeys.includes(key) || !exact(e, ['value', 'operator', 'unit', 'state'])
     || ![...states, 'needs-confirmation'].includes(e.state)) return false;

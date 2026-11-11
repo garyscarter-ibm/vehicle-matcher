@@ -41,6 +41,17 @@ export function formatTerm(term = {}) {
   return 'Terms not supplied';
 }
 
+/** Current cost / budget for a points-monthly term, e.g. "1,100 / 1,300 points per month". Missing amounts say so. */
+export function formatPointsCost(term = {}) {
+  if (term.kind !== 'points-monthly') return 'Not supplied';
+  const cost = Number.isFinite(term.value) ? term.value.toLocaleString('en-GB') : null;
+  const budget = Number.isFinite(term.allowance) ? term.allowance.toLocaleString('en-GB') : null;
+  if (cost && budget) return `${cost} / ${budget} points per month`;
+  if (cost) return `${cost} points per month \u00b7 budget not supplied`;
+  if (budget) return `Cost not supplied \u00b7 ${budget} points per month budget`;
+  return 'Not supplied';
+}
+
 /** Screen heading block: optional kicker, title (h<level>) and lede, in the retail vm-kicker/vm-title/vm-lede styles. */
 export function screenIntro({ kicker, title, lede, level = 2, className } = {}) {
   const wrap = el('div', className);

@@ -1,3 +1,4 @@
+@import "./switch.css";
 .gcsp .gcsp-field { display: flex; flex-direction: column; gap: var(--gcsp-space-1); min-width: 0; }
 .gcsp .gcsp-field-label { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); font-weight: var(--gcsp-font-weight); }
 .gcsp .gcsp-field input, .gcsp .gcsp-field select, .gcsp .gcsp-field textarea { box-sizing: border-box; text-overflow: ellipsis; width: 100%; min-width: 0; max-width: 100%; min-height: var(--gcsp-input-height); padding: 0 var(--gcsp-space-2); font: inherit; font-size: var(--gcsp-font-size-regular); font-weight: var(--gcsp-font-input-weight); color: var(--gcsp-text); background: var(--gcsp-surface); border: 1px solid var(--gcsp-input-border); border-radius: var(--gcsp-radius); } .gcsp .gcsp-field input:hover, .gcsp .gcsp-field select:hover, .gcsp .gcsp-field textarea:hover { border-color: var(--gcsp-input-border-hover); }
@@ -8,8 +9,7 @@
 .gcsp .gcsp-field-hint, .gcsp .gcsp-field-error { margin: 0; overflow-wrap: anywhere; font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
 .gcsp .gcsp-field-hint { color: var(--gcsp-text-muted); }
 .gcsp .gcsp-field-error { color: var(--gcsp-danger); font-weight: var(--gcsp-font-strong-weight); }
-.gcsp .gcsp-error-summary { padding: var(--gcsp-space-4); border: 1px solid var(--gcsp-danger-border); border-radius: var(--gcsp-radius); background: var(--gcsp-danger-surface); overflow-wrap: anywhere; }
-.gcsp .gcsp-error-summary .gcsp-h2 { margin: 0 0 var(--gcsp-space-3); }
+.gcsp .gcsp-error-summary { padding: var(--gcsp-space-4); border: 1px solid var(--gcsp-danger-border); border-radius: var(--gcsp-radius); background: var(--gcsp-danger-surface); overflow-wrap: anywhere; } .gcsp .gcsp-error-summary .gcsp-h2 { margin: 0 0 var(--gcsp-space-3); }
 .gcsp .gcsp-error-links { margin: 0; padding-left: var(--gcsp-space-5); display: grid; gap: var(--gcsp-space-2); }
 .gcsp .gcsp-error-links a { color: var(--gcsp-accent-strong); text-decoration: underline; }
 .gcsp [hidden] { display: none !important; }

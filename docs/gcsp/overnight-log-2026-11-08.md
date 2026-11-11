@@ -428,3 +428,10 @@ For Russell or Gary:
 - Decision: fixed the FUCQ-362 second Start again stale-run bug directly (c814b3f8, one-file fix plus regression test) rather than raising a Bug, so the dry run isn't hit by it.
 - FUCQ-363 merged 04f28455 (main journey on generated stock, 100 per weekday release, Paula guarantee, stale-inventory restart fix). Merged-tree check 202/203, 1 skipped. Note for Gary: only 1 Series hatches pass Paula's gates in today's corpus, so her offer is a hatch in a varying colour.
 - All seven presenter stories (FUCQ-360 to 366) merged into gcsp-poc by 23:30, 10 Nov.
+
+## 10 Nov 23:50, hosted check after FUCQ-363 (Wanjiru)
+- Hosted console on generated stock works: two Releases gave 100 cars each (3 model lines, 12 to 14 colours; on the scheme 99 then 199). Grid fills 5 rows of 20 and looks right, so the column count stays.
+- Timing on Render: Start again took 78s; Releases took 28s and 39s. The first Release after the deploy returned 502 (Bad Gateway) after about 180s and the service recovered by itself. Not diagnosed (no Render logs here). Risk for the dry run: press Release once and wait; warm the service with one Start again and Release before presenting.
+- Locally a Start again plus Release peaks at 347 MB and takes 11s, inside the 2 GB plan.
+- What happened shows Offer email not delivered because hosted mail fails with mail-configuration-invalid. The email is still captured (View email works). For Gary: mail settings on Render, or accept the wording.
+- One 401 from /api/gcsp/orders/progress/all on first console load (listOrders before the presenter session); harmless, not fixed.

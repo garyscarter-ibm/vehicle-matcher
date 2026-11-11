@@ -4509,23 +4509,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-10T20:00:41Z",
+      "observed_at": "2026-11-10T23:32:36Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-359",
       "slices": [
         {
           "id": "composition",
-          "status": "not-started",
-          "title": "Account and current-car composition"
+          "status": "complete",
+          "title": "Account and current-car composition",
+          "observed_at": "2026-11-10T23:32:35Z",
+          "evidence": "Lead review dee54ca2: composition, order, Points cost, mount point; 448 scoped tests 447 pass (1 pre-existing base live-regions failure); strict side-by-sides docs/gcsp/evidence/fucq359"
         },
         {
           "id": "shared-kit",
-          "status": "not-started",
-          "title": "Shared components and responsive states"
+          "status": "complete",
+          "title": "Shared components and responsive states",
+          "observed_at": "2026-11-10T23:32:35Z",
+          "evidence": "gcsp-media-whole, formatPointsCost, NO_IMAGE_YOUR_CAR in kit, COMPONENTS.md, gallery; ratchet passes, account cap 56->54; neighbours pixel-identical"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Connected Account and GC secondary actions"
+          "status": "blocked",
+          "title": "Connected Account and GC secondary actions",
+          "observed_at": "2026-11-10T23:32:36Z",
+          "evidence": "Slot and DOM/visual/keyboard order delivered; final integrated evidence needs FUCQ-368 compact Preferences mounted via mountAccount preferences option"
         }
       ],
       "unsliced": false
@@ -4537,23 +4543,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-10T20:00:41Z",
+      "observed_at": "2026-11-11T02:41:01Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-367",
       "slices": [
         {
           "id": "rating-contract",
-          "status": "not-started",
-          "title": "Persisted rating contract and compatibility"
+          "status": "complete",
+          "title": "Persisted rating contract and compatibility",
+          "observed_at": "2026-11-11T02:41:01Z",
+          "evidence": "b0c8bd17 dev/DEV-2026-11-10-009, lead-reviewed: scoped 651 tests (2 known base failures) + 316/316 final; real HTTP+repository rating round trip; strict 20-state capture 226/226 vs 193cbf07; independent Opus critique fixed and re-inspected"
         },
         {
           "id": "rating-control",
-          "status": "not-started",
-          "title": "Shared rating and tooltip interactions"
+          "status": "complete",
+          "title": "Shared rating and tooltip interactions",
+          "observed_at": "2026-11-10T23:58:35Z",
+          "evidence": "d3336a6e on dev/DEV-2026-11-10-009: lead-reviewed starRating/helpTip kit, catalogue, gallery, ratchet; 26 jsdom tests and 19/19 real-Chrome keyboard/pointer checks; interim side-by-sides vs 193cbf07"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Account persistence and current-car identity"
+          "status": "complete",
+          "title": "Account persistence and current-car identity",
+          "observed_at": "2026-11-11T02:41:01Z",
+          "evidence": "b0c8bd17 dev/DEV-2026-11-10-009, lead-reviewed: scoped 651 tests (2 known base failures) + 316/316 final; real HTTP+repository rating round trip; strict 20-state capture 226/226 vs 193cbf07; independent Opus critique fixed and re-inspected"
         }
       ],
       "unsliced": false
@@ -4565,23 +4577,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-10T20:00:41Z",
+      "observed_at": "2026-11-11T01:43:03Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-368",
       "slices": [
         {
           "id": "preference-contract",
-          "status": "not-started",
-          "title": "Sparse multi-choice and importance contract"
+          "status": "complete",
+          "title": "Sparse multi-choice and importance contract",
+          "observed_at": "2026-11-11T00:06:04Z",
+          "evidence": "99affe71 reviewed by lead; merged-tree scoped run 317 tests, 313 pass, 1 known pre-existing fail (gcsp-brief retained fixtures), 3 skipped"
         },
         {
           "id": "category-editor",
-          "status": "not-started",
-          "title": "Compact autosaving category editor"
+          "status": "complete",
+          "title": "Compact autosaving category editor",
+          "observed_at": "2026-11-11T01:43:03Z",
+          "evidence": "5e240bf5+8674fbd2+8377a0e7 reviewed by lead; 180/180 component tests; Opus critique findings resolved on re-inspection"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Persistence and failure recovery"
+          "status": "complete",
+          "title": "Persistence and failure recovery",
+          "observed_at": "2026-11-11T01:43:03Z",
+          "evidence": "Account mount on merged GC-036 base; strict capture docs/gcsp/evidence/fucq368; npm test 4753 pass, 9 fail all also failing on base 784df762"
         }
       ],
       "unsliced": false

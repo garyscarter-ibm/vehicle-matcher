@@ -11,6 +11,10 @@ import { loadingSkeleton } from '../kit/loading-skeleton.js';
 let sequence = 0;
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const titleCase = (v) => v[0].toUpperCase() + v.slice(1);
+// A saved multiple-choice value is a list (a legacy scalar reads as one choice); a slider or scalar stays as it is.
+const listOf = (v) => Array.isArray(v) ? v : v === null || v === undefined ? [] : [v];
+const hasValue = (v) => Array.isArray(v) ? v.length > 0 : Number.isFinite(v) || typeof v === 'string';
+const choiceLabel = (v) => SPEC_LABELS[v] || FUEL_SPEC[v] || (typeof v === 'string' ? titleCase(v) : v);
 const stateText = (state) => state === 'confirmed' ? 'Saved' : state === 'inferred' ? 'Suggested' : 'Draft';
 // Internal source ids (policy:brief.editor.v1) never reach the screen; an unrecognised one is not named.
 const sourceText = (source) => ({ employee: 'Your answers', 'manual-account': 'Scheme account', 'employee-provider': 'Scheme account' })[source] ?? null;
@@ -47,7 +51,7 @@ export function mountBriefBody(main, adapters = {}) {
     const level = (v) => Number.isFinite(v) ? `${v} out of ${context.slider.maximum}` : 'Not set';
     const prefs = Object.entries(context.preferences).filter(([key]) => brief.preferences[key]).map(([key, d]) => {
       const p = brief.preferences[key];
-      const shown = d.type === 'slider' ? level(p.value) : SPEC_LABELS[p.value] || FUEL_SPEC[p.value] || (typeof p.value === 'string' ? titleCase(p.value) : p.value);
+      const shown = d.type === 'slider' ? level(p.value) : Array.isArray(p.value) ? p.value.map(choiceLabel).join(', ') : choiceLabel(p.value);
       return { label: d.label, value: `${shown}, importance ${p.importance === context.slider.minimum ? "I don't mind" : level(p.importance)}` };
     });
     const answer = (question, e) => {
@@ -122,8 +126,15 @@ export function mountBriefBody(main, adapters = {}) {
       let value;
       if (definition.type === 'slider') value = range(valueWrap, initial?.value, 'what you prefer', (v) => controller.updatePreference(key, { value: v }));
       else {
-        value = renderOptionList({ id: key, options: definition.values.map((v) => ({ value: v, label: SPEC_LABELS[v] || FUEL_SPEC[v] || titleCase(v) })) }, null,
-          { value: initial?.value, disabled: !definition.editable, ariaLabel: `${definition.label}: what you prefer`, onValueChange: (v) => controller.updatePreference(key, { value: v }) });
+        const multi = definition.multiple === true;
+        // A list keeps registry order and never goes empty here: clearing every choice is the Account's remove action.
+        const choose = (v) => {
+          if (!multi) { controller.updatePreference(key, { value: v }); return; }
+          const next = definition.values.filter((option) => v.includes(option));
+          if (next.length) controller.updatePreference(key, { value: next }); else value.update({ value: listOf(controller.snapshot().brief.preferences[key]?.value) });
+        };
+        value = renderOptionList({ id: key, multi, options: definition.values.map((v) => ({ value: v, label: choiceLabel(v) })) }, null,
+          { value: multi ? listOf(initial?.value) : initial?.value, disabled: !definition.editable, ariaLabel: `${definition.label}: what you prefer`, onValueChange: choose });
         valueWrap.append(value.list);
       }
       const importance = range(importanceWrap, initial?.importance, 'how much it matters', (v) => controller.updatePreference(key, { importance: v }));
@@ -132,7 +143,7 @@ export function mountBriefBody(main, adapters = {}) {
       importanceWrap.append(indifferent);
       axes.append(valueWrap, importanceWrap); field.append(axes); (definition.type === 'slider' ? more : preferences).append(field);
       field.setAttribute('aria-describedby', draftNotice.id);
-      handles.set(key, { value, importance, indifferent, importanceWrap, label: definition.label });
+      handles.set(key, { value, importance, indifferent, importanceWrap, label: definition.label, multi: definition.multiple === true });
     }
     if (more.children.length > 1) preferences.append(more);
     form.append(preferences);
@@ -202,12 +213,12 @@ export function mountBriefBody(main, adapters = {}) {
       for (const [key, h] of handles) {
         const p = state.brief.preferences[key];
         // Importance shows once the attribute has a value; an unset one stays unset.
-        h.importanceWrap.hidden = !(Number.isFinite(p?.value) || typeof p?.value === 'string');
+        h.importanceWrap.hidden = !hasValue(p?.value);
         if (!p) continue;
-        h.value.update({ value: p.value, valueState: Number.isFinite(p.value) || typeof p.value === 'string' ? 'confirmed' : 'unknown' });
+        h.value.update({ value: h.multi ? listOf(p.value) : p.value, valueState: hasValue(p.value) ? 'confirmed' : 'unknown' });
         h.importance.update({ value: p.importance, valueState: Number.isFinite(p.importance) ? 'confirmed' : 'unknown' });
         h.indifferent.setAttribute('aria-pressed', String(p.importance === context.slider.minimum));
-        recordProvenance(key, h.label, withSource(`${stateText(p.valueState)} preference ${p.value}; ${stateText(p.importanceState).toLowerCase()} importance ${p.importance}`, p.source));
+        recordProvenance(key, h.label, withSource(`${stateText(p.valueState)} preference ${Array.isArray(p.value) ? p.value.join(', ') : p.value}; ${stateText(p.importanceState).toLowerCase()} importance ${p.importance}`, p.source));
       }
       for (const [key, q] of questions) q.update(state.brief.essentials[key]);
       const open = [...questions.keys()].filter((key) => state.brief.essentials[key]?.value == null).length;

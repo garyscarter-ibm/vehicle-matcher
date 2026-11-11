@@ -332,7 +332,7 @@
       "comparison.carsPerEmployee": 1
     },
     "overlayHash": "11e7dfd4d7d8e574005ed2643c04cce219348cc6e190225ddb38c86aad79024a",
-    "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+    "policyHash": "97df1a052794bcb1b8dbd5673a82debbf90c159602b247758f0276e8f9c1dcd5",
     "configurationHash": "0a6085bfae9b761f96553b8432a4118ee78be8fef865c15dabc94b43253cb788",
     "configurationSource": {
       "kind": "reviewed-fixtures",
@@ -970,6 +970,7 @@
             "body": {
               "dimension": "body",
               "type": "enum",
+              "multiple": true,
               "values": [
                 "hatchback",
                 "saloon",
@@ -988,6 +989,7 @@
             "fuel": {
               "dimension": "fuel",
               "type": "enum",
+              "multiple": true,
               "values": [
                 "petrol",
                 "diesel",
