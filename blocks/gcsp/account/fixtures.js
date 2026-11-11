@@ -225,6 +225,9 @@ export const ACCOUNT_SNAPSHOT = {
             "employeeId": "employee-paula",
             "schemeId": "pcs-ukfs-bmw",
             "status": "returned",
+            "model": "BMW 1 Series Sports Hatch 120",
+            "media": { "src": "/assets/gcsp-vehicle-evidence/ed60cefd049e7293423575b5f0fcee802dbab14083dea2480211ab272896281a.webp", "alt": "BMW 1 Series Sports Hatch" },
+            "vehicle": {"configuration": "120 M Sport", "body": "hatchback", "fuel": "petrol"},
             "actualCollectionDate": "2025-01-01",
             "returnedDate": "2025-12-01",
             "source": {
@@ -781,6 +784,9 @@ export const UNSUPPORTED_SNAPSHOT = {
             "employeeId": "employee-sam",
             "schemeId": "pcs-ukfs-bmw",
             "status": "returned",
+            "model": "BMW 1 Series Sports Hatch 120",
+            "media": { "src": "/assets/gcsp-vehicle-evidence/ed60cefd049e7293423575b5f0fcee802dbab14083dea2480211ab272896281a.webp", "alt": "BMW 1 Series Sports Hatch" },
+            "vehicle": {"configuration": "120 M Sport", "body": "hatchback", "fuel": "petrol"},
             "actualCollectionDate": "2025-01-01",
             "returnedDate": "2025-12-01",
             "source": {

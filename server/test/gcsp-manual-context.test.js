@@ -210,6 +210,8 @@ test('account uses identity-seeded principal and entitlement; history, licence a
     oldContractId: 'current:employee-paula', enabled: true }]);
   assert.equal(account.value.histories[1].orderingSupported, false);
   assert.equal(account.value.histories[1].entries[0].status, 'returned');
+  // Every seeded history car is named, so Your cars never shows a "Model not supplied" row.
+  assert.deepEqual(account.value.histories.flatMap((h) => h.entries.map((e) => e.model)), ['BMW 3 Series Touring 320i', 'BMW 1 Series Sports Hatch 120']);
   assert.equal(account.value.histories[2].state, 'empty-history');
   assert.equal(account.value.view.fields.account.supportOwner, 'hr-support');
   assert.equal(account.value.view.fields.licence.editable, false);
