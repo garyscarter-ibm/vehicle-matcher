@@ -341,7 +341,12 @@ export function createAccountPreferencesController({ transport, createCommandId,
     const found = outcome?.status === 'ok' ? outcome.value?.initial : null;
     if (!object(found?.accountPreferences?.categories) || !revision(found.briefVersion) || !revision(found.draftVersion)) return;
     const before = buddy?.state;
-    if (JSON.stringify(found.accountPreferences.categories) === JSON.stringify(confirmed) && found.accountPreferences.categories) {
+    if (JSON.stringify(found.accountPreferences.categories) === JSON.stringify(confirmed)
+      && (found.currentCarRating?.contractId ?? null) === (rating?.contractId ?? null)
+      && (found.currentCarRating?.value ?? null) === (rating?.saved ?? null)
+      && (found.sameAgain?.contractId ?? null) === (same?.contractId ?? null)
+      && (found.sameAgain?.on === true) === (same?.saved === true)
+      && (found.sameAgain?.available === true) === (same?.available === true)) {
       versions = { brief: found.briefVersion, draft: found.draftVersion }; buddy = buddyOf(found.buddy);
       if (buddyMsg && buddy?.state !== before) buddyMsg = null;
       buddyRetry = null; emit(); return;

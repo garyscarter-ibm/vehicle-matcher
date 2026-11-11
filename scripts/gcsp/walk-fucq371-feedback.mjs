@@ -1,18 +1,20 @@
 // FUCQ-371 integrated walkthrough of current-car feedback in recommendations: real host, memory repository, real login, real presenter routes. Nothing is stubbed.
-// Run: WALK_PASSWORD=<demo password> perl -e 'alarm shift; exec @ARGV' 900 node scripts/gcsp/walk-fucq371-feedback.mjs   (OUT and SCRATCH default to the story's folders)
+// Run through _tools/test_stamp.py with command: SCRATCH="$TMPDIR" node scripts/gcsp/walk-fucq371-feedback.mjs
+// Supply WALK_PASSWORD privately in the environment and OUT as the run-owned retained evidence directory.
 import { spawn, spawnSync } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { access, mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '/Users/usget/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
-const OUT = process.env.OUT || '/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/fucq371-2026-11-11/walkthrough-v3';
-const scratch = process.env.SCRATCH || '/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-20261110-claude/DEV-2026-11-10-013/scratch/walk';
+const OUT = process.env.OUT;
+const scratch = process.env.SCRATCH;
+if (!OUT || !scratch) throw new Error('OUT and supervised SCRATCH are required');
 const PORT = Number(process.env.WALK_PORT || 8809); const ORIGIN = `http://127.0.0.1:${PORT}`;
 const EMAIL = process.env.WALK_EMAIL || 'paula.mason@gcsp-demo.com'; const PASSWORD = process.env.WALK_PASSWORD;
 if (!PASSWORD) throw new Error('WALK_PASSWORD is required (the demo login password)');
-const THIRD = process.env.WALK_THIRD || 'comfort';
+const THIRD = process.env.WALK_THIRD || 'sportiness';
 const VIEWPORTS = [[1440, 1100], [375, 1000]];
 const report = { run: 'fucq371-live-walkthrough', commit: null, viewports: {}, findings: [] };
 const stoppers = [];
@@ -20,16 +22,23 @@ process.on('SIGALRM', async () => { for (const stop of stoppers) await stop().ca
 process.on('SIGTERM', async () => { for (const stop of stoppers) await stop().catch(() => {}); process.exit(143); });
 
 async function startHost() {
-  const env = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: scratch, GCSP_RUNTIME: '1', GCSP_REPOSITORY_MODE: 'memory', GCSP_PUBLIC_ORIGIN: ORIGIN, PORT: String(PORT), DEMO_ACCESS_KEY: `walk-${randomBytes(9).toString('hex')}` };
+  const env = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: scratch, TMP: scratch, TEMP: scratch, GCSP_RUNTIME: '1', GCSP_REPOSITORY_MODE: 'memory', GCSP_PUBLIC_ORIGIN: ORIGIN, PORT: String(PORT), DEMO_ACCESS_KEY: `walk-${randomBytes(9).toString('hex')}` };
   const child = spawn(process.execPath, ['index.js'], { cwd: `${root}server`, env, stdio: ['ignore', 'pipe', 'pipe'], detached: true });
+  const stop = async () => {
+    if (child.exitCode !== null || child.signalCode !== null) return;
+    const ended = new Promise((done) => child.once('exit', done));
+    try { process.kill(-child.pid, 'SIGTERM'); } catch { return; }
+    const killed = setTimeout(() => { try { process.kill(-child.pid, 'SIGKILL'); } catch {} }, 3000);
+    await ended; clearTimeout(killed);
+  };
+  stoppers.push(stop);
   let output = '';
   await new Promise((done, fail) => {
     const timer = setTimeout(() => fail(new Error(`host not ready: ${output.slice(-300)}`)), 90000);
     for (const s of [child.stdout, child.stderr]) s.on('data', (d) => { output += d; if (output.includes('GCSP hosted demo')) { clearTimeout(timer); done(); } });
     child.once('exit', (code) => { clearTimeout(timer); fail(new Error(`host exited ${code}: ${output.slice(-300)}`)); });
   });
-  const stop = async () => { try { process.kill(-child.pid, 'SIGKILL'); } catch {} await new Promise((r) => setTimeout(r, 300)); };
-  stoppers.push(stop); return { stop };
+  return { stop };
 }
 
 const carText = (o) => o && ({ offerId: o.offerId, runId: o.runId, vehicle: o.vehicle ?? o.car ?? o.title ?? null });
@@ -190,9 +199,10 @@ async function walk(vp) {
     await s.reload(); c = await s.cats(); const dom3 = await s.domCats(); await shot('03-categories');
     const body = c.categories.body; const fuel = c.categories.fuel;
     step('3 Body Hatchback only (high) and Fuel Petrol (medium), nothing else, persist after reload', JSON.stringify(body?.value) === '["hatchback"]' && body?.importance === 'high' && JSON.stringify(fuel?.value) === '["petrol"]' && fuel?.importance === 'medium' && Object.keys(c.categories).length === 2, { editor: c.categories, dom: dom3 });
-    // Buddy needs at least 3 categories, so the two-category brief cannot engage: record that, then add a third category (THIRD, default comfort: its fact, tags, is the only remaining one the generated stock carries).
+    // Exercise the repaired generated performance facts through the real persisted brief.
     const a5 = await s.cats(); const engageTry = await s.engage();
     step('3b two categories only: Engage Buddy is refused (minimum 3), recorded', engageTry?.state === 'disengaged', { lamp: engageTry, status: (await page.locator('.gcsp-prefs-status').innerText().catch(() => '')).trim(), editor: a5.categories });
+    await shot('03b-engagement-validation');
     await s.editTile(THIRD, ['End'], false); await s.reload(); const c3 = await s.cats(); await shot('03c-three-categories');
     step(`3c third category ${THIRD} (medium) added so Buddy can engage; brief is Body Hatchback (high), Fuel Petrol, ${THIRD}`, Object.keys(c3.categories).length === 3 && c3.categories[THIRD]?.importance === 'medium', c3.categories);
     c = c3; dom3.length = 0; dom3.push(...await s.domCats());
@@ -211,8 +221,40 @@ async function walk(vp) {
     let l = await s.engage(); await shot('05a-engaged');
     step('5a Engage Buddy shows "Buddy engaged"', l?.text === 'Buddy engaged', l);
     await s.action().click(); await page.waitForFunction(() => document.querySelector('.gcsp-buddy-status.is-prominent')?.dataset.state === 'disengaged', null, { timeout: 15000 }).catch(() => {});
-    const dis = await s.lamp(); l = await s.engage(); await shot('05b-engaged-again');
+    const dis = await s.lamp(); await shot('05a-disengaged'); l = await s.engage(); await shot('05b-engaged-again');
     step('5b Disengage then Engage again', dis?.text === 'Buddy disengaged' && l?.text === 'Buddy engaged', { disengaged: dis, engaged: l });
+
+    // Both screens use the same binary authority and gated editor operation.
+    await page.goto(`${ORIGIN}/gcsp-activity-live.html`, { waitUntil: 'load' });
+    await page.getByRole('button', { name: 'Disengage Buddy', exact: true }).waitFor(); await shot('05c-activity-engaged');
+    await page.getByRole('button', { name: 'Disengage Buddy', exact: true }).click();
+    await page.getByRole('button', { name: 'Engage Buddy', exact: true }).waitFor(); await shot('05d-activity-disengaged');
+    await page.goto(`${ORIGIN}/gcsp-account.html`, { waitUntil: 'load' }); await s.settle();
+    step('5c Activity Disengage is off on Account after reload', (await s.lamp())?.state === 'disengaged');
+    await page.goto(`${ORIGIN}/gcsp-activity-live.html`, { waitUntil: 'load' });
+    await page.getByRole('button', { name: 'Engage Buddy', exact: true }).click();
+    await page.getByRole('button', { name: 'Disengage Buddy', exact: true }).waitFor();
+    await page.goto(`${ORIGIN}/gcsp-account.html`, { waitUntil: 'load' }); await s.settle();
+    step('5d Activity Engage is on on Account after reload', (await s.lamp())?.state === 'engaged');
+
+    // The original Account stays mounted while another tab changes only feedback.
+    const remote = await s.context.newPage();
+    await remote.goto(`${ORIGIN}/gcsp-account.html`, { waitUntil: 'load' });
+    await remote.locator('.gcsp-star-rating label.gcsp-star').nth(3).click();
+    await page.waitForTimeout(700);
+    const syncAccount = () => page.locator('gcsp-account').evaluate((n) => n.dispatchEvent(new CustomEvent('gcsp:presenter-action')));
+    await syncAccount();
+    await page.waitForFunction(() => document.querySelector('.gcsp-star-rating input:checked')?.value === '4');
+    step('5e existing Account adopts a remote rating-only edit on refresh', (await s.uiStars()) === 4);
+    await remote.getByRole('switch', { name: 'Same again, please!' }).check({ force: true });
+    await page.waitForTimeout(700); await syncAccount();
+    await page.waitForFunction(() => document.querySelector('[role="switch"]')?.checked === true);
+    step('5f existing Account adopts a remote Same-again-only edit', await page.getByRole('switch', { name: 'Same again, please!' }).isChecked());
+    await remote.getByRole('switch', { name: 'Same again, please!' }).uncheck({ force: true });
+    await page.waitForTimeout(700); await syncAccount();
+    await page.waitForFunction(() => document.querySelector('[role="switch"]')?.checked === false);
+    await remote.close();
+    step('5g remote Same again off restores saved categories in the existing Account', JSON.stringify((await s.cats()).categories) === JSON.stringify(c3.categories));
 
     // 9 retained Account parts (after step 5)
     const order = await page.evaluate(() => {
@@ -293,15 +335,17 @@ async function walk(vp) {
       // Open the Offer page by the account link when present, else by the coordinates.
       const href = await page.locator('a[href*="/gcsp/offer"]').first().getAttribute('href').catch(() => null);
       await page.goto(href ? new URL(href, ORIGIN).href : `${ORIGIN}/gcsp/offer?offerId=${encodeURIComponent(o.offerId)}&runId=${encodeURIComponent(o.runId)}`, { waitUntil: 'load', timeout: 60000 });
-      await page.getByText('Why it suits you').first().waitFor({ timeout: 30000 }).catch(() => {}); await page.waitForTimeout(800);
+      await page.getByText('Benefits', { exact: true }).first().waitFor({ timeout: 10000 }); await page.waitForTimeout(300);
       const text = await page.locator('body').innerText();
       const sentence = ['Similar to your current car, which you rated highly.', 'Better than your current car for sportiness.', 'Better than your current car for'].find((t) => text.includes(t));
       await shot('06b-offer-page');
-      step('6b Offer page shows the feedback reason under "Why it suits you"', Boolean(sentence) && text.includes('Why it suits you'), { linkFromAccount: href, sentence: sentence ?? null, title: await page.locator('h1').first().innerText().catch(() => null), reasonsDom: (text.match(/Why it suits you[\s\S]{0,500}/) ?? [text.slice(0, 600)])[0].replace(/\s+/g, ' '), offerRead: o });
+      if (vp[0] === 375) { await page.setViewportSize({ width: 320, height: 1000 }); await shot('06b-offer-page-320'); await page.setViewportSize({ width: vp[0], height: vp[1] }); }
+      step('6b live Offer page shows the feedback reason in Benefits', Boolean(sentence) && text.includes('Benefits'), { linkFromAccount: href, sentence: sentence ?? null, title: await page.locator('h1').first().innerText().catch(() => null), offerRead: o });
     }
     if (list.length) {
       await page.goto(`${ORIGIN}/gcsp-account.html`, { waitUntil: 'load' }); await s.settle();
       await page.getByRole('switch', { name: 'Same again, please!' }).check({ force: true }); await page.waitForTimeout(1200); await s.idle(); await s.reload(); await shot('06c-same-again-on');
+      if (vp[0] === 375) { await page.setViewportSize({ width: 320, height: 1000 }); await shot('06c-account-320'); await page.setViewportSize({ width: vp[0], height: vp[1] }); }
       const sa = await s.cats(); const rel2 = await s.release('walk371-pos-tick-2');
       await page.goto(`${ORIGIN}/gcsp-account.html`, { waitUntil: 'load' }); await s.settle();
       const l2 = (await s.offers()).map(s.brief); await shot('06d-account-same-again-after-release');
@@ -328,7 +372,18 @@ async function walk(vp) {
     nstep('7b negative case: no offered car is similar to the current car (G21 Touring, estate, petrol)', nrel.tickStatus === 200 && similarOffered.length === 0, { release: nrel, offers: nbr.length ? nbr : 'none' });
     if (nlist.length) {
       const href = `${ORIGIN}/gcsp/offer?offerId=${encodeURIComponent(nbr[0].offerId)}&runId=${encodeURIComponent(nbr[0].runId)}`;
-      await np.goto(href, { waitUntil: 'load' }); await np.getByText('Why it suits you').first().waitFor({ timeout: 30000 }).catch(() => {}); await np.waitForTimeout(800); await nshot('07c-negative-offer');
+      await np.goto(href, { waitUntil: 'load' }); await np.getByText('Benefits', { exact: true }).first().waitFor({ timeout: 10000 }); await nshot('07c-negative-offer');
+      nstep('7c live Offer explains the negative-rating influence', (await np.locator('body').innerText()).includes('Different from the current car you rated poorly.'));
+    } else nstep('7c live Offer explains the negative-rating influence', false, 'No negative-case offer was produced.');
+    const hold = Math.min(Number(process.env.WALK_REVIEW_HOLD_MS) || 0, 180000);
+    if (vp[0] === VIEWPORTS.at(-1)[0] && hold > 0) {
+      await writeFile(`${OUT}/review-ready.json`, JSON.stringify({ origin: ORIGIN, page: np.url(), viewport: vp }));
+      console.log('Independent browser review ready.');
+      const until = Date.now() + hold;
+      while (Date.now() < until) {
+        if (await access(`${OUT}/review-continue`).then(() => true, () => false)) break;
+        await np.waitForTimeout(500);
+      }
     }
     extra.errorsPositive = errors.slice(0, errsPos);
   } catch (error) {
@@ -345,9 +400,13 @@ async function walk(vp) {
 try {
   await mkdir(scratch, { recursive: true }); await mkdir(OUT, { recursive: true });
   report.commit = spawnSync('git', ['rev-parse', '--short', 'HEAD'], { cwd: root, encoding: 'utf8' }).stdout.trim();
-  for (const vp of VIEWPORTS) report.viewports[vp[0]] = await walk(vp);
+  for (const vp of VIEWPORTS) {
+    report.viewports[vp[0]] = await walk(vp);
+    await writeFile(`${OUT}/walkthrough.json`, JSON.stringify(report, null, 2));
+  }
   const all = Object.values(report.viewports).flatMap((v) => v.rows);
   report.summary = { steps: all.length, passed: all.filter((r) => r.pass).length, failed: all.filter((r) => !r.pass).map((r) => r.step) };
+  if (report.summary.failed.length) process.exitCode = 1;
   const left = spawnSync('lsof', ['-nP', `-iTCP:${PORT}`, '-sTCP:LISTEN'], { encoding: 'utf8' }).stdout.trim();
   report.listenersAfter = left || 'none';
   await writeFile(`${OUT}/walkthrough.json`, JSON.stringify(report, null, 2));

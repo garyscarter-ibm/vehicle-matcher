@@ -1,23 +1,23 @@
 import { el, button } from '../../vehicle-matcher/ui.js';
 
+export const buddyEngaged = (permission) => permission?.searchConsent === true && permission.holdConsent === true && permission.paused === false;
+
 // Presentation only: the activity read remains the authority on search permission.
 export function buddyState(result) {
   const value = result?.status === 'ok' ? result.value : null;
   if (!value || !Object.hasOwn(value, 'permission')) return 'unavailable';
   if (value.permission === null) return 'unset';
   const permission = value.permission;
-  if (typeof permission?.paused !== 'boolean' || typeof permission?.canSearch !== 'boolean') return 'unavailable';
+  if (['searchConsent', 'holdConsent', 'paused', 'canSearch'].some((key) => typeof permission?.[key] !== 'boolean')) return 'unavailable';
   if (value.currentOffer?.state === 'accepted') return 'finished';
-  if (permission.paused) return 'paused';
-  return permission.canSearch ? 'active' : 'inactive';
+  return buddyEngaged(permission) ? 'active' : 'inactive';
 }
 
-const labels = { engaged: 'Buddy engaged', disengaged: 'Buddy disengaged', unknown: 'Buddy status unavailable', active: 'Active', paused: 'Paused', unset: 'Not set up', finished: 'Search finished', inactive: 'Inactive', unavailable: 'Status unavailable' };
+const labels = { engaged: 'Buddy engaged', disengaged: 'Buddy disengaged', unknown: 'Buddy status unavailable', active: 'Buddy engaged', paused: 'Buddy disengaged', unset: 'Not set up', finished: 'Search finished', inactive: 'Buddy disengaged', unavailable: 'Status unavailable' };
 
 const ENGAGEMENT = ['engaged', 'disengaged', 'unknown'];
 
-/** Shared status dot/wording, optionally inside the outlined Buddy navigation link.
- * `prominent: true, id` (FUCQ-370) is the Account lamp: a static `<p>` (no live region) with a repaint method `update(state)` on the element. */
+// Shared Buddy wording; the prominent Account lamp repaints in place without a live region.
 export function buddyStatus({ state = 'unavailable', href, onClick, prominent = false, id } = {}) {
   if (prominent) return prominentStatus(id, state);
   const key = Object.hasOwn(labels, state) ? state : 'unavailable';
@@ -27,7 +27,7 @@ export function buddyStatus({ state = 'unavailable', href, onClick, prominent = 
   if (!href) return status;
   const link = button({ href, variant: 'ghost', onClick });
   link.classList.add('gcsp-buddy-link'); link.dataset.focusKey = 'buddy-status';
-  link.append(el('span', 'gcsp-buddy-name', 'Buddy'));
+  if (!labels[key].startsWith('Buddy ')) link.append(el('span', 'gcsp-buddy-name', 'Buddy'));
   if (key === 'unset') link.append(el('span', 'gcsp-buddy-setup', 'Set up your buddy'));
   else link.append(status);
   const chevron = el('span', 'gcsp-buddy-chevron', '›'); chevron.setAttribute('aria-hidden', 'true');

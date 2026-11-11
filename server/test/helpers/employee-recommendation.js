@@ -25,7 +25,7 @@ export const provider = (value = providerValue()) => ({ async resolve() { return
 export const time = { async now() { return { status: 'ok', value: { now: instant, runId: context.runId, clockVersion: 'clock-v1' } }; } };
 export const policy = () => createPolicyService();
 // FUCQ-371: provider-side current-car baseline (never part of a request) and the stored feedback shapes.
-export const baselineFacts = { modelLine: 'G21 Touring', eligibilityModelKey: 'G21 Touring|320i', body: 'estate', fuel: 'petrol', zeroTo62: 7.6, mpg: 42.8 };
+export const baselineFacts = { modelLine: 'G21 Touring', eligibilityModelKey: 'G21 Touring|320i', configurationId: 'RzIxOlMx', body: 'estate', fuel: 'petrol', zeroTo62: 7.6, mpg: 42.8 };
 export const currentCar = (facts = baselineFacts, contractId = 'current:employee-test') => ({ contractId,
   source: { mode: 'synthetic', sourceVersion: 'manual-records-v1', observedAt: instant },
   facts: Object.fromEntries(Object.entries(facts).filter(([, value]) => value !== null && value !== undefined)

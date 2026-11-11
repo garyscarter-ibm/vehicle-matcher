@@ -1,3 +1,4 @@
+import { buddyEngaged } from '../kit/buddy-status.js';
 import { isRunRestarted } from '../kit/run-restarted.js';
 
 // Client sequencing only. Server outcomes remain the permission and activity authority.
@@ -13,7 +14,7 @@ export function createActivityController({ adapter = {}, onChange, createCommand
   const getState = () => structuredClone(state);
   function publish(next) { state = next; if (!disposed) onChange?.(getState()); }
   const signature = (value) => JSON.stringify([value.result, value.offerDisplay ?? null]);
-  async function load({ pending = false, message = '', quiet = false } = {}) {
+  async function load({ pending = false, message = '', quiet = false, expectedEngaged } = {}) {
     if (disposed) return getState();
     const current = ++generation; readAbort?.abort(); const abort = new AbortController(); readAbort = abort;
     if (!pending) publish({ phase: 'loading', result: null, pending: false, message: '' });
@@ -30,6 +31,7 @@ export function createActivityController({ adapter = {}, onChange, createCommand
     }
     if (snapshot) {
       const next = { phase: 'ready', result: snapshot, pending: false, message, offerDisplay };
+      if (typeof expectedEngaged === 'boolean' && buddyEngaged(snapshot.value.permission) !== expectedEngaged) next.message = 'Buddy changed. Showing current status.';
       if (quiet) next.message = state.phase === 'ready' && signature(next) === signature(state) ? '' : 'Activity updated.';
       publish(next);
     }
@@ -42,26 +44,28 @@ export function createActivityController({ adapter = {}, onChange, createCommand
   async function command(operation) {
     const value = state.result?.value;
     if (disposed || state.pending || state.phase !== 'ready' || !positive(value?.briefVersion)
-      || !value.permission || typeof adapter[operation] !== 'function'
-      || operation === 'pause' && value.permission.canSearch !== true
-      || operation === 'resume' && value.permission.paused !== true) return getState();
+      || !value.permission || typeof (adapter[operation] ?? adapter[operation === 'engage' ? 'resume' : 'pause']) !== 'function'
+      || operation === 'disengage' && !buddyEngaged(value.permission)
+      || operation === 'engage' && buddyEngaged(value.permission)) return getState();
     let commandId;
     try { commandId = createCommandId(); } catch { commandId = null; }
     if (typeof commandId !== 'string' || !commandId.trim()) {
-      publish({ ...state, message: 'Search could not be updated. Try again.' }); return getState();
+      publish({ ...state, message: 'Buddy could not be updated. Try again.' }); return getState();
     }
     const current = generation; const abort = new AbortController(); commandAbort = abort;
     const expectedBriefVersion = value.briefVersion;
-    publish({ ...state, pending: true, message: 'Updating search.' });
+    publish({ ...state, pending: true, message: 'Updating Buddy.' });
     let out;
-    try { out = await adapter[operation]({ commandId, expectedBriefVersion, signal: abort.signal }); } catch { out = unavailable(); }
+    try { out = await (adapter[operation] ?? adapter[operation === 'engage' ? 'resume' : 'pause'])({ commandId, expectedBriefVersion, signal: abort.signal }); } catch { out = unavailable(); }
     if (disposed || abort.signal.aborted || current !== generation) return getState();
     if (isRunRestarted(out)) { publish({ phase: 'restarted', result: null, pending: false, message: '' }); commandAbort = null; return getState(); }
-    const message = out?.status === 'ok' ? operation === 'pause' ? 'Search paused.' : 'Search resumed.'
-      : ['stale-version', 'conflict'].includes(out?.status) ? 'Search changed. Showing current status.' : 'Search could not be updated. Try again.';
-    await load({ pending: true, message }); commandAbort = null;
+    const message = out?.status === 'ok' ? operation === 'disengage' ? 'Buddy disengaged.' : 'Buddy engaged.'
+      : out?.status === 'invalid' && out.code === 'engagement-minimum' ? 'Choose more preferences or turn on Same again in Account to engage Buddy.'
+      : ['stale-version', 'conflict'].includes(out?.status) ? 'Buddy changed. Showing current status.' : 'Buddy could not be updated. Try again.';
+    await load({ pending: true, message, ...(out?.status === 'ok' ? { expectedEngaged: operation === 'engage' } : {}) }); commandAbort = null;
     return getState();
   }
-  return { getState, refresh, sync, pause: () => command('pause'), resume: () => command('resume'),
+  return { getState, refresh, sync, disengage: () => command('disengage'), engage: () => command('engage'),
+    pause: () => command('disengage'), resume: () => command('engage'),
     destroy() { if (disposed) return; disposed = true; generation += 1; readAbort?.abort(); commandAbort?.abort(); } };
 }

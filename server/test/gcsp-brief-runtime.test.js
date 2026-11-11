@@ -60,6 +60,7 @@ test('local trusted composition loads account/editor, saves real versions and pr
   assert.equal(loaded.json.status, 'ok'); assert.equal(loaded.json.value.initial.briefVersion, 0);
   const draft = structuredClone(loaded.json.value.initial.brief);
   Object.assign(draft.preferences.comfort, { value: 94, valueState: 'draft', source: 'employee' });
+  for (const key of ['sportiness', 'economy']) Object.assign(draft.preferences[key], { value: 50, valueState: 'draft', source: 'employee' });
   const preview = await app.request('/api/gcsp/brief/preview', { kind: 'unsaved-draft', baseBriefVersion: 0, draftVersion: 0, brief: draft });
   assert.equal(preview.json.status, 'ok'); assert.equal(preview.json.value.state, 'no-stock');
   assert.equal(preview.json.value.eligibleCount, 0); assert.equal(preview.json.value.decisions.length, 0);

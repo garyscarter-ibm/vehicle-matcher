@@ -131,11 +131,12 @@ const SENTENCES = {
   'licence-not-valid-at-collection': () => 'Your licence is not valid on the collection date.',
   'locally-excluded': () => 'You have ruled this car out.',
   'feedback-similar': () => 'Similar to your current car, which you rated highly.',
+  'feedback-different': () => 'Different from the current car you rated poorly.',
   'feedback-improvement': (e) => keyList(e.keys) ? `Better than your current car for ${keyList(e.keys)}.` : 'Better than your current car for your preferences.',
-  'same-again-match': () => 'The same model as your current car, as you asked.',
+  'same-again-match': () => 'The same model and specification as your current car, as you asked.',
   'feedback-similar-omitted': () => 'Too similar to your current car, which you rated poorly.',
   'feedback-not-similar-or-better': () => 'Neither similar to your current car nor better on your preferences.',
-  'same-again-different': () => 'Not the same model as your current car.',
+  'same-again-different': () => 'The same model and specification could not be confirmed.',
 };
 
 /** One server reason, trade-off, blocker or unknown as a plain sentence; never a code or field name. */

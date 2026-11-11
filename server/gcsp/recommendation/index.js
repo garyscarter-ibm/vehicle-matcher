@@ -74,7 +74,7 @@ function judgeFeedback({ fb, gated, candidate, scored, brief, employeeFacts, con
   if (!baseline || !(sameOn || usable.rating)) return { record: base, reasons: [] };
   const dims = rules.similarity.dimensions;
   if (sameOn) {
-    const continuity = matchDimensions(baseline.facts, facts, rules.sameAgain.dimensions, config, 'same');
+    const continuity = matchDimensions(baseline.facts, facts, rules.sameAgain.dimensions, config, 'same', candidate.configurationId);
     const record = { ...base, continuity, similarity: matchDimensions(baseline.facts, facts, dims, config, 'similar') };
     return continuity === 'same'
       ? { record: { ...record, effect: 'kept', reasonCode: 'same-again-match' }, reasons: [{ code: 'same-again-match', keys: rules.sameAgain.dimensions }] }
@@ -85,7 +85,8 @@ function judgeFeedback({ fb, gated, candidate, scored, brief, employeeFacts, con
   if (base.rating.class === 'negative') {
     return similarity === 'similar'
       ? { record: { ...record, effect: 'omitted', reasonCode: 'feedback-similar-omitted' }, omit: { code: 'feedback-similar-omitted', keys: dims } }
-      : { record: { ...record, effect: 'kept', reasonCode: similarity === 'unknown' ? 'feedback-similarity-unknown' : 'feedback-different' }, reasons: [] };
+      : { record: { ...record, effect: 'kept', reasonCode: similarity === 'unknown' ? 'feedback-similarity-unknown' : 'feedback-different' },
+        reasons: similarity === 'different' ? [{ code: 'feedback-different', keys: dims }] : [] };
   }
   if (base.rating.class !== 'positive') return { record, reasons: [] };
   if (similarity === 'similar') return { record: { ...record, effect: 'kept', reasonCode: 'feedback-similar' }, reasons: [{ code: 'feedback-similar', keys: dims }] };
@@ -158,12 +159,15 @@ async function evaluateRecommendation({ provider, policy, time }, context, reque
         if (Object.keys(typed).length) {
           const row = await policy.getAssumption(FEEDBACK_KEY, read);
           if (row.status !== 'ok' || row.policyVersion !== allowance.policyVersion || !feedbackPolicyValid(row.value?.value)) {
+            if (typed.sameAgain?.on === true || typed.currentCarRating?.value != null) return unavailable('feedback-policy-unavailable');
             feedbackRecord = { applied: false, reason: 'feedback-policy-unavailable' };
           } else {
             assumptionResults.push(row);
             const baseline = baselineOf(source.currentCar);
             const matches = (entry) => entry !== undefined && baseline !== null && entry.contractId === baseline.contractId;
             const rating = typed.currentCarRating ?? { value: null };
+            if (!baseline && (typed.sameAgain?.on === true || ratingClass(rating.value, row.value.value.rating) === 'positive'))
+              return unavailable('feedback-baseline-unavailable');
             const usable = { rating: matches(typed.currentCarRating), sameAgain: matches(typed.sameAgain) };
             const inertCode = !baseline ? 'feedback-baseline-unavailable' : Object.keys(typed).some((key) => !matches(typed[key])) ? 'feedback-contract-mismatch' : 'feedback-neutral';
             fb = { policy: row.value.value, policyVersion: row.policyVersion, baseline, rating, usable, inertCode,

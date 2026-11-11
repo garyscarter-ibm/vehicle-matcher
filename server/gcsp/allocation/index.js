@@ -1,3 +1,4 @@
+import { isBuddyEngaged } from '../brief/permission.js';
 import { createHash, randomUUID } from 'node:crypto';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
@@ -136,7 +137,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
     const expiry = event.eventType === 'buddy-expired';
     const lapsed = new Set(RETURN_KEYS[event.eventType] ? rows.holds.filter((h) => event.holdIds.includes(h.holdId)).map((h) => h.employeeId) : []);
     const letLapse = new Set(expiry ? rows.holds.filter((h) => h.state === 'expired' && h.releaseReason === 'buddy-expired').map((h) => `${h.employeeId}|${h.orderUuid}`) : []);
-    const briefs = latest(rows.briefs).filter((b) => b.buddy?.searchConsent === true && b.buddy.paused === false)
+    const briefs = latest(rows.briefs).filter((b) => isBuddyEngaged(b.buddy))
       .sort((a, b) => ordinal(a.employeeId, b.employeeId));
     const entries = new Map(pool.map((r) => [r.orderUuid, entryOf(r)])); const stockVersions = new Map();
     const plan = { trigger: event, evaluatedAt: instant.now, clockVersion: instant.clockVersion,

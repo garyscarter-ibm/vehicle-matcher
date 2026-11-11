@@ -11,12 +11,14 @@ import './plan/register.js';
 import { FIXTURE_NAMES as COMPARISON_FIXTURES, EXPERIMENT_FIXTURE_NAMES } from './comparison/fixtures.js';
 import './comparison/register.js';
 import '../cases/register.js';
+import { routePortalEvents } from '../employee/portal-navigation.js';
 
 const params = new URLSearchParams(globalThis.location?.search || '');
 const requested = params.get('fixture');
 const plan = params.get('plan');
 const comparison = params.get('comparison');
 const host = document.querySelector('gcsp-greg-dashboard');
+if (host) routePortalEvents(host);
 function addFixtureNotice() {
   const page = host?.querySelector('.gcsp-greg');
   if (!FIXTURE_NAMES.includes(requested) || !page || page.querySelector('.gcsp-fixture-notice')) return;

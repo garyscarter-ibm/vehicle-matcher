@@ -222,7 +222,7 @@ test('approved DTO flows through the default HTTP adapter/controller into the sh
 });
 
 // FUCQ-371 on the FUCQ-383 layout: a feedback reason is one whole Benefits highlight, even on a long car name.
-test('a feedback-improvement reason renders whole as a Benefits highlight beside a long vehicle name', async () => {
+test('feedback improvement and negative-rating reasons render whole as Benefits beside a long vehicle name', async () => {
   const dto = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url), 'utf8'));
   dto.quote.facts.display.name = 'BMW 3 Series 320d xDrive M Sport Pro Touring Individual Edition with Technology Pack Plus';
   dto.quote.revisions.feedback = 'employee.currentCarFeedback.v1@gcsp-policy-v1+manual-records-v1';
@@ -235,6 +235,10 @@ test('a feedback-improvement reason renders whole as a Benefits highlight beside
   assert.match(root.textContent, /Technology Pack Plus/); assert.equal(items.length, 1);
   for (const node of root.querySelectorAll('.gcsp-highlight')) assert.equal(node.getAttribute('style'), null);
   assert.equal(root.querySelector('.gcsp-decision-highlights [class*="truncate"], .gcsp-decision-highlights [class*="clamp"], .gcsp-decision-highlights [class*="ellipsis"]'), null);
+  dto.quote.decision.reasons = [{ code: 'feedback-different', keys: ['modelLine', 'body', 'fuel'] }];
+  view.update({ ...toOfferPresentation({ status: 'ok', value: dto }).value, canAccept: false, canDecline: false,
+    decisionUnavailable: true, countdown: '2 hours remaining' });
+  assert.match(root.querySelector('.gcsp-highlight-benefits').textContent, /Different from the current car you rated poorly\./);
   view.destroy();
 });
 

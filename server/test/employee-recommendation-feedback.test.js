@@ -54,7 +54,7 @@ test('typed fields are validated in exactly the stored shapes and the baseline i
   const accepted = await run(service, { currentCarRating: rating(null), sameAgain: sameAgain(false) });
   assert.equal(accepted.status, 'ok');
   const missingBaseline = await run(setup({ baseline: null }), { currentCarRating: rating(5) });
-  assert.equal(byCar(missingBaseline)[1].feedback.reasonCode, 'feedback-baseline-unavailable');
+  assert.equal(missingBaseline.status, 'unavailable'); assert.equal(missingBaseline.code, 'feedback-baseline-unavailable');
 });
 
 test('rating 1 to 5 and unset: positive keeps similar or proven improvement, negative omits similar, neutral changes nothing', async () => {
@@ -170,36 +170,32 @@ test('gates always come first: a loved or Same-again car failing any gate is nev
   assert.ok(codes(byCar(points)[1].blockers).includes('allowance-exceeded')); assert.ok(!codes(byCar(points)[1].blockers).includes('same-again-different'));
 });
 
-test('a contract mismatch or missing baseline is neutral with a recorded reason', async () => {
+test('stale-contract feedback is neutral; active continuity cannot silently lose its baseline', async () => {
   const plain = await run(setup());
   const wrong = await run(setup(), { currentCarRating: rating(1, 'current:other'), sameAgain: sameAgain(true, 'current:other') });
   assert.deepEqual(kept(wrong), kept(plain)); const open = wrong.value.decisions.filter((d) => d.gateStatus === 'eligible');
   assert.ok(open.length > 0 && open.every((d) => d.feedback.reasonCode === 'feedback-contract-mismatch' && d.feedback.effect === 'none'));
   const none = await run(setup({ baseline: null }), { currentCarRating: rating(1), sameAgain: sameAgain(true) });
-  assert.deepEqual(kept(none), kept(plain));
-  assert.ok(none.value.decisions.filter((d) => d.gateStatus === 'eligible').every((d) => d.feedback.reasonCode === 'feedback-baseline-unavailable' && d.feedback.baseline === null));
+  assert.equal(none.status, 'unavailable'); assert.equal(none.code, 'feedback-baseline-unavailable');
   const garbage = await run(setup({ baseline: { contractId: 'current:employee-test' } }), { currentCarRating: rating(1) });
   assert.ok(garbage.value.decisions.filter((d) => d.gateStatus === 'eligible').every((d) => d.feedback.reasonCode === 'feedback-baseline-unavailable'));
 });
 
-test('a missing, invalid or legacy-version feedback entry applies no effect and records why', async () => {
-  const plain = await run(setup());
+test('missing, invalid or legacy feedback policy cannot silently disable active feedback', async () => {
   const missing = withSeed((s) => { s.assumptions = s.assumptions.filter((row) => row.key !== KEY); });
   const broken = withSeed((s) => { feedbackValue(s).precedence = ['rating', 'gates']; });
   for (const policyService of [missing, broken]) {
     const result = await run(setup({ policyService }), { currentCarRating: rating(1), sameAgain: sameAgain(true) });
-    assert.equal(result.status, 'ok'); assert.deepEqual(kept(result), kept(plain));
-    assert.ok(result.value.decisions.every((d) => d.feedback.applied === false && d.feedback.reason === 'feedback-policy-unavailable'));
-    assert.equal(Object.hasOwn(result.value.versions, 'feedback'), false);
+    assert.equal(result.status, 'unavailable'); assert.equal(result.code, 'feedback-policy-unavailable');
+    assert.equal((await run(setup({ policyService }))).status, 'ok');
   }
   const legacy = new PolicyService({ provider: { loadVersions: async () => [seed, (() => { const next = structuredClone(seed); next.policyVersion = 'gcsp-policy-v0';
     next.effectiveFrom = instant;
     for (const t of ['allowances', 'pricePlans', 'eligibilityRules', 'schemeRuleLinks', 'assumptions']) next[t].forEach((r) => { r.policyVersion = 'gcsp-policy-v0'; });
     next.assumptions = next.assumptions.filter((row) => row.key !== KEY); return next; })()] } });
   const pinned = await setup({ policyService: legacy }).recommend({ ...context, policyVersion: 'gcsp-policy-v0' }, { ...base(), currentCarRating: rating(1) });
-  assert.equal(pinned.status, 'ok'); assert.equal(pinned.value.versions.policy, 'gcsp-policy-v0');
-  assert.deepEqual(kept(pinned), kept(plain));
-  assert.ok(pinned.value.decisions.every((d) => d.feedback.applied === false && d.feedback.reason === 'feedback-policy-unavailable'));
+  assert.equal(pinned.status, 'unavailable'); assert.equal(pinned.code, 'feedback-policy-unavailable');
+  assert.equal((await setup({ policyService: legacy }).recommend({ ...context, policyVersion: 'gcsp-policy-v0' }, base())).status, 'ok');
 });
 
 test('one canonical policy change alters the real evaluator: thresholds and dimensions', async () => {

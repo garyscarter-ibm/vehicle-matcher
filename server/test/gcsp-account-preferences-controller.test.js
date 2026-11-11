@@ -653,3 +653,33 @@ test('refreshBuddy adopts the buddy lane quietly, defers while busy, and reloads
   controller.open('comfort'); controller.change('comfort', { value: 0 }); await settle();
   const before = loads; await controller.refreshBuddy(); assert.equal(loads, before, 'nothing is re-read while a save is pending');
 });
+
+
+test('quiet refresh adopts remote rating and Same again changes even when categories are unchanged', async () => {
+  let response = withBuddy(again(), buddy());
+  const { controller, saves } = harness(() => response);
+  await controller.load();
+  response = withBuddy(again({}, { versions: { briefVersion: 2, draftVersion: 2 } }), buddy());
+  response.value.initial.currentCarRating.value = 5;
+  await controller.refreshBuddy();
+  assert.equal(controller.snapshot().rating.value, 5, 'a rating-only remote edit is adopted');
+  response = withBuddy(again({}, { on: true, versions: { briefVersion: 2, draftVersion: 3 } }), buddy('engaged'));
+  response.value.initial.currentCarRating.value = 5;
+  await controller.refreshBuddy();
+  assert.equal(controller.snapshot().rating.value, 5);
+  assert.equal(controller.snapshot().rating.saved, 5);
+  assert.equal(controller.snapshot().sameAgain.on, true);
+  assert.equal(controller.snapshot().understanding.value, 11);
+  assert.equal(controller.snapshot().briefVersion, 2);
+  controller.change('body', { value: ['estate'] });
+  assert.equal(saves.length, 0, 'remote Same again locks category editing before the next action');
+  response = withBuddy(again({}, { on: false, versions: { briefVersion: 3, draftVersion: 4 } }), buddy());
+  response.value.initial.currentCarRating.value = 2;
+  await controller.refreshBuddy();
+  assert.equal(controller.snapshot().sameAgain.on, false);
+  assert.equal(controller.snapshot().rating.value, 2);
+  controller.change('body', { value: ['estate'] });
+  assert.equal(saves[0].input.expectedBriefVersion, 3);
+  assert.equal(saves[0].input.expectedDraftVersion, 4);
+  controller.destroy();
+});

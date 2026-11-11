@@ -1,5 +1,6 @@
 import { validInstant } from '../policy/file-provider.js';
 import { confirmedFact, scorePreferences } from '../../scenarios/employee/index.js';
+import { canonicalVehicleIdentifier } from '../vehicle-evidence/vehicle-lookup.js';
 
 export const FEEDBACK_KEY = 'employee.currentCarFeedback.v1';
 // The evaluator implements exactly this order, so a policy naming another one fails closed.
@@ -28,6 +29,7 @@ export function projectCurrentCarBaseline({ manualContext, contractId, context, 
   const put = (key, value, unit) => { facts[key] = { status: 'known', value, unit, provenance: { ...provenance } }; };
   if (plain(vehicle)) {
     for (const key of strings) if (text(vehicle[key])) put(key, vehicle[key], null);
+    if (canonicalVehicleIdentifier('configuration', vehicle.configurationId)) put('configurationId', vehicle.configurationId, null);
     for (const [key, unit] of Object.entries(numbers)) if (Number.isFinite(vehicle[key]) && vehicle[key] > 0) put(key, vehicle[key], unit);
     if (Array.isArray(vehicle.tags) && vehicle.tags.length && vehicle.tags.every(text)) put('tags', [...vehicle.tags], null);
   }
@@ -55,10 +57,16 @@ export const feedbackPolicyValid = (v) => plain(v) && v.schemaVersion === 1 && p
 export const ratingClass = (value, rating) => ['positive', 'negative'].find((k) => rating[k].includes(value)) ?? 'neutral';
 
 // similar/same only when every dimension is confirmed equal on both sides; one confirmed difference is different.
-export function matchDimensions(baselineFacts, facts, dimensions, config, equal) {
+export function matchDimensions(baselineFacts, facts, dimensions, config, equal, configurationId) {
   let unknown = false;
   for (const key of dimensions) {
     const a = baselineFacts[key]; const b = facts[key];
+    if (key === 'configurationId') {
+      if (!confirmedFact(a, config) || !canonicalVehicleIdentifier('configuration', a.value)
+        || !canonicalVehicleIdentifier('configuration', configurationId)) { unknown = true; continue; }
+      if (a.value !== configurationId) return 'different';
+      continue;
+    }
     if (!confirmedFact(a, config) || !confirmedFact(b, config)) { unknown = true; continue; }
     if (a.value !== b.value) return 'different';
   }
@@ -73,7 +81,10 @@ export function compareImprovement({ snapshot, scored, baseline, brief, employee
   const facts = Object.fromEntries(Object.entries(baseline.facts).filter(([, fact]) => confirmedFact(fact, config)));
   const base = scorePreferences({ display: { name: 'current car' }, facts }, brief, employeeFacts, config, slider).components;
   // An anchored score for a missing model fact (ac6bccdc) is not evidence, so it stays unknown.
-  const at = (rows, key) => { const row = rows.find((r) => r.field === key); return row?.modelFactsIncomplete ? undefined : row?.score; };
+  const at = (rows, key) => {
+    const row = rows.find((r) => r.field === key);
+    return row?.modelFactsIncomplete || !Object.values(row?.facts ?? {}).every((f) => confirmedFact(f, config)) ? undefined : row?.score;
+  };
   const scores = expressed.map((key) => [key, at(scored.components, key), at(base, key)]);
   if (scores.some(([, c, b]) => !Number.isFinite(c) || !Number.isFinite(b))) return { result: 'unknown', keys: [] };
   const better = scores.filter(([, c, b]) => c > b).map(([key]) => key);

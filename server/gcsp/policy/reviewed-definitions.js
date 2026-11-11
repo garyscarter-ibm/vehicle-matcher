@@ -48,8 +48,19 @@ const offerJourneyDefinition = { schemaVersion: 1, definitionSetId: 'offer-journ
   definitions: [...offerDeclineReasons.definitions, ...offerFollowupQuestions.definitions] };
 const offerJourney = { ...offerJourneyDefinition, digest: inputDigest(offerJourneyDefinition) };
 if (!validateReviewedDefinitionSet(offerJourney)) throw new TypeError('The combined offer journey definition is invalid.');
+// These deployed employee rules are reviewed in the canonical seed; do not duplicate defaults.
+const employeeSeed = JSON.parse(await readFile(new URL('./seed-v1.json', import.meta.url), 'utf8'));
+const employeeKeys = ['brief.engagement.v1', 'employee.currentCarFeedback.v1'];
+const employeeDefinition = { schemaVersion: 1, definitionSetId: 'employee-experience-v1', revision: '1',
+  definitions: [...employeeKeys.map((key) => {
+    const row = employeeSeed.assumptions.find((entry) => entry.key === key);
+    if (!row) throw new TypeError('Missing reviewed employee experience rule.');
+    const { policyVersion, effectiveFrom, ...definition } = row; return definition;
+  }), ...offerJourney.definitions] };
+const employeeExperience = { ...employeeDefinition, digest: inputDigest(employeeDefinition) };
+if (!validateReviewedDefinitionSet(employeeExperience)) throw new TypeError('The employee experience definition is invalid.');
 const registry = freeze({ [presenter.definitionSetId]: presenter, [gregEditor.definitionSetId]: gregEditor,
   [learning.definitionSetId]: learning, [offerDeclineReasons.definitionSetId]: offerDeclineReasons,
   [choiceModel.definitionSetId]: choiceModel, [offerFollowupQuestions.definitionSetId]: offerFollowupQuestions,
-  [offerJourney.definitionSetId]: offerJourney });
+  [offerJourney.definitionSetId]: offerJourney, [employeeExperience.definitionSetId]: employeeExperience });
 export const getReviewedDefinitionSet = (definitionSetId) => Object.hasOwn(registry, definitionSetId) ? registry[definitionSetId] : null;

@@ -2,7 +2,7 @@
 import { el, screenIntro, button, statusScreen } from '../../vehicle-matcher/ui.js';
 import { svgIcon } from '../shell/portal-shell.js';
 import { activityTimeline } from '../kit/activity-timeline.js';
-import { buddyState, buddyStatus } from '../kit/buddy-status.js';
+import { buddyEngaged, buddyState, buddyStatus } from '../kit/buddy-status.js';
 import { activityOffer } from './activity-offer.js';
 import { activityCopy as copy, activityEvents, searchLines, exclusionLines } from './activity-copy.js';
 
@@ -24,7 +24,7 @@ function nextSteps(lines, onReviewBrief, announce) {
   box.append(actions); return box;
 }
 
-export function activityBody({ result, onRetry, onPause, onResume, onReviewBrief, pending = false, offerDisplay, level = 1, announce } = {}) {
+export function activityBody({ result, onRetry, onPause, onResume, onEngage, onDisengage, onReviewBrief, pending = false, offerDisplay, level = 1, announce } = {}) {
   // A host that passes announce owns the view's one live region, so nothing here is live.
   const hosted = typeof announce === 'function';
   const root = el('div', 'vm gcsp-activity'); root.destroy = () => {};
@@ -46,15 +46,14 @@ export function activityBody({ result, onRetry, onPause, onResume, onReviewBrief
     setup.classList.add('gcsp-buddy-action'); state.append(setup);
     root.append(statusScreen({ title: 'Set up your buddy', message: 'Choose your preferences to get started.', role: hosted ? null : 'status' })); return root;
   }
-  const paused = value.permission.paused === true;
-  // An accepted car ends the search, so it reads finished and offers no pause or resume.
+  const paused = !buddyEngaged(value.permission);
+  // An accepted car ends the search and closes the Buddy controls.
   const finished = value.currentOffer?.state === 'accepted';
   if (!finished) {
-    const command = paused ? onResume : onPause;
-    const allowed = paused || value.permission.canSearch === true;
-    const disabled = pending || !allowed || typeof command !== 'function';
-    const reason = pending ? 'Updating search' : !allowed ? 'Search unavailable' : typeof command !== 'function' ? 'Preview only' : undefined;
-    const action = button({ label: paused ? 'Resume search' : 'Pause search', variant: 'ghost', disabled, onClick: command });
+    const command = paused ? (onEngage ?? onResume) : (onDisengage ?? onPause);
+    const disabled = pending || typeof command !== 'function';
+    const reason = pending ? 'Updating Buddy' : typeof command !== 'function' ? 'Preview only' : undefined;
+    const action = button({ label: paused ? 'Engage Buddy' : 'Disengage Buddy', variant: 'ghost', disabled, onClick: command });
     action.classList.add('gcsp-buddy-action', 'gcsp-activity-search-action'); action.dataset.focusKey = 'buddy-search-action';
     action.prepend(svgIcon(paused ? ['m8 5 11 7-11 7Z'] : ['M8 5v14', 'M16 5v14']));
     if (reason) {

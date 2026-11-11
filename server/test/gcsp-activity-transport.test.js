@@ -4,11 +4,11 @@ const mod=await import('../../blocks/gcsp/activity/activity-http.js').catch(() =
 const make=(args) => {assert.equal(typeof mod.createActivityHttpAdapter,'function');return mod.createActivityHttpAdapter(args);};
 test('transport uses fixed same-origin no-store credentialed paths and whitelists command fields',async () => {
   const calls=[];const signal=new AbortController().signal;
-  const a=make({fetch:async (path,options) => {calls.push({path,options});return {ok:true,json:async () => ({status:'ok',value:{}})};}});
+  const a=make({fetch:async (path,options) => {calls.push({path,options});return {ok:true,json:async () => ({status:'ok',value:{initial:{briefVersion:calls.filter((c) => c.options.method==='POST').length+2,draftVersion:4}}})};}});
   await a.readActivity({signal});await a.pause({commandId:'p',expectedBriefVersion:2,employeeId:'forged',runId:'foreign',signal});await a.resume({commandId:'r',expectedBriefVersion:3,signal});
-  assert.deepEqual(calls.map((c) => c.path),['/api/gcsp/activity','/api/gcsp/brief/pause','/api/gcsp/brief/resume']);
+  assert.deepEqual(calls.map((c) => c.path),['/api/gcsp/activity','/api/gcsp/brief/editor','/api/gcsp/brief/disengage','/api/gcsp/brief/editor','/api/gcsp/brief/engage']);
   for(const c of calls){assert.equal(c.options.credentials,'same-origin');assert.equal(c.options.cache,'no-store');assert.equal(c.options.redirect,'error');assert.equal(c.options.signal,signal);}
-  assert.deepEqual(JSON.parse(calls[1].options.body),{commandId:'p',expectedBriefVersion:2});assert.equal(calls[0].options.body,undefined);
+  assert.deepEqual(JSON.parse(calls[2].options.body),{commandId:'p',expectedBriefVersion:2,expectedDraftVersion:4});assert.equal(calls[0].options.body,undefined);
 });
 test('transport retains real stale/session outcomes and maps network, malformed and false-success responses to unavailable',async () => {
   const answers=[{ok:false,json:async () => ({status:'stale-version'})},{ok:false,json:async () => ({status:'missing-session'})},{ok:false,json:async () => ({status:'ok'})},{ok:true,json:async () => ({unexpected:true})}];
@@ -45,4 +45,16 @@ test('readOfferDisplay reads the exact offer URL and returns only the validated 
   answer={status:'not-found'};assert.equal(await a.readOfferDisplay(ids),null);
   answer={...offerEnvelope(),value:{...offerEnvelope().value,schemaVersion:2}};assert.equal(await a.readOfferDisplay(ids),null);
   assert.equal(await make({fetch:async () => {throw new Error('offline');}}).readOfferDisplay(ids),null);
+});
+
+
+test('Activity preflight refuses a changed brief or unreadable draft and forwards minimum refusals', async () => {
+  const calls=[]; let initial={briefVersion:4,draftVersion:2}; let outcome={status:'invalid',code:'engagement-minimum',remaining:2};
+  const adapter=make({fetch:async (path,options) => {calls.push(path); return {ok:true,json:async () => options.method==='GET'?{status:'ok',value:{initial}}:outcome};}});
+  assert.equal((await adapter.engage({commandId:'stale',expectedBriefVersion:3})).status,'stale-version');
+  assert.deepEqual(calls,['/api/gcsp/brief/editor']);
+  assert.deepEqual(await adapter.engage({commandId:'minimum',expectedBriefVersion:4}),outcome);
+  initial={briefVersion:4};
+  assert.equal((await adapter.disengage({commandId:'bad-read',expectedBriefVersion:4})).status,'unavailable');
+  assert.equal(calls.filter((path) => path==='/api/gcsp/brief/disengage').length,0);
 });

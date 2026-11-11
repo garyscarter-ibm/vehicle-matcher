@@ -31,27 +31,27 @@ const MODELS = {
     body: 'estate', fuel: 'ev', boot: 490, zeroTo62: 6.1, sizeClass: 3, insuranceGroup: 35, tags: ['electric'] },
   // FUCQ-199: the G1-6-eligible line, so a G1-6 employee (Alex) has a car.
   hatch: { ...f70, model: '1 Series Sports Hatch', derivative: '120', configurationId: 'Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=', key: 'F70 Sports Hatch|120',
-    insuranceGroup: 22, tags: ['city'] },
+    zeroTo62: 7.8, mpg: 48.7, insuranceGroup: 22, tags: ['city'] },
 };
-// Generated-stock lines with no demo car (FUCQ-77 mappings): line specs from MODEL_SPECS, insurance group and tags synthetic.
-// 0-62 varies by derivative (M135, M240i), so it stays unknown until FUCQ-77 supplies per-derivative facts.
+// Per-derivative BMW references and WLTP conventions: docs/gcsp/stock-model-facts-2026-11-11.md.
+// Stock provenance remains synthetic; insurance groups and tags remain scenario assumptions.
 const g42 = { body: 'coupe', fuel: 'petrol', boot: 390, sizeClass: 1, seats: 4, tags: ['sporty'] };
 const BROWSE_LINES = [
-  { ...f70, key: 'F70 Sports Hatch|M135', insuranceGroup: 36, tags: ['sporty'] },
-  { ...g42, key: 'G42 Coupe|220i', insuranceGroup: 29 },
-  { ...g42, key: 'G42 Coupe|230i', insuranceGroup: 33 },
-  { ...g42, key: 'G42 Coupe|M240i', insuranceGroup: 42 },
+  { ...f70, key: 'F70 Sports Hatch|M135', zeroTo62: 4.9, mpg: 34.4, insuranceGroup: 36, tags: ['sporty'] },
+  { ...g42, key: 'G42 Coupe|220i', zeroTo62: 7.5, mpg: 41.5, insuranceGroup: 29 },
+  { ...g42, key: 'G42 Coupe|230i', zeroTo62: 5.9, mpg: 40.4, insuranceGroup: 33 },
+  { ...g42, key: 'G42 Coupe|M240i', zeroTo62: 4.3, mpg: 35.3, insuranceGroup: 42 },
   // Demo fleet lines (11 November): body and fuel from the derivative, boot and size from MODEL_SPECS.
-  ...[['G21 Touring|330e', 'estate', 'phev', 410, 2, 32, ['family']], ['G21 Touring|M340i', 'estate', 'petrol', 500, 2, 44, ['family', 'sporty']],
-    ['U11 X1|18d', 'suv', 'diesel', 540, 2, 25, ['family']], ['U11 X1|20i', 'suv', 'petrol', 540, 2, 24, ['family']],
-    ['U11 X1|23d', 'suv', 'diesel', 540, 2, 28, ['family']], ['U11 X1|23i', 'suv', 'petrol', 540, 2, 29, ['family']],
-    ['U11 X1|25e', 'suv', 'phev', 490, 2, 30, ['family']], ['U11 X1|30e', 'suv', 'phev', 490, 2, 31, ['family']],
-    ['U11 X1|M35i', 'suv', 'petrol', 540, 2, 38, ['family', 'sporty']], ['U11 iX1|iX1 20', 'suv', 'ev', 490, 2, 30, ['electric']],
-    ['U11 iX1|iX1 30', 'suv', 'ev', 490, 2, 33, ['electric']], ['U10 X2|20i', 'suv', 'petrol', 470, 2, 27, ['family']],
-    ['U10 X2|M35i', 'suv', 'petrol', 470, 2, 38, ['sporty']], ['U10 iX2|iX2 20', 'suv', 'ev', 525, 2, 31, ['electric']],
-    ['U10 iX2|iX2 30', 'suv', 'ev', 525, 2, 34, ['electric']], ['G26 i4|i4 35', 'coupe', 'ev', 470, 2, 41, ['electric']],
-    ['G26 i4|i4 40', 'coupe', 'ev', 470, 2, 44, ['electric']]]
-    .map(([key, body, fuel, boot, sizeClass, insuranceGroup, tags]) => ({ key, body, fuel, boot, sizeClass, insuranceGroup, tags })),
+  ...[['G21 Touring|330e', 'estate', 'phev', 410, 2, 32, ['family'], 6.0, 37.7], ['G21 Touring|M340i', 'estate', 'petrol', 500, 2, 44, ['family', 'sporty'], 4.5, 36.7],
+    ['U11 X1|18d', 'suv', 'diesel', 540, 2, 25, ['family'], 8.9, 52.3], ['U11 X1|20i', 'suv', 'petrol', 540, 2, 24, ['family'], 8.3, 46.3],
+    ['U11 X1|23d', 'suv', 'diesel', 540, 2, 28, ['family'], 7.4, 56.5], ['U11 X1|23i', 'suv', 'petrol', 540, 2, 29, ['family'], 7.1, 41.5],
+    ['U11 X1|25e', 'suv', 'phev', 490, 2, 30, ['family'], 6.8, 43.5], ['U11 X1|30e', 'suv', 'phev', 490, 2, 31, ['family'], 5.6, 43.5],
+    ['U11 X1|M35i', 'suv', 'petrol', 540, 2, 38, ['family', 'sporty'], 5.4, 35.8], ['U11 iX1|iX1 20', 'suv', 'ev', 490, 2, 30, ['electric'], 8.6, null],
+    ['U11 iX1|iX1 30', 'suv', 'ev', 490, 2, 33, ['electric'], 5.6, null], ['U10 X2|20i', 'suv', 'petrol', 470, 2, 27, ['family'], 8.3, 44.8],
+    ['U10 X2|M35i', 'suv', 'petrol', 470, 2, 38, ['sporty'], 5.4, 34.4], ['U10 iX2|iX2 20', 'suv', 'ev', 525, 2, 31, ['electric'], 8.6, null],
+    ['U10 iX2|iX2 30', 'suv', 'ev', 525, 2, 34, ['electric'], 5.6, null], ['G26 i4|i4 35', 'coupe', 'ev', 470, 2, 41, ['electric'], 6.0, null],
+    ['G26 i4|i4 40', 'coupe', 'ev', 470, 2, 44, ['electric'], 5.6, null]]
+    .map(([key, body, fuel, boot, sizeClass, insuranceGroup, tags, zeroTo62, mpg]) => ({ key, body, fuel, boot, sizeClass, insuranceGroup, tags, zeroTo62, mpg })),
 ];
 // Browse facts of a model line by its eligibility key, as { name: { value, unit } }; shared with generated stock.
 export function modelBrowseFacts(key) {

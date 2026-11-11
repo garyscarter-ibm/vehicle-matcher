@@ -6,4 +6,4 @@
 .gcsp .gcsp-tab[aria-selected="true"] { border-bottom-color: var(--gcsp-accent); color: var(--gcsp-text); font-weight: var(--gcsp-font-strong-weight); }
 .gcsp .gcsp-tab:focus-visible, .gcsp .gcsp-tab-panel:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
 .gcsp .gcsp-tab-panel { min-width: 0; }
-.gcsp .gcsp-tab-panel[hidden] { display: none; }
+.gcsp .gcsp-tab-panel[hidden] { display: none; } @media (max-width: 600px) { .gcsp .gcsp-tab { min-height: 44px; } }
