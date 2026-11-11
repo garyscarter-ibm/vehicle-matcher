@@ -121,3 +121,25 @@ test('stored evaluator cannot escalate drafts into a preview or confer state-wri
   assert.equal((await evaluator.evaluate(subject(), { ...brief(), briefVersion: 0 })).status, 'invalid');
   assert.equal(writes, 0); assert.deepEqual(supplied, before);
 });
+
+test('each recommendation boundary loads one pinned policy with unchanged complete results and provenance', async () => {
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
+  const methods = ['getAllowance', 'getAssumption', 'getEligibility', 'getPointsCost'];
+  for (const count of [0, 1, 50]) {
+    let loads = 0;
+    const scoped = new PolicyService({ provider: { async loadVersions() { loads += 1; return [seed]; } } });
+    const plain = Object.fromEntries(methods.map((method) => [method, (...args) => scoped[method](...args)]));
+    const source = provider(providerValue(Array.from({ length: count }, (_, index) => stock(index + 1))));
+    for (const boundary of ['recommend', 'previewUnsaved', 'evaluate']) {
+      const operation = (policy) => boundary === 'evaluate'
+        ? createStoredSubjectRecommendationEvaluator(ports({ policy, provider: source })).evaluate(subject(), brief())
+        : createEmployeeRecommendationService(ports({ policy, provider: source }))[boundary](context, boundary === 'recommend' ? brief() : preview());
+      const expected = await operation(plain); assert.equal(expected.status, 'ok');
+      loads = 0;
+      assert.deepEqual(await operation(scoped), expected);
+      assert.equal(loads, 1, `${boundary}: ${count} candidates`);
+      assert.deepEqual(await operation(scoped), expected);
+      assert.equal(loads, 2, `${boundary}: a new operation reloads the provider`);
+    }
+  }
+});

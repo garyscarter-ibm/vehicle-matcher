@@ -152,6 +152,23 @@ function providerContract(name, factory) {
         assert.equal((await f.provider.loadVersions(await f.read())).length, 2);
       } finally { await reopened.close(); }
     }));
+    await t.test('operation scope retains old pins and discovers another instance publication immediately', () => withFixture(async (f, fixture) => {
+      const reopened = fixture.reopen();
+      try {
+        const competing = new PolicyService({ provider: reopened, identity: f.identity, clock: f.clock });
+        const later = { runId: f.greg.runId, asOf: nextDate };
+        const pin = { ...later, policyVersion: initialVersion };
+        await f.policy.withReadScope(async () => {
+          const held = await f.policy.getAssumption(changedKey, pin);
+          assert.equal((await f.policy.getActiveVersion(later)).policyVersion, initialVersion);
+          assert.equal((await competing.publishPolicyVersion(f.greg, change())).status, 'ok');
+          const current = await f.policy.getAssumption(changedKey, later);
+          assert.equal(current.policyVersion, 'policy-test-v2'); assert.equal(current.value.value, 180);
+          assert.deepEqual(await f.policy.getAssumption(changedKey, pin), held);
+          assert.deepEqual(await f.policy.getAssumption(changedKey, { ...later, policyVersion: 'policy-test-v2' }), current);
+        });
+      } finally { await reopened.close(); }
+    }));
     await t.test('later scheduled versions retain distinct changes already scheduled before them', () => withFixture(async (f) => {
       assert.equal((await f.policy.publishPolicyVersion(f.greg, change())).status, 'ok');
       const scheduled = await f.provider.loadVersions(await f.read());

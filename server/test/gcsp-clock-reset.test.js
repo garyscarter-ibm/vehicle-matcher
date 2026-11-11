@@ -78,7 +78,12 @@ test('reset restores versioned employees/time and new allocator identifiers whil
   const oldScope = { ...scope(before.runId), ...f.presenter };
   const stock = (await f.repository.query(oldScope, 'stock')).value;
   assert.equal(stock.length, 2);
-  await f.repository.transaction(oldScope, command('employee-change'), (tx) => tx.compareAndSwap({ table: 'employees', key: { runId: before.runId, employeeId: f.employee.employeeId } }, 1, { name: 'Changed during trial' }));
+  const changed = await f.repository.transaction(oldScope, command('employee-change'), async (tx) => {
+    const ref = { table: 'employees', key: { runId: before.runId, employeeId: f.employee.employeeId } };
+    const employee = await tx.get(ref);
+    return tx.compareAndSwap(ref, employee.value.version, { name: 'Changed during trial' });
+  });
+  assert.equal(changed.status, 'ok');
   const corpus = stock.map((row) => row.configurationId);
   const input = resetCommand(before);
   assert.equal((await f.clock.reset(f.employee, input)).status, 'forbidden');
@@ -142,6 +147,26 @@ const register = async (f, handlers) => {
   for (const [handlerId, stage, handle] of handlers) assert.equal((await f.clock.registerHandler({ handlerId, stage, handle })).status, 'ok');
 };
 const tickCommand = (eventId = 'tick-one', expectedClockVersion = '1') => ({ eventId, expectedClockVersion, inputDigest: inputDigest({ cue: eventId }) });
+
+test('one tick shares pinned policy with the consumer facade and the next tick loads a fresh source', async () => {
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
+  let loads = 0;
+  const policy = new PolicyService({ provider: { async loadVersions() { loads += 1; return [seed]; } } });
+  const f = await setup({ policy });
+  const facade = policy.withPublicationPorts({ clock: f.clock, identity: f.identity, repository: f.repository });
+  const handle = async ({ context, now }) => facade.withReadScope(async () => {
+    const read = { runId: context.runId, asOf: now, policyVersion: seed.policyVersion };
+    const outcomes = await Promise.all(['hold.cart.durationSeconds', 'hold.buddy.durationSeconds'].map((key) => facade.getAssumption(key, read)));
+    assert.ok(outcomes.every((outcome) => outcome.status === 'ok'));
+    return ok({ policyVersion: outcomes[0].policyVersion });
+  });
+  await register(f, [['first', 'release-pull', handle], ['second', 'buddy-allocation', handle]]);
+  loads = 0;
+  assert.equal((await f.clock.tick(f.presenter, tickCommand('policy-scope-one'))).status, 'ok');
+  assert.equal(loads, 1);
+  assert.equal((await f.clock.tick(f.presenter, tickCommand('policy-scope-two'))).status, 'ok');
+  assert.equal(loads, 2);
+});
 
 test('ticks record policy stage/id order and durable event outcomes, including replay after reopening', async () => {
   const f = await setup();

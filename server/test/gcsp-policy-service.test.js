@@ -351,3 +351,77 @@ test('quote terms stay valid at least as long as the buddy hold they pin', async
   const hold = (await service.getAssumption('hold.buddy.durationSeconds', read)).value.value;
   assert.equal(quote >= hold, true);
 });
+
+test('operation scopes share in-flight pinned reads and nested scopes preserve complete typed outcomes', async () => {
+  const seeds = [await alternateSeed()]; let loads = 0;
+  const policy = new PolicyService({ provider: { async loadVersions() { loads += 1; await Promise.resolve(); return seeds; } } });
+  const pin = { ...read, policyVersion: version };
+  const expected = await projection(withSeeds(...seeds), pin);
+  await policy.withReadScope(async () => {
+    const [first, nested] = await Promise.all([
+      projection(policy, pin), policy.withReadScope(() => projection(policy, { ...pin, asOf: '2027-01-01T00:00:00Z' })),
+    ]);
+    assert.deepEqual(first, expected); assert.deepEqual(nested, expected);
+    assert.equal(loads, 1);
+    first.allowance.value.monthlyPoints = -1;
+    assert.deepEqual(await projection(policy, pin), expected);
+  });
+  await policy.withReadScope(() => projection(policy, pin));
+  assert.equal(loads, 2);
+});
+
+test('scoped pins isolate runs, versions, service instances and concurrent operations', async () => {
+  const seed = await alternateSeed();
+  const next = reviseVersion(structuredClone(seed), 'scoped-v2', '2026-11-05T00:00:00Z');
+  let loads = 0;
+  const provider = { async loadVersions() { loads += 1; await Promise.resolve(); return [seed, next]; } };
+  const policy = new PolicyService({ provider }); const other = new PolicyService({ provider });
+  const pin = { ...read, policyVersion: version };
+  await policy.withReadScope(async () => {
+    await Promise.all([policy.getActiveVersion(pin), policy.getActiveVersion({ ...pin, runId: 'another-run' }),
+      policy.getActiveVersion({ ...pin, policyVersion: next.policyVersion }), other.getActiveVersion(pin)]);
+    assert.equal(loads, 4);
+    assert.equal((await policy.getActiveVersion({ ...pin, policyVersion: 'missing' })).code, 'policy-version-not-found');
+    assert.equal((await policy.getActiveVersion({ ...pin, asOf: 'invalid' })).code, 'invalid-read');
+    assert.equal(loads, 5);
+  });
+  const before = loads;
+  await Promise.all([policy.withReadScope(() => projection(policy, pin)), policy.withReadScope(() => projection(policy, pin))]);
+  assert.equal(loads - before, 2);
+});
+
+test('unpinned discovery sees new versions within a scope while retained pins remain stable', async () => {
+  const seed = await alternateSeed(); let supplied = [seed]; let loads = 0;
+  const policy = new PolicyService({ provider: { async loadVersions() { loads += 1; return supplied; } } });
+  const pin = { ...read, policyVersion: version };
+  const later = { ...read, asOf: '2026-11-06T12:00:00Z' };
+  await policy.withReadScope(async () => {
+    const held = await projection(policy, pin);
+    assert.equal((await policy.getActiveVersion(later)).policyVersion, version);
+    const next = reviseVersion(structuredClone(seed), 'scoped-v2', '2026-11-05T00:00:00Z');
+    const nextPin = { ...later, policyVersion: next.policyVersion };
+    assert.equal((await policy.getActiveVersion(nextPin)).code, 'policy-version-not-found');
+    supplied = [seed, next];
+    assert.equal((await policy.getActiveVersion(later)).policyVersion, next.policyVersion);
+    assert.equal((await policy.getActiveVersion(nextPin)).policyVersion, next.policyVersion);
+    assert.deepEqual(await projection(policy, pin), held);
+    assert.equal(loads, 5);
+  });
+});
+
+test('source errors are scoped and a later operation retries the source without hiding a new failure', async () => {
+  const seed = await alternateSeed(); let fail = true; let loads = 0;
+  const policy = new PolicyService({ provider: { async loadVersions() { loads += 1; if (fail) throw Error('private-source'); return [seed]; } } });
+  const facade = policy.withPublicationPorts();
+  const pin = { ...read, policyVersion: version };
+  await policy.withReadScope(async () => {
+    const failed = await Promise.all([policy.getActiveVersion(pin), facade.getAssumption('hold.cart.durationSeconds', pin)]);
+    assert.ok(failed.every((outcome) => outcome.status === 'unavailable' && outcome.code === 'source-unavailable'));
+    assert.equal(loads, 1);
+  });
+  fail = false;
+  assert.equal((await facade.withReadScope(() => facade.getActiveVersion(pin))).status, 'ok');
+  fail = true;
+  assert.equal((await policy.withReadScope(() => policy.getActiveVersion(pin))).status, 'unavailable');
+  assert.equal(loads, 3);
+});

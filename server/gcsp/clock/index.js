@@ -151,7 +151,7 @@ export class DemoClock {
     if (allowed.status !== 'ok') return allowed;
     const current = await this.#current(context);
     if (current.status !== 'ok') return current;
-    return composePresenterTick({ repository: this.#repository, policy: this.#policy, clock: this }, context, input);
+    return this.#withPolicyReadScope(() => composePresenterTick({ repository: this.#repository, policy: this.#policy, clock: this }, context, input));
   }
 
   async reset(context, input = {}, preparedFixture) {
@@ -244,6 +244,14 @@ export class DemoClock {
   }
 
   async #executeTick(context, input, kind) {
+    return this.#withPolicyReadScope(() => this.#executeScopedTick(context, input, kind));
+  }
+
+  #withPolicyReadScope(work) {
+    return typeof this.#policy.withReadScope === 'function' ? this.#policy.withReadScope(work) : work();
+  }
+
+  async #executeScopedTick(context, input, kind) {
     const current = await this.#current(context);
     if (current.status !== 'ok') return current;
     const configured = await loadClockConfiguration(this.#policy, this.#read(current.value), current.value);

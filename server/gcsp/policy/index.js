@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { FilePolicyProvider, PolicySourceError, snapshotVersions, validInstant } from './file-provider.js';
 import { PostgresPolicyProvider } from './postgres-provider.js';
 import { publishPolicyVersion } from './publish.js';
@@ -19,10 +20,26 @@ export class PolicyService {
   #provider;
   #identity; #clock; #repository;
   #snapshots = new WeakMap(); #pinnedRows = new WeakMap();
+  #readScopes = new AsyncLocalStorage();
 
   constructor({ provider = new FilePolicyProvider(), identity, clock, repository } = {}) {
     this.#provider = provider;
     this.#identity = identity; this.#clock = clock; this.#repository = repository;
+  }
+
+  // A scope shares immutable pins only; active-version discovery always reaches the provider.
+  withReadScope(work) {
+    return this.#readScopes.getStore() ? work() : this.#readScopes.run(new Map(), work);
+  }
+
+  async #loadVersions(read) {
+    const supplied = await this.#provider.loadVersions(read);
+    let versions = this.#snapshots.get(supplied);
+    if (!versions) {
+      versions = snapshotVersions(supplied);
+      this.#snapshots.set(supplied, versions);
+    }
+    return versions;
   }
 
   async #resolve(read) {
@@ -32,12 +49,13 @@ export class PolicyService {
     }
     let versions;
     try {
-      const supplied = await this.#provider.loadVersions(read);
-      versions = this.#snapshots.get(supplied);
-      if (!versions) {
-        versions = snapshotVersions(supplied);
-        this.#snapshots.set(supplied, versions);
-      }
+      const scope = Object.hasOwn(read, 'policyVersion') && this.#readScopes.getStore();
+      const key = scope && JSON.stringify([read.runId, read.policyVersion]);
+      if (scope && !scope.has(key)) scope.set(key, this.#loadVersions(read));
+      const loading = scope ? scope.get(key) : this.#loadVersions(read);
+      versions = await loading;
+      // A missing pin may be published later, so only found immutable versions retain reuse.
+      if (scope && scope.get(key) === loading && !versions.some((version) => version.policyVersion === read.policyVersion)) scope.delete(key);
     } catch (error) {
       return { error: outcome(error instanceof PolicySourceError && error.code === 'source-invalid' ? 'invalid' : 'unavailable', null, {
         code: error instanceof PolicySourceError ? error.code : 'source-unavailable',
@@ -157,7 +175,9 @@ export class PolicyService {
   }
 
   withPublicationPorts({ identity, clock, repository } = {}) {
-    return new PolicyService({ provider: this.#provider, identity, clock, repository });
+    const facade = new PolicyService({ provider: this.#provider, identity, clock, repository });
+    facade.#readScopes = this.#readScopes;
+    return facade;
   }
 
   async adoptReviewedAssumptions(context, input) {

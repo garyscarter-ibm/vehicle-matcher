@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { inputDigest, ok } from '../gcsp/repository/index.js';
+import { createMemoryRepository, inputDigest, ok } from '../gcsp/repository/index.js';
 import { BriefService } from '../gcsp/brief/index.js';
 import { buddyDeclineEvents, buddyExpiryEvents } from '../gcsp/allocation/index.js';
 import { DECISION_EVENTS } from '../gcsp/offers/decision.js';
@@ -130,6 +130,54 @@ test('changing a completed producer payload conflicts without another claim', as
   await f.write((tx) => tx.compareAndSwap(ref, row.version, { outcome: ok({ ...row.outcome.value, source: {
     ...row.outcome.value.source, version: 'changed-source' } }) }));
   assert.equal((await f.service.consumeTriggers(f.context)).status, 'conflict'); assert.equal(f.calls.length, calls);
+});
+
+test('clock summary skips historical evaluation hydration while full allocation replay remains complete', async () => {
+  let evaluationReads = 0;
+  const f = await allocationFixture({ cars: 2, createRepository(options) {
+    const repository = createMemoryRepository(options);
+    return { ...repository, async read(context, reference) {
+      if (reference.table === 'event_receipts' && reference.key.consumerId === 'buddy-allocation-evaluation') evaluationReads += 1;
+      return repository.read(context, reference);
+    } };
+  } });
+  await put(f, release(f));
+  const summary = await f.service.consumeTriggers(f.context, { projection: 'summary' });
+  assert.equal(summary.status, 'ok', JSON.stringify(summary));
+  const calls = f.calls.length;
+  evaluationReads = 0;
+  const full = await f.service.consumeTriggers(f.context);
+  assert.equal(full.status, 'ok', JSON.stringify(full)); assert.ok(evaluationReads > 0);
+  const [small] = summary.value.allocations; const [complete] = full.value.allocations;
+  assert.equal(small.projection, 'summary'); assert.equal(small.receipt.eventId, complete.event.eventId);
+  assert.equal(small.assignments.length, complete.assignments.length);
+  assert.equal(small.attempts.length, complete.attempts.length);
+  assert.deepEqual(small.evaluations.map((row) => row.employeeId), complete.evaluations.map((row) => row.employeeId));
+  assert.ok(complete.assignments[0].quote); assert.equal(Object.hasOwn(small.assignments[0], 'quote'), false);
+  assert.ok(Buffer.byteLength(JSON.stringify(summary)) < Buffer.byteLength(JSON.stringify(full)) / 4);
+  evaluationReads = 0;
+  assert.deepEqual(await f.create().consumeTriggers(f.context, { projection: 'summary' }), summary);
+  assert.equal(evaluationReads, 0); assert.equal(f.calls.length, calls);
+  const ref = { table: 'event_receipts', key: { runId: f.context.runId, consumerId: 'stock-release', eventId: 'released-tranche' } };
+  const row = (await f.repository.read(f.context, ref)).value;
+  await f.write((tx) => tx.compareAndSwap(ref, row.version, { outcome: ok({ ...row.outcome.value,
+    source: { ...row.outcome.value.source, version: 'changed-with-same-producer-digest' } }) }));
+  assert.equal((await f.service.consumeTriggers(f.context, { projection: 'summary' })).status, 'conflict');
+  assert.equal(f.calls.length, calls);
+});
+
+test('clock summary resumes an uncertain allocation using its original durable operation', async () => {
+  let interrupted = true;
+  const f = await allocationFixture({ cars: 1, claimResult: (_, input) => interrupted
+    ? { status: 'unavailable' } : ok({ claimId: input.operationId }) });
+  await put(f, release(f));
+  assert.equal((await f.service.consumeTriggers(f.context, { projection: 'summary' })).code, 'claim-pending');
+  interrupted = false;
+  const resumed = await f.create().consumeTriggers(f.context, { projection: 'summary' });
+  assert.equal(resumed.status, 'ok', JSON.stringify(resumed));
+  assert.equal(resumed.value.allocations[0].assignments.length, 1);
+  assert.equal(f.calls[0].input.operationId, f.calls[1].input.operationId);
+  assert.deepEqual(f.calls[0].input.quote, f.calls[1].input.quote);
 });
 
 test('buddy expiry receipts group by lapse instant, sort holds and ignore other producers', () => {

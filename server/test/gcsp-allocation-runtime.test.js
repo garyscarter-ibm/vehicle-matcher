@@ -113,12 +113,16 @@ test('shared runtime allocates on brief-changed then stock-released triggers thr
   assert.deepEqual(briefChanged.attempts, []); assert.equal((await f.rows('offers')).length, 0);
   const released = allocationsOf(good(await tick(f))).filter((row) => row.event.eventType === 'stock-released');
   assert.equal(released.length, 1); assert.equal(released[0].state, 'allocated');
+  assert.equal(released[0].projection, 'summary');
   assert.equal(released[0].policyVersion, f.presenter.policyVersion);
   assert.equal(released[0].assumptions[0].key, 'allocation.tieBreak.rule');
   assert.deepEqual(released[0].evaluations.map((row) => row.employeeId), [f.contexts.paula.employeeId]);
   assert.equal(released[0].attempts.length, 1); assert.equal(released[0].attempts[0].outcome.status, 'ok');
   for (const table of ['offers', 'notification_outbox']) assert.equal((await f.rows(table)).length, 1);
   assert.equal((await f.rows('holds')).filter((row) => row.type === 'buddy-offer').length, 1);
+  assert.equal(JSON.stringify(released).includes('vehicle-snapshot-v1'), false, 'clock outcomes carry no recommendation/quote graphs');
+  const next = good(await tick(f, 'fresh-tick-after-release'));
+  assert.deepEqual(allocationsOf(next), allocationsOf(good(await tick(f))), 'later ticks retain compact historical summaries');
 });
 
 test('a stale first claim makes the composed allocator try the next car; one hold, offer and outbox job', async (t) => {

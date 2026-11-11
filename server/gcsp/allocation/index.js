@@ -116,6 +116,21 @@ export function createAllocationService({ repository, policy, clock, identity, c
     const { evaluationRefs, ...value } = outcome.value;
     return ok({ ...value, evaluations });
   }
+  // Clock receipts need identity and counts, not another copy of every quote and
+  // recommendation graph. Explicit allocation callers retain the full replay.
+  function summarize(eventId, outcome) {
+    if (outcome?.status !== 'ok') return outcome;
+    const value = outcome.value;
+    return ok({ projection: 'summary', runId: value.runId, state: value.state,
+      receipt: { consumerId: ALLOCATION_CONSUMER, eventId },
+      event: { eventId, eventType: value.event.eventType, sourceEventId: value.event.sourceEventId },
+      evaluatedAt: value.evaluatedAt, policyVersion: value.policyVersion, assumptions: value.assumptions,
+      assignments: value.assignments.map(({ employeeId, orderUuid, operationId }) => ({ employeeId, orderUuid, operationId })),
+      attempts: value.attempts.map(({ employeeId, orderUuid, operationId, outcome: attemptOutcome }) => ({ employeeId, orderUuid, operationId,
+        outcome: { status: attemptOutcome.status } })),
+      evaluations: (value.evaluationRefs?.employeeIds ?? value.evaluations.map((row) => row.employeeId)).map((employeeId) => ({ employeeId })),
+      ...(value.excluded ? { excluded: value.excluded.map(({ employeeId }) => ({ employeeId })) } : {}) });
+  }
   async function prepare(context, event, instant, assumptions) {
     // A rejected pre-plan attempt reads repaired rows on retry; the accepted prepare receipt freezes replay.
     // Transaction results are kept as command receipts, so this one returns a marker, not the rows.
@@ -252,10 +267,10 @@ export function createAllocationService({ repository, policy, clock, identity, c
     register() {
       if (typeof clock?.registerHandler !== 'function') return Promise.resolve(unavailable('not-configured'));
       registration ??= clock.registerHandler({ handlerId: ALLOCATION_CONSUMER, stage: 'buddy-allocation',
-        handle: ({ context }) => service.consumeTriggers(context) });
+        handle: ({ context }) => service.consumeTriggers(context, { projection: 'summary' }) });
       return registration;
     },
-    async consumeTriggers(context) {
+    async consumeTriggers(context, { projection = 'full' } = {}) {
       if (!repository || typeof identity?.requireRole !== 'function') return unavailable('not-configured');
       const allowed = await identity.requireRole(context, 'presenter'); if (allowed.status !== 'ok') return allowed;
       try {
@@ -292,7 +307,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
           || ordinal(a.sourceReceipt.consumerId, b.sourceReceipt.consumerId) || ordinal(a.sourceEventId, b.sourceEventId));
         const allocations = [];
         for (const event of events) {
-          const outcome = await service.allocate(context, event); if (outcome.status !== 'ok') return outcome;
+          const outcome = await service.allocate(context, event, { projection }); if (outcome.status !== 'ok') return outcome;
           allocations.push(outcome.value);
         }
         const left = allocations.at(-1)?.excluded;
@@ -300,7 +315,7 @@ export function createAllocationService({ repository, policy, clock, identity, c
           ...(left?.length ? { limitations: [{ code: 'renewal-deadline-unknown', employees: new Set(left.map((row) => row.employeeId)).size }] } : {}) });
       } catch { return unavailable('allocation-source-invalid'); }
     },
-    async allocate(context, event) {
+    async allocate(context, event, { projection = 'full' } = {}) {
       if (!repository || !policy || !clock || typeof identity?.resolveEmployeeContext !== 'function' || typeof claim?.tryClaim !== 'function') return unavailable('not-configured');
       const allowed = await identity.requireRole(context, 'presenter'); if (allowed.status !== 'ok') return allowed;
       if (!event || !text(event.eventId) || !['stock-released', 'brief-changed', 'buddy-expired', 'buddy-declined'].includes(event.eventType)
@@ -310,7 +325,8 @@ export function createAllocationService({ repository, policy, clock, identity, c
       try {
         let receipt = await readAllocationReceipt(context, ref(context, event.eventId), 'plan');
         if (receipt.status === 'ok' && receipt.value.inputDigest !== digest) return result('conflict', { reason: 'idempotency-input-changed' });
-        if (receipt.status === 'ok' && receipt.value.state === 'completed') return hydrate(context, event.eventId, receipt.value.outcome);
+        if (receipt.status === 'ok' && receipt.value.state === 'completed') return projection === 'summary'
+          ? summarize(event.eventId, receipt.value.outcome) : hydrate(context, event.eventId, receipt.value.outcome);
         if (receipt.status !== 'ok' && receipt.status !== 'not-found') return receipt;
         if (receipt.status === 'not-found') {
           const time = await clock.now(context); if (time.status !== 'ok') return time;
@@ -408,7 +424,8 @@ export function createAllocationService({ repository, policy, clock, identity, c
         });
         if (finished.status !== 'ok') return finished;
         const completed = await repository.read(context, ref(context, event.eventId));
-        return completed.status === 'ok' ? hydrate(context, event.eventId, completed.value.outcome) : completed;
+        return completed.status === 'ok' ? projection === 'summary'
+          ? summarize(event.eventId, completed.value.outcome) : hydrate(context, event.eventId, completed.value.outcome) : completed;
       } catch { return unavailable('allocation-source-invalid'); }
     },
   };
