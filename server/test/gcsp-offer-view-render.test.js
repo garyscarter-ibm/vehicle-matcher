@@ -143,6 +143,21 @@ test('missing image has a useful fallback and terminal states have no decision c
   }
 });
 
+test('loading uses the shared offer skeleton until the authoritative offer arrives', () => {
+  const { root, view, data } = render('pending');
+  view.update({ state: 'loading' });
+  const skeleton = root.querySelector('.gcsp-skeleton[data-layout="offer"]');
+  assert.ok(skeleton); assert.equal(root.querySelector('.gcsp-offer-body').getAttribute('aria-busy'), 'true');
+  assert.equal(skeleton.querySelector('[role="status"]').textContent, 'Loading your offer.');
+  assert.equal(root.querySelector('button, a, input'), null);
+  assert.doesNotMatch(root.textContent, /Please wait/);
+  view.update(data);
+  assert.equal(root.querySelector('.gcsp-skeleton[data-layout="offer"]'), null);
+  assert.equal(root.querySelector('.gcsp-offer-body').getAttribute('aria-busy'), 'false');
+  assert.equal(root.querySelector('h1').textContent, 'Your vehicle offer');
+  view.destroy();
+});
+
 // FUCQ-228: an expired offer shows that it expired and the next step, not the offer's fit.
 test('expired offer shows only its expiry and next step', () => {
   const { root, view, data } = render('pending', { links: { activity: '/gcsp-activity-live.html', cars: '/gcsp-account.html' } });

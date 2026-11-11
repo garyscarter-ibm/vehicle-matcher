@@ -368,6 +368,10 @@
       "max_lines": 14
     },
     {
+      "path": "blocks/gcsp/kit/offer-skeleton.css",
+      "max_lines": 19
+    },
+    {
       "path": "blocks/gcsp/kit/release-skeleton.css",
       "max_lines": 12
     },
@@ -417,7 +421,7 @@
     },
     {
       "path": "blocks/gcsp/kit/vehicle-decision.css",
-      "max_lines": 59
+      "max_lines": 57
     },
     {
       "path": "blocks/gcsp/offer/decision-drawer.css",

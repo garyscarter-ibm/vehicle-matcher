@@ -7,6 +7,7 @@ import { stageList } from '../kit/stage-list.js';
 import { dataTable } from '../kit/data-table.js';
 import { orderIdentityRows } from '../kit/order-identity.js';
 import { viewStatus } from '../kit/view-status.js';
+import { loadingSkeleton } from '../kit/loading-skeleton.js';
 import { ACCESS_LAPSED_TITLE, RUN_RESTARTED_TITLE, accessLapsedScreen, runRestartedScreen } from '../kit/run-restarted.js';
 import { followupHandle } from './followup-entry.js';
 
@@ -195,6 +196,11 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
     gallery?.destroy(); gallery = undefined;
     content.replaceChildren(); if (!checking) showCheck('');
     const state = model.state;
+    if (state === 'loading') {
+      const heading = screenIntro({ title: 'Your vehicle offer', level: 1 }); heading.classList.add('gcsp-vh');
+      content.append(heading, loadingSkeleton({ label: 'Loading your offer.', layout: 'offer' }));
+      messageNode = el('p'); return;
+    }
     if (state === 'restarted' || state === 'access-lapsed') {
       // The offer page sits outside the access gate, so a lapsed key needs the access form, not a reload.
       const screen = state === 'restarted' ? runRestartedScreen() : accessLapsedScreen();
@@ -323,6 +329,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, setExp
   }
   function update(model) {
     lastModel = model;
+    page.setAttribute('aria-busy', String(model.state === 'loading'));
     decisionWasOpen = Boolean(page.querySelector('[data-offer-decision-drawer]'));
     drawer.update(model);
     if (decisionWasOpen && model.state === 'accepted') accepting = true;

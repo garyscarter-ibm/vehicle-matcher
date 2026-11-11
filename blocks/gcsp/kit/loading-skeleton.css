@@ -1,4 +1,4 @@
-@import "./release-skeleton.css"; /* GCSP kit: page-shaped placeholders; still under reduced motion. */
+@import "./release-skeleton.css"; @import "./offer-skeleton.css"; /* GCSP kit: page-shaped placeholders; still under reduced motion. */
 .gcsp .gcsp-skeleton-shapes { display: flex; flex-direction: column; gap: 16px; max-width: 1040px; }
 .gcsp .gcsp-skeleton-shape { display: block; height: 14px; border-radius: var(--gcsp-radius); background: var(--gcsp-divider) linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%) no-repeat; background-size: 200% 100%; opacity: 0.7; animation: gcsp-skeleton-sweep 1.4s ease-in-out infinite; }
 .gcsp .gcsp-skeleton-title { width: 38%; height: 32px; margin-bottom: 8px; }

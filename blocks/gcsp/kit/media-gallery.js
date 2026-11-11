@@ -2,6 +2,7 @@ import { el, button } from '../../vehicle-matcher/ui.js';
 import { mediaWell } from '../../vehicle-matcher/modes/result-card.js';
 import { isDisplayImage } from './vehicle-image-assets.js';
 import { NO_IMAGE_TEXT } from './plain-copy.js';
+import { loadingSkeleton } from './loading-skeleton.js';
 
 let sequence = 0;
 const paths = { enlarge: ['M10 3a7 7 0 1 0 0 14a7 7 0 0 0 0-14', 'm15 15 6 6', 'M10 7v6M7 10h6'], close: ['m6 6 12 12M18 6 6 18'], previous: ['m14 5-7 7 7 7'], next: ['m10 5 7 7-7 7'] };
@@ -32,7 +33,7 @@ export function mediaGallery({ name = 'Vehicle', images = [], placeholder = NO_I
   let selected = 0; let destroyed = false; let open = false;
   const failed = new Set(); const thumbSets = [];
   let dialog; let large; let heading; let position; let previous; let next; let enlarge;
-  const status = el('p', 'gcsp-media-gallery-loading', 'Loading image'); status.setAttribute('role', 'status');
+  const status = loadingSkeleton({ label: 'Loading image', layout: 'media' }); status.classList.add('gcsp-media-gallery-loading');
   const api = { root, get selectedIndex() { return selected; }, select, destroy() {
     if (destroyed) return; destroyed = true; close(false);
     root.ownerDocument.removeEventListener('keydown', onKey);
@@ -81,14 +82,14 @@ export function mediaGallery({ name = 'Vehicle', images = [], placeholder = NO_I
     thumbSets.forEach((set) => { set[index].classList.add('is-unavailable'); set[index].querySelector('img')?.remove(); });
     if (previous) previous.hidden = next.hidden = views.length - failed.size < 2;
     if (index !== selected) return;
-    status.hidden = true; enlarge.hidden = true;
+    status.hidden = true; feature.setAttribute('aria-busy', 'false'); enlarge.hidden = true;
     well.showPhoto(null); well.media.querySelector('.vm-card-soon').textContent = views.length > 1 ? 'Image unavailable. Choose another view.' : placeholder;
     if (large) { large.replaceChildren(el('p', 'gcsp-media-gallery-unavailable', 'Image unavailable')); }
   }
   function showLarge(view, index) {
     heading.textContent = view.label; position.textContent = `${index + 1} of ${views.length}`;
     if (!open) return;
-    const loading = el('p', 'gcsp-media-gallery-large-loading', 'Loading image'); loading.setAttribute('role', 'status');
+    const loading = loadingSkeleton({ label: 'Loading image', layout: 'media' }); loading.classList.add('gcsp-media-gallery-large-loading');
     const image = el('img', 'gcsp-media-gallery-large'); image.alt = view.alt;
     image.addEventListener('load', () => loading.remove());
     image.addEventListener('error', () => { if (selected === index) markFailed(index); });
@@ -103,12 +104,12 @@ export function mediaGallery({ name = 'Vehicle', images = [], placeholder = NO_I
     enlarge.setAttribute('aria-label', `Enlarge ${view.label.toLowerCase()} image`);
     if (failed.has(selected)) { markFailed(selected); }
     else {
-      well.showPhoto(view.src, view); status.hidden = false; enlarge.hidden = false;
+      well.showPhoto(view.src, view); status.hidden = false; feature.setAttribute('aria-busy', 'true'); enlarge.hidden = false;
       const image = well.media.querySelector('img'); image.loading = 'eager';
       const ownIndex = selected;
-      image.addEventListener('load', () => { if (selected === ownIndex && image.isConnected) status.hidden = true; });
+      image.addEventListener('load', () => { if (selected === ownIndex && image.isConnected) { status.hidden = true; feature.setAttribute('aria-busy', 'false'); } });
       image.addEventListener('error', () => { if (selected === ownIndex && !destroyed) markFailed(ownIndex); });
-      if (image.complete && image.naturalWidth > 0) status.hidden = true;
+      if (image.complete && image.naturalWidth > 0) { status.hidden = true; feature.setAttribute('aria-busy', 'false'); }
     }
     if (dialog) {
       showLarge(view, selected);

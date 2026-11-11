@@ -42,6 +42,19 @@ test('the feature layout is Your cars: a title, one full-bleed car panel, a pane
   assert.equal(root.querySelectorAll('.gcsp-skeleton-panel').length, 1); assert.equal(root.querySelectorAll('.gcsp-skeleton-rows').length, 1);
 });
 
+test('offer and media layouts reserve the redesigned content without interactive or announced shapes', () => {
+  const offer = loadingSkeleton({ layout: 'offer', label: 'Loading your offer.' });
+  assert.ok(offer.querySelector('.gcsp-skeleton-clock'));
+  const card = offer.querySelector('.gcsp-skeleton-offer-card');
+  assert.ok(card.querySelector('.gcsp-skeleton-media'));
+  assert.equal(card.querySelectorAll('.gcsp-skeleton-button').length, 2);
+  assert.equal(offer.querySelector('button, a, input, [tabindex]'), null);
+  assert.equal(offer.querySelectorAll('[role="status"]').length, 1);
+  const media = loadingSkeleton({ layout: 'media' });
+  assert.equal(media.querySelector('.gcsp-skeleton-shapes').childElementCount, 1);
+  assert.ok(media.querySelector('.gcsp-skeleton-media'));
+});
+
 test('release layouts mirror car tiles, labelled counters and label/bar/count rows without live announcements', () => {
   const cars = loadingSkeleton({ layout: 'release-grid', items: 8, role: null });
   assert.equal(cars.querySelectorAll('.gcsp-release-tile').length, 8); assert.equal(cars.querySelector('[tabindex],[role]'), null);

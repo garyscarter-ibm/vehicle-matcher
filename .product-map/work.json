@@ -5106,6 +5106,19 @@
       "original_status": "In Review",
       "branch": "dev/DEV-2026-11-11-GC-005",
       "workers": []
+    },
+    {
+      "id": "FUCQ-402",
+      "title": "Align the redesigned vehicle offer with shared page and skeleton patterns",
+      "status": "In Review",
+      "original_status": "In Review",
+      "type": "Bug",
+      "observed_at": "2026-11-11T20:18:00Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-402",
+      "assignee": "",
+      "unsliced": true,
+      "note": "Gary-authorised bounded presentation repair: shared skeletons and Density patterns, scoped checks and parent desktop/375/320 review. Existing FUCQ-387 global ratchet failure remains independent; no acceptance/full-suite/deployed claim. docs/gcsp/evidence/fucq-402/README.md",
+      "workers": []
     }
   ]
 }

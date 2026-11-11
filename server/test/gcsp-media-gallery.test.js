@@ -19,6 +19,27 @@ const mount = (supplied = images()) => {
   return gallery;
 };
 
+test('feature and enlarged image skeletons settle on load or failure, and stale loads cannot clear a new view', () => {
+  const gallery = mediaGallery({ images: images() }); document.body.append(gallery.root);
+  const feature = gallery.root.querySelector('.gcsp-media-gallery-feature');
+  const loading = feature.querySelector('.gcsp-skeleton[data-layout="media"]');
+  assert.ok(loading); assert.equal(feature.getAttribute('aria-busy'), 'true');
+  const old = feature.querySelector('img');
+  gallery.select(1); old.dispatchEvent(new window.Event('load'));
+  assert.equal(loading.hidden, false);
+  feature.querySelector('img').dispatchEvent(new window.Event('load'));
+  assert.equal(loading.hidden, true); assert.equal(feature.getAttribute('aria-busy'), 'false');
+  gallery.root.querySelector('.gcsp-media-gallery-enlarge').click();
+  const dialog = gallery.root.querySelector('dialog');
+  assert.ok(dialog.querySelector('.gcsp-skeleton[data-layout="media"]'));
+  dialog.querySelector('img').dispatchEvent(new window.Event('load'));
+  assert.equal(dialog.querySelector('.gcsp-skeleton'), null);
+  gallery.select(2); feature.querySelector('img').dispatchEvent(new window.Event('error'));
+  assert.equal(loading.hidden, true); assert.equal(feature.getAttribute('aria-busy'), 'false');
+  assert.match(feature.textContent, /Image unavailable/);
+  gallery.destroy();
+});
+
 test('thumbnail changes the feature in place and magnifier opens that selected view', () => {
   const gallery = mount();
   gallery.root.querySelectorAll('.gcsp-media-gallery-thumbs button')[1].click();

@@ -4,12 +4,12 @@
 .gcsp .gcsp-vehicle-decision > :is(.vm-card-media, .gcsp-media-gallery) { grid-column: 1; grid-row: 1 / 3; min-width: 0; height: 100%; min-height: 400px; aspect-ratio: auto; }
 .gcsp .gcsp-vehicle-decision .vm-card-photo { object-fit: contain; }
 .gcsp .gcsp-vehicle-decision .vm-card-line { display: none; }
-.gcsp .gcsp-vehicle-decision .vm-card-name { font-size: clamp(1.65rem, 2.8vw, 2.25rem); line-height: 1.1; }
+.gcsp .gcsp-vehicle-decision .vm-card-name { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); }
 .gcsp .gcsp-vehicle-decision .vm-card-terms { display: flex; flex-direction: column; gap: var(--gcsp-space-1); }
 .gcsp .gcsp-vehicle-decision .vm-card-terms p, .gcsp .gcsp-vehicle-saving, .gcsp .gcsp-vehicle-summary .gcsp-note { margin: 0; }
 .gcsp .gcsp-vehicle-saving { color: var(--gcsp-success); font-weight: var(--gcsp-font-strong-weight); }
 .gcsp .gcsp-vehicle-summary .gcsp-offer-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.gcsp .gcsp-vehicle-summary .vm-btn { width: 100%; min-width: 0; padding-inline: var(--gcsp-space-2); min-height: 46px; font-size: var(--gcsp-font-size-regular); }
+.gcsp .gcsp-vehicle-summary .vm-btn { width: 100%; min-width: 0; padding-inline: var(--gcsp-space-2); }
 .gcsp .gcsp-vehicle-details { grid-column: 2; grid-row: 2; min-width: 0; padding: 0 var(--gcsp-space-6) var(--gcsp-space-6); }
 .gcsp .gcsp-vehicle-details-title, .gcsp .gcsp-vehicle-details .gcsp-finishes { display: none; }
 .gcsp .gcsp-vehicle-details .vm-facts { margin: var(--gcsp-space-4) 0 0; padding-top: var(--gcsp-space-4); border-top: 1px solid var(--gcsp-divider); }
@@ -27,13 +27,13 @@
 .gcsp .gcsp-highlight-benefits .gcsp-highlight-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
 .gcsp .gcsp-highlight { min-width: 0; border: 1px solid var(--gcsp-divider); padding: var(--gcsp-space-4); background: var(--gcsp-surface-raised); }
 .gcsp .gcsp-highlight-benefits .gcsp-highlight { background: var(--gcsp-accent-soft); }
-.gcsp .gcsp-highlight-heading { margin: 0; font-size: 1.375rem; font-weight: var(--gcsp-font-strong-weight); line-height: 1.2; }
+.gcsp .gcsp-highlight-heading { margin: 0; font-size: var(--gcsp-font-size-heading); font-weight: var(--gcsp-font-strong-weight); line-height: var(--gcsp-font-line-heading); }
 .gcsp .gcsp-highlight-number { font-size: var(--gcsp-font-size-figure); }
 .gcsp .gcsp-highlight-detail { margin: var(--gcsp-space-2) 0 0; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-small); }
 .gcsp .gcsp-highlight-empty { grid-column: 1 / -1; margin: 0; padding: var(--gcsp-space-4); }
 .gcsp .gcsp-offer-header { display: flex; align-items: start; justify-content: space-between; gap: var(--gcsp-space-4); }
 .gcsp .gcsp-offer-header .vm-intro { margin: 0; }
-.gcsp .gcsp-offer-header .vm-title { font-family: var(--gcsp-font-heading); font-size: var(--gcsp-font-size-figure-lg); line-height: 1.05; text-transform: none; }
+.gcsp .gcsp-offer-header .vm-title { margin: 0; }
 .gcsp .gcsp-offer-clock { display: flex; align-items: center; gap: var(--gcsp-space-3); flex-shrink: 0; }
 .gcsp .gcsp-offer-clock .gcsp-countdown { color: var(--gcsp-text); font-size: 2.75rem; font-weight: var(--gcsp-font-strong-weight); font-variant-numeric: tabular-nums; line-height: 1.1; }
 .gcsp .gcsp-offer-clock-label { font-size: var(--gcsp-font-size-small); color: var(--gcsp-text-muted); max-width: 8em; }
@@ -41,10 +41,8 @@
 .gcsp .gcsp-offer-header .vm-lede { margin: var(--gcsp-space-2) 0 0; }
 @media (max-width: 800px) {
   .gcsp .gcsp-vehicle-decision { grid-template-columns: minmax(0, 1fr); }
-  .gcsp .gcsp-offer-header .vm-title { font-size: var(--gcsp-font-size-figure); }
   .gcsp .gcsp-vehicle-summary > .gcsp-finishes { display: none; }
   .gcsp .gcsp-vehicle-details .gcsp-finishes { display: flex; }
-  .gcsp .gcsp-highlight-heading { font-size: 1.125rem; }
   .gcsp .gcsp-vehicle-summary { grid-column: 1; grid-row: 1; padding: var(--gcsp-space-4); }
   .gcsp .gcsp-vehicle-decision > :is(.vm-card-media, .gcsp-media-gallery) { grid-column: 1; grid-row: 2; height: auto; min-height: 0; }
   .gcsp .gcsp-vehicle-details { grid-column: 1; grid-row: 3; padding: var(--gcsp-space-4); }
