@@ -1,5 +1,5 @@
 import { createFeedbackState, reduceFeedback, applyConfirmedFeedbackChange, candidateSurvivesFeedback } from '../../../blocks/vehicle-matcher/feedback-actions.js';
-import { validateBrief, evaluateEssentials, scorePreferences, chargingGates, confirmedFact } from './index.js';
+import { validateBrief, evaluateEssentials, scorePreferences, rankEmployeeRecommendations, chargingGates, confirmedFact } from './index.js';
 
 const clone = (value) => structuredClone(value);
 const unavailable = (code) => ({ status: 'unavailable', code, retryable: true });
@@ -64,10 +64,11 @@ export function reduceEmployeeDraft(state, action, { source, config, slider, cha
         blockers, unknowns: [...unknowns, ...scored.unknowns], reasons: [...reasons, ...scored.reasons], tradeOffs: scored.tradeOffs,
         brief: clone(brief), employeeFacts, versions: { ...candidate.versions, brief: reduced.nextVersion } });
     }
-    const ranked = decisions.filter((d) => d.suitable).sort((a, b) => (b.score ?? -1) - (a.score ?? -1) || a.orderUuid.localeCompare(b.orderUuid));
+    const ranked = rankEmployeeRecommendations(decisions, config);
     return { status: 'ok', nextVersion: reduced.nextVersion, state: { ...clone(state), brief, feedback: reduced.state },
       outcome: { state: !decisions.length ? 'no-stock' : ranked.length ? 'recommendations'
         : decisions.some((d) => d.gateStatus === 'needs-confirmation') ? 'needs-confirmation' : 'no-match',
-      decisions, recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length } };
+      decisions, recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length,
+      ...(config.ranking ? { ranking: clone(config.ranking) } : {}) } };
   } catch { return unavailable('employee-draft-data-unavailable'); }
 }

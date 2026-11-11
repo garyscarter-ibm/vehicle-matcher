@@ -26,6 +26,8 @@ if (host && FIXTURE_NAMES.includes(requested)) {
     readOnly: true,
     readAccount: async () => accountFixture(requested),
     readDraft: async () => ({ status: 'not-found' }),
+    // ?offer=pending|declined|expired shows the newest offer in that state.
+    ...(query.get('offer') ? { readOffers: async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-fixture', runId: 'run-fixture', state: query.get('offer') }] } }) } : {}),
     discardDraft: async () => ({ status: 'unavailable', code: 'read-only-visual-fixture' }),
     startJourney: async () => ({ status: 'unavailable', code: 'read-only-visual-fixture' }),
   };

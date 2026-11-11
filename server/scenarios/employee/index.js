@@ -134,3 +134,25 @@ export function scorePreferences(snapshot, brief, employeeFacts, config, slider)
   return { score: importance ? Math.round(components.reduce((total, c) => total + c.score * (c.effectiveImportance ?? c.importance), 0) / importance) : null,
     components, unknowns, reasons, tradeOffs };
 }
+
+// Keep preference percentages intact. A band is anchored to its best remaining
+// fit, so a chain of near-ties cannot promote a much worse match to the top.
+export function rankEmployeeRecommendations(decisions, config) {
+  const ranked = decisions.filter((entry) => entry.gateStatus === 'eligible')
+    .sort((a, b) => (b.score ?? -1) - (a.score ?? -1) || a.orderUuid.localeCompare(b.orderUuid));
+  const ranking = config.ranking;
+  if (ranking === undefined) return ranked; // Retain the ordering of older policy pins.
+  if (ranking.rule !== 'similarFitThenPoints' || !Number.isFinite(ranking.fitTolerance)
+    || ranking.fitTolerance < 0 || ranking.fitTolerance > 100) throw TypeError('Invalid employee recommendation ranking');
+  const ordered = [];
+  for (let start = 0; start < ranked.length;) {
+    const best = ranked[start].score;
+    let end = start + 1;
+    while (end < ranked.length && (best === null ? ranked[end].score === null
+      : ranked[end].score !== null && best - ranked[end].score <= ranking.fitTolerance)) end += 1;
+    ordered.push(...ranked.slice(start, end).sort((a, b) => b.terms.points.value - a.terms.points.value
+      || (b.score ?? -1) - (a.score ?? -1) || a.orderUuid.localeCompare(b.orderUuid)));
+    start = end;
+  }
+  return ordered;
+}
