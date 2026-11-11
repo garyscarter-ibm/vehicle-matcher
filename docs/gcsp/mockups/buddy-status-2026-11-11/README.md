@@ -15,3 +15,9 @@ References: `docs/gcsp/experience-quality.md`, `COMPONENTS.md`, `docs/gcsp/your-
 The 10 November frozen Account reference and existing FUCQ-370 overlap this area; choosing a direction here is not a Story amendment or delivery claim. Spec, Story reconciliation and implementation follow selection. No Jira or product-map status is changed.
 
 Validation: static HTML/asset sanity checks and `git diff --check` passed; a quick browser look at 1280 px confirmed all three placements and nine state examples. [The saved board](options.jpg) shows that render. Application tests, interaction tests and full visual acceptance were not run for this static concept task. The temporary preview server was stopped after capture; the HTML and saved image remain available.
+
+## Refined combination
+
+Gary chose C’s Active presentation with B’s box styling and requested mockups for every status. [The combined board](combined.html) shows Active, Paused and Not configured side by side, each in the supplied gap and with a readable detail underneath. Active/Paused retain C’s coloured dot, state text, divider and View buddy route inside B’s white outlined box; the unconfigured state uses the chosen Set up your buddy wording. This is a further static concept, pending selection before build. The original options remain available.
+
+Validation: static sanity checks and `git diff --check` passed. One quick 1280 px browser look confirmed the three combined states; [the saved combined board](combined-statuses.jpg) records it. No application or interaction tests were run. The preview server was stopped after capture.

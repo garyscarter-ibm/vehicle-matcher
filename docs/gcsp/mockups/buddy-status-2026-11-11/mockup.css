@@ -49,6 +49,9 @@ h1, h2, p, figure { margin: 0; }
 .state-example + .state-example { border-top: 1px solid var(--gcsp-divider); }
 .review-foot { display: flex; gap: var(--gcsp-space-8); color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); margin-top: var(--gcsp-space-6); }
 .review-foot p { flex: 1; }
+.combined .option-head { min-height: 72px; }
+.combined .option-head h2 { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); }
+.combined .state-example { min-height: 44px; }
 @media (max-width: 1140px) {
   .review { padding: var(--gcsp-space-5); }
   .options { gap: var(--gcsp-space-4); }
