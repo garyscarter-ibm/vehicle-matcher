@@ -185,7 +185,7 @@ test('activity with a search that found nothing, its why box and renewal help ha
 test('activity loading and help standalone each keep one live region', async (t) => {
   const loading = root(); const never = new Promise(() => {});
   t.after(mountActivity(loading, { adapter: { loadAccount: async () => readyAccount, readActivity: () => never } }));
-  await waitFor(() => loading.querySelector('.gcsp-activity .vm-status')); assertQuiet(loading, 'activity loading');
+  await waitFor(() => loading.querySelector('.gcsp-activity .gcsp-skeleton')); assertQuiet(loading, 'activity loading');
   for (const name of ['none', 'unavailable', 'loading', 'request']) {
     const host = root(); const stop = mountHelpBody(host, { adapter: helpFixture(name) }); await settle(); await settle();
     assertQuiet(host, `help ${name}`); stop(); host.remove();
