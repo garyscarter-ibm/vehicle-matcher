@@ -27,7 +27,7 @@ function regroup(controller) {
   const fold = (label) => all('details.gcsp-presenter-fold').find((node) => [...node.children].find((c) => c.tagName === 'SUMMARY')?.textContent.startsWith(label));
   const actions = controller.querySelector('.gcsp-presenter-actions');
   const piece = {
-    actions, tick, reset: named('Reset scenario'), confirmation: controller.querySelector('.gcsp-presenter-confirmation'),
+    actions, tick, reset: named('Reset scenario'), toGreg: named('Reset and switch to Greg'), confirmation: controller.querySelector('.gcsp-presenter-confirmation'),
     proceed: named('Continue to workspace'), scenario: picker('Scenario'), availability: controller.querySelector('[id^="presenter-availability-"]'),
     next: named('Next release'), nextReason: controller.querySelector('[id^="presenter-release-"]'), toTarget: named('Tick to target'),
     target: controller.querySelector('.gcsp-presenter-group .gcsp-field'), times: controller.querySelector('datalist'),
@@ -41,7 +41,7 @@ function regroup(controller) {
   const empty = el('p', 'gcsp-note gcsp-console-empty', 'No fault switches reported');
   piece.faults.open = true; piece.lastTick.open = true;
   const items = [
-    { id: 'scenario', label: 'Scenario', panel: panel(piece.scenario, piece.availability, piece.reset, piece.confirmation, piece.proceed) },
+    { id: 'scenario', label: 'Scenario', panel: panel(piece.scenario, piece.availability, piece.reset, piece.toGreg, piece.confirmation, piece.proceed) },
     { id: 'clock', label: 'Clock', panel: panel(piece.tick, piece.next, piece.nextReason, piece.target, piece.times, piece.toTarget) },
     { id: 'people', label: 'People', panel: panel(piece.principal, piece.switchPrincipal, piece.fresh) },
     { id: 'faults', label: 'Faults', panel: panel(piece.faults, empty) },
