@@ -93,6 +93,12 @@ test('longDate formats date-only values and instants, and refuses the rest', () 
   for (const bad of [null, undefined, '', 'soon', '2026-02-30', '13/11/2026', 20261113]) assert.equal(longDate(bad), null, String(bad));
 });
 
+test('longDate names an instant by its UK day (BST in July, GMT in January) and a calendar date as itself', () => {
+  assert.equal(longDate('2026-07-15T23:30:00.000Z'), 'Thursday 16 July 2026');
+  assert.equal(longDate('2026-01-15T23:30:00.000Z'), 'Thursday 15 January 2026');
+  assert.equal(longDate('2026-07-15'), 'Wednesday 15 July 2026');
+});
+
 test('bodyStyleLabel reuses the shared labels and title-cases the rest', () => {
   assert.equal(bodyStyleLabel('coupe'), 'Coupé');
   assert.equal(bodyStyleLabel('mpv'), 'Family carrier');
