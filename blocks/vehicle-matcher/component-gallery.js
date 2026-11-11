@@ -245,7 +245,7 @@ function gregKitExamples() {
   const columns = [{ key: 'name', label: 'Model line' }, { key: 'released', label: 'Released', numeric: true },
     { key: 'held', label: 'Held', numeric: true }, { key: 'allocated', label: 'Allocated', numeric: true }];
   group('Vehicle decision: finishes and five benefits').append(
-    finishLabel({ label: 'Paint', value: 'Alpine White' }), finishLabel({ label: 'Upholstery', value: 'Black upholstery', shade: 'black' }),
+    finishLabel({ label: 'Paint', value: 'Alpine White' }), finishLabel({ label: 'Upholstery', value: 'Black Veganza' }),
     decisionHighlights({ benefits: [{ number: '25', title: 'fewer points', detail: 'Every month, compared with your current car' },
       ...['Head-up display', 'Panoramic glass roof', 'Harman Kardon audio', 'Parking assistance'].map((title) => ({ title, detail: 'Supplied comparison example' }))],
     tradeoffs: [{ number: '90', title: 'litres less', detail: 'Boot space compared with your current car' }] }),
@@ -254,6 +254,10 @@ function gregKitExamples() {
       rows: [{ label: 'Points a month', current: '320 points', offer: { label: '295 points', winner: true } },
         { label: 'Boot', current: { label: '500 litres', winner: true }, offer: '410 litres' }] }),
   );
+  group('Vehicle finishes: known, unknown and mixed colours').append(...[
+    ['Paint', 'Portimao Blue'], ['Paint', 'BMW Individual Paintwork'], ['Paint', 'Unlisted finish'],
+    ['Upholstery', 'Cognac Perforated Sensatec'], ['Upholstery', 'Veganza perforated Coral Red/Black'],
+  ].map(([label, value]) => finishLabel({ label, value })));
   const equipmentView = structuredClone(employeeCardFixture); equipmentView.members = equipmentView.members.slice(0, 1);
   const equipmentItems = Array.from({ length: 41 }, (_, index) => `Supplied equipment example ${index + 1}`);
   equipmentView.members[0].facts.push({ label: 'Options', value: equipmentItems.join(', '), items: equipmentItems });

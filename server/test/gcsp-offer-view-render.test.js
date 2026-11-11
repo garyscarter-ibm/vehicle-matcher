@@ -625,11 +625,11 @@ test('FUCQ-383: ties, unknowns and preference-dependent rows stay neutral with h
   assert.match(root.textContent, /No benefits confirmed/); assert.match(root.textContent, /No tradeoffs confirmed/);
 });
 
-test('FUCQ-383: supplied finish prose remains readable and unsupported colours remain neutral', () => {
+test('FUCQ-383: supplied finish prose remains readable and unrecognised colours remain neutral', () => {
   const { root, view, data } = render('pending');
-  data.card.members[0].facts = [{ label: 'Colour', value: 'Alpine White' }, { label: 'Interior', value: 'Black upholstery' }, { label: 'Scheme', value: 'Choices' }];
+  data.card.members[0].facts = [{ label: 'Colour', value: 'Unlisted blue paint' }, { label: 'Interior', value: 'Unknown leather with red stitching' }, { label: 'Scheme', value: 'Choices' }];
   view.update(data);
-  assert.match(root.querySelector('.gcsp-vehicle-details').textContent, /Alpine White.*Black upholstery/);
+  assert.match(root.querySelector('.gcsp-vehicle-details').textContent, /Unlisted blue paint.*Unknown leather with red stitching/);
   assert.equal(root.querySelectorAll('.gcsp-finish-swatch:not(.is-unknown)').length, 0);
   assert.doesNotMatch(root.querySelector('.vm-card').textContent, /Scheme|Choices|Order no\./);
 });
@@ -642,4 +642,22 @@ test('FUCQ-383: drawer action hook cannot bypass controller declaration acceptan
   root.querySelector('[data-offer-action="accept"]').click(); assert.deepEqual(calls, ['accept']);
   await ctl.decision('accept'); assert.deepEqual(calls, ['accept']);
   unsubscribe(); ctl.destroy(); view.destroy();
+});
+
+// The shared lookup works after the actual API projection; it is not a preview-only shade injection.
+test('projected access data paints recognised finish names without new shade fields or changed vehicle facts', async () => {
+  const dto = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url), 'utf8'));
+  const known = (value) => ({ ...structuredClone(dto.quote.facts.facts.seats), value, unit: null });
+  dto.quote.facts.facts.colour = known('Portimao Blue metallic');
+  dto.quote.facts.facts.interior = known('Black Veganza');
+  const outcome = toOfferPresentation({ status: 'ok', value: dto });
+  assert.equal(outcome.status, 'ok');
+  assert.equal(outcome.value.card.members[0].facts.find((fact) => fact.label === 'Colour').shade, undefined);
+  const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root); view.update(outcome.value);
+  const finishes = [...root.querySelectorAll('.gcsp-vehicle-summary .gcsp-finish')];
+  assert.deepEqual(finishes.map((node) => node.textContent), ['Portimao Blue metallic', 'Black Veganza']);
+  assert.deepEqual(finishes.map((node) => node.querySelector('span').style.backgroundColor), ['rgb(51, 86, 125)', 'rgb(29, 29, 31)']);
+  assert.equal(root.querySelectorAll('.gcsp-vehicle-summary .is-unknown').length, 0);
+  view.destroy();
 });

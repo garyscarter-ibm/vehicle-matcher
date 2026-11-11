@@ -72,3 +72,12 @@ test('image-only pickers retain names and synchronized selection while the exist
   assert.deepEqual([...original.root.querySelectorAll('.gcsp-media-gallery-thumbs button')].map((button) => button.textContent), images.map((image) => image.label));
   gallery.destroy(); original.destroy();
 });
+
+test('the fuller offer uses the shared white paint and black upholstery mapping without fixture-only shades', () => {
+  const { root, view, model } = mount();
+  assert.ok(model.card.members[0].facts.filter((fact) => ['Colour', 'Interior'].includes(fact.label)).every((fact) => fact.shade === undefined));
+  const finishes = [...root.querySelectorAll('.gcsp-vehicle-summary .gcsp-finish')];
+  assert.deepEqual(finishes.map((node) => node.textContent), ['Alpine White', 'Black Veganza']);
+  assert.deepEqual(finishes.map((node) => node.querySelector('span').style.backgroundColor), ['rgb(244, 244, 242)', 'rgb(29, 29, 31)']);
+  view.destroy();
+});
