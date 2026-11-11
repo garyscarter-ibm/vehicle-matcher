@@ -5022,6 +5022,64 @@
           "evidence": "Original composition reproduces supplied signature-policy failure; patched Node20 selection passes 60/60. See docs/gcsp/evidence/fucq392/offline-signature-policy-2026-11-11.md. Render recovery unverified."
         }
       ]
+    },
+    {
+      "id": "FUCQ-397",
+      "title": "Bring Buddy controls and recent history into Your cars",
+      "status": "To Do",
+      "type": "Story",
+      "assignee": "Gary Carter",
+      "observed_at": "2026-11-11T17:33:38Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-397",
+      "slices": [
+        {
+          "id": "tile",
+          "status": "in-progress",
+          "title": "Buddy-tile-and-controls",
+          "observed_at": "2026-11-11T17:33:38Z",
+          "evidence": "Pussyfoot implementing dev/DEV-2026-11-11-GC-004; Gary approved option A on 11 November 2026."
+        },
+        {
+          "id": "history",
+          "status": "not-started",
+          "title": "History-and-offer-drawers"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Integration-and-rendered-review"
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-398",
+      "title": "Show run-scoped Buddy allocation outcomes on Presenter",
+      "status": "To Do",
+      "type": "Story",
+      "assignee": "Gary Carter",
+      "observed_at": "2026-11-11T17:33:39Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-398",
+      "slices": [
+        {
+          "id": "projection",
+          "status": "in-progress",
+          "title": "Authoritative-allocation-projection",
+          "observed_at": "2026-11-11T17:33:39Z",
+          "evidence": "Yosemite Sam implementing dev/DEV-2026-11-11-GC-005; Gary approved option A on 11 November 2026."
+        },
+        {
+          "id": "presenter",
+          "status": "not-started",
+          "title": "Presenter-allocation-section"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Integration-and-rendered-review"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
