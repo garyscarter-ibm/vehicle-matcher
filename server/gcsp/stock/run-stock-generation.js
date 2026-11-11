@@ -74,13 +74,22 @@ export function createDemoStockGeneration({ policy, repository, contextForRun, e
         // Exact source evidence is retained even for an unmapped, ineligible model.
         const factsForConfiguration = (_binding, record, source) => {
           const key = mapping[record?.configuration?.agModelCode];
+          const selected = record?.catalogue?.equipment?.selected;
+          const selection = selected?.state === 'known' && Array.isArray(selected.options) ? {
+            optionSelection: { value: { kind: 'selected-catalogue', codes: [...new Set([...selected.options,
+              ...(selected.accessories ?? []).map((entry) => typeof entry === 'string' ? entry : entry.code)])],
+            complete: record.catalogue.schemaVersion === '2'
+              ? selected.factoryComplete === true && selected.accessoryCodesComplete === true
+              : record.catalogue.schemaVersion === '1' && selected.complete === true && selected.completeness === 'complete',
+            modelCode: record.configuration.vgModelCode, sourceRef: record.configurationId }, unit: null },
+          } : {};
           const details = vehicleEvidenceDetails({ kind: 'configuration', id: record.configurationId }, source);
           // The stock pull port excludes VIN fields; a configuration has no VIN association.
           delete details.identity.vin;
           const provenance = { sourceRef: JSON.stringify(record.sourceContext.sourceRefs),
             observedAt: `${record.sourceContext.observedDate}T00:00:00.000Z`, version: record.snapshotVersion, assurance: 'model-reference' };
           const known = (value) => ({ status: 'known', value, unit: null, provenance });
-          return { ...(typeof key === 'string' ? { eligibilityModelKey: { value: key, unit: null }, ...modelBrowseFacts(key) } : {}),
+          return { ...selection, ...(typeof key === 'string' ? { eligibilityModelKey: { value: key, unit: null }, ...modelBrowseFacts(key) } : {}),
             ...selectedConfigurationDefinitionFacts(details), configurationEvidence: known(details),
             gearbox: details.description.powertrain.transmission.state === 'known'
               ? known(details.description.powertrain.transmission.value)

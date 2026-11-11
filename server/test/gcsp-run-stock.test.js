@@ -12,6 +12,7 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createRunStockProvider, createRunStockProviderFactory } from '../gcsp/stock/index.js';
 import { createReleaseGuarantee } from '../gcsp/stock/release-guarantee.js';
 import { STOCK_GENERATOR_NAMESPACE } from '../gcsp/vehicle-evidence/stock-generator.js';
+import { scorePreferences } from '../scenarios/employee/index.js';
 
 const good = (outcome) => { assert.equal(outcome?.status, 'ok', JSON.stringify(outcome)); return outcome.value; };
 const roots = [];
@@ -53,6 +54,20 @@ test('default run: generated stock, Next release at the first cadence window, re
   assert.deepEqual(f.factory.provider.describe(f.runId), { source: 'generated', reason: 'Stock generated for the run.' });
   const rows = generatedRows(await f.stock());
   assert.ok(rows.length > 100 && rows.every((row) => row.state === 'unreleased'), `generated ${rows.length}`);
+  const calibration = good(await f.policy.getAssumption('employee.recommendation.v1', {
+    runId: f.runId, asOf: '2026-11-05T09:00:00.000Z' })).value;
+  for (const row of rows) {
+    const selected = factOf(row, 'optionSelection');
+    assert.equal(selected?.kind, 'selected-catalogue', 'carry selected configuration, not dictionary availability or VIN fitment');
+    assert.equal(selected.complete, true);
+    const factoryCodes = Buffer.from(row.configurationId, 'base64').toString('utf8').split(':')[1].split(',');
+    assert.ok(factoryCodes.every((code) => selected.codes.includes(code)), 'exact configuration codes survive generation');
+    assert.ok(selected.codes.length >= factoryCodes.length);
+    const fit = scorePreferences(row.facts, { preferences: {} }, {}, calibration, { minimum: 0, maximum: 100 });
+    assert.ok(fit.components.some((entry) => entry.field === 'wellSpecified' && entry.importance === 100));
+  }
+  assert.ok(rows.some((row) => factOf(row, 'optionSelection').codes.includes('SE000001')),
+    'retain the legacy catalogue selection\'s charging-card accessory as well as factory codes');
   const run = good(await f.repository.read(f.context, { table: 'runs', key: { runId: f.runId } }));
   const windows = run.versions.stockGeneration.report.release.windows;
   const controls = good(await f.controls.readState(f.context)).controls;
