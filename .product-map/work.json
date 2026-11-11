@@ -4995,6 +4995,33 @@
           "evidence": "Real generated 502-car PostgreSQL stock-to-quote-to-offer producer passes; 204 affected memory/offer tests pass; native contract retains pre-existing FUCQ-395 failure. No Render recovery or 256 MB cap proof; merge held by Gary."
         }
       ]
+    },
+    {
+      "id": "FUCQ-396",
+      "title": "Fleet artifact restore depends on runtime PostgreSQL for retained signature policy",
+      "type": "Bug",
+      "status": "To Do",
+      "original_status": "To Do",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-396",
+      "branch": "fix/fucq-396-build-policy",
+      "unsliced": false,
+      "observed_at": "2026-11-11T17:27:36Z",
+      "slices": [
+        {
+          "id": "policy",
+          "status": "complete",
+          "title": "Explicit retained file-policy composition",
+          "observed_at": "2026-11-11T17:27:24Z",
+          "evidence": "Original composition reproduces supplied signature-policy failure; patched Node20 selection passes 60/60. See docs/gcsp/evidence/fucq392/offline-signature-policy-2026-11-11.md. Render recovery unverified."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Offline real-CLI and integrity regression proof",
+          "observed_at": "2026-11-11T17:27:24Z",
+          "evidence": "Original composition reproduces supplied signature-policy failure; patched Node20 selection passes 60/60. See docs/gcsp/evidence/fucq392/offline-signature-policy-2026-11-11.md. Render recovery unverified."
+        }
+      ]
     }
   ]
 }
