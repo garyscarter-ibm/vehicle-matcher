@@ -174,6 +174,9 @@ export function createStockGenerator({ repository, registry, policyService, cont
             .filter((field) => Object.hasOwn(response.value, field)).map((field) => [field, response.value[field]])));
         }
         const trancheSize = values.get('supply.release.size');
+        // Optional release mix: per-line weights replace the observed car counts when every planned line has one.
+        const mixRead = await policyService.getAssumption('supply.release.modelMix', read);
+        const mix = mixRead?.status === 'ok' && mixRead.policyVersion === policyVersion ? mixRead.value?.value : null;
         const weekly = values.get('supply.weeklyReleaseVolume');
         if (!positive(trancheSize) || trancheSize > 100000 || !keysExactly(weekly, ['min', 'max']) || !positive(weekly.min)
           || !positive(weekly.max) || weekly.max < weekly.min || weekly.max > 100000) return invalid('unsupported-release-policy');
@@ -208,6 +211,10 @@ export function createStockGenerator({ repository, registry, policyService, cont
         // Each tranche is drawn on its own, so every release mixes model lines and colours and no two releases repeat.
         if (guarantee && guarantee.minimumCars > trancheSize) return invalid('unsupported-release-guarantee');
         const windowCount = releaseAt.length - 1; const observedTotal = aggregates.reduce((sum, row) => sum + row.observed.carCount, 0);
+        const mixed = object(mix) && aggregates.every((row) => Number.isFinite(mix[row.modelLineId]) && mix[row.modelLineId] >= 0)
+          && aggregates.some((row) => mix[row.modelLineId] > 0);
+        const weightOf = (row) => (mixed ? mix[row.modelLineId] : row.observed.carCount);
+        const weightTotal = aggregates.reduce((sum, row) => sum + weightOf(row), 0);
         const vehicles = []; const tally = new Map(aggregates.map((row) => [row.modelLineId, { cars: 0, colours: new Map(), planned: [], debt: new Map() }]));
         const modelDebt = new Map();
         const observedAt = new Date(run.clockInstant).toISOString();
@@ -257,9 +264,9 @@ export function createStockGenerator({ repository, registry, policyService, cont
           const trancheCars = Math.min(total, (tranche + 1) * trancheSize) - tranche * trancheSize;
           // Each draw carries its rounding debt forward, so small tranches cannot bias the run-level shares.
           const modelCounts = apportion(trancheCars, aggregates.map((row) => [row.modelLineId, Math.max(0,
-            trancheCars * row.observed.carCount / observedTotal + (modelDebt.get(row.modelLineId) ?? 0))]), [...entropy, 'models', ...trancheEntropy]);
+            trancheCars * weightOf(row) / weightTotal + (modelDebt.get(row.modelLineId) ?? 0))]), [...entropy, 'models', ...trancheEntropy]);
           for (const row of modelCounts) modelDebt.set(row.key, (modelDebt.get(row.key) ?? 0)
-            + trancheCars * aggregates.find((model) => model.modelLineId === row.key).observed.carCount / observedTotal - row.count);
+            + trancheCars * weightOf(aggregates.find((model) => model.modelLineId === row.key)) / weightTotal - row.count);
           for (const model of aggregates) {
             const count = modelCounts.find((row) => row.key === model.modelLineId).count;
             const covered = tally.get(model.modelLineId).planned;
@@ -317,7 +324,7 @@ export function createStockGenerator({ repository, registry, policyService, cont
           const offered = Object.keys(model.observed.colourShares);
           const coveredShare = covered.reduce((sum, [, share]) => sum + share, 0);
           return { modelLineId: model.modelLineId, sourceKind: model.observed.sourceKind, cars: count,
-            observedShare: model.observed.carCount / observedTotal, actualShare: count / total,
+            observedShare: model.observed.carCount / observedTotal, releaseShare: weightOf(model) / weightTotal, actualShare: count / total,
             colourShares: Object.fromEntries(covered.map(([colour]) => [colour, count ? (colours.get(colour) ?? 0) / count : 0])),
             plannedColourShares: Object.fromEntries(covered.map(([colour, share]) => [colour, share / coveredShare])),
             coveredColourShare: Math.round(coveredShare * 10000) / 10000, uncoveredColourCount: offered.length - covered.length,

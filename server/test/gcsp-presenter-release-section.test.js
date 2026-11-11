@@ -45,9 +45,28 @@ test('after a release it shows labelled tiles, counters and the model-line break
   const grid = f.api.root.querySelector('[role="grid"]'); assert.equal(grid.getAttribute('aria-label'), 'Released cars');
   assert.deepEqual(cells(f.api.root).map((cell) => cell.getAttribute('aria-label')), ['Model 0, Colour 0', 'Model 1', 'Model 2, Colour 2', 'Model 3, Colour 3']);
   assert.deepEqual(facts(f.api.root, '.gcsp-release-totals'), { Released: '4', 'Model lines': '2', Colours: '3', 'On the scheme': '1,200' });
-  assert.deepEqual(Object.entries(facts(f.api.root, '.gcsp-release-lines')), [['G20', '3'], ['F70', '1']]);
-  assert.ok(f.api.root.querySelector('[aria-label="Cars released by model line"]'));
   f.api.destroy();
+});
+
+const bars = (figure) => [...figure.querySelectorAll('.gcsp-count-bars-row')].map((row) => [row.querySelector('.gcsp-count-bars-label').textContent, row.querySelector('.gcsp-count-bars-n').textContent]);
+test('the release charts sit in a closed disclosure: model line, colour, points and fuel in count bars', async () => {
+  const charts = { colours: Array.from({ length: 10 }, (_, at) => ({ label: `Paint ${at}`, count: 10 - at })),
+    fuel: [{ label: 'Petrol', count: 3 }, { label: 'Electric', count: 1 }], points: [{ label: '800', count: 3 }, { label: '1400', count: 1 }] };
+  const f = mount(latest('run-a', 't1', 4, { charts })); await f.api.refresh(); await settle();
+  const fold = f.api.root.querySelector('details.gcsp-release-charts');
+  assert.equal(fold.open, false); assert.equal(fold.hidden, false); assert.equal(fold.querySelector('summary').textContent, 'Release charts');
+  const figures = [...fold.querySelectorAll('figure.gcsp-count-bars')];
+  assert.deepEqual(figures.map((n) => n.querySelector('h3').textContent), ['Model line', 'Colour', 'Points a month', 'Fuel']);
+  for (const n of figures) assert.equal(n.getAttribute('aria-labelledby'), n.querySelector('h3').id);
+  assert.deepEqual(bars(figures[0]), [['G20', '3'], ['F70', '1']]);
+  assert.equal(bars(figures[1]).length, 8); assert.deepEqual(bars(figures[1]).at(-1), ['Other colours', String(3 + 2 + 1)]);
+  assert.deepEqual(bars(figures[2]), [['800 points', '3'], ['1,400 points', '1']]);
+  assert.deepEqual(bars(figures[3]), [['Petrol', '3'], ['Electric', '1']]);
+  assert.equal(figures[0].querySelector('.gcsp-count-bars-bar span').style.getPropertyValue('--gcsp-count-share'), '100%');
+  assert.equal(figures[0].querySelectorAll('.gcsp-count-bars-bar span')[1].style.getPropertyValue('--gcsp-count-share'), '33.33%');
+  assert.equal(f.api.root.querySelector('.gcsp-release-lines'), null);
+  f.api.destroy();
+  const g = mount(empty); await g.api.refresh(); assert.equal(g.api.root.querySelector('details.gcsp-release-charts').hidden, true); g.api.destroy();
 });
 
 test('a missing method, an unavailable reply or a throw all show the before state with no error copy', async () => {

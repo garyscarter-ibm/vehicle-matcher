@@ -6,6 +6,7 @@ import { createPresenterHttpAdapter } from './http-adapter.js';
 import { mountPresenterControls } from './controls.js';
 import { mountReleaseSection } from './release-section.js';
 import { mountHappenedFeed } from './happened-feed.js';
+import { dayBar } from './day-bar.js';
 
 export const PRESENTER_CONSOLE_MODE_KEY = 'gcsp:presenter-console-mode';
 const ACTION_KEY = 'gcsp:presenter-action'; // Same signal the controller writes, so open portal tabs refresh.
@@ -67,7 +68,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   const logo = el('img'); logo.src = LOGO(); logo.alt = ''; logo.setAttribute('width', '88'); logo.setAttribute('height', '24');
   const brand = el('div', 'gcsp-console-brand'); brand.append(logo, el('span', '', 'Group Car Schemes'), el('strong', '', 'Presenter'));
   const clockSlot = el('div', 'gcsp-console-time'); clockSlot.setAttribute('aria-live', 'polite'); clockSlot.hidden = true;
-  const clock = el('span', 'gcsp-console-clock'); clockSlot.append(clock);
+  const dayText = el('span', 'gcsp-console-day'); const clock = el('span', 'gcsp-console-clock'); clockSlot.append(dayText, clock);
   const toggle = el('button', 'gcsp-console-mode', 'Advanced'); toggle.type = 'button'; toggle.setAttribute('aria-pressed', 'false');
   const head = el('header', 'gcsp-console-head'); head.append(brand, clockSlot, toggle);
 
@@ -82,7 +83,8 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   const status = el('p', 'gcsp-console-status'); status.setAttribute('role', 'status');
   const stage = el('section', 'gcsp-console-stage'); stage.setAttribute('aria-labelledby', headline.id);
   const skeleton = loadingSkeleton({ label: 'Loading the presenter console', layout: 'console' }); stage.dataset.loading = '';
-  stage.append(skeleton, text, screen, actions, reasonText, status);
+  const week = dayBar();
+  stage.append(skeleton, text, screen, actions, week.root, reasonText, status);
   const releaseSection = mountReleaseSection(stage, { adapter }); // After the Start again confirmation, before the feed.
   const feed = mountHappenedFeed(stage, { adapter, storage: store() });
 
@@ -105,11 +107,16 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
     if (why) release.setAttribute('aria-describedby', reasonText.id); else release.removeAttribute('aria-describedby');
   }
   const basic = {
-    update({ headline: title, sub: line, clock: time, primary } = {}) {
+    update({ headline: title, sub: line, clock: time, week: days, primary } = {}) {
       const named = title !== undefined;
       if (named) { headlineSupplied = true; headline.textContent = title || TITLE; }
       if (line !== undefined) { sub.textContent = line || ''; sub.hidden = !line; }
-      if (time !== undefined) { clock.textContent = time || ''; clockSlot.hidden = !time; }
+      if (time !== undefined) {
+        // "Day 2 · Tue 10 Nov, 11:30am" reads as a muted day and a bold clock, as in the mockup.
+        const [day, at] = (time || '').includes(' · ') ? time.split(' · ') : ['', time || ''];
+        dayText.textContent = day; dayText.hidden = !day; clock.textContent = at; clockSlot.hidden = !time;
+      }
+      if (days !== undefined) week.update(days ?? {});
       if (primary) {
         if (primary.label !== undefined) release.textContent = primary.label;
         if (primary.disabled !== undefined) disabledSupplied = Boolean(primary.disabled);
@@ -124,7 +131,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   // tick(body, copy) runs the default release path with another tick body; refresh() re-reads the controls.
   const context = () => ({ adapter, state, basic, setMode, commandId, refresh: () => read(),
     tick: (body, copy) => defaultRelease({ adapter, state, basic, commandId }, body, copy) });
-  const showScreen = (node) => { screen.replaceChildren(node); actions.hidden = true; reasonText.hidden = true; feed.root.hidden = true; releaseSection.root.hidden = true; };
+  const showScreen = (node) => { screen.replaceChildren(node); actions.hidden = true; week.root.hidden = true; reasonText.hidden = true; feed.root.hidden = true; releaseSection.root.hidden = true; };
 
   async function applyState(next) {
     state = next; loaded = true; screen.replaceChildren(); actions.hidden = false; releaseSection.root.hidden = false;
