@@ -2,7 +2,7 @@ import { createVehicleSnapshot, createEmployeeTerms, freezeVehicleData } from '.
 import { validInstant } from '../policy/file-provider.js';
 import { currentCarRatingValid } from '../brief/rating.js';
 import { sameAgainValid } from '../brief/same-again.js';
-import { validateBrief, validateBriefContent, evaluateEssentials, scorePreferences, confirmedFact, chargingGates } from '../../scenarios/employee/index.js';
+import { validateBrief, validateBriefContent, evaluateEssentials, scorePreferences, rankEmployeeRecommendations, confirmedFact, chargingGates } from '../../scenarios/employee/index.js';
 
 const result = (status, fields) => ({ status, ...fields, contractVersion: '1.0.0' });
 const unavailable = (code) => result('unavailable', { code, reason: 'The employee recommendation source is unavailable.', retryable: true });
@@ -158,14 +158,15 @@ async function evaluateRecommendation({ provider, policy, time }, context, reque
             evidence: { eligibility: eligibility.value, allowance: allowance.value, points: points.status === 'ok' ? points.value : null,
               assumptions: assumptionResults.map((row) => row.value), availability: candidate.availability } });
         }
-        const ranked = decisions.filter((entry) => entry.gateStatus === 'eligible').sort((a, b) => (b.score ?? -1) - (a.score ?? -1) || a.orderUuid.localeCompare(b.orderUuid));
+        const ranked = rankEmployeeRecommendations(decisions, config);
         return freezeVehicleData(result('ok', { value: { scenarioId: 'employee-scheme-demo-v1', runId: context.runId,
           ...(preview ? { preview: preview.metadata, brief: preview.original } : {}),
           state: !decisions.length ? 'no-stock' : ranked.length ? 'recommendations' : 'no-viable-stock', evaluatedAt: now,
           versions: { brief: briefVersion, facts: source.factsVersion, policy: allowance.policyVersion, stock: source.stockVersion, clock: clock.value.clockVersion },
           // The brief gallery shows best fit first; stored evaluations keep provider order for allocation records.
           decisions: preview ? [...ranked, ...decisions.filter((entry) => entry.gateStatus !== 'eligible')] : decisions,
-          recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length } }));
+          recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length,
+          ...(config.ranking ? { ranking: config.ranking } : {}) } }));
       } catch { return unavailable('employee-source-invalid'); }
 }
 

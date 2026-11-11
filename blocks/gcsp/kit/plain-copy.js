@@ -56,6 +56,7 @@ const FALLBACK = {
 
 /** The badge on the top-scoring eligible cars when it is informative; never a percentage. */
 export const BEST_MATCH = { text: 'Best match', title: 'Best match: this car fits your preferences better than the other eligible cars.' };
+export const POINTS_RECOMMENDATION = { text: 'Recommended', title: 'Recommended: makes the most of your points allowance among similarly matched cars.' };
 
 const lowerWord = (v) => /^[A-Z]{2,}$/.test(v) ? v : v.toLowerCase();
 const ENUM_LABELS = { body: bodyStyleLabel, fuel: (v) => (typeof v === 'string' && v ? FUEL_SPEC[v] ?? upperFirst(spaced(v)) : null) };

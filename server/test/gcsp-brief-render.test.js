@@ -156,6 +156,19 @@ test('Best match is withheld when every eligible car ties or the top score is ze
   }
 });
 
+test('points-aware preview marks the server recommendation without claiming the highest preference score', async (t) => {
+  const preview = withCars([[96], [100]]);
+  preview.value.ranking = { rule: 'similarFitThenPoints', fitTolerance: 5 };
+  preview.value.decisions[0].terms.points.value = 1200;
+  preview.value.decisions[1].terms.points.value = 800;
+  const main = await mountWith(t, preview);
+  const cards = [...main.querySelectorAll('.gcsp-brief-cards .vm-card')];
+  assert.equal(cards[0].querySelector('.vm-score').textContent, 'Recommended');
+  assert.match(cards[0].querySelector('.vm-score').title, /points allowance/);
+  assert.equal(cards[1].querySelector('.vm-score').hidden, true);
+  assert.doesNotMatch(main.querySelector('.gcsp-brief-cards').textContent, /Best match|\d+%/);
+});
+
 test('an unset preference slider reads Not set, not Not supplied', async (t) => {
   const editor = structuredClone(fixture.edited.value); delete editor.initial.brief.preferences.economy;
   const main = await mountWith(t, fixture.preview, editor);

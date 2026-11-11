@@ -141,6 +141,16 @@ test('employee recomputation promotes a candidate beyond the display cap using c
   assert.equal(result.nextVersion, 2); assert.equal(f.state.brief.briefVersion, 1);
 });
 
+test('employee feedback retains allowance utilisation ordering after exclusions', async () => {
+  const f = await employeeFixture([stock(1), stock(2), stock(3)]);
+  f.options.source = structuredClone(f.options.source);
+  f.options.source.value.decisions.forEach((row, index) => { row.terms.points.value = 800 + index * 200; });
+  const result = reduceEmployeeDraft(f.state, action(f.state.feedback, 'exclude-candidate',
+    { id: f.options.source.value.decisions[0].candidateKey }, 'exclude-low'), f.options);
+  assert.equal(result.status, 'ok');
+  assert.deepEqual(result.outcome.recommendations.map((row) => row.terms.points.value), [1200, 1000]);
+});
+
 test('employee exact and configuration-group exclusions are local and undo restores every recomputed candidate', async () => {
   const cars = [stock(1), stock(2), stock(3)];
   const f = await employeeFixture(cars); const key = f.options.source.value.decisions[0].candidateKey;

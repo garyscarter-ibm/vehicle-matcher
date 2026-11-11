@@ -4693,6 +4693,17 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-381",
+      "title": "Prefer full points allowance for similarly suitable employee recommendations",
+      "status": "In Review",
+      "original_status": "In Review",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-381",
+      "unsliced": true,
+      "slices": [],
+      "observed_at": "2026-11-11T11:39:01Z"
     }
   ]
 }
