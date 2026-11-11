@@ -9,7 +9,7 @@ export function mountNotificationEmail(root, { adapter, signal } = {}) {
   let version = null; let busy = false; let locked = false; let disposed = false; let command;
   const form = el('form', 'gcsp-notification-email'); form.noValidate = true;
   const input = el('input'); input.type = 'email'; input.autocomplete = 'email'; input.maxLength = 254;
-  const field = labelledField({ id: `gcsp-notification-email-${++serial}`, label: 'Notification email', control: input,
+  const field = labelledField({ id: `gcsp-notification-email-${++serial}`, label: 'Email address', control: input,
     hint: 'Used for car offers and updates. Clear it to stop email notifications.' });
   const status = el('p', 'gcsp-note'); status.setAttribute('role', 'status');
   const save = button({ label: 'Save email', variant: 'ghost' }); save.type = 'submit';

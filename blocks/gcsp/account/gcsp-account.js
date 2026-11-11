@@ -157,10 +157,10 @@ function yourDetails(model, controls) {
   section.setAttribute('aria-labelledby', 'gcsp-account-details-title');
   const title = el('h2', 'gcsp-h2', 'Your details'); title.id = 'gcsp-account-details-title';
   const rows = el('ul', 'gcsp-account-rows');
-  const item = (heading, content, help) => {
+  const item = (heading, content) => {
     const node = el('li', 'gcsp-account-row'); const copy = el('div', 'gcsp-account-lines');
     copy.append(...content); node.append(el('h3', 'gcsp-account-row-label', heading), copy);
-    if (help) node.append(help); return node;
+    return node;
   };
   const line = (...parts) => { const node = el('p', 'gcsp-account-line'); node.append(...parts); return node; };
   const muted = (text) => el('span', 'gcsp-note', text);
@@ -174,7 +174,7 @@ function yourDetails(model, controls) {
     ...[lineOf(text(idf('Email')), text(idf('Phone'))), addressLine(idf('Address')), text(date(idf('Date of birth'))) && `Date of birth ${date(idf('Date of birth'))}`,
       override && `Allowance override: ${override}${overrideEnd ? ` (ends ${overrideEnd})` : ''}`]
       .filter(supplied).map((value) => line(muted(value)))];
-  rows.append(item('Employee', employee, controls.supportButton('hr-support', 'Get help with your details')));
+  rows.append(item('Employee', employee));
   const drivers = model.drivers.map((driver) => {
     const licence = driver.licence ?? {};
     const valid = (name, label) => {
@@ -190,9 +190,10 @@ function yourDetails(model, controls) {
       addressLine(driver.address) && `Address ${addressLine(driver.address)}`, type('car', 'Car'), type('bike', 'Bike'));
     return [line(el('strong', undefined, driver.name ?? 'Driver'), ...(rest ? [muted(` \u00b7 ${rest}`)] : [])), ...(extra ? [line(muted(extra))] : [])];
   }).flat();
-  rows.append(item(`Drivers (${model.drivers.length})`, drivers.length ? drivers : [el('p', 'gcsp-note', 'No driver or licence details supplied.')],
-    controls.supportButton('driver-support', 'Get help with drivers')));
-  if (controls.notificationEmail) rows.append(item('Notifications', [controls.notificationEmail()]));
+  rows.append(item(`Drivers (${model.drivers.length})`, drivers.length ? drivers : [el('p', 'gcsp-note', 'No driver or licence details supplied.')]));
+  if (controls.notificationEmail) {
+    const email = el('li', 'gcsp-account-row'); email.append(controls.notificationEmail()); rows.append(email);
+  }
   section.append(title, rows);
   return section;
 }
