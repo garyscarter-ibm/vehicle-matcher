@@ -793,7 +793,7 @@ test('FUCQ-252: after a confirmed handover or return the current-car card follow
       assert.equal(rest.length, 0, `${oldStatus}: one current-car card`); assert.equal(card.dataset.contractId, undefined);
       assert.equal(card.dataset.orderUuid, orders.uuid); assert.equal(card.querySelector('h2').textContent, 'BMW 3 Series Saloon 320i');
       assert.equal(card.querySelector('.gcsp-account-context'), null);
-      assert.deepEqual(factPairs(card).slice(0, 3), [['Status', 'Current car'], ['Collected', '7 November 2026'], ['Delivered VIN', VIN]]);
+      assert.deepEqual(factPairs(card).slice(0, 2), [['Collected', '7 November 2026'], ['Delivered VIN', VIN]], 'the panel is the current car, so no Status fact');
       assert.doesNotMatch(view.root.textContent, /No current car|Choose a replacement/);
     } finally { view.destroy(); }
   }
@@ -869,7 +869,7 @@ test('FUCQ-195: the current-car card shows readable labels and no raw identifier
     const record = openFrom(first.root).textContent; first.root.querySelector('.gcsp-side-drawer .vm-btn').click();
     for (const id of raw) { assert.ok(!shownText.some((text) => text.includes(id)), id); assert.ok(!record.includes(id), id); }
     assert.ok(![...card.querySelectorAll('dd')].some((node) => node.textContent === value.currentContract.status));
-    assert.deepEqual(factPairs(card)[0], ['Status', 'Current car']);
+    assert.equal(factPairs(card).some(([name]) => name === 'Status'), false, 'the record keeps Status; the panel does not repeat it');
     assert.equal(pointsCost(card), '1,100 / 1,300 points per month');
     assert.doesNotMatch(card.textContent, /Synthetic example data/);
     assert.doesNotMatch(card.textContent, /Vehicle slot|Scheme|Current contract|points cost not supplied|Wltp/);
@@ -1066,9 +1066,9 @@ test('the current car: heading and specification, countdown, ordered facts, deta
     const countdown = car.querySelector('.gcsp-countdown');
     assert.equal(countdown.textContent, 'Contract ends in 26 days \u00b7 1 December 2026');
     assert.equal(countdown.previousElementSibling.className, 'gcsp-account-title');
-    // Registration is unsupplied in the fixture, so its row is hidden; Points cost is last.
-    assert.deepEqual(factPairs(car.querySelector('.gcsp-account-car-facts')), [['Status', 'Current car'], ['Driver', 'Paula Mason'],
-      ['Contract end', '1 December 2026'], ['Term', '6 months'], ['Annual mileage', '12,000 mi/year'], ['Current mileage', '5,200 mi'],
+    // No Status or Contract end (the countdown says it); unsupplied Registration is hidden; Points cost is last.
+    assert.deepEqual(factPairs(car.querySelector('.gcsp-account-car-facts')), [['Driver', 'Paula Mason'],
+      ['Term', '6 months'], ['Annual mileage', '12,000 mi/year'], ['Current mileage', '5,200 mi'],
       ['Points cost', '1,100 / 1,300 points per month']]);
     const details = car.querySelector('details.gcsp-details');
     assert.equal(details.querySelector('summary.gcsp-details-summary').textContent, 'Order, collection and vehicle details');

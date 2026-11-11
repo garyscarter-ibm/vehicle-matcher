@@ -28,7 +28,7 @@ Its agreed structure stays: car panel, rating, facts and Points cost, then Your 
 | 6 | `14` loading: the generic page skeleton, narrower than the page, with lede lines and an inset image the page doesn't have | Skeletons are shaped like the coming view | A `feature` skeleton layout in the kit: the full-width car panel (wide image, facts column), the preferences panel and rows | Kit extend, made |
 | 7 | `01` history note "No Motorcycle Choices orders. PCS UK FS BMW shows history only…" | No unnecessary prose; Paula P10 hides empty schemes | The "No … orders." half is dropped; the history-only half stays | Rule fix, made |
 | 8 | Car panel `border-radius: 0` | Radius token | `--gcsp-radius` | Token fix, made |
-| 9 | `01` car facts repeat the countdown ("Contract end 1 December 2026") and say "Status: Current car" under a panel that is the current car | Say a fact once (Paula P10 names both) | **Proposed:** drop both facts from the panel; both stay in the full record | Changes the frozen facts, needs Gary |
+| 9 | `01` car facts repeat the countdown ("Contract end 1 December 2026") and say "Status: Current car" under a panel that is the current car | Say a fact once (Paula P10 names both) | Both dropped from the panel, and Status from the car-from-order panel too; both stay in the full record | Changes the frozen facts; Gary approved, 11 Nov |
 
 ## Checked and left as they are
 
@@ -63,7 +63,7 @@ Not changed, and why:
   from the account data, and FUCQ-369 uses the heading and spec as the car's description.
 - **Low.** Short Order history columns wrap beside a very long car name (`04`). This is `dataTable`, not this layout.
 - **Low.** `?prefs=pending` doesn't hold the save in flight, so `12` matches `01`. This is the FUCQ-368 fixture.
-- **Item 9 above:** still waiting for Gary's decision.
+- **Item 9 above:** Gary approved dropping the facts on 11 November, and it's built.
 
 Tests run (scoped, one worker): gcsp-account-render, gcsp-loading-skeleton, gcsp-presenter-refresh, gcsp-account-runtime,
 gcsp-live-regions, ui-ratchet, gcsp-painted-copy-words, shared-kit-contracts, gcsp-plain-copy and gcsp-manual-journey-resume
