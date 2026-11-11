@@ -1,0 +1,159 @@
+{
+  "scope": "Local concept gallery interaction smoke and final visual captures only; no production acceptance",
+  "captures": [
+    {
+      "name": "1440-index",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "missingImages": []
+    },
+    {
+      "name": "1440-gallery-rear",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "missingImages": []
+    },
+    {
+      "name": "375-index",
+      "width": 375,
+      "scrollWidth": 375,
+      "missingImages": []
+    },
+    {
+      "name": "375-gallery-interior",
+      "width": 375,
+      "scrollWidth": 375,
+      "missingImages": []
+    },
+    {
+      "name": "375-accept",
+      "width": 375,
+      "scrollWidth": 375,
+      "missingImages": []
+    },
+    {
+      "name": "375-accept-declarations",
+      "width": 375,
+      "scrollWidth": 375,
+      "missingImages": []
+    },
+    {
+      "name": "375-decline",
+      "width": 375,
+      "scrollWidth": 375,
+      "missingImages": []
+    },
+    {
+      "name": "375-accept-validation",
+      "width": 375,
+      "scrollWidth": 375,
+      "missingImages": []
+    },
+    {
+      "name": "375-decline-validation",
+      "width": 375,
+      "scrollWidth": 375,
+      "missingImages": []
+    },
+    {
+      "name": "375-expired",
+      "width": 375,
+      "scrollWidth": 375,
+      "missingImages": []
+    },
+    {
+      "name": "375-accepted",
+      "width": 375,
+      "scrollWidth": 375,
+      "missingImages": []
+    },
+    {
+      "name": "375-declined",
+      "width": 375,
+      "scrollWidth": 375,
+      "missingImages": []
+    },
+    {
+      "name": "1440-accept",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "missingImages": []
+    },
+    {
+      "name": "1440-decline",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "missingImages": []
+    },
+    {
+      "name": "320-index-long",
+      "width": 320,
+      "scrollWidth": 320,
+      "missingImages": []
+    },
+    {
+      "name": "320-gallery",
+      "width": 320,
+      "scrollWidth": 320,
+      "missingImages": []
+    }
+  ],
+  "galleryChecks": [
+    "thumbnail updates in place",
+    "magnifier opens selected",
+    "ArrowLeft/Right and wrap",
+    "dialog thumbnails select",
+    "Escape closes and restores focus",
+    "close button",
+    "narrow strip scrolls selected thumbnail into view"
+  ],
+  "strip": {
+    "client": 325,
+    "scroll": 366,
+    "scrollLeft": 41,
+    "selected": {
+      "x": 235,
+      "y": 564.078125,
+      "width": 112,
+      "height": 90.5,
+      "top": 564.078125,
+      "right": 347,
+      "bottom": 654.578125,
+      "left": 235
+    },
+    "rect": {
+      "x": 25,
+      "y": 561.078125,
+      "width": 325,
+      "height": 100.5,
+      "top": 561.078125,
+      "right": 350,
+      "bottom": 661.578125,
+      "left": 25
+    }
+  },
+  "pageErrors": [],
+  "unmodelled": "No data-backed loading, empty or unavailable-image flow; other decisions/countdown remain painted states",
+  "toolingNotes": [
+    "Native browser blocked file: URL, so captures used a run-owned loopback static server.",
+    "First capture attempt completed checks and screenshots but receipt write failed because native browser VM has no require; final correction capture returned its receipt for parent persistence."
+  ],
+  "finalSourceSha256": {
+    "blocks/gcsp/kit/side-drawer.css": "2392127f886867c36c97eaab43955c88f0b1b4827357bcbd9d225016f2777d13",
+    "blocks/gcsp/shell/gcsp-tokens.css": "d04bfd54a32efcbeb2452b54f766b4c567f85442fcf1b0d07b2866e5ac9e7c11",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/accept-validation.html": "7cdfe69b7dded970f9d7425e7c7d2b21bf34ce932d2b71a11ed9a8e8349185ca",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/accept.html": "43fbaff7f671213bdff492bc35362bbb1f63d8bc9d06861f94fee362bfdc4481",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/accepted.html": "34aa60103dad8f604c1a474135a0272736d71d78fb5c22192705da6b15e17e02",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/decline-validation.html": "0451b61d1b6873e0cb351ca30eb55468281f76dd8e91c56a10d72ad06d618ed5",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/decline.html": "36b3c8d3e5c9e2c10304720468a16bdc2d61b1e49d88c62e2a0313ae8c1538ab",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/declined.html": "43aab00ccf6fb25b89ea044da5391bf33a8428db0f40b76e889999b8a97a7470",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/documents.html": "bb0c0d53e481488db05a74acee1bc0ff583410993cfbd97267892b13a5b03501",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/expired.html": "995265d720e6ff9caff8a3836078f7d8940490ff39647c94b15941b3d8871e7a",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/gallery-front.html": "3a6e77b0e94036ef03f785c974fa5220c9f74e84966b9a9ffdf43923585f896a",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/gallery-interior.html": "67a8c046d49852ba090d7eccdc75440a1316c7bea57ce3ae13b4769e772bea46",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/gallery-rear.html": "9466ff5e76e5a6ab81685db891233a1972b734ca23c08593d2a5815489fc2028",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/gallery.js": "c90638ccdf367a8434c7cc7908ee2b12aefe4ad70ce6388845386cf328db2dd4",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/index.html": "149699fcc98189122ede0c37798ce95414247b6aca1e4ac1e9c6b010b3c17295",
+    "docs/gcsp/mockups/vehicle-offer-2026-11-11/mockup.css": "ad56cc91ee39b987fe05b3164093fbf90cc46fb2814189b397386ec0eb3b554d"
+  }
+}

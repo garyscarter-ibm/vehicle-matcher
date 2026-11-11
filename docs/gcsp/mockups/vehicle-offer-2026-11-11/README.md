@@ -1,12 +1,17 @@
 # Vehicle offer concept · FUCQ-380
 
-Static screens for design discussion. Start at `index.html`; ordinary links open the accept/decline drawers, gallery views and outcome screens. `accept-validation.html`, `decline-validation.html` and `expired.html` show separate fixed states. No scripts, countdown, saving, submission or decision logic. The declaration boxes, reason selection and comment are painted states. The initial acceptance drawer has three unchecked declarations and a disabled final Accept; the accepted screen is separately accessible in the state navigation. Documents are short layout copy, not approved scheme wording.
+Screens for design discussion. Start at `index.html`; ordinary links open the accept/decline drawers and outcome screens. The small external `gallery.js` is the only interaction: thumbnails replace the featured image in place, and Enlarge opens the selected image with a thumbnail strip, previous/next buttons and arrow-key navigation. Escape or Close returns focus to Enlarge. `accept-validation.html`, `decline-validation.html` and `expired.html` show separate fixed states. No countdown, saving, submission or decision logic. The declaration boxes, reason selection and comment are painted states. The initial acceptance drawer has three unchecked declarations and a disabled final Accept; the accepted screen is separately accessible as `accepted.html`. Documents are short layout copy, not approved scheme wording.
 
 - Timer is **2:00 = two hours**, shown in hours:minutes. Expired is **0:00**. The deadline is illustrative.
 - Uses the shared Density heading font, palette and slim portal shell. Drawer sizing/padding follow the current Your cars View record component. The offer uses the full available content width, capped at 1680px.
 - Current vehicle is a BMW 320i M Sport Touring; offered vehicle is a BMW 330e M Sport Touring. Car identity, 295/320 points, collection, fitted options and personal details are illustrative visual content. The plug-in hybrid's 410L boot versus 500L makes the drawback clear. These are not verified exact vehicle specifications.
+- Benefits and tradeoffs are grouped separately. Comparison emphasis follows the winning cell: fewer points and the illustrated equipment favour the offer; boot space favours the current car. Ties, powertrain and unknown range stay neutral.
+- Paint and upholstery swatches accompany their text labels. Scheme is omitted from the vehicle facts.
+- Review states remain direct files, with no design-state navigation inside the product. `gallery-front.html`, `gallery-rear.html` and `gallery-interior.html` are compatible entry screens that open the corresponding larger image over the same offer.
 - Options shown side by side are candidates for discussion: heated seats, parking assistance, head-up display, panoramic roof, audio and towbar. The user has not selected which options or differences matter most. Decide those priorities before specification or implementation.
 - The concise contact, return and declaration content lives in the acceptance fly-out. Accept and decline are directly visible before the gallery on narrow screens.
+
+The second review pass applies the collaborator's Benefits/Tradeoffs, gallery, swatch and comparison-cell refinements. Independent rendered critique passed after removing the redundant comparison caption and tightening the mobile image viewer. See `review/refinement-review.md` and `review/refinement-capture-receipt.json`. Unavailable-image, loading and empty-gallery flows remain unmodelled. Discussion and feedback stay in this Codex chat; no upload or feedback form is used. Stories remain on hold until the direction is agreed.
 
 ## Images
 
