@@ -1,6 +1,7 @@
 import { ok, result } from '../repository/core.js';
 import { readCarNamer } from '../policy/car-name.js';
 import { configurationIdDisplayImage, modelDisplayImage, readDisplayImageCatalogue } from '../vehicle-evidence/display-images.js';
+import { VISIBILITY } from '../stock/demo-provider.js';
 
 // FUCQ-364: presenter read of the run's latest release. User agnostic: cars and totals only, never a person.
 const CONSUMER = 'stock-release';
@@ -64,6 +65,26 @@ async function project(row, name, colours) {
     modelName, modelLine: line ? lineName(name, line) : null, colourName };
 }
 
+const FUEL = { petrol: 'Petrol', diesel: 'Diesel', phev: 'Plug-in hybrid', ev: 'Electric' };
+const tally = (values, order) => {
+  const counts = new Map(); for (const value of values) if (value !== null) counts.set(value, (counts.get(value) ?? 0) + 1);
+  return [...counts].sort(order).map(([label, count]) => ({ label: String(label), count }));
+};
+const byCount = (a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1);
+
+// Monthly points on the first visible scheme, by model key; null where no price is effective.
+async function pointsFor(policy, read, rows) {
+  const mapping = await policy?.getAssumption('eligibility.context.mapping', read).catch(() => null);
+  const scheme = mapping?.status === 'ok' ? mapping.value.value?.find?.((row) => row.schemeId === VISIBILITY.schemeIds[0]) : null;
+  if (!scheme) return () => null;
+  const context = { companyId: scheme.companyId, schemeId: scheme.schemeId, gradeId: scheme.gradeIds[0] }; const cache = new Map();
+  for (const key of new Set(rows.map((row) => fact(row, 'eligibilityModelKey')).filter(text))) {
+    const cost = await policy.getPointsCost(context, { eligibilityModelKey: key }, read).catch(() => null);
+    cache.set(key, cost?.status === 'ok' && Number.isFinite(cost.value.monthlyPoints) ? cost.value.monthlyPoints : null);
+  }
+  return (row) => cache.get(fact(row, 'eligibilityModelKey')) ?? null;
+}
+
 const distinct = (cars, field) => new Set(cars.map((car) => car[field]).filter((value) => value !== null)).size;
 
 /** Read only: release receipts and stock rows. Nothing is written, held, allocated or evaluated. */
@@ -81,19 +102,24 @@ export function createPresenterReleaseRoutes(deps) {
       const stock = await repository.query(context, 'stock');
       if (stock.status !== 'ok') return stock;
       const release = latestRelease(receipts.value);
-      const empty = { runId: context.runId, release: null, cars: [], modelLines: [],
+      const empty = { runId: context.runId, release: null, cars: [], modelLines: [], charts: { colours: [], fuel: [], points: [] },
         counts: { released: 0, modelLines: 0, colours: 0, onScheme: stock.value.filter(onScheme).length } };
       if (!release) return ok(empty);
       const rows = new Map(stock.value.map((row) => [row.orderUuid, row]));
       if (release.orderUuids.some((id) => !rows.has(id))) return broken();
       const read = { runId: context.runId, asOf: release.releasedAt, policyVersion: release.policyVersion };
       const [name, colours] = await Promise.all([readCarNamer(deps.policy, read), pictureColours(deps.policy, read)]);
-      const cars = await Promise.all(release.orderUuids.map((id) => project(rows.get(id), name, colours)));
+      const released = release.orderUuids.map((id) => rows.get(id));
+      const cars = await Promise.all(released.map((row) => project(row, name, colours)));
+      const points = await pointsFor(deps.policy, read, released);
+      const charts = { colours: tally(cars.map((car) => car.colourName), byCount),
+        fuel: tally(released.map((row) => FUEL[fact(row, 'fuel')] ?? null), byCount),
+        points: tally(released.map(points), (a, b) => a[0] - b[0]) };
       const lines = new Map();
       for (const car of cars) if (car.modelLine) lines.set(car.modelLine, (lines.get(car.modelLine) ?? 0) + 1);
       const modelLines = [...lines].map(([modelLine, count]) => ({ modelLine, count }))
         .sort((a, b) => b.count - a.count || (a.modelLine < b.modelLine ? -1 : 1));
-      return ok({ ...empty, release: { windowId: release.windowId, releasedAt: release.releasedAt, trancheId: release.trancheId }, cars, modelLines,
+      return ok({ ...empty, release: { windowId: release.windowId, releasedAt: release.releasedAt, trancheId: release.trancheId }, cars, modelLines, charts,
         counts: { released: cars.length, modelLines: modelLines.length, colours: distinct(cars, 'colourName'), onScheme: empty.counts.onScheme } });
     } }];
 }

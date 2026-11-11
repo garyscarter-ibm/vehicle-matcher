@@ -114,7 +114,8 @@ test('eligibility keys come from policy: evidenced AG codes map, others stay unm
   const f = await compose(t, { environmentId: 'run-stock-keys' });
   const rows = generatedRows(await f.stock());
   const mapped = rows.filter((row) => factOf(row, 'eligibilityModelKey') !== undefined);
-  const keys = ['G61 i5|i5 40', 'F70 Sports Hatch|120', 'F70 Sports Hatch|M135', 'G42 Coupe|220i', 'G42 Coupe|230i', 'G42 Coupe|M240i'];
+  // The demo fleet corpus (11 Nov) carries all seven scheme lines, so every policy key can appear.
+  const keys = Object.values((await f.policy.getAssumption('stock.eligibilityModelKeys.v1', { runId: f.runId, asOf: '2026-11-05T09:00:00.000Z' })).value.value);
   assert.ok(mapped.length > 0, 'evidenced cars are mapped');
   assert.ok(mapped.every((row) => keys.includes(factOf(row, 'eligibilityModelKey')) && factOf(row, 'body') !== undefined && factOf(row, 'seats') > 0), JSON.stringify([...new Set(mapped.map((r) => [factOf(r, 'eligibilityModelKey'), factOf(r, 'body'), factOf(r, 'seats'), factOf(r, 'fuel')].join(',')))]));
   const i5 = mapped.filter((row) => factOf(row, 'eligibilityModelKey') === 'G61 i5|i5 40');

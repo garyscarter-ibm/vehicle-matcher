@@ -458,7 +458,7 @@ test('seeded stock from the real seed and corpus is reproducible, seed-sensitive
       assert.ok(lead >= model.observed.leadTimeWeeks.min && lead <= model.observed.leadTimeWeeks.max);
     }
     if (model.cars < 20) continue;
-    assert.ok(Math.abs(model.actualShare - model.observedShare) <= 0.05);
+    assert.ok(Math.abs(model.actualShare - model.releaseShare) <= 0.05);
     for (const [colour, share] of Object.entries(model.plannedColourShares)) {
       const actual = own.filter((row) => fact(row, 'colour') === colour).length / own.length;
       assert.ok(Math.abs(actual - share) <= 0.05, `${model.modelLineId} ${colour}`);

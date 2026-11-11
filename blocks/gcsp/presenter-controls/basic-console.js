@@ -25,7 +25,7 @@ export function basicConsoleOptions({ adapter = createPresenterHttpAdapter() } =
     if (turn !== reads) return;
     const orders = listed?.status === 'ok' && Array.isArray(listed.value?.orders) ? listed.value.orders.length : null;
     model = basicModel({ controls: state, scenario: currentEntry(state, catalogue), orders });
-    basic.update({ headline: model.headline, sub: model.sub, clock: model.clock,
+    basic.update({ headline: model.headline, sub: model.sub, clock: model.clock, week: { now: state.now, start: currentEntry(state, catalogue)?.clockStart },
       primary: { label: model.release.label, disabled: model.release.disabled, reason: model.release.reason } });
     basic.release.dataset.phase = model.phase;
   }

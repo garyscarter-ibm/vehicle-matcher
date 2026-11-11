@@ -41,6 +41,17 @@ const BROWSE_LINES = [
   { ...g42, key: 'G42 Coupe|220i', insuranceGroup: 29 },
   { ...g42, key: 'G42 Coupe|230i', insuranceGroup: 33 },
   { ...g42, key: 'G42 Coupe|M240i', insuranceGroup: 42 },
+  // Demo fleet lines (11 November): body and fuel from the derivative, boot and size from MODEL_SPECS.
+  ...[['G21 Touring|330e', 'estate', 'phev', 410, 2, 32, ['family']], ['G21 Touring|M340i', 'estate', 'petrol', 500, 2, 44, ['family', 'sporty']],
+    ['U11 X1|18d', 'suv', 'diesel', 540, 2, 25, ['family']], ['U11 X1|20i', 'suv', 'petrol', 540, 2, 24, ['family']],
+    ['U11 X1|23d', 'suv', 'diesel', 540, 2, 28, ['family']], ['U11 X1|23i', 'suv', 'petrol', 540, 2, 29, ['family']],
+    ['U11 X1|25e', 'suv', 'phev', 490, 2, 30, ['family']], ['U11 X1|30e', 'suv', 'phev', 490, 2, 31, ['family']],
+    ['U11 X1|M35i', 'suv', 'petrol', 540, 2, 38, ['family', 'sporty']], ['U11 iX1|iX1 20', 'suv', 'ev', 490, 2, 30, ['electric']],
+    ['U11 iX1|iX1 30', 'suv', 'ev', 490, 2, 33, ['electric']], ['U10 X2|20i', 'suv', 'petrol', 470, 2, 27, ['family']],
+    ['U10 X2|M35i', 'suv', 'petrol', 470, 2, 38, ['sporty']], ['U10 iX2|iX2 20', 'suv', 'ev', 525, 2, 31, ['electric']],
+    ['U10 iX2|iX2 30', 'suv', 'ev', 525, 2, 34, ['electric']], ['G26 i4|i4 35', 'coupe', 'ev', 470, 2, 41, ['electric']],
+    ['G26 i4|i4 40', 'coupe', 'ev', 470, 2, 44, ['electric']]]
+    .map(([key, body, fuel, boot, sizeClass, insuranceGroup, tags]) => ({ key, body, fuel, boot, sizeClass, insuranceGroup, tags })),
 ];
 // Browse facts of a model line by its eligibility key, as { name: { value, unit } }; shared with generated stock.
 export function modelBrowseFacts(key) {
