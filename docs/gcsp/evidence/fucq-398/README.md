@@ -49,3 +49,12 @@ For deterministic visual states only, intercept `/api/gcsp/presenter/releases/la
 Agent Yosemite Sam (they/them): requested and selected `gpt-6.1-sol` / `medium`, no fallback, no descendants. Desktop title set and tool-confirmed as Yosemite Sam. IBM gateway check PASS.
 
 Owned scratch: `/Users/garycarter/Documents/Codex/2026-11-11/oka/work/buddy-allocation-build/yosemite_sam`; ownership manifest is the sibling `yosemite-sam-manifest.json`. Test runner separately registers subprocess/scratch manifests and removes each shard. Budget: below 256 MiB scratch, one worker, chunks below ten minutes. Runner checkpoint receipts verify every owned shard removed; sampled scratch peaks were 0–2.29 MiB. The worker root remained 0 bytes and was removed with absence verified. No owned child process remains. The ignored server dependency symlink is retained for repeatable local checks; no installation or source dependency was changed. No browser process was launched by this worker.
+
+
+## Parent rendered and real-command review
+
+Merged source at `834c733c`, integrated with Buddy at `56117eee`. Actual local memory runtime, HTTP adapters and browser UI on 11 November 2026: before release all Allocation counts were0; first release produced Pending1. An actual employee decline followed by **Advanced / Last tick / Refresh readback** produced Pending0, Declined1, Accepted0. **Start again / Confirm** returned all counts to0 and restored focus to Release. A second fresh runtime reproduced Pending1 after the Buddy integration. Accepted outcome is covered by the scoped authoritative projection tests; a final accepted decision was not repeated in-browser.
+
+Desktop1440 and narrow375 layouts were inspected; all three Allocation values remained readable, with document scroll width375 at viewport375. Saved chat outputs: `presenter-allocation-built-desktop.png`, `presenter-allocation-built-mobile.png`. Existing narrow header overlap is separately captured Low **FUCQ-400**, linked to original console Story FUCQ-360, with its screenshot attached. FUCQ-360 explicitly validated desktop only. The Allocation composition does not change that header.
+
+Combined CSS ratchet after both merges:141/142 passed. Its only failure remains FUCQ-387 (unchanged console44/cap39); Allocation/release17 and Buddy15 pass. Source review and real-command checks used actual readbacks, not synthetic event injection. Neither a full suite nor production/PostgreSQL deployment smoke was run.

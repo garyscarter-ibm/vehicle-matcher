@@ -12,7 +12,9 @@ import { PORTAL_ROUTES } from '../employee/portal-navigation.js';
 const validTime = (value) => typeof value === 'string' && Number.isFinite(Date.parse(value));
 // Only projected events get rows; offer creation never masquerades as the later decision time.
 export function buddyEvents(value = {}) {
-  const events = activityEvents(value.stateChanges);
+  const operations = new Map((value.stateChanges ?? []).map((event) => [event.eventId, event.operation]));
+  const searchLabels = { paused: 'Search paused', resumed: 'Search resumed' };
+  const events = activityEvents(value.stateChanges).map((event) => ({ ...event, label: searchLabels[operations.get(event.id)] ?? event.label }));
   const check = value.lastSuccessfulCheck;
   if (check) events.push({ id: `check:${check.checkedAt}`, occurredAt: check.checkedAt, label: 'Cars checked',
     detail: `${check.carsChecked} cars checked, ${check.suitableCars} suitable.` });
