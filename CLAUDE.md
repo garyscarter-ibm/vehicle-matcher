@@ -4,6 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Conventions
 
+### Jira writes paused
+
+Follow `AGENTS.md`, section "Jira writes paused": no Jira writes from any session, agent, poller or
+sync until a collaborator explicitly unpauses them. This overrides automatic backlog and defect updates.
+
 ### Equal collaborator authority
 
 Follow `AGENTS.md`, section "Equal collaborator authority", for contributor decisions and authorisation in every
