@@ -3,7 +3,6 @@ import { NO_IMAGE_TEXT } from '../kit/plain-copy.js';
 
 export const orderCopy = Object.freeze({
   title: 'Order progress',
-  timeNote: 'All times are UTC.',
   loading: 'Loading your order',
   unavailableTitle: 'Order progress unavailable',
   unavailable: 'Your order could not be loaded. Try again.',

@@ -13,9 +13,13 @@ test('actual live entry bootstraps the shared canonical account and current acti
   const opened=await startGcspDemo({runtime:{mode:'memory',environmentId:'activity-live-http',policyAsOf:'2026-11-05T14:00:00.000Z',commandId:'live-http-bootstrap'},port:0,tls:https.configuration});
   assert.equal(opened.status,'ok');const app=opened.value;let controller;
   try{
-    const page=await fetch(app.origin+'/gcsp-activity-live.html');assert.equal(page.status,200);assert.match(await page.text(),/gcsp-activity[^>]+data-live/);
+    // FUCQ-322: session pages need a signed-in session, so sign in as Paula before opening the page.
+    const anonymous=await fetch(app.origin+'/gcsp-activity-live.html');assert.equal(anonymous.status,303);assert.equal(anonymous.headers.get('location'),'/gcsp/login');
+    const login=await fetch(app.origin+'/api/gcsp/session/login',{method:'POST',headers:{Origin:app.origin,'Content-Type':'application/json'},
+      body:JSON.stringify({email:'paula.mason@gcsp-demo.com',password:'fucq'})});assert.equal(login.status,200);
+    const cookie=login.headers.getSetCookie().filter((value)=>!/Max-Age=0(?:;|$)/i.test(value)).map((value)=>value.split(';')[0]).join('; ');assert.ok(cookie);
+    const page=await fetch(app.origin+'/gcsp-activity-live.html',{headers:{Cookie:cookie}});assert.equal(page.status,200);assert.match(await page.text(),/gcsp-activity[^>]+data-live/);
     assert.match(page.headers.get('cache-control'),/no-store/);
-    const cookie=page.headers.getSetCookie().map((value)=>value.split(';')[0]).join('; ');assert.ok(cookie);
     const request=(path,options={})=>fetch(new URL(path,app.origin),{...options,headers:{...options.headers,Origin:app.origin,Cookie:cookie}});
     const account=createAccountHttpAdapter({fetch:request});const current=await account.loadAccount();assert.equal(current.status,'ready');assert.equal(current.name,'Paula Mason');
     const adapter=createActivityHttpAdapter({fetch:request,loadAccount:account.loadAccount});controller=createActivityController({adapter});

@@ -1,5 +1,7 @@
 # Hand-over: epic FUCQ-358 follow-on dispatcher, 11 November 2026 (updated 02:50 GMT)
 
+**Superseded.** The run stopped at 04:17 GMT. Read `docs/HANDOVER-2026-11-11-EPIC358-CUTOFF.md` instead.
+
 This is a checkpoint, not a stop. The follow-on dispatcher session (started 23:05 GMT from the old poller session
 `69298e71`) is still running and pacing with ScheduleWakeup. Read `docs/HANDOVER-2026-11-10-EPIC358-POLLER.md` first.
 It records the goal, Russell's instructions and the decisions. This file says where the epic stands now.

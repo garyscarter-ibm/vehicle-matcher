@@ -129,8 +129,10 @@ export async function startModeServer(poolsByBrand) {
   // is a state the mode is built to handle.
   const fetchDealerDirectory = async () => new Map();
   const geocodePostcode = async () => null;
+  // Stub GCSP vehicle evidence: the real corpus load blocks the event loop for seconds and times out settle().
   const server = buildServer({
     fetchRetailerStock, fetchNearbyStock, enrichColours, fetchDealerDirectory, geocodePostcode,
+    gcspVehicleEvidence: { lookup: { resolve: async () => ({ status: 'unavailable' }) } },
   });
   server.listen(0);
   await once(server, 'listening');

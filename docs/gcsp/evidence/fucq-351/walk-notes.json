@@ -1,0 +1,86 @@
+[
+ {
+  "portalNavigated": "/gcsp/login"
+ },
+ {
+  "portalNavigated": "/gcsp-account.html"
+ },
+ {
+  "portalStart": {
+   "url": "/gcsp-account.html",
+   "h1": "YOUR CARS"
+  }
+ },
+ {
+  "advancedReached": true
+ },
+ {
+  "scenarioReached": true
+ },
+ {
+  "scenarioFocus": "BUTTON:Decline then change"
+ },
+ {
+  "tabStops": [
+   "BUTTON:Reset scenario",
+   "BUTTON:Reset and switch to Greg"
+  ]
+ },
+ {
+  "shortcutRing": "solid 2px none"
+ },
+ {
+  "afterOpen": {
+   "focus": "BUTTON:Confirm reset",
+   "confirm": "Reset into Decline then change as Greg Lawson? This starts a new run."
+  }
+ },
+ {
+  "afterEscape": "BUTTON:Reset and switch to Greg"
+ },
+ {
+  "portalNavigated": "/gcsp-greg.html"
+ },
+ {
+  "posts": [
+   "/api/gcsp/presenter/scenarios/reset 200 {\"status\":\"ok\",\"value\":{\"previousRunId\":\"demo-ea3b050919d5058adfbcb7852fc98722\",\"runId\":\"d",
+   "/api/gcsp/session/switch 200 {\"status\":\"ok\",\"value\":{\"environmentId\":\"gcsp-hosted-demo\",\"runId\":\"demo-d8026a9519e478aeb"
+  ]
+ },
+ {
+  "consoleAfter": {
+   "url": "/gcsp-presenter.html",
+   "focus": "P:Reset done. Acting as Greg Lawson.",
+   "status": [
+    "",
+    "Reset done. Acting as Greg Lawson.",
+    ""
+   ]
+  }
+ },
+ {
+  "portalAfter": {
+   "url": "/gcsp-greg.html",
+   "h1": "NEXT ORDER",
+   "reloadPrompt": false,
+   "account": "GL\nGreg Lawson",
+   "scenario": false
+  }
+ },
+ {
+  "controlsRead": "ok"
+ },
+ {
+  "tickAfter": {
+   "posts": [
+    "/api/gcsp/presenter/controls/tick 200 {\"status\":\"ok\",\"value\":{\"advance\":{\"runId\":\"demo-d8026a9519e478aeb14e0884eb07ed9a\",\"now\":\""
+   ],
+   "status": [
+    "Action recorded"
+   ]
+  }
+ },
+ {
+  "actingContext": "ok Greg Lawson greg"
+ }
+]

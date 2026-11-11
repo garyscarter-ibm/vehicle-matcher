@@ -33,6 +33,15 @@ function setup(overrides = {}) {
 }
 const text = (root, selector) => root.querySelector(selector).textContent;
 
+// Records every value written to the h1, so a test can prove no interim heading is ever painted.
+function watchHeading(root) {
+  const h1 = root.querySelector('h1'); const seen = []; const own = Object.getOwnPropertyDescriptor(window.Node.prototype, 'textContent');
+  Object.defineProperty(h1, 'textContent', { configurable: true, get() { return own.get.call(this); }, set(value) { seen.push(value); own.set.call(this, value); } });
+  return seen;
+}
+const gate = () => { let open; const wait = new Promise((resolve) => { open = resolve; }); return { wait, open }; };
+const visibleSkeleton = (root) => root.querySelector('.gcsp-console-stage > .gcsp-skeleton');
+
 test('Basic shows the London clock, the headline and the journey label read from the server', async () => {
   const f = setup(); await f.api.ready; await settle();
   assert.equal(text(f.root, '.gcsp-console-clock'), 'Day 1 · Mon 9 Nov, 9:00am');
@@ -88,6 +97,7 @@ test('confirmed Start again resets into a fresh Main successful journey run and 
     scenarioVersion: main.scenarioVersion, fixtureVersion: main.fixtureVersion, policyVersion: 'p1' });
   assert.equal(text(f.root, '[role="status"]'), 'Started again on day 1');
   assert.equal(text(f.root, '.gcsp-console-clock'), 'Day 1 · Mon 9 Nov, 9:00am');
+  await new Promise((resolve) => setTimeout(resolve, 20)); // keepFocus restores focus on a timer after the read settles.
   assert.equal(document.activeElement, f.api.basic.release, 'focus lands on Release after Start again'); f.api.destroy();
 });
 
@@ -113,4 +123,19 @@ test('a second Start again after more releases sends the current run, not the fi
   const resets = f.calls.filter(([kind]) => kind === 'reset').map(([, body]) => body);
   assert.equal(resets.length, 2); assert.equal(resets[0].expectedRunId, 'run-a');
   assert.equal(resets[1].expectedRunId, 'run-b'); assert.equal(resets[1].expectedRunVersion, 4); f.api.destroy();
+});
+
+test('the skeleton holds until the model lands, and the h1 is written once with the final headline', async () => {
+  const hold = gate(); const f = setup({ readScenarios: async () => { await hold.wait; return ok(catalogue); } }); const seen = watchHeading(f.root);
+  await settle(); assert.ok(visibleSkeleton(f.root)); assert.deepEqual(seen, []);
+  assert.equal(f.root.querySelector('.gcsp-console-stage').hasAttribute('data-loading'), true);
+  hold.open(); await f.api.ready; await settle();
+  assert.deepEqual(seen, ['Ready for the next release']); assert.equal(visibleSkeleton(f.root), null);
+  assert.equal(f.api.basic.release.textContent, "Release tomorrow's cars"); f.api.destroy();
+});
+
+test('a failed order or scenario read still ends the skeleton on a real headline', async () => {
+  const f = setup({ readScenarios: async () => ({ status: 'unavailable' }), listOrders: async () => { throw new Error('down'); } }); const seen = watchHeading(f.root);
+  await f.api.ready; await settle();
+  assert.equal(visibleSkeleton(f.root), null); assert.equal(seen.length, 1); assert.notEqual(seen[0], ''); assert.notEqual(seen[0], 'Presenter console'); f.api.destroy();
 });

@@ -317,18 +317,18 @@ test('a presenter-recorded missed return reads Return missed, owned by the schem
 
 test('a handover completed before the return outcome makes the new car current, then the return is confirmed', async (t) => {
   const f = await setup(t, { returnOutcome: 'returned' }); const orderUuid = await submitOrder(f); const controller = await open(f, { orderUuid });
-  const car = { name: 'Synthetic new car' };
+  const car = { name: 'BMW 3 Series Saloon 320i' };
   try {
     await toScheduled(f, controller, 'ro-both'); const wait = await delays(f); const slot = await returnScheduled(f, controller, wait, 'ro-both');
     await atSlotStart(f, controller, 'ro-both');
     good(await f.dependencies.gcspAppointments.complete(f.presenter, { orderUuid })); await controller.refresh();
     let returning = value(controller, 'returnPlan'); assert.deepEqual([returning.state, returning.relationship.currentCar.kind, returning.relationship.oldCar.status], ['return-scheduled', 'order', 'held']);
     let plan = orderProgressBody({ progress: controller.getState().progress, car }).querySelector('.gcsp-order-return').textContent;
-    assert.match(plan, /Current carSynthetic new car/); assert.match(plan, /Car to returnBMW 3 Series Touring 320i/); assert.match(plan, /Return booked: /); assert.doesNotMatch(plan, /Returned:|stays yours until it is returned/);
+    assert.match(plan, /Current carBMW 3 Series Saloon 320i/); assert.match(plan, /Car to returnBMW 3 Series Touring 320i/); assert.match(plan, /Return booked: /); assert.doesNotMatch(plan, /Returned:|stays yours until it is returned/);
     await pastReturn(f, controller, slot, 'ro-both'); returning = value(controller, 'returnPlan');
     assert.deepEqual([returning.state, returning.relationship.currentCar.kind, returning.relationship.oldCar.status], ['returned', 'order', 'returned']);
     plan = orderProgressBody({ progress: controller.getState().progress, car }).querySelector('.gcsp-order-return').textContent;
-    assert.match(plan, /Returned: /); assert.match(plan, /Current carSynthetic new car/); assert.match(plan, /Returned carBMW 3 Series Touring 320i/); assert.doesNotMatch(plan, /Car to return/);
+    assert.match(plan, /Returned: /); assert.match(plan, /Current carBMW 3 Series Saloon 320i/); assert.match(plan, /Returned carBMW 3 Series Touring 320i/); assert.doesNotMatch(plan, /Car to return/);
   } finally { controller.destroy(); }
 });
 

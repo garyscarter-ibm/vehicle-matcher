@@ -41,14 +41,14 @@ function statusLine(over, text) {
   return line;
 }
 
-export function renderRepresentativeBody(main, { account, data } = {}) {
+export function renderRepresentativeBody(main, { account, data, refresh } = {}) {
   const wrap = el('div', 'vm gcsp-rep');
   const done = () => { wrap.remove(); };
   if (account?.status !== 'ready' || !data) {
-    const retry = el('p', 'gcsp-note', 'Use Retry in the header to try again.');
+    const retry = button({ label: 'Refresh', onClick: () => refresh?.() });
     wrap.append(screenIntro({ kicker: 'Choices', title: 'Your cars', level: 1, className: 'gcsp-intro' }), statusScreen({
       title: 'Your cars are not available right now',
-      message: 'We could not load your account, so your current car and the cars you can choose are hidden.',
+      message: 'We could not load your account, so your current car and the cars you can choose are hidden. Refresh to try again.',
       actions: [retry],
     }));
     main.replaceChildren(wrap);

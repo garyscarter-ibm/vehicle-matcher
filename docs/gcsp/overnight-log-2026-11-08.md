@@ -435,3 +435,12 @@ For Russell or Gary:
 - Locally a Start again plus Release peaks at 347 MB and takes 11s, inside the 2 GB plan.
 - What happened shows Offer email not delivered because hosted mail fails with mail-configuration-invalid. The email is still captured (View email works). For Gary: mail settings on Render, or accept the wording.
 - One 401 from /api/gcsp/orders/progress/all on first console load (listOrders before the presenter session); harmless, not fixed.
+
+## 11 Nov 08:10, Gary's console tweaks (Wanjiru)
+- Asked: skeleton loading, day starts on the current day, no heading cycling on load, why emails aren't sent.
+- Emails: hosted mail is set to Brevo but the transport refuses every send with mail-configuration-invalid before any network call. That code means at least one of GCSP_BREVO_API_KEY, GCSP_MAIL_FROM, GCSP_MAIL_FROM_NAME, GCSP_MAIL_RECIPIENTS (valid JSON map employeeId to address) or GCSP_PUBLIC_BASE_URL is missing or invalid on Render, or GCSP_MAIL_TRANSPORT is not exactly brevo. Recipient keys must be employee ids (employee-paula), not principal ids. The email-transport doc also records sender identity and a deployed real send as never verified. Needs Gary or Russell in the Render dashboard; not changeable from here.
+- Cool Cat (implementer) on skeleton plus settled heading; Mickey Mouse (implementer) on Day 1 = today's London date at 9:00am, offsets kept.
+- Merged fix/console-skeleton (90170e7c): console skeleton until the final headline, own skeletons for Today's release and What happened, no interim headings, equal-size buttons. 192/192 targeted.
+- Merged fix/clock-start-today (dc1f474b): each run's Day 1 is the London date when it starts, at the template's 9:00am; 9:30 and 11:00 cues shift with it; stored per run as versions.scenarioClock; hosted passes wallNow. Merged-tree check 191/191. Five failures seen in the wider run also fail on base (gcsp-clock-reset 'reset restores versioned employees', gcsp-brief, gcsp-live-regions, gcsp-manual-claims, launcher-employee-entry): not from this change, not diagnosed.
+- Merged fix/console-copy: removed 'The next release fills this grid.'; What happened is a closed disclosure by default.
+- Hosted check 11 Nov 09:10: Start again via the API gave now 2026-11-11T09:00:00Z and catalogue clockStart 11 Nov, so Day 1 is today. Collapsed What happened, no grid filler line and equal console buttons are in the served assets. Earlier attempts hit the old instance during Render's cut-over (502s with dynamic-paid-error between). Hosted run is fresh at Day 1 for the dry run.

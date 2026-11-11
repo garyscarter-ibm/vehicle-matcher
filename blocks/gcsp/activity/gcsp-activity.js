@@ -24,9 +24,9 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, s
   if (signal?.aborted) { teardown(); return teardown; }
   signal?.addEventListener('abort', teardown, { once: true });
   stopShell = mountEmployee(root, { brand, view: 'activity', loadingLayout: 'timeline', signal: abort.signal,
-    onNavigate, notifications: adapter.notifications,
+    onNavigate, notifications: adapter.notifications, accountFailure: 'page',
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
-    renderBody(main, { account }) {
+    renderBody(main, { account, refresh }) {
       let body; let stopped = false; let restoringFocus = false; let unsubscribeClock;
       const announcement = viewStatus({ className: 'gcsp-vh gcsp-activity-announcement' });
       const content = el('div');
@@ -51,7 +51,7 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', onNavigate, s
           body.append(screenIntro({ title: 'Buddy activity' }), runRestartedScreen({ reload }));
         } else {
           body = activityBody({ announce: announcement.announce, result: state.result, pending: state.pending, offerDisplay: state.offerDisplay ?? offerDisplay,
-            onRetry: account.status === 'ready' ? () => controller?.refresh() : undefined,
+            onRetry: account.status === 'ready' ? () => controller?.refresh() : refresh,
             onPause: typeof adapter.pause === 'function' ? () => controller?.pause() : undefined,
             onResume: typeof adapter.resume === 'function' ? () => controller?.resume() : undefined,
             onReviewBrief: typeof onNavigate === 'function' ? () => onNavigate('brief') : undefined });

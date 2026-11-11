@@ -107,7 +107,7 @@ test('account: one presenter action re-reads once, keeps the shell and focus, sh
   await settle(node, () => live.textContent !== ''); await pause();
   assert.deepEqual(n, { account: 2, draft: 2, list: 2, stages: 0 }); assert.deepEqual(watch.seen, []); assert.equal(live.textContent, 'Account updated.');
   assert.equal(node.firstElementChild, shell); assert.equal(node.querySelector('main'), main); assert.ok(node.querySelector('.gcsp-account-order-status'));
-  assert.match(node.textContent, /Account as of/);
+  assert.ok(node.querySelector('.gcsp-feature'), 'the car panel is redrawn in place');
   assert.notEqual(refreshButton(), old); assert.equal(document.activeElement, refreshButton());
   live.textContent = ''; act(node); await settle(node, () => n.account === 3); await pause();
   assert.equal(n.list, 3); assert.equal(live.textContent, ''); assert.equal(document.activeElement, refreshButton());

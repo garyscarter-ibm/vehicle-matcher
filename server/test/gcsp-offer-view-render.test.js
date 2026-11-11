@@ -316,7 +316,7 @@ test('before accepting, the handoff shows contact, return car, wording and one c
   try {
     const group = root.querySelector('[aria-label="Before you accept"]');
     assert.equal(group.querySelector('h2').textContent, 'Before you accept');
-    for (const text of ['07700 900123', 'paula.mason@gcsp-demo.com', 'G20 320d M Sport', '31 December 2026', '41,250 miles', 'Scheme terms']) assert.match(group.textContent, new RegExp(text));
+    for (const text of ['07700 900123', 'paula.mason@gcsp-demo.com', 'BMW 3 Series Touring 320i', '31 December 2026', '41,250 miles', 'Scheme terms']) assert.match(group.textContent, new RegExp(text));
     const boxes = [...group.querySelectorAll('input[type="checkbox"]')];
     assert.equal(boxes.length, 3); assert.ok(boxes.every((box) => box.labels[0].textContent.length > 10 && !box.checked));
     const accept = root.querySelector('[data-offer-action="accept"]'); assert.equal(accept.disabled, true);

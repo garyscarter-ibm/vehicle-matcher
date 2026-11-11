@@ -30,7 +30,8 @@ function standalone(root, title, message) {
 
 /**
  * Mount the employee shell: the rail is PORTAL_NAVIGATION; a click goes to ctx.onNavigate(key) or PORTAL_ROUTES via ctx.location.
- * ctx.notifications (optional) shows the header bell: a bell source { connect(update) } or a static model. viewLabel is the crumb for a view outside the rail; returns a teardown with setView(key).
+ * ctx.notifications (optional) shows the header bell; viewLabel is the crumb for a view outside the rail. ctx.accountFailure 'page' keeps
+ * the header quiet on a failed read, for a body that shows it with renderBody's refresh. Returns a teardown with setView(key).
  */
 export function mountEmployee(root, ctx = {}) {
   const brand = String(ctx.brand || 'bmw').toLowerCase();
@@ -61,7 +62,7 @@ export function mountEmployee(root, ctx = {}) {
       cleanupBody?.();
       cleanupBody = null;
       const draw = ctx.renderBody || defaultBody;
-      const out = draw(shell.main, { view, account, label: labelOf(view) });
+      const out = draw(shell.main, { view, account, label: labelOf(view), refresh: load });
       if (typeof out === 'function') cleanupBody = out;
     };
     const showLoading = () => {
@@ -103,6 +104,7 @@ export function mountEmployee(root, ctx = {}) {
         else routeAccountMenu(key, ctx.location || root.ownerDocument.defaultView.location);
       },
       onRetryAccount: load,
+      accountFailure: ctx.accountFailure === 'page' ? 'page' : 'header',
     });
     setView = (key) => {
       if (!known(key) || key === view) return;
@@ -187,6 +189,7 @@ export class GcspEmployeeElement extends HTMLElement {
       loadAccount: adapter?.loadAccount,
       signOut: fixtureName || adapter?.readOnly === true ? false : adapter?.signOut,
       renderBody: adapter?.renderBody,
+      accountFailure: adapter?.accountFailure,
       onNavigate: (to) => {
         const event = this._emit('gcsp:navigate', { from: this._current, to }, true);
         if (!event.defaultPrevented) this.setAttribute('view', to);

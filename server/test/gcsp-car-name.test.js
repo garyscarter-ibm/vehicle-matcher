@@ -82,3 +82,35 @@ test('the current car on the account and offer comparison reads as the rule name
   assert.equal(account.value.contracts[0].model, expected);
   assert.doesNotMatch(JSON.stringify(account.value.contracts), /Fictional BMW|Synthetic 3/);
 });
+
+// FUCQ-315: the rule reaches Greg's catalogue, the order progress, offer and presenter fixtures, the return car and the email.
+test("Greg's order plan catalogue names each configuration by the rule", async () => {
+  const name = await readCarNamer(createPolicyService(), read);
+  const row = await createPolicyService().getAssumption('orderPlan.catalog.v1', read); assert.equal(row.status, 'ok');
+  for (const c of row.value.value.configurations) {
+    const key = c.facts.eligibilityModelKey.value;
+    assert.equal(c.display.name, name(key === 'G61 i5|i5 40' ? 'G61 i5|i5 eDrive40' : key), key);
+  }
+});
+
+test('order progress, offer and presenter fixtures name cars by the rule, as the live screens do', async () => {
+  const { orderProgressFixtures } = await import('../../blocks/gcsp/order-progress/fixtures.js');
+  const { offerFixture } = await import('../../blocks/gcsp/offer/fixtures.js');
+  const { fixtureMessages } = await import('../../blocks/gcsp/presenter/fixtures.js');
+  const name = await readCarNamer(createPolicyService(), read); const live = await demoCars();
+  const progress = orderProgressFixtures();
+  assert.ok(live.some((car) => car.facts.display.name === progress.car.name), progress.car.name);
+  assert.match(JSON.stringify(progress.states['return-not-planned']), new RegExp(`"model":"${name('G21 Touring|320i')}"`));
+  assert.equal(offerFixture('handoff-replacement').value.handoff.returnCar.model, name('G21 Touring|320i'));
+  for (const text of [JSON.stringify(progress), JSON.stringify(offerFixture('handoff-replacement')), JSON.stringify(fixtureMessages())]) {
+    assert.doesNotMatch(text, /(Fictional|Synthetic) (BMW|new car|\d Series|i\d)|BMW 320i Touring|G20 320d/);
+  }
+});
+
+test('the offer email names the car exactly as the quote and offer page do', async () => {
+  const { renderOfferMessage } = await import('../gcsp/notify/templates.js');
+  const [car] = await demoCars();
+  const message = renderOfferMessage({ offer: { expiresAt: '2026-11-06T13:00:00.000Z', state: 'active' }, quote: { facts: car.facts },
+    employee: { employeeId: 'employee-paula', name: 'Paula Mason' }, offerLink: 'https://example.test/gcsp/offer?offerId=o', now: read.asOf });
+  assert.match(message.textBody, new RegExp(`\\n${car.facts.display.name}\\n`)); assert.doesNotMatch(message.textBody + message.htmlBody, /Synthetic|Fictional/);
+});

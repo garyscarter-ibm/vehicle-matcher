@@ -2,11 +2,11 @@ import { el, button } from '../../vehicle-matcher/ui.js';
 import { demoTime } from './activity-timeline.js';
 
 let sequence = 0;
-const day = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
-const clock = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'UTC' });
+const day = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Europe/London' });
+const clock = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'Europe/London' });
 const dayText = (date) => { const p = Object.fromEntries(day.formatToParts(date).map((part) => [part.type, part.value])); return `${p.weekday} ${p.day} ${p.month} ${p.year}`; };
 
-/** Offered times grouped by demo-time (UTC) day: each day a named list of compact time buttons. Supplied order is kept; the caller owns the request. */
+/** Offered times grouped by UK day: each day a named list of compact time buttons. Supplied order is kept; the caller owns the request. */
 export function slotPicker({ slots = [], actionLabel = 'Request', onPick, disabled = false, className = '' } = {}) {
   const root = el('ul', `gcsp-slot-picker${className ? ` ${className}` : ''}`); const days = new Map();
   for (const slot of slots) {

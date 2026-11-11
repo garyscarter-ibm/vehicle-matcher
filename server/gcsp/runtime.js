@@ -49,7 +49,7 @@ const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].ever
 // Explicit composition only. A failed PostgreSQL open never changes providers.
 export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy,
   environmentId, policyAsOf, commandId, stockProvider, production, offerLandingUrl = process.env.GCSP_OFFER_LANDING_URL,
-  sessionNow = () => new Date().toISOString(), loginAdapter, adoptOfferJourney = false, mail, comparisonResultFile } = {}) {
+  sessionNow = () => new Date().toISOString(), wallNow, loginAdapter, adoptOfferJourney = false, mail, comparisonResultFile } = {}) {
   if (!['postgres', 'memory'].includes(mode)) return result('invalid', { code: 'unsupported-repository-mode' });
   try { offerLandingUrl = resolveOfferLandingUrl(offerLandingUrl); }
   catch { return result('invalid', { code: 'invalid-offer-landing-url' }); }
@@ -69,7 +69,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
   try {
     const opened = await repository.open();
     if (opened.status !== 'ok') { await close(); return opened; }
-    const initialized = await createDemoRuntime({ repository, policy: readPolicy, environmentId, environmentKind: 'synthetic', policyAsOf, commandId, sessionNow, loginAdapter });
+    const initialized = await createDemoRuntime({ repository, policy: readPolicy, environmentId, environmentKind: 'synthetic', policyAsOf, commandId, sessionNow, wallNow, loginAdapter });
     if (initialized.status !== 'ok') { await close(); return initialized; }
     const { clock, identity } = initialized.value;
     const profiles = await identity.seedPrincipals();

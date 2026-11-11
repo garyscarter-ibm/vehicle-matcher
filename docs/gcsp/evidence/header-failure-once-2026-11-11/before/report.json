@@ -1,0 +1,132 @@
+[
+  {
+    "name": "01-your-cars-source-failure",
+    "path": "/gcsp-account.html?fixture=source-failure",
+    "header": {
+      "status": "unavailable",
+      "label": "Account unavailable",
+      "text": "Account unavailable\nYour account could not be loaded.\nRetry"
+    },
+    "headings": [
+      "H1:YOUR CARS",
+      "H2:Your account is unavailable"
+    ],
+    "buttons": [
+      "Refresh",
+      "Contact support"
+    ],
+    "body": "YOUR CARS\nYour account is unavailable\n\nRefresh to try again, or contact scheme support.\n\nRefresh\nContact support"
+  },
+  {
+    "name": "02-your-cars-conflict",
+    "path": "/gcsp-account.html?fixture=conflict",
+    "header": {
+      "status": "unavailable",
+      "label": "Account unavailable",
+      "text": "Account unavailable\nYour account could not be loaded.\nRetry"
+    },
+    "headings": [
+      "H1:YOUR CARS",
+      "H2:Your account has changed"
+    ],
+    "buttons": [
+      "Refresh",
+      "Contact support"
+    ],
+    "body": "YOUR CARS\nYour account has changed\n\nRefresh to see the latest.\n\nRefresh\nContact support"
+  },
+  {
+    "name": "03-shell-representative-unavailable",
+    "path": "/gcsp-employee.html?fixture=representative-unavailable",
+    "header": {
+      "status": "unavailable",
+      "label": "Account unavailable",
+      "text": "Account unavailable\nYour account could not be loaded.\nRetry"
+    },
+    "headings": [
+      "H1:YOUR CARS",
+      "H2:Your cars are not available right now"
+    ],
+    "buttons": [],
+    "body": "YOUR CARS\nYour cars are not available right now\n\nWe could not load your account, so your current car and the cars you can choose are hidden.\n\nUse Retry in the header to try again."
+  },
+  {
+    "name": "04-preferences-failure",
+    "path": "/_capture-header-failure.html?page=brief",
+    "header": {
+      "status": "unavailable",
+      "label": "Account unavailable",
+      "text": "Account unavailable\nYour account could not be loaded.\nRetry"
+    },
+    "headings": [
+      "H2:Your preferences are unavailable"
+    ],
+    "buttons": [],
+    "body": "Your preferences are unavailable\n\nLoad your account to review your preferences."
+  },
+  {
+    "name": "05-activity-failure",
+    "path": "/_capture-header-failure.html?page=activity",
+    "header": {
+      "status": "unavailable",
+      "label": "Account unavailable",
+      "text": "Account unavailable\nYour account could not be loaded.\nRetry"
+    },
+    "headings": [
+      "H1:YOUR BUDDY",
+      "H2:Activity unavailable"
+    ],
+    "buttons": [
+      "disabled:Retry"
+    ],
+    "body": "YOUR BUDDY\nActivity unavailable\n\nSearch status and offers are unavailable. Try again.\n\nRetry\n\nSearch status and offers are unavailable. Try again."
+  },
+  {
+    "name": "06-order-progress-failure",
+    "path": "/_capture-header-failure.html?page=order-progress",
+    "header": {
+      "status": "unavailable",
+      "label": "Account unavailable",
+      "text": "Account unavailable\nYour account could not be loaded.\nRetry"
+    },
+    "headings": [
+      "H1:ORDER PROGRESS",
+      "H2:Order progress unavailable"
+    ],
+    "buttons": [
+      "disabled:Retry"
+    ],
+    "body": "ORDER PROGRESS\nOrder progress unavailable\n\nYour order could not be loaded. Try again.\n\nRetry\n\nOrder progress unavailable. Your order could not be loaded. Try again."
+  },
+  {
+    "name": "07-manual-setup-failure",
+    "path": "/_capture-header-failure.html?page=manual-setup",
+    "header": {
+      "status": "unavailable",
+      "label": "Account unavailable",
+      "text": "Account unavailable\nYour account could not be loaded.\nRetry"
+    },
+    "headings": [
+      "H2:Ordering choices unavailable"
+    ],
+    "buttons": [
+      "Retry",
+      "Back to account"
+    ],
+    "body": "Ordering choices unavailable\n\nReview your account or retry. Your current car is unchanged.\n\nRetryBack to account"
+  },
+  {
+    "name": "08-offer-followup-failure",
+    "path": "/_capture-header-failure.html?page=offer-followup",
+    "header": {
+      "status": "unavailable",
+      "label": "Account unavailable",
+      "text": "Account unavailable\nYour account could not be loaded.\nRetry"
+    },
+    "headings": [
+      "H2:Follow-up unavailable"
+    ],
+    "buttons": [],
+    "body": "Follow-up unavailable\n\nLoad your account to continue."
+  }
+]

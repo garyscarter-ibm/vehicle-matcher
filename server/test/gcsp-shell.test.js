@@ -163,6 +163,16 @@ test('FUCQ-201: a restarted account state keeps the header quiet, with no unavai
   }
 });
 
+test('accountFailure page keeps the header quiet on a failed read; a ready account still shows', () => {
+  const shell = shellMod.portalShell({ navigation: items, account: { status: 'unavailable' }, accountFailure: 'page' });
+  const box = shell.root.querySelector('.gcsp-account');
+  assert.equal(box.dataset.status, 'unavailable'); assert.equal(box.textContent, '');
+  assert.equal(box.querySelector('.gcsp-account-retry'), null); assert.equal(box.hasAttribute('aria-label'), false);
+  shell.setAccount({ status: 'ready', name: 'New Person' });
+  assert.equal(box.getAttribute('aria-label'), 'Account: New Person');
+  shell.destroy();
+});
+
 test('shell destroy removes its DOM and listeners', () => {
   let retries = 0;
   const shell = shellMod.portalShell({ navigation: items, account: { status: 'unavailable' }, onRetryAccount: () => { retries += 1; } });
@@ -273,6 +283,24 @@ test('missing adapter shows the account as unavailable and Retry reloads', async
   assert.equal(calls, 2);
   assert.equal(root2.querySelector('.gcsp-account').getAttribute('aria-label'), 'Account: Test Person');
   t2();
+});
+
+test('pages that own a failed account read say it once: a quiet header and one Refresh in the body', async () => {
+  const pages = [
+    ['../../blocks/gcsp/brief/gcsp-brief.js', 'mountBrief', /Your preferences are unavailable/],
+    ['../../blocks/gcsp/offer-followup/gcsp-offer-followup.js', 'mountOfferFollowup', /Follow-up unavailable/],
+  ];
+  for (const [path, name, title] of pages) {
+    let reads = 0; const root = host();
+    const stop = (await import(path))[name](root, { brand: 'bmw', signOut: false, loadAccount: async () => { reads += 1; return { status: 'unavailable' }; } });
+    await tick();
+    assert.match(root.querySelector('main').textContent, title);
+    assert.equal(root.querySelector('.gcsp-account').textContent, ''); assert.doesNotMatch(root.textContent, /Retry|Account unavailable/);
+    const refresh = [...root.querySelectorAll('main button')];
+    assert.deepEqual(refresh.map((b) => b.textContent), ['Refresh']);
+    refresh[0].click(); await tick(); assert.equal(reads, 2);
+    stop();
+  }
 });
 
 test('a brand other than bmw renders an honest unavailable state', () => {
@@ -707,13 +735,18 @@ test('named fixtures render their states', async () => {
   assert.equal(loading.childNodes.length, 0);
 
   const bad = await mountFixture('representative-unavailable', 400);
-  assert.equal(bad.querySelector('.gcsp-account').getAttribute('aria-label'), 'Account unavailable');
+  // The body says it once, so the header has no unavailable label or Retry.
+  assert.equal(bad.querySelector('.gcsp-account').hasAttribute('aria-label'), false);
+  assert.equal(bad.querySelector('.gcsp-account-retry'), null);
   assert.equal(bad.querySelector('.gcsp-card'), null);
   const status = bad.querySelector('main .vm-status');
   assert.equal(status.getAttribute('role'), 'status');
   assert.match(status.textContent, /not available right now/);
-  assert.match(status.textContent, /Retry/);
+  assert.doesNotMatch(bad.textContent, /Retry|Account unavailable/);
+  assert.equal(status.querySelector('button.vm-btn-primary').textContent, 'Refresh');
   assert.equal(bad.querySelectorAll('h1').length, 1);
+  status.querySelector('button').click();
+  assert.equal(bad.querySelector('.gcsp-account').getAttribute('aria-busy'), 'true');
   bad.remove();
 });
 

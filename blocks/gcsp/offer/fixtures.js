@@ -7,7 +7,7 @@ const WORDING = 'Scheme terms: selection requests allocation of this exact schem
   + 'Approval, appointment and collection are separate decisions; submission does not end the current contract.';
 const handoffFixture = (blocked) => ({ termsVersion: 'fictional-order-terms-v1', termsDigest: 'synthetic-terms-digest', wording: WORDING, fictional: true,
   mode: 'replacement', blocker: blocked ? 'contact-required' : null, contact: blocked ? null : { phone: '07700 900123', email: 'paula.mason@gcsp-demo.com' },
-  returnCar: { model: 'G20 320d M Sport', contractEndDate: '2026-12-31', currentOdometer: { value: 41250, unit: 'miles' } },
+  returnCar: { model: 'BMW 3 Series Touring 320i', contractEndDate: '2026-12-31', currentOdometer: { value: 41250, unit: 'miles' } },
   declarations: [{ id: 'terms', label: 'I accept these scheme terms.' }, { id: 'driver', label: 'The nominated driver and licence details are correct.' },
     { id: 'return', label: 'The old contract and expected return mileage are correct.' }] });
 const selectionFixture = (name) => {

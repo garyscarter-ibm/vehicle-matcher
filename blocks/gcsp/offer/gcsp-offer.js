@@ -31,7 +31,7 @@ function followupMount(port) {
 export function mountOffer(root, adapter = {}) {
   const shell = portalShell({ title: 'Group Car Schemes Portal', account: adapter.account || { status: 'unavailable', message: 'Account details not supplied.' },
     navigation: adapter.navigation || [], accountMenu: adapter.accountMenu || [], breadcrumbs: [{ label: 'Your offer' }], onNavigate: adapter.onNavigate, arrivalFocus: true,
-    signOut: adapter.signOut, notifications: adapter.notifications });
+    signOut: adapter.signOut, notifications: adapter.notifications, reload: adapter.reload });
   root.replaceChildren(shell.root);
   const controller = createOfferController({ read: adapter.read || (async () => ({ status: 'unavailable' })),
     decide: adapter.decide, readReasons: adapter.readReasons, createCommandId: adapter.createCommandId });

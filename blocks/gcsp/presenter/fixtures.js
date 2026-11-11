@@ -31,7 +31,7 @@ const unrendered = (fields) => ({
 /** Fresh fixture messages, newest first as the server returns them. */
 export function fixtureMessages() {
   return [
-    offerMessage({ jobId: 'job-004', employeeId: 'employee-paula', name: 'Paula Mason', vehicle: 'BMW 320i Touring', time: '2026-11-05T09:20:00.000Z' }),
+    offerMessage({ jobId: 'job-004', employeeId: 'employee-paula', name: 'Paula Mason', vehicle: 'BMW 3 Series Touring 320i', time: '2026-11-05T09:20:00.000Z' }),
     unrendered({ jobId: 'job-003', state: 'retrying', attempts: 2, error: 'transport-unavailable', nextAttemptAt: '2026-11-05T09:17:00.000Z',
       time: '2026-11-05T09:15:00.000Z', recipient: { employeeId: 'employee-alex', name: 'Alex Morgan-Whitfield' } }),
     unrendered({ jobId: 'job-002', state: 'failed', attempts: 3, error: 'offer-expired', nextAttemptAt: null,

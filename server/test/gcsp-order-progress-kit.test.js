@@ -105,6 +105,15 @@ test('slotPicker disables its buttons while pending and renders plain times with
   assert.equal(slotPicker({ slots: [] }).children.length, 0);
 });
 
+test('slotPicker groups and words times on the UK clock: BST in July, GMT in January (FUCQ-354)', () => {
+  const node = slotPicker({ actionLabel: 'Request return', onPick: () => {}, slots: [
+    { slotId: 'summer', start: '2026-07-15T23:30:00.000Z' }, { slotId: 'winter', start: '2026-01-15T23:30:00.000Z' }] });
+  const days = [...node.querySelectorAll(':scope > li')];
+  assert.deepEqual(days.map((d) => d.querySelector('.gcsp-slot-day-heading').textContent), ['Thu 16 Jul 2026', 'Thu 15 Jan 2026']);
+  assert.deepEqual([...node.querySelectorAll('button')].map((b) => [b.textContent, b.getAttribute('aria-label')]),
+    [['00:30', 'Request return 16 Jul 2026, 00:30'], ['23:30', 'Request return 15 Jan 2026, 23:30']]);
+});
+
 test('focus keys tell equal times on different days apart, and plain buttons still key on their text', () => {
   const node = slotPicker({ slots, onPick: () => {} }); document.body.append(node);
   const [a, b, c] = [...node.querySelectorAll('button')]; const key = focus.focusKeyOf(c);

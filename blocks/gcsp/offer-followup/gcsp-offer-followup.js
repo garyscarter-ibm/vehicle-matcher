@@ -1,5 +1,5 @@
 import { mountEmployee } from '../employee/gcsp-employee.js';
-import { statusScreen } from '../../vehicle-matcher/ui.js';
+import { button, statusScreen } from '../../vehicle-matcher/ui.js';
 import { createFollowupController } from './followup-controller.js';
 import { createFollowupHttpAdapter } from './http-adapter.js';
 import { createFollowupView } from './followup-view.js';
@@ -26,14 +26,15 @@ export function mountFollowupBody(root, ctx = {}) {
 
 /** Host supplies trusted account loading and FUCQ-105's projector; no fixture or URL identity fallback. */
 export function mountOfferFollowup(root, ctx = {}) {
-  return mountEmployee(root, { ...ctx, view: 'offer-followup', viewLabel: 'Your next offer',
-    renderBody(main, { account, view }) {
+  return mountEmployee(root, { ...ctx, view: 'offer-followup', viewLabel: 'Your next offer', accountFailure: 'page',
+    renderBody(main, { account, view, refresh }) {
+      if (account.status !== 'ready') {
+        main.replaceChildren(statusScreen({ title: 'Follow-up unavailable', message: 'Refresh to try again.',
+          actions: [button({ label: 'Refresh', onClick: () => refresh?.() })] })); return undefined;
+      }
       if (view !== 'offer-followup') {
         if (ctx.renderBody) return ctx.renderBody(main, { account, view });
         main.replaceChildren(statusScreen({ title: 'Your cars', message: 'Open your account to view your cars.' })); return undefined;
-      }
-      if (account.status !== 'ready') {
-        main.replaceChildren(statusScreen({ title: 'Follow-up unavailable', message: 'Load your account to continue.' })); return undefined;
       }
       return mountFollowupBody(main, ctx);
     } });

@@ -14365,7 +14365,7 @@
             "derivativeId": "g20-saloon-320i",
             "version": "order-plan-catalog.v1",
             "display": {
-              "name": "3 Series Saloon 320i"
+              "name": "BMW 3 Series Saloon 320i"
             },
             "facts": {
               "eligibilityModelKey": {
@@ -14417,7 +14417,7 @@
             "derivativeId": "g20-saloon-330e",
             "version": "order-plan-catalog.v1",
             "display": {
-              "name": "3 Series Saloon 330e"
+              "name": "BMW 3 Series Saloon 330e"
             },
             "facts": {
               "eligibilityModelKey": {
@@ -14465,7 +14465,7 @@
             "derivativeId": "g21-touring-320i",
             "version": "order-plan-catalog.v1",
             "display": {
-              "name": "3 Series Touring 320i"
+              "name": "BMW 3 Series Touring 320i"
             },
             "facts": {
               "eligibilityModelKey": {
@@ -14517,7 +14517,7 @@
             "derivativeId": "g61-i5-40",
             "version": "order-plan-catalog.v1",
             "display": {
-              "name": "i5 eDrive40 Touring"
+              "name": "BMW i5 eDrive40 Touring"
             },
             "facts": {
               "eligibilityModelKey": {
@@ -14565,7 +14565,7 @@
             "derivativeId": "f70-hatch-120",
             "version": "order-plan-catalog.v1",
             "display": {
-              "name": "1 Series Sports Hatch 120"
+              "name": "BMW 1 Series Sports Hatch 120"
             },
             "facts": {
               "eligibilityModelKey": {

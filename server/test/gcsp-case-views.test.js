@@ -46,7 +46,7 @@ test('each employee state renders owner, reasons, dates, next action, remedy and
     const c = caseFixture(name);
     assert.match(root.textContent, /Scheme team/); assert.match(root.textContent, new RegExp(c.reason));
     assert.match(root.textContent, /Review the renewal options with Paula/);
-    assert.match(root.textContent, /Due \(UTC\)/); assert.match(root.textContent, /2026-11-06 12:00:00 UTC/);
+    assert.match(root.textContent, /Due6 Nov 2026, 12:00/); assert.doesNotMatch(root.textContent, /UTC/); // FUCQ-354: UK time, no label
     assert.match(root.textContent, /Renewal deadline \(calendar date\)/); assert.match(root.textContent, /2026-11-20/);
     assert.match(root.textContent, /Dated case history/); assert.match(root.textContent, /Actor(You|Automatic check)/);
     assert.match(root.textContent, name === 'trigger' ? /Opened fromRenewal deadline approaching/ : /Opened fromHelp request/);

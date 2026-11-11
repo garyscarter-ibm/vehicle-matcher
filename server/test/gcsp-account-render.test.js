@@ -258,7 +258,7 @@ test('account composition preserves complete supplied facts, labelled details an
     root.querySelector('.gcsp-side-drawer .vm-btn').click();
     assert.deepEqual([...root.querySelectorAll('.gcsp-feature .gcsp-actions button')].map((b) => b.textContent),
       ['Choose a replacement']);
-    assert.match(otherScheme.textContent, /Replacement is unavailable for this contract and slot\./);
+    assert.match(otherScheme.textContent, /Replacement isn\u2019t available for this car\./);
     assert.equal(root.querySelectorAll('.gcsp-feature .vm-btn-primary').length, 1);
     assert.ok(detailsRow(root, 'Employee').textContent.includes('Allowance override: 1,500 points/month (ends 1 December 2026)'));
     const drivers = detailsRow(root, 'Drivers (2)');
@@ -285,21 +285,24 @@ test('FUCQ-277: the allowance shows in the Points cost row and the no-car line, 
     assert.equal(pointsCost(first.root.querySelector('.gcsp-feature')), '1,100 / 1,300 points per month');
     assert.equal(first.root.querySelector('.gcsp-account-key'), null);
     assert.doesNotMatch(first.root.textContent, /Allowance override|Override end|Allowance basis|Synthetic monthly demo|Not a verified|Exact specification is not supplied/);
-    assert.match(first.root.querySelector('.gcsp-account-body').lastElementChild.textContent, /Account as of/);
+    assert.doesNotMatch(first.root.textContent, /Account as of/, 'no freshness line (Paula P10)');
   } finally { first.destroy(); first.root.remove(); }
   const noCar = await domMount(readOnlyAdapter('no-current-car'));
   try {
     assert.equal(noCar.root.querySelector('.gcsp-feature'), null);
-    const line = [...noCar.root.querySelectorAll('.gcsp-account-body > p')].find((node) => /Your allowance/.test(node.textContent));
-    assert.equal(line.textContent, 'Your allowance: 1,300 points a month.');
+    // One region: the no-car message carries the allowance, and Start a new order is its primary.
+    const region = [...noCar.root.querySelectorAll('.vm-status')].find((node) => /No current car/.test(node.textContent));
+    assert.equal(region.querySelector('.vm-lede').textContent, 'Your allowance is 1,300 points a month.');
+    assert.ok(region.querySelector('.gcsp-actions .vm-btn-primary')?.textContent === 'Start a new order');
+    assert.equal(noCar.root.querySelector('.gcsp-account-body > .vm-btn'), null, 'no detached full-width button');
     assert.doesNotMatch(noCar.root.textContent, /Allowance override/);
   } finally { noCar.destroy(); noCar.root.remove(); }
   const overridden = accountFixture('no-current-car');
   Object.assign(overridden.value.account, { allowanceOverride: { value: 1500, unit: 'points/month' }, allowanceOverrideEndDate: '2026-12-01' });
   const withOverride = await domMount({ ...readOnlyAdapter(), readAccount: async () => overridden });
   try {
-    const line = [...withOverride.root.querySelectorAll('.gcsp-account-body > p')].find((node) => /Your allowance/.test(node.textContent));
-    assert.equal(line.textContent, 'Your allowance: 1,300 points a month. Allowance override: 1,500 points/month, ends 1 December 2026.');
+    const line = [...withOverride.root.querySelectorAll('.vm-status .vm-lede')].find((node) => /Your allowance/.test(node.textContent));
+    assert.equal(line.textContent, 'Your allowance is 1,300 points a month. Allowance override: 1,500 points/month, ends 1 December 2026.');
   } finally { withOverride.destroy(); withOverride.root.remove(); }
   const set = unnamed('multi-slot');
   Object.assign(set.value.account, { allowanceOverride: { value: 1500, unit: 'points/month' }, allowanceOverrideEndDate: '2026-12-01' });
@@ -359,7 +362,12 @@ test('distinct entitlement, HR, empty and failure states provide truthful action
     const { root, destroy } = await domMount(readOnlyAdapter(name));
     try {
       assert.ok(root.textContent.includes(title), name);
-      assert.equal(Boolean(findButton(root, 'Refresh account')), name === 'source-failure');
+      assert.equal(Boolean(findButton(root, 'Refresh')), name === 'source-failure');
+      if (name === 'source-failure') {
+        assert.equal(findButton(root, 'Refresh').closest('.vm-status')?.querySelector('.vm-btn-primary'), findButton(root, 'Refresh'), 'Refresh is the failure region primary');
+        assert.equal(root.querySelectorAll('.vm-status').length, 1, 'one failure region');
+      }
+      if (['not-yet-eligible', 'unsupported-scheme'].includes(name)) assert.doesNotMatch(root.querySelector('.gcsp-feature').textContent, /Replacement isn/, 'the page state says it once');
       assert.equal(Boolean(findButton(root, 'Start a new order')), name === 'no-current-car');
       if (!['no-current-car', 'no-history'].includes(name)) assert.equal(findButton(root, 'Choose a replacement'), undefined);
       if (name === 'unsupported-scheme') {
@@ -600,13 +608,13 @@ const selection = (orderUuid, display) => async () => ({ status: 'ok', value: { 
 test('account with an order shows one Your new car row with a Track your order link, not the embedded tracker', async () => {
   const orders = orderAdapter('appointment-requested', [structuredClone(orderProgressFixtures().states['appointment-requested'].stages.value)]);
   const keys = [];
-  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readOrder: selection(orders.uuid, { name: 'Synthetic i5 eDrive40 Touring', photo: '/img/i5.jpg' }) },
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readOrder: selection(orders.uuid, { name: 'BMW i5 eDrive40 Touring', photo: '/img/i5.jpg' }) },
     { orderAdapter: orders, onNavigate: (key) => keys.push(key) });
   try {
     await settleOrder(root, (node) => node.querySelector('.gcsp-account-order-status'));
     const row = root.querySelector('.gcsp-account-order-status'); assert.ok(row, 'new car row');
     assert.equal(row.getAttribute('aria-label'), 'Your new car'); assert.equal(root.querySelectorAll('main h1').length, 1);
-    assert.equal(row.querySelector('.gcsp-card-name, .gcsp-summary-name').textContent, 'Synthetic i5 eDrive40 Touring');
+    assert.equal(row.querySelector('.gcsp-card-name, .gcsp-summary-name').textContent, 'BMW i5 eDrive40 Touring');
     assert.equal(row.querySelector('img.vm-card-photo').getAttribute('src'), '/img/i5.jpg');
     assert.match(row.textContent, /Current step: /); assert.match(row.textContent, /Order referenceGCSP-000123Car order number1000001/);
     const link = [...row.querySelectorAll('a')].find((node) => node.textContent === 'Track your order'); assert.ok(link, 'track link');
@@ -614,7 +622,7 @@ test('account with an order shows one Your new car row with a Track your order l
     link.click(); assert.deepEqual(keys, ['order-progress']);
     assert.equal(root.querySelector('.gcsp-account-order, .gcsp-order-progress, .gcsp-stage-tracker'), null, 'the tracker is not embedded');
     const history = root.querySelector('.gcsp-account-history'); assert.equal(history.querySelector('details'), null, 'order history is one table, not disclosures');
-    assert.ok([...history.querySelectorAll('tbody th')].some((cell) => cell.textContent === 'Synthetic i5 eDrive40 Touring'), 'the placed order is a history row');
+    assert.ok([...history.querySelectorAll('tbody th')].some((cell) => cell.textContent === 'BMW i5 eDrive40 Touring'), 'the placed order is a history row');
     assert.equal(row.closest('details'), null);
   } finally { destroy(); }
 });
@@ -631,7 +639,7 @@ test('account shows no new car row without an order, on a failed list, or for an
 test('FUCQ-193: an accepted offer with its order in progress no longer offers "View your offer"', async () => {
   const offers = (state) => async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-2', runId: 'run-1', state }, { offerId: 'offer-1', runId: 'run-1', state: 'declined' }] } });
   const orders = orderAdapter();
-  const accepted = await domMount({ ...readOnlyAdapter('no-entitlement'), readOffers: offers('accepted'), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  const accepted = await domMount({ ...readOnlyAdapter('no-entitlement'), readOffers: offers('accepted'), readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   try {
     await settleOrder(accepted.root, (node) => node.querySelector('.gcsp-account-order-status'));
     assert.ok(accepted.root.querySelector('.gcsp-account-order-status'), 'the new car row is shown');
@@ -679,7 +687,7 @@ test('FUCQ-193: the HTTP adapter reads the newest listed offer state, and a fail
 test('FUCQ-192: an in-progress order on the slot replaces "No ordering entitlement" with its state and a progress link', async () => {
   const listed = (slot) => { const row = structuredClone(orderProgressFixtures().states['appointment-requested'].stages.value); row.entitlementSlotId = slot; return [row]; };
   const allocated = () => { const envelope = accountFixture('no-entitlement'); for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
-  const mount = (orders) => domMount({ ...readOnlyAdapter(), readAccount: async () => allocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  const mount = (orders) => domMount({ ...readOnlyAdapter(), readAccount: async () => allocated(), readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   const ordered = orderAdapter('appointment-requested', listed('slot-paula')); const { root, destroy } = await mount(ordered);
   try {
     await settleOrder(root, (node) => node.querySelector('.gcsp-account-order-status'));
@@ -707,7 +715,7 @@ test('FUCQ-257: a handed-over order titles its account card as handed over, not 
     stageList: [...stages.value.stageList, 'handover'], stages: [...stages.value.stages, { stage: 'handover', state: 'approved', at: instant, providerReference: 'SYN-APPT-0001', operationId: null }] });
   const orders = { ...orderAdapter('appointment-completed', [stages.value]), readStages: async () => structuredClone(stages) };
   const allocated = accountFixture('no-entitlement'); for (const slot of allocated.value.slots) slot.state = 'allocated';
-  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => structuredClone(allocated), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => structuredClone(allocated), readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   try {
     await settleOrder(root, (node) => node.querySelector('.gcsp-account-order-status'));
     const status = root.querySelector('.gcsp-account-order-status'); assert.ok(status, 'order status');
@@ -723,7 +731,7 @@ test('FUCQ-224: an order on the slot replaces the saved journey card; an order o
   const draft = { status: 'ok', value: { draftStage: 'complete', draftVersion: 3, requiresRefresh: false,
     choices: { mode: 'replacement', oldContractId: 'current:employee-paula', slotId: 'slot-paula', schemeId: 'choices-fs-uk' } } };
   const mount = (orders) => domMount({ ...readOnlyAdapter(), readAccount: async () => allocated(), readDraft: async () => draft,
-    readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+    readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   const ordered = await mount(orderAdapter('appointment-requested', listed('slot-paula')));
   try {
     await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order-status'));
@@ -743,7 +751,7 @@ test('FUCQ-237: an order in progress replaces "No current car" for an employee w
   const noCarAllocated = () => { const envelope = accountFixture('no-current-car'); Object.assign(envelope.value, { state: 'no-entitlement', actions: [] });
     for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
   const mount = (name) => { const orders = orderAdapter(name, listed(name));
-    return domMount({ ...readOnlyAdapter(), readAccount: async () => noCarAllocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders }); };
+    return domMount({ ...readOnlyAdapter(), readAccount: async () => noCarAllocated(), readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders }); };
   const ordered = await mount('appointment-requested');
   try {
     await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order-status'));
@@ -768,7 +776,7 @@ test('FUCQ-252: after a confirmed handover or return the current-car card follow
     newCar: { orderUuid: orders.uuid, status: collected ? 'collected' : 'on-order', collectedAt: collected ? '2026-11-07T13:00:00.000Z' : null, vin: collected ? VIN : null } });
   const account = (rel) => { const envelope = accountFixture('no-entitlement'); for (const slot of envelope.value.slots) slot.state = 'allocated';
     if (rel) envelope.value.currentCarRelationships = [rel]; return envelope; };
-  const mount = (rel) => domMount({ ...readOnlyAdapter(), readAccount: async () => account(rel), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  const mount = (rel) => domMount({ ...readOnlyAdapter(), readAccount: async () => account(rel), readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders });
   const cards = (root) => [...root.querySelectorAll('.gcsp-account-body > .gcsp-feature')];
   for (const [label, rel] of [['nothing confirmed', null], ['relationship still on the old contract', relationship('held', false)]]) {
     const view = await mount(rel);
@@ -783,9 +791,9 @@ test('FUCQ-252: after a confirmed handover or return the current-car card follow
       await settleOrder(view.root, (node) => node.querySelector('.gcsp-account-order-status'));
       const [card, ...rest] = cards(view.root);
       assert.equal(rest.length, 0, `${oldStatus}: one current-car card`); assert.equal(card.dataset.contractId, undefined);
-      assert.equal(card.dataset.orderUuid, orders.uuid); assert.equal(card.querySelector('h2').textContent, 'Synthetic 3 Series Saloon 320i');
+      assert.equal(card.dataset.orderUuid, orders.uuid); assert.equal(card.querySelector('h2').textContent, 'BMW 3 Series Saloon 320i');
       assert.equal(card.querySelector('.gcsp-account-context'), null);
-      assert.deepEqual(factPairs(card).slice(0, 3), [['Status', 'Current car'], ['Collected', '7 November 2026'], ['Delivered VIN', VIN]]);
+      assert.deepEqual(factPairs(card).slice(0, 2), [['Collected', '7 November 2026'], ['Delivered VIN', VIN]], 'the panel is the current car, so no Status fact');
       assert.doesNotMatch(view.root.textContent, /No current car|Choose a replacement/);
     } finally { view.destroy(); }
   }
@@ -802,13 +810,13 @@ test('FUCQ-239: Order history lists a placed order and no longer says "No order 
   const noCarAllocated = () => { const envelope = accountFixture('no-current-car'); Object.assign(envelope.value, { state: 'no-entitlement', actions: [] });
     for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
   const mount = (name) => { const orders = orderAdapter(name, listed(name));
-    return domMount({ ...readOnlyAdapter(), readAccount: async () => noCarAllocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders }); };
+    return domMount({ ...readOnlyAdapter(), readAccount: async () => noCarAllocated(), readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) }, { orderAdapter: orders }); };
   const ordered = await mount('appointment-requested');
   try {
     await settleOrder(ordered.root, (node) => node.querySelector('.gcsp-account-order-status'));
     const histories = ordered.root.querySelector('.gcsp-account-history'); const [entry] = rowsOf(ordered.root);
     assert.doesNotMatch(histories.textContent, /No order history\./); assert.ok(entry, 'placed order row');
-    assert.equal(entry.querySelector('th').textContent, 'Synthetic 3 Series Saloon 320i');
+    assert.equal(entry.querySelector('th').textContent, 'BMW 3 Series Saloon 320i');
     assert.equal(cellsOf(entry)[4], 'Sent to ordering');
     const drawer = openRecord(ordered.root);
     assert.deepEqual(factPairs(drawer).filter(([name]) => ['Status', 'Order reference', 'Car order number'].includes(name)),
@@ -861,7 +869,7 @@ test('FUCQ-195: the current-car card shows readable labels and no raw identifier
     const record = openFrom(first.root).textContent; first.root.querySelector('.gcsp-side-drawer .vm-btn').click();
     for (const id of raw) { assert.ok(!shownText.some((text) => text.includes(id)), id); assert.ok(!record.includes(id), id); }
     assert.ok(![...card.querySelectorAll('dd')].some((node) => node.textContent === value.currentContract.status));
-    assert.deepEqual(factPairs(card)[0], ['Status', 'Current car']);
+    assert.equal(factPairs(card).some(([name]) => name === 'Status'), false, 'the record keeps Status; the panel does not repeat it');
     assert.equal(pointsCost(card), '1,100 / 1,300 points per month');
     assert.doesNotMatch(card.textContent, /Synthetic example data/);
     assert.doesNotMatch(card.textContent, /Vehicle slot|Scheme|Current contract|points cost not supplied|Wltp/);
@@ -877,7 +885,7 @@ function assertRestartedPage(root, reloads) {
   assert.equal(body.querySelector('h1').textContent, 'Your cars'); assert.match(body.textContent, /Restarted/);
   assert.match(body.textContent, /Reload to continue/);
   assert.doesNotMatch(body.textContent, /This account cannot be opened|Your account is unavailable|Journey could not be saved|stale-run|unknown-session|\u2014/);
-  assert.equal(press('Refresh account'), undefined); assert.equal(press('Choose a replacement'), undefined);
+  assert.equal(press('Refresh'), undefined); assert.equal(press('Choose a replacement'), undefined);
   const reload = press('Reload'); assert.ok(reload); reload.click(); assert.equal(reloads(), 1);
 }
 test('FUCQ-198: a stale-run or unknown-session account read shows the restart screen with a working Reload', async () => {
@@ -913,7 +921,7 @@ test('FUCQ-198: a start journey reply of stale-run shows the restart screen, not
   } finally { destroy(); root.remove(); }
 });
 
-test('FUCQ-197: order history, saved journey and footer show words, not raw identifiers', async () => {
+test('FUCQ-197: order history and saved journey show words, not raw identifiers', async () => {
   const input = unnamed('multi-slot'); const value = input.value;
   const entries = value.histories.flatMap((history) => history.entries);
   const raw = [...new Set([...value.histories.map((history) => history.schemeId), ...entries.flatMap((entry) => [entry.contractId, entry.slotId]),
@@ -923,16 +931,14 @@ test('FUCQ-197: order history, saved journey and footer show words, not raw iden
   const mounted = await domMount({ ...readOnlyAdapter(), readAccount: async () => input, readDraft: async () => draft });
   try {
     const body = mounted.root.querySelector('.gcsp-account-body');
-    const fresh = body.lastElementChild;
-    const parts = [body.querySelector('.gcsp-summary'), body.querySelector('.gcsp-account-history'), fresh];
+    const parts = [body.querySelector('.gcsp-summary'), body.querySelector('.gcsp-account-history'), body.lastElementChild];
     const shownText = parts.flatMap((part) => [...part.querySelectorAll('dd, p, h2, h3, summary, button, td, th'), part]).map((node) => node.textContent);
     for (const id of raw) assert.ok(!shownText.some((text) => text.includes(id)), id);
     const saved = parts[0].textContent;
     assert.match(saved, /Current car/); assert.match(saved, new RegExp(value.currentContract.model));
     assert.doesNotMatch(saved, /Mode|Scheme|Draft version|replacement\b/);
     assert.deepEqual(rowsOf(mounted.root).map((tr) => cellsOf(tr)[1]), ['Scheme 1', 'Scheme 2', 'Scheme 2']);
-    assert.equal(fresh.textContent, 'Account as of 5 November 2026 at 09:00.');
-    assert.ok(fresh.classList.contains('gcsp-synthetic'), 'the freshness line closes the page, after Your details');
+    assert.doesNotMatch(body.textContent, /Account as of/, 'no freshness line (Paula P10)');
   } finally { mounted.destroy(); mounted.root.remove(); }
   value.histories[0].label = 'Fictional car scheme'; value.slots[0].label = 'Company car 1';
   const labelled = await domMount({ ...readOnlyAdapter(), readAccount: async () => input, readDraft: async () => draft });
@@ -962,7 +968,7 @@ test('FUCQ-220: the order card of an earlier order shows only the car order numb
   const row = structuredClone(orderProgressFixtures().states['earlier-order'].stages.value); row.entitlementSlotId = 'slot-paula';
   const envelope = accountFixture('no-entitlement'); for (const slot of envelope.value.slots) slot.state = 'allocated';
   const orders = orderAdapter('earlier-order', [row]);
-  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => envelope, readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) },
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => envelope, readOrder: selection(orders.uuid, { name: 'BMW 3 Series Saloon 320i' }) },
     { orderAdapter: orders });
   try {
     await settleOrder(root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
@@ -1032,7 +1038,7 @@ test('the HTTP adapter reads buddy activity, and any failure or abort is handled
 });
 
 // Your cars layout (10 November): head row, car, Your preferences, then the secondary components.
-test('the page head carries the title only; the freshness line closes the page and Refresh shows only when stale', async () => {
+test('the page head carries the title only; Your details closes the page and Refresh shows only when stale', async () => {
   const input = unnamed('ready');
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try {
@@ -1041,12 +1047,11 @@ test('the page head carries the title only; the freshness line closes the page a
     assert.ok(head.querySelector('h1')); assert.equal(head.querySelector('.vm-kicker'), null);
     assert.equal(head.children.length, 1, 'nothing on the right of the head yet');
     assert.equal(body.querySelector('.gcsp-account-fresh'), null);
-    assert.equal(body.lastElementChild.textContent, 'Account as of 5 November 2026 at 09:00.');
-    assert.ok(body.lastElementChild.classList.contains('gcsp-synthetic'));
-    assert.equal(head.querySelector('button'), null, 'Refresh account only when stale');
+    assert.doesNotMatch(body.textContent, /Account as of/);
+    assert.equal(head.querySelector('button'), null, 'Refresh only when stale');
     const secondary = body.querySelector('.gcsp-account-secondary');
     assert.ok(secondary.contains(body.querySelector('.gcsp-account-history')) && secondary.querySelector('#gcsp-account-details-title'));
-    assert.equal(secondary.nextElementSibling, body.lastElementChild);
+    assert.equal(body.lastElementChild, secondary);
   } finally { destroy(); root.remove(); }
 });
 
@@ -1061,9 +1066,9 @@ test('the current car: heading and specification, countdown, ordered facts, deta
     const countdown = car.querySelector('.gcsp-countdown');
     assert.equal(countdown.textContent, 'Contract ends in 26 days \u00b7 1 December 2026');
     assert.equal(countdown.previousElementSibling.className, 'gcsp-account-title');
-    // Registration is unsupplied in the fixture, so its row is hidden; Points cost is last.
-    assert.deepEqual(factPairs(car.querySelector('.gcsp-account-car-facts')), [['Status', 'Current car'], ['Driver', 'Paula Mason'],
-      ['Contract end', '1 December 2026'], ['Term', '6 months'], ['Annual mileage', '12,000 mi/year'], ['Current mileage', '5,200 mi'],
+    // No Status or Contract end (the countdown says it); unsupplied Registration is hidden; Points cost is last.
+    assert.deepEqual(factPairs(car.querySelector('.gcsp-account-car-facts')), [['Driver', 'Paula Mason'],
+      ['Term', '6 months'], ['Annual mileage', '12,000 mi/year'], ['Current mileage', '5,200 mi'],
       ['Points cost', '1,100 / 1,300 points per month']]);
     const details = car.querySelector('details.gcsp-details');
     assert.equal(details.querySelector('summary.gcsp-details-summary').textContent, 'Order, collection and vehicle details');
@@ -1288,7 +1293,7 @@ test('order history is one table across schemes with a status word per row, and 
       ['Model not supplied', 'Scheme 2', '1 January 2025', 'Returned 1 Dec 2025', 'Returned', 'View record']]);
     assert.equal(rowsOf(root)[0].querySelector('.is-success').textContent, 'Current car');
     assert.equal(rowsOf(root)[1].querySelector('.is-success'), null);
-    assert.equal(section.querySelector('.gcsp-synthetic').textContent, "No Scheme 3 orders. Scheme 2 shows history only; you can't order through it here.");
+    assert.equal(section.querySelector('.gcsp-synthetic').textContent, "Scheme 2 shows history only; you can't order through it here.");
     assert.equal(root.querySelectorAll('.gcsp-account-history .gcsp-table-action').length, 2);
     assert.equal(findButton(root, 'Choose a replacement').closest('.gcsp-feature') !== null, true);
     assert.equal(root.querySelectorAll('.gcsp-account-history .vm-btn-primary').length, 0);
@@ -1296,7 +1301,7 @@ test('order history is one table across schemes with a status word per row, and 
   const named = await domMount({ ...readOnlyAdapter(), readAccount: async () => accountFixture('ready') });
   try {
     assert.equal(named.root.querySelector('.gcsp-account-history .gcsp-synthetic').textContent,
-      "No Motorcycle Choices orders. PCS UK FS BMW shows history only; you can't order through it here.");
+      "PCS UK FS BMW shows history only; you can't order through it here.");
   } finally { named.destroy(); named.root.remove(); }
   const none = await domMount(readOnlyAdapter('no-history'));
   try { assert.equal(none.root.querySelector('.gcsp-account-history p').textContent, 'No order history.'); } finally { none.destroy(); none.root.remove(); }
