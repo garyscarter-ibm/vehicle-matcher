@@ -292,7 +292,7 @@ test('FUCQ-277: the allowance shows in the Points cost row and the no-car line, 
     assert.equal(noCar.root.querySelector('.gcsp-feature'), null);
     // One region: the no-car message carries the allowance, and Start a new order is its primary.
     const region = [...noCar.root.querySelectorAll('.vm-status')].find((node) => /No current car/.test(node.textContent));
-    assert.equal(region.querySelector('.vm-lede').textContent, 'No current vehicle is supplied for your account. Your allowance: 1,300 points a month.');
+    assert.equal(region.querySelector('.vm-lede').textContent, 'Your allowance is 1,300 points a month.');
     assert.ok(region.querySelector('.gcsp-actions .vm-btn-primary')?.textContent === 'Start a new order');
     assert.equal(noCar.root.querySelector('.gcsp-account-body > .vm-btn'), null, 'no detached full-width button');
     assert.doesNotMatch(noCar.root.textContent, /Allowance override/);
@@ -302,7 +302,7 @@ test('FUCQ-277: the allowance shows in the Points cost row and the no-car line, 
   const withOverride = await domMount({ ...readOnlyAdapter(), readAccount: async () => overridden });
   try {
     const line = [...withOverride.root.querySelectorAll('.vm-status .vm-lede')].find((node) => /Your allowance/.test(node.textContent));
-    assert.equal(line.textContent, 'No current vehicle is supplied for your account. Your allowance: 1,300 points a month. Allowance override: 1,500 points/month, ends 1 December 2026.');
+    assert.equal(line.textContent, 'Your allowance is 1,300 points a month. Allowance override: 1,500 points/month, ends 1 December 2026.');
   } finally { withOverride.destroy(); withOverride.root.remove(); }
   const set = unnamed('multi-slot');
   Object.assign(set.value.account, { allowanceOverride: { value: 1500, unit: 'points/month' }, allowanceOverrideEndDate: '2026-12-01' });

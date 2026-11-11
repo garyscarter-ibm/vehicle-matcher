@@ -318,7 +318,7 @@
     "query": "?fixture=unsupported-scheme&prefs=selected",
     "api": null,
     "errors": [],
-    "height": 1645,
+    "height": 1573,
     "headings": [
       "H1:Your cars",
       "H2:Ordering is not supported for this scheme",
@@ -347,7 +347,6 @@
     ],
     "notes": [
       "Choose at least 3 categories. Tell your buddy what matters.",
-      "Rolls-Royce and Production Choices and PCS UK FS BMW show history only; you can't order through them",
       "· Employee number E168167 · Band PG1",
       "sam.patel@gcsp-demo.com · 01632 960000",
       "27 Ashdown Road, Bracknell, RG12 9ZZ",
@@ -475,7 +474,7 @@
     "query": "",
     "api": "hang",
     "errors": [],
-    "height": 963,
+    "height": 959,
     "headings": [],
     "buttons": [
       "P:",

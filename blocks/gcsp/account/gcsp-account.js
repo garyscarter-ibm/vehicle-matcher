@@ -24,14 +24,14 @@ const MISSING = 'Not supplied';
 const failure = { status: 'unavailable', code: 'account-transport-unavailable' };
 const states = {
   'absent-hr-account': ['Your HR account is missing', 'Contact HR support to check your employee account.'],
-  'not-yet-eligible': ['Replacement is not available yet', 'Your supplied collection window does not permit a replacement now.'],
+  'not-yet-eligible': ['Replacement is not available yet', 'Your collection window doesn\u2019t allow a replacement yet.'],
   'ordering-closed': ['Too late to order before renewal', 'No collection date fits before your contract ends. Scheme support can help with your renewal.'],
   'no-entitlement': ['No ordering entitlement', 'Scheme support can check your entitlement.'],
-  'unsupported-scheme': ['Ordering is not supported for this scheme', 'Your supplied contracts and history remain available below.'],
+  'unsupported-scheme': ['Ordering is not supported for this scheme', null],
   'no-contract': ['Your current contract is missing', 'Scheme support must check the contract linked to your vehicle slot.'],
   'source-failure': ['Your account is unavailable', 'Refresh to try again, or contact scheme support.'],
   refused: ['This account cannot be opened', 'Reopen your employee session or contact scheme support.'],
-  conflict: ['Your account has changed', 'Refresh your account before starting a journey.'],
+  conflict: ['Your account has changed', 'Refresh to see the latest.'],
 };
 
 function shown(value) {
@@ -343,7 +343,7 @@ function orderHistory(model, { order, orderVehicle, controls }) {
   const join = (list, word) => list.length < 2 ? list.join('') : `${list.slice(0, -1).join(', ')} ${word} ${list.at(-1)}`;
   const only = model.histories.flatMap((history, index) => !history.orderingSupported && history.count ? [schemeTitle(history, index)] : []);
   // Empty schemes say nothing (Paula P10); a history-only scheme says so once.
-  if (only.length) section.append(el('p', 'gcsp-synthetic', `${join(only, 'and')} ${only.length === 1 ? 'shows' : 'show'} history only; you can't order through ${only.length === 1 ? 'it' : 'them'} here.`));
+  if (only.length && model.state !== 'unsupported-scheme') section.append(el('p', 'gcsp-synthetic', `${join(only, 'and')} ${only.length === 1 ? 'shows' : 'show'} history only; you can't order through ${only.length === 1 ? 'it' : 'them'} here.`));
   return section;
 }
 
@@ -424,16 +424,16 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     const none = !model.currentContracts.length && !model.currentOrders.length;
     // Without a current car there is no Points cost row, so the allowance (and any override, FUCQ-277) joins the one region.
     const base = model.allowance?.monthlyPoints ?? model.allowance?.value;
-    const line = none ? [Number.isFinite(base) && `Your allowance: ${points(base)} points a month`, overrideText(model)].filter(Boolean).join('. ') : '';
+    const line = none ? [Number.isFinite(base) && `Your allowance is ${points(base)} points a month`, overrideText(model)].filter(Boolean).join('. ') : '';
     const starts = model.actions.filter((item) => item.action === 'order').map((action) => controls.startButton(action));
     const startRow = () => { const row = el('div', 'gcsp-actions'); row.append(...starts); return row; };
-    const noCar = (message) => statusScreen({ title: 'No current car', message: [message, line && `${line}.`].filter(Boolean).join(' '),
+    const noCar = (message) => statusScreen({ title: 'No current car', message: [message, line && `${line}.`].filter(Boolean).join(' ') || null,
       role: null, actions: starts.length ? [startRow()] : [] });
     for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls, Boolean(states[model.state])));
     for (const car of model.currentOrders) wrap.append(orderCurrentCar(car, order, orderVehicle));
     const shownNoCar = none && (model.carReturned || !(ordered && order.outcome !== 'declined'));
     if (shownNoCar) wrap.append(noCar(model.carReturned ? 'Your previous car has been returned. Your new car becomes current at handover.'
-      : 'No current vehicle is supplied for your account.'));
+      : null));
     else { if (line) wrap.append(el('p', 'gcsp-note', `${line}.`)); wrap.append(...starts); }
     if (preferences) wrap.append(preferences);
     const secondary = el('div', 'gcsp-account-secondary');

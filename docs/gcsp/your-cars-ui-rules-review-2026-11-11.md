@@ -45,3 +45,26 @@ Its agreed structure stays: car panel, rating, facts and Points cost, then Your 
 - REUSE `statusScreen` (failure and no-current-car regions, with their actions), `button`, `factList`, `screenIntro`.
 - EXTEND `loadingSkeleton` with a `feature` layout (documented in `COMPONENTS.md`); `mountEmployee` already passes `loadingLayout`.
 - NEW: none.
+
+## Independent critique of the after captures
+
+Reviewer (general-purpose, opus), from the images and rule docs only. It found no regression from before to after, and confirmed items 1 to 8.
+Acted on:
+- **Status copy.** Provenance words were removed. No current car reads "Your allowance is 1,300 points a month." Not yet
+  eligible reads "Your collection window doesn't allow a replacement yet." Unsupported drops its line. Conflict reads
+  "Refresh to see the latest."
+- **History note.** It isn't shown when the unsupported-scheme state already says ordering isn't possible.
+- **Feature skeleton.** Its title bar is the width of the real title.
+
+Not changed, and why:
+- **Medium, follow-up.** The shell header's "Account unavailable" and "Retry" repeat the body's failure region. The header
+  still says "unavailable" on a conflict. This is the shared portal shell on every employee page, outside the Your cars layout.
+- **Medium, data-driven.** The car heading and spec line repeat the variant ("320i" and "320i M Sport Touring"). They come
+  from the account data, and FUCQ-369 uses the heading and spec as the car's description.
+- **Low.** Short Order history columns wrap beside a very long car name (`04`). This is `dataTable`, not this layout.
+- **Low.** `?prefs=pending` doesn't hold the save in flight, so `12` matches `01`. This is the FUCQ-368 fixture.
+- **Item 9 above:** still waiting for Gary's decision.
+
+Tests run (scoped, one worker): gcsp-account-render, gcsp-loading-skeleton, gcsp-presenter-refresh, gcsp-account-runtime,
+gcsp-live-regions, ui-ratchet, gcsp-painted-copy-words, shared-kit-contracts, gcsp-plain-copy and gcsp-manual-journey-resume
+(285 pass), plus render.test.js (41 pass). Full `npm test` was not run.
