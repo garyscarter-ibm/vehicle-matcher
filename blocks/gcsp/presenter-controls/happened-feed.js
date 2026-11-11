@@ -39,12 +39,15 @@ function lapsedCount(tick) {
 
 /** Appends section.gcsp-happened to parent. Returns { root, update(controls), destroy() }. */
 export function mountHappenedFeed(parent, { adapter, storage } = {}) {
-  const root = el('section', 'gcsp-happened'); root.hidden = true;
-  const slot = el('div', 'gcsp-happened-slot'); slot.append(loadingSkeleton({ label: 'Loading what happened', layout: 'section', role: null })); root.append(slot);
+  // A closed disclosure by default (Gary, 11 Nov); the summary is its visible title, so the list drops its own heading.
+  const root = el('section', 'gcsp-happened'); root.hidden = true; root.setAttribute('aria-label', 'What happened');
+  const fold = el('details', 'gcsp-happened-fold'); const summary = el('summary', 'gcsp-happened-summary', 'What happened');
+  const slot = el('div', 'gcsp-happened-slot'); slot.append(loadingSkeleton({ label: 'Loading what happened', layout: 'section', role: null }));
+  fold.append(summary, slot); root.append(fold);
   parent.append(root);
   let runId = null; let history = []; let messages = []; let failed = false; let clock = { runId: null, start: null, promise: null };
   let turn = 0; let destroyed = false; let drawer = null; let heading = null;
-  const warning = el('p', 'gcsp-note', 'Captured emails could not be loaded.'); warning.hidden = true; root.append(warning);
+  const warning = el('p', 'gcsp-note', 'Captured emails could not be loaded.'); warning.hidden = true; slot.after(warning);
 
   const save = () => { try { storage?.setItem(KEY(runId), JSON.stringify(history)); } catch { /* storage optional */ } };
   function load() {
@@ -95,7 +98,7 @@ export function mountHappenedFeed(parent, { adapter, storage } = {}) {
   function paint(controls, start) {
     const timeline = activityTimeline({ events: feedEvents({ controls, clockStart: start, history, messages, action: viewEmail }),
       heading: 'What happened', level: 2, note: null, formatTime: timeOf });
-    heading = timeline.querySelector('.gcsp-timeline-heading'); heading.tabIndex = -1;
+    timeline.querySelector('.gcsp-timeline-heading')?.classList.add('gcsp-vh'); heading = summary;
     slot.replaceChildren(timeline); warning.hidden = !failed;
   }
 
