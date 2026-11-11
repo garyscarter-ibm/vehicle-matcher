@@ -9,8 +9,8 @@ import { imageDisplay } from './display-images.js';
 export const STOCK_GENERATOR_VERSION = 'stock-generator.v1';
 export const STOCK_GENERATOR_NAMESPACE = `synthetic:${STOCK_GENERATOR_VERSION}`;
 // Fact names the generator owns; a factsForConfiguration seam may add others but never override these.
-const RESERVED_FACTS = ['stockIdentityKind', 'modelLine', 'colour', 'leadTimeWeeks', 'confirmedDeliveryWeek', 'plannedRelease',
-  'syntheticVehicleId', 'configurationHash', 'generatorVersion', 'policyVersion'];
+const RESERVED_FACTS = ['stockIdentityKind', 'modelLine', 'leadTimeWeeks', 'confirmedDeliveryWeek', 'plannedRelease',
+  'syntheticIdentity', 'syntheticVehicleId', 'configurationHash', 'generatorVersion', 'policyVersion'];
 const text = (v) => typeof v === 'string' && v.trim().length > 0 && v.length <= 512;
 // Real corpus configuration ids are base64 signatures that can exceed 512 characters.
 const identifier = (v) => typeof v === 'string' && v.length > 0 && v.length <= 4096;
@@ -195,7 +195,7 @@ export function createStockGenerator({ repository, registry, policyService, cont
               : [['observed-aggregate', 'observed aggregate']];
           return !accepted.some(([kind, status]) => row.observed.sourceKind === kind && provenanceRow.status === status);
         })) return invalid('aggregate-provenance-mismatch');
-        const configurations = new Map(); let activeDigest;
+        const configurations = new Map(); const sources = new Map(); let activeDigest;
         for (const binding of [...plan.configurations].sort((a, b) => a.configurationId.localeCompare(b.configurationId))) {
           const response = await registry.getConfiguration(binding.configurationId);
           if (!['ok', 'complete', 'partial'].includes(response?.status) || !object(response.record?.configuration)) return unavailable('configuration-unavailable');
@@ -207,6 +207,7 @@ export function createStockGenerator({ repository, registry, policyService, cont
             && /^assets\/gcsp-vehicle-evidence\/[a-f0-9]{64}\.webp$/.test(image.asset)
             && ['representative-model', 'representative-configuration'].includes(image.fidelity) && image.role === image.fidelity);
           configurations.set(binding.configurationId, { ...binding, record: response.record, images });
+          sources.set(binding.configurationId, response);
         }
         // Each tranche is drawn on its own, so every release mixes model lines and colours and no two releases repeat.
         if (guarantee && guarantee.minimumCars > trancheSize) return invalid('unsupported-release-guarantee');
@@ -226,10 +227,13 @@ export function createStockGenerator({ repository, registry, policyService, cont
         async function ensureExtra(binding) {
           const id = binding.configurationId;
           if (extras.has(id)) return null;
-          const extra = factsForConfiguration ? await factsForConfiguration(structuredClone(binding), structuredClone(binding.record)) : {};
-          if (!object(extra) || Object.keys(extra).some((key) => RESERVED_FACTS.includes(key) || ['vin', 'vin7', 'vin17'].includes(key.toLowerCase()))) return invalid('invalid-stock-facts');
+          const extra = factsForConfiguration ? await factsForConfiguration(structuredClone(binding), structuredClone(binding.record),
+            structuredClone(sources.get(id))) : {};
+          if (!object(extra) || Object.keys(extra).some((key) => RESERVED_FACTS.includes(key) || ['vin', 'vin7', 'vin17'].includes(key.toLowerCase()))
+            || extra.colour !== undefined && !keysExactly(extra.colour, ['status', 'value', 'unit', 'provenance'])) return invalid('invalid-stock-facts');
           const wrapped = Object.fromEntries(Object.entries(extra).map(([name, value]) =>
-            [name, object(value) && keysExactly(value, ['value', 'unit']) ? own(value.value, value.unit) : own(value)]));
+            [name, object(value) && (Object.hasOwn(value, 'status') || Object.hasOwn(value, 'provenance')) ? structuredClone(value)
+              : object(value) && keysExactly(value, ['value', 'unit']) ? own(value.value, value.unit) : own(value)]));
           // Validate before reserving identifiers, so a bad seam value cannot leave reservations behind.
           try { createVehicleSnapshot({ sourceNamespace: STOCK_GENERATOR_NAMESPACE, identityKind: 'exact-stock', sourceKeys: { stockId: id },
             snapshotVersion, observedAt, display: { name: id.slice(0, 32) }, facts: wrapped }); } catch { return invalid('invalid-stock-facts'); }
@@ -360,14 +364,21 @@ export function createStockGenerator({ repository, registry, policyService, cont
             const aggregateRef = `policy:${plan.aggregateKeys[modelLineId]}`;
             const title = plan.titles?.[modelLineId] ?? modelLineId; const displayName = plan.displayNames?.[modelLineId] ?? title;
             const name = carName(extras.get(identity.configurationId)?.eligibilityModelKey?.value ?? title, displayName);
+            const configuration = car.binding.record.configuration;
             const facts = createVehicleSnapshot({ sourceNamespace: STOCK_GENERATOR_NAMESPACE, identityKind: 'exact-stock',
-              sourceKeys: { stockId: identity.orderUuid }, snapshotVersion, observedAt, display: imageDisplay(`${name} in ${colour}`, car.binding.images),
-              facts: { ...extras.get(identity.configurationId), stockIdentityKind: own('synthetic'), modelLine: known(title, aggregateRef), colour: known(colour, aggregateRef),
+              sourceKeys: { stockId: identity.orderUuid }, snapshotVersion, observedAt,
+              display: { ...imageDisplay(`${name} in ${colour}`, car.binding.images),
+                ...(text(configuration.model) ? { model: configuration.model } : {}),
+                ...(text(configuration.derivative) ? { derivative: configuration.derivative } : {}) },
+              facts: { ...extras.get(identity.configurationId), stockIdentityKind: own('synthetic'), modelLine: known(title, aggregateRef),
+                colour: extras.get(identity.configurationId).colour ?? known(colour, aggregateRef),
                 leadTimeWeeks: known(car.leadTimeWeeks, aggregateRef, 'weeks'),
                 confirmedDeliveryWeek: known(confirmedWeek(horizonEnd, car.leadTimeWeeks, timeZone), aggregateRef),
                 plannedRelease: known({ releaseId: `${runId}:stock:${tranche}`, windowStart: at, windowEnd: releaseAt[windowIndex + 1], policyVersion },
                   'policy:supply.release.cadence'),
                 syntheticVehicleId: own(identity.vehicleId), configurationHash: own(identity.configurationHash),
+                syntheticIdentity: own(Object.fromEntries(['vehicleId', 'identityKind', 'generatorVersion', 'originatingDatasetId',
+                  'configurationHash', 'snapshotVersion'].map((key) => [key, identity[key]]))),
                 generatorVersion: own(STOCK_GENERATOR_VERSION), policyVersion: own(policyVersion) } });
             return { runId, orderUuid: identity.orderUuid, orderNumber: identity.orderNumber, wholesalerOrderId: identity.wholesalerOrderId,
               configurationId: identity.configurationId, corpusVersion: plan.corpusVersion, revision: 1, account: stockAccount,

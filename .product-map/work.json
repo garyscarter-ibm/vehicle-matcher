@@ -4834,10 +4834,31 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Bug",
-      "observed_at": "2026-11-11T12:19:13Z",
+      "observed_at": "2026-11-11T13:53:15Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-382",
-      "unsliced": true,
-      "note": "Diagnosis-only/no-pickup hold preserved. No repair or live reproduction claimed."
+      "unsliced": false,
+      "note": "Diagnosis-only/no-pickup hold preserved. No repair or live reproduction claimed.",
+      "slices": [
+        {
+          "id": "source",
+          "status": "in-progress",
+          "title": "Preserve-exact-source-facts-and-provenance",
+          "observed_at": "2026-11-11T13:53:15Z",
+          "evidence": "Causal RED regression verified; minimal producer/attributed-fact repair applied, integration GREEN pending"
+        },
+        {
+          "id": "identity",
+          "status": "in-progress",
+          "title": "Reconcile-generated-stock-identity-with-existing-lookup",
+          "observed_at": "2026-11-11T13:53:15Z",
+          "evidence": "Canonical association writer and legacy-compatible lookup reader applied, actual lookup proof pending"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Real-producer-to-pinned-offer-and-rendered-review"
+        }
+      ]
     }
   ]
 }

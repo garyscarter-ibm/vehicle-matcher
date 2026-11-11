@@ -2,6 +2,15 @@
 export const VEHICLE_DETAILS_VERSION = '1.0.0';
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const copy = (v) => v === undefined ? null : structuredClone(v);
+
+/** Read canonical generated snapshots and the original allocation adapter's legacy envelope. */
+export function stockSyntheticIdentity(stock) {
+  const snapshot = stock?.facts;
+  if (snapshot?.contractVersion !== 'vehicle-snapshot-v1') return snapshot?.syntheticIdentity;
+  const fact = snapshot.facts?.syntheticIdentity;
+  return snapshot.identityKind === 'exact-stock' && snapshot.sourceKeys?.stockId === stock.orderUuid
+    && fact?.status === 'known' && object(fact.value) ? fact.value : null;
+}
 const failures = {
   'invalid-input': ['invalid-vehicle-identifier', 'Use a canonical configuration ID, stock order UUID or 17-character VIN for the selected route.', 'correct-identifier', false],
   'not-found': ['vehicle-not-found', 'This identifier is absent from the selected local data. Check the identifier and selected dataset.', 'check-identifier', false],
@@ -66,7 +75,7 @@ function selectedAppearance(equipment, category) {
 /** Only called after the lookup module has checked the exact immutable associations. */
 export function vehicleEvidenceDetails(request, source, stock = null) {
   const record = source.record; const configuration = record.configuration; const catalogue = record.catalogue;
-  const vehicle = source.vehicle; const identity = stock?.facts?.syntheticIdentity || vehicle;
+  const vehicle = source.vehicle; const identity = stockSyntheticIdentity(stock) || vehicle;
   const status = source.status === 'partial' ? 'partial' : 'complete';
   const evidence = record.sourceContext;
   const provenance = { kind: evidence.sourceKind === 'dated-snapshot' ? 'observed' : 'reference',
