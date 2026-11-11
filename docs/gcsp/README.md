@@ -4,6 +4,8 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
+**Paint colour families, 11 November:** the [183-code mapping table](paint-colour-family-mapping-2026-11-11.md) records named and Individual shades in shared policy, with revisable broad families. Named Individual colours resolve normally; the inspected 10k cohort's 761 generic `P0490` selections retain no specific companion shade. This adds lookup data; colour preferences and matching integration remain separate.
+
 **Paula's Touring feedback, 11 November:** the [diagnosis and proposed rule changes](paula-touring-match-diagnosis-2026-11-11.md) explain the inspected Touring eligibility blockers, the SUV's zero body fit and why the follow-up refuses her already-saved Estate preference. Proposals await collaborator approval; no product or employee data was changed.
 
 **Buddy subset preferences, 11 November:** the [correction and validation record](subset-preferences-fix-2026-11-11.md) explains why untouched practical defaults prevented matching, the shared consumer fix, midpoint preference weighting and scoped check limits.
