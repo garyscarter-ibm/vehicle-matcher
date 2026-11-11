@@ -4,6 +4,7 @@ import { mkdir, mkdtemp, readFile, readdir, rm, writeFile, stat } from 'node:fs/
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { validateRelease, releaseLimits } from '../gcsp/vehicle-evidence/fleet-release.js';
 import { downloadAsset, restoreFleetRelease, validationFailed } from '../gcsp/vehicle-evidence/fleet-artifacts.js';
@@ -111,4 +112,55 @@ test('restore accepts no caller-supplied release list; unapproved ids fail close
   const root = await mkdtemp(join(tmpdir(), 'restore-approval-')); t.after(() => rm(root, { recursive: true, force: true }));
   await assert.rejects(restoreFleetRelease({ releaseId: 'c'.repeat(64), store: join(root, 'store'), cacheRoot: join(root, 'cache'),
     releases: [{ releaseId: 'c'.repeat(64) }] }), { artifactCode: 'release-not-approved' });
+});
+
+test('the real offline restore CLI retains an existing-store rejection and leaves the old selection intact', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'restore-existing-rejection-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const first = await corpusInput(); const store = join(root, 'existing');
+  const firstCandidate = join(root, 'first');
+  assert.equal((await writeCorpusCandidate(firstCandidate, first, options)).status, 'ok');
+  assert.equal((await createSyntheticRegistry({ root: store, ...options }).publish(firstCandidate)).status, 'ok');
+  const before = await Promise.all(['active.json', 'identity-inventory.json'].map((file) => readFile(join(store, file))));
+
+  // Both corpora are valid independently; changing the same dataset/version is forbidden.
+  const candidate = join(root, 'candidate');
+  assert.equal((await writeCorpusCandidate(candidate, await corpusInput({ count: 2, inventory: first.allocationInventory }), options)).status, 'ok');
+  const digest = hash(await readFile(join(candidate, 'manifest.json')));
+  const cache = join(root, 'cache'); const cachedStore = join(cache, digest, 'store');
+  assert.equal((await createSyntheticRegistry({ root: cachedStore, ...options }).publish(candidate)).status, 'ok');
+
+  // Isolate the code-owned descriptor alongside a copy of the real CLI/restore code.
+  // Production approval still comes only from fleet-releases.json, never caller input.
+  const moduleRoot = join(root, 'server/gcsp/vehicle-evidence');
+  await mkdir(moduleRoot, { recursive: true }); await mkdir(join(root, 'server/scripts'));
+  await writeFile(join(root, 'server/package.json'), '{"type":"module"}');
+  const moduleUrl = new URL('../gcsp/vehicle-evidence/fleet-artifacts.js', import.meta.url);
+  const moduleSource = (await readFile(moduleUrl, 'utf8')).replace(/from '([^']+)'/g, (match, specifier) =>
+    specifier.startsWith('.') && specifier !== './fleet-release.js' ? `from '${new URL(specifier, moduleUrl).href}'` : match);
+  await writeFile(join(moduleRoot, 'fleet-artifacts.js'), moduleSource);
+  await writeFile(join(moduleRoot, 'fleet-release.js'), await readFile(new URL('../gcsp/vehicle-evidence/fleet-release.js', import.meta.url)));
+  const cli = join(root, 'server/scripts/fleet-artifacts.mjs');
+  await writeFile(cli, await readFile(new URL('../scripts/fleet-artifacts.mjs', import.meta.url)));
+  const assets = [];
+  for (const name of ['active.json', 'identity-inventory.json', ...['manifest.json', 'configurations.jsonl', 'vins.jsonl', 'images.jsonl'].map((file) => `versions/${digest}/${file}`)]) {
+    const content = await readFile(join(cachedStore, name));
+    assets.push({ name: name.replaceAll('/', '--'), path: `store/${name}`, role: 'corpus', bytes: content.length, sha256: hash(content),
+      url: `https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/test-fixture/${name.replaceAll('/', '--')}` });
+  }
+  await writeFile(join(moduleRoot, 'fleet-releases.json'), JSON.stringify([{ schemaVersion: 'fleet-release.v1',
+    releaseId: digest, manifestDigest: digest, previousManifestDigest: null, datasetId: first.metadata.datasetId,
+    version: first.metadata.version, jsonlMaxBytes: 67108864, assets, sources: [] }]));
+
+  const child = spawnSync(process.execPath, [cli, 'restore', '--release', digest, '--store', store, '--cache', cache, '--network', 'offline'],
+    { cwd: root, encoding: 'utf8', timeout: 10000 });
+  assert.equal(child.error, undefined); assert.equal(child.status, 1, child.stderr); assert.equal(child.stderr, '');
+  const report = JSON.parse(child.stdout);
+  assert.equal(report.step, 'publish-existing'); assert.equal(report.code, 'store-rejected');
+  assert.equal(report.validation.stage, 'existing'); assert.equal(report.validation.status, 'conflict');
+  assert.equal(report.validation.failure.code, 'dataset-version-conflict');
+  assert.equal(child.stdout.trim().split('\n').length, 1); assert.equal(child.stdout.includes(root), false);
+  assert.doesNotMatch(child.stdout, /:\/\//);
+  for (const [i, file] of ['active.json', 'identity-inventory.json'].entries()) assert.deepEqual(await readFile(join(store, file)), before[i]);
+  assert.equal((await createSyntheticRegistry({ root: store, ...options }).load()).active.version, '1');
 });

@@ -1,0 +1,629 @@
+[
+  {
+    "cleanup": {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-accept-receipt.json",
+      "created": 1794406567.897126,
+      "device": 16777230,
+      "groups": [
+        43139
+      ],
+      "inode": 266157561,
+      "local_scratch_reason": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "location": "local",
+      "owner": {
+        "pid": 43114,
+        "start": "Wed Nov 11 14:16:07 2026"
+      },
+      "peak": 2310420,
+      "removed": 1794406581.7546082,
+      "root": "/private/tmp/test-stamp-shard-963c1a0e3a3f4bc5ae60df4c9cba5d98",
+      "state": "removed",
+      "token": "963c1a0e3a3f4bc5ae60df4c9cba5d98",
+      "version": 1
+    },
+    "command": "python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/run-drawer-proof.py accept",
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-accept.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/963c1a0e3a3f4bc5ae60df4c9cba5d98.json",
+    "peak_rss": 588333056,
+    "peak_scratch": 2310420,
+    "rc": 1,
+    "receipt_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-accept-receipt-attempt01.json",
+    "retained_harness_identity": {
+      "drawer-browser-proof.mjs": "51a9fddcf3f194563b0e992a0dd7d3ea9fe01527b0513ccef6d9953ee6a3be35",
+      "drawer-runtime.mjs": "8ac351c7cdef44f0a5d7fa78c48b91d563ccaecf6d9b38733bdf0c13b6daf7e3",
+      "run-drawer-proof.py": "4cba94a94e0a62c5c5a2fefef12ba6553d707ff5a2f28a1d23f6f5d72c48bc21"
+    },
+    "source_identity": "3dafdf3fba3f599960fa4b0268f42bbd6e49dee079c5b111a28ca181f6457176",
+    "source_match_at_consolidation": {
+      "blocks/gcsp/kit/media-gallery.css": true,
+      "blocks/gcsp/kit/media-gallery.js": true,
+      "blocks/gcsp/kit/option-rows.css": false,
+      "blocks/gcsp/kit/side-drawer.js": true,
+      "blocks/gcsp/kit/vehicle-decision.css": false,
+      "blocks/gcsp/kit/vehicle-decision.js": false,
+      "blocks/gcsp/offer/decision-drawer.css": true,
+      "blocks/gcsp/offer/decision-drawer.js": true,
+      "blocks/gcsp/offer/offer-controller.js": true,
+      "blocks/gcsp/offer/offer-projection.js": false,
+      "blocks/gcsp/offer/offer-view.js": true,
+      "server/gcsp/offers/access-http.js": true,
+      "server/gcsp/offers/access.js": true,
+      "server/gcsp/offers/buddy-conversion.js": true,
+      "server/gcsp/offers/decision.js": true
+    },
+    "wall": 13.812756540999544
+  },
+  {
+    "cleanup": {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-accept-receipt.json",
+      "created": 1794406598.6312451,
+      "device": 16777230,
+      "groups": [
+        43588
+      ],
+      "inode": 266160029,
+      "local_scratch_reason": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "location": "local",
+      "owner": {
+        "pid": 43570,
+        "start": "Wed Nov 11 14:16:38 2026"
+      },
+      "peak": 2310419,
+      "removed": 1794406612.3473458,
+      "root": "/private/tmp/test-stamp-shard-53b0ed7ecd66483e89f1a62b7692a05f",
+      "state": "removed",
+      "token": "53b0ed7ecd66483e89f1a62b7692a05f",
+      "version": 1
+    },
+    "command": "python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/run-drawer-proof.py accept",
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-accept.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/53b0ed7ecd66483e89f1a62b7692a05f.json",
+    "peak_rss": 578322432,
+    "peak_scratch": 2310419,
+    "rc": 1,
+    "receipt_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-accept-receipt-attempt02.json",
+    "retained_harness_identity": {
+      "drawer-browser-proof.mjs": "2ab6d18c81a3911462435c8ed82ab919139e2147d7dfb4b9d7f48223635d3e76",
+      "drawer-runtime.mjs": "9f0574e23f48f70bf82826aed4b41e0f39b8dc32e2bb732f9ac5de19b7468a6d",
+      "run-drawer-proof.py": "4cba94a94e0a62c5c5a2fefef12ba6553d707ff5a2f28a1d23f6f5d72c48bc21"
+    },
+    "source_identity": "3c4be0a5fc97be54f02f6ce779e9352bc1349f110f050a060ad72f3765bcc476",
+    "source_match_at_consolidation": {
+      "blocks/gcsp/kit/media-gallery.css": true,
+      "blocks/gcsp/kit/media-gallery.js": true,
+      "blocks/gcsp/kit/option-rows.css": false,
+      "blocks/gcsp/kit/side-drawer.js": true,
+      "blocks/gcsp/kit/vehicle-decision.css": false,
+      "blocks/gcsp/kit/vehicle-decision.js": false,
+      "blocks/gcsp/offer/decision-drawer.css": true,
+      "blocks/gcsp/offer/decision-drawer.js": true,
+      "blocks/gcsp/offer/offer-controller.js": true,
+      "blocks/gcsp/offer/offer-projection.js": false,
+      "blocks/gcsp/offer/offer-view.js": true,
+      "server/gcsp/offers/access-http.js": true,
+      "server/gcsp/offers/access.js": true,
+      "server/gcsp/offers/buddy-conversion.js": true,
+      "server/gcsp/offers/decision.js": true
+    },
+    "wall": 13.68817783400118
+  },
+  {
+    "cleanup": {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-accept-receipt.json",
+      "created": 1794406629.898242,
+      "device": 16777230,
+      "groups": [
+        43958
+      ],
+      "inode": 266161957,
+      "local_scratch_reason": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "location": "local",
+      "owner": {
+        "pid": 43943,
+        "start": "Wed Nov 11 14:17:09 2026"
+      },
+      "peak": 7722388,
+      "removed": 1794406646.921004,
+      "root": "/private/tmp/test-stamp-shard-9761e4181b234449a1febd805ef12e2e",
+      "state": "removed",
+      "token": "9761e4181b234449a1febd805ef12e2e",
+      "version": 1
+    },
+    "command": "python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/run-drawer-proof.py accept",
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-accept.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/9761e4181b234449a1febd805ef12e2e.json",
+    "peak_rss": 574898176,
+    "peak_scratch": 7722388,
+    "rc": 0,
+    "receipt_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-accept-receipt.json",
+    "retained_harness_identity": {
+      "drawer-browser-proof.mjs": "2ab6d18c81a3911462435c8ed82ab919139e2147d7dfb4b9d7f48223635d3e76",
+      "drawer-runtime.mjs": "5543fa38864b4261e848d1c6ee7f701b622e0a99786824cae933215d4c60eb21",
+      "run-drawer-proof.py": "4cba94a94e0a62c5c5a2fefef12ba6553d707ff5a2f28a1d23f6f5d72c48bc21"
+    },
+    "source_identity": "bde4e683cb4a2ab85a6547c25a771334242adb30cefbd1315d65dccf8a674a45",
+    "source_match_at_consolidation": {
+      "blocks/gcsp/kit/media-gallery.css": true,
+      "blocks/gcsp/kit/media-gallery.js": true,
+      "blocks/gcsp/kit/option-rows.css": false,
+      "blocks/gcsp/kit/side-drawer.js": true,
+      "blocks/gcsp/kit/vehicle-decision.css": false,
+      "blocks/gcsp/kit/vehicle-decision.js": false,
+      "blocks/gcsp/offer/decision-drawer.css": true,
+      "blocks/gcsp/offer/decision-drawer.js": true,
+      "blocks/gcsp/offer/offer-controller.js": true,
+      "blocks/gcsp/offer/offer-projection.js": false,
+      "blocks/gcsp/offer/offer-view.js": true,
+      "server/gcsp/offers/access-http.js": true,
+      "server/gcsp/offers/access.js": true,
+      "server/gcsp/offers/buddy-conversion.js": true,
+      "server/gcsp/offers/decision.js": true
+    },
+    "wall": 16.993806500000574
+  },
+  {
+    "cleanup": {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-access-loss-receipt.json",
+      "created": 1794406894.4593139,
+      "device": 16777230,
+      "groups": [
+        47802
+      ],
+      "inode": 266178604,
+      "local_scratch_reason": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "location": "local",
+      "owner": {
+        "pid": 47787,
+        "start": "Wed Nov 11 14:21:34 2026"
+      },
+      "peak": 7726513,
+      "removed": 1794406931.297707,
+      "root": "/private/tmp/test-stamp-shard-69016a005cb744afbf442135e14a0cab",
+      "state": "removed",
+      "token": "69016a005cb744afbf442135e14a0cab",
+      "version": 1
+    },
+    "command": "python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/run-drawer-proof.py access-loss",
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-access-loss.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/69016a005cb744afbf442135e14a0cab.json",
+    "peak_rss": 577208320,
+    "peak_scratch": 7726513,
+    "rc": 1,
+    "receipt_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-access-loss-receipt-attempt01.json",
+    "retained_harness_identity": {
+      "drawer-browser-proof.mjs": "6e2243aa9c20748342830fcf8f7b67a61caddf1fbca63972355443a90d62af11",
+      "drawer-runtime.mjs": "5543fa38864b4261e848d1c6ee7f701b622e0a99786824cae933215d4c60eb21",
+      "run-drawer-proof.py": "ee6b76afb5281b250be37e8aedbdd360a85b7fd23d073d2f6dbba8767a0ccfff"
+    },
+    "source_identity": "17ab6c98dd753717a16f25497cb665c379e211d0bfe1dc93e77e8a26f68f8bc0",
+    "source_match_at_consolidation": {
+      "blocks/gcsp/kit/media-gallery.css": true,
+      "blocks/gcsp/kit/media-gallery.js": true,
+      "blocks/gcsp/kit/option-rows.css": false,
+      "blocks/gcsp/kit/side-drawer.js": true,
+      "blocks/gcsp/kit/vehicle-decision.css": false,
+      "blocks/gcsp/kit/vehicle-decision.js": false,
+      "blocks/gcsp/offer/decision-drawer.css": true,
+      "blocks/gcsp/offer/decision-drawer.js": true,
+      "blocks/gcsp/offer/offer-controller.js": true,
+      "blocks/gcsp/offer/offer-projection.js": false,
+      "blocks/gcsp/offer/offer-view.js": true,
+      "server/gcsp/offers/access-http.js": true,
+      "server/gcsp/offers/access.js": true,
+      "server/gcsp/offers/buddy-conversion.js": true,
+      "server/gcsp/offers/decision.js": true
+    },
+    "wall": 36.807145291999404
+  },
+  {
+    "cleanup": {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-access-loss-receipt.json",
+      "created": 1794407372.649359,
+      "device": 16777230,
+      "groups": [
+        53481
+      ],
+      "inode": 266189128,
+      "local_scratch_reason": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "location": "local",
+      "owner": {
+        "pid": 53463,
+        "start": "Wed Nov 11 14:29:32 2026"
+      },
+      "peak": 7722387,
+      "removed": 1794407388.5512068,
+      "root": "/private/tmp/test-stamp-shard-bfd0f2e6b3714669a36277b571202fe0",
+      "state": "removed",
+      "token": "bfd0f2e6b3714669a36277b571202fe0",
+      "version": 1
+    },
+    "command": "python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/run-drawer-proof.py access-loss",
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-access-loss.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/bfd0f2e6b3714669a36277b571202fe0.json",
+    "peak_rss": 603324416,
+    "peak_scratch": 7722387,
+    "rc": 0,
+    "receipt_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-access-loss-receipt.json",
+    "retained_harness_identity": {
+      "drawer-browser-proof.mjs": "0f8c3fd64269c24f43834f45b0aaec9eb2532ff988666236a1bb47a95b9b8364",
+      "drawer-runtime.mjs": "5543fa38864b4261e848d1c6ee7f701b622e0a99786824cae933215d4c60eb21",
+      "run-drawer-proof.py": "978c2a665db3f2a8ba40a7fca865c5091d78de2604fd07f6b78fc30c4af69668"
+    },
+    "source_identity": "1a75fbd6583e13846c303a57cc1e77f6ffca7cf88a2ec5dcc9cb93acf9b38ea5",
+    "source_match_at_consolidation": {
+      "blocks/gcsp/kit/media-gallery.css": true,
+      "blocks/gcsp/kit/media-gallery.js": true,
+      "blocks/gcsp/kit/option-rows.css": true,
+      "blocks/gcsp/kit/side-drawer.js": true,
+      "blocks/gcsp/kit/vehicle-decision.css": true,
+      "blocks/gcsp/kit/vehicle-decision.js": true,
+      "blocks/gcsp/offer/decision-drawer.css": true,
+      "blocks/gcsp/offer/decision-drawer.js": true,
+      "blocks/gcsp/offer/offer-controller.js": true,
+      "blocks/gcsp/offer/offer-projection.js": true,
+      "blocks/gcsp/offer/offer-view.js": true,
+      "server/gcsp/offers/access-http.js": true,
+      "server/gcsp/offers/access.js": true,
+      "server/gcsp/offers/buddy-conversion.js": true,
+      "server/gcsp/offers/decision.js": true
+    },
+    "wall": 15.874039083000753
+  },
+  {
+    "cleanup": {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-decline-receipt.json",
+      "created": 1794406686.890649,
+      "device": 16777230,
+      "groups": [
+        44714
+      ],
+      "inode": 266165588,
+      "local_scratch_reason": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "location": "local",
+      "owner": {
+        "pid": 44686,
+        "start": "Wed Nov 11 14:18:06 2026"
+      },
+      "peak": 7722387,
+      "removed": 1794406704.130615,
+      "root": "/private/tmp/test-stamp-shard-a0579cbfdacc4aeeab81b2db59ab3eb4",
+      "state": "removed",
+      "token": "a0579cbfdacc4aeeab81b2db59ab3eb4",
+      "version": 1
+    },
+    "command": "python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/run-drawer-proof.py decline",
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-decline.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/a0579cbfdacc4aeeab81b2db59ab3eb4.json",
+    "peak_rss": 577175552,
+    "peak_scratch": 7722387,
+    "rc": 0,
+    "receipt_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-decline-receipt.json",
+    "retained_harness_identity": {
+      "drawer-browser-proof.mjs": "2ab6d18c81a3911462435c8ed82ab919139e2147d7dfb4b9d7f48223635d3e76",
+      "drawer-runtime.mjs": "5543fa38864b4261e848d1c6ee7f701b622e0a99786824cae933215d4c60eb21",
+      "run-drawer-proof.py": "4cba94a94e0a62c5c5a2fefef12ba6553d707ff5a2f28a1d23f6f5d72c48bc21"
+    },
+    "source_identity": "bde4e683cb4a2ab85a6547c25a771334242adb30cefbd1315d65dccf8a674a45",
+    "source_match_at_consolidation": {
+      "blocks/gcsp/kit/media-gallery.css": true,
+      "blocks/gcsp/kit/media-gallery.js": true,
+      "blocks/gcsp/kit/option-rows.css": false,
+      "blocks/gcsp/kit/side-drawer.js": true,
+      "blocks/gcsp/kit/vehicle-decision.css": false,
+      "blocks/gcsp/kit/vehicle-decision.js": false,
+      "blocks/gcsp/offer/decision-drawer.css": true,
+      "blocks/gcsp/offer/decision-drawer.js": true,
+      "blocks/gcsp/offer/offer-controller.js": true,
+      "blocks/gcsp/offer/offer-projection.js": false,
+      "blocks/gcsp/offer/offer-view.js": true,
+      "server/gcsp/offers/access-http.js": true,
+      "server/gcsp/offers/access.js": true,
+      "server/gcsp/offers/buddy-conversion.js": true,
+      "server/gcsp/offers/decision.js": true
+    },
+    "wall": 17.2113043749996
+  },
+  {
+    "cleanup": {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-gallery-boundaries-receipt.json",
+      "created": 1794406767.41205,
+      "device": 16777230,
+      "groups": [
+        45712
+      ],
+      "inode": 266170105,
+      "local_scratch_reason": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "location": "local",
+      "owner": {
+        "pid": 45661,
+        "start": "Wed Nov 11 14:19:26 2026"
+      },
+      "peak": 7722579,
+      "removed": 1794406790.364855,
+      "root": "/private/tmp/test-stamp-shard-80c974bc9a47409a849e23ef0c1c783c",
+      "state": "removed",
+      "token": "80c974bc9a47409a849e23ef0c1c783c",
+      "version": 1
+    },
+    "command": "python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/run-drawer-proof.py gallery-boundaries",
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-gallery-boundaries.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/80c974bc9a47409a849e23ef0c1c783c.json",
+    "peak_rss": 603996160,
+    "peak_scratch": 7722579,
+    "rc": 0,
+    "receipt_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-gallery-boundaries-receipt.json",
+    "retained_harness_identity": {
+      "drawer-browser-proof.mjs": "00c5eb2e497cc1d0bf55ed62cd6c0370f9af837eb66d7486049b5d8f33f9c336",
+      "drawer-runtime.mjs": "5543fa38864b4261e848d1c6ee7f701b622e0a99786824cae933215d4c60eb21",
+      "run-drawer-proof.py": "ee6b76afb5281b250be37e8aedbdd360a85b7fd23d073d2f6dbba8767a0ccfff"
+    },
+    "source_identity": "17822da704d7f0d99a5a790790c5b66781279ceebbf0b26da7adc0ebcc142029",
+    "source_match_at_consolidation": {
+      "blocks/gcsp/kit/media-gallery.css": true,
+      "blocks/gcsp/kit/media-gallery.js": true,
+      "blocks/gcsp/kit/option-rows.css": false,
+      "blocks/gcsp/kit/side-drawer.js": true,
+      "blocks/gcsp/kit/vehicle-decision.css": false,
+      "blocks/gcsp/kit/vehicle-decision.js": false,
+      "blocks/gcsp/offer/decision-drawer.css": true,
+      "blocks/gcsp/offer/decision-drawer.js": true,
+      "blocks/gcsp/offer/offer-controller.js": true,
+      "blocks/gcsp/offer/offer-projection.js": false,
+      "blocks/gcsp/offer/offer-view.js": true,
+      "server/gcsp/offers/access-http.js": true,
+      "server/gcsp/offers/access.js": true,
+      "server/gcsp/offers/buddy-conversion.js": true,
+      "server/gcsp/offers/decision.js": true
+    },
+    "wall": 22.86787908400038
+  },
+  {
+    "cleanup": {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-gallery-timing-receipt.json",
+      "created": 1794406722.334323,
+      "device": 16777230,
+      "groups": [
+        45070
+      ],
+      "inode": 266167785,
+      "local_scratch_reason": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "location": "local",
+      "owner": {
+        "pid": 45056,
+        "start": "Wed Nov 11 14:18:41 2026"
+      },
+      "peak": 7722580,
+      "removed": 1794406738.419307,
+      "root": "/private/tmp/test-stamp-shard-4a49c504bcad4904add9f717b0feb663",
+      "state": "removed",
+      "token": "4a49c504bcad4904add9f717b0feb663",
+      "version": 1
+    },
+    "command": "python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/run-drawer-proof.py gallery-timing",
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-gallery-timing.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/4a49c504bcad4904add9f717b0feb663.json",
+    "peak_rss": 583385088,
+    "peak_scratch": 7722580,
+    "rc": 1,
+    "receipt_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-gallery-timing-receipt.json",
+    "retained_harness_identity": {
+      "drawer-browser-proof.mjs": "2ab6d18c81a3911462435c8ed82ab919139e2147d7dfb4b9d7f48223635d3e76",
+      "drawer-runtime.mjs": "5543fa38864b4261e848d1c6ee7f701b622e0a99786824cae933215d4c60eb21",
+      "run-drawer-proof.py": "4cba94a94e0a62c5c5a2fefef12ba6553d707ff5a2f28a1d23f6f5d72c48bc21"
+    },
+    "source_identity": "bde4e683cb4a2ab85a6547c25a771334242adb30cefbd1315d65dccf8a674a45",
+    "source_match_at_consolidation": {
+      "blocks/gcsp/kit/media-gallery.css": true,
+      "blocks/gcsp/kit/media-gallery.js": true,
+      "blocks/gcsp/kit/option-rows.css": false,
+      "blocks/gcsp/kit/side-drawer.js": true,
+      "blocks/gcsp/kit/vehicle-decision.css": false,
+      "blocks/gcsp/kit/vehicle-decision.js": false,
+      "blocks/gcsp/offer/decision-drawer.css": true,
+      "blocks/gcsp/offer/decision-drawer.js": true,
+      "blocks/gcsp/offer/offer-controller.js": true,
+      "blocks/gcsp/offer/offer-projection.js": false,
+      "blocks/gcsp/offer/offer-view.js": true,
+      "server/gcsp/offers/access-http.js": true,
+      "server/gcsp/offers/access.js": true,
+      "server/gcsp/offers/buddy-conversion.js": true,
+      "server/gcsp/offers/decision.js": true
+    },
+    "wall": 16.057346875000803
+  },
+  {
+    "cleanup": {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-stale-expiry-receipt.json",
+      "created": 1794406802.517791,
+      "device": 16777230,
+      "groups": [
+        46414
+      ],
+      "inode": 266172211,
+      "local_scratch_reason": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "location": "local",
+      "owner": {
+        "pid": 46394,
+        "start": "Wed Nov 11 14:20:02 2026"
+      },
+      "peak": 7590164,
+      "removed": 1794406817.910929,
+      "root": "/private/tmp/test-stamp-shard-89deeb8375ad4ad7b24e8d2ff2fead64",
+      "state": "removed",
+      "token": "89deeb8375ad4ad7b24e8d2ff2fead64",
+      "version": 1
+    },
+    "command": "python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/run-drawer-proof.py stale-expiry",
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-stale-expiry.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/89deeb8375ad4ad7b24e8d2ff2fead64.json",
+    "peak_rss": 601522176,
+    "peak_scratch": 7590164,
+    "rc": 1,
+    "receipt_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-stale-expiry-receipt-attempt01.json",
+    "retained_harness_identity": {
+      "drawer-browser-proof.mjs": "17db4834b35ddc108fea0ebf74badd3f22e937685aa5208763e73cae8f7b20ab",
+      "drawer-runtime.mjs": "5543fa38864b4261e848d1c6ee7f701b622e0a99786824cae933215d4c60eb21",
+      "run-drawer-proof.py": "ee6b76afb5281b250be37e8aedbdd360a85b7fd23d073d2f6dbba8767a0ccfff"
+    },
+    "source_identity": "d5d30627f00500cf355a1643577f56de6370668062dd02e3885397b31c74125e",
+    "source_match_at_consolidation": {
+      "blocks/gcsp/kit/media-gallery.css": true,
+      "blocks/gcsp/kit/media-gallery.js": true,
+      "blocks/gcsp/kit/option-rows.css": false,
+      "blocks/gcsp/kit/side-drawer.js": true,
+      "blocks/gcsp/kit/vehicle-decision.css": false,
+      "blocks/gcsp/kit/vehicle-decision.js": false,
+      "blocks/gcsp/offer/decision-drawer.css": true,
+      "blocks/gcsp/offer/decision-drawer.js": true,
+      "blocks/gcsp/offer/offer-controller.js": true,
+      "blocks/gcsp/offer/offer-projection.js": false,
+      "blocks/gcsp/offer/offer-view.js": true,
+      "server/gcsp/offers/access-http.js": true,
+      "server/gcsp/offers/access.js": true,
+      "server/gcsp/offers/buddy-conversion.js": true,
+      "server/gcsp/offers/decision.js": true
+    },
+    "wall": 15.336435791999975
+  },
+  {
+    "cleanup": {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-stale-expiry-receipt.json",
+      "created": 1794406858.524775,
+      "device": 16777230,
+      "groups": [
+        47254
+      ],
+      "inode": 266176230,
+      "local_scratch_reason": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "location": "local",
+      "owner": {
+        "pid": 47233,
+        "start": "Wed Nov 11 14:20:57 2026"
+      },
+      "peak": 7722387,
+      "removed": 1794406876.267048,
+      "root": "/private/tmp/test-stamp-shard-bec8fa093e7e427cabe6dcdd1bcc7196",
+      "state": "removed",
+      "token": "bec8fa093e7e427cabe6dcdd1bcc7196",
+      "version": 1
+    },
+    "command": "python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/run-drawer-proof.py stale-expiry",
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-stale-expiry.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/bec8fa093e7e427cabe6dcdd1bcc7196.json",
+    "peak_rss": 570048512,
+    "peak_scratch": 7722387,
+    "rc": 0,
+    "receipt_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-stale-expiry-receipt.json",
+    "retained_harness_identity": {
+      "drawer-browser-proof.mjs": "6e2243aa9c20748342830fcf8f7b67a61caddf1fbca63972355443a90d62af11",
+      "drawer-runtime.mjs": "5543fa38864b4261e848d1c6ee7f701b622e0a99786824cae933215d4c60eb21",
+      "run-drawer-proof.py": "ee6b76afb5281b250be37e8aedbdd360a85b7fd23d073d2f6dbba8767a0ccfff"
+    },
+    "source_identity": "17ab6c98dd753717a16f25497cb665c379e211d0bfe1dc93e77e8a26f68f8bc0",
+    "source_match_at_consolidation": {
+      "blocks/gcsp/kit/media-gallery.css": true,
+      "blocks/gcsp/kit/media-gallery.js": true,
+      "blocks/gcsp/kit/option-rows.css": false,
+      "blocks/gcsp/kit/side-drawer.js": true,
+      "blocks/gcsp/kit/vehicle-decision.css": false,
+      "blocks/gcsp/kit/vehicle-decision.js": false,
+      "blocks/gcsp/offer/decision-drawer.css": true,
+      "blocks/gcsp/offer/decision-drawer.js": true,
+      "blocks/gcsp/offer/offer-controller.js": true,
+      "blocks/gcsp/offer/offer-projection.js": false,
+      "blocks/gcsp/offer/offer-view.js": true,
+      "server/gcsp/offers/access-http.js": true,
+      "server/gcsp/offers/access.js": true,
+      "server/gcsp/offers/buddy-conversion.js": true,
+      "server/gcsp/offers/decision.js": true
+    },
+    "wall": 17.703122250000888
+  },
+  {
+    "cleanup": {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-visual-corrections-receipt.json",
+      "created": 1794407323.7406368,
+      "device": 16777230,
+      "groups": [
+        52964
+      ],
+      "inode": 266186667,
+      "local_scratch_reason": "Bounded active isolated headless Chrome profile and ephemeral localhost TLS; retained review screenshots outside scratch",
+      "location": "local",
+      "owner": {
+        "pid": 52950,
+        "start": "Wed Nov 11 14:28:43 2026"
+      },
+      "peak": 7722387,
+      "removed": 1794407339.332798,
+      "root": "/private/tmp/test-stamp-shard-58d5e952076f46cb8a57d1ac485a5d86",
+      "state": "removed",
+      "token": "58d5e952076f46cb8a57d1ac485a5d86",
+      "version": 1
+    },
+    "command": "python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/run-drawer-proof.py visual-corrections",
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-visual-corrections.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/ownership/58d5e952076f46cb8a57d1ac485a5d86.json",
+    "peak_rss": 598392832,
+    "peak_scratch": 7722387,
+    "rc": 0,
+    "receipt_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/browser-visual-corrections-receipt.json",
+    "retained_harness_identity": {
+      "drawer-browser-proof.mjs": "0f8c3fd64269c24f43834f45b0aaec9eb2532ff988666236a1bb47a95b9b8364",
+      "drawer-runtime.mjs": "5543fa38864b4261e848d1c6ee7f701b622e0a99786824cae933215d4c60eb21",
+      "run-drawer-proof.py": "978c2a665db3f2a8ba40a7fca865c5091d78de2604fd07f6b78fc30c4af69668"
+    },
+    "source_identity": "1a75fbd6583e13846c303a57cc1e77f6ffca7cf88a2ec5dcc9cb93acf9b38ea5",
+    "source_match_at_consolidation": {
+      "blocks/gcsp/kit/media-gallery.css": true,
+      "blocks/gcsp/kit/media-gallery.js": true,
+      "blocks/gcsp/kit/option-rows.css": true,
+      "blocks/gcsp/kit/side-drawer.js": true,
+      "blocks/gcsp/kit/vehicle-decision.css": true,
+      "blocks/gcsp/kit/vehicle-decision.js": true,
+      "blocks/gcsp/offer/decision-drawer.css": true,
+      "blocks/gcsp/offer/decision-drawer.js": true,
+      "blocks/gcsp/offer/offer-controller.js": true,
+      "blocks/gcsp/offer/offer-projection.js": true,
+      "blocks/gcsp/offer/offer-view.js": true,
+      "server/gcsp/offers/access-http.js": true,
+      "server/gcsp/offers/access.js": true,
+      "server/gcsp/offers/buddy-conversion.js": true,
+      "server/gcsp/offers/decision.js": true
+    },
+    "wall": 15.560694124998918
+  }
+]

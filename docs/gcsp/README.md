@@ -4,11 +4,11 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
-## Approved vehicle offer direction — 11 November 2026
+## Vehicle offer delivered for review — 11 November 2026
 
-[FUCQ-380](https://ibm-consulting.atlassian.net/browse/FUCQ-380) records the requested wider offer screen, countdown, gallery, vehicle comparison and decision fly-outs. The collaborator approved the [local visual concept](mockups/vehicle-offer-2026-11-11/index.html) after the final caption, alignment, five-benefit overflow and fixed-choice decline edits. [FUCQ-383–386 and the approved scope](vehicle-offer-stories-2026-11-11.md) cover presentation, readable code definitions, multi-angle gallery and decision drawers; [assumptions and review](mockups/vehicle-offer-2026-11-11/README.md) accompany it. Existing FUCQ-337 is reused for exact-option comparisons. This is design/backlog authoring; no production implementation or dispatcher starts here.
+The approved [FUCQ-380 offer direction](mockups/vehicle-offer-2026-11-11/README.md) is implemented in `gcsp-poc`. FUCQ-383–386 and the separately authorised FUCQ-382 prerequisite are built, merged and **In Review**; FUCQ-380 is also In Review. The bounded poller is stopped. Read the [delivery report](dev-poller-fucq380-2026-11-11.md) for merge/Result links, independent desktop/narrow visual review, actual local producer/decision/timing trials, baseline changes and validation/data limits. Collaborator acceptance remains separate.
 
-[The data diagnosis](mockups/vehicle-offer-2026-11-11/diagnosis.md) identifies configuration detail lost between the registry and generated stock, plus absent readable option definitions. Bug [FUCQ-382](https://ibm-consulting.atlassian.net/browse/FUCQ-382), related to original Story FUCQ-105, holds that finding separately for discussion; no repair or live reproduction is claimed.
+Russell lifted FUCQ-382's diagnosis-only hold and authorised the compact expected-return-mileage field on 11 November. The [original story/design record](vehicle-offer-stories-2026-11-11.md) retains the approved scope and historical authoring evidence. Existing FUCQ-337 exact-option comparison scope remains separate.
 
 ## Latest build handover — 6 November 2026
 

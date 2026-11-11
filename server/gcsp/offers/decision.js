@@ -5,7 +5,7 @@ import { prepareBuddySelection } from './buddy-conversion.js';
 export const DECLINE_REASONS_KEY = 'offer.declineReasons.v1';
 export const DECISION_EVENTS = 'offer-decisions:events:v1';
 const fields = ['commandId', 'runId', 'offerId', 'decision', 'reasonCode',
-  'expectedOfferVersion', 'expectedHoldVersion', 'expectedQuoteVersion', 'termsDigest', 'declarations'];
+  'expectedOfferVersion', 'expectedHoldVersion', 'expectedQuoteVersion', 'termsDigest', 'declarations', 'expectedReturnMileage'];
 const object = (v) => v !== null && typeof v === 'object' && Object.getPrototypeOf(v) === Object.prototype;
 const only = (v, keys) => object(v) && Reflect.ownKeys(v).every((k) => keys.includes(k));
 const text = (v) => typeof v === 'string' && v.trim().length > 0 && v.length <= 128;
@@ -266,7 +266,7 @@ export class OfferDecisionService {
       expectedQuoteId: q.quoteId, expectedStockVersion: replay?.versions?.stock ?? stock.value.version,
       termsDigest: input.termsDigest, declarations: input.declarations };
     let decided;
-    const converter = { prepare: (c, source) => prepareBuddySelection({ repository: this.#repository, clock: this.#clock }, c, source),
+    const converter = { prepare: (c, source) => prepareBuddySelection({ repository: this.#repository, clock: this.#clock, policy: this.#policy, expectedReturnMileage: input.expectedReturnMileage }, c, source),
       convertSelection: async (_c, _allocation, { commitSelection }) => (decided = await this.#transact(prepared, input, commitSelection)) };
     const selection = await this.#ordering.submitSource(context, ordering, { converter });
     if (!['ok', 'pending'].includes(selection.status)) return selection;
@@ -281,7 +281,8 @@ export class OfferDecisionService {
       if (!only(input, fields) || !['commandId', 'runId', 'offerId'].every((k) => text(input[k]))
         || !['accept', 'decline'].includes(input.decision)
         || ['Offer', 'Hold', 'Quote'].some((k) => !positive(input[`expected${k}Version`]))
-        || (input.decision === 'decline' ? !text(input.reasonCode) : Object.hasOwn(input, 'reasonCode'))
+        || (input.decision === 'decline' ? !text(input.reasonCode) || Object.hasOwn(input, 'expectedReturnMileage') : Object.hasOwn(input, 'reasonCode'))
+        || (Object.hasOwn(input, 'expectedReturnMileage') && (!Number.isSafeInteger(input.expectedReturnMileage) || input.expectedReturnMileage < 0))
         || (accepting && this.#ordering ? !text(input.termsDigest) || !object(input.declarations)
           : Object.hasOwn(input, 'termsDigest') || Object.hasOwn(input, 'declarations'))) return invalid();
       const prepared = await this.#prepare(context, { runId: input.runId, offerId: input.offerId });

@@ -1,0 +1,11 @@
+# FUCQ-383 implementation and validation
+
+Component plan: reuse portalShell, matchCard, mediaWell, factList, button, viewStatus, declarations and decline controls. Extend dataTable with hidden accessible caption, equal columns and per-cell winner. Add shared vehicleDecisionCard/finishLabel/decisionHighlights because existing matchCard lacks the responsive summary/media/details ordering, metricTile lacks grouped wrapping highlights, and neither supplies readable finish-plus-neutral-swatch treatment. Catalogue, gallery and ratchet ship with these changes.
+
+Architecture unchanged: existing presentation/controller/read/decision ports remain in the same browser block; no service, store, queue, external dependency or connection changes. The design-with-drawio unchanged-design exception applies.
+
+Baseline adaptation: preserve FUCQ-370/371 server reason text, checks, handoff blockers, accepted confirmation and navigation. Move grounded supplied reasons into uncapped highlights and retain unknowns/blockers with exact facts. Only points cost and boot volume infer directional winners; equipment priority stays FUCQ-337's separate obligation. Upstream FUCQ-382 remains diagnosis-only; no invented identity/specifications. FUCQ-384's ordinary colour/interior fact text is compatible; absent evidenced shade remains neutral. FUCQ-385 gallery and FUCQ-386 drawers integrate serially after this checkpoint.
+
+Validation plan: three authored offer tests, changed shared-kit/dataTable callers, UI ratchet, painted-copy and CSP tests. Affected selector dry run has no configured language plugin and proposes the full suite; use explicit scoped commands because only UI composition/formatting changes, with authoritative clock and decision protections retained. No full suite selected. Browser proof will inspect 1440/375/320, long/unknown/empty/two/five benefits and both winning columns; real offer/DemoClock producer reads remain an explicit integration gate. One worker per chunk, <=600s/2GiB; test_stamp or Scratch supervisor owns cleanup.
+
+Checkpoint evidence and remaining original acceptance gaps: [checkpoint.md](checkpoint.md). This increment is integration-pending, not built. The final Story Result and acceptance/map completion follow combined integration and independent review.

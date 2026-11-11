@@ -1,0 +1,345 @@
+{
+  "version": 1,
+  "issue": "FUCQ-383",
+  "recorded_at": "2026-11-11T14:55:52Z",
+  "scope": "Original six AC development evidence; Built does not imply collaborator acceptance or Jira transition",
+  "original_scope_unchanged": true,
+  "own_presentation_checkpoint": "dc4462359ac365d93c78983f45c9738b05b244e6",
+  "corrected_ui_commit": "22176eb2393c644151c097bc1022998b67c1fe29",
+  "shared_evidence_commit": "9089a8158765459f198be05f178fd6e2b5d494e8",
+  "latest_gcsp_poc_at_merge": "10fec0636a6fd358f0923d63fedb29265b0c1ef2",
+  "finalization_merge_commit": "b977000104e7a0bd188393db0a3cd960a3acd592",
+  "current_source_equals_corrected_ui": false,
+  "final_shared_identity": {
+    "source": "../fucq386/identities.json",
+    "corrected_ui_commit": "22176eb2393c644151c097bc1022998b67c1fe29",
+    "checked_files": 20,
+    "matched_files": 19,
+    "mismatches": [
+      {
+        "path": "server/test/gcsp-offer-view-render.test.js",
+        "corrected_ui_sha256": "06b20e05f0dbad72840c4f858eeacbd02f043280d4b71f4f95257dc0723f4e7d",
+        "current_sha256": "b00ac810cc8ef32ff78b5bfa5406e5af269450e1188ae7f152b24823fb0b4a4c",
+        "reason": "FUCQ-390 intentionally replaces the empty-rail assertion with the canonical four-route navigation assertion"
+      }
+    ],
+    "expected_sha256": {
+      "blocks/gcsp/kit/media-gallery.css": "2bab9856c20b351a52a462bbaf1c79ddadf3b18d585b8ce99bcbcfe316833f7c",
+      "blocks/gcsp/kit/media-gallery.js": "0735b8ed4a0493f76abee2578d82f1c8e033e0a99597efd4d3756b0167b88a70",
+      "blocks/gcsp/kit/option-rows.css": "97da56426517834df9c0f57f4362d5f247cd14e0f029a1baeda2c7a837382439",
+      "blocks/gcsp/kit/side-drawer.js": "57910fe1e8a6d434951e172cdb1afb31783aee08996c465de48ded2091229f3c",
+      "blocks/gcsp/kit/vehicle-decision.css": "9057204220f923449ed37ef5d1b6d08b301b461d26cd25418a8fad24bcf4651e",
+      "blocks/gcsp/kit/vehicle-decision.js": "5444f61e909a8bc7697ffd6210a6918b25141c3cef286389b1704edb6230f8f5",
+      "blocks/gcsp/offer/decision-drawer.css": "2fc3d00c73f5042d1e1cfc468481d088bebd3c02ea07ee28f15f5a697eef98c4",
+      "blocks/gcsp/offer/decision-drawer.js": "86ce98aab6d22d696fcdbc0926f4751b12e762f8e5b702db3ebc766281b95131",
+      "blocks/gcsp/offer/offer-controller.js": "cdf1622f0b039290c3800d3ae03cf5195bcd5bb60933ff24d5aa06de69eb60d2",
+      "blocks/gcsp/offer/offer-projection.js": "eae39dd4fb3898bd6db9be49b3820f96fe0464e01e4c592df3d68e127f75b4f5",
+      "blocks/gcsp/offer/offer-view.js": "6bc44184df1f31857847a74b56445df1854b8087330d7bff96f46a81e25e1229",
+      "server/gcsp/offers/access-http.js": "a17f8af461cc9ccf6f9b3b94eec18cd7e98b7c394d8dd6f189848576f7cdd97d",
+      "server/gcsp/offers/access.js": "f3d2c5130412665f796b5a09040b114296b0152de1983a46e9740507306da0a5",
+      "server/gcsp/offers/buddy-conversion.js": "9821ec9bdaccf1e0d9816a30b0143b6864df1a737ec6d035f15e0dc6f1e06e85",
+      "server/gcsp/offers/decision.js": "b95f6bd9c06d9a5f631d49efca6bb50cbe1aee15943bd4c9686cb9a4fb935dfe",
+      "server/test/gcsp-offer-view-decision.test.js": "276d06b94fc13e04beb6b40c72e6614002e5b001b445f7a3cc41a2970518bc3a",
+      "server/test/gcsp-offer-view-projection.test.js": "5c223c0cd0aaf7abaca7c583bfa82362a4a8400c669ad8ac405a1cddaab5d506",
+      "server/test/gcsp-offer-view-render.test.js": "06b20e05f0dbad72840c4f858eeacbd02f043280d4b71f4f95257dc0723f4e7d",
+      "server/test/shared-kit-contracts.test.js": "c66f08836b324b90bed6587e9808cbd45ec862e2167f8c76bac757f26bc9dfa3",
+      "server/test/ui-ratchet.json": "8bf76027ec1f4936ed5c22e05632be6f79949d4a3ae3679a7ffa751ce0b2033e"
+    },
+    "current_sha256": {
+      "blocks/gcsp/kit/media-gallery.css": "2bab9856c20b351a52a462bbaf1c79ddadf3b18d585b8ce99bcbcfe316833f7c",
+      "blocks/gcsp/kit/media-gallery.js": "0735b8ed4a0493f76abee2578d82f1c8e033e0a99597efd4d3756b0167b88a70",
+      "blocks/gcsp/kit/option-rows.css": "97da56426517834df9c0f57f4362d5f247cd14e0f029a1baeda2c7a837382439",
+      "blocks/gcsp/kit/side-drawer.js": "57910fe1e8a6d434951e172cdb1afb31783aee08996c465de48ded2091229f3c",
+      "blocks/gcsp/kit/vehicle-decision.css": "9057204220f923449ed37ef5d1b6d08b301b461d26cd25418a8fad24bcf4651e",
+      "blocks/gcsp/kit/vehicle-decision.js": "5444f61e909a8bc7697ffd6210a6918b25141c3cef286389b1704edb6230f8f5",
+      "blocks/gcsp/offer/decision-drawer.css": "2fc3d00c73f5042d1e1cfc468481d088bebd3c02ea07ee28f15f5a697eef98c4",
+      "blocks/gcsp/offer/decision-drawer.js": "86ce98aab6d22d696fcdbc0926f4751b12e762f8e5b702db3ebc766281b95131",
+      "blocks/gcsp/offer/offer-controller.js": "cdf1622f0b039290c3800d3ae03cf5195bcd5bb60933ff24d5aa06de69eb60d2",
+      "blocks/gcsp/offer/offer-projection.js": "eae39dd4fb3898bd6db9be49b3820f96fe0464e01e4c592df3d68e127f75b4f5",
+      "blocks/gcsp/offer/offer-view.js": "6bc44184df1f31857847a74b56445df1854b8087330d7bff96f46a81e25e1229",
+      "server/gcsp/offers/access-http.js": "a17f8af461cc9ccf6f9b3b94eec18cd7e98b7c394d8dd6f189848576f7cdd97d",
+      "server/gcsp/offers/access.js": "f3d2c5130412665f796b5a09040b114296b0152de1983a46e9740507306da0a5",
+      "server/gcsp/offers/buddy-conversion.js": "9821ec9bdaccf1e0d9816a30b0143b6864df1a737ec6d035f15e0dc6f1e06e85",
+      "server/gcsp/offers/decision.js": "b95f6bd9c06d9a5f631d49efca6bb50cbe1aee15943bd4c9686cb9a4fb935dfe",
+      "server/test/gcsp-offer-view-decision.test.js": "276d06b94fc13e04beb6b40c72e6614002e5b001b445f7a3cc41a2970518bc3a",
+      "server/test/gcsp-offer-view-projection.test.js": "5c223c0cd0aaf7abaca7c583bfa82362a4a8400c669ad8ac405a1cddaab5d506",
+      "server/test/gcsp-offer-view-render.test.js": "b00ac810cc8ef32ff78b5bfa5406e5af269450e1188ae7f152b24823fb0b4a4c",
+      "server/test/shared-kit-contracts.test.js": "c66f08836b324b90bed6587e9808cbd45ec862e2167f8c76bac757f26bc9dfa3",
+      "server/test/ui-ratchet.json": "8bf76027ec1f4936ed5c22e05632be6f79949d4a3ae3679a7ffa751ce0b2033e"
+    }
+  },
+  "independent_review": {
+    "path": "docs/gcsp/evidence/fucq386/independent-visual-review.md",
+    "sha256": "9e3c92c8b8053827fa0e073b4bc8cea7eaaa6e7ac774b135d7216fe304eb0f41",
+    "verdict": "passed"
+  },
+  "historical_checkpoint_comparison": [
+    {
+      "path": "COMPONENTS.md",
+      "checkpoint_sha256": "06f2ddd0c3c85293cf103acc8766970c3f67a2427383286a115d87f108dda3a4",
+      "final_sha256": "5f2671e4765cd9f4de1dcc115170bab0dac4ccd0545aec3e969c8e02f6e24de9",
+      "unchanged": false
+    },
+    {
+      "path": "blocks/gcsp/kit/data-table-compare.css",
+      "checkpoint_sha256": "62c8e3eddcc1fff3b3ff554f1a758ddf1c380ad9600c97e67ffe69d758cca6c2",
+      "final_sha256": "62c8e3eddcc1fff3b3ff554f1a758ddf1c380ad9600c97e67ffe69d758cca6c2",
+      "unchanged": true
+    },
+    {
+      "path": "blocks/gcsp/kit/data-table.js",
+      "checkpoint_sha256": "783a48bfaea8b0d3f34abf75fd082d5ef76d5b09d02c55211cefa16eca25096b",
+      "final_sha256": "783a48bfaea8b0d3f34abf75fd082d5ef76d5b09d02c55211cefa16eca25096b",
+      "unchanged": true
+    },
+    {
+      "path": "blocks/gcsp/kit/vehicle-decision.css",
+      "checkpoint_sha256": "d59123cf6fea43ec6842b5687bd295f48ca7725658b7d70f0f5f492eecbbfdd0",
+      "final_sha256": "9057204220f923449ed37ef5d1b6d08b301b461d26cd25418a8fad24bcf4651e",
+      "unchanged": false
+    },
+    {
+      "path": "blocks/gcsp/kit/vehicle-decision.js",
+      "checkpoint_sha256": "020626b4a452fa09549168eb9eb9cd451f6a9a3fbde8760d2b84fd9807a0d469",
+      "final_sha256": "5444f61e909a8bc7697ffd6210a6918b25141c3cef286389b1704edb6230f8f5",
+      "unchanged": false
+    },
+    {
+      "path": "blocks/gcsp/offer/gcsp-offer.css",
+      "checkpoint_sha256": "902772d75c372c007e4280783c0ba184c14945330ece06baaaccbd78895041d7",
+      "final_sha256": "6caa53d27ffeb830a3adb6a20b32ff9dc8b4dde3d3c758449dff85306011e481",
+      "unchanged": false
+    },
+    {
+      "path": "blocks/gcsp/offer/offer-controller.js",
+      "checkpoint_sha256": "4f6ddc050c7ee78a06916bfc2415ae0ea1565e2a0513ac459869e27ea57b15f3",
+      "final_sha256": "cdf1622f0b039290c3800d3ae03cf5195bcd5bb60933ff24d5aa06de69eb60d2",
+      "unchanged": false
+    },
+    {
+      "path": "blocks/gcsp/offer/offer-view.js",
+      "checkpoint_sha256": "ddf315f57ffac877e9e0c3c8a7cc7269e5cc0acbc932c1fe1b3bcb4d18c50506",
+      "final_sha256": "6bc44184df1f31857847a74b56445df1854b8087330d7bff96f46a81e25e1229",
+      "unchanged": false
+    },
+    {
+      "path": "blocks/vehicle-matcher/component-gallery.js",
+      "checkpoint_sha256": "372cda03eff194da831275463f242b4550af7f22fbe23cfac50388dd335fa608",
+      "final_sha256": "6f5dd06e59304c773eafa6586f9390761225217146b738c86d722fdcb0f6f338",
+      "unchanged": false
+    },
+    {
+      "path": "components.html",
+      "checkpoint_sha256": "29efa4fbe7425c64a10e463cee0aba5e93f158ff34b0f73babd1d24b9c5a7e16",
+      "final_sha256": "e2fcf9ce4d532972127552dfc64e3f9add9b381569268c6f612c59e969cf0a1c",
+      "unchanged": false
+    },
+    {
+      "path": "server/test/gcsp-offer-view-check.test.js",
+      "checkpoint_sha256": "a508020a2d7bdb2c8d73f1549494707274b0deaff45216ef1eab51becb7784a1",
+      "final_sha256": "a508020a2d7bdb2c8d73f1549494707274b0deaff45216ef1eab51becb7784a1",
+      "unchanged": true
+    },
+    {
+      "path": "server/test/gcsp-offer-view-controller.test.js",
+      "checkpoint_sha256": "1688c9fcf2f93d995cb4e90f4504510e5e3c6fcc719016225d46442caaf45f4e",
+      "final_sha256": "1688c9fcf2f93d995cb4e90f4504510e5e3c6fcc719016225d46442caaf45f4e",
+      "unchanged": true
+    },
+    {
+      "path": "server/test/gcsp-offer-view-decision.test.js",
+      "checkpoint_sha256": "54a0f5e688d0dcbfff7a3bd3d33a8c74ec2ccbbc017f0a289b0336a9e6a2c7fc",
+      "final_sha256": "276d06b94fc13e04beb6b40c72e6614002e5b001b445f7a3cc41a2970518bc3a",
+      "unchanged": false
+    },
+    {
+      "path": "server/test/gcsp-offer-view-render.test.js",
+      "checkpoint_sha256": "9e0dea155f593bb428456d1960247a92992d2fa37a5de739e0c121d29f0e3af4",
+      "final_sha256": "b00ac810cc8ef32ff78b5bfa5406e5af269450e1188ae7f152b24823fb0b4a4c",
+      "unchanged": false
+    },
+    {
+      "path": "server/test/gcsp-painted-copy-words.test.js",
+      "checkpoint_sha256": "e7abdd82b700f9a01a783f5365a83bcbe97571c5cf1194b42aadf0572fd69f2a",
+      "final_sha256": "8d7435db6064aa20d6e1f9f7fdfc284395b858d75588e53f90dba1e35201694f",
+      "unchanged": false
+    },
+    {
+      "path": "server/test/ui-ratchet.json",
+      "checkpoint_sha256": "b5d804af66025b9ea8db5e98f11caa8274c8bdbc3b8ddd70c7d851ab6a084788",
+      "final_sha256": "8bf76027ec1f4936ed5c22e05632be6f79949d4a3ae3679a7ffa751ce0b2033e",
+      "unchanged": false
+    }
+  ],
+  "reuse_limits": {
+    "old_69": "Historical 69/69 at the F383 checkpoint is supporting evidence only. F386 later changed controller mileage/review gating, mount setter and HTTP payload; this is not a blanket current-source 69-test pass.",
+    "countdown_functions": "remainingTime/countdownText prefix is byte-identical to the F383 checkpoint; actual timing HTTP proof uses the current controller/view/access/decision/runtime blobs.",
+    "timing_unchanged_since_799c7a65": {
+      "blocks/gcsp/offer/offer-controller.js": "cdf1622f0b039290c3800d3ae03cf5195bcd5bb60933ff24d5aa06de69eb60d2",
+      "blocks/gcsp/offer/offer-view.js": "6bc44184df1f31857847a74b56445df1854b8087330d7bff96f46a81e25e1229",
+      "blocks/gcsp/offer/decision-drawer.js": "86ce98aab6d22d696fcdbc0926f4751b12e762f8e5b702db3ebc766281b95131",
+      "blocks/gcsp/offer/gcsp-offer.js": "2ef6d370a83a254166ea836c7e3341b07dee1f80ba1d90c0cc395ae6e3ab3755",
+      "blocks/gcsp/offer/http-adapter.js": "42780a986e166b54ebe3a03d6027129bcc0f094c4edc59ae0a295b94b8354308",
+      "server/gcsp/offers/access.js": "f3d2c5130412665f796b5a09040b114296b0152de1983a46e9740507306da0a5",
+      "server/gcsp/offers/access-http.js": "a17f8af461cc9ccf6f9b3b94eec18cd7e98b7c394d8dd6f189848576f7cdd97d",
+      "server/gcsp/offers/decision.js": "b95f6bd9c06d9a5f631d49efca6bb50cbe1aee15943bd4c9686cb9a4fb935dfe",
+      "server/gcsp/runtime.js": "c9cc23989dcdffca6ca1989c7eeaf7dcbe5cb79c8b517c7c85d8788b2337eff1",
+      "server/gcsp/presenter-controls/commands.js": "acfc1a13c5dc6e15b7e767950c7b86a668637962fbff95e7c658de4be9081839",
+      "server/gcsp/presenter-controls/http.js": "d575c0ea6b4ac3fb659fe05fa66535d942215342215c8e1a8ed73b000efaf672"
+    },
+    "projection_change": "After 799c7a65 only detailFact adds supported array items and retains provenance. Timing parsing is untouched; changed projection/card layout is covered by the 160 corrected-offer checks at 22176eb2 and corrected actual browser renders. FUCQ-390 later changes only portal-links.js in application code, with separate focused evidence.",
+    "bfcache": "Guard, entry and two-test file are unchanged. Mount adds only expected-mileage setter wiring and retains destroy lifecycle; view now destroys drawer/gallery as reviewed. Reused simulated PageTransitionEvent tests do not establish actual browser BFCache.",
+    "unchanged_checkpoint_boundaries": {
+      "blocks/gcsp/offer/entry.js": "258bb418f0d64286765ce90fb8e4d120496c9b5e9b2ab41751bb535eb4b1e7f3",
+      "blocks/gcsp/offer/entry-harness.js": "41fc42b5090ee7aaccd9ee1eae789f3d8e6501f6980236edc4a2a8863f2e4138",
+      "server/test/gcsp-offer-bfcache.test.js": "04a617ce0a008a64b9a5bc6a67e58e503808374fa85cc41fa060c6713c6cbaaf",
+      "server/test/gcsp-offer-view-controller.test.js": "1688c9fcf2f93d995cb4e90f4504510e5e3c6fcc719016225d46442caaf45f4e",
+      "server/test/gcsp-offer-view-check.test.js": "a508020a2d7bdb2c8d73f1549494707274b0deaff45216ef1eab51becb7784a1"
+    }
+  },
+  "historical_results_not_added": [
+    {
+      "scope": "F385 integration",
+      "passed": 198,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "scope": "F386 source checkpoint",
+      "passed": 175,
+      "failed": 0,
+      "skipped": 2
+    },
+    {
+      "scope": "F383 final controller/render/decision/BFCache checkpoint",
+      "passed": 69,
+      "identity": "6c8c479d01e15ef40ab6d3ced0f0cfc3c7aa0a377d4ca6df11a302bac471c346"
+    }
+  ],
+  "actual_application_evidence": "docs/gcsp/evidence/fucq386/README.md and checks/*.json; actual local synthetic generated-stock/release/hold/HTTPS authority with isolated headless sessions",
+  "timing_authority": {
+    "offer_id": "buddy-offer:56c93351234a06acb9653ea7806d9bf2f2b290c82b55e6078239c4f526126059",
+    "run_id": "demo-9284019530c7b45a377f8e5ff437ec4b",
+    "expires_at": "2026-11-05T13:30:00.000Z",
+    "seconds": [
+      7200,
+      7140,
+      60,
+      0
+    ],
+    "reload_and_second_context_stable": true,
+    "expiry_semantics": "OfferAccess computes expired/deadline-passed from DemoClock >= hold.expiresAt; raw offer row can stay active. Zero decisions/operations in timing trial.",
+    "boundary_faults": "Pending-zero response and absent timing are labelled faults; actual clock expiry is separately proven.",
+    "viewport_caveat": "320-prefixed resumed boundary captures were actual 1440px. Tracked retained copies use 1440 names; final visual correction provides actual 320px proof."
+  },
+  "failures_skips_unrun": [
+    "Historical failed assertions, dependency/setup/resource/idle-handle attempts remain in checkpoint and browser receipts; not relabelled passing",
+    "Gallery prefix whole chunk remains incomplete after harness locator ambiguity; successful prefix and resumed boundary checks are distinct",
+    "Earlier literal Session ended timeout remains failed; successful actual 404/not-found proof does not claim a Session ended/recovery-link journey",
+    "Two original mixed-supervisor skips remain skipped; later actual HTTP/browser outcomes cover the relevant local memory boundary",
+    "Native PostgreSQL, deployed/external integrations and actual browser BFCache unrun",
+    "No full-suite/global ratchet green; FUCQ-387 presenter ratchet failures and FUCQ-344 nonfatal clockVersion diagnostics remain separate",
+    "FUCQ-390 scoped run retains two existing FUCQ-387 presenter ratchet failures and its final Transition was skipped browser assertion; neither is relabelled passing"
+  ],
+  "new_tests_browser_or_scratch_during_finalization": false,
+  "evidence_paths_tracked_verification": {
+    "verified_at": "2026-11-11T14:56:30Z",
+    "exact_paths": [
+      ".product-map/work.json",
+      "_dev/in-progress/DEV-2026-11-11-001.md",
+      "docs/gcsp/evidence/fucq383/checkpoint.md",
+      "docs/gcsp/evidence/fucq383/empty-375.png",
+      "docs/gcsp/evidence/fucq383/final-resource-receipt.json",
+      "docs/gcsp/evidence/fucq383/final-validation-reuse.json",
+      "docs/gcsp/evidence/fucq383/final-validation.md",
+      "docs/gcsp/evidence/fucq383/five-1440.png",
+      "docs/gcsp/evidence/fucq383/five-320.png",
+      "docs/gcsp/evidence/fucq383/five-375.png",
+      "docs/gcsp/evidence/fucq383/unknown-375.png",
+      "docs/gcsp/evidence/fucq386/README.md",
+      "docs/gcsp/evidence/fucq386/browser-receipts.json",
+      "docs/gcsp/evidence/fucq386/capture-index.json",
+      "docs/gcsp/evidence/fucq386/captures/accept/320-accepted-second-context.png",
+      "docs/gcsp/evidence/fucq386/captures/visual-corrections/1440-offer-settled-equipment-closed.png",
+      "docs/gcsp/evidence/fucq386/captures/visual-corrections/320-equipment-keyboard-expanded.png",
+      "docs/gcsp/evidence/fucq386/captures/visual-corrections/320-offer-settled-equipment-closed.png",
+      "docs/gcsp/evidence/fucq386/captures/visual-corrections/375-offer-settled-equipment-closed.png",
+      "docs/gcsp/evidence/fucq386/checks/accept.json",
+      "docs/gcsp/evidence/fucq386/checks/access-loss.json",
+      "docs/gcsp/evidence/fucq386/checks/decline.json",
+      "docs/gcsp/evidence/fucq386/checks/gallery-boundaries.json",
+      "docs/gcsp/evidence/fucq386/checks/stale-expiry.json",
+      "docs/gcsp/evidence/fucq386/identities.json",
+      "docs/gcsp/evidence/fucq386/independent-visual-review.md",
+      "docs/gcsp/evidence/fucq386/resource-receipt.json",
+      "docs/gcsp/evidence/fucq386/scoped-test-records.json",
+      "docs/gcsp/evidence/fucq390/README.md"
+    ],
+    "result": "All exact F383 final records, every local Markdown evidence target and inherited shared records are in the index; only the three named F383 evidence files were force-added."
+  },
+  "initial_finalization_merge_commit": "4a3e9992d42d4eb73b471bffdc071bcfa67616d8",
+  "application_test_changes_since_corrected_ui": [
+    "blocks/gcsp/offer/portal-links.js",
+    "server/test/gcsp-offer-view-render.test.js",
+    "server/test/gcsp-shell-navigation.test.js"
+  ],
+  "initial_shared_identity_check": {
+    "commit": "4a3e9992d42d4eb73b471bffdc071bcfa67616d8",
+    "checked_files": 20,
+    "matched_files": 20,
+    "mismatches": []
+  },
+  "corrected_offer_scoped_checks": [
+    {
+      "record": "docs/gcsp/evidence/fucq386/scoped-test-records.json",
+      "code_key": "559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4",
+      "environment": "e7b3cb26f844e3b3642ae2d66aeaa928b32010249b5a646286b24d080bd3a30e",
+      "variant": "default",
+      "passed": 160,
+      "failed": 0,
+      "skipped": 0,
+      "command": "node --test --test-concurrency=1 server/test/gcsp-offer-view-projection.test.js server/test/gcsp-offer-view-render.test.js server/test/shared-kit-contracts.test.js server/test/gcsp-offer-view-decision.test.js",
+      "validated_commit": "22176eb2393c644151c097bc1022998b67c1fe29",
+      "reuse_limit": "Passing result belongs to the corrected offer identity. Current source later changes portal-links.js and one included render-test assertion; no blanket 160-pass result for the later combined identity is claimed."
+    },
+    {
+      "record": "docs/gcsp/evidence/fucq386/scoped-test-records.json",
+      "passed": 4,
+      "scope": "changed vehicle-decision/option-rows stylesheet ratchet",
+      "variant": "default"
+    },
+    {
+      "record": "docs/gcsp/evidence/fucq386/scoped-test-records.json",
+      "result": "no findings",
+      "scope": "final mechanical Impeccable scan, subordinate to substantive visual/source PASS"
+    }
+  ],
+  "later_navigation_boundary": {
+    "commit": "10fec0636a6fd358f0923d63fedb29265b0c1ef2",
+    "tracked_summary": "docs/gcsp/evidence/fucq390/README.md",
+    "summary_sha256": "c5209b367e3a69f910c289d7e108326745231a854bb7c9a4c061dd92893643e8",
+    "current_paths_equal_validation_commit": true,
+    "sha256": {
+      "blocks/gcsp/offer/portal-links.js": "7dbb0566dd591be7db0bbb9dcfc031d921a5e802d6c09361e498d53f6e355ff8",
+      "server/test/gcsp-offer-view-render.test.js": "b00ac810cc8ef32ff78b5bfa5406e5af269450e1188ae7f152b24823fb0b4a4c",
+      "server/test/gcsp-shell-navigation.test.js": "73c6fcae01b7a7c5421550bb0639cf30b22ddb4850d1299f7af0e475de223b74"
+    },
+    "scope": "Canonical employee rail/routes remain available without ready account data; account controls and offer actions remain ready-only; no countdown/decision/matching/data change",
+    "command": "node --test --test-concurrency=1 server/test/gcsp-shell-navigation.test.js server/test/gcsp-offer-view-render.test.js server/test/gcsp-offer-runtime-composition.test.js server/test/gcsp-offer-bfcache.test.js server/test/gcsp-offer-access.test.js server/test/ui-ratchet.test.js",
+    "checks": 233,
+    "passed": 231,
+    "failed": 2,
+    "failure_scope": "Existing presenter CSS ratchet failures tracked by FUCQ-387; all navigation/render/runtime/access/BFCache checks passed",
+    "duration_seconds": 37.9,
+    "variant": "default",
+    "node": "26.7.0",
+    "independent_review": "Pinky, requested/selected gpt-6.1-sol/high, no fallback; substantive 1280/375px review found no blocking/major issue or required correction in change scope",
+    "browser_limits": "Tracked summary reports ten screenshots and successful desktop/mobile keyboard/routes/long-identity/accepted checks. First mobile selector attempt was resumed; final zero-pageerror assertion observed Transition was skipped. No pristine browser-script pass is claimed.",
+    "tracking_limit": "Only README.md is tracked for FUCQ-390 in the inherited commit; F383 relies on that durable summary, not untracked receipt/PNG paths.",
+    "separate_low_bug": "FUCQ-391 ineffective account-header Retry remains separately recorded; no repair claimed",
+    "selection_reason": "Changed static rail adapter, offer mount caller assertion and shell entry regressions; existing focused validation covers this exact seam. No new source/test/browser change in the F383 metadata checkpoint requires rerunning it.",
+    "parent_final_source_audit": "Parent relayed Mike’s final audit on 11 November 2026: portal-links.js is the only changed application path among the 560 reviewed source paths; the later F390 focused validation and ten-capture substantive review cover that seam with the browser-script limitation retained."
+  },
+  "original_criteria_sha256": "05b621d5700ee6545ae5b7ccf9fd849017c38f1da891b1537fc9dcb6cc5f89ca",
+  "original_criteria_count": 6
+}

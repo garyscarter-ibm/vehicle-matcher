@@ -3,7 +3,7 @@ import { mkdir, open, readFile, readdir, rename, rm, unlink } from 'node:fs/prom
 import { isAbsolute, join, resolve } from 'node:path';
 import { inputDigest } from '../repository/core.js';
 import { calculateVinCheckDigit } from './vin-generator.js';
-import { boundDiagnostic, canonicalContent, CORPUS_FILES, durableCopy, durableWrite, readCorpusFile,
+import { boundDiagnostic, canonicalContent, corpusFailure, CORPUS_FILES, durableCopy, durableWrite, readCorpusFile,
   syncDirectory, validateCorpusDirectory } from './corpus-publisher.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -237,7 +237,11 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
       await writeAtomic(root, 'active.json', { schemaVersion: '1', selected: selection, previous });
       select({ ...published, selection });
       return { status: 'ok', idempotent: false, active: info() };
-    } catch { return report(unavailable('publication-interrupted', 'Publication did not complete. Reopen the store to discover its validated old-or-new selection; retained identities are never regenerated.')); }
+    } catch (error) {
+      const cause = corpusFailure(error, 'publication');
+      return report(unavailable('publication-interrupted', 'Publication did not complete. Reopen the store to discover its validated old-or-new selection; retained identities are never regenerated.',
+        { cause: cause.failure, ...cause.diagnostic }));
+    }
     finally { if (staging) await rm(staging, { recursive: true, force: true }); if (unlock) await unlock(); }
   }
   async function deactivate() {

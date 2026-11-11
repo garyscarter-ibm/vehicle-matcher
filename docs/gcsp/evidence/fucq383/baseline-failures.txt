@@ -1,0 +1,17 @@
+Observed during the FUCQ-383 scoped validation, 11 November 2026.
+
+FUCQ-387 (unchanged baseline 783b943942cdbe22c4b94764a5c60a376ce698d0):
+blocks/gcsp/presenter-controls/presenter-console.css is 44 lines, cap 39. Put a shared piece's style in the kit's stylesheet, or make room by removing rules a migration left unused.
+blocks/gcsp/presenter-controls/release-section.css is 15 lines, below its cap 17: lower "max_lines" in ui-ratchet.json to 15.
+
+FUCQ-344, twice during the 26/26 passing painted-copy run:
+TypeError: Cannot read properties of undefined (reading 'clockVersion')
+    at HTMLButtonElement.<anonymous> (blocks/gcsp/presenter-controls/controls.js:136:81)
+    at click (server/test/gcsp-painted-copy-words.test.js:387:151)
+    at TestContext.<anonymous> (server/test/gcsp-painted-copy-words.test.js:518:5)
+
+Initial ten-file run: 251 pass / 1 fail.
+The offer paints no demo or synthetic wording in any state, including decline and its reasons:
+AssertionError [ERR_ASSERTION]: offer:pending did not render the expected view
+expected: /Accept this offer/
+The approved label is Accept offer. Corrected assertion rerun: 26 pass / 0 fail.

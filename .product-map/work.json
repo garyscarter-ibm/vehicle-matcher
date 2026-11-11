@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-11-11T12:19:11Z",
+  "observed_at": "2026-11-11T15:28:13Z",
   "version": 1,
   "stories": [
     {
@@ -4721,126 +4721,186 @@
     {
       "id": "FUCQ-383",
       "title": "Show a full-width offer with benefits, tradeoffs and time to decide",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-11T12:19:11Z",
+      "observed_at": "2026-11-11T15:28:13Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-383",
       "slices": [
         {
           "id": "presentation",
-          "status": "not-started",
-          "title": "Offer layout and grounded comparison emphasis"
+          "status": "complete",
+          "title": "Offer layout and grounded comparison emphasis",
+          "observed_at": "2026-11-11T14:54:26Z",
+          "evidence": "Original AC1/3/4/6: corrected full-width card, all 41 equipment labels, five-benefit/current+offer winner/neutral cases and independent 1440/375/320 PASS at 22176eb2; 160 scoped offer checks and 4 style checks. Later F390 navigation repair has separate focused validation. docs/gcsp/evidence/fucq383/final-validation.md"
         },
         {
           "id": "countdown",
-          "status": "not-started",
-          "title": "Server-derived hours and minutes countdown"
+          "status": "complete",
+          "title": "Server-derived hours and minutes countdown",
+          "observed_at": "2026-11-11T14:54:26Z",
+          "evidence": "Original AC2: actual presenter HTTP clock/readback 7200→7140→60→0 on unchanged offer/deadline, reload and second context; labelled zero immediate-reread/missing-timing faults. Current authority blobs verified identical. docs/gcsp/evidence/fucq383/final-validation.md"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Actual offer read, all states and rendered review"
+          "status": "complete",
+          "title": "Actual offer read, all states and rendered review",
+          "observed_at": "2026-11-11T14:54:26Z",
+          "evidence": "Original AC1–6 complete at local generated-stock/HTTPS boundary: actual decisions/expiry/refusal, corrected independent PASS and offer regressions; later F390 navigation checks/critique cover the changed seam. No deployed/BFCache/full-suite/collaborator acceptance claim. docs/gcsp/evidence/fucq383/final-validation.md"
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "workers": [],
+      "development_observed_at": "2026-11-11T14:54:26Z",
+      "note": "Built against the original six ACs with scoped offer and actual local HTTPS evidence, independent corrected visual/source PASS, and later F390 focused navigation evidence. Development completion is separate from Jira/collaborator acceptance. docs/gcsp/evidence/fucq383/final-validation.md"
     },
     {
       "id": "FUCQ-384",
       "title": "Resolve selected configuration codes from a seeded local definition index",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-11T12:19:11Z",
+      "observed_at": "2026-11-11T15:28:13Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-384",
       "slices": [
         {
           "id": "definitions",
-          "status": "not-started",
-          "title": "Supported code dictionary and versioned identity"
+          "status": "complete",
+          "title": "Supported code dictionary and versioned identity",
+          "observed_at": "2026-11-11T15:04:01Z",
+          "evidence": "Original AC1/3/6 complete: versioned exact-context seed, 239/240 configurations, 11900/11947 codes; retained source/version gaps and unknown swatches/fitment explicit. Corrected provenance independently reviewed. docs/gcsp/evidence/fucq384/finalization.json"
         },
         {
           "id": "index",
-          "status": "not-started",
-          "title": "Keyed local joins and explicit unknowns"
+          "status": "complete",
+          "title": "Keyed local joins and explicit unknowns",
+          "observed_at": "2026-11-11T15:04:01Z",
+          "evidence": "Original AC2/3/6 complete: existing registry/indexed JSONL and compiled keyed maps reused; one index build/repeated reads; load, identity, ambiguity and provenance boundaries covered. Historical 95-pass scope and later F382 contract change distinguished. docs/gcsp/evidence/fucq384/finalization.json"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Generated vehicle to pinned quote and comparison"
+          "status": "complete",
+          "title": "Generated vehicle to pinned quote and comparison",
+          "observed_at": "2026-11-11T15:04:01Z",
+          "evidence": "Original AC4/5 complete: actual F382 generation/release/recommendation/BuddyHold pin/access/projection; old quote/terms/card immutable after successor dictionary/current stock. All 41 primary labels and corrected 1440/375/320 independent visual PASS. Later F390 boundary explicit. docs/gcsp/evidence/fucq384/README.md"
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "workers": [],
+      "development_observed_at": "2026-11-11T15:04:00Z",
+      "note": "Original six criteria Built with scoped source, actual producer and independently reviewed corrected comparison evidence. Parent owns integration/Jira In Review/acceptance; no Done transition or F60/F337 completion. Later F390 source/test boundary and validation limits are explicit. docs/gcsp/evidence/fucq384/finalization.json"
     },
     {
       "id": "FUCQ-385",
       "title": "Show a seeded three-view vehicle gallery with an enlarged image viewer",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-11T12:19:12Z",
+      "observed_at": "2026-11-11T15:28:13Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-385",
       "slices": [
         {
           "id": "seeds",
-          "status": "not-started",
-          "title": "Three-view retained assets and valid associations"
+          "status": "complete",
+          "title": "Three-view retained assets and valid associations",
+          "observed_at": "2026-11-11T15:15:13Z",
+          "evidence": "Original AC1/2 complete: 240 admitted configuration galleries with front/rear/interior distinct retained digests; catalogue/source hashes unchanged. Interior model/generation/body limit explicit. Scoped registry/provider and actual producer evidence. docs/gcsp/evidence/fucq385/finalization.json"
         },
         {
           "id": "viewer",
-          "status": "not-started",
-          "title": "Shared featured gallery and enlarged viewer"
+          "status": "complete",
+          "title": "Shared featured gallery and enlarged viewer",
+          "observed_at": "2026-11-11T15:15:13Z",
+          "evidence": "Original AC3/4/5 complete: selected feature/current enlargement, wrap/strip/counter/focus/Escape; unchanged fallback contracts. Actual touch and true 320 selected-broken marker independently reinspected. Historical incomplete locator attempt retained. docs/gcsp/evidence/fucq385/finalization.json"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Seeded producer to offer and rendered keyboard review"
+          "status": "complete",
+          "title": "Seeded producer to offer and rendered keyboard review",
+          "observed_at": "2026-11-11T15:15:13Z",
+          "evidence": "Original AC2/6 complete: actual generated stock/release/BuddyHold/access gallery; corrected 1440/375/320 substantive independent PASS. 198 historical scoped pass, later160+4 and separate F390 boundary qualified; no acceptance claim. docs/gcsp/fucq-385-gallery-evidence-2026-11-11.md"
         }
       ],
-      "unsliced": false
-    },
-    {
-      "id": "FUCQ-386",
-      "title": "Confirm offer acceptance or fixed-reason decline in a side drawer",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-11T12:19:12Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-386",
-      "slices": [
-        {
-          "id": "drawers",
-          "status": "not-started",
-          "title": "Shared acceptance and fixed-reason decline drawers"
-        },
-        {
-          "id": "decisions",
-          "status": "not-started",
-          "title": "Existing authoritative decision and validation contracts"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Actual accept-decline handoff, follow-up and rendered review"
-        }
-      ],
-      "unsliced": false
+      "unsliced": false,
+      "development_observed_at": "2026-11-11T15:15:12Z",
+      "workers": [],
+      "note": "Original six criteria Built with 240 three-view associations, scoped provider/viewer contracts, actual producer/touch and independently reviewed corrected offer. Original Jira observation/status retained; parent owns merge/Jira/acceptance. Identity/F390 qualifications and historical failures/skips remain explicit. docs/gcsp/evidence/fucq385/finalization.json"
     },
     {
       "id": "FUCQ-382",
       "title": "Preserve vehicle configuration details in stock and offer quotes",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
       "type": "Bug",
-      "observed_at": "2026-11-11T12:19:13Z",
+      "observed_at": "2026-11-11T15:28:13Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-382",
-      "unsliced": true,
-      "note": "Diagnosis-only/no-pickup hold preserved. No repair or live reproduction claimed."
+      "unsliced": false,
+      "note": "Repair authorised on 11 November 2026; original AC1–3 Built with local actual generated-stock, recommendation, pinned-offer and independently reviewed rendered evidence. Genuine definition, transmission and fitment gaps remain explicit; no external deployment, full-suite or collaborator/Jira acceptance claim. docs/gcsp/evidence/fucq382/README.md",
+      "slices": [
+        {
+          "id": "source",
+          "status": "complete",
+          "title": "Preserve-exact-source-facts-and-provenance",
+          "observed_at": "2026-11-11T14:42:07Z",
+          "evidence": "Original AC1/2: actual retained producer facts, provenance and pin propagation pass; 11 mapped hashes unchanged in shared 9089a815. Source 37 pass/1 PG skip and final 11 pass are scoped, not additive. docs/gcsp/evidence/fucq382/README.md"
+        },
+        {
+          "id": "identity",
+          "status": "complete",
+          "title": "Reconcile-generated-stock-identity-with-existing-lookup",
+          "observed_at": "2026-11-11T14:42:07Z",
+          "evidence": "Canonical exact-stock association plus missing, wrong and substituted identity boundaries pass at unchanged source 593b3c737; the actual order UUID resolves to the admitted configuration. Independent source PASS. docs/gcsp/evidence/fucq382/independent-source-review.md"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Real-producer-to-pinned-offer-and-rendered-review",
+          "observed_at": "2026-11-11T14:42:07Z",
+          "evidence": "Original AC1–3 complete through actual generated release, recommendation, pin, access and rendered comparison. Historical quote immutable; genuine definition gaps explicit. Independent corrected 1440/375/320 PASS at 22176eb2; final shared 9089a815. docs/gcsp/evidence/fucq382/README.md"
+        }
+      ],
+      "workers": [],
+      "development_observed_at": "2026-11-11T14:42:07Z"
+    },
+    {
+      "id": "FUCQ-386",
+      "title": "Confirm offer acceptance or fixed-reason decline in a side drawer",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-11T15:28:13Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-386",
+      "slices": [
+        {
+          "id": "drawers",
+          "status": "complete",
+          "title": "Shared acceptance and fixed-reason decline drawers",
+          "observed_at": "2026-11-11T15:24:17Z",
+          "evidence": "Original AC1/2/3/6 reviewed complete: one shared drawer, authoritative declarations/documents/mileage, current fixed-code radios and keyboard/1440/375/320 corrected rendering. Source 22176eb2; docs/gcsp/evidence/fucq386/finalization.json and independent-visual-review.md PASS."
+        },
+        {
+          "id": "decisions",
+          "status": "complete",
+          "title": "Existing authoritative decision and validation contracts",
+          "observed_at": "2026-11-11T15:24:17Z",
+          "evidence": "Original AC2/4/5 reviewed complete: real HTTPS accept/decline/ordering/follow-up, pinned terms/replay/conflict, pending duplicate lock, stale/clock expiry and actual access 404 focus/no mutation. Scoped 160+4 and historical 175+2 skips retain distinct identities; finalization.json."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Actual accept-decline handoff, follow-up and rendered review",
+          "observed_at": "2026-11-11T15:24:17Z",
+          "evidence": "Original six ACs reviewed complete at corrected 22176eb2: generated stock/release/BuddyHold/access route; reload/independent-context readback; corrected 1440/375/320 substantive Mike PASS. F390 later rail/test deltas separately qualified. 29 captures verified; 23 roots/groups absent. finalization.json."
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-11-004",
+      "workers": []
     },
     {
       "id": "FUCQ-389",
@@ -4871,6 +4931,29 @@
         }
       ],
       "observed_at": "2026-11-11T13:54:39Z"
+    },
+    {
+      "id": "FUCQ-390",
+      "title": "Keep the four-link sidebar on out-of-date offer pages",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-11T14:50:56Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-390",
+      "unsliced": true,
+      "evidence": "docs/gcsp/evidence/fucq390/README.md"
+    },
+    {
+      "id": "FUCQ-391",
+      "title": "Make the offer header Retry reload unavailable account details",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-11T14:50:56Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-391",
+      "unsliced": true
     }
   ]
 }

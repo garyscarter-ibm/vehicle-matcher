@@ -1,5 +1,5 @@
 import { inputDigest } from '../repository/core.js';
-import { vehicleEvidenceDetails, vehicleEvidenceFailure, validVehicleEvidenceSource } from './vehicle-details-contract.js';
+import { vehicleEvidenceDetails, vehicleEvidenceFailure, validVehicleEvidenceSource, stockSyntheticIdentity } from './vehicle-details-contract.js';
 import { classifyVehicleEvidenceRequest } from './identity-routing.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -55,7 +55,7 @@ export function createVehicleEvidenceLookup({ registry, repository } = {}) {
         const found = await repository.read(context, { table: 'stock', key: { runId: context.runId, orderUuid: id } });
         if (found?.status !== 'ok') return sourceFailure(found, kind);
         stock = found.value;
-        const association = stock?.facts?.syntheticIdentity;
+        const association = stockSyntheticIdentity(stock);
         if (!object(stock) || stock.orderUuid !== id || stock.runId !== context.runId
           || !text(stock.configurationId) || !/^\d{7}$/.test(stock.orderNumber)
           || association?.identityKind !== 'synthetic' || !text(association.vehicleId)

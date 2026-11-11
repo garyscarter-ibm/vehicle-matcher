@@ -1,0 +1,79 @@
+{
+  "checks": [
+    {
+      "name": "real HTTPS access exchange; email fragment removed; app custom element mounted"
+    },
+    {
+      "expiresAt": "2026-11-05T13:30:00.000Z",
+      "httpStatus": 200,
+      "label": "initial",
+      "name": "fresh generated hold has exactly 7200 seconds from authoritative offer read",
+      "offerId": "buddy-offer:56c93351234a06acb9653ea7806d9bf2f2b290c82b55e6078239c4f526126059",
+      "reason": "awaiting-decision",
+      "runId": "demo-9284019530c7b45a377f8e5ff437ec4b",
+      "seconds": 7200,
+      "serverNow": "2026-11-05T11:30:00.000Z",
+      "state": "pending",
+      "status": "ok"
+    },
+    {
+      "name": "real stale version refuses without mutation and resets confirmations; actual DemoClock expiry closes drawer and focuses current status"
+    }
+  ],
+  "clockTrace": [
+    {
+      "clockVersion": "3",
+      "endpoint": "/api/gcsp/presenter/clock/advance",
+      "expectedClockVersion": "2",
+      "from": "2026-11-05T11:30:00.000Z",
+      "method": "POST",
+      "observedStatus": "ok",
+      "to": "2026-11-05T13:30:01.000Z"
+    }
+  ],
+  "cspErrors": [],
+  "faultInjection": null,
+  "finalAuthority": {
+    "decisions": 0,
+    "offer": "active",
+    "operations": 0
+  },
+  "pageErrors": [],
+  "part": "stale-expiry",
+  "retention_note": "Representative captures committed; unselected original screenshots remain in local run metadata. Filename prefixes corrected from actual recorded viewport where necessary.",
+  "screenshots": [
+    {
+      "original_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/stale-expiry/375-stale-revalidated.png",
+      "path": "captures/stale-expiry/375-stale-revalidated.png",
+      "retained": true,
+      "viewport": {
+        "height": 1000,
+        "width": 375
+      }
+    },
+    {
+      "original_path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/stale-expiry/375-expired-focus-restored.png",
+      "path": "captures/stale-expiry/375-expired-focus-restored.png",
+      "retained": true,
+      "viewport": {
+        "height": 1000,
+        "width": 375
+      }
+    }
+  ],
+  "source": "actual HTTPS app/runtime/generated-stock/release/access/decision/readback; owned inventory/profile",
+  "timingReads": [
+    {
+      "expiresAt": "2026-11-05T13:30:00.000Z",
+      "httpStatus": 200,
+      "label": "initial",
+      "offerId": "buddy-offer:56c93351234a06acb9653ea7806d9bf2f2b290c82b55e6078239c4f526126059",
+      "reason": "awaiting-decision",
+      "runId": "demo-9284019530c7b45a377f8e5ff437ec4b",
+      "seconds": 7200,
+      "serverNow": "2026-11-05T11:30:00.000Z",
+      "state": "pending",
+      "status": "ok"
+    }
+  ]
+}
