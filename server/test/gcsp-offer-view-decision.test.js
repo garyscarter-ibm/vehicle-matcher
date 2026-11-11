@@ -9,7 +9,7 @@ import { createOfferController } from '../../blocks/gcsp/offer/offer-controller.
 import { createOfferView } from '../../blocks/gcsp/offer/offer-view.js';
 
 const handoff = { termsVersion: 'terms-v1', termsDigest: 'terms-digest-1', wording: 'Fictional terms.', fictional: true, mode: 'new', blocker: null,
-  contact: { phone: '07700 900123', email: 'p@example.invalid' }, returnCar: null,
+  contact: { phone: '07700 900123', email: 'p@example.invalid' }, driver: { name: 'Paula Example', kind: 'employee', licence: { displayNumber: 'EXAMPLE123', categories: ['car'], validFrom: '2010-01-01', validUntil: '2030-01-01' } }, returnCar: null,
   declarations: [{ id: 'terms', label: 'Terms.' }, { id: 'driver', label: 'Driver.' }] };
 const tickAll = (controller) => { controller.tickDeclaration('terms', true); controller.tickDeclaration('driver', true); };
 const sample = { ...JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-access.json', import.meta.url))), handoff };
@@ -79,24 +79,24 @@ test('reason keyboard focus remains usable when the authoritative hold deadline 
   const f = setup(t); const root = document.createElement('div'); document.body.append(root);
   const view = createOfferView(root); t.after(() => view.destroy());
   f.controller.subscribe(view.update); await f.controller.refresh(); await f.controller.decision('decline');
-  const select = root.querySelector('select'); select.focus();
+  const select = root.querySelector('[data-offer-reason]'); select.focus();
   f.setDTO({ ...sample, serverNow: sample.expiresAt }); await f.controller.refresh();
   assert.equal(select.disabled, true);
   assert.equal(document.activeElement.dataset.offerAction, 'decline-cancel');
   assert.equal(f.calls.some((call) => call.options.method === 'POST'), false);
 });
 
-test('GC-042: opening Decline focuses the reason select once reasons load, and a poll mid-read never parks focus on Cancel', async (t) => {
+test('GC-042: Decline focuses its radio after loading; polling parks on status and returns to the controlled radio', async (t) => {
   const waits = []; const f = setup(t, { reasonRead: ({ reasons }) => { const wait = deferred(); waits.push(wait); return wait.promise.then(() => response({ status: 'ok', value: reasons })); } });
   const root = document.createElement('div'); document.body.append(root);
   const view = createOfferView(root, { decide: (kind, options) => f.controller.decision(kind, options), cancelDecline: f.controller.cancelDecline,
     selectReason: f.controller.selectDeclineReason, refreshReasons: f.controller.refreshDeclineReasons });
   t.after(() => view.destroy()); f.controller.subscribe(view.update); await f.controller.refresh();
   root.querySelector('[data-offer-action="decline"]').focus(); const opening = f.controller.decision('decline');
-  const select = root.querySelector('select'); assert.equal(select.disabled, true);
+  assert.equal(root.querySelector('[data-offer-reason]'), null);
   assert.equal(document.activeElement.tabIndex, -1); assert.match(document.activeElement.textContent, /Loading reasons/);
   waits.shift().resolve(); await opening; await turn();
-  assert.equal(select.disabled, false); assert.equal(document.activeElement, select);
+  const select = root.querySelector('[data-offer-reason]'); assert.equal(select.disabled, false); assert.equal(document.activeElement, select);
   const poll = f.controller.refresh(); await turn();
   assert.notEqual(document.activeElement.dataset.offerAction, 'decline-cancel'); assert.equal(document.activeElement.tabIndex, -1);
   waits.shift().resolve(); await poll; await turn();
@@ -159,7 +159,7 @@ test('reason projection omits private extras and renders server text safely', as
   assert.equal(JSON.stringify(f.controller.snapshot().declineReason).includes('private'), false);
   const root = document.createElement('main'); document.body.append(root); const view = createOfferView(root); t.after(view.destroy);
   view.update(f.controller.snapshot());
-  assert.equal(root.querySelector('select option[value="test-body"]').textContent, supplied.reasons[0].label);
+  assert.equal(root.querySelector('[data-offer-reason="test-body"]').textContent, supplied.reasons[0].label);
   assert.equal(root.querySelectorAll('[onerror], script').length, 0);
 });
 
@@ -168,10 +168,10 @@ test('a new registry or offer revision refreshes choices while preserving card, 
   const view = createOfferView(root, { selectReason: f.controller.selectDeclineReason }); const unsubscribe = f.controller.subscribe(view.update);
   t.after(() => { unsubscribe(); view.destroy(); });
   await f.controller.refresh(); await f.controller.decision('decline'); f.controller.selectDeclineReason('test-body');
-  const select = root.querySelector('select'); const card = root.querySelector('.vm-card'); select.focus();
+  const drawer = root.querySelector('[data-offer-decision-drawer]'); const card = root.querySelector('.vm-card'); root.querySelector('[data-offer-reason]').focus();
   f.setReasons({ ...registry(), policyVersion: 'contract-input-v2', reasons: [{ code: 'changed', label: 'Changed reason', attribute: 'body' }] });
   const next = structuredClone(sample); next.offerVersion += 1; f.setDTO(next); await f.controller.refresh();
-  assert.equal(root.querySelector('select'), select); assert.equal(root.querySelector('.vm-card'), card);
+  assert.equal(root.querySelector('[data-offer-decision-drawer]'), drawer); assert.equal(root.querySelector('.vm-card'), card); assert.equal(root.querySelector('[data-offer-reason]').textContent, 'Changed reason');
   assert.equal(document.activeElement, root.querySelector('.gcsp-error-summary h2'));
   assert.equal(f.controller.snapshot().declineReason.selectedCode, ''); assert.match(root.textContent, /current list/);
   assert.equal(f.controller.snapshot().reference.offerVersion, next.offerVersion); assert.equal(f.controller.snapshot().expiresAt, sample.expiresAt);
@@ -226,17 +226,79 @@ test('mounted custom element wires reason validation, cancellation, confirmation
   const host = document.createElement('gcsp-offer'); host.adapter = { ...f.adapter, createCommandId: () => 'mounted-command' };
   document.body.append(host); t.after(() => host.remove()); await turn();
   host.querySelector('[data-offer-action="decline"]').click(); await turn();
-  const select = host.querySelector('select'); assert.equal(document.activeElement, select);
+  const radio = host.querySelector('[data-offer-reason]'); assert.equal(document.activeElement, radio);
   host.querySelector('[data-offer-action="decline-confirm"]').click(); await turn();
-  assert.match(host.textContent, /Choose a reason\./); assert.equal(select.getAttribute('aria-invalid'), 'true');
-  select.value = 'test-body'; select.dispatchEvent(new dom.window.Event('change')); assert.equal(select.getAttribute('aria-invalid'), 'false');
-  // Decline replaces the decision region: no Accept is visible, and focus stays on the reason control.
-  assert.equal(document.activeElement, select); assert.equal(host.querySelector('[data-offer-action="accept"]').closest('[data-offer-decision-actions]').hidden, true);
+  assert.match(host.textContent, /Choose a reason\./); assert.equal(radio.closest('[role="radiogroup"]').getAttribute('aria-invalid'), 'true');
+  radio.click(); assert.equal(radio.closest('[role="radiogroup"]').getAttribute('aria-invalid'), 'false');
+  assert.equal(host.querySelector('[data-offer-action="accept"]').closest('[inert]') !== null, true);
+  assert.equal(host.querySelectorAll('textarea, select, input[type="text"]').length, 0);
   assert.equal(host.querySelector('[data-offer-action="decline-cancel"]').textContent, 'Keep this offer');
   host.querySelector('[data-offer-action="decline-cancel"]').click(); assert.equal(document.activeElement.dataset.offerAction, 'decline');
+  assert.equal(host.querySelector('[data-offer-decision-drawer]'), null);
   host.querySelector('[data-offer-action="decline"]').click(); await turn();
-  select.value = 'test-body'; select.dispatchEvent(new dom.window.Event('change'));
+  host.querySelector('[data-offer-reason]').click();
   host.querySelector('[data-offer-action="decline-confirm"]').click(); await turn();
   assert.equal(f.calls.filter((call) => call.options.method === 'POST').length, 1);
   host.remove(); assert.equal(host.querySelector('.gcsp-offer-body'), null);
+});
+
+test('F386 acceptance first click reviews actual records and documents; cancel restores focus without a command', async (t) => {
+  const f = setup(t); const root = document.createElement('main'); document.body.append(root);
+  const view = createOfferView(root, { decide: f.controller.decision, tickDeclaration: f.controller.tickDeclaration,
+    setExpectedReturnMileage: f.controller.setExpectedReturnMileage, cancelDecline: f.controller.cancelDecline });
+  t.after(view.destroy); f.controller.subscribe(view.update); await f.controller.refresh();
+  const opener = root.querySelector('[data-offer-action="accept"]'); opener.focus(); opener.click();
+  const panel = root.querySelector('[role="dialog"]'); assert.ok(panel); assert.match(panel.textContent, /Paula Example/); assert.match(panel.textContent, /EXAMPLE123/);
+  assert.equal(root.querySelectorAll('[role="status"]').length, 1); assert.ok(panel.querySelector('[role="status"]')); assert.equal(panel.querySelector('[role="status"]').closest('[inert]'), null);
+  assert.equal(panel.querySelectorAll('[data-offer-declaration]:checked').length, 0);
+  assert.equal(panel.querySelector('[data-offer-action="accept-confirm"]').disabled, true);
+  assert.equal(f.calls.some((call) => call.options.method === 'POST'), false);
+  const links = [...panel.querySelectorAll('a')]; assert.equal(links.length, 2);
+  links[0].click(); assert.equal(panel.querySelector('details').open, true); assert.equal(document.activeElement.tagName, 'SUMMARY');
+  assert.match(panel.querySelector('details').textContent, /Fictional terms/);
+  links[1].click(); assert.equal(document.activeElement.textContent, 'Driver and licence');
+  document.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }));
+  assert.equal(root.querySelector('[role="dialog"]'), null); assert.equal(document.activeElement, opener);
+  assert.equal(root.querySelector('[inert]'), null); assert.equal(f.calls.some((call) => call.options.method === 'POST'), false);
+});
+
+test('F386 replacement mileage is explicit, resets declarations when edited, and only valid entered mileage crosses accept', async (t) => {
+  const initial = { ...sample, handoff: { ...handoff, mode: 'replacement', returnMileage: { maximum: 100000, unit: 'mi' },
+    returnCar: { model: 'Actual old car', contractEndDate: '2026-12-31', currentOdometer: { value: 5200, unit: 'mi' } },
+    declarations: [...handoff.declarations, { id: 'return', label: 'The old contract and expected return mileage are correct.' }] } };
+  const f = setup(t, { initial }); const root = document.createElement('main'); document.body.append(root);
+  const view = createOfferView(root, { decide: f.controller.decision, tickDeclaration: f.controller.tickDeclaration,
+    setExpectedReturnMileage: f.controller.setExpectedReturnMileage }); t.after(view.destroy);
+  f.controller.subscribe(view.update); await f.controller.refresh(); root.querySelector('[data-offer-action="accept"]').click();
+  const panel = root.querySelector('[role="dialog"]'); const input = panel.querySelector('[data-offer-expected-mileage]');
+  assert.equal(input.value, ''); assert.match(panel.textContent, /Recorded mileage5,200 mi/); assert.equal(panel.querySelectorAll('a').length, 3);
+  const final = panel.querySelector('[data-offer-action="accept-confirm"]');
+  for (const value of ['-1', '1.5', '100001', 'unknown']) {
+    input.value = value; input.dispatchEvent(new dom.window.Event('input')); input.dispatchEvent(new dom.window.Event('blur'));
+    assert.equal(final.disabled, true); assert.equal(input.getAttribute('aria-invalid'), 'true');
+  }
+  input.value = '6100'; input.dispatchEvent(new dom.window.Event('input')); assert.equal(input.getAttribute('aria-invalid'), 'false');
+  for (const box of panel.querySelectorAll('[data-offer-declaration]')) box.click(); assert.equal(final.disabled, false);
+  input.value = '6200'; input.dispatchEvent(new dom.window.Event('input')); assert.equal(final.disabled, true);
+  assert.equal(panel.querySelectorAll('[data-offer-declaration]:checked').length, 0);
+  for (const box of panel.querySelectorAll('[data-offer-declaration]')) box.click(); final.click(); final.click(); await turn();
+  const posts = f.calls.filter((call) => call.options.method === 'POST'); assert.equal(posts.length, 1);
+  const body = JSON.parse(posts[0].options.body); assert.equal(body.expectedReturnMileage, 6200); assert.equal(body.termsDigest, handoff.termsDigest);
+  assert.deepEqual(body.declarations, { terms: true, driver: true, return: true }); assert.equal(Object.hasOwn(body, 'currentOdometer'), false);
+});
+
+test('F386 pending command contains focus and dismissal; uncertain readback provides a check without another decision', async (t) => {
+  const wait = deferred(); let failed = false;
+  const f = setup(t, { command: () => wait.promise, read: ({ dto }) => failed ? response({ status: 'unavailable' }, false) : response({ status: 'ok', value: dto }) });
+  const root = document.createElement('main'); document.body.append(root);
+  const view = createOfferView(root, { decide: f.controller.decision, tickDeclaration: f.controller.tickDeclaration, refresh: f.controller.refresh });
+  t.after(view.destroy); f.controller.subscribe(view.update); await f.controller.refresh(); root.querySelector('[data-offer-action="accept"]').click();
+  const panel = root.querySelector('[role="dialog"]'); for (const box of panel.querySelectorAll('[data-offer-declaration]')) box.click();
+  panel.querySelector('[data-offer-action="accept-confirm"]').click();
+  document.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }));
+  assert.ok(panel.isConnected); assert.equal(panel.querySelector('[data-offer-action="accept-cancel"]').disabled, true);
+  failed = true; wait.resolve(response({ status: 'unavailable' }, false)); await turn();
+  assert.equal(panel.querySelector('[data-offer-action="accept-confirm"]').textContent, 'Check current state');
+  assert.match(panel.textContent, /could not be confirmed/); assert.equal(panel.querySelector('[data-offer-action="accept-cancel"]').disabled, false);
+  panel.querySelector('[data-offer-action="accept-confirm"]').click(); await turn(); assert.equal(f.calls.filter((call) => call.options.method === 'POST').length, 1);
 });

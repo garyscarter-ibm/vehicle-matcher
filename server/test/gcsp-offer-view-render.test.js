@@ -246,9 +246,9 @@ test('published decline-only DTO updates mounted actions and accessible explanat
     assert.equal(accept.disabled, false); assert.equal(declineButton.disabled, false);
     dto = { ...decline, handoff: dto.handoff }; await c.refresh(); // Same handoff, so only the clock read changes.
     assert.equal(root.querySelector('[data-offer-action="accept"]'), accept); assert.equal(root.querySelector('.vm-card'), card);
-    assert.equal(accept.disabled, true); assert.equal(declineButton.disabled, false); assert.equal(document.activeElement, declineButton);
+    assert.equal(accept.disabled, false); assert.equal(declineButton.disabled, false); assert.equal(document.activeElement, accept);
     const reason = root.querySelector(`#${accept.getAttribute('aria-describedby')}`);
-    assert.equal(reason.textContent, 'Acceptance is unavailable. You can still decline this offer.');
+    assert.match(reason.textContent, /Review your details/);
     assert.equal(root.querySelector('.gcsp-countdown').textContent, '1:00'); assert.doesNotMatch(root.textContent, /Order no\. 0123456|Order number/);
     assert.match(root.textContent, /Partial comparison/); assert.equal(root.querySelectorAll('[data-offer-comparison] td.is-missing').length, 7);
     accept.click(); assert.deepEqual(calls, []);
@@ -283,41 +283,33 @@ const stageText = (root) => [...root.querySelectorAll('.gcsp-stage-item')].map((
 async function mountFixture(name, decide) {
   const root = document.createElement('div'); document.body.append(root);
   const c = createOfferController({ read: async () => offerFixture(name), decide, readReasons: async () => ({ status: 'unavailable' }) });
-  const view = createOfferView(root, { decide: c.decision, tickDeclaration: c.tickDeclaration });
+  const view = createOfferView(root, { decide: c.decision, tickDeclaration: c.tickDeclaration, setExpectedReturnMileage: c.setExpectedReturnMileage });
   const unsubscribe = c.subscribe(view.update); await c.refresh();
   return { root, c, stop: () => { unsubscribe(); c.destroy(); view.destroy(); } };
 }
 
-test('before accepting, the handoff shows contact, return car, wording and one checkbox per declaration gating Accept', async () => {
-  const calls = []; const { root, c, stop } = await mountFixture('handoff-replacement', async (input) => { calls.push(input); return { status: 'ok' }; });
+test('acceptance review opens in a drawer, keeps all actual context and gates only its final Accept', async () => {
+  const calls = []; const { root, stop } = await mountFixture('handoff-replacement', async (input) => { calls.push(input); return { status: 'ok' }; });
   try {
-    const group = root.querySelector('[aria-label="Before you accept"]');
-    assert.equal(group.querySelector('h2').textContent, 'Before you accept');
-    for (const text of ['07700 900123', 'paula.mason@gcsp-demo.com', 'BMW 3 Series Touring 320i', '31 December 2026', '41,250 miles', 'Scheme terms']) assert.match(group.textContent, new RegExp(text));
-    const boxes = [...group.querySelectorAll('input[type="checkbox"]')];
-    assert.equal(boxes.length, 3); assert.ok(boxes.every((box) => box.labels[0].textContent.length > 10 && !box.checked));
-    const accept = root.querySelector('[data-offer-action="accept"]'); assert.equal(accept.disabled, true);
-    assert.match(root.textContent, /Tick each declaration to accept this offer\./);
-    for (const box of boxes.slice(0, 2)) { box.checked = true; box.dispatchEvent(new window.Event('change', { bubbles: true })); }
-    assert.equal(accept.disabled, true); assert.equal(root.querySelector('[aria-label="Before you accept"] input'), boxes[0]);
-    boxes[2].checked = true; boxes[2].dispatchEvent(new window.Event('change', { bubbles: true }));
-    assert.equal(accept.disabled, false);
-    boxes[1].checked = false; boxes[1].dispatchEvent(new window.Event('change', { bubbles: true })); assert.equal(accept.disabled, true);
-    boxes[1].checked = true; boxes[1].dispatchEvent(new window.Event('change', { bubbles: true }));
-    accept.click(); await new Promise((resolve) => setTimeout(resolve, 0));
-    assert.equal(calls.length, 1); assert.equal(calls[0].termsDigest, 'synthetic-terms-digest');
+    const opener = root.querySelector('[data-offer-action="accept"]'); assert.equal(opener.disabled, false); opener.click();
+    const group = root.querySelector('[role="dialog"]'); assert.equal(group.querySelector('h2').textContent, 'Accept your offer');
+    for (const text of ['07700 900123', 'paula.mason@gcsp-demo.com', 'BMW 3 Series Touring 320i', '31 December 2026', '41,250 miles', 'Scheme terms', 'MASON900000PM9XX']) assert.match(group.textContent, new RegExp(text));
+    const boxes = [...group.querySelectorAll('input[type="checkbox"]')]; assert.equal(boxes.length, 3); assert.ok(boxes.every((box) => !box.checked));
+    const final = group.querySelector('[data-offer-action="accept-confirm"]'); assert.equal(final.disabled, true); assert.equal(calls.length, 0);
+    const input = group.querySelector('[data-offer-expected-mileage]'); input.value = '42000'; input.dispatchEvent(new window.Event('input'));
+    for (const box of boxes) box.click(); assert.equal(final.disabled, false);
+    boxes[1].click(); assert.equal(final.disabled, true); boxes[1].click(); final.click(); await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.equal(calls.length, 1); assert.equal(calls[0].termsDigest, 'synthetic-terms-digest'); assert.equal(calls[0].expectedReturnMileage, 42000);
     assert.deepEqual(calls[0].declarations, { terms: true, driver: true, return: true });
   } finally { stop(); }
 });
 
-test('a handoff blocker names the reason, points to scheme support and offers no Accept', async () => {
+test('a blocked handoff remains reviewable with explicit missing context and disabled final Accept', async () => {
   const { root, stop } = await mountFixture('handoff-blocked', async () => ({ status: 'ok' }));
   try {
-    const group = root.querySelector('[aria-label="Before you accept"]');
-    assert.match(group.textContent, /valid contact phone and email are needed/); assert.match(group.textContent, /Contact scheme support\./);
-    assert.equal(group.querySelectorAll('input').length, 0);
-    assert.equal(root.querySelector('[data-offer-action="accept"]').hidden, true);
-    assert.equal(root.querySelector('[data-offer-action="decline"]').hidden, false);
+    const opener = root.querySelector('[data-offer-action="accept"]'); assert.equal(opener.disabled, false); opener.click();
+    const group = root.querySelector('[role="dialog"]'); assert.match(group.textContent, /Confirm your contact details with scheme support/);
+    assert.match(group.textContent, /To confirm/); assert.equal(group.querySelector('[data-offer-action="accept-confirm"]').disabled, true);
   } finally { stop(); }
 });
 
@@ -468,10 +460,10 @@ test('GC-041: an accepted offer leads on to order progress and Your cars beside 
 
 test('GC-041: after Accept focus moves to the Offer accepted heading, and a background change to accepted leaves focus alone', () => {
   const root = document.createElement('div'); document.body.append(root);
-  const pending = { ...offerFixture('pending').value, canAccept: true, canDecline: true, countdown: '2 hours remaining' };
+  const pending = { ...offerFixture('handoff-replacement').value, canReviewAccept: true, canAccept: true, canDecline: true, ticked: { terms: true, driver: true, return: true }, expectedReturnMileage: '42000', countdown: '2 hours remaining' };
   let view; const decide = () => { view.update({ ...acceptedModel('uncertain'), message: 'Checking your decision. Please wait.' }); view.update(acceptedModel()); };
   view = createOfferView(root, { decide });
-  view.update(pending); root.querySelector('[data-offer-action=accept]').focus(); root.querySelector('[data-offer-action=accept]').click();
+  view.update(pending); root.querySelector('[data-offer-action=accept]').focus(); root.querySelector('[data-offer-action=accept]').click(); root.querySelector('[data-offer-action=accept-confirm]').click();
   const heading = root.querySelector('h1'); assert.equal(heading.textContent, 'Offer accepted');
   assert.equal(document.activeElement, heading); assert.equal(heading.getAttribute('tabindex'), '-1');
   view.update({ ...acceptedModel(), now: '2026-11-06T12:00:00Z' }); assert.equal(document.activeElement, heading);

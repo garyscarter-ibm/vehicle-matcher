@@ -4814,7 +4814,7 @@
       "original_status": "In Progress",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T13:31:06Z",
+      "observed_at": "2026-11-11T13:49:26Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-386",
       "slices": [
         {
@@ -4825,8 +4825,10 @@
         },
         {
           "id": "decisions",
-          "status": "not-started",
-          "title": "Existing authoritative decision and validation contracts"
+          "status": "in-progress",
+          "title": "Existing authoritative decision and validation contracts",
+          "observed_at": "2026-11-11T13:49:26Z",
+          "evidence": "Functional checkpoint: actual buddy ordering, required expected-mileage/idempotency and scoped offer checks pass; browser integration and independent critique pending"
         },
         {
           "id": "integration",

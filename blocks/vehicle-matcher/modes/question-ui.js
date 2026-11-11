@@ -131,11 +131,11 @@ export function renderRangeSlider(list, q, answers, options = {}) {
 
 /** Native option buttons return the live selected Set; onPick follows the committed single selection. */
 export function renderOptionList(q, answers, options = {}) {
-  const { onChange, onPick, onValueChange, disabled = false, ariaLabel } = options;
+  const { onChange, onPick, onValueChange, disabled = false, ariaLabel, variant } = options;
   const controlled = callbackOwned(options);
   const stored = controlled ? options.value : answers[q.id];
   const selected = new Set(q.multi ? (stored || []) : (stored != null ? [stored] : []));
-  const list = el('div', 'vm-options');
+  const list = el('div', variant === 'rows' && !q.multi ? 'vm-options vm-options-rows' : 'vm-options');
   list.setAttribute('role', q.multi ? 'group' : 'radiogroup');
   if (ariaLabel || q.label) list.setAttribute('aria-label', ariaLabel || q.label);
   const optionButtons = [];

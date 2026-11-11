@@ -408,6 +408,14 @@
     {
       "path": "blocks/gcsp/kit/vehicle-decision.css",
       "max_lines": 57
+    },
+    {
+      "path": "blocks/gcsp/offer/decision-drawer.css",
+      "max_lines": 11
+    },
+    {
+      "path": "blocks/gcsp/kit/option-rows.css",
+      "max_lines": 7
     }
   ],
   "baseline": {

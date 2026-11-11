@@ -1,0 +1,6 @@
+.gcsp .vm-options.vm-options-rows { display: flex; flex-direction: column; gap: 0; }
+.gcsp .vm-options-rows .vm-option { display: flex; align-items: center; justify-content: flex-start; gap: var(--gcsp-space-3); width: 100%; min-height: var(--gcsp-input-height); margin: 0; padding: var(--gcsp-space-3) 0; border: 0; border-bottom: 1px solid var(--gcsp-divider); border-radius: 0; background: var(--gcsp-surface); box-shadow: none; color: var(--gcsp-text); text-align: left; font: inherit; }
+.gcsp .vm-options-rows .vm-option::before { content: ''; flex: none; box-sizing: border-box; width: 22px; height: 22px; border: 1px solid var(--gcsp-input-border); border-radius: 50%; }
+.gcsp .vm-options-rows .vm-option.is-selected::before { border: 6px solid var(--gcsp-accent-strong); }
+.gcsp .vm-options-rows .vm-option:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
+.gcsp .vm-options-rows .vm-option:disabled { color: var(--gcsp-text-muted); cursor: default; }
