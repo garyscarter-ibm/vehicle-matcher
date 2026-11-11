@@ -1,6 +1,6 @@
 {
   "run": "fucq369-strict-capture",
-  "implementationCommit": "4707f8c5",
+  "implementationCommit": "c2463090",
   "reference": {
     "commit": "193cbf07",
     "dir": "docs/gcsp/mockups/account-preferences-2026-11-10/review"
@@ -29,50 +29,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 367
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1294.55,
-          "y": 733,
+          "y": 665,
           "width": 72.45,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 82
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 82
         },
@@ -104,13 +104,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -171,7 +171,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1629,
+        "docHeight": 1521,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -370,13 +370,13 @@
       "implementationImage": "1440-initial-implementation.jpg",
       "implementationSize": [
         1440,
-        1629
+        1521
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1079
+        1011
       ],
       "referenceSize": [
         1440,
@@ -405,50 +405,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 367
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1294.55,
-          "y": 733,
+          "y": 665,
           "width": 72.45,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 82
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 82
         },
@@ -480,13 +480,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -542,7 +542,7 @@
             "text": "Select this option if you just love everything about your current car, and your next best car would be another BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol",
             "box": {
               "x": 121,
-              "y": 867,
+              "y": 799,
               "width": 420,
               "height": 80
             },
@@ -559,7 +559,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1629,
+        "docHeight": 1521,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -770,13 +770,13 @@
       "implementationImage": "1440-same-tooltip-implementation.jpg",
       "implementationSize": [
         1440,
-        1629
+        1521
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1079
+        1011
       ],
       "referenceSize": [
         1440,
@@ -805,50 +805,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 385
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1287.8,
-          "y": 733,
+          "y": 665,
           "width": 79.2,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 100
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 100
         },
@@ -880,13 +880,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -947,7 +947,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1647,
+        "docHeight": 1539,
         "active": "gcsp-account-prefs-1-same-again",
         "activeIsSwitch": true,
         "derived": {
@@ -1146,13 +1146,13 @@
       "implementationImage": "1440-same-again-implementation.jpg",
       "implementationSize": [
         1440,
-        1647
+        1539
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1097
+        1029
       ],
       "referenceSize": [
         1440,
@@ -1185,50 +1185,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 367
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1287.8,
-          "y": 733,
+          "y": 665,
           "width": 79.2,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 82
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 82
         },
@@ -1260,13 +1260,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -1327,7 +1327,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1629,
+        "docHeight": 1521,
         "active": "gcsp-account-prefs-1-same-again",
         "activeIsSwitch": true,
         "derived": {
@@ -1526,13 +1526,13 @@
       "implementationImage": "1440-same-again-retained-high-implementation.jpg",
       "implementationSize": [
         1440,
-        1629
+        1521
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1079
+        1011
       ],
       "referenceSize": [
         1440,
@@ -1559,50 +1559,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 385
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1292.13,
-          "y": 733,
+          "y": 665,
           "width": 74.88,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 100
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 100
         },
@@ -1634,13 +1634,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -1701,7 +1701,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1647,
+        "docHeight": 1539,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -1900,13 +1900,13 @@
       "implementationImage": "1440-selected-implementation.jpg",
       "implementationSize": [
         1440,
-        1647
+        1539
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1097
+        1029
       ],
       "referenceSize": [
         1440,
@@ -1933,50 +1933,50 @@
       "impl": {
         "sectionBox": {
           "x": 144,
-          "y": 869.88,
+          "y": 851.88,
           "width": 1680,
           "height": 367
         },
         "headingBox": {
           "x": 169,
-          "y": 894.88,
+          "y": 876.88,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1554,
-          "y": 894.88,
+          "y": 876.88,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.146,
         "meterBox": {
           "x": 1554,
-          "y": 926.88,
+          "y": 908.88,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1724.13,
-          "y": 894.88,
+          "y": 876.88,
           "width": 74.88,
           "height": 28
         },
         "modeBox": {
           "x": 169,
-          "y": 963.88,
+          "y": 945.88,
           "width": 1630,
           "height": 78
         },
         "tilesBox": {
           "x": 169,
-          "y": 1061.88,
+          "y": 1043.88,
           "width": 1630,
           "height": 82
         },
         "firstTileBox": {
           "x": 169,
-          "y": 1061.88,
+          "y": 1043.88,
           "width": 261.66,
           "height": 82
         },
@@ -2008,13 +2008,13 @@
         "ring": {
           "box": {
             "x": 307.92,
-            "y": 980.88,
+            "y": 962.88,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 169,
-            "y": 994.38,
+            "y": 976.38,
             "width": 134.92,
             "height": 17
           },
@@ -2075,7 +2075,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1791,
+        "docHeight": 1733,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -2274,13 +2274,13 @@
       "implementationImage": "1920-selected-implementation.jpg",
       "implementationSize": [
         1920,
-        1791
+        1733
       ],
       "zoomCropImpl": [
         140,
-        865,
+        847,
         1828,
-        1240
+        1222
       ],
       "referenceSize": [
         1920,
@@ -2307,50 +2307,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 699.94,
+          "y": 640,
           "width": 956,
           "height": 461
         },
         "headingBox": {
           "x": 121,
-          "y": 724.94,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 782,
-          "y": 724.94,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.256,
         "meterBox": {
           "x": 782,
-          "y": 756.94,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 952.13,
-          "y": 724.94,
+          "y": 665,
           "width": 74.88,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 793.94,
+          "y": 734,
           "width": 906,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 891.94,
+          "y": 832,
           "width": 906,
           "height": 176
         },
         "firstTileBox": {
           "x": 121,
-          "y": 891.94,
+          "y": 832,
           "width": 294,
           "height": 82
         },
@@ -2382,13 +2382,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 810.94,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 824.44,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -2449,7 +2449,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1736,
+        "docHeight": 1636,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -2648,13 +2648,13 @@
       "implementationImage": "1100-selected-implementation.jpg",
       "implementationSize": [
         1100,
-        1736
+        1636
       ],
       "zoomCropImpl": [
         92,
-        695,
+        636,
         1056,
-        1164
+        1105
       ],
       "referenceSize": [
         1100,
@@ -2681,50 +2681,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 697.31,
+          "y": 640,
           "width": 880,
           "height": 461
         },
         "headingBox": {
           "x": 121,
-          "y": 722.31,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 706,
-          "y": 722.31,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.278,
         "meterBox": {
           "x": 706,
-          "y": 754.31,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 876.13,
-          "y": 722.31,
+          "y": 665,
           "width": 74.88,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 791.31,
+          "y": 734,
           "width": 830,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 889.31,
+          "y": 832,
           "width": 830,
           "height": 176
         },
         "firstTileBox": {
           "x": 121,
-          "y": 889.31,
+          "y": 832,
           "width": 268.66,
           "height": 82
         },
@@ -2756,13 +2756,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 808.31,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 821.81,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -2823,7 +2823,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1754,
+        "docHeight": 1657,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -3022,13 +3022,13 @@
       "implementationImage": "1024-selected-implementation.jpg",
       "implementationSize": [
         1024,
-        1754
+        1657
       ],
       "zoomCropImpl": [
         92,
-        693,
+        636,
         980,
-        1162
+        1105
       ],
       "referenceSize": [
         1024,
@@ -3055,50 +3055,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 694.19,
+          "y": 640,
           "width": 756,
           "height": 461
         },
         "headingBox": {
           "x": 121,
-          "y": 719.19,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 582,
-          "y": 719.19,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.324,
         "meterBox": {
           "x": 582,
-          "y": 751.19,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 752.13,
-          "y": 719.19,
+          "y": 665,
           "width": 74.88,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 788.19,
+          "y": 734,
           "width": 706,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 886.19,
+          "y": 832,
           "width": 706,
           "height": 176
         },
         "firstTileBox": {
           "x": 121,
-          "y": 886.19,
+          "y": 832,
           "width": 227.33,
           "height": 82
         },
@@ -3130,13 +3130,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 805.19,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 818.69,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -3197,7 +3197,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1767,
+        "docHeight": 1673,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -3396,13 +3396,13 @@
       "implementationImage": "900-selected-implementation.jpg",
       "implementationSize": [
         900,
-        1767
+        1673
       ],
       "zoomCropImpl": [
         92,
-        690,
+        636,
         856,
-        1159
+        1105
       ],
       "referenceSize": [
         900,
@@ -3429,50 +3429,50 @@
       "impl": {
         "sectionBox": {
           "x": 72,
-          "y": 678.19,
+          "y": 624,
           "width": 724,
           "height": 514
         },
         "headingBox": {
           "x": 97,
-          "y": 703.19,
+          "y": 649,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 97,
-          "y": 768.19,
+          "y": 714,
           "width": 674,
           "height": 37
         },
         "scoreWidthVsSection": 0.931,
         "meterBox": {
           "x": 97,
-          "y": 800.19,
+          "y": 746,
           "width": 674,
           "height": 5
         },
         "valueBox": {
           "x": 481.63,
-          "y": 768.19,
+          "y": 714,
           "width": 289.38,
           "height": 28
         },
         "modeBox": {
           "x": 97,
-          "y": 825.19,
+          "y": 771,
           "width": 674,
           "height": 78
         },
         "tilesBox": {
           "x": 97,
-          "y": 923.19,
+          "y": 869,
           "width": 674,
           "height": 176
         },
         "firstTileBox": {
           "x": 97,
-          "y": 923.19,
+          "y": 869,
           "width": 216.66,
           "height": 82
         },
@@ -3504,13 +3504,13 @@
         "ring": {
           "box": {
             "x": 235.92,
-            "y": 842.19,
+            "y": 788,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 97,
-            "y": 855.69,
+            "y": 801.5,
             "width": 134.92,
             "height": 17
           },
@@ -3571,7 +3571,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1825,
+        "docHeight": 1731,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -3770,13 +3770,13 @@
       "implementationImage": "820-selected-implementation.jpg",
       "implementationSize": [
         820,
-        1825
+        1731
       ],
       "zoomCropImpl": [
         68,
-        674,
+        620,
         800,
-        1196
+        1142
       ],
       "referenceSize": [
         820,
@@ -3803,50 +3803,50 @@
       "impl": {
         "sectionBox": {
           "x": 16,
-          "y": 878,
+          "y": 823.81,
           "width": 343,
           "height": 584
         },
         "headingBox": {
           "x": 33,
-          "y": 895,
+          "y": 840.81,
           "width": 309,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 981,
+          "y": 926.81,
           "width": 309,
           "height": 37
         },
         "scoreWidthVsSection": 0.901,
         "meterBox": {
           "x": 33,
-          "y": 1013,
+          "y": 958.81,
           "width": 309,
           "height": 5
         },
         "valueBox": {
           "x": 235.13,
-          "y": 981,
+          "y": 926.81,
           "width": 106.88,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 1034,
+          "y": 979.81,
           "width": 309,
           "height": 78
         },
         "tilesBox": {
           "x": 33,
-          "y": 1128,
+          "y": 1073.81,
           "width": 309,
           "height": 253
         },
         "firstTileBox": {
           "x": 33,
-          "y": 1128,
+          "y": 1073.81,
           "width": 150.5,
           "height": 73
         },
@@ -3878,13 +3878,13 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 1051,
+            "y": 996.81,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 1064.5,
+            "y": 1010.31,
             "width": 134.92,
             "height": 17
           },
@@ -3945,7 +3945,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 2494,
+        "docHeight": 2400,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -4144,13 +4144,13 @@
       "implementationImage": "375-selected-implementation.jpg",
       "implementationSize": [
         375,
-        2494
+        2400
       ],
       "zoomCropImpl": [
         12,
-        874,
+        819,
         363,
-        1466
+        1411
       ],
       "referenceSize": [
         375,
@@ -4177,50 +4177,50 @@
       "impl": {
         "sectionBox": {
           "x": 16,
-          "y": 916.06,
+          "y": 861.88,
           "width": 288,
           "height": 620
         },
         "headingBox": {
           "x": 33,
-          "y": 933.06,
+          "y": 878.88,
           "width": 254,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 254,
           "height": 37
         },
         "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
-          "y": 1051.06,
+          "y": 996.88,
           "width": 254,
           "height": 5
         },
         "valueBox": {
           "x": 207.63,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 79.38,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 1072.06,
+          "y": 1017.88,
           "width": 254,
           "height": 78
         },
         "tilesBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 254,
           "height": 289
         },
         "firstTileBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 123,
           "height": 91
         },
@@ -4252,13 +4252,13 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 1089.06,
+            "y": 1034.88,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 1102.56,
+            "y": 1048.38,
             "width": 134.92,
             "height": 17
           },
@@ -4319,7 +4319,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 2651,
+        "docHeight": 2557,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -4518,13 +4518,13 @@
       "implementationImage": "320-long-implementation.jpg",
       "implementationSize": [
         320,
-        2651
+        2557
       ],
       "zoomCropImpl": [
         12,
-        912,
+        857,
         308,
-        1540
+        1485
       ],
       "referenceSize": [
         320,
@@ -4553,50 +4553,50 @@
       "impl": {
         "sectionBox": {
           "x": 16,
-          "y": 916.06,
+          "y": 861.88,
           "width": 288,
           "height": 620
         },
         "headingBox": {
           "x": 33,
-          "y": 933.06,
+          "y": 878.88,
           "width": 254,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 254,
           "height": 37
         },
         "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
-          "y": 1051.06,
+          "y": 996.88,
           "width": 254,
           "height": 5
         },
         "valueBox": {
           "x": 203.3,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 83.7,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 1072.06,
+          "y": 1017.88,
           "width": 254,
           "height": 78
         },
         "tilesBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 254,
           "height": 289
         },
         "firstTileBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 123,
           "height": 91
         },
@@ -4628,13 +4628,13 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 1089.06,
+            "y": 1034.88,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 1102.56,
+            "y": 1048.38,
             "width": 134.92,
             "height": 17
           },
@@ -4695,7 +4695,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 2651,
+        "docHeight": 2557,
         "active": "gcsp-account-prefs-1-same-again",
         "activeIsSwitch": true,
         "derived": {
@@ -4894,13 +4894,13 @@
       "implementationImage": "320-same-again-implementation.jpg",
       "implementationSize": [
         320,
-        2651
+        2557
       ],
       "zoomCropImpl": [
         12,
-        912,
+        857,
         308,
-        1540
+        1485
       ],
       "referenceSize": [
         320,
@@ -4929,50 +4929,50 @@
       "impl": {
         "sectionBox": {
           "x": 16,
-          "y": 916.06,
+          "y": 861.88,
           "width": 288,
           "height": 620
         },
         "headingBox": {
           "x": 33,
-          "y": 933.06,
+          "y": 878.88,
           "width": 254,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 254,
           "height": 37
         },
         "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
-          "y": 1051.06,
+          "y": 996.88,
           "width": 254,
           "height": 5
         },
         "valueBox": {
           "x": 203.3,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 83.7,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 1072.06,
+          "y": 1017.88,
           "width": 254,
           "height": 78
         },
         "tilesBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 254,
           "height": 289
         },
         "firstTileBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 123,
           "height": 91
         },
@@ -5004,13 +5004,13 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 1089.06,
+            "y": 1034.88,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 1102.56,
+            "y": 1048.38,
             "width": 134.92,
             "height": 17
           },
@@ -5071,7 +5071,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 2651,
+        "docHeight": 2557,
         "active": "gcsp-account-prefs-1-same-again",
         "activeIsSwitch": true,
         "derived": {
@@ -5270,13 +5270,13 @@
       "implementationImage": "320-same-again-neutral-implementation.jpg",
       "implementationSize": [
         320,
-        2651
+        2557
       ],
       "zoomCropImpl": [
         12,
-        912,
+        857,
         308,
-        1540
+        1485
       ],
       "referenceSize": [
         320,
@@ -5305,50 +5305,50 @@
       "impl": {
         "sectionBox": {
           "x": 16,
-          "y": 916.06,
+          "y": 861.88,
           "width": 288,
           "height": 620
         },
         "headingBox": {
           "x": 33,
-          "y": 933.06,
+          "y": 878.88,
           "width": 254,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 254,
           "height": 37
         },
         "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
-          "y": 1051.06,
+          "y": 996.88,
           "width": 254,
           "height": 5
         },
         "valueBox": {
           "x": 207.63,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 79.38,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 1072.06,
+          "y": 1017.88,
           "width": 254,
           "height": 78
         },
         "tilesBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 254,
           "height": 289
         },
         "firstTileBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 123,
           "height": 91
         },
@@ -5380,20 +5380,20 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 1089.06,
+            "y": 1034.88,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 1102.56,
+            "y": 1048.38,
             "width": 134.92,
             "height": 17
           },
           "focused": true,
           "outlineStyle": "solid",
           "outlineWidth": "2px",
-          "outlineOffset": "3px"
+          "outlineOffset": "-8px"
         },
         "note": null,
         "tiles": [
@@ -5442,7 +5442,7 @@
             "text": "Select this option if you just love everything about your current car, and your next best car would be another BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid",
             "box": {
               "x": 33,
-              "y": 1137.06,
+              "y": 1082.88,
               "width": 224,
               "height": 152
             },
@@ -5459,7 +5459,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 2651,
+        "docHeight": 2557,
         "active": "About Same again, please!",
         "activeIsSwitch": false,
         "derived": {
@@ -5670,13 +5670,13 @@
       "implementationImage": "320-same-tooltip-long-implementation.jpg",
       "implementationSize": [
         320,
-        2651
+        2557
       ],
       "zoomCropImpl": [
         12,
-        912,
+        857,
         308,
-        1540
+        1485
       ],
       "referenceSize": [
         320,
@@ -5706,50 +5706,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 688
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1292.45,
-          "y": 733,
+          "y": 665,
           "width": 74.55,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 82
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 82
         },
@@ -5781,13 +5781,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -5848,7 +5848,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1950,
+        "docHeight": 1842,
         "active": "BUTTON",
         "activeIsSwitch": false,
         "derived": {
@@ -6047,13 +6047,13 @@
       "implementationImage": "1440-importance-medium-implementation.jpg",
       "implementationSize": [
         1440,
-        1950
+        1842
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1400
+        1332
       ],
       "referenceSize": [
         1440,
@@ -6084,50 +6084,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 688
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1292.45,
-          "y": 733,
+          "y": 665,
           "width": 74.55,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 82
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 82
         },
@@ -6159,13 +6159,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -6226,7 +6226,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1950,
+        "docHeight": 1842,
         "active": "gcsp-account-prefs-1-important",
         "activeIsSwitch": false,
         "derived": {
@@ -6425,13 +6425,13 @@
       "implementationImage": "1440-importance-high-implementation.jpg",
       "implementationSize": [
         1440,
-        1950
+        1842
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1400
+        1332
       ],
       "referenceSize": [
         1440,
@@ -6458,50 +6458,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 367
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1294.55,
-          "y": 733,
+          "y": 665,
           "width": 72.45,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 82
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 82
         },
@@ -6533,13 +6533,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -6600,7 +6600,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1629,
+        "docHeight": 1521,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -6800,13 +6800,13 @@
       "implementationImage": "1440-validation-implementation.jpg",
       "implementationSize": [
         1440,
-        1629
+        1521
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1079
+        1011
       ],
       "referenceSize": [
         1440,
@@ -6833,50 +6833,50 @@
       "impl": {
         "sectionBox": {
           "x": 16,
-          "y": 878,
+          "y": 823.81,
           "width": 343,
           "height": 584
         },
         "headingBox": {
           "x": 33,
-          "y": 895,
+          "y": 840.81,
           "width": 309,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 981,
+          "y": 926.81,
           "width": 309,
           "height": 37
         },
         "scoreWidthVsSection": 0.901,
         "meterBox": {
           "x": 33,
-          "y": 1013,
+          "y": 958.81,
           "width": 309,
           "height": 5
         },
         "valueBox": {
           "x": 235.13,
-          "y": 981,
+          "y": 926.81,
           "width": 106.88,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 1034,
+          "y": 979.81,
           "width": 309,
           "height": 78
         },
         "tilesBox": {
           "x": 33,
-          "y": 1128,
+          "y": 1073.81,
           "width": 309,
           "height": 253
         },
         "firstTileBox": {
           "x": 33,
-          "y": 1128,
+          "y": 1073.81,
           "width": 150.5,
           "height": 73
         },
@@ -6908,13 +6908,13 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 1051,
+            "y": 996.81,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 1064.5,
+            "y": 1010.31,
             "width": 134.92,
             "height": 17
           },
@@ -6975,7 +6975,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 2494,
+        "docHeight": 2400,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -7175,13 +7175,13 @@
       "implementationImage": "375-engaged-implementation.jpg",
       "implementationSize": [
         375,
-        2494
+        2400
       ],
       "zoomCropImpl": [
         12,
-        874,
+        819,
         363,
-        1466
+        1411
       ],
       "referenceSize": [
         375,
@@ -7210,50 +7210,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 385
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1292.13,
-          "y": 733,
+          "y": 665,
           "width": 74.88,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 100
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 100
         },
@@ -7285,13 +7285,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -7353,7 +7353,7 @@
         "dialog": {
           "box": {
             "x": 960,
-            "y": 647,
+            "y": 539,
             "width": 480,
             "height": 1000
           },
@@ -7368,7 +7368,7 @@
           "text": "Car record \u00b7 BMW Choices\n\nBMW 3 Series Touring 320i\nClose\nContract\nStatus\nCurrent car\nDriver\nPaula Mason\nTerm\n6 months\nAnnual mileage\n12,000 mi/year\nContract end\n1 December 2026\nCollection\nCollected\n1 June 2026\nReplacement window\n12 November 2026 to 1 December 2026\nCurrent mileage\n5,200 mi\nOrder and vehicle\n\nNot supplied for this car.\n\nTechnical specification and options\n\nModel or handbook evidence does not confirm the fitted equipment on your car.\n\nNot supplied for this car.\n\nPrint record"
         },
         "overflow": false,
-        "docHeight": 1647,
+        "docHeight": 1539,
         "active": "gcsp-side-drawer-1",
         "activeIsSwitch": false,
         "derived": {
@@ -7583,13 +7583,13 @@
       "implementationImage": "1440-record-drawer-implementation.jpg",
       "implementationSize": [
         1440,
-        1647
+        1539
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1097
+        1029
       ],
       "referenceSize": [
         1440,
@@ -7618,50 +7618,50 @@
       "impl": {
         "sectionBox": {
           "x": 16,
-          "y": 878,
+          "y": 823.81,
           "width": 343,
           "height": 584
         },
         "headingBox": {
           "x": 33,
-          "y": 895,
+          "y": 840.81,
           "width": 309,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 981,
+          "y": 926.81,
           "width": 309,
           "height": 37
         },
         "scoreWidthVsSection": 0.901,
         "meterBox": {
           "x": 33,
-          "y": 1013,
+          "y": 958.81,
           "width": 309,
           "height": 5
         },
         "valueBox": {
           "x": 235.13,
-          "y": 981,
+          "y": 926.81,
           "width": 106.88,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 1034,
+          "y": 979.81,
           "width": 309,
           "height": 78
         },
         "tilesBox": {
           "x": 33,
-          "y": 1128,
+          "y": 1073.81,
           "width": 309,
           "height": 253
         },
         "firstTileBox": {
           "x": 33,
-          "y": 1128,
+          "y": 1073.81,
           "width": 150.5,
           "height": 73
         },
@@ -7693,13 +7693,13 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 1051,
+            "y": 996.81,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 1064.5,
+            "y": 1010.31,
             "width": 134.92,
             "height": 17
           },
@@ -7761,7 +7761,7 @@
         "dialog": {
           "box": {
             "x": 0,
-            "y": 1175,
+            "y": 1121,
             "width": 375,
             "height": 1000
           },
@@ -7776,7 +7776,7 @@
           "text": "Car record \u00b7 BMW Choices\n\nBMW 3 Series Touring 320i\nClose\nContract\nStatus\nCurrent car\nDriver\nPaula Mason\nTerm\n6 months\nAnnual mileage\n12,000 mi/year\nContract end\n1 December 2026\nCollection\nCollected\n1 June 2026\nReplacement window\n12 November 2026 to 1 December 2026\nCurrent mileage\n5,200 mi\nOrder and vehicle\n\nNot supplied for this car.\n\nTechnical specification and options\n\nModel or handbook evidence does not confirm the fitted equipment on your car.\n\nNot supplied for this car.\n\nPrint record"
         },
         "overflow": false,
-        "docHeight": 2494,
+        "docHeight": 2400,
         "active": "gcsp-side-drawer-1",
         "activeIsSwitch": false,
         "derived": {
@@ -7991,13 +7991,13 @@
       "implementationImage": "375-record-drawer-implementation.jpg",
       "implementationSize": [
         375,
-        2494
+        2400
       ],
       "zoomCropImpl": [
         12,
-        874,
+        819,
         363,
-        1466
+        1411
       ],
       "referenceSize": [
         375,
@@ -8027,50 +8027,50 @@
       "before": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 385
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1292.13,
-          "y": 733,
+          "y": 665,
           "width": 74.88,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 100
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 100
         },
@@ -8102,13 +8102,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -8169,57 +8169,57 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1647,
+        "docHeight": 1539,
         "active": "H1",
         "activeIsSwitch": false
       },
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 385
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1292.13,
-          "y": 733,
+          "y": 665,
           "width": 74.88,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 100
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 100
         },
@@ -8251,13 +8251,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -8318,7 +8318,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1647,
+        "docHeight": 1539,
         "active": "gcsp-account-prefs-1-same-again",
         "activeIsSwitch": true,
         "derived": {
@@ -8512,13 +8512,13 @@
       "implementationImage": "1440-restored-implementation.jpg",
       "implementationSize": [
         1440,
-        1647
+        1539
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1097
+        1029
       ],
       "prefsZoom": "1440-restored-prefs-zoom.jpg"
     },
@@ -8537,50 +8537,50 @@
       "before": {
         "sectionBox": {
           "x": 16,
-          "y": 916.06,
+          "y": 861.88,
           "width": 288,
           "height": 620
         },
         "headingBox": {
           "x": 33,
-          "y": 933.06,
+          "y": 878.88,
           "width": 254,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 254,
           "height": 37
         },
         "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
-          "y": 1051.06,
+          "y": 996.88,
           "width": 254,
           "height": 5
         },
         "valueBox": {
           "x": 207.63,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 79.38,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 1072.06,
+          "y": 1017.88,
           "width": 254,
           "height": 78
         },
         "tilesBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 254,
           "height": 289
         },
         "firstTileBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 123,
           "height": 91
         },
@@ -8612,13 +8612,13 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 1089.06,
+            "y": 1034.88,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 1102.56,
+            "y": 1048.38,
             "width": 134.92,
             "height": 17
           },
@@ -8679,57 +8679,57 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 2651,
+        "docHeight": 2557,
         "active": "H1",
         "activeIsSwitch": false
       },
       "impl": {
         "sectionBox": {
           "x": 16,
-          "y": 916.06,
+          "y": 861.88,
           "width": 288,
           "height": 620
         },
         "headingBox": {
           "x": 33,
-          "y": 933.06,
+          "y": 878.88,
           "width": 254,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 254,
           "height": 37
         },
         "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
-          "y": 1051.06,
+          "y": 996.88,
           "width": 254,
           "height": 5
         },
         "valueBox": {
           "x": 207.63,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 79.38,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 1072.06,
+          "y": 1017.88,
           "width": 254,
           "height": 78
         },
         "tilesBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 254,
           "height": 289
         },
         "firstTileBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 123,
           "height": 91
         },
@@ -8761,13 +8761,13 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 1089.06,
+            "y": 1034.88,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 1102.56,
+            "y": 1048.38,
             "width": 134.92,
             "height": 17
           },
@@ -8828,7 +8828,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 2651,
+        "docHeight": 2557,
         "active": "gcsp-account-prefs-1-same-again",
         "activeIsSwitch": true,
         "derived": {
@@ -9022,13 +9022,13 @@
       "implementationImage": "320-restored-implementation.jpg",
       "implementationSize": [
         320,
-        2651
+        2557
       ],
       "zoomCropImpl": [
         12,
-        912,
+        857,
         308,
-        1540
+        1485
       ],
       "prefsZoom": "320-restored-prefs-zoom.jpg"
     },
@@ -9051,50 +9051,50 @@
       "before": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 367
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1292.45,
-          "y": 733,
+          "y": 665,
           "width": 74.55,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 82
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 82
         },
@@ -9126,13 +9126,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -9193,57 +9193,57 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1629,
+        "docHeight": 1521,
         "active": "Body, considered: Touring / Estate, really important",
         "activeIsSwitch": false
       },
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 367
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1292.45,
-          "y": 733,
+          "y": 665,
           "width": 74.55,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 82
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 82
         },
@@ -9275,13 +9275,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -9342,7 +9342,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1629,
+        "docHeight": 1521,
         "active": "gcsp-account-prefs-1-same-again",
         "activeIsSwitch": true,
         "derived": {
@@ -9536,13 +9536,13 @@
       "implementationImage": "1440-restored-high-implementation.jpg",
       "implementationSize": [
         1440,
-        1629
+        1521
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1079
+        1011
       ],
       "prefsZoom": "1440-restored-high-prefs-zoom.jpg"
     },
@@ -9558,50 +9558,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 421,
+          "y": 334,
           "width": 1296,
           "height": 385
         },
         "headingBox": {
           "x": 121,
-          "y": 446,
+          "y": 359,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 446,
+          "y": 359,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 478,
+          "y": 391,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1292.13,
-          "y": 446,
+          "y": 359,
           "width": 74.88,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 515,
+          "y": 428,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 613,
+          "y": 526,
           "width": 1246,
           "height": 100
         },
         "firstTileBox": {
           "x": 121,
-          "y": 613,
+          "y": 526,
           "width": 197.66,
           "height": 100
         },
@@ -9633,13 +9633,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 532,
+            "y": 445,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 545.5,
+            "y": 458.5,
             "width": 134.92,
             "height": 17
           },
@@ -9700,7 +9700,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1220,
+        "docHeight": 1117,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -9726,13 +9726,13 @@
       "implementationImage": "1440-no-current-car-implementation.jpg",
       "implementationSize": [
         1440,
-        1220
+        1117
       ],
       "zoomCropImpl": [
         92,
-        417,
+        330,
         1396,
-        810
+        723
       ],
       "prefsZoom": "1440-no-current-car-prefs-zoom.jpg"
     },
@@ -9748,50 +9748,50 @@
       "impl": {
         "sectionBox": {
           "x": 16,
-          "y": 435.19,
+          "y": 362,
           "width": 288,
           "height": 645
         },
         "headingBox": {
           "x": 33,
-          "y": 452.19,
+          "y": 379,
           "width": 254,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 538.19,
+          "y": 465,
           "width": 254,
           "height": 37
         },
         "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
-          "y": 570.19,
+          "y": 497,
           "width": 254,
           "height": 5
         },
         "valueBox": {
           "x": 207.63,
-          "y": 538.19,
+          "y": 465,
           "width": 79.38,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 591.19,
+          "y": 518,
           "width": 254,
           "height": 103
         },
         "tilesBox": {
           "x": 33,
-          "y": 710.19,
+          "y": 637,
           "width": 254,
           "height": 289
         },
         "firstTileBox": {
           "x": 33,
-          "y": 710.19,
+          "y": 637,
           "width": 123,
           "height": 91
         },
@@ -9823,13 +9823,13 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 608.19,
+            "y": 535,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 621.69,
+            "y": 548.5,
             "width": 134.92,
             "height": 17
           },
@@ -9890,7 +9890,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1785,
+        "docHeight": 1672,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -9916,13 +9916,13 @@
       "implementationImage": "320-no-current-car-implementation.jpg",
       "implementationSize": [
         320,
-        1785
+        1672
       ],
       "zoomCropImpl": [
         12,
-        431,
+        358,
         308,
-        1084
+        1011
       ],
       "prefsZoom": "320-no-current-car-prefs-zoom.jpg"
     },
@@ -9938,50 +9938,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 385
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1287.8,
-          "y": 733,
+          "y": 665,
           "width": 79.2,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 100
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 100
         },
@@ -10013,13 +10013,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -10082,7 +10082,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1647,
+        "docHeight": 1539,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -10108,13 +10108,13 @@
       "implementationImage": "1440-same-again-failed-implementation.jpg",
       "implementationSize": [
         1440,
-        1647
+        1539
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1097
+        1029
       ],
       "prefsZoom": "1440-same-again-failed-prefs-zoom.jpg"
     },
@@ -10130,50 +10130,50 @@
       "impl": {
         "sectionBox": {
           "x": 16,
-          "y": 916.06,
+          "y": 861.88,
           "width": 288,
           "height": 645
         },
         "headingBox": {
           "x": 33,
-          "y": 933.06,
+          "y": 878.88,
           "width": 254,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 254,
           "height": 37
         },
         "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
-          "y": 1051.06,
+          "y": 996.88,
           "width": 254,
           "height": 5
         },
         "valueBox": {
           "x": 203.3,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 83.7,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 1072.06,
+          "y": 1017.88,
           "width": 254,
           "height": 78
         },
         "tilesBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 254,
           "height": 289
         },
         "firstTileBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 123,
           "height": 91
         },
@@ -10205,13 +10205,13 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 1089.06,
+            "y": 1034.88,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 1102.56,
+            "y": 1048.38,
             "width": 134.92,
             "height": 17
           },
@@ -10274,7 +10274,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 2676,
+        "docHeight": 2582,
         "active": "H1",
         "activeIsSwitch": false,
         "derived": {
@@ -10300,13 +10300,13 @@
       "implementationImage": "320-same-again-failed-implementation.jpg",
       "implementationSize": [
         320,
-        2676
+        2582
       ],
       "zoomCropImpl": [
         12,
-        912,
+        857,
         308,
-        1565
+        1510
       ],
       "prefsZoom": "320-same-again-failed-prefs-zoom.jpg"
     },
@@ -10324,50 +10324,50 @@
       "impl": {
         "sectionBox": {
           "x": 96,
-          "y": 708,
+          "y": 640,
           "width": 1296,
           "height": 385
         },
         "headingBox": {
           "x": 121,
-          "y": 733,
+          "y": 665,
           "width": 383.31,
           "height": 24
         },
         "scoreBox": {
           "x": 1122,
-          "y": 733,
+          "y": 665,
           "width": 245,
           "height": 37
         },
         "scoreWidthVsSection": 0.189,
         "meterBox": {
           "x": 1122,
-          "y": 765,
+          "y": 697,
           "width": 245,
           "height": 5
         },
         "valueBox": {
           "x": 1287.8,
-          "y": 733,
+          "y": 665,
           "width": 79.2,
           "height": 28
         },
         "modeBox": {
           "x": 121,
-          "y": 802,
+          "y": 734,
           "width": 1246,
           "height": 78
         },
         "tilesBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 1246,
           "height": 100
         },
         "firstTileBox": {
           "x": 121,
-          "y": 900,
+          "y": 832,
           "width": 197.66,
           "height": 100
         },
@@ -10399,13 +10399,13 @@
         "ring": {
           "box": {
             "x": 259.92,
-            "y": 819,
+            "y": 751,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 121,
-            "y": 832.5,
+            "y": 764.5,
             "width": 134.92,
             "height": 17
           },
@@ -10466,7 +10466,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 1647,
+        "docHeight": 1539,
         "active": "gcsp-account-prefs-1-same-again",
         "activeIsSwitch": true,
         "derived": {
@@ -10492,13 +10492,13 @@
       "implementationImage": "1440-same-again-pending-implementation.jpg",
       "implementationSize": [
         1440,
-        1647
+        1539
       ],
       "zoomCropImpl": [
         92,
-        704,
+        636,
         1396,
-        1097
+        1029
       ],
       "prefsZoom": "1440-same-again-pending-prefs-zoom.jpg"
     },
@@ -10541,20 +10541,20 @@
           "ring": {
             "box": {
               "x": 171.92,
-              "y": 1089.06,
+              "y": 1034.88,
               "width": 44,
               "height": 44
             },
             "labelText": {
               "x": 33,
-              "y": 1102.56,
+              "y": 1048.38,
               "width": 134.92,
               "height": 17
             },
             "focused": true,
             "outlineStyle": "solid",
             "outlineWidth": "2px",
-            "outlineOffset": "3px"
+            "outlineOffset": "-8px"
           }
         },
         {
@@ -10567,50 +10567,50 @@
       "beforeSpace": {
         "sectionBox": {
           "x": 16,
-          "y": 916.06,
+          "y": 861.88,
           "width": 288,
           "height": 620
         },
         "headingBox": {
           "x": 33,
-          "y": 933.06,
+          "y": 878.88,
           "width": 254,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 254,
           "height": 37
         },
         "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
-          "y": 1051.06,
+          "y": 996.88,
           "width": 254,
           "height": 5
         },
         "valueBox": {
           "x": 207.63,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 79.38,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 1072.06,
+          "y": 1017.88,
           "width": 254,
           "height": 78
         },
         "tilesBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 254,
           "height": 289
         },
         "firstTileBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 123,
           "height": 91
         },
@@ -10642,13 +10642,13 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 1089.06,
+            "y": 1034.88,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 1102.56,
+            "y": 1048.38,
             "width": 134.92,
             "height": 17
           },
@@ -10704,7 +10704,7 @@
             "text": "Select this option if you just love everything about your current car, and your next best car would be another BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid",
             "box": {
               "x": 33,
-              "y": 1137.06,
+              "y": 1082.88,
               "width": 224,
               "height": 152
             },
@@ -10721,57 +10721,57 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 2651,
+        "docHeight": 2557,
         "active": "gcsp-account-prefs-1-same-again",
         "activeIsSwitch": true
       },
       "impl": {
         "sectionBox": {
           "x": 16,
-          "y": 916.06,
+          "y": 861.88,
           "width": 288,
           "height": 620
         },
         "headingBox": {
           "x": 33,
-          "y": 933.06,
+          "y": 878.88,
           "width": 254,
           "height": 24
         },
         "scoreBox": {
           "x": 33,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 254,
           "height": 37
         },
         "scoreWidthVsSection": 0.882,
         "meterBox": {
           "x": 33,
-          "y": 1051.06,
+          "y": 996.88,
           "width": 254,
           "height": 5
         },
         "valueBox": {
           "x": 203.3,
-          "y": 1019.06,
+          "y": 964.88,
           "width": 83.7,
           "height": 28
         },
         "modeBox": {
           "x": 33,
-          "y": 1072.06,
+          "y": 1017.88,
           "width": 254,
           "height": 78
         },
         "tilesBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 254,
           "height": 289
         },
         "firstTileBox": {
           "x": 33,
-          "y": 1166.06,
+          "y": 1111.88,
           "width": 123,
           "height": 91
         },
@@ -10803,13 +10803,13 @@
         "ring": {
           "box": {
             "x": 171.92,
-            "y": 1089.06,
+            "y": 1034.88,
             "width": 44,
             "height": 44
           },
           "labelText": {
             "x": 33,
-            "y": 1102.56,
+            "y": 1048.38,
             "width": 134.92,
             "height": 17
           },
@@ -10865,7 +10865,7 @@
             "text": "Select this option if you just love everything about your current car, and your next best car would be another BMW 3 Series 330e xDrive M Sport Pro Touring M Sport Pro BMW Individual specification \u00b7 Plug-in hybrid",
             "box": {
               "x": 33,
-              "y": 1137.06,
+              "y": 1082.88,
               "width": 224,
               "height": 152
             },
@@ -10882,7 +10882,7 @@
         },
         "dialog": null,
         "overflow": false,
-        "docHeight": 2651,
+        "docHeight": 2557,
         "active": "gcsp-account-prefs-1-same-again",
         "activeIsSwitch": true,
         "derived": {
@@ -10908,13 +10908,13 @@
       "implementationImage": "320-same-keyboard-implementation.jpg",
       "implementationSize": [
         320,
-        2651
+        2557
       ],
       "zoomCropImpl": [
         12,
-        912,
+        857,
         308,
-        1540
+        1485
       ],
       "prefsZoom": "320-same-keyboard-prefs-zoom.jpg"
     }
@@ -14768,7 +14768,7 @@
       "pass": true,
       "detail": {
         "x": 33,
-        "y": 1137.06,
+        "y": 1082.88,
         "width": 224,
         "height": 152
       }
@@ -15015,26 +15015,26 @@
     {
       "state": "320-same-tooltip-long",
       "label": "focused info button drawn focus ring (rect grown by computed outline offset and width) does not intersect the label text",
-      "pass": false,
+      "pass": true,
       "detail": {
-        "pass": false,
+        "pass": true,
         "outerRing": {
-          "l": 166.92,
-          "t": 1084.06,
-          "r": 220.92,
-          "b": 1138.06
+          "l": 177.92,
+          "t": 1040.88,
+          "r": 209.92,
+          "b": 1072.88
         },
         "labelText": {
           "l": 33,
-          "t": 1102.56,
+          "t": 1048.38,
           "r": 167.92,
-          "b": 1119.56
+          "b": 1065.38
         },
-        "gapToLabel": -1,
+        "gapToLabel": 10,
         "computed": {
           "style": "solid",
           "width": "2px",
-          "offset": "3px"
+          "offset": "-8px"
         }
       }
     },
@@ -17345,7 +17345,7 @@
       "pass": true,
       "detail": {
         "x": 33,
-        "y": 1137.06,
+        "y": 1082.88,
         "width": 224,
         "height": 152
       }
@@ -17353,26 +17353,26 @@
     {
       "state": "320-same-keyboard",
       "label": "focused info button drawn focus ring (rect grown by computed outline offset and width) does not intersect the label text (at the info stop of the Tab sequence)",
-      "pass": false,
+      "pass": true,
       "detail": {
-        "pass": false,
+        "pass": true,
         "outerRing": {
-          "l": 166.92,
-          "t": 1084.06,
-          "r": 220.92,
-          "b": 1138.06
+          "l": 177.92,
+          "t": 1040.88,
+          "r": 209.92,
+          "b": 1072.88
         },
         "labelText": {
           "l": 33,
-          "t": 1102.56,
+          "t": 1048.38,
           "r": 167.92,
-          "b": 1119.56
+          "b": 1065.38
         },
-        "gapToLabel": -1,
+        "gapToLabel": 10,
         "computed": {
           "style": "solid",
           "width": "2px",
-          "offset": "3px"
+          "offset": "-8px"
         }
       }
     },
@@ -17407,20 +17407,20 @@
           "ring": {
             "box": {
               "x": 171.92,
-              "y": 1089.06,
+              "y": 1034.88,
               "width": 44,
               "height": 44
             },
             "labelText": {
               "x": 33,
-              "y": 1102.56,
+              "y": 1048.38,
               "width": 134.92,
               "height": 17
             },
             "focused": true,
             "outlineStyle": "solid",
             "outlineWidth": "2px",
-            "outlineOffset": "3px"
+            "outlineOffset": "-8px"
           }
         },
         {
@@ -17556,11 +17556,8 @@
   ],
   "summary": {
     "checks": 472,
-    "passed": 470,
-    "failed": [
-      "320-same-tooltip-long: focused info button drawn focus ring (rect grown by computed outline offset and width) does not intersect the label text",
-      "320-same-keyboard: focused info button drawn focus ring (rect grown by computed outline offset and width) does not intersect the label text (at the info stop of the Tab sequence)"
-    ]
+    "passed": 472,
+    "failed": []
   },
   "countStrip": "1440-count-strip-implementation.jpg"
 }
