@@ -392,6 +392,26 @@ test('the browser transport and controller save through the real route and the e
   for (let at = 0; at < 50 && fresh.snapshot().status.kind === 'pending'; at += 1) await new Promise((done) => setTimeout(done, 10));
   assert.equal(fresh.snapshot().status.kind, 'stale'); assert.equal(fresh.snapshot().categories.economy.value, 0);
   await fresh.reload(); assert.equal(fresh.snapshot().categories.economy.state, 'unset'); assert.equal(fresh.snapshot().categories.size.value, 100);
+  // Same again through the same controller and route: the choices and importance stay exactly as saved, and the score follows.
+  const settled = async (c) => { for (let at = 0; at < 50 && c.snapshot().status.kind === 'pending'; at += 1) await new Promise((done) => setTimeout(done, 10)); };
+  const before = (await read(f)).initial.accountPreferences; const contractId = await carOf(f);
+  assert.deepEqual(controller.snapshot().sameAgain, { available: true, on: false, reason: null, status: 'idle' });
+  controller.toggleSameAgain(true); await settled(controller);
+  assert.deepEqual(controller.snapshot().sameAgain, { available: true, on: true, reason: null, status: 'saved' });
+  assert.equal(controller.snapshot().status.text, 'More like your current car. Preferences save automatically.');
+  assert.deepEqual(controller.snapshot().understanding, { value: 11, maximum: 11, pending: false, failed: false });
+  let on = await read(f); const row = (await draftOf(f)).brief;
+  assert.deepEqual([row.sameAgain.on, row.sameAgain.contractId], [true, contractId]);
+  assert.deepEqual(on.initial.sameAgain, { available: true, on: true, contractId });
+  assert.deepEqual(on.initial.accountPreferences.categories, before.categories, 'choices and importance are untouched');
+  assert.deepEqual([on.initial.accountPreferences.understanding.value, on.initial.accountPreferences.understanding.basis], [11, 'same-again']);
+  controller.change('size', { value: 0 }); controller.open('body'); assert.equal(controller.snapshot().open, null);
+  assert.equal(controller.snapshot().categories.size.value, 100, 'edits do nothing while on');
+  controller.toggleSameAgain(false); await settled(controller);
+  const off = await read(f);
+  assert.equal(off.initial.sameAgain.on, false); assert.deepEqual(off.initial.accountPreferences.categories, before.categories);
+  assert.deepEqual([off.initial.accountPreferences.understanding.value, off.initial.accountPreferences.understanding.basis], [before.understanding.value, 'categories']);
+  assert.equal(controller.snapshot().understanding.value, before.understanding.value); assert.equal(controller.snapshot().understanding.pending, false);
   fresh.destroy(); controller.destroy();
 });
 

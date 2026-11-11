@@ -93,7 +93,8 @@ test('a failed load shows a short status with Try again, and teardown empties th
 
 test('every named visual state mounts with its expected tiles, panel and status', async () => {
   const expected = { empty: [0, null], selected: [3, null], 'body-open-unset': [0, 'body'], 'body-open-medium': [3, 'body'], 'body-high': [3, 'body'],
-    'comfort-midpoint': [3, 'comfort'], 'remove-comfort': [3, null], 'save-failed': [3, null], stale: [3, null], pending: [3, null], 'rating-failed': [3, null] };
+    'comfort-midpoint': [3, 'comfort'], 'remove-comfort': [3, null], 'save-failed': [3, null], stale: [3, null], pending: [3, null], 'rating-failed': [3, null],
+    'same-again': [3, null], 'same-again-high': [1, null], 'same-again-failed': [3, null], ...Object.fromEntries([0, 1, 2, 3, 4, 5, 6].map((n) => [`count-${n}`, [n, null]])) };
   for (const name of PREFERENCE_FIXTURE_STATES) {
     const host = document.createElement('div'); document.body.append(host); let mounted;
     const destroy = mountAccount(host, { adapter: adapter(), preferences: (region, { signal }) => {
@@ -107,6 +108,11 @@ test('every named visual state mounts with its expected tiles, panel and status'
     if (name === 'save-failed') assert.equal(statusText(region), 'Your comfort change was not saved.');
     if (name === 'stale') assert.match(statusText(region), /Reload to see the latest/);
     if (name === 'remove-comfort') assert.equal(region.querySelector('.gcsp-prefs-removal').hidden, false);
+    if (name === 'same-again-failed') assert.equal(statusText(region), 'Same again was not saved.');
+    if (name.startsWith('same-again') && name !== 'same-again-failed') assert.equal(region.querySelector('.gcsp-prefs').classList.contains('is-same-again'), true, name);
+    if (name === 'same-again') assert.equal(statusText(region), 'More like your current car. Preferences save automatically.');
+    if (name === 'same-again-high') assert.equal(region.querySelector('.gcsp-prefs-tile.is-important'), null, 'retained high importance is shown neutral');
+    if (/^count-/.test(name)) assert.equal(region.querySelector('.gcsp-understanding-value').textContent, `${[1, 3, 4, 6, 7, 9, 10][Number(name.slice(6))]} / 11`, name);
     if (name === 'body-high') assert.equal(region.querySelector('.gcsp-prefs-tile.is-important') !== null, true);
     destroy(); host.remove();
   }
@@ -122,7 +128,7 @@ async function mountRated(state = 'selected', { fixture = 'ready', rating, wrap 
   const inner = wrap(previewPreferenceTransport(state, { rating })); const calls = []; let mounted;
   const spy = { loadEditor: () => inner.loadEditor(), savePreferences: (input) => { calls.push(structuredClone(input)); return inner.savePreferences(input); } };
   const destroy = mountAccount(host, { adapter: { ...adapter(), readAccount: async () => accountFixture(fixture) },
-    preferences: (region, { signal }) => { mounted = mountAccountPreferences(region, { transport: spy, signal }); return mounted; } });
+    preferences: (region, { signal, describeCar }) => { mounted = mountAccountPreferences(region, { transport: spy, signal, describeCar }); return mounted; } });
   await tick(); await mounted.ready; await tick();
   return { host, destroy, calls, controller: mounted.controller };
 }
@@ -196,4 +202,84 @@ test('teardown removes the rating and its listeners', async () => {
   const { host, destroy, controller } = await mountRated('selected', { rating: 1 });
   const node = stars(host)[0]; destroy(); controller.rate(2, 'current:employee-paula');
   assert.equal(node.querySelector('input[value="2"]').checked, false); host.remove();
+});
+
+// FUCQ-369: the Same again row and Buddy understanding on the bitmap.
+const sameInput = (host) => host.querySelector('.gcsp-same-switch input');
+const figure = (host) => host.querySelector('.gcsp-understanding-value');
+const CAR_TEXT = 'BMW 3 Series Touring 320i 320i M Sport Touring \u00b7 Petrol'; // the Account fixture's heading and specification
+
+test('the Same again row sits between the head and the tiles and its help names the Account car', async () => {
+  const { host, destroy } = await mountRated('selected');
+  const region = host.querySelector('.gcsp-account-preferences'); const head = region.querySelector('.gcsp-prefs-head'); const row = region.querySelector('.gcsp-prefs-mode'); const tiles = region.querySelector('.gcsp-prefs-tiles');
+  const after = (a, b) => Boolean(a.compareDocumentPosition(b) & window.Node.DOCUMENT_POSITION_FOLLOWING);
+  assert.ok(after(head, row) && after(row, tiles)); assert.ok(sameInput(host)); assert.equal(sameInput(host).checked, false);
+  const tip = row.querySelector('[role=tooltip]').textContent;
+  assert.equal(tip, `Select this option if you just love everything about your current car, and your next best car would be another ${CAR_TEXT}`);
+  assert.equal(figure(host).textContent, '6 / 11'); assert.equal(figure(host).getAttribute('aria-label'), 'Buddy understanding 6 out of 11');
+  const feature = host.querySelector('.gcsp-feature'); const parts = [feature.querySelector('.gcsp-h2').textContent, feature.querySelector('.gcsp-account-spec')?.textContent].filter(Boolean).join(' ');
+  assert.ok(tip.endsWith(parts)); destroy(); host.remove();
+});
+
+test('Space on the switch turns Same again on and autosaves; focus stays on it and the score and status follow', async () => {
+  const { host, destroy, calls } = await mountRated('selected');
+  const input = sameInput(host); input.focus(); input.checked = true; input.dispatchEvent(new window.Event('change', { bubbles: true }));
+  const region = host.querySelector('.gcsp-account-preferences');
+  assert.equal(statusText(region), 'Saving your preferences.'); assert.equal(region.querySelector('.gcsp-prefs-status').classList.contains('is-pending'), true);
+  assert.equal(figure(host).getAttribute('aria-label'), 'Buddy understanding 11 out of 11 (saving)');
+  await tick(); await tick();
+  assert.deepEqual(calls[0].sameAgain, { contractId: 'current:employee-paula', on: true }); assert.deepEqual(calls[0].changes, {});
+  assert.equal(document.activeElement, sameInput(host), 'focus stays on the switch'); assert.equal(sameInput(host), input, 'the same control node');
+  assert.equal(input.checked, true); assert.equal(statusText(region), 'More like your current car. Preferences save automatically.');
+  assert.equal(figure(host).textContent, '11 / 11'); assert.equal(figure(host).getAttribute('aria-label'), 'Buddy understanding 11 out of 11');
+  assert.equal(region.querySelectorAll('.gcsp-prefs-open:not(:disabled)').length, 0, 'tiles are neutral and disabled');
+  assert.equal(host.querySelector('.gcsp-prefs-tile.is-considered .gcsp-prefs-value').textContent, 'Touring / Estate', 'saved choices stay visible');
+  input.checked = false; input.dispatchEvent(new window.Event('change', { bubbles: true })); await tick(); await tick();
+  assert.deepEqual(calls[1].sameAgain, { contractId: 'current:employee-paula', on: false });
+  assert.equal(figure(host).textContent, '6 / 11'); assert.equal(document.activeElement, input);
+  assert.equal(statusText(region), '3 categories considered · Saved automatically');
+  destroy(); host.remove();
+});
+
+test('a quiet Account redraw keeps the Same again switch node, its state and its focus', async () => {
+  const { host, destroy, controller } = await mountRated('same-again');
+  assert.equal(controller.snapshot().sameAgain.on, true);
+  const input = sameInput(host); assert.equal(input.checked, true); input.focus();
+  await destroy.sync(); await tick();
+  assert.equal(sameInput(host), input); assert.equal(input.checked, true); assert.equal(document.activeElement, input);
+  assert.equal(host.querySelector('.gcsp-prefs-mode [role=tooltip]').textContent.endsWith(CAR_TEXT), true);
+  destroy(); host.remove();
+});
+
+test('a failed Same again save says so with Try again, keeps the attempt and the retry reuses the command', async () => {
+  let fail = true;
+  const { host, destroy, calls } = await mountRated('selected', { wrap: (t) => ({ loadEditor: t.loadEditor, savePreferences: (i) => (fail ? { status: 'unavailable', retryable: true } : t.savePreferences(i)) }) });
+  const input = sameInput(host); input.focus(); input.checked = true; input.dispatchEvent(new window.Event('change', { bubbles: true })); await tick(); await tick();
+  const region = host.querySelector('.gcsp-account-preferences');
+  assert.equal(statusText(region), 'Same again was not saved.'); assert.equal(input.checked, true);
+  assert.equal(figure(host).getAttribute('aria-label'), 'Buddy understanding 11 out of 11 (not saved)');
+  const retry = [...region.querySelectorAll('button')].find((node) => node.textContent === 'Try again'); fail = false; retry.click(); await tick(); await tick(); await tick();
+  assert.equal(calls[1].commandId, calls[0].commandId); assert.equal(statusText(region), 'More like your current car. Preferences save automatically.');
+  assert.notEqual(document.activeElement, document.body); destroy(); host.remove();
+});
+
+test('no current car: the switch is disabled with the reason and the categories stay editable', async () => {
+  const host = document.createElement('div'); document.body.append(host); let mounted;
+  const inner = previewPreferenceTransport('selected', { sameAgainReason: 'no-current-car' });
+  const destroy = mountAccount(host, { adapter: { ...adapter(), readAccount: async () => accountFixture('no-current-car') },
+    preferences: (region, { signal, describeCar }) => { mounted = mountAccountPreferences(region, { transport: inner, signal, describeCar }); return mounted; } });
+  await tick(); await mounted.ready; await tick();
+  assert.equal(sameInput(host).disabled, true); assert.equal(sameInput(host).checked, false);
+  assert.equal(host.querySelector('.gcsp-prefs-same-note').textContent, 'Add your current car to use this.');
+  click(tile(host, 'body')); await tick(); assert.equal(host.querySelector('.gcsp-prefs-panel').hidden, false);
+  destroy(); host.remove();
+});
+
+test('the description is set once the current car renders after the preferences', async () => {
+  const host = document.createElement('div'); document.body.append(host); let mounted;
+  const destroy = mountAccount(host, { adapter: adapter(), preferences: (region, { signal, describeCar }) => {
+    mounted = mountAccountPreferences(region, { transport: previewPreferenceTransport('selected'), signal, describeCar: () => describeCar() }); return mounted; } });
+  await tick(); await mounted.ready; await tick();
+  assert.ok(host.querySelector('.gcsp-prefs-mode [role=tooltip]').textContent.endsWith(CAR_TEXT));
+  destroy(); host.remove();
 });

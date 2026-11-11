@@ -35,8 +35,10 @@ test('update repaints in place, and pending adds (saving) without changing the f
   assert.equal(figure(view), node); assert.equal(node.textContent, '6 / 11'); assert.equal(filled(view), 6);
   assert.equal(node.getAttribute('aria-label'), 'Buddy understanding 6 out of 11 (saving)');
   assert.ok(view.root.classList.contains('is-pending'));
-  view.update({ value: 6, maximum: 11, pending: false });
-  assert.equal(node.getAttribute('aria-label'), 'Buddy understanding 6 out of 11'); assert.ok(!view.root.classList.contains('is-pending'));
+  view.update({ value: 6, maximum: 11, pending: true, failed: true });
+  assert.equal(node.getAttribute('aria-label'), 'Buddy understanding 6 out of 11 (not saved)');
+  view.update({ value: 6, maximum: 11, pending: false, failed: true });
+  assert.equal(node.getAttribute('aria-label'), 'Buddy understanding 6 out of 11', 'failed only reads while the figure is unconfirmed'); assert.ok(!view.root.classList.contains('is-pending'));
 });
 
 test('clamps to the range, needs an id, and never uses confidence, probability or fit words', () => {

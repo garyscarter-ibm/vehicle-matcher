@@ -7,10 +7,10 @@ let sequence = 0;
 const commandId = (kind) => `${kind}:${globalThis.crypto.randomUUID()}`;
 
 /** Mounts the compact Preferences into Account's one persistent region. Owns its content, so Account redraws never touch it. */
-export function mountAccountPreferences(region, { transport, signal, createCommandId = commandId } = {}) {
+export function mountAccountPreferences(region, { transport, signal, createCommandId = commandId, describeCar } = {}) {
   const doc = region.ownerDocument; const id = `gcsp-account-prefs-${++sequence}`;
   const controller = createAccountPreferencesController({ transport, createCommandId });
-  let view = null; let failure = null; let skeleton = null; let finished = false; let wasInside = false;
+  let view = null; let described = ''; let failure = null; let skeleton = null; let finished = false; let wasInside = false;
   const act = { load: () => controller.load(), reload: () => controller.reload(), retry: () => controller.retry() };
 
   function unavailable(state) {
@@ -30,19 +30,27 @@ export function mountAccountPreferences(region, { transport, signal, createComma
     }
     if (state.phase === 'failed' && !view) { skeleton = null; unavailable(state); return; }
     skeleton = null; failure = null;
+    const lane = state.sameAgain; const score = state.understanding;
     const next = { categories: state.categories, open: state.open, pendingRemoval: state.pendingRemoval, disabled: state.disabled,
+      ...(lane ? { sameAgain: { on: lane.on, available: lane.available, reason: lane.reason } } : {}), ...(score ? { understanding: score } : {}),
       status: { kind: state.status.kind, text: state.status.text, ...(state.status.actionLabel ? { actionLabel: state.status.actionLabel,
         onAction: () => { wasInside = true; act[state.status.action]?.(); } } : {}) } };
     if (!view) {
-      view = categoryPreferences({ id, categories: preferenceCategories(state.projection), state: next,
+      described = describeCar?.() ?? ''; view = categoryPreferences({ id, categories: preferenceCategories(state.projection), state: next,
         minimum: state.projection.minimumCategories,
+        ...(state.projection.understanding ? { understanding: { maximum: state.projection.understanding.maximum } } : {}),
+        ...(lane ? { sameAgain: { description: describeCar?.() ?? '', onToggle: (on) => controller.toggleSameAgain(on) } } : {}),
         onOpen: (key) => controller.open(key), onClose: () => controller.close(),
         onChange: (key, change) => controller.change(key, change),
         onRemove: (key) => controller.requestRemove(key), onKeep: (key) => controller.keep(key),
         onConfirmRemove: (key) => { controller.confirmRemove(key); view.focusCategory(key); } });
       region.replaceChildren(view.root);
       if (wasInside) view.root.querySelector('h2')?.focus();
-    } else view.update(next);
+    } else {
+      view.update(next);
+      const car = lane && describeCar ? describeCar() : null;
+      if (car !== null && car !== described) { described = car; view.setSameAgainDescription(car); }
+    }
     // A status button that vanished with the focus on it hands focus to the heading, never to the page.
     if ((inside || wasInside) && (!doc.activeElement || doc.activeElement === doc.body)) view.root.querySelector('h2')?.focus();
     wasInside = false;

@@ -16,6 +16,7 @@ const ICONS = {
   bin: ['M3 6h18', 'M9 6V3h6v3', 'M5 6l1 15h12l1-15', 'M10 10v7', 'M14 10v7'],
 };
 const SAME_AGAIN_REASONS = { 'no-current-car': 'Add your current car to use this.', 'current-car-unidentified': 'Your current car details are incomplete.' };
+const sameTipText = (description) => `Select this option if you just love everything about your current car, and your next best car would be another ${description ?? ''}`.trimEnd();
 const choicesOf = (category) => category.options ?? category.stops ?? [];
 
 /** Turns the server's `context.accountPreferences` into the ordered category list the component takes. */
@@ -57,7 +58,7 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
     info.setAttribute('aria-label', 'About Same again, please!'); info.append(svgIcon(ICONS.info));
     field.root.replaceChildren(field.root.querySelector('label'), info, field.input);
     const tip = helpTip({ host: field.root, triggers: [info], id: `${id}-same-again-help`, placement: 'below-start', dismissOnActivate: false,
-      text: `Select this option if you just love everything about your current car, and your next best car would be another ${sameOptions.description}` });
+      text: sameTipText(sameOptions.description) });
     const note = el('p', 'gcsp-note gcsp-prefs-same-note'); note.id = `${id}-same-again-note`; note.hidden = true;
     field.input.setAttribute('aria-describedby', tip.root.id);
     mode.append(field.root, note); same = { field, note, tip };
@@ -172,7 +173,7 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
     const disabled = Boolean(state.disabled); const sameOn = Boolean(same && state.sameAgain?.on && state.sameAgain.available !== false);
     const open = sameOn ? null : state.open; const pendingRemoval = sameOn ? null : state.pendingRemoval;
     root.classList.toggle('is-disabled', disabled); root.classList.toggle('is-same-again', sameOn);
-    meter?.update({ value: state.understanding?.value ?? 0, maximum: state.understanding?.maximum ?? meterOptions.maximum, pending: Boolean(state.understanding?.pending) });
+    meter?.update({ value: state.understanding?.value ?? 0, maximum: state.understanding?.maximum ?? meterOptions.maximum, pending: Boolean(state.understanding?.pending), failed: Boolean(state.understanding?.failed) });
     if (same) patchSame(sameOn, disabled);
     for (const category of categories) {
       const view = nodes.get(category.key); const entry = entryOf(category.key); const considered = entry.state === 'considered';
@@ -202,6 +203,7 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
   return {
     root, update,
     focusCategory: (key) => nodes.get(key)?.open.focus(),
+    setSameAgainDescription(description) { same?.tip.setText(sameTipText(description)); },
     destroy() { same?.tip.destroy(); root.remove(); parts = null; nodes.clear(); },
   };
 }
