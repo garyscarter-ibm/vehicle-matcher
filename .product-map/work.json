@@ -4645,7 +4645,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T14:05:31Z",
+      "observed_at": "2026-11-11T15:52:16Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-370",
       "slices": [
         {
@@ -4664,15 +4664,17 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reload and minimum-loss state behavior",
-          "observed_at": "2026-11-11T13:23:52Z"
+          "observed_at": "2026-11-11T15:52:16Z",
+          "evidence": "a84865a0+entry fix: merged gcsp-poc 770538da, one indicator; scoped 566/563 (3 base); full suite 5019/4959, 16 of 17 fail on base, 1 fixed (launcher-employee-entry 6/6); walk 32/32"
         },
         {
           "id": "visual-review",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Strict frozen comparison and independent critique",
-          "observed_at": "2026-11-11T14:05:31Z"
+          "observed_at": "2026-11-11T15:52:16Z",
+          "evidence": "strict capture 707/707 on 718053eb; Minnie Mouse re-critique pass; README docs/gcsp/evidence/fucq370/README.md, OneDrive manifest sha256 349e325a"
         }
       ],
       "unsliced": false

@@ -42,21 +42,21 @@ Static-harness captures use fixtures; the live walkthrough uses the memory repos
 
 ## Artefacts (outside Git)
 
-98 files, 15,197,799 bytes (JPEG, plus `results.json`, `walkthrough.json` and `manifest.json`):
-
-```text
-/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/fucq370-2026-11-11/
-```
-
-`manifest.json` lists the SHA-256 and size of every other file. Key hashes:
+Final set, recaptured on `718053eb` (after the gcsp-poc merge d1663945 and the one-indicator change), in
+`/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/fucq370-2026-11-11/`.
+The earlier capture of `da4bc9be` is kept in its `pre-merge/` subfolder for comparison. `manifest.json` lists the SHA-256 and size of all 197 files (30,438,052 bytes).
 
 | File | SHA-256 |
 | --- | --- |
-| results.json | 99d844c0374bf12cbed3825d93ceac306ce50f6639914ba1cc138e08cfb3107c |
-| walkthrough.json | 442356122c8461061b86425c4aeaef1d7ac045c2a9ac98be8d6270cbe7ef5c9b |
-| manifest.json | c3e06232bf08cb0a5cd02154b8ac4077b5f6d6833befe8a732cef06c7781bf7b |
+| results.json (707 of 707 checks, commit 718053eb) | 737fb33529b736333f5ae08189f312ba8157375511e01d593f37b9b635a13aae |
+| walkthrough.json (32 of 32 steps) | 782999c0b4e58ab1d0c4fb16a22b91e678a470833e1765edd0f6d867bf058871 |
+| manifest.json | 349e325a16942c8ba36ed3b0d59aa5280b57d73ec17e8c19b9ae21b669bdde38 |
 
 Naming: `<state>-side-by-side.jpg`, `<state>-prefs-zoom.jpg`, `<state>-head-zoom.jpg` for paired states; `<state>-implementation.jpg` plus the two zooms for implementation-only states; `walk-<width>-NN-<step>.jpg` for the live walkthrough. This is a verified local OneDrive copy; cloud upload was not verified.
+
+## One Buddy indicator (after the FUCQ-389 merge)
+
+Russell, 11 November: "Pick one buddy indicator or the other, not both." The Account head keeps the FUCQ-370 lamp, now the kit `buddyStatus({ prominent: true, id })` variant of Gary's FUCQ-389 component, so there is one kit component. Gary's compact Your cars link was removed from Account; his Buddy activity header and Pause search / Resume search controls are unchanged. The independent re-review of the affected states on 718053eb found no regression.
 
 ## Scoped tests
 
