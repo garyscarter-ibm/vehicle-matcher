@@ -95,7 +95,7 @@ export function createLiveDisplayImageHandler({ fetchImpl = globalThis.fetch, no
   async function mapping() {
     mappings ??= (async () => {
       const catalogue = await loadCatalogue(); const images = new Map();
-      for (const image of [...catalogue.configurations.map((row) => row.image), ...Object.values(catalogue.variants), ...Object.values(catalogue.models)]) {
+      for (const image of [...catalogue.configurations.map((row) => row.image), ...Object.values(catalogue.variants), ...Object.values(catalogue.models), ...Object.values(catalogue.configurationGalleries ?? catalogue.galleries ?? {}).flat()]) {
         if (ID.test(image?.imageId) && ASSET.test(image.asset) && /^[a-f0-9]{64}$/.test(image.sha256)
           && Number.isSafeInteger(image.bytes) && image.bytes > 0 && image.bytes <= maxImageBytes) images.set(image.imageId, { image });
       }
