@@ -1,5 +1,6 @@
 import { rankCars } from '../../engine.js';
 import { validInstant } from '../../gcsp/policy/file-provider.js';
+import { scoreOptionEvidence } from './option-evidence.js';
 
 const object = (value) => value && typeof value === 'object' && !Array.isArray(value)
   && [Object.prototype, null].includes(Object.getPrototypeOf(value));
@@ -103,6 +104,8 @@ export function scorePreferences(snapshot, brief, employeeFacts, config, slider)
   }
   const car = { name: snapshot.display.name, ...Object.fromEntries(Object.entries(snapshot.facts)
     .filter(([, fact]) => fact.status === 'known').map(([key, fact]) => [key, fact.value])) };
+  const options = scoreOptionEvidence(confirmedFact(snapshot.facts.optionSelection, config)
+    ? snapshot.facts.optionSelection.value : null, config.optionEvidence, config.preferences);
   for (const [key, preference] of Object.entries(brief.preferences)) {
     if (preference.importance === slider.minimum) continue;
     if (preference.valueState !== 'confirmed' || preference.importanceState !== 'confirmed') {
@@ -110,26 +113,44 @@ export function scorePreferences(snapshot, brief, employeeFacts, config, slider)
     }
     const d = config.preferences[key];
     const fields = d.facts.filter((field) => !(key === 'economy' && field === 'mpg' && config.plugInFuels.includes(car.fuel)));
-    if (fields.some((field) => snapshot.facts[field]?.status !== 'known')) {
-      unknowns.push({ code: 'preference-fact-unknown', field: key, facts: fields }); continue;
+    const modelFactsIncomplete = fields.some((field) => snapshot.facts[field]?.status !== 'known');
+    let modelObserved;
+    if (modelFactsIncomplete) {
+      unknowns.push({ code: 'preference-fact-unknown', field: key, facts: fields });
+      if (d.type !== 'slider' || config.optionEvidence === undefined
+        || (key !== 'sportiness' && !options?.adjustment[key])) continue;
+      modelObserved = config.optionEvidence.unknownModelAnchor;
+    } else {
+      const answers = { ...d.answers, ...(d.answer ? { [d.answer]: choiceList(preference.value) } : {}) };
+      if (confirmedFact(employeeFacts.charging, config)) answers.charging = employeeFacts.charging.value;
+      if (key === 'economy' && confirmedFact(employeeFacts.annualMileage, config)) answers.mileage = employeeFacts.annualMileage.value;
+      const tuning = { ...config.tuning, retailBudgetEnabled: config.retailBudgetEnabled,
+        weights: { body: d.component === 'taste' ? 1 : 0, economy: 0, performance: 0, [d.dimension]: 1 } };
+      const [ranked] = rankCars(answers, [car], tuning);
+      modelObserved = Math.min(slider.maximum, ranked[d.component] * (d.scaleMultiplier ?? 1));
     }
-    const answers = { ...d.answers, ...(d.answer ? { [d.answer]: choiceList(preference.value) } : {}) };
-    if (confirmedFact(employeeFacts.charging, config)) answers.charging = employeeFacts.charging.value;
-    if (key === 'economy' && confirmedFact(employeeFacts.annualMileage, config)) answers.mileage = employeeFacts.annualMileage.value;
-    const tuning = { ...config.tuning, retailBudgetEnabled: config.retailBudgetEnabled,
-      weights: { body: d.component === 'taste' ? 1 : 0, economy: 0, performance: 0, [d.dimension]: 1 } };
-    const [ranked] = rankCars(answers, [car], tuning);
-    const observed = Math.min(slider.maximum, ranked[d.component] * (d.scaleMultiplier ?? 1));
+    let adjustment = options?.adjustment[key] ?? 0;
+    if (d.type === 'enum' && options?.enumEvidence[key]?.some((value) => choiceList(preference.value).includes(value))
+      && (key !== 'fuel' || config.plugInFuels.includes(car.fuel))) adjustment = config.optionEvidence.sliderStep;
+    const observed = Math.max(slider.minimum, Math.min(slider.maximum, modelObserved + adjustment));
     if (!Number.isFinite(observed)) { unknowns.push({ code: 'preference-fact-unknown', field: key, facts: fields }); continue; }
     const score = d.type === 'slider' ? slider.maximum - Math.abs(preference.value - observed) : observed;
     const policyWeight = weights === undefined ? 1 : weights[key];
     const effectiveImportance = preference.importance * policyWeight;
     const evidence = { code: 'preference-fit', field: key, score, importance: preference.importance,
       ...(weights === undefined ? {} : { policyWeight, effectiveImportance }),
+      ...(modelFactsIncomplete ? { modelFactsIncomplete: true } : {}),
+      ...(options && adjustment ? { modelObserved, optionEvidence: { version: options.version,
+        kind: options.kind, adjustment, groups: options.groups.filter((group) => group.evidence[key]) } } : {}),
       desired: preference.value, observed, facts: Object.fromEntries(fields.map((field) => [field, snapshot.facts[field]])) };
     components.push(evidence);
     (score === slider.maximum ? reasons : tradeOffs).push(evidence);
   }
+  // This participates exactly like another importance-100 preference, but it is not
+  // employee input and never becomes a visible preference, completion tick or trade-off.
+  if (options?.complete) components.push({ code: 'specification-fit', field: 'wellSpecified', hidden: true,
+    score: options.score, importance: options.importance, totalWeight: options.totalWeight,
+    mappingVersion: options.version, selectionKind: options.kind });
   const importance = components.reduce((total, component) => total + (component.effectiveImportance ?? component.importance), 0);
   return { score: importance ? Math.round(components.reduce((total, c) => total + c.score * (c.effectiveImportance ?? c.importance), 0) / importance) : null,
     components, unknowns, reasons, tradeOffs };

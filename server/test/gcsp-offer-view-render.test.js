@@ -23,6 +23,40 @@ function render(name, ports = {}) {
   return { root, view, data };
 }
 
+test('offer gallery uses ordered views, keeps selection across clock reads and closes on redraw or teardown', async () => {
+  const catalogue = JSON.parse(await readFile(new URL('../data/gcsp/vehicle-evidence/display-images.v1.json', import.meta.url)));
+  const images = Object.values(catalogue.configurationGalleries)[0].map((image) => ({
+    src: `/${image.asset}`, alt: `BMW, ${image.label.toLowerCase()}`, fidelity: image.fidelity,
+    sourceRef: image.sourceRef, viewpoint: image.viewpoint, label: image.label,
+  }));
+  const { root, view, data } = render('pending');
+  data.card.members[0].media.images = images;
+  view.update(data);
+  const gallery = root.querySelector('.gcsp-media-gallery');
+  assert.ok(gallery); assert.equal(gallery.parentElement.classList.contains('gcsp-vehicle-decision'), true);
+  assert.deepEqual([...gallery.querySelectorAll('.gcsp-media-gallery-thumbs button')].map((node) => node.textContent), images.map((image) => image.label));
+  gallery.querySelectorAll('.gcsp-media-gallery-thumbs button')[1].click();
+  assert.equal(gallery.querySelector('.vm-card-photo').getAttribute('src'), images[1].src);
+  view.update({ ...data, countdown: '1:59' });
+  assert.equal(root.querySelector('.gcsp-media-gallery'), gallery);
+  assert.equal(gallery.querySelector('.vm-card-photo').alt, images[1].alt);
+  gallery.querySelector('.gcsp-media-gallery-enlarge').click();
+  const oldDialog = gallery.querySelector('dialog'); assert.equal(oldDialog.open, true);
+  view.update({ ...data, state: 'expired' }); assert.equal(oldDialog.open, false);
+  view.update(data); const dialog = root.querySelector('.gcsp-media-gallery-dialog');
+  root.querySelector('.gcsp-media-gallery-enlarge').click();
+  view.destroy(); assert.equal(dialog.open, false); assert.equal(root.childElementCount, 0);
+});
+
+test('offer gallery keeps a historical photo without fabricating extra views', () => {
+  const { root, view, data } = render('pending');
+  data.card.members[0].media = { src: '/assets/brand-hero/bmw.jpg', alt: 'BMW car' };
+  view.update(data);
+  assert.equal(root.querySelector('.gcsp-media-gallery-feature img').getAttribute('src'), '/assets/brand-hero/bmw.jpg');
+  assert.equal(root.querySelector('.gcsp-media-gallery-thumbs'), null);
+  view.destroy();
+});
+
 test('exact shared card, points and current car comparison preserve supplied unknowns and provenance', () => {
   const { root } = render('pending');
   assert.equal(root.querySelectorAll('.vm-card').length, 1);
@@ -35,6 +69,23 @@ test('exact shared card, points and current car comparison preserve supplied unk
   assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
   const reason = root.querySelector('[data-offer-action="accept"]').getAttribute('aria-describedby');
   assert.match(root.querySelector(`#${reason}`).textContent, /Decisions are unavailable/);
+});
+
+test('41 supplied equipment labels use a closed native disclosure outside the compact facts grid', () => {
+  const { root, view, data } = render('pending');
+  const labels = Array.from({ length: 41 }, (_, index) => `Supported equipment ${index + 1}`);
+  const card = structuredClone(data.card); const member = card.members[0];
+  member.facts = member.facts.filter((row) => row.label !== 'Options');
+  member.facts.push({ label: 'Options', value: labels.join(', '), items: labels, provenance: { sourceRef: 'retained-options' } });
+  view.update({ ...data, card });
+  const disclosure = root.querySelector('details.gcsp-vehicle-equipment');
+  assert.ok(disclosure); assert.equal(disclosure.open, false);
+  assert.equal(disclosure.querySelector('summary').textContent, 'Selected equipment (41)');
+  assert.deepEqual([...disclosure.querySelectorAll('li')].map((node) => node.textContent), labels);
+  assert.equal(disclosure.closest('.vm-card-facts'), null);
+  assert.doesNotMatch(root.querySelector('.vm-card-facts').textContent, /Supported equipment|Options/);
+  assert.deepEqual(member.facts.at(-1).provenance, { sourceRef: 'retained-options' });
+  assert.equal(member.facts.at(-1).items.length, 41);
 });
 
 test('FUCQ-383: pending offer leads with h:mm, one uncaptained equal-column comparison and current-first identities', () => {
@@ -246,9 +297,9 @@ test('published decline-only DTO updates mounted actions and accessible explanat
     assert.equal(accept.disabled, false); assert.equal(declineButton.disabled, false);
     dto = { ...decline, handoff: dto.handoff }; await c.refresh(); // Same handoff, so only the clock read changes.
     assert.equal(root.querySelector('[data-offer-action="accept"]'), accept); assert.equal(root.querySelector('.vm-card'), card);
-    assert.equal(accept.disabled, true); assert.equal(declineButton.disabled, false); assert.equal(document.activeElement, declineButton);
+    assert.equal(accept.disabled, false); assert.equal(declineButton.disabled, false); assert.equal(document.activeElement, accept);
     const reason = root.querySelector(`#${accept.getAttribute('aria-describedby')}`);
-    assert.equal(reason.textContent, 'Acceptance is unavailable. You can still decline this offer.');
+    assert.match(reason.textContent, /Review your details/);
     assert.equal(root.querySelector('.gcsp-countdown').textContent, '1:00'); assert.doesNotMatch(root.textContent, /Order no\. 0123456|Order number/);
     assert.match(root.textContent, /Partial comparison/); assert.equal(root.querySelectorAll('[data-offer-comparison] td.is-missing').length, 7);
     accept.click(); assert.deepEqual(calls, []);
@@ -283,41 +334,33 @@ const stageText = (root) => [...root.querySelectorAll('.gcsp-stage-item')].map((
 async function mountFixture(name, decide) {
   const root = document.createElement('div'); document.body.append(root);
   const c = createOfferController({ read: async () => offerFixture(name), decide, readReasons: async () => ({ status: 'unavailable' }) });
-  const view = createOfferView(root, { decide: c.decision, tickDeclaration: c.tickDeclaration });
+  const view = createOfferView(root, { decide: c.decision, tickDeclaration: c.tickDeclaration, setExpectedReturnMileage: c.setExpectedReturnMileage });
   const unsubscribe = c.subscribe(view.update); await c.refresh();
   return { root, c, stop: () => { unsubscribe(); c.destroy(); view.destroy(); } };
 }
 
-test('before accepting, the handoff shows contact, return car, wording and one checkbox per declaration gating Accept', async () => {
-  const calls = []; const { root, c, stop } = await mountFixture('handoff-replacement', async (input) => { calls.push(input); return { status: 'ok' }; });
+test('acceptance review opens in a drawer, keeps all actual context and gates only its final Accept', async () => {
+  const calls = []; const { root, stop } = await mountFixture('handoff-replacement', async (input) => { calls.push(input); return { status: 'ok' }; });
   try {
-    const group = root.querySelector('[aria-label="Before you accept"]');
-    assert.equal(group.querySelector('h2').textContent, 'Before you accept');
-    for (const text of ['07700 900123', 'paula.mason@gcsp-demo.com', 'BMW 3 Series Touring 320i', '31 December 2026', '41,250 miles', 'Scheme terms']) assert.match(group.textContent, new RegExp(text));
-    const boxes = [...group.querySelectorAll('input[type="checkbox"]')];
-    assert.equal(boxes.length, 3); assert.ok(boxes.every((box) => box.labels[0].textContent.length > 10 && !box.checked));
-    const accept = root.querySelector('[data-offer-action="accept"]'); assert.equal(accept.disabled, true);
-    assert.match(root.textContent, /Tick each declaration to accept this offer\./);
-    for (const box of boxes.slice(0, 2)) { box.checked = true; box.dispatchEvent(new window.Event('change', { bubbles: true })); }
-    assert.equal(accept.disabled, true); assert.equal(root.querySelector('[aria-label="Before you accept"] input'), boxes[0]);
-    boxes[2].checked = true; boxes[2].dispatchEvent(new window.Event('change', { bubbles: true }));
-    assert.equal(accept.disabled, false);
-    boxes[1].checked = false; boxes[1].dispatchEvent(new window.Event('change', { bubbles: true })); assert.equal(accept.disabled, true);
-    boxes[1].checked = true; boxes[1].dispatchEvent(new window.Event('change', { bubbles: true }));
-    accept.click(); await new Promise((resolve) => setTimeout(resolve, 0));
-    assert.equal(calls.length, 1); assert.equal(calls[0].termsDigest, 'synthetic-terms-digest');
+    const opener = root.querySelector('[data-offer-action="accept"]'); assert.equal(opener.disabled, false); opener.click();
+    const group = root.querySelector('[role="dialog"]'); assert.equal(group.querySelector('h2').textContent, 'Accept your offer');
+    for (const text of ['07700 900123', 'paula.mason@gcsp-demo.com', 'BMW 3 Series Touring 320i', '31 December 2026', '41,250 miles', 'Scheme terms', 'MASON900000PM9XX']) assert.match(group.textContent, new RegExp(text));
+    const boxes = [...group.querySelectorAll('input[type="checkbox"]')]; assert.equal(boxes.length, 3); assert.ok(boxes.every((box) => !box.checked));
+    const final = group.querySelector('[data-offer-action="accept-confirm"]'); assert.equal(final.disabled, true); assert.equal(calls.length, 0);
+    const input = group.querySelector('[data-offer-expected-mileage]'); input.value = '42000'; input.dispatchEvent(new window.Event('input'));
+    for (const box of boxes) box.click(); assert.equal(final.disabled, false);
+    boxes[1].click(); assert.equal(final.disabled, true); boxes[1].click(); final.click(); await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.equal(calls.length, 1); assert.equal(calls[0].termsDigest, 'synthetic-terms-digest'); assert.equal(calls[0].expectedReturnMileage, 42000);
     assert.deepEqual(calls[0].declarations, { terms: true, driver: true, return: true });
   } finally { stop(); }
 });
 
-test('a handoff blocker names the reason, points to scheme support and offers no Accept', async () => {
+test('a blocked handoff remains reviewable with explicit missing context and disabled final Accept', async () => {
   const { root, stop } = await mountFixture('handoff-blocked', async () => ({ status: 'ok' }));
   try {
-    const group = root.querySelector('[aria-label="Before you accept"]');
-    assert.match(group.textContent, /valid contact phone and email are needed/); assert.match(group.textContent, /Contact scheme support\./);
-    assert.equal(group.querySelectorAll('input').length, 0);
-    assert.equal(root.querySelector('[data-offer-action="accept"]').hidden, true);
-    assert.equal(root.querySelector('[data-offer-action="decline"]').hidden, false);
+    const opener = root.querySelector('[data-offer-action="accept"]'); assert.equal(opener.disabled, false); opener.click();
+    const group = root.querySelector('[role="dialog"]'); assert.match(group.textContent, /Confirm your contact details with scheme support/);
+    assert.match(group.textContent, /To confirm/); assert.equal(group.querySelector('[data-offer-action="accept-confirm"]').disabled, true);
   } finally { stop(); }
 });
 
@@ -468,10 +511,10 @@ test('GC-041: an accepted offer leads on to order progress and Your cars beside 
 
 test('GC-041: after Accept focus moves to the Offer accepted heading, and a background change to accepted leaves focus alone', () => {
   const root = document.createElement('div'); document.body.append(root);
-  const pending = { ...offerFixture('pending').value, canAccept: true, canDecline: true, countdown: '2 hours remaining' };
+  const pending = { ...offerFixture('handoff-replacement').value, canReviewAccept: true, canAccept: true, canDecline: true, ticked: { terms: true, driver: true, return: true }, expectedReturnMileage: '42000', countdown: '2 hours remaining' };
   let view; const decide = () => { view.update({ ...acceptedModel('uncertain'), message: 'Checking your decision. Please wait.' }); view.update(acceptedModel()); };
   view = createOfferView(root, { decide });
-  view.update(pending); root.querySelector('[data-offer-action=accept]').focus(); root.querySelector('[data-offer-action=accept]').click();
+  view.update(pending); root.querySelector('[data-offer-action=accept]').focus(); root.querySelector('[data-offer-action=accept]').click(); root.querySelector('[data-offer-action=accept-confirm]').click();
   const heading = root.querySelector('h1'); assert.equal(heading.textContent, 'Offer accepted');
   assert.equal(document.activeElement, heading); assert.equal(heading.getAttribute('tabindex'), '-1');
   view.update({ ...acceptedModel(), now: '2026-11-06T12:00:00Z' }); assert.equal(document.activeElement, heading);

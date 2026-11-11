@@ -2,7 +2,7 @@
 import { el, screenIntro, button, statusScreen } from '../../vehicle-matcher/ui.js';
 import { svgIcon } from '../shell/portal-shell.js';
 import { activityTimeline } from '../kit/activity-timeline.js';
-import { actionMenu } from '../kit/action-menu.js';
+import { buddyState, buddyStatus } from '../kit/buddy-status.js';
 import { activityOffer } from './activity-offer.js';
 import { activityCopy as copy, activityEvents, searchLines, exclusionLines } from './activity-copy.js';
 
@@ -30,29 +30,38 @@ export function activityBody({ result, onRetry, onPause, onResume, onReviewBrief
   const root = el('div', 'vm gcsp-activity'); root.destroy = () => {};
   const header = el('div', 'gcsp-activity-header');
   header.append(screenIntro({ title: copy.title, level, className: 'gcsp-activity-intro' })); root.append(header);
-  if (result?.status !== 'ok' || !result.value) {
+  if (buddyState(result) === 'unavailable') {
     if (hosted) announce(copy.unavailable);
     root.append(statusScreen({ title: 'Activity unavailable', message: copy.unavailable, role: hosted ? null : 'alert',
       actions: [button({ label: 'Retry', onClick: onRetry, disabled: typeof onRetry !== 'function' })] }));
     return root;
   }
   const value = result.value;
-  if (!value.permission) { root.append(statusScreen({ title: 'No confirmed search', message: 'Save your preferences to start a search.', role: hosted ? null : 'status' })); return root; }
+  const statusKey = buddyState(result);
+  const state = el('div', 'gcsp-activity-state');
+  const badge = buddyStatus({ state: statusKey }); badge.classList.add('gcsp-activity-status');
+  state.append(badge); header.append(state);
+  if (!value.permission) {
+    const setup = button({ label: 'Set up your buddy', variant: 'ghost', onClick: onReviewBrief, disabled: typeof onReviewBrief !== 'function' });
+    setup.classList.add('gcsp-buddy-action'); state.append(setup);
+    root.append(statusScreen({ title: 'Set up your buddy', message: 'Choose your preferences to get started.', role: hosted ? null : 'status' })); return root;
+  }
   const paused = value.permission.paused === true;
   // An accepted car ends the search, so it reads finished and offers no pause or resume.
   const finished = value.currentOffer?.state === 'accepted';
-  const inactive = finished || paused || value.permission.canSearch !== true;
-  const badge = el('p', `gcsp-activity-status${inactive ? ' is-inactive' : ''}`);
-  badge.append(svgIcon(inactive && !finished ? ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M9 8v8', 'M15 8v8']
-    : ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M8 12l3 3 5-6']), document.createTextNode(finished ? copy.finished : inactive ? 'Inactive' : 'Active'));
-  const state = el('div', 'gcsp-activity-state'); state.append(badge); header.append(state);
   if (!finished) {
     const command = paused ? onResume : onPause;
     const allowed = paused || value.permission.canSearch === true;
     const disabled = pending || !allowed || typeof command !== 'function';
     const reason = pending ? 'Updating search' : !allowed ? 'Search unavailable' : typeof command !== 'function' ? 'Preview only' : undefined;
-    const actions = actionMenu({ label: 'Search actions', items: [{ label: paused ? 'Resume Search' : 'Pause Search', disabled, reason, onSelect: command }] });
-    state.append(actions.root); root.destroy = actions.destroy;
+    const action = button({ label: paused ? 'Resume search' : 'Pause search', variant: 'ghost', disabled, onClick: command });
+    action.classList.add('gcsp-buddy-action', 'gcsp-activity-search-action'); action.dataset.focusKey = 'buddy-search-action';
+    action.prepend(svgIcon(paused ? ['m8 5 11 7-11 7Z'] : ['M8 5v14', 'M16 5v14']));
+    if (reason) {
+      const note = el('span', 'gcsp-vh', reason); note.id = `gcsp-search-action-${noteIds += 1}`;
+      action.setAttribute('aria-describedby', note.id); state.append(note);
+    }
+    state.append(action);
   }
   // The server names the current offer; display data (imagery, title) applies only when it references that offer.
   const offer = value.currentOffer || null;

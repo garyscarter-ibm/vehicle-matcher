@@ -4,7 +4,7 @@ import { isRunRestarted } from '../kit/run-restarted.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
 import { basicModel, currentEntry, startAgainBody } from './basic-model.js';
 
-const CONFIRM = 'The scheme goes back to day 1 and released cars are cleared. Employees keep their saved preferences. The next release brings a new set of cars.';
+const CONFIRM = 'Day 1, cars cleared. Preferences kept.';
 const sentence = (value) => { const text = typeof value === 'string' ? value.trim() : ''; return /^[a-z0-9]+(-[a-z0-9]+)+$/.test(text) ? '' : text.slice(0, 160); };
 const MOVE = { pending: 'Moving on a day', done: 'Moved on a day', failed: 'Not moved on' };
 const RELEASE = { pending: 'Releasing cars', done: 'Cars released', failed: 'Release not completed' };
@@ -47,18 +47,20 @@ export function basicConsoleOptions({ adapter = createPresenterHttpAdapter() } =
   function confirmation(ctx) {
     if (panel) return panel;
     const id = `gcsp-console-confirm-${++sequence}`;
-    const root = el('section', 'gcsp-console-confirm'); root.hidden = true; root.setAttribute('role', 'alertdialog');
+    const root = el('div', 'gcsp-console-confirm'); root.id = id; root.hidden = true; root.setAttribute('role', 'group');
     root.setAttribute('aria-labelledby', `${id}-title`); root.setAttribute('aria-describedby', `${id}-text`);
-    const title = el('h2', '', 'Start again?'); title.id = `${id}-title`;
-    const text = el('p', 'gcsp-console-sub', CONFIRM); text.id = `${id}-text`;
+    const title = el('strong', '', 'Start again?'); title.id = `${id}-title`;
+    const text = el('span', 'gcsp-console-confirm-note', CONFIRM); text.id = `${id}-text`;
+    const copy = el('span', 'gcsp-console-confirm-copy'); copy.append(title, ' ', text);
     // The panel is built once, so its buttons read the newest context: an old one holds a stale run id.
-    const close = () => { root.hidden = true; latest.basic.startAgain.disabled = false; latest.basic.startAgain.focus(); };
-    const yes = button({ label: 'Start again', onClick: () => { root.hidden = true; const now = latest; reset(now).finally(() => { now.basic.startAgain.disabled = false; }); } });
+    const hide = () => { root.hidden = true; latest.basic.startAgain.hidden = false; latest.basic.startAgain.setAttribute('aria-expanded', 'false'); };
+    const close = () => { hide(); latest.basic.startAgain.disabled = false; latest.basic.startAgain.focus(); };
+    const yes = button({ label: 'Confirm', variant: 'ghost', describedBy: text.id, onClick: () => { hide(); const now = latest; reset(now).finally(() => { now.basic.startAgain.disabled = false; }); } });
     const no = button({ label: 'Cancel', variant: 'ghost', onClick: close });
-    const row = el('div', 'gcsp-console-actions'); row.append(yes, no);
-    root.append(title, text, row);
+    root.append(copy, yes, no);
     root.addEventListener('keydown', (event) => { if (event.key === 'Escape') { event.preventDefault(); close(); } });
-    ctx.basic.startAgain.closest('.gcsp-console-actions').after(root);
+    const slot = el('div', 'gcsp-console-restart'); ctx.basic.startAgain.before(slot); slot.append(ctx.basic.startAgain, root);
+    ctx.basic.startAgain.setAttribute('aria-controls', id); ctx.basic.startAgain.setAttribute('aria-expanded', 'false');
     panel = { root, yes };
     return panel;
   }
@@ -90,7 +92,7 @@ export function basicConsoleOptions({ adapter = createPresenterHttpAdapter() } =
   function onStartAgain(ctx) {
     if (resetting) return;
     latest = ctx; const { root, yes } = confirmation(ctx);
-    root.hidden = false; ctx.basic.startAgain.disabled = true; yes.focus();
+    root.hidden = false; ctx.basic.startAgain.hidden = true; ctx.basic.startAgain.disabled = true; ctx.basic.startAgain.setAttribute('aria-expanded', 'true'); yes.focus();
   }
 
   return { adapter, onState, onRelease, onStartAgain };

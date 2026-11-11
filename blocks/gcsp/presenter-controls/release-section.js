@@ -44,7 +44,7 @@ export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
     foot.replaceChildren(totals);
   }
   function paintCharts(lines, data) {
-    charts.removeAttribute('aria-busy');
+    chartGrid.removeAttribute('aria-busy');
     const rows = (list) => (Array.isArray(list) ? list : []).filter((row) => text(row?.label)).map((row) => ({ label: row.label, count: count(row.count) }));
     const points = rows(data?.points).map((row) => ({ ...row, label: /^\d+$/.test(row.label) ? `${shown(Number(row.label))} points` : row.label }));
     chartGrid.replaceChildren(
@@ -57,11 +57,13 @@ export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
   function setLoading() {
     if (disposed) return;
     turn += 1; counting += 1;
-    charts.hidden = false; charts.setAttribute('aria-busy', 'true');
-    chartGrid.replaceChildren(...['Model line', 'Colour', 'Points a month', 'Fuel'].map((label) => {
-      const chart = el('div', ''); chart.append(el('h3', '', label), loadingSkeleton({ label: `Loading ${label.toLowerCase()}`, layout: 'section', role: null })); return chart;
+    grid.setLoading(); body.replaceChildren(grid.root);
+    charts.hidden = false; chartGrid.setAttribute('aria-busy', 'true');
+    const sizes = [...chartGrid.querySelectorAll('.gcsp-count-bars')].map((chart) => chart.querySelectorAll('.gcsp-count-bars-row').length);
+    chartGrid.replaceChildren(...['Model line', 'Colour', 'Points a month', 'Fuel'].map((label, at) => {
+      const chart = el('div', 'gcsp-count-bars'); chart.append(el('h3', 'gcsp-count-bars-heading', label), loadingSkeleton({ label: `Loading ${label.toLowerCase()}`, layout: 'bars', role: null, items: sizes[at] || 3 })); return chart;
     }));
-    foot.replaceChildren(loadingSkeleton({ label: 'Loading release totals', layout: 'section', role: null }));
+    foot.replaceChildren(loadingSkeleton({ label: 'Loading release totals', layout: 'stats', role: null, labels: LABELS }));
   }
   // Counts the painted counters up to `end` over COUNT_MS; paintFoot supersedes it.
   function countUp(end) {
@@ -91,9 +93,13 @@ export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
     const lines = (Array.isArray(value.modelLines) ? value.modelLines : []).filter((row) => text(row?.modelLine)).map((row) => ({ modelLine: row.modelLine, count: count(row.count) }));
     line.textContent = `Released ${friendlyTime(release.releasedAt) ?? 'today'}`;
     paintCharts(lines, value.charts);
-    if (key === shownKey) { paintFoot(final); return; }
-    shownKey = key; body.replaceChildren(grid.root);
     const cars = (Array.isArray(value.cars) ? value.cars : []).map((car) => ({ id: car.id, imageSrc: car.imageSrc, label: tileLabel(car) }));
+    if (key === shownKey) {
+      paintFoot(final);
+      if (grid.root.hasAttribute('aria-busy')) await grid.show(cars, { animate: false });
+      return;
+    }
+    shownKey = key; body.replaceChildren(grid.root);
     const motion = !initial && !reduced() && Boolean(win?.requestAnimationFrame);
     paintFoot(motion ? NONE : final);
     await grid.show(cars, { animate: !initial });
@@ -102,6 +108,6 @@ export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
   }
 
   function destroy() { disposed = true; counting += 1; abort.abort(); grid.destroy(); root.remove(); }
-  body.replaceChildren(loadingSkeleton({ label: "Loading today's release", layout: 'section', role: null }));
+  setLoading();
   return { root, setLoading, refresh, destroy };
 }

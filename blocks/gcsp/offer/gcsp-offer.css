@@ -1,4 +1,4 @@
-@import "../employee/gcsp-employee.css"; @import "../kit/form-controls.css"; @import "../kit/stage-list.css"; @import "../kit/vehicle-decision.css";
+@import "../employee/gcsp-employee.css"; @import "../kit/form-controls.css"; @import "../kit/stage-list.css"; @import "../kit/vehicle-decision.css"; @import "../kit/media-gallery.css"; @import "./decision-drawer.css";
 gcsp-offer { display: block; }
 .gcsp .gcsp-offer-body { min-width: 0; width: 100%; max-width: 1680px; margin-inline: auto; overflow-wrap: anywhere; }
 .gcsp .gcsp-offer-content { display: flex; flex-direction: column; align-items: stretch; gap: var(--gcsp-space-4); }

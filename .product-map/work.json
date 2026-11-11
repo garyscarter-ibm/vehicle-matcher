@@ -1193,7 +1193,7 @@
           "status": "in-progress",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
           "observed_at": "2026-11-06T00:30:56Z",
-          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100→102 streamedHTTP→105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
+          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100\u2192102 streamedHTTP\u2192105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
         },
         {
           "id": "decision-host",
@@ -2062,7 +2062,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
@@ -3917,7 +3917,7 @@
     },
     {
       "id": "FUCQ-326",
-      "title": "Use “Your preferences” consistently in the employee journey",
+      "title": "Use \u201cYour preferences\u201d consistently in the employee journey",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
@@ -4746,23 +4746,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T12:19:11Z",
+      "observed_at": "2026-11-11T13:37:22Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-384",
       "slices": [
         {
           "id": "definitions",
-          "status": "not-started",
-          "title": "Supported code dictionary and versioned identity"
+          "status": "complete",
+          "title": "Supported code dictionary and versioned identity",
+          "observed_at": "2026-11-11T13:22:13Z",
+          "evidence": "Versioned retained-source seed: 239/240 configurations, 11900/11947 selected codes, exact context applicability; source gaps/swatches explicit. Scoped checkpoint only; docs/gcsp/evidence/fucq384/README.md."
         },
         {
           "id": "index",
-          "status": "not-started",
-          "title": "Keyed local joins and explicit unknowns"
+          "status": "complete",
+          "title": "Keyed local joins and explicit unknowns",
+          "observed_at": "2026-11-11T13:37:22Z",
+          "evidence": "Provenance correction after independent review: actual retained labels keep snapshot identity; mixed arrays retain per-code origins. Two regressions failed before fix; fresh95 scoped definitions/adapter/BuddyHold/snapshot checks pass. docs/gcsp/evidence/fucq384/README.md"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Generated vehicle to pinned quote and comparison"
+          "status": "blocked",
+          "title": "Generated vehicle to pinned quote and comparison",
+          "observed_at": "2026-11-11T13:37:22Z",
+          "evidence": "Original AC4 awaits actual generated-stock/recommendation/newly pinned quote proof through separately authorised FUCQ-382 repair. Fixture-producer quote proof only; integrated rendered comparison review/acceptance pending. Checkpoint is not Built/Done."
         }
       ],
       "unsliced": false
@@ -4774,51 +4780,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T12:19:12Z",
+      "observed_at": "2026-11-11T14:13:24Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-385",
       "slices": [
         {
           "id": "seeds",
-          "status": "not-started",
-          "title": "Three-view retained assets and valid associations"
+          "status": "complete",
+          "title": "Three-view retained assets and valid associations",
+          "observed_at": "2026-11-11T13:33:53Z",
+          "evidence": "docs/gcsp/fucq-385-gallery-evidence-2026-11-11.md; 240 admitted configs have three ordered distinct digests; scoped source/projection/producer tests 150 pass, 1 native PG skip; provenance mapping regression passed"
         },
         {
           "id": "viewer",
-          "status": "not-started",
-          "title": "Shared featured gallery and enlarged viewer"
+          "status": "in-progress",
+          "title": "Shared featured gallery and enlarged viewer",
+          "observed_at": "2026-11-11T14:13:24Z",
+          "evidence": "Standalone behavior and independent critique finding corrected; offer/shared-kit consumption now covered by 198 passing scoped checks. Combined hasTouch/rendered reinspection remains open."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Seeded producer to offer and rendered keyboard review"
-        }
-      ],
-      "unsliced": false
-    },
-    {
-      "id": "FUCQ-386",
-      "title": "Confirm offer acceptance or fixed-reason decline in a side drawer",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-11T12:19:12Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-386",
-      "slices": [
-        {
-          "id": "drawers",
-          "status": "not-started",
-          "title": "Shared acceptance and fixed-reason decline drawers"
-        },
-        {
-          "id": "decisions",
-          "status": "not-started",
-          "title": "Existing authoritative decision and validation contracts"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Actual accept-decline handoff, follow-up and rendered review"
+          "status": "in-progress",
+          "title": "Seeded producer to offer and rendered keyboard review",
+          "observed_at": "2026-11-11T14:13:24Z",
+          "evidence": "Ordered gallery connected through offer access/projection/view, shared card and catalogue. Scoped 198 pass; original-AC status-focus correction passes. Actual generated offer/browser/touch/independent combined critique remains open; no acceptance claim."
         }
       ],
       "unsliced": false
@@ -4830,10 +4814,108 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Bug",
-      "observed_at": "2026-11-11T12:19:13Z",
+      "observed_at": "2026-11-11T13:53:15Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-382",
-      "unsliced": true,
-      "note": "Diagnosis-only/no-pickup hold preserved. No repair or live reproduction claimed."
+      "unsliced": false,
+      "note": "Repair authorised on 11 November 2026; original AC1–3 Built with local actual generated-stock, recommendation, pinned-offer and independently reviewed rendered evidence. Genuine definition, transmission and fitment gaps remain explicit; no external deployment, full-suite or collaborator/Jira acceptance claim. docs/gcsp/evidence/fucq382/README.md",
+      "slices": [
+        {
+          "id": "source",
+          "status": "complete",
+          "title": "Preserve-exact-source-facts-and-provenance",
+          "observed_at": "2026-11-11T14:42:07Z",
+          "evidence": "Original AC1/2: actual retained producer facts, provenance and pin propagation pass; 11 mapped hashes unchanged in shared 9089a815. Source 37 pass/1 PG skip and final 11 pass are scoped, not additive. docs/gcsp/evidence/fucq382/README.md"
+        },
+        {
+          "id": "identity",
+          "status": "complete",
+          "title": "Reconcile-generated-stock-identity-with-existing-lookup",
+          "observed_at": "2026-11-11T14:42:07Z",
+          "evidence": "Canonical exact-stock association plus missing, wrong and substituted identity boundaries pass at unchanged source 593b3c737; the actual order UUID resolves to the admitted configuration. Independent source PASS. docs/gcsp/evidence/fucq382/independent-source-review.md"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Real-producer-to-pinned-offer-and-rendered-review",
+          "observed_at": "2026-11-11T14:42:07Z",
+          "evidence": "Original AC1–3 complete through actual generated release, recommendation, pin, access and rendered comparison. Historical quote immutable; genuine definition gaps explicit. Independent corrected 1440/375/320 PASS at 22176eb2; final shared 9089a815. docs/gcsp/evidence/fucq382/README.md"
+        }
+      ],
+      "workers": [],
+      "development_observed_at": "2026-11-11T14:42:07Z"
+    },
+    {
+      "id": "FUCQ-386",
+      "title": "Confirm offer acceptance or fixed-reason decline in a side drawer",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-11T13:49:26Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-386",
+      "slices": [
+        {
+          "id": "drawers",
+          "status": "in-progress",
+          "title": "Shared acceptance and fixed-reason decline drawers",
+          "observed_at": "2026-11-11T13:31:06Z"
+        },
+        {
+          "id": "decisions",
+          "status": "in-progress",
+          "title": "Existing authoritative decision and validation contracts",
+          "observed_at": "2026-11-11T13:49:26Z",
+          "evidence": "Functional checkpoint: actual buddy ordering, required expected-mileage/idempotency and scoped offer checks pass; browser integration and independent critique pending"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Actual accept-decline handoff, follow-up and rendered review"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-11-004",
+      "workers": [
+        {
+          "name": "Tweety",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-11T13:31:06.297589+00:00",
+          "expires_at": "2026-11-11T15:31:06.297589+00:00",
+          "source": "dispatcher F386 brief 2026-11-11",
+          "status": "working"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-389",
+      "title": "Show consistent Buddy status on Your cars and visible search controls",
+      "status": "In Review",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-389",
+      "branch": "codex/buddy-status-controls",
+      "unsliced": false,
+      "slices": [
+        {
+          "id": "shared-status",
+          "title": "Shared status and account navigation",
+          "status": "complete",
+          "evidence": "docs/gcsp/evidence/fucq389/validation.md"
+        },
+        {
+          "id": "search-controls",
+          "title": "Visible activity commands",
+          "status": "complete",
+          "evidence": "docs/gcsp/evidence/fucq389/validation.md"
+        },
+        {
+          "id": "integration",
+          "title": "Real readback and visual integration",
+          "status": "complete",
+          "evidence": "docs/gcsp/evidence/fucq389/validation.md"
+        }
+      ],
+      "observed_at": "2026-11-11T13:54:39Z"
     }
   ]
 }

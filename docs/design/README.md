@@ -10,6 +10,8 @@ The target is a **shared pure recommendation core with separate retail and emplo
 
 ## Views
 
+**BMW discussion view, 11 November 2026:** [system context and adapter map](bmw-system-context.md) provides a three-page [editable draw.io share export](bmw-system-context.drawio), with [overview PNG](bmw-system-context.png), [data adapter map](bmw-data-adapters.png) and [action adapter map](bmw-action-adapters.png). The same pages are added to the canonical design as 10–12. Known BMW system roles, candidate services and unconfirmed interfaces are labelled separately; this is not evidence of live BMW integration.
+
 | Draw.io page | Purpose | Export |
 |---|---|---|
 | 00 GCSP architecture | Whole-demo responsibility and navigation view: employee, Greg, shared entry/kit/core, transactions, data, state, events, mail and release. Links to detail pages. | [PNG](gcsp-architecture.png) |
@@ -24,10 +26,15 @@ The target is a **shared pure recommendation core with separate retail and emplo
 | 07 Planning and lifecycle | Greg's request → confirmed supply → actual release; policy versions; employee selection, acknowledged order, approval, booking and readiness. | [PNG](planning-and-lifecycle.png) |
 | 08 Predictive order planning | FUCQ-74: learning records, offline training/evaluation, versioned model, central policy, demand prediction, constrained order planning and Greg's intentional submission/replanning. | [PNG](predictive-order-planning.png) |
 | 09 1,000-employee comparison | Readiness item C8: seeded cohort generator, isolated simulation harness, today's first-come-first-served route and the buddy route on identical inputs, cross-seed measures, immutable results and the route comparison panel on Greg's dashboard. | Not yet exported |
+| 10 BMW system context | BMW discussion overview: our experience, logical adapters, external system roles, candidate Microsoft/vehicle/Production services and target hosting. | [PNG](bmw-system-context.png) |
+| 11 BMW data adapters | Required identity, employee, policy, release, vehicle and optional connected-use inputs; expected BMW authorities and current demo providers. | [PNG](bmw-data-adapters.png) |
+| 12 BMW action adapters | Required exclusive reservations, ordering, approvals/documents, appointments/return, notifications and Production actions; authoritative acknowledgement boundaries. | [PNG](bmw-action-adapters.png) |
 
 The employee overview was split into area pages to keep connectors readable. Reference stubs denote the same component on another page; they do not create another service. Diagrams show dependencies and named data/actions rather than a complete sequence diagram. Repeated objects across distinct views refer to the same logical object.
 
 ## Status and boundaries
+
+Pages **10–12** use their own integration key: green identifies a known/referenced system role and amber a candidate mapping. Blue identifies our experience and logical adapters on those pages; it does not claim that a BMW connection is built or verified. The build-progress colours below describe the earlier implementation/target views.
 
 Blue means current implementation; purple/dashed means proposed. Current application code was reviewed at `27cf841e1af6ea1c0598bcd63700145138fdb947`; this FUCQ-6 review uses checkout `eefc85c` and its existing working-copy context. The retail API and exports exist; their internal shared-core extraction does not. Russell agreed the shared recommendation direction on 1 November 2026 and requested implementation stories for FUCQ-8. Its shared recommendation work is being refined separately from the wider employee lifecycle. Proposed components remain purple until built and verified; design agreement does not establish implementation or operational acceptance. No application code or hosting was changed by this design update.
 

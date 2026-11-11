@@ -7,6 +7,7 @@ import { createSyntheticRegistry } from './synthetic-registry.js';
 import { createVehicleEvidenceLookup } from './vehicle-lookup.js';
 import { APPROVED_CORPUS_IMAGES } from './registered-corpus-images.js';
 import { withDisplayImages } from './display-images.js';
+import { withConfigurationDefinitions } from './configuration-definitions.js';
 
 export const DEFAULT_VEHICLE_CORPUS_ROOT = fileURLToPath(new URL('../../data/gcsp/vehicle-evidence/fleet-source.v1', import.meta.url));
 
@@ -30,9 +31,11 @@ export function createLocalVehicleEvidenceLookup({ root = DEFAULT_VEHICLE_CORPUS
     readiness = { status: 'unavailable', elapsedMs: elapsedMs(), manifestDigest: null,
       recovered: false, code: 'corpus-unavailable' };
   });
-  const lookup = createVehicleEvidenceLookup({ registry: withDisplayImages(registry), repository });
+  const definitions = withConfigurationDefinitions(withDisplayImages(registry));
+  const lookup = createVehicleEvidenceLookup({ registry: definitions, repository });
   return Object.freeze({
     readiness() { return { ...readiness, elapsedMs: readiness.elapsedMs ?? elapsedMs() }; },
+    definitionStatus() { return definitions.definitionStatus(); },
     async resolve(request, options) { await loaded; return lookup.resolve(request, options); },
     async classifyRequest(request, options) { await loaded; return lookup.classifyRequest(request, options); },
   });

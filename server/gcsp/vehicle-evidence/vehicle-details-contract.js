@@ -2,6 +2,15 @@
 export const VEHICLE_DETAILS_VERSION = '1.0.0';
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const copy = (v) => v === undefined ? null : structuredClone(v);
+
+/** Read canonical generated snapshots and the original allocation adapter's legacy envelope. */
+export function stockSyntheticIdentity(stock) {
+  const snapshot = stock?.facts;
+  if (snapshot?.contractVersion !== 'vehicle-snapshot-v1') return snapshot?.syntheticIdentity;
+  const fact = snapshot.facts?.syntheticIdentity;
+  return snapshot.identityKind === 'exact-stock' && snapshot.sourceKeys?.stockId === stock.orderUuid
+    && fact?.status === 'known' && object(fact.value) ? fact.value : null;
+}
 const failures = {
   'invalid-input': ['invalid-vehicle-identifier', 'Use a canonical configuration ID, stock order UUID or 17-character VIN for the selected route.', 'correct-identifier', false],
   'not-found': ['vehicle-not-found', 'This identifier is absent from the selected local data. Check the identifier and selected dataset.', 'check-identifier', false],
@@ -43,7 +52,7 @@ function technicalFacts(catalogue, supplement) {
       ? copy(fact) : { ...unknown(), definition, unit }];
   }));
 }
-function equipmentFacts(catalogue) {
+function equipmentFacts(catalogue, resolution) {
   const e = catalogue?.equipment;
   return {
     definitions: copy(e?.definitions) || [],
@@ -51,12 +60,14 @@ function equipmentFacts(catalogue) {
     selected: copy(e?.selected) || { state: 'unknown', options: null, accessories: null, complete: false, completeness: 'unknown' },
     // A catalogue and a fictional identity association cannot verify a physical build.
     verifiedFitted: { state: 'unknown', codes: null, reason: 'source-does-not-verify-fitting' },
+    ...(resolution ? { resolution: copy(resolution) } : {}),
   };
 }
 function selectedAppearance(equipment, category) {
   const selections = equipment.selected.state !== 'known' ? [] : equipment.definitions
     .filter((entry) => entry.category === category && equipment.selected.options?.includes(entry.code))
-    .map((entry) => ({ code: entry.code, label: copy(entry.label), claim: 'selected-catalogue-equipment' }));
+    .map((entry) => ({ code: entry.code, label: copy(entry.label), claim: 'selected-catalogue-equipment',
+      ...(equipment.resolution?.resolvedCount ? { swatch: unknown('source-swatch-unavailable') } : {}) }));
   return { state: selections.length ? 'known' : 'unknown', selections,
     ...(selections.length ? {} : { reason: 'source-selection-unavailable' }) };
 }
@@ -64,12 +75,12 @@ function selectedAppearance(equipment, category) {
 /** Only called after the lookup module has checked the exact immutable associations. */
 export function vehicleEvidenceDetails(request, source, stock = null) {
   const record = source.record; const configuration = record.configuration; const catalogue = record.catalogue;
-  const vehicle = source.vehicle; const identity = stock?.facts?.syntheticIdentity || vehicle;
+  const vehicle = source.vehicle; const identity = stockSyntheticIdentity(stock) || vehicle;
   const status = source.status === 'partial' ? 'partial' : 'complete';
   const evidence = record.sourceContext;
   const provenance = { kind: evidence.sourceKind === 'dated-snapshot' ? 'observed' : 'reference',
     source: copy(evidence.sourceRefs), observedDate: evidence.observedDate };
-  const equipment = equipmentFacts(catalogue);
+  const equipment = equipmentFacts(catalogue, source.definitionResolution);
   const images = (source.images || []).map((image) => ({ imageId: image.imageId, asset: image.asset,
     role: image.role, fidelity: image.fidelity, sourceKind: image.sourceKind, observedDate: image.observedDate,
     label: image.fidelity === 'representative-configuration' ? 'Representative configuration image' : 'Representative model image' }));
@@ -108,7 +119,8 @@ export function vehicleEvidenceDetails(request, source, stock = null) {
       unresolvedFacts: copy(evidence.unresolvedFacts), identityProvenance: copy(record.canonicalIdentity.provenance) },
     completeness: { record: status, selectedOptions: evidence.selectedOptionCompleteness,
       measurements: source.technicalSupplement ? 'partial' : catalogue?.completeness?.measurements || 'unknown',
-      optionDefinitions: (catalogue?.schemaVersion === '2' ? catalogue.completeness?.definitions : catalogue?.completeness?.optionDefinitions) || 'unknown',
+      optionDefinitions: (source.definitionResolution?.resolvedCount ? source.definitionResolution.state : null)
+        || (catalogue?.schemaVersion === '2' ? catalogue.completeness?.definitions : catalogue?.completeness?.optionDefinitions) || 'unknown',
       availableOptions: (catalogue?.schemaVersion === '2' ? catalogue.completeness?.availability : catalogue?.completeness?.availableOptions) || 'unknown', verifiedFitted: 'unknown',
       images: images.length ? 'representative' : 'unknown' },
     presentation: { syntheticLabel: 'Vehicle identity',

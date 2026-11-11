@@ -10,7 +10,7 @@ const invalid = () => result('invalid', { code: 'invalid-offer-decision-request'
 const unavailable = () => result('unavailable', { code: 'offer-decision-unavailable',
   reason: 'Offer decisions are temporarily unavailable.', retryable: true });
 const fields = ['commandId', 'runId', 'decision', 'reasonCode',
-  'expectedOfferVersion', 'expectedHoldVersion', 'expectedQuoteVersion', 'termsDigest', 'declarations'];
+  'expectedOfferVersion', 'expectedHoldVersion', 'expectedQuoteVersion', 'termsDigest', 'declarations', 'expectedReturnMileage'];
 
 async function bodyOf(req) {
   if (!/^application\/json(?:\s*;|$)/i.test(req.headers['content-type'] ?? '')) throw Error('Invalid body');

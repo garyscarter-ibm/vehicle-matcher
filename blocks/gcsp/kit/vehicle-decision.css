@@ -1,7 +1,7 @@
 @import "./data-table-compare.css";
 .gcsp .gcsp-vehicle-decision { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); grid-template-rows: auto 1fr; border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface-raised); overflow: hidden; }
 .gcsp .gcsp-vehicle-summary { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; gap: var(--gcsp-space-3); min-width: 0; padding: var(--gcsp-space-6) var(--gcsp-space-6) var(--gcsp-space-4); }
-.gcsp .gcsp-vehicle-decision .vm-card-media { grid-column: 1; grid-row: 1 / 3; min-width: 0; height: 100%; min-height: 400px; aspect-ratio: auto; }
+.gcsp .gcsp-vehicle-decision > :is(.vm-card-media, .gcsp-media-gallery) { grid-column: 1; grid-row: 1 / 3; min-width: 0; height: 100%; min-height: 400px; aspect-ratio: auto; }
 .gcsp .gcsp-vehicle-decision .vm-card-photo { object-fit: contain; }
 .gcsp .gcsp-vehicle-decision .vm-card-line { display: none; }
 .gcsp .gcsp-vehicle-decision .vm-card-name { font-size: clamp(1.65rem, 2.8vw, 2.25rem); line-height: 1.1; }
@@ -13,6 +13,8 @@
 .gcsp .gcsp-vehicle-details { grid-column: 2; grid-row: 2; min-width: 0; padding: 0 var(--gcsp-space-6) var(--gcsp-space-6); }
 .gcsp .gcsp-vehicle-details-title, .gcsp .gcsp-vehicle-details .gcsp-finishes { display: none; }
 .gcsp .gcsp-vehicle-details .vm-facts { margin: var(--gcsp-space-4) 0 0; padding-top: var(--gcsp-space-4); border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-vehicle-equipment ul { columns: 2 16em; margin: 0 0 var(--gcsp-space-3); padding-left: 1.25rem; }
+.gcsp .gcsp-vehicle-equipment li { break-inside: avoid; overflow-wrap: anywhere; padding-block: var(--gcsp-space-1); }
 .gcsp .gcsp-finishes { display: flex; flex-wrap: wrap; gap: var(--gcsp-space-2) var(--gcsp-space-4); }
 .gcsp .gcsp-finish { display: flex; align-items: center; gap: var(--gcsp-space-2); margin: 0; font-size: var(--gcsp-font-size-small); }
 .gcsp .gcsp-finish-swatch { display: inline-block; flex: 0 0 16px; width: 16px; height: 16px; border: 1px solid var(--gcsp-text-muted); border-radius: 50%; }
@@ -44,7 +46,7 @@
   .gcsp .gcsp-vehicle-details .gcsp-finishes { display: flex; }
   .gcsp .gcsp-highlight-heading { font-size: 1.125rem; }
   .gcsp .gcsp-vehicle-summary { grid-column: 1; grid-row: 1; padding: var(--gcsp-space-4); }
-  .gcsp .gcsp-vehicle-decision .vm-card-media { grid-column: 1; grid-row: 2; aspect-ratio: 16 / 9; min-height: 0; }
+  .gcsp .gcsp-vehicle-decision > :is(.vm-card-media, .gcsp-media-gallery) { grid-column: 1; grid-row: 2; height: auto; min-height: 0; }
   .gcsp .gcsp-vehicle-details { grid-column: 1; grid-row: 3; padding: var(--gcsp-space-4); }
   .gcsp .gcsp-vehicle-details-title { display: block; margin: 0 0 var(--gcsp-space-3); }
   .gcsp .gcsp-decision-highlights { grid-template-columns: minmax(0, 1fr); gap: var(--gcsp-space-4); }

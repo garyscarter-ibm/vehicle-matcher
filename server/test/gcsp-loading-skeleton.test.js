@@ -41,3 +41,15 @@ test('the feature layout is Your cars: a title, one full-bleed car panel, a pane
   assert.ok(feature?.classList.contains('gcsp-skeleton-card')); assert.ok(feature.querySelector('.gcsp-skeleton-media'));
   assert.equal(root.querySelectorAll('.gcsp-skeleton-panel').length, 1); assert.equal(root.querySelectorAll('.gcsp-skeleton-rows').length, 1);
 });
+
+test('release layouts mirror car tiles, labelled counters and label/bar/count rows without live announcements', () => {
+  const cars = loadingSkeleton({ layout: 'release-grid', items: 8, role: null });
+  assert.equal(cars.querySelectorAll('.gcsp-release-tile').length, 8); assert.equal(cars.querySelector('[tabindex],[role]'), null);
+  const stats = loadingSkeleton({ layout: 'stats', labels: ['Latest release', 'Total released'], role: null });
+  assert.deepEqual([...stats.querySelectorAll('.vm-fact-label')].map((node) => node.textContent), ['Latest release', 'Total released']);
+  assert.equal(stats.querySelectorAll('.gcsp-skeleton-stat-value').length, 2);
+  const bars = loadingSkeleton({ layout: 'bars', items: 4, role: null });
+  assert.equal(bars.querySelectorAll('.gcsp-count-bars-row').length, 4);
+  assert.ok([...bars.querySelectorAll('.gcsp-count-bars-row')].every((row) => row.children.length === 3));
+  for (const root of [cars, stats, bars]) { assert.equal(root.querySelector('.gcsp-skeleton-shapes').getAttribute('aria-hidden'), 'true'); assert.equal(root.querySelector('[role="status"]'), null); }
+});
