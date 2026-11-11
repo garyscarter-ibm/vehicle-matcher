@@ -3,6 +3,8 @@ import { SPEC_LABELS, FUEL_SPEC } from '../../vehicle-matcher/modes/result-card.
 
 /** The one fallback line for a car with no image (GCSP cards, account, activity, order progress). */
 export const NO_IMAGE_TEXT = 'No image for this car yet';
+// The Account hero names the employee's own car (frozen reference 193cbf07).
+export const NO_IMAGE_YOUR_CAR = 'No image available for your car';
 
 
 const FIELDS = { body: 'Body style', fuel: 'Fuel', seats: 'Seats', boot: 'Boot', zeroTo62: '0 to 62 mph', mpg: 'Fuel economy',

@@ -1,9 +1,12 @@
 import { el, button, factList } from '../../vehicle-matcher/ui.js';
 import { labelledField, errorSummary, checkboxField } from './form-controls.js';
+import { categoryPreferences, preferenceCategories } from './category-preferences.js';
 import { stageList } from './stage-list.js';
 import { rangeBar } from './range-bar.js';
 import { showMore } from './show-more.js';
 import { tabs } from './tabs.js';
+import { notificationBell } from './notification-bell.js';
+import { notificationModel } from '../activity/notification-source.js';
 import { releaseGrid } from './release-grid.js';
 import { installArrivalFocus, focusHeading } from './arrival-focus.js';
 import { runRestartedScreen, runRestartedNotice, accessLapsedScreen } from './run-restarted.js';
@@ -22,7 +25,9 @@ export function formControlsExample() {
   } });
   const reset = button({ label: 'Clear validation example', variant: 'ghost', onClick: () => { field.setError(''); summary.update([]); } });
   const declaration = checkboxField({ id: 'gallery-declaration', label: 'The nominated driver and licence details are correct.' });
-  body.append(summary.root, field.root, declaration.root, validate, reset); scope.append(body); section.append(scope); return section;
+  const sw = checkboxField({ id: 'gallery-switch', label: 'This is really important', switch: true });
+  const off = checkboxField({ id: 'gallery-switch-off', label: 'Unavailable until a choice is made', switch: true, disabled: true });
+  body.append(summary.root, field.root, declaration.root, sw.root, off.root, validate, reset); scope.append(body); section.append(scope); return section;
 }
 
 export function stageListExample() {
@@ -96,6 +101,30 @@ export function tabsExample() {
   scope.append(set.root); section.append(scope); return section;
 }
 
+const BELL_CAR = { offerRef: { offerId: 'gallery-1' }, title: 'BMW i5 Touring eDrive40, Sophisto Grey',
+  images: [{ src: '/assets/gcsp-vehicle-evidence/00419fa06ad620a42de6311039c7df679f692b7f2af52d5a7daba46cd034dc93.webp', alt: 'Front three quarters', fidelity: 'representative-configuration' }] };
+const BELL_CHANGE = { eventId: 'gallery-e1', operation: 'confirmed', occurredAt: '2026-11-10T09:12:00.000Z' };
+const bellOffer = (state) => ({ offerRef: { offerId: 'gallery-1' }, state, version: 1, createdAt: '2026-11-10T09:30:00.000Z',
+  expiresAt: '2026-11-10T16:40:00.000Z', href: '/gcsp-offer.html' });
+
+export function notificationBellExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-notification-bell';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP notification bell'));
+  const activity = (state) => ({ currentOffer: bellOffer(state), offers: [bellOffer(state)], stateChanges: [BELL_CHANGE] });
+  const states = [['None waiting', { ...notificationModel(activity('accepted'), BELL_CAR), waiting: 0, rows: [] }, false],
+    ['One car offer waiting', notificationModel(activity('active'), BELL_CAR), false],
+    ['New offer note', { ...notificationModel(activity('active'), BELL_CAR), note: { id: 'gallery-note', title: 'Your buddy found a car', text: 'BMW i5 Touring. Respond by 16:40.' } }, false],
+    ['Open, offer waiting', notificationModel(activity('active'), BELL_CAR), true],
+    ['Open, nothing waiting', notificationModel(activity('accepted'), BELL_CAR), true],
+    ['Open, unavailable', { status: 'unavailable', waiting: 0, rows: [] }, true]];
+  for (const [label, model, open] of states) {
+    const scope = el('div', 'gcsp'); scope.style.minHeight = '0'; const frame = el('div', ''); frame.style.cssText = `display: flex; align-items: flex-start; justify-content: flex-end; padding: 8px 24px; min-height: ${open ? 400 : 120}px`;
+    const bell = notificationBell({ pinned: open, schedule: () => 0, cancel() {} }); frame.append(bell.root); scope.append(el('p', 'gcsp-note', label), frame);
+    bell.update(model); if (open) bell.open(); section.append(scope);
+  }
+  return section;
+}
+
 const RELEASE_CARS = [
   ['07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp', '3 Series Touring', 'Alpine White'],
   ['ed60cefd049e7293423575b5f0fcee802dbab14083dea2480211ab272896281a.webp', '1 Series Sports Hatch', 'BMW Individual Frozen Pure Grey'],
@@ -118,4 +147,38 @@ export function releaseGridExample() {
   const tiles = RELEASE_CARS.map(([hash, model, paint], at) => ({ id: at, imageSrc: `./assets/gcsp-vehicle-evidence/${hash}`, label: `${model}, ${paint}` }));
   const replay = button({ label: 'Replay', variant: 'ghost', onClick: () => grid.show(tiles) });
   const row = el('p'); row.append(replay); scope.append(row, grid.root); section.append(scope); grid.show(tiles, { animate: false }); return section;
+}
+
+const opts = (...pairs) => pairs.map(([value, label]) => ({ value, label }));
+const stops = (...labels) => labels.map((label, at) => ({ value: at * 50, label }));
+const PREFERENCE_CATEGORIES = preferenceCategories({ order: ['body', 'fuel', 'sportiness', 'comfort', 'economy', 'size'], categories: {
+  body: { label: 'Body', question: 'Which body styles feel right?', kind: 'multi', options: opts(['hatchback', 'Hatchback'], ['saloon', 'Saloon'], ['estate', 'Touring / Estate'], ['suv', 'SUV'], ['coupe', 'Coupé'], ['convertible', 'Convertible'], ['mpv', 'MPV']) },
+  fuel: { label: 'Fuel', question: 'What would you like to drive?', kind: 'multi', options: opts(['petrol', 'Petrol'], ['diesel', 'Diesel'], ['phev', 'Plug-in hybrid'], ['ev', 'Electric']) },
+  sportiness: { label: 'Sportiness', question: 'How do you like your car to feel?', kind: 'stops', openDefault: 50, stops: stops('Relaxed', 'A bit of both', 'Sporty') },
+  comfort: { label: 'Comfort', question: 'How much comfort would you like?', kind: 'stops', openDefault: 50, stops: stops('Simple and functional', 'A bit of both', 'As comfortable as possible') },
+  economy: { label: 'Economy', question: 'Where would you put the balance?', kind: 'stops', openDefault: 50, stops: stops('Driving comes first', 'A bit of both', 'Economy comes first') },
+  size: { label: 'Size', question: 'What size works for your life?', kind: 'stops', openDefault: 50, stops: stops('Compact', 'A bit of both', 'Spacious') } } });
+const considered = (value, importance = 'medium') => ({ state: 'considered', value, importance });
+const PREFERENCE_SAMPLE = { body: considered(['estate']), fuel: considered(['petrol']), comfort: considered(100) };
+
+export function categoryPreferencesExample() {
+  const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-category-preferences';
+  section.append(el('h2', 'vm-gallery-title', 'GCSP category preferences'));
+  const states = [['Empty', {}, null], ['Selected', PREFERENCE_SAMPLE, null], ['Open, nothing chosen', {}, 'sportiness'],
+    ['Open, medium importance', PREFERENCE_SAMPLE, 'body'], ['Open, really important', { ...PREFERENCE_SAMPLE, body: considered(['estate'], 'high') }, 'body'],
+    ['Slider at the midpoint', { ...PREFERENCE_SAMPLE, comfort: considered(50) }, 'comfort'], ['Remove confirmation', PREFERENCE_SAMPLE, null, 'comfort'],
+    ['Save failed', PREFERENCE_SAMPLE, null, null, { kind: 'failed', text: 'Your changes were not saved.', actionLabel: 'Try again' }]];
+  states.forEach(([label, initial, open, pendingRemoval = null, status = { kind: 'saved', text: 'Preferences saved automatically.' }], at) => {
+    const scope = el('div', 'gcsp'); const body = el('div', 'vm'); let current = { categories: structuredClone(initial), open, pendingRemoval, disabled: false, status };
+    const patch = (next) => { current = { ...current, ...next }; view.update(current); };
+    const view = categoryPreferences({ id: `gallery-prefs-${at}`, categories: PREFERENCE_CATEGORIES, state: current,
+      onOpen: (key) => patch({ open: current.open === key ? null : key, pendingRemoval: null }),
+      onChange: (key, change) => { const entry = current.categories[key] ?? { state: 'considered', importance: 'medium' };
+        patch({ categories: { ...current.categories, [key]: { ...entry, state: 'considered', ...change } } }); },
+      onRemove: (key) => patch({ pendingRemoval: key, open: null }), onKeep: () => patch({ pendingRemoval: null }), onClose: () => patch({ open: null }),
+      onConfirmRemove: (key) => { const next = { ...current.categories }; delete next[key]; patch({ categories: next, pendingRemoval: null }); view.focusCategory(key); },
+      onStatusAction: () => patch({ status: { kind: 'saved', text: 'Preferences saved automatically.' } }) });
+    body.append(el('p', 'gcsp-note', label), view.root); scope.append(body); section.append(scope);
+  });
+  return section;
 }

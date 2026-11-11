@@ -1,13 +1,14 @@
 import { createEmployeeRecommendationService } from '../../recommendation/index.js';
 import { inputDigest, ok, result } from '../../repository/index.js';
 import { projectRecommendationFacts } from '../../manual-context/recommendation-facts.js';
+import { intentValue } from '../../../scenarios/employee/index.js';
 
 const visible = (stock, employee) => stock.visibility?.companyIds?.includes(employee.companyId)
   && stock.visibility?.schemeIds?.includes(employee.schemeId)
   && (stock.visibility.employeeIds === null || stock.visibility.employeeIds?.includes(employee.employeeId));
 const intent = (brief) => ({
   preferences: Object.fromEntries(Object.entries(brief.preferences ?? {}).map(([key, p]) => [key,
-    { value: p.value, importance: p.importance, valueState: p.valueState, importanceState: p.importanceState }])),
+    { value: intentValue(p.value), importance: p.importance, valueState: p.valueState, importanceState: p.importanceState }])),
   essentials: Object.fromEntries(Object.entries(brief.essentials ?? {}).map(([key, e]) => [key,
     { value: e.operator === 'includes' && Array.isArray(e.value) ? [...new Set(e.value)].sort() : e.value,
       operator: e.operator, unit: e.unit, state: e.state }])),

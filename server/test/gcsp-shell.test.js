@@ -768,7 +768,7 @@ test('the activity live host routes the rail through the shared helper without U
   const host = read('blocks/gcsp/activity/live.js');
   assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
     '../shell/account-runtime.js', './activity-http.js', '../cases/http-adapter.js', '../kit/presenter-actions.js',
-    '../employee/portal-navigation.js', './gcsp-activity.js',
+    '../employee/portal-navigation.js', './notification-source.js', './gcsp-activity.js',
   ]);
   assert.match(host, /routePortalEvents\(host\)/);
   assert.doesNotMatch(host, /URLSearchParams|\blocation\b|\bhistory\./);
@@ -785,7 +785,7 @@ test('the order progress pages load the custom element through external modules 
   const host = read('blocks/gcsp/order-progress/live.js');
   assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
     '../shell/session-lifecycle.js', '../shell/account-runtime.js', './order-progress-http.js', '../cases/http-adapter.js', '../account/http-adapter.js', './order-car.js',
-    '../kit/presenter-actions.js', '../employee/portal-navigation.js', './gcsp-order-progress.js',
+    '../kit/presenter-actions.js', '../employee/portal-navigation.js', '../activity/activity-http.js', '../activity/notification-source.js', './gcsp-order-progress.js',
   ]);
   assert.match(host, /routePortalEvents\(host\)/);
   assert.match(host, /reload: \(\) => win\.location\.reload\(\)/);

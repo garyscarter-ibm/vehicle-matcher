@@ -11003,6 +11003,93 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "brief.accountPreferences.v1",
+      "value": {
+        "schemaVersion": 1,
+        "minimumCategories": 3,
+        "importance": { "medium": 50, "high": 100, "highFrom": 75 },
+        "order": ["body", "fuel", "sportiness", "comfort", "economy", "size"],
+        "categories": {
+          "body": {
+            "label": "Body",
+            "question": "Which body styles feel right?",
+            "kind": "multi",
+            "options": [
+              { "value": "hatchback", "label": "Hatchback" },
+              { "value": "saloon", "label": "Saloon" },
+              { "value": "estate", "label": "Touring / Estate" },
+              { "value": "suv", "label": "SUV" },
+              { "value": "coupe", "label": "Coupé" },
+              { "value": "convertible", "label": "Convertible" },
+              { "value": "mpv", "label": "MPV" }
+            ]
+          },
+          "fuel": {
+            "label": "Fuel",
+            "question": "What would you like to drive?",
+            "kind": "multi",
+            "options": [
+              { "value": "petrol", "label": "Petrol" },
+              { "value": "diesel", "label": "Diesel" },
+              { "value": "phev", "label": "Plug-in hybrid" },
+              { "value": "ev", "label": "Electric" }
+            ]
+          },
+          "sportiness": {
+            "label": "Sportiness",
+            "question": "How do you like your car to feel?",
+            "kind": "stops",
+            "openDefault": 50,
+            "stops": [
+              { "value": 0, "label": "Relaxed" },
+              { "value": 50, "label": "A bit of both" },
+              { "value": 100, "label": "Sporty" }
+            ]
+          },
+          "comfort": {
+            "label": "Comfort",
+            "question": "How much comfort would you like?",
+            "kind": "stops",
+            "openDefault": 50,
+            "stops": [
+              { "value": 0, "label": "Simple and functional" },
+              { "value": 50, "label": "A bit of both" },
+              { "value": 100, "label": "As comfortable as possible" }
+            ]
+          },
+          "economy": {
+            "label": "Economy",
+            "question": "Where would you put the balance?",
+            "kind": "stops",
+            "openDefault": 50,
+            "stops": [
+              { "value": 0, "label": "Driving comes first" },
+              { "value": 50, "label": "A bit of both" },
+              { "value": 100, "label": "Economy comes first" }
+            ]
+          },
+          "size": {
+            "label": "Size",
+            "question": "What size works for your life?",
+            "kind": "stops",
+            "openDefault": 50,
+            "stops": [
+              { "value": 0, "label": "Compact" },
+              { "value": 50, "label": "A bit of both" },
+              { "value": 100, "label": "Spacious" }
+            ]
+          }
+        }
+      },
+      "unit": "Account preference categories, stops and importance levels",
+      "status": "assumed",
+      "basis": "Revisable compact Account categories, three-stop labels and medium/high importance numbers on the shared 0-100 scale; no BMW policy claim.",
+      "source": "docs/gcsp/mockups/account-preferences-2026-11-10/FROZEN-REFERENCE.md",
+      "sourceDate": "2026-11-10",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "hold.cart.durationSeconds",
       "value": 120,
       "unit": "seconds",
@@ -11202,12 +11289,12 @@
     },
     {
       "key": "supply.release.size",
-      "value": 20,
+      "value": 100,
       "unit": "cars per synthetic tranche",
       "status": "assumed",
-      "basis": "Assumed plausible small demo release; target sizes undocumented (round-2); scenario may explicitly override with provenance.",
-      "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
-      "sourceDate": "2026-11-04",
+      "basis": "Demo assumption (Gary Carter, 10 November 2026, presenter revamp): 100 cars per release so each day has a full forecourt. Replaces the earlier assumed 20; target sizes remain undocumented (round-2). A scenario may explicitly override with provenance.",
+      "source": "docs/gcsp/presenter-revamp-spec.md",
+      "sourceDate": "2026-11-10",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
@@ -11484,6 +11571,7 @@
           "body": {
             "dimension": "body",
             "type": "enum",
+            "multiple": true,
             "values": [
               "hatchback",
               "saloon",
@@ -11502,6 +11590,7 @@
           "fuel": {
             "dimension": "fuel",
             "type": "enum",
+            "multiple": true,
             "values": [
               "petrol",
               "diesel",
@@ -13343,7 +13432,15 @@
             "time": "11:30"
           },
           {
+            "weekday": 2,
+            "time": "11:30"
+          },
+          {
             "weekday": 3,
+            "time": "11:30"
+          },
+          {
+            "weekday": 4,
             "time": "11:30"
           },
           {
@@ -13354,23 +13451,23 @@
       },
       "unit": "weekday and local time per release",
       "status": "assumed",
-      "basis": "Monday, Wednesday and Friday releases and the Monday 11:30 time come from docs/gcsp/background.md. The Wednesday and Friday times are assumed to match Monday; the UK time zone is assumed.",
-      "source": "docs/gcsp/background.md",
-      "sourceDate": "2026-11-07",
+      "basis": "Demo assumption (Gary Carter, 10 November 2026, presenter revamp): a release every weekday at 11:30 UK time. Replaces the real cadence of Monday, Wednesday and Friday at 11:30 (Monday's 11:30 time from docs/gcsp/background.md; the other times and the UK time zone were assumed).",
+      "source": "docs/gcsp/presenter-revamp-spec.md",
+      "sourceDate": "2026-11-10",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
       "key": "supply.weeklyReleaseVolume",
       "value": {
-        "min": 300,
-        "max": 400
+        "min": 500,
+        "max": 500
       },
       "unit": "cars per week",
       "status": "assumed",
-      "basis": "background.md says 300 to 400 new cars are uploaded each week; the generator draws a weekly total inside this range.",
-      "source": "docs/gcsp/background.md",
-      "sourceDate": "2026-11-07",
+      "basis": "Demo assumption (Gary Carter, 10 November 2026, presenter revamp): five weekday releases of 100 cars. Replaces the real 300 to 400 new cars a week from docs/gcsp/background.md; the generator draws a weekly total inside this range.",
+      "source": "docs/gcsp/presenter-revamp-spec.md",
+      "sourceDate": "2026-11-10",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },

@@ -37,3 +37,14 @@ test('a 401 with no status (lapsed access key) reads access-required; a status k
   for (const status of [401, 403]) assert.deepEqual(await createBriefTransport({ fetch: lapsed(status, { status: 'forbidden' }) }).loadEditor(), { status: 'forbidden' });
   assert.deepEqual(await createBriefTransport({ fetch: lapsed(500, undefined) }).loadEditor(), { status: 'unavailable', retryable: true });
 });
+
+test('savePreferences posts exactly the four fields to the preferences route and refuses extras', async () => {
+  const calls = []; const transport = createBriefTransport({ fetch: async (url, init) => { calls.push([url, init]); return { ok: true, status: 200, json: async () => ({ status: 'ok', value: { draftVersion: 1 } }) }; } });
+  const input = { commandId: 'p1', expectedBriefVersion: 1, expectedDraftVersion: 0, changes: { comfort: { value: 50 } } };
+  assert.equal((await transport.savePreferences(input)).status, 'ok');
+  assert.equal(calls[0][0], '/api/gcsp/brief/preferences'); assert.equal(calls[0][1].method, 'POST'); assert.deepEqual(JSON.parse(calls[0][1].body), input);
+  assert.deepEqual(await transport.savePreferences({ ...input, consent: {} }), { status: 'invalid', field: 'request' }); assert.equal(calls.length, 1);
+  const conflict = createBriefTransport({ fetch: async () => ({ ok: false, status: 409, json: async () => ({ status: 'conflict', reason: 'brief-read-only' }) }) });
+  assert.deepEqual(await conflict.savePreferences(input), { status: 'conflict', reason: 'brief-read-only' });
+  assert.equal((await createBriefTransport({ fetch: async () => { throw Error('offline'); } }).savePreferences(input)).status, 'unavailable');
+});

@@ -1,0 +1,73 @@
+{
+  "steps": [
+    {
+      "name": "signed in as Paula; console started again",
+      "pass": true,
+      "detail": "release label=Release tomorrow's cars"
+    },
+    {
+      "name": "bell on /gcsp-account.html",
+      "pass": true,
+      "detail": "url=/gcsp-account.html label=Notifications, none waiting leftOfAccount=true"
+    },
+    {
+      "name": "bell on /gcsp-activity-live.html",
+      "pass": true,
+      "detail": "url=/gcsp-activity-live.html label=Notifications, none waiting leftOfAccount=true"
+    },
+    {
+      "name": "bell on /gcsp-order-progress-live.html",
+      "pass": true,
+      "detail": "url=/gcsp-order-progress-live.html label=Notifications, none waiting leftOfAccount=true"
+    },
+    {
+      "name": "bell on /gcsp-help.html",
+      "pass": true,
+      "detail": "url=/gcsp-help.html label=Notifications, none waiting leftOfAccount=true"
+    },
+    {
+      "name": "bell on /gcsp-brief-live.html",
+      "pass": true,
+      "detail": "url=/gcsp-brief-live.html label=Notifications, none waiting leftOfAccount=true"
+    },
+    {
+      "name": "badge appears without reload",
+      "pass": true,
+      "detail": "badge=1 after 3ms navigations=0 label=Notifications, 1 car offer waiting"
+    },
+    {
+      "name": "note shown and announced",
+      "pass": true,
+      "detail": "note=Your buddy found a car BMW 3 Series Touring 320i. Respond by 13:30. live=Your buddy found a car. BMW 3 Series Touring 320i. Respond by 13:30."
+    },
+    {
+      "name": "panel opens with offer row",
+      "pass": true,
+      "detail": "{\"open\":true,\"expanded\":\"true\",\"controls\":true,\"text\":\"Notifications Your buddy found a car BMW 3 Series Touring 320i Reserved for you. Respond by 13:30. View your offer Your buddy started searching Using the preferences you saved at 09:00. See all buddy activity\",\"thumb\":true}"
+    },
+    {
+      "name": "Escape closes and returns focus",
+      "pass": true,
+      "detail": "{\"hidden\":true,\"focus\":true}"
+    },
+    {
+      "name": "bell and account menu close each other",
+      "pass": true,
+      "detail": "{\"mutual\":{\"bellHidden\":true,\"accountOpen\":true},\"mutual2\":{\"bellOpen\":true,\"accountOpen\":false}}"
+    },
+    {
+      "name": "offer page keeps the badge",
+      "pass": true,
+      "detail": "url=http://127.0.0.1:50961/gcsp/offer badge=1"
+    },
+    {
+      "name": "no em dashes on screen",
+      "pass": true
+    },
+    {
+      "name": "no page errors",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

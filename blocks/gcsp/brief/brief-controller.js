@@ -27,7 +27,9 @@ function clone(value) {
 
 function typed(value, definition, slider) {
   if (definition.type === 'slider') return Number.isInteger(value) && value >= slider.minimum && value <= slider.maximum;
-  if (definition.type === 'enum') return Array.isArray(definition.values) && definition.values.includes(value);
+  if (definition.type === 'enum') return Array.isArray(definition.values) && (definition.multiple === true && Array.isArray(value)
+    ? value.length > 0 && value.every((v, i) => definition.values.includes(v) && (i === 0 || definition.values.indexOf(v) > definition.values.indexOf(value[i - 1])))
+    : definition.values.includes(value));
   if (definition.type === 'boolean') return typeof value === 'boolean';
   if (definition.type === 'number') return Number.isFinite(value) && value >= (definition.minimum ?? 0)
     && (definition.maximum === undefined || value <= definition.maximum) && (!definition.integer || Number.isInteger(value));
@@ -84,7 +86,7 @@ export function createBriefController({ context, initial = {}, transport, create
     || context.slider.minimum > context.slider.maximum || !transport
     || !['preview', 'saveDraft', 'confirm'].every((key) => typeof transport[key] === 'function')
     || typeof createCommandId !== 'function') throw new TypeError('Supply editor context and transport ports.');
-  if (!only(initial, ['brief', 'briefVersion', 'draftVersion', 'consent'])
+  if (!only(initial, ['brief', 'briefVersion', 'draftVersion', 'consent', 'accountPreferences'])
     || !revision(initial.briefVersion ?? 0) || !revision(initial.draftVersion ?? 0)) throw new TypeError('Invalid initial versions.');
   const brief = initial.brief ?? { schemaVersion: 1, preferences: {}, essentials: {} };
   if (!validateBrief(brief, context)) throw new TypeError('Invalid initial brief.');

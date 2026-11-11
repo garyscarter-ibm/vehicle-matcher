@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, isAbsolute, join } from 'node:path';
 import { result } from '../repository/index.js';
@@ -9,8 +9,9 @@ import { withDisplayImages } from '../vehicle-evidence/display-images.js';
 import { createSyntheticRegistry } from '../vehicle-evidence/synthetic-registry.js';
 import { buildRetainedCorpusPlan } from '../vehicle-evidence/stock-configuration-plan.js';
 import { createStockGenerator } from '../vehicle-evidence/stock-generator.js';
-import { canonicalAllocationContent, emptyAllocationInventory } from '../vehicle-evidence/vin-allocation.js';
+import { canonicalAllocationContent, emptyAllocationInventory, readAllocationInventory } from '../vehicle-evidence/vin-allocation.js';
 import { VISIBILITY, modelBrowseFacts } from './demo-provider.js';
+import { createReleaseGuarantee } from './release-guarantee.js';
 
 export const STOCK_ACCOUNT = 'gcsp-demo-scheme-stock';
 export const STOCK_SEED = 'gcsp-demo-stock-v1';
@@ -18,7 +19,7 @@ export const ELIGIBILITY_KEYS = 'stock.eligibilityModelKeys.v1';
 const unavailable = (code) => result('unavailable', { code, reason: 'Generated stock is unavailable.', retryable: true });
 
 /** Composes the FUCQ-78 generator for the demo: retained corpus registry and plan, loaded once and cached.
- * generate(run) is idempotent per run; any build failure is an unavailable outcome, never a throw. */
+ * generate(run, { scenario, tranche }) is idempotent per run; any build failure is an unavailable outcome, never a throw. */
 export function createDemoStockGeneration({ policy, repository, contextForRun, environmentId, env = process.env,
   corpusRoot = DEFAULT_VEHICLE_CORPUS_ROOT } = {}) {
   const inventoryPath = env.GCSP_STOCK_INVENTORY_PATH || join(tmpdir(), 'gcsp-stock-inventory', `${environmentId}.json`);
@@ -27,6 +28,12 @@ export function createDemoStockGeneration({ policy, repository, contextForRun, e
     if (!isAbsolute(inventoryPath)) return false;
     try { await readFile(inventoryPath); } catch {
       await mkdir(dirname(inventoryPath), { recursive: true });
+      await writeFile(inventoryPath, canonicalAllocationContent(emptyAllocationInventory()), { flag: 'wx' }).catch((error) => { if (error.code !== 'EEXIST') throw error; });
+      return true;
+    }
+    // A truncated or corrupt file is renamed aside, never deleted, so startup does not fall back to demo stock.
+    if ((await readAllocationInventory(inventoryPath)).status === 'invalid-inventory') {
+      await rename(inventoryPath, `${inventoryPath}.invalid-${Date.now()}`);
       await writeFile(inventoryPath, canonicalAllocationContent(emptyAllocationInventory()), { flag: 'wx' }).catch((error) => { if (error.code !== 'EEXIST') throw error; });
     }
     return true;
@@ -53,7 +60,7 @@ export function createDemoStockGeneration({ policy, repository, contextForRun, e
     return plans.get(read.policyVersion);
   }
   return Object.freeze({
-    async generate(run) {
+    async generate(run, input = {}) {
       try {
         if (!(await ensureInventory())) return unavailable('inventory-path-invalid');
         const read = { runId: run.runId, asOf: run.clockInstant, policyVersion: run.policyVersion };
@@ -65,8 +72,12 @@ export function createDemoStockGeneration({ policy, repository, contextForRun, e
           const key = mapping[record?.configuration?.agModelCode];
           return typeof key === 'string' ? { eligibilityModelKey: { value: key, unit: null }, ...modelBrowseFacts(key) } : {};
         };
+        const wanted = input.tranche?.guarantee;
+        const checked = wanted ? await createReleaseGuarantee({ policy, read, scenario: input.scenario, guarantee: wanted }) : null;
+        if (wanted && !checked) return unavailable('release-guarantee-unavailable');
         const generator = createStockGenerator({ repository, registry: loaded, policyService: policy, contextForRun, configurationPlan: plan,
-          stockAccount: STOCK_ACCOUNT, allocationInventoryPath: inventoryPath, visibility: VISIBILITY, factsForConfiguration });
+          stockAccount: STOCK_ACCOUNT, allocationInventoryPath: inventoryPath, visibility: VISIBILITY, factsForConfiguration,
+          ...(checked ? { guarantee: { ...wanted, qualifies: checked.qualifies } } : {}) });
         return await generator.generateStock(run.runId, STOCK_SEED, run.policyVersion);
       } catch { return unavailable('stock-generation-unavailable'); }
     },

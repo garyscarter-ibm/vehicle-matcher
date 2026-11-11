@@ -79,7 +79,8 @@ const VEHICLE_FIELDS = ['vehicleId', 'configurationId', 'snapshotVersion', 'conf
 function planValid(plan) {
   try {
     return object(plan) && ['runId', 'seed', 'corpusVersion', 'datasetId'].every((key) => text(plan[key]))
-      && Object.keys(plan).every((key) => ['runId', 'seed', 'corpusVersion', 'datasetId', 'generatorVersion', 'vehicles'].includes(key))
+      && Object.keys(plan).every((key) => ['runId', 'seed', 'corpusVersion', 'datasetId', 'generatorVersion', 'vehicles', 'replaceRunStock'].includes(key))
+      && (plan.replaceRunStock === undefined || plan.replaceRunStock === true)
       && Array.isArray(plan.vehicles) && plan.vehicles.length > 0 && plan.vehicles.length <= 100000
       && new Set(plan.vehicles.map((v) => v?.vehicleId)).size === plan.vehicles.length
       && plan.vehicles.every((vehicle) => object(vehicle) && Object.keys(vehicle).every((key) => VEHICLE_FIELDS.includes(key))
@@ -106,10 +107,16 @@ export async function allocateSyntheticIdentities(inventory, plan, { expectedRev
   }
   if (!planValid(plan)) return { status: 'invalid-input' };
   if (plan.generatorVersion !== undefined && plan.generatorVersion !== VIN_GENERATOR_VERSION) return { status: 'version-conflict' };
-  if (inventory.records.some((row) => row.runId === plan.runId && row.corpusVersion !== plan.corpusVersion)) return { status: 'version-conflict' };
   const next = structuredClone(inventory);
   const { limits, records } = next;
   let collisions = 0; let changed = false;
+  if (plan.replaceRunStock) {
+    // Leftover unplanned VIN-less stock for this run is dropped; VIN-bearing records and other runs are kept.
+    const planned = new Set(plan.vehicles.map((v) => v.vehicleId));
+    const kept = records.filter((row) => row.runId !== plan.runId || row.usage !== 'stock' || row.vin17 !== undefined || planned.has(row.vehicleId));
+    if (kept.length !== records.length) { records.splice(0, records.length, ...kept); changed = true; }
+  }
+  if (records.some((row) => row.runId === plan.runId && row.corpusVersion !== plan.corpusVersion)) return { status: 'version-conflict' };
   const exhausted = (reason, attempts) => ({ status: 'exhausted', reason, attempts, collisions });
   const choose = (parts, size, occupied, convert) => {
     const attempts = Math.min(limits.maxAttempts, size);

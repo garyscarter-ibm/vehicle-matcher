@@ -1,31 +1,24 @@
 @import "../employee/gcsp-employee.css";
 @import "../order-progress/gcsp-order-progress.css"; /* Account composition uses the employee feature and shared kit; the page layout below is scoped to the account body. */
-@import "../kit/gcsp-kit.css"; @import "../kit/side-drawer.css";
+@import "../kit/gcsp-kit.css"; @import "../kit/side-drawer.css"; @import "../kit/category-preferences.css";
 gcsp-account { display: block; }
-.gcsp .gcsp-account-body { width: 100%; min-width: 0; overflow-wrap: anywhere; }
+.gcsp .gcsp-rep.gcsp-account-body { width: 100%; max-width: 1680px; margin-inline: auto; padding-top: var(--gcsp-space-6); min-width: 0; overflow-wrap: anywhere; }
 .gcsp .gcsp-account-body .gcsp-summary { scroll-margin-top: var(--gcsp-space-4); }
-.gcsp .gcsp-account-body :is(dl, dd) { margin: 0; }
+.gcsp .gcsp-account-body :is(dl, dd:not(.vm-fact-value)) { margin: 0; }
 .gcsp .gcsp-account-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gcsp-space-3) var(--gcsp-space-4); }
-.gcsp .gcsp-account-fresh { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gcsp-space-3); }
-.gcsp .gcsp-account-body .gcsp-feature { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
-.gcsp .gcsp-feature-media { display: flex; flex-direction: column; gap: var(--gcsp-space-2); min-width: 0; padding: var(--gcsp-space-4); border-right: 1px solid var(--gcsp-divider); }
-.gcsp .gcsp-account-body .gcsp-feature .vm-card-media { display: block; aspect-ratio: auto; min-height: 0; padding: 0; background: var(--gcsp-surface-muted); border-radius: var(--gcsp-radius); }
-.gcsp .gcsp-account-body .gcsp-feature .vm-card-media:not(.has-photo) { aspect-ratio: 4 / 3; display: flex; }
-.gcsp .gcsp-account-body .gcsp-feature .vm-card-photo { position: static; display: block; aspect-ratio: 4 / 3; height: auto; object-fit: contain; }
-.gcsp .gcsp-account-body .gcsp-feature .vm-media-caption { position: static; padding: var(--gcsp-space-2); background: none; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
-.gcsp .gcsp-account-body .gcsp-feature-copy { gap: var(--gcsp-space-6); padding: var(--gcsp-space-6); }
+.gcsp .gcsp-account-head .gcsp-intro .vm-title { margin: 0; font-size: clamp(28px, 3vw, 40px); line-height: 1.15; }
+.gcsp .gcsp-account-body .gcsp-feature { grid-template-columns: minmax(0, 1fr) minmax(390px, 480px); background: var(--gcsp-surface); border-radius: 0; }
+.gcsp .gcsp-feature-media { display: flex; flex-direction: column; justify-content: center; min-width: 0; background: var(--gcsp-surface-muted); }
+.gcsp .gcsp-account-body .gcsp-feature-copy { align-content: start; gap: var(--gcsp-space-4); }
 .gcsp .gcsp-account-title { display: flex; flex-direction: column; gap: var(--gcsp-space-1); }
-.gcsp .gcsp-account-context { margin: 0; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
-.gcsp .gcsp-account-state { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--gcsp-space-1) var(--gcsp-space-2); margin: 0; }
-.gcsp .gcsp-account-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--gcsp-warning); }
-.gcsp .gcsp-account-key { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gcsp-space-4); padding: var(--gcsp-space-4) 0; border-block: 1px solid var(--gcsp-divider); }
-.gcsp .gcsp-account-key > div { display: flex; flex-direction: column; gap: var(--gcsp-space-half); min-width: 0; }
-.gcsp .gcsp-account-key dt { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
-.gcsp .gcsp-account-key dd { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); font-weight: var(--gcsp-font-strong-weight); }
-.gcsp .gcsp-account-key dd.is-missing { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-regular); font-weight: var(--gcsp-font-weight); }
-.gcsp .gcsp-account-unit { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); font-weight: var(--gcsp-font-weight); }
-.gcsp .vm-facts.gcsp-account-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gcsp-space-4); }
-.gcsp .gcsp-account-facts .vm-fact-value, .gcsp .gcsp-record-facts .vm-fact-value { font-weight: var(--gcsp-font-weight); }
+.gcsp .gcsp-account-title .gcsp-h2, .gcsp .gcsp-account-spec { margin: 0; } .gcsp .gcsp-account-spec { line-height: var(--gcsp-font-line-heading); }
+.gcsp .vm-facts.gcsp-account-facts { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gcsp-space-3) var(--gcsp-space-6); margin: 0; }
+.gcsp .gcsp-account-facts .vm-fact { min-width: 0; }
+.gcsp .gcsp-account-car-facts > .vm-fact:last-child { grid-column: 1 / -1; }
+.gcsp .gcsp-account-preferences:not(:has(> .gcsp-prefs)) { display: flex; flex-direction: column; gap: var(--gcsp-space-3); padding: var(--gcsp-space-6); background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-account-preferences > * { margin: 0; }
+.gcsp .gcsp-account-preferences .vm-btn { align-self: flex-start; } .gcsp .gcsp-account-preferences > h2 + .gcsp-note { margin-top: calc(var(--gcsp-space-1) - var(--gcsp-space-3)); }
+.gcsp .gcsp-account-secondary { display: flex; flex-direction: column; gap: var(--gcsp-space-6); }
 .gcsp .gcsp-account-section, .gcsp .gcsp-account-history { display: flex; flex-direction: column; gap: var(--gcsp-space-3); }
 .gcsp .gcsp-account-history .gcsp-table-caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); padding: 0; } /* the h2 already titles the table */
 .gcsp .gcsp-account-rows { margin: 0; padding: 0; list-style: none; background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
@@ -39,13 +32,18 @@ gcsp-account { display: block; }
 .gcsp .vm-facts.gcsp-record-facts { grid-template-columns: minmax(0, 1fr); gap: var(--gcsp-space-2); }
 .gcsp .gcsp-record-facts .vm-fact { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: var(--gcsp-space-4); }
 .gcsp .gcsp-record-facts .vm-fact-label { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); }
-.gcsp .gcsp-record-facts .vm-fact-value { margin: 0; }
+.gcsp .gcsp-record-facts .vm-fact-value { margin: 0; font-weight: var(--gcsp-font-weight); }
 .gcsp.gcsp-account-print-record { display: none; }
+@media (max-width: 1100px) {
+  .gcsp .gcsp-account-body .gcsp-feature { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+@media (max-width: 850px) {
+  .gcsp .gcsp-account-body .gcsp-feature-copy { padding: var(--gcsp-space-4); }
+  .gcsp .vm-facts.gcsp-account-facts { gap: var(--gcsp-space-3); }
+}
 @media (max-width: 600px) {
   .gcsp .gcsp-account-body .gcsp-feature { grid-template-columns: minmax(0, 1fr); }
-  .gcsp .gcsp-feature-media { border-right: 0; border-bottom: 1px solid var(--gcsp-divider); }
-  .gcsp .gcsp-account-body .gcsp-feature-copy { gap: var(--gcsp-space-4); padding: var(--gcsp-space-4); }
-  .gcsp .gcsp-account-key, .gcsp .vm-facts.gcsp-account-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gcsp .gcsp-account-preferences:not(:has(> .gcsp-prefs)) { padding: var(--gcsp-space-4); }
   .gcsp .gcsp-account-row, .gcsp .gcsp-record-facts .vm-fact { grid-template-columns: minmax(0, 1fr); gap: var(--gcsp-space-2); }
   .gcsp .gcsp-account-row .vm-btn { justify-self: start; }
 }

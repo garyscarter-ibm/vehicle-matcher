@@ -8,6 +8,9 @@ import { mountOrderProgress } from '../order-progress/gcsp-order-progress.js';
 import { createOrderProgressHttpAdapter } from '../order-progress/order-progress-http.js';
 import { createCaseHttpAdapter } from '../cases/http-adapter.js';
 import { PORTAL_ROUTES, signedInPortal } from './portal-links.js';
+import { createActivityHttpAdapter } from '../activity/activity-http.js';
+import { createNotificationSource } from '../activity/notification-source.js';
+import { subscribePresenterActions } from '../kit/presenter-actions.js';
 
 // Both account reads use the ordinary employee session; offer access remains independently scoped.
 export function mountOfferEntry(root, { fetch: request = globalThis.fetch, location = globalThis.location,
@@ -29,7 +32,10 @@ export function mountOfferEntry(root, { fetch: request = globalThis.fetch, locat
     const current = await account.loadAccount({ signal: abort.signal });
     if (disposed) return;
     root.removeAttribute('aria-busy');
-    cleanup = mountOffer(root, { ...offer, account: current, ...signedInPortal(current, location),
+    // Without an employee session the bell shows, with no badge and no read.
+    const notifications = current?.status === 'ready' ? createNotificationSource({ adapter: createActivityHttpAdapter({ fetch: request }),
+      subscribe: subscribePresenterActions(root) }) : { status: 'unavailable' };
+    cleanup = mountOffer(root, { ...offer, account: current, notifications, ...signedInPortal(current, location),
       order: { mount: (host, { orderUuid, car, announce }) => mountOrderProgress(host, { adapter: progress, helpAdapter, orderUuid, car, announce,
         embedded: true, headingLevel: 2, signal: abort.signal }) },
       followup: { loadAccount: account.loadAccount,

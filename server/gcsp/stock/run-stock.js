@@ -25,6 +25,7 @@ export function createRunStockProvider({ policy, repository, contextForRun, gene
     const run = found.value;
     if (holds(rows.value, DEMO_STOCK_NAMESPACE)) return ok({ source: 'demo', reason: 'The run already holds demo stock.' });
     const selected = run.versions?.scenarioSelection;
+    let input;
     if (selected) {
       const catalogue = await loadScenarioCatalogue({ policy, read: { runId, asOf: run.clockInstant, policyVersion: run.policyVersion } });
       if (catalogue.status !== 'ok') return unavailable();
@@ -32,9 +33,11 @@ export function createRunStockProvider({ policy, repository, contextForRun, gene
       if (scenario?.inputs?.stockTranches?.some((row) => row.source === 'published-demo-stock')) {
         return ok({ source: 'demo', reason: 'The scenario replays published demo stock.' });
       }
+      const tranche = scenario?.inputs?.stockTranches?.find((row) => row.source === 'generated-stock');
+      if (tranche) input = { scenario, tranche };
     }
     if (holds(rows.value, STOCK_GENERATOR_NAMESPACE)) return ok({ source: 'generated', reason: 'The run holds generated stock.' });
-    const outcome = typeof generation?.generate === 'function' ? await generation.generate(run)
+    const outcome = typeof generation?.generate === 'function' ? await generation.generate(run, input)
       : result('unavailable', { code: 'generation-not-configured' });
     if (outcome.status === 'ok') return ok({ source: 'generated', reason: 'Stock generated for the run.' });
     const reason = `Stock generation ${outcome.status}${outcome.code ?? outcome.reason ? ` (${outcome.code ?? outcome.reason})` : ''}.`;

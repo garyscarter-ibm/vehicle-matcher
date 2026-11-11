@@ -179,6 +179,44 @@ essential, driver, eligibility, allowance, required-by, availability and complet
 Outcome states, exact candidate decisions, reasons/trade-offs and all source/policy/clock versions follow FUCQ-29.
 The approved public recommendation route still requires a positive version and excludes browser charging essentials.
 
+### Account preferences · FUCQ-368
+
+The single assumed policy key `brief.accountPreferences.v1` (`schemaVersion: 1`) owns the six compact Account categories
+in `order` (Body, Fuel, Sportiness, Comfort, Economy, Size), each category's label, question and options or three stops
+(`value`, `label`), the `openDefault` stop (A bit of both, 50), `minimumCategories` (3) and the importance levels
+`{ medium: 50, high: 100, highFrom: 75 }` on the shared 0-100 scale. `readEditor` and `savePreferences` validate it against the
+recommendation registry (options are registered enum values in registry order; stops lie inside the slider bounds and include
+`openDefault`; medium is above the minimum and below `highFrom`) and return `unavailable` when it is missing or malformed.
+Clients carry no category, stop or weight constants of their own.
+
+Body and Fuel are `multiple: true` in `employee.recommendation.v1`. Brief validation accepts a registered scalar (legacy) or a
+non-empty list of unique registered values in registry order; other enums stay scalar. Compatible read: a scalar `x` reads as `[x]`,
+and brief intent comparisons treat `x` and `[x]` as one choice. New Account saves write lists. Scoring passes every chosen value
+to the retail engine; Greg demand counts a brief once under each chosen value.
+
+A category is considered when the brief has an entry, its importance is above the slider minimum and its `source` is `employee`
+or its `valueState` is `confirmed`. Policy-sourced unconfirmed defaults are never considered, and an absent entry is unset and
+unimportant (no invisible midpoint).
+
+`GET /api/gcsp/brief/editor` adds `context.preferences[key].multiple`, `context.accountPreferences` (`policyVersion`, `order`,
+`minimumCategories`, `importance: { medium, high }`, `categories`) and `initial.accountPreferences = { considered, categories }`. Each
+category is `{ state: 'unset' }` or `{ state: 'considered', value, importance: 'medium' | 'high', exact }`. A multi value is always a
+list; a stored slider value that is not a stop reads as the nearest stop (ties to the middle) with `exact: false`. Importance is
+`high` from `highFrom`. A new employee still receives the old editor fallback in `initial.brief`, with all six categories unset here.
+
+`POST /api/gcsp/brief/preferences` (strict editor route) takes exactly `{ commandId, expectedBriefVersion, expectedDraftVersion,
+changes }`. Each change is `null` (remove value and importance) or `{ value?, importance? }` with `importance` `'medium'` or
+`'high'`. Numeric weights, unknown categories or options, invalid stops, empty lists, identity or authority fields and an
+importance with no existing entry are `invalid`. A value-only patch to a new category gets medium. The base is the matching draft,
+else the approved brief, else a new employee base with unconfirmed essentials and no preferences; other preferences, essentials and
+`currentCarFeedback` are kept exactly. It persists through `BriefService.saveDraft`, whose transaction owns versions and `commandId`
+idempotency, so `stale-version`, `conflict`, `forbidden`, `stale-run` and `unavailable` pass through; an accepted offer returns
+`conflict` with `reason: 'brief-read-only'`. Success is `{ briefVersion, draftVersion, accountPreferences }`. Autosave writes drafts
+only: it never confirms, changes consent or `buddy`, or creates a search, hold or offer. Engagement remains the separate
+confirm and consent operation (FUCQ-370).
+
+Client semantics (`blocks/gcsp/brief/account-preferences-controller.js`, DOM-free): each intent updates the view at once and queues a sparse patch. One request is in flight; later intents merge into one pending patch (last write per category wins, `null` overrides, a value after a removal restarts at medium) and go out with the versions the previous success returned. A success adopts the server's categories only for categories with no newer pending edit. `saved` is shown only when everything sent is confirmed. A network or `unavailable` failure keeps the edits and `retry()` resends the same `commandId` while the merged changes are unchanged, else a new one. `stale-version` and `conflict` keep the edits until the explicit `reload()`; `access-required`, a restarted run and `brief-read-only` disable editing; `invalid` restores the last confirmed state. The controller never calls draft-confirm, consent or Buddy routes.
+
 ## LearningRecord schema v1 · FUCQ-113 bounded observed slice
 
 `server/gcsp/predict/records/index.js` exports `validateLearningRecord(record)` and
@@ -464,13 +502,14 @@ Key names use lower camel-case dotted namespaces; a suffix states a dimensional 
 | `eligibility.homeCharging.requiredForPlugIn` | `true` boolean | Assumed demo practical gate from brief; target has no such BMW rule (round-2). Unknown/not-ready charging prevents a plug-in offer under this assumption. |
 | `eligibility.rule.matchField` | `eligibilityModelKey` field name | Assumed bridge of retained series/model/engine labels to matrix rows, since target matching code is undefined (round-3). Exact mapping is versioned/provenanced in the seed; unknown mapping fails. |
 | `eligibility.rule.precedence` | `excludeThenInclude` enum | Assumed deterministic include/exclude evaluation; unknowns cannot widen eligibility. |
-| `supply.release.size` | `20` cars per synthetic tranche | Assumed plausible small demo release; target sizes undocumented (round-2); scenario may explicitly override with provenance. |
+| `supply.release.size` | `100` cars per synthetic tranche | Demo assumption (Gary, 10 November 2026, presenter revamp), replacing 20; target sizes undocumented (round-2); scenario may explicitly override with provenance. |
 | `supply.release.windows` | Object: a named `cue`, then `windows` of `windowId`, `offsetMinutes` and `cars` (structure, see seed) | Assumed demo windows for the synthetic stock provider, in minutes after the named `clock.scenario.v1` time `cue` (`release`), so one cue change moves them all. |
 | `stock.eligibilityModelKeys.v1` | Object: corpus `agModelCode` to `eligibilityModelKey` (structure, see seed) | Assumed bridge so generated stock on retained corpus configurations can pass model eligibility. Only AG `72HH` to `G61 i5\|i5 40` is evidenced (fleet-plan.json); unmapped cars release but are not eligible. |
 | `supply.leadTimeDays` | `56` calendar days | Assumed eight-week production-to-release planning input; not a BMW delivery promise (round-2). |
 | `brief.slider.minimum` | `0` integer slider units | Assumed `brief.slider.scale`; shared position and importance scale. |
 | `brief.slider.maximum` | `100` integer slider units | Assumed `brief.slider.scale`; dimensions declare categorical alternatives where required. |
 | `brief.editor.v1` | Editor presentation/input configuration | Assumed labelled draft control defaults and practical yes/no/unknown mappings; consumed through PolicyService, with no scoring tuning or permission grant. |
+| `brief.accountPreferences.v1` | Account preference categories, stops and importance levels (structure, see seed) | Assumed compact Account categories, three-stop labels and medium/high importance mapping; consumed through PolicyService (FUCQ-368). |
 | `stock.configuration.modelCodeField` | `vgModelCode` field name | Assumed use of target knowledge-base format; AG/VG discrepancy remains open (Q13 round-3 and HLD). |
 | `stock.configuration.codeSeparator` | `,` character | Assumed target detail, supported by public configurator shape (HLD follow-up). |
 | `stock.configuration.includePaintAndUpholstery` | `true` boolean | Assumed target detail, supported by configurator; every factory option included, dealer accessories excluded. |

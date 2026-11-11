@@ -1,0 +1,70 @@
+/* Mockup only: real GCSP shell classes and Density tokens; sb-* is storyboard framing and the proposed bell. */
+body { margin: 0; }
+.sb-page { display: block; padding: var(--gcsp-space-8) var(--gcsp-space-6); max-width: 1340px; margin: 0 auto; }
+.sb-page p, .sb-page h2, .sb-page dl, .sb-page dd { margin: 0; }
+.sb-intro { margin-bottom: var(--gcsp-space-8); }
+.sb-muted { color: var(--gcsp-text-muted); }
+
+/* Storyboard frames */
+.sb-frame { margin-bottom: var(--gcsp-space-6); }
+.sb-caption { display: flex; gap: var(--gcsp-space-4); align-items: flex-start; margin-bottom: var(--gcsp-space-3); max-width: 900px; }
+.sb-caption h2 { font-size: var(--gcsp-font-size-heading); line-height: var(--gcsp-font-line-heading); font-weight: var(--gcsp-font-strong-weight); margin-bottom: var(--gcsp-space-1); }
+.sb-caption p { color: var(--gcsp-text-muted); }
+.sb-step { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--gcsp-text); color: var(--gcsp-surface); font-weight: var(--gcsp-font-strong-weight); }
+.sb-step-alt { background: var(--gcsp-surface); color: var(--gcsp-text); border: 1px solid var(--gcsp-text); }
+.sb-screen { position: relative; height: 340px; overflow: hidden; border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface-page); box-shadow: var(--gcsp-elevation-overlay); }
+.sb-screen-tall { height: 470px; }
+.sb-screen .gcsp-header { position: relative; }
+.sb-screen .gcsp-nav { position: static; height: auto; min-height: 400px; }
+.sb-main { flex: 1; padding: var(--gcsp-space-6) var(--gcsp-space-8); }
+.sb-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 260px)); gap: var(--gcsp-space-4) var(--gcsp-space-8); margin-top: var(--gcsp-space-6); }
+.sb-facts dt { font-size: var(--gcsp-font-size-label); color: var(--gcsp-text-muted); }
+.sb-facts dd { font-weight: var(--gcsp-font-strong-weight); }
+.sb-beat { display: flex; justify-content: center; margin: var(--gcsp-space-6) 0 var(--gcsp-space-8); }
+.sb-beat span { padding: var(--gcsp-space-2) var(--gcsp-space-4); border: 1px dashed var(--gcsp-divider); border-radius: 999px; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); }
+.sb-alt { margin-top: var(--gcsp-space-8); padding-top: var(--gcsp-space-8); border-top: 1px solid var(--gcsp-divider); }
+
+/* Header end: bell beside the account */
+.sb-header-end { display: flex; align-items: center; gap: var(--gcsp-space-2); margin-left: auto; }
+.sb-account { margin-left: 0; max-width: none; }
+.sb-bell-wrap { position: relative; }
+.sb-bell { position: relative; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: var(--gcsp-radius); background: transparent; color: var(--gcsp-text); cursor: pointer; }
+.sb-bell .gcsp-icon { width: 22px; height: 22px; }
+.sb-bell:hover, .sb-bell.is-open { background: var(--gcsp-hover); }
+.sb-badge { position: absolute; top: 6px; right: 5px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--gcsp-danger); color: #fff; font-size: 11px; line-height: 18px; font-weight: var(--gcsp-font-strong-weight); text-align: center; box-shadow: 0 0 0 2px var(--gcsp-surface); }
+
+/* Frame 2 toast under the bell */
+.sb-toast { position: absolute; top: calc(100% + var(--gcsp-space-2)); right: -8px; z-index: 35; width: 300px; display: grid; gap: var(--gcsp-space-half); padding: var(--gcsp-space-3) var(--gcsp-space-4); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); box-shadow: var(--gcsp-elevation-overlay); }
+.sb-toast span { color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); }
+
+/* Frames 3 and 5 dropdown */
+.sb-panel { position: absolute; top: calc(100% + var(--gcsp-space-2)); right: -8px; z-index: 35; width: 380px; border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); box-shadow: var(--gcsp-elevation-overlay); }
+.sb-panel-title { padding: var(--gcsp-space-3) var(--gcsp-space-4); border-bottom: 1px solid var(--gcsp-divider); font-size: var(--gcsp-font-size-regular); font-weight: var(--gcsp-font-strong-weight); }
+.sb-rows { list-style: none; margin: 0; padding: 0; }
+.sb-row { display: flex; gap: var(--gcsp-space-3); padding: var(--gcsp-space-4); }
+.sb-row + .sb-row { border-top: 1px solid var(--gcsp-divider); }
+.sb-row.is-waiting { background: var(--gcsp-accent-soft); }
+.sb-thumb { flex: none; width: 84px; height: 56px; object-fit: contain; border-radius: var(--gcsp-radius); background: var(--gcsp-surface-muted); }
+.sb-row-copy { display: grid; gap: var(--gcsp-space-half); min-width: 0; font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); }
+.sb-row-copy strong { font-size: var(--gcsp-font-size-regular); }
+.sb-row-plain { padding-left: calc(84px + var(--gcsp-space-3)); }
+.sb-row-head { display: flex; align-items: center; gap: var(--gcsp-space-2); }
+.sb-row-btn { justify-self: start; margin-top: var(--gcsp-space-2); }
+.sb-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--gcsp-danger); }
+.sb-link, .sb-panel-foot { color: var(--gcsp-link); text-decoration: underline; text-underline-offset: 2px; }
+.sb-link { justify-self: start; margin-top: var(--gcsp-space-1); }
+.sb-panel-foot { display: block; padding: var(--gcsp-space-3) var(--gcsp-space-4); border-top: 1px solid var(--gcsp-divider); font-size: var(--gcsp-font-size-label); }
+
+/* Frame 4 offer page sketch */
+.sb-offer { display: grid; grid-template-columns: 440px minmax(0, 1fr); gap: var(--gcsp-space-8); align-items: start; }
+.sb-offer-img { width: 100%; aspect-ratio: 16 / 10; object-fit: contain; background: var(--gcsp-surface-muted); border-radius: var(--gcsp-radius); }
+.sb-offer-car { font-size: var(--gcsp-font-size-heading); font-weight: var(--gcsp-font-strong-weight); margin-bottom: var(--gcsp-space-1) !important; }
+.sb-actions { display: flex; gap: var(--gcsp-space-3); margin-top: var(--gcsp-space-6); }
+
+/* Alternative B chip */
+.sb-chip { display: inline-flex; align-items: center; gap: var(--gcsp-space-2); min-height: 36px; padding: 0 var(--gcsp-space-4); border: 1px solid var(--gcsp-accent); border-radius: 999px; background: var(--gcsp-accent-soft); color: var(--gcsp-link); font: inherit; font-size: var(--gcsp-font-size-label); font-weight: var(--gcsp-font-strong-weight); cursor: pointer; }
+
+/* Notes */
+.sb-notes { margin-top: var(--gcsp-space-8); padding-top: var(--gcsp-space-6); border-top: 1px solid var(--gcsp-divider); max-width: 900px; }
+.sb-notes h2 { font-size: var(--gcsp-font-size-heading); font-weight: var(--gcsp-font-strong-weight); margin-bottom: var(--gcsp-space-3); }
+.sb-notes ul { margin: 0; padding-left: var(--gcsp-space-6); display: grid; gap: var(--gcsp-space-2); }

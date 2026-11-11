@@ -1,12 +1,24 @@
 // Read-only named snapshots are visual fixtures. Saved journeys always use the real HTTP adapter.
-import { defineGcspAccount } from './gcsp-account.js';
+import { defineGcspAccount, mountAccount } from './gcsp-account.js';
 import { accountFixture, FIXTURE_NAMES } from './fixtures.js';
 import { mountManualJourney } from '../manual-setup/journey.js';
 import { createOrderProgressHttpAdapter } from '../order-progress/order-progress-http.js';
 import { createCaseHttpAdapter } from '../cases/http-adapter.js';
 import { subscribePresenterActions } from '../kit/presenter-actions.js';
+import { createActivityHttpAdapter } from '../activity/activity-http.js';
+import { createNotificationSource } from '../activity/notification-source.js';
+import { createBriefTransport } from '../brief/brief-transport.js';
+import { mountAccountPreferences } from '../brief/account-preferences.js';
+import { PREFERENCE_FIXTURE_STATES, previewPreferenceTransport, drivePreferenceState } from '../brief/account-preferences-fixtures.js';
 
-const requested = new URLSearchParams(globalThis.location?.search ?? '').get('fixture');
+const query = new URLSearchParams(globalThis.location?.search ?? '');
+const requested = query.get('fixture'); const prefs = query.get('prefs');
+// The saved record is always the live transport; ?prefs= swaps in an in-memory one for a named visual state.
+const previewPreferences = (state) => (region, { signal }) => {
+  const mounted = mountAccountPreferences(region, { transport: previewPreferenceTransport(state), signal });
+  mounted.ready.then(() => drivePreferenceState(mounted.controller, state));
+  return mounted;
+};
 const host = document.querySelector('gcsp-account');
 if (host && FIXTURE_NAMES.includes(requested)) {
   host.adapter = {
@@ -16,9 +28,12 @@ if (host && FIXTURE_NAMES.includes(requested)) {
     discardDraft: async () => ({ status: 'unavailable', code: 'read-only-visual-fixture' }),
     startJourney: async () => ({ status: 'unavailable', code: 'read-only-visual-fixture' }),
   };
-  defineGcspAccount();
+  if (PREFERENCE_FIXTURE_STATES.includes(prefs)) mountAccount(host, { adapter: host.adapter, brand: host.getAttribute('brand') ?? 'bmw', preferences: previewPreferences(prefs) });
+  else defineGcspAccount();
 } else if (host) {
   mountManualJourney(host, { orderAdapter: createOrderProgressHttpAdapter(), helpAdapter: createCaseHttpAdapter(),
     subscribeClock: subscribePresenterActions(host),
+    preferences: (region, { signal }) => mountAccountPreferences(region, { transport: createBriefTransport({ signal }), signal }),
+    notifications: createNotificationSource({ adapter: createActivityHttpAdapter(), subscribe: subscribePresenterActions(host) }),
     onSupport: () => globalThis.location.assign(new URL('../../../gcsp-help.html', import.meta.url).href) });
 }

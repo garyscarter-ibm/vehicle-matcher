@@ -165,7 +165,7 @@
     },
     {
       "path": "blocks/gcsp/account/gcsp-account.css",
-      "max_lines": 56
+      "max_lines": 54
     },
     {
       "path": "blocks/vehicle-matcher/question-controls.css",
@@ -328,6 +328,10 @@
       "max_lines": 12
     },
     {
+      "path": "blocks/gcsp/kit/notification-bell.css",
+      "max_lines": 31
+    },
+    {
       "path": "blocks/gcsp/kit/data-table-compare.css",
       "max_lines": 9
     },
@@ -378,6 +382,14 @@
     {
       "path": "blocks/gcsp/presenter-controls/happened-feed.css",
       "max_lines": 17
+    },
+    {
+      "path": "blocks/gcsp/kit/category-preferences.css",
+      "max_lines": 32
+    },
+    {
+      "path": "blocks/gcsp/kit/switch.css",
+      "max_lines": 9
     }
   ],
   "baseline": {

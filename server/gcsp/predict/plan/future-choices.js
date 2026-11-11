@@ -1,6 +1,6 @@
 import { inputDigest } from '../../repository/core.js';
 import { createEmployeeTerms } from '../../../vehicles/index.js';
-import { validateBriefContent, evaluateEssentials, chargingGates, scorePreferences, confirmedFact } from '../../../scenarios/employee/index.js';
+import { validateBriefContent, evaluateEssentials, chargingGates, scorePreferences, confirmedFact, intentValue } from '../../../scenarios/employee/index.js';
 import { CONTRACT_VERSION, text, instant, compare, integer } from './input.js';
 import { renewalInstant } from './renewal.js';
 
@@ -14,7 +14,7 @@ const keys = ['employee.recommendation.v1', 'brief.slider.minimum', 'brief.slide
 // cannot reopen a declined exact car. Future configurations are not that car.
 const intent = (brief) => ({
   preferences: Object.fromEntries(Object.entries(brief.preferences ?? {}).map(([k, p]) => [k,
-    { value: p.value, importance: p.importance, valueState: p.valueState, importanceState: p.importanceState }])),
+    { value: intentValue(p.value), importance: p.importance, valueState: p.valueState, importanceState: p.importanceState }])),
   essentials: Object.fromEntries(Object.entries(brief.essentials ?? {}).map(([k, e]) => [k,
     { value: e.operator === 'includes' && Array.isArray(e.value) ? [...new Set(e.value)].sort(compare) : e.value,
       operator: e.operator, unit: e.unit, state: e.state }])),

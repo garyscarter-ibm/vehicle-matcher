@@ -1,7 +1,7 @@
 import { accountIdentity } from '../shell/account-runtime.js';
 // Account page composition. Account authority and durable journey state stay in the adapter.
-import { el, screenIntro, button, statusScreen, factList, formatTerm } from '../../vehicle-matcher/ui.js';
-import { mediaWell } from '../../vehicle-matcher/modes/result-card.js';
+import { el, screenIntro, button, statusScreen, factList, formatTerm, formatPointsCost } from '../../vehicle-matcher/ui.js';
+import { mediaWell, FUEL_SPEC } from '../../vehicle-matcher/modes/result-card.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { runRestartedScreen, isRunRestarted } from '../kit/run-restarted.js';
 import { countdown } from '../employee/representative-body.js';
@@ -15,8 +15,7 @@ import { orderIdentityRows, orderReferenceOf } from '../kit/order-identity.js';
 import { focusKeyOf, findByFocusKey, keepScroll } from '../kit/focus-key.js';
 import { dataTable } from '../kit/data-table.js';
 import { sideDrawer } from '../kit/side-drawer.js';
-import { NO_IMAGE_TEXT } from '../kit/plain-copy.js';
-import { demoTime } from '../kit/activity-timeline.js';
+import { NO_IMAGE_TEXT, NO_IMAGE_YOUR_CAR } from '../kit/plain-copy.js';
 import { routePortal, PORTAL_ROUTES } from '../employee/portal-navigation.js';
 
 let serial = 0;
@@ -134,7 +133,8 @@ function recordSections({ contract, model }) {
     ?? el('p', 'gcsp-note', 'Not supplied for this car.')));
   const specRows = [...standard.map((key) => row(technicalLabel(key), technical[key] ?? contract[key])),
     ...Object.entries(technical).filter(([key]) => !['provenance', 'source', ...standard].includes(key)).map(([key, value]) => row(technicalLabel(key), value)),
-    row('Specification provenance', sourceLabel(technical.provenance ?? technical.source ?? contract.source))];
+    row('Specification provenance', sourceLabel(technical.provenance ?? technical.source ?? contract.source)),
+    row('Image source', contract.media?.provenance)];
   sections.push(recordSection('Technical specification and options', el('p', 'gcsp-note', 'Model or handbook evidence does not confirm the fitted equipment on your car.'),
     suppliedFacts(specRows, 'gcsp-record-facts') ?? el('p', 'gcsp-note', 'Not supplied for this car.')));
   return sections;
@@ -194,25 +194,22 @@ function yourDetails(model, controls) {
   return section;
 }
 
-function keyFigure(label, value, unit) {
-  const cell = el('div'); const figure = el('dd', value == null ? 'is-missing' : undefined, value ?? 'Not supplied');
-  if (value != null && unit) figure.append(' ', el('span', 'gcsp-account-unit', unit));
-  cell.append(el('dt', undefined, label), figure); return cell;
-}
 const points = (value) => Number.isFinite(value) ? value.toLocaleString('en-GB') : null;
 
-function mediaColumn(media, ...extra) {
-  const column = el('div', 'gcsp-feature-media');
-  column.append(media, ...extra); return column;
-}
+const mediaColumn = (media) => { const column = el('div', 'gcsp-feature-media'); column.append(media); return column; };
 
-function currentCar(contract, model, controls, buddy = false, hero = null) {
+// Authoritative terms only: the contract's own, else its vehicle points; the account allowance fills the trusted scheme alone.
+function pointsTerms(contract, model) {
   const terms = { kind: 'points-monthly', ...contract.terms };
-  // The contract's vehicle record carries its monthly points (points-per-month in the offer comparison).
   if (!Object.hasOwn(terms, 'value') && Number.isFinite(contract.vehicle?.points)) terms.value = contract.vehicle.points;
-  if (!Object.hasOwn(terms, 'allowance') && contract.schemeId === model.choices?.schemeId) {
+  if (!Object.hasOwn(terms, 'allowance') && contract.schemeId === model.choices?.schemeId && model.allowance?.status !== 'unknown') {
     terms.allowance = model.allowance?.monthlyPoints ?? model.allowance?.value;
   }
+  return terms;
+}
+
+function currentCar(contract, model, controls) {
+  const terms = pointsTerms(contract, model);
   const feature = el('section', 'gcsp-feature');
   feature.dataset.contractId = contract.contractId;
   const heading = el('h2', 'gcsp-h2', contract.model ?? 'Current car: model not supplied');
@@ -220,38 +217,33 @@ function currentCar(contract, model, controls, buddy = false, hero = null) {
   feature.setAttribute('aria-labelledby', heading.id);
   const source = contract.media;
   const { media } = mediaWell({ name: contract.model ?? 'Current car', photo: source?.src ?? source?.photo ?? '',
-    line: '', alt: source?.alt ?? contract.model ?? 'Car',
-    caption: source?.caption }, 'gcsp-media', { placeholder: NO_IMAGE_TEXT });
+    line: '', alt: source?.alt ?? contract.model ?? 'Car' }, 'gcsp-media gcsp-media-whole', { placeholder: NO_IMAGE_YOUR_CAR });
   const scheme = schemeName(model, contract.schemeId);
-  const state = el('p', 'gcsp-account-state');
-  if (contract.daysRemaining == null) state.append('Contract end: Not supplied');
-  else {
-    if (contract.daysRemaining <= 90) { const dot = el('span', 'gcsp-account-dot'); dot.setAttribute('aria-hidden', 'true'); state.append(dot); }
-    state.append(el('strong', undefined, `Contract ${countdown(model.asOf.slice(0, 10), contract.contractEndDate)}`), el('span', 'gcsp-note', ` on ${date(contract.contractEndDate)}`));
-  }
-  const key = el('dl', 'gcsp-account-key');
-  const window = windowText(contract);
-  key.append(keyFigure('This car', points(terms.value), 'points a month'), keyFigure('Your allowance', points(terms.allowance), 'points a month'),
-    window ? keyFigure('Collect a replacement', window) : keyFigure('Contract end', date(contract.contractEndDate)));
-  const copy = el('div', 'gcsp-feature-copy');
   const title = el('div', 'gcsp-account-title');
-  title.append(el('p', 'gcsp-account-context', scheme ? `Current car \u00b7 ${scheme}` : 'Current car'), heading, state);
-  copy.append(title, key);
+  title.append(heading);
+  const spec = [contract.vehicle?.configuration, FUEL_SPEC[contract.vehicle?.fuel]].filter(Boolean).join(' \u00b7 ');
+  if (spec) title.append(el('p', 'gcsp-account-spec', spec));
+  const state = contract.daysRemaining == null ? el('p', 'gcsp-note', 'Contract end: Not supplied')
+    : el('p', 'gcsp-countdown', `Contract ${countdown(model.asOf.slice(0, 10), contract.contractEndDate)} \u00b7 ${date(contract.contractEndDate)}`);
+  const copy = el('div', 'gcsp-feature-copy');
+  copy.append(title, state);
+  const list = suppliedFacts([row('Status', status(contract.status)), row('Driver', contract.driver?.name), row('Contract end', date(contract.contractEndDate)),
+    row('Term', contract.months, 'months'), row('Annual mileage', contract.annualMileage, contract.mileageUnit), row('Scheme', scheme),
+    row('Registration', contract.registration), row('Current mileage', contract.currentOdometer), ...slotRows(model, contract.slotId),
+    row('Points cost', formatPointsCost(terms))], 'gcsp-account-facts gcsp-account-car-facts');
+  copy.append(list);
   const override = Number.isFinite(terms.allowance) ? overrideText(model) : null;
   if (override) copy.append(el('p', 'gcsp-synthetic', override));
-  const quiet = suppliedFacts([row('Driver', contract.driver?.name), row('Term', contract.months, 'months'),
-    row('Annual mileage', contract.annualMileage, contract.mileageUnit), row('Collected', date(contract.actualCollectionDate)),
-    row('Current mileage', contract.currentOdometer), row('Registration', contract.registration), ...slotRows(model, contract.slotId)], 'gcsp-account-facts');
-  if (quiet) copy.append(quiet);
-  if (hero) copy.append(hero(3));
-  if (!contract.action) copy.append(el('p', 'gcsp-note', 'Replacement is unavailable for this contract and slot.'));
-  const actions = el('div', 'gcsp-actions');
-  if (contract.action) actions.append(controls.startButton(contract.action, buddy));
-  const view = button({ label: 'View car record', variant: 'ghost', onClick: () => controls.openRecord(recordFor(contract, model, scheme), view) });
-  view.dataset.focusKey = `View car record ${contract.contractId}`;
-  actions.append(view);
-  copy.append(actions);
-  feature.append(mediaColumn(media, ...(source?.provenance ? [el('p', 'gcsp-synthetic', `Image source: ${shown(source.provenance)}`)] : [])), copy);
+  const more = suppliedFacts([row('Collected', date(contract.actualCollectionDate)), row('Replacement collection', windowText(contract)),
+    ...orderRows(contract), row('Delivered VIN', contract.vin)], 'gcsp-account-facts');
+  if (more) {
+    const details = el('details', 'gcsp-details');
+    details.append(el('summary', 'gcsp-details-summary', 'Order, collection and vehicle details'), more);
+    copy.append(details);
+  }
+  if (contract.action) { const actions = el('div', 'gcsp-actions'); actions.append(controls.startButton(contract.action)); copy.append(actions); }
+  else copy.append(el('p', 'gcsp-note', 'Replacement is unavailable for this contract and slot.'));
+  feature.append(mediaColumn(media), copy);
   return feature;
 }
 
@@ -268,11 +260,11 @@ function orderCurrentCar(car, order, orderVehicle) {
   heading.id = `gcsp-account-car-${++serial}`;
   feature.setAttribute('aria-labelledby', heading.id);
   const { media } = mediaWell({ name: name ?? 'Current car', photo: same ? orderVehicle?.photo ?? '' : '', line: '',
-    alt: name ?? 'Car' }, 'gcsp-media', { placeholder: NO_IMAGE_TEXT });
+    alt: name ?? 'Car' }, 'gcsp-media gcsp-media-whole', { placeholder: NO_IMAGE_YOUR_CAR });
   const copy = el('div', 'gcsp-feature-copy');
   const title = el('div', 'gcsp-account-title');
-  title.append(el('p', 'gcsp-account-context', 'Current car'), heading);
-  copy.append(title, ...[suppliedFacts([row('Collected', date(car.collectedAt?.slice(0, 10))), row('Delivered VIN', car.vin),
+  title.append(heading);
+  copy.append(title, ...[suppliedFacts([row('Status', 'Current car'), row('Collected', date(car.collectedAt?.slice(0, 10))), row('Delivered VIN', car.vin),
     ...(same ? orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value)) : [])], 'gcsp-account-facts')].filter(Boolean));
   feature.append(mediaColumn(media), copy);
   return feature;
@@ -303,27 +295,10 @@ function newCarRow(order, vehicle, controls) {
 // FUCQ-278: a pending newest offer is the one decision; manual car choices step back until it is made.
 const offerHeld = (offers) => offers?.[0]?.state === 'pending';
 
-// The hero block tells Paula what her buddy is doing; copy and buttons follow the saved permission.
-function buddyCard(value, { pending, controls }) {
-  const permission = value?.permission;
-  const check = value?.lastSuccessfulCheck; const lines = [];
-  const looking = permission?.canSearch === true && permission.paused !== true;
-  let text; let actions;
-  const go = (label, key, variant) => button({ label, variant, disabled: pending, onClick: () => controls.go(key) });
-  if (!permission) { text = 'Tell your buddy what matters and it will keep looking for a suitable car for you.'; actions = [go('Set your preferences', 'brief', 'primary')]; }
-  else if (looking) {
-    text = 'Your buddy is looking for a car for you.';
-    if (check && Number.isFinite(Date.parse(check.checkedAt))) lines.push(`Last check ${demoTime(check.checkedAt)}: ${check.carsChecked} ${check.carsChecked === 1 ? 'car' : 'cars'} checked, ${check.suitableCars} suitable.`);
-    actions = [go('See buddy activity', 'activity', 'primary'), go('Change your preferences', 'brief', 'ghost')];
-  } else { text = 'Your buddy is paused, so it is not looking for cars.'; actions = [go('Change your preferences', 'brief', 'primary'), go('See buddy activity', 'activity', 'ghost')]; }
-  return { build: (level) => heroBlock('Your buddy', [text, ...lines], actions, level), primary: !permission || looking };
-}
-
-// One labelled block: a heading, plain lines and the state's actions (the first is the primary).
-function heroBlock(title, lines, actions, level = 2) {
-  const card = el(level === 2 ? 'section' : 'div', level === 2 ? 'gcsp-summary' : 'gcsp-summary-live'); card.setAttribute('aria-label', title);
-  if (level !== 2) card.setAttribute('role', 'group');
-  card.append(el(`h${level}`, 'gcsp-h2', title), ...lines.map((line) => el('p', 'gcsp-note', line)), ...actions);
+// One labelled summary: a heading, plain lines and the state's actions.
+function heroBlock(title, lines, actions) {
+  const card = el('section', 'gcsp-summary'); card.setAttribute('aria-label', title);
+  card.append(el('h2', 'gcsp-h2', title), ...lines.map((line) => el('p', 'gcsp-note', line)), ...actions);
   return card;
 }
 
@@ -389,24 +364,21 @@ function discardConfirm(controls, pending) {
 }
 
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
-export function renderAccountBody(main, { model, draft, offers = [], activity, pending = false, message, journey = false, confirmDiscard = false, controls, order, orderVehicle, restarted = false, reload } = {}) {
+export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, confirmDiscard = false, controls, order, orderVehicle, restarted = false, reload, preferences } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
   const head = el('div', 'gcsp-account-head');
-  head.append(screenIntro({ kicker: 'Choices', title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
+  head.append(screenIntro({ title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
   wrap.append(head);
   // A restarted run needs a reload, so nothing else on the page can work.
   if (restarted || model.state === 'restarted' || isRunRestarted(draft)) {
     wrap.append(runRestartedScreen({ reload })); main.replaceChildren(wrap); return () => wrap.remove();
   }
-  const fresh = el('div', 'gcsp-account-fresh');
   const provenance = model.account ? model.versions?.employeeContract : null;
-  if (provenance) fresh.append(el('p', 'gcsp-synthetic', `${provenance.label ? `Source: ${provenance.label}. ` : ''}Account as of ${asOf(model.asOf)}.`));
   // Presenter actions refresh the page; a manual refresh shows only after a failure, a conflict or a stale saved journey.
   const stale = ['source-failure', 'conflict', 'refused'].includes(model.state) || message?.error || draft?.value?.requiresRefresh
     || (draft && !['ok', 'not-found'].includes(draft.status));
-  if (stale) fresh.append(button({ label: 'Refresh account', variant: 'ghost', disabled: pending, onClick: controls.refresh }));
-  if (fresh.childElementCount) head.append(fresh);
+  if (stale) head.append(button({ label: 'Refresh account', variant: 'ghost', disabled: pending, onClick: controls.refresh }));
   if (message) { const note = statusScreen({ title: message.title, message: message.text, role: null }); note.classList.add('gcsp-account-message'); wrap.append(note); }
   const ordered = !journey && model.state === 'no-entitlement' && order
     && model.slots.some((slot) => slot.entitlementSlotId === order.entitlementSlotId);
@@ -419,14 +391,10 @@ export function renderAccountBody(main, { model, draft, offers = [], activity, p
   const held = !journey && offerHeld(offers) && Boolean(controls.openOffer);
   // An accepted newest offer has become an order, so its progress replaces the offer link.
   const offerShown = !journey && offers.length && offers[0].state !== 'accepted' && controls.openOffer;
-  let buddy = false; let hero = null;
-  if (!journey && !offerShown && !ordered && offers[0]?.state !== 'accepted' && activity?.status === 'ok' && controls.go) {
-    const built = buddyCard(activity.value, { pending, controls }); hero = built.build; buddy = built.primary;
-  }
-  if (offerShown) {
-    hero = (level) => heroBlock('Your car offer', ['Your buddy found a car for you. Check its details and deadline.',
+  if (offerShown && model.account) {
+    wrap.append(heroBlock('Your car offer', ['Your buddy found a car for you. Check its details and deadline.',
       ...(held ? ['Decide on your car offer before choosing another car.'] : [])],
-    [button({ label: 'View your offer', disabled: pending, onClick: () => controls.openOffer(offers[0]) })], level);
+    [button({ label: 'View your offer', disabled: pending, onClick: () => controls.openOffer(offers[0]) })]));
   }
   // FUCQ-224: once the slot has an order, its progress replaces the saved journey card.
   const superseded = ordered && draft?.status === 'ok' && draft.value.choices?.slotId === order.entitlementSlotId;
@@ -451,32 +419,34 @@ export function renderAccountBody(main, { model, draft, offers = [], activity, p
     wrap.append(statusScreen({ title: 'Saved journey could not be read', message: 'Refresh before starting or resuming a journey.', role: null }));
   }
   if (model.account) {
-    // FUCQ-237: an order in progress replaces "No current car"; a declined order keeps it. A confirmed return (FUCQ-252) shows it.
+    // FUCQ-237: an order in progress replaces "No current car" for an employee with no current car; a declined order keeps it.
     const none = !model.currentContracts.length && !model.currentOrders.length;
-    // Without a current car there is no key strip, so the allowance (and any override, FUCQ-277) gets one line here.
+    // Without a current car there is no Points cost row, so the allowance (and any override, FUCQ-277) gets one line here.
     if (none) {
       const base = model.allowance?.monthlyPoints ?? model.allowance?.value;
       const line = [Number.isFinite(base) && `Your allowance: ${points(base)} points a month`, overrideText(model)].filter(Boolean).join('. ');
       if (line) wrap.append(el('p', 'gcsp-note', `${line}.`));
     }
-    // The hero (buddy or offer) sits in the first current car; with no car it stands alone.
-    model.currentContracts.forEach((contract, index) => wrap.append(currentCar(contract, model, controls, buddy, index === 0 ? hero : null)));
-    if (!model.currentContracts.length && hero) wrap.append(hero(2));
+    for (const contract of model.currentContracts) wrap.append(currentCar(contract, model, controls));
     for (const car of model.currentOrders) wrap.append(orderCurrentCar(car, order, orderVehicle));
     if (none && model.carReturned) wrap.append(statusScreen({ title: 'No current car', message: 'Your previous car has been returned. Your new car becomes current at handover.', role: null }));
     else if (none && !(ordered && order.outcome !== 'declined')) wrap.append(statusScreen({ title: 'No current car', message: 'No current vehicle is supplied for your account.', role: null }));
-    for (const action of model.actions.filter((item) => item.action === 'order')) wrap.append(controls.startButton(action, buddy));
-    wrap.append(orderHistory(model, { order, orderVehicle, controls }), yourDetails(model, controls));
+    for (const action of model.actions.filter((item) => item.action === 'order')) wrap.append(controls.startButton(action));
+    if (preferences) wrap.append(preferences);
+    const secondary = el('div', 'gcsp-account-secondary');
+    secondary.append(orderHistory(model, { order, orderVehicle, controls }), yourDetails(model, controls));
+    wrap.append(secondary);
+    if (provenance) wrap.append(el('p', 'gcsp-synthetic', `${provenance.label ? `Source: ${provenance.label}. ` : ''}Account as of ${asOf(model.asOf)}.`));
   }
   main.replaceChildren(wrap);
   return () => wrap.remove();
 }
 
-export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, onNavigate, print, orderAdapter, helpAdapter, reload, signOut = adapter.readOnly !== true } = {}) {
+export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, onNavigate, print, orderAdapter, helpAdapter, reload, preferences, notifications, signOut = adapter.readOnly !== true } = {}) {
   const abort = new AbortController();
-  let envelope; let draft; let offers; let activity; let main; let pending = false; let message = null; let journey = false; let disposed = false;
+  let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
   let generation = 0; let teardown; let loading; let finishPrint; let drawer; let orderRow; let orderVehicle; let restarted = false;
-  let confirming = false; let syncVersion = 0; const live = viewStatus();
+  let confirming = false; let syncVersion = 0; let region; let regionTeardown; const live = viewStatus();
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
   const read = async (name) => {
@@ -495,8 +465,8 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       message = { title: 'Support route', text: `Support route: ${route}.` }; live.clear(); draw(true);
     } }),
     go: (key) => (onNavigate ?? ((to) => routePortal(to, root.ownerDocument.defaultView.location)))(key),
-    startButton: (action, buddy = false) => button({ label: action.action === 'replace' ? 'Choose a replacement' : 'Start a new order',
-      variant: !journey && (offerHeld(offers) || buddy) ? 'ghost' : 'primary',
+    startButton: (action) => button({ label: action.action === 'replace' ? 'Choose a replacement' : 'Start a new order',
+      variant: !journey && offerHeld(offers) ? 'ghost' : 'primary',
       disabled: pending || draft?.status !== 'ok' && draft?.status !== 'not-found', onClick: () => start(action) }),
     openRecord: (record, opener) => {
       drawer?.close(false);
@@ -522,10 +492,28 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       try { root.ownerDocument.defaultView.print(); } catch { finishPrint(); }
     },
   };
+  // One region node for the page's life: a mounted capability survives every redraw, and owns the content once supplied.
+  function preferencesRegion() {
+    if (region) return region;
+    region = el('section', 'gcsp-account-preferences'); region.id = 'gcsp-account-preferences';
+    if (preferences) {
+      region.setAttribute('aria-label', 'Your preferences');
+      regionTeardown = preferences(region, { signal: abort.signal });
+      return region;
+    }
+    const title = el('h2', 'gcsp-h2', 'Your preferences'); title.id = 'gcsp-account-preferences-title';
+    region.setAttribute('aria-labelledby', title.id);
+    region.append(title, el('p', 'gcsp-note', 'Tell your buddy what matters in your next car.'),
+      button({ label: 'Edit your preferences', variant: 'ghost', href: PORTAL_ROUTES.brief,
+        onClick: (event) => { event.preventDefault(); controls.go('brief'); } }));
+    return region;
+  }
   function draw(focus = false) {
     if (!main || disposed) return;
     if (draft?.status !== 'ok') confirming = false;
-    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, activity, pending, message, journey, confirmDiscard: confirming, controls, order: orderRow, orderVehicle, restarted, reload });
+    const model = toAccountView(envelope);
+    renderAccountBody(main, { model, draft, offers, pending, message, journey, confirmDiscard: confirming, controls, order: orderRow, orderVehicle, restarted, reload,
+      preferences: model.account ? preferencesRegion() : undefined });
     if (message) live.announce(`${message.title}. ${message.text}`);
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
   }
@@ -551,14 +539,12 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   function holdOrder({ row, car }) { orderRow = row; orderVehicle = car; }
   async function loadAccount() {
     const version = ++generation;
-    const [accountResult, draftResult, offerResult, activityResult, found] = await Promise.all([read('readAccount'), read('readDraft'),
-      typeof adapter.readOffers === 'function' ? read('readOffers') : null,
-      typeof adapter.readActivity === 'function' ? read('readActivity') : null, findOrder()]);
+    const [accountResult, draftResult, offerResult, found] = await Promise.all([read('readAccount'), read('readDraft'),
+      typeof adapter.readOffers === 'function' ? read('readOffers') : null, findOrder()]);
     if (disposed || version !== generation) return { status: 'unavailable' };
     orderRow = null; orderVehicle = null;
     if (found) holdOrder(found);
     envelope = accountResult; draft = draftResult; offers = offerResult?.status === 'ok' ? offerResult.value.offers : [];
-    activity = activityResult;
     const model = toAccountView(envelope);
     if (isRunRestarted(envelope)) return { status: envelope.status };
     return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', ...accountIdentity(model.account),
@@ -577,20 +563,18 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   async function sync() {
     if (pending || disposed || !main) return;
     const version = ++syncVersion; const base = generation;
-    const [accountResult, draftResult, offerResult, activityResult, latest] = await Promise.all([read('readAccount'), read('readDraft'),
-      typeof adapter.readOffers === 'function' ? read('readOffers') : null,
-      typeof adapter.readActivity === 'function' ? read('readActivity') : null, listLatest()]);
+    const [accountResult, draftResult, offerResult, latest] = await Promise.all([read('readAccount'), read('readDraft'),
+      typeof adapter.readOffers === 'function' ? read('readOffers') : null, listLatest()]);
     if (disposed || pending || !main || version !== syncVersion || base !== generation) return;
     if (accountResult?.status !== 'ok' || !['ok', 'not-found'].includes(draftResult?.status) || !latest) return;
-    const before = JSON.stringify([envelope, draft, offers, activity, orderRow?.orderUuid]);
+    const before = JSON.stringify([envelope, draft, offers, orderRow?.orderUuid]);
     const same = Boolean(latest.orderUuid) && latest.orderUuid === orderRow?.orderUuid;
     const next = latest.orderUuid && !same ? await describeOrder(latest) : null;
     if (disposed || pending || !main || version !== syncVersion || base !== generation || latest.orderUuid && !same && !next) return;
     if (same) orderRow = latest.orders.find((item) => item?.orderUuid === latest.orderUuid) ?? orderRow;
     else { orderRow = null; orderVehicle = null; if (next) holdOrder(next); }
     envelope = accountResult; draft = draftResult; if (offerResult?.status === 'ok') offers = offerResult.value.offers;
-    if (activityResult?.status === 'ok') activity = activityResult;
-    if (JSON.stringify([envelope, draft, offers, activity, orderRow?.orderUuid]) === before) return;
+    if (JSON.stringify([envelope, draft, offers, orderRow?.orderUuid]) === before) return;
     const win = root.ownerDocument.defaultView; const held = main.contains(root.ownerDocument.activeElement) && root.ownerDocument.activeElement.closest(FOCUSABLE);
     const key = held ? focusKeyOf(held) : null;
     keepScroll(win, () => draw());
@@ -681,10 +665,10 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     } catch { if (!disposed) { confirming = false; discardFailed(failure); } }
     finally { pending = false; if (!disposed) { draw(done); if (!done) discardButton()?.focus(); } }
   }
-  const shellAdapter = { signOut, loadAccount: () => { loading = loadAccount(); return loading; },
+  const shellAdapter = { signOut, notifications, loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
   teardown = mountEmployee(root, { brand, ...shellAdapter }); keepLive();
-  const destroy = () => { disposed = true; generation += 1; abort.abort(); drawer?.close(false); finishPrint?.(); teardown(); live.root.remove(); };
+  const destroy = () => { disposed = true; generation += 1; abort.abort(); drawer?.close(false); finishPrint?.(); regionTeardown?.(); teardown(); live.root.remove(); };
   destroy.refresh = refresh;
   destroy.sync = sync;
   return destroy;

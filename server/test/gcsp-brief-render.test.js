@@ -311,3 +311,20 @@ test('FUCQ-328: Paula\'s scheme facts show what her records hold and count unans
   assert.equal(jordan.node.querySelector('.vm-facts-more').textContent, 'No current car on your scheme account.');
   assert.doesNotMatch(jordan.text, /Not supplied/);
 });
+test('a saved Body list (FUCQ-368) shows every choice selected, keeps its order and is not cleared by editing', async (t) => {
+  const editor = structuredClone(fixture.edited.value); editor.context.preferences.body.multiple = true; editor.context.preferences.fuel.multiple = true;
+  Object.assign(editor.initial.brief.preferences.body, { value: ['saloon', 'estate'].sort((a, b) => editor.context.preferences.body.values.indexOf(a) - editor.context.preferences.body.values.indexOf(b)) });
+  const main = document.createElement('main'); document.body.append(main); const previews = [];
+  const teardown = mountBriefBody(main, { editor, transport: { preview: async (v) => { previews.push(v); return fixture.preview; }, saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }) } });
+  t.after(() => { teardown(); main.remove(); }); await settle();
+  const body = main.querySelector('[aria-label="Body style: what you prefer"]');
+  assert.deepEqual([...body.querySelectorAll('.is-selected')].map((n) => n.textContent), ['Saloon', 'Estate']);
+  assert.match(main.querySelector('.gcsp-brief-known').textContent, /preference saloon, estate/);
+  [...body.querySelectorAll('button')].find((n) => n.textContent === 'SUV').click(); await settle();
+  assert.deepEqual(previews.at(-1).brief.preferences.body.value, ['saloon', 'estate', 'suv']);
+  const last = [...body.querySelectorAll('button')].filter((n) => n.getAttribute('aria-checked') === 'true');
+  last.slice(1).forEach((n) => n.click()); await settle();
+  last[0].click(); await settle();
+  assert.deepEqual(previews.at(-1).brief.preferences.body.value, ['saloon'], 'the last choice stays: clearing is the Account remove action');
+  assert.equal([...body.querySelectorAll('.is-selected')].length, 1);
+});
