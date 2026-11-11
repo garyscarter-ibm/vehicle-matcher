@@ -161,6 +161,10 @@ test('Your details mounts the email control once and preserves unsaved input acr
   const stop = mountAccount(root, { adapter }); await tick(); await tick();
   const input = root.querySelector('input[type=email]'); assert.ok(input); input.value = 'unsaved@example.test';
   assert.match(input.closest('section').textContent, /Your details/);
+  const disclosure = input.closest('details'); assert.ok(disclosure); assert.equal(disclosure.open, false);
+  assert.equal(disclosure.closest('.gcsp-account-row'), root.querySelector('.gcsp-account-rows').lastElementChild);
+  disclosure.open = true;
   [...root.querySelectorAll('button')].find((node) => node.textContent === 'Get help with your details').click();
+  assert.equal(input.closest('details'), disclosure); assert.equal(disclosure.open, true);
   assert.equal(root.querySelector('input[type=email]'), input); assert.equal(input.value, 'unsaved@example.test'); assert.equal(reads, 1); stop();
 });

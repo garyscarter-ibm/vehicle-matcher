@@ -87,3 +87,51 @@ it is not represented as fixed or used to broaden this change.
 The selected scope excludes retail ranking, ML/training, the whole unrelated server suite and live
 provider/inbox verification. The baseline was fast-forwarded to c5a20b12 (documentation changes only)
 before final direct validation. No Jira changes or production employee-address writes were made.
+
+## Quieter notification settings
+
+Gary requested a less prominent setting at the bottom of the table, collapsed by default.
+**Your Cars → Your details** now ends with the Notifications row. Its **Notification email**
+disclosure starts closed and opens the existing email field and Save button. It uses the shared
+native disclosure styling; account redraws preserve an open disclosure and any unsaved address.
+
+Final scoped validation: **10 passed, 0 failed, 0 skipped**, covering the settings regressions,
+last-row placement, default closed state and redraw preservation. Actual account browser checks
+at 1440 and 390 px passed keyboard open/close, invalid-email focus, save and clear, with no
+horizontal overflow or page errors. Both collapsed captures were visually inspected; the linked
+desktop, narrow and checks evidence above now records this presentation.
+
+Local targeted receipt:
+`.claude/test-runs/targeted-20704309f85db9bddfd9d63eed73426d0251fc4e04612a46328a8ad7035f829c-default-1794438106340535000.json`.
+The baseline advanced from dd2ac6a8 to 81c14be9 after validation; the intervening changes only
+updated the unrelated presenter diagnosis document. No backend delivery behavior changed, and
+live Render deployment and inbox delivery remain unverified.
+
+## Live follow-up: Paula inbox not received
+
+Gary reported no email after another attempt and confirmed he meant Paula. Read-only hosted
+outbox inspection at **11 November 2026, 23:05 UTC** found nine current-run messages:
+
+- Paula's latest offer (`buddy-notification:e8d79611cbf54bf3cdbdf2d59670e742d3e35d4fba6b086842a659e6719c3f10`)
+  and renewal-case update (`case-b418616b578cbaaac2ce077680641f8b9d1273c2`) are `sent`,
+  `configured`, attempt 1, with no error or next attempt.
+- Greg's latest offer failed with `recipient-email-invalid`; this is separate from Paula's report.
+- Six older messages retain `mail-configuration-invalid`. They are historical failures, not the
+  outcome of Paula's latest send.
+
+Paula's own authenticated settings route returns a saved delivery address (version 1) at IBM,
+masked here as `ga***@ibm.com`. Investigation used a separate presenter session and the ordinary
+View as Paula flow; it changed no employee settings and initiated no notification or clock tick.
+The outbox's 18 November timestamp is simulated application time, not the real date of this check.
+
+The configured Brevo transport marks a message sent only after a confirmed provider acknowledgement
+(HTTP 201 and a valid message ID, or reuse of that persisted acknowledgement). This establishes
+provider acceptance, not inbox delivery. No delivery-event/webhook status is stored in the outbox.
+Current evidence therefore places the unresolved receipt failure after provider acceptance; it
+does not establish whether the message was delivered, filtered, deferred or bounced.
+
+Next required evidence is Brevo's transactional delivery log for Paula's latest offer and IBM
+destination, including event and reason. Chrome extension tab selection failed and native controls
+reported missing Computer Use permission; the named local GCSP Keychain item was unavailable.
+No provider credential was retrieved. Gary was asked for the delivery-log event. No code change,
+new live send, resend, Jira write or claim of inbox delivery was made during this investigation.

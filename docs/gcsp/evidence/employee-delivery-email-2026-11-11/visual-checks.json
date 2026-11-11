@@ -1,6 +1,9 @@
 [
   {
     "width": 1440,
+    "collapsedByDefault": true,
+    "lastRow": true,
+    "keyboardDisclosure": true,
     "keyboardSave": true,
     "invalidFocus": true,
     "clear": true,
@@ -8,6 +11,9 @@
   },
   {
     "width": 390,
+    "collapsedByDefault": true,
+    "lastRow": true,
+    "keyboardDisclosure": true,
     "keyboardSave": true,
     "invalidFocus": true,
     "clear": true,
