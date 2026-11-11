@@ -1254,7 +1254,7 @@ test('the car record drawer opens from history rows only, and Escape, Close and 
     // From a history row, with the Close button.
     const rowButton = root.querySelectorAll('.gcsp-account-history tbody .gcsp-table-action')[1]; rowButton.focus(); rowButton.click();
     panel = root.querySelector('.gcsp-side-drawer-panel');
-    assert.equal(panel.querySelector('h2').textContent, 'Model not supplied');
+    assert.equal(panel.querySelector('h2').textContent, 'BMW 1 Series Sports Hatch 120');
     assert.match(sectionOf(panel, 'Contract').textContent, /StatusReturned/); assert.match(sectionOf(panel, 'Contract').textContent, /Returned1 December 2025/);
     findButton(panel, 'Close').click(); assert.equal(root.querySelector('.gcsp-side-drawer'), null);
     assert.equal(document.activeElement.getAttribute('aria-label'), rowButton.getAttribute('aria-label'));
@@ -1264,6 +1264,19 @@ test('the car record drawer opens from history rows only, and Escape, Close and 
     press('Tab'); assert.ok(inside.contains(document.activeElement));
     root.querySelector('.gcsp-side-drawer-backdrop').click(); assert.equal(root.querySelector('.gcsp-side-drawer'), null);
     assert.equal(document.activeElement, opener);
+  } finally { destroy(); root.remove(); }
+});
+
+test('FUCQ-316: a history car with no model is named from what is known, never "Model not supplied", in the row and its record', async () => {
+  const envelope = accountFixture(); delete envelope.value.histories[1].entries[0].model;
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => envelope });
+  try {
+    assert.equal(cellsOf(rowsOf(root)[1])[0], 'Your previous car');
+    assert.equal(rowsOf(root)[1].querySelector('.is-missing'), null);
+    root.querySelectorAll('.gcsp-account-history tbody .gcsp-table-action')[1].click();
+    const panel = root.querySelector('.gcsp-side-drawer-panel');
+    assert.equal(panel.querySelector('h2').textContent, 'Your previous car');
+    assert.doesNotMatch(`${root.textContent}${panel.textContent}`, /model not supplied/i);
   } finally { destroy(); root.remove(); }
 });
 
@@ -1290,7 +1303,7 @@ test('order history is one table across schemes with a status word per row, and 
     assert.deepEqual([...section.querySelectorAll('thead th')].map((n) => n.textContent), ['Car', 'Scheme', 'Collected', 'Ended', 'Status', 'Record']);
     assert.deepEqual(rowsOf(root).map(cellsOf), [
       ['BMW 3 Series Touring 320i', 'Scheme 1', '1 June 2026', 'Ends 1 Dec 2026', 'Current car', 'View record'],
-      ['Model not supplied', 'Scheme 2', '1 January 2025', 'Returned 1 Dec 2025', 'Returned', 'View record']]);
+      ['BMW 1 Series Sports Hatch 120', 'Scheme 2', '1 January 2025', 'Returned 1 Dec 2025', 'Returned', 'View record']]);
     assert.equal(rowsOf(root)[0].querySelector('.is-success').textContent, 'Current car');
     assert.equal(rowsOf(root)[1].querySelector('.is-success'), null);
     assert.equal(section.querySelector('.gcsp-synthetic').textContent, "Scheme 2 shows history only; you can't order through it here.");

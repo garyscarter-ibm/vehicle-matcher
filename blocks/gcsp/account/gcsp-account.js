@@ -211,7 +211,7 @@ function currentCar(contract, model, controls, explained = false) {
   const terms = pointsTerms(contract, model);
   const feature = el('section', 'gcsp-feature');
   feature.dataset.contractId = contract.contractId;
-  const heading = el('h2', 'gcsp-h2', contract.model ?? 'Current car: model not supplied');
+  const heading = el('h2', 'gcsp-h2', contract.model ?? 'Your current car');
   heading.id = `gcsp-account-car-${++serial}`;
   feature.setAttribute('aria-labelledby', heading.id);
   const source = contract.media;
@@ -247,7 +247,9 @@ function currentCar(contract, model, controls, explained = false) {
   return feature;
 }
 
-const recordFor = (contract, model, scheme) => ({ contract, model, title: contract.model ?? 'Model not supplied',
+// FUCQ-316: an unknown model is named by what is known about the car, never a "not supplied" placeholder.
+const carName = (contract, fallback) => contract.model ?? fallback ?? (contract.status === 'current' ? 'Your current car' : 'Your previous car');
+const recordFor = (contract, model, scheme, fallback) => ({ contract, model, title: carName(contract, fallback),
   context: ['Car record', scheme].filter(Boolean).join(' \u00b7 ') });
 
 // FUCQ-252: a collected order the server reports as the current car; its name and image come from the order read.
@@ -256,7 +258,7 @@ function orderCurrentCar(car, order, orderVehicle) {
   const name = same ? orderVehicle?.name : null;
   const feature = el('section', 'gcsp-feature');
   feature.dataset.orderUuid = car.orderUuid;
-  const heading = el('h2', 'gcsp-h2', name ?? 'Current car: model not supplied');
+  const heading = el('h2', 'gcsp-h2', name ?? 'Your current car');
   heading.id = `gcsp-account-car-${++serial}`;
   feature.setAttribute('aria-labelledby', heading.id);
   const { media } = mediaWell({ name: name ?? 'Current car', photo: same ? orderVehicle?.photo ?? '' : '', line: '',
@@ -316,16 +318,16 @@ function orderHistory(model, { order, orderVehicle, controls }) {
   const title = el('h2', 'gcsp-h2', 'Order history'); title.id = 'gcsp-account-history-title';
   section.append(title);
   const rows = [];
-  const add = (contract, scheme, ended, tag) => {
-    const car = contract.model ?? 'Model not supplied';
-    rows.push({ car: contract.model ? car : { label: car, missing: true }, scheme, collected: date(contract.actualCollectionDate), ended,
-      status: tag, record: recordFor(contract, model, scheme), name: `View record for ${[car, scheme, ended].filter(Boolean).join(', ')}` });
+  const add = (contract, scheme, ended, tag, fallback) => {
+    const car = carName(contract, fallback);
+    rows.push({ car, scheme, collected: date(contract.actualCollectionDate), ended,
+      status: tag, record: recordFor(contract, model, scheme, fallback), name: `View record for ${[car, scheme, ended].filter(Boolean).join(', ')}` });
   };
   const placed = order && model.slots.some((slot) => slot.entitlementSlotId === order.entitlementSlotId);
   if (placed) {
     const car = orderVehicle?.name ?? null;
     add({ model: car, status: order.outcome, slotId: order.entitlementSlotId, orderReference: order.source?.orderReference, orderNumber: order.source?.orderNumber },
-      schemeTitleFor(model, model.account?.schemeId), null, status(order.outcome));
+      schemeTitleFor(model, model.account?.schemeId), null, status(order.outcome), 'Your new car');
   }
   model.histories.forEach((history, index) => {
     for (const contract of history.entries) {
