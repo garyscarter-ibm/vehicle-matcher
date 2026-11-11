@@ -1091,7 +1091,7 @@ test('the current car: large image, key facts and full record access', async () 
     assert.equal(car.querySelector('.gcsp-account-spec').previousElementSibling, car.querySelector('h2'));
     const countdown = car.querySelector('.gcsp-countdown');
     assert.equal(countdown.textContent, 'Contract ends in 26 days \u00b7 1 December 2026');
-    assert.equal(countdown.previousElementSibling.className, 'gcsp-account-title');
+    assert.equal(countdown.previousElementSibling, car.querySelector('.gcsp-account-title'));
     assert.deepEqual(factPairs(car.querySelector('.gcsp-account-car-facts')), [['Points per month', '1,100 / 1,300'], ['Current mileage', '5,200 mi']]);
     assert.equal(car.querySelector('details.gcsp-details'), null);
     assert.deepEqual([...car.querySelectorAll('button')].map((node) => node.textContent), ['View car record', 'Choose a replacement']);

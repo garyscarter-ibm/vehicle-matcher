@@ -1,0 +1,6 @@
+/* Shared type roles for the current car and focused offer. */
+.gcsp .vm.gcsp-vehicle-page { font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); }
+.gcsp .gcsp-vehicle-heading { display: flex; flex-direction: column; gap: var(--gcsp-space-1); min-width: 0; }
+.gcsp .gcsp-vehicle-copy .gcsp-vehicle-title { margin: 0; font-family: var(--gcsp-font); font-size: var(--gcsp-font-size-title); line-height: var(--gcsp-font-line-title); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-vehicle-copy .gcsp-vehicle-context { margin: 0; color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); line-height: var(--gcsp-font-line-label); font-weight: var(--gcsp-font-weight); }
+.gcsp .gcsp-vehicle-meta, .gcsp .gcsp-vehicle-meta .gcsp-finish { margin: 0; font-size: var(--gcsp-font-size-regular); line-height: var(--gcsp-font-line-regular); font-weight: var(--gcsp-font-weight); }

@@ -144,7 +144,7 @@ function acceptedFacts(model) {
 
 /** Compose shared primitives only; server projection owns vehicle facts, terms and decisions. */
 export function createOfferView(root, { refresh, decide, tickDeclaration, setExpectedReturnMileage, selectReason, cancelDecline, refreshReasons, mountFollowup, links, openDecision } = {}) {
-  const page = el('div', 'vm gcsp-offer-body');
+  const page = el('div', 'vm gcsp-offer-body gcsp-vehicle-page');
   page.id = `gcsp-offer-${++sequence}`;
   const content = el('div', 'gcsp-offer-content');
   // FUCQ-234: screen-reader only, and silent when the offer first lands because the heading already shows the state.

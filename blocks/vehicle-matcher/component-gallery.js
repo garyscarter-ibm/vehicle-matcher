@@ -259,6 +259,9 @@ function gregKitExamples() {
   equipmentView.members[0].facts.push({ label: 'Options', value: equipmentItems.join(', '), items: equipmentItems });
   group('Vehicle decision: 41 supplied equipment labels').append(vehicleDecisionCard({ view: equipmentView }));
   const focused = offerFixture('fuller-offer').value.card;
+  const currentSummary = el('div', 'gcsp-vehicle-copy gcsp-vehicle-heading');
+  currentSummary.append(el('p', 'gcsp-vehicle-context', 'Current car'), el('h2', 'gcsp-vehicle-title', 'BMW 320i M Sport Saloon'), el('p', 'gcsp-vehicle-meta', 'Automatic · Petrol'));
+  group('Vehicle summary: shared current car typography').append(currentSummary);
   group('Focused offer: decision panel').append(vehicleDecisionCard({ view: focused, layout: 'focused', kicker: 'Your buddy found a car for you' }));
   group('Focused offer: four benefits and five tradeoffs').append(decisionHighlights({ layout: 'list',
     benefits: [{ number: '300', title: 'fewer points', detail: 'Every month, compared with your current car' }, ...focused.members[0].decision.reasons.map((title) => ({ title }))],
