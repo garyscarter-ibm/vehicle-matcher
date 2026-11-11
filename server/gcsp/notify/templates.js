@@ -48,23 +48,24 @@ export function renderOfferMessage({ offer, quote, employee, offerLink, now }) {
   if (!offer || !employee || !safeOfferLink(offerLink) || !validInstant(now) || !validInstant(offer.expiresAt)) {
     throw new TypeError('Offer message inputs are unavailable.');
   }
-  const given = copy(employee.name);
-  const name = given || 'Scheme employee';
-  const greeting = given ? `Hello ${given},` : 'Hello,';
+  const fullName = copy(employee.name);
+  const name = fullName || 'Scheme employee';
+  const firstName = fullName.split(/\s+/)[0];
   const vehicle = vehicleName(quote);
   const image = vehicleImage(quote, vehicle);
   const photo = image ? `<img src="${escape(image.src)}" alt="${escape(image.alt)}" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;margin:16px 0">` : '';
   const points = monthlyPoints(quote);
   const expired = Date.parse(offer.expiresAt) <= Date.parse(now) || offer.state === 'expired';
   const subject = expired ? 'Your vehicle offer has expired' : 'Your vehicle offer is ready to review';
+  const heading = firstName ? `${firstName}, ${subject[0].toLowerCase()}${subject.slice(1)}` : subject;
   const status = expired ? 'This offer has expired. Open your employee account to check its current status.'
     : `Respond by ${deadlineWords(offer.expiresAt)}.`;
   const missing = quote?.facts ? '' : 'Full vehicle details are not available in this notification. Check the offer in your account.';
-  const textBody = [greeting, '', subject, vehicle, points, status, missing, '', `Review your offer: ${offerLink}`].filter((line) => line !== '').join('\n\n');
+  const textBody = [heading, vehicle, points, status, missing, '', `Review your offer: ${offerLink}`].filter((line) => line !== '').join('\n\n');
   // Email clients need inline styles; colours and spacing follow the offer page's Density theme.
   const summary = `<div style="background:#fff;border:1px solid #dcdee1;padding:16px;margin:16px 0 24px">${points ? `<p style="margin:0 0 16px;font-size:20px;font-weight:bold">${escape(points)}</p>` : ''}<p style="margin:0;${points ? 'border-top:1px solid #dcdee1;padding-top:16px;' : ''}">${escape(status)}</p></div>`;
   const action = `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:24px 0"><tr><td bgcolor="#037493"><a style="display:inline-block;padding:12px 24px;border:1px solid #037493;background:#037493;color:#fff;font-weight:bold;text-decoration:none" href="${escape(offerLink)}">View offer</a></td></tr></table>`;
-  const htmlBody = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${subject}</title></head><body style="margin:0;background:#f5f6f6;color:#1f2328;font-family:Arial,sans-serif;line-height:1.6"><main style="max-width:600px;margin:0 auto;padding:24px;background:#fff;overflow-wrap:anywhere"><p style="font-size:14px;color:#4e545d">GCSP employee vehicle scheme</p><h1 style="font-size:26px;line-height:1.25">${subject}</h1><p>${escape(greeting)}</p>${photo}<h2 style="font-size:20px">${escape(vehicle)}</h2>${summary}${missing ? `<p>${escape(missing)}</p>` : ''}${action}<p style="font-size:12px;color:#4e545d">If you cannot use the button, copy this address:</p><p style="font-size:12px;word-break:break-all">${escape(offerLink)}</p></main></body></html>`;
+  const htmlBody = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${subject}</title></head><body style="margin:0;background:#f5f6f6;color:#1f2328;font-family:Arial,sans-serif;line-height:1.6"><main style="max-width:600px;margin:0 auto;padding:24px;background:#fff;overflow-wrap:anywhere"><p style="font-size:14px;color:#4e545d">GCSP employee vehicle scheme</p><h1 style="font-size:26px;line-height:1.25">${escape(heading)}</h1>${photo}<h2 style="font-size:20px">${escape(vehicle)}</h2>${summary}${missing ? `<p>${escape(missing)}</p>` : ''}${action}<p style="font-size:12px;color:#4e545d">If you cannot use the button, copy this address:</p><p style="font-size:12px;word-break:break-all">${escape(offerLink)}</p></main></body></html>`;
   return { recipient: { employeeId: employee.employeeId, name, fictional: true }, subject, textBody, htmlBody, offerLink,
     ...(image ? { vehicleImage: image } : {}) };
 }
