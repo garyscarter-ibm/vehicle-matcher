@@ -11299,6 +11299,25 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "supply.release.modelMix",
+      "value": {
+        "u11-x1": 35,
+        "g42-coupe": 21,
+        "f70-sports-hatch": 15,
+        "g61-i5": 11,
+        "u10-x2": 10,
+        "g21-touring": 6,
+        "g26-i4": 3
+      },
+      "unit": "relative weight of each model line in a release",
+      "status": "assumed",
+      "basis": "Demo assumption (Gary Carter, 11 November 2026): each release follows the approved presenter console mockup spread of model lines. Replaces the stock-locator car counts as release weights; colours still follow the observed shares.",
+      "source": "docs/gcsp/mockups/presenter-console.html",
+      "sourceDate": "2026-11-11",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "supply.leadTimeDays",
       "value": 56,
       "unit": "calendar days",
@@ -13548,11 +13567,31 @@
           "modelLineId": "g61-i5",
           "title": "G61 i5",
           "displayName": "i5 Touring"
+        },
+        "G21": {
+          "modelLineId": "g21-touring",
+          "title": "G21 Touring",
+          "displayName": "3 Series Touring"
+        },
+        "G26": {
+          "modelLineId": "g26-i4",
+          "title": "G26 i4",
+          "displayName": "i4 Gran Coupé"
+        },
+        "U10": {
+          "modelLineId": "u10-x2",
+          "title": "U10 X2",
+          "displayName": "X2"
+        },
+        "U11": {
+          "modelLineId": "u11-x1",
+          "title": "U11 X1",
+          "displayName": "X1"
         }
       },
       "unit": "scheme model line by corpus generation",
       "status": "assumed",
-      "basis": "The retained corpus carries a generation code but no model names. F70 and G42 map to the scheme lines of the same name; G61 is taken as the G61 i5 line because fleet-plan.json maps T5MJ (G61E) to it. Other lines have no retained corpus rows (FUCQ-77 coverage gap). Display names drop the generation code.",
+      "basis": "The retained corpus carries a generation code but no model names. F70 and G42 map to the scheme lines of the same name; G61 is taken as the G61 i5 line because fleet-plan.json maps T5MJ (G61E) to it. Generated stock reads the demo fleet corpus (Gary, 11 November 2026), which also carries G21, G26, U10 and U11; U11 maps to the X1 line, so iX1 cars count as X1 and U10 iX2 cars as X2. Display names drop the generation code.",
       "source": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
       "sourceDate": "2026-11-07",
       "policyVersion": "gcsp-policy-v1",

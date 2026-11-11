@@ -50,7 +50,7 @@ async function compose(t, { generated = false, environmentId = 'presenter-releas
 
 const EMPLOYEE_WORDS = /employee|paula|alex|eligib|gateStatus|suitab|offer|match|hold|quote|brief|score|grade|principal/i;
 function assertUserAgnostic(value) {
-  assert.deepEqual(Object.keys(value).sort(), ['cars', 'counts', 'modelLines', 'release', 'runId']);
+  assert.deepEqual(Object.keys(value).sort(), ['cars', 'charts', 'counts', 'modelLines', 'release', 'runId']);
   assert.deepEqual(Object.keys(value.counts).sort(), ['colours', 'modelLines', 'onScheme', 'released']);
   for (const car of value.cars) assert.deepEqual(Object.keys(car).sort(), ['colourName', 'id', 'imageAlt', 'imageSrc', 'modelLine', 'modelName']);
   assert.doesNotMatch(JSON.stringify(value), EMPLOYEE_WORDS);
@@ -66,7 +66,7 @@ test('demo stock: release null with zero counts before a release, then the first
   const f = await compose(t);
   const before = await f.call(PATH);
   assert.equal(before.status, 200);
-  assert.deepEqual(before.body.value, { runId: f.context.runId, release: null, cars: [], modelLines: [],
+  assert.deepEqual(before.body.value, { runId: f.context.runId, release: null, cars: [], modelLines: [], charts: { colours: [], fuel: [], points: [] },
     counts: { released: 0, modelLines: 0, colours: 0, onScheme: 0 } });
   const released = await f.release('first-release');
   const reply = await f.call(PATH);
@@ -123,6 +123,12 @@ test('generated stock: the release reads its model lines and colours from the ge
     assert.match(car.modelLine, /^BMW /); assert.doesNotMatch(car.modelName, / in /);
   }
   assert.equal(value.modelLines.reduce((sum, row) => sum + row.count, 0), value.counts.released);
+  // Charts: every released car is counted once in colour, fuel and points; seven lines follow the mockup mix.
+  const total = (list) => list.reduce((sum, row) => sum + row.count, 0);
+  for (const name of ['colours', 'fuel', 'points']) assert.equal(total(value.charts[name]), value.counts.released, name);
+  assert.ok(value.charts.points.every((row) => /^\d+$/.test(row.label)));
+  assert.ok(value.charts.fuel.every((row) => ['Petrol', 'Diesel', 'Plug-in hybrid', 'Electric'].includes(row.label)));
+  assert.equal(value.modelLines.length, 7);
 });
 
 test('the read writes nothing', async (t) => {

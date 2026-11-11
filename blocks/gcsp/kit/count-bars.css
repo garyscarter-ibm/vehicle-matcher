@@ -1,0 +1,10 @@
+/* Count bars: label, bar and count rows, the presenter mockup's chart style. Bars scale to the largest count. */
+.gcsp .gcsp-count-bars { margin: 0; min-width: 0; }
+.gcsp .gcsp-count-bars-heading { margin: 0 0 var(--gcsp-space-2); color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); font-weight: var(--gcsp-font-weight); }
+.gcsp .gcsp-count-bars-rows { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.gcsp .gcsp-count-bars-row { display: grid; grid-template-columns: minmax(0, 180px) minmax(0, 1fr) 28px; gap: 10px; align-items: center; font-size: var(--gcsp-font-size-label); }
+.gcsp .gcsp-count-bars-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gcsp .gcsp-count-bars-bar { height: 8px; background: var(--gcsp-surface-page); }
+.gcsp .gcsp-count-bars-bar span { display: block; height: 100%; width: var(--gcsp-count-share, 0); background: var(--gcsp-accent); }
+.gcsp .gcsp-count-bars-n { text-align: right; font-variant-numeric: tabular-nums; }
+.gcsp .gcsp-count-bars-empty { color: var(--gcsp-text-muted); }

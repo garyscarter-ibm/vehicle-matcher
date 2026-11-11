@@ -3,6 +3,7 @@ import { el, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { friendlyTime } from '../kit/friendly-time.js';
 import { releaseGrid } from '../kit/release-grid.js';
 import { loadingSkeleton } from '../kit/loading-skeleton.js';
+import { countBars } from '../kit/count-bars.js';
 
 const COUNT_MS = 600;
 const REDUCE = '(prefers-reduced-motion: reduce)';
@@ -29,19 +30,28 @@ export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
   const grid = releaseGrid({ label: 'Released cars', columns: 20, matchMedia });
   const empty = statusScreen({ title: 'No cars released yet', role: null, level: 3 });
   const body = el('div', 'gcsp-console-release-body'); const foot = el('div', 'gcsp-console-release-foot');
-  root.append(head, body, foot); parent.append(root);
+  // Charts sit in a closed disclosure, like What happened (Gary, 11 Nov); built from the release read only.
+  const charts = el('details', 'gcsp-release-charts'); const chartsTitle = el('summary', 'gcsp-release-charts-summary', 'Release charts');
+  const chartGrid = el('div', 'gcsp-release-charts-grid'); charts.append(chartsTitle, chartGrid); charts.hidden = true;
+  root.append(head, body, foot, charts); parent.append(root);
 
   const abort = new AbortController(); let disposed = false; let turn = 0; let shownKey = null; let first = true; let counting = 0; let totals = null;
   const reduced = () => { try { return Boolean((matchMedia ?? win?.matchMedia?.bind(win))?.(REDUCE)?.matches); } catch { return false; } };
 
-  function paintFoot(values, lines) {
+  function paintFoot(values) {
     counting += 1;
     totals = factList(LABELS.map((label, at) => ({ label, value: shown(values[at]) })), { className: 'gcsp-release-totals' });
-    const breakdown = factList(lines.map((row) => ({ label: row.modelLine, value: row.count })), { className: 'gcsp-release-lines' });
-    breakdown.setAttribute('aria-label', 'Cars released by model line');
-    const heading = el('p', 'gcsp-release-lines-title', 'Cars released by model line'); heading.setAttribute('aria-hidden', 'true');
-    const side = el('div', 'gcsp-release-lines-wrap'); side.append(heading, breakdown);
-    foot.replaceChildren(totals, ...(lines.length ? [side] : []));
+    foot.replaceChildren(totals);
+  }
+  function paintCharts(lines, data) {
+    const rows = (list) => (Array.isArray(list) ? list : []).filter((row) => text(row?.label)).map((row) => ({ label: row.label, count: count(row.count) }));
+    const points = rows(data?.points).map((row) => ({ ...row, label: /^\d+$/.test(row.label) ? `${shown(Number(row.label))} points` : row.label }));
+    chartGrid.replaceChildren(
+      countBars({ label: 'Model line', rows: lines.map((row) => ({ label: row.modelLine, count: row.count })) }),
+      countBars({ label: 'Colour', rows: rows(data?.colours), limit: 8, otherLabel: 'Other colours' }),
+      countBars({ label: 'Points a month', rows: points }),
+      countBars({ label: 'Fuel', rows: rows(data?.fuel) }));
+    charts.hidden = !lines.length;
   }
   // Counts the painted counters up to `end` over COUNT_MS; paintFoot supersedes it.
   function countUp(end) {
@@ -56,7 +66,7 @@ export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
   }
   function paintBefore() {
     grid.clear(); shownKey = null; line.textContent = 'Waiting for 11:30am';
-    body.replaceChildren(empty); paintFoot(NONE, []);
+    body.replaceChildren(empty); paintFoot(NONE); paintCharts([], null);
   }
 
   async function refresh() {
@@ -70,11 +80,12 @@ export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
     const final = [value.counts?.released, value.counts?.modelLines, value.counts?.colours, value.counts?.onScheme].map(count);
     const lines = (Array.isArray(value.modelLines) ? value.modelLines : []).filter((row) => text(row?.modelLine)).map((row) => ({ modelLine: row.modelLine, count: count(row.count) }));
     line.textContent = `Released ${friendlyTime(release.releasedAt) ?? 'today'}`;
-    if (key === shownKey) { paintFoot(final, lines); return; }
+    paintCharts(lines, value.charts);
+    if (key === shownKey) { paintFoot(final); return; }
     shownKey = key; body.replaceChildren(grid.root);
     const cars = (Array.isArray(value.cars) ? value.cars : []).map((car) => ({ id: car.id, imageSrc: car.imageSrc, label: tileLabel(car) }));
     const motion = !initial && !reduced() && Boolean(win?.requestAnimationFrame);
-    paintFoot(motion ? NONE : final, lines);
+    paintFoot(motion ? NONE : final);
     await grid.show(cars, { animate: !initial });
     if (!motion || disposed || mine !== turn) return;
     countUp(final);

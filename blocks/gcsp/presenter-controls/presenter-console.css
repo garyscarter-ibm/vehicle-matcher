@@ -36,3 +36,8 @@ body.gcsp { margin: 0; background: var(--gcsp-surface-page); color: var(--gcsp-t
 .gcsp .gcsp-presenter-group:has(> .gcsp-presenter-fold[hidden]) > .gcsp-console-empty { display: block; }
 @media (prefers-reduced-motion: reduce) { .gcsp .gcsp-console * { transition: none !important; animation: none !important; } }
 @media (max-width: 760px) { .gcsp .gcsp-console-head { padding: 0 var(--gcsp-space-3); gap: var(--gcsp-space-3); } .gcsp .gcsp-console-main { padding: var(--gcsp-space-3); } .gcsp .gcsp-console-stage { padding: var(--gcsp-space-4); } }
+.gcsp .gcsp-console-time { display: flex; align-items: baseline; gap: var(--gcsp-space-3); } .gcsp .gcsp-console-day { color: var(--gcsp-text-muted); } .gcsp .gcsp-console-time[hidden], .gcsp .gcsp-console-time [hidden] { display: none; }
+.gcsp .gcsp-console-week { display: flex; gap: 4px; margin: var(--gcsp-space-2) 0 0; padding: 0; list-style: none; } .gcsp .gcsp-console-week[hidden] { display: none; }
+.gcsp .gcsp-console-week li { flex: 1; padding: 6px 8px 0; border-top: 3px solid var(--gcsp-divider); color: var(--gcsp-text-muted); font-size: var(--gcsp-font-size-label); }
+.gcsp .gcsp-console-week li.is-done { border-top-color: var(--gcsp-text-muted); } .gcsp .gcsp-console-week li.is-weekend { opacity: .5; }
+.gcsp .gcsp-console-week li.is-today { border-top-color: var(--gcsp-accent); color: var(--gcsp-text); font-weight: var(--gcsp-font-strong-weight); }

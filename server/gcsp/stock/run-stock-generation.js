@@ -2,7 +2,7 @@ import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, isAbsolute, join } from 'node:path';
 import { result } from '../repository/index.js';
-import { DEFAULT_VEHICLE_CORPUS_ROOT } from '../vehicle-evidence/local-vehicle-lookup.js';
+import { fileURLToPath } from 'node:url';
 import { releaseLimits, DEFAULT_ARTIFACT_ROOT } from '../vehicle-evidence/fleet-release.js';
 import { APPROVED_CORPUS_IMAGES } from '../vehicle-evidence/registered-corpus-images.js';
 import { withDisplayImages } from '../vehicle-evidence/display-images.js';
@@ -16,12 +16,14 @@ import { createReleaseGuarantee } from './release-guarantee.js';
 export const STOCK_ACCOUNT = 'gcsp-demo-scheme-stock';
 export const STOCK_SEED = 'gcsp-demo-stock-v1';
 export const ELIGIBILITY_KEYS = 'stock.eligibilityModelKeys.v1';
+// The demo fleet corpus covers all seven scheme lines; the retained FUCQ-61 corpus covers only F70, G42 and G61.
+export const STOCK_CORPUS_ROOT = fileURLToPath(new URL('../../data/gcsp/vehicle-evidence/demo-fleet.v1', import.meta.url));
 const unavailable = (code) => result('unavailable', { code, reason: 'Generated stock is unavailable.', retryable: true });
 
 /** Composes the FUCQ-78 generator for the demo: retained corpus registry and plan, loaded once and cached.
  * generate(run, { scenario, tranche }) is idempotent per run; any build failure is an unavailable outcome, never a throw. */
 export function createDemoStockGeneration({ policy, repository, contextForRun, environmentId, env = process.env,
-  corpusRoot = DEFAULT_VEHICLE_CORPUS_ROOT } = {}) {
+  corpusRoot = STOCK_CORPUS_ROOT } = {}) {
   const inventoryPath = env.GCSP_STOCK_INVENTORY_PATH || join(tmpdir(), 'gcsp-stock-inventory', `${environmentId}.json`);
   let registry; const plans = new Map();
   async function ensureInventory() {

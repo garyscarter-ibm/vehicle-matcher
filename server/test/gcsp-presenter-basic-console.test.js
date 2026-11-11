@@ -44,7 +44,10 @@ const visibleSkeleton = (root) => root.querySelector('.gcsp-console-stage > .gcs
 
 test('Basic shows the London clock, the headline and the journey label read from the server', async () => {
   const f = setup(); await f.api.ready; await settle();
-  assert.equal(text(f.root, '.gcsp-console-clock'), 'Day 1 · Mon 9 Nov, 9:00am');
+  assert.equal(`${text(f.root, '.gcsp-console-day')} · ${text(f.root, '.gcsp-console-clock')}`, 'Day 1 · Mon 9 Nov, 9:00am');
+  const week = [...f.root.querySelectorAll('ol.gcsp-console-week li')];
+  assert.deepEqual(week.map((n) => n.textContent), ['Mon 9', 'Tue 10', 'Wed 11', 'Thu 12', 'Fri 13', 'Sat 14', 'Sun 15']);
+  assert.equal(week[0].getAttribute('aria-current'), 'date'); assert.ok(week[5].classList.contains('is-weekend'));
   assert.equal(text(f.root, 'h1'), 'Ready for the next release');
   assert.equal(text(f.root, '.gcsp-console-sub'), 'Next release: Tomorrow, 11:30am.');
   assert.equal(f.api.basic.release.textContent, "Release tomorrow's cars"); assert.equal(f.api.basic.release.disabled, false);
@@ -57,7 +60,7 @@ test('Release moves the clock to the next weekday 11:30am through the existing t
   f.api.basic.release.click(); await settle();
   assert.deepEqual(f.calls, [['tick', { commandId: 'command-1', expectedClockVersion: '7', mode: 'to', to: '2026-11-10T11:30:00.000Z' }]]);
   assert.equal(text(f.root, '[role="status"]'), 'Cars released');
-  assert.equal(text(f.root, '.gcsp-console-clock'), 'Day 2 · Tue 10 Nov, 11:30am');
+  assert.equal(`${text(f.root, '.gcsp-console-day')} · ${text(f.root, '.gcsp-console-clock')}`, 'Day 2 · Tue 10 Nov, 11:30am');
   f.api.basic.release.focus(); f.api.basic.release.click(); await settle();
   assert.equal(document.activeElement, f.api.basic.release, 'keyboard focus stays on Release');
   f.api.destroy();
@@ -96,7 +99,7 @@ test('confirmed Start again resets into a fresh Main successful journey run and 
   assert.deepEqual(reset, { commandId: 'command-2', expectedRunId: 'run-a', expectedRunVersion: 3, scenarioId: 'main-successful-journey',
     scenarioVersion: main.scenarioVersion, fixtureVersion: main.fixtureVersion, policyVersion: 'p1' });
   assert.equal(text(f.root, '[role="status"]'), 'Started again on day 1');
-  assert.equal(text(f.root, '.gcsp-console-clock'), 'Day 1 · Mon 9 Nov, 9:00am');
+  assert.equal(`${text(f.root, '.gcsp-console-day')} · ${text(f.root, '.gcsp-console-clock')}`, 'Day 1 · Mon 9 Nov, 9:00am');
   await new Promise((resolve) => setTimeout(resolve, 20)); // keepFocus restores focus on a timer after the read settles.
   assert.equal(document.activeElement, f.api.basic.release, 'focus lands on Release after Start again'); f.api.destroy();
 });
