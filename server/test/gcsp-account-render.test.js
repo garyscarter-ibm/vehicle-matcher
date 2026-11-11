@@ -587,9 +587,12 @@ test('default print exposes only the chosen complete record and cleans its tempo
   } finally { window.print = original; destroy(); root.remove(); }
 });
 
-test('account shows a keyboard-operable link to the employee offer only when one is listed', async () => {
-  const withOffer = await domMount({ ...readOnlyAdapter(), readOffers: async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-1', runId: 'run-1' }] } }) });
+test('account shows a keyboard-operable link to a pending offer only; the bell carries the rest', async () => {
+  const listed = (state) => async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-1', runId: 'run-1', ...(state ? { state } : {}) }] } });
+  const withOffer = await domMount({ ...readOnlyAdapter(), readOffers: listed('pending') });
   const view = findButton(withOffer.root, 'View your offer'); assert.ok(view); assert.equal(view.tagName, 'BUTTON'); withOffer.destroy();
+  const unknown = await domMount({ ...readOnlyAdapter(), readOffers: listed() });
+  assert.equal(findButton(unknown.root, 'View your offer'), undefined, 'an unread state is not a pending decision'); unknown.destroy();
   const without = await domMount({ ...readOnlyAdapter(), readOffers: async () => ({ status: 'unavailable' }) });
   assert.equal(findButton(without.root, 'View your offer'), undefined); without.destroy();
 });
@@ -661,13 +664,18 @@ test('FUCQ-278: a held newest offer is the one primary action; saved journey and
     assert.equal(findButton(held.root, 'View your offer').classList.contains('vm-btn-primary'), true);
     assert.deepEqual(['Carry on', 'Choose a replacement'].map(variant), [true, true]);
     assert.ok(['Carry on', 'Choose a replacement'].every((text) => !findButton(held.root, text).disabled));
-    assert.equal((held.root.textContent.match(/Decide on your car offer before choosing another car\./g) ?? []).length, 1);
+    assert.equal((held.root.textContent.match(/You have a car offer to decide on before choosing another car\./g) ?? []).length, 1);
+    // No separate offer card (the bell announces it); the reason and the link sit in the replacement slot.
+    assert.equal(held.root.querySelector('[aria-label="Your car offer"]'), null);
+    assert.ok(findButton(held.root, 'View your offer').closest('.gcsp-feature .gcsp-actions'));
+    assert.doesNotMatch(held.root.textContent, /Your buddy found a car for you/);
   } finally { held.destroy(); }
   for (const state of ['declined', 'expired', undefined]) {
     const other = await domMount(adapter(state));
     try {
       assert.deepEqual(['Carry on', 'Choose a replacement'].map((text) => findButton(other.root, text).classList.contains('vm-btn-primary')), [true, true], String(state));
-      assert.doesNotMatch(other.root.textContent, /Decide on your car offer before/);
+      assert.doesNotMatch(other.root.textContent, /car offer to decide on/);
+      assert.equal(findButton(other.root, 'View your offer'), undefined, 'only a pending offer gets the slot link');
     } finally { other.destroy(); }
   }
 });
@@ -1205,24 +1213,23 @@ test('no Your preferences region appears when the account itself could not be re
   } finally { view.destroy(); view.root.remove(); }
 });
 
-test('the offer sits outside the car and opens the offer; a held offer ghosts Choose a replacement', async () => {
+test('a pending offer puts its reason and View your offer in the replacement slot; Choose a replacement steps back', async () => {
   const offers = (state) => async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-1', runId: 'run-1', ...(state ? { state } : {}) }] } });
   const held = await domMount({ ...readOnlyAdapter(), readOffers: offers('pending') });
   try {
-    const offer = held.root.querySelector('[aria-label="Your car offer"]'); const car = held.root.querySelector('.gcsp-feature');
-    assert.ok(offer && !car.contains(offer) && !offer.contains(car));
-    assert.ok(offer.compareDocumentPosition(car) & window.Node.DOCUMENT_POSITION_FOLLOWING, 'the offer precedes the car');
-    assert.equal(offer.querySelector('h2').textContent, 'Your car offer');
-    assert.equal(findButton(offer, 'View your offer').classList.contains('vm-btn-primary'), true);
-    assert.match(offer.textContent, /Decide on your car offer before choosing another car\./);
+    const car = held.root.querySelector('.gcsp-feature'); const row = car.querySelector('.gcsp-actions');
+    assert.equal(held.root.querySelector('[aria-label="Your car offer"]'), null, 'no separate offer card');
+    assert.deepEqual([...row.querySelectorAll('button')].map((b) => b.textContent), ['View your offer', 'Choose a replacement']);
+    assert.equal(findButton(row, 'View your offer').classList.contains('vm-btn-primary'), true);
+    assert.equal(row.previousElementSibling.textContent, 'You have a car offer to decide on before choosing another car.');
     assert.equal(ghost(held.root, 'Choose a replacement'), true);
     assert.equal(findButton(held.root, 'Choose a replacement').disabled, false);
   } finally { held.destroy(); held.root.remove(); }
   const open = await domMount({ ...readOnlyAdapter(), readOffers: offers('declined') });
   try {
     assert.equal(ghost(open.root, 'Choose a replacement'), false);
-    assert.doesNotMatch(open.root.textContent, /Decide on your car offer before/);
-    assert.ok(findButton(open.root, 'View your offer'));
+    assert.doesNotMatch(open.root.textContent, /car offer to decide on/);
+    assert.equal(findButton(open.root, 'View your offer'), undefined, 'a decided offer lives in the bell');
   } finally { open.destroy(); open.root.remove(); }
 });
 
