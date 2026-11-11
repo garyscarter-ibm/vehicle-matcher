@@ -11,10 +11,13 @@ export const ORDERING_NAVIGATION = Object.freeze([
   item('ordering', 'Employee car ordering', ['M4 20V10', 'M10 20V4', 'M16 20v-7', 'M21 20H3']),
 ]);
 const NO_NAVIGATION = Object.freeze([]);
+const EMPLOYEE_ORDERING_NAVIGATION = Object.freeze([...PORTAL_NAVIGATION, ...ORDERING_NAVIGATION]);
 
-// The existing server-owned greg role is the scheme ordering administrator. It has no employee entitlement.
+// Trusted roles compose: ordering team members can also have their own employee account and Buddy.
 export function navigationForAccount(navigation, account) {
   const ordering = account?.status === 'ready' && Array.isArray(account.roles) && account.roles.includes('greg');
+  if ((navigation === PORTAL_NAVIGATION || navigation === ORDERING_NAVIGATION) && ordering && account.roles.includes('employee'))
+    return EMPLOYEE_ORDERING_NAVIGATION;
   if (navigation === ORDERING_NAVIGATION) return ordering ? ORDERING_NAVIGATION : NO_NAVIGATION;
   return navigation === PORTAL_NAVIGATION && ordering ? ORDERING_NAVIGATION : navigation;
 }

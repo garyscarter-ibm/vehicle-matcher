@@ -34,9 +34,11 @@ export async function adoptEmployeeExperiencePolicy({ policy, identity, clock })
   }
   const greg = await identity.switchPrincipal(context, principal.principalId, `employee-experience-greg:${randomUUID()}`);
   if (greg.status !== 'ok') return greg;
-  const adopted = await policy.refreshEmployeeExperience(greg.value.context, { commandId: `adopt:${SET}:${context.runId}`,
+  const adopted = await policy.refreshEmployeeExperience(greg.value.context, { commandId: `adopt:${SET}:${context.runId}:${bundle.digest}`,
     expectedActiveVersion: greg.value.context.policyVersion, policyVersion: `${greg.value.context.policyVersion}+${SET}`,
     effectiveFrom: time.value.now, definitionSetId: SET });
   if (adopted.status !== 'ok' || adopted.value?.activation?.status !== 'active') return unavailable();
+  const seeded = await identity.seedPrincipals();
+  if (seeded.status !== 'ok') return seeded;
   return ok({ adopted: true, policyVersion: adopted.value.activation.policyVersion, adoption: adopted.value.adoption });
 }

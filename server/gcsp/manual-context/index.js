@@ -150,7 +150,7 @@ export class ManualContextService {
     if (!p.account) return { state: p.state, asOf: p.now, account: null, drivers: [], contracts: [], slots: [], histories: [], actions: [], view };
     const actions = p.state === 'ready' ? [{ action: p.contract ? 'replace' : 'order', slotId: p.slot.entitlementSlotId,
       schemeId: context.schemeId, oldContractId: p.contract?.contractId ?? null, enabled: true }] : [];
-    return { state: p.state, asOf: p.now, account: p.account.account, drivers: p.drivers.drivers,
+    return { state: p.state, asOf: p.now, account: { ...p.account.account, roles: [...context.roles] }, drivers: p.drivers.drivers,
       contracts: p.account.contracts, slots: p.account.slots.map((slot) => ({ ...slot, ordering: {
         enabled: slot.entitlementSlotId === context.entitlementSlotId && p.state === 'ready',
         reason: slot.entitlementSlotId !== context.entitlementSlotId ? 'outside-trusted-context'
