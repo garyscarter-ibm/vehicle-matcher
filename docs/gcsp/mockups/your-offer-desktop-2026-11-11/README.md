@@ -13,3 +13,5 @@ Quick rendered review only, at 1440 × 1040: inspected all three alternatives, a
 Gary chose Focused decision for refinement on 11 November. First refinement: remove the thumbnail captions and view-count text from the focused gallery picker, retaining descriptive image alternatives. Applied to the focused screen and its two review overlays; the other concept alternatives are retained for comparison.
 
 Second refinement: centre the image-only thumbnail strip beneath the main image in Focused decision and its review overlays. Quick desktop visual check; no behaviour added.
+
+Exploratory third refinement: `gallery-options.html` compares the current separate strip with `focused-overlay.html`, a small opaque white thumbnail tray over the lower image area. The overlay sits in the clear space below the whole car; it does not crop or obscure it. The centred-below direction remains available. Static desktop concept and quick visual check only.
