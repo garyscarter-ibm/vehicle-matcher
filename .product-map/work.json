@@ -4756,25 +4756,28 @@
           "id": "definitions",
           "status": "complete",
           "title": "Supported code dictionary and versioned identity",
-          "observed_at": "2026-11-11T13:22:13Z",
-          "evidence": "Versioned retained-source seed: 239/240 configurations, 11900/11947 selected codes, exact context applicability; source gaps/swatches explicit. Scoped checkpoint only; docs/gcsp/evidence/fucq384/README.md."
+          "observed_at": "2026-11-11T15:04:01Z",
+          "evidence": "Original AC1/3/6 complete: versioned exact-context seed, 239/240 configurations, 11900/11947 codes; retained source/version gaps and unknown swatches/fitment explicit. Corrected provenance independently reviewed. docs/gcsp/evidence/fucq384/finalization.json"
         },
         {
           "id": "index",
           "status": "complete",
           "title": "Keyed local joins and explicit unknowns",
-          "observed_at": "2026-11-11T13:37:22Z",
-          "evidence": "Provenance correction after independent review: actual retained labels keep snapshot identity; mixed arrays retain per-code origins. Two regressions failed before fix; fresh95 scoped definitions/adapter/BuddyHold/snapshot checks pass. docs/gcsp/evidence/fucq384/README.md"
+          "observed_at": "2026-11-11T15:04:01Z",
+          "evidence": "Original AC2/3/6 complete: existing registry/indexed JSONL and compiled keyed maps reused; one index build/repeated reads; load, identity, ambiguity and provenance boundaries covered. Historical 95-pass scope and later F382 contract change distinguished. docs/gcsp/evidence/fucq384/finalization.json"
         },
         {
           "id": "integration",
-          "status": "blocked",
+          "status": "complete",
           "title": "Generated vehicle to pinned quote and comparison",
-          "observed_at": "2026-11-11T13:37:22Z",
-          "evidence": "Original AC4 awaits actual generated-stock/recommendation/newly pinned quote proof through separately authorised FUCQ-382 repair. Fixture-producer quote proof only; integrated rendered comparison review/acceptance pending. Checkpoint is not Built/Done."
+          "observed_at": "2026-11-11T15:04:01Z",
+          "evidence": "Original AC4/5 complete: actual F382 generation/release/recommendation/BuddyHold pin/access/projection; old quote/terms/card immutable after successor dictionary/current stock. All 41 primary labels and corrected 1440/375/320 independent visual PASS. Later F390 boundary explicit. docs/gcsp/evidence/fucq384/README.md"
         }
       ],
-      "unsliced": false
+      "unsliced": false,
+      "workers": [],
+      "development_observed_at": "2026-11-11T15:04:00Z",
+      "note": "Original six criteria Built with scoped source, actual producer and independently reviewed corrected comparison evidence. Parent owns integration/Jira In Review/acceptance; no Done transition or F60/F337 completion. Later F390 source/test boundary and validation limits are explicit. docs/gcsp/evidence/fucq384/finalization.json"
     },
     {
       "id": "FUCQ-385",
