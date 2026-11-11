@@ -226,8 +226,8 @@ function currentCar(contract, model, controls, explained = false) {
     : el('p', 'gcsp-countdown', `Contract ${countdown(model.asOf.slice(0, 10), contract.contractEndDate)} \u00b7 ${date(contract.contractEndDate)}`);
   const copy = el('div', 'gcsp-feature-copy');
   copy.append(title, state);
-  const list = suppliedFacts([row('Status', status(contract.status)), row('Driver', contract.driver?.name), row('Contract end', date(contract.contractEndDate)),
-    row('Term', contract.months, 'months'), row('Annual mileage', contract.annualMileage, contract.mileageUnit), row('Scheme', scheme),
+  // The countdown already says the end date and the panel is the current car, so neither repeats as a fact (Gary, 11 Nov).
+  const list = suppliedFacts([row('Driver', contract.driver?.name), row('Term', contract.months, 'months'), row('Annual mileage', contract.annualMileage, contract.mileageUnit), row('Scheme', scheme),
     row('Registration', contract.registration), row('Current mileage', contract.currentOdometer), ...slotRows(model, contract.slotId),
     row('Points cost', formatPointsCost(terms))], 'gcsp-account-facts gcsp-account-car-facts');
   copy.append(list);
@@ -264,7 +264,7 @@ function orderCurrentCar(car, order, orderVehicle) {
   const copy = el('div', 'gcsp-feature-copy');
   const title = el('div', 'gcsp-account-title');
   title.append(heading);
-  copy.append(title, ...[suppliedFacts([row('Status', 'Current car'), row('Collected', date(car.collectedAt?.slice(0, 10))), row('Delivered VIN', car.vin),
+  copy.append(title, ...[suppliedFacts([row('Collected', date(car.collectedAt?.slice(0, 10))), row('Delivered VIN', car.vin),
     ...(same ? orderIdentityRows(order.source?.orderReference, order.source?.orderNumber).map(({ label, value }) => row(label, value)) : [])], 'gcsp-account-facts')].filter(Boolean));
   feature.append(mediaColumn(media), copy);
   return feature;

@@ -4,7 +4,7 @@
     "query": "?fixture=ready&prefs=selected&rating=4",
     "api": null,
     "errors": [],
-    "height": 1491,
+    "height": 1441,
     "headings": [
       "H1:Your cars",
       "H2:BMW 3 Series Touring 320i",
@@ -45,7 +45,7 @@
     "query": "?fixture=ready&prefs=empty",
     "api": null,
     "errors": [],
-    "height": 1473,
+    "height": 1423,
     "headings": [
       "H1:Your cars",
       "H2:BMW 3 Series Touring 320i",
@@ -83,7 +83,7 @@
     "query": "?fixture=ready",
     "api": null,
     "errors": [],
-    "height": 1347,
+    "height": 1297,
     "headings": [
       "H1:Your cars",
       "H2:BMW 3 Series Touring 320i",
@@ -116,7 +116,7 @@
     "query": "?fixture=multi-slot&prefs=selected",
     "api": null,
     "errors": [],
-    "height": 2115,
+    "height": 2015,
     "headings": [
       "H1:Your cars",
       "H2:BMW 3 Series Touring 320i",
@@ -160,7 +160,7 @@
     "query": "?fixture=missing-image&prefs=selected",
     "api": null,
     "errors": [],
-    "height": 1491,
+    "height": 1441,
     "headings": [
       "H1:Your cars",
       "H2:BMW 3 Series Touring 320i",
@@ -237,7 +237,7 @@
     "query": "?fixture=no-history&prefs=selected",
     "api": null,
     "errors": [],
-    "height": 1351,
+    "height": 1301,
     "headings": [
       "H1:Your cars",
       "H2:BMW 3 Series Touring 320i",
@@ -276,7 +276,7 @@
     "query": "?fixture=not-yet-eligible&prefs=selected",
     "api": null,
     "errors": [],
-    "height": 1625,
+    "height": 1575,
     "headings": [
       "H1:Your cars",
       "H2:Replacement is not available yet",
@@ -318,7 +318,7 @@
     "query": "?fixture=unsupported-scheme&prefs=selected",
     "api": null,
     "errors": [],
-    "height": 1573,
+    "height": 1523,
     "headings": [
       "H1:Your cars",
       "H2:Ordering is not supported for this scheme",
@@ -391,7 +391,7 @@
     "query": "?fixture=ready&prefs=pending",
     "api": null,
     "errors": [],
-    "height": 1491,
+    "height": 1441,
     "headings": [
       "H1:Your cars",
       "H2:BMW 3 Series Touring 320i",
@@ -432,7 +432,7 @@
     "query": "?fixture=ready&prefs=save-failed",
     "api": null,
     "errors": [],
-    "height": 1473,
+    "height": 1423,
     "headings": [
       "H1:Your cars",
       "H2:BMW 3 Series Touring 320i",
