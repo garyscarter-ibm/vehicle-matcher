@@ -27,7 +27,7 @@ export function createRunStockProvider({ policy, repository, contextForRun, gene
     const selected = run.versions?.scenarioSelection;
     let input;
     if (selected) {
-      const catalogue = await loadScenarioCatalogue({ policy, read: { runId, asOf: run.clockInstant, policyVersion: run.policyVersion } });
+      const catalogue = await loadScenarioCatalogue({ policy, read: { runId, asOf: run.clockInstant, policyVersion: run.policyVersion }, run });
       if (catalogue.status !== 'ok') return unavailable();
       const scenario = catalogue.value.scenarios.find((row) => row.scenarioId === selected.scenarioId);
       if (scenario?.inputs?.stockTranches?.some((row) => row.source === 'published-demo-stock')) {

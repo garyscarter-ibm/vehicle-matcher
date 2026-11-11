@@ -6,9 +6,15 @@ const LAYOUTS = Object.freeze({
   form: ['title', 'line', 'panel', 'panel'],
   timeline: ['title', 'card-text', 'rows'],
   card: ['title', 'card'],
+  console: ['title', 'line-short', 'actions', 'panel', 'rows'],
+  section: ['rows'],
 });
 
 function block(kind) {
+  if (kind === 'actions') {
+    const row = el('div', 'gcsp-skeleton-actions');
+    row.append(...[0, 1].map(() => el('span', 'gcsp-skeleton-shape gcsp-skeleton-button'))); return row;
+  }
   if (kind === 'card' || kind === 'card-text') {
     const card = el('div', 'gcsp-skeleton-card');
     if (kind === 'card') card.append(el('span', 'gcsp-skeleton-shape gcsp-skeleton-media'));

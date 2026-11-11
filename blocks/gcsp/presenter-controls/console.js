@@ -1,5 +1,6 @@
 import { el, button, statusScreen } from '../../vehicle-matcher/ui.js';
 import { tabs } from '../kit/tabs.js';
+import { loadingSkeleton } from '../kit/loading-skeleton.js';
 import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
 import { mountPresenterControls } from './controls.js';
@@ -59,7 +60,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   const win = host.ownerDocument.defaultView; const abort = new AbortController();
   const store = () => { try { return storage ?? win.sessionStorage; } catch { return null; } };
   let disposed = false; let busy = false; let loaded = false; let state; let mode = 'basic'; let controller = null; let group = null; let watcher = null; let watchTimer = null;
-  let headlineSupplied = false; let disabledSupplied; let reasonSupplied; let defaultDisabled = true; let defaultReason = '';
+  let headlineSupplied = false; let loading = true; let applied = 0; let disabledSupplied; let reasonSupplied; let defaultDisabled = true; let defaultReason = '';
   const id = `gcsp-console-${++sequence}`;
   const root = el('div', 'gcsp-console'); if (!host.closest('.gcsp')) root.classList.add('gcsp');
 
@@ -70,7 +71,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   const toggle = el('button', 'gcsp-console-mode', 'Advanced'); toggle.type = 'button'; toggle.setAttribute('aria-pressed', 'false');
   const head = el('header', 'gcsp-console-head'); head.append(brand, clockSlot, toggle);
 
-  const headline = el('h1', '', TITLE); headline.id = `${id}-title`; const sub = el('p', 'gcsp-console-sub'); sub.hidden = true;
+  const headline = el('h1'); headline.id = `${id}-title`; const sub = el('p', 'gcsp-console-sub'); sub.hidden = true;
   const text = el('div', 'gcsp-console-text'); text.append(headline, sub);
   const screen = el('div', 'gcsp-console-screen');
   const release = button({ label: "Release tomorrow's cars", variant: 'primary', disabled: true, onClick: () => runRelease() });
@@ -80,7 +81,8 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   const reasonText = el('p', 'gcsp-console-reason'); reasonText.id = `${id}-reason`; reasonText.hidden = true;
   const status = el('p', 'gcsp-console-status'); status.setAttribute('role', 'status');
   const stage = el('section', 'gcsp-console-stage'); stage.setAttribute('aria-labelledby', headline.id);
-  stage.append(text, screen, actions, reasonText, status);
+  const skeleton = loadingSkeleton({ label: 'Loading the presenter console', layout: 'console' }); stage.dataset.loading = '';
+  stage.append(skeleton, text, screen, actions, reasonText, status);
   const releaseSection = mountReleaseSection(stage, { adapter }); // After the Start again confirmation, before the feed.
   const feed = mountHappenedFeed(stage, { adapter, storage: store() });
 
@@ -91,6 +93,10 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   const main = el('main', 'gcsp-console-main'); main.append(stage, advanced);
   root.append(head, main); host.replaceChildren(root);
 
+  // The skeleton stands in for the whole Basic body until a final headline exists, so no interim heading is ever painted.
+  function endLoading() { if (!loading) return; loading = false; skeleton.remove(); delete stage.dataset.loading; }
+  function fallbackHeading() { if (!headlineSupplied) headline.textContent = state?.currentScenario?.name || TITLE; }
+
   function paintPrimary() {
     const unavailable = disabledSupplied ?? defaultDisabled;
     release.disabled = busy || !loaded || unavailable;
@@ -100,7 +106,8 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   }
   const basic = {
     update({ headline: title, sub: line, clock: time, primary } = {}) {
-      if (title !== undefined) { headlineSupplied = true; headline.textContent = title || TITLE; }
+      const named = title !== undefined;
+      if (named) { headlineSupplied = true; headline.textContent = title || TITLE; }
       if (line !== undefined) { sub.textContent = line || ''; sub.hidden = !line; }
       if (time !== undefined) { clock.textContent = time || ''; clockSlot.hidden = !time; }
       if (primary) {
@@ -109,6 +116,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
         if (primary.reason !== undefined) reasonSupplied = primary.reason || '';
         paintPrimary();
       }
+      if (named) endLoading();
     },
     setStatus(value) { status.textContent = value ?? ''; },
     release, startAgain,
@@ -118,20 +126,22 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
     tick: (body, copy) => defaultRelease({ adapter, state, basic, commandId }, body, copy) });
   const showScreen = (node) => { screen.replaceChildren(node); actions.hidden = true; reasonText.hidden = true; feed.root.hidden = true; releaseSection.root.hidden = true; };
 
-  function applyState(next) {
+  async function applyState(next) {
     state = next; loaded = true; screen.replaceChildren(); actions.hidden = false; releaseSection.root.hidden = false;
-    if (!headlineSupplied) headline.textContent = state.currentScenario?.name || TITLE;
     const due = state.controls?.nextRelease;
     defaultDisabled = due?.status !== 'available';
     defaultReason = defaultDisabled ? `Release unavailable: ${sentence(due?.reason) || 'no release is due'}` : '';
-    paintPrimary(); feed.update(state); onState?.(state, basic); releaseSection.refresh();
+    paintPrimary(); feed.update(state); releaseSection.refresh();
+    // Only the latest read may fall back to the scenario name, and only once onState has settled.
+    const mine = ++applied;
+    return Promise.resolve(onState?.(state, basic)).catch(() => {}).then(() => { if (mine === applied && !disposed) { fallbackHeading(); endLoading(); } });
   }
   async function read() {
     let reply;
     try { reply = await adapter.readControls({ signal: abort.signal }); } catch { reply = { status: 'unavailable' }; }
     if (disposed) return;
-    if (reply?.status === 'ok') { applyState(reply.value); return; }
-    loaded = false; paintPrimary();
+    if (reply?.status === 'ok') { await applyState(reply.value); return; }
+    loaded = false; paintPrimary(); if (!headlineSupplied && !headline.textContent) headline.textContent = TITLE; endLoading();
     if (isRunRestarted(reply)) showScreen(runRestartedScreen({ reload }));
     else if (NO_SESSION.includes(reply?.status)) showScreen(statusScreen({ title: 'Presenter controls unavailable', message: 'Reload this page to start a presenter session.' }));
     else showScreen(statusScreen({ title: 'Presenter controls unavailable', message: 'The controls could not be read.', actions: [button({ label: 'Retry', onClick: () => read() })] }));

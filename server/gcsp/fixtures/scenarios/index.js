@@ -19,9 +19,9 @@ export const missingScenarioCapabilities = (definition) => definition.kind === '
   ? [] : [...definition.requiredCapabilities];
 const unavailable = () => result('unavailable', { reason: 'The scenario policy or canonical principals are unavailable.', retryable: false });
 
-export async function loadScenarioCatalogue({ policy, read }) {
+export async function loadScenarioCatalogue({ policy, read, run }) {
   if (!(policy instanceof PolicyService)) return unavailable();
-  const [configuration, people] = await Promise.all([loadClockConfiguration(policy, read), loadDemoPrincipals(policy, read)]);
+  const [configuration, people] = await Promise.all([loadClockConfiguration(policy, read, run), loadDemoPrincipals(policy, read)]);
   if (configuration.status !== 'ok') return configuration;
   if (people.status !== 'ok' || people.policyVersion !== read.policyVersion) return unavailable();
   const entries = [];

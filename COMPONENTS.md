@@ -441,7 +441,7 @@ Looked at `vm-skel` (matcher-only shimmer bars with no layouts or label) and `st
 
 | Call | Use for |
 |---|---|
-| `loadingSkeleton({ label, layout, role })` | Grey blocks shaped like the coming view, with a slow sweep that stops under reduced motion. `layout` is `page` (title, lines, car card, rows; the default), `form` (preferences panels), `timeline` (card and rows, for activity and order progress) or `card` (help). The shapes are `aria-hidden`; `label` is the one line assistive tech hears, with `role="status"` unless `role: null` (when the page already has a live region). `mountEmployee` draws it while the account loads, picking `ctx.loadingLayout`. |
+| `loadingSkeleton({ label, layout, role })` | Grey blocks shaped like the coming view, with a slow sweep that stops under reduced motion. `layout` is `page` (title, lines, car card, rows; the default), `form` (preferences panels), `timeline` (card and rows, for activity and order progress) or `card` (help). The shapes are `aria-hidden`; `label` is the one line assistive tech hears, with `role="status"` unless `role: null` (when the page already has a live region). `mountEmployee` draws it while the account loads, picking `ctx.loadingLayout`. Two more layouts serve the presenter console: `console` (heading, sub line, two buttons, a panel and rows; the console shows it in place of the whole Basic body until the final headline is set, so no interim heading paints) and `section` (rows only; Today's release and What happened draw it with `role: null` until their first read lands). |
 
 ### GCSP demo restarted (`blocks/gcsp/kit/run-restarted.js`)
 

@@ -150,7 +150,7 @@ function gcspExamples() {
     { label: 'Gearbox', value: 'Automatic' }, { label: 'Options', value: null, missingLabel: 'Fitted equipment unknown' },
   ], { className: 'vm-facts-pair' }));
   const well = group('mediaWell placeholder');
-  well.append(mediaWell({ name: 'Synthetic car', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: NO_IMAGE_TEXT }).media);
+  well.append(mediaWell({ name: 'BMW 3 Series Touring 320i', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: NO_IMAGE_TEXT }).media);
   const whole = el('div', 'vm-gallery-gcsp-whole');
   for (const photo of ['/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp', '']) {
     whole.append(mediaWell({ name: 'BMW 3 Series Touring', line: '', photo, alt: 'BMW 3 Series Touring' }, 'gcsp-media gcsp-media-whole', { placeholder: NO_IMAGE_TEXT }).media);
@@ -253,7 +253,7 @@ function gregKitExamples() {
     rowAction: { label: 'Open', name: (row) => `Open case for ${row.name}`, onSelect: () => {}, disabled: (row) => row.status === 'Closed' } }));
   const unknown = { label: 'Unknown', missing: true };
   group('dataTable: comparison, label | this offer | current car at any width (compare)').append(dataTable({ caption: 'Compared with your current car', id: 'gallery-greg-compare', compare: true,
-    columns: [{ key: 'l', label: 'Detail' }, { key: 'a', label: 'This offer', detail: 'BMW 320i M Sport Touring with extended leather' }, { key: 'b', label: 'Your current car', detail: 'Fictional BMW 320i Touring' }],
+    columns: [{ key: 'l', label: 'Detail' }, { key: 'a', label: 'This offer', detail: 'BMW 320i M Sport Touring with extended leather' }, { key: 'b', label: 'Your current car', detail: 'BMW 3 Series Touring 320i' }],
     rows: [{ l: 'Body style', a: 'Estate', b: 'Estate' }, { l: 'Boot', a: '500 litres', b: unknown }, { l: '0 to 62 mph', a: '7.6 s', b: unknown }, { l: 'Points a month', a: '1,100 points', b: unknown }] }));
   group('dataTable: empty state').append(dataTable({ caption: 'Stock by model line (empty)', columns, rows: [], emptyText: 'No stock has been released yet', id: 'gallery-greg-empty' }));
   section.append(scope);

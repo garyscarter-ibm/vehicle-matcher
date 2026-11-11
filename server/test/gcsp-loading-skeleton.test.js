@@ -26,3 +26,10 @@ test('the sweep stops for reduced motion through the shell rule, and the shell i
   assert.match(shell, /@import "\.\.\/kit\/loading-skeleton\.css";/);
   assert.match(shell, /prefers-reduced-motion: reduce\)\s*{\s*\.gcsp \*[^}]*animation: none !important/);
 });
+
+test('the console layout draws a heading, buttons, a panel and rows, with one status line', () => {
+  const root = loadingSkeleton({ label: 'Loading the presenter console', layout: 'console' });
+  assert.equal(root.dataset.layout, 'console'); assert.equal(root.querySelectorAll('.gcsp-skeleton-actions .gcsp-skeleton-button').length, 2);
+  assert.ok(root.querySelector('.gcsp-skeleton-panel')); assert.ok(root.querySelector('.gcsp-skeleton-rows')); assert.equal(root.querySelectorAll('[role="status"]').length, 1);
+  assert.equal(loadingSkeleton({ layout: 'section', role: null }).dataset.layout, 'section');
+});

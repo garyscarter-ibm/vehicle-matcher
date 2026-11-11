@@ -48,6 +48,14 @@ test('an empty run shows one Scheme started row with a London friendly time', as
   assert.equal(f.feed.root.hidden, false); f.feed.destroy();
 });
 
+test('What happened is a disclosure that starts closed and opens from its summary', async () => {
+  const f = mount(); await f.feed.update(controls());
+  const fold = f.feed.root.querySelector('details.gcsp-happened-fold');
+  assert.ok(fold); assert.equal(fold.open, false);
+  assert.equal(fold.querySelector('summary').textContent, 'What happened');
+  assert.ok(fold.contains(f.feed.root.querySelector('.gcsp-timeline-list'))); f.feed.destroy();
+});
+
 test('release, hold lapse and offer email rows come newest first with plain labels and no recipient name', async () => {
   const f = mount({ readOutbox: async () => ok({ runId: 'run-a', messages: [message(), message({ jobId: 'job-2', state: 'failed', time: '2026-11-10T09:00:00.000Z' }),
     message({ jobId: 'job-3', messageKind: 'other' })] }) });
@@ -132,4 +140,14 @@ test('the page links the feed styles and the painted feed has no em dash', () =>
   const html = readFileSync(new URL('../../gcsp-presenter.html', import.meta.url), 'utf8');
   for (const sheet of ['kit/activity-timeline.css', 'kit/side-drawer.css', 'presenter-controls/happened-feed.css']) assert.ok(html.includes(sheet), sheet);
   assert.doesNotMatch(readFileSync(new URL('../../blocks/gcsp/presenter-controls/happened-feed.css', import.meta.url), 'utf8'), /border-(left|right)\s*:\s*[2-9]|presenter\.css/);
+});
+
+test('What happened shows a skeleton from mount until its first paint, never an empty list', async () => {
+  const hold = { open: null }; const wait = new Promise((resolve) => { hold.open = resolve; });
+  const f = mount({ readOutbox: async () => { await wait; return ok({ runId: 'run-a', messages: [] }); } });
+  assert.ok(f.feed.root.querySelector('.gcsp-skeleton')); assert.equal(f.feed.root.querySelector('.gcsp-timeline-event'), null);
+  const pending = f.feed.update(controls()); await settle();
+  assert.equal(f.feed.root.hidden, false); assert.ok(f.feed.root.querySelector('.gcsp-skeleton')); assert.equal(f.feed.root.querySelector('.gcsp-timeline-event'), null);
+  hold.open(); await pending;
+  assert.equal(f.feed.root.querySelector('.gcsp-skeleton'), null); assert.equal(labels(f.feed.root).length, 1); f.feed.destroy();
 });
