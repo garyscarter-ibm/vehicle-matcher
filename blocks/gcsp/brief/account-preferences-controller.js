@@ -55,7 +55,13 @@ export function createAccountPreferencesController({ transport, createCommandId,
     if (inflight || has(pending)) return { kind: 'pending', text: PREFERENCE_COPY.pending };
     if (rejected) return { kind: 'failed', text: PREFERENCE_COPY.rejected };
     if (saved) return { kind: 'saved', text: saved };
-    return { kind: 'idle', text: '' };
+    return { kind: 'idle', text: counted() };
+  }
+  // The frozen footer copy when nothing is pending: how many categories count toward the minimum.
+  function counted() {
+    if (!projection) return '';
+    const n = projection.order.filter((key) => entryOf(key).state === 'considered').length; const min = projection.minimumCategories ?? 3;
+    return n >= min ? `${n} categories considered · Saved automatically` : `${n} of ${min} categories considered · Preferences save automatically`;
   }
   const snapshot = () => clone({ phase, projection, categories: view, open, pendingRemoval, status: status(), disabled: phase !== 'ready' || locked(),
     briefVersion: versions.brief, draftVersion: versions.draft });

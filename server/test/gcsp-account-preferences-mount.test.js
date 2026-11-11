@@ -41,7 +41,7 @@ test('the capability sits in Account between Your cars and Order history, and sh
   assert.ok(after(host.querySelector('.gcsp-feature'), region) && after(region, host.querySelector('.gcsp-account-history')));
   assert.equal(region.querySelectorAll('.gcsp-prefs-tile').length, 6);
   assert.match(tile(region, 'body').getAttribute('aria-label'), /Body, considered: Touring \/ Estate/);
-  assert.equal(statusText(region), '');
+  assert.equal(statusText(region), '3 categories considered · Saved automatically');
   destroy(); host.remove();
 });
 
