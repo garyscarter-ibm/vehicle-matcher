@@ -1,0 +1,13 @@
+# FUCQ-386 delivery plan
+
+Original six acceptance criteria remain fixed. F383 corrected layout checkpoint dc446235 is integrated; F383 acceptance stays with Mulan. F385 gallery source files and F382 producer/identity repair are outside this work.
+
+Stable slices: `drawers` (shared sideDrawer acceptance and fixed reason presentation, 5 points); `decisions` (authoritative handoff/documents and controller integration, 5 points); `integration` (real service/readback, responsive keyboard states, independent critique and corrections, 3 points). Existing shared-experience and offer-journey component associations are reused.
+
+Component plan: reuse sideDrawer, checkboxField, labelledField/native radio controls, errorSummary, factList, button and viewStatus; extend sideDrawer only for actual background containment and visible-control focus filtering if required by evidence. Drawers are offer page composition, no second ordering or policy implementation. All additions/extension styling, catalogue and gallery remain coherent.
+
+Selected validation: first run the three Story commands (`gcsp-offer-view-decision`, `gcsp-offer-view-decision-mixed`, `gcsp-offer-view-followup-entry`) with sideDrawer consumers. Extend focused coverage for the drawer module, handoff projection, canonical terms/documents, invalid reason/no free text, first click/cancel, stale/expiry and duplicate decisions. Actual service/access readback, reload and second isolated browser/context are separate required evidence. Custom element/CSP and changed kit ratchet checks are included. F387 unrelated presenter ratchet and F344 JSDOM clockVersion diagnostic remain recorded. No full application suite: changed offer/kit/acceptance boundaries have explicit focused checks.
+
+Resources: one test/browser worker per chunk, at most 600 seconds and 2 GiB scratch. Expected Node chunk under 100 MiB disk / 512 MiB RAM / 2 minutes; browser chunk bounded local active profile exception under 250 MiB disk / 1 GiB RAM / 5 minutes. Scratch ownership manifests and finalizers use `_tools/test_resources.py` under shared `.claude/dev-poller-fucq380-20261111/f386`; retained receipts outside scratch; output expected below 256 MiB. Large output destination is OneDrive-IBM/Claude/vehicle-matcher. Headless isolated browsers only.
+
+Current source gap: stored replacement context has recorded odometer only; no expected-return mileage. Recorded must not be substituted. Pending collaborator decision about bounded expected-mileage capture; final Accept must remain disabled for missing/invalid required context. Scheme wording comes from SchemeOrderTerms/PolicyService ordering.terms.v1; driver/licence and return record links must show actual handoff source fields.

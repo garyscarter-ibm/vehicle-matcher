@@ -4796,19 +4796,32 @@
       "unsliced": false
     },
     {
-      "id": "FUCQ-386",
-      "title": "Confirm offer acceptance or fixed-reason decline in a side drawer",
+      "id": "FUCQ-382",
+      "title": "Preserve vehicle configuration details in stock and offer quotes",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-11T12:19:13Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-382",
+      "unsliced": true,
+      "note": "Diagnosis-only/no-pickup hold preserved. No repair or live reproduction claimed."
+    },
+    {
+      "id": "FUCQ-386",
+      "title": "Confirm offer acceptance or fixed-reason decline in a side drawer",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T12:19:12Z",
+      "observed_at": "2026-11-11T13:31:06Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-386",
       "slices": [
         {
           "id": "drawers",
-          "status": "not-started",
-          "title": "Shared acceptance and fixed-reason decline drawers"
+          "status": "in-progress",
+          "title": "Shared acceptance and fixed-reason decline drawers",
+          "observed_at": "2026-11-11T13:31:06Z"
         },
         {
           "id": "decisions",
@@ -4821,19 +4834,19 @@
           "title": "Actual accept-decline handoff, follow-up and rendered review"
         }
       ],
-      "unsliced": false
-    },
-    {
-      "id": "FUCQ-382",
-      "title": "Preserve vehicle configuration details in stock and offer quotes",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Bug",
-      "observed_at": "2026-11-11T12:19:13Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-382",
-      "unsliced": true,
-      "note": "Diagnosis-only/no-pickup hold preserved. No repair or live reproduction claimed."
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-11-004",
+      "workers": [
+        {
+          "name": "Tweety",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-11T13:31:06.297589+00:00",
+          "expires_at": "2026-11-11T15:31:06.297589+00:00",
+          "source": "dispatcher F386 brief 2026-11-11",
+          "status": "working"
+        }
+      ]
     }
   ]
 }
