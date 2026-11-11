@@ -27,7 +27,7 @@ export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
   const line = el('p', 'gcsp-console-release-line');
   const head = el('div', 'gcsp-console-release-head'); head.append(title, line);
   const grid = releaseGrid({ label: 'Released cars', columns: 20, matchMedia });
-  const empty = statusScreen({ title: 'No cars released yet', message: 'The next release fills this grid.', role: null, level: 3 });
+  const empty = statusScreen({ title: 'No cars released yet', role: null, level: 3 });
   const body = el('div', 'gcsp-console-release-body'); const foot = el('div', 'gcsp-console-release-foot');
   root.append(head, body, foot); parent.append(root);
 

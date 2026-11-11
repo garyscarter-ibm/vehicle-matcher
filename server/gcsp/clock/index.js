@@ -4,6 +4,7 @@ import { validInstant } from '../policy/file-provider.js';
 import { loadClockConfiguration, buildScenarioSeed } from '../fixtures/scenario-v1.js';
 import { randomUUID } from 'node:crypto';
 import { isPreparedScenarioFixture } from '../fixtures/scenarios/index.js';
+import { deriveScenarioClock } from './start-day.js';
 import { composePresenterTick, readPresenterClockConfiguration } from '../presenter-controls/commands.js';
 
 const text = (value) => typeof value === 'string' && value.length > 0 && value.length <= 128;
@@ -24,18 +25,19 @@ const unavailable = () => result('unavailable', { reason: 'The clock is unavaila
 const stale = () => result('stale-run', { reason: 'This page is out of date. Reload to see the latest.' });
 const ref = (table, context, key = {}) => ({ table, key: { runId: context.runId, ...key } });
 const command = (commandId, payload) => ({ commandId, inputDigest: inputDigest(payload) });
-const publicVersions = (versions) => ({ ...versions, syntheticIdentityInventory: versions.syntheticIdentityInventory
+const publicVersions = ({ scenarioClock, ...versions }) => ({ ...versions, syntheticIdentityInventory: versions.syntheticIdentityInventory
   ? { revision: versions.syntheticIdentityInventory.revision, contentDigest: versions.syntheticIdentityInventory.contentDigest } : null });
 const publicReset = (outcome) => outcome.status === 'ok' ? ok({ ...outcome.value, versions: publicVersions(outcome.value.versions) }) : outcome;
 
 export class DemoClock {
-  #repository; #policy; #identity; #environmentId; #environmentKind;
+  #repository; #policy; #identity; #environmentId; #environmentKind; #wallNow;
   #handlers = new Map(); #sealed = false; #startup;
 
-  constructor({ repository, policy, identity, environmentId, environmentKind }) {
+  // With wallNow, Day 1 is its London date at the template's wall time, read once per run. Without, the template stands.
+  constructor({ repository, policy, identity, environmentId, environmentKind, wallNow }) {
     if (!repository || !policy || !identity || !text(environmentId)) throw new TypeError('Inject repository, policy, identity and environment.');
     this.#repository = repository; this.#policy = policy; this.#identity = identity;
-    this.#environmentId = environmentId; this.#environmentKind = environmentKind;
+    this.#environmentId = environmentId; this.#environmentKind = environmentKind; this.#wallNow = wallNow;
   }
 
   async #current(context) {
@@ -61,19 +63,27 @@ export class DemoClock {
     const read = { runId, asOf: policyAsOf, policyVersion: active.policyVersion };
     const configuration = await loadClockConfiguration(this.#policy, read);
     if (configuration.status !== 'ok') return configuration;
-    const seed = await buildScenarioSeed({ policy: this.#policy, read, configuration: configuration.value, runId });
+    const dated = this.#dated(configuration.value);
+    const seed = await buildScenarioSeed({ policy: this.#policy, read, configuration: dated, runId });
     if (seed.status !== 'ok') return seed;
     const context = { runId, environmentId: this.#environmentId, principalId: 'clock-bootstrap', roles: [] };
     return publicReset(await this.#repository.resetRun(context, command(`clock:initialize:${commandId}`, { policyAsOf }), {
-      expectedCurrentRunId: null, nextRun: this.#runRow(runId, active.policyVersion, configuration.value, seed.value.versions), rows: seed.value.rows,
+      expectedCurrentRunId: null, nextRun: this.#runRow(runId, active.policyVersion, dated, seed.value.versions), rows: seed.value.rows,
     }));
+  }
+
+  #dated(configuration) {
+    if (!this.#wallNow) return configuration;
+    const { startsAt, namedTimes } = deriveScenarioClock(configuration.scenario, this.#wallNow());
+    return { ...configuration, scenario: { ...configuration.scenario, startsAt, namedTimes } };
   }
 
   #runRow(runId, policyVersion, configuration, versions) {
     return { runId, environmentId: this.#environmentId, status: 'active', current: true, policyVersion,
       scenarioVersion: configuration.scenario.scenarioVersion, fixtureVersion: configuration.scenario.fixtureVersion,
       corpusVersion: configuration.scenario.corpusVersion, clockInstant: configuration.scenario.startsAt,
-      clockVersion: configuration.commands.initialClockVersion, versions };
+      clockVersion: configuration.commands.initialClockVersion,
+      versions: { ...versions, scenarioClock: { startsAt: configuration.scenario.startsAt, namedTimes: configuration.scenario.namedTimes } } };
   }
 
   async now(context) {
@@ -104,7 +114,7 @@ export class DemoClock {
       || Object.hasOwn(input, 'bySeconds') === Object.hasOwn(input, 'to')) return invalid('advance', 'Supply commandId, expectedClockVersion and one of bySeconds or to.');
     const current = await this.#current(context);
     if (current.status !== 'ok') return current;
-    const configured = await loadClockConfiguration(this.#policy, this.#read(current.value));
+    const configured = await loadClockConfiguration(this.#policy, this.#read(current.value), current.value);
     if (configured.status !== 'ok') return configured;
     return this.#repository.transaction(context, command(`clock:advance:${input.commandId}`, input), async (tx) => {
       const found = await tx.get(ref('runs', context));
@@ -172,7 +182,8 @@ export class DemoClock {
       return result('stale-version', { expectedVersion: preparedFixture.policyVersion, currentVersion: found.value.policyVersion,
         resource: { table: 'scenario-fixtures' }, action: 'refresh' });
     }
-    const configuration = preparedFixture?.configuration ?? configured.value;
+    const template = preparedFixture?.configuration ?? configured.value;
+    const configuration = this.#dated(template);
     const { scenario } = configuration;
     // A prepared journey names its own versions; the seed still uses the canonical clock configuration.
     const expected = preparedFixture ?? scenario;
@@ -235,7 +246,7 @@ export class DemoClock {
   async #executeTick(context, input, kind) {
     const current = await this.#current(context);
     if (current.status !== 'ok') return current;
-    const configured = await loadClockConfiguration(this.#policy, this.#read(current.value));
+    const configured = await loadClockConfiguration(this.#policy, this.#read(current.value), current.value);
     if (configured.status !== 'ok') return configured;
     this.#sealed = true;
     const stages = kind === 'startup' ? configured.value.commands.startupStages : configured.value.stages;

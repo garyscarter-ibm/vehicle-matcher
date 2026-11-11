@@ -34,12 +34,12 @@ test('atomic run transition rolls back failed fixture rows and retains one curre
   assert.equal((await repository.transaction(scope('first'), command('old-decision'), (tx) => tx.insert('decisions', { runId: 'first', decisionId: 'old' }))).status, 'stale-run');
 });
 
-async function setup({ policy = createPolicyService() } = {}) {
+async function setup({ policy = createPolicyService(), wall } = {}) {
   const store = createMemoryStore();
   const repository = createMemoryRepository({ store });
   await repository.open();
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'clock-test', environmentKind: 'synthetic',
-    policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T00:00:00.000Z', secureCookies: true });
+    policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T00:00:00.000Z', wallNow: wall ? () => wall : undefined, secureCookies: true });
   assert.equal(runtime.status, 'ok', JSON.stringify(runtime));
   const { clock, identity } = runtime.value;
   const presenter = await identity.createPresenterSession('presenter');
@@ -123,7 +123,7 @@ test('canonical scenario changes affect clock/reset and operational providers ca
   const scenario = seed.assumptions.find((row) => row.key === 'clock.scenario.v1').value;
   scenario.startsAt = '2026-11-06T10:00:00.000Z';
   scenario.namedTimes.release = '2026-11-06T10:30:00.000Z';
-  const f = await setup({ policy: new PolicyService({ provider: { async loadVersions() { return [seed]; } } }) });
+  const f = await setup({ policy: new PolicyService({ provider: { async loadVersions() { return [seed]; } } }), wall: '2026-11-06T00:00:00.000Z' });
   const before = (await f.clock.readState(f.presenter)).value;
   assert.equal(before.now, '2026-11-06T10:00:00.000Z');
   const moved = await f.clock.advance(f.presenter, { commandId: 'new-cue', expectedClockVersion: '1', to: 'release' });
