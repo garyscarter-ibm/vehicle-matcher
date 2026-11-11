@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ok } from '../gcsp/repository/index.js';
 import { allocationFixture } from './helpers/gcsp-allocation.js';
+import { stock, fact, rating, sameAgain } from './helpers/employee-recommendation.js';
 import { expandEvaluation, readAllocationEvaluation } from '../gcsp/allocation/evaluation-rows.js';
 
 test('three employees compete deterministically for scarce exact cars, one each', async () => {
@@ -301,4 +302,62 @@ test('FUCQ-225: with no charging answer in the brief, a plug-in car needs confir
   assert.ok(f.calls.length > 0 && f.calls.every(({ input }) => input.orderUuid !== plugIn.orderUuid), 'no claim for the plug-in car');
   // The quote keeps the employee's stored facts, which the hold service compares.
   assert.ok(out.value.assignments.every((a) => a.quote.employeeFacts.charging?.value === 'home'));
+});
+
+// FUCQ-371: the confirmed brief's saved rating and Same again reach allocation with a server-resolved baseline.
+async function feedbackFixture(options) {
+  const f = await allocationFixture(options); const [, target] = f.employees; const src = 'manual-records-v1';
+  const source = { mode: 'synthetic', sourceRef: 'fixture:manual', sourceVersion: src, schemaVersion: '1', effectiveFrom: '2026-01-01T00:00:00.000Z', observedAt: '2026-11-01T00:00:00.000Z' };
+  const contractId = `current:${target.employeeId}`;
+  const cars = [['G21 Touring', 'G21 Touring|320i', 'estate'], ['U11 X1', 'U11 X1|20i', 'suv']];
+  await f.write(async (tx) => {
+    const emp = await tx.get({ table: 'employees', key: { runId: f.context.runId, employeeId: target.employeeId } });
+    const [current] = emp.value.contract.manualContext.contracts;
+    const contracts = [{ ...current, contractId, source, vehicle: { modelLine: 'G21 Touring', eligibilityModelKey: 'G21 Touring|320i', body: 'estate', fuel: 'petrol' } }];
+    const saved = await tx.compareAndSwap({ table: 'employees', key: { runId: f.context.runId, employeeId: target.employeeId } }, emp.value.version,
+      { contract: { manualContext: { ...emp.value.contract.manualContext, source, contracts } } });
+    if (saved.status !== 'ok') return saved;
+    const slot = await tx.get({ table: 'entitlement_slots', key: { runId: f.context.runId, entitlementSlotId: target.entitlementSlotId } });
+    const bound = await tx.compareAndSwap({ table: 'entitlement_slots', key: { runId: f.context.runId, entitlementSlotId: target.entitlementSlotId } }, slot.value.version, { contractId });
+    if (bound.status !== 'ok') return bound;
+    for (const [i, [line, key, body]] of cars.entries()) {
+      const candidate = stock(i + 1, { modelLine: fact(line), eligibilityModelKey: fact(key), body: fact(body) });
+      const row = await tx.get({ table: 'stock', key: { runId: f.context.runId, orderUuid: candidate.orderUuid } });
+      const swapped = await tx.compareAndSwap({ table: 'stock', key: { runId: f.context.runId, orderUuid: candidate.orderUuid } }, row.value.version, { facts: candidate.snapshot });
+      if (swapped.status !== 'ok') return swapped;
+    }
+    return ok({});
+  });
+  const give = (typed) => f.write(async (tx) => {
+    const current = await tx.get({ table: 'briefs', key: { runId: f.context.runId, employeeId: target.employeeId, briefVersion: 1 } });
+    return tx.insert('briefs', { ...current.value, briefVersion: 2, ...typed });
+  });
+  const result = async () => { const out = await f.service.allocate(f.context, f.event); assert.equal(out.status, 'ok', JSON.stringify(out));
+    const mine = out.value.evaluations.find((e) => e.employeeId === target.employeeId);
+    return { out, eligible: mine.decisions.filter((d) => d.gateStatus === 'eligible').map((d) => Number(d.orderUuid.slice(-1))).sort(), mine }; };
+  return { f, target, contractId, give, result };
+}
+
+test('FUCQ-371: a saved rating or Same again narrows allocation contenders; an old brief keeps its prior contenders', async () => {
+  const old = await feedbackFixture(); assert.deepEqual((await old.result()).eligible, [1, 2]);
+  const rated = await feedbackFixture(); await rated.give({ currentCarRating: rating(5, rated.contractId) });
+  const positive = await rated.result();
+  assert.deepEqual(positive.eligible, [1], 'the different, non-improving car is not a contender');
+  assert.ok(positive.mine.decisions.find((d) => d.orderUuid.endsWith('2')).blockers.some((b) => b.code === 'feedback-not-similar-or-better'));
+  const again = await feedbackFixture(); await again.give({ currentCarRating: rating(5, again.contractId), sameAgain: sameAgain(true, again.contractId) });
+  const same = await again.result(); assert.deepEqual(same.eligible, [1]);
+  assert.ok(same.mine.decisions.find((d) => d.orderUuid.endsWith('2')).blockers.some((b) => b.code === 'same-again-different'));
+  const other = await feedbackFixture(); await other.give({ currentCarRating: rating(5, 'current:someone-else') });
+  assert.deepEqual((await other.result()).eligible, [1, 2], 'feedback for another contract is neutral');
+});
+
+test('FUCQ-371: the frozen baseline replays to the same quote, and a request never carries it', async () => {
+  const x = await feedbackFixture({ cars: 2 }); await x.give({ currentCarRating: rating(4, x.contractId), sameAgain: sameAgain(true, x.contractId) });
+  const out = await x.f.service.allocate(x.f.context, x.f.event); assert.equal(out.status, 'ok', JSON.stringify(out));
+  const mine = out.value.assignments.find((a) => a.employeeId === x.target.employeeId);
+  if (mine) assert.ok(mine.quote.reasons.some((r) => r.code === 'same-again-match') && mine.quote.versions.feedback.endsWith('+manual-records-v1'));
+  const rows = (await x.f.repository.query(x.f.context, 'event_receipts', { consumerId: 'buddy-allocation-evaluation' })).value;
+  const frozen = rows.find((r) => r.outcome.value.employeeId === x.target.employeeId).outcome.value.quoteInputs;
+  assert.equal(frozen.currentCar.contractId, x.contractId); assert.equal(frozen.request.currentCarRating.value, 4);
+  assert.equal(Object.hasOwn(frozen.request, 'currentCar'), false);
 });

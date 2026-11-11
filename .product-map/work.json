@@ -4686,23 +4686,35 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-10T20:00:41Z",
+      "observed_at": "2026-11-11T13:22:41Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-371",
       "slices": [
         {
           "id": "feedback-policy",
-          "status": "not-started",
-          "title": "Canonical feedback similarity and improvement policy"
+          "status": "complete",
+          "title": "Canonical feedback policy, typed contract and evaluation",
+          "observed_at": "2026-11-11T12:12:14Z",
+          "evidence": "Lead review of slice A diff; scoped 9-file run 291 tests 288 pass 3 skipped 0 fail; feedback tests 15/15"
         },
         {
           "id": "recommendation",
-          "status": "not-started",
-          "title": "Real recommendation consumers and grounded reasons"
+          "status": "complete",
+          "title": "Real recommendation consumers receive feedback and baseline",
+          "observed_at": "2026-11-11T12:53:12Z",
+          "evidence": "Lead review of slice B diff; 13 scoped files 477 tests 476 pass, 1 known base failure gcsp-brief retained-fixtures; lead re-run allocation+buddy-hold+feedback 89/89"
+        },
+        {
+          "id": "offer-explanation",
+          "status": "complete",
+          "title": "Offer explanation consumption and strict capture",
+          "observed_at": "2026-11-11T13:22:29Z",
+          "evidence": "Lead review of C1/C2; Offer real-envelope capture 87/87 checks; independent Opus critique applied and recaptured; covering tests 54/54; docs/gcsp/evidence/fucq371/README.md"
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Connected Account through Offer walkthrough"
+          "status": "blocked",
+          "title": "Connected Account through Offer walkthrough and six-story critique",
+          "observed_at": "2026-11-11T13:22:41Z"
         }
       ],
       "unsliced": false

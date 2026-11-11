@@ -2,6 +2,7 @@ import { inputDigest, ok, result } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { validateBrief } from '../../scenarios/employee/index.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
+import { storedFeedback } from '../recommendation/current-car.js';
 import { applyConfirmedFeedbackChange } from '../../../blocks/vehicle-matcher/feedback-actions.js';
 import { FOLLOWUP_QUESTIONS_KEY, equipmentListValid } from '../offers/followup-policy.js';
 import { currentCarRatingValid } from './rating.js';
@@ -314,7 +315,7 @@ export class BriefService {
 
   // Allocation can call this gate before claiming. It creates no search, hold or offer.
   // FUCQ-29 remains the one owner of driver/points/eligibility/essential/availability gates.
-  async evaluateCandidate(context, { candidate, employeeFacts } = {}) {
+  async evaluateCandidate(context, { candidate, employeeFacts, currentCar } = {}) {
     const prepared = await this.#prepare(context); if (prepared.error) return prepared.error;
     const current = await this.readCurrent(context); if (current.status !== 'ok') return current;
     const brief = current.value.brief;
@@ -324,9 +325,9 @@ export class BriefService {
     facts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging?.value ?? null,
       unit: null, provenance: { sourceRef: charging?.source ?? 'brief:unresolved', version: String(brief.briefVersion), observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
     const provider = { async resolve() { return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: context.employeeId,
-      factsVersion: String(brief.briefVersion), stockVersion: candidate?.availability?.version, employeeFacts: facts, stock: [candidate] }); } };
+      factsVersion: String(brief.briefVersion), stockVersion: candidate?.availability?.version, employeeFacts: facts, stock: [candidate], ...(currentCar ? { currentCar } : {}) }); } };
     const recommendation = createEmployeeRecommendationService({ provider, policy: this.#policy, time: this.#clock });
-    const evaluated = await recommendation.recommend(context, projection(brief));
+    const evaluated = await recommendation.recommend(context, { ...projection(brief), ...storedFeedback(brief) });
     return evaluated.status === 'ok' ? ok(evaluated.value.decisions[0]) : evaluated;
   }
 }
