@@ -9,6 +9,7 @@ const COUNT_MS = 600;
 const REDUCE = '(prefers-reduced-motion: reduce)';
 const LABELS = ['Latest release', 'Total released', 'Unallocated', 'Buddy Allocated', 'Manually Allocated'];
 const NONE = LABELS.map(() => 0);
+const ALLOCATION = [['Allocation Pending', 'pending'], ['Allocation Declined', 'declined'], ['Allocation Accepted', 'accepted']];
 let sequence = 0;
 
 const text = (value) => (typeof value === 'string' && value.trim() ? value.trim() : '');
@@ -20,7 +21,7 @@ const count = (value) => (Number.isFinite(value) && value > 0 ? Math.floor(value
 const shown = (value) => value.toLocaleString('en-GB');
 
 /** Mounts Today's release at the end of `parent`. Returns { root, setLoading(), refresh() -> Promise, destroy() }.
- * Shows a skeleton until the first read lands. Reads adapter.readLatestRelease; anything but an ok reply shows the before-release state, with no error copy. */
+ * Reads release stock and separate run-scoped offer counts through adapter.readLatestRelease. */
 export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
   const win = parent.ownerDocument.defaultView; const id = `gcsp-console-release-${++sequence}`;
   const root = el('section', 'gcsp-console-release'); root.setAttribute('aria-labelledby', `${id}-title`);
@@ -33,11 +34,23 @@ export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
   // Charts sit in a closed disclosure, like What happened (Gary, 11 Nov); built from the release read only.
   const charts = el('details', 'gcsp-release-charts'); const chartsTitle = el('summary', 'gcsp-release-charts-summary', 'Latest release stats');
   const chartGrid = el('div', 'gcsp-release-charts-grid'); charts.append(chartsTitle, chartGrid); charts.hidden = true;
-  root.append(head, body, foot, charts); parent.append(root);
+  const allocation = el('section', 'gcsp-console-release gcsp-console-allocation'); allocation.setAttribute('aria-labelledby', `${id}-allocation`);
+  const allocationTitle = el('h2', '', 'Allocation'); allocationTitle.id = `${id}-allocation`;
+  const allocationHead = el('div', 'gcsp-console-release-head');
+  allocationHead.append(allocationTitle, el('p', 'gcsp-console-release-line', 'Buddy offers · this run'));
+  const allocationBody = el('div', 'gcsp-allocation-body'); allocation.append(allocationHead, allocationBody);
+  root.append(head, body, foot, charts, allocation); parent.append(root);
 
   const abort = new AbortController(); let disposed = false; let turn = 0; let shownKey = null; let first = true; let counting = 0; let totals = null;
   const reduced = () => { try { return Boolean((matchMedia ?? win?.matchMedia?.bind(win))?.(REDUCE)?.matches); } catch { return false; } };
 
+  function paintAllocation(value) {
+    allocationBody.removeAttribute('aria-busy');
+    const known = ALLOCATION.every(([, key]) => Number.isSafeInteger(value?.[key]) && value[key] >= 0);
+    allocationBody.replaceChildren(known
+      ? factList(ALLOCATION.map(([label, key]) => ({ label, value: shown(value[key]) })), { className: 'gcsp-allocation-totals' })
+      : statusScreen({ title: 'Allocation unavailable', message: 'Refresh the presenter readback to try again.', role: null, level: 3 }));
+  }
   function paintFoot(values) {
     counting += 1;
     totals = factList(LABELS.map((label, at) => ({ label, value: shown(values[at]) })), { className: 'gcsp-release-totals' });
@@ -58,6 +71,8 @@ export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
     if (disposed) return;
     turn += 1; counting += 1;
     grid.setLoading(); body.replaceChildren(grid.root);
+    allocationBody.setAttribute('aria-busy', 'true');
+    allocationBody.replaceChildren(loadingSkeleton({ label: 'Loading allocation', layout: 'stats', role: null, labels: ALLOCATION.map(([label]) => label) }));
     charts.hidden = false; chartGrid.setAttribute('aria-busy', 'true');
     const sizes = [...chartGrid.querySelectorAll('.gcsp-count-bars')].map((chart) => chart.querySelectorAll('.gcsp-count-bars-row').length);
     chartGrid.replaceChildren(...['Model line', 'Colour', 'Points a month', 'Fuel'].map((label, at) => {
@@ -86,6 +101,7 @@ export function mountReleaseSection(parent, { adapter, matchMedia } = {}) {
     try { reply = await adapter?.readLatestRelease?.({ signal: abort.signal }); } catch { reply = null; }
     if (disposed || mine !== turn) return;
     const value = reply?.status === 'ok' ? reply.value : null; const release = value?.release;
+    paintAllocation(value?.allocation);
     const initial = first; first = false;
     if (!value || !release) { paintBefore(); return; }
     const key = `${value.runId}:${release.trancheId ?? release.windowId}`;

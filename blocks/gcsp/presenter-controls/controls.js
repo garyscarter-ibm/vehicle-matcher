@@ -62,7 +62,7 @@ function releasedCarCount(state) {
 // All controls retain their DOM identity while readback and results update.
 export function mountPresenterControls(host, { adapter = createPresenterHttpAdapter(),
   commandId = () => globalThis.crypto.randomUUID(), navigate = (url) => { const link = el('a'); link.href = url; link.click(); }, reload, clearAfter = 5000,
-  onAvailability, onReveal, onEscape, openOnLoad = false } = {}) {
+  onAvailability, onReveal, onEscape, onReadback, openOnLoad = false } = {}) {
   const abort = new AbortController();
   const options = { signal: abort.signal };
   let disposed = false; let busy = false; let authorized = false; let state; let context; let catalogue; let faults = null; let startStopped = false;
@@ -304,6 +304,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       readMessage.textContent = acting.status === 'ok' ? '' : `Acting context unavailable: ${why(acting)}`;
       if (!original) { message.textContent = 'Presenter controls ready'; fade(); }
       announceReset();
+      await onReadback?.(read.value);
       if (acting.status === 'ok') return { controls: read.value, context: acting.value };
     } catch { if (!disposed && authorized) readMessage.textContent = 'Backend unavailable'; }
     finally { busy = false; update(); if (focusStatus && !disposed) { focusStatus = false; message.tabIndex = -1; message.focus(); } }
