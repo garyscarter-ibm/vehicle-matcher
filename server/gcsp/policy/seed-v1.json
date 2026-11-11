@@ -11008,6 +11008,7 @@
         "schemaVersion": 1,
         "minimumCategories": 3,
         "importance": { "medium": 50, "high": 100, "highFrom": 75 },
+        "understanding": { "kind": "input-completeness", "maximum": 11, "byConsidered": [1, 3, 4, 6, 7, 9, 10], "sameAgain": 11 },
         "order": ["body", "fuel", "sportiness", "comfort", "economy", "size"],
         "categories": {
           "body": {
@@ -11083,7 +11084,7 @@
       },
       "unit": "Account preference categories, stops and importance levels",
       "status": "assumed",
-      "basis": "Revisable compact Account categories, three-stop labels and medium/high importance numbers on the shared 0-100 scale; no BMW policy claim.",
+      "basis": "Revisable compact Account categories, three-stop labels and medium/high importance numbers on the shared 0-100 scale, plus an illustrative input-completeness mapping for Buddy understanding (not confidence); no BMW policy claim.",
       "source": "docs/gcsp/mockups/account-preferences-2026-11-10/FROZEN-REFERENCE.md",
       "sourceDate": "2026-11-10",
       "policyVersion": "gcsp-policy-v1",

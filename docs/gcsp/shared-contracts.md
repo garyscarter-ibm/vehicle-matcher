@@ -237,6 +237,28 @@ Success adds `currentCarRating` to `{ briefVersion, draftVersion, accountPrefere
 car. A replacement car therefore never inherits a rating; the earlier value stays in history only. Confirming keeps the field in
 the approved brief. Scoring, previews and the learning-record export ignore it (AP-06 owns any recommendation effect).
 
+### Same again and Buddy understanding · FUCQ-369
+
+Same again is explicit next-car intent, persisted as the optional brief field `sameAgain: { on, contractId, source: 'employee', setAt }`
+(exact keys, a sibling of `currentCarRating`). It rides the same autosave: the request adds an optional `sameAgain: { contractId, on }`
+(boolean `on`; extra keys or wrong types are `invalid`, field `sameAgain`), and `changes` may be `{}` when it is present. No current
+car gives `conflict` `no-current-car`, a current contract without a model gives `current-car-unidentified`, and a different contract
+gives `current-car-changed`; nothing is written. While it is on, a category change without `on: false` in the same patch is `invalid`
+(field `changes`, "Turn off Same again to change your categories."). Turning it on or off never touches `preferences`, consent,
+`buddy`, pause or the rating. It is intent only: scoring, previews and ranking ignore it (FUCQ-371 owns its meaning), and it never
+engages Buddy or grants search or hold authority (FUCQ-370).
+
+Readback adds a top-level `sameAgain` view beside `currentCarRating`: `{ available: true, on, contractId }`, or
+`{ available: false, on: false, contractId: null, reason }` with `no-current-car` or `current-car-unidentified`. A record for another
+contract reads as off, so a replacement car starts off. `accountPreferences` gains `sameAgain: boolean` and
+`understanding: { kind: 'input-completeness', value, maximum, basis: 'same-again' | 'categories', considered, policyKey, policyVersion }`.
+
+Understanding is input completeness, not confidence or probability: how much the employee has told Buddy. Its mapping lives once in
+the policy entry `brief.accountPreferences.v1` (`understanding: { kind, maximum: 11, byConsidered: [1, 3, 4, 6, 7, 9, 10], sameAgain: 11 }`,
+status `assumed`, illustrative). `value` is `sameAgain` while Same again is on for the current car, else `byConsidered[considered]`.
+Importance, ratings and policy-default or unopened categories never change it. `GET /editor` carries the mapping in
+`context.accountPreferences.understanding` with `policyKey`, and every readback carries `policyKey` and `policyVersion` as provenance.
+
 ## LearningRecord schema v1 · FUCQ-113 bounded observed slice
 
 `server/gcsp/predict/records/index.js` exports `validateLearningRecord(record)` and
