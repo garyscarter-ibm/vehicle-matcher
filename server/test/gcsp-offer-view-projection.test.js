@@ -82,6 +82,18 @@ test('media preserves a supplied caption and adds no disclaimer when none is sup
   assert.equal(toOfferPresentation(envelope(dto)).value.card.members[0].media.caption, null);
 });
 
+test('ordered gallery metadata remains attached to the pinned offer media', () => {
+  const dto = sample(); const display = dto.quote.facts.display;
+  display.photo = '/assets/gcsp-vehicle-evidence/07c269dd7f55fad0a56bbad65ae72f7c35defc5e8883a8290a82972e1defb427.webp';
+  display.images = [
+    { src: display.photo, alt: display.name, fidelity: 'representative-configuration', sourceRef: 'retained-front', viewpoint: 'FRONTLEFT', label: 'Front exterior' },
+    { src: '/assets/gcsp-vehicle-evidence/285aba84d74d7b3c792e4cb47d97f650a5c81e711eeb5b58c8c959d355380464.webp', alt: 'BMW interior', fidelity: 'representative-model', sourceRef: 'retained-interior', viewpoint: 'DASH', label: 'Interior' },
+  ];
+  const result = toOfferPresentation(envelope(dto)); assert.equal(result.status, 'ok');
+  assert.deepEqual(result.value.card.members[0].media.images, display.images);
+  assert.equal(result.value.card.members[0].media.src, display.photo);
+});
+
 test('unsupported private fields never enter the display projection or its retained evidence', () => {
   const dto = sample(); const privateValue = 'private-marker-must-not-cross';
   dto.employeeId = privateValue; dto.tokenHash = privateValue; dto.quote.employeeFacts = { employeeId: privateValue };

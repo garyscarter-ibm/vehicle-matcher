@@ -262,6 +262,28 @@ test('F386 acceptance first click reviews actual records and documents; cancel r
   assert.equal(root.querySelector('[inert]'), null); assert.equal(f.calls.some((call) => call.options.method === 'POST'), false);
 });
 
+for (const outcome of ['expired', 'access-lapsed']) {
+  test(`F386 authoritative ${outcome} read closes an open decision drawer into a usable keyboard destination`, async (t) => {
+    let changed = false;
+    const f = setup(t, { read: ({ dto }) => changed
+      ? outcome === 'access-lapsed' ? { ...response({}, false), status: 401 }
+        : response({ status: 'ok', value: { ...dto, state: 'expired', reason: 'deadline-reached', handoff: null, availableActions: [] } })
+      : response({ status: 'ok', value: dto }) });
+    const root = document.createElement('main'); document.body.append(root);
+    const view = createOfferView(root, { decide: f.controller.decision, tickDeclaration: f.controller.tickDeclaration });
+    t.after(view.destroy); f.controller.subscribe(view.update); await f.controller.refresh();
+    const opener = root.querySelector('[data-offer-action="accept"]'); opener.focus(); opener.click();
+    const declaration = root.querySelector('[data-offer-declaration]'); assert.ok(declaration); declaration.focus();
+    changed = true; await f.controller.refresh();
+    assert.equal(root.querySelector('[data-offer-decision-drawer]'), null);
+    assert.equal(root.querySelector('[inert]'), null);
+    const destination = outcome === 'expired' ? root.querySelector('h1') : root.querySelector('a.vm-btn');
+    assert.equal(destination.textContent, outcome === 'expired' ? 'Offer expired' : 'Open your account');
+    assert.equal(document.activeElement, destination);
+    assert.equal(f.calls.some((call) => call.options.method === 'POST'), false);
+  });
+}
+
 test('F386 replacement mileage is explicit, resets declarations when edited, and only valid entered mileage crosses accept', async (t) => {
   const initial = { ...sample, handoff: { ...handoff, mode: 'replacement', returnMileage: { maximum: 100000, unit: 'mi' },
     returnCar: { model: 'Actual old car', contractEndDate: '2026-12-31', currentOdometer: { value: 5200, unit: 'mi' } },

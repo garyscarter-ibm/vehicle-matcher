@@ -416,6 +416,10 @@
     {
       "path": "blocks/gcsp/kit/option-rows.css",
       "max_lines": 7
+    },
+    {
+      "path": "blocks/gcsp/kit/media-gallery.css",
+      "max_lines": 46
     }
   ],
   "baseline": {

@@ -23,6 +23,40 @@ function render(name, ports = {}) {
   return { root, view, data };
 }
 
+test('offer gallery uses ordered views, keeps selection across clock reads and closes on redraw or teardown', async () => {
+  const catalogue = JSON.parse(await readFile(new URL('../data/gcsp/vehicle-evidence/display-images.v1.json', import.meta.url)));
+  const images = Object.values(catalogue.configurationGalleries)[0].map((image) => ({
+    src: `/${image.asset}`, alt: `BMW, ${image.label.toLowerCase()}`, fidelity: image.fidelity,
+    sourceRef: image.sourceRef, viewpoint: image.viewpoint, label: image.label,
+  }));
+  const { root, view, data } = render('pending');
+  data.card.members[0].media.images = images;
+  view.update(data);
+  const gallery = root.querySelector('.gcsp-media-gallery');
+  assert.ok(gallery); assert.equal(gallery.parentElement.classList.contains('gcsp-vehicle-decision'), true);
+  assert.deepEqual([...gallery.querySelectorAll('.gcsp-media-gallery-thumbs button')].map((node) => node.textContent), images.map((image) => image.label));
+  gallery.querySelectorAll('.gcsp-media-gallery-thumbs button')[1].click();
+  assert.equal(gallery.querySelector('.vm-card-photo').getAttribute('src'), images[1].src);
+  view.update({ ...data, countdown: '1:59' });
+  assert.equal(root.querySelector('.gcsp-media-gallery'), gallery);
+  assert.equal(gallery.querySelector('.vm-card-photo').alt, images[1].alt);
+  gallery.querySelector('.gcsp-media-gallery-enlarge').click();
+  const oldDialog = gallery.querySelector('dialog'); assert.equal(oldDialog.open, true);
+  view.update({ ...data, state: 'expired' }); assert.equal(oldDialog.open, false);
+  view.update(data); const dialog = root.querySelector('.gcsp-media-gallery-dialog');
+  root.querySelector('.gcsp-media-gallery-enlarge').click();
+  view.destroy(); assert.equal(dialog.open, false); assert.equal(root.childElementCount, 0);
+});
+
+test('offer gallery keeps a historical photo without fabricating extra views', () => {
+  const { root, view, data } = render('pending');
+  data.card.members[0].media = { src: '/assets/brand-hero/bmw.jpg', alt: 'BMW car' };
+  view.update(data);
+  assert.equal(root.querySelector('.gcsp-media-gallery-feature img').getAttribute('src'), '/assets/brand-hero/bmw.jpg');
+  assert.equal(root.querySelector('.gcsp-media-gallery-thumbs'), null);
+  view.destroy();
+});
+
 test('exact shared card, points and current car comparison preserve supplied unknowns and provenance', () => {
   const { root } = render('pending');
   assert.equal(root.querySelectorAll('.vm-card').length, 1);

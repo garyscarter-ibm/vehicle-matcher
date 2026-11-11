@@ -96,7 +96,7 @@ function presentation(offer, hold, quote, stock, clock, followup, extra = {}) {
     || inputDigest(decision.terms) !== inputDigest(quote.terms)) throw Error('Inconsistent pinned decision');
   const facts = select(snapshot, ['contractVersion', 'candidateKey', 'sourceNamespace', 'identityKind', 'snapshotVersion', 'observedAt']);
   const image = (entry) => typeof entry === 'string' ? { src: entry }
-    : textFields(entry, ['src', 'alt', 'caption', 'fidelity', 'sourceRef']);
+    : textFields(entry, ['src', 'alt', 'caption', 'fidelity', 'sourceRef', 'viewpoint', 'label']);
   facts.sourceKeys = { stockId: snapshot.sourceKeys.stockId };
   facts.display = { ...textFields(snapshot.display, ['name', 'manufacturer', 'model', 'derivative', 'colour']),
     photo: typeof snapshot.display.photo === 'string' ? snapshot.display.photo : null,
