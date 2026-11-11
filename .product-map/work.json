@@ -4740,23 +4740,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-11T12:19:11Z",
+      "observed_at": "2026-11-11T13:22:14Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-384",
       "slices": [
         {
           "id": "definitions",
-          "status": "not-started",
-          "title": "Supported code dictionary and versioned identity"
+          "status": "complete",
+          "title": "Supported code dictionary and versioned identity",
+          "observed_at": "2026-11-11T13:22:13Z",
+          "evidence": "Versioned retained-source seed: 239/240 configurations, 11900/11947 selected codes, exact context applicability; source gaps/swatches explicit. Scoped checkpoint only; docs/gcsp/evidence/fucq384/README.md."
         },
         {
           "id": "index",
-          "status": "not-started",
-          "title": "Keyed local joins and explicit unknowns"
+          "status": "complete",
+          "title": "Keyed local joins and explicit unknowns",
+          "observed_at": "2026-11-11T13:22:14Z",
+          "evidence": "Local keyed maps and detached adapter enrichment; 89 boundary checks plus 1 actual retained-registry check pass; original producer integration remains held. Scoped evidence in docs/gcsp/evidence/fucq384/README.md."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Generated vehicle to pinned quote and comparison"
+          "status": "blocked",
+          "title": "Generated vehicle to pinned quote and comparison",
+          "observed_at": "2026-11-11T13:22:14Z",
+          "evidence": "Original AC4 actual generated-stock/recommendation/newly pinned quote path awaits explicitly held FUCQ-382 repair. Fixture-producer quote test only. Rendered comparison and independent review pending; checkpoint is not Built/Done."
         }
       ],
       "unsliced": false
