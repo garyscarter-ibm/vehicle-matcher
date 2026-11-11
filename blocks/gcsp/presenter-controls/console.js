@@ -198,7 +198,7 @@ export function mountPresenterConsole(host, { adapter = createPresenterHttpAdapt
   function mountAdvanced() {
     if (controller) return;
     controller = mountPresenterControls(advancedHost, { adapter, commandId, reload, ...(navigate ? { navigate } : {}),
-      onReveal: () => {}, onEscape: () => {}, onAvailability: (visible) => { advancedNote.hidden = visible; } });
+      onReadback: (next) => applyState(next), onReveal: () => {}, onEscape: () => {}, onAvailability: (visible) => { advancedNote.hidden = visible; } });
     group = regroup(controller.root); root.dataset.tabs = String(Boolean(group));
   }
   function setMode(next) {
