@@ -1,7 +1,7 @@
 import { el, button } from '../../vehicle-matcher/ui.js';
 import { categoryPreferences, preferenceCategories } from '../kit/category-preferences.js';
 import { loadingSkeleton } from '../kit/loading-skeleton.js';
-import { createAccountPreferencesController } from './account-preferences-controller.js';
+import { createAccountPreferencesController, PREFERENCE_COPY } from './account-preferences-controller.js';
 
 let sequence = 0;
 const commandId = (kind) => `${kind}:${globalThis.crypto.randomUUID()}`;
@@ -34,8 +34,12 @@ export function mountAccountPreferences(region, { transport, signal, createComma
     const action = { label: lamp.state === 'engaged' ? 'Disengage Buddy' : 'Engage Buddy', disabled: lamp.state === 'unknown' || Boolean(lamp.pending) || lamp.waiting };
     const next = { categories: state.categories, open: state.open, pendingRemoval: state.pendingRemoval, disabled: state.disabled,
       ...(lane ? { sameAgain: { on: lane.on, available: lane.available, reason: lane.reason } } : {}), ...(score ? { understanding: score } : {}), action,
-      status: { kind: state.status.kind, text: state.status.text, ...(state.status.actionLabel ? { actionLabel: state.status.actionLabel,
-        onAction: () => { wasInside = true; act[state.status.action]?.(); } } : {}) } };
+      status: null };
+    // At rest with no readable engagement, the footer says why the action is disabled and offers a reload.
+    const shown = state.status.kind === 'idle' && lamp.state === 'unknown'
+      ? { kind: 'failed', text: PREFERENCE_COPY.buddyUnknown, actionLabel: 'Reload preferences', action: 'reload' } : state.status;
+    next.status = { kind: shown.kind, text: shown.text, ...(shown.actionLabel ? { actionLabel: shown.actionLabel,
+      onAction: () => { wasInside = true; act[shown.action]?.(); } } : {}) };
     if (!view) {
       described = describeCar?.() ?? ''; view = categoryPreferences({ id, categories: preferenceCategories(state.projection), state: next,
         minimum: state.projection.minimumCategories,

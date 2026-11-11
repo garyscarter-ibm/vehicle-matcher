@@ -18,6 +18,7 @@ export const PREFERENCE_COPY = Object.freeze({
   engaged: 'Buddy engaged. Your preferences will guide the search.',
   disengaged: 'Buddy disengaged. Your preferences are kept.',
   underMinimum: (n) => `Choose ${n} more ${n === 1 ? 'category' : 'categories'} to engage Buddy. Your preferences save automatically.`,
+  buddyUnknown: 'Buddy status unavailable. Reload to try again.',
   minimumLost: (n) => `Preferences saved. Buddy disengaged: choose at least ${n} categories to engage again.`,
 });
 

@@ -306,7 +306,9 @@ test('the lamp sits in the head, the action in the footer slot, and there is no 
   destroy(); host.remove();
   const off = await mountBuddy('selected'); assert.equal(lampText(off.host), 'Buddy disengaged'); assert.equal(action(off.host).textContent, 'Engage Buddy'); off.destroy(); off.host.remove();
   const unknown = await mountBuddy('selected', { buddy: 'unknown' });
-  assert.equal(lampText(unknown.host), 'Buddy status unavailable'); assert.equal(action(unknown.host).disabled, true); unknown.destroy(); unknown.host.remove();
+  assert.equal(lampText(unknown.host), 'Buddy status unavailable'); assert.equal(action(unknown.host).disabled, true);
+  assert.equal(statusText(unknown.host), 'Buddy status unavailable. Reload to try again.');
+  assert.ok([...unknown.host.querySelectorAll('.gcsp-prefs-statusline button')].some((node) => node.textContent === 'Reload preferences')); unknown.destroy(); unknown.host.remove();
 });
 
 test('engage and disengage keep focus on the button and say it once in the status line', async () => {
