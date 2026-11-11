@@ -232,6 +232,8 @@ test('the switch is controlled: Space-style change calls onToggle and nothing el
   view.update(base({ categories: chosen, sameAgain: { on: true, available: true } })); assert.equal(input.checked, true);
   input.checked = false; input.dispatchEvent(new dom.window.Event('change', { bubbles: true })); assert.deepEqual(toggles, [true, false]);
   click(input); assert.equal(toggles.length, 3);
+  const tip = view.root.querySelector('.gcsp-help-tip'); view.root.querySelector('.gcsp-prefs-info').focus(); assert.equal(tip.hidden, false);
+  input.focus(); input.checked = true; input.dispatchEvent(new dom.window.Event('change', { bubbles: true })); assert.equal(tip.hidden, true, 'toggling closes the help over the tiles');
 });
 
 test('help tip: exact text, described-by, hover, focus, tap, Escape and outside press', () => {
@@ -278,11 +280,13 @@ test('unavailable: switch disabled and unchecked with a reason, tiles still usab
   const { view, calls } = (() => { const m = mountSame({ categories: chosen, sameAgain: { on: true, available: false, reason: 'no-current-car' } }); return { view: m.view, calls: [] }; })();
   const input = document.getElementById('p-same-again'); const note = view.root.querySelector('.gcsp-prefs-same-note');
   assert.equal(input.disabled, true); assert.equal(input.checked, false); assert.equal(note.hidden, false);
-  assert.equal(note.textContent, 'Add your current car to use this.'); assert.ok(input.getAttribute('aria-describedby').split(' ').includes(note.id));
+  assert.equal(note.textContent, 'Add your current car to use this.'); assert.equal(input.getAttribute('aria-describedby'), note.id);
+  const info = view.root.querySelector('.gcsp-prefs-info'); assert.equal(info.hidden, true, 'no car to describe, so no help to open');
   assert.ok(!view.root.classList.contains('is-same-again')); assert.equal(tile('body').disabled, false);
   view.update(base({ categories: chosen, open: 'body', sameAgain: { on: false, available: false, reason: 'current-car-unidentified' } }));
   assert.equal(note.textContent, 'Your current car details are incomplete.'); assert.equal(document.getElementById('p-panel').hidden, false);
   view.update(base({ categories: chosen, sameAgain: { on: false, available: true } })); assert.equal(note.hidden, true); assert.equal(input.disabled, false);
+  assert.equal(info.hidden, false); assert.equal(input.getAttribute('aria-describedby'), view.root.querySelector('.gcsp-help-tip').id);
   assert.ok(!/—/.test(view.root.textContent)); assert.equal(calls.length, 0);
 });
 

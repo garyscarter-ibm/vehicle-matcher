@@ -52,7 +52,7 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
   const mode = el('div', 'gcsp-prefs-mode'); mode.dataset.slot = 'mode';
   let same = null;
   if (sameOptions) {
-    const field = checkboxField({ id: `${id}-same-again`, label: 'Same again, please!', switch: true, onChange: (on) => sameOptions.onToggle?.(on) });
+    const field = checkboxField({ id: `${id}-same-again`, label: 'Same again, please!', switch: true, onChange: (on) => { same.tip.hide(); sameOptions.onToggle?.(on); } });
     field.root.classList.add('gcsp-same-switch');
     const info = button({ label: '', variant: 'ghost' }); info.classList.add('gcsp-prefs-info');
     info.setAttribute('aria-label', 'About Same again, please!'); info.append(svgIcon(ICONS.info));
@@ -61,7 +61,7 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
       text: sameTipText(sameOptions.description) });
     const note = el('p', 'gcsp-note gcsp-prefs-same-note'); note.id = `${id}-same-again-note`; note.hidden = true;
     field.input.setAttribute('aria-describedby', tip.root.id);
-    mode.append(field.root, note); same = { field, note, tip };
+    mode.append(field.root, note); same = { field, note, tip, info };
   }
   const tiles = el('div', 'gcsp-prefs-tiles'); const panelId = `${id}-panel`;
   const nodes = new Map();
@@ -165,7 +165,8 @@ export function categoryPreferences({ id, categories = [], state: initial = {}, 
     const view = state.sameAgain ?? {}; const available = view.available !== false; const reason = available ? '' : (SAME_AGAIN_REASONS[view.reason] ?? SAME_AGAIN_REASONS['no-current-car']);
     same.field.input.checked = sameOn; same.field.input.disabled = disabled || !available;
     same.note.hidden = available; same.note.textContent = reason;
-    const ids = [same.tip.root.id, ...(available ? [] : [same.note.id])].join(' '); same.field.input.setAttribute('aria-describedby', ids);
+    // No identified car, no target to describe: hide the help and let the visible reason describe the switch.
+    same.info.hidden = !available; if (!available) same.tip.hide(); same.field.input.setAttribute('aria-describedby', available ? same.tip.root.id : same.note.id);
   }
 
   function update(next) {

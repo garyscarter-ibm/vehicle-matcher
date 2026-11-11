@@ -6,5 +6,5 @@
 .gcsp .gcsp-understanding-meter { grid-column: 1 / -1; height: 5px; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 3px; }
 .gcsp .gcsp-understanding-meter i { background: var(--gcsp-divider); } .gcsp .gcsp-understanding-meter i.is-filled { background: var(--gcsp-accent); }
 .gcsp .gcsp-understanding-meter i:last-child { background: var(--gcsp-surface-muted); border: 1px solid var(--gcsp-divider); }
-.gcsp .gcsp-understanding-meter i:last-child.is-filled { background: var(--gcsp-accent-strong); border-color: var(--gcsp-accent-strong); }
+.gcsp .gcsp-understanding-meter i:last-child.is-filled { background: var(--gcsp-accent-strong); border-color: var(--gcsp-accent-strong); } .gcsp .gcsp-understanding.is-pending .gcsp-understanding-meter i.is-filled { background: var(--gcsp-text-muted); border-color: var(--gcsp-text-muted); }
 @media (max-width: 850px) { .gcsp .gcsp-understanding { width: 100%; min-width: 0; } }
