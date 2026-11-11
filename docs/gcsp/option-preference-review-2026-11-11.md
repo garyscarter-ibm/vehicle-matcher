@@ -1,4 +1,4 @@
-# Option evidence and specification preference — review draft
+# Option evidence and specification preference — reviewed mappings
 
 Russell requested two recommendation rules on 11 November 2026:
 
@@ -14,7 +14,15 @@ The matrix contains **469 unique identifiers**: **467 described option codes** a
 
 The Matrix sheet contains the seven preferences, draft desirability/evidence values, attention flags and editable review decisions/notes. Source labels preserves model-specific descriptions; Guide and sources explains the rules and lists provenance. Save edits in the workbook and tell the agent when ready so it can retrieve the actual saved cells. The workbook is the human review surface; reconcile accepted edits back into the JSON before implementation.
 
-Follow-up decision, 11 November 2026: **Well-specified may exceed 1 for especially desirable or “unicorn” options.** Treat it as a desirability weight: `1` normal, `2` highly desirable, `3` exceptional. Other non-negative numeric weights are also accepted for review. Sum weights after capability deduplication, while keeping the hidden preference importance at 100. The workbook was open in Excel during this refinement and was preserved to protect in-progress review edits. Its existing drop-down is a starting list; reviewers may type higher weights directly. Reconcile those saved values and refresh the workbook guide after review.
+Follow-up decisions, 11 November 2026: **Well-specified may exceed 1 for especially desirable or “unicorn” options.** Treat it as a desirability weight: `1` normal, `2` highly desirable, `3` exceptional. The collaborator subsequently capped positive values at **+3** and instructed that an accidental `11` is a typo, interpreted as `1`. Sum weights after capability deduplication, while keeping the hidden preference importance at 100. The workbook remains untouched, including its original guide and drop-downs.
+
+## Saved review reconciled
+
+The collaborator completed the review on 11 November. All 469 rows were read by option code, with 283 changed scoring cells plus the two charging-card fuel mappings (76 comfort, 146 well-specified, 44 sportiness, eight economy, seven size, two fuel). Saved values are authoritative, including edits on rows labelled “Change requested”; overall approval includes the 17 unchanged rows still labelled “Not reviewed”. There are 249 “Approved” and 203 “Change requested” rows. All scoring values are within the agreed range. No scoring cell contains `11`; the only exact `11` is the unchanged selected-configuration source count for S01GL, which is metadata and never a score.
+
+The reconciled JSON preserves each decision, note, original description variant and source. It records the saved workbook SHA-256 `aa860e13b808599888771ea2777ef53516d83692cfbac34293d231beb672fd38`. The two weight-3 options are FVAEW and FVATQ (extended Merino leather). S05ML is explicitly grouped with S033F as requested; S09TA remains grouped with S0337. Charging-card descriptions are recorded as collaborator-supplied labels without replacing retained source evidence. Original proposal rationales remain labelled as such; reviewed values take precedence.
+
+This reconciliation checkpoint changes review data and documentation only. Backend integration follows these reviewed mappings; no source corpus or open workbook is modified.
 
 ## Draft interpretation
 
