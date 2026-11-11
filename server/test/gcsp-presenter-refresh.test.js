@@ -36,19 +36,20 @@ test('activity: one presenter action re-reads once, quietly, keeps focus and ann
   const snap = (name) => structuredClone(activityFixtures.snapshots[name]);
   let current = snap('never-checked'); let reads = 0; const node = root();
   const stop = activity.mountActivity(node, { adapter: { loadAccount: async () => account, readActivity: async () => { reads += 1; return structuredClone(current); },
+    pause: async () => ({ status: 'ok' }), resume: async () => ({ status: 'ok' }),
     subscribeClock: actions.subscribePresenterActions(node) } });
   cleanups.push(stop);
   await settle(node, (r) => r.querySelector('.gcsp-activity-status')?.textContent === 'Active');
-  const trigger = node.querySelector('.gcsp-action-trigger'); trigger.focus(); assert.equal(reads, 1);
+  const trigger = node.querySelector('.gcsp-activity-search-action'); trigger.focus(); assert.equal(reads, 1);
   const watch = loadingWatch(node, 'Loading activity'); const note = node.querySelector('.gcsp-activity-announcement');
   current = snap('offer'); act(node);
   await settle(node, () => reads === 2 && node.querySelector('.gcsp-activity img, .gcsp-activity a[href]'));
   await pause(); assert.equal(reads, 2); assert.deepEqual(watch.seen, []);
-  assert.equal(document.activeElement, node.querySelector('.gcsp-action-trigger')); assert.notEqual(document.activeElement, trigger);
+  assert.equal(document.activeElement, node.querySelector('.gcsp-activity-search-action')); assert.notEqual(document.activeElement, trigger);
   assert.equal(note.textContent, 'Activity updated.');
   act(node); await settle(node, () => reads === 3); await pause();
   assert.equal(reads, 3); assert.deepEqual(watch.seen, []); assert.equal(note.textContent, '');
-  assert.equal(document.activeElement, node.querySelector('.gcsp-action-trigger'));
+  assert.equal(document.activeElement, node.querySelector('.gcsp-activity-search-action'));
   watch.stop(); stop(); act(node); await pause(); assert.equal(reads, 3);
 });
 

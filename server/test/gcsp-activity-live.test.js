@@ -5,6 +5,8 @@ import { startGcspDemo } from '../../scripts/gcsp-demo.mjs';
 import { createAccountHttpAdapter } from '../../blocks/gcsp/shell/account-runtime.js';
 import { createActivityHttpAdapter } from '../../blocks/gcsp/activity/activity-http.js';
 import { createActivityController } from '../../blocks/gcsp/activity/activity-controller.js';
+import { createAccountHttpAdapter as createCarsAdapter } from '../../blocks/gcsp/account/http-adapter.js';
+import { buddyState } from '../../blocks/gcsp/kit/buddy-status.js';
 import { preference, essential } from './helpers/employee-recommendation.js';
 import { createLocalHttpsFixture } from './helpers/local-https.js';
 
@@ -23,14 +25,19 @@ test('actual live entry bootstraps the shared canonical account and current acti
     const request=(path,options={})=>fetch(new URL(path,app.origin),{...options,headers:{...options.headers,Origin:app.origin,Cookie:cookie}});
     const account=createAccountHttpAdapter({fetch:request});const current=await account.loadAccount();assert.equal(current.status,'ready');assert.equal(current.name,'Paula Mason');
     const adapter=createActivityHttpAdapter({fetch:request,loadAccount:account.loadAccount});controller=createActivityController({adapter});
+    const cars = createCarsAdapter({ fetchImpl: request });
     await controller.refresh();assert.equal(controller.getState().result.value.permission,null);assert.equal(controller.getState().result.value.state,'no-brief');
+    assert.equal(buddyState(await cars.readActivity()), 'unset');
     const post=async(path,body)=>(await request(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})).json();
     assert.equal((await post('/api/gcsp/brief/draft',{commandId:randomUUID(),expectedBriefVersion:0,expectedDraftVersion:0,
       brief:{schemaVersion:1,preferences:{body:preference('estate')},essentials:{seats:essential(5)}}})).status,'ok');
     assert.equal((await post('/api/gcsp/brief/confirm',{commandId:randomUUID(),expectedBriefVersion:0,expectedDraftVersion:1,consent:{search:true,hold:true}})).status,'ok');
     await controller.refresh();assert.equal(controller.getState().result.value.briefVersion,1);assert.equal(controller.getState().result.value.permission.canSearch,true);
+    assert.equal(buddyState(await cars.readActivity()), 'active');
     await controller.pause();assert.equal(controller.getState().result.value.briefVersion,2);assert.equal(controller.getState().result.value.permission.canHold,false);
+    assert.equal(buddyState(await cars.readActivity()), 'paused');
     await controller.resume();assert.equal(controller.getState().result.value.briefVersion,3);assert.equal(controller.getState().result.value.permission.canSearch,true);
+    assert.equal(buddyState(await cars.readActivity()), 'active');
     const fresh=await adapter.readActivity();assert.equal(fresh.value.briefVersion,3);assert.equal(fresh.value.lastSuccessfulCheck,null);assert.deepEqual(fresh.value.offers,[]);
     assert.equal((await fetch(app.origin+'/docs/gcsp/demo-brief.md')).status,404);
   }finally{controller?.destroy();await app.close();}
