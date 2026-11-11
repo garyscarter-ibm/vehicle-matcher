@@ -1,0 +1,292 @@
+[
+  {
+    "bytes": 416258,
+    "path": "captures/visual-corrections/1440-offer-settled-equipment-closed.png",
+    "sha256": "fdca52a0edf241fa0567baa913250359a334749e3739e4e1f8da7a54226c192d",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/visual-corrections/1440-offer-settled-equipment-closed.png",
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    }
+  },
+  {
+    "bytes": 193439,
+    "path": "captures/visual-corrections/375-offer-settled-equipment-closed.png",
+    "sha256": "db2d4529cff5ad1bde49b730c662098a728566d9aaa278b91697787bfd923d3b",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/visual-corrections/375-offer-settled-equipment-closed.png",
+    "viewport": {
+      "height": 1000,
+      "width": 375
+    }
+  },
+  {
+    "bytes": 175918,
+    "path": "captures/visual-corrections/320-offer-settled-equipment-closed.png",
+    "sha256": "e2c92b4179015cfb24d0b0099be8a0e172ba16e93b265c3853f9ca02837b6d50",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/visual-corrections/320-offer-settled-equipment-closed.png",
+    "viewport": {
+      "height": 1000,
+      "width": 320
+    }
+  },
+  {
+    "bytes": 536759,
+    "path": "captures/visual-corrections/1440-equipment-keyboard-expanded.png",
+    "sha256": "26fa49fa2f1c47f5b46fd4820627efd3364ee38eeb6bcd0c25bf051109c4bd88",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/visual-corrections/1440-equipment-keyboard-expanded.png",
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    }
+  },
+  {
+    "bytes": 261268,
+    "path": "captures/visual-corrections/320-equipment-keyboard-expanded.png",
+    "sha256": "1a7b6f85d3ba280ec040fe082df2d807b3662c840e6ce4559ac84d7fe4da48d8",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/visual-corrections/320-equipment-keyboard-expanded.png",
+    "viewport": {
+      "height": 1000,
+      "width": 320
+    }
+  },
+  {
+    "bytes": 114641,
+    "path": "captures/visual-corrections/375-decline-corrected-initial.png",
+    "sha256": "a55eb9f9d58324ea230fb905b12efb9e208ccd78fd0b926339721fae08a93c73",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/visual-corrections/375-decline-corrected-initial.png",
+    "viewport": {
+      "height": 1000,
+      "width": 375
+    }
+  },
+  {
+    "bytes": 121752,
+    "path": "captures/visual-corrections/320-decline-corrected-validation.png",
+    "sha256": "722f11f8b4ff2a6fc70ba1943fa72c21e27e2be3b5fb481ddc448f8309984580",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/visual-corrections/320-decline-corrected-validation.png",
+    "viewport": {
+      "height": 1000,
+      "width": 320
+    }
+  },
+  {
+    "bytes": 298953,
+    "path": "captures/visual-corrections/1440-decline-corrected-selected-focus.png",
+    "sha256": "4f6acad04decf861e32dfb52cdc9a709308cb20d02fed3b5ed74eaa42c757920",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/visual-corrections/1440-decline-corrected-selected-focus.png",
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    }
+  },
+  {
+    "bytes": 145343,
+    "path": "captures/visual-corrections/320-gallery-selected-broken-keyboard-focus.png",
+    "sha256": "1c3b42cc3af2aab85b1f5f980e006c02a35ac73d63e9ea90cf34a61f516d0914",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/visual-corrections/320-gallery-selected-broken-keyboard-focus.png",
+    "viewport": {
+      "height": 1000,
+      "width": 320
+    }
+  },
+  {
+    "bytes": 196746,
+    "path": "captures/accept/1440-accept-initial-viewport.png",
+    "sha256": "89328bd6847f45c4782d8a9ef0ac95c73fae1c3ca3b6c9f9b1ca1a6317c1c9fb",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/accept/1440-accept-initial-viewport.png",
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    }
+  },
+  {
+    "bytes": 82655,
+    "path": "captures/accept/375-accept-ready-viewport.png",
+    "sha256": "d88e89764475e07dcfa1ace1ccb9dacd69be9941c0522900b03b86e69ca0a118",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/accept/375-accept-ready-viewport.png",
+    "viewport": {
+      "height": 1000,
+      "width": 375
+    }
+  },
+  {
+    "bytes": 248168,
+    "path": "captures/accept/320-accept-validation.png",
+    "sha256": "f41afab0b99c36a114c598f3d643d079bdfcccd81e984e1c833f5ede1a364649",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/accept/320-accept-validation.png",
+    "viewport": {
+      "height": 1000,
+      "width": 320
+    }
+  },
+  {
+    "bytes": 78038,
+    "path": "captures/accept/375-accept-pending-viewport.png",
+    "sha256": "7fa03fac3609732a119da840626d5031cae0de308f378b44433b803f9cbfa5da",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/accept/375-accept-pending-viewport.png",
+    "viewport": {
+      "height": 1000,
+      "width": 375
+    }
+  },
+  {
+    "bytes": 27978,
+    "path": "captures/accept/375-accepted.png",
+    "sha256": "3d416d9dd8244296511458def54187a900306b5be08546df33524f09b9db5025",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/accept/375-accepted.png",
+    "viewport": {
+      "height": 1000,
+      "width": 375
+    }
+  },
+  {
+    "bytes": 26716,
+    "path": "captures/accept/320-accepted-second-context.png",
+    "sha256": "3260483ea8a8fb7aac9eefe0c2a35832271346fed4e0ea4d18a7514b77e549b0",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/accept/320-accepted-second-context.png",
+    "viewport": {
+      "height": 1000,
+      "width": 320
+    }
+  },
+  {
+    "bytes": 78480,
+    "path": "captures/accept/320-accept-ready-viewport.png",
+    "sha256": "57f23d5d8676a62cfdb77d9ea847172de092c5da3ca3febc46819be733d6bc6c",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/accept/320-accept-ready-viewport.png",
+    "viewport": {
+      "height": 1000,
+      "width": 320
+    }
+  },
+  {
+    "bytes": 221319,
+    "path": "captures/decline/320-decline-loading.png",
+    "sha256": "e52ce1d1f748598a124ee7b4f285db893886666bcfbbf7dd5928101c5a61fa83",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/decline/320-decline-loading.png",
+    "viewport": {
+      "height": 1000,
+      "width": 320
+    }
+  },
+  {
+    "bytes": 224790,
+    "path": "captures/decline/320-decline-unavailable.png",
+    "sha256": "ee3a014865ed970d11f73efacfb3ebb91be670e7405874ed52a38814f3dbe054",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/decline/320-decline-unavailable.png",
+    "viewport": {
+      "height": 1000,
+      "width": 320
+    }
+  },
+  {
+    "bytes": 40635,
+    "path": "captures/decline/320-declined-followup.png",
+    "sha256": "3d10ded19298104eeba1fe8716044f25c115c8c7a04e078c7e479f273c6ebae0",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/decline/320-declined-followup.png",
+    "viewport": {
+      "height": 1000,
+      "width": 320
+    }
+  },
+  {
+    "bytes": 52110,
+    "path": "captures/decline/1440-declined-second-context.png",
+    "sha256": "92a163d666c8261b6f96fb57487187d81391b7ca462c3af131b33b2a5924a6f7",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/decline/1440-declined-second-context.png",
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    }
+  },
+  {
+    "bytes": 455302,
+    "path": "captures/gallery-timing/1440-combined-gallery-selected.png",
+    "sha256": "042c5e4943f7412f2dbfe27cd1fd0cd312598c5626a16a1eab37b30f7215b4b3",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/gallery-timing/1440-combined-gallery-selected.png",
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    }
+  },
+  {
+    "bytes": 298220,
+    "path": "captures/gallery-timing/375-combined-gallery-selected.png",
+    "sha256": "7cdf0ddd3fe241e457048182b7e5f84c4947111f8fea3290b4c1e43a4453c2cc",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/gallery-timing/375-combined-gallery-selected.png",
+    "viewport": {
+      "height": 1000,
+      "width": 375
+    }
+  },
+  {
+    "bytes": 305825,
+    "path": "captures/gallery-timing/320-mobile-touch-interior-synchronised.png",
+    "sha256": "448b1f2a550b78bbf97c080b86d148def35193b50a9d518423078e826a3fcdf5",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/gallery-timing/320-mobile-touch-interior-synchronised.png",
+    "viewport": {
+      "height": 900,
+      "width": 320
+    }
+  },
+  {
+    "bytes": 526021,
+    "path": "captures/gallery-boundaries/1440-countdown-last-minute.png",
+    "sha256": "f11a750a688a953972f2f7387783d9310fa88009c14feb2e2a2a99e308c156e3",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/gallery-boundaries/320-countdown-last-minute.png",
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    }
+  },
+  {
+    "bytes": 30183,
+    "path": "captures/gallery-boundaries/1440-countdown-authoritative-expired.png",
+    "sha256": "69fce4a8f88a54cb4201dce02cc2eec520ed6cc876c7761e4947f96d35bba1ac",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/gallery-boundaries/320-countdown-authoritative-expired.png",
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    }
+  },
+  {
+    "bytes": 20067,
+    "path": "captures/gallery-boundaries/375-countdown-expired-second-context.png",
+    "sha256": "835bc6680f129c3b113b9e43802124b464b9febaf219520558477fd4eb76d523",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/gallery-boundaries/375-countdown-expired-second-context.png",
+    "viewport": {
+      "height": 1000,
+      "width": 375
+    }
+  },
+  {
+    "bytes": 253440,
+    "path": "captures/stale-expiry/375-stale-revalidated.png",
+    "sha256": "ef6291241105bfa8b1dbae152673407180e13e7abbae7b1cd812979d559e8c6e",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/stale-expiry/375-stale-revalidated.png",
+    "viewport": {
+      "height": 1000,
+      "width": 375
+    }
+  },
+  {
+    "bytes": 20067,
+    "path": "captures/stale-expiry/375-expired-focus-restored.png",
+    "sha256": "835bc6680f129c3b113b9e43802124b464b9febaf219520558477fd4eb76d523",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/stale-expiry/375-expired-focus-restored.png",
+    "viewport": {
+      "height": 1000,
+      "width": 375
+    }
+  },
+  {
+    "bytes": 13588,
+    "path": "captures/access-loss/320-access-loss-focus-restored.png",
+    "sha256": "ed52a21fd3bafc3bbdd114f70c9756ca27621aeba65aa4ae3eff4a28961256ab",
+    "source": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-fucq380-20261111/f386/review/access-loss/320-access-loss-focus-restored.png",
+    "viewport": {
+      "height": 900,
+      "width": 320
+    }
+  }
+]

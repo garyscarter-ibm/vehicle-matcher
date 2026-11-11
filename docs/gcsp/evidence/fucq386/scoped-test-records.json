@@ -1,0 +1,167 @@
+[
+  {
+    "base": "HEAD",
+    "base_commit": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "changed_paths": [
+      "COMPONENTS.md",
+      "_tools/__pycache__/scaffold_git.cpython-314.pyc",
+      "blocks/gcsp/kit/option-rows.css",
+      "blocks/gcsp/kit/vehicle-decision.css",
+      "blocks/gcsp/kit/vehicle-decision.js",
+      "blocks/gcsp/offer/offer-projection.js",
+      "blocks/vehicle-matcher/component-gallery.js",
+      "docs/gcsp/evidence/fucq386/plan.md",
+      "server/node_modules",
+      "server/test/gcsp-offer-view-projection.test.js",
+      "server/test/gcsp-offer-view-render.test.js",
+      "server/test/ui-ratchet.json"
+    ],
+    "code_key": "559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4",
+    "commands": [
+      "node --test --test-concurrency=1 server/test/gcsp-offer-view-projection.test.js server/test/gcsp-offer-view-render.test.js server/test/shared-kit-contracts.test.js server/test/gcsp-offer-view-decision.test.js"
+    ],
+    "cwd": ".",
+    "dirty": true,
+    "execution_identity": {
+      "code": "559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4",
+      "environment": "e7b3cb26f844e3b3642ae2d66aeaa928b32010249b5a646286b24d080bd3a30e",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+      "scope": "targeted",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/gcsp-offer-view-projection.test.js server/test/gcsp-offer-view-render.test.js server/test/shared-kit-contracts.test.js server/test/gcsp-offer-view-decision.test.js"
+      ],
+      "settings": "a3ead851f638e196bf1104bff365315bb90d7641a4e10cd5981f3d94e9f21a9d",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "modules": [],
+    "python": "3.14.7",
+    "ran": null,
+    "reason": "F386 equipment disclosure and shared option-row correction: projection preserves 41 labels/provenance; offer render is sole production vehicleDecisionCard caller; shared kit and offer decisions cover shared options and drawer integration. Existing unchanged access/decision-service/browser authority evidence reused. No full suite; unrelated presenter ratchet F387 stays separately recorded.",
+    "result": "passed",
+    "scope": "targeted",
+    "selection_notes": [],
+    "skipped": 0,
+    "source_path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4-default-1794407242289265000.json",
+    "time": "2026-11-11T14:27:22+0000",
+    "tree": "6dcb08b41f7ddea5064bbe7ad2b0895fd6fb239b",
+    "variant": "default",
+    "wall": 2.3
+  },
+  {
+    "base": "HEAD",
+    "base_commit": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "changed_paths": [
+      "COMPONENTS.md",
+      "_tools/__pycache__/scaffold_git.cpython-314.pyc",
+      "blocks/gcsp/kit/option-rows.css",
+      "blocks/gcsp/kit/vehicle-decision.css",
+      "blocks/gcsp/kit/vehicle-decision.js",
+      "blocks/gcsp/offer/offer-projection.js",
+      "blocks/vehicle-matcher/component-gallery.js",
+      "docs/gcsp/evidence/fucq386/plan.md",
+      "server/node_modules",
+      "server/test/gcsp-offer-view-projection.test.js",
+      "server/test/gcsp-offer-view-render.test.js",
+      "server/test/ui-ratchet.json"
+    ],
+    "code_key": "559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4",
+    "commands": [
+      "node --test --test-name-pattern='blocks/gcsp/kit/(vehicle-decision|option-rows)\\.css' server/test/ui-ratchet.test.js"
+    ],
+    "cwd": ".",
+    "dirty": true,
+    "execution_identity": {
+      "code": "559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4",
+      "environment": "e7b3cb26f844e3b3642ae2d66aeaa928b32010249b5a646286b24d080bd3a30e",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+      "scope": "targeted",
+      "selected": [
+        "node --test --test-name-pattern='blocks/gcsp/kit/(vehicle-decision|option-rows)\\.css' server/test/ui-ratchet.test.js"
+      ],
+      "settings": "cdeba0d089414167fe9fc8086351d39ba5fe2eb23ce6ff74b7e70bcf5932a609",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "modules": [],
+    "python": "3.14.7",
+    "ran": null,
+    "reason": "Only changed shared stylesheet caps: vehicle-decision adds responsive equipment list and option-rows explicitly lays radios horizontally. Global presenter pattern failures remain known F387; no unrelated full ratchet pass claimed.",
+    "result": "passed",
+    "scope": "targeted",
+    "selection_notes": [],
+    "skipped": 0,
+    "source_path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4-default-1794407300589749000.json",
+    "time": "2026-11-11T14:28:20+0000",
+    "tree": "6dcb08b41f7ddea5064bbe7ad2b0895fd6fb239b",
+    "variant": "default",
+    "wall": 0.3
+  },
+  {
+    "base": "HEAD",
+    "base_commit": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "changed_paths": [
+      "COMPONENTS.md",
+      "_tools/__pycache__/scaffold_git.cpython-314.pyc",
+      "blocks/gcsp/kit/option-rows.css",
+      "blocks/gcsp/kit/vehicle-decision.css",
+      "blocks/gcsp/kit/vehicle-decision.js",
+      "blocks/gcsp/offer/offer-projection.js",
+      "blocks/vehicle-matcher/component-gallery.js",
+      "docs/gcsp/evidence/fucq386/plan.md",
+      "server/node_modules",
+      "server/test/gcsp-offer-view-projection.test.js",
+      "server/test/gcsp-offer-view-render.test.js",
+      "server/test/ui-ratchet.json"
+    ],
+    "code_key": "559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4",
+    "commands": [
+      "node /Users/usget/.codex/skills/impeccable/scripts/detect.mjs --json blocks/gcsp/kit/vehicle-decision.js blocks/gcsp/kit/vehicle-decision.css blocks/gcsp/kit/option-rows.css"
+    ],
+    "cwd": ".",
+    "dirty": true,
+    "execution_identity": {
+      "code": "559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4",
+      "environment": "e7b3cb26f844e3b3642ae2d66aeaa928b32010249b5a646286b24d080bd3a30e",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+      "scope": "targeted",
+      "selected": [
+        "node /Users/usget/.codex/skills/impeccable/scripts/detect.mjs --json blocks/gcsp/kit/vehicle-decision.js blocks/gcsp/kit/vehicle-decision.css blocks/gcsp/kit/option-rows.css"
+      ],
+      "settings": "5b98cab062ca4e395c3cf2d5e0c82d6ecde945b2e84520303fde2c8e2c08da7c",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "799c7a655fe5a12a90ea798a86cf1566d8e992a5",
+    "modules": [],
+    "python": "3.14.7",
+    "ran": null,
+    "reason": "Final mechanical Impeccable detector over the three visually corrected shared targets, after substantive review; not a browser or application-suite substitute.",
+    "result": "passed",
+    "scope": "targeted",
+    "selection_notes": [],
+    "skipped": 0,
+    "source_path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-559e3044c409bd5eac3c24d4cc09714aab9370ccdbe1920703054472732d4ee4-default-1794407429951392000.json",
+    "time": "2026-11-11T14:30:29+0000",
+    "tree": "6dcb08b41f7ddea5064bbe7ad2b0895fd6fb239b",
+    "variant": "default",
+    "wall": 0.6
+  }
+]
