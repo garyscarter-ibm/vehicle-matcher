@@ -163,6 +163,7 @@ function gcspExamples() {
     { label: 'Contract end', value: '1 December 2026' },
     { label: 'Points cost', value: formatPointsCost({ kind: 'points-monthly', value: 1100, allowance: 1300 }) },
     { label: 'Points cost', value: formatPointsCost({ kind: 'points-monthly', value: 1100 }) },
+    { label: 'Points per month', value: formatPointsCost({ kind: 'points-monthly', value: 1100, allowance: 1300 }, { compact: true }) },
   ]));
   const reviewMedia = el('div', 'gcsp-review-layout');
   const reviewImage = employeeCardFixture.members[0].media;

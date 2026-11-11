@@ -205,7 +205,7 @@ const openRecord = (root, index = 0) => { root.querySelectorAll('.gcsp-account-h
 const openFrom = (root, index = 0) => openRecord(root, index);
 // The history table opens records from the history entry, a copy of the current contract.
 const mirrorHistory = (input, index = 0) => { const entries = input.value.histories.flatMap((h) => h.entries); const id = input.value.contracts[index].contractId; Object.assign(entries.find((e) => e.contractId === id), structuredClone(input.value.contracts[index])); };
-const pointsCosts = (scope) => [...scope.querySelectorAll('dl > div')].filter((d) => d.querySelector('dt').textContent === 'Points cost').map((d) => d.querySelector('dd').textContent);
+const pointsCosts = (scope) => [...scope.querySelectorAll('dl > div')].filter((d) => ['Points cost', 'Points per month'].includes(d.querySelector('dt').textContent)).map((d) => d.querySelector('dd').textContent);
 const pointsCost = (scope) => pointsCosts(scope)[0];
 const sectionOf = (drawer, title) => [...drawer.querySelectorAll('.gcsp-record-section')].find((node) => node.querySelector('h3').textContent === title);
 const detailsRow = (root, label) => [...root.querySelectorAll('.gcsp-account-row')].find((node) => node.querySelector('h3').textContent.startsWith(label));
@@ -249,9 +249,9 @@ test('account composition preserves complete supplied facts, labelled details an
     assert.equal(root.querySelectorAll('.gcsp-feature').length, 2);
     const current = root.querySelector('.gcsp-feature');
     assert.equal(current.querySelector('.gcsp-countdown').textContent, 'Contract ends in 26 days \u00b7 1 December 2026');
-    assert.equal(pointsCost(current), '1,100 / 1,300 points per month');
+    assert.equal(pointsCost(current), '1,100 / 1,300');
     const otherScheme = root.querySelectorAll('.gcsp-feature')[1];
-    assert.equal(pointsCost(otherScheme), '1,100 points per month \u00b7 budget not supplied');
+    assert.equal(pointsCost(otherScheme), '1,100 \u00b7 budget not supplied');
     assert.doesNotMatch(otherScheme.textContent, /1,300/);
     assert.doesNotMatch(current.textContent, /current:employee-paula|slot-paula|choices-fs-uk/);
     assert.equal(current.querySelector('.gcsp-details'), null);
@@ -289,7 +289,7 @@ test('FUCQ-277: the allowance shows in the Points cost row and the no-car line, 
   const first = await domMount({ ...readOnlyAdapter(), readAccount: async () => plain });
   try {
     assert.equal(first.root.querySelector('.gcsp-allowance'), null);
-    assert.equal(pointsCost(first.root.querySelector('.gcsp-feature')), '1,100 / 1,300 points per month');
+    assert.equal(pointsCost(first.root.querySelector('.gcsp-feature')), '1,100 / 1,300');
     assert.equal(first.root.querySelector('.gcsp-account-key'), null);
     assert.doesNotMatch(first.root.textContent, /Allowance override|Override end|Allowance basis|Synthetic monthly demo|Not a verified|Exact specification is not supplied/);
     assert.doesNotMatch(first.root.textContent, /Account as of/, 'no freshness line (Paula P10)');
@@ -329,13 +329,13 @@ test('current contracts retain their explicit scheme allowance including zero an
   const first = await domMount(adapter);
   try {
     const cost = [...first.root.querySelectorAll('.gcsp-feature')].map(pointsCost);
-    assert.equal(cost[0], '1,100 / 0 points per month');
-    assert.equal(cost[1], '900 / 950 points per month');
+    assert.equal(cost[0], '1,100 / 0');
+    assert.equal(cost[1], '900 / 950');
   } finally { first.destroy(); first.root.remove(); }
   input.value.contracts[0].terms.allowance = null;
   const second = await domMount(adapter);
   try {
-    assert.equal(pointsCost(second.root.querySelector('.gcsp-feature')), '1,100 points per month \u00b7 budget not supplied');
+    assert.equal(pointsCost(second.root.querySelector('.gcsp-feature')), '1,100 \u00b7 budget not supplied');
   } finally { second.destroy(); second.root.remove(); }
 });
 
@@ -885,7 +885,7 @@ test('FUCQ-195: the current-car card shows readable labels and no raw identifier
     for (const id of raw) { assert.ok(!shownText.some((text) => text.includes(id)), id); assert.ok(!record.includes(id), id); }
     assert.ok(![...card.querySelectorAll('dd')].some((node) => node.textContent === value.currentContract.status));
     assert.equal(factPairs(card).some(([name]) => name === 'Status'), false, 'the record keeps Status; the panel does not repeat it');
-    assert.equal(pointsCost(card), '1,100 / 1,300 points per month');
+    assert.equal(pointsCost(card), '1,100 / 1,300');
     assert.doesNotMatch(card.textContent, /Synthetic example data/);
     assert.doesNotMatch(card.textContent, /Vehicle slot|Scheme|Current contract|points cost not supplied|Wltp/);
   } finally { first.destroy(); first.root.remove(); }
@@ -1087,12 +1087,12 @@ test('the current car: large image, key facts and full record access', async () 
   try {
     const car = root.querySelector('.gcsp-feature');
     assert.equal(car.querySelector('h2').textContent, 'BMW 3 Series Touring 320i');
-    assert.equal(car.querySelector('.gcsp-account-spec').textContent, '320i M Sport Touring \u00b7 Petrol');
+    assert.equal(car.querySelector('.gcsp-account-spec').textContent, 'M Sport Touring \u00b7 Petrol');
     assert.equal(car.querySelector('.gcsp-account-spec').previousElementSibling, car.querySelector('h2'));
     const countdown = car.querySelector('.gcsp-countdown');
     assert.equal(countdown.textContent, 'Contract ends in 26 days \u00b7 1 December 2026');
     assert.equal(countdown.previousElementSibling.className, 'gcsp-account-title');
-    assert.deepEqual(factPairs(car.querySelector('.gcsp-account-car-facts')), [['Points cost', '1,100 / 1,300 points per month'], ['Current mileage', '5,200 mi']]);
+    assert.deepEqual(factPairs(car.querySelector('.gcsp-account-car-facts')), [['Points per month', '1,100 / 1,300'], ['Current mileage', '5,200 mi']]);
     assert.equal(car.querySelector('details.gcsp-details'), null);
     assert.deepEqual([...car.querySelectorAll('button')].map((node) => node.textContent), ['View car record', 'Choose a replacement']);
     findButton(car, 'View car record').click();
@@ -1145,7 +1145,7 @@ test('Points cost shows once, from the authoritative terms and allowance, and fo
   const count = (root) => pointsCosts(root).length;
   const ready = await domMount(readOnlyAdapter());
   try {
-    assert.deepEqual(pointsCosts(ready.root), ['1,100 / 1,300 points per month']);
+    assert.deepEqual(pointsCosts(ready.root), ['1,100 / 1,300']);
     assert.doesNotMatch(ready.root.textContent, /Your allowance|points a month/);
   } finally { ready.destroy(); ready.root.remove(); }
   const render = async (edit, name = 'ready') => {
@@ -1153,20 +1153,20 @@ test('Points cost shows once, from the authoritative terms and allowance, and fo
     const view = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
     const text = pointsCost(view.root.querySelector('.gcsp-feature')); view.destroy(); view.root.remove(); return text;
   };
-  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: 1250, allowance: 1500 }; }), '1,250 / 1,500 points per month');
-  assert.equal(await render((v) => { v.allowance.monthlyPoints = 1400; }), '1,100 / 1,400 points per month', 'the account allowance feeds the trusted scheme');
-  assert.equal(await render((v) => { v.contracts[0].vehicle.points = 1000; }), '1,000 / 1,300 points per month');
-  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: 1100, allowance: 0 }; }), '1,100 / 0 points per month', 'a zero budget is real');
-  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: 0, allowance: 1300 }; }), '0 / 1,300 points per month', 'a zero cost is real');
-  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', allowance: 1300 }; delete v.contracts[0].vehicle.points; }), 'Cost not supplied \u00b7 1,300 points per month budget');
-  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: 1100, allowance: null }; }), '1,100 points per month \u00b7 budget not supplied');
+  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: 1250, allowance: 1500 }; }), '1,250 / 1,500');
+  assert.equal(await render((v) => { v.allowance.monthlyPoints = 1400; }), '1,100 / 1,400', 'the account allowance feeds the trusted scheme');
+  assert.equal(await render((v) => { v.contracts[0].vehicle.points = 1000; }), '1,000 / 1,300');
+  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: 1100, allowance: 0 }; }), '1,100 / 0', 'a zero budget is real');
+  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: 0, allowance: 1300 }; }), '0 / 1,300', 'a zero cost is real');
+  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', allowance: 1300 }; delete v.contracts[0].vehicle.points; }), 'Cost not supplied \u00b7 1,300 budget');
+  assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: 1100, allowance: null }; }), '1,100 \u00b7 budget not supplied');
   assert.equal(await render((v) => { v.contracts[0].terms = { kind: 'points-monthly', value: null, allowance: null }; delete v.contracts[0].vehicle.points; }), 'Not supplied');
-  assert.equal(await render((v) => { v.allowance = { status: 'unknown' }; }), '1,100 points per month \u00b7 budget not supplied', 'an unknown allowance is not supplied');
+  assert.equal(await render((v) => { v.allowance = { status: 'unknown' }; }), '1,100 \u00b7 budget not supplied', 'an unknown allowance is not supplied');
   // Another scheme's allowance is never borrowed.
   const multi = await domMount(readOnlyAdapter('multi-slot'));
   try {
     const cars = [...multi.root.querySelectorAll('.gcsp-feature')];
-    assert.equal(pointsCost(cars[1]), '1,100 points per month \u00b7 budget not supplied');
+    assert.equal(pointsCost(cars[1]), '1,100 \u00b7 budget not supplied');
     assert.equal(count(multi.root), 2);
   } finally { multi.destroy(); multi.root.remove(); }
 });
@@ -1260,7 +1260,7 @@ test('a missing image keeps a readable placeholder in the whole-car well and the
     assert.ok(media.classList.contains('gcsp-media-whole')); assert.equal(media.classList.contains('has-photo'), false);
     assert.equal(media.querySelector('.vm-card-soon').textContent, 'No image available for your car');
     assert.equal(car.querySelector('h2').textContent, 'BMW 3 Series Touring 320i');
-    assert.equal(car.querySelector('.gcsp-account-spec').textContent, '320i M Sport Touring \u00b7 Petrol');
+    assert.equal(car.querySelector('.gcsp-account-spec').textContent, 'M Sport Touring \u00b7 Petrol');
   } finally { view.destroy(); view.root.remove(); }
 });
 
