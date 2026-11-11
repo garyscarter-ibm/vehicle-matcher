@@ -6,6 +6,8 @@ const commands = {
   draft: ['commandId', 'expectedBriefVersion', 'expectedDraftVersion', 'brief'],
   confirm: ['commandId', 'expectedBriefVersion', 'expectedDraftVersion', 'consent'],
   preferences: ['commandId', 'expectedBriefVersion', 'expectedDraftVersion', 'changes', 'currentCarRating', 'sameAgain'],
+  engage: ['commandId', 'expectedBriefVersion', 'expectedDraftVersion'],
+  disengage: ['commandId', 'expectedBriefVersion', 'expectedDraftVersion'],
 };
 
 /** Same-origin HTTP ports; trusted identity and policy never become browser payload fields. */
@@ -33,5 +35,6 @@ export function createBriefTransport({ fetch: request = globalThis.fetch, baseUR
   }
   return { loadEditor: (options = {}) => call('editor', undefined, options.signal), preview: (input, options = {}) => call('preview', input, options.signal),
     saveDraft: (input, options = {}) => call('draft', input, options.signal), confirm: (input, options = {}) => call('confirm', input, options.signal),
-    savePreferences: (input, options = {}) => call('preferences', input, options.signal) };
+    savePreferences: (input, options = {}) => call('preferences', input, options.signal),
+    engage: (input, options = {}) => call('engage', input, options.signal), disengage: (input, options = {}) => call('disengage', input, options.signal) };
 }

@@ -318,17 +318,19 @@ lifecycle('HTTP routes expose lifecycle and ignore top-level browser identity/ru
     assert.equal(drafted.json.value.employeeId, f.context.employeeId);
     assert.equal(drafted.json.value.runId, f.context.runId);
     assert.equal((await request('/draft')).json.value.draftVersion, 1);
-    const input = { commandId: 'http-confirm', expectedDraftVersion: 1, expectedBriefVersion: 0 };
+    // Pause needs held consent (FUCQ-370).
+    const input = { commandId: 'http-confirm', expectedDraftVersion: 1, expectedBriefVersion: 0, consent: { search: true, hold: true } };
     const confirmed = await request('/confirm', { body: input });
     assert.equal(confirmed.status, 200, JSON.stringify(confirmed));
-    assert.equal(confirmed.json.value.brief.buddy.enabled, false);
+    assert.equal(confirmed.json.value.brief.buddy.enabled, true);
     assert.equal(confirmed.cache, 'no-store');
     assert.equal((await request('?employeeId=other&runId=other')).json.value.brief.employeeId, f.context.employeeId);
     const stale = await request('/pause', { body: { commandId: 'stale-http', expectedBriefVersion: 0 } });
     assert.equal(stale.status, 409); assert.equal(stale.json.action, 'refresh');
-    assert.equal((await request('/pause', { body: { commandId: 'pause-http', expectedBriefVersion: 1 } })).json.value.brief.buddy.paused, true);
+    const paused = await request('/pause', { body: { commandId: 'pause-http', expectedBriefVersion: 1 } });
+    assert.equal(paused.json.value.brief.buddy.paused, true); assert.equal(paused.json.value.activity.canSearch, false);
     const resumed = await request('/resume', { body: { commandId: 'resume-http', expectedBriefVersion: 2 } });
-    assert.equal(resumed.json.value.activity.canSearch, false);
+    assert.equal(resumed.json.value.activity.canSearch, true);
     assert.equal((await request('/history')).json.value.versions.length, 3);
     assert.equal((await request('/draft', { body: { commandId: 'bad', expectedBriefVersion: 3, expectedDraftVersion: 1, brief: { ...data(), employeeId: 'other' } } })).status, 400);
     assert.equal((await request('', { session: f.presenter })).status, 403);

@@ -210,7 +210,8 @@ test('current base and draft versions reject stale requests and stale unmatched 
   const f = await setup(t); await draftSave(f);
   assert.equal((await preview(f)).status, 'stale-version');
   assert.equal((await preview(f, draft(), 1, 1)).status, 'stale-version');
-  await f.brief.confirm(f.context, { commandId: 'confirm', expectedBriefVersion: 0, expectedDraftVersion: 1 });
+  // Pause needs held consent (FUCQ-370), so this confirm grants it.
+  await f.brief.confirm(f.context, { commandId: 'confirm', expectedBriefVersion: 0, expectedDraftVersion: 1, consent: { search: true, hold: true } });
   const b = draft(); b.preferences.comfort.value = 5;
   await draftSave(f, b, 'second', 1, 1);
   await f.brief.pause(f.context, { commandId: 'pause', expectedBriefVersion: 1 });

@@ -237,5 +237,8 @@ export function buddyStatusExample() {
     row.append(buddyStatus({ state, href: '/gcsp-activity-live.html' }), document.createTextNode(' '), buddyStatus({ state }));
     body.append(row);
   }
+  const strip = el('div'); strip.style.display = 'grid'; strip.style.gap = '16px';
+  ['engaged', 'disengaged', 'unknown'].forEach((state) => strip.append(buddyStatus({ prominent: true, id: `gallery-buddy-${state}`, state })));
+  body.append(strip);
   scope.append(body); section.append(scope); return section;
 }

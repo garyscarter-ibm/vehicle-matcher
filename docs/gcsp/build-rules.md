@@ -72,6 +72,8 @@ Rules may be developed through trial and improvement. Implementers may select pl
 
 Acceptance for relevant implementation: demonstrate that changing an entry in the central source changes the affected calculations and displays consistently, while preserving the required historical/active-offer behaviour. Each story's existing `decided`, `acceptance` and `validate` sections reference this rule and the keys it consumes or introduces.
 
+Buddy engagement (FUCQ-370) is one such assumption: the policy entry `brief.engagement.v1` (`grants` search and hold together, `onMinimumLoss: 'disengage'`) is an ASSUMED, revisable mockup design rule from frozen reference 193cbf07, not verified BMW policy; change it in `seed-v1.json` only.
+
 Plausible synthetic rules permit progress without claiming verified BMW policy, real-system access or successful external actions. The [demo brief](demo-brief.md) and [experience quality contract](experience-quality.md) continue to govern working behaviour and acceptance.
 
 ## Refine the experience through hands-on trials
