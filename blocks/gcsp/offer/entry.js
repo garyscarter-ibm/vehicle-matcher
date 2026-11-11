@@ -35,7 +35,7 @@ export function mountOfferEntry(root, { fetch: request = globalThis.fetch, locat
     // Without an employee session the bell shows, with no badge and no read.
     const notifications = current?.status === 'ready' ? createNotificationSource({ adapter: createActivityHttpAdapter({ fetch: request }),
       subscribe: subscribePresenterActions(root) }) : { status: 'unavailable' };
-    cleanup = mountOffer(root, { ...offer, account: current, notifications, ...signedInPortal(current, location),
+    cleanup = mountOffer(root, { ...offer, account: current, notifications, reload: () => location.reload(), ...signedInPortal(current, location),
       order: { mount: (host, { orderUuid, car, announce }) => mountOrderProgress(host, { adapter: progress, helpAdapter, orderUuid, car, announce,
         embedded: true, headingLevel: 2, signal: abort.signal }) },
       followup: { loadAccount: account.loadAccount,
