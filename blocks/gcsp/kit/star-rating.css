@@ -9,5 +9,6 @@
 .gcsp .gcsp-star svg { width: 24px; height: 24px; color: var(--gcsp-text-muted); pointer-events: none; }
 .gcsp .gcsp-star.is-filled svg { color: var(--gcsp-warning); fill: var(--gcsp-warning); }
 .gcsp .gcsp-star:has(input:focus-visible) { outline: 2px solid var(--gcsp-focus); outline-offset: 1px; }
-.gcsp .gcsp-star-rating:has(> .vm-btn:not([hidden])) { display: flex; align-items: center; gap: var(--gcsp-space-2); }
-.gcsp .gcsp-star-rating > .vm-btn { background: var(--gcsp-surface); } .gcsp .gcsp-star-rating > .vm-btn[hidden] { display: none; }
+.gcsp .gcsp-star-rating:has(> .gcsp-star-failed:not([hidden])) { display: flex; flex-direction: column; align-items: flex-end; gap: var(--gcsp-space-1); }
+.gcsp .gcsp-star-failed { display: flex; align-items: center; gap: var(--gcsp-space-2); padding-inline-start: var(--gcsp-space-3); background: var(--gcsp-surface); border-radius: var(--gcsp-radius); color: var(--gcsp-text); font-size: var(--gcsp-font-size-label); font-weight: var(--gcsp-font-strong-weight); white-space: nowrap; }
+.gcsp .gcsp-star-failed[hidden] { display: none; } .gcsp .gcsp-star-failed .vm-btn { min-height: 44px; white-space: nowrap; }

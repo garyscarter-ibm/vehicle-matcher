@@ -93,7 +93,7 @@ test('a failed load shows a short status with Try again, and teardown empties th
 
 test('every named visual state mounts with its expected tiles, panel and status', async () => {
   const expected = { empty: [0, null], selected: [3, null], 'body-open-unset': [0, 'body'], 'body-open-medium': [3, 'body'], 'body-high': [3, 'body'],
-    'comfort-midpoint': [3, 'comfort'], 'remove-comfort': [3, null], 'save-failed': [3, null], stale: [3, null], pending: [3, null] };
+    'comfort-midpoint': [3, 'comfort'], 'remove-comfort': [3, null], 'save-failed': [3, null], stale: [3, null], pending: [3, null], 'rating-failed': [3, null] };
   for (const name of PREFERENCE_FIXTURE_STATES) {
     const host = document.createElement('div'); document.body.append(host); let mounted;
     const destroy = mountAccount(host, { adapter: adapter(), preferences: (region, { signal }) => {
@@ -159,12 +159,12 @@ test('the same rating instance and its focus survive an Account redraw; a failed
   const { host, destroy, calls } = await mountRated('selected', { rating: 2, wrap: (t) => ({ loadEditor: t.loadEditor, savePreferences: (i) => (fail ? { status: 'unavailable', retryable: true } : t.savePreferences(i)) }) });
   const first = stars(host)[0]; radio(host, 5).focus(); radio(host, 5).click(); await tick(); await tick();
   assert.equal(radio(host, 5).checked, true, 'the attempted value stays visible');
-  const retry = first.querySelector('.vm-btn'); assert.equal(retry.hidden, false);
+  const retry = first.querySelector('.vm-btn'); assert.equal(first.querySelector('.gcsp-star-failed').hidden, false);
   await destroy.sync(); await tick();
   assert.equal(stars(host)[0], first, 'the same node is re-appended'); assert.equal(stars(host).length, 1);
   assert.equal(document.activeElement, radio(host, 5));
   fail = false; retry.click(); await tick(); await tick();
-  assert.equal(calls[1].commandId, calls[0].commandId); assert.equal(first.querySelector('.vm-btn').hidden, true);
+  assert.equal(calls[1].commandId, calls[0].commandId); assert.equal(first.querySelector('.gcsp-star-failed').hidden, true);
   destroy(); host.remove();
 });
 

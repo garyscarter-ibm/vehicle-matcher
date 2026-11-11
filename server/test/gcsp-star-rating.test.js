@@ -216,16 +216,17 @@ test('the modules use no innerHTML, eval, new Function, string timers or em dash
   }
 });
 
-test('onRetry shows a Try again button only while failed, and calls it', () => {
+test('onRetry shows visible Rating not saved text and a Try again button only while failed, and calls it', () => {
   let calls = 0;
   const { rating } = mount({ value: 3, onRetry: () => { calls += 1; } });
-  const retry = rating.root.querySelector('.vm-btn');
-  assert.equal(retry.textContent, 'Try again'); assert.equal(retry.hidden, true); assert.equal(retry.type, 'button');
-  rating.update({ value: 3, status: 'failed' }); assert.equal(retry.hidden, false);
+  const failed = rating.root.querySelector('.gcsp-star-failed'); const retry = failed.querySelector('.vm-btn');
+  assert.equal(retry.textContent, 'Try again'); assert.equal(retry.getAttribute('aria-label'), 'Try saving your rating again');
+  assert.equal(failed.querySelector('span').textContent, 'Rating not saved'); assert.equal(failed.hidden, true); assert.equal(retry.type, 'button');
+  rating.update({ value: 3, status: 'failed' }); assert.equal(failed.hidden, false);
   retry.click(); assert.equal(calls, 1);
-  rating.update({ status: 'pending' }); assert.equal(retry.hidden, true);
-  rating.update({ status: 'failed' }); assert.equal(retry.hidden, false);
-  rating.update({ status: 'saved' }); assert.equal(retry.hidden, true);
+  rating.update({ status: 'pending' }); assert.equal(failed.hidden, true);
+  rating.update({ status: 'failed' }); assert.equal(failed.hidden, false);
+  rating.update({ status: 'saved' }); assert.equal(failed.hidden, true);
 });
 
 test('without onRetry a failed rating adds no button', () => {

@@ -16,7 +16,8 @@ export function starRating({ label, value = null, help, labels = RATING_WORDS, o
   const root = el('fieldset', `gcsp-star-rating${overlay ? ' gcsp-star-rating-overlay' : ''}`); root.dataset.status = 'idle';
   root.append(el('legend', '', label));
   const retry = onRetry ? button({ label: 'Try again', variant: 'ghost', onClick: () => onRetry() }) : null;
-  if (retry) { retry.hidden = true; root.append(retry); }
+  const failed = retry ? el('div', 'gcsp-star-failed') : null;
+  if (retry) { retry.setAttribute('aria-label', 'Try saving your rating again'); failed.append(el('span', '', 'Rating not saved'), retry); failed.hidden = true; root.append(failed); }
   const row = el('div', 'gcsp-star-row'); root.append(row);
   let current = clean(value); let status = 'idle'; let spoken = ''; let spaceHeld = false;
   const own = announce ? null : viewStatus(); if (own) root.append(own.root);
@@ -76,7 +77,7 @@ export function starRating({ label, value = null, help, labels = RATING_WORDS, o
     if (next.status === undefined) return;
     const was = status; status = STATUSES.includes(next.status) ? next.status : 'idle';
     root.dataset.status = status;
-    if (retry) retry.hidden = status !== 'failed';
+    if (failed) failed.hidden = status !== 'failed';
     if (status === 'pending') root.setAttribute('aria-busy', 'true'); else root.removeAttribute('aria-busy');
     if (status === 'pending') { spoken = ''; own?.clear(); } else if (status === 'saved') say(current === null ? 'Rating cleared' : `Rating saved: ${current} of 5`);
     else if (status === 'failed') say('Rating not saved. Try again.');
